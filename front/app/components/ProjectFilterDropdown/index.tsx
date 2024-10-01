@@ -8,6 +8,8 @@ import useLocalize from 'hooks/useLocalize';
 
 import FilterSelector from 'components/FilterSelector';
 
+import { classNames } from 'utils/helperUtils';
+
 type Props = {
   title: string | JSX.Element;
   onChange: (projectIds: string[]) => void;
@@ -64,8 +66,7 @@ const ProjectFilterDropdown = ({
     if (options && options.length > 0) {
       return (
         <FilterSelector
-          id="e2e-project-filter-selector"
-          className={className}
+          className={classNames(className, 'e2e-project-filter-selector')}
           title={title}
           name="projects"
           selected={selectedValues}

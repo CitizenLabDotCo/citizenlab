@@ -17,8 +17,8 @@ import { useIntl } from 'utils/cl-intl';
 
 import MissingData from '../../_shared/MissingData';
 
-import PointLocationQuestion from './PointLocationQuestion';
-import { getLegendLabels } from './utils';
+import MapQuestion from './MapQuestions';
+import { getLegendLabels, isMapBasedQuestion } from './utils';
 
 interface Props {
   projectId: string;
@@ -68,13 +68,12 @@ const SurveyQuestionResult = ({
         totalSubmissions={attributes.totalResponseCount}
         totalResponses={attributes.questionResponseCount}
       />
-      {attributes.grouped === false && attributes.pointResponses ? (
-        <PointLocationQuestion
-          pointResponses={attributes.pointResponses}
-          mapConfigId={attributes.mapConfigId}
-          customFieldId={attributes.customFieldId}
+      {isMapBasedQuestion(attributes.inputType) ? (
+        <MapQuestion
+          attributes={attributes}
           projectId={projectId}
           heatmap={heatmap}
+          customFieldId={questionId}
         />
       ) : (
         <>

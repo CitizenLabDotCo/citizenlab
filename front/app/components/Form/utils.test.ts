@@ -1,8 +1,6 @@
 import { RuleEffect } from '@jsonforms/core';
 
-import { getFormSchemaAndData, isValidData } from './utils';
-
-import { customAjv } from '.';
+import { getFormSchemaAndData, isValidData, customAjv } from './utils';
 
 describe('getFormSchemaAndData', () => {
   it('should return the same schema and data if no elements are hidden', () => {

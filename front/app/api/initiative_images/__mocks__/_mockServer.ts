@@ -1,4 +1,4 @@
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 
 import { getOrigin } from 'utils/storybook/getOrigin';
 
@@ -42,12 +42,12 @@ export const initiativeImagesData: IInitiativeImageData[] = [
 export const apiPath = '*initiatives/:initiativeId/images/:imageId';
 
 const endpoints = {
-  'GET initiatives/:initiativeId/images/:imageId': rest.get(
-    apiPath,
-    (_req, res, ctx) => {
-      return res(ctx.status(200), ctx.json({ data: initiativeImagesData[0] }));
-    }
-  ),
+  'GET initiatives/:initiativeId/images/:imageId': http.get(apiPath, () => {
+    return HttpResponse.json(
+      { data: initiativeImagesData[0] },
+      { status: 200 }
+    );
+  }),
 };
 
 export default endpoints;

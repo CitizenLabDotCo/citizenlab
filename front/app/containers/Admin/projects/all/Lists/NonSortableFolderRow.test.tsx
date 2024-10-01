@@ -53,6 +53,20 @@ jest.mock('api/admin_publications/useAdminPublications', () => {
   return () => mockFolderChildAdminPublications;
 });
 
+const mockProjectData = {
+  id: '2',
+  type: 'project',
+  attributes: {
+    title_multiloc: { en: 'Test Project' },
+    slug: 'test',
+    uses_content_builder: true,
+  },
+};
+
+jest.mock('api/projects/useProjectById', () =>
+  jest.fn(() => ({ data: { data: mockProjectData } }))
+);
+
 const props: Props = {
   publication: folderPublication,
   isLastItem: true,

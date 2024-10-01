@@ -124,9 +124,7 @@ resource 'Phases' do
         parameter :title_multiloc, 'The title of the phase in nultiple locales', required: true
         parameter :description_multiloc, 'The description of the phase in multiple languages. Supports basic HTML.', required: false
         parameter :participation_method, "The participation method of the project, either #{Phase::PARTICIPATION_METHODS.join(',')}. Defaults to ideation.", required: false
-        parameter :posting_enabled, 'Can citizens post ideas in this phase? Defaults to true', required: false
-        parameter :posting_method, "How does posting work? Either #{Phase::POSTING_METHODS.join(',')}. Defaults to unlimited for ideation, and limited to one for native surveys.", required: false
-        parameter :posting_limited_max, 'Number of posts a citizen can perform in this phase. Defaults to 1', required: false
+        parameter :submission_enabled, 'Can citizens submit inputs in this phase? Defaults to true', required: false
         parameter :commenting_enabled, 'Can citizens post comment in this phase? Defaults to true', required: false
         parameter :reacting_enabled, 'Can citizens react in this phase? Defaults to true', required: false
         parameter :reacting_like_method, "How does reacting work? Either #{Phase::REACTING_METHODS.join(',')}. Defaults to unlimited", required: false
@@ -152,6 +150,7 @@ resource 'Phases' do
         parameter :campaigns_settings, "A hash, only including keys in #{Phase::CAMPAIGNS} and with only boolean values", required: true
         parameter :native_survey_title_multiloc, 'A title for the native survey.'
         parameter :native_survey_button_multiloc, 'Text for native survey call to action button.'
+        parameter :prescreening_enabled, 'Do inputs need to go through pre-screening before being published? Defaults to false', required: false
       end
 
       ValidationErrorHelper.new.error_fields(self, Phase)
@@ -178,7 +177,7 @@ resource 'Phases' do
         expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
         expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
         expect(json_response.dig(:data, :attributes, :participation_method)).to eq participation_method
-        expect(json_response.dig(:data, :attributes, :posting_enabled)).to be true
+        expect(json_response.dig(:data, :attributes, :submission_enabled)).to be true
         expect(json_response.dig(:data, :attributes, :commenting_enabled)).to be true
         expect(json_response.dig(:data, :attributes, :reacting_enabled)).to be true
         expect(json_response.dig(:data, :attributes, :reacting_dislike_enabled)).to be true
@@ -188,6 +187,25 @@ resource 'Phases' do
         expect(json_response.dig(:data, :attributes, :end_at)).to eq end_at.to_s
         expect(json_response.dig(:data, :attributes, :previous_phase_end_at_updated)).to be false
         expect(json_response.dig(:data, :relationships, :project, :data, :id)).to eq project_id
+      end
+
+      describe do
+        with_options scope: :phase do
+          parameter :expire_days_limit, 'Default value for how many days a proposal has to meet the voting threshold and move to the next stage. Defaults to 90.'
+          parameter :reacting_threshold, 'Default value for how many votes (reactions) a proposal needs to move to the next stage. Defaults to 300.'
+        end
+
+        let(:participation_method) { 'proposals' }
+        let(:expire_days_limit) { 100 }
+        let(:reacting_threshold) { 500 }
+
+        example_request 'Create a proposals phase' do
+          assert_status 201
+          expect(json_response.dig(:data, :attributes, :participation_method)).to eq 'proposals'
+          expect(json_response.dig(:data, :attributes, :expire_days_limit)).to eq 100
+          expect(json_response.dig(:data, :attributes, :reacting_threshold)).to eq 500
+          expect(json_response.dig(:data, :attributes, :reacting_dislike_enabled)).to be false
+        end
       end
 
       context 'Blank phase end dates' do
@@ -298,7 +316,7 @@ resource 'Phases' do
           # A native survey phase still has some ideation-related state, all column defaults.
           expect(phase_in_db.input_term).to eq 'idea'
           expect(phase_in_db.presentation_mode).to eq 'card'
-          expect(json_response.dig(:data, :attributes, :posting_enabled)).to be true
+          expect(json_response.dig(:data, :attributes, :submission_enabled)).to be true
           expect(json_response.dig(:data, :attributes, :commenting_enabled)).to be true
           expect(json_response.dig(:data, :attributes, :reacting_enabled)).to be true
           expect(json_response.dig(:data, :attributes, :reacting_dislike_enabled)).to be true
@@ -391,9 +409,7 @@ resource 'Phases' do
         parameter :title_multiloc, 'The title of the phase in nultiple locales'
         parameter :description_multiloc, 'The description of the phase in multiple languages. Supports basic HTML.'
         parameter :participation_method, "The participation method of the project, either #{Phase::PARTICIPATION_METHODS.join(',')}. Defaults to ideation.", required: false
-        parameter :posting_enabled, 'Can citizens post ideas in this phase?', required: false
-        parameter :posting_method, "How does posting work? Either #{Phase::POSTING_METHODS.join(',')}. Defaults to unlimited for ideation, and limited to one for native surveys.", required: false
-        parameter :posting_limited_max, 'Number of posts a citizen can perform in this phase. Defaults to 1', required: false
+        parameter :submission_enabled, 'Can citizens post ideas in this phase?', required: false
         parameter :commenting_enabled, 'Can citizens post comment in this phase?', required: false
         parameter :reacting_enabled, 'Can citizens react in this phase?', required: false
         parameter :reacting_like_method, "How does liking work? Either #{Phase::REACTING_METHODS.join(',')}", required: false
@@ -415,6 +431,7 @@ resource 'Phases' do
         parameter :end_at, 'The end date of the phase'
         parameter :poll_anonymous, "Are users associated with their answer? Only applies if participation_method is 'poll'. Can't be changed after first answer.", required: false
         parameter :ideas_order, 'The default order of ideas.'
+        parameter :prescreening_enabled, 'Do inputs need to go through pre-screening before being published?', required: false
       end
       ValidationErrorHelper.new.error_fields(self, Phase)
       response_field :project, "Array containing objects with signature {error: 'is_not_timeline_project'}", scope: :errors
@@ -424,29 +441,45 @@ resource 'Phases' do
       let(:id) { phase.id }
       let(:description_multiloc) { phase.description_multiloc }
       let(:participation_method) { phase.participation_method }
-      let(:posting_enabled) { false }
-      let(:posting_method) { 'limited' }
-      let(:posting_limited_max) { 5 }
+      let(:submission_enabled) { false }
       let(:commenting_enabled) { false }
       let(:reacting_enabled) { true }
       let(:reacting_like_method) { 'limited' }
       let(:reacting_like_limited_max) { 6 }
       let(:presentation_mode) { 'map' }
       let(:allow_anonymous_participation) { true }
+      let(:prescreening_enabled) { true }
 
       example_request 'Update a phase' do
         expect(response_status).to eq 200
         expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
         expect(json_response.dig(:data, :attributes, :participation_method)).to eq participation_method
-        expect(json_response.dig(:data, :attributes, :posting_enabled)).to eq posting_enabled
-        expect(json_response.dig(:data, :attributes, :posting_method)).to eq posting_method
-        expect(json_response.dig(:data, :attributes, :posting_limited_max)).to eq posting_limited_max
+        expect(json_response.dig(:data, :attributes, :submission_enabled)).to eq submission_enabled
         expect(json_response.dig(:data, :attributes, :commenting_enabled)).to eq commenting_enabled
         expect(json_response.dig(:data, :attributes, :reacting_enabled)).to eq reacting_enabled
         expect(json_response.dig(:data, :attributes, :reacting_like_method)).to eq reacting_like_method
         expect(json_response.dig(:data, :attributes, :reacting_like_limited_max)).to eq reacting_like_limited_max
         expect(json_response.dig(:data, :attributes, :presentation_mode)).to eq presentation_mode
         expect(json_response.dig(:data, :attributes, :allow_anonymous_participation)).to eq allow_anonymous_participation
+        expect(json_response.dig(:data, :attributes, :prescreening_enabled)).to eq prescreening_enabled
+      end
+
+      describe do
+        with_options scope: :phase do
+          parameter :expire_days_limit, 'Default value for how many days a proposal has to meet the voting threshold and move to the next stage.'
+          parameter :reacting_threshold, 'Default value for how many votes (reactions) a proposal needs to move to the next stage.'
+        end
+
+        let(:id) { create(:proposals_phase).id }
+        let(:participation_method) { 'proposals' }
+        let(:expire_days_limit) { 100 }
+        let(:reacting_threshold) { 500 }
+
+        example_request 'Update a proposals phase' do
+          assert_status 200
+          expect(json_response.dig(:data, :attributes, :expire_days_limit)).to eq 100
+          expect(json_response.dig(:data, :attributes, :reacting_threshold)).to eq 500
+        end
       end
 
       describe do
@@ -723,9 +756,9 @@ resource 'Phases' do
 
           example 'Download native survey phase inputs in one sheet' do
             expected_params = [[survey_response1, survey_response2], active_phase, { view_private_attributes: true }]
-            allow(XlsxExport::InputSheetGenerator).to receive(:new).and_return(XlsxExport::InputSheetGenerator.new(*expected_params))
+            allow(Export::Xlsx::InputSheetGenerator).to receive(:new).and_return(Export::Xlsx::InputSheetGenerator.new(*expected_params))
             do_request
-            expect(XlsxExport::InputSheetGenerator).to have_received(:new).with(*expected_params)
+            expect(Export::Xlsx::InputSheetGenerator).to have_received(:new).with(*expected_params)
 
             assert_status 200
             expect(xlsx_contents(response_body)).to match([
@@ -844,9 +877,9 @@ resource 'Phases' do
 
       example 'Download phase inputs WITH private user data', document: false do
         expected_params = [[survey_response], active_phase, { view_private_attributes: true }]
-        allow(XlsxExport::InputSheetGenerator).to receive(:new).and_return(XlsxExport::InputSheetGenerator.new(*expected_params))
+        allow(Export::Xlsx::InputSheetGenerator).to receive(:new).and_return(Export::Xlsx::InputSheetGenerator.new(*expected_params))
         do_request
-        expect(XlsxExport::InputSheetGenerator).to have_received(:new).with(*expected_params)
+        expect(Export::Xlsx::InputSheetGenerator).to have_received(:new).with(*expected_params)
         assert_status 200
         expect(xlsx_contents(response_body)).to match([
           {

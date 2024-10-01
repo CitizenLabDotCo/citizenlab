@@ -16,7 +16,7 @@ module EmailCampaigns
     end
 
     def remove_consents(emails_url)
-      emails = open(emails_url).readlines.map(&:strip).map(&:downcase)
+      emails = open(emails_url).readlines.map { |x| x.strip.downcase }
       Rails.logger.info "Found #{emails.size} emails"
 
       users = User.where(email: emails).all

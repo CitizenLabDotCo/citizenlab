@@ -47,7 +47,7 @@ resource 'Reactions' do
     end
     ValidationErrorHelper.new.error_fields(self, Reaction)
 
-    disabled_reasons = Permissions::IdeaPermissionsService::REACTING_DENIED_REASONS.values + Permissions::IdeaPermissionsService::USER_DENIED_REASONS.values
+    disabled_reasons = Permissions::PhasePermissionsService::REACTING_DENIED_REASONS.values + Permissions::PhasePermissionsService::USER_DENIED_REASONS.values
     response_field :base, "Array containing objects with signature { error: #{disabled_reasons.join(' | ')} }", scope: :errors
 
     let(:idea_id) { @idea.id }
@@ -76,12 +76,27 @@ resource 'Reactions' do
         assert_status 422
       end
     end
+
+    describe do
+      let!(:status_threshold_reached) { create(:proposals_status, code: 'threshold_reached') }
+      let(:phase) { create(:proposals_phase, reacting_threshold: 2) }
+      let(:proposal) { create(:proposal, idea_status: create(:proposals_status, code: 'proposed'), creation_phase: phase, project: phase.project, phases: [phase]) }
+      let(:idea_id) { proposal.id }
+
+      example 'Reaching the voting threshold immediately triggers status change', document: false do
+        create_list(:reaction, 2, reactable: proposal, mode: 'up')
+
+        do_request
+        assert_status 201
+        expect(proposal.reload.idea_status).to eq status_threshold_reached
+      end
+    end
   end
 
   post 'web_api/v1/ideas/:idea_id/reactions/up' do
     ValidationErrorHelper.new.error_fields(self, Reaction)
 
-    disabled_reasons = Permissions::IdeaPermissionsService::REACTING_DENIED_REASONS.values + Permissions::IdeaPermissionsService::USER_DENIED_REASONS.values
+    disabled_reasons = Permissions::PhasePermissionsService::REACTING_DENIED_REASONS.values + Permissions::PhasePermissionsService::USER_DENIED_REASONS.values
     response_field :base, "Array containing objects with signature { error: #{disabled_reasons.join(' | ')} }", scope: :errors
 
     let(:idea_id) { @idea.id }
@@ -118,7 +133,7 @@ resource 'Reactions' do
       example_request '[error] Like an idea in a phase where reactions are disabled' do
         expect(status).to eq 401
         json_response = json_parse(response_body)
-        expect(json_response[:errors][:base][0][:error]).to eq Permissions::IdeaPermissionsService::REACTING_DENIED_REASONS[:reacting_disabled]
+        expect(json_response[:errors][:base][0][:error]).to eq Permissions::PhasePermissionsService::REACTING_DENIED_REASONS[:reacting_disabled]
         expect(@idea.reload.likes_count).to eq 2
         expect(@idea.reload.dislikes_count).to eq 0
       end
@@ -149,7 +164,7 @@ resource 'Reactions' do
       example_request '[error] Like an idea in a phase where you can like only once' do
         expect(status).to eq 401
         json_response = json_parse(response_body)
-        expect(json_response[:errors][:base][0][:error]).to eq Permissions::IdeaPermissionsService::REACTING_DENIED_REASONS[:reacting_like_limited_max_reached]
+        expect(json_response[:errors][:base][0][:error]).to eq Permissions::PhasePermissionsService::REACTING_DENIED_REASONS[:reacting_like_limited_max_reached]
         expect(@idea.reload.likes_count).to eq 2
         expect(@idea.reload.dislikes_count).to eq 0
       end
@@ -159,7 +174,7 @@ resource 'Reactions' do
   post 'web_api/v1/ideas/:idea_id/reactions/down' do
     ValidationErrorHelper.new.error_fields(self, Reaction)
 
-    disabled_reasons = Permissions::IdeaPermissionsService::REACTING_DENIED_REASONS.values + Permissions::IdeaPermissionsService::USER_DENIED_REASONS.values
+    disabled_reasons = Permissions::PhasePermissionsService::REACTING_DENIED_REASONS.values + Permissions::PhasePermissionsService::USER_DENIED_REASONS.values
     response_field :base, "Array containing objects with signature { error: #{disabled_reasons.join(' | ')} }", scope: :errors
 
     let(:idea_id) { @idea.id }
@@ -194,7 +209,7 @@ resource 'Reactions' do
       do_request
       expect(status).to eq 401
       json_response = json_parse(response_body)
-      expect(json_response[:errors][:base][0][:error]).to eq Permissions::IdeaPermissionsService::REACTING_DENIED_REASONS[:reacting_dislike_disabled]
+      expect(json_response[:errors][:base][0][:error]).to eq Permissions::PhasePermissionsService::REACTING_DENIED_REASONS[:reacting_dislike_disabled]
       expect(@idea.reload.likes_count).to eq 2
       expect(@idea.reload.dislikes_count).to eq 1
     end

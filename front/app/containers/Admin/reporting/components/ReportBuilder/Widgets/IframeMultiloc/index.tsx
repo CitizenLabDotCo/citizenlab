@@ -31,7 +31,7 @@ const IframeMultiloc = ({ url, height, title }: Props) => {
 
   return (
     <Box
-      id="e2e-content-builder-iframe-component"
+      className="e2e-content-builder-iframe-component"
       minHeight="26px"
       maxWidth="1200px"
       margin="0 auto"

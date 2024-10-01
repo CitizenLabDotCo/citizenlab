@@ -47,7 +47,9 @@ module EmailCampaigns
 
     def self.default_schedule
       day, hour = [[:thursday, 13], [:saturday, 8]].sample
-      IceCube::Schedule.new(Time.find_zone(AppConfiguration.instance.settings('core', 'timezone')).local(2020)) do |s|
+      start_time = AppConfiguration.timezone.local(2020)
+
+      IceCube::Schedule.new(start_time) do |s|
         rule = IceCube::Rule.weekly(1).day(day).hour_of_day(hour)
         s.add_recurrence_rule(rule)
       end
@@ -190,7 +192,7 @@ module EmailCampaigns
         author_first_name: comment.author&.first_name,
         author_last_name: name_service.last_name!(comment.author),
         author_locale: comment.author&.locale,
-        author_avatar: comment.author.avatar&.versions&.map { |k, v| [k.to_s, v.url] }&.to_h
+        author_avatar: comment.author.avatar&.versions&.to_h { |k, v| [k.to_s, v.url] }
       }
     end
 

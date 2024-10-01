@@ -29,9 +29,10 @@ interface Props {
   statusId: string;
   className?: string;
   id?: string;
+  maxLength?: number;
 }
 
-const StatusBadge = memo<Props>(({ statusId, id, className }) => {
+const StatusBadge = memo<Props>(({ statusId, id, className, maxLength }) => {
   const { data: ideaStatus } = useIdeaStatus(statusId);
 
   if (ideaStatus) {
@@ -39,7 +40,10 @@ const StatusBadge = memo<Props>(({ statusId, id, className }) => {
 
     return (
       <Container id={id} className={className || ''} color={color}>
-        <T value={ideaStatus.data.attributes.title_multiloc} />
+        <T
+          value={ideaStatus.data.attributes.title_multiloc}
+          maxLength={maxLength}
+        />
       </Container>
     );
   }

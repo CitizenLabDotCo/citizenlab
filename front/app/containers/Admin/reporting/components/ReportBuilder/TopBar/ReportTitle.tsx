@@ -7,7 +7,6 @@ import {
   Input,
   Title,
 } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
 import styled from 'styled-components';
 
 import useReport from 'api/reports/useReport';
@@ -128,22 +127,16 @@ const ReportTitle = ({ reportId }) => {
       alignItems="center"
       justifyContent="flex-start"
     >
-      <Tippy
-        content={formatMessage(messages.reportTitleTooltip)}
-        zIndex={99999}
-        placement="right"
-      >
-        <div>
-          <StyledInput
-            type="text"
-            value={newTitle}
-            onChange={setNewTitle}
-            onBlur={handleOnBlur}
-            onKeyDown={handleOnKeyDown}
-            setRef={setInputRef}
-          />
-        </div>
-      </Tippy>
+      <div>
+        <StyledInput
+          type="text"
+          value={newTitle}
+          onChange={setNewTitle}
+          onBlur={handleOnBlur}
+          onKeyDown={handleOnKeyDown}
+          setRef={setInputRef}
+        />
+      </div>
 
       {errorMessage && <StyledError text={errorMessage} />}
     </Box>

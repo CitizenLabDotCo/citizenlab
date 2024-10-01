@@ -29,11 +29,19 @@ class PermissionPolicy < ApplicationPolicy
     user&.active? && UserRoleService.new.can_moderate?(record, user)
   end
 
+  def reset?
+    update?
+  end
+
   def requirements?
     true
   end
 
   def schema?
+    true
+  end
+
+  def access_denied_explanation?
     true
   end
 end

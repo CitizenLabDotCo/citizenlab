@@ -206,6 +206,9 @@ async function fetcher({
       }
     }
   }
+
+  if (!data) return null;
+
   const { included: _included, ...rest } = data;
   return rest as Omit<BaseResponseData, 'included'>;
 }

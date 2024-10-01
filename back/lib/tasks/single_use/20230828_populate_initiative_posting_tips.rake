@@ -7,7 +7,7 @@ namespace :single_use do
   # docker-compose run --rm web bin/rails 'single_use:populate_initiative_posting_tips'
   task populate_initiative_posting_tips: :environment do |_t, _args|
     locale_files = {}
-    Tenant.switch_each do |_tenant|
+    Tenant.safe_switch_each do |_tenant|
       posting_tips = {}
       app_config = AppConfiguration.instance
 
@@ -30,7 +30,7 @@ namespace :single_use do
 
   # We need to have this copy in the BE code for defaults.
   task populate_initiative_posting_tips_from_be_locales: :environment do |_t, _args|
-    Tenant.switch_each do |_tenant|
+    Tenant.safe_switch_each do |_tenant|
       app_config = AppConfiguration.instance
       app_config.settings['initiatives']['posting_tips'] =
         MultilocService.new.i18n_to_multiloc(

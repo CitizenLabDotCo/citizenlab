@@ -1,4 +1,4 @@
-import React, { memo, useState, useCallback, useEffect } from 'react';
+import React, { memo, useState, useCallback } from 'react';
 
 import {
   IconTooltip,
@@ -53,36 +53,24 @@ export interface Props
 }
 
 const QuillMutilocWithLocaleSwitcher = memo<Props>((props) => {
-  const {
-    valueMultiloc,
-    onChange,
-    className,
-    label,
-    labelTooltipText,
-    ...quillProps
-  } = props;
+  const { valueMultiloc, onChange, label, labelTooltipText, ...quillProps } =
+    props;
 
-  const [selectedLocale, setSelectedLocale] = useState<SupportedLocale | null>(
-    null
+  const [selectedLocale, setSelectedLocale] = useState<SupportedLocale>(
+    useLocale()
   );
-
-  const locale = useLocale();
   const tenantLocales = useAppConfigurationLocales();
 
-  useEffect(() => {
-    !isNilOrError(locale) && setSelectedLocale(locale);
-  }, [locale]);
-
   const handleValueOnChange = useCallback(
-    (value: string, locale: SupportedLocale) => {
+    (value: string) => {
       const newValueMultiloc = {
         ...(valueMultiloc || {}),
-        [locale]: value,
+        [selectedLocale]: value,
       } as Multiloc;
 
-      onChange(newValueMultiloc, locale);
+      onChange(newValueMultiloc, selectedLocale);
     },
-    [valueMultiloc, onChange]
+    [valueMultiloc, selectedLocale, onChange]
   );
 
   const handleOnSelectedLocaleChange = useCallback(
@@ -96,7 +84,7 @@ const QuillMutilocWithLocaleSwitcher = memo<Props>((props) => {
     const id = `${props.id}-${selectedLocale}`;
 
     return (
-      <Container className={className} id={props.id}>
+      <Container id={props.id}>
         <LabelContainer>
           {label && (
             <StyledLabel htmlFor={id}>
@@ -121,7 +109,6 @@ const QuillMutilocWithLocaleSwitcher = memo<Props>((props) => {
           {...quillProps}
           id={id}
           value={valueMultiloc?.[selectedLocale]}
-          locale={selectedLocale}
           onChange={handleValueOnChange}
         />
       </Container>

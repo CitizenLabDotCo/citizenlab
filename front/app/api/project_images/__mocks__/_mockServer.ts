@@ -1,4 +1,4 @@
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 
 import { API_PATH } from 'containers/App/constants';
 
@@ -43,22 +43,16 @@ export const projectImagesPath = `${API_PATH}/projects/:projectId/images`;
 export const projectImagePath = `${API_PATH}/projects/:projectId/images/:imageId`;
 
 const endpoints = {
-  'GET projects/:projectId/images': rest.get(
-    projectImagesPath,
-    (_req, res, ctx) => {
-      return res(ctx.status(200), ctx.json({ data: projectImagesData }));
-    }
-  ),
-  'POST projects/:projectId/images': rest.post(
-    projectImagesPath,
-    (_req, res, ctx) => {
-      return res(ctx.status(200), ctx.json({ data: projectImagesData[0] }));
-    }
-  ),
-  'DELETE projects/:projectId/images/:imageId': rest.delete(
+  'GET projects/:projectId/images': http.get(projectImagesPath, () => {
+    return HttpResponse.json({ data: projectImagesData }, { status: 200 });
+  }),
+  'POST projects/:projectId/images': http.post(projectImagesPath, () => {
+    return HttpResponse.json({ data: projectImagesData[0] }, { status: 200 });
+  }),
+  'DELETE projects/:projectId/images/:imageId': http.delete(
     projectImagePath,
-    (_req, res, ctx) => {
-      return res(ctx.status(200));
+    () => {
+      return HttpResponse.json(null, { status: 200 });
     }
   ),
 };

@@ -133,19 +133,23 @@ export default ({
           <SubSectionTitleWithDescription>
             <FormattedMessage {...messages.optionsToVoteOn} />
           </SubSectionTitleWithDescription>
-          <FormattedMessage
-            {...messages.optionsToVoteOnDescription}
-            values={{
-              optionsPageLink: (
-                <Link
-                  to={`/admin/projects/${projectId}/phases/${phaseId}/ideas`}
-                  rel="noreferrer"
-                >
-                  <FormattedMessage {...messages.optionsPageText} />
-                </Link>
-              ),
-            }}
-          />
+          {phaseId ? (
+            <FormattedMessage
+              {...messages.optionsToVoteOnDescription}
+              values={{
+                optionsPageLink: (
+                  <Link
+                    to={`/admin/projects/${projectId}/phases/${phaseId}/ideas`}
+                    rel="noreferrer"
+                  >
+                    <FormattedMessage {...messages.optionsPageText} />
+                  </Link>
+                ),
+              }}
+            />
+          ) : (
+            <FormattedMessage {...messages.optionsToVoteOnDescWihoutPhase} />
+          )}
         </SectionField>
         {voting_method === 'budgeting' && (
           <BudgetingInputs
@@ -161,7 +165,7 @@ export default ({
         {voting_method === 'multiple_voting' && (
           <MultipleVotingInputs
             voting_max_total={voting_max_total}
-            apiErrors={undefined}
+            apiErrors={apiErrors}
             voteTermError={voteTermError}
             maxTotalVotesError={maxTotalVotesError}
             maxVotesPerOptionError={maxVotesPerOptionError}
@@ -179,7 +183,7 @@ export default ({
         {voting_method === 'single_voting' && (
           <SingleVotingInputs
             voting_max_total={voting_max_total}
-            apiErrors={undefined}
+            apiErrors={apiErrors}
             maxTotalVotesError={maxTotalVotesError}
             handleMaxVotingAmountChange={handleVotingMaxTotalChange}
           />

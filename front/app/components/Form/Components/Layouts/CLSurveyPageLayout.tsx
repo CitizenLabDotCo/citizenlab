@@ -1,23 +1,40 @@
-import React, { memo, useState, useEffect, useContext, useRef } from 'react';
+import React, {
+  memo,
+  useState,
+  useEffect,
+  useContext,
+  useRef,
+  useMemo,
+} from 'react';
 
 import {
   Box,
   colors,
+  Spinner,
   Title,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 import { LayoutProps, RankedTester, rankWith } from '@jsonforms/core';
 import {
-  JsonFormsDispatch,
   withJsonFormsLayoutProps,
   useJsonForms,
+  JsonFormsDispatch,
 } from '@jsonforms/react';
-import { useSearchParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import { useTheme } from 'styled-components';
 
+import { IMapConfig } from 'api/map_config/types';
+import useMapConfigById from 'api/map_config/useMapConfigById';
+import useProjectMapConfig from 'api/map_config/useProjectMapConfig';
 import usePhase from 'api/phases/usePhase';
+import usePhases from 'api/phases/usePhases';
+import { getCurrentPhase } from 'api/phases/utils';
+import useProjectBySlug from 'api/projects/useProjectBySlug';
 
-import { customAjv } from 'components/Form';
+import useLocalize from 'hooks/useLocalize';
+
+import EsriMap from 'components/EsriMap';
+import { parseLayers } from 'components/EsriMap/utils';
 import {
   getSanitizedFormData,
   getPageSchema,
@@ -28,17 +45,21 @@ import {
   getFormCompletionPercentage,
 } from 'components/Form/Components/Layouts/utils';
 import { FormContext } from 'components/Form/contexts';
+import { customAjv } from 'components/Form/utils';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
+import eventEmitter from 'utils/eventEmitter';
 
 import {
   extractElementsByOtherOptionLogic,
   hasOtherTextFieldBelow,
   isVisible,
 } from '../Controls/visibilityUtils';
+import { useErrorToRead } from '../Fields/ErrorToReadContext';
 
+import { SURVEY_PAGE_CHANGE_EVENT } from './events';
 import messages from './messages';
 import PageControlButtons from './PageControlButtons';
 
@@ -57,9 +78,14 @@ const CLSurveyPageLayout = memo(
     data,
   }: LayoutProps) => {
     const { onSubmit, setShowAllErrors, setFormData } = useContext(FormContext);
-    const { formatMessage } = useIntl();
     const [currentStep, setCurrentStep] = useState<number>(0);
     const [isLoading, setIsLoading] = useState(false);
+    const isMobileOrSmaller = useBreakpoint('phone');
+    const [searchParams] = useSearchParams();
+    const { formatMessage } = useIntl();
+    const formState = useJsonForms();
+    const localize = useLocalize();
+    const theme = useTheme();
 
     // We can cast types because the tester made sure we only get correct values
     const pageTypeElements = (uischema as PageCategorization)
@@ -67,19 +93,51 @@ const CLSurveyPageLayout = memo(
     const [uiPages, setUiPages] = useState<PageType[]>(pageTypeElements);
     const [userPagePath] = useState<PageType[]>([]);
     const [scrollToError, setScrollToError] = useState(false);
-    const theme = useTheme();
-    const formState = useJsonForms();
-    const isSmallerThanPhone = useBreakpoint('phone');
+    const [percentageAnswered, setPercentageAnswered] = useState<number>(1);
     const showSubmit = currentStep === uiPages.length - 1;
     const dataCyValue = showSubmit ? 'e2e-submit-form' : 'e2e-next-page';
     const hasPreviousPage = currentStep !== 0;
+
+    const draggableDivRef = useRef<HTMLDivElement>(null);
+    const dragDividerRef = useRef<HTMLDivElement>(null);
     const pagesRef = useRef<HTMLDivElement>(null);
-    const [queryParams] = useSearchParams();
-    const phaseId = queryParams.get('phase_id') || undefined;
+    const { announceError } = useErrorToRead();
+
+    // Get project and relevant phase data
+    const { slug } = useParams() as {
+      slug: string;
+    };
+    const { data: project } = useProjectBySlug(slug);
+    const { data: phases } = usePhases(project?.data.id);
+    const phaseIdFromSearchParams = searchParams.get('phase_id');
+    const phaseId =
+      phaseIdFromSearchParams || getCurrentPhase(phases?.data)?.id;
     const { data: phase } = usePhase(phaseId);
     const allowAnonymousPosting =
-      phase?.data.attributes.allow_anonymous_participation;
-    const [percentageAnswered, setPercentageAnswered] = useState<number>(1);
+      phase?.data?.attributes.allow_anonymous_participation;
+
+    // Map-related variables
+    const { data: projectMapConfig } = useProjectMapConfig(project?.data.id);
+    const isMapPage = uiPages[currentStep].options.page_layout === 'map';
+    const mapConfigId =
+      uiPages[currentStep].options.map_config_id || projectMapConfig?.data?.id;
+    const { data: fetchedMapConfig, isFetching: isFetchingMapConfig } =
+      useMapConfigById(mapConfigId);
+    const [mapConfig, setMapConfig] = useState<IMapConfig | null | undefined>(
+      null
+    );
+    const mapLayers = useMemo(() => {
+      return parseLayers(mapConfig, localize);
+    }, [localize, mapConfig]);
+
+    useEffect(() => {
+      setMapConfig(mapConfigId ? fetchedMapConfig : null);
+    }, [fetchedMapConfig, mapConfigId]);
+
+    // Emit event when page changes and map is fetched
+    useEffect(() => {
+      eventEmitter.emit(SURVEY_PAGE_CHANGE_EVENT);
+    }, [currentStep, isFetchingMapConfig]);
 
     useEffect(() => {
       // We can cast types because the tester made sure we only get correct values
@@ -100,15 +158,22 @@ const CLSurveyPageLayout = memo(
 
     useEffect(() => {
       if (scrollToError) {
-        // Scroll to the first field with an error
-        document.getElementById('error-display')?.scrollIntoView({
-          behavior: 'smooth',
-          block: 'nearest',
-          inline: 'start',
-        });
+        // Select the first error element by its class name
+        const firstErrorElement = document.querySelector(
+          '.error-display-container'
+        );
+        if (firstErrorElement) {
+          firstErrorElement.scrollIntoView({
+            behavior: 'smooth',
+            block: 'nearest',
+            inline: 'start',
+          });
+
+          announceError(firstErrorElement.id);
+        }
         setScrollToError(false);
       }
-    }, [scrollToError]);
+    }, [scrollToError, announceError]);
 
     useEffect(() => {
       if (currentStep === uiPages.length - 1) {
@@ -136,6 +201,9 @@ const CLSurveyPageLayout = memo(
     const scrollToTop = () => {
       // Scroll inner container to top
       if (pagesRef?.current) {
+        pagesRef.current.scrollIntoView({
+          block: 'start',
+        });
         pagesRef.current.scrollTop = 0;
       }
     };
@@ -164,7 +232,7 @@ const CLSurveyPageLayout = memo(
         scrollToTop();
         data.publication_status = 'draft';
         data.latest_complete_page = currentStep;
-        onSubmit?.(data, false);
+        onSubmit?.({ data }, false);
         setCurrentStep(currentStep + 1);
 
         setIsLoading(false);
@@ -206,80 +274,165 @@ const CLSurveyPageLayout = memo(
       scrollToTop();
     };
 
-    return (
-      <>
-        <Box display="flex" flexDirection="column" height="100%">
-          {allowAnonymousPosting && (
-            <Box w="100%" px={isSmallerThanPhone ? '16px' : '24px'} mt="12px">
-              <Warning icon="shield-checkered">
-                {formatMessage(messages.anonymousSurveyMessage)}
-              </Warning>
-            </Box>
-          )}
-          <Box h="100%" display="flex" ref={pagesRef}>
-            {uiPages.map((page, index) => {
-              const pageElements = extractElementsByOtherOptionLogic(
-                page,
-                data
-              );
-              return (
-                currentStep === index && (
-                  <Box key={index} p="24px" w="100%">
-                    <Box display="flex" flexDirection="column">
-                      {page.options.title && (
-                        <Title
-                          as="h1"
-                          variant={isSmallerThanPhone ? 'h2' : 'h1'}
-                          m="0"
-                          mb="8px"
-                          color="tenantPrimary"
-                        >
-                          {page.options.title}
-                        </Title>
-                      )}
-                      {page.options.description && (
-                        <Box mb="48px">
-                          <QuillEditedContent
-                            fontWeight={400}
-                            textColor={theme.colors.tenantText}
-                          >
-                            <div
-                              dangerouslySetInnerHTML={{
-                                __html: page.options.description,
-                              }}
-                            />
-                          </QuillEditedContent>
-                        </Box>
-                      )}
-                      {pageElements.map((elementUiSchema, index) => {
-                        const hasOtherFieldBelow = hasOtherTextFieldBelow(
-                          elementUiSchema,
-                          data
-                        );
+    const onDragDivider = (event) => {
+      event.preventDefault();
+      // Change the height of the map container to match the drag event
+      if (draggableDivRef?.current) {
+        const clientY = event?.changedTouches?.[0]?.clientY;
+        // Don't allow the div to be dragged outside bounds of survey page
+        if (clientY > 0 && clientY < document.body.clientHeight - 180) {
+          draggableDivRef.current.style.height = `${clientY}px`;
+        }
+      }
+    };
 
-                        return (
-                          <Box
-                            mb={hasOtherFieldBelow ? undefined : '28px'}
-                            key={index}
-                          >
-                            <JsonFormsDispatch
-                              renderers={renderers}
-                              cells={cells}
-                              uischema={elementUiSchema}
-                              schema={schema}
-                              path={path}
-                              enabled={enabled}
-                            />
-                          </Box>
-                        );
-                      })}
-                    </Box>
-                  </Box>
-                )
-              );
-            })}
+    dragDividerRef?.current?.addEventListener('touchmove', onDragDivider);
+
+    if (isFetchingMapConfig) {
+      return (
+        <Box h="100%" w="100%" display="flex">
+          <Box mx="auto" my="auto">
+            <Spinner />
           </Box>
         </Box>
+      );
+    }
+
+    return (
+      <>
+        <Box
+          id="container"
+          display="flex"
+          flexDirection={isMobileOrSmaller ? 'column' : 'row'}
+          height="100%"
+          w="100%"
+        >
+          {isMapPage && (
+            <Box
+              id="survey_page_map"
+              w={isMobileOrSmaller ? '100%' : '60%'}
+              minWidth="60%"
+              h="100%"
+              ref={draggableDivRef}
+              key={`esri_map_${currentStep}`}
+            >
+              <EsriMap
+                layers={mapLayers}
+                initialData={{
+                  showLegend: true,
+                  showLayerVisibilityControl: true,
+                  showLegendExpanded: true,
+                  showZoomControls: isMobileOrSmaller ? false : true,
+                  zoom: Number(mapConfig?.data?.attributes.zoom_level),
+                  center: mapConfig?.data?.attributes.center_geojson,
+                }}
+                webMapId={mapConfig?.data.attributes.esri_web_map_id}
+                height="100%"
+              />
+            </Box>
+          )}
+
+          <Box flex={'1 1 auto'} overflowY="auto" h="100%" ref={pagesRef}>
+            {isMapPage && isMobileOrSmaller && (
+              <Box
+                aria-hidden={true}
+                height="30px"
+                py="20px"
+                ref={dragDividerRef}
+                position="absolute"
+                background={colors.white}
+                w="100%"
+                zIndex="1000"
+              >
+                <Box
+                  mx="auto"
+                  w="40px"
+                  h="4px"
+                  bgColor={colors.grey400}
+                  borderRadius="10px"
+                />
+              </Box>
+            )}
+            <Box
+              display="flex"
+              flexDirection="column"
+              height="100%"
+              mt={isMapPage && isMobileOrSmaller ? '20px' : undefined}
+            >
+              <Box h="100%" display="flex">
+                {uiPages.map((page, index) => {
+                  const pageElements = extractElementsByOtherOptionLogic(
+                    page,
+                    data
+                  );
+                  return (
+                    currentStep === index && (
+                      <Box key={index} p="24px" w="100%">
+                        <Box display="flex" flexDirection="column">
+                          {allowAnonymousPosting && (
+                            <Box w="100%" mb="12px">
+                              <Warning icon="shield-checkered">
+                                {formatMessage(messages.anonymousSurveyMessage)}
+                              </Warning>
+                            </Box>
+                          )}
+                          {page.options.title && (
+                            <Title
+                              as="h1"
+                              variant={isMobileOrSmaller ? 'h2' : 'h1'}
+                              m="0"
+                              mb="8px"
+                              color="tenantPrimary"
+                            >
+                              {page.options.title}
+                            </Title>
+                          )}
+                          {page.options.description && (
+                            <Box mb="48px">
+                              <QuillEditedContent
+                                fontWeight={400}
+                                textColor={theme.colors.tenantText}
+                              >
+                                <div
+                                  dangerouslySetInnerHTML={{
+                                    __html: page.options.description,
+                                  }}
+                                />
+                              </QuillEditedContent>
+                            </Box>
+                          )}
+                          {pageElements.map((elementUiSchema, index) => {
+                            const hasOtherFieldBelow = hasOtherTextFieldBelow(
+                              elementUiSchema,
+                              data
+                            );
+
+                            return (
+                              <Box
+                                mb={hasOtherFieldBelow ? undefined : '28px'}
+                                key={index}
+                              >
+                                <JsonFormsDispatch
+                                  renderers={renderers}
+                                  cells={cells}
+                                  uischema={elementUiSchema}
+                                  schema={schema}
+                                  path={path}
+                                  enabled={enabled}
+                                />
+                              </Box>
+                            );
+                          })}
+                        </Box>
+                      </Box>
+                    )
+                  );
+                })}
+              </Box>
+            </Box>
+          </Box>
+        </Box>
+
         {/*
           TODO:
           We should move the footer (progress bar and navigation buttons) into IdeasNewSurveyForm/index.tsx
@@ -290,11 +443,10 @@ const CLSurveyPageLayout = memo(
           progress update before entering a new page, rather than after leaving it.
         */}
         <Box
-          maxWidth="700px"
+          maxWidth={isMapPage ? '1100px' : '700px'}
           w="100%"
           position="fixed"
-          bottom={isSmallerThanPhone ? '0' : '40px'}
-          zIndex="1010"
+          bottom={isMobileOrSmaller ? '0' : '40px'}
         >
           <Box background={colors.background}>
             <Box

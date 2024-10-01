@@ -1,5 +1,5 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import { makeUser } from 'api/users/__mocks__/useUsers';
@@ -13,8 +13,8 @@ export const userData: IUser = makeUser();
 
 const apiPath = '*users/:id/block';
 const server = setupServer(
-  rest.patch(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: userData }));
+  http.patch(apiPath, () => {
+    return HttpResponse.json({ data: userData }, { status: 200 });
   })
 );
 
@@ -40,8 +40,8 @@ describe('useBlockUser', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.patch(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.patch(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

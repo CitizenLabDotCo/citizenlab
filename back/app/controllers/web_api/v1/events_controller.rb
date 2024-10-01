@@ -42,7 +42,7 @@ class WebApi::V1::EventsController < ApplicationController
     attendees = User.where(id: event.attendances.pluck(:attendee_id))
 
     I18n.with_locale(current_user&.locale) do
-      xlsx = XlsxExport::AttendeesGenerator.new.generate_attendees_xlsx attendees, view_private_attributes: true
+      xlsx = Export::Xlsx::AttendeesGenerator.new.generate_attendees_xlsx attendees, view_private_attributes: true
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'attendees.xlsx'
     end
 
@@ -181,12 +181,7 @@ class WebApi::V1::EventsController < ApplicationController
     date_str = date_str.strip
     return nil if date_str.in?(['null', ''])
 
-    config_timezone.parse(date_str)
-  end
-
-  def config_timezone
-    timezone_str = AppConfiguration.instance.settings('core', 'timezone')
-    ActiveSupport::TimeZone[timezone_str] || (raise KeyError, timezone_str)
+    AppConfiguration.timezone.parse(date_str)
   end
 
   def default_locale

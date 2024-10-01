@@ -100,10 +100,7 @@ const ProjectFolderShowPage = ({ projectFolder }: Props) => {
   const { data: authUser } = useAuthUser();
   const isSmallerThanSmallDesktop = useBreakpoint('smallDesktop');
 
-  const userCanEditFolder = userModeratesFolder(
-    authUser?.data,
-    projectFolder.id
-  );
+  const userCanEditFolder = userModeratesFolder(authUser, projectFolder.id);
 
   return (
     <>
@@ -120,7 +117,7 @@ const ProjectFolderShowPage = ({ projectFolder }: Props) => {
                 <Button
                   icon="edit"
                   linkTo={`/admin/projects/folders/${projectFolder.id}/settings`}
-                  buttonStyle="secondary"
+                  buttonStyle="secondary-outlined"
                   padding="6px 12px"
                 >
                   <FormattedMessage {...messages.editFolder} />

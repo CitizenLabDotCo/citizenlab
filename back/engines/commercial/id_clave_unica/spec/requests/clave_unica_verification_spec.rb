@@ -121,7 +121,7 @@ describe 'clave_unica verification' do
     get "/auth/clave_unica?token=#{@token}&pathname=/some-page"
     follow_redirect!
 
-    expect(response).to redirect_to('/some-page?verification_error=true&error=taken')
+    expect(response).to redirect_to('/some-page?verification_error=true&error_code=taken')
     expect(@user.reload).to have_attributes({
       verified: false,
       first_name: 'Rudolphi',
@@ -131,7 +131,7 @@ describe 'clave_unica verification' do
 
   it 'creates user when the authentication token is not passed' do
     expect(User.count).to eq(1)
-    get '/auth/clave_unica?param=/some-param'
+    get '/auth/clave_unica?param=some-param'
     follow_redirect!
 
     expect(User.count).to eq(2)
@@ -145,7 +145,14 @@ describe 'clave_unica verification' do
       password_digest: nil
     })
 
-    expect(response).to redirect_to('/en/complete-signup?param=%2Fsome-param')
+    expect(response).to redirect_to('/en/?param=some-param')
+  end
+
+  it 'does not send email to empty address (when just registered)' do
+    get '/auth/clave_unica'
+    follow_redirect!
+
+    expect(ActionMailer::Base.deliveries).to be_empty
   end
 
   context 'when verification is already taken by new user' do
@@ -168,7 +175,7 @@ describe 'clave_unica verification' do
         get "/auth/clave_unica?token=#{@token}&pathname=/some-page"
         follow_redirect!
 
-        expect(response).to redirect_to('/some-page?verification_error=true&error=taken')
+        expect(response).to redirect_to('/some-page?verification_error=true&error_code=taken')
         expect(@user.reload).to have_attributes({
           verified: false,
           first_name: 'Rudolphi',
@@ -213,41 +220,31 @@ describe 'clave_unica verification' do
         configuration.save!
       end
 
-      it 'creates user that can confirm her email' do
+      it 'creates user that can add & confirm her email' do
         get '/auth/clave_unica'
         follow_redirect!
 
         user = User.order(created_at: :asc).last
         expect_to_create_verified_and_identified_user(user)
-        expect(user.confirmation_required?).to be(true)
+        expect(user.email).to be_nil
+        expect(user.active?).to be(true)
+        expect(ActionMailer::Base.deliveries.count).to eq(0)
 
         headers = { 'Authorization' => authorization_header(user) }
 
-        post '/web_api/v1/user/resend_code', params: { new_email: 'newcoolemail@example.org' }, headers: headers
+        patch "/web_api/v1/users/#{user.id}", params: { user: { email: 'newcoolemail@example.org' } }, headers: headers
         expect(response).to have_http_status(:ok)
-        expect(user.reload).to have_attributes({ new_email: 'newcoolemail@example.org' })
+        expect(user.reload).to have_attributes({ email: 'newcoolemail@example.org' })
         expect(user.confirmation_required?).to be(true)
+        expect(user.active?).to be(false)
+        expect(ActionMailer::Base.deliveries.count).to eq(1)
 
         post '/web_api/v1/user/confirm', params: { confirmation: { code: user.email_confirmation_code } }, headers: headers
-
         expect(response).to have_http_status(:ok)
         expect(user.reload.confirmation_required?).to be(false)
+        expect(user.active?).to be(true)
         expect(user).to have_attributes({ email: 'newcoolemail@example.org' })
         expect(user.new_email).to be_nil
-      end
-
-      it 'creates user that cannot update her email' do
-        get '/auth/clave_unica'
-        follow_redirect!
-
-        user = User.order(created_at: :asc).last
-
-        headers = { 'Authorization' => authorization_header(user) }
-        patch "/web_api/v1/users/#{user.id}", params: { user: { email: 'newcoolemail@example.org' } }, headers: headers
-
-        expect(response).not_to have_http_status(:ok)
-        expect(user.reload).to have_attributes({ email: nil })
-        expect(user.confirmation_required?).to be(true)
       end
 
       it 'creates user that can enter email, change it and then confirm it' do
@@ -272,7 +269,7 @@ describe 'clave_unica verification' do
         expect(user.new_email).to be_nil
       end
 
-      it 'prevents bypassing email confirmation by logging in when signup is partially completed' do
+      it 'allows users to be active without adding an email & confirmation' do
         get '/auth/clave_unica'
         follow_redirect!
 
@@ -280,11 +277,10 @@ describe 'clave_unica verification' do
         follow_redirect!
 
         user = User.order(created_at: :asc).last
-
-        headers = { 'Authorization' => authorization_header(user) }
-        post '/web_api/v1/user/resend_code', params: { new_email: 'newcoolemail@example.org' }, headers: headers
-
-        expect(user.confirmation_required?).to be(true)
+        expect_to_create_verified_and_identified_user(user)
+        expect(user.email).to be_nil
+        expect(user.confirmation_required?).to be(false)
+        expect(user.active?).to be(true)
       end
     end
 

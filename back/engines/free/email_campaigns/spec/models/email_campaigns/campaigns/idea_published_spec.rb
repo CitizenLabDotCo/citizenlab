@@ -22,7 +22,7 @@ RSpec.describe EmailCampaigns::Campaigns::IdeaPublished do
     end
 
     describe do
-      before { IdeaStatus.create_defaults }
+      before { create(:idea_status_proposed) }
 
       let(:idea) do
         project = create(:single_phase_native_survey_project)

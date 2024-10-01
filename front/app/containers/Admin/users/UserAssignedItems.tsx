@@ -7,8 +7,8 @@ import {
   Box,
   Text,
   Button,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
 import styled from 'styled-components';
 
 import { IAdminPublicationData } from 'api/admin_publications/types';
@@ -80,7 +80,7 @@ const RemoveButton = ({
   );
 
   return (
-    <Tippy
+    <Tooltip
       content={
         <FormattedMessage
           {...messages.removeModeratorFrom}
@@ -102,7 +102,7 @@ const RemoveButton = ({
           {formatMessage(messages.remove)}
         </Button>
       </Box>
-    </Tippy>
+    </Tooltip>
   );
 };
 

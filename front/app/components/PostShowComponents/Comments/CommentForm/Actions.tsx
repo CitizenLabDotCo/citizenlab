@@ -52,6 +52,10 @@ const Actions = ({
 
   const visible = focused || processing;
 
+  if (!visible) {
+    return null;
+  }
+
   const checkbox = (
     <CheckboxWithLabel
       dataTestId="e2e-post-comment-anonymously-checkbox"
@@ -83,7 +87,7 @@ const Actions = ({
     <Box display="flex">
       <Button
         disabled={processing}
-        buttonStyle="secondary"
+        buttonStyle="secondary-outlined"
         padding={smallerThanTablet ? '6px 12px' : undefined}
         mr="8px"
         onClick={onCancel}
@@ -110,7 +114,7 @@ const Actions = ({
         mt="10px"
         mb="10px"
         mr="10px"
-        display={visible ? 'flex' : 'none'}
+        display="flex"
       >
         <Box display="flex" flexDirection="column">
           {allowAnonymousParticipation && (
@@ -131,7 +135,7 @@ const Actions = ({
       mt="10px"
       mb="10px"
       mr="10px"
-      display={visible ? 'flex' : 'none'}
+      display="flex"
     >
       {cancelAndSubmit}
       {allowAnonymousParticipation && checkbox}

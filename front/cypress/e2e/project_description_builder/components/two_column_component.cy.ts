@@ -63,7 +63,7 @@ describe('Project description builder Two Column component', () => {
     cy.wait('@saveProjectDescriptionBuilder');
 
     cy.visit(`/projects/${projectSlug}`);
-    cy.get('#e2e-two-column').should('exist');
+    cy.get('.e2e-two-column').should('exist');
     cy.get('div.e2e-text-box').should('have.length', 2);
     cy.get('div#e2e-about-box').should('have.length', 2);
   });
@@ -75,14 +75,14 @@ describe('Project description builder Two Column component', () => {
     cy.visit(
       `/admin/project-description-builder/projects/${projectId}/description`
     );
-    cy.get('#e2e-two-column').should('be.visible');
+    cy.get('.e2e-two-column').should('be.visible');
 
-    cy.get('#e2e-two-column').click('top');
+    cy.get('.e2e-two-column').click('top');
     cy.get('#e2e-delete-button').click();
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveProjectDescriptionBuilder');
 
     cy.visit(`/projects/${projectSlug}`);
-    cy.get('#e2e-two-column').should('not.exist');
+    cy.get('.e2e-two-column').should('not.exist');
   });
 });

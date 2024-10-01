@@ -68,16 +68,6 @@ RSpec.describe Activity do
         activity = create(:idea_created_activity, user: admin, acted_at: 31.days.ago)
         expect(described_class.management).not_to include(activity)
       end
-
-      it 'inludes activities where created_at is later than 20-05-2024' do
-        activity = create(:idea_created_activity, user: admin, created_at: Date.new(2024, 5, 21))
-        expect(described_class.management).to include(activity)
-      end
-
-      it 'excludes activities where created_at is earlier than 21-05-2024' do
-        activity = create(:idea_created_activity, user: admin, created_at: Date.new(2024, 5, 20))
-        expect(described_class.management).not_to include(activity)
-      end
     end
   end
 end

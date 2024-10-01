@@ -3,6 +3,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
+# TODO: cleanup-after-proposals-migration
 resource 'Comments' do
   explanation 'Comments permit users to have discussions about content (i.e. ideas).'
 
@@ -212,7 +213,6 @@ resource 'Comments' do
         parameter :anonymous, 'Post this comment anonymously - true/false', required: false
       end
       ValidationErrorHelper.new.error_fields(self, Comment)
-      # TODO: JS Used to include COMMENTING_DENIED_REASONS.values - is there some code missing?
       response_field :base, "Array containing objects with signature { error: #{Permissions::InitiativePermissionsService::USER_DENIED_REASONS.values.join(' | ')} }", scope: :errors
 
       let(:initiative_id) { @initiative.id }

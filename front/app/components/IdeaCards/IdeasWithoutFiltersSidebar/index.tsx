@@ -37,86 +37,36 @@ import TopicFilterDropdown from '../shared/Filters/TopicFilterDropdown';
 import IdeasView from '../shared/IdeasView';
 import tracks from '../tracks';
 
-const Container = styled.div`
-  width: 100%;
-`;
-
 const FiltersArea = styled.div`
   width: 100%;
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
   margin-bottom: 12px;
+  gap: 12px;
+
   ${isRtl`
-    flex-direction: row-reverse;
+    flex-direction: column-reverse;
   `}
-  &.mapView {
-    justify-content: flex-end;
-    margin-bottom: 15px;
-    ${media.tablet`
-      margin-bottom: 0px;
-    `}
-  }
+
   ${media.tablet`
-    flex-direction: column;
-    align-items: stretch;
     margin-bottom: 8px;
-  `}
-`;
-
-const FilterArea = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const LeftFilterArea = styled(FilterArea)`
-  flex: 1 1 auto;
-  &.hidden {
-    display: none;
-  }
-  ${media.tablet`
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-  `}
-`;
-
-const RightFilterArea = styled(FilterArea)`
-  display: flex;
-  align-items: center;
-  &.hidden {
-    display: none;
-  }
-`;
-
-const DropdownFilters = styled.div`
-  display: flex;
-  align-items: center;
-  &.hidden {
-    display: none;
-  }
-`;
-
-const DesktopViewButtons = styled(ViewButtons)`
-  margin-left: 40px;
-  ${media.tablet`
-    display: none;
   `}
 `;
 
 const StyledSearchInput = styled(SearchInput)`
   width: 300px;
   margin-right: 30px;
+  flex-shrink: 0;
+
   ${isRtl`
     margin-right: 0;
     margin-left: auto;
   `}
-  ${media.tablet`
+
+  ${media.phone`
     width: 100%;
     margin-right: 0px;
     margin-left: 0px;
-    margin-bottom: 20px;
   `}
 `;
 
@@ -234,33 +184,29 @@ const IdeasWithoutFiltersSidebar = ({
       )
     : false;
   const showViewButtons = !!(locationEnabled && showViewToggle);
+  const showSearch = !(selectedView === 'map') && showSearchbar;
 
   if (isLoading) return <Spinner />;
 
   if (list) {
     return (
-      <Container
-        id="e2e-ideas-container"
-        className={`${className || ''} ${
-          selectedView === 'map' ? 'mapView' : 'listView'
-        }`}
-      >
-        <FiltersArea
-          id="e2e-ideas-filters"
-          className={`ideasContainer ${
-            selectedView === 'map' ? 'mapView' : 'listView'
-          }`}
-        >
-          <LeftFilterArea>
-            {showViewButtons && smallerThanTablet && (
-              <Box mb="16px">
-                <ViewButtons
-                  selectedView={selectedView}
-                  onClick={setSelectedView}
-                />
-              </Box>
+      <Box id="e2e-ideas-container" className={`${className || ''}`}>
+        <FiltersArea id="e2e-ideas-filters" className="ideasContainer">
+          <Box display="flex" justifyContent="flex-end">
+            {showViewButtons && (
+              <ViewButtons
+                selectedView={selectedView}
+                onClick={setSelectedView}
+              />
             )}
-            {!(selectedView === 'map') && showSearchbar && (
+          </Box>
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            flexWrap="wrap"
+            gap="12px"
+          >
+            {showSearch && (
               <StyledSearchInput
                 defaultValue={ideaQueryParameters.search}
                 className="e2e-search-ideas-input"
@@ -268,14 +214,12 @@ const IdeasWithoutFiltersSidebar = ({
                 a11y_numberOfSearchResults={list.length}
               />
             )}
-          </LeftFilterArea>
-
-          <RightFilterArea>
             {showDropdownFilters && (
-              <DropdownFilters
-                className={`${selectedView === 'map' ? 'hidden' : 'visible'} ${
-                  showViewButtons ? 'hasViewButtons' : ''
-                }`}
+              <Box
+                display="flex"
+                alignItems="center"
+                justifyContent="flex-end"
+                w={showSearch ? 'auto' : '100%'}
               >
                 <SelectSort
                   value={defaultSortingMethod ?? ideaDefaultSortMethodFallback}
@@ -299,16 +243,9 @@ const IdeasWithoutFiltersSidebar = ({
                     alignment={!smallerThanTablet ? 'right' : 'left'}
                   />
                 )}
-              </DropdownFilters>
+              </Box>
             )}
-
-            {showViewButtons && !smallerThanTablet && (
-              <DesktopViewButtons
-                selectedView={selectedView}
-                onClick={setSelectedView}
-              />
-            )}
-          </RightFilterArea>
+          </Box>
         </FiltersArea>
         <IdeasView
           list={list}
@@ -324,7 +261,7 @@ const IdeasWithoutFiltersSidebar = ({
           phaseId={phaseId}
           ideaMarkers={ideaMarkers}
         />
-      </Container>
+      </Box>
     );
   }
 

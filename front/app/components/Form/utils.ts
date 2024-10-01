@@ -1,4 +1,4 @@
-import { Layout, JsonSchema7 } from '@jsonforms/core';
+import { Layout, JsonSchema7, createAjv, Tester } from '@jsonforms/core';
 import Ajv from 'ajv';
 import { isEmpty, forOwn } from 'lodash-es';
 
@@ -98,7 +98,7 @@ export const isValidData = (
   uiSchema: Layout | PageCategorization,
   data: FormData,
   ajv: Ajv,
-  isSurvey: boolean
+  isSurvey = false
 ) => {
   if (!data) return false;
 
@@ -123,3 +123,14 @@ export function getOtherControlKey(scope: string = ''): string | undefined {
 
   return undefined;
 }
+
+export const customAjv = createAjv({
+  useDefaults: 'empty',
+  removeAdditional: true,
+});
+// The image key word is used for the image choice option
+customAjv.addKeyword('image');
+
+export const dropdownLayoutTester: Tester = (uischema) => {
+  return uischema?.options?.dropdown_layout || false;
+};

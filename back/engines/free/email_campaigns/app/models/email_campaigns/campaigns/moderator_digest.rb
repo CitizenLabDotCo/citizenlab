@@ -49,7 +49,9 @@ module EmailCampaigns
     end
 
     def self.default_schedule
-      IceCube::Schedule.new(Time.find_zone(AppConfiguration.instance.settings('core', 'timezone')).local(2019)) do |s|
+      start_time = AppConfiguration.timezone.local(2019)
+
+      IceCube::Schedule.new(start_time) do |s|
         s.add_recurrence_rule(
           IceCube::Rule.weekly(1).day(:monday).hour_of_day(10)
         )
@@ -127,10 +129,9 @@ module EmailCampaigns
     end
 
     def zero_statistics?(statistics)
-      ((statistics[:new_ideas_increase] == 0) &&
-         (statistics[:new_comments_increase] == 0) &&
-         (statistics[:new_participants_increase] == 0)
-      )
+      (statistics[:new_ideas_increase] == 0) &&
+        (statistics[:new_comments_increase] == 0) &&
+        (statistics[:new_participants_increase] == 0)
     end
 
     def days_ago
@@ -148,7 +149,7 @@ module EmailCampaigns
       # take N_TOP_IDEAS
       top_ideas = Idea.published.where project_id: project.id
       top_ideas = top_ideas.all.select do |idea|
-        idea.participation_method_on_creation.include_data_in_email? &&
+        idea.participation_method_on_creation.supports_public_visibility? &&
           (idea_activity_count(idea) > 0 || idea.published_at > Time.now - days_ago)
       end
       top_ideas = top_ideas.sort_by do |idea|

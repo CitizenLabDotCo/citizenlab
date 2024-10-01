@@ -25,10 +25,11 @@ const isTruthy = (value?: boolean) => !!value;
 
 interface Props {
   loading: boolean;
+  showByContinuingText?: boolean;
   onSubmit: () => void;
 }
 
-const PoliciesForm = ({ loading, onSubmit }: Props) => {
+const PoliciesForm = ({ loading, showByContinuingText, onSubmit }: Props) => {
   const { formatMessage } = useIntl();
 
   const schema = object({
@@ -56,7 +57,7 @@ const PoliciesForm = ({ loading, onSubmit }: Props) => {
         <Text mt="0px" mb="32px">
           {formatMessage(messages.reviewTheTerms)}
         </Text>
-        <PoliciesMarkup />
+        <PoliciesMarkup showByContinuingText={showByContinuingText} />
         <Button
           id="e2e-policies-continue"
           mt="32px"

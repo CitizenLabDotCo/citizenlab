@@ -1,5 +1,5 @@
 import { renderHook } from '@testing-library/react-hooks';
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
@@ -10,8 +10,8 @@ import useCustomPages from './useCustomPages';
 const apiPath = '*/static_pages';
 
 const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: customPagesData }));
+  http.get(apiPath, () => {
+    return HttpResponse.json({ data: customPagesData }, { status: 200 });
   })
 );
 
@@ -34,8 +34,8 @@ describe('useCustomPages', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

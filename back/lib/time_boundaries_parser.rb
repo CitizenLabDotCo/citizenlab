@@ -5,10 +5,10 @@ class TimeBoundariesParser
   end
 
   def parse
-    timezone = AppConfiguration.instance.settings('core', 'timezone')
-    platform_range = AppConfiguration.instance.created_at..Time.now.in_time_zone(timezone).end_of_day
-    start_range = @start_at.present? ? @start_at.to_date : platform_range.begin
-    end_range = @end_at.present? ? @end_at.to_date : platform_range.end
+    timezone = AppConfiguration.timezone
+    platform_range = AppConfiguration.instance.created_at..timezone.now.end_of_day
+    start_range = @start_at.present? ? @start_at.to_datetime.in_time_zone(timezone).beginning_of_day : platform_range.begin
+    end_range = @end_at.present? ? @end_at.to_datetime.in_time_zone(timezone).end_of_day : platform_range.end
     requested_range = start_range...end_range
     if requested_range.overlaps?(platform_range)
       range = range_intersection(platform_range, requested_range)

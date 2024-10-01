@@ -1,13 +1,13 @@
-import { ILinks, Multiloc, IRelationship } from 'typings';
+import { ILinks, IRelationship, Multiloc } from 'typings';
+
+import { PublicationStatus as ProjectPublicationStatus } from 'api/projects/types';
 
 import {
-  ProjectReactingDisabledReason,
-  ProjectCommentingDisabledReason,
-  PublicationStatus as ProjectPublicationStatus,
-  ProjectVotingDisabledReason,
-} from 'api/projects/types';
-
-import { ActionDescriptorFutureEnabled } from 'utils/actionDescriptors';
+  ActionDescriptorFutureEnabled,
+  IdeaCommentingDisabledReason,
+  IdeaReactingDisabledReason,
+  IdeaVotingDisabledReason,
+} from 'utils/actionDescriptors/types';
 import { Keys } from 'utils/cl-react-query/types';
 
 import ideasKeys from './keys';
@@ -15,18 +15,6 @@ import ideasKeys from './keys';
 export type IdeasKeys = Keys<typeof ideasKeys>;
 
 export type IdeaPublicationStatus = 'draft' | 'published' | 'archived' | 'spam';
-
-export type IdeaReactingDisabledReason =
-  | 'idea_not_in_current_phase'
-  | ProjectReactingDisabledReason;
-
-export type IdeaCommentingDisabledReason =
-  | 'idea_not_in_current_phase'
-  | ProjectCommentingDisabledReason;
-
-export type IdeaVotingDisabledReason =
-  | 'idea_not_in_current_phase'
-  | ProjectVotingDisabledReason;
 
 export type Sort =
   | 'random'
@@ -119,6 +107,8 @@ export interface IIdeaData {
     anonymous: boolean;
     author_hash: string;
     followers_count: number;
+    reacting_threshold?: number;
+    expires_at?: string;
   };
   relationships: {
     assignee?: {
@@ -163,8 +153,8 @@ export interface IIdeaData {
 export interface IIdeaAdd {
   // Required
   project_id: string;
-  publication_status: IdeaPublicationStatus;
   // Optional
+  publication_status?: IdeaPublicationStatus;
   title_multiloc?: Multiloc;
   author_id?: string | null;
   assignee_id?: string | null;
@@ -228,6 +218,7 @@ export interface IQueryParameters {
   feedback_needed?: boolean;
   filter_can_moderate?: boolean;
   basket_id?: string;
+  transitive?: boolean;
 }
 
 export interface IIdeaApprovals {

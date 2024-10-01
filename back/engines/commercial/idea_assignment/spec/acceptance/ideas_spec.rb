@@ -103,7 +103,7 @@ resource 'Ideas' do
       end
       ValidationErrorHelper.new.error_fields self, Idea
       response_field :ideas_phases, "Array containing objects with signature { error: 'invalid' }", scope: :errors
-      response_field :base, "Array containing objects with signature { error: #{Permissions::IdeaPermissionsService::POSTING_DENIED_REASONS.values.join(' | ')} }", scope: :errors
+      response_field :base, "Array containing objects with signature { error: #{Permissions::PhasePermissionsService::POSTING_DENIED_REASONS.values.join(' | ')} }", scope: :errors
 
       before do
         create(:idea_status, code: 'proposed')
@@ -141,7 +141,7 @@ resource 'Ideas' do
       parameter :assignee_id, 'The user id of the admin/moderator that takes ownership. Only allowed for admins/moderators.'
     end
     ValidationErrorHelper.new.error_fields(self, Idea)
-    response_field :base, "Array containing objects with signature { error: #{Permissions::IdeaPermissionsService::POSTING_DENIED_REASONS.values.join(' | ')} }", scope: :errors
+    response_field :base, "Array containing objects with signature { error: #{Permissions::PhasePermissionsService::POSTING_DENIED_REASONS.values.join(' | ')} }", scope: :errors
 
     before do
       @project = create(:single_phase_ideation_project)
@@ -176,7 +176,7 @@ resource 'Ideas' do
         expect(json_response.dig(:data, :relationships, :assignee, :data, :id)).to eq assignee_id
       end
 
-      example 'Changing the project keeps the assignee valid', document: false, if: defined?(ProjectManagement::Engine) do
+      example 'Changing the project keeps the assignee valid', document: false do
         @idea.update! assignee: create(:project_moderator, projects: [@project])
         do_request project_id: create(:project).id
 
@@ -186,7 +186,7 @@ resource 'Ideas' do
       end
     end
 
-    context 'when moderator', if: defined?(ProjectManagement::Engine) do
+    context 'when moderator' do
       before { header_token_for create(:project_moderator, projects: [@project]) }
 
       let(:assignee_id) { create(:admin).id }

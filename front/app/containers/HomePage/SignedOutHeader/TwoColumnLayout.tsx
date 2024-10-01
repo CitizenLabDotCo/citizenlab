@@ -1,13 +1,13 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
-
 import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/HomepageBanner';
 import HeaderContent from 'containers/HomePage/SignedOutHeader/HeaderContent';
 
 import {
   Container,
+  HeaderImageWrapper,
   HeaderImage,
+  TextWrapper,
 } from 'components/LandingPages/citizen/TwoColumnLayout';
 
 interface Props {
@@ -23,10 +23,7 @@ const TwoColumnLayout = ({ homepageSettings }: Props) => {
       data-cy="e2e-two-column-layout-container"
     >
       {headerImage && (
-        <Box
-          minWidth="50%"
-          data-testid="homepage-two-column-layout-header-image"
-        >
+        <HeaderImageWrapper data-testid="homepage-two-column-layout-header-image">
           <HeaderImage
             src={headerImage}
             cover={true}
@@ -35,13 +32,15 @@ const TwoColumnLayout = ({ homepageSettings }: Props) => {
             placeholderBg="transparent"
             alt=""
           />
-        </Box>
+        </HeaderImageWrapper>
       )}
-      <HeaderContent
-        fontColors="dark"
-        align="left"
-        homepageSettings={homepageSettings}
-      />
+      <TextWrapper>
+        <HeaderContent
+          fontColors="dark"
+          align="left"
+          homepageSettings={homepageSettings}
+        />
+      </TextWrapper>
     </Container>
   );
 };

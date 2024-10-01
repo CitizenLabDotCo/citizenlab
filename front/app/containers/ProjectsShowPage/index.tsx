@@ -43,6 +43,7 @@ import { isValidPhase } from './phaseParam';
 import ProjectCTABar from './ProjectCTABar';
 import ProjectHeader from './shared/header/ProjectHeader';
 import ProjectShowPageMeta from './shared/header/ProjectShowPageMeta';
+import { maxPageWidth } from './styles';
 import SuccessModal from './SucessModal';
 import TimelineContainer from './timeline';
 
@@ -131,54 +132,54 @@ const ProjectsShowPage = ({ project }: Props) => {
         <ProjectHeader projectId={projectId} />
         <ProjectCTABar projectId={projectId} />
 
-        <main>
-          <div id="participation-detail">
-            <TimelineContainer projectId={projectId} />
-          </div>
-          {!!events?.data.length && (
-            <Box
-              id="e2e-events-section-project-page"
-              display="flex"
-              flexDirection="column"
-              gap="48px"
-              mx="auto"
-              my="48px"
-              maxWidth="1166px"
-              padding={isSmallerThanTablet ? '20px' : '0px'}
-            >
-              <EventsViewer
-                showProjectFilter={false}
-                projectId={projectId}
-                eventsTime="currentAndFuture"
-                title={formatMessage(messages.upcomingAndOngoingEvents)}
-                fallbackMessage={messages.noUpcomingOrOngoingEvents}
-                projectPublicationStatuses={['published', 'draft', 'archived']}
-              />
-              <EventsViewer
-                showProjectFilter={false}
-                projectId={projectId}
-                eventsTime="past"
-                title={formatMessage(messages.pastEvents)}
-                fallbackMessage={messages.noPastEvents}
-                projectPublicationStatuses={['published', 'draft', 'archived']}
-                showDateFilter={false}
-              />
-            </Box>
-          )}
-        </main>
+        <div id="participation-detail">
+          <TimelineContainer projectId={projectId} />
+        </div>
+        {!!events?.data.length && (
+          <Box
+            id="e2e-events-section-project-page"
+            display="flex"
+            flexDirection="column"
+            gap="48px"
+            mx="auto"
+            my="48px"
+            maxWidth={`${maxPageWidth}px`}
+            padding={isSmallerThanTablet ? '20px' : '0px'}
+          >
+            <EventsViewer
+              showProjectFilter={false}
+              projectId={projectId}
+              eventsTime="currentAndFuture"
+              title={formatMessage(messages.upcomingAndOngoingEvents)}
+              fallbackMessage={messages.noUpcomingOrOngoingEvents}
+              projectPublicationStatuses={['published', 'draft', 'archived']}
+            />
+            <EventsViewer
+              showProjectFilter={false}
+              projectId={projectId}
+              eventsTime="past"
+              title={formatMessage(messages.pastEvents)}
+              fallbackMessage={messages.noPastEvents}
+              projectPublicationStatuses={['published', 'draft', 'archived']}
+              showDateFilter={false}
+            />
+          </Box>
+        )}
         <SuccessModal projectId={projectId} />
       </ContentWrapper>
     );
   }
 
   return (
-    <Container
-      background={
-        events && events?.data.length > 0 ? colors.white : colors.background
-      }
-    >
-      {content}
-    </Container>
+    <main>
+      <Container
+        background={
+          events && events?.data.length > 0 ? colors.white : colors.background
+        }
+      >
+        {content}
+      </Container>
+    </main>
   );
 };
 

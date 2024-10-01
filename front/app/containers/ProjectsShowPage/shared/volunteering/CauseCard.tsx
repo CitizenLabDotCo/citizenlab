@@ -9,15 +9,15 @@ import {
   viewportWidths,
   defaultCardStyle,
   isRtl,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
 import styled, { useTheme } from 'styled-components';
 
-import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/constants';
-import getAuthenticationRequirements from 'api/authentication/authentication_requirements/getAuthenticationRequirements';
+import { AuthenticationContext } from 'api/authentication/authentication_requirements/types';
 import { ICauseData } from 'api/causes/types';
 import useAddVolunteer from 'api/causes/useAddVolunteer';
 import useDeleteVolunteer from 'api/causes/useDeleteVolunteer';
+import { IProject } from 'api/projects/types';
 
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
@@ -27,6 +27,10 @@ import Image from 'components/UI/Image';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 import { ScreenReaderOnly } from 'utils/a11y';
+import {
+  isFixableByAuthentication,
+  getPermissionsDisabledMessage,
+} from 'utils/actionDescriptors';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isEmptyMultiloc } from 'utils/helperUtils';
 
@@ -165,10 +169,10 @@ const ActionWrapper = styled.div`
 interface Props {
   cause: ICauseData;
   className?: string;
-  disabled?: boolean;
+  project: IProject;
 }
 
-const CauseCard = ({ cause, className, disabled }: Props) => {
+const CauseCard = ({ cause, className, project }: Props) => {
   const { mutate: addVolunteer } = useAddVolunteer();
   const { mutate: deleteVolunteer } = useDeleteVolunteer();
   const theme = useTheme();
@@ -191,14 +195,29 @@ const CauseCard = ({ cause, className, disabled }: Props) => {
     params: { cause },
   } as const;
 
-  const handleOnVolunteerButtonClick = async () => {
-    const response = await getAuthenticationRequirements(GLOBAL_CONTEXT);
-    const { requirements } = response.data.attributes;
+  const { disabled_reason } =
+    project.data.attributes.action_descriptors.volunteering;
 
-    if (requirements.permitted) {
+  const blocked = !!disabled_reason;
+  const blockedAndUnfixable =
+    blocked && !isFixableByAuthentication(disabled_reason);
+
+  const handleOnVolunteerButtonClick = async () => {
+    const phaseId = cause.relationships.phase.data.id;
+
+    const context: AuthenticationContext = {
+      type: 'phase',
+      action: 'volunteering',
+      id: phaseId,
+    };
+
+    if (!blocked) {
       volunteer();
-    } else {
-      triggerAuthenticationFlow({ successAction });
+    } else if (!blockedAndUnfixable) {
+      triggerAuthenticationFlow({
+        successAction,
+        context,
+      });
     }
   };
 
@@ -258,19 +277,21 @@ const CauseCard = ({ cause, className, disabled }: Props) => {
         </Content>
 
         <ActionWrapper>
-          <Tippy
-            disabled={!disabled}
-            interactive={true}
+          <Tooltip
+            disabled={!blockedAndUnfixable}
             placement="bottom"
-            content={formatMessage(messages.notOpenParticipation)}
+            content={formatMessage(
+              getPermissionsDisabledMessage('volunteering', disabled_reason) ??
+                messages.notOpenParticipation
+            )}
           >
             <div>
               <Button
                 onClick={handleOnVolunteerButtonClick}
                 icon={!isVolunteer ? 'volunteer' : 'volunteer-off'}
-                buttonStyle={!isVolunteer ? 'primary' : 'secondary'}
+                buttonStyle={!isVolunteer ? 'primary' : 'secondary-outlined'}
                 fullWidth={smallerThanSmallTablet}
-                disabled={disabled}
+                disabled={blockedAndUnfixable}
               >
                 {isVolunteer ? (
                   <FormattedMessage {...messages.withdrawVolunteerButton} />
@@ -279,7 +300,7 @@ const CauseCard = ({ cause, className, disabled }: Props) => {
                 )}
               </Button>
             </div>
-          </Tippy>
+          </Tooltip>
         </ActionWrapper>
       </Right>
     </Container>

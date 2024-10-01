@@ -1,5 +1,5 @@
 import { renderHook } from '@testing-library/react-hooks';
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
@@ -9,8 +9,8 @@ import useInitiatives from './useInitiatives';
 
 const apiPath = '*initiatives';
 const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: initiativesData, links }));
+  http.get(apiPath, () => {
+    return HttpResponse.json({ data: initiativesData, links }, { status: 200 });
   })
 );
 
@@ -40,8 +40,8 @@ describe('useInitiatives', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

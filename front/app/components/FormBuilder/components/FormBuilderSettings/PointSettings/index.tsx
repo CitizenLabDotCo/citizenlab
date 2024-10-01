@@ -22,8 +22,9 @@ import CustomMapConfigPage from 'containers/Admin/CustomMapConfigPage';
 import EsriMap from 'components/EsriMap';
 import { goToMapLocation, parseLayers } from 'components/EsriMap/utils';
 import Modal from 'components/UI/Modal';
+import Warning from 'components/UI/Warning';
 
-import { useIntl } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import { getCenter, getZoomLevel } from 'utils/mapUtils/map';
 
@@ -38,9 +39,10 @@ const StyledLabel = styled(Label)`
 type Props = {
   mapConfigIdName: string;
   field: IFlatCustomFieldWithIndex;
+  pageLayoutName?: string;
 };
 
-const PointSettings = ({ mapConfigIdName, field }: Props) => {
+const PointSettings = ({ mapConfigIdName, pageLayoutName, field }: Props) => {
   const { projectId, phaseId } = useParams() as {
     projectId: string;
     phaseId?: string;
@@ -58,6 +60,11 @@ const PointSettings = ({ mapConfigIdName, field }: Props) => {
   const { mutateAsync: duplicateMapConfig } = useDuplicateMapConfig();
   const [mapView, setMapView] = useState<MapView | null>(null);
 
+  // Determine whether to show the map configuration option
+  const showMapConfigurationOption = pageLayoutName
+    ? watch(pageLayoutName) === 'map'
+    : true;
+
   // Default project map settings if not present
   const { data: appConfig } = useAppConfiguration();
 
@@ -74,8 +81,12 @@ const PointSettings = ({ mapConfigIdName, field }: Props) => {
 
   // Load map state from mapConfig
   const mapLayers = useMemo(() => {
+    if (!showMapConfigurationOption) {
+      // Reset the map view if we're hiding the map
+      mapView?.destroy();
+    }
     return parseLayers(mapConfig, localize);
-  }, [localize, mapConfig]);
+  }, [localize, mapConfig, mapView, showMapConfigurationOption]);
 
   const onConfigureMapClick = useCallback(() => {
     if (!mapConfigId) {
@@ -159,6 +170,10 @@ const PointSettings = ({ mapConfigIdName, field }: Props) => {
     setMapView(mapView);
   }, []);
 
+  if (!showMapConfigurationOption) {
+    return null;
+  }
+
   if ((isLoadingFieldConfig && mapConfigId) || isLoadingRawFields) {
     return (
       <Box my="24px">
@@ -186,12 +201,33 @@ const PointSettings = ({ mapConfigIdName, field }: Props) => {
           }}
           webMapId={mapConfig?.data.attributes.esri_web_map_id}
         />
+        {(field?.input_type === 'line' || field?.input_type === 'polygon') && (
+          <Box my="8px">
+            <Warning>
+              <FormattedMessage
+                {...messages.linePolygonMapWarning}
+                values={{
+                  accessibilityStatement: (
+                    <a
+                      href={'/pages/accessibility-statement'}
+                      target="_blank"
+                      rel="noreferrer"
+                      style={{ textDecoration: 'underline' }}
+                    >
+                      <FormattedMessage {...messages.accessibilityStatement} />
+                    </a>
+                  ),
+                }}
+              />
+            </Warning>
+          </Box>
+        )}
         <Button
           data-cy="e2e-configure-map-button"
           mt="16px"
           iconPos="left"
           icon="edit"
-          buttonStyle="secondary"
+          buttonStyle="secondary-outlined"
           onClick={onConfigureMapClick}
         >
           {formatMessage(messages.configureMap)}

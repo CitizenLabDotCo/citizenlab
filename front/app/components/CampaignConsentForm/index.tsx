@@ -5,6 +5,7 @@ import {
   Box,
   Button,
   CheckboxWithLabel,
+  Text,
 } from '@citizenlab/cl2-component-library';
 
 import {
@@ -159,7 +160,7 @@ const CampaignConsentForm = ({
     setShowFeedback(false);
     setLoading(true);
     updateCampaignConsents(
-      { consentChanges },
+      { consentChanges, unsubscriptionToken },
       {
         onSuccess: () => {
           setShowFeedback('success');
@@ -196,12 +197,12 @@ const CampaignConsentForm = ({
           ) => (
             <Accordion
               key={i}
-              title={
+              title={<Text m="12px">{contentType}</Text>}
+              prefix={
                 <CheckboxWithPartialCheck
                   id={contentType}
                   checked={group_consented}
                   onChange={toggleGroup(contentType)}
-                  label={<Box m="14px 0">{contentType}</Box>}
                 />
               }
             >

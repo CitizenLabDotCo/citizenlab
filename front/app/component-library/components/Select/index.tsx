@@ -128,6 +128,10 @@ class Select extends PureComponent<Props> {
       (option) => option.value.toString() === event.target.value.toString()
     );
     if (selectedOption) onChange(selectedOption);
+    else if (event.target.value === 'DEFAULT_SELECT_VALUE') {
+      // Reset the value to undefined if the default value is selected
+      onChange({ value: undefined, label: '' });
+    }
   };
 
   handleOnBlur = (event: FocusEvent<HTMLSelectElement>) => {

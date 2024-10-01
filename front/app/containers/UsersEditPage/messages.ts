@@ -101,7 +101,7 @@ export default defineMessages({
   deletionSubtitle: {
     id: 'app.containers.UsersEditPage.deletionSubtitle',
     defaultMessage:
-      'This action can not be undone. The content you published on the platform will be anonymized. If you wish to delete all your content, you can contact us at support@citizenlab.co.',
+      'This action can not be undone. The content you published on the platform will be anonymized. If you wish to delete all your content, you can contact us at support@govocal.com.',
   },
   deleteMyAccount: {
     id: 'app.containers.UsersEditPage.deleteMyAccount',

@@ -92,7 +92,6 @@ const Status = ({ initiative, onScrollToOfficialFeedback }: Props) => {
       };
 
       triggerAuthenticationFlow({
-        flow: 'signup',
         context: {
           type: 'initiative',
           action: 'reacting_initiative',

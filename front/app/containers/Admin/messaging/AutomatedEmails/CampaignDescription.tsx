@@ -27,8 +27,8 @@ const CampaignDescription = ({ campaign }: Props) => {
       </Text>
       {campaign.recipient_segment &&
         (campaign.trigger || campaign.schedule) && (
-          <Box display="flex">
-            <Box display="flex" justifyContent="center">
+          <Box display="flex" alignItems="center">
+            <Box display="flex" justifyContent="center" alignItems="center">
               <IconTooltip
                 placement="top"
                 icon="user"
@@ -42,7 +42,12 @@ const CampaignDescription = ({ campaign }: Props) => {
               </Text>
             </Box>
             <Box ml="4px">·</Box>
-            <Box display="flex" justifyContent="center" ml="4px">
+            <Box
+              display="flex"
+              justifyContent="center"
+              ml="4px"
+              alignItems="center"
+            >
               <IconTooltip
                 placement="top"
                 icon="clock"

@@ -85,7 +85,10 @@ const FilterSidebar = ({
 
   const getLinkToTagManager = (): RouteType | null => {
     // https://www.notion.so/citizenlab/Customised-tags-don-t-show-up-as-options-to-add-to-input-9c7c39f6af194c8385088878037cd498?pvs=4
-    if (type === 'ProjectIdeas' && typeof projectId === 'string') {
+    if (
+      (type === 'ProjectIdeas' || type === 'ProjectProposals') &&
+      typeof projectId === 'string'
+    ) {
       return `/admin/projects/${projectId}/settings/tags`;
     } else if (isAdmin(authUser)) {
       // For admins, both for /admin/ideas (type 'AllIdeas') and /admin/initiatives, we show the link to the platform-wide tag manager

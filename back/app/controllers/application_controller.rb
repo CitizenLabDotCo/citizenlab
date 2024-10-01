@@ -70,8 +70,8 @@ class ApplicationController < ActionController::API
   # Used by semantic logger to include in every log line
   def append_info_to_payload(payload)
     super
-    payload[:tenant_id] = Current.tenant&.id
-    payload[:tenant_host] = Current.tenant&.host
+    payload[:tenant_id] = Tenant.safe_current&.id
+    payload[:tenant_host] = Tenant.safe_current&.host
     payload[:user_id] = current_user&.id
     payload[:request_id] = request.request_id
     payload[:'X-Amzn-Trace-Id'] = request.headers['X-Amzn-Trace-Id']
@@ -156,6 +156,6 @@ class ApplicationController < ActionController::API
     return unless resource_params.key?(image_field_name) && resource_params[image_field_name].nil?
 
     # setting the image attribute to nil will not remove the image
-    resource.public_send("remove_#{image_field_name}!")
+    resource.public_send(:"remove_#{image_field_name}!")
   end
 end

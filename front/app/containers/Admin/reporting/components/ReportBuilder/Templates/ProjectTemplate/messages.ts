@@ -27,4 +27,12 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.components.ReportBuilder.Templates.projectResults',
     defaultMessage: 'Project results',
   },
+  projectLabel: {
+    id: 'app.containers.admin.ReportBuilder.projectLabel1',
+    defaultMessage: 'Project',
+  },
+  managerLabel: {
+    id: 'app.containers.admin.ReportBuilder.managerLabel1',
+    defaultMessage: 'Project manager',
+  },
 });

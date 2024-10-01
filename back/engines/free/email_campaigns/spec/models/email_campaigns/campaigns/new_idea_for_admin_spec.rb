@@ -63,7 +63,7 @@ RSpec.describe EmailCampaigns::Campaigns::NewIdeaForAdmin do
     end
 
     describe do
-      before { IdeaStatus.create_defaults }
+      before { create(:idea_status_proposed) }
 
       let(:project) { create(:single_phase_native_survey_project) }
       let(:idea) { create(:idea, author: user, project: project, creation_phase: project.phases.first) }

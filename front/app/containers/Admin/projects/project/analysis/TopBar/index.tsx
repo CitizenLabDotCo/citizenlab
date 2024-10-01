@@ -143,7 +143,7 @@ const TopBar = () => {
           </TruncatedTitle>
         </Box>
         <Button
-          buttonStyle="secondary"
+          buttonStyle="secondary-outlined"
           icon="filter"
           size="s"
           onClick={toggleFilters}

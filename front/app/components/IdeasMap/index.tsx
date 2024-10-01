@@ -44,6 +44,7 @@ import {
 } from 'components/EsriMap/utils';
 
 import { useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { isAdmin } from 'utils/permissions/roles';
@@ -86,6 +87,7 @@ const StyledIdeaMapCard = styled(IdeaMapCard)<{ isClickable: boolean }>`
 
 // Custom styling for Esri map
 const StyledMapContainer = styled(Box)`
+  position: relative;
   calcite-action-bar {
     display: none;
   }
@@ -115,7 +117,6 @@ const IdeasMap = memo<Props>(
     const { data: authUser } = useAuthUser();
     const [searchParams] = useSearchParams();
     const isMobileOrSmaller = useBreakpoint('phone');
-    const isTabletOrSmaller = useBreakpoint('tablet');
 
     // Create div elements to use for inserting React components into Esri map popup
     // Docs: https://developers.arcgis.com/javascript/latest/custom-ui/#introduction
@@ -299,7 +300,7 @@ const IdeasMap = memo<Props>(
         setClickedMapLocation(esriPointToGeoJson(event.mapPoint));
 
         const ideaPostingEnabled =
-          (phase?.data.attributes.posting_enabled && authUser) ||
+          (phase?.data.attributes.submission_enabled && authUser) ||
           isAdmin(authUser);
 
         // On map click, we either open an existing idea OR show the "submit an idea" popup.
@@ -411,7 +412,7 @@ const IdeasMap = memo<Props>(
       [
         setSelectedIdea,
         authUser,
-        phase?.data.attributes.posting_enabled,
+        phase?.data.attributes.submission_enabled,
         startIdeaButtonNode,
         formatMessage,
         ideaIconSecondary,
@@ -501,7 +502,7 @@ const IdeasMap = memo<Props>(
                 (layer) => layer.id === hoveredLayerId
               )}
             />
-            {phaseId && projectId && (
+            {phaseId && (
               <StartIdeaButton
                 modalPortalElement={startIdeaButtonNode}
                 latlng={clickedMapLocation}
@@ -517,7 +518,7 @@ const IdeasMap = memo<Props>(
               )}
               mapView={esriMapView}
             />
-            {isTabletOrSmaller && (
+            {isMobileOrSmaller && (
               <CSSTransition
                 classNames="animation"
                 in={!!selectedIdea}
@@ -530,7 +531,15 @@ const IdeasMap = memo<Props>(
                       onClose={() => {
                         setSelectedIdea(null);
                       }}
-                      onSelectIdea={setSelectedIdea}
+                      onSelectIdea={(ideaId: string) => {
+                        clHistory.push(
+                          `/ideas/${ideaData.attributes.slug}?go_back=true`,
+                          {
+                            scrollToTop: true,
+                          }
+                        );
+                        setSelectedIdea(ideaId);
+                      }}
                       isClickable={true}
                       projectId={projectId}
                       phaseId={phaseId}
@@ -539,25 +548,37 @@ const IdeasMap = memo<Props>(
                 </Box>
               </CSSTransition>
             )}
-            <Box
-              width="390px"
-              height={`calc(${mapHeightDesktop} - 80px)`}
-              position="absolute"
-              display="flex"
-              top="25px"
-              left="25px"
-              zIndex="900"
-            >
-              <IdeaMapOverlay
-                projectId={projectId}
-                phaseId={phaseId}
-                onSelectIdea={onSelectIdeaFromList}
-                selectedIdea={selectedIdea}
-              />
-            </Box>
+            {!isMobileOrSmaller && (
+              <Box
+                width="390px"
+                height={`calc(${mapHeightDesktop} - 80px)`}
+                position="absolute"
+                top="25px"
+                left="25px"
+                zIndex="900"
+                display="flex"
+              >
+                <IdeaMapOverlay
+                  projectId={projectId}
+                  phaseId={phaseId}
+                  onSelectIdea={onSelectIdeaFromList}
+                  selectedIdea={selectedIdea}
+                />
+              </Box>
+            )}
             <InstructionMessage projectId={projectId} />
           </InnerContainer>
         </StyledMapContainer>
+        {isMobileOrSmaller && (
+          <Box width="100%" mt="8px">
+            <IdeaMapOverlay
+              projectId={projectId}
+              phaseId={phaseId}
+              onSelectIdea={onSelectIdeaFromList}
+              selectedIdea={selectedIdea}
+            />
+          </Box>
+        )}
       </>
     );
   }

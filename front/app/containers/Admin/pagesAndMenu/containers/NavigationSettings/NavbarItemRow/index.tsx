@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, colors } from '@citizenlab/cl2-component-library';
+import { Box, colors, Tooltip } from '@citizenlab/cl2-component-library';
 import { RouteType } from 'routes';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
@@ -97,7 +97,7 @@ const NavbarItemRow = ({
       <Box display="flex" alignItems="flex-end">
         {showEditButton && (
           <Button
-            buttonStyle="secondary"
+            buttonStyle="secondary-outlined"
             icon="edit"
             onClick={handleOnClickEditButton}
             ml="10px"
@@ -112,7 +112,7 @@ const NavbarItemRow = ({
         {viewButtonLink && (
           <Link to={viewButtonLink} target="_blank">
             <Button
-              buttonStyle="secondary"
+              buttonStyle="secondary-outlined"
               icon="eye"
               ml="10px"
               className="intercom-admin-pages-menu-view-button"
@@ -124,7 +124,7 @@ const NavbarItemRow = ({
 
         {!isDefaultPage && onClickDeleteButton && (
           <Button
-            buttonStyle="secondary"
+            buttonStyle="secondary-outlined"
             icon="delete"
             onClick={handleOnClickDeleteButton}
             ml="10px"
@@ -135,23 +135,28 @@ const NavbarItemRow = ({
         )}
 
         {showAddButton && (
-          <Button
-            // no icon on add and remove buttons, so specify height to match the others
-            height="44px"
-            buttonStyle="secondary"
-            onClick={handleOnClickAddButton}
-            disabled={addButtonDisabled}
-            ml="10px"
-            className="intercom-admin-pages-menu-add-to-navbar-button"
+          <Tooltip
+            content={<FormattedMessage {...messages.navBarMaxItems} />}
+            disabled={!addButtonDisabled}
           >
-            <FormattedMessage {...messages.addButton} />
-          </Button>
+            <Button
+              // no icon on add and remove buttons, so specify height to match the others
+              height="44px"
+              buttonStyle="secondary-outlined"
+              onClick={handleOnClickAddButton}
+              disabled={addButtonDisabled}
+              ml="10px"
+              className="intercom-admin-pages-menu-add-to-navbar-button"
+            >
+              <FormattedMessage {...messages.addButton} />
+            </Button>
+          </Tooltip>
         )}
 
         {showRemoveButton && (
           <Button
             height="44px"
-            buttonStyle="secondary"
+            buttonStyle="secondary-outlined"
             onClick={handleOnClickRemoveButton}
             ml="10px"
             className="intercom-admin-pages-menu-remove-from-navbar-button"

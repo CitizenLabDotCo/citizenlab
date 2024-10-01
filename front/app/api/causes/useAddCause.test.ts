@@ -1,5 +1,5 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
@@ -10,8 +10,8 @@ import useAddCause from './useAddCause';
 const apiPath = '*causes';
 
 const server = setupServer(
-  rest.post(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: causesData[0] }));
+  http.post(apiPath, () => {
+    return HttpResponse.json({ data: causesData[0] }, { status: 200 });
   })
 );
 
@@ -42,8 +42,8 @@ describe('useAddCause', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.post(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.post(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

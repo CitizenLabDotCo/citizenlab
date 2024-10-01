@@ -98,8 +98,8 @@ describe('Profile Page', () => {
     cy.visit(`/events/${eventId}`);
 
     // RSVP to event
-    cy.get('#e2e-event-attendance-button').should('exist');
-    cy.get('#e2e-event-attendance-button').click();
+    cy.get('.e2e-event-attendance-button').should('exist');
+    cy.get('.e2e-event-attendance-button').click();
 
     // Go to profile
     cy.visit(`/profile/${newUserName}-${newUserSurname}`);
@@ -108,7 +108,7 @@ describe('Profile Page', () => {
     // Confirm the event is in the list
     cy.get('.e2e-events-nav').click();
     cy.get('.e2e-profile-events').should('exist');
-    cy.get('#e2e-event-attendance-button').should('exist');
+    cy.get('.e2e-event-attendance-button').should('exist');
   });
 
   after(() => {

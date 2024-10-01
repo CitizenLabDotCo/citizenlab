@@ -4,14 +4,15 @@ import {
   UpdateState,
   AuthenticationData,
   SetError,
+  State,
 } from '../../typings';
 
-import { emaillessSsoFlow } from './emaillessSsoFlow';
 import { lightFlow } from './lightFlow';
 import { missingDataFlow } from './missingDataFlow';
 import { sharedSteps } from './sharedSteps';
 import { signInFlow } from './signInFlow';
 import { signUpFlow } from './signUpFlow';
+import { ssoVerificationFlow } from './ssoVerificationFlow';
 import { Step } from './typings';
 
 export const getStepConfig = (
@@ -20,17 +21,25 @@ export const getStepConfig = (
   setCurrentStep: (step: Step) => void,
   setError: SetError,
   updateState: UpdateState,
-  anySSOEnabled: boolean
+  anySSOEnabled: boolean,
+  state: State
 ) => {
   return {
     ...lightFlow(
       getAuthenticationData,
       getRequirements,
       setCurrentStep,
-      updateState
+      updateState,
+      state
     ),
 
-    ...missingDataFlow(getRequirements, setCurrentStep),
+    ...missingDataFlow(
+      getAuthenticationData,
+      getRequirements,
+      setCurrentStep,
+      updateState,
+      state
+    ),
 
     ...sharedSteps(
       getAuthenticationData,
@@ -45,6 +54,7 @@ export const getStepConfig = (
       getAuthenticationData,
       getRequirements,
       setCurrentStep,
+      updateState,
       anySSOEnabled
     ),
 
@@ -56,7 +66,12 @@ export const getStepConfig = (
       anySSOEnabled
     ),
 
-    ...emaillessSsoFlow(getRequirements, setCurrentStep, updateState),
+    ...ssoVerificationFlow(
+      getAuthenticationData,
+      getRequirements,
+      setCurrentStep,
+      updateState
+    ),
 
     'verification-only': {
       CLOSE: () => setCurrentStep('closed'),

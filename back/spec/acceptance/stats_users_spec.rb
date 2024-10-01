@@ -10,27 +10,29 @@ end
 
 resource 'Stats - Users' do
   explanation 'The various stats endpoints can be used to show how certain properties of users.'
+  header 'Content-Type', 'application/json'
 
-  let!(:now) { Time.now.in_time_zone(@timezone) }
+  let(:timezone) { AppConfiguration.timezone }
+  let!(:now) { timezone.now }
 
   before do
     admin_header_token
-    header 'Content-Type', 'application/json'
     AppConfiguration.instance.update!(created_at: now - 2.years)
-    @timezone = AppConfiguration.instance.settings('core', 'timezone')
+    begin_of_last_month = (now - 1.month).beginning_of_month
 
-    travel_to((now - 1.month).in_time_zone(@timezone).beginning_of_month - 1.day) do
+    travel_to(begin_of_last_month - 1.day) do
       create(:user)
     end
 
-    travel_to((now - 1.month).in_time_zone(@timezone).beginning_of_month + 10.days) do
+    travel_to(begin_of_last_month + 10.days) do
       create(:user)
       create(:user)
       create(:admin)
       create(:user)
       create(:invited_user)
     end
-    travel_to((now - 1.month).in_time_zone(@timezone).beginning_of_month + 25.days) do
+
+    travel_to(begin_of_last_month + 25.days) do
       create_list(:user, 4)
     end
   end

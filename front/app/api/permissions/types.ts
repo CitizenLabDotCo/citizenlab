@@ -1,4 +1,10 @@
-import { IRelationship } from 'typings';
+import { IRelationship, Multiloc } from 'typings';
+
+import {
+  IPhasePermissionAction,
+  IPhasePermissionData,
+  PermittedBy,
+} from 'api/phase_permissions/types';
 
 import { Keys } from 'utils/cl-react-query/types';
 
@@ -16,11 +22,14 @@ export interface IGlobalPermissionData {
   id: string;
   type: 'permission';
   attributes: {
+    access_denied_explanation_multiloc: Multiloc;
     action: IGlobalPermissionAction;
-    permitted_by: 'everyone' | 'users' | 'groups' | 'admins_moderators';
+    permitted_by: PermittedBy;
     created_at: string;
     updated_at: string;
     global_custom_fields: boolean;
+    verification_enabled: boolean;
+    verification_expiry: number | null;
   };
   relationships: {
     permission_scope: {
@@ -32,54 +41,29 @@ export interface IGlobalPermissionData {
   };
 }
 
-export type IPhasePermissionAction =
-  | 'posting_idea'
-  | 'reacting_idea'
-  | 'commenting_idea'
-  | 'taking_survey'
-  | 'taking_poll'
-  | 'voting'
-  | 'annotating_document';
-
-export interface IPhasePermissionData {
-  id: string;
-  type: string;
-  attributes: {
-    action: IPhasePermissionAction;
-    permitted_by:
-      | 'everyone'
-      | 'users'
-      | 'groups'
-      | 'admins_moderators'
-      | 'everyone_confirmed_email';
-    created_at: string;
-    updated_at: string;
-    global_custom_fields: boolean;
-  };
-  relationships: {
-    permission_scope: {
-      data: IRelationship;
-    };
-    groups: {
-      data: IRelationship[];
-    };
-  };
-}
+export type Action = IGlobalPermissionAction | IPhasePermissionAction;
 
 export type IPermissionData = IPhasePermissionData | IGlobalPermissionData;
-
-export interface IPhasePermission {
-  data: IPhasePermissionData;
-}
 
 export interface IGlobalPermissions {
   data: IGlobalPermissionData[];
 }
 
-export interface IPermissionUpdate {
-  id: string;
-  action: string;
-  group_ids: string[];
-  permitted_by: IPermissionData['attributes']['permitted_by'];
-  global_custom_fields: boolean;
+export interface IGlobalPermission {
+  data: IGlobalPermissionData;
 }
+
+export interface PermissionUpdateParams {
+  id: string;
+  action: IGlobalPermissionAction;
+  group_ids: string[];
+  permitted_by: PermittedBy;
+  global_custom_fields: boolean;
+  verification_expiry: number | null;
+  access_denied_explanation_multiloc: Multiloc;
+}
+
+export type ResetPermissionParams = {
+  permissionId: string;
+  action: IGlobalPermissionAction;
+};

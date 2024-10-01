@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Permissions
   class BasePermissionsService
     SUPPORTED_ACTIONS = %w[
@@ -13,6 +11,8 @@ module Permissions
       annotating_document
       taking_survey
       taking_poll
+      attending_event
+      volunteering
     ].freeze
 
     USER_DENIED_REASONS = {
@@ -25,20 +25,20 @@ module Permissions
       user_blocked: 'user_blocked'
     }.freeze
 
-    def initialize
-      super
-      @timeline_service = TimelineService.new
+    def initialize(user, user_requirements_service: nil)
+      @user = user
+      @user_requirements_service = user_requirements_service
+      @user_requirements_service ||= Permissions::UserRequirementsService.new(check_groups_and_verification: false)
     end
 
-    # NOTE: Where phase and project are nil, the check is for global permissions (ie initiatives)
-    def denied_reason_for_action(action, user, phase = nil, project: nil)
-      return unless supported_action? action
-
-      permission = find_permission(action, phase)
-      user_denied_reason(permission, user, project)
+    def denied_reason_for_action(action, scope: nil)
+      permission = find_permission(action, scope: scope)
+      user_denied_reason(permission)
     end
 
     private
+
+    attr_reader :user, :user_requirements_service
 
     def supported_action?(action)
       return true if SUPPORTED_ACTIONS.include? action
@@ -46,11 +46,10 @@ module Permissions
       raise "Unsupported action: #{action}"
     end
 
-    def find_permission(action, phase)
-      permission = phase&.permissions&.find { |p| p[:action] == action }
+    def find_permission(action, scope: nil)
+      permission = scope&.permissions&.find { |p| p[:action] == action }
 
       if permission.blank?
-        scope = phase&.permission_scope # If phase is nil, then this is a global permission (ie for initiatives)
         permission = Permission.includes(:groups).find_by(permission_scope: scope, action: action)
 
         if permission.blank? && Permission.available_actions(scope)
@@ -59,13 +58,13 @@ module Permissions
         end
       end
 
-      raise "Unknown action '#{action}' for phase: #{phase}" unless permission
+      raise "Unknown action '#{action}' for scope: #{scope}" if !permission
 
       permission
     end
 
     # User methods
-    def user_denied_reason(permission, user, scope = nil)
+    def user_denied_reason(permission, scope = nil)
       return if permission.permitted_by == 'everyone'
       return USER_DENIED_REASONS[:user_not_signed_in] unless user
       return USER_DENIED_REASONS[:user_blocked] if user.blocked?
@@ -73,23 +72,15 @@ module Permissions
       return USER_DENIED_REASONS[:user_not_active] unless user.active?
       return if UserRoleService.new.can_moderate? scope, user
       return USER_DENIED_REASONS[:user_not_permitted] if permission.permitted_by == 'admins_moderators'
-      return USER_DENIED_REASONS[:user_missing_requirements] unless user_requirements_service.requirements(permission, user)[:permitted]
+      return USER_DENIED_REASONS[:user_missing_requirements] unless user_requirements_service.permitted_for_permission?(permission, user)
       return USER_DENIED_REASONS[:user_not_verified] if user_requirements_service.requires_verification?(permission, user)
-      return USER_DENIED_REASONS[:user_not_in_group] if denied_when_permitted_by_groups?(permission, user)
+      return USER_DENIED_REASONS[:user_not_in_group] if denied_when_permitted_by_groups?(permission)
 
       nil
     end
 
-    def denied_when_permitted_by_groups?(permission, user)
-      permission.permitted_by == 'groups' && permission.groups && !user.in_any_groups?(permission.groups)
-    end
-
-    def user_requirements_service
-      @user_requirements_service ||= Permissions::UserRequirementsService.new(check_groups: false)
-    end
-
-    def user_can_moderate_something?(user)
-      @user_can_moderate_something ||= (user.admin? || UserRoleService.new.moderates_something?(user))
+    def denied_when_permitted_by_groups?(permission)
+      permission.groups.any? && !user.in_any_groups?(permission.groups)
     end
   end
 end

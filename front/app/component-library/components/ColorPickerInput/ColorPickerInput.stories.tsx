@@ -5,9 +5,6 @@ import type { Meta, StoryObj } from '@storybook/react';
 const meta = {
   title: 'Components/ColorPickerInput',
   component: ColorPickerInput,
-  parameters: {
-    layout: 'centered',
-  },
 } satisfies Meta<typeof ColorPickerInput>;
 
 export default meta;

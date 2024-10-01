@@ -9,8 +9,6 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 import {
   SeatTypeMessageDescriptor,
   TSeatType,
@@ -32,23 +30,18 @@ const SeatSetSuccess = ({
   hasExceededPlanSeatLimit,
 }: SeatChangeSuccessModalProps) => {
   const { formatMessage } = useIntl();
-  const hasSeatBasedBillingEnabled = useFeatureFlag({
-    name: 'seat_based_billing',
-  });
   const seatTypeMessages: SeatTypeMessageDescriptor = {
     admin: messages.admin,
     moderator: messages.manager,
   };
-  const descriptionMessage =
-    hasSeatBasedBillingEnabled && hasExceededPlanSeatLimit
-      ? formatMessage(messages.reflectedMessage)
-      : formatMessage(messages.rightsGranted, {
-          seatType: formatMessage(seatTypeMessages[seatType]),
-        });
-  const titleMessage =
-    hasSeatBasedBillingEnabled && hasExceededPlanSeatLimit
-      ? messages.orderCompleted
-      : messages.allDone;
+  const descriptionMessage = hasExceededPlanSeatLimit
+    ? formatMessage(messages.reflectedMessage)
+    : formatMessage(messages.rightsGranted, {
+        seatType: formatMessage(seatTypeMessages[seatType]),
+      });
+  const titleMessage = hasExceededPlanSeatLimit
+    ? messages.orderCompleted
+    : messages.allDone;
 
   return (
     <Box p="30px" data-cy="e2e-seat-set-success-body">

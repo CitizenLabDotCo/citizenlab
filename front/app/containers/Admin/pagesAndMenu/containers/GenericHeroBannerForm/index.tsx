@@ -4,7 +4,6 @@ import { Box } from '@citizenlab/cl2-component-library';
 import { RouteType } from 'routes';
 
 import { Section } from 'components/admin/Section';
-import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
 import { TBreadcrumbs } from 'components/UI/Breadcrumbs';
 import Warning from 'components/UI/Warning';
 
@@ -14,6 +13,7 @@ import SectionFormWrapper from '../../components/SectionFormWrapper';
 import ViewCustomPageButton from '../CustomPages/Edit/ViewCustomPageButton';
 
 import messages from './messages';
+import SubmitWrapper, { ISubmitState } from './SubmitWrapper';
 
 interface Props {
   breadcrumbs: TBreadcrumbs;

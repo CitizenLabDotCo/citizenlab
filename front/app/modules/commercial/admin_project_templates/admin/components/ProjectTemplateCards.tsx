@@ -174,7 +174,7 @@ const ProjectTemplateCards = memo<Props & WrappedComponentProps>(
                 <LoadMoreButton
                   processing={loadingMore}
                   onClick={onLoadMore}
-                  buttonStyle="secondary"
+                  buttonStyle="secondary-outlined"
                 >
                   <FormattedMessage {...messages.loadMoreTemplates} />
                 </LoadMoreButton>

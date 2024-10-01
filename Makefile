@@ -53,10 +53,10 @@ psql:
 	docker-compose run -it -e PGPASSWORD=postgres -e PGOPTIONS="--search_path=localhost" postgres psql -U postgres -h postgres -d cl2_back_development
 
 # Run it with:
-# make add-campaign-and-notification source=initiative_resubmitted_for_review target=new_cosponsor_added
-# See back/bin/add_campaign_and_notification for details.
-add-campaign-and-notification:
-	back/bin/add_campaign_and_notification ${source} ${target}
+# make copy-paste-code-entity source=initiative_resubmitted_for_review target=new_cosponsor_added
+# See back/bin/copy_paste_code_entity for details.
+copy-paste-code-entity:
+	back/bin/copy_paste_code_entity ${source} ${target}
 
 blint back-lint-autocorrect:
 	docker compose run web bundle exec rubocop -P --format simple --autocorrect
@@ -69,7 +69,7 @@ r rspec:
 # Usage example:
 # make feature-toggle feature=initiative_cosponsors enabled=true
 feature-toggle:
-	docker-compose run web "bin/rails runner \"enabled = ${enabled}; feature = '${feature}'; Tenant.find_by(host: 'localhost').switch!; c = AppConfiguration.first; c.settings['${feature}'] ||= {}; c.settings['${feature}']['allowed'] = ${enabled}; c.settings['${feature}']['enabled'] = ${enabled}; c.save!\""
+	docker-compose run web "bin/rails runner \"enabled = ${enabled}; feature = '${feature}'; Tenant.find_by(host: 'localhost').switch!; c = AppConfiguration.instance; c.settings['${feature}'] ||= {}; c.settings['${feature}']['allowed'] = ${enabled}; c.settings['${feature}']['enabled'] = ${enabled}; c.save!\""
 
 # =================
 # E2E tests
@@ -94,50 +94,6 @@ e2e-setup-and-up:
 e2e-run-test:
 	cd front && \
 	npm run cypress:run -- --config baseUrl=http://localhost:3000 --spec ${spec}
-
-# -----------------
-# The following e2e commands use the "ci-env" prefix which means
-# that the used environment will be very similar to CI (the same docker-compose.yml file)
-# -----------------
-
-e2e-ci-env-setup:
-	cd e2e && \
-	docker-compose build && \
-	docker-compose run web bin/rails db:drop db:create db:schema:load && \
-	docker-compose run web bin/rails "cl2_back:create_tenant[e2e.front,e2etests_template]"
-
-e2e-ci-env-up:
-	# we need --build because volumes are not used by default https://www.notion.so/citizenlab/Testing-253d0c3cd99841a59929f7f615179935?pvs=4#f088eb9d2c304af59d5d5d2ede6e4439
-	cd e2e && docker-compose up --build
-
-e2e-ci-env-setup-and-up:
-	make e2e-ci-env-setup
-	make e2e-ci-env-up
-
-# Run it with:
-# make e2e-ci-env-run-test spec=cypress/e2e/about_page.cy.ts
-# # or specify an entire folder
-# make e2e-ci-env-run-test spec=cypress/e2e/project_description_builder/sections
-e2e-ci-env-run-test:
-	cd e2e && \
-	docker-compose run --rm --name cypress_run front npm run cypress:run -- --config baseUrl=http://e2e.front:3000 --spec ${spec}
-
-e2e-ci-env-db-dump:
-	cd e2e && \
-	docker compose exec postgres pg_dumpall -c -U postgres > dump.sql
-
-e2e-ci-env-db-restore:
-	cd e2e && \
-	docker compose exec postgres psql -U postgres -d cl2_back_development -c "SELECT 1" 1> /dev/null && \
-	docker compose exec postgres psql -U postgres -d cl2_back_development -c "DROP SCHEMA IF EXISTS e2e_front,public CASCADE" 1> /dev/null 2> /dev/null && \
-	docker compose exec postgres psql -U postgres -d cl2_back_development -c "CREATE SCHEMA public" && \
-	cat dump.sql | docker compose exec -T postgres psql --quiet -U postgres 1> /dev/null 2> /dev/null
-
-e2e-ci-env-reproduce-flaky-test:
-	for i in $(shell seq 1 10); do \
-		make e2e-ci-env-db-restore && \
-		make e2e-ci-env-run-test spec="${spec}"; \
-	done
 
 # =================
 # CircleCI

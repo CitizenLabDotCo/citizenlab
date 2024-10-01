@@ -13,273 +13,7 @@ resource 'Ideas' do
 
     before do
       @user = user
-      create(:idea_status_proposed)
       header_token_for user
-    end
-
-    get 'web_api/v1/ideas' do
-      with_options scope: :page do
-        parameter :number, 'Page number'
-        parameter :size, 'Number of ideas per page'
-      end
-      parameter :topics, 'Filter by topics (OR)', required: false
-      parameter :projects, 'Filter by projects (OR)', required: false
-      parameter :phase, 'Filter by project phase', required: false
-      parameter :basket_id, 'Filter by basket', required: false
-      parameter :author, 'Filter by author (user id)', required: false
-      parameter :idea_status, 'Filter by status (idea status id)', required: false
-      parameter :search, 'Filter by searching in title and body', required: false
-      parameter :sort, "Either 'new', '-new', 'trending', '-trending', 'popular', '-popular', 'author_name', '-author_name', 'likes_count', '-likes_count', 'dislikes_count', '-dislikes_count', 'status', '-status', 'baskets_count', '-baskets_count', 'votes_count', '-votes_count', 'budget', '-budget', 'random'", required: false
-      parameter :publication_status, 'Filter by publication status; returns all published ideas by default', required: false
-      parameter :project_publication_status, "Filter by project publication_status. One of #{AdminPublication::PUBLICATION_STATUSES.join(', ')}", required: false
-      parameter :feedback_needed, 'Filter out ideas that need feedback', required: false
-      parameter :filter_trending, 'Filter out truly trending ideas', required: false
-
-      describe do
-        before do
-          @ideas = %w[published published draft published published published].map do |ps|
-            create(:idea, publication_status: ps)
-          end
-          survey_project = create(:single_phase_native_survey_project)
-          create(:idea, project: survey_project, creation_phase: survey_project.phases.first)
-        end
-
-        example_request 'List all published ideas (default behaviour)' do
-          expect(status).to eq(200)
-          json_response = json_parse(response_body)
-          expect(json_response[:data].size).to eq 5
-          expect(json_response[:data].map { |d| d.dig(:attributes, :publication_status) }).to all(eq 'published')
-        end
-
-        example 'Don\'t list drafts (default behaviour)', document: false do
-          do_request publication_status: 'draft'
-          json_response = json_parse(response_body)
-          expect(json_response[:data].size).to eq 0
-        end
-
-        example 'List all ideas for a topic' do
-          t1 = create(:topic)
-
-          i1 = @ideas.first
-          i1.project.update!(allowed_input_topics: Topic.all)
-          i1.topics << t1
-          i1.save!
-
-          do_request topics: [t1.id]
-          json_response = json_parse(response_body)
-          expect(json_response[:data].size).to eq 1
-          expect(json_response[:data][0][:id]).to eq i1.id
-        end
-
-        example 'List all ideas for a topic with other filters enabled', document: false do
-          t1 = create(:topic)
-
-          i1 = @ideas.first
-          i1.project.update!(allowed_input_topics: Topic.all)
-          i1.topics << t1
-          i1.save!
-
-          do_request topics: [t1.id], sort: 'random'
-          expect(status).to eq(200)
-        end
-
-        example 'List all ideas which match one of the given topics', document: false do
-          t1 = create(:topic)
-          t2 = create(:topic)
-          t3 = create(:topic)
-
-          i1 = @ideas[0]
-          i1.project.update!(allowed_input_topics: Topic.all)
-          i1.topics = [t1, t3]
-          i1.save!
-          i2 = @ideas[1]
-          i2.project.update!(allowed_input_topics: Topic.all)
-          i2.topics = [t2]
-          i2.save!
-          i3 = @ideas[3]
-          i3.project.update!(allowed_input_topics: Topic.all)
-          i3.topics = [t3, t1, t2]
-          i3.save!
-
-          do_request topics: [t1.id, t2.id]
-          json_response = json_parse(response_body)
-          expect(json_response[:data].size).to eq 3
-          expect(json_response[:data].pluck(:id)).to match_array [i1.id, i2.id, i3.id]
-        end
-
-        example 'List all ideas in a project' do
-          l = create(:single_phase_ideation_project)
-          i = create(:idea, project: l)
-
-          do_request projects: [l.id]
-
-          json_response = json_parse(response_body)
-          expect(json_response[:data].size).to eq 1
-          expect(json_response[:data][0][:id]).to eq i.id
-        end
-
-        example 'List all ideas in any of the given projects', document: false do
-          i1 = create(:idea)
-          i2 = create(:idea)
-
-          do_request projects: [i1.project.id, i2.project.id]
-
-          json_response = json_parse(response_body)
-          expect(json_response[:data].size).to eq 2
-          expect(json_response[:data].pluck(:id)).to match_array [i1.id, i2.id]
-        end
-
-        example 'List all ideas in a phase of a project' do
-          pr = create(:project_with_phases)
-          ph1 = pr.phases.first
-          ph2 = pr.phases.second
-          ideas = [
-            create(:idea, phases: [ph1], project: pr),
-            create(:idea, phases: [ph2], project: pr),
-            create(:idea, phases: [ph1, ph2], project: pr)
-          ]
-
-          do_request phase: ph2.id
-          json_response = json_parse(response_body)
-          expect(json_response[:data].size).to eq 2
-          expect(json_response[:data].pluck(:id)).to match_array [ideas[1].id, ideas[2].id]
-        end
-
-        example 'List all ideas in a basket' do
-          basket = create(:basket)
-          [@ideas[1], @ideas[2], @ideas[5]].each { _1.baskets << basket }
-
-          do_request(basket_id: basket.id)
-          json_response = json_parse(response_body)
-          expect(json_response[:data].size).to eq 2
-          expect(json_response[:data].pluck(:id)).to match_array [@ideas[1].id, @ideas[5].id]
-        end
-
-        example 'List all ideas in published projects' do
-          idea = create(:idea, project: create(:project, admin_publication_attributes: { publication_status: 'archived' }))
-          do_request(project_publication_status: 'published')
-          json_response = json_parse(response_body)
-          expect(json_response[:data].size).to eq 5
-          expect(json_response[:data].pluck(:id)).not_to include(idea.id)
-        end
-
-        example 'List all ideas for an idea status' do
-          status = create(:idea_status)
-          i = create(:idea, idea_status: status)
-
-          do_request idea_status: status.id
-          json_response = json_parse(response_body)
-          expect(json_response[:data].size).to eq 1
-          expect(json_response[:data][0][:id]).to eq i.id
-        end
-
-        example 'List all ideas for a user' do
-          u = create(:user)
-          i = create(:idea, author: u)
-
-          do_request author: u.id
-          json_response = json_parse(response_body)
-          expect(json_response[:data].size).to eq 1
-          expect(json_response[:data][0][:id]).to eq i.id
-        end
-
-        example 'List all ideas that need feedback' do
-          proposed = create(:idea_status_proposed)
-          i = create(:idea, idea_status: proposed)
-
-          do_request feedback_needed: true
-          json_response = json_parse(response_body)
-          expect(json_response[:data].size).to eq 1
-          expect(json_response[:data][0][:id]).to eq i.id
-        end
-
-        example 'Search for ideas' do
-          initiatives = [
-            create(:idea, title_multiloc: { en: 'This idea is uniqque' }),
-            create(:idea, title_multiloc: { en: 'This one origiinal' })
-          ]
-
-          do_request search: 'uniqque'
-          json_response = json_parse(response_body)
-          expect(json_response[:data].size).to eq 1
-          expect(json_response[:data][0][:id]).to eq initiatives[0].id
-        end
-
-        example 'List all ideas sorted by new' do
-          i1 = create(:idea)
-
-          do_request sort: 'new'
-          json_response = json_parse(response_body)
-          expect(json_response[:data].size).to eq 6
-          expect(json_response[:data][0][:id]).to eq i1.id
-        end
-
-        example 'List all ideas by random ordering', document: false do
-          create(:idea)
-
-          do_request sort: 'random'
-          json_response = json_parse(response_body)
-          expect(json_response[:data].size).to eq 6
-        end
-
-        example 'List all ideas includes the user_reaction and user_follower', document: false do
-          reaction = create(:reaction, user: @user)
-          follower = create(:follower, followable: create(:idea), user: @user)
-
-          do_request
-          json_response = json_parse(response_body)
-          expect(json_response[:data].filter_map { |d| d.dig(:relationships, :user_reaction, :data, :id) }.first).to eq reaction.id
-          expect(json_response[:data].filter_map { |d| d.dig(:relationships, :user_follower, :data, :id) }.first).to eq follower.id
-          expect(json_response[:included].pluck(:id)).to include reaction.id
-        end
-
-        example 'Search for ideas should work with trending ordering', document: false do
-          i1 = Idea.first
-          i1.title_multiloc['nl-BE'] = 'Park met blauwe bomen'
-          i1.title_multiloc['en'] = 'A park with orange grass'
-          i1.save!
-
-          do_request search: 'Park', sort: 'trending'
-          expect(status).to eq(200)
-        end
-
-        example 'Default trending ordering', document: false do
-          do_request project_publication_status: 'published', sort: 'trending'
-          expect(status).to eq(200)
-        end
-
-        example 'List all ideas in a phase of a project - baskets_count and votes_count are overwritten with values from ideas_phase' do
-          pr = create(:project_with_active_budgeting_phase)
-          phase = pr.phases.first
-          ideas = create_list(:idea, 2, phases: [phase], project: pr)
-          basket = create(:basket, phase: phase, submitted_at: nil)
-          basket2 = create(:basket, phase: phase, submitted_at: nil)
-          basket.update!(ideas: ideas, submitted_at: Time.zone.now)
-          basket2.update!(ideas: ideas, submitted_at: Time.zone.now)
-          SideFxBasketService.new.after_update basket, user
-          SideFxBasketService.new.after_update basket2, user
-
-          # Different phase (should be ignored in the counts)
-          phase2 = create(:single_voting_phase, project: pr)
-          basket3 = create(:basket, phase: phase2, submitted_at: nil)
-          basket3.update!(ideas: ideas, submitted_at: Time.zone.now)
-          SideFxBasketService.new.after_update basket3, user
-
-          do_request phase: phase.id
-          assert_status 200
-
-          expect(response_data.size).to eq 2
-          expect(response_data.pluck(:id)).to match_array [ideas[0].id, ideas[1].id]
-          ideas_phases = json_response_body[:included].map { |i| i if i[:type] == 'ideas_phase' }.compact!
-          expect(ideas_phases.size).to eq 2
-          expect(ideas_phases[0][:attributes][:baskets_count]).to eq 2
-          expect(ideas_phases[1][:attributes][:baskets_count]).to eq 2
-
-          # Check the value in idea has also been overwritten
-          expect(ideas[0].reload[:baskets_count]).to eq 3
-          expect(response_data[0][:attributes][:baskets_count]).to eq 2
-        end
-      end
     end
 
     get 'web_api/v1/ideas/as_markers' do
@@ -301,18 +35,19 @@ resource 'Ideas' do
 
       describe do
         before do
+          factories = %i[idea idea idea proposal idea idea idea]
           locations = [[51.044039, 3.716964], [50.845552, 4.357355], [50.640255, 5.571848], [50.950772, 4.308304], [51.215929, 4.422602], [50.453848, 3.952217], [-27.148983, -109.424659]]
           placenames = ['Ghent', 'Brussels', 'Liège', 'Meise', 'Antwerp', 'Mons', 'Hanga Roa']
-          @ideas = locations.zip(placenames).map do |location, placename|
+          @ideas = factories.zip(locations, placenames).map do |factory, location, placename|
             create(
-              :idea,
+              factory,
               location_point_geojson: { 'type' => 'Point', 'coordinates' => location },
               title_multiloc: { 'en' => placename }
             )
           end
         end
 
-        example 'List all idea markers within a bounding box' do
+        example 'List all inputs markers within a bounding box' do
           do_request(bounding_box: '[51.208758,3.224363,50.000667,5.715281]') # Bruges-Bastogne
 
           expect(status).to eq(200)
@@ -321,7 +56,7 @@ resource 'Ideas' do
           expect(json_response[:data].map { |d| d.dig(:attributes, :title_multiloc, :en) }.sort).to match %w[Ghent Brussels Liège Meise Mons].sort
         end
 
-        example 'List all idea markers in a phase of a project', document: false do
+        example 'List all inputs markers in a phase of a project', document: false do
           pr = create(:project_with_phases)
           ph1 = pr.phases.first
           ph2 = pr.phases.second
@@ -612,41 +347,60 @@ resource 'Ideas' do
       context 'Idea authored by another user' do
         let!(:idea) { create(:idea, project: phase.project, phases: [phase], creation_phase: phase, publication_status: 'draft') }
 
-        example '[error] No draft ideas for current user', document: false do
+        example '[empty idea] No draft ideas for current user', document: false do
           do_request
-          expect(status).to eq 404
+          expect(status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :id)).to be_nil
         end
       end
 
       context 'Idea is not draft' do
         let!(:idea) { create(:idea, project: phase.project, phases: [phase], creation_phase: phase, author: @user) }
 
-        example '[error] No draft ideas', document: false do
+        example '[empty idea] No draft ideas', document: false do
           do_request
-          expect(status).to eq 404
+          expect(status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :id)).to be_nil
         end
       end
 
       context 'Idea is not native survey' do
         let!(:idea) { create(:idea, project: phase.project, phases: [phase], author: @user, publication_status: 'draft') }
 
-        example '[error] No native survey idea found', document: false do
+        example '[empty idea] No native survey idea found', document: false do
           do_request
-          expect(status).to eq 404
+          expect(status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :id)).to be_nil
+        end
+      end
+
+      context 'User is not logged in' do
+        let!(:idea) { create(:idea, project: phase.project, phases: [phase], author: @user, publication_status: 'draft') }
+
+        example '[empty idea] User not logged in', document: false do
+          header 'Authorization', nil
+          do_request
+          expect(status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :id)).to be_nil
         end
       end
     end
 
     delete 'web_api/v1/ideas/:id' do
+      let(:id) { input.id }
+
       context 'when the idea belongs to a phase' do
-        let!(:idea) { create(:idea, author: user, project: project, publication_status: 'published') }
+        let!(:input) { create(:idea, author: user, project: project, publication_status: 'published') }
         let(:project) { create(:project_with_phases) }
         let(:phase) { project.phases.first }
-        let(:id) { idea.id }
 
         before do
           allow_any_instance_of(IdeaPolicy).to receive(:destroy?).and_return(true)
-          idea.ideas_phases.create!(phase: phase)
+          input.ideas_phases.create!(phase: phase)
         end
 
         example 'the count starts at 1' do
@@ -661,10 +415,18 @@ resource 'Ideas' do
         end
       end
 
+      describe do
+        let(:input) { create(:proposal, author: user) }
+
+        example_request 'Delete a proposal' do
+          assert_status 200
+          expect { Idea.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+        end
+      end
+
       context 'when a voting context' do
         let(:project) { create(:single_phase_budgeting_project) }
-        let(:idea) { create(:idea, project: project, phases: project.phases) }
-        let(:id) { idea.id }
+        let(:input) { create(:idea, project: project, phases: project.phases) }
 
         example_request '[error] Normal resident cannot delete an idea in a voting context', document: false do
           assert_status 401

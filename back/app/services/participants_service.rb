@@ -10,7 +10,6 @@ class ParticipantsService
     polling
     volunteering
     event_attending
-    following
   ]
 
   def participants(options = {})
@@ -161,16 +160,6 @@ class ParticipantsService
         .where(created_at: since..)
       event_attendees = User.where(id: event_attendances.select(:attendee_id))
       participants = participants.or(event_attendees)
-    end
-
-    # Following
-    if actions.include? :following
-      followers = Follower
-        .where(followable: projects)
-        .or(Follower.where(followable: Idea.where(project: projects)))
-        .where(created_at: since..)
-
-      participants = participants.or(User.where(id: followers.select(:user_id)))
     end
 
     participants

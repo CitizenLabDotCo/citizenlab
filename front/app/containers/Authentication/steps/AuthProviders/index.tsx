@@ -21,6 +21,7 @@ import TextButton from '../_components/TextButton';
 import AuthProviderButton, { TOnContinueFunction } from './AuthProviderButton';
 import ClaveUnicaExpandedAuthProviderButton from './ClaveUnicaExpandedAuthProviderButton';
 import messages from './messages';
+import { useLocation } from 'react-router-dom';
 
 const Container = styled.div`
   display: flex;
@@ -53,12 +54,17 @@ const AuthProviders = memo<Props>(
   ({ flow, className, error, onSwitchFlow, onSelectAuthProvider }) => {
     const { formatMessage } = useIntl();
     const { data: tenant } = useAppConfiguration();
+    const { pathname } = useLocation();
     const tenantSettings = tenant?.data.attributes.settings;
+
+    const showAdminOnlyMethods = pathname.endsWith('/sign-in/admin');
 
     const passwordLoginEnabled = useFeatureFlag({ name: 'password_login' });
     const googleLoginEnabled = useFeatureFlag({ name: 'google_login' });
     const facebookLoginEnabled = useFeatureFlag({ name: 'facebook_login' });
-    const azureAdLoginEnabled = useFeatureFlag({ name: 'azure_ad_login' });
+    const azureAdLoginEnabled =
+      useFeatureFlag({ name: 'azure_ad_login' }) &&
+      (!tenantSettings?.azure_ad_login?.admin_only || showAdminOnlyMethods);
     const azureAdB2cLoginEnabled = useFeatureFlag({
       name: 'azure_ad_b2c_login',
     });
@@ -76,6 +82,10 @@ const AuthProviders = memo<Props>(
     });
     const criiptoLoginEnabled = useFeatureFlag({
       name: 'criipto_login',
+    });
+    const fakeSsoEnabled = useFeatureFlag({ name: 'fake_sso' });
+    const nemlogInLoginEnabled = useFeatureFlag({
+      name: 'nemlog_in_login',
     });
 
     const azureProviderName =
@@ -109,13 +119,15 @@ const AuthProviders = memo<Props>(
 
     const showMainAuthMethods =
       isPasswordSigninOrSignupAllowed ||
+      fakeSsoEnabled ||
       facebookLoginEnabled ||
       azureAdLoginEnabled ||
       azureAdB2cLoginEnabled ||
       viennaCitizenLoginEnabled ||
       claveUnicaLoginEnabled ||
       hoplrLoginEnabled ||
-      criiptoLoginEnabled;
+      criiptoLoginEnabled ||
+      nemlogInLoginEnabled;
 
     return (
       <Container
@@ -135,6 +147,18 @@ const AuthProviders = memo<Props>(
 
         {showMainAuthMethods && franceconnectLoginEnabled && <Or />}
 
+        {fakeSsoEnabled && (
+          <StyledAuthProviderButton
+            icon="bullseye"
+            flow={flow}
+            authProvider="fake_sso"
+            onContinue={onSelectAuthProvider}
+            id="e2e-login-with-fake-sso"
+          >
+            <FormattedMessage {...messages.continueWithFakeSSO} />
+          </StyledAuthProviderButton>
+        )}
+
         {claveUnicaLoginEnabled && (
           <StyledClaveUnicaExpandedAuthProviderButton
             flow={flow}
@@ -150,6 +174,16 @@ const AuthProviders = memo<Props>(
             onContinue={onSelectAuthProvider}
           >
             <FormattedMessage {...messages.continueWithHoplr} />
+          </StyledAuthProviderButton>
+        )}
+
+        {nemlogInLoginEnabled && (
+          <StyledAuthProviderButton
+            flow={flow}
+            authProvider="nemlog_in"
+            onContinue={onSelectAuthProvider}
+          >
+            <FormattedMessage {...messages.continueWithNemlogIn} />
           </StyledAuthProviderButton>
         )}
 

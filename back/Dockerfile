@@ -14,7 +14,7 @@ COPY back/engines ./engines
 RUN find engines -type f -not -name "*.gemspec" -not -name "version.rb" -print0 | xargs -0 rm -rf \
    && find engines -type d -empty -delete
 
-FROM ruby:3.3.0-slim
+FROM ruby:3.3.1-slim
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 RUN apt-get update                                        \
@@ -52,7 +52,7 @@ RUN curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --yes --
     && echo "deb [signed-by=/usr/share/keyrings/postgresql-archive-keyring.gpg] https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list \
     # Make sure the version of `postgresql-client` matches the version used by the
     # `postgres` service in `docker-compose.yml`.
-    && apt-get update && apt-get install -y postgresql-client-13
+    && apt-get update && apt-get install -y postgresql-client-16
 
 WORKDIR /cl2_back
 

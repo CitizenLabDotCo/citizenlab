@@ -22,7 +22,10 @@ const ContentBuilderLanguageProvider = ({
 
   useEffect(() => {
     if (!isNilOrError(contentBuilderLocale)) {
-      import(`i18n/${contentBuilderLocale}`).then((translationMessages) => {
+      import(
+        /* @vite-ignore */
+        `i18n/${contentBuilderLocale}`
+      ).then((translationMessages) => {
         setMessages(translationMessages.default);
       });
       moment.locale(contentBuilderLocale);

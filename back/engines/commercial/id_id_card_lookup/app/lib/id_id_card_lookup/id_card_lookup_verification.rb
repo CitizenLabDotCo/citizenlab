@@ -19,9 +19,9 @@ module IdIdCardLookup
 
     def config_parameters
       %i[
-        method_name_multiloc
-        card_id_multiloc
-        card_id_tooltip_multiloc
+        ui_method_name
+        card_id
+        card_id_tooltip
         card_id_placeholder
         explainer_image_url
       ]
@@ -29,16 +29,16 @@ module IdIdCardLookup
 
     def config_parameters_schema
       {
-        method_name_multiloc: {
-          '$ref': '#/definitions/multiloc_string',
+        ui_method_name: {
+          type: 'string',
           private: true
         },
-        card_id_multiloc: {
-          '$ref': '#/definitions/multiloc_string',
+        card_id: {
+          type: 'string',
           private: true
         },
-        card_id_tooltip_multiloc: {
-          '$ref': '#/definitions/multiloc_string',
+        card_id_tooltip: {
+          type: 'string',
           private: true
         }
       }
@@ -46,9 +46,9 @@ module IdIdCardLookup
 
     def exposed_config_parameters
       %i[
-        method_name_multiloc
-        card_id_multiloc
-        card_id_tooltip_multiloc
+        ui_method_name
+        card_id
+        card_id_tooltip
         card_id_placeholder
         explainer_image_url
       ]

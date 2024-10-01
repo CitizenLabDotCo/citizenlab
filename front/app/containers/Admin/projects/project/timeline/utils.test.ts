@@ -15,7 +15,7 @@ export const phasesDataMockDataWithoutId = {
     end_at: 'one week from now',
     created_at: 'yesterday',
     updated_at: 'yesterday but later',
-    posting_enabled: false,
+    submission_enabled: false,
     commenting_enabled: false,
     reacting_enabled: false,
     reacting_like_limited_max: 0,

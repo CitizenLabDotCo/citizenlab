@@ -1,4 +1,4 @@
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 
 import { IPhaseData } from '../types';
 
@@ -14,7 +14,7 @@ export const phasesData: IPhaseData[] = [
       end_at: 'one week from now',
       created_at: 'yesterday',
       updated_at: 'yesterday but later',
-      posting_enabled: false,
+      submission_enabled: false,
       commenting_enabled: false,
       reacting_enabled: false,
       reacting_like_limited_max: 0,
@@ -58,7 +58,7 @@ export const phasesData: IPhaseData[] = [
       created_at: 'yesterday',
       updated_at: 'yesterday but later',
       participation_method: 'poll',
-      posting_enabled: false,
+      submission_enabled: false,
       commenting_enabled: false,
       reacting_enabled: false,
       reacting_like_method: 'limited',
@@ -99,7 +99,7 @@ export const phasesData: IPhaseData[] = [
       created_at: 'yesterday',
       updated_at: 'yesterday but later',
       participation_method: 'ideation',
-      posting_enabled: true,
+      submission_enabled: true,
       commenting_enabled: true,
       reacting_enabled: true,
       reacting_like_method: 'limited',
@@ -143,7 +143,7 @@ export const mockPhaseInformationData: IPhaseData = {
     end_at: 'one week from now',
     created_at: 'yesterday',
     updated_at: 'yesterday but later',
-    posting_enabled: false,
+    submission_enabled: false,
     commenting_enabled: false,
     reacting_enabled: false,
     reacting_like_limited_max: 0,
@@ -188,7 +188,7 @@ export const mockPhaseIdeationData: IPhaseData = {
     created_at: 'yesterday',
     updated_at: 'yesterday but later',
     participation_method: 'ideation',
-    posting_enabled: true,
+    submission_enabled: true,
     commenting_enabled: true,
     reacting_enabled: true,
     reacting_like_method: 'limited',
@@ -237,7 +237,7 @@ export const mockPhaseSurveyTypeformData: IPhaseData = {
     input_term: 'idea',
     presentation_mode: 'card',
     ideas_count: 3,
-    posting_enabled: false,
+    submission_enabled: false,
     commenting_enabled: false,
     reacting_enabled: false,
     reacting_like_limited_max: 0,
@@ -282,7 +282,7 @@ export const mockPhaseSurveyGoogleFormData: IPhaseData = {
     reacting_dislike_method: 'limited',
     input_term: 'idea',
     presentation_mode: 'card',
-    posting_enabled: false,
+    submission_enabled: false,
     commenting_enabled: false,
     reacting_enabled: false,
     reacting_like_limited_max: 0,
@@ -316,15 +316,12 @@ export const apiPathPhase = '/web_api/v1/phases/:id';
 export const apiPathPhases = '/web_api/v1/projects/:projectId/phases';
 
 const endpoints = {
-  'GET phases/:id': rest.get(apiPathPhase, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: phasesData[0] }));
+  'GET phases/:id': http.get(apiPathPhase, () => {
+    return HttpResponse.json({ data: phasesData[0] }, { status: 200 });
   }),
-  'GET projects/:projectId/phases': rest.get(
-    apiPathPhases,
-    (_req, res, ctx) => {
-      return res(ctx.status(200), ctx.json({ data: phasesData }));
-    }
-  ),
+  'GET projects/:projectId/phases': http.get(apiPathPhases, () => {
+    return HttpResponse.json({ data: phasesData }, { status: 200 });
+  }),
 };
 
 const votingPhase: IPhaseData = {
@@ -348,7 +345,7 @@ const votingPhase: IPhaseData = {
     campaigns_settings: {
       project_phase_started: true,
     },
-    posting_enabled: true,
+    submission_enabled: true,
     commenting_enabled: true,
     reacting_enabled: true,
     reacting_like_method: 'unlimited',
@@ -397,8 +394,8 @@ const votingPhase: IPhaseData = {
   },
 };
 
-export const votingPhaseHandler = rest.get(apiPathPhase, (_req, res, ctx) => {
-  return res(ctx.status(200), ctx.json({ data: votingPhase }));
+export const votingPhaseHandler = http.get(apiPathPhase, () => {
+  return HttpResponse.json({ data: votingPhase }, { status: 200 });
 });
 
 export default endpoints;

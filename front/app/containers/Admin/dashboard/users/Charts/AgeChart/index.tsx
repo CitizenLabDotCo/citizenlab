@@ -3,7 +3,7 @@ import React, { useRef } from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
 
-import { useUsersByAgeLive } from 'api/graph_data_units';
+import { useDemographicsLive } from 'api/graph_data_units';
 import { usersByAgeXlsxEndpoint } from 'api/users_by_age/util';
 
 import messages from 'containers/Admin/dashboard/messages';
@@ -20,6 +20,7 @@ import { QueryParameters } from './typings';
 
 interface Props extends QueryParameters {
   currentGroupFilterLabel?: string | undefined;
+  customFieldId: string;
 }
 
 const AgeChart = ({
@@ -27,16 +28,21 @@ const AgeChart = ({
   endAt,
   currentGroupFilter,
   currentGroupFilterLabel,
+  customFieldId,
 }: Props) => {
   const { formatMessage } = useIntl();
   const graphRef = useRef();
 
-  const { data: usersByAge } = useUsersByAgeLive({
+  const { data: usersByAge } = useDemographicsLive({
+    custom_field_id: customFieldId,
     start_at: startAt ? momentToIsoDate(moment(startAt)) : null,
     end_at: endAt ? momentToIsoDate(moment(endAt)) : null,
     group_id: currentGroupFilter,
   });
-  const ageSerie = convertToGraphFormat(usersByAge, formatMessage);
+  const ageSerie = convertToGraphFormat(
+    usersByAge?.data.attributes.series,
+    formatMessage
+  );
 
   const cardTitle = formatMessage(messages.usersByAgeTitle);
 

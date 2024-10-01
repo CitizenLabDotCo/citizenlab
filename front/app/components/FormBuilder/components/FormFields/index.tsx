@@ -34,7 +34,7 @@ interface FormFieldsProps {
   ) => void;
   selectedFieldId?: string;
   builderConfig: FormBuilderConfig;
-  closeSettings: () => void;
+  closeSettings: (triggerAutosave?: boolean) => void;
 }
 
 const FormFields = ({
@@ -70,7 +70,7 @@ const FormFields = ({
       });
     } else {
       const lastGroupElement = nestedGroupData[nestedGroupData.length - 1];
-      lastGroupElement.questions.push({
+      lastGroupElement?.questions.push({
         ...field,
       });
     }
@@ -79,7 +79,7 @@ const FormFields = ({
   const fieldNumbers = getFieldNumbers(formCustomFields);
 
   return (
-    <Box height="100%">
+    <Box height="100%" data-cy="e2e-form-fields">
       <DragAndDrop
         onDragEnd={(result: DragAndDropResult) => {
           handleDragEnd(result, nestedGroupData);

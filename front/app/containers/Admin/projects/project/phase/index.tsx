@@ -46,9 +46,6 @@ const AdminProjectPhaseIndex = ({
     surveys_enabled: useFeatureFlag({
       name: 'surveys',
     }),
-    granular_permissions_enabled: useFeatureFlag({
-      name: 'granular_permissions',
-    }),
     report_builder_enabled: useFeatureFlag({
       name: 'report_builder',
     }),

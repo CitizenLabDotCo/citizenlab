@@ -18,7 +18,8 @@ module UserConfirmation
 
   # true if the user has not yet confirmed their email address and the platform requires it
   def confirmation_required?
-    user_confirmation_enabled? && confirmation_required
+    user_confirmation_enabled? && confirmation_required &&
+      !(sso? && verified && email.nil?) # for verified SSO users without email, confirmation is not yet required
   end
 
   def confirm
@@ -27,11 +28,17 @@ module UserConfirmation
   end
 
   def confirm!
-    return if !confirmation_required? && !new_email
+    return unless confirmation_required? || new_email
 
     confirm_new_email if new_email.present?
     confirm
     save!
+
+    # Cancel any other pending email changes initiated with the same email to prevent
+    # those users from becoming invalid due to email validations.
+    User
+      .where(new_email: email)
+      .update_all(new_email: nil, email_confirmation_code: nil, updated_at: Time.zone.now)
   end
 
   def reset_confirmation_and_counts
@@ -44,10 +51,6 @@ module UserConfirmation
     end
     self.confirmation_required = true
     self.email_confirmation_code_sent_at = nil
-  end
-
-  def should_send_confirmation_email?
-    confirmation_required? && email_confirmation_code_sent_at.nil?
   end
 
   def email_confirmation_code_expiration_at

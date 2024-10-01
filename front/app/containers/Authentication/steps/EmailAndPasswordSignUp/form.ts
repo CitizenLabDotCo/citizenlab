@@ -29,14 +29,35 @@ export const DEFAULT_VALUES: Partial<FormValues> = {
 
 const isTruthy = (value?: boolean) => !!value;
 
+export const getEmailSchema = (formatMessage: FormatMessage) =>
+  string()
+    .required(formatMessage(sharedMessages.emailMissingError))
+    .email(formatMessage(sharedMessages.emailFormatError))
+    .test('', formatMessage(sharedMessages.emailFormatError), isValidEmail);
+
+export const getPasswordSchema = (
+  minimumPasswordLength: number,
+  formatMessage: FormatMessage
+) =>
+  string()
+    .required(formatMessage(sharedMessages.noPasswordError))
+    .test(
+      '',
+      formatMessage(passwordInputMessages.minimumPasswordLengthError, {
+        minimumPasswordLength,
+      }),
+      (value) => !!(value && value.length >= minimumPasswordLength)
+    );
+
 export const getSchema = (
   minimumPasswordLength: number,
   formatMessage: FormatMessage
 ) => {
-  const emailSchema = string()
-    .required(formatMessage(sharedMessages.emailMissingError))
-    .email(formatMessage(sharedMessages.emailFormatError))
-    .test('', formatMessage(sharedMessages.emailFormatError), isValidEmail);
+  const emailSchema = getEmailSchema(formatMessage);
+  const passwordSchema = getPasswordSchema(
+    minimumPasswordLength,
+    formatMessage
+  );
 
   const schema = object({
     first_name: string().required(
@@ -46,15 +67,7 @@ export const getSchema = (
       formatMessage(sharedMessages.emptyLastNameError)
     ),
     email: emailSchema,
-    password: string()
-      .required(formatMessage(sharedMessages.noPasswordError))
-      .test(
-        '',
-        formatMessage(passwordInputMessages.minimumPasswordLengthError, {
-          minimumPasswordLength,
-        }),
-        (value) => !!(value && value.length >= minimumPasswordLength)
-      ),
+    password: passwordSchema,
     termsAndConditionsAccepted: boolean().test(
       '',
       formatMessage(authProvidersMessages.tacError),

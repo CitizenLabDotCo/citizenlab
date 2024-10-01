@@ -10,22 +10,17 @@ RSpec.describe Permission do
   end
 
   describe 'global_custom_fields' do
+    context 'everyone' do
+      it 'is true when created' do
+        permission = create(:permission, :by_everyone)
+        expect(permission.global_custom_fields).to be_truthy
+      end
+    end
+
     context 'everyone_confirmed_email' do
-      it 'is false when created' do
+      it 'is true when created' do
         permission = create(:permission, :by_everyone_confirmed_email)
-        expect(permission.global_custom_fields).to be_falsey
-      end
-
-      it 'is false when updated to everyone_confirmed_email' do
-        permission = create(:permission, global_custom_fields: true)
-        permission.update!(permitted_by: 'everyone_confirmed_email')
-        expect(permission.global_custom_fields).to be_falsey
-      end
-
-      it 'is false even when set to true' do
-        permission = create(:permission, :by_everyone_confirmed_email)
-        permission.update!(global_custom_fields: true)
-        expect(permission.global_custom_fields).to be_falsey
+        expect(permission.global_custom_fields).to be_truthy
       end
     end
 
@@ -58,7 +53,7 @@ RSpec.describe Permission do
     end
 
     context 'native survey' do
-      let(:phase) { create(:native_survey_phase, posting_enabled: false) }
+      let(:phase) { create(:native_survey_phase, submission_enabled: false) }
       let!(:permission_posting) { create(:permission, action: 'posting_idea', permission_scope: phase) }
 
       it 'Returns all permissions for native surveys even if survey is not open to responses' do

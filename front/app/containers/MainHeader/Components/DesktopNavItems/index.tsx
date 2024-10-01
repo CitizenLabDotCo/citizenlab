@@ -5,6 +5,7 @@ import styled from 'styled-components';
 
 import useCustomPageSlugById from 'api/custom_pages/useCustomPageSlugById';
 import useNavbarItems from 'api/navbar/useNavbarItems';
+import useProjectSlugById from 'api/projects/useProjectSlugById';
 
 import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
@@ -42,13 +43,15 @@ const NavbarItems = styled.ul`
 const DesktopNavItems = () => {
   const { data: navbarItems } = useNavbarItems();
   const pageSlugById = useCustomPageSlugById();
+  const projectSlugById = useProjectSlugById();
   const { formatMessage } = useIntl();
 
   if (isNilOrError(navbarItems) || isNilOrError(pageSlugById)) return null;
 
   const navbarItemPropsArray = getNavbarItemPropsArray(
     navbarItems.data,
-    pageSlugById
+    pageSlugById,
+    projectSlugById
   );
 
   return (
@@ -67,15 +70,17 @@ const DesktopNavItems = () => {
               />
             );
           }
-
-          return (
-            <DesktopNavbarItem
-              linkTo={linkTo}
-              onlyActiveOnIndex={onlyActiveOnIndex}
-              navigationItemTitle={navigationItemTitle}
-              key={i}
-            />
-          );
+          if (linkTo) {
+            return (
+              <DesktopNavbarItem
+                linkTo={linkTo}
+                onlyActiveOnIndex={onlyActiveOnIndex}
+                navigationItemTitle={navigationItemTitle}
+                key={i}
+              />
+            );
+          }
+          return null;
         })}
       </NavbarItems>
     </Container>

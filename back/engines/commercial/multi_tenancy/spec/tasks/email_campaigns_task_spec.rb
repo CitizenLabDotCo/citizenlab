@@ -15,7 +15,7 @@ describe 'rake email_campaigns' do
     it 'enqueues a TriggerOnScheduleJob for every tenant' do
       t = Time.zone.now
       travel_to(t) do
-        create(:tenant)
+        create(:test_tenant, host: 'test.govocal.com')
 
         expect { task.execute }
           .to have_enqueued_job(EmailCampaigns::TriggerOnScheduleJob)

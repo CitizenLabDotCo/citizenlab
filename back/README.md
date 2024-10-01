@@ -124,7 +124,7 @@ In order to have more fake data in your localhost tenant, set the `SEED_SIZE` en
 
 If you would like to access another tenant than the `localhost` tenant, created through e.d. cl2-admin, you can set the `OVERRIDE_HOST` environment variable in `.env` prior to starting the container. This makes cl2-back believe that all requests are coming from that tenants host, letting you access the tenant at localhost:3000 through cl2-front.
 
-NOTE: Watch out that you don't accidently commit these changes!
+NOTE: Watch out that you don't accidentally commit these changes!
 
 
 ## Using S3 storage in development
@@ -134,7 +134,7 @@ Set `USE_AWS_S3_IN_DEV=true` in `env_files/back-safe.env`.
 
 ## Creating Engines
 
-In this section, we explain what you need to do (and what you shouldn't forget) when adding a new engine to `citizenlab/back`. Throughout these instructions, replace "`blorgh`" by the name of your engine. These instructions are for adding free engines (Citizenlab employees can find the instructions for commercial engines in Notion).
+In this section, we explain what you need to do (and what you shouldn't forget) when adding a new engine to `citizenlab/back`. Throughout these instructions, replace "`blorgh`" by the name of your engine. These instructions are for adding free engines (Go Vocal employees can find the instructions for commercial engines in Notion).
 
 1. Run `docker-compose run web bin/rails plugin new engines/free/blorgh --mountable`. Initialize your engine with a nice `README` file.
 

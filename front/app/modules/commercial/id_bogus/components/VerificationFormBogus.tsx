@@ -120,7 +120,7 @@ const VerificationFormBogus = memo<Props>(
             </SubmitButton>
             <CancelButton
               onClick={onCancelButtonClicked}
-              buttonStyle="secondary"
+              buttonStyle="secondary-outlined"
             >
               Cancel
             </CancelButton>

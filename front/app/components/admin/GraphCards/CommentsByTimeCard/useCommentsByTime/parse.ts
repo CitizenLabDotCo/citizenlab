@@ -1,9 +1,9 @@
 import moment, { Moment } from 'moment';
 
 import {
-  CommentsByTimeResponse,
+  ParticipationResponse,
   TimeSeriesResponseRow,
-} from 'api/graph_data_units/responseTypes/CommentsByTimeWidget';
+} from 'api/graph_data_units/responseTypes/ParticipationWidget';
 
 import {
   timeSeriesParser,
@@ -39,11 +39,10 @@ const getDate = (row: TimeSeriesResponseRow) => {
 const _parseTimeSeries = timeSeriesParser(getDate, parseRow);
 
 export const parseTimeSeries = (
-  responseTimeSeries: CommentsByTimeResponse['data']['attributes'][0],
+  responseTimeSeries: ParticipationResponse['data']['attributes'][1],
   startAtMoment: Moment | null | undefined,
   endAtMoment: Moment | null,
-  resolution: IResolution,
-  total: CommentsByTimeResponse['data']['attributes'][1]
+  resolution: IResolution
 ): TimeSeries | null => {
   const timeSeries = _parseTimeSeries(
     responseTimeSeries,
@@ -52,17 +51,15 @@ export const parseTimeSeries = (
     resolution
   );
 
-  if (
-    !timeSeries ||
-    timeSeries.length === 0 ||
-    typeof total[0]?.count !== 'number'
-  ) {
+  const total = sumTimeSeries(responseTimeSeries);
+
+  if (!timeSeries || timeSeries.length === 0) {
     return null;
   }
 
   return calculateCumulativeSerie(
     timeSeries,
-    total[0]?.count,
+    total,
     (row: TimeSeriesRow) => row.comments
   );
 };
@@ -79,4 +76,8 @@ export const parseExcelData = (
   return {
     [translations.timeSeries]: timeSeriesData ?? [],
   };
+};
+
+const sumTimeSeries = (timeSeries: TimeSeriesResponseRow[]) => {
+  return timeSeries.reduce((acc, { count }) => acc + count, 0);
 };

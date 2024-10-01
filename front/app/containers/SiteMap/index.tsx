@@ -108,7 +108,7 @@ const SiteMap = () => {
       if (component.current) {
         // if the event is synthetic, it's a key event and we move focus
         // https://github.com/facebook/react/issues/3907
-        if (event.detail === 0) {
+        if ((event as any).detail === 0) {
           component.current.focus();
         }
 

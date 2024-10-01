@@ -1,5 +1,5 @@
 import { renderHook } from '@testing-library/react-hooks';
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
@@ -10,8 +10,8 @@ import useProjectGroups from './useProjectGroups';
 const apiPath = '*/projects/:projectId/groups_projects';
 
 const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: projectGroups }));
+  http.get(apiPath, () => {
+    return HttpResponse.json({ data: projectGroups }, { status: 200 });
   })
 );
 
@@ -37,8 +37,8 @@ describe('useProjectGroups', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

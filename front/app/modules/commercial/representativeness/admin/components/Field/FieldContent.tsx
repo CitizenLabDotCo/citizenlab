@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
-import { Box, colors } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
+import { Box, colors, Tooltip } from '@citizenlab/cl2-component-library';
 
 import Button from 'components/UI/Button';
 import Warning from 'components/UI/Warning';
@@ -109,7 +108,7 @@ const FieldContent = ({
           )}
         </Box>
 
-        <Tippy
+        <Tooltip
           content={<FormattedMessage {...messages.disallowSaveMessage} />}
           disabled={allowSubmit}
           placement="top"
@@ -126,7 +125,7 @@ const FieldContent = ({
               onClick={onSubmit}
             />
           </div>
-        </Tippy>
+        </Tooltip>
       </Box>
 
       <BinModal

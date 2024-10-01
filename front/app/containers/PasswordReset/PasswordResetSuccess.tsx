@@ -18,7 +18,7 @@ import messages from './messages';
 const PasswordResetSuccess = () => {
   const signIn = () => {
     clHistory.push('/');
-    triggerAuthenticationFlow({ flow: 'signin' });
+    triggerAuthenticationFlow({}, 'signin');
   };
 
   return (

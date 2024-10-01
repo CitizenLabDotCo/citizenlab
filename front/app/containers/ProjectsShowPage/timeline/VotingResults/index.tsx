@@ -1,11 +1,14 @@
 import React from 'react';
 
-import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { Box, Button, useBreakpoint } from '@citizenlab/cl2-component-library';
 
-import { IIdeas } from 'api/ideas/types';
-import useIdeas from 'api/ideas/useIdeas';
+import { IIdeaData } from 'api/ideas/types';
+import useInfiniteIdeas from 'api/ideas/useInfiniteIdeas';
 import { VotingMethod } from 'api/phases/types';
 
+import { useIntl } from 'utils/cl-intl';
+
+import messages from './messages';
 import VotingResultCard from './VotingResultCard';
 
 interface Props {
@@ -14,13 +17,23 @@ interface Props {
 }
 
 const VotingResults = ({ phaseId, votingMethod }: Props) => {
-  const { data: ideas } = useIdeas({
+  const { formatMessage } = useIntl();
+
+  const {
+    data: ideas,
+    isLoading,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteIdeas({
     phase: phaseId,
     sort: votingMethod === 'budgeting' ? 'baskets_count' : 'votes_count',
   });
+
   const smallerThanPhone = useBreakpoint('phone');
 
-  if (!ideas) return null;
+  const ideasList = ideas?.pages.map((page) => page.data).flat();
+  if (!ideasList) return null;
 
   const getMx = (i: number) =>
     smallerThanPhone ? {} : i % 2 ? { ml: '8px' } : { mr: '8px' };
@@ -33,7 +46,7 @@ const VotingResults = ({ phaseId, votingMethod }: Props) => {
       flexWrap="wrap"
       justifyContent="space-between"
     >
-      {ideas.data.map((idea, i) => (
+      {ideasList.map((idea, i) => (
         <Box
           key={idea.id}
           mb={smallerThanPhone ? '8px' : '20px'}
@@ -47,7 +60,7 @@ const VotingResults = ({ phaseId, votingMethod }: Props) => {
             rank={
               getRanks(
                 getCounts(
-                  ideas,
+                  ideasList,
                   votingMethod === 'budgeting' ? 'baskets_count' : 'votes_count'
                 )
               )[i]
@@ -55,6 +68,17 @@ const VotingResults = ({ phaseId, votingMethod }: Props) => {
           />
         </Box>
       ))}
+      {hasNextPage && (
+        <Box width="100%" display="flex" justifyContent="center" mt="30px">
+          <Button
+            onClick={() => fetchNextPage()}
+            buttonStyle="secondary-outlined"
+            text={formatMessage(messages.showMore)}
+            processing={isLoading || isFetchingNextPage}
+            icon="refresh"
+          />
+        </Box>
+      )}
     </Box>
   );
 };
@@ -81,8 +105,8 @@ const getRanks = (counts: number[]) => {
 };
 
 const getCounts = (
-  ideas: IIdeas,
+  ideas: IIdeaData[],
   attributeName: 'baskets_count' | 'votes_count'
-) => ideas.data.map((idea) => idea.attributes[attributeName]);
+) => ideas.map((idea) => idea.attributes[attributeName]);
 
 export default VotingResults;

@@ -1,4 +1,4 @@
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 
 import { API_PATH } from 'containers/App/constants';
 
@@ -8,23 +8,23 @@ export const initiativeResponse: AuthenticationRequirementsResponse = {
   data: {
     type: 'requirements',
     attributes: {
+      permitted: false,
+      disabled_reason: 'user_missing_requirements',
       requirements: {
-        permitted: false,
-        requirements: {
-          built_in: {
-            first_name: 'require',
-            last_name: 'require',
-            email: 'require',
-          },
-          custom_fields: {},
-          onboarding: {},
-          special: {
-            password: 'require',
-            confirmation: 'require',
-            verification: 'dont_ask',
-            group_membership: 'dont_ask',
-          },
+        authentication: {
+          permitted_by: 'users',
+          missing_user_attributes: [
+            'first_name',
+            'last_name',
+            'email',
+            'password',
+            'confirmation',
+          ],
         },
+        verification: false,
+        custom_fields: {},
+        onboarding: false,
+        group_membership: false,
       },
     },
   },
@@ -34,23 +34,17 @@ export const phaseResponse: AuthenticationRequirementsResponse = {
   data: {
     type: 'requirements',
     attributes: {
+      permitted: false,
+      disabled_reason: 'user_missing_requirements',
       requirements: {
-        permitted: false,
-        requirements: {
-          built_in: {
-            first_name: 'satisfied',
-            last_name: 'satisfied',
-            email: 'satisfied',
-          },
-          custom_fields: {},
-          onboarding: {},
-          special: {
-            password: 'satisfied',
-            confirmation: 'require',
-            verification: 'dont_ask',
-            group_membership: 'dont_ask',
-          },
+        authentication: {
+          permitted_by: 'users',
+          missing_user_attributes: ['confirmation'],
         },
+        verification: false,
+        custom_fields: {},
+        onboarding: false,
+        group_membership: false,
       },
     },
   },
@@ -60,23 +54,17 @@ export const ideaResponse: AuthenticationRequirementsResponse = {
   data: {
     type: 'requirements',
     attributes: {
+      permitted: true,
+      disabled_reason: null,
       requirements: {
-        permitted: true,
-        requirements: {
-          built_in: {
-            first_name: 'satisfied',
-            last_name: 'satisfied',
-            email: 'satisfied',
-          },
-          custom_fields: {},
-          onboarding: {},
-          special: {
-            password: 'satisfied',
-            confirmation: 'satisfied',
-            verification: 'dont_ask',
-            group_membership: 'dont_ask',
-          },
+        authentication: {
+          permitted_by: 'users',
+          missing_user_attributes: [],
         },
+        verification: false,
+        custom_fields: {},
+        onboarding: false,
+        group_membership: false,
       },
     },
   },
@@ -88,28 +76,25 @@ export const phasePath = `${API_PATH}/phases/456/permissions/posting_idea/requir
 export const ideaPath = `${API_PATH}/ideas/789/permissions/commenting_idea/requirements`;
 
 const endpoints = {
-  'GET permissions/visiting/requirements': rest.get(
-    globalPath,
-    (_req, res, ctx) => {
-      return res(ctx.status(200), ctx.json(initiativeResponse));
-    }
-  ),
-  'GET permissions/posting_initiative/requirements': rest.get(
+  'GET permissions/visiting/requirements': http.get(globalPath, () => {
+    return HttpResponse.json(initiativeResponse, { status: 200 });
+  }),
+  'GET permissions/posting_initiative/requirements': http.get(
     initiativesPath,
-    (_req, res, ctx) => {
-      return res(ctx.status(200), ctx.json(initiativeResponse));
+    () => {
+      return HttpResponse.json(initiativeResponse, { status: 200 });
     }
   ),
-  'GET phases/:phaseId/permissions/posting_idea/requirements': rest.get(
+  'GET phases/:phaseId/permissions/posting_idea/requirements': http.get(
     phasePath,
-    (_req, res, ctx) => {
-      return res(ctx.status(200), ctx.json(phaseResponse));
+    () => {
+      return HttpResponse.json(phaseResponse, { status: 200 });
     }
   ),
-  'GET ideas/:ideaId/permissions/commenting_idea/requirements': rest.get(
+  'GET ideas/:ideaId/permissions/commenting_idea/requirements': http.get(
     ideaPath,
-    (_req, res, ctx) => {
-      return res(ctx.status(200), ctx.json(ideaResponse));
+    () => {
+      return HttpResponse.json(ideaResponse, { status: 200 });
     }
   ),
 };

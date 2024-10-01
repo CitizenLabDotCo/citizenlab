@@ -5,9 +5,6 @@ import type { Meta, StoryObj } from '@storybook/react';
 const meta = {
   title: 'Components/CardButton',
   component: CardButton,
-  parameters: {
-    layout: 'centered',
-  },
 } satisfies Meta<typeof CardButton>;
 
 export default meta;

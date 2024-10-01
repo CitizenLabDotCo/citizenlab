@@ -9,8 +9,7 @@
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    # TODO: only allow known origins
-    origins '*'
+    origins Rails.application.config.allowed_cors_origins
 
     resource '*',
       headers: :any,

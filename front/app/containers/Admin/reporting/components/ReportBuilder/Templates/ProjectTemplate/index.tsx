@@ -26,7 +26,6 @@ import { FormatMessageValues } from 'utils/cl-intl/useIntl';
 import { withoutSpacing, getFullName } from 'utils/textUtils';
 
 import { SURVEY_QUESTION_INPUT_TYPES } from '../../constants';
-import aboutMessages from '../../Widgets/_deprecated/AboutReportWidget/messages';
 import DemographicsWidget from '../../Widgets/ChartWidgets/DemographicsWidget';
 import { INPUT_TYPES } from '../../Widgets/ChartWidgets/DemographicsWidget/Settings';
 import ParticipantsWidget from '../../Widgets/ChartWidgets/ParticipantsWidget';
@@ -116,12 +115,12 @@ const ProjectTemplateContent = ({ reportId, projectId }: Props) => {
       return withoutSpacing`
         <ul>
           <li>
-            <b>${formatMessage(aboutMessages.projectLabel)}</b>:
+            <b>${formatMessage(messages.projectLabel)}</b>:
             ${` ${projectTitle?.[locale] ?? ''}`}
           </li>
           ${period ? `<li>${period}</li>` : ''}
           <li>
-            <b>${formatMessage(aboutMessages.managerLabel)}</b>:
+            <b>${formatMessage(messages.managerLabel)}</b>:
             ${` ${projectModerator}`}
           </li>
         </ul>
@@ -221,11 +220,14 @@ const ProjectTemplateContent = ({ reportId, projectId }: Props) => {
       <WhiteSpace />
       <TwoColumn columnLayout="1-1">
         <Element id="left" is={Container} canvas>
+          {/* We don't filter demographics by start and end date,
+              because start and end date refer to the
+              registration date of the user, not the
+              participation date of the user. */}
           <DemographicsWidget
             projectId={projectId}
             customFieldId={genderField?.id}
             title={genderField?.attributes.title_multiloc}
-            {...projectPeriod}
           />
         </Element>
         <Element id="right" is={Container} canvas>
@@ -233,7 +235,6 @@ const ProjectTemplateContent = ({ reportId, projectId }: Props) => {
             projectId={projectId}
             customFieldId={ageField?.id}
             title={ageField?.attributes.title_multiloc}
-            {...projectPeriod}
           />
         </Element>
       </TwoColumn>

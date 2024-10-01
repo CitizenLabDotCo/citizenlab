@@ -31,6 +31,15 @@ const AdminTopicsIndexComponent = lazy(() => import('./topics/all'));
 const AdminTopicsNewComponent = lazy(() => import('./topics/New'));
 const AdminTopicsEditComponent = lazy(() => import('./topics/Edit'));
 
+// statuses
+const StatusesComponent = React.lazy(() => import('./statuses/containers/'));
+const NewStatusComponent = React.lazy(
+  () => import('./statuses/containers/new')
+);
+const StatusShowComponent = React.lazy(
+  () => import('./statuses/containers/edit')
+);
+
 export enum settingsRoutes {
   settings = 'settings',
   settingsDefault = '',
@@ -43,6 +52,10 @@ export enum settingsRoutes {
   topics = 'topics',
   edit = 'edit',
   topicEdit = ':topicId/edit',
+  ideation = 'ideation',
+  proposals = 'proposals',
+  statuses = 'statuses',
+  statusId = ':statusId',
 }
 
 export type settingRouteTypes =
@@ -56,6 +69,12 @@ export type settingRouteTypes =
   | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.topics}`>
   | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.topics}/${settingsRoutes.new}`>
   | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.topics}/${string}/${settingsRoutes.edit}`>
+  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.ideation}/${settingsRoutes.statuses}`>
+  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.ideation}/${settingsRoutes.statuses}/${settingsRoutes.new}`>
+  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.ideation}/${settingsRoutes.statuses}/${string}`>
+  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.proposals}/${settingsRoutes.statuses}`>
+  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.proposals}/${settingsRoutes.statuses}/${settingsRoutes.new}`>
+  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.proposals}/${settingsRoutes.statuses}/${string}`>
   | registrationRouteTypes;
 
 export default () => ({
@@ -148,6 +167,66 @@ export default () => ({
           element: (
             <PageLoading>
               <AdminTopicsEditComponent />
+            </PageLoading>
+          ),
+        },
+      ],
+    },
+    {
+      path: `${settingsRoutes.ideation}/${settingsRoutes.statuses}`,
+
+      children: [
+        {
+          index: true,
+          element: (
+            <PageLoading>
+              <StatusesComponent variant="ideation" />
+            </PageLoading>
+          ),
+        },
+        {
+          path: settingsRoutes.new,
+          element: (
+            <PageLoading>
+              <NewStatusComponent variant="ideation" />
+            </PageLoading>
+          ),
+        },
+        {
+          path: settingsRoutes.statusId,
+          element: (
+            <PageLoading>
+              <StatusShowComponent variant="ideation" />
+            </PageLoading>
+          ),
+        },
+      ],
+    },
+    {
+      path: `${settingsRoutes.proposals}/${settingsRoutes.statuses}`,
+
+      children: [
+        {
+          index: true,
+          element: (
+            <PageLoading>
+              <StatusesComponent variant="proposals" />
+            </PageLoading>
+          ),
+        },
+        {
+          path: settingsRoutes.new,
+          element: (
+            <PageLoading>
+              <NewStatusComponent variant="proposals" />
+            </PageLoading>
+          ),
+        },
+        {
+          path: settingsRoutes.statusId,
+          element: (
+            <PageLoading>
+              <StatusShowComponent variant="proposals" />
             </PageLoading>
           ),
         },

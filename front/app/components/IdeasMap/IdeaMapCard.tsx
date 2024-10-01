@@ -2,12 +2,11 @@ import React, { memo } from 'react';
 
 import {
   Icon,
-  useWindowSize,
   Box,
   defaultCardStyle,
   fontSizes,
   colors,
-  viewportWidths,
+  useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 import { darken } from 'polished';
 import styled from 'styled-components';
@@ -22,7 +21,6 @@ import CloseIconButton from 'components/UI/CloseIconButton';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
-import clHistory from 'utils/cl-router/history';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
 import FormattedBudget from 'utils/currency/FormattedBudget';
@@ -129,8 +127,7 @@ const IdeaMapCard = memo<Props>(
     const { data: appConfig } = useAppConfiguration();
     const { data: phase } = usePhase(phaseId || null);
     const { data: project } = useProjectById(projectId);
-    const { windowWidth } = useWindowSize();
-    const tablet = windowWidth <= viewportWidths.tablet;
+    const isMobileOrSmaller = useBreakpoint('phone');
     const phaseData = phase?.data;
 
     const votingMethodConfig = getVotingMethodConfig(
@@ -143,13 +140,10 @@ const IdeaMapCard = memo<Props>(
     const handleOnClick = (event: React.FormEvent) => {
       event?.preventDefault();
       updateSearchParams({ idea_map_id: idea.id });
-
-      if (tablet) {
-        clHistory.push(`/ideas/${idea.attributes.slug}?go_back=true`, {
-          scrollToTop: true,
-        });
-      } else {
-        onSelectIdea(idea.id);
+      onSelectIdea(idea.id);
+      const mapElement = document.getElementById('e2e-ideas-map');
+      if (mapElement) {
+        mapElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
     };
 
@@ -197,7 +191,7 @@ const IdeaMapCard = memo<Props>(
           tabIndex={0}
           id="e2e-idea-map-card"
         >
-          {tablet && (
+          {isMobileOrSmaller && onClose && (
             <StyledCloseIconButton
               iconWidth={'12px'}
               iconHeight={'12px'}

@@ -1,7 +1,36 @@
-const path = require('path');
-import type { StorybookConfig } from '@storybook/react-webpack5';
-const webpack = require('webpack');
-import mockModules from './mockModules';
+import { StorybookConfig } from '@storybook/react-vite';
+
+const APP_FOLDER_ALIASES = [
+  'api',
+  'assets',
+  'component-library',
+  'components',
+  'containers',
+  'context',
+  'global-styles',
+  'hooks',
+  'i18n',
+  'modules',
+  'resources',
+  'root',
+  'routes',
+  'translations',
+  'typings',
+  'utils'
+].map((folder) => ({
+  find: folder,
+  replacement: `${process.cwd()}/app/${folder}`
+}));
+
+const COMPONENT_LIBRARY_ALIAS = {
+  find: '@citizenlab/cl2-component-library',
+  replacement: `${process.cwd()}/app/component-library`
+};
+
+const CONSTANTS_ALIAS = {
+  find: 'app/containers/App/constants',
+  replacement: `${process.cwd()}/app/containers/App/constants.ts`
+}
 
 const config: StorybookConfig = {
   stories: ['../app/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
@@ -11,49 +40,33 @@ const config: StorybookConfig = {
     // This upgrade has breaking changes so those need to be dealt with first.
     // 'storybook-addon-react-router-v6',
     'storybook-react-intl',
+    '@storybook/addon-viewport'
   ],
-  framework: {
-    name: '@storybook/react-webpack5',
-    options: {},
+  framework: '@storybook/react-vite',
+  core: {
+    builder: '@storybook/builder-vite',
   },
-  docs: {
-    autodocs: 'tag',
-  },
+  docs: {},
   babel: async () => {
-    const opt = require('./.babelrc.json');
+    const opt = await import('./.babelrc.json');
     return opt;
   },
-  webpackFinal(config, _options) {
-    config.resolve = {
-      ...config.resolve,
-      modules: [
-        path.join(process.cwd(), 'app'),
-        ...(config?.resolve?.modules ?? []),
-      ],
-      alias: {
-        ...mockModules,
-        polished: path.resolve('./node_modules/polished'),
-        moment: path.resolve('./node_modules/moment'),
-        react: path.resolve('./node_modules/react'),
-        'styled-components': path.resolve('./node_modules/styled-components'),
-        'react-transition-group': path.resolve(
-          './node_modules/react-transition-group'
-        ),
-        '@citizenlab/cl2-component-library': path.resolve(
-          'app/component-library'
-        ),
-        ...(config?.resolve?.alias ?? {}),
+  async viteFinal(config) {
+    // Merge custom configuration into the default config
+    const { mergeConfig } = await import('vite');
+
+    return mergeConfig(config, {
+      resolve: {
+        alias: [
+          ...APP_FOLDER_ALIASES,
+          COMPONENT_LIBRARY_ALIAS,
+          CONSTANTS_ALIAS
+        ]
       },
-    };
-
-    config.plugins = [
-      ...(config?.plugins?.constructor === Array ? config.plugins : []),
-      new webpack.ProvidePlugin({
-        process: 'process/browser',
-      }),
-    ];
-
-    return config;
+      define: {
+        'process.env': process.env
+      }
+    });
   },
   staticDirs: ['./public', './static'],
 };

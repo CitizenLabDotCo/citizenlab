@@ -76,7 +76,7 @@ executors:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_HOST: localhost
-      - image: "postgis/postgis:13-3.4"
+      - image: "postgis/postgis:16-3.4"
         environment:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
@@ -111,7 +111,7 @@ commands:
       # version available in the source repositories is 1.3.3, which has been broken by
       # a change of SSL certificate. For more information, see:
       # https://github.com/lastpass/lastpass-cli/issues/653
-      - run: sudo .circleci/install_lpass.sh v1.3.5
+      - run: sudo .circleci/install_lpass.sh v1.5.0
       - run: echo $LASTPASS_PASSWORD | LPASS_DISABLE_PINENTRY=1 lpass login ${LASTPASS_EMAIL}
       - run: lpass show --notes 'citizenlab back-secret.env' > env_files/back-secret.env
       - run: lpass show --notes 'citizenlab front-secret.env' > env_files/front-secret.env
@@ -178,11 +178,6 @@ jobs:
     environment:
       RAILS_ENV: development
     steps:
-      # CVE-2015-9284 is "CSRF vulnerability in OmniAuth's request phase"
-      # Solution: upgrade to '>= 2.0.0'
-      # But we can't, due to unmaintained gems that don't work with Omniauth 2.0.
-      # See https://github.com/rubysec/bundler-audit
-      #
       # GHSA-xc9x-jj77-9p9j
       # Solutions: upgrade Nokogiri (requires newer Ruby) or
       # Compile and link Nokogiri against new libxml2
@@ -191,7 +186,7 @@ jobs:
       # CVE-2023-51774
       # It has been fixed by upgrading to json-jwt to 1.16.6, but the CVE data has not
       # been updated yet. So we can safely ignore it.
-      - run: bundle exec bundle-audit check --update --ignore CVE-2015-9284 GHSA-xc9x-jj77-9p9j CVE-2023-51774
+      - run: bundle exec bundle-audit check --update --ignore GHSA-xc9x-jj77-9p9j CVE-2023-51774
 
   back-license-check:
     resource_class: small
@@ -242,9 +237,8 @@ jobs:
       - wait-for-postgres
       - run: bin/rails db:create db:schema:load
       - run: |
-          TESTFILES=$(circleci tests glob "spec/**/*_spec.rb" "engines/*/*/spec/**/*_spec.rb" | circleci tests split  --split-by=timings)
-          echo $TESTFILES
-          bundle exec rspec --format documentation --profile --format RspecJunitFormatter -o spec/reports/rspec.xml -- ${TESTFILES}
+          circleci tests glob "spec/**/*_spec.rb" "engines/*/*/spec/**/*_spec.rb" \
+            | circleci tests run --command="xargs bundle exec rspec --format documentation --format RspecJunitFormatter -o spec/reports/rspec.xml" --verbose --split-by=timings
       - store_test_results:
           path: spec/reports
 
@@ -490,7 +484,9 @@ jobs:
             - /root/.npm
           key: v2-npm-cache-{{ checksum "package-lock.json" }}
       - run:
-          command: TEST_BUILD="true" npm run build
+          command: | 
+            TEST_BUILD="true" npm run build
+            npx --yes bundlesize2
           no_output_timeout: "30m"
 
   front-extract-intl:
@@ -551,9 +547,7 @@ jobs:
           name: Run tests with JUnit as reporter
           command: |
             cd citizenlab/front
-            TEST_FILES=$(circleci tests glob '**/*.test.{ts,tsx}' | circleci tests split --split-by=timings)
-            echo $TEST_FILES
-            npm run test:ci -- $TEST_FILES
+            npx jest --listTests | circleci tests run --command="JEST_JUNIT_ADD_FILE_ATTRIBUTE=true xargs npx jest --ci --reporters=default --reporters=jest-junit -w 3 --coverage --coverageReporters=text-summary --" --split-by=timings
           environment:
             JEST_JUNIT_OUTPUT_DIR: ./reports/
       - store_test_results:
@@ -648,7 +642,7 @@ jobs:
       - run:
           command: npm install lighthouse-ci@1.13.1
       - run:
-          command: npx lighthouse-ci@1.13.1 https://demo.stg.citizenlab.co --performance=3 --report=/tmp
+          command: npx lighthouse-ci@1.13.1 https://demo.stg.govocal.com --performance=3 --report=/tmp
       - store_artifacts:
           path: /tmp/report.html
           destination: lighthouse
@@ -678,59 +672,137 @@ jobs:
       - run: npm run chromatic
 
   # E2E TESTS
-  e2e-tests:
+  e2e-setup-db:
     docker:
-      - image: cimg/base:2021.03
-    parallelism: 3
+      - image: cimg/base:2024.08
     working_directory: ~/citizenlab
-    resource_class: medium+
+    resource_class: medium
+    parameters:
+      docker_layer_caching:
+        type: boolean
+        description: Because docker layer caching is expensive, we make it optional so the automated nightly e2e runs can opt-out from using it.
     steps:
       - shallow-clone
       - copy_secrets_from_lastpass
-      - setup_remote_docker
+      - setup_remote_docker:
+          docker_layer_caching: << parameters.docker_layer_caching >>
       - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
       - run: |
           cd e2e
-          # --parallel is weird https://github.com/docker/compose/issues/7901 but it seems to work.
-          # `docker compose` (w/o hythen) doesn't work atm "docker: 'compose' is not a docker command"
-          docker-compose build --parallel
+          docker compose run web bin/rails db:drop db:create db:schema:load
+          docker compose run web bin/rails "cl2_back:create_tenant[e2e.front,e2etests_template]"
+      - run: docker cp $(docker ps -lq):/cl2_back/public/uploads .
       - run: |
           cd e2e
-          docker-compose run web bin/rails db:drop db:create db:schema:load
-          docker-compose run web bin/rails "cl2_back:create_tenant[e2e.front,e2etests_template]"
+          docker cp -a $(docker compose ps -q postgres):/var/lib/postgresql/data ../postgresql-data
+      - run: |
+          docker tag e2e-web citizenlabdotco/back-e2e:$CIRCLE_SHA1
+          docker push citizenlabdotco/back-e2e:$CIRCLE_SHA1
+      - persist_to_workspace:
+          root: .
+          paths:
+            - postgresql-data
+            - uploads
+            - env_files
+
+  e2e-setup-front:
+    docker:
+      - image: cimg/base:2024.08
+    resource_class: large
+    parameters:
+      docker_layer_caching:
+        type: boolean
+        description: Because docker layer caching is expensive, we make it optional so the automated nightly e2e runs can opt-out from using it.
+    working_directory: ~/citizenlab
+    steps:
+      - shallow-clone
+      - copy_secrets_from_lastpass
+      - setup_remote_docker:
+          docker_layer_caching: << parameters.docker_layer_caching >>
+      - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
+      - run: |
+          cd e2e
+          docker compose run --build front npm run build:test
+      - run: docker cp $(docker ps -lq):/front/build .
+      - run: |
+          docker tag e2e-front citizenlabdotco/front-e2e:$CIRCLE_SHA1
+      - run: |
+          docker push citizenlabdotco/front-e2e:$CIRCLE_SHA1
+      - persist_to_workspace:
+          root: .
+          paths:
+            - build
+  e2e-tests:
+    docker:
+      - image: cimg/base:2024.08
+    parameters:
+      parallelism:
+        type: integer
+    parallelism: << parameters.parallelism >>
+    working_directory: ~/citizenlab
+    resource_class: medium
+    steps:
+      - shallow-clone
+      - setup_remote_docker
+      - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
+      - attach_workspace:
+          at: .
       - run:
+          name: Start pulling in the large cypress image in parallel to continuing with the rest of the setup
+          command: |
+              cd e2e
+              docker compose -f docker-compose.yml -f docker-compose.test.yml pull cypress
+          background: true
+      - run:
+          name: Pull all images and create the containers, but don't start them yet
           command: |
             cd e2e
-            docker-compose up
+            docker compose -f docker-compose.yml -f docker-compose.test.yml up --no-start
+      - run:
+          name: Copy the pre-built e2e tenant data and front-end bundle into the containers
+          command: |
+            cd e2e
+            WEB_CONTAINER_ID=$(docker compose ps -a -q web)
+            FRONT_CONTAINER_ID=$(docker compose ps -a -q front)
+            POSTGRES_CONTAINER_ID=$(docker compose ps -a -q postgres)
+            docker cp ../uploads/. $WEB_CONTAINER_ID:/cl2_back/public/uploads
+            docker cp ../build $FRONT_CONTAINER_ID:/front/build
+            docker cp ../postgresql-data/. $POSTGRES_CONTAINER_ID:/var/lib/postgresql/data
+      - run:
+          name: Start the containers, block on them becoming healthy
+          command: |
+            cd e2e
+            docker compose -f docker-compose.yml -f docker-compose.test.yml up -d --wait
+      - run:
+          name: Output the container logs
+          command: |
+              cd e2e
+              docker compose -f docker-compose.yml -f docker-compose.test.yml logs -f
           background: true
-      # Wait until build is finished.
-      - run: |
-          sleep 10 # if we run `docker-compose run` immediately, it fails with "network is ambiguous (2 matches found on name)"
-          cd e2e
-          # we cannot access localhost:3000, so we call it from the container
-          # https://discuss.circleci.com/t/cannot-communicate-with-docker-container/27253/2
-          docker-compose run front curl --retry 2 --retry-delay 5 --retry-connrefused -v http://e2e.front:3000
-      - run: |
-          cd front
-          TESTFILES=$(circleci tests glob "cypress/e2e/**/*.cy.ts" | circleci tests split  --split-by=timings)
-          COMMA_SEPARATED_TESTFILES=$(echo $TESTFILES | sed 's/ /,/g')
-          echo $COMMA_SEPARATED_TESTFILES
-          cd ../e2e
-          docker-compose run --name cypress_run front npm run cypress:run -- --config baseUrl=http://e2e.front:3000 --spec ${COMMA_SEPARATED_TESTFILES}
-      # Uncomment to save XML reports
-      # docker-compose run --name cypress_run front npm run cypress:run -- --reporter junit --reporter-options "mochaFile=reports/cypress.xml,toConsole=true" --config baseUrl=http://e2e.front:3000 --spec ${COMMA_SEPARATED_TESTFILES}
-      # We run cypress tests in container, so we need to copy the results out.
-      # ToDo: fix it. Reporting doesn't work atm.
-      # - run: |
-      #     mkdir -p front/reports
-      #     docker cp cypress_run:/front/reports/cypress.xml front/reports/cypress.xml
+      - run:
+          name: Run cypress
+          command: |
+            cd front
+            TESTFILES=$(circleci tests glob "cypress/e2e/**/*.cy.ts" | circleci tests split --split-by=timings)
+            COMMA_SEPARATED_TESTFILES=$(echo $TESTFILES | sed 's/ /,/g')
+            echo $COMMA_SEPARATED_TESTFILES
+            cd ../e2e
+            docker compose -f docker-compose.yml -f docker-compose.test.yml --profile cypress run --name cypress_run \
+              cypress npm run cypress:run -- \
+              --reporter cypress-circleci-reporter \
+              --config baseUrl=http://e2e.front:3000 \
+              --spec ${COMMA_SEPARATED_TESTFILES}
+      - run:
+          command: |
+            docker cp cypress_run:/front/test_results .
+          when: always
       - run:
           command: docker cp cypress_run:/front/cypress/screenshots .
           # If `when: always`, it fails on success with
           # Error: No such container:path: cypress_run:/front/cypress/screenshots
           when: on_fail
       - store_test_results:
-          path: front/reports
+          path: test_results
       - store_artifacts:
           path: screenshots
 
@@ -825,6 +897,10 @@ workflows:
             - citizenlab-ee-environment
           requires:
             - back-build-docker-image
+          filters:
+            branches:
+              only:
+                - master
       - back-trigger-deploy:
           context: circleci-api-token
           requires:
@@ -887,7 +963,7 @@ workflows:
             branches:
               only: production
       - back-deploy-to-swarm:
-          name: Deploy to Europe
+          name: Deploy to Europe (Frankfurt)
           requires:
             - back-push-deployment-docker-image
           filters:
@@ -899,6 +975,32 @@ workflows:
           stack_name: cl2-prd-bnlx-stack
           env_file: ".env-web"
           cluster_name: "eu"
+      - back-deploy-to-swarm:
+          name: Deploy to Europe (Paris)
+          requires:
+            - back-push-deployment-docker-image
+          filters:
+            branches:
+              only:
+                - production
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_PARIS
+          compose_file: docker-compose-production.yml
+          stack_name: cl2
+          env_file: ".env-web"
+          cluster_name: "paris"
+      - back-deploy-to-swarm:
+          name: Deploy to Europe (Stockholm)
+          requires:
+            - back-push-deployment-docker-image
+          filters:
+            branches:
+              only:
+                - production
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_STOCKHOLM
+          compose_file: docker-compose-production.yml
+          stack_name: cl2
+          env_file: ".env-web"
+          cluster_name: "stockholm"
       - back-deploy-to-swarm:
           name: Deploy to Canada
           requires:
@@ -1050,10 +1152,23 @@ workflows:
   manually-e2e-tests:
     when: << pipeline.parameters.e2e >>
     jobs:
-      - e2e-tests:
+      - e2e-setup-db:
+          docker_layer_caching: true
           context:
             - docker-hub-access
             - lastpass
+      - e2e-setup-front:
+          docker_layer_caching: true
+          context:
+            - docker-hub-access
+            - lastpass
+      - e2e-tests:
+          parallelism: 16
+          context:
+            - docker-hub-access
+          requires:
+            - e2e-setup-db
+            - e2e-setup-front
 
   nightly-e2e-tests:
     triggers:
@@ -1064,11 +1179,24 @@ workflows:
               only:
                 - master
     jobs:
+      - e2e-setup-db:
+          docker_layer_caching: false
+          context:
+            - docker-hub-access
+            - lastpass
+      - e2e-setup-front:
+          docker_layer_caching: false
+          context:
+            - docker-hub-access
+            - lastpass
       - e2e-tests:
+          parallelism: 6
+          requires:
+            - e2e-setup-db
+            - e2e-setup-front
           context:
             - docker-hub-access
             - slack-dev-notifications-e2e
-            - lastpass
           post-steps:
             - slack/notify:
                 event: pass
@@ -1088,13 +1216,31 @@ workflows:
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
       - back-generate-tenant-templates:
-          name: "Europe (mainland)"
+          name: "Europe (Frankfurt)"
           context:
             - docker-hub-access
             - citizenlab-ee-environment
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
           ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_EUROPE
+          env_file: ".env-web"
+      - back-generate-tenant-templates:
+          name: "Europe (Paris)"
+          context:
+            - docker-hub-access
+            - citizenlab-ee-environment
+            - slack-dev-notifications-tenant-templates
+          <<: *slack-fail-post-step-templates
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_PARIS
+          env_file: ".env-web"
+      - back-generate-tenant-templates:
+          name: "Europe (Stockholm)"
+          context:
+            - docker-hub-access
+            - citizenlab-ee-environment
+            - slack-dev-notifications-tenant-templates
+          <<: *slack-fail-post-step-templates
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_STOCKHOLM
           env_file: ".env-web"
       - back-generate-tenant-templates:
           name: "South America"
@@ -1140,7 +1286,9 @@ workflows:
           <<: *slack-fail-post-step-templates
           requires:
             - back-build-docker-image
-            - "Europe (mainland)"
+            - "Europe (Frankfurt)"
+            - "Europe (Paris)"
+            - "Europe (Stockholm)"
             - "South America"
             - "Canada"
             - "US West"
@@ -1179,13 +1327,31 @@ workflows:
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
       - back-generate-tenant-templates:
-          name: "Europe (mainland)"
+          name: "Europe (Frankfurt)"
           context:
             - docker-hub-access
             - citizenlab-ee-environment
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
           ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_EUROPE
+          env_file: ".env-web"
+      - back-generate-tenant-templates:
+          name: "Europe (Paris)"
+          context:
+            - docker-hub-access
+            - citizenlab-ee-environment
+            - slack-dev-notifications-tenant-templates
+          <<: *slack-fail-post-step-templates
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_PARIS
+          env_file: ".env-web"
+      - back-generate-tenant-templates:
+          name: "Europe (Stockholm)"
+          context:
+            - docker-hub-access
+            - citizenlab-ee-environment
+            - slack-dev-notifications-tenant-templates
+          <<: *slack-fail-post-step-templates
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_STOCKHOLM
           env_file: ".env-web"
       - back-generate-tenant-templates:
           name: "South America"
@@ -1231,7 +1397,9 @@ workflows:
           <<: *slack-fail-post-step-templates
           requires:
             - back-build-docker-image
-            - "Europe (mainland)"
+            - "Europe (Frankfurt)"
+            - "Europe (Paris)"
+            - "Europe (Stockholm)"
             - "South America"
             - "Canada"
             - "US West"
@@ -1261,6 +1429,20 @@ workflows:
               only:
                 - production
     jobs:
+      - check-for-inconsistent-data:
+          <<: *slack-fail-post-step-inconsistent-data
+          name: "Europe (Paris)"
+          context:
+            - slack-dev-notifications-inconsistent-data
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_PARIS
+          env_file: ".env-web"
+      - check-for-inconsistent-data:
+          <<: *slack-fail-post-step-inconsistent-data
+          name: "Europe (Stockholm)"
+          context:
+            - slack-dev-notifications-inconsistent-data
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_STOCKHOLM
+          env_file: ".env-web"
       - check-for-inconsistent-data:
           <<: *slack-fail-post-step-inconsistent-data
           name: "South America"

@@ -90,7 +90,7 @@ const AdminProjectEventsIndex = () => {
         </SectionDescription>
         <ListWrapper className="e2e-projects-events">
           <AddButton
-            buttonStyle="cl-blue"
+            buttonStyle="admin-dark"
             icon="plus-circle"
             linkTo={`/admin/projects/${projectId}/events/new`}
           >
@@ -179,7 +179,7 @@ const AdminProjectEventsIndex = () => {
                         <FormattedMessage {...messages.deleteButtonLabel} />
                       </Button>
                       <Button
-                        buttonStyle="secondary"
+                        buttonStyle="secondary-outlined"
                         disabled={event.attributes.attendees_count === 0}
                         icon="download"
                         onClick={() => handleAttendeesExport(event)}
@@ -187,7 +187,7 @@ const AdminProjectEventsIndex = () => {
                         <FormattedMessage {...messages.exportAttendees} />
                       </Button>
                       <Button
-                        buttonStyle="secondary"
+                        buttonStyle="secondary-outlined"
                         icon="edit"
                         linkTo={`/admin/projects/${projectId}/events/${event.id}`}
                       >

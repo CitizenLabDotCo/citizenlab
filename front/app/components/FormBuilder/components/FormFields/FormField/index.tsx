@@ -50,7 +50,7 @@ type Props = {
   selectedFieldId?: string;
   builderConfig: FormBuilderConfig;
   fieldNumbers: Record<string, number>;
-  closeSettings: () => void;
+  closeSettings: (triggerAutosave?: boolean) => void;
 };
 
 export const FormField = ({
@@ -184,7 +184,7 @@ export const FormField = ({
         remove(fieldIndex);
       }
     }
-    closeSettings();
+    closeSettings(false);
     trigger();
   };
 
@@ -371,7 +371,11 @@ export const FormField = ({
             >
               {formatMessage(messages.confirmDeleteFieldWithLogicButtonText)}
             </Button>
-            <Button buttonStyle="secondary" width="auto" onClick={closeModal}>
+            <Button
+              buttonStyle="secondary-outlined"
+              width="auto"
+              onClick={closeModal}
+            >
               {formatMessage(messages.cancelDeleteButtonText)}
             </Button>
           </Box>

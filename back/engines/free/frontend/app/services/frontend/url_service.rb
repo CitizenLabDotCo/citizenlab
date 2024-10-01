@@ -79,29 +79,15 @@ module Frontend
       locale ? "#{url}/#{locale.locale_sym}" : url
     end
 
-    def verification_url(options = {})
-      pathname = options[:pathname]
+    def sso_return_url(options = {})
+      pathname = options[:pathname] || '/'
+      pathname = strip_existing_locale_from_path(pathname) if options[:locale]
       "#{home_url(options)}#{pathname}"
     end
 
-    def signin_success_url(options = {})
-      home_url(options)
-    end
-
-    def signup_success_url(options = {})
-      "#{home_url(options)}/complete-signup"
-    end
-
-    def signin_failure_url(options = {})
-      "#{home_url(options)}/authentication-error"
-    end
-
-    def verification_success_url(options = {})
-      verification_url(options)
-    end
-
-    def verification_failure_url(options = {})
-      verification_url(options)
+    def verification_return_url(options = {})
+      pathname = options[:pathname]
+      "#{home_url(options)}#{pathname}"
     end
 
     def invite_url(token, options = {})
@@ -132,7 +118,7 @@ module Frontend
 
     def unfollow_url(follower)
       locale = follower.user ? Locale.new(follower.user.locale) : nil
-      url = model_to_url(follower.followable, locale: (follower.user.presence && locale))
+      url = model_to_url(follower.followable, locale: follower.user.presence && locale)
       url || "#{home_url(locale: locale)}/profile/#{follower.user.slug}/following"
     end
 
@@ -154,11 +140,11 @@ module Frontend
 
     def admin_project_url(project_id, configuration = app_config_instance)
       project = Project.find(project_id)
-      last_phase_id = project ? TimelineService.new.current_or_last_can_contain_ideas_phase(project)&.id : nil
+      last_phase_id = project ? TimelineService.new.current_or_backup_transitive_phase(project)&.id : nil
       if last_phase_id
         "#{configuration.base_frontend_uri}/admin/projects/#{project_id}/phases/#{last_phase_id}/ideas"
       else
-        "#{configuration.base_frontend_uri}/admin/projects/#{project_id}/setup"
+        "#{configuration.base_frontend_uri}/admin/projects/#{project_id}/settings"
       end
     end
 
@@ -183,6 +169,11 @@ module Frontend
         ActiveSupport::Deprecation.warn(':tenant options is deprecated, use :app_configuration instead.') # MT_TODO to be removed
       end
       options[:app_configuration] || tenant&.configuration || app_config_instance # TODO: OS remove: tenant&.configuration
+    end
+
+    def strip_existing_locale_from_path(pathname)
+      # NOTE: Assumes the path is always passed with a leading slash & locale is always the first segment
+      pathname.gsub(%r{^/([a-z]{2}(-[A-Z]{2})?)(/(.*))}, '\3')
     end
 
     # Memoized database query

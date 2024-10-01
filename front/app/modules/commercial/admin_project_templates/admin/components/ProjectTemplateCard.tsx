@@ -152,7 +152,7 @@ const ProjectTemplateCard = memo<Props>(
         <Buttons>
           <UseTemplateButton
             onClick={onOpenUseTemplateModal}
-            buttonStyle="secondary"
+            buttonStyle="secondary-outlined"
             fullWidth={true}
             bgColor={darken(0.05, colors.grey200)}
             bgHoverColor={darken(0.1, colors.grey200)}

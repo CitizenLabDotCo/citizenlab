@@ -1,5 +1,5 @@
 import { renderHook } from '@testing-library/react-hooks';
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
@@ -15,8 +15,8 @@ const params: NavbarParameters = {
 };
 
 const server = setupServer(
-  rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: navbarItemsData }));
+  http.get(apiPath, () => {
+    return HttpResponse.json({ data: navbarItemsData }, { status: 200 });
   })
 );
 
@@ -39,8 +39,8 @@ describe('useNavbarItems', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 
@@ -56,8 +56,8 @@ describe('useNavbarItems', () => {
 
   it('calls correct endpoint for removed default items', async () => {
     server.use(
-      rest.get(`${apiPath}/removed_default_items`, (_req, res, ctx) => {
-        return res(ctx.status(200), ctx.json({ data: navbarItemsData }));
+      http.get(`${apiPath}/removed_default_items`, () => {
+        return HttpResponse.json({ data: navbarItemsData }, { status: 200 });
       })
     );
     const { result, waitFor } = renderHook(

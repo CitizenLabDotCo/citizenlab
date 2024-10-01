@@ -1,7 +1,10 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  // Cookie policy
+  headTitle: {
+    id: 'app.containers.AccessibilityStatement.headTitle',
+    defaultMessage: 'Accessibility Statement | {orgName}',
+  },
   title: {
     id: 'app.containers.AccessibilityStatement.title',
     defaultMessage: 'Accessibility Statement',
@@ -90,8 +93,8 @@ export default defineMessages({
     id: 'app.containers.AccessibilityStatement.postalAddress',
     defaultMessage: 'Postal address:',
   },
-  citizenLabAddress2022: {
-    id: 'app.containers.AccessibilityStatement.citizenLabAddress2022',
+  govocalAddress2022: {
+    id: 'app.containers.AccessibilityStatement.govocalAddress2022',
     defaultMessage: 'Boulevard Pachéco 34, 1000 Brussels, Belgium',
   },
   responsiveness: {
@@ -102,10 +105,10 @@ export default defineMessages({
     id: 'app.containers.AccessibilityStatement.publicationDate',
     defaultMessage: 'Publication date',
   },
-  publicationDateIntro: {
-    id: 'app.containers.AccessibilityStatement.publicationDateIntro',
+  publicationDate2024: {
+    id: 'app.containers.AccessibilityStatement.publicationDate2024',
     defaultMessage:
-      'This accessibility statement was published on June 30, 2022.',
+      'This accessibility statement was published on August 21, 2024.',
   },
   applicability: {
     id: 'app.containers.AccessibilityStatement.applicability',
@@ -137,14 +140,29 @@ export default defineMessages({
     defaultMessage:
       'Survey tools that are available for use on this platform are third-party software and may not be accessible.',
   },
-  mapviewIdeas: {
-    id: 'app.containers.AccessibilityStatement.mapviewIdeas',
-    defaultMessage: 'Map view of inputs',
+  mapping: {
+    id: 'app.containers.AccessibilityStatement.mapping',
+    defaultMessage: 'Mapping',
   },
-  mapviewIdeasException: {
-    id: 'app.containers.AccessibilityStatement.mapviewIdeasException',
+  mapping_1: {
+    id: 'app.containers.AccessibilityStatement.mapping_1',
     defaultMessage:
-      'Projects have the option to display their inputs in a map view, which is not accessible. There is, however, always an alternative list view available, which is accessible.',
+      'Maps on the platform partially meet accessibility standards. Map extent, zoom, and UI widgets can be controlled using a keyboard when viewing maps. Admins can also configure the style of map layers in the back office, or using the Esri integration, to create more accessible colour palettes and symbology. Using different line or polygon styles (e.g. dashed lines) will also help differentiate map layers wherever possible, and although such styling cannot be configured within our platform at this time, it can be configured if using maps with the Esri integration.',
+  },
+  mapping_2: {
+    id: 'app.containers.AccessibilityStatement.mapping_2',
+    defaultMessage:
+      'Maps in the platform are not fully accessible as they do not audibly present basemaps, map layers, or trends in the data to users utilizing screen readers. Fully accessible maps would need to audibly present the map layers and describe any relevant trends in the data. Furthermore, line and polygon map drawing in surveys is not accessible as shapes cannot be drawn using a keyboard. Alternative input methods are not available at this time due to technical complexity.',
+  },
+  mapping_3: {
+    id: 'app.containers.AccessibilityStatement.mapping_3',
+    defaultMessage:
+      'To make line and polygon map drawing more accessible, we recommend including an introduction or explanation in the survey question or page description of what the map is showing and any relevant trends. Furthermore, a short or long answer text question could be provided so respondents can describe their answer in plain terms if needed (rather than clicking on the map). We also recommend including contact information for the project manager so respondents who cannot fill in a map question can request an alternative method to answer the question (E.g. Video meeting).',
+  },
+  mapping_4: {
+    id: 'app.containers.AccessibilityStatement.mapping_4',
+    defaultMessage:
+      'For Ideation projects and proposals, there is an option to display inputs in a map view, which is not accessible. However, for these methods there is an alternative list view of inputs available, which is accessible.',
   },
   screenReaderSearchResults: {
     id: 'app.containers.AccessibilityStatement.screenReaderSearchResults',

@@ -1,28 +1,25 @@
 import React, { useCallback, useState } from 'react';
 
 // jsonforms
-import {
-  JsonSchema7,
-  UISchemaElement,
-  Translator,
-  Layout,
-} from '@jsonforms/core';
+import { JsonSchema7, Translator, Layout } from '@jsonforms/core';
 import { JsonForms } from '@jsonforms/react';
-import Ajv, { ErrorObject } from 'ajv';
+import { ErrorObject } from 'ajv';
 import { CLErrors, SupportedLocale } from 'typings';
 
 import { parseRequiredMultilocsSchema } from 'components/Form/parseRequiredMultilocs';
+import { customAjv } from 'components/Form/utils';
 
 import { useIntl } from 'utils/cl-intl';
 import { getDefaultAjvErrorMessage } from 'utils/errorUtils';
 
 import { APIErrorsContext, FormContext } from '../../contexts';
 import { ApiErrorGetter, AjvErrorGetter, FormData } from '../../typings';
+import { ExtendedUISchema } from '../Controls/visibilityUtils';
 
+import { ErrorToReadProvider } from './ErrorToReadContext';
 import { selectRenderers } from './formConfig';
 
 interface Props {
-  ajv: Ajv;
   data: FormData;
   apiErrors?: CLErrors;
   showAllErrors: boolean;
@@ -35,12 +32,10 @@ interface Props {
   config?: 'default' | 'input' | 'survey';
   locale: SupportedLocale;
   onChange: (formData: FormData) => void;
-  setFormData?: (formData: FormData) => void;
   onSubmit?: (formData: FormData) => Promise<any>;
 }
 
 const Fields = ({
-  ajv,
   data,
   apiErrors,
   showAllErrors,
@@ -53,7 +48,6 @@ const Fields = ({
   config,
   locale,
   onChange,
-  setFormData,
   onSubmit,
 }: Props) => {
   const { formatMessage } = useIntl();
@@ -71,7 +65,7 @@ const Fields = ({
     (
       error: ErrorObject,
       _translate: Translator,
-      uischema?: UISchemaElement
+      uischema?: ExtendedUISchema
     ) => {
       const message =
         getAjvErrorMessage?.(error, uischema) ||
@@ -80,7 +74,10 @@ const Fields = ({
           format: error?.parentSchema?.format,
           type: error?.parentSchema?.type,
         });
-      return formatMessage(message, error.params);
+      return formatMessage(message, {
+        ...error.params,
+        fieldName: uischema?.label || '',
+      });
     },
     [formatMessage, getAjvErrorMessage]
   );
@@ -96,24 +93,26 @@ const Fields = ({
           getApiErrorMessage: safeApiErrorMessages(),
           onSubmit,
           setShowAllErrors,
-          setFormData,
+          setFormData: onChange,
           locale,
         }}
       >
-        <JsonForms
-          schema={parsedSchema}
-          uischema={uiSchema}
-          data={data}
-          renderers={renderers}
-          onChange={({ data }) => {
-            onChange(data);
-          }}
-          validationMode="ValidateAndShow"
-          ajv={ajv}
-          i18n={{
-            translateError,
-          }}
-        />
+        <ErrorToReadProvider>
+          <JsonForms
+            schema={parsedSchema}
+            uischema={uiSchema}
+            data={data}
+            renderers={renderers}
+            onChange={({ data }) => {
+              onChange(data);
+            }}
+            validationMode="ValidateAndShow"
+            ajv={customAjv}
+            i18n={{
+              translateError,
+            }}
+          />
+        </ErrorToReadProvider>
       </FormContext.Provider>
     </APIErrorsContext.Provider>
   );

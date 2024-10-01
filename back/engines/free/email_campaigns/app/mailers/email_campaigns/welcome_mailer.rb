@@ -4,6 +4,10 @@ module EmailCampaigns
   class WelcomeMailer < ApplicationMailer
     protected
 
+    def preheader
+      format_message('preheader', values: { organizationName: organization_name })
+    end
+
     def subject
       format_message('subject', values: { organizationName: organization_name })
     end
@@ -16,10 +20,6 @@ module EmailCampaigns
 
     def header_message
       format_message('message_welcome', values: { organizationName: organization_name })
-    end
-
-    def show_unsubscribe_link?
-      false
     end
   end
 end

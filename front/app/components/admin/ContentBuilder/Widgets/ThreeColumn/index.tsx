@@ -21,7 +21,7 @@ export const ThreeColumnWrapper = ({
   const isSmallerThanTablet = useBreakpoint('tablet');
   return (
     <Box
-      id="e2e-three-column"
+      className="e2e-three-column"
       flexDirection={isSmallerThanTablet ? 'column' : 'row'}
       minHeight="40px"
       display="flex"

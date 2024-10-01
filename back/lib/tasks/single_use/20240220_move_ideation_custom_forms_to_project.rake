@@ -5,7 +5,7 @@ namespace :single_use do
   # project. The ideation custom forms should always be associated with a project unlike
   # custom forms that implement native surveys.
   task move_ideation_custom_forms_to_project: :environment do
-    Tenant.switch_each do |tenant|
+    Tenant.safe_switch_each do |tenant|
       custom_forms = CustomForm.where(participation_context_type: 'Phase')
       ActiveRecord::Associations::Preloader.new(
         records: custom_forms,

@@ -14,21 +14,46 @@ if ! git clone --depth 1 --branch "$version" "$repository" lastpass-cli; then
     exit 1
 fi
 
+
+if [ ! -f /etc/lsb-release ]; then
+  echo "lsb-release missing, unlikely to be a Ubuntu system"
+  exit 1
+fi
+. /etc/lsb-release
+if [ "$DISTRIB_RELEASE" == "22.04" ]; then
 # Install the dependencies
-apt-get update
-apt-get --no-install-recommends -yqq install \
-  bash-completion                            \
-  build-essential                            \
-  cmake                                      \
-  libcurl4                                   \
-  libcurl4-openssl-dev                       \
-  libssl-dev                                 \
-  libxml2                                    \
-  libxml2-dev                                \
-  libssl1.1                                  \
-  pkg-config                                 \
-  ca-certificates                            \
-  xclip
+  apt-get update
+  apt-get --no-install-recommends -yqq install \
+    bash-completion                            \
+    build-essential                            \
+    cmake                                      \
+    libcurl4                                   \
+    libcurl4-openssl-dev                       \
+    libssl-dev                                 \
+    libxml2                                    \
+    libxml2-dev                                \
+    pkg-config                                 \
+    ca-certificates                            \
+    xclip
+fi
+
+if [ "$DISTRIB_RELEASE" != "22.04" ]; then
+# Install the dependencies
+  apt-get update
+  apt-get --no-install-recommends -yqq install \
+    bash-completion                            \
+    build-essential                            \
+    cmake                                      \
+    libcurl4                                   \
+    libcurl4-openssl-dev                       \
+    libssl-dev                                 \
+    libxml2                                    \
+    libxml2-dev                                \
+    libssl1.1                                  \
+    pkg-config                                 \
+    ca-certificates                            \
+    xclip
+fi
 
 # Build and install the LastPass CLI
 cd lastpass-cli

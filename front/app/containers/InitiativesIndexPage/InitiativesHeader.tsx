@@ -13,7 +13,8 @@ import T from 'components/T';
 import Warning from 'components/UI/Warning';
 
 import { ScreenReaderOnly } from 'utils/a11y';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
 
 import InitiativeInfoContent from './InitiativeInfoContent';
@@ -91,6 +92,7 @@ export interface Props {
 const InitiativesHeader = ({ className }: Props) => {
   const { data: appConfiguration } = useAppConfiguration();
   const postingPermission = useInitiativesPermissions('posting_initiative');
+  const { formatMessage } = useIntl();
   if (isNilOrError(appConfiguration) || isNilOrError(postingPermission)) {
     return null;
   }
@@ -144,7 +146,16 @@ const InitiativesHeader = ({ className }: Props) => {
           <InitiativeButton location="initiatives_header" />
         ) : (
           <Warning>
-            <FormattedMessage {...messages.newProposalsNotPermitted} />
+            <FormattedMessage
+              {...messages.newProposalsNotPermitted}
+              values={{
+                link: (
+                  <Link to="/pages/faq" target="_blank">
+                    {formatMessage(messages.guidelinesLinkText)}
+                  </Link>
+                ),
+              }}
+            />
           </Warning>
         )}
       </Content>

@@ -10,6 +10,9 @@ export const permissionsData: IPermissionData[] = [
       global_custom_fields: false,
       created_at: '2023-08-01T14:22:08.000Z',
       updated_at: '2023-09-14T08:55:27.098Z',
+      verification_enabled: false,
+      verification_expiry: null,
+      access_denied_explanation_multiloc: {},
     },
     relationships: {
       permission_scope: {
@@ -29,6 +32,9 @@ export const permissionsData: IPermissionData[] = [
       global_custom_fields: true,
       created_at: '2023-08-01T14:22:08.000Z',
       updated_at: '2023-08-01T14:22:08.000Z',
+      verification_enabled: false,
+      verification_expiry: null,
+      access_denied_explanation_multiloc: {},
     },
     relationships: {
       permission_scope: {

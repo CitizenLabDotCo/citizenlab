@@ -315,9 +315,7 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
                   ]
                 : []),
               ...projectFolders.data
-                .filter((folder) =>
-                  userModeratesFolder(authUser.data, folder.id)
-                )
+                .filter((folder) => userModeratesFolder(authUser, folder.id))
                 .map((folder) => {
                   return {
                     value: folder.id,
@@ -343,7 +341,7 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
     );
 
     const isSelectDisabled = !!(
-      isProjectFolderModerator(authUser.data) &&
+      isProjectFolderModerator(authUser) &&
       folderOptions &&
       folderOptions.length === 1
     );
@@ -365,7 +363,7 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
             {!success ? (
               <>
                 <CreateProjectButton
-                  buttonStyle="secondary"
+                  buttonStyle="secondary-outlined"
                   onClick={onCreateProject}
                   processing={processing}
                 >
@@ -381,7 +379,7 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
                 )}
               </>
             ) : (
-              <CloseButton buttonStyle="secondary" onClick={onClose}>
+              <CloseButton buttonStyle="secondary-outlined" onClick={onClose}>
                 <FormattedMessage {...messages.close} />
               </CloseButton>
             )}

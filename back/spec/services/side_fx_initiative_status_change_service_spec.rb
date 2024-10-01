@@ -2,6 +2,7 @@
 
 require 'rails_helper'
 
+# TODO: cleanup-after-proposals-migration
 describe SideFxInitiativeStatusChangeService do
   let(:service) { described_class.new }
   let(:user) { create(:user) }

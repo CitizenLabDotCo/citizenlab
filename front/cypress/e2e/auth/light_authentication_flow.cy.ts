@@ -32,16 +32,12 @@ describe('Light authentication flow', () => {
       .then((phase) => {
         phaseId = phase.body.data.id;
 
-        cy.intercept(`**/phases/${phaseId}/permissions/posting_idea`).as(
-          'setPermissionRequest'
-        );
-
-        cy.setAdminLoginCookie();
-        cy.visit(`/admin/projects/${projectId}/settings/access-rights`);
-        cy.get('#e2e-granular-permissions-phase-accordion').click();
-        cy.get('#e2e-permission-email-confirmed-users').click();
-        cy.wait('@setPermissionRequest').then(() => {
-          cy.logout();
+        cy.apiSetPhasePermission({
+          phaseId,
+          permissionBody: {
+            permitted_by: 'everyone_confirmed_email',
+          },
+          action: 'posting_idea',
         });
       });
   });
@@ -49,8 +45,8 @@ describe('Light authentication flow', () => {
   it('works when signing up with new email', () => {
     cy.visit(`/projects/${projectTitle}`);
 
-    cy.get('#e2e-idea-button').should('exist');
-    cy.get('#e2e-idea-button').click({ force: true });
+    cy.get('.e2e-idea-button').first().find('button').should('exist');
+    cy.get('.e2e-idea-button').first().find('button').click({ force: true });
 
     cy.get('input#email').focus().type(randomEmail());
     cy.get('#e2e-light-flow-email-submit').click();
@@ -74,10 +70,10 @@ describe('Light authentication flow', () => {
   it('works when signing up with existing normal user', () => {
     cy.visit(`/projects/${projectTitle}`);
 
-    cy.get('#e2e-idea-button').should('exist');
-    cy.get('#e2e-idea-button').click({ force: true });
+    cy.get('.e2e-idea-button').first().find('button').should('exist');
+    cy.get('.e2e-idea-button').first().find('button').click({ force: true });
 
-    cy.get('input#email').focus().type('admin@citizenlab.co');
+    cy.get('input#email').focus().type('admin@govocal.com');
     cy.get('#e2e-light-flow-email-submit').click();
 
     cy.get('input#password').type('democracy2.0');

@@ -13,5 +13,10 @@ module Verification
         end
       end
     end
+
+    # Method metadata
+    attribute :method_metadata do |record|
+      VerificationService.new.method_metadata(record)
+    end
   end
 end

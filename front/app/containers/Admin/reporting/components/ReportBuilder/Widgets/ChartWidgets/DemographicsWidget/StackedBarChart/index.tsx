@@ -61,7 +61,7 @@ const StackedBarChart = ({ response }: Props) => {
         stackedBarHoverIndex,
         data,
         columns,
-        Object.values(data[0]),
+        percentages,
         labels
       )}
       legend={{

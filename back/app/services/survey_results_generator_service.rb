@@ -26,6 +26,15 @@ class SurveyResultsGeneratorService < FieldVisitorService
     end
   end
 
+  def visit_number(field)
+    responses = base_responses(field)
+    response_count = responses.size
+
+    core_field_attributes(field, response_count).merge({
+      numberResponses: responses
+    })
+  end
+
   def visit_select(field)
     visit_select_base(field)
   end
@@ -68,18 +77,20 @@ class SurveyResultsGeneratorService < FieldVisitorService
     })
   end
 
-  def visit_point(field)
-    responses = inputs
-      .select("custom_field_values->'#{field.key}' as value")
-      .where("custom_field_values->'#{field.key}' IS NOT NULL")
-      .map do |response|
-        { response: response.value }
-      end
-    response_count = responses.size
+  def visit_shapefile_upload(field)
+    visit_file_upload(field)
+  end
 
-    core_field_attributes(field, response_count).merge({
-      mapConfigId: field&.map_config&.id, pointResponses: responses
-    })
+  def visit_point(field)
+    responses_to_geographic_input_type(field)
+  end
+
+  def visit_line(field)
+    responses_to_geographic_input_type(field)
+  end
+
+  def visit_polygon(field)
+    responses_to_geographic_input_type(field)
   end
 
   private
@@ -96,6 +107,15 @@ class SurveyResultsGeneratorService < FieldVisitorService
       totalResponseCount: @inputs.count,
       questionResponseCount: response_count
     }
+  end
+
+  def base_responses(field)
+    inputs
+      .select("custom_field_values->'#{field.key}' as value")
+      .where("custom_field_values->'#{field.key}' IS NOT NULL")
+      .map do |response|
+        { answer: response.value }
+      end
   end
 
   def visit_select_base(field)
@@ -140,7 +160,7 @@ class SurveyResultsGeneratorService < FieldVisitorService
     elsif %w[multiselect multiselect_image].include? field.input_type
       %{
           jsonb_array_elements(
-            CASE WHEN jsonb_path_exists(#{table}.custom_field_values, '$ ? (exists (@.#{field.key}))')
+            CASE WHEN jsonb_path_exists(#{table}.custom_field_values, '$ ? (exists (@."#{field.key}"))')
               THEN #{table}.custom_field_values->'#{field.key}'
               ELSE '[null]'::jsonb END
           ) as #{as}
@@ -148,6 +168,15 @@ class SurveyResultsGeneratorService < FieldVisitorService
     else
       raise "Unsupported field type: #{field.input_type}"
     end
+  end
+
+  def responses_to_geographic_input_type(field)
+    responses = base_responses(field)
+    response_count = responses.size
+
+    core_field_attributes(field, response_count).merge({
+      mapConfigId: field&.map_config&.id, "#{field.input_type}Responses": responses
+    })
   end
 
   def build_select_response(answers, field, group_field)
@@ -267,14 +296,14 @@ class SurveyResultsGeneratorService < FieldVisitorService
     answer_titles = (1..field.maximum).index_with do |value|
       { title_multiloc: locales.index_with { |_locale| value.to_s } }
     end
-    minimum_labels = field.minimum_label_multiloc.transform_values do |label|
-      label.present? ? "1 - #{label}" : '1'
+
+    answer_titles.each_key do |value|
+      labels = field.nth_linear_scale_multiloc(value).transform_values do |label|
+        label.present? ? "#{value} - #{label}" : value
+      end
+
+      answer_titles[value][:title_multiloc].merge! labels
     end
-    answer_titles[1][:title_multiloc].merge! minimum_labels
-    maximum_labels = field.maximum_label_multiloc.transform_values do |label|
-      label.present? ? "#{field.maximum} - #{label}" : field.maximum.to_s
-    end
-    answer_titles[field.maximum][:title_multiloc].merge! maximum_labels
 
     answer_titles
   end

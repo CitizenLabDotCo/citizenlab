@@ -14,7 +14,7 @@ import { FormLabel } from 'components/UI/FormComponents';
 import LocationInput, { Option } from 'components/UI/LocationInput';
 
 import { useIntl } from 'utils/cl-intl';
-import { getLabel } from 'utils/JSONFormUtils';
+import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 
 import ErrorDisplay from '../ErrorDisplay';
 
@@ -30,6 +30,7 @@ const LocationControl = ({
   errors,
   required,
   visible,
+  id,
 }: ControlProps & WrappedComponentProps) => {
   const { formatMessage } = useIntl();
   const [didBlur, setDidBlur] = useState(false);
@@ -77,7 +78,12 @@ const LocationControl = ({
         className="e2e-idea-form-location-input-field"
       />
 
-      <ErrorDisplay didBlur={didBlur} ajvErrors={errors} fieldPath={path} />
+      <ErrorDisplay
+        inputId={sanitizeForClassname(id)}
+        didBlur={didBlur}
+        ajvErrors={errors}
+        fieldPath={path}
+      />
     </>
   );
 };

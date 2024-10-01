@@ -41,7 +41,7 @@ class WebApi::V1::ProjectsController < ApplicationController
       user_followers: user_followers,
       timeline_active: TimelineService.new.timeline_active_on_collection(@projects.to_a),
       visible_children_count_by_parent_id: {}, # projects don't have children
-      permission_service: Permissions::ProjectPermissionsService.new
+      user_requirements_service: Permissions::UserRequirementsService.new(check_groups_and_verification: false)
     }
 
     render json: linked_json(
@@ -55,7 +55,7 @@ class WebApi::V1::ProjectsController < ApplicationController
   def show
     render json: WebApi::V1::ProjectSerializer.new(
       @project,
-      params: jsonapi_serializer_params,
+      params: jsonapi_serializer_params.merge(use_cache: params[:use_cache]),
       include: %i[admin_publication project_images current_phase avatars]
     ).serializable_hash
   end
@@ -138,7 +138,7 @@ class WebApi::V1::ProjectsController < ApplicationController
 
   def index_xlsx
     I18n.with_locale(current_user.locale) do
-      xlsx = XlsxExport::InputsGenerator.new.generate_inputs_for_project @project.id, view_private_attributes: true
+      xlsx = Export::Xlsx::InputsGenerator.new.generate_inputs_for_project @project.id, view_private_attributes: true
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'inputs.xlsx'
     end
   end
@@ -146,7 +146,7 @@ class WebApi::V1::ProjectsController < ApplicationController
   def votes_by_user_xlsx
     if @project.phases.where(participation_method: 'voting').present?
       I18n.with_locale(current_user&.locale) do
-        xlsx = XlsxExport::ProjectBasketsVotesGenerator.new.generate_project_baskets_votes_xlsx(@project)
+        xlsx = Export::Xlsx::ProjectBasketsVotesGenerator.new.generate_project_baskets_votes_xlsx(@project)
         send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
           filename: 'votes_by_user.xlsx'
       end
@@ -160,7 +160,7 @@ class WebApi::V1::ProjectsController < ApplicationController
   def votes_by_input_xlsx
     if @project.phases.where(participation_method: 'voting').present?
       I18n.with_locale(current_user&.locale) do
-        xlsx = XlsxExport::ProjectIdeasVotesGenerator.new.generate_project_ideas_votes_xlsx @project
+        xlsx = Export::Xlsx::ProjectIdeasVotesGenerator.new.generate_project_ideas_votes_xlsx @project
         send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
           filename: 'votes_by_input.xlsx'
       end
@@ -181,7 +181,9 @@ class WebApi::V1::ProjectsController < ApplicationController
     ActiveRecord::Base.transaction do
       set_folder
       authorize @project
-      @project.save
+      saved = @project.save
+      check_publication_inconsistencies! if saved
+      saved
     end
   end
 
@@ -194,5 +196,22 @@ class WebApi::V1::ProjectsController < ApplicationController
   def set_project
     @project = Project.find(params[:id])
     authorize @project
+  end
+
+  def check_publication_inconsistencies!
+    # This code is meant to be temporary to find the cause of the disappearing admin publication bugs
+    Project.all.each do |project|
+      next if project.valid?
+
+      errors = project&.errors&.details
+
+      # Skip a known case where we expect project to be invalid at this point
+      moved_folder = project.admin_publication&.parent_id_was == project.folder_id
+      assignee_error_only = errors == { :default_assignee_id => [{ :error => :assignee_can_not_moderate_project }] }
+      next if assignee_error_only && moved_folder
+
+      # Validation errors will appear in the Sentry error 'Additional Data'
+      ErrorReporter.report_msg("Project change would lead to inconsistencies! (id: #{project.id})", extra: errors || {})
+    end
   end
 end

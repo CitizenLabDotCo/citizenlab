@@ -8,7 +8,7 @@ resource 'Authentication' do
     header 'Content-Type', 'application/json'
   end
 
-  explanation 'Contact support@citizenlab.co to get hold of your client_id and client_secret. Authenticate with your client_id and client_secret to retrieve a JWT token. You need to send the JWT token you got back along with every request to the API, as part of the `Authorization` header. The JWT token expires after 24h, so make sure to re-authenticate.'
+  explanation 'Contact support@govocal.com to get hold of your client_id and client_secret. Authenticate with your client_id and client_secret to retrieve a JWT token. You need to send the JWT token you got back along with every request to the API, as part of the `Authorization` header. The JWT token expires after 24h, so make sure to re-authenticate.'
 
   route '/api/v1/authenticate', 'Authentication' do
     post 'Authenticate' do

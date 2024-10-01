@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import {
   IconTooltip,
@@ -8,8 +8,8 @@ import {
   Icon,
   Title,
   colors,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
 import styled from 'styled-components';
 
 import { IPhase, ParticipationMethod } from 'api/phases/types';
@@ -29,6 +29,7 @@ import messages from '../../../messages';
 import documentImage from './assets/document.png';
 import ideationImage from './assets/ideation.png';
 import informationImage from './assets/information.png';
+import proposalsImage from './assets/proposals.png';
 import surveyImage from './assets/survey.png';
 import volunteeringImage from './assets/volunteering.png';
 import votingImage from './assets/voting.png';
@@ -62,7 +63,9 @@ const ParticipationMethodPicker = ({
   const [methodToChangeTo, setMethodToChangeTo] =
     useState<ParticipationMethod | null>(null);
   const [showSurveyOptions, setShowSurveyOptions] = useState(
-    selectedMethod === 'native_survey'
+    participation_method === 'native_survey' ||
+      participation_method === 'survey' ||
+      participation_method === 'poll'
   );
   const [showChangeMethodModal, setShowChangeMethodModal] = useState(false);
   const closeModal = () => {
@@ -78,8 +81,9 @@ const ParticipationMethodPicker = ({
   const pollsEnabled = useFeatureFlag({
     name: 'polls',
   });
-  const nativeSurveysEnabled = useFeatureFlag({
-    name: 'native_surveys',
+
+  const proposalsParticipationMethodEnabled = useFeatureFlag({
+    name: 'proposals_participation_method',
   });
 
   const changeMethod = (newMethod?: ParticipationMethod) => {
@@ -108,11 +112,6 @@ const ParticipationMethodPicker = ({
     }
   };
 
-  useEffect(() => {
-    setSelectedMethod(participation_method);
-    setShowSurveyOptions(participation_method === 'native_survey');
-  }, [participation_method]);
-
   return (
     <>
       <SectionField>
@@ -140,6 +139,17 @@ const ParticipationMethodPicker = ({
               image={ideationImage}
               selected={selectedMethod === 'ideation'}
             />
+
+            {proposalsParticipationMethodEnabled && (
+              <ParticipationMethodChoice
+                key="proposals"
+                title={formatMessage(messages2.proposalsTitle)}
+                subtitle={formatMessage(messages2.proposalsDescription)}
+                onClick={(event) => handleMethodSelect(event, 'proposals')}
+                image={proposalsImage}
+                selected={selectedMethod === 'proposals'}
+              />
+            )}
 
             <ParticipationMethodChoice
               key="survey"
@@ -176,52 +186,56 @@ const ParticipationMethodPicker = ({
               image={volunteeringImage}
               selected={selectedMethod === 'volunteering'}
             />
-
-            {documentAnnotationAllowed && (
+            {documentAnnotationAllowed ? (
+              documentAnnotationEnabled && (
+                <Box position="relative">
+                  <ParticipationMethodChoice
+                    key="document"
+                    title={formatMessage(messages2.documentTitle)}
+                    subtitle={formatMessage(messages2.documentDescription)}
+                    onClick={(event) => {
+                      event.preventDefault();
+                      handleMethodSelect(event, 'document_annotation');
+                    }}
+                    image={documentImage}
+                    selected={selectedMethod === 'document_annotation'}
+                  />
+                </Box>
+              )
+            ) : (
               <Box position="relative">
                 <ParticipationMethodChoice
                   key="document"
                   title={formatMessage(messages2.documentTitle)}
                   subtitle={formatMessage(messages2.documentDescription)}
-                  onClick={(event) => {
-                    event.preventDefault();
-                    if (documentAnnotationEnabled) {
-                      handleMethodSelect(event, 'document_annotation');
-                    }
-                  }}
                   image={documentImage}
                   selected={selectedMethod === 'document_annotation'}
                 />
-                {/* Don't show tooltip and locked badge if the feature is enabled */}
-                {!documentAnnotationEnabled && (
-                  <Box
-                    style={{ transform: 'translateX(-50%)' }}
-                    position="absolute"
-                    top="20%"
-                    left="50%"
+                <Box
+                  style={{ transform: 'translateX(-50%)' }}
+                  position="absolute"
+                  top="20%"
+                  left="50%"
+                >
+                  <Tooltip
+                    maxWidth="250px"
+                    placement="bottom"
+                    content={formatMessage(messages.contactGovSuccessToAccess)}
+                    hideOnClick={false}
                   >
-                    <Tippy
-                      maxWidth="250px"
-                      placement="bottom"
-                      content={formatMessage(
-                        messages.contactGovSuccessToAccess
-                      )}
-                      hideOnClick={false}
-                    >
-                      <Badge color={colors.coolGrey600} className="inverse">
-                        <Box
-                          display="flex"
-                          justifyContent="center"
-                          alignItems="center"
-                          gap="6px"
-                        >
-                          <Icon name="lock" fill="white" width="13px" />
-                          {formatMessage(messages2.addOn)}
-                        </Box>
-                      </Badge>
-                    </Tippy>
-                  </Box>
-                )}
+                    <Badge color={colors.coolGrey600} className="inverse">
+                      <Box
+                        display="flex"
+                        justifyContent="center"
+                        alignItems="center"
+                        gap="6px"
+                      >
+                        <Icon name="lock" fill="white" width="13px" />
+                        {formatMessage(messages2.addOn)}
+                      </Box>
+                    </Badge>
+                  </Tooltip>
+                </Box>
               </Box>
             )}
 
@@ -233,34 +247,32 @@ const ParticipationMethodPicker = ({
                   </SubSectionTitle>
                 </Box>
 
-                {nativeSurveysEnabled && (
-                  <ParticipationMethodChoice
-                    onClick={(event) =>
-                      handleMethodSelect(event, 'native_survey')
-                    }
-                    title={formatMessage(messages2.survey)}
-                    selected={selectedMethod === 'native_survey'}
-                  >
-                    <>
-                      <LeftAlignedList>
-                        <li>
-                          <FormattedMessage {...messages2.aiPoweredInsights} />
-                        </li>
-                        <li>
-                          <FormattedMessage {...messages2.manyQuestionTypes} />
-                        </li>
-                        <li>
-                          <FormattedMessage {...messages2.logic} />
-                        </li>
-                        <li>
-                          <FormattedMessage
-                            {...messages2.linkWithReportBuilder}
-                          />
-                        </li>
-                      </LeftAlignedList>
-                    </>
-                  </ParticipationMethodChoice>
-                )}
+                <ParticipationMethodChoice
+                  onClick={(event) =>
+                    handleMethodSelect(event, 'native_survey')
+                  }
+                  title={formatMessage(messages2.survey)}
+                  selected={selectedMethod === 'native_survey'}
+                >
+                  <>
+                    <LeftAlignedList>
+                      <li>
+                        <FormattedMessage {...messages2.aiPoweredInsights} />
+                      </li>
+                      <li>
+                        <FormattedMessage {...messages2.manyQuestionTypes} />
+                      </li>
+                      <li>
+                        <FormattedMessage {...messages2.logic} />
+                      </li>
+                      <li>
+                        <FormattedMessage
+                          {...messages2.linkWithReportBuilder}
+                        />
+                      </li>
+                    </LeftAlignedList>
+                  </>
+                </ParticipationMethodChoice>
 
                 {pollsEnabled && (
                   <ParticipationMethodChoice
@@ -314,7 +326,7 @@ const ParticipationMethodPicker = ({
             alignItems="center"
           >
             <Button
-              buttonStyle="secondary"
+              buttonStyle="secondary-outlined"
               width="100%"
               onClick={closeModal}
               mr="16px"

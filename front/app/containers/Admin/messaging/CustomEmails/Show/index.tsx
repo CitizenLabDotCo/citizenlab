@@ -104,9 +104,8 @@ const Show = () => {
     campaign?.data.attributes.context_id
   );
 
-  const { data: sender } = useUserById(
-    campaign?.data.relationships.author.data.id
-  );
+  const authorId = campaign?.data.relationships.author.data?.id;
+  const { data: sender } = useUserById(authorId);
 
   const {
     mutate: sendCampaign,
@@ -216,7 +215,7 @@ const Show = () => {
             <Buttons>
               <Button
                 linkTo={`/admin/messaging/emails/custom/${campaign.data.id}/edit`}
-                buttonStyle="secondary"
+                buttonStyle="secondary-outlined"
               >
                 <FormattedMessage {...messages.editButtonLabel} />
               </Button>
@@ -333,7 +332,7 @@ const Show = () => {
             </SendNowWarning>
             <ButtonsWrapper>
               <Button
-                buttonStyle="secondary"
+                buttonStyle="secondary-outlined"
                 linkTo={`/admin/messaging/emails/custom/${campaign.data.id}/edit`}
               >
                 <FormattedMessage {...messages.changeRecipientsButton} />

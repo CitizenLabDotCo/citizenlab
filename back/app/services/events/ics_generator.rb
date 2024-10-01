@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'icalendar/tzinfo'
+
 module Events
   class IcsGenerator
     # @param [Event, #to_ary] events one or multiple events
@@ -24,11 +26,12 @@ module Events
 
     def empty_calendar
       Icalendar::Calendar.new.tap do |cal|
-        cal.prodid = 'CitizenLab'
+        cal.prodid = 'GoVocal'
       end
     end
 
     def add_event_to_calendar(cal, event, preferred_locale)
+      timezone = AppConfiguration.timezone
       start_time = event.start_at.in_time_zone(timezone)
       end_time = event.end_at.in_time_zone(timezone)
 
@@ -43,13 +46,15 @@ module Events
       # Therefore, we have decided to use the timezone identifier without the `/` prefix,
       # even though it deviates from the ICS specification.
       tzid = timezone.tzinfo.identifier
+      ical_timezone = timezone.tzinfo.ical_timezone start_time
+      cal.add_timezone ical_timezone
 
       cal.event do |e|
         e.dtstart = Icalendar::Values::DateTime.new(start_time, tzid: tzid)
         e.dtend = Icalendar::Values::DateTime.new(end_time, tzid: tzid)
 
         e.summary = multiloc_service.t(event.title_multiloc, preferred_locale)
-        e.description = multiloc_service.t(event.description_multiloc, preferred_locale)
+        e.description = event_description(event, preferred_locale)
         e.location = full_address(event, preferred_locale)
 
         # The interpretation of the URL property seems to differ widely depending on its
@@ -73,15 +78,18 @@ module Events
       address.presence
     end
 
-    def multiloc_service
-      @multiloc_service ||= MultilocService.new
+    def event_description(event, preferred_locale)
+      tenant_locales = AppConfiguration.instance.settings('core', 'locales')
+      locale = tenant_locales.include?(preferred_locale) ? preferred_locale : tenant_locales.first
+
+      event_details = I18n.with_locale(locale) { I18n.t('ics_calendar_event.event_details') }
+      event_url = Frontend::UrlService.new.model_to_url(event, locale: Locale.new(locale))
+
+      "#{event_details}: #{event_url}"
     end
 
-    def timezone
-      @timezone ||= begin
-        timezone_name = AppConfiguration.instance.settings.dig('core', 'timezone')
-        ActiveSupport::TimeZone[timezone_name] || (raise KeyError, timezone_name)
-      end
+    def multiloc_service
+      @multiloc_service ||= MultilocService.new
     end
   end
 end

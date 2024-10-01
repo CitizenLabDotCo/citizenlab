@@ -2,22 +2,71 @@
 
 module ParticipationMethod
   class Ideation < Base
+    def self.method_str
+      'ideation'
+    end
+
+    def allowed_extra_field_input_types
+      %w[section number linear_scale text multiline_text select multiselect multiselect_image]
+    end
+
+    def allowed_ideas_orders
+      %w[trending random popular -new new]
+    end
+
+    def assign_defaults(input)
+      input_status_code = input.creation_phase&.prescreening_enabled ? 'prescreening' : 'proposed'
+      input.idea_status ||= IdeaStatus.find_by!(code: input_status_code, participation_method: idea_status_method)
+      input.publication_status ||= input.idea_status.public_post? ? 'published' : 'submitted'
+    end
+
     def assign_defaults_for_phase
       phase.ideas_order ||= 'trending'
     end
 
-    def generate_slug(input)
-      title = MultilocService.new.t(input.title_multiloc, input.author&.locale).presence
-      SlugService.new.generate_slug input, title
+    def author_in_form?(user)
+      AppConfiguration.instance.feature_activated?('idea_author_change') \
+      && !!user \
+      && UserRoleService.new.can_moderate_project?(phase.project, user)
     end
 
-    def assign_defaults(input)
-      input.idea_status ||= IdeaStatus.find_by!(code: 'proposed')
+    def budget_in_form?(user)
+      phase.project.phases.any? do |phase|
+        phase.participation_method == 'voting' && Factory.instance.voting_method_for(phase).budget_in_form?(user)
+      end
+    end
+
+    # Locks mirror the name of the fields whose default values cannot be changed (ie are locked)
+    def constraints
+      result = {
+        ideation_section1: { locks: { enabled: true, title_multiloc: true } },
+        title_multiloc: { locks: { enabled: true, required: true, title_multiloc: true } },
+        body_multiloc: { locks: { enabled: true, required: true, title_multiloc: true } },
+        idea_images_attributes: { locks: { enabled: true, title_multiloc: true } },
+        idea_files_attributes: { locks: { title_multiloc: true } },
+        topic_ids: { locks: { title_multiloc: true } },
+        location_description: { locks: { title_multiloc: true } }
+      }
+      result[:proposed_budget] = { locks: { title_multiloc: true } } if proposed_budget_in_form?
+      result
+    end
+
+    # NOTE: This is only ever used by the analyses controller - otherwise the front-end always persists the form
+    def create_default_form!
+      context = transitive? ? phase.project : phase
+      form = CustomForm.create(participation_context: context)
+
+      default_fields(form).reverse_each do |field|
+        field.save!
+        field.move_to_top
+      end
+
+      form
     end
 
     def default_fields(custom_form)
       multiloc_service = MultilocService.new
-      [
+      fields = [
         CustomField.new(
           id: SecureRandom.uuid,
           resource: custom_form,
@@ -221,8 +270,10 @@ module ParticipationMethod
           enabled: true,
           ordering: 8,
           answer_visible_to: CustomField::VISIBLE_TO_PUBLIC
-        ),
-        CustomField.new(
+        )
+      ]
+      if proposed_budget_in_form?
+        fields << CustomField.new(
           id: SecureRandom.uuid,
           resource: custom_form,
           key: 'proposed_budget',
@@ -245,64 +296,28 @@ module ParticipationMethod
           ordering: 9,
           answer_visible_to: CustomField::VISIBLE_TO_PUBLIC
         )
-      ]
-    end
-
-    def allowed_extra_field_input_types
-      %w[section number linear_scale text multiline_text select multiselect multiselect_image]
-    end
-
-    # Locks mirror the name of the fields whose default values cannot be changed (ie are locked)
-    def constraints
-      {
-        ideation_section1: { locks: { enabled: true, title_multiloc: true } },
-        title_multiloc: { locks: { enabled: true, required: true, title_multiloc: true } },
-        body_multiloc: { locks: { enabled: true, required: true, title_multiloc: true } },
-        idea_images_attributes: { locks: { enabled: true, title_multiloc: true } },
-        idea_files_attributes: { locks: { title_multiloc: true } },
-        topic_ids: { locks: { title_multiloc: true } },
-        location_description: { locks: { title_multiloc: true } },
-        proposed_budget: { locks: { title_multiloc: true } }
-      }
-    end
-
-    def form_structure_element
-      'section'
-    end
-
-    # NOTE: This is only ever used by the analyses controller - otherwise the front-end always persists the form
-    def create_default_form!
-      form = CustomForm.create(participation_context: phase.project)
-
-      default_fields(form).reverse_each do |field|
-        field.save!
-        field.move_to_top
       end
-
-      form
+      fields
     end
 
-    def validate_built_in_fields?
+    def generate_slug(input)
+      title = MultilocService.new.t(input.title_multiloc, input.author&.locale).presence
+      SlugService.new.generate_slug input, title
+    end
+
+    def supports_answer_visible_to?
       true
     end
 
-    def author_in_form?(user)
-      AppConfiguration.instance.feature_activated?('idea_author_change') \
-      && !!user \
-      && UserRoleService.new.can_moderate_project?(phase.project, user)
+    def supports_assignment?
+      true
     end
 
-    def budget_in_form?(user)
-      phase.project.phases.any? do |phase|
-        phase.voting? && Factory.instance.voting_method_for(phase).budget_in_form?(user)
-      end
+    def supports_built_in_fields?
+      true
     end
 
-    def allowed_ideas_orders
-      %w[trending random popular -new new]
-    end
-
-    def posting_allowed?
+    def supports_commenting?
       true
     end
 
@@ -310,11 +325,15 @@ module ParticipationMethod
       true
     end
 
-    def supports_publication?
+    def supports_input_term?
       true
     end
 
-    def supports_commenting?
+    def supports_inputs_without_author?
+      false
+    end
+
+    def supports_public_visibility?
       true
     end
 
@@ -326,19 +345,17 @@ module ParticipationMethod
       true
     end
 
-    def supports_assignment?
+    def supports_submission?
       true
     end
 
-    def sign_in_required_for_posting?
+    def transitive?
       true
     end
 
-    def supports_answer_visible_to?
-      true
-    end
+    private
 
-    def supports_idea_form?
+    def proposed_budget_in_form?
       true
     end
   end

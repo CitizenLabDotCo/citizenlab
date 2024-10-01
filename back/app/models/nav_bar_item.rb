@@ -11,15 +11,18 @@
 #  static_page_id :uuid
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
+#  project_id     :uuid
 #
 # Indexes
 #
 #  index_nav_bar_items_on_code            (code)
 #  index_nav_bar_items_on_ordering        (ordering)
+#  index_nav_bar_items_on_project_id      (project_id)
 #  index_nav_bar_items_on_static_page_id  (static_page_id)
 #
 # Foreign Keys
 #
+#  fk_rails_...  (project_id => projects.id)
 #  fk_rails_...  (static_page_id => static_pages.id)
 #
 class NavBarItem < ApplicationRecord
@@ -29,11 +32,13 @@ class NavBarItem < ApplicationRecord
   acts_as_list column: :ordering, top_of_list: 0, add_new_at: :bottom
 
   belongs_to :static_page, optional: true
+  belongs_to :project, optional: true
 
   validates :title_multiloc, multiloc: { presence: false }
   validates :code, inclusion: { in: CODES }
   validates :code, uniqueness: true, if: ->(item) { !item.custom? }
-  validates :static_page, presence: true, if: :custom?
+  validates :static_page, presence: true, if: :page?
+  validates :project, presence: true, if: :project?
 
   before_validation :set_code, on: :create
 
@@ -52,6 +57,14 @@ class NavBarItem < ApplicationRecord
     code == 'custom'
   end
 
+  def page?
+    code == 'custom' && static_page_id.present?
+  end
+
+  def project?
+    code == 'custom' && project_id.present?
+  end
+
   def title_multiloc_with_fallback
     fallback_title_multiloc.merge(title_multiloc || {})
   end
@@ -63,11 +76,13 @@ class NavBarItem < ApplicationRecord
   end
 
   def fallback_title_multiloc
-    key_code = custom? ? static_page.code : code
+    return project.title_multiloc if project?
+
+    key_code = page? ? static_page.code : code
     key = "nav_bar_items.#{key_code}.title"
     if I18n.exists? key
       MultilocService.new.i18n_to_multiloc key
-    elsif custom?
+    elsif page?
       static_page.title_multiloc
     end
   end

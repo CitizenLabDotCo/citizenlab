@@ -234,3 +234,7 @@ export function hexToRGBA(hex: string, alpha: number) {
     return `rgb(${r}, ${g}, ${b})`;
   }
 }
+
+export const classNames = (...classes: (string | undefined)[]) => {
+  return classes.filter(Boolean).join(' ');
+};

@@ -1,4 +1,4 @@
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import { queryClient } from 'utils/cl-react-query/queryClient';
@@ -49,12 +49,16 @@ describe('getMentions', () => {
 
   it('returns data correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res.once(
-          ctx.status(200),
-          ctx.json({ data: { data: mentionsData } })
-        );
-      })
+      http.get(
+        apiPath,
+        () => {
+          return HttpResponse.json(
+            { data: { data: mentionsData } },
+            { status: 200 }
+          );
+        },
+        { once: true }
+      )
     );
 
     const result = await getMentions({ mention: 'test' });
@@ -63,9 +67,13 @@ describe('getMentions', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPath, (_req, res, ctx) => {
-        return res.once(ctx.status(500), ctx.json({ error: 'error' }));
-      })
+      http.get(
+        apiPath,
+        () => {
+          return HttpResponse.json({ error: 'error' }, { status: 500 });
+        },
+        { once: true }
+      )
     );
 
     let thrownError = {};

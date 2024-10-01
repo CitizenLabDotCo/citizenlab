@@ -14,6 +14,7 @@ import {
   colors,
   isRtl,
   media,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
 import styled from 'styled-components';
@@ -127,13 +128,13 @@ interface Props {
 }
 
 const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
-  const { data: project } = useProjectById(projectId);
+  const { data: authUser } = useAuthUser();
+  const { data: project } = useProjectById(projectId, !isAdmin(authUser));
   const { data: phases } = usePhases(projectId);
   const { data: events } = useEvents({
     projectIds: [projectId],
     sort: '-start_at',
   });
-  const { data: authUser } = useAuthUser();
 
   const { formatMessage } = useIntl();
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | undefined>();
@@ -177,7 +178,7 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
   if (project) {
     const isProjectArchived =
       project.data.attributes.publication_status === 'archived';
-    const postingIsEnabled = currentPhase?.attributes.posting_enabled;
+    const postingIsEnabled = currentPhase?.attributes.submission_enabled;
     const projectParticipantsCount = project.data.attributes.participants_count;
     const maxBudget = currentPhase?.attributes?.voting_max_total || null;
     const hasProjectEnded = currentPhase
@@ -222,10 +223,19 @@ const ProjectInfoSideBar = memo<Props>(({ projectId, className }) => {
               )}
             <ListItem id="e2e-project-sidebar-participants-count">
               <ListItemIcon ariaHidden name="user" />
-              <FormattedMessage
-                {...messages.xParticipants}
-                values={{ participantsCount: projectParticipantsCount }}
-              />
+              <Tooltip
+                disabled={!isAdmin(authUser)}
+                placement="bottom"
+                content={formatMessage(messages.liveDataMessage)}
+              >
+                <div>
+                  <FormattedMessage
+                    {...messages.xParticipants}
+                    values={{ participantsCount: projectParticipantsCount }}
+                  />
+                </div>
+              </Tooltip>
+
               {isAdmin(authUser) && hasNativeSurvey(phases?.data) && (
                 <Box ml="4px">
                   <IconTooltip

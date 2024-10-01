@@ -47,9 +47,11 @@ const FormBuilderToolbox = ({
   const isInputFormCustomFieldsFlagEnabled = useFeatureFlag({
     name: 'input_form_custom_fields',
   });
-  const isLocationAnswerEnabled = useFeatureFlag({
-    name: 'input_form_mapping_question',
+
+  const isFormMappingEnabled = useFeatureFlag({
+    name: 'form_mapping',
   });
+
   const { watch } = useFormContext();
   const formCustomFields: IFlatCustomField[] = watch('customFields');
   const isCustomFieldsDisabled =
@@ -81,8 +83,13 @@ const FormBuilderToolbox = ({
         title_multiloc: {
           [locale]: '',
         },
-        maximum_label_multiloc: {},
-        minimum_label_multiloc: {},
+        linear_scale_label_1_multiloc: {},
+        linear_scale_label_2_multiloc: {},
+        linear_scale_label_3_multiloc: {},
+        linear_scale_label_4_multiloc: {},
+        linear_scale_label_5_multiloc: {},
+        linear_scale_label_6_multiloc: {},
+        linear_scale_label_7_multiloc: {},
         maximum: 5,
         options: [
           {
@@ -112,13 +119,16 @@ const FormBuilderToolbox = ({
     >
       <Box overflowY="auto" w="100%" display="inline">
         <LayoutFields addField={addField} builderConfig={builderConfig} />
-        {builderConfig.displayBuiltInFields && <BuiltInFields move={move} />}
-        <Box display="flex">
+        {builderConfig.displayBuiltInFields && (
+          <BuiltInFields move={move} builderConfig={builderConfig} />
+        )}
+        <Box display="flex" alignItems="center">
           <Title
             fontWeight="normal"
-            mb="4px"
             ml="16px"
+            mt="16px"
             variant="h6"
+            m="0px"
             as="h3"
             color="textSecondary"
             style={{ textTransform: 'uppercase' }}
@@ -128,7 +138,6 @@ const FormBuilderToolbox = ({
           {!builderConfig.alwaysShowCustomFields && (
             <IconTooltip
               ml="4px"
-              mt="8px"
               icon={isCustomFieldsDisabled ? 'info-outline' : 'info-solid'}
               iconColor={
                 isCustomFieldsDisabled ? colors.coolGrey300 : colors.coolGrey500
@@ -221,17 +230,66 @@ const FormBuilderToolbox = ({
           inputType="file_upload"
           disabled={isCustomFieldsDisabled}
         />
-        {isLocationAnswerEnabled && (
-          <ToolboxItem
-            icon="map"
-            label={formatMessage(messages.locationAnswer)}
-            onClick={() => addField('point')}
-            data-cy="e2e-point-field"
-            fieldsToExclude={builderConfig.toolboxFieldsToExclude}
-            inputType="point"
-            disabled={isCustomFieldsDisabled}
-          />
-        )}
+        <Box>
+          {!builderConfig.toolboxFieldsToExclude.includes('point') && ( // We want to show the mapping section
+            <>
+              <Title
+                fontWeight="normal"
+                ml="16px"
+                mt="16px"
+                variant="h6"
+                m="0px"
+                as="h3"
+                color="textSecondary"
+                style={{ textTransform: 'uppercase' }}
+              >
+                {formatMessage(messages.mapping)}
+              </Title>
+              <ToolboxItem
+                icon="dropPin"
+                label={formatMessage(messages.dropPin)}
+                onClick={() => addField('point')}
+                data-cy="e2e-point-field"
+                fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+                inputType="point"
+                disabled={!isFormMappingEnabled}
+                disabledTooltipMessage={messages.mappingNotInCurrentLicense}
+              />
+              <>
+                <ToolboxItem
+                  icon="drawRoute"
+                  label={formatMessage(messages.drawRoute)}
+                  onClick={() => addField('line')}
+                  data-cy="e2e-line-field"
+                  fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+                  inputType="line"
+                  disabled={!isFormMappingEnabled}
+                  disabledTooltipMessage={messages.mappingNotInCurrentLicense}
+                />
+                <ToolboxItem
+                  icon="drawPolygon"
+                  label={formatMessage(messages.drawArea)}
+                  onClick={() => addField('polygon')}
+                  data-cy="e2e-polygon-field"
+                  fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+                  inputType="polygon"
+                  disabled={!isFormMappingEnabled}
+                  disabledTooltipMessage={messages.mappingNotInCurrentLicense}
+                />
+                <ToolboxItem
+                  icon="upload-file"
+                  label={formatMessage(messages.shapefileUpload)}
+                  onClick={() => addField('shapefile_upload')}
+                  data-cy="e2e-file-shapefile-field"
+                  fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+                  inputType="shapefile_upload"
+                  disabled={!isFormMappingEnabled}
+                  disabledTooltipMessage={messages.mappingNotInCurrentLicense}
+                />
+              </>
+            </>
+          )}
+        </Box>
       </Box>
     </Box>
   );

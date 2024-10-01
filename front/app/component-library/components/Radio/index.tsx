@@ -1,5 +1,6 @@
 import React, { FormEvent, useState } from 'react';
 
+import useInstanceId from 'component-library/hooks/useInstanceId';
 import { get } from 'lodash-es';
 import { hideVisually } from 'polished';
 import styled, { useTheme } from 'styled-components';
@@ -88,20 +89,9 @@ const Label = styled.label`
   }
 `;
 
-/**
- * If we have a label, an id is required. Otherwise id is optional.
- */
-type LabelProps =
-  | {
-      label: string | JSX.Element | null;
-      id: string;
-    }
-  | {
-      label?: undefined;
-      id?: string | undefined;
-    };
-
 export type Props = {
+  label?: string | JSX.Element | null;
+  id?: string;
   onChange?: (arg: any) => void;
   currentValue?: any;
   value: any;
@@ -118,8 +108,7 @@ export type Props = {
   className?: string;
   isRequired?: boolean;
 } & BoxPaddingProps &
-  BoxMarginProps &
-  LabelProps;
+  BoxMarginProps;
 
 const Radio = ({
   onChange,
@@ -138,6 +127,7 @@ const Radio = ({
 }: Props) => {
   const theme = useTheme();
   const [inputFocused, setInputFocused] = useState(false);
+  const uuid = useInstanceId();
 
   const handleOnChange = (event: FormEvent) => {
     event.preventDefault();
@@ -172,7 +162,7 @@ const Radio = ({
       {...rest}
     >
       <HiddenRadio
-        id={id}
+        id={id ?? uuid}
         type="radio"
         name={name}
         value={value}
@@ -196,7 +186,7 @@ const Radio = ({
       </CustomRadio>
       {label && (
         <Label
-          htmlFor={id}
+          htmlFor={id ?? uuid}
           className={`
           ${className || ''}
           text

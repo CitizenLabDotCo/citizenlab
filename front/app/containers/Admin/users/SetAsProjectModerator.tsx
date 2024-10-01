@@ -20,9 +20,11 @@ import messages from './messages';
 const SetAsProjectModerator = ({
   user,
   onClose,
+  onSuccess,
 }: {
   user: IUserData;
   onClose: () => void;
+  onSuccess: () => void;
 }) => {
   const { mutateAsync: addProjectModerator } = useAddProjectModerator();
   const { mutateAsync: addProjectFolderModerator } =
@@ -76,6 +78,7 @@ const SetAsProjectModerator = ({
       }
     } finally {
       setIsLoading(false);
+      onSuccess();
       onClose();
     }
   };

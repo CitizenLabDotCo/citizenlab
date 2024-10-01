@@ -1,7 +1,12 @@
 import React from 'react';
 
-import { Box, Image, Title, Text } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
+import {
+  Box,
+  Image,
+  Title,
+  Text,
+  Tooltip,
+} from '@citizenlab/cl2-component-library';
 import EmptyProjectsImage from 'assets/img/landingpage/no_projects_image.svg';
 import styled from 'styled-components';
 
@@ -49,7 +54,7 @@ const EmptyState = ({ onOpenModal }: Props) => {
           <Text>
             <FormattedMessage {...messages.customizeReport} />
           </Text>
-          <Tippy
+          <Tooltip
             maxWidth="250px"
             placement="right-start"
             content={<FormattedMessage {...sharedMessages.contactToAccess} />}
@@ -67,7 +72,7 @@ const EmptyState = ({ onOpenModal }: Props) => {
                 <FormattedMessage {...messages.emptyStateButtonText} />
               </Button>
             </div>
-          </Tippy>
+          </Tooltip>
         </Box>
       </Box>
     </Box>

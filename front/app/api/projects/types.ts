@@ -1,10 +1,18 @@
 import { ILinks, IRelationship, Multiloc } from 'typings';
 
 import {
-  UserDisabledReason,
   ActionDescriptor,
   ActionDescriptorFutureEnabled,
-} from 'utils/actionDescriptors';
+  ProjectDisabledReason,
+  ProjectCommentingDisabledReason,
+  ProjectDocumentAnnotationDisabledReason,
+  ProjectPollDisabledReason,
+  ProjectPostingDisabledReason,
+  ProjectReactingDisabledReason,
+  ProjectSurveyDisabledReason,
+  ProjectVotingDisabledReason,
+  ProjectVolunteeringDisabledReason,
+} from 'utils/actionDescriptors/types';
 import { Keys } from 'utils/cl-react-query/types';
 
 import {
@@ -91,6 +99,8 @@ export interface IProjectAttributes {
     taking_poll: ActionDescriptor<ProjectPollDisabledReason>;
     annotating_document: ActionDescriptor<ProjectDocumentAnnotationDisabledReason>;
     voting: ActionDescriptor<ProjectVotingDisabledReason>;
+    attending_event: ActionDescriptor<ProjectDisabledReason>;
+    volunteering: ActionDescriptor<ProjectVolunteeringDisabledReason>;
   };
   uses_content_builder: boolean;
 }
@@ -136,45 +146,6 @@ export interface IProjectData {
 type Visibility = 'public' | 'groups' | 'admins';
 type PresentationMode = 'map' | 'card';
 
-type ProjectDisabledReason =
-  | 'project_not_visible'
-  | 'project_inactive'
-  | UserDisabledReason;
-
-export type ProjectPostingDisabledReason =
-  | 'posting_not_supported'
-  | 'posting_disabled'
-  // Only applicable to taking surveys at the moment.
-  // Not configurable via admin UI, determined in BE
-  | 'posting_limited_max_reached'
-  | ProjectDisabledReason;
-
-export type ProjectCommentingDisabledReason =
-  | 'commenting_not_supported'
-  | 'commenting_disabled'
-  | ProjectDisabledReason;
-
-export type ProjectReactingDisabledReason =
-  | 'reacting_not_supported'
-  | 'reacting_disabled'
-  | 'reacting_dislike_disabled'
-  | 'reacting_like_limited_max_reached'
-  | 'reacting_dislike_limited_max_reached'
-  | ProjectDisabledReason;
-
-export type ProjectSurveyDisabledReason = 'not_survey' | ProjectDisabledReason;
-
-export type ProjectPollDisabledReason =
-  | 'not_poll'
-  | 'already_responded'
-  | ProjectDisabledReason;
-
-export type ProjectDocumentAnnotationDisabledReason =
-  | 'not_document_annotation'
-  | ProjectDisabledReason;
-
-export type ProjectVotingDisabledReason = 'not_voting' | ProjectDisabledReason;
-
 interface ProjectHeaderBgImageSizes {
   large: string | null;
 }
@@ -197,7 +168,7 @@ export interface IUpdatedProjectProperties {
   area_ids?: string[];
   visible_to?: Visibility;
   participation_method?: ParticipationMethod | null;
-  posting_enabled?: boolean | null;
+  submission_enabled?: boolean | null;
   commenting_enabled?: boolean | null;
   reacting_enabled?: boolean | null;
   reacting_like_method?: 'limited' | 'unlimited' | null;

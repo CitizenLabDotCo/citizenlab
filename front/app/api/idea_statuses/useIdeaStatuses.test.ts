@@ -1,5 +1,5 @@
 import { renderHook } from '@testing-library/react-hooks';
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
@@ -17,9 +17,15 @@ describe('useIdeaStatuses', () => {
   afterAll(() => server.close());
 
   it('returns data correctly', async () => {
-    const { result, waitFor } = renderHook(() => useIdeaStatuses(), {
-      wrapper: createQueryClientWrapper(),
-    });
+    const { result, waitFor } = renderHook(
+      () =>
+        useIdeaStatuses({
+          participation_method: 'ideation',
+        }),
+      {
+        wrapper: createQueryClientWrapper(),
+      }
+    );
 
     expect(result.current.isLoading).toBe(true);
 
@@ -31,14 +37,20 @@ describe('useIdeaStatuses', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPathStatuses, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get(apiPathStatuses, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 
-    const { result, waitFor } = renderHook(() => useIdeaStatuses(), {
-      wrapper: createQueryClientWrapper(),
-    });
+    const { result, waitFor } = renderHook(
+      () =>
+        useIdeaStatuses({
+          participation_method: 'ideation',
+        }),
+      {
+        wrapper: createQueryClientWrapper(),
+      }
+    );
 
     expect(result.current.isLoading).toBe(true);
     await waitFor(() => expect(result.current.isError).toBe(true));

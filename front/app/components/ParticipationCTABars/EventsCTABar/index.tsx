@@ -40,7 +40,9 @@ const EventsCTABar = ({ phases, project }: CTABarProps) => {
       CTAButton={
         <Button
           id="e2e-cta-bar-see-events"
-          onClick={() => scrollToElement({ id: 'project-events' })}
+          onClick={() =>
+            scrollToElement({ id: 'e2e-events-section-project-page' })
+          }
           fontWeight="500"
           bgColor={theme.colors.white}
           textColor={theme.colors.tenantText}

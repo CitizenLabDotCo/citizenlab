@@ -16,11 +16,11 @@ import Button from 'components/UI/Button';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
+import NewIdeaButton from '../../components/NewIdeaButton';
 import messages from '../messages';
 
 import AnalysisBanner from './AnalysisBanner';
 import ownMessages from './messages';
-import NewIdeaButton from './NewIdeaButton';
 
 const defaultTimelineProjectVisibleFilterMenu = 'phases';
 const timelineProjectVisibleFilterMenus: TFilterMenu[] = [
@@ -62,7 +62,7 @@ const AdminProjectIdeas = () => {
                 width="auto"
                 linkTo={`/admin/projects/${projectId}/phases/${phaseId}/input-importer`}
                 icon="page"
-                buttonStyle="secondary"
+                buttonStyle="secondary-outlined"
               >
                 <FormattedMessage {...ownMessages.importInputs} />
               </Button>
@@ -82,6 +82,7 @@ const AdminProjectIdeas = () => {
 
       {project && (
         <InputManager
+          key={phaseId}
           projectId={project.data.id}
           phases={phases?.data}
           phaseId={phaseId}

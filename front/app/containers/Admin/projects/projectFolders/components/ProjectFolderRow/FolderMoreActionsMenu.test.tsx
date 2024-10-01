@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import { IUserData } from 'api/users/types';
@@ -53,8 +53,8 @@ jest.mock('api/project_folders/useProjectFolders', () => () => {
 const apiPath = '*project_folders/:folderId';
 
 const server = setupServer(
-  rest.delete(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(500), ctx.json({}));
+  http.delete(apiPath, () => {
+    return HttpResponse.json({}, { status: 500 });
   })
 );
 

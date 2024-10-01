@@ -7,25 +7,27 @@ import {
   isRtl,
   Icon,
   IconNames,
+  Tooltip,
+  Button as ButtonComponent,
 } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
 import { lighten } from 'polished';
 import { FormattedDate } from 'react-intl';
 import styled, { keyframes } from 'styled-components';
 
 import { TReactionMode } from 'api/idea_reactions/types';
-import { IdeaReactingDisabledReason } from 'api/ideas/types';
 import useIdeaById from 'api/ideas/useIdeaById';
-import useAuthUser from 'api/me/useAuthUser';
 import useProjectById from 'api/projects/useProjectById';
 
 import useLocalize from 'hooks/useLocalize';
 
 import { ScreenReaderOnly } from 'utils/a11y';
-import { isFixableByAuthentication } from 'utils/actionDescriptors';
+import {
+  getPermissionsDisabledMessage,
+  isFixableByAuthentication,
+} from 'utils/actionDescriptors';
+import { IdeaReactingDisabledReason } from 'utils/actionDescriptors/types';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
-import globalMessages from 'utils/messages';
 
 import messages from './messages';
 
@@ -327,6 +329,7 @@ interface Props {
   onClick: (event: React.FormEvent) => void;
   iconName: IconNames;
   ideaId: string;
+  variant?: 'text' | 'icon';
 }
 
 const ReactionButton = ({
@@ -339,8 +342,8 @@ const ReactionButton = ({
   iconName,
   ideaId,
   userReactionMode,
+  variant = 'icon',
 }: Props) => {
-  const { data: authUser } = useAuthUser();
   const { data: idea } = useIdeaById(ideaId);
   const projectId = !isNilOrError(idea)
     ? idea.data.relationships.project.data.id
@@ -348,42 +351,6 @@ const ReactionButton = ({
 
   const { data: project } = useProjectById(projectId);
   const localize = useLocalize();
-
-  const getDisabledReasonMessage = (
-    disabledReason: IdeaReactingDisabledReason | null,
-    futureEnabled: string | null
-  ) => {
-    if (disabledReason === 'project_inactive') {
-      return futureEnabled
-        ? messages.reactingPossibleLater
-        : messages.reactingDisabledProjectInactive;
-    } else if (disabledReason === 'user_not_in_group') {
-      return globalMessages.notInGroup;
-    } else if (disabledReason === 'reacting_disabled' && futureEnabled) {
-      return messages.reactingPossibleLater;
-    } else if (disabledReason === 'reacting_like_limited_max_reached') {
-      return messages.likingDisabledMaxReached;
-    } else if (disabledReason === 'reacting_dislike_limited_max_reached') {
-      return messages.dislikingDisabledMaxReached;
-    } else if (disabledReason === 'idea_not_in_current_phase') {
-      return futureEnabled
-        ? messages.reactingDisabledFutureEnabled
-        : messages.reactingDisabledPhaseOver;
-    } else if (disabledReason === 'user_not_permitted') {
-      return messages.reactingNotPermitted;
-    } else if (
-      (authUser && disabledReason === 'user_not_active') ||
-      disabledReason === 'user_missing_requirements'
-    ) {
-      return messages.completeProfileToReact;
-    } else if (disabledReason === 'user_not_signed_in') {
-      return messages.reactingNotSignedIn;
-    } else if (authUser && disabledReason === 'user_not_verified') {
-      return messages.reactingVerifyToReact;
-    } else {
-      return messages.reactingNotEnabled;
-    }
-  };
 
   if (!isNilOrError(idea) && !isNilOrError(project)) {
     const reactingDescriptor =
@@ -405,9 +372,20 @@ const ReactionButton = ({
         (alreadyReacted && cancellingEnabled) ||
         (disabledReason && isFixableByAuthentication(disabledReason)));
 
-    const disabledReasonMessage = getDisabledReasonMessage(
-      disabledReason,
-      futureEnabledAt
+    const disabledOrFutureEnabledReason =
+      futureEnabledAt &&
+      disabledReason &&
+      [
+        'project_inactive',
+        'reacting_disabled',
+        'idea_not_in_current_phase',
+      ].includes(disabledReason)
+        ? 'future_enabled'
+        : disabledReason;
+
+    const disabledReasonMessage = getPermissionsDisabledMessage(
+      'reacting_idea',
+      disabledOrFutureEnabledReason
     );
 
     const enabledFromDate = futureEnabledAt ? (
@@ -421,7 +399,7 @@ const ReactionButton = ({
     const projectName = localize(project.data.attributes.title_multiloc);
     const buttonReactionModeIsActive = buttonReactionMode === userReactionMode;
 
-    const disabledMessage = (
+    const disabledMessage = disabledReasonMessage && (
       <FormattedMessage
         {...disabledReasonMessage}
         values={{
@@ -432,60 +410,84 @@ const ReactionButton = ({
     );
 
     return (
-      <Tippy
+      <Tooltip
         placement="top"
         theme="dark"
         disabled={disabledReason === null}
         content={disabledMessage}
         trigger="mouseenter"
+        width={variant === 'text' ? '100%' : 'fit-content'}
       >
-        <Button
-          buttonReactionMode={buttonReactionMode}
-          buttonReactionModeIsActive={buttonReactionModeIsActive}
-          reactingEnabled={buttonEnabled}
-          onMouseDown={removeFocusAfterMouseClick}
-          onClick={onClick}
-          className={[
-            className,
-            {
-              up: 'e2e-ideacard-like-button',
-              down: 'e2e-ideacard-dislike-button',
-            }[buttonReactionMode],
-            buttonReactionModeEnabled ? 'enabled' : '',
-          ].join(' ')}
-          aria-disabled={!buttonEnabled}
-        >
-          <ReactionIconContainer
-            styleType={styleType}
-            size={size}
-            reactingEnabled={buttonEnabled}
-            buttonReactionModeIsActive={buttonReactionModeIsActive}
-            buttonReactionMode={buttonReactionMode}
-            disabledReason={disabledReason}
-          >
-            <ReactionIcon
-              name={iconName}
-              reactingEnabled={buttonEnabled}
-              buttonReactionModeIsActive={buttonReactionModeIsActive}
+        <>
+          {variant === 'text' && (
+            <ButtonComponent
+              onClick={onClick}
+              icon={buttonReactionModeIsActive ? 'check' : 'vote-ballot'}
+              bgColor={buttonReactionModeIsActive ? colors.success : undefined}
+            >
+              {buttonReactionModeIsActive ? (
+                <FormattedMessage {...messages.voted} />
+              ) : (
+                <FormattedMessage {...messages.vote} />
+              )}
+              <ScreenReaderOnly>
+                <FormattedMessage
+                  {...{ up: messages.like, down: messages.dislike }[
+                    buttonReactionMode
+                  ]}
+                />
+              </ScreenReaderOnly>
+            </ButtonComponent>
+          )}
+          {variant === 'icon' && (
+            <Button
               buttonReactionMode={buttonReactionMode}
-              disabledReason={disabledReason}
-            />
-            <ScreenReaderOnly>
-              <FormattedMessage
-                {...{ up: messages.like, down: messages.dislike }[
-                  buttonReactionMode
-                ]}
-              />
-            </ScreenReaderOnly>
-          </ReactionIconContainer>
-          <ReactionCount
-            reactingEnabled={buttonEnabled}
-            buttonReactionMode={buttonReactionMode}
-            buttonReactionModeIsActive={buttonReactionModeIsActive}
-            aria-hidden
-          >
-            {reactionsCount}
-          </ReactionCount>
+              buttonReactionModeIsActive={buttonReactionModeIsActive}
+              reactingEnabled={buttonEnabled}
+              onMouseDown={removeFocusAfterMouseClick}
+              onClick={onClick}
+              className={[
+                className,
+                {
+                  up: 'e2e-ideacard-like-button',
+                  down: 'e2e-ideacard-dislike-button',
+                }[buttonReactionMode],
+                buttonReactionModeEnabled ? 'enabled' : '',
+              ].join(' ')}
+            >
+              <ReactionIconContainer
+                styleType={styleType}
+                size={size}
+                reactingEnabled={buttonEnabled}
+                buttonReactionModeIsActive={buttonReactionModeIsActive}
+                buttonReactionMode={buttonReactionMode}
+                disabledReason={disabledReason}
+              >
+                <ReactionIcon
+                  name={iconName}
+                  reactingEnabled={buttonEnabled}
+                  buttonReactionModeIsActive={buttonReactionModeIsActive}
+                  buttonReactionMode={buttonReactionMode}
+                  disabledReason={disabledReason}
+                />
+                <ScreenReaderOnly>
+                  <FormattedMessage
+                    {...{ up: messages.like, down: messages.dislike }[
+                      buttonReactionMode
+                    ]}
+                  />
+                </ScreenReaderOnly>
+              </ReactionIconContainer>
+              <ReactionCount
+                reactingEnabled={buttonEnabled}
+                buttonReactionMode={buttonReactionMode}
+                buttonReactionModeIsActive={buttonReactionModeIsActive}
+                aria-hidden
+              >
+                {reactionsCount}
+              </ReactionCount>
+            </Button>
+          )}
           {disabledReason && (
             // Adding a dot as a hack to make the screen reader read the message with the correct pause after the previous text. Ideally all messages should have a dot at the end.
             <ScreenReaderOnly>
@@ -493,8 +495,8 @@ const ReactionButton = ({
               {disabledMessage}
             </ScreenReaderOnly>
           )}
-        </Button>
-      </Tippy>
+        </>
+      </Tooltip>
     );
   }
 

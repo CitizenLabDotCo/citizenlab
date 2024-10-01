@@ -6,8 +6,8 @@ import moment, { Moment } from 'moment';
 import useAuthUser from 'api/me/useAuthUser';
 
 import CommentsByTimeCard from 'components/admin/GraphCards/CommentsByTimeCard';
+import InputsByTimeCard from 'components/admin/GraphCards/InputsByTimeCard';
 import ParticipantsCard from 'components/admin/GraphCards/ParticipantsCard';
-import PostByTimeCard from 'components/admin/GraphCards/PostsByTimeCard';
 import ReactionsByTimeCard from 'components/admin/GraphCards/ReactionsByTimeCard';
 import RegistrationsCard from 'components/admin/GraphCards/RegistrationsCard';
 import { GraphsContainer, Column } from 'components/admin/GraphWrappers';
@@ -129,16 +129,19 @@ const OverviewDashboard = () => {
       />
       <GraphsContainer>
         <Column>
-          <RegistrationsCard
-            projectId={currentProjectFilter}
-            startAtMoment={startAtMoment}
-            endAtMoment={endAtMoment}
-            resolution={resolution}
-            layout={isSmallerThanSmallDesktop ? 'narrow' : 'wide'}
-            hideRegistrationRate
-          />
+          {/* Registration data is hidden when the user filters by project because it is not available. For more details, refer to: https://www.notion.so/govocal/Gent-is-struggling-to-access-the-data-on-their-visitor-dashboard-cecae17322a24ccdb4bd938a511159cc?d=78857b76019144ee97b6bd8de960ead1 */}
+          {!currentProjectFilter && (
+            <RegistrationsCard
+              projectId={currentProjectFilter}
+              startAtMoment={startAtMoment}
+              endAtMoment={endAtMoment}
+              resolution={resolution}
+              layout={isSmallerThanSmallDesktop ? 'narrow' : 'wide'}
+              hideRegistrationRate
+            />
+          )}
         </Column>
-        <Column>
+        <Column fullWidth={!!currentProjectFilter}>
           <ParticipantsCard
             projectId={currentProjectFilter}
             startAtMoment={startAtMoment}
@@ -166,7 +169,7 @@ const OverviewDashboard = () => {
             endAtMoment={endAtMoment}
             resolution={resolution}
           />
-          <PostByTimeCard
+          <InputsByTimeCard
             projectId={currentProjectFilter}
             startAtMoment={startAtMoment}
             endAtMoment={endAtMoment}

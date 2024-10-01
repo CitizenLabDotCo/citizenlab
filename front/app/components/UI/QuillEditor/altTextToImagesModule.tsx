@@ -4,6 +4,8 @@
 
 import Quill, { QuillOptionsStatic } from 'quill';
 
+import { getPlaceHolder } from './utils';
+
 const Module = Quill.import('core/module');
 const BaseImageFormat = Quill.import('formats/image');
 const BlockEmbed = Quill.import('blots/block/embed');
@@ -31,6 +33,7 @@ export class ImageBlot extends BaseImageFormat {
     if (value) {
       node.appendChild(img);
     }
+
     return node;
   }
 
@@ -48,6 +51,10 @@ export class ImageBlot extends BaseImageFormat {
       'display: block; width:100%; border: 1px solid #ccc; border-radius: 3px; padding: 5px; margin-bottom:4px;'
     );
     altInput.setAttribute('value', img?.getAttribute('alt') || '');
+
+    // Set placeholder
+    altInput.setAttribute('placeholder', getPlaceHolder());
+
     // Handle change of input field value
     const handleChange = (e: Event) => {
       const target = e.target as HTMLTextAreaElement;
@@ -125,6 +132,7 @@ export class AltTextToImagesModule extends Module {
       }
       // Find image blot element
       const elm = e?.target?.closest('.ql-alt-text-input-container');
+
       // Deselect callback
       const deselect = () => {
         elm.onDeselect();

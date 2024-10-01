@@ -47,10 +47,14 @@ module EmailCampaigns
     N_TOP_IDEAS = 12
 
     def self.default_schedule
-      config_timezone = Time.find_zone(AppConfiguration.instance.settings('core', 'timezone'))
+      start_time = AppConfiguration.timezone.local(2019)
 
-      IceCube::Schedule.new(config_timezone.local(2019)) do |schedule|
-        every_monday_at10_am = IceCube::Rule.weekly(1).day(:monday).hour_of_day(10)
+      IceCube::Schedule.new(start_time) do |schedule|
+        every_monday_at10_am = IceCube::Rule
+          .weekly(1)
+          .day(:monday)
+          .hour_of_day(10)
+
         schedule.add_recurrence_rule(every_monday_at10_am)
       end
     end
@@ -159,7 +163,7 @@ module EmailCampaigns
 
     def top_ideas
       @top_ideas ||= new_ideas.concat(active_ideas).uniq(&:id).select do |idea|
-        idea.participation_method_on_creation.include_data_in_email?
+        idea.participation_method_on_creation.supports_public_visibility?
       end
     end
 
@@ -219,9 +223,9 @@ module EmailCampaigns
       new_comments_increases = Comment.where(post_id: idea_ids).where('created_at > ?', Time.now - days_ago).group(:post_id).count
 
       idea_ids.each_with_object({}) do |idea_id, object|
-        likes = (new_likes_counts[idea_id] || 0)
-        dislikes = (new_dislikes_counts[idea_id] || 0)
-        comments        = (new_comments_increases[idea_id] || 0)
+        likes = new_likes_counts[idea_id] || 0
+        dislikes = new_dislikes_counts[idea_id] || 0
+        comments        = new_comments_increases[idea_id] || 0
         total           = (likes + dislikes + comments)
         object[idea_id] = { likes: likes, dislikes: dislikes, comments: comments, total: total }
       end

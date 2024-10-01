@@ -100,6 +100,9 @@ RSpec/MultipleExpectations:
 Style/DoubleNegation:
   Enabled: false
 
+Performance/Casecmp:
+  Enabled: false
+
 Style/NegatedIf:
   Enabled: false
 
@@ -132,6 +135,10 @@ RSpec/MultipleMemoizedHelpers:
 RSpec/SharedContext:
   Exclude:
     - "**/spec/acceptance/**/*"
+
+RSpec/ImplicitSubject:
+  Exclude:
+    - "**/spec/policies/**/*"
 
 Style/IfUnlessModifier:
   Enabled: false

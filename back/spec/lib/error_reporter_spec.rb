@@ -4,10 +4,33 @@ require 'rails_helper'
 
 RSpec.describe ErrorReporter do
   describe '.handle' do
-    it 'captures and reports errors' do
-      expect(described_class).to receive(:report).with(instance_of(TypeError)).and_call_original
-      described_class.handle do
-        1 + nil
+    context 'when in test environment' do
+      it 'does not capture and report errors' do
+        expect(described_class).not_to receive(:report)
+        expect do
+          described_class.handle { 1 + nil }
+        end.to raise_error(TypeError)
+      end
+    end
+
+    context 'when in production environment' do
+      # rubocop:disable RSpec/BeforeAfterAll
+      before(:all) do
+        Rails.env = 'production'
+        load 'lib/error_reporter.rb'
+      end
+
+      after(:all) do
+        Rails.env = 'test'
+        load 'lib/error_reporter.rb'
+      end
+      # rubocop:enable RSpec/BeforeAfterAll
+
+      it 'captures and reports errors' do
+        expect(described_class).to receive(:report).with(instance_of(TypeError)).and_call_original
+        expect do
+          described_class.handle { 1 + nil }
+        end.not_to raise_error
       end
     end
   end
@@ -33,13 +56,13 @@ RSpec.describe ErrorReporter do
       expect(Rails.logger).to receive(:error).with(instance_of(String), {}).and_call_original
     end
 
-    it 'repors in-line created errors which do not have backtrace' do
+    it 'reports in-line created errors which do not have backtrace' do
       error = StandardError.new('test')
       expect_report(error)
       described_class.report(error)
     end
 
-    it 'repors runtime errors' do
+    it 'reports runtime errors' do
       expect_report(instance_of(TypeError))
       begin
         1 + nil

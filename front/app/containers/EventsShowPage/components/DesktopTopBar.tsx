@@ -32,10 +32,8 @@ interface Props {
 
 const TopBar = ({ project, event }: Props) => {
   const location = useLocation();
-  const { data: user } = useAuthUser();
+  const { data: authUser } = useAuthUser();
   const { formatMessage } = useIntl();
-  const projectId = project.id;
-  const canModerate = user ? canModerateProject(projectId, user) : false;
 
   return (
     <Bar>
@@ -49,16 +47,18 @@ const TopBar = ({ project, event }: Props) => {
               : clHistory.push(`/projects/${project.attributes.slug}`);
           }}
         />
-        {canModerate && (
+        {canModerateProject(project, authUser) && (
           <Button
-            buttonStyle="secondary"
+            buttonStyle="secondary-outlined"
             m="0px"
             icon="edit"
             px="8px"
             py="4px"
             text={formatMessage(messages.editEvent)}
             onClick={() => {
-              clHistory.push(`/admin/projects/${projectId}/events/${event.id}`);
+              clHistory.push(
+                `/admin/projects/${project.id}/events/${event.id}`
+              );
             }}
           />
         )}

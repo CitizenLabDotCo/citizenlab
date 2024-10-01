@@ -34,8 +34,8 @@ module Filterer
 
     # @param [String] name name of the filter
     # @param [Proc] block
-    def add_filter(name, &block)
-      filters << Filter.new(name, &block)
+    def add_filter(name, &)
+      filters << Filter.new(name, &)
     end
   end
 

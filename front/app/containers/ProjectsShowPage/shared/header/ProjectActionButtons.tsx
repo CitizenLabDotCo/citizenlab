@@ -102,7 +102,6 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
       };
 
       triggerAuthenticationFlow({
-        flow: 'signup',
         context: {
           type: 'phase',
           id: currentPhase.id,
@@ -135,7 +134,6 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
       };
 
       triggerAuthenticationFlow({
-        flow: 'signup',
         context: {
           type: 'phase',
           id: currentPhase.id,
@@ -190,7 +188,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
       {showSeeIdeasButton ? (
         <SeeIdeasButton
           id="e2e-project-see-ideas-button"
-          buttonStyle="secondary"
+          buttonStyle="secondary-outlined"
           onClick={() => {
             scrollToElementWithId('project-ideas');
           }}
@@ -210,9 +208,9 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
       ) : showEventsCTAButton ? (
         <Button
           id="e2e-project-see-events-button"
-          buttonStyle="secondary"
+          buttonStyle="secondary-outlined"
           onClick={() => {
-            scrollToElement({ id: 'project-events' });
+            scrollToElement({ id: 'e2e-events-section-project-page' });
           }}
           fontWeight="500"
           mb="8px"

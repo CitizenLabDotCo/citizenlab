@@ -1,13 +1,10 @@
-# frozen_string_literal: true
-
 require 'rails_helper'
 
-describe Permissions::BasePermissionsService do
-  let(:service) { described_class.new }
+# TODO: cleanup-after-proposals-migration
+describe Permissions::InitiativePermissionsService do
+  let(:service) { described_class.new(user) }
 
-  before do
-    SettingsService.new.activate_feature! 'user_confirmation'
-  end
+  before { SettingsService.new.activate_feature! 'user_confirmation' }
 
   # NOTE: Most of the logic here is tested in the parent class tests - BasePermissionsService
   describe '"posting_initiative" denied_reason_for_action' do
@@ -20,18 +17,22 @@ describe Permissions::BasePermissionsService do
     it 'returns nil when action is allowed' do
       groups = create_list(:group, 2)
       groups.first.add_member(user).save!
-      permission.update!(permitted_by: 'groups', group_ids: groups.map(&:id))
-      expect(service.denied_reason_for_action(action, user)).to be_nil
+      permission.update!(permitted_by: 'users', group_ids: groups.map(&:id))
+      expect(service.denied_reason_for_action(action)).to be_nil
     end
 
-    it 'returns `user_not_signed_in` when user needs to be signed in' do
-      permission.update!(permitted_by: 'users')
-      expect(service.denied_reason_for_action(action, nil)).to eq 'user_not_signed_in'
+    context 'when the user is not signed in' do
+      let(:user) { nil }
+
+      it 'returns `user_not_signed_in` when user needs to be signed in' do
+        permission.update!(permitted_by: 'users')
+        expect(service.denied_reason_for_action(action)).to eq 'user_not_signed_in'
+      end
     end
 
     it 'returns `user_not_in_group` when user is not in authorized groups' do
-      permission.update!(permitted_by: 'groups', group_ids: create_list(:group, 2).map(&:id))
-      expect(service.denied_reason_for_action(action, user)).to eq 'user_not_in_group'
+      permission.update!(permitted_by: 'users', group_ids: create_list(:group, 2).map(&:id))
+      expect(service.denied_reason_for_action(action)).to eq 'user_not_in_group'
     end
   end
 end

@@ -174,7 +174,10 @@ resource 'Users' do
         end
 
         context 'when the user_avatars module is inactive' do
-          before { SettingsService.new.deactivate_feature!('user_avatars') }
+          before do
+            SettingsService.new.deactivate_feature!('gravatar_avatars')
+            SettingsService.new.deactivate_feature!('user_avatars')
+          end
 
           example_request 'Create a user without avatar' do
             assert_status 201
@@ -826,7 +829,7 @@ resource 'Users' do
             ])
 
             project.phases.first.permissions.find_by(action: 'posting_idea')
-              .update!(permitted_by: 'groups', groups: [old_timers])
+              .update!(permitted_by: 'users', groups: [old_timers])
           end
 
           context 'on a resident' do
@@ -846,7 +849,6 @@ resource 'Users' do
                 config = AppConfiguration.instance
                 config.settings['core']['maximum_admins_number'] = 2
                 config.settings['core']['additional_admins_number'] = 0
-                config.settings['seat_based_billing'] = { enabled: true, allowed: true }
                 config.save!
               end
 
@@ -1193,7 +1195,10 @@ resource 'Users' do
         end
 
         describe 'when user_avatars is disabled' do
-          before { SettingsService.new.deactivate_feature!('user_avatars') }
+          before do
+            SettingsService.new.deactivate_feature!('gravatar_avatars')
+            SettingsService.new.deactivate_feature!('user_avatars')
+          end
 
           example 'The user avatar can be removed' do
             @user.update!(avatar: Rails.root.join('spec/fixtures/male_avatar_1.jpg').open)
@@ -1342,7 +1347,7 @@ resource 'Users' do
         let(:id) { @user.id }
 
         example 'Get the number of ideas published by one user' do
-          IdeaStatus.create_defaults
+          create(:idea_status_proposed)
           create(:idea, author: @user)
           create(:idea)
           create(:idea, author: @user, publication_status: 'draft')
@@ -1355,6 +1360,7 @@ resource 'Users' do
         end
       end
 
+      # TODO: cleanup-after-proposals-migration
       get 'web_api/v1/users/:id/initiatives_count' do
         let(:id) { @user.id }
 
@@ -1398,6 +1404,7 @@ resource 'Users' do
           expect(json_response.dig(:data, :attributes, :count)).to eq 2
         end
 
+        # TODO: cleanup-after-proposals-migration
         example 'Get the number of comments on initiatives posted by one user' do
           create(:comment, author: @user, post: create(:initiative))
           create(:comment, author: @user, post: create(:initiative))

@@ -70,6 +70,8 @@ class Project < ApplicationRecord
   before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, dependent: :nullify
 
+  has_one :nav_bar_item, dependent: :destroy
+
   has_one :admin_publication, as: :publication, dependent: :destroy
   accepts_nested_attributes_for :admin_publication, update_only: true
 
@@ -87,7 +89,7 @@ class Project < ApplicationRecord
   validates :description_preview_multiloc, multiloc: { presence: false }
   validates :visible_to, presence: true, inclusion: { in: VISIBLE_TOS }
   validates :internal_role, inclusion: { in: INTERNAL_ROLES, allow_nil: true }
-  validate :admin_publication_must_exist, unless: proc { Current.loading_tenant_template }
+  validate :admin_publication_must_exist, unless: proc { Current.loading_tenant_template } # TODO: This should always be validated!
 
   pg_search_scope :search_by_all,
     against: %i[title_multiloc description_multiloc description_preview_multiloc slug],
@@ -187,11 +189,12 @@ class Project < ApplicationRecord
     self.folder_changed = false
   end
 
-  def uses_input_form?
-    phases.each do |phase|
-      return true if phase.can_contain_ideas?
-    end
-    false
+  def pmethod
+    # NOTE: if a project is passed to this method, timeline projects used to always return 'Ideation'
+    # as it was never set and defaulted to this when the participation_method was available on the project
+    # The following mimics the same behaviour now that participation method is not available on the project
+    # TODO: Maybe change to find phase with ideation or voting where created date between start and end date?
+    @pmethod ||= ParticipationMethod::Ideation.new(phases.first)
   end
 
   private
@@ -284,3 +287,4 @@ Project.include(IdeaAssignment::Extensions::Project)
 Project.include(ContentBuilder::Patches::Project)
 Project.include(Analysis::Patches::Project)
 Project.include(EmailCampaigns::Extensions::Project)
+Project.include(BulkImportIdeas::Patches::Project)

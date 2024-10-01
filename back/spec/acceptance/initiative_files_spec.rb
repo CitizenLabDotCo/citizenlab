@@ -3,6 +3,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
+# TODO: cleanup-after-proposals-migration
 resource 'InitiativeFile' do
   explanation 'File attachments.'
 

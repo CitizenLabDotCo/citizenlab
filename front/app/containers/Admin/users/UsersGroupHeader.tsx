@@ -51,7 +51,7 @@ const UsersGroupHeader = memo(
               hiddenText={<FormattedMessage {...messages.editGroup} />}
               padding=".65em"
               icon="edit"
-              buttonStyle="secondary"
+              buttonStyle="secondary-outlined"
               onClick={onEdit}
             />
             <Button

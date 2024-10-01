@@ -13,7 +13,7 @@ describe SideFxIdeaService do
     end
 
     it "doesn't trigger toxicity detection for a native survey response" do
-      IdeaStatus.create_defaults
+      create(:idea_status_proposed)
       project = create(:single_phase_native_survey_project)
       response = create(:idea, project: project, creation_phase: project.phases.first)
       expect { service.after_create(response, user) }.not_to have_enqueued_job(ToxicityDetectionJob)
@@ -28,7 +28,7 @@ describe SideFxIdeaService do
     end
 
     it "doesn't trigger toxicity detection for a native survey response" do
-      IdeaStatus.create_defaults
+      create(:idea_status_proposed)
       project = create(:single_phase_native_survey_project)
       response = create(:idea, project: project, creation_phase: project.phases.first)
       response.update!(title_multiloc: { 'en' => 'Updated title' })

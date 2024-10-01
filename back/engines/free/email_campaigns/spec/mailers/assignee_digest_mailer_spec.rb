@@ -2,6 +2,7 @@
 
 require 'rails_helper'
 
+# TODO: move-old-proposals-test
 RSpec.describe EmailCampaigns::AssigneeDigestMailer do
   describe 'AssigneeDigest' do
     let_it_be(:recipient) { create(:admin, locale: 'en') }
@@ -20,8 +21,8 @@ RSpec.describe EmailCampaigns::AssigneeDigestMailer do
                               id: idea.id,
                               title_multiloc: idea.title_multiloc,
                               url: Frontend::UrlService.new.model_to_url(idea),
-                              published_at: (idea.published_at&.iso8601 || Time.now.iso8601),
-                              assigned_at: (idea.assigned_at&.iso8601 || Time.now.iso8601),
+                              published_at: idea.published_at&.iso8601 || Time.now.iso8601,
+                              assigned_at: idea.assigned_at&.iso8601 || Time.now.iso8601,
                               author_name: name_service.display_name!(idea.author),
                               likes_count: idea.likes_count,
                               dislikes_count: idea.dislikes_count,
@@ -33,8 +34,8 @@ RSpec.describe EmailCampaigns::AssigneeDigestMailer do
                                     id: initiative.id,
                                     title_multiloc: initiative.title_multiloc,
                                     url: Frontend::UrlService.new.model_to_url(initiative),
-                                    published_at: (initiative.published_at&.iso8601 || Time.now.iso8601),
-                                    assigned_at: (initiative.assigned_at&.iso8601 || Time.now.iso8601),
+                                    published_at: initiative.published_at&.iso8601 || Time.now.iso8601,
+                                    assigned_at: initiative.assigned_at&.iso8601 || Time.now.iso8601,
                                     author_name: name_service.display_name!(initiative.author),
                                     likes_count: initiative.likes_count,
                                     comments_count: initiative.comments_count,
@@ -54,12 +55,12 @@ RSpec.describe EmailCampaigns::AssigneeDigestMailer do
                                               id: initiative.id,
                                               title_multiloc: initiative.title_multiloc,
                                               url: Frontend::UrlService.new.model_to_url(initiative),
-                                              published_at: (initiative.published_at&.iso8601 || Time.now.iso8601),
-                                              assigned_at: (initiative.assigned_at&.iso8601 || Time.now.iso8601),
+                                              published_at: initiative.published_at&.iso8601 || Time.now.iso8601,
+                                              assigned_at: initiative.assigned_at&.iso8601 || Time.now.iso8601,
                                               author_name: name_service.display_name!(initiative.author),
                                               likes_count: initiative.likes_count,
                                               comments_count: initiative.comments_count,
-                                              threshold_reached_at: (initiative.threshold_reached_at&.iso8601 || Time.now.iso8601),
+                                              threshold_reached_at: initiative.threshold_reached_at&.iso8601 || Time.now.iso8601,
                                               images: initiative.initiative_images.map do |image|
                                                         {
                                                           ordering: image.ordering,

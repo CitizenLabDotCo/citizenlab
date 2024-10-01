@@ -102,7 +102,7 @@ nn:
       "link_terms_conditions": "Vilkår og betingelser"
       "link_unsubscribe": "Meld av"
       "powered_by": "Levert av"
-      "statement": "CitizenLab har sendt deg denne e-posten på vegne av %{organizationName}, fordi du er en registrert bruker hos %{organizationLink}. Du kan %{unsubscribeLink} hvis du ikke vil motta disse e-postene i fremtiden."
+      "statement": "Go Vocal har sendt deg denne e-posten på vegne av %{organizationName}, fordi du er en registrert bruker hos %{organizationLink}. Du kan %{unsubscribeLink} hvis du ikke vil motta disse e-postene i fremtiden."
       "unsubscribe_text": "meld av"
     comment_deleted_by_admin:
       reason: 'Grunnen til at din kommentar ble slettet:'

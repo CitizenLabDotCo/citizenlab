@@ -32,7 +32,7 @@ describe 'google authentication' do
             picture: 'https://lh3.googleusercontent.com/-Q2YP0Ju3enE/AAAAAAAAAAI/AAAAAAAAAAA/ACHi3rcvJkuBGnWEs_vjHZDTGaRUE7RXeg/s96-c/photo.jpg',
             given_name: 'Boris',
             family_name: 'Brompton',
-            email_verified: true
+            email_verified: email_verified
           },
           id_token: 'eyJhbGciOiJSUzI1NiJsImtpZCI6IjZmNjc4MRJhNzEbOTlhNjU4ZTc2MGFhNWFhOTNlNWZjM2RjNzUyYjUiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiI2OTI0ODQ0NDE4MTMtZGFtZGUwYWVtMWllNjlxcmFoNnRlcjhnbmRjbmY4cWYuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiI2OTI0ODQ0NDE4MTMtZGFtZGUwYWVtMWllNjlxcmFoNnRlcjhnbmRjbmY4cWYuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMDE0ODE5NDYxMjQwMzkxODQ2NzQiLCJlbWFpbCI6ImZyYW5rLnZhbmRyb29nZW5icm9lY2tAb3V0bG9vay5iZSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJhdF9oYXNoIjoiZlhsYkVEMVgyRElxam10WVJ1LXZOZyIsIm5hbWUiOiJGcmFuayBWYW4gRHJvb2dlbmJyb2VjayIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vLVEyWVAwSnUzZW5FL0FBQUFBQUFBQUFJL0FBQUFBQUFBQUFBL0FDSGkzcmN2Smt1QkduV0VzX3ZqSFpEVEdhUlVFN1JYZWcvczk2LWMvcGhvdG8uanBnIiwiZ2l2ZW5fbmFtZSI6IkZyYW5rIiwiZmFtaWx5X25hbWUiOiJWYW4gRHJvb2dlbmJyb2VjayIsImxvY2FsZSI6Im5sIiwiaWF0IjoxNTU0OTcwOTY1LCJleHAiOjE1NTQ5NzQ1NjV9.JPl32XIxUMGj9aS8_Z4rKgWPx-f-jHf0KbinTUZh7OmpO9k5AAXTqw_qeA79vaZiyxfn24RFbYb-F4Wvnp1qnHGlMRkGFRhtYR474v1XoN1a9y8WYXsHclyP3beWmLSUmHzMrkme5hkK3Ejc7Fj0EaAjDpufmublpqQLXl8FRXU0Q9iDtceX6owU-LJDvfXeCmEuOrIE4psTY0Vtv4iPLiQWTaRVa_9QGJpxZQMqNyyDfyZerzwAHpfx3YMCqj5Tj3OUa-KrTgWAFrY3jUijdehwLQRwMlGpVUPGt7_dZsGxis3ZClWxO1h-IRzhVwvpMSnjycZl3GV9y2mgt9xSpw',
           raw_info: {
@@ -43,7 +43,7 @@ describe 'google authentication' do
             picture: 'https://lh3.googleusercontent.com/-Q2YP0Ju3enE/AAAAAAAAAAI/AAAAAAAAAAA/ACHi3rcvJkuBGnWEs_vjHZDTGaRUE7RXeg/mo/photo.jpg',
             given_name: 'Boris',
             family_name: 'Brompton',
-            email_verified: true
+            email_verified: email_verified
           }
         },
         provider: 'google',
@@ -73,13 +73,15 @@ describe 'google authentication' do
     host! 'example.org'
   end
 
+  let(:email_verified) { true }
+
   it 'successfully authenticates an existing user' do
     user = create(:user, email: 'boris.brompton@orange.uk')
 
     get '/auth/google?random-passthrough-param=somevalue'
     follow_redirect!
 
-    expect(response).to redirect_to('/en?random-passthrough-param=somevalue')
+    expect(response).to redirect_to('/en/?random-passthrough-param=somevalue')
 
     expect(user.reload).to have_attributes({
       first_name: user.first_name,
@@ -150,7 +152,7 @@ describe 'google authentication' do
 
       # Expect the redirect URL to include the locale ('nl-NL') from Tenant locales that includes
       # the locale code in the mock omniauth response ('nl')
-      expect(response).to redirect_to('/nl-NL/complete-signup?random-passthrough-param=somevalue')
+      expect(response).to redirect_to('/nl-NL/?random-passthrough-param=somevalue')
 
       user = User.find_by(email: 'boris.brompton@orange.uk')
 
@@ -172,9 +174,8 @@ describe 'google authentication' do
       follow_redirect!
 
       # Expect the redirect URL to include the locale ('fr-FR') of the previously selected locale,
-      # which should be preferred over any locale deduced from the locale in the omniauth response ('nl')
-      # Note: '%2F' is the URL-safe encoding of an ASCII '/' character
-      expect(response).to redirect_to('/fr-FR/complete-signup?sso_pathname=%2Ffr-FR%2Fsome-page')
+      # which should be preferred in created user over any locale deduced from the locale in the omniauth response ('nl')
+      expect(response).to redirect_to('/fr-FR/some-page?')
 
       user = User.find_by(email: 'boris.brompton@orange.uk')
 
@@ -190,7 +191,7 @@ describe 'google authentication' do
       # Expect the redirect URL to include the locale ('nl-NL') from Tenant locales that includes
       # the locale code in the mock omniauth response ('nl')
       # Because the 'selected' locale is the default, we cannot be sure anything was actively selected.
-      expect(response).to redirect_to('/nl-NL/complete-signup?sso_pathname=%2Fen%2Fsome-page')
+      expect(response).to redirect_to('/nl-NL/some-page?')
 
       user = User.find_by(email: 'boris.brompton@orange.uk')
 
@@ -208,6 +209,17 @@ describe 'google authentication' do
         user = User.find_by(email: 'boris.brompton@orange.uk')
         expect(user.confirmation_required?).to be(false)
       end
+
+      context 'when email is not verified' do
+        let(:email_verified) { false }
+
+        it 'creates unconfirmed user' do
+          get '/auth/google'
+          follow_redirect!
+          user = User.find_by(email: 'boris.brompton@orange.uk')
+          expect(user.confirmation_required?).to be(true)
+        end
+      end
     end
   end
 
@@ -219,7 +231,7 @@ describe 'google authentication' do
 
     # Expect the redirect url to include the locale ('nl-NL') from Tenant locales that includes
     # the locale code in the mock omniauth response ('nl')
-    expect(response).to redirect_to('/nl-NL/complete-signup?random-passthrough-param=somevalue')
+    expect(response).to redirect_to('/nl-NL/?random-passthrough-param=somevalue')
 
     expect(user.reload).to have_attributes({
       first_name: 'Boris',

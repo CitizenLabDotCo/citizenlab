@@ -6,6 +6,7 @@ lv:
       "inappropriate_content_flagged": Nepiemērots saturs atzīmēts ar karodziņu - administratori
     inappropriate_content_flagged:
       subject: 'Ieraksts jūsu platformā ir atzīmēts pārskatīšanai'
+      preheader: 'Ieraksts jūsu platformā ir atzīmēts pārskatīšanai'
       header_title: 'Ieraksts jūsu platformā ir atzīmēts pārskatīšanai'
       comment_author: '%{authorName} komentēja:'
       idea_author: '%{authorName} iesniedza ziņu:'

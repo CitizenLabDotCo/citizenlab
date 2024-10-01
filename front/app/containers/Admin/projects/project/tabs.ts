@@ -13,18 +13,12 @@ export type IPhaseTab = ITab & {
 export type FeatureFlags = {
   surveys_enabled: boolean;
   typeform_enabled: boolean;
-  granular_permissions_enabled: boolean;
   report_builder_enabled: boolean;
 };
 
 export const getTabs = (
   phase: IPhaseData,
-  {
-    surveys_enabled,
-    typeform_enabled,
-    granular_permissions_enabled,
-    report_builder_enabled,
-  }: FeatureFlags,
+  { surveys_enabled, typeform_enabled, report_builder_enabled }: FeatureFlags,
   formatMessage: FormatMessage
 ): IPhaseTab[] => {
   return [
@@ -35,17 +29,20 @@ export const getTabs = (
     },
     getMethodConfig(phase.attributes.participation_method).showInputManager && {
       label: formatMessage(messages.inputManagerTab),
-      url: 'ideas',
-      name: 'ideas',
+      url: getMethodConfig(phase.attributes.participation_method)
+        .inputManagerName,
+      name: getMethodConfig(phase.attributes.participation_method)
+        .inputManagerName,
     },
     getMethodConfig(phase.attributes.participation_method).formEditor ===
       'simpleFormEditor' && {
       label: formatMessage(messages.inputFormTab),
-      url: 'ideaform',
-      name: 'ideaform',
+      url: 'form',
+      name: 'form',
     },
     (phase.attributes.participation_method === 'ideation' ||
-      phase.attributes.participation_method === 'voting') && {
+      phase.attributes.participation_method === 'voting' ||
+      phase.attributes.participation_method === 'proposals') && {
       label: formatMessage(messages.mapTab),
       url: 'map',
       name: 'map',
@@ -82,7 +79,7 @@ export const getTabs = (
         ? undefined
         : formatMessage(messages.lockedTooltip),
     },
-    granular_permissions_enabled && {
+    {
       label: formatMessage(messages.phaseAccessRights),
       url: 'access-rights',
       name: 'access-rights',

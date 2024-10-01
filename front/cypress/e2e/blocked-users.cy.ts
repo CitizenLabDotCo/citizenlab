@@ -10,7 +10,7 @@ describe('Blocked user', () => {
   before(() => {
     cy.apiSignup(firstName, lastName, email, password).then((response) => {
       userId = response.body.data.id;
-      cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+      cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
         const adminJwt = response.body.jwt;
         cy.request({
           headers: {
@@ -64,8 +64,8 @@ describe('Blocked user', () => {
   // registration work, but we will come back to this.
   it.skip('Should not be able to reaction comments', () => {
     cy.visit('ideas/verified-idea');
-    cy.get('#e2e-comment-like-button').should('exist');
-    cy.get('#e2e-comment-like-button').click({ force: true });
+    cy.get('.e2e-comment-like-button').should('exist');
+    cy.get('.e2e-comment-like-button').click({ force: true });
     cy.get('.e2e-comment-reaction.reacted').should('not.exist');
   });
 });

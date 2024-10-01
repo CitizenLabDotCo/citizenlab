@@ -6,9 +6,6 @@ import StatusLabel from './';
 const meta = {
   title: 'Components/StatusLabel',
   component: StatusLabel,
-  parameters: {
-    layout: 'centered',
-  },
 } satisfies Meta<typeof StatusLabel>;
 
 export default meta;

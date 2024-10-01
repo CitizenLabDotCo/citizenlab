@@ -16,9 +16,9 @@ module MultiTenancy
         end
         Group.create!({
           membership_type: 'rules',
-          title_multiloc: runner.create_for_some_locales { 'Citizenlab Heroes' },
+          title_multiloc: runner.create_for_some_locales { 'Go Vocal Heroes' },
           rules: [
-            { ruleType: 'email', predicate: 'ends_on', value: '@citizenlab.co' }
+            { ruleType: 'email', predicate: 'ends_on', value: '@govocal.com' }
           ]
         })
       end

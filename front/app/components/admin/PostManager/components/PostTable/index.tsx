@@ -186,8 +186,11 @@ const PostTable = ({
             toggleSelectAll={toggleSelectAll}
             handleSortClick={handleSortClick}
           />
-        ) : type === 'AllIdeas' || type === 'ProjectIdeas' ? (
+        ) : type === 'AllIdeas' ||
+          type === 'ProjectIdeas' ||
+          type === 'ProjectProposals' ? (
           <IdeaHeaderRow
+            type={type}
             selectedProjectId={selectedProjectId}
             selectedPhaseId={selectedPhaseId}
             sortAttribute={sortAttribute}

@@ -12,13 +12,17 @@ module EmailCampaigns
     def campaign_mail
       attachments['event.ics'] = Events::IcsGenerator.new.generate_ics(
         Event.find(event.event_attributes.id),
-        locale.locale_sym
+        locale.to_s
       )
 
       super
     end
 
     private
+
+    def preheader
+      format_message('preheader', values: { firstName: recipient.first_name, eventTitle: event_title })
+    end
 
     def subject
       format_message('subject', values: {
@@ -32,11 +36,17 @@ module EmailCampaigns
     end
 
     def event_time
-      timezone_name = AppConfiguration.instance.settings.dig('core', 'timezone')
-      timezone = ActiveSupport::TimeZone[timezone_name] || (raise KeyError, timezone_name)
+      timezone = AppConfiguration.timezone
 
-      start_at = I18n.l(event.event_attributes.start_at.in_time_zone(timezone), format: :short, locale: locale.locale_sym)
-      end_at = I18n.l(event.event_attributes.end_at.in_time_zone(timezone), format: :short, locale: locale.locale_sym)
+      start_at = I18n.l(
+        timezone.at(event.event_attributes.start_at),
+        format: :short, locale: locale.locale_sym
+      )
+
+      end_at = I18n.l(
+        timezone.at(event.event_attributes.end_at),
+        format: :short, locale: locale.locale_sym
+      )
 
       "#{start_at} – #{end_at}"
     end
@@ -50,11 +60,6 @@ module EmailCampaigns
       end
 
       location.presence
-    end
-
-    def event_description
-      description = localize_for_recipient(event.event_attributes.description_multiloc)
-      strip_tags(description).presence
     end
 
     def project_title

@@ -28,18 +28,16 @@ module Polls
     end
 
     def create?
-      (
-        active? &&
+      active? &&
         (record.user_id == user.id) &&
         ProjectPolicy.new(user, record.phase.project).show? &&
         check_responding_allowed(record, user)
-      )
     end
 
     private
 
     def check_responding_allowed(response, user)
-      !Permissions::PhasePermissionsService.new.denied_reason_for_action 'taking_poll', user, response.phase
+      !Permissions::PhasePermissionsService.new(response.phase, user).denied_reason_for_action 'taking_poll'
     end
   end
 end

@@ -9,6 +9,7 @@ module EmailCampaigns
     skip_after_action :verify_authorized
 
     before_action :verify, only: :create
+    around_action :switch_tenant
 
     MAILGUN_STATUS_MAPPING = {
       'accepted' => 'accepted',
@@ -59,7 +60,16 @@ module EmailCampaigns
 
       head :not_acceptable if signature != OpenSSL::HMAC.hexdigest(digest, api_key, data)
     end
+
+    def switch_tenant(&)
+      tenant_id = params.dig(:'event-data', :'user-variables', :cl_tenant_id)
+      if tenant_id
+        Tenant.find(tenant_id).switch(&)
+      else
+        head :not_acceptable
+      end
+    rescue Apartment::TenantNotFound, ActiveRecord::RecordNotFound
+      head :not_acceptable
+    end
   end
 end
-
-EmailCampaigns::Hooks::MailgunEventsController.include(MultiTenancy::Patches::EmailCampaigns::Hooks::MailgunEventsController)

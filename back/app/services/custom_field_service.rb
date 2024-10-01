@@ -35,7 +35,7 @@ class CustomFieldService
           elsif field.input_type && respond_to?(override_method_type, true)
             send(override_method_type, field, locale)
           else
-            send("#{field.input_type}_to_json_schema_field", field, locale)
+            send(:"#{field.input_type}_to_json_schema_field", field, locale)
           end
       end
     }.tap do |output|
@@ -68,7 +68,7 @@ class CustomFieldService
         if field.code && respond_to?(override_method, true)
           send(override_method, field, locale)
         else
-          send("#{field.input_type}_to_ui_schema_field", field, locale)
+          send(:"#{field.input_type}_to_ui_schema_field", field, locale)
         end
     end.tap do |output|
       output['ui:order'] = fields.sort_by { |f| f.ordering || Float::INFINITY }.map(&:key)
@@ -125,10 +125,9 @@ class CustomFieldService
   def self.remove_not_visible_fields(idea, current_user)
     return idea.custom_field_values if idea.draft?
 
-    custom_form = CustomForm.find_or_initialize_by participation_context: idea.project
-    fields = IdeaCustomFieldsService.new(custom_form).enabled_public_fields
+    fields = IdeaCustomFieldsService.new(idea.custom_form).enabled_public_fields
     if can_see_admin_answers?(idea, current_user)
-      fields = IdeaCustomFieldsService.new(custom_form).enabled_fields
+      fields = IdeaCustomFieldsService.new(idea.custom_form).enabled_fields
     end
     visible_keys = fields.pluck(:key)
     idea.custom_field_values.slice(*visible_keys)
@@ -140,19 +139,21 @@ class CustomFieldService
     idea.author_id == current_user.id || UserRoleService.new.can_moderate_project?(idea.project, current_user)
   end
 
-  private
+  # Fallback to another locale title if current locale is missing
+  def handle_title(field, locale)
+    I18n.with_locale(locale) do
+      @multiloc_service.t(field.title_multiloc)
+    end
+  end
 
+  # Fallback to another locale description if current locale is missing
   def handle_description(field, locale)
     I18n.with_locale(locale) do
       @multiloc_service.t(field.description_multiloc)
     end
   end
 
-  def handle_title(field, locale)
-    I18n.with_locale(locale) do
-      @multiloc_service.t(field.title_multiloc)
-    end
-  end
+  private
 
   def base_ui_schema_field(field, _locale)
     {}.tap do |ui_schema|
@@ -350,6 +351,38 @@ class CustomFieldService
   end
 
   def point_to_json_schema_field(field, locale)
+    {
+      title: handle_title(field, locale),
+      description: handle_description(field, locale),
+      type: 'string'
+    }
+  end
+
+  # *** line ***
+
+  def line_to_ui_schema_field(_field, _locale)
+    {}.tap do |ui_schema|
+      ui_schema[:'ui:widget'] = 'hidden'
+    end
+  end
+
+  def line_to_json_schema_field(field, locale)
+    {
+      title: handle_title(field, locale),
+      description: handle_description(field, locale),
+      type: 'string'
+    }
+  end
+
+  # *** polygon ***
+
+  def polygon_to_ui_schema_field(_field, _locale)
+    {}.tap do |ui_schema|
+      ui_schema[:'ui:widget'] = 'hidden'
+    end
+  end
+
+  def polygon_to_json_schema_field(field, locale)
     {
       title: handle_title(field, locale),
       description: handle_description(field, locale),

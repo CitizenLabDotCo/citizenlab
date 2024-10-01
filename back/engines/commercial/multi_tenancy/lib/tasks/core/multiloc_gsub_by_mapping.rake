@@ -40,7 +40,7 @@ namespace :fix do
               end
 
               if n_gsubs > 0
-                record.send("#{column}=", JSON.parse(multiloc_value))
+                record.send(:"#{column}=", JSON.parse(multiloc_value))
                 gsubs_performed += n_gsubs if record.save!
               end
             # rubocop:disable Lint/RescueException

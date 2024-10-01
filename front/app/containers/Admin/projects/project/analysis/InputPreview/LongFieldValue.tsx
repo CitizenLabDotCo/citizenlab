@@ -25,6 +25,11 @@ import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 import messages from '../messages';
 import tracks from '../tracks';
 
+import LineMapPreview from './MapPreview/LineMapPreview';
+import PointMapPreview from './MapPreview/PointMapPreview';
+import PolygonMapPreview from './MapPreview/PolygonMapPreview';
+import ShapefilePreview from './ShapefilePreview';
+
 type Props = {
   customFieldId: string;
   input: IInputsData;
@@ -69,7 +74,7 @@ const FilterToggleButton = ({ customFieldId, value }) => {
   return (
     <Button
       onClick={handleToggleFilterOption(customFieldId, value)}
-      buttonStyle="secondary"
+      buttonStyle="secondary-outlined"
       size="s"
       margin="0"
       padding="1px"
@@ -94,6 +99,7 @@ const FilterToggleButton = ({ customFieldId, value }) => {
  */
 const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
   const { formatMessage } = useIntl();
+
   const containerId: { projectId?: string; phaseId?: string } = {};
   if (projectId) {
     containerId.projectId = projectId;
@@ -285,6 +291,46 @@ const FieldValue = ({ projectId, phaseId, customFieldId, input }: Props) => {
                   formatMessage(messages.noAnswer)
                 )}
               </Text>
+            </Box>
+          );
+        }
+        case 'shapefile_upload': {
+          return (
+            <Box>
+              <Title variant="h5" m="0px">
+                <T value={customField.data.attributes.title_multiloc} />
+              </Title>
+              <ShapefilePreview inputId={input.id} file={rawValue} />
+            </Box>
+          );
+        }
+        case 'point': {
+          return (
+            <Box>
+              <Title variant="h5" m="0px" mb="4px">
+                <T value={customField.data.attributes.title_multiloc} />
+              </Title>
+              <PointMapPreview rawValue={rawValue} />
+            </Box>
+          );
+        }
+        case 'line': {
+          return (
+            <Box>
+              <Title variant="h5" m="0px" mb="4px">
+                <T value={customField.data.attributes.title_multiloc} />
+              </Title>
+              <LineMapPreview rawValue={rawValue} />
+            </Box>
+          );
+        }
+        case 'polygon': {
+          return (
+            <Box>
+              <Title variant="h5" m="0px" mb="4px">
+                <T value={customField.data.attributes.title_multiloc} />
+              </Title>
+              <PolygonMapPreview rawValue={rawValue} />
             </Box>
           );
         }

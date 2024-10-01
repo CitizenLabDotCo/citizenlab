@@ -14,12 +14,12 @@ import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 
 import ContentContainer from 'components/ContentContainer';
 import FollowUnfollow from 'components/FollowUnfollow';
-import Outlet from 'components/Outlet';
 import {
   HeaderImage,
   HeaderImageContainer,
 } from 'components/ProjectableHeader';
 import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
+import ContentViewer from 'components/ProjectDescriptionBuilder/ContentViewer';
 import Button from 'components/UI/Button';
 
 import { useIntl } from 'utils/cl-intl';
@@ -80,7 +80,7 @@ const ProjectHeader = memo<Props>(({ projectId, className }) => {
     const projectHeaderImageLargeUrl =
       project.data.attributes?.header_bg?.large;
     const userCanEditProject =
-      !isNilOrError(authUser) && canModerateProject(project.data.id, authUser);
+      !isNilOrError(authUser) && canModerateProject(project.data, authUser);
 
     return (
       <Container className={className || ''}>
@@ -108,7 +108,7 @@ const ProjectHeader = memo<Props>(({ projectId, className }) => {
                     <EditButton
                       icon="edit"
                       linkTo={adminProjectsProjectPath(project.data.id)}
-                      buttonStyle="secondary"
+                      buttonStyle="secondary-outlined"
                       padding="6px 12px"
                     >
                       {formatMessage(messages.editProject)}
@@ -130,7 +130,7 @@ const ProjectHeader = memo<Props>(({ projectId, className }) => {
             </Box>
           </Box>
           {projectHeaderImageLargeUrl && (
-            <HeaderImageContainer id="e2e-project-header-image">
+            <HeaderImageContainer>
               <HeaderImage
                 id="e2e-project-header-image"
                 src={projectHeaderImageLargeUrl}
@@ -149,7 +149,7 @@ const ProjectHeader = memo<Props>(({ projectId, className }) => {
           {!projectDescriptionBuilderEnabled && (
             <ProjectInfo projectId={projectId} />
           )}
-          <Outlet id="app.ProjectsShowPage.shared.header.ProjectInfo.projectDescriptionBuilder" />
+          <ContentViewer />
         </ContentContainer>
       </Container>
     );

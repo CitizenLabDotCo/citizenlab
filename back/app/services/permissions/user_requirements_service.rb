@@ -1,33 +1,37 @@
 # frozen_string_literal: true
 
 class Permissions::UserRequirementsService
-  def initialize(check_groups: true)
+  def initialize(check_groups_and_verification: true)
     # This allows us to ignore groups when calling from within PermissionsService where groups are separately checked
-    @check_groups = check_groups
+    @check_groups_and_verification = check_groups_and_verification
   end
 
   def requirements(permission, user)
-    requirements = base_requirements permission
+    requirements = base_requirements(permission)
     mark_satisfied_requirements! requirements, permission, user if user
     ignore_password_for_sso! requirements, user if user
-    permitted = requirements.values.none? do |subrequirements|
-      subrequirements.value? 'require'
-    end
-    {
-      permitted: permitted,
-      requirements: requirements
-    }
+    requirements
   end
 
-  def requirements_fields(permission)
-    if permission.global_custom_fields
-      registration_fields
-    else
-      permission.permissions_custom_fields.map do |permissions_custom_field|
-        permissions_custom_field.custom_field.tap do |field|
-          field.enabled = true # Need to overide this to ensure it gets displayed when not enabled at platform level
-          field.required = permissions_custom_field.required
-        end
+  def permitted?(requirements)
+    return false if requirements[:authentication][:missing_user_attributes].any?
+    return false if requirements[:verification]
+    return false if requirements[:custom_fields].values.any?('required')
+    return false if requirements[:group_membership]
+
+    true
+  end
+
+  def permitted_for_permission?(permission, user)
+    requirements = requirements(permission, user)
+    permitted?(requirements)
+  end
+
+  def requirements_custom_fields(permission)
+    permissions_custom_fields_service.fields_for_permission(permission).map do |permissions_custom_field|
+      permissions_custom_field.custom_field.tap do |field|
+        field.enabled = true # Need to override this to ensure it gets displayed when not enabled at platform level
+        field.required = permissions_custom_field.required
       end
     end
   end
@@ -40,90 +44,72 @@ class Permissions::UserRequirementsService
   private
 
   def base_requirements(permission)
-    everyone = {
-      built_in: {
-        first_name: 'dont_ask',
-        last_name: 'dont_ask',
-        email: 'dont_ask'
+    users_requirements = {
+      authentication: {
+        permitted_by: permission.permitted_by,
+        missing_user_attributes: %i[first_name last_name email confirmation password]
       },
-      custom_fields: requirements_fields(permission).to_h { |field| [field.key, 'dont_ask'] },
-      onboarding: { topics_and_areas: 'dont_ask' },
-      special: {
-        password: 'dont_ask',
-        confirmation: 'dont_ask',
-        verification: 'dont_ask',
-        group_membership: 'dont_ask'
-      }
+      verification: false,
+      custom_fields: requirements_custom_fields(permission).to_h { |field| [field.key, (field.required ? 'required' : 'optional')] },
+      onboarding: onboarding_possible?,
+      group_membership: @check_groups_and_verification && permission.groups.any?
     }
 
-    everyone_confirmed_email = everyone.deep_dup.tap do |requirements|
-      requirements[:built_in][:email] = 'require'
-      requirements[:custom_fields] = requirements_fields(permission).to_h { |field| [field.key, (field.required ? 'require' : 'ask')] }
-      requirements[:special][:confirmation] = 'require' if app_configuration.feature_activated?('user_confirmation')
+    everyone_confirmed_email_requirements = users_requirements.deep_dup.tap do |requirements|
+      requirements[:authentication][:missing_user_attributes] = %i[email confirmation]
+      requirements[:onboarding] = false
     end
 
-    users = everyone_confirmed_email.deep_dup.tap do |requirements|
-      requirements[:built_in][:first_name] = 'require'
-      requirements[:built_in][:last_name] = 'require'
-      requirements[:onboarding].transform_values! { 'ask' } if onboarding_possible?
-      requirements[:special][:password] = 'require'
-    end
-
-    groups = users.deep_dup.tap do |requirements|
-      requirements[:special][:group_membership] = 'require' if @check_groups
+    everyone_requirements = everyone_confirmed_email_requirements.deep_dup.tap do |requirements|
+      requirements[:authentication][:missing_user_attributes] = []
     end
 
     case permission.permitted_by
     when 'everyone'
-      everyone
+      everyone_requirements
     when 'everyone_confirmed_email'
       if permission.action == 'following'
-        app_configuration.feature_activated?('user_confirmation') && app_configuration.feature_activated?('password_login') ? everyone_confirmed_email : users
+        app_configuration.feature_activated?('user_confirmation') && app_configuration.feature_activated?('password_login') ? everyone_confirmed_email_requirements : users_requirements
       else
-        app_configuration.feature_activated?('user_confirmation') ? everyone_confirmed_email : users
+        app_configuration.feature_activated?('user_confirmation') ? everyone_confirmed_email_requirements : users_requirements
       end
-    when 'groups'
-      groups
-    else # users | admins_moderators'
-      users
+    else # users | groups | verified | admins_moderators
+      users_requirements
     end
   end
 
   def mark_satisfied_requirements!(requirements, permission, user)
     return requirements unless user
 
-    requirements[:built_in]&.each_key do |attribute|
-      requirements[:built_in][attribute] = 'satisfied' unless user.send(attribute).nil?
+    requirements[:authentication][:missing_user_attributes].excluding(%i[confirmation password])&.each do |attribute|
+      requirements[:authentication][:missing_user_attributes].delete(attribute) unless user.send(attribute).nil?
     end
+    requirements[:authentication][:missing_user_attributes].delete(:password) unless user.password_digest.nil?
+    requirements[:authentication][:missing_user_attributes].delete(:confirmation) unless user.confirmation_required?
+
     requirements[:custom_fields]&.each_key do |key|
-      requirements[:custom_fields][key] = 'satisfied' if user.custom_field_values.key?(key)
+      requirements[:custom_fields].delete(key) if user.custom_field_values.key?(key)
     end
-    %w[topics_and_areas].each do |onboarding_key|
-      requirements[:onboarding][onboarding_key] = 'satisfied' if user.onboarding[onboarding_key] == 'satisfied'
+
+    if requirements[:onboarding]
+      requirements[:onboarding] = user.onboarding['topics_and_areas'] != 'satisfied'
     end
-    requirements[:special]&.each_key do |special_key|
-      is_satisfied = case special_key
-      when :password
-        !user.no_password?
-      when :confirmation
-        !user.confirmation_required?
-      when :group_membership
-        permission.groups.present? && user.in_any_groups?(permission.groups)
-      end
-      requirements[:special][special_key] = 'satisfied' if is_satisfied
+
+    if requirements[:group_membership]
+      requirements[:group_membership] = !user.in_any_groups?(permission.groups)
     end
   end
 
   def onboarding_possible?
     return @onboarding_possible unless @onboarding_possible.nil?
 
-    @onboarding_possible = app_configuration.settings.dig('core', 'onboarding') && (Topic.where(include_in_onboarding: true).count > 0 || Area.where(include_in_onboarding: true).count > 0)
+    @onboarding_possible = app_configuration.settings.dig('core', 'onboarding') && (!Topic.where(include_in_onboarding: true).empty? || !Area.where(include_in_onboarding: true).empty?)
   end
 
   def ignore_password_for_sso!(requirements, user)
     return requirements unless user
 
-    requirements[:special][:password] = 'dont_ask' if user.sso?
+    requirements[:authentication][:missing_user_attributes].delete(:password) if user.sso?
   end
 
   def app_configuration
@@ -132,6 +118,10 @@ class Permissions::UserRequirementsService
 
   def registration_fields
     @registration_fields ||= CustomField.registration.enabled.order(:ordering)
+  end
+
+  def permissions_custom_fields_service
+    @permissions_custom_fields_service ||= Permissions::PermissionsCustomFieldsService.new
   end
 end
 

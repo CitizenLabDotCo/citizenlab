@@ -34,8 +34,8 @@ describe TimelineService do
     end
 
     it "returns the active phase when we're in the last day of the phase" do
-      now = Time.now.in_time_zone(AppConfiguration.instance.settings('core', 'timezone')).to_date
-      phase = create(:phase, start_at: now - 1.week, end_at: now, project: project)
+      today = AppConfiguration.timezone.now.to_date
+      phase = create(:phase, start_at: today - 1.week, end_at: today, project: project)
       expect(service.current_phase(project)&.id).to eq(phase.id)
     end
 
@@ -113,53 +113,60 @@ describe TimelineService do
     end
   end
 
-  describe 'current_or_last_can_contain_ideas_phase' do
+  describe 'current_or_backup_transitive_phase' do
     let(:project) { create(:project) }
 
     it 'returns the currently active ideation phase of the project' do
       active_phase = create_active_phase(project)
       5.times { create_inactive_phase(project, participation_method: 'ideation') }
-      expect(service.current_or_last_can_contain_ideas_phase(project)&.id).to eq(active_phase.id)
+      expect(service.current_or_backup_transitive_phase(project)&.id).to eq(active_phase.id)
+    end
+
+    it 'returns the currently active proposal phase of the project' do
+      active_phase = create(:proposals_phase, project: project, start_at: Date.yesterday, end_at: Date.tomorrow)
+      2.times { create_inactive_phase(project, participation_method: 'ideation') }
+      expect(service.current_or_backup_transitive_phase(project)&.id).to eq(active_phase.id)
     end
 
     it 'returns the currently active voting phase of the project' do
       active_phase = create_active_phase(project, factory: :budgeting_phase)
       5.times { create_inactive_phase(project, participation_method: 'ideation') }
-      expect(service.current_or_last_can_contain_ideas_phase(project)&.id).to eq(active_phase.id)
+      expect(service.current_or_backup_transitive_phase(project)&.id).to eq(active_phase.id)
     end
 
     it 'returns the last ideation phase of the project if there is no currently active phase' do
-      5.times { create_inactive_phase(project, participation_method: 'ideation') }
-      expect(service.current_or_last_can_contain_ideas_phase(project)&.id).to eq(project.phases.last.id)
+      2.times { create_inactive_phase(project, participation_method: 'ideation') }
+      create_inactive_phase(project, participation_method: 'proposals')
+      expect(service.current_or_backup_transitive_phase(project)&.id).to eq(project.phases[-2].id)
     end
 
     it 'returns the last voting phase of the project if there is no currently active phase' do
       4.times { create_inactive_phase(project, participation_method: 'ideation') }
       create_inactive_phase(project, participation_method: 'voting', voting_method: 'budgeting', voting_max_total: 1000)
-      expect(service.current_or_last_can_contain_ideas_phase(project)&.id).to eq(project.phases.last.id)
-      expect(service.current_or_last_can_contain_ideas_phase(project)&.voting_method).to eq('budgeting')
+      expect(service.current_or_backup_transitive_phase(project)&.id).to eq(project.phases.last.id)
+      expect(service.current_or_backup_transitive_phase(project)&.voting_method).to eq('budgeting')
     end
 
     it 'returns the last ideation phase of the project if the end_date is blank' do
       create_active_phase(project, factory: :native_survey_phase)
       open_ideation_phase = create(:phase, project: project, participation_method: 'ideation', start_at: Time.now.to_date + 10.days, end_at: nil)
-      expect(service.current_or_last_can_contain_ideas_phase(project)&.id).to eq(open_ideation_phase.id)
+      expect(service.current_or_backup_transitive_phase(project)&.id).to eq(open_ideation_phase.id)
     end
 
     it 'returns the current ideation phase of the project if the end_date is blank' do
       create(:phase, project: project, participation_method: 'ideation', start_at: Time.now.to_date - 10.days, end_at: Time.now.to_date - 2.days)
       open_current_ideation_phase = create(:phase, project: project, participation_method: 'ideation', start_at: Time.now.to_date - 1.day, end_at: nil)
-      expect(service.current_or_last_can_contain_ideas_phase(project)&.id).to eq(open_current_ideation_phase.id)
+      expect(service.current_or_backup_transitive_phase(project)&.id).to eq(open_current_ideation_phase.id)
     end
 
     it 'returns nil if there are no phases' do
-      expect(service.current_or_last_can_contain_ideas_phase(project)).to be_nil
+      expect(service.current_or_backup_transitive_phase(project)).to be_nil
     end
 
     it 'returns nil if there are no ideation phases' do
       create_active_phase(project, factory: :native_survey_phase)
       5.times { create_inactive_phase(project, participation_method: 'poll') }
-      expect(service.current_or_last_can_contain_ideas_phase(project)).to be_nil
+      expect(service.current_or_backup_transitive_phase(project)).to be_nil
     end
   end
 
@@ -409,8 +416,8 @@ describe TimelineService do
   end
 
   def create_active_phase(project, factory: :phase)
-    now = Time.now.in_time_zone(AppConfiguration.instance.settings('core', 'timezone')).to_date
-    create(factory, project: project, start_at: now - 2.weeks, end_at: now)
+    today = AppConfiguration.timezone.now.to_date
+    create(factory, project: project, start_at: today - 2.weeks, end_at: today)
   end
 
   def create_inactive_phase(project, phase_options = {})

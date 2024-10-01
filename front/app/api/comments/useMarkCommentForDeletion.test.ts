@@ -1,5 +1,5 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
@@ -9,8 +9,8 @@ import useMarkCommentForDeletion from './useMarkCommentForDeletion';
 const apiPath = '*comments/:commentId/mark_as_deleted';
 
 const server = setupServer(
-  rest.post(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(202));
+  http.post(apiPath, () => {
+    return HttpResponse.json(null, { status: 202 });
   })
 );
 
@@ -38,8 +38,8 @@ describe('useMarkCommentForDeletion', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.post(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.post(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

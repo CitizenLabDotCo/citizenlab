@@ -21,6 +21,10 @@ export default defineMessages({
     id: 'app.components.AuthProviders.continueWithHoplr',
     defaultMessage: 'Continue with Hoplr',
   },
+  continueWithNemlogIn: {
+    id: 'app.components.AuthProviders.continueWithNemlogIn',
+    defaultMessage: 'Continue with MitID',
+  },
   continueWithAzure: {
     id: 'app.components.AuthProviders.continueWithAzure',
     defaultMessage: 'Continue with {azureProviderName}',
@@ -32,6 +36,10 @@ export default defineMessages({
   signUpButtonAltText: {
     id: 'app.components.AuthProviders.signUpButtonAltText',
     defaultMessage: 'Sign up with {loginMechanismName}',
+  },
+  continueWithFakeSSO: {
+    id: 'app.components.AuthProviders.continueWithFakeSSO',
+    defaultMessage: 'Continue with Fake SSO',
   },
   goToLogIn: {
     id: 'app.components.AuthProviders.goToLogIn',

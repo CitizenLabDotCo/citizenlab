@@ -18,9 +18,9 @@ export default defineMessages({
     defaultMessage:
       'Reach out to the responsible person in your city administration, or contact a {link}.',
   },
-  citizenlabExpert: {
-    id: 'app.components.ProjectTemplatePreview.citizenlabExpert',
-    defaultMessage: 'CitizenLab expert',
+  govocalExpert: {
+    id: 'app.components.ProjectTemplatePreview.govocalExpert',
+    defaultMessage: 'Go Vocal expert',
   },
   useTemplate: {
     id: 'app.components.ProjectTemplatePreview.useTemplate',

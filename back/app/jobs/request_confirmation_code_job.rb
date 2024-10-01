@@ -19,7 +19,7 @@ class RequestConfirmationCodeJob < ApplicationJob
 
     ActiveRecord::Base.transaction do
       user.save!
-      deliver_confirmation_code! user
+      deliver_confirmation_code!(user)
       schedule_code_expiration! user
       LogActivityJob.perform_later(user, 'received_confirmation_code', user, Time.now.to_i, payload: { new_email: new_email })
     end

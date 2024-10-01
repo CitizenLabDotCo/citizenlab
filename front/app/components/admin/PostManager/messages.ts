@@ -284,9 +284,9 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.latestFeedbackMode',
     defaultMessage: 'Use the latest existing official update as an explanation',
   },
-  automatic: {
-    id: 'app.components.admin.PostManager.automatic',
-    defaultMessage: '(automatic)',
+  automatedStatusTooltipText: {
+    id: 'app.components.admin.PostManager.automatedStatusTooltipText',
+    defaultMessage: 'This status updates automatically when conditions are met',
   },
   inputs: {
     id: 'app.components.admin.PostManager.inputs',
@@ -311,5 +311,15 @@ export default defineMessages({
   cosponsors: {
     id: 'app.components.admin.PostManager.cosponsors',
     defaultMessage: 'Cosponsors',
+  },
+  prescreeningTooltipUpsell: {
+    id: 'app.components.admin.PostManager.screeningTooltip',
+    defaultMessage:
+      'Screening is not included in your current plan. Talk to your Government Success Manager or admin to unlock it.',
+  },
+  prescreeningTooltipPhaseDisabled: {
+    id: 'app.components.admin.PostManager.screeningTooltipPhaseDisabled',
+    defaultMessage:
+      'Screening is turned off for this phase. Go to phase setup to enable it',
   },
 });

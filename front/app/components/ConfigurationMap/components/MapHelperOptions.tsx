@@ -1,8 +1,12 @@
 import React from 'react';
 
 import MapView from '@arcgis/core/views/MapView';
-import { Box, Button, colors } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
+import {
+  Box,
+  Button,
+  colors,
+  Tooltip,
+} from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
 import { IMapConfig } from 'api/map_config/types';
@@ -61,7 +65,7 @@ const MapHelperOptions = ({ mapConfig, mapView }: Props) => {
         background={colors.white}
         borderRadius="3px"
       >
-        <Tippy
+        <Tooltip
           maxWidth="250px"
           placement="right"
           content={formatMessage(messages.goToDefaultMapView)}
@@ -76,7 +80,7 @@ const MapHelperOptions = ({ mapConfig, mapView }: Props) => {
               onClick={goToDefaultMapView}
             />
           </div>
-        </Tippy>
+        </Tooltip>
       </Box>
       <Box
         position="absolute"
@@ -86,7 +90,7 @@ const MapHelperOptions = ({ mapConfig, mapView }: Props) => {
         background={colors.white}
         borderRadius="3px"
       >
-        <Tippy
+        <Tooltip
           maxWidth="250px"
           placement="right"
           content={formatMessage(messages.setAsDefaultMapView)}
@@ -103,7 +107,7 @@ const MapHelperOptions = ({ mapConfig, mapView }: Props) => {
               textColor={colors.coolGrey600}
             />
           </div>
-        </Tippy>
+        </Tooltip>
       </Box>
     </Box>
   );

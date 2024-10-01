@@ -3,7 +3,6 @@ import { IProjectData } from 'api/projects/types';
 
 export type Period = {
   start_at: string;
-  last_phase_start_at: string;
   end_at: string | null;
 };
 

@@ -40,6 +40,10 @@ const ProjectFilter = ({
     [onProjectFilter]
   );
 
+  if (!authUser) {
+    return null;
+  }
+
   const getEmptyOptionMessage = () => {
     if (isAdmin(authUser)) {
       return emptyOptionMessage ?? dashboardFilterMessages.allProjects;

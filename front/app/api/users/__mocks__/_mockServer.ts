@@ -1,4 +1,4 @@
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 
 import { API_PATH } from 'containers/App/constants';
 
@@ -10,8 +10,8 @@ export const usersData: IUserData[] = [
     type: 'user',
     attributes: {
       first_name: 'Test',
-      last_name: 'Citizenlab',
-      slug: 'test-citizenlab',
+      last_name: 'Go Vocal',
+      slug: 'test-govocal',
       locale: 'en',
       avatar: {
         small: null,
@@ -25,7 +25,7 @@ export const usersData: IUserData[] = [
       invite_status: null,
       created_at: '2018-11-26T15:41:19.782Z',
       updated_at: '2018-11-26T15:41:19.782Z',
-      email: 'test@citizenlab.co',
+      email: 'test@govocal.com',
       confirmation_required: false,
       custom_field_values: {
         birthyear: 1990,
@@ -69,14 +69,14 @@ export const usersData: IUserData[] = [
 export const apiPath = `${API_PATH}/users/:id`;
 
 const endpoints = {
-  'GET users/:id': rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: usersData[0] }));
+  'GET users/:id': http.get(apiPath, () => {
+    return HttpResponse.json({ data: usersData[0] }, { status: 200 });
   }),
-  'POST users': rest.post(`${API_PATH}/users`, (_req, res, ctx) => {
-    return res(ctx.status(201), ctx.json({ data: usersData[0] }));
+  'POST users': http.post(`${API_PATH}/users`, () => {
+    return HttpResponse.json({ data: usersData[0] }, { status: 201 });
   }),
-  'POST user_token': rest.post(`${API_PATH}/user_token`, (_req, res, ctx) => {
-    return res(ctx.status(201), ctx.json({ jwt: 'abc123' }));
+  'POST user_token': http.post(`${API_PATH}/user_token`, () => {
+    return HttpResponse.json({ jwt: 'abc123' }, { status: 201 });
   }),
 };
 

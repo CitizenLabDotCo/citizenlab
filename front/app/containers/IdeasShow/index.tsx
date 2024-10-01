@@ -1,7 +1,6 @@
 import React, { lazy, Suspense, useState } from 'react';
 
-import { Box, Badge } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
+import { Box, Badge, Tooltip } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -15,6 +14,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import ProjectLink from 'containers/EventsShowPage/components/ProjectLink';
 
+import Divider from 'components/admin/Divider';
 import ErrorToast from 'components/ErrorToast';
 import FollowUnfollow from 'components/FollowUnfollow';
 import Body from 'components/PostShowComponents/Body';
@@ -30,6 +30,7 @@ import Container from './components/Container';
 import IdeaNavigationButtons from './components/IdeaNavigationButtons';
 import IdeaTitle from './components/IdeaTitle';
 import MetaInformation from './components/MetaInformation';
+import ProposalInfo from './components/ProposalInfo';
 import ProposedBudget from './components/ProposedBudget';
 import RightColumnDesktop from './components/RightColumnDesktop';
 import TranslateButton from './components/TranslateButton';
@@ -101,11 +102,10 @@ export const IdeasShow = ({
       handleContainerRef={handleContainerRef}
     >
       <Box display="flex" id="e2e-idea-show-page-content">
-        <Box flex="1 1 100%">
+        <Box flex="1 1 100%" w="100%">
           {wasImported && (
             <Box display="flex">
-              <Tippy
-                interactive={true}
+              <Tooltip
                 theme={'dark'}
                 content={
                   <Box>
@@ -121,7 +121,7 @@ export const IdeasShow = ({
                     <FormattedMessage {...messages.imported} />
                   </Badge>
                 </Box>
-              </Tippy>
+              </Tooltip>
             </Box>
           )}
           {compact && phaseContext && (
@@ -155,20 +155,24 @@ export const IdeasShow = ({
               translateButtonClicked={translateButtonIsClicked}
             />
           </Box>
-          {compact &&
-            participationContext?.attributes.participation_method !==
-              'voting' && // To reduce bias we want to hide the author data during voting methods
-            statusId && (
-              <Box my="24px">
-                <MetaInformation
-                  ideaId={ideaId}
-                  projectId={project.data.id}
-                  statusId={statusId}
-                  authorId={authorId}
-                  compact={compact}
-                />
-              </Box>
-            )}
+          {compact && statusId && (
+            <Box my="24px">
+              {participationContext?.attributes.participation_method ===
+                'proposals' && (
+                <>
+                  <Divider />
+                  <ProposalInfo idea={idea} compact={compact} />
+                </>
+              )}
+              <MetaInformation
+                ideaId={ideaId}
+                projectId={project.data.id}
+                statusId={statusId}
+                authorId={authorId}
+                compact={compact}
+              />
+            </Box>
+          )}
           <Box my={compact ? '24px' : '80px'}>
             <OfficialFeedback
               postId={ideaId}

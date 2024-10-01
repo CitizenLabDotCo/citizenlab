@@ -10,7 +10,7 @@ module MultiTenancy
           created_at = Faker::Date.between(from: Tenant.current.created_at, to: Time.zone.now)
           initiative = Initiative.create!(
             title_multiloc: runner.create_for_some_locales { Faker::Lorem.sentence[0...80] },
-            body_multiloc: runner.create_for_some_locales { Faker::Lorem.paragraphs.map { |p| "<p>#{p}</p>" }.join },
+            body_multiloc: runner.rand_description_multiloc,
             author: User.offset(rand(User.count)).first,
             publication_status: 'published',
             published_at: Faker::Date.between(from: created_at, to: Time.zone.now),
@@ -21,12 +21,6 @@ module MultiTenancy
             topics: Array.new(rand(3)) { rand(Topic.count) }.uniq.map { |offset| Topic.offset(offset).first },
             areas: Array.new(rand(3)) { rand(Area.count) }.uniq.map { |offset| Area.offset(offset).first },
             assignee: rand(5) == 0 ? User.admin.sample : nil
-          )
-          # TODO: make initiative statuses correspond with required reactions reached
-          InitiativeStatusChange.create!(
-            created_at: initiative.published_at,
-            initiative: initiative,
-            initiative_status: InitiativeStatus.offset(rand(InitiativeStatus.count)).first
           )
 
           [1, 1, 2, 2, 3][rand(5)].times do |_i|
@@ -48,7 +42,7 @@ module MultiTenancy
 
           rand(5).times do
             initiative.official_feedbacks.create!(
-              body_multiloc: runner.create_for_some_locales { Faker::Lorem.paragraphs.map { |p| "<p>#{p}</p>" }.join },
+              body_multiloc: runner.rand_description_multiloc,
               author_multiloc: runner.create_for_some_locales { Faker::FunnyName.name },
               user: User.admin.sample
             )

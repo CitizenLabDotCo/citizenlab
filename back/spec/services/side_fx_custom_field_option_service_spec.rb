@@ -22,8 +22,8 @@ describe SideFxCustomFieldOptionService do
 
   describe 'after_destroy' do
     let(:custom_field1) { create(:custom_field, :for_custom_form, input_type: 'select') }
-    let(:custom_field2) { create(:custom_field, :for_custom_form, input_type: 'page') }
-    let(:custom_field3) { create(:custom_field, :for_custom_form, input_type: 'page') }
+    let(:custom_field2) { create(:custom_field, :for_custom_form, input_type: 'page', page_layout: 'default') }
+    let(:custom_field3) { create(:custom_field, :for_custom_form, input_type: 'page', page_layout: 'default') }
     let(:option1) { create(:custom_field_option, custom_field: custom_field1, key: 'option_1') }
     let(:option2) { create(:custom_field_option, custom_field: custom_field1, key: 'option_2') }
     let(:logic) do

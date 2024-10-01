@@ -1,5 +1,5 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
@@ -9,8 +9,8 @@ import useUpdateProjectFolder from './useUpdateProjectFolder';
 
 const apiPath = '*project_folders/:projectFolderId';
 const server = setupServer(
-  rest.patch(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: projectFolderData }));
+  http.patch(apiPath, () => {
+    return HttpResponse.json({ data: projectFolderData }, { status: 200 });
   })
 );
 
@@ -50,8 +50,8 @@ describe('useUpdateProjectFolder', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.patch(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.patch(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 

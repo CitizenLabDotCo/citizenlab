@@ -10,6 +10,7 @@ import styled from 'styled-components';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { useIntl } from 'utils/cl-intl';
+import { classNames } from 'utils/helperUtils';
 
 import messages from '../../messages';
 
@@ -100,8 +101,7 @@ const LikeButton = ({
 
   return (
     <Container
-      id="e2e-comment-like-button"
-      className={`reaction ${className || ''}`}
+      className={classNames('reaction', 'e2e-comment-like-button', className)}
     >
       <ButtonWrapper
         onClick={onClick}

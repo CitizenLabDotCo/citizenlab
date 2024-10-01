@@ -31,6 +31,9 @@ describe('Project description builder Iframe component', () => {
   });
   beforeEach(() => {
     cy.setAdminLoginCookie();
+    cy.visit(
+      `/admin/project-description-builder/projects/${projectId}/description`
+    );
   });
 
   after(() => {
@@ -54,7 +57,7 @@ describe('Project description builder Iframe component', () => {
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveProjectDescriptionBuilder');
     cy.visit(`/projects/${projectSlug}`);
-    cy.get('#e2e-content-builder-iframe-component').should('exist');
+    cy.get('.e2e-content-builder-iframe-component').should('exist');
   });
 
   it('handles Iframe errors correctly', () => {
@@ -64,7 +67,7 @@ describe('Project description builder Iframe component', () => {
     cy.visit(
       `/admin/project-description-builder/projects/${projectId}/description`
     );
-    cy.get('#e2e-content-builder-iframe-component').click('center', {
+    cy.get('.e2e-content-builder-iframe-component').click('center', {
       force: true,
     });
 
@@ -74,7 +77,7 @@ describe('Project description builder Iframe component', () => {
       .type('https://citizen');
     cy.get('.e2e-error-message').should('be.visible');
     // Check that save is disabled
-    cy.contains('Save').should('be.disabled');
+    cy.contains('Save').should('have.attr', 'aria-disabled', 'true');
     // Check that red border is present
     cy.get('.e2e-render-node')
       .last()
@@ -96,7 +99,7 @@ describe('Project description builder Iframe component', () => {
     cy.intercept('**/content_builder_layouts/project_description/upsert').as(
       'saveProjectDescriptionBuilder'
     );
-    cy.get('#e2e-content-builder-iframe-component').should('exist');
+    cy.get('.e2e-content-builder-iframe-component').should('exist');
 
     cy.get('#e2e-content-builder-frame').click();
     cy.get('#e2e-delete-button').click();
@@ -104,6 +107,6 @@ describe('Project description builder Iframe component', () => {
     cy.wait('@saveProjectDescriptionBuilder');
 
     cy.visit(`/projects/${projectSlug}`);
-    cy.get('#e2e-content-builder-iframe-component').should('not.exist');
+    cy.get('.e2e-content-builder-iframe-component').should('not.exist');
   });
 });

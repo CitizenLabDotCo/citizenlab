@@ -77,7 +77,7 @@ export default defineMessages({
   powerBIDescription: {
     id: 'app.containers.Admin.tools.powerBIDescription',
     defaultMessage:
-      'Use our plug & play Power BI Templates to access Citizenlab data in your Microsoft Power BI Workspace.',
+      'Use our plug & play Power BI Templates to access Go Vocal data in your Microsoft Power BI Workspace.',
   },
   powerBIDownloadTemplates: {
     id: 'app.containers.Admin.tools.powerBIDownloadTemplates',

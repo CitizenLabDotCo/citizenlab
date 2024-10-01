@@ -101,7 +101,7 @@ class Tasks::SingleUse::Services::ContinuousProjectMigrationService
       survey_service: project.survey_service,
 
       commenting_enabled: project.commenting_enabled,
-      posting_enabled: project.posting_enabled,
+      submission_enabled: project.submission_enabled,
       posting_method: project.posting_method,
       posting_limited_max: project.posting_limited_max,
       reacting_enabled: project.reacting_enabled,
@@ -144,7 +144,7 @@ class Tasks::SingleUse::Services::ContinuousProjectMigrationService
       survey_service: nil,
 
       commenting_enabled: true,
-      posting_enabled: true,
+      submission_enabled: true,
       posting_method: 'unlimited',
       posting_limited_max: 1,
       reacting_enabled: true,

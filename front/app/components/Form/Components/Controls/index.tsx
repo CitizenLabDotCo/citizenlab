@@ -60,10 +60,13 @@ import ImageMultichoiceControl, {
 import LinearScaleControl, {
   linearScaleControlTester,
 } from './LinearScaleControl';
+import MapControl, { mapControlTester } from './MapInput/MapControl';
 import MultiSelectCheckboxControl, {
   multiSelectCheckboxControlTester,
 } from './MultiSelectCheckboxControl';
-import PointControl, { pointControlTester } from './PointControl/PointControl';
+import ShapefileUploadControl, {
+  shapefileUploadControlTester,
+} from './ShapefileUploadControl';
 import SingleAttachmentControl, {
   singleAttachmentControlTester,
 } from './SingleAttachmentControl';
@@ -86,8 +89,8 @@ export {
   orderedLayoutTester,
   InputControl,
   inputControlTester,
-  PointControl,
-  pointControlTester,
+  MapControl,
+  mapControlTester,
   TextAreaControl,
   textAreaControlTester,
   WYSIWYGControl,
@@ -130,4 +133,6 @@ export {
   linearScaleControlTester,
   SingleAttachmentControl,
   singleAttachmentControlTester,
+  ShapefileUploadControl,
+  shapefileUploadControlTester,
 };

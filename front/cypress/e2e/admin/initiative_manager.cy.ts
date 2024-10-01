@@ -123,7 +123,7 @@ describe('Initiative manager', () => {
       cy.apiLikeInitiative(
         // Only admin accounts are confirmed by default (see User#set_confirmation_required),
         // and so allowed to react to initiatives.
-        'hello@citizenlab.co',
+        'hello@govocal.com',
         'democrazy',
         initiativeId1
       );

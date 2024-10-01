@@ -780,7 +780,8 @@ RSpec.describe InputUiSchemaGeneratorService do
             resource: custom_form,
             key: 'about_your_cycling_habits',
             title_multiloc: { 'en' => 'About your cycling habits' },
-            description_multiloc: { 'en' => 'Please indicate how you use <strong>a bike</strong>.' }
+            description_multiloc: { 'en' => 'Please indicate how you use <strong>a bike</strong>.' },
+            page_layout: 'map'
           )
         end
         let!(:field_in_page2) do
@@ -816,7 +817,9 @@ RSpec.describe InputUiSchemaGeneratorService do
                   input_type: page1.input_type,
                   id: page1.id,
                   title: 'About you',
-                  description: 'Please fill in some <strong>personal details</strong>.'
+                  description: 'Please fill in some <strong>personal details</strong>.',
+                  page_layout: 'default',
+                  map_config_id: nil
                 },
                 elements: [{
                   type: 'Control',
@@ -837,7 +840,9 @@ RSpec.describe InputUiSchemaGeneratorService do
                   input_type: page2.input_type,
                   id: page2.id,
                   title: 'About your cycling habits',
-                  description: 'Please indicate how you use <strong>a bike</strong>.'
+                  description: 'Please indicate how you use <strong>a bike</strong>.',
+                  page_layout: 'map',
+                  map_config_id: nil
                 },
                 elements: [{
                   type: 'Control',
@@ -858,7 +863,9 @@ RSpec.describe InputUiSchemaGeneratorService do
                   input_type: page3.input_type,
                   id: page3.id,
                   title: 'This is the end of the survey',
-                  description: 'Thank you for participating 🚀'
+                  description: 'Thank you for participating 🚀',
+                  page_layout: 'default',
+                  map_config_id: nil
                 },
                 elements: []
               },
@@ -866,8 +873,8 @@ RSpec.describe InputUiSchemaGeneratorService do
                 type: 'Page',
                 options: {
                   id: 'survey_end',
-                  title: 'Thanks for participating',
-                  description: "Please submit your answers by selecting 'Submit' below."
+                  title: 'Almost done',
+                  description: "You are about to submit your answers. By clicking 'Submit' you give us permission to analyse your answers.<br/>After you submit, you will no longer be able to go back and change any of your answers."
                 },
                 elements: []
               }
@@ -980,7 +987,9 @@ RSpec.describe InputUiSchemaGeneratorService do
                   input_type: page1.input_type,
                   id: page1.id,
                   title: '',
-                  description: ''
+                  description: '',
+                  page_layout: 'default',
+                  map_config_id: nil
                 },
                 elements: [{
                   type: 'Control',
@@ -991,8 +1000,13 @@ RSpec.describe InputUiSchemaGeneratorService do
                     description: '',
                     isAdminField: false,
                     hasRule: true,
-                    maximum_label: '',
-                    minimum_label: ''
+                    linear_scale_label1: '',
+                    linear_scale_label2: '',
+                    linear_scale_label3: '',
+                    linear_scale_label4: '',
+                    linear_scale_label5: '',
+                    linear_scale_label6: '',
+                    linear_scale_label7: ''
                   }
                 }]
               },
@@ -1002,7 +1016,9 @@ RSpec.describe InputUiSchemaGeneratorService do
                   input_type: page2.input_type,
                   id: page2.id,
                   title: '',
-                  description: ''
+                  description: '',
+                  page_layout: 'default',
+                  map_config_id: nil
                 },
                 elements: [{
                   type: 'Control',
@@ -1011,6 +1027,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                   options: {
                     input_type: field_in_page2.input_type,
                     description: '',
+                    dropdown_layout: false,
                     isAdminField: false,
                     hasRule: true,
                     enumNames: ['Every day', 'Never', 'Other'],
@@ -1019,7 +1036,7 @@ RSpec.describe InputUiSchemaGeneratorService do
                 }, {
                   type: 'Control',
                   scope: "#/properties/#{field_in_page2.key}_other",
-                  label: "If you picked 'Other', what are you thinking of?",
+                  label: 'Type your answer',
                   options: {
                     description: '',
                     hasRule: false,
@@ -1046,7 +1063,9 @@ RSpec.describe InputUiSchemaGeneratorService do
                   input_type: page3.input_type,
                   id: page3.id,
                   title: '',
-                  description: ''
+                  description: '',
+                  page_layout: 'default',
+                  map_config_id: nil
                 },
                 elements: [],
                 ruleArray: [
@@ -1065,8 +1084,8 @@ RSpec.describe InputUiSchemaGeneratorService do
                 type: 'Page',
                 options: {
                   id: 'survey_end',
-                  title: 'Thanks for participating',
-                  description: "Please submit your answers by selecting 'Submit' below."
+                  title: 'Almost done',
+                  description: "You are about to submit your answers. By clicking 'Submit' you give us permission to analyse your answers.<br/>After you submit, you will no longer be able to go back and change any of your answers."
                 },
                 elements: []
               }
@@ -1409,13 +1428,14 @@ RSpec.describe InputUiSchemaGeneratorService do
     let(:ui_schema) { generator.generate_for IdeaCustomFieldsService.new(custom_form).enabled_fields }
     let(:field) do
       create(
-        :custom_field,
-        input_type: 'page',
+        :custom_field_page,
         key: field_key,
         title_multiloc: { 'en' => 'Page field title' },
         description_multiloc: { 'en' => 'Page field description' }
       )
     end
+
+    let!(:map_config) { create(:map_config, mappable: field) }
 
     it 'returns the schema for the given field, with id, and without elements' do
       expect(generator.visit_page(field)).to eq({
@@ -1424,7 +1444,9 @@ RSpec.describe InputUiSchemaGeneratorService do
           input_type: field.input_type,
           id: field.id,
           title: 'Page field title',
-          description: 'Page field description'
+          description: 'Page field description',
+          page_layout: 'default',
+          map_config_id: map_config.id
         },
         elements: []
       })

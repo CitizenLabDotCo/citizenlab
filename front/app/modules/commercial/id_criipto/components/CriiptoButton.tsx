@@ -7,7 +7,6 @@ import {
 
 import { AUTH_PATH } from 'containers/App/constants';
 
-import T from 'components/T';
 import VerificationMethodButton from 'components/UI/VerificationMethodButton';
 
 import { getJwt } from 'utils/auth/jwt';
@@ -34,7 +33,7 @@ const CriiptoButton = ({ onClick, verificationMethod, last }: Props) => {
       onClick={handleOnClick}
       last={last}
     >
-      <T value={verificationMethod.attributes.method_name_multiloc} />
+      {verificationMethod.attributes.ui_method_name}
     </VerificationMethodButton>
   );
 };

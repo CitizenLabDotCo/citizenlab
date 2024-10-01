@@ -18,7 +18,6 @@ import { IProjectData } from 'api/projects/types';
 import useProjects from 'api/projects/useProjects';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
 import { appLocalePairs } from 'containers/App/constants';
@@ -82,9 +81,6 @@ const InvitationOptions = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const appConfigurationLocales = useAppConfigurationLocales();
-  const hasSeatBasedBillingEnabled = useFeatureFlag({
-    name: 'seat_based_billing',
-  });
   const { data: projects } = useProjects({
     publicationStatuses: ['draft', 'published', 'archived'],
   });
@@ -162,7 +158,7 @@ const InvitationOptions = ({
               onChange={handleAdminRightsOnToggle}
             />
           </Box>
-          {!hasSeatBasedBillingEnabled && inviteesWillHaveAdminRights && (
+          {inviteesWillHaveAdminRights && (
             <Box marginTop="20px">
               <SeatInfo seatType="admin" />
             </Box>
@@ -217,11 +213,9 @@ const InvitationOptions = ({
                   <FormattedMessage {...messages.required} />
                 </StyledWarning>
               )}
-              {!hasSeatBasedBillingEnabled && (
-                <Box marginTop="20px">
-                  <SeatInfo seatType="moderator" />
-                </Box>
-              )}
+              <Box marginTop="20px">
+                <SeatInfo seatType="moderator" />
+              </Box>
             </>
           )}
         </SectionField>

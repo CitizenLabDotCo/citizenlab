@@ -8,7 +8,6 @@ import { ImportedIdeaMetadataResponse } from 'api/import_ideas/types';
 
 import ideaFormMessages from 'containers/IdeasNewPage/messages';
 
-import { customAjv } from 'components/Form';
 import Fields from 'components/Form/Components/Fields';
 import {
   FormData,
@@ -74,7 +73,6 @@ const IdeaForm = ({
   return (
     <Box w="90%">
       <Fields
-        ajv={customAjv}
         showAllErrors={showAllErrors}
         apiErrors={apiErrors}
         schema={schema}

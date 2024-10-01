@@ -6,9 +6,6 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
   title: 'Components/Dropdown',
-  parameters: {
-    layout: 'centered',
-  },
 } satisfies Meta<typeof Dropdown>;
 
 export default meta;

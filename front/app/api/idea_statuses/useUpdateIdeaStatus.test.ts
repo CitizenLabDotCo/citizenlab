@@ -1,5 +1,5 @@
 import { renderHook, act } from '@testing-library/react-hooks';
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
@@ -9,8 +9,8 @@ import useUpdateIdeaStatus from './useUpdateIdeaStatus';
 
 const apiPath = '*idea_statuses/:id';
 const server = setupServer(
-  rest.patch(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: ideaStatusesData[0] }));
+  http.patch(apiPath, () => {
+    return HttpResponse.json({ data: ideaStatusesData[0] }, { status: 200 });
   })
 );
 
@@ -26,7 +26,12 @@ describe('useUpdateIdeaStatus', () => {
     act(() => {
       result.current.mutate({
         id: 'id',
-        requestBody: { title_multiloc: { en: 'name' }, color: '#000000' },
+
+        requestBody: {
+          title_multiloc: { en: 'name' },
+          color: '#000000',
+          participation_method: 'ideation',
+        },
       });
     });
 
@@ -36,8 +41,8 @@ describe('useUpdateIdeaStatus', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.patch(apiPath, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.patch(apiPath, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 
@@ -47,7 +52,11 @@ describe('useUpdateIdeaStatus', () => {
     act(() => {
       result.current.mutate({
         id: 'id',
-        requestBody: { title_multiloc: { en: 'name' }, color: '#000000' },
+        requestBody: {
+          title_multiloc: { en: 'name' },
+          color: '#000000',
+          participation_method: 'ideation',
+        },
       });
     });
     await waitFor(() => expect(result.current.isError).toBe(true));

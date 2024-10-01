@@ -2,8 +2,8 @@
 import {
   linearScaleControlTester,
   LinearScaleControl,
-  PointControl,
-  pointControlTester,
+  MapControl,
+  mapControlTester,
   inputControlTester,
   InputControl,
   textAreaControlTester,
@@ -52,6 +52,8 @@ import {
   SingleSelectControl,
   singleAttachmentControlTester,
   SingleAttachmentControl,
+  shapefileUploadControlTester,
+  ShapefileUploadControl,
 } from 'components/Form/Components/Controls';
 
 const commonRenderers = [
@@ -104,8 +106,12 @@ export const selectRenderers = (formType: 'default' | 'input' | 'survey') => {
       renderer: SingleAttachmentControl,
     },
     {
-      tester: pointControlTester,
-      renderer: PointControl,
+      tester: mapControlTester,
+      renderer: MapControl,
+    },
+    {
+      tester: shapefileUploadControlTester,
+      renderer: ShapefileUploadControl,
     },
     ...commonRenderers,
   ];

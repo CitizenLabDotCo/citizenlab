@@ -54,23 +54,23 @@ describe('Project description builder Button component', () => {
 
     // Change style
     cy.get('#style-primary').click({ force: true });
-    cy.get('#e2e-button').get('button').should('have.class', 'primary');
+    cy.get('.e2e-button').get('button').should('have.class', 'primary');
     cy.get('#style-secondary').click({ force: true });
-    cy.get('#e2e-button').get('a').should('have.class', 'secondary');
+    cy.get('.e2e-button').get('a').should('have.class', 'secondary-outlined');
 
     // Change alignment
-    cy.get('#e2e-button')
+    cy.get('.e2e-button')
       .parent()
       .invoke('css', 'justify-content')
       .should('equal', 'flex-start');
     cy.get('#alignment-center').click({ force: true });
-    cy.get('#e2e-button')
+    cy.get('.e2e-button')
       .parent()
       .invoke('css', 'justify-content')
       .should('equal', 'center');
     cy.get('#alignment-right').click({ force: true });
     cy.get('.e2eBuilderSettingsClose').click({ force: true });
-    cy.get('#e2e-button')
+    cy.get('.e2e-button')
       .parent()
       .invoke('css', 'justify-content')
       .should('equal', 'flex-end');
@@ -90,13 +90,13 @@ describe('Project description builder Button component', () => {
       `/admin/project-description-builder/projects/${projectId}/description`
     );
 
-    cy.get('#e2e-button').should('exist');
-    cy.get('#e2e-button').parent().click({ force: true });
+    cy.get('.e2e-button').should('exist');
+    cy.get('.e2e-button').parent().click({ force: true });
     cy.get('#e2e-delete-button').click();
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveProjectDescriptionBuilder');
 
     cy.visit(`/projects/${projectSlug}`);
-    cy.get('#e2e-button').should('not.exist');
+    cy.get('.e2e-button').should('not.exist');
   });
 });

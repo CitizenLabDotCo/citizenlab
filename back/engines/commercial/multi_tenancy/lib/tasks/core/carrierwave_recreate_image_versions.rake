@@ -24,7 +24,7 @@ namespace :carrierwave do
   # docker exec -it -e MODEL_CONFIGS='[{"class": "AppConfiguration", "attributes": { "logo": ["small", "medium"], "favicon": [] } }, {"class": "ProjectImage", "attributes": { "image": [] } }]' "$(docker ps | awk '/web/ {print $1}' | head -1)" bin/rails carrierwave:recreate_image_versions
   #
   task recreate_image_versions: :environment do
-    Tenant.switch_each do |tenant|
+    Tenant.safe_switch_each do |tenant|
       puts("Enqueueing #{tenant.host} RecreateVersionsJob")
 
       JSON.parse(ENV.fetch('MODEL_CONFIGS')).each do |model_config|

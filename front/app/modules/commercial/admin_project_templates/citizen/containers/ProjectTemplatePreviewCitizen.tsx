@@ -118,12 +118,8 @@ const ProjectTemplatePreviewCitizen = memo<Props & WithRouterProps>(
         clHistory.push(`/admin/projects/templates/${projectTemplateId}`);
       } else {
         const link = (
-          <a
-            href="mailto:support@citizenlab.co"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <FormattedMessage {...messages.citizenlabExpert} />
+          <a href="mailto:support@govocal.com" target="_blank" rel="noreferrer">
+            <FormattedMessage {...messages.govocalExpert} />
           </a>
         );
 

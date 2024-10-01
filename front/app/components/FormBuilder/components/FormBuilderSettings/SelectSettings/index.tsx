@@ -9,29 +9,55 @@ import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 type Props = {
+  inputType: string;
   randomizeName: string;
+  dropdownLayoutName: string;
 };
 
-const SelectSettings = ({ randomizeName }: Props) => {
+const SelectSettings = ({
+  inputType,
+  randomizeName,
+  dropdownLayoutName,
+}: Props) => {
   const { formatMessage } = useIntl();
 
   return (
-    <Box mb="24px">
-      <Toggle
-        name={randomizeName}
-        label={
-          <Box display="flex">
-            {formatMessage(messages.randomize)}
-            <Box pl="4px">
-              <IconTooltip
-                placement="top-start"
-                content={formatMessage(messages.randomizeToolTip)}
-              />
+    <>
+      <Box mb="24px">
+        <Toggle
+          name={randomizeName}
+          label={
+            <Box display="flex">
+              {formatMessage(messages.randomize)}
+              <Box pl="4px">
+                <IconTooltip
+                  placement="top-start"
+                  content={formatMessage(messages.randomizeToolTip)}
+                />
+              </Box>
             </Box>
-          </Box>
-        }
-      />
-    </Box>
+          }
+        />
+      </Box>
+      {inputType !== 'multiselect_image' && (
+        <Box mb="24px">
+          <Toggle
+            name={dropdownLayoutName}
+            label={
+              <Box display="flex">
+                {formatMessage(messages.displayAsDropdown)}
+                <Box pl="4px">
+                  <IconTooltip
+                    placement="top-start"
+                    content={formatMessage(messages.displayAsDropdownTooltip)}
+                  />
+                </Box>
+              </Box>
+            }
+          />
+        </Box>
+      )}
+    </>
   );
 };
 

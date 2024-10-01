@@ -5,6 +5,7 @@ import { Element } from '@craftjs/core';
 import { FormatMessage } from 'typings';
 
 import { useProjects } from 'api/graph_data_units';
+import { ProjectReportsPublicationStatus } from 'api/graph_data_units/requestTypes';
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
@@ -42,9 +43,14 @@ import { getCommunity, getComparedDateRange, getProjects } from './utils';
 interface Props {
   startDate: string;
   endDate: string;
+  publicationStatuses?: ProjectReportsPublicationStatus[];
 }
 
-const PlatformTemplateContent = ({ startDate, endDate }: Props) => {
+const PlatformTemplateContent = ({
+  startDate,
+  endDate,
+  publicationStatuses = ['published'],
+}: Props) => {
   const dateRange = {
     startAt: startDate,
     endAt: endDate,
@@ -70,6 +76,7 @@ const PlatformTemplateContent = ({ startDate, endDate }: Props) => {
   const { data: projects } = useProjects({
     start_at: startDate,
     end_at: endDate,
+    publication_statuses: publicationStatuses,
   });
 
   if (!appConfigurationLocales || !userFields || !stats || !projects) {
@@ -133,7 +140,9 @@ const PlatformTemplateContent = ({ startDate, endDate }: Props) => {
     });
   };
 
-  const supportedFields = userFields.data.filter(isSupportedField);
+  const supportedEnabledFields = userFields.data
+    .filter(isSupportedField)
+    .filter((field) => field.attributes.enabled);
 
   return (
     <Element id="platform-report-template" is={Box} canvas>
@@ -176,10 +185,14 @@ const PlatformTemplateContent = ({ startDate, endDate }: Props) => {
         )}
       />
       <WhiteSpace size="small" />
-      {supportedFields.map((field) => (
+      {supportedEnabledFields.map((field) => (
         <Element is={Container} canvas key={field.id}>
           <DemographicsWidget
-            title={field.attributes.title_multiloc}
+            title={
+              field.attributes.code === 'birthyear'
+                ? toMultiloc(messages.age)
+                : field.attributes.title_multiloc
+            }
             {...dateRange}
             customFieldId={field.id}
           />

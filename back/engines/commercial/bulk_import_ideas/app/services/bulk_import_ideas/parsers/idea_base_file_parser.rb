@@ -86,7 +86,7 @@ module BulkImportIdeas::Parsers
     end
 
     def idea_blank?(idea)
-      idea.each do |_field, value|
+      idea.each_value do |value|
         return false if value.present?
       end
       true
@@ -94,7 +94,7 @@ module BulkImportIdeas::Parsers
 
     def structure_raw_fields(fields)
       fields.map do |name, value|
-        name = XlsxExport::Utils.new.remove_duplicate_column_name_suffix name
+        name = Export::Xlsx::Utils.new.remove_duplicate_column_name_suffix name
         {
           name: name,
           value: value,

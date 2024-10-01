@@ -7,7 +7,6 @@ import {
   useBreakpoint,
   useWindowSize,
 } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
 
 import { IdeaPublicationStatus } from 'api/ideas/types';
 import useAddIdea from 'api/ideas/useAddIdea';
@@ -20,6 +19,7 @@ import { IPhases, IPhaseData } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
 import usePhases from 'api/phases/usePhases';
 import { getCurrentPhase } from 'api/phases/utils';
+import projectsKeys from 'api/projects/keys';
 import { IProject } from 'api/projects/types';
 
 import useInputSchema from 'hooks/useInputSchema';
@@ -28,11 +28,13 @@ import useLocalize from 'hooks/useLocalize';
 import ideaFormMessages from 'containers/IdeasNewPage/messages';
 
 import Form from 'components/Form';
+import { SURVEY_PAGE_CHANGE_EVENT } from 'components/Form/Components/Layouts/events';
 import { AjvErrorGetter, ApiErrorGetter } from 'components/Form/typings';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
 
+import { queryClient } from 'utils/cl-react-query/queryClient';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
-import { isNilOrError } from 'utils/helperUtils';
+import eventEmitter from 'utils/eventEmitter';
 import { getElementType, getFieldNameFromPath } from 'utils/JSONFormUtils';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
@@ -40,6 +42,7 @@ import { getFormValues } from '../../IdeasEditPage/utils';
 import IdeasNewSurveyMeta from '../IdeasNewSurveyMeta';
 
 import SurveyHeading from './SurveyHeading';
+import { convertGeojsonToWKT } from './utils';
 
 const getConfig = (
   phaseFromUrl: IPhaseData | undefined,
@@ -65,16 +68,15 @@ interface FormValues {
 
 interface Props {
   project: IProject;
+  phaseId: string | undefined;
 }
 
-const IdeasNewSurveyForm = ({ project }: Props) => {
+const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
   const localize = useLocalize();
   const isSmallerThanPhone = useBreakpoint('phone');
   const { mutateAsync: addIdea } = useAddIdea();
   const { mutateAsync: updateIdea } = useUpdateIdea();
   const { data: authUser } = useAuthUser();
-  const [queryParams] = useSearchParams();
-  const phaseId = queryParams.get('phase_id') || undefined;
   const { data: phases } = usePhases(project.data.id);
   const { data: phaseFromUrl } = usePhase(phaseId);
   const {
@@ -86,6 +88,7 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
     projectId: project.data.id,
     phaseId,
   });
+  const [usingMapView, setUsingMapView] = useState(false);
 
   const { data: draftIdea, status: draftIdeaStatus } =
     useDraftIdeaByPhaseId(phaseId);
@@ -152,6 +155,19 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
     }
   }, [draftIdeaStatus, draftIdea, schema, ideaId]);
 
+  // Listen for survey page change event
+  useEffect(() => {
+    const subscription = eventEmitter
+      .observeEvent(SURVEY_PAGE_CHANGE_EVENT)
+      .subscribe(() => {
+        setUsingMapView(!!document.getElementById('survey_page_map'));
+      });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
+
   if (isLoadingInputSchema || loadingDraftIdea) return <FullPageSpinner />;
   if (
     // inputSchemaError should display an error page instead
@@ -165,32 +181,47 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
   }
 
   const handleDraftIdeas = async (data: FormValues) => {
-    if (data.publication_status === 'draft') {
-      if (allowAnonymousPosting || isNilOrError(authUser)) {
+    if (data.publication_status === 'published') {
+      return onSubmit(data, true);
+    } else {
+      if (allowAnonymousPosting || !authUser) {
         // Anonymous or not logged in surveys should not save drafts
         return;
       }
 
       return onSubmit(data, false);
-    } else {
-      return onSubmit(data, true);
     }
   };
 
   const onSubmit = async (data: FormValues, published?: boolean) => {
+    const requestBodyConvertedData = convertGeojsonToWKT(data);
+
     const requestBody = {
-      ...data,
+      ...requestBodyConvertedData,
       project_id: project.data.id,
-      ...(canModerateProject(project.data.id, authUser)
+      ...(canModerateProject(project.data, authUser)
         ? { phase_ids: [phaseId] }
         : {}), // Moderators can submit survey responses for inactive phases, in which case the backend cannot infer the correct phase (the current phase).
       publication_status: data.publication_status || 'published',
     };
 
+    const handleOnError = () => {
+      // If an error happens, it's likely some permission issues.
+      // We refetch the project to use the correct action descriptors.
+      queryClient.invalidateQueries({
+        queryKey: projectsKeys.all(),
+      });
+    };
     // Update or add the idea depending on if we have an existing draft idea
     const idea = ideaId
-      ? await updateIdea({ id: ideaId, requestBody })
-      : await addIdea(requestBody);
+      ? await updateIdea(
+          { id: ideaId, requestBody },
+          {
+            onError: handleOnError,
+          }
+        )
+      : await addIdea(requestBody, { onError: handleOnError });
+
     setIdeaId(idea.data.id);
 
     const ideaAttributes = idea.data.attributes;
@@ -262,10 +293,11 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
           mx="auto"
           position="relative"
           top={isSmallerThanPhone ? '0' : '40px'}
-          maxWidth="700px"
+          maxWidth={usingMapView ? '1100px' : '700px'}
         >
           <SurveyHeading
             titleText={localize(phase?.attributes.native_survey_title_multiloc)}
+            phaseId={phaseId}
           />
         </Box>
         <main id="e2e-idea-new-page">
@@ -276,7 +308,7 @@ const IdeasNewSurveyForm = ({ project }: Props) => {
           >
             <Box
               background={colors.white}
-              maxWidth="700px"
+              maxWidth={usingMapView ? '1100px' : '700px'}
               w="100%"
               // Height is recalculated on window resize via useWindowSize hook
               h={calculateDynamicHeight()}

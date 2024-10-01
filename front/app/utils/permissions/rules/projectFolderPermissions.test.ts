@@ -10,12 +10,12 @@ describe('isProjectFolderModerator', () => {
     const user = makeUser({
       roles: [{ type: 'project_folder_moderator' }],
     });
-    expect(isProjectFolderModerator(user.data)).toBeTruthy();
+    expect(isProjectFolderModerator(user)).toBeTruthy();
   });
 
   it('returns false when a user is not a project folder moderator', () => {
     const user = makeUser();
-    expect(isProjectFolderModerator(user.data)).toBeFalsy();
+    expect(isProjectFolderModerator(user)).toBeFalsy();
   });
 });
 
@@ -27,7 +27,7 @@ describe('userModeratesFolder', () => {
         { type: 'project_folder_moderator', project_folder_id: folderId },
       ],
     });
-    expect(userModeratesFolder(moderator.data, folderId)).toBeTruthy();
+    expect(userModeratesFolder(moderator, folderId)).toBeTruthy();
   });
 
   it('returns false when a user is a moderator for a different project', () => {
@@ -38,17 +38,14 @@ describe('userModeratesFolder', () => {
       ],
     });
     expect(
-      userModeratesFolder(
-        moderator.data,
-        '444add65-e122-51db-a1b9-80fcd2e3f635'
-      )
+      userModeratesFolder(moderator, '444add65-e122-51db-a1b9-80fcd2e3f635')
     ).toBeFalsy();
   });
 
   it('returns false when a user is not a moderator', () => {
     const user = makeUser();
     expect(
-      userModeratesFolder(user.data, 'df534d5b-ec63-5adf-8713-9cc247957175')
+      userModeratesFolder(user, 'df534d5b-ec63-5adf-8713-9cc247957175')
     ).toBeFalsy();
   });
 });

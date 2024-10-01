@@ -50,20 +50,49 @@ describe MultiTenancy::Templates::TenantSerializer do
       expect(home_attributes['title_multiloc']).to be_blank
     end
 
-    it 'can deal with projects without admin publication' do
-      # The changes introduced by ticket CL-793 can be
-      # reverted once the issue with projects losing their
-      # admin publications is solved.
+    it 'can deal with nested admin publications in projects' do
+      create(:project, title_multiloc: { 'en' => 'top-project' })
+      create(
+        :project,
+        title_multiloc: { 'en' => 'nested-project' },
+        folder: create(:project_folder, title_multiloc: { 'en' => 'folder' }).tap do |folder|
+          folder.admin_publication.move_to_bottom
+        end
+      )
 
-      project = create(:project)
-      project.admin_publication.delete
-      expect(project.reload).to be_present
+      serializer = described_class.new(Tenant.current, uploads_full_urls: true)
+      template = serializer.run(deserializer_format: true)
 
-      template = tenant_serializer.run(deserializer_format: true)
-
-      expect(template['models']).to be_present
-      expect(template.dig('models', 'project', 0, 'admin_publication_attributes')).to be_nil
+      tenant = create(:tenant, locales: AppConfiguration.instance.settings('core', 'locales'))
+      tenant.switch do
+        MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
+        expect(Project.count).to eq 2
+        expect(AdminPublication.count).to eq 3
+        expect(ProjectFolders::Folder.count).to eq 1
+        top_project = Project.find_by(title_multiloc: { 'en' => 'top-project' })
+        folder = ProjectFolders::Folder.find_by(title_multiloc: { 'en' => 'folder' })
+        nested_project = Project.find_by(title_multiloc: { 'en' => 'nested-project' })
+        expect(top_project.admin_publication.ordering).to eq 0
+        expect(folder.admin_publication.ordering).to eq 1
+        expect(nested_project.admin_publication.ordering).to eq 0
+        expect(nested_project.folder).to eq folder
+      end
     end
+
+    # TODO: Re-enable after fixing inconsistent data on templates.
+    # it "fails when there's a missing publication" do
+    #   create(:project).admin_publication.delete
+
+    #   expect do
+    #     serializer = described_class.new(Tenant.current, uploads_full_urls: true)
+    #     template = serializer.run(deserializer_format: true)
+
+    #     tenant = create(:tenant, locales: AppConfiguration.instance.settings('core', 'locales'))
+    #     tenant.switch do
+    #       MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
+    #     end
+    #   end.to raise_error(RuntimeError) # Error class subject to change
+    # end
 
     it 'can deal with missing authors' do
       idea = create(:idea, author: nil)
@@ -88,6 +117,7 @@ describe MultiTenancy::Templates::TenantSerializer do
       expect(template.dig('models', 'static_page', 0, 'remote_header_bg_url')).to match(%r{/uploads/.*/static_page/header_bg/.*.jpg})
     end
 
+    # TODO: move-old-proposals-test
     it 'successfully copies over cosponsors_intiatives' do
       initiative = create(:initiative, title_multiloc: { en: 'initiative-1' })
       user = create(:user, email: 'user-1@g.com')
@@ -108,7 +138,7 @@ describe MultiTenancy::Templates::TenantSerializer do
     end
 
     it 'successfully copies over native surveys and responses' do
-      IdeaStatus.create_defaults
+      create(:idea_status_proposed)
 
       timeline_project = create(:project_with_future_native_survey_phase)
       survey_phase = timeline_project.phases.last
@@ -123,7 +153,7 @@ describe MultiTenancy::Templates::TenantSerializer do
 
       tenant = create(:tenant)
       tenant.switch do
-        IdeaStatus.create_defaults
+        create(:idea_status_proposed)
         expect(Project.count).to eq 0
 
         MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
@@ -145,7 +175,7 @@ describe MultiTenancy::Templates::TenantSerializer do
       description_multiloc = {
         'en' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />'
       }
-      field = create(:custom_field, :for_custom_form, description_multiloc: description_multiloc)
+      field = create(:custom_field_page, :for_custom_form, description_multiloc: description_multiloc)
       field.update! description_multiloc: TextImageService.new.swap_data_images_multiloc(field.description_multiloc, field: :description_multiloc, imageable: field)
 
       template = tenant_serializer.run(deserializer_format: true)
@@ -156,7 +186,9 @@ describe MultiTenancy::Templates::TenantSerializer do
         'input_type' => field.input_type,
         'title_multiloc' => field.title_multiloc,
         'random_option_ordering' => field.random_option_ordering,
-        'description_multiloc' => field.description_multiloc
+        'dropdown_layout' => field.dropdown_layout,
+        'description_multiloc' => field.description_multiloc,
+        'page_layout' => field.page_layout
       )
     end
 
@@ -204,6 +236,7 @@ describe MultiTenancy::Templates::TenantSerializer do
         create(factory, :for_custom_form, resource: custom_form)
       end
       unsupported_field = create(:custom_field, :for_custom_form, input_type: 'file_upload', resource: custom_form)
+      create(:idea_status_proposed)
       response = create(:native_survey_response, project: project)
       custom_field_values = {
         supported_fields[0].key => 7,

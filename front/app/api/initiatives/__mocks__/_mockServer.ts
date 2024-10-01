@@ -1,4 +1,4 @@
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 
 import { IInitiativeData } from '../types';
 
@@ -163,8 +163,8 @@ export const links = {
 export const apiPath = '/web_api/v1/initiatives/:initiativeId';
 
 const endpoints = {
-  'GET initiatives/:id': rest.get(apiPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: initiativesData[0] }));
+  'GET initiatives/:id': http.get(apiPath, () => {
+    return HttpResponse.json({ data: initiativesData[0] }, { status: 200 });
   }),
 };
 

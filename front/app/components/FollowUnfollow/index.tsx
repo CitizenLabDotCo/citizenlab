@@ -6,8 +6,8 @@ import {
   BoxWidthProps,
   BoxPaddingProps,
   colors,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
 import { useLocation } from 'react-router-dom';
 
 import useABTest from 'api/experiments/useABTest';
@@ -122,7 +122,6 @@ const FollowUnfollow = ({
     };
 
     triggerAuthenticationFlow({
-      flow: 'signup',
       context,
       successAction,
     });
@@ -181,8 +180,7 @@ const FollowUnfollow = ({
   };
 
   return (
-    <Tippy
-      interactive={true}
+    <Tooltip
       disabled={!toolTipType}
       theme="dark"
       maxWidth={280}
@@ -205,7 +203,7 @@ const FollowUnfollow = ({
             : followUnfollowText}
         </Button>
       </div>
-    </Tippy>
+    </Tooltip>
   );
 };
 

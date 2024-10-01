@@ -1,6 +1,6 @@
 module ReportBuilder
   class Queries::Projects < ReportBuilder::Queries::Base
-    def run_query(start_at: nil, end_at: nil, **_other_props)
+    def run_query(start_at: nil, end_at: nil, publication_statuses: ['published'], **_other_props)
       start_date, end_date = TimeBoundariesParser.new(start_at, end_at).parse
 
       overlapping_project_ids = Phase
@@ -10,13 +10,12 @@ module ReportBuilder
       overlapping_projects = Project
         .joins(:admin_publication)
         .where(id: overlapping_project_ids)
-        .where(admin_publication: { publication_status: 'published' })
+        .where(admin_publication: { publication_status: publication_statuses })
 
       periods = Phase
         .select(
           :project_id,
           'min(start_at) as start_at',
-          'max(start_at) as last_phase_start_at',
           'CASE WHEN count(end_at) = count(*) THEN max(end_at) ELSE NULL END as end_at'
         )
         .where(project_id: overlapping_project_ids)
@@ -24,7 +23,7 @@ module ReportBuilder
         .to_h do |period|
         [
           period.project_id,
-          period.slice(:start_at, :last_phase_start_at, :end_at)
+          period.slice(:start_at, :end_at)
         ]
       end
 

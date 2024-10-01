@@ -5,13 +5,12 @@ import { Navigate, useLocation } from 'react-router-dom';
 
 import { IAppConfigurationData } from 'api/app_configuration/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useAuthUser from 'api/me/useAuthUser';
 
 import PageLoading from 'components/UI/PageLoading';
 import Unauthorized from 'components/Unauthorized';
 
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
-import { isNilOrError, isUUID } from 'utils/helperUtils';
+import { isUUID } from 'utils/helperUtils';
 import { usePermission } from 'utils/permissions';
 
 import createDashboardRoutes, { dashboardRouteTypes } from './dashboard/routes';
@@ -39,6 +38,12 @@ import createAdminUsersRoutes, { userRouteTypes } from './users/routes';
 
 const AdminContainer = lazy(() => import('containers/Admin'));
 const AdminFavicon = lazy(() => import('containers/Admin/favicon'));
+const ProjectDescriptionBuilderComponent = React.lazy(
+  () => import('containers/ProjectDescriptionBuilder')
+);
+const FullscreenPreview = React.lazy(
+  () => import('containers/ProjectDescriptionBuilder/FullscreenPreview')
+);
 
 export type AdminRoute<T extends string = string> = `/admin/${T}`;
 
@@ -100,9 +105,8 @@ const IndexElement = () => {
   });
 
   const { data: appConfiguration } = useAppConfiguration();
-  const { data: authUser } = useAuthUser();
 
-  if (isNilOrError(appConfiguration) || authUser === undefined) return null;
+  if (!appConfiguration) return null;
 
   const redirectURL = accessAuthorized
     ? null
@@ -120,6 +124,12 @@ const IndexElement = () => {
     </PageLoading>
   );
 };
+
+export enum descriptionBuilderRoutes {
+  projectdescriptionBuilder = 'project-description-builder',
+  description = `project-description-builder/projects/:projectId/description`,
+  preview = `project-description-builder/projects/:projectId/preview`,
+}
 
 const createAdminRoutes = () => {
   return {
@@ -154,6 +164,14 @@ const createAdminRoutes = () => {
             <AdminFavicon />
           </PageLoading>
         ),
+      },
+      {
+        path: descriptionBuilderRoutes.description,
+        element: <ProjectDescriptionBuilderComponent />,
+      },
+      {
+        path: descriptionBuilderRoutes.preview,
+        element: <FullscreenPreview />,
       },
       ...moduleConfiguration.routes.admin,
     ],

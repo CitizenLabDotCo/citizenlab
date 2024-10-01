@@ -14,6 +14,11 @@ export default defineMessages({
     defaultMessage:
       'If you have access to our AI package, you will be able to summarise and categorise text responses with AI',
   },
+  mappingNotInCurrentLicense: {
+    id: 'app.components.formBuilder.mappingNotInCurrentLicense',
+    defaultMessage:
+      'Survey mapping features are not included in your current license. Reach out to your GovSuccess Manager to learn more.',
+  },
   shortAnswer: {
     id: 'app.components.formBuilder.shortAnswer',
     defaultMessage: 'Short answer',
@@ -70,9 +75,21 @@ export default defineMessages({
     id: 'app.components.formBuilder.fileUpload',
     defaultMessage: 'File upload',
   },
-  locationAnswer: {
-    id: 'app.components.formBuilder.locationAnswer',
-    defaultMessage: 'Location answer',
+  shapefileUpload: {
+    id: 'app.components.formBuilder.shapefileUpload',
+    defaultMessage: 'Esri shapefile upload',
+  },
+  dropPin: {
+    id: 'app.components.formBuilder.dropPin',
+    defaultMessage: 'Drop pin',
+  },
+  drawRoute: {
+    id: 'app.components.formBuilder.drawRoute',
+    defaultMessage: 'Draw route',
+  },
+  drawArea: {
+    id: 'app.components.formBuilder.drawArea',
+    defaultMessage: 'Draw area',
   },
   proposedBudget: {
     id: 'app.components.formBuilder.proposedBudget',
@@ -173,6 +190,10 @@ export default defineMessages({
   optional: {
     id: 'app.components.formBuilder.optional',
     defaultMessage: 'Optional',
+  },
+  mapping: {
+    id: 'app.components.formBuilder.mapping',
+    defaultMessage: 'Mapping',
   },
   // Logic Settings
   formEnd: {

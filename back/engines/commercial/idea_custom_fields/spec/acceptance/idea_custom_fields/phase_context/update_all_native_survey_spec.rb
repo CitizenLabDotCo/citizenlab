@@ -37,7 +37,10 @@ resource 'Idea Custom Fields' do
         create(:custom_field, resource: custom_form) # field to destroy
         request = {
           custom_fields: [
-            { input_type: 'page' },
+            {
+              input_type: 'page',
+              page_layout: 'default'
+            },
             # Inserted field first to test reordering of fields.
             {
               input_type: 'text',
@@ -116,7 +119,10 @@ resource 'Idea Custom Fields' do
 
         request = {
           custom_fields: [
-            { input_type: 'page' },
+            {
+              input_type: 'page',
+              page_layout: 'default'
+            },
             {
               input_type: 'multiselect',
               title_multiloc: { en: 'Inserted field' },
@@ -147,6 +153,7 @@ resource 'Idea Custom Fields' do
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: {},
+            dropdown_layout: false,
             enabled: true,
             input_type: 'multiselect',
             key: Regexp.new('inserted_field'),
@@ -218,7 +225,10 @@ resource 'Idea Custom Fields' do
         image2 = create(:custom_field_option_image, custom_field_option: nil)
         request = {
           custom_fields: [
-            { input_type: 'page' },
+            {
+              input_type: 'page',
+              page_layout: 'default'
+            },
             {
               input_type: 'multiselect_image',
               title_multiloc: { en: 'Inserted field' },
@@ -288,7 +298,10 @@ resource 'Idea Custom Fields' do
       example '[error] Add a field of unsupported input_type' do
         request = {
           custom_fields: [
-            { input_type: 'page' },
+            {
+              input_type: 'page',
+              page_layout: 'default'
+            },
             {
               input_type: 'topic_ids',
               title_multiloc: { 'en' => 'Topics field title' },
@@ -305,6 +318,67 @@ resource 'Idea Custom Fields' do
         expect(json_response).to eq({ errors: { '1': { input_type: [{ error: 'inclusion', value: 'topic_ids' }] } } })
       end
 
+      example 'Update linear_scale field' do
+        field_to_update = create(:custom_field_linear_scale, resource: custom_form)
+        create(:custom_field, resource: custom_form) # field to destroy
+        request = {
+          custom_fields: [
+            {
+              input_type: 'page',
+              page_layout: 'default'
+            },
+            {
+              id: field_to_update.id,
+              title_multiloc: { 'en' => 'Select a value from the scale' },
+              description_multiloc: { 'en' => 'Description of question' },
+              required: true,
+              enabled: true,
+              maximum: 7,
+              linear_scale_label_1_multiloc: { 'en' => 'Lowest' },
+              linear_scale_label_2_multiloc: { 'en' => 'Low' },
+              linear_scale_label_3_multiloc: { 'en' => 'Low-ish' },
+              linear_scale_label_4_multiloc: { 'en' => 'Neutral' },
+              linear_scale_label_5_multiloc: { 'en' => 'High-ish' },
+              linear_scale_label_6_multiloc: { 'en' => 'High' },
+              linear_scale_label_7_multiloc: { 'en' => 'Highest' }
+            }
+          ]
+        }
+        do_request request
+
+        assert_status 200
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq 2
+        expect(json_response[:data][1]).to match({
+          attributes: {
+            code: nil,
+            created_at: an_instance_of(String),
+            description_multiloc: { en: 'Description of question' },
+            enabled: true,
+            input_type: 'linear_scale',
+            key: an_instance_of(String),
+            ordering: 1,
+            required: true,
+            title_multiloc: { en: 'Select a value from the scale' },
+            updated_at: an_instance_of(String),
+            maximum: 7,
+            linear_scale_label_1_multiloc: { en: 'Lowest' },
+            linear_scale_label_2_multiloc: { en: 'Low' },
+            linear_scale_label_3_multiloc: { en: 'Low-ish' },
+            linear_scale_label_4_multiloc: { en: 'Neutral' },
+            linear_scale_label_5_multiloc: { en: 'High-ish' },
+            linear_scale_label_6_multiloc: { en: 'High' },
+            linear_scale_label_7_multiloc: { en: 'Highest' },
+            logic: {},
+            random_option_ordering: false,
+            constraints: {}
+          },
+          id: an_instance_of(String),
+          type: 'custom_field',
+          relationships: { options: { data: [] } }
+        })
+      end
+
       context 'Update custom field options with images' do
         let!(:page) { create(:custom_field_page, resource: custom_form) }
         let!(:field) { create(:custom_field_multiselect_image, resource: custom_form) }
@@ -318,7 +392,8 @@ resource 'Idea Custom Fields' do
             custom_fields: [
               {
                 id: page.id,
-                input_type: 'page'
+                input_type: 'page',
+                page_layout: 'default'
               },
               {
                 id: field.id,
@@ -356,7 +431,8 @@ resource 'Idea Custom Fields' do
             custom_fields: [
               {
                 id: page.id,
-                input_type: 'page'
+                input_type: 'page',
+                page_layout: 'default'
               },
               {
                 id: field.id,
@@ -401,7 +477,10 @@ resource 'Idea Custom Fields' do
 
         request = {
           custom_fields: [
-            { input_type: 'page' },
+            {
+              input_type: 'page',
+              page_layout: 'default'
+            },
             {
               id: select_field.id,
               input_type: 'multiselect',
@@ -459,7 +538,10 @@ resource 'Idea Custom Fields' do
 
         request = {
           custom_fields: [
-            { input_type: 'page' },
+            {
+              input_type: 'page',
+              page_layout: 'default'
+            },
             {
               id: select_field.id,
               input_type: select_field.input_type,
@@ -519,7 +601,10 @@ resource 'Idea Custom Fields' do
 
         request = {
           custom_fields: [
-            { input_type: 'page' },
+            {
+              input_type: 'page',
+              page_layout: 'default'
+            },
             {
               id: field.id,
               title_multiloc: { 'en' => 'Updated field' },
@@ -542,6 +627,7 @@ resource 'Idea Custom Fields' do
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: an_instance_of(Hash),
+            dropdown_layout: false,
             enabled: true,
             input_type: 'select',
             key: field.key,
@@ -560,7 +646,7 @@ resource 'Idea Custom Fields' do
       end
 
       example 'Updating custom fields in a native survey phase when there are responses' do
-        IdeaStatus.create_defaults
+        create(:idea_status_proposed)
         create(:custom_field, resource: custom_form) # field to ensure custom form has been created
         create(:idea, project: context.project, creation_phase: context, phases: [context])
 
@@ -603,7 +689,10 @@ resource 'Idea Custom Fields' do
 
           request = {
             custom_fields: [
-              { input_type: 'page' },
+              {
+                input_type: 'page',
+                page_layout: 'default'
+              },
               {
                 id: field_to_update.id,
                 options: []
@@ -622,7 +711,10 @@ resource 'Idea Custom Fields' do
         field_to_update = create(:custom_field, resource: custom_form, title_multiloc: { 'en' => 'Some field' })
         request = {
           custom_fields: [
-            { input_type: 'page' },
+            {
+              input_type: 'page',
+              page_layout: 'default'
+            },
             {
               # input_type is not given
               title_multiloc: { 'en' => 'Inserted field' },
@@ -690,7 +782,10 @@ resource 'Idea Custom Fields' do
         field_to_update = create(:custom_field_select, :with_options, resource: custom_form)
         request = {
           custom_fields: [
-            { input_type: 'page' },
+            {
+              input_type: 'page',
+              page_layout: 'default'
+            },
             {
               id: field_to_update.id,
               title_multiloc: { 'en' => 'New title' },
@@ -739,6 +834,7 @@ resource 'Idea Custom Fields' do
             {
               id: page1.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page1.title_multiloc,
               description_multiloc: page1.description_multiloc,
               required: false,
@@ -754,6 +850,7 @@ resource 'Idea Custom Fields' do
             {
               id: page2.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page2.title_multiloc,
               description_multiloc: page2.description_multiloc,
               required: false,
@@ -791,6 +888,7 @@ resource 'Idea Custom Fields' do
             {
               id: page1.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page1.title_multiloc,
               description_multiloc: page1.description_multiloc,
               required: false,
@@ -803,8 +901,13 @@ resource 'Idea Custom Fields' do
               required: true,
               enabled: true,
               maximum: 5,
-              minimum_label_multiloc: { 'en' => 'Strongly disagree' },
-              maximum_label_multiloc: { 'en' => 'Strongly agree' },
+              linear_scale_label_1_multiloc: { 'en' => 'Strongly disagree' },
+              linear_scale_label_2_multiloc: { 'en' => 'Disagree' },
+              linear_scale_label_3_multiloc: { 'en' => 'Neutral' },
+              linear_scale_label_4_multiloc: { 'en' => 'Agree' },
+              linear_scale_label_5_multiloc: { 'en' => 'Strongly agree' },
+              linear_scale_label_6_multiloc: {},
+              linear_scale_label_7_multiloc: {},
               logic: {
                 rules: [{ if: 2, goto_page_id: page3.id }]
               }
@@ -812,6 +915,7 @@ resource 'Idea Custom Fields' do
             {
               id: page2.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page2.title_multiloc,
               description_multiloc: page2.description_multiloc,
               required: false,
@@ -820,6 +924,7 @@ resource 'Idea Custom Fields' do
             {
               id: page3.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page3.title_multiloc,
               description_multiloc: page3.description_multiloc,
               required: false,
@@ -841,6 +946,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: page1.key,
             ordering: 0,
+            page_layout: 'default',
             required: false,
             title_multiloc: page1.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -850,7 +956,7 @@ resource 'Idea Custom Fields' do
           },
           id: page1.id,
           type: 'custom_field',
-          relationships: { options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] } }
         })
         expect(json_response[:data][1]).to match({
           attributes: {
@@ -865,8 +971,13 @@ resource 'Idea Custom Fields' do
             title_multiloc: field_to_update.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
             maximum: 5,
-            minimum_label_multiloc: field_to_update.minimum_label_multiloc.symbolize_keys,
-            maximum_label_multiloc: field_to_update.maximum_label_multiloc.symbolize_keys,
+            linear_scale_label_1_multiloc: field_to_update.linear_scale_label_1_multiloc.symbolize_keys,
+            linear_scale_label_2_multiloc: field_to_update.linear_scale_label_2_multiloc.symbolize_keys,
+            linear_scale_label_3_multiloc: field_to_update.linear_scale_label_3_multiloc.symbolize_keys,
+            linear_scale_label_4_multiloc: field_to_update.linear_scale_label_4_multiloc.symbolize_keys,
+            linear_scale_label_5_multiloc: field_to_update.linear_scale_label_5_multiloc.symbolize_keys,
+            linear_scale_label_6_multiloc: field_to_update.linear_scale_label_6_multiloc.symbolize_keys,
+            linear_scale_label_7_multiloc: field_to_update.linear_scale_label_7_multiloc.symbolize_keys,
             logic: {
               rules: [{ if: 2, goto_page_id: page3.id }]
             },
@@ -886,6 +997,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: page2.key,
             ordering: 2,
+            page_layout: 'default',
             required: false,
             title_multiloc: page2.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -895,7 +1007,7 @@ resource 'Idea Custom Fields' do
           },
           id: page2.id,
           type: 'custom_field',
-          relationships: { options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] } }
         })
         expect(json_response[:data][3]).to match({
           attributes: {
@@ -906,6 +1018,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: page3.key,
             ordering: 3,
+            page_layout: 'default',
             required: false,
             title_multiloc: page3.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -915,7 +1028,7 @@ resource 'Idea Custom Fields' do
           },
           id: page3.id,
           type: 'custom_field',
-          relationships: { options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] } }
         })
       end
 
@@ -930,6 +1043,7 @@ resource 'Idea Custom Fields' do
             {
               id: page_to_update.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page_to_update.title_multiloc,
               description_multiloc: page_to_update.description_multiloc,
               required: false,
@@ -939,6 +1053,7 @@ resource 'Idea Custom Fields' do
             {
               id: page2.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page2.title_multiloc,
               description_multiloc: page2.description_multiloc,
               required: false,
@@ -947,6 +1062,7 @@ resource 'Idea Custom Fields' do
             {
               id: page3.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page3.title_multiloc,
               description_multiloc: page3.description_multiloc,
               required: false,
@@ -955,6 +1071,7 @@ resource 'Idea Custom Fields' do
             {
               id: page4.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page4.title_multiloc,
               description_multiloc: page4.description_multiloc,
               required: false,
@@ -974,6 +1091,7 @@ resource 'Idea Custom Fields' do
             description_multiloc: page_to_update.description_multiloc.symbolize_keys,
             enabled: true,
             input_type: 'page',
+            page_layout: 'default',
             key: page_to_update.key,
             ordering: 0,
             required: false,
@@ -985,7 +1103,7 @@ resource 'Idea Custom Fields' do
           },
           id: page_to_update.id,
           type: 'custom_field',
-          relationships: { options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] } }
         })
         expect(json_response[:data][1]).to match({
           attributes: {
@@ -996,6 +1114,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: page2.key,
             ordering: 1,
+            page_layout: 'default',
             required: false,
             title_multiloc: page2.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -1005,7 +1124,7 @@ resource 'Idea Custom Fields' do
           },
           id: page2.id,
           type: 'custom_field',
-          relationships: { options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] } }
         })
         expect(json_response[:data][2]).to match({
           attributes: {
@@ -1016,6 +1135,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: page3.key,
             ordering: 2,
+            page_layout: 'default',
             required: false,
             title_multiloc: page3.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -1025,7 +1145,7 @@ resource 'Idea Custom Fields' do
           },
           id: page3.id,
           type: 'custom_field',
-          relationships: { options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] } }
         })
         expect(json_response[:data][3]).to match({
           attributes: {
@@ -1036,6 +1156,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: page4.key,
             ordering: 3,
+            page_layout: 'default',
             required: false,
             title_multiloc: page4.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -1045,7 +1166,7 @@ resource 'Idea Custom Fields' do
           },
           id: page4.id,
           type: 'custom_field',
-          relationships: { options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] } }
         })
       end
 
@@ -1059,6 +1180,7 @@ resource 'Idea Custom Fields' do
             {
               id: page_to_update.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page_to_update.title_multiloc,
               description_multiloc: page_to_update.description_multiloc,
               required: false,
@@ -1070,6 +1192,7 @@ resource 'Idea Custom Fields' do
             {
               id: page2.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page2.title_multiloc,
               description_multiloc: page2.description_multiloc,
               required: false,
@@ -1078,6 +1201,7 @@ resource 'Idea Custom Fields' do
             {
               id: page3.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page3.title_multiloc,
               description_multiloc: page3.description_multiloc,
               required: false,
@@ -1086,6 +1210,7 @@ resource 'Idea Custom Fields' do
             {
               temp_id: 'TEMP-ID-1',
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: { 'en' => 'Page 4' },
               description_multiloc: { 'en' => 'Page 4 description' },
               required: false,
@@ -1107,6 +1232,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: page_to_update.key,
             ordering: 0,
+            page_layout: 'default',
             required: false,
             title_multiloc: page_to_update.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -1116,7 +1242,7 @@ resource 'Idea Custom Fields' do
           },
           id: page_to_update.id,
           type: 'custom_field',
-          relationships: { options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] } }
         })
         expect(json_response[:data][1]).to match({
           attributes: {
@@ -1127,6 +1253,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: page2.key,
             ordering: 1,
+            page_layout: 'default',
             required: false,
             title_multiloc: page2.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -1136,7 +1263,7 @@ resource 'Idea Custom Fields' do
           },
           id: page2.id,
           type: 'custom_field',
-          relationships: { options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] } }
         })
         expect(json_response[:data][2]).to match({
           attributes: {
@@ -1147,6 +1274,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: page3.key,
             ordering: 2,
+            page_layout: 'default',
             required: false,
             title_multiloc: page3.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -1156,7 +1284,7 @@ resource 'Idea Custom Fields' do
           },
           id: page3.id,
           type: 'custom_field',
-          relationships: { options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] } }
         })
         expect(json_response[:data][3]).to match({
           attributes: {
@@ -1167,6 +1295,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: nil,
             ordering: 3,
+            page_layout: 'default',
             required: false,
             title_multiloc: { en: 'Page 4' },
             updated_at: an_instance_of(String),
@@ -1176,7 +1305,7 @@ resource 'Idea Custom Fields' do
           },
           id: an_instance_of(String),
           type: 'custom_field',
-          relationships: { options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] } }
         })
       end
 
@@ -1187,6 +1316,7 @@ resource 'Idea Custom Fields' do
             {
               temp_id: 'TEMP-ID-1',
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: { 'en' => 'New page with logic' },
               description_multiloc: { 'en' => 'New page with logic description' },
               required: false,
@@ -1196,6 +1326,7 @@ resource 'Idea Custom Fields' do
             {
               id: existing_page.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: existing_page.title_multiloc,
               description_multiloc: existing_page.description_multiloc,
               required: false,
@@ -1204,6 +1335,7 @@ resource 'Idea Custom Fields' do
             {
               temp_id: 'TEMP-ID-2',
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: { 'en' => 'Target page' },
               description_multiloc: { 'en' => 'Target page description' },
               required: false,
@@ -1225,6 +1357,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: nil,
             ordering: 0,
+            page_layout: 'default',
             required: false,
             title_multiloc: { en: 'New page with logic' },
             updated_at: an_instance_of(String),
@@ -1234,7 +1367,7 @@ resource 'Idea Custom Fields' do
           },
           id: an_instance_of(String),
           type: 'custom_field',
-          relationships: { options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] } }
         })
         expect(json_response[:data][1]).to match({
           attributes: {
@@ -1245,6 +1378,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: existing_page.key,
             ordering: 1,
+            page_layout: 'default',
             required: false,
             title_multiloc: existing_page.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -1254,7 +1388,7 @@ resource 'Idea Custom Fields' do
           },
           id: existing_page.id,
           type: 'custom_field',
-          relationships: { options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] } }
         })
         expect(json_response[:data][2]).to match({
           attributes: {
@@ -1265,6 +1399,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: nil,
             ordering: 2,
+            page_layout: 'default',
             required: false,
             title_multiloc: { en: 'Target page' },
             updated_at: an_instance_of(String),
@@ -1274,7 +1409,7 @@ resource 'Idea Custom Fields' do
           },
           id: an_instance_of(String),
           type: 'custom_field',
-          relationships: { options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] } }
         })
       end
 
@@ -1288,6 +1423,7 @@ resource 'Idea Custom Fields' do
             {
               id: page_to_update.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page_to_update.title_multiloc,
               description_multiloc: page_to_update.description_multiloc,
               required: false,
@@ -1297,6 +1433,7 @@ resource 'Idea Custom Fields' do
             {
               id: page2.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page2.title_multiloc,
               description_multiloc: page2.description_multiloc,
               required: false,
@@ -1305,6 +1442,7 @@ resource 'Idea Custom Fields' do
             {
               id: page3.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page3.title_multiloc,
               description_multiloc: page3.description_multiloc,
               required: false,
@@ -1326,6 +1464,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: page_to_update.key,
             ordering: 0,
+            page_layout: 'default',
             required: false,
             title_multiloc: page_to_update.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -1335,7 +1474,7 @@ resource 'Idea Custom Fields' do
           },
           id: page_to_update.id,
           type: 'custom_field',
-          relationships: { options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] } }
         })
         expect(json_response[:data][1]).to match({
           attributes: {
@@ -1346,6 +1485,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: page2.key,
             ordering: 1,
+            page_layout: 'default',
             required: false,
             title_multiloc: page2.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -1355,7 +1495,7 @@ resource 'Idea Custom Fields' do
           },
           id: page2.id,
           type: 'custom_field',
-          relationships: { options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] } }
         })
         expect(json_response[:data][2]).to match({
           attributes: {
@@ -1366,6 +1506,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: page3.key,
             ordering: 2,
+            page_layout: 'default',
             required: false,
             title_multiloc: page3.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -1375,7 +1516,7 @@ resource 'Idea Custom Fields' do
           },
           id: page3.id,
           type: 'custom_field',
-          relationships: { options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] } }
         })
       end
 
@@ -1389,6 +1530,7 @@ resource 'Idea Custom Fields' do
             {
               id: page_to_update.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page_to_update.title_multiloc,
               description_multiloc: page_to_update.description_multiloc,
               required: false,
@@ -1398,6 +1540,7 @@ resource 'Idea Custom Fields' do
             {
               id: page2.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page2.title_multiloc,
               description_multiloc: page2.description_multiloc,
               required: false,
@@ -1419,6 +1562,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: page_to_update.key,
             ordering: 0,
+            page_layout: 'default',
             required: false,
             title_multiloc: page_to_update.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -1428,7 +1572,7 @@ resource 'Idea Custom Fields' do
           },
           id: page_to_update.id,
           type: 'custom_field',
-          relationships: { options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] } }
         })
         expect(json_response[:data][1]).to match({
           attributes: {
@@ -1439,6 +1583,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: page2.key,
             ordering: 1,
+            page_layout: 'default',
             required: false,
             title_multiloc: page2.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -1448,7 +1593,7 @@ resource 'Idea Custom Fields' do
           },
           id: page2.id,
           type: 'custom_field',
-          relationships: { options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] } }
         })
       end
 
@@ -1470,6 +1615,7 @@ resource 'Idea Custom Fields' do
             {
               id: page1.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page1.title_multiloc,
               description_multiloc: page1.description_multiloc,
               required: false,
@@ -1482,8 +1628,13 @@ resource 'Idea Custom Fields' do
               required: true,
               enabled: true,
               maximum: 5,
-              minimum_label_multiloc: { 'en' => 'Strongly disagree' },
-              maximum_label_multiloc: { 'en' => 'Strongly agree' },
+              linear_scale_label_1_multiloc: { 'en' => 'Strongly disagree' },
+              linear_scale_label_2_multiloc: { 'en' => 'Disagree' },
+              linear_scale_label_3_multiloc: { 'en' => 'Neutral' },
+              linear_scale_label_4_multiloc: { 'en' => 'Agree' },
+              linear_scale_label_5_multiloc: { 'en' => 'Strongly agree' },
+              linear_scale_label_6_multiloc: {},
+              linear_scale_label_7_multiloc: {},
               logic: {
                 rules: [{ if: 2, goto_page_id: 'TEMP-ID-1' }]
               }
@@ -1491,6 +1642,7 @@ resource 'Idea Custom Fields' do
             {
               id: page2.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page2.title_multiloc,
               description_multiloc: page2.description_multiloc,
               required: false,
@@ -1499,6 +1651,7 @@ resource 'Idea Custom Fields' do
             {
               temp_id: 'TEMP-ID-1',
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: { 'en' => 'Page 3' },
               description_multiloc: { 'en' => 'Page 3 description' },
               required: false,
@@ -1520,6 +1673,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: page1.key,
             ordering: 0,
+            page_layout: 'default',
             required: false,
             title_multiloc: page1.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -1529,7 +1683,7 @@ resource 'Idea Custom Fields' do
           },
           id: page1.id,
           type: 'custom_field',
-          relationships: { options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] } }
         })
         expect(json_response[:data][1]).to match({
           attributes: {
@@ -1544,8 +1698,13 @@ resource 'Idea Custom Fields' do
             title_multiloc: field_to_update.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
             maximum: 5,
-            minimum_label_multiloc: field_to_update.minimum_label_multiloc.symbolize_keys,
-            maximum_label_multiloc: field_to_update.maximum_label_multiloc.symbolize_keys,
+            linear_scale_label_1_multiloc: field_to_update.linear_scale_label_1_multiloc.symbolize_keys,
+            linear_scale_label_2_multiloc: field_to_update.linear_scale_label_2_multiloc.symbolize_keys,
+            linear_scale_label_3_multiloc: field_to_update.linear_scale_label_3_multiloc.symbolize_keys,
+            linear_scale_label_4_multiloc: field_to_update.linear_scale_label_4_multiloc.symbolize_keys,
+            linear_scale_label_5_multiloc: field_to_update.linear_scale_label_5_multiloc.symbolize_keys,
+            linear_scale_label_6_multiloc: field_to_update.linear_scale_label_6_multiloc.symbolize_keys,
+            linear_scale_label_7_multiloc: field_to_update.linear_scale_label_7_multiloc.symbolize_keys,
             logic: {
               rules: [{ if: 2, goto_page_id: json_response[:data][3][:id] }]
             },
@@ -1565,6 +1724,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: page2.key,
             ordering: 2,
+            page_layout: 'default',
             required: false,
             title_multiloc: page2.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -1574,7 +1734,7 @@ resource 'Idea Custom Fields' do
           },
           id: page2.id,
           type: 'custom_field',
-          relationships: { options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] } }
         })
         expect(json_response[:data][3]).to match({
           attributes: {
@@ -1585,6 +1745,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: nil,
             ordering: 3,
+            page_layout: 'default',
             required: false,
             title_multiloc: { en: 'Page 3' },
             updated_at: an_instance_of(String),
@@ -1594,7 +1755,7 @@ resource 'Idea Custom Fields' do
           },
           id: an_instance_of(String),
           type: 'custom_field',
-          relationships: { options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] } }
         })
       end
 
@@ -1618,6 +1779,7 @@ resource 'Idea Custom Fields' do
             {
               id: page1.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page1.title_multiloc,
               description_multiloc: page1.description_multiloc,
               required: false,
@@ -1630,8 +1792,13 @@ resource 'Idea Custom Fields' do
               required: true,
               enabled: true,
               maximum: 5,
-              minimum_label_multiloc: { 'en' => 'Strongly disagree' },
-              maximum_label_multiloc: { 'en' => 'Strongly agree' },
+              linear_scale_label_1_multiloc: { 'en' => 'Strongly disagree' },
+              linear_scale_label_2_multiloc: { 'en' => 'Disagree' },
+              linear_scale_label_3_multiloc: { 'en' => 'Neutral' },
+              linear_scale_label_4_multiloc: { 'en' => 'Agree' },
+              linear_scale_label_5_multiloc: { 'en' => 'Strongly agree' },
+              linear_scale_label_6_multiloc: {},
+              linear_scale_label_7_multiloc: {},
               logic: {
                 rules: [{ if: 1, goto_page_id: page2.id }]
               }
@@ -1639,6 +1806,7 @@ resource 'Idea Custom Fields' do
             {
               id: page3.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page3.title_multiloc,
               description_multiloc: page3.description_multiloc,
               required: false,
@@ -1647,6 +1815,7 @@ resource 'Idea Custom Fields' do
             {
               id: page2.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page2.title_multiloc,
               description_multiloc: page2.description_multiloc,
               required: false,
@@ -1667,6 +1836,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: page1.key,
             ordering: 0,
+            page_layout: 'default',
             required: false,
             title_multiloc: page1.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -1676,7 +1846,7 @@ resource 'Idea Custom Fields' do
           },
           id: page1.id,
           type: 'custom_field',
-          relationships: { options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] } }
         })
         expect(json_response[:data][1]).to match({
           attributes: {
@@ -1691,8 +1861,13 @@ resource 'Idea Custom Fields' do
             title_multiloc: field_to_update.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
             maximum: 5,
-            minimum_label_multiloc: field_to_update.minimum_label_multiloc.symbolize_keys,
-            maximum_label_multiloc: field_to_update.maximum_label_multiloc.symbolize_keys,
+            linear_scale_label_1_multiloc: field_to_update.linear_scale_label_1_multiloc.symbolize_keys,
+            linear_scale_label_2_multiloc: field_to_update.linear_scale_label_2_multiloc.symbolize_keys,
+            linear_scale_label_3_multiloc: field_to_update.linear_scale_label_3_multiloc.symbolize_keys,
+            linear_scale_label_4_multiloc: field_to_update.linear_scale_label_4_multiloc.symbolize_keys,
+            linear_scale_label_5_multiloc: field_to_update.linear_scale_label_5_multiloc.symbolize_keys,
+            linear_scale_label_6_multiloc: field_to_update.linear_scale_label_6_multiloc.symbolize_keys,
+            linear_scale_label_7_multiloc: field_to_update.linear_scale_label_7_multiloc.symbolize_keys,
             logic: {
               rules: [{ if: 1, goto_page_id: page2.id }]
             },
@@ -1712,6 +1887,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: page3.key,
             ordering: 2,
+            page_layout: 'default',
             required: false,
             title_multiloc: page3.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -1721,7 +1897,7 @@ resource 'Idea Custom Fields' do
           },
           id: page3.id,
           type: 'custom_field',
-          relationships: { options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] } }
         })
         expect(json_response[:data][3]).to match({
           attributes: {
@@ -1732,6 +1908,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: page2.key,
             ordering: 3,
+            page_layout: 'default',
             required: false,
             title_multiloc: page2.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -1741,7 +1918,7 @@ resource 'Idea Custom Fields' do
           },
           id: page2.id,
           type: 'custom_field',
-          relationships: { options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] } }
         })
       end
 
@@ -1763,6 +1940,7 @@ resource 'Idea Custom Fields' do
             {
               id: page1.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page1.title_multiloc,
               description_multiloc: page1.description_multiloc,
               required: false,
@@ -1775,13 +1953,19 @@ resource 'Idea Custom Fields' do
               required: false,
               enabled: true,
               maximum: 5,
-              minimum_label_multiloc: { 'en' => 'Strongly disagree' },
-              maximum_label_multiloc: { 'en' => 'Strongly agree' },
+              linear_scale_label_1_multiloc: { 'en' => 'Strongly disagree' },
+              linear_scale_label_2_multiloc: { 'en' => 'Disagree' },
+              linear_scale_label_3_multiloc: { 'en' => 'Neutral' },
+              linear_scale_label_4_multiloc: { 'en' => 'Agree' },
+              linear_scale_label_5_multiloc: { 'en' => 'Strongly agree' },
+              linear_scale_label_6_multiloc: {},
+              linear_scale_label_7_multiloc: {},
               logic: {}
             },
             {
               id: page2.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page2.title_multiloc,
               description_multiloc: page2.description_multiloc,
               required: false,
@@ -1803,6 +1987,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: page1.key,
             ordering: 0,
+            page_layout: 'default',
             required: false,
             title_multiloc: page1.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -1812,7 +1997,7 @@ resource 'Idea Custom Fields' do
           },
           id: page1.id,
           type: 'custom_field',
-          relationships: { options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] } }
         })
         expect(json_response[:data][1]).to match({
           attributes: {
@@ -1827,8 +2012,13 @@ resource 'Idea Custom Fields' do
             title_multiloc: field_to_update.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
             maximum: 5,
-            minimum_label_multiloc: field_to_update.minimum_label_multiloc.symbolize_keys,
-            maximum_label_multiloc: field_to_update.maximum_label_multiloc.symbolize_keys,
+            linear_scale_label_1_multiloc: field_to_update.linear_scale_label_1_multiloc.symbolize_keys,
+            linear_scale_label_2_multiloc: field_to_update.linear_scale_label_2_multiloc.symbolize_keys,
+            linear_scale_label_3_multiloc: field_to_update.linear_scale_label_3_multiloc.symbolize_keys,
+            linear_scale_label_4_multiloc: field_to_update.linear_scale_label_4_multiloc.symbolize_keys,
+            linear_scale_label_5_multiloc: field_to_update.linear_scale_label_5_multiloc.symbolize_keys,
+            linear_scale_label_6_multiloc: field_to_update.linear_scale_label_6_multiloc.symbolize_keys,
+            linear_scale_label_7_multiloc: field_to_update.linear_scale_label_7_multiloc.symbolize_keys,
             logic: {},
             constraints: {},
             random_option_ordering: false
@@ -1846,6 +2036,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: page2.key,
             ordering: 2,
+            page_layout: 'default',
             required: false,
             title_multiloc: page2.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -1855,7 +2046,7 @@ resource 'Idea Custom Fields' do
           },
           id: page2.id,
           type: 'custom_field',
-          relationships: { options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] } }
         })
       end
 
@@ -1878,6 +2069,7 @@ resource 'Idea Custom Fields' do
             {
               id: page1.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page1.title_multiloc,
               description_multiloc: page1.description_multiloc,
               required: false,
@@ -1890,8 +2082,13 @@ resource 'Idea Custom Fields' do
               required: false,
               enabled: true,
               maximum: 5,
-              minimum_label_multiloc: { 'en' => 'Strongly disagree' },
-              maximum_label_multiloc: { 'en' => 'Strongly agree' },
+              linear_scale_label_1_multiloc: { 'en' => 'Strongly disagree' },
+              linear_scale_label_2_multiloc: { 'en' => 'Disagree' },
+              linear_scale_label_3_multiloc: { 'en' => 'Neutral' },
+              linear_scale_label_4_multiloc: { 'en' => 'Agree' },
+              linear_scale_label_5_multiloc: { 'en' => 'Strongly agree' },
+              linear_scale_label_6_multiloc: {},
+              linear_scale_label_7_multiloc: {},
               logic: {}
             }
           ]
@@ -1910,6 +2107,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: page1.key,
             ordering: 0,
+            page_layout: 'default',
             required: false,
             title_multiloc: page1.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -1919,7 +2117,7 @@ resource 'Idea Custom Fields' do
           },
           id: page1.id,
           type: 'custom_field',
-          relationships: { options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] } }
         })
         expect(json_response[:data][1]).to match({
           attributes: {
@@ -1934,8 +2132,13 @@ resource 'Idea Custom Fields' do
             title_multiloc: field_to_update.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
             maximum: 5,
-            minimum_label_multiloc: field_to_update.minimum_label_multiloc.symbolize_keys,
-            maximum_label_multiloc: field_to_update.maximum_label_multiloc.symbolize_keys,
+            linear_scale_label_1_multiloc: field_to_update.linear_scale_label_1_multiloc.symbolize_keys,
+            linear_scale_label_2_multiloc: field_to_update.linear_scale_label_2_multiloc.symbolize_keys,
+            linear_scale_label_3_multiloc: field_to_update.linear_scale_label_3_multiloc.symbolize_keys,
+            linear_scale_label_4_multiloc: field_to_update.linear_scale_label_4_multiloc.symbolize_keys,
+            linear_scale_label_5_multiloc: field_to_update.linear_scale_label_5_multiloc.symbolize_keys,
+            linear_scale_label_6_multiloc: field_to_update.linear_scale_label_6_multiloc.symbolize_keys,
+            linear_scale_label_7_multiloc: field_to_update.linear_scale_label_7_multiloc.symbolize_keys,
             logic: {},
             constraints: {},
             random_option_ordering: false
@@ -1965,6 +2168,7 @@ resource 'Idea Custom Fields' do
             {
               id: page1.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page1.title_multiloc,
               description_multiloc: page1.description_multiloc,
               required: false,
@@ -1986,6 +2190,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: page1.key,
             ordering: 0,
+            page_layout: 'default',
             required: false,
             title_multiloc: page1.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -1995,7 +2200,7 @@ resource 'Idea Custom Fields' do
           },
           id: page1.id,
           type: 'custom_field',
-          relationships: { options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] } }
         })
       end
 
@@ -2023,6 +2228,7 @@ resource 'Idea Custom Fields' do
             {
               id: page1.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page1.title_multiloc,
               description_multiloc: page1.description_multiloc,
               required: false,
@@ -2035,8 +2241,13 @@ resource 'Idea Custom Fields' do
               required: true,
               enabled: true,
               maximum: 5,
-              minimum_label_multiloc: { 'en' => 'Strongly disagree' },
-              maximum_label_multiloc: { 'en' => 'Strongly agree' },
+              linear_scale_label_1_multiloc: { 'en' => 'Strongly disagree' },
+              linear_scale_label_2_multiloc: { 'en' => 'Disagree' },
+              linear_scale_label_3_multiloc: { 'en' => 'Neutral' },
+              linear_scale_label_4_multiloc: { 'en' => 'Agree' },
+              linear_scale_label_5_multiloc: { 'en' => 'Strongly agree' },
+              linear_scale_label_6_multiloc: {},
+              linear_scale_label_7_multiloc: {},
               logic: {
                 rules: [{ if: 2, goto_page_id: page3.id }]
               }
@@ -2044,6 +2255,7 @@ resource 'Idea Custom Fields' do
             {
               id: page2.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page2.title_multiloc,
               description_multiloc: page2.description_multiloc,
               required: false,
@@ -2052,6 +2264,7 @@ resource 'Idea Custom Fields' do
             {
               id: page3.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page3.title_multiloc,
               description_multiloc: page3.description_multiloc,
               required: false,
@@ -2073,6 +2286,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: page1.key,
             ordering: 0,
+            page_layout: 'default',
             required: false,
             title_multiloc: page1.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -2082,7 +2296,7 @@ resource 'Idea Custom Fields' do
           },
           id: page1.id,
           type: 'custom_field',
-          relationships: { options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] } }
         })
         expect(json_response[:data][1]).to match({
           attributes: {
@@ -2097,8 +2311,13 @@ resource 'Idea Custom Fields' do
             title_multiloc: field_to_update.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
             maximum: 5,
-            minimum_label_multiloc: field_to_update.minimum_label_multiloc.symbolize_keys,
-            maximum_label_multiloc: field_to_update.maximum_label_multiloc.symbolize_keys,
+            linear_scale_label_1_multiloc: field_to_update.linear_scale_label_1_multiloc.symbolize_keys,
+            linear_scale_label_2_multiloc: field_to_update.linear_scale_label_2_multiloc.symbolize_keys,
+            linear_scale_label_3_multiloc: field_to_update.linear_scale_label_3_multiloc.symbolize_keys,
+            linear_scale_label_4_multiloc: field_to_update.linear_scale_label_4_multiloc.symbolize_keys,
+            linear_scale_label_5_multiloc: field_to_update.linear_scale_label_5_multiloc.symbolize_keys,
+            linear_scale_label_6_multiloc: field_to_update.linear_scale_label_6_multiloc.symbolize_keys,
+            linear_scale_label_7_multiloc: field_to_update.linear_scale_label_7_multiloc.symbolize_keys,
             logic: {
               rules: [{ if: 2, goto_page_id: page3.id }]
             },
@@ -2118,6 +2337,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: page2.key,
             ordering: 2,
+            page_layout: 'default',
             required: false,
             title_multiloc: page2.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -2127,7 +2347,7 @@ resource 'Idea Custom Fields' do
           },
           id: page2.id,
           type: 'custom_field',
-          relationships: { options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] } }
         })
         expect(json_response[:data][3]).to match({
           attributes: {
@@ -2138,6 +2358,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: page3.key,
             ordering: 3,
+            page_layout: 'default',
             required: false,
             title_multiloc: page3.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -2147,7 +2368,7 @@ resource 'Idea Custom Fields' do
           },
           id: page3.id,
           type: 'custom_field',
-          relationships: { options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] } }
         })
       end
 
@@ -2165,6 +2386,7 @@ resource 'Idea Custom Fields' do
             {
               id: page1.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page1.title_multiloc,
               description_multiloc: page1.description_multiloc,
               required: false,
@@ -2177,8 +2399,13 @@ resource 'Idea Custom Fields' do
               required: true,
               enabled: true,
               maximum: 5,
-              minimum_label_multiloc: { 'en' => 'Strongly disagree' },
-              maximum_label_multiloc: { 'en' => 'Strongly agree' },
+              linear_scale_label_1_multiloc: { 'en' => 'Strongly disagree' },
+              linear_scale_label_2_multiloc: { 'en' => 'Disagree' },
+              linear_scale_label_3_multiloc: { 'en' => 'Neutral' },
+              linear_scale_label_4_multiloc: { 'en' => 'Agree' },
+              linear_scale_label_5_multiloc: { 'en' => 'Strongly agree' },
+              linear_scale_label_6_multiloc: {},
+              linear_scale_label_7_multiloc: {},
               logic: {
                 rules: [{ if: 2, goto_page_id: 'TEMP-ID-1' }]
               }
@@ -2186,6 +2413,7 @@ resource 'Idea Custom Fields' do
             {
               temp_id: 'TEMP-ID-1',
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: { 'en' => 'Page 2' },
               description_multiloc: { 'en' => 'Page 2 description' },
               required: false,
@@ -2207,6 +2435,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: page1.key,
             ordering: 0,
+            page_layout: 'default',
             required: false,
             title_multiloc: page1.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -2216,7 +2445,7 @@ resource 'Idea Custom Fields' do
           },
           id: page1.id,
           type: 'custom_field',
-          relationships: { options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] } }
         })
         expect(json_response[:data][1]).to match({
           attributes: {
@@ -2231,8 +2460,13 @@ resource 'Idea Custom Fields' do
             title_multiloc: field_to_update.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
             maximum: 5,
-            minimum_label_multiloc: field_to_update.minimum_label_multiloc.symbolize_keys,
-            maximum_label_multiloc: field_to_update.maximum_label_multiloc.symbolize_keys,
+            linear_scale_label_1_multiloc: field_to_update.linear_scale_label_1_multiloc.symbolize_keys,
+            linear_scale_label_2_multiloc: field_to_update.linear_scale_label_2_multiloc.symbolize_keys,
+            linear_scale_label_3_multiloc: field_to_update.linear_scale_label_3_multiloc.symbolize_keys,
+            linear_scale_label_4_multiloc: field_to_update.linear_scale_label_4_multiloc.symbolize_keys,
+            linear_scale_label_5_multiloc: field_to_update.linear_scale_label_5_multiloc.symbolize_keys,
+            linear_scale_label_6_multiloc: field_to_update.linear_scale_label_6_multiloc.symbolize_keys,
+            linear_scale_label_7_multiloc: field_to_update.linear_scale_label_7_multiloc.symbolize_keys,
             logic: {
               rules: [{ if: 2, goto_page_id: json_response[:data][2][:id] }]
             },
@@ -2252,6 +2486,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: nil,
             ordering: 2,
+            page_layout: 'default',
             required: false,
             title_multiloc: { en: 'Page 2' },
             updated_at: an_instance_of(String),
@@ -2261,7 +2496,7 @@ resource 'Idea Custom Fields' do
           },
           id: an_instance_of(String),
           type: 'custom_field',
-          relationships: { options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] } }
         })
       end
 
@@ -2285,6 +2520,7 @@ resource 'Idea Custom Fields' do
             {
               id: page1.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page1.title_multiloc,
               description_multiloc: page1.description_multiloc,
               required: false,
@@ -2328,6 +2564,7 @@ resource 'Idea Custom Fields' do
             {
               temp_id: 'TEMP-ID-1',
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: { 'en' => 'Page 2' },
               description_multiloc: { 'en' => 'Page 2 description' },
               required: false,
@@ -2336,6 +2573,7 @@ resource 'Idea Custom Fields' do
             {
               temp_id: 'TEMP-ID-3',
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: { 'en' => 'Page 3' },
               description_multiloc: { 'en' => 'Page 3 description' },
               required: false,
@@ -2360,6 +2598,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: page1.key,
             ordering: 0,
+            page_layout: 'default',
             required: false,
             title_multiloc: page1.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -2369,13 +2608,14 @@ resource 'Idea Custom Fields' do
           },
           id: page1.id,
           type: 'custom_field',
-          relationships: { options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] } }
         })
         expect(json_response[:data][1]).to match({
           attributes: {
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: field1_to_update.description_multiloc.symbolize_keys,
+            dropdown_layout: false,
             enabled: true,
             input_type: 'select',
             key: field1_to_update.key,
@@ -2405,6 +2645,7 @@ resource 'Idea Custom Fields' do
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: field2_to_update.description_multiloc.symbolize_keys,
+            dropdown_layout: false,
             enabled: true,
             input_type: 'select',
             key: field2_to_update.key,
@@ -2438,6 +2679,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: nil,
             ordering: 3,
+            page_layout: 'default',
             required: false,
             title_multiloc: { en: 'Page 2' },
             updated_at: an_instance_of(String),
@@ -2447,7 +2689,7 @@ resource 'Idea Custom Fields' do
           },
           id: an_instance_of(String),
           type: 'custom_field',
-          relationships: { options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] } }
         })
         expect(json_response[:data][4]).to match({
           attributes: {
@@ -2458,6 +2700,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: nil,
             ordering: 4,
+            page_layout: 'default',
             required: false,
             title_multiloc: { en: 'Page 3' },
             updated_at: an_instance_of(String),
@@ -2467,7 +2710,7 @@ resource 'Idea Custom Fields' do
           },
           id: an_instance_of(String),
           type: 'custom_field',
-          relationships: { options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] } }
         })
       end
 
@@ -2479,6 +2722,7 @@ resource 'Idea Custom Fields' do
             {
               id: page1.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page1.title_multiloc,
               description_multiloc: page1.description_multiloc,
               required: false,
@@ -2490,9 +2734,14 @@ resource 'Idea Custom Fields' do
               description_multiloc: { 'en' => 'Description of question 1 on page 1' },
               required: true,
               enabled: true,
-              maximum: 5,
-              minimum_label_multiloc: { 'en' => 'Strongly disagree' },
-              maximum_label_multiloc: { 'en' => 'Strongly agree' },
+              maximum: 7,
+              linear_scale_label_1_multiloc: { 'en' => 'Lowest' },
+              linear_scale_label_2_multiloc: { 'en' => 'Low' },
+              linear_scale_label_3_multiloc: { 'en' => 'Low-ish' },
+              linear_scale_label_4_multiloc: { 'en' => 'Neutral' },
+              linear_scale_label_5_multiloc: { 'en' => 'High-ish' },
+              linear_scale_label_6_multiloc: { 'en' => 'High' },
+              linear_scale_label_7_multiloc: { 'en' => 'Highest' },
               logic: {
                 rules: [{ if: 2, goto_page_id: 'TEMP-ID-1' }]
               }
@@ -2500,6 +2749,7 @@ resource 'Idea Custom Fields' do
             {
               temp_id: 'TEMP-ID-1',
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: { 'en' => 'Page 2' },
               description_multiloc: { 'en' => 'Page 2 description' },
               required: false,
@@ -2522,6 +2772,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: page1.key,
             ordering: 0,
+            page_layout: 'default',
             required: false,
             title_multiloc: page1.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -2531,7 +2782,7 @@ resource 'Idea Custom Fields' do
           },
           id: page1.id,
           type: 'custom_field',
-          relationships: { options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] } }
         })
         expect(json_response[:data][1]).to match({
           attributes: {
@@ -2545,9 +2796,14 @@ resource 'Idea Custom Fields' do
             required: true,
             title_multiloc: { en: 'Question 1 on page 1' },
             updated_at: an_instance_of(String),
-            maximum: 5,
-            minimum_label_multiloc: { en: 'Strongly disagree' },
-            maximum_label_multiloc: { en: 'Strongly agree' },
+            maximum: 7,
+            linear_scale_label_1_multiloc: { en: 'Lowest' },
+            linear_scale_label_2_multiloc: { en: 'Low' },
+            linear_scale_label_3_multiloc: { en: 'Low-ish' },
+            linear_scale_label_4_multiloc: { en: 'Neutral' },
+            linear_scale_label_5_multiloc: { en: 'High-ish' },
+            linear_scale_label_6_multiloc: { en: 'High' },
+            linear_scale_label_7_multiloc: { en: 'Highest' },
             logic: {
               rules: [{ if: 2, goto_page_id: json_response[:data][2][:id] }]
             },
@@ -2567,6 +2823,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: nil,
             ordering: 2,
+            page_layout: 'default',
             required: false,
             title_multiloc: { en: 'Page 2' },
             updated_at: an_instance_of(String),
@@ -2576,7 +2833,7 @@ resource 'Idea Custom Fields' do
           },
           id: an_instance_of(String),
           type: 'custom_field',
-          relationships: { options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] } }
         })
       end
 
@@ -2601,6 +2858,7 @@ resource 'Idea Custom Fields' do
             {
               id: page1.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page1.title_multiloc,
               description_multiloc: page1.description_multiloc,
               required: false,
@@ -2613,8 +2871,13 @@ resource 'Idea Custom Fields' do
               required: true,
               enabled: true,
               maximum: 5,
-              minimum_label_multiloc: { 'en' => 'Strongly disagree' },
-              maximum_label_multiloc: { 'en' => 'Strongly agree' },
+              linear_scale_label_1_multiloc: { 'en' => 'Strongly disagree' },
+              linear_scale_label_2_multiloc: { 'en' => 'Disagree' },
+              linear_scale_label_3_multiloc: { 'en' => 'Neutral' },
+              linear_scale_label_4_multiloc: { 'en' => 'Agree' },
+              linear_scale_label_5_multiloc: { 'en' => 'Strongly agree' },
+              linear_scale_label_6_multiloc: {},
+              linear_scale_label_7_multiloc: {},
               logic: {
                 rules: [
                   { if: 1, goto_page_id: page2.id },
@@ -2625,6 +2888,7 @@ resource 'Idea Custom Fields' do
             {
               id: page2.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page2.title_multiloc,
               description_multiloc: page2.description_multiloc,
               required: false,
@@ -2633,6 +2897,7 @@ resource 'Idea Custom Fields' do
             {
               id: page3.id,
               input_type: 'page',
+              page_layout: 'default',
               title_multiloc: page3.title_multiloc,
               description_multiloc: page3.description_multiloc,
               required: false,
@@ -2654,6 +2919,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: page1.key,
             ordering: 0,
+            page_layout: 'default',
             required: false,
             title_multiloc: page1.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -2663,7 +2929,7 @@ resource 'Idea Custom Fields' do
           },
           id: page1.id,
           type: 'custom_field',
-          relationships: { options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] } }
         })
         expect(json_response[:data][1]).to match({
           attributes: {
@@ -2678,8 +2944,13 @@ resource 'Idea Custom Fields' do
             title_multiloc: field_to_update.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
             maximum: 5,
-            minimum_label_multiloc: field_to_update.minimum_label_multiloc.symbolize_keys,
-            maximum_label_multiloc: field_to_update.maximum_label_multiloc.symbolize_keys,
+            linear_scale_label_1_multiloc: field_to_update.linear_scale_label_1_multiloc.symbolize_keys,
+            linear_scale_label_2_multiloc: field_to_update.linear_scale_label_2_multiloc.symbolize_keys,
+            linear_scale_label_3_multiloc: field_to_update.linear_scale_label_3_multiloc.symbolize_keys,
+            linear_scale_label_4_multiloc: field_to_update.linear_scale_label_4_multiloc.symbolize_keys,
+            linear_scale_label_5_multiloc: field_to_update.linear_scale_label_5_multiloc.symbolize_keys,
+            linear_scale_label_6_multiloc: field_to_update.linear_scale_label_6_multiloc.symbolize_keys,
+            linear_scale_label_7_multiloc: field_to_update.linear_scale_label_7_multiloc.symbolize_keys,
             logic: {
               rules: [
                 { if: 1, goto_page_id: page2.id },
@@ -2702,6 +2973,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: page2.key,
             ordering: 2,
+            page_layout: 'default',
             required: false,
             title_multiloc: page2.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -2711,7 +2983,7 @@ resource 'Idea Custom Fields' do
           },
           id: page2.id,
           type: 'custom_field',
-          relationships: { options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] } }
         })
         expect(json_response[:data][3]).to match({
           attributes: {
@@ -2722,6 +2994,7 @@ resource 'Idea Custom Fields' do
             input_type: 'page',
             key: page3.key,
             ordering: 3,
+            page_layout: 'default',
             required: false,
             title_multiloc: page3.title_multiloc.symbolize_keys,
             updated_at: an_instance_of(String),
@@ -2731,7 +3004,7 @@ resource 'Idea Custom Fields' do
           },
           id: page3.id,
           type: 'custom_field',
-          relationships: { options: { data: [] } }
+          relationships: { map_config: { data: nil }, options: { data: [] } }
         })
       end
 
@@ -2742,7 +3015,10 @@ resource 'Idea Custom Fields' do
 
         request = {
           custom_fields: [
-            { input_type: 'page' },
+            {
+              input_type: 'page',
+              page_layout: 'default'
+            },
             {
               id: change_field.id,
               input_type: 'select',
@@ -2773,6 +3049,7 @@ resource 'Idea Custom Fields' do
             code: nil,
             created_at: an_instance_of(String),
             description_multiloc: {},
+            dropdown_layout: false,
             enabled: true,
             input_type: 'select',
             key: an_instance_of(String),
@@ -2842,7 +3119,7 @@ resource 'Idea Custom Fields' do
 
       example 'Updating custom fields when there are responses' do
         create(:custom_field, resource: custom_form) # field to ensure custom form has been created
-        IdeaStatus.create_defaults
+        create(:idea_status_proposed)
         create(:idea, project: context.project, phases: [context])
 
         do_request(custom_fields: [])
@@ -2858,7 +3135,10 @@ resource 'Idea Custom Fields' do
         field_to_update = create(:custom_field, resource: custom_form, title_multiloc: { 'en' => 'Some field' })
         request = {
           custom_fields: [
-            { input_type: 'page' },
+            {
+              input_type: 'page',
+              page_layout: 'default'
+            },
             {
               title_multiloc: { 'en' => 'Inserted field' },
               description_multiloc: { 'en' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />' },
@@ -2888,7 +3168,10 @@ resource 'Idea Custom Fields' do
           field_to_update = create(:custom_field_point, resource: custom_form, title_multiloc: { 'en' => 'Point field' })
           request = {
             custom_fields: [
-              { input_type: 'page' },
+              {
+                input_type: 'page',
+                page_layout: 'default'
+              },
               {
                 title_multiloc: { 'en' => 'Inserted point custom field' },
                 description_multiloc: { 'en' => 'Inserted point custom field description' },
@@ -2921,6 +3204,45 @@ resource 'Idea Custom Fields' do
           expect(new_custom_field.input_type).to eq('point')
         end
 
+        example "Relating map_config(s) with 'page' custom field(s)" do
+          field_to_update = create(:custom_field_page, resource: custom_form, title_multiloc: { 'en' => 'Page field' })
+          request = {
+            custom_fields: [
+              {
+                input_type: 'page',
+                page_layout: 'default',
+                title_multiloc: { 'en' => 'Inserted page custom field' },
+                description_multiloc: { 'en' => 'Inserted page custom field description' },
+                required: false,
+                enabled: true,
+                map_config_id: map_config1.id
+              },
+              {
+                id: field_to_update.id,
+                input_type: 'page',
+                page_layout: 'default',
+                title_multiloc: { 'en' => 'Updated page custom field' },
+                description_multiloc: { 'en' => 'Updated page custom field description' },
+                required: false,
+                enabled: true,
+                map_config_id: map_config2.id
+              }
+            ]
+          }
+
+          do_request request
+          assert_status 200
+
+          new_custom_field = map_config1.reload.mappable
+          expect(new_custom_field.title_multiloc).to eq({ 'en' => 'Inserted page custom field' })
+          expect(new_custom_field.input_type).to eq('page')
+
+          updated_custom_field = CustomField.find(field_to_update.id)
+          expect(updated_custom_field.map_config).to eq(map_config2)
+          expect(updated_custom_field.title_multiloc).to eq({ 'en' => 'Updated page custom field' })
+          expect(new_custom_field.input_type).to eq('page')
+        end
+
         example '[errors] Responds with multiple numbered errors when such errors present', document: false do
           custom_field_point_with_map_config = create(:custom_field_point, resource: custom_form)
           create(:map_config, mappable_id: custom_field_point_with_map_config.id, mappable_type: 'CustomField')
@@ -2935,7 +3257,10 @@ resource 'Idea Custom Fields' do
           # }
           request = {
             custom_fields: [
-              { input_type: 'page' },
+              {
+                input_type: 'page',
+                page_layout: 'default'
+              },
               {
                 title_multiloc: { 'en' => 'Inserted text custom field' },
                 description_multiloc: { 'en' => 'Inserted text custom field description' },
@@ -2979,40 +3304,35 @@ resource 'Idea Custom Fields' do
         # by sending a separate request to delete the map_config, using DELETE ...map_configs/:id.
         # i.e. map_config_id: nil, map_config_id: '', or ommitting map_config_id param will not remove the relation.
         example 'Absence of map_config_id does not remove existing relation', document: false do
-          custom_field1 = create(:custom_field_point, resource: custom_form)
+          custom_field1 = create(:custom_field_page, resource: custom_form)
           map_config1 = create(:map_config, mappable_id: custom_field1.id, mappable_type: 'CustomField')
           custom_field2 = create(:custom_field_point, resource: custom_form)
           map_config2 = create(:map_config, mappable_id: custom_field2.id, mappable_type: 'CustomField')
           custom_field3 = create(:custom_field_point, resource: custom_form)
           map_config3 = create(:map_config, mappable_id: custom_field3.id, mappable_type: 'CustomField')
+          custom_field4 = create(:custom_field_point, resource: custom_form)
+          map_config4 = create(:map_config, mappable_id: custom_field4.id, mappable_type: 'CustomField')
 
           request = {
             custom_fields: [
-              { input_type: 'page' },
               {
                 id: custom_field1.id,
-                title_multiloc: { 'en' => 'Updated point custom field 1' },
-                description_multiloc: { 'en' => 'Updated point custom field 1 description' },
-                input_type: 'point',
-                required: false,
-                enabled: false
-              },
-              {
-                id: custom_field2.id,
-                title_multiloc: { 'en' => 'Updated point custom field 2' },
-                description_multiloc: { 'en' => 'Updated point custom field 2 description' },
-                input_type: 'point',
-                required: false,
-                enabled: false,
+                input_type: 'page',
+                page_layout: 'default',
                 map_config_id: nil
               },
               {
+                id: custom_field2.id,
+                input_type: 'point'
+              },
+              {
                 id: custom_field3.id,
-                title_multiloc: { 'en' => 'Updated point custom field 3' },
-                description_multiloc: { 'en' => 'Updated point custom field 3 description' },
                 input_type: 'point',
-                required: false,
-                enabled: false,
+                map_config_id: nil
+              },
+              {
+                id: custom_field4.id,
+                input_type: 'point',
                 map_config_id: ''
               }
             ]
@@ -3024,6 +3344,7 @@ resource 'Idea Custom Fields' do
           expect(custom_field1.reload.map_config).to eq(map_config1)
           expect(custom_field2.reload.map_config).to eq(map_config2)
           expect(custom_field3.reload.map_config).to eq(map_config3)
+          expect(custom_field4.reload.map_config).to eq(map_config4)
         end
       end
     end

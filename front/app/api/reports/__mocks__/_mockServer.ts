@@ -1,4 +1,4 @@
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 
 import { API_PATH } from 'containers/App/constants';
 
@@ -8,11 +8,11 @@ export const apiPathReport = `${API_PATH}/reports/:id`;
 export const apiPathReports = `${API_PATH}/reports`;
 
 const endpoints = {
-  'GET reports/:id': rest.get(apiPathReport, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: reportsData[0] }));
+  'GET reports/:id': http.get(apiPathReport, () => {
+    return HttpResponse.json({ data: reportsData[0] }, { status: 200 });
   }),
-  'GET reports': rest.get(apiPathReports, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json({ data: reportsData }));
+  'GET reports': http.get(apiPathReports, () => {
+    return HttpResponse.json({ data: reportsData }, { status: 200 });
   }),
 };
 

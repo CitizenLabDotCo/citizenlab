@@ -1,12 +1,17 @@
+import React from 'react';
+
 import Input from '.';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
   title: 'Components/Input',
-  component: Input,
-  parameters: {
-    layout: 'centered',
+  render: (props) => {
+    return (
+      <div style={{ width: '300px' }}>
+        <Input {...props} />
+      </div>
+    );
   },
 } satisfies Meta<typeof Input>;
 

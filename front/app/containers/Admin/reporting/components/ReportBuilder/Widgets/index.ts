@@ -3,19 +3,6 @@ import whiteSpaceMessages from 'components/admin/ContentBuilder/Widgets/WhiteSpa
 
 import { MessageDescriptor } from 'utils/cl-intl';
 
-import AboutReportWidget, {
-  aboutReportTitle,
-} from './_deprecated/AboutReportWidget';
-import AgeWidget, { ageTitle } from './ChartWidgets/_deprecated/AgeWidget';
-import CommentsByTimeWidget, {
-  commentsByTimeTitle,
-} from './ChartWidgets/_deprecated/CommentsByTimeWidget';
-import GenderWidget, {
-  genderTitle,
-} from './ChartWidgets/_deprecated/GenderWidget';
-import PostsByTimeWidget, {
-  postsByTimeTitle,
-} from './ChartWidgets/_deprecated/PostsByTimeWidget';
 import ReactionsByTimeWidget, {
   reactionsByTimeTitle,
 } from './ChartWidgets/_deprecated/ReactionsByTimeWidget';
@@ -73,11 +60,6 @@ export const WIDGETS = {
   ActiveUsersWidget: ParticipantsWidget,
 
   // DEPRECATED
-  AgeWidget,
-  GenderWidget,
-  AboutReportWidget,
-  PostsByTimeWidget,
-  CommentsByTimeWidget,
   ReactionsByTimeWidget,
 };
 
@@ -105,11 +87,6 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   ActiveUsersWidget: participantsTitle,
 
   // DEPRECATED
-  AgeWidget: ageTitle,
-  GenderWidget: genderTitle,
-  AboutReportWidget: aboutReportTitle,
-  PostsByTimeWidget: postsByTimeTitle,
-  CommentsByTimeWidget: commentsByTimeTitle,
   ReactionsByTimeWidget: reactionsByTimeTitle,
 };
 
@@ -136,10 +113,6 @@ const WIDGETS_WITHOUT_POINTER_EVENTS = new Set<string>([
   'ActiveUsersWidget',
 
   // DEPRECATED
-  'AgeWidget',
-  'GenderWidget',
-  'PostsByTimeWidget',
-  'CommentsByTimeWidget',
   'ReactionsByTimeWidget',
 ] satisfies WidgetName[]);
 

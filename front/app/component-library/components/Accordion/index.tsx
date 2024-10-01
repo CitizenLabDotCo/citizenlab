@@ -3,6 +3,7 @@ import React, { ReactNode, useEffect, useState } from 'react';
 import { CSSTransition } from 'react-transition-group';
 import styled from 'styled-components';
 
+import useInstanceId from '../../hooks/useInstanceId';
 import { colors, isRtl } from '../../utils/styleUtils';
 import Box, { BoxMarginProps, BoxPaddingProps, BoxWidthProps } from '../Box';
 import Icon from '../Icon';
@@ -11,6 +12,7 @@ import ListItem from '../ListItem';
 type AccordionProps = {
   title: ReactNode;
   children: ReactNode;
+  prefix?: ReactNode;
   isOpenByDefault?: boolean;
   className?: string;
   onChange?: (isOpen: boolean) => void;
@@ -103,6 +105,7 @@ const CollapseContainer = styled(Box)<{
 const Accordion = ({
   isOpenByDefault,
   title,
+  prefix,
   className,
   onChange,
   children,
@@ -111,6 +114,7 @@ const Accordion = ({
   ...rest
 }: AccordionProps) => {
   const [isExpanded, setIsExpanded] = useState(isOpenByDefault);
+  const uuid = useInstanceId();
 
   useEffect(() => {
     setIsExpanded(isOpenByDefault);
@@ -123,18 +127,21 @@ const Accordion = ({
 
   return (
     <ListItem className={className} {...rest}>
-      <TitleButton
-        as="button"
-        padding="0"
-        aria-expanded={isExpanded}
-        aria-controls="collapsed-section"
-        id="accordion-title"
-        className={isExpanded ? 'expanded' : 'collapsed'}
-        onClick={handleChange}
-      >
-        {title}
-        <ChevronIcon name="chevron-right" />
-      </TitleButton>
+      <Box display="flex" alignItems="center">
+        {prefix}
+        <TitleButton
+          as="button"
+          padding="0"
+          aria-expanded={isExpanded}
+          aria-controls={`collapsed-section-${uuid}`}
+          id={`accordion-title-${uuid}`}
+          className={isExpanded ? 'expanded' : 'collapsed'}
+          onClick={handleChange}
+        >
+          {title}
+          <ChevronIcon name="chevron-right" />
+        </TitleButton>
+      </Box>
       <CSSTransition
         in={isExpanded}
         timeout={timeoutMilliseconds}
@@ -144,9 +151,9 @@ const Accordion = ({
         classNames={`expanded`}
       >
         <CollapseContainer
-          id="collapsed-section"
+          id={`collapsed-section-${uuid}`}
           role="region"
-          aria-labelledby="accordion-title"
+          aria-labelledby={`accordion-title-${uuid}`}
           aria-live="polite"
           transitionHeight={transitionHeightPx}
           timeout={timeoutMilliseconds}

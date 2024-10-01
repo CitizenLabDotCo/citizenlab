@@ -77,10 +77,13 @@ sr-Cyrl:
       "link_terms_conditions": "Услови коришћења"
       "link_unsubscribe": "Одјавите се"
       "powered_by": "Покреће га"
-      "statement": "Овај е-маил вам је послао CitizenLab у име %{organizationName}, јер сте регистровани корисник %{organizationLink}. Можете %{unsubscribeLink} ако не желите да примате ове е-поруке у будућности."
+      "recipient_statement": "This e-mail was sent to you by Go Vocal on behalf of %{organizationName}, because you are a registered user of %{organizationLink}."
+      "unsubscribe_statement": "You can %{unsubscribeLink} if you do not want to receive these e-mails in the future."
       "unsubscribe_text": "одјавите се"
     follow:
       "unfollow_here": "Примили сте ово обавештење због ставке коју пратите. <a href=\"%{unfollow_url}\">Можете га опозвати овде.</a>"
+    manual:
+      preheader: 'You have mail from %{organizationName}'
     comment_deleted_by_admin:
       reason: 'Разлог зашто је ваш коментар обрисан:'
       cta_view: 'Погледајте ову идеју'
@@ -539,6 +542,7 @@ sr-Cyrl:
       cta_see_results: 'Погледајте резултате на платформи'
     event_registration_confirmation:
       subject: "Ти си у! Ваша регистрација за \"%{eventTitle}\" је потврђена"
+      preheader: "%{firstName}, thanks for registering for %{eventTitle}"
       header_message: "%{firstName}, хвала на регистрацији"
       event_details:
         labels:

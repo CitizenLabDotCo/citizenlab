@@ -20,7 +20,7 @@ class WebApi::V1::IdeasController < ApplicationController
   def index
     ideas = IdeasFinder.new(
       params,
-      scope: policy_scope(Idea).where(publication_status: 'published'),
+      scope: policy_scope(Idea).submitted_or_published,
       current_user: current_user
     ).find_records
 
@@ -32,6 +32,7 @@ class WebApi::V1::IdeasController < ApplicationController
       :idea_trending_info,
       :topics,
       :phases,
+      :creation_phase,
       {
         project: [:phases, { phases: { permissions: [:groups] } }, { custom_form: [:custom_fields] }],
         author: [:unread_notifications]
@@ -119,9 +120,15 @@ class WebApi::V1::IdeasController < ApplicationController
     render_show Idea.find_by!(slug: params[:slug])
   end
 
-  # Return a single draft idea for a phase - for native survey autosave
+  # return a single draft idea for this user for this phase
+  # returns an empty idea if none found
+  # used only in native survey autosave
   def draft_by_phase
-    render_show Idea.find_by!(creation_phase_id: params[:phase_id], author: current_user, publication_status: 'draft')
+    phase = Phase.find(params[:phase_id])
+    draft_idea =
+      (current_user && Idea.find_by(creation_phase_id: params[:phase_id], author: current_user, publication_status: 'draft')) ||
+      Idea.new(project: phase.project, author: current_user, publication_status: 'draft')
+    render_show draft_idea, check_auth: false
   end
 
   #   Normal users always post in an active phase. They should never provide a phase id.
@@ -145,11 +152,11 @@ class WebApi::V1::IdeasController < ApplicationController
     end
     send_error and return unless phase
 
-    participation_method = Factory.instance.participation_method_for(phase)
-    extract_custom_field_values_from_params!(participation_method.custom_form)
-    params_for_create = idea_params participation_method.custom_form, is_moderator
+    form = phase.pmethod.custom_form
+    extract_custom_field_values_from_params!(form)
+    params_for_create = idea_params form, is_moderator
     input = Idea.new params_for_create
-    input.creation_phase = (phase if participation_method.creation_phase?)
+    input.creation_phase = (phase if !phase.pmethod.transitive?)
     input.phase_ids = [phase.id] if phase_ids.empty?
 
     # NOTE: Needs refactor allow_anonymous_participation? so anonymous_participation can be allow or force
@@ -164,13 +171,17 @@ class WebApi::V1::IdeasController < ApplicationController
       render json: { errors: { base: [{ error: :anonymous_participation_not_allowed }] } }, status: :unprocessable_entity
       return
     end
+    if idea_status_not_allowed?(input)
+      render json: { errors: { idea_status_id: [{ error: 'Cannot manually assign inputs to an automatic status', value: input.idea_status_id }] } }, status: :unprocessable_entity
+      return
+    end
     verify_profanity input
 
     save_options = {}
     save_options[:context] = :publication if params.dig(:idea, :publication_status) == 'published'
     ActiveRecord::Base.transaction do
       if input.save(**save_options)
-        update_file_upload_fields input, participation_method.custom_form, params_for_create
+        update_file_upload_fields input, form, params_for_create
         sidefx.after_create(input, current_user)
         render json: WebApi::V1::IdeaSerializer.new(
           input.reload,
@@ -185,8 +196,6 @@ class WebApi::V1::IdeasController < ApplicationController
 
   def update
     input = Idea.find params[:id]
-    project = input.project
-    phase = TimelineService.new.current_phase_not_archived project
     authorize input
 
     if invalid_blank_author_for_update? input, params
@@ -199,17 +208,20 @@ class WebApi::V1::IdeasController < ApplicationController
     params[:idea][:phase_ids] ||= [] if params[:idea].key?(:phase_ids)
     params_service.mark_custom_field_values_to_clear!(input.custom_field_values, params[:idea][:custom_field_values])
 
-    user_can_moderate_project = UserRoleService.new.can_moderate_project?(project, current_user)
+    user_can_moderate_project = UserRoleService.new.can_moderate_project?(input.project, current_user)
     update_params = idea_params(input.custom_form, user_can_moderate_project).to_h
     update_params[:custom_field_values] = params_service.updated_custom_field_values(input.custom_field_values, update_params[:custom_field_values])
     CustomFieldService.new.compact_custom_field_values! update_params[:custom_field_values]
-    input.assign_attributes update_params
-    authorize input
-    if anonymous_not_allowed?(phase)
-      render json: { errors: { base: [{ error: :anonymous_participation_not_allowed }] } }, status: :unprocessable_entity
-      return
+
+    ActiveRecord::Base.transaction do # Assigning relationships cause database changes
+      input.assign_attributes update_params
+      authorize input
+      if not_allowed_update_errors(input)
+        render json: not_allowed_update_errors(input), status: :unprocessable_entity
+        return # rubocop:disable Rails/TransactionExitStatement
+      end
+      verify_profanity input
     end
-    verify_profanity input
 
     sidefx.before_update(input, current_user)
 
@@ -244,8 +256,8 @@ class WebApi::V1::IdeasController < ApplicationController
 
   private
 
-  def render_show(input)
-    authorize input
+  def render_show(input, check_auth: true)
+    authorize input if check_auth # we should usually check auth, except when we're returning an empty draft idea
     render json: WebApi::V1::IdeaSerializer.new(
       input,
       params: jsonapi_serializer_params,
@@ -308,7 +320,7 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def idea_attributes(custom_form, user_can_moderate_project)
-    submittable_field_keys = submittable_custom_fields(custom_form).map(&:key).map(&:to_sym)
+    submittable_field_keys = submittable_custom_fields(custom_form).map { |x| x.key.to_sym }
     attributes = idea_simple_attributes(submittable_field_keys)
     complex_attributes = idea_complex_attributes(custom_form, submittable_field_keys)
     attributes << complex_attributes if complex_attributes.any?
@@ -372,6 +384,12 @@ class WebApi::V1::IdeasController < ApplicationController
     params.dig('idea', 'anonymous') && !phase.allow_anonymous_participation
   end
 
+  def idea_status_not_allowed?(input)
+    return false if params.dig(:idea, :idea_status_id).blank?
+
+    !input.idea_status.can_manually_transition_to?
+  end
+
   def serialization_options_for(ideas)
     include = %i[author idea_images ideas_phases]
     if current_user
@@ -389,7 +407,7 @@ class WebApi::V1::IdeasController < ApplicationController
         params: jsonapi_serializer_params(
           vbii: reactions.index_by(&:reactable_id),
           user_followers: user_followers,
-          permission_service: Permissions::IdeaPermissionsService.new
+          user_requirements_service: Permissions::UserRequirementsService.new(check_groups_and_verification: false)
         ),
         include: include
       }
@@ -409,7 +427,7 @@ class WebApi::V1::IdeasController < ApplicationController
 
     return false if input.idea_import && input.idea_import.approved_at.nil?
 
-    input.participation_method_on_creation.sign_in_required_for_posting?
+    !input.participation_method_on_creation.supports_inputs_without_author?
   end
 
   # Change counts on idea for values for phase, if filtered by phase
@@ -428,6 +446,22 @@ class WebApi::V1::IdeasController < ApplicationController
       end
     end
     ideas
+  end
+
+  def not_allowed_update_errors(input)
+    if anonymous_not_allowed?(TimelineService.new.current_phase_not_archived(input.project))
+      return { errors: { base: [{ error: :anonymous_participation_not_allowed }] } }
+    end
+    if idea_status_not_allowed?(input)
+      return { errors: { idea_status_id: [{ error: 'Cannot manually assign inputs to this status', value: input.idea_status_id }] } }
+    end
+    if !input.participation_method_on_creation.transitive? && input.project_id_changed?
+      return { errors: { project_id: [{ error: 'Cannot change the project of non-transitive inputs', value: input.project_id }] } }
+    end
+
+    if !input.participation_method_on_creation.transitive? && input.ideas_phases.find_index(&:changed?)
+      { errors: { phase_ids: [{ error: 'Cannot change the phases of non-transitive inputs', value: input.phase_ids }] } }
+    end
   end
 end
 

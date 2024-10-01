@@ -87,7 +87,7 @@ const CreateTokenModal = ({ onClose }: CreateTokenModalProps) => {
                 mt="40px"
               >
                 <Button
-                  buttonStyle="secondary"
+                  buttonStyle="secondary-outlined"
                   onClick={onClose}
                   disabled={isLoading}
                   type="button"
@@ -133,7 +133,7 @@ const CreateTokenModal = ({ onClose }: CreateTokenModalProps) => {
             </StyledSecretText>
           </Box>
           <Box display="flex" gap="12px" justifyContent="flex-end" mt="40px">
-            <Button buttonStyle="secondary" onClick={onClose}>
+            <Button buttonStyle="secondary-outlined" onClick={onClose}>
               {formatMessage(messages.createTokenModalSuccessClose)}
             </Button>
             <Button

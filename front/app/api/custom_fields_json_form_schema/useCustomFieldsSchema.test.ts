@@ -1,5 +1,5 @@
 import { renderHook } from '@testing-library/react-hooks';
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
@@ -16,14 +16,14 @@ const phasePath = '*phases/456/permissions/posting_idea/schema';
 const ideaPath = '*ideas/789/permissions/commenting_idea/schema';
 
 const server = setupServer(
-  rest.get(initiativesPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(initiativeResponse));
+  http.get(initiativesPath, () => {
+    return HttpResponse.json(initiativeResponse, { status: 200 });
   }),
-  rest.get(phasePath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(phaseResponse));
+  http.get(phasePath, () => {
+    return HttpResponse.json(phaseResponse, { status: 200 });
   }),
-  rest.get(ideaPath, (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(ideaResponse));
+  http.get(ideaPath, () => {
+    return HttpResponse.json(ideaResponse, { status: 200 });
   })
 );
 

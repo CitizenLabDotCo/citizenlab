@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 
+import { Select } from '@citizenlab/cl2-component-library';
 import { MessageDescriptor } from 'react-intl';
 import { FormatMessage, IOption } from 'typings';
 
@@ -11,8 +12,6 @@ import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../../../../messages';
-
-import { StyledSelect } from './styling';
 
 const LABEL_MESSAGES: {
   [key in InputTerm]: MessageDescriptor;
@@ -53,7 +52,7 @@ export default ({ input_term, handleInputTermChange }: Props) => {
       <SubSectionTitle>
         <FormattedMessage {...messages.inputTermSelectLabel} />
       </SubSectionTitle>
-      <StyledSelect
+      <Select
         value={input_term}
         options={inputTermOptions}
         onChange={handleInputTermChange}

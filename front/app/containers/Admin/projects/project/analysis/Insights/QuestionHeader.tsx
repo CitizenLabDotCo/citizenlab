@@ -1,7 +1,12 @@
 import React from 'react';
 
-import { Box, Icon, Text, colors } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
+import {
+  Box,
+  Icon,
+  Text,
+  colors,
+  Tooltip,
+} from '@citizenlab/cl2-component-library';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -11,7 +16,7 @@ const QuestionHeader = ({ question }: { question: string }) => {
   const { formatMessage } = useIntl();
 
   return (
-    <Tippy
+    <Tooltip
       content={<Box p="4px">{formatMessage(messages.aiSummaryTooltip)}</Box>}
       placement="top"
       zIndex={99999}
@@ -34,7 +39,7 @@ const QuestionHeader = ({ question }: { question: string }) => {
           <Icon name="question-bubble" width="18px" height="18px" />
         </Box>
       </Box>
-    </Tippy>
+    </Tooltip>
   );
 };
 

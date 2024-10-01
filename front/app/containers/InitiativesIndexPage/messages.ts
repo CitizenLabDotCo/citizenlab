@@ -52,7 +52,12 @@ export default defineMessages({
     defaultMessage: 'Start your own initiative and make your voice heard',
   },
   newProposalsNotPermitted: {
-    id: 'app.containers.InitiativesIndexPage.newProposalsNotPermitted',
-    defaultMessage: 'New proposals are not currently being accepted.',
+    id: 'app.containers.InitiativesIndexPage.newProposalsNotPermitted1',
+    defaultMessage:
+      'Unfortunately, you cannot submit a proposal. Read why in {link}.',
+  },
+  guidelinesLinkText: {
+    id: 'app.containers.InitiativesIndexPage.guidelinesLinkText',
+    defaultMessage: 'our guidelines',
   },
 });

@@ -11,11 +11,10 @@ import { ControlProps } from '@jsonforms/core';
 import { withJsonFormsControlProps } from '@jsonforms/react';
 import styled, { useTheme } from 'styled-components';
 
-import FullscreenImage from 'components/FullscreenImage';
 import { FormLabel } from 'components/UI/FormComponents';
+import FullscreenImage from 'components/UI/FullscreenImage';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 
 import ErrorDisplay from '../ErrorDisplay';
@@ -24,6 +23,7 @@ import VerificationIcon from '../VerificationIcon';
 import { getOptions, getSubtextElement } from './controlUtils';
 import imageFile from './emptyImage.png';
 import messages from './messages';
+import { getInstructionMessage } from './utils';
 
 const HoverBox = styled(Box)<{ hoverColor: string }>`
   cursor: pointer;
@@ -58,26 +58,6 @@ const ImageMultichoiceControl = ({
     return null;
   }
 
-  const getInstructionMessage = () => {
-    if (!isNilOrError(minItems) && !isNilOrError(maxItems)) {
-      if (minItems < 1 && maxItems === options?.length) {
-        return formatMessage(messages.selectAsManyAsYouLike);
-      }
-      if (maxItems === minItems) {
-        return formatMessage(messages.selectExactly, {
-          selectExactly: maxItems,
-        });
-      }
-      if (minItems !== maxItems) {
-        return formatMessage(messages.selectBetween, {
-          minItems,
-          maxItems,
-        });
-      }
-    }
-    return null;
-  };
-
   return (
     <>
       <FormLabel
@@ -89,7 +69,12 @@ const ImageMultichoiceControl = ({
       />
       <Box display="block" data-cy="e2e-image-multichoice-control">
         <Text mt="4px" mb={answerNotPublic ? '4px' : '8px'} fontSize="s">
-          {getInstructionMessage()}
+          {getInstructionMessage({
+            minItems,
+            maxItems,
+            formatMessage,
+            options,
+          })}
         </Text>
         {answerNotPublic && (
           <Text mt="0px" fontSize="s">
@@ -181,7 +166,12 @@ const ImageMultichoiceControl = ({
         </Box>
         <VerificationIcon show={uischema?.options?.verificationLocked} />
       </Box>
-      <ErrorDisplay ajvErrors={errors} fieldPath={path} didBlur={didBlur} />
+      <ErrorDisplay
+        inputId={sanitizeForClassname(id)}
+        ajvErrors={errors}
+        fieldPath={path}
+        didBlur={didBlur}
+      />
     </>
   );
 };

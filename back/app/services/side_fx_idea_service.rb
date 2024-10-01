@@ -27,6 +27,7 @@ class SideFxIdeaService
 
   def before_update(idea, user)
     idea.body_multiloc = TextImageService.new.swap_data_images_multiloc(idea.body_multiloc, field: :body_multiloc, imageable: idea)
+    idea.publication_status = 'published' if idea.submitted_or_published? && idea.idea_status&.public_post?
     before_publish idea, user if idea.will_be_published?
   end
 
@@ -106,7 +107,7 @@ class SideFxIdeaService
 
   def add_autoreaction(idea)
     return unless idea.author
-    return if Permissions::IdeaPermissionsService.new.denied_reason_for_action 'reacting_idea', idea.author, idea, reaction_mode: 'up'
+    return if Permissions::IdeaPermissionsService.new(idea, idea.author).denied_reason_for_action 'reacting_idea', reaction_mode: 'up'
 
     idea.reactions.create!(mode: 'up', user: idea.author)
     idea.reload
@@ -158,3 +159,4 @@ end
 
 SideFxIdeaService.prepend(FlagInappropriateContent::Patches::SideFxIdeaService)
 SideFxIdeaService.prepend(IdeaAssignment::Patches::SideFxIdeaService)
+SideFxIdeaService.prepend(BulkImportIdeas::Patches::SideFxIdeaService)

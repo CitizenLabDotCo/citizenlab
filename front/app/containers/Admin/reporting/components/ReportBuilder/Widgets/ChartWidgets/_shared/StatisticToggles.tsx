@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { Box, Toggle } from '@citizenlab/cl2-component-library';
+import { Box, Toggle, Tooltip } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
-import Tippy from '@tippyjs/react';
 
 import { getComparedTimeRange } from 'components/admin/GraphCards/_utils/query';
 
@@ -30,7 +29,7 @@ export const ComparisonToggle = () => {
 
   return (
     <Box mb="20px">
-      <Tippy
+      <Tooltip
         content={formatMessage(messages.youNeedToSelectADateRange)}
         disabled={!noTimePeriodSelected}
         placement="left-start"
@@ -58,7 +57,7 @@ export const ComparisonToggle = () => {
             }}
           />
         </div>
-      </Tippy>
+      </Tooltip>
     </Box>
   );
 };

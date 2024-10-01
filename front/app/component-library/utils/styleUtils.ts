@@ -311,6 +311,12 @@ export function quillEditedContent(
       font-weight: bold;
       padding: 0;
       margin: 0 0 16px 0;
+
+      a {
+        font-size: inherit;
+        font-weight: inherit;
+        text-decoration: inherit;
+      }
     }
 
     h3 {
@@ -319,6 +325,12 @@ export function quillEditedContent(
       font-weight: bold;
       padding: 0;
       margin: 0 0 16px 0;
+
+      a {
+        font-size: inherit;
+        font-weight: inherit;
+        text-decoration: inherit;
+      }
     }
 
     p {

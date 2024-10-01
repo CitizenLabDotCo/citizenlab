@@ -23,6 +23,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from '../../messages';
 import Events from '../CraftComponents/Events';
+import Highlight from '../CraftComponents/Highlight';
 import Proposals from '../CraftComponents/Proposals';
 
 type HomepageBuilderToolboxProps = {
@@ -63,6 +64,14 @@ const HomepageBuilderToolbox = ({
         component={<Events />}
         icon="calendar"
         label={formatMessage(messages.eventsTitle)}
+      />
+      <DraggableElement
+        id="e2e-draggable-events"
+        component={
+          <Highlight primaryButtonText={{}} secondaryButtonText={{}} />
+        }
+        icon="flash"
+        label={formatMessage(messages.highlightTitle)}
       />
       <DraggableElement
         id="e2e-draggable-image-text-cards"

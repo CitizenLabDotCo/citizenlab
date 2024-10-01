@@ -1,14 +1,6 @@
-import React, { useState, KeyboardEvent } from 'react';
+import React, { useState, KeyboardEvent, useMemo } from 'react';
 
-import {
-  Box,
-  Button,
-  Icon,
-  colors,
-  useBreakpoint,
-  media,
-  isRtl,
-} from '@citizenlab/cl2-component-library';
+import { Box, media, isRtl } from '@citizenlab/cl2-component-library';
 import {
   isArray,
   find,
@@ -20,8 +12,8 @@ import {
 } from 'lodash-es';
 import styled from 'styled-components';
 
-import Title from './Title';
-import ValuesList from './ValuesList';
+import Combobox from './Combobox';
+import MultiSelectDropdown from './MultiSelectDropdown';
 
 const Container = styled(Box)`
   display: inline-block;
@@ -123,7 +115,6 @@ const FilterSelector = ({
 }: Props) => {
   const baseID = `filter-${Math.floor(Math.random() * 10000000)}`;
   const [opened, setOpened] = useState(false);
-  const isPhoneOrSmaller = useBreakpoint('phone');
 
   const getTitle = (
     selection: string[],
@@ -189,18 +180,40 @@ const FilterSelector = ({
     closeExpanded();
   };
 
-  const currentTitle = getTitle(
-    selected,
-    values,
-    multipleSelectionAllowed,
-    title
-  );
-
   const handleKeyDown = (event: KeyboardEvent) => {
     if (event.key === 'ArrowDown' && !opened) {
       event.preventDefault();
       toggleValuesList();
     }
+  };
+
+  // We use a random id for the selectorId to ensure it doesn't conflict if multiple
+  // instances of the same filter selector are rendered on the same page.
+  const selectorId = useMemo(
+    () => `id-${name}-${Math.random().toString(36).slice(2, 11)}`,
+    [name]
+  );
+
+  const sharedProps = {
+    opened,
+    selected,
+    onClickOutside: handleClickOutside,
+    baseID,
+    width,
+    mobileWidth,
+    maxHeight,
+    mobileMaxHeight,
+    top,
+    left,
+    mobileLeft,
+    right,
+    mobileRight,
+    filterSelectorStyle,
+    minWidth,
+    toggleValuesList,
+    textColor,
+    currentTitle: getTitle(selected, values, multipleSelectionAllowed, title),
+    handleKeyDown,
   };
 
   return (
@@ -210,59 +223,21 @@ const FilterSelector = ({
         last ? 'last' : ''
       }`}
     >
-      <Box id={`id-${name}`}>
-        {/* The id is used for aria-labelledby on the group
-         which defines the accessible name for the group */}
-        {filterSelectorStyle === 'button' ? (
-          <Button
-            height={isPhoneOrSmaller ? '32px' : '36px'}
-            borderRadius="24px"
-            onClick={toggleValuesList}
-            minWidth={minWidth ? minWidth : undefined}
-            onKeyDown={handleKeyDown}
-            ariaExpanded={opened}
-            aria-controls={baseID}
-          >
-            <Box display="flex" gap="8px">
-              {currentTitle}
-              <Icon
-                fill={colors.white}
-                name={opened ? 'chevron-up' : 'chevron-down'}
-              />
-            </Box>
-          </Button>
-        ) : (
-          <Title
-            key={baseID}
-            title={currentTitle}
-            opened={opened}
-            onClick={toggleValuesList}
-            baseID={baseID}
-            textColor={textColor}
-            handleKeyDown={handleKeyDown}
-          />
-        )}
-      </Box>
-      <ValuesList
-        title={currentTitle}
-        opened={opened}
-        values={values}
-        selected={selected}
-        onChange={selectionChange}
-        onClickOutside={handleClickOutside}
-        multipleSelectionAllowed={multipleSelectionAllowed}
-        baseID={baseID}
-        width={width}
-        mobileWidth={mobileWidth}
-        maxHeight={maxHeight}
-        mobileMaxHeight={mobileMaxHeight}
-        top={top}
-        left={left}
-        mobileLeft={mobileLeft}
-        right={right}
-        mobileRight={mobileRight}
-        name={name}
-      />
+      {multipleSelectionAllowed ? (
+        <MultiSelectDropdown
+          values={values}
+          onChange={selectionChange}
+          selectorId={selectorId}
+          name={name}
+          {...sharedProps}
+        />
+      ) : (
+        <Combobox
+          options={values}
+          onChange={selectionChange}
+          {...sharedProps}
+        />
+      )}
     </Container>
   );
 };

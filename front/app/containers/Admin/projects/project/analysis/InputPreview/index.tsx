@@ -101,7 +101,7 @@ const InputListItem = () => {
           <Button
             linkTo={`/admin/projects/${analysis.data.relationships.project?.data?.id}/phases/${phaseId}/ideas?selected_idea_id=${selectedInputId}`}
             openLinkInNewTab
-            buttonStyle="secondary"
+            buttonStyle="secondary-outlined"
             icon="settings"
             size="s"
             padding="4px 8px"
@@ -116,7 +116,7 @@ const InputListItem = () => {
           onClick={() =>
             setShowAllQuestions((showAllQuestions) => !showAllQuestions)
           }
-          buttonStyle="secondary"
+          buttonStyle="secondary-outlined"
           size="s"
           icon={showAllQuestions ? 'minus' : 'plus'}
           mb="20px"

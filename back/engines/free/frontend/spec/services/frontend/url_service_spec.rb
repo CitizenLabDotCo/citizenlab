@@ -74,4 +74,21 @@ describe Frontend::UrlService do
       end
     end
   end
+
+  describe '#sso_return_url' do
+    it 'returns the correct URLs when locale NOT provided' do
+      expect(service.sso_return_url).to eq 'http://example.org/'
+      expect(service.sso_return_url(pathname: '/')).to eq 'http://example.org/'
+      expect(service.sso_return_url(pathname: '/en/some-path')).to eq 'http://example.org/en/some-path'
+      expect(service.sso_return_url(pathname: '/en/another/path/')).to eq 'http://example.org/en/another/path/'
+    end
+
+    it 'returns the correct URLs when locale is provided' do
+      locale =  Locale.new('nl-NL')
+      expect(service.sso_return_url(locale: locale)).to eq 'http://example.org/nl-NL/'
+      expect(service.sso_return_url(pathname: '/', locale: locale)).to eq 'http://example.org/nl-NL/'
+      expect(service.sso_return_url(pathname: '/en/some-path', locale: locale)).to eq 'http://example.org/nl-NL/some-path'
+      expect(service.sso_return_url(pathname: '/en/another/path/', locale: locale)).to eq 'http://example.org/nl-NL/another/path/'
+    end
+  end
 end

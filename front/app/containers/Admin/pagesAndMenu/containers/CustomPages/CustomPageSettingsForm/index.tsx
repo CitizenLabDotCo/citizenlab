@@ -5,9 +5,9 @@ import {
   IconTooltip,
   Label,
   colors,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
-import Tippy from '@tippyjs/react';
 import { FormProvider, useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
@@ -257,7 +257,7 @@ const CustomPageSettingsForm = ({
                 display="inline-flex"
                 disabled={showPlanUpgradeTease}
               >
-                <Tippy
+                <Tooltip
                   maxWidth="250px"
                   placement="right-end"
                   content={formatMessage(messages.contactGovSuccessToAccess)}
@@ -311,7 +311,7 @@ const CustomPageSettingsForm = ({
                       )}
                     </Box>
                   </div>
-                </Tippy>
+                </Tooltip>
               </LinkedProjectContainer>
             )}
           </SectionField>

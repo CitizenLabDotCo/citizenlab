@@ -11,7 +11,7 @@ module Pundit
     attr_reader :reason
 
     def initialize(options = {})
-      super(options)
+      super
       @reason = options[:reason] unless options.is_a?(String)
     end
   end

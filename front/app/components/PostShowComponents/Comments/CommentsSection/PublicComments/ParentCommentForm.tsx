@@ -11,6 +11,7 @@ import useAddCommentToIdea from 'api/comments/useAddCommentToIdea';
 import useAddCommentToInitiative from 'api/comments/useAddCommentToInitiative';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useAuthUser from 'api/me/useAuthUser';
+import useProjectById from 'api/projects/useProjectById';
 
 import useLocale from 'hooks/useLocale';
 
@@ -105,7 +106,7 @@ const ParentCommentForm = ({
   const textareaElement = useRef<HTMLTextAreaElement | null>(null);
   const [inputValue, setInputValue] = useState('');
   const [focused, setFocused] = useState(false);
-  const [isCommentCancelled, setIsCommentCancelled] = useState(false);
+  const [commentCancelledMessage, setCommentCancelledMessage] = useState('');
   const [hasApiError, setHasApiError] = useState(false);
   const [profanityApiError, setProfanityApiError] = useState(false);
   const [postAnonymously, setPostAnonymously] = useState(false);
@@ -113,6 +114,7 @@ const ParentCommentForm = ({
     useState(false);
   const { data: idea } = useIdeaById(ideaId);
   const projectId = idea ? idea.data.relationships.project.data.id : null;
+  const { data: project } = useProjectById(projectId);
 
   const processing =
     addCommentToIdeaIsLoading || addCommentToInitiativeIsLoading;
@@ -131,7 +133,7 @@ const ParentCommentForm = ({
   };
 
   const onFocus = () => {
-    setIsCommentCancelled(false);
+    setCommentCancelledMessage('');
     trackEventByName(tracks.focusParentCommentEditor, {
       extra: {
         postId: ideaId || initiativeId,
@@ -286,17 +288,20 @@ const ParentCommentForm = ({
     : messages[`${postType}CommentBodyPlaceholder`];
   const placeholder = formatMessage(placeholderMessage);
   const userCanModerate = {
-    idea: canModerateProject(projectId, authUser),
+    idea: project ? canModerateProject(project.data, authUser) : false,
     initiative: canModerateInitiative(authUser),
   }[postType];
 
   return (
     <Box display="flex" className={className || ''} my="12px">
+      <ScreenReaderOnly aria-live="polite" role="status">
+        {commentCancelledMessage}
+      </ScreenReaderOnly>
       <StyledAvatar
         userId={authUser.data.id}
         size={30}
         isLinkToProfile={!!authUser.data.id}
-        moderator={userCanModerate}
+        showModeratorStyles={userCanModerate}
       />
       <FormContainer
         className="ideaCommentForm"
@@ -327,11 +332,6 @@ const ParentCommentForm = ({
             onFocus={onFocus}
             getTextAreaRef={setRef}
           />
-          {isCommentCancelled && (
-            <ScreenReaderOnly aria-live="polite">
-              {formatMessage(messages.a11y_cancelledPostingComment)}
-            </ScreenReaderOnly>
-          )}
           <Actions
             processing={processing}
             focused={focused}
@@ -342,7 +342,9 @@ const ParentCommentForm = ({
             togglePostAnonymously={setPostAnonymously}
             onSubmit={onSubmit}
             onCancel={() => {
-              setIsCommentCancelled(true);
+              setCommentCancelledMessage(
+                formatMessage(messages.a11y_cancelledPostingComment)
+              );
               close();
             }}
           />

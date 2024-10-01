@@ -124,7 +124,7 @@ const ProjectTopicSelector = memo(
 
           <AddTopicButton
             text={formatMessage(messages.addTopics)}
-            buttonStyle="cl-blue"
+            buttonStyle="admin-dark"
             icon="plus-circle"
             onClick={handleOnAddTopicsClick}
             disabled={

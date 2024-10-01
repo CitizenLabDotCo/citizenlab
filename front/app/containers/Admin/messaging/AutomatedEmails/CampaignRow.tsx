@@ -67,7 +67,7 @@ const CampaignRow = ({ campaign, onClickViewExample }: Props) => {
               <Button
                 icon="eye"
                 onClick={onClickViewExample}
-                buttonStyle="secondary"
+                buttonStyle="secondary-outlined"
               >
                 <FormattedMessage {...messages.viewExample} />
               </Button>

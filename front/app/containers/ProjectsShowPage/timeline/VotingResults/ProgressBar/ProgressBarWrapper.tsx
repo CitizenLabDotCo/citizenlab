@@ -1,7 +1,6 @@
 import React, { ReactNode } from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
+import { Box, Text, Tooltip } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
 
 interface Props {
@@ -14,12 +13,7 @@ const ProgressBarWrapper = ({ children, votesPercentage, tooltip }: Props) => {
   const theme = useTheme();
 
   return (
-    <Tippy
-      disabled={false}
-      content={tooltip}
-      interactive={true}
-      placement="bottom"
-    >
+    <Tooltip disabled={false} content={tooltip} placement="bottom">
       <Box display="flex" alignItems="center" flexDirection="column" w="100%">
         <Text
           m="0"
@@ -46,7 +40,7 @@ const ProgressBarWrapper = ({ children, votesPercentage, tooltip }: Props) => {
           />
         </Box>
       </Box>
-    </Tippy>
+    </Tooltip>
   );
 };
 

@@ -2,8 +2,12 @@ import React from 'react';
 
 import Point from '@arcgis/core/geometry/Point';
 import MapView from '@arcgis/core/views/MapView';
-import { Box, Button, colors } from '@citizenlab/cl2-component-library';
-import Tippy from '@tippyjs/react';
+import {
+  Box,
+  Button,
+  colors,
+  Tooltip,
+} from '@citizenlab/cl2-component-library';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IMapConfig } from 'api/map_config/types';
@@ -17,9 +21,10 @@ import { useIntl } from 'utils/cl-intl';
 type Props = {
   mapView?: MapView | null;
   mapConfig?: IMapConfig | null;
+  resetButtonRef?: React.RefObject<HTMLDivElement>;
 };
 
-const ResetMapViewButton = ({ mapConfig, mapView }: Props) => {
+const ResetMapViewButton = ({ mapConfig, mapView, resetButtonRef }: Props) => {
   const { formatMessage } = useIntl();
   const { data: appConfig } = useAppConfiguration();
 
@@ -50,35 +55,29 @@ const ResetMapViewButton = ({ mapConfig, mapView }: Props) => {
   };
 
   return (
-    <Box zIndex="999999">
-      <Box
-        zIndex="1000"
-        mt="-72px"
-        ml="16px"
-        w="36px"
-        background={colors.white}
+    <Box ref={resetButtonRef}>
+      <Tooltip
+        maxWidth="250px"
+        placement="right"
+        content={formatMessage(messages.goToDefaultMapView)}
+        hideOnClick={true}
       >
-        <Tippy
-          maxWidth="250px"
-          placement="right"
-          content={formatMessage(messages.goToDefaultMapView)}
-          hideOnClick={true}
-        >
-          <div>
-            <Button
-              icon="gps"
-              buttonStyle="white"
-              iconColor={colors.coolGrey500}
-              bgHoverColor={colors.grey100}
-              borderRadius="0px"
-              padding="7px"
-              boxShadow="0px 2px 2px rgba(0, 0, 0, 0.2)"
-              onClick={goToDefaultMapView}
-              aria-label={formatMessage(messages.goToDefaultMapView)}
-            />
-          </div>
-        </Tippy>
-      </Box>
+        <div>
+          <Button
+            icon="gps"
+            buttonStyle="white"
+            iconColor={colors.coolGrey500}
+            bgHoverColor={colors.grey100}
+            borderRadius="0px"
+            padding="7px"
+            width="32px"
+            height="32px"
+            iconSize="20px"
+            onClick={goToDefaultMapView}
+            aria-label={formatMessage(messages.goToDefaultMapView)}
+          />
+        </div>
+      </Tooltip>
     </Box>
   );
 };

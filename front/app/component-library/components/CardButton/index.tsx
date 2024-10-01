@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-import { lighten } from 'polished';
-
 import { colors } from '../../utils/styleUtils';
 import Box, { BoxProps } from '../Box';
 import Icon, { IconNames } from '../Icon';
@@ -14,17 +12,16 @@ type CardButtonProps = {
   icon?: React.ReactNode;
   title?: string;
   subtitle?: string;
+  disabled?: boolean;
 };
 
-// TODO: Temporary colour until new tealLight variations added to component library
-export const backgroundColor = lighten(0.1, colors.tealLight);
-
 const CardButton = ({
-  selected,
+  selected = false,
   iconName,
   icon,
   title,
   subtitle,
+  disabled = false,
   onMouseEnter,
   onMouseLeave,
   ...rest
@@ -35,7 +32,7 @@ const CardButton = ({
     <Box
       width="240px"
       minHeight="210px"
-      background={selected || isHover ? backgroundColor : colors.white}
+      background={selected || isHover ? colors.teal50 : colors.white}
       onMouseEnter={(e) => {
         setIsHover(true);
         onMouseEnter?.(e);
@@ -48,12 +45,13 @@ const CardButton = ({
       border={
         selected ? `solid 1px ${colors.primary}` : `solid 1px ${colors.grey400}`
       }
-      style={{ cursor: 'pointer' }}
+      style={{ cursor: disabled ? 'not-allowed' : 'pointer' }}
       as={'button' as unknown as undefined}
       display="flex"
       flexDirection="column"
       alignItems="flex-start"
       justifyContent="flex-start"
+      disabled={disabled}
       {...rest}
     >
       {iconName && (
@@ -61,14 +59,14 @@ const CardButton = ({
           width="28px"
           height="28px"
           name={iconName}
-          fill={selected ? colors.teal200 : colors.grey400}
+          fill={disabled ? colors.disabled : colors.teal200}
         />
       )}
       {icon ?? null}
       {title && (
         <Title
           variant="h5"
-          color={selected ? 'primary' : 'coolGrey700'}
+          color={disabled ? 'disabled' : 'primary'}
           textAlign="left"
         >
           {title}
@@ -77,7 +75,7 @@ const CardButton = ({
       {subtitle && (
         <Text
           fontSize="s"
-          color={selected ? 'primary' : 'coolGrey700'}
+          color={disabled ? 'disabled' : 'primary'}
           textAlign="left"
         >
           {subtitle}

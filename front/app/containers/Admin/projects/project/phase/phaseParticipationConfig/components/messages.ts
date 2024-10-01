@@ -37,6 +37,15 @@ export default defineMessages({
     defaultMessage:
       "Tap into your users' collective intelligence. Invite them to submit, discuss ideas, and/or provide feedback in a public forum.",
   },
+  proposalsTitle: {
+    id: 'app.containers.AdminPage.phase.methodPicker.proposalsTitle',
+    defaultMessage: 'Proposals, petitions or initiatives',
+  },
+  proposalsDescription: {
+    id: 'app.containers.AdminPage.phase.methodPicker.proposalsDescription',
+    defaultMessage:
+      'Allow participants to upload ideas with a time and vote limit.',
+  },
   surveyTitle: {
     id: 'app.containers.AdminPage.phase.methodPicker.surveyTitle1',
     defaultMessage: 'Create a survey',

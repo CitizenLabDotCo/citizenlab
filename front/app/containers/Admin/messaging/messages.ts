@@ -20,10 +20,6 @@ export default defineMessages({
     id: 'app.containers.Admin.emails.addCampaign',
     defaultMessage: 'Create email',
   },
-  addTextButton: {
-    id: 'app.containers.Admin.emails.addTextButton',
-    defaultMessage: 'Create a new SMS',
-  },
   deleteButtonLabel: {
     id: 'app.containers.Admin.emails.deleteButtonLabel',
     defaultMessage: 'Delete',
@@ -152,10 +148,6 @@ export default defineMessages({
     id: 'app.containers.Admin.Campaigns.tabAutomatedEmails',
     defaultMessage: 'Automated emails',
   },
-  tabTexting: {
-    id: 'app.containers.Admin.Campaigns.tabTexting1',
-    defaultMessage: 'Texting',
-  },
   campaignFrom: {
     id: 'app.containers.Admin.Campaigns.campaignFrom',
     defaultMessage: 'From:',
@@ -172,26 +164,6 @@ export default defineMessages({
   noCampaignsHeader: {
     id: 'app.containers.Admin.emails.emptyCampaignsHeader',
     defaultMessage: 'Send your first email',
-  },
-  noTextingCampaignsHeader: {
-    id: 'app.containers.Admin.emails.noTextingCampaignsHeader',
-    defaultMessage: 'No SMS has been drafted or sent yet',
-  },
-  message: {
-    id: 'app.containers.Admin.emails.message',
-    defaultMessage: 'Message',
-  },
-  dateSent: {
-    id: 'app.containers.Admin.emails.dateSent',
-    defaultMessage: 'Date sent',
-  },
-  recipients: {
-    id: 'app.containers.Admin.emails.recipients',
-    defaultMessage: 'Recipients',
-  },
-  status: {
-    id: 'app.containers.Admin.emails.status',
-    defaultMessage: 'Status',
   },
   noCampaignsDescription: {
     id: 'app.containers.Admin.emails.emptyCampaignsDescription',

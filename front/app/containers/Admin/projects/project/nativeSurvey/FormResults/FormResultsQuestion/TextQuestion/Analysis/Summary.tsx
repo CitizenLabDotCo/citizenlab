@@ -4,6 +4,7 @@ import { Box, Spinner } from '@citizenlab/cl2-component-library';
 import { stringify } from 'qs';
 import { useParams } from 'react-router-dom';
 
+import useAnalysisBackgroundTask from 'api/analysis_background_tasks/useAnalysisBackgroundTask';
 import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
 import useAnalysisSummary from 'api/analysis_summaries/useAnalysisSummary';
 import useRegenerateAnalysisSummary from 'api/analysis_summaries/useRegenerateAnalysisSummary';
@@ -16,6 +17,7 @@ import SummaryHeader from 'containers/Admin/projects/project/analysis/Insights/S
 import tracks from 'containers/Admin/projects/project/analysis/tracks';
 
 import Button from 'components/UI/Button';
+import Error from 'components/UI/Error';
 
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -33,8 +35,9 @@ const Summary = ({
 }) => {
   const { formatMessage } = useIntl();
 
-  const largeSummariesEnabled = useFeatureFlag({
+  const largeSummariesAllowed = useFeatureFlag({
     name: 'large_summaries',
+    onlyCheckAllowed: true,
   });
 
   const { projectId, phaseId } = useParams() as {
@@ -51,6 +54,13 @@ const Summary = ({
   const filters = data?.data.attributes.filters;
   const generatedAt = data?.data.attributes.generated_at;
   const missingInputsCount = data?.data.attributes.missing_inputs_count || 0;
+  const backgroundTaskId = data?.data.relationships.background_task.data.id;
+
+  const { data: task } = useAnalysisBackgroundTask(
+    analysisId,
+    backgroundTaskId,
+    true
+  );
 
   const { data: filteredInputs } = useInfiniteAnalysisInputs({
     analysisId,
@@ -58,14 +68,17 @@ const Summary = ({
   });
 
   const filteredInputCount = filteredInputs?.pages[0].meta.filtered_count || 0;
+  const backgroundTaskFailed = task?.data.attributes.state === 'failed';
+  const showSpinner = !summary && !backgroundTaskFailed;
 
   const refreshDisabled =
-    missingInputsCount === 0 ||
-    (!largeSummariesEnabled && filteredInputCount > 30);
+    !backgroundTaskFailed &&
+    (missingInputsCount === 0 ||
+      (!largeSummariesAllowed && filteredInputCount > 30));
 
   return (
     <>
-      {!summary && <Spinner />}
+      {showSpinner && <Spinner />}
 
       <Box
         id="e2e-analysis-summary"
@@ -73,7 +86,7 @@ const Summary = ({
         justifyContent="space-between"
         h="460px"
         gap="16px"
-        display={!summary ? 'none' : 'flex'}
+        display={showSpinner ? 'none' : 'flex'}
       >
         <Box overflowY="auto" h="100%">
           <SummaryHeader />
@@ -84,8 +97,11 @@ const Summary = ({
             projectId={projectId}
             phaseId={phaseId}
             generatedAt={generatedAt}
-            backgroundTaskId={data?.data.relationships.background_task.data.id}
+            backgroundTaskId={backgroundTaskId}
           />
+          {backgroundTaskFailed && (
+            <Error text={formatMessage(messages.backgroundTaskFailedMessage)} />
+          )}
         </Box>
 
         <InsightFooter
@@ -108,14 +124,18 @@ const Summary = ({
             }}
             processing={isLoadingRegenerateSummary}
           >
-            <FormattedMessage
-              {...messages.refresh}
-              values={{ count: missingInputsCount }}
-            />
+            {backgroundTaskFailed ? (
+              <FormattedMessage {...messages.regenerate} />
+            ) : (
+              <FormattedMessage
+                {...messages.refresh}
+                values={{ count: missingInputsCount }}
+              />
+            )}
           </Button>
           <Button
             id="e2e-explore-summary"
-            buttonStyle="secondary"
+            buttonStyle="secondary-outlined"
             icon="eye"
             linkTo={`/admin/projects/${projectId}/analysis/${analysisId}?${stringify(
               { ...convertFilterValuesToString(filters), phase_id: phaseId }

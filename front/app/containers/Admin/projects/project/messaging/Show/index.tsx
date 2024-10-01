@@ -146,7 +146,7 @@ const Show = () => {
               <Buttons>
                 <Button
                   linkTo={`/admin/projects/${projectId}/messaging/${campaign.data.id}/edit`}
-                  buttonStyle="secondary"
+                  buttonStyle="secondary-outlined"
                 >
                   <FormattedMessage {...messages.editButtonLabel} />
                 </Button>

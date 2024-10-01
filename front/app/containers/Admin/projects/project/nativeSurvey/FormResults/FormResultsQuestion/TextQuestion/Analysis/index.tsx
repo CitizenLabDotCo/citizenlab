@@ -139,7 +139,7 @@ const Analysis = ({
           <Button
             processing={isAddAnalysisLoading}
             onClick={goToAnalysis}
-            buttonStyle="secondary"
+            buttonStyle="secondary-outlined"
             icon="stars"
           >
             {formatMessage(messages.createAIAnalysis)}
@@ -213,7 +213,7 @@ const Analysis = ({
                 show_insights: true,
               })
             }
-            buttonStyle="secondary"
+            buttonStyle="secondary-outlined"
             icon="stars"
           >
             {formatMessage(messages.showSummaries)}

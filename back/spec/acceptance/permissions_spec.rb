@@ -11,6 +11,7 @@ resource 'Permissions' do
     @project = create(:single_phase_ideation_project)
     @phase = TimelineService.new.current_phase_not_archived(@project)
     Permissions::PermissionsUpdateService.new.update_all_permissions
+    SettingsService.new.activate_feature! 'verification', settings: { verification_methods: [{ name: 'fake_sso' }] }
   end
 
   let(:project_id) { @project.id }
@@ -53,16 +54,15 @@ resource 'Permissions' do
 
         expect do
           do_request
-        end.not_to exceed_query_limit(1).with(/SELECT.*custom_fields/)
+        end.not_to exceed_query_limit(2).with(/SELECT.*custom_fields/)
 
         assert_status 200
         json_response = json_parse response_body
         permission_data = json_response[:data].find { |d| d[:id] == permission.id }
-        ordered_permissions_custom_field_ids = permission.permissions_custom_fields.sort_by do |permissions_custom_field|
-          permissions_custom_field.custom_field.ordering
-        end.map(&:id)
+        ordered_permissions_custom_field_ids = permission.permissions_custom_fields.pluck(:id)
+
         expect(permission_data.dig(:relationships, :custom_fields)).to eq(
-          { data: [field1, field2, field3].map { |field| { id: field.id, type: 'custom_field' } } }
+          { data: [field2, field1, field3].map { |field| { id: field.id, type: 'custom_field' } } }
         )
         expect(permission_data.dig(:relationships, :permissions_custom_fields)).to eq(
           { data: ordered_permissions_custom_field_ids.map { |id| { id: id, type: 'permissions_custom_field' } } }
@@ -91,21 +91,39 @@ resource 'Permissions' do
 
       example_request 'List all global permissions' do
         assert_status 200
-        json_response = json_parse response_body
-        expect(json_response[:data].size).to eq Permission.available_actions(nil).size
+        expect(response_data.size).to eq 6
+        expect(response_data.map { |d| d.dig(:attributes, :action) }).to match_array Permission.available_actions(nil)
       end
     end
 
     get 'web_api/v1/phases/:phase_id/permissions/:action' do
       let(:action) { @phase.permissions.first.action }
 
+      before do
+        create(:custom_field_gender, enabled: true, required: true)
+        @phase.permissions.first.update!(group_ids: create_list(:group, 2, projects: [@phase.project]).map(&:id), global_custom_fields: true)
+      end
+
       example_request 'Get one permission by action' do
         expect(status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :id)).to eq @phase.permissions.first.id
+        expect(response_data[:id]).to eq @phase.permissions.first.id
+        expect(response_data.dig(:attributes, :permitted_by)).to eq 'users'
+        expect(response_data.dig(:relationships, :groups, :data).pluck(:id)).to match_array Group.all.pluck(:id)
+        # TODO: JS - Default Permissions fields will not be returned as relationships - are they needed?
+      end
+
+      example 'Get one group permission', document: false do
+        @phase.permissions.first.update!(permitted_by: 'users')
+
+        do_request
+        expect(status).to eq 200
+        expect(response_data.dig(:attributes, :permitted_by)).to eq 'users'
+        expect(response_data.dig(:relationships, :groups, :data).count).to eq 2
+        expect(response_data.dig(:relationships, :groups, :data).pluck(:id)).to match_array Group.all.pluck(:id)
       end
     end
 
+    # TODO: posting_initiative
     get 'web_api/v1/permissions/:action' do
       let(:action) { 'posting_initiative' }
 
@@ -121,21 +139,66 @@ resource 'Permissions' do
         parameter :permitted_by, "Defines who is granted permission, either #{Permission::PERMITTED_BIES.join(',')}.", required: false
         parameter :global_custom_fields, 'When set to true, the enabled registrations are associated to the permission', required: false
         parameter :group_ids, "An array of group id's associated to this permission", required: false
+        parameter :verification_expiry, 'number of days before reverification required - nil means never reverify', required: false
+        parameter :access_denied_explanation_multiloc, 'Multiloc string for explaining why access is denied', required: false
       end
       ValidationErrorHelper.new.error_fields(self, Permission)
 
       let(:action) { @phase.permissions.first.action }
-      let(:permitted_by) { 'groups' }
       let(:group_ids) { create_list(:group, 3, projects: [@phase.project]).map(&:id) }
+      let(:access_denied_explanation_multiloc) { { en: 'You do not have access because you are not in the right group' } }
 
-      example_request 'Update a permission' do
-        assert_status 200
-        json_response = json_parse response_body
-        expect(json_response.dig(:data, :attributes, :permitted_by)).to eq permitted_by
-        expect(json_response.dig(:data, :relationships, :groups, :data).pluck(:id)).to match_array group_ids
+      context 'permitted_by: verified' do
+        let(:permitted_by) { 'verified' }
+        let(:verification_expiry) { 30 }
+
+        example_request 'Update a permission with verified permitted_by' do
+          assert_status 200
+          expect(response_data.dig(:attributes, :permitted_by)).to eq permitted_by
+          expect(response_data.dig(:attributes, :verification_expiry)).to eq verification_expiry
+          expect(response_data.dig(:attributes, :verification_enabled)).to be true
+          expect(response_data.dig(:attributes, :access_denied_explanation_multiloc)).to eq access_denied_explanation_multiloc
+          expect(response_data.dig(:relationships, :groups, :data).pluck(:id)).to match_array group_ids
+        end
+      end
+
+      context 'permitted_by: everyone_confirmed_email' do
+        let(:permitted_by) { 'everyone_confirmed_email' }
+
+        example_request 'Update group IDs when permitted_by "everyone_confirmed_email"' do
+          assert_status 200
+          expect(response_data.dig(:attributes, :permitted_by)).to eq permitted_by
+          expect(response_data.dig(:attributes, :access_denied_explanation_multiloc)).to eq access_denied_explanation_multiloc
+          expect(response_data.dig(:relationships, :groups, :data).pluck(:id)).to match_array group_ids
+        end
       end
     end
 
+    patch 'web_api/v1/phases/:phase_id/permissions/:action/reset' do
+      ValidationErrorHelper.new.error_fields(self, Permission)
+
+      let(:permission) { @phase.permissions.first }
+      let(:action) { @phase.permissions.first.action }
+
+      example 'Reset a permission to use global custom fields and no groups' do
+        # Create some groups & permission fields
+        permission.update!(global_custom_fields: false)
+        create(:permissions_custom_field, permission: permission, custom_field: create(:custom_field), required: true)
+        permission.groups << create_list(:group, 2, projects: [@phase.project])
+
+        # Check the setup is correct
+        expect(permission.permissions_custom_fields.count).to eq 1
+        expect(permission.groups.count).to eq 2
+
+        do_request
+        assert_status 200
+        expect(response_data.dig(:attributes, :global_custom_fields)).to be true
+        expect(permission.permissions_custom_fields.count).to eq 0
+        expect(permission.permissions_custom_fields.count).to eq 0
+      end
+    end
+
+    # TODO: posting_initiative
     patch 'web_api/v1/permissions/:action' do
       with_options scope: :permission do
         parameter :permitted_by, "Defines who is granted permission, either #{Permission::PERMITTED_BIES.join(',')}.", required: false
@@ -145,7 +208,7 @@ resource 'Permissions' do
       ValidationErrorHelper.new.error_fields(self, Permission)
 
       let(:action) { 'reacting_initiative' }
-      let(:permitted_by) { 'groups' }
+      let(:permitted_by) { 'users' }
       let(:group_ids) { create_list(:group, 3).map(&:id) }
 
       example_request 'Update a global permission' do
@@ -174,23 +237,18 @@ resource 'Permissions' do
 
         example_request 'Get the participation requirements of a user in a phase' do
           assert_status 200
-          json_response = json_parse response_body
-          expect(json_response.dig(:data, :attributes, :requirements)).to eq({
+          expect(response_data[:attributes]).to eq({
             permitted: true,
+            disabled_reason: nil,
             requirements: {
-              built_in: {
-                first_name: 'satisfied',
-                last_name: 'satisfied',
-                email: 'satisfied'
+              authentication: {
+                permitted_by: 'everyone',
+                missing_user_attributes: []
               },
+              verification: false,
               custom_fields: {},
-              onboarding: { topics_and_areas: 'dont_ask' },
-              special: {
-                password: 'satisfied',
-                confirmation: 'satisfied',
-                verification: 'dont_ask',
-                group_membership: 'dont_ask'
-              }
+              onboarding: false,
+              group_membership: false
             }
           })
         end
@@ -219,23 +277,18 @@ resource 'Permissions' do
         # NOTE: Custom fields requirements will be {} as they are set globally - which are not allowed for everyone_confirmed_email
         example_request 'Get the participation requirements of a passwordless user requiring confirmation in a phase' do
           assert_status 200
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:data, :attributes, :requirements)).to eq({
+          expect(response_data[:attributes]).to eq({
             permitted: false,
+            disabled_reason: 'user_missing_requirements',
             requirements: {
-              built_in: {
-                first_name: 'satisfied',
-                last_name: 'dont_ask',
-                email: 'satisfied'
+              authentication: {
+                permitted_by: 'everyone_confirmed_email',
+                missing_user_attributes: ['confirmation']
               },
+              verification: false,
               custom_fields: {},
-              onboarding: { topics_and_areas: 'dont_ask' },
-              special: {
-                password: 'dont_ask',
-                confirmation: 'require',
-                verification: 'dont_ask',
-                group_membership: 'dont_ask'
-              }
+              onboarding: false,
+              group_membership: false
             }
           })
         end
@@ -252,23 +305,18 @@ resource 'Permissions' do
 
       example_request 'Get the participation requirements of a user in the global scope' do
         assert_status 200
-        json_response = json_parse response_body
-        expect(json_response.dig(:data, :attributes, :requirements)).to eq({
+        expect(response_data[:attributes]).to eq({
           permitted: true,
+          disabled_reason: nil,
           requirements: {
-            built_in: {
-              first_name: 'satisfied',
-              last_name: 'satisfied',
-              email: 'satisfied'
+            authentication: {
+              permitted_by: 'everyone',
+              missing_user_attributes: []
             },
+            verification: false,
             custom_fields: {},
-            onboarding: { topics_and_areas: 'dont_ask' },
-            special: {
-              password: 'satisfied',
-              confirmation: 'satisfied',
-              verification: 'dont_ask',
-              group_membership: 'dont_ask'
-            }
+            onboarding: false,
+            group_membership: false
           }
         })
       end
@@ -296,27 +344,21 @@ resource 'Permissions' do
 
       example_request 'Get the global registration requirements when custom fields are asked' do
         assert_status 200
-        json_response = json_parse response_body
-        expect(json_response.dig(:data, :attributes, :requirements)).to eq({
+        expect(response_data[:attributes]).to eq({
           permitted: false,
+          disabled_reason: 'user_missing_requirements',
           requirements: {
-            built_in: {
-              first_name: 'satisfied',
-              last_name: 'require',
-              email: 'satisfied'
+            authentication: {
+              permitted_by: 'users',
+              missing_user_attributes: %w[last_name password]
             },
+            verification: false,
             custom_fields: {
-              birthyear: 'require',
-              gender: 'satisfied',
-              extra_field: 'require'
+              birthyear: 'required',
+              extra_field: 'required'
             },
-            onboarding: { topics_and_areas: 'ask' },
-            special: {
-              password: 'require',
-              confirmation: 'satisfied',
-              verification: 'dont_ask',
-              group_membership: 'dont_ask'
-            }
+            onboarding: true,
+            group_membership: false
           }
         })
       end
@@ -336,23 +378,18 @@ resource 'Permissions' do
 
       example_request 'Get the participation requirements of a user in an idea' do
         assert_status 200
-        json_response = json_parse response_body
-        expect(json_response.dig(:data, :attributes, :requirements)).to eq({
+        expect(response_data[:attributes]).to eq({
           permitted: true,
+          disabled_reason: nil,
           requirements: {
-            built_in: {
-              first_name: 'satisfied',
-              last_name: 'satisfied',
-              email: 'satisfied'
+            authentication: {
+              permitted_by: 'users',
+              missing_user_attributes: []
             },
+            verification: false,
             custom_fields: {},
-            onboarding: { topics_and_areas: 'ask' },
-            special: {
-              password: 'satisfied',
-              confirmation: 'satisfied',
-              verification: 'dont_ask',
-              group_membership: 'dont_ask'
-            }
+            onboarding: true,
+            group_membership: false
           }
         })
       end
@@ -445,6 +482,21 @@ resource 'Permissions' do
           required: [@field2.key]
         })
         expect(json_attributes[:ui_schema_multiloc]).to be_present
+      end
+    end
+
+    get 'web_api/v1/phases/:phase_id/permissions/:action/access_denied_explanation' do
+      before do
+        @permission = @phase.permissions.first
+        @multiloc = { en: '<p>You do not have access because you are not in the right group</p>' }
+        @permission.update!(access_denied_explanation_multiloc: @multiloc)
+      end
+
+      let(:action) { @permission.action }
+
+      example_request 'Get the access denied explanation of a phase permission' do
+        assert_status 200
+        expect(response_data[:attributes][:access_denied_explanation_multiloc]).to eq(@multiloc)
       end
     end
   end

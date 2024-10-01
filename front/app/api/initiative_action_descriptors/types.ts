@@ -1,4 +1,7 @@
-import { ActionDescriptor, UserDisabledReason } from 'utils/actionDescriptors';
+import {
+  ActionDescriptor,
+  UserDisabledReason,
+} from 'utils/actionDescriptors/types';
 import { Keys } from 'utils/cl-react-query/types';
 
 import initiativeActionDescriptorsKeys from './keys';

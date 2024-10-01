@@ -10,7 +10,7 @@ namespace :single_use do
     live_run = !!ActiveModel::Type::Boolean.new.cast(args[:live_run])
     puts "Live run: #{live_run}"
 
-    Tenant.switch_each do |tenant|
+    Tenant.safe_switch_each do |tenant|
       puts "Processing tenant #{tenant.host}"
 
       ids = Project.joins(:project_images).group('projects.id')

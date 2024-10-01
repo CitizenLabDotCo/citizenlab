@@ -6,9 +6,9 @@ import {
   colors,
   IconButton,
   TooltipContentWrapper,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
 import { useEditor } from '@craftjs/core';
-import Tippy from '@tippyjs/react';
 import { RouteType } from 'routes';
 import { SupportedLocale } from 'typings';
 
@@ -48,6 +48,17 @@ type ContentBuilderTopBarProps = {
   setView: (view: View) => void;
   setSaved: () => void;
   setSelectedLocale: React.Dispatch<React.SetStateAction<SupportedLocale>>;
+};
+
+const TEMPLATE_NODES = new Set([
+  'ProjectTemplate',
+  'PhaseTemplate',
+  'PlatformTemplate',
+]);
+
+const isTemplateNode = (resolvedName?: string) => {
+  if (!resolvedName) return false;
+  return TEMPLATE_NODES.has(resolvedName);
 };
 
 const ContentBuilderTopBar = ({
@@ -137,13 +148,11 @@ const ContentBuilderTopBar = ({
       const firstNode = nodes.ROOT?.nodes[0];
       if (!firstNode) return;
 
-      const displayName = nodes?.[firstNode].displayName;
+      const type = nodes?.[firstNode].type;
+      const resolvedName =
+        typeof type === 'object' ? type.resolvedName : undefined;
 
-      if (
-        !['ProjectTemplate', 'PhaseTemplate', 'PlatformTemplate'].includes(
-          displayName
-        )
-      ) {
+      if (!isTemplateNode(resolvedName)) {
         // In theory this should not be possible, but handling
         // it gracefully just in case
         setInitialized(true);
@@ -158,13 +167,13 @@ const ContentBuilderTopBar = ({
       const numberOfNodes = Object.keys(nodes).length;
 
       if (
-        displayName === 'ProjectTemplate' &&
+        resolvedName === 'ProjectTemplate' &&
         numberOfNodes < PROJECT_TEMPLATE_MIN_NUMBER_OF_NODES_BEFORE_AUTOSAVE
       ) {
         return;
       }
       if (
-        displayName === 'PlatformTemplate' &&
+        resolvedName === 'PlatformTemplate' &&
         numberOfNodes < PLATFORM_TEMPLATE_MIN_NUMBER_OF_NODES_BEFORE_AUTOSAVE
       ) {
         return;
@@ -237,8 +246,7 @@ const ContentBuilderTopBar = ({
           </Box>
         )}
         <Box ml="32px">
-          <Tippy
-            interactive={false}
+          <Tooltip
             placement="bottom"
             disabled={!disablePrint}
             zIndex={CONTENT_BUILDER_Z_INDEX.tooltip}
@@ -251,7 +259,7 @@ const ContentBuilderTopBar = ({
             <div>
               <Button
                 icon="print"
-                buttonStyle="secondary"
+                buttonStyle="secondary-outlined"
                 iconColor={colors.textPrimary}
                 iconSize="16px"
                 px="12px"
@@ -261,7 +269,7 @@ const ContentBuilderTopBar = ({
                 disabled={disablePrint}
               />
             </div>
-          </Tippy>
+          </Tooltip>
         </Box>
         <SaveButton
           disabled={disableSave}

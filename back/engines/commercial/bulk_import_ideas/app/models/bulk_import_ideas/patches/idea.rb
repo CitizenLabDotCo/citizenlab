@@ -35,7 +35,7 @@ module BulkImportIdeas::Patches::Idea
           approved_at: Time.now,
           user_created: new_author_created || idea_import&.user_created,
           user_consent: !new_author_created,
-          content_changes: changes.except('publication_status', 'published_at', 'updated_at')
+          content_changes: changes.except('publication_status', 'published_at', 'submitted_at', 'updated_at')
         )
       end
 

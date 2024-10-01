@@ -14,7 +14,7 @@ type Props = {
   title: string;
   subtitle?: string;
   image?: string;
-  onClick: (event) => void;
+  onClick?: (event) => void;
   children?: JSX.Element;
 };
 
@@ -52,6 +52,7 @@ const ParticipationMethodChoice = ({
       }}
       onClick={onClick}
       style={{ cursor: 'pointer' }}
+      height="100%"
     >
       {image && (
         <Image

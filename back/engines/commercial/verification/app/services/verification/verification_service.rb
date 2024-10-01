@@ -37,6 +37,21 @@ module Verification
       active_methods(configuration).include? method_by_name(method_name)
     end
 
+    # Not all verification methods are allowed at a permission/action level
+    # NOTE: for real platforms, you should never have
+    # more than one verification method enabled at a time.
+    def first_method_enabled_for_verified_actions
+      active_methods(AppConfiguration.instance).find do |method|
+        method.respond_to?(:enabled_for_verified_actions?) && method.enabled_for_verified_actions?
+      end
+    end
+
+    # NOTE: for real platforms, you should never have
+    # more than one verification method enabled at a time.
+    def first_method_enabled
+      active_methods(AppConfiguration.instance).first
+    end
+
     class NoMatchError < StandardError; end
 
     class NotEntitledError < StandardError
@@ -95,6 +110,56 @@ module Verification
         end
       end
       custom_fields.uniq
+    end
+
+    # Return method metadata
+    def method_metadata(method)
+      allowed_for_verified_actions = method.respond_to?(:enabled_for_verified_actions?) && method&.enabled_for_verified_actions?
+
+      name = method.respond_to?(:ui_method_name) ? method.ui_method_name : method.name
+
+      # Attributes
+      multiloc_service = MultilocService.new
+      locales = AppConfiguration.instance.settings('core', 'locales')
+
+      locked_attributes = if method.respond_to?(:locked_attributes)
+        method.locked_attributes.filter_map do |code|
+          multiloc_service.i18n_to_multiloc("xlsx_export.column_headers.#{code}", locales: locales)
+        end
+      else
+        []
+      end
+
+      other_attributes = if method.respond_to?(:other_attributes)
+        method.other_attributes.filter_map do |code|
+          multiloc_service.i18n_to_multiloc("xlsx_export.column_headers.#{code}", locales: locales)
+        end
+      else
+        []
+      end
+
+      # Custom fields
+      custom_fields = CustomField.registration
+      locked_custom_fields = if method.respond_to?(:locked_custom_fields)
+        method.locked_custom_fields.filter_map { |code| custom_fields.find { |f| f.code == code.to_s }&.title_multiloc }
+      else
+        []
+      end
+
+      other_custom_fields = if method.respond_to?(:other_custom_fields)
+        method.other_custom_fields.filter_map { |code| custom_fields.find { |f| f.code == code.to_s }&.title_multiloc }
+      else
+        []
+      end
+
+      {
+        allowed_for_verified_actions: allowed_for_verified_actions,
+        name: name,
+        locked_attributes: locked_attributes,
+        other_attributes: other_attributes,
+        locked_custom_fields: locked_custom_fields,
+        other_custom_fields: other_custom_fields
+      }
     end
 
     def verifications_by_uid(uid, method)

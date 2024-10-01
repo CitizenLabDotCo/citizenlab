@@ -3,6 +3,7 @@ import React, { memo, useState, useEffect, useRef } from 'react';
 import {
   useWindowSize,
   defaultCardStyle,
+  useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import styled from 'styled-components';
@@ -101,6 +102,7 @@ const IdeaMapOverlay = memo<Props>(
     const { windowWidth } = useWindowSize();
     const timeoutRef = useRef<number>();
     const smallerThan1440px = !!(windowWidth && windowWidth <= 1440);
+    const isMobileOrSmaller = useBreakpoint('phone');
 
     const [scrollContainerElement, setScrollContainerElement] =
       useState<HTMLDivElement | null>(null);
@@ -141,49 +143,52 @@ const IdeaMapOverlay = memo<Props>(
         }
       }, 0);
     };
+    const showList = isMobileOrSmaller ? true : !selectedIdea;
 
     if (project) {
       return (
         <Container className={className || ''}>
-          {!selectedIdea && (
+          {showList && (
             <StyledIdeasList
               projectId={projectId}
               phaseId={phaseId}
               onSelectIdea={handleSelectIdea}
             />
           )}
-          <CSSTransition
-            classNames="animation"
-            in={!!selectedIdea}
-            timeout={timeout}
-            mountOnEnter={true}
-            unmountOnExit={true}
-            enter={true}
-            exit={true}
-          >
-            <InnerOverlay
-              right={smallerThan1440px ? '-100px' : '-150px'}
-              tabIndex={-1}
-              // Ref to use to focus on the overlay after selecting an idea
-              ref={overlayRef}
+          {!isMobileOrSmaller && (
+            <CSSTransition
+              classNames="animation"
+              in={!!selectedIdea}
+              timeout={timeout}
+              mountOnEnter={true}
+              unmountOnExit={true}
+              enter={true}
+              exit={true}
             >
-              <IdeaShowPageTopBar
-                ideaId={selectedIdea ?? undefined}
-                deselectIdeaOnMap={() => {
-                  onSelectIdea(null);
-                }}
-                projectId={projectId}
-              />
-              {selectedIdea && (
-                <StyledIdeasShow
-                  ideaId={selectedIdea}
+              <InnerOverlay
+                right={smallerThan1440px ? '-100px' : '-150px'}
+                tabIndex={-1}
+                // Ref to use to focus on the overlay after selecting an idea
+                ref={overlayRef}
+              >
+                <IdeaShowPageTopBar
+                  ideaId={selectedIdea ?? undefined}
+                  deselectIdeaOnMap={() => {
+                    onSelectIdea(null);
+                  }}
                   projectId={projectId}
-                  compact={true}
-                  setRef={handleIdeasShowSetRef}
                 />
-              )}
-            </InnerOverlay>
-          </CSSTransition>
+                {selectedIdea && (
+                  <StyledIdeasShow
+                    ideaId={selectedIdea}
+                    projectId={projectId}
+                    compact={true}
+                    setRef={handleIdeasShowSetRef}
+                  />
+                )}
+              </InnerOverlay>
+            </CSSTransition>
+          )}
         </Container>
       );
     }

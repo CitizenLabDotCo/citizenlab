@@ -35,7 +35,11 @@ export const ConsentText = styled.div`
   }
 `;
 
-const PoliciesMarkup = () => {
+interface Props {
+  showByContinuingText?: boolean;
+}
+
+const PoliciesMarkup = ({ showByContinuingText = true }: Props) => {
   const { formatMessage } = useIntl();
 
   return (
@@ -84,9 +88,11 @@ const PoliciesMarkup = () => {
           }
         />
       </Box>
-      <Text mt="24px" mb="0px" fontSize="s" color="tenantText">
-        {formatMessage(messages.byContinuing)}
-      </Text>
+      {showByContinuingText && (
+        <Text mt="24px" mb="0px" fontSize="s" color="tenantText">
+          {formatMessage(messages.byContinuing)}
+        </Text>
+      )}
     </>
   );
 };

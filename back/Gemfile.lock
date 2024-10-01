@@ -46,14 +46,6 @@ PATH
       ros-apartment (>= 2.9.0)
 
 PATH
-  remote: engines/commercial/custom_idea_statuses
-  specs:
-    custom_idea_statuses (0.1.0)
-      active_model_serializers (~> 0.10.7)
-      pundit (~> 2.0)
-      rails (~> 7.0)
-
-PATH
   remote: engines/commercial/custom_maps
   specs:
     custom_maps (0.1.0)
@@ -126,6 +118,13 @@ PATH
       verification
 
 PATH
+  remote: engines/commercial/id_fake_sso
+  specs:
+    id_fake_sso (0.1.0)
+      omniauth_openid_connect
+      rails (~> 7.0)
+
+PATH
   remote: engines/commercial/id_franceconnect
   specs:
     id_franceconnect (0.1.0)
@@ -160,7 +159,7 @@ PATH
   remote: engines/commercial/id_nemlog_in
   specs:
     id_nemlog_in (1.0.0)
-      omniauth-saml (~> 1.10.3)
+      omniauth-saml (~> 2.2.0)
       rails (~> 7.0)
 
 PATH
@@ -175,7 +174,7 @@ PATH
   remote: engines/commercial/id_vienna_saml
   specs:
     id_vienna_saml (1.0.0)
-      omniauth-saml (~> 1.10.3)
+      omniauth-saml (~> 2.2.0)
       rails (~> 7.0)
 
 PATH
@@ -266,14 +265,6 @@ PATH
   specs:
     smart_groups (0.1.0)
       rails (~> 7.0)
-
-PATH
-  remote: engines/commercial/texting
-  specs:
-    texting (0.1.0)
-      rails (~> 7.0)
-      smstools (~> 0.2.2)
-      twilio-ruby (>= 5.77, < 6.4)
 
 PATH
   remote: engines/commercial/user_custom_fields
@@ -429,7 +420,7 @@ GEM
     activerecord (7.0.8.4)
       activemodel (= 7.0.8.4)
       activesupport (= 7.0.8.4)
-    activerecord-import (1.6.0)
+    activerecord-import (1.7.0)
       activerecord (>= 4.2)
     activerecord-postgis-adapter (8.0.3)
       activerecord (~> 7.0.0)
@@ -498,7 +489,7 @@ GEM
       debug_inspector (>= 0.0.1)
     bootsnap (1.18.3)
       msgpack (~> 1.2)
-    builder (3.2.4)
+    builder (3.3.0)
     bullet (7.1.6)
       activesupport (>= 3.0.0)
       uniform_notifier (~> 1.11)
@@ -563,20 +554,22 @@ GEM
     diff-lcs (1.5.1)
     docile (1.4.0)
     domain_name (0.6.20240107)
+    drb (2.2.0)
+      ruby2_keywords
     easy_translate (0.5.1)
       thread
       thread_safe
     erubi (1.12.0)
     event_stream_parser (1.0.0)
-    excon (0.110.0)
+    excon (0.111.0)
     factory_bot (6.4.6)
       activesupport (>= 5.0.0)
     factory_bot_rails (6.4.3)
       factory_bot (~> 6.4)
       railties (>= 5.0.0)
-    faker (3.3.1)
+    faker (3.4.1)
       i18n (>= 1.8.11, < 2)
-    faraday (2.9.0)
+    faraday (2.9.2)
       faraday-net_http (>= 2.0, < 3.2)
     faraday-follow_redirects (0.3.0)
       faraday (>= 1, < 3)
@@ -589,11 +582,14 @@ GEM
       net-http
     faraday-retry (2.2.1)
       faraday (~> 2.0)
-    ffi (1.16.3)
-    ffi-compiler (1.0.1)
-      ffi (>= 1.0.0)
+    ffi (1.17.0-aarch64-linux-gnu)
+    ffi (1.17.0-arm64-darwin)
+    ffi (1.17.0-x86_64-darwin)
+    ffi (1.17.0-x86_64-linux-gnu)
+    ffi-compiler (1.3.2)
+      ffi (>= 1.15.5)
       rake
-    fog-aws (3.22.0)
+    fog-aws (3.24.0)
       fog-core (~> 2.1)
       fog-json (~> 1.1)
       fog-xml (~> 0.1)
@@ -623,15 +619,14 @@ GEM
     google-api-client (0.53.0)
       google-apis-core (~> 0.1)
       google-apis-generator (~> 0.1)
-    google-apis-core (0.4.2)
+    google-apis-core (0.15.1)
       addressable (~> 2.5, >= 2.5.1)
-      googleauth (>= 0.16.2, < 2.a)
-      httpclient (>= 2.8.1, < 3.a)
+      googleauth (~> 1.9)
+      httpclient (>= 2.8.3, < 3.a)
       mini_mime (~> 1.0)
+      mutex_m
       representable (~> 3.0)
       retriable (>= 2.0, < 4.a)
-      rexml
-      webrick
     google-apis-discovery_v1 (0.8.0)
       google-apis-core (>= 0.4, < 2.a)
     google-apis-generator (0.4.1)
@@ -661,10 +656,10 @@ GEM
     google-cloud-location (0.8.0)
       gapic-common (>= 0.21.1, < 2.a)
       google-cloud-errors (~> 1.0)
-    google-protobuf (3.25.3-aarch64-linux)
-    google-protobuf (3.25.3-arm64-darwin)
-    google-protobuf (3.25.3-x86_64-darwin)
-    google-protobuf (3.25.3-x86_64-linux)
+    google-protobuf (3.25.5-aarch64-linux)
+    google-protobuf (3.25.5-arm64-darwin)
+    google-protobuf (3.25.5-x86_64-darwin)
+    google-protobuf (3.25.5-x86_64-linux)
     googleapis-common-protos (1.5.0)
       google-protobuf (~> 3.18)
       googleapis-common-protos-types (~> 1.7)
@@ -700,13 +695,14 @@ GEM
     hashdiff (1.1.0)
     hashie (5.0.0)
     htmlentities (4.3.4)
-    http (5.1.1)
+    http (5.2.0)
       addressable (~> 2.8)
+      base64 (~> 0.1)
       http-cookie (~> 1.0)
       http-form_data (~> 2.2)
-      llhttp-ffi (~> 0.4.0)
+      llhttp-ffi (~> 0.5.0)
     http-accept (1.7.0)
-    http-cookie (1.0.5)
+    http-cookie (1.0.6)
       domain_name (~> 0.5)
     http-form_data (2.3.0)
     httparty (0.22.0)
@@ -777,7 +773,7 @@ GEM
     listen (3.9.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
-    llhttp-ffi (0.4.0)
+    llhttp-ffi (0.5.0)
       ffi-compiler (~> 1.0)
       rake (~> 13.0)
     loofah (2.22.0)
@@ -795,11 +791,11 @@ GEM
     method_source (1.1.0)
     mime-types (3.5.2)
       mime-types-data (~> 3.2015)
-    mime-types-data (3.2024.0507)
+    mime-types-data (3.2024.0702)
     mimemagic (0.4.3)
       nokogiri (~> 1)
       rake
-    mini_magick (4.12.0)
+    mini_magick (4.13.2)
     mini_mime (1.1.5)
     minitest (5.23.1)
     mjml-rails (4.11.0)
@@ -811,6 +807,7 @@ GEM
     mustache (1.1.1)
     mustermann (3.0.0)
       ruby2_keywords (~> 0.0.1)
+    mutex_m (0.2.0)
     nanoid (2.0.0)
     net-http (0.4.1)
       uri
@@ -825,6 +822,7 @@ GEM
       net-protocol
     netrc (0.11.0)
     nio4r (2.7.3)
+    nkf (0.1.3)
     nlpcloud (1.0.45)
       rest-client (~> 2.1)
     nokogiri (1.16.5-aarch64-linux)
@@ -843,28 +841,28 @@ GEM
       multi_xml (~> 0.5)
       rack (>= 1.2, < 3)
     okcomputer (1.18.5)
-    omniauth (1.9.2)
+    omniauth (2.1.2)
       hashie (>= 3.4.6)
-      rack (>= 1.6.2, < 3)
-    omniauth-auth0 (2.6.0)
-      omniauth (~> 1.9)
+      rack (>= 2.2.3)
+      rack-protection
+    omniauth-auth0 (2.4.1)
       omniauth-oauth2 (~> 1.5)
     omniauth-facebook (9.0.0)
       omniauth-oauth2 (~> 1.2)
-    omniauth-google-oauth2 (0.8.2)
+    omniauth-google-oauth2 (1.0.1)
       jwt (>= 2.0)
       oauth2 (~> 1.1)
-      omniauth (~> 1.1)
-      omniauth-oauth2 (>= 1.6)
+      omniauth (~> 2.0)
+      omniauth-oauth2 (~> 1.7.1)
     omniauth-oauth2 (1.7.2)
       oauth2 (~> 1.4)
       omniauth (>= 1.9, < 3)
     omniauth-rails_csrf_protection (0.1.2)
       actionpack (>= 4.2)
       omniauth (>= 1.3.1)
-    omniauth-saml (1.10.3)
-      omniauth (~> 1.3, >= 1.3.2)
-      ruby-saml (~> 1.9)
+    omniauth-saml (2.2.1)
+      omniauth (~> 2.1)
+      ruby-saml (~> 1.17)
     omniauth_openid_connect (0.7.1)
       omniauth (>= 1.9, < 3)
       openid_connect (~> 2.2)
@@ -884,8 +882,8 @@ GEM
     order_as_specified (1.7)
       activerecord (>= 5.0.0)
     os (1.1.4)
-    parallel (1.24.0)
-    parser (3.3.1.0)
+    parallel (1.25.1)
+    parser (3.3.4.0)
       ast (~> 2.4.1)
       racc
     pdf-core (0.10.0)
@@ -925,7 +923,7 @@ GEM
       interception (>= 0.5)
       pry (>= 0.12.0)
     public_suffix (4.0.7)
-    puma (6.4.2)
+    puma (6.4.3)
       nio4r (~> 2.0)
     pundit (2.3.2)
       activesupport (>= 3.0.0)
@@ -934,7 +932,7 @@ GEM
     que-web (0.10.0)
       que (>= 1)
       sinatra
-    racc (1.8.0)
+    racc (1.8.1)
     rack (2.2.9)
     rack-attack (6.7.0)
       rack (>= 1.0, < 4)
@@ -995,7 +993,7 @@ GEM
       ffi (~> 1.0)
     rbtree (0.4.6)
     redcarpet (3.6.0)
-    regexp_parser (2.9.0)
+    regexp_parser (2.9.2)
     representable (3.1.1)
       declarative (< 0.1.0)
       trailblazer-option (>= 0.1.1, < 0.2.0)
@@ -1006,8 +1004,7 @@ GEM
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
     retriable (3.1.2)
-    rexml (3.2.8)
-      strscan (>= 3.0.9)
+    rexml (3.3.7)
     rgeo (3.0.1)
     rgeo-activerecord (7.0.1)
       activerecord (>= 5.0)
@@ -1029,6 +1026,9 @@ GEM
     rspec-expectations (3.13.0)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.13.0)
+    rspec-html-matchers (0.10.0)
+      nokogiri (~> 1)
+      rspec (>= 3.0.0.a)
     rspec-its (1.3.0)
       rspec-core (>= 3.0.0)
       rspec-expectations (>= 3.0.0)
@@ -1064,15 +1064,15 @@ GEM
       rspec (~> 3.0)
     rspec_junit_formatter (0.6.0)
       rspec-core (>= 2, < 4, != 2.12.0)
-    rubocop (1.57.2)
+    rubocop (1.65.1)
       json (~> 2.3)
       language_server-protocol (>= 3.17.0)
       parallel (~> 1.10)
-      parser (>= 3.2.2.4)
+      parser (>= 3.3.0.2)
       rainbow (>= 2.2.2, < 4.0)
-      regexp_parser (>= 1.8, < 3.0)
+      regexp_parser (>= 2.4, < 3.0)
       rexml (>= 3.2.5, < 4.0)
-      rubocop-ast (>= 1.28.1, < 2.0)
+      rubocop-ast (>= 1.31.1, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 2.4.0, < 3.0)
     rubocop-ast (1.31.3)
@@ -1081,9 +1081,9 @@ GEM
       rubocop (~> 1.41)
     rubocop-factory_bot (2.25.1)
       rubocop (~> 1.41)
-    rubocop-performance (1.18.0)
-      rubocop (>= 1.7.0, < 2.0)
-      rubocop-ast (>= 0.4.0)
+    rubocop-performance (1.21.1)
+      rubocop (>= 1.48.1, < 2.0)
+      rubocop-ast (>= 1.31.1, < 2.0)
     rubocop-rails (2.22.1)
       activesupport (>= 4.2.0)
       rack (>= 1.1)
@@ -1095,14 +1095,14 @@ GEM
       rubocop-rspec_rails (~> 2.28)
     rubocop-rspec_rails (2.28.3)
       rubocop (~> 1.40)
-    ruby-openai (7.0.1)
+    ruby-openai (7.1.0)
       event_stream_parser (>= 0.3.0, < 2.0.0)
       faraday (>= 1)
       faraday-multipart (>= 1)
     ruby-progressbar (1.13.0)
     ruby-rc4 (0.1.5)
-    ruby-saml (1.14.0)
-      nokogiri (>= 1.10.5)
+    ruby-saml (1.17.0)
+      nokogiri (>= 1.13.10)
       rexml
     ruby-vips (2.2.1)
       ffi (~> 1.12)
@@ -1125,6 +1125,7 @@ GEM
     scenic (1.8.0)
       activerecord (>= 4.0.0)
       railties (>= 4.0.0)
+    scientist (1.6.4)
     semantic_logger (4.15.0)
       concurrent-ruby (~> 1.0)
     sentry-rails (5.17.3)
@@ -1155,7 +1156,6 @@ GEM
       rack (~> 2.2, >= 2.2.4)
       rack-protection (= 3.0.6)
       tilt (~> 2.0)
-    smstools (0.2.2)
     sorted_set (1.0.3)
       rbtree
       set (~> 1.0)
@@ -1167,7 +1167,6 @@ GEM
       spring (>= 4)
     ssrf_filter (1.1.2)
     stackprof (0.2.26)
-    strscan (3.1.0)
     swd (2.0.2)
       activesupport (>= 3)
       attr_required (>= 0.0.5)
@@ -1187,10 +1186,6 @@ GEM
     trailblazer-option (0.1.2)
     ttfunk (1.8.0)
       bigdecimal (~> 3.1)
-    twilio-ruby (6.3.0)
-      faraday (>= 0.9, < 3.0)
-      jwt (>= 1.5, < 3.0)
-      nokogiri (>= 1.6, < 2.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     uber (0.1.0)
@@ -1215,11 +1210,10 @@ GEM
       activesupport
       faraday (~> 2.0)
       faraday-follow_redirects
-    webmock (3.23.0)
+    webmock (3.23.1)
       addressable (>= 2.8.0)
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
-    webrick (1.7.0)
     websocket-driver (0.7.6)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
@@ -1234,11 +1228,12 @@ PLATFORMS
   aarch64-linux
   arm64-darwin-21
   x86_64-darwin-21
+  x86_64-darwin-23
   x86_64-linux
 
 DEPENDENCIES
   active_model_serializers (~> 0.10.12)
-  activerecord-import (~> 1.6)
+  activerecord-import (~> 1.7)
   activerecord-postgis-adapter (~> 8.0)
   acts_as_list (~> 1.1)
   admin_api!
@@ -1264,17 +1259,18 @@ DEPENDENCIES
   combine_pdf (~> 1.0.26)
   content_builder!
   counter_culture (~> 3.5)
-  custom_idea_statuses!
+  csv (~> 3.3.0)
   custom_maps!
   dalli (~> 3.2.8)
   database_cleaner (~> 2.0.2)
   document_annotation!
+  drb
   email_campaigns!
   factory_bot_rails
   faker
   faraday-jwt (~> 0.1.0)
   flag_inappropriate_content!
-  fog-aws (~> 3.22)
+  fog-aws (~> 3.24)
   frontend!
   google-cloud-document_ai (~> 1.4)
   google_tag_manager!
@@ -1287,6 +1283,7 @@ DEPENDENCIES
   id_clave_unica!
   id_cow!
   id_criipto!
+  id_fake_sso!
   id_franceconnect!
   id_gent_rrn!
   id_hoplr!
@@ -1310,21 +1307,23 @@ DEPENDENCIES
   machine_translations!
   mailgun-ruby (~> 1.2.14)
   matomo!
-  mini_magick (~> 4.12)
+  mini_magick (~> 4.13)
   mjml-rails (~> 4.11)
   moderation!
   multi_tenancy!
+  mutex_m
+  nkf
   nokogiri (~> 1.16.5)
   okcomputer
-  omniauth (~> 1.9.1)
+  omniauth (~> 2.1)
   omniauth-facebook
   omniauth-google-oauth2
   omniauth-rails_csrf_protection
-  omniauth-saml (~> 1.10.3)
+  omniauth-saml (~> 2.2.0)
   omniauth_openid_connect (~> 0.7.1)
   onboarding!
   order_as_specified
-  pg
+  pg (~> 1.5.6)
   pg_search (~> 2.3.5)
   polls!
   posthog_integration!
@@ -1336,7 +1335,7 @@ DEPENDENCIES
   pry-rails
   pry-rescue
   public_api!
-  puma (~> 6.4.2)
+  puma (~> 6.4.3)
   pundit (~> 2.3.2)
   que (~> 2.3.0)
   que-web (~> 0.10.0)
@@ -1353,6 +1352,7 @@ DEPENDENCIES
   rgeo-geojson
   rinku (~> 2)
   ros-apartment
+  rspec-html-matchers (~> 0.10)
   rspec-its
   rspec-parameterized
   rspec-rails (~> 6.1.2)
@@ -1368,6 +1368,7 @@ DEPENDENCIES
   rubyzip (~> 1.3.0)
   saharspec
   scenic
+  scientist (~> 1.6.4)
   sentry-rails
   sentry-ruby
   seo!
@@ -1382,7 +1383,6 @@ DEPENDENCIES
   stackprof (~> 0.2.26)
   surveys!
   test-prof (~> 1.3)
-  texting!
   user_custom_fields!
   vcr (~> 6.2)
   verification!
@@ -1390,7 +1390,7 @@ DEPENDENCIES
   webmock (~> 3.23)
 
 RUBY VERSION
-   ruby 3.3.0p0
+   ruby 3.3.1p55
 
 BUNDLED WITH
-   2.4.20
+   2.5.9

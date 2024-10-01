@@ -15,14 +15,6 @@ module UserCustomFields
       end
     end
 
-    def schema?
-      true
-    end
-
-    def json_forms_schema?
-      schema?
-    end
-
     def create?
       user&.active? && user&.admin? && !record.code
     end

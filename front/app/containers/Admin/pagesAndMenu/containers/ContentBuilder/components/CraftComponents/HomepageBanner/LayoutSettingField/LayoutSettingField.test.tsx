@@ -4,6 +4,8 @@ import { render, screen, waitFor } from 'utils/testUtils/rtl';
 
 import LayoutSettingField from './';
 
+jest.mock('hooks/useFeatureFlag', () => jest.fn(() => true));
+
 describe('LayoutSettingField', () => {
   it('renders with the proper radio button checked', () => {
     render(

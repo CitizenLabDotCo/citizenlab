@@ -19,7 +19,7 @@ const ManageButton = ({ isDisabled, publicationId }: Props) => {
       e2e-admin-edit-publication intercom-admin-project-edit-button
     `}
       linkTo={adminProjectsProjectPath(publicationId)}
-      buttonStyle="secondary"
+      buttonStyle="secondary-outlined"
       icon="edit"
       type="button"
       key="manage"

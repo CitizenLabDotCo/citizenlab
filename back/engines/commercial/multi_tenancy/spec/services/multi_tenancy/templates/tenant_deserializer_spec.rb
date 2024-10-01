@@ -17,6 +17,11 @@ describe MultiTenancy::Templates::TenantDeserializer do
           - &4
             title_multiloc:
               en: Project 2
+          admin_publication:
+          - publication_ref: *3
+            publication_status: published
+          - publication_ref: *4
+            publication_status: published
           custom_form:
           - &1
             created_at: 2020-02-18 22:46:33 UTC
@@ -56,37 +61,6 @@ describe MultiTenancy::Templates::TenantDeserializer do
       expect(CustomField.all.map(&:resource)).to match_array CustomForm.all
     end
 
-    it 'associates attribute refs correctly' do
-      yml = <<~YAML
-        ---
-        models:
-          project_folders/folder:
-          - title_multiloc:
-              en: Folder title
-            admin_publication_attributes: &1
-              publication_status: published
-          project:
-            - title_multiloc:
-                en: Project 1 title
-              admin_publication_attributes:
-                publication_status: published
-                parent_attributes_ref: *1
-            - title_multiloc:
-                en: Project 2 title
-              admin_publication_attributes:
-                publication_status: published
-                parent_attributes_ref: *1
-      YAML
-
-      template = YAML.load(yml, aliases: true)
-
-      service.deserialize(template)
-
-      expect(ProjectFolders::Folder.count).to eq 1
-      expect(Project.count).to eq 2
-      expect(Project.all.map { |pj| pj.folder&.id }.uniq).to eq [ProjectFolders::Folder.first.id]
-    end
-
     describe 'filtering of template multiloc attributes' do
       let(:platform_locales) { ['en'] }
       let(:template) do
@@ -97,6 +71,9 @@ describe MultiTenancy::Templates::TenantDeserializer do
                 title_multiloc:
                   en: Project
                   nl-BE: Project
+            admin_publication:
+              - publication_ref: *project
+                publication_status: published
             idea_status:
               - title_multiloc: idea_statuses.proposed
                 ordering: 100
