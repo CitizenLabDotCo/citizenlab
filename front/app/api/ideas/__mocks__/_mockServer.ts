@@ -38,6 +38,11 @@ export const ideaData: IIdeaData[] = [
       baskets_count: 0,
       votes_count: 0,
       action_descriptors: {
+        editing_idea: {
+          enabled: true,
+          disabled_reason: null,
+          future_enabled_at: null,
+        },
         reacting_idea: {
           enabled: true,
           disabled_reason: null,
@@ -150,6 +155,11 @@ export const ideaData: IIdeaData[] = [
       votes_count: 0,
       baskets_count: 0,
       action_descriptors: {
+        editing_idea: {
+          enabled: true,
+          disabled_reason: null,
+          future_enabled_at: null,
+        },
         reacting_idea: {
           enabled: true,
           disabled_reason: null,
