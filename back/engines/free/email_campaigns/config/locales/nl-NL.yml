@@ -12,7 +12,7 @@ nl:
       "cosponsor_of_your_initiative": Een gebruiker accepteert mijn uitnodiging om mijn voorstel te steunen
       "event_registration_confirmation": Bevestiging registratie activiteit
       "idea_marked_as_spam": Idee spammelding
-      "idea_published": Publicatie van mijn input
+      "idea_published": Publicatie van mijn invoer
       "initiative_assigned_to_you": Toewijzing van een voorstel aan mij
       "initiative_marked_as_spam": Voorstel spammelding
       "initiative_published": Publicatie van mijn voorstel
@@ -31,7 +31,7 @@ nl:
       "mention_in_official_feedback": Vermelding in een update
       "mention_in_internal_comment": Vermelding in een interne reactie
       "new_comment_for_admin": Nieuwe reactie in een project dat ik modereer
-      "new_idea_for_admin": Nieuwe input in een project dat ik modereer
+      "new_idea_for_admin": Nieuwe invoer in een project dat ik modereer
       "new_initiative_for_admin": Nieuw voorstel
       "official_feedback_on_idea_you_follow": Update over een invoer die je volgt
       "official_feedback_on_initiative_you_follow": Update over een voorstel dat je volgt
@@ -41,7 +41,7 @@ nl:
       "project_phase_started": Nieuwe projectfase
       "project_phase_upcoming": Opkomende nieuwe projectfase
       "project_published": Project gepubliceerd
-      "status_change_on_idea_you_follow": Statusverandering van een ingang die je volgt
+      "status_change_on_idea_you_follow": Statusverandering van een invoer die je volgt
       "status_change_on_initiative_you_follow": Statuswijziging van een voorstel dat je volgt
       "threshold_reached_for_admin": Een voorstel bereikte het benodigd aantal stemmen
       "welcome": Na registratie
@@ -376,7 +376,7 @@ nl:
       header_message: '%{feedback_author_name} schreef een update bij %{input_title}''.'
       header_title: 'Er is een update op "%{input_title}"'
       subject: 'Er is officiële feedback geplaatst op "%{input_title}".'
-      preheader: 'Er is een update over een ingang die je volgt'
+      preheader: 'Er is een update over een invoer die je volgt'
     official_feedback_on_initiative_you_follow:
       header_message: '%{officialName} gaf een update over het voorstel ''%{initiativeTitle}''. Klik op de onderstaande knop om het gesprek voort te zetten met %{organizationName}.'
       header_title: 'Er is een update over een voorstel dat je volgt'
@@ -440,9 +440,9 @@ nl:
       header_message: 'Het participatieplatform van %{organizationName} heeft zojuist het volgende project gepubliceerd:'
       preheader: 'Er is een nieuw project gepubliceerd'
     status_change_on_idea_you_follow:
-      status_change: 'De nieuwe status van deze ingang is ''%{status}''.'
-      header_message: '%{organizationName} de status van de input ''%{input_title}'' op hun digitale participatieplatform bijgewerkt.'
-      header_title: 'Een ingang die je volgt heeft een nieuwe status'
+      status_change: 'De nieuwe status van deze invoer is ''%{status}'''
+      header_message: '%{organizationName} heeft de status van de input ''%{input_title}'' op hun digitale participatieplatform bijgewerkt.'
+      header_title: 'Een invoer die je volgt heeft een nieuwe status'
       subject: 'De status van "%{input_title}" is veranderd'
       preheader: 'Een ingang die je volgt heeft een nieuwe status'
     status_change_on_initiative_you_follow:
@@ -495,7 +495,7 @@ nl:
         petition: 'Je petitie is gepubliceerd'
       main_header: 'Je postte "%{input_title}"'
       header_message: 'Laten we ervoor zorgen dat het gelezen wordt.'
-      message_get_votes: 'Meer mensen bereiken'
+      message_get_votes: 'Bereik meer mensen'
       action_published_idea: 'Gepubliceerd'
       action_add_image: '%{addImageLink} om de visibiliteit van je idee te vergroten'
       add_image: 'Voeg een afbeelding toe'
@@ -505,21 +505,21 @@ nl:
       send_email: e-mail
       action_share_link: 'Deel het op een kanaal naar keuze met deze %{link}'
       link: link
-      preheader: '%{firstName}, fijn dat je een idee hebt gedeeld op het platform van %{organizationName}. Zoek er nu steun voor.'
+      preheader: '%{firstName}, fijn dat je je invoer hebt gedeeld op het platform van %{organizationName}. Zoek er nu steun voor.'
     your_input_in_screening:
       main_header:
-        idea: 'Jouw idee staat in "%{prescreening_status_title}"'
+        idea: 'Je idee staat in "%{prescreening_status_title}"'
         question: 'Je vraag staat in "%{prescreening_status_title}"'
-        contribution: 'Jouw bijdrage staat in "%{prescreening_status_title}"'
+        contribution: 'Je bijdrage staat in "%{prescreening_status_title}"'
         project: 'Je project staat in "%{prescreening_status_title}"'
-        issue: 'Je probleem staat op "%{prescreening_status_title}".'
-        option: 'Je optie staat op "%{prescreening_status_title}".'
+        issue: 'Je reactie staat in "%{prescreening_status_title}"'
+        option: 'Je optie staat op "%{prescreening_status_title}"'
         proposal: 'Je voorstel staat in "%{prescreening_status_title}"'
-        initiative: 'Jouw initiatief staat in "%{prescreening_status_title}"'
+        initiative: 'Je initiatief staat in "%{prescreening_status_title}"'
         petition: 'Je petitie staat in "%{prescreening_status_title}"'
       message: '"%{input_title}" wordt zichtbaar voor anderen zodra het is beoordeeld en goedgekeurd.'
       subject: '"%{input_title}" is bijna gepubliceerd'
-      preheader: 'Het staat momenteel op %{prescreening_status_title}'
+      preheader: 'Het staat momenteel in %{prescreening_status_title}'
     your_proposed_initiatives_digest:
       subject: 'Wekelijkse update van je voorstel'
       preheader: 'Wat is er de afgelopen week met je voorstel gebeurd?'
@@ -611,7 +611,7 @@ nl:
         user_who_is_mentioned: 'Gebruiker die genoemd wordt'
         user_who_published_the_proposal: 'Gebruiker die het voorstel heeft gepubliceerd'
         user_who_published_the_input: 'Gebruiker die de bijdrage heeft gepubliceerd'
-        user_who_submitted_the_input: 'Gebruiker die de invoer heeft verzonden'
+        user_who_submitted_the_input: 'Gebruiker die de invoer heeft ingestuurd'
         user_who_registers: 'Gebruiker die zich registreert'
         user_who_was_invited: 'Gebruiker die werd uitgenodigd'
         users_who_engaged_with_the_project: 'Gebruikers die zich met het project bezighielden'
@@ -656,7 +656,7 @@ nl:
         user_is_invited_to_cosponsor_a_proposal: 'Gebruiker is uitgenodigd om een voorstel te steunen'
         user_is_mentioned_in_internal_comment: 'Gebruiker wordt genoemd in interne reactie'
         new_input_is_published: 'Nieuwe bijdrage is gepubliceerd'
-        new_input_awaits_screening: 'Nieuwe input wacht op screening'
+        new_input_awaits_screening: 'Nieuwe invoer wacht op screening'
         new_proposal_is_posted: 'Nieuw voorstel is geplaatst'
         project_phase_changes: 'Wijzigingen in projectfase'
         project_published: 'Project gepubliceerd'
