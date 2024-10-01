@@ -36,6 +36,8 @@
   symbols:
     outside: annet sted
   idea_statuses:
+    prescreening: forhåndsscreening
+    prescreening_description: Dette innspillet er for tiden under vurdering av prosjektlederen og er ennå ikke synlig for offentligheten.
     proposed: foreslått
     proposed_description: Ideen har blitt forslått til kommunen
     viewed: Sett
@@ -48,6 +50,14 @@
     implemented_description: Denne ideen har blitt tatt i bruk av kommunen
     rejected: avslått
     rejected_description: Denne ideen ble avslått
+    expired: utløpt
+    expired_description: utløpt
+    threshold_reached: terskel nådd
+    threshold_reached_description: terskel nådd
+    answered: svarte
+    answered_description: svarte
+    ineligible: ikke kvalifisert
+    ineligible_description: ikke kvalifisert
   initiative_statuses:
     review_pending: vurdering venter
     review_pending_description: vurdering venter
@@ -182,8 +192,8 @@
       section3:
         title: Detaljer
         description:
-      other_text_field:
-        title: Hvis du valgte '{other_option}', hva tenker du på?
+      other_input_field:
+        title: Skriv inn svaret ditt
   custom_forms:
     categories:
       main_content:
@@ -199,12 +209,6 @@
           title: Hva er problemet ditt?
         option:
           title: Hva er alternativet ditt?
-      details:
-        title: Detaljer
-      attachements:
-        title: Bilder og vedlagte filer
-      extra:
-        title: Tilleggsinformasjon
   custom_field_options:
     gender:
       male: Mann
@@ -229,6 +233,7 @@
       <ul><li>Skriv mer om forslaget ditt. Du kan skrive en kladd og deretter kopiere det inn.</li><li>Velg en beskrivende tittel som forklarer hva forslaget ditt går ut på. </li><li>Husk å visualisere forslaget ditt med et passende bilde så det skiller seg ut.</li><li>Legg til relevante filer, som video, inspirerende eksempler, tekniske tegninger eller planer.</li><li>Del ideen din på sosiale medier og i andre kanaler for å samle støtte fra andre.</li></ul>
   reset_password_mailer:
     send_reset_password:
+      preheader: 'Tilbakestill passordet ditt for %{organizationName}'
       cta_reset_password: 'Tilbakestill passordet ditt'
       message_you_reset_your_password: 'Du ba om å tilbakestille passord for plattformen til%{organizationName}. Klikk på knappen nedenfor for å velge et nytt, sikkert passord. Koblingen utløper om en time.'
       subject: '%{organizationName}: tilbakestill passordet ditt'
@@ -267,6 +272,7 @@
       submitted_at: 'Innlevert kl'
       tags: 'Tagger'
       title: 'Tittel'
+      user_data: 'Brukerdata'
       votes_count: 'Stemmer'
   form_builder:
     default_select_field:
@@ -274,12 +280,12 @@
       option1: 'Alternativ 1'
       option2: 'Alternativ 2'
     form_end_page:
-      title: 'Takk for at du deltar'
-      description: "Send inn svarene dine ved å velge 'Send' nedenfor."
+      title_text: 'Nesten ferdig'
+      description_text_2: "Du er i ferd med å sende inn svarene dine. Ved å klikke 'Send' gir du oss tillatelse til å analysere svarene dine.<br/>Etter at du har sendt inn, vil du ikke lenger kunne gå tilbake og endre noen av svarene dine."
     pdf_export:
       personal_data: 'Personlig informasjon'
-      personal_data_explanation_ideation: "Vi vil sende inn dine innspill til %{organizationName}sin online deltakelsesplattform. Hvis du vil at navnet ditt skal vises som forfatter av dette innspillet og motta oppdateringer som er relevante for innspillet ditt på e-post, vennligst fyll ut følgende felt på denne siden, så oppretter vi en konto for deg. E-posten din vil ikke være offentlig og vil kun bli brukt av %{organizationName}. Hvis du ønsker å være anonym, eller ikke godtar at vi bruker dine personopplysninger på denne måten, kan du la dem stå tomme."
-      personal_data_explanation_native_survey: "Vi vil sende inn dine innspill til %{organizationName}sin online deltakelsesplattform. Hvis du ønsker å motta oppdateringer som er relevante for dine innspill på e-post, vennligst fyll ut følgende felt på denne siden, så oppretter vi en konto for deg. Dataene dine vil ikke være offentlige og vil kun bli brukt av %{organizationName}. Hvis du ikke godtar at vi skal bruke dine personopplysninger på denne måten, kan du la dem stå tomme."
+      personal_data_explanation_public: "Vi vil sende inn dine innspill til %{organizationName}sin online deltakelsesplattform. Hvis du vil at navnet ditt skal vises som forfatter av dette innspillet og motta oppdateringer som er relevante for innspillet ditt på e-post, vennligst fyll ut følgende felt på denne siden, så oppretter vi en konto for deg. E-posten din vil ikke være offentlig og vil kun brukes av %{organizationName}. Hvis du ønsker å være anonym, eller ikke godtar at vi bruker dine personopplysninger på denne måten, kan du la dem stå tomme."
+      personal_data_explanation_private: "Vi vil sende inn dine innspill til %{organizationName}sin online deltakelsesplattform. Hvis du ønsker å motta oppdateringer som er relevante for dine innspill på e-post, vennligst fyll ut følgende felt på denne siden, så oppretter vi en konto for deg. Dataene dine vil ikke være offentlige og vil kun bli brukt av %{organizationName}. Hvis du ikke godtar at vi skal bruke dine personopplysninger på denne måten, kan du la dem stå tomme."
       first_name: 'Fornavn'
       last_name: 'Etternavn'
       email_address: 'Epostadresse'
@@ -287,6 +293,12 @@
       optional: 'valgfri'
       permission: 'Tillatelse'
       choose_as_many: 'Velg så mange du vil'
+      choose_exactly:
+        one: 'Velg nøyaktig %{count} -alternativet'
+        other: 'Velg nøyaktig %{count} alternativer'
+      choose_between: 'Velg mellom %{min} og %{max} alternativer'
+      choose_at_least: 'Velg minst %{count} alternativer'
+      choose_at_most: 'Velg maksimalt %{count} alternativer'
       this_answer: 'Dette svaret vil kun bli delt med moderatorer, og ikke til offentligheten.'
       page: 'Side'
       date_published: 'Publiseringsdato (dd-mm-åååå)'
@@ -299,10 +311,11 @@
   confirmations_mailer:
     send_confirmation_code:
       subject: "Bekreft e-postadressen din på deltakerplattformen til %{organizationName}"
+      preheader: 'Bekreft e-postadressen din for %{organizationName}'
       header: "Din bekreftelseskode"
       header_message: "Hei, %{firstName}!"
       confirm_email_address: "Bekreft e-postadressen din"
-      thanks_for_signing_up: "Takk for at du registrerer deg på deltakerplattformen til %{organizationName}."
+      thanks_for_signing_up1: "Takk for din deltagelse. Vennligst skriv inn denne bekreftelseskoden i vinduet på %{organizationName}sin deltakelsesplattform:"
       best_regards: "Med vennlig hilsen,"
       ignore_email: "Hvis du ikke har bedt om en kode, kan du overse denne e-postmeldingen."
       expire_code: "Denne koden utløper om"
@@ -313,6 +326,7 @@
   user_blocked_mailer:
     send_user_blocked_email:
       subject: 'Kontoen din er midlertidig deaktivert'
+      preheader: 'Kontoen din på deltakelsesplattformen til %{organizationName} er midlertidig deaktivert'
       title_user_blocked: 'Kontoen din er midlertidig deaktivert'
       paragraph_1_without_reason: "Kontoen din på deltakelsesplattformen til %{organizationName} har blitt midlertidig deaktivert på grunn av brudd på fellesskapets retningslinjer."
       paragraph_1_with_reason: "Kontoen din på deltakelsesplattformen til %{organizationName} har blitt midlertidig deaktivert av følgende grunn:"
@@ -328,3 +342,5 @@
   voting_method:
     default_voting_term_singular: "stemme"
     default_voting_term_plural: "stemmer"
+  ics_calendar_event:
+    event_details: "Begivenhetsdetaljer"
