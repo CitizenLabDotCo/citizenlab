@@ -77,10 +77,13 @@ kl:
       "link_terms_conditions": "Piumasaqaatit atugassarititaasullu"
       "link_unsubscribe": "Atuisuujunnaarneq"
       "powered_by": "Ingerlanneqartoq"
-      "statement": "Emaili una %{organizationName} sinnerlugu CitizenLabimit nassiunneqarpoq, %{organizationLink}-imut atuisutut nalunaarsimagavit. Siunissami emailinik ima ittunik nassinneqartarusunngikkuit una %{unsubscribeLink} tooruk."
+      "recipient_statement": "This e-mail was sent to you by Go Vocal on behalf of %{organizationName}, because you are a registered user of %{organizationLink}."
+      "unsubscribe_statement": "You can %{unsubscribeLink} if you do not want to receive these e-mails in the future."
       "unsubscribe_text": "atuisuujunnaarit"
     follow:
       "unfollow_here": "You have received this notification because of an item that you follow. <a href=\"%{unfollow_url}\">You can unfollow it here.</a>"
+    manual:
+      preheader: 'You have mail from %{organizationName}'
     comment_deleted_by_admin:
       reason: 'Oqaaseqaativit peerneqarneranut pissutaasoq:'
       cta_view: 'Isumassarsiaq una takujuk'
@@ -539,6 +542,7 @@ kl:
       cta_see_results: 'See results in the platform'
     event_registration_confirmation:
       subject: "You're in! Your registration for \"%{eventTitle}\" is confirmed"
+      preheader: "%{firstName}, thanks for registering for %{eventTitle}"
       header_message: "%{firstName}, thanks for registering for"
       event_details:
         labels:
