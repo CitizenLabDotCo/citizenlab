@@ -187,7 +187,7 @@ describe IdeaPolicy do
           is_expected.to permit(:by_slug)
           is_expected.to permit(:create)
           is_expected.to permit(:update)
-          expect(editing_idea_disabled_reason).to be_nil
+          expect(editing_idea_disabled_reason).to eq 'posting_not_supported'
           is_expected.to permit(:destroy)
           is_expected.to permit(:index_xlsx)
 
@@ -397,7 +397,7 @@ describe IdeaPolicy do
         is_expected.to permit(:by_slug)
         is_expected.to permit(:create)
         is_expected.to permit(:update)
-        expect(editing_idea_disabled_reason).to be_nil
+        expect(editing_idea_disabled_reason).to eq 'project_inactive'
         is_expected.to permit(:destroy)
         is_expected.to permit(:index_xlsx)
 
@@ -451,7 +451,7 @@ describe IdeaPolicy do
         is_expected.to permit(:by_slug)
         is_expected.to permit(:create)
         is_expected.to permit(:update)
-        expect(editing_idea_disabled_reason).to be_nil
+        expect(editing_idea_disabled_reason).to eq 'posting_not_supported'
         is_expected.to permit(:destroy)
         is_expected.to permit(:index_xlsx)
 
@@ -509,7 +509,7 @@ describe IdeaPolicy do
         is_expected.to permit(:by_slug)
         is_expected.to permit(:create)
         is_expected.to permit(:update)
-        expect(editing_idea_disabled_reason).to be_nil
+        expect(editing_idea_disabled_reason).to eq 'project_inactive'
         is_expected.to permit(:destroy)
         is_expected.to permit(:index_xlsx)
 
