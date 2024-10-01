@@ -22,7 +22,7 @@ const useIdeaStatuses = ({
   participation_method,
 }: {
   enabled?: boolean;
-  participation_method: IdeaStatusesQueryParams['participation_method'];
+  participation_method?: IdeaStatusesQueryParams['participation_method'];
 }) => {
   return useQuery<IIdeaStatuses, CLErrors, IIdeaStatuses, IdeaStatusesKeys>({
     queryKey: ideaStatusesKeys.list({ participation_method }),

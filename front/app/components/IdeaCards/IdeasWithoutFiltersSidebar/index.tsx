@@ -183,6 +183,7 @@ const IdeasWithoutFiltersSidebar = ({
         locale
       )
     : false;
+
   const showViewButtons = !!(locationEnabled && showViewToggle);
   const showSearch = !(selectedView === 'map') && showSearchbar;
 

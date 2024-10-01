@@ -170,6 +170,9 @@ cy:
       topic_ids:
         title: Tagiau
         description:
+      consponsor_ids:
+        title: Cyd-noddwyr
+        description: Gwahoddwch gyd-noddwyr drwy'r maes isod. Bydd y cyd-noddwyr gwadd yn derbyn e-bost.
       location:
         title: Lleoliad
         description:

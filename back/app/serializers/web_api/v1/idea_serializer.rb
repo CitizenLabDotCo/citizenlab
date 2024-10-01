@@ -58,6 +58,7 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
   has_many :idea_images, serializer: WebApi::V1::ImageSerializer
   has_many :phases
   has_many :ideas_phases
+  has_many :cosponsors, record_type: :user, serializer: WebApi::V1::UserSerializer
 
   belongs_to :author, record_type: :user, serializer: WebApi::V1::UserSerializer
   belongs_to :project

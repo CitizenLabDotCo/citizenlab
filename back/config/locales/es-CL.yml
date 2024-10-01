@@ -170,6 +170,9 @@ es-CL:
       topic_ids:
         title: Temas
         description:
+      consponsor_ids:
+        title: Copatrocinadores
+        description: Invita a copatrocinadores a través del campo de abajo. Los copatrocinadores invitados recibirán un correo electrónico.
       location:
         title: Ubicación
         description:
