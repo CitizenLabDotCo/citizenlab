@@ -8,7 +8,7 @@ import ClickOutside from 'utils/containers/clickOutside';
 import Calendar from './Calendar';
 import Input from './Input';
 
-const WIDTH = '620px';
+const WIDTH = '310px';
 
 const StyledClickOutside = styled(ClickOutside)`
   div.tippy-box {
@@ -20,11 +20,11 @@ const StyledClickOutside = styled(ClickOutside)`
 type Props = {
   id?: string;
   selectedDate: Date | undefined;
-  onChange: (date: Date) => void;
+  onChange: (date: Date | undefined) => void;
   disabled?: boolean;
 };
 
-const DateSinglePicker = ({ selectedDate }: Props) => {
+const DateSinglePicker = ({ selectedDate, onChange }: Props) => {
   const [calendarOpen, setCalendarOpen] = useState(false);
 
   return (
@@ -32,12 +32,11 @@ const DateSinglePicker = ({ selectedDate }: Props) => {
       <Tooltip
         content={
           <Box width={WIDTH}>
-            <Calendar />
+            <Calendar selectedDate={selectedDate} onChange={onChange} />
           </Box>
         }
         placement="bottom"
         visible={calendarOpen}
-        width="1200px"
       >
         <Input
           selectedDate={selectedDate}
