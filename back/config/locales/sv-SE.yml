@@ -36,6 +36,8 @@ sv:
   symbols:
     outside: någon annanstans
   idea_statuses:
+    prescreening: förhandsgranskning
+    prescreening_description: Denna inmatning granskas för närvarande av projektledaren och är ännu inte synlig för allmänheten.
     proposed: föreslagen
     proposed_description: Den här idén har föreslagits till staden
     viewed: har setts
@@ -48,6 +50,14 @@ sv:
     implemented_description: Den här idén har genomförts av staden
     rejected: avvisad
     rejected_description: Den här idén har avvisats
+    expired: utgått
+    expired_description: utgått
+    threshold_reached: tröskelvärdet uppnått
+    threshold_reached_description: tröskelvärdet uppnått
+    answered: besvarade
+    answered_description: besvarade
+    ineligible: obehörig
+    ineligible_description: obehörig
   initiative_statuses:
     review_pending: pågående granskning
     review_pending_description: pågående granskning
@@ -182,8 +192,8 @@ sv:
       section3:
         title: Detaljer
         description:
-      other_text_field:
-        title: Om du valde "{other_option}", vad tänker du då på?
+      other_input_field:
+        title: Skriv in ditt svar
   custom_forms:
     categories:
       main_content:
@@ -199,12 +209,6 @@ sv:
           title: Vad är ditt problem?
         option:
           title: Vad är ditt alternativ?
-      details:
-        title: Detaljer
-      attachements:
-        title: Bilder och bilagor
-      extra:
-        title: Ytterligare information
   custom_field_options:
     gender:
       male: Man
@@ -229,6 +233,7 @@ sv:
       <ul><li>Ta tid på dig att utveckla ditt förslag. Om det behövs skriver du först ett utkast och kopierar och klistrar sedan in det här.</li><li>Välj en meningsfull titel som tydligt förklarar vad ditt förslag innebär.</li><li>Visualisera ditt förslag med en passande bild så att det sticker ut!</li><li>Lägg till relevanta bilagor, t. ex. videor, inspirerande exempel, teknisk information eller planer.</li><li>Dela din idé i sociala medier och andra kanaler för att samla stöd från andra.</li></ul>
   reset_password_mailer:
     send_reset_password:
+      preheader: 'Återställ ditt lösenord för %{organizationName}'
       cta_reset_password: 'Återställ ditt lösenord'
       message_you_reset_your_password: 'Du begärde en lösenordsåterställning för plattformen för deltagande för %{organizationName}. Klicka på knappen nedan för att välja ett nytt, säkert lösenord. Länken upphör att gälla om 1 timme.'
       subject: '%{organizationName}: Återställ ditt lösenord'
@@ -267,6 +272,7 @@ sv:
       submitted_at: 'Inlämnad på'
       tags: 'Etiketter'
       title: 'Titel'
+      user_data: 'Användardata'
       votes_count: 'Röster'
   form_builder:
     default_select_field:
@@ -274,12 +280,12 @@ sv:
       option1: 'Alternativ 1'
       option2: 'Alternativ 2'
     form_end_page:
-      title: 'Tack för ditt deltagande'
-      description: "Skicka in dina svar genom att klicka på \"Skicka\" nedan."
+      title_text: 'Nästan klar'
+      description_text_2: "Du är på väg att skicka in dina svar. Genom att klicka på \"Skicka\" ger du oss tillåtelse att analysera dina svar.<br/>Efter att du har skickat in kan du inte längre gå tillbaka och ändra något av dina svar."
     pdf_export:
       personal_data: 'Personuppgifter'
-      personal_data_explanation_ideation: "Vi kommer att skicka in ditt bidrag till %{organizationName}:s onlineplattform för deltagande. Om du vill att ditt namn ska visas som författare till detta bidrag och få uppdateringar som är relevanta för ditt bidrag via e-post, fyll i följande fält på denna sida så skapar vi ett konto åt dig. Din e-postadress kommer inte att vara offentlig och kommer endast att användas av %{organizationName}. Om du vill vara anonym eller inte samtycker till att vi använder dina personuppgifter på detta sätt kan du lämna dem tomma."
-      personal_data_explanation_native_survey: "Vi kommer att skicka din input till %{organizationName}:s onlineplattform för deltagande. Om du vill få uppdateringar som är relevanta för ditt bidrag via e-post, vänligen fyll i följande fält på denna sida så skapar vi ett konto åt dig. Dina uppgifter kommer inte att vara offentliga och kommer endast att användas av %{organizationName}. Om du inte samtycker till att vi använder dina personuppgifter på detta sätt kan du lämna dem tomma."
+      personal_data_explanation_public: "Vi kommer att skicka dina synpunkter till %{organizationName}:s onlineplattform för deltagande. Om du vill att ditt namn ska visas som författare till detta inlägg och få uppdateringar som är relevanta för ditt inlägg via e-post, vänligen fyll i följande fält på denna sida så skapar vi ett konto åt dig. Ditt e-postmeddelande kommer inte att vara offentligt och kommer endast att användas av %{organizationName}. Om du vill vara anonym eller inte samtycker till att vi använder dina personuppgifter på detta sätt kan du lämna dem tomma."
+      personal_data_explanation_private: "Vi kommer att skicka dina synpunkter till %{organizationName}:s onlineplattform för deltagande. Om du vill få uppdateringar som är relevanta för ditt bidrag via e-post, vänligen fyll i följande fält på denna sida så skapar vi ett konto åt dig. Dina uppgifter kommer inte att vara offentliga och kommer endast att användas av %{organizationName}. Om du inte samtycker till att vi använder dina personuppgifter på detta sätt kan du lämna dem tomma."
       first_name: 'Förnamn'
       last_name: 'Efternamn'
       email_address: 'E-postadress'
@@ -287,6 +293,12 @@ sv:
       optional: 'valfri'
       permission: 'Tillstånd'
       choose_as_many: 'Välj så många du vill'
+      choose_exactly:
+        one: 'Välj exakt %{count} alternativ'
+        other: 'Välj exakt %{count} alternativ'
+      choose_between: 'Välj mellan %{min} och %{max}'
+      choose_at_least: 'Välj minst %{count} alternativ'
+      choose_at_most: 'Välj högst %{count} alternativ'
       this_answer: 'Detta svar kommer endast att delas med moderatorer och inte med allmänheten.'
       page: 'Sida'
       date_published: 'Datum för publicering (dd-mm-åååå)'
@@ -299,10 +311,11 @@ sv:
   confirmations_mailer:
     send_confirmation_code:
       subject: "Bekräfta din e-postadress för %{organizationName}s plattform för deltagande"
+      preheader: 'Bekräfta din e-postadress för %{organizationName}'
       header: "Din bekräftelsekod"
       header_message: "Hej %{firstName}!"
       confirm_email_address: "Bekräfta din e-postadress"
-      thanks_for_signing_up: "Tack för att du registrerade dig för %{organizationName}s plattform för deltagande."
+      thanks_for_signing_up1: "Tack för din medverkan. Vänligen ange denna bekräftelsekod i fönstret på %{organizationName}:s plattform för deltagande:"
       best_regards: "Med vänliga hälsningar,"
       ignore_email: "Om du inte har begärt en kod kan du ignorera det här e-postmeddelandet."
       expire_code: "Den här koden kommer att gå ut om"
@@ -313,6 +326,7 @@ sv:
   user_blocked_mailer:
     send_user_blocked_email:
       subject: 'Ditt konto har tillfälligt inaktiverats'
+      preheader: 'Ditt konto på deltagarplattformen %{organizationName} har tillfälligt inaktiverats'
       title_user_blocked: 'Ditt konto har tillfälligt inaktiverats'
       paragraph_1_without_reason: "Ditt konto på deltagarplattformen %{organizationName} har tillfälligt stängts av på grund av brott mot gemenskapens riktlinjer."
       paragraph_1_with_reason: "Ditt konto på deltagarplattformen %{organizationName} har tillfälligt inaktiverats av följande skäl:"
@@ -328,3 +342,5 @@ sv:
   voting_method:
     default_voting_term_singular: "omröstning"
     default_voting_term_plural: "röster"
+  ics_calendar_event:
+    event_details: "Detaljer om evenemanget"
