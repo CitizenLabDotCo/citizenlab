@@ -69,7 +69,7 @@ module Notifications
   class CosponsorOfYourIdea < Notification
     validates :initiating_user, :cosponsorship, presence: true
 
-    ACTIVITY_TRIGGERS = { 'Cosponsorship' => { 'input_cosponsorship_accepted' => true } }
+    ACTIVITY_TRIGGERS = { 'Cosponsorship' => { 'accepted' => true } }
     EVENT_NAME = 'Cosponsor has accepted your invitation to cosponsor your input'
 
     def self.make_notifications_on(activity)

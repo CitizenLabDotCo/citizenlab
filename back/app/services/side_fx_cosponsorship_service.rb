@@ -6,7 +6,7 @@ class SideFxCosponsorshipService
   def after_accept(cosponsorship, user)
     LogActivityJob.perform_later(
       cosponsorship,
-      'input_cosponsorship_accepted',
+      'accepted',
       user, # We don't want anonymized users being cosponsors
       cosponsorship.updated_at.to_i,
       payload: { change: cosponsorship.status_previous_change }
