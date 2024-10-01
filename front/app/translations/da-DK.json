@@ -582,7 +582,7 @@
   "app.components.admin.UserFilterConditions.predicate_is_one_of": "er en af",
   "app.components.admin.UserFilterConditions.predicate_is_one_of_areas": "et af områderne",
   "app.components.admin.UserFilterConditions.predicate_is_one_of_folders": "en af mapperne",
-  "app.components.admin.UserFilterConditions.predicate_is_one_of_inputs": "en af indgangene",
+  "app.components.admin.UserFilterConditions.predicate_is_one_of_inputs": "et input",
   "app.components.admin.UserFilterConditions.predicate_is_one_of_projects": "et af projekterne",
   "app.components.admin.UserFilterConditions.predicate_is_one_of_topics": "et af emnerne",
   "app.components.admin.UserFilterConditions.predicate_is_project_moderator": "er en projektleder",
