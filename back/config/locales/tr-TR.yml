@@ -36,6 +36,8 @@ tr:
   symbols:
     outside: başka bir yerde
   idea_statuses:
+    prescreening: ön eleme
+    prescreening_description: Bu girdi şu anda proje yöneticisi tarafından incelenmektedir ve henüz kamuya açık değildir.
     proposed: önerilen
     proposed_description: Bu fikir kent yönetimine önerildi
     viewed: görüntülendi
@@ -48,6 +50,14 @@ tr:
     implemented_description: Bu fikir kent yönetimi tarafından uygulandı
     rejected: reddedildi
     rejected_description: Bu fikir reddedildi
+    expired: süresi doldu
+    expired_description: süresi doldu
+    threshold_reached: eşiğe ulaşıldı
+    threshold_reached_description: eşiğe ulaşıldı
+    answered: cevap verdi
+    answered_description: cevap verdi
+    ineligible: uygun değil
+    ineligible_description: uygun değil
   initiative_statuses:
     review_pending: inceleme beklemede
     review_pending_description: inceleme beklemede
@@ -182,8 +192,8 @@ tr:
       section3:
         title: Detaylar
         description:
-      other_text_field:
-        title: Eğer '{other_option}' adresini seçtiyseniz, ne düşünüyorsunuz?
+      other_input_field:
+        title: Cevabınızı yazın
   custom_forms:
     categories:
       main_content:
@@ -199,12 +209,6 @@ tr:
           title: Sorununuz nedir?
         option:
           title: Seçeneğiniz nedir ?
-      details:
-        title: Ayrıntılar
-      attachements:
-        title: Görseller ve Ekler
-      extra:
-        title: Diğer bilgiler
   custom_field_options:
     gender:
       male: Erkek
@@ -229,6 +233,7 @@ tr:
       <ul><li>Önerinizi daha detaylı açıklamak için acele etmeyin. Gerekirse, önce bir taslak yazın ve kopyalayıp buraya yapıştırın.</li><li>Önerinizin ne olduğunu net bir şekilde açıklayan anlamlı bir başlık seçin.</li><li>Öne çıkmasını sağlamak için önerinize uygun bir görsel ekleyin.</li><li>Videolar, ilham verici örnekler, teknik bilgiler veya planlar gibi ilgili ekleri ekleyin.</li><li>Başkalarından destek toplamak için fikrinizi sosyal medyada ve diğer kanallarda paylaşın.</li></ul>
   reset_password_mailer:
     send_reset_password:
+      preheader: '%{organizationName}için şifrenizi sıfırlayın'
       cta_reset_password: 'Parolanızı sıfırlayın'
       message_you_reset_your_password: '%{organizationName} katılım platformu için parola sıfırlama talebinde bulundunuz. Yeni ve güvenli bir parola seçmek için aşağıdaki düğmeye tıklayın. Bu bağlantı 1 saat için geçerlidir.'
       subject: '%{organizationName}: Parolanızı sıfırlayın'
@@ -267,6 +272,7 @@ tr:
       submitted_at: 'Şu adrese gönderildi'
       tags: 'Etiketler'
       title: 'Başlık'
+      user_data: 'Kullanıcı verileri'
       votes_count: 'Oylar'
   form_builder:
     default_select_field:
@@ -274,12 +280,12 @@ tr:
       option1: 'Seçenek 1'
       option2: 'Seçenek 2'
     form_end_page:
-      title: 'Katıldığınız için teşekkürler'
-      description: "Lütfen cevaplarınızı aşağıdaki 'Gönder' butonuna basarak gönderiniz."
+      title_text: 'Neredeyse bitti'
+      description_text_2: "Cevaplarınızı göndermek üzeresiniz. 'Gönder'e tıklayarak bize cevaplarınızı analiz etme izni vermiş olursunuz.<br/>Gönderdikten sonra artık geri dönüp cevaplarınızdan herhangi birini değiştiremezsiniz."
     pdf_export:
       personal_data: 'Kişisel veriler'
-      personal_data_explanation_ideation: "Girdinizi %{organizationName}'un çevrimiçi katılım platformuna göndereceğiz. Adınızın bu girdinin yazarı olarak görüntülenmesini ve girdinizle ilgili güncellemeleri e-posta ile almak istiyorsanız, lütfen bu sayfadaki aşağıdaki alanları doldurun ve sizin için bir hesap oluşturalım. E-postanız herkese açık olmayacak ve sadece %{organizationName}tarafından kullanılacaktır. Anonim kalmak istiyorsanız veya kişisel verilerinizi bu şekilde kullanmamızı kabul etmiyorsanız, bu alanları boş bırakabilirsiniz."
-      personal_data_explanation_native_survey: "Girdilerinizi %{organizationName}'un çevrimiçi katılım platformuna göndereceğiz. Girdilerinizle ilgili güncellemeleri e-posta yoluyla almak istiyorsanız, lütfen bu sayfadaki aşağıdaki alanları doldurun ve sizin için bir hesap oluşturalım. Verileriniz kamuya açık olmayacak ve sadece %{organizationName}tarafından kullanılacaktır. Kişisel verilerinizi bu şekilde kullanmamızı kabul etmiyorsanız, bu alanları boş bırakabilirsiniz."
+      personal_data_explanation_public: "Girdinizi %{organizationName}'un çevrimiçi katılım platformuna göndereceğiz. Adınızın bu girdinin yazarı olarak görüntülenmesini ve girdinizle ilgili güncellemeleri e-posta ile almak istiyorsanız, lütfen bu sayfadaki aşağıdaki alanları doldurun ve sizin için bir hesap oluşturalım. E-postanız herkese açık olmayacak ve sadece %{organizationName}tarafından kullanılacaktır. Anonim kalmak istiyorsanız veya kişisel verilerinizi bu şekilde kullanmamızı kabul etmiyorsanız, bu alanları boş bırakabilirsiniz."
+      personal_data_explanation_private: "Girdilerinizi %{organizationName}'un çevrimiçi katılım platformuna göndereceğiz. Girdilerinizle ilgili güncellemeleri e-posta yoluyla almak istiyorsanız, lütfen bu sayfadaki aşağıdaki alanları doldurun ve sizin için bir hesap oluşturalım. Verileriniz kamuya açık olmayacak ve sadece %{organizationName}tarafından kullanılacaktır. Kişisel verilerinizi bu şekilde kullanmamızı kabul etmiyorsanız, bu alanları boş bırakabilirsiniz."
       first_name: 'İlk isim'
       last_name: 'Soyadı'
       email_address: 'E-posta adresi'
@@ -287,6 +293,12 @@ tr:
       optional: 'isteğe bağlı'
       permission: 'İzin'
       choose_as_many: 'İstediğiniz kadar seçin'
+      choose_exactly:
+        one: 'Tam olarak %{count} seçeneğini seçin'
+        other: 'Tam olarak %{count} seçeneklerini seçin'
+      choose_between: '%{min} ve %{max} seçenekleri arasından seçim yapın'
+      choose_at_least: 'En az %{count} seçeneklerinden birini seçin'
+      choose_at_most: 'En fazla %{count} seçeneklerinden birini seçin'
       this_answer: 'Bu cevap sadece moderatörlerle paylaşılacak, kamuoyu ile paylaşılmayacaktır.'
       page: 'Sayfa'
       date_published: 'Yayınlanma Tarihi (gg-aa-yyyy)'
@@ -299,10 +311,11 @@ tr:
   confirmations_mailer:
     send_confirmation_code:
       subject: "%{organizationName} katılım platformu için e-posta adresinizi doğrulayın"
+      preheader: '%{organizationName}için e-posta adresinizi onaylayın'
       header: "Onay Kodunuz"
       header_message: "Merhaba %{firstName}!"
       confirm_email_address: "E-posta adresinizi onaylayın"
-      thanks_for_signing_up: "%{organizationName} katılım platformuna kaydolduğunuz için teşekkür ederiz."
+      thanks_for_signing_up1: "Katılımınız için teşekkür ederiz. Lütfen bu onay kodunu %{organizationName}'un katılım platformundaki pencereye girin:"
       best_regards: "Saygılarımla,"
       ignore_email: "Eğer bir kod talep etmediyseniz, bu e-postayı güvenle göz ardı edebilirsiniz."
       expire_code: "Bu kodun geçerlilik süresi "
@@ -313,6 +326,7 @@ tr:
   user_blocked_mailer:
     send_user_blocked_email:
       subject: 'Hesabınız geçici olarak devre dışı bırakıldı'
+      preheader: '%{organizationName} katılım platformundaki hesabınız geçici olarak devre dışı bırakıldı'
       title_user_blocked: 'Hesabınız geçici olarak devre dışı bırakıldı'
       paragraph_1_without_reason: "%{organizationName} katılım platformundaki hesabınız, topluluk kurallarının ihlali nedeniyle geçici olarak devre dışı bırakılmıştır."
       paragraph_1_with_reason: "%{organizationName} katılım platformundaki hesabınız aşağıdaki nedenden dolayı geçici olarak devre dışı bırakılmıştır:"
@@ -328,3 +342,5 @@ tr:
   voting_method:
     default_voting_term_singular: "oylama"
     default_voting_term_plural: "oylar"
+  ics_calendar_event:
+    event_details: "Etkinlik detayları"
