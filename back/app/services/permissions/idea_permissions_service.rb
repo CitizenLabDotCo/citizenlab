@@ -13,10 +13,9 @@ module Permissions
     end
 
     def denied_reason_for_action(action, reaction_mode: nil, delete_action: false)
-      return if user && UserRoleService.new.can_moderate_project?(idea.project, user)
-
       reason = super
       return reason if reason
+      return if user && UserRoleService.new.can_moderate_project?(idea.project, user)
 
       case action
       when 'editing_idea'
