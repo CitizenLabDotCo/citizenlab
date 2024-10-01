@@ -170,6 +170,9 @@ pl:
       topic_ids:
         title: Tematy
         description:
+      consponsor_ids:
+        title: Współsponsorzy
+        description: Zaproś współsponsorów za pomocą poniższego pola. Zaproszeni współsponsorzy otrzymają wiadomość e-mail.
       location:
         title: Lokalizacja
         description:
