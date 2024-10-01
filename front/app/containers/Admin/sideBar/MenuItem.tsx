@@ -6,9 +6,12 @@ import {
   fontSizes,
   Icon,
   Box,
+  Tooltip,
+  Image,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useFeatureFlags from 'hooks/useFeatureFlags';
 
 import CountBadge from 'components/UI/CountBadge';
@@ -17,6 +20,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { usePermission } from 'utils/permissions';
 
+import tooltipImage from './assets/tooltip.png';
 import messages from './messages';
 import { NavItem } from './navItems';
 
@@ -51,6 +55,10 @@ const MenuItemLink = styled(Link)`
   &.active,
   &.focus-visible {
     background: rgba(0, 0, 0, 0.7);
+  }
+  &.disabled {
+    pointer-events: none;
+    opacity: 0.5;
   }
 
   &:not(.active) {
@@ -96,27 +104,58 @@ const MenuItem = ({ navItem }: Props) => {
     item: { type: 'route', path: navItem.link },
   });
 
+  // Temporary proposal warning implementation, will be removed together with the navbar item
+  // after users have had enough time to get used to the feature
+
+  const isProjectProposalsEnabled = useFeatureFlag({
+    name: 'proposals_participation_method',
+  });
+
+  const isItemDisabled =
+    isProjectProposalsEnabled && navItem.name === 'initiatives';
+
   if (!featuresEnabled || !hasPermission) return null;
 
   return (
-    <MenuItemLink
-      to={navItem.link}
-      className={`intercom-admin-menu-item-${navItem.name}`}
+    <Tooltip
+      content={
+        <Box
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          gap="20px"
+        >
+          <Image src={tooltipImage} alt="" w="250px" />
+          <FormattedMessage {...messages.proposalsTooltip} />
+        </Box>
+      }
+      placement="right"
+      disabled={!isItemDisabled}
+      theme="dark"
     >
-      <Box
-        display="flex"
-        flex="0 0 auto"
-        alignItems="center"
-        justifyContent="center"
-        className={navItem.iconName}
+      <MenuItemLink
+        to={navItem.link}
+        className={`intercom-admin-menu-item-${navItem.name} ${
+          isItemDisabled ? 'disabled' : ''
+        }`}
       >
-        <Icon name={navItem.iconName} />
-      </Box>
-      <Text>
-        <FormattedMessage {...messages[navItem.message]} />
-        {!!navItem.count && <CountBadge count={navItem.count} />}
-      </Text>
-    </MenuItemLink>
+        <>
+          <Box
+            display="flex"
+            flex="0 0 auto"
+            alignItems="center"
+            justifyContent="center"
+            className={navItem.iconName}
+          >
+            <Icon name={navItem.iconName} />
+          </Box>
+          <Text>
+            <FormattedMessage {...messages[navItem.message]} />
+            {!!navItem.count && <CountBadge count={navItem.count} />}
+          </Text>
+        </>
+      </MenuItemLink>
+    </Tooltip>
   );
 };
 
