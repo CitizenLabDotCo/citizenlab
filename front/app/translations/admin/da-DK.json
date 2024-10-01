@@ -2128,7 +2128,7 @@
   "app.containers.AdminPage.SideBar.processing": "Behandling",
   "app.containers.AdminPage.SideBar.projectManager": "Projektleder",
   "app.containers.AdminPage.SideBar.projects": "Projekter",
-  "app.containers.AdminPage.SideBar.proposalsTooltip": "Forslag er nu en deltagelsesmetode. Du kan også fastgøre individuelle projekter til navigationslinjen.",
+  "app.containers.AdminPage.SideBar.proposalsTooltip": "Forslag er nu en metode. Du kan også fastgøre individuelle projekter til navigationslinjen.",
   "app.containers.AdminPage.SideBar.settings": "Indstillinger",
   "app.containers.AdminPage.SideBar.signOut": "Logge ud",
   "app.containers.AdminPage.SideBar.support": "Support",
