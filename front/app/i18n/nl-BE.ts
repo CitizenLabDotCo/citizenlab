@@ -1,7 +1,7 @@
 import nlBE from 'date-fns/locale/nl-BE';
 import { registerLocale } from 'react-datepicker';
 
-import { addLocale } from 'components/admin/DatePhasePicker/Calendar/locales';
+import { addLocale } from 'components/admin/DatePickers/DatePhasePicker/Calendar/locales';
 
 import { formatTranslationMessages } from './';
 

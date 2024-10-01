@@ -8,10 +8,10 @@ import { CLErrors } from 'typings';
 import { IUpdatedPhaseProperties } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
 
-import DatePhasePicker from 'components/admin/DatePhasePicker';
-import { rangesValid } from 'components/admin/DatePhasePicker/Calendar/utils/rangesValid';
-import { isSelectedRangeOpenEnded } from 'components/admin/DatePhasePicker/isSelectedRangeOpenEnded';
-import { patchDisabledRanges } from 'components/admin/DatePhasePicker/patchDisabledRanges';
+import DatePhasePicker from 'components/admin/DatePickers/DatePhasePicker';
+import { rangesValid } from 'components/admin/DatePickers/DatePhasePicker/Calendar/utils/rangesValid';
+import { isSelectedRangeOpenEnded } from 'components/admin/DatePickers/DatePhasePicker/isSelectedRangeOpenEnded';
+import { patchDisabledRanges } from 'components/admin/DatePickers/DatePhasePicker/patchDisabledRanges';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 import Warning from 'components/UI/Warning';

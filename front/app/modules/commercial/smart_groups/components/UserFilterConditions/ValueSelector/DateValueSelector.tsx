@@ -2,7 +2,7 @@ import React from 'react';
 
 import moment from 'moment';
 
-import DateSinglePicker from 'components/admin/DateSinglePicker';
+import DateSinglePicker from 'components/admin/DatePickers/DateSinglePicker';
 
 type Props = {
   value?: string;

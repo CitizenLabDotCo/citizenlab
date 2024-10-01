@@ -1,6 +1,6 @@
 import { addDays } from 'date-fns';
 
-import { DateRange } from 'components/admin/DatePhasePicker/typings';
+import { DateRange } from 'components/admin/DatePickers/DatePhasePicker/typings';
 
 export const getDefaultMonth = (
   { from }: Partial<DateRange>,
