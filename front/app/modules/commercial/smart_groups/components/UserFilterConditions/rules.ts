@@ -8,8 +8,6 @@ import IdeaStatusValueSelector from './ValueSelector/IdeaStatusValueSelector';
 import IdeaStatusValuesSelector from './ValueSelector/IdeaStatusValuesSelector';
 import IdeaValueSelector from './ValueSelector/IdeaValueSelector';
 import IdeaValuesSelector from './ValueSelector/IdeaValuesSelector';
-import InitiativeValueSelector from './ValueSelector/InitiativeValueSelector';
-import InitiativeValuesSelector from './ValueSelector/InitiativeValuesSelector';
 import NumberValueSelector from './ValueSelector/NumberValueSelector';
 import ProjectFolderValueSelector from './ValueSelector/ProjectFolderValueSelector';
 import ProjectFolderValuesSelector from './ValueSelector/ProjectFolderValuesSelector';
@@ -74,14 +72,12 @@ type TFollowPredicate =
   | 'nothing'
   | 'is_not_project'
   | 'is_not_folder'
-  | 'is_not_initiative'
-  | 'is_not_idea'
+  | 'is_not_input'
   | 'is_not_topic'
   | 'is_not_area'
   | 'is_one_of_projects'
   | 'is_one_of_folders'
-  | 'is_one_of_ideas'
-  | 'is_one_of_initiatives'
+  | 'is_one_of_inputs'
   | 'is_one_of_topics'
   | 'is_one_of_areas';
 
@@ -484,14 +480,12 @@ export type TRule =
         | 'nothing'
         | 'is_not_project'
         | 'is_not_folder'
-        | 'is_not_idea'
-        | 'is_not_initiative'
+        | 'is_not_input'
         | 'is_not_topic'
         | 'is_not_area'
         | 'is_one_of_projects'
         | 'is_one_of_folders'
-        | 'is_one_of_ideas'
-        | 'is_one_of_initiatives'
+        | 'is_one_of_inputs'
         | 'is_one_of_topics'
         | 'is_one_of_areas';
       value?: string | string[];
@@ -564,10 +558,8 @@ export const ruleTypeConstraints = {
     is_not_project: ProjectValueSelector,
     is_one_of_folders: ProjectFolderValuesSelector,
     is_not_folder: ProjectFolderValueSelector,
-    is_one_of_ideas: IdeaValuesSelector,
-    is_not_idea: IdeaValueSelector,
-    is_one_of_initiatives: InitiativeValuesSelector,
-    is_not_initiative: InitiativeValueSelector,
+    is_one_of_inputs: IdeaValuesSelector,
+    is_not_input: IdeaValueSelector,
     is_one_of_topics: TopicValuesSelector,
     is_not_topic: TopicValueSelector,
     is_one_of_areas: AreaValuesSelector,
