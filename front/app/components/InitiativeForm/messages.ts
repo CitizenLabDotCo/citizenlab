@@ -107,8 +107,8 @@ export default defineMessages({
     defaultMessage: 'Type an address',
   },
   cosponsorSectionTitle: {
-    id: 'app.components.InitiativeForm.cosponsorSectionTitle',
-    defaultMessage: 'Cosponsors needed for review',
+    id: 'app.components.InitiativeForm.co-sponsorSectionTitle',
+    defaultMessage: 'Co-sponsors needed for review',
   },
   cosponsorSubtextBeforeInput: {
     id: 'app.components.InitiativeForm.cosponsorSubtextBeforeInput',
@@ -197,7 +197,7 @@ export default defineMessages({
     defaultMessage: 'Start typing a name to search',
   },
   cosponsorsLabel: {
-    id: 'app.components.InitiativeForm.cosponsorsLabel',
-    defaultMessage: 'Cosponsors',
+    id: 'app.components.InitiativeForm.co-sponsorsLabel',
+    defaultMessage: 'Co-sponsors',
   },
 });

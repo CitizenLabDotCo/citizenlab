@@ -51,8 +51,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 import { validateSlug } from 'utils/textUtils';
 
-import { IPhaseParticipationConfig } from '../phase/phaseParticipationConfig/utils/participationMethodConfigs';
-
 import AttachmentsDropzone from './components/AttachmentsDropzone';
 import GeographicAreaInputs from './components/GeographicAreaInputs';
 import ProjectCardImageDropzone from './components/ProjectCardImageDropzone';
@@ -255,9 +253,7 @@ const AdminProjectsProjectGeneral = () => {
     }));
   };
 
-  async function saveForm(
-    participationContextConfig: IPhaseParticipationConfig | null = null
-  ) {
+  async function saveForm() {
     // Should be split. Same func for existing/new project
     // Makes things unnecessarily complicated (e.g. projectId below).
     let isNewProject = false;
@@ -275,7 +271,6 @@ const AdminProjectsProjectGeneral = () => {
             project?.data.attributes.publication_status || 'draft',
         },
         ...projectAttributesDiff,
-        ...participationContextConfig,
       };
 
       try {
