@@ -36,6 +36,8 @@ ar-MA:
   symbols:
     outside: في مكان آخر
   idea_statuses:
+    prescreening: الفحص المسبق
+    prescreening_description: يخضع هذا الإدخال حاليًا لمراجعة مدير المشروع ولم يصبح مرئيًا للجمهور بعد.
     proposed: تم اقتراحها
     proposed_description: تم اقتراح هذه الفكرة على المدينة
     viewed: تمت مشاهدتها
@@ -48,6 +50,14 @@ ar-MA:
     implemented_description: تم تنفيذ هذه الفكرة من قِبل المدينة
     rejected: تم رفضها
     rejected_description: تم رفض هذه الفكرة
+    expired: منتهي الصلاحية
+    expired_description: منتهي الصلاحية
+    threshold_reached: وصلت العتبة
+    threshold_reached_description: وصلت العتبة
+    answered: أجاب
+    answered_description: أجاب
+    ineligible: غير مؤهل
+    ineligible_description: غير مؤهل
   initiative_statuses:
     review_pending: المراجعة معلقة
     review_pending_description: المراجعة معلقة
@@ -182,8 +192,8 @@ ar-MA:
       section3:
         title: تفاصيل
         description:
-      other_text_field:
-        title: إذا اخترت '{other_option}'، ما الذي تفكر فيه؟
+      other_input_field:
+        title: اكتب إجابتك
   custom_forms:
     categories:
       main_content:
@@ -199,12 +209,6 @@ ar-MA:
           title: ما مشكلتك؟
         option:
           title: ما خيارك؟
-      details:
-        title: التفاصيل
-      attachements:
-        title: الصور والمرفقات
-      extra:
-        title: معلومات إضافية
   custom_field_options:
     gender:
       male: ذكر
@@ -229,6 +233,7 @@ ar-MA:
       <ul><li>خذ الوقت الكافي لكتابة مُقترحك وإيضاحه. إذا لزم الأمر، اكتب مسوّدة أولاً ثم انسخها والصقها هنا. بمجرد النشر، سيتمكن الآخرون من قراءة المُقترح وسيسير الوقت بسرعة.</li><li>اختر عنوانًا ذا معنى يشرح بوضوح ما ينطوي عليه اقتراحك.</li><li>تأكد من إضافة صورة مناسبة إلى مُقترحك، حتى يبرز من بين المُقترحات الأخرى.</li><li>أضِف مرفقات ذات صلة، مثل الفيديوهات،أو الأمثلة المُلهمة، أو التفاصيل الفنية، أو الخطط.</li><li>شارك فكرتك على وسائل التواصل الاجتماعي والقنوات الأخرى لحشد الدعم من الآخرين.</li></ul>
   reset_password_mailer:
     send_reset_password:
+      preheader: 'إعادة تعيين كلمة المرور الخاصة بك لـ %{organizationName}'
       cta_reset_password: 'إعادة تعيين كلمة المرور'
       message_you_reset_your_password: 'لقد طلبت إعادة تعيين كلمة المرور لمنصة مشاركة %{organizationName}. انقر فوق الزر أدناه لاختيار كلمة مرور جديدة وآمنة. تنتهي صلاحية الرابط خلال ساعة واحدة.'
       subject: '%{organizationName}: إعادة تعيين كلمة المرور'
@@ -267,6 +272,7 @@ ar-MA:
       submitted_at: 'قدمت في'
       tags: 'العلامات'
       title: 'عنوان'
+      user_data: 'بيانات المستخدم'
       votes_count: 'الأصوات'
   form_builder:
     default_select_field:
@@ -274,12 +280,12 @@ ar-MA:
       option1: 'الخيار 1'
       option2: 'الخيار 2'
     form_end_page:
-      title: 'شكرا للمشاركة'
-      description: "يرجى إرسال إجاباتك عن طريق تحديد \"إرسال\" أدناه."
+      title_text: 'تم الانتهاء تقريبا'
+      description_text_2: "أنت على وشك إرسال إجاباتك. بالنقر فوق \"إرسال\"، فإنك تمنحنا الإذن بتحليل إجاباتك.<br/>بعد الإرسال، لن تتمكن بعد الآن من الرجوع وتغيير أي من إجاباتك."
     pdf_export:
       personal_data: 'بيانات شخصية'
-      personal_data_explanation_ideation: "سوف نقوم بإرسال مدخلاتك إلى منصة المشاركة عبر الإنترنت الخاصة بـ %{organizationName}. إذا كنت تريد أن يتم عرض اسمك كمؤلف لهذا الإدخال وتلقي التحديثات ذات الصلة بإدخالك عبر البريد الإلكتروني، فيرجى ملء الحقول التالية في هذه الصفحة وسنقوم بإنشاء حساب لك. لن يكون بريدك الإلكتروني عامًا ولن يستخدمه إلا %{organizationName}. إذا كنت تريد أن تظل مجهول الهوية، أو لا توافق على استخدام بياناتك الشخصية بهذه الطريقة، فيمكنك تركها فارغة."
-      personal_data_explanation_native_survey: "سوف نقوم بإرسال مدخلاتك إلى منصة المشاركة عبر الإنترنت الخاصة بـ %{organizationName}. إذا كنت تريد تلقي التحديثات ذات الصلة بإدخالك عبر البريد الإلكتروني، فيرجى ملء الحقول التالية في هذه الصفحة وسنقوم بإنشاء حساب لك. لن تكون بياناتك عامة ولن يستخدمها إلا %{organizationName}. إذا كنت لا توافق على استخدام بياناتك الشخصية بهذه الطريقة، فيمكنك تركها فارغة."
+      personal_data_explanation_public: "سوف نقوم بإرسال مدخلاتك إلى منصة المشاركة عبر الإنترنت الخاصة بـ %{organizationName}. إذا كنت تريد أن يتم عرض اسمك كمؤلف لهذا الإدخال وتلقي التحديثات ذات الصلة بإدخالك عبر البريد الإلكتروني، فيرجى ملء الحقول التالية في هذه الصفحة وسنقوم بإنشاء حساب لك. لن يكون بريدك الإلكتروني عامًا ولن يستخدمه إلا %{organizationName}. إذا كنت تريد أن تظل مجهول الهوية، أو لا توافق على استخدام بياناتك الشخصية بهذه الطريقة، فيمكنك تركها فارغة."
+      personal_data_explanation_private: "سوف نقوم بإرسال مدخلاتك إلى منصة المشاركة عبر الإنترنت الخاصة بـ %{organizationName}. إذا كنت تريد تلقي التحديثات ذات الصلة بإدخالك عبر البريد الإلكتروني، فيرجى ملء الحقول التالية في هذه الصفحة وسنقوم بإنشاء حساب لك. لن تكون بياناتك عامة ولن يتم استخدامها إلا بواسطة %{organizationName}. إذا كنت لا توافق على استخدام بياناتك الشخصية بهذه الطريقة، فيمكنك تركها فارغة."
       first_name: 'الاسم الأول'
       last_name: 'اسم العائلة'
       email_address: 'عنوان البريد الإلكتروني'
@@ -287,6 +293,16 @@ ar-MA:
       optional: 'خياري'
       permission: 'إذن'
       choose_as_many: 'اختر العدد الذي تريده'
+      choose_exactly:
+        zero: 'اختر بالضبط %{count} الخيارات'
+        one: 'اختر بالضبط الخيار %{count}'
+        two: 'اختر بالضبط %{count} الخيارات'
+        few: 'اختر بالضبط %{count} الخيارات'
+        many: 'اختر بالضبط %{count} الخيارات'
+        other: 'اختر بالضبط %{count} الخيارات'
+      choose_between: 'اختر بين الخيارين %{min} و %{max}'
+      choose_at_least: 'اختر ما لا يقل عن %{count} خيارًا'
+      choose_at_most: 'اختر ما لا يزيد عن %{count} من الخيارات'
       this_answer: 'سيتم مشاركة هذه الإجابة مع المشرفين فقط، وليس للعامة.'
       page: 'صفحة'
       date_published: 'تاريخ النشر (يوم-شهر-س س س س)'
@@ -299,10 +315,11 @@ ar-MA:
   confirmations_mailer:
     send_confirmation_code:
       subject: "قم بتأكيد عنوان البريد الإلكتروني لمنصة المشاركة الخاصة بمؤسسة %{organizationName}"
+      preheader: 'تأكيد عنوان بريدك الإلكتروني لـ %{organizationName}'
       header: "رمز التأكيد الخاص بك"
       header_message: "مرحبًا %{firstName}!"
       confirm_email_address: "أكد عنوان بريدك الألكتروني"
-      thanks_for_signing_up: "نشكرك على تسجيل الاشتراك في منصة المشاركة الخاصة بمؤسسة %{organizationName}."
+      thanks_for_signing_up1: "أشكركم على مشاركتكم. الرجاء إدخال رمز التأكيد هذا في نافذة منصة المشاركة %{organizationName}:"
       best_regards: "أطيب التحيات،"
       ignore_email: "إذا لم تطلب رمزًا ، فيمكنك تجاهل هذا البريد الإلكتروني بأمان."
       expire_code: "ستنتهي صلاحية هذا الرمز في "
@@ -313,6 +330,7 @@ ar-MA:
   user_blocked_mailer:
     send_user_blocked_email:
       subject: 'تم تعطيل حسابك مؤقتا'
+      preheader: 'تم تعطيل حسابك على منصة المشاركة %{organizationName} مؤقتًا'
       title_user_blocked: 'تم تعطيل حسابك مؤقتا'
       paragraph_1_without_reason: "تم تعطيل حسابك على منصة المشاركة %{organizationName} مؤقتًا لانتهاك إرشادات المجتمع."
       paragraph_1_with_reason: "تم تعطيل حسابك على منصة المشاركة %{organizationName} مؤقتًا للأسباب التالية:"
@@ -328,3 +346,5 @@ ar-MA:
   voting_method:
     default_voting_term_singular: "تصويت"
     default_voting_term_plural: "أصوات"
+  ics_calendar_event:
+    event_details: "تفاصيل الحدث"
