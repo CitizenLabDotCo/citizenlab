@@ -18,7 +18,7 @@ SELECT
 from ideas i
 INNER JOIN analytics_dimension_types adt ON adt.name = 'idea'
 LEFT JOIN analytics_build_feedbacks AS abf ON abf.post_id = i.id
-LEFT JOIN projects pr ON pr.id = i.project_id
+WHERE i.creation_phase_id IS NULL -- Exclude survey responses
 
 UNION ALL
 

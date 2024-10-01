@@ -1830,10 +1830,10 @@ CREATE VIEW public.analytics_fact_posts AS
     i.likes_count,
     i.dislikes_count,
     i.publication_status
-   FROM (((public.ideas i
+   FROM ((public.ideas i
      JOIN public.analytics_dimension_types adt ON (((adt.name)::text = 'idea'::text)))
      LEFT JOIN public.analytics_build_feedbacks abf ON ((abf.post_id = i.id)))
-     LEFT JOIN public.projects pr ON ((pr.id = i.project_id)))
+  WHERE (i.creation_phase_id IS NULL)
 UNION ALL
  SELECT i.id,
     i.author_id AS user_id,
