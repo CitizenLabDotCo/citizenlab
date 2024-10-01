@@ -170,6 +170,9 @@ el:
       topic_ids:
         title: Ετικέτες
         description:
+      consponsor_ids:
+        title: Συν-χορηγοί
+        description: Προσκαλέστε τους συν-χορηγούς μέσω του παρακάτω πεδίου. Ο/οι προσκεκλημένος/οι συν-χορηγός/ες θα λάβει/ουν ένα email.
       location:
         title: Τοποθεσία
         description:
