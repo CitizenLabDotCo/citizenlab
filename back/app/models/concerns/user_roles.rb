@@ -130,6 +130,41 @@ module UserRoles # rubocop:disable Metrics/ModuleLength
     end
   end
 
+  # Compress the compacted roles into a delimited string to add to the JWT cookie
+  def compress_roles
+    admin = false
+    project_moderator = []
+    project_folder_moderator = []
+
+    compacted_roles.each do |role|
+      case role['type']
+      when 'admin'
+        admin = true
+      when 'project_moderator'
+        project_moderator << role['project_id']
+      when 'project_folder_moderator'
+        project_folder_moderator << role['project_folder_id']
+      end
+    end
+    # Return a bar & comma delimited string
+    "#{admin}|#{project_moderator.join(',')}|#{project_folder_moderator.join(',')}"
+  end
+
+  def decompress_roles(delimited_roles)
+    types = delimited_roles.split('|')
+
+    roles = []
+    roles << { 'type' => 'admin' } if types[0] == 'true'
+    types[1]&.split(',')&.each do |project_id|
+      roles << { 'type' => 'project_moderator', 'project_id' => project_id }
+    end
+    types[2]&.split(',')&.each do |project_folder_id|
+      roles << { 'type' => 'project_folder_moderator', 'project_folder_id' => project_folder_id }
+    end
+
+    roles
+  end
+
   def project_folder_moderator?(project_folder_id = nil)
     project_folder_id ? moderated_project_folder_ids.include?(project_folder_id) : moderated_project_folder_ids.present?
   end
