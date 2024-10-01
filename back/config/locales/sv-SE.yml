@@ -170,6 +170,9 @@ sv:
       topic_ids:
         title: Topics
         description:
+      consponsor_ids:
+        title: Medförslagsställare
+        description: Bjud in medsponsorer genom att fylla i fältet nedan. Den eller de inbjudna medsponsorerna kommer att få ett e-postmeddelande.
       location:
         title: Plats
         description:
