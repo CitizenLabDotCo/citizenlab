@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import DateSinglePicker from '.';
+import DateSinglePicker from './index2';
 
 import type { Meta } from '@storybook/react';
 
@@ -19,9 +19,9 @@ const WrapperStandard = () => {
 
   return (
     <DateSinglePicker
-      selectedDate={selectedDate ?? null}
+      selectedDate={selectedDate}
       onChange={(date) => {
-        setSelectedDate(date ?? undefined);
+        setSelectedDate(date);
       }}
     />
   );
