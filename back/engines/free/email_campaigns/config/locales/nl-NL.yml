@@ -77,10 +77,13 @@ nl:
       "link_terms_conditions": "Gebruiksvoorwaarden"
       "link_unsubscribe": "Uitschrijven"
       "powered_by": "Mogelijk gemaakt door"
-      "statement": "Je kreeg deze e-mail van Go Vocal in naam van %{organizationName} omdat je geregistreerd bent als gebruiker op %{organizationLink}. Je kan je %{unsubscribeLink} als je deze e-mails niet meer wil ontvangen in de toekomst."
+      "recipient_statement": "Deze e-mail is door Go Vocal naar u verzonden namens %{organizationName}, omdat u een geregistreerde gebruiker bent van %{organizationLink}."
+      "unsubscribe_statement": "Je kunt je %{unsubscribeLink} als je deze e-mails in de toekomst niet meer wilt ontvangen."
       "unsubscribe_text": "uitschrijven"
     follow:
       "unfollow_here": "Je hebt deze melding ontvangen vanwege een item dat je volgt. <a href=\"%{unfollow_url}\">Je kunt het hier ontvolgen.</a>"
+    manual:
+      preheader: 'Je hebt mail van %{organizationName}'
     comment_deleted_by_admin:
       reason: 'De reden waarom je reactie is verwijderd:'
       cta_view: 'Bekijk dit idee'
@@ -539,6 +542,7 @@ nl:
       cta_see_results: 'Bekijk resultaten op het platform'
     event_registration_confirmation:
       subject: "Je bent binnen! Je inschrijving voor \"%{eventTitle}\" is bevestigd"
+      preheader: "%{firstName}, bedankt voor het registreren voor %{eventTitle}"
       header_message: "%{firstName}, bedankt voor het registreren voor"
       event_details:
         labels:
