@@ -1,6 +1,6 @@
 export interface LegendItem {
   icon: 'plain-line' | 'line' | 'rect' | 'circle';
-  iconColor: string;
+  color: string;
   label: string;
   itemColor?: string;
 }
