@@ -36,6 +36,8 @@ fi:
   symbols:
     outside: jossain muualla
   idea_statuses:
+    prescreening: esiseulonta
+    prescreening_description: Projektipäällikkö tarkistaa parhaillaan tätä syötettä, eikä se ole vielä näkyvissä yleisölle.
     proposed: ehdotettu
     proposed_description: Tätä ideaa on esitetty kaupungille
     viewed: katsottu
@@ -48,6 +50,14 @@ fi:
     implemented_description: Tämä idea on kaupungin toimesta toteutettu
     rejected: hylätty
     rejected_description: Tämä ajatus on hylätty
+    expired: vanhentunut
+    expired_description: vanhentunut
+    threshold_reached: kynnys saavutettu
+    threshold_reached_description: kynnys saavutettu
+    answered: vastasi
+    answered_description: vastasi
+    ineligible: kelpaamattomia
+    ineligible_description: kelpaamattomia
   initiative_statuses:
     review_pending: tarkistus odottaa
     review_pending_description: tarkistus odottaa
@@ -182,8 +192,8 @@ fi:
       section3:
         title: Yksityiskohdat
         description:
-      other_text_field:
-        title: Jos valitsit{other_option}, mitä ajattelet?
+      other_input_field:
+        title: Kirjoita vastauksesi
   custom_forms:
     categories:
       main_content:
@@ -199,12 +209,6 @@ fi:
           title: Mikä on kommenttisi?
         option:
           title: Mikä on vaihtoehtosi?
-      details:
-        title: Yksityiskohdat
-      attachements:
-        title: Kuvat ja liitteet
-      extra:
-        title: Lisäinformaatio
   custom_field_options:
     gender:
       male: Mies
@@ -229,6 +233,7 @@ fi:
       <ul><li>Käytä aikaa ehdotuksen tarkentamiseen. Kirjoita tarvittaessa ensin luonnos ja kopioi ja liitä se sitten tähän.</li><li>Valitse merkityksellinen otsikko, joka selittää selvästi, mitä ehdotuksesi sisältää.</li><li>Visualisoi ehdotuksesi sopivalla kuvalla, jotta se erottuu joukosta!</li><li>Lisää asiaankuuluvia liitteitä, kuten videoita, inspiroivia esimerkkejä, teknisiä yksityiskohtia tai suunnitelmia.</li><li>Jaa ideasi sosiaalisessa mediassa ja muissa kanavissa saadaksesi tukea muilta.</li></ul>
   reset_password_mailer:
     send_reset_password:
+      preheader: 'Palauta salasanasi %{organizationName}'
       cta_reset_password: 'Nollaa salasana'
       message_you_reset_your_password: 'Pyysit salasanan vaihtoa osallistumisalustalle %{organizationName}. Napsauta alla olevaa painiketta valitaksesi uuden, turvallisen salasanan. Linkki vanhenee 1 tunnin kuluttua.'
       subject: '%{organizationName}: Palauta salasanasi'
@@ -267,6 +272,7 @@ fi:
       submitted_at: 'Lähetetty klo'
       tags: 'Tunnisteet'
       title: 'Otsikko'
+      user_data: 'Käyttäjätiedot'
       votes_count: 'Äänet'
   form_builder:
     default_select_field:
@@ -274,12 +280,12 @@ fi:
       option1: 'Vaihtoehto 1'
       option2: 'Vaihtoehto 2'
     form_end_page:
-      title: 'Kiitos osallistumisesta'
-      description: "Lähetä vastauksesi valitsemalla alta \"Lähetä\"."
+      title_text: 'Melkein valmis'
+      description_text_2: "Olet lähettämässä vastauksesi. Napsauttamalla 'Lähetä' annat meille luvan analysoida vastauksiasi.<br/>Lähettämisen jälkeen et voi enää palata takaisin ja muuttaa vastauksiasi."
     pdf_export:
       personal_data: 'Henkilökohtaiset tiedot'
-      personal_data_explanation_ideation: "Lähetämme palautetta %{organizationName}:n online-osallistumisalustalle. Jos haluat, että nimesi näytetään tämän syötteen kirjoittajana ja että saat sähköpostiisi syöttöäsi koskevia päivityksiä, täytä seuraavat tämän sivun kentät, niin luomme sinulle tilin. Sähköpostisi ei ole julkinen, ja vain %{organizationName}käyttää sitä. Jos haluat pysyä nimettömänä tai et suostu siihen, että käytämme henkilötietojasi tällä tavalla, voit jättää ne tyhjiksi."
-      personal_data_explanation_native_survey: "Lähetämme palautetta %{organizationName}:n online-osallistumisalustalle. Jos haluat saada palautettasi koskevia päivityksiä sähköpostitse, täytä seuraavat tämän sivun kentät, niin luomme sinulle tilin. Tietosi eivät ole julkisia, ja vain %{organizationName}käyttää niitä. Jos et suostu siihen, että käytämme henkilötietojasi tällä tavalla, voit jättää ne tyhjiksi."
+      personal_data_explanation_public: "Lähetämme palautetta %{organizationName}:n online-osallistumisalustalle. Jos haluat, että nimesi näytetään tämän syötteen kirjoittajana ja että saat sähköpostiisi syöttöäsi koskevia päivityksiä, täytä seuraavat tämän sivun kentät, niin luomme sinulle tilin. Sähköpostisi ei ole julkinen, ja vain %{organizationName}käyttää sitä. Jos haluat pysyä nimettömänä tai et suostu siihen, että käytämme henkilötietojasi tällä tavalla, voit jättää ne tyhjiksi."
+      personal_data_explanation_private: "Lähetämme palautetta %{organizationName}:n online-osallistumisalustalle. Jos haluat saada palautettasi koskevia päivityksiä sähköpostitse, täytä seuraavat tämän sivun kentät, niin luomme sinulle tilin. Tietosi eivät ole julkisia, ja vain %{organizationName}käyttää niitä. Jos et suostu siihen, että käytämme henkilötietojasi tällä tavalla, voit jättää ne tyhjiksi."
       first_name: 'Etunimet)'
       last_name: 'Sukunimi'
       email_address: 'Sähköpostiosoite'
@@ -287,6 +293,12 @@ fi:
       optional: 'valinnainen'
       permission: 'Lupa'
       choose_as_many: 'Valitse niin monta kuin haluat'
+      choose_exactly:
+        one: 'Valitse täsmälleen %{count} -vaihtoehto'
+        other: 'Valitse täsmälleen %{count} vaihtoehdot'
+      choose_between: 'Valitse %{min} ja %{max} vaihtoehdoista'
+      choose_at_least: 'Valitse vähintään %{count} vaihtoehtoa'
+      choose_at_most: 'Valitse enintään %{count} vaihtoehtoa'
       this_answer: 'Tämä vastaus jaetaan vain moderaattoreille, ei yleisölle.'
       page: 'Sivu'
       date_published: 'Julkaisupäivä (pp-kk-vvvv)'
@@ -299,10 +311,11 @@ fi:
   confirmations_mailer:
     send_confirmation_code:
       subject: "Vahvista sähköpostiosoitteesi %{organizationName}:n osallistumisalustalle"
+      preheader: 'Vahvista sähköpostiosoitteesi kohteelle %{organizationName}'
       header: "Vahvistuskoodisi"
       header_message: "Hei %{firstName}!"
       confirm_email_address: "Vahvista sähköpostiosoitteesi"
-      thanks_for_signing_up: "Kiitos osallistumisestasi. Syötä tämä vahvistuskoodi ikkunaan %{organizationName}:n osallistumisalustalla:"
+      thanks_for_signing_up1: "Kiitos osallistumisestasi. Syötä tämä vahvistuskoodi ikkunaan %{organizationName}:n osallistumisalustalla:"
       best_regards: "Parhain terveisin,"
       ignore_email: "Jos et pyytänyt koodia, voit jättää tämän sähköpostin huomiotta."
       expire_code: "Tämä koodi vanhenee vuonna "
@@ -313,6 +326,7 @@ fi:
   user_blocked_mailer:
     send_user_blocked_email:
       subject: 'Tilisi on väliaikaisesti poistettu käytöstä'
+      preheader: 'Tilisi osallistumisalustalla %{organizationName} on väliaikaisesti poistettu käytöstä'
       title_user_blocked: 'Tilisi on väliaikaisesti poistettu käytöstä'
       paragraph_1_without_reason: "Tilisi osallistumisalustalla %{organizationName} on poistettu tilapäisesti käytöstä yhteisön sääntöjen rikkomisen vuoksi."
       paragraph_1_with_reason: "Tilisi osallistumisalustalla %{organizationName} on poistettu tilapäisesti käytöstä seuraavasta syystä:"
@@ -328,3 +342,5 @@ fi:
   voting_method:
     default_voting_term_singular: "äänestys"
     default_voting_term_plural: "ääniä"
+  ics_calendar_event:
+    event_details: "Tapahtuman tiedot"
