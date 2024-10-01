@@ -77,10 +77,13 @@ sr-Latn:
       "link_terms_conditions": "Uslovi korišćenja"
       "link_unsubscribe": "Odjavite se"
       "powered_by": "Powered by"
-      "statement": "Ovaj email vam je poslat od strane internet stranice %{organizationName}, jer ste registrovani korisnik platforme %{organizationLink}. Možete da kliknete na %{unsubscribeLink} ako ubuduće ne želite da primate ove e-poruke."
+      "recipient_statement": "This e-mail was sent to you by Go Vocal on behalf of %{organizationName}, because you are a registered user of %{organizationLink}."
+      "unsubscribe_statement": "You can %{unsubscribeLink} if you do not want to receive these e-mails in the future."
       "unsubscribe_text": "odjavitе se"
     follow:
       "unfollow_here": "You have received this notification because of an item that you follow. <a href=\"%{unfollow_url}\">You can unfollow it here.</a>"
+    manual:
+      preheader: 'You have mail from %{organizationName}'
     comment_deleted_by_admin:
       reason: 'Razlog zašto je vaš komentar izbrisan:'
       cta_view: 'Pogledajte ovu objavu'
@@ -539,6 +542,7 @@ sr-Latn:
       cta_see_results: 'See results in the platform'
     event_registration_confirmation:
       subject: "You're in! Your registration for \"%{eventTitle}\" is confirmed"
+      preheader: "%{firstName}, thanks for registering for %{eventTitle}"
       header_message: "%{firstName}, thanks for registering for"
       event_details:
         labels:
