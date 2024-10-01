@@ -170,6 +170,9 @@ lb:
       topic_ids:
         title: Sujeten
         description:
+      consponsor_ids:
+        title: Co-Sponsoren
+        description: Invitéiert Co-Sponsoren duerch d'Feld hei drënner. Den invitéierte Co-Sponsor (en) kritt eng E-Mail.
       location:
         title: Standuert
         description:
