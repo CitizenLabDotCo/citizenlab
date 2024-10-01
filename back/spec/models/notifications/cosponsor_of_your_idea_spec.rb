@@ -15,6 +15,7 @@ RSpec.describe Notifications::CosponsorOfYourIdea do
       )
 
       notifications = described_class.make_notifications_on activity
+      expect(notifications.count).to eq 1
       expect(notifications.first).to have_attributes(
         recipient_id: idea.author_id,
         initiating_user: cosponsorship.user,
