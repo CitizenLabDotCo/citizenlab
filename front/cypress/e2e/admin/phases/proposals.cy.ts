@@ -2,9 +2,8 @@ import { randomString } from '../../../support/commands';
 
 describe('Admin: proposal phase', () => {
   beforeEach(() => {
-    cy.setAdminLoginCookie();
+    cy.setConsentAndAdminLoginCookies();
     cy.visit('/admin/projects/all');
-    cy.acceptCookies();
     cy.get('[data-cy="e2e-new-project-button"]').click();
     cy.wait(1000);
     cy.get('.e2e-project-general-form');
@@ -51,6 +50,7 @@ describe('Admin: proposal phase', () => {
     cy.get('#e2e-view-project').click();
 
     // Verify proposal phase is created and published
+    cy.get('#e2e-project-page').should('contain.text', projectTitleEN);
     cy.get('#e2e-ideation-cta-button').should(
       'have.text',
       'Submit your idea' // Change to proposal later
