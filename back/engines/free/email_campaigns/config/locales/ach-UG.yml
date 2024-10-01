@@ -77,10 +77,13 @@ ach:
       "link_terms_conditions": "crwdns2343756:0crwdne2343756:0"
       "link_unsubscribe": "crwdns2343758:0crwdne2343758:0"
       "powered_by": "crwdns2343760:0crwdne2343760:0"
-      "statement": "crwdns2343762:0%{organizationName}crwdnd2343762:0%{organizationLink}crwdnd2343762:0%{unsubscribeLink}crwdne2343762:0"
+      "recipient_statement": "crwdns3238913:0%{organizationName}crwdnd3238913:0%{organizationLink}crwdne3238913:0"
+      "unsubscribe_statement": "crwdns3238915:0%{unsubscribeLink}crwdne3238915:0"
       "unsubscribe_text": "crwdns2343764:0crwdne2343764:0"
     follow:
       "unfollow_here": "crwdns2343766:0%{unfollow_url}crwdne2343766:0"
+    manual:
+      preheader: 'crwdns3238917:0%{organizationName}crwdne3238917:0'
     comment_deleted_by_admin:
       reason: 'crwdns2343768:0crwdne2343768:0'
       cta_view: 'crwdns2343770:0crwdne2343770:0'
@@ -539,6 +542,7 @@ ach:
       cta_see_results: 'crwdns2344574:0crwdne2344574:0'
     event_registration_confirmation:
       subject: "crwdns2344576:0%{eventTitle}crwdne2344576:0"
+      preheader: "crwdns3238919:0%{firstName}crwdnd3238919:0%{eventTitle}crwdne3238919:0"
       header_message: "crwdns2344578:0%{firstName}crwdne2344578:0"
       event_details:
         labels:
