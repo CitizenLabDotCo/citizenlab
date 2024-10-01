@@ -77,10 +77,13 @@ fi:
       "link_terms_conditions": "käyttöehdot"
       "link_unsubscribe": "Lopeta tilaus"
       "powered_by": "Yhteistyössä"
-      "statement": "Go Vocal lähetti sinulle tämän sähköpostin käyttäjän %{organizationName}puolesta, koska olet %{organizationLink}rekisteröity käyttäjä. Voit %{unsubscribeLink} , jos et halua saada näitä sähköposteja jatkossa."
+      "recipient_statement": "Go Vocal lähetti sinulle tämän sähköpostin käyttäjän %{organizationName}puolesta, koska olet verkkotunnuksen %{organizationLink}rekisteröity käyttäjä."
+      "unsubscribe_statement": "Voit %{unsubscribeLink} , jos et halua saada näitä sähköposteja jatkossa."
       "unsubscribe_text": "Lopeta tilaus"
     follow:
       "unfollow_here": "Sait tämän ilmoituksen seuraamasi kohteen takia. <a href=\"%{unfollow_url}\">Voit lopettaa sen seuraamisen täällä.</a>"
+    manual:
+      preheader: 'Sinulla on postia osoitteesta %{organizationName}'
     comment_deleted_by_admin:
       reason: 'Syy miksi kommenttisi poistettiin:'
       cta_view: 'Katso tämä idea'
@@ -539,6 +542,7 @@ fi:
       cta_see_results: 'Katso tulokset alustalta'
     event_registration_confirmation:
       subject: "Olet mukana! Rekisteröitymisesi kohteelle \"%{eventTitle}\" on vahvistettu"
+      preheader: "%{firstName}, kiitos rekisteröitymisestä %{eventTitle}"
       header_message: "%{firstName}, kiitos rekisteröitymisestä"
       event_details:
         labels:
