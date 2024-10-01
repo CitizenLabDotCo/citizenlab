@@ -38,7 +38,10 @@ interface Props {
   sortDirection?: SortDirection;
   allSelected: boolean;
   toggleSelectAll: () => void;
-  handleSortClick: (newSortAttribute: string) => () => void;
+  handleSortClick: (
+    newSortAttribute: string,
+    defaultSort?: 'ascending' | 'descending'
+  ) => () => void;
   type: ManagerType;
 }
 
@@ -193,7 +196,7 @@ const IdeaHeaderRow = ({
     {
       name: 'published_on',
       width: 2,
-      onChange: handleSortClick('new'),
+      onChange: handleSortClick('new', 'ascending'),
       Component: (
         props: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>
       ) => {
