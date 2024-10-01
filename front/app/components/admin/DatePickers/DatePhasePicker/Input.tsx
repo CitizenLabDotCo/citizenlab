@@ -1,42 +1,14 @@
 import React from 'react';
 
-import {
-  Icon,
-  defaultInputStyle,
-  Box,
-  colors,
-  fontSizes,
-} from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
+import { Icon, Box } from '@citizenlab/cl2-component-library';
 
 import { useIntl } from 'utils/cl-intl';
 
+import InputContainer from '../_shared/InputContainer';
+import sharedMessages from '../_shared/messages';
+
 import messages from './messages';
 import { DateRange } from './typings';
-
-const Container = styled.button`
-  ${defaultInputStyle};
-  cursor: pointer;
-  display: flex;
-  flex-direction: row;
-  font-size: ${fontSizes.base}px;
-
-  color: ${colors.grey800};
-
-  &:hover,
-  &:focus {
-    color: ${colors.black};
-  }
-
-  svg {
-    fill: ${colors.grey700};
-  }
-
-  &:hover svg,
-  &:focus svg {
-    fill: ${colors.black};
-  }
-`;
 
 interface Props {
   selectedRange: Partial<DateRange>;
@@ -46,15 +18,10 @@ interface Props {
 
 const Input = ({ selectedRange, selectedRangeIsOpenEnded, onClick }: Props) => {
   const { formatMessage } = useIntl();
-  const selectDate = formatMessage(messages.selectDate);
+  const selectDate = formatMessage(sharedMessages.selectDate);
 
   return (
-    <Container
-      onClick={(e) => {
-        e.preventDefault();
-        onClick();
-      }}
-    >
+    <InputContainer onClick={onClick}>
       <Box mr="8px">
         {selectedRange.from
           ? selectedRange.from.toLocaleDateString()
@@ -68,8 +35,7 @@ const Input = ({ selectedRange, selectedRangeIsOpenEnded, onClick }: Props) => {
           ? selectedRange.to.toLocaleDateString()
           : selectDate}
       </Box>
-      <Icon name="calendar" height="18px" />
-    </Container>
+    </InputContainer>
   );
 };
 
