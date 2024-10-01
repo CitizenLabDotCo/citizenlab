@@ -1,5 +1,5 @@
 import { renderHook } from '@testing-library/react-hooks';
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
@@ -38,8 +38,8 @@ describe('useMiniatureIdeas', () => {
 
   it('returns error correctly', async () => {
     server.use(
-      rest.get(apiPathMiniIdeas, (_req, res, ctx) => {
-        return res(ctx.status(500));
+      http.get(apiPathMiniIdeas, () => {
+        return HttpResponse.json(null, { status: 500 });
       })
     );
 
