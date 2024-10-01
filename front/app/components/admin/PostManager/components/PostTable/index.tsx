@@ -118,9 +118,20 @@ const PostTable = ({
   lastPageNumber,
 }: Props) => {
   const handleSortClick =
-    (newSortAttribute: IdeasSort | InitiativesSort) => () => {
+    (
+      newSortAttribute: IdeasSort | InitiativesSort,
+      defaultSort: 'ascending' | 'descending' = 'descending'
+    ) =>
+    () => {
       if (isFunction(onChangeSort)) {
-        const newSortSign = sortDirection === 'ascending' ? '-' : '';
+        const currentSortAttribute = sortAttribute?.replace(/^-/, '');
+        const isDifferentAttribute = currentSortAttribute !== newSortAttribute;
+
+        // If the attribute is different, we fallback to the default sort direction
+        const newSortDirection = isDifferentAttribute
+          ? defaultSort
+          : sortDirection;
+        const newSortSign = newSortDirection === 'ascending' ? '-' : '';
 
         onChangeSort(
           `${newSortSign}${newSortAttribute}` as IdeasSort | InitiativesSort
