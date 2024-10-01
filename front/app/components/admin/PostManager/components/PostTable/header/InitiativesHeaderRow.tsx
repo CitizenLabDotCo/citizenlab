@@ -24,10 +24,7 @@ interface Props {
   sortDirection?: SortDirection;
   allSelected: boolean;
   toggleSelectAll: () => void;
-  handleSortClick: (
-    newSortAttribute: InitiativesSortAttribute,
-    defaultSort?: 'ascending' | 'descending'
-  ) => () => void;
+  handleSortClick: (newSortAttribute: InitiativesSortAttribute) => () => void;
 }
 
 const InitiativesHeaderRow = ({
@@ -85,7 +82,7 @@ const InitiativesHeaderRow = ({
           sortAttribute={sortAttribute}
           sortDirection={sortDirection}
           sortAttributeName="new"
-          onChange={handleSortClick('new', 'ascending')}
+          onChange={handleSortClick('new')}
         >
           <FormattedMessage {...messages.publication_date} />
         </SortableHeaderCell>
