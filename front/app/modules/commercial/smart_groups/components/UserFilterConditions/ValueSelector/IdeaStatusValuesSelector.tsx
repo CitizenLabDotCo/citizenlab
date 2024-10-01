@@ -8,22 +8,32 @@ import useLocalize from 'hooks/useLocalize';
 
 import MultipleSelect from 'components/UI/MultipleSelect';
 
+import { useIntl } from 'utils/cl-intl';
+
+import messages from '../messages';
+
 export interface Props {
   value: string;
   onChange: (value: string[]) => void;
 }
 
 const IdeaStatusValuesSelector = memo(({ value, onChange }: Props) => {
-  const { data: ideaStatuses } = useIdeaStatuses({
-    participation_method: 'ideation',
-  });
+  const { data: ideaStatuses } = useIdeaStatuses({});
   const localize = useLocalize();
+  const { formatMessage } = useIntl();
+
+  const methodName = {
+    proposals: formatMessage(messages.ideaStatusMethodProposals),
+    ideation: formatMessage(messages.ideaStatusMethodIdeation),
+  };
   const generateOptions = (): IOption[] => {
     if (ideaStatuses) {
       return ideaStatuses.data.map((ideaStatus) => {
         return {
           value: ideaStatus.id,
-          label: localize(ideaStatus.attributes.title_multiloc),
+          label: `${localize(ideaStatus.attributes.title_multiloc)} (${
+            methodName[ideaStatus.attributes.participation_method]
+          })`,
         };
       });
     } else {
