@@ -36,6 +36,8 @@ sr-Cyrl:
   symbols:
     outside: негде другде
   idea_statuses:
+    prescreening: screening
+    prescreening_description: This input is currently under review by the project manager and is not yet visible to the public.
     proposed: предложено
     proposed_description: Ова идеја је предложена граду
     viewed: гледано
@@ -48,6 +50,14 @@ sr-Cyrl:
     implemented_description: Ову идеју је спровео град
     rejected: одбијен
     rejected_description: Ова идеја је одбијена
+    expired: expired
+    expired_description: This input is no longer active and has been closed due to time constraints or inactivity.
+    threshold_reached: threshold reached
+    threshold_reached_description: This input has met the required support threshold and will now be considered for further action.
+    answered: answered
+    answered_description: The project manager has published an official feedback on this input.
+    ineligible: ineligible
+    ineligible_description: This input has been reviewed and, unfortunately, has been rejected. An official update has been provided with more details.
   initiative_statuses:
     review_pending: преглед на чекању
     review_pending_description: преглед на чекању
@@ -182,8 +192,8 @@ sr-Cyrl:
       section3:
         title: Детаљи
         description:
-      other_text_field:
-        title: If you picked '{other_option}', what are you thinking of?
+      other_input_field:
+        title: Type your answer
   custom_forms:
     categories:
       main_content:
@@ -199,12 +209,6 @@ sr-Cyrl:
           title: Који је твој коментар?
         option:
           title: Која је твоја опција?
-      details:
-        title: Детаљи
-      attachements:
-        title: Слике и прилози
-      extra:
-        title: Додатне Информације
   custom_field_options:
     gender:
       male: Мушки
@@ -229,6 +233,7 @@ sr-Cyrl:
       <ul><li>Одвојите време да разрадите свој предлог. Ако је потребно, прво откуцајте нацрт, а затим га копирајте и залепите овде.</li><li>Изаберите смислен наслов који јасно објашњава шта ваш предлог подразумева.</li><li>Визуелизирајте свој предлог одговарајућом сликом како бисте помогли да се истакне!</li><li>Додајте релевантне прилоге, као што су видео снимци, инспиративни примери, технички детаљи или планови.</li><li>Поделите своју идеју на друштвеним медијима и другим каналима како бисте прикупили подршку других.</li></ul>
   reset_password_mailer:
     send_reset_password:
+      preheader: 'Reset your password for %{organizationName}'
       cta_reset_password: 'Ресетујте вашу лозинку'
       message_you_reset_your_password: 'Захтевали сте ресетовање лозинке за платформу за учешће %{organizationName}. Кликните на дугме испод да бисте изабрали нову, безбедну лозинку. Веза истиче за 1 сат.'
       subject: '%{organizationName}: Ресетујте лозинку'
@@ -267,6 +272,7 @@ sr-Cyrl:
       submitted_at: 'Submitted at'
       tags: 'Tags'
       title: 'Title'
+      user_data: 'User data'
       votes_count: 'Гласови'
   form_builder:
     default_select_field:
@@ -274,12 +280,12 @@ sr-Cyrl:
       option1: 'Опција 1'
       option2: 'Опција 2'
     form_end_page:
-      title: 'Thanks for participating'
-      description: "Please submit your answers by selecting 'Submit' below."
+      title_text: 'Almost done'
+      description_text_2: "You are about to submit your answers. By clicking 'Submit' you give us permission to analyse your answers.<br/>After you submit, you will no longer be able to go back and change any of your answers."
     pdf_export:
       personal_data: 'Лични подаци'
-      personal_data_explanation_ideation: "Ваш допринос ћемо послати на платформу за онлајн учешће %{organizationName}. Ако желите да ваше име буде приказано као аутор овог уноса и да примате ажурирања релевантна за ваш унос путем е-поште, попуните следећа поља на овој страници и ми ћемо креирати налог за вас. Ваша е-пошта неће бити јавна и користиће је само %{organizationName}. Ако желите да останете анонимни, или не пристајете да користимо ваше личне податке на овај начин, можете их оставити празне."
-      personal_data_explanation_native_survey: "Ваш допринос ћемо послати на платформу за онлајн учешће %{organizationName}. Ако желите да примате ажурирања релевантна за ваш унос путем е-поште, попуните следећа поља на овој страници и ми ћемо вам отворити налог. Ваши подаци неће бити јавни и користиће их само %{organizationName}. Ако се не слажете да ваше личне податке користимо на овај начин, можете их оставити празне."
+      personal_data_explanation_public: "We will submit your input to %{organizationName}'s online participation platform. If you want your name to be displayed as author of this input and receive updates relevant to your input by email, please fill out the following fields on this page and we will create an account for you. Your email will not be public and will only be used by %{organizationName}. If you want to remain anonymous, or do not agree for us to use your personal data in this way, you can leave them empty."
+      personal_data_explanation_private: "We will submit your input to %{organizationName}'s online participation platform. If you want to receive updates relevant to your input by email, please fill out the following fields on this page and we will create an account for you. Your data will not be public and will only be used by %{organizationName}. If you do not agree for us to use your personal data in this way, you can leave them empty."
       first_name: 'Име'
       last_name: 'Презиме'
       email_address: 'Адреса Е-поште'
@@ -287,6 +293,13 @@ sr-Cyrl:
       optional: 'опционо'
       permission: 'Дозвола'
       choose_as_many: 'Изаберите колико желите'
+      choose_exactly:
+        one: 'Choose exactly %{count} option'
+        few: 'Choose exactly %{count} options'
+        other: 'Choose exactly %{count} options'
+      choose_between: 'Choose between %{min} and %{max} options'
+      choose_at_least: 'Choose at least %{count} options'
+      choose_at_most: 'Choose at most %{count} options'
       this_answer: 'Овај одговор ће бити подељен само модераторима, а не јавности.'
       page: 'Страна'
       date_published: 'Датум објављивања (дд-мм-гггг)'
@@ -299,10 +312,11 @@ sr-Cyrl:
   confirmations_mailer:
     send_confirmation_code:
       subject: "Потврдите своју адресу е-поште за платформу за учешће %{organizationName}"
+      preheader: 'Confirm your email address for %{organizationName}'
       header: "Ваш код за потврду"
       header_message: "Здраво %{firstName}!"
       confirm_email_address: "Потврдите вашу емаил адресу"
-      thanks_for_signing_up: "Хвала што сте се пријавили за платформу за учешће %{organizationName}."
+      thanks_for_signing_up1: "Thank you for your participation. Please enter this confirmation code in the window on %{organizationName}'s participation platform:"
       best_regards: "Срдачан поздрав,"
       ignore_email: "Ако нисте тражили код, можете безбедно да игноришете ову е-поруку."
       expire_code: "Овај код ће истећи за "
@@ -313,6 +327,7 @@ sr-Cyrl:
   user_blocked_mailer:
     send_user_blocked_email:
       subject: 'Ваш налог је привремено онемогућен'
+      preheader: 'Your account on the participation platform of %{organizationName} has been temporarily disabled'
       title_user_blocked: 'Ваш налог је привремено онемогућен'
       paragraph_1_without_reason: "Ваш налог на платформи за учешће %{organizationName} је привремено онемогућен због кршења смерница заједнице."
       paragraph_1_with_reason: "Ваш налог на платформи за учешће %{organizationName} је привремено онемогућен из следећег разлога:"
@@ -328,3 +343,5 @@ sr-Cyrl:
   voting_method:
     default_voting_term_singular: "воте"
     default_voting_term_plural: "гласови"
+  ics_calendar_event:
+    event_details: "Event details"
