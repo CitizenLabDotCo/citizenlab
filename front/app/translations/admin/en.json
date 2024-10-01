@@ -2128,6 +2128,7 @@
   "app.containers.AdminPage.SideBar.processing": "Processing",
   "app.containers.AdminPage.SideBar.projectManager": "Project manager",
   "app.containers.AdminPage.SideBar.projects": "Projects",
+  "app.containers.AdminPage.SideBar.proposalsTooltip": "Proposals are now a participation method. You can also pin individual projects to the navigation bar.",
   "app.containers.AdminPage.SideBar.settings": "Settings",
   "app.containers.AdminPage.SideBar.signOut": "Sign out",
   "app.containers.AdminPage.SideBar.support": "Support",
