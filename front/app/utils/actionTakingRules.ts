@@ -149,7 +149,7 @@ export const getIdeaPostingRules = ({
 
     // timeline
     if (phase) {
-      // not an enabled ideation or native survey phase
+      // not an enabled ideation or native survey or proposals phase
       if (
         !(
           (phase.attributes.participation_method === 'ideation' ||

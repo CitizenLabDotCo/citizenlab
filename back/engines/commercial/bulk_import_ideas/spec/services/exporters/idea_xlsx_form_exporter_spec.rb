@@ -79,7 +79,7 @@ describe BulkImportIdeas::Exporters::IdeaXlsxFormExporter do
         'Number field',
         'Linear scale field',
         'Select field',
-        "If you picked 'Other', what are you thinking of?",
+        'Type your answer',
         'Multi select field',
         'Image select field'
       ])

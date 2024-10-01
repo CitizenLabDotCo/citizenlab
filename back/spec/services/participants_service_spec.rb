@@ -130,6 +130,7 @@ describe ParticipantsService do
     end
 
     it 'returns total project participant count including anonymous posts & everyone surveys' do
+      create(:idea_status_proposed)
       project = create(:project)
       pp1, pp2, pp3, pp4, pp5 = create_list(:user, 5)
 
@@ -311,13 +312,14 @@ describe ParticipantsService do
       expect(service.projects_participants([project]).map(&:id)).to match_array [attendee1.id, attendee2.id]
     end
 
-    it 'returns followers' do
+    it 'does not return followers' do
       project = create(:project)
-      follower1 = create(:follower, followable: project).user
-      idea = create(:idea, project: project, author: follower1)
-      follower2 = create(:follower, followable: idea).user
+      create(:follower, followable: project).user
+      author = create(:user)
+      idea = create(:idea, project: project, author: author)
+      create(:follower, followable: idea).user
 
-      expect(service.projects_participants([project]).map(&:id)).to match_array [follower1.id, follower2.id]
+      expect(service.projects_participants([project]).map(&:id)).to match_array [author.id]
     end
   end
 

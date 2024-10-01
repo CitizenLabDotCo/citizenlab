@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 
 import {
   Box,
@@ -7,6 +7,8 @@ import {
   Title,
   StatusLabel,
   colors,
+  Toggle,
+  IconTooltip,
 } from '@citizenlab/cl2-component-library';
 import { useFormContext } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
@@ -27,10 +29,12 @@ import Button from 'components/UI/Button';
 import GoBackButton from 'components/UI/GoBackButton';
 import Modal from 'components/UI/Modal';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
 import messages from '../messages';
+import tracks from '../tracks';
 
 import ownMessages from './messages';
 
@@ -43,18 +47,25 @@ type FormBuilderTopBarProps = {
   isSubmitting: boolean;
   builderConfig: FormBuilderConfig;
   viewFormLink: RouteType;
+  autosaveEnabled: boolean;
+  showAutosaveToggle: boolean;
+  setAutosaveEnabled: Dispatch<SetStateAction<boolean>>;
 };
 
 const FormBuilderTopBar = ({
   isSubmitting,
   builderConfig,
   viewFormLink,
+  autosaveEnabled,
+  setAutosaveEnabled,
+  showAutosaveToggle,
 }: FormBuilderTopBarProps) => {
   const printedFormsEnabled =
     useFeatureFlag({
       name: 'import_printed_forms',
     }) && builderConfig.onDownloadPDF;
   const localize = useLocalize();
+  const { formatMessage } = useIntl();
   const { projectId, phaseId } = useParams() as {
     projectId: string;
     phaseId?: string;
@@ -64,8 +75,8 @@ const FormBuilderTopBar = ({
   const {
     formState: { isDirty },
   } = useFormContext();
-
   const [showLeaveModal, setShowLeaveModal] = useState(false);
+
   const closeModal = () => {
     setShowLeaveModal(false);
   };
@@ -135,6 +146,28 @@ const FormBuilderTopBar = ({
             )}
           </Box>
         </Box>
+        {showAutosaveToggle && (
+          <Box mx="16px">
+            <Toggle
+              label={
+                <Box display="flex" gap="4px">
+                  {formatMessage(ownMessages.autosave)}
+                  <IconTooltip
+                    content={formatMessage(ownMessages.autosaveTooltip)}
+                  />
+                </Box>
+              }
+              checked={autosaveEnabled}
+              onChange={() => {
+                autosaveEnabled
+                  ? trackEventByName(tracks.toggledOffFormAutosaving)
+                  : trackEventByName(tracks.toggledOnFormAutosaving);
+
+                setAutosaveEnabled(!autosaveEnabled);
+              }}
+            />
+          </Box>
+        )}
         {printedFormsEnabled && (
           <Button
             buttonStyle="secondary-outlined"

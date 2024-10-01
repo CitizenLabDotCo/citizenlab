@@ -245,7 +245,6 @@ interface Routes {
   citizen: RouteConfiguration[];
   admin: RouteConfiguration[];
   'admin.projects': RouteConfiguration[];
-  'admin.projects.project': RouteConfiguration[];
   'admin.initiatives': RouteConfiguration[];
   'admin.ideas': RouteConfiguration[];
   'admin.pages-menu': RouteConfiguration[];
@@ -364,10 +363,6 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
       ),
       'admin.projects': parseModuleRoutes(
         mergedRoutes?.['admin.projects'],
-        RouteTypes.ADMIN
-      ),
-      'admin.projects.project': parseModuleRoutes(
-        mergedRoutes?.['admin.projects.project'],
         RouteTypes.ADMIN
       ),
       'admin.project_templates': parseModuleRoutes(

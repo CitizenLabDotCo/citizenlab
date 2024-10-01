@@ -11,6 +11,7 @@ export const phasePermissionsData: IPhasePermissionData = {
     global_custom_fields: false,
     verification_enabled: false,
     verification_expiry: null,
+    access_denied_explanation_multiloc: {},
   },
   relationships: {
     permission_scope: {

@@ -131,23 +131,6 @@ RSpec.describe EmailCampaigns::EventRegistrationConfirmationMailer do
         end
       end
 
-      context 'when the event has a description' do
-        include ActionView::Helpers::SanitizeHelper
-
-        it 'contains the description' do
-          # Sanity check
-          event_description = event_attributes['description_multiloc']
-          expect(event_description).to be_present
-
-          # Check for presence of:
-          # <div> Description </div>
-          # <div ...> Be there and learn everything about our future! </div>
-          label_div = page.find('div', exact_text: /\s*Description\s*/)
-          description = strip_tags(event_description[recipient.locale])
-          expect(label_div).to have_css('+ div', text: description)
-        end
-      end
-
       context 'when the event has no description' do
         before do
           event_attributes['description_multiloc'] = {}

@@ -12,7 +12,7 @@ module Permissions
       @idea ||= idea
     end
 
-    def denied_reason_for_action(action, reaction_mode: nil)
+    def denied_reason_for_action(action, reaction_mode: nil, delete_action: false)
       return if user && UserRoleService.new.can_moderate_project?(idea.project, user)
 
       reason = super
@@ -33,8 +33,8 @@ module Permissions
       end
     end
 
-    def denied_reason_for_reaction_mode(reaction_mode)
-      denied_reason_for_action('reacting_idea', reaction_mode: reaction_mode)
+    def denied_reason_for_reaction_mode(reaction_mode, delete_action: false)
+      denied_reason_for_action('reacting_idea', reaction_mode: reaction_mode, delete_action: delete_action)
     end
 
     def action_descriptors

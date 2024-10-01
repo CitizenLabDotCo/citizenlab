@@ -255,6 +255,18 @@
         }
       },
 
+      "gravatar_avatars": {
+        "type": "object",
+        "title": "Automatically try to download an avatar from an external service called Gravatar when a user registers without an avatar",
+        "description": "Allow users to upload a profile picture.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true },
+          "enabled": { "type": "boolean", "default": true }
+        }
+      },
+
       "internal_commenting": {
         "type": "object",
         "title": "Internal commenting",
@@ -414,6 +426,12 @@
             "title": "Login Mechanism Name",
             "type": "string",
             "description": "The Login Mechanism Name is used for user-facing copy. For instance, \"Sign up with {login_mechanism_name}.\"."
+          },
+          "admin_only": {
+            "title": "Admin only",
+            "type": "boolean",
+            "default": false,
+            "description": "Should this login mechanism be available only for admins at /sign-in/admin ?"
           }
         }
       },
@@ -896,8 +914,8 @@
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
-          "allowed": { "type": "boolean", "default": true },
-          "enabled": { "type": "boolean", "default": false }
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": true }
         }
       },
 
@@ -1085,18 +1103,6 @@
               "type": "string"
             }
           }
-        }
-      },
-
-      "input_form_mapping_question": {
-        "type": "object",
-        "title": "Mapping question used in in-platform surveys",
-        "description":  "Allow mapping question(s) for use in in-platform surveys. Currently limited to one type: Select a point on a map.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false },
-          "enabled": { "type": "boolean", "default": false }
         }
       },
 
@@ -1308,6 +1314,18 @@
         "type": "object",
         "title": "Proposals participation method",
         "description": "Enables the ability to choose proposals as a participation method for a project.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "input_cosponsorship": {
+        "type": "object",
+        "title": "Input co-sponsorship",
+        "description": "Enables the ability to invite co-sponsors to your inputs.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {

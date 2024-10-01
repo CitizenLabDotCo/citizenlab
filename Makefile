@@ -13,22 +13,22 @@
 # =================
 
 build:
-	docker-compose build
+	docker compose build
 	cd front && npm install
 
 reset-dev-env:
 	# -v removes volumes with all the data inside https://docs.docker.com/compose/reference/down/
-	docker-compose down -v || true # do not exit on error (some networks may be present, volumes may be used, which is often fine)
+	docker compose down -v || true # do not exit on error (some networks may be present, volumes may be used, which is often fine)
 	make build
 	# https://citizenlabco.slack.com/archives/C016C2EHURY/p1644234622002569
-	docker-compose run --rm web "bin/rails db:create && bin/rails db:reset"
-	docker-compose run --rm -e RAILS_ENV=test web bin/rails db:drop db:create db:schema:load
+	docker compose run --rm web "bin/rails db:create && bin/rails db:reset"
+	docker compose run --rm -e RAILS_ENV=test web bin/rails db:drop db:create db:schema:load
 
 migrate:
-	docker-compose run --rm web bin/rails db:migrate cl2back:clean_tenant_settings email_campaigns:assure_campaign_records fix_existing_tenants:update_permissions cl2back:clear_cache_store email_campaigns:remove_deprecated
+	docker compose run --rm web bin/rails db:migrate cl2back:clean_tenant_settings email_campaigns:assure_campaign_records fix_existing_tenants:update_permissions cl2back:clear_cache_store email_campaigns:remove_deprecated
 
 be-up:
-	docker-compose up
+	docker compose up
 
 fe-up:
 	cd front && npm start
@@ -41,7 +41,7 @@ up:
 # # or
 # make rails-console
 c rails-console:
-	docker-compose run --rm web bin/rails c
+	docker compose run --rm web bin/rails c
 
 # Runs rails console in an existing web container. May be useful if you need to access localhost:4000 in the console.
 # E.g., this command works in this console `curl http://localhost:4000`
@@ -50,7 +50,7 @@ rails-console-exec:
 
 # search_path=localhost specifies the schema of localhost tenant
 psql:
-	docker-compose run -it -e PGPASSWORD=postgres -e PGOPTIONS="--search_path=localhost" postgres psql -U postgres -h postgres -d cl2_back_development
+	docker compose run -it -e PGPASSWORD=postgres -e PGOPTIONS="--search_path=localhost" postgres psql -U postgres -h postgres -d cl2_back_development
 
 # Run it with:
 # make copy-paste-code-entity source=initiative_resubmitted_for_review target=new_cosponsor_added
@@ -64,12 +64,12 @@ blint back-lint-autocorrect:
 # Usage example:
 # make r file=spec/models/idea_spec.rb
 r rspec:
-	docker-compose run --rm web bin/rspec ${file}
+	docker compose run --rm web bin/rspec ${file}
 
 # Usage example:
 # make feature-toggle feature=initiative_cosponsors enabled=true
 feature-toggle:
-	docker-compose run web "bin/rails runner \"enabled = ${enabled}; feature = '${feature}'; Tenant.find_by(host: 'localhost').switch!; c = AppConfiguration.instance; c.settings['${feature}'] ||= {}; c.settings['${feature}']['allowed'] = ${enabled}; c.settings['${feature}']['enabled'] = ${enabled}; c.save!\""
+	docker compose run web "bin/rails runner \"enabled = ${enabled}; feature = '${feature}'; Tenant.find_by(host: 'localhost').switch!; c = AppConfiguration.instance; c.settings['${feature}'] ||= {}; c.settings['${feature}']['allowed'] = ${enabled}; c.settings['${feature}']['enabled'] = ${enabled}; c.save!\""
 
 # =================
 # E2E tests
@@ -80,8 +80,8 @@ feature-toggle:
 # After running this command, start the dev servers as usual (make up)
 e2e-setup:
 	make build
-	docker-compose run --rm web bin/rails db:drop db:create db:schema:load
-	docker-compose run --rm web bin/rails cl2_back:create_tenant[localhost,e2etests_template]
+	docker compose run --rm web bin/rails db:drop db:create db:schema:load
+	docker compose run --rm web bin/rails cl2_back:create_tenant[localhost,e2etests_template]
 
 e2e-setup-and-up:
 	make e2e-setup
@@ -94,50 +94,6 @@ e2e-setup-and-up:
 e2e-run-test:
 	cd front && \
 	npm run cypress:run -- --config baseUrl=http://localhost:3000 --spec ${spec}
-
-# -----------------
-# The following e2e commands use the "ci-env" prefix which means
-# that the used environment will be very similar to CI (the same docker-compose.yml file)
-# -----------------
-
-e2e-ci-env-setup:
-	cd e2e && \
-	docker-compose build && \
-	docker-compose run web bin/rails db:drop db:create db:schema:load && \
-	docker-compose run web bin/rails "cl2_back:create_tenant[e2e.front,e2etests_template]"
-
-e2e-ci-env-up:
-	# we need --build because volumes are not used by default https://www.notion.so/citizenlab/Testing-253d0c3cd99841a59929f7f615179935?pvs=4#f088eb9d2c304af59d5d5d2ede6e4439
-	cd e2e && docker-compose up --build
-
-e2e-ci-env-setup-and-up:
-	make e2e-ci-env-setup
-	make e2e-ci-env-up
-
-# Run it with:
-# make e2e-ci-env-run-test spec=cypress/e2e/about_page.cy.ts
-# # or specify an entire folder
-# make e2e-ci-env-run-test spec=cypress/e2e/project_description_builder/sections
-e2e-ci-env-run-test:
-	cd e2e && \
-	docker-compose run --rm --name cypress_run front npm run cypress:run -- --config baseUrl=http://e2e.front:3000 --spec ${spec}
-
-e2e-ci-env-db-dump:
-	cd e2e && \
-	docker compose exec postgres pg_dumpall -c -U postgres > dump.sql
-
-e2e-ci-env-db-restore:
-	cd e2e && \
-	docker compose exec postgres psql -U postgres -d cl2_back_development -c "SELECT 1" 1> /dev/null && \
-	docker compose exec postgres psql -U postgres -d cl2_back_development -c "DROP SCHEMA IF EXISTS e2e_front,public CASCADE" 1> /dev/null 2> /dev/null && \
-	docker compose exec postgres psql -U postgres -d cl2_back_development -c "CREATE SCHEMA public" && \
-	cat dump.sql | docker compose exec -T postgres psql --quiet -U postgres 1> /dev/null 2> /dev/null
-
-e2e-ci-env-reproduce-flaky-test:
-	for i in $(shell seq 1 10); do \
-		make e2e-ci-env-db-restore && \
-		make e2e-ci-env-run-test spec="${spec}"; \
-	done
 
 # =================
 # CircleCI

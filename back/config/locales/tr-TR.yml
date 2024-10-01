@@ -36,6 +36,8 @@ tr:
   symbols:
     outside: başka bir yerde
   idea_statuses:
+    prescreening: ön eleme
+    prescreening_description: Bu girdi şu anda proje yöneticisi tarafından incelenmektedir ve henüz kamuya açık değildir.
     proposed: önerilen
     proposed_description: Bu fikir kent yönetimine önerildi
     viewed: görüntülendi
@@ -190,8 +192,8 @@ tr:
       section3:
         title: Detaylar
         description:
-      other_text_field:
-        title: Eğer '{other_option}' adresini seçtiyseniz, ne düşünüyorsunuz?
+      other_input_field:
+        title: Cevabınızı yazın
   custom_forms:
     categories:
       main_content:
@@ -231,6 +233,7 @@ tr:
       <ul><li>Önerinizi daha detaylı açıklamak için acele etmeyin. Gerekirse, önce bir taslak yazın ve kopyalayıp buraya yapıştırın.</li><li>Önerinizin ne olduğunu net bir şekilde açıklayan anlamlı bir başlık seçin.</li><li>Öne çıkmasını sağlamak için önerinize uygun bir görsel ekleyin.</li><li>Videolar, ilham verici örnekler, teknik bilgiler veya planlar gibi ilgili ekleri ekleyin.</li><li>Başkalarından destek toplamak için fikrinizi sosyal medyada ve diğer kanallarda paylaşın.</li></ul>
   reset_password_mailer:
     send_reset_password:
+      preheader: '%{organizationName}için şifrenizi sıfırlayın'
       cta_reset_password: 'Parolanızı sıfırlayın'
       message_you_reset_your_password: '%{organizationName} katılım platformu için parola sıfırlama talebinde bulundunuz. Yeni ve güvenli bir parola seçmek için aşağıdaki düğmeye tıklayın. Bu bağlantı 1 saat için geçerlidir.'
       subject: '%{organizationName}: Parolanızı sıfırlayın'
@@ -308,6 +311,7 @@ tr:
   confirmations_mailer:
     send_confirmation_code:
       subject: "%{organizationName} katılım platformu için e-posta adresinizi doğrulayın"
+      preheader: '%{organizationName}için e-posta adresinizi onaylayın'
       header: "Onay Kodunuz"
       header_message: "Merhaba %{firstName}!"
       confirm_email_address: "E-posta adresinizi onaylayın"
@@ -322,6 +326,7 @@ tr:
   user_blocked_mailer:
     send_user_blocked_email:
       subject: 'Hesabınız geçici olarak devre dışı bırakıldı'
+      preheader: '%{organizationName} katılım platformundaki hesabınız geçici olarak devre dışı bırakıldı'
       title_user_blocked: 'Hesabınız geçici olarak devre dışı bırakıldı'
       paragraph_1_without_reason: "%{organizationName} katılım platformundaki hesabınız, topluluk kurallarının ihlali nedeniyle geçici olarak devre dışı bırakılmıştır."
       paragraph_1_with_reason: "%{organizationName} katılım platformundaki hesabınız aşağıdaki nedenden dolayı geçici olarak devre dışı bırakılmıştır:"
@@ -337,3 +342,5 @@ tr:
   voting_method:
     default_voting_term_singular: "oylama"
     default_voting_term_plural: "oylar"
+  ics_calendar_event:
+    event_details: "Etkinlik detayları"

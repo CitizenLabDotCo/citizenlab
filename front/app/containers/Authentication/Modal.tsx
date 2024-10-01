@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, lazy, Suspense } from 'react';
 
 import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
@@ -19,10 +19,10 @@ import {
   HELPER_TEXT_KEYS,
   ERROR_CODE_MESSAGES,
 } from './messageUtils';
+import AccessDenied from './steps/AccessDenied';
 import AuthProviders from './steps/AuthProviders';
 import BuiltInFields from './steps/BuiltInFields';
 import ChangeEmail from './steps/ChangeEmail';
-import CustomFields from './steps/CustomFields';
 import EmailAndPassword from './steps/EmailAndPassword';
 import EmailAndPasswordSignUp from './steps/EmailAndPasswordSignUp';
 import EmailAndPasswordVerifiedActions from './steps/EmailAndPasswordVerifiedActions';
@@ -41,6 +41,9 @@ import Verification from './steps/Verification';
 import VerificationSuccess from './steps/VerificationSuccess';
 import { ModalProps } from './typings';
 import useSteps from './useSteps';
+// All steps above could be lazy loaded
+// but this one was the worst in terms of bundle size impact
+const CustomFields = lazy(() => import('./steps/CustomFields'));
 
 const AuthModal = ({ setModalOpen }: ModalProps) => {
   const {
@@ -276,13 +279,15 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
           />
         )}
         {currentStep === 'missing-data:custom-fields' && (
-          <CustomFields
-            authenticationData={authenticationData}
-            loading={loading}
-            setError={setError}
-            onSubmit={transition(currentStep, 'SUBMIT')}
-            onSkip={transition(currentStep, 'SKIP')}
-          />
+          <Suspense fallback={null}>
+            <CustomFields
+              authenticationData={authenticationData}
+              loading={loading}
+              setError={setError}
+              onSubmit={transition(currentStep, 'SUBMIT')}
+              onSkip={transition(currentStep, 'SKIP')}
+            />
+          </Suspense>
         )}
 
         {currentStep === 'missing-data:onboarding' && (
@@ -320,6 +325,13 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
             onSubmit={transition(currentStep, 'SIGN_IN')}
             onSwitchFlow={transition(currentStep, 'SWITCH_FLOW')}
             closeModal={transition(currentStep, 'CLOSE')}
+          />
+        )}
+
+        {currentStep === 'access-denied' && (
+          <AccessDenied
+            authenticationData={authenticationData}
+            onClose={transition(currentStep, 'CLOSE')}
           />
         )}
       </Box>

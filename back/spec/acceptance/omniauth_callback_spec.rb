@@ -9,7 +9,7 @@ resource 'Omniauth Callback', document: false do
   post '/auth/failure' do
     example_request 'Redirect to failure URL' do
       expect(status).to eq(302)
-      expect(response_headers['Location']).to include('/authentication-error')
+      expect(response_headers['Location']).to include('authentication_error=true')
     end
   end
 

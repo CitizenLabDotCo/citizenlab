@@ -36,6 +36,8 @@ sr-Latn:
   symbols:
     outside: negde drugde
   idea_statuses:
+    prescreening: screening
+    prescreening_description: This input is currently under review by the project manager and is not yet visible to the public.
     proposed: predloženo
     proposed_description: Ova ideja je predložena administraciji
     viewed: pregledano
@@ -49,13 +51,13 @@ sr-Latn:
     rejected: odbijeno
     rejected_description: Ova ideja je odbijena
     expired: expired
-    expired_description: expired
+    expired_description: This input is no longer active and has been closed due to time constraints or inactivity.
     threshold_reached: threshold reached
-    threshold_reached_description: threshold reached
+    threshold_reached_description: This input has met the required support threshold and will now be considered for further action.
     answered: answered
-    answered_description: answered
+    answered_description: The project manager has published an official feedback on this input.
     ineligible: ineligible
-    ineligible_description: ineligible
+    ineligible_description: This input has been reviewed and, unfortunately, has been rejected. An official update has been provided with more details.
   initiative_statuses:
     review_pending: review pending
     review_pending_description: review pending
@@ -190,8 +192,8 @@ sr-Latn:
       section3:
         title: Detalji
         description:
-      other_text_field:
-        title: If you picked '{other_option}', what are you thinking of?
+      other_input_field:
+        title: Type your answer
   custom_forms:
     categories:
       main_content:
@@ -231,6 +233,7 @@ sr-Latn:
       Pokušajte da se posvetite obrazloženju vašeg predloga. Ukoliko je potrebno, prethodno pripremite tekst pa ga kopirajte ovde.</li><li>Odaberite naziv koji jasno opisuje na šta se vaša ideja odnosi.</li><li>Vizualizujte svoj predlog odgovarajućom slikom koja će mu pomoći da se istakne!</li><li>Dodajte priloge poput video zapisa, ilustrativnih primera, tehničkih detalja ili planova.</li><li>Podelite vašu ideju na društvenim mrežama kako biste prikupili podršku od drugih.</li></ul>
   reset_password_mailer:
     send_reset_password:
+      preheader: 'Reset your password for %{organizationName}'
       cta_reset_password: 'Resetujte vašu lozinku'
       message_you_reset_your_password: 'Zatražili ste resetovanje lozinke za %{organizationName} participativnu platformu. Kliknite na dugme u nastavku da biste izabrali novu, sigurnu lozinku. Link ističe za 1 sat.'
       subject: '%{organizationName}: Resetujte lozinku'
@@ -309,6 +312,7 @@ sr-Latn:
   confirmations_mailer:
     send_confirmation_code:
       subject: "Potvrdite svoju adresu e -pošte za %{organizationName} platformu"
+      preheader: 'Confirm your email address for %{organizationName}'
       header: "Vaš konfirmacioni kod"
       header_message: "Zdravo %{firstName}!"
       confirm_email_address: "Potvrdi svoju adresu e-pošte"
@@ -323,6 +327,7 @@ sr-Latn:
   user_blocked_mailer:
     send_user_blocked_email:
       subject: 'Ваш налог је привремено онемогућен'
+      preheader: 'Your account on the participation platform of %{organizationName} has been temporarily disabled'
       title_user_blocked: 'Ваш налог је привремено онемогућен'
       paragraph_1_without_reason: "Ваш налог на платформи за учешће %{organizationName} је привремено онемогућен због кршења смерница заједнице."
       paragraph_1_with_reason: "Ваш налог на платформи за учешће %{organizationName} је привремено онемогућен из следећег разлога:"
@@ -338,3 +343,5 @@ sr-Latn:
   voting_method:
     default_voting_term_singular: "vote"
     default_voting_term_plural: "votes"
+  ics_calendar_event:
+    event_details: "Event details"

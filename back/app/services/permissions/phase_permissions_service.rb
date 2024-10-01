@@ -52,7 +52,7 @@ module Permissions
       @phase ||= phase
     end
 
-    def denied_reason_for_action(action, reaction_mode: nil)
+    def denied_reason_for_action(action, reaction_mode: nil, delete_action: false)
       return PHASE_DENIED_REASONS[:project_inactive] unless phase || IGNORED_PHASE_ACTIONS.include?(action)
 
       phase_denied_reason = case action
@@ -63,7 +63,7 @@ module Permissions
       when 'commenting_idea'
         commenting_idea_denied_reason_for_action
       when 'reacting_idea'
-        reacting_denied_reason_for_action(reaction_mode: reaction_mode)
+        reacting_denied_reason_for_action(reaction_mode: reaction_mode, delete_action: delete_action)
       when 'voting'
         voting_denied_reason_for_action
       when 'annotating_document'
@@ -111,16 +111,17 @@ module Permissions
       end
     end
 
-    def reacting_denied_reason_for_action(reaction_mode: nil)
+    # NOTE: some reasons should not be returned if trying to delete a reaction (delete_action: true)
+    def reacting_denied_reason_for_action(reaction_mode: nil, delete_action: false)
       if !participation_method.supports_reacting?
         REACTING_DENIED_REASONS[:reacting_not_supported]
       elsif !phase.reacting_enabled
         REACTING_DENIED_REASONS[:reacting_disabled]
       elsif reaction_mode == 'down' && !phase.reacting_dislike_enabled
         REACTING_DENIED_REASONS[:reacting_dislike_disabled]
-      elsif reaction_mode == 'up' && user && liking_limit_reached?
+      elsif reaction_mode == 'up' && user && liking_limit_reached? && !delete_action
         REACTING_DENIED_REASONS[:reacting_like_limited_max_reached]
-      elsif reaction_mode == 'down' && user && disliking_limit_reached?
+      elsif reaction_mode == 'down' && user && disliking_limit_reached? && !delete_action
         REACTING_DENIED_REASONS[:reacting_dislike_limited_max_reached]
       end
     end
