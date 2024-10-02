@@ -82,6 +82,8 @@ fi:
       "unsubscribe_text": "Lopeta tilaus"
     follow:
       "unfollow_here": "Sait tämän ilmoituksen seuraamasi kohteen takia. <a href=\"%{unfollow_url}\">Voit lopettaa sen seuraamisen täällä.</a>"
+    manual:
+      preheader: 'Sinulla on postia osoitteesta %{organizationName}'
     comment_deleted_by_admin:
       reason: 'Syy miksi kommenttisi poistettiin:'
       cta_view: 'Katso tämä idea'
@@ -540,6 +542,7 @@ fi:
       cta_see_results: 'Katso tulokset alustalta'
     event_registration_confirmation:
       subject: "Olet mukana! Rekisteröitymisesi kohteelle \"%{eventTitle}\" on vahvistettu"
+      preheader: "%{firstName}, kiitos rekisteröitymisestä %{eventTitle}"
       header_message: "%{firstName}, kiitos rekisteröitymisestä"
       event_details:
         labels:

@@ -13,7 +13,6 @@ import useAuthUser from 'api/me/useAuthUser';
 import { invalidateAllActionDescriptors } from 'containers/Authentication/useSteps/invalidateAllActionDescriptors';
 
 import { queryClient } from 'utils/cl-react-query/queryClient';
-import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 
 import {
@@ -212,7 +211,7 @@ export default function useSteps() {
     }
 
     // launch sign in flow, derived from route
-    if (pathname.endsWith('/sign-in')) {
+    if (pathname.endsWith('/sign-in') || pathname.endsWith('/sign-in/admin')) {
       if (isNilOrError(authUser)) {
         authenticationDataRef.current = {
           context: GLOBAL_CONTEXT,
@@ -222,8 +221,6 @@ export default function useSteps() {
 
         transition(currentStep, 'TRIGGER_AUTHENTICATION_FLOW')('signin');
       }
-      // Remove all parameters from URL as they've already been captured
-      window.history.replaceState(null, '', '/');
       return;
     }
 
@@ -247,11 +244,23 @@ export default function useSteps() {
       ignoreQueryPrefix: true,
     }) as any;
 
+    // Verification from profile & group based (non-SSO) verification flow
     if (urlSearchParams.verification_error === 'true') {
       transition(
         currentStep,
         'TRIGGER_VERIFICATION_ERROR'
-      )(urlSearchParams.error);
+      )(urlSearchParams.error_code);
+
+      // Remove query string from URL as params already been captured
+      window.history.replaceState(null, '', pathname);
+      return;
+    }
+
+    if (urlSearchParams.authentication_error === 'true') {
+      transition(currentStep, 'TRIGGER_AUTH_ERROR')(urlSearchParams.error_code);
+
+      // Remove query string from URL as params already been captured
+      window.history.replaceState(null, '', pathname);
       return;
     }
 
@@ -264,12 +273,9 @@ export default function useSteps() {
     ) {
       const {
         sso_flow,
-        sso_pathname,
         sso_verification_action,
         sso_verification_id,
         sso_verification_type,
-        error_code,
-        verification_success,
       } = urlSearchParams as SSOParams;
 
       // Check if there is a success action in local storage (from SSO or verification)
@@ -298,23 +304,10 @@ export default function useSteps() {
 
       const flow = sso_flow ?? 'signin';
       updateState({ flow });
-
-      if (pathname.endsWith('authentication-error')) {
-        transition(currentStep, 'TRIGGER_AUTH_ERROR')(error_code);
-
-        // Remove all parameters from URL as they've already been captured
-        window.history.replaceState(null, '', '/');
-        return;
-      }
-
-      if (sso_pathname) {
-        clHistory.replace(sso_pathname);
-      } else if (!verification_success) {
-        // Remove all parameters from URL as they've already been captured
-        window.history.replaceState(null, '', '/');
-      }
-
       transition(currentStep, 'RESUME_FLOW_AFTER_SSO')(flow);
+
+      // Remove query string from URL as params already been captured
+      window.history.replaceState(null, '', pathname);
     }
   }, [
     pathname,

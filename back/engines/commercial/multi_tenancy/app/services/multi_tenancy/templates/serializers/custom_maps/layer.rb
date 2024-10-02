@@ -6,7 +6,7 @@ module MultiTenancy
       module CustomMaps
         class Layer < Base
           ref_attribute :map_config
-          attributes %i[type layer_url default_enabled geojson marker_svg_url title_multiloc]
+          attributes %i[type layer_url default_enabled geojson marker_svg_url title_multiloc ordering]
         end
       end
     end

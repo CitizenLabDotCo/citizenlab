@@ -225,6 +225,9 @@ namespace :cl2_back do
               client_secret: 'fake_client_secret',
               domain: 'fake_domain',
               method_name_multiloc: { en: 'Verify with Auth0' }
+            },
+            {
+              name: 'fake_sso'
             }
           ]
         },
@@ -260,13 +263,9 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
-        input_form_mapping_question: {
+        form_mapping: {
           enabled: true,
           allowed: true
-        },
-        form_mapping: {
-          enabled: false,
-          allowed: false
         },
         posthog_integration: {
           enabled: false,

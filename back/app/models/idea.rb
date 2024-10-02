@@ -93,6 +93,9 @@ class Idea < ApplicationRecord
   has_many :text_images, as: :imageable, dependent: :destroy
   has_many :followers, as: :followable, dependent: :destroy
 
+  has_many :cosponsorships, dependent: :destroy
+  has_many :cosponsors, through: :cosponsorships, source: :user
+
   has_many :idea_images, -> { order(:ordering) }, dependent: :destroy, inverse_of: :idea
   has_many :idea_files, -> { order(:ordering) }, dependent: :destroy, inverse_of: :idea
   has_one :idea_trending_info
@@ -271,7 +274,7 @@ class Idea < ApplicationRecord
 
   def not_published_in_non_public_status
     return if !published?
-    return if idea_status.public_post?
+    return if !idea_status || idea_status.public_post?
 
     errors.add(
       :publication_status,

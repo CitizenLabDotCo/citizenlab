@@ -424,6 +424,7 @@ const ReactionButton = ({
               onClick={onClick}
               icon={buttonReactionModeIsActive ? 'check' : 'vote-ballot'}
               bgColor={buttonReactionModeIsActive ? colors.success : undefined}
+              className="e2e-ideacard-vote-button"
             >
               {buttonReactionModeIsActive ? (
                 <FormattedMessage {...messages.voted} />

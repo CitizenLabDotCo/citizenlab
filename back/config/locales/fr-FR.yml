@@ -170,6 +170,9 @@ fr:
       topic_ids:
         title: Étiquettes
         description:
+      consponsor_ids:
+        title: Coparrainants
+        description: Invitez des co-parrains dans le champ ci-dessous. Le(s) co-sponsor(s) invité(s) recevra(ont) un courriel.
       location:
         title: Adresse
         description:
@@ -192,8 +195,8 @@ fr:
       section3:
         title: Détails
         description:
-      other_text_field:
-        title: Puisque vous avez choisi « {other_option} », à quoi pensez-vous ?
+      other_input_field:
+        title: Saisissez votre réponse
   custom_forms:
     categories:
       main_content:
@@ -233,6 +236,7 @@ fr:
       <ul><li>Prenez le temps d’élaborer votre proposition en détails. Si nécessaire, écrivez un brouillon quelque part et copiez-collez sur la plateforme une fois que vous êtes prêt.</li><li>Choisissez un titre évocateur qui explique clairement ce que votre proposition comporte.</li><li>Assurez-vous d’illustrer votre proposition avec une image de bonnes dimensions de sorte à la faire ressortir plus distinctement.</li><li>Ajouter des pièces jointes telles que des vidéos, des exemples inspirants, des détails techniques ou des plans.</li><li>Partagez votre idée sur les réseaux sociaux et via d’autres canaux afin de récolter des votes.</li></ul>
   reset_password_mailer:
     send_reset_password:
+      preheader: 'Réinitialisez votre mot de passe pour %{organizationName}'
       cta_reset_password: 'Réinitialisez votre mot de passe'
       message_you_reset_your_password: 'Vous avez demandé une réinitialisation du mot de passe pour la plateforme de participation de %{organizationName}. Cliquez sur le bouton ci-dessous pour choisir un nouveau mot de passe sécurisé. Le lien expire dans 1 heure.'
       subject: '%{organizationName}: réinitialisez votre mot de passe'
@@ -310,6 +314,7 @@ fr:
   confirmations_mailer:
     send_confirmation_code:
       subject: "Confirmez votre adresse électronique pour la plateforme de participation de %{organizationName}"
+      preheader: 'Confirmez votre adresse e-mail pour %{organizationName}'
       header: "Votre code de confirmation"
       header_message: "Bonjour %{firstName} !"
       confirm_email_address: "Confirmez votre adresse e-mail"
@@ -324,6 +329,7 @@ fr:
   user_blocked_mailer:
     send_user_blocked_email:
       subject: 'Votre compte a été temporairement désactivé'
+      preheader: 'Votre compte sur la plateforme de participation de %{organizationName} a été temporairement désactivé'
       title_user_blocked: 'Votre compte a été temporairement désactivé'
       paragraph_1_without_reason: "Votre compte sur la plateforme de participation de %{organizationName} a été temporairement désactivé en raison d'une violation des règles de la communauté."
       paragraph_1_with_reason: "Votre compte sur la plateforme de participation de %{organizationName} a été temporairement désactivé pour la raison suivante :"
@@ -339,3 +345,5 @@ fr:
   voting_method:
     default_voting_term_singular: "vote"
     default_voting_term_plural: "votes"
+  ics_calendar_event:
+    event_details: "Détails de l'événement"

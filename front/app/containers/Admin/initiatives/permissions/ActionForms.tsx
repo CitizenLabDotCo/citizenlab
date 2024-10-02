@@ -17,7 +17,7 @@ interface Props {
 }
 
 const ActionForms = ({ permissions }: Props) => {
-  const { mutate: updatePermission } = useUpdatePermission();
+  const { mutateAsync: updatePermission } = useUpdatePermission();
   const { mutate: resetPermission } = useResetPermission();
 
   return (
@@ -50,15 +50,21 @@ const ActionForms = ({ permissions }: Props) => {
           >
             <ActionForm
               permissionData={permission}
-              onChange={({ permittedBy, groupIds, verificationExpiry }) =>
-                updatePermission({
+              onChange={async ({
+                permitted_by,
+                group_ids,
+                verification_expiry,
+                access_denied_explanation_multiloc,
+              }) => {
+                await updatePermission({
                   id: permission.id,
                   action: permission.attributes.action,
-                  permitted_by: permittedBy,
-                  group_ids: groupIds,
-                  verification_expiry: verificationExpiry,
-                })
-              }
+                  permitted_by,
+                  group_ids,
+                  verification_expiry,
+                  access_denied_explanation_multiloc,
+                });
+              }}
               onReset={() =>
                 resetPermission({
                   action: permissionAction,

@@ -145,6 +145,8 @@ class User < ApplicationRecord
   has_many :attended_events, through: :event_attendances, source: :event
   has_many :follows, -> { order(:followable_id) }, class_name: 'Follower', dependent: :destroy
   has_many :cosponsors_initiatives, dependent: :destroy
+  has_many :cosponsorships, dependent: :destroy
+  has_many :cosponsored_ideas, through: :cosponsorships, source: :idea
 
   before_validation :sanitize_bio_multiloc, if: :bio_multiloc
   before_validation :complete_registration

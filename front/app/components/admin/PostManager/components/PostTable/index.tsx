@@ -120,10 +120,8 @@ const PostTable = ({
   const handleSortClick =
     (newSortAttribute: IdeasSort | InitiativesSort) => () => {
       if (isFunction(onChangeSort)) {
-        let newSortSign = '-';
-        if (newSortAttribute === sortAttribute) {
-          newSortSign = sortDirection === 'ascending' ? '-' : '';
-        }
+        const newSortSign = sortDirection === 'ascending' ? '-' : '';
+
         onChangeSort(
           `${newSortSign}${newSortAttribute}` as IdeasSort | InitiativesSort
         );
@@ -193,7 +191,7 @@ const PostTable = ({
             type={type}
             selectedProjectId={selectedProjectId}
             selectedPhaseId={selectedPhaseId}
-            sortAttribute={sortAttribute}
+            sortAttribute={sortAttribute as IdeasSort} // PostTable handles both ideas && initiatives, but here we know we only have ideas
             sortDirection={sortDirection}
             allSelected={allSelected(selection)}
             toggleSelectAll={toggleSelectAll}

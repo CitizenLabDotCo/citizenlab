@@ -1,4 +1,4 @@
-import { IRelationship } from 'typings';
+import { IRelationship, Multiloc } from 'typings';
 
 import {
   IPhasePermissionAction,
@@ -22,6 +22,7 @@ export interface IGlobalPermissionData {
   id: string;
   type: 'permission';
   attributes: {
+    access_denied_explanation_multiloc: Multiloc;
     action: IGlobalPermissionAction;
     permitted_by: PermittedBy;
     created_at: string;
@@ -59,6 +60,7 @@ export interface PermissionUpdateParams {
   permitted_by: PermittedBy;
   global_custom_fields: boolean;
   verification_expiry: number | null;
+  access_denied_explanation_multiloc: Multiloc;
 }
 
 export type ResetPermissionParams = {

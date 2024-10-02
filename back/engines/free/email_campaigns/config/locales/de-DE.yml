@@ -82,6 +82,8 @@ de:
       "unsubscribe_text": "abbestellen"
     follow:
       "unfollow_here": "Sie haben diese Benachrichtigung wegen eines Elementes erhalten, dem Sie folgen. <a href=\"%{unfollow_url}\">Sie können hier aufhören diesem zu folgen.</a>"
+    manual:
+      preheader: 'Sie haben Post von %{organizationName}'
     comment_deleted_by_admin:
       reason: 'Der Grund, warum Ihr Kommentar gelöscht wurde:'
       cta_view: 'Zur Plattform'
@@ -540,6 +542,7 @@ de:
       cta_see_results: 'Ergebnisse auf der Plattform ansehen'
     event_registration_confirmation:
       subject: "Sie sind dabei! Ihre Anmeldung für \"%{eventTitle}\" ist bestätigt"
+      preheader: "%{firstName}, danke für Ihre Anmeldung für %{eventTitle}"
       header_message: "%{firstName}, danke für die Registrierung für"
       event_details:
         labels:

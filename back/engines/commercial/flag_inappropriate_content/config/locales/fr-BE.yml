@@ -6,6 +6,7 @@ fr-BE:
       "inappropriate_content_flagged": Contenu inapproprié signalé - administrateurs
     inappropriate_content_flagged:
       subject: 'Une publication a été signalée et doit-être vérifiée'
+      preheader: 'Une publication sur votre plateforme a été signalée et doit être vérifiée'
       header_title: 'Une publication a été signalée et doit-être vérifiée'
       comment_author: '%{authorName} a commenté :'
       idea_author: '%{authorName} a publié une contribution :'

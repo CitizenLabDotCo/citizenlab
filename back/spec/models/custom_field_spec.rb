@@ -91,6 +91,10 @@ class TestVisitor < FieldVisitorService
     'topic_ids from visitor'
   end
 
+  def visit_cosponsor_ids(_field)
+    'cosponsor_ids from visitor'
+  end
+
   def visit_file_upload(_field)
     'file_upload from visitor'
   end
@@ -523,8 +527,8 @@ RSpec.describe CustomField do
       expect(other_option_text_field).not_to be_nil
       expect(other_option_text_field.key).to eq 'select_field_other'
       expect(other_option_text_field.input_type).to eq 'text'
-      expect(other_option_text_field.title_multiloc['en']).to eq "If you picked 'Something else', what are you thinking of?"
-      expect(other_option_text_field.title_multiloc['fr-FR']).to eq 'Puisque vous avez choisi « Quelque chose », à quoi pensez-vous ?'
+      expect(other_option_text_field.title_multiloc['en']).to eq 'Type your answer'
+      expect(other_option_text_field.title_multiloc['fr-FR']).to eq 'Tapez votre réponse'
     end
 
     it 'returns nil otherwise' do

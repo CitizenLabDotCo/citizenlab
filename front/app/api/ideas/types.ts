@@ -131,6 +131,9 @@ export interface IIdeaData {
     idea_import?: {
       data: IRelationship | null;
     };
+    cosponsors?: {
+      data: IRelationship | null;
+    };
   };
 }
 

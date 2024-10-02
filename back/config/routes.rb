@@ -42,6 +42,7 @@ Rails.application.routes.draw do
         resources :permissions, param: :permission_action do
           get 'requirements', on: :member
           get 'schema', on: :member
+          get 'access_denied_explanation', on: :member
           patch 'reset', on: :member
           resources :permissions_custom_fields, shallow: true do
             patch 'reorder', on: :member
@@ -58,6 +59,9 @@ Rails.application.routes.draw do
         defaults: { reactable: 'Idea', spam_reportable: 'Idea', post: 'Idea', followable: 'Idea', parent_param: :idea_id } do
         resources :images, defaults: { container_type: 'Idea' }
         resources :files, defaults: { container_type: 'Idea' }
+        resources :cosponsorships, defaults: { container_type: 'Idea' } do
+          patch 'accept', on: :member
+        end
 
         get :as_xlsx, on: :collection, action: 'index_xlsx'
         get :mini, on: :collection, action: 'index_mini'
@@ -301,6 +305,7 @@ Rails.application.routes.draw do
   get '/auth/failure', to: 'omniauth_callback#failure'
   post '/auth/failure', to: 'omniauth_callback#failure'
   get '/auth/:provider/logout_data', to: 'omniauth_callback#logout_data'
+  get '/auth/:provider/spslo', to: 'omniauth_callback#spslo'
 
   if Rails.env.development?
     require 'que/web'

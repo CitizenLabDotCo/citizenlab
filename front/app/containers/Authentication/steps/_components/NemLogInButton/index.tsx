@@ -20,7 +20,7 @@ interface Props {
   grayBorder?: boolean;
   standardSSOBehavior?: boolean;
   onClick?: (method: TVerificationMethod) => void;
-  onClick2?: () => void;
+  onClickStandardSSO?: () => void;
 }
 
 const NemlogInButton = ({
@@ -29,7 +29,7 @@ const NemlogInButton = ({
   grayBorder,
   standardSSOBehavior,
   onClick,
-  onClick2,
+  onClickStandardSSO,
 }: Props) => {
   const handleOnClick = () => {
     if (method && onClick) {
@@ -37,7 +37,7 @@ const NemlogInButton = ({
     }
 
     if (standardSSOBehavior) {
-      onClick2?.();
+      onClickStandardSSO?.();
     } else {
       const jwt = getJwt();
       window.location.href = `${AUTH_PATH}/nemlog_in?token=${jwt}&pathname=${removeUrlLocale(
