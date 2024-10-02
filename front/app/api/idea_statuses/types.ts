@@ -74,6 +74,7 @@ export interface IIdeaStatusData {
     ideas_count?: number;
     locked: boolean;
     can_manually_transition_to: boolean;
+    participation_method: 'ideation' | 'proposals';
   };
 }
 
