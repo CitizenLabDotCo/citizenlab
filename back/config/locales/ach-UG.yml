@@ -170,6 +170,9 @@ ach:
       topic_ids:
         title: crwdns3224645:0crwdne3224645:0
         description: crwdns3224647:0crwdne3224647:0
+      consponsor_ids:
+        title: crwdns3250949:0crwdne3250949:0
+        description: crwdns3250951:0crwdne3250951:0
       location:
         title: crwdns3224649:0crwdne3224649:0
         description: crwdns3224651:0crwdne3224651:0
