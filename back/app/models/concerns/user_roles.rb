@@ -134,7 +134,6 @@ module UserRoles # rubocop:disable Metrics/ModuleLength
       when 'project_moderator'
         project_moderator = true
       when 'project_folder_moderator'
-        project_moderator = true
         compressed_roles << role
       end
     end
