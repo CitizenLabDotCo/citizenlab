@@ -31,6 +31,7 @@ PublicApi::Engine.routes.draw do
       route_mapper.resources :project_folders
       route_mapper.resources :reactions, only: %i[index]
       route_mapper.resources :topics
+      route_mapper.resources :areas
       route_mapper.resources :users
       route_mapper.resources :volunteering_causes
       route_mapper.resources :volunteering_volunteers
