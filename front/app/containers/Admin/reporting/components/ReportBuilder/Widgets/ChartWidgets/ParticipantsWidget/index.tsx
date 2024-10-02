@@ -17,9 +17,9 @@ import ChartWidgetSettings from './ChartWidgetSettings';
 import ParticipantsCard from './ParticipantsCard';
 import { Props } from './typings';
 
-const ParticipantsWidget = ({ title, projectId, ...props }: Props) => {
+const ParticipantsWidget = ({ title, ...props }: Props) => {
   const { formatMessage } = useIntl();
-  const { data: phases } = usePhases(projectId);
+  const { data: phases } = usePhases(props.projectId);
 
   return (
     <Card title={title} pagebreak>

@@ -170,6 +170,9 @@ nl:
       topic_ids:
         title: Tags
         description:
+      consponsor_ids:
+        title: Ondersteuners
+        description: Nodig ondersteuners uit via het onderstaande veld. De uitgenodigde ondersteuner(s) ontvangen een e-mail.
       location:
         title: Locatie
         description:

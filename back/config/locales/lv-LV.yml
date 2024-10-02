@@ -170,6 +170,9 @@ lv:
       topic_ids:
         title: Tagi
         description:
+      consponsor_ids:
+        title: Līdzfinansētāji
+        description: Uzaiciniet līdzfinansētājus, izmantojot tālāk norādīto lauku. Uzaicinātais(-ie) līdzsponsors(-i) saņems e-pastu.
       location:
         title: Atrašanās vieta
         description:
