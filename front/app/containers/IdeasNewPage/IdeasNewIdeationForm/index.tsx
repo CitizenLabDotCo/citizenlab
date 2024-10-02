@@ -91,7 +91,7 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
     phaseId,
   });
   const search = location.search;
-
+  const [loading, setLoading] = useState(false);
   const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
     useState(false);
   const [processingLocation, setProcessingLocation] = useState(false);
@@ -157,6 +157,7 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
   };
 
   const onSubmit = async (data: FormValues) => {
+    setLoading(true);
     const location_point_geojson = await getLocationGeojson(
       initialFormData,
       data
@@ -180,6 +181,7 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
       ideaId,
       idea,
     });
+    setLoading(false);
   };
 
   const getApiErrorMessage: ApiErrorGetter = useCallback(
@@ -260,6 +262,7 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
               initialFormData={initialFormData}
               getAjvErrorMessage={getAjvErrorMessage}
               getApiErrorMessage={getApiErrorMessage}
+              loading={loading}
               title={
                 participationMethodConfig.getFormTitle ? (
                   <Box mb="40px">
