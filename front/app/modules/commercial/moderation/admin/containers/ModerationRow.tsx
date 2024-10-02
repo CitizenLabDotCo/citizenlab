@@ -168,13 +168,6 @@ const ModerationRow = memo<Props & WrappedComponentProps>(
     function getViewLink(moderatableType: TModeratableType): RouteType | null {
       if (moderatableType === 'Comment') {
         if (
-          belongsToTypes.includes('initiative') &&
-          moderation.attributes.belongs_to.initiative?.slug
-        ) {
-          return `${initiativesPath}/${moderation.attributes.belongs_to.initiative.slug}`;
-        }
-
-        if (
           belongsToTypes.includes('idea') &&
           moderation.attributes.belongs_to.idea?.slug
         ) {
@@ -184,10 +177,6 @@ const ModerationRow = memo<Props & WrappedComponentProps>(
 
       if (moderatableType === 'Idea') {
         return `${ideasPath}/${moderation.attributes.content_slug}`;
-      }
-
-      if (moderatableType === 'Initiative') {
-        return `${initiativesPath}/${moderation.attributes.content_slug}`;
       }
 
       return null;

@@ -121,16 +121,12 @@ const InternalCommentsSection = ({ postId, postType, className }: Props) => {
       <Box my="24px">
         <InternalParentCommentForm
           ideaId={ideaId}
-          initiativeId={initiativeId}
-          postType={postType}
           postingComment={handleCommentPosting}
         />
       </Box>
 
       <InternalComments
         ideaId={ideaId}
-        initiativeId={initiativeId}
-        postType={postType}
         allComments={commentsList}
         loading={isLoading}
       />

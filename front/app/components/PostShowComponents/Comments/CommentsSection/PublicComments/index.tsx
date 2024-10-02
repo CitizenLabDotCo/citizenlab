@@ -164,8 +164,6 @@ const PublicComments = ({
         <Box mb="24px">
           <ParentCommentForm
             ideaId={ideaId}
-            initiativeId={initiativeId}
-            postType={postType}
             postingComment={handleCommentPosting}
             allowAnonymousParticipation={allowAnonymousParticipation}
           />
@@ -173,8 +171,6 @@ const PublicComments = ({
       )}
       <Comments
         ideaId={ideaId}
-        initiativeId={initiativeId}
-        postType={postType}
         allComments={commentsList}
         loading={isLoading}
         allowAnonymousParticipation={allowAnonymousParticipation}

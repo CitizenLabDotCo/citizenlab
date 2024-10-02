@@ -20,7 +20,6 @@ import { trackLike, trackCancelLike } from './trackReaction';
 
 interface Props {
   ideaId: string | undefined;
-  postType: 'idea' | 'initiative';
   commentType: 'parent' | 'child' | undefined;
   comment: ICommentData;
   className?: string;
@@ -28,7 +27,6 @@ interface Props {
 
 const CommentReaction = ({
   ideaId,
-  postType,
   comment,
   commentType,
   className,
@@ -136,27 +134,6 @@ const CommentReaction = ({
           context,
           successAction,
         });
-      }
-    }
-
-    if (postType === 'initiative') {
-      const authenticationRequirements =
-        commentReactingPermissionInitiative?.authenticationRequirements;
-
-      if (authenticationRequirements) {
-        // Wondering why 'commenting_initiative' and not 'comment_reacting_initiative'?
-        // See app/api/initiative_action_descriptors/types.ts
-        const context = {
-          action: 'commenting_initiative',
-          type: 'initiative',
-        } as const;
-
-        triggerAuthenticationFlow({
-          context,
-          successAction,
-        });
-      } else {
-        reaction();
       }
     }
   };

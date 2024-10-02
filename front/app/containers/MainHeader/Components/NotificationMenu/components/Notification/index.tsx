@@ -21,7 +21,6 @@ import {
   IProjectPhaseUpcomingNotificationData,
   IProjectPublishedNotificationData,
   IStatusChangeOnIdeaYouFollowNotificationData,
-  IThresholdReachedForAdminNotificationData,
   IProjectFolderModerationRightsReceivedNotificationData,
   IVotingBasketSubmittedNotificationData,
   INativeSurveyNotSubmittedNotificationData,
@@ -53,7 +52,6 @@ import ProjectPhaseStartedNotification from '../ProjectPhaseStartedNotification'
 import ProjectPhaseUpcomingNotification from '../ProjectPhaseUpcomingNotification';
 import ProjectPublishedNotification from '../ProjectPublishedNotification';
 import StatusChangeOnIdeaYouFollowNotification from '../StatusChangeOnIdeaYouFollowNotification';
-import ThresholdReachedForAdminNotification from '../ThresholdReachedForAdminNotification';
 import VotingBasketNotSubmittedNotification from '../VotingBasketNotSubmittedNotification';
 import VotingBasketSubmittedNotification from '../VotingBasketSubmittedNotification';
 import VotingLastChanceNotification from '../VotingLastChanceNotification';
@@ -187,15 +185,6 @@ const Notification = ({ notification }: Props) => {
         <StatusChangeOnIdeaYouFollowNotification
           notification={
             notification as IStatusChangeOnIdeaYouFollowNotificationData
-          }
-        />
-      );
-
-    case 'threshold_reached_for_admin':
-      return (
-        <ThresholdReachedForAdminNotification
-          notification={
-            notification as IThresholdReachedForAdminNotificationData
           }
         />
       );
