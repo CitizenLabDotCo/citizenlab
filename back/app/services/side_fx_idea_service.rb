@@ -161,7 +161,7 @@ class SideFxIdeaService
   end
 
   def log_activities_if_cosponsors_added(idea, user, old_cosponsor_ids)
-    added_ids = idea.reload.cosponsors.map(&:id) - old_cosponsor_ids
+    added_ids = idea.cosponsors.map(&:id) - old_cosponsor_ids
     if added_ids.present?
       new_cosponsorships = idea.cosponsorships.where(user_id: added_ids)
       new_cosponsorships.each do |cosponsorship|
