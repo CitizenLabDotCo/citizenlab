@@ -7,9 +7,6 @@ import type { Meta, StoryObj } from '@storybook/react';
 const meta = {
   title: 'DateSinglePicker',
   component: DateSinglePicker,
-  parameters: {
-    chromatic: { disableSnapshot: false },
-  },
 } satisfies Meta<typeof DateSinglePicker>;
 
 type Story = StoryObj<typeof meta>;

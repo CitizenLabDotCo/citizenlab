@@ -10,9 +10,6 @@ import type { Meta } from '@storybook/react';
 const meta = {
   title: 'DatePhasePicker',
   component: DatePhasePicker,
-  parameters: {
-    chromatic: { disableSnapshot: false },
-  },
 } satisfies Meta<typeof DatePhasePicker>;
 
 export default meta;
