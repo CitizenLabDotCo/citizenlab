@@ -1,7 +1,7 @@
 import lb from 'date-fns/locale/lb';
 import { registerLocale } from 'react-datepicker';
 
-import { addLocale } from 'components/admin/DatePickers/DatePhasePicker/Calendar/locales';
+import { addLocale } from 'components/admin/DatePickers/_shared/locales';
 
 import { formatTranslationMessages } from './';
 

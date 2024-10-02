@@ -1,7 +1,7 @@
 import sv from 'date-fns/locale/sv';
 import { registerLocale } from 'react-datepicker';
 
-import { addLocale } from 'components/admin/DatePickers/DatePhasePicker/Calendar/locales';
+import { addLocale } from 'components/admin/DatePickers/_shared/locales';
 
 import { formatTranslationMessages } from './';
 

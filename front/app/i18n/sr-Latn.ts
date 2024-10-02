@@ -1,7 +1,7 @@
 import srLatn from 'date-fns/locale/sr-Latn';
 import { registerLocale } from 'react-datepicker';
 
-import { addLocale } from 'components/admin/DatePickers/DatePhasePicker/Calendar/locales';
+import { addLocale } from 'components/admin/DatePickers/_shared/locales';
 
 import { formatTranslationMessages } from './';
 

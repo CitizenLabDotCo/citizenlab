@@ -1,7 +1,7 @@
 import arMA from 'date-fns/locale/ar-MA';
 import { registerLocale } from 'react-datepicker';
 
-import { addLocale } from 'components/admin/DatePickers/DatePhasePicker/Calendar/locales';
+import { addLocale } from 'components/admin/DatePickers/_shared/locales';
 
 import { formatTranslationMessages } from './';
 
