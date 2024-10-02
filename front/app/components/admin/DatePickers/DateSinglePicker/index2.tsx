@@ -32,7 +32,14 @@ const DateSinglePicker = ({ selectedDate, onChange }: Props) => {
       <Tooltip
         content={
           <Box width={WIDTH}>
-            <Calendar selectedDate={selectedDate} onChange={onChange} />
+            <Calendar
+              selectedDate={selectedDate}
+              onChange={(date) => {
+                // We don't allow deselecting dates
+                if (!date) return;
+                onChange(date);
+              }}
+            />
           </Box>
         }
         placement="bottom"
