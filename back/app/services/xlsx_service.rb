@@ -134,7 +134,7 @@ class XlsxService
     generate_xlsx 'Users', columns, users
   end
 
-  def generate_idea_xlsx_columns(_ideas, view_private_attributes: false, with_tags: false)
+  def generate_idea_xlsx_columns(_ideas, view_private_attributes: false, with_tags: false, with_cosponsors: false)
     columns = [
       { header: 'id',                   f: ->(i) { i.id }, skip_sanitization: true },
       { header: 'title',                f: ->(i) { multiloc_service.t(i.title_multiloc) } },
@@ -158,13 +158,18 @@ class XlsxService
       { header: 'location_description', f: ->(i) { i.location_description } },
       { header: 'attachments',          f: ->(i) { i.idea_files.map { |f| f.file.url }.join("\n") }, skip_sanitization: true, width: 2 }
     ]
+    if with_cosponsors
+      columns.push(
+        { header: 'cosponsors', f: ->(i) { i.cosponsors.map(&:full_name).join(', ') }, skip_sanitization: true }
+      )
+    end
     columns.concat user_custom_field_columns(:author)
     columns.reject! { |c| %w[author_name author_email assignee assignee_email author_id].include?(c[:header]) } unless view_private_attributes
     columns
   end
 
-  def generate_ideas_xlsx(ideas, view_private_attributes: false, with_tags: false)
-    columns = generate_idea_xlsx_columns(ideas, view_private_attributes: view_private_attributes, with_tags: with_tags)
+  def generate_ideas_xlsx(ideas, view_private_attributes: false, with_tags: false, with_cosponsors: false)
+    columns = generate_idea_xlsx_columns(ideas, view_private_attributes: view_private_attributes, with_tags:, with_cosponsors:)
 
     generate_xlsx 'Ideas', columns, ideas
   end
