@@ -170,6 +170,9 @@ de:
       topic_ids:
         title: Themen
         description:
+      consponsor_ids:
+        title: Unterstützer*innen
+        description: Laden Sie Unterstützer*innen über das unten stehende Feld ein. Unterstützende werden eine E-Mail erhalten.
       location:
         title: Standort
         description:
