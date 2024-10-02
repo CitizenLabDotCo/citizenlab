@@ -170,6 +170,9 @@ pt:
       topic_ids:
         title: Tópicos
         description:
+      consponsor_ids:
+        title: Co-patrocinadores
+        description: Convide co-patrocinadores por meio do campo abaixo. Você receberá um e-mail do(s) copatrocinador(es) convidado(s).
       location:
         title: Localização
         description:
