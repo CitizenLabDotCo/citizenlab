@@ -54,6 +54,7 @@ const InputContainer = ({ id, disabled = false, children, onClick }: Props) => {
   return (
     <Container
       id={id}
+      className="e2e-date-phase-picker-input"
       disabled={disabled}
       onClick={(e) => {
         if (disabled) return;
