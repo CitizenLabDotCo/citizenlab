@@ -50,6 +50,7 @@ const Input = ({ selectedRange, selectedRangeIsOpenEnded, onClick }: Props) => {
 
   return (
     <Container
+      className="e2e-date-phase-picker-input"
       onClick={(e) => {
         e.preventDefault();
         onClick();
