@@ -7,7 +7,7 @@ import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import { cosponsorshipData } from './__mocks__/useCosponsorships';
 import useAcceptCosponsorshipInvitation from './useAcceptCosponsorshipInvitation';
 
-const apiPath = '*cosponsorships/:id/accept_cosponsorship';
+const apiPath = '*cosponsorships/:id/accept';
 const server = setupServer(
   http.patch(apiPath, () => {
     return HttpResponse.json({ data: cosponsorshipData[0] }, { status: 200 });

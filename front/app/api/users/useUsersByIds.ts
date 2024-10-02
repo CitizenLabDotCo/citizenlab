@@ -14,6 +14,12 @@ export const fetchUser = (id: string) => {
   });
 };
 
+/**
+ * Fetches users by their ids one by one (careful with performance implications)
+ * @param userIds - Array of user ids
+ * @returns Array of useQuery hooks
+ */
+
 const useUsersWithIds = (userIds?: string[]) => {
   const queries = userIds
     ? userIds.map((userId) => ({

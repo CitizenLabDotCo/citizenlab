@@ -34,7 +34,7 @@ resource 'Cosponsorships' do
   end
 
   context 'when the user is the invited user' do
-    patch 'web_api/v1/ideas/:idea_id/cosponsorships/:cosponsorship_id/accept_cosponsorship' do
+    patch 'web_api/v1/ideas/:idea_id/cosponsorships/:cosponsorship_id/accept' do
       before do
         header 'Authorization', authorization_header(@user)
       end
@@ -47,7 +47,7 @@ resource 'Cosponsorships' do
   end
 
   context 'when the user is not the invited user' do
-    patch 'web_api/v1/ideas/:idea_id/cosponsorships/:cosponsorship_id/accept_cosponsorship' do
+    patch 'web_api/v1/ideas/:idea_id/cosponsorships/:cosponsorship_id/accept' do
       example_request 'Accept a cosponsorship when the user is not the invited user' do
         expect(status).to eq 401
       end

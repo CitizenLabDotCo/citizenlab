@@ -16,7 +16,7 @@ const acceptCosponsorshipInvitation = ({
   id,
 }: IAcceptCosponsorshipInvitationObject) =>
   fetcher<ICosponsorship>({
-    path: `/ideas/${ideaId}/cosponsorships/${id}/accept_cosponsorship`,
+    path: `/ideas/${ideaId}/cosponsorships/${id}/accept`,
     action: 'patch',
   });
 

@@ -10,11 +10,11 @@ class CosponsorshipPolicy < ApplicationPolicy
     end
 
     def resolve
-      scope.all
+      scope.where(idea_id: Pundit.policy_scope(user, Idea))
     end
   end
 
-  def accept_cosponsorship?
+  def accept?
     user.id == record.user_id
   end
 end
