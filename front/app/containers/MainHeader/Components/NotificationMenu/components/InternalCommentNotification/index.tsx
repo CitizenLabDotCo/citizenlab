@@ -16,26 +16,6 @@ interface Props {
   notification: IInternalCommentNotificationData;
 }
 
-const mapPostTypeToLink = (
-  notification: IInternalCommentNotificationData
-): RouteType | null => {
-  const { post_type, project_id, post_id, internal_comment_id } =
-    notification.attributes;
-
-  switch (post_type) {
-    case 'Idea': {
-      // project_id cannot be null for an idea but we need to check it for TS because we have no project_id on initiatives
-      if (!project_id) {
-        return null;
-      }
-      return `/admin/projects/${project_id}/ideas/${post_id}#${internal_comment_id}`;
-    }
-
-    case 'Initiative':
-      return `/admin/initiatives/${post_id}#${internal_comment_id}`;
-  }
-};
-
 const getNotificationMessage = (
   notification: IInternalCommentNotificationData
 ): MessageDescriptor => {
@@ -65,7 +45,8 @@ const InternalCommentNotification = memo<Props>(({ notification }) => {
   const deletedUser =
     isNilOrError(notification.attributes.initiating_user_first_name) ||
     isNilOrError(notification.attributes.initiating_user_slug);
-  const linkTo: RouteType | null = mapPostTypeToLink(notification);
+  const { project_id, post_id, internal_comment_id } = notification.attributes;
+  const linkTo: RouteType | null = `/admin/projects/${project_id}/ideas/${post_id}#${internal_comment_id}`;
 
   if (!linkTo) {
     return null;
