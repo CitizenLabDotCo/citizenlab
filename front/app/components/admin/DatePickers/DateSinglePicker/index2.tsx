@@ -7,6 +7,7 @@ import ClickOutside from 'utils/containers/clickOutside';
 
 import Calendar from './Calendar';
 import Input from './Input';
+import { Props } from './typings';
 
 const WIDTH = '310px';
 
@@ -17,14 +18,12 @@ const StyledClickOutside = styled(ClickOutside)`
   }
 `;
 
-type Props = {
-  id?: string;
-  selectedDate: Date | undefined;
-  onChange: (date: Date | undefined) => void;
-  disabled?: boolean;
-};
-
-const DateSinglePicker = ({ selectedDate, onChange }: Props) => {
+const DateSinglePicker = ({
+  selectedDate,
+  startMonth,
+  endMonth,
+  onChange,
+}: Props) => {
   const [calendarOpen, setCalendarOpen] = useState(false);
 
   return (
@@ -34,6 +33,8 @@ const DateSinglePicker = ({ selectedDate, onChange }: Props) => {
           <Box width={WIDTH}>
             <Calendar
               selectedDate={selectedDate}
+              startMonth={startMonth}
+              endMonth={endMonth}
               onChange={(date) => {
                 // We don't allow deselecting dates
                 if (!date) return;
