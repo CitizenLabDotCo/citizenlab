@@ -9,26 +9,18 @@ import {
   ICommentMarkedAsSpamNotificationData,
   ICommentOnYourCommentNotificationData,
   ICommentOnIdeaYouFollowNotificationData,
-  ICommentOnInitiativeYouFollowNotificationData,
-  ICosponsorOfYourInitiativeNotificationData,
   IIdeaAssignedToYouNotificationData,
   IIdeaMarkedAsSpamNotificationData,
-  IInitiativeAssignedToYouNotificationData,
-  IInitiativeMarkedAsSpamNotificationData,
-  IInitiativeResubmittedForReviewNotificationData,
   IInviteAcceptedNotificationData,
-  IInvitationToCosponsorInitiativeNotificationData,
   IMentionInCommentNotificationData,
   IInternalCommentNotificationData,
   IMentionInOfficialFeedbackNotificationData,
   IOfficialFeedbackOnIdeaYouFollowNotificationData,
-  IOfficialFeedbackOnInitiativeYouFollowNotificationData,
   IProjectModerationRightsReceivedNotificationData,
   IProjectPhaseStartedNotificationData,
   IProjectPhaseUpcomingNotificationData,
   IProjectPublishedNotificationData,
   IStatusChangeOnIdeaYouFollowNotificationData,
-  IStatusChangeOnInitiativeYouFollowNotificationData,
   IThresholdReachedForAdminNotificationData,
   IProjectFolderModerationRightsReceivedNotificationData,
   IVotingBasketSubmittedNotificationData,
@@ -46,29 +38,21 @@ import AdminRightsReceivedNotification from '../AdminRightsReceivedNotification'
 import CommentDeletedByAdminNotification from '../CommentDeletedByAdminNotification';
 import CommentMarkedAsSpamNotification from '../CommentMarkedAsSpamNotification';
 import CommentOnIdeaYouFollowNotification from '../CommentOnIdeaYouFollowNotification';
-import CommentOnInitiativeYouFollowNotification from '../CommentOnInitiativeYouFollowNotification';
 import CommentOnYourCommentNotification from '../CommentOnYourCommentNotification';
-import CosponsorOfYourInitiativeNotification from '../CosponsorOfYourInitiativeNotification';
 import IdeaAssignedToYouNotification from '../IdeaAssignedToYouNotification';
 import IdeaMarkedAsSpamNotification from '../IdeaMarkedAsSpamNotification';
-import InitiativeAssignedToYouNotification from '../InitiativeAssignedToYouNotification';
-import InitiativeMarkedAsSpamNotification from '../InitiativeMarkedAsSpamNotification';
-import InitiativeResubmittedForReviewNotification from '../InitiativeResubmittedForReviewNotification';
 import InternalCommentNotification from '../InternalCommentNotification';
-import InvitationToCosponsorInitiativeNotification from '../InvitationToCosponsorInitiativeNotification';
 import InviteAcceptedNotification from '../InviteAcceptedNotification';
 import MentionInCommentNotification from '../MentionInCommentNotification';
 import MentionInOfficialFeedbackNotification from '../MentionInOfficialFeedbackNotification';
 import NativeSurveyNotSubmittedNotification from '../NativeSurveyNotSubmittedNotification';
 import OfficialFeedbackOnIdeaYouFollowNotification from '../OfficialFeedbackOnIdeaYouFollowNotification';
-import OfficialFeedbackOnInitiativeYouFollowNotification from '../OfficialFeedbackOnInitiativeYouFollowNotification';
 import ProjectFolderModerationRightsReceivedNotification from '../ProjectFolderModerationRightsReceivedNotification';
 import ProjectModerationRightsReceivedNotification from '../ProjectModerationRightsReceivedNotification';
 import ProjectPhaseStartedNotification from '../ProjectPhaseStartedNotification';
 import ProjectPhaseUpcomingNotification from '../ProjectPhaseUpcomingNotification';
 import ProjectPublishedNotification from '../ProjectPublishedNotification';
 import StatusChangeOnIdeaYouFollowNotification from '../StatusChangeOnIdeaYouFollowNotification';
-import StatusChangeOnInitiativeYouFollowNotification from '../StatusChangeOnInitiativeYouFollowNotification';
 import ThresholdReachedForAdminNotification from '../ThresholdReachedForAdminNotification';
 import VotingBasketNotSubmittedNotification from '../VotingBasketNotSubmittedNotification';
 import VotingBasketSubmittedNotification from '../VotingBasketSubmittedNotification';
@@ -117,22 +101,7 @@ const Notification = ({ notification }: Props) => {
           notification={notification as ICommentOnIdeaYouFollowNotificationData}
         />
       );
-    case 'comment_on_initiative_you_follow':
-      return (
-        <CommentOnInitiativeYouFollowNotification
-          notification={
-            notification as ICommentOnInitiativeYouFollowNotificationData
-          }
-        />
-      );
-    case 'cosponsor_of_your_initiative':
-      return (
-        <CosponsorOfYourInitiativeNotification
-          notification={
-            notification as ICosponsorOfYourInitiativeNotificationData
-          }
-        />
-      );
+
     case 'idea_assigned_to_you':
       return (
         <IdeaAssignedToYouNotification
@@ -145,42 +114,14 @@ const Notification = ({ notification }: Props) => {
           notification={notification as IIdeaMarkedAsSpamNotificationData}
         />
       );
-    case 'initiative_assigned_to_you':
-      return (
-        <InitiativeAssignedToYouNotification
-          notification={
-            notification as IInitiativeAssignedToYouNotificationData
-          }
-        />
-      );
-    case 'initiative_marked_as_spam':
-      return (
-        <InitiativeMarkedAsSpamNotification
-          notification={notification as IInitiativeMarkedAsSpamNotificationData}
-        />
-      );
-    case 'initiative_resubmitted_for_review':
-      return (
-        <InitiativeResubmittedForReviewNotification
-          notification={
-            notification as IInitiativeResubmittedForReviewNotificationData
-          }
-        />
-      );
+
     case 'invite_accepted':
       return (
         <InviteAcceptedNotification
           notification={notification as IInviteAcceptedNotificationData}
         />
       );
-    case 'invitation_to_cosponsor_initiative':
-      return (
-        <InvitationToCosponsorInitiativeNotification
-          notification={
-            notification as IInvitationToCosponsorInitiativeNotificationData
-          }
-        />
-      );
+
     case 'mention_in_comment':
       return (
         <MentionInCommentNotification
@@ -190,12 +131,9 @@ const Notification = ({ notification }: Props) => {
     case 'mention_in_internal_comment':
     case 'internal_comment_on_your_internal_comment':
     case 'internal_comment_on_idea_assigned_to_you':
-    case 'internal_comment_on_initiative_assigned_to_you':
     case 'internal_comment_on_idea_you_moderate':
     case 'internal_comment_on_idea_you_commented_internally_on':
-    case 'internal_comment_on_initiative_you_commented_internally_on':
     case 'internal_comment_on_unassigned_unmoderated_idea':
-    case 'internal_comment_on_unassigned_initiative':
       return (
         <InternalCommentNotification
           notification={notification as IInternalCommentNotificationData}
@@ -217,14 +155,7 @@ const Notification = ({ notification }: Props) => {
           }
         />
       );
-    case 'official_feedback_on_initiative_you_follow':
-      return (
-        <OfficialFeedbackOnInitiativeYouFollowNotification
-          notification={
-            notification as IOfficialFeedbackOnInitiativeYouFollowNotificationData
-          }
-        />
-      );
+
     case 'project_moderation_rights_received':
       return (
         <ProjectModerationRightsReceivedNotification
@@ -259,14 +190,7 @@ const Notification = ({ notification }: Props) => {
           }
         />
       );
-    case 'status_change_on_initiative_you_follow':
-      return (
-        <StatusChangeOnInitiativeYouFollowNotification
-          notification={
-            notification as IStatusChangeOnInitiativeYouFollowNotificationData
-          }
-        />
-      );
+
     case 'threshold_reached_for_admin':
       return (
         <ThresholdReachedForAdminNotification

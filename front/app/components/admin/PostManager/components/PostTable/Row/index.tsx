@@ -16,7 +16,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import { ManagerType, TFilterMenu } from '../../..';
 
 import IdeaRow from './IdeaRow';
-import InitiativeRow from './InitiativeRow';
 
 export const TitleLink = styled.a`
   display: block;
@@ -38,8 +37,6 @@ export const TitleLink = styled.a`
     text-decoration: underline;
   }
 `;
-
-function nothingHappens() {}
 
 type Props = {
   type: ManagerType;
@@ -84,45 +81,23 @@ const Row = ({
     return null;
   }
 
-  if (
-    type === 'AllIdeas' ||
-    type === 'ProjectIdeas' ||
-    type === 'ProjectProposals'
-  ) {
-    return (
-      <Suspense fallback={null}>
-        <IdeaRow
-          type={type}
-          idea={post as IIdeaData}
-          statuses={statuses as IIdeaStatusData[]}
-          selectedProjectId={selectedProjectId}
-          selectedPhaseId={selectedPhaseId}
-          phases={phases}
-          selection={selection}
-          activeFilterMenu={activeFilterMenu}
-          onClickCheckbox={onClickCheckbox}
-          onClickTitle={onClickTitle}
-          locale={locale}
-        />
-      </Suspense>
-    );
-  } else if (type === 'Initiatives') {
-    return (
-      <Suspense fallback={null}>
-        <InitiativeRow
-          type={type}
-          initiative={post as IInitiativeData}
-          statuses={statuses as IInitiativeStatusData[]}
-          selection={selection}
-          activeFilterMenu={activeFilterMenu}
-          onClickCheckbox={onClickCheckbox}
-          onClickTitle={onClickTitle}
-          nothingHappens={nothingHappens}
-        />
-      </Suspense>
-    );
-  }
-  return null;
+  return (
+    <Suspense fallback={null}>
+      <IdeaRow
+        type={type}
+        idea={post as IIdeaData}
+        statuses={statuses as IIdeaStatusData[]}
+        selectedProjectId={selectedProjectId}
+        selectedPhaseId={selectedPhaseId}
+        phases={phases}
+        selection={selection}
+        activeFilterMenu={activeFilterMenu}
+        onClickCheckbox={onClickCheckbox}
+        onClickTitle={onClickTitle}
+        locale={locale}
+      />
+    </Suspense>
+  );
 };
 
 export default Row;

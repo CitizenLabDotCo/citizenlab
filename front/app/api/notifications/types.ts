@@ -95,33 +95,6 @@ export interface ICommentOnIdeaYouFollowNotificationData
   };
 }
 
-export interface ICommentOnInitiativeYouFollowNotificationData
-  extends IBaseNotificationData {
-  attributes: {
-    type: 'comment_on_initiative_you_follow';
-    read_at: string | null;
-    created_at: string;
-    initiating_user_first_name: string | null;
-    initiating_user_last_name: string | null;
-    initiating_user_slug: string | null;
-    post_slug: string | null;
-    post_title_multiloc: Multiloc;
-  };
-}
-
-export interface ICosponsorOfYourInitiativeNotificationData
-  extends IBaseNotificationData {
-  attributes: {
-    type: 'cosponsor_of_your_initiative';
-    read_at: string | null;
-    created_at: string;
-    initiating_user_first_name: string | null;
-    initiating_user_last_name: string | null;
-    initiating_user_slug: string | null;
-    post_slug: string | null;
-  };
-}
-
 export interface IIdeaAssignedToYouNotificationData
   extends IBaseNotificationData {
   attributes: {
@@ -150,45 +123,6 @@ export interface IIdeaMarkedAsSpamNotificationData
   };
 }
 
-export interface IInitiativeAssignedToYouNotificationData
-  extends IBaseNotificationData {
-  attributes: {
-    type: 'initiative_assigned_to_you';
-    read_at: string | null;
-    created_at: string;
-    initiating_user_first_name: string | null;
-    initiating_user_last_name: string | null;
-    initiating_user_slug: string | null;
-    post_title_multiloc: Multiloc;
-    post_slug: string;
-  };
-}
-
-export interface IInitiativeMarkedAsSpamNotificationData
-  extends IBaseNotificationData {
-  attributes: {
-    type: 'initiative_marked_as_spam';
-    read_at: string | null;
-    created_at: string;
-    initiating_user_first_name: string | null;
-    initiating_user_last_name: string | null;
-    initiating_user_slug: string | null;
-    post_title_multiloc: Multiloc;
-    post_slug: string;
-  };
-}
-
-export interface IInitiativeResubmittedForReviewNotificationData
-  extends IBaseNotificationData {
-  attributes: {
-    type: 'initiative_resubmitted_for_review';
-    read_at: string | null;
-    created_at: string;
-    post_title_multiloc: Multiloc;
-    post_slug: string;
-  };
-}
-
 export interface IInviteAcceptedNotificationData extends IBaseNotificationData {
   attributes: {
     type: 'invite_accepted';
@@ -197,19 +131,6 @@ export interface IInviteAcceptedNotificationData extends IBaseNotificationData {
     initiating_user_first_name: string | null;
     initiating_user_last_name: string | null;
     initiating_user_slug: string | null;
-  };
-}
-
-export interface IInvitationToCosponsorInitiativeNotificationData
-  extends IBaseNotificationData {
-  attributes: {
-    type: 'invitation_to_cosponsor_initiative';
-    read_at: string | null;
-    created_at: string;
-    initiating_user_first_name: string | null;
-    initiating_user_last_name: string | null;
-    initiating_user_slug: string | null;
-    post_slug: string | null;
   };
 }
 
@@ -266,18 +187,6 @@ export interface IOfficialFeedbackOnIdeaYouFollowNotificationData
   extends IBaseNotificationData {
   attributes: {
     type: 'official_feedback_on_idea_you_follow';
-    read_at: string | null;
-    created_at: string;
-    official_feedback_author: Multiloc;
-    post_slug: string | null;
-    post_title_multiloc: Multiloc;
-  };
-}
-
-export interface IOfficialFeedbackOnInitiativeYouFollowNotificationData
-  extends IBaseNotificationData {
-  attributes: {
-    type: 'official_feedback_on_initiative_you_follow';
     read_at: string | null;
     created_at: string;
     official_feedback_author: Multiloc;
@@ -343,18 +252,6 @@ export interface IStatusChangeOnIdeaYouFollowNotificationData
     post_title_multiloc: Multiloc;
     post_slug: string;
     idea_status_title_multiloc: Multiloc;
-  };
-}
-
-export interface IStatusChangeOnInitiativeYouFollowNotificationData
-  extends IBaseNotificationData {
-  attributes: {
-    type: 'status_change_on_initiative_you_follow';
-    read_at: string | null;
-    created_at: string;
-    post_title_multiloc: Multiloc;
-    post_slug: string;
-    initiative_status_title_multiloc: Multiloc;
   };
 }
 
@@ -442,26 +339,18 @@ export interface INotificationDataMap {
   ICommentMarkedAsSpamNotificationData: ICommentMarkedAsSpamNotificationData;
   ICommentOnYourCommentNotificationData: ICommentOnYourCommentNotificationData;
   ICommentOnIdeaYouFollowNotificationData: ICommentOnIdeaYouFollowNotificationData;
-  ICommentOnInitiativeYouFollowNotificationData: ICommentOnInitiativeYouFollowNotificationData;
-  ICosponsorOfYourInitiativeNotificationData: ICosponsorOfYourInitiativeNotificationData;
   IIdeaAssignedToYouNotificationData: IIdeaAssignedToYouNotificationData;
   IIdeaMarkedAsSpamNotificationData: IIdeaMarkedAsSpamNotificationData;
-  IInitiativeAssignedToYouNotificationData: IInitiativeAssignedToYouNotificationData;
-  IInitiativeMarkedAsSpamNotificationData: IInitiativeMarkedAsSpamNotificationData;
-  IInitiativeResubmittedForReviewNotificationData: IInitiativeResubmittedForReviewNotificationData;
   IInviteAcceptedNotificationData: IInviteAcceptedNotificationData;
-  IInvitationToCosponsorInitiativeNotificationData: IInvitationToCosponsorInitiativeNotificationData;
   IMentionInCommentNotificationData: IMentionInCommentNotificationData;
   IInternalCommentNotificationData: IInternalCommentNotificationData;
   IMentionInOfficialFeedbackNotificationData: IMentionInOfficialFeedbackNotificationData;
   IOfficialFeedbackOnIdeaYouFollowNotificationData: IOfficialFeedbackOnIdeaYouFollowNotificationData;
-  IOfficialFeedbackOnInitiativeYouFollowNotificationData: IOfficialFeedbackOnInitiativeYouFollowNotificationData;
   IProjectModerationRightsReceivedNotificationData: IProjectModerationRightsReceivedNotificationData;
   IProjectPhaseStartedNotificationData: IProjectPhaseStartedNotificationData;
   IProjectPhaseUpcomingNotificationData: IProjectPhaseUpcomingNotificationData;
   IProjectPublishedNotificationData: IProjectPublishedNotificationData;
   IStatusChangeOnIdeaYouFollowNotificationData: IStatusChangeOnIdeaYouFollowNotificationData;
-  IStatusChangeOnInitiativeYouFollowNotificationData: IStatusChangeOnInitiativeYouFollowNotificationData;
   IThresholdReachedForAdminNotificationData: IThresholdReachedForAdminNotificationData;
   IProjectFolderModerationRightsReceivedNotificationData: IProjectFolderModerationRightsReceivedNotificationData;
   IVotingBasketSubmittedNotificationData: IVotingBasketSubmittedNotificationData;

@@ -29,7 +29,6 @@ import { SortDirection } from 'utils/paginationUtils';
 import { ManagerType, TFilterMenu } from '../..';
 
 import IdeaHeaderRow from './header/IdeaHeaderRow';
-import InitiativesHeaderRow from './header/InitiativesHeaderRow';
 import NoPost from './NoPost';
 import Row from './Row';
 
@@ -176,28 +175,17 @@ const PostTable = ({
           bodyRows: true,
         }}
       >
-        {type === 'Initiatives' ? (
-          <InitiativesHeaderRow
-            sortAttribute={sortAttribute as InitiativesSort}
-            sortDirection={sortDirection}
-            allSelected={allSelected(selection)}
-            toggleSelectAll={toggleSelectAll}
-            handleSortClick={handleSortClick}
-          />
-        ) : type === 'AllIdeas' ||
-          type === 'ProjectIdeas' ||
-          type === 'ProjectProposals' ? (
-          <IdeaHeaderRow
-            type={type}
-            selectedProjectId={selectedProjectId}
-            selectedPhaseId={selectedPhaseId}
-            sortAttribute={sortAttribute as IdeasSort} // PostTable handles both ideas && initiatives, but here we know we only have ideas
-            sortDirection={sortDirection}
-            allSelected={allSelected(selection)}
-            toggleSelectAll={toggleSelectAll}
-            handleSortClick={handleSortClick}
-          />
-        ) : null}
+        <IdeaHeaderRow
+          type={type}
+          selectedProjectId={selectedProjectId}
+          selectedPhaseId={selectedPhaseId}
+          sortAttribute={sortAttribute as IdeasSort} // PostTable handles both ideas && initiatives, but here we know we only have ideas
+          sortDirection={sortDirection}
+          allSelected={allSelected(selection)}
+          toggleSelectAll={toggleSelectAll}
+          handleSortClick={handleSortClick}
+        />
+
         <Tbody>
           {!isEmpty(posts) ? (
             <TransitionGroup component={null}>
@@ -241,7 +229,7 @@ const PostTable = ({
       {isEmpty(posts) && (
         <TransitionGroup component={null}>
           <CSSTransition classNames="fade" timeout={500}>
-            <NoPost handleSeeAll={handleSeeAll} type={type} />
+            <NoPost handleSeeAll={handleSeeAll} />
           </CSSTransition>
         </TransitionGroup>
       )}

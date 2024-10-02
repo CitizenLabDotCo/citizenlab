@@ -14,6 +14,7 @@ import { Multiloc, CLErrors } from 'typings';
 import { VotingMethod } from 'api/phases/types';
 
 import {
+  SectionDescription,
   SectionField,
   SubSectionTitleWithDescription,
 } from 'components/admin/Section';

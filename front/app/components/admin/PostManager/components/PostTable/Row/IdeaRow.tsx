@@ -445,7 +445,6 @@ const IdeaRow = ({
           statuses,
           selectedStatus,
         }}
-        allowedTransitions={null}
         onUpdatePhases={onUpdateIdeaPhases}
         onUpdateTopics={onUpdateIdeaTopics}
         onUpdateStatus={onUpdateIdeaStatus}
