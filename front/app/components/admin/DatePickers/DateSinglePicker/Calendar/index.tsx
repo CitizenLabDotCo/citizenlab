@@ -4,6 +4,10 @@ import { colors } from '@citizenlab/cl2-component-library';
 import { DayPicker } from 'react-day-picker';
 import styled from 'styled-components';
 
+import useLocale from 'hooks/useLocale';
+
+import { getLocale } from '../../_shared/locales';
+
 const DayPickerStyles = styled.div`
   .rdp-root {
     --rdp-accent-color: ${colors.teal700};
@@ -24,9 +28,17 @@ interface Props {
 }
 
 const Calendar = ({ selectedDate, onChange }: Props) => {
+  const locale = useLocale();
+
   return (
     <DayPickerStyles>
-      <DayPicker mode="single" selected={selectedDate} onSelect={onChange} />
+      <DayPicker
+        mode="single"
+        captionLayout="dropdown"
+        locale={getLocale(locale)}
+        selected={selectedDate}
+        onSelect={onChange}
+      />
     </DayPickerStyles>
   );
 };

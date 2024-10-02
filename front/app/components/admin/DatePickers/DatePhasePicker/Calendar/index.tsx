@@ -8,9 +8,9 @@ import styled from 'styled-components';
 
 import useLocale from 'hooks/useLocale';
 
+import { getLocale } from '../../_shared/locales';
 import { Props } from '../typings';
 
-import { getLocale } from './locales';
 import { generateModifiers } from './utils/generateModifiers';
 import { getEndMonth, getStartMonth } from './utils/getStartEndMonth';
 import { getUpdatedRange } from './utils/getUpdatedRange';
