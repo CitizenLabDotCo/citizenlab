@@ -20,6 +20,7 @@ const StyledClickOutside = styled(ClickOutside)`
 
 const DateSinglePicker = ({
   id,
+  disabled,
   selectedDate,
   startMonth,
   endMonth,
@@ -49,6 +50,7 @@ const DateSinglePicker = ({
       >
         <Input
           id={id}
+          disabled={disabled}
           selectedDate={selectedDate}
           onClick={() => setCalendarOpen(true)}
         />

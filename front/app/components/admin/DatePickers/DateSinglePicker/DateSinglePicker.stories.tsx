@@ -6,7 +6,7 @@ import DateSinglePicker from './index2';
 
 import OldDateSinglePicker from '.';
 
-import type { Meta } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
   title: 'DateSinglePicker',
@@ -15,6 +15,8 @@ const meta = {
     chromatic: { disableSnapshot: false },
   },
 } satisfies Meta<typeof DateSinglePicker>;
+
+type Story = StoryObj<typeof meta>;
 
 export default meta;
 
@@ -29,6 +31,13 @@ const WrapperStandard = () => {
 export const Standard = {
   render: () => {
     return <WrapperStandard />;
+  },
+};
+
+export const Disabled: Story = {
+  args: {
+    disabled: true,
+    onChange: () => {},
   },
 };
 

@@ -1,7 +1,7 @@
 export interface CalendarProps {
   startMonth?: Date;
   endMonth?: Date;
-  selectedDate: Date | undefined;
+  selectedDate?: Date;
   onChange: (date: Date) => void;
 }
 
