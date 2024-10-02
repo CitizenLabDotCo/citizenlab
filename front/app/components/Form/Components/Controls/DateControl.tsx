@@ -49,7 +49,7 @@ const DateControl = ({
       <Box display="flex">
         <DateSinglePicker
           id={sanitizeForClassname(id)}
-          selectedDate={data ? new Date(data) : null}
+          selectedDate={data ? new Date(data) : undefined}
           onChange={(value) => {
             handleChange(
               path,
