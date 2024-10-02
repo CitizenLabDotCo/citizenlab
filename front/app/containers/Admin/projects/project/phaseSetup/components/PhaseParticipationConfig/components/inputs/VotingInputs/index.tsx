@@ -8,11 +8,10 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
 import { Multiloc, CLErrors } from 'typings';
 
 import { VotingMethod } from 'api/phases/types';
-
-import { StyledSectionDescription } from 'containers/Admin/initiatives/settings';
 
 import {
   SectionField,
@@ -33,6 +32,11 @@ import BudgetingInputs from './votingMethodInputs/BudgetingInputs';
 import MultipleVotingInputs from './votingMethodInputs/MultipleVotingInputs';
 import SingleVotingInputs from './votingMethodInputs/SingleVotingInputs';
 import VotingMethodSelector from './VotingMethodSelector';
+
+export const StyledSectionDescription = styled(SectionDescription)`
+  margin-top: 0;
+  margin-bottom: 20px;
+`;
 
 export interface VotingInputsProps {
   voting_method: VotingMethod | null | undefined;
