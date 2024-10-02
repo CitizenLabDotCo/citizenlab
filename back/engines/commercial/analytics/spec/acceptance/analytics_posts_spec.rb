@@ -36,6 +36,7 @@ resource 'Analytics - FactPosts model' do
       create(:idea, created_at: @dates[0])
       create(:initiative, created_at: @dates[1])
       create(:idea, created_at: @dates[2])
+      create(:proposal, created_at: @dates[2])
       do_request({
         query: {
           fact: 'post',
@@ -48,16 +49,24 @@ resource 'Analytics - FactPosts model' do
       assert_status 200
       expect(response_data[:attributes]).to match_array([
         { 'dimension_date_created.month': '2022-09', count: 2 },
-        { 'dimension_date_created.month': '2022-10', count: 1 }
+        { 'dimension_date_created.month': '2022-10', count: 2 }
       ])
     end
 
     example 'does not return survey responses', document: false do
       # Create 2 posts inc 1 ignored survey
       create(:idea_status_proposed)
-      project = create(:project_with_past_ideation_and_current_native_survey_phase)
-      create(:idea, created_at: @dates[0], project: project, phases: [project.phases.first])
-      create(:native_survey_response, created_at: @dates[0], project: project, phases: [project.phases.last], creation_phase: project.phases.last)
+      # project = create(:project_with_past_ideation_and_current_native_survey_phase)
+      project = create(:project_with_current_phase,
+        phases_config: {
+          sequence: 'ispc',
+          i: { factory: :phase },
+          s: { factory: :native_survey_phase },
+          p: { factory: :proposals_phase }
+        })
+      create(:idea, created_at: @dates[0], project: project, phases: [project.phases[0]])
+      create(:native_survey_response, created_at: @dates[0], project: project, phases: [project.phases[1]], creation_phase: project.phases[1])
+      create(:proposal, created_at: @dates[0], project: project, phases: [project.phases[2]], creation_phase: project.phases[2])
 
       do_request({
         query: {
@@ -70,7 +79,7 @@ resource 'Analytics - FactPosts model' do
       })
       assert_status 200
       expect(response_data[:attributes]).to match_array([
-        { 'dimension_date_created.month': '2022-09', count: 1 }
+        { 'dimension_date_created.month': '2022-09', count: 2 }
       ])
     end
 
