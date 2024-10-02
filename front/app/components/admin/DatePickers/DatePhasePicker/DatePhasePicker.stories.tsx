@@ -46,6 +46,7 @@ const WrapperDisabledRanges = () => {
     <DatePhasePicker
       selectedRange={selectedRange}
       disabledRanges={DISABLED_RANGES}
+      defaultMonth={new Date(2024, 9, 1)}
       onUpdateRange={setSelectedRange}
     />
   );
@@ -68,6 +69,7 @@ const WrapperOpenEndedDisabledRanges = () => {
     <DatePhasePicker
       selectedRange={selectedRange}
       disabledRanges={patchDisabledRanges(selectedRange, DISABLED_RANGES)}
+      defaultMonth={new Date(2024, 8, 1)}
       onUpdateRange={setSelectedRange}
     />
   );
