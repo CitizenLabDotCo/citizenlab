@@ -122,10 +122,6 @@ export type GraphqlMultiloc = {
   locale: SupportedLocale;
 }[];
 
-export type MultilocFormValues = {
-  [field: string]: Multiloc | null | undefined;
-};
-
 export interface CLError {
   error: string;
   value?: string;

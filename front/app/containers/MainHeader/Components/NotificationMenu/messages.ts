@@ -22,10 +22,6 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.noNotifications',
     defaultMessage: "You don't have any notifications yet",
   },
-  cosponsorOfYourInitiative: {
-    id: 'app.containers.NotificationMenu.cosponsorOfYourInitiative',
-    defaultMessage: '{name} cosponsored your proposal',
-  },
   userCommentedOnIdeaYouFollow: {
     id: 'app.containers.NotificationMenu.userCommentedOnIdeaYouFollow',
     defaultMessage: '{name} commented on an idea that you follow',
@@ -50,10 +46,6 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.userCommentedOnContributionYouFollow',
     defaultMessage: '{name} commented on a contribution that you follow',
   },
-  userCommentedOnInitiativeYouFollow: {
-    id: 'app.containers.NotificationMenu.userCommentedOnInitiativeYouFollow',
-    defaultMessage: '{name} commented on an initiative that you follow',
-  },
   userReactedToYourComment: {
     id: 'app.containers.NotificationMenu.userReactedToYourComment',
     defaultMessage: '{name} reacted to your comment',
@@ -65,10 +57,6 @@ export default defineMessages({
   mentionInInternalComment: {
     id: 'app.containers.NotificationMenu.mentionInInternalComment',
     defaultMessage: '{name} mentioned you in an internal comment',
-  },
-  initiativeResubmittedForReview: {
-    id: 'app.containers.NotificationMenu.initiativeResubmittedForReview',
-    defaultMessage: '"{initiativeTitle}" resubmitted for review',
   },
   internalCommentOnYourInternalComment: {
     id: 'app.containers.NotificationMenu.internalCommentOnYourInternalComment',
@@ -121,10 +109,6 @@ export default defineMessages({
   statusChangedOnIdeaYouFollow: {
     id: 'app.containers.NotificationMenu.statusChangedOnIdeaYouFollow',
     defaultMessage: '{ideaTitle} status has changed to {status}',
-  },
-  statusChangedOnInitiativeYouFollow: {
-    id: 'app.containers.NotificationMenu.statusChangedOnInitiativeYouFollow',
-    defaultMessage: '{initiativeTitle} status has changed to {status}',
   },
   thresholdReachedForAdmin: {
     id: 'app.containers.NotificationMenu.thresholdReachedForAdmin',
@@ -194,11 +178,6 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.officialFeedbackOnContributionYouFollow',
     defaultMessage:
       '{officialName} gave an official update on a contribution you follow',
-  },
-  officialFeedbackOnInitiativeYouFollow: {
-    id: 'app.containers.NotificationMenu.officialFeedbackOnInitiativeYouFollow',
-    defaultMessage:
-      '{officialName} gave an official update on an initiative you follow',
   },
   mentionInOfficialFeedback: {
     id: 'app.containers.NotificationMenu.mentionInOfficialFeedback',
