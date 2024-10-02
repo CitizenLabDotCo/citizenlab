@@ -56,7 +56,7 @@ interface Props {
   config?: 'default' | 'input' | 'survey';
   layout?: 'inline' | 'fullpage';
   footer?: React.ReactNode;
-  // Optional loading state from parent. If set, loading state is controlled by the parent.
+  // Optional loading state from parent. If set, the loading state will be controlled by the parent.
   loading?: boolean;
 }
 
@@ -73,7 +73,7 @@ const Form = memo(
     layout,
     footer,
     onSubmit,
-    loading: externalLoading, // External loading state (optional)
+    loading: externalLoading,
   }: Props) => {
     const { formatMessage } = useIntl();
     const locale = useLocale();
