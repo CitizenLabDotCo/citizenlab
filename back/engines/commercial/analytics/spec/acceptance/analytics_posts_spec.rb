@@ -26,7 +26,7 @@ resource 'Analytics - FactPosts model' do
       end
 
       # Set up type dimensions
-      [{ name: 'idea', parent: 'post' }, { name: 'initiative', parent: 'post' }].each do |type|
+      [{ name: 'idea', parent: 'post' }, { name: 'initiative', parent: 'post' }, { name: 'proposal', parent: 'post' }].each do |type|
         create(:dimension_type, name: type[:name], parent: type[:parent])
       end
     end
@@ -56,7 +56,6 @@ resource 'Analytics - FactPosts model' do
     example 'does not return survey responses', document: false do
       # Create 2 posts inc 1 ignored survey
       create(:idea_status_proposed)
-      # project = create(:project_with_past_ideation_and_current_native_survey_phase)
       project = create(:project_with_current_phase,
         phases_config: {
           sequence: 'ispc',

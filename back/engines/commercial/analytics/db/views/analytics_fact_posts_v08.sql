@@ -16,9 +16,12 @@ SELECT
     dislikes_count,
     i.publication_status
 from ideas i
-INNER JOIN analytics_dimension_types adt ON adt.name = 'idea'
 LEFT JOIN analytics_build_feedbacks AS abf ON abf.post_id = i.id
 LEFT JOIN phases AS creation_phase on i.creation_phase_id = creation_phase.id
+INNER JOIN analytics_dimension_types adt ON adt.name = CASE
+                                                            WHEN creation_phase IS NULL THEN 'idea'
+                                                            WHEN creation_phase.participation_method = 'proposals' THEN 'proposal'
+                                                        END
 WHERE creation_phase IS NULL OR creation_phase.participation_method = 'proposals'
 
 UNION ALL
