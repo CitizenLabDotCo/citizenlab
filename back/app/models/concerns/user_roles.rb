@@ -116,53 +116,33 @@ module UserRoles # rubocop:disable Metrics/ModuleLength
     roles.any? { |r| r['type'] == 'admin' }
   end
 
-  # Returns roles excluding the `project_moderator` roles that are redundant with
-  # `project_folder_moderator` roles (i.e. the user is a project moderator for a
-  # project that is in a folder that they moderate).
-  def compacted_roles
-    redundant_project_ids = AdminPublication
-      .joins(:parent)
-      .where(parent: { publication_id: moderated_project_folder_ids })
-      .pluck(:publication_id)
-
-    roles.reject do |role|
-      role['type'] == 'project_moderator' && role['project_id'].in?(redundant_project_ids)
-    end
-  end
-
-  # Compress the compacted roles into a delimited string to add to the JWT cookie
+  # Reduce the roles to add to the JWT cookie to stop it getting too large
+  # Roles from cookie are ONLY used by workshops and cl2-admin-templates
+  # - workshops only cares if it finds type: admin or type: project_moderator.
+  #   It does not use project_id or use type: project_moderator
+  # - cl2-admin-templates only cares if it finds type: admin or type: project_folder_moderator.
+  #   It needs the project_folder_id but does not use type: project_moderator
   def compress_roles
     admin = false
-    project_moderator = []
-    project_folder_moderator = []
+    project_moderator = false
+    compressed_roles = []
 
-    compacted_roles.each do |role|
+    roles.each do |role|
       case role['type']
       when 'admin'
         admin = true
       when 'project_moderator'
-        project_moderator << role['project_id']
+        project_moderator = true
       when 'project_folder_moderator'
-        project_folder_moderator << role['project_folder_id']
+        project_moderator = true
+        compressed_roles << role
       end
     end
-    # Return a bar & comma delimited string
-    "#{admin}|#{project_moderator.join(',')}|#{project_folder_moderator.join(',')}"
-  end
 
-  def decompress_roles(delimited_roles)
-    types = delimited_roles.split('|')
+    compressed_roles << { 'type' => 'admin' } if admin
+    compressed_roles << { 'type' => 'project_moderator' } if project_moderator
 
-    roles = []
-    roles << { 'type' => 'admin' } if types[0] == 'true'
-    types[1]&.split(',')&.each do |project_id|
-      roles << { 'type' => 'project_moderator', 'project_id' => project_id }
-    end
-    types[2]&.split(',')&.each do |project_folder_id|
-      roles << { 'type' => 'project_folder_moderator', 'project_folder_id' => project_folder_id }
-    end
-
-    roles
+    compressed_roles
   end
 
   def project_folder_moderator?(project_folder_id = nil)
