@@ -56,6 +56,8 @@ interface Props {
   config?: 'default' | 'input' | 'survey';
   layout?: 'inline' | 'fullpage';
   footer?: React.ReactNode;
+  // Optional loading state from parent. If set, loading state is controlled by the parent.
+  loading?: boolean;
 }
 
 const Form = memo(
@@ -71,6 +73,7 @@ const Form = memo(
     layout,
     footer,
     onSubmit,
+    loading: externalLoading, // External loading state (optional)
   }: Props) => {
     const { formatMessage } = useIntl();
     const locale = useLocale();
@@ -79,7 +82,10 @@ const Form = memo(
       return parseRequiredMultilocsData(schema, locale, initialFormData);
     });
     const [apiErrors, setApiErrors] = useState<CLErrors | undefined>();
-    const [loading, setLoading] = useState(false);
+    const [internalLoading, internalSetLoading] = useState(false);
+    const loading =
+      externalLoading !== undefined ? externalLoading : internalLoading;
+
     const [scrollToError, setScrollToError] = useState(false);
     const [showAllErrors, setShowAllErrors] = useState(false);
 
@@ -112,14 +118,18 @@ const Form = memo(
       setShowAllErrors(showErrors);
 
       if (isValidData(schema, uiSchema, submissionData, customAjv, isSurvey)) {
-        setLoading(true);
+        if (externalLoading === undefined) {
+          internalSetLoading(true);
+        }
         try {
           await onSubmit(submissionData);
         } catch (e) {
           setScrollToError(true);
           setApiErrors(e.errors);
         }
-        setLoading(false);
+        if (externalLoading === undefined) {
+          internalSetLoading(false);
+        }
       }
       setScrollToError(true);
     };
