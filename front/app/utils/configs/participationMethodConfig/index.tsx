@@ -150,7 +150,7 @@ const proposalsConfig: ParticipationMethodConfig = {
       const urlParameters = `?new_idea_id=${props.ideaId}`;
       if (props.idea) {
         clHistory.push({
-          pathname: `/projects/${props.project?.attributes.slug}/ideas/${props.idea.data.attributes.slug}`,
+          pathname: `/ideas/${props.idea.data.attributes.slug}`,
           search: urlParameters.concat(
             props.phaseId ? `&phase_id=${props.phaseId}` : ''
           ),
