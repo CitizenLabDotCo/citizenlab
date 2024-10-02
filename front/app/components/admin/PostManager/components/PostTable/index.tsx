@@ -122,11 +122,8 @@ const PostTable = ({
       if (isFunction(onChangeSort)) {
         const currentSortAttribute = sortAttribute?.replace(/^-/, '');
         const isSameAttribute = currentSortAttribute === newSortAttribute;
-        const newSortSign = isSameAttribute
-          ? sortDirection === 'ascending'
-            ? '-'
-            : ''
-          : ''; // Default to descending order
+        const newSortSign =
+          isSameAttribute && sortDirection === 'descending' ? '-' : '';
 
         onChangeSort(
           `${newSortSign}${newSortAttribute}` as IdeasSort | InitiativesSort
