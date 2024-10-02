@@ -1,7 +1,6 @@
 import React, { lazy, Suspense, useState } from 'react';
 
 import { Box, Badge, Tooltip } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useIdeaImages from 'api/idea_images/useIdeaImages';
@@ -28,7 +27,6 @@ import { usePermission } from 'utils/permissions';
 
 import Container from './components/Container';
 import Cosponsorship from './components/Cosponsorship';
-import IdeaNavigationButtons from './components/IdeaNavigationButtons';
 import IdeaTitle from './components/IdeaTitle';
 import MetaInformation from './components/MetaInformation';
 import ProposalInfo from './components/ProposalInfo';
@@ -75,9 +73,6 @@ export const IdeasShow = ({
   });
   const { data: phases } = usePhases(project?.data.id);
 
-  const [searchParams] = useSearchParams();
-  const phaseContext = searchParams.get('phase_context');
-
   const handleContainerRef = (element: HTMLDivElement) => {
     setRef?.(element);
   };
@@ -123,14 +118,6 @@ export const IdeasShow = ({
                   </Badge>
                 </Box>
               </Tooltip>
-            </Box>
-          )}
-          {compact && phaseContext && (
-            <Box mb="8px">
-              <IdeaNavigationButtons
-                projectId={project.data.id}
-                phaseContext={phaseContext}
-              />
             </Box>
           )}
           <IdeaTitle

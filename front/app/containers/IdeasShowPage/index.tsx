@@ -8,7 +8,7 @@ import {
   media,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { VotingContext } from 'api/baskets_ideas/useVoting';
@@ -19,6 +19,7 @@ import useProjectById from 'api/projects/useProjectById';
 
 import IdeasShow from 'containers/IdeasShow';
 import IdeaMeta from 'containers/IdeasShow/components/IdeaMeta';
+import IdeaNavigationButtons from 'containers/IdeasShow/components/IdeaNavigationButtons';
 import ProjectCTABar from 'containers/ProjectsShowPage/ProjectCTABar';
 
 import PageNotFound from 'components/PageNotFound';
@@ -69,6 +70,9 @@ const IdeasShowPage = () => {
   );
   const { data: phases } = usePhases(project?.data.id);
 
+  const [searchParams] = useSearchParams();
+  const phaseContext = searchParams.get('phase_context');
+
   if (!project) return null;
 
   if (status === 'loading') {
@@ -115,13 +119,23 @@ const IdeasShowPage = () => {
           ) : (
             <DesktopTopBar project={project.data} />
           )}
-          <main id="e2e-idea-show">
-            <StyledIdeasShow
-              ideaId={idea.data.id}
-              projectId={idea.data.relationships.project.data.id}
-              compact={isSmallerThanTablet}
-            />
-          </main>
+          <>
+            {phaseContext && (
+              <Box mb="8px">
+                <IdeaNavigationButtons
+                  projectId={project.data.id}
+                  phaseContext={phaseContext}
+                />
+                <main id="e2e-idea-show">
+                  <StyledIdeasShow
+                    ideaId={idea.data.id}
+                    projectId={idea.data.relationships.project.data.id}
+                    compact={isSmallerThanTablet}
+                  />
+                </main>
+              </Box>
+            )}
+          </>
         </Box>
         {showCTABar && (
           <Box
