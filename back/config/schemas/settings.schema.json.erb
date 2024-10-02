@@ -1322,6 +1322,18 @@
         }
       },
 
+      "input_cosponsorship": {
+        "type": "object",
+        "title": "Input co-sponsorship",
+        "description": "Enables the ability to invite co-sponsors to your inputs.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
       "management_feed": {
         "type": "object",
         "title": "Management Feed",

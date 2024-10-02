@@ -1,15 +1,3 @@
-<% unless preheader.empty? %>
-  <mj-section>
-    <mj-column>
-      <mj-text>
-        <span style="color: transparent; display: none; height: 0; max-height: 0; max-width: 0; opacity: 0; overflow: hidden; mso-hide: all; visibility: hidden; width: 0;">
-          <%= preheader %>
-        </span>
-      </mj-text>
-    </mj-column>
-  </mj-section>
-<% end %>
-
 <%= render partial: 'application/logo_medium_top' %>
 
 <% unless header_title.empty? %>

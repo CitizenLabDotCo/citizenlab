@@ -170,6 +170,9 @@ ar:
       topic_ids:
         title: الموضوعات
         description:
+      consponsor_ids:
+        title: الرعاة المشاركون
+        description: قم بدعوة الرعاة المشاركين من خلال الحقل أدناه. سيتلقى الرعاة المشاركون المدعوون رسالة بريد إلكتروني.
       location:
         title: الموقع
         description:

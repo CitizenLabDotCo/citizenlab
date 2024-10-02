@@ -21,6 +21,7 @@ import { rightColumnWidthDesktop } from '../../styleConstants';
 import GoToCommentsButton from '../Buttons/GoToCommentsButton';
 import IdeaSharingButton from '../Buttons/IdeaSharingButton';
 import SharingButtonComponent from '../Buttons/SharingButtonComponent';
+import Cosponsorship from '../Cosponsorship';
 import MetaInformation from '../MetaInformation';
 import ProposalInfo from '../ProposalInfo';
 
@@ -56,7 +57,6 @@ const RightColumnDesktop = ({
   const commentingEnabled =
     !!idea?.data.attributes.action_descriptors.commenting_idea.enabled;
 
-  // showReactionControl
   const participationMethod = phase?.attributes.participation_method;
 
   const reactingActionDescriptor =
@@ -91,7 +91,7 @@ const RightColumnDesktop = ({
       className={className}
     >
       <Box display="flex" flexDirection="column">
-        {showInteractionsContainer && (
+        {showInteractionsContainer && participationMethod && (
           <Box
             padding="20px"
             borderRadius="3px"
@@ -135,6 +135,8 @@ const RightColumnDesktop = ({
             />
           </Box>
         )}
+        <Cosponsorship ideaId={ideaId} />
+
         <Box mb="16px">
           <IdeaSharingButton
             ideaId={ideaId}

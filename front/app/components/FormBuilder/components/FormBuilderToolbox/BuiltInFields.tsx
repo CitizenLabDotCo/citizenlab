@@ -15,6 +15,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 import ToolboxItem from './ToolboxItem';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 interface BuiltInFieldsProps {
   move: (indexA: number, indexB: number) => void;
@@ -22,6 +23,7 @@ interface BuiltInFieldsProps {
 }
 
 const BuiltInFields = ({ move, builderConfig }: BuiltInFieldsProps) => {
+  const cosponsorsEnabled = useFeatureFlag({ name: 'input_cosponsorship' });
   const { watch, trigger, setValue } = useFormContext();
   const { formatMessage } = useIntl();
   const formCustomFields: IFlatCustomField[] = watch('customFields');
@@ -101,6 +103,19 @@ const BuiltInFields = ({ move, builderConfig }: BuiltInFieldsProps) => {
           data-cy="e2e-tags-item"
         />
       )}
+      {builderConfig.builtInFields.includes('cosponsor_ids') &&
+        cosponsorsEnabled && (
+          <ToolboxItem
+            icon="volunteer"
+            label={formatMessage(messages.cosponsors)}
+            onClick={() => enableField('cosponsor_ids')}
+            data-cy="e2e-cosponsors-field"
+            fieldsToExclude={builderConfig.toolboxFieldsToExclude}
+            inputType="cosponsor_ids"
+            disabled={!enabledBuiltInFieldKeys.includes('cosponsor_ids')}
+            disabledTooltipMessage={messages.disabledBuiltInFieldTooltip}
+          />
+        )}
     </Box>
   );
 };

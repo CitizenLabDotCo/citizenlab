@@ -36,7 +36,7 @@ module EmailCampaigns
 
     validates :context_id, presence: true
 
-    recipient_filter :project_participants
+    recipient_filter :project_participants_and_followers
 
     def self.recipient_role_multiloc_key
       'email_campaigns.admin_labels.recipient_role.project_participants'
@@ -52,8 +52,10 @@ module EmailCampaigns
       true
     end
 
-    def project_participants(users_scope, _options = {})
-      users_scope.where(id: ParticipantsService.new.projects_participants(project))
+    def project_participants_and_followers(users_scope, _options = {})
+      users_scope
+        .where(id: ParticipantsService.new.projects_participants(project))
+        .or(users_scope.where(id: project.followers.pluck(:user_id)))
     end
   end
 end

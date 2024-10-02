@@ -16,6 +16,8 @@ export type Sort =
   | '-likes_count'
   | 'comments_count'
   | '-comments_count'
+  | 'accepted_cosponsorships_count'
+  | '-accepted_cosponsorships_count'
   | 'status'
   | '-status'
   | 'random';
