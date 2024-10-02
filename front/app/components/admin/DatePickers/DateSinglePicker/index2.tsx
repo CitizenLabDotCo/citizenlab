@@ -19,6 +19,7 @@ const StyledClickOutside = styled(ClickOutside)`
 `;
 
 const DateSinglePicker = ({
+  id,
   selectedDate,
   startMonth,
   endMonth,
@@ -47,6 +48,7 @@ const DateSinglePicker = ({
         visible={calendarOpen}
       >
         <Input
+          id={id}
           selectedDate={selectedDate}
           onClick={() => setCalendarOpen(true)}
         />

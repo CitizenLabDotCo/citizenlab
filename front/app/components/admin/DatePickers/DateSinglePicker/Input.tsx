@@ -8,16 +8,17 @@ import InputContainer from '../_shared/InputContainer';
 import sharedMessages from '../_shared/messages';
 
 interface Props {
+  id?: string;
   selectedDate?: Date;
   onClick: () => void;
 }
 
-const Input = ({ selectedDate, onClick }: Props) => {
+const Input = ({ id, selectedDate, onClick }: Props) => {
   const { formatMessage } = useIntl();
   const selectDate = formatMessage(sharedMessages.selectDate);
 
   return (
-    <InputContainer onClick={onClick}>
+    <InputContainer onClick={onClick} id={id}>
       <Box mr="8px">
         {selectedDate ? selectedDate.toLocaleDateString() : selectDate}
       </Box>

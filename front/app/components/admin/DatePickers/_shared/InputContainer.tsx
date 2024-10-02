@@ -33,13 +33,15 @@ const Container = styled.button`
 `;
 
 interface Props {
+  id?: string;
   children: React.ReactNode;
   onClick: () => void;
 }
 
-const InputContainer = ({ children, onClick }: Props) => {
+const InputContainer = ({ id, children, onClick }: Props) => {
   return (
     <Container
+      id={id}
       onClick={(e) => {
         e.preventDefault();
         onClick();
