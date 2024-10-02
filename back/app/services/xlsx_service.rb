@@ -144,6 +144,7 @@ class XlsxService
       { header: 'author_id',            f: ->(i) { i.author_id } },
       { header: 'proposed_budget',      f: ->(i) { i.proposed_budget },                                                    skip_sanitization: true },
       { header: 'published_at',         f: ->(i) { i.published_at },                                                       skip_sanitization: true },
+      { header: 'submitted_at',         f: ->(i) { i.submitted_at },                                                       skip_sanitization: true },
       { header: 'comments',             f: ->(i) { i.comments_count },                                                     skip_sanitization: true },
       { header: 'likes',                f: ->(i) { i.likes_count }, skip_sanitization: true },
       { header: 'dislikes',             f: ->(i) { i.dislikes_count }, skip_sanitization: true },
