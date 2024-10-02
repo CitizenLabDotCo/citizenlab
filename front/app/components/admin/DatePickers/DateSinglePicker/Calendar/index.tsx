@@ -2,6 +2,7 @@ import React from 'react';
 
 import { colors } from '@citizenlab/cl2-component-library';
 import { DayPicker } from 'react-day-picker';
+import 'react-day-picker/style.css';
 import styled from 'styled-components';
 
 import useLocale from 'hooks/useLocale';
