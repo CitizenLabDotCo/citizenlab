@@ -13,7 +13,9 @@ export const getStartMonth = ({
   const twoYearsAgo = addYears(new Date(), -2);
 
   if (selectedDate) {
-    return new Date(Math.min(selectedDate.getTime(), twoYearsAgo.getTime()));
+    return new Date(
+      Math.min(addYears(selectedDate, -2).getTime(), twoYearsAgo.getTime())
+    );
   }
 
   return twoYearsAgo;
@@ -30,7 +32,7 @@ export const getEndMonth = ({ endMonth, selectedDate }: GetEndMonthProps) => {
 
   if (selectedDate) {
     return new Date(
-      Math.max(selectedDate.getTime(), twoYearsFromNow.getTime())
+      Math.max(addYears(selectedDate, 2).getTime(), twoYearsFromNow.getTime())
     );
   }
 

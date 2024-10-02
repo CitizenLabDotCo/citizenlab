@@ -20,7 +20,7 @@ export const getStartMonth = ({
   const times: number[] = [addYears(new Date(), -2).getTime()];
 
   if (selectedRange.from) {
-    times.push(selectedRange.from.getTime());
+    times.push(addYears(selectedRange.from, -2).getTime());
   }
 
   if (disabledRanges.length > 0) {
@@ -52,7 +52,7 @@ export const getEndMonth = ({
   const times: number[] = [addYears(new Date(), 2).getTime()];
 
   if (selectedRange.to) {
-    times.push(selectedRange.to.getTime());
+    times.push(addYears(selectedRange.to, 2).getTime());
   }
 
   if (disabledRanges.length > 0) {
