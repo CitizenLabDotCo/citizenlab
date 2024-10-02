@@ -170,6 +170,9 @@ fr-BE:
       topic_ids:
         title: Étiquettes
         description:
+      consponsor_ids:
+        title: Coparrainants
+        description: Invitez des co-parrains dans le champ ci-dessous. Le(s) co-sponsor(s) invité(s) recevra(ont) un courriel.
       location:
         title: Adresse
         description:

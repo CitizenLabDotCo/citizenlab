@@ -91,6 +91,10 @@ class TestVisitor < FieldVisitorService
     'topic_ids from visitor'
   end
 
+  def visit_cosponsor_ids(_field)
+    'cosponsor_ids from visitor'
+  end
+
   def visit_file_upload(_field)
     'file_upload from visitor'
   end
