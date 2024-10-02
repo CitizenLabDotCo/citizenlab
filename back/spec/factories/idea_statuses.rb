@@ -34,7 +34,7 @@ FactoryBot.define do
 
     factory :proposal_status_prescreening do
       code { 'prescreening' }
-      title_multiloc { { 'en' => 'Threshold reached' } }
+      title_multiloc { { 'en' => 'screening' } }
     end
   end
 end
