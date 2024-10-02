@@ -24,6 +24,7 @@ const DateSinglePicker = ({
   selectedDate,
   startMonth,
   endMonth,
+  defaultMonth,
   onChange,
 }: Props) => {
   const [calendarOpen, setCalendarOpen] = useState(false);
@@ -37,6 +38,7 @@ const DateSinglePicker = ({
               selectedDate={selectedDate}
               startMonth={startMonth}
               endMonth={endMonth}
+              defaultMonth={defaultMonth}
               onChange={(date) => {
                 // We don't allow deselecting dates
                 if (!date) return;

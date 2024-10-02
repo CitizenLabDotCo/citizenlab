@@ -30,6 +30,7 @@ const Calendar = ({
   selectedDate,
   startMonth: _startMonth,
   endMonth: _endMonth,
+  defaultMonth,
   onChange,
 }: CalendarProps) => {
   const locale = useLocale();
@@ -45,6 +46,7 @@ const Calendar = ({
         locale={getLocale(locale)}
         startMonth={startMonth}
         endMonth={endMonth}
+        defaultMonth={defaultMonth}
         selected={selectedDate}
         onSelect={onChange}
       />
