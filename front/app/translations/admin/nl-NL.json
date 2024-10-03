@@ -2132,6 +2132,7 @@
   "app.containers.AdminPage.SideBar.processing": "Verwerking",
   "app.containers.AdminPage.SideBar.projectManager": "Projectbeheerder",
   "app.containers.AdminPage.SideBar.projects": "Projecten",
+  "app.containers.AdminPage.SideBar.proposalsTooltip": "Voorstellen zijn nu een participatiemethode. Je kunt ook individuele projecten vastmaken aan de navigatiebalk.",
   "app.containers.AdminPage.SideBar.settings": "Instellingen",
   "app.containers.AdminPage.SideBar.signOut": "Afmelden",
   "app.containers.AdminPage.SideBar.support": "Support",
