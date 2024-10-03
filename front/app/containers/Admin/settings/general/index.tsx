@@ -176,10 +176,12 @@ const SettingsGeneralTab = () => {
             </Setting>
           )}
 
-          <Box mt="20px">
-            <SubSectionTitle>Anonymous name settings</SubSectionTitle>
-            <Text mt="0">
-              Choose how users without names will appear on the platform.
+          <Box mt="30px">
+            <SubSectionTitle>
+              <FormattedMessage {...messages.anonymousNameTitle} />
+            </SubSectionTitle>
+            <Text mt="-10px">
+              <FormattedMessage {...messages.anonymousNameDescription} />
             </Text>
             {anomymousNameSchemes.map((scheme) => (
               <Radio

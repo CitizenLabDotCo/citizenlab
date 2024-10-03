@@ -184,6 +184,15 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.populationMinError',
     defaultMessage: 'Population must be a positive number.',
   },
+  anonymousNameTitle: {
+    id: 'app.containers.AdminPage.SettingsPage.anonymousNameTitle',
+    defaultMessage: 'Anonymous name display',
+  },
+  anonymousNameDescription: {
+    id: 'app.containers.AdminPage.SettingsPage.anonymousNameDescription',
+    defaultMessage:
+      'Choose how users without names in their profile will appear on the platform.',
+  },
   // NOTE: Using _user and _animal as suffixes as key is built dynamically from lowercase string setting
   anonymousNameScheme_user: {
     id: 'app.containers.AdminPage.SettingsPage.anonymousNameScheme_user',

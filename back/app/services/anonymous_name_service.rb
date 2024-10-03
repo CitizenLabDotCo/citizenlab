@@ -7,7 +7,7 @@ class AnonymousNameService
 
   def first_name
     if scheme == 'animal'
-      animal(@user.created_at.to_s.sum**2)
+      animal(@user.created_at.to_i)
     else
       I18n.t 'user.anon_first_name'
     end

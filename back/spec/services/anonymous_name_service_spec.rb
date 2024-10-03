@@ -15,12 +15,12 @@ describe AnonymousNameService do
 
     describe '#first_name' do
       it 'returns a random (but consistent) animal name' do
-        expect(service.first_name).to eq 'Cat'
+        expect(service.first_name).to eq 'Aardvark'
       end
 
       it 'returns a random animal in French' do
         user.update!(locale: 'fr-FR')
-        expect(service.first_name).to eq 'Chat'
+        expect(service.first_name).to eq 'Oryctérope'
       end
     end
 
@@ -43,6 +43,20 @@ describe AnonymousNameService do
       AppConfiguration.instance.update!(settings: settings)
     end
 
+    describe '#first_name' do
+      it 'returns "user"' do
+        expect(service.first_name).to eq 'User'
+      end
+    end
+
+    describe '#last_name' do
+      it 'returns a 6 digit number' do
+        expect(service.last_name).to eq '342990'
+      end
+    end
+  end
+
+  context 'when the scheme is NOT set in settings' do
     describe '#first_name' do
       it 'returns "user"' do
         expect(service.first_name).to eq 'User'

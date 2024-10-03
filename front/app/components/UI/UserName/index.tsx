@@ -18,6 +18,7 @@ import { useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 
 import messages from './messages';
+import useAuthUser from 'api/me/useAuthUser';
 
 const Name = styled.span<{
   color?: string;
@@ -95,6 +96,7 @@ const UserName = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const { data: user } = useUserById(userId);
+  const { data: authUser } = useAuthUser();
 
   const sharedNameProps: StyleProps = {
     fontWeight,
@@ -161,24 +163,46 @@ const UserName = ({
       e2e-username
     `;
 
-    if (isLinkToProfile) {
+    const isAuthorWithNoName =
+      user.data.id === authUser?.data.id && authUser?.data.attributes.no_name;
+
+    const nameSnippet = (
+      <Name {...sharedNameProps} className={classNames}>
+        {name}
+      </Name>
+    );
+
+    const nameLinkSnippet = (
+      <Link
+        to={profileLink}
+        className={`e2e-author-link ${className || ''}`}
+        scrollToTop
+      >
+        {nameSnippet}
+      </Link>
+    );
+
+    if (isAuthorWithNoName) {
       return (
-        <Link
-          to={profileLink}
-          className={`e2e-author-link ${className || ''}`}
-          scrollToTop
+        <Tooltip
+          placement="top-start"
+          maxWidth={'260px'}
+          theme={'dark'}
+          content={
+            <Box style={{ cursor: 'default' }}>
+              <Text my="8px" color="white" fontSize="s">
+                {formatMessage(messages.authorWithNoNameTooltip)}
+              </Text>
+            </Box>
+          }
         >
-          <Name {...sharedNameProps} className={classNames}>
-            {name}
-          </Name>
-        </Link>
+          {nameLinkSnippet}
+        </Tooltip>
       );
+    } else if (isLinkToProfile) {
+      return nameLinkSnippet;
     } else {
-      return (
-        <Name {...sharedNameProps} className={classNames}>
-          {name}
-        </Name>
-      );
+      return nameSnippet;
     }
   }
 
