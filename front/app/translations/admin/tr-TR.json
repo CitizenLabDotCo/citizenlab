@@ -2132,6 +2132,7 @@
   "app.containers.AdminPage.SideBar.processing": "İşleme",
   "app.containers.AdminPage.SideBar.projectManager": "Proje Yöneticisi",
   "app.containers.AdminPage.SideBar.projects": "Projeler",
+  "app.containers.AdminPage.SideBar.proposalsTooltip": "Teklifler artık bir katılım yöntemi. Projeleri tek tek gezinti çubuğuna da sabitleyebilirsiniz.",
   "app.containers.AdminPage.SideBar.settings": "Ayarlar",
   "app.containers.AdminPage.SideBar.signOut": "Çıkış yapın",
   "app.containers.AdminPage.SideBar.support": "Destek",
