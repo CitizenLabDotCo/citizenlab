@@ -2132,6 +2132,7 @@
   "app.containers.AdminPage.SideBar.processing": "Behandling",
   "app.containers.AdminPage.SideBar.projectManager": "Prosjektleder",
   "app.containers.AdminPage.SideBar.projects": "Prosjekter",
+  "app.containers.AdminPage.SideBar.proposalsTooltip": "Forslag er nå en medvirkningsmetode. Du kan også feste individuelle prosjekter til navigasjonslinjen.",
   "app.containers.AdminPage.SideBar.settings": "Innstillinger",
   "app.containers.AdminPage.SideBar.signOut": "Logg ut",
   "app.containers.AdminPage.SideBar.support": "Brukerstøtte",
