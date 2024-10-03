@@ -82,6 +82,16 @@ const DayPickerStyles = styled.div`
     background: linear-gradient(90deg, ${disabledBackground3}, ${colors.white});
   }
 
+  .is-disabled-single {
+    background: ${disabledBackground};
+    color: ${colors.grey800};
+    border-radius: 50%;
+  }
+
+  .is-disabled-single > button {
+    cursor: not-allowed;
+  }
+
   .is-selected-gradient_one {
     background: linear-gradient(
       90deg,
@@ -116,6 +126,7 @@ const modifiersClassNames = {
   isDisabledGradient_one: 'is-disabled-gradient_one',
   isDisabledGradient_two: 'is-disabled-gradient_two',
   isDisabledGradient_three: 'is-disabled-gradient_three',
+  isDisabledSingle: 'is-disabled-single',
   isSelectedStart: 'rdp-range_start',
   isSelectedMiddle: 'rdp-range_middle',
   isSelectedEnd: 'rdp-range_end',
@@ -160,9 +171,14 @@ const Calendar = ({
 
   const handleDayClick: PropsBase['onDayClick'] = (
     day,
-    { isDisabledStart, isDisabledMiddle, isDisabledEnd }
+    { isDisabledStart, isDisabledMiddle, isDisabledEnd, isDisabledSingle }
   ) => {
-    if (isDisabledStart || isDisabledMiddle || isDisabledEnd) {
+    if (
+      isDisabledStart ||
+      isDisabledMiddle ||
+      isDisabledEnd ||
+      isDisabledSingle
+    ) {
       return;
     }
 
