@@ -2132,6 +2132,7 @@
   "app.containers.AdminPage.SideBar.processing": "Analyse",
   "app.containers.AdminPage.SideBar.projectManager": "Projektmanager*in",
   "app.containers.AdminPage.SideBar.projects": "Projekte",
+  "app.containers.AdminPage.SideBar.proposalsTooltip": "Vorschläge sind jetzt eine Beteiligungsmethode. Sie können auch einzelne Projekte an die Navigationsleiste anheften.",
   "app.containers.AdminPage.SideBar.settings": "Einstellungen",
   "app.containers.AdminPage.SideBar.signOut": "Abmelden",
   "app.containers.AdminPage.SideBar.support": "Hilfe",
