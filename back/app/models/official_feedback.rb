@@ -8,19 +8,18 @@
 #  body_multiloc   :jsonb
 #  author_multiloc :jsonb
 #  user_id         :uuid
-#  post_id         :uuid
+#  idea_id         :uuid
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
-#  post_type       :string
 #
 # Indexes
 #
-#  index_official_feedbacks_on_post     (post_id,post_type)
-#  index_official_feedbacks_on_post_id  (post_id)
+#  index_official_feedbacks_on_idea_id  (idea_id)
 #  index_official_feedbacks_on_user_id  (user_id)
 #
 # Foreign Keys
 #
+#  fk_rails_...  (idea_id => ideas.id)
 #  fk_rails_...  (user_id => users.id)
 #
 class OfficialFeedback < ApplicationRecord

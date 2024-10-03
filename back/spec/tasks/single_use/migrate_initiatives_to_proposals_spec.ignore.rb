@@ -10,6 +10,6 @@ describe 'initiatives_to_proposals:migrate_proposals rake task' do
 
     Rake::Task['initiatives_to_proposals:migrate_proposals'].invoke
 
-    expect(Idea.where(creation_phase: { participation_method: 'proposals' }).count).to eq(1)
+    expect(Idea.includes(:creation_phase).where(creation_phase: { participation_method: 'proposals' }).count).to eq(1)
   end
 end
