@@ -141,9 +141,6 @@ export interface IAppConfigurationSettings {
     url?: string;
   };
   maps?: AppConfigurationMapSettings;
-  initiatives: ProposalsSettings;
-  initiative_review?: AppConfigurationFeature;
-  initiative_cosponsors?: AppConfigurationFeature;
   fragments?: {
     allowed: boolean;
     enabled: boolean;

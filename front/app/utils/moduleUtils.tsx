@@ -108,7 +108,6 @@ export interface OutletsPropertyMap {
     resolution: IResolution;
   };
   'app.containers.Admin.dashboard.summary.projectStatus': StatCardProps;
-  'app.containers.Admin.dashboard.summary.proposals': StatCardProps;
   'app.containers.Admin.dashboard.summary.invitations': StatCardProps;
   'app.containers.Admin.dashboard.summary.events': StatCardProps;
   'app.containers.IdeasShow.MetaInformation': {

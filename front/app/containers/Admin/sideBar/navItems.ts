@@ -40,7 +40,6 @@ const navItems: NavItem[] = [
     link: '/admin',
     iconName: 'proposals',
     message: 'initiatives',
-    featureNames: ['initiatives'],
     onlyCheckAllowed: true,
   },
   {

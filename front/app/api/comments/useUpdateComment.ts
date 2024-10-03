@@ -13,13 +13,7 @@ const updateComment = async ({ commentId, ...requestBody }: IUpdatedComment) =>
     body: { comment: requestBody },
   });
 
-const useUpdateComment = ({
-  ideaId,
-  initiativeId,
-}: {
-  ideaId?: string;
-  initiativeId?: string;
-}) => {
+const useUpdateComment = ({ ideaId }: { ideaId?: string }) => {
   const queryClient = useQueryClient();
   return useMutation<IComment, CLErrorsWrapper, IUpdatedComment>({
     mutationFn: updateComment,
@@ -27,7 +21,6 @@ const useUpdateComment = ({
       queryClient.invalidateQueries({
         queryKey: commentKeys.list({
           ideaId,
-          initiativeId,
         }),
       });
     },

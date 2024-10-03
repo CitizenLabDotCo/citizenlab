@@ -7,7 +7,6 @@ import endpoints, {
 import getAuthenticationRequirements from './getAuthenticationRequirements';
 
 const server = setupServer(
-  endpoints['GET permissions/posting_initiative/requirements'],
   endpoints['GET phases/:phaseId/permissions/posting_idea/requirements'],
   endpoints['GET ideas/:ideaId/permissions/commenting_idea/requirements']
 );
