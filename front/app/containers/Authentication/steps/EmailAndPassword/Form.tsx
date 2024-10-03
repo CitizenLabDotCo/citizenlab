@@ -131,7 +131,7 @@ const Form = ({ loading, setError, onSubmit, closeModal }: Props) => {
             labelTooltipText={formatMessage(sharedMessages.rememberMeTooltip)}
             ariaLabel={`${formatMessage(
               sharedMessages.rememberMe
-            )} ${formatMessage(sharedMessages.rememberMeTooltip)}`}
+            )}. ${formatMessage(sharedMessages.rememberMeTooltip)}`}
           />
         </Box>
         <Box w="100%" display="flex" mt="32px">
