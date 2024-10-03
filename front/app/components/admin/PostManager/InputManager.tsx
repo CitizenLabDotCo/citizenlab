@@ -335,7 +335,7 @@ const InputManager = ({
             sortDirection={
               queryParameters.sort
                 ? getSortDirection(queryParameters.sort)
-                : 'ascending'
+                : 'descending'
             }
             onChangeSort={onChangeSorting}
             posts={ideas.data}

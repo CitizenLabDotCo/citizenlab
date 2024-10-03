@@ -15,5 +15,5 @@ export function getSortAttribute<Sort, SortAttribute>(sort: Sort) {
 }
 
 export function getSortDirection<Sort>(sort: Sort): SortDirection {
-  return (sort as any).startsWith('-') ? 'descending' : 'ascending';
+  return (sort as any).startsWith('-') ? 'ascending' : 'descending';
 }
