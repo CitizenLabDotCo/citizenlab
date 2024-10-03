@@ -298,8 +298,6 @@
   "app.components.PostComponents.SharingModalContent.ideaEmailSharingBody": "ما رأيك بهذه الفكرة؟ صوّت وشارك النقاش عبر {postUrl} لجعل صوتك مسموعًا!",
   "app.components.PostComponents.SharingModalContent.ideaEmailSharingSubjectText": "ادعم فكرتي: {postTitle}",
   "app.components.PostComponents.SharingModalContent.ideaWhatsAppMessage": "ادعم فكرتي: {postTitle}.",
-  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingBody": "ما رأيك بهذا المُقترح؟ صوّت وشارك النقاش عبر {postUrl} لجعل صوتك مسموعًا!",
-  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingSubject": "ادعم مُقترحي: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.issueEmailSharingBody": "لقد نشرت مشكلة '{postTitle}' على {postUrl}!",
   "app.components.PostComponents.SharingModalContent.issueEmailSharingSubject": "لقد نشرت مشكلة للتو: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.issueWhatsAppMessage": "لقد نشرت مشكلة للتو: {postTitle}.",

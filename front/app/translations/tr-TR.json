@@ -298,8 +298,6 @@
   "app.components.PostComponents.SharingModalContent.ideaEmailSharingBody": "{postUrl} üzerinden '{postTitle}' fikrime destek olun!",
   "app.components.PostComponents.SharingModalContent.ideaEmailSharingSubjectText": "Fikrime destek olun: {postTitle}",
   "app.components.PostComponents.SharingModalContent.ideaWhatsAppMessage": "Fikrime destek olun: {postTitle}.",
-  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingBody": "Bu öneri hakkında ne düşünüyorsunuz? Oylayın ve sesinizi duyurmak için {postUrl} adresindeki tartışmayı paylaşın.",
-  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingSubject": "Önerime destek olun: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.issueEmailSharingBody": "{postUrl} üzerinde bir '{postTitle}' şeklinde bir yorum yayınladım!",
   "app.components.PostComponents.SharingModalContent.issueEmailSharingSubject": "Yeni bir yorum yayınladım: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.issueWhatsAppMessage": "Yeni bir yorum yayınladım: {postTitle}.",

@@ -298,8 +298,6 @@
   "app.components.PostComponents.SharingModalContent.ideaEmailSharingBody": "Stöd min idé {postTitle} på {postUrl}!",
   "app.components.PostComponents.SharingModalContent.ideaEmailSharingSubjectText": "Stöd min idé: {postTitle}",
   "app.components.PostComponents.SharingModalContent.ideaWhatsAppMessage": "Stöd min idé: {postTitle}.",
-  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingBody": "Vad tycker du om det här förslaget? Rösta på det och dela diskussionen på {postUrl} för att göra din röst hörd!",
-  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingSubject": "Stöd mitt förslag: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.issueEmailSharingBody": "Jag publicerade en kommentar {postTitle} på {postUrl}!",
   "app.components.PostComponents.SharingModalContent.issueEmailSharingSubject": "Jag publicerade just en kommentar: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.issueWhatsAppMessage": "Jag publicerade just en kommentar: {postTitle}.",

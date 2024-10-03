@@ -245,8 +245,6 @@
   "app.components.PostComponents.SharingModalContent.ideaEmailSharingBody": "Isumassarsiaq una qanoq igaajuk? Taajuk oqaloqatigiinnerlu uani {postUrl} tusaaneqarumallutit siammaruk!",
   "app.components.PostComponents.SharingModalContent.ideaEmailSharingSubjectText": "Isumassarsiara taperseruk: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.ideaWhatsAppMessage": "{tenantName, select, DeloitteDK {Isumarnik ikkussigit: {postTitle}.} other {Isumassarsiara taperseruk: {postTitle}.}}",
-  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingBody": "Innuttaasunit siunnersuut una qanoq igaajuk? Taajuk oqaloqatigiinnerlu uani {postUrl} tusaaneqarumallutit siammaruk!",
-  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingSubject": "Innuttaasutut siunnersuutiga taperseruk: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.issueEmailSharingBody": "{postTitle} -imi ajornartorsiut {postUrl} ikkuppara!",
   "app.components.PostComponents.SharingModalContent.issueEmailSharingSubject": "Ajornartorsiummik ikkusseqqammerpunga: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.issueWhatsAppMessage": "Ajornartorsiummik ikkusseqqammerpunga: {postTitle}.",

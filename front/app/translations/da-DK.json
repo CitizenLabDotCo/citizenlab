@@ -298,8 +298,6 @@
   "app.components.PostComponents.SharingModalContent.ideaEmailSharingBody": "Hvad synes du om denne idé? Stem på den og del diskussionen på {postUrl} for at blive hørt!",
   "app.components.PostComponents.SharingModalContent.ideaEmailSharingSubjectText": "{tenantName, select, DeloitteDK {Giv dit input: {postTitle}} other {Støt min idé: {ideaTitle}}}",
   "app.components.PostComponents.SharingModalContent.ideaWhatsAppMessage": "{tenantName, select, DeloitteDK {Giv dit input: {postTitle}.} other {Støt min idé: {postTitle}.}}",
-  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingBody": "Hvad synes du om dette forslag? Stem på den og del diskussionen på {postUrl} for at blive hørt!",
-  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingSubject": "Støt mit forslag: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.issueEmailSharingBody": "Jeg sendte dette høringssvar '{postTitle}' på {postUrl}!",
   "app.components.PostComponents.SharingModalContent.issueEmailSharingSubject": "Jeg har lige sendt et høringssvar til {postTitle}.",
   "app.components.PostComponents.SharingModalContent.issueWhatsAppMessage": "Jeg har lige sendt et høringssvar til {postTitle}.",

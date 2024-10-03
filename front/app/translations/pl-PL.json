@@ -298,8 +298,6 @@
   "app.components.PostComponents.SharingModalContent.ideaEmailSharingBody": "Co sądzisz o tym pomyśle? Zagłosuj na niego i podziel się dyskusją w {postUrl}, aby twój głos był słyszalny!",
   "app.components.PostComponents.SharingModalContent.ideaEmailSharingSubjectText": "Poprzyj mój pomysł: {postTitle}",
   "app.components.PostComponents.SharingModalContent.ideaWhatsAppMessage": "Poprzyj mój pomysł: {postTitle}.",
-  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingBody": "Co sądzisz o tym pomyśle? Zagłosuj na niego i podziel się dyskusją w {postUrl}, aby twój głos był słyszalny!",
-  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingSubject": "Poprzyj moją propozycję: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.issueEmailSharingBody": "Zgłosiłem sprawę '{postTitle}' w {postUrl}!",
   "app.components.PostComponents.SharingModalContent.issueEmailSharingSubject": "Właśnie zgłosiłem sprawę: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.issueWhatsAppMessage": "Właśnie zgłosiłem sprawę: {postTitle}.",

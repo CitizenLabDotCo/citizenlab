@@ -298,8 +298,6 @@
   "app.components.PostComponents.SharingModalContent.ideaEmailSharingBody": "Wat denk je van deze bijdrage? Breng je stem uit en neem deel aan de discussie op {postUrl} om je stem te laten horen!",
   "app.components.PostComponents.SharingModalContent.ideaEmailSharingSubjectText": "Steun mijn idee: {postTitle}",
   "app.components.PostComponents.SharingModalContent.ideaWhatsAppMessage": "Steun mijn idee: {postTitle}.",
-  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingBody": "Wat denk je van dit voorstel? Breng je stem uit en neem deel aan de discussie op {postUrl} om je stem te laten horen!",
-  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingSubject": "Steun mijn voorstel: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.issueEmailSharingBody": "Ik heb net een reactie gepost '{postTitle}' op {postUrl}!",
   "app.components.PostComponents.SharingModalContent.issueEmailSharingSubject": "Ik heb net een reactie gepost: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.issueWhatsAppMessage": "Ik heb net een reactie gepost: {postTitle}.",

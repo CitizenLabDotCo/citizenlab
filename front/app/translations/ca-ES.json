@@ -298,8 +298,6 @@
   "app.components.PostComponents.SharingModalContent.ideaEmailSharingBody": "Doneu suport a la meva idea \"{postTitle}\" a {postUrl}!",
   "app.components.PostComponents.SharingModalContent.ideaEmailSharingSubjectText": "Doneu suport a la meva idea: {postTitle}",
   "app.components.PostComponents.SharingModalContent.ideaWhatsAppMessage": "Doneu suport a la meva idea: {postTitle}.",
-  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingBody": "Què us sembla aquesta proposta? Voteu-hi i compartiu la discussió a {postUrl} per fer sentir la vostra veu!",
-  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingSubject": "Doneu suport a la meva proposta: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.issueEmailSharingBody": "He publicat un comentari \"{postTitle}\" a {postUrl}!",
   "app.components.PostComponents.SharingModalContent.issueEmailSharingSubject": "Acabo de publicar un comentari: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.issueWhatsAppMessage": "Acabo de publicar un comentari: {postTitle}.",

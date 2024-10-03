@@ -298,8 +298,6 @@
   "app.components.PostComponents.SharingModalContent.ideaEmailSharingBody": "Atbalstīt manu ideju '{postTitle}' {postUrl}!",
   "app.components.PostComponents.SharingModalContent.ideaEmailSharingSubjectText": "Atbalstīt manu ideju: {postTitle}",
   "app.components.PostComponents.SharingModalContent.ideaWhatsAppMessage": "Atbalstīt manu ideju: {postTitle}.",
-  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingBody": "Ko jūs domājat par šo priekšlikumu? Balsojiet par to un koplietojiet diskusiju vietnē {postUrl}, lai jūsu viedoklis tiktu sadzirdēts!",
-  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingSubject": "Atbalstīt manu priekšlikumu: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.issueEmailSharingBody": "Es publicēju komentāru '{postTitle}' {postUrl}!",
   "app.components.PostComponents.SharingModalContent.issueEmailSharingSubject": "Es tikko publicēju komentāru: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.issueWhatsAppMessage": "Es tikko publicēju komentāru: {postTitle}.",

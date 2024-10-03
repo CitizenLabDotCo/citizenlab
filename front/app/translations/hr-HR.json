@@ -298,8 +298,6 @@
   "app.components.PostComponents.SharingModalContent.ideaEmailSharingBody": "Podržite moju ideju '{postTitle}' na {postUrl}!",
   "app.components.PostComponents.SharingModalContent.ideaEmailSharingSubjectText": "Podržite moju ideju: {postTitle}",
   "app.components.PostComponents.SharingModalContent.ideaWhatsAppMessage": "Podržite moju ideju: {postTitle}.",
-  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingBody": "Što mislite o ovom prijedlogu? Glasajte i podijelite raspravu na {postUrl} kako bi se vaš glas čuo!",
-  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingSubject": "Podržite moj prijedlog: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.issueEmailSharingBody": "Objavio/la sam komentar '{postTitle}' ovdje {postUrl}!",
   "app.components.PostComponents.SharingModalContent.issueEmailSharingSubject": "Upravo sam objavio/la komentar: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.issueWhatsAppMessage": "Upravo sam objavio/la komentar: {postTitle}.",

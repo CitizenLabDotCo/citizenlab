@@ -298,8 +298,6 @@
   "app.components.PostComponents.SharingModalContent.ideaEmailSharingBody": "Unterstützen Sie meine Idee '{postTitle}' bei {postUrl}!",
   "app.components.PostComponents.SharingModalContent.ideaEmailSharingSubjectText": "Meine Idee unterstützen: {postTitle}",
   "app.components.PostComponents.SharingModalContent.ideaWhatsAppMessage": "Meine Idee unterstützen: {postTitle}.",
-  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingBody": "Was hälst du von diesem Vorschlag? Stimme ab und teile die Diskussion unter {postUrl}, um deiner Stimme Gehör zu verschaffen!",
-  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingSubject": "Meinen Vorschlag unterstützen: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.issueEmailSharingBody": "Unter {postUrl} habe ich ein Problem „{postTitle}“ gepostet!",
   "app.components.PostComponents.SharingModalContent.issueEmailSharingSubject": "Ich habe gerade ein Problem gepostet: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.issueWhatsAppMessage": "Ich habe gerade ein Problem gepostet: {postTitle}.",

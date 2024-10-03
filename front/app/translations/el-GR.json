@@ -298,8 +298,6 @@
   "app.components.PostComponents.SharingModalContent.ideaEmailSharingBody": "Υποστηρίξτε την ιδέα μου '{postTitle}' στο {postUrl}!",
   "app.components.PostComponents.SharingModalContent.ideaEmailSharingSubjectText": "Υποστηρίξτε την ιδέα μου: {postTitle}",
   "app.components.PostComponents.SharingModalContent.ideaWhatsAppMessage": "Υποστηρίξτε την ιδέα μου: {postTitle}.",
-  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingBody": "Τι γνώμη έχετε για αυτή την πρόταση; Ψηφίστε την και κοινοποιείστε τη συζήτηση στο {postUrl} για να ακουστεί η φωνή σας!",
-  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingSubject": "Υποστηρίξτε την πρότασή μου: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.issueEmailSharingBody": "Έχω δημοσιεύσει ένα σχόλιο '{postTitle}' στο {postUrl}!",
   "app.components.PostComponents.SharingModalContent.issueEmailSharingSubject": "Μόλις δημοσίευσα ένα σχόλιο: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.issueWhatsAppMessage": "Μόλις δημοσίευσα ένα σχόλιο: {postTitle}.",

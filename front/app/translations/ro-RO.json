@@ -207,8 +207,6 @@
   "app.components.PostComponents.SharingModalContent.ideaEmailSharingBody": "Ce părere ai despre această idee? Votează-o și distribuie discuția la {postUrl} pentru a te face auzit!",
   "app.components.PostComponents.SharingModalContent.ideaEmailSharingSubjectText": "Sprijină-mi ideea: {postTitle}",
   "app.components.PostComponents.SharingModalContent.ideaWhatsAppMessage": "Sprijiniți ideea mea: {postTitle}.",
-  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingBody": "Ce părere ai despre această idee? Votează-o și distribuie discuția la {postUrl} pentru a te face auzit!",
-  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingSubject": "Sprijiniți propunerea mea: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.issueEmailSharingBody": "Am postat o problemă '{postTitle}' la {postUrl}!",
   "app.components.PostComponents.SharingModalContent.issueEmailSharingSubject": "Tocmai am postat o problemă: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.issueWhatsAppMessage": "Tocmai am postat o problemă: {postTitle}.",

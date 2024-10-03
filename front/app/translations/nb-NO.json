@@ -298,8 +298,6 @@
   "app.components.PostComponents.SharingModalContent.ideaEmailSharingBody": "Hva synes du om denne ideen? Stem på den og bli med i diskusjonen på {postUrl} for å få stemmen din hørt.",
   "app.components.PostComponents.SharingModalContent.ideaEmailSharingSubjectText": "Støtt ideen min: {postTitle}",
   "app.components.PostComponents.SharingModalContent.ideaWhatsAppMessage": "Støtt ideen min: {postTitle}.",
-  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingBody": "Hva synes du om dette forslaget? Stem på det og bli med i diskusjonen på {postUrl} for å få stemmen din hørt.",
-  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingSubject": "Støtt forslaget mitt: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.issueEmailSharingBody": "Jeg la ut et tema '{postTitle}' på {postUrl}!",
   "app.components.PostComponents.SharingModalContent.issueEmailSharingSubject": "Jeg har nettopp lagt ut et emne: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.issueWhatsAppMessage": "Jeg har nettopp lagt ut et tema: {postTitle}.",

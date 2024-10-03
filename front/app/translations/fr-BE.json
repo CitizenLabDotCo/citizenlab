@@ -298,8 +298,6 @@
   "app.components.PostComponents.SharingModalContent.ideaEmailSharingBody": "Que pensez-vous de cette idée ? Votez et rejoignez la discussion sur {postUrl} pour que votre voix soit entendue!",
   "app.components.PostComponents.SharingModalContent.ideaEmailSharingSubjectText": "Soutenir mon idée : {postTitle}",
   "app.components.PostComponents.SharingModalContent.ideaWhatsAppMessage": "Soutenir mon idée : {postTitle}.",
-  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingBody": "Que pensez-vous de cette proposition ? Votez et rejoignez la discussion sur {postUrl} pour que votre voix soit entendue!",
-  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingSubject": "Soutenir mon proposition : {postTitle}.",
   "app.components.PostComponents.SharingModalContent.issueEmailSharingBody": "J'ai publié un problème « {postTitle} » à {postUrl} !",
   "app.components.PostComponents.SharingModalContent.issueEmailSharingSubject": "Je viens de publier un problème : {postTitle}.",
   "app.components.PostComponents.SharingModalContent.issueWhatsAppMessage": "Je viens de publier un problème : {postTitle}.",
