@@ -166,19 +166,19 @@ const UserName = ({
     const isAuthorWithNoName =
       user.data.id === authUser?.data.id && authUser?.data.attributes.no_name;
 
-    const nameSnippet = (
+    const nameElement = (
       <Name {...sharedNameProps} className={classNames}>
         {name}
       </Name>
     );
 
-    const nameLinkSnippet = (
+    const linkedNamelement = (
       <Link
         to={profileLink}
         className={`e2e-author-link ${className || ''}`}
         scrollToTop
       >
-        {nameSnippet}
+        {nameElement}
       </Link>
     );
 
@@ -196,13 +196,13 @@ const UserName = ({
             </Box>
           }
         >
-          {nameLinkSnippet}
+          {linkedNamelement}
         </Tooltip>
       );
     } else if (isLinkToProfile) {
-      return nameLinkSnippet;
+      return linkedNamelement;
     } else {
-      return nameSnippet;
+      return nameElement;
     }
   }
 
