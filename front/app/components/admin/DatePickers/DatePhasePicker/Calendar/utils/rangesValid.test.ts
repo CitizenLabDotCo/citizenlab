@@ -12,6 +12,13 @@ describe('rangesValid', () => {
       expect(rangesValid({ from: new Date() }, [])).toEqual({ valid: true });
     });
 
+    it('is valid to have from and to be the same value', () => {
+      const date = new Date();
+      expect(rangesValid({ from: date, to: date }, [])).toEqual({
+        valid: true,
+      });
+    });
+
     it('is invalid when only to is defined', () => {
       expect(rangesValid({ to: new Date() }, [])).toEqual({
         valid: false,

@@ -28,9 +28,16 @@ export const getUpdatedRange = ({
     };
   }
 
-  if (from > clickedDate || from.getTime() === clickedDate.getTime()) {
+  if (from > clickedDate) {
     return {
       from: clickedDate,
+    };
+  }
+
+  if (from.getTime() === clickedDate.getTime()) {
+    return {
+      from: clickedDate,
+      to: clickedDate,
     };
   }
 

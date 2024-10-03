@@ -28,15 +28,16 @@ describe('getUpdatedRange', () => {
       });
     });
 
-    it('updates start date if clicked date is start date', () => {
-      const selectedRange = { from: new Date(2024, 3, 1) };
+    it('creates single-day phase if clicked date is start date', () => {
+      const date = new Date(2024, 3, 1);
+      const selectedRange = { from: date };
       const disabledRanges = [];
-      const clickedDate = new Date(2024, 3, 1);
 
       expect(
-        getUpdatedRange({ selectedRange, disabledRanges, clickedDate })
+        getUpdatedRange({ selectedRange, disabledRanges, clickedDate: date })
       ).toEqual({
-        from: clickedDate,
+        from: date,
+        to: date,
       });
     });
 
