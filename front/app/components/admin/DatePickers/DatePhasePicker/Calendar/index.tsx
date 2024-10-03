@@ -70,10 +70,6 @@ const DayPickerStyles = styled.div`
     );
   }
 
-  .is-disabled-gradient_one > button {
-    cursor: not-allowed;
-  }
-
   .is-disabled-gradient_two {
     background: linear-gradient(
       90deg,
@@ -164,14 +160,9 @@ const Calendar = ({
 
   const handleDayClick: PropsBase['onDayClick'] = (
     day,
-    { isDisabledStart, isDisabledMiddle, isDisabledEnd, isDisabledGradient_one }
+    { isDisabledStart, isDisabledMiddle, isDisabledEnd }
   ) => {
-    if (
-      isDisabledStart ||
-      isDisabledMiddle ||
-      isDisabledEnd ||
-      isDisabledGradient_one
-    ) {
+    if (isDisabledStart || isDisabledMiddle || isDisabledEnd) {
       return;
     }
 

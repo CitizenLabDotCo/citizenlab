@@ -13,6 +13,18 @@ describe('getUpdatedRange', () => {
         from: clickedDate,
       });
     });
+
+    it('is possible to click one day after open-ended disabled range', () => {
+      const selectedRange = {};
+      const disabledRanges = [{ from: new Date(2024, 3, 1) }];
+      const clickedDate = new Date(2024, 3, 2);
+
+      expect(
+        getUpdatedRange({ selectedRange, disabledRanges, clickedDate })
+      ).toEqual({
+        from: clickedDate,
+      });
+    });
   });
 
   describe('selectedRange has a start date', () => {

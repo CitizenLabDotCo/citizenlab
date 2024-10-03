@@ -49,6 +49,14 @@ describe('rangesValid', () => {
         reason: 'disabledRanges invalid',
       });
     });
+
+    it('is possible to have one-day disabled ranges', () => {
+      expect(
+        rangesValid({}, [
+          { from: new Date(2024, 1, 1), to: new Date(2024, 1, 1) },
+        ])
+      ).toEqual({ valid: true });
+    });
   });
 
   describe('selectedRange and disabledRanges', () => {
