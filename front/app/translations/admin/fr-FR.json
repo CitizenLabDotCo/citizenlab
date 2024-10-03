@@ -2132,7 +2132,7 @@
   "app.containers.AdminPage.SideBar.processing": "Traitement",
   "app.containers.AdminPage.SideBar.projectManager": "Gestionnaire de projets",
   "app.containers.AdminPage.SideBar.projects": "{tenantName, select, frw {Communes} other {Projets}}",
-  "app.containers.AdminPage.SideBar.proposalsTooltip": "Les propositions sont désormais une méthode de participation. Vous pouvez également épingler des projets individuels à la barre de navigation.",
+  "app.containers.AdminPage.SideBar.proposalsTooltip": "Les propositions sont désormais une méthode de participation. Vous pouvez également épingler des projets à la barre de navigation.",
   "app.containers.AdminPage.SideBar.settings": "Paramètres",
   "app.containers.AdminPage.SideBar.signOut": "Se déconnecter",
   "app.containers.AdminPage.SideBar.support": "Aide",
