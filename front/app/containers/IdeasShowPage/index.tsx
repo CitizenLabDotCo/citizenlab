@@ -40,7 +40,7 @@ const StyledIdeaShowPageTopBar = styled(IdeaShowPageTopBar)`
 `;
 
 // note: StyledIdeasShow styles defined here should match that in PostPageFullscreenModal!
-const StyledIdeasShow = styled(IdeasShow)`
+const StyledIdeasShow = styled(IdeasShow)<{ hasNextPreviousControl?: boolean }>`
   min-height: calc(
     100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
   );
@@ -49,13 +49,14 @@ const StyledIdeasShow = styled(IdeasShow)`
   padding-right: 60px;
 
   ${({ theme }) => media.tablet`
-    margin-top: ${theme.menuHeight}px;
+    margin-top: ${(props) =>
+      props.hasNextPreviousControl ? '0' : theme.menuHeight}px;
     min-height: calc(100vh - ${theme.mobileTopBarHeight}px);
     padding-top: 35px;
   `}
 
   ${media.phone`
-    padding-top: 25px;
+    padding-top: ${(props) => (props.hasNextPreviousControl ? '0px' : '25px')};
     padding-left: 15px;
     padding-right: 15px;
   `}
@@ -120,21 +121,32 @@ const IdeasShowPage = () => {
             <DesktopTopBar project={project.data} />
           )}
           <>
-            {phaseContext && (
-              <Box mb="8px">
-                <IdeaNavigationButtons
-                  projectId={project.data.id}
-                  phaseContext={phaseContext}
+            <Box mb="8px">
+              {phaseContext && (
+                <Box
+                  width="100%"
+                  display="flex"
+                  justifyContent="center"
+                  mt={isSmallerThanTablet ? '68px ' : ''}
+                >
+                  <Box width="80px">
+                    <IdeaNavigationButtons
+                      projectId={project.data.id}
+                      phaseContext={phaseContext}
+                    />
+                  </Box>
+                </Box>
+              )}
+
+              <main id="e2e-idea-show">
+                <StyledIdeasShow
+                  ideaId={idea.data.id}
+                  projectId={idea.data.relationships.project.data.id}
+                  compact={isSmallerThanTablet}
+                  hasNextPreviousControl={phaseContext !== null}
                 />
-                <main id="e2e-idea-show">
-                  <StyledIdeasShow
-                    ideaId={idea.data.id}
-                    projectId={idea.data.relationships.project.data.id}
-                    compact={isSmallerThanTablet}
-                  />
-                </main>
-              </Box>
-            )}
+              </main>
+            </Box>
           </>
         </Box>
         {showCTABar && (

@@ -73,9 +73,12 @@ const IdeaNavigationButtons = ({ projectId, phaseContext }: Props) => {
           p="0px !important"
           iconName="chevron-left"
           onClick={() => {
-            clHistory.replace(
-              `/ideas/${previousIdeaSlug}?phase_context=${phaseContext}`
-            );
+            {
+              previousIdeaSlug &&
+                clHistory.replace(
+                  `/ideas/${previousIdeaSlug}?phase_context=${phaseContext}`
+                );
+            }
           }}
           a11y_buttonActionMessage={formatMessage(messages.goToPreviousInput)}
           aria-label={formatMessage(messages.goToPreviousInput)}
@@ -99,9 +102,10 @@ const IdeaNavigationButtons = ({ projectId, phaseContext }: Props) => {
           p="0px !important"
           iconName="chevron-right"
           onClick={() => {
-            clHistory.replace(
-              `/ideas/${nextIdeaSlug}?phase_context=${phaseContext}`
-            );
+            nextIdeaSlug &&
+              clHistory.replace(
+                `/ideas/${nextIdeaSlug}?phase_context=${phaseContext}`
+              );
           }}
           aria-label={formatMessage(messages.goToNextInput)}
           a11y_buttonActionMessage={formatMessage(messages.goToNextInput)}
