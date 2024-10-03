@@ -53,12 +53,12 @@ export const getUpdatedRange = ({
       return {
         from: clickedDate,
       };
-    } else {
-      return {
-        from,
-        to: clickedDate,
-      };
     }
+
+    return {
+      from,
+      to: clickedDate,
+    };
   }
 
   return {

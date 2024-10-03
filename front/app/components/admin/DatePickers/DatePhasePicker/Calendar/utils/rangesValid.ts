@@ -84,12 +84,12 @@ export const rangesValid = (
 
       if (validRangeSequence(combinedRanges)) {
         return { valid: true, reason: undefined };
-      } else {
-        return {
-          valid: false,
-          reason: 'selectedRange and disabledRanges invalid together',
-        };
       }
+
+      return {
+        valid: false,
+        reason: 'selectedRange and disabledRanges invalid together',
+      };
     }
   } else {
     const fromIsLast = from >= disabledRanges[disabledRanges.length - 1].from;
@@ -100,9 +100,9 @@ export const rangesValid = (
         reason:
           'selectedRange cannot be last if disabledRanges ends with an open range',
       };
-    } else {
-      return { valid: true, reason: undefined };
     }
+
+    return { valid: true, reason: undefined };
   }
 };
 
