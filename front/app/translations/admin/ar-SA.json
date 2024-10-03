@@ -2132,6 +2132,7 @@
   "app.containers.AdminPage.SideBar.processing": "معالجة",
   "app.containers.AdminPage.SideBar.projectManager": "مدير المشروع",
   "app.containers.AdminPage.SideBar.projects": "المشاريع",
+  "app.containers.AdminPage.SideBar.proposalsTooltip": "أصبحت المقترحات الآن طريقة للمشاركة. يمكنك أيضًا تثبيت المشاريع الفردية على شريط التنقل.",
   "app.containers.AdminPage.SideBar.settings": "الإعدادات",
   "app.containers.AdminPage.SideBar.signOut": "خروج",
   "app.containers.AdminPage.SideBar.support": "يدعم",
