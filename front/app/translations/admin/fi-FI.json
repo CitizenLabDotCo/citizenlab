@@ -2132,6 +2132,7 @@
   "app.containers.AdminPage.SideBar.processing": "Käsittely",
   "app.containers.AdminPage.SideBar.projectManager": "Projektipäällikkö",
   "app.containers.AdminPage.SideBar.projects": "Projektit",
+  "app.containers.AdminPage.SideBar.proposalsTooltip": "Ehdotukset ovat nyt osallistumismenetelmä. Voit myös kiinnittää yksittäisiä projekteja navigointipalkkiin.",
   "app.containers.AdminPage.SideBar.settings": "asetukset",
   "app.containers.AdminPage.SideBar.signOut": "Kirjaudu ulos",
   "app.containers.AdminPage.SideBar.support": "Tuki",
