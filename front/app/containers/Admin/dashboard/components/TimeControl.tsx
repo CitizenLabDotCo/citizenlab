@@ -4,7 +4,7 @@ import { Icon, Dropdown, colors } from '@citizenlab/cl2-component-library';
 import moment, { Moment } from 'moment';
 import styled from 'styled-components';
 
-import DateRangePicker from 'components/admin/DateRangePicker';
+import DateRangePicker from 'components/admin/DatePickers/DateRangePicker';
 import Button from 'components/UI/Button';
 
 import { FormattedMessage } from 'utils/cl-intl';

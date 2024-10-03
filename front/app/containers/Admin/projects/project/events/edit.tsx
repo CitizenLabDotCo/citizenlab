@@ -33,7 +33,7 @@ import useUpdateEvent from 'api/events/useUpdateEvent';
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 import useLocale from 'hooks/useLocale';
 
-import DateTimePicker from 'components/admin/DateTimePicker';
+import DateTimePicker from 'components/admin/DatePickers/DateTimePicker';
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import Button from 'components/UI/Button';

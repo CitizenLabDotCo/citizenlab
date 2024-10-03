@@ -10,7 +10,7 @@ import {
 import { withJsonFormsControlProps } from '@jsonforms/react';
 import moment from 'moment';
 
-import DateSinglePicker from 'components/admin/DateSinglePicker';
+import DateSinglePicker from 'components/admin/DatePickers/DateSinglePicker';
 import { FormLabel } from 'components/UI/FormComponents';
 
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
@@ -49,7 +49,7 @@ const DateControl = ({
       <Box display="flex">
         <DateSinglePicker
           id={sanitizeForClassname(id)}
-          selectedDate={data ? new Date(data) : null}
+          selectedDate={data ? new Date(data) : undefined}
           onChange={(value) => {
             handleChange(
               path,
