@@ -20,8 +20,8 @@ describe Analytics::PopulateDimensionsService do
       expect(Analytics::DimensionDate.count).to be >= 180
     end
 
-    it 'has 18 dimension types' do
-      expect(Analytics::DimensionType.count).to eq(18)
+    it 'has 20 dimension types' do
+      expect(Analytics::DimensionType.count).to eq(20)
     end
 
     it 'has 5 referrer types' do
