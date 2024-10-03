@@ -224,7 +224,7 @@ const ParentCommentForm = ({
 
   const placeholderMessage: MessageDescriptor = isAdminPage
     ? messages.visibleToUsersPlaceholder
-    : messages[`IdeaCommentBodyPlaceholder`];
+    : messages.ideaCommentBodyPlaceholder;
   const placeholder = formatMessage(placeholderMessage);
   const userCanModerate = project
     ? canModerateProject(project.data, authUser)
