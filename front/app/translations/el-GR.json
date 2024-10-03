@@ -786,6 +786,8 @@
   "app.components.formBuilder.title": "Τίτλος",
   "app.components.formBuilder.toLabel": "στο",
   "app.components.formBuilder.unsavedChanges": "Έχετε μη αποθηκευμένες αλλαγές",
+  "app.components.phaseTimeLeft.xDayLeft": "{timeLeft, plural, =0 {Λιγότερο από μία ημέρα} one {# ημέρα} other {# ημέρες}} αριστερά",
+  "app.components.phaseTimeLeft.xWeeksLeft": "{timeLeft}  εβδομάδες αριστερά",
   "app.components.screenReaderCurrency.AED": "Ντιρχάμ Ηνωμένων Αραβικών Εμιράτων",
   "app.components.screenReaderCurrency.AFN": "Αφγανός Αφγανός",
   "app.components.screenReaderCurrency.ALL": "Αλβανικό λεκ",

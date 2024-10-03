@@ -786,6 +786,8 @@
   "app.components.formBuilder.title": "Teitl",
   "app.components.formBuilder.toLabel": "i",
   "app.components.formBuilder.unsavedChanges": "Mae gennych newidiadau heb eu cadw",
+  "app.components.phaseTimeLeft.xDayLeft": "{timeLeft, plural, =0 {Llai na diwrnod} one {# diwrnod} other {# diwrnod}} ar ôl",
+  "app.components.phaseTimeLeft.xWeeksLeft": "{timeLeft}  wythnosau ar ôl",
   "app.components.screenReaderCurrency.AED": "Emiradau Arabaidd Unedig Dirham",
   "app.components.screenReaderCurrency.AFN": "Affganiaidd",
   "app.components.screenReaderCurrency.ALL": "Albaneg Lek",

@@ -786,6 +786,8 @@
   "app.components.formBuilder.title": "Titel",
   "app.components.formBuilder.toLabel": "bis",
   "app.components.formBuilder.unsavedChanges": "Sie haben ungespeicherte Änderungen",
+  "app.components.phaseTimeLeft.xDayLeft": "noch {timeLeft, plural, =0 {weniger als ein Tag} one {# Tag} other {# Tage}}",
+  "app.components.phaseTimeLeft.xWeeksLeft": "noch {timeLeft} Wochen",
   "app.components.screenReaderCurrency.AED": "Vereinigte Arabische Emirate Dirham",
   "app.components.screenReaderCurrency.AFN": "Afghanisch Afghani",
   "app.components.screenReaderCurrency.ALL": "Albanischer Lek",

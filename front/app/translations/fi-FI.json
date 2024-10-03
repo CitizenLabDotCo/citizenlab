@@ -786,6 +786,8 @@
   "app.components.formBuilder.title": "Otsikko",
   "app.components.formBuilder.toLabel": "to",
   "app.components.formBuilder.unsavedChanges": "Sinulla on tallentamattomia muutoksia",
+  "app.components.phaseTimeLeft.xDayLeft": "{timeLeft, plural, =0 {Alle päivä} one {# päivä} other {# päivää}} jäljellä",
+  "app.components.phaseTimeLeft.xWeeksLeft": "{timeLeft}  viikkoa jäljellä",
   "app.components.screenReaderCurrency.AED": "Yhdistyneiden arabiemiirikuntien dirham",
   "app.components.screenReaderCurrency.AFN": "afgaani afgaani",
   "app.components.screenReaderCurrency.ALL": "albanialainen Lek",

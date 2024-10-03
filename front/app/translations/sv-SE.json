@@ -786,6 +786,8 @@
   "app.components.formBuilder.title": "Titel",
   "app.components.formBuilder.toLabel": "till",
   "app.components.formBuilder.unsavedChanges": "Du har obefintliga förändringar",
+  "app.components.phaseTimeLeft.xDayLeft": "{timeLeft, plural, =0 {Mindre än en dag} one {# dag} other {# dagar}} vänster",
+  "app.components.phaseTimeLeft.xWeeksLeft": "{timeLeft}  veckor kvar",
   "app.components.screenReaderCurrency.AED": "Förenade Arabemiraten Dirham",
   "app.components.screenReaderCurrency.AFN": "Afghansk Afghansk",
   "app.components.screenReaderCurrency.ALL": "Albanska Lek",

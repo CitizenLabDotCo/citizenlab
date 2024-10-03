@@ -786,6 +786,8 @@
   "app.components.formBuilder.title": "Naslov",
   "app.components.formBuilder.toLabel": "do",
   "app.components.formBuilder.unsavedChanges": "You have unsaved changes",
+  "app.components.phaseTimeLeft.xDayLeft": "{timeLeft, plural, =0 {Less than a day} one {# day} other {# days}} left",
+  "app.components.phaseTimeLeft.xWeeksLeft": "{timeLeft}  weeks left",
   "app.components.screenReaderCurrency.AED": "United Arab Emirates Dirham",
   "app.components.screenReaderCurrency.AFN": "Afghan Afghani",
   "app.components.screenReaderCurrency.ALL": "Albanian Lek",

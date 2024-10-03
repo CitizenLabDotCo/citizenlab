@@ -786,6 +786,8 @@
   "app.components.formBuilder.title": "العنوان",
   "app.components.formBuilder.toLabel": "إلى",
   "app.components.formBuilder.unsavedChanges": "لم تحفظ التغييرات",
+  "app.components.phaseTimeLeft.xDayLeft": "{timeLeft, plural, =0 {أقل من يوم} one {# يوم} other {# أيام}} متبقي",
+  "app.components.phaseTimeLeft.xWeeksLeft": "{timeLeft}  أسابيع متبقية",
   "app.components.screenReaderCurrency.AED": "درهم الإمارات العربية المتحدة",
   "app.components.screenReaderCurrency.AFN": "أفغاني أفغاني",
   "app.components.screenReaderCurrency.ALL": "ليك الألباني",
