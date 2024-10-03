@@ -86,11 +86,7 @@ const generateDisabledModifiers = (disabledRanges: DateRange[]) => {
   }
 
   if (allAreClosedDateRanges(disabledRanges)) {
-    return {
-      isDisabledStart: disabledRanges.map(({ from }) => from),
-      isDisabledMiddle: generateDisabledMiddleRange(disabledRanges),
-      isDisabledEnd: disabledRanges.map(({ to }) => to),
-    };
+    return generateClosedDisabledRanges(disabledRanges);
   } else {
     const lastDisabledRange = disabledRanges[disabledRanges.length - 1];
     const disabledRangesWithoutLast = disabledRanges.slice(0, -1);
@@ -112,15 +108,18 @@ const generateDisabledModifiers = (disabledRanges: DateRange[]) => {
         ...isDisabledGradient,
       };
     } else {
+      const closedDisabledRanges = generateClosedDisabledRanges(
+        disabledRangesWithoutLast
+      );
+
       return {
         isDisabledStart: [
-          ...disabledRangesWithoutLast.map(({ from }) => from),
+          ...(closedDisabledRanges.isDisabledStart || []),
           lastDisabledRange.from,
         ],
-        isDisabledMiddle: generateDisabledMiddleRange(
-          disabledRangesWithoutLast
-        ),
-        isDisabledEnd: disabledRangesWithoutLast.map(({ to }) => to),
+        isDisabledMiddle: closedDisabledRanges.isDisabledMiddle,
+        isDisabledEnd: closedDisabledRanges.isDisabledEnd,
+        isDisabledSingle: closedDisabledRanges.isDisabledSingle,
         ...isDisabledGradient,
       };
     }
@@ -149,4 +148,59 @@ const generateDisabledMiddleRange = (disabledRanges: ClosedDateRange[]) => {
     const middleRange = generateMiddleRange(range);
     return middleRange ? [...acc, middleRange] : acc;
   }, []);
+};
+
+const generateClosedDisabledRanges = (disabledRanges: ClosedDateRange[]) => {
+  const disabledRangesWithoutSingleDayRanges: ClosedDateRange[] = [];
+  const singleDayRanges: ClosedDateRange[] = [];
+
+  for (const range of disabledRanges) {
+    if (range.to.getTime() === range.from.getTime()) {
+      singleDayRanges.push(range);
+    } else {
+      disabledRangesWithoutSingleDayRanges.push(range);
+    }
+  }
+
+  if (
+    disabledRangesWithoutSingleDayRanges.length === 0 &&
+    singleDayRanges.length === 0
+  ) {
+    return {};
+  }
+
+  if (
+    disabledRangesWithoutSingleDayRanges.length === 0 &&
+    singleDayRanges.length > 0
+  ) {
+    return {
+      isDisabledSingle: singleDayRanges.map(({ from }) => from),
+    };
+  }
+
+  if (
+    disabledRangesWithoutSingleDayRanges.length > 0 &&
+    singleDayRanges.length === 0
+  ) {
+    return {
+      isDisabledStart: disabledRangesWithoutSingleDayRanges.map(
+        ({ from }) => from
+      ),
+      isDisabledMiddle: generateDisabledMiddleRange(
+        disabledRangesWithoutSingleDayRanges
+      ),
+      isDisabledEnd: disabledRangesWithoutSingleDayRanges.map(({ to }) => to),
+    };
+  }
+
+  return {
+    isDisabledSingle: singleDayRanges.map(({ from }) => from),
+    isDisabledStart: disabledRangesWithoutSingleDayRanges.map(
+      ({ from }) => from
+    ),
+    isDisabledMiddle: generateDisabledMiddleRange(
+      disabledRangesWithoutSingleDayRanges
+    ),
+    isDisabledEnd: disabledRangesWithoutSingleDayRanges.map(({ to }) => to),
+  };
 };

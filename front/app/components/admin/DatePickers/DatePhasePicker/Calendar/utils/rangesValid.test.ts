@@ -57,6 +57,35 @@ describe('rangesValid', () => {
         ])
       ).toEqual({ valid: true });
     });
+
+    it('should be valid 1', () => {
+      const disabledRanges = [
+        {
+          from: new Date(2024, 2, 1),
+          to: new Date(2024, 2, 1),
+        },
+        {
+          from: new Date(2024, 2, 2),
+          to: new Date(2024, 2, 20),
+        },
+      ];
+
+      expect(rangesValid({}, disabledRanges)).toEqual({ valid: true });
+    });
+
+    it('should be valid 2', () => {
+      const disabledRanges = [
+        {
+          from: new Date(2024, 2, 1),
+          to: new Date(2024, 2, 1),
+        },
+        {
+          from: new Date(2024, 2, 2),
+        },
+      ];
+
+      expect(rangesValid({}, disabledRanges)).toEqual({ valid: true });
+    });
   });
 
   describe('selectedRange and disabledRanges', () => {

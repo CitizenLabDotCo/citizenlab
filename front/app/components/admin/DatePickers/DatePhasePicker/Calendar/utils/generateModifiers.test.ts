@@ -101,6 +101,59 @@ describe('generateModifiers', () => {
         isDisabledGradient_three: new Date(2024, 4, 4),
       });
     });
+
+    it('correctly handles single-day disabled ranges when all are closed', () => {
+      const disabledRanges = [
+        {
+          from: new Date(2024, 2, 1),
+          to: new Date(2024, 2, 1),
+        },
+        {
+          from: new Date(2024, 2, 2),
+          to: new Date(2024, 2, 20),
+        },
+      ];
+
+      expect(generateModifiers({ selectedRange, disabledRanges })).toEqual({
+        isDisabledSingle: [new Date(2024, 2, 1)],
+        isDisabledStart: [new Date(2024, 2, 2)],
+        isDisabledMiddle: [],
+        isDisabledEnd: [new Date(2024, 2, 20)],
+      });
+    });
+
+    it('correctly handles single-day disabled ranges when last is open', () => {
+      const disabledRanges = [
+        {
+          from: new Date(2024, 2, 1),
+          to: new Date(2024, 2, 1),
+        },
+        {
+          from: new Date(2024, 2, 2),
+        },
+      ];
+
+      expect(generateModifiers({ selectedRange, disabledRanges })).toEqual({
+        isDisabledSingle: [new Date(2024, 2, 1)],
+        isDisabledStart: [new Date(2024, 2, 2)],
+        isDisabledGradient_one: new Date(2024, 2, 3),
+        isDisabledGradient_two: new Date(2024, 2, 4),
+        isDisabledGradient_three: new Date(2024, 2, 5),
+      });
+    });
+
+    it('correctly handles one single-day disabled range', () => {
+      const disabledRanges = [
+        {
+          from: new Date(2024, 2, 1),
+          to: new Date(2024, 2, 1),
+        },
+      ];
+
+      expect(generateModifiers({ selectedRange, disabledRanges })).toEqual({
+        isDisabledSingle: [new Date(2024, 2, 1)],
+      });
+    });
   });
 
   describe('selectedRange and disabledRanges', () => {
