@@ -2132,6 +2132,7 @@
   "app.containers.AdminPage.SideBar.processing": "Prosesu",
   "app.containers.AdminPage.SideBar.projectManager": "Rheolwr Prosiect",
   "app.containers.AdminPage.SideBar.projects": "Prosiectau",
+  "app.containers.AdminPage.SideBar.proposalsTooltip": "Mae cynigion bellach yn ddull cyfranogiad. Gallwch hefyd binio prosiectau unigol i'r bar llywio.",
   "app.containers.AdminPage.SideBar.settings": "Gosodiadau",
   "app.containers.AdminPage.SideBar.signOut": "Arwyddo allan",
   "app.containers.AdminPage.SideBar.support": "Cefnogaeth",
