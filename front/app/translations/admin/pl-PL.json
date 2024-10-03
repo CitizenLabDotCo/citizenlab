@@ -2132,6 +2132,7 @@
   "app.containers.AdminPage.SideBar.processing": "Przetwarzanie",
   "app.containers.AdminPage.SideBar.projectManager": "Kierownik projektu",
   "app.containers.AdminPage.SideBar.projects": "Projekty",
+  "app.containers.AdminPage.SideBar.proposalsTooltip": "Propozycje są teraz metodą uczestnictwa. Możesz także przypiąć poszczególne projekty do paska nawigacji.",
   "app.containers.AdminPage.SideBar.settings": "Ustawienia",
   "app.containers.AdminPage.SideBar.signOut": "Wyloguj się",
   "app.containers.AdminPage.SideBar.support": "Wsparcie",
