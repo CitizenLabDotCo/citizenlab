@@ -16,6 +16,7 @@ type Props = {
   image?: string;
   onClick?: (event) => void;
   children?: JSX.Element;
+  participation_method: string;
 };
 
 export const backgroundColor = lighten(0.1, colors.tealLight);
@@ -45,6 +46,7 @@ const ParticipationMethodChoice = ({
   image,
   onClick,
   children,
+  participation_method,
 }: Props) => {
   const [isHover, setIsHover] = useState(false);
   const borderColor = selected || isHover ? colors.primary : colors.borderLight;
@@ -71,6 +73,7 @@ const ParticipationMethodChoice = ({
       onClick={onClick}
       style={{ cursor: 'pointer' }}
       height="100%"
+      id={`e2e-participation-method-choice-${participation_method}`}
     >
       {image && (
         <Image
