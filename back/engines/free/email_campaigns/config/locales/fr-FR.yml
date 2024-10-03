@@ -473,7 +473,7 @@ fr:
       unread_notifications: "Vous avez de nouvelles notifications ! Visitez la plate-forme pour découvrir ce qu'il s'y passe."
     threshold_reached_for_admin:
       cta_process_initiative: 'Passez cette proposition à l''étape suivante'
-      main_header: 'Une proposition a atteint le nombre de voix requis!'
+      main_header: 'Une proposition a atteint le nombre de voix requis !'
       subject: '"%{input_title} a atteint le nombre de voix requis'
       preheader: 'Assurez-vous de passer aux étapes suivantes'
     welcome:
@@ -488,12 +488,12 @@ fr:
         question: 'Votre question a été publiée'
         contribution: 'Votre contribution a été publiée'
         project: 'Votre projet a été publié'
-        issue: 'Votre numéro a été publié'
+        issue: 'Votre problème a été publié'
         option: 'Votre option a été publiée'
         proposal: 'Votre proposition a été publiée'
         initiative: 'Votre initiative a été publiée'
         petition: 'Votre pétition a été publiée'
-      main_header: 'Vous avez posté "%{input_title}"'
+      main_header: 'Vous avez posté « %{input_title} »'
       header_message: 'Veillons à ce qu''il soit lu.'
       message_get_votes: 'Atteindre plus de personnes'
       action_published_idea: 'Publié'
