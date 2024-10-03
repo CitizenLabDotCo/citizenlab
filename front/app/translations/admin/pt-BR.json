@@ -2132,6 +2132,7 @@
   "app.containers.AdminPage.SideBar.processing": "Em processamento",
   "app.containers.AdminPage.SideBar.projectManager": "Gestor de projeto",
   "app.containers.AdminPage.SideBar.projects": "Projetos",
+  "app.containers.AdminPage.SideBar.proposalsTooltip": "As propostas agora são um método de participação. Você também pode fixar projetos individuais na barra de navegação.",
   "app.containers.AdminPage.SideBar.settings": "Minhas configurações",
   "app.containers.AdminPage.SideBar.signOut": "Sair",
   "app.containers.AdminPage.SideBar.support": "Suporte",
