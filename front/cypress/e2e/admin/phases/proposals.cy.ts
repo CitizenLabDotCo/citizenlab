@@ -37,6 +37,13 @@ describe('Admin: proposal phase', () => {
     const phaseNameEN = randomString();
     cy.get('#title').type(phaseNameEN);
 
+    // Set date
+    cy.get('.e2e-date-phase-picker-input').first().click();
+    cy.get('.rdp-today').first().click();
+
+    // Click input again to close date picker
+    cy.get('.e2e-date-phase-picker-input').first().click();
+
     cy.get('#e2e-participation-method-choice-proposals').click();
     cy.get('.e2e-submit-wrapper-button button').click();
 
