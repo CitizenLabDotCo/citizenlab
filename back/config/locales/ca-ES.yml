@@ -170,6 +170,9 @@ ca:
       topic_ids:
         title: Etiquetes
         description:
+      consponsor_ids:
+        title: Copatrocinadors
+        description: Convida als copatrocinadors a través del camp següent. Els copatrocinadors convidats rebran un correu electrònic.
       location:
         title: Ubicació
         description:

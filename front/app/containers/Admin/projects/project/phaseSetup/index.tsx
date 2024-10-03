@@ -7,7 +7,6 @@ import {
   IconTooltip,
   colors,
 } from '@citizenlab/cl2-component-library';
-import moment from 'moment';
 import { useParams } from 'react-router-dom';
 import { CLErrors, UploadFile, Multiloc } from 'typings';
 
@@ -51,12 +50,13 @@ import clHistory from 'utils/cl-router/history';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 
 import CampaignRow from './components/CampaignRow';
+// import DateSetup from './components/DateSetup';
 import DateSetup from './components/DateSetup';
 import PhaseParticipationConfig from './components/PhaseParticipationConfig';
 import { ideationDefaultConfig } from './components/PhaseParticipationConfig/utils/participationMethodConfigs';
 import messages from './messages';
 import { SubmitStateType, ValidationErrors } from './typings';
-import { getTimelineTab, getStartDate } from './utils';
+import { getTimelineTab } from './utils';
 import validate from './validate';
 
 const convertToFileType = (phaseFiles: IPhaseFiles | undefined) => {
@@ -230,6 +230,7 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
 
     const { isValidated, errors } = validate(
       formData,
+      phases,
       formatMessage,
       tenantLocales
     );
@@ -296,31 +297,11 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
 
   const save = async (formData: IUpdatedPhaseProperties) => {
     if (processing) return;
-
     setProcessing(true);
-
-    const start = getStartDate({
-      phase: phase?.data,
-      phases,
-      formData,
-    });
-    const end = formData.end_at ? moment(formData.end_at) : null;
-
-    // If the start date was automatically calculated, we need to update the dates in submit if even if the user didn't change them
-    const updatedAttr = {
-      ...formData,
-      ...(!formData.start_at &&
-        start && {
-          start_at: start.locale('en').format('YYYY-MM-DD'),
-          end_at:
-            formData.end_at ||
-            (end ? end.locale('en').format('YYYY-MM-DD') : ''),
-        }),
-    };
 
     if (phase) {
       updatePhase(
-        { phaseId: phase?.data.id, ...updatedAttr },
+        { phaseId: phase?.data.id, ...formData },
         {
           onSuccess: (response) => {
             handleSaveResponse(response, false);
@@ -332,7 +313,7 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
       addPhase(
         {
           projectId,
-          ...updatedAttr,
+          ...formData,
         },
         {
           onSuccess: (response) => {
@@ -381,8 +362,10 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
           <DateSetup
             formData={formData}
             errors={errors}
+            validationErrors={validationErrors}
             setSubmitState={setSubmitState}
             setFormData={setFormData}
+            setValidationErrors={setValidationErrors}
           />
 
           <PhaseParticipationConfig
