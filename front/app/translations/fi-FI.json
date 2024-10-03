@@ -298,8 +298,6 @@
   "app.components.PostComponents.SharingModalContent.ideaEmailSharingBody": "Tue ideaani{postTitle}osoitteessa {postUrl}!",
   "app.components.PostComponents.SharingModalContent.ideaEmailSharingSubjectText": "Tue ideaani: {postTitle}",
   "app.components.PostComponents.SharingModalContent.ideaWhatsAppMessage": "Tue ideaani: {postTitle}.",
-  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingBody": "Mitä mieltä olet tästä ehdotuksesta? Äänestä sitä ja jaa keskustelu osoitteessa {postUrl} saadaksesi äänesi kuuluviin!",
-  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingSubject": "Tue ehdotustani: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.issueEmailSharingBody": "Lähetin kommentin '{postTitle}' osoitteessa {postUrl}!",
   "app.components.PostComponents.SharingModalContent.issueEmailSharingSubject": "Lähetin juuri kommentin: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.issueWhatsAppMessage": "Lähetin juuri kommentin: {postTitle}.",

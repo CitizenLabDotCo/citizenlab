@@ -298,8 +298,6 @@
   "app.components.PostComponents.SharingModalContent.ideaEmailSharingBody": "Wat haalt Dir vun dëser Iddi? Ënnerstëtzt meng Iddi '{postTitle}' ënner {postUrl}!",
   "app.components.PostComponents.SharingModalContent.ideaEmailSharingSubjectText": "Ënnertstëtzt meng Iddi: {postTitle}",
   "app.components.PostComponents.SharingModalContent.ideaWhatsAppMessage": "Meng Iddi ënnerstëtzen: {postTitle}",
-  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingBody": "Wat haalt Dir vun dësem Virschlag? Stëmmt of an diskutéiert mat ënner {postUrl}, fir datt Är Stëmm gehéiert gëtt!",
-  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingSubject": "Ënnerstëtzt mäi Virschlag: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.issueEmailSharingBody": "Ech hunn e Kommentar '{postTitle}' ënner {postUrl} gepost!",
   "app.components.PostComponents.SharingModalContent.issueEmailSharingSubject": "Ech hu grad e Kommentar gepost: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.issueWhatsAppMessage": "Ech hunn a Kommentar '{postTitle}' bei {postUrl}gepost!",

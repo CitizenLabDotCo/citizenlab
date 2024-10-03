@@ -298,8 +298,6 @@
   "app.components.PostComponents.SharingModalContent.ideaEmailSharingBody": "Cefnogwch fy syniad '{postTitle}' ar {postUrl}!",
   "app.components.PostComponents.SharingModalContent.ideaEmailSharingSubjectText": "Cefnogwch fy syniad: {postTitle}",
   "app.components.PostComponents.SharingModalContent.ideaWhatsAppMessage": "Cefnogwch fy syniad: {postTitle}.",
-  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingBody": "Beth yw eich barn am y cynnig hwn? Pleidleisiwch arno a rhannwch y drafodaeth yn {postUrl} i sicrhau bod eich llais yn cael ei glywed!",
-  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingSubject": "Cefnogwch fy nghynnig: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.issueEmailSharingBody": "Postiais sylw '{postTitle}' yn {postUrl}!",
   "app.components.PostComponents.SharingModalContent.issueEmailSharingSubject": "Newydd bostio sylw: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.issueWhatsAppMessage": "Newydd bostio sylw: {postTitle}.",
