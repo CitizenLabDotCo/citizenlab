@@ -58,8 +58,3 @@ export interface PermissionUpdateParams {
   verification_expiry: number | null;
   access_denied_explanation_multiloc: Multiloc;
 }
-
-export type ResetPermissionParams = {
-  permissionId: string;
-  action: IGlobalPermissionAction;
-};

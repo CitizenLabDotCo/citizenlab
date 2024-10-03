@@ -58,10 +58,6 @@ export interface IIdeaNewInternalComment extends INewInternalComment {
   ideaId: string;
 }
 
-export interface IInitiativeNewInternalComment extends INewInternalComment {
-  initiativeId: string;
-}
-
 export interface INewInternalComment {
   author_id: string;
   parent_id?: string;
