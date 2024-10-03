@@ -10,6 +10,7 @@ export type TooltipProps = Omit<
   'interactive' | 'plugins' | 'role'
 > & {
   width?: string;
+  useWrapper?: boolean;
 };
 
 const useActiveElement = () => {
@@ -44,6 +45,7 @@ const Tooltip = ({
   children,
   theme = 'light',
   width,
+  useWrapper = true,
   ...rest
 }: TooltipProps) => {
   const tooltipId = useRef(
@@ -105,7 +107,13 @@ const Tooltip = ({
         theme={theme}
         {...rest}
       >
-        {children}
+        {useWrapper ? (
+          <Box as="span" id={tooltipId.current} w={width || 'fit-content'}>
+            {children}
+          </Box>
+        ) : (
+          children
+        )}
       </Tippy>
     </Box>
   );

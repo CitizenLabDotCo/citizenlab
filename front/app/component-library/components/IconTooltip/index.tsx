@@ -104,6 +104,7 @@ const IconTooltip: FC<Props> = memo<Props>(
         placement={placement || 'right-end'}
         theme={theme || ''}
         maxWidth={maxTooltipWidth || 350}
+        useWrapper={false}
         content={
           <ContentWrapper id={`tooltip-content-${uuid}`} tippytheme={theme}>
             {content}
