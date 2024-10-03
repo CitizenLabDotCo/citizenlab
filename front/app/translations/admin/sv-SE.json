@@ -2132,6 +2132,7 @@
   "app.containers.AdminPage.SideBar.processing": "Bearbetning",
   "app.containers.AdminPage.SideBar.projectManager": "Projektledare",
   "app.containers.AdminPage.SideBar.projects": "Projekt",
+  "app.containers.AdminPage.SideBar.proposalsTooltip": "Förslag är nu en metod för deltagande. Du kan också fästa enskilda projekt i navigeringsfältet.",
   "app.containers.AdminPage.SideBar.settings": "Inställningar",
   "app.containers.AdminPage.SideBar.signOut": "Logga ut",
   "app.containers.AdminPage.SideBar.support": "Stöd",
