@@ -7,8 +7,6 @@ import { ICommentData } from 'api/comments/types';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useAuthUser from 'api/me/useAuthUser';
 
-import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
-
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 
@@ -40,12 +38,6 @@ const CommentReaction = ({
   const { mutate: addCommentReaction } = useAddCommentReaction();
   const { data: commentReaction } = useCommentReaction(
     comment.relationships.user_reaction?.data?.id
-  );
-
-  // Wondering why 'comment_reacting_initiative' and not 'commenting_initiative'?
-  // See app/api/initiative_action_descriptors/types.ts
-  const commentReactingPermissionInitiative = useInitiativesPermissions(
-    'comment_reacting_initiative'
   );
 
   const reaction = async () => {
@@ -139,16 +131,12 @@ const CommentReaction = ({
   };
 
   if (!isNilOrError(comment)) {
-    let disabled: boolean;
+    let disabled: boolean = false;
 
     if (idea) {
-      // Wondering why 'comment_reacting_idea' and not 'commenting_idea'?
-      // See app/api/ideas/types.ts
       const { enabled, disabled_reason } =
         idea.data.attributes.action_descriptors.comment_reacting_idea;
       disabled = !enabled && !isFixableByAuthentication(disabled_reason);
-    } else {
-      disabled = !commentReactingPermissionInitiative?.enabled;
     }
 
     if (!disabled || likeCount > 0) {

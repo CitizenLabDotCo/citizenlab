@@ -80,14 +80,12 @@ function isIMessageInfo(text: Message | Multiloc): text is Message {
 interface Props {
   className?: string;
   links: ILink[];
-  postType: 'idea' | 'initiative';
 }
 
 const Breadcrumbs = ({
   intl: { formatMessage },
   className,
   links,
-  postType,
 }: Props & WrappedComponentProps) => {
   const localize = useLocalize();
 
@@ -102,11 +100,7 @@ const Breadcrumbs = ({
       </HomeLink>
       <Separator>/</Separator>
       {links.map((link) => (
-        <StyledLink
-          key={link.to}
-          id={`e2e-${postType}-other-link`}
-          to={link.to}
-        >
+        <StyledLink key={link.to} id={`e2e-idea-other-link`} to={link.to}>
           <LinkText>
             {isIMessageInfo(link.text) ? (
               <FormattedMessage {...link.text.message} />

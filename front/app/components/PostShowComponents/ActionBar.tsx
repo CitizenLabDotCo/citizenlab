@@ -3,10 +3,6 @@ import React, { memo } from 'react';
 import { colors, media } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import { IInitiativeData } from 'api/initiatives/types';
-
-import Outlet from 'components/Outlet';
-
 import { postPageContentMaxWidth } from './styleConstants';
 
 const Container = styled.div`
@@ -55,34 +51,15 @@ const Right = styled.div`
 interface Props {
   rightContent: JSX.Element | null;
   leftContent: JSX.Element | null;
-  translateButtonClicked: boolean;
-  onTranslate: () => void;
-  initiative: IInitiativeData;
 }
 
-export default memo<Props>(
-  ({
-    rightContent,
-    leftContent,
-    translateButtonClicked,
-    onTranslate,
-    initiative,
-  }) => {
-    return (
-      <Container>
-        <Inner>
-          <Left>{leftContent}</Left>
-          <Right>
-            <Outlet
-              id="app.components.PostShowComponents.ActionBar.right"
-              translateButtonClicked={translateButtonClicked}
-              onClick={onTranslate}
-              initiative={initiative}
-            />
-            {rightContent}
-          </Right>
-        </Inner>
-      </Container>
-    );
-  }
-);
+export default memo<Props>(({ rightContent, leftContent }) => {
+  return (
+    <Container>
+      <Inner>
+        <Left>{leftContent}</Left>
+        <Right>{rightContent}</Right>
+      </Inner>
+    </Container>
+  );
+});

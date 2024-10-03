@@ -31,26 +31,6 @@ describe('useCustomFieldsSchema', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
-  it('returns initiative data correctly', async () => {
-    const context = {
-      type: 'initiative',
-      action: 'posting_initiative',
-    } as const;
-    const { result, waitFor } = renderHook(
-      () => useCustomFieldsSchema(context),
-      {
-        wrapper: createQueryClientWrapper(),
-      }
-    );
-
-    expect(result.current.isLoading).toBe(true);
-
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
-
-    expect(result.current.isLoading).toBe(false);
-    expect(result.current.data).toEqual(initiativeResponse);
-  });
-
   it('returns phase data correctly', async () => {
     const context = {
       type: 'phase',

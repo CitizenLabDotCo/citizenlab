@@ -3,7 +3,6 @@ import { CLErrors } from 'typings';
 
 import commentsKeys from 'api/comments/keys';
 import ideasKeys from 'api/ideas/keys';
-import initiativesKeys from 'api/initiatives/keys';
 import userCommentsCount from 'api/user_comments_count/keys';
 
 import fetcher from 'utils/cl-react-query/fetcher';
@@ -26,7 +25,6 @@ const markInternalCommentForDeletion = async ({
 
 const useMarkInternalCommentForDeletion = ({
   ideaId,
-  initiativeId,
   parentCommentId,
 }: {
   ideaId?: string;
@@ -58,20 +56,6 @@ const useMarkInternalCommentForDeletion = ({
       if (parentCommentId) {
         queryClient.invalidateQueries({
           queryKey: commentsKeys.list({ commentId: parentCommentId }),
-        });
-      }
-
-      if (initiativeId) {
-        queryClient.invalidateQueries({
-          queryKey: internalCommentKeys.list({
-            type: 'initiative',
-            initiativeId,
-          }),
-        });
-
-        // We invalidate the initiative because the number of internal comments is on the initiative
-        queryClient.invalidateQueries({
-          queryKey: initiativesKeys.item({ id: initiativeId }),
         });
       }
 

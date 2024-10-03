@@ -12,10 +12,6 @@ import {
 } from './reactionOnComment';
 import { reactionOnIdea, ReactionOnIdeaParams } from './reactionOnIdea';
 import {
-  reactionOnInitiative,
-  ReactionOnInitiativeParams,
-} from './reactionOnInitiative';
-import {
   redirectToIdeaForm,
   RedirectToIdeaFormParams,
 } from './redirectToIdeaForm';
@@ -79,11 +75,6 @@ interface ReactionOnIdeaAction {
   params: ReactionOnIdeaParams;
 }
 
-interface ReactionOnInitiativeAction {
-  name: 'reactionOnInitiative';
-  params: ReactionOnInitiativeParams;
-}
-
 interface SubmitPollAction {
   name: 'submitPoll';
   params: SubmitPollParams;
@@ -98,7 +89,6 @@ export type SuccessAction =
   | VoteAction
   | ReactionOnCommentAction
   | ReactionOnIdeaAction
-  | ReactionOnInitiativeAction
   | FollowAction
   | SubmitPollAction
   | AttendEventAction;
@@ -221,11 +211,6 @@ export const getAction = ({ name, params }: SuccessAction) => {
     return submitPoll(params);
   }
 
-  if (name === 'attendEvent') {
-    ensureJSONSerializable(params);
-    return attendEvent(params);
-  }
-
   ensureJSONSerializable(params);
-  return reactionOnInitiative(params);
+  return attendEvent(params);
 };

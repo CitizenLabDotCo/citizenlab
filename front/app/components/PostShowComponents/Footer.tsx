@@ -3,8 +3,6 @@ import React, { memo } from 'react';
 import { media } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-
 import CommentsSection from 'components/PostShowComponents/Comments/CommentsSection';
 
 import {
@@ -51,26 +49,14 @@ const ContentInner = styled.div`
 interface Props {
   className?: string;
   postId: string;
-  postType: 'idea' | 'initiative';
 }
 
-const Footer = memo<Props>(({ postId, postType, className }) => {
-  const { data: appConfiguration } = useAppConfiguration();
-
+const Footer = memo<Props>(({ postId, className }) => {
   return (
     <Container className={className || ''}>
       <Content>
         <ContentInner>
-          <CommentsSection
-            allowAnonymousParticipation={
-              postType === 'initiative'
-                ? appConfiguration?.data.attributes.settings.initiatives
-                    .allow_anonymous_participation
-                : undefined
-            }
-            postId={postId}
-            postType={postType}
-          />
+          <CommentsSection postId={postId} />
         </ContentInner>
       </Content>
     </Container>

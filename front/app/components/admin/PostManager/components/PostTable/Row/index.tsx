@@ -5,8 +5,6 @@ import styled from 'styled-components';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 import { IIdeaData } from 'api/ideas/types';
-import { IInitiativeStatusData } from 'api/initiative_statuses/types';
-import { IInitiativeData } from 'api/initiatives/types';
 import { IPhaseData } from 'api/phases/types';
 
 import useLocale from 'hooks/useLocale';
@@ -40,12 +38,12 @@ export const TitleLink = styled.a`
 
 type Props = {
   type: ManagerType;
-  post: IIdeaData | IInitiativeData;
+  post: IIdeaData;
   /** A set of ids of ideas/initiatives that are currently selected */
   selection: Set<string>;
   activeFilterMenu: TFilterMenu;
   phases?: IPhaseData[];
-  statuses?: IIdeaStatusData[] | IInitiativeStatusData[];
+  statuses?: IIdeaStatusData[];
   selectedPhaseId?: string | null;
   selectedProjectId?: string | null;
   onToggleSelect: () => void;

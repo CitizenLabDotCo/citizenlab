@@ -19,7 +19,6 @@ import {
 
 import { IGroupDataAttributes, MembershipType } from 'api/groups/types';
 import { IIdeaData } from 'api/ideas/types';
-import { IInitiativeData } from 'api/initiatives/types';
 import { TNotificationData } from 'api/notifications/types';
 import { TVerificationMethod } from 'api/verification_methods/types';
 
@@ -141,19 +140,10 @@ export interface OutletsPropertyMap {
     onVerified: () => void;
     activeStep: TVerificationStep;
   };
-  'app.components.PostShowComponents.ActionBar.right': {
-    translateButtonClicked: boolean;
-    onClick: () => void;
-    initiative: IInitiativeData;
-  };
   'app.components.PostShowComponents.CommentFooter.left': {
     commentId: string;
   };
-  'app.containers.InitiativesShow.left': {
-    translateButtonClicked: boolean;
-    onClick: () => void;
-    initiative: IInitiativeData;
-  };
+
   'app.containers.IdeasShow.left': {
     translateButtonClicked: boolean;
     onClick: () => void;
@@ -169,11 +159,9 @@ export interface OutletsPropertyMap {
     postId: string;
     body: string;
     translateButtonClicked?: boolean;
-    postType: 'idea' | 'initiative';
   };
   'app.components.PostShowComponents.Title.translation': {
     postId: string;
-    postType: 'idea' | 'initiative';
     title: string;
     translateButtonClicked?: boolean;
     color?: string;

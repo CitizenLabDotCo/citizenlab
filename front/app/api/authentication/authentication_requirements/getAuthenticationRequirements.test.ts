@@ -1,7 +1,6 @@
 import { setupServer } from 'msw/node';
 
 import endpoints, {
-  initiativeResponse,
   phaseResponse,
   ideaResponse,
 } from './__mocks__/_mockServer';
@@ -16,15 +15,6 @@ const server = setupServer(
 describe('getAuthenticationRequirements', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
-
-  it('returns initiative data correctly', async () => {
-    const result = await getAuthenticationRequirements({
-      type: 'initiative',
-      action: 'posting_initiative',
-    });
-
-    expect(result).toEqual(initiativeResponse);
-  });
 
   it('returns phase data correctly', async () => {
     const result = await getAuthenticationRequirements({

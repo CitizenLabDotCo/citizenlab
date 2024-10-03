@@ -15,11 +15,6 @@ import styled from 'styled-components';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 import { Sort as IdeasSort, IIdeaData } from 'api/ideas/types';
-import { IInitiativeStatusData } from 'api/initiative_statuses/types';
-import {
-  IInitiativeData,
-  Sort as InitiativesSort,
-} from 'api/initiatives/types';
 import { IPhaseData } from 'api/phases/types';
 
 import Pagination from 'components/admin/Pagination';
@@ -78,14 +73,14 @@ const Container = styled.div`
 
 interface Props {
   type: ManagerType;
-  sortAttribute?: IdeasSort | InitiativesSort;
+  sortAttribute?: IdeasSort;
   sortDirection?: SortDirection;
-  posts: IIdeaData[] | IInitiativeData[];
+  posts: IIdeaData[];
   phases?: IPhaseData[];
-  statuses?: IIdeaStatusData[] | IInitiativeStatusData[];
+  statuses?: IIdeaStatusData[];
   selectedPhaseId?: string | null;
   selectedProjectId?: string | null;
-  onChangeSort?: (sort: IdeasSort | InitiativesSort) => void;
+  onChangeSort?: (sort: IdeasSort) => void;
   /** A set of ids of ideas/initiatives that are currently selected */
   selection: Set<string>;
   onChangeSelection: React.Dispatch<React.SetStateAction<Set<string>>>;
@@ -116,16 +111,13 @@ const PostTable = ({
   currentPageNumber,
   lastPageNumber,
 }: Props) => {
-  const handleSortClick =
-    (newSortAttribute: IdeasSort | InitiativesSort) => () => {
-      if (isFunction(onChangeSort)) {
-        const newSortSign = sortDirection === 'ascending' ? '-' : '';
+  const handleSortClick = (newSortAttribute: IdeasSort) => () => {
+    if (isFunction(onChangeSort)) {
+      const newSortSign = sortDirection === 'ascending' ? '-' : '';
 
-        onChangeSort(
-          `${newSortSign}${newSortAttribute}` as IdeasSort | InitiativesSort
-        );
-      }
-    };
+      onChangeSort(`${newSortSign}${newSortAttribute}` as IdeasSort);
+    }
+  };
 
   const toggleSelect = (postId: string) => () => {
     onChangeSelection((currentSelection) => {
@@ -159,9 +151,7 @@ const PostTable = ({
   const allSelected = (selection: Set<string>) => {
     return (
       !isEmpty(posts) &&
-      every(posts, (post: IIdeaData | IInitiativeData) =>
-        selection.has(post.id)
-      )
+      every(posts, (post: IIdeaData) => selection.has(post.id))
     );
   };
 
@@ -189,26 +179,23 @@ const PostTable = ({
         <Tbody>
           {!isEmpty(posts) ? (
             <TransitionGroup component={null}>
-              {
-                // Cleanest workaround typescript I found
-                (posts as (IIdeaData | IInitiativeData)[]).map((post) => (
-                  <CSSTransition classNames="fade" timeout={500} key={post.id}>
-                    <Row
-                      key={post.id}
-                      type={type}
-                      post={post}
-                      selection={selection}
-                      activeFilterMenu={activeFilterMenu}
-                      phases={phases}
-                      statuses={statuses}
-                      selectedProjectId={selectedProjectId}
-                      selectedPhaseId={selectedPhaseId}
-                      onToggleSelect={toggleSelect(post.id)}
-                      openPreview={openPreview}
-                    />
-                  </CSSTransition>
-                ))
-              }
+              {posts.map((post) => (
+                <CSSTransition classNames="fade" timeout={500} key={post.id}>
+                  <Row
+                    key={post.id}
+                    type={type}
+                    post={post}
+                    selection={selection}
+                    activeFilterMenu={activeFilterMenu}
+                    phases={phases}
+                    statuses={statuses}
+                    selectedProjectId={selectedProjectId}
+                    selectedPhaseId={selectedPhaseId}
+                    onToggleSelect={toggleSelect(post.id)}
+                    openPreview={openPreview}
+                  />
+                </CSSTransition>
+              ))}
             </TransitionGroup>
           ) : null}
         </Tbody>

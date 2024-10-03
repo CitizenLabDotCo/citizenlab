@@ -15,10 +15,7 @@ import styled from 'styled-components';
 import { CommentsSort } from 'api/comments/types';
 import useComments from 'api/comments/useComments';
 import useIdeaById from 'api/ideas/useIdeaById';
-import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useProjectById from 'api/projects/useProjectById';
-
-import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
 
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
@@ -28,7 +25,6 @@ import messages from '../../messages';
 import tracks from '../../tracks';
 
 import CommentingIdeaDisabled from './CommentingIdeaDisabled';
-import CommentingProposalDisabled from './CommentingProposalDisabled';
 import Comments from './Comments';
 import CommentSorting from './CommentSorting';
 import ParentCommentForm from './ParentCommentForm';
@@ -51,14 +47,12 @@ const LoadingMoreMessage = styled.div`
 
 export interface Props {
   postId: string;
-  postType: 'idea' | 'initiative';
   className?: string;
   allowAnonymousParticipation?: boolean;
 }
 
 const PublicComments = ({
   postId,
-  postType,
   className,
   allowAnonymousParticipation,
 }: Props) => {
@@ -73,10 +67,8 @@ const PublicComments = ({
     },
   });
   const isSmallerThanPhone = useBreakpoint('phone');
-  const initiativeId = postType === 'initiative' ? postId : undefined;
-  const ideaId = postType === 'idea' ? postId : undefined;
-  const { data: initiative } = useInitiativeById(initiativeId);
-  const { data: idea } = useIdeaById(ideaId);
+
+  const { data: idea } = useIdeaById(postId);
   const { pathname } = useLocation();
   const [sortOrder, setSortOrder] = useState<CommentsSort>('new');
   const {
@@ -86,23 +78,18 @@ const PublicComments = ({
     hasNextPage,
     isLoading,
   } = useComments({
-    initiativeId: postType === 'initiative' ? postId : undefined,
-    ideaId: postType === 'idea' ? postId : undefined,
+    ideaId: postId,
     sort: sortOrder,
   });
-  const commentingPermissionInitiative = useInitiativesPermissions(
-    'commenting_initiative'
-  );
 
   const commentsList = comments?.pages.flatMap((page) => page.data);
 
-  const post = initiative || idea;
   const projectId = idea?.data.relationships?.project.data.id;
   const { data: project } = useProjectById(projectId);
 
   const [posting, setPosting] = useState(false);
 
-  if (!post || !commentsList) return null;
+  if (!idea || !commentsList) return null;
 
   const handleSortOrderChange = (sortOrder: CommentsSort) => {
     trackEventByName(tracks.clickCommentsSortOrder);
@@ -114,18 +101,13 @@ const PublicComments = ({
   };
 
   const phaseId = project?.data.relationships?.current_phase?.data?.id;
-  const commentCount = post.data.attributes.comments_count;
+  const commentCount = idea.data.attributes.comments_count;
   const hasComments = commentCount > 0;
   const isAdminPage = isPage('admin', pathname);
   const showCommentCount = !isAdminPage && hasComments;
   const showHeader = !isAdminPage || hasComments;
-  const canComment = {
-    idea: !idea?.data.attributes.action_descriptors.commenting_idea
-      .disabled_reason,
-    initiative:
-      !commentingPermissionInitiative?.disabledReason &&
-      !commentingPermissionInitiative?.authenticationRequirements,
-  }[postType];
+  const canComment =
+    !idea?.data.attributes.action_descriptors.commenting_idea.disabled_reason;
 
   return (
     <Box className={className || ''}>
@@ -145,11 +127,9 @@ const PublicComments = ({
             <FormattedMessage {...messages.invisibleTitleComments} />
             {showCommentCount && <CommentCount>({commentCount})</CommentCount>}
           </Title>
-          {postType === 'idea' && idea ? (
-            <CommentingIdeaDisabled idea={idea} phaseId={phaseId} />
-          ) : (
-            <CommentingProposalDisabled />
-          )}
+
+          <CommentingIdeaDisabled idea={idea} phaseId={phaseId} />
+
           {hasComments && (
             <Box ml="auto" mb="24px">
               <CommentSorting
@@ -163,14 +143,14 @@ const PublicComments = ({
       {canComment && (
         <Box mb="24px">
           <ParentCommentForm
-            ideaId={ideaId}
+            ideaId={postId}
             postingComment={handleCommentPosting}
             allowAnonymousParticipation={allowAnonymousParticipation}
           />
         </Box>
       )}
       <Comments
-        ideaId={ideaId}
+        ideaId={postId}
         allComments={commentsList}
         loading={isLoading}
         allowAnonymousParticipation={allowAnonymousParticipation}

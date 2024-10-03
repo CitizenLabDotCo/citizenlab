@@ -41,7 +41,6 @@ const IdeaTitle = ({ idea, projectId, translateButtonClicked }: Props) => {
   return (
     <IdeaHeader id="e2e-idea-title">
       <Title
-        postType="idea"
         postId={idea.data.id}
         title={ideaTitle}
         translateButtonClicked={translateButtonClicked}

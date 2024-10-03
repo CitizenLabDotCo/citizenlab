@@ -29,10 +29,6 @@ export default defineMessages({
     id: 'app.components.PostComponents.SharingModalContent.projectEmailSharingSubject',
     defaultMessage: 'Support my project: {postTitle}.',
   },
-  initiativeEmailSharingSubject: {
-    id: 'app.components.PostComponents.SharingModalContent.initiativeEmailSharingSubject',
-    defaultMessage: 'Support my initiative: {postTitle}.',
-  },
   ideaEmailSharingBody: {
     id: 'app.components.PostComponents.SharingModalContent.ideaEmailSharingBody',
     defaultMessage: "Support my idea '{postTitle}' at {postUrl}!",
@@ -57,11 +53,6 @@ export default defineMessages({
   projectEmailSharingBody: {
     id: 'app.components.PostComponents.SharingModalContent.projectEmailSharingBody',
     defaultMessage: "Support my project '{postTitle}' at {postUrl}!",
-  },
-  initiativeEmailSharingBody: {
-    id: 'app.components.PostComponents.SharingModalContent.initiativeEmailSharingBody',
-    defaultMessage:
-      'What do you think of this initiative? Vote on it and share the discussion at {postUrl} to make your voice heard!',
   },
   ideaWhatsAppMessage: {
     id: 'app.components.PostComponents.SharingModalContent.ideaWhatsAppMessage',

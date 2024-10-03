@@ -2,7 +2,6 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrorsWrapper } from 'typings';
 
 import commentKeys from 'api/comments/keys';
-import initiativesKeys from 'api/initiatives/keys';
 import userCommentsCount from 'api/user_comments_count/keys';
 
 import fetcher from 'utils/cl-react-query/fetcher';
@@ -29,9 +28,6 @@ const useAddCommentToInitiative = () => {
       });
       queryClient.invalidateQueries({
         queryKey: commentKeys.list({ authorId: variables.author_id }),
-      });
-      queryClient.invalidateQueries({
-        queryKey: initiativesKeys.item({ id: variables.initiativeId }),
       });
       queryClient.invalidateQueries({
         queryKey: userCommentsCount.items(),

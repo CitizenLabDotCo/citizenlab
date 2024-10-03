@@ -448,7 +448,6 @@ const IdeaRow = ({
         onUpdatePhases={onUpdateIdeaPhases}
         onUpdateTopics={onUpdateIdeaTopics}
         onUpdateStatus={onUpdateIdeaStatus}
-        postType="idea"
       />
       <PhaseDeselectModal
         open={phaseDeselectModalOpen}

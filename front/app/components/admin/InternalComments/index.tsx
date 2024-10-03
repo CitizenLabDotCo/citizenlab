@@ -12,7 +12,6 @@ import { useInView } from 'react-intersection-observer';
 import styled from 'styled-components';
 
 import useIdeaById from 'api/ideas/useIdeaById';
-import useInitiativeById from 'api/initiatives/useInitiativeById';
 import { InternalCommentSort } from 'api/internal_comments/types';
 import useInternalComments from 'api/internal_comments/useInternalComments';
 
@@ -49,11 +48,10 @@ const LoadingMoreMessage = styled.div`
 
 export interface Props {
   postId: string;
-  postType: 'idea' | 'initiative';
   className?: string;
 }
 
-const InternalCommentsSection = ({ postId, postType, className }: Props) => {
+const InternalCommentsSection = ({ postId, className }: Props) => {
   const { ref } = useInView({
     rootMargin: '3000px',
     onChange: (inView) => {
@@ -64,10 +62,8 @@ const InternalCommentsSection = ({ postId, postType, className }: Props) => {
       }
     },
   });
-  const initiativeId = postType === 'initiative' ? postId : undefined;
-  const ideaId = postType === 'idea' ? postId : undefined;
-  const { data: initiative } = useInitiativeById(initiativeId);
-  const { data: idea } = useIdeaById(ideaId);
+
+  const { data: idea } = useIdeaById(postId);
   const [sortOrder, setSortOrder] = useState<InternalCommentSort>('new');
   const {
     data: comments,
@@ -76,19 +72,17 @@ const InternalCommentsSection = ({ postId, postType, className }: Props) => {
     hasNextPage,
     isLoading,
   } = useInternalComments({
-    type: postType,
+    type: 'idea',
     ideaId: postId,
-    initiativeId: postId,
     sort: sortOrder,
   });
   const [posting, setPosting] = useState(false);
 
   const commentsList = comments?.pages.flatMap((page) => page.data);
-  const post = initiative || idea;
 
-  if (!post || !commentsList) return null;
+  if (!idea || !commentsList) return null;
 
-  const hasComments = post.data.attributes.internal_comments_count > 0;
+  const hasComments = idea.data.attributes.internal_comments_count > 0;
 
   const handleSortOrderChange = (sortOrder: InternalCommentSort) => {
     trackEventByName(tracks.clickCommentsSortOrder);
@@ -120,13 +114,13 @@ const InternalCommentsSection = ({ postId, postType, className }: Props) => {
 
       <Box my="24px">
         <InternalParentCommentForm
-          ideaId={ideaId}
+          ideaId={postId}
           postingComment={handleCommentPosting}
         />
       </Box>
 
       <InternalComments
-        ideaId={ideaId}
+        ideaId={postId}
         allComments={commentsList}
         loading={isLoading}
       />

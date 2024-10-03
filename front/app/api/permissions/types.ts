@@ -12,11 +12,7 @@ import permissionsKeys from './keys';
 
 export type PermissionsKeys = Keys<typeof permissionsKeys>;
 
-export type IGlobalPermissionAction =
-  | 'reacting_initiative'
-  | 'commenting_initiative'
-  | 'posting_initiative'
-  | 'following';
+export type IGlobalPermissionAction = 'following';
 
 export interface IGlobalPermissionData {
   id: string;

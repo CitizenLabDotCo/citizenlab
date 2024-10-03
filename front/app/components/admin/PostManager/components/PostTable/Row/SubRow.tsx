@@ -3,7 +3,6 @@ import React from 'react';
 import { Tr, Td, colors } from '@citizenlab/cl2-component-library';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
-import { IInitiativeStatusData } from 'api/initiative_statuses/types';
 import { IPhaseData } from 'api/phases/types';
 
 import { TFilterMenu } from '../../..';
@@ -21,14 +20,12 @@ interface Props {
   phases?: IPhaseData[];
   selectedTopics?: string[];
   projectId?: string;
-  statuses?: IIdeaStatusData[] | IInitiativeStatusData[] | undefined;
+  statuses?: IIdeaStatusData[];
   selectedStatus: string | undefined;
   // Only ideas can have phases, hence optional
   onUpdatePhases?: (id: string[]) => void;
   onUpdateTopics: (id: string[]) => void;
   onUpdateStatus: (id: string) => void;
-  /* set allowedTransitions to null to allow all */
-  postType: 'idea' | 'initiative';
 }
 
 const SubRow = ({
@@ -44,7 +41,6 @@ const SubRow = ({
   onUpdatePhases,
   onUpdateTopics,
   onUpdateStatus,
-  postType,
 }: Props) => {
   return (
     <Tr className={className} background={active ? colors.grey300 : undefined}>
@@ -66,7 +62,7 @@ const SubRow = ({
         {activeFilterMenu === 'projects' && projectId && (
           <ProjectSelector projectId={projectId} />
         )}
-        {activeFilterMenu === 'statuses' && postType === 'idea' && statuses && (
+        {activeFilterMenu === 'statuses' && statuses && (
           <IdeasStatusSelector
             statuses={statuses as IIdeaStatusData[]}
             selectedStatus={selectedStatus}
