@@ -115,11 +115,11 @@ const validRangeSequence = (ranges: DateRange[]) => {
       return false;
     }
 
-    if (!validDifference(currentRange)) {
+    if (!validDifference(currentRange, 0)) {
       return false;
     }
 
-    if (!validDifference({ from: currentRange.to, to: nextRange.from })) {
+    if (!validDifference({ from: currentRange.to, to: nextRange.from }, 1)) {
       return false;
     }
   }
@@ -127,7 +127,7 @@ const validRangeSequence = (ranges: DateRange[]) => {
   return true;
 };
 
-const validDifference = (range: ClosedDateRange) => {
+const validDifference = (range: ClosedDateRange, requiredDiff: number) => {
   const diff = differenceInDays(range.to, range.from);
-  return diff >= 1;
+  return diff >= requiredDiff;
 };

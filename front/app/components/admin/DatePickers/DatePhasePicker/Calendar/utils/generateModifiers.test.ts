@@ -117,7 +117,12 @@ describe('generateModifiers', () => {
       expect(generateModifiers({ selectedRange, disabledRanges })).toEqual({
         isDisabledSingle: [new Date(2024, 2, 1)],
         isDisabledStart: [new Date(2024, 2, 2)],
-        isDisabledMiddle: [],
+        isDisabledMiddle: [
+          {
+            from: new Date(2024, 2, 3),
+            to: new Date(2024, 2, 19),
+          },
+        ],
         isDisabledEnd: [new Date(2024, 2, 20)],
       });
     });
