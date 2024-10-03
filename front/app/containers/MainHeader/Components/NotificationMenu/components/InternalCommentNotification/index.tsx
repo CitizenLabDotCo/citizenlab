@@ -26,18 +26,12 @@ const getNotificationMessage = (
       return messages.internalCommentOnYourInternalComment;
     case 'internal_comment_on_idea_assigned_to_you':
       return messages.internalCommentOnIdeaAssignedToYou;
-    case 'internal_comment_on_initiative_assigned_to_you':
-      return messages.internalCommentOnInitiativeAssignedToYou;
     case 'internal_comment_on_idea_you_moderate':
       return messages.internalCommentOnIdeaYouModerate;
     case 'internal_comment_on_idea_you_commented_internally_on':
       return messages.internalCommentOnIdeaYouCommentedInternallyOn;
-    case 'internal_comment_on_initiative_you_commented_internally_on':
-      return messages.internalCommentOnInitiativeYouCommentedInternallyOn;
     case 'internal_comment_on_unassigned_unmoderated_idea':
       return messages.internalCommentOnUnassignedUnmoderatedIdea;
-    case 'internal_comment_on_unassigned_initiative':
-      return messages.internalCommentOnUnassignedInitiative;
   }
 };
 

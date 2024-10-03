@@ -8,7 +8,6 @@ export type InternalCommentsKeys = Keys<typeof commentsKeys>;
 
 export type IInternalCommentParameters =
   | { type: 'idea'; ideaId: string }
-  | { type: 'initiative'; initiativeId: string }
   | { type: 'author'; authorId: string }
   | { type: 'comment'; commentId: string };
 
