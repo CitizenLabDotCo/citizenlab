@@ -59,11 +59,7 @@ end
 def rake_20240910_create_proposals_project(reporter)
   config = AppConfiguration.instance
   project = Project.new(
-    title_multiloc: { # Include all locales app.containers.InitiativesIndexPage.header
-      'en' => 'Proposals',
-      'nl-BE' => 'Voorstellen',
-      'fr-BE' => 'Propositions'
-    },
+    title_multiloc: rake_20240910_migrate_project_title_multiloc,
     description_multiloc: {}, # Include all locales app.containers.InitiativesIndexPage.explanationContent app.containers.InitiativesIndexPage.learnMoreAboutProposals
     slug: 'proposals' # Does this work if there is already a project with this slug?
     # Include more project attributes
@@ -219,5 +215,53 @@ def rake_20240910_migrate_initiatives_static_page(reporter)
       page.errors.details,
       context: { tenant: tenant.host, static_page: page.id }
     )
+  end
+end
+
+def rake_20240910_migrate_project_title_multiloc
+  multiloc = {
+    "ar-MA" => "انشر مُقترحك هنا وضعه على جدول أعمال {styledOrgName}",
+    "ar-SA" => "انشر مُقترحك هنا وضعه على جدول أعمال {styledOrgName}",
+    "ca-ES" => "Publiqueu la vostra proposta aquí i col·loqueu-la a l'agenda de {styledOrgName}",
+    "cy-GB" => "Postiwch eich cynnig yma a'i roi ar agenda {styledOrgName}",
+    "da-DK" => "Aflever dit forslag her og sæt det på dagsordenen hos {styledOrgName}",
+    "de-DE" => "Veröffentliche deinen Vorschlag hier und setze ihn auf die Tagesordnung von {styledOrgName}",
+    "el-GR" => "Δημοσιεύστε την πρότασή σας εδώ και βάλτε την στην ημερήσια διάταξη του {styledOrgName}",
+    "en-CA" => "Post your proposal here and place it on the agenda of {styledOrgName}",
+    "en-GB" => "Post your proposal here and place it on the agenda of {styledOrgName}",
+    "en-IE" => "Post your proposal here and place it on the agenda of {styledOrgName}",
+    "en" => "Post your proposal here and place it on the agenda of {styledOrgName}",
+    "es-CL" => "Sube aquí tu propuesta e instálala en la agenda de {styledOrgName}",
+    "es-ES" => "Sube aquí tu propuesta e instálala en la agenda de {styledOrgName}",
+    "fi-FI" => "Lähetä ehdotuksesi tähän ja laita se {styledOrgName}esityslistalle",
+    "fr-BE" => "Postez votre proposition ici et récoltez du soutien pour la mettre à l’agenda",
+    "fr-FR" => "Postez votre proposition ici et récoltez du soutien pour la mettre à l’agenda",
+    "hr-HR" => "Objavite svoj prijedlog i stavite ga na dnevni red {styledOrgName}",
+    "hu-HU" => "Post your proposal here and place it on the agenda of {styledOrgName}",
+    "it-IT" => "Pubblica qui la tua proposta e mettila all'ordine del giorno di {styledOrgName}",
+    "kl-GL" => "Siunnersuutit uunga allaguk, uanilu {styledOrgName} oqaluuserisassanngortillugu",
+    "lb-LU" => "Verëffentlecht Äre Virschlag hei a setzt en op d’Agenda vum {styledOrgName}",
+    "lv-LV" => "Publicējiet šeit savu priekšlikumu un iekļaujiet to {styledOrgName} darba kārtībā",
+    "mi" => "Post your proposal here and place it on the agenda of {styledOrgName}",
+    "nb-NO" => "Publiser ideen din her og sett det på agendaen til {styledOrgName}",
+    "nl-BE" => "Plaats je voorstel hier en breng het op de agenda van {styledOrgName}",
+    "nl-NL" => "Plaats je voorstel hier en breng het op de agenda van {styledOrgName}",
+    "pl-PL" => "Opublikuj swoją propozycję tutaj i umieść ją w porządku dziennym {styledOrgName}",
+    "pt-BR" => "Publique aqui a sua proposta e coloque-a na agenda de {styledOrgName}",
+    "ro-RO" => "Postează aici propunerea ta și pune-o pe ordinea de zi a {styledOrgName}",
+    "sr-Latn" => "Postavite vaš predlog i uputite ga na razmatranje ka {styledOrgName}",
+    "sr-SP" => "Поставите свој предлог овде и ставите га на дневни ред {styledOrgName}",
+    "sv-SE" => "Publicera ditt förslag här och sätt upp det på dagordningen för {styledOrgName}",
+    "tr-TR" => "Önerinizi burada yayınlayın ve {styledOrgName} gündemine taşıyın"
+  }
+  case AppConfiguration.instance.name
+  when 'KøbenhavnsKommune'
+    multiloc['da-DK'] = 'Hvad er dit københavnerforslag?'
+  when 'HolbækKommune'
+    multiloc['da-DK'] = 'Opret dit forslag her og sæt det på dagsordenen hos Holbæk Kommune'
+  end
+  multiloc.to_h do |key, value|
+    org_name = Locale.new(key).resolve_multiloc(AppConfiguration.instance.settings('core', 'organization_name'))
+    [key, value.gsub('{styledOrgName}', org_name)]
   end
 end
