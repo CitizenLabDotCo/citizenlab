@@ -1,6 +1,8 @@
 import { addDays } from 'date-fns';
 
-import { ClosedDateRange, DateRange } from '../../typings';
+import { DateRange } from 'components/admin/DatePickers/_shared/typings';
+
+import { ClosedDateRange } from '../../typings';
 
 import { rangesValid } from './rangesValid';
 import { isClosedDateRange } from './utils';

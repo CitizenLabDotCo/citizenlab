@@ -1,7 +1,4 @@
-export type DateRange = {
-  from: Date;
-  to?: Date;
-};
+import { DateRange } from '../_shared/typings';
 
 export type ClosedDateRange = {
   from: Date;

@@ -1,6 +1,8 @@
 import { differenceInDays } from 'date-fns';
 
-import { DateRange, ClosedDateRange } from '../../typings';
+import { DateRange } from 'components/admin/DatePickers/_shared/typings';
+
+import { ClosedDateRange } from '../../typings';
 
 import { allAreClosedDateRanges, isClosedDateRange } from './utils';
 
