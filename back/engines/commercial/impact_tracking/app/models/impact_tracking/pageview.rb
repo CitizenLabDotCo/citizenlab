@@ -3,15 +3,11 @@
 # Table name: impact_tracking_pageviews
 #
 #  id                          :uuid             not null, primary key
-#  impact_tracking_sessions_id :uuid
+#  impact_tracking_sessions_id :uuid             not null
 #  path                        :string           not null
 #  route                       :string           not null
 #  created_at                  :datetime         not null
 #  updated_at                  :datetime         not null
-#
-# Indexes
-#
-#  index_impact_tracking_pageviews_on_impact_tracking_sessions_id  (impact_tracking_sessions_id)
 #
 # Foreign Keys
 #

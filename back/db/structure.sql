@@ -16,6 +16,7 @@ ALTER TABLE IF EXISTS ONLY public.comments DROP CONSTRAINT IF EXISTS fk_rails_f4
 ALTER TABLE IF EXISTS ONLY public.cosponsorships DROP CONSTRAINT IF EXISTS fk_rails_f32533b783;
 ALTER TABLE IF EXISTS ONLY public.report_builder_published_graph_data_units DROP CONSTRAINT IF EXISTS fk_rails_f21a19c203;
 ALTER TABLE IF EXISTS ONLY public.idea_files DROP CONSTRAINT IF EXISTS fk_rails_efb12f53ad;
+ALTER TABLE IF EXISTS ONLY public.impact_tracking_pageviews DROP CONSTRAINT IF EXISTS fk_rails_ef24561698;
 ALTER TABLE IF EXISTS ONLY public.static_pages_topics DROP CONSTRAINT IF EXISTS fk_rails_edc8786515;
 ALTER TABLE IF EXISTS ONLY public.polls_response_options DROP CONSTRAINT IF EXISTS fk_rails_e871bf6e26;
 ALTER TABLE IF EXISTS ONLY public.nav_bar_items DROP CONSTRAINT IF EXISTS fk_rails_e8076fb9f6;
@@ -440,6 +441,7 @@ ALTER TABLE IF EXISTS ONLY public.initiative_images DROP CONSTRAINT IF EXISTS in
 ALTER TABLE IF EXISTS ONLY public.initiative_files DROP CONSTRAINT IF EXISTS initiative_files_pkey;
 ALTER TABLE IF EXISTS ONLY public.impact_tracking_sessions DROP CONSTRAINT IF EXISTS impact_tracking_sessions_pkey;
 ALTER TABLE IF EXISTS ONLY public.impact_tracking_salts DROP CONSTRAINT IF EXISTS impact_tracking_salts_pkey;
+ALTER TABLE IF EXISTS ONLY public.impact_tracking_pageviews DROP CONSTRAINT IF EXISTS impact_tracking_pageviews_pkey;
 ALTER TABLE IF EXISTS ONLY public.identities DROP CONSTRAINT IF EXISTS identities_pkey;
 ALTER TABLE IF EXISTS ONLY public.ideas_topics DROP CONSTRAINT IF EXISTS ideas_topics_pkey;
 ALTER TABLE IF EXISTS ONLY public.ideas DROP CONSTRAINT IF EXISTS ideas_pkey;
@@ -548,6 +550,7 @@ DROP VIEW IF EXISTS public.initiative_initiative_statuses;
 DROP TABLE IF EXISTS public.initiative_images;
 DROP TABLE IF EXISTS public.initiative_files;
 DROP TABLE IF EXISTS public.impact_tracking_salts;
+DROP TABLE IF EXISTS public.impact_tracking_pageviews;
 DROP TABLE IF EXISTS public.identities;
 DROP TABLE IF EXISTS public.ideas_topics;
 DROP TABLE IF EXISTS public.ideas_phases;
@@ -2557,6 +2560,20 @@ CREATE TABLE public.identities (
 
 
 --
+-- Name: impact_tracking_pageviews; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.impact_tracking_pageviews (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    impact_tracking_sessions_id uuid NOT NULL,
+    path character varying NOT NULL,
+    route character varying NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: impact_tracking_salts; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -3870,6 +3887,14 @@ ALTER TABLE ONLY public.ideas_topics
 
 ALTER TABLE ONLY public.identities
     ADD CONSTRAINT identities_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: impact_tracking_pageviews impact_tracking_pageviews_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.impact_tracking_pageviews
+    ADD CONSTRAINT impact_tracking_pageviews_pkey PRIMARY KEY (id);
 
 
 --
@@ -7012,6 +7037,14 @@ ALTER TABLE ONLY public.static_pages_topics
 
 
 --
+-- Name: impact_tracking_pageviews fk_rails_ef24561698; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.impact_tracking_pageviews
+    ADD CONSTRAINT fk_rails_ef24561698 FOREIGN KEY (impact_tracking_sessions_id) REFERENCES public.impact_tracking_sessions(id);
+
+
+--
 -- Name: idea_files fk_rails_efb12f53ad; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7527,6 +7560,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240923112800'),
 ('20240923112801'),
 ('20240927175400'),
-('20241001101704');
+('20241001101704'),
+('20241004182900');
 
 
