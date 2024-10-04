@@ -146,6 +146,36 @@ describe('rangesValid', () => {
           reason: 'selectedRange and disabledRanges invalid together',
         });
       });
+
+      it('is valid (bug)', () => {
+        const selectedRange = {
+          from: new Date('2024-10-28'),
+          to: new Date('2024-12-13'),
+        };
+
+        const disabledRanges = [
+          {
+            from: new Date('2024-08-19'),
+            to: new Date('2024-10-13'),
+          },
+          {
+            from: new Date('2024-10-15'),
+            to: new Date('2024-10-27'),
+          },
+          {
+            from: new Date('2024-12-14'),
+            to: new Date('2024-12-16'),
+          },
+          {
+            from: new Date('2024-12-17'),
+            to: new Date('2024-12-19'),
+          },
+        ];
+
+        expect(rangesValid(selectedRange, disabledRanges)).toEqual({
+          valid: true,
+        });
+      });
     });
 
     describe('open disabled range', () => {
