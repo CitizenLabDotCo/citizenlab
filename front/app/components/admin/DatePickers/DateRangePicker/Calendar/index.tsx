@@ -7,6 +7,7 @@ import styled from 'styled-components';
 
 import useLocale from 'hooks/useLocale';
 
+import { getEndMonth, getStartMonth } from '../../_shared/getStartEndMonth';
 import { getLocale } from '../../_shared/locales';
 import { Props } from '../typings';
 
@@ -22,8 +23,23 @@ const DayPickerStyles = styled.div`
   }
 `;
 
-const Calendar = ({ selectedRange, onUpdateRange }: Props) => {
+const Calendar = ({
+  selectedRange,
+  startMonth: _startMonth,
+  endMonth: _endMonth,
+  onUpdateRange,
+}: Props) => {
   const locale = useLocale();
+
+  const startMonth = getStartMonth({
+    startMonth: _startMonth,
+    selectedDate: selectedRange.from,
+  });
+
+  const endMonth = getEndMonth({
+    endMonth: _endMonth,
+    selectedDate: selectedRange.to,
+  });
 
   return (
     <DayPickerStyles>
@@ -32,6 +48,8 @@ const Calendar = ({ selectedRange, onUpdateRange }: Props) => {
         numberOfMonths={2}
         captionLayout="dropdown"
         locale={getLocale(locale)}
+        startMonth={startMonth}
+        endMonth={endMonth}
         selected={{ from: selectedRange.from, to: selectedRange.to }}
         onSelect={(newRange) => {
           onUpdateRange(newRange ?? {});

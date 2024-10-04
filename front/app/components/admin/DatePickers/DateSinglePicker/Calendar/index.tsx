@@ -7,10 +7,9 @@ import styled from 'styled-components';
 
 import useLocale from 'hooks/useLocale';
 
+import { getEndMonth, getStartMonth } from '../../_shared/getStartEndMonth';
 import { getLocale } from '../../_shared/locales';
 import { CalendarProps } from '../typings';
-
-import { getEndMonth, getStartMonth } from './utils/getStartEndMonth';
 
 const DayPickerStyles = styled.div`
   .rdp-root {
