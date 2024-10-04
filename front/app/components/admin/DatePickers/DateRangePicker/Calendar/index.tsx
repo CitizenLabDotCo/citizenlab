@@ -15,6 +15,11 @@ const DayPickerStyles = styled.div`
     --rdp-accent-color: ${colors.teal700};
     --rdp-accent-background-color: ${colors.teal100};
   }
+
+  .rdp-selected > button.rdp-day_button {
+    font-size: 14px;
+    font-weight: normal;
+  }
 `;
 
 const Calendar = ({ selectedRange, onUpdateRange }: Props) => {
