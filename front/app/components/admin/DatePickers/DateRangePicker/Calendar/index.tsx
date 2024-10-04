@@ -27,6 +27,7 @@ const Calendar = ({
   selectedRange,
   startMonth: _startMonth,
   endMonth: _endMonth,
+  defaultMonth,
   onUpdateRange,
 }: Props) => {
   const locale = useLocale();
@@ -50,6 +51,7 @@ const Calendar = ({
         locale={getLocale(locale)}
         startMonth={startMonth}
         endMonth={endMonth}
+        defaultMonth={defaultMonth}
         selected={{ from: selectedRange.from, to: selectedRange.to }}
         onSelect={(newRange) => {
           onUpdateRange(newRange ?? {});

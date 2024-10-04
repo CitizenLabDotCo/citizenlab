@@ -14,6 +14,7 @@ const DateRangePicker = ({
   selectedRange,
   startMonth,
   endMonth,
+  defaultMonth,
   onUpdateRange,
 }: Props) => {
   const [calendarOpen, setCalendarOpen] = useState(false);
@@ -30,7 +31,7 @@ const DateRangePicker = ({
               selectedRange={selectedRange}
               startMonth={startMonth}
               endMonth={endMonth}
-              // defaultMonth={defaultMonth}
+              defaultMonth={defaultMonth}
               onUpdateRange={onUpdateRange}
             />
           </Box>
