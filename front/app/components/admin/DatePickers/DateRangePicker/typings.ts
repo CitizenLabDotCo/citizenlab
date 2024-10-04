@@ -4,5 +4,5 @@ export interface Props {
   selectedRange: Partial<DateRange>;
   startMonth?: Date;
   endMonth?: Date;
-  onUpdateRange: (range: DateRange) => void;
+  onUpdateRange: (range: Partial<DateRange>) => void;
 }

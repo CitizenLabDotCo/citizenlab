@@ -33,7 +33,9 @@ const Calendar = ({ selectedRange, onUpdateRange }: Props) => {
         captionLayout="dropdown"
         locale={getLocale(locale)}
         selected={{ from: selectedRange.from, to: selectedRange.to }}
-        onSelect={onUpdateRange}
+        onSelect={(newRange) => {
+          onUpdateRange(newRange ?? {});
+        }}
       />
     </DayPickerStyles>
   );
