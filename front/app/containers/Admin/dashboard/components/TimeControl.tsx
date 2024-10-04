@@ -192,10 +192,13 @@ const TimeControl = ({
         />
       </DropdownContainer>
       <DateRangePicker
-        startDate={startAtMoment === undefined ? null : startAtMoment}
-        endDate={endAtMoment}
+        selectedRange={{
+          from: startAtMoment ? startAtMoment.toDate() : undefined,
+          to: endAtMoment ? endAtMoment.toDate() : undefined,
+        }}
         onDatesChange={handleDatesChange}
-        minDate={minDate}
+        startMonth={minDate?.toDate()}
+        // disabled={[] TODO}
       />
     </Container>
   );

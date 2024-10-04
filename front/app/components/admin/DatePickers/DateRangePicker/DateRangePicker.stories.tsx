@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { DateRange } from '../_shared/typings';
 
-import DateRangePicker from './index2';
+import DateRangePicker from '.';
 
 import type { Meta } from '@storybook/react';
 
