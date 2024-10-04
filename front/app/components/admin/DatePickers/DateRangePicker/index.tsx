@@ -46,14 +46,14 @@ export type Dates = {
 };
 
 interface Props {
-  startDate: Moment | null;
-  endDate: Moment | null;
-  onDatesChange: ({ startDate, endDate }: Dates) => void;
-  minDate?: Moment;
+  startDate: Moment | null; //
+  endDate: Moment | null; //
+  onDatesChange: ({ startDate, endDate }: Dates) => void; //
+  minDate?: Moment; //
   maxDate?: Moment;
-  startDatePlaceholderText?: string;
-  endDatePlaceholderText?: string;
-  excludeDates?: Moment[];
+  // startDatePlaceholderText?: string;
+  // endDatePlaceholderText?: string;
+  // excludeDates?: Moment[];
 }
 
 const DateRangePicker = ({
@@ -62,10 +62,10 @@ const DateRangePicker = ({
   onDatesChange,
   minDate,
   maxDate,
-  startDatePlaceholderText,
-  endDatePlaceholderText,
-  excludeDates,
-}: Props) => {
+}: // startDatePlaceholderText,
+// endDatePlaceholderText,
+// excludeDates,
+Props) => {
   const locale = useLocale();
 
   if (isNilOrError(locale)) return null;
@@ -106,8 +106,8 @@ const DateRangePicker = ({
   const convertedEndDate = endDate ? moment(endDate).toDate() : null;
   const convertedMinDate = minDate ? moment(minDate).toDate() : null;
   const convertedMaxDate = maxDate ? moment(maxDate).toDate() : null;
-  const convertedExcludeDates =
-    excludeDates?.map((date) => moment(date).toDate()) || [];
+  // const convertedExcludeDates =
+  // excludeDates?.map((date) => moment(date).toDate()) || [];
 
   return (
     <StylingWrapper>
@@ -120,8 +120,8 @@ const DateRangePicker = ({
         endDate={convertedEndDate}
         minDate={convertedMinDate}
         locale={localeUsed}
-        excludeDates={convertedExcludeDates}
-        placeholderText={startDatePlaceholderText}
+        // excludeDates={convertedExcludeDates}
+        // placeholderText={startDatePlaceholderText}
         // This makes sure we adjust date based on the passed locale.
         dateFormat="P"
         popperClassName="e2e-start-date-popper"
@@ -139,11 +139,11 @@ const DateRangePicker = ({
         endDate={convertedEndDate}
         minDate={convertedStartDate}
         maxDate={convertedMaxDate}
-        excludeDates={convertedExcludeDates}
+        // excludeDates={convertedExcludeDates}
         locale={localeUsed}
         // This makes sure we adjust date based on the passed locale.
         dateFormat="P"
-        placeholderText={endDatePlaceholderText}
+        // placeholderText={endDatePlaceholderText}
         popperClassName="e2e-end-date-popper"
         autoComplete="off"
       />
