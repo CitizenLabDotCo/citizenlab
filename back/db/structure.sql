@@ -16,7 +16,6 @@ ALTER TABLE IF EXISTS ONLY public.comments DROP CONSTRAINT IF EXISTS fk_rails_f4
 ALTER TABLE IF EXISTS ONLY public.cosponsorships DROP CONSTRAINT IF EXISTS fk_rails_f32533b783;
 ALTER TABLE IF EXISTS ONLY public.report_builder_published_graph_data_units DROP CONSTRAINT IF EXISTS fk_rails_f21a19c203;
 ALTER TABLE IF EXISTS ONLY public.idea_files DROP CONSTRAINT IF EXISTS fk_rails_efb12f53ad;
-ALTER TABLE IF EXISTS ONLY public.impact_tracking_pageviews DROP CONSTRAINT IF EXISTS fk_rails_ef24561698;
 ALTER TABLE IF EXISTS ONLY public.static_pages_topics DROP CONSTRAINT IF EXISTS fk_rails_edc8786515;
 ALTER TABLE IF EXISTS ONLY public.polls_response_options DROP CONSTRAINT IF EXISTS fk_rails_e871bf6e26;
 ALTER TABLE IF EXISTS ONLY public.nav_bar_items DROP CONSTRAINT IF EXISTS fk_rails_e8076fb9f6;
@@ -24,6 +23,7 @@ ALTER TABLE IF EXISTS ONLY public.cosponsors_initiatives DROP CONSTRAINT IF EXIS
 ALTER TABLE IF EXISTS ONLY public.permissions_custom_fields DROP CONSTRAINT IF EXISTS fk_rails_e211dc8f99;
 ALTER TABLE IF EXISTS ONLY public.baskets_ideas DROP CONSTRAINT IF EXISTS fk_rails_dfb57cbce2;
 ALTER TABLE IF EXISTS ONLY public.official_feedbacks DROP CONSTRAINT IF EXISTS fk_rails_ddd7e21dfa;
+ALTER TABLE IF EXISTS ONLY public.impact_tracking_pageviews DROP CONSTRAINT IF EXISTS fk_rails_dd3b2cc184;
 ALTER TABLE IF EXISTS ONLY public.project_folders_images DROP CONSTRAINT IF EXISTS fk_rails_dcbc962cfe;
 ALTER TABLE IF EXISTS ONLY public.project_folders_files DROP CONSTRAINT IF EXISTS fk_rails_dc7aeb6534;
 ALTER TABLE IF EXISTS ONLY public.analysis_summaries DROP CONSTRAINT IF EXISTS fk_rails_dbd13460f0;
@@ -2565,7 +2565,7 @@ CREATE TABLE public.identities (
 
 CREATE TABLE public.impact_tracking_pageviews (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
-    impact_tracking_sessions_id uuid NOT NULL,
+    session_id uuid NOT NULL,
     path character varying NOT NULL,
     route character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
@@ -6981,6 +6981,14 @@ ALTER TABLE ONLY public.project_folders_images
 
 
 --
+-- Name: impact_tracking_pageviews fk_rails_dd3b2cc184; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.impact_tracking_pageviews
+    ADD CONSTRAINT fk_rails_dd3b2cc184 FOREIGN KEY (session_id) REFERENCES public.impact_tracking_sessions(id);
+
+
+--
 -- Name: official_feedbacks fk_rails_ddd7e21dfa; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7034,14 +7042,6 @@ ALTER TABLE ONLY public.polls_response_options
 
 ALTER TABLE ONLY public.static_pages_topics
     ADD CONSTRAINT fk_rails_edc8786515 FOREIGN KEY (topic_id) REFERENCES public.topics(id);
-
-
---
--- Name: impact_tracking_pageviews fk_rails_ef24561698; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.impact_tracking_pageviews
-    ADD CONSTRAINT fk_rails_ef24561698 FOREIGN KEY (impact_tracking_sessions_id) REFERENCES public.impact_tracking_sessions(id);
 
 
 --
