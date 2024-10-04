@@ -3,7 +3,7 @@
 class CreatePageviews < ActiveRecord::Migration[7.0]
   def change
     create_table :impact_tracking_pageviews, id: :uuid do |t|
-      t.references :impact_tracking_sessions, foreign_key: true, type: :uuid
+      t.references :impact_tracking_sessions, foreign_key: true, type: :uuid, index: false
       t.string 'path', null: false
       t.string 'route', null: false
       t.timestamps
