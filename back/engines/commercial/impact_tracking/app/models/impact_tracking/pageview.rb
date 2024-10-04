@@ -5,7 +5,7 @@
 #  id         :uuid             not null, primary key
 #  session_id :uuid             not null
 #  path       :string           not null
-#  route      :string           not null
+#  route      :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
@@ -16,5 +16,4 @@
 class ImpactTracking::Pageview < ApplicationRecord
   validates :session_id, presence: true
   validates :path, presence: true
-  validates :route, presence: true
 end

@@ -2567,7 +2567,7 @@ CREATE TABLE public.impact_tracking_pageviews (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     session_id uuid NOT NULL,
     path character varying NOT NULL,
-    route character varying NOT NULL,
+    route character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
