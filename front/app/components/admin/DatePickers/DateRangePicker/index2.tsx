@@ -1,6 +1,13 @@
 import React from 'react';
 
-interface Props {}
+import { DateRange } from '../_shared/typings';
+
+interface Props {
+  selectedRange: Partial<DateRange>;
+  startMonth?: Date;
+  endMonth?: Date;
+  onUpdateRange: (range: DateRange) => void;
+}
 
 const DateRangePicker = (_props: Props) => {
   return <></>;
