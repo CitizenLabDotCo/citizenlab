@@ -7,7 +7,7 @@ module ImpactTracking
       skip_after_action :verify_authorized, only: %i[create upgrade]
 
       before_action :ignore_crawlers
-      before_action :set_current_session, only: [:upgrade]
+      before_action :set_current_session, only: %i[upgrade track_pageview]
 
       def create
         entry_path = params['entryPath']
@@ -48,6 +48,20 @@ module ImpactTracking
         )
 
           head :accepted
+        else
+          head :internal_server_error
+        end
+      end
+
+      def track_pageview
+        pageview = Pageview.create(
+          session_id: @session.id,
+          path: params[:path],
+          route: params[:route]
+        )
+
+        if pageview
+          head :created
         else
           head :internal_server_error
         end
