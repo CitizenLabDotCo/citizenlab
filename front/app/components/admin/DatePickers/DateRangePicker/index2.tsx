@@ -3,20 +3,19 @@ import React, { useState } from 'react';
 import { Tooltip, Box } from '@citizenlab/cl2-component-library';
 
 import ClickOutsideContainer from '../_shared/ClickOutsideContainer';
-import { DateRange } from '../_shared/typings';
 
+import Calendar from './Calendar';
 import Input from './Input';
+import { Props } from './typings';
 
 const WIDTH = '620px';
 
-interface Props {
-  selectedRange: Partial<DateRange>;
-  startMonth?: Date;
-  endMonth?: Date;
-  onUpdateRange: (range: DateRange) => void;
-}
-
-const DateRangePicker = ({ selectedRange }: Props) => {
+const DateRangePicker = ({
+  selectedRange,
+  startMonth,
+  endMonth,
+  onUpdateRange,
+}: Props) => {
   const [calendarOpen, setCalendarOpen] = useState(false);
 
   return (
@@ -27,15 +26,13 @@ const DateRangePicker = ({ selectedRange }: Props) => {
       <Tooltip
         content={
           <Box width={WIDTH}>
-            TEST
-            {/* <Calendar
+            <Calendar
               selectedRange={selectedRange}
-              disabledRanges={disabledRanges}
               startMonth={startMonth}
               endMonth={endMonth}
-              defaultMonth={defaultMonth}
+              // defaultMonth={defaultMonth}
               onUpdateRange={onUpdateRange}
-            /> */}
+            />
           </Box>
         }
         placement="bottom"
