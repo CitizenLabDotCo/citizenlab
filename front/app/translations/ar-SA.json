@@ -182,6 +182,7 @@
   "app.components.HookForm.Feedback.submissionError": "أعد المحاولة. إذا استمرت المشكلة، فتواصل معنا",
   "app.components.HookForm.Feedback.submissionErrorTitle": "عذرًا، حدثت مشكلة من جانبنا.",
   "app.components.HookForm.Feedback.successMessage": "تم إرسال النموذج بنجاح",
+  "app.components.HookForm.PasswordInput.passwordLabel": "كلمة المرور",
   "app.components.HorizontalScroll.scrollLeftLabel": "قم بالتمرير إلى اليسار.",
   "app.components.HorizontalScroll.scrollRightLabel": "قم بالتمرير إلى اليمين.",
   "app.components.IdeaCards.a11y_ideasHaveBeenSorted": "{sortOder} تم تحميل الأفكار.",
