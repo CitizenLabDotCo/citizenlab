@@ -170,6 +170,9 @@ ar:
       topic_ids:
         title: الموضوعات
         description:
+      consponsor_ids:
+        title: الرعاة المشاركون
+        description: قم بدعوة الرعاة المشاركين من خلال الحقل أدناه. سيتلقى الرعاة المشاركون المدعوون رسالة بريد إلكتروني.
       location:
         title: الموقع
         description:
@@ -233,6 +236,7 @@ ar:
       <ul><li>خذ الوقت الكافي لكتابة مُقترحك وإيضاحه. إذا لزم الأمر، اكتب مسوّدة أولاً ثم انسخها والصقها هنا. بمجرد النشر، سيتمكن الآخرون من قراءة المُقترح وسيسير الوقت بسرعة.</li><li>اختر عنوانًا ذا معنى يشرح بوضوح ما ينطوي عليه اقتراحك.</li><li>تأكد من إضافة صورة مناسبة إلى مُقترحك، حتى يبرز من بين المُقترحات الأخرى.</li><li>أضِف مرفقات ذات صلة، مثل الفيديوهات،أو الأمثلة المُلهمة، أو التفاصيل الفنية، أو الخطط.</li><li>شارك فكرتك على وسائل التواصل الاجتماعي والقنوات الأخرى لحشد الدعم من الآخرين.</li></ul>
   reset_password_mailer:
     send_reset_password:
+      preheader: 'إعادة تعيين كلمة المرور الخاصة بك لـ %{organizationName}'
       cta_reset_password: 'إعادة تعيين كلمة المرور'
       message_you_reset_your_password: 'لقد طلبت إعادة تعيين كلمة المرور لمنصة مشاركة %{organizationName}. انقر فوق الزر أدناه لاختيار كلمة مرور جديدة وآمنة. تنتهي صلاحية الرابط خلال ساعة واحدة.'
       subject: '%{organizationName}: إعادة تعيين كلمة المرور'
@@ -314,6 +318,7 @@ ar:
   confirmations_mailer:
     send_confirmation_code:
       subject: "قم بتأكيد عنوان البريد الإلكتروني لمنصة المشاركة الخاصة بمؤسسة %{organizationName}"
+      preheader: 'تأكيد عنوان بريدك الإلكتروني لـ %{organizationName}'
       header: "رمز التأكيد الخاص بك"
       header_message: "مرحبًا %{firstName}!"
       confirm_email_address: "أكِّد عنوان بريدك الإلكتروني"
@@ -328,6 +333,7 @@ ar:
   user_blocked_mailer:
     send_user_blocked_email:
       subject: 'تم تعطيل حسابك مؤقتا'
+      preheader: 'تم تعطيل حسابك على منصة المشاركة %{organizationName} مؤقتًا'
       title_user_blocked: 'تم تعطيل حسابك مؤقتا'
       paragraph_1_without_reason: "تم تعطيل حسابك على منصة المشاركة %{organizationName} مؤقتًا لانتهاك إرشادات المجتمع."
       paragraph_1_with_reason: "تم تعطيل حسابك على منصة المشاركة %{organizationName} مؤقتًا للأسباب التالية:"
@@ -343,3 +349,5 @@ ar:
   voting_method:
     default_voting_term_singular: "تصويت"
     default_voting_term_plural: "أصوات"
+  ics_calendar_event:
+    event_details: "تفاصيل الحدث"

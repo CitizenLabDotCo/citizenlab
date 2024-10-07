@@ -82,6 +82,8 @@
       "unsubscribe_text": "meld av"
     follow:
       "unfollow_here": "Du har mottatt dette varselet på grunn av et element du følger. <a href=\"%{unfollow_url}\">Du kan slutte å følge den her.</a>"
+    manual:
+      preheader: 'Du har e-post fra %{organizationName}'
     comment_deleted_by_admin:
       reason: 'Grunnen til at din kommentar ble slettet:'
       cta_view: 'Sjekk ut denne ideen'
@@ -540,6 +542,7 @@
       cta_see_results: 'Se resultater i plattformen'
     event_registration_confirmation:
       subject: "Du er med! Din registrering for \"%{eventTitle}\" er bekreftet"
+      preheader: "%{firstName}, takk for at du registrerte deg for %{eventTitle}"
       header_message: "%{firstName}, takk for at du registrerte deg for"
       event_details:
         labels:

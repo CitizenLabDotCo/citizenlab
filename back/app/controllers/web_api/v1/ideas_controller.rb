@@ -78,8 +78,11 @@ class WebApi::V1::IdeasController < ApplicationController
     ideas = SortByParamsService.new.sort_ideas(ideas, params, current_user)
     ideas = ideas.includes(:author, :topics, :project, :idea_status, :idea_files)
 
+    with_cosponsors = AppConfiguration.instance.feature_activated?('input_cosponsorship')
+    ideas = ideas.includes(:cosponsors) if with_cosponsors
+
     I18n.with_locale(current_user&.locale) do
-      xlsx = XlsxService.new.generate_ideas_xlsx ideas, view_private_attributes: true
+      xlsx = XlsxService.new.generate_ideas_xlsx(ideas, view_private_attributes: true, with_cosponsors:)
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'ideas.xlsx'
     end
   end
@@ -205,6 +208,7 @@ class WebApi::V1::IdeasController < ApplicationController
 
     extract_custom_field_values_from_params!(input.custom_form)
     params[:idea][:topic_ids] ||= [] if params[:idea].key?(:topic_ids)
+    params[:idea][:cosponsor_ids] ||= [] if params[:idea].key?(:cosponsor_ids)
     params[:idea][:phase_ids] ||= [] if params[:idea].key?(:phase_ids)
     params_service.mark_custom_field_values_to_clear!(input.custom_field_values, params[:idea][:custom_field_values])
 
@@ -234,7 +238,7 @@ class WebApi::V1::IdeasController < ApplicationController
         render json: WebApi::V1::IdeaSerializer.new(
           input.reload,
           params: jsonapi_serializer_params,
-          include: %i[author topics user_reaction idea_images]
+          include: %i[author topics user_reaction idea_images cosponsors]
         ).serializable_hash, status: :ok
       else
         render json: { errors: input.errors.details }, status: :unprocessable_entity
@@ -365,6 +369,10 @@ class WebApi::V1::IdeasController < ApplicationController
       complex_attributes[:topic_ids] = []
     end
 
+    if submittable_field_keys.include?(:cosponsor_ids)
+      complex_attributes[:cosponsor_ids] = []
+    end
+
     complex_attributes
   end
 
@@ -391,7 +399,7 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def serialization_options_for(ideas)
-    include = %i[author idea_images ideas_phases]
+    include = %i[author idea_images ideas_phases cosponsors]
     if current_user
       # I have no idea why but the trending query part
       # breaks if you don't fetch the ids in this way.

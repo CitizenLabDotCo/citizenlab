@@ -36,7 +36,7 @@ import { LogicSettings } from './LogicSettings';
 
 interface Props {
   field: IFlatCustomFieldWithIndex;
-  closeSettings: () => void;
+  closeSettings: (triggerAutosave?: boolean) => void;
   builderConfig: FormBuilderConfig;
   formHasSubmissions: boolean;
 }
@@ -112,7 +112,7 @@ const FormBuilderSettings = ({
           a11y_buttonActionMessage={messages.close}
           onClick={() => {
             trackEventByName(tracks.formFieldSettingsCloseButtonClicked);
-            closeSettings();
+            closeSettings(true);
           }}
           iconColor={colors.textSecondary}
           iconColorOnHover={'#000'}

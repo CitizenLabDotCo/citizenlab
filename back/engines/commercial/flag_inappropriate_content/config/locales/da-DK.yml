@@ -6,6 +6,7 @@ da:
       "inappropriate_content_flagged": Uhensigtsmæssigt indhold markeret - admins
     inappropriate_content_flagged:
       subject: 'Et indlæg på din platform er blevet markeret til gennemsyn'
+      preheader: 'Et indlæg på din platform er blevet markeret til gennemsyn'
       header_title: 'Et indlæg på din platform er blevet markeret til gennemsyn'
       comment_author: '%{authorName} kommenterede:'
       idea_author: '%{authorName} har indsendt et indlæg:'

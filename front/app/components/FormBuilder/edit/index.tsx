@@ -154,11 +154,11 @@ const FormEdit = ({
     }
   }, [formCustomFields, isUpdatingForm, isFetching, reset]);
 
-  const closeSettings = () => {
+  const closeSettings = (triggerAutosave?: boolean) => {
     setSelectedField(undefined);
 
     // If autosave is enabled & no submission have come in yet, save
-    if (autosaveEnabled && totalSubmissions === 0) {
+    if (triggerAutosave && autosaveEnabled && totalSubmissions === 0) {
       onFormSubmit(getValues());
     }
   };
@@ -249,6 +249,7 @@ const FormEdit = ({
           maximum: field.maximum?.toString() || '5',
         }),
       }));
+
       await updateFormCustomFields(
         {
           projectId,

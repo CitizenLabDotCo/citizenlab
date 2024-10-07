@@ -93,6 +93,7 @@ const NOT_SUPPORTED_SCOPES = new Set([
   '#/properties/idea_images_attributes',
   '#/properties/idea_files_attributes',
   '#/properties/topic_ids',
+  '#/properties/cosponsor_ids',
 ]);
 
 const filterUiSchema = (uiSchema) => {

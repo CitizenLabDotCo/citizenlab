@@ -27,7 +27,8 @@ const FieldTypeSwitcher = ({ field, formHasSubmissions }: Props) => {
     formatMessage
   );
 
-  if (fieldSwitchOptions.length === 0) return null;
+  // Don't show if there are no field switch options, or it's a built-in field
+  if (fieldSwitchOptions.length === 0 || field.code) return null;
 
   return (
     <Box mb="24px">
@@ -35,23 +36,29 @@ const FieldTypeSwitcher = ({ field, formHasSubmissions }: Props) => {
         disabled={!formHasSubmissions}
         content={formatMessage(messages.formHasSubmissionsWarning)}
       >
-        <Select
-          disabled={formHasSubmissions}
-          options={fieldSwitchOptions}
-          onChange={(value) => {
-            // Remove the current field ID, since we want to create a new field
-            setValue(`customFields.${field.index}.id`, undefined, {
-              shouldDirty: true,
-            });
-            // Generate a new temp ID for the field
-            setValue(`customFields.${field.index}.temp_id`, generateTempId(), {
-              shouldDirty: true,
-            });
-            setValue(inputTypeName, value?.value, { shouldDirty: true });
-          }}
-          value={watch(inputTypeName)}
-          label={formatMessage(messages.type)}
-        />
+        <Box>
+          <Select
+            disabled={formHasSubmissions}
+            options={fieldSwitchOptions}
+            onChange={(value) => {
+              // Remove the current field ID, since we want to create a new field
+              setValue(`customFields.${field.index}.id`, undefined, {
+                shouldDirty: true,
+              });
+              // Generate a new temp ID for the field
+              setValue(
+                `customFields.${field.index}.temp_id`,
+                generateTempId(),
+                {
+                  shouldDirty: true,
+                }
+              );
+              setValue(inputTypeName, value?.value, { shouldDirty: true });
+            }}
+            value={watch(inputTypeName)}
+            label={formatMessage(messages.type)}
+          />
+        </Box>
       </Tooltip>
     </Box>
   );
