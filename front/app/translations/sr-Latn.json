@@ -171,7 +171,6 @@
   "app.components.FolderFolderCard.a11y_folderTitle": "Naziv foldera:",
   "app.components.FolderFolderCard.archived": "Arhivirano",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {# projekata} one {# projekat} other {# projekata}}",
-  "app.components.FormBuilder.components.FieldTypeSwitcher.surveyHasSubmissionsWarning": "The field type cannot be changed once the survey has submissions.",
   "app.components.FormBuilder.components.FieldTypeSwitcher.type": "Type",
   "app.components.FormBuilder.components.FormBuilderTopBar.autosave": "Autosave",
   "app.components.FormBuilder.components.FormBuilderTopBar.autosaveTooltip4": "Auto-saving is enabled by default when you open the form editor. Any time you close the field settings panel using the \"X\" button, it will automatically trigger a save.",
