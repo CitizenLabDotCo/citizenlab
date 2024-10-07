@@ -171,7 +171,7 @@
   "app.components.FolderFolderCard.a11y_folderTitle": "Título da pasta:",
   "app.components.FolderFolderCard.archived": "Arquivado",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {# projetos} one {# projeto} other {# projetos}}",
-  "app.components.FormBuilder.components.FieldTypeSwitcher.surveyHasSubmissionsWarning": "O tipo de campo não pode ser alterado após o envio da pesquisa.",
+  "app.components.FormBuilder.components.FieldTypeSwitcher.formHasSubmissionsWarning2": "O tipo de campo não pode ser alterado depois que houver envios.",
   "app.components.FormBuilder.components.FieldTypeSwitcher.type": "Tipo",
   "app.components.FormBuilder.components.FormBuilderTopBar.autosave": "Salvamento automático",
   "app.components.FormBuilder.components.FormBuilderTopBar.autosaveTooltip4": "O salvamento automático é ativado por padrão quando você abre o editor de formulários. Sempre que você fechar o painel de configurações de campo usando o botão \"X\", ele acionará automaticamente um salvamento.",
