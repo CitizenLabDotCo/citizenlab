@@ -171,7 +171,7 @@
   "app.components.FolderFolderCard.a11y_folderTitle": "Título de la carpeta:",
   "app.components.FolderFolderCard.archived": "Archivado",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {# proyectos} one {# proyecto} other {# proyectos}}",
-  "app.components.FormBuilder.components.FieldTypeSwitcher.surveyHasSubmissionsWarning": "El tipo de campo no puede cambiarse una vez que la encuesta se ha enviado.",
+  "app.components.FormBuilder.components.FieldTypeSwitcher.formHasSubmissionsWarning2": "El tipo de campo no puede cambiarse una vez que se han recibido respuestas.",
   "app.components.FormBuilder.components.FieldTypeSwitcher.type": "Tipo",
   "app.components.FormBuilder.components.FormBuilderTopBar.autosave": "Autoguardado",
   "app.components.FormBuilder.components.FormBuilderTopBar.autosaveTooltip4": "El guardado automático está activado por defecto cuando abres el editor de formularios. Cada vez que cierres el panel de configuración de campos con el botón \"X\", se activará automáticamente el guardado.",
