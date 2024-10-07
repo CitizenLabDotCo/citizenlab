@@ -31,7 +31,7 @@ fr-BE:
       "mention_in_official_feedback": Mention dans une mise à jour
       "mention_in_internal_comment": Mention dans un commentaire interne
       "new_comment_for_admin": Nouveau commentaire dans un projet que je modère
-      "new_idea_for_admin": Nouvelle contribution à un projet que je modère
+      "new_idea_for_admin": Nouvelle contribution dans un projet que je modère
       "new_initiative_for_admin": Nouvelle proposition
       "official_feedback_on_idea_you_follow": Mise à jour d'une entrée que vous suivez
       "official_feedback_on_initiative_you_follow": Mise à jour d'une proposition que vous suivez
@@ -283,14 +283,14 @@ fr-BE:
       event_description: '%{authorNameFull} a placé une réaction sur ''%{inputTitle}''. Cliquez sur le bouton ci-dessous pour poursuivre la conversation avec %{authorName}.'
       main_header:
         idea: '%{authorName} a commenté une idée que vous suivez'
-        question: '%{authorName} commenté une question que vous suivez'
-        contribution: '%{authorName} commenté une contribution que vous suivez'
-        project: '%{authorName} commenté un projet que vous suivez'
+        question: '%{authorName} a commenté une question que vous suivez'
+        contribution: '%{authorName} a commenté une contribution que vous suivez'
+        project: '%{authorName} a commenté un projet que vous suivez'
         issue: '%{authorName} commenté un sujet que vous suivez'
-        option: '%{authorName} commenté une option que vous suivez'
+        option: '%{authorName} a commenté une option que vous suivez'
         proposal: '%{authorName} a commenté une proposition que vous suivez'
-        initiative: '%{authorName} commenté une initiative que vous suivez'
-        petition: '%{authorName} commenté une pétition que vous suivez'
+        initiative: '%{authorName} a commenté une initiative que vous suivez'
+        petition: '%{authorName} a commenté une pétition que vous suivez'
       subject: 'Il y a un nouveau commentaire sur "%{input_title}"'
       preheader: '%{authorName} a publié un commentaire sur une idée pour %{organizationName}'
     comment_on_initiative_you_follow:
@@ -333,45 +333,45 @@ fr-BE:
     internal_comment_on_idea_assigned_to_you:
       cta_reply_to: 'Voir le commentaire de %{firstName}'
       event_description: '%{authorNameFull} a commenté en interne une entrée qui vous a été attribuée.'
-      subject: 'Nouveau commentaire interne sur ''%{post}'''
-      main_header: 'Nouveau commentaire interne sur ''%{post}'''
-      preheader: 'Nouveau commentaire interne sur ''%{post}'''
+      subject: 'Nouveau commentaire interne sur « %{post} »'
+      main_header: 'Nouveau commentaire interne sur « %{post} »'
+      preheader: 'Nouveau commentaire interne sur « %{post} »'
     internal_comment_on_idea_you_commented_internally_on:
       cta_reply_to: 'Voir le commentaire de %{firstName}'
       event_description: '%{authorNameFull} a commenté en interne une entrée que vous avez commentée en interne.'
-      subject: 'Nouveau commentaire interne sur ''%{post}'''
-      main_header: 'Nouveau commentaire interne sur ''%{post}'''
-      preheader: 'Nouveau commentaire interne sur ''%{post}'''
+      subject: 'Nouveau commentaire interne sur « %{post} »'
+      main_header: 'Nouveau commentaire interne sur « %{post} »'
+      preheader: 'Nouveau commentaire interne sur « %{post} »'
     internal_comment_on_idea_you_moderate:
       cta_reply_to: 'Voir le commentaire de %{firstName}'
       event_description: '%{authorNameFull} a commenté en interne une entrée dans un projet ou un dossier que vous gérez.'
-      subject: 'Nouveau commentaire interne sur ''%{post}'''
-      main_header: 'Nouveau commentaire interne sur ''%{post}'''
-      preheader: 'Nouveau commentaire interne sur ''%{post}'''
+      subject: 'Nouveau commentaire interne sur « %{post} »'
+      main_header: 'Nouveau commentaire interne sur « %{post} »'
+      preheader: 'Nouveau commentaire interne sur « %{post} »'
     internal_comment_on_initiative_assigned_to_you:
       cta_reply_to: 'Voir le commentaire de %{firstName}'
       event_description: '%{authorNameFull} a commenté en interne une proposition qui vous a été confiée.'
-      subject: 'Nouveau commentaire interne sur ''%{post}'''
-      main_header: 'Nouveau commentaire interne sur ''%{post}'''
-      preheader: 'Nouveau commentaire interne sur ''%{post}'''
+      subject: 'Nouveau commentaire interne sur « %{post} »'
+      main_header: 'Nouveau commentaire interne sur « %{post} »'
+      preheader: 'Nouveau commentaire interne sur « %{post} »'
     internal_comment_on_initiative_you_commented_internally_on:
       cta_reply_to: 'Voir le commentaire de %{firstName}'
       event_description: '%{authorNameFull} a commenté en interne une proposition que vous avez commentée en interne.'
-      subject: 'Nouveau commentaire interne sur ''%{post}'''
-      main_header: 'Nouveau commentaire interne sur ''%{post}'''
-      preheader: 'Nouveau commentaire interne sur ''%{post}'''
+      subject: 'Nouveau commentaire interne sur « %{post} »'
+      main_header: 'Nouveau commentaire interne sur « %{post} »'
+      preheader: 'Nouveau commentaire interne sur « %{post} »'
     internal_comment_on_unassigned_initiative:
       cta_reply_to: 'Voir le commentaire de %{firstName}'
       event_description: '%{authorNameFull} a commenté en interne une proposition non attribuée.'
-      subject: 'Nouveau commentaire interne sur ''%{post}'''
-      main_header: 'Nouveau commentaire interne sur ''%{post}'''
-      preheader: 'Nouveau commentaire interne sur ''%{post}'''
+      subject: 'Nouveau commentaire interne sur « %{post} »'
+      main_header: 'Nouveau commentaire interne sur « %{post} »'
+      preheader: 'Nouveau commentaire interne sur « %{post} »'
     internal_comment_on_unassigned_unmoderated_idea:
       cta_reply_to: 'Voir le commentaire de %{firstName}'
       event_description: '%{authorNameFull} a commenté en interne une entrée non attribuée dans un projet non géré.'
-      subject: 'Nouveau commentaire interne sur ''%{post}'''
-      main_header: 'Nouveau commentaire interne sur ''%{post}'''
-      preheader: 'Nouveau commentaire interne sur ''%{post}'''
+      subject: 'Nouveau commentaire interne sur « %{post} »'
+      main_header: 'Nouveau commentaire interne sur « %{post} »'
+      preheader: 'Nouveau commentaire interne sur « %{post} »'
     official_feedback_on_idea_you_follow:
       header_message: '%{feedback_author_name} a fait un retour sur %{input_title}''.'
       header_title: 'Il y a une mise à jour sur "%{input_title}"'
@@ -442,9 +442,9 @@ fr-BE:
     status_change_on_idea_you_follow:
       status_change: 'Le nouvel état de cette entrée est ''%{status}'''
       header_message: '%{organizationName} a mis à jour le statut de l''entrée "%{input_title}" sur sa plateforme de participation numérique.'
-      header_title: 'Une entrée que vous suivez a un nouveau statut'
-      subject: 'Le statut de "%{input_title}" a changé'
-      preheader: 'Une entrée que vous suivez a un nouveau statut'
+      header_title: 'Une contribution que vous suivez a un nouveau statut'
+      subject: 'Le statut de « %{input_title} » a changé'
+      preheader: 'Une contribution que vous suivez a un nouveau statut'
     status_change_on_initiative_you_follow:
       status_change: 'Le nouveau statut de cette proposition est « %{initiativeStatus} »'
       header_message: 'Le statut de la proposition « %{initiativeTitle} » a été changé sur la plateforme de participation de %{organizationName}.'
@@ -460,7 +460,7 @@ fr-BE:
       cta_go_to_the_platform: "Voir la plateforme"
       title_no_activity_past_week: "Pas d'activité la semaine passée"
       successful_proposals_title: "Atteint le seuil"
-      successful_proposals_text: "Au cours de la semaine écoulée, ils ont bénéficié d'un soutien suffisant pour passer à l'étape suivante."
+      successful_proposals_text: "Au cours de la semaine dernière, ces propositions ont reçu suffisamment de soutien pour passer à l'étape suivante."
       today_by_author: "Aujourd'hui par %{author}"
       yesterday_by_author: "Hier par %{author}"
       x_days_ago_by_author: "Il y a %{x} jours par %{author}"
@@ -473,8 +473,8 @@ fr-BE:
       unread_notifications: "Vous avez de nouvelles notifications ! Visitez la plate-forme pour découvrir ce qu'il s'y passe."
     threshold_reached_for_admin:
       cta_process_initiative: 'Passez cette initiative à l''étape suivante'
-      main_header: 'Une proposition a atteint le nombre de voix requis!'
-      subject: '"%{input_title} a atteint le nombre de voix requis'
+      main_header: 'Une proposition a atteint le nombre de voix requis !'
+      subject: '« %{input_title} » a atteint le nombre de votes requis'
       preheader: 'Assurez-vous de passer aux étapes suivantes'
     welcome:
       cta_join_platform: 'Découvrir la plateforme'
@@ -488,12 +488,12 @@ fr-BE:
         question: 'Votre question a été publiée'
         contribution: 'Votre contribution a été publiée'
         project: 'Votre projet a été publié'
-        issue: 'Votre numéro a été publié'
+        issue: 'Votre problème a été publié'
         option: 'Votre option a été publiée'
         proposal: 'Votre proposition a été publiée'
         initiative: 'Votre initiative a été publiée'
         petition: 'Votre pétition a été publiée'
-      main_header: 'Vous avez posté "%{input_title}"'
+      main_header: 'Vous avez posté « %{input_title} »'
       header_message: 'Veillons à ce qu''il soit lu.'
       message_get_votes: 'Atteindre plus de personnes'
       action_published_idea: 'Publié'
@@ -611,7 +611,7 @@ fr-BE:
         user_who_is_mentioned: 'Utilisateur mentionné'
         user_who_published_the_proposal: 'L''utilisateur qui a posté la proposition'
         user_who_published_the_input: 'L''utilisateur qui a posté la contribution'
-        user_who_submitted_the_input: 'Utilisateur qui a soumis l''entrée'
+        user_who_submitted_the_input: 'Utilisateur qui a soumis la contribution'
         user_who_registers: 'Utilisateur qui s''inscrit'
         user_who_was_invited: 'Utilisateur invité'
         users_who_engaged_with_the_project: 'Les utilisateurs qui ont participé au projet'
