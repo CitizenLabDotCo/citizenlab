@@ -31,7 +31,7 @@ fr:
       "mention_in_official_feedback": Mention dans une mise à jour
       "mention_in_internal_comment": Mention dans un commentaire interne
       "new_comment_for_admin": Nouveau commentaire dans un projet que je modère
-      "new_idea_for_admin": Nouvelle contribution à un projet que je modère
+      "new_idea_for_admin": Nouvelle contribution dans un projet que je modère
       "new_initiative_for_admin": Nouvelle proposition
       "official_feedback_on_idea_you_follow": Mise à jour d'une entrée que vous suivez
       "official_feedback_on_initiative_you_follow": Mise à jour d'une proposition que vous suivez
@@ -460,7 +460,7 @@ fr:
       cta_go_to_the_platform: "Voir la plateforme"
       title_no_activity_past_week: "Pas d'activité la semaine passée"
       successful_proposals_title: "Atteint le seuil"
-      successful_proposals_text: "Au cours de la semaine écoulée, ils ont bénéficié d'un soutien suffisant pour passer à l'étape suivante."
+      successful_proposals_text: "Au cours de la semaine dernière, ces propositions ont reçu suffisamment de soutien pour passer à l'étape suivante."
       today_by_author: "Aujourd'hui par %{author}"
       yesterday_by_author: "Hier par %{author}"
       x_days_ago_by_author: "Il y a %{x} jours par %{author}"
@@ -474,7 +474,7 @@ fr:
     threshold_reached_for_admin:
       cta_process_initiative: 'Passez cette proposition à l''étape suivante'
       main_header: 'Une proposition a atteint le nombre de voix requis !'
-      subject: '"%{input_title} a atteint le nombre de voix requis'
+      subject: '« %{input_title} » a atteint le nombre de votes requis'
       preheader: 'Assurez-vous de passer aux étapes suivantes'
     welcome:
       cta_join_platform: 'Découvrir la plateforme'
