@@ -117,7 +117,7 @@
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.surveyQuestion": "Question d'enquête",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.untilNow": "{date} jusqu'à maintenant",
   "app.components.admin.DatePhasePicker.Input.openEnded": "Ouvert à tous",
-  "app.components.admin.DatePhasePicker.Input.selectDate": "Sélectionnez la date",
+  "app.components.admin.DatePhasePicker.Input.selectDate": "Sélectionnez une date",
   "app.components.admin.DateTimePicker.time": "Heure",
   "app.components.admin.Graphs": "Aucune donnée disponible avec les filtres actuels.",
   "app.components.admin.Graphs.noDataShort": "Pas de données disponibles.",
