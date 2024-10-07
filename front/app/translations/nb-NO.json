@@ -171,6 +171,7 @@
   "app.components.FolderFolderCard.a11y_folderTitle": "Mappetittel:",
   "app.components.FolderFolderCard.archived": "Arkivert",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, one {# prosjekt} other {# prosjekter}}",
+  "app.components.FormBuilder.components.FieldTypeSwitcher.formHasSubmissionsWarning2": "Felttypen kan ikke endres når det er innsendinger.",
   "app.components.FormBuilder.components.FieldTypeSwitcher.type": "Type",
   "app.components.FormBuilder.components.FormBuilderTopBar.autosave": "Autolagring",
   "app.components.FormBuilder.components.FormBuilderTopBar.autosaveTooltip4": "Automatisk lagring er aktivert som standard når du åpner skjemaredigering. Hver gang du lukker feltinnstillingspanelet ved å bruke \"X\"-knappen, vil det automatisk utløse en lagring.",

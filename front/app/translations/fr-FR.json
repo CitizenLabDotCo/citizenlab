@@ -171,6 +171,7 @@
   "app.components.FolderFolderCard.a11y_folderTitle": "Titre du dossier :",
   "app.components.FolderFolderCard.archived": "Archivés",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {# projets} one {# projet} other {# projets}}",
+  "app.components.FormBuilder.components.FieldTypeSwitcher.formHasSubmissionsWarning2": "Le type de champ ne peut pas être modifié une fois que des réponses ont été soumises.",
   "app.components.FormBuilder.components.FieldTypeSwitcher.type": "Type",
   "app.components.FormBuilder.components.FormBuilderTopBar.autosave": "Sauvegarde automatique",
   "app.components.FormBuilder.components.FormBuilderTopBar.autosaveTooltip4": "La sauvegarde automatique est activée par défaut lorsque vous ouvrez l'éditeur de formulaire. Chaque fois que vous fermez le panneau de configuration d'un champ en utilisant le bouton « X », cela déclenchera automatiquement une sauvegarde.",
