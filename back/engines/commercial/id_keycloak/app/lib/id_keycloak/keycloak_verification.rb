@@ -52,10 +52,6 @@ module IdKeycloak
       ]
     end
 
-    def profile_to_uid(auth)
-      auth.pid
-    end
-
     def locked_attributes
       %i[first_name last_name]
     end
@@ -69,6 +65,10 @@ module IdKeycloak
         config[:birthday_custom_field_key].presence,
         config[:birthyear_custom_field_key].presence
       ].compact
+    end
+
+    def profile_to_uid(auth)
+      auth['uid']
     end
 
     def updateable_user_attrs

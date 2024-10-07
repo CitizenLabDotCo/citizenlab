@@ -52,6 +52,11 @@ be-up-idaustria:
 	BASE_DEV_URI=https://idaustria-g3fy.loca.lt docker compose up -d
 	lt --print-requests --port 3000 --subdomain idaustria-g3fy
 
+be-up-keycloak:
+	docker compose down
+	BASE_DEV_URI=https://keycloak-r3tyu.loca.lt docker compose up -d
+	lt --print-requests --port 3000 --subdomain keycloak-r3tyu
+
 # Run it with:
 # make c
 # # or
