@@ -171,7 +171,7 @@
   "app.components.FolderFolderCard.a11y_folderTitle": "Klasör başlığı:",
   "app.components.FolderFolderCard.archived": "Arşivlenmiş",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, one {# proje} other {# proje}}",
-  "app.components.FormBuilder.components.FieldTypeSwitcher.surveyHasSubmissionsWarning": "Anket gönderildikten sonra alan türü değiştirilemez.",
+  "app.components.FormBuilder.components.FieldTypeSwitcher.formHasSubmissionsWarning2": "Gönderimler yapıldıktan sonra alan türü değiştirilemez.",
   "app.components.FormBuilder.components.FieldTypeSwitcher.type": "Tip",
   "app.components.FormBuilder.components.FormBuilderTopBar.autosave": "Otomatik Kaydetme",
   "app.components.FormBuilder.components.FormBuilderTopBar.autosaveTooltip4": "Otomatik kaydetme, form düzenleyiciyi açtığınızda varsayılan olarak etkinleştirilir. \"X\" düğmesini kullanarak alan ayarları panelini her kapattığınızda, otomatik olarak bir kaydetme işlemi tetiklenir.",
