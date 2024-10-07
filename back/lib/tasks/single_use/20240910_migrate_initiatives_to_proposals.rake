@@ -3,7 +3,6 @@ namespace :initiatives_to_proposals do
   task :migrate_proposals, [] => [:environment] do
     reporter = ScriptReporter.new
     Tenant.safe_switch_each do |tenant|
-      pp rake_20240910_migrate_project_description_multiloc
       next if !AppConfiguration.instance.feature_activated?('initiatives') && !Initiative.exists?
 
       project = rake_20240910_create_proposals_project(reporter)
@@ -11,7 +10,7 @@ namespace :initiatives_to_proposals do
 
       rake_20240910_substitute_homepage_element(project, reporter)
       rake_20240910_replace_navbaritem(project, reporter)
-      rake_20240910_migrate_input_statuses(reporter) # Overwrite the input status descriptions
+      rake_20240910_migrate_input_statuses(reporter)
       map_initiatives_to_proposals = {}
       Initiative.where.not(publication_status: 'draft').each do |initiative|
         proposal_attributes = rake_20240910_proposal_attributes(initiative, project)
@@ -33,6 +32,7 @@ namespace :initiatives_to_proposals do
           )
           next
         end
+        rake_20240910_migrate_changed_status(proposal, reporter)
         rake_20240910_migrate_images_files(proposal, reporter) # Idea images, idea files and text images (header background is not migrated)
         rake_20240910_migrate_topics(proposal, reporter)
         rake_20240910_migrate_reactions(proposal, reporter)
@@ -41,7 +41,6 @@ namespace :initiatives_to_proposals do
         rake_20240910_migrate_followers(proposal, reporter)
         rake_20240910_migrate_spam_reports(proposal, reporter)
         rake_20240910_migrate_cosponsors(proposal, reporter)
-        # Should we also migrate notifications?
       end
       rake_20240910_migrate_initiatives_static_page(reporter)
       SettingsService.new.deactivate_feature!('initiatives')
@@ -62,8 +61,9 @@ def rake_20240910_create_proposals_project(reporter)
   project = Project.new(
     title_multiloc: rake_20240910_migrate_project_title_multiloc,
     description_multiloc: rake_20240910_migrate_project_description_multiloc,
-    slug: 'proposals' # Does this work if there is already a project with this slug?
-    # Include more project attributes
+    slug: 'proposals', # Does this work if there is already a project with this slug?
+    default_assignee: User.active.admin.order(:created_at).reject(&:super_admin?).first
+    # TODO: Check if project topics are included like this
   )
   project.admin_publication_attributes = { publication_status: 'archived' } if !config.feature_activated?('initiatives')
   # Set visibility and granular permissions according to the permissions for initiatives
@@ -79,14 +79,14 @@ def rake_20240910_create_proposals_project(reporter)
     title_multiloc: MultilocService.new.i18n_to_multiloc('nav_bar_items.proposals.title', locales: CL2_SUPPORTED_LOCALES),
     start_at: config.created_at,
     end_at: nil,
+    campaigns_settings: { project_phase_started: true },
     participation_method: 'proposals',
     expire_days_limit: config.settings('initiatives', 'days_limit'),
     reacting_threshold: config.settings('initiatives', 'reacting_threshold'),
     prescreening_enabled: config.feature_activated?('initiative_review'),
-    campaigns_settings: { project_phase_started: true }
-    # Include cosponsorship settings
-    # Include more phase attributes
+    # TODO: Include cosponsorship settings
   )
+  ParticipationMethod::Proposals.new(phase).assign_defaults_for_phase
   if !phase.save
     reporter.add_error(
       phase.errors.details,
@@ -108,12 +108,8 @@ def rake_20240910_substitute_homepage_element(project, reporter)
       'type' => { 'resolvedName' => 'Highlight' },
       'nodes' => [],
       "props": {
-          'title' => {
-              'en' => 'What is your proposal?' # app.containers.landing.initiativesBoxTitle
-          },
-          'description' => {
-              'en' => 'Post your proposal on this platform. Blablabla.' # app.containers.landing.initiativesBoxText
-          },
+          'title' => rake_20240910_migrate_homepage_title_multiloc,
+          'description' => rake_20240910_migrate_homepage_description_multiloc,
           'primaryButtonLink' => "/projects/#{project.slug}ideas/new?phase_id=#{project.phases.first.id}",
           'primaryButtonText' => {
               'en' => 'Post your proposal'
@@ -150,9 +146,34 @@ def rake_20240910_replace_navbaritem(project, reporter)
   if !item.save
     reporter.add_error(
       item.errors.details,
-      context: { tenant: tenant.host, nav_bar_item: item.id }
+      context: { tenant: AppConfiguration.instance.host, nav_bar_item: item.id }
     )
   end
+end
+
+def rake_20240910_migrate_input_statuses(reporter)
+  IdeaStatus.where.not(code: 'custom').each do |status|
+    if rake_20240910_migrate_update_input_status_title(status)
+      status.title_multiloc = MultilocService.new.i18n_to_multiloc("idea_statuses.#{status.code}", locales: CL2_SUPPORTED_LOCALES)
+    end
+    if rake_20240910_migrate_update_input_status_description(status)
+      status.description_multiloc = MultilocService.new.i18n_to_multiloc("idea_statuses.#{status.code}_description", locales: CL2_SUPPORTED_LOCALES)
+    end
+    if !status.save
+      reporter.add_error(
+        status.errors.details,
+        context: { tenant: AppConfiguration.instance.host, input_status: status.id }
+      )
+    end
+  end
+end
+
+def rake_20240910_migrate_update_input_status_title(status)
+  status.participation_method == 'proposals'
+end
+
+def rake_20240910_migrate_update_input_status_description(status)
+  status.participation_method == 'proposals'
 end
 
 def rake_20240910_proposal_attributes(initiative, project)
@@ -173,7 +194,7 @@ def rake_20240910_proposal_attributes(initiative, project)
     author_hash: initiative.author_hash,
     anonymous: initiative.anonymous,
     submitted_at: (initiative.published_at || initiative.created_at),
-    project: initiative.project,
+    project: project,
     creation_phase: proposals_phase,
     phases: [proposals_phase]
   }
@@ -191,7 +212,7 @@ def rake_20240910_assign_idea_status(proposal, initiative, reporter)
   else
     reporter.add_error(
       "No matching input status found for code #{code}",
-      context: { tenant: tenant.host, initiative: initiative.id, input_status_code: code }
+      context: { tenant: AppConfiguration.instance.host, initiative: initiative.id, input_status_code: code }
     )
     return false
   end
@@ -214,7 +235,7 @@ def rake_20240910_migrate_initiatives_static_page(reporter)
   if !page.update(code: 'custom')
     reporter.add_error(
       page.errors.details,
-      context: { tenant: tenant.host, static_page: page.id }
+      context: { tenant: AppConfiguration.instance.host, static_page: page.id }
     )
   end
 end
