@@ -113,7 +113,10 @@ const PostTable = ({
 }: Props) => {
   const handleSortClick = (newSortAttribute: IdeasSort) => () => {
     if (isFunction(onChangeSort)) {
-      const newSortSign = sortDirection === 'ascending' ? '-' : '';
+      const currentSortAttribute = sortAttribute?.replace(/^-/, '');
+      const isSameAttribute = currentSortAttribute === newSortAttribute;
+      const newSortSign =
+        isSameAttribute && sortDirection === 'descending' ? '-' : '';
 
       onChangeSort(`${newSortSign}${newSortAttribute}` as IdeasSort);
     }

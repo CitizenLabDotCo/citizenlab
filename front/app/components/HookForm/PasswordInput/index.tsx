@@ -9,6 +9,10 @@ import PasswordInputComponent, {
   Props as PasswordInputComponentProps,
 } from 'components/UI/PasswordInput';
 
+import { useIntl } from 'utils/cl-intl';
+
+import messages from './messages';
+
 interface Props
   extends Omit<
     PasswordInputComponentProps,
@@ -25,6 +29,7 @@ const PasswordInput = ({ name, label, ...rest }: Props) => {
     formState: { errors: formContextErrors },
     control,
   } = useFormContext();
+  const { formatMessage } = useIntl();
 
   const defaultValue = '';
 
@@ -51,6 +56,7 @@ const PasswordInput = ({ name, label, ...rest }: Props) => {
             {...field}
             {...rest}
             id={name}
+            aria-label={formatMessage(messages.passwordLabel)}
             password={getValues(name)}
           />
         )}

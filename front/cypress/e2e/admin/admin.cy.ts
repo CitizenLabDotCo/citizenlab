@@ -26,7 +26,7 @@ describe('navigation to admin section when clicking corresponding button in side
 
   ADMIN_PAGES.forEach(({ url, container }) => {
     it(`navigates to ${url}`, () => {
-      cy.get(`nav#sidebar > a[href="/en/admin/${url}"]`).click();
+      cy.get(`nav#sidebar > span > a[href="/en/admin/${url}"]`).click();
       cy.location('pathname').should('include', `/en/admin/${url}`);
       cy.get(container);
     });

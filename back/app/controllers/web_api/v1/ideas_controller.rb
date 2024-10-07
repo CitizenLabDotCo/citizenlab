@@ -78,8 +78,11 @@ class WebApi::V1::IdeasController < ApplicationController
     ideas = SortByParamsService.new.sort_ideas(ideas, params, current_user)
     ideas = ideas.includes(:author, :topics, :project, :idea_status, :idea_files)
 
+    with_cosponsors = AppConfiguration.instance.feature_activated?('input_cosponsorship')
+    ideas = ideas.includes(:cosponsors) if with_cosponsors
+
     I18n.with_locale(current_user&.locale) do
-      xlsx = XlsxService.new.generate_ideas_xlsx ideas, view_private_attributes: true
+      xlsx = XlsxService.new.generate_ideas_xlsx(ideas, view_private_attributes: true, with_cosponsors:)
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'ideas.xlsx'
     end
   end
