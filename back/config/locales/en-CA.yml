@@ -170,6 +170,9 @@ en-CA:
       topic_ids:
         title: Tags
         description:
+      consponsor_ids:
+        title: Co-sponsors
+        description: Invite co-sponsors through the field below. The invited co-sponsor(s) will receive an email.
       location:
         title: Location
         description:
