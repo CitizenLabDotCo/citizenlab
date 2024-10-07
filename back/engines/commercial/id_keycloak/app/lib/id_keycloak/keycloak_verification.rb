@@ -35,17 +35,6 @@ module IdKeycloak
       }
     end
 
-    # copied from back/engines/commercial/id_nemlog_in/app/lib/id_nemlog_in/nemlog_in_verification.rb
-    def entitled?(auth)
-      minimum_age = config[:minimum_age]
-      return true if minimum_age.blank?
-
-      age = auth.extra.raw_info.age.to_i
-      raise Verification::VerificationService::NotEntitledError, 'under_minimum_age' if age < minimum_age
-
-      true
-    end
-
     def exposed_config_parameters
       [
         :ui_method_name

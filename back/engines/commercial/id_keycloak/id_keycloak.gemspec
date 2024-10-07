@@ -10,8 +10,8 @@ Gem::Specification.new do |s|
   s.name        = 'id_keycloak'
   s.version     = IdKeycloak::VERSION
   s.summary     = 'Verification using Keycloak (ID Porten)'
-  s.authors     = ['CitizenLab']
-  s.licenses    = [Gem::Licenses::NONSTANDARD] # ['CitizenLab Commercial License V2']
+  s.authors     = ['Go Vocal']
+  s.licenses    = [Gem::Licenses::NONSTANDARD] # ['Go Vocal Commercial License V2']
   s.files = Dir['{app,config,db,lib}/**/*', 'Rakefile', 'README.md']
 
   s.add_dependency 'rails', '~> 7.0'
