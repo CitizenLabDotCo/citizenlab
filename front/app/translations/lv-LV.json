@@ -182,6 +182,7 @@
   "app.components.HookForm.Feedback.submissionError": "Mēģiniet vēlreiz. Ja problēma saglabājas, sazinieties ar mums",
   "app.components.HookForm.Feedback.submissionErrorTitle": "Atvainojiet, problēma bija mūsu pusē",
   "app.components.HookForm.Feedback.successMessage": "Veidlapa veiksmīgi iesniegta",
+  "app.components.HookForm.PasswordInput.passwordLabel": "Parole",
   "app.components.HorizontalScroll.scrollLeftLabel": "Ritiniet pa kreisi.",
   "app.components.HorizontalScroll.scrollRightLabel": "Ritiniet pa labi.",
   "app.components.IdeaCards.a11y_ideasHaveBeenSorted": "{sortOder} idejas ir ielādētas.",

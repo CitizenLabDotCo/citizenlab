@@ -128,7 +128,7 @@ en-GB:
     all_input:
       title: All input
     proposals:
-      title: '{tenantName, select, stirlingcouncil {Petitions} other {Proposals}}'
+      title: Proposals
     events:
       title: Events
     about:
