@@ -171,6 +171,7 @@
   "app.components.FolderFolderCard.a11y_folderTitle": "Mapes nosaukums:",
   "app.components.FolderFolderCard.archived": "Arhivēts",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {# projekti} one {# projekts} other {# projekti}}",
+  "app.components.FormBuilder.components.FieldTypeSwitcher.formHasSubmissionsWarning2": "Lauka tipu nevar mainīt, tiklīdz ir iesniegti pieteikumi.",
   "app.components.FormBuilder.components.FieldTypeSwitcher.type": "Tips",
   "app.components.FormBuilder.components.FormBuilderTopBar.autosave": "Automātiskā saglabāšana",
   "app.components.FormBuilder.components.FormBuilderTopBar.autosaveTooltip4": "Pēc noklusējuma, atverot veidlapas redaktoru, ir iespējota automātiskā saglabāšana. Katru reizi, kad aizverat lauka iestatījumu paneli, izmantojot pogu \"X\", automātiski tiek veikta saglabāšana.",
