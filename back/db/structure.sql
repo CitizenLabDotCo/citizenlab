@@ -552,6 +552,7 @@ DROP TABLE IF EXISTS public.initiative_files;
 DROP TABLE IF EXISTS public.impact_tracking_salts;
 DROP TABLE IF EXISTS public.identities;
 DROP TABLE IF EXISTS public.ideas_topics;
+DROP TABLE IF EXISTS public.ideas_phases;
 DROP VIEW IF EXISTS public.idea_trending_infos;
 DROP TABLE IF EXISTS public.idea_imports;
 DROP TABLE IF EXISTS public.idea_import_files;
@@ -596,7 +597,6 @@ DROP TABLE IF EXISTS public.invites;
 DROP VIEW IF EXISTS public.analytics_fact_project_statuses;
 DROP VIEW IF EXISTS public.analytics_fact_posts;
 DROP TABLE IF EXISTS public.initiative_status_changes;
-DROP TABLE IF EXISTS public.ideas_phases;
 DROP VIEW IF EXISTS public.analytics_fact_participations;
 DROP TABLE IF EXISTS public.volunteering_volunteers;
 DROP TABLE IF EXISTS public.volunteering_causes;
@@ -1795,21 +1795,6 @@ UNION ALL
 
 
 --
--- Name: ideas_phases; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.ideas_phases (
-    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    idea_id uuid,
-    phase_id uuid,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    baskets_count integer DEFAULT 0 NOT NULL,
-    votes_count integer DEFAULT 0 NOT NULL
-);
-
-
---
 -- Name: initiative_status_changes; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1847,13 +1832,10 @@ CREATE VIEW public.analytics_fact_posts AS
     i.likes_count,
     i.dislikes_count,
     i.publication_status
-   FROM (((((public.ideas i
+   FROM ((public.ideas i
      JOIN public.analytics_dimension_types adt ON (((adt.name)::text = 'idea'::text)))
      LEFT JOIN public.analytics_build_feedbacks abf ON ((abf.post_id = i.id)))
-     LEFT JOIN public.ideas_phases iph ON ((iph.idea_id = i.id)))
-     LEFT JOIN public.phases ph ON ((ph.id = iph.phase_id)))
-     LEFT JOIN public.projects pr ON ((pr.id = i.project_id)))
-  WHERE ((ph.id IS NULL) OR ((ph.participation_method)::text <> 'native_survey'::text))
+  WHERE (i.creation_phase_id IS NULL)
 UNION ALL
  SELECT i.id,
     i.author_id AS user_id,
@@ -2523,6 +2505,21 @@ CREATE VIEW public.idea_trending_infos AS
            FROM public.reactions
           WHERE (((reactions.mode)::text = 'up'::text) AND ((reactions.reactable_type)::text = 'Idea'::text))
           GROUP BY reactions.reactable_id) likes_at ON ((ideas.id = likes_at.reactable_id)));
+
+
+--
+-- Name: ideas_phases; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.ideas_phases (
+    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
+    idea_id uuid,
+    phase_id uuid,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    baskets_count integer DEFAULT 0 NOT NULL,
+    votes_count integer DEFAULT 0 NOT NULL
+);
 
 
 --
@@ -7537,6 +7534,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240917181018'),
 ('20240923112800'),
 ('20240923112801'),
-('20240926175000');
+('20240926175000'),
+('20241001101704');
 
 
