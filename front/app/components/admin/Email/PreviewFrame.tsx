@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 import Frame from 'react-frame-component';
 import styled from 'styled-components';
@@ -17,26 +17,15 @@ const StyledFrame = styled(Frame)`
 type Props = {
   campaignId: string;
   className?: string;
+  children?: React.ReactNode;
 };
 
-type State = {
-  previewHtml?: string;
-};
+const PreviewFrame = ({ campaignId, className, children }: Props) => {
+  const [previewHtml, setPreviewHtml] = useState<string>();
 
-class PreviewFrame extends React.Component<Props, State> {
-  iframeNode: HTMLIFrameElement | undefined;
-
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      previewHtml: undefined,
-    };
-  }
-
-  componentDidMount() {
-    // TODO: Replace with fetcher when the backend is updated
+  useEffect(() => {
     const jwt = getJwt();
-    fetch(`${API_PATH}/campaigns/${this.props.campaignId}/preview`, {
+    fetch(`${API_PATH}/campaigns/${campaignId}/preview`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -45,26 +34,21 @@ class PreviewFrame extends React.Component<Props, State> {
     })
       .then((response) => response.json())
       .then((data) => {
-        this.setState({ previewHtml: data.html });
+        setPreviewHtml(data.html);
       });
-  }
+  }, [campaignId]);
 
-  render() {
-    const { previewHtml } = this.state;
-    const { className } = this.props;
+  if (!previewHtml) return null;
 
-    if (!previewHtml) return null;
-
-    return (
-      <StyledFrame
-        id="e2e-email-preview-iframe"
-        className={className}
-        initialContent={previewHtml}
-      >
-        {this.props.children}
-      </StyledFrame>
-    );
-  }
-}
+  return (
+    <StyledFrame
+      id="e2e-email-preview-iframe"
+      className={className}
+      initialContent={previewHtml}
+    >
+      {children}
+    </StyledFrame>
+  );
+};
 
 export default PreviewFrame;

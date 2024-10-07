@@ -151,7 +151,11 @@ interface ParticipationParams extends BaseParams {
   props: ParticipationProps;
 }
 
-export interface ProjectsProps extends DateProps {}
+export type ProjectReportsPublicationStatus = 'published' | 'archived';
+
+export interface ProjectsProps extends DateProps {
+  publication_statuses?: ProjectReportsPublicationStatus[];
+}
 
 interface ProjectsParams extends BaseParams {
   resolved_name: 'ProjectsWidget';

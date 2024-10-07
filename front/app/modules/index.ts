@@ -34,9 +34,6 @@ import moderationConfiguration, {
   moderationRouteTypes,
 } from './commercial/moderation';
 import posthogConfiguration from './commercial/posthog_integration';
-import projectDescriptionBuilderConfiguration, {
-  descriptionBuilderRouteTypes,
-} from './commercial/project_description_builder';
 import representativenessConfiguration, {
   representativenessRouteTypes,
 } from './commercial/representativeness';
@@ -50,7 +47,6 @@ export type moduleRouteTypes =
   | analyticsRouteTypes
   | bulkIdeaImportRouteTypes
   | moderationRouteTypes
-  | descriptionBuilderRouteTypes
   | representativenessRouteTypes
   | widgetsRouteTypes;
 
@@ -87,9 +83,6 @@ export default loadModules([
   },
   {
     configuration: ideaAssignmentConfiguration,
-  },
-  {
-    configuration: projectDescriptionBuilderConfiguration,
   },
   {
     configuration: bulkIdeaImportConfiguration,

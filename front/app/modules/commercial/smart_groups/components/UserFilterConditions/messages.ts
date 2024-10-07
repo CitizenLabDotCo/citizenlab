@@ -234,14 +234,6 @@ export default defineMessages({
     id: 'app.components.admin.UserFilterConditions.predicate_not_registered_to_an_event',
     defaultMessage: "didn't register to an event",
   },
-  predicate_follows_something: {
-    id: 'app.components.admin.UserFilterConditions.predicate_follows_something',
-    defaultMessage: 'follows something in these projects',
-  },
-  predicate_not_follows_something: {
-    id: 'app.components.admin.UserFilterConditions.predicate_not_follows_something',
-    defaultMessage: 'does not follow anything in this project',
-  },
   predicate_is_verified: {
     id: 'app.components.admin.UserFilterConditions.predicate_is_verified',
     defaultMessage: 'is verified',
@@ -274,21 +266,13 @@ export default defineMessages({
     id: 'app.components.admin.UserFilterConditions.predicate_is_not_folder',
     defaultMessage: 'excludes folder',
   },
-  predicate_is_one_of_ideas: {
-    id: 'app.components.admin.UserFilterConditions.predicate_is_one_of_ideas',
-    defaultMessage: 'one of the ideas',
+  predicate_is_one_of_inputs: {
+    id: 'app.components.admin.UserFilterConditions.predicate_is_one_of_inputs',
+    defaultMessage: 'one of the inputs',
   },
-  predicate_is_not_idea: {
-    id: 'app.components.admin.UserFilterConditions.predicate_is_not_idea',
-    defaultMessage: 'excludes idea',
-  },
-  predicate_is_one_of_initiatives: {
-    id: 'app.components.admin.UserFilterConditions.predicate_is_one_of_initiatives',
-    defaultMessage: 'one of the proposals',
-  },
-  predicate_is_not_initiative: {
-    id: 'app.components.admin.UserFilterConditions.predicate_is_not_initiative',
-    defaultMessage: 'excludes proposal',
+  predicate_is_not_input: {
+    id: 'app.components.admin.UserFilterConditions.predicate_is_not_input',
+    defaultMessage: 'excludes input',
   },
   predicate_attends_something: {
     id: 'app.components.admin.UserFilterConditions.predicate_attends_something',
@@ -334,5 +318,13 @@ export default defineMessages({
   rulesFormLabelValue: {
     id: 'app.components.admin.UserFilterConditions.rulesFormLabelValue',
     defaultMessage: 'Value',
+  },
+  ideaStatusMethodProposals: {
+    id: 'app.components.admin.UserFilterConditions.ideaStatusMethodProposals',
+    defaultMessage: 'Proposals',
+  },
+  ideaStatusMethodIdeation: {
+    id: 'app.components.admin.UserFilterConditions.ideaStatusMethodIdeation',
+    defaultMessage: 'Ideation',
   },
 });

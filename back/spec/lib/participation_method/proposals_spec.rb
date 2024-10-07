@@ -163,6 +163,7 @@ RSpec.describe ParticipationMethod::Proposals do
         ideation_section3
         topic_ids
         location_description
+        cosponsor_ids
       ]
     end
   end

@@ -989,6 +989,19 @@ workflows:
           env_file: ".env-web"
           cluster_name: "paris"
       - back-deploy-to-swarm:
+          name: Deploy to Europe (Stockholm)
+          requires:
+            - back-push-deployment-docker-image
+          filters:
+            branches:
+              only:
+                - production
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_STOCKHOLM
+          compose_file: docker-compose-production.yml
+          stack_name: cl2
+          env_file: ".env-web"
+          cluster_name: "stockholm"
+      - back-deploy-to-swarm:
           name: Deploy to Canada
           requires:
             - back-push-deployment-docker-image
@@ -1221,6 +1234,15 @@ workflows:
           ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_PARIS
           env_file: ".env-web"
       - back-generate-tenant-templates:
+          name: "Europe (Stockholm)"
+          context:
+            - docker-hub-access
+            - citizenlab-ee-environment
+            - slack-dev-notifications-tenant-templates
+          <<: *slack-fail-post-step-templates
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_STOCKHOLM
+          env_file: ".env-web"
+      - back-generate-tenant-templates:
           name: "South America"
           context:
             - docker-hub-access
@@ -1266,6 +1288,7 @@ workflows:
             - back-build-docker-image
             - "Europe (Frankfurt)"
             - "Europe (Paris)"
+            - "Europe (Stockholm)"
             - "South America"
             - "Canada"
             - "US West"
@@ -1322,6 +1345,15 @@ workflows:
           ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_PARIS
           env_file: ".env-web"
       - back-generate-tenant-templates:
+          name: "Europe (Stockholm)"
+          context:
+            - docker-hub-access
+            - citizenlab-ee-environment
+            - slack-dev-notifications-tenant-templates
+          <<: *slack-fail-post-step-templates
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_STOCKHOLM
+          env_file: ".env-web"
+      - back-generate-tenant-templates:
           name: "South America"
           context:
             - docker-hub-access
@@ -1367,6 +1399,7 @@ workflows:
             - back-build-docker-image
             - "Europe (Frankfurt)"
             - "Europe (Paris)"
+            - "Europe (Stockholm)"
             - "South America"
             - "Canada"
             - "US West"
@@ -1402,6 +1435,13 @@ workflows:
           context:
             - slack-dev-notifications-inconsistent-data
           ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_PARIS
+          env_file: ".env-web"
+      - check-for-inconsistent-data:
+          <<: *slack-fail-post-step-inconsistent-data
+          name: "Europe (Stockholm)"
+          context:
+            - slack-dev-notifications-inconsistent-data
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_STOCKHOLM
           env_file: ".env-web"
       - check-for-inconsistent-data:
           <<: *slack-fail-post-step-inconsistent-data

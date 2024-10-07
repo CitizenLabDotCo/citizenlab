@@ -62,8 +62,8 @@ fr:
       section3:
         title: Details
         description:
-      other_text_field:
-        title: Puisque vous avez choisi « {other_option} », à quoi pensez-vous ?
+      other_input_field:
+        title: Tapez votre réponse
   custom_forms:
     categories:
       main_content:

@@ -142,25 +142,29 @@ const Accordion = ({
           <ChevronIcon name="chevron-right" />
         </TitleButton>
       </Box>
-      <CSSTransition
-        in={isExpanded}
-        timeout={timeoutMilliseconds}
-        mountOnEnter={true}
-        unmountOnExit={true}
-        exit={false}
-        classNames={`expanded`}
+      <Box
+        role="region"
+        aria-live="polite"
+        id={`collapsed-section-${uuid}`}
+        aria-labelledby={`accordion-title-${uuid}`}
       >
-        <CollapseContainer
-          id={`collapsed-section-${uuid}`}
-          role="region"
-          aria-labelledby={`accordion-title-${uuid}`}
-          aria-live="polite"
-          transitionHeight={transitionHeightPx}
+        <CSSTransition
+          in={isExpanded}
           timeout={timeoutMilliseconds}
+          mountOnEnter={true}
+          unmountOnExit={true}
+          exit={false}
+          classNames={`expanded`}
         >
-          {children}
-        </CollapseContainer>
-      </CSSTransition>
+          <CollapseContainer
+            aria-live="polite"
+            transitionHeight={transitionHeightPx}
+            timeout={timeoutMilliseconds}
+          >
+            {children}
+          </CollapseContainer>
+        </CSSTransition>
+      </Box>
     </ListItem>
   );
 };

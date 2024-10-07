@@ -23,10 +23,12 @@ import {
 } from 'components/FormBuilder/utils';
 import CloseIconButton from 'components/UI/CloseIconButton';
 
+import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../messages';
+import tracks from '../tracks';
 import { getFieldNumbers } from '../utils';
 
 import { ContentSettings } from './ContentSettings';
@@ -34,14 +36,16 @@ import { LogicSettings } from './LogicSettings';
 
 interface Props {
   field: IFlatCustomFieldWithIndex;
-  closeSettings: () => void;
+  closeSettings: (triggerAutosave?: boolean) => void;
   builderConfig: FormBuilderConfig;
+  formHasSubmissions: boolean;
 }
 
 const FormBuilderSettings = ({
   field,
   closeSettings,
   builderConfig,
+  formHasSubmissions,
 }: Props) => {
   const locales = useAppConfigurationLocales();
   const [currentTab, setCurrentTab] = useState<'content' | 'logic'>('content');
@@ -75,7 +79,7 @@ const FormBuilderSettings = ({
   };
 
   const translatedStringKey = getTranslatedStringKey(
-    field.input_type,
+    watch(`customFields.${field.index}.input_type`),
     field.key
   );
   const tabNotActiveBorder = `1px solid ${colors.grey400}`;
@@ -106,7 +110,10 @@ const FormBuilderSettings = ({
       >
         <CloseIconButton
           a11y_buttonActionMessage={messages.close}
-          onClick={closeSettings}
+          onClick={() => {
+            trackEventByName(tracks.formFieldSettingsCloseButtonClicked);
+            closeSettings(true);
+          }}
           iconColor={colors.textSecondary}
           iconColorOnHover={'#000'}
         />
@@ -152,7 +159,11 @@ const FormBuilderSettings = ({
       {(!showTabbedSettings ||
         !builderConfig.isLogicEnabled ||
         (showTabbedSettings && currentTab === 'content')) && (
-        <ContentSettings field={field} locales={locales} />
+        <ContentSettings
+          field={field}
+          locales={locales}
+          formHasSubmissions={formHasSubmissions}
+        />
       )}
       {showTabbedSettings && currentTab === 'logic' && (
         <LogicSettings

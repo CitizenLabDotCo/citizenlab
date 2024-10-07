@@ -227,7 +227,7 @@ const ProjectProposalsManager = ({
             sortDirection={
               queryParameters.sort
                 ? getSortDirection(queryParameters.sort)
-                : 'ascending'
+                : 'descending'
             }
             onChangeSort={onChangeSorting}
             posts={proposals.data}
