@@ -145,6 +145,29 @@ export const navbarItemsData: INavbarItem[] = [
       },
     },
   },
+  {
+    id: '037c953a-f717-4d17-beca-b0b684335b7b',
+    type: 'nav_bar_item',
+    attributes: {
+      title_multiloc: {
+        en: 'Proposals',
+        'nl-BE': 'Voorstellen',
+        'fr-BE': 'Propositions',
+      },
+      code: 'custom',
+      ordering: 3,
+      created_at: '2021-12-10T10:36:36.767Z',
+      updated_at: '2021-12-10T10:41:30.660Z',
+    },
+    relationships: {
+      static_page: {
+        data: null,
+      },
+      project: {
+        data: null,
+      },
+    },
+  },
 ];
 
 export default jest.fn(() => {
