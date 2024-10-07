@@ -182,6 +182,7 @@
   "app.components.HookForm.Feedback.submissionError": "Probeer het nog eens. Neem contact met ons op als het probleem zich blijft voordoen",
   "app.components.HookForm.Feedback.submissionErrorTitle": "Er ging iets mis aan onze kant, excuses",
   "app.components.HookForm.Feedback.successMessage": "Formulier succesvol verstuurd",
+  "app.components.HookForm.PasswordInput.passwordLabel": "Wachtwoord",
   "app.components.HorizontalScroll.scrollLeftLabel": "Scroll naar links.",
   "app.components.HorizontalScroll.scrollRightLabel": "Scroll naar rechts.",
   "app.components.IdeaCards.a11y_ideasHaveBeenSorted": "{sortOder} ideeën zijn geladen.",
