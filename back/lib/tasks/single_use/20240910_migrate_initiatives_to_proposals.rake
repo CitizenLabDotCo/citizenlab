@@ -61,7 +61,7 @@ def rake_20240910_create_proposals_project(reporter)
   config = AppConfiguration.instance
   project = Project.new(
     title_multiloc: rake_20240910_migrate_project_title_multiloc,
-    description_multiloc: rake_20240910_migrate_project_description_multiloc, # Include all locales app.containers.InitiativesIndexPage.explanationContent app.containers.InitiativesIndexPage.learnMoreAboutProposals
+    description_multiloc: rake_20240910_migrate_project_description_multiloc,
     slug: 'proposals' # Does this work if there is already a project with this slug?
     # Include more project attributes
   )
@@ -330,7 +330,6 @@ def rake_20240910_migrate_project_description_multiloc
     "kl-GL" => "{voteThreshold} ullut uku iluanni taasinerit {daysLimit} ",
     "lb-LU" => "{voteThreshold} Stëmmen innerhalb vun {daysLimit} Deeg",
     "lv-LV" => "{voteThreshold} balsis {daysLimit} dienu laikā",
-    "mi-NZ" => "{voteThreshold} votes within {daysLimit} days",
     "mi" => "{voteThreshold} votes within {daysLimit} days",
     "nb-NO" => "{voteThreshold} stemmer innen {daysLimit} dager",
     "nl-BE" => "{voteThreshold} stemmen in {daysLimit} dagen",
@@ -379,7 +378,7 @@ def rake_20240910_migrate_project_description_multiloc
     "sv-SE" => "Läs mer om hur förslag fungerar.",
     "tr-TR" => "Önerilerin işleyiş şekli hakkında daha fazla bilgi edinin."
   }
-  multiloc_content.map do |key, value|
+  multiloc_content.to_h do |key, value|
     org_name = Locale.new(key).resolve_multiloc(config.settings('core', 'organization_name'))
     new_value = value.gsub('{orgName}', org_name)
     new_value = if !page_slug
@@ -413,4 +412,111 @@ def rake_20240910_migrate_project_description_multiloc
     )
     [key, new_value]
   end
+end
+
+def rake_20240910_migrate_homepage_title_multiloc
+  multiloc = {
+    "ar-MA" => "ما هو مُقترحك؟",
+    "ar-SA" => "ما هو مُقترحك؟",
+    "ca-ES" => "Quina és la vostra proposta?",
+    "cy-GB" => "Beth yw eich cynnig?",
+    "da-DK" => "Hvad er dit forslag?",
+    "de-DE" => "Wie lautet Ihr Vorschlag?",
+    "el-GR" => "Ποια είναι η πρότασή σας;",
+    "en-CA" => "What is your proposal?",
+    "en-GB" => "What is your proposal?",
+    "en-IE" => "What is your proposal?",
+    "en" => "What is your proposal?",
+    "es-CL" => "¿Cuál es tu propuesta?",
+    "es-ES" => "¿Cuál es tu propuesta?",
+    "fi-FI" => "Mikä on ehdotuksesi?",
+    "fr-BE" => "Quelle est votre proposition ?",
+    "fr-FR" => "Quelle est votre proposition ?",
+    "hr-HR" => "Koji je vaš prijedlog?",
+    "hu-HU" => "What is your proposal?",
+    "it-IT" => "Qual è la sua proposta?",
+    "kl-GL" => "Innuttaasutut siunnersuutit sunaava?",
+    "lb-LU" => "Wat ass Äre Virschlag?",
+    "lv-LV" => "Kāds ir jūsu priekšlikums?",
+    "mi" => "E tono ana koe mō te aha?",
+    "nb-NO" => "Hva er forslaget ditt?",
+    "nl-BE" => "Wat is jouw voorstel?",
+    "nl-NL" => "Geen plaats voor jouw plannen? Start je eigen voorstel!",
+    "pl-PL" => "O czym jest twoja propozycja?",
+    "pt-BR" => "Qual é a sua proposta?",
+    "ro-RO" => "Care este propunerea ta?",
+    "sr-Latn" => "Koji je vaš predlog?",
+    "sr-SP" => "Шта је ваш предлог?",
+    "sv-SE" => "Vad är ditt förslag?",
+    "tr-TR" => "Öneriniz nedir?"
+  }
+
+  case AppConfiguration.instance.name
+  when 'KøbenhavnsKommune'
+    multiloc['da-DK'] = 'Stil og støt københavnerforslag'
+  when 'RegionSjælland'
+    multiloc['da-DK'] = 'Stil og støt borgerforslag'
+  end
+
+  multiloc
+end
+
+def rake_20240910_migrate_homepage_description_multiloc
+  multiloc = {
+    "ar-MA" => "انشر مُقترحك على هذه المنصة، احشد الدعم وضعه على جدول الأعمال. أو اطلع على مُقترحات الآخرين.",
+    "ar-SA" => "انشر مُقترحك على هذه المنصة، احشد الدعم وضعه على جدول الأعمال. أو اطلع على مُقترحات الآخرين.",
+    "ca-ES"=>
+      "Publiqueu la vostra proposta en aquesta plataforma, reculliu suport i col·loqueu-lo a l'agenda. O reviseu els suggeriments dels altres.",
+    "cy-GB" => "Postiwch eich cynnig ar y platfform hwn, casglwch gefnogaeth a rhowch ef ar yr agenda. Neu adolygwch awgrymiadau eraill.",
+    "da-DK"=>
+      "Du kan aflevere dit forslag på denne platform, indsamle støtte fra andre borgere og sætte det på kommunens dagsorden. Du kan også tage et kig på forslag fra andre borgere.",
+    "de-DE"=>
+      "Reiche deinen Vorschlag auf dieser Plattform ein, sammle dafür Unterstützung und setze ihn auf unsere Tagesordnung. Oder lass dich von anderen Vorschlägen inspirieren.",
+    "el-GR"=>
+      "Δημοσιεύστε την πρότασή σας σε αυτή την πλατφόρμα, συγκεντρώστε υποστήριξη και βάλτε την στην ημερήσια διάταξη. Ή εξετάστε τις προτάσεις των άλλων.",
+    "en-CA" => "Post your proposal on this platform, gather support and place it on the agenda. Or review the suggestions of others.",
+    "en-GB"=>
+      "Post your proposal on this platform, gather support and place it on the agenda. Or review the suggestions of others.",
+    "en-IE" => "Post your proposal on this platform, gather support and place it on the agenda. Or review the suggestions of others.",
+    "en" => "Post your proposal on this platform, gather support and place it on the agenda. Or review the suggestions of others.",
+    "es-CL" => "Publica tu propuesta en la plataforma, reúne apoyo y colócala en la agenda. O revisa las sugerencias de otros.",
+    "es-ES" => "Publica tu propuesta en la plataforma, reúne apoyo y colócala en la agenda. O revisa las sugerencias de otros.",
+    "fi-FI" => "Lähetä ehdotuksesi tälle alustalle, kerää tukea ja laita se asialistalle. Tai tutustu muiden ehdotuksiin.",
+    "fr-BE"=>
+      "Postez votre proposition sur cette plateforme, recueillez des soutiens et mettez-la à l'ordre du jour. Ou explorez simplement les propositions de vos concitoyens.",
+    "fr-FR"=>
+      "Postez votre proposition sur cette plateforme, recueillez des soutiens et mettez-la à l'ordre du jour. Ou explorez simplement les propositions de vos concitoyens.",
+    "hr-HR" => "Objavite svoj prijedlog na ovoj platformi, prikupite podršku, stavite ga na dnevni red ili pregledajte prijedloge drugih.",
+    "hu-HU" => "Post your proposal on this platform, gather support and place it on the agenda. Or review the suggestions of others.",
+    "it-IT"=>
+      "Pubblica la tua proposta su questa piattaforma, raccogli il sostegno e mettila all'ordine del giorno. Oppure esamina i suggerimenti degli altri.",
+    "kl-GL"=>
+      "Isaaffimmut uunga siunnersuutit allassinnaavat, innuttaasunit allanit tapersersorneqarsinnaavutit aamma kommunimit oqallisigisassanngortissinnaavat. Aamma innuttaasut allat siunnersuutaat atuarsinnaavatit.",
+    "lb-LU"=>
+      "Verëffentlecht Äre Virschlag fir administrativ Vereinfachung op dëser Plattform, sammelt Ënnerstëtzung a setzt se op d’Agenda. Oder kuckt d’Virschléi vun anere Persounen.",
+    "lv-LV"=>
+      "Publicējiet savu priekšlikumu šajā platformā, iegūstiet atbalstu un iekļaujiet to darba kārtībā. Vai arī izskatiet citu personu ieteikumus.",
+    "mi" => "Whakairia tō tono ki tēnei pūhara, me whai tautoko, ka whakauru ai ki te rārangi take. Tirohia ngā whakaaro a ētahi atu.",
+    "nb-NO"=>
+      "Publiser forslaget ditt på platformen. Hent støtte fra andre innbyggere og sett forslaget på agendaen. Du kan også se andres forslag.",
+    "nl-BE"=>
+      "Plaats jouw voorstel op dit platform, verzamel steun en breng het op de agenda. Of discussieer mee over de voorstellen van anderen.",
+    "nl-NL" => "Samen maken we het hier mooier. We leveren allemaal een bijdrage aan. Heb jij een mooi plan? Laat het ons weten!",
+    "pl-PL" => "Umieść swoją propozycję na tej platformie, zbierz poparcie i umieść ją w porządku dziennym lub zapoznaj się z sugestiami innych.",
+    "pt-BR" => "Publique sua proposta nesta plataforma, obtenha suporte e coloque-a na agenda. Ou revise as sugestões de outras pessoas.",
+    "ro-RO" => "Postează propunerea ta pe această platformă și pune-o astfel pe ordinea de zi a primăriei!",
+    "sr-Latn" => "Objavite svoj predlog na ovoj platformi, prikupite podršku, stavite ga na dnevni red ili pregledajte predloge drugih.",
+    "sr-SP" => "Објавите свој предлог на овој платформи, прикупите подршку и ставите га на дневни ред. Или прегледајте предлоге других.",
+    "sv-SE" => "Publicera ditt förslag på den här plattformen, samla stöd och sätt upp det på dagordningen. Eller granska andras förslag.",
+    "tr-TR" => "Önerinizi bu platformda yayınlayın, destek toplayın ve gündeme yerleştirin. Veya başkalarının önerilerini inceleyin."
+  }
+
+  case AppConfiguration.instance.name
+  when 'KøbenhavnsKommune'
+    multiloc['da-DK'] = 'Har du et forslag til ændringer i Københavns Kommune, som du ønsker at sætte på den politiske dagsorden, kan du stille et københavnerforslag her på platformen. Du kan også se og støtte andres forslag.'
+  when 'RegionSjælland'
+    multiloc['da-DK'] = 'Har du et forslag til ændringer i Region Sjælland, som du ønsker at sætte på den politiske dagsorden, kan du stille et borgerforslag her på platformen. Du kan også se og støtte andres forslag.'
+  end
+
+  multiloc
 end
