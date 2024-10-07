@@ -82,6 +82,8 @@ lv:
       "unsubscribe_text": "atteikties"
     follow:
       "unfollow_here": "Jūs esat saņēmis šo paziņojumu, jo jums ir sekots līdzi. <a href=\"%{unfollow_url}\">Jūs varat to atcelt šeit.</a>"
+    manual:
+      preheader: 'Jums ir pasts no %{organizationName}'
     comment_deleted_by_admin:
       reason: 'Iemesls, kāpēc jūsu komentārs tika dzēsts:'
       cta_view: 'Skatīt šo ideju'
@@ -540,6 +542,7 @@ lv:
       cta_see_results: 'Skatiet rezultātus platformā'
     event_registration_confirmation:
       subject: "Jūs esat iekļauts! Jūsu reģistrācija \"%{eventTitle}\" ir apstiprināta"
+      preheader: "%{firstName}, paldies par reģistrēšanos %{eventTitle}"
       header_message: "%{firstName}, paldies par reģistrēšanos"
       event_details:
         labels:
