@@ -388,6 +388,7 @@ resource 'Ideas' do
       let(:phase) { create(:proposals_phase, with_permissions: with_permissions) }
       let(:project) { phase.project }
       let(:creation_phase_id) { phase.id }
+      let!(:custom_form) { create(:custom_form, :with_default_fields, participation_context: phase) }
       let(:input) { build(:proposal, project: project) }
       let(:title_multiloc) { { 'en' => 'My proposal title' } }
       let(:body_multiloc) { { 'en' => 'My proposal body' } }
@@ -396,6 +397,10 @@ resource 'Ideas' do
       let(:cosponsor_ids) { cosponsors.map(&:id) }
       let!(:proposed_status) { create(:proposals_status, code: 'proposed') }
       let!(:prescreening_status) { create(:proposals_status, code: 'prescreening') }
+
+      before do
+        CustomField.find_by(code: 'cosponsor_ids').update!(enabled: true)
+      end
 
       context 'when visitor' do
         example '[error] Create a proposal', document: false do
