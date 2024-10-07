@@ -36,23 +36,29 @@ const FieldTypeSwitcher = ({ field, surveyHasSubmissions }: Props) => {
         disabled={!surveyHasSubmissions}
         content={formatMessage(messages.surveyHasSubmissionsWarning)}
       >
-        <Select
-          disabled={surveyHasSubmissions}
-          options={fieldSwitchOptions}
-          onChange={(value) => {
-            // Remove the current field ID, since we want to create a new field
-            setValue(`customFields.${field.index}.id`, undefined, {
-              shouldDirty: true,
-            });
-            // Generate a new temp ID for the field
-            setValue(`customFields.${field.index}.temp_id`, generateTempId(), {
-              shouldDirty: true,
-            });
-            setValue(inputTypeName, value?.value, { shouldDirty: true });
-          }}
-          value={watch(inputTypeName)}
-          label={formatMessage(messages.type)}
-        />
+        <Box>
+          <Select
+            disabled={surveyHasSubmissions}
+            options={fieldSwitchOptions}
+            onChange={(value) => {
+              // Remove the current field ID, since we want to create a new field
+              setValue(`customFields.${field.index}.id`, undefined, {
+                shouldDirty: true,
+              });
+              // Generate a new temp ID for the field
+              setValue(
+                `customFields.${field.index}.temp_id`,
+                generateTempId(),
+                {
+                  shouldDirty: true,
+                }
+              );
+              setValue(inputTypeName, value?.value, { shouldDirty: true });
+            }}
+            value={watch(inputTypeName)}
+            label={formatMessage(messages.type)}
+          />
+        </Box>
       </Tooltip>
     </Box>
   );
