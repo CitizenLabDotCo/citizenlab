@@ -1122,7 +1122,6 @@
   "app.containers.IdeaCard.readMore": "Verder lezen",
   "app.containers.IdeaCard.xComments": "{commentsCount, plural, =0 {geen reacties} one {1 reactie} other {# reacties}}",
   "app.containers.IdeaCard.xVotesOfY": "{xVotes, plural, =0 {geen stemmen} one {1 stem} other {# stemmen}} van de {votingThreshold}",
-  "app.containers.IdeaCards.a11y_totalInitiatives": "Totaal aantal voorstellen: {initiativeCount}",
   "app.containers.IdeaCards.a11y_totalItems": "Totaal aantal items: {ideasCount}",
   "app.containers.IdeaCards.all": "Alle",
   "app.containers.IdeaCards.filter": "Filter",
