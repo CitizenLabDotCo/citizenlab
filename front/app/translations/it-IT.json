@@ -171,7 +171,7 @@
   "app.components.FolderFolderCard.a11y_folderTitle": "Titolo della cartella:",
   "app.components.FolderFolderCard.archived": "Archiviato",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, one {# progetto} other {# progetti}}",
-  "app.components.FormBuilder.components.FieldTypeSwitcher.surveyHasSubmissionsWarning": "Il tipo di campo non può essere modificato una volta che l'indagine è stata inviata.",
+  "app.components.FormBuilder.components.FieldTypeSwitcher.formHasSubmissionsWarning2": "Il tipo di campo non può essere cambiato una volta che sono state inviate delle richieste.",
   "app.components.FormBuilder.components.FieldTypeSwitcher.type": "Tipo",
   "app.components.FormBuilder.components.FormBuilderTopBar.autosave": "Salvataggio automatico",
   "app.components.FormBuilder.components.FormBuilderTopBar.autosaveTooltip4": "Il salvataggio automatico è abilitato per impostazione predefinita quando apri l'editor del modulo. Ogni volta che chiudi il pannello delle impostazioni del campo utilizzando il pulsante \"X\", si attiverà automaticamente un salvataggio.",
