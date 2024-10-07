@@ -6,6 +6,7 @@ kl:
       "inappropriate_content_flagged": Imai naleqqutinngitsut nalunaaqutsigaapput – administratorer
     inappropriate_content_flagged:
       subject: 'Nittartakkanni ilanngussaq misissugassatut nalunaaqutserneqarsimavoq'
+      preheader: 'A post on your platform has been flagged for review'
       header_title: 'Nittartakkanni ilanngussaq misissugassatut nalunaaqutserneqarsimavoq'
       comment_author: '%{authorName} oqaaseqaateqarpoq:'
       idea_author: '%{authorName} ilanngussassamik nassiussineq:'
