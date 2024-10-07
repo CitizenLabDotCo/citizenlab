@@ -37,14 +37,6 @@ module IdKeycloak
       }
     end
 
-    def config
-      {
-        domain: 'login-test.oslo.kommune.no',
-        client_id: 'medvirkning',
-        client_secret: '1BAGMRDjdyCtSUGP18YgmGplB4RqpxTq'
-      }
-    end
-
     def email_always_present?
       false
     end
