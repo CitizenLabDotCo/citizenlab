@@ -182,6 +182,7 @@
   "app.components.HookForm.Feedback.submissionError": "Försök igen. Kontakta oss om problemet kvarstår",
   "app.components.HookForm.Feedback.submissionErrorTitle": "Ursäkta, det var ett problem hos oss",
   "app.components.HookForm.Feedback.successMessage": "Formuläret har skickats in",
+  "app.components.HookForm.PasswordInput.passwordLabel": "Lösenord",
   "app.components.HorizontalScroll.scrollLeftLabel": "Skrolla till vänster.",
   "app.components.HorizontalScroll.scrollRightLabel": "Skrolla till höger.",
   "app.components.IdeaCards.a11y_ideasHaveBeenSorted": "{sortOder} idéer har laddats.",
