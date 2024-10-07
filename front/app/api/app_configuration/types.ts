@@ -234,7 +234,6 @@ export interface IAppConfigurationSettings {
   multi_language_platform?: AppConfigurationFeature;
   customisable_homepage_banner?: AppConfigurationFeature;
   management_feed?: AppConfigurationFeature;
-  proposals_participation_method?: AppConfigurationFeature;
   fake_sso?: AppConfigurationFeature;
   prescreening?: AppConfigurationFeature;
   input_cosponsorship?: AppConfigurationFeature;
