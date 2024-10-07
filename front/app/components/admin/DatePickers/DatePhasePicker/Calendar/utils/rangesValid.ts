@@ -119,7 +119,15 @@ const validRangeSequence = (ranges: DateRange[]) => {
       return false;
     }
 
-    if (!validDifference({ from: currentRange.to, to: nextRange.from }, 1)) {
+    // TODO:
+    // this really should be the comment out line, but for some insane reason
+    // date-fns thinks that the difference between
+    // 2024-10-28T00:00:00.000Z
+    // and
+    // 2024-10-27T00:00:00.000Z
+    // is zero days. Going to fix this later.
+    // if (!validDifference({ from: currentRange.to, to: nextRange.from }, 1)) {
+    if (!validDifference({ from: currentRange.to, to: nextRange.from }, 0)) {
       return false;
     }
   }
