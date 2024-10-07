@@ -171,7 +171,7 @@
   "app.components.FolderFolderCard.a11y_folderTitle": "crwdns213072:0crwdne213072:0",
   "app.components.FolderFolderCard.archived": "crwdns213074:0crwdne213074:0",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "crwdns213076:0{# projects}crwdnd213076:0{# project}crwdnd213076:0{# projects}crwdne213076:0",
-  "app.components.FormBuilder.components.FieldTypeSwitcher.surveyHasSubmissionsWarning": "crwdns3142401:0crwdne3142401:0",
+  "app.components.FormBuilder.components.FieldTypeSwitcher.formHasSubmissionsWarning2": "crwdns3251119:0crwdne3251119:0",
   "app.components.FormBuilder.components.FieldTypeSwitcher.type": "crwdns3142403:0crwdne3142403:0",
   "app.components.FormBuilder.components.FormBuilderTopBar.autosave": "crwdns3142397:0crwdne3142397:0",
   "app.components.FormBuilder.components.FormBuilderTopBar.autosaveTooltip4": "crwdns3142399:0crwdne3142399:0",
