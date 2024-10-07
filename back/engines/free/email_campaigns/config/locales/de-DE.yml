@@ -10,6 +10,7 @@ de:
       "comment_on_idea_you_follow": Ein Kommentar zu einer Idee, der Sie folgen
       "comment_on_initiative_you_follow": Ein Kommentar zu einem Vorschlag, dem Sie folgen
       "cosponsor_of_your_initiative": Nutzer*in nimmt meine Einladung an, meinen Vorschlag zu unterstützen
+      "cosponsor_of_your_idea": Nutzer*in nimmt meine Einladung an, meinen Vorschlag zu unterstützen
       "event_registration_confirmation": Anmeldebestätigung für die Veranstaltung
       "first_idea_published": Veröffentlichung des ersten Beitrags
       "idea_marked_as_spam": Beitrag wird als Spam gekennzeichnet
@@ -18,6 +19,7 @@ de:
       "initiative_marked_as_spam": Vorschlag wird als Spam markiert
       "initiative_published": Veröffentlichung eines Vorschlags
       "invitation_to_cosponsor_initiative": Einladung zur Unterstützung eines Vorschlags
+      "invitation_to_cosponsor_idea": Einladung zur Unterstützung eines Vorschlags
       "initiative_resubmitted_for_review": Vorschlag erneut zur Prüfung eingereicht
       "invite_received": Einladung
       "invite_reminder": Einladungserinnerung
@@ -138,6 +140,12 @@ de:
       today: Heute
       wrong_content: 'Der Kommentar ist nicht relevant.'
       yesterday: Gestern
+    cosponsor_of_your_idea:
+      cta_reply_to: 'Eigenen Vorschlag ansehen'
+      event_description: 'Herzlichen Glückwunsch! %{cosponsorName} hat Ihre Einladung zur Unterstützung Ihres Vorschlags angenommen.'
+      main_header: '%{cosponsorName} hat Ihre Einladung angenommen, Ihren Vorschlag mit zu unterstützen'
+      subject: '%{cosponsorName} hat Ihre Einladung angenommen, Ihren Vorschlag mit zu unterstützen'
+      preheader: '%{cosponsorName} hat Ihre Einladung angenommen, Ihren Vorschlag mit zu unterstützen'
     cosponsor_of_your_initiative:
       cta_reply_to: 'Eigenen Vorschlag ansehen'
       event_description_initiative: 'Herzlichen Glückwunsch! %{cosponsorName} hat Ihre Einladung zur Unterstützung Ihres Vorschlags angenommen.'
@@ -181,6 +189,15 @@ de:
       main_header: '%{firstName}, Sie haben eine neue Aufgabe'
       subject: 'Sie haben einen Auftrag auf der Plattform von %{organizationName}'
       preheader_initiative: 'Der Vorschlag von %{authorName} wurde Ihnen zugewiesen'
+    invitation_to_cosponsor_idea:
+      cta_reply_to: 'Unterstützen Sie diesen Vorschlag'
+      event_description: '%{authorName} hat einen neuen Vorschlag erstellt und möchte, dass Sie ihn unterstützen.'
+      event_description_cosponsoring: 'Unterstützer*in eines Vorschlags zu sein bedeutet <strong>, dass Ihr Name zusammen mit den Namen der anderen Unterstützer*innen des Vorschlags angezeigt wird</strong>.'
+      event_description_before_action: 'Um den Vorschlag zu sehen und die Einladung anzunehmen, müssen Sie in Ihrem Konto eingeloggt sein.'
+      event_description_action: 'Klicken Sie auf den Button unten, um den Vorschlag zu lesen.'
+      main_header: 'Sie wurden eingeladen, einen Vorschlag zu unterstützen'
+      subject: 'Sie wurden eingeladen, einen Vorschlag zu unterstützen'
+      preheader: 'Sie wurden eingeladen, den Vorschlag von %{authorName} zu unterstützen'
     invitation_to_cosponsor_initiative:
       cta_reply_to: 'Unterstützen Sie diesen Vorschlag'
       event_description_initiative: '%{authorName} hat einen neuen Vorschlag erstellt und möchte, dass Sie ihn unterstützen.'
