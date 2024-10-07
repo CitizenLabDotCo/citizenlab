@@ -225,7 +225,7 @@
   "app.components.InitiativeCards.showXInitiatives": "Afficher {initiativesCount, plural, no {# propositions} one {# proposition} other {# propositions}}",
   "app.components.InitiativeCards.sortTitle": "Trier",
   "app.components.InitiativeCards.trending": "Populaire",
-  "app.components.InitiativeCards.tryOtherFilter": "La recherche ou les filtres sélectionnés n'ont retourné aucuns résultats. Essayer de les changers pour découvrir d'autres propositions.",
+  "app.components.InitiativeCards.tryOtherFilter": "La recherche ou les filtres sélectionnés n'ont retourné aucun résultat. Essayez de les changer pour découvrir d'autres propositions.",
   "app.components.InitiativeCards.xInitiatives": "{initiativesCount, plural, no {# propositions} one {# proposition} other {# propositions}}",
   "app.components.InitiativeForm.bannerUploadLabel": "Ajouter une bannière",
   "app.components.InitiativeForm.bannerUploadLabelSubtext": "Rendez votre page visuellement plus attrayante. Cette image sera affichée en haut de votre page.",
