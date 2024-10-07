@@ -365,7 +365,7 @@ resource 'Ideas' do
       public_input_params(self)
       with_options scope: :idea do
         parameter :custom_field_name1, 'A value for one custom field'
-        # parameter :cosponsor_ids, 'Array of user ids of the desired cosponsors' # TODO: cosponsors
+        parameter :cosponsor_ids, 'Array of user ids of the desired cosponsors'
       end
 
       let(:input) { create(:proposal) }
@@ -443,7 +443,21 @@ resource 'Ideas' do
           end
         end
 
-        # TODO: Update the cosponsors
+        describe do
+          let(:new_cosponsor) { create(:user) }
+          let(:input) { create(:proposal, cosponsors: create_list(:user, 2)) }
+
+          example 'Update the cosponsors' do
+            create(:cosponsorship, user: new_cosponsor, idea: input)
+
+            do_request
+            assert_status 200
+            json_response = json_parse response_body
+
+            expect(json_response.dig(:data, :relationships, :cosponsors, :data).length).to eq 3
+            expect(json_response.dig(:data, :relationships, :cosponsors, :data).pluck(:id)).to include new_cosponsor.id
+          end
+        end
       end
 
       context 'when admin' do

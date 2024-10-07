@@ -1,17 +1,15 @@
 import React from 'react';
 
-import { Text } from '@citizenlab/cl2-component-library';
-
 import { useIntl } from 'utils/cl-intl';
 import { getPeriodRemainingUntil } from 'utils/dateUtils';
 
-import messages from '../../messages';
+import messages from './messages';
 
 interface Props {
   currentPhaseEndsAt: string;
 }
 
-const TimeLeft = ({ currentPhaseEndsAt }: Props) => {
+const PhaseTimeLeft = ({ currentPhaseEndsAt }: Props) => {
   const { formatMessage } = useIntl();
   let timeLeft = getPeriodRemainingUntil(currentPhaseEndsAt, 'weeks');
   let timeLeftMessage = messages.xWeeksLeft;
@@ -23,17 +21,7 @@ const TimeLeft = ({ currentPhaseEndsAt }: Props) => {
     timeLeftMessage = messages.xDayLeft;
   }
 
-  return (
-    <Text
-      color="white"
-      style={{ textTransform: 'uppercase' }}
-      fontSize="xs"
-      fontWeight="bold"
-      m="0"
-    >
-      {formatMessage(timeLeftMessage, { timeLeft })}
-    </Text>
-  );
+  return <>{formatMessage(timeLeftMessage, { timeLeft })}</>;
 };
 
-export default TimeLeft;
+export default PhaseTimeLeft;

@@ -214,7 +214,7 @@ const ProposalsManager = ({ defaultFilterMenu, visibleFilterMenus }: Props) => {
             sortDirection={
               queryParameters.sort
                 ? getSortDirection(queryParameters.sort)
-                : 'ascending'
+                : 'descending'
             }
             onChangeSort={onChangeSorting}
             posts={initiatives.data}

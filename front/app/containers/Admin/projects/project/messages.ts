@@ -587,4 +587,12 @@ export default defineMessages({
     defaultMessage:
       'Screening is not included in your current plan. Talk to your Government Success Manager or admin to unlock it.',
   },
+  missingStartDateError: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.missingStartDateError',
+    defaultMessage: 'Missing start date',
+  },
+  missingEndDateError: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.missingEndDateError',
+    defaultMessage: 'Missing end date',
+  },
 });

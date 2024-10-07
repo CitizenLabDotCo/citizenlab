@@ -38,14 +38,16 @@ const PagesMenu = () => {
             content={formatMessage(messages.navBarMaxItems)}
             disabled={!disabledAddProjectToNavbarButton}
           >
-            <Button
-              icon="link"
-              buttonStyle="text"
-              onClick={() => setAddProjectModalIsOpen(true)}
-              disabled={disabledAddProjectToNavbarButton}
-            >
-              {formatMessage(messages.addProject)}
-            </Button>
+            <Box>
+              <Button
+                icon="link"
+                buttonStyle="text"
+                onClick={() => setAddProjectModalIsOpen(true)}
+                disabled={disabledAddProjectToNavbarButton}
+              >
+                {formatMessage(messages.addProject)}
+              </Button>
+            </Box>
           </Tooltip>
           <Button
             buttonStyle="admin-dark"

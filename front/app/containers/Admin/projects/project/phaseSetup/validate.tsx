@@ -1,16 +1,19 @@
 import { isFinite, isNaN } from 'lodash-es';
 import { FormatMessage, SupportedLocale } from 'typings';
 
-import { IUpdatedPhaseProperties } from 'api/phases/types';
+import { IUpdatedPhaseProperties, IPhases } from 'api/phases/types';
 
 import messages from '../messages';
 
 const validate = (
   state: IUpdatedPhaseProperties,
+  phases: IPhases | undefined,
   formatMessage: FormatMessage,
   locales?: SupportedLocale[]
 ) => {
   const {
+    start_at,
+    end_at,
     reacting_like_method,
     reacting_dislike_method,
     reacting_like_limited_max,
@@ -27,6 +30,7 @@ const validate = (
   } = state;
 
   let isValidated = true;
+  let phaseDateError: string | undefined;
   let noLikingLimitError: string | undefined;
   let noDislikingLimitError: string | undefined;
   let minTotalVotesError: string | undefined;
@@ -35,6 +39,29 @@ const validate = (
   let voteTermError: string | undefined;
   let expireDateLimitError: string | undefined;
   let reactingThresholdError: string | undefined;
+
+  if (!phases || phases.data.length === 0) {
+    if (!start_at) {
+      phaseDateError = formatMessage(messages.missingStartDateError);
+      isValidated = false;
+    }
+  } else {
+    if (!start_at) {
+      phaseDateError = formatMessage(messages.missingStartDateError);
+      isValidated = false;
+    } else {
+      if (!end_at) {
+        const startAtDates = phases.data.map((phase) =>
+          new Date(phase.attributes.start_at).getTime()
+        );
+        const maxStartAt = Math.max(...startAtDates);
+        if (new Date(start_at).getTime() < maxStartAt) {
+          phaseDateError = formatMessage(messages.missingEndDateError);
+          isValidated = false;
+        }
+      }
+    }
+  }
 
   if (
     participation_method === 'voting' &&
@@ -153,6 +180,7 @@ const validate = (
   return {
     isValidated,
     errors: {
+      phaseDateError,
       noLikingLimitError,
       noDislikingLimitError,
       minTotalVotesError,

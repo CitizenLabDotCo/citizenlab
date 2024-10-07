@@ -253,6 +253,7 @@ resource 'Ideas' do
       let!(:baskets) { create_list(:basket, 2, ideas: [idea], phase: project.phases.first) }
       let!(:topic) { create(:topic, ideas: [idea], projects: [idea.project]) }
       let!(:user_reaction) { create(:reaction, user: @user, reactable: idea) }
+      let!(:cosponsorship) { create(:cosponsorship, idea: idea, user: @user) }
       let(:id) { idea.id }
 
       example_request 'Get one idea by id' do
@@ -308,7 +309,8 @@ resource 'Ideas' do
           },
           author: { data: { id: idea.author_id, type: 'user' } },
           idea_status: { data: { id: idea.idea_status_id, type: 'idea_status' } },
-          user_reaction: { data: { id: user_reaction.id, type: 'reaction' } }
+          user_reaction: { data: { id: user_reaction.id, type: 'reaction' } },
+          cosponsors: { data: [{ id: cosponsorship.user_id, type: 'user' }] }
         )
       end
     end

@@ -10,7 +10,7 @@ module IdeaAssignment
         idea.assignee = nil
       end
 
-      def after_update(idea, user)
+      def after_update(idea, user, _old_cosponsor_ids)
         super
         return unless idea.assignee_id_previously_changed?
 
