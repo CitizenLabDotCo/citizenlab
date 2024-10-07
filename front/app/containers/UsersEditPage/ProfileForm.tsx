@@ -1,6 +1,11 @@
 import React, { useState, useEffect, FormEvent } from 'react';
 
-import { IconTooltip, Box, Button } from '@citizenlab/cl2-component-library';
+import {
+  IconTooltip,
+  Box,
+  Text,
+  Button,
+} from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { isEmpty } from 'lodash-es';
 import { useForm, FormProvider } from 'react-hook-form';
@@ -193,6 +198,15 @@ const ProfileForm = () => {
                 borderRadius="50%"
               />
             </SectionField>
+          )}
+
+          {authUser?.data.attributes.no_name && (
+            <Text>
+              <FormattedMessage
+                {...messages.noNameWarning}
+                values={{ displayName: authUser?.data.attributes.display_name }}
+              />
+            </Text>
           )}
 
           <SectionField>

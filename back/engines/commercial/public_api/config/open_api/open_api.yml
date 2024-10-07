@@ -4,7 +4,7 @@ info:
   description: Go Vocal's public REST API is available for customers that want to programatically access data of the platform. This can be used to integrate the data in other tools, or to display Go Vocal content on another website..
   contact:
     name: API Support
-    email: support@govocal
+    email: support@govocal.com
   version: 2
 host: 'localhost:4000'
 schemes:

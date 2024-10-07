@@ -219,6 +219,13 @@
             "title": "Additional number of manager seats",
             "description": "Number of project and folder manager seats bought additionally over the contract limit.",
             "type": ["integer", "null"]
+          },
+          "anonymous_name_scheme":  {
+            "title": "Scheme to use when displaying anonymous names",
+            "description": "Default is User 123456.",
+            "type": "string",
+            "enum": ["user", "animal"],
+            "default": "user"
           }
         }
       },
