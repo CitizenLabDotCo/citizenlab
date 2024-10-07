@@ -171,7 +171,6 @@
   "app.components.FolderFolderCard.a11y_folderTitle": "Naziv mape:",
   "app.components.FolderFolderCard.archived": "Arhivirano",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {# projekata} one {# projekt} other {# projekta}}",
-  "app.components.FormBuilder.components.FieldTypeSwitcher.surveyHasSubmissionsWarning": "Vrsta polja ne može se promijeniti nakon što anketa ima podneske.",
   "app.components.FormBuilder.components.FieldTypeSwitcher.type": "Tip",
   "app.components.FormBuilder.components.FormBuilderTopBar.autosave": "Automatsko spremanje",
   "app.components.FormBuilder.components.FormBuilderTopBar.autosaveTooltip4": "Automatsko spremanje omogućeno je prema zadanim postavkama kada otvorite uređivač obrazaca. Svaki put kad zatvorite ploču s postavkama polja pomoću gumba \"X\", automatski će se pokrenuti spremanje.",

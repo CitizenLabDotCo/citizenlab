@@ -14,10 +14,10 @@ import { getFieldSwitchOptions } from './utils';
 
 type Props = {
   field: IFlatCustomFieldWithIndex;
-  surveyHasSubmissions: boolean;
+  formHasSubmissions: boolean;
 };
 
-const FieldTypeSwitcher = ({ field, surveyHasSubmissions }: Props) => {
+const FieldTypeSwitcher = ({ field, formHasSubmissions }: Props) => {
   const { formatMessage } = useIntl();
   const { setValue, watch } = useFormContext();
 
@@ -33,12 +33,12 @@ const FieldTypeSwitcher = ({ field, surveyHasSubmissions }: Props) => {
   return (
     <Box mb="24px">
       <Tooltip
-        disabled={!surveyHasSubmissions}
-        content={formatMessage(messages.surveyHasSubmissionsWarning)}
+        disabled={!formHasSubmissions}
+        content={formatMessage(messages.formHasSubmissionsWarning)}
       >
         <Box>
           <Select
-            disabled={surveyHasSubmissions}
+            disabled={formHasSubmissions}
             options={fieldSwitchOptions}
             onChange={(value) => {
               // Remove the current field ID, since we want to create a new field
