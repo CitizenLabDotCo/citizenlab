@@ -11,6 +11,7 @@ import { darken } from 'polished';
 import { RouteType } from 'routes';
 import styled from 'styled-components';
 
+import useAuthUser from 'api/me/useAuthUser';
 import { IUserData } from 'api/users/types';
 import useUserById from 'api/users/useUserById';
 
@@ -18,7 +19,6 @@ import { useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 
 import messages from './messages';
-import useAuthUser from 'api/me/useAuthUser';
 
 const Name = styled.span<{
   color?: string;

@@ -6,6 +6,8 @@ import {
   Toggle,
   Text,
 } from '@citizenlab/cl2-component-library';
+import Box from 'component-library/components/Box';
+import Radio from 'component-library/components/Radio';
 import styled from 'styled-components';
 
 import {
@@ -24,8 +26,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import messages from '../messages';
 
 import Form from './Form';
-import Radio from 'component-library/components/Radio';
-import Box from 'component-library/components/Box';
 
 const StyledSection = styled(Section)`
   margin-bottom: 50px;
@@ -193,7 +193,7 @@ const SettingsGeneralTab = () => {
                 value={scheme}
                 name={scheme}
                 id={scheme}
-                label={formatMessage(messages['anonymousNameScheme_' + scheme])}
+                label={formatMessage(messages[`anonymousNameScheme_${scheme}`])}
               />
             ))}
           </Box>
