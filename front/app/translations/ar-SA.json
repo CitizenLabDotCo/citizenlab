@@ -171,6 +171,7 @@
   "app.components.FolderFolderCard.a11y_folderTitle": "عنوان المجلد:",
   "app.components.FolderFolderCard.archived": "مؤرشف",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {# من المشاريع} one {# مشروع} other {# من المشاريع}}",
+  "app.components.FormBuilder.components.FieldTypeSwitcher.formHasSubmissionsWarning2": "لا يمكن تغيير نوع الحقل بمجرد وجود عمليات إرسال.",
   "app.components.FormBuilder.components.FieldTypeSwitcher.type": "يكتب",
   "app.components.FormBuilder.components.FormBuilderTopBar.autosave": "الحفظ التلقائي",
   "app.components.FormBuilder.components.FormBuilderTopBar.autosaveTooltip4": "يتم تمكين الحفظ التلقائي افتراضيًا عند فتح محرر النماذج. في كل مرة تغلق فيها لوحة إعدادات الحقل باستخدام الزر \"X\"، سيتم تشغيل الحفظ تلقائيًا.",
