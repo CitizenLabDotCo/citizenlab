@@ -171,6 +171,7 @@
   "app.components.FolderFolderCard.a11y_folderTitle": "Mapptitel:",
   "app.components.FolderFolderCard.archived": "Arkiverad",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {# projekt} one {# projekt} other {# projekt}}",
+  "app.components.FormBuilder.components.FieldTypeSwitcher.formHasSubmissionsWarning2": "Fälttypen kan inte ändras när det finns inlämningar.",
   "app.components.FormBuilder.components.FieldTypeSwitcher.type": "Typ",
   "app.components.FormBuilder.components.FormBuilderTopBar.autosave": "Autospara",
   "app.components.FormBuilder.components.FormBuilderTopBar.autosaveTooltip4": "Automatisk sparning är aktiverad som standard när du öppnar formulärredigeraren. Varje gång du stänger fältinställningspanelen med hjälp av \"X\"-knappen kommer den automatiskt att utlösa en sparning.",
