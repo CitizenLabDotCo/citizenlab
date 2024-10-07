@@ -78,8 +78,11 @@ class WebApi::V1::IdeasController < ApplicationController
     ideas = SortByParamsService.new.sort_ideas(ideas, params, current_user)
     ideas = ideas.includes(:author, :topics, :project, :idea_status, :idea_files)
 
+    with_cosponsors = AppConfiguration.instance.feature_activated?('input_cosponsorship')
+    ideas = ideas.includes(:cosponsors) if with_cosponsors
+
     I18n.with_locale(current_user&.locale) do
-      xlsx = XlsxService.new.generate_ideas_xlsx ideas, view_private_attributes: true
+      xlsx = XlsxService.new.generate_ideas_xlsx(ideas, view_private_attributes: true, with_cosponsors:)
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'ideas.xlsx'
     end
   end
@@ -196,6 +199,7 @@ class WebApi::V1::IdeasController < ApplicationController
 
   def update
     input = Idea.find params[:id]
+
     authorize input
 
     if invalid_blank_author_for_update? input, params
@@ -225,12 +229,12 @@ class WebApi::V1::IdeasController < ApplicationController
     end
 
     sidefx.before_update(input, current_user)
-
+    cosponsor_ids = input.cosponsors.map(&:id)
     save_options = {}
     save_options[:context] = :publication if params.dig(:idea, :publication_status) == 'published'
     ActiveRecord::Base.transaction do
       if input.save(**save_options)
-        sidefx.after_update(input, current_user)
+        sidefx.after_update(input, current_user, cosponsor_ids)
         update_file_upload_fields input, input.custom_form, update_params
         render json: WebApi::V1::IdeaSerializer.new(
           input.reload,

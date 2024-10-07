@@ -50,6 +50,10 @@ FactoryBot.define do
     enabled { true }
   end
 
+  factory :cosponsor_of_your_idea_campaign, class: EmailCampaigns::Campaigns::CosponsorOfYourIdea do
+    enabled { true }
+  end
+
   factory :idea_marked_as_spam_campaign, class: EmailCampaigns::Campaigns::IdeaMarkedAsSpam do
     enabled { true }
   end
@@ -111,6 +115,10 @@ FactoryBot.define do
   end
 
   factory :internal_comment_on_your_internal_comment_campaign, class: EmailCampaigns::Campaigns::InternalCommentOnYourInternalComment do
+    enabled { true }
+  end
+
+  factory :invitation_to_cosponsor_idea_campaign, class: EmailCampaigns::Campaigns::InvitationToCosponsorIdea do
     enabled { true }
   end
 

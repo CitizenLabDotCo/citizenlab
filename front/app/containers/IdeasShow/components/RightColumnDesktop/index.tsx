@@ -14,7 +14,6 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import FollowUnfollow from 'components/FollowUnfollow';
 import ReactionControl from 'components/ReactionControl';
 
-import { isFixableByAuthentication } from 'utils/actionDescriptors';
 import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
 
 import { rightColumnWidthDesktop } from '../../styleConstants';
@@ -24,6 +23,7 @@ import SharingButtonComponent from '../Buttons/SharingButtonComponent';
 import Cosponsorship from '../Cosponsorship';
 import MetaInformation from '../MetaInformation';
 import ProposalInfo from '../ProposalInfo';
+import { showIdeaReactions } from 'components/ReactionControl/utils';
 
 interface Props {
   ideaId: string;
@@ -59,24 +59,10 @@ const RightColumnDesktop = ({
 
   const participationMethod = phase?.attributes.participation_method;
 
-  const reactingActionDescriptor =
-    idea.data.attributes.action_descriptors.reacting_idea;
-  const reactingFutureEnabled = !!(
-    reactingActionDescriptor.up.future_enabled_at ||
-    reactingActionDescriptor.down.future_enabled_at
+  const showIdeaReactionControl = showIdeaReactions(
+    idea.data,
+    participationMethod
   );
-  const cancellingEnabled = reactingActionDescriptor.cancelling_enabled;
-  const likesCount = idea.data.attributes.likes_count;
-  const dislikesCount = idea.data.attributes.dislikes_count;
-  const showReactionControl =
-    participationMethod !== 'voting' &&
-    participationMethod !== 'proposals' &&
-    (reactingActionDescriptor.enabled ||
-      isFixableByAuthentication(reactingActionDescriptor.disabled_reason) ||
-      cancellingEnabled ||
-      reactingFutureEnabled ||
-      likesCount > 0 ||
-      dislikesCount > 0);
 
   const showInteractionsContainer =
     ideaIsInParticipationContext || commentingEnabled || followEnabled;
@@ -103,14 +89,14 @@ const RightColumnDesktop = ({
                 <ProposalInfo idea={idea} />
               </Box>
             )}
-            {showReactionControl && (
-              <Box pb="23px" mb="23px">
+            {showIdeaReactionControl && (
+              <Box pb="23px" mb="23px" borderBottom="solid 1px #ccc">
                 <ReactionControl styleType="shadow" ideaId={ideaId} size="4" />
               </Box>
             )}
-            {phase && ideaIsInParticipationContext && (
+            {phase && ideaIsInParticipationContext && votingConfig && (
               <Box pb="23px" mb="23px" borderBottom="solid 1px #ccc">
-                {votingConfig?.getIdeaPageVoteInput({
+                {votingConfig.getIdeaPageVoteInput({
                   ideaId,
                   phase,
                   compact: false,

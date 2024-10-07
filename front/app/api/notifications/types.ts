@@ -122,6 +122,19 @@ export interface ICosponsorOfYourInitiativeNotificationData
   };
 }
 
+export interface ICosponsorOfYourIdeaNotificationData
+  extends IBaseNotificationData {
+  attributes: {
+    type: 'cosponsor_of_your_idea';
+    read_at: string | null;
+    created_at: string;
+    initiating_user_first_name: string | null;
+    initiating_user_last_name: string | null;
+    initiating_user_slug: string | null;
+    post_slug: string | null;
+  };
+}
+
 export interface IIdeaAssignedToYouNotificationData
   extends IBaseNotificationData {
   attributes: {
@@ -204,6 +217,19 @@ export interface IInvitationToCosponsorInitiativeNotificationData
   extends IBaseNotificationData {
   attributes: {
     type: 'invitation_to_cosponsor_initiative';
+    read_at: string | null;
+    created_at: string;
+    initiating_user_first_name: string | null;
+    initiating_user_last_name: string | null;
+    initiating_user_slug: string | null;
+    post_slug: string | null;
+  };
+}
+
+export interface IInvitationToCosponsorIdeaNotificationData
+  extends IBaseNotificationData {
+  attributes: {
+    type: 'invitation_to_cosponsor_idea';
     read_at: string | null;
     created_at: string;
     initiating_user_first_name: string | null;
@@ -444,6 +470,7 @@ export interface INotificationDataMap {
   ICommentOnIdeaYouFollowNotificationData: ICommentOnIdeaYouFollowNotificationData;
   ICommentOnInitiativeYouFollowNotificationData: ICommentOnInitiativeYouFollowNotificationData;
   ICosponsorOfYourInitiativeNotificationData: ICosponsorOfYourInitiativeNotificationData;
+  ICosponsorOfYourIdeaNotificationData: ICosponsorOfYourIdeaNotificationData;
   IIdeaAssignedToYouNotificationData: IIdeaAssignedToYouNotificationData;
   IIdeaMarkedAsSpamNotificationData: IIdeaMarkedAsSpamNotificationData;
   IInitiativeAssignedToYouNotificationData: IInitiativeAssignedToYouNotificationData;
@@ -451,6 +478,7 @@ export interface INotificationDataMap {
   IInitiativeResubmittedForReviewNotificationData: IInitiativeResubmittedForReviewNotificationData;
   IInviteAcceptedNotificationData: IInviteAcceptedNotificationData;
   IInvitationToCosponsorInitiativeNotificationData: IInvitationToCosponsorInitiativeNotificationData;
+  IInvitationToCosponsorIdeaNotificationData: IInvitationToCosponsorIdeaNotificationData;
   IMentionInCommentNotificationData: IMentionInCommentNotificationData;
   IInternalCommentNotificationData: IInternalCommentNotificationData;
   IMentionInOfficialFeedbackNotificationData: IMentionInOfficialFeedbackNotificationData;
