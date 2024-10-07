@@ -212,7 +212,7 @@ fr:
         proposal:
           title: Quelle est votre proposition ?
         initiative:
-          title: Quelle est votre proposition ?
+          title: Quelle est votre initiative ?
         petition:
           title: Quelle est votre pétition ?
   custom_field_options:
