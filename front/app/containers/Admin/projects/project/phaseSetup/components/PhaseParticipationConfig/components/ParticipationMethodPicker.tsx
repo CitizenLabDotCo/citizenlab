@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import {
   IconTooltip,
@@ -97,6 +97,15 @@ const ParticipationMethodPicker = ({
   const proposalsParticipationMethodEnabled = useFeatureFlag({
     name: 'proposals_participation_method',
   });
+
+  useEffect(() => {
+    setSelectedMethod(participation_method);
+    setShowSurveyOptions(
+      participation_method === 'native_survey' ||
+        participation_method === 'survey' ||
+        participation_method === 'poll'
+    );
+  }, [participation_method]);
 
   const changeMethod = (newMethod?: ParticipationMethod) => {
     const method = newMethod || methodToChangeTo;
