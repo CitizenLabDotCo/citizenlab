@@ -171,7 +171,7 @@
   "app.components.FolderFolderCard.a11y_folderTitle": "Titel des Ordners:",
   "app.components.FolderFolderCard.archived": "Archiviert",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {# Projekte} one {# Projekt} other {# Projekte}}",
-  "app.components.FormBuilder.components.FieldTypeSwitcher.surveyHasSubmissionsWarning": "Der Feldtyp kann nicht mehr geändert werden, sobald die Umfrage abgeschickt wurde.",
+  "app.components.FormBuilder.components.FieldTypeSwitcher.formHasSubmissionsWarning2": "Der Feldtyp kann nicht geändert werden, sobald es Einreichungen gibt.",
   "app.components.FormBuilder.components.FieldTypeSwitcher.type": "Typ",
   "app.components.FormBuilder.components.FormBuilderTopBar.autosave": "Automatisch speichern",
   "app.components.FormBuilder.components.FormBuilderTopBar.autosaveTooltip4": "Die automatische Speicherung ist standardmäßig aktiviert, wenn Sie den Formulareditor öffnen. Jedes Mal, wenn Sie das Feldeinstellungsfenster mit der Schaltfläche „X“ schließen, wird automatisch eine Speicherung ausgelöst.",
