@@ -2,6 +2,8 @@ import React from 'react';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
 import Modal from 'components/UI/Modal';
 
@@ -24,8 +26,11 @@ const InitiativeModals = ({
   const { data: appConfiguration } = useAppConfiguration();
   const initiativeReviewRequired = useInitiativeReviewRequired();
   const { formatMessage } = useIntl();
+  const initiativeFlowSocialSharingEnabled = useFeatureFlag({
+    name: 'initiativeflow_social_sharing',
+  });
 
-  if (!appConfiguration) return null;
+  if (!appConfiguration || !initiativeFlowSocialSharingEnabled) return null;
 
   const initiativeSettings =
     appConfiguration.data.attributes.settings.initiatives;

@@ -167,6 +167,8 @@ export interface IAppConfigurationSettings {
   qualtrics_surveys?: AppConfigurationFeature;
   smart_survey_surveys?: AppConfigurationFeature;
   microsoft_forms_surveys?: AppConfigurationFeature;
+  ideaflow_social_sharing?: AppConfigurationFeature;
+  initiativeflow_social_sharing?: AppConfigurationFeature;
   survey_xact_surveys?: AppConfigurationFeature;
   snap_survey_surveys?: AppConfigurationFeature;
   project_folders?: AppConfigurationFeature;
