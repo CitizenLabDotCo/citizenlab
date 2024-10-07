@@ -580,7 +580,7 @@
   "app.components.admin.UserFilterConditions.predicate_is_one_of": "est l'une des",
   "app.components.admin.UserFilterConditions.predicate_is_one_of_areas": "suit au moins une des zones géographiques",
   "app.components.admin.UserFilterConditions.predicate_is_one_of_folders": "un des dossiers",
-  "app.components.admin.UserFilterConditions.predicate_is_one_of_inputs": "l'une des entrées",
+  "app.components.admin.UserFilterConditions.predicate_is_one_of_inputs": "une des contributions",
   "app.components.admin.UserFilterConditions.predicate_is_one_of_projects": "un des projets",
   "app.components.admin.UserFilterConditions.predicate_is_one_of_topics": "l'un des thèmes",
   "app.components.admin.UserFilterConditions.predicate_is_project_moderator": "est un administrateur projet",
