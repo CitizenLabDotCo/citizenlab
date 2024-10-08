@@ -1832,10 +1832,16 @@ CREATE VIEW public.analytics_fact_posts AS
     i.likes_count,
     i.dislikes_count,
     i.publication_status
-   FROM ((public.ideas i
-     JOIN public.analytics_dimension_types adt ON (((adt.name)::text = 'idea'::text)))
+   FROM (((public.ideas i
      LEFT JOIN public.analytics_build_feedbacks abf ON ((abf.post_id = i.id)))
-  WHERE (i.creation_phase_id IS NULL)
+     LEFT JOIN public.phases creation_phase ON ((i.creation_phase_id = creation_phase.id)))
+     JOIN public.analytics_dimension_types adt ON (((adt.name)::text =
+        CASE
+            WHEN (creation_phase.* IS NULL) THEN 'idea'::text
+            WHEN ((creation_phase.participation_method)::text = 'proposals'::text) THEN 'proposal'::text
+            ELSE NULL::text
+        END)))
+  WHERE ((creation_phase.* IS NULL) OR ((creation_phase.participation_method)::text = 'proposals'::text))
 UNION ALL
  SELECT i.id,
     i.author_id AS user_id,
@@ -7535,6 +7541,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240923112800'),
 ('20240923112801'),
 ('20240926175000'),
-('20241001101704');
+('20241001101704'),
+('20241002200522');
 
 
