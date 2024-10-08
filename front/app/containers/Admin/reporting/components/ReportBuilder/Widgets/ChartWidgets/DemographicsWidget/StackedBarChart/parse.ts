@@ -61,9 +61,9 @@ const parseBirthyearResponse = (
   const legendItems = columns.map((column) => {
     return {
       icon: 'circle' as const,
-      color: binHash[column] === 0 ? 'red' : statusColorById[column],
+      color: statusColorById[column],
       label: column,
-      itemColor: data[0][column] === 0 ? colors.coolGrey300 : undefined,
+      value: data[0][column],
     };
   });
 
@@ -106,9 +106,9 @@ const parseOtherResponse = (
   const legendItems = sortedColumns.map((column, i) => {
     return {
       icon: 'circle' as const,
-      color: data[0][column] === 0 ? 'red' : statusColorById[column],
+      color: statusColorById[column],
       label: labels[i],
-      itemColor: data[0][column] === 0 ? colors.coolGrey300 : undefined,
+      value: data[0][column],
     };
   });
 

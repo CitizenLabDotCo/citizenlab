@@ -14,6 +14,7 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
 
+import DemographicsLegend from './DemographicsLegend';
 import { parseResponse } from './parse';
 import { tooltip } from './tooltip';
 
@@ -66,11 +67,12 @@ const StackedBarChart = ({ response }: Props) => {
       )}
       legend={{
         items: legendItems,
-        marginTop: 25,
+        marginTop: 15,
         maintainGraphSize: true,
       }}
       onMouseOver={onMouseOverStackedBar}
       onMouseOut={onMouseOutStackedBar}
+      CustomLegend={DemographicsLegend}
     />
   );
 };
