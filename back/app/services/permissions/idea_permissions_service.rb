@@ -13,17 +13,22 @@ module Permissions
     end
 
     def denied_reason_for_action(action, reaction_mode: nil, delete_action: false)
-      reason = super
-      return reason if reason
-      return if user && UserRoleService.new.can_moderate_project?(idea.project, user)
-
       case action
       when 'editing_idea'
+        return if user && UserRoleService.new.can_moderate_project?(idea.project, user)
+
+        reason = super
+        return reason if reason
+
         return IDEA_DENIED_REASONS[:not_author] if (idea.author_id != user&.id) || idea.author_id.nil? || !user&.active?
         return IDEA_DENIED_REASONS[:votes_exist] if idea.participation_method_on_creation.use_reactions_as_votes? && idea.reactions.where.not(user_id: user&.id).exists?
 
         IDEA_DENIED_REASONS[:published_after_screening] if idea.creation_phase&.prescreening_enabled && idea.published?
       else
+        reason = super
+        return reason if reason
+        return if user && UserRoleService.new.can_moderate_project?(idea.project, user)
+
         # The input does not need to be in the current phase for editing.
         # We preserved the behaviour that was already there, but we're not
         # sure if this is the desired behaviour.
