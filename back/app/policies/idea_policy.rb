@@ -62,6 +62,7 @@ class IdeaPolicy < ApplicationPolicy
 
     project_show = ProjectPolicy.new(user, record.project).show?
     return true if project_show && %w[draft published].include?(record.publication_status)
+    return true if record.cosponsors.include?(user)
 
     active? && (owner? || UserRoleService.new.can_moderate_project?(record.project, user))
   end

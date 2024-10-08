@@ -607,7 +607,7 @@ describe IdeaPolicy do
 
   context 'on a proposal that is in pre-screening' do
     let(:project) { create(:single_phase_proposals_project, phase_attrs: { prescreening_enabled: true }) }
-    let(:idea) { create(:proposal, project: project, publication_status: 'draft', idea_status: create(:proposals_status, code: 'prescreening')) }
+    let(:idea) { create(:proposal, project: project, publication_status: 'submitted', idea_status: create(:proposals_status, code: 'prescreening')) }
     let!(:cosponsorship) { create(:cosponsorship, idea:, status: 'pending') }
 
     before do
@@ -620,8 +620,8 @@ describe IdeaPolicy do
       let(:user) { create(:user) }
 
       it do
-        is_expected.to permit(:show) # We generally allow users to see drafts when they have the id or slug
-        expect(scope.resolve.size).to eq 0 # but not let them list it
+        is_expected.not_to permit(:show)
+        expect(scope.resolve.size).to eq 0
       end
     end
 
