@@ -95,7 +95,6 @@ class IdeaPolicy < ApplicationPolicy
   def owner?
     user && record.author_id == user.id
   end
-
 end
 
 IdeaPolicy.prepend(BulkImportIdeas::Patches::IdeaPolicy)

@@ -605,14 +605,14 @@ describe IdeaPolicy do
     end
   end
 
-  context "on a proposal that is in pre-screening" do
+  context 'on a proposal that is in pre-screening' do
     let(:project) { create(:single_phase_proposals_project, phase_attrs: { prescreening_enabled: true }) }
     let(:idea) { create(:proposal, project: project, publication_status: 'draft', idea_status: create(:proposals_status, code: 'prescreening')) }
-    let!(:cosponsorship) { create(:cosponsorship, idea: , status: 'pending') }
+    let!(:cosponsorship) { create(:cosponsorship, idea:, status: 'pending') }
 
     before do
       settings = AppConfiguration.instance.settings
-      settings['input_cosponsorship'] = { "allowed" => true, "enabled": true }
+      settings['input_cosponsorship'] = { 'allowed' => true, 'enabled' => true }
       AppConfiguration.instance.update!(settings: settings)
     end
 
@@ -625,7 +625,7 @@ describe IdeaPolicy do
       end
     end
 
-    context "for a normal user invited as a cosponsor" do
+    context 'for a normal user invited as a cosponsor' do
       let(:user) { cosponsorship.user }
 
       it do
