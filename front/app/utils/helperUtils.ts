@@ -96,17 +96,21 @@ export const isIdeaShowPage = (urlSegments: string[]) => {
   );
 };
 
-export const isInitiativeShowPage = (urlSegments: string[]) => {
+export const initiativeShowPageSlug = (urlSegments: string[]) => {
   const firstUrlSegment = urlSegments[0];
   const secondUrlSegment = urlSegments[1];
   const lastUrlSegment = urlSegments[urlSegments.length - 1];
 
-  return (
+  if (
     urlSegments.length === 3 &&
     locales.includes(firstUrlSegment) &&
     secondUrlSegment === 'initiatives' &&
     lastUrlSegment !== 'new'
-  );
+  ) {
+    return lastUrlSegment;
+  } else {
+    return null;
+  }
 };
 
 export function stopPropagation(event) {

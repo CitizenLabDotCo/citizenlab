@@ -36,10 +36,16 @@ import ErrorBoundary from 'components/ErrorBoundary';
 
 import { trackPage } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
 import Navigate from 'utils/cl-router/Navigate';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 import eventEmitter from 'utils/eventEmitter';
-import { endsWith, isIdeaShowPage, isPage } from 'utils/helperUtils';
+import {
+  endsWith,
+  initiativeShowPageSlug,
+  isIdeaShowPage,
+  isPage,
+} from 'utils/helperUtils';
 import { localeStream } from 'utils/localeStream';
 import { usePermission } from 'utils/permissions';
 import { isAdmin, isModerator } from 'utils/permissions/roles';
@@ -254,6 +260,16 @@ const App = ({ children }: Props) => {
     trackPage(location.pathname);
   }, [location.pathname]);
 
+  const urlSegments = location.pathname.replace(/^\/+/g, '').split('/');
+
+  // Redirect from /initiatives/:slug to /ideas/:slug to make sure old initiative links still work
+  useEffect(() => {
+    if (initiativeShowPageSlug(urlSegments)) {
+      const slug = initiativeShowPageSlug(urlSegments);
+      clHistory.replace(`/ideas/${slug}`);
+    }
+  }, [urlSegments]);
+
   const closeUserDeletedModal = () => {
     setUserDeletedSuccessfullyModalOpened(false);
   };
@@ -269,7 +285,6 @@ const App = ({ children }: Props) => {
   const showFooter =
     !isAdminPage && !isIdeaFormPage && !isIdeaEditPage && !isNativeSurveyPage;
   const { pathname } = removeLocale(location.pathname);
-  const urlSegments = location.pathname.replace(/^\/+/g, '').split('/');
   const disableScroll = fullscreenModalEnabled && signUpInModalOpened;
   const isAuthenticationPending = authUser === undefined;
   const canAccessRoute = usePermission({

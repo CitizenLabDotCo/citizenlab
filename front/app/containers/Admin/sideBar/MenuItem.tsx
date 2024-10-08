@@ -118,6 +118,7 @@ const MenuItem = ({ navItem }: Props) => {
           flexDirection="column"
           alignItems="center"
           gap="20px"
+          p="8px"
         >
           <Image src={tooltipImage} alt="" w="250px" />
           <FormattedMessage {...messages.proposalsTooltip} />
