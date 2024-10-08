@@ -1126,7 +1126,7 @@
   "app.containers.Admin.reporting.components.ReportBuilderPage.emptyStateButtonText": "Einen Bericht erstellen",
   "app.containers.Admin.reporting.components.ReportBuilderPage.emptyStateTitle": "Erstellen Sie Ihren ersten Projektbericht",
   "app.containers.Admin.reporting.components.ReportBuilderPage.noProjectSelected": "Kein Projekt ausgewählt",
-  "app.containers.Admin.reporting.components.ReportBuilderPage.platformTemplate": "Beginnen Sie mit einer Plattformvorlage",
+  "app.containers.Admin.reporting.components.ReportBuilderPage.platformTemplate": "Mit einer Plattformvorlage beginnen",
   "app.containers.Admin.reporting.components.ReportBuilderPage.printToPdf": "Als PDF drucken",
   "app.containers.Admin.reporting.components.ReportBuilderPage.projectTemplate": "Mit einer Projektvorlage beginnen",
   "app.containers.Admin.reporting.components.ReportBuilderPage.reportTemplate": "Berichtsvorlage",
