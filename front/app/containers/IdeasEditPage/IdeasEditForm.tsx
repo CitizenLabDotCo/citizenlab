@@ -55,7 +55,7 @@ const IdeasEditForm = ({ ideaId }: Props) => {
   const previousPathName = useContext(PreviousPathnameContext);
   const [isDisclaimerOpened, setIsDisclaimerOpened] = useState(false);
   const [formData, setFormData] = useState<FormValues | null>(null);
-
+  const [loading, setLoading] = useState(false);
   const { data: authUser } = useAuthUser();
   const { data: idea } = useIdeaById(ideaId);
   const { mutate: deleteIdeaImage } = useDeleteIdeaImage();
@@ -170,6 +170,7 @@ const IdeasEditForm = ({ ideaId }: Props) => {
   };
 
   const onSubmit = async (data: FormValues) => {
+    setLoading(true);
     const { idea_images_attributes, ...ideaWithoutImages } = data;
 
     const location_point_geojson = await getLocationGeojson(
@@ -209,6 +210,7 @@ const IdeasEditForm = ({ ideaId }: Props) => {
       },
       { scrollToTop: true }
     );
+    setLoading(false);
   };
 
   return (
@@ -229,6 +231,7 @@ const IdeasEditForm = ({ ideaId }: Props) => {
               getAjvErrorMessage={getAjvErrorMessage}
               getApiErrorMessage={getApiErrorMessage}
               config={'input'}
+              loading={loading}
               title={
                 <Box
                   width="100%"
