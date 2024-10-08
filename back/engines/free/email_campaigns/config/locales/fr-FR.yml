@@ -62,7 +62,7 @@ fr:
       author_wrote: '%{authorName} a écrit :'
       cta_goto_idea: 'Voir l''idée'
       cta_goto_proposal: 'Voir la proposition'
-      cta_goto_project: 'Aller à ce projet'
+      cta_goto_project: 'Voir le projet'
     schedules:
       weekly:
         "0": "Chaque semaine, le dimanche à %{hourOfDay}"
@@ -458,7 +458,7 @@ fr:
       action_share_link: 'Partagez-la via n''importe quel canal en copiant le %{link}'
       action_share_twitter: 'Informez vos followers sur %{twitterLink}'
       add_image: 'Ajoutez une image'
-      cta_view_idea: 'Aller à votre idée'
+      cta_view_idea: 'Accédez à votre idée'
       event_description: '%{firstName}, félicitations pour votre première idée sur la plate-forme de participation de %{organizationName}. Vous serez averti lorsque les gens interagissent avec votre idée. Découvrez ci-dessous les prochaines étapes que vous pouvez suivre.'
       link: lien
       main_header: '%{firstName}, vous avez posté votre première idée !'
@@ -481,7 +481,7 @@ fr:
       action_share_link: 'Partagez-la via n''importe quel canal en copiant le %{link}'
       action_share_twitter: 'Informez vos followers sur %{twitterLink}'
       add_image: 'Ajoutez une image'
-      cta_view_idea: 'Aller à votre idée'
+      cta_view_idea: 'Accédez à votre idée'
       event_description: '%{firstName}, votre idée a été publiée avec succès sur la plateforme de participation de %{organizationName}. Vous serez averti lorsque les gens interagissent avec votre idée. Découvrez ci-dessous les prochaines étapes que vous pouvez suivre.'
       link: lien
       main_header: 'Votre idée a bien été postée. Partagez-la à votre entourage !'
@@ -496,7 +496,7 @@ fr:
       preheader: 'Qu''est-il arrivé à votre proposition la semaine dernière ?'
       title_your_weekly_report: 'Comment s''est déroulée votre proposition ?'
       text_introduction: 'Trouvez les chiffres clés ci-dessous et rendez-vous sur la page de votre proposition pour passer à l''action et obtenir suffisamment de soutien à temps.'
-      cta_see_your_initiative: 'Aller à votre proposition'
+      cta_see_your_initiative: 'Accédez à vos propositions'
       total_votes: 'Total des votes'
       new_votes: 'Nouveaux votes'
       remaining_votes: 'Votes restants'
