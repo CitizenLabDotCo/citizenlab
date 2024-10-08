@@ -61,7 +61,7 @@ def rake_20240910_create_proposals_project(reporter)
   project = Project.new(
     title_multiloc: rake_20240910_migrate_project_title_multiloc,
     description_multiloc: rake_20240910_migrate_project_description_multiloc,
-    slug: 'proposals', # TODO: Does this work if there is already a project with this slug?
+    slug: SlugService.new.generate_slug(Project.new, 'proposals'),
     default_assignee: User.active.admin.order(:created_at).reject(&:super_admin?).first
     # TODO: Check if project topics are included like this
   )
@@ -128,8 +128,8 @@ def rake_20240910_substitute_homepage_element(project, reporter)
   homepage = ContentBuilder::Layout.find_by(code: 'homepage')
   return if !homepage
 
-  homepage.craftjs_json.map_values! do |element|
-    next element if element.dig('type', 'resolvedName') != 'Proposals'
+  homepage.craftjs_json.transform_values! do |element|
+    next element if element['type'].is_a?(Hash) && element.dig('type', 'resolvedName') != 'Proposals'
 
     {
       'type' => { 'resolvedName' => 'Highlight' },
@@ -212,7 +212,7 @@ end
 def rake_20240910_proposal_attributes(initiative, project)
   proposals_phase = project.phases.first
   {
-    slug: initiative.slug,
+    slug: SlugService.new.generate_slug(Idea.new, initiative.slug),
     title_multiloc: initiative.title_multiloc,
     body_multiloc: initiative.body_multiloc,
     author_id: initiative.author_id,
@@ -336,7 +336,7 @@ def rake_20240910_migrate_reactions(proposal, initiative, reporter)
     reaction = Reaction.new(
       mode: 'up',
       user_id: like.user_id,
-      reactionable: proposal,
+      reactable: proposal,
       created_at: like.created_at
     )
     if !reaction.save
@@ -427,7 +427,8 @@ def rake_20240910_migrate_official_feedback(proposal, initiative, reporter)
     new_feedback = OfficialFeedback.new(
       post: proposal,
       body_multiloc: old_feedback.body_multiloc,
-      author_id: old_feedback.author_id,
+      author_multiloc: old_feedback.author_multiloc,
+      user_id: old_feedback.user_id,
       created_at: old_feedback.created_at
     )
     if !new_feedback.save
