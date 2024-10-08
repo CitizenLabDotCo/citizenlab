@@ -5,8 +5,8 @@ fr-BE:
     admin_campaign_type_description:
       "inappropriate_content_flagged": Contenu inapproprié signalé - administrateurs
     inappropriate_content_flagged:
-      subject: 'Un message a été marqué pour examen'
-      header_title: 'Un message a été marqué pour examen'
+      subject: 'Une publication a été signalée'
+      header_title: 'Une publication a été signalée'
       author_wrote: '%{authorName} a écrit :'
       automatically_flagged: >
         Cette publication a été automatiquement détectée comme pouvant contenir du contenu inapproprié. Nous vous notifions afin que vous puissiez l'examiner en fonction de vos propres règles de modération.
