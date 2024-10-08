@@ -360,6 +360,7 @@ export interface INotificationDataMap {
   IIdeaMarkedAsSpamNotificationData: IIdeaMarkedAsSpamNotificationData;
   IInviteAcceptedNotificationData: IInviteAcceptedNotificationData;
   IInvitationToCosponsorIdeaNotificationData: IInvitationToCosponsorIdeaNotificationData;
+  ICosponsorOfYourIdeaNotificationData: ICosponsorOfYourIdeaNotificationData;
   IMentionInCommentNotificationData: IMentionInCommentNotificationData;
   IInternalCommentNotificationData: IInternalCommentNotificationData;
   IMentionInOfficialFeedbackNotificationData: IMentionInOfficialFeedbackNotificationData;
