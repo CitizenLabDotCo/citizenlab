@@ -10,6 +10,7 @@ pl:
       "comment_on_idea_you_follow": Komentarz do pomysłu, za którym podążasz
       "comment_on_initiative_you_follow": Komentarz do propozycji, którą śledzisz
       "cosponsor_of_your_initiative": Użytkownik akceptuje moje zaproszenie do współsponsorowania mojej propozycji.
+      "cosponsor_of_your_idea": Użytkownik akceptuje moje zaproszenie do współsponsorowania mojej propozycji.
       "event_registration_confirmation": Potwierdzenie rejestracji na wydarzenie
       "first_idea_published": Publikacja mojego pierwszego pomysłu
       "idea_marked_as_spam": Raport dot. pomysłów oznaczonych jako spam
@@ -18,6 +19,7 @@ pl:
       "initiative_marked_as_spam": Raport dot. propozycji oznaczonych jako spam
       "initiative_published": Publikacja mojej propozycji
       "invitation_to_cosponsor_initiative": Zaproszenie do współsponsorowania wniosku
+      "invitation_to_cosponsor_idea": Zaproszenie do współsponsorowania wniosku
       "initiative_resubmitted_for_review": Wniosek ponownie przesłany do przeglądu
       "invite_received": Zaproszenie
       "invite_reminder": Przypomnienie o zaproszeniu
@@ -138,6 +140,12 @@ pl:
       today: Dzisiaj
       wrong_content: 'Ten komentarz jest bez związku.'
       yesterday: Wczoraj
+    cosponsor_of_your_idea:
+      cta_reply_to: 'Wyświetl swoją propozycję'
+      event_description: 'Gratulacje! %{cosponsorName} przyjął Twoje zaproszenie do współsponsorowania Twojego wniosku.'
+      main_header: '%{cosponsorName} przyjęła Twoje zaproszenie do współsponsorowania Twojego wniosku'
+      subject: '%{cosponsorName} przyjęła Twoje zaproszenie do współsponsorowania Twojego wniosku'
+      preheader: '%{cosponsorName} przyjęła Twoje zaproszenie do współsponsorowania Twojego wniosku'
     cosponsor_of_your_initiative:
       cta_reply_to: 'Wyświetl swoją propozycję'
       event_description_initiative: 'Gratulacje! %{cosponsorName} przyjął Twoje zaproszenie do współsponsorowania Twojego wniosku.'
@@ -181,6 +189,15 @@ pl:
       main_header: '%{firstName}, masz nowe zadanie'
       subject: 'Zostałeś przypisany na platformie %{organizationName}'
       preheader_initiative: 'Przypisano do Ciebie propozycję %{authorName}'
+    invitation_to_cosponsor_idea:
+      cta_reply_to: 'Współsponsoruj tę propozycję'
+      event_description: '%{authorName} stworzył nową propozycję i chciałby, abyś ją współsponsorował.'
+      event_description_cosponsoring: 'Współsponsorowanie wniosku oznacza, że <strong>Twoje imię i nazwisko będzie wyświetlane</strong> wraz z imionami i nazwiskami innych współsponsorów wniosku.'
+      event_description_before_action: 'Aby zobaczyć propozycję i zaakceptować zaproszenie, musisz być zalogowany na swoje konto.'
+      event_description_action: 'Kliknij poniżej, aby przeczytać propozycję.'
+      main_header: 'Zostałeś zaproszony do współsponsorowania wniosku'
+      subject: 'Zostałeś zaproszony do współsponsorowania wniosku'
+      preheader: 'Zostałeś zaproszony do współsponsorowania propozycji %{authorName}'
     invitation_to_cosponsor_initiative:
       cta_reply_to: 'Współsponsoruj tę propozycję'
       event_description_initiative: '%{authorName} stworzył nową propozycję i chciałby, abyś ją współsponsorował.'
