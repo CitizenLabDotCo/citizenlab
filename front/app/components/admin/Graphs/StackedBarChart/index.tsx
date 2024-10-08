@@ -160,6 +160,8 @@ const StackedBarChart = <Row,>({
             onMouseOver={handleMouseOver(barIndex)}
             onMouseOut={handleMouseOut(barIndex)}
             stackId="a"
+            stroke="white"
+            strokeWidth={1}
           >
             {(typeof labels === 'object' || labels === true) && (
               <LabelList {...labelConfig} />
