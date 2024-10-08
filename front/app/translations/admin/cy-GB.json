@@ -2533,7 +2533,6 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeSupportLink": "https://support.citizenlab.co/en/articles/6354058-embedding-elements-in-the-content-builder-to-enrich-project-descriptions",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeUrlErrorMessage": "Rhowch gyfeiriad gwe dilys, er enghraifft https://example.com",
   "app.containers.admin.ContentBuilder.IframeMultiloc.url": "Gwreiddio",
-  "app.containers.admin.ContentBuilder.aboutBox": "Ynglŷn â blwch",
   "app.containers.admin.ContentBuilder.accordionMultiloc": "Acordion",
   "app.containers.admin.ContentBuilder.accordionMultilocDefaultOpenLabel": "Agor yn ddiofyn",
   "app.containers.admin.ContentBuilder.accordionMultilocTextLabel": "Testun",

@@ -2533,7 +2533,6 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeSupportLink": "https://support.citizenlab.co/en/articles/6354058-embedding-elements-in-the-content-builder-to-enrich-project-descriptions",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeUrlErrorMessage": "Ievadiet derīgu tīmekļa adresi, piemēram, https://example.com.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.url": "Ievietot",
-  "app.containers.admin.ContentBuilder.aboutBox": "Sadaļa “par”",
   "app.containers.admin.ContentBuilder.accordionMultiloc": "Akordeons",
   "app.containers.admin.ContentBuilder.accordionMultilocDefaultOpenLabel": "Atvērt pēc noklusējuma",
   "app.containers.admin.ContentBuilder.accordionMultilocTextLabel": "Teksts",

@@ -2533,7 +2533,6 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeSupportLink": "https://support.citizenlab.co/en/articles/6354058-embedding-elements-in-the-content-builder-to-enrich-project-descriptions",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeUrlErrorMessage": "Geçerli bir web adresi girin, örneğin https://example.com",
   "app.containers.admin.ContentBuilder.IframeMultiloc.url": "Gömmek",
-  "app.containers.admin.ContentBuilder.aboutBox": "Hakkında kutusu",
   "app.containers.admin.ContentBuilder.accordionMultiloc": "Akordeon",
   "app.containers.admin.ContentBuilder.accordionMultilocDefaultOpenLabel": "Varsayılan olarak açık",
   "app.containers.admin.ContentBuilder.accordionMultilocTextLabel": "Metin",

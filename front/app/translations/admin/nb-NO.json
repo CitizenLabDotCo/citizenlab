@@ -2533,7 +2533,6 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeSupportLink": "https://support.citizenlab.co/en/articles/6354058-embedding-elements-in-the-content-builder-to-enrich-project-descriptions",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeUrlErrorMessage": "Skriv inn en gyldig nettadresse, for eksempel https://example.com",
   "app.containers.admin.ContentBuilder.IframeMultiloc.url": "Bygg inn",
-  "app.containers.admin.ContentBuilder.aboutBox": "Om-boks",
   "app.containers.admin.ContentBuilder.accordionMultiloc": "Trekkspill",
   "app.containers.admin.ContentBuilder.accordionMultilocDefaultOpenLabel": "Åpne som standard",
   "app.containers.admin.ContentBuilder.accordionMultilocTextLabel": "Tekst",

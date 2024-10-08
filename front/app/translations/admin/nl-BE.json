@@ -2533,7 +2533,6 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeSupportLink": "https://support.citizenlab.co/nl/articles/7025826-projectbeschrijvingen-aanpassen-met-de-content-builder#h_cf8a993642",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeUrlErrorMessage": "Voer een geldig webadres in, bijvoorbeeld https://example.com",
   "app.containers.admin.ContentBuilder.IframeMultiloc.url": "Insluiten",
-  "app.containers.admin.ContentBuilder.aboutBox": "Over Box",
   "app.containers.admin.ContentBuilder.accordionMultiloc": "Accordeon",
   "app.containers.admin.ContentBuilder.accordionMultilocDefaultOpenLabel": "Standaard openen",
   "app.containers.admin.ContentBuilder.accordionMultilocTextLabel": "Tekst",

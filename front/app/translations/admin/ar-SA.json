@@ -2533,7 +2533,6 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeSupportLink": "https://support.citizenlab.co/en/articles/6354058-embedding-elements-in-the-content-builder-to-enrich-project-descriptions",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeUrlErrorMessage": "أدخل عنوان ويب صالحًا، على سبيل المثال https://example.com",
   "app.containers.admin.ContentBuilder.IframeMultiloc.url": "تضمين",
-  "app.containers.admin.ContentBuilder.aboutBox": "حول مربع الحوار",
   "app.containers.admin.ContentBuilder.accordionMultiloc": "الأكورديون",
   "app.containers.admin.ContentBuilder.accordionMultilocDefaultOpenLabel": "فتح افتراضيا",
   "app.containers.admin.ContentBuilder.accordionMultilocTextLabel": "نص",

@@ -2533,7 +2533,6 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeSupportLink": "https://support.citizenlab.co/en/articles/6354058-embedding-elements-in-the-content-builder-to-enrich-project-descriptions",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeUrlErrorMessage": "Enter a valid web address, for example https://example.com",
   "app.containers.admin.ContentBuilder.IframeMultiloc.url": "Embed",
-  "app.containers.admin.ContentBuilder.aboutBox": "O kompaniji Box",
   "app.containers.admin.ContentBuilder.accordionMultiloc": "Accordion",
   "app.containers.admin.ContentBuilder.accordionMultilocDefaultOpenLabel": "Open by default",
   "app.containers.admin.ContentBuilder.accordionMultilocTextLabel": "Text",

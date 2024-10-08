@@ -2533,7 +2533,6 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeSupportLink": "https://support.citizenlab.co/en/articles/6354058-embedding-elements-in-the-content-builder-to-enrich-project-descriptions",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeUrlErrorMessage": "Unesite valjanu web adresu, na primjer https://example.com",
   "app.containers.admin.ContentBuilder.IframeMultiloc.url": "Ugraditi",
-  "app.containers.admin.ContentBuilder.aboutBox": "Okvir s informacijama",
   "app.containers.admin.ContentBuilder.accordionMultiloc": "Harmonika",
   "app.containers.admin.ContentBuilder.accordionMultilocDefaultOpenLabel": "Otvoreno prema zadanim postavkama",
   "app.containers.admin.ContentBuilder.accordionMultilocTextLabel": "Tekst",

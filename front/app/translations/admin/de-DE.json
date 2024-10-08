@@ -2533,7 +2533,6 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeSupportLink": "https://support.citizenlab.co/de/articles/7025826-anpassen-von-projektbeschreibungen-mit-dem-content-builder",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeUrlErrorMessage": "Geben Sie eine gültige Webadresse ein, zum Beispiel https://beispiel.de",
   "app.containers.admin.ContentBuilder.IframeMultiloc.url": "Einbetten",
-  "app.containers.admin.ContentBuilder.aboutBox": "\"Über\"-Fenster",
   "app.containers.admin.ContentBuilder.accordionMultiloc": "Akkordeon",
   "app.containers.admin.ContentBuilder.accordionMultilocDefaultOpenLabel": "Standardmäßig geöffnet",
   "app.containers.admin.ContentBuilder.accordionMultilocTextLabel": "Text",

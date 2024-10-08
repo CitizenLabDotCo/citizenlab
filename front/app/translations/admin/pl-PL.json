@@ -2533,7 +2533,6 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeSupportLink": "https://support.citizenlab.co/en/articles/6354058-embedding-elements-in-the-content-builder-to-enrich-project-descriptions",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeUrlErrorMessage": "Wprowadź prawidłowy adres internetowy, na przykład https://example.com.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.url": "Osadzony",
-  "app.containers.admin.ContentBuilder.aboutBox": "O pudełku",
   "app.containers.admin.ContentBuilder.accordionMultiloc": "Akordeon",
   "app.containers.admin.ContentBuilder.accordionMultilocDefaultOpenLabel": "Otwórz domyślnie",
   "app.containers.admin.ContentBuilder.accordionMultilocTextLabel": "Tekst",

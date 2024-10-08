@@ -2533,7 +2533,6 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeSupportLink": "https://support.citizenlab.co/fr/articles/7025826-personnaliser-la-description-de-vos-projets-avec-l-editeur-de-contenu#h_cf8a993642",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeUrlErrorMessage": "Saisissez une URL valide, par exemple https://example.com",
   "app.containers.admin.ContentBuilder.IframeMultiloc.url": "URL",
-  "app.containers.admin.ContentBuilder.aboutBox": "À propos",
   "app.containers.admin.ContentBuilder.accordionMultiloc": "Section accordéon",
   "app.containers.admin.ContentBuilder.accordionMultilocDefaultOpenLabel": "Ouvrir par défaut",
   "app.containers.admin.ContentBuilder.accordionMultilocTextLabel": "Texte",
