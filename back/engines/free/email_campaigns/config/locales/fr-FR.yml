@@ -280,7 +280,7 @@ fr:
       yesterday: Hier
     comment_on_idea_you_follow:
       cta_reply_to: 'Répondre à %{commentAuthor}'
-      event_description: '%{authorNameFull} a placé une réaction sur ''%{inputTitle}''. Cliquez sur le bouton ci-dessous pour poursuivre la conversation avec %{authorName}.'
+      event_description: '%{authorNameFull} a réagi à « %{inputTitle} ». Cliquez sur le bouton ci-dessous pour continuer la conversation avec %{authorName}.'
       main_header:
         idea: '%{authorName} a commenté une idée que vous suivez'
         question: '%{authorName} a commenté une question que vous suivez'
@@ -311,7 +311,7 @@ fr:
       cta_publication: 'Faites votre retour à %{authorName}'
       main_header_prescreening: 'Une contribution à examiner'
       event_description_prescreening: '%{authorName} a soumis une nouvelle contribution sur votre plateforme.'
-      input_not_visible_prescreening: '<b>L''entrée ne sera pas visible</b> tant que vous n''aurez pas modifié son statut.'
+      input_not_visible_prescreening: '<b>La contribution ne sera pas visible</b> tant que vous n''aurez pas modifié son statut.'
       cta_prescreening: 'Examiner les données'
       days_ago: 'Il y a %{numberOfDays} jours'
       preheader: '%{authorName} a publié une nouvelle contribution sur votre plateforme'
