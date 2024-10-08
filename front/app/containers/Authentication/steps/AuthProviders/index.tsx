@@ -1,6 +1,7 @@
 import React, { memo, useCallback } from 'react';
 
 import { Text } from '@citizenlab/cl2-component-library';
+import { useLocation, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -21,7 +22,6 @@ import TextButton from '../_components/TextButton';
 import AuthProviderButton, { TOnContinueFunction } from './AuthProviderButton';
 import ClaveUnicaExpandedAuthProviderButton from './ClaveUnicaExpandedAuthProviderButton';
 import messages from './messages';
-import { useLocation, useSearchParams } from 'react-router-dom';
 
 const Container = styled.div`
   display: flex;
