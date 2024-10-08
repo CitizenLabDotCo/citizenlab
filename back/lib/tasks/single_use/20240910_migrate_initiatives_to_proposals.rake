@@ -224,7 +224,7 @@ def rake_20240910_proposal_attributes(initiative, project)
     assigned_at: initiative.assigned_at,
     author_hash: initiative.author_hash,
     anonymous: initiative.anonymous,
-    submitted_at: (initiative.published_at || initiative.created_at),
+    submitted_at: initiative.published_at || initiative.created_at,
     project: project,
     creation_phase: proposals_phase,
     phases: [proposals_phase]
@@ -236,16 +236,16 @@ def rake_20240910_assign_idea_status(proposal, initiative, reporter)
   status = rake_20240910_to_idea_status(initiative.initiative_status)
   if status
     proposal.idea_status = status
-    return true
+    true
   elsif %w[review_pending changes_requested].include?(code)
     proposal.idea_status = IdeaStatus.find_by(code: 'prescreening', participation_method: 'proposals')
-    return true
+    true
   else
     reporter.add_error(
       "No matching input status found for code #{code}",
       context: { tenant: AppConfiguration.instance.host, proposal: proposal.slug, input_status_code: code }
     )
-    return false
+    false
   end
 end
 
@@ -735,8 +735,7 @@ def rake_20240910_migrate_homepage_description_multiloc
     "ca-ES" => "Publiqueu la vostra proposta en aquesta plataforma, reculliu suport i col·loqueu-lo a l'agenda. O reviseu els suggeriments dels altres.",
     "cy-GB" => "Postiwch eich cynnig ar y platfform hwn, casglwch gefnogaeth a rhowch ef ar yr agenda. Neu adolygwch awgrymiadau eraill.",
     "da-DK" => "Du kan aflevere dit forslag på denne platform, indsamle støtte fra andre borgere og sætte det på kommunens dagsorden. Du kan også tage et kig på forslag fra andre borgere.",
-    "de-DE"=>
-      "Reiche deinen Vorschlag auf dieser Plattform ein, sammle dafür Unterstützung und setze ihn auf unsere Tagesordnung. Oder lass dich von anderen Vorschlägen inspirieren.",
+    "de-DE" => "Reiche deinen Vorschlag auf dieser Plattform ein, sammle dafür Unterstützung und setze ihn auf unsere Tagesordnung. Oder lass dich von anderen Vorschlägen inspirieren.",
     "el-GR" => "Δημοσιεύστε την πρότασή σας σε αυτή την πλατφόρμα, συγκεντρώστε υποστήριξη και βάλτε την στην ημερήσια διάταξη. Ή εξετάστε τις προτάσεις των άλλων.",
     "en-CA" => "Post your proposal on this platform, gather support and place it on the agenda. Or review the suggestions of others.",
     "en-GB" => "Post your proposal on this platform, gather support and place it on the agenda. Or review the suggestions of others.",
@@ -775,3 +774,5 @@ def rake_20240910_migrate_homepage_description_multiloc
 
   multiloc
 end
+
+# rubocop:enable Style/StringLiterals
