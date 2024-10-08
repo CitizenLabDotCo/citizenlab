@@ -935,7 +935,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.IdeaEditor.lastName": "Nachname",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.IdeaEditor.pleaseEnterValidUser": "Bitte geben Sie eine E-Mail-Adresse und/oder einen Vor- und Nachnamen ein, um diesen Beitrag einem Autor / einer Autorin zuzuordnen. Oder deaktivieren Sie das Zustimmungsfeld.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.IdeaEditor.thereIsAlreadyAnAccount": "Es gibt bereits ein Konto, das mit dieser E-Mail verknüpft ist. Diese Eingabe wird zu diesem hinzugefügt.",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.IdeaEditor.userConsent": "Zustimmung des/der Benutzer*in (Benutzerkonto erstellen)",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.IdeaEditor.userConsent": "Zustimmung des/der Nutzer*in (Nutzer*innenkonto erstellen)",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approve": "Freigeben",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approveAllInputs": "Alle Beiträge freigeben",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": "Autor*in:",
