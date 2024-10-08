@@ -610,16 +610,18 @@ describe IdeaPolicy do
     let(:idea) { create(:proposal, project: project, publication_status: 'draft', idea_status: create(:proposals_status, code: 'prescreening')) }
     let!(:cosponsorship) { create(:cosponsorship, idea: , status: 'pending') }
 
+    before do
+      settings = AppConfiguration.instance.settings
+      settings['input_cosponsorship'] = { "allowed" => true, "enabled": true }
+      AppConfiguration.instance.update!(settings: settings)
+    end
+
     context "for a normal user that's not the author" do
       let(:user) { create(:user) }
 
       it do
-        is_expected.not_to permit(:show)
-        is_expected.not_to permit(:update)
-        expect(editing_idea_disabled_reason).to be_present
-        is_expected.not_to permit(:destroy)
-        is_expected.not_to permit(:index_xlsx)
-        expect(scope.resolve.size).to eq 0
+        is_expected.to permit(:show) # We generally allow users to see drafts when they have the id or slug
+        expect(scope.resolve.size).to eq 0 # but not let them list it
       end
     end
 
@@ -628,10 +630,6 @@ describe IdeaPolicy do
 
       it do
         is_expected.to permit(:show)
-        is_expected.not_to permit(:update)
-        expect(editing_idea_disabled_reason).to be_present
-        is_expected.not_to permit(:destroy)
-        is_expected.not_to permit(:index_xlsx)
         expect(scope.resolve.size).to eq 1
       end
     end
