@@ -15,12 +15,18 @@ module Permissions
     def denied_reason_for_action(action, reaction_mode: nil, delete_action: false)
       case action
       when 'editing_idea'
+        # We have different order of rules for editing_idea, in order to:
+        # 1) Support editing of ideas by admins/moderators, even if the project
+        #    is no longer active
+        # 2) Performance optimization for the active descriptor, first checking
+        #    whether user is the author before doing more heavier checks
+        #    involving permissions and votes
         return if user && UserRoleService.new.can_moderate_project?(idea.project, user)
+        return IDEA_DENIED_REASONS[:not_author] if (idea.author_id != user&.id) || idea.author_id.nil? || !user&.active?
 
         reason = super
         return reason if reason
 
-        return IDEA_DENIED_REASONS[:not_author] if (idea.author_id != user&.id) || idea.author_id.nil? || !user&.active?
         return IDEA_DENIED_REASONS[:votes_exist] if idea.participation_method_on_creation.use_reactions_as_votes? && idea.reactions.where.not(user_id: user&.id).exists?
 
         IDEA_DENIED_REASONS[:published_after_screening] if idea.creation_phase&.prescreening_enabled && idea.published?
