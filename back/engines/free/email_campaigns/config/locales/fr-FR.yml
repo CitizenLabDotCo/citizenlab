@@ -291,7 +291,7 @@ fr:
         proposal: '%{authorName} a commenté une proposition que vous suivez'
         initiative: '%{authorName} a commenté une initiative que vous suivez'
         petition: '%{authorName} a commenté une pétition que vous suivez'
-      subject: 'Il y a un nouveau commentaire sur "%{input_title}"'
+      subject: 'Il y a un nouveau commentaire sur « %{input_title} »'
       preheader: '%{authorName} a publié un commentaire sur une idée pour %{organizationName}'
     comment_on_initiative_you_follow:
       cta_reply_to: 'Répondre à %{commentAuthor}'
@@ -306,7 +306,7 @@ fr:
       subject: 'Une nouvelle proposition a été publiée sur la plateforme de %{organizationName}'
       preheader: '%{authorName} a publié une nouvelle proposition sur votre plateforme'
     new_idea_for_admin:
-      main_header_publication: 'Une nouvelle entrée a été publiée sur votre plateforme'
+      main_header_publication: 'Une nouvelle contribution a été publiée sur votre plateforme'
       event_description_publication: '%{authorName} a soumis une nouvelle contribution sur votre plateforme. Découvrez-le maintenant, donnez votre avis ou modifiez son statut !'
       cta_publication: 'Faites votre retour à %{authorName}'
       main_header_prescreening: 'Une contribution à examiner'
@@ -518,7 +518,7 @@ fr:
         initiative: 'Votre initiative est dans "%{prescreening_status_title}"'
         petition: 'Votre pétition est dans "%{prescreening_status_title}"'
       message: '"%{input_title}"deviendra visible pour les autres lorsqu''elle aura été examinée et approuvée.'
-      subject: '"%{input_title}"est presque publié'
+      subject: '« %{input_title} » est presque publié'
       preheader: 'Il se trouve actuellement sur le site %{prescreening_status_title}'
     your_proposed_initiatives_digest:
       subject: 'Mise à jour hebdomadaire de votre proposition'
