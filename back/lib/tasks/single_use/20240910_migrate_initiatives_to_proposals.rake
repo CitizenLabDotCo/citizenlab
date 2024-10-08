@@ -35,13 +35,13 @@ namespace :initiatives_to_proposals do
           next
         end
         rake_20240910_migrate_status_changes(proposal, initiative, reporter)
-        rake_20240910_migrate_images_files(proposal, initiative, reporter) # Idea images, idea files and text images (header background is not migrated)
+        rake_20240910_migrate_images_files(proposal, initiative, reporter)
         rake_20240910_migrate_topics(proposal, initiative, reporter)
         rake_20240910_migrate_reactions(proposal, initiative, reporter)
-        rake_20240910_migrate_comments(proposal, initiative, reporter) # Including internal comments
+        rake_20240910_migrate_spam_reports(proposal, initiative, reporter)
+        rake_20240910_migrate_comments(proposal, initiative, reporter)
         rake_20240910_migrate_official_feedback(proposal, initiative, reporter)
         rake_20240910_migrate_followers(proposal, initiative, reporter)
-        rake_20240910_migrate_spam_reports(proposal, initiative, reporter)
         rake_20240910_migrate_cosponsors(proposal, initiative, reporter)
       end
       rake_20240910_migrate_initiatives_static_page(reporter)
@@ -312,6 +312,124 @@ def rake_20240910_migrate_images_files(proposal, initiative, reporter)
       reporter.add_error(
         text_image.errors.details,
         context: { tenant: AppConfiguration.instance.host, proposal: proposal.slug, text_image: text_image.id }
+      )
+    end
+  end
+end
+
+def rake_20240910_migrate_topics(proposal, initiative, reporter)
+  proposal.topics = initiative.topics
+  if !proposal.save
+    reporter.add_error(
+      proposal.errors.details,
+      context: { tenant: AppConfiguration.instance.host, proposal: proposal.slug }
+    )
+  end
+end
+
+def rake_20240910_migrate_reactions(proposal, initiative, reporter)
+  initiative.likes.each do |like|
+    reaction = Reaction.new(
+      mode: 'up',
+      user_id: like.user_id,
+      reactionable: proposal,
+      created_at: like.created_at
+    )
+    if !reaction.save
+      reporter.add_error(
+        reaction.errors.details,
+        context: { tenant: AppConfiguration.instance.host, proposal: proposal.slug, reaction: like.id }
+      )
+    end
+  end
+end
+
+def rake_20240910_migrate_spam_reports(proposal, initiative, reporter)
+  initiative.spam_reports.each do |old_report|
+    new_report = SpamReport.new(
+      spam_reportable: proposal,
+      user_id: old_report.user_id,
+      reason_code: old_report.reason_code,
+      other_reason: old_report.other_reason,
+      created_at: old_report.created_at
+    )
+    if !new_report.save
+      reporter.add_error(
+        new_report.errors.details,
+        context: { tenant: AppConfiguration.instance.host, proposal: proposal.slug, spam_report: old_report.id }
+      )
+    end
+  end
+end
+
+def rake_20240910_migrate_comments(proposal, initiative, reporter)
+  # There is only one internal comment, on a demo platform, so
+  # skipping those.
+  # TODO: Verify that comments tree structure is migrated correctly
+  comment_mapping = {}
+  initiative.comments.order(parent_id: :desc, created_at: :asc).each do |old_comment|
+    new_comment = Comment.new(
+      body_multiloc: old_comment.body_multiloc,
+      publication_status: old_comment.publication_status,
+      author_id: old_comment.author_id,
+      author_hash: old_comment.author_hash,
+      anonymous: old_comment.anonymous,
+      created_at: old_comment.created_at,
+      body_updated_at: old_comment.body_updated_at,
+      post: proposal
+    )
+    new_comment.parent_id = comment_mapping[old_comment.parent_id] if old_comment.parent_id
+    if !new_comment.save
+      reporter.add_error(
+        new_comment.errors.details,
+        context: { tenant: AppConfiguration.instance.host, proposal: proposal.slug, comment: old_comment.id }
+      )
+    end
+    comment_mapping[old_comment.id] = new_comment.id
+    old_comment.reactions.each do |reaction|
+      new_reaction = Reaction.new(
+        mode: reaction.mode,
+        user: reaction.user,
+        reactable: new_comment,
+        created_at: reaction.created_at
+      )
+      if !new_reaction.save
+        reporter.add_error(
+          new_reaction.errors.details,
+          context: { tenant: AppConfiguration.instance.host, proposal: proposal.slug, reaction: reaction.id }
+        )
+      end
+    end
+    old_comment.spam_reports.each do |old_report|
+      new_report = SpamReport.new(
+        spam_reportable: new_comment,
+        user_id: old_report.user_id,
+        reason_code: old_report.reason_code,
+        other_reason: old_report.other_reason,
+        created_at: old_report.created_at
+      )
+      if !new_report.save
+        reporter.add_error(
+          new_report.errors.details,
+          context: { tenant: AppConfiguration.instance.host, proposal: proposal.slug, spam_report: old_report.id }
+        )
+      end
+    end
+  end
+end
+
+def rake_20240910_migrate_official_feedback(proposal, initiative, reporter)
+  initiative.initiative_official_feedback.each do |old_feedback|
+    new_feedback = OfficialFeedback.new(
+      post: proposal,
+      body_multiloc: old_feedback.body_multiloc,
+      author_id: old_feedback.author_id,
+      created_at: old_feedback.created_at
+    )
+    if !new_feedback.save
+      reporter.add_error(
+        new_feedback.errors.details,
+        context: { tenant: AppConfiguration.instance.host, proposal: proposal.slug, official_feedback: old_feedback.id }
       )
     end
   end
