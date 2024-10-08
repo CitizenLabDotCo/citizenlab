@@ -5,13 +5,15 @@ namespace :initiatives_to_proposals do
     Tenant.safe_switch_each do |tenant|
       next if !AppConfiguration.instance.feature_activated?('initiatives') && !Initiative.exists?
 
+      SettingsService.new.activate_feature!('input_cosponsorship') if AppConfiguration.instance.feature_activated?('initiative_cosponsorship')
+
       project = rake_20240910_create_proposals_project(reporter)
       next if !project
 
       rake_20240910_substitute_homepage_element(project, reporter)
       rake_20240910_replace_navbaritem(project, reporter)
       rake_20240910_migrate_input_statuses(reporter)
-      map_initiatives_to_proposals = {}
+      # map_initiatives_to_proposals = {} # TODO: Delete?
       Initiative.where.not(publication_status: 'draft').each do |initiative|
         proposal_attributes = rake_20240910_proposal_attributes(initiative, project)
         proposal = Idea.new proposal_attributes
@@ -19,28 +21,28 @@ namespace :initiatives_to_proposals do
 
         rake_20240910_assign_publication(proposal, initiative)
         if proposal.save
-          map_initiatives_to_proposals[initiative.id] = proposal.id
+          # map_initiatives_to_proposals[initiative.id] = proposal.id
           reporter.add_create(
             'Proposal',
             proposal_attributes,
-            context: { tenant: tenant.host, initiative: initiative.id }
+            context: { tenant: tenant.host, proposal: initiative.slug }
           )
         else
           reporter.add_error(
             proposal.errors.details,
-            context: { tenant: tenant.host, initiative: initiative.id }
+            context: { tenant: tenant.host, proposal: proposal.slug }
           )
           next
         end
-        rake_20240910_migrate_changed_status(proposal, reporter)
-        rake_20240910_migrate_images_files(proposal, reporter) # Idea images, idea files and text images (header background is not migrated)
-        rake_20240910_migrate_topics(proposal, reporter)
-        rake_20240910_migrate_reactions(proposal, reporter)
-        rake_20240910_migrate_comments(proposal, reporter) # Including internal comments
-        rake_20240910_migrate_official_feedback(proposal, reporter)
-        rake_20240910_migrate_followers(proposal, reporter)
-        rake_20240910_migrate_spam_reports(proposal, reporter)
-        rake_20240910_migrate_cosponsors(proposal, reporter)
+        rake_20240910_migrate_status_changes(proposal, initiative, reporter)
+        rake_20240910_migrate_images_files(proposal, initiative, reporter) # Idea images, idea files and text images (header background is not migrated)
+        rake_20240910_migrate_topics(proposal, initiative, reporter)
+        rake_20240910_migrate_reactions(proposal, initiative, reporter)
+        rake_20240910_migrate_comments(proposal, initiative, reporter) # Including internal comments
+        rake_20240910_migrate_official_feedback(proposal, initiative, reporter)
+        rake_20240910_migrate_followers(proposal, initiative, reporter)
+        rake_20240910_migrate_spam_reports(proposal, initiative, reporter)
+        rake_20240910_migrate_cosponsors(proposal, initiative, reporter)
       end
       rake_20240910_migrate_initiatives_static_page(reporter)
       SettingsService.new.deactivate_feature!('initiatives')
@@ -61,12 +63,11 @@ def rake_20240910_create_proposals_project(reporter)
   project = Project.new(
     title_multiloc: rake_20240910_migrate_project_title_multiloc,
     description_multiloc: rake_20240910_migrate_project_description_multiloc,
-    slug: 'proposals', # Does this work if there is already a project with this slug?
+    slug: 'proposals', # TODO: Does this work if there is already a project with this slug?
     default_assignee: User.active.admin.order(:created_at).reject(&:super_admin?).first
     # TODO: Check if project topics are included like this
   )
   project.admin_publication_attributes = { publication_status: 'archived' } if !config.feature_activated?('initiatives')
-  # Set visibility and granular permissions according to the permissions for initiatives
   if !project.save
     reporter.add_error(
       project.errors.details,
@@ -83,8 +84,7 @@ def rake_20240910_create_proposals_project(reporter)
     participation_method: 'proposals',
     expire_days_limit: config.settings('initiatives', 'days_limit'),
     reacting_threshold: config.settings('initiatives', 'reacting_threshold'),
-    prescreening_enabled: config.feature_activated?('initiative_review'),
-    # TODO: Include cosponsorship settings
+    prescreening_enabled: config.feature_activated?('initiative_review')
   )
   ParticipationMethod::Proposals.new(phase).assign_defaults_for_phase
   if !phase.save
@@ -93,6 +93,35 @@ def rake_20240910_create_proposals_project(reporter)
       context: { tenant: config.host, phase: phase.id }
     )
     return false
+  end
+  Permissions::PermissionsUpdateService.new.update_permissions_for_scope(phase)
+  phase.reload
+  Permission.where(action: %w[posting_initiative commenting_initiative reacting_initiative]).each do |old_permission|
+    permission_mapping = {
+      'posting_initiative' => 'posting_idea',
+      'commenting_initiative' => 'commenting_idea',
+      'reacting_initiative' => 'reacting_idea'
+    }
+    new_permission = phase.permissions.find_by(action: permission_mapping[old_permission.action])
+    new_permission.assign_attributes(
+      permitted_by: old_permission.permitted_by,
+      global_custom_fields: old_permission.global_custom_fields,
+      verification_expiry: old_permission.verification_expiry,
+      access_denied_explanation_multiloc: old_permission.access_denied_explanation_multiloc,
+      group_ids: old_permission.group_ids
+    )
+    old_permission.permissions_custom_fields.order(:ordering).each do |old_custom_field|
+      new_permission.permissions_custom_fields << {
+        custom_field_id: old_custom_field.custom_field_id,
+        required: old_custom_field.required
+      }
+    end
+    if !new_permission.save
+      reporter.add_error(
+        new_permission.errors.details,
+        context: { tenant: config.host, permission: new_permission.action }
+      )
+    end
   end
   project
 end
@@ -178,12 +207,10 @@ end
 
 def rake_20240910_proposal_attributes(initiative, project)
   proposals_phase = project.phases.first
-  # Do we want to preserve the slug?
   {
+    slug: initiative.slug,
     title_multiloc: initiative.title_multiloc,
     body_multiloc: initiative.body_multiloc,
-    publication_status: initiative.publication_status,
-    published_at: initiative.published_at,
     author_id: initiative.author_id,
     created_at: initiative.created_at,
     updated_at: initiative.updated_at,
@@ -201,8 +228,8 @@ def rake_20240910_proposal_attributes(initiative, project)
 end
 
 def rake_20240910_assign_idea_status(proposal, initiative, reporter)
-  code = initiative.initiative_status.code
-  status = IdeaStatus.find_by(code: code, participation_method: 'proposals')
+  code = initiative.initiative_status&.code
+  status = rake_20240910_to_idea_status(initiative.initiative_status)
   if status
     proposal.idea_status = status
     return true
@@ -212,10 +239,14 @@ def rake_20240910_assign_idea_status(proposal, initiative, reporter)
   else
     reporter.add_error(
       "No matching input status found for code #{code}",
-      context: { tenant: AppConfiguration.instance.host, initiative: initiative.id, input_status_code: code }
+      context: { tenant: AppConfiguration.instance.host, proposal: proposal.slug, input_status_code: code }
     )
     return false
   end
+end
+
+def rake_20240910_to_idea_status(initiative_status)
+  IdeaStatus.find_by(code: initiative_status.code, participation_method: 'proposals')
 end
 
 def rake_20240910_assign_publication(proposal, initiative)
@@ -225,6 +256,64 @@ def rake_20240910_assign_publication(proposal, initiative)
   else
     proposal.publication_status = 'submitted'
     proposal.submitted_at = initiative.created_at
+  end
+end
+
+def rake_20240910_migrate_status_changes(proposal, initiative, reporter)
+  previous_status_id = nil
+  initiative.initiative_status_changes.order(:created_at).each do |change|
+    next_status_id = rake_20240910_to_idea_status(change.initiative_status)&.id
+    activity = Activity.new(
+      item: proposal,
+      action: 'changed_status',
+      user: change.user,
+      acted_at: change.created_at,
+      payload: { change: [previous_status_id, next_status_id] }
+    )
+    previous_status_id = next_status_id
+    if !activity.save
+      reporter.add_error(
+        activity.errors.details,
+        context: { tenant: AppConfiguration.instance.host, proposal: proposal.slug, status_change: change.id }
+      )
+    end
+  end
+end
+
+def rake_20240910_migrate_images_files(proposal, initiative, reporter)
+  initiative.initiative_images.order(:ordering).each do |old_image|
+    new_image = IdeaImage.new(
+      idea: proposal,
+      remote_image_url: old_image.image_url
+    )
+    if !new_image.save
+      reporter.add_error(
+        new_image.errors.details,
+        context: { tenant: AppConfiguration.instance.host, proposal: proposal.slug, image: old_image.id }
+      )
+    end
+  end
+  initiative.initiative_files.order(:ordering).each do |old_file|
+    new_file = IdeaFile.new(
+      idea: proposal,
+      name: old_file.name,
+      remote_file_url: old_file.file_url
+    )
+    if !new_file.save
+      reporter.add_error(
+        new_file.errors.details,
+        context: { tenant: AppConfiguration.instance.host, proposal: proposal.slug, file: old_file.id }
+      )
+    end
+  end
+  initiative.text_images.each do |text_image|
+    text_image.imageable = proposal
+    if !text_image.save
+      reporter.add_error(
+        text_image.errors.details,
+        context: { tenant: AppConfiguration.instance.host, proposal: proposal.slug, text_image: text_image.id }
+      )
+    end
   end
 end
 
