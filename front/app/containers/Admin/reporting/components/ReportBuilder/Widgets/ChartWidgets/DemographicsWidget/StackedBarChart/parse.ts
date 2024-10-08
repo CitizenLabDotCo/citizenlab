@@ -1,4 +1,3 @@
-import { colors } from '@citizenlab/cl2-component-library';
 import { Multiloc } from 'typings';
 
 import { DemographicsResponse } from 'api/graph_data_units/responseTypes/DemographicsWidget';
