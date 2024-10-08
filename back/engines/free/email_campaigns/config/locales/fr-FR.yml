@@ -55,7 +55,7 @@ fr:
       "voting_last_chance": Dernière chance pour voter
       "voting_phase_started": Nouvelle phase de projet avec vote
       "voting_results": Résultats du vote
-      "your_input_in_screening": Ma contribution attend d'être examinée
+      "your_input_in_screening": Ma contribution est en attente de validation
       "your_proposed_initiatives_digest": Aperçu hebdomadaire de vos propositions
     general:
       by_author: 'par %{authorName}'
@@ -169,14 +169,14 @@ fr:
       title_your_weekly_report: '%{firstName}, la contribution des citoyens est en attente de votre mise à jour'
       cta_manage_your_input: 'Gérer vos contributions'
       x_inputs_need_your_feedback: 'les intrants ont besoin de votre avis'
-      title_assignment_past_week: 'Dernières entrées qui vous ont été attribuées'
-      title_no_assignment_past_week: 'Aucune nouvelle entrée ne vous a été attribuée la semaine dernière'
+      title_assignment_past_week: 'Dernières contributions qui vous ont été assignées'
+      title_no_assignment_past_week: 'Aucune nouvelle contribution ne vous a été assignée la semaine dernière'
       yesterday_by_author: 'Hier par %{author}'
       today_by_author: 'Aujourd''hui par %{author}'
       x_days_ago_by_author: 'Il y a %{x} jours par %{author}'
       title_successful_past_week: 'Affecté à vous qui avez atteint le seuil'
     idea_marked_as_spam:
-      cta_review: 'Vérification prépublication'
+      cta_review: 'Vérifier'
       report_inappropriate_offensive_content: 'Je trouve ce contenu inapproprié ou offensant.'
       report_not_an_idea: 'Ce contenu n''est pas pertinent et n''a pas sa place ici.'
       subject: 'Un spam a été signalé sur la plateforme de %{organizationName}'
@@ -254,7 +254,7 @@ fr:
       main_header: '%{authorNameFirst} vous a mentionné dans un commentaire interne.'
       preheader: '%{authorNameFull} vous a mentionné dans un commentaire interne.'
     moderator_digest:
-      subject: 'Rapport hebdomadaire du gestionnaire de "%{project_title}"'
+      subject: 'Rapport hebdomadaires du projet « %{project_title} »'
       preheader: 'Résumé du rapport administrateur projet de %{organizationName}'
       title_your_weekly_report: '%{firstName}, voici votre rapport hebdomadaire !'
       text_introduction: 'Voici une sélection des idées qui ont généré le plus d''activité la semaine dernière. Découvrez ce qui se passe sur votre plateforme !'
@@ -494,8 +494,8 @@ fr:
         initiative: 'Votre initiative a été publiée'
         petition: 'Votre pétition a été publiée'
       main_header: 'Vous avez posté « %{input_title} »'
-      header_message: 'Veillons à ce qu''il soit lu.'
-      message_get_votes: 'Atteindre plus de personnes'
+      header_message: 'Assurons-nous qu''il soit lu.'
+      message_get_votes: 'Faites passer le message'
       action_published_idea: 'Publié'
       action_add_image: '%{addImageLink} pour donner plus de visibilité à votre idée'
       add_image: 'Ajoutez une image'
@@ -517,9 +517,9 @@ fr:
         proposal: 'Le statut de votre proposition est « %{prescreening_status_title} »'
         initiative: 'Le statut de votre initiative est « %{prescreening_status_title} »'
         petition: 'Le statut de votre pétition est « %{prescreening_status_title} »'
-      message: '"%{input_title}"deviendra visible pour les autres lorsqu''elle aura été examinée et approuvée.'
+      message: 'Votre contribution « %{input_title} » deviendra visible pour les autres une fois qu''elle aura été relue et approuvée.'
       subject: '« %{input_title} » est presque publié'
-      preheader: 'Il se trouve actuellement sur le site %{prescreening_status_title}'
+      preheader: 'Le statut de votre contribution est actuellement « %{prescreening_status_title} »'
     your_proposed_initiatives_digest:
       subject: 'Mise à jour hebdomadaire de votre proposition'
       preheader: 'Qu''est-il arrivé à votre proposition la semaine dernière ?'
@@ -656,7 +656,7 @@ fr:
         user_is_invited_to_cosponsor_a_proposal: 'Un utilisateur est invité à soutenir une proposition'
         user_is_mentioned_in_internal_comment: 'L''utilisateur est mentionné dans un commentaire interne'
         new_input_is_published: 'Une nouvelle contribution a été postée'
-        new_input_awaits_screening: 'Une nouvelle contribution attend d''être examinée'
+        new_input_awaits_screening: 'Nouvelle contribution en attente de validation'
         new_proposal_is_posted: 'Publication d''une nouvelle proposition'
         project_phase_changes: 'Changements de phase du projet'
         project_published: 'Publication d''un projet'
