@@ -45,7 +45,6 @@ ALTER TABLE IF EXISTS ONLY public.analysis_background_tasks DROP CONSTRAINT IF E
 ALTER TABLE IF EXISTS ONLY public.ideas_phases DROP CONSTRAINT IF EXISTS fk_rails_bd36415a82;
 ALTER TABLE IF EXISTS ONLY public.polls_options DROP CONSTRAINT IF EXISTS fk_rails_bb813b4549;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_b894d506a0;
-ALTER TABLE IF EXISTS ONLY public.official_feedbacks DROP CONSTRAINT IF EXISTS fk_rails_b4a1624855;
 ALTER TABLE IF EXISTS ONLY public.custom_field_options DROP CONSTRAINT IF EXISTS fk_rails_b48da9e6c7;
 ALTER TABLE IF EXISTS ONLY public.baskets DROP CONSTRAINT IF EXISTS fk_rails_b3d04c10d5;
 ALTER TABLE IF EXISTS ONLY public.phases DROP CONSTRAINT IF EXISTS fk_rails_b0efe660f5;
@@ -200,7 +199,8 @@ DROP INDEX IF EXISTS public.index_permissions_custom_fields_on_custom_field_id;
 DROP INDEX IF EXISTS public.index_permission_field;
 DROP INDEX IF EXISTS public.index_onboarding_campaign_dismissals_on_user_id;
 DROP INDEX IF EXISTS public.index_official_feedbacks_on_user_id;
-DROP INDEX IF EXISTS public.index_official_feedbacks_on_idea_id;
+DROP INDEX IF EXISTS public.index_official_feedbacks_on_post_id;
+DROP INDEX IF EXISTS public.index_official_feedbacks_on_post;
 DROP INDEX IF EXISTS public.index_notifications_on_spam_report_id;
 DROP INDEX IF EXISTS public.index_notifications_on_recipient_id_and_read_at;
 DROP INDEX IF EXISTS public.index_notifications_on_recipient_id;
@@ -1098,9 +1098,10 @@ CREATE TABLE public.official_feedbacks (
     body_multiloc jsonb DEFAULT '{}'::jsonb,
     author_multiloc jsonb DEFAULT '{}'::jsonb,
     user_id uuid,
-    idea_id uuid,
+    post_id uuid,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    post_type character varying
 );
 
 
@@ -1121,12 +1122,12 @@ CREATE VIEW public.analytics_build_feedbacks AS
           WHERE (((activities.action)::text = 'changed_status'::text) AND ((activities.item_type)::text = ANY (ARRAY[('Idea'::character varying)::text, ('Initiative'::character varying)::text])))
           GROUP BY activities.item_id
         UNION ALL
-         SELECT official_feedbacks.idea_id AS post_id,
+         SELECT official_feedbacks.post_id,
             min(official_feedbacks.created_at) AS feedback_first_date,
             1 AS feedback_official,
             0 AS feedback_status_change
            FROM public.official_feedbacks
-          GROUP BY official_feedbacks.idea_id) a
+          GROUP BY official_feedbacks.post_id) a
   GROUP BY post_id;
 
 
@@ -5609,10 +5610,17 @@ CREATE INDEX index_notifications_on_spam_report_id ON public.notifications USING
 
 
 --
--- Name: index_official_feedbacks_on_idea_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_official_feedbacks_on_post; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_official_feedbacks_on_idea_id ON public.official_feedbacks USING btree (idea_id);
+CREATE INDEX index_official_feedbacks_on_post ON public.official_feedbacks USING btree (post_id, post_type);
+
+
+--
+-- Name: index_official_feedbacks_on_post_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_official_feedbacks_on_post_id ON public.official_feedbacks USING btree (post_id);
 
 
 --
@@ -6780,14 +6788,6 @@ ALTER TABLE ONLY public.custom_field_options
 
 
 --
--- Name: official_feedbacks fk_rails_b4a1624855; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.official_feedbacks
-    ADD CONSTRAINT fk_rails_b4a1624855 FOREIGN KEY (idea_id) REFERENCES public.ideas(id);
-
-
---
 -- Name: notifications fk_rails_b894d506a0; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7531,7 +7531,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240821135150'),
 ('20240826083227'),
 ('20240829185625'),
-('20240911143007'),
 ('20240917181018'),
 ('20240923112800'),
 ('20240923112801'),
