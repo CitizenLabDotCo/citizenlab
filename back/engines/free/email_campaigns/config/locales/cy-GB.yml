@@ -10,6 +10,7 @@ cy:
       "comment_on_idea_you_follow": Sylw ar syniad rydych chi'n ei ddilyn
       "comment_on_initiative_you_follow": Sylw ar gynnig yr ydych yn ei ddilyn
       "cosponsor_of_your_initiative": Mae defnyddiwr yn derbyn fy ngwahoddiad i gyd-noddi fy nghynnig
+      "cosponsor_of_your_idea": Mae defnyddiwr yn derbyn fy ngwahoddiad i gyd-noddi fy nghynnig
       "event_registration_confirmation": Cadarnhad cofrestru digwyddiad
       "first_idea_published": Cyhoeddi fy syniad cyntaf
       "idea_marked_as_spam": Adroddiad sbam syniad
@@ -18,6 +19,7 @@ cy:
       "initiative_marked_as_spam": Adroddiad sbam cynnig
       "initiative_published": Cyhoeddi fy nghynnig
       "invitation_to_cosponsor_initiative": Gwahoddiad i gyd-noddi cynnig
+      "invitation_to_cosponsor_idea": Gwahoddiad i gyd-noddi cynnig
       "initiative_resubmitted_for_review": Ailgyflwynwyd y cynnig i'w adolygu
       "invite_received": Gwahoddiad
       "invite_reminder": Nodyn atgoffa gwahoddiad
@@ -138,6 +140,12 @@ cy:
       today: Heddiw
       wrong_content: 'Nid yw''r sylw yn berthnasol.'
       yesterday: Ddoe
+    cosponsor_of_your_idea:
+      cta_reply_to: 'Gweld eich cynnig'
+      event_description: 'Llongyfarchiadau! %{cosponsorName} wedi derbyn eich gwahoddiad i gyd-noddi eich cynnig.'
+      main_header: '%{cosponsorName} wedi derbyn eich gwahoddiad i gyd-noddi eich cynnig'
+      subject: '%{cosponsorName} wedi derbyn eich gwahoddiad i gyd-noddi eich cynnig'
+      preheader: '%{cosponsorName} wedi derbyn eich gwahoddiad i gyd-noddi eich cynnig'
     cosponsor_of_your_initiative:
       cta_reply_to: 'Gweld eich cynnig'
       event_description_initiative: 'Llongyfarchiadau! %{cosponsorName} wedi derbyn eich gwahoddiad i gyd-noddi eich cynnig.'
@@ -181,6 +189,15 @@ cy:
       main_header: '%{firstName}, mae gennych aseiniad newydd'
       subject: 'Mae gennych aseiniad ar y platfform o %{organizationName}'
       preheader_initiative: 'Mae''r cynnig o %{authorName} wedi''i aseinio i chi'
+    invitation_to_cosponsor_idea:
+      cta_reply_to: 'Cyd-noddi''r cynnig hwn'
+      event_description: '%{authorName} wedi creu cynnig newydd a hoffem i chi ei gyd-noddi.'
+      event_description_cosponsoring: 'Mae cyd-noddi cynnig yn golygu <strong>bydd eich enw yn cael ei arddangos</strong> gydag enwau cyd-noddwyr eraill y cynnig.'
+      event_description_before_action: 'I weld y cynnig a derbyn y gwahoddiad, rhaid i chi fod wedi mewngofnodi i''ch cyfrif.'
+      event_description_action: 'Cliciwch isod i ddarllen y cynnig.'
+      main_header: 'Rydych wedi cael eich gwahodd i gyd-noddi cynnig'
+      subject: 'Rydych wedi cael eich gwahodd i gyd-noddi cynnig'
+      preheader: 'Rydych wedi cael eich gwahodd i gyd-noddi''r cynnig o %{authorName}'
     invitation_to_cosponsor_initiative:
       cta_reply_to: 'Cyd-noddi''r cynnig hwn'
       event_description_initiative: '%{authorName} wedi creu cynnig newydd a hoffem i chi ei gyd-noddi.'

@@ -5,6 +5,7 @@ def public_input_params(spec)
   spec.parameter :title_multiloc, 'Multi-locale field with the idea title', scope: :idea, required: true, extra: 'Maximum 100 characters'
   spec.parameter :body_multiloc, 'Multi-locale field with the idea body', scope: :idea, extra: 'Required if not draft'
   spec.parameter :topic_ids, 'Array of ids of the associated topics', scope: :idea
+  spec.parameter :cosponsor_ids, 'Array of ids of the desired cosponsors', scope: :idea
   spec.parameter :location_point_geojson, 'A GeoJSON point that situates the location the idea applies to', scope: :idea
   spec.parameter :location_description, 'A human readable description of the location the idea applies to', scope: :idea
   spec.parameter :idea_images_attributes, 'an array of base64 images to create', scope: :idea
@@ -380,19 +381,26 @@ resource 'Ideas' do
     context 'in a proposals phase' do
       public_input_params(self)
       with_options scope: :idea do
-        # parameter :cosponsor_ids, 'Array of user ids of the desired cosponsors' # TODO: cosponsors
+        parameter :cosponsor_ids, 'Array of user ids of the desired cosponsors'
       end
 
       let(:with_permissions) { false }
       let(:phase) { create(:proposals_phase, with_permissions: with_permissions) }
       let(:project) { phase.project }
       let(:creation_phase_id) { phase.id }
+      let!(:custom_form) { create(:custom_form, :with_default_fields, participation_context: phase) }
       let(:input) { build(:proposal, project: project) }
       let(:title_multiloc) { { 'en' => 'My proposal title' } }
       let(:body_multiloc) { { 'en' => 'My proposal body' } }
       let(:topic_ids) { [create(:topic, projects: [project]).id] }
+      let(:cosponsors) { create_list(:user, 2) }
+      let(:cosponsor_ids) { cosponsors.map(&:id) }
       let!(:proposed_status) { create(:proposals_status, code: 'proposed') }
       let!(:prescreening_status) { create(:proposals_status, code: 'prescreening') }
+
+      before do
+        CustomField.find_by(code: 'cosponsor_ids').update!(enabled: true)
+      end
 
       context 'when visitor' do
         example '[error] Create a proposal', document: false do
@@ -455,6 +463,7 @@ resource 'Ideas' do
           expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to eq title_multiloc
           expect(json_response.dig(:data, :attributes, :body_multiloc).stringify_keys).to eq body_multiloc
           expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
+          expect(json_response.dig(:data, :relationships, :cosponsors, :data).pluck(:id)).to match_array cosponsor_ids
         end
       end
     end

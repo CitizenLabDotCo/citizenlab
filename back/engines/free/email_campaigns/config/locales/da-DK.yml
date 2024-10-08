@@ -10,6 +10,7 @@ da:
       "comment_on_idea_you_follow": En kommentar til en idé, som du følger
       "comment_on_initiative_you_follow": En kommentar til et forslag, som du følger
       "cosponsor_of_your_initiative": En bruger accepterer min invitation til at være medstiller på mit forslag
+      "cosponsor_of_your_idea": En bruger accepterer min invitation til at være medstiller på mit forslag
       "event_registration_confirmation": Bekræftelse af tilmelding til begivenhed
       "first_idea_published": Publicering af min første idé
       "idea_marked_as_spam": Rapportering af idé-spam
@@ -18,6 +19,7 @@ da:
       "initiative_marked_as_spam": Rapportering af forslag-spam
       "initiative_published": Publicering af mit forslag
       "invitation_to_cosponsor_initiative": Invitation til at være medstiller på et forslag
+      "invitation_to_cosponsor_idea": Invitation til at være medstiller på et forslag
       "initiative_resubmitted_for_review": Forslaget indsendes igen til gennemgang
       "invite_received": Invitation
       "invite_reminder": Invitationspåmindelse
@@ -138,6 +140,12 @@ da:
       today: I dag
       wrong_content: 'Kommentaren er ikke relevant.'
       yesterday: I går
+    cosponsor_of_your_idea:
+      cta_reply_to: 'Se dit forslag'
+      event_description: 'Tillykke! %{cosponsorName} har accepteret din invitation til at være medstiller på dit forslag.'
+      main_header: '%{cosponsorName} har accepteret din invitation til at være medstiller på dit forslag'
+      subject: '%{cosponsorName} har accepteret din invitation til at være medstiller på dit forslag'
+      preheader: '%{cosponsorName} har accepteret din invitation til at være medstiller på dit forslag'
     cosponsor_of_your_initiative:
       cta_reply_to: 'Se dit forslag'
       event_description_initiative: 'Tillykke! %{cosponsorName} har accepteret din invitation til at være medstiller på dit forslag.'
@@ -181,6 +189,15 @@ da:
       main_header: '%{firstName}, du har en ny tildeling'
       subject: 'Du har en ny tildeling på platformen for %{organizationName}'
       preheader_initiative: 'Du er blevet tildelt %{authorName}s forslag'
+    invitation_to_cosponsor_idea:
+      cta_reply_to: 'Vær medstiller på dette forslag'
+      event_description: '%{authorName} har stillet et nyt forslag og vil gerne have dig til at være medstiller på det.'
+      event_description_cosponsoring: 'At være medstiller på et forslag betyder, at <strong>dit navn vil blive vist</strong> sammen med navnene på de øvrige medstillere.'
+      event_description_before_action: 'For at se forslaget og acceptere invitationen, skal du være logget ind på din konto.'
+      event_description_action: 'Klik nedenfor for at se forslaget.'
+      main_header: 'Du er blevet inviteret til at være medstiller på et forslag'
+      subject: 'Du er blevet inviteret til at være medstiller på et forslag'
+      preheader: 'Du er blevet inviteret til at være medstiller på forslaget fra %{authorName}'
     invitation_to_cosponsor_initiative:
       cta_reply_to: 'Vær medstiller på dette forslag'
       event_description_initiative: '%{authorName} har stillet et nyt forslag og vil gerne have dig til at være medstiller på det.'

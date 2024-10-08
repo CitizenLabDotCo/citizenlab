@@ -90,6 +90,19 @@ export interface ICommentOnIdeaYouFollowNotificationData
   };
 }
 
+export interface ICosponsorOfYourIdeaNotificationData
+  extends IBaseNotificationData {
+  attributes: {
+    type: 'cosponsor_of_your_idea';
+    read_at: string | null;
+    created_at: string;
+    initiating_user_first_name: string | null;
+    initiating_user_last_name: string | null;
+    initiating_user_slug: string | null;
+    post_slug: string | null;
+  };
+}
+
 export interface IIdeaAssignedToYouNotificationData
   extends IBaseNotificationData {
   attributes: {
@@ -126,6 +139,18 @@ export interface IInviteAcceptedNotificationData extends IBaseNotificationData {
     initiating_user_first_name: string | null;
     initiating_user_last_name: string | null;
     initiating_user_slug: string | null;
+  };
+}
+export interface IInvitationToCosponsorIdeaNotificationData
+  extends IBaseNotificationData {
+  attributes: {
+    type: 'invitation_to_cosponsor_idea';
+    read_at: string | null;
+    created_at: string;
+    initiating_user_first_name: string | null;
+    initiating_user_last_name: string | null;
+    initiating_user_slug: string | null;
+    post_slug: string | null;
   };
 }
 
@@ -334,6 +359,7 @@ export interface INotificationDataMap {
   IIdeaAssignedToYouNotificationData: IIdeaAssignedToYouNotificationData;
   IIdeaMarkedAsSpamNotificationData: IIdeaMarkedAsSpamNotificationData;
   IInviteAcceptedNotificationData: IInviteAcceptedNotificationData;
+  IInvitationToCosponsorIdeaNotificationData: IInvitationToCosponsorIdeaNotificationData;
   IMentionInCommentNotificationData: IMentionInCommentNotificationData;
   IInternalCommentNotificationData: IInternalCommentNotificationData;
   IMentionInOfficialFeedbackNotificationData: IMentionInOfficialFeedbackNotificationData;

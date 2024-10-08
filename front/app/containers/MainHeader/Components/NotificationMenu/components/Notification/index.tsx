@@ -12,6 +12,7 @@ import {
   IIdeaAssignedToYouNotificationData,
   IIdeaMarkedAsSpamNotificationData,
   IInviteAcceptedNotificationData,
+  IInvitationToCosponsorIdeaNotificationData,
   IMentionInCommentNotificationData,
   IInternalCommentNotificationData,
   IMentionInOfficialFeedbackNotificationData,
@@ -41,6 +42,7 @@ import CommentOnYourCommentNotification from '../CommentOnYourCommentNotificatio
 import IdeaAssignedToYouNotification from '../IdeaAssignedToYouNotification';
 import IdeaMarkedAsSpamNotification from '../IdeaMarkedAsSpamNotification';
 import InternalCommentNotification from '../InternalCommentNotification';
+import InvitationToCosponsorIdeaNotification from '../InvitationToCosponsorIdeaNotification';
 import InviteAcceptedNotification from '../InviteAcceptedNotification';
 import MentionInCommentNotification from '../MentionInCommentNotification';
 import MentionInOfficialFeedbackNotification from '../MentionInOfficialFeedbackNotification';
@@ -99,7 +101,6 @@ const Notification = ({ notification }: Props) => {
           notification={notification as ICommentOnIdeaYouFollowNotificationData}
         />
       );
-
     case 'idea_assigned_to_you':
       return (
         <IdeaAssignedToYouNotification
@@ -120,6 +121,14 @@ const Notification = ({ notification }: Props) => {
         />
       );
 
+    case 'invitation_to_cosponsor_idea':
+      return (
+        <InvitationToCosponsorIdeaNotification
+          notification={
+            notification as IInvitationToCosponsorIdeaNotificationData
+          }
+        />
+      );
     case 'mention_in_comment':
       return (
         <MentionInCommentNotification
