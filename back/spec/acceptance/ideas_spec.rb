@@ -268,7 +268,7 @@ resource 'Ideas' do
           action_descriptors: {
             editing_idea: {
               enabled: false,
-              disabled_reason: 'posting_not_supported',
+              disabled_reason: 'not_author',
               future_enabled_at: nil
             },
             commenting_idea: {
