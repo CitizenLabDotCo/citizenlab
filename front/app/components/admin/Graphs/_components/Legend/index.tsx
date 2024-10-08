@@ -49,12 +49,8 @@ const Legend = ({
             key={i}
             className="graph-legend-item"
           >
-            <Icon {...item} {...{ color: item.itemColor || item.color }} />
-            <text
-              transform="translate(18,12)"
-              fontSize="14px"
-              fill={item.itemColor || textColor}
-            >
+            <Icon {...item} />
+            <text transform="translate(18,12)" fontSize="14px" fill={textColor}>
               {item.label}
             </text>
           </g>
