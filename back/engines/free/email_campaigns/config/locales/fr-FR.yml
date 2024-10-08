@@ -33,7 +33,7 @@ fr:
       "new_comment_for_admin": Nouveau commentaire dans un projet que je modère
       "new_idea_for_admin": Nouvelle contribution dans un projet que je modère
       "new_initiative_for_admin": Nouvelle proposition
-      "official_feedback_on_idea_you_follow": Mise à jour d'une entrée que vous suivez
+      "official_feedback_on_idea_you_follow": Mise à jour concernant une contribution que vous suivez
       "official_feedback_on_initiative_you_follow": Mise à jour d'une proposition que vous suivez
       "password_reset": Réinitialisation du mot de passe
       "project_moderation_rights_received": Droits de modération de projet reçus
@@ -41,7 +41,7 @@ fr:
       "project_phase_started": Nouvelle phase de projet
       "project_phase_upcoming": Nouvelle phase de projet à venir
       "project_published": Projet publié
-      "status_change_on_idea_you_follow": Changement de statut d'une entrée que vous suivez
+      "status_change_on_idea_you_follow": Changement de statut d'une contribution que vous suivez
       "status_change_on_initiative_you_follow": Changement de statut d'une proposition que vous suivez
       "threshold_reached_for_admin": La proposition a atteint le seuil de vote
       "welcome": Après inscription
@@ -61,17 +61,17 @@ fr:
       by_author: 'par %{authorName}'
       author_wrote: '%{authorName} a écrit :'
       cta_goto_idea: 'Voir l''idée'
-      cta_goto_input: 'Accéder à cette entrée'
+      cta_goto_input: 'Voir la contribution'
       cta_goto:
         idea: 'Voir l''idée'
-        question: 'Aller à cette question'
-        contribution: 'Accéder à cette contribution'
-        project: 'Aller à ce projet'
-        issue: 'Aller à ce numéro'
-        option: 'Accédez à cette option'
+        question: 'Voir la question'
+        contribution: 'Voir la contribution'
+        project: 'Voir le projet'
+        issue: 'Voir le problème'
+        option: 'Voir l''option'
         proposal: 'Voir la proposition'
-        initiative: 'Aller à cette initiative'
-        petition: 'Aller à cette pétition'
+        initiative: 'Voir l''initiative'
+        petition: 'Voir la pétition'
       cta_goto_your:
         idea: 'Aller à votre idée'
         question: 'Aller à votre question'
@@ -83,7 +83,7 @@ fr:
         initiative: 'Accédez à votre initiative'
         petition: 'Accédez à votre pétition'
       cta_goto_proposal: 'Voir la proposition'
-      cta_goto_project: 'Aller à ce projet'
+      cta_goto_project: 'Voir le projet'
     schedules:
       weekly:
         "0": "Chaque semaine, le dimanche à %{hourOfDay}"
@@ -314,7 +314,7 @@ fr:
       input_not_visible_prescreening: '<b>L''entrée ne sera pas visible</b> tant que vous n''aurez pas modifié son statut.'
       cta_prescreening: 'Examiner les données'
       days_ago: 'Il y a %{numberOfDays} jours'
-      preheader: '%{authorName} publié une nouvelle entrée sur votre plateforme'
+      preheader: '%{authorName} a publié une nouvelle contribution sur votre plateforme'
       today: Aujourd'hui
       yesterday: Hier
     comment_on_your_comment:
@@ -373,10 +373,10 @@ fr:
       main_header: 'Nouveau commentaire interne sur « %{post} »'
       preheader: 'Nouveau commentaire interne sur « %{post} »'
     official_feedback_on_idea_you_follow:
-      header_message: '%{feedback_author_name} a fait un retour sur %{input_title}''.'
-      header_title: 'Il y a une mise à jour sur "%{input_title}"'
-      subject: 'Les commentaires officiels ont été publiés sur "%{input_title}"'
-      preheader: 'Il y a une mise à jour sur une entrée que vous suivez'
+      header_message: '%{feedback_author_name} a publié une mise à jour sur « %{input_title} ».'
+      header_title: 'Il y a une mise à jour sur « %{input_title} »'
+      subject: 'Un retour officiel a été publié sur « %{input_title} »'
+      preheader: 'Il y a une mise à jour sur une contribution que vous suivez'
     official_feedback_on_initiative_you_follow:
       header_message: '"%{officialName} a publié un message officiel concernant la proposition « %{initiativeTitle} ». Cliquez sur le bouton ci-dessous pour continuer la conversation avec %{organizationName}.'
       header_title: 'Il y a une mise à jour sur une proposition que vous suivez'
@@ -440,8 +440,8 @@ fr:
       header_message: 'La plateforme de participation de %{organizationName} vient de publier le projet suivant :'
       preheader: 'Un nouveau projet a été publié'
     status_change_on_idea_you_follow:
-      status_change: 'Le nouvel état de cette entrée est ''%{status}'''
-      header_message: '%{organizationName} a mis à jour le statut de l''entrée "%{input_title}" sur sa plateforme de participation numérique.'
+      status_change: 'Le nouveau statut de cette contribution est « %{status} »'
+      header_message: '%{organizationName} a changé le statut de la contribution « %{input_title} » sur leur plateforme de participation.'
       header_title: 'Une contribution que vous suivez a un nouveau statut'
       subject: 'Le statut de « %{input_title} » a changé'
       preheader: 'Une contribution que vous suivez a un nouveau statut'
@@ -452,7 +452,7 @@ fr:
       subject: 'Le statut d''une proposition que vous suivez a changé'
       preheader: 'Une proposition que vous suivez a un nouveau statut'
     user_digest:
-      subject: "Cette semaine sur la plateforme de participation %{organizationName}"
+      subject: "Cette semaine sur la plateforme de participation de %{organizationName}"
       commented: "%{authorFirstName} a commenté :"
       preheader: "Aperçu hebdomadaire de %{organizationName}"
       title_your_weekly_report: "Découvrez ce qui s'est passé la semaine dernière"
