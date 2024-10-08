@@ -823,7 +823,7 @@
   "app.containers.Admin.project.emails.addCampaign": "Créer un e-mail",
   "app.containers.Admin.project.emails.addCampaignTitle": "Nouvelle campagne d'e-mails",
   "app.containers.Admin.project.emails.allParticipantsAndFollowers": "Tous les {participants} et les followers du projet",
-  "app.containers.Admin.project.emails.allParticipantsTooltipText2": "Il s'agit des utilisateurs enregistrés qui ont effectué une action dans le cadre du projet. Les utilisateurs non enregistrés ou anonymes ne sont pas inclus.",
+  "app.containers.Admin.project.emails.allParticipantsTooltipText2": "Sont compris ici les utilisateurs enregistrés ayant effectué une action dans le projet. Les utilisateurs non enregistrés ou anonymisés ne sont pas inclus.",
   "app.containers.Admin.project.emails.dateSent": "Date d'envoi",
   "app.containers.Admin.project.emails.deleteButtonLabel": "Supprimer",
   "app.containers.Admin.project.emails.draft": "Brouillon",
