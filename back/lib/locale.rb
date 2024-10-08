@@ -31,8 +31,8 @@ class Locale
   def resolve_multiloc(multiloc)
     return multiloc[to_s] if multiloc.key?(to_s)
 
-    key = multiloc.keys.min_by { |key| fallback_languages.index(Locale.new(key).language) || fallback_languages.size }
-    multiloc[key] || multiloc.values.first
+    preferred_key = multiloc.keys.min_by { |key| fallback_languages.index(Locale.new(key).language) || fallback_languages.size }
+    multiloc[preferred_key] || multiloc.values.first
   end
 
   def fallback_languages

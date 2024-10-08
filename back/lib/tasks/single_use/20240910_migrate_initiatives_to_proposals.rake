@@ -13,7 +13,6 @@ namespace :initiatives_to_proposals do
       rake_20240910_substitute_homepage_element(project, reporter)
       rake_20240910_replace_navbaritem(project, reporter)
       rake_20240910_migrate_input_statuses(reporter)
-      # map_initiatives_to_proposals = {} # TODO: Delete?
       Initiative.where.not(publication_status: 'draft').each do |initiative|
         proposal_attributes = rake_20240910_proposal_attributes(initiative, project)
         proposal = Idea.new proposal_attributes
@@ -21,7 +20,6 @@ namespace :initiatives_to_proposals do
 
         rake_20240910_assign_publication(proposal, initiative)
         if proposal.save
-          # map_initiatives_to_proposals[initiative.id] = proposal.id
           reporter.add_create(
             'Proposal',
             proposal_attributes,
@@ -52,7 +50,7 @@ namespace :initiatives_to_proposals do
 end
 
 task :migrate_proposals, [] => [:environment] do
-  Tenant.safe_switch_each do |tenant|
+  Tenant.safe_switch_each do
     Project.find_by(slug: 'proposals')&.destroy
     SettingsService.new.activate_feature!('initiatives')
   end
@@ -136,24 +134,24 @@ def rake_20240910_substitute_homepage_element(project, reporter)
     {
       'type' => { 'resolvedName' => 'Highlight' },
       'nodes' => [],
-      "props": {
-          'title' => rake_20240910_migrate_homepage_title_multiloc,
-          'description' => rake_20240910_migrate_homepage_description_multiloc,
-          'primaryButtonLink' => "/projects/#{project.slug}ideas/new?phase_id=#{project.phases.first.id}",
-          'primaryButtonText' => {
-              'en' => 'Post your proposal'
-          },
-          'secondaryButtonLink' => "/projects/#{project.slug}",
-          'secondaryButtonText' => {
-              'en' => 'Explore all proposals'
-          }
+      'props' => {
+        'title' => rake_20240910_migrate_homepage_title_multiloc,
+        'description' => rake_20240910_migrate_homepage_description_multiloc,
+        'primaryButtonLink' => "/projects/#{project.slug}ideas/new?phase_id=#{project.phases.first.id}",
+        'primaryButtonText' => {
+          'en' => 'Post your proposal'
+        },
+        'secondaryButtonLink' => "/projects/#{project.slug}",
+        'secondaryButtonText' => {
+          'en' => 'Explore all proposals'
+        }
       },
       'custom' => {
-          'title' => {
-              'id' => 'app.containers.admin.ContentBuilder.homepage.highlight.highlightTitle',
-              'defaultMessage' => 'Highlight'
-          },
-          'noPointerEvents' => true
+        'title' => {
+          'id' => 'app.containers.admin.ContentBuilder.homepage.highlight.highlightTitle',
+          'defaultMessage' => 'Highlight'
+        },
+        'noPointerEvents' => true
       },
       'hidden' => false,
       'parent' => 'ROOT',
@@ -161,6 +159,12 @@ def rake_20240910_substitute_homepage_element(project, reporter)
       'displayName' => 'Highlight',
       'linkedNodes' => {}
     }
+  end
+  if !homepage.save
+    reporter.add_error(
+      homepage.errors.details,
+      context: { tenant: AppConfiguration.instance.host, homepage: homepage.id }
+    )
   end
 end
 
@@ -480,6 +484,8 @@ def rake_20240910_migrate_initiatives_static_page(reporter)
   end
 end
 
+# rubocop:disable Style/StringLiterals
+
 def rake_20240910_migrate_project_title_multiloc
   multiloc = {
     "ar-MA" => "انشر مُقترحك هنا وضعه على جدول أعمال {styledOrgName}",
@@ -609,7 +615,7 @@ def rake_20240910_migrate_project_description_multiloc
     "ar-SA" => "اعرف المزيد حول المُقترحات.",
     "ca-ES" => "Obteniu més informació sobre com funcionen les propostes.",
     "cy-GB" => "Dysgwch fwy am sut mae cynigion yn gweithio.",
-    "da-DK" =>  "Læs mere om hvordan forslag fungerer.",
+    "da-DK" => "Læs mere om hvordan forslag fungerer.",
     "de-DE" => "Mehr zu den Zulassungskriterien von Vorschlägen.",
     "el-GR" => "Μάθετε περισσότερα σχετικά με τον τρόπο λειτουργίας των προτάσεων.",
     "en-CA" => "Learn more about how proposals work.",
@@ -642,9 +648,7 @@ def rake_20240910_migrate_project_description_multiloc
   multiloc_content.to_h do |key, value|
     org_name = Locale.new(key).resolve_multiloc(config.settings('core', 'organization_name'))
     new_value = value.gsub('{orgName}', org_name)
-    new_value = if !page_slug
-      new_value.gsub('{link}', '')
-    else
+    new_value = if page_slug
       link = "/#{key}/pages/#{page_slug}"
       text = if config.name == 'KøbenhavnsKommune' && key == 'da-DK'
         'Her kan du læse mere om retningslinjer og kriterier for Københavnerforslagsordningen.'
@@ -654,6 +658,8 @@ def rake_20240910_migrate_project_description_multiloc
         multiloc_link[key]
       end
       new_value.gsub('{link}', "<a href=\"#{link}\">#{text}</a>")
+    else
+      new_value.gsub('{link}', '')
     end
     constraints_text = multiloc_constraints[key]
     case key
@@ -726,42 +732,30 @@ def rake_20240910_migrate_homepage_description_multiloc
   multiloc = {
     "ar-MA" => "انشر مُقترحك على هذه المنصة، احشد الدعم وضعه على جدول الأعمال. أو اطلع على مُقترحات الآخرين.",
     "ar-SA" => "انشر مُقترحك على هذه المنصة، احشد الدعم وضعه على جدول الأعمال. أو اطلع على مُقترحات الآخرين.",
-    "ca-ES"=>
-      "Publiqueu la vostra proposta en aquesta plataforma, reculliu suport i col·loqueu-lo a l'agenda. O reviseu els suggeriments dels altres.",
+    "ca-ES" => "Publiqueu la vostra proposta en aquesta plataforma, reculliu suport i col·loqueu-lo a l'agenda. O reviseu els suggeriments dels altres.",
     "cy-GB" => "Postiwch eich cynnig ar y platfform hwn, casglwch gefnogaeth a rhowch ef ar yr agenda. Neu adolygwch awgrymiadau eraill.",
-    "da-DK"=>
-      "Du kan aflevere dit forslag på denne platform, indsamle støtte fra andre borgere og sætte det på kommunens dagsorden. Du kan også tage et kig på forslag fra andre borgere.",
+    "da-DK" => "Du kan aflevere dit forslag på denne platform, indsamle støtte fra andre borgere og sætte det på kommunens dagsorden. Du kan også tage et kig på forslag fra andre borgere.",
     "de-DE"=>
       "Reiche deinen Vorschlag auf dieser Plattform ein, sammle dafür Unterstützung und setze ihn auf unsere Tagesordnung. Oder lass dich von anderen Vorschlägen inspirieren.",
-    "el-GR"=>
-      "Δημοσιεύστε την πρότασή σας σε αυτή την πλατφόρμα, συγκεντρώστε υποστήριξη και βάλτε την στην ημερήσια διάταξη. Ή εξετάστε τις προτάσεις των άλλων.",
+    "el-GR" => "Δημοσιεύστε την πρότασή σας σε αυτή την πλατφόρμα, συγκεντρώστε υποστήριξη και βάλτε την στην ημερήσια διάταξη. Ή εξετάστε τις προτάσεις των άλλων.",
     "en-CA" => "Post your proposal on this platform, gather support and place it on the agenda. Or review the suggestions of others.",
-    "en-GB"=>
-      "Post your proposal on this platform, gather support and place it on the agenda. Or review the suggestions of others.",
+    "en-GB" => "Post your proposal on this platform, gather support and place it on the agenda. Or review the suggestions of others.",
     "en-IE" => "Post your proposal on this platform, gather support and place it on the agenda. Or review the suggestions of others.",
     "en" => "Post your proposal on this platform, gather support and place it on the agenda. Or review the suggestions of others.",
     "es-CL" => "Publica tu propuesta en la plataforma, reúne apoyo y colócala en la agenda. O revisa las sugerencias de otros.",
     "es-ES" => "Publica tu propuesta en la plataforma, reúne apoyo y colócala en la agenda. O revisa las sugerencias de otros.",
     "fi-FI" => "Lähetä ehdotuksesi tälle alustalle, kerää tukea ja laita se asialistalle. Tai tutustu muiden ehdotuksiin.",
-    "fr-BE"=>
-      "Postez votre proposition sur cette plateforme, recueillez des soutiens et mettez-la à l'ordre du jour. Ou explorez simplement les propositions de vos concitoyens.",
-    "fr-FR"=>
-      "Postez votre proposition sur cette plateforme, recueillez des soutiens et mettez-la à l'ordre du jour. Ou explorez simplement les propositions de vos concitoyens.",
+    "fr-BE" => "Postez votre proposition sur cette plateforme, recueillez des soutiens et mettez-la à l'ordre du jour. Ou explorez simplement les propositions de vos concitoyens.",
+    "fr-FR" => "Postez votre proposition sur cette plateforme, recueillez des soutiens et mettez-la à l'ordre du jour. Ou explorez simplement les propositions de vos concitoyens.",
     "hr-HR" => "Objavite svoj prijedlog na ovoj platformi, prikupite podršku, stavite ga na dnevni red ili pregledajte prijedloge drugih.",
     "hu-HU" => "Post your proposal on this platform, gather support and place it on the agenda. Or review the suggestions of others.",
-    "it-IT"=>
-      "Pubblica la tua proposta su questa piattaforma, raccogli il sostegno e mettila all'ordine del giorno. Oppure esamina i suggerimenti degli altri.",
-    "kl-GL"=>
-      "Isaaffimmut uunga siunnersuutit allassinnaavat, innuttaasunit allanit tapersersorneqarsinnaavutit aamma kommunimit oqallisigisassanngortissinnaavat. Aamma innuttaasut allat siunnersuutaat atuarsinnaavatit.",
-    "lb-LU"=>
-      "Verëffentlecht Äre Virschlag fir administrativ Vereinfachung op dëser Plattform, sammelt Ënnerstëtzung a setzt se op d’Agenda. Oder kuckt d’Virschléi vun anere Persounen.",
-    "lv-LV"=>
-      "Publicējiet savu priekšlikumu šajā platformā, iegūstiet atbalstu un iekļaujiet to darba kārtībā. Vai arī izskatiet citu personu ieteikumus.",
+    "it-IT" => "Pubblica la tua proposta su questa piattaforma, raccogli il sostegno e mettila all'ordine del giorno. Oppure esamina i suggerimenti degli altri.",
+    "kl-GL" => "Isaaffimmut uunga siunnersuutit allassinnaavat, innuttaasunit allanit tapersersorneqarsinnaavutit aamma kommunimit oqallisigisassanngortissinnaavat. Aamma innuttaasut allat siunnersuutaat atuarsinnaavatit.",
+    "lb-LU" => "Verëffentlecht Äre Virschlag fir administrativ Vereinfachung op dëser Plattform, sammelt Ënnerstëtzung a setzt se op d’Agenda. Oder kuckt d’Virschléi vun anere Persounen.",
+    "lv-LV" => "Publicējiet savu priekšlikumu šajā platformā, iegūstiet atbalstu un iekļaujiet to darba kārtībā. Vai arī izskatiet citu personu ieteikumus.",
     "mi" => "Whakairia tō tono ki tēnei pūhara, me whai tautoko, ka whakauru ai ki te rārangi take. Tirohia ngā whakaaro a ētahi atu.",
-    "nb-NO"=>
-      "Publiser forslaget ditt på platformen. Hent støtte fra andre innbyggere og sett forslaget på agendaen. Du kan også se andres forslag.",
-    "nl-BE"=>
-      "Plaats jouw voorstel op dit platform, verzamel steun en breng het op de agenda. Of discussieer mee over de voorstellen van anderen.",
+    "nb-NO" => "Publiser forslaget ditt på platformen. Hent støtte fra andre innbyggere og sett forslaget på agendaen. Du kan også se andres forslag.",
+    "nl-BE" => "Plaats jouw voorstel op dit platform, verzamel steun en breng het op de agenda. Of discussieer mee over de voorstellen van anderen.",
     "nl-NL" => "Samen maken we het hier mooier. We leveren allemaal een bijdrage aan. Heb jij een mooi plan? Laat het ons weten!",
     "pl-PL" => "Umieść swoją propozycję na tej platformie, zbierz poparcie i umieść ją w porządku dziennym lub zapoznaj się z sugestiami innych.",
     "pt-BR" => "Publique sua proposta nesta plataforma, obtenha suporte e coloque-a na agenda. Ou revise as sugestões de outras pessoas.",
