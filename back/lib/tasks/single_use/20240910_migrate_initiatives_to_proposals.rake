@@ -419,7 +419,7 @@ def rake_20240910_migrate_comments(proposal, initiative, reporter)
 end
 
 def rake_20240910_migrate_official_feedback(proposal, initiative, reporter)
-  initiative.initiative_official_feedback.each do |old_feedback|
+  initiative.official_feedbacks.each do |old_feedback|
     new_feedback = OfficialFeedback.new(
       post: proposal,
       body_multiloc: old_feedback.body_multiloc,
@@ -430,6 +430,39 @@ def rake_20240910_migrate_official_feedback(proposal, initiative, reporter)
       reporter.add_error(
         new_feedback.errors.details,
         context: { tenant: AppConfiguration.instance.host, proposal: proposal.slug, official_feedback: old_feedback.id }
+      )
+    end
+  end
+end
+
+def rake_20240910_migrate_followers(proposal, initiative, reporter)
+  initiative.followers.each do |old_follower|
+    new_follower = Follow.new(
+      followable: proposal,
+      user_id: old_follower.user_id,
+      created_at: old_follower.created_at
+    )
+    if !new_follower.save
+      reporter.add_error(
+        new_follower.errors.details,
+        context: { tenant: AppConfiguration.instance.host, proposal: proposal.slug, follower: old_follower.id }
+      )
+    end
+  end
+end
+
+def rake_20240910_migrate_cosponsors(proposal, initiative, reporter)
+  initiative.cosponsors_initiatives.each do |old_cosponsor|
+    new_cosponsor = Cosponsorship.new(
+      idea: proposal,
+      user_id: old_cosponsor.user_id,
+      status: old_cosponsor.status,
+      created_at: old_cosponsor.created_at
+    )
+    if !new_cosponsor.save
+      reporter.add_error(
+        new_cosponsor.errors.details,
+        context: { tenant: AppConfiguration.instance.host, proposal: proposal.slug, cosponsor: old_cosponsor.id }
       )
     end
   end
