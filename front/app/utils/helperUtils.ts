@@ -41,9 +41,7 @@ export function isNonEmptyString(str: string) {
 type pageKeys =
   | 'admin'
   | 'idea_form'
-  | 'initiative_form'
   | 'idea_edit'
-  | 'initiative_edit'
   | 'native_survey'
   | 'sign_in'
   | 'sign_up'
@@ -68,16 +66,10 @@ export function isPage(pageKey: pageKeys, pathName: string) {
       return pathnameWithoutLocale.startsWith('/email-settings');
     case 'admin':
       return pathnameWithoutLocale.startsWith('/admin/');
-    case 'initiative_form':
-      // Needs to use endsWith
-      // Otherwise an initiative with the name 'new playground for our children' would also pass
-      return pathnameWithoutLocale.endsWith('/initiatives/new');
     case 'idea_form':
       return pathnameWithoutLocale.endsWith('/ideas/new');
     case 'idea_edit':
       return pathnameWithoutLocale.startsWith('/ideas/edit/');
-    case 'initiative_edit':
-      return pathnameWithoutLocale.startsWith('/initiatives/edit/');
     case 'native_survey':
       return pathnameWithoutLocale.endsWith('/surveys/new');
     case 'sign_in':

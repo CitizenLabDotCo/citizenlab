@@ -11,7 +11,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 interface Props {
-  /** A set of ids of ideas/initiatives that are currently selected */
+  /** A set of ids of ideas that are currently selected */
   selection: Set<string>;
   resetSelection: () => void;
 }

@@ -4,21 +4,13 @@ import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
-import {
-  initiativeResponse,
-  phaseResponse,
-  ideaResponse,
-} from './__mocks__/useCustomFieldsSchema';
+import { phaseResponse, ideaResponse } from './__mocks__/useCustomFieldsSchema';
 import useCustomFieldsSchema from './useCustomFieldsSchema';
 
-const initiativesPath = '*permissions/posting_initiative/schema';
 const phasePath = '*phases/456/permissions/posting_idea/schema';
 const ideaPath = '*ideas/789/permissions/commenting_idea/schema';
 
 const server = setupServer(
-  http.get(initiativesPath, () => {
-    return HttpResponse.json(initiativeResponse, { status: 200 });
-  }),
   http.get(phasePath, () => {
     return HttpResponse.json(phaseResponse, { status: 200 });
   }),

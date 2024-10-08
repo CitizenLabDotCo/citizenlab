@@ -66,10 +66,6 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.internalCommentOnIdeaAssignedToYou',
     defaultMessage: '{name} commented internally on an input assigned to you',
   },
-  internalCommentOnInitiativeAssignedToYou: {
-    id: 'app.containers.NotificationMenu.internalCommentOnInitiativeAssignedToYou',
-    defaultMessage: '{name} commented internally on a proposal assigned to you',
-  },
   internalCommentOnIdeaYouModerate: {
     id: 'app.containers.NotificationMenu.internalCommentOnIdeaYouModerate',
     defaultMessage:
@@ -80,23 +76,10 @@ export default defineMessages({
     defaultMessage:
       '{name} commented internally on an input that you commented on internally',
   },
-  internalCommentOnInitiativeYouCommentedInternallyOn: {
-    id: 'app.containers.NotificationMenu.internalCommentOnInitiativeYouCommentedInternallyOn',
-    defaultMessage:
-      '{name} commented internally on a proposal that you commented on internally',
-  },
   internalCommentOnUnassignedUnmoderatedIdea: {
     id: 'app.containers.NotificationMenu.internalCommentOnUnassignedUnmoderatedIdea',
     defaultMessage:
       '{name} commented internally on an unassigned input in an unmanaged project',
-  },
-  internalCommentOnUnassignedInitiative: {
-    id: 'app.containers.NotificationMenu.internalCommentOnUnassignedInitiative',
-    defaultMessage: '{name} commented internally on an unassigned proposal',
-  },
-  invitationToCosponsorInitiative: {
-    id: 'app.containers.NotificationMenu.invitationToCosponsorInitiative',
-    defaultMessage: '{name} invited you to cosponsor a proposal',
   },
   userReportedCommentAsSpam: {
     id: 'app.containers.NotificationMenu.userReportedCommentAsSpam1',

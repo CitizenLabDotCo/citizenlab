@@ -118,7 +118,6 @@ export interface OutletsPropertyMap {
     projectId: string;
     children: OutletRenderProps;
   };
-  'app.containers.Admin.initiatives.tabs': ITabsOutlet;
   'app.containers.Admin.ideas.tabs': ITabsOutlet;
   'app.containers.Admin.sideBar.navItems': {
     onData: (data: InsertConfigurationOptions<NavItem>) => void;
@@ -232,7 +231,6 @@ interface Routes {
   citizen: RouteConfiguration[];
   admin: RouteConfiguration[];
   'admin.projects': RouteConfiguration[];
-  'admin.initiatives': RouteConfiguration[];
   'admin.ideas': RouteConfiguration[];
   'admin.pages-menu': RouteConfiguration[];
   'admin.dashboards': RouteConfiguration[];
@@ -332,10 +330,6 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
     routes: {
       citizen: citizenRoutes,
       admin: adminRoutes,
-      'admin.initiatives': parseModuleRoutes(
-        mergedRoutes?.['admin.initiatives'],
-        RouteTypes.ADMIN
-      ),
       'admin.ideas': parseModuleRoutes(
         mergedRoutes?.['admin.ideas'],
         RouteTypes.ADMIN

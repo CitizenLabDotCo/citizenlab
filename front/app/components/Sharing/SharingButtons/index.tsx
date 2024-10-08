@@ -19,7 +19,7 @@ import messages from '../messages';
 import { getUrlWithUtm, UtmParams, Medium } from '../utils';
 
 interface Props {
-  context: 'idea' | 'project' | 'initiative' | 'folder' | 'event';
+  context: 'idea' | 'project' | 'folder' | 'event';
   url: string;
   twitterMessage: string;
   whatsAppMessage: string;
@@ -51,7 +51,6 @@ const SharingButtons = ({
   const titleMessage = {
     idea: <FormattedMessage {...messages.share} />,
     project: <FormattedMessage {...messages.shareThisProject} />,
-    initiative: <FormattedMessage {...messages.shareThisInitiative} />,
     folder: <FormattedMessage {...messages.shareThisFolder} />,
     event: <FormattedMessage {...messages.shareThisEvent} />,
   }[context];

@@ -10,7 +10,7 @@ const Container = styled.div`
 `;
 
 interface Props {
-  /** A set of ids of ideas/initiatives that are currently selected */
+  /** A set of ids of ideas that are currently selected */
   selection: Set<string>;
   resetSelection: () => void;
   handleClickEdit: () => void;

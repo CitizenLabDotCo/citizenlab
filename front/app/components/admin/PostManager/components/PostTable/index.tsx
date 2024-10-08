@@ -81,7 +81,7 @@ interface Props {
   selectedPhaseId?: string | null;
   selectedProjectId?: string | null;
   onChangeSort?: (sort: IdeasSort) => void;
-  /** A set of ids of ideas/initiatives that are currently selected */
+  /** A set of ids of ideas that are currently selected */
   selection: Set<string>;
   onChangeSelection: React.Dispatch<React.SetStateAction<Set<string>>>;
   currentPageNumber?: number;
@@ -172,7 +172,7 @@ const PostTable = ({
           type={type}
           selectedProjectId={selectedProjectId}
           selectedPhaseId={selectedPhaseId}
-          sortAttribute={sortAttribute as IdeasSort} // PostTable handles both ideas && initiatives, but here we know we only have ideas
+          sortAttribute={sortAttribute}
           sortDirection={sortDirection}
           allSelected={allSelected(selection)}
           toggleSelectAll={toggleSelectAll}

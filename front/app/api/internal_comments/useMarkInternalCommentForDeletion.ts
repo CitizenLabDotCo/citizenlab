@@ -28,7 +28,6 @@ const useMarkInternalCommentForDeletion = ({
   parentCommentId,
 }: {
   ideaId?: string;
-  initiativeId?: string;
   parentCommentId?: string;
 }) => {
   const queryClient = useQueryClient();

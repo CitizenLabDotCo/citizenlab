@@ -90,7 +90,7 @@ const FilterSidebar = ({
     ) {
       return `/admin/projects/${projectId}/settings/tags`;
     } else if (isAdmin(authUser)) {
-      // For admins, both for /admin/ideas (type 'AllIdeas') and /admin/initiatives, we show the link to the platform-wide tag manager
+      // For admins we show the link to the platform-wide tag manager
       return '/admin/settings/topics';
     } else {
       // Don't show the link to the platform-wide tag manager if the user is not an admin.

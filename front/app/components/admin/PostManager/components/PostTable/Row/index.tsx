@@ -39,7 +39,7 @@ export const TitleLink = styled.a`
 type Props = {
   type: ManagerType;
   post: IIdeaData;
-  /** A set of ids of ideas/initiatives that are currently selected */
+  /** A set of ids of ideas that are currently selected */
   selection: Set<string>;
   activeFilterMenu: TFilterMenu;
   phases?: IPhaseData[];

@@ -35,15 +35,12 @@ export interface IAdminRightsReceivedNotificationData
   };
 }
 
-type PostType = 'Initiative' | 'Idea';
-
 export interface ICommentDeletedByAdminNotificationData
   extends IBaseNotificationData {
   attributes: {
     type: 'comment_deleted_by_admin';
     read_at: string | null;
     created_at: string;
-    post_type: PostType;
     post_slug: string | null;
     post_title_multiloc: Multiloc;
     reason_code: 'irrelevant' | 'inappropriate' | 'other';
@@ -60,7 +57,6 @@ export interface ICommentMarkedAsSpamNotificationData
     initiating_user_first_name: string | null;
     initiating_user_last_name: string | null;
     initiating_user_slug: string | null;
-    post_type: PostType;
     post_slug: string | null;
     post_title_multiloc: Multiloc;
   };
@@ -75,7 +71,6 @@ export interface ICommentOnYourCommentNotificationData
     initiating_user_first_name: string | null;
     initiating_user_last_name: string | null;
     initiating_user_slug: string | null;
-    post_type: PostType;
     post_slug: string | null;
     post_title_multiloc: Multiloc;
   };
@@ -143,7 +138,6 @@ export interface IMentionInCommentNotificationData
     initiating_user_first_name: string | null;
     initiating_user_last_name: string | null;
     initiating_user_slug: string | null;
-    post_type: PostType;
     post_slug: string | null;
     post_title_multiloc: Multiloc;
   };
@@ -158,7 +152,6 @@ export interface IInternalCommentNotificationData
     initiating_user_first_name: string | null;
     initiating_user_last_name: string | null;
     initiating_user_slug: string | null;
-    post_type: PostType;
     post_slug: string | null;
     post_title_multiloc: Multiloc;
     post_id: string;
@@ -177,7 +170,6 @@ export interface IMentionInOfficialFeedbackNotificationData
     initiating_user_last_name: string | null;
     initiating_user_slug: string | null;
     official_feedback_author: Multiloc;
-    post_type: PostType;
     post_slug: string | null;
     post_title_multiloc: Multiloc;
   };

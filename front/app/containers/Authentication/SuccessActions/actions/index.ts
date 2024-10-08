@@ -15,10 +15,6 @@ import {
   redirectToIdeaForm,
   RedirectToIdeaFormParams,
 } from './redirectToIdeaForm';
-import {
-  redirectToInitiativeForm,
-  RedirectToInitiativeFormParams,
-} from './redirectToInitiativeForm';
 import { replyToComment, ReplyToCommentParams } from './replyToComment';
 import { scrollTo, ScrollToParams } from './scrollTo';
 import { submitPoll, SubmitPollParams } from './submitPoll';
@@ -28,11 +24,6 @@ import { vote, VoteParams } from './vote';
 interface RedirectToIdeaFormAction {
   name: 'redirectToIdeaForm';
   params: RedirectToIdeaFormParams;
-}
-
-interface RedirectToInitiativeFormAction {
-  name: 'redirectToInitiativeForm';
-  params: RedirectToInitiativeFormParams;
 }
 
 interface FollowAction {
@@ -82,7 +73,6 @@ interface SubmitPollAction {
 
 export type SuccessAction =
   | RedirectToIdeaFormAction
-  | RedirectToInitiativeFormAction
   | ReplyToCommentAction
   | ScrollToAction
   | VolunteerAction
@@ -164,11 +154,6 @@ export const getAction = ({ name, params }: SuccessAction) => {
   if (name === 'redirectToIdeaForm') {
     ensureJSONSerializable(params);
     return redirectToIdeaForm(params);
-  }
-
-  if (name === 'redirectToInitiativeForm') {
-    ensureJSONSerializable(params);
-    return redirectToInitiativeForm(params);
   }
 
   if (name === 'follow') {
