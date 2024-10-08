@@ -1342,7 +1342,6 @@
   "app.containers.NotificationMenu.adminRightsReceived": "Ara sou un administrador de la plataforma",
   "app.containers.NotificationMenu.commentDeletedByAdminFor1": "El teu comentari a \"{postTitle}\" ha estat esborrat per un administrador perquè\n      {reasonCode, select, irrelevant {és irrellevant} inappropriate {el seu contingut és inadequat} other {{otherReason}}}",
   "app.containers.NotificationMenu.cosponsorOfYourIdea": "{name} ha acceptat la teva invitació de copatrocini",
-  "app.containers.NotificationMenu.cosponsorOfYourInitiative": "{name} copatrocina la teva proposta",
   "app.containers.NotificationMenu.deletedUser": "Autor desconegut",
   "app.containers.NotificationMenu.error": "No s'han pogut carregar les notificacions",
   "app.containers.NotificationMenu.internalCommentOnIdeaAssignedToYou": "{name} ha comentat internament una entrada que se t'ha assignat",

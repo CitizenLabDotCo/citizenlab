@@ -1342,7 +1342,6 @@
   "app.containers.NotificationMenu.adminRightsReceived": "Du er nu administrator af platformen",
   "app.containers.NotificationMenu.commentDeletedByAdminFor1": "Din kommentar til '{postTitle}' er blevet slettet af en administrator, fordi\n       {reasonCode, vælg, irrelevant {det er irrelevant} upassende {dets indhold er upassende} andet {{otherReason}}}\n",
   "app.containers.NotificationMenu.cosponsorOfYourIdea": "{name} har accepteret din invitation til medsponsorat",
-  "app.containers.NotificationMenu.cosponsorOfYourInitiative": "{name} støttede dit forslag",
   "app.containers.NotificationMenu.deletedUser": "Ukendt forfatter",
   "app.containers.NotificationMenu.error": "Kunne ikke indlæse notifikationer",
   "app.containers.NotificationMenu.internalCommentOnIdeaAssignedToYou": "{name} har kommenteret internt på et input, som du har fået tildelt",

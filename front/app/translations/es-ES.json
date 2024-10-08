@@ -1342,7 +1342,6 @@
   "app.containers.NotificationMenu.adminRightsReceived": "Ahora eres un administrador de la plataforma",
   "app.containers.NotificationMenu.commentDeletedByAdminFor1": "Tu comentario en '{postTitle}' ha sido eliminado por un administrador porque\n      {reasonCode, select, irrelevant {es irrelevante} inappropriate {su contenido es inapropiado} other {{otherReason}}}",
   "app.containers.NotificationMenu.cosponsorOfYourIdea": "{name} aceptó tu invitación de copatrocinio",
-  "app.containers.NotificationMenu.cosponsorOfYourInitiative": "{name} copatrocinó tu propuesta",
   "app.containers.NotificationMenu.deletedUser": "Autor desconocido",
   "app.containers.NotificationMenu.error": "No se pueden cargar las notificaciones",
   "app.containers.NotificationMenu.internalCommentOnIdeaAssignedToYou": "Los comentarios publicados aquí serán visibles para los usuarios regulares",

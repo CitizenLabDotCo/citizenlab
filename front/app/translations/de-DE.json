@@ -1342,7 +1342,6 @@
   "app.containers.NotificationMenu.adminRightsReceived": "Sie sind jetzt Admin der Plattform",
   "app.containers.NotificationMenu.commentDeletedByAdminFor1": "Ihr Kommentar zu \"{postTitle}\" wurde von einem Admin gelöscht, weil\n      {reasonCode, select, irrelevant {er sachfremd ist} inappropriate {der Inhalt unangemessen ist} other {{otherReason}}}",
   "app.containers.NotificationMenu.cosponsorOfYourIdea": "{name} hat Ihre Unterstützungs-Einladung angenommen",
-  "app.containers.NotificationMenu.cosponsorOfYourInitiative": "{name} unterstützt Ihren Vorschlag",
   "app.containers.NotificationMenu.deletedUser": "Unbekannte Person",
   "app.containers.NotificationMenu.error": "Benachrichtigungen konnten nicht geladen werden",
   "app.containers.NotificationMenu.internalCommentOnIdeaAssignedToYou": "{name} hat einen Ihnen zugewiesenen Beitrag intern kommentiert",

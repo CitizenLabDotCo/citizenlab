@@ -1342,7 +1342,6 @@
   "app.containers.NotificationMenu.adminRightsReceived": "أنت الآن مسؤول عن المنصة",
   "app.containers.NotificationMenu.commentDeletedByAdminFor1": "تم حذف تعليقك على \"{postTitle}\" من قبل مسؤول لأن\n      {reasonCode, select, irrelevant {لا صلة له بالموضوع} inappropriate {محتواه غير مناسب} other {{otherReason}}}",
   "app.containers.NotificationMenu.cosponsorOfYourIdea": "{name} تم قبول دعوة الرعاية المشتركة الخاصة بك",
-  "app.containers.NotificationMenu.cosponsorOfYourInitiative": "{name} شارك في رعاية اقتراحك",
   "app.containers.NotificationMenu.deletedUser": "مؤلف غير معروف",
   "app.containers.NotificationMenu.error": "تعذّر تحميل الإشعارات",
   "app.containers.NotificationMenu.internalCommentOnIdeaAssignedToYou": "{name} علق داخليًا على إدخال مخصص لك",

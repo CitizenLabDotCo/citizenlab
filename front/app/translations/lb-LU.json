@@ -1342,7 +1342,6 @@
   "app.containers.NotificationMenu.adminRightsReceived": "Dir sidd elo en Administrateur vun der Plattform",
   "app.containers.NotificationMenu.commentDeletedByAdminFor1": "Äre Kommentar op \"{postTitle}\" gouf vun engem Administrateur geläscht well\n      {reasonCode, select, irrelevant {et ass irrelevant} inappropriate {säin Inhalt ass net passend} other {{otherReason}}}",
   "app.containers.NotificationMenu.cosponsorOfYourIdea": "{name} huet Är Co-Sponsorinvitatioun ugeholl",
-  "app.containers.NotificationMenu.cosponsorOfYourInitiative": "{name} cosponséiert Är Propositioun",
   "app.containers.NotificationMenu.deletedUser": "Onbekannten Auteur",
   "app.containers.NotificationMenu.error": "Benoriichtegunge kënnen net geluede ginn",
   "app.containers.NotificationMenu.internalCommentOnIdeaAssignedToYou": "{name} kommentéiert intern op en Input deen Iech zougewisen gouf",

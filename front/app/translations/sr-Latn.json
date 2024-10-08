@@ -1342,7 +1342,6 @@
   "app.containers.NotificationMenu.adminRightsReceived": "Sada ste administrator platforme",
   "app.containers.NotificationMenu.commentDeletedByAdminFor1": "Your comment on \"{postTitle}\" has been deleted by an admin because\n      {reasonCode, select, irrelevant {it is irrelevant} inappropriate {its content is inappropriate} other {{otherReason}}}",
   "app.containers.NotificationMenu.cosponsorOfYourIdea": "{name} accepted your co-sponsorship invitation",
-  "app.containers.NotificationMenu.cosponsorOfYourInitiative": "{name} cosponsored your proposal",
   "app.containers.NotificationMenu.deletedUser": "Nepoznat autor",
   "app.containers.NotificationMenu.error": "Neuspešno učitavanje notifikacija",
   "app.containers.NotificationMenu.internalCommentOnIdeaAssignedToYou": "{name} је интерно коментарисао унос који вам је додељен",

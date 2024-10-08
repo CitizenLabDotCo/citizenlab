@@ -1342,7 +1342,6 @@
   "app.containers.NotificationMenu.adminRightsReceived": "Rydych chi bellach yn weinyddwr y platfform",
   "app.containers.NotificationMenu.commentDeletedByAdminFor1": "Mae eich sylw ar \"{postTitle}\" wedi ei ddileu gan weinyddwr oherwydd\n      {reasonCode, select, irrelevant {mae'n amherthnasol} inappropriate {mae ei gynnwys yn amhriodol} other {{otherReason}}}",
   "app.containers.NotificationMenu.cosponsorOfYourIdea": "Derbyniodd {name} eich gwahoddiad cyd-noddi",
-  "app.containers.NotificationMenu.cosponsorOfYourInitiative": "{name} noddi eich cynnig",
   "app.containers.NotificationMenu.deletedUser": "Awdur anhysbys",
   "app.containers.NotificationMenu.error": "Methu â llwytho hysbysiadau",
   "app.containers.NotificationMenu.internalCommentOnIdeaAssignedToYou": "{name} sylwadau mewnol ar fewnbwn a neilltuwyd i chi",

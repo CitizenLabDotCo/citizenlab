@@ -1342,7 +1342,6 @@
   "app.containers.NotificationMenu.adminRightsReceived": "Du är nu administratör av plattformen",
   "app.containers.NotificationMenu.commentDeletedByAdminFor1": "Din kommentar på \"{postTitle}\" har tagits bort av en administratör eftersom\n      {reasonCode, select, irrelevant {den är irrelevant} inappropriate {dess innehåll är olämpligt} other {{otherReason}}}",
   "app.containers.NotificationMenu.cosponsorOfYourIdea": "{name} accepterade din inbjudan till medsponsring",
-  "app.containers.NotificationMenu.cosponsorOfYourInitiative": "{name} stödde ditt förslag",
   "app.containers.NotificationMenu.deletedUser": "Okänd författare",
   "app.containers.NotificationMenu.error": "Det gick inte att läsa in aviseringar",
   "app.containers.NotificationMenu.internalCommentOnIdeaAssignedToYou": "{name} kommenterat internt på en input som tilldelats dig",

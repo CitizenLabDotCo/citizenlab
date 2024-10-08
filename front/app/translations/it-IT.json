@@ -1342,7 +1342,6 @@
   "app.containers.NotificationMenu.adminRightsReceived": "Ora sei un amministratore della piattaforma",
   "app.containers.NotificationMenu.commentDeletedByAdminFor1": "Il tuo commento su \"{postTitle}\" è stato cancellato da un amministratore perché\n      {reasonCode, select, irrelevant {è irrilevante} inappropriate {il suo contenuto è inappropriato} other {{otherReason}}}",
   "app.containers.NotificationMenu.cosponsorOfYourIdea": "{name} ha accettato l'invito alla co-sponsorizzazione",
-  "app.containers.NotificationMenu.cosponsorOfYourInitiative": "{name} ha sponsorizzato la tua proposta",
   "app.containers.NotificationMenu.deletedUser": "Autore sconosciuto",
   "app.containers.NotificationMenu.error": "Impossibile caricare le notifiche",
   "app.containers.NotificationMenu.internalCommentOnIdeaAssignedToYou": "{name} ha commentato internamente un input che ti è stato assegnato",

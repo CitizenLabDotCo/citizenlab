@@ -1342,7 +1342,6 @@
   "app.containers.NotificationMenu.adminRightsReceived": "Je bent nu een platformbeheerder van het platform",
   "app.containers.NotificationMenu.commentDeletedByAdminFor1": "Je reactie op \"{postTitle}\" is verwijderd door een platformbeheerder omdat deze\n      {reasonCode, select, irrelevant {irrelevant is} inappropriate {ongepast is} other {{otherReason}}}",
   "app.containers.NotificationMenu.cosponsorOfYourIdea": "{name} je uitnodiging voor co-sponsorschap geaccepteerd",
-  "app.containers.NotificationMenu.cosponsorOfYourInitiative": "{name} steunt je voorstel",
   "app.containers.NotificationMenu.deletedUser": "Onbekende auteur",
   "app.containers.NotificationMenu.error": "Kan meldingen niet laden",
   "app.containers.NotificationMenu.internalCommentOnIdeaAssignedToYou": "{name} heeft een interne reactie gegeven op een aan jou toegewezen bijdrage",

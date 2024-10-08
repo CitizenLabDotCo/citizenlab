@@ -1342,7 +1342,6 @@
   "app.containers.NotificationMenu.adminRightsReceived": "Sada ste administrator platforme",
   "app.containers.NotificationMenu.commentDeletedByAdminFor1": "Vaš komentar na \"{postTitle}\" je obrisan od strane administratora jer\n      {reasonCode, select, irrelevant {to je nebitno} inappropriate {njegov sadržaj je neprikladan} other {{otherReason}}}",
   "app.containers.NotificationMenu.cosponsorOfYourIdea": "{name} je prihvatio vaš poziv za susponzorstvo",
-  "app.containers.NotificationMenu.cosponsorOfYourInitiative": "{name} je susponzorirao vaš prijedlog",
   "app.containers.NotificationMenu.deletedUser": "Nepoznat autor",
   "app.containers.NotificationMenu.error": "Neuspješno učitavanje obavijesti",
   "app.containers.NotificationMenu.internalCommentOnIdeaAssignedToYou": "{name} je interno komentirao unos koji vam je dodijeljen",
