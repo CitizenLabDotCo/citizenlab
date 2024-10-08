@@ -370,7 +370,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participants": "{participantsCount, plural, one {1 participant} other {{participantsCount} participants}}",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.attendees": "Participants à l'événement",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.embeddedMethods": "Participants aux méthodes intégrées (par exemple, enquêtes externes)",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.followers": "Suiveurs d'un projet",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.followers": "Les followers d'un projet",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.note": "Remarque : l'activation des autorisations de participation anonyme ou ouverte peut permettre aux utilisateurs de participer plusieurs fois, ce qui entraîne des données trompeuses ou incomplètes sur les utilisateurs.",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsExclusionTitle": "Les participants ne comprennent pas :",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsInfoTitle": "Les participants sont les suivants",
