@@ -10,6 +10,7 @@ sv:
       "comment_on_idea_you_follow": En kommentar till en idé som du följer
       "comment_on_initiative_you_follow": En kommentar till ett förslag som du följer
       "cosponsor_of_your_initiative": En användare accepterar min inbjudan att samsponsra mitt förslag
+      "cosponsor_of_your_idea": En användare accepterar min inbjudan att medsponsra mitt förslag
       "event_registration_confirmation": Bekräftelse på registrering av evenemang
       "idea_marked_as_spam": Skräppostrapport för idé
       "idea_published": Offentliggörande av mina synpunkter
@@ -17,6 +18,7 @@ sv:
       "initiative_marked_as_spam": Skräppostrapport för förslag
       "initiative_published": Publicering av mitt förslag
       "invitation_to_cosponsor_initiative": Inbjudan att vara medförslagsställare
+      "invitation_to_cosponsor_idea": Inbjudan att sponsra ett förslag
       "initiative_resubmitted_for_review": Förslaget lämnas in på nytt för granskning
       "invite_received": Inbjudan
       "invite_reminder": Påminnelse om inbjudan
@@ -103,6 +105,8 @@ sv:
       "unsubscribe_text": "avsluta prenumeration"
     follow:
       "unfollow_here": "Du har fått detta meddelande på grund av ett objekt som du följer. <a href=\"%{unfollow_url}\">Du kan avfölja det här.</a>"
+    manual:
+      preheader: 'Du har e-post från %{organizationName}'
     comment_deleted_by_admin:
       reason: 'Anledningen till att din kommentar togs bort:'
       cta_view: 'Se den här idén'
@@ -157,6 +161,12 @@ sv:
       today: I dag
       wrong_content: 'Kommentaren är inte relevant.'
       yesterday: I går
+    cosponsor_of_your_idea:
+      cta_reply_to: 'Se ditt förslag'
+      event_description: 'Grattis! %{cosponsorName} har accepterat din inbjudan att vara medsponsor för ditt förslag.'
+      main_header: '%{cosponsorName} har accepterat din inbjudan att sponsra ditt förslag'
+      subject: '%{cosponsorName} har accepterat din inbjudan att sponsra ditt förslag'
+      preheader: '%{cosponsorName} har accepterat din inbjudan att sponsra ditt förslag'
     cosponsor_of_your_initiative:
       cta_reply_to: 'Visa ditt förslag'
       event_description_initiative: 'Grattis! %{cosponsorName} har accepterat din inbjudan att vara med och sponsra ditt förslag.'
@@ -197,6 +207,15 @@ sv:
       main_header: '%{firstName}, du har ett nytt uppdrag'
       subject: 'Du har ett uppdrag på plattformen för %{organizationName}'
       preheader_initiative: 'Förslaget från %{authorName} har tilldelats dig'
+    invitation_to_cosponsor_idea:
+      cta_reply_to: 'Stöd detta förslag'
+      event_description: '%{authorName} har skapat ett nytt förslag och vill att du ska stödja det.'
+      event_description_cosponsoring: 'Att vara medsponsor till ett förslag innebär att <strong>ditt namn kommer att visas</strong> tillsammans med namnen på de andra medsponsorerna till förslaget.'
+      event_description_before_action: 'För att kunna se förslaget och acceptera inbjudan måste du vara inloggad på ditt konto.'
+      event_description_action: 'Klicka nedan för att läsa förslaget.'
+      main_header: 'Du har blivit inbjuden att sponsra ett förslag'
+      subject: 'Du har blivit inbjuden att sponsra ett förslag'
+      preheader: 'Du har blivit inbjuden att stödja förslaget från %{authorName}'
     invitation_to_cosponsor_initiative:
       cta_reply_to: 'Stöd detta förslag'
       event_description_initiative: '%{authorName} har skapat ett nytt förslag och vill att du ska stödja det.'
@@ -569,6 +588,7 @@ sv:
       cta_see_results: 'Se resultat i plattformen'
     event_registration_confirmation:
       subject: "Du har kommit in! Din anmälan till \"%{eventTitle}\" är bekräftad."
+      preheader: "%{firstName}, tack för att du registrerar dig för %{eventTitle}"
       header_message: "%{firstName}, tack för att du registrerat dig för"
       event_details:
         labels:
