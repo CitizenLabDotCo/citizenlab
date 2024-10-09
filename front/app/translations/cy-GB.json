@@ -1354,7 +1354,6 @@
   "app.containers.NotificationMenu.internalCommentOnYourInternalComment": "{name} sylw ar eich sylw mewnol",
   "app.containers.NotificationMenu.invitationToCosponsorContribution": "{name} eich gwahodd i gyd-noddi cyfraniad",
   "app.containers.NotificationMenu.invitationToCosponsorIdea": "{name} gwahodd chi i gyd-noddi syniad",
-  "app.containers.NotificationMenu.invitationToCosponsorInitiative": "{name} eich gwahodd i gefnogi cynnig",
   "app.containers.NotificationMenu.invitationToCosponsorIssue": "{name} eich gwahodd i gyd-noddi mater",
   "app.containers.NotificationMenu.invitationToCosponsorOption": "{name} gwahodd chi i gyd-noddi opsiwn",
   "app.containers.NotificationMenu.invitationToCosponsorPetition": "{name} eich gwahodd i gyd-noddi deiseb",

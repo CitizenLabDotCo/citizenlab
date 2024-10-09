@@ -1354,7 +1354,6 @@
   "app.containers.NotificationMenu.internalCommentOnYourInternalComment": "{name} علق على تعليقك الداخلي",
   "app.containers.NotificationMenu.invitationToCosponsorContribution": "{name} تمت دعوتك للمشاركة في رعاية مساهمة",
   "app.containers.NotificationMenu.invitationToCosponsorIdea": "{name} تمت دعوتك للمشاركة في رعاية فكرة",
-  "app.containers.NotificationMenu.invitationToCosponsorInitiative": "دعاك {name} للمشاركة في رعاية اقتراح",
   "app.containers.NotificationMenu.invitationToCosponsorIssue": "{name} تمت دعوتك للمشاركة في رعاية قضية",
   "app.containers.NotificationMenu.invitationToCosponsorOption": "{name} تمت دعوتك للمشاركة في رعاية أحد الخيارات",
   "app.containers.NotificationMenu.invitationToCosponsorPetition": "{name} تمت دعوتك للمشاركة في رعاية العريضة",

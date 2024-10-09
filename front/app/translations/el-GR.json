@@ -1354,7 +1354,6 @@
   "app.containers.NotificationMenu.internalCommentOnYourInternalComment": "{name} σχολίασε το εσωτερικό σας σχόλιο",
   "app.containers.NotificationMenu.invitationToCosponsorContribution": "{name} σας κάλεσε να συν-χορηγήσετε μια συνεισφορά",
   "app.containers.NotificationMenu.invitationToCosponsorIdea": "{name} σας κάλεσε να συν-χορηγήσετε μια ιδέα",
-  "app.containers.NotificationMenu.invitationToCosponsorInitiative": "{name} σας κάλεσε να συνυπογράψετε μια πρόταση",
   "app.containers.NotificationMenu.invitationToCosponsorIssue": "{name} σας κάλεσε να συνυπογράψετε ένα θέμα",
   "app.containers.NotificationMenu.invitationToCosponsorOption": "{name} σας κάλεσε να συν-χορηγήσετε μια επιλογή",
   "app.containers.NotificationMenu.invitationToCosponsorPetition": "{name} σας κάλεσε να συνυπογράψετε μια αίτηση",
