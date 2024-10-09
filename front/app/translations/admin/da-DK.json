@@ -2128,8 +2128,6 @@
   "app.containers.AdminPage.SideBar.insights": "Indsigt",
   "app.containers.AdminPage.SideBar.knowledgeBase": "Vidensbase",
   "app.containers.AdminPage.SideBar.language": "Sprog",
-  "app.containers.AdminPage.SideBar.linkToCommunityPlatform": "https://community.citizenlab.co",
-  "app.containers.AdminPage.SideBar.linkToSupport": "https://support.citizenlab.co",
   "app.containers.AdminPage.SideBar.menu": "Sider og menu",
   "app.containers.AdminPage.SideBar.messaging": "Meddelelser",
   "app.containers.AdminPage.SideBar.moderation": "Aktivitet",

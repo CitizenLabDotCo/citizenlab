@@ -2128,8 +2128,6 @@
   "app.containers.AdminPage.SideBar.insights": "Ziņojumu sniegšana",
   "app.containers.AdminPage.SideBar.knowledgeBase": "Zināšanu bāze",
   "app.containers.AdminPage.SideBar.language": "Valoda",
-  "app.containers.AdminPage.SideBar.linkToCommunityPlatform": "https://community.citizenlab.co",
-  "app.containers.AdminPage.SideBar.linkToSupport": "https://support.citizenlab.co",
   "app.containers.AdminPage.SideBar.menu": "Lapas un izvēlne",
   "app.containers.AdminPage.SideBar.messaging": "Ziņapmaiņa",
   "app.containers.AdminPage.SideBar.moderation": "Pasākums",

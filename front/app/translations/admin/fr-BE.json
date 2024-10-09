@@ -2128,8 +2128,6 @@
   "app.containers.AdminPage.SideBar.insights": "Rapports",
   "app.containers.AdminPage.SideBar.knowledgeBase": "Base de connaissances",
   "app.containers.AdminPage.SideBar.language": "Langue",
-  "app.containers.AdminPage.SideBar.linkToCommunityPlatform": "https://community.citizenlab.co",
-  "app.containers.AdminPage.SideBar.linkToSupport": "https://support.citizenlab.co",
   "app.containers.AdminPage.SideBar.menu": "Pages et menu",
   "app.containers.AdminPage.SideBar.messaging": "Messagerie",
   "app.containers.AdminPage.SideBar.moderation": "Activité",

@@ -2128,8 +2128,6 @@
   "app.containers.AdminPage.SideBar.insights": "تقديم بلاغات",
   "app.containers.AdminPage.SideBar.knowledgeBase": "قاعدة المعرفة",
   "app.containers.AdminPage.SideBar.language": "لغة",
-  "app.containers.AdminPage.SideBar.linkToCommunityPlatform": "https://community.citizenlab.co",
-  "app.containers.AdminPage.SideBar.linkToSupport": "https://support.citizenlab.co",
   "app.containers.AdminPage.SideBar.menu": "صفحات وقائمة",
   "app.containers.AdminPage.SideBar.messaging": "رسائل",
   "app.containers.AdminPage.SideBar.moderation": "النشاط",

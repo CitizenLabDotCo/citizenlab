@@ -1440,8 +1440,6 @@
   "app.containers.AdminPage.SideBar.insights": "Informes",
   "app.containers.AdminPage.SideBar.knowledgeBase": "Base de coneixements",
   "app.containers.AdminPage.SideBar.language": "Llenguatge",
-  "app.containers.AdminPage.SideBar.linkToCommunityPlatform": "https://community.citizenlab.co",
-  "app.containers.AdminPage.SideBar.linkToSupport": "https://support.citizenlab.co",
   "app.containers.AdminPage.SideBar.menu": "Pages & menu",
   "app.containers.AdminPage.SideBar.messaging": "Messaging",
   "app.containers.AdminPage.SideBar.moderation": "Activity",

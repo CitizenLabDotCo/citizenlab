@@ -2128,8 +2128,6 @@
   "app.containers.AdminPage.SideBar.insights": "Raportointi",
   "app.containers.AdminPage.SideBar.knowledgeBase": "Tietopohja",
   "app.containers.AdminPage.SideBar.language": "Kieli",
-  "app.containers.AdminPage.SideBar.linkToCommunityPlatform": "https://community.citizenlab.co",
-  "app.containers.AdminPage.SideBar.linkToSupport": "https://support.citizenlab.co",
   "app.containers.AdminPage.SideBar.menu": "Sivut ja valikko",
   "app.containers.AdminPage.SideBar.messaging": "Viestit",
   "app.containers.AdminPage.SideBar.moderation": "Toiminta",

@@ -2128,8 +2128,6 @@
   "app.containers.AdminPage.SideBar.insights": "Raporlama",
   "app.containers.AdminPage.SideBar.knowledgeBase": "Bilgi tabanı",
   "app.containers.AdminPage.SideBar.language": "Dil",
-  "app.containers.AdminPage.SideBar.linkToCommunityPlatform": "https://community.citizenlab.co",
-  "app.containers.AdminPage.SideBar.linkToSupport": "https://support.citizenlab.co",
   "app.containers.AdminPage.SideBar.menu": "Sayfalar ve menü",
   "app.containers.AdminPage.SideBar.messaging": "Mesajlaşma",
   "app.containers.AdminPage.SideBar.moderation": "Etkinlik",

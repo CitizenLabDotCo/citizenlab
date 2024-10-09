@@ -2128,8 +2128,6 @@
   "app.containers.AdminPage.SideBar.insights": "Rapportering",
   "app.containers.AdminPage.SideBar.knowledgeBase": "Kennisbank",
   "app.containers.AdminPage.SideBar.language": "Taal",
-  "app.containers.AdminPage.SideBar.linkToCommunityPlatform": "https://community.citizenlab.co",
-  "app.containers.AdminPage.SideBar.linkToSupport": "https://support.citizenlab.co",
   "app.containers.AdminPage.SideBar.menu": "Pagina's en menu",
   "app.containers.AdminPage.SideBar.messaging": "E-mails",
   "app.containers.AdminPage.SideBar.moderation": "Activiteit",
