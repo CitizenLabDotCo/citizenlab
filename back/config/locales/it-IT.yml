@@ -170,6 +170,9 @@ it:
       topic_ids:
         title: Argomenti
         description:
+      consponsor_ids:
+        title: Co-sponsor
+        description: Invita i co-sponsor nel campo sottostante. I co-sponsor invitati riceveranno un'e-mail.
       location:
         title: Posizione
         description:
@@ -239,6 +242,7 @@ it:
       <ul><li>Prenditi il tempo per elaborare la tua proposta. Se necessario, scrivi prima una bozza e poi fai un copia-incolla qui.</li><li>Scegli un titolo significativo che spieghi chiaramente cosa comporta la tua proposta.</li><li>Visualizzate la vostra proposta con un'immagine adatta per farla risaltare!</li><li>Aggiungi allegati rilevanti, come video, esempi ispiratori, dettagli tecnici o piani.</li><li>Condividi la tua idea sui social media e altri canali per raccogliere il sostegno degli altri.</li></ul>
   reset_password_mailer:
     send_reset_password:
+      preheader: 'Reimposta la tua password per %{organizationName}'
       cta_reset_password: 'Ripristina la tua password'
       message_you_reset_your_password: 'Hai richiesto un reset della password per la piattaforma di partecipazione di %{organizationName}. Clicca il pulsante qui sotto per scegliere una nuova password sicura. Il link scade tra 1 ora.'
       subject: '%{organizationName}: Resetta la tua password'
@@ -316,6 +320,7 @@ it:
   confirmations_mailer:
     send_confirmation_code:
       subject: "Conferma il tuo indirizzo email per la piattaforma di partecipazione di %{organizationName}"
+      preheader: 'Conferma il tuo indirizzo e-mail per %{organizationName}'
       header: "Il tuo codice di conferma"
       header_message: "Ciao %{firstName}!"
       confirm_email_address: "Confermare l'indirizzo e-mail"
@@ -330,6 +335,7 @@ it:
   user_blocked_mailer:
     send_user_blocked_email:
       subject: 'Il suo account è stato temporaneamente disabilitato'
+      preheader: 'Il tuo account sulla piattaforma di partecipazione di %{organizationName} è stato temporaneamente disabilitato.'
       title_user_blocked: 'Il suo account è stato temporaneamente disabilitato'
       paragraph_1_without_reason: "Il tuo account sulla piattaforma di partecipazione %{organizationName} è stato temporaneamente disabilitato per una violazione delle linee guida della comunità."
       paragraph_1_with_reason: "Il vostro account sulla piattaforma di partecipazione di %{organizationName} è stato temporaneamente disabilitato per il seguente motivo:"
@@ -345,3 +351,5 @@ it:
   voting_method:
     default_voting_term_singular: "voto"
     default_voting_term_plural: "voti"
+  ics_calendar_event:
+    event_details: "Dettagli dell'evento"
