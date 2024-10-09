@@ -80,6 +80,7 @@ def rake_20240910_create_proposals_project(reporter)
     end_at: nil,
     campaigns_settings: { project_phase_started: true },
     participation_method: 'proposals',
+    # input_term: 'proposals', TODO: Uncomment after merging new input terms
     expire_days_limit: config.settings('initiatives', 'days_limit'),
     reacting_threshold: config.settings('initiatives', 'reacting_threshold'),
     prescreening_enabled: config.feature_activated?('initiative_review')
@@ -129,7 +130,7 @@ def rake_20240910_substitute_homepage_element(project, reporter)
   return if !homepage
 
   homepage.craftjs_json.transform_values! do |element|
-    next element if element['type'].is_a?(Hash) && element.dig('type', 'resolvedName') != 'Proposals'
+    next element unless element['type'].is_a?(Hash) && element.dig('type', 'resolvedName') == 'Proposals'
 
     {
       'type' => { 'resolvedName' => 'Highlight' },
@@ -176,6 +177,7 @@ def rake_20240910_replace_navbaritem(project, reporter)
     code: 'custom',
     project_id: project.id
   )
+  item.title_multiloc = MultilocService.new.i18n_to_multiloc('nav_bar_items.proposals.title', locales: CL2_SUPPORTED_LOCALES) if item.title_multiloc.blank?
   if !item.save
     reporter.add_error(
       item.errors.details,
