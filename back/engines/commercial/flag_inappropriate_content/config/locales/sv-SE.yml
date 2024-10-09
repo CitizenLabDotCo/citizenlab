@@ -8,6 +8,7 @@ sv:
       subject: 'Ett inlägg har flaggats för granskning'
       header_title: 'Ett inlägg har flaggats för granskning'
       author_wrote: '%{authorName} skrev:'
+      preheader: 'Ett inlägg på din plattform har flaggats för granskning'
       automatically_flagged: >
         Det här inlägget upptäcktes automatiskt som potentiellt innehållande olämpligt innehåll. Vi skickar det här meddelandet till dig så att du kan granska inlägget i enlighet med dina egna riktlinjer för moderering.
       how_to_review: >
