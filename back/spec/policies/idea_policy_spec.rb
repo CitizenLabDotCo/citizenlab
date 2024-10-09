@@ -604,4 +604,34 @@ describe IdeaPolicy do
       end
     end
   end
+
+  context 'on a proposal that is in pre-screening' do
+    let(:project) { create(:single_phase_proposals_project, phase_attrs: { prescreening_enabled: true }) }
+    let(:idea) { create(:proposal, project: project, publication_status: 'submitted', idea_status: create(:proposals_status, code: 'prescreening')) }
+    let!(:cosponsorship) { create(:cosponsorship, idea:, status: 'pending') }
+
+    before do
+      settings = AppConfiguration.instance.settings
+      settings['input_cosponsorship'] = { 'allowed' => true, 'enabled' => true }
+      AppConfiguration.instance.update!(settings: settings)
+    end
+
+    context "for a normal user that's not the author" do
+      let(:user) { create(:user) }
+
+      it do
+        is_expected.not_to permit(:show)
+        expect(scope.resolve.size).to eq 0
+      end
+    end
+
+    context 'for a normal user invited as a cosponsor' do
+      let(:user) { cosponsorship.user }
+
+      it do
+        is_expected.to permit(:show)
+        expect(scope.resolve.size).to eq 1
+      end
+    end
+  end
 end
