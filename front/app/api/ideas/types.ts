@@ -7,7 +7,6 @@ import {
   IdeaCommentingDisabledReason,
   IdeaReactingDisabledReason,
   IdeaVotingDisabledReason,
-  ReactingIdeaActionDescriptor,
 } from 'utils/actionDescriptors/types';
 import { Keys } from 'utils/cl-react-query/types';
 
@@ -41,6 +40,23 @@ export type Sort =
   | '-comments_count'
   | 'budget'
   | '-budget';
+
+type ReactingIdeaActionDescriptor =
+  | { enabled: true; disabled_reason: null; cancelling_enabled: boolean }
+  | {
+      enabled: false;
+      disabled_reason: IdeaReactingDisabledReason;
+      cancelling_enabled: boolean;
+    };
+
+export interface IMiniIdeaData {
+  id: string;
+  type: string;
+  attributes: {
+    title_multiloc: Multiloc;
+    slug: string;
+  };
+}
 
 export interface IIdeaData {
   id: string;
@@ -178,6 +194,10 @@ export interface IIdeaUpdate {
 export interface IIdeas {
   data: IIdeaData[];
   links: ILinks;
+}
+
+export interface IMiniIdeas {
+  data: IMiniIdeaData[];
 }
 
 export interface IIdea {
