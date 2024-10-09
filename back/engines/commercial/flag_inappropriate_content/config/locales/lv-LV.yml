@@ -8,6 +8,7 @@ lv:
       subject: 'Ieraksts ir atzīmēts pārskatīšanai'
       header_title: 'Ieraksts ir atzīmēts pārskatīšanai'
       author_wrote: '%{authorName} rakstīja:'
+      preheader: 'Ieraksts jūsu platformā ir atzīmēts pārskatīšanai'
       automatically_flagged: >
         Šī ziņa tika automātiski konstatēta kā iespējami neatbilstoša satura ziņa. Mēs nosūtām jums šo paziņojumu, lai jūs varētu pārskatīt šo ziņu saskaņā ar savām moderēšanas vadlīnijām.
       how_to_review: >
