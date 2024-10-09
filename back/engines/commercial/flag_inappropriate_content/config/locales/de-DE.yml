@@ -8,6 +8,7 @@ de:
       subject: 'Ein Beitrag wurde zur Überprüfung markiert'
       header_title: 'Ein Beitrag wurde zur Überprüfung markiert'
       author_wrote: '%{authorName} schrieb:'
+      preheader: 'Ein Beitrag auf Ihrer Plattform wurde als Spam markiert'
       automatically_flagged: >
         Dieser Beitrag wurde automatisch als potenziell unangemessener Inhalt erkannt. Wir senden Ihnen diese Benachrichtigung, damit Sie den Beitrag gemäß Ihren eigenen Moderationsrichtlinien überprüfen können.
       how_to_review: >
