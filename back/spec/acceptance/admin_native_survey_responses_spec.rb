@@ -28,7 +28,7 @@ resource 'Ideas' do
     end
     let(:id) { input.id }
 
-    example_request '[error] Try to get one input by id' do
+    example_request 'Get one input by id' do
       assert_status 200
       expect(response_data[:id]).to eq input.id
     end
@@ -48,7 +48,7 @@ resource 'Ideas' do
     end
     let(:slug) { input.slug }
 
-    example_request '[error] Try to get one input by slug' do
+    example_request 'Get one input by slug' do
       assert_status 200
       expect(response_data[:id]).to eq input.id
     end
