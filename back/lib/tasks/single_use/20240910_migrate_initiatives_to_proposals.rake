@@ -63,7 +63,6 @@ def rake_20240910_create_proposals_project(reporter)
     description_multiloc: rake_20240910_migrate_project_description_multiloc,
     slug: SlugService.new.generate_slug(Project.new, 'proposals'),
     default_assignee: User.active.admin.order(:created_at).reject(&:super_admin?).first
-    # TODO: Check if project topics are included like this
   )
   project.admin_publication_attributes = { publication_status: 'archived' } if !config.feature_activated?('initiatives')
   if !project.save
@@ -73,6 +72,7 @@ def rake_20240910_create_proposals_project(reporter)
     )
     return false
   end
+  project.set_default_topics!
   phase = Phase.new(
     project: project,
     title_multiloc: MultilocService.new.i18n_to_multiloc('nav_bar_items.proposals.title', locales: CL2_SUPPORTED_LOCALES),
@@ -138,7 +138,7 @@ def rake_20240910_substitute_homepage_element(project, reporter)
       'props' => {
         'title' => rake_20240910_migrate_homepage_title_multiloc,
         'description' => rake_20240910_migrate_homepage_description_multiloc,
-        'primaryButtonLink' => "/projects/#{project.slug}ideas/new?phase_id=#{project.phases.first.id}",
+        'primaryButtonLink' => "/projects/#{project.slug}/ideas/new?phase_id=#{project.phases.first.id}", # TODO: Test link
         'primaryButtonText' => {
           'en' => 'Post your proposal'
         },
