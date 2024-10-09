@@ -10,6 +10,7 @@ ca:
       "comment_on_idea_you_follow": Un comentari sobre una idea que segueixes
       "comment_on_initiative_you_follow": Un comentari sobre una proposta que seguiu
       "cosponsor_of_your_initiative": Un usuari accepta la meva invitació per copatrocinar la meva proposta
+      "cosponsor_of_your_idea": Un usuari accepta la meva invitació per copatrocinar la meva proposta
       "event_registration_confirmation": Confirmació de registre de l'esdeveniment
       "idea_marked_as_spam": Informe de correu brossa d'idees
       "idea_published": Publicació de la meva aportació
@@ -17,6 +18,7 @@ ca:
       "initiative_marked_as_spam": Informe de correu brossa de la proposta
       "initiative_published": Publicació de la meva proposta
       "invitation_to_cosponsor_initiative": Invitació a copatrocinar una proposta
+      "invitation_to_cosponsor_idea": Invitació a copatrocinar una proposta
       "initiative_resubmitted_for_review": S'ha tornat a enviar la proposta per a la seva revisió
       "invite_received": Invitació
       "invite_reminder": Recordatori d'invitació
@@ -103,6 +105,8 @@ ca:
       "unsubscribe_text": "donar-se de baixa"
     follow:
       "unfollow_here": "Heu rebut aquesta notificació a causa d'un element que seguiu. <a href=\"%{unfollow_url}\">Pots deixar de seguir-lo aquí.</a>"
+    manual:
+      preheader: 'Tens correu de %{organizationName}'
     comment_deleted_by_admin:
       reason: 'El motiu pel qual s''ha suprimit el teu comentari:'
       cta_view: 'Mira aquesta idea'
@@ -157,6 +161,12 @@ ca:
       today: Avui
       wrong_content: 'El comentari no és rellevant.'
       yesterday: Ahir
+    cosponsor_of_your_idea:
+      cta_reply_to: 'Consulta la teva proposta'
+      event_description: 'Felicitats! %{cosponsorName} ha acceptat la teva invitació per copatrocinar la teva proposta.'
+      main_header: '%{cosponsorName} ha acceptat la teva invitació per copatrocinar la teva proposta'
+      subject: '%{cosponsorName} ha acceptat la teva invitació per copatrocinar la teva proposta'
+      preheader: '%{cosponsorName} ha acceptat la teva invitació per copatrocinar la teva proposta'
     cosponsor_of_your_initiative:
       cta_reply_to: 'Consulta la teva proposta'
       event_description_initiative: 'Felicitats! %{cosponsorName} ha acceptat la teva invitació per copatrocinar la teva proposta.'
@@ -197,6 +207,15 @@ ca:
       main_header: '%{firstName}, tens una tasca nova'
       subject: 'Tens una tasca a la plataforma de %{organizationName}'
       preheader_initiative: 'Se t''ha assignat la proposta de %{authorName}'
+    invitation_to_cosponsor_idea:
+      cta_reply_to: 'Copatrocina aquesta proposta'
+      event_description: '%{authorName} ha creat una nova proposta i voldria que la copatrocinis.'
+      event_description_cosponsoring: 'Copatrocinar una proposta significa que <strong>el vostre nom es mostrarà</strong> amb els noms d''altres copatrocinadors de la proposta.'
+      event_description_before_action: 'Per veure la proposta i acceptar la invitació, heu d''iniciar sessió al vostre compte.'
+      event_description_action: 'Feu clic a continuació per llegir la proposta.'
+      main_header: 'Us han convidat a copatrocinar una proposta'
+      subject: 'Us han convidat a copatrocinar una proposta'
+      preheader: 'Us han convidat a copatrocinar la proposta de %{authorName}'
     invitation_to_cosponsor_initiative:
       cta_reply_to: 'Copatrocina aquesta proposta'
       event_description_initiative: '%{authorName} ha creat una nova proposta i voldria que la copatrocinis.'
@@ -569,6 +588,7 @@ ca:
       cta_see_results: 'Veure resultats a la plataforma'
     event_registration_confirmation:
       subject: "Estàs dins! El vostre registre per a \"%{eventTitle}\" està confirmat"
+      preheader: "%{firstName}, gràcies per registrar-te a %{eventTitle}"
       header_message: "%{firstName}, gràcies per registrar-te"
       event_details:
         labels:
