@@ -8,6 +8,7 @@ kl:
       subject: 'A post has been flagged for review'
       header_title: 'A post has been flagged for review'
       author_wrote: '%{authorName} wrote:'
+      preheader: 'A post on your platform has been flagged for review'
       automatically_flagged: >
         Una ilanngussaq naleqqutinngitsunik imaqarsinnaasutut pasitsaanneqarpoq. Matuminnga nalunaarfigivatsigit, nammineq najoqqutassiatit naapertorlugit misissorsinnaaniassagakku.
       how_to_review: >
