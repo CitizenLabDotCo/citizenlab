@@ -10,6 +10,7 @@ fr:
       "comment_on_idea_you_follow": Un commentaire sur une idée que vous suivez
       "comment_on_initiative_you_follow": Un commentaire sur une proposition que vous suivez
       "cosponsor_of_your_initiative": Un utilisateur accepte de soutenir ma proposition
+      "cosponsor_of_your_idea": Un utilisateur accepte de soutenir ma proposition
       "event_registration_confirmation": Confirmation de l'inscription à l'événement
       "first_idea_published": Publication de ma première idée
       "idea_marked_as_spam": Rapport sur le spam d'idées
@@ -18,6 +19,7 @@ fr:
       "initiative_marked_as_spam": Rapport sur le spam de proposition
       "initiative_published": Publication de mon proposition
       "invitation_to_cosponsor_initiative": Invitation à soutenir une proposition
+      "invitation_to_cosponsor_idea": Invitation à soutenir une proposition
       "initiative_resubmitted_for_review": Proposition soumise à nouveau pour examen
       "invite_received": Invitation
       "invite_reminder": Rappel d'invitation
@@ -138,6 +140,12 @@ fr:
       today: Aujourd'hui
       wrong_content: 'Le commentaire n’est pas pertinent.'
       yesterday: Hier
+    cosponsor_of_your_idea:
+      cta_reply_to: 'Voir votre proposition'
+      event_description: 'Félicitations ! %{cosponsorName} a accepté de soutenir votre proposition.'
+      main_header: '%{cosponsorName} a accepté de soutenir votre proposition'
+      subject: '%{cosponsorName} a accepté de soutenir votre proposition'
+      preheader: '%{cosponsorName} a accepté de soutenir votre proposition'
     cosponsor_of_your_initiative:
       cta_reply_to: 'Voir votre proposition'
       event_description_initiative: 'Félicitations ! %{cosponsorName} a accepté de soutenir votre proposition.'
@@ -181,6 +189,15 @@ fr:
       main_header: '%{firstName}, vous avez une nouvelle attribution'
       subject: 'Vous avez une nouvelle attribution sur la plateforme de %{organizationName}'
       preheader_initiative: 'La proposition de %{authorName} vous a été attribuée'
+    invitation_to_cosponsor_idea:
+      cta_reply_to: 'Soutenir cette proposition'
+      event_description: '%{authorName} a créé une nouvelle proposition et aimerait que vous la souteniez.'
+      event_description_cosponsoring: 'Soutenir une proposition signifie que <strong>votre nom sera affiché</strong> avec les noms des autres soutiens de la proposition.'
+      event_description_before_action: 'Pour voir la proposition et accepter l''invitation, vous devez être connecté à votre compte.'
+      event_description_action: 'Cliquez ci-dessous pour lire la proposition.'
+      main_header: 'Vous avez été invité à soutenir une proposition'
+      subject: 'Vous avez été invité à soutenir une proposition'
+      preheader: 'Vous avez été invité à soutenir la proposition de %{authorName}'
     invitation_to_cosponsor_initiative:
       cta_reply_to: 'Soutenir cette proposition'
       event_description_initiative: '%{authorName} a créé une nouvelle proposition et aimerait que vous la souteniez.'
