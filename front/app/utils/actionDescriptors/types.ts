@@ -84,14 +84,6 @@ export type ActionDescriptorFutureEnabled<DisabledReason> =
       future_enabled_at: string | null;
     };
 
-export type ReactingIdeaActionDescriptor =
-  | { enabled: true; disabled_reason: null; cancelling_enabled: boolean }
-  | {
-      enabled: false;
-      disabled_reason: IdeaReactingDisabledReason;
-      cancelling_enabled: boolean;
-    };
-
 // NOTE: Bit of a shim to add in the budgeting action - even though it doesn't really exist
 export type ActionDescriptorAction =
   | 'posting_idea'
