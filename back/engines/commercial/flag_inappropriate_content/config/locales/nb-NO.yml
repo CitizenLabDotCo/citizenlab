@@ -8,6 +8,7 @@
       subject: 'Et innlegg har blitt flagget for vurdering'
       header_title: 'Et innlegg har blitt flagget for vurdering'
       author_wrote: '%{authorName} skrev:'
+      preheader: 'Et innlegg på plattformen din har blitt flagget for vurdering'
       automatically_flagged: >
         Dette innlegget ble automatisk oppdaget som potensielt upassende innhold. Vi sender deg dette varselet slik at du kan se gjennom innlegget i samsvar med dine egne retningslinjer for moderering.
       how_to_review: >
