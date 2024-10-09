@@ -8,6 +8,7 @@ cy:
       subject: 'Mae post wedi''i fflagio i''w hadolygu'
       header_title: 'Mae post wedi''i fflagio i''w hadolygu'
       author_wrote: 'Ysgrifennodd %{authorName} :'
+      preheader: 'Mae postiad ar eich platfform wedi''i fflagio i''w adolygu'
       automatically_flagged: >
         Canfuwyd yn awtomatig bod y postiad hwn yn cynnwys cynnwys amhriodol. Rydym yn anfon yr hysbysiad hwn atoch fel y gallwch adolygu'r post yn unol â'ch canllawiau safoni eich hun.
       how_to_review: >
