@@ -1180,7 +1180,6 @@
   "app.containers.AdminPage.widgets.titleStyle": "النمط",
   "app.containers.AdminPage.widgets.titleWidgets": "عنصر الواجهة",
   "app.containers.ContentBuilder.Save": "حفظ",
-  "app.containers.admin.ContentBuilder.aboutBox": "حول مربع الحوار",
   "app.containers.admin.ContentBuilder.content": "محتوى",
   "app.containers.admin.ContentBuilder.delete": "حذف",
   "app.containers.admin.ContentBuilder.error": "خطأ",

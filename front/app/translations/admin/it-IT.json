@@ -1521,7 +1521,6 @@
   "app.containers.AdminPage.widgets.titleStyle": "Style",
   "app.containers.AdminPage.widgets.titleWidgets": "Widget",
   "app.containers.ContentBuilder.Save": "Save",
-  "app.containers.admin.ContentBuilder.aboutBox": "About box",
   "app.containers.admin.ContentBuilder.content": "CONTENT",
   "app.containers.admin.ContentBuilder.delete": "Delete",
   "app.containers.admin.ContentBuilder.error": "error",
