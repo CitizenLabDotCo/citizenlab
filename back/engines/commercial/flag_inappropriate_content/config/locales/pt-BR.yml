@@ -8,6 +8,7 @@ pt:
       subject: 'Uma postagem foi marcada para revisão'
       header_title: 'Uma postagem foi marcada para revisão'
       author_wrote: '%{authorName} escreveu:'
+      preheader: 'Uma publicação em sua plataforma foi marcada para revisão'
       automatically_flagged: >
         Esta postagem foi detectada automaticamente como potencialmente contendo conteúdo inadequado. Estamos enviando esta notificação para que você possa analisar a publicação de acordo com suas próprias diretrizes de moderação.
       how_to_review: >
