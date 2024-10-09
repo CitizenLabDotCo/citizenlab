@@ -2119,6 +2119,7 @@
   "app.containers.AdminPage.SideBar.academy": "Academy",
   "app.containers.AdminPage.SideBar.administrator": "Administrator",
   "app.containers.AdminPage.SideBar.communityPlatform": "Community platform",
+  "app.containers.AdminPage.SideBar.customerPortal": "Customer portal",
   "app.containers.AdminPage.SideBar.dashboard": "Dashboard",
   "app.containers.AdminPage.SideBar.emails": "Emails",
   "app.containers.AdminPage.SideBar.folderManager": "Folder manager",
