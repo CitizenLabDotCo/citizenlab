@@ -252,12 +252,21 @@ describe IdeaPolicy do
       it do
         is_expected.to permit(:show)
         is_expected.to permit(:by_slug)
-        is_expected.to permit(:create)
         is_expected.not_to permit(:update)
         is_expected.not_to permit(:destroy)
         is_expected.not_to permit(:index_xlsx)
 
         expect(scope.resolve.size).to eq 1
+      end
+
+      context 'with an unsaved idea' do
+        let(:project) { create(:project_with_active_native_survey_phase) }
+        let(:user) { create(:user) }
+        let(:idea) { build(:native_survey_response, project:, author: user) }
+
+        it do
+          is_expected.to permit(:create)
+        end
       end
     end
 
