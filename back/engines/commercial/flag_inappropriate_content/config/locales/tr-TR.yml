@@ -8,6 +8,7 @@ tr:
       subject: 'Bir gönderi incelenmek üzere işaretlendi'
       header_title: 'Bir gönderi incelenmek üzere işaretlendi'
       author_wrote: '%{authorName} yazdı:'
+      preheader: 'Platformunuzdaki bir gönderi incelenmek üzere işaretlendi'
       automatically_flagged: >
         Bu gönderi otomatik olarak potansiyel olarak uygunsuz içerik içeriyor olarak algılandı. Gönderiyi kendi moderasyon kurallarınıza uygun olarak inceleyebilmeniz için size bu bildirimi gönderiyoruz.
       how_to_review: >
