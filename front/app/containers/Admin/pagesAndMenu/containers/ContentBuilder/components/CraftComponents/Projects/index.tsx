@@ -3,9 +3,10 @@ import React from 'react';
 import { Box, colors, media, Text } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
 import styled from 'styled-components';
+import { Multiloc } from 'typings';
 
 import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
-// import ProjectAndFolderCards from 'components/ProjectAndFolderCards';
+import ProjectAndFolderCards from 'components/ProjectAndFolderCards';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -25,28 +26,26 @@ const ProjectSection = styled.div`
   `}
 `;
 
-const Projects = () =>
-  //   {
-  //   currentlyWorkingOnText,
-  // }: {
-  //   currentlyWorkingOnText?: Multiloc;
-  // }
-  {
-    return (
-      <Box bg={colors.background} data-cy="e2e-projects">
-        <Box maxWidth="1200px" margin="0 auto">
-          <ProjectSection id="e2e-landing-page-project-section">
-            {/* <ProjectAndFolderCards
+const Projects = ({
+  currentlyWorkingOnText,
+}: {
+  currentlyWorkingOnText?: Multiloc;
+}) => {
+  return (
+    <Box bg={colors.background} data-cy="e2e-projects">
+      <Box maxWidth="1200px" margin="0 auto">
+        <ProjectSection id="e2e-landing-page-project-section">
+          <ProjectAndFolderCards
             publicationStatusFilter={['published', 'archived']}
             showTitle={true}
             layout="dynamic"
             currentlyWorkingOnText={currentlyWorkingOnText}
-          /> */}
-          </ProjectSection>
-        </Box>
+          />
+        </ProjectSection>
       </Box>
-    );
-  };
+    </Box>
+  );
+};
 
 const ProjectsSettings = () => {
   const { formatMessage } = useIntl();

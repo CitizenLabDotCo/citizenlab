@@ -85,14 +85,6 @@ export default defineMessages({
     defaultMessage:
       '{name} commented internally on an unassigned input in an unmanaged project',
   },
-  internalCommentOnUnassignedInitiative: {
-    id: 'app.containers.NotificationMenu.internalCommentOnUnassignedInitiative',
-    defaultMessage: '{name} commented internally on an unassigned proposal',
-  },
-  invitationToCosponsorInitiative: {
-    id: 'app.containers.NotificationMenu.invitationToCosponsorInitiative',
-    defaultMessage: '{name} invited you to cosponsor a proposal',
-  },
   invitationToCosponsorIdea: {
     id: 'app.containers.NotificationMenu.invitationToCosponsorIdea',
     defaultMessage: '{name} invited you to co-sponsor an idea',
