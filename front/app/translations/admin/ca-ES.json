@@ -1578,7 +1578,6 @@
   "app.containers.AdminPage.widgets.titleStyle": "Estil",
   "app.containers.AdminPage.widgets.titleWidgets": "Widget",
   "app.containers.ContentBuilder.Save": "Save",
-  "app.containers.admin.ContentBuilder.aboutBox": "Sobre la caixa",
   "app.containers.admin.ContentBuilder.content": "CONTINGUT",
   "app.containers.admin.ContentBuilder.delete": "Delete",
   "app.containers.admin.ContentBuilder.error": "error",
