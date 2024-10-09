@@ -5,7 +5,7 @@ describe('Landing page - not signed in', () => {
     cy.goToLandingPage();
   });
 
-  it.only('shows the correct content', () => {
+  it('shows the correct content', () => {
     // shows the page
     cy.get('#e2e-landing-page');
 

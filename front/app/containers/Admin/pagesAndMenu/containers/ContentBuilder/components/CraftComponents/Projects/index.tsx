@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { Multiloc } from 'typings';
 
 import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
-import ProjectAndFolderCards from 'components/ProjectAndFolderCards';
+// import ProjectAndFolderCards from 'components/ProjectAndFolderCards';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -35,12 +35,12 @@ const Projects = ({
     <Box bg={colors.background} data-cy="e2e-projects">
       <Box maxWidth="1200px" margin="0 auto">
         <ProjectSection id="e2e-landing-page-project-section">
-          <ProjectAndFolderCards
+          {/* <ProjectAndFolderCards
             publicationStatusFilter={['published', 'archived']}
             showTitle={true}
             layout="dynamic"
             currentlyWorkingOnText={currentlyWorkingOnText}
-          />
+          /> */}
         </ProjectSection>
       </Box>
     </Box>
