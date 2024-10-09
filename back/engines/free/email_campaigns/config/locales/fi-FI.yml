@@ -10,6 +10,7 @@ fi:
       "comment_on_idea_you_follow": Kommentti ideaan, jota seuraat
       "comment_on_initiative_you_follow": Kommentti ehdotukseen, jota seuraat
       "cosponsor_of_your_initiative": Käyttäjä hyväksyy kutsuni sponsoroida ehdotustani
+      "cosponsor_of_your_idea": Käyttäjä hyväksyy kutsuni sponsoroida ehdotustani
       "event_registration_confirmation": Tapahtuman ilmoittautumisvahvistus
       "idea_marked_as_spam": Idea roskapostiraportti
       "idea_published": Kirjoitukseni julkaisu
@@ -17,6 +18,7 @@ fi:
       "initiative_marked_as_spam": Ehdotuksen roskapostiraportti
       "initiative_published": Ehdotukseni julkaisu
       "invitation_to_cosponsor_initiative": Kutsu osallistumaan ehdotukseen
+      "invitation_to_cosponsor_idea": Kutsu yhteissponsoroimaan ehdotusta
       "initiative_resubmitted_for_review": Ehdotus lähetettiin uudelleen tarkistettavaksi
       "invite_received": Kutsu
       "invite_reminder": Kutsumuistutus
@@ -103,6 +105,8 @@ fi:
       "unsubscribe_text": "Lopeta tilaus"
     follow:
       "unfollow_here": "Sait tämän ilmoituksen seuraamasi kohteen takia. <a href=\"%{unfollow_url}\">Voit lopettaa sen seuraamisen täällä.</a>"
+    manual:
+      preheader: 'Sinulla on postia osoitteesta %{organizationName}'
     comment_deleted_by_admin:
       reason: 'Syy miksi kommenttisi poistettiin:'
       cta_view: 'Katso tämä idea'
@@ -157,6 +161,12 @@ fi:
       today: Tänään
       wrong_content: 'Kommentti ei liity asiaan.'
       yesterday: Eilen
+    cosponsor_of_your_idea:
+      cta_reply_to: 'Katso ehdotuksesi'
+      event_description: 'Onnittelut! %{cosponsorName} on hyväksynyt kutsusi tukea ehdotustasi.'
+      main_header: '%{cosponsorName} on hyväksynyt kutsusi tukea ehdotustasi'
+      subject: '%{cosponsorName} on hyväksynyt kutsusi tukea ehdotustasi'
+      preheader: '%{cosponsorName} on hyväksynyt kutsusi tukea ehdotustasi'
     cosponsor_of_your_initiative:
       cta_reply_to: 'Katso ehdotuksesi'
       event_description_initiative: 'Onnittelut! %{cosponsorName} on hyväksynyt kutsusi tukea ehdotustasi.'
@@ -197,6 +207,15 @@ fi:
       main_header: '%{firstName}, sinulla on uusi tehtävä'
       subject: 'Sinulla on tehtävä alustalla %{organizationName}'
       preheader_initiative: '%{authorName} ehdotus on määrätty sinulle'
+    invitation_to_cosponsor_idea:
+      cta_reply_to: 'Kannata tätä ehdotusta'
+      event_description: '%{authorName} on luonut uuden ehdotuksen ja haluaa sinun tukevan sitä.'
+      event_description_cosponsoring: 'Ehdotuksen yhteissponsorointi tarkoittaa, että <strong>nimesi näytetään</strong> ehdotuksen muiden tukisponsoreiden nimien kanssa.'
+      event_description_before_action: 'Nähdäksesi ehdotuksen ja hyväksyäksesi kutsun sinun tulee olla kirjautuneena tilillesi.'
+      event_description_action: 'Klikkaa alta lukeaksesi ehdotuksen.'
+      main_header: 'Sinut on kutsuttu tukemaan ehdotusta'
+      subject: 'Sinut on kutsuttu tukemaan ehdotusta'
+      preheader: 'Sinut on kutsuttu tukemaan ehdotusta %{authorName}'
     invitation_to_cosponsor_initiative:
       cta_reply_to: 'Kannata tätä ehdotusta'
       event_description_initiative: '%{authorName} on luonut uuden ehdotuksen ja haluaa sinun tukevan sitä.'
@@ -569,6 +588,7 @@ fi:
       cta_see_results: 'Katso tulokset alustalta'
     event_registration_confirmation:
       subject: "Olet mukana! Rekisteröitymisesi kohteelle \"%{eventTitle}\" on vahvistettu"
+      preheader: "%{firstName}, kiitos rekisteröitymisestä %{eventTitle}"
       header_message: "%{firstName}, kiitos rekisteröitymisestä"
       event_details:
         labels:
