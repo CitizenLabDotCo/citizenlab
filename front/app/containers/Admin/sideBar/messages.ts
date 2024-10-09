@@ -93,6 +93,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SideBar.communityPlatform',
     defaultMessage: 'Community platform',
   },
+  customerPortal: {
+    id: 'app.containers.AdminPage.SideBar.customerPortal',
+    defaultMessage: 'Customer portal',
+  },
   linkToCommunityPlatform: {
     id: 'app.containers.AdminPage.SideBar.linkToCommunityPlatform',
     defaultMessage: 'https://community.citizenlab.co',
