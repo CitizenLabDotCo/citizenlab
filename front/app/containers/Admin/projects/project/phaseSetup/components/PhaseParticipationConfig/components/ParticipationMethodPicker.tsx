@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import {
   IconTooltip,
@@ -98,6 +98,15 @@ const ParticipationMethodPicker = ({
     name: 'proposals_participation_method',
   });
 
+  useEffect(() => {
+    setSelectedMethod(participation_method);
+    setShowSurveyOptions(
+      participation_method === 'native_survey' ||
+        participation_method === 'survey' ||
+        participation_method === 'poll'
+    );
+  }, [participation_method]);
+
   const changeMethod = (newMethod?: ParticipationMethod) => {
     const method = newMethod || methodToChangeTo;
 
@@ -115,6 +124,11 @@ const ParticipationMethodPicker = ({
 
   const handleMethodSelect = (event, method: ParticipationMethod) => {
     event.preventDefault();
+
+    // We don't want to change the method if it is the same
+    if (selectedMethod === method) {
+      return;
+    }
 
     if (phase) {
       setMethodToChangeTo(method);
