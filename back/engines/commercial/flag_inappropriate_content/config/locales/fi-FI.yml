@@ -8,6 +8,7 @@ fi:
       subject: 'Viesti on merkitty tarkistettavaksi'
       header_title: 'Viesti on merkitty tarkistettavaksi'
       author_wrote: '%{authorName} kirjoitti:'
+      preheader: 'Alustallasi oleva viesti on merkitty tarkistettavaksi'
       automatically_flagged: >
         Tämä viesti havaittiin automaattisesti mahdollisesti sisältäväksi sopimatonta sisältöä. Lähetämme sinulle tämän ilmoituksen, jotta voit tarkistaa viestin omien valvontaohjeidesi mukaisesti.
       how_to_review: >
