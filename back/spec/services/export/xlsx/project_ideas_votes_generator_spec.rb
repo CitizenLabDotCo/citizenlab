@@ -72,8 +72,7 @@ describe Export::Xlsx::ProjectIdeasVotesGenerator do
     end
 
     it 'does not contain a row for an idea NOT assigned to a voting phase' do
-      idea_not_in_voting_phase = create(:idea, project: project)
-      create(:ideas_phase, idea: idea_not_in_voting_phase, phase: phase1)
+      idea_not_in_voting_phase = create(:idea, project: project, phases: [phase1])
       idea_id_column = workbook.worksheets[0].collect { |row| row[0].value }
 
       expect(project.ideas.count).to eq(5)

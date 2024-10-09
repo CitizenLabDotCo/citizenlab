@@ -28,6 +28,10 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
     default field
   end
 
+  def visit_cosponsor_ids(field)
+    default field
+  end
+
   def visit_page(field)
     {
       type: 'Page',

@@ -9,6 +9,7 @@ import {
   defaultCardStyle,
   defaultCardHoverStyle,
   isRtl,
+  Text,
 } from '@citizenlab/cl2-component-library';
 import { isEmpty, round } from 'lodash-es';
 import moment from 'moment';
@@ -30,6 +31,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import AvatarBubbles from 'components/AvatarBubbles';
 import FollowUnfollow from 'components/FollowUnfollow';
+import PhaseTimeLeft from 'components/PhaseTimeLeft';
 import { TLayout } from 'components/ProjectAndFolderCards';
 import T from 'components/T';
 import Image from 'components/UI/Image';
@@ -223,13 +225,6 @@ const ContentHeader = styled.div`
       padding-right: 10px;
     `}
   }
-`;
-
-const TimeRemaining = styled.div`
-  color: ${({ theme }) => theme.colors.tenantText};
-  font-size: ${fontSizes.s}px;
-  font-weight: 400;
-  margin-bottom: 7px;
 `;
 
 const ProgressBar = styled.div`
@@ -455,10 +450,6 @@ const ProjectCard = memo<InputProps>(
       const startAt = phase?.data.attributes.start_at;
       const endAt = phase?.data.attributes.end_at;
 
-      const timeRemaining = endAt
-        ? moment.duration(moment().diff(moment(endAt).endOf('day'))).humanize()
-        : null;
-
       let countdown: JSX.Element | null = null;
       const inputTerm = getInputTerm(phases?.data, phase?.data);
 
@@ -474,7 +465,7 @@ const ProjectCard = memo<InputProps>(
             <FormattedMessage {...messages.finished} />
           </ContentHeaderLabel>
         );
-      } else if (timeRemaining) {
+      } else if (endAt) {
         const totalDays = moment
           .duration(moment(endAt).diff(moment(startAt)))
           .asDays();
@@ -486,12 +477,9 @@ const ProjectCard = memo<InputProps>(
           round((pastDays / totalDays) * 100, 1);
         countdown = (
           <Box mt="4px" className="e2e-project-card-time-remaining">
-            <TimeRemaining className={size}>
-              <FormattedMessage
-                {...messages.remaining}
-                values={{ timeRemaining }}
-              />
-            </TimeRemaining>
+            <Text color="textPrimary" fontSize="s" m="0">
+              <PhaseTimeLeft currentPhaseEndsAt={endAt} />
+            </Text>
             <ProgressBar ref={progressBarRef} aria-hidden>
               <ProgressBarOverlay
                 progress={progress}
@@ -723,15 +711,13 @@ const ProjectCard = memo<InputProps>(
                   className={`${size} ${!showFooter ? 'hidden' : ''}`}
                 >
                   <Box h="100%" display="flex" alignItems="center">
-                    {hasAvatars && (
-                      <AvatarBubbles
-                        size={32}
-                        limit={3}
-                        userCountBgColor={theme.colors.tenantPrimary}
-                        avatarIds={avatarIds}
-                        userCount={project.data.attributes.participants_count}
-                      />
-                    )}
+                    <AvatarBubbles
+                      size={32}
+                      limit={3}
+                      userCountBgColor={theme.colors.tenantPrimary}
+                      avatarIds={avatarIds}
+                      userCount={project.data.attributes.participants_count}
+                    />
                   </Box>
                 </ContentFooter>
               </Box>

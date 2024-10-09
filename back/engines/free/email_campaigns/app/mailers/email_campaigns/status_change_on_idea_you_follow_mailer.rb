@@ -4,6 +4,10 @@ module EmailCampaigns
   class StatusChangeOnIdeaYouFollowMailer < ApplicationMailer
     private
 
+    def preheader
+      format_message('preheader')
+    end
+
     def subject
       format_message('subject', values: { input_title: localize_for_recipient(event.post_title_multiloc) })
     end

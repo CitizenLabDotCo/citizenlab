@@ -13,6 +13,7 @@ ALTER TABLE IF EXISTS ONLY public.ideas_topics DROP CONSTRAINT IF EXISTS fk_rail
 ALTER TABLE IF EXISTS ONLY public.ideas_topics DROP CONSTRAINT IF EXISTS fk_rails_fd874ecf4b;
 ALTER TABLE IF EXISTS ONLY public.events_attendances DROP CONSTRAINT IF EXISTS fk_rails_fba307ba3b;
 ALTER TABLE IF EXISTS ONLY public.comments DROP CONSTRAINT IF EXISTS fk_rails_f44b1e3c8a;
+ALTER TABLE IF EXISTS ONLY public.cosponsorships DROP CONSTRAINT IF EXISTS fk_rails_f32533b783;
 ALTER TABLE IF EXISTS ONLY public.report_builder_published_graph_data_units DROP CONSTRAINT IF EXISTS fk_rails_f21a19c203;
 ALTER TABLE IF EXISTS ONLY public.idea_files DROP CONSTRAINT IF EXISTS fk_rails_efb12f53ad;
 ALTER TABLE IF EXISTS ONLY public.static_pages_topics DROP CONSTRAINT IF EXISTS fk_rails_edc8786515;
@@ -91,6 +92,7 @@ ALTER TABLE IF EXISTS ONLY public.groups_permissions DROP CONSTRAINT IF EXISTS f
 ALTER TABLE IF EXISTS ONLY public.initiatives_topics DROP CONSTRAINT IF EXISTS fk_rails_6ee3ffe8e1;
 ALTER TABLE IF EXISTS ONLY public.report_builder_reports DROP CONSTRAINT IF EXISTS fk_rails_6988c9886e;
 ALTER TABLE IF EXISTS ONLY public.idea_imports DROP CONSTRAINT IF EXISTS fk_rails_67f00886f9;
+ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_67be9591a3;
 ALTER TABLE IF EXISTS ONLY public.idea_imports DROP CONSTRAINT IF EXISTS fk_rails_636c77bdd1;
 ALTER TABLE IF EXISTS ONLY public.internal_comments DROP CONSTRAINT IF EXISTS fk_rails_617a7ea994;
 ALTER TABLE IF EXISTS ONLY public.analysis_taggings DROP CONSTRAINT IF EXISTS fk_rails_604cfbcd8d;
@@ -114,6 +116,7 @@ ALTER TABLE IF EXISTS ONLY public.custom_field_option_images DROP CONSTRAINT IF 
 ALTER TABLE IF EXISTS ONLY public.nav_bar_items DROP CONSTRAINT IF EXISTS fk_rails_34143a680f;
 ALTER TABLE IF EXISTS ONLY public.volunteering_volunteers DROP CONSTRAINT IF EXISTS fk_rails_33a154a9ba;
 ALTER TABLE IF EXISTS ONLY public.phase_files DROP CONSTRAINT IF EXISTS fk_rails_33852a9a71;
+ALTER TABLE IF EXISTS ONLY public.cosponsorships DROP CONSTRAINT IF EXISTS fk_rails_2d026b99a2;
 ALTER TABLE IF EXISTS ONLY public.analysis_analyses DROP CONSTRAINT IF EXISTS fk_rails_2a92a64a56;
 ALTER TABLE IF EXISTS ONLY public.events_attendances DROP CONSTRAINT IF EXISTS fk_rails_29ccdf5b04;
 ALTER TABLE IF EXISTS ONLY public.areas_static_pages DROP CONSTRAINT IF EXISTS fk_rails_231f268568;
@@ -211,6 +214,7 @@ DROP INDEX IF EXISTS public.index_notifications_on_internal_comment_id;
 DROP INDEX IF EXISTS public.index_notifications_on_initiating_user_id;
 DROP INDEX IF EXISTS public.index_notifications_on_inappropriate_content_flag_id;
 DROP INDEX IF EXISTS public.index_notifications_on_created_at;
+DROP INDEX IF EXISTS public.index_notifications_on_cosponsorship_id;
 DROP INDEX IF EXISTS public.index_notifications_on_cosponsors_initiative_id;
 DROP INDEX IF EXISTS public.index_notifications_on_basket_id;
 DROP INDEX IF EXISTS public.index_nav_bar_items_on_static_page_id;
@@ -310,6 +314,8 @@ DROP INDEX IF EXISTS public.index_custom_fields_on_resource_type_and_resource_id
 DROP INDEX IF EXISTS public.index_custom_field_options_on_custom_field_id_and_key;
 DROP INDEX IF EXISTS public.index_custom_field_options_on_custom_field_id;
 DROP INDEX IF EXISTS public.index_custom_field_option_images_on_custom_field_option_id;
+DROP INDEX IF EXISTS public.index_cosponsorships_on_user_id;
+DROP INDEX IF EXISTS public.index_cosponsorships_on_idea_id;
 DROP INDEX IF EXISTS public.index_cosponsors_initiatives_on_user_id;
 DROP INDEX IF EXISTS public.index_cosponsors_initiatives_on_initiative_id;
 DROP INDEX IF EXISTS public.index_content_builder_layouts_content_buidable_type_id_code;
@@ -467,6 +473,7 @@ ALTER TABLE IF EXISTS ONLY public.custom_forms DROP CONSTRAINT IF EXISTS custom_
 ALTER TABLE IF EXISTS ONLY public.custom_fields DROP CONSTRAINT IF EXISTS custom_fields_pkey;
 ALTER TABLE IF EXISTS ONLY public.custom_field_options DROP CONSTRAINT IF EXISTS custom_field_options_pkey;
 ALTER TABLE IF EXISTS ONLY public.custom_field_option_images DROP CONSTRAINT IF EXISTS custom_field_option_images_pkey;
+ALTER TABLE IF EXISTS ONLY public.cosponsorships DROP CONSTRAINT IF EXISTS cosponsorships_pkey;
 ALTER TABLE IF EXISTS ONLY public.cosponsors_initiatives DROP CONSTRAINT IF EXISTS cosponsors_initiatives_pkey;
 ALTER TABLE IF EXISTS ONLY public.content_builder_layouts DROP CONSTRAINT IF EXISTS content_builder_layouts_pkey;
 ALTER TABLE IF EXISTS ONLY public.content_builder_layout_images DROP CONSTRAINT IF EXISTS content_builder_layout_images_pkey;
@@ -545,6 +552,7 @@ DROP TABLE IF EXISTS public.initiative_files;
 DROP TABLE IF EXISTS public.impact_tracking_salts;
 DROP TABLE IF EXISTS public.identities;
 DROP TABLE IF EXISTS public.ideas_topics;
+DROP TABLE IF EXISTS public.ideas_phases;
 DROP VIEW IF EXISTS public.idea_trending_infos;
 DROP TABLE IF EXISTS public.idea_imports;
 DROP TABLE IF EXISTS public.idea_import_files;
@@ -569,6 +577,7 @@ DROP TABLE IF EXISTS public.custom_forms;
 DROP TABLE IF EXISTS public.custom_fields;
 DROP TABLE IF EXISTS public.custom_field_options;
 DROP TABLE IF EXISTS public.custom_field_option_images;
+DROP TABLE IF EXISTS public.cosponsorships;
 DROP TABLE IF EXISTS public.cosponsors_initiatives;
 DROP TABLE IF EXISTS public.content_builder_layouts;
 DROP TABLE IF EXISTS public.content_builder_layout_images;
@@ -588,7 +597,6 @@ DROP TABLE IF EXISTS public.invites;
 DROP VIEW IF EXISTS public.analytics_fact_project_statuses;
 DROP VIEW IF EXISTS public.analytics_fact_posts;
 DROP TABLE IF EXISTS public.initiative_status_changes;
-DROP TABLE IF EXISTS public.ideas_phases;
 DROP VIEW IF EXISTS public.analytics_fact_participations;
 DROP TABLE IF EXISTS public.volunteering_volunteers;
 DROP TABLE IF EXISTS public.volunteering_causes;
@@ -1787,21 +1795,6 @@ UNION ALL
 
 
 --
--- Name: ideas_phases; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.ideas_phases (
-    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    idea_id uuid,
-    phase_id uuid,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    baskets_count integer DEFAULT 0 NOT NULL,
-    votes_count integer DEFAULT 0 NOT NULL
-);
-
-
---
 -- Name: initiative_status_changes; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1839,13 +1832,16 @@ CREATE VIEW public.analytics_fact_posts AS
     i.likes_count,
     i.dislikes_count,
     i.publication_status
-   FROM (((((public.ideas i
-     JOIN public.analytics_dimension_types adt ON (((adt.name)::text = 'idea'::text)))
+   FROM (((public.ideas i
      LEFT JOIN public.analytics_build_feedbacks abf ON ((abf.post_id = i.id)))
-     LEFT JOIN public.ideas_phases iph ON ((iph.idea_id = i.id)))
-     LEFT JOIN public.phases ph ON ((ph.id = iph.phase_id)))
-     LEFT JOIN public.projects pr ON ((pr.id = i.project_id)))
-  WHERE ((ph.id IS NULL) OR ((ph.participation_method)::text <> 'native_survey'::text))
+     LEFT JOIN public.phases creation_phase ON ((i.creation_phase_id = creation_phase.id)))
+     JOIN public.analytics_dimension_types adt ON (((adt.name)::text =
+        CASE
+            WHEN (creation_phase.* IS NULL) THEN 'idea'::text
+            WHEN ((creation_phase.participation_method)::text = 'proposals'::text) THEN 'proposal'::text
+            ELSE NULL::text
+        END)))
+  WHERE ((creation_phase.* IS NULL) OR ((creation_phase.participation_method)::text = 'proposals'::text))
 UNION ALL
  SELECT i.id,
     i.author_id AS user_id,
@@ -2116,6 +2112,20 @@ CREATE TABLE public.cosponsors_initiatives (
     status character varying DEFAULT 'pending'::character varying NOT NULL,
     user_id uuid NOT NULL,
     initiative_id uuid NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: cosponsorships; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.cosponsorships (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    status character varying DEFAULT 'pending'::character varying NOT NULL,
+    user_id uuid NOT NULL,
+    idea_id uuid NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -2504,6 +2514,21 @@ CREATE VIEW public.idea_trending_infos AS
 
 
 --
+-- Name: ideas_phases; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.ideas_phases (
+    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
+    idea_id uuid,
+    phase_id uuid,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    baskets_count integer DEFAULT 0 NOT NULL,
+    votes_count integer DEFAULT 0 NOT NULL
+);
+
+
+--
 -- Name: ideas_topics; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2822,7 +2847,8 @@ CREATE TABLE public.notifications (
     inappropriate_content_flag_id uuid,
     internal_comment_id uuid,
     basket_id uuid,
-    cosponsors_initiative_id uuid
+    cosponsors_initiative_id uuid,
+    cosponsorship_id uuid
 );
 
 
@@ -3587,6 +3613,14 @@ ALTER TABLE ONLY public.content_builder_layouts
 
 ALTER TABLE ONLY public.cosponsors_initiatives
     ADD CONSTRAINT cosponsors_initiatives_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: cosponsorships cosponsorships_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.cosponsorships
+    ADD CONSTRAINT cosponsorships_pkey PRIMARY KEY (id);
 
 
 --
@@ -4777,6 +4811,20 @@ CREATE INDEX index_cosponsors_initiatives_on_user_id ON public.cosponsors_initia
 
 
 --
+-- Name: index_cosponsorships_on_idea_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_cosponsorships_on_idea_id ON public.cosponsorships USING btree (idea_id);
+
+
+--
+-- Name: index_cosponsorships_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_cosponsorships_on_user_id ON public.cosponsorships USING btree (user_id);
+
+
+--
 -- Name: index_custom_field_option_images_on_custom_field_option_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -5467,6 +5515,13 @@ CREATE INDEX index_notifications_on_basket_id ON public.notifications USING btre
 --
 
 CREATE INDEX index_notifications_on_cosponsors_initiative_id ON public.notifications USING btree (cosponsors_initiative_id);
+
+
+--
+-- Name: index_notifications_on_cosponsorship_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_notifications_on_cosponsorship_id ON public.notifications USING btree (cosponsorship_id);
 
 
 --
@@ -6163,6 +6218,14 @@ ALTER TABLE ONLY public.analysis_analyses
 
 
 --
+-- Name: cosponsorships fk_rails_2d026b99a2; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.cosponsorships
+    ADD CONSTRAINT fk_rails_2d026b99a2 FOREIGN KEY (idea_id) REFERENCES public.ideas(id);
+
+
+--
 -- Name: phase_files fk_rails_33852a9a71; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -6344,6 +6407,14 @@ ALTER TABLE ONLY public.internal_comments
 
 ALTER TABLE ONLY public.idea_imports
     ADD CONSTRAINT fk_rails_636c77bdd1 FOREIGN KEY (file_id) REFERENCES public.idea_import_files(id);
+
+
+--
+-- Name: notifications fk_rails_67be9591a3; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.notifications
+    ADD CONSTRAINT fk_rails_67be9591a3 FOREIGN KEY (cosponsorship_id) REFERENCES public.cosponsorships(id);
 
 
 --
@@ -6971,6 +7042,14 @@ ALTER TABLE ONLY public.report_builder_published_graph_data_units
 
 
 --
+-- Name: cosponsorships fk_rails_f32533b783; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.cosponsorships
+    ADD CONSTRAINT fk_rails_f32533b783 FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
 -- Name: comments fk_rails_f44b1e3c8a; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7458,7 +7537,11 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240821135150'),
 ('20240826083227'),
 ('20240829185625'),
+('20240917181018'),
 ('20240923112800'),
-('20240923112801');
+('20240923112801'),
+('20240926175000'),
+('20241001101704'),
+('20241002200522');
 
 

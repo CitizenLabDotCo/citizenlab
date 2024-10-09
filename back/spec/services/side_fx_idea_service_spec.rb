@@ -9,7 +9,6 @@ describe SideFxIdeaService do
   describe 'after_create' do
     it "logs a 'created' action activity job" do
       idea = create(:idea, author: user)
-
       expect { service.after_create(idea, user) }
         .to enqueue_job(LogActivityJob)
         .with(
@@ -76,6 +75,21 @@ describe SideFxIdeaService do
 
       expect(user.follows.pluck(:followable_id)).to contain_exactly idea.id, project.id, folder.id
     end
+
+    it 'creates a cosponsorship' do
+      cosponsor = create(:user)
+      idea = create(:idea, cosponsor_ids: [cosponsor.id])
+
+      expect { service.after_create idea.reload, user }
+        .to enqueue_job(LogActivityJob)
+        .with(
+          idea.cosponsorships.first,
+          'created',
+          user,
+          idea.cosponsorships.first.created_at.to_i
+        )
+        .exactly(1).times
+    end
   end
 
   describe 'after_update' do
@@ -121,7 +135,7 @@ describe SideFxIdeaService do
       idea = create(:idea, publication_status: 'submitted', author: user)
       idea.update!(publication_status: 'published')
 
-      expect { service.after_update(idea, user) }
+      expect { service.after_update(idea, user, []) }
         .to enqueue_job(LogActivityJob)
         .with(idea, 'published', user, idea.published_at.to_i, project_id: idea.project_id)
         .exactly(1).times
@@ -132,7 +146,7 @@ describe SideFxIdeaService do
       old_title_multiloc = idea.title_multiloc
 
       idea.update!(title_multiloc: { en: 'something else' })
-      expect { service.after_update(idea, user) }
+      expect { service.after_update(idea, user, []) }
         .to enqueue_job(LogActivityJob).with(
           idea,
           'changed',
@@ -153,7 +167,7 @@ describe SideFxIdeaService do
 
       idea.update!(location_point_geojson: { 'type' => 'Point', 'coordinates' => [42.42, 42.42] })
 
-      expect { service.after_update(idea, user) }
+      expect { service.after_update(idea, user, []) }
         .to enqueue_job(LogActivityJob).with(
           idea,
           'changed',
@@ -173,7 +187,7 @@ describe SideFxIdeaService do
       old_idea_title = idea.title_multiloc
       idea.update!(title_multiloc: { en: 'changed' })
 
-      expect { service.after_update(idea, user) }
+      expect { service.after_update(idea, user, []) }
         .to enqueue_job(LogActivityJob).with(
           idea,
           'changed_title',
@@ -188,7 +202,7 @@ describe SideFxIdeaService do
       old_idea_body = idea.body_multiloc
       idea.update!(body_multiloc: { en: 'changed' })
 
-      expect { service.after_update(idea, user) }
+      expect { service.after_update(idea, user, []) }
         .to enqueue_job(LogActivityJob).with(
           idea,
           'changed_body',
@@ -204,7 +218,7 @@ describe SideFxIdeaService do
       new_idea_status = create(:idea_status)
       idea.update!(idea_status: new_idea_status)
 
-      expect { service.after_update(idea, user) }
+      expect { service.after_update(idea, user, []) }
         .to enqueue_job(LogActivityJob).with(
           idea,
           'changed_status',
@@ -212,6 +226,22 @@ describe SideFxIdeaService do
           idea.updated_at.to_i,
           payload: { change: [old_idea_status.id, new_idea_status.id] },
           project_id: idea.project_id
+        ).exactly(1).times
+    end
+
+    it 'creates a cosponsorship when cosponsor_ids change' do
+      cosponsor = create(:user)
+
+      idea = create(:idea)
+      idea.update!(cosponsor_ids: [cosponsor.id])
+
+      expect { service.after_update(idea, user, []) }
+        .to enqueue_job(LogActivityJob)
+        .with(
+          idea.cosponsorships.first,
+          'created',
+          user,
+          idea.cosponsorships.first.created_at.to_i
         ).exactly(1).times
     end
   end

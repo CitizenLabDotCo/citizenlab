@@ -390,10 +390,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.surveyEmbedUrl',
     defaultMessage: 'Survey Embed URL',
   },
-  konveioDocumentAnnotationEmbedUrl: {
-    id: 'app.containers.AdminPage.ProjectEdit.konveioDocumentAnnotationEmbedUrl',
-    defaultMessage: 'Embed Konveio URL',
-  },
   titleSurveyResults: {
     id: 'app.containers.AdminPage.ProjectEdit.SurveyResults.titleSurveyResults',
     defaultMessage: 'Consult the survey answers',
@@ -532,20 +528,6 @@ export default defineMessages({
     defaultMessage:
       'Collecting feedback on a document is a custom feature, and is not included in your current license. Reach out to your GovSuccess Manager to learn more about it.',
   },
-  konveioSupport: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.konveioSupport',
-    defaultMessage:
-      'Provide the link to your Konveio document here. Read our {supportArticleLink} for more information on setting up Konveio.',
-  },
-  konveioSupportPageURL: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.konveioSupportPageURL',
-    defaultMessage:
-      'https://support.citizenlab.co/en/articles/7946532-embedding-konveio-pdf-documents-for-collecting-feedback',
-  },
-  konveioSupportArticle: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.konveioSupportArticle',
-    defaultMessage: 'support article',
-  },
   optionsToVoteOnDescription: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.optionsToVoteOnDescription2',
     defaultMessage: 'Configure the voting options in the {optionsPageLink}.',
@@ -617,5 +599,13 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.screeningTooltip',
     defaultMessage:
       'Screening is not included in your current plan. Talk to your Government Success Manager or admin to unlock it.',
+  },
+  missingStartDateError: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.missingStartDateError',
+    defaultMessage: 'Missing start date',
+  },
+  missingEndDateError: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.missingEndDateError',
+    defaultMessage: 'Missing end date',
   },
 });

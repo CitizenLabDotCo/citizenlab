@@ -10,6 +10,7 @@ en-GB:
       "comment_on_idea_you_follow": A comment on an idea that you follow
       "comment_on_initiative_you_follow": A comment on a proposal that you follow
       "cosponsor_of_your_initiative": A user accepts my invitation to co-sponsor my proposal
+      "cosponsor_of_your_idea": A user accepts my invitation to co-sponsor my proposal
       "event_registration_confirmation": Event registration confirmation
       "first_idea_published": Publication of my first idea
       "idea_marked_as_spam": Idea spam report
@@ -18,6 +19,7 @@ en-GB:
       "initiative_marked_as_spam": Proposal spam report
       "initiative_published": Publication of my proposal
       "invitation_to_cosponsor_initiative": Invitation to co-sponsor a proposal
+      "invitation_to_cosponsor_idea": Invitation to co-sponsor a proposal
       "initiative_resubmitted_for_review": Proposal resubmitted for review
       "invite_received": Invitation
       "invite_reminder": Invitation reminder
@@ -82,6 +84,8 @@ en-GB:
       "unsubscribe_text": "unsubscribe"
     follow:
       "unfollow_here": "You have received this notification because of an item that you follow. <a href=\"%{unfollow_url}\">You can unfollow it here.</a>"
+    manual:
+      preheader: 'You have mail from %{organizationName}'
     comment_deleted_by_admin:
       reason: 'The reason why your comment was deleted:'
       cta_view: 'View this idea'
@@ -136,6 +140,12 @@ en-GB:
       today: Today
       wrong_content: 'The comment is not relevant.'
       yesterday: Yesterday
+    cosponsor_of_your_idea:
+      cta_reply_to: 'View your proposal'
+      event_description: 'Congratulations! %{cosponsorName} has accepted your invitation to co-sponsor your proposal.'
+      main_header: '%{cosponsorName} has accepted your invitation to co-sponsor your proposal'
+      subject: '%{cosponsorName} has accepted your invitation to co-sponsor your proposal'
+      preheader: '%{cosponsorName} has accepted your invitation to co-sponsor your proposal'
     cosponsor_of_your_initiative:
       cta_reply_to: 'View your proposal'
       event_description_initiative: 'Congratulations! %{cosponsorName} has accepted your invitation to co-sponsor your proposal.'
@@ -179,6 +189,15 @@ en-GB:
       main_header: '%{firstName}, you have a new assignment'
       subject: 'You have an assignment on the platform of %{organizationName}'
       preheader_initiative: 'The proposal of %{authorName} has been assigned to you'
+    invitation_to_cosponsor_idea:
+      cta_reply_to: 'Co-sponsor this proposal'
+      event_description: '%{authorName} has created a new proposal and would like you to co-sponsor it.'
+      event_description_cosponsoring: 'Co-sponsoring a proposal means that <strong>your name will be displayed</strong> with the names of other co-sponsors of the proposal.'
+      event_description_before_action: 'To see the proposal and accept the invitation, you must be logged in to your account.'
+      event_description_action: 'Click below to read the proposal.'
+      main_header: 'You have been invited to co-sponsor a proposal'
+      subject: 'You have been invited to co-sponsor a proposal'
+      preheader: 'You have been invited to co-sponsor the proposal of %{authorName}'
     invitation_to_cosponsor_initiative:
       cta_reply_to: 'Co-sponsor this proposal'
       event_description_initiative: '%{authorName} has created a new proposal and would like you to co-sponsor it.'
@@ -540,6 +559,7 @@ en-GB:
       cta_see_results: 'See results in the platform'
     event_registration_confirmation:
       subject: "You're in! Your registration for \"%{eventTitle}\" is confirmed"
+      preheader: "%{firstName}, thanks for registering for %{eventTitle}"
       header_message: "%{firstName}, thanks for registering for"
       event_details:
         labels:

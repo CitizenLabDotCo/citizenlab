@@ -8,6 +8,7 @@ en:
       subject: 'A post has been flagged for review'
       header_title: 'A post has been flagged for review'
       author_wrote: '%{authorName} wrote:'
+      preheader: 'A post on your platform has been flagged for review'
       automatically_flagged: >
         This post was automatically detected as potentially containing inappropriate
         content. We’re sending you this notification so that you can review the post in

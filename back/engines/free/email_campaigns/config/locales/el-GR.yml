@@ -10,6 +10,7 @@ el:
       "comment_on_idea_you_follow": Ένα σχόλιο για μια ιδέα που ακολουθείτε
       "comment_on_initiative_you_follow": Ένα σχόλιο σχετικά με μια πρόταση που ακολουθείτε
       "cosponsor_of_your_initiative": Ένας χρήστης αποδέχεται την πρόσκλησή μου να συνυπογράψει την πρότασή μου
+      "cosponsor_of_your_idea": Ένας χρήστης αποδέχεται την πρόσκλησή μου να συνυπογράψει την πρότασή μου
       "event_registration_confirmation": Επιβεβαίωση εγγραφής στην εκδήλωση
       "first_idea_published": Δημοσίευση της πρώτης μου ιδέας
       "idea_marked_as_spam": Αναφορά spam ιδεών
@@ -18,6 +19,7 @@ el:
       "initiative_marked_as_spam": Έκθεση για την ανεπιθύμητη αλληλογραφία της πρότασης
       "initiative_published": Δημοσίευση της πρότασής μου
       "invitation_to_cosponsor_initiative": Πρόσκληση για συν-χορηγία πρότασης
+      "invitation_to_cosponsor_idea": Πρόσκληση για συν-χορηγία πρότασης
       "initiative_resubmitted_for_review": Η πρόταση υποβάλλεται εκ νέου για επανεξέταση
       "invite_received": Προσκλήσεις
       "invite_reminder": Υπενθύμιση πρόσκλησης
@@ -82,6 +84,8 @@ el:
       "unsubscribe_text": "διαγραφή"
     follow:
       "unfollow_here": "Λάβατε αυτή την ειδοποίηση εξαιτίας ενός στοιχείου που ακολουθείτε. <a href=\"%{unfollow_url}\">Μπορείτε να το ακυρώσετε εδώ.</a>"
+    manual:
+      preheader: 'Έχετε αλληλογραφία από το %{organizationName}'
     comment_deleted_by_admin:
       reason: 'Ο λόγος για τον οποίο διαγράφηκε το σχόλιό σας:'
       cta_view: 'Δείτε αυτή την ιδέα'
@@ -136,6 +140,12 @@ el:
       today: Σήμερα
       wrong_content: 'Το σχόλιο δεν είναι σχετικό.'
       yesterday: Χθες
+    cosponsor_of_your_idea:
+      cta_reply_to: 'Δείτε την πρότασή σας'
+      event_description: 'Συγχαρητήρια! Το %{cosponsorName} αποδέχτηκε την πρόσκλησή σας να συνδιοργανώσει την πρότασή σας.'
+      main_header: '%{cosponsorName} αποδέχθηκε την πρόσκλησή σας να συνυποστηρίξει την πρότασή σας'
+      subject: '%{cosponsorName} αποδέχθηκε την πρόσκλησή σας να συνυποστηρίξει την πρότασή σας'
+      preheader: '%{cosponsorName} αποδέχθηκε την πρόσκλησή σας να συνυποστηρίξει την πρότασή σας'
     cosponsor_of_your_initiative:
       cta_reply_to: 'Δείτε την πρότασή σας'
       event_description_initiative: 'Συγχαρητήρια! Το %{cosponsorName} αποδέχτηκε την πρόσκλησή σας να συνδιοργανώσει την πρότασή σας.'
@@ -179,6 +189,15 @@ el:
       main_header: '%{firstName}, έχετε μια νέα αποστολή'
       subject: 'Έχετε μια αποστολή στην πλατφόρμα %{organizationName}'
       preheader_initiative: 'Σας έχει ανατεθεί η πρόταση της ιστοσελίδας %{authorName}'
+    invitation_to_cosponsor_idea:
+      cta_reply_to: 'Συν-χορηγός αυτής της πρότασης'
+      event_description: '%{authorName} δημιούργησε μια νέα πρόταση και θα ήθελε να τη συνυποστηρίξετε.'
+      event_description_cosponsoring: 'Η συνυποστήριξη μιας πρότασης σημαίνει ότι <strong>το όνομά σας θα εμφανίζεται</strong> μαζί με τα ονόματα των άλλων συνυποστηρικτών της πρότασης.'
+      event_description_before_action: 'Για να δείτε την πρόταση και να αποδεχτείτε την πρόσκληση, πρέπει να είστε συνδεδεμένοι στο λογαριασμό σας.'
+      event_description_action: 'Κάντε κλικ παρακάτω για να διαβάσετε την πρόταση.'
+      main_header: 'Έχετε προσκληθεί να συνυπογράψετε μια πρόταση'
+      subject: 'Έχετε προσκληθεί να συνυπογράψετε μια πρόταση'
+      preheader: 'Έχετε κληθεί να συνυπογράψετε την πρόταση της ιστοσελίδας %{authorName}.'
     invitation_to_cosponsor_initiative:
       cta_reply_to: 'Συν-χορηγός αυτής της πρότασης'
       event_description_initiative: '%{authorName} δημιούργησε μια νέα πρόταση και θα ήθελε να τη συνυποστηρίξετε.'
@@ -540,6 +559,7 @@ el:
       cta_see_results: 'Δείτε τα αποτελέσματα στην πλατφόρμα'
     event_registration_confirmation:
       subject: "Είσαι μέσα! Η εγγραφή σας για το \"%{eventTitle}\" είναι επιβεβαιωμένη"
+      preheader: "%{firstName}, ευχαριστώ για την εγγραφή σας στο %{eventTitle}"
       header_message: "%{firstName}, ευχαριστώ για την εγγραφή σας για"
       event_details:
         labels:

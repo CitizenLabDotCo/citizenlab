@@ -5,9 +5,9 @@ import { PublicationStatus as ProjectPublicationStatus } from 'api/projects/type
 import {
   ActionDescriptorFutureEnabled,
   IdeaCommentingDisabledReason,
+  IdeaEditingDisabledReason,
   IdeaReactingDisabledReason,
   IdeaVotingDisabledReason,
-  ReactingIdeaActionDescriptor,
 } from 'utils/actionDescriptors/types';
 import { Keys } from 'utils/cl-react-query/types';
 
@@ -41,6 +41,23 @@ export type Sort =
   | '-comments_count'
   | 'budget'
   | '-budget';
+
+type ReactingIdeaActionDescriptor =
+  | { enabled: true; disabled_reason: null; cancelling_enabled: boolean }
+  | {
+      enabled: false;
+      disabled_reason: IdeaReactingDisabledReason;
+      cancelling_enabled: boolean;
+    };
+
+export interface IMiniIdeaData {
+  id: string;
+  type: string;
+  attributes: {
+    title_multiloc: Multiloc;
+    slug: string;
+  };
+}
 
 export interface IIdeaData {
   id: string;
@@ -87,6 +104,7 @@ export interface IIdeaData {
       // but not an action (so e.g. it can't be used in the authentication_requirements API).
       comment_reacting_idea: ActionDescriptorFutureEnabled<IdeaCommentingDisabledReason>;
       voting?: ActionDescriptorFutureEnabled<IdeaVotingDisabledReason>;
+      editing_idea: ActionDescriptorFutureEnabled<IdeaEditingDisabledReason>;
     };
     anonymous: boolean;
     author_hash: string;
@@ -129,6 +147,9 @@ export interface IIdeaData {
       data: IRelationship | null;
     };
     idea_import?: {
+      data: IRelationship | null;
+    };
+    cosponsors?: {
       data: IRelationship | null;
     };
   };
@@ -175,6 +196,10 @@ export interface IIdeaUpdate {
 export interface IIdeas {
   data: IIdeaData[];
   links: ILinks;
+}
+
+export interface IMiniIdeas {
+  data: IMiniIdeaData[];
 }
 
 export interface IIdea {

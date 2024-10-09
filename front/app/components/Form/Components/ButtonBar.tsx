@@ -34,6 +34,7 @@ const ButtonBar = ({
       <Button
         className="e2e-submit-idea-form"
         processing={processing}
+        disabled={processing}
         text={buttonText}
         marginRight="10px"
         onClick={onSubmit}

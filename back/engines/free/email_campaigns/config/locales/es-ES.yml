@@ -10,6 +10,7 @@ es:
       "comment_on_idea_you_follow": Un comentario sobre una idea que sigues
       "comment_on_initiative_you_follow": Un comentario sobre una propuesta que sigues
       "cosponsor_of_your_initiative": Un usuario acepta mi invitación a copatrocinar mi propuesta
+      "cosponsor_of_your_idea": Un usuario acepta mi invitación a copatrocinar mi propuesta
       "event_registration_confirmation": Confirmación de inscripción al evento
       "first_idea_published": Publicación de mi primera idea
       "idea_marked_as_spam": Informar de spam de ideas
@@ -18,6 +19,7 @@ es:
       "initiative_marked_as_spam": Informar de spam de propuesta
       "initiative_published": Publicación de mi propuesta
       "invitation_to_cosponsor_initiative": Invitación a copatrocinar una propuesta
+      "invitation_to_cosponsor_idea": Invitación a copatrocinar una propuesta
       "initiative_resubmitted_for_review": Propuesta reenviada para revisión
       "invite_received": Invitación
       "invite_reminder": Recordatorio de invitación
@@ -82,6 +84,8 @@ es:
       "unsubscribe_text": "cancelar la suscripción"
     follow:
       "unfollow_here": "Has recibido esta notificación debido a un artículo que sigues. <a href=\"%{unfollow_url}\">Puedes dejar de seguirlo aquí.</a>"
+    manual:
+      preheader: 'Tienes un correo electrónico de %{organizationName}'
     comment_deleted_by_admin:
       reason: 'La razón por la que tu comentario fue eliminado:'
       cta_view: 'Ver esta idea'
@@ -136,6 +140,12 @@ es:
       today: Hoy
       wrong_content: 'Este comentario no es relevante.'
       yesterday: Ayer
+    cosponsor_of_your_idea:
+      cta_reply_to: 'Ver tu propuesta'
+      event_description: 'Enhorabuena! %{cosponsorName} ha aceptado tu invitación para copatrocinar tu propuesta.'
+      main_header: '%{cosponsorName} ha aceptado tu invitación para copatrocinar tu propuesta'
+      subject: '%{cosponsorName} ha aceptado tu invitación para copatrocinar tu propuesta'
+      preheader: '%{cosponsorName} ha aceptado tu invitación para copatrocinar tu propuesta'
     cosponsor_of_your_initiative:
       cta_reply_to: 'Ver tu propuesta'
       event_description_initiative: 'Enhorabuena! %{cosponsorName} ha aceptado tu invitación para copatrocinar tu propuesta.'
@@ -179,6 +189,15 @@ es:
       main_header: '%{firstName}, tienes una nueva asignación'
       subject: 'Tienes una asignación en la plataforma de %{organizationName}'
       preheader_initiative: 'La propuesta de %{authorName} ha sido asignada a ti'
+    invitation_to_cosponsor_idea:
+      cta_reply_to: 'Copatrocina esta propuesta'
+      event_description: '%{authorName} ha creado una nueva propuesta y le gustaría que la copatrocinases.'
+      event_description_cosponsoring: 'Copatrocinar una propuesta significa que <strong>tu nombre aparecerá</strong> con los nombres de otros copatrocinadores de la propuesta.'
+      event_description_before_action: 'Para ver la propuesta y aceptar la invitación, tienes que iniciar sesión primero con tu cuenta.'
+      event_description_action: 'Haz clic abajo para leer la propuesta.'
+      main_header: 'Has sido invitado a copatrocinar una propuesta'
+      subject: 'Has sido invitado a copatrocinar una propuesta'
+      preheader: 'Se te ha invitado a copatrocinar la propuesta de %{authorName}'
     invitation_to_cosponsor_initiative:
       cta_reply_to: 'Copatrocina esta propuesta'
       event_description_initiative: '%{authorName} ha creado una nueva propuesta y le gustaría que la copatrocinases.'
@@ -540,6 +559,7 @@ es:
       cta_see_results: 'Ver resultados en la plataforma'
     event_registration_confirmation:
       subject: "¡Estás dentro! Tu inscripción en \"%{eventTitle}\" está confirmada"
+      preheader: "%{firstName}, gracias por registrarte para %{eventTitle}"
       header_message: "%{firstName}gracias por registrarte en"
       event_details:
         labels:

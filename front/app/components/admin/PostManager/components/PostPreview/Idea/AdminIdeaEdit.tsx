@@ -71,6 +71,14 @@ const AdminIdeaEdit = ({
               idea.data.relationships?.topics?.data.map((rel) => rel.id),
             ];
           } else if (
+            prop === 'cosponsor_ids' &&
+            Array.isArray(idea.data.relationships?.cosponsors?.data)
+          ) {
+            return [
+              prop,
+              idea.data.relationships?.cosponsors?.data.map((rel) => rel.id),
+            ];
+          } else if (
             prop === 'idea_images_attributes' &&
             Array.isArray(idea.data.relationships?.idea_images?.data)
           ) {

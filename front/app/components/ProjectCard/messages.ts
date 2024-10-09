@@ -60,10 +60,6 @@ export default defineMessages({
     id: 'app.components.ProjectCard.finished',
     defaultMessage: 'Finished',
   },
-  remaining: {
-    id: 'app.components.ProjectCard.remaining',
-    defaultMessage: '{timeRemaining} remaining',
-  },
   allocateYourBudget: {
     id: 'app.components.ProjectCard.allocateYourBudget',
     defaultMessage: 'Allocate your budget',

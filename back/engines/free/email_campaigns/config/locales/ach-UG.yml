@@ -10,6 +10,7 @@ ach:
       "comment_on_idea_you_follow": crwdns1081660:0crwdne1081660:0
       "comment_on_initiative_you_follow": crwdns1081662:0crwdne1081662:0
       "cosponsor_of_your_initiative": crwdns904355:0crwdne904355:0
+      "cosponsor_of_your_idea": crwdns3251175:0crwdne3251175:0
       "event_registration_confirmation": crwdns1061713:0crwdne1061713:0
       "first_idea_published": crwdns208070:0crwdne208070:0
       "idea_marked_as_spam": crwdns208072:0crwdne208072:0
@@ -18,6 +19,7 @@ ach:
       "initiative_marked_as_spam": crwdns208078:0crwdne208078:0
       "initiative_published": crwdns208080:0crwdne208080:0
       "invitation_to_cosponsor_initiative": crwdns904357:0crwdne904357:0
+      "invitation_to_cosponsor_idea": crwdns3251177:0crwdne3251177:0
       "initiative_resubmitted_for_review": crwdns904359:0crwdne904359:0
       "invite_received": crwdns208082:0crwdne208082:0
       "invite_reminder": crwdns208084:0crwdne208084:0
@@ -82,6 +84,8 @@ ach:
       "unsubscribe_text": "crwdns208256:0crwdne208256:0"
     follow:
       "unfollow_here": "crwdns1081684:0%{unfollow_url}crwdne1081684:0"
+    manual:
+      preheader: 'crwdns3166239:0%{organizationName}crwdne3166239:0'
     comment_deleted_by_admin:
       reason: 'crwdns208258:0crwdne208258:0'
       cta_view: 'crwdns208260:0crwdne208260:0'
@@ -136,6 +140,12 @@ ach:
       today: crwdns208352:0crwdne208352:0
       wrong_content: 'crwdns208354:0crwdne208354:0'
       yesterday: crwdns208356:0crwdne208356:0
+    cosponsor_of_your_idea:
+      cta_reply_to: 'crwdns3251179:0crwdne3251179:0'
+      event_description: 'crwdns3251181:0%{cosponsorName}crwdne3251181:0'
+      main_header: 'crwdns3251183:0%{cosponsorName}crwdne3251183:0'
+      subject: 'crwdns3251185:0%{cosponsorName}crwdne3251185:0'
+      preheader: 'crwdns3251187:0%{cosponsorName}crwdne3251187:0'
     cosponsor_of_your_initiative:
       cta_reply_to: 'crwdns904361:0crwdne904361:0'
       event_description_initiative: 'crwdns904363:0%{cosponsorName}crwdne904363:0'
@@ -179,6 +189,15 @@ ach:
       main_header: 'crwdns208436:0%{firstName}crwdne208436:0'
       subject: 'crwdns208438:0%{organizationName}crwdne208438:0'
       preheader_initiative: 'crwdns208440:0%{authorName}crwdne208440:0'
+    invitation_to_cosponsor_idea:
+      cta_reply_to: 'crwdns3251189:0crwdne3251189:0'
+      event_description: 'crwdns3251191:0%{authorName}crwdne3251191:0'
+      event_description_cosponsoring: 'crwdns3251193:0crwdne3251193:0'
+      event_description_before_action: 'crwdns3251195:0crwdne3251195:0'
+      event_description_action: 'crwdns3251197:0crwdne3251197:0'
+      main_header: 'crwdns3251199:0crwdne3251199:0'
+      subject: 'crwdns3251201:0crwdne3251201:0'
+      preheader: 'crwdns3251203:0%{authorName}crwdne3251203:0'
     invitation_to_cosponsor_initiative:
       cta_reply_to: 'crwdns904373:0crwdne904373:0'
       event_description_initiative: 'crwdns904375:0%{authorName}crwdne904375:0'
@@ -540,6 +559,7 @@ ach:
       cta_see_results: 'crwdns777477:0crwdne777477:0'
     event_registration_confirmation:
       subject: "crwdns1061715:0%{eventTitle}crwdne1061715:0"
+      preheader: "crwdns3166241:0%{firstName}crwdnd3166241:0%{eventTitle}crwdne3166241:0"
       header_message: "crwdns1061717:0%{firstName}crwdne1061717:0"
       event_details:
         labels:

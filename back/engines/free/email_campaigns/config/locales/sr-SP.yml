@@ -10,6 +10,7 @@ sr-Cyrl:
       "comment_on_idea_you_follow": Коментар идеје коју пратите
       "comment_on_initiative_you_follow": Коментар на предлог који следите
       "cosponsor_of_your_initiative": Корисник прихвата мој позив да буде ко-спонзор мог предлога
+      "cosponsor_of_your_idea": A user accepts my invitation to co-sponsor my proposal
       "event_registration_confirmation": Потврда регистрације догађаја
       "first_idea_published": Објављивање моје прве идеје
       "idea_marked_as_spam": Извештај о нежељеној пошти идеја
@@ -18,6 +19,7 @@ sr-Cyrl:
       "initiative_marked_as_spam": Извештај о нежељеној пошти предлога
       "initiative_published": Објављивање мог предлога
       "invitation_to_cosponsor_initiative": Позив за ко-спонзорисање предлога
+      "invitation_to_cosponsor_idea": Invitation to co-sponsor a proposal
       "initiative_resubmitted_for_review": Предлог је поново достављен на разматрање
       "invite_received": Позив
       "invite_reminder": Подсетник за позив
@@ -82,6 +84,8 @@ sr-Cyrl:
       "unsubscribe_text": "одјавите се"
     follow:
       "unfollow_here": "Примили сте ово обавештење због ставке коју пратите. <a href=\"%{unfollow_url}\">Можете га опозвати овде.</a>"
+    manual:
+      preheader: 'You have mail from %{organizationName}'
     comment_deleted_by_admin:
       reason: 'Разлог зашто је ваш коментар обрисан:'
       cta_view: 'Погледајте ову идеју'
@@ -136,6 +140,12 @@ sr-Cyrl:
       today: Данас
       wrong_content: 'Коментар није релевантан.'
       yesterday: Јучер
+    cosponsor_of_your_idea:
+      cta_reply_to: 'View your proposal'
+      event_description: 'Congratulations! %{cosponsorName} has accepted your invitation to co-sponsor your proposal.'
+      main_header: '%{cosponsorName} has accepted your invitation to co-sponsor your proposal'
+      subject: '%{cosponsorName} has accepted your invitation to co-sponsor your proposal'
+      preheader: '%{cosponsorName} has accepted your invitation to co-sponsor your proposal'
     cosponsor_of_your_initiative:
       cta_reply_to: 'Погледајте свој предлог'
       event_description_initiative: 'Честитам! %{cosponsorName} је прихватио ваш позив да буде ко-спонзор вашег предлога.'
@@ -179,6 +189,15 @@ sr-Cyrl:
       main_header: '%{firstName}, имате нови задатак'
       subject: 'Имате задатак на платформи %{organizationName}'
       preheader_initiative: 'Предлог %{authorName} је додељен вама'
+    invitation_to_cosponsor_idea:
+      cta_reply_to: 'Co-sponsor this proposal'
+      event_description: '%{authorName} has created a new proposal and would like you to co-sponsor it.'
+      event_description_cosponsoring: 'Co-sponsoring a proposal means that <strong>your name will be displayed</strong> with the names of other co-sponsors of the proposal.'
+      event_description_before_action: 'To see the proposal and accept the invitation, you must be logged in to your account.'
+      event_description_action: 'Click below to read the proposal.'
+      main_header: 'You have been invited to co-sponsor a proposal'
+      subject: 'You have been invited to co-sponsor a proposal'
+      preheader: 'You have been invited to co-sponsor the proposal of %{authorName}'
     invitation_to_cosponsor_initiative:
       cta_reply_to: 'Ко-спонзоришите овај предлог'
       event_description_initiative: '%{authorName} је направио нови предлог и желео би да га суспонзоришете.'
@@ -540,6 +559,7 @@ sr-Cyrl:
       cta_see_results: 'Погледајте резултате на платформи'
     event_registration_confirmation:
       subject: "Ти си у! Ваша регистрација за \"%{eventTitle}\" је потврђена"
+      preheader: "%{firstName}, thanks for registering for %{eventTitle}"
       header_message: "%{firstName}, хвала на регистрацији"
       event_details:
         labels:

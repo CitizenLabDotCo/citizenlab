@@ -26,6 +26,10 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.cosponsorOfYourInitiative',
     defaultMessage: '{name} cosponsored your proposal',
   },
+  cosponsorOfYourIdea: {
+    id: 'app.containers.NotificationMenu.cosponsorOfYourIdea',
+    defaultMessage: '{name} accepted your co-sponsorship invitation',
+  },
   // #input_term_copy
   userCommentedOnIdeaYouFollow: {
     id: 'app.containers.NotificationMenu.userCommentedOnIdeaYouFollow',
@@ -118,6 +122,39 @@ export default defineMessages({
   invitationToCosponsorInitiative: {
     id: 'app.containers.NotificationMenu.invitationToCosponsorInitiative',
     defaultMessage: '{name} invited you to cosponsor a proposal',
+  },
+  invitationToCosponsorIdea: {
+    id: 'app.containers.NotificationMenu.invitationToCosponsorIdea',
+    defaultMessage: '{name} invited you to co-sponsor an idea',
+  },
+  invitationToCosponsorOption: {
+    id: 'app.containers.NotificationMenu.invitationToCosponsorOption',
+    defaultMessage: '{name} invited you to co-sponsor an option',
+  },
+  invitationToCosponsorQuestion: {
+    id: 'app.containers.NotificationMenu.invitationToCosponsorQuestion',
+    defaultMessage: '{name} invited you to co-sponsor a question',
+  },
+
+  invitationToCosponsorIssue: {
+    id: 'app.containers.NotificationMenu.invitationToCosponsorIssue',
+    defaultMessage: '{name} invited you to co-sponsor an issue',
+  },
+  invitationToCosponsorContribution: {
+    id: 'app.containers.NotificationMenu.invitationToCosponsorContribution',
+    defaultMessage: '{name} invited you to co-sponsor a contribution',
+  },
+  invitationToCosponsorProject: {
+    id: 'app.containers.NotificationMenu.invitationToCosponsorProject',
+    defaultMessage: '{name} invited you to co-sponsor a project',
+  },
+  invitationToCosponsorPetition: {
+    id: 'app.containers.NotificationMenu.invitationToCosponsorPetition',
+    defaultMessage: '{name} invited you to co-sponsor a petition',
+  },
+  invitationToCosponsorProposal: {
+    id: 'app.containers.NotificationMenu.invitationToCosponsorProposal',
+    defaultMessage: '{name} invited you to co-sponsor a proposal',
   },
   userReportedCommentAsSpam: {
     id: 'app.containers.NotificationMenu.userReportedCommentAsSpam1',

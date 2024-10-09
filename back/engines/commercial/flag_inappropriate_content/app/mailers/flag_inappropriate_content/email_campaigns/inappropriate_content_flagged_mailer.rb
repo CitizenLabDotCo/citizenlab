@@ -5,8 +5,12 @@ module FlagInappropriateContent
     class InappropriateContentFlaggedMailer < ::EmailCampaigns::ApplicationMailer
       protected
 
+      def preheader
+        format_message('preheader')
+      end
+
       def subject
-        format_message('subject', values: { organizationName: organization_name })
+        format_message('subject')
       end
 
       private

@@ -24,6 +24,8 @@ class SideFxIdeaService
 
     after_submission idea, user if idea.submitted_or_published?
     after_publish idea, user if idea.published?
+
+    log_activities_if_cosponsors_added(idea, user, _old_cosponsor_ids = [])
   end
 
   def before_update(idea, user)
@@ -32,7 +34,7 @@ class SideFxIdeaService
     before_publish idea, user if idea.will_be_published?
   end
 
-  def after_update(idea, user)
+  def after_update(idea, user, old_cosponsor_ids)
     remove_user_from_past_activities_with_item(idea, user) if idea.anonymous_previously_changed?(to: true)
 
     after_submission idea, user if idea.just_submitted?
@@ -82,6 +84,8 @@ class SideFxIdeaService
         payload: { change: idea.body_multiloc_previous_change }
       )
     end
+
+    log_activities_if_cosponsors_added(idea, user, old_cosponsor_ids)
   end
 
   def after_destroy(frozen_idea, user)
@@ -160,6 +164,21 @@ class SideFxIdeaService
     end
 
     change
+  end
+
+  def log_activities_if_cosponsors_added(idea, user, old_cosponsor_ids)
+    added_ids = idea.cosponsors.map(&:id) - old_cosponsor_ids
+    if added_ids.present?
+      new_cosponsorships = idea.cosponsorships.where(user_id: added_ids)
+      new_cosponsorships.each do |cosponsorship|
+        LogActivityJob.perform_later(
+          cosponsorship,
+          'created',
+          user, # We don't want anonymized authors when cosponsors feature in use
+          cosponsorship.created_at.to_i
+        )
+      end
+    end
   end
 end
 

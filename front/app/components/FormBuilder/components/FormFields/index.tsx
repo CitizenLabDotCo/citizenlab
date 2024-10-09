@@ -34,7 +34,7 @@ interface FormFieldsProps {
   ) => void;
   selectedFieldId?: string;
   builderConfig: FormBuilderConfig;
-  closeSettings: () => void;
+  closeSettings: (triggerAutosave?: boolean) => void;
 }
 
 const FormFields = ({

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { colors, Tooltip } from '@citizenlab/cl2-component-library';
+import { colors, Box, Tooltip } from '@citizenlab/cl2-component-library';
 
 import Button from 'components/UI/Button';
 
@@ -51,15 +51,17 @@ const VoteButtons = ({
           theme="light"
           hideOnClick={false}
         >
-          <Button
-            buttonStyle="primary"
-            iconSize="20px"
-            icon="vote-ballot"
-            onClick={onReaction}
-            id="e2e-proposal-vote-button"
-          >
-            <FormattedMessage {...messages.vote} />
-          </Button>
+          <Box>
+            <Button
+              buttonStyle="primary"
+              iconSize="20px"
+              icon="vote-ballot"
+              onClick={onReaction}
+              id="e2e-proposal-vote-button"
+            >
+              <FormattedMessage {...messages.vote} />
+            </Button>
+          </Box>
         </Tooltip>
       )}
     </>
