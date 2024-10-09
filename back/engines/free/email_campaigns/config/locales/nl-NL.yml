@@ -444,7 +444,7 @@ nl:
       header_message: '%{organizationName} heeft de status van de input ''%{input_title}'' op hun digitale participatieplatform bijgewerkt.'
       header_title: 'Een invoer die je volgt heeft een nieuwe status'
       subject: 'De status van "%{input_title}" is veranderd'
-      preheader: 'Een ingang die je volgt heeft een nieuwe status'
+      preheader: 'Een bijdrage die je volgt heeft een nieuwe status'
     status_change_on_initiative_you_follow:
       status_change: 'De nieuwe status van dit voorstel is ''%{initiativeStatus}'''
       header_message: 'De status van het voorstel ''%{initiativeTitle}'' is bijgewerkt op het digitale participatieplatform van %{organizationName}.'
@@ -459,7 +459,7 @@ nl:
       intro_text: "Hier is een overzicht van wat er is gebeurd op het participatieplatform van %{organizationName}."
       cta_go_to_the_platform: "Ga naar het platform"
       title_no_activity_past_week: "Geen activiteit de afgelopen week"
-      successful_proposals_title: "De drempel bereikt"
+      successful_proposals_title: "Bereikte het benodigd aantal stemmen"
       successful_proposals_text: "In de afgelopen week hebben deze genoeg steun gekregen om naar de volgende fase te gaan."
       today_by_author: "Vandaag door %{author}"
       yesterday_by_author: "Gisteren door %{author}"
@@ -473,7 +473,7 @@ nl:
       unread_notifications: "Je hebt nieuwe meldingen! Bezoek het platform om te ontdekken wat er aan het gebeuren is."
     threshold_reached_for_admin:
       cta_process_initiative: 'Zet de volgende stappen met dit voorstel'
-      main_header: 'Een voorstel heeft het benodigd aantal stemmen bereikt!'
+      main_header: 'Een voorstel bereikte het nodige aantal stemmen!'
       subject: '"%{input_title} bereikte het benodigd aantal stemmen'
       preheader: 'Tijd om de volgende stappen te nemen'
     welcome:
@@ -488,7 +488,7 @@ nl:
         question: 'Je vraag is gepubliceerd'
         contribution: 'Je bijdrage is gepubliceerd'
         project: 'Je project is gepubliceerd'
-        issue: 'Je uitgave is gepubliceerd'
+        issue: 'Je reactie is gepubliceerd'
         option: 'Je optie is gepubliceerd'
         proposal: 'Je voorstel is gepubliceerd'
         initiative: 'Je initiatief is gepubliceerd'
