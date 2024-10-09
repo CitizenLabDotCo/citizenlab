@@ -8,6 +8,7 @@ ca:
       subject: 'S''ha marcat una publicació per revisar-la'
       header_title: 'S''ha marcat una publicació per revisar-la'
       author_wrote: '%{authorName} ha escrit:'
+      preheader: 'S''ha marcat una publicació a la teva plataforma perquè la revisi'
       automatically_flagged: >
         Aquesta publicació s'ha detectat automàticament com a contingut potencialment inadequat. T'enviem aquesta notificació perquè puguis revisar la publicació d'acord amb les teves pròpies directrius de moderació.
       how_to_review: >
