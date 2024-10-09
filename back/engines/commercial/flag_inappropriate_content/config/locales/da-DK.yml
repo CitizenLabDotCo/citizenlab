@@ -8,6 +8,7 @@ da:
       subject: 'Et indlæg er blevet markeret til gennemgang'
       header_title: 'Et indlæg er blevet markeret til gennemgang'
       author_wrote: '%{authorName} skrev:'
+      preheader: 'Et indlæg på din platform er blevet markeret til gennemsyn'
       automatically_flagged: >
         Dette indlæg blev automatisk registreret som potentielt indeholdende upassende indhold. Vi sender dig denne meddelelse, så du kan gennemgå indlægget i overensstemmelse med jeres egne retningslinjer for moderering.
       how_to_review: >
