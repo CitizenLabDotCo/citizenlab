@@ -183,6 +183,21 @@ class Idea < ApplicationRecord
     native_survey.where(publication_status: 'draft')
   }
 
+  # Filters out all the ideas for which the ParticipationMethod responds truety
+  # to the given block. The block receives the ParticipationMethod object as an
+  # argument
+  def self.where_pmethod(&)
+    all_pmethods = ParticipationMethod::Base.all_methods.map { |m| m.new(nil) }
+    truety_pmethods = all_pmethods.select(&)
+    truety_method_strs = truety_pmethods.map { |pmethod| pmethod.class.method_str }
+    result = where(creation_phase: Phase.where(participation_method: truety_method_strs))
+    if truety_pmethods.find(&:transitive?)
+      result.or(where(creation_phase: nil))
+    else
+      result
+    end
+  end
+
   def just_published?
     publication_status_previous_change == %w[draft published] || publication_status_previous_change == [nil, 'published']
   end

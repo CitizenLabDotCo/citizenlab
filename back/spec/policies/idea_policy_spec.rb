@@ -195,6 +195,85 @@ describe IdeaPolicy do
     end
   end
 
+  context 'on a published native survey response in a public project' do
+    let!(:proposed_status) { create(:idea_status_proposed) }
+    let(:idea) { create(:native_survey_response) }
+    let(:project) { idea.project }
+
+    context 'for a visitor' do
+      let(:user) { nil }
+
+      it do
+        is_expected.not_to permit(:show)
+        is_expected.not_to permit(:by_slug)
+        is_expected.not_to permit(:update)
+        is_expected.not_to permit(:destroy)
+        is_expected.not_to permit(:index_xlsx)
+
+        expect(scope.resolve.size).to eq 0
+      end
+    end
+
+    context 'for a resident who is not the response author' do
+      let(:user) { create(:user) }
+
+      it do
+        is_expected.not_to     permit(:show)
+        is_expected.not_to     permit(:by_slug)
+        is_expected.not_to permit(:create)
+        is_expected.not_to permit(:update)
+        is_expected.not_to permit(:destroy)
+        is_expected.not_to permit(:index_xlsx)
+
+        expect(scope.resolve.size).to eq 0
+      end
+    end
+
+    context 'for a resident who is the response author' do
+      let(:user) { idea.author }
+
+      it do
+        is_expected.to permit(:show)
+        is_expected.to permit(:by_slug)
+        is_expected.to permit(:create)
+        is_expected.not_to permit(:update)
+        is_expected.not_to permit(:destroy)
+        is_expected.not_to permit(:index_xlsx)
+
+        expect(scope.resolve.size).to eq 1
+      end
+    end
+
+    context 'for an admin' do
+      let(:user) { create(:admin) }
+
+      it do
+        is_expected.to permit(:show)
+        is_expected.to permit(:by_slug)
+        is_expected.to permit(:create)
+        is_expected.not_to permit(:update)
+        is_expected.to permit(:destroy)
+        is_expected.to permit(:index_xlsx)
+
+        expect(scope.resolve.size).to eq 1
+      end
+    end
+
+    context 'for a moderator' do
+      let(:user) { create(:project_moderator, projects: [project]) }
+
+      it do
+        is_expected.to permit(:show)
+        is_expected.to permit(:create)
+        is_expected.not_to permit(:update)
+        is_expected.to permit(:destroy)
+        is_expected.to permit(:index_xlsx)
+
+        expect(scope.resolve.size).to eq 1
+      end
+    end
+  end
+
   context 'on idea in a private admins project' do
     let(:project) { create(:private_admins_project) }
     let!(:idea) { create(:idea, project: project) }
