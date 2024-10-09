@@ -3,6 +3,7 @@ namespace :initiatives_to_proposals do
   task :migrate_proposals, [] => [:environment] do
     reporter = ScriptReporter.new
     Tenant.safe_switch_each do |tenant|
+      puts "Migrating initiatives to proposals for #{tenant.host}"
       next if !AppConfiguration.instance.feature_activated?('initiatives') && !Initiative.exists?
 
       SettingsService.new.activate_feature!('input_cosponsorship') if AppConfiguration.instance.feature_activated?('initiative_cosponsorship')
@@ -109,17 +110,24 @@ def rake_20240910_create_proposals_project(reporter)
       access_denied_explanation_multiloc: old_permission.access_denied_explanation_multiloc,
       group_ids: old_permission.group_ids
     )
-    old_permission.permissions_custom_fields.order(:ordering).each do |old_custom_field|
-      new_permission.permissions_custom_fields << {
-        custom_field_id: old_custom_field.custom_field_id,
-        required: old_custom_field.required
-      }
-    end
     if !new_permission.save
       reporter.add_error(
         new_permission.errors.details,
         context: { tenant: config.host, permission: new_permission.action }
       )
+    end
+    old_permission.permissions_custom_fields.order(:ordering).each do |old_custom_field|
+      new_custom_field = PermissionsCustomField.new(
+        permission: new_permission,
+        custom_field_id: old_custom_field.custom_field_id,
+        required: old_custom_field.required
+      )
+      if new_custom_field.save
+        reporter.add_error(
+          new_custom_field.errors.details,
+          context: { tenant: config.host, permissions_custom_field: old_custom_field.id }
+        )
+      end
     end
   end
   project
@@ -138,7 +146,7 @@ def rake_20240910_substitute_homepage_element(project, reporter)
       'props' => {
         'title' => rake_20240910_migrate_homepage_title_multiloc,
         'description' => rake_20240910_migrate_homepage_description_multiloc,
-        'primaryButtonLink' => "/projects/#{project.slug}/ideas/new?phase_id=#{project.phases.first.id}", # TODO: Test link
+        'primaryButtonLink' => "/projects/#{project.slug}/ideas/new?phase_id=#{project.phases.first.id}",
         'primaryButtonText' => {
           'en' => 'Post your proposal'
         },
@@ -191,6 +199,7 @@ def rake_20240910_migrate_input_statuses(reporter)
     if status.participation_method == 'proposals'
       status.title_multiloc = MultilocService.new.i18n_to_multiloc("idea_statuses.#{status.code}", locales: CL2_SUPPORTED_LOCALES)
       # TODO: replace colours of proposal statuses
+      # TODO: identify proposal statuses with custom copy
     end
     status.description_multiloc = MultilocService.new.i18n_to_multiloc("idea_statuses.#{status.code}_description", locales: CL2_SUPPORTED_LOCALES)
     if !status.save
@@ -362,7 +371,6 @@ end
 def rake_20240910_migrate_comments(proposal, initiative, reporter)
   # There is only one internal comment, on a demo platform, so
   # skipping those.
-  # TODO: Verify that comments tree structure is migrated correctly
   comment_mapping = {}
   initiative.comments.order(parent_id: :desc, created_at: :asc).each do |old_comment|
     new_comment = Comment.new(
