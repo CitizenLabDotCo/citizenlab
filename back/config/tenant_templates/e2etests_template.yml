@@ -320,18 +320,15 @@ models:
       code: all_input
       ordering: 2
     -
-      code: proposals
+      code: events
       ordering: 3
     -
-      code: events
-      ordering: 4
-    -
       code: custom
-      ordering: 5
+      ordering: 4
       static_page_ref: *information-page
     -
       code: custom
-      ordering: 6
+      ordering: 5
       static_page_ref: *faq-page
   user:
   - &admin
