@@ -61,14 +61,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SideBar.tools',
     defaultMessage: 'Tools',
   },
-  academy: {
-    id: 'app.containers.AdminPage.SideBar.academy',
-    defaultMessage: 'Academy',
-  },
-  linkToAcademy: {
-    id: 'app.containers.AdminPage.SideBar.linkToAcademy',
-    defaultMessage: 'https://academy.citizenlab.co/',
-  },
   guide: {
     id: 'app.containers.AdminPage.SideBar.guide',
     defaultMessage: 'Guide',
