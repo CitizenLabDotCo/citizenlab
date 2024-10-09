@@ -188,12 +188,11 @@ end
 
 def rake_20240910_migrate_input_statuses(reporter)
   IdeaStatus.where.not(code: 'custom').each do |status|
-    if rake_20240910_migrate_update_input_status_title(status)
+    if status.participation_method == 'proposals'
       status.title_multiloc = MultilocService.new.i18n_to_multiloc("idea_statuses.#{status.code}", locales: CL2_SUPPORTED_LOCALES)
+      # TODO: replace colours of proposal statuses
     end
-    if rake_20240910_migrate_update_input_status_description(status)
-      status.description_multiloc = MultilocService.new.i18n_to_multiloc("idea_statuses.#{status.code}_description", locales: CL2_SUPPORTED_LOCALES)
-    end
+    status.description_multiloc = MultilocService.new.i18n_to_multiloc("idea_statuses.#{status.code}_description", locales: CL2_SUPPORTED_LOCALES)
     if !status.save
       reporter.add_error(
         status.errors.details,
@@ -201,14 +200,6 @@ def rake_20240910_migrate_input_statuses(reporter)
       )
     end
   end
-end
-
-def rake_20240910_migrate_update_input_status_title(status)
-  status.participation_method == 'proposals'
-end
-
-def rake_20240910_migrate_update_input_status_description(status)
-  status.participation_method == 'proposals'
 end
 
 def rake_20240910_proposal_attributes(initiative, project)
