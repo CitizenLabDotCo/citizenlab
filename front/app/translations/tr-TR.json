@@ -1354,7 +1354,6 @@
   "app.containers.NotificationMenu.internalCommentOnYourInternalComment": "{name} iç yorumunuz üzerine yorum yaptı",
   "app.containers.NotificationMenu.invitationToCosponsorContribution": "{name} sizi bir katkıya ortak sponsor olmaya davet etti",
   "app.containers.NotificationMenu.invitationToCosponsorIdea": "{name} sizi bir fikre ortak sponsor olmaya davet etti",
-  "app.containers.NotificationMenu.invitationToCosponsorInitiative": "{name} sizi bir teklife sponsor olmaya davet etti",
   "app.containers.NotificationMenu.invitationToCosponsorIssue": "{name} sizi bir konuya ortak sponsor olmaya davet etti",
   "app.containers.NotificationMenu.invitationToCosponsorOption": "{name} sizi bir seçeneğe ortak sponsor olmaya davet etti",
   "app.containers.NotificationMenu.invitationToCosponsorPetition": "{name} sizi bir dilekçeye ortak sponsor olmaya davet etti",

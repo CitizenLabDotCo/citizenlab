@@ -1354,7 +1354,6 @@
   "app.containers.NotificationMenu.internalCommentOnYourInternalComment": "{name} kommentoi sisäistä kommenttiasi",
   "app.containers.NotificationMenu.invitationToCosponsorContribution": "{name} kutsui sinut tukemaan lahjoitusta",
   "app.containers.NotificationMenu.invitationToCosponsorIdea": "{name} kutsui sinut sponsoroimaan ideaa",
-  "app.containers.NotificationMenu.invitationToCosponsorInitiative": "{name} kutsui sinut tukemaan ehdotusta",
   "app.containers.NotificationMenu.invitationToCosponsorIssue": "{name} kutsui sinut sponsoroimaan ongelmaa",
   "app.containers.NotificationMenu.invitationToCosponsorOption": "{name} kutsui sinut sponsoroimaan vaihtoehtoa",
   "app.containers.NotificationMenu.invitationToCosponsorPetition": "{name} kutsui sinut tukemaan vetoomusta",
