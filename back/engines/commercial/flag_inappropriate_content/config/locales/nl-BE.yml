@@ -8,6 +8,7 @@ nl-BE:
       subject: 'Een bericht is gemarkeerd voor beoordeling'
       header_title: 'Een bericht is gemarkeerd voor beoordeling'
       author_wrote: '%{authorName} schreef:'
+      preheader: 'Een bericht op je platform is gemarkeerd om na te kijken'
       automatically_flagged: >
         Dit bericht is automatisch gedetecteerd als een bericht met mogelijk ongepaste inhoud. We sturen je deze melding zodat je het bericht kunt beoordelen volgens je eigen moderatierichtlijnen.
       how_to_review: >
