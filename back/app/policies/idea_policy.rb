@@ -32,12 +32,6 @@ class IdeaPolicy < ApplicationPolicy
           .where(projects: { visible_to: 'public', admin_publications: { publication_status: %w[published archived] } })
       end
     end
-
-    private
-
-    def methods_with_public_visibility
-      ParticipationMethodService.new.all_methods.select(&:supports_public_visibility?)
-    end
   end
 
   def index_xlsx?
