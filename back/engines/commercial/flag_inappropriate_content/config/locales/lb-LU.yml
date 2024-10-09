@@ -8,6 +8,7 @@ lb:
       subject: 'E Post gouf fir Iwwerpréiwung markéiert'
       header_title: 'E Post gouf fir Iwwerpréiwung markéiert'
       author_wrote: '%{authorName} huet geschriwwen:'
+      preheader: 'E Post op Ärer Plattform gouf fir Iwwerpréiwung markéiert'
       automatically_flagged: >
         Dëse Post gouf automatesch festgestallt als potenziell onpassend Inhalt. Mir schécken Iech dës Notifikatioun fir datt Dir de Post am Aklang mat Ären eegene Moderatiounsrichtlinnen iwwerpréift.
       how_to_review: >
