@@ -172,9 +172,7 @@ class Idea < ApplicationRecord
   }
 
   scope :publicly_visible, lambda {
-    visible_methods = %w[ideation proposals] # TODO: delegate to participation methods
-    where(creation_phase: nil)
-      .or(where(creation_phase: Phase.where(participation_method: visible_methods)))
+    where_pmethod(&:supports_public_visibility?)
   }
   scope :transitive, -> { where creation_phase: nil }
 
