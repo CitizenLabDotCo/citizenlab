@@ -49,7 +49,7 @@ namespace :initiatives_to_proposals do
   end
 end
 
-task :migrate_proposals, [] => [:environment] do
+task :revert_proposals, [] => [:environment] do
   Tenant.safe_switch_each do
     Project.find_by(slug: 'proposals')&.destroy
     SettingsService.new.activate_feature!('initiatives')
@@ -435,7 +435,7 @@ end
 
 def rake_20240910_migrate_followers(proposal, initiative, reporter)
   initiative.followers.each do |old_follower|
-    new_follower = Follow.new(
+    new_follower = Follower.new(
       followable: proposal,
       user_id: old_follower.user_id,
       created_at: old_follower.created_at
