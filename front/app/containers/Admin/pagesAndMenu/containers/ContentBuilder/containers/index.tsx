@@ -3,7 +3,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
 import { SerializedNodes } from '@craftjs/core';
 import { isEmpty } from 'lodash-es';
-// import { useTheme } from 'styled-components';
+import { useTheme } from 'styled-components';
 import { SupportedLocale } from 'typings';
 
 import useHomepageLayout from 'api/home_page_layout/useHomepageLayout';
@@ -33,7 +33,7 @@ const HomepageBuilderPage = () => {
     SupportedLocale | undefined
   >();
 
-  // const theme = useTheme();
+  const theme = useTheme();
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
 
   const locale = useLocale();
@@ -129,25 +129,25 @@ const HomepageBuilderPage = () => {
               <Box width="1000px">
                 <ContentBuilderFrame editorData={getEditorData()}>
                   <HomepageBanner
-                  // homepageSettings={{
-                  //   banner_avatars_enabled: true,
-                  //   banner_layout: 'full_width_banner_layout',
-                  //   banner_signed_in_header_multiloc: {},
-                  //   banner_cta_signed_in_text_multiloc: {},
-                  //   banner_cta_signed_in_type: 'no_button',
-                  //   banner_cta_signed_in_url: null,
-                  //   banner_signed_out_header_multiloc: {},
-                  //   banner_signed_out_subheader_multiloc: {},
-                  //   banner_signed_out_header_overlay_color:
-                  //     theme.colors.tenantPrimary,
-                  //   banner_signed_out_header_overlay_opacity: 90,
-                  //   banner_signed_in_header_overlay_color:
-                  //     theme.colors.tenantPrimary,
-                  //   banner_signed_in_header_overlay_opacity: 90,
-                  //   banner_cta_signed_out_text_multiloc: {},
-                  //   banner_cta_signed_out_type: 'sign_up_button',
-                  //   banner_cta_signed_out_url: null,
-                  // }}
+                    homepageSettings={{
+                      banner_avatars_enabled: true,
+                      banner_layout: 'full_width_banner_layout',
+                      banner_signed_in_header_multiloc: {},
+                      banner_cta_signed_in_text_multiloc: {},
+                      banner_cta_signed_in_type: 'no_button',
+                      banner_cta_signed_in_url: null,
+                      banner_signed_out_header_multiloc: {},
+                      banner_signed_out_subheader_multiloc: {},
+                      banner_signed_out_header_overlay_color:
+                        theme.colors.tenantPrimary,
+                      banner_signed_out_header_overlay_opacity: 90,
+                      banner_signed_in_header_overlay_color:
+                        theme.colors.tenantPrimary,
+                      banner_signed_in_header_overlay_opacity: 90,
+                      banner_cta_signed_out_text_multiloc: {},
+                      banner_cta_signed_out_type: 'sign_up_button',
+                      banner_cta_signed_out_url: null,
+                    }}
                   />
                   <Projects />
                 </ContentBuilderFrame>

@@ -9,13 +9,9 @@ import useAuthUser from 'api/me/useAuthUser';
 
 import useKeyPress from 'hooks/useKeyPress';
 
-import CityLogoSection from 'components/CityLogoSection';
-
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 import { canAccessRoute } from 'utils/permissions/rules/routePermissions';
-
-import Viewer from './Viewer';
 
 export const adminRedirectPath: RouteType = '/admin';
 
@@ -44,8 +40,8 @@ const HomePage = () => {
 
   return (
     <main id="e2e-landing-page">
-      <Viewer />
-      <CityLogoSection />
+      {/* <Viewer />
+      <CityLogoSection /> */}
     </main>
   );
 };
