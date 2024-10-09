@@ -1,13 +1,13 @@
 cy:
   email_campaigns:
     campaign_type_description:
-      "idea_assigned_to_you": Neilltuo syniad i mi
+      "idea_assigned_to_you": Neilltuo mewnbwn i mi
     admin_campaign_type_description:
-      "idea_assigned_to_you": Neilltuo syniad - gweinyddwyr a rheolwyr prosiect
+      "idea_assigned_to_you": Neilltuo mewnbwn - gweinyddwyr a rheolwyr prosiect
     idea_assigned_to_you:
       by_author: 'gan %{authorName}'
       cta_reply_to: 'Rhowch adborth i %{authorName}'
-      event_description_idea: 'Mae syniad wedi''i neilltuo i chi. Rhowch adborth trwy ysgrifennu diweddariad swyddogol neu trwy newid ei statws.'
-      main_header: '%{firstName}, mae gennych aseiniad newydd'
-      subject: 'Mae gennych aseiniad ar y platfform o %{organizationName}'
-      preheader_idea: 'Mae''r syniad o %{authorName} wedi''i neilltuo i chi'
+      event_description_idea: 'Mae mewnbwn wedi''i neilltuo i chi. Rhowch adborth trwy ysgrifennu diweddariad swyddogol neu trwy newid ei statws.'
+      main_header: '%{firstName}, neilltuwyd mewnbwn i chi'
+      subject: 'Neilltuwyd mewnbwn i chi ar y platfform o %{organizationName}'
+      preheader_idea: 'Mae mewnbwn %{authorName} wedi''i neilltuo i chi'

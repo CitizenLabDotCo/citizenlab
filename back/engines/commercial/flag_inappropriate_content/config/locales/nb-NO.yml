@@ -5,13 +5,11 @@
     admin_campaign_type_description:
       "inappropriate_content_flagged": Upassende innhold flagget – administratorer
     inappropriate_content_flagged:
-      subject: 'Et innlegg på plattformen er flagget for gjennomgang'
-      header_title: 'Et innlegg på plattformen er flagget for gjennomgang'
-      comment_author: '%{authorName} kommenterte:'
-      idea_author: '%{authorName} sendte inn et innlegg:'
-      initiative_author: '%{authorName} sendte inn et forslag:'
+      subject: 'Et innlegg har blitt flagget for vurdering'
+      header_title: 'Et innlegg har blitt flagget for vurdering'
+      author_wrote: '%{authorName} skrev:'
       automatically_flagged: >
         Dette innlegget ble automatisk oppdaget som potensielt upassende innhold. Vi sender deg dette varselet slik at du kan se gjennom innlegget i samsvar med dine egne retningslinjer for moderering.
       how_to_review: >
         Hvis innlegget ikke inneholder upassende innhold, kan du fjerne advarselen via plattformen din i fanen Aktivitet i administrasjonspanelet.
-      cta_review_post: 'Gjennomgå innlegg'
+      cta_review: 'Gjennomgå'

@@ -209,6 +209,12 @@ cy:
           title: Beth yw eich sylw?
         option:
           title: Beth yw eich opsiwn?
+        proposal:
+          title: Beth yw eich cynnig?
+        initiative:
+          title: Beth yw eich menter?
+        petition:
+          title: Beth yw eich deiseb?
   custom_field_options:
     gender:
       male: Gwryw
