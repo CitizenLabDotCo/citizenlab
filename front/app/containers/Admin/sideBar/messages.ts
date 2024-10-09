@@ -66,8 +66,8 @@ export default defineMessages({
     defaultMessage: 'Guide',
   },
   linkToSupport: {
-    id: 'app.containers.AdminPage.SideBar.linkToSupport',
-    defaultMessage: 'https://support.citizenlab.co',
+    id: 'app.containers.AdminPage.SideBar.linkToSupport2',
+    defaultMessage: 'https://support.govocal.com',
   },
   toPlatform: {
     id: 'app.containers.AdminPage.SideBar.toPlatform',
@@ -90,8 +90,8 @@ export default defineMessages({
     defaultMessage: 'Customer portal',
   },
   linkToCommunityPlatform: {
-    id: 'app.containers.AdminPage.SideBar.linkToCommunityPlatform',
-    defaultMessage: 'https://community.citizenlab.co',
+    id: 'app.containers.AdminPage.SideBar.linkToCommunityPlatform2',
+    defaultMessage: 'https://community.govocal.com',
   },
   notifications: {
     id: 'app.containers.AdminPage.SideBar.notifications',
