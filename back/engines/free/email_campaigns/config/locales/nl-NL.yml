@@ -10,6 +10,7 @@ nl:
       "comment_on_idea_you_follow": Een reactie op een idee dat je volgt
       "comment_on_initiative_you_follow": Een reactie op een voorstel dat je volgt
       "cosponsor_of_your_initiative": Een gebruiker accepteert mijn uitnodiging om mijn voorstel te steunen
+      "cosponsor_of_your_idea": Een gebruiker accepteert mijn uitnodiging om mijn voorstel te steunen
       "event_registration_confirmation": Bevestiging registratie activiteit
       "idea_marked_as_spam": Idee spammelding
       "idea_published": Publicatie van mijn invoer
@@ -17,6 +18,7 @@ nl:
       "initiative_marked_as_spam": Voorstel spammelding
       "initiative_published": Publicatie van mijn voorstel
       "invitation_to_cosponsor_initiative": Uitnodiging om een voorstel te steunen
+      "invitation_to_cosponsor_idea": Uitnodiging om een voorstel te steunen
       "initiative_resubmitted_for_review": Voorstel opnieuw ingediend voor beoordeling
       "invite_received": Uitnodiging
       "invite_reminder": Herinnering uitnodiging
@@ -103,6 +105,8 @@ nl:
       "unsubscribe_text": "uitschrijven"
     follow:
       "unfollow_here": "Je hebt deze melding ontvangen vanwege een item dat je volgt. <a href=\"%{unfollow_url}\">Je kunt het hier ontvolgen.</a>"
+    manual:
+      preheader: 'Je hebt mail van %{organizationName}'
     comment_deleted_by_admin:
       reason: 'De reden waarom je reactie is verwijderd:'
       cta_view: 'Bekijk dit idee'
@@ -157,6 +161,12 @@ nl:
       today: Vandaag
       wrong_content: 'De reactie is niet relevant.'
       yesterday: Gisteren
+    cosponsor_of_your_idea:
+      cta_reply_to: 'Bekijk je voorstel'
+      event_description: 'Gefeliciteerd! %{cosponsorName} heeft je uitnodiging om je voorstel te steunen geaccepteerd.'
+      main_header: '%{cosponsorName} heeft je uitnodiging om je voorstel te steunen geaccepteerd'
+      subject: '%{cosponsorName} heeft je uitnodiging om je voorstel te steunen geaccepteerd'
+      preheader: '%{cosponsorName} heeft je uitnodiging om je voorstel te steunen geaccepteerd'
     cosponsor_of_your_initiative:
       cta_reply_to: 'Bekijk je voorstel'
       event_description_initiative: 'Gefeliciteerd! %{cosponsorName} heeft je uitnodiging om je voorstel te steunen geaccepteerd.'
@@ -197,6 +207,15 @@ nl:
       main_header: '%{firstName}, je hebt een nieuwe toewijzing'
       subject: 'Je hebt een toewijzing op het platform van %{organizationName}'
       preheader_initiative: 'Je kreeg het voorstel van %{authorName} toegewezen'
+    invitation_to_cosponsor_idea:
+      cta_reply_to: 'Steun dit voorstel'
+      event_description: '%{authorName} heeft een nieuw voorstel gemaakt en wil graag dat jij het steunt.'
+      event_description_cosponsoring: 'Ondersteuner zijn van een voorstel betekent dat <strong>jouw naam wordt weergegeven</strong> met de namen van andere ondersteuners van het voorstel.'
+      event_description_before_action: 'Om het voorstel te zien en de uitnodiging te accepteren, moet je ingelogd zijn met je account.'
+      event_description_action: 'Klik hieronder om het voorstel te lezen.'
+      main_header: 'Je bent uitgenodigd om een voorstel te steunen'
+      subject: 'Je bent uitgenodigd om een voorstel te steunen'
+      preheader: 'Je bent uitgenodigd om het voorstel van %{authorName} te steunen'
     invitation_to_cosponsor_initiative:
       cta_reply_to: 'Steun dit voorstel'
       event_description_initiative: '%{authorName} heeft een nieuw voorstel gemaakt en wil graag dat jij het steunt.'
@@ -569,6 +588,7 @@ nl:
       cta_see_results: 'Bekijk resultaten op het platform'
     event_registration_confirmation:
       subject: "Je bent binnen! Je inschrijving voor \"%{eventTitle}\" is bevestigd"
+      preheader: "%{firstName}, bedankt voor het registreren voor %{eventTitle}"
       header_message: "%{firstName}, bedankt voor het registreren voor"
       event_details:
         labels:
