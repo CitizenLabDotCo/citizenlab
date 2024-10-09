@@ -8,6 +8,7 @@ sr-Cyrl:
       subject: 'A post has been flagged for review'
       header_title: 'A post has been flagged for review'
       author_wrote: '%{authorName} wrote:'
+      preheader: 'A post on your platform has been flagged for review'
       automatically_flagged: >
         Овај пост је аутоматски откривен као потенцијално неприкладан садржај. Шаљемо вам ово обавештење да бисте могли да прегледате објаву у складу са својим смерницама за модерирање.
       how_to_review: >
