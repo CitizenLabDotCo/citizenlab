@@ -8,6 +8,7 @@ hr:
       subject: 'Post je označen za pregled'
       header_title: 'Post je označen za pregled'
       author_wrote: '%{authorName} je napisao:'
+      preheader: 'Post na vašoj platformi označen je za pregled'
       automatically_flagged: >
         Ovaj post je automatski otkriven kao potencijalno neprikladan sadržaj. Šaljemo vam ovu obavijest kako biste mogli pregledati post u skladu s vlastitim smjernicama za moderiranje.
       how_to_review: >
