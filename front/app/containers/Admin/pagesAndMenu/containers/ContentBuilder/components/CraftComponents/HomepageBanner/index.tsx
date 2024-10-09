@@ -11,26 +11,22 @@ import {
   Text,
 } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
-import { useLocation, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { RouteType } from 'routes';
 import { ImageSizes, Multiloc, UploadFile } from 'typings';
 
 import useAddContentBuilderImage from 'api/content_builder_images/useAddContentBuilderImage';
-import useAuthUser from 'api/me/useAuthUser';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import useLocale from 'hooks/useLocale';
 
 import homepageMessages from 'containers/HomePage/messages';
-import SignedInHeader from 'containers/HomePage/SignedInHeader';
-import SignedOutHeader from 'containers/HomePage/SignedOutHeader';
 
 import {
   CONTENT_BUILDER_ERROR_EVENT,
   IMAGE_UPLOADING_EVENT,
 } from 'components/admin/ContentBuilder/constants';
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
-import Fragment from 'components/Fragment';
+// import Fragment from 'components/Fragment';
 import Error from 'components/UI/Error';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
@@ -117,20 +113,22 @@ type Props = {
   errors?: ErrorType[];
 };
 
-const HomepageBanner = ({ homepageSettings, image }: Props) => {
-  const { pathname } = useLocation();
-  const { data: authUser } = useAuthUser();
-  const [search] = useSearchParams();
-  const locale = useLocale();
+const HomepageBanner = () =>
+  // { homepageSettings, image }: Props
+  {
+    // const { pathname } = useLocation();
+    // const { data: authUser } = useAuthUser();
+    // const [search] = useSearchParams();
+    // const locale = useLocale();
 
-  const isHomepage = pathname === `/${locale}` || pathname === `/${locale}/`;
-  const showSignedInHeader =
-    (isHomepage && authUser?.data !== undefined) ||
-    search.get('variant') === 'signedIn';
+    // const isHomepage = pathname === `/${locale}` || pathname === `/${locale}/`;
+    // const showSignedInHeader =
+    //   (isHomepage && authUser?.data !== undefined) ||
+    //   search.get('variant') === 'signedIn';
 
-  return (
-    <div data-cy="e2e-homepage-banner">
-      {showSignedInHeader ? (
+    return (
+      <div data-cy="e2e-homepage-banner">
+        {/* {showSignedInHeader ? (
         <SignedInHeader
           homepageSettings={{
             ...homepageSettings,
@@ -155,10 +153,10 @@ const HomepageBanner = ({ homepageSettings, image }: Props) => {
             }}
           />
         </Fragment>
-      )}
-    </div>
-  );
-};
+      )} */}
+      </div>
+    );
+  };
 
 const HomepageBannerSettings = () => {
   const {
