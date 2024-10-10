@@ -76,8 +76,6 @@ const FileUploader = ({
     }
   };
 
-  if (!files) return null;
-
   const fileNames = files.map((file) => file.name).join(', ');
 
   const content = (
