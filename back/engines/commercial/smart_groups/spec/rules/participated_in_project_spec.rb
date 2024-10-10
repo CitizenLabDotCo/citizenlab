@@ -49,7 +49,7 @@ describe SmartGroups::Rules::ParticipatedInProject do
   end
 
   describe 'filter' do
-    let_it_be(:project1) { create(:project) }
+    let_it_be(:project1) { create(:single_phase_proposals_project) }
     let_it_be(:project2) { create(:project) }
     let_it_be(:user1) { create(:user) }
     let_it_be(:user2) { create(:user) }

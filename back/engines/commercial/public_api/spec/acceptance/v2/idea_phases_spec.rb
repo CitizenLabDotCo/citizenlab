@@ -36,7 +36,7 @@ resource 'Posts' do
     let(:ideas) { create_list(:idea, 2, project: project) }
     let!(:idea_phases) do
       2.times do |index|
-        create(:ideas_phase, idea: ideas[index], phase: project.phases[index])
+        ideas[index].update!(phases: [project.phases[index]])
       end
       IdeasPhase.all
     end

@@ -33,10 +33,13 @@ definePermissionRule(
 );
 
 definePermissionRule('idea', 'edit', (idea: IIdeaData, user) => {
-  return !!(
+  const userCanEditIdea = !!(
     isAuthor(idea, user) ||
     isAdmin(user) ||
     isIdeaProjectModerator(idea, user)
+  );
+  return (
+    userCanEditIdea && idea.attributes.action_descriptors.editing_idea.enabled
   );
 });
 

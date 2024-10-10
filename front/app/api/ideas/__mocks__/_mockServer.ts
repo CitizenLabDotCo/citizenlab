@@ -2,7 +2,30 @@ import { http, HttpResponse } from 'msw';
 
 import { API_PATH } from 'containers/App/constants';
 
-import { IIdeaData } from '../types';
+import { IIdeaData, IMiniIdeaData } from '../types';
+
+export const miniIdeaData: IMiniIdeaData[] = [
+  {
+    id: '2e902e6f-59cd-4864-83f9-96e0f65f81aa',
+    type: 'idea_mini',
+    attributes: {
+      title_multiloc: {
+        en: 'Idea from the current ideation phase 4',
+      },
+      slug: 'idea-from-the-current-ideation-phase-4',
+    },
+  },
+  {
+    id: '214a2be1-1b16-4900-8f8c-3550e401572b',
+    type: 'idea_mini',
+    attributes: {
+      title_multiloc: {
+        en: 'Idea from the current ideation phase 3',
+      },
+      slug: 'idea-from-the-current-ideation-phase-3',
+    },
+  },
+];
 
 export const ideaData: IIdeaData[] = [
   {
@@ -38,6 +61,11 @@ export const ideaData: IIdeaData[] = [
       baskets_count: 0,
       votes_count: 0,
       action_descriptors: {
+        editing_idea: {
+          enabled: true,
+          disabled_reason: null,
+          future_enabled_at: null,
+        },
         reacting_idea: {
           enabled: true,
           disabled_reason: null,
@@ -150,6 +178,11 @@ export const ideaData: IIdeaData[] = [
       votes_count: 0,
       baskets_count: 0,
       action_descriptors: {
+        editing_idea: {
+          enabled: true,
+          disabled_reason: null,
+          future_enabled_at: null,
+        },
         reacting_idea: {
           enabled: true,
           disabled_reason: null,
@@ -232,6 +265,7 @@ export const links = {
 };
 
 export const apiPathIdeas = `${API_PATH}/ideas`;
+export const apiPathMiniIdeas = `${API_PATH}/ideas/mini`;
 export const apiPathById = `${API_PATH}/ideas/:ideaId`;
 export const apiPathBySlug = `${API_PATH}/ideas/by_slug/:slug`;
 
@@ -355,6 +389,9 @@ const votingIdea = {
 const endpoints = {
   'GET ideas': http.get(apiPathIdeas, () => {
     return HttpResponse.json({ data: ideaData }, { status: 200 });
+  }),
+  'GET ideas/mini': http.get(apiPathMiniIdeas, () => {
+    return HttpResponse.json({ data: miniIdeaData }, { status: 200 });
   }),
   'GET ideas/:id': http.get(apiPathById, () => {
     return HttpResponse.json({ data: ideaData[0] }, { status: 200 });

@@ -21,6 +21,7 @@ interface Props {
 const SSOButtons = (props: Props) => {
   const { formatMessage } = useIntl();
 
+  // TODO: JS - This code is repeated in other places
   const passwordLoginEnabled = useFeatureFlag({ name: 'password_login' });
   const googleLoginEnabled = useFeatureFlag({ name: 'google_login' });
   const facebookLoginEnabled = useFeatureFlag({ name: 'facebook_login' });
@@ -38,6 +39,9 @@ const SSOButtons = (props: Props) => {
   const criiptoLoginEnabled = useFeatureFlag({
     name: 'criipto_login',
   });
+  const keycloakLoginEnabled = useFeatureFlag({
+    name: 'keycloak_login',
+  });
 
   if (
     !googleLoginEnabled &&
@@ -47,7 +51,8 @@ const SSOButtons = (props: Props) => {
     !franceconnectLoginEnabled &&
     !claveUnicaLoginEnabled &&
     !hoplrLoginEnabled &&
-    !criiptoLoginEnabled
+    !criiptoLoginEnabled &&
+    !keycloakLoginEnabled
   ) {
     if (passwordLoginEnabled) {
       return null;

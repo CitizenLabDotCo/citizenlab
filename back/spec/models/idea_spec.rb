@@ -547,8 +547,8 @@ RSpec.describe Idea do
   end
 
   describe 'activity_after' do
-    let_it_be(:recent_idea) { create(:idea, updated_at: 1.day.ago) }
-    let_it_be(:old_idea) { create(:idea, updated_at: 30.days.ago) }
+    let_it_be(:recent_idea) { create(:idea).tap { |idea| idea.update!(updated_at: 1.day.ago) } }
+    let_it_be(:old_idea) { create(:idea).tap { |idea| idea.update!(updated_at: 30.days.ago) } }
 
     let(:recent_ideas) { described_class.activity_after(7.days.ago) }
 
