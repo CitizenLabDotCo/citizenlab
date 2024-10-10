@@ -49,13 +49,6 @@ module IdKeycloak
       %i[email]
     end
 
-    def locked_custom_fields
-      [
-        config[:birthday_custom_field_key].presence,
-        config[:birthyear_custom_field_key].presence
-      ].compact
-    end
-
     def profile_to_uid(auth)
       auth['uid']
     end

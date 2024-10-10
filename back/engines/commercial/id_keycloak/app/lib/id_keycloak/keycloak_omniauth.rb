@@ -25,7 +25,7 @@ module IdKeycloak
       options[:client_options] = {
         identifier: config[:client_id],
         secret: config[:client_secret],
-        redirect_uri: 'https://keycloak-r3tyu.loca.lt/auth/keycloak/callback',
+        redirect_uri: "#{configuration.base_backend_uri}/auth/keycloak/callback",
 
         # NOTE: Cannot use auto discovery as .well-known/openid-configuration is not on the root of the domain
         client_signing_alg: :RS256,
