@@ -73,6 +73,7 @@ const disabledMessages: {
   user_not_active: undefined,
   user_not_verified: undefined,
   user_missing_requirements: undefined,
+  not_supported: undefined,
 };
 
 const DisabledReasonTooltip = ({ disabledReason }: Props) => {
