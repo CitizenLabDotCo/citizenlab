@@ -26,10 +26,6 @@ type EditorProps = {
   onNodesChange?: (nodes: SerializedNodes) => void;
 };
 
-const Proposals = () => {
-  return <></>;
-};
-
 const Editor: React.FC<EditorProps> = ({
   onNodesChange,
   isPreview,
@@ -53,7 +49,6 @@ const Editor: React.FC<EditorProps> = ({
         Projects,
         Events,
         Highlight,
-        Proposals,
       }}
       isPreview={isPreview}
       onNodesChange={onNodesChange}
