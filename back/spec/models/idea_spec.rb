@@ -680,4 +680,15 @@ RSpec.describe Idea do
       end
     end
   end
+
+  describe 'where_pmethod scope' do
+    it 'returns only the ideas with a participation method that returns true for the given block' do
+      create(:idea_status_proposed)
+      idea = create(:idea)
+      proposal = create(:proposal)
+      _response = create(:native_survey_response)
+
+      expect(described_class.where_pmethod { |pmethod| %w[ideation proposals].include? pmethod.class.method_str }).to match_array [proposal, idea]
+    end
+  end
 end
