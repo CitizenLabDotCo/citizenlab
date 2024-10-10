@@ -337,6 +337,8 @@
       you_can_sign_in_again_from: "Du kan logge på igjen fra %{date}"
   user:
     anon_first_name: "Bruker"
+    anon_scheme:
+      animals: 'alligator, krokodille, alpakka, maur, antilope, ape, armadillo, bavian, grevling, flaggermus, bjørn, bever, bie, bille, bøffel, sommerfugl, kamel, vannbøffel, karibu, katt, storfe, gepard, sjimpanse, chinchilla, sikada ,musling,kakerlakk,torsk,coyote,krabbe,cricket,kråke,ravn,hjort,dinosaur,hund,delfin,nise,and,ørn,ål,elefant,elg,ilder,fisk,flue,rev,frosk,padde,gerbil ,siraff,myg,gnu,gnu,geit,gullfisk,gås,gorilla,gresshoppe,marsvin,hamster,hare,pinnsvin,sild,flodhest,hornet,hest,hund,hyene,impala,sjakal,maneter,kenguru,wallaby, koala, leopard, løve, øgle, lama, gresshoppe, lus, ara, stokkand, mammut, manatee, mår, mink, minnow, føflekk, elg, mygg, mus, rotte, muldyr, moskusrotte, oter, okse, østers, panda, gris, nebbdyr, pinnsvin, præriehund, mops, kanin, vaskebjørn, reinsdyr, neshorn, laks, sardin, skorpion, sel, sjøløve, serval, hai, sau, stinkdyr, snegl, slange, edderkopp, ekorn, svane, termitt, tiger, ørret, skilpadde, skilpadde, hvalross, veps, hval, ulv, wombat, tremor, orm, yak, guljakke, sebra'
   time:
     am: er
     formats:
