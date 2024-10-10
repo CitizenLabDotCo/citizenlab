@@ -284,7 +284,7 @@ lb:
       option2: 'Méiglechkeet 2'
     form_end_page:
       title_text: 'Bal fäerdeg'
-      description_text_2: "Dir sidd amgaang Är Äntwerten ofzeginn. Andeems Dir op 'Submit' klickt, gitt Dir eis Erlaabnis fir Är Äntwerten ze analyséieren.<br/>Nodeems Dir Iech ofginn hutt, kënnt Dir net méi zréckgoen an eng vun Ären Äntwerten änneren."
+      description_text_2: "Dir kënnt elo Är Äntwerten ofginn. Andeems Dir op 'Schécken' klickt, gitt Dir eis d‘Erlabnis ﬁr Är Äntwerten ze analyséieren.<br/>Nodeems Dir de Formulaire ofgeschéckt hutt, kënnt Dir net méi zréckgoen an eng vun Ären Äntwerten änneren."
     pdf_export:
       personal_data: 'Perséinlech Daten'
       personal_data_explanation_public: "Mir wäerten Ären Input op %{organizationName}'s Online Participatiounsplattform ofginn. Wann Dir wëllt datt Ären Numm als Auteur vun dësem Input ugewise gëtt an Updates per E-Mail relevant fir Ären Input kritt, fëllt w.e.g. déi folgend Felder op dëser Säit aus a mir erstellen e Kont fir Iech. Är E-Mail wäert net ëffentlech sinn a gëtt nëmme vu %{organizationName}benotzt. Wann Dir anonym wëllt bleiwen, oder net averstane sidd datt mir Är perséinlech Donnéeën op dës Manéier benotzen, kënnt Dir se eidel loossen."
@@ -337,6 +337,8 @@ lb:
       you_can_sign_in_again_from: "Dir kënnt erëm ab %{date}umellen"
   user:
     anon_first_name: "Benotzer"
+    anon_scheme:
+      animals: 'alligator, krokodil, alpaka, ant, antilope, ape, armadillo, bavianen, badger, Fliedermaus, Béier, Beaver, Bee, Käfer, Büffel, Päiperlek, Kamel, Waasser Büffel, Karibou, Kaz, Ranner, Gepard, Schimpans, Chinchilla, Zikad , Muschel, Kakerlak, Bacalhau, Coyote, Krab, Spréngerlek, Kräid, Kueb, Hirsch, Dinosaurier, Hond, Delfin, Porpoise, Ent, Adler, Ael, Elefant, Elch, Frett, Fësch, Fléi, Fuuss, Frog, Mouk, Gerbil ,Giraff, Gnat, Gnu, Wildbeest, Geess, Goldfësch, Gäns, Gorilla, Grasshopper, Meerschwäin, Hamster, Hues, Igel, Hering, Hippopotamus, Hornet, Päerd, Hënn, Hyena, Impala, Jackal, Jellyfish, Känguru, Wallaby, Koala, Leopard, Léiw, Eidechse, Lama, Locust, Maus, Macaw, Mallard, Mammut, Manatee, Marter, Nerz, Mink, Mol, Moos, Moustique, Maus, Rat, Mulle, Muskrat, Otter, Ochs, Auster, Panda, Schwäin, Platypus, Porcupine, Prairie Dog, Mops, Kanéngchen, Raccoon, Reindeer, Nashorn, Lachs, Sardin, Skorpion, Sigel, Seeléiw, Serval, Hai, Schof, Skunk, Schleeken, Schlaang, Spann, Eichhaut, Schwan, Termit, Tiger, Forelle, Schildkröt, Schildkröt, Walrus, Wasp, Wal, Wollef, Wombat, Woodchuck, Wuerm, Jak, Yellowjacket, Zebra'
   time:
     am: am
     formats:
