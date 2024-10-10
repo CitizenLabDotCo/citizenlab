@@ -296,6 +296,12 @@ sv:
       optional: 'valfri'
       permission: 'Tillstånd'
       choose_as_many: 'Välj så många du vill'
+      choose_exactly:
+        one: 'Välj exakt %{count} alternativ'
+        other: 'Välj exakt %{count} alternativ'
+      choose_between: 'Välj mellan %{min} och %{max}'
+      choose_at_least: 'Välj minst %{count} alternativ'
+      choose_at_most: 'Välj högst %{count} alternativ'
       this_answer: 'Detta svar kommer endast att delas med moderatorer och inte med allmänheten.'
       page: 'Sida'
       date_published: 'Datum för publicering (dd-mm-åååå)'

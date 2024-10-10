@@ -296,6 +296,12 @@ da:
       optional: 'valgfrit'
       permission: 'Tilladelse'
       choose_as_many: 'Vælg så mange som du vil'
+      choose_exactly:
+        one: 'Vælg præcis %{count} mulighed'
+        other: 'Vælg præcis %{count} muligheder'
+      choose_between: 'Vælg mellem %{min} og %{max}'
+      choose_at_least: 'Vælg mindst %{count} muligheder'
+      choose_at_most: 'Vælg højst %{count} muligheder'
       this_answer: 'Dette svar vil kun blive delt med moderatorer og ikke med offentligheden.'
       page: 'Side'
       date_published: 'Dato for offentliggørelse (dd-mm-åååå)'
