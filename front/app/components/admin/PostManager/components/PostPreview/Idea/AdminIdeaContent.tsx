@@ -244,7 +244,7 @@ const AdminIdeaContent = ({ handleClickEdit, closePreview, ideaId }: Props) => {
           </BelongsToProject>
         )}
 
-        <StyledTitle postId={ideaId} postType="idea" title={ideaTitle} />
+        <StyledTitle postId={ideaId} title={ideaTitle} />
         <StyledPostedBy
           ideaId={ideaId}
           authorId={authorId}
@@ -274,7 +274,6 @@ const AdminIdeaContent = ({ handleClickEdit, closePreview, ideaId }: Props) => {
 
             <StyledBody
               postId={ideaId}
-              postType="idea"
               body={localize(idea.data.attributes.body_multiloc)}
             />
 
@@ -292,16 +291,11 @@ const AdminIdeaContent = ({ handleClickEdit, closePreview, ideaId }: Props) => {
               </Box>
             )}
 
-            <StyledOfficialFeedback
-              postId={ideaId}
-              postType="idea"
-              permissionToPost
-            />
+            <StyledOfficialFeedback postId={ideaId} permissionToPost />
 
             <CommentsSection
               allowAnonymousParticipation={allowAnonymousParticipation}
               postId={ideaId}
-              postType="idea"
               showInternalComments
             />
           </Left>

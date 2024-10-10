@@ -34,23 +34,6 @@ export interface IRelationship {
   type: string;
 }
 
-export type ILocationInfo =
-  | {
-      location_description: string | undefined;
-      location_point_geojson: {
-        type: 'Point';
-        coordinates: number[];
-      };
-    }
-  | {
-      location_description: undefined;
-      error: 'not_found';
-      location_point_geojson: {
-        type: 'Point';
-        coordinates: number[];
-      };
-    };
-
 export interface ITab {
   name: string;
   label: string;
@@ -121,10 +104,6 @@ export type GraphqlMultiloc = {
   content: string;
   locale: SupportedLocale;
 }[];
-
-export type MultilocFormValues = {
-  [field: string]: Multiloc | null | undefined;
-};
 
 export interface CLError {
   error: string;

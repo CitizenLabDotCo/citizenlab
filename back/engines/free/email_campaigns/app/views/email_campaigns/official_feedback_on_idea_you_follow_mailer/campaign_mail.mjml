@@ -1,6 +1,6 @@
 <%= render 'email_campaigns/official_feedbacks/card' %>
 
-<%= render partial: 'application/cta_button', locals: { href: event.official_feedback_url , message: format_message('cta_goto_idea', component: 'general') } %>
+<%= render partial: 'application/cta_button', locals: { href: event.official_feedback_url , message: format_message("cta_goto.#{event.input_term}", component: 'general') } %>
 
 <% if AppConfiguration.instance.feature_activated?('follow') %>
   <%= render 'email_campaigns/follow/card' %>

@@ -49,9 +49,9 @@ const InvitationToCosponsorIdeaNotification = memo<Props>((props) => {
             question: messages.invitationToCosponsorQuestion,
             issue: messages.invitationToCosponsorIssue,
             contribution: messages.invitationToCosponsorContribution,
-            // initiative: messages.invitationToCosponsorInitiative,
-            // petition: messages.invitationToCosponsorPetition,
-            // proposal: messages.invitationToCosponsorProposal,
+            initiative: messages.invitationToCosponsorInitiative,
+            petition: messages.invitationToCosponsorPetition,
+            proposal: messages.invitationToCosponsorProposal,
           })}
           values={{
             name: deletedUser ? (

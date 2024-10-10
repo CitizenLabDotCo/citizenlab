@@ -26,5 +26,15 @@ FactoryBot.define do
       code { 'proposed' }
       title_multiloc { { 'en' => 'proposed' } }
     end
+
+    factory :proposal_status_threshold_reached do
+      code { 'threshold_reached' }
+      title_multiloc { { 'en' => 'Threshold reached' } }
+    end
+
+    factory :proposal_status_prescreening do
+      code { 'prescreening' }
+      title_multiloc { { 'en' => 'screening' } }
+    end
   end
 end

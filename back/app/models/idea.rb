@@ -172,9 +172,7 @@ class Idea < ApplicationRecord
   }
 
   scope :publicly_visible, lambda {
-    visible_methods = %w[ideation proposals] # TODO: delegate to participation methods
-    where(creation_phase: nil)
-      .or(where(creation_phase: Phase.where(participation_method: visible_methods)))
+    where_pmethod(&:supports_public_visibility?)
   }
   scope :transitive, -> { where creation_phase: nil }
 
@@ -183,12 +181,50 @@ class Idea < ApplicationRecord
     native_survey.where(publication_status: 'draft')
   }
 
+  # Filters out all the ideas for which the ParticipationMethod responds truety
+  # to the given block. The block receives the ParticipationMethod object as an
+  # argument
+  def self.where_pmethod(&)
+    all_pmethods = ParticipationMethod::Base.all_methods.map { |m| m.new(nil) }
+    truety_pmethods = all_pmethods.select(&)
+    truety_method_strs = truety_pmethods.map { |pmethod| pmethod.class.method_str }
+    result = where(creation_phase: Phase.where(participation_method: truety_method_strs))
+    if truety_pmethods.find(&:transitive?)
+      result.or(where(creation_phase: nil))
+    else
+      result
+    end
+  end
+
+  scope :with_status_code, lambda { |code|
+    joins(:idea_status).where(idea_statuses: { code: code })
+  }
+
+  # Is the performance of this code okay? We currently have no other data source for status changes
+  scope :with_status_transitioned_after, lambda { |time|
+    idea_ids = Activity.where(item_type: 'Idea', action: 'changed_status', created_at: time..).pluck(:item_id)
+    where(id: idea_ids)
+  }
+
+  def just_submitted?
+    # It would be better to foresee separate endpoints for submission,
+    # rather than relying on Rails dirty to detect publication.
+    from, to = publication_status_previous_change
+    SUBMISSION_STATUSES.exclude?(from) && SUBMISSION_STATUSES.include?(to)
+  end
+
   def just_published?
-    publication_status_previous_change == %w[draft published] || publication_status_previous_change == [nil, 'published']
+    # It would be better to foresee separate endpoints for publication,
+    # rather than relying on Rails dirty to detect publication.
+    from, to = publication_status_previous_change
+    from != 'published' && to == 'published'
   end
 
   def will_be_published?
-    publication_status_change == %w[draft published] || publication_status_change == [nil, 'published']
+    # It would be better to foresee separate endpoints for publication,
+    # rather than relying on Rails dirty to detect publication.
+    from, to = publication_status_change
+    from != 'published' && to == 'published'
   end
 
   def consultation_context
@@ -303,7 +339,7 @@ class Idea < ApplicationRecord
   end
 
   def transitive_input_term
-    current_phase_input_term || last_past_phase_input_term || first_future_phase_input_term || Phase::DEFAULT_INPUT_TERM
+    current_phase_input_term || last_past_phase_input_term || first_future_phase_input_term || Phase::FALLBACK_INPUT_TERM
   end
 
   def current_phase_input_term

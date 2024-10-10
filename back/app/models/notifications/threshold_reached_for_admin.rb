@@ -69,21 +69,22 @@ module Notifications
   class ThresholdReachedForAdmin < Notification
     validates :post, presence: true
 
-    ACTIVITY_TRIGGERS = { 'Initiative' => { 'reached_threshold' => true } }
+    ACTIVITY_TRIGGERS = { 'Idea' => { 'changed_status' => true } }
     EVENT_NAME = 'Threshold reached for admin'
 
     def self.make_notifications_on(activity)
-      initiative = activity.item
+      status = IdeaStatus.find(activity.payload['change'].last)
+      return [] unless status&.code == 'threshold_reached'
+
+      input = activity.item
       initiator_id = activity.user_id
 
-      User.admin.ids.reject do |recipient_id|
-        recipient_id == initiator_id
-      end.map do |recipient_id|
+      UserRoleService.new.moderators_for_project(input.project).map do |recipient|
         new(
-          recipient_id: recipient_id,
+          recipient: recipient,
           initiating_user_id: initiator_id,
-          post: initiative,
-          post_status: initiative.initiative_status
+          post: input,
+          post_status: status
         )
       end
     end

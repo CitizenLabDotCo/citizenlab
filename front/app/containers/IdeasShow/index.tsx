@@ -137,7 +137,6 @@ export const IdeasShow = ({
           <ProposedBudget ideaId={ideaId} projectId={project.data.id} />
           <Box mb={compact ? '12px' : '40px'}>
             <Body
-              postType="idea"
               postId={ideaId}
               body={localize(idea.data.attributes?.body_multiloc)}
               translateButtonClicked={translateButtonIsClicked}
@@ -166,7 +165,6 @@ export const IdeasShow = ({
           <Box my={compact ? '24px' : '80px'}>
             <OfficialFeedback
               postId={ideaId}
-              postType="idea"
               permissionToPost={postOfficialFeedbackPermission}
             />
           </Box>
@@ -177,7 +175,6 @@ export const IdeasShow = ({
                   participationContext?.attributes.allow_anonymous_participation
                 }
                 postId={ideaId}
-                postType="idea"
               />
             </Suspense>
           </Box>

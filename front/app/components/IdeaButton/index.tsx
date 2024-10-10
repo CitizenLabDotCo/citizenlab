@@ -194,6 +194,9 @@ const IdeaButton = memo<Props>(
                     question: messages.addAQuestion,
                     issue: messages.submitAnIssue,
                     contribution: messages.addAContribution,
+                    proposal: messages.addAProposal,
+                    initiative: messages.addAnInitiative,
+                    petition: messages.addAPetition,
                   })}
                 />
               )}

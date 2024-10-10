@@ -5,7 +5,7 @@ module EmailCampaigns
     private
 
     def subject
-      format_message('subject')
+      format_message('subject', values: { input_title: localize_for_recipient(event.post_title_multiloc) })
     end
 
     def header_title
@@ -13,7 +13,7 @@ module EmailCampaigns
     end
 
     def header_message
-      format_message('event_description')
+      nil
     end
 
     def preheader

@@ -8,7 +8,6 @@ interface Props {
   placeholder: string;
   rows: number;
   postId?: string;
-  postType: 'idea' | 'initiative';
   value: string;
   error?: JSX.Element;
   onChange: (value: string) => void;
@@ -22,7 +21,6 @@ const TextArea = ({
   placeholder,
   rows,
   postId,
-  postType,
   value,
   error,
   onChange,
@@ -37,7 +35,6 @@ const TextArea = ({
       placeholder={placeholder}
       rows={rows}
       postId={postId}
-      postType={postType}
       value={value}
       error={error}
       onChange={onChange}

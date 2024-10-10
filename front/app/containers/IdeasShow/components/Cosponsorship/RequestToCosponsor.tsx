@@ -28,7 +28,7 @@ interface Props {
 }
 
 const RequestToCosponsor = ({ ideaId }: Props) => {
-  const { mutate: acceptInitiativeConsponsorshipInvite, isLoading } =
+  const { mutate: acceptConsponsorshipInvite, isLoading } =
     useAcceptCosponsorshipInvitation();
 
   const { data: cosponsors } = useCosponsorships({
@@ -54,7 +54,7 @@ const RequestToCosponsor = ({ ideaId }: Props) => {
         <Button
           icon="volunteer"
           onClick={() =>
-            acceptInitiativeConsponsorshipInvite({
+            acceptConsponsorshipInvite({
               ideaId,
               id: invitedCosponsor.id,
             })

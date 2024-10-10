@@ -94,10 +94,6 @@ const ParticipationMethodPicker = ({
     name: 'polls',
   });
 
-  const proposalsParticipationMethodEnabled = useFeatureFlag({
-    name: 'proposals_participation_method',
-  });
-
   useEffect(() => {
     setSelectedMethod(participation_method);
     setShowSurveyOptions(
@@ -167,17 +163,15 @@ const ParticipationMethodPicker = ({
               participation_method="ideation"
             />
 
-            {proposalsParticipationMethodEnabled && (
-              <ParticipationMethodChoice
-                key="proposals"
-                title={formatMessage(messages2.proposalsTitle)}
-                subtitle={formatMessage(messages2.proposalsDescription)}
-                onClick={(event) => handleMethodSelect(event, 'proposals')}
-                image={proposalsImage}
-                selected={selectedMethod === 'proposals'}
-                participation_method="proposals"
-              />
-            )}
+            <ParticipationMethodChoice
+              key="proposals"
+              title={formatMessage(messages2.proposalsTitle)}
+              subtitle={formatMessage(messages2.proposalsDescription)}
+              onClick={(event) => handleMethodSelect(event, 'proposals')}
+              image={proposalsImage}
+              selected={selectedMethod === 'proposals'}
+              participation_method="proposals"
+            />
 
             <ParticipationMethodChoice
               key="survey"

@@ -33,6 +33,7 @@ import { isFieldEnabled } from 'utils/projectUtils';
 
 import messages from '../messages';
 import SelectSort, { Sort } from '../shared/Filters/SortFilterDropdown';
+import StatusFilterDropdown from '../shared/Filters/StatusFilterDropdown';
 import TopicFilterDropdown from '../shared/Filters/TopicFilterDropdown';
 import IdeasView from '../shared/IdeasView';
 import tracks from '../tracks';
@@ -75,6 +76,7 @@ export interface QueryParametersUpdate {
   sort?: Sort;
   projects?: string[];
   topics?: string[];
+  idea_status?: string;
 }
 
 export interface Props {
@@ -111,7 +113,6 @@ const IdeasWithoutFiltersSidebar = ({
   const selectedIdeaMarkerId = searchParams.get('idea_map_id');
   const smallerThanTablet = useBreakpoint('tablet');
   const smallerThanPhone = useBreakpoint('phone');
-
   const { data: project } = useProjectById(projectId);
 
   const selectedView =
@@ -168,6 +169,13 @@ const IdeasWithoutFiltersSidebar = ({
       : onUpdateQuery({ topics });
   };
 
+  const handleStatusChange = (idea_status: string) => {
+    trackEventByName(tracks.statusesFilter, {
+      idea_status,
+    });
+
+    onUpdateQuery({ idea_status });
+  };
   const locationEnabled = !isNilOrError(ideaCustomFieldsSchemas)
     ? isFieldEnabled(
         'location_description',
@@ -186,6 +194,7 @@ const IdeasWithoutFiltersSidebar = ({
 
   const showViewButtons = !!(locationEnabled && showViewToggle);
   const showSearch = !(selectedView === 'map') && showSearchbar;
+  const participationMethod = phase?.data.attributes.participation_method;
 
   if (isLoading) return <Spinner />;
 
@@ -242,6 +251,19 @@ const IdeasWithoutFiltersSidebar = ({
                     selectedTopicIds={ideaQueryParameters.topics ?? []}
                     onChange={handleTopicsOnChange}
                     alignment={!smallerThanTablet ? 'right' : 'left'}
+                  />
+                )}
+                {(participationMethod === 'proposals' ||
+                  participationMethod === 'ideation') && (
+                  <StatusFilterDropdown
+                    selectedStatusIds={
+                      ideaQueryParameters.idea_status
+                        ? [ideaQueryParameters.idea_status]
+                        : []
+                    }
+                    onChange={(statuses) => handleStatusChange(statuses[0])}
+                    alignment="left"
+                    participationMethod={participationMethod}
                   />
                 )}
               </Box>

@@ -134,18 +134,6 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.exportSelectedInputsComments',
     defaultMessage: 'Export comments for selected inputs (.xslx)',
   },
-  exportInitiatives: {
-    id: 'app.components.admin.PostManager.exportInitiatives',
-    defaultMessage: 'Export all initiatives (.xslx)',
-  },
-  exportInitiativesProjects: {
-    id: 'app.components.admin.PostManager.exportInitiativesProjects',
-    defaultMessage: 'Export initiatives for this project (.xslx)',
-  },
-  exportSelectedInitiatives: {
-    id: 'app.components.admin.PostManager.exportSelectedInitiatives',
-    defaultMessage: 'Export selected initiatives (.xslx)',
-  },
   exportVotesByUser: {
     id: 'app.components.admin.PostManager.exportVotesByUser',
     defaultMessage: 'Export votes by user (.xslx)',
@@ -162,22 +150,6 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.votesByInputExportFileName',
     defaultMessage: 'votes_by_input',
   },
-  initiativesExportFileName: {
-    id: 'app.components.admin.PostManager.initiativesExportFileName',
-    defaultMessage: 'proposals',
-  },
-  initiativesCommentsExportFileName: {
-    id: 'app.components.admin.PostManager.initiativesCommentsExportFileName',
-    defaultMessage: 'proposal_comments',
-  },
-  exportInitiativesComments: {
-    id: 'app.components.admin.PostManager.exportInitiativesComments',
-    defaultMessage: 'Export all comments (.xslx)',
-  },
-  exportSelectedInitiativesComments: {
-    id: 'app.components.admin.PostManager.exportSelectedInitiativesComments',
-    defaultMessage: 'Export comments for selected initiatives (.xslx)',
-  },
   exports: {
     id: 'app.components.admin.PostManager.exports',
     defaultMessage: 'Exports',
@@ -185,10 +157,6 @@ export default defineMessages({
   noFilteredResults: {
     id: 'app.components.admin.PostManager.noFilteredResults',
     defaultMessage: 'The filters you selected did not return any results',
-  },
-  noInitiativesHere: {
-    id: 'app.components.admin.PostManager.noInitiativesHere',
-    defaultMessage: 'No initiatives match the current filters',
   },
   resetInputFiltersDescription: {
     id: 'app.components.admin.PostManager.resetInputFiltersDescription',
@@ -234,23 +202,6 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.multipleInputs',
     defaultMessage: '{ideaCount} inputs',
   },
-  oneInitiative: {
-    id: 'app.components.admin.PostManager.oneInitiative',
-    defaultMessage: '1 initiative',
-  },
-  multipleInitiatives: {
-    id: 'app.components.admin.PostManager.multipleInitiatives',
-    defaultMessage: '{initiativesCount} initiatives',
-  },
-  changeStatusModalTitle: {
-    id: 'app.components.admin.PostManager.changeStatusModalTitle',
-    defaultMessage: "Change this initiative's status",
-  },
-  statusChange: {
-    id: 'app.components.admin.PostManager.statusChange',
-    defaultMessage:
-      "To change {initiativeTitle}'s status to {newStatus}, please provide feedback to the community.",
-  },
   feedbackBodyPlaceholder: {
     id: 'app.components.admin.PostManager.feedbackBodyPlaceholder',
     defaultMessage: 'Justify this status change',
@@ -291,10 +242,6 @@ export default defineMessages({
   inputs: {
     id: 'app.components.admin.PostManager.inputs',
     defaultMessage: 'inputs',
-  },
-  initiatives: {
-    id: 'app.components.admin.PostManager.initiatives',
-    defaultMessage: 'initiatives',
   },
   cost: {
     id: 'app.components.admin.PostManager.cost',

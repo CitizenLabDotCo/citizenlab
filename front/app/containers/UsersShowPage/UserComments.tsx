@@ -132,15 +132,11 @@ export const UserComments = () => {
           )}
           {Object.keys(commentGroups).map((postId) => {
             const commentGroup = commentGroups[postId];
-            const postType = commentGroup[0].relationships.post.data.type as
-              | 'idea'
-              | 'initiative';
 
             return (
               <PostCommentGroup
                 key={postId}
                 postId={postId}
-                postType={postType}
                 comments={commentGroup}
                 userId={user.data.id}
               />

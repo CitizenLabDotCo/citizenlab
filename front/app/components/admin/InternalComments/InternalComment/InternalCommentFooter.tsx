@@ -77,7 +77,6 @@ const Right = styled.div`
 
 interface Props {
   ideaId: string | undefined;
-  initiativeId: string | undefined;
   projectId?: string | null;
   commentId: string;
   commentType: 'parent' | 'child';
@@ -90,7 +89,6 @@ const InternalCommentFooter = ({
   onEditing,
   commentType,
   ideaId,
-  initiativeId,
   projectId,
   commentId,
   className,
@@ -117,7 +115,6 @@ const InternalCommentFooter = ({
           comment={comment.data}
           onCommentEdit={onEditing}
           ideaId={ideaId}
-          initiativeId={initiativeId}
         />
       </Right>
     </Container>

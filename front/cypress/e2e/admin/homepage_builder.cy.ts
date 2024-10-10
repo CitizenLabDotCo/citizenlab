@@ -126,11 +126,6 @@ describe('Homepage builder', () => {
       position: 'below',
     });
 
-    // Proposals
-    cy.get('#e2e-draggable-proposals').dragAndDrop('.e2e-signed-out-header', {
-      position: 'below',
-    });
-
     // Customize projects title
     cy.get('[data-cy="e2e-projects"]').click({
       force: true,
@@ -150,7 +145,6 @@ describe('Homepage builder', () => {
     cy.get('div.e2e-text-box').last().should('contain', 'last text');
     cy.wait('@getEvents');
     cy.get('[data-cy="e2e-events"]').should('exist');
-    cy.get('[data-cy="e2e-proposals"]').should('exist');
     cy.get('[data-cy="e2e-projects"]').should(
       'contain',
       'Custom projects title'
@@ -186,13 +180,6 @@ describe('Homepage builder', () => {
     });
     cy.get('#e2e-delete-button').click();
 
-    // Delete proposals
-    cy.get('[data-cy="e2e-proposals"]').should('exist');
-    cy.get('[data-cy="e2e-proposals"]').click({
-      force: true,
-    });
-    cy.get('#e2e-delete-button').click();
-
     // Clear projects title
     cy.get('[data-cy="e2e-projects"]').click({
       force: true,
@@ -210,7 +197,6 @@ describe('Homepage builder', () => {
     cy.get('.e2e-two-column').should('not.exist');
     cy.get('div.e2e-text-box').should('not.exist');
     cy.get('[data-cy="e2e-events"]').should('not.exist');
-    cy.get('[data-cy="e2e-proposals"]').should('not.exist');
 
     cy.wait('@getAdminPublications');
     const regex = /currently working on/gi;

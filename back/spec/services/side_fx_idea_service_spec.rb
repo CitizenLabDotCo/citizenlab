@@ -22,17 +22,42 @@ describe SideFxIdeaService do
         .exactly(1).times
     end
 
-    it "logs a 'published' action job when publication_state is published" do
+    it "logs a 'submitted' action job when the publication_status is submitted" do
+      idea = create(:idea, publication_status: 'submitted', author: user)
+
+      expect { service.after_create(idea, user) }
+        .to enqueue_job(LogActivityJob)
+        .with(idea, 'submitted', user, idea.submitted_at.to_i, project_id: idea.project_id)
+        .exactly(1).times
+    end
+
+    it "logs a 'submitted' action job when the publication_status is published" do
       idea = create(:idea, publication_status: 'published', author: user)
 
       expect { service.after_create(idea, user) }
         .to enqueue_job(LogActivityJob)
-        .with(idea, 'published', user, idea.created_at.to_i, project_id: idea.project_id)
+        .with(idea, 'submitted', user, idea.submitted_at.to_i, project_id: idea.project_id)
+        .exactly(1).times
+    end
+
+    it "logs a 'published' action job when the publication_status is published" do
+      idea = create(:idea, publication_status: 'published', author: user)
+
+      expect { service.after_create(idea, user) }
+        .to enqueue_job(LogActivityJob)
+        .with(idea, 'published', user, idea.published_at.to_i, project_id: idea.project_id)
         .exactly(1).times
         .and enqueue_job(Seo::ScrapeFacebookJob).exactly(1).times
     end
 
-    it "doesn't log a 'published' action job when publication_state is draft" do
+    it "doesn't log a 'submitted' action job when the publication_status is draft" do
+      idea = create(:idea, publication_status: 'draft')
+      expect { service.after_create(idea, user) }
+        .not_to enqueue_job(LogActivityJob)
+        .with(idea, 'submitted', any_args)
+    end
+
+    it "doesn't log a 'published' action job when the publication_status is draft" do
       idea = create(:idea, publication_status: 'draft')
       expect { service.after_create(idea, user) }
         .not_to enqueue_job(LogActivityJob)
@@ -68,9 +93,47 @@ describe SideFxIdeaService do
   end
 
   describe 'after_update' do
-    it "logs a 'published' action job when publication_state goes from draft to published" do
+    it "logs a 'submitted' action job when the publication_status goes from draft to submitted" do
       idea = create(:idea, publication_status: 'draft', author: user)
-      idea.update(publication_status: 'published')
+      idea.update!(publication_status: 'submitted')
+
+      expect { service.after_update(idea, user, []) }
+        .to enqueue_job(LogActivityJob)
+        .with(idea, 'submitted', user, idea.submitted_at.to_i, project_id: idea.project_id)
+        .exactly(1).times
+    end
+
+    it "logs a 'submitted' action job when the publication_status goes from draft to published" do
+      idea = create(:idea, publication_status: 'draft', author: user)
+      idea.update!(publication_status: 'published')
+
+      expect { service.after_update(idea, user, []) }
+        .to enqueue_job(LogActivityJob)
+        .with(idea, 'submitted', user, idea.submitted_at.to_i, project_id: idea.project_id)
+        .exactly(1).times
+    end
+
+    it "doesn't log a 'submitted' action job when the publication_status goes from submitted to published" do
+      idea = create(:idea, publication_status: 'submitted', author: user)
+      idea.update!(publication_status: 'published')
+      expect { service.after_update(idea, user, []) }
+        .not_to enqueue_job(LogActivityJob)
+        .with(idea, 'submitted', any_args)
+    end
+
+    it "logs a 'published' action job when the publication_status goes from draft to published" do
+      idea = create(:idea, publication_status: 'draft', author: user)
+      idea.update!(publication_status: 'published')
+
+      expect { service.after_update(idea, user, []) }
+        .to enqueue_job(LogActivityJob)
+        .with(idea, 'published', user, idea.published_at.to_i, project_id: idea.project_id)
+        .exactly(1).times
+    end
+
+    it "logs a 'published' action job when the publication_status goes from submitted to published" do
+      idea = create(:idea, publication_status: 'submitted', author: user)
+      idea.update!(publication_status: 'published')
 
       expect { service.after_update(idea, user, []) }
         .to enqueue_job(LogActivityJob)

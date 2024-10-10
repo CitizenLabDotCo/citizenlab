@@ -1,6 +1,7 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  // #input_term_copy
   newIdea: {
     id: 'app.containers.AdminPage.ProjectEdit.newIdea',
     defaultMessage: 'New idea',
@@ -28,5 +29,17 @@ export default defineMessages({
   newProject: {
     id: 'app.containers.AdminPage.ProjectEdit.newProject',
     defaultMessage: 'New Project',
+  },
+  newProposal: {
+    id: 'app.containers.AdminPage.ProjectEdit.newProposal',
+    defaultMessage: 'Add a proposal',
+  },
+  newInitiative: {
+    id: 'app.containers.AdminPage.ProjectEdit.newInitiative',
+    defaultMessage: 'Add an initiative',
+  },
+  newPetition: {
+    id: 'app.containers.AdminPage.ProjectEdit.newPetition',
+    defaultMessage: 'Add a petition',
   },
 });

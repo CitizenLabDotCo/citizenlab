@@ -3,7 +3,7 @@
 class InputUiSchemaGeneratorService < UiSchemaGeneratorService
   def initialize(input_term, supports_answer_visible_to)
     super()
-    @input_term = input_term || Phase::DEFAULT_INPUT_TERM
+    @input_term = input_term || Phase::FALLBACK_INPUT_TERM
     @supports_answer_visible_to = supports_answer_visible_to
   end
 

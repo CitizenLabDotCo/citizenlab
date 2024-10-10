@@ -286,7 +286,6 @@ const InputManager = ({
       <ThreeColumns>
         <LeftColumn>
           <ActionBar
-            type={type}
             selection={selection}
             resetSelection={resetSelection}
             handleClickEdit={openPreviewEdit}

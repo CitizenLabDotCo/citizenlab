@@ -9,8 +9,7 @@ RSpec.describe EmailCampaigns::AdminDigestMailer do
     let_it_be(:campaign) { EmailCampaigns::Campaigns::AdminDigest.create! }
     let_it_be(:command) do
       top_ideas = create_list(:idea, 3)
-      new_initiatives = create_list(:initiative, 3)
-      successful_initiatives = create_list(:initiative, 2)
+      successful_proposals = create_list(:proposal, 2)
 
       {
         recipient: recipient,
@@ -31,19 +30,17 @@ RSpec.describe EmailCampaigns::AdminDigestMailer do
               active_users: { increase: 1 }
             }
           },
-          top_project_ideas: [
+          top_project_inputs: [
             {
               project: { url: 'some_fake_url', title_multiloc: { 'en' => 'project title' } },
               current_phase: nil,
-              top_ideas: top_ideas.map { |idea| campaign.serialize_idea(idea) }
+              top_ideas: top_ideas.map { |idea| campaign.serialize_input(idea) }
             }
           ],
-          new_initiatives: new_initiatives.map { |initiative| campaign.serialize_initiative(initiative) },
-          successful_initiatives: successful_initiatives.map { |initiative| campaign.serialize_initiative(initiative) }
+          successful_proposals: successful_proposals.map { |proposal| campaign.serialize_input(proposal) }
         },
         tracked_content: {
-          idea_ids: [],
-          initiative_ids: []
+          idea_ids: []
         }
       }
     end
@@ -69,18 +66,14 @@ RSpec.describe EmailCampaigns::AdminDigestMailer do
       expect(mail.body.encoded).to match(AppConfiguration.instance.settings('core', 'organization_name', 'en'))
     end
 
-    it 'shows all ideas' do
-      expect(mail_document.css('.idea').length).to eq 3
-    end
-
     it 'renders links to the top project ideas' do
-      ideas_urls = command.dig(:event_payload, :top_project_ideas).first[:top_ideas].pluck(:url)
-      first_idea_link = mail_document.css('.idea a').first
+      ideas_urls = command.dig(:event_payload, :top_project_inputs).first[:top_ideas].pluck(:url)
+      first_idea_link = mail_document.css('.top-projects .idea a').first
       expect(first_idea_link.attr('href')).to eq(ideas_urls.first)
     end
 
-    it 'shows all initiatives' do
-      expect(mail_document.css('.initiative').length).to eq 5
+    it 'renders the proposal that reached the threshold' do
+      expect(mail_document.css('.successful-proposals .idea').length).to eq 2
     end
 
     it 'assigns home url' do

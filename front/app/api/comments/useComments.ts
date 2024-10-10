@@ -14,14 +14,11 @@ import {
 
 const getCommentsEndpoint = ({
   ideaId,
-  initiativeId,
   authorId,
   commentId,
 }: ICommentParameters) => {
   if (ideaId) {
     return `ideas/${ideaId}/comments`;
-  } else if (initiativeId) {
-    return `initiatives/${initiativeId}/comments`;
   } else if (commentId) {
     return `comments/${commentId}/children`;
   } else return `users/${authorId}/comments`;
@@ -54,10 +51,7 @@ const useComments = (
       return hasNextPage && pageNumber ? pageNumber + 1 : null;
     },
     enabled:
-      !!parameters.authorId ||
-      !!parameters.initiativeId ||
-      !!parameters.ideaId ||
-      !!parameters.commentId,
+      !!parameters.authorId || !!parameters.ideaId || !!parameters.commentId,
   });
 };
 

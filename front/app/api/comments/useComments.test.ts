@@ -8,7 +8,6 @@ import { commentsData, links } from './__mocks__/useComments';
 import useComments from './useComments';
 
 const ideaPath = '*ideas/:ideaId/comments';
-const initiativePath = '*initiatives/:initiativeId/comments';
 const childrenPath = '*comments/:commentId/children';
 const userPath = '*users/:userId/comments';
 
@@ -29,30 +28,6 @@ describe('useComments', () => {
     );
     const { result, waitFor } = renderHook(
       () => useComments({ ideaId: 'ideaId' }),
-      {
-        wrapper: createQueryClientWrapper(),
-      }
-    );
-
-    expect(result.current.isLoading).toBe(true);
-
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
-
-    expect(result.current.isLoading).toBe(false);
-    expect(result.current.data?.pages[0].data).toEqual(commentsData);
-  });
-
-  it('returns data correctly with initiativeId', async () => {
-    server.use(
-      http.get(initiativePath, () => {
-        return HttpResponse.json(
-          { data: commentsData, links },
-          { status: 200 }
-        );
-      })
-    );
-    const { result, waitFor } = renderHook(
-      () => useComments({ initiativeId: 'initiativeId' }),
       {
         wrapper: createQueryClientWrapper(),
       }

@@ -5,7 +5,6 @@ import { UserComponent } from '@craftjs/core';
 
 import Events from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/Events';
 import Projects from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/Projects';
-import Proposals from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/Proposals';
 
 const Container: UserComponent = ({ children }) => {
   return (
@@ -19,10 +18,7 @@ Container.craft = {
   rules: {
     canMoveIn: (incomingNodes) => {
       return !incomingNodes.some(
-        (node) =>
-          node.data.type === Events ||
-          node.data.type === Proposals ||
-          node.data.type === Projects
+        (node) => node.data.type === Events || node.data.type === Projects
       );
     },
   },

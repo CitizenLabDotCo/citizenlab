@@ -11,7 +11,6 @@ import rocket from 'assets/img/rocket.png';
 import { MessageDescriptor } from 'react-intl';
 
 import useIdeaById from 'api/ideas/useIdeaById';
-import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useAuthUser from 'api/me/useAuthUser';
 import usePhases from 'api/phases/usePhases';
 import { getInputTerm } from 'api/phases/utils';
@@ -31,25 +30,16 @@ import messages from './messages';
 import tracks from './tracks';
 
 interface Props {
-  postType: 'idea' | 'initiative';
   postId: string | null;
   className?: string;
   title: string;
   subtitle: string;
 }
 
-const SharingModalContent = ({
-  postId,
-  postType,
-  className,
-  title,
-  subtitle,
-}: Props) => {
+const SharingModalContent = ({ postId, className, title, subtitle }: Props) => {
   const { formatMessage } = useIntl();
-  const initiativeId = postType === 'initiative' && postId ? postId : undefined;
-  const ideaId = postType === 'idea' && postId ? postId : undefined;
-  const { data: initiative } = useInitiativeById(initiativeId);
-  const { data: idea } = useIdeaById(ideaId);
+  const ideaId = postId;
+  const { data: idea } = useIdeaById(ideaId ?? undefined);
   const { data: project } = useProjectById(
     idea?.data.relationships.project.data.id
   );
@@ -61,22 +51,17 @@ const SharingModalContent = ({
   useEffect(() => {
     trackEventByName(tracks.sharingModalOpened.name, {
       postId,
-      postType,
+      postType: 'idea',
     });
-  }, [postId, postType]);
+  }, [postId]);
 
   const getPostValues = () => {
     let postTitle: string | null = null;
     let postUrl: string | null = null;
 
-    if (postType === 'idea' && idea) {
+    if (idea) {
       postTitle = localize(idea.data.attributes.title_multiloc);
-      postUrl = `${location.origin}/${locale}/${postType}s/${idea.data.attributes.slug}`;
-    }
-
-    if (postType === 'initiative' && initiative) {
-      postTitle = localize(initiative.data.attributes.title_multiloc);
-      postUrl = `${location.origin}/${locale}/${postType}s/${initiative.data.attributes.slug}`;
+      postUrl = `${location.origin}/${locale}/ideas/${idea.data.attributes.slug}`;
     }
 
     return { postTitle, postUrl };
@@ -97,6 +82,9 @@ const SharingModalContent = ({
         question: messages.questionEmailSharingSubject,
         issue: messages.issueEmailSharingSubject,
         contribution: messages.contributionEmailSharingSubject,
+        initiative: messages.initiativeEmailSharingSubject,
+        proposal: messages.proposalEmailSharingSubject,
+        petition: messages.petitionEmailSharingSubject,
       });
       emailSharingBody = getInputTermMessage(inputTerm, {
         idea: messages.ideaEmailSharingBody,
@@ -105,6 +93,9 @@ const SharingModalContent = ({
         question: messages.questionEmailSharingModalContentBody,
         issue: messages.issueEmailSharingBody,
         contribution: messages.contributionEmailSharingBody,
+        initiative: messages.initiativeEmailSharingBody,
+        proposal: messages.proposalEmailSharingBody,
+        petition: messages.petitionEmailSharingBody,
       });
       whatsAppMessage = getInputTermMessage(inputTerm, {
         idea: messages.ideaWhatsAppMessage,
@@ -113,26 +104,17 @@ const SharingModalContent = ({
         question: messages.questionWhatsAppMessage,
         issue: messages.issueWhatsAppMessage,
         contribution: messages.contributionWhatsAppMessage,
+        initiative: messages.initiativeWhatsAppMessage,
+        proposal: messages.proposalWhatsAppMessage,
+        petition: messages.petitionWhatsAppMessage,
       });
     }
 
     return { emailSharingSubject, emailSharingBody, whatsAppMessage };
   };
 
-  const getInitiativeMessages = () => {
-    const emailSharingSubject = messages.initiativeEmailSharingSubject;
-    const emailSharingBody = messages.initiativeEmailSharingBody;
-    const whatsAppMessage = messages.whatsAppMessageProposal;
-
-    return { emailSharingSubject, emailSharingBody, whatsAppMessage };
-  };
-
   const getMessages = () => {
-    if (postType === 'idea') {
-      return getIdeaMessages();
-    } else {
-      return getInitiativeMessages();
-    }
+    return getIdeaMessages();
   };
 
   const { postTitle, postUrl } = getPostValues();
@@ -160,7 +142,7 @@ const SharingModalContent = ({
         <Title
           variant="h2"
           textAlign="center"
-          className={`e2e-${postType}-social-sharing-modal-title`}
+          className={`e2e-idea-social-sharing-modal-title`}
         >
           {title}
         </Title>
@@ -174,7 +156,7 @@ const SharingModalContent = ({
           {subtitle}
         </Text>
         <SharingButtons
-          context={postType}
+          context={'idea'}
           url={postUrl}
           twitterMessage={formatMessage(messages.twitterMessage, {
             postTitle,
@@ -188,8 +170,8 @@ const SharingModalContent = ({
             postUrl,
           })}
           utmParams={{
-            source: `share_${postType}`,
-            campaign: `${postType}flow`,
+            source: `share_idea`,
+            campaign: `ideaflow`,
             content: authUser.data.id,
           }}
         />

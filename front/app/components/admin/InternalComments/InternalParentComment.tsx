@@ -38,8 +38,6 @@ const LoadMoreButton = styled(Button)`
 
 interface Props {
   ideaId: string | undefined;
-  initiativeId: string | undefined;
-  postType: 'idea' | 'initiative';
   commentId: string;
   childCommentIds: string[];
   className?: string;
@@ -48,8 +46,6 @@ interface Props {
 const InternalParentComment = ({
   commentId,
   ideaId,
-  initiativeId,
-  postType,
   className,
   childCommentIds,
 }: Props) => {
@@ -97,7 +93,6 @@ const InternalParentComment = ({
         <ParentCommentContainer className={commentDeleted ? 'deleted' : ''}>
           <InternalComment
             ideaId={ideaId}
-            initiativeId={initiativeId}
             projectId={projectId}
             commentId={commentId}
             commentType="parent"
@@ -130,7 +125,6 @@ const InternalParentComment = ({
           modifiedChildCommentIds.map((childCommentId, index) => (
             <InternalComment
               ideaId={ideaId}
-              initiativeId={initiativeId}
               projectId={projectId}
               key={childCommentId}
               commentId={childCommentId}
@@ -141,8 +135,6 @@ const InternalParentComment = ({
 
         <StyledChildCommentForm
           ideaId={ideaId}
-          initiativeId={initiativeId}
-          postType={postType}
           projectId={projectId}
           parentId={commentId}
         />

@@ -45,7 +45,7 @@ module EmailCampaigns
     end
 
     def self.consentable_roles
-      ['admin']
+      %w[admin project_moderator project_folder_moderator]
     end
 
     def activity_triggers
@@ -61,7 +61,7 @@ module EmailCampaigns
     end
 
     def self.recipient_segment_multiloc_key
-      'email_campaigns.admin_labels.recipient_segment.admins'
+      'email_campaigns.admin_labels.recipient_segment.admins_and_managers_managing_the_project'
     end
 
     def self.content_type_multiloc_key
@@ -88,15 +88,6 @@ module EmailCampaigns
           post_url: Frontend::UrlService.new.model_to_url(notification.post, locale: Locale.new(recipient.locale)),
           post_likes_count: notification.post.likes_count,
           post_comments_count: notification.post.comments_count,
-          post_images: notification.post.initiative_images.map do |image|
-            {
-              ordering: image.ordering,
-              versions: image.image.versions.to_h { |k, v| [k.to_s, v.url] }
-            }
-          end,
-          initiative_header_bg: {
-            versions: notification.post.header_bg.versions.to_h { |k, v| [k.to_s, v.url] }
-          },
           **assignee_attributes
         }
       }]

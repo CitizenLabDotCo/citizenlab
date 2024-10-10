@@ -22,11 +22,6 @@ export default defineMessages({
     defaultMessage:
       '{inputsCount, plural, no {# inputs} one {# input} other {# inputs}}',
   },
-  a11y_numberOfInitiatives: {
-    id: 'app.components.FilterBoxes.a11y_numberOfInitiatives',
-    defaultMessage:
-      '{initiativeCount, plural, no {# initiatives} one {# initiative} other {# initiatives}}',
-  },
   a11y_removeFilter: {
     id: 'app.components.FilterBoxes.a11y_removeFilter',
     defaultMessage: 'Remove filter',

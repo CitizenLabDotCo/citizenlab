@@ -19,7 +19,6 @@ import {
 
 import { IGroupDataAttributes, MembershipType } from 'api/groups/types';
 import { IIdeaData } from 'api/ideas/types';
-import { IInitiativeData } from 'api/initiatives/types';
 import { TNotificationData } from 'api/notifications/types';
 import { TVerificationMethod } from 'api/verification_methods/types';
 
@@ -109,7 +108,6 @@ export interface OutletsPropertyMap {
     resolution: IResolution;
   };
   'app.containers.Admin.dashboard.summary.projectStatus': StatCardProps;
-  'app.containers.Admin.dashboard.summary.proposals': StatCardProps;
   'app.containers.Admin.dashboard.summary.invitations': StatCardProps;
   'app.containers.Admin.dashboard.summary.events': StatCardProps;
   'app.containers.IdeasShow.MetaInformation': {
@@ -120,7 +118,6 @@ export interface OutletsPropertyMap {
     projectId: string;
     children: OutletRenderProps;
   };
-  'app.containers.Admin.initiatives.tabs': ITabsOutlet;
   'app.containers.Admin.ideas.tabs': ITabsOutlet;
   'app.containers.Admin.sideBar.navItems': {
     onData: (data: InsertConfigurationOptions<NavItem>) => void;
@@ -141,19 +138,10 @@ export interface OutletsPropertyMap {
     onVerified: () => void;
     activeStep: TVerificationStep;
   };
-  'app.components.PostShowComponents.ActionBar.right': {
-    translateButtonClicked: boolean;
-    onClick: () => void;
-    initiative: IInitiativeData;
-  };
   'app.components.PostShowComponents.CommentFooter.left': {
     commentId: string;
   };
-  'app.containers.InitiativesShow.left': {
-    translateButtonClicked: boolean;
-    onClick: () => void;
-    initiative: IInitiativeData;
-  };
+
   'app.containers.IdeasShow.left': {
     translateButtonClicked: boolean;
     onClick: () => void;
@@ -169,11 +157,9 @@ export interface OutletsPropertyMap {
     postId: string;
     body: string;
     translateButtonClicked?: boolean;
-    postType: 'idea' | 'initiative';
   };
   'app.components.PostShowComponents.Title.translation': {
     postId: string;
-    postType: 'idea' | 'initiative';
     title: string;
     translateButtonClicked?: boolean;
     color?: string;
@@ -245,7 +231,6 @@ interface Routes {
   citizen: RouteConfiguration[];
   admin: RouteConfiguration[];
   'admin.projects': RouteConfiguration[];
-  'admin.initiatives': RouteConfiguration[];
   'admin.ideas': RouteConfiguration[];
   'admin.pages-menu': RouteConfiguration[];
   'admin.dashboards': RouteConfiguration[];
@@ -345,10 +330,6 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
     routes: {
       citizen: citizenRoutes,
       admin: adminRoutes,
-      'admin.initiatives': parseModuleRoutes(
-        mergedRoutes?.['admin.initiatives'],
-        RouteTypes.ADMIN
-      ),
       'admin.ideas': parseModuleRoutes(
         mergedRoutes?.['admin.ideas'],
         RouteTypes.ADMIN

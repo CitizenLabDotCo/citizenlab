@@ -35,6 +35,14 @@ export default defineMessages({
     id: 'app.containers.IdeaCards.topicsTitle',
     defaultMessage: 'Topics',
   },
+  statusesTitle: {
+    id: 'app.containers.IdeaCards.statusesTitle',
+    defaultMessage: 'Status',
+  },
+  allStatuses: {
+    id: 'app.containers.IdeaCards.allStatuses',
+    defaultMessage: 'All statuses',
+  },
   trending: {
     id: 'app.containers.IdeaCards.trending',
     defaultMessage: 'Trending',

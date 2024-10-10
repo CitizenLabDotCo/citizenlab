@@ -7,8 +7,6 @@ import { ICommentData } from 'api/comments/types';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useAuthUser from 'api/me/useAuthUser';
 
-import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
-
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 
@@ -20,7 +18,6 @@ import { trackLike, trackCancelLike } from './trackReaction';
 
 interface Props {
   ideaId: string | undefined;
-  postType: 'idea' | 'initiative';
   commentType: 'parent' | 'child' | undefined;
   comment: ICommentData;
   className?: string;
@@ -28,7 +25,6 @@ interface Props {
 
 const CommentReaction = ({
   ideaId,
-  postType,
   comment,
   commentType,
   className,
@@ -42,12 +38,6 @@ const CommentReaction = ({
   const { mutate: addCommentReaction } = useAddCommentReaction();
   const { data: commentReaction } = useCommentReaction(
     comment.relationships.user_reaction?.data?.id
-  );
-
-  // Wondering why 'comment_reacting_initiative' and not 'commenting_initiative'?
-  // See app/api/initiative_action_descriptors/types.ts
-  const commentReactingPermissionInitiative = useInitiativesPermissions(
-    'comment_reacting_initiative'
   );
 
   const reaction = async () => {
@@ -138,40 +128,15 @@ const CommentReaction = ({
         });
       }
     }
-
-    if (postType === 'initiative') {
-      const authenticationRequirements =
-        commentReactingPermissionInitiative?.authenticationRequirements;
-
-      if (authenticationRequirements) {
-        // Wondering why 'commenting_initiative' and not 'comment_reacting_initiative'?
-        // See app/api/initiative_action_descriptors/types.ts
-        const context = {
-          action: 'commenting_initiative',
-          type: 'initiative',
-        } as const;
-
-        triggerAuthenticationFlow({
-          context,
-          successAction,
-        });
-      } else {
-        reaction();
-      }
-    }
   };
 
   if (!isNilOrError(comment)) {
-    let disabled: boolean;
+    let disabled: boolean = false;
 
     if (idea) {
-      // Wondering why 'comment_reacting_idea' and not 'commenting_idea'?
-      // See app/api/ideas/types.ts
       const { enabled, disabled_reason } =
         idea.data.attributes.action_descriptors.comment_reacting_idea;
       disabled = !enabled && !isFixableByAuthentication(disabled_reason);
-    } else {
-      disabled = !commentReactingPermissionInitiative?.enabled;
     }
 
     if (!disabled || likeCount > 0) {

@@ -39,9 +39,6 @@ const Following = () => {
     Project: {
       label: messages.projects,
     },
-    Initiative: {
-      label: messages.proposals,
-    },
     Idea: {
       label: messages.inputs,
     },
@@ -84,7 +81,6 @@ const Following = () => {
           availableTabs={[
             'Project',
             'Idea',
-            'Initiative',
             'ProjectFolders::Folder',
             'Topics',
             'Areas',

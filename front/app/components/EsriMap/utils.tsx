@@ -450,7 +450,7 @@ export const getClusterConfiguration = (clusterSymbolColor?: string) => {
 
 // showAddInputPopup
 // Description: Shows a popup where the user clicked and adds content from a popupContentNode
-// Usage: This is used by the Initiative Map and Idea Map to show "Submit" buttons on map click.
+// Usage: This is used by the Idea Map to show "Submit" buttons on map click.
 type AddInputPopupProps = {
   event;
   mapView: MapView;

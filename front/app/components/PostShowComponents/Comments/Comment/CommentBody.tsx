@@ -53,7 +53,6 @@ const ButtonsWrapper = styled.div`
 
 interface Props {
   ideaId: string | undefined;
-  initiativeId: string | undefined;
   commentId: string;
   commentType: 'parent' | 'child';
   editing: boolean;
@@ -70,13 +69,11 @@ const CommentBody = ({
   onCommentSaved,
   className,
   ideaId,
-  initiativeId,
 }: Props) => {
   const theme = useTheme();
   const { data: comment } = useComment(commentId);
   const { mutate: updateComment, isLoading: processing } = useUpdateComment({
     ideaId,
-    initiativeId,
   });
   const localize = useLocalize();
   const locale = useLocale();

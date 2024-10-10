@@ -2,9 +2,6 @@ import React from 'react';
 
 import { SupportedLocale } from 'typings';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
-
 import contentBuilderMessages from 'components/admin/ContentBuilder/messages';
 import Container from 'components/admin/ContentBuilder/Toolbox/Container';
 import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
@@ -24,7 +21,6 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../../messages';
 import Events from '../CraftComponents/Events';
 import Highlight from '../CraftComponents/Highlight';
-import Proposals from '../CraftComponents/Proposals';
 
 type HomepageBuilderToolboxProps = {
   selectedLocale: SupportedLocale;
@@ -35,30 +31,12 @@ const HomepageBuilderToolbox = ({
 }: HomepageBuilderToolboxProps) => {
   const { formatMessage } = useIntl();
 
-  const postingPermission = useInitiativesPermissions('posting_initiative');
-  const postingProposalsEnabled = !!postingPermission?.enabled;
-  const hasProposalsEnabled = useFeatureFlag({
-    name: 'initiatives',
-  });
-  const proposalsEnabled = postingProposalsEnabled && hasProposalsEnabled;
-
   return (
     <Container>
       <SectionTitle>
         <FormattedMessage {...messages.sections} />
       </SectionTitle>
-      <DraggableElement
-        id="e2e-draggable-proposals"
-        component={<Proposals />}
-        icon="proposals"
-        label={formatMessage(messages.proposalsTitle)}
-        disabled={!proposalsEnabled}
-        tooltipContent={
-          proposalsEnabled
-            ? formatMessage(messages.proposalsDisabledTooltip)
-            : undefined
-        }
-      />
+
       <DraggableElement
         id="e2e-draggable-events"
         component={<Events />}

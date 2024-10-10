@@ -1,6 +1,7 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  // #input_term_copy
   submitYourIdea: {
     id: 'app.containers.IdeaButton.submitYourIdea',
     defaultMessage: 'Submit your idea',
@@ -28,6 +29,18 @@ export default defineMessages({
   addAContribution: {
     id: 'app.containers.IdeaButton.addAContribution',
     defaultMessage: 'Add a contribution',
+  },
+  addAProposal: {
+    id: 'app.containers.IdeaButton.addAProposal',
+    defaultMessage: 'Add a proposal',
+  },
+  addAnInitiative: {
+    id: 'app.containers.IdeaButton.addAnInitiative',
+    defaultMessage: 'Add an initiative',
+  },
+  addAPetition: {
+    id: 'app.containers.IdeaButton.addAPetition',
+    defaultMessage: 'Add a petition',
   },
   signInLinkText: {
     id: 'app.containers.IdeaButton.signInLinkText',

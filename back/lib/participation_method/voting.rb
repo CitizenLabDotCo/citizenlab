@@ -16,6 +16,7 @@ module ParticipationMethod
 
     def assign_defaults_for_phase
       phase.ideas_order ||= 'random'
+      phase.input_term ||= default_input_term if supports_input_term?
       Factory.instance.voting_method_for(phase).assign_defaults_for_phase
     end
 

@@ -1,4 +1,3 @@
-import { IInitiativeAction } from 'api/initiative_action_descriptors/types';
 import {
   IPhasePermissionAction,
   PermittedBy,
@@ -9,11 +8,6 @@ import { Keys } from 'utils/cl-react-query/types';
 
 import { GLOBAL_CONTEXT } from './constants';
 import keys from './keys';
-
-interface InitiativeContext {
-  type: 'initiative';
-  action: IInitiativeAction;
-}
 
 export type IFollowingAction = 'following';
 
@@ -36,7 +30,6 @@ interface IdeaContext {
 
 export type AuthenticationContext =
   | typeof GLOBAL_CONTEXT
-  | InitiativeContext
   | PhaseContext
   | IdeaContext
   | IFollowContext;

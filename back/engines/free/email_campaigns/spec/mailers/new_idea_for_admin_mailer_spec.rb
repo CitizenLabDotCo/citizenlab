@@ -4,44 +4,120 @@ require 'rails_helper'
 
 RSpec.describe EmailCampaigns::NewIdeaForAdminMailer do
   describe 'campaign_mail' do
-    let_it_be(:recipient) { create(:user, locale: 'en') }
+    let_it_be(:recipient) { create(:user, locale: 'en', first_name: 'Gonzo') }
     let_it_be(:campaign) { EmailCampaigns::Campaigns::NewIdeaForAdmin.create! }
-    let_it_be(:idea) { create(:idea, author: recipient) }
-    let_it_be(:command) do
-      {
-        recipient: recipient,
-        event_payload: {
-          post_published_at: idea.published_at.iso8601,
-          post_title_multiloc: idea.title_multiloc,
-          post_author_name: idea.author_name,
-          post_url: Frontend::UrlService.new.model_to_url(idea, locale: Locale.new(recipient.locale))
+    let_it_be(:author) { create(:user, first_name: 'Kermit', last_name: 'the Frog') }
+
+    describe 'when the input if published' do
+      let_it_be(:input) { create(:idea, title_multiloc: { en: 'My idea title' }, publication_status: 'published', author: author) }
+      let_it_be(:command) do
+        activity = create(:activity, item: input, action: 'submitted')
+        create(:new_idea_for_admin_campaign).generate_commands(
+          activity: activity,
+          recipient: recipient
+        ).first.merge({ recipient: recipient })
+      end
+      let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+
+      it 'renders the subject' do
+        expect(mail.subject).to eq('Gonzo, a new input has been published on your platform')
+      end
+
+      it 'renders the receiver email' do
+        expect(mail.to).to eq([recipient.email])
+      end
+
+      it 'renders the sender email' do
+        expect(mail.from).to all(end_with('@citizenlab.co'))
+      end
+
+      it 'includes the header' do
+        expect(mail.body.encoded).to have_tag('div') do
+          with_tag 'h1' do
+            with_text(/Gonzo, a new input has been published on your platform/)
+          end
+          with_tag 'p' do
+            with_text(/Kermit the Frog has submitted a new input on your platform\. Discover it now, give some feedback or change its status!/)
+          end
+        end
+      end
+
+      it 'includes the input box' do
+        expect(mail.body.encoded).to have_tag('table') do
+          with_tag 'h2' do
+            with_text(/My idea title/)
+          end
+          with_tag 'p' do
+            with_text(/by Kermit the Frog/)
+          end
+        end
+      end
+
+      it 'includes the CTA' do
+        expect(mail.body.encoded).to have_tag('a', with: { href: "http://example.org/en/ideas/#{input.slug}" }) do
+          with_text(/Give feedback to Kermit the Frog/)
+        end
+      end
+    end
+
+    describe 'when the input is in prescreening' do
+      let_it_be(:input) { create(:proposal, title_multiloc: { en: 'My proposal title' }, publication_status: 'submitted', idea_status: create(:proposals_status, code: 'prescreening'), author: author) }
+      let_it_be(:command) do
+        {
+          recipient: recipient,
+          event_payload: {
+            post_submitted_at: input.submitted_at&.iso8601,
+            post_published_at: input.published_at&.iso8601,
+            post_title_multiloc: input.title_multiloc,
+            post_author_name: input.author_name,
+            post_url: Frontend::UrlService.new.model_to_url(input, locale: Locale.new(recipient.locale))
+          }
         }
-      }
-    end
+      end
+      let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
 
-    let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+      it 'renders the subject' do
+        expect(mail.subject).to eq('Gonzo, an input requires your review')
+      end
 
-    before_all { EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id) }
+      it 'renders the receiver email' do
+        expect(mail.to).to eq([recipient.email])
+      end
 
-    it 'renders the subject' do
-      expect(mail.subject).to start_with('A new post has been published on')
-    end
+      it 'renders the sender email' do
+        expect(mail.from).to all(end_with('@citizenlab.co'))
+      end
 
-    it 'renders the receiver email' do
-      expect(mail.to).to eq([recipient.email])
-    end
+      it 'includes the header' do
+        expect(mail.body.encoded).to have_tag('div') do
+          with_tag 'h1' do
+            with_text(/Gonzo, an input requires your review/)
+          end
+          with_tag 'p' do
+            with_text(/Kermit the Frog has submitted a new input on your platform\./)
+          end
+          with_tag 'div' do
+            with_text(/The input won't be visible until you modify its status\./)
+          end
+        end
+      end
 
-    it 'renders the sender email' do
-      expect(mail.from).to all(end_with('@citizenlab.co'))
-    end
+      it 'includes the input box' do
+        expect(mail.body.encoded).to have_tag('table') do
+          with_tag 'h2' do
+            with_text(/My proposal title/)
+          end
+          with_tag 'p' do
+            with_text(/by Kermit the Frog/)
+          end
+        end
+      end
 
-    it 'assigns author name' do
-      expect(mail.body.encoded).to match(idea.author_name)
-    end
-
-    it 'assigns go to idea CTA' do
-      idea_url = Frontend::UrlService.new.model_to_url(idea, locale: Locale.new(recipient.locale))
-      expect(mail.body.encoded).to match(idea_url)
+      it 'includes the CTA' do
+        expect(mail.body.encoded).to have_tag('a', with: { href: "http://example.org/en/ideas/#{input.slug}" }) do
+          with_text(/Review the input/)
+        end
+      end
     end
   end
 end

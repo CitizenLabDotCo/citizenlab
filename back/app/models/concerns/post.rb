@@ -8,6 +8,7 @@ module Post
   extend ActiveSupport::Concern
 
   PUBLICATION_STATUSES = %w[draft submitted published].freeze
+  SUBMISSION_STATUSES = %w[submitted published].freeze
 
   included do
     pg_search_scope :restricted_search,
@@ -51,7 +52,7 @@ module Post
 
     scope :draft, -> { where(publication_status: 'draft') }
     scope :published, -> { where publication_status: 'published' }
-    scope :submitted_or_published, -> { where publication_status: %w[submitted published] }
+    scope :submitted_or_published, -> { where publication_status: SUBMISSION_STATUSES }
 
     scope :order_new, ->(direction = :desc) { order(published_at: direction) }
     scope :order_random, lambda { |user|
@@ -67,7 +68,7 @@ module Post
     end
 
     def submitted_or_published?
-      %w[submitted published].include? publication_status
+      SUBMISSION_STATUSES.include? publication_status
     end
 
     def published?

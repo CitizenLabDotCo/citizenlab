@@ -47,7 +47,7 @@ type Props = {
   statuses?: IIdeaStatusData[];
   selectedPhaseId?: string | null;
   selectedProjectId?: string | null;
-  /** A set of ids of ideas/initiatives that are currently selected */
+  /** A set of ids of ideas that are currently selected */
   selection: Set<string>;
   activeFilterMenu: TFilterMenu;
   className?: string;
@@ -445,11 +445,9 @@ const IdeaRow = ({
           statuses,
           selectedStatus,
         }}
-        allowedTransitions={null}
         onUpdatePhases={onUpdateIdeaPhases}
         onUpdateTopics={onUpdateIdeaTopics}
         onUpdateStatus={onUpdateIdeaStatus}
-        postType="idea"
       />
       <PhaseDeselectModal
         open={phaseDeselectModalOpen}

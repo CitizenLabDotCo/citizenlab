@@ -7,8 +7,7 @@ import moderationsKeys from './keys';
 export type ModerationsKeys = Keys<typeof moderationsKeys>;
 
 export type TModerationStatus = 'read' | 'unread';
-export type TModeratableType = 'Idea' | 'Initiative' | 'Comment';
-// add case for initiative
+export type TModeratableType = 'Idea' | 'Comment';
 export type TBelongsTo = keyof IModerationData['attributes']['belongs_to'];
 
 export interface IModerationData {
@@ -28,11 +27,6 @@ export interface IModerationData {
         title_multiloc: Multiloc;
       };
       idea?: {
-        id: string;
-        slug: string;
-        title_multiloc: Multiloc;
-      };
-      initiative?: {
         id: string;
         slug: string;
         title_multiloc: Multiloc;

@@ -67,7 +67,6 @@ const SortFilterDropdown = ({ alignment, value, onChange, phase }: Props) => {
         values={options}
         onChange={handleOnChange}
         multipleSelectionAllowed={false}
-        width="180px"
         left={alignment === 'left' ? '-5px' : undefined}
         mobileLeft={alignment === 'left' ? '-5px' : undefined}
         right={alignment === 'right' ? '-5px' : undefined}

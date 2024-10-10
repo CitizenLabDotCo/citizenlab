@@ -26,15 +26,13 @@ const StyledParentComment = styled(InternalParentComment)`
 
 interface Props {
   ideaId: string | undefined;
-  initiativeId: string | undefined;
-  postType: 'idea' | 'initiative';
   allComments: IInternalCommentData[];
   loading: boolean;
   className?: string;
 }
 
 const InternalComments = memo<Props>(
-  ({ ideaId, initiativeId, postType, allComments, loading, className }) => {
+  ({ ideaId, allComments, loading, className }) => {
     const { formatMessage } = useIntl();
     const [commentPostedMessage, setCommentPostedMessage] = useState('');
     const [commentDeletedMessage, setCommentDeletedMessage] = useState('');
@@ -103,8 +101,6 @@ const InternalComments = memo<Props>(
             <StyledParentComment
               key={parentComment.id}
               ideaId={ideaId}
-              initiativeId={initiativeId}
-              postType={postType}
               commentId={parentComment.id}
               childCommentIds={childCommentIds}
               className={loading ? 'loading' : ''}

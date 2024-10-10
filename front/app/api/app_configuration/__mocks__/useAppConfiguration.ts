@@ -47,15 +47,6 @@ export const appConfigurationData: IAppConfigurationData = {
         tenant_site_id: '13',
         product_site_id: '14',
       },
-      initiatives: {
-        allowed: true,
-        enabled: true,
-        days_limit: 50,
-        eligibility_criteria: {},
-        posting_tips: {},
-        threshold_reached_message: {},
-        reacting_threshold: 5,
-      },
     },
     logo: {
       small: 'http://zah.cy/wof.jpg',

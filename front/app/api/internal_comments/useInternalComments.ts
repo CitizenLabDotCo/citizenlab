@@ -18,8 +18,6 @@ const getInternalCommentsEndpoint = (params: IInternalCommentParameters) => {
   switch (type) {
     case 'idea':
       return `ideas/${params.ideaId}/internal_comments`;
-    case 'initiative':
-      return `initiatives/${params.initiativeId}/internal_comments`;
     case 'comment':
       return `internal_comments/${params.commentId}/children`;
     case 'author':

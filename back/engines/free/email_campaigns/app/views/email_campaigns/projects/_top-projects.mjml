@@ -1,8 +1,8 @@
-<mj-section padding="0 25px">
+<mj-section padding="0 25px" css-class="top-projects">
   <mj-column>
     <mj-text>
       <h2 style="padding: 20px 0">
-        <% if event.top_project_ideas.empty? %>
+        <% if event.top_project_inputs.empty? %>
           <%= format_message('title_no_activity_past_week') %>
         <% else %>
           <%= format_message('title_activity_past_week') %>
@@ -10,8 +10,8 @@
       </h2>
     </mj-text>
 
-    <% event.top_project_ideas.each do |serialized_project_ideas| %>
-      <%= render 'email_campaigns/projects/project-ideas', serialized_project_ideas: serialized_project_ideas %>
+    <% event.top_project_inputs.each do |serialized_project_inputs| %>
+      <%= render 'email_campaigns/projects/project-inputs', serialized_project_inputs: %>
     <% end %>
   </mj-column>
 </mj-section>

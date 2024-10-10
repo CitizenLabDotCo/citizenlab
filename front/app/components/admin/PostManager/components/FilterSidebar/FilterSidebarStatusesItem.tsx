@@ -12,7 +12,6 @@ import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
-import { IInitiativeStatusData } from 'api/initiative_statuses/types';
 import usePhase from 'api/phases/usePhase';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -38,7 +37,7 @@ const StatusText = styled.div`
 `;
 
 interface Props {
-  status: IIdeaStatusData | IInitiativeStatusData;
+  status: IIdeaStatusData;
   active: boolean;
   onClick: () => void;
 }
@@ -63,9 +62,7 @@ const FilterSidebarStatusesItem = ({ status, active, onClick }: Props) => {
   });
 
   const showAutomaticStatusTooltip =
-    (status as IInitiativeStatusData).attributes.transition_type ===
-      'automatic' ||
-    (status as IIdeaStatusData).attributes.can_manually_transition_to === false;
+    status.attributes.can_manually_transition_to === false;
 
   const prescreeningButtonIsDisabled =
     status.attributes.code === 'prescreening' &&
