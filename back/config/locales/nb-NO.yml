@@ -212,6 +212,12 @@
           title: Hva er problemet ditt?
         option:
           title: Hva er alternativet ditt?
+        proposal:
+          title: Hva er ditt forslag?
+        initiative:
+          title: Hva er ditt initiativ?
+        petition:
+          title: Hva er begjæringen din?
   custom_field_options:
     gender:
       male: Mann
