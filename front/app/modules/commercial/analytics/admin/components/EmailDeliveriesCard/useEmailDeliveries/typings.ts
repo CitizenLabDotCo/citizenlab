@@ -1,6 +1,10 @@
-import { Dates, Resolution } from 'components/admin/GraphCards/typings';
+import {
+  Dates,
+  ProjectId,
+  Resolution,
+} from 'components/admin/GraphCards/typings';
 
-export type QueryParameters = Dates & Resolution;
+export type QueryParameters = Dates & Resolution & ProjectId;
 
 // Response
 export type Response = {
