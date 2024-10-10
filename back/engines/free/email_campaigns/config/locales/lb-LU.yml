@@ -13,7 +13,7 @@ lb:
       "cosponsor_of_your_idea": E Benotzer akzeptéiert meng Invitatioun fir meng Propositioun ze sponsoren
       "event_registration_confirmation": Event Aschreiwung Bestätegung
       "idea_marked_as_spam": Spambericht iwwer d'Iddien
-      "idea_published": Publikatioun vu mengem Input
+      "idea_published": Verëffentlechung vu menger Iddi
       "initiative_assigned_to_you": E Virschlag gouf mir zougewisen
       "initiative_marked_as_spam": Spambericht iwwer d'Virschléi
       "initiative_published": Verëffentlechung vu mengem Virschlag
@@ -33,9 +33,9 @@ lb:
       "mention_in_official_feedback": Ernimmung an engem Update
       "mention_in_internal_comment": Ernimmen an engem internen Commentaire
       "new_comment_for_admin": Neie Kommentar an engem Projet, deen ech moderéieren
-      "new_idea_for_admin": Neien Input an engem Projet ech moderéieren
+      "new_idea_for_admin": Nei Iddi an engem Projet, deen ech moderéien
       "new_initiative_for_admin": Nei Propositioun
-      "official_feedback_on_idea_you_follow": Update op en Input deen Dir verfollegt
+      "official_feedback_on_idea_you_follow": Update op eng Iddi déi Dir verfollegt
       "official_feedback_on_initiative_you_follow": Update op eng Propositioun déi Dir verfollegt
       "password_reset": Passwuert zerécksetzen
       "project_moderation_rights_received": Moderatiounsrechter fir Projete kritt
@@ -43,7 +43,7 @@ lb:
       "project_phase_started": Nei Projetsphas
       "project_phase_upcoming": Bevirstoend nei Projetsphas
       "project_published": Projet publizéiert
-      "status_change_on_idea_you_follow": StatusÄnnerung vun engem Input deen Dir verfollegt
+      "status_change_on_idea_you_follow": Status Ännerung vun enger Iddi déi Dir verfollegt
       "status_change_on_initiative_you_follow": StatusÄnnerung vun enger Propositioun déi Dir verfollegt
       "threshold_reached_for_admin": Virschlag huet d'Schwell vun de Stëmmen erreecht. 
       "welcome": No der Aschreiwung
@@ -174,13 +174,13 @@ lb:
       subject: '%{cosponsorName} huet Är Invitatioun ugeholl fir Är Propositioun ze co-sponsoren'
       preheader_initiative: '%{cosponsorName} huet Är Invitatioun ugeholl fir Är Propositioun ze co-sponsoren'
     assignee_digest:
-      subject: 'Inputs déi Äre Feedback erfuerderen: %{numberIdeas}'
+      subject: 'Iddien, déi Äre Feedback erfuerderen: %{numberIdeas}'
       preheader: 'Iwwersiicht vun den Elementer déi Iech zougewise goufen %{organizationName}'
       title_your_weekly_report: '%{firstName}, de Bäitrag vun de Benotzer waart op Äre Feedback'
       cta_manage_your_input: 'Är Bäiträg verwalten'
       x_inputs_need_your_feedback: 'Input brauch Äre Feedback'
-      title_assignment_past_week: 'Déi lescht Input fir Iech zougewisen'
-      title_no_assignment_past_week: 'Keng nei Input fir Iech d''lescht Woch zougewisen'
+      title_assignment_past_week: 'Neist Iddien, déi Iech zougewise goufen'
+      title_no_assignment_past_week: 'D''lescht Woch goufen Iech keng nei Iddien zougewisen'
       yesterday_by_author: 'Gëschter vun %{author}'
       today_by_author: 'Haut vun %{author}'
       x_days_ago_by_author: 'Virun %{x} Deeg %{author} vun'
@@ -188,7 +188,7 @@ lb:
     idea_marked_as_spam:
       cta_review: 'Iwwerpréiwung'
       report_inappropriate_offensive_content: 'Ech fannen dësen Inhalt net ugemiess oder beleidegend.'
-      report_not_an_idea: 'Dësen Inhalt ass net relevant a gehéiert net hei.'
+      report_not_an_idea: 'Dësen Inhalt ass keng Iddi a gehéiert net hei hin.'
       subject: 'Dir hutt e Spambericht op der Plattform vum %{organizationName}'
       preheader: 'Reagéiert op dës Spammeldung'
       reported_this_because: '%{reporterFirstName} huet dëst gemellt, well:'
@@ -333,7 +333,7 @@ lb:
       input_not_visible_prescreening: '<b>Den Input wäert net</b> sichtbar sinn bis Dir säi Status ännert.'
       cta_prescreening: 'Iwwerpréift den Input'
       days_ago: 'Virun %{numberOfDays} Deeg'
-      preheader: '%{authorName} publizéiert en neien Input op Ärer Plattform'
+      preheader: '%{authorName} huet eng nei Iddi op Ärer Plattform gepost'
       today: Haut
       yesterday: Gëschter
     comment_on_your_comment:
@@ -352,50 +352,50 @@ lb:
     internal_comment_on_idea_assigned_to_you:
       cta_reply_to: 'Kuckt de Kommentar vum %{firstName}'
       event_description: '%{authorNameFull} kommentéiert intern op en Input deen Iech zougewisen gouf.'
-      subject: 'Neien internen Kommentar zu ''%{post}'''
-      main_header: 'Neien internen Kommentar zu ''%{post}'''
-      preheader: 'Neien internen Kommentar zu ''%{post}'''
+      subject: '''%{post}'' huet en neien internen Kommentar'
+      main_header: '''%{post}'' huet en neien internen Kommentar'
+      preheader: '''%{post}'' huet en neien internen Kommentar'
     internal_comment_on_idea_you_commented_internally_on:
       cta_reply_to: 'Kuckt de Kommentar vum %{firstName}'
       event_description: '%{authorNameFull} kommentéiert intern op en Input deen Dir intern kommentéiert hutt.'
-      subject: 'Neien internen Kommentar zu ''%{post}'''
-      main_header: 'Neien internen Kommentar zu ''%{post}'''
-      preheader: 'Neien internen Kommentar zu ''%{post}'''
+      subject: '''%{post}'' huet en neien internen Kommentar'
+      main_header: '''%{post}'' huet en neien internen Kommentar'
+      preheader: '''%{post}'' huet en neien internen Kommentar'
     internal_comment_on_idea_you_moderate:
       cta_reply_to: 'Kuckt de Kommentar vum %{firstName}'
       event_description: '%{authorNameFull} kommentéiert intern op en Input an engem Projet oder Dossier deen Dir geréiert.'
-      subject: 'Neien internen Kommentar zu ''%{post}'''
-      main_header: 'Neien internen Kommentar zu ''%{post}'''
-      preheader: 'Neien internen Kommentar zu ''%{post}'''
+      subject: '''%{post}'' huet en neien internen Kommentar'
+      main_header: '''%{post}'' huet en neien internen Kommentar'
+      preheader: '''%{post}'' huet en neien internen Kommentar'
     internal_comment_on_initiative_assigned_to_you:
       cta_reply_to: 'Kuckt de Kommentar vum %{firstName}'
       event_description: '%{authorNameFull} kommentéiert intern op eng Propositioun déi Iech zougewisen gouf.'
-      subject: 'Neien internen Kommentar zu ''%{post}'''
-      main_header: 'Neien internen Kommentar zu ''%{post}'''
-      preheader: 'Neien internen Kommentar zu ''%{post}'''
+      subject: '''%{post}'' huet en neien internen Kommentar'
+      main_header: '''%{post}'' huet en neien internen Kommentar'
+      preheader: '''%{post}'' huet en neien internen Kommentar'
     internal_comment_on_initiative_you_commented_internally_on:
       cta_reply_to: 'Kuckt de Kommentar vum %{firstName}'
       event_description: '%{authorNameFull} kommentéiert intern op eng Propositioun déi Dir intern kommentéiert hutt.'
-      subject: 'Neien internen Kommentar zu ''%{post}'''
-      main_header: 'Neien internen Kommentar zu ''%{post}'''
-      preheader: 'Neien internen Kommentar zu ''%{post}'''
+      subject: '''%{post}'' huet en neien internen Kommentar'
+      main_header: '''%{post}'' huet en neien internen Kommentar'
+      preheader: '''%{post}'' huet en neien internen Kommentar'
     internal_comment_on_unassigned_initiative:
       cta_reply_to: 'Kuckt de Kommentar vum %{firstName}'
       event_description: '%{authorNameFull} kommentéiert intern op eng net zougewisen Propositioun.'
-      subject: 'Neien internen Kommentar zu ''%{post}'''
-      main_header: 'Neien internen Kommentar zu ''%{post}'''
-      preheader: 'Neien internen Kommentar zu ''%{post}'''
+      subject: '''%{post}'' huet en neien internen Kommentar'
+      main_header: '''%{post}'' huet en neien internen Kommentar'
+      preheader: '''%{post}'' huet en neien internen Kommentar'
     internal_comment_on_unassigned_unmoderated_idea:
       cta_reply_to: 'Kuckt de Kommentar vum %{firstName}'
       event_description: '%{authorNameFull} kommentéiert intern op en net zougewisenen Input an engem net verwalteten Projet.'
-      subject: 'Neien internen Kommentar zu ''%{post}'''
-      main_header: 'Neien internen Kommentar zu ''%{post}'''
-      preheader: 'Neien internen Kommentar zu ''%{post}'''
+      subject: '''%{post}'' huet en neien internen Kommentar'
+      main_header: '''%{post}'' huet en neien internen Kommentar'
+      preheader: '''%{post}'' huet en neien internen Kommentar'
     official_feedback_on_idea_you_follow:
       header_message: '%{feedback_author_name} huet en Update iwwer ''%{input_title}'' ginn.'
       header_title: 'Et gëtt en Update iwwer "%{input_title}"'
       subject: 'Offiziell Feedback gouf op "%{input_title}" gepost'
-      preheader: 'Et gëtt en Update op engem Input deen Dir verfollegt'
+      preheader: 'Et gëtt en Update iwwer eng Iddi déi Dir verfollegt'
     official_feedback_on_initiative_you_follow:
       header_message: '%{officialName} huet en Update iwwer d''Propositioun ''%{initiativeTitle}'' ginn. Klickt op de Knäppchen hei ënnen fir an d''Gespréich mat %{organizationName}anzegoen.'
       header_title: 'Et gëtt en Update iwwer eng Propositioun déi Dir verfollegt'
@@ -461,9 +461,9 @@ lb:
     status_change_on_idea_you_follow:
       status_change: 'Den neie Status vun dësem Input ass ''%{status}'''
       header_message: '%{organizationName} huet de Status vum Input ''%{input_title}'' op hirer digitaler Participatiounsplattform aktualiséiert.'
-      header_title: 'En Input deen Dir verfollegt huet en neie Status'
+      header_title: 'Eng Iddi déi Dir verfollegt huet en neie Status'
       subject: 'De Status vun "%{input_title}" ass geännert'
-      preheader: 'En Input deen Dir verfollegt huet en neie Status'
+      preheader: 'Eng Iddi déi Dir verfollegt huet en neie Status'
     status_change_on_initiative_you_follow:
       status_change: 'Den neie Status vun dëser Propositioun ass ''%{initiativeStatus}'''
       header_message: 'De Status vun der Propositioun ''%{initiativeTitle}'' gouf op der digitaler Participatiounsplattform vum %{organizationName}aktualiséiert.'
@@ -471,7 +471,7 @@ lb:
       subject: 'De Status vun enger Propositioun déi Dir verfollegt huet geännert'
       preheader: 'Eng Propositioun déi Dir befollegt huet en neie Status'
     user_digest:
-      subject: "Dës Woch op der Participatiounsplattform vun %{organizationName}"
+      subject: "Är wéchentlech Aktivitéit op der participativer Plattform %{organizationName}"
       commented: "%{authorFirstName} huet kommentéiert:"
       preheader: "Wéchentlechen Iwwerbléck vun %{organizationName}"
       title_your_weekly_report: "Fannt eraus wat d'lescht Woch geschitt ass"
@@ -479,7 +479,7 @@ lb:
       cta_go_to_the_platform: "D'Plattform besichen"
       title_no_activity_past_week: "Keng Aktivitéit an der leschter Woch"
       successful_proposals_title: "D'Schwell erreecht"
-      successful_proposals_text: "An der leschter Woch hunn dës genuch Ënnerstëtzung kritt fir op déi nächst Etapp ze goen."
+      successful_proposals_text: "Dëse Virschlag huet genuch Ënnerstëtzung kritt fir an déi nächst Etapp ze kommen!! Klickt op de Virschlag fir méi gewuer ze ginn, wat als nächst geschitt."
       today_by_author: "Haut vun %{author}"
       yesterday_by_author: "Gëschter vun %{author}"
       x_days_ago_by_author: "Virun %{x} Deeg %{author} vun"
@@ -488,11 +488,11 @@ lb:
       no_notifications: "Keng Benoriichtegungen"
       one_notification: "1 Benoriichtegung"
       multiple_notifications: "%{notifCount} Benoriichtegungen"
-      no_unread_notifications: "Dir hutt keng ongelies Notifikatiounen."
+      no_unread_notifications: "Dir hutt keng ongelies Benoriichtegungen. Besicht d’Plattform fir erauszefannen wat sech deet a fir bäizedroen!"
       unread_notifications: "Dir hutt Benoriichtegungen, déi Dir nach net gelies hutt. Besicht d’Plattform fir erauszefanne wat leeft!"
     threshold_reached_for_admin:
       cta_process_initiative: 'Bréngt dës Initiativ an déi nächst Etapp'
-      main_header: 'Eng Propositioun huet d''Wahlschwell erreecht!'
+      main_header: 'E Virschlag huet d''Schwell vun den Ofstëmmungen erreecht!'
       subject: '"%{input_title}" huet d''Wahlschwell erreecht'
       preheader: 'Stellt sécher, datt Dir déi nächst Schrëtter maacht'
     welcome:
@@ -514,8 +514,8 @@ lb:
         petition: 'Är Petitioun gouf publizéiert'
       main_header: 'Dir hutt "%{input_title}" gepost'
       header_message: 'Loosst eis sécher stellen datt et gelies gëtt.'
-      message_get_votes: 'Erreeche méi Leit'
-      action_published_idea: 'Verëffentlecht'
+      message_get_votes: 'Erreecht méi Leit mat Ärer Iddi:'
+      action_published_idea: 'Verëffentlecht Iddi'
       action_add_image: '%{addImageLink} fir d’Siichtbarkeet ze verbesseren'
       add_image: 'A Bild afügen'
       action_share_fb: 'Sot et Äre Frënn op %{fbLink}'
@@ -524,7 +524,7 @@ lb:
       send_email: E-Mail
       action_share_link: 'Deelt et iwwer all belibege Kanal, andeem Dir %{link} kopéiert'
       link: Link
-      preheader: '%{firstName}, Gratulatioun fir Ären Input op der Plattform vun %{organizationName}ze posten. Elo sammelen Ënnerstëtzung.'
+      preheader: '%{firstName}, Gléckwonsch fir d’Verëffentlechen vun Ärer Iddi op der %{organizationName} Plattform. Sammelt a kritt elo Ënnerstëtzung.'
     your_input_in_screening:
       main_header:
         idea: 'Är Iddi ass an "%{prescreening_status_title}"'
