@@ -64,7 +64,7 @@ const TopicFilterDropdown = ({
       values={options}
       onChange={onChange}
       multipleSelectionAllowed={true}
-      last={true}
+      last={false}
       left={alignment === 'left' ? '-5px' : undefined}
       mobileLeft={alignment === 'left' ? '-5px' : undefined}
       right={alignment === 'right' ? '-5px' : undefined}

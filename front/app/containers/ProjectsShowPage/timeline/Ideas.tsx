@@ -40,6 +40,7 @@ interface QueryParameters {
   search?: string;
   sort: Sort;
   topics?: string[];
+  idea_status?: string;
 }
 
 const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
@@ -47,6 +48,7 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
   const sortParam = searchParams.get('sort') as Sort | null;
   const searchParam = searchParams.get('search');
   const topicsParam = searchParams.get('topics');
+  const ideaStatusParam = searchParams.get('idea_status');
   const config = getMethodConfig(phase.attributes.participation_method);
 
   const ideaQueryParameters = useMemo<QueryParameters>(
@@ -61,8 +63,17 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
         ideaDefaultSortMethodFallback,
       search: searchParam ?? undefined,
       topics: topicsParam ? JSON.parse(topicsParam) : undefined,
+      idea_status: ideaStatusParam ?? undefined,
     }),
-    [config, projectId, sortParam, searchParam, phase, topicsParam]
+    [
+      config,
+      projectId,
+      sortParam,
+      searchParam,
+      phase,
+      topicsParam,
+      ideaStatusParam,
+    ]
   );
 
   const participationMethod = phase.attributes.participation_method;
