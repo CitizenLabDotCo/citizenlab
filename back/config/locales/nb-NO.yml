@@ -146,8 +146,6 @@
         title: Fødselsår
       domicile:
         title: Bosted
-      education:
-        title: Utdanning
     ideas:
       title:
         title: Tittel
@@ -212,14 +210,6 @@
       unspecified: Uspesifisert
     domicile:
       outside: Et annet sted
-    education:
-      ISCED2: Grunnskole
-      ISCED3: Grunnskole
-      ISCED4: Videregående skole
-      ISCED5: Fagskole
-      ISCED6: Bachelorgrad eller tilsvarende
-      ISCED7: Mastergrad eller tilsvarende
-      ISCED8: Doktorgrad  eller tilsvarende
   initiatives:
     default_threshold_reached_message: >
       <p>Inivitiativtakerne er invitert til  å presentere sitt forslag under neste kommunemøte Vi vil gi en offisiell oppdatering.</p>

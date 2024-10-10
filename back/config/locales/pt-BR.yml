@@ -146,8 +146,6 @@ pt:
         title: Ano do nascimento
       domicile:
         title: Endereço
-      education:
-        title: Educação
     ideas:
       title:
         title: Assunto
@@ -212,14 +210,6 @@ pt:
       unspecified: Outros
     domicile:
       outside: Em outro lugar
-    education:
-      ISCED2: Educação infantil
-      ISCED3: Ensino fundamental
-      ISCED4: Ensino médio
-      ISCED5: Ensino técnico
-      ISCED6: Ensino superior
-      ISCED7: Mestrado ou equivalente
-      ISCED8: Doutorado ou equivalente
   initiatives:
     default_threshold_reached_message: >
       <p>Os iniciadores são convidados a apresentar a sua proposta na próxima reunião do conselho. Nós forneceremos uma atualização oficial.</p>

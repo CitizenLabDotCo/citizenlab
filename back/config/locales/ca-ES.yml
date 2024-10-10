@@ -146,8 +146,6 @@ ca:
         title: Any de naixement
       domicile:
         title: Lloc de residència
-      education:
-        title: Educació
     ideas:
       title:
         title: Títol
@@ -212,14 +210,6 @@ ca:
       unspecified: Altres
     domicile:
       outside: Algun altre lloc
-    education:
-      ISCED2: Educació secundària inferior
-      ISCED3: Educació secundària superior
-      ISCED4: Educació postsecundària no terciària
-      ISCED5: Educació terciària de cicle curt
-      ISCED6: Batxillerat o equivalent
-      ISCED7: Màster o equivalent
-      ISCED8: Doctorat o equivalent
   initiatives:
     default_threshold_reached_message: >
       <p>Es convida els iniciadors a presentar la seva proposta a la propera reunió del consell. Us proporcionarem una actualització oficial.</p>
