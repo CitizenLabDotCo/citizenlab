@@ -71,8 +71,7 @@ export type TOnProjectAttributesDiffChangeFunction = (
 ) => void;
 
 type FileOrdering = {
-  id: string | undefined;
-  ordering: number | undefined;
+  [id: string]: number | undefined;
 };
 
 const AdminProjectsProjectGeneral = () => {
@@ -108,7 +107,7 @@ const AdminProjectsProjectGeneral = () => {
   // both in projectAttributesDiff and as separate state.
   const [projectFiles, setProjectFiles] = useState<UploadFile[]>([]);
   const [initialProjectFilesOrdering, setInitialProjectFilesOrdering] =
-    useState<FileOrdering[]>([]);
+    useState<FileOrdering>({});
   const [projectFilesToRemove, setProjectFilesToRemove] = useState<
     UploadFile[]
   >([]);
@@ -165,12 +164,15 @@ const AdminProjectsProjectGeneral = () => {
          * Alternative deep copy methods like deepClone, structuredClone, and JSON.parse(JSON.stringify(obj))
          * have inconsistencies, so we create an object with only the necessary properties for ordering.
          * This approach is fine for now as the number of files is expected to be small. We can optimize if performance becomes an issue.
+         * We are also using an object here so lookup is O(1).
          */
         setInitialProjectFilesOrdering(
-          nextProjectFiles.map((file) => ({
-            id: file?.id,
-            ordering: file?.ordering,
-          }))
+          nextProjectFiles.reduce((acc, file) => {
+            if (file?.id) {
+              acc[file.id] = file.ordering;
+            }
+            return acc;
+          }, {})
         );
       }
     })();
@@ -350,14 +352,14 @@ const AdminProjectsProjectGeneral = () => {
           });
 
         const reorderedFiles = projectFiles.filter((file) => {
-          const initialFile = initialProjectFilesOrdering.find(
-            (f) => f.id === file.id
-          );
+          const initialOrdering = file.id
+            ? initialProjectFilesOrdering[file.id]
+            : undefined;
           return (
             file.remote &&
             typeof file.ordering !== 'undefined' &&
-            (typeof initialFile?.ordering === 'undefined' ||
-              file.ordering !== initialFile.ordering)
+            (typeof initialOrdering === 'undefined' ||
+              file.ordering !== initialOrdering)
           );
         });
 
