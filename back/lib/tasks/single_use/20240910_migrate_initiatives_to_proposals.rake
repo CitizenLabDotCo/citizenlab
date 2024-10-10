@@ -647,6 +647,14 @@ def rake_20240910_migrate_project_description_multiloc
     "sv-SE" => "Läs mer om hur förslag fungerar.",
     "tr-TR" => "Önerilerin işleyiş şekli hakkında daha fazla bilgi edinin."
   }
+  case config.name
+  when 'RegionSjælland'
+    multiloc_content['da-DK'] = "Har du et forslag til, hvordan Region Sjælland kan blive sundere, grønnere og mere lige for alle? Så har du mulighed for at stille dit borgerforslag og sætte det til offentlig afstemning her på platformen. Hvis dit forslag opfylder kriterierne og opnår {constraints}, vil det blive behandlet af dine regionspolitikere. {link}"
+  when 'KøbenhavnsKommune'
+    multiloc_content['da-DK'] = "Har du et forslag til, hvordan København kan blive en endnu bedre by at bo og færdes i? Så har du mulighed for at stille dit københavnerforslag og sætte det til offentlig afstemning her på platformen. Hvis dit forslag opfylder kriterierne og opnår {constraints}, vil det blive behandlet af vores kommunalpolitikere. {link}"
+  when 'HolbækKommune'
+    multiloc_content['da-DK'] = "Har du en idé til hvordan kommunen kan blive endnu bedre, eller et forslag som du synes politikerne skal drøfte? Så opret et borgerforslag her. Hvis det opnår {constraints}, kommer det videre til Kommunalbestyrelsen. Husk at du skal være MitID-valideret for at kunne stille forslag. {link}"
+  end
   multiloc_content.to_h do |key, value|
     org_name = Locale.new(key).resolve_multiloc(config.settings('core', 'organization_name')) || ''
     new_value = value.gsub('{orgName}', org_name)
@@ -664,17 +672,6 @@ def rake_20240910_migrate_project_description_multiloc
       new_value.gsub('{link}', '')
     end
     constraints_text = multiloc_constraints[key]
-    case key
-    when 'da-DK'
-      case config.name
-      when 'RegionSjælland'
-        constraints_text = "Har du et forslag til, hvordan Region Sjælland kan blive sundere, grønnere og mere lige for alle? Så har du mulighed for at stille dit borgerforslag og sætte det til offentlig afstemning her på platformen. Hvis dit forslag opfylder kriterierne og opnår {constraints}, vil det blive behandlet af dine regionspolitikere. {link}"
-      when 'KøbenhavnsKommune'
-        constraints_text = "Har du et forslag til, hvordan København kan blive en endnu bedre by at bo og færdes i? Så har du mulighed for at stille dit københavnerforslag og sætte det til offentlig afstemning her på platformen. Hvis dit forslag opfylder kriterierne og opnår {constraints}, vil det blive behandlet af vores kommunalpolitikere. {link}"
-      when 'HolbækKommune'
-        constraints_text = "Har du en idé til hvordan kommunen kan blive endnu bedre, eller et forslag som du synes politikerne skal drøfte? Så opret et borgerforslag her. Hvis det opnår {constraints}, kommer det videre til Kommunalbestyrelsen. Husk at du skal være MitID-valideret for at kunne stille forslag. {link}"
-      end
-    end
     new_value = new_value.gsub(
       '{constraints}',
       constraints_text.gsub('{daysLimit}', expire_days_limit.to_s).gsub('{voteThreshold}', reacting_threshold.to_s)
