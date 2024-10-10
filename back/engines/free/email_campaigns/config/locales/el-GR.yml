@@ -13,7 +13,7 @@ el:
       "cosponsor_of_your_idea": Ένας χρήστης αποδέχεται την πρόσκλησή μου να συνυπογράψει την πρότασή μου
       "event_registration_confirmation": Επιβεβαίωση εγγραφής στην εκδήλωση
       "idea_marked_as_spam": Αναφορά spam ιδεών
-      "idea_published": Δημοσίευση της συμβολής μου
+      "idea_published": Δημοσίευση της ιδέας μου
       "initiative_assigned_to_you": Ανάθεση πρότασης σε μένα
       "initiative_marked_as_spam": Έκθεση για την ανεπιθύμητη αλληλογραφία της πρότασης
       "initiative_published": Δημοσίευση της πρότασής μου
@@ -33,9 +33,9 @@ el:
       "mention_in_official_feedback": Αναφορά σε μια ενημέρωση
       "mention_in_internal_comment": Αναφορά σε εσωτερικό σχόλιο
       "new_comment_for_admin": Νέο σχόλιο σε ένα έργο που συντονίζω
-      "new_idea_for_admin": Νέα εισροή σε ένα έργο που συντονίζω
+      "new_idea_for_admin": Νέα ιδέα σε ένα έργο που συντονίζω
       "new_initiative_for_admin": Νέα πρόταση
-      "official_feedback_on_idea_you_follow": Ενημέρωση σχετικά με μια είσοδο που ακολουθείτε
+      "official_feedback_on_idea_you_follow": Ενημέρωση για μια ιδέα που ακολουθείτε
       "official_feedback_on_initiative_you_follow": Ενημέρωση σχετικά με μια πρόταση που ακολουθείτε
       "password_reset": Επαναφορά κωδικού πρόσβασης
       "project_moderation_rights_received": Δικαιώματα συντονισμού έργου που ελήφθησαν
@@ -43,7 +43,7 @@ el:
       "project_phase_started": Νέα φάση του έργου
       "project_phase_upcoming": Επόμενη νέα φάση έργου
       "project_published": Δημοσιευμένο έργο
-      "status_change_on_idea_you_follow": Αλλαγή κατάστασης μιας εισόδου που ακολουθείτε
+      "status_change_on_idea_you_follow": Αλλαγή κατάστασης μιας ιδέας που ακολουθείτε
       "status_change_on_initiative_you_follow": Αλλαγή κατάστασης μιας πρότασης που ακολουθείτε
       "threshold_reached_for_admin": Η πρόταση έφθασε το κατώτατο όριο ψήφου
       "welcome": Μετά την εγγραφή
@@ -174,13 +174,13 @@ el:
       subject: '%{cosponsorName} αποδέχθηκε την πρόσκλησή σας να συνυποστηρίξει την πρότασή σας'
       preheader_initiative: '%{cosponsorName} αποδέχθηκε την πρόσκλησή σας να συνυποστηρίξει την πρότασή σας'
     assignee_digest:
-      subject: 'Είσοδοι που απαιτούν τα σχόλιά σας: %{numberIdeas}'
+      subject: 'Ιδέες που απαιτούν τα σχόλιά σας: %{numberIdeas}'
       preheader: 'Ψηφίδα παραλήπτη της ιστοσελίδας %{organizationName}'
       title_your_weekly_report: '%{firstName}, η συμβολή των πολιτών περιμένει τα σχόλιά σας'
       cta_manage_your_input: 'Διαχειριστείτε τις εισροές σας'
       x_inputs_need_your_feedback: 'εισροές χρειάζονται τα σχόλιά σας'
-      title_assignment_past_week: 'Τελευταίες εισροές που σας έχουν ανατεθεί'
-      title_no_assignment_past_week: 'Δεν σας ανατέθηκαν νέες εισροές την περασμένη εβδομάδα'
+      title_assignment_past_week: 'Τελευταίες ιδέες που σας έχουν ανατεθεί'
+      title_no_assignment_past_week: 'Δεν σας ανατέθηκαν νέες ιδέες την περασμένη εβδομάδα'
       yesterday_by_author: 'Χθες από %{author}'
       today_by_author: 'Σήμερα από %{author}'
       x_days_ago_by_author: '%{x} πριν από μέρες από %{author}'
@@ -188,7 +188,7 @@ el:
     idea_marked_as_spam:
       cta_review: 'Ανασκόπηση'
       report_inappropriate_offensive_content: 'Θεωρώ αυτό το περιεχόμενο ακατάλληλο ή προσβλητικό.'
-      report_not_an_idea: 'Αυτό το περιεχόμενο δεν είναι σχετικό και δεν ανήκει εδώ.'
+      report_not_an_idea: 'Αυτό το περιεχόμενο δεν είναι ιδέα και δεν ανήκει εδώ.'
       subject: 'Έχετε μια αναφορά ανεπιθύμητης αλληλογραφίας στην πλατφόρμα %{organizationName}'
       preheader: 'Ενεργήστε βάσει αυτής της έκθεσης spam'
       reported_this_because: '%{reporterFirstName} το ανέφερε αυτό επειδή:'
@@ -333,7 +333,7 @@ el:
       input_not_visible_prescreening: '<b>Η είσοδος δεν θα είναι ορατή</b> μέχρι να τροποποιήσετε την κατάστασή της.'
       cta_prescreening: 'Επανεξέταση της εισόδου'
       days_ago: '%{numberOfDays} ημέρες πριν'
-      preheader: '%{authorName} δημοσίευσε μια νέα είσοδο στην πλατφόρμα σας'
+      preheader: '%{authorName} δημοσίευσε μια νέα ιδέα στην πλατφόρμα σας'
       today: Σήμερα
       yesterday: Χθες
     comment_on_your_comment:
@@ -352,50 +352,50 @@ el:
     internal_comment_on_idea_assigned_to_you:
       cta_reply_to: 'Προβολή σχολίου από %{firstName}'
       event_description: '%{authorNameFull} σχολιάσατε εσωτερικά μια είσοδο που σας έχει ανατεθεί.'
-      subject: 'Νέο εσωτερικό σχόλιο για το ''%{post}'''
-      main_header: 'Νέο εσωτερικό σχόλιο για το ''%{post}'''
-      preheader: 'Νέο εσωτερικό σχόλιο για το ''%{post}'''
+      subject: '''%{post}'' έχει ένα νέο εσωτερικό σχόλιο'
+      main_header: '''%{post}'' έχει ένα νέο εσωτερικό σχόλιο'
+      preheader: '''%{post}'' έχει ένα νέο εσωτερικό σχόλιο'
     internal_comment_on_idea_you_commented_internally_on:
       cta_reply_to: 'Προβολή σχολίου από %{firstName}'
       event_description: '%{authorNameFull} σχολίασε εσωτερικά μια είσοδο που σχολιάσατε εσωτερικά.'
-      subject: 'Νέο εσωτερικό σχόλιο για το ''%{post}'''
-      main_header: 'Νέο εσωτερικό σχόλιο για το ''%{post}'''
-      preheader: 'Νέο εσωτερικό σχόλιο για το ''%{post}'''
+      subject: '''%{post}'' έχει ένα νέο εσωτερικό σχόλιο'
+      main_header: '''%{post}'' έχει ένα νέο εσωτερικό σχόλιο'
+      preheader: '''%{post}'' έχει ένα νέο εσωτερικό σχόλιο'
     internal_comment_on_idea_you_moderate:
       cta_reply_to: 'Προβολή σχολίου από %{firstName}'
       event_description: '%{authorNameFull} σχολίασε εσωτερικά μια είσοδο σε ένα έργο ή φάκελο που διαχειρίζεστε.'
-      subject: 'Νέο εσωτερικό σχόλιο για το ''%{post}'''
-      main_header: 'Νέο εσωτερικό σχόλιο για το ''%{post}'''
-      preheader: 'Νέο εσωτερικό σχόλιο για το ''%{post}'''
+      subject: '''%{post}'' έχει ένα νέο εσωτερικό σχόλιο'
+      main_header: '''%{post}'' έχει ένα νέο εσωτερικό σχόλιο'
+      preheader: '''%{post}'' έχει ένα νέο εσωτερικό σχόλιο'
     internal_comment_on_initiative_assigned_to_you:
       cta_reply_to: 'Προβολή σχολίου από %{firstName}'
       event_description: '%{authorNameFull} σχολιάσατε εσωτερικά μια πρόταση που σας ανατέθηκε.'
-      subject: 'Νέο εσωτερικό σχόλιο για το ''%{post}'''
-      main_header: 'Νέο εσωτερικό σχόλιο για το ''%{post}'''
-      preheader: 'Νέο εσωτερικό σχόλιο για το ''%{post}'''
+      subject: '''%{post}'' έχει ένα νέο εσωτερικό σχόλιο'
+      main_header: '''%{post}'' έχει ένα νέο εσωτερικό σχόλιο'
+      preheader: '''%{post}'' έχει ένα νέο εσωτερικό σχόλιο'
     internal_comment_on_initiative_you_commented_internally_on:
       cta_reply_to: 'Προβολή σχολίου από %{firstName}'
       event_description: '%{authorNameFull} σχολίασε εσωτερικά μια πρόταση που σχολιάσατε εσωτερικά.'
-      subject: 'Νέο εσωτερικό σχόλιο για το ''%{post}'''
-      main_header: 'Νέο εσωτερικό σχόλιο για το ''%{post}'''
-      preheader: 'Νέο εσωτερικό σχόλιο για το ''%{post}'''
+      subject: '''%{post}'' έχει ένα νέο εσωτερικό σχόλιο'
+      main_header: '''%{post}'' έχει ένα νέο εσωτερικό σχόλιο'
+      preheader: '''%{post}'' έχει ένα νέο εσωτερικό σχόλιο'
     internal_comment_on_unassigned_initiative:
       cta_reply_to: 'Προβολή σχολίου από %{firstName}'
       event_description: '%{authorNameFull} σχολίασε εσωτερικά μια μη ανατεθείσα πρόταση.'
-      subject: 'Νέο εσωτερικό σχόλιο για το ''%{post}'''
-      main_header: 'Νέο εσωτερικό σχόλιο για το ''%{post}'''
-      preheader: 'Νέο εσωτερικό σχόλιο για το ''%{post}'''
+      subject: '''%{post}'' έχει ένα νέο εσωτερικό σχόλιο'
+      main_header: '''%{post}'' έχει ένα νέο εσωτερικό σχόλιο'
+      preheader: '''%{post}'' έχει ένα νέο εσωτερικό σχόλιο'
     internal_comment_on_unassigned_unmoderated_idea:
       cta_reply_to: 'Προβολή σχολίου από %{firstName}'
       event_description: '%{authorNameFull} σχολίασε εσωτερικά μια μη καθορισμένη είσοδο σε ένα μη διαχειριζόμενο έργο.'
-      subject: 'Νέο εσωτερικό σχόλιο για το ''%{post}'''
-      main_header: 'Νέο εσωτερικό σχόλιο για το ''%{post}'''
-      preheader: 'Νέο εσωτερικό σχόλιο για το ''%{post}'''
+      subject: '''%{post}'' έχει ένα νέο εσωτερικό σχόλιο'
+      main_header: '''%{post}'' έχει ένα νέο εσωτερικό σχόλιο'
+      preheader: '''%{post}'' έχει ένα νέο εσωτερικό σχόλιο'
     official_feedback_on_idea_you_follow:
       header_message: '%{feedback_author_name} ενημέρωσε για το ''%{input_title}''.'
       header_title: 'Υπάρχει μια ενημέρωση για το "%{input_title}"'
       subject: 'Τα επίσημα σχόλια δημοσιεύτηκαν στο "%{input_title}"'
-      preheader: 'Υπάρχει μια ενημέρωση για μια είσοδο που ακολουθείτε'
+      preheader: 'Υπάρχει μια ενημέρωση σχετικά με μια ιδέα που ακολουθείτε'
     official_feedback_on_initiative_you_follow:
       header_message: '%{officialName} ενημέρωσε σχετικά με την πρόταση "%{initiativeTitle}". Κάντε κλικ στο παρακάτω κουμπί για να μπείτε στη συζήτηση με το %{organizationName}.'
       header_title: 'Υπάρχει μια ενημέρωση σχετικά με μια πρόταση που ακολουθείτε'
@@ -461,9 +461,9 @@ el:
     status_change_on_idea_you_follow:
       status_change: 'Η νέα κατάσταση αυτής της εισόδου είναι ''%{status}'''
       header_message: '%{organizationName} ενημέρωσε την κατάσταση της εισόδου "%{input_title}" στην ψηφιακή πλατφόρμα συμμετοχής τους.'
-      header_title: 'Μια είσοδος που ακολουθείτε έχει μια νέα κατάσταση'
+      header_title: 'Μια ιδέα που ακολουθείτε έχει μια νέα κατάσταση'
       subject: 'Η κατάσταση του "%{input_title}" έχει αλλάξει'
-      preheader: 'Μια είσοδος που ακολουθείτε έχει μια νέα κατάσταση'
+      preheader: 'Μια ιδέα που ακολουθείτε έχει μια νέα κατάσταση'
     status_change_on_initiative_you_follow:
       status_change: 'Η νέα κατάσταση της πρότασης αυτής είναι "%{initiativeStatus}".'
       header_message: 'Η κατάσταση της πρότασης "%{initiativeTitle}" ενημερώθηκε στην ψηφιακή πλατφόρμα συμμετοχής της %{organizationName}.'
@@ -471,7 +471,7 @@ el:
       subject: 'Η κατάσταση μιας πρότασης που ακολουθείτε έχει αλλάξει'
       preheader: 'Μια πρόταση που ακολουθείτε έχει νέα κατάσταση'
     user_digest:
-      subject: "Αυτή την εβδομάδα στην πλατφόρμα συμμετοχής του %{organizationName}"
+      subject: "Η δραστηριότητά σας στην πλατφόρμα συμμετοχής του %{organizationName}"
       commented: "%{authorFirstName} σχολίασε:"
       preheader: "Εβδομαδιαία επισκόπηση του %{organizationName}"
       title_your_weekly_report: "Ανακαλύψτε τι συνέβη την περασμένη εβδομάδα"
@@ -479,7 +479,7 @@ el:
       cta_go_to_the_platform: "Μεταβείτε στην πλατφόρμα"
       title_no_activity_past_week: "Καμία δραστηριότητα την τελευταία εβδομάδα"
       successful_proposals_title: "Έφτασε το όριο"
-      successful_proposals_text: "Την προηγούμενη εβδομάδα, αυτά έχουν λάβει αρκετή υποστήριξη για να περάσουν στο επόμενο στάδιο."
+      successful_proposals_text: "Οι προτάσεις αυτές έχουν λάβει αρκετή υποστήριξη για να προχωρήσουν στο επόμενο στάδιο! Κάντε κλικ στην πρόταση για να μάθετε περισσότερα σχετικά με το τι θα γίνει στη συνέχεια."
       today_by_author: "Σήμερα από %{author}"
       yesterday_by_author: "Χθες από %{author}"
       x_days_ago_by_author: "%{x} πριν από μέρες από %{author}"
@@ -488,11 +488,11 @@ el:
       no_notifications: "Δεν υπάρχουν ειδοποιήσεις"
       one_notification: "1 κοινοποίηση"
       multiple_notifications: "%{notifCount} ειδοποιήσεις"
-      no_unread_notifications: "Δεν έχετε αδιάβαστες ειδοποιήσεις."
+      no_unread_notifications: "Δεν έχετε αδιάβαστες ειδοποιήσεις. Επισκεφθείτε την πλατφόρμα για να συνεισφέρετε και να δημιουργήσετε νέες ειδοποιήσεις!"
       unread_notifications: "Έχετε αδιάβαστες ειδοποιήσεις. Επισκεφθείτε την πλατφόρμα για να ανακαλύψετε τι συμβαίνει!"
     threshold_reached_for_admin:
       cta_process_initiative: 'Προχωρήστε αυτή την πρωτοβουλία στα επόμενα βήματα'
-      main_header: 'Μια πρόταση έφθασε το κατώφλι της ψηφοφορίας!'
+      main_header: 'Μια πρωτοβουλία έφτασε στο όριο της ψηφοφορίας!'
       subject: '"%{input_title}" έφθασε το κατώφλι ψηφοφορίας'
       preheader: 'Φροντίστε να κάνετε τα επόμενα βήματα'
     welcome:
@@ -514,8 +514,8 @@ el:
         petition: 'Το αίτημά σας έχει δημοσιευτεί'
       main_header: 'Δημοσιεύσατε το "%{input_title}"'
       header_message: 'Ας βεβαιωθούμε ότι θα διαβαστεί.'
-      message_get_votes: 'Πλησιάστε περισσότερους ανθρώπους'
-      action_published_idea: 'Δημοσιευμένο'
+      message_get_votes: 'Προσεγγίστε περισσότερους ανθρώπους με την ιδέα σας:'
+      action_published_idea: 'Δημοσιευμένη ιδέα'
       action_add_image: '%{addImageLink} για να αυξηθεί η ορατότητα'
       add_image: 'Προσθήκη εικόνας'
       action_share_fb: 'Ενημερώστε τους φίλους σας στο %{fbLink}'
@@ -524,7 +524,7 @@ el:
       send_email: email
       action_share_link: 'Μοιραστείτε το μέσω οποιουδήποτε καναλιού αντιγράφοντας το %{link}'
       link: σύνδεσμος
-      preheader: '%{firstName}, συγχαρητήρια για την ανάρτηση της εισήγησής σας στην πλατφόρμα του %{organizationName}. Τώρα συγκεντρώστε υποστήριξη.'
+      preheader: '%{firstName}, συγχαρητήρια για την ανάρτηση της ιδέας σας στην πλατφόρμα του %{organizationName}. Τώρα συγκεντρώστε υποστήριξη.'
     your_input_in_screening:
       main_header:
         idea: 'Η ιδέα σας είναι στο "%{prescreening_status_title}"'
