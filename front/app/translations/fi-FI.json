@@ -307,7 +307,6 @@
   "app.components.PostComponents.SharingModalContent.questionEmailSharingSubject": "Liity keskusteluun: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.questionWhatsAppMessage": "Liity keskusteluun: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.twitterMessage": "Äänestä {postTitle} päällä",
-  "app.components.PostComponents.SharingModalContent.whatsAppMessageProposal": "Lähetin juuri ehdotuksen kohteelle {orgName}: {postTitle}",
   "app.components.PostComponents.linkToHomePage": "Linkki kotisivulle",
   "app.components.PostComponents.readMore": "Lue lisää...",
   "app.components.PostComponents.topics": "Aiheet",

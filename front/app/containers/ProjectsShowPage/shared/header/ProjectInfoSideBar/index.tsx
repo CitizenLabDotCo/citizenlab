@@ -320,6 +320,10 @@ const ProjectInfoSideBar = memo<Props>(
                                   issue: messages.xIssuesInCurrentPhase,
                                   contribution:
                                     messages.xContributionsInCurrentPhase,
+                                  proposal: messages.xProposalsInCurrentPhase,
+                                  initiative:
+                                    messages.xInitiativesInCurrentPhase,
+                                  petition: messages.xPetitionsInCurrentPhase,
                                 }
                               )}
                               values={{ ideasCount }}
@@ -339,6 +343,9 @@ const ProjectInfoSideBar = memo<Props>(
                                   issue: messages.xIssuesInFinalPhase,
                                   contribution:
                                     messages.xContributionsInFinalPhase,
+                                  proposal: messages.xProposalsInFinalPhase,
+                                  initiative: messages.xInitiativesInFinalPhase,
+                                  petition: messages.xPetitionsInFinalPhase,
                                 }
                               )}
                               values={{ ideasCount }}

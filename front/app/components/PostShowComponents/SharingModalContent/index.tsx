@@ -82,6 +82,9 @@ const SharingModalContent = ({ postId, className, title, subtitle }: Props) => {
         question: messages.questionEmailSharingSubject,
         issue: messages.issueEmailSharingSubject,
         contribution: messages.contributionEmailSharingSubject,
+        initiative: messages.initiativeEmailSharingSubject,
+        proposal: messages.proposalEmailSharingSubject,
+        petition: messages.petitionEmailSharingSubject,
       });
       emailSharingBody = getInputTermMessage(inputTerm, {
         idea: messages.ideaEmailSharingBody,
@@ -90,6 +93,9 @@ const SharingModalContent = ({ postId, className, title, subtitle }: Props) => {
         question: messages.questionEmailSharingModalContentBody,
         issue: messages.issueEmailSharingBody,
         contribution: messages.contributionEmailSharingBody,
+        initiative: messages.initiativeEmailSharingBody,
+        proposal: messages.proposalEmailSharingBody,
+        petition: messages.petitionEmailSharingBody,
       });
       whatsAppMessage = getInputTermMessage(inputTerm, {
         idea: messages.ideaWhatsAppMessage,
@@ -98,6 +104,9 @@ const SharingModalContent = ({ postId, className, title, subtitle }: Props) => {
         question: messages.questionWhatsAppMessage,
         issue: messages.issueWhatsAppMessage,
         contribution: messages.contributionWhatsAppMessage,
+        initiative: messages.initiativeWhatsAppMessage,
+        proposal: messages.proposalWhatsAppMessage,
+        petition: messages.petitionWhatsAppMessage,
       });
     }
 

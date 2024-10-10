@@ -5,14 +5,7 @@
     border="1px solid #eaeaea">
     <mj-text>
       <p style="font-size: 14px; margin-top: 10px; color: #84939E;">
-        <% case event.flaggable_type %>
-        <% when 'Comment' %>
-          <%= format_message('comment_author', values: { authorName: event.flaggable_author_name }) %>
-        <% when 'Idea' %>
-          <%= format_message('idea_author', values: { authorName: event.flaggable_author_name }) %>
-        <% when 'Initiative' %>
-          <%= format_message('initiative_author', values: { authorName: event.flaggable_author_name }) %>
-        <% end %>
+        <%= format_message('author_wrote', values: {authorName: event.flaggable_author_name }) %>
       </p>
       <% case event.flaggable_type %>
       <% when 'Comment' %>
@@ -51,4 +44,4 @@
     </mj-column>
   </mj-section>
 
-<%= render partial: 'application/cta_button', locals: { href: event.flaggable_url, message: format_message('cta_review_post') } %>
+<%= render partial: 'application/cta_button', locals: { href: event.flaggable_url, message: format_message('cta_review') } %>

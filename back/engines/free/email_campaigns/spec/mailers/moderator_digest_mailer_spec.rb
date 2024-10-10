@@ -59,7 +59,8 @@ RSpec.describe EmailCampaigns::ModeratorDigestMailer do
               comments_increment: idea.comments.where('created_at > ?', Time.now - days_ago).count
             }
           end,
-          has_new_ideas: true
+          has_new_ideas: true,
+          successful_proposals: []
         },
         tracked_content: {
           idea_ids: [],

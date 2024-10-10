@@ -142,96 +142,17 @@ module EmailCampaigns
               created_at: '2019-01-25T14:49:09Z'
             }
           ],
-          new_initiatives: [
-            {
-              id: 'dea0620a-f5b0-4ee0-9c44-2466742eceb7',
-              title_multiloc: {
-                'en' => 'Werkelijke milieukost doorrekenen op alle producten'
-              },
-              url: 'http://localhost:3000/initiatives/werkelijke-milieukost-doorrekenen-op-alle-producten-1',
-              published_at: '2019-09-09T13:04:49Z',
-              author_name: 'Sebi Hoorens',
-              likes_count: 1,
-              comments_count: 0,
-              images: [
-                {
-                  ordering: nil,
-                  versions: {
-                    small: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/boat_small.jpeg',
-                    medium: 'http://localhost:4000/uploads/59cbf3fa-8028-43cc-b5a1-fba42bdaac01/initiative_image/image/76082065-961f-415e-8fbe-a7b2cbef34ab/medium_57f51b02-2314-4b7c-8835-9c0435a84138.jpeg',
-                    large: 'http://localhost:4000/uploads/59cbf3fa-8028-43cc-b5a1-fba42bdaac01/initiative_image/image/76082065-961f-415e-8fbe-a7b2cbef34ab/large_57f51b02-2314-4b7c-8835-9c0435a84138.jpeg',
-                    fb: 'http://localhost:4000/uploads/59cbf3fa-8028-43cc-b5a1-fba42bdaac01/initiative_image/image/76082065-961f-415e-8fbe-a7b2cbef34ab/fb_57f51b02-2314-4b7c-8835-9c0435a84138.jpeg'
-                  }
-                }
-              ],
-              header_bg: {
-                versions: {
-                  large: 'http://localhost:4000/uploads/59cbf3fa-8028-43cc-b5a1-fba42bdaac01/initiative/header_bg/dea0620a-f5b0-4ee0-9c44-2466742eceb7/large_7bdd322e-a320-4d12-980b-52f2bea10a46.jpeg',
-                  medium: 'http://localhost:4000/uploads/59cbf3fa-8028-43cc-b5a1-fba42bdaac01/initiative/header_bg/dea0620a-f5b0-4ee0-9c44-2466742eceb7/medium_7bdd322e-a320-4d12-980b-52f2bea10a46.jpeg',
-                  small: 'http://localhost:4000/uploads/59cbf3fa-8028-43cc-b5a1-fba42bdaac01/initiative/header_bg/dea0620a-f5b0-4ee0-9c44-2466742eceb7/small_7bdd322e-a320-4d12-980b-52f2bea10a46.jpeg'
-                }
-              }
-            },
+          successful_proposals: [
             {
               id: '61bdec68-222e-47b2-8933-6d0ca61410eb',
               title_multiloc: {
                 'en' => 'Werkelijke milieukost doorrekenen op alle producten'
               },
-              url: 'http://localhost:3000/initiatives/werkelijke-milieukost-doorrekenen-op-alle-producten',
+              url: 'http://localhost:3000/ideas/werkelijke-milieukost-doorrekenen-op-alle-producten',
               published_at: '2019-09-09T12:50:44Z',
               author_name: 'Sebi Hoorens',
               likes_count: 5,
-              comments_count: 2,
-              images: [
-                {
-                  ordering: nil,
-                  versions: {
-                    small: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/boat_small.jpeg',
-                    medium: 'http://localhost:4000/uploads/59cbf3fa-8028-43cc-b5a1-fba42bdaac01/initiative_image/image/27dabd91-ff40-4ce8-9c99-38695d2f3fa5/medium_14330b58-2421-474b-9f67-a9031d5505cf.jpeg',
-                    large: 'http://localhost:4000/uploads/59cbf3fa-8028-43cc-b5a1-fba42bdaac01/initiative_image/image/27dabd91-ff40-4ce8-9c99-38695d2f3fa5/large_14330b58-2421-474b-9f67-a9031d5505cf.jpeg',
-                    fb: 'http://localhost:4000/uploads/59cbf3fa-8028-43cc-b5a1-fba42bdaac01/initiative_image/image/27dabd91-ff40-4ce8-9c99-38695d2f3fa5/fb_14330b58-2421-474b-9f67-a9031d5505cf.jpeg'
-                  }
-                }
-              ],
-              header_bg: {
-                versions: {
-                  large: 'http://localhost:4000/uploads/59cbf3fa-8028-43cc-b5a1-fba42bdaac01/initiative/header_bg/61bdec68-222e-47b2-8933-6d0ca61410eb/large_59efc040-71ad-480e-b356-3adb36b83ec2.jpeg',
-                  medium: 'http://localhost:4000/uploads/59cbf3fa-8028-43cc-b5a1-fba42bdaac01/initiative/header_bg/61bdec68-222e-47b2-8933-6d0ca61410eb/medium_59efc040-71ad-480e-b356-3adb36b83ec2.jpeg',
-                  small: 'http://localhost:4000/uploads/59cbf3fa-8028-43cc-b5a1-fba42bdaac01/initiative/header_bg/61bdec68-222e-47b2-8933-6d0ca61410eb/small_59efc040-71ad-480e-b356-3adb36b83ec2.jpeg'
-                }
-              }
-            }
-          ],
-          successful_initiatives: [
-            {
-              id: '61bdec68-222e-47b2-8933-6d0ca61410eb',
-              title_multiloc: {
-                'en' => 'Werkelijke milieukost doorrekenen op alle producten'
-              },
-              url: 'http://localhost:3000/initiatives/werkelijke-milieukost-doorrekenen-op-alle-producten',
-              published_at: '2019-09-09T12:50:44Z',
-              author_name: 'Sebi Hoorens',
-              likes_count: 5,
-              comments_count: 2,
-              threshold_reached_at: '2019-09-09T14:15:46Z',
-              images: [
-                {
-                  ordering: nil,
-                  versions: {
-                    small: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/boat_small.jpeg',
-                    medium: 'http://localhost:4000/uploads/59cbf3fa-8028-43cc-b5a1-fba42bdaac01/initiative_image/image/27dabd91-ff40-4ce8-9c99-38695d2f3fa5/medium_14330b58-2421-474b-9f67-a9031d5505cf.jpeg',
-                    large: 'http://localhost:4000/uploads/59cbf3fa-8028-43cc-b5a1-fba42bdaac01/initiative_image/image/27dabd91-ff40-4ce8-9c99-38695d2f3fa5/large_14330b58-2421-474b-9f67-a9031d5505cf.jpeg',
-                    fb: 'http://localhost:4000/uploads/59cbf3fa-8028-43cc-b5a1-fba42bdaac01/initiative_image/image/27dabd91-ff40-4ce8-9c99-38695d2f3fa5/fb_14330b58-2421-474b-9f67-a9031d5505cf.jpeg'
-                  }
-                }
-              ],
-              header_bg: {
-                versions: {
-                  large: 'http://localhost:4000/uploads/59cbf3fa-8028-43cc-b5a1-fba42bdaac01/initiative/header_bg/61bdec68-222e-47b2-8933-6d0ca61410eb/large_59efc040-71ad-480e-b356-3adb36b83ec2.jpeg',
-                  medium: 'http://localhost:4000/uploads/59cbf3fa-8028-43cc-b5a1-fba42bdaac01/initiative/header_bg/61bdec68-222e-47b2-8933-6d0ca61410eb/medium_59efc040-71ad-480e-b356-3adb36b83ec2.jpeg',
-                  small: 'http://localhost:4000/uploads/59cbf3fa-8028-43cc-b5a1-fba42bdaac01/initiative/header_bg/61bdec68-222e-47b2-8933-6d0ca61410eb/small_59efc040-71ad-480e-b356-3adb36b83ec2.jpeg'
-                }
-              }
+              comments_count: 2
             }
           ]
         }

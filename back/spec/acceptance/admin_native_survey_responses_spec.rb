@@ -28,10 +28,9 @@ resource 'Ideas' do
     end
     let(:id) { input.id }
 
-    example_request '[error] Try to get one input by id' do
-      assert_status 401
-      json_response = json_parse(response_body)
-      expect(json_response).to eq({ errors: { base: [{ error: 'Unauthorized!' }] } })
+    example_request 'Get one input by id' do
+      assert_status 200
+      expect(response_data[:id]).to eq input.id
     end
   end
 
@@ -49,10 +48,9 @@ resource 'Ideas' do
     end
     let(:slug) { input.slug }
 
-    example_request '[error] Try to get one input by slug' do
-      assert_status 401
-      json_response = json_parse(response_body)
-      expect(json_response).to eq({ errors: { base: [{ error: 'Unauthorized!' }] } })
+    example_request 'Get one input by slug' do
+      assert_status 200
+      expect(response_data[:id]).to eq input.id
     end
   end
 
