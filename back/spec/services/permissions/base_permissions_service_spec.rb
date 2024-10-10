@@ -5,7 +5,7 @@ describe Permissions::BasePermissionsService do
 
   before { SettingsService.new.activate_feature! 'user_confirmation' }
 
-  describe 'denied_reason_for_permission' do
+  describe 'user_denied_reason' do
     before do
       create(:custom_field_birthyear, required: true)
       create(:custom_field_gender, required: false)
@@ -349,6 +349,14 @@ describe Permissions::BasePermissionsService do
 
         it { expect(denied_reason).to eq 'user_not_active' }
       end
+    end
+  end
+
+  describe 'denied_reason_for_action' do
+    let(:user) { create(:admin) }
+
+    it 'returns "not_supported" for an unsupported action' do
+      expect(service.denied_reason_for_action('eating_cheese')).to eq 'not_supported'
     end
   end
 end
