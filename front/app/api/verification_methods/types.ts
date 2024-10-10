@@ -8,6 +8,7 @@ export type VerificationMethodsKeys = Keys<typeof verificationMethodsKeys>;
 
 export const verificationTypesLeavingPlatform = [
   'auth0',
+  'id_austria',
   'criipto',
   'bosa_fas',
   'clave_unica',
@@ -26,7 +27,8 @@ export type TVerificationMethodName =
   | 'gent_rrn'
   | 'id_card_lookup'
   | 'nemlog_in'
-  | 'oostende_rrn';
+  | 'oostende_rrn'
+  | 'id_austria';
 
 export interface IVerificationMethods {
   data: TVerificationMethod[];
@@ -97,9 +99,20 @@ export type IDAuth0Method = {
   };
 };
 
+export type IDIdAustriaMethod = {
+  id: string;
+  type: 'verification_method';
+  attributes: {
+    name: 'id_austria';
+    ui_method_name: string;
+    method_metadata?: MethodMetadata;
+  };
+};
+
 export type TVerificationMethod =
   | TGenericMethod
   | FakeSSOMethod
   | IDLookupMethod
   | IDCriiptoMethod
-  | IDAuth0Method;
+  | IDAuth0Method
+  | IDIdAustriaMethod;
