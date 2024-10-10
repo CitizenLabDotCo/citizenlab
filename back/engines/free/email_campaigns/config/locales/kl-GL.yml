@@ -13,7 +13,7 @@ kl:
       "cosponsor_of_your_idea": A user accepts my invitation to co-sponsor my proposal
       "event_registration_confirmation": Event registration confirmation
       "idea_marked_as_spam": Spam pillugit isumassarsianut nalunaarusiorneq
-      "idea_published": Publication of my input
+      "idea_published": Isumassarsiannik avammut saqqummiineq
       "initiative_assigned_to_you": Innuttaasut siunnersuutaannik uannut tunniussineq
       "initiative_marked_as_spam": Spam pillugit innuttaasut siunnersuutaannut nalunaarusiorneq
       "initiative_published": Innuttaasutut siunnersuutinnik avammut saqqummiussineq
@@ -33,7 +33,7 @@ kl:
       "mention_in_official_feedback": Nutarterinermi taaneqarneq
       "mention_in_internal_comment": Mention in an internal comment
       "new_comment_for_admin": Suliniummut ingerlatannut nutaamik oqaaseqaat
-      "new_idea_for_admin": New input in a project I moderate
+      "new_idea_for_admin": Suliniummut ingerlatannut isumassarsiaq nutaaq
       "new_initiative_for_admin": Innuttaasup siunnersuutaa nutaaq
       "official_feedback_on_idea_you_follow": Update on an input that you follow
       "official_feedback_on_initiative_you_follow": Update on a proposal that you follow
@@ -174,13 +174,13 @@ kl:
       subject: '%{cosponsorName} has accepted your invitation to co-sponsor your proposal'
       preheader_initiative: '%{cosponsorName} has accepted your invitation to co-sponsor your proposal'
     assignee_digest:
-      subject: 'Inputs requiring your feedback: %{numberIdeas}'
+      subject: 'Isumassarsiat utimut nalunaarnissannik piumasaqaatitallit: %{numberIdeas}'
       preheader: '%{organizationName}mut aallartitamit eqikkaaneq'
       title_your_weekly_report: '%{firstName}, innuttaasunut paasissutissap utimut nalunaarnissat utaqqivaa'
       cta_manage_your_input: 'Siunnersuutitit aqukkit'
       x_inputs_need_your_feedback: 'inputs need your feedback'
-      title_assignment_past_week: 'Latest inputs assigned to you'
-      title_no_assignment_past_week: 'No new inputs assigned to you last week'
+      title_assignment_past_week: 'Isumassarsiat kingulliit ilinnut tunniunneqartut'
+      title_no_assignment_past_week: 'Sapaatip akunnerani kingullermi ilinnut isumassarsianik nutaanik tunniussisoqanngilaq'
       yesterday_by_author: 'Ippassaq %{author}-mit'
       today_by_author: 'Ullumi %{author}-mit'
       x_days_ago_by_author: 'Ullut %{x} matuma siorna %{author}-mit'
@@ -188,7 +188,7 @@ kl:
     idea_marked_as_spam:
       cta_review: 'Review'
       report_inappropriate_offensive_content: 'Imarisai tulluutinngitsutut narrujuumminartutullu isigaakka.'
-      report_not_an_idea: 'This content is not relevant and does not belong here.'
+      report_not_an_idea: 'Uuma imaa isumassarsiaanngilaq uungalu tulluuttuunani.'
       subject: 'Platformimi %{organizationName}mi spam-imik nalunaaruteqarputit'
       preheader: 'Spamimik nalunaarut iliuuseqarfigiuk'
       reported_this_because: '%{reporterFirstName} nalunaarutiginnippoq pissutigalugu:'
@@ -333,7 +333,7 @@ kl:
       input_not_visible_prescreening: '<b>The input won''t be visible</b> until you modify its status.'
       cta_prescreening: 'Review the input'
       days_ago: '%{numberOfDays} ullut matuma siorna'
-      preheader: '%{authorName} published a new input on your platform'
+      preheader: '%{authorName} platforminni isumassarsiamik nutaamik tamanut saqqummiivoq'
       today: Ullumikkut
       yesterday: Ippassaq
     comment_on_your_comment:
@@ -471,7 +471,7 @@ kl:
       subject: 'The status of a proposal you follow has changed'
       preheader: 'A proposal you follow has a new status'
     user_digest:
-      subject: "This week on the participation platform of %{organizationName}"
+      subject: "%{organizationName}mut peqataanermi platformimi sapaatip akunnikkaartumik paasissutissat kingullit ilanngullugit takussutissaq"
       commented: "%{authorFirstName} oqaaseqaateqarpoq:"
       preheader: "Sapaatip akunnikkaartumik %{organizationName}mut nalunaarsuutit"
       title_your_weekly_report: "Sapaatip akunnerani kingullermi susoqarsimanersoq paasiniaruk"
@@ -479,7 +479,7 @@ kl:
       cta_go_to_the_platform: "Platformi pulaaruk"
       title_no_activity_past_week: "Sapaatip akunnerani kingullermi suliaqanngilaq"
       successful_proposals_title: "Reached the threshold"
-      successful_proposals_text: "In the past week, these have gotten enough support to move to the next stage."
+      successful_proposals_text: "These proposals have gotten enough support to move to the next stage! Click on the proposal to learn more about what happens next."
       today_by_author: "Ullumi %{author}-mit"
       yesterday_by_author: "Ippassaq %{author}-mit"
       x_days_ago_by_author: "Ullut %{x} matuma siorna %{author}-mit"
@@ -488,11 +488,11 @@ kl:
       no_notifications: "No notifications"
       one_notification: "1 notification"
       multiple_notifications: "%{notifCount} notifications"
-      no_unread_notifications: "You don't have any unread notifications."
+      no_unread_notifications: "You've got no unread notifications. However, we invite you to visit the platform to discover what’s happening."
       unread_notifications: "You've got unread notifications. We invite you to visit the platform to discover what’s happening."
     threshold_reached_for_admin:
       cta_process_initiative: 'Suliniut una tullianut ingerlateqqiguk'
-      main_header: 'A proposal reached the voting threshold!'
+      main_header: 'Suliniutip taasinermi killiffissani anguaa!'
       subject: '"%{input_title}" reached the voting threshold'
       preheader: 'Tulliata naammassinissaa qulakkeeruk'
     welcome:
@@ -514,8 +514,8 @@ kl:
         petition: 'Your petition has been published'
       main_header: 'You posted "%{input_title}"'
       header_message: 'Let''s make sure it gets read.'
-      message_get_votes: 'Reach more people'
-      action_published_idea: 'Published'
+      message_get_votes: 'Isumassarsiannik inuit amerlanerit angukkit.'
+      action_published_idea: 'Isumassarsiaq saqqummeriigaq'
       action_add_image: '%{addImageLink} takuneqarsinnaanera allisarlugu'
       add_image: 'Assimik ilanngussigit'
       action_share_fb: 'Ikinngutitit %{fbLink}miittut oqaluttuutikkit'
@@ -524,7 +524,7 @@ kl:
       send_email: e-maili
       action_share_link: '%{link} assilineratigut kanaalini tamani siammarteruk'
       link: Innersuussaq
-      preheader: '%{firstName}, congratulations on posting your input on the platform of %{organizationName}. Now gather support.'
+      preheader: '%{firstName}, pilluarit isumassarsiannik %{organizationName}p platformianut saqqummiigavit. Isumassarsiannut tapersersuisussanik nassaarnissamut piffissanngorpoq.'
     your_input_in_screening:
       main_header:
         idea: 'Your idea is in "%{prescreening_status_title}"'
