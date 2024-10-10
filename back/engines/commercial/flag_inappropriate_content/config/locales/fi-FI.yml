@@ -5,8 +5,8 @@ fi:
     admin_campaign_type_description:
       "inappropriate_content_flagged": Sopimaton sisältö merkitty - järjestelmänvalvojat
     inappropriate_content_flagged:
-      subject: 'Viesti on merkitty tarkistettavaksi'
-      header_title: 'Viesti on merkitty tarkistettavaksi'
+      subject: 'Alustallasi oleva viesti on merkitty tarkistettavaksi'
+      header_title: 'Alustallasi oleva viesti on merkitty tarkistettavaksi'
       author_wrote: '%{authorName} kirjoitti:'
       preheader: 'Alustallasi oleva viesti on merkitty tarkistettavaksi'
       automatically_flagged: >
