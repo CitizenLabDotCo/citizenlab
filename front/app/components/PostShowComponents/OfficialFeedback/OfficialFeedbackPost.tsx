@@ -13,8 +13,6 @@ import { Multiloc } from 'typings';
 
 import { IOfficialFeedbackData as IIdeaOfficialFeedbackData } from 'api/idea_official_feedback/types';
 import useDeleteIdeaOfficialFeedback from 'api/idea_official_feedback/useDeleteIdeaOfficialFeedback';
-import { IOfficialFeedbackData as IInitiativeOfficialFeedbackData } from 'api/initiative_official_feedback/types';
-import useDeleteInitiativeOfficialFeedback from 'api/initiative_official_feedback/useDeleteInitiativeOfficialFeedback';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -141,10 +139,8 @@ const StyledMoreActionsMenu = styled(MoreActionsMenu)`
 
 interface Props {
   editingAllowed: boolean | undefined;
-  officialFeedbackPost:
-    | IIdeaOfficialFeedbackData
-    | IInitiativeOfficialFeedbackData;
-  postType: 'idea' | 'initiative';
+  officialFeedbackPost: IIdeaOfficialFeedbackData;
+
   className?: string;
   a11y_pronounceLatestOfficialFeedbackPost?: boolean;
 }
@@ -152,7 +148,6 @@ interface Props {
 const OfficialFeedbackPost = ({
   officialFeedbackPost,
   editingAllowed,
-  postType,
   className,
   a11y_pronounceLatestOfficialFeedbackPost,
 }: Props) => {
@@ -160,8 +155,7 @@ const OfficialFeedbackPost = ({
   const localize = useLocalize();
   const { mutate: deleteOfficialFeedbackFromIdea } =
     useDeleteIdeaOfficialFeedback();
-  const { mutate: deleteOfficialFeedbackFromInitiative } =
-    useDeleteInitiativeOfficialFeedback();
+
   const [showEditForm, setShowEditForm] = useState(false);
 
   const openEditForm = () => {
@@ -174,13 +168,7 @@ const OfficialFeedbackPost = ({
 
   const deletePost = (postId: string) => () => {
     if (window.confirm(formatMessage(messages.deletionConfirmation))) {
-      switch (postType) {
-        case 'idea':
-          deleteOfficialFeedbackFromIdea(postId);
-        // eslint-disable-next-line no-fallthrough
-        case 'initiative':
-          deleteOfficialFeedbackFromInitiative(postId);
-      }
+      deleteOfficialFeedbackFromIdea(postId);
     }
   };
 
@@ -216,7 +204,6 @@ const OfficialFeedbackPost = ({
           formType="edit"
           feedback={officialFeedbackPost}
           onClose={closeEditForm}
-          postType={postType}
         />
       </EditFormContainer>
     );

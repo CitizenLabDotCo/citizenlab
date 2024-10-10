@@ -1153,7 +1153,7 @@ workflows:
     when: << pipeline.parameters.e2e >>
     jobs:
       - e2e-setup-db:
-          docker_layer_caching: true
+          docker_layer_caching: false
           context:
             - docker-hub-access
             - lastpass

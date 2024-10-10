@@ -190,7 +190,7 @@ describe('Idea show page actions', () => {
           ideaId2 = idea.body.data.id;
           ideaSlug2 = idea.body.data.attributes.slug;
 
-          cy.apiAddComment(ideaId2, 'idea', randomString());
+          cy.apiAddComment(ideaId2, randomString());
         });
       });
 

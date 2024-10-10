@@ -8,7 +8,7 @@ import { ModalContentContainer } from 'components/UI/Modal';
 import ReportForm from './SpamReportForm';
 
 interface Props {
-  targetType: 'comments' | 'ideas' | 'initiatives';
+  targetType: 'comments' | 'ideas';
   targetId: string;
 }
 

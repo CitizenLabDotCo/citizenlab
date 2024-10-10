@@ -19,10 +19,6 @@ export default defineMessages({
     defaultMessage:
       'Are you sure you want to delete this input? The input will be deleted from all project phases and cannot be recovered.',
   },
-  deleteInitiativeConfirmation: {
-    id: 'app.components.admin.PostManager.PostPreview.deleteInitiativeConfirmation',
-    defaultMessage: 'Are you sure you want to delete this initiative?',
-  },
   reactionCounts: {
     id: 'app.components.admin.PostManager.PostPreview.reactionCounts',
     defaultMessage: 'Reaction counts:',

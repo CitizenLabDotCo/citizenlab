@@ -145,9 +145,6 @@ export interface IAppConfigurationSettings {
     url?: string;
   };
   maps?: AppConfigurationMapSettings;
-  initiatives: ProposalsSettings;
-  initiative_review?: AppConfigurationFeature;
-  initiative_cosponsors?: AppConfigurationFeature;
   fragments?: {
     allowed: boolean;
     enabled: boolean;
@@ -241,7 +238,6 @@ export interface IAppConfigurationSettings {
   multi_language_platform?: AppConfigurationFeature;
   customisable_homepage_banner?: AppConfigurationFeature;
   management_feed?: AppConfigurationFeature;
-  proposals_participation_method?: AppConfigurationFeature;
   fake_sso?: AppConfigurationFeature;
   prescreening?: AppConfigurationFeature;
   input_cosponsorship?: AppConfigurationFeature;

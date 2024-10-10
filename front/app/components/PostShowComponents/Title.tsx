@@ -32,7 +32,6 @@ export const Title = styled.h1<{
 
 interface Props {
   postId: string;
-  postType: 'idea' | 'initiative';
   title: string;
   translateButtonClicked?: boolean;
   className?: string;
@@ -43,7 +42,6 @@ interface Props {
 const PostTitle = memo<Props>(
   ({
     postId,
-    postType,
     title,
     translateButtonClicked,
     className,
@@ -56,7 +54,6 @@ const PostTitle = memo<Props>(
           id="app.components.PostShowComponents.Title.translation"
           title={title}
           postId={postId}
-          postType={postType}
           color={color}
           align={align}
           translateButtonClicked={translateButtonClicked}
@@ -65,7 +62,7 @@ const PostTitle = memo<Props>(
             outletComponents.length > 0 ? (
               <>{outletComponents}</>
             ) : (
-              <Title id={`e2e-${postType}-title`} color={color} align={align}>
+              <Title id={`e2e-idea-title`} color={color} align={align}>
                 {title}
               </Title>
             )

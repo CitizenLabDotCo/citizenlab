@@ -22,10 +22,6 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.noNotifications',
     defaultMessage: "You don't have any notifications yet",
   },
-  cosponsorOfYourInitiative: {
-    id: 'app.containers.NotificationMenu.cosponsorOfYourInitiative',
-    defaultMessage: '{name} cosponsored your proposal',
-  },
   cosponsorOfYourIdea: {
     id: 'app.containers.NotificationMenu.cosponsorOfYourIdea',
     defaultMessage: '{name} accepted your co-sponsorship invitation',
@@ -79,10 +75,6 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.mentionInInternalComment',
     defaultMessage: '{name} mentioned you in an internal comment',
   },
-  initiativeResubmittedForReview: {
-    id: 'app.containers.NotificationMenu.initiativeResubmittedForReview',
-    defaultMessage: '"{initiativeTitle}" resubmitted for review',
-  },
   internalCommentOnYourInternalComment: {
     id: 'app.containers.NotificationMenu.internalCommentOnYourInternalComment',
     defaultMessage: '{name} commented on your internal comment',
@@ -90,10 +82,6 @@ export default defineMessages({
   internalCommentOnIdeaAssignedToYou: {
     id: 'app.containers.NotificationMenu.internalCommentOnIdeaAssignedToYou',
     defaultMessage: '{name} commented internally on an input assigned to you',
-  },
-  internalCommentOnInitiativeAssignedToYou: {
-    id: 'app.containers.NotificationMenu.internalCommentOnInitiativeAssignedToYou',
-    defaultMessage: '{name} commented internally on a proposal assigned to you',
   },
   internalCommentOnIdeaYouModerate: {
     id: 'app.containers.NotificationMenu.internalCommentOnIdeaYouModerate',
@@ -105,23 +93,10 @@ export default defineMessages({
     defaultMessage:
       '{name} commented internally on an input that you commented on internally',
   },
-  internalCommentOnInitiativeYouCommentedInternallyOn: {
-    id: 'app.containers.NotificationMenu.internalCommentOnInitiativeYouCommentedInternallyOn',
-    defaultMessage:
-      '{name} commented internally on a proposal that you commented on internally',
-  },
   internalCommentOnUnassignedUnmoderatedIdea: {
     id: 'app.containers.NotificationMenu.internalCommentOnUnassignedUnmoderatedIdea',
     defaultMessage:
       '{name} commented internally on an unassigned input in an unmanaged project',
-  },
-  internalCommentOnUnassignedInitiative: {
-    id: 'app.containers.NotificationMenu.internalCommentOnUnassignedInitiative',
-    defaultMessage: '{name} commented internally on an unassigned proposal',
-  },
-  invitationToCosponsorInitiative: {
-    id: 'app.containers.NotificationMenu.invitationToCosponsorInitiative',
-    defaultMessage: '{name} invited you to cosponsor a proposal',
   },
   invitationToCosponsorIdea: {
     id: 'app.containers.NotificationMenu.invitationToCosponsorIdea',
@@ -156,6 +131,10 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.invitationToCosponsorProposal',
     defaultMessage: '{name} invited you to co-sponsor a proposal',
   },
+  invitationToCosponsorInitiative: {
+    id: 'app.containers.NotificationMenu.invitationToCosponsorInitiative',
+    defaultMessage: '{name} invited you to co-sponsor an initiative',
+  },
   userReportedCommentAsSpam: {
     id: 'app.containers.NotificationMenu.userReportedCommentAsSpam1',
     defaultMessage: '{name} reported a comment on "{postTitle}" as spam',
@@ -167,10 +146,6 @@ export default defineMessages({
   statusChangedOnIdeaYouFollow: {
     id: 'app.containers.NotificationMenu.statusChangedOnIdeaYouFollow',
     defaultMessage: '{ideaTitle} status has changed to {status}',
-  },
-  statusChangedOnInitiativeYouFollow: {
-    id: 'app.containers.NotificationMenu.statusChangedOnInitiativeYouFollow',
-    defaultMessage: '{initiativeTitle} status has changed to {status}',
   },
   thresholdReachedForAdmin: {
     id: 'app.containers.NotificationMenu.thresholdReachedForAdmin',

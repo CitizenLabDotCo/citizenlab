@@ -4,14 +4,12 @@ import { setupServer } from 'msw/node';
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
 import endpoints, {
-  initiativeResponse,
   phaseResponse,
   ideaResponse,
 } from './__mocks__/_mockServer';
 import useAuthenticationRequirements from './useAuthenticationRequirements';
 
 const server = setupServer(
-  endpoints['GET permissions/posting_initiative/requirements'],
   endpoints['GET phases/:phaseId/permissions/posting_idea/requirements'],
   endpoints['GET ideas/:ideaId/permissions/commenting_idea/requirements']
 );
@@ -19,26 +17,6 @@ const server = setupServer(
 describe('useAuthenticationRequirements', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
-
-  it('returns initiative data correctly', async () => {
-    const context = {
-      type: 'initiative',
-      action: 'posting_initiative',
-    } as const;
-    const { result, waitFor } = renderHook(
-      () => useAuthenticationRequirements(context),
-      {
-        wrapper: createQueryClientWrapper(),
-      }
-    );
-
-    expect(result.current.isLoading).toBe(true);
-
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
-
-    expect(result.current.isLoading).toBe(false);
-    expect(result.current.data).toEqual(initiativeResponse);
-  });
 
   it('returns phase data correctly', async () => {
     const context = {

@@ -8,8 +8,6 @@ import useComment from 'api/comments/useComment';
 import useComments from 'api/comments/useComments';
 import useIdeaById from 'api/ideas/useIdeaById';
 
-import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
-
 import Button from 'components/UI/Button';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -41,8 +39,6 @@ const LoadMoreButton = styled(Button)`
 
 interface Props {
   ideaId: string | undefined;
-  initiativeId: string | undefined;
-  postType: 'idea' | 'initiative';
   commentId: string;
   childCommentIds: string[];
   className?: string;
@@ -52,15 +48,10 @@ interface Props {
 const ParentComment = ({
   commentId,
   ideaId,
-  initiativeId,
-  postType,
   className,
   childCommentIds,
   allowAnonymousParticipation,
 }: Props) => {
-  const commentingPermissionInitiative = useInitiativesPermissions(
-    'commenting_initiative'
-  );
   const theme = useTheme();
   const { data: comment } = useComment(commentId);
   const {
@@ -79,10 +70,7 @@ const ParentComment = ({
     const commentDeleted =
       comment.data.attributes.publication_status === 'deleted';
     const commentingDisabledReason =
-      postType === 'initiative'
-        ? commentingPermissionInitiative?.disabledReason
-        : idea?.data.attributes.action_descriptors.commenting_idea
-            .disabled_reason;
+      idea?.data.attributes.action_descriptors.commenting_idea.disabled_reason;
     const showCommentForm = isNil(commentingDisabledReason);
     const hasChildComments = childCommentIds && childCommentIds.length > 0;
     const modifiedChildCommentIds = !isNilOrError(childComments)
@@ -106,8 +94,6 @@ const ParentComment = ({
         <ParentCommentContainer className={commentDeleted ? 'deleted' : ''}>
           <Comment
             ideaId={ideaId}
-            initiativeId={initiativeId}
-            postType={postType}
             projectId={projectId}
             commentId={commentId}
             commentType="parent"
@@ -140,8 +126,6 @@ const ParentComment = ({
           modifiedChildCommentIds.map((childCommentId, index) => (
             <Comment
               ideaId={ideaId}
-              initiativeId={initiativeId}
-              postType={postType}
               projectId={projectId}
               key={childCommentId}
               commentId={childCommentId}
@@ -153,8 +137,6 @@ const ParentComment = ({
         {showCommentForm && (
           <StyledChildCommentForm
             ideaId={ideaId}
-            initiativeId={initiativeId}
-            postType={postType}
             projectId={projectId}
             parentId={commentId}
             allowAnonymousParticipation={allowAnonymousParticipation}
