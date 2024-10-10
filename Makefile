@@ -36,6 +36,27 @@ fe-up:
 up:
 	make -j 2 be-up fe-up
 
+# For testing different SSO methods
+be-up-claveunica:
+	docker compose down
+	BASE_DEV_URI=https://claveunica-h2dkc.loca.lt docker compose up -d
+	lt --print-requests --port 3000 --subdomain claveunica-h2dkc
+
+be-up-nemlogin:
+	docker compose down
+	BASE_DEV_URI=https://nemlogin-k3kd.loca.lt docker compose up -d
+	lt --print-requests --port 3000 --subdomain nemlogin-k3kd
+
+be-up-idaustria:
+	docker compose down
+	BASE_DEV_URI=https://idaustria-g3fy.loca.lt docker compose up -d
+	lt --print-requests --port 3000 --subdomain idaustria-g3fy
+
+be-up-keycloak:
+	docker compose down
+	BASE_DEV_URI=https://keycloak-r3tyu.loca.lt docker compose up -d
+	lt --print-requests --port 3000 --subdomain keycloak-r3tyu
+
 # Run it with:
 # make c
 # # or

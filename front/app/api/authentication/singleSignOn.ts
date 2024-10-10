@@ -20,6 +20,7 @@ export interface SSOProviderMap {
   criipto: 'criipto';
   fake_sso: 'fake_sso';
   nemlog_in: 'nemlog_in';
+  keycloak: 'keycloak';
 }
 
 export type SSOProvider = SSOProviderMap[keyof SSOProviderMap];
