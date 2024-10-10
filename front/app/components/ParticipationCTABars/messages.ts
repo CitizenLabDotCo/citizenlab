@@ -37,6 +37,38 @@ export default defineMessages({
     id: 'app.components.ParticipationCTABars.seeIdeas',
     defaultMessage: 'See ideas',
   },
+  seeOptions: {
+    id: 'app.components.ParticipationCTABars.seeOptions',
+    defaultMessage: 'See options',
+  },
+  seeProjects: {
+    id: 'app.components.ParticipationCTABars.seeProjects',
+    defaultMessage: 'See projects',
+  },
+  seeQuestions: {
+    id: 'app.components.ParticipationCTABars.seeQuestions',
+    defaultMessage: 'See questions',
+  },
+  seeIssues: {
+    id: 'app.components.ParticipationCTABars.seeIssues',
+    defaultMessage: 'See issues',
+  },
+  seeContributions: {
+    id: 'app.components.ParticipationCTABars.seeContributions',
+    defaultMessage: 'See contributions',
+  },
+  seeProposals: {
+    id: 'app.components.ParticipationCTABars.seeProposals',
+    defaultMessage: 'See proposals',
+  },
+  seeInitiatives: {
+    id: 'app.components.ParticipationCTABars.seeInitiatives',
+    defaultMessage: 'See initiatives',
+  },
+  seePetitions: {
+    id: 'app.components.ParticipationCTABars.seePetitions',
+    defaultMessage: 'See petitions',
+  },
   submit: {
     id: 'app.components.ParticipationCTABars.submit',
     defaultMessage: 'Submit',
