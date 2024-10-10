@@ -249,6 +249,9 @@ const IdeasEditForm = ({ ideaId }: Props) => {
                       question: messages.questionFormTitle,
                       issue: messages.issueFormTitle,
                       contribution: messages.contributionFormTitle,
+                      initiative: messages.initiativeFormTitle,
+                      petition: messages.petitionFormTitle,
+                      proposal: messages.proposalFormTitle,
                     }[
                       uiSchema && uiSchema?.options?.inputTerm
                         ? uiSchema.options.inputTerm
