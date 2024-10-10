@@ -1,6 +1,7 @@
 module Permissions
   class BasePermissionsService
     SUPPORTED_ACTIONS = %w[
+      following
       visiting
       posting_initiative
       commenting_initiative
@@ -33,7 +34,7 @@ module Permissions
     end
 
     def denied_reason_for_action(action, scope: nil)
-      return if !supported_action? action
+      return unless supported_action? action
 
       permission = find_permission(action, scope: scope)
       user_denied_reason(permission)
