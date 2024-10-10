@@ -6,7 +6,7 @@ namespace :initiatives_to_proposals do
       puts "Migrating initiatives to proposals for #{tenant.host}"
       next if !AppConfiguration.instance.feature_activated?('initiatives') && !Initiative.exists?
 
-      SettingsService.new.activate_feature!('input_cosponsorship') if AppConfiguration.instance.feature_activated?('initiative_cosponsorship')
+      SettingsService.new.activate_feature!('input_cosponsorship') if AppConfiguration.instance.feature_activated?('initiative_cosponsors')
 
       project = rake_20240910_create_proposals_project(reporter)
       next if !project
@@ -81,7 +81,7 @@ def rake_20240910_create_proposals_project(reporter)
     end_at: nil,
     campaigns_settings: { project_phase_started: true },
     participation_method: 'proposals',
-    # input_term: 'proposals', TODO: Uncomment after merging new input terms
+    input_term: 'proposal',
     expire_days_limit: config.settings('initiatives', 'days_limit'),
     reacting_threshold: config.settings('initiatives', 'reacting_threshold'),
     prescreening_enabled: config.feature_activated?('initiative_review')
