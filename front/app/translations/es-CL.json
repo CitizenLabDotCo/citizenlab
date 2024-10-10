@@ -1354,7 +1354,6 @@
   "app.containers.NotificationMenu.internalCommentOnYourInternalComment": "{name} comentó sobre tu comentario interno",
   "app.containers.NotificationMenu.invitationToCosponsorContribution": "{name} te invita a copatrocinar una contribución",
   "app.containers.NotificationMenu.invitationToCosponsorIdea": "{name} te invitó a copatrocinar una idea",
-  "app.containers.NotificationMenu.invitationToCosponsorInitiative": "{name} te ha invitado a copatrocinar una propuesta",
   "app.containers.NotificationMenu.invitationToCosponsorIssue": "{name} te invitó a copatrocinar un comentario",
   "app.containers.NotificationMenu.invitationToCosponsorOption": "{name} te invitó a copatrocinar una opción",
   "app.containers.NotificationMenu.invitationToCosponsorPetition": "{name} te invitó a copatrocinar una petición",
