@@ -42,6 +42,10 @@ module ParticipationMethod
       true
     end
 
+    def default_input_term
+      'proposal'
+    end
+
     private
 
     def proposed_budget_in_form?

@@ -51,17 +51,19 @@ resource 'SEO' do
       end
     end
 
-    # TODO: move-old-proposals-test
     context 'when the platform has some ideas and other content' do
       let(:idea_count) { 2 }
       let(:project_count) { 1 }
 
       before do
         %w[all_input events].each { |code| create(:nav_bar_item, code: code) }
-        create_list(:project, project_count)
+        projects = create_list(:project, project_count)
         create(:project_folder)
-        create_list(:idea, idea_count, project: Project.first)
+        create_list(:idea, idea_count, project: projects.first)
         create(:initiative)
+        create(:proposal)
+        create(:idea_status_proposed)
+        @native_survey_response = create(:native_survey_response)
         create(:static_page)
         do_request
       end
@@ -72,12 +74,14 @@ resource 'SEO' do
 
       example 'the sitemap has the right number of items' do
         expected_count = base_count +
-                         (idea_count    * url_count_per_idea    * locales_count) +
-                         (project_count * url_count_per_project * locales_count) +
+                         (idea_count * url_count_per_idea * locales_count) +
+                         ((project_count + 2) * url_count_per_project * locales_count) +
                          (1 * locales_count) + # project folders
-                         #  (1 * locales_count) + # initiatives
-                         (1 * locales_count) # static pages
+                         (1 * locales_count) + # proposals
+                         (1 * locales_count) + # static pages
+                         0 # native survery response
         expect(sitemap.search('url').count).to eq expected_count
+        expect(sitemap.search('url').map { |url| url.at('loc').text }).not_to include a_string_including(@native_survey_response.slug)
       end
     end
   end

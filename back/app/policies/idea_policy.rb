@@ -12,16 +12,24 @@ class IdeaPolicy < ApplicationPolicy
     def resolve
       if user&.admin?
         scope.all
+      elsif user&.project_or_folder_moderator? # We do this as a separate logic branch to avoid the moderatable_projects call for normal users
+        scope
+          .submitted_or_published.where(author: user)
+          .or(scope.published.where_pmethod(&:supports_public_visibility?))
+          .or(scope.where(id: sponsored_ideas))
+          .or(scope.where(project: UserRoleService.new.moderatable_projects(user)))
+          .where(project: Pundit.policy_scope(user, Project))
       elsif user
         scope
           .submitted_or_published.where(author: user)
-          .or(scope.published)
+          .or(scope.published.where_pmethod(&:supports_public_visibility?))
           .or(scope.where(id: sponsored_ideas))
           .where(project: Pundit.policy_scope(user, Project))
       else
         scope
           .left_outer_joins(project: [:admin_publication])
           .published
+          .where_pmethod(&:supports_public_visibility?)
           .where(projects: { visible_to: 'public', admin_publications: { publication_status: %w[published archived] } })
       end
     end
@@ -58,11 +66,13 @@ class IdeaPolicy < ApplicationPolicy
   end
 
   def show?
-    return false if !(record.draft? || record.participation_method_on_creation.supports_public_visibility?)
-
-    project_show = ProjectPolicy.new(user, record.project).show?
-    return true if project_show && %w[draft published].include?(record.publication_status)
-    return true if record.cosponsors.include?(user)
+    if record.participation_method_on_creation.supports_public_visibility?
+      project_show = ProjectPolicy.new(user, record.project).show?
+      return true if project_show && %w[draft published].include?(record.publication_status)
+      return true if record.cosponsors.include?(user)
+    elsif record.draft?
+      return true
+    end
 
     active? && (owner? || UserRoleService.new.can_moderate_project?(record.project, user))
   end

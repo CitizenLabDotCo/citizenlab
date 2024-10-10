@@ -381,7 +381,6 @@
   "app.components.PostComponents.SharingModalContent.questionEmailSharingSubject": "Stil dit spørgsmål: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.questionWhatsAppMessage": "Stil dit spørgsmål: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.twitterMessage": "{tenantName, select, DeloitteDK {Giv dit input {postTitle}} other {Stem på {postTitle} på}}",
-  "app.components.PostComponents.SharingModalContent.whatsAppMessageProposal": "Jeg har lige sendt et forslag til {orgName}: {postTitle}",
   "app.components.PostComponents.linkToHomePage": "Link til hjemmeside",
   "app.components.PostComponents.readMore": "Læs mere...",
   "app.components.PostComponents.topics": "Emner",
