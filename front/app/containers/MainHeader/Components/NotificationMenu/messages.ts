@@ -131,6 +131,10 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.invitationToCosponsorProposal',
     defaultMessage: '{name} invited you to co-sponsor a proposal',
   },
+  invitationToCosponsorInitiative: {
+    id: 'app.containers.NotificationMenu.invitationToCosponsorInitiative',
+    defaultMessage: '{name} invited you to co-sponsor an initiative',
+  },
   userReportedCommentAsSpam: {
     id: 'app.containers.NotificationMenu.userReportedCommentAsSpam1',
     defaultMessage: '{name} reported a comment on "{postTitle}" as spam',
