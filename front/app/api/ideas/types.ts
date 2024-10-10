@@ -5,6 +5,7 @@ import { PublicationStatus as ProjectPublicationStatus } from 'api/projects/type
 import {
   ActionDescriptorFutureEnabled,
   IdeaCommentingDisabledReason,
+  IdeaEditingDisabledReason,
   IdeaReactingDisabledReason,
   IdeaVotingDisabledReason,
 } from 'utils/actionDescriptors/types';
@@ -103,6 +104,7 @@ export interface IIdeaData {
       // but not an action (so e.g. it can't be used in the authentication_requirements API).
       comment_reacting_idea: ActionDescriptorFutureEnabled<IdeaCommentingDisabledReason>;
       voting?: ActionDescriptorFutureEnabled<IdeaVotingDisabledReason>;
+      editing_idea: ActionDescriptorFutureEnabled<IdeaEditingDisabledReason>;
     };
     anonymous: boolean;
     author_hash: string;
