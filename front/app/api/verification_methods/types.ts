@@ -13,6 +13,7 @@ export const verificationTypesLeavingPlatform = [
   'clave_unica',
   'franceconnect',
   'nemlog_in',
+  'keycloak',
 ];
 
 export type TVerificationMethodName =
@@ -25,6 +26,7 @@ export type TVerificationMethodName =
   | 'franceconnect'
   | 'gent_rrn'
   | 'id_card_lookup'
+  | 'keycloak'
   | 'nemlog_in'
   | 'oostende_rrn';
 
@@ -87,6 +89,16 @@ export type IDCriiptoMethod = {
   };
 };
 
+export type IDKeycloakMethod = {
+  id: string;
+  type: 'verification_method';
+  attributes: {
+    name: 'keycloak';
+    method_metadata?: MethodMetadata;
+    ui_method_name: string;
+  };
+};
+
 export type IDAuth0Method = {
   id: string;
   type: 'verification_method';
@@ -102,4 +114,5 @@ export type TVerificationMethod =
   | FakeSSOMethod
   | IDLookupMethod
   | IDCriiptoMethod
+  | IDKeycloakMethod
   | IDAuth0Method;
