@@ -40,6 +40,20 @@ const mockProjectData = {
     input_term: 'idea',
     uses_content_builder: true,
   },
+  relationships: {
+    avatars: {
+      data: [
+        {
+          id: '1',
+          type: 'avatar',
+        },
+        {
+          id: '2',
+          type: 'avatar',
+        },
+      ],
+    },
+  },
 };
 
 const mockProjectDescriptionBuilderLayoutData:
@@ -70,7 +84,7 @@ describe('Preview', () => {
       screen.queryByTestId('projectDescriptionBuilderProjectDescription')
     ).not.toBeInTheDocument();
   });
-  it('should shows description when project description builder is not enabled', () => {
+  it('should show description when project description builder is not enabled', () => {
     DEFAULT_PROJECT_DESCRIPTION_BUILDER_LAYOUT_DATA.data.attributes.enabled =
       false;
     render(<Preview projectId={projectId} projectTitle={projectTitle} />);

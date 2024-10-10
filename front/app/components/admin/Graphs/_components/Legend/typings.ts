@@ -2,6 +2,7 @@ export interface LegendItem {
   icon: 'plain-line' | 'line' | 'rect' | 'circle';
   color: string;
   label: string;
+  value?: number;
 }
 
 export interface ItemCoordinates {

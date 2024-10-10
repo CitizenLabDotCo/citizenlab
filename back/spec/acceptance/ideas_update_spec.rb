@@ -94,7 +94,7 @@ resource 'Ideas' do
 
         example '[error] Update an idea when there is a posting disabled reason' do
           expect_any_instance_of(Permissions::ProjectPermissionsService)
-            .to receive(:denied_reason_for_action).with('posting_idea').and_return('i_dont_like_you')
+            .to receive(:denied_reason_for_action).with('editing_idea', anything).and_return('i_dont_like_you')
 
           do_request
 
