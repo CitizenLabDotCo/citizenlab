@@ -3,6 +3,8 @@ import React from 'react';
 import usePhases from 'api/phases/usePhases';
 import { getInputTerm } from 'api/phases/utils';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
 import Modal from 'components/UI/Modal';
 
@@ -24,6 +26,13 @@ const IdeaSharingModal = ({
 }: Props) => {
   const { data: phases } = usePhases(projectId);
   const { formatMessage } = useIntl();
+  const ideaflowSocialSharingIsEnabled = useFeatureFlag({
+    name: 'ideaflow_social_sharing',
+  });
+
+  if (!ideaflowSocialSharingIsEnabled) {
+    return null;
+  }
 
   return (
     <Modal

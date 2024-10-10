@@ -179,6 +179,14 @@ module MultiTenancy
               enabled: false,
               allowed: false
             },
+            ideaflow_social_sharing: {
+              enabled: true,
+              allowed: true
+            },
+            initiativeflow_social_sharing: {
+              enabled: true,
+              allowed: true
+            },
             planhat: {
               enabled: false,
               allowed: false

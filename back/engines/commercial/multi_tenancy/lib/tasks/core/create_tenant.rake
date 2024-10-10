@@ -66,6 +66,14 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        ideaflow_social_sharing: {
+          enabled: true,
+          allowed: true
+        },
+        initiativeflow_social_sharing: {
+          enabled: true,
+          allowed: true
+        },
         widgets: {
           enabled: true,
           allowed: true

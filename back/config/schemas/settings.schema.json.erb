@@ -986,6 +986,30 @@
         }
       },
 
+      "ideaflow_social_sharing": {
+        "type": "object",
+        "title": "Share Ideas on Social Media",
+        "description":  "After posting an idea, users receive a pop-up to share their idea on social media.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
+      },
+
+      "initiativeflow_social_sharing": {
+        "type": "object",
+        "title": "Share Proposals on Social Media",
+        "description": "After posting a proposal, users receive a pop-up to share their proposal on social media.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
+      },
+
       "widgets": {
         "type": "object",
         "title": "Widgets",
