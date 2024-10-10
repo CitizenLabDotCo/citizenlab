@@ -16,6 +16,7 @@ class IdeaPolicy < ApplicationPolicy
         scope
           .submitted_or_published.where(author: user)
           .or(scope.published.where_pmethod(&:supports_public_visibility?))
+          .or(scope.where(id: sponsored_ideas))
           .or(scope.where(project: UserRoleService.new.moderatable_projects(user)))
           .where(project: Pundit.policy_scope(user, Project))
       elsif user
