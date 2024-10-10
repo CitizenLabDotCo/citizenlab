@@ -57,7 +57,7 @@ const StatusFilterDropdown = ({
       title={
         <FormattedMessage
           {...messages.statusesTitle}
-          key={`status-title-${Math.floor(Math.random() * 100000000)}`}
+          key={`status-title-${selectedStatusIds.join('-')}`}
         />
       }
       name="statuses"
