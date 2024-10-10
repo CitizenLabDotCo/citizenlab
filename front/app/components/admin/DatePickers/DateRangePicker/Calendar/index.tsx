@@ -9,7 +9,7 @@ import useLocale from 'hooks/useLocale';
 
 import { getEndMonth, getStartMonth } from '../../_shared/getStartEndMonth';
 import { getLocale } from '../../_shared/locales';
-import { CalendarProps } from '../typings';
+import { Props } from '../typings';
 
 const DayPickerStyles = styled.div`
   .rdp-root {
@@ -18,36 +18,44 @@ const DayPickerStyles = styled.div`
   }
 
   .rdp-selected > button.rdp-day_button {
-    background-color: ${colors.teal700};
-    color: ${colors.white};
     font-size: 14px;
     font-weight: normal;
   }
 `;
 
 const Calendar = ({
-  selectedDate,
+  selectedRange,
   startMonth: _startMonth,
   endMonth: _endMonth,
   defaultMonth,
-  onChange,
-}: CalendarProps) => {
+  onUpdateRange,
+}: Props) => {
   const locale = useLocale();
 
-  const startMonth = getStartMonth({ startMonth: _startMonth, selectedDate });
-  const endMonth = getEndMonth({ endMonth: _endMonth, selectedDate });
+  const startMonth = getStartMonth({
+    startMonth: _startMonth,
+    selectedDate: selectedRange.from,
+  });
+
+  const endMonth = getEndMonth({
+    endMonth: _endMonth,
+    selectedDate: selectedRange.to,
+  });
 
   return (
     <DayPickerStyles>
       <DayPicker
-        mode="single"
+        mode="range"
+        numberOfMonths={2}
         captionLayout="dropdown"
         locale={getLocale(locale)}
         startMonth={startMonth}
         endMonth={endMonth}
         defaultMonth={defaultMonth}
-        selected={selectedDate}
-        onSelect={onChange}
+        selected={{ from: selectedRange.from, to: selectedRange.to }}
+        onSelect={(newRange) => {
+          onUpdateRange(newRange ?? {});
+        }}
       />
     </DayPickerStyles>
   );

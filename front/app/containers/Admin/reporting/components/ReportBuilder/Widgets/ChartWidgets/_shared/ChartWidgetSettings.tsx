@@ -127,9 +127,16 @@ export const DateRangeInput = ({
         {label ?? formatMessage(messages.analyticsChartDateRange)}
       </Text>
       <DateRangePicker
-        startDate={startAtMoment}
-        endDate={endAtMoment}
-        onDatesChange={handleChangeTimeRange}
+        selectedRange={{
+          from: startAtMoment ? startAtMoment.toDate() : undefined,
+          to: endAtMoment ? endAtMoment.toDate() : undefined,
+        }}
+        onUpdateRange={({ from, to }) => {
+          handleChangeTimeRange({
+            startDate: from ? moment(from) : null,
+            endDate: to ? moment(to) : null,
+          });
+        }}
       />
     </Box>
   );

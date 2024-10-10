@@ -1,4 +1,5 @@
-import { DateRange, ClosedDateRange } from '../../typings';
+import { DateRange } from '../../../_shared/typings';
+import { ClosedDateRange } from '../../typings';
 
 export const isClosedDateRange = (range: DateRange): range is ClosedDateRange =>
   !!range.to;
