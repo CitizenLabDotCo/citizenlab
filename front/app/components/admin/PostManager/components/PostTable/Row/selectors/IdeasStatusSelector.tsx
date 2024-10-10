@@ -25,6 +25,7 @@ const ColorIndicator = styled.div<{ active: boolean; disabled: boolean }>`
   margin: 0 0.25rem;
   ${(props) => (props.active ? `background-color: ${props.color};` : '')}
   ${(props) => (props.disabled ? 'cursor: not-allowed;' : '')}
+   ${(props) => (props.disabled ? 'pointer-events: none;' : '')}
 `;
 
 type Props = {
@@ -55,10 +56,11 @@ class IdeasStatusSelector extends React.PureComponent<Props> {
                 <Text fontWeight="bold" m="0px">
                   <T value={status.attributes.title_multiloc} />
                 </Text>
-                <FormattedMessage {...messages.automatedStatusTooltipText} />
+                {!status.attributes.can_manually_transition_to && (
+                  <FormattedMessage {...messages.automatedStatusTooltipText} />
+                )}
               </div>
             }
-            disabled={status.attributes.can_manually_transition_to}
           >
             <ColorIndicator
               color={status.attributes.color}
