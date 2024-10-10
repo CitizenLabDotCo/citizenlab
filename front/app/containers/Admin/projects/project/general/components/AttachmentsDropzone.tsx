@@ -41,6 +41,7 @@ const AttachmentsDropzone = ({
       apiErrors={apiErrors}
       onFileReorder={onFileReorder}
       enableDragAndDrop
+      multiple
     />
   </StyledSectionField>
 );

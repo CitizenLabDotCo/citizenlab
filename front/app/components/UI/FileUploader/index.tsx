@@ -24,6 +24,7 @@ export interface Props {
   files: FileType[] | null;
   apiErrors?: CLErrors | null;
   enableDragAndDrop?: boolean;
+  multiple?: boolean;
 }
 
 const FileUploader = ({
@@ -35,6 +36,7 @@ const FileUploader = ({
   id,
   className,
   enableDragAndDrop = false,
+  multiple = false,
 }: Props) => {
   const [files, setFiles] = useState<FileType[]>(initialFiles || []);
 
@@ -85,7 +87,7 @@ const FileUploader = ({
       data-cy="e2e-file-uploader-container"
       w="100%"
     >
-      <FileInput onAdd={handleFileOnAdd} id={id} />
+      <FileInput onAdd={handleFileOnAdd} id={id} multiple={multiple} />
       <Error fieldName="file" apiErrors={apiErrors?.file} />
 
       <List key={files.length} className="files-list e2e-files-list">
