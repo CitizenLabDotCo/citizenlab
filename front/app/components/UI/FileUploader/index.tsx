@@ -23,6 +23,7 @@ export interface Props {
   onFileReorder?: (updatedFiles: FileType[]) => void;
   files: FileType[] | null;
   apiErrors?: CLErrors | null;
+  enableDragAndDrop?: boolean;
 }
 
 const FileUploader = ({
@@ -33,6 +34,7 @@ const FileUploader = ({
   apiErrors,
   id,
   className,
+  enableDragAndDrop = false,
 }: Props) => {
   const [files, setFiles] = useState<FileType[]>(initialFiles || []);
 
@@ -73,19 +75,19 @@ const FileUploader = ({
 
   const fileNames = files.map((file) => file.name).join(', ');
 
-  return (
-    <DndProvider backend={HTML5Backend}>
-      <Box
-        className={className}
-        key={id}
-        data-cy="e2e-file-uploader-container"
-        w="100%"
-      >
-        <FileInput onAdd={handleFileOnAdd} id={id} />
-        <Error fieldName="file" apiErrors={apiErrors?.file} />
+  const content = (
+    <Box
+      className={className}
+      key={id}
+      data-cy="e2e-file-uploader-container"
+      w="100%"
+    >
+      <FileInput onAdd={handleFileOnAdd} id={id} />
+      <Error fieldName="file" apiErrors={apiErrors?.file} />
 
-        <List key={files.length} className="files-list e2e-files-list">
-          {files.map((file: FileType, index: number) => (
+      <List key={files.length} className="files-list e2e-files-list">
+        {files.map((file: FileType, index: number) =>
+          enableDragAndDrop ? (
             <SortableRow
               key={`item-${file.id || file.name}`}
               id={file.id || file.name}
@@ -101,19 +103,33 @@ const FileUploader = ({
                 />
               </Box>
             </SortableRow>
-          ))}
-        </List>
+          ) : (
+            <Box key={`item-${file.id || file.name}`} w="100%">
+              <FileDisplay
+                key={`item-${file.id || file.name}`}
+                onDeleteClick={handleFileOnRemove(file)}
+                file={file}
+              />
+            </Box>
+          )
+        )}
+      </List>
 
-        <ScreenReaderOnly aria-live="polite">
-          <FormattedMessage
-            {...(files.length > 0
-              ? messages.a11y_filesToBeUploaded
-              : messages.a11y_noFiles)}
-            values={{ fileNames }}
-          />
-        </ScreenReaderOnly>
-      </Box>
-    </DndProvider>
+      <ScreenReaderOnly aria-live="polite">
+        <FormattedMessage
+          {...(files.length > 0
+            ? messages.a11y_filesToBeUploaded
+            : messages.a11y_noFiles)}
+          values={{ fileNames }}
+        />
+      </ScreenReaderOnly>
+    </Box>
+  );
+
+  return enableDragAndDrop ? (
+    <DndProvider backend={HTML5Backend}>{content}</DndProvider>
+  ) : (
+    content
   );
 };
 
