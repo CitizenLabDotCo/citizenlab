@@ -5,8 +5,8 @@ pl:
     admin_campaign_type_description:
       "inappropriate_content_flagged": Nieodpowiednie treści zostały oznaczone - administratorzy
     inappropriate_content_flagged:
-      subject: 'Post został oznaczony do sprawdzenia'
-      header_title: 'Post został oznaczony do sprawdzenia'
+      subject: 'Post na Twojej platformie został oznaczony do przeglądu'
+      header_title: 'Post na Twojej platformie został oznaczony do przeglądu'
       author_wrote: '%{authorName} napisał:'
       preheader: 'Post na Twojej platformie został oznaczony do sprawdzenia'
       automatically_flagged: >
