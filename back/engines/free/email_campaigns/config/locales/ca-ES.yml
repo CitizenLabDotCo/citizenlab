@@ -12,9 +12,8 @@ ca:
       "cosponsor_of_your_initiative": Un usuari accepta la meva invitació per copatrocinar la meva proposta
       "cosponsor_of_your_idea": Un usuari accepta la meva invitació per copatrocinar la meva proposta
       "event_registration_confirmation": Confirmació de registre de l'esdeveniment
-      "first_idea_published": Publicació de la meva primera idea
       "idea_marked_as_spam": Informe de correu brossa d'idees
-      "idea_published": Publicació de la meva idea
+      "idea_published": Publicació de la meva aportació
       "initiative_assigned_to_you": Encàrrec d'una proposta a mi
       "initiative_marked_as_spam": Informe de correu brossa de la proposta
       "initiative_published": Publicació de la meva proposta
@@ -34,9 +33,9 @@ ca:
       "mention_in_official_feedback": Esmenta en una actualització
       "mention_in_internal_comment": Esmenta en un comentari intern
       "new_comment_for_admin": Nou comentari en un projecte que modero
-      "new_idea_for_admin": Nova idea en un projecte que modero
+      "new_idea_for_admin": Nova entrada en un projecte que modero
       "new_initiative_for_admin": Nova proposta
-      "official_feedback_on_idea_you_follow": Actualitzeu una idea que seguiu
+      "official_feedback_on_idea_you_follow": Actualitzeu una entrada que seguiu
       "official_feedback_on_initiative_you_follow": Actualitzeu una proposta que seguiu
       "password_reset": Restabliu la contrasenya
       "project_moderation_rights_received": S'han rebut els drets de moderació del projecte
@@ -44,7 +43,7 @@ ca:
       "project_phase_started": Nova fase del projecte
       "project_phase_upcoming": Pròxima nova fase del projecte
       "project_published": Projecte publicat
-      "status_change_on_idea_you_follow": Canvi d'estat d'una idea que segueixes
+      "status_change_on_idea_you_follow": Canvi d'estat d'una entrada que seguiu
       "status_change_on_initiative_you_follow": Canvi d'estat d'una proposta que seguiu
       "threshold_reached_for_admin": La proposta ha arribat al llindar de votació
       "welcome": Després de la inscripció
@@ -58,11 +57,33 @@ ca:
       "voting_last_chance": Última oportunitat per votar
       "voting_phase_started": Nova fase del projecte amb votació
       "voting_results": Resultats de les votacions
+      "your_input_in_screening": La meva aportació està pendent de la projecció
       "your_proposed_initiatives_digest": Resum setmanal de les vostres propostes
     general:
       by_author: 'per %{authorName}'
       author_wrote: '%{authorName} va escriure:'
       cta_goto_idea: 'Aneu a aquesta idea'
+      cta_goto_input: 'Aneu a aquesta entrada'
+      cta_goto:
+        idea: 'Aneu a aquesta idea'
+        question: 'Aneu a aquesta pregunta'
+        contribution: 'Aneu a aquesta aportació'
+        project: 'Aneu a aquest projecte'
+        issue: 'Aneu a aquest tema'
+        option: 'Aneu a aquesta opció'
+        proposal: 'Aneu a aquesta proposta'
+        initiative: 'Aneu a aquesta iniciativa'
+        petition: 'Aneu a aquesta petició'
+      cta_goto_your:
+        idea: 'Ves a la teva idea'
+        question: 'Aneu a la vostra pregunta'
+        contribution: 'Aneu a la vostra aportació'
+        project: 'Aneu al vostre projecte'
+        issue: 'Aneu al vostre problema'
+        option: 'Aneu a la vostra opció'
+        proposal: 'Aneu a la vostra proposta'
+        initiative: 'Aneu a la vostra iniciativa'
+        petition: 'Aneu a la vostra petició'
       cta_goto_proposal: 'Aneu a aquesta proposta'
       cta_goto_project: 'Aneu a aquest projecte'
     schedules:
@@ -104,12 +125,12 @@ ca:
       text_introduction: 'Hem seleccionat per a tu l''entrada que ha generat més activitat durant la setmana passada. Descobreix què passa a la teva plataforma!'
       cta_visit_the_platform: 'Visiteu la vostra plataforma'
       new_users: 'Usuaris nous'
-      new_ideas: 'Noves idees'
+      new_inputs: 'Noves entrades'
       new_comments: 'Nous comentaris'
       title_activity_past_week: 'Activitat de la setmana passada'
       title_no_activity_past_week: 'No hi ha hagut cap activitat durant la setmana passada'
       title_initiatives_past_week: 'Noves propostes de la setmana passada'
-      title_successful_initiatives_past_week: 'Propostes que van assolir el llindar la setmana passada'
+      reached_threshold: 'S''ha arribat al llindar'
       yesterday_by_author: 'Ahir a les %{author}'
       today_by_author: 'Avui a les %{author}'
       x_days_ago_by_author: 'fa %{x} dies per %{author}'
@@ -153,24 +174,21 @@ ca:
       subject: '%{cosponsorName} ha acceptat la teva invitació per copatrocinar la teva proposta'
       preheader_initiative: '%{cosponsorName} ha acceptat la teva invitació per copatrocinar la teva proposta'
     assignee_digest:
-      subject: 'Idees que requereixen la vostra opinió: %{numberIdeas}'
+      subject: 'Entrades que requereixen els vostres comentaris: %{numberIdeas}'
       preheader: 'Resum del cessionari de %{organizationName}'
       title_your_weekly_report: '%{firstName}, l''aportació del ciutadà està esperant els vostres comentaris'
       cta_manage_your_input: 'Gestiona la teva entrada'
-      assigned_ideas: 'Les idees necessiten els vostres comentaris'
-      title_assignment_past_week: 'Últimes idees que t''han assignat'
-      title_no_assignment_past_week: 'La setmana passada no us van assignar idees noves'
+      x_inputs_need_your_feedback: 'les entrades necessiten els vostres comentaris'
+      title_assignment_past_week: 'Últimes entrades assignades'
+      title_no_assignment_past_week: 'No se''t va assignar cap entrada nova la setmana passada'
       yesterday_by_author: 'Ahir a les %{author}'
       today_by_author: 'Avui a les %{author}'
       x_days_ago_by_author: 'fa %{x} dies per %{author}'
-      idea_section: Idees
-      initiative_section: Propostes
-      title_initiatives_past_week: 'Noves propostes assignades'
-      title_successful_initiatives_past_week: 'Propostes que t''han assignat que han arribat al llindar'
+      title_successful_past_week: 'Se t''ha assignat que ha arribat al llindar'
     idea_marked_as_spam:
-      cta_review_idea: 'Revisió de la idea'
+      cta_review: 'Revisió'
       report_inappropriate_offensive_content: 'Trobo que aquest contingut és inadequat o ofensiu.'
-      report_not_an_idea: 'Aquest contingut no és una idea i no pertany aquí.'
+      report_not_an_idea: 'Aquest contingut no és rellevant i no pertany aquí.'
       subject: 'Tens un informe de correu brossa a la plataforma de %{organizationName}'
       preheader: 'Actueu sobre aquest informe de correu brossa'
       reported_this_because: '%{reporterFirstName} ho han informat perquè:'
@@ -255,7 +273,7 @@ ca:
       main_header: '%{authorNameFirst} t''ha mencionat en un comentari intern.'
       preheader: '%{authorNameFull} t''ha mencionat en un comentari intern.'
     moderator_digest:
-      subject: 'El vostre informe setmanal del gestor de projectes de %{time}'
+      subject: 'Informe setmanal del gestor de "%{project_title}"'
       preheader: 'Resum del gestor de projectes de %{organizationName}'
       title_your_weekly_report: '%{firstName}, el teu informe setmanal'
       text_introduction: 'Hem seleccionat per a tu l''entrada que ha generat més activitat durant la setmana passada. Descobreix què està passant amb el teu projecte!'
@@ -265,6 +283,7 @@ ca:
       new_comments: 'Nous comentaris'
       title_inputs_past_week: 'Noves entrades la setmana passada'
       title_no_inputs_past_week: 'No hi ha entrades noves la setmana passada'
+      title_threshold_reached: Llindar assolit la setmana passada
       yesterday_by_author: 'Ahir a les %{author}'
       today_by_author: 'Avui a les %{author}'
       x_days_ago_by_author: 'fa %{x} dies per %{author}'
@@ -280,9 +299,18 @@ ca:
       yesterday: Ahir
     comment_on_idea_you_follow:
       cta_reply_to: 'Respon a %{commentAuthor}'
-      event_description: '%{authorNameFull} va posar una reacció a la idea ''%{ideaTitle}''. Feu clic al botó següent per continuar la conversa amb %{authorName}.'
-      main_header: '%{authorName} ha comentat una idea que segueixes'
-      subject: 'Hi ha un nou comentari sobre una idea que segueixes'
+      event_description: '%{authorNameFull} va posar una reacció a ''%{inputTitle}''. Feu clic al botó següent per continuar la conversa amb %{authorName}.'
+      main_header:
+        idea: '%{authorName} ha comentat una idea que segueixes'
+        question: '%{authorName} ha comentat una pregunta que segueixes'
+        contribution: '%{authorName} ha comentat una contribució que segueixes'
+        project: '%{authorName} ha comentat un projecte que segueixes'
+        issue: '%{authorName} ha comentat un problema que segueixes'
+        option: '%{authorName} ha comentat una opció que segueixes'
+        proposal: '%{authorName} ha comentat una proposta que segueixes'
+        initiative: '%{authorName} ha comentat una iniciativa que segueixes'
+        petition: '%{authorName} ha comentat una petició que segueixes'
+      subject: 'Hi ha un nou comentari a "%{input_title}"'
       preheader: '%{authorName} va deixar un comentari sobre una idea per a %{organizationName}'
     comment_on_initiative_you_follow:
       cta_reply_to: 'Respon a %{commentAuthor}'
@@ -297,13 +325,15 @@ ca:
       subject: 'Algú va publicar una nova proposta a la plataforma de %{organizationName}'
       preheader: '%{authorName} ha publicat una nova proposta a la teva plataforma'
     new_idea_for_admin:
-      commented: '%{authorFirstName} ha comentat:'
-      cta_reply_to: 'Doneu comentaris a %{authorName}'
+      main_header_publication: 'S''ha publicat una nova entrada a la vostra plataforma'
+      event_description_publication: '%{authorName} ha enviat una entrada nova a la teva plataforma. Descobriu-lo ara, feu-ne un comentari o canvieu-ne l''estat!'
+      cta_publication: 'Envieu comentaris a %{authorName}'
+      main_header_prescreening: 'Una entrada requereix la vostra revisió'
+      event_description_prescreening: '%{authorName} ha enviat una entrada nova a la teva plataforma.'
+      input_not_visible_prescreening: '<b>L''entrada no serà visible</b> fins que no modifiqueu el seu estat.'
+      cta_prescreening: 'Revisa l''entrada'
       days_ago: 'fa %{numberOfDays} dies'
-      event_description: '%{authorName} ha publicat una nova idea a la teva plataforma. Descobriu-lo ara, feu-ne un comentari o canvieu-ne l''estat!'
-      main_header: '%{firstName}, s''ha publicat una nova idea a la teva plataforma'
-      subject: 'S''ha publicat una nova publicació a la plataforma de %{organizationName}'
-      preheader: '%{authorName} ha publicat una nova idea a la teva plataforma'
+      preheader: '%{authorName} ha publicat una nova entrada a la teva plataforma'
       today: Avui
       yesterday: Ahir
     comment_on_your_comment:
@@ -322,50 +352,50 @@ ca:
     internal_comment_on_idea_assigned_to_you:
       cta_reply_to: 'Veure comentari per %{firstName}'
       event_description: '%{authorNameFull} ha comentat internament una entrada que se t''ha assignat.'
-      subject: '''%{post}'' té un nou comentari intern'
-      main_header: '''%{post}'' té un nou comentari intern'
-      preheader: '''%{post}'' té un nou comentari intern'
+      subject: 'Nou comentari intern sobre "%{post}"'
+      main_header: 'Nou comentari intern sobre "%{post}"'
+      preheader: 'Nou comentari intern sobre "%{post}"'
     internal_comment_on_idea_you_commented_internally_on:
       cta_reply_to: 'Veure comentari per %{firstName}'
       event_description: '%{authorNameFull} va comentar internament una entrada que vau comentar internament.'
-      subject: '''%{post}'' té un nou comentari intern'
-      main_header: '''%{post}'' té un nou comentari intern'
-      preheader: '''%{post}'' té un nou comentari intern'
+      subject: 'Nou comentari intern sobre "%{post}"'
+      main_header: 'Nou comentari intern sobre "%{post}"'
+      preheader: 'Nou comentari intern sobre "%{post}"'
     internal_comment_on_idea_you_moderate:
       cta_reply_to: 'Veure comentari per %{firstName}'
       event_description: '%{authorNameFull} ha comentat internament una entrada en un projecte o carpeta que gestioneu.'
-      subject: '''%{post}'' té un nou comentari intern'
-      main_header: '''%{post}'' té un nou comentari intern'
-      preheader: '''%{post}'' té un nou comentari intern'
+      subject: 'Nou comentari intern sobre "%{post}"'
+      main_header: 'Nou comentari intern sobre "%{post}"'
+      preheader: 'Nou comentari intern sobre "%{post}"'
     internal_comment_on_initiative_assigned_to_you:
       cta_reply_to: 'Veure comentari per %{firstName}'
       event_description: '%{authorNameFull} ha comentat internament una proposta que se t''ha assignat.'
-      subject: '''%{post}'' té un nou comentari intern'
-      main_header: '''%{post}'' té un nou comentari intern'
-      preheader: '''%{post}'' té un nou comentari intern'
+      subject: 'Nou comentari intern sobre "%{post}"'
+      main_header: 'Nou comentari intern sobre "%{post}"'
+      preheader: 'Nou comentari intern sobre "%{post}"'
     internal_comment_on_initiative_you_commented_internally_on:
       cta_reply_to: 'Veure comentari per %{firstName}'
       event_description: '%{authorNameFull} ha comentat internament una proposta que has comentat internament.'
-      subject: '''%{post}'' té un nou comentari intern'
-      main_header: '''%{post}'' té un nou comentari intern'
-      preheader: '''%{post}'' té un nou comentari intern'
+      subject: 'Nou comentari intern sobre "%{post}"'
+      main_header: 'Nou comentari intern sobre "%{post}"'
+      preheader: 'Nou comentari intern sobre "%{post}"'
     internal_comment_on_unassigned_initiative:
       cta_reply_to: 'Veure comentari per %{firstName}'
       event_description: '%{authorNameFull} ha comentat internament una proposta no assignada.'
-      subject: '''%{post}'' té un nou comentari intern'
-      main_header: '''%{post}'' té un nou comentari intern'
-      preheader: '''%{post}'' té un nou comentari intern'
+      subject: 'Nou comentari intern sobre "%{post}"'
+      main_header: 'Nou comentari intern sobre "%{post}"'
+      preheader: 'Nou comentari intern sobre "%{post}"'
     internal_comment_on_unassigned_unmoderated_idea:
       cta_reply_to: 'Veure comentari per %{firstName}'
       event_description: '%{authorNameFull} ha comentat internament una entrada no assignada en un projecte no gestionat.'
-      subject: '''%{post}'' té un nou comentari intern'
-      main_header: '''%{post}'' té un nou comentari intern'
-      preheader: '''%{post}'' té un nou comentari intern'
+      subject: 'Nou comentari intern sobre "%{post}"'
+      main_header: 'Nou comentari intern sobre "%{post}"'
+      preheader: 'Nou comentari intern sobre "%{post}"'
     official_feedback_on_idea_you_follow:
-      header_message: '%{officialName} va actualitzar la idea "%{ideaTitle}". Feu clic al botó següent per entrar a la conversa amb %{officialName}.'
-      header_title: 'Hi ha una actualització d''una idea que seguiu'
-      subject: 'Una idea que seguiu ha rebut una actualització oficial a la plataforma de %{organizationName}'
-      preheader: 'Hi ha una actualització d''una idea que seguiu'
+      header_message: '%{feedback_author_name} va donar una actualització a ''%{input_title}''.'
+      header_title: 'Hi ha una actualització a "%{input_title}"'
+      subject: 'Els comentaris oficials es van publicar a "%{input_title}"'
+      preheader: 'Hi ha una actualització d''una entrada que seguiu'
     official_feedback_on_initiative_you_follow:
       header_message: '%{officialName} va actualitzar la proposta "%{initiativeTitle}". Feu clic al botó següent per entrar a la conversa amb %{organizationName}.'
       header_title: 'Hi ha una actualització sobre una proposta que seguiu'
@@ -429,11 +459,11 @@ ca:
       header_message: 'La plataforma de participació de %{organizationName} acaba de publicar el següent projecte:'
       preheader: 'S''ha publicat un nou projecte'
     status_change_on_idea_you_follow:
-      status_change: 'El nou estat d''aquesta idea és "%{ideaStatus}"'
-      header_message: '%{organizationName} ha actualitzat l''estat de la idea ''%{ideaTitle}'' a la seva plataforma de participació digital.'
-      header_title: 'Una idea que seguiu té un nou estat'
-      subject: 'S''ha canviat l''estat d''una idea que segueixes'
-      preheader: 'Una idea que seguiu té un nou estat'
+      status_change: 'El nou estat d''aquesta entrada és ''%{status}'''
+      header_message: '%{organizationName} ha actualitzat l''estat de l''entrada ''%{input_title}'' a la seva plataforma de participació digital.'
+      header_title: 'Una entrada que seguiu té un estat nou'
+      subject: 'L''estat de "%{input_title}" ha canviat'
+      preheader: 'Una entrada que seguiu té un estat nou'
     status_change_on_initiative_you_follow:
       status_change: 'El nou estat d''aquesta proposta és "%{initiativeStatus}"'
       header_message: 'S''ha actualitzat l''estat de la proposta ''%{initiativeTitle}'' a la plataforma de participació digital de l'' %{organizationName}.'
@@ -441,51 +471,30 @@ ca:
       subject: 'L''estat d''una proposta que seguiu ha canviat'
       preheader: 'Una proposta que seguiu té un nou estat'
     user_digest:
-      subject: "La teva activitat a la plataforma de participació de %{organizationName}"
+      subject: "Aquesta setmana a la plataforma de participació de %{organizationName}"
       commented: "%{authorFirstName} ha comentat:"
       preheader: "Vista general setmanal de %{organizationName}"
       title_your_weekly_report: "Descobreix què va passar la setmana passada"
       intro_text: "Aquí teniu un resum del que va passar a la plataforma de participació de %{organizationName}."
       cta_go_to_the_platform: "Aneu a la plataforma"
       title_no_activity_past_week: "No hi ha activitat durant la darrera setmana"
-      title_proposals: "Les propostes van començar"
-      proposals_started_text: "Les propostes són idees que necessiten guanyar impuls i suport dels altres (persones com tu!) per tirar endavant. A continuació es mostra una llista de les propostes que s'han presentat durant la darrera setmana. Feu clic a qualsevol d'ells per donar-hi una ullada i oferir el vostre suport i comentaris!"
-      title_successful_proposals: "Propostes que han arribat al llindar"
-      successful_proposals_text: "Aquestes propostes han rebut prou suport per passar a la següent etapa! Feu clic a la proposta per saber més sobre què passarà a continuació."
+      successful_proposals_title: "S'ha arribat al llindar"
+      successful_proposals_text: "La setmana passada, aquests han obtingut prou suport per passar a la següent etapa."
       today_by_author: "Avui a les %{author}"
       yesterday_by_author: "Ahir a les %{author}"
       x_days_ago_by_author: "fa %{x} dies per %{author}"
-      trending_ideas: "Idees tendències"
-      trending_ideas_text: "T'interessa què està passant a la plataforma? Aquí teniu les tres idees més tendències i què diu la gent sobre elles."
+      trending_title: "Tendència"
+      trending_text: "T'interessa què està passant a la plataforma? Aquí teniu les tres contribucions més tendències i què diu la gent sobre elles."
       no_notifications: "No hi ha notificacions"
       one_notification: "1 notificació"
       multiple_notifications: "%{notifCount} notificacions"
-      no_unread_notifications: "No teniu cap notificació no llegida. Visiteu la plataforma per aportar les vostres aportacions i generar noves notificacions!"
+      no_unread_notifications: "No teniu cap notificació no llegida."
       unread_notifications: "Tens notificacions no llegides. Visita la plataforma per descobrir què està passant!"
     threshold_reached_for_admin:
       cta_process_initiative: 'Porta aquesta iniciativa als passos següents'
-      event_description: 'Una iniciativa ha arribat al llindar de votació a la vostra plataforma. Feu clic al botó següent per passar als passos següents!'
-      main_header: 'Una iniciativa ha arribat al llindar de votació!'
-      subject: 'Una iniciativa ha arribat al llindar de votació a la vostra plataforma'
+      main_header: 'Una proposta ha arribat al llindar de votació!'
+      subject: '"%{input_title}" ha arribat al llindar de votació'
       preheader: 'Assegureu-vos de fer els següents passos'
-    first_idea_published:
-      action_add_image: '%{addImageLink} per augmentar la visibilitat'
-      action_comment: '%{textComment} en idees existents'
-      action_published_idea: 'Idea publicada'
-      action_send_email: 'Envia un %{sendEmailLink}als teus contactes'
-      action_share_fb: 'Avisa als teus amics al %{fbLink}'
-      action_share_link: 'Comparteix-lo a través de qualsevol canal copiant el %{link}'
-      action_share_twitter: 'Informa als teus seguidors al %{twitterLink}'
-      add_image: 'Afegeix una imatge'
-      cta_view_idea: 'Ves a la teva idea'
-      event_description: '%{firstName}, felicitats per la teva primera idea a la plataforma de participació de %{organizationName}. Se us notificarà quan la gent interacciona amb la vostra idea. Descobriu quins passos podeu seguir a continuació.'
-      link: enllaç
-      main_header: '%{firstName}, has publicat la teva primera idea!'
-      message_get_votes: 'Arribeu a més persones amb la vostra idea:'
-      preheader: '%{firstName}, felicitats per publicar la teva primera idea a la plataforma de %{organizationName}. Ara recolliu suport per a la vostra idea'
-      see_you: 'Ens veiem aviat a la plataforma!'
-      send_email: correu electrònic
-      subject: 'La teva primera idea a la plataforma de %{organizationName}'
     welcome:
       cta_join_platform: 'Descobreix la plataforma'
       subject: 'Benvinguts a la plataforma de %{organizationName}'
@@ -493,23 +502,43 @@ ca:
       message_welcome: 'Enhorabona, t''has registrat amb èxit a la plataforma de participació de %{organizationName}. Ara pots descobrir la plataforma i fer sentir la teva veu. També pots afegir una foto de perfil i una breu descripció per dir als altres qui ets.'
       preheader: 'Aquí teniu el que podeu fer a la plataforma de %{organizationName}'
     idea_published:
+      subject:
+        idea: 'La teva idea ha estat publicada'
+        question: 'La teva pregunta s''ha publicat'
+        contribution: 'La teva aportació ha estat publicada'
+        project: 'El teu projecte s''ha publicat'
+        issue: 'El teu problema s''ha publicat'
+        option: 'La teva opció ha estat publicada'
+        proposal: 'La teva proposta s''ha publicat'
+        initiative: 'La teva iniciativa ha estat publicada'
+        petition: 'La teva petició s''ha publicat'
+      main_header: 'Has publicat "%{input_title}"'
+      header_message: 'Assegurem-nos que es llegeix.'
+      message_get_votes: 'Arribeu a més gent'
+      action_published_idea: 'Publicat'
       action_add_image: '%{addImageLink} per augmentar la visibilitat'
-      action_published_idea: 'Idea publicada'
-      action_send_email: 'Envia un %{sendEmailLink}als teus contactes'
-      action_share_fb: 'Avisa als teus amics al %{fbLink}'
-      action_share_link: 'Comparteix-lo a través de qualsevol canal copiant el %{link}'
-      action_share_twitter: 'Informa als teus seguidors al %{twitterLink}'
       add_image: 'Afegeix una imatge'
-      cta_view_idea: 'Ves a la teva idea'
-      event_description: '%{firstName}, la teva idea s''ha publicat amb èxit a la plataforma de participació de %{organizationName}. Rebràs una notificació quan la gent interacciona amb la teva idea. Descobriu quins passos podeu seguir a continuació.'
-      link: enllaç
-      main_header: 'Has publicat una idea! Assegurem-nos que es llegeix.'
-      message_get_votes: 'Arribeu a més persones amb la vostra idea:'
-      preheader: '%{firstName}, enhorabona per publicar la teva idea a la plataforma de %{organizationName}. Ara recollir suport.'
-      see_you: 'Ens veiem aviat a la plataforma!'
+      action_share_fb: 'Avisa als teus amics al %{fbLink}'
+      action_share_twitter: 'Informa als teus seguidors al %{twitterLink}'
+      action_send_email: 'Envia un %{sendEmailLink}als teus contactes'
       send_email: correu electrònic
-      subject: 'La teva idea a la plataforma de %{organizationName}'
-      message_next_steps: ""
+      action_share_link: 'Comparteix-lo a través de qualsevol canal copiant el %{link}'
+      link: enllaç
+      preheader: '%{firstName}, enhorabona per publicar la teva aportació a la plataforma de %{organizationName}. Ara recollir suport.'
+    your_input_in_screening:
+      main_header:
+        idea: 'La teva idea està a "%{prescreening_status_title}"'
+        question: 'La teva pregunta és a "%{prescreening_status_title}"'
+        contribution: 'La teva contribució és a "%{prescreening_status_title}"'
+        project: 'El vostre projecte és a "%{prescreening_status_title}"'
+        issue: 'El teu problema és a "%{prescreening_status_title}"'
+        option: 'La vostra opció és a "%{prescreening_status_title}"'
+        proposal: 'La teva proposta és a "%{prescreening_status_title}"'
+        initiative: 'La teva iniciativa és a "%{prescreening_status_title}"'
+        petition: 'La teva petició és a "%{prescreening_status_title}"'
+      message: '"%{input_title}" serà visible per als altres un cop hagi estat revisat i aprovat.'
+      subject: '"%{input_title}" gairebé està publicat'
+      preheader: 'Actualment és a %{prescreening_status_title}'
     your_proposed_initiatives_digest:
       subject: 'Actualització setmanal de les vostres propostes'
       preheader: 'Què ha passat amb les vostres propostes la setmana passada?'
@@ -602,6 +631,7 @@ ca:
         user_who_is_mentioned: 'Usuari que s''esmenta'
         user_who_published_the_proposal: 'Usuari que ha publicat la proposta'
         user_who_published_the_input: 'Usuari que ha publicat l''entrada'
+        user_who_submitted_the_input: 'Usuari que ha enviat l''entrada'
         user_who_registers: 'Usuari que es registra'
         user_who_was_invited: 'Usuari que va ser convidat'
         users_who_engaged_with_the_project: 'Usuaris que han participat amb el projecte'
@@ -646,6 +676,7 @@ ca:
         user_is_invited_to_cosponsor_a_proposal: 'Es convida l''usuari a copatrocinar una proposta'
         user_is_mentioned_in_internal_comment: 'L''usuari s''esmenta al comentari intern'
         new_input_is_published: 'Es publica una nova entrada'
+        new_input_awaits_screening: 'La nova entrada està a l''espera de la projecció'
         new_proposal_is_posted: 'S''ha publicat una nova proposta'
         project_phase_changes: 'Canvis de fase del projecte'
         project_published: 'Projecte publicat'
