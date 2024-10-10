@@ -5,8 +5,8 @@ sv:
     admin_campaign_type_description:
       "inappropriate_content_flagged": Olämpligt innehåll flaggat – administratörer
     inappropriate_content_flagged:
-      subject: 'Ett inlägg har flaggats för granskning'
-      header_title: 'Ett inlägg har flaggats för granskning'
+      subject: 'Ett inlägg på din plattform har flaggats för granskning'
+      header_title: 'Ett inlägg på din plattform har flaggats för granskning'
       author_wrote: '%{authorName} skrev:'
       preheader: 'Ett inlägg på din plattform har flaggats för granskning'
       automatically_flagged: >
