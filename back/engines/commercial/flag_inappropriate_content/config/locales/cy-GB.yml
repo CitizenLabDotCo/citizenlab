@@ -5,8 +5,8 @@ cy:
     admin_campaign_type_description:
       "inappropriate_content_flagged": Amlygwyd cynnwys amhriodol - gweinyddwyr
     inappropriate_content_flagged:
-      subject: 'Mae post wedi''i fflagio i''w hadolygu'
-      header_title: 'Mae post wedi''i fflagio i''w hadolygu'
+      subject: 'Mae postiad ar eich platfform wedi''i fflagio i''w adolygu'
+      header_title: 'Mae postiad ar eich platfform wedi''i fflagio i''w adolygu'
       author_wrote: 'Ysgrifennodd %{authorName} :'
       preheader: 'Mae postiad ar eich platfform wedi''i fflagio i''w adolygu'
       automatically_flagged: >
