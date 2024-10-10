@@ -172,7 +172,7 @@ fr:
         description:
       consponsor_ids:
         title: Coparrainants
-        description: Invitez des co-parrains dans le champ ci-dessous. Le(s) co-sponsor(s) invité(s) recevra(ont) un courriel.
+        description: Invitez des soutiens via le champ ci-dessous. Les personnes invitées recevront un e-mail.
       location:
         title: Adresse
         description:
