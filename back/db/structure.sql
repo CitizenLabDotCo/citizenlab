@@ -1401,9 +1401,11 @@ CREATE VIEW public.analytics_fact_email_deliveries AS
  SELECT ecd.id,
     (ecd.sent_at)::date AS dimension_date_sent_id,
     ecd.campaign_id,
-    ((ecc.type)::text <> 'EmailCampaigns::Campaigns::Manual'::text) AS automated
-   FROM (public.email_campaigns_deliveries ecd
-     JOIN public.email_campaigns_campaigns ecc ON ((ecc.id = ecd.campaign_id)));
+    p.id AS dimension_project_id,
+    ((ecc.type)::text <> ALL ((ARRAY['EmailCampaigns::Campaigns::Manual'::character varying, 'EmailCampaigns::Campaigns::ManualProjectParticipants'::character varying])::text[])) AS automated
+   FROM ((public.email_campaigns_deliveries ecd
+     JOIN public.email_campaigns_campaigns ecc ON ((ecc.id = ecd.campaign_id)))
+     LEFT JOIN public.projects p ON ((p.id = ecc.context_id)));
 
 
 --
@@ -7535,6 +7537,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240923112800'),
 ('20240923112801'),
 ('20240926175000'),
-('20241001101704');
+('20241001101704'),
+('20241008143004');
 
 
