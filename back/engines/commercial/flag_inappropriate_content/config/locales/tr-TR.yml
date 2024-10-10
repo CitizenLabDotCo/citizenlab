@@ -5,8 +5,8 @@ tr:
     admin_campaign_type_description:
       "inappropriate_content_flagged": Uygunsuz içerik işaretlendi - yöneticiler
     inappropriate_content_flagged:
-      subject: 'Bir gönderi incelenmek üzere işaretlendi'
-      header_title: 'Bir gönderi incelenmek üzere işaretlendi'
+      subject: 'Platformunuzdaki bir yayın, incelenmek üzere işaretlendi'
+      header_title: 'Platformunuzdaki bir yayın, incelenmek üzere işaretlendi'
       author_wrote: '%{authorName} yazdı:'
       preheader: 'Platformunuzdaki bir gönderi incelenmek üzere işaretlendi'
       automatically_flagged: >
