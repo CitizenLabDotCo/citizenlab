@@ -51,7 +51,6 @@ resource 'SEO' do
       end
     end
 
-    # TODO: move-old-proposals-test
     context 'when the platform has some ideas and other content' do
       let(:idea_count) { 2 }
       let(:project_count) { 1 }

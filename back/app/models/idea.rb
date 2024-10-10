@@ -196,12 +196,35 @@ class Idea < ApplicationRecord
     end
   end
 
+  scope :with_status_code, lambda { |code|
+    joins(:idea_status).where(idea_statuses: { code: code })
+  }
+
+  # Is the performance of this code okay? We currently have no other data source for status changes
+  scope :with_status_transitioned_after, lambda { |time|
+    idea_ids = Activity.where(item_type: 'Idea', action: 'changed_status', created_at: time..).pluck(:item_id)
+    where(id: idea_ids)
+  }
+
+  def just_submitted?
+    # It would be better to foresee separate endpoints for submission,
+    # rather than relying on Rails dirty to detect publication.
+    from, to = publication_status_previous_change
+    SUBMISSION_STATUSES.exclude?(from) && SUBMISSION_STATUSES.include?(to)
+  end
+
   def just_published?
-    publication_status_previous_change == %w[draft published] || publication_status_previous_change == [nil, 'published']
+    # It would be better to foresee separate endpoints for publication,
+    # rather than relying on Rails dirty to detect publication.
+    from, to = publication_status_previous_change
+    from != 'published' && to == 'published'
   end
 
   def will_be_published?
-    publication_status_change == %w[draft published] || publication_status_change == [nil, 'published']
+    # It would be better to foresee separate endpoints for publication,
+    # rather than relying on Rails dirty to detect publication.
+    from, to = publication_status_change
+    from != 'published' && to == 'published'
   end
 
   def consultation_context
@@ -316,7 +339,7 @@ class Idea < ApplicationRecord
   end
 
   def transitive_input_term
-    current_phase_input_term || last_past_phase_input_term || first_future_phase_input_term || Phase::DEFAULT_INPUT_TERM
+    current_phase_input_term || last_past_phase_input_term || first_future_phase_input_term || Phase::FALLBACK_INPUT_TERM
   end
 
   def current_phase_input_term

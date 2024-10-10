@@ -8,8 +8,8 @@ RSpec.describe EmailCampaigns::ThresholdReachedForAdminMailer do
     let_it_be(:recipient) { create(:user, locale: 'en') }
     let_it_be(:assignee) { create(:admin, locale: 'en') }
     let_it_be(:campaign) { EmailCampaigns::Campaigns::ThresholdReachedForAdmin.create! }
-    let_it_be(:initiative) { create(:initiative, assignee: assignee) }
-    let_it_be(:notification) { create(:threshold_reached_for_admin, recipient: recipient, post: initiative) }
+    let_it_be(:proposal) { create(:proposal, assignee: assignee) }
+    let_it_be(:notification) { create(:threshold_reached_for_admin, recipient: recipient, post: proposal) }
     let_it_be(:command) do
       {
         recipient: recipient,
@@ -21,15 +21,6 @@ RSpec.describe EmailCampaigns::ThresholdReachedForAdminMailer do
           post_url: Frontend::UrlService.new.model_to_url(notification.post, locale: Locale.new(recipient.locale)),
           post_likes_count: notification.post.likes_count,
           post_comments_count: notification.post.comments_count,
-          post_images: notification.post.initiative_images.map do |image|
-            {
-              ordering: image.ordering,
-              versions: image.image.versions.to_h { |k, v| [k.to_s, v.url] }
-            }
-          end,
-          initiative_header_bg: {
-            versions: notification.post.header_bg.versions.to_h { |k, v| [k.to_s, v.url] }
-          },
           assignee_first_name: notification.post.assignee.first_name,
           assignee_last_name: notification.post.assignee.last_name
         }
