@@ -1,13 +1,13 @@
 ca:
   email_campaigns:
     campaign_type_description:
-      "idea_assigned_to_you": Assignació d'una entrada a mi
+      "idea_assigned_to_you": Assignment of an idea to me
     admin_campaign_type_description:
-      "idea_assigned_to_you": 'Assignació d''una entrada: administradors i gestors de projectes'
+      "idea_assigned_to_you": Assignment of an idea - admins and project managers
     idea_assigned_to_you:
       by_author: 'by %{authorName}'
       cta_reply_to: 'Give feedback to %{authorName}'
-      event_description_idea: 'Se t''ha assignat una entrada. Doneu comentaris escrivint una actualització oficial o canviant-ne l''estat.'
-      main_header: '%{firstName}, se t''ha assignat una entrada'
-      subject: 'Se t''ha assignat una entrada a la plataforma de %{organizationName}'
-      preheader_idea: 'Se t''ha assignat l''entrada de %{authorName}'
+      event_description_idea: 'An idea has been assigned to you. Give feedback by writing an official update or by changing its status.'
+      main_header: '%{firstName}, you have a new assignment'
+      subject: 'You have an assignment on the platform of %{organizationName}'
+      preheader_idea: 'The idea of %{authorName} has been assigned to you'
