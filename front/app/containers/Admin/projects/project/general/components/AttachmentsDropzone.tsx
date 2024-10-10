@@ -37,6 +37,7 @@ export default ({
       onFileRemove={handleProjectFileOnRemove}
       files={projectFiles}
       apiErrors={apiErrors}
+      enableDragAndDrop
     />
   </StyledSectionField>
 );
