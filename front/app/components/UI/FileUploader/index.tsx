@@ -66,6 +66,11 @@ const FileUploader = ({
       const updatedFiles = [...files];
       const [movedFile] = updatedFiles.splice(fromIndex, 1);
       updatedFiles.splice(toIndex, 0, movedFile);
+
+      updatedFiles.forEach((file, index) => {
+        file.ordering = index;
+      });
+
       setFiles(updatedFiles);
       onFileReorder?.(updatedFiles);
     }
