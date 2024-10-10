@@ -3,14 +3,11 @@ import React from 'react';
 import { Tr, Td, colors } from '@citizenlab/cl2-component-library';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
-import { IInitiativeAllowedTransitions } from 'api/initiative_allowed_transitions/types';
-import { IInitiativeStatusData } from 'api/initiative_statuses/types';
 import { IPhaseData } from 'api/phases/types';
 
 import { TFilterMenu } from '../../..';
 
 import IdeasStatusSelector from './selectors/IdeasStatusSelector';
-import InitiativesStatusSelector from './selectors/InitiativesStatusSelector';
 import PhasesSelector from './selectors/PhasesSelector';
 import ProjectSelector from './selectors/ProjectSelector';
 import TopicsSelector from './selectors/TopicsSelector';
@@ -23,15 +20,12 @@ interface Props {
   phases?: IPhaseData[];
   selectedTopics?: string[];
   projectId?: string;
-  statuses?: IIdeaStatusData[] | IInitiativeStatusData[] | undefined;
+  statuses?: IIdeaStatusData[];
   selectedStatus: string | undefined;
   // Only ideas can have phases, hence optional
   onUpdatePhases?: (id: string[]) => void;
   onUpdateTopics: (id: string[]) => void;
   onUpdateStatus: (id: string) => void;
-  allowedTransitions: IInitiativeAllowedTransitions | null;
-  /* set allowedTransitions to null to allow all */
-  postType: 'idea' | 'initiative';
 }
 
 const SubRow = ({
@@ -47,8 +41,6 @@ const SubRow = ({
   onUpdatePhases,
   onUpdateTopics,
   onUpdateStatus,
-  allowedTransitions,
-  postType,
 }: Props) => {
   return (
     <Tr className={className} background={active ? colors.grey300 : undefined}>
@@ -70,18 +62,7 @@ const SubRow = ({
         {activeFilterMenu === 'projects' && projectId && (
           <ProjectSelector projectId={projectId} />
         )}
-        {activeFilterMenu === 'statuses' &&
-          postType === 'initiative' &&
-          statuses &&
-          allowedTransitions !== undefined && (
-            <InitiativesStatusSelector
-              statuses={statuses as IInitiativeStatusData[]}
-              selectedStatus={selectedStatus}
-              onUpdateStatus={onUpdateStatus}
-              allowedTransitions={allowedTransitions}
-            />
-          )}
-        {activeFilterMenu === 'statuses' && postType === 'idea' && statuses && (
+        {activeFilterMenu === 'statuses' && statuses && (
           <IdeasStatusSelector
             statuses={statuses as IIdeaStatusData[]}
             selectedStatus={selectedStatus}

@@ -108,7 +108,6 @@ interface Props {
 }
 
 const ideasPath = '/ideas';
-const initiativesPath = '/initiatives';
 const projectsPath = '/projects';
 
 const ModerationRow = memo<Props & WrappedComponentProps>(
@@ -168,13 +167,6 @@ const ModerationRow = memo<Props & WrappedComponentProps>(
     function getViewLink(moderatableType: TModeratableType): RouteType | null {
       if (moderatableType === 'Comment') {
         if (
-          belongsToTypes.includes('initiative') &&
-          moderation.attributes.belongs_to.initiative?.slug
-        ) {
-          return `${initiativesPath}/${moderation.attributes.belongs_to.initiative.slug}`;
-        }
-
-        if (
           belongsToTypes.includes('idea') &&
           moderation.attributes.belongs_to.idea?.slug
         ) {
@@ -184,10 +176,6 @@ const ModerationRow = memo<Props & WrappedComponentProps>(
 
       if (moderatableType === 'Idea') {
         return `${ideasPath}/${moderation.attributes.content_slug}`;
-      }
-
-      if (moderatableType === 'Initiative') {
-        return `${initiativesPath}/${moderation.attributes.content_slug}`;
       }
 
       return null;
@@ -211,7 +199,6 @@ const ModerationRow = memo<Props & WrappedComponentProps>(
             {
               Idea: messages.post,
               Comment: messages.comment,
-              Initiative: messages.initiative,
             }[moderatableType]
           )}
         </Cell>
@@ -221,13 +208,11 @@ const ModerationRow = memo<Props & WrappedComponentProps>(
               const belongsToTypeMessage = {
                 idea: messages.post,
                 project: messages.project,
-                initiative: messages.initiative,
               }[belongsToType];
               const belongsToTitleMultiloc =
                 moderation.attributes.belongs_to[belongsToType]?.title_multiloc;
               const belongsToHref = {
                 idea: `${ideasPath}/${moderation.attributes.belongs_to.idea?.slug}`,
-                initiative: `${initiativesPath}/${moderation.attributes.belongs_to.initiative?.slug}`,
                 project: `${projectsPath}/${moderation.attributes.belongs_to.project?.slug}`,
               }[belongsToType];
 
@@ -277,7 +262,6 @@ const ModerationRow = memo<Props & WrappedComponentProps>(
                 <FormattedMessage
                   {...{
                     Idea: messages.goToPost,
-                    Initiative: messages.goToProposal,
                     Comment: messages.goToComment,
                   }[moderatableType]}
                 />

@@ -108,7 +108,6 @@ const ideationConfig: ParticipationMethodConfig = {
     if (props.ideaIdForSocialSharing && props.title && props.subtitle) {
       return (
         <SharingModalContent
-          postType="idea"
           postId={props.ideaIdForSocialSharing}
           title={props.title}
           subtitle={props.subtitle}
@@ -163,7 +162,6 @@ const proposalsConfig: ParticipationMethodConfig = {
     if (props.ideaIdForSocialSharing && props.title && props.subtitle) {
       return (
         <SharingModalContent
-          postType="idea"
           postId={props.ideaIdForSocialSharing}
           title={props.title}
           subtitle={props.subtitle}

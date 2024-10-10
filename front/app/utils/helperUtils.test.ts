@@ -71,19 +71,6 @@ describe('isPage', () => {
     });
   });
 
-  describe('initiative_form', () => {
-    it('returns true we are at the new initiative form', () => {
-      expect(isPage('initiative_form', '/nl-BE/initiatives/new')).toBe(true);
-    });
-
-    it('returns false when we are not at the new initiative form', () => {
-      expect(isPage('initiative_form', '/en/')).toBe(false);
-      expect(isPage('initiative_form', '/en/initiatives/new-playground')).toBe(
-        false
-      );
-    });
-  });
-
   describe('idea_edit', () => {
     it('returns true we are at the idea edit form', () => {
       expect(
@@ -96,7 +83,6 @@ describe('isPage', () => {
 
     it('returns false when we are not at the idea edit form', () => {
       expect(isPage('idea_edit', '/en/')).toBe(false);
-      expect(isPage('idea_edit', '/en/initiatives/new-playground')).toBe(false);
       expect(isPage('idea_edit', '/en/admin/dashboard')).toBe(false);
       expect(
         isPage('idea_edit', '/en/ideas/edit-this-is-an-example-idea')

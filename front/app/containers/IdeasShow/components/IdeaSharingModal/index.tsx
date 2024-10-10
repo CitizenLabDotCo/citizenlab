@@ -33,7 +33,6 @@ const IdeaSharingModal = ({
       skipText={<>{formatMessage(messages.skipSharing)}</>}
     >
       <SharingModalContent
-        postType="idea"
         postId={newIdeaId}
         title={formatMessage(
           getInputTermMessage(getInputTerm(phases?.data), {

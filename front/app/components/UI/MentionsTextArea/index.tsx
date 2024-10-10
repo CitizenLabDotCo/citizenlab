@@ -5,7 +5,7 @@ import {
   fontSizes,
   defaultStyles,
 } from '@citizenlab/cl2-component-library';
-import { isString, isEmpty, capitalize } from 'lodash-es';
+import { isString, isEmpty } from 'lodash-es';
 import { transparentize } from 'polished';
 import { MentionsInput, Mention, MentionItem } from 'react-mentions';
 import styled, { useTheme } from 'styled-components';
@@ -60,7 +60,6 @@ export interface Props {
   placeholder?: string;
   rows: number;
   postId?: string;
-  postType?: 'idea' | 'initiative';
   error?: JSX.Element | string | null;
   onChange?: (arg: string, locale: SupportedLocale | undefined) => void;
   onFocus?: () => void;
@@ -104,7 +103,6 @@ const MentionsTextArea = ({
   locale,
   getTextareaRef,
   postId,
-  postType,
   id,
   className,
   ariaLabel,
@@ -225,7 +223,6 @@ const MentionsTextArea = ({
       const queryParameters = {
         mention: query.toLowerCase(),
         post_id: postId,
-        post_type: capitalize(postType) as 'Idea' | 'Initiative',
         roles,
       };
 

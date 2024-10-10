@@ -42,7 +42,6 @@ export default defineMessages({
     id: 'app.components.PostComponents.SharingModalContent.petitionEmailSharingSubject',
     defaultMessage: 'Support my petition: {postTitle}.',
   },
-  // #input_term_copy
   ideaEmailSharingBody: {
     id: 'app.components.PostComponents.SharingModalContent.ideaEmailSharingBody',
     defaultMessage: "Support my idea '{postTitle}' at {postUrl}!",
@@ -81,7 +80,6 @@ export default defineMessages({
     id: 'app.components.PostComponents.SharingModalContent.petitionEmailSharingBody',
     defaultMessage: "Support my petition '{postTitle}' at {postUrl}!",
   },
-  // #input_term_copy
   ideaWhatsAppMessage: {
     id: 'app.components.PostComponents.SharingModalContent.ideaWhatsAppMessage',
     defaultMessage: 'Support my idea: {postTitle}.',

@@ -37,55 +37,40 @@ const Topic = styled.div`
 interface Props {
   postTopicIds: string[];
   className?: string;
-  postType: 'idea' | 'initiative';
   showTitle?: boolean;
 }
 
-const Topics = memo(
-  ({ postTopicIds, className, postType, showTitle }: Props) => {
-    const { formatMessage } = useIntl();
-    const theme = useTheme();
-    return (
-      <Box display="flex" flexDirection="column">
-        {showTitle && (
-          <Title variant="h3">{formatMessage(messages.topics)}</Title>
-        )}
-        <Box
-          id={`e2e-${postType}-topics`}
-          className={className}
-          display="flex"
-          flexDirection={theme.isRtl ? 'row-reverse' : 'row'}
-          flexWrap="wrap"
-        >
-          {postTopicIds.map((topicId: string) => {
-            return (
-              <TopicComponent
-                key={topicId}
-                topicId={topicId}
-                postType={postType}
-              />
-            );
-          })}
-        </Box>
+const Topics = memo(({ postTopicIds, className, showTitle }: Props) => {
+  const { formatMessage } = useIntl();
+  const theme = useTheme();
+  return (
+    <Box display="flex" flexDirection="column">
+      {showTitle && (
+        <Title variant="h3">{formatMessage(messages.topics)}</Title>
+      )}
+      <Box
+        id={`e2e-idea-topics`}
+        className={className}
+        display="flex"
+        flexDirection={theme.isRtl ? 'row-reverse' : 'row'}
+        flexWrap="wrap"
+      >
+        {postTopicIds.map((topicId: string) => {
+          return <TopicComponent key={topicId} topicId={topicId} />;
+        })}
       </Box>
-    );
-  }
-);
+    </Box>
+  );
+});
 
-const TopicComponent = ({
-  topicId,
-  postType,
-}: {
-  topicId: string;
-  postType: 'idea' | 'initiative';
-}) => {
+const TopicComponent = ({ topicId }: { topicId: string }) => {
   const { data: topic } = useTopic(topicId);
   const localize = useLocalize();
 
   if (!topic) return null;
 
   return (
-    <Topic className={`e2e-${postType}-topic`}>
+    <Topic className={`e2e-idea-topic`}>
       {localize(topic.data.attributes.title_multiloc)}
     </Topic>
   );

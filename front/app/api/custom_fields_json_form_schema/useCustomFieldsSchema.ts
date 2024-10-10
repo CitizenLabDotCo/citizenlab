@@ -22,7 +22,7 @@ const fetchUserCustomFieldsSchema = (
 ) => {
   const { type, action } = authenticationContext;
 
-  if (type === 'initiative' || type === 'global' || type === 'follow') {
+  if (type === 'global' || type === 'follow') {
     return fetcher<SchemaResponse>({
       path: `/permissions/${action}/schema`,
       action: 'get',

@@ -19,7 +19,6 @@ import Events from '../CraftComponents/Events';
 import Highlight from '../CraftComponents/Highlight';
 import HomepageBanner from '../CraftComponents/HomepageBanner';
 import Projects from '../CraftComponents/Projects';
-import Proposals from '../CraftComponents/Proposals';
 
 type EditorProps = {
   children?: React.ReactNode;
@@ -48,7 +47,6 @@ const Editor: React.FC<EditorProps> = ({
         ButtonMultiloc,
         HomepageBanner,
         Projects,
-        Proposals,
         Events,
         Highlight,
       }}
