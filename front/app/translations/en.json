@@ -1419,6 +1419,7 @@
   "app.containers.NotificationMenu.internalCommentOnYourInternalComment": "{name} commented on your internal comment",
   "app.containers.NotificationMenu.invitationToCosponsorContribution": "{name} invited you to co-sponsor a contribution",
   "app.containers.NotificationMenu.invitationToCosponsorIdea": "{name} invited you to co-sponsor an idea",
+  "app.containers.NotificationMenu.invitationToCosponsorInitiative": "{name} invited you to co-sponsor an initiative",
   "app.containers.NotificationMenu.invitationToCosponsorIssue": "{name} invited you to co-sponsor an issue",
   "app.containers.NotificationMenu.invitationToCosponsorOption": "{name} invited you to co-sponsor an option",
   "app.containers.NotificationMenu.invitationToCosponsorPetition": "{name} invited you to co-sponsor a petition",
