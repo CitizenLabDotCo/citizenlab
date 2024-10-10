@@ -51,7 +51,6 @@ resource 'SEO' do
       end
     end
 
-    # TODO: move-old-proposals-test
     context 'when the platform has some ideas and other content' do
       let(:idea_count) { 2 }
       let(:project_count) { 1 }
@@ -61,7 +60,6 @@ resource 'SEO' do
         create_list(:project, project_count)
         create(:project_folder)
         create_list(:idea, idea_count, project: Project.first)
-        create(:initiative)
         create(:static_page)
         do_request
       end
@@ -75,7 +73,6 @@ resource 'SEO' do
                          (idea_count    * url_count_per_idea    * locales_count) +
                          (project_count * url_count_per_project * locales_count) +
                          (1 * locales_count) + # project folders
-                         (1 * locales_count) + # initiatives
                          (1 * locales_count) # static pages
         expect(sitemap.search('url').count).to eq expected_count
       end

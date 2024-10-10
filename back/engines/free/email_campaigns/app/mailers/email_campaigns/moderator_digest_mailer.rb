@@ -7,7 +7,7 @@ module EmailCampaigns
     helper_method :change_ideas, :change_comments, :change_users
 
     def subject
-      format_message('subject', values: { time: formatted_todays_date })
+      format_message('subject', values: { project_title: event.project_title })
     end
 
     def header_title
