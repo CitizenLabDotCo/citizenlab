@@ -29,6 +29,11 @@ export const ideasData: IIdeaData[] = [
       baskets_count: 0,
       votes_count: 0,
       action_descriptors: {
+        editing_idea: {
+          enabled: true,
+          disabled_reason: null,
+          future_enabled_at: null,
+        },
         reacting_idea: {
           enabled: true,
           disabled_reason: null,

@@ -80,15 +80,9 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def show?
-    active_moderator? || (
-      %w[published archived].include?(record.admin_publication.publication_status) && (
-        record.visible_to == 'public' || (
-          user &&
-          record.visible_to == 'groups' &&
-          user.in_any_groups?(record.groups)
-        )
-      )
-    )
+    return false if Permissions::ProjectPermissionsService.new(record, user).project_visible_disabled_reason
+
+    active_moderator? || %w[published archived].include?(record.admin_publication.publication_status)
   end
 
   def by_slug?

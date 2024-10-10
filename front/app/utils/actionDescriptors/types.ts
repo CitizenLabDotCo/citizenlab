@@ -70,6 +70,13 @@ export type IdeaVotingDisabledReason =
   | 'idea_not_in_current_phase'
   | ProjectVotingDisabledReason;
 
+export type IdeaEditingDisabledReason =
+  | 'idea_not_in_current_phase'
+  | 'votes_exist'
+  | 'published_after_screening'
+  | 'not_author'
+  | ProjectDisabledReason;
+
 export type ActionDescriptor<DisabledReason> =
   | { enabled: true; disabled_reason: null }
   | { enabled: false; disabled_reason: DisabledReason };
