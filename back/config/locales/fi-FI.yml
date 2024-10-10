@@ -212,6 +212,12 @@ fi:
           title: Mikä on kommenttisi?
         option:
           title: Mikä on vaihtoehtosi?
+        proposal:
+          title: Mikä on ehdotuksesi?
+        initiative:
+          title: Mikä on aloitteesi?
+        petition:
+          title: Mikä on vetoomuksenne?
   custom_field_options:
     gender:
       male: Mies

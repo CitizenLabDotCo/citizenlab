@@ -212,6 +212,12 @@ sv:
           title: Vad är ditt problem?
         option:
           title: Vad är ditt alternativ?
+        proposal:
+          title: Vad är ditt förslag?
+        initiative:
+          title: Vad är ditt initiativ?
+        petition:
+          title: Vad är din framställan?
   custom_field_options:
     gender:
       male: Man

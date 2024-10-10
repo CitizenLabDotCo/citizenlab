@@ -212,6 +212,12 @@ ca:
           title: Quin és el vostre comentari?
         option:
           title: Quina és la vostra opció ?
+        proposal:
+          title: Quina és la teva proposta?
+        initiative:
+          title: Quina és la teva iniciativa?
+        petition:
+          title: Quina és la teva petició?
   custom_field_options:
     gender:
       male: Mascle

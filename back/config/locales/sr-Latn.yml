@@ -212,6 +212,12 @@ sr-Latn:
           title: Šta je vaša tema ?
         option:
           title: Šta je vaša opcija ?
+        proposal:
+          title: What is your proposal?
+        initiative:
+          title: What is your initiative?
+        petition:
+          title: What is your petition?
   custom_field_options:
     gender:
       male: Muškarac

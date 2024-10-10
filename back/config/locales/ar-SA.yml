@@ -212,6 +212,12 @@ ar:
           title: ما مشكلتك؟
         option:
           title: ما خيارك؟
+        proposal:
+          title: ما هو اقتراحك؟
+        initiative:
+          title: ما هي مبادرتك؟
+        petition:
+          title: ما هي عريضتك؟
   custom_field_options:
     gender:
       male: ذكر

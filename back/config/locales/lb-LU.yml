@@ -212,6 +212,12 @@ lb:
           title: Wat ass Är Ugeleeënheet ?
         option:
           title: Wat ass Är Optioun?
+        proposal:
+          title: Wat ass Är Propositioun?
+        initiative:
+          title: Wat ass Är Initiativ?
+        petition:
+          title: Wat ass Är Petitioun?
   custom_field_options:
     gender:
       male: Männlech

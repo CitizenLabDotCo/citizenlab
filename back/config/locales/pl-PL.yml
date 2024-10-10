@@ -212,6 +212,12 @@ pl:
           title: Jaka jest Twoja sprawa ?
         option:
           title: Jaka jest Twója opcja?
+        proposal:
+          title: Jaka jest twoja propozycja?
+        initiative:
+          title: Jaka jest twoja inicjatywa?
+        petition:
+          title: Jaka jest twoja petycja?
   custom_field_options:
     gender:
       male: Mężczyzna
