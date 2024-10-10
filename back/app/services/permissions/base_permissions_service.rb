@@ -6,6 +6,7 @@ module Permissions
       posting_initiative
       commenting_initiative
       reacting_initiative
+      editing_idea
       posting_idea
       commenting_idea
       reacting_idea
@@ -40,6 +41,7 @@ module Permissions
     def denied_reason_for_action(action, scope: nil)
       return BASE_DENIED_REASONS[:not_supported] unless supported_action? action
 
+      action = 'posting_idea' if action == 'editing_idea' # Needed because there are no permissions for editing_idea
       permission = find_permission(action, scope: scope)
       user_denied_reason(permission)
     end
