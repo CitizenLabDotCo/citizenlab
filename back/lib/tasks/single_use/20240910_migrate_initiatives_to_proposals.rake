@@ -146,14 +146,10 @@ def rake_20240910_substitute_homepage_element(project, reporter)
       'props' => {
         'title' => rake_20240910_migrate_homepage_title_multiloc,
         'description' => rake_20240910_migrate_homepage_description_multiloc,
-        'primaryButtonLink' => "/projects/#{project.slug}/ideas/new?phase_id=#{project.phases.first.id}",
-        'primaryButtonText' => {
-          'en' => 'Post your proposal'
-        },
-        'secondaryButtonLink' => "/projects/#{project.slug}",
-        'secondaryButtonText' => {
-          'en' => 'Explore all proposals'
-        }
+        'primaryButtonLink' => "/projects/#{project.slug}",
+        'primaryButtonText' => rake_20240910_migrate_homepage_explore_multiloc,
+        'secondaryButtonLink' => '',
+        'secondaryButtonText' => {}
       },
       'custom' => {
         'title' => {
@@ -772,6 +768,44 @@ def rake_20240910_migrate_homepage_description_multiloc
   end
 
   multiloc
+end
+
+def rake_20240910_migrate_homepage_explore_multiloc
+  {
+    "ar-MA" => "استكشف جميع المُقترحات",
+    "ar-SA" => "استكشف جميع المُقترحات",
+    "ca-ES" => "Exploreu totes les propostes",
+    "cy-GB" => "Archwiliwch yr holl gynigion",
+    "da-DK" => "Se alle forslag",
+    "de-DE" => "Alle Vorschläge erkunden",
+    "el-GR" => "Εξερευνήστε όλες τις προτάσεις",
+    "en-CA" => "Explore all proposals",
+    "en-GB" => "Explore all proposals",
+    "en-IE" => "Explore all proposals",
+    "en" => "Explore all proposals",
+    "es-CL" => "Explora todas las iniciativas",
+    "es-ES" => "Explora todas las propuestas",
+    "fi-FI" => "Tutustu kaikkiin ehdotuksiin",
+    "fr-BE" => "Explorez toutes les propositions",
+    "fr-FR" => "Explorez toutes les propositions",
+    "hr-HR" => "Istražite sve prijedloge",
+    "hu-HU" => "Explore all proposals",
+    "it-IT" => "Esplora tutte le proposte",
+    "kl-GL" => "Innuttaasut siunnersuutaat tamaasa takukkit",
+    "lb-LU" => "Entdeckt all dVirschléi",
+    "lv-LV" => "Izpētīt visus priekšlikumus",
+    "mi" => "Tūhuratia ngā tono katoa",
+    "nb-NO" => "Utforsk alle forslag",
+    "nl-BE" => "Ontdek alle voorstellen",
+    "nl-NL" => "Ontdek alle voorstellen",
+    "pl-PL" => "Zapoznaj się z wszystkimi propozycjami",
+    "pt-BR" => "Explore todas as propostas",
+    "ro-RO" => "Explorează toate propunerile",
+    "sr-Latn" => "Istražite sve predloge",
+    "sr-SP" => "Истражите све предлоге",
+    "sv-SE" => "Utforska alla förslag",
+    "tr-TR" => "Tüm önerileri inceleyin"
+  }
 end
 
 # rubocop:enable Style/StringLiterals
