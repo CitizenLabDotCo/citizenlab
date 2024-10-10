@@ -58,7 +58,7 @@ class WebApi::V1::FilesController < ApplicationController
   }
 
   before_action :set_container, only: %i[index create]
-  before_action :set_file, only: %i[show destroy]
+  before_action :set_file, only: %i[show destroy update]
   skip_after_action :verify_policy_scoped
 
   def index
@@ -79,6 +79,14 @@ class WebApi::V1::FilesController < ApplicationController
         @file,
         params: jsonapi_serializer_params
       ).serializable_hash, status: :created
+    else
+      render json: { errors: transform_carrierwave_error_details(@file.errors, :file) }, status: :unprocessable_entity
+    end
+  end
+
+  def update
+    if @file.update(file_params)
+      render json: WebApi::V1::FileSerializer.new(@file, params: jsonapi_serializer_params).serializable_hash, status: :ok
     else
       render json: { errors: transform_carrierwave_error_details(@file.errors, :file) }, status: :unprocessable_entity
     end
