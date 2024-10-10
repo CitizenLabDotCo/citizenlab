@@ -97,7 +97,7 @@ describe SideFxIdeaService do
       idea = create(:idea, publication_status: 'draft', author: user)
       idea.update!(publication_status: 'submitted')
 
-      expect { service.after_update(idea, user) }
+      expect { service.after_update(idea, user, []) }
         .to enqueue_job(LogActivityJob)
         .with(idea, 'submitted', user, idea.submitted_at.to_i, project_id: idea.project_id)
         .exactly(1).times
@@ -107,7 +107,7 @@ describe SideFxIdeaService do
       idea = create(:idea, publication_status: 'draft', author: user)
       idea.update!(publication_status: 'published')
 
-      expect { service.after_update(idea, user) }
+      expect { service.after_update(idea, user, []) }
         .to enqueue_job(LogActivityJob)
         .with(idea, 'submitted', user, idea.submitted_at.to_i, project_id: idea.project_id)
         .exactly(1).times
@@ -116,7 +116,7 @@ describe SideFxIdeaService do
     it "doesn't log a 'submitted' action job when the publication_status goes from submitted to published" do
       idea = create(:idea, publication_status: 'submitted', author: user)
       idea.update!(publication_status: 'published')
-      expect { service.after_update(idea, user) }
+      expect { service.after_update(idea, user, []) }
         .not_to enqueue_job(LogActivityJob)
         .with(idea, 'submitted', any_args)
     end
@@ -125,7 +125,7 @@ describe SideFxIdeaService do
       idea = create(:idea, publication_status: 'draft', author: user)
       idea.update!(publication_status: 'published')
 
-      expect { service.after_update(idea, user) }
+      expect { service.after_update(idea, user, []) }
         .to enqueue_job(LogActivityJob)
         .with(idea, 'published', user, idea.published_at.to_i, project_id: idea.project_id)
         .exactly(1).times
