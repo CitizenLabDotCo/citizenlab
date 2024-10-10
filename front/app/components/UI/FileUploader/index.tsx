@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { DndProvider } from 'react-dnd';
@@ -29,13 +29,23 @@ const FileUploader = ({
   onFileAdd,
   onFileRemove,
   onFileReorder,
-  files,
+  files: initialFiles,
   apiErrors,
   id,
   className,
 }: Props) => {
+  const [files, setFiles] = useState<FileType[]>(initialFiles || []);
+
+  useEffect(() => {
+    if (initialFiles) {
+      setFiles(initialFiles);
+    }
+  }, [initialFiles]);
+
   const handleFileOnAdd = (fileToAdd: UploadFile) => {
     if (!files?.find((file) => file.base64 === fileToAdd.base64)) {
+      const updatedFiles = [...files, fileToAdd as FileType];
+      setFiles(updatedFiles);
       onFileAdd(fileToAdd);
     }
   };
@@ -44,6 +54,8 @@ const FileUploader = ({
     (fileToRemove: FileType) => (event: React.FormEvent) => {
       event.preventDefault();
       event.stopPropagation();
+      const updatedFiles = files.filter((file) => file.id !== fileToRemove.id);
+      setFiles(updatedFiles);
       onFileRemove?.(fileToRemove);
     };
 
@@ -52,6 +64,7 @@ const FileUploader = ({
       const updatedFiles = [...files];
       const [movedFile] = updatedFiles.splice(fromIndex, 1);
       updatedFiles.splice(toIndex, 0, movedFile);
+      setFiles(updatedFiles);
       onFileReorder?.(updatedFiles);
     }
   };
