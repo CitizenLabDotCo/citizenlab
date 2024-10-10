@@ -531,7 +531,7 @@ def rake_20240910_migrate_project_title_multiloc
     multiloc['da-DK'] = 'Opret dit forslag her og sæt det på dagsordenen hos Holbæk Kommune'
   end
   multiloc.to_h do |key, value|
-    org_name = Locale.new(key).resolve_multiloc(AppConfiguration.instance.settings('core', 'organization_name'))
+    org_name = Locale.new(key).resolve_multiloc(AppConfiguration.instance.settings('core', 'organization_name')) || ''
     [key, value.gsub('{styledOrgName}', org_name)]
   end
 end
@@ -648,7 +648,7 @@ def rake_20240910_migrate_project_description_multiloc
     "tr-TR" => "Önerilerin işleyiş şekli hakkında daha fazla bilgi edinin."
   }
   multiloc_content.to_h do |key, value|
-    org_name = Locale.new(key).resolve_multiloc(config.settings('core', 'organization_name'))
+    org_name = Locale.new(key).resolve_multiloc(config.settings('core', 'organization_name')) || ''
     new_value = value.gsub('{orgName}', org_name)
     new_value = if page_slug
       link = "/#{key}/pages/#{page_slug}"
