@@ -273,35 +273,6 @@ models:
     top_info_section_multiloc: static_pages.terms_and_conditions_body
     top_info_section_enabled: true
     slug: terms-and-conditions
-  - &initiatives-page
-    code: proposals
-    title_multiloc: static_pages.initiatives_title
-    top_info_section_multiloc: static_pages.initiatives_body
-    top_info_section_enabled: true
-    files_section_enabled: true
-    slug: initiatives
-    text_images_attributes:
-      - imageable_field: top_info_section_multiloc
-        remote_image_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_in_meeting_graphic.png
-        text_reference: 493c1992-608d-4666-90f0-20d38071353d
-      - imageable_field: top_info_section_multiloc
-        remote_image_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_in_meeting_graphic.png
-        text_reference: d5917ff6-985c-479b-bfb5-4b9d424f0933
-      - imageable_field: top_info_section_multiloc
-        remote_image_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_in_meeting_graphic.png
-        text_reference: b4e659ab-2830-48fd-b3ce-96e16856262f
-      - imageable_field: top_info_section_multiloc
-        remote_image_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_in_meeting_graphic.png
-        text_reference: 43f82d75-2aa1-41ab-8c45-9c8ba9dff49f
-      - imageable_field: top_info_section_multiloc
-        remote_image_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_in_meeting_graphic.png
-        text_reference: ba16670d-e551-46af-8ba4-51250fb97439
-      - imageable_field: top_info_section_multiloc
-        remote_image_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_in_meeting_graphic.png
-        text_reference: b4974fd9-7681-4acd-951b-a3979ffc55b0
-      - imageable_field: top_info_section_multiloc
-        remote_image_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_in_meeting_graphic.png
-        text_reference: 85a9e561-4c27-4f6b-949a-d8e06905787b
   - &faq-page
     code: faq
     title_multiloc: static_pages.faq_title

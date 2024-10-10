@@ -17,10 +17,10 @@ describe NavBarItemService do
 
   describe '#auto_reposition!' do
     it 'positions within defaults when all defaults are present in correct order' do
-      %w[home projects proposals all_input custom].each { |c| create(:nav_bar_item, code: c) }
+      %w[home projects all_input custom].each { |c| create(:nav_bar_item, code: c) }
       item = create(:nav_bar_item, code: 'events')
       service.auto_reposition! item
-      expect(NavBarItem.order(:ordering).pluck(:code)).to eq %w[home projects proposals events all_input custom]
+      expect(NavBarItem.order(:ordering).pluck(:code)).to eq %w[home projects events all_input custom]
     end
 
     it 'positions within defaults when some defaults are missing but present in correct order' do
@@ -39,16 +39,16 @@ describe NavBarItemService do
 
     it 'positions behind defaults when default items are not in right order but all custom items occur at the end' do
       %w[projects all_input home custom custom].each { |c| create(:nav_bar_item, code: c) }
-      item = create(:nav_bar_item, code: 'proposals')
+      item = create(:nav_bar_item, code: 'events')
       service.auto_reposition! item
-      expect(NavBarItem.order(:ordering).pluck(:code)).to eq %w[projects all_input home proposals custom custom]
+      expect(NavBarItem.order(:ordering).pluck(:code)).to eq %w[projects all_input home events custom custom]
     end
 
     it 'positions within defaults when sequences occur behind desired position' do
-      %w[projects all_input custom events].each { |c| create(:nav_bar_item, code: c) }
-      item = create(:nav_bar_item, code: 'proposals')
+      %w[home all_input custom events].each { |c| create(:nav_bar_item, code: c) }
+      item = create(:nav_bar_item, code: 'projects')
       service.auto_reposition! item
-      expect(NavBarItem.order(:ordering).pluck(:code)).to eq %w[projects proposals all_input custom events]
+      expect(NavBarItem.order(:ordering).pluck(:code)).to eq %w[home projects all_input custom events]
     end
 
     it 'positions before custom items when there are no default items' do

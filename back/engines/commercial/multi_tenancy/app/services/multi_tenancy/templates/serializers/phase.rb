@@ -25,6 +25,9 @@ module MultiTenancy
           reacting_enabled
           baskets_count
           votes_count
+          prescreening_enabled
+          expire_days_limit
+          reacting_threshold
         ]
 
         attribute(:start_at) { |phase| serialize_timestamp(phase.start_at) }
