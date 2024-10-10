@@ -60,7 +60,7 @@ describe('Admin: proposal phase', () => {
     cy.get('#e2e-project-page').should('contain.text', projectTitleEN);
     cy.get('#e2e-ideation-cta-button').should(
       'have.text',
-      'Submit your idea' // Change to proposal later
+      'Submit your proposal'
     );
   });
 });
