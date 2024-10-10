@@ -17,7 +17,7 @@ const updateProjectFile = async ({
     body: requestBody,
   });
 
-const useAddProjectFile = () => {
+const useUpdateProjectFile = () => {
   const queryClient = useQueryClient();
   return useMutation<IProjectFile, CLErrors, UpdateProjectFileObject>({
     mutationFn: updateProjectFile,
@@ -31,4 +31,4 @@ const useAddProjectFile = () => {
   });
 };
 
-export default useAddProjectFile;
+export default useUpdateProjectFile;
