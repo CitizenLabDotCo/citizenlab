@@ -8,7 +8,6 @@ import {
   IconButton,
 } from '@citizenlab/cl2-component-library';
 import { lighten } from 'polished';
-import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
 
 import { ScreenReaderOnly } from 'utils/a11y';
@@ -81,6 +80,7 @@ export interface FileType {
   name: string;
   size: number;
   error?: string[];
+  ordering?: number;
 }
 
 interface Props {
