@@ -430,9 +430,9 @@ export default defineMessages({
       "Voting results won't be shared at the end of the phase unless you modify it in the phase setup.",
   },
   votingShareResultsTurnedOn: {
-    id: 'app.containers.AdminPage.ProjectEdit.PostManager.votingShareResultsTurnedOn',
+    id: 'app.containers.AdminPage.ProjectEdit.PostManager.votingShareResultsTurnedOn2',
     defaultMessage:
-      'These results will be automatically shared once the phase ends. Modify the end of this phase to change when the results are shared.',
+      'These results will be automatically shared once the phase ends. Modify the end date of this phase to change when the results are shared.',
   },
   subtitleInputProjectProposals: {
     id: 'app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputProjectProposals',
