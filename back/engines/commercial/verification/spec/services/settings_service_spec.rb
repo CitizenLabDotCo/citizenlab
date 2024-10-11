@@ -25,11 +25,11 @@ describe SettingsService do
           'enabled' => true,
           'verification_methods' => [
             {
-              'name' => "nemlog_in",
+              'name' => 'nemlog_in',
               'hide_in_profile' => true
             },
             {
-              'name' => "keycloak",
+              'name' => 'keycloak',
               'hide_in_profile' => true
             }
           ]
@@ -47,10 +47,10 @@ describe SettingsService do
           'enabled' => true,
           'verification_methods' => [
             {
-              'name' => "nemlog_in"
+              'name' => 'nemlog_in'
             },
             {
-              'name' => "keycloak",
+              'name' => 'keycloak',
               'hide_in_profile' => true
             }
           ]

@@ -5,7 +5,7 @@ module Verification
     module SettingsService
       def format_for_front_end(settings, schema)
         settings = disable_verification_if_no_methods_enabled(settings)
-        super(settings, schema)
+        super
       end
 
       private
@@ -14,7 +14,7 @@ module Verification
       # a) There are no verification methods
       # b) All verification methods are flagged as 'hide_from_profile'
       def disable_verification_if_no_methods_enabled(settings)
-        return settings if settings['verification']['enabled'] == false
+        return settings if !settings['verification'] || settings['verification']['enabled'] == false
 
         enabled = settings['verification']['verification_methods'].present?
         enabled = false if settings['verification']['verification_methods']&.pluck('hide_in_profile')&.all?(true)
