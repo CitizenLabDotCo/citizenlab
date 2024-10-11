@@ -17,5 +17,9 @@ module Verification
         .symbolize_keys
         .presence
     end
+
+    def show_in_user_profile?
+      false
+    end
   end
 end

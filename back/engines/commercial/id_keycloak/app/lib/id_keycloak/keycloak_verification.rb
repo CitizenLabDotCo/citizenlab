@@ -22,8 +22,11 @@ module IdKeycloak
         domain
         client_id
         client_secret
+        hide_from_profile
       ]
     end
+
+    # TODO: JS - Implement hide_from_profile
 
     def config_parameters_schema
       {
@@ -55,6 +58,10 @@ module IdKeycloak
 
     def updateable_user_attrs
       super + %i[first_name last_name]
+    end
+
+    def show_in_user_profile?
+      false
     end
   end
 end
