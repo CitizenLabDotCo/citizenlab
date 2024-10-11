@@ -420,6 +420,20 @@ export default defineMessages({
     defaultMessage:
       'Give feedback, assign topics or copy inputs to the next project phase.',
   },
+  votingShareResultsTurnedOff: {
+    id: 'app.containers.AdminPage.ProjectEdit.PostManager.votingShareResultsTurnedOff',
+    defaultMessage: 'Result sharing is turned off.',
+  },
+  votingShareResultsTurnedOff2: {
+    id: 'app.containers.AdminPage.ProjectEdit.PostManager.votingShareResultsTurnedOff2',
+    defaultMessage:
+      "Voting results won't be shared at the end of the phase unless you modify it in the phase setup.",
+  },
+  votingShareResultsTurnedOn: {
+    id: 'app.containers.AdminPage.ProjectEdit.PostManager.votingShareResultsTurnedOn',
+    defaultMessage:
+      'These results will be automatically shared once the phase ends. Modify the end of this phase to change when the results are shared.',
+  },
   subtitleInputProjectProposals: {
     id: 'app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputProjectProposals',
     defaultMessage: 'Manage proposals, give feedback and assign topics.',
