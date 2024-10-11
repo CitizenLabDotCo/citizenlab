@@ -10,8 +10,9 @@
 #
 # Indexes
 #
-#  index_areas_projects_on_area_id     (area_id)
-#  index_areas_projects_on_project_id  (project_id)
+#  index_areas_projects_on_area_id                 (area_id)
+#  index_areas_projects_on_project_id              (project_id)
+#  index_areas_projects_on_project_id_and_area_id  (project_id,area_id) UNIQUE
 #
 # Foreign Keys
 #
