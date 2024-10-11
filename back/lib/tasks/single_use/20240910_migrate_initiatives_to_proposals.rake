@@ -3,48 +3,55 @@ namespace :initiatives_to_proposals do
   task :migrate_proposals, [] => [:environment] do
     reporter = ScriptReporter.new
     Tenant.safe_switch_each do |tenant|
-      puts "Migrating initiatives to proposals for #{tenant.host}"
-      next if !AppConfiguration.instance.feature_activated?('initiatives') && !Initiative.exists?
+      begin
+        puts "Migrating initiatives to proposals for #{tenant.host}"
+        # next if %w[copenhagenmigrated.epic.citizenlab.co kobenhavntaler.kk.dk].exclude? tenant.host ### TODO: DELETE THIS LINE
+        next if !AppConfiguration.instance.feature_activated?('initiatives') && !Initiative.exists?
 
-      SettingsService.new.activate_feature!('input_cosponsorship') if AppConfiguration.instance.feature_activated?('initiative_cosponsors')
+        SettingsService.new.activate_feature!('input_cosponsorship') if AppConfiguration.instance.feature_activated?('initiative_cosponsors')
 
-      project = rake_20240910_create_proposals_project(reporter)
-      next if !project
+        project = rake_20240910_create_proposals_project(reporter)
+        next if !project
 
-      rake_20240910_substitute_homepage_element(project, reporter)
-      rake_20240910_replace_navbaritem(project, reporter)
-      rake_20240910_migrate_input_statuses(reporter)
-      Initiative.where.not(publication_status: 'draft').each do |initiative|
-        proposal_attributes = rake_20240910_proposal_attributes(initiative, project)
-        proposal = Idea.new proposal_attributes
-        next if !rake_20240910_assign_idea_status(proposal, initiative, reporter)
+        rake_20240910_substitute_homepage_element(project, reporter)
+        rake_20240910_replace_navbaritem(project, reporter)
+        rake_20240910_migrate_input_statuses(reporter)
+        Initiative.where.not(publication_status: 'draft').each do |initiative|
+          proposal_attributes = rake_20240910_proposal_attributes(initiative, project)
+          proposal = Idea.new proposal_attributes
+          next if !rake_20240910_assign_idea_status(proposal, initiative, reporter)
 
-        rake_20240910_assign_publication(proposal, initiative)
-        if proposal.save
-          reporter.add_create(
-            'Proposal',
-            proposal_attributes,
-            context: { tenant: tenant.host, proposal: initiative.slug }
-          )
-        else
-          reporter.add_error(
-            proposal.errors.details,
-            context: { tenant: tenant.host, proposal: proposal.slug }
-          )
-          next
+          rake_20240910_assign_publication(proposal, initiative)
+          if proposal.save
+            reporter.add_create(
+              'Proposal',
+              proposal_attributes,
+              context: { tenant: tenant.host, proposal: initiative.slug }
+            )
+          else
+            reporter.add_error(
+              proposal.errors.details,
+              context: { tenant: tenant.host, proposal: proposal.slug }
+            )
+            next
+          end
+          rake_20240910_migrate_status_changes(proposal, initiative, reporter)
+          rake_20240910_migrate_images_files(proposal, initiative, reporter)
+          rake_20240910_migrate_topics(proposal, initiative, reporter)
+          rake_20240910_migrate_reactions(proposal, initiative, reporter)
+          rake_20240910_migrate_spam_reports(proposal, initiative, reporter)
+          rake_20240910_migrate_comments(proposal, initiative, reporter)
+          rake_20240910_migrate_official_feedback(proposal, initiative, reporter)
+          rake_20240910_migrate_followers(proposal, initiative, reporter)
+          rake_20240910_migrate_cosponsors(proposal, initiative, reporter)
         end
-        rake_20240910_migrate_status_changes(proposal, initiative, reporter)
-        rake_20240910_migrate_images_files(proposal, initiative, reporter)
-        rake_20240910_migrate_topics(proposal, initiative, reporter)
-        rake_20240910_migrate_reactions(proposal, initiative, reporter)
-        rake_20240910_migrate_spam_reports(proposal, initiative, reporter)
-        rake_20240910_migrate_comments(proposal, initiative, reporter)
-        rake_20240910_migrate_official_feedback(proposal, initiative, reporter)
-        rake_20240910_migrate_followers(proposal, initiative, reporter)
-        rake_20240910_migrate_cosponsors(proposal, initiative, reporter)
+        rake_20240910_migrate_initiatives_static_page(reporter)
+        SettingsService.new.deactivate_feature!('initiatives')
+        reporter.report!('migrate_initiatives_to_proposals.json', verbose: false)
+      rescue ActiveRecord::StatementInvalid => e
+        puts "Error occurred during migration: #{e.message}"
+        reporter.add_error(e.message)
       end
-      rake_20240910_migrate_initiatives_static_page(reporter)
-      SettingsService.new.deactivate_feature!('initiatives')
     end
     reporter.report!('migrate_initiatives_to_proposals.json', verbose: true)
   end
@@ -191,13 +198,25 @@ def rake_20240910_replace_navbaritem(project, reporter)
 end
 
 def rake_20240910_migrate_input_statuses(reporter)
+  new_colors = {
+    'prescreening' => '#4B4B4B',
+    'proposed' => '#057ABE',
+    'threshold_reached' => '#008300',
+    'expired' => '#B22222',
+    'answered' => '#1E3A8A',
+    'ineligible' => '#8B0000',
+  }
   IdeaStatus.where.not(code: 'custom').each do |status|
     if status.participation_method == 'proposals'
       status.title_multiloc = MultilocService.new.i18n_to_multiloc("idea_statuses.#{status.code}", locales: CL2_SUPPORTED_LOCALES)
-      # TODO: replace colours of proposal statuses
+      # TODO: replace colors of proposal statuses
       # TODO: identify proposal statuses with custom copy
     end
     status.description_multiloc = MultilocService.new.i18n_to_multiloc("idea_statuses.#{status.code}_description", locales: CL2_SUPPORTED_LOCALES)
+    new_color = new_colors[status.code]
+    if new_color && (status.code != 'proposed' || status.participation_method == 'proposals' || status.color == '#687782')
+      status.color = new_color
+    end
     if !status.save
       reporter.add_error(
         status.errors.details,

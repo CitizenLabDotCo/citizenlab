@@ -7,7 +7,7 @@ models:
       title_multiloc: idea_statuses.proposed
       ordering: 0
       code: proposed
-      color: '#687782'
+      color: '#057ABE'
       description_multiloc: idea_statuses.proposed_description
       participation_method: ideation
     -
@@ -49,42 +49,42 @@ models:
       title_multiloc: idea_statuses.prescreening
       ordering: 0
       code: prescreening
-      color: '#767676'
+      color: '#4B4B4B'
       description_multiloc: idea_statuses.prescreening_description
       participation_method: proposals
     -
       title_multiloc: idea_statuses.proposed
       ordering: 1
       code: proposed
-      color: '#BEE7EB'
+      color: '#057ABE'
       description_multiloc: idea_statuses.proposed_description
       participation_method: proposals
     -
       title_multiloc: idea_statuses.threshold_reached
       ordering: 2
       code: threshold_reached
-      color: '#40B8C5'
+      color: '#008300'
       description_multiloc: idea_statuses.threshold_reached_description
       participation_method: proposals
     -
       title_multiloc: idea_statuses.expired
       ordering: 3
       code: expired
-      color: '#FF672F'
+      color: '#B22222'
       description_multiloc: idea_statuses.expired_description
       participation_method: proposals
     -
       title_multiloc: idea_statuses.answered
       ordering: 4
       code: answered
-      color: '#147985'
+      color: '#1E3A8A'
       description_multiloc: idea_statuses.answered_description
       participation_method: proposals
     -
       title_multiloc: idea_statuses.ineligible
       ordering: 5
       code: ineligible
-      color: '#E52516'
+      color: '#8B0000'
       description_multiloc: idea_statuses.ineligible_description
       participation_method: proposals
   initiative_status:
