@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   postgres:
     # When you update PostgreSQL, make sure to upgrade the `postgresql-client` version
@@ -36,7 +34,8 @@ services:
       - "env_files/back-safe.env"
       - "env_files/back-secret.env"
     environment:
-      BUNDLE_PATH: /bundle
+      - BUNDLE_PATH=/bundle
+      - BASE_DEV_URI
     tty: true
     stdin_open: true
 
