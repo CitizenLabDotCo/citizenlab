@@ -44,6 +44,7 @@
 #  expire_days_limit             :integer
 #  reacting_threshold            :integer
 #  prescreening_enabled          :boolean          default(FALSE), not null
+#  autoshare_results_enabled     :boolean          default(TRUE)
 #
 # Indexes
 #
@@ -150,6 +151,7 @@ class Phase < ApplicationRecord
     validate :validate_voting
     validates :voting_term_singular_multiloc, multiloc: { presence: false }
     validates :voting_term_plural_multiloc, multiloc: { presence: false }
+    validates :autoshare_results_enabled, inclusion: { in: [true, false] }
   end
   validates :voting_min_total,
     numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: :voting_max_total,

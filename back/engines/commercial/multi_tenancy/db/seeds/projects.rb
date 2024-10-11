@@ -117,6 +117,7 @@ module MultiTenancy
               reacting_like_limited_max: rand(1..15),
               reacting_dislike_method: %w[unlimited unlimited unlimited limited][rand(4)],
               reacting_dislike_limited_max: rand(1..15)
+              autoshare_results_enabled: true
             })
           end
           phase.save!

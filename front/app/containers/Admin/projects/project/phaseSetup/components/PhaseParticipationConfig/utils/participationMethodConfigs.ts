@@ -65,6 +65,7 @@ export const votingDefaultConfig: IUpdatedPhaseProperties = {
   voting_max_total: 100,
   voting_max_votes_per_idea: 1,
   commenting_enabled: true,
+  autoshare_results_enabled: true,
   presentation_mode: 'card',
   ideas_order: 'random',
   input_term: 'idea',
