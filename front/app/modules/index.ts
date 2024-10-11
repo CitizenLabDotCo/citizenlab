@@ -18,6 +18,7 @@ import idBosaFasConfiguration from './commercial/id_bosa_fas';
 import IdClaveUnicaConfiguration from './commercial/id_clave_unica';
 import idCowConfiguration from './commercial/id_cow';
 import idCriiptoConfiguration from './commercial/id_criipto';
+import idKeycloakConfiguration from './commercial/id_keycloak';
 import IdFranceConnectConfiguration from './commercial/id_franceconnect';
 import IdGentRrnConfiguration from './commercial/id_gent_rrn';
 import idIdCardLookupConfiguration from './commercial/id_id_card_lookup';
@@ -103,6 +104,9 @@ export default loadModules([
   },
   {
     configuration: idCriiptoConfiguration,
+  },
+  {
+    configuration: idKeycloakConfiguration,
   },
   {
     configuration: idBogusConfiguration,

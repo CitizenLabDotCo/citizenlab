@@ -255,6 +255,7 @@ describe SortByParamsService do
           { idea: ideas[2], phase: project_with_phases.phases.first, baskets_count: 3, votes_count: 3 }
         ]
           .map do |attributes|
+          attributes[:idea].update!(phases: [])
           create(:ideas_phase, **attributes)
         end
       end
