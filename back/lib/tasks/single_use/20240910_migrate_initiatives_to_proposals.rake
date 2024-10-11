@@ -305,7 +305,9 @@ def rake_20240910_migrate_images_files(proposal, initiative, reporter)
   initiative.initiative_images.order(:ordering).each do |old_image|
     new_image = IdeaImage.new(
       idea: proposal,
-      remote_image_url: old_image.image_url
+      remote_image_url: old_image.image_url,
+      created_at: old_image.created_at,
+      updated_at: old_image.updated_at
     )
     if !new_image.save
       reporter.add_error(
@@ -318,7 +320,9 @@ def rake_20240910_migrate_images_files(proposal, initiative, reporter)
     new_file = IdeaFile.new(
       idea: proposal,
       name: old_file.name,
-      remote_file_url: old_file.file_url
+      remote_file_url: old_file.file_url,
+      created_at: old_file.created_at,
+      updated_at: old_file.updated_at
     )
     if !new_file.save
       reporter.add_error(
@@ -354,7 +358,8 @@ def rake_20240910_migrate_reactions(proposal, initiative, reporter)
       mode: 'up',
       user_id: like.user_id,
       reactable: proposal,
-      created_at: like.created_at
+      created_at: like.created_at,
+      updated_at: like.updated_at
     )
     if !reaction.save
       reporter.add_error(
@@ -372,7 +377,9 @@ def rake_20240910_migrate_spam_reports(proposal, initiative, reporter)
       user_id: old_report.user_id,
       reason_code: old_report.reason_code,
       other_reason: old_report.other_reason,
-      created_at: old_report.created_at
+      reported_at: old_report.reported_at,
+      created_at: old_report.created_at,
+      updated_at: old_report.updated_at
     )
     if !new_report.save
       reporter.add_error(
@@ -395,6 +402,7 @@ def rake_20240910_migrate_comments(proposal, initiative, reporter)
       author_hash: old_comment.author_hash,
       anonymous: old_comment.anonymous,
       created_at: old_comment.created_at,
+      updated_at: old_comment.updated_at,
       body_updated_at: old_comment.body_updated_at,
       post: proposal
     )
@@ -411,7 +419,8 @@ def rake_20240910_migrate_comments(proposal, initiative, reporter)
         mode: reaction.mode,
         user: reaction.user,
         reactable: new_comment,
-        created_at: reaction.created_at
+        created_at: reaction.created_at,
+        updated_at: reaction.updated_at
       )
       if !new_reaction.save
         reporter.add_error(
@@ -426,7 +435,9 @@ def rake_20240910_migrate_comments(proposal, initiative, reporter)
         user_id: old_report.user_id,
         reason_code: old_report.reason_code,
         other_reason: old_report.other_reason,
-        created_at: old_report.created_at
+        reported_at: old_report.reported_at,
+        created_at: old_report.created_at,
+        updated_at: old_report.updated_at
       )
       if !new_report.save
         reporter.add_error(
@@ -445,7 +456,8 @@ def rake_20240910_migrate_official_feedback(proposal, initiative, reporter)
       body_multiloc: old_feedback.body_multiloc,
       author_multiloc: old_feedback.author_multiloc,
       user_id: old_feedback.user_id,
-      created_at: old_feedback.created_at
+      created_at: old_feedback.created_at,
+      updated_at: old_feedback.updated_at
     )
     if !new_feedback.save
       reporter.add_error(
@@ -461,7 +473,8 @@ def rake_20240910_migrate_followers(proposal, initiative, reporter)
     new_follower = Follower.new(
       followable: proposal,
       user_id: old_follower.user_id,
-      created_at: old_follower.created_at
+      created_at: old_follower.created_at,
+      updated_at: old_follower.updated_at
     )
     if !new_follower.save
       reporter.add_error(
@@ -478,7 +491,8 @@ def rake_20240910_migrate_cosponsors(proposal, initiative, reporter)
       idea: proposal,
       user_id: old_cosponsor.user_id,
       status: old_cosponsor.status,
-      created_at: old_cosponsor.created_at
+      created_at: old_cosponsor.created_at,
+      updated_at: old_cosponsor.updated_at
     )
     if !new_cosponsor.save
       reporter.add_error(
