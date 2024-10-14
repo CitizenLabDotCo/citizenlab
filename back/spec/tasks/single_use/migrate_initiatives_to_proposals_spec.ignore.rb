@@ -12,6 +12,6 @@ describe 'initiatives_to_proposals:migrate_proposals rake task' do
     Rake::Task['initiatives_to_proposals:migrate_proposals'].invoke
 
     expect(Idea.includes(:creation_phase).where(creation_phase: { participation_method: 'proposals' }).count).to eq(1)
-    expect(IdeaStatus.where(participation_method: 'proposals', code: 'proposed').title_multiloc['da-DK']).to eq('uegnet')
+    expect(IdeaStatus.find_by(participation_method: 'proposals', code: 'proposed').title_multiloc['da-DK']).to eq('uegnet')
   end
 end

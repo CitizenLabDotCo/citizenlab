@@ -94,6 +94,7 @@ def rake_20240910_create_proposals_project(reporter)
     reacting_threshold: config.settings('initiatives', 'reacting_threshold'),
     prescreening_enabled: config.feature_activated?('initiative_review')
   )
+  phase[:allow_anonymous_participation] = config.settings('initiatives', 'allow_anonymous_participation') if config.settings('initiatives').key? 'allow_anonymous_participation'
   ParticipationMethod::Proposals.new(phase).assign_defaults_for_phase
   if !phase.save
     reporter.add_error(
@@ -210,8 +211,9 @@ def rake_20240910_migrate_input_statuses(reporter)
   custom_titles = ['archived', 'closed', 'on hold', 'open', 'uegnet']
   IdeaStatus.where.not(code: 'custom').each do |status|
     if status.participation_method == 'proposals'
-      new_title_multiloc = MultilocService.new.i18n_to_multiloc("idea_statuses.#{status.code}", locales: CL2_SUPPORTED_LOCALES)
-      status.title_multiloc = new_title_multiloc.merge(status.title_multiloc.select { |_, title| custom_titles.include?(title) })
+      status.title_multiloc = MultilocService.new.i18n_to_multiloc("idea_statuses.#{status.code}", locales: CL2_SUPPORTED_LOCALES)
+      old_status = InitiativeStatus.find_by(code: status.code)
+      status.title_multiloc.merge!(old_status.title_multiloc.select { |_, title| custom_titles.include?(title) }) if old_status
     end
     status.description_multiloc = MultilocService.new.i18n_to_multiloc("idea_statuses.#{status.code}_description", locales: CL2_SUPPORTED_LOCALES)
     new_color = new_colors[status.code]
