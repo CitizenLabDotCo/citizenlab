@@ -343,6 +343,11 @@ resource 'AdminPublication' do
     let!(:_custom_folder) { create(:project_folder, projects: projects.take(3)) }
     let(:draft_project) { create(:project, slug: 'draft-project', admin_publication_attributes: { publication_status: 'draft' }) }
     let!(:folder_with_draft_project) { create(:project_folder, projects: [draft_project]) }
+    let!(:admin_project) { create(:project, visible_to: 'admins') }
+
+    let!(:group) { create(:group) }
+    let!(:group_project) { create(:project, visible_to: 'groups') }
+    let!(:groups_project) { create(:groups_project, project: group_project, group: group) }
 
     get 'web_api/v1/admin_publications/homepage_legacy_projects_widget_publications' do
       with_options scope: :page do
@@ -360,18 +365,37 @@ resource 'AdminPublication' do
           .to match_array %w[published archived]
       end
 
-      example 'Filters out folders with no visible children for the current user', document: false do
-        do_request
-        expect(status).to eq(200)
-        json_response = json_parse(response_body)
-        expect(json_response[:data].pluck(:id)).not_to include folder_with_draft_project.admin_publication.id
-      end
-
       example 'Returns only publications with depth 0', document: false do
         do_request
         expect(status).to eq(200)
         json_response = json_parse(response_body)
         expect(json_response[:data].map { |d| d.dig(:attributes, :depth) }.uniq).to eq [0]
+      end
+
+      example 'Does not return publications for projects only visible to admin', document: false do
+        do_request
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+        expect(json_response[:data].pluck(:id)).not_to include admin_project.admin_publication.id
+      end
+
+      example 'Does not return publications for projects only visible to group resident is not in', document: false do
+        do_request
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+        expect(json_response[:data].pluck(:id)).not_to include group_project.admin_publication.id
+      end
+
+      example 'Filters out folders with no visible children for the current user', document: false do
+        folder_with_admin_project = create(:project_folder, projects: [admin_project])
+        folder_with_group_project = create(:project_folder, projects: [group_project])
+
+        do_request
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+        expect(json_response[:data].pluck(:id)).not_to include folder_with_draft_project.admin_publication.id
+        expect(json_response[:data].pluck(:id)).not_to include folder_with_admin_project.admin_publication.id
+        expect(json_response[:data].pluck(:id)).not_to include folder_with_group_project.admin_publication.id
       end
 
       example 'Returns an empty list success response if there are no publications', document: false do
