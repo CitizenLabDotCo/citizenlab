@@ -37,16 +37,18 @@ const SpotlightProject = ({ title, description, buttonText }: Props) => {
             </Box>
           )}
         </Box>
-        <img
-          src={citySrc}
-          width="100%"
-          height="100%"
-          alt="placeholder"
-          style={{
-            borderRadius: stylingConsts.borderRadius,
-            maxHeight: '300px',
-          }}
-        />
+        <Box ml="40px">
+          <img
+            src={citySrc}
+            width="100%"
+            height="100%"
+            alt="placeholder"
+            style={{
+              borderRadius: stylingConsts.borderRadius,
+              maxHeight: '300px',
+            }}
+          />
+        </Box>
       </Box>
     </Box>
   );
