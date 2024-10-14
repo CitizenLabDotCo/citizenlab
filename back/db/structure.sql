@@ -335,6 +335,7 @@ DROP INDEX IF EXISTS public.index_baskets_ideas_on_idea_id;
 DROP INDEX IF EXISTS public.index_baskets_ideas_on_basket_id_and_idea_id;
 DROP INDEX IF EXISTS public.index_areas_static_pages_on_static_page_id;
 DROP INDEX IF EXISTS public.index_areas_static_pages_on_area_id;
+DROP INDEX IF EXISTS public.index_areas_projects_on_project_id_and_area_id;
 DROP INDEX IF EXISTS public.index_areas_projects_on_project_id;
 DROP INDEX IF EXISTS public.index_areas_projects_on_area_id;
 DROP INDEX IF EXISTS public.index_areas_on_include_in_onboarding;
@@ -4680,6 +4681,13 @@ CREATE INDEX index_areas_projects_on_project_id ON public.areas_projects USING b
 
 
 --
+-- Name: index_areas_projects_on_project_id_and_area_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_areas_projects_on_project_id_and_area_id ON public.areas_projects USING btree (project_id, area_id);
+
+
+--
 -- Name: index_areas_static_pages_on_area_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -7545,6 +7553,5 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240926175000'),
 ('20241001101704'),
 ('20241002200522'),
-('20241008143004');
-
-
+('20241008143004'),
+('20241011101454');
