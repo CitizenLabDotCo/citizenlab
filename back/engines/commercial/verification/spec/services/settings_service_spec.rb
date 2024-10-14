@@ -26,11 +26,11 @@ describe SettingsService do
           'verification_methods' => [
             {
               'name' => 'nemlog_in',
-              'hide_in_profile' => true
+              'hide_from_profile' => true
             },
             {
               'name' => 'keycloak',
-              'hide_in_profile' => true
+              'hide_from_profile' => true
             }
           ]
         }

@@ -44,7 +44,7 @@ module IdKeycloak
         hide_from_profile: {
           private: true,
           type: 'boolean',
-          description: 'Should verification be shown in the user profile and under the username?'
+          description: 'Should verification be hidden in the user profile and under the username?'
         }
       }
     end
@@ -69,6 +69,10 @@ module IdKeycloak
 
     def updateable_user_attrs
       super + %i[first_name last_name]
+    end
+
+    def enabled_for_verified_actions?
+      config[:enabled_for_verified_actions] || false
     end
   end
 end

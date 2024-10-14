@@ -17,7 +17,7 @@ module Verification
         return settings if !settings['verification'] || settings['verification']['enabled'] == false
 
         enabled = settings['verification']['verification_methods'].present?
-        enabled = false if settings['verification']['verification_methods']&.pluck('hide_in_profile')&.all?(true)
+        enabled = false if settings['verification']['verification_methods']&.pluck('hide_from_profile')&.all?(true)
 
         settings['verification']['enabled'] = enabled
         settings
