@@ -262,7 +262,7 @@ const IdeasWithoutFiltersSidebar = ({
                         : []
                     }
                     onChange={(statuses) => handleStatusChange(statuses[0])}
-                    alignment="left"
+                    alignment={!smallerThanTablet ? 'right' : 'left'}
                     participationMethod={participationMethod}
                   />
                 )}
