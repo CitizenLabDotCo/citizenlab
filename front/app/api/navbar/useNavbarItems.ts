@@ -8,7 +8,7 @@ import navbarKeys from './keys';
 import { INavbarItems, NavbarKeys, NavbarParameters } from './types';
 import { MAX_TITLE_LENGTH } from './util';
 
-const fetchNavbarItems = ({
+export const fetchNavbarItems = ({
   onlyDefaultItems,
   onlyRemovedDefaultItems,
 }: NavbarParameters) =>
