@@ -36,7 +36,7 @@ namespace :initiatives_to_proposals do
             next
           end
           rake_20240910_migrate_status_changes(proposal, initiative, reporter)
-          rake_20240910_migrate_images_files(proposal, initiative, reporter)
+          rake_20240910_migrate_images_files(proposal, initiative, reporter) ### TODO: RESTORE THIS LINE
           rake_20240910_migrate_topics(proposal, initiative, reporter)
           rake_20240910_migrate_reactions(proposal, initiative, reporter)
           rake_20240910_migrate_spam_reports(proposal, initiative, reporter)
@@ -51,6 +51,7 @@ namespace :initiatives_to_proposals do
       rescue ActiveRecord::StatementInvalid => e
         puts "Error occurred during migration: #{e.message}"
         reporter.add_error(e.message)
+        sleep(20 * 60)
       end
     end
     reporter.report!('migrate_initiatives_to_proposals.json', verbose: true)
@@ -206,11 +207,11 @@ def rake_20240910_migrate_input_statuses(reporter)
     'answered' => '#1E3A8A',
     'ineligible' => '#8B0000',
   }
+  custom_titles = ['archived', 'closed', 'on hold', 'open', 'uegnet']
   IdeaStatus.where.not(code: 'custom').each do |status|
     if status.participation_method == 'proposals'
-      status.title_multiloc = MultilocService.new.i18n_to_multiloc("idea_statuses.#{status.code}", locales: CL2_SUPPORTED_LOCALES)
-      # TODO: replace colors of proposal statuses
-      # TODO: identify proposal statuses with custom copy
+      new_title_multiloc = MultilocService.new.i18n_to_multiloc("idea_statuses.#{status.code}", locales: CL2_SUPPORTED_LOCALES)
+      status.title_multiloc = new_title_multiloc.merge(status.title_multiloc.select { |_, title| custom_titles.include?(title) })
     end
     status.description_multiloc = MultilocService.new.i18n_to_multiloc("idea_statuses.#{status.code}_description", locales: CL2_SUPPORTED_LOCALES)
     new_color = new_colors[status.code]
