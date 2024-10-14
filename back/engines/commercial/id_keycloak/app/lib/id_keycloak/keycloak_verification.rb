@@ -22,6 +22,7 @@ module IdKeycloak
         domain
         client_id
         client_secret
+        enabled_for_verified_actions
         hide_from_profile
       ]
     end
@@ -34,6 +35,16 @@ module IdKeycloak
           type: 'string',
           description: 'The name this verification method will have in the UI',
           default: 'ID-Porten'
+        },
+        enabled_for_verified_actions: {
+          private: true,
+          type: 'boolean',
+          description: 'Whether this verification method should be enabled for verified actions.'
+        },
+        hide_from_profile: {
+          private: true,
+          type: 'boolean',
+          description: 'Should verification be shown in the user profile and under the username?'
         }
       }
     end
@@ -58,10 +69,6 @@ module IdKeycloak
 
     def updateable_user_attrs
       super + %i[first_name last_name]
-    end
-
-    def show_in_user_profile?
-      false
     end
   end
 end
