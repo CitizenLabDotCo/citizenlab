@@ -2,9 +2,10 @@ import React from 'react';
 
 import messages from './messages';
 import Settings from './Settings';
+import SpotlightProjectInner from './SpotlightProject';
 
 const SpotlightProject = () => {
-  return <div>Sup</div>;
+  return <SpotlightProjectInner />;
 };
 
 SpotlightProject.craft = {
