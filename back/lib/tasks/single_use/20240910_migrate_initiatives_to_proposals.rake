@@ -35,7 +35,7 @@ namespace :initiatives_to_proposals do
             )
             next
           end
-          rake_20240910_migrate_status_changes(proposal, initiative, reporter)
+          rake_20240910_migrate_activities(proposal, initiative, reporter)
           rake_20240910_migrate_images_files(proposal, initiative, reporter) ### TODO: RESTORE THIS LINE
           rake_20240910_migrate_topics(proposal, initiative, reporter)
           rake_20240910_migrate_reactions(proposal, initiative, reporter)
@@ -281,7 +281,7 @@ def rake_20240910_assign_publication(proposal, initiative)
   end
 end
 
-def rake_20240910_migrate_status_changes(proposal, initiative, reporter)
+def rake_20240910_migrate_activities(proposal, initiative, reporter)
   previous_status_id = nil
   initiative.initiative_status_changes.order(:created_at).each do |change|
     next_status_id = rake_20240910_to_idea_status(change.initiative_status)&.id
@@ -297,6 +297,22 @@ def rake_20240910_migrate_status_changes(proposal, initiative, reporter)
       reporter.add_error(
         activity.errors.details,
         context: { tenant: AppConfiguration.instance.host, proposal: proposal.slug, status_change: change.id }
+      )
+    end
+  end
+
+  initiative.activities.where(action: %w[published changed changed_title changed_body deleted]).each do |old_activity|
+    new_activity = Activity.new(
+      item: proposal,
+      action: old_activity.action,
+      user: old_activity.user,
+      acted_at: old_activity.created_at,
+      payload: old_activity.payload
+    )
+    if !new_activity.save
+      reporter.add_error(
+        new_activity.errors.details,
+        context: { tenant: AppConfiguration.instance.host, proposal: proposal.slug, activity: old_activity.id }
       )
     end
   end
