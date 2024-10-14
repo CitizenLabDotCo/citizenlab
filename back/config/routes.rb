@@ -204,9 +204,10 @@ Rails.application.routes.draw do
         patch 'reorder', on: :member
       end
 
-      resources :admin_publications, only: %i[index show] do
+      resources :admin_publications, only: %i[index show homepage_legacy_projects_widget_publications] do
         patch 'reorder', on: :member
         get 'status_counts', on: :collection
+        get 'homepage_legacy_projects_widget_publications', on: :collection
       end
 
       resources :project_folders, controller: 'folders', concerns: [:followable], defaults: { followable: 'ProjectFolders::Folder' } do
