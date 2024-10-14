@@ -6,7 +6,7 @@ export const projectFilesData = [
       file: {
         url: 'http://localhost:4000/uploads/test.xlsx',
       },
-      ordering: null,
+      ordering: 3,
       name: 'test_likert_survey_results_download_2022-10-25.xlsx',
       size: 4369,
       created_at: '2023-03-01T03:34:20.022Z',
