@@ -156,6 +156,7 @@ export const AvatarBubbles = ({
       (avatar) =>
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         avatar &&
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         avatar.attributes.avatar &&
         avatar.attributes.avatar[imageSize]
     ) as IAvatarData[];
