@@ -335,6 +335,7 @@ DROP INDEX IF EXISTS public.index_baskets_ideas_on_idea_id;
 DROP INDEX IF EXISTS public.index_baskets_ideas_on_basket_id_and_idea_id;
 DROP INDEX IF EXISTS public.index_areas_static_pages_on_static_page_id;
 DROP INDEX IF EXISTS public.index_areas_static_pages_on_area_id;
+DROP INDEX IF EXISTS public.index_areas_projects_on_project_id_and_area_id;
 DROP INDEX IF EXISTS public.index_areas_projects_on_project_id;
 DROP INDEX IF EXISTS public.index_areas_projects_on_area_id;
 DROP INDEX IF EXISTS public.index_areas_on_include_in_onboarding;
@@ -1401,9 +1402,11 @@ CREATE VIEW public.analytics_fact_email_deliveries AS
  SELECT ecd.id,
     (ecd.sent_at)::date AS dimension_date_sent_id,
     ecd.campaign_id,
-    ((ecc.type)::text <> 'EmailCampaigns::Campaigns::Manual'::text) AS automated
-   FROM (public.email_campaigns_deliveries ecd
-     JOIN public.email_campaigns_campaigns ecc ON ((ecc.id = ecd.campaign_id)));
+    p.id AS dimension_project_id,
+    ((ecc.type)::text <> ALL ((ARRAY['EmailCampaigns::Campaigns::Manual'::character varying, 'EmailCampaigns::Campaigns::ManualProjectParticipants'::character varying])::text[])) AS automated
+   FROM ((public.email_campaigns_deliveries ecd
+     JOIN public.email_campaigns_campaigns ecc ON ((ecc.id = ecd.campaign_id)))
+     LEFT JOIN public.projects p ON ((p.id = ecc.context_id)));
 
 
 --
@@ -2122,7 +2125,7 @@ CREATE TABLE public.cosponsors_initiatives (
 --
 
 CREATE TABLE public.cosponsorships (
-    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     status character varying DEFAULT 'pending'::character varying NOT NULL,
     user_id uuid NOT NULL,
     idea_id uuid NOT NULL,
@@ -4675,6 +4678,13 @@ CREATE INDEX index_areas_projects_on_area_id ON public.areas_projects USING btre
 --
 
 CREATE INDEX index_areas_projects_on_project_id ON public.areas_projects USING btree (project_id);
+
+
+--
+-- Name: index_areas_projects_on_project_id_and_area_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_areas_projects_on_project_id_and_area_id ON public.areas_projects USING btree (project_id, area_id);
 
 
 --
@@ -7542,6 +7552,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240923112801'),
 ('20240926175000'),
 ('20241001101704'),
-('20241002200522');
-
-
+('20241002200522'),
+('20241008143004'),
+('20241011101454');
