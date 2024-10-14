@@ -9,15 +9,7 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
     publications = policy_scope(AdminPublication.includes(:parent))
     publications = publication_filterer.filter(publications, params.merge(current_user: current_user))
 
-    # A flattened ordering, such that project publications with a parent (projects in folders) are ordered
-    # first by their parent's :ordering, and then by their own :ordering (their ordering within the folder).
-    publications = publications.select(
-      'admin_publications.*',
-      'CASE WHEN admin_publications.parent_id IS NULL THEN admin_publications.ordering ELSE parents.ordering END
-      AS root_ordering'
-    )
-      .joins('LEFT OUTER JOIN admin_publications AS parents ON parents.id = admin_publications.parent_id')
-      .order('root_ordering, admin_publications.ordering')
+    publications = flattened_ordering(publications)
 
     @publications = paginate publications
     @publications = @publications.includes(:publication, :children)
@@ -44,15 +36,7 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
       )
     )
 
-    # A flattened ordering, such that project publications with a parent (projects in folders) are ordered
-    # first by their parent's :ordering, and then by their own :ordering (their ordering within the folder).
-    publications = publications.select(
-      'admin_publications.*',
-      'CASE WHEN admin_publications.parent_id IS NULL THEN admin_publications.ordering ELSE parents.ordering END
-      AS root_ordering'
-    )
-      .joins('LEFT OUTER JOIN admin_publications AS parents ON parents.id = admin_publications.parent_id')
-      .order('root_ordering, admin_publications.ordering')
+    publications = flattened_ordering(publications)
 
     @publications = paginate publications
     @publications = @publications.includes(:publication, :children)
@@ -104,5 +88,17 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
   def set_admin_publication
     @publication = AdminPublication.find params[:id]
     authorize @publication
+  end
+
+  def flattened_ordering(publications)
+    # A flattened ordering, such that project publications with a parent (projects in folders) are ordered
+    # first by their parent's :ordering, and then by their own :ordering (their ordering within the folder).
+    publications.select(
+      'admin_publications.*',
+      'CASE WHEN admin_publications.parent_id IS NULL THEN admin_publications.ordering ELSE parents.ordering END
+      AS root_ordering'
+    )
+      .joins('LEFT OUTER JOIN admin_publications AS parents ON parents.id = admin_publications.parent_id')
+      .order('root_ordering, admin_publications.ordering')
   end
 end
