@@ -82,6 +82,7 @@ def rake_20240910_create_proposals_project(reporter)
     return false
   end
   project.set_default_topics!
+
   phase = Phase.new(
     project: project,
     title_multiloc: MultilocService.new.i18n_to_multiloc('nav_bar_items.proposals.title', locales: CL2_SUPPORTED_LOCALES),
@@ -94,7 +95,7 @@ def rake_20240910_create_proposals_project(reporter)
     reacting_threshold: config.settings('initiatives', 'reacting_threshold'),
     prescreening_enabled: config.feature_activated?('initiative_review')
   )
-  phase[:allow_anonymous_participation] = config.settings('initiatives', 'allow_anonymous_participation') if config.settings('initiatives').key? 'allow_anonymous_participation'
+  phase[:allow_anonymous_participation] = config.settings('initiatives', 'allow_anonymous_participation') if config.settings('initiatives')&.key? 'allow_anonymous_participation'
   ParticipationMethod::Proposals.new(phase).assign_defaults_for_phase
   if !phase.save
     reporter.add_error(
@@ -103,6 +104,17 @@ def rake_20240910_create_proposals_project(reporter)
     )
     return false
   end
+
+  phase.pmethod.create_default_form!
+  section = phase.reload.custom_form.custom_fields.find_by(code: 'ideation_section1')
+  section.description_multiloc = config.settings('initiatives', 'posting_tips').presence || MultilocService.new.i18n_to_multiloc('initiatives.default_posting_tips', locales: CL2_SUPPORTED_LOCALES)
+  if !section.save
+    reporter.add_error(
+      section.errors.details,
+      context: { tenant: config.host, section: section.id }
+    )
+  end
+
   Permissions::PermissionsUpdateService.new.update_permissions_for_scope(phase)
   phase.reload
   Permission.where(action: %w[posting_initiative commenting_initiative reacting_initiative]).each do |old_permission|
