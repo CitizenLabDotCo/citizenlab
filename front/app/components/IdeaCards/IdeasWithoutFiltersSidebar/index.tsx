@@ -250,7 +250,7 @@ const IdeasWithoutFiltersSidebar = ({
                     projectId={projectId}
                     selectedTopicIds={ideaQueryParameters.topics ?? []}
                     onChange={handleTopicsOnChange}
-                    alignment={!smallerThanTablet ? 'right' : 'left'}
+                    alignment={smallerThanTablet ? 'right' : 'left'}
                   />
                 )}
                 {(participationMethod === 'proposals' ||
@@ -262,7 +262,7 @@ const IdeasWithoutFiltersSidebar = ({
                         : []
                     }
                     onChange={(statuses) => handleStatusChange(statuses[0])}
-                    alignment="left"
+                    alignment={smallerThanTablet ? 'right' : 'left'}
                     participationMethod={participationMethod}
                   />
                 )}

@@ -135,6 +135,19 @@ export const IdeasShow = ({
             onClick={setTranslateButtonIsClicked}
           />
           <ProposedBudget ideaId={ideaId} projectId={project.data.id} />
+
+          {compact && statusId && (
+            <Box my="24px">
+              {participationContext?.attributes.participation_method ===
+                'proposals' && (
+                <>
+                  <Divider />
+                  <ProposalInfo idea={idea} compact={compact} />
+                  <Divider />
+                </>
+              )}
+            </Box>
+          )}
           <Box mb={compact ? '12px' : '40px'}>
             <Body
               postId={ideaId}
@@ -146,13 +159,6 @@ export const IdeasShow = ({
 
           {compact && statusId && (
             <Box my="24px">
-              {participationContext?.attributes.participation_method ===
-                'proposals' && (
-                <>
-                  <Divider />
-                  <ProposalInfo idea={idea} compact={compact} />
-                </>
-              )}
               <MetaInformation
                 ideaId={ideaId}
                 projectId={project.data.id}

@@ -247,6 +247,10 @@ class Idea < ApplicationRecord
     consultation_context.pmethod
   end
 
+  def assign_defaults
+    participation_method_on_creation.assign_defaults self
+  end
+
   private
 
   def schema_for_validation
@@ -257,10 +261,6 @@ class Idea < ApplicationRecord
 
   def supports_built_in_fields?
     !draft? && participation_method_on_creation.supports_built_in_fields?
-  end
-
-  def assign_defaults
-    participation_method_on_creation.assign_defaults self
   end
 
   def sanitize_body_multiloc

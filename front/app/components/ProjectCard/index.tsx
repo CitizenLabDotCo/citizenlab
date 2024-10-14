@@ -492,77 +492,67 @@ const ProjectCard = memo<InputProps>(
 
       const getCTAMessage = () => {
         let ctaMessage: JSX.Element | null = null;
-
-        switch (participationMethod) {
-          case 'voting':
-            if (votingMethod === 'budgeting') {
-              ctaMessage = (
-                <FormattedMessage {...messages.allocateYourBudget} />
-              );
-            } else {
-              ctaMessage = <FormattedMessage {...messages.vote} />;
-            }
-            break;
-          case 'information':
-            ctaMessage = <FormattedMessage {...messages.learnMore} />;
-            break;
-          case 'survey':
-            ctaMessage = <FormattedMessage {...messages.takeTheSurvey} />;
-            break;
-          case 'native_survey':
+        if (participationMethod === 'voting') {
+          if (votingMethod === 'budgeting') {
+            ctaMessage = <FormattedMessage {...messages.allocateYourBudget} />;
+          } else {
+            ctaMessage = <FormattedMessage {...messages.vote} />;
+          }
+        } else if (participationMethod === 'information') {
+          ctaMessage = <FormattedMessage {...messages.learnMore} />;
+        } else if (participationMethod === 'survey') {
+          ctaMessage = <FormattedMessage {...messages.takeTheSurvey} />;
+        } else if (participationMethod === 'native_survey') {
+          ctaMessage = (
+            <>
+              {localize(phase?.data.attributes.native_survey_button_multiloc)}
+            </>
+          );
+        } else if (participationMethod === 'document_annotation') {
+          ctaMessage = <FormattedMessage {...messages.reviewDocument} />;
+        } else if (participationMethod === 'poll') {
+          ctaMessage = <FormattedMessage {...messages.takeThePoll} />;
+        } else if (
+          participationMethod === 'ideation' ||
+          participationMethod === 'proposals'
+        ) {
+          if (canPost) {
             ctaMessage = (
-              <>
-                {localize(phase?.data.attributes.native_survey_button_multiloc)}
-              </>
+              <FormattedMessage
+                {...getInputTermMessage(inputTerm, {
+                  idea: messages.submitYourIdea,
+                  option: messages.addYourOption,
+                  project: messages.submitYourProject,
+                  question: messages.joinDiscussion,
+                  issue: messages.submitAnIssue,
+                  contribution: messages.contributeYourInput,
+                  initiative: messages.submitYourInitiative,
+                  proposal: messages.submitYourProposal,
+                  petition: messages.submitYourPetition,
+                })}
+              />
             );
-            break;
-          case 'document_annotation':
-            ctaMessage = <FormattedMessage {...messages.reviewDocument} />;
-            break;
-          case 'poll':
-            ctaMessage = <FormattedMessage {...messages.takeThePoll} />;
-            break;
-          case 'ideation':
-            if (canPost) {
-              ctaMessage = (
-                <FormattedMessage
-                  {...getInputTermMessage(inputTerm, {
-                    idea: messages.submitYourIdea,
-                    option: messages.addYourOption,
-                    project: messages.submitYourProject,
-                    question: messages.joinDiscussion,
-                    issue: messages.submitAnIssue,
-                    contribution: messages.contributeYourInput,
-                    initiative: messages.submitYourInitiative,
-                    proposal: messages.submitYourProposal,
-                    petition: messages.submitYourPetition,
-                  })}
-                />
-              );
-            } else if (canReact) {
-              ctaMessage = <FormattedMessage {...messages.reaction} />;
-            } else if (canComment) {
-              ctaMessage = <FormattedMessage {...messages.comment} />;
-            } else {
-              ctaMessage = (
-                <FormattedMessage
-                  {...getInputTermMessage(inputTerm, {
-                    idea: messages.viewTheIdeas,
-                    option: messages.viewTheOptions,
-                    project: messages.viewTheProjects,
-                    question: messages.viewTheQuestions,
-                    issue: messages.viewTheIssues,
-                    contribution: messages.viewTheContributions,
-                    proposal: messages.viewTheProposals,
-                    initiative: messages.viewTheInitiatives,
-                    petition: messages.viewThePetitions,
-                  })}
-                />
-              );
-            }
-            break;
-          default:
-            ctaMessage = null;
+          } else if (canReact) {
+            ctaMessage = <FormattedMessage {...messages.reaction} />;
+          } else if (canComment) {
+            ctaMessage = <FormattedMessage {...messages.comment} />;
+          } else {
+            ctaMessage = (
+              <FormattedMessage
+                {...getInputTermMessage(inputTerm, {
+                  idea: messages.viewTheIdeas,
+                  option: messages.viewTheOptions,
+                  project: messages.viewTheProjects,
+                  question: messages.viewTheQuestions,
+                  issue: messages.viewTheIssues,
+                  contribution: messages.viewTheContributions,
+                  proposal: messages.viewTheProposals,
+                  initiative: messages.viewTheInitiatives,
+                  petition: messages.viewThePetitions,
+                })}
+              />
+            );
+          }
         }
 
         return ctaMessage;
