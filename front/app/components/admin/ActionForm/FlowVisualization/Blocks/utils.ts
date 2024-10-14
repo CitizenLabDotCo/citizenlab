@@ -10,6 +10,7 @@ export const getReturnedFieldsPreview = (
   verificationMethodMetadata: MethodMetadata,
   localize: Localize
 ) => {
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!verificationMethodMetadata) return null;
 
   const {

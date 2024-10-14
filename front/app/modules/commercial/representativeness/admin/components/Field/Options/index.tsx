@@ -104,6 +104,7 @@ const Options = injectIntl(
 
               <Box display="flex" alignItems="center" width="40%">
                 <OptionInput
+                  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                   value={population === undefined ? null : population}
                   percentage={percentages[id]}
                   disabled={!enabled}

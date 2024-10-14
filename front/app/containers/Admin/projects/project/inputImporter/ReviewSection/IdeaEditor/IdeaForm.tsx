@@ -39,9 +39,7 @@ const IdeaForm = ({
   const getApiErrorMessage: ApiErrorGetter = useCallback(
     (error) => {
       return (
-        ideaFormMessages[
-          `api_error_${uiSchema?.options?.inputTerm}_${error}`
-        ] ||
+        ideaFormMessages[`api_error_${uiSchema.options?.inputTerm}_${error}`] ||
         ideaFormMessages[`api_error_${error}`] ||
         ideaFormMessages[`api_error_invalid`]
       );
@@ -53,15 +51,15 @@ const IdeaForm = ({
     (error) => {
       return (
         ideaFormMessages[
-          `ajv_error_${uiSchema?.options?.inputTerm}_${
+          `ajv_error_${uiSchema.options?.inputTerm}_${
             getFieldNameFromPath(error.instancePath) ||
-            error?.params?.missingProperty
+            error.params.missingProperty
           }_${error.keyword}`
         ] ||
         ideaFormMessages[
           `ajv_error_${
             getFieldNameFromPath(error.instancePath) ||
-            error?.params?.missingProperty
+            error.params.missingProperty
           }_${error.keyword}`
         ] ||
         undefined

@@ -10,7 +10,7 @@ export const getOptionRule = (
   option: IOptionsType,
   field: IFlatCustomField
 ) => {
-  const rules = field.logic?.rules;
+  const rules = field.logic.rules;
   if (!isNilOrError(rules) && (option.id || option.temp_id)) {
     const rule = rules.find(
       (rule) => rule.if === option.id || rule.if === option.temp_id
@@ -26,7 +26,7 @@ export const getLinearScaleRule = (
   option: { key: number; label: string },
   field: IFlatCustomField
 ) => {
-  const rules = field.logic?.rules;
+  const rules = field.logic.rules;
   if (!isNilOrError(rules) && option.key) {
     const rule = rules.find((rule) => rule.if === option.key);
     if (rule && rule.if && rule.goto_page_id) {
@@ -59,7 +59,7 @@ export const getTitleFromAnswerId = (
       return answerId.toString();
     }
     // Otherwise this is an option ID, return the related option title
-    const option = field?.options?.find(
+    const option = field.options?.find(
       (option) => option.id === answerId || option.temp_id === answerId
     );
     return option?.title_multiloc[locale];

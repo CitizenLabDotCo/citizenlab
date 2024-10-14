@@ -95,7 +95,7 @@ const AccessRightsNotice = ({
               <>
                 {surveyUserFields && (
                   <>
-                    {surveyUserFields?.length > 0 && (
+                    {surveyUserFields.length > 0 && (
                       <>
                         <p>{formatMessage(messages.userFieldsIntro)}</p>
                         <ul>

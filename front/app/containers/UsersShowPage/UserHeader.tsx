@@ -79,7 +79,7 @@ const UserHeader = ({ userSlug }: Props) => {
     }
   });
 
-  const isBlocked = user.data.attributes?.blocked;
+  const isBlocked = user.data.attributes.blocked;
   const isCurrentUserAdmin = isAdmin(authUser);
   const canBlock = isCurrentUserAdmin && user.data.id !== authUser?.data.id;
 
@@ -147,9 +147,11 @@ const UserHeader = ({ userSlug }: Props) => {
         </Text>
         {!hideBio &&
           !isEmpty(user.data.attributes.bio_multiloc) &&
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           hasDescription && (
             <Bio data-testid="userHeaderBio">
               <QuillEditedContent>
+                {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
                 {user.data.attributes.bio_multiloc && (
                   <T
                     value={user.data.attributes.bio_multiloc}

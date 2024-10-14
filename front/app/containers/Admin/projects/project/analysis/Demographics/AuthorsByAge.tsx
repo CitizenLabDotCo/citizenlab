@@ -84,7 +84,7 @@ const AuthorsByAge = ({ customFieldId }: Props) => {
 
   const chartData =
     totalAuthorsByAge &&
-    totalAuthorsByAge?.data.attributes.series.bins.map((fromAge, index) => {
+    totalAuthorsByAge.data.attributes.series.bins.map((fromAge, index) => {
       let name;
       let shortName;
       let total;
@@ -93,12 +93,12 @@ const AuthorsByAge = ({ customFieldId }: Props) => {
       if (fromAge === null) {
         name = formatMessage(messages.unknown);
         shortName = '?';
-        total = totalAuthorsByAge?.data.attributes.unknown_age_count;
+        total = totalAuthorsByAge.data.attributes.unknown_age_count;
         filtered = filteredAuthorsByAge?.data.attributes.unknown_age_count;
       } else {
         name = `${fromAge} - ${fromAge + 9}`;
         shortName = fromAge;
-        total = totalAuthorsByAge?.data.attributes.series.user_counts[index];
+        total = totalAuthorsByAge.data.attributes.series.user_counts[index];
         filtered =
           filteredAuthorsByAge?.data.attributes.series.user_counts[index];
       }

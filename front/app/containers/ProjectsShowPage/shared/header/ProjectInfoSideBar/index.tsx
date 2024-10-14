@@ -186,7 +186,7 @@ const ProjectInfoSideBar = memo<Props>(
       const postingIsEnabled = currentPhase?.attributes.submission_enabled;
       const projectParticipantsCount =
         project.data.attributes.participants_count;
-      const maxBudget = currentPhase?.attributes?.voting_max_total || null;
+      const maxBudget = currentPhase?.attributes.voting_max_total || null;
       const hasProjectEnded = currentPhase
         ? pastPresentOrFuture([
             currentPhase.attributes.start_at,
@@ -196,13 +196,13 @@ const ProjectInfoSideBar = memo<Props>(
 
       const ideasCount = currentPhase?.attributes.ideas_count;
       const currentPhaseParticipationMethod =
-        currentPhase?.attributes?.participation_method;
+        currentPhase?.attributes.participation_method;
       const surveyMessage = messages.oneSurveyInCurrentPhase;
       const docAnnotationMessage = messages.oneDocToReviewInCurrentPhase;
 
       const isParticipatoryBudgeting =
         currentPhase?.attributes.participation_method === 'voting' &&
-        currentPhase?.attributes.voting_method === 'budgeting';
+        currentPhase.attributes.voting_method === 'budgeting';
       const avatarIds =
         project.data.relationships.avatars &&
         project.data.relationships.avatars.data
@@ -298,7 +298,7 @@ const ProjectInfoSideBar = memo<Props>(
               {(currentPhaseParticipationMethod === 'ideation' ||
                 (currentPhase &&
                   hasProjectEnded &&
-                  currentPhase?.attributes.participation_method ===
+                  currentPhase.attributes.participation_method ===
                     'ideation')) &&
                 typeof ideasCount === 'number' &&
                 ideasCount > 0 && (
@@ -355,6 +355,7 @@ const ProjectInfoSideBar = memo<Props>(
                   <Box>
                     <ListItem>
                       <ListItemIcon ariaHidden name="chart-bar" />
+                      {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
                       {surveySubmissionCount &&
                         surveySubmissionCount.data.attributes.totalSubmissions}
                       <Box ml="4px">

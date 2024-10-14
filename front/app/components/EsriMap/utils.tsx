@@ -69,11 +69,11 @@ export const getDefaultBasemap = (tileProvider: string | undefined): Layer => {
 // getTileAttribution
 // Description: Gets the correct tile attribution given a certain tileProvider URL.
 const getTileAttribution = (tileProvider: string): string => {
-  if (tileProvider?.includes('maptiler')) {
+  if (tileProvider.includes('maptiler')) {
     return MAPTILER_ATTRIBUTION;
   }
 
-  if (tileProvider?.includes('wien.gv.at/basemap')) {
+  if (tileProvider.includes('wien.gv.at/basemap')) {
     return BASEMAP_AT_ATTRIBUTION;
   }
 
@@ -533,12 +533,13 @@ export const parseLayers = (
   mapConfig: IMapConfig | null | undefined,
   localize: Localize
 ) => {
-  const mapConfigLayers = mapConfig?.data?.attributes.layers;
+  const mapConfigLayers = mapConfig?.data.attributes.layers;
   if (!mapConfigLayers) return [];
 
   // All layers are either of type Esri or GeoJSON, so we can check just the first layer
   if (mapConfigLayers[0]?.type === 'CustomMaps::GeojsonLayer') {
     return createEsriGeoJsonLayers(mapConfigLayers, localize);
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   } else if (mapConfigLayers[0]?.type === 'CustomMaps::EsriFeatureLayer') {
     return createEsriFeatureLayers(mapConfigLayers, localize);
   }
@@ -570,7 +571,7 @@ export const createEsriGeoJsonLayers = (
     });
 
     // All features in a layer will have the same geometry, so we can just check the first feature
-    const geometryType = layer.geojson?.features?.[0]?.geometry?.type;
+    const geometryType = layer.geojson?.features[0]?.geometry.type;
 
     if (geometryType === 'Polygon') {
       // All features in a layer will have the same symbology, so we can just check the first feature
@@ -637,7 +638,7 @@ export const handleWebMapReferenceLayers = (
   referenceLayers: Collection<Layer>
 ) => {
   // Add current basemap layers to new variable
-  const newBasemapLayers = webMap.basemap?.baseLayers;
+  const newBasemapLayers = webMap.basemap.baseLayers;
   // Append the reference layers to the new basemap layers list
   webMap.addMany(referenceLayers.toArray());
   // Set the WebMap basemap to this new list of layers
@@ -649,6 +650,7 @@ export const handleWebMapReferenceLayers = (
 // applyHeatMapRenderer
 // Description: Apply a heat map renderer to a point Feature layer
 export const applyHeatMapRenderer = (layer: FeatureLayer, mapView: MapView) => {
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (layer && mapView) {
     // Set up the parameters for the heatmapRendererCreator
     const heatmapParams = {

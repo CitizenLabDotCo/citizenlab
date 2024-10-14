@@ -56,15 +56,15 @@ const SingleSelectControl = ({
           options={options as IOption[]}
           onChange={(val) => {
             setDidBlur(true);
-            handleChange(path, val?.value);
+            handleChange(path, val.value);
           }}
           key={sanitizeForClassname(id)}
           id={sanitizeForClassname(id)}
           aria-label={getLabel(uischema, schema, path)}
           canBeEmpty // see Select component for more info
-          disabled={uischema?.options?.readonly}
+          disabled={uischema.options?.readonly}
         />
-        <VerificationIcon show={uischema?.options?.verificationLocked} />
+        <VerificationIcon show={uischema.options?.verificationLocked} />
       </Box>
       <ErrorDisplay
         inputId={sanitizeForClassname(id)}

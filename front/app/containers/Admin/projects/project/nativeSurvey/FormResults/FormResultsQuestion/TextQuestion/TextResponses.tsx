@@ -35,7 +35,7 @@ const TextResponses = ({
   // The virtualizer
   const { measureElement, getTotalSize, getVirtualItems } = useVirtualizer({
     count: textResponses.length,
-    getScrollElement: () => parentRef?.current,
+    getScrollElement: () => parentRef.current,
     estimateSize: () => 100,
   });
 

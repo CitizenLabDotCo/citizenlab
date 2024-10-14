@@ -51,7 +51,7 @@ const Image = ({ alt = {}, image }: Props) => {
 
   const emitImageLoaded = useCallback(() => {
     if (!image?.imageUrl) return;
-    eventEmitter.emit(IMAGE_LOADED_EVENT, image?.imageUrl);
+    eventEmitter.emit(IMAGE_LOADED_EVENT, image.imageUrl);
   }, [image?.imageUrl]);
 
   return (
@@ -68,9 +68,9 @@ const Image = ({ alt = {}, image }: Props) => {
       {image?.imageUrl && (
         <ImageComponent
           width="100%"
-          src={image?.imageUrl}
+          src={image.imageUrl}
           alt={localize(alt) || ''}
-          data-code={image?.dataCode}
+          data-code={image.dataCode}
           onLoad={emitImageLoaded}
         />
       )}

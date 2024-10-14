@@ -41,13 +41,13 @@ export const getFormSchemaAndData = (
       data?.publication_status === 'draft'
     ) {
       // Get the index of the current page we're iterating in the uiSchema.
-      const indexCurrentElement = uiSchema?.elements?.findIndex(
-        (page) => page?.options?.id === parentSchema?.options?.id
+      const indexCurrentElement = uiSchema.elements.findIndex(
+        (page) => page.options?.id === parentSchema?.options?.id
       );
 
       // If the index of the current page is greater than the latest completed page
       // we don't want to include it in our validation check.
-      if (indexCurrentElement > data?.latest_complete_page) {
+      if (indexCurrentElement > data.latest_complete_page) {
         return;
       }
     }
@@ -58,7 +58,7 @@ export const getFormSchemaAndData = (
       data,
       '',
       ajv,
-      uiSchema?.elements as PageType[]
+      uiSchema.elements as PageType[]
     );
 
     const isElementVisible = isVisible(element, data, '', ajv);
@@ -132,5 +132,5 @@ export const customAjv = createAjv({
 customAjv.addKeyword('image');
 
 export const dropdownLayoutTester: Tester = (uischema) => {
-  return uischema?.options?.dropdown_layout || false;
+  return uischema.options?.dropdown_layout || false;
 };

@@ -47,7 +47,7 @@ const FileUploader = ({
   }, [initialFiles]);
 
   const handleFileOnAdd = (fileToAdd: UploadFile) => {
-    if (!files?.find((file) => file.base64 === fileToAdd.base64)) {
+    if (!files.find((file) => file.base64 === fileToAdd.base64)) {
       const updatedFiles = [...files, fileToAdd as FileType];
       setFiles(updatedFiles);
       onFileAdd(fileToAdd);
@@ -64,6 +64,7 @@ const FileUploader = ({
     };
 
   const handleDragRow = (fromIndex: number, toIndex: number) => {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (files) {
       const updatedFiles = [...files];
       const [movedFile] = updatedFiles.splice(fromIndex, 1);

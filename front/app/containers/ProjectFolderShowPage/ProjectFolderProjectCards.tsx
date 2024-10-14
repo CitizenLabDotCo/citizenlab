@@ -65,6 +65,7 @@ const ProjectFolderProjectCards = ({ folderId, className }: Props) => {
     );
     const hideDescriptionPreview = hasNoDescriptionPreviews;
 
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (adminPublications && adminPublications.length > 0) {
       return (
         <Container className={className}>

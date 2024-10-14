@@ -29,13 +29,13 @@ const Edit = () => {
   const handleSubmit = async (values: FormValues) => {
     await updateCampaign({ id: campaign.data.id, campaign: values });
     clHistory.push(
-      `/admin/projects/${projectId}/messaging/${campaign?.data.id}`
+      `/admin/projects/${projectId}/messaging/${campaign.data.id}`
     );
   };
 
   const goBack = () => {
     clHistory.push(
-      `/admin/projects/${projectId}/messaging/${campaign?.data.id}`
+      `/admin/projects/${projectId}/messaging/${campaign.data.id}`
     );
   };
 

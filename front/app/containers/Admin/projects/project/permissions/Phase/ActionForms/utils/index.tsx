@@ -36,6 +36,7 @@ export const getPermissionActionSectionSubtitle = ({
     };
     return participationContextPermissionActionMessages[permissionAction];
   }
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (postType === 'initiative') {
     const globalPermissionActionMessages: {
       [key in Exclude<IGlobalPermissionAction, 'following'>]: MessageDescriptor;

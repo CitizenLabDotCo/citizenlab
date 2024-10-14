@@ -34,7 +34,7 @@ const SingleFileUploader = ({ name, accept }: Props) => {
         control={control}
         defaultValue={undefined}
         render={({ field: { ref: _ref, ...field } }) => {
-          const fileName = field?.value?.filename;
+          const fileName = field.value?.filename;
 
           return (
             <>

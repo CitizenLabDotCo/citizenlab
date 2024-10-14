@@ -156,18 +156,19 @@ const budgetingConfig: VotingMethodConfig = {
       );
     }
     if (submissionState === 'hasSubmitted') {
-      if (phase?.attributes.end_at) {
+      if (phase.attributes.end_at) {
         return (
           <FormattedMessage
             values={{
               b: (chunks) => (
                 <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
               ),
-              endDate: getLocalisedDateString(phase?.attributes.end_at),
+              endDate: getLocalisedDateString(phase.attributes.end_at),
             }}
             {...messages.budgetingSubmittedInstructions}
           />
         );
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       } else if (phase && !phase.attributes.end_at) {
         return (
           <FormattedMessage
@@ -190,6 +191,7 @@ const budgetingConfig: VotingMethodConfig = {
           {...messages.budgetingSubmittedInstructionsContinuous}
         />
       );
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     } else if (submissionState === 'submissionEnded') {
       return (
         <FormattedMessage
@@ -197,10 +199,10 @@ const budgetingConfig: VotingMethodConfig = {
             b: (chunks) => (
               <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
             ),
-            endDate: getLocalisedDateString(phase?.attributes.end_at),
-            maxBudget: phase?.attributes.voting_max_total?.toLocaleString(),
+            endDate: getLocalisedDateString(phase.attributes.end_at),
+            maxBudget: phase.attributes.voting_max_total?.toLocaleString(),
             currency,
-            optionCount: phase?.attributes.ideas_count,
+            optionCount: phase.attributes.ideas_count,
           }}
           {...messages.budgetParticipationEnded}
         />
@@ -277,10 +279,12 @@ const multipleVotingConfig: VotingMethodConfig = {
     const fallbackVotesTerm = formatMessage(messages.votes).toLowerCase();
 
     const voteTerm =
-      localize(phase?.attributes?.voting_term_singular_multiloc) ??
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      localize(phase?.attributes.voting_term_singular_multiloc) ??
       fallbackVoteTerm;
     const votesTerm =
-      localize(phase?.attributes?.voting_term_plural_multiloc) ??
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      localize(phase?.attributes.voting_term_plural_multiloc) ??
       fallbackVotesTerm;
 
     const maxVotesTerm =
@@ -329,18 +333,19 @@ const multipleVotingConfig: VotingMethodConfig = {
       );
     }
     if (submissionState === 'hasSubmitted') {
-      if (phase?.attributes.end_at) {
+      if (phase.attributes.end_at) {
         return (
           <FormattedMessage
             values={{
               b: (chunks) => (
                 <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
               ),
-              endDate: getLocalisedDateString(phase?.attributes.end_at),
+              endDate: getLocalisedDateString(phase.attributes.end_at),
             }}
             {...messages.votingSubmittedInstructions}
           />
         );
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       } else if (phase) {
         return (
           <FormattedMessage
@@ -364,8 +369,9 @@ const multipleVotingConfig: VotingMethodConfig = {
         />
       );
     } else if (
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       submissionState === 'submissionEnded' &&
-      phase?.attributes.end_at
+      phase.attributes.end_at
     ) {
       return (
         <FormattedMessage
@@ -373,8 +379,8 @@ const multipleVotingConfig: VotingMethodConfig = {
             b: (chunks) => (
               <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
             ),
-            endDate: getLocalisedDateString(phase?.attributes.end_at),
-            maxVotes: phase?.attributes.voting_max_total?.toLocaleString(),
+            endDate: getLocalisedDateString(phase.attributes.end_at),
+            maxVotes: phase.attributes.voting_max_total?.toLocaleString(),
             voteTerm: maxVotesTerm,
             optionCount: phase.attributes.ideas_count,
           }}
@@ -487,7 +493,7 @@ const singleVotingConfig: VotingMethodConfig = {
               b: (chunks) => (
                 <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
               ),
-              endDate: getLocalisedDateString(phase?.attributes.end_at),
+              endDate: getLocalisedDateString(phase.attributes.end_at),
             }}
             {...messages.votingSubmittedInstructions}
           />
@@ -514,8 +520,9 @@ const singleVotingConfig: VotingMethodConfig = {
           {...messages.votingSubmittedInstructionsContinuous}
         />
       );
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     } else if (submissionState === 'submissionEnded') {
-      const votingMax = phase?.attributes?.voting_max_total;
+      const votingMax = phase?.attributes.voting_max_total;
       if (votingMax) {
         if (votingMax > 1 && phase.attributes.end_at) {
           return (
@@ -524,8 +531,8 @@ const singleVotingConfig: VotingMethodConfig = {
                 b: (chunks) => (
                   <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
                 ),
-                endDate: getLocalisedDateString(phase?.attributes.end_at),
-                maxVotes: votingMax?.toLocaleString(),
+                endDate: getLocalisedDateString(phase.attributes.end_at),
+                maxVotes: votingMax.toLocaleString(),
                 optionCount: phase.attributes.ideas_count,
               }}
               {...messages.singleVotingEnded}
@@ -538,8 +545,8 @@ const singleVotingConfig: VotingMethodConfig = {
                 b: (chunks) => (
                   <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
                 ),
-                endDate: getLocalisedDateString(phase?.attributes.end_at),
-                maxVotes: votingMax?.toLocaleString(),
+                endDate: getLocalisedDateString(phase.attributes.end_at),
+                maxVotes: votingMax.toLocaleString(),
                 optionCount: phase.attributes.ideas_count,
               }}
               {...messages.singleVotingOneVoteEnded}
@@ -555,7 +562,7 @@ const singleVotingConfig: VotingMethodConfig = {
               b: (chunks) => (
                 <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
               ),
-              endDate: getLocalisedDateString(phase?.attributes.end_at),
+              endDate: getLocalisedDateString(phase.attributes.end_at),
             }}
             {...messages.singleVotingUnlimitedEnded}
           />

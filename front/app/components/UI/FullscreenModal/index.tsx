@@ -211,9 +211,10 @@ class FullscreenModal extends PureComponent<Props, State> {
     } = this.props;
     const shards = compact([navbarRef, mobileNavbarRef]);
     const modalPortalElement =
-      this.props.modalPortalElement || document?.getElementById('modal-portal');
+      this.props.modalPortalElement || document.getElementById('modal-portal');
     let modalContent: React.ReactChild | null = null;
 
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (animateInOut || (!animateInOut && opened)) {
       modalContent = (
         <Container
@@ -268,6 +269,7 @@ class FullscreenModal extends PureComponent<Props, State> {
       );
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (!animateInOut && opened && modalPortalElement) {
       return createPortal(modalContent, modalPortalElement);
     }

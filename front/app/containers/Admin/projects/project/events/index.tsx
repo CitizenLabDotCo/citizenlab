@@ -129,7 +129,7 @@ const AdminProjectEventsIndex = () => {
             </Warning>
           </Box>
 
-          {events && events?.data.length > 0 && (
+          {events && events.data.length > 0 && (
             <StyledList>
               <>
                 <HeadRow>

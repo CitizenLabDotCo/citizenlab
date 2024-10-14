@@ -265,9 +265,9 @@ const InitiativeCards = ({ className, invisibleTitleMessage }: Props) => {
     windowWidth && windowWidth >= viewportWidths.tablet;
   const filterColumnWidth = windowWidth && windowWidth < 1400 ? 340 : 352;
   const filtersActive =
-    selectedInitiativeFilters?.search ||
-    selectedInitiativeFilters?.initiative_status ||
-    selectedInitiativeFilters?.topics;
+    selectedInitiativeFilters.search ||
+    selectedInitiativeFilters.initiative_status ||
+    selectedInitiativeFilters.topics;
 
   const filtersSidebar = (
     <Box className={className} position="relative">
@@ -295,7 +295,7 @@ const InitiativeCards = ({ className, invisibleTitleMessage }: Props) => {
         placeholder={searchPlaceholder}
         ariaLabel={searchAriaLabel}
         onChange={handleSearchOnChange}
-        a11y_numberOfSearchResults={flatInitiatives?.length || 0}
+        a11y_numberOfSearchResults={flatInitiatives.length || 0}
       />
       <Box mb="20px">
         <StatusFilterBox
@@ -325,6 +325,7 @@ const InitiativeCards = ({ className, invisibleTitleMessage }: Props) => {
         <FormattedMessage tagName="h2" {...invisibleTitleMessage} />
       </ScreenReaderOnly>
 
+      {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
       {flatInitiatives !== undefined && (
         <>
           {!biggerThanLargeTablet && (
@@ -344,13 +345,13 @@ const InitiativeCards = ({ className, invisibleTitleMessage }: Props) => {
                     buttonText={
                       initiativesFilterCounts?.data.attributes.total &&
                       isNumber(
-                        initiativesFilterCounts?.data.attributes.total
+                        initiativesFilterCounts.data.attributes.total
                       ) ? (
                         <FormattedMessage
                           {...messages.showXInitiatives}
                           values={{
                             initiativesCount:
-                              initiativesFilterCounts?.data.attributes.total,
+                              initiativesFilterCounts.data.attributes.total,
                           }}
                         />
                       ) : (
@@ -372,7 +373,7 @@ const InitiativeCards = ({ className, invisibleTitleMessage }: Props) => {
                   placeholder={searchPlaceholder}
                   ariaLabel={searchAriaLabel}
                   onChange={handleSearchOnChange}
-                  a11y_numberOfSearchResults={flatInitiatives?.length || 0}
+                  a11y_numberOfSearchResults={flatInitiatives.length || 0}
                 />
               </Box>
 
@@ -422,7 +423,7 @@ const InitiativeCards = ({ className, invisibleTitleMessage }: Props) => {
               alignItems="stretch"
               position="relative"
             >
-              {flatInitiatives?.length > 0 ? (
+              {flatInitiatives.length > 0 ? (
                 <>
                   {selectedView === 'card' && (
                     <ProposalsList

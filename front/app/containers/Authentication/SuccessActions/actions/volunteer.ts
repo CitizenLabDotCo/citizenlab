@@ -12,7 +12,7 @@ export interface VolunteerParams {
 export const volunteer =
   ({ cause }: VolunteerParams) =>
   async () => {
-    if (cause.relationships?.user_volunteer?.data) {
+    if (cause.relationships.user_volunteer?.data) {
       await deleteVolunteer({
         causeId: cause.id,
         volunteerId: cause.relationships.user_volunteer.data.id,

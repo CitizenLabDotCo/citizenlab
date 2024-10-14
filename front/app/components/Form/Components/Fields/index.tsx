@@ -71,8 +71,8 @@ const Fields = ({
         getAjvErrorMessage?.(error, uischema) ||
         getDefaultAjvErrorMessage({
           keyword: error.keyword,
-          format: error?.parentSchema?.format,
-          type: error?.parentSchema?.type,
+          format: error.parentSchema?.format,
+          type: error.parentSchema?.type,
         });
       return formatMessage(message, {
         ...error.params,

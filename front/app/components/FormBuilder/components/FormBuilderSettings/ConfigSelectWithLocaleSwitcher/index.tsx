@@ -72,19 +72,18 @@ const ConfigSelectWithLocaleSwitcher = ({
 
   useEffect(() => {
     if (
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       customFieldOptionImages &&
       customFieldOptionImages.length !== prevImageQueries?.length
     ) {
       (async () => {
         const promises = customFieldOptionImages.map(
           async (customFieldOptionImage) => {
-            if (
-              !customFieldOptionImage?.data?.data.attributes.versions.medium
-            ) {
+            if (!customFieldOptionImage.data?.data.attributes.versions.medium) {
               return;
             }
             const imageData = await convertUrlToUploadFile(
-              customFieldOptionImage?.data?.data.attributes.versions.medium
+              customFieldOptionImage.data.data.attributes.versions.medium
             );
             return { [customFieldOptionImage.data.data.id]: imageData };
           }
@@ -234,9 +233,9 @@ const ConfigSelectWithLocaleSwitcher = ({
                   </Box>
                 </Box>
                 <DndProvider backend={HTML5Backend}>
-                  <List key={choices?.length}>
+                  <List key={choices.length}>
                     {choices
-                      ?.sort((a, b) => {
+                      .sort((a, b) => {
                         const aValue = a.other ? 1 : 0;
                         const bValue = b.other ? 1 : 0;
 

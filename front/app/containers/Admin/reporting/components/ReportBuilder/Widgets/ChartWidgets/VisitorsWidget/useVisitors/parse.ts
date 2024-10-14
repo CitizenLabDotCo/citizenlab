@@ -58,7 +58,7 @@ const parseVisitDuration = (
     Number(matomoVisitsWholePeriod?.avg_duration) || 0;
 
   const visitDurationComparedPeriod = matomoVisitsComparedPeriod
-    ? Number(matomoVisitsComparedPeriod?.avg_duration) || 0
+    ? Number(matomoVisitsComparedPeriod.avg_duration) || 0
     : undefined;
 
   const delta = getDelta(visitDurationWholePeriod, visitDurationComparedPeriod);
@@ -77,7 +77,7 @@ const parsePageViews = (attributes: VisitorsResponse['data']['attributes']) => {
     Number(matomoVisitsWholePeriod?.avg_pages_visited) || 0;
 
   const pageViewsComparedPeriod = matomoVisitsComparedPeriod
-    ? Number(matomoVisitsComparedPeriod?.avg_pages_visited) || 0
+    ? Number(matomoVisitsComparedPeriod.avg_pages_visited) || 0
     : undefined;
 
   const delta = getDelta(pageViewsWholePeriod, pageViewsComparedPeriod);

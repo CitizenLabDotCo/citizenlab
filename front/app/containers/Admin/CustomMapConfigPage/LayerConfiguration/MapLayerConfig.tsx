@@ -115,7 +115,7 @@ const MapLayerConfig = memo<Props & WrappedComponentProps>(
     const tenantLocales = useAppConfigurationLocales();
 
     const mapLayer =
-      mapConfig?.data?.attributes?.layers?.find(
+      mapConfig.data.attributes.layers.find(
         (layer) => layer.id === mapLayerId
       ) || undefined;
     const geojsonDataType = getGeojsonLayerType(mapLayer);
@@ -127,9 +127,9 @@ const MapLayerConfig = memo<Props & WrappedComponentProps>(
       title_multiloc: getEditableTitleMultiloc(mapLayer),
       color: getLayerColor(mapLayer),
       markerSymbol:
-        mapLayer?.geojson?.features?.[0]?.properties?.['marker-symbol'] || '',
+        mapLayer?.geojson?.features[0]?.properties?.['marker-symbol'] || '',
       tooltipContent:
-        mapLayer?.geojson?.features?.[0]?.properties?.tooltipContent,
+        mapLayer?.geojson?.features[0]?.properties?.tooltipContent,
     });
 
     useEffect(() => {
@@ -138,10 +138,9 @@ const MapLayerConfig = memo<Props & WrappedComponentProps>(
           title_multiloc: getEditableTitleMultiloc(mapLayer),
           color: getLayerColor(mapLayer),
           markerSymbol:
-            mapLayer?.geojson?.features?.[0]?.properties?.['marker-symbol'] ||
-            '',
+            mapLayer?.geojson?.features[0]?.properties?.['marker-symbol'] || '',
           tooltipContent:
-            mapLayer?.geojson?.features?.[0]?.properties?.tooltipContent,
+            mapLayer?.geojson?.features[0]?.properties?.tooltipContent,
         },
         false
       );
@@ -209,15 +208,16 @@ const MapLayerConfig = memo<Props & WrappedComponentProps>(
           title_multiloc
         ).every((key) => isEmpty((title_multiloc as Multiloc)[key]));
 
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (isTitleMultilocEmpty && mapConfig && !isNilOrError(tenantLocales)) {
           title_multiloc = getUnnamedLayerTitleMultiloc(tenantLocales);
         }
 
         const geojson = cloneDeep(
-          mapLayer?.geojson || {}
+          mapLayer.geojson || {}
         ) as GeoJSON.FeatureCollection;
 
-        geojson?.features.forEach((feature) => {
+        geojson.features.forEach((feature) => {
           feature.properties = {
             ...feature.properties,
             'fill-opacity': 0.3,
@@ -241,7 +241,7 @@ const MapLayerConfig = memo<Props & WrappedComponentProps>(
         try {
           await updateProjectMapLayer({
             id: mapLayer.id,
-            mapConfigId: mapConfig?.data?.id,
+            mapConfigId: mapConfig.data.id,
             title_multiloc,
             geojson,
           });

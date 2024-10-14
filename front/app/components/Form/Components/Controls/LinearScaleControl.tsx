@@ -39,14 +39,14 @@ const LinearScaleControl = ({
   const { formatMessage } = useIntl();
 
   const minimum = 1;
-  const maximum = schema?.maximum ?? 7; // Seven since the maximum number of options is 7
+  const maximum = schema.maximum ?? 7; // Seven since the maximum number of options is 7
   const answerNotPublic = uischema.options?.answer_visible_to === 'admins';
   const sliderRef = useRef<HTMLDivElement>(null);
 
   const getAriaValueText = useCallback(
     (value: number, total: number) => {
       // If the value has a label, read it out
-      if (uischema?.options?.[`linear_scale_label${value}`]) {
+      if (uischema.options?.[`linear_scale_label${value}`]) {
         return formatMessage(messages.valueOutOfTotalWithLabel, {
           value,
           total,
@@ -54,7 +54,7 @@ const LinearScaleControl = ({
         });
       }
       // If we don't have a label but we do have a maximum, read out the current value & maximum label
-      else if (uischema?.options?.[`linear_scale_label${maximum}`]) {
+      else if (uischema.options?.[`linear_scale_label${maximum}`]) {
         return formatMessage(messages.valueOutOfTotalWithMaxExplanation, {
           value,
           total,
@@ -125,7 +125,7 @@ const LinearScaleControl = ({
 
   // Put all labels from the UI Schema in an array so we can easily access them
   const labelsFromSchema = Array.from({ length: maximum }, (_, index) => {
-    return uischema?.options?.[`linear_scale_label${index + 1}`];
+    return uischema.options?.[`linear_scale_label${index + 1}`];
   });
 
   // Get an array of the middle value labels so we can determine how to show them in the UI
@@ -256,7 +256,7 @@ const LinearScaleControl = ({
             </Box>
           )}
         </Box>
-        <VerificationIcon show={uischema?.options?.verificationLocked} />
+        <VerificationIcon show={uischema.options?.verificationLocked} />
       </Box>
       <ErrorDisplay
         inputId={sanitizeForClassname(id)}
@@ -271,7 +271,7 @@ const LinearScaleControl = ({
 export default withJsonFormsControlProps(LinearScaleControl);
 
 export const linearScaleControlTester = (schema: UiSchema) => {
-  if (schema?.options?.linear_scale_label1?.length >= 0) {
+  if (schema.options?.linear_scale_label1?.length >= 0) {
     return 100;
   }
   return -1;

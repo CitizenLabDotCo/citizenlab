@@ -39,6 +39,7 @@ const ContentBuilderLanguageProvider = ({
     };
   }, [contentBuilderLocale, platformLocale]);
 
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (isNilOrError(contentBuilderLocale) || !messages) {
     return null;
   }

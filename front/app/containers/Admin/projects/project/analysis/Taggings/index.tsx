@@ -29,7 +29,7 @@ const Taggings = ({
 
   const taggingsForInput = useMemo(
     () =>
-      taggings?.data?.filter(
+      taggings?.data.filter(
         (tagging) => tagging.relationships.input.data.id === inputId
       ),
     [taggings, inputId]
@@ -37,7 +37,7 @@ const Taggings = ({
 
   return (
     <Box display="flex" gap="8px" flexWrap="wrap">
-      {tags?.data?.map((tag) => {
+      {tags?.data.map((tag) => {
         const taggingForTag = taggingsForInput?.find(
           (tagging) => tagging.relationships.tag.data.id === tag.id
         );
@@ -54,7 +54,7 @@ const Taggings = ({
               },
               onDeleteTagging: () => {
                 taggingForTag &&
-                  deleteTagging({ analysisId, id: taggingForTag?.id });
+                  deleteTagging({ analysisId, id: taggingForTag.id });
               },
             }}
           />

@@ -388,7 +388,7 @@ const Moderation = () => {
   };
 
   if (moderations) {
-    const lastPage = getPageNumberFromUrl(moderations.links?.last) || 1;
+    const lastPage = getPageNumberFromUrl(moderations.links.last) || 1;
     return (
       <Container>
         <PageTitleWrapper>

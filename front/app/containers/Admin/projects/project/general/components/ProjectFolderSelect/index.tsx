@@ -98,7 +98,7 @@ const ProjectFolderSelect = ({
   }
 
   const folderOptions: IOption[] =
-    !isNilOrError(projectFolders) && !isNilOrError(projectFolders?.data)
+    !isNilOrError(projectFolders) && !isNilOrError(projectFolders.data)
       ? [
           {
             value: '',

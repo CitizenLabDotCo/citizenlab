@@ -168,7 +168,7 @@ const AdminProjectsProjectGeneral = () => {
          */
         setInitialProjectFilesOrdering(
           nextProjectFiles.reduce((acc, file) => {
-            if (file?.id) {
+            if (file.id) {
               acc[file.id] = file.ordering;
             }
             return acc;

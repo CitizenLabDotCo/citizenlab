@@ -59,16 +59,18 @@ const InputListItem = () => {
     analysis.data.attributes.participation_method === 'native_survey';
 
   const mainCustomFieldId =
-    analysis.data.relationships?.main_custom_field?.data?.id;
+    analysis.data.relationships.main_custom_field?.data.id;
 
   const additionalCustomFieldIds =
-    analysis.data.relationships?.additional_custom_fields?.data.map(
+    analysis.data.relationships.additional_custom_fields?.data.map(
       (field) => field.id
     );
 
   const allCustomFields = analysis.data.relationships.all_custom_fields.data;
-  const customFieldsInAnalysisIds =
-    [mainCustomFieldId, ...(additionalCustomFieldIds || [])] || [];
+  const customFieldsInAnalysisIds = [
+    mainCustomFieldId,
+    ...(additionalCustomFieldIds || []),
+  ];
 
   const handleAddRemoveAdditionalCustomField = (customFieldId: string) => {
     const newAdditionalCustomFieldIds = additionalCustomFieldIds?.includes(
@@ -99,7 +101,7 @@ const InputListItem = () => {
       {showManageIdeaButton && (
         <Box display="flex" justifyContent="flex-end">
           <Button
-            linkTo={`/admin/projects/${analysis.data.relationships.project?.data?.id}/phases/${phaseId}/ideas?selected_idea_id=${selectedInputId}`}
+            linkTo={`/admin/projects/${analysis.data.relationships.project?.data.id}/phases/${phaseId}/ideas?selected_idea_id=${selectedInputId}`}
             openLinkInNewTab
             buttonStyle="secondary-outlined"
             icon="settings"
@@ -131,7 +133,7 @@ const InputListItem = () => {
       {authorId && author && !isRefetchingAuthor && (
         <Box mt="20px" display="flex" alignItems="center">
           <Avatar size={40} userId={author.data.id} />
-          <Text m="0px">{getFullName(author?.data)}</Text>
+          <Text m="0px">{getFullName(author.data)}</Text>
           <Divider />
         </Box>
       )}
@@ -205,8 +207,8 @@ const InputListItem = () => {
               <LongFieldValue
                 customFieldId={customField.id}
                 input={input.data}
-                projectId={analysis.data.relationships.project?.data?.id}
-                phaseId={analysis.data.relationships.phase?.data?.id}
+                projectId={analysis.data.relationships.project?.data.id}
+                phaseId={analysis.data.relationships.phase?.data.id}
               />
             </Box>
             {isSurveyAnalysis && <Divider m="0px" />}

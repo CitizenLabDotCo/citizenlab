@@ -195,6 +195,7 @@ const Phone = ({
           onClick={onTranslateInitiative}
           initiative={initiative.data}
         />
+        {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
         {initiativeGeoPosition && initiativeAddress && (
           <StyledDropdownMap
             address={initiativeAddress}
@@ -218,7 +219,7 @@ const Phone = ({
           <Body
             postId={initiativeId}
             postType="initiative"
-            body={localize(initiative.data.attributes?.body_multiloc)}
+            body={localize(initiative.data.attributes.body_multiloc)}
             translateButtonClicked={translateButtonClicked}
           />
         </Box>

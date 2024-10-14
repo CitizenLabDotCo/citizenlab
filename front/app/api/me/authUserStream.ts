@@ -24,7 +24,7 @@ const authUserStreamQueryObserver = new QueryObserver<
 });
 
 authUserStreamQueryObserver.subscribe((query) => {
-  return authUserStream.next(query?.data);
+  return authUserStream.next(query.data);
 });
 
 /** @deprecated Only used for backwards compatibility reasons with streams. Do not use in React components or hooks */

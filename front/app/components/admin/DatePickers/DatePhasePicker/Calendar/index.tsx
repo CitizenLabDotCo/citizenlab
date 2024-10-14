@@ -188,6 +188,7 @@ const Calendar = ({
       clickedDate: day,
     });
 
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (updatedRange) {
       onUpdateRange(updatedRange);
     }

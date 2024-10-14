@@ -215,7 +215,7 @@ export default class SideModal extends PureComponent<Props, State> {
 
   render(): React.ReactNode {
     const { children, opened, label } = this.props;
-    const modalPortalElement = document?.getElementById('modal-portal');
+    const modalPortalElement = document.getElementById('modal-portal');
 
     if (modalPortalElement) {
       return createPortal(

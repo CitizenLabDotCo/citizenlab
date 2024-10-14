@@ -40,6 +40,7 @@ export const handleMapClickMultipoint = (
   const currentPointCoordinates = getUserInputPoints(mapView);
 
   // Update the form data
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (currentPointCoordinates) {
     // Add to existing points
     currentPointCoordinates.push([newPoint[0], newPoint[1]]);
@@ -76,19 +77,19 @@ export const setupPointDrag = ({
   // Using the mapView on 'drag' event, we handle the dragging of the point & updating the form data
 
   mapView?.on('drag', (event) => {
-    if (event?.action === 'start') {
+    if (event.action === 'start') {
       // START ACTION: Store the point that the user is trying to drag
 
       mapView.hitTest(event).then((response) => {
         // Get the first element under the mouse click
-        const clickedElement = response?.results?.[0];
+        const clickedElement = response.results[0];
         if (
-          clickedElement?.layer.title === 'User Input' &&
-          clickedElement?.type === 'graphic' &&
+          clickedElement.layer.title === 'User Input' &&
+          clickedElement.type === 'graphic' &&
           clickedElement.graphic.geometry.type === 'point'
         ) {
           event.stopPropagation();
-          pointBeingDragged.current = clickedElement?.graphic;
+          pointBeingDragged.current = clickedElement.graphic;
         }
       });
     } else if (event.action === 'update') {
@@ -102,7 +103,7 @@ export const setupPointDrag = ({
           mapView.graphics.remove(temporaryDragGraphic.current);
 
         // Create a temporary "preview" point graphic and add it to the map view
-        temporaryDragGraphic.current = pointBeingDragged?.current?.clone();
+        temporaryDragGraphic.current = pointBeingDragged.current.clone();
 
         // Change the symbol colour so we can identify it as the preview point
         temporaryDragGraphic.current.symbol = getShapeSymbol({
@@ -114,6 +115,7 @@ export const setupPointDrag = ({
         });
 
         // Generate temporary line graphics between the preview point and existing vertices
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         mapView &&
           generateLinePreview({
             mapView,
@@ -124,6 +126,7 @@ export const setupPointDrag = ({
           });
 
         // Add the preview graphic to the map
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (temporaryDragGraphic.current) {
           temporaryDragGraphic.current.geometry = mapView.toMap(event);
           mapView.graphics.add(temporaryDragGraphic.current);
@@ -132,7 +135,7 @@ export const setupPointDrag = ({
     } else if (event.action === 'end') {
       // END ACTION: Update the form data with the new coordinates and remove temporary graphics
 
-      if (pointBeingDragged?.current) {
+      if (pointBeingDragged.current) {
         event.stopPropagation();
         if (temporaryDragGraphic.current) {
           // Remove the temporary drag graphic
@@ -148,15 +151,14 @@ export const setupPointDrag = ({
             const longitude = coordinates[0];
             const latitude = coordinates[1];
             if (
-              longitude ===
-                pointBeingDragged?.current?.geometry?.['longitude'] &&
-              latitude === pointBeingDragged?.current?.geometry?.['latitude']
+              longitude === pointBeingDragged.current?.geometry['longitude'] &&
+              latitude === pointBeingDragged.current.geometry['latitude']
             ) {
               // This is the original point the user tried to drag, so
               // now we update the geometry.
               return [
-                temporaryDragGraphic?.current?.geometry?.['longitude'],
-                temporaryDragGraphic?.current?.geometry?.['latitude'],
+                temporaryDragGraphic.current?.geometry['longitude'],
+                temporaryDragGraphic.current?.geometry['latitude'],
               ];
             } else {
               return coordinates;
@@ -207,8 +209,8 @@ export const generateLinePreview = ({
 
   const indexOfDragPoint = currentDataCoordinates.findIndex(
     (coordinates: number[][]) =>
-      coordinates[0] === pointBeingDragged?.current?.geometry?.['longitude'] &&
-      coordinates[1] === pointBeingDragged?.current?.geometry?.['latitude']
+      coordinates[0] === pointBeingDragged.current?.geometry['longitude'] &&
+      coordinates[1] === pointBeingDragged.current.geometry['latitude']
   );
 
   // Create a line graphic connecting the drag point preview to any previous or next points
@@ -283,6 +285,7 @@ export const convertCoordinatesToGeoJSON = (
   coordinates: number[][],
   uiSchema: ControlElement
 ) => {
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (coordinates) {
     const geoJsonType =
       uiSchema.options?.input_type === 'line' ? 'LineString' : 'Polygon';
@@ -313,7 +316,7 @@ export const updateMultiPointsDataAndDisplay = ({
   const coordinates = data;
 
   // Create graphics for the user input points
-  const pointGraphics = coordinates?.map((coordinates) => {
+  const pointGraphics = coordinates.map((coordinates) => {
     return new Graphic({
       geometry: new Point({
         longitude: coordinates[0],
@@ -330,13 +333,13 @@ export const updateMultiPointsDataAndDisplay = ({
   });
 
   // Create an Esri line graphic to connect the points
-  const pointsForLine = coordinates?.map((coordinates) => [
+  const pointsForLine = coordinates.map((coordinates) => [
     coordinates[0],
     coordinates[1],
   ]);
   // If we have a polygon, we want to close the shape by connecting the first and last points
   if (inputType === 'polygon') {
-    pointsForLine?.push(coordinates[0]);
+    pointsForLine.push(coordinates[0]);
   }
   // Create the Esri line object
   const polyline = new Polyline({

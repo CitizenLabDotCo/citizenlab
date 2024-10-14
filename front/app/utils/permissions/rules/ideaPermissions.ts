@@ -9,7 +9,7 @@ const isAuthor = (idea: IIdeaData, user: IUser | undefined) => {
   return (
     user &&
     idea.relationships.author?.data &&
-    idea.relationships.author?.data.id === user.data.id
+    idea.relationships.author.data.id === user.data.id
   );
 };
 

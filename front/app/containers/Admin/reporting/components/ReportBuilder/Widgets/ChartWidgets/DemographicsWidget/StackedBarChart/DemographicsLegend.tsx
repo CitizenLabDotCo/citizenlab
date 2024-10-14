@@ -23,9 +23,10 @@ const DemographicsLegend = ({ items, legendDimensions }: CustomLegendProps) => {
         flexWrap="wrap"
         margin="0 auto"
       >
+        {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
         {items &&
           items.map((item, index) => {
-            const isZeroValue = item?.value === 0;
+            const isZeroValue = item.value === 0;
             const color = isZeroValue ? colors.coolGrey300 : item.color;
 
             return (

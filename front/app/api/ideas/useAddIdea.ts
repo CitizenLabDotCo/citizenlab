@@ -38,7 +38,7 @@ const useAddIdea = () => {
         queryKey: ideaImagesKeys.items(),
       });
 
-      const projectId = idea.data.relationships?.project.data.id;
+      const projectId = idea.data.relationships.project.data.id;
 
       if (projectId) {
         queryClient.invalidateQueries({

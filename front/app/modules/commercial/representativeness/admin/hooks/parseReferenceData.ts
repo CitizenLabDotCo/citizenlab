@@ -68,6 +68,7 @@ export const regFieldToReferenceData = (
   const { users, reference_population } = usersByField.data.attributes.series;
   if (reference_population === null) return [];
 
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const optionIds = reference_population && Object.keys(reference_population);
   const includedUsers = syncKeys(users, optionIds);
 
@@ -102,6 +103,7 @@ const syncKeys = (users: Record<string, number>, keys: string[]) => {
   const fixedUsers = {};
 
   keys.forEach((key) => {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     fixedUsers[key] = users[key] ?? 0;
   });
 

@@ -22,6 +22,7 @@ const ProjectInfo = ({ project, phase }: Props) => {
 
   const projectTitle = localize(project.attributes.title_multiloc);
 
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const ideasCount = phase
     ? phase.attributes.ideas_count
     : project.attributes.ideas_count;
@@ -31,6 +32,7 @@ const ProjectInfo = ({ project, phase }: Props) => {
       <Text mt="4px" mb="4px">
         {'| '}
         {projectTitle}
+        {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
         {phase ? ` (${localize(phase.attributes.title_multiloc)})` : ''}
       </Text>
       <Text mt="4px" mb="4px" color="textSecondary" fontSize="s">

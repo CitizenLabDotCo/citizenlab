@@ -36,12 +36,13 @@ const InputListItem = memo(({ input, onSelect, selected }: Props) => {
   });
   const { formatDate, formatMessage } = useIntl();
 
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!analysis || !input) return null;
 
   const { title_multiloc } = input.attributes;
 
   const mainCustomFieldId =
-    analysis.data.relationships.main_custom_field?.data?.id;
+    analysis.data.relationships.main_custom_field?.data.id;
 
   return (
     <Box data-cy="e2e-analysis-input-item">
@@ -98,8 +99,8 @@ const InputListItem = memo(({ input, onSelect, selected }: Props) => {
                 <InputShortFieldValue
                   customFieldId={mainCustomFieldId}
                   input={input}
-                  projectId={analysis.data.relationships.project?.data?.id}
-                  phaseId={analysis.data.relationships.phase?.data?.id}
+                  projectId={analysis.data.relationships.project?.data.id}
+                  phaseId={analysis.data.relationships.phase?.data.id}
                 />
               </Text>
             )}

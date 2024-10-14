@@ -35,7 +35,7 @@ const BottomInfoSection = () => {
 
   return (
     <GenericBottomInfoSection
-      pageData={customPage?.data}
+      pageData={customPage.data}
       updatePage={(data) => updateCustomPage({ id: customPageId, ...data })}
       updatePageAndEnableSection={(data) =>
         updateCustomPageAndEnableSection(customPageId, data)

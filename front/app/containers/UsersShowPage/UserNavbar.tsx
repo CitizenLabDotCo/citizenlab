@@ -133,11 +133,11 @@ const UserNavbar = memo<Props>(({ user }) => {
   const { data: authUser } = useAuthUser();
 
   const eventsCount = events?.data.length;
-  const showEventTab = authUser?.data?.id === user.id;
+  const showEventTab = authUser?.data.id === user.id;
   const isFollowingEnabled = useFeatureFlag({
     name: 'follow',
   });
-  const showFollowingTab = isFollowingEnabled && authUser?.data?.id === user.id;
+  const showFollowingTab = isFollowingEnabled && authUser?.data.id === user.id;
 
   const followingTab: TabData = {
     label: formatMessage(messages.followingWithCount, {

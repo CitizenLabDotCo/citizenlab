@@ -279,6 +279,7 @@ const Tags = () => {
             </Box>
           </TagContainer>
         ))}
+        {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
         {!isLoadingTags && emptyState && (
           <Box>
             <Text p="6px" color="grey600" textAlign="center">

@@ -80,6 +80,7 @@ const PolygonMap = ({
   }, [graphics, layerId, layerTitle]);
 
   const layers = useMemo(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     return responsesLayer && mapConfigLayers
       ? [...mapConfigLayers, responsesLayer]
       : [];
@@ -93,8 +94,8 @@ const PolygonMap = ({
       showLegend: true,
       showLegendExpanded: false,
       showLayerVisibilityControl: true,
-      zoom: Number(mapConfig?.data?.attributes.zoom_level),
-      center: mapConfig?.data?.attributes.center_geojson,
+      zoom: Number(mapConfig?.data.attributes.zoom_level),
+      center: mapConfig?.data.attributes.center_geojson,
     }),
     [mapConfig, onInit]
   );
@@ -102,7 +103,7 @@ const PolygonMap = ({
   return (
     <EsriMap
       initialData={initialData}
-      webMapId={mapConfig?.data?.attributes.esri_web_map_id}
+      webMapId={mapConfig?.data.attributes.esri_web_map_id}
       height="440px"
       layers={layers}
     />

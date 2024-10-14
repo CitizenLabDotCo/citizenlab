@@ -26,9 +26,7 @@ const AssignSingleVoteBox = memo(({ ideaId, phase }: Props) => {
   const { data: idea } = useIdeaById(ideaId);
   const { numberOfVotesCast } = useVoting();
 
-  const { data: basket } = useBasket(
-    phase.relationships?.user_basket?.data?.id
-  );
+  const { data: basket } = useBasket(phase.relationships.user_basket?.data?.id);
   const actionDescriptor = idea?.data.attributes.action_descriptors.voting;
   const { voting_max_total } = phase.attributes;
 
@@ -36,7 +34,7 @@ const AssignSingleVoteBox = memo(({ ideaId, phase }: Props) => {
 
   const votesLeft = (voting_max_total ?? 0) - (numberOfVotesCast ?? 0);
 
-  const totalVotes = basket?.data?.attributes?.total_votes;
+  const totalVotes = basket?.data.attributes.total_votes;
   const totalVotesGreaterThanZero = totalVotes !== undefined && totalVotes > 0;
 
   return (

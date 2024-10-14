@@ -36,7 +36,7 @@ const ReactionControl = ({
         followableType="initiatives"
         followableId={initiative.data.id}
         followersCount={initiative.data.attributes.followers_count}
-        followerId={initiative.data.relationships.user_follower?.data?.id}
+        followerId={initiative.data.relationships.user_follower.data?.id}
         buttonStyle="primary-outlined"
         toolTipType="input"
       />

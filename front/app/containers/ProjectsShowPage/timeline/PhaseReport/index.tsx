@@ -62,6 +62,7 @@ const PhaseReport = ({ reportId, phaseId }: Props) => {
           >
             <Box maxWidth={MAX_REPORT_WIDTH} w="100%">
               <Editor isPreview={true}>
+                {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
                 {editorData && <ContentBuilderFrame editorData={editorData} />}
               </Editor>
             </Box>

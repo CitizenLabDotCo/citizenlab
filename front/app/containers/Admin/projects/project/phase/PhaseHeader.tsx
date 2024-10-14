@@ -77,6 +77,7 @@ export const PhaseHeader = ({ phase, tabs }: Props) => {
     formatMessage
   );
 
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!phase) {
     return null;
   }

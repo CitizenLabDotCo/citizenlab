@@ -78,7 +78,7 @@ const FakeLegend = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [calculationScheduled]);
 
-  const rightLegend = position?.includes('right');
+  const rightLegend = position.includes('right');
   const stringWidth = rightLegend
     ? 'auto'
     : typeof width === 'number'

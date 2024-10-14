@@ -195,7 +195,7 @@ const IdeaCard = ({
                 followableType="ideas"
                 followableId={idea.data.id}
                 followersCount={idea.data.attributes.followers_count}
-                followerId={idea.data.relationships.user_follower?.data?.id}
+                followerId={idea.data.relationships.user_follower.data?.id}
                 w="auto"
                 toolTipType="input"
               />

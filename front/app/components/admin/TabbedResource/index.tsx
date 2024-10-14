@@ -86,6 +86,7 @@ const TabbedResource = ({
         {rightSideCTA && <Box ml="60px">{rightSideCTA}</Box>}
       </Box>
 
+      {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
       {tabs && tabs.length > 0 && (
         <TabbedNav className="e2e-resource-tabs">
           {tabs.map((tab) => {

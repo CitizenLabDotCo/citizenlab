@@ -201,13 +201,13 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
         messages[
           `ajv_error_${uiSchema?.options?.inputTerm}_${
             getFieldNameFromPath(error.instancePath) ||
-            error?.params?.missingProperty
+            error.params.missingProperty
           }_${error.keyword}`
         ] ||
         messages[
           `ajv_error_${
             getFieldNameFromPath(error.instancePath) ||
-            error?.params?.missingProperty
+            error.params.missingProperty
           }_${error.keyword}`
         ] ||
         messages[

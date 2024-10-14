@@ -174,7 +174,7 @@ const ProjectsShowPage = ({ project }: Props) => {
     <main>
       <Container
         background={
-          events && events?.data.length > 0 ? colors.white : colors.background
+          events && events.data.length > 0 ? colors.white : colors.background
         }
       >
         {content}
@@ -220,6 +220,7 @@ const ProjectsShowPageWrapper = () => {
     );
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const userJustLoggedOut = userWasLoggedIn && user === null;
   const unauthorized = statusProject === 'error' && isUnauthorizedRQ(error);
 
@@ -231,6 +232,7 @@ const ProjectsShowPageWrapper = () => {
     return <Unauthorized />;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (statusProject === 'error' || project === null) {
     return <PageNotFound />;
   }

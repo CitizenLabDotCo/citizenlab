@@ -84,6 +84,7 @@ const ParentComment = ({
         : idea?.data.attributes.action_descriptors.commenting_idea
             .disabled_reason;
     const showCommentForm = isNil(commentingDisabledReason);
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     const hasChildComments = childCommentIds && childCommentIds.length > 0;
     const modifiedChildCommentIds = !isNilOrError(childComments)
       ? childComments

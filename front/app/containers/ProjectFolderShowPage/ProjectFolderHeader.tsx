@@ -29,11 +29,11 @@ const ProjectFolderHeader = memo<Props>(({ projectFolder, className }) => {
 
   const smallerThan1100px = windowWidth ? windowWidth <= 1100 : false;
 
-  if (projectFolder.attributes?.header_bg?.large) {
+  if (projectFolder.attributes.header_bg?.large) {
     return (
       <HeaderImageContainer className={`${className || ''} e2e-header-folder`}>
         <HeaderImage
-          src={projectFolder.attributes?.header_bg.large}
+          src={projectFolder.attributes.header_bg.large}
           cover={true}
           fadeIn={false}
           isLazy={false}

@@ -91,7 +91,7 @@ const SingleSelectRadioControl = ({
             />
           </StyledBox>
         ))}
-        <VerificationIcon show={uischema?.options?.verificationLocked} />
+        <VerificationIcon show={uischema.options?.verificationLocked} />
       </Box>
       <ErrorDisplay
         inputId={sanitizeForClassname(id)}

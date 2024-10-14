@@ -65,6 +65,7 @@ const CustomMapConfigPage = memo<Props>(({ className, passedMapConfig }) => {
       projectId &&
       appConfig &&
       !isFetching &&
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       (mapConfig?.data === null || !mapConfig)
     ) {
       createProjectMapConfig({
@@ -87,9 +88,10 @@ const CustomMapConfigPage = memo<Props>(({ className, passedMapConfig }) => {
     isFetching,
   ]);
 
-  if (projectId && mapConfig?.data?.id) {
+  if (projectId && mapConfig?.data.id) {
     return (
       <Container className={className || ''}>
+        {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
         {view === 'main' && mapConfig && (
           <StyledMapConfigOverview
             setView={setView}
@@ -102,14 +104,14 @@ const CustomMapConfigPage = memo<Props>(({ className, passedMapConfig }) => {
           <Box flex="0 0 520px" width="520px">
             <FeatureLayerUpload
               setView={setView}
-              mapConfigId={mapConfig?.data.id}
+              mapConfigId={mapConfig.data.id}
             />
           </Box>
         )}
 
         {view === 'webMapUpload' && (
           <Box flex="0 0 520px" width="520px">
-            <WebMapUpload setView={setView} mapConfigId={mapConfig?.data.id} />
+            <WebMapUpload setView={setView} mapConfigId={mapConfig.data.id} />
           </Box>
         )}
 

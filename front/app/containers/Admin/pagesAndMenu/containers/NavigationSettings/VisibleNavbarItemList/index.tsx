@@ -42,7 +42,7 @@ const VisibleNavbarItemList = ({
 
   const handleClickEdit = (navbarItem: Item) => () => {
     // redirect to homepage edit page
-    if (navbarItem?.attributes?.code && navbarItem.attributes.code === 'home') {
+    if (navbarItem.attributes.code && navbarItem.attributes.code === 'home') {
       clHistory.push(
         `${ADMIN_PAGES_MENU_PATH}/homepage-builder/?variant=signedOut`
       );

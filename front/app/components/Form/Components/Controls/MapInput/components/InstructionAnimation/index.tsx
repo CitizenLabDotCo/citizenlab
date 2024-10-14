@@ -44,18 +44,18 @@ const InstructionAnimation = ({
       case 'point':
         return !data?.coordinates;
       case 'line':
-        return !data || data?.coordinates?.length < 2;
+        return !data || data.coordinates?.length < 2;
       case 'polygon':
-        return !data || data?.coordinates?.[0]?.length < 4;
+        return !data || data.coordinates?.[0]?.length < 4;
     }
   };
 
   const onClick = () => {
     // For accessibility reasons, the animation must stop once it's clicked.
-    if (lottieRef?.current?.animationItem?.isPaused) {
-      lottieRef?.current?.play();
+    if (lottieRef.current?.animationItem?.isPaused) {
+      lottieRef.current.play();
     } else {
-      lottieRef?.current?.pause();
+      lottieRef.current?.pause();
     }
   };
 

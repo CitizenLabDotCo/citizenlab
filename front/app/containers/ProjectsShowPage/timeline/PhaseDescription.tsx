@@ -70,6 +70,7 @@ const PhaseDescription = ({ projectId, selectedPhaseId }: Props) => {
     return null;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const content = phase
     ? localize(phase.data.attributes.description_multiloc)
     : '';
@@ -93,12 +94,13 @@ const PhaseDescription = ({ projectId, selectedPhaseId }: Props) => {
         phaseId={selectedPhaseId}
         descriptionHasContent={descriptionHasContent}
       />
+      {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
       {phase && descriptionHasContent && (
         <>
           <ReadMoreWrapper
             fontSize="base"
             contentId="phase-description"
-            value={phase.data.attributes?.description_multiloc}
+            value={phase.data.attributes.description_multiloc}
           />
 
           {!isNilOrError(phaseFiles) && !isEmpty(phaseFiles) && (
@@ -107,7 +109,7 @@ const PhaseDescription = ({ projectId, selectedPhaseId }: Props) => {
         </>
       )}
       {isActivePhase && (
-        <EventPreviews projectId={phase?.data.relationships.project.data.id} />
+        <EventPreviews projectId={phase.data.relationships.project.data.id} />
       )}
     </Container>
   );

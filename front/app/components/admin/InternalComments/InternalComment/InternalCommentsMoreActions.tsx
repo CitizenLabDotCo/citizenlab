@@ -66,7 +66,7 @@ const InternalCommentsMoreActions = ({
   initiativeId,
 }: Props) => {
   const moreActionsButtonRef = useRef<HTMLButtonElement>(null);
-  const parentCommentId = comment.relationships?.parent?.data?.id;
+  const parentCommentId = comment.relationships.parent.data?.id;
   const { data: authUser } = useAuthUser();
   const { mutate: markForDeletion, isLoading } =
     useMarkInternalCommentForDeletion({

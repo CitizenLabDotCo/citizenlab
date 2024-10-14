@@ -50,16 +50,15 @@ const RenderNode = ({ render }) => {
   } = useNode((node) => {
     // This can sometimes be undefined, even though
     // craftjs says it can't
-    if (!node) return {};
-    if (!node.data) return {};
-    if (!node.events) return {};
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    if (!node || !node.data || !node.events) return {};
 
     const name = node.data.name;
 
     return {
       props: node.data.props,
       name,
-      hasError: node.data.props?.hasError,
+      hasError: node.data.props.hasError,
       title: WIDGET_TITLES[name],
       noPointerEvents: hasNoPointerEvents(name),
     };
@@ -82,7 +81,7 @@ const RenderNode = ({ render }) => {
   });
 
   const parentNode = parentId ? node(parentId).get() : undefined;
-  const parentName = parentNode?.data?.name;
+  const parentName = parentNode?.data.name;
   const isChildOfComplexComponent = parentName
     ? hasChildren(parentName)
     : false;

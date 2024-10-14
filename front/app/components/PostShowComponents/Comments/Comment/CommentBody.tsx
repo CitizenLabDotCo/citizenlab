@@ -126,6 +126,7 @@ const CommentBody = ({
   const setNewTextAreaRef = (element: HTMLTextAreaElement) => {
     textareaElement.current = element;
 
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (textareaElement.current) {
       textareaElement.current.scrollIntoView({
         behavior: 'smooth',
@@ -136,6 +137,7 @@ const CommentBody = ({
   };
 
   const focusEndOfEditingArea = (element: HTMLTextAreaElement) => {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (element.setSelectionRange && element.textContent) {
       element.setSelectionRange(
         element.textContent.length,
@@ -211,6 +213,7 @@ const CommentBody = ({
           </QuillEditedContent>
           <ButtonsWrapper>
             {apiErrors &&
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
               apiErrors.body_multiloc &&
               apiErrors.body_multiloc[locale] && (
                 <Error apiErrors={apiErrors.body_multiloc[locale]} />

@@ -70,6 +70,7 @@ const IdeaMoreActions = memo(({ idea, className, projectId }: Props) => {
     clHistory.push(`/ideas/edit/${idea.id}`, { scrollToTop: true });
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!idea) return null;
 
   const ideaId = idea.id;

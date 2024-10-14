@@ -22,7 +22,7 @@ const ReportBuilderSettings = () => {
         id: currentNodeId,
         name,
         title: WIDGET_TITLES[name],
-        settings: state.nodes[currentNodeId].related?.settings,
+        settings: state.nodes[currentNodeId].related.settings,
         isDeletable: query.node(currentNodeId).isDeletable(),
         custom: state.nodes[currentNodeId].data.custom,
       };

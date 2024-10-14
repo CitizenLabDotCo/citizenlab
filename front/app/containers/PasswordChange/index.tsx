@@ -44,7 +44,7 @@ const ChangePassword = () => {
   const { formatMessage } = useIntl();
   const [success, setSuccess] = useState(false);
   const userHasPreviousPassword =
-    !isNilOrError(authUser) && !authUser.data.attributes?.no_password;
+    !isNilOrError(authUser) && !authUser.data.attributes.no_password;
   const pageTitle = userHasPreviousPassword
     ? messages.titleChangePassword
     : messages.titleAddPassword;

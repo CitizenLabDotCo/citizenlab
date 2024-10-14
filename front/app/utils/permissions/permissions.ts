@@ -41,6 +41,7 @@ const definePermissionRule = (
   rule: PermissionRule
 ) => {
   permissionRules[resourceType] = {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     ...(permissionRules[resourceType] || {}),
     [action]: rule,
   };
@@ -69,6 +70,7 @@ const usePermission = ({
   const resourceType = isResource(item) ? item.type : item;
   const rule = getPermissionRule(resourceType, action);
 
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (rule && appConfig) {
     return rule(item, user, appConfig.data, context);
   } else {

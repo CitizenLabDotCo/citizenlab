@@ -34,7 +34,7 @@ export const getOptions = (
     );
   } else if (fieldType === 'singleEnum') {
     return (
-      schema?.enum
+      schema.enum
         ?.map((option, index) => ({
           value: option.toString(),
           label: uiSchema?.options?.enumNames[index] || option.toString(),
@@ -43,7 +43,7 @@ export const getOptions = (
     );
   } else {
     return (
-      schema?.oneOf
+      schema.oneOf
         ?.map((option) => ({
           value: option.const,
           label: option.title || option.const,

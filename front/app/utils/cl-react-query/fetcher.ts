@@ -90,6 +90,7 @@ async function fetcher({
     (value) => isNil(value) || value === ''
   );
 
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const requestQueryParams = relevantQueryParams
     ? stringify(relevantQueryParams, {
         arrayFormat: 'brackets',
@@ -148,12 +149,14 @@ async function fetcher({
   if (!response.ok) {
     const error = data as unknown as CLErrors;
     handleBlockedUserError(response.status, error);
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (!error.errors) {
       reportError(data);
     }
 
     throw error;
   } else {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (data) {
       if (isArray(data.data)) {
         if (cacheIndividualItems) {
@@ -207,6 +210,7 @@ async function fetcher({
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!data) return null;
 
   const { included: _included, ...rest } = data;

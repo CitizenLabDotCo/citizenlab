@@ -151,6 +151,7 @@ export const sharedSteps = (
           return;
         }
 
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (flow === 'signup') {
           anySSOEnabled
             ? setCurrentStep('sign-up:auth-providers')
@@ -167,6 +168,7 @@ export const sharedSteps = (
         if (error_code === 'not_entitled_under_minimum_age') {
           setCurrentStep('missing-data:verification');
           setError('not_entitled_under_minimum_age');
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         } else if (error_code === 'taken') {
           setCurrentStep('missing-data:verification');
           setError('verification_taken');

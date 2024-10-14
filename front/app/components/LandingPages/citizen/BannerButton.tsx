@@ -17,6 +17,7 @@ type Props = {
 
 const BannerButton = ({ buttonStyle, ...props }: Props) => (
   <Button
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     buttonStyle={buttonStyle || 'primary-inverse'}
     fontWeight="500"
     padding="13px 22px"

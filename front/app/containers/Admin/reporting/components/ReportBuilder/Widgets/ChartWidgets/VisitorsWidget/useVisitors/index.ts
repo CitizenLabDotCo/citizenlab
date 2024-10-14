@@ -41,6 +41,7 @@ export default function useVisitors({
             analytics.data.attributes[0],
             startAt ? moment(startAt) : null,
             endAt ? moment(endAt) : null,
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             currentResolution ?? 'month'
           )
         : null,

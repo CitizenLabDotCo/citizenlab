@@ -57,7 +57,7 @@ const UndoButton = ({
 
       if (userInputLayer) {
         userInputLayer.removeAll();
-        mapView?.map?.layers?.remove(userInputLayer);
+        mapView?.map.layers.remove(userInputLayer);
         handleMultiPointChange?.(undefined);
       }
     }

@@ -19,7 +19,7 @@ type Props = {
 };
 
 const FieldGroupSettings = ({ field, locale }: Props) => {
-  const lockedAttributes = field?.constraints?.locks;
+  const lockedAttributes = field.constraints?.locks;
   const handleKeyDown = (event: React.KeyboardEvent<Element>) => {
     // We want to prevent the form builder from being closed when enter is pressed
     if (event.key === 'Enter') {

@@ -21,7 +21,7 @@ const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
   const isSmallerThanTablet = useBreakpoint('tablet');
   const isSmallerThanPhone = useBreakpoint('phone');
   const [isVisible, setIsVisible] = useState(false);
-  const portalElement = document?.getElementById('topbar-portal');
+  const portalElement = document.getElementById('topbar-portal');
   const { data: phases } = usePhases(projectId);
   const { data: project } = useProjectById(projectId);
 

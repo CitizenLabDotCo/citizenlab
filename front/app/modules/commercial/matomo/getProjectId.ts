@@ -39,7 +39,7 @@ async function getIdea(slug: string) {
 
 async function getProjectIdFromIdeaSlug(slug: string) {
   const idea = await getIdea(slug);
-  return idea?.data.relationships?.project?.data?.id;
+  return idea.data.relationships.project.data.id;
 }
 
 async function extractProjectIdFromIdeaPath(path: string) {

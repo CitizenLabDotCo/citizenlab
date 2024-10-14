@@ -61,6 +61,7 @@ export const getTabs = (
     phase.attributes.participation_method === 'survey' &&
       surveys_enabled &&
       typeform_enabled &&
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       (!surveys_enabled || phase.attributes.survey_service === 'typeform') && {
         label: formatMessage(messages.surveyResultsTab),
         url: 'survey-results',

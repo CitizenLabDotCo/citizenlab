@@ -52,7 +52,7 @@ const AuthorFieldFilterItem = ({
       display="flex"
     >
       <Box>
-        <T value={customField?.data.attributes.title_multiloc} />
+        <T value={customField.data.attributes.title_multiloc} />
       </Box>
       <Box mx="3px">{predicate}</Box>
       <ElipsisFilterValue>

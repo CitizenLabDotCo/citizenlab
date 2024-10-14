@@ -385,7 +385,7 @@ const OfficialFeedbackForm = ({
             name="official-feedback-form-mentions-textarea"
             locale={selectedLocale}
             ariaLabel={formatMessage(messages.officialUpdateBody)}
-            value={formValues.bodyMultiloc?.[selectedLocale] || ''}
+            value={formValues.bodyMultiloc[selectedLocale] || ''}
             onChange={handleBodyOnChange}
             placeholder={formatMessage(messages.textAreaPlaceholder)}
             rows={8}
@@ -397,7 +397,7 @@ const OfficialFeedbackForm = ({
           <StyledInput
             type="text"
             locale={selectedLocale}
-            value={formValues.authorMultiloc?.[selectedLocale] || ''}
+            value={formValues.authorMultiloc[selectedLocale] || ''}
             onChange={handleAuthorOnChange}
             placeholder={formatMessage(messages.officialNamePlaceholder)}
             ariaLabel={formatMessage(messages.officialUpdateAuthor)}

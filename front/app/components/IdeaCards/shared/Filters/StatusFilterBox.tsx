@@ -37,7 +37,7 @@ const StatusFilterBox = ({
         <StatusFilter
           type="idea"
           statuses={ideaStatuses.data}
-          filterCounts={ideasFilterCounts?.data.attributes}
+          filterCounts={ideasFilterCounts.data.attributes}
           selectedStatusId={selectedStatusId}
           onChange={handleOnChange}
         />

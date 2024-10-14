@@ -85,7 +85,7 @@ const ProjectRow = ({
   const { data: project } = useProjectById(projectId);
 
   const { data: parentPublication } = useAdminPublication(
-    publication.relationships.parent?.data?.id || null
+    publication.relationships.parent.data?.id || null
   );
   const localize = useLocalize();
 
@@ -98,6 +98,7 @@ const ProjectRow = ({
   const handleActionLoading = (actionType: ActionType, isRunning: boolean) => {
     if (actionType === 'copying') {
       setIsBeingCopyied(isRunning);
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     } else if (actionType === 'deleting') {
       setIsBeingDeleted(isRunning);
     }
@@ -174,9 +175,7 @@ const ProjectRow = ({
                   type="button"
                   className={[
                     'e2e-admin-edit-publication',
-                    publication.attributes.publication_title_multiloc?.[
-                      'en-GB'
-                    ],
+                    publication.attributes.publication_title_multiloc['en-GB'],
                   ]
                     .filter((item) => item)
                     .join(' ')}

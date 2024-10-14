@@ -110,6 +110,7 @@ class LocaleSwitcher extends PureComponent<Props> {
   render() {
     const { locales, selectedLocale, values, className } = this.props;
 
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (locales && locales.length > 1) {
       return (
         <Container className={className}>

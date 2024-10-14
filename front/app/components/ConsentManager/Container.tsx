@@ -56,6 +56,7 @@ const Container = ({
   );
 
   const handleCancel = useCallback(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     const isEmpty = Object.values(preferences).every((e) => e === undefined);
 
     // Only show the cancel confirmation if there's unconsented destinations...

@@ -70,6 +70,7 @@ const InitiativesEditFormWrapper = ({
         onSuccess: (initiative) => {
           const initiativeId = initiative.data.id;
 
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           if (local_initiative_files) {
             handleAddFiles(
               initiativeId,

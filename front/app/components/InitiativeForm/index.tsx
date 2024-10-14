@@ -154,6 +154,7 @@ const InitiativeForm = ({
           topic_ids: initiative.relationships.topics.data.map(
             (topic) => topic.id
           ),
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           cosponsor_ids: initiative.attributes.cosponsorships
             ? initiative.attributes.cosponsorships.map(
                 (cosponsor) => cosponsor.user_id
@@ -218,6 +219,7 @@ const InitiativeForm = ({
         );
 
         const files = (await Promise.all(
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           convertedFiles.filter((f) => f !== null)
         )) as UploadFile[];
 
@@ -240,7 +242,7 @@ const InitiativeForm = ({
     const disclamerNeeded =
       methods.getValues('images')?.[0] ||
       methods.getValues('header_bg')?.[0] ||
-      methods.getValues('local_initiative_files')?.length > 0 ||
+      methods.getValues('local_initiative_files').length > 0 ||
       Object.values(methods.getValues('body_multiloc')).some((value) =>
         value.includes('<img')
       );

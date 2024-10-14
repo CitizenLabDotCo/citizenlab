@@ -26,8 +26,8 @@ const geocode = async (address: string | null | undefined) => {
       },
     });
 
-    const lat = result?.data.attributes.location.lat;
-    const lng = result?.data.attributes.location.lng;
+    const lat = result.data.attributes.location.lat;
+    const lng = result.data.attributes.location.lng;
 
     if (isNumber(lat) && isNumber(lng)) {
       return {

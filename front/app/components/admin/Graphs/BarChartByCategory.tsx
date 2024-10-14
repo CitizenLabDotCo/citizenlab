@@ -67,6 +67,7 @@ const BarChartByCategory = ({
       options,
     } = data.data.attributes;
     let res: GraphOption[] = [];
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (options) {
       res = Object.entries(options)
         .sort((a, b) => a[1].ordering - b[1].ordering)

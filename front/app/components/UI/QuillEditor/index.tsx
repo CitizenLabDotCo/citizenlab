@@ -126,9 +126,11 @@ const QuillEditor = ({
 
     // Not sure why we handle focus like this, but seems to work
     const focusHandler = (range: RangeStatic, oldRange: RangeStatic) => {
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (range === null && oldRange !== null) {
         setFocussed(false);
         onBlurRef.current?.();
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       } else if (range !== null && oldRange === null) {
         setFocussed(true);
         onFocusRef.current?.();

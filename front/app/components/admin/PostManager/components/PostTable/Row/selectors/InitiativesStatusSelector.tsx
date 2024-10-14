@@ -44,6 +44,7 @@ const InitiativesStatusSelector = ({
   const isAllowed = (statusId: string) => {
     if (allowedTransitions === null) return false;
 
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     return allowedTransitions.data.attributes[statusId] !== undefined;
   };
 

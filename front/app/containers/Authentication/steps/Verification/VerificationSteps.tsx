@@ -59,13 +59,14 @@ const VerificationSteps = memo<Props>(
           selectedMethod.attributes.name
         )
       ) {
-        if (authenticationData?.successAction) {
+        if (authenticationData.successAction) {
           localStorage.setItem(
             'auth_success_action',
             JSON.stringify(authenticationData.successAction)
           );
         }
-        if (authenticationData?.context) {
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        if (authenticationData.context) {
           localStorage.setItem(
             'auth_context',
             JSON.stringify(authenticationData.context)

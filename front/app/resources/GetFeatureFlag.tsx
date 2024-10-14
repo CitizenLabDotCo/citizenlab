@@ -12,10 +12,11 @@ interface Props {
 
 const GetFeatureFlag = (props: Props) => {
   const { data: appConfiguration } = useAppConfiguration();
-  const appConfigurationSettings = appConfiguration?.data?.attributes?.settings;
+  const appConfigurationSettings = appConfiguration?.data.attributes.settings;
 
   const { name, children } = props;
   const showFeature =
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     !name ||
     (get(appConfigurationSettings, `${name}.allowed`) === true &&
       get(appConfigurationSettings, `${name}.enabled`) === true);

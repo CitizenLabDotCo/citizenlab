@@ -98,7 +98,12 @@ const ideaPostingDisabledReason = (
         disabledReason: backendReason,
         authenticationRequirements: null,
       };
-    case 'user_not_permitted' || 'user_blocked':
+    case 'user_not_permitted':
+      return {
+        disabledReason: backendReason,
+        authenticationRequirements: null,
+      };
+    case 'user_blocked':
       return {
         disabledReason: backendReason,
         authenticationRequirements: null,

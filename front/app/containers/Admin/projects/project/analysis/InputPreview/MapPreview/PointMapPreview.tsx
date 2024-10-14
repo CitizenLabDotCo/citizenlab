@@ -36,13 +36,13 @@ const PointMapPreview = ({ rawValue }: Props) => {
           type: 'Feature',
           geometry: {
             type: 'Point',
-            coordinates: point?.coordinates,
+            coordinates: point.coordinates,
           },
           properties: null,
         },
       ],
     }),
-    [point?.coordinates]
+    [point.coordinates]
   );
 
   const mapLayer: IMapLayerAttributes = useMemo(
@@ -69,7 +69,8 @@ const PointMapPreview = ({ rawValue }: Props) => {
 
   return (
     <Box>
-      {point?.coordinates ? (
+      {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
+      {point.coordinates ? (
         <EsriMap
           layers={layers}
           initialData={{
@@ -77,7 +78,7 @@ const PointMapPreview = ({ rawValue }: Props) => {
             showFullscreenOption: true,
             center: {
               type: 'Point',
-              coordinates: point?.coordinates,
+              coordinates: point.coordinates,
             },
           }}
           height="180px"

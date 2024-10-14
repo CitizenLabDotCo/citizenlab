@@ -63,7 +63,7 @@ const UserCustomFieldsForm = ({
   const getAjvErrorMessage = (error: ErrorObject) => {
     switch (error.keyword) {
       case 'required':
-        return messages[`ajv_error_${error?.params?.missingProperty}_required`];
+        return messages[`ajv_error_${error.params.missingProperty}_required`];
       default:
         return undefined;
     }
@@ -82,7 +82,7 @@ const UserCustomFieldsForm = ({
         showAllErrors={showAllErrors}
         setShowAllErrors={setShowAllErrors}
         onChange={(data) => {
-          data && onChange?.(data);
+          data && onChange(data);
         }}
       />
     </Box>
@@ -102,9 +102,9 @@ const UserCustomFieldsFormWrapper = ({
   if (!authUser || !userCustomFieldsSchema) return null;
 
   const schema =
-    userCustomFieldsSchema.data.attributes?.json_schema_multiloc[locale];
+    userCustomFieldsSchema.data.attributes.json_schema_multiloc[locale];
   const uiSchema =
-    userCustomFieldsSchema.data.attributes?.ui_schema_multiloc[locale];
+    userCustomFieldsSchema.data.attributes.ui_schema_multiloc[locale];
 
   if (!schema || !uiSchema) return null;
 

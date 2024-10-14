@@ -61,7 +61,7 @@ const FormBuilderSettings = ({
     const fieldNumbers = getFieldNumbers(formCustomFields);
     const pageArray: { value: string; label: string }[] = [];
 
-    formCustomFields?.forEach((field) => {
+    formCustomFields.forEach((field) => {
       if (field.input_type === 'page') {
         pageArray.push({
           value: field.temp_id || field.id,
@@ -158,6 +158,7 @@ const FormBuilderSettings = ({
       )}
       {(!showTabbedSettings ||
         !builderConfig.isLogicEnabled ||
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         (showTabbedSettings && currentTab === 'content')) && (
         <ContentSettings
           field={field}

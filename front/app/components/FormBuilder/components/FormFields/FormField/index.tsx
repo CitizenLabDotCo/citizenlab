@@ -69,7 +69,7 @@ export const FormField = ({
   } = useFormContext();
   const moreActionsButtonRef = useRef<HTMLButtonElement>(null);
   const { formatMessage } = useIntl();
-  const lockedAttributes = field?.constraints?.locks;
+  const lockedAttributes = field.constraints?.locks;
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const formCustomFields: IFlatCustomField[] = watch('customFields');
   const index = formCustomFields.findIndex((f) => f.id === field.id);
@@ -83,7 +83,7 @@ export const FormField = ({
   const hasErrors = !!errors.customFields?.[index];
 
   const showLogicOnRow =
-    field.input_type !== 'page' ? field.logic?.rules : field.logic;
+    field.input_type !== 'page' ? field.logic.rules : field.logic;
 
   const isFieldGrouping = ['page', 'section'].includes(field.input_type);
 
@@ -92,7 +92,7 @@ export const FormField = ({
     formCustomFields.filter((field) => field.input_type === groupingType)
       .length > 1;
   const isDeleteShown =
-    !(field?.input_type !== groupingType || isGroupDeletable) ||
+    !(field.input_type !== groupingType || isGroupDeletable) ||
     get(lockedAttributes, 'enabled', false);
 
   const editFieldAndValidate = () => {
@@ -152,7 +152,7 @@ export const FormField = ({
     // Duplicate the map config if this is a mapping question
     if (
       originalField.input_type === 'point' &&
-      originalField.map_config?.data?.id
+      originalField.map_config?.data.id
     ) {
       const newMapConfig = await duplicateMapConfig(
         originalField.map_config.data.id
@@ -198,16 +198,18 @@ export const FormField = ({
   const deleteField = (fieldIndex: number) => {
     // Check if deleted field has linked logic
     const doesPageHaveLinkedLogic = formCustomFields.some((formField) => {
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (formField.logic && formField.logic.rules) {
         return formField.logic.rules.some(
           (rule) =>
             rule.goto_page_id === field.id ||
             rule.goto_page_id === field.temp_id
         );
-      } else if (formField.logic && formField.logic?.next_page_id) {
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      } else if (formField.logic && formField.logic.next_page_id) {
         return (
-          formField.logic?.next_page_id === field.id ||
-          formField.logic?.next_page_id === field.temp_id
+          formField.logic.next_page_id === field.id ||
+          formField.logic.next_page_id === field.temp_id
         );
       }
       return false;
@@ -222,6 +224,7 @@ export const FormField = ({
 
   const removeLogicAndDelete = () => {
     formCustomFields.map((formField, i) => {
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (formField.logic && formField.logic.rules) {
         const updatedRules = formField.logic.rules.filter(
           (rule) =>
@@ -229,6 +232,7 @@ export const FormField = ({
             rule.goto_page_id !== field.temp_id
         );
         setValue(`customFields.${i}.logic.rules`, updatedRules);
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       } else if (formField.logic && formField.logic.next_page_id) {
         if (
           formField.logic.next_page_id === field.id ||

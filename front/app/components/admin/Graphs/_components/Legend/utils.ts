@@ -43,7 +43,7 @@ export const itemsMatch = (
 export const getJustifyContent = (position: Position) => {
   if (position === 'bottom-center') return 'center';
   if (position === 'bottom-left') return 'flex-start';
-  if (position?.includes('right')) return 'flex-start';
+  if (position.includes('right')) return 'flex-start';
   return 'flex-end';
 };
 

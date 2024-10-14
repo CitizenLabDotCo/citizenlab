@@ -205,6 +205,7 @@ const MultiSelectDropdown = ({
         content={
           <Box role="group" aria-labelledby={selectorId}>
             <List className="e2e-sort-items">
+              {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
               {values &&
                 values.map((entry, index) => {
                   const checked = includes(selected, entry.value);

@@ -72,7 +72,7 @@ const DesktopView = ({
     label: '',
   });
   const isWebMap = !!mapConfig?.data.attributes.esri_web_map_id;
-  const layerCount = mapConfig?.data?.attributes?.layers?.length || 0;
+  const layerCount = mapConfig?.data.attributes.layers.length || 0;
 
   // Create refs for custom UI elements
   const resetButtonRef: React.RefObject<HTMLDivElement> = React.createRef();
@@ -85,15 +85,15 @@ const DesktopView = ({
 
   // Add the custom UI elements to the map
   useEffect(() => {
-    mapView?.ui?.add(instructionRef?.current || '', 'bottom-left');
+    mapView?.ui.add(instructionRef.current || '', 'bottom-left');
 
     if (isLineOrPolygonInput(inputType)) {
       // Show these buttons in sequence for line/polygon inputs
-      mapView?.ui?.add(undoButtonRef?.current || '', 'top-right');
-      mapView?.ui?.add(resetButtonRef?.current || '', 'top-right');
+      mapView?.ui.add(undoButtonRef.current || '', 'top-right');
+      mapView?.ui.add(resetButtonRef.current || '', 'top-right');
       return;
     } else if (inputType === 'point') {
-      mapView?.ui?.add(resetButtonRef?.current || '', 'top-right');
+      mapView?.ui.add(resetButtonRef.current || '', 'top-right');
     }
   }, [
     id,
@@ -136,7 +136,7 @@ const DesktopView = ({
 
   // Handle typed address input
   const handleLocationInputChange = (point: Point | undefined) => {
-    inputType === 'point' && handleSinglePointChange?.(point);
+    inputType === 'point' && handleSinglePointChange(point);
   };
 
   // Attach behaviour for when a user edits a point by dragging it

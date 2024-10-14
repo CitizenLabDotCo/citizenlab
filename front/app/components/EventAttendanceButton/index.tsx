@@ -43,20 +43,20 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
     useState(false);
 
   // Attendance API
-  const { data: eventsAttending } = useEventsByUserId(user?.data?.id);
+  const { data: eventsAttending } = useEventsByUserId(user?.data.id);
   const { mutate: addEventAttendance, isLoading: isAddingAttendance } =
     useAddEventAttendance(event.id);
   const { mutate: deleteEventAttendance, isLoading: isRemovingAttendance } =
-    useDeleteEventAttendance(event.id, user?.data?.id);
+    useDeleteEventAttendance(event.id, user?.data.id);
 
   // Attendance
-  const userAttendingEventObject = eventsAttending?.data?.find(
+  const userAttendingEventObject = eventsAttending?.data.find(
     (eventAttending) => eventAttending.id === event.id
   );
   const userIsAttending = !!userAttendingEventObject;
   const attendanceId =
     userAttendingEventObject?.relationships.user_attendance.data.id || null;
-  const customButtonText = localize(event?.attributes.attend_button_multiloc);
+  const customButtonText = localize(event.attributes.attend_button_multiloc);
 
   // Permissions
   const { data: project } = useProjectById(event.relationships.project.data.id);
@@ -82,7 +82,7 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
     project.data.attributes.action_descriptors.attending_event;
 
   const handleClick = () => {
-    if (event?.attributes.using_url) {
+    if (event.attributes.using_url) {
       window.open(event.attributes.using_url);
       return;
     }
@@ -104,7 +104,7 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
         ? ({
             type: 'phase',
             action: 'attending_event',
-            id: currentPhase?.id,
+            id: currentPhase.id,
           } as const)
         : ({
             type: 'global',
@@ -130,7 +130,7 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
   };
 
   const getButtonText = () => {
-    if (customButtonText && event?.attributes.using_url) {
+    if (customButtonText && event.attributes.using_url) {
       return customButtonText;
     } else if (userIsAttending) {
       return formatMessage(messages.attending);
@@ -139,7 +139,7 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
   };
 
   const getButtonIcon = () => {
-    if (event?.attributes.using_url) {
+    if (event.attributes.using_url) {
       return undefined;
     } else if (userIsAttending) {
       return 'check';

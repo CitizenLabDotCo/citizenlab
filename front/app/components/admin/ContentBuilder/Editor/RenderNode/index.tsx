@@ -56,7 +56,7 @@ const RenderNode = ({ render }) => {
 
   const parentNode = parentId && node(parentId).get();
   const isChildOfComplexComponent =
-    parentNode === '' ? false : !!parentNode?.data.custom?.hasChildren;
+    parentNode === '' ? false : !!parentNode.data.custom?.hasChildren;
 
   // Handle multi-column hover state
   useEffect(() => {

@@ -75,6 +75,7 @@ const FeedbackSettings = ({ initiativeId, className }: Props) => {
     return statuses.map((status) => ({
       value: status.id,
       label: localize(status.attributes.title_multiloc),
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       disabled: allowedTransitions.data.attributes[status.id] === undefined,
     }));
   };
@@ -127,7 +128,7 @@ const FeedbackSettings = ({ initiativeId, className }: Props) => {
       initiativeId,
       newStatusId: statusId,
       feedbackRequired:
-        allowedTransitions.data.attributes[statusId]?.feedback_required,
+        allowedTransitions.data.attributes[statusId].feedback_required,
     });
 
     trackEventByName(tracks.initiativeStatusChange, {

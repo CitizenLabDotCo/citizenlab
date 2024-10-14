@@ -165,7 +165,7 @@ const LineBarChart = <Row,>({
           labelFormatter={formatLabel}
           cursor={{ strokeWidth: 1 }}
         />
-        {legend_?.items
+        {legend_.items
           .filter((l) => l.icon !== 'line')
           .map((l, l_i) => (
             <Bar
@@ -183,12 +183,14 @@ const LineBarChart = <Row,>({
           type="monotone"
           yAxisId="line"
           dataKey={yLine}
-          activeDot={Boolean(data && data?.length < 31)}
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+          activeDot={Boolean(data && data.length < 31)}
           stroke={legacyColors.line}
           fill={legacyColors.line}
           strokeWidth={1}
           name={formatMessage(dashboardMessages.total)}
         />
+        {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
         {legend_ && graphDimensions && legendDimensions && (
           <g className="graph-legend">
             <Legend

@@ -43,7 +43,7 @@ const PointLocationQuestion = ({
 
   // Add reset button to the map
   useEffect(() => {
-    mapView?.ui?.add(resetButtonRef?.current || '', 'top-right');
+    mapView?.ui.add(resetButtonRef.current || '', 'top-right');
   }, [mapView?.ui, resetButtonRef]);
 
   // Either get the custom map configuration or project level one
@@ -56,7 +56,7 @@ const PointLocationQuestion = ({
     (isLoadingCustomMapConfig && mapConfigId) || isLoadingProjectMapConfig;
 
   const points = useMemo(() => {
-    return pointResponses?.map(({ answer }) => answer);
+    return pointResponses.map(({ answer }) => answer);
   }, [pointResponses]);
 
   return (

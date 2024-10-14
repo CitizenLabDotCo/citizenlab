@@ -20,10 +20,10 @@ export const getCenter = (
   mapConfig: IMapConfigData | undefined
 ) => {
   const mapConfigLat = !isNilOrError(mapConfig)
-    ? mapConfig?.attributes.center_geojson?.coordinates[1]
+    ? mapConfig.attributes.center_geojson?.coordinates[1]
     : null;
   const mapConfigLng = !isNilOrError(mapConfig)
-    ? mapConfig?.attributes.center_geojson?.coordinates[0]
+    ? mapConfig.attributes.center_geojson?.coordinates[0]
     : null;
 
   if (centerLatLng) {
@@ -41,7 +41,7 @@ export const getZoomLevel = (
   mapConfig: IMapConfigData | undefined
 ) => {
   const mapConfigZoom = !isNilOrError(mapConfig)
-    ? mapConfig?.attributes.zoom_level
+    ? mapConfig.attributes.zoom_level
     : null;
 
   if (isNumber(zoom)) {
@@ -58,7 +58,7 @@ export const getTileProvider = (
   mapConfig: IMapConfigData | undefined
 ) => {
   const mapConfigTileProvider = !isNilOrError(mapConfig)
-    ? mapConfig?.attributes.tile_provider
+    ? mapConfig.attributes.tile_provider
     : null;
 
   if (!isNilOrError(mapConfigTileProvider)) {
@@ -71,15 +71,15 @@ export const getTileProvider = (
 export const getGeojsonLayerType = (
   mapLayer: IMapLayerAttributes | undefined
 ) => {
-  return mapLayer?.geojson?.features?.[0]?.geometry?.type || 'Point';
+  return mapLayer?.geojson?.features[0]?.geometry.type || 'Point';
 };
 
 export const getLayerColor = (mapLayer: IMapLayerAttributes | undefined) => {
   const type = getGeojsonLayerType(mapLayer);
   const fillColor: string | undefined =
-    mapLayer?.geojson?.features?.[0]?.properties?.fill;
+    mapLayer?.geojson?.features[0]?.properties?.fill;
   const markerColor: string | undefined =
-    mapLayer?.geojson?.features?.[0]?.properties?.['marker-color'];
+    mapLayer?.geojson?.features[0]?.properties?.['marker-color'];
   const fallbackColor = '#7D7D7D';
 
   if (type === 'Point') {

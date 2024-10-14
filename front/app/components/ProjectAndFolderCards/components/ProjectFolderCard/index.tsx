@@ -354,12 +354,14 @@ const ProjectFolderCard = memo<Props>(
 
     // Footer
     const avatarIds =
-      projectFolder?.data.relationships.avatars &&
-      projectFolder?.data.relationships.avatars.data
-        ? projectFolder?.data.relationships.avatars.data.map(
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      projectFolder.data.relationships.avatars &&
+      projectFolder.data.relationships.avatars.data
+        ? projectFolder.data.relationships.avatars.data.map(
             (avatar) => avatar.id
           )
         : [];
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     const showAvatarBubbles = avatarIds ? avatarIds.length > 0 : false;
     const showFooter = showAvatarBubbles;
 
@@ -487,9 +489,7 @@ const ProjectFolderCard = memo<Props>(
                     limit={3}
                     userCountBgColor={theme.colors.tenantPrimary}
                     avatarIds={avatarIds}
-                    userCount={
-                      projectFolder?.data.attributes.participants_count
-                    }
+                    userCount={projectFolder.data.attributes.participants_count}
                   />
                 )}
               </Box>
@@ -502,7 +502,7 @@ const ProjectFolderCard = memo<Props>(
                 followableId={projectFolder.data.id}
                 followersCount={projectFolder.data.attributes.followers_count}
                 followerId={
-                  projectFolder.data.relationships.user_follower?.data?.id
+                  projectFolder.data.relationships.user_follower.data?.id
                 }
                 w="100%"
                 toolTipType="projectOrFolder"

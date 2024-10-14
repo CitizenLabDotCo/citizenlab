@@ -52,7 +52,7 @@ const ExampleFrame = ({
             <FormattedMessage {...messages.to} />
           </Text>
           <Text my="0">
-            <T value={campaign?.data.attributes.recipient_segment_multiloc} />
+            <T value={campaign.data.attributes.recipient_segment_multiloc} />
           </Text>
         </Box>
       </Box>

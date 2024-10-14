@@ -57,7 +57,7 @@ const ParticipationReportPreview = ({
               title={{ [locale]: formatMessage(messages.participantsTimeline) }}
             />
             <WhiteSpace />
-            {userFields?.data.map((field) => {
+            {userFields.data.map((field) => {
               return (
                 <Element is="div" canvas key={field.id}>
                   <DemographicsWidget

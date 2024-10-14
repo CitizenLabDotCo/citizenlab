@@ -45,7 +45,7 @@ const AnalysisBanner = () => {
   const handleGoToAnalysis = () => {
     if (analyses?.data.length) {
       clHistory.push(
-        `/admin/projects/${projectId}/analysis/${analyses?.data[0].id}?phase_id=${phaseId}`
+        `/admin/projects/${projectId}/analysis/${analyses.data[0].id}?phase_id=${phaseId}`
       );
     } else {
       createAnalysis(

@@ -91,17 +91,13 @@ const MapCenterAndZoomConfig = memo<Props & WrappedComponentProps>(
     const { data: appConfig } = useAppConfiguration();
     const { mutateAsync: updateMapConfig } = useUpdateMapConfig(projectId);
 
-    const defaultLatLng = getCenter(
-      undefined,
-      appConfig?.data,
-      mapConfig?.data
-    );
+    const defaultLatLng = getCenter(undefined, appConfig?.data, mapConfig.data);
     const defaultLat = defaultLatLng[0];
     const defaultLng = defaultLatLng[1];
     const defaultZoom = getZoomLevel(
       undefined,
       appConfig?.data,
-      mapConfig?.data
+      mapConfig.data
     );
 
     const [touched, setTouched] = useState(false);
@@ -114,18 +110,19 @@ const MapCenterAndZoomConfig = memo<Props & WrappedComponentProps>(
     });
 
     useEffect(() => {
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (!isNilOrError(appConfig) && mapConfig) {
         const defaultLatLng = getCenter(
           undefined,
-          appConfig?.data,
-          mapConfig?.data
+          appConfig.data,
+          mapConfig.data
         );
         const defaultLat = defaultLatLng[0];
         const defaultLng = defaultLatLng[1];
         const defaultZoom = getZoomLevel(
           undefined,
-          appConfig?.data,
-          mapConfig?.data
+          appConfig.data,
+          mapConfig.data
         );
 
         formChange(
@@ -217,6 +214,7 @@ const MapCenterAndZoomConfig = memo<Props & WrappedComponentProps>(
     const handleOnSave = async (event: React.FormEvent) => {
       event.preventDefault();
 
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (mapConfig && validate()) {
         try {
           formProcessing();

@@ -59,28 +59,28 @@ const AdminIdeaEdit = ({
     : Object.fromEntries(
         Object.keys(schema.properties).map((prop) => {
           if (prop === 'author_id') {
-            return [prop, idea.data.relationships?.author?.data?.id];
-          } else if (idea.data.attributes?.[prop]) {
-            return [prop, idea.data.attributes?.[prop]];
+            return [prop, idea.data.relationships.author?.data?.id];
+          } else if (idea.data.attributes[prop]) {
+            return [prop, idea.data.attributes[prop]];
           } else if (
             prop === 'topic_ids' &&
-            Array.isArray(idea.data.relationships?.topics?.data)
+            Array.isArray(idea.data.relationships.topics?.data)
           ) {
             return [
               prop,
-              idea.data.relationships?.topics?.data.map((rel) => rel.id),
+              idea.data.relationships.topics?.data.map((rel) => rel.id),
             ];
           } else if (
             prop === 'cosponsor_ids' &&
-            Array.isArray(idea.data.relationships?.cosponsors?.data)
+            Array.isArray(idea.data.relationships.cosponsors?.data)
           ) {
             return [
               prop,
-              idea.data.relationships?.cosponsors?.data.map((rel) => rel.id),
+              idea.data.relationships.cosponsors?.data.map((rel) => rel.id),
             ];
           } else if (
             prop === 'idea_images_attributes' &&
-            Array.isArray(idea.data.relationships?.idea_images?.data)
+            Array.isArray(idea.data.relationships.idea_images.data)
           ) {
             return [prop, remoteImages?.data];
           } else if (prop === 'idea_files_attributes') {
@@ -122,7 +122,7 @@ const AdminIdeaEdit = ({
       ...ideaWithoutImages,
       idea_images_attributes,
       location_point_geojson,
-      project_id: project?.data.id,
+      project_id: project.data.id,
       publication_status: 'published',
     };
 
@@ -154,13 +154,13 @@ const AdminIdeaEdit = ({
       messages[
         `ajv_error_${uiSchema?.options?.inputTerm}_${
           getFieldNameFromPath(error.instancePath) ||
-          error?.params?.missingProperty
+          error.params.missingProperty
         }_${error.keyword}`
       ] ||
       messages[
         `ajv_error_${
           getFieldNameFromPath(error.instancePath) ||
-          error?.params?.missingProperty
+          error.params.missingProperty
         }_${error.keyword}`
       ] ||
       undefined

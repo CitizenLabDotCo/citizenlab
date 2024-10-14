@@ -133,7 +133,7 @@ const Avatar = memo(
       );
     }
 
-    const slug = user?.data.attributes.slug;
+    const slug = user.data.attributes.slug;
     const profileLink: RouteType = `/profile/${slug}`;
     const hasValidProfileLink = profileLink !== '/profile/undefined';
 
@@ -190,6 +190,7 @@ const AvatarInner = ({
   const bgColor = props.bgColor || 'transparent';
 
   if (isNilOrError(user)) {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (authorHash === null) {
       return null;
     } else {

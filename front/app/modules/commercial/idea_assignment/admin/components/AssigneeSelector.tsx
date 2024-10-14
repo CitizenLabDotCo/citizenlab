@@ -63,7 +63,7 @@ const IdeaAssignment = ({ projectId }: Props) => {
 
   if (project) {
     const defaultAssigneeId =
-      project.data.relationships?.default_assignee?.data?.id;
+      project.data.relationships.default_assignee?.data?.id;
     // If defaultAssigneeValue is not a string, it's null, so we convert it to a string (see getoptions)
     const defaultAssigneeValue =
       typeof defaultAssigneeId === 'string' ? defaultAssigneeId : 'unassigned';

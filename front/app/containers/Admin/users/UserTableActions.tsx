@@ -205,6 +205,7 @@ const UserTableActions = ({
     };
 
   const addUsersToGroups = async () => {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (selectedGroupIds && selectedGroupIds.length > 0) {
       const usersIds = selectedUsers === 'all' ? allUsersIds : selectedUsers;
       const promises: Promise<IGroupMemberships | CLErrorsWrapper>[] = [];
@@ -384,6 +385,7 @@ const UserTableActions = ({
                       padding="12px"
                       whiteSpace="normal"
                       disabled={
+                        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                         !selectedGroupIds || selectedGroupIds.length === 0
                       }
                     >

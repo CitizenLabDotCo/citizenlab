@@ -113,7 +113,7 @@ const FullMobileNavMenu = ({
     projectSlugById
   );
 
-  const modalPortalElement = document?.getElementById('mobile-nav-portal');
+  const modalPortalElement = document.getElementById('mobile-nav-portal');
 
   const handleOnCloseButtonClick = () => {
     onClose();

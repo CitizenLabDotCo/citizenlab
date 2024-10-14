@@ -90,7 +90,7 @@ const Sidebar = ({ authUser }: Props) => {
   const { data: ideasCount } = useIdeasCount(
     {
       feedback_needed: true,
-      assignee: authUser?.data.id,
+      assignee: authUser.data.id,
       transitive: true,
     },
     isAdmin(authUser)
@@ -98,7 +98,7 @@ const Sidebar = ({ authUser }: Props) => {
   const { data: initiativesCount } = useInitiativesCount(
     {
       feedback_needed: true,
-      assignee: authUser?.data.id,
+      assignee: authUser.data.id,
     },
     isAdmin(authUser)
   );
@@ -139,6 +139,7 @@ const Sidebar = ({ authUser }: Props) => {
     setNavItems(insertConfiguration(insertNavItemOptions)(navItems));
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!(navItems && navItems.length > 1)) {
     return null;
   }

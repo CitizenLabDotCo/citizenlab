@@ -32,7 +32,7 @@ const MapHelperOptions = ({ mapConfig, mapView }: Props) => {
   const { mutateAsync: updateMapConfig } = useUpdateMapConfig(projectId);
 
   const goToDefaultMapView = () => {
-    const centerPoint = mapConfig?.data.attributes.center_geojson;
+    const centerPoint = mapConfig.data.attributes.center_geojson;
     if (mapView && centerPoint) {
       goToMapLocation(
         centerPoint,
@@ -43,14 +43,14 @@ const MapHelperOptions = ({ mapConfig, mapView }: Props) => {
   };
 
   const setAsDefaultMapView = () => {
-    if (mapView?.center.longitude && mapView?.center.latitude) {
+    if (mapView?.center.longitude && mapView.center.latitude) {
       updateMapConfig({
-        mapConfigId: mapConfig?.data.id,
+        mapConfigId: mapConfig.data.id,
         center_geojson: {
           type: 'Point',
           coordinates: [mapView.center.longitude, mapView.center.latitude],
         },
-        zoom_level: mapView?.zoom.toString(),
+        zoom_level: mapView.zoom.toString(),
       });
     }
   };

@@ -24,7 +24,7 @@ const EventDescription = ({ event }: Props) => {
           <ReadMoreWrapper
             fontSize="base"
             contentId="event-description"
-            value={event.attributes?.description_multiloc}
+            value={event.attributes.description_multiloc}
           />
         </Box>
 

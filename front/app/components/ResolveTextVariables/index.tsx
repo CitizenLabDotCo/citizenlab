@@ -36,11 +36,13 @@ class ResolveTextVariables extends PureComponent<Props> {
 
       const initiativeSettings = tenant.attributes.settings.initiatives;
 
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (initiativeSettings.eligibility_criteria) {
         textVariables.initiativesEligibilityCriteria = localize(
           initiativeSettings.eligibility_criteria
         );
       }
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (initiativeSettings.threshold_reached_message) {
         textVariables.initiativesThresholdReachedMessage = localize(
           initiativeSettings.threshold_reached_message

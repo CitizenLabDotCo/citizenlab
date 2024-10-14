@@ -135,7 +135,7 @@ export const AvatarBubbles = ({
     enabled: !avatarIds,
   });
 
-  const currentUserCount = userCount || randomAvatars?.meta?.total;
+  const currentUserCount = userCount || randomAvatars?.meta.total;
 
   const avatarsWithIdsQueries = useAvatarsWithIds(avatarIds);
 
@@ -154,8 +154,9 @@ export const AvatarBubbles = ({
 
     const avatarsWithImage = avatars.filter(
       (avatar) =>
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         avatar &&
-        avatar.attributes?.avatar &&
+        avatar.attributes.avatar &&
         avatar.attributes.avatar[imageSize]
     ) as IAvatarData[];
 

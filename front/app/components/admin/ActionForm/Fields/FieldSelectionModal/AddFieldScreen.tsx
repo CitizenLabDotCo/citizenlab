@@ -93,10 +93,10 @@ export const AddFieldScreen = ({
           });
 
           if (
-            (newField.data.id && formValues?.input_type === 'multiselect') ||
-            formValues?.input_type === 'select'
+            (newField.data.id && formValues.input_type === 'multiselect') ||
+            formValues.input_type === 'select'
           ) {
-            formValues?.options?.forEach(async (option) => {
+            formValues.options?.forEach(async (option) => {
               await addUserCustomFieldOption({
                 customFieldId: newField.data.id,
                 title_multiloc: option.title_multiloc,

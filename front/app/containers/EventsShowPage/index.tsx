@@ -77,7 +77,7 @@ const EventsShowPage = () => {
     event?.data.relationships.project.data.id
   );
   const { data: eventImage } = useEventImage(event?.data);
-  const largeImage = eventImage?.data.attributes?.versions?.large;
+  const largeImage = eventImage?.data.attributes.versions.large;
 
   if (status === 'loading') {
     return (

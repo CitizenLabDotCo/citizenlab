@@ -22,7 +22,7 @@ const PermissionTooltipMessage = ({
 }: PermissionTooltipMessageProps) => {
   const { formatMessage } = useIntl();
   const { data: groups } = useGroups({});
-  if (!permissions || !permissions?.length || !groups) {
+  if (!permissions || !permissions.length || !groups) {
     return null;
   }
 
@@ -47,9 +47,10 @@ const PermissionTooltipMessage = ({
           <Text my="0px" variant="bodyS">
             {formatMessage(messages.whoCanParticipate)}
           </Text>
+          {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
           {permissions &&
-            permissions?.length > 1 &&
-            permissions?.map((permission) => {
+            permissions.length > 1 &&
+            permissions.map((permission) => {
               return (
                 <Text my="0px" variant="bodyS" key={permission.id}>
                   <FormattedMessage

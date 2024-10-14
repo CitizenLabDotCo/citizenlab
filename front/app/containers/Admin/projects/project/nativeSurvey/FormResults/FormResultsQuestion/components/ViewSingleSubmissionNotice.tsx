@@ -35,9 +35,9 @@ const ViewSingleSubmissionNotice = ({ customFieldId }: Props) => {
 
   const relevantAnalysis =
     analyses?.data &&
-    analyses?.data?.find(
+    analyses.data.find(
       (analysis) =>
-        analysis.relationships.main_custom_field?.data?.id === customFieldId
+        analysis.relationships.main_custom_field?.data.id === customFieldId
     );
 
   const goToAnalysis = () => {

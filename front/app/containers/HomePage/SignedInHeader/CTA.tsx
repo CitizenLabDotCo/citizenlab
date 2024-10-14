@@ -28,6 +28,7 @@ const CTA = ({ buttonStyle, homepageSettings }: Props) => {
 
     switch (ctaType) {
       case 'customized_button':
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         return homepageSettings ? (
           <BannerButton
             buttonStyle={buttonStyle}

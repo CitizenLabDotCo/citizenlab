@@ -40,7 +40,7 @@ const CheckboxControl = ({
           id={sanitizeForClassname(id)}
           checked={Boolean(data)}
           onChange={() => handleChange(path, !data)}
-          disabled={uischema?.options?.readonly}
+          disabled={uischema.options?.readonly}
           mr="8px"
         />
         <FormLabel
@@ -50,7 +50,7 @@ const CheckboxControl = ({
           subtextValue={getSubtextElement(uischema.options?.description)}
           subtextSupportsHtml
         />
-        <VerificationIcon show={uischema?.options?.verificationLocked} />
+        <VerificationIcon show={uischema.options?.verificationLocked} />
       </Box>
       <ErrorDisplay
         inputId={sanitizeForClassname(id)}

@@ -105,6 +105,7 @@ const InternalCommentBody = ({
   const setNewTextAreaRef = (element: HTMLTextAreaElement) => {
     textareaElement.current = element;
 
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (textareaElement.current) {
       textareaElement.current.scrollIntoView({
         behavior: 'smooth',
@@ -115,6 +116,7 @@ const InternalCommentBody = ({
   };
 
   const focusEndOfEditingArea = (element: HTMLTextAreaElement) => {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (element.setSelectionRange && element.textContent) {
       element.setSelectionRange(
         element.textContent.length,
@@ -145,7 +147,7 @@ const InternalCommentBody = ({
           setCommentContent('');
         },
         onError: (error) => {
-          const apiErrors = error?.errors;
+          const apiErrors = error.errors;
           setApiErrors(apiErrors);
         },
       }
@@ -182,6 +184,7 @@ const InternalCommentBody = ({
           </QuillEditedContent>
           <ButtonsWrapper>
             {apiErrors &&
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
               apiErrors.body_multiloc &&
               apiErrors.body_multiloc[locale] && (
                 <Error apiErrors={apiErrors.body_multiloc[locale]} />

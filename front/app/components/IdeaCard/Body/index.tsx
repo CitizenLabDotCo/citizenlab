@@ -73,7 +73,7 @@ const Body = ({ idea }: Props) => {
   const locale = useLocale();
   const localize = useLocalize();
 
-  const authorId = idea.data.relationships?.author?.data?.id || null;
+  const authorId = idea.data.relationships.author?.data?.id || null;
   const authorHash = idea.data.attributes.author_hash;
 
   // remove html tags from wysiwyg output

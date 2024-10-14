@@ -115,7 +115,7 @@ const ReportBuilderPage = () => {
   if (!reports) return null;
   if (!me) return null;
 
-  const sortedReports = reports?.data.sort((a, b) => {
+  const sortedReports = reports.data.sort((a, b) => {
     return b.attributes.updated_at.localeCompare(a.attributes.updated_at);
   });
 
@@ -175,7 +175,8 @@ const ReportBuilderPage = () => {
               <SearchInput
                 placeholder={searchReports}
                 ariaLabel={searchReports}
-                a11y_numberOfSearchResults={reports?.data.length ?? 0}
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+                a11y_numberOfSearchResults={reports.data.length ?? 0}
                 onChange={(value) => setSearch(value ?? undefined)}
               />
             </Box>

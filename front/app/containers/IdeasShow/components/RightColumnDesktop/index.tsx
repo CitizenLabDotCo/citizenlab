@@ -13,6 +13,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import FollowUnfollow from 'components/FollowUnfollow';
 import ReactionControl from 'components/ReactionControl';
+import { showIdeaReactions } from 'components/ReactionControl/utils';
 
 import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
 
@@ -23,7 +24,6 @@ import SharingButtonComponent from '../Buttons/SharingButtonComponent';
 import Cosponsorship from '../Cosponsorship';
 import MetaInformation from '../MetaInformation';
 import ProposalInfo from '../ProposalInfo';
-import { showIdeaReactions } from 'components/ReactionControl/utils';
 
 interface Props {
   ideaId: string;
@@ -52,10 +52,11 @@ const RightColumnDesktop = ({
   const votingConfig = getVotingMethodConfig(phase?.attributes.voting_method);
 
   const ideaIsInParticipationContext =
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     phase && idea ? isIdeaInParticipationContext(idea, phase) : undefined;
 
   const commentingEnabled =
-    !!idea?.data.attributes.action_descriptors.commenting_idea.enabled;
+    !!idea.data.attributes.action_descriptors.commenting_idea.enabled;
 
   const participationMethod = phase?.attributes.participation_method;
 
@@ -94,6 +95,7 @@ const RightColumnDesktop = ({
                 <ReactionControl styleType="shadow" ideaId={ideaId} size="4" />
               </Box>
             )}
+            {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
             {phase && ideaIsInParticipationContext && votingConfig && (
               <Box pb="23px" mb="23px" borderBottom="solid 1px #ccc">
                 {votingConfig.getIdeaPageVoteInput({
@@ -113,7 +115,7 @@ const RightColumnDesktop = ({
               followableType="ideas"
               followableId={ideaId}
               followersCount={idea.data.attributes.followers_count}
-              followerId={idea.data.relationships.user_follower?.data?.id}
+              followerId={idea.data.relationships.user_follower.data?.id}
               toolTipType="input"
               buttonStyle={
                 participationMethod === 'proposals' ? 'white' : 'primary'

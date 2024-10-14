@@ -158,7 +158,7 @@ const SelectableResourceChart = ({
     if (
       showMore == null &&
       containerRef.current &&
-      containerRef.current?.clientHeight > 300
+      containerRef.current.clientHeight > 300
     ) {
       setShowMore(true);
     }

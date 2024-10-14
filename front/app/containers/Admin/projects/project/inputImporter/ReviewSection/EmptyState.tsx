@@ -70,7 +70,7 @@ const EmptyState = () => {
   const handleExportPDF = async ({ personal_data }: FormValues) => {
     if (isNilOrError(locale)) return;
 
-    if (phase?.data.attributes.participation_method === 'native_survey') {
+    if (phase.data.attributes.participation_method === 'native_survey') {
       await saveSurveyAsPDF({
         downloadPdfLink: surveyDownloadPdfLink,
         locale,
@@ -138,7 +138,7 @@ const EmptyState = () => {
       <PDFExportModal
         open={exportModalOpen}
         formType={
-          phase?.data.attributes.participation_method === 'native_survey'
+          phase.data.attributes.participation_method === 'native_survey'
             ? 'survey'
             : 'idea_form'
         }

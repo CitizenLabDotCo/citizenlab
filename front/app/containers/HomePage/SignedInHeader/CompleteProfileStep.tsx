@@ -46,7 +46,7 @@ const CompleteProfileStep = ({
           <Left>
             <Icons>
               <StyledAvatar
-                userId={authUser?.data.id}
+                userId={authUser.data.id}
                 size={50}
                 fillColor="#fff"
                 padding={0}

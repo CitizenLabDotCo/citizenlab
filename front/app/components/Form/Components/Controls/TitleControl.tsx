@@ -61,16 +61,16 @@ export const TitleControl = ({
           type={schema.type === 'number' ? 'number' : 'text'}
           value={data}
           onChange={onChange}
-          maxCharCount={schema?.maxLength}
+          maxCharCount={schema.maxLength}
           onBlur={() => {
-            uischema?.options?.transform === 'trim_on_blur' &&
+            uischema.options?.transform === 'trim_on_blur' &&
               isString(data) &&
               onChange(data.trim());
             setDidBlur(true);
           }}
-          disabled={uischema?.options?.readonly}
+          disabled={uischema.options?.readonly}
         />
-        <VerificationIcon show={uischema?.options?.verificationLocked} />
+        <VerificationIcon show={uischema.options?.verificationLocked} />
       </Box>
       <ErrorDisplay
         inputId={sanitizeForClassname(id)}

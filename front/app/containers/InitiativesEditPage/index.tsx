@@ -58,6 +58,7 @@ const InitiativesEditPage = ({ initiative }: Props) => {
     const isPrivilegedUser =
       isAdmin(authUser) || !isRegularUser(authUser) || isSuperAdmin(authUser);
 
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (!isPrivilegedUser && authUser === null) {
       clHistory.replace(previousPathName || '/sign-up');
     }

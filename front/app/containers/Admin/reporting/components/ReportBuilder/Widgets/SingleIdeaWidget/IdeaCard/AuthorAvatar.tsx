@@ -32,7 +32,7 @@ const StyledUserName = styled(UserName)`
 
 // Inspired by front/app/components/IdeaCard/Body/index.tsx
 const AuthorAvatar = ({ idea }: { idea: IIdeaData }) => {
-  const authorId = idea.relationships?.author?.data?.id || null;
+  const authorId = idea.relationships.author?.data?.id || null;
   const authorHash = idea.attributes.author_hash;
 
   return (

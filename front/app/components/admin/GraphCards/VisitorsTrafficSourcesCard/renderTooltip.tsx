@@ -23,6 +23,7 @@ interface CustomTooltipProps {
 }
 
 const CustomTooltip = ({ payload }: CustomTooltipProps) => {
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!payload || !payload[0]) return null;
   const { value, percentage, name } = payload[0].payload;
 

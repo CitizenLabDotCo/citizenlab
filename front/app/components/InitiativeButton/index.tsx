@@ -50,7 +50,7 @@ const InitiativeButton = ({ lat, lng, location, buttonStyle }: Props) => {
     });
 
     if (initiativePermissions?.enabled) {
-      if (initiativePermissions?.authenticationRequirements) {
+      if (initiativePermissions.authenticationRequirements) {
         const context = {
           type: 'initiative',
           action: 'posting_initiative',

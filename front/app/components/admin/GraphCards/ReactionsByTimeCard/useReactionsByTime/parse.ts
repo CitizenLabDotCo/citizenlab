@@ -64,7 +64,7 @@ export const parseTimeSeries = (
 
   return calculateCumulativeSerie(
     timeSeries,
-    total[0]?.sum_reactions_count,
+    total[0].sum_reactions_count,
     (row: TimeSeriesRow) => row.likes + row.dislikes
   );
 };

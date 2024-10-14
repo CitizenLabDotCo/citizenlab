@@ -106,6 +106,7 @@ const Row = ({
         />
       </Suspense>
     );
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   } else if (type === 'Initiatives') {
     return (
       <Suspense fallback={null}>

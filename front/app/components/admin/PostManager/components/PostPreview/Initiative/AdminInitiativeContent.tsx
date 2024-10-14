@@ -134,6 +134,7 @@ const AdminInitiativeContent = ({
         ? initiativeImages.data[0].attributes.versions.large
         : null;
     const initiativeGeoPosition =
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       initiative.data.attributes.location_point_geojson || null;
     const initiativeAddress =
       initiative.data.attributes.location_description || null;
@@ -197,6 +198,7 @@ const AdminInitiativeContent = ({
                 body={localize(initiative.data.attributes.body_multiloc)}
               />
 
+              {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
               {initiativeGeoPosition && initiativeAddress && (
                 <StyledMap
                   address={initiativeAddress}

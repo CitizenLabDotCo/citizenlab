@@ -110,7 +110,7 @@ const MobileView = ({
     if (graphicsLayer?.graphics) {
       mapView?.goTo(graphicsLayer.graphics);
     }
-  }, [mapView, mapView?.map?.layers]);
+  }, [mapView, mapView?.map.layers]);
 
   return (
     <>

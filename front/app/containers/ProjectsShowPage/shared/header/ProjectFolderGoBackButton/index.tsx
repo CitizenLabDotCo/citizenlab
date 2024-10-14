@@ -26,6 +26,7 @@ const GoBackButton = memo(({ projectFolderId, className }: Props) => {
     }
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!isNilOrError(projectFolder) && projectFolder.data) {
     return (
       <Button

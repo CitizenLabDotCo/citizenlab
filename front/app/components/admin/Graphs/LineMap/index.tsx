@@ -71,6 +71,7 @@ const LineMap = ({ lines, mapConfig, layerTitle, layerId, onInit }: Props) => {
   }, [graphics, layerId, layerTitle]);
 
   const layers = useMemo(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     return responsesLayer && mapConfigLayers
       ? [...mapConfigLayers, responsesLayer]
       : [];
@@ -84,8 +85,8 @@ const LineMap = ({ lines, mapConfig, layerTitle, layerId, onInit }: Props) => {
       showLegend: true,
       showLegendExpanded: false,
       showLayerVisibilityControl: true,
-      zoom: Number(mapConfig?.data?.attributes.zoom_level),
-      center: mapConfig?.data?.attributes.center_geojson,
+      zoom: Number(mapConfig?.data.attributes.zoom_level),
+      center: mapConfig?.data.attributes.center_geojson,
     }),
     [mapConfig, onInit]
   );
@@ -93,7 +94,7 @@ const LineMap = ({ lines, mapConfig, layerTitle, layerId, onInit }: Props) => {
   return (
     <EsriMap
       initialData={initialData}
-      webMapId={mapConfig?.data?.attributes.esri_web_map_id}
+      webMapId={mapConfig?.data.attributes.esri_web_map_id}
       height="440px"
       layers={layers}
     />

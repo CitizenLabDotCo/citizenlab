@@ -32,7 +32,7 @@ const UpdateFollowArea = ({ area }: Props) => {
   const { formatMessage } = useIntl();
   const theme = useTheme();
   const isLoading = isAddingFollower || isDeletingFollower;
-  const followerId = area.relationships.user_follower?.data?.id;
+  const followerId = area.relationships.user_follower.data?.id;
   const isFollowing = !!followerId;
   const areaButtonContentColor = isFollowing
     ? colors.white

@@ -104,6 +104,7 @@ const ProjectFolderRow = memo<Props>(
                   <RowContentInner className="expand primary">
                     {hasProjects && (
                       <ArrowIcon
+                        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                         expanded={hasProjects && isFolderOpen}
                         name="chevron-right"
                       />

@@ -95,7 +95,7 @@ export const getConsentRequired = (
     !cookieConsent ||
     !!activeDestinations.find(
       (destination) =>
-        !Object.keys(cookieConsent?.savedChoices).includes(destination.key)
+        !Object.keys(cookieConsent.savedChoices).includes(destination.key)
     );
 
   return isConsentRequired;

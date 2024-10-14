@@ -25,7 +25,7 @@ export const initialWindowWidth = Math.max(
   window.innerWidth || 0
 );
 export const initialContainerWidth =
-  document?.getElementById('e2e-ideas-container')?.offsetWidth ||
+  document.getElementById('e2e-ideas-container')?.offsetWidth ||
   (initialWindowWidth < maxPageWidth ? initialWindowWidth - 40 : maxPageWidth);
 
 export const initialInnerContainerLeftMargin = getInnerContainerLeftMargin(

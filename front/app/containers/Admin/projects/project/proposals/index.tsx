@@ -57,6 +57,7 @@ const AdminProjectProposals = () => {
         </Text>
       </Box>
 
+      {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
       {project && (
         <ProjectProposalsManager
           key={phaseId}

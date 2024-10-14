@@ -37,8 +37,8 @@ const InputFieldFilterItem = ({
   const { formatMessage } = useIntl();
   const { analysisId } = useParams() as { analysisId: string };
   const { data: analysis } = useAnalysis(analysisId);
-  const projectId = analysis?.data.relationships.project?.data?.id;
-  const phaseId = analysis?.data.relationships.phase?.data?.id;
+  const projectId = analysis?.data.relationships.project?.data.id;
+  const phaseId = analysis?.data.relationships.phase?.data.id;
   const containerId: { projectId?: string; phaseId?: string } = {};
   if (projectId) {
     containerId.projectId = projectId;
@@ -64,7 +64,7 @@ const InputFieldFilterItem = ({
       color={colors.success}
       display="flex"
     >
-      <Box>Question {customField?.data.attributes.ordering}</Box>
+      <Box>Question {customField.data.attributes.ordering}</Box>
       <Box mx="3px">{predicate}</Box>
       <EllipsisFilterValue>
         {Array.isArray(filterValue) &&

@@ -42,15 +42,14 @@ export const PageRuleInput = ({
   const logic = watch(name) as LogicType;
   const fields: IFlatCustomField[] = watch('customFields');
   const [selectedPage, setSelectedPage] = useState<string | null | undefined>(
-    logic && logic?.next_page_id ? logic.next_page_id : undefined
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    logic && logic.next_page_id ? logic.next_page_id : undefined
   );
   const [showRuleInput, setShowRuleInput] = useState<boolean>(
     selectedPage ? true : false
   );
   const [isRuleInvalid, setIsRuleInvalid] = useState(
-    selectedPage
-      ? !isPageRuleValid(fields, fieldId, logic?.next_page_id)
-      : false
+    selectedPage ? !isPageRuleValid(fields, fieldId, logic.next_page_id) : false
   );
   const onSelectionChange = (page: IOption) => {
     setSelectedPage(page.value);

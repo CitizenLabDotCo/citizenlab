@@ -115,8 +115,10 @@ const ReactionIconContainer = styled.div<{
     if (buttonReactionModeIsActive) {
       if (
         reactingEnabled ||
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         (!reactingEnabled &&
           disabledReason === 'reacting_dislike_limited_max_reached') ||
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         (!reactingEnabled &&
           disabledReason === 'reacting_like_limited_max_reached')
       ) {
@@ -261,6 +263,7 @@ const ReactionIcon = styled(Icon)<{
         `;
       }
 
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (!reactingEnabled) {
         return `
           fill: ${

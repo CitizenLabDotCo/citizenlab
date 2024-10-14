@@ -211,7 +211,8 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
     setInStatePhaseFiles(
       isDuplicate
         ? inStatePhaseFiles
-        : [...(inStatePhaseFiles || []), modifiedNewFile]
+        : // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+          [...(inStatePhaseFiles || []), modifiedNewFile]
     );
     setSubmitState(isDuplicate ? submitState : 'enabled');
   };
@@ -220,6 +221,7 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
     setInStatePhaseFiles(
       inStatePhaseFiles.filter((file) => file.name !== fileToRemove.name)
     );
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     setPhaseFilesToRemove([...(phaseFilesToRemove || []), fileToRemove]);
     setSubmitState('enabled');
   };
@@ -243,6 +245,7 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
   };
 
   const handleError = (error: { errors: CLErrors }) => {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     setErrors(error.errors || null);
     setProcessing(false);
     setSubmitState('error');
@@ -301,7 +304,7 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
 
     if (phase) {
       updatePhase(
-        { phaseId: phase?.data.id, ...formData },
+        { phaseId: phase.data.id, ...formData },
         {
           onSuccess: (response) => {
             handleSaveResponse(response, false);
@@ -423,7 +426,7 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
                 <CampaignRow
                   campaign={stringifyCampaignFields(campaign, localize)}
                   checked={
-                    !!formData?.campaigns_settings?.[
+                    !!formData.campaigns_settings?.[
                       campaign.attributes.campaign_name
                     ]
                   }
@@ -434,11 +437,13 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
             </SectionField>
           )}
 
+          {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
           {errors && errors.project && (
             <SectionField>
               <Error apiErrors={errors.project} />
             </SectionField>
           )}
+          {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
           {errors && errors.base && (
             <SectionField>
               <Error apiErrors={errors.base} />

@@ -13,6 +13,7 @@ declare let requestAnimationFrame: {
 function triggerResize(dimension: 'width' | 'height', value: number) {
   if (dimension === 'width') {
     (window.innerWidth as number) = value;
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   } else if (dimension === 'height') {
     (window.innerHeight as number) = value;
   }

@@ -22,6 +22,7 @@ class EventEmitter {
   observeEvent<T>(eventName: string): Observable<IEventEmitterEvent<T>> {
     const streamName = eventName;
 
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (!this.stream[streamName]) {
       this.stream[streamName] = this.subject.pipe(
         filter((data) => data.eventName === eventName),

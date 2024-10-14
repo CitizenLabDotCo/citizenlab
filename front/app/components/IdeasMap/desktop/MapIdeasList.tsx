@@ -158,7 +158,7 @@ const MapIdeasList = memo<Props>(
     if (isNilOrError(ideaCustomFieldsSchema)) return null;
 
     const methodConfig =
-      phase && getMethodConfig(phase.data.attributes?.participation_method);
+      phase && getMethodConfig(phase.data.attributes.participation_method);
 
     const topicsEnabled = isFieldEnabled(
       'topic_ids',
@@ -217,6 +217,7 @@ const MapIdeasList = memo<Props>(
               />
             ))}
 
+          {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
           {(ideaMarkers === null || ideaMarkers?.data.length === 0) && (
             <EmptyContainer>
               <IdeaIcon ariaHidden name="idea" />

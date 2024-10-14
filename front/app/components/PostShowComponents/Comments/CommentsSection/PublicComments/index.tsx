@@ -97,7 +97,7 @@ const PublicComments = ({
   const commentsList = comments?.pages.flatMap((page) => page.data);
 
   const post = initiative || idea;
-  const projectId = idea?.data.relationships?.project.data.id;
+  const projectId = idea?.data.relationships.project.data.id;
   const { data: project } = useProjectById(projectId);
 
   const [posting, setPosting] = useState(false);
@@ -113,7 +113,7 @@ const PublicComments = ({
     setPosting(isPosting);
   };
 
-  const phaseId = project?.data.relationships?.current_phase?.data?.id;
+  const phaseId = project?.data.relationships.current_phase?.data?.id;
   const commentCount = post.data.attributes.comments_count;
   const hasComments = commentCount > 0;
   const isAdminPage = isPage('admin', pathname);

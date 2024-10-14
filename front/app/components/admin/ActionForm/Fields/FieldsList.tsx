@@ -51,6 +51,7 @@ const FieldsList = ({ phaseId, action }: Props) => {
 
   return (
     <>
+      {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
       {permissionFields && (
         <SortableList
           items={permissionFields.data}

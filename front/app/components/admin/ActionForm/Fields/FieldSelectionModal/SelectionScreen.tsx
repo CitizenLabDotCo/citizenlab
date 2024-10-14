@@ -40,7 +40,8 @@ export const SelectionScreen = ({
 
   const selectedFieldIds = new Set(
     selectedFields
-      ?.map((field) => field.relationships.custom_field.data?.id)
+      ?.map((field) => field.relationships.custom_field.data.id)
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       .filter((id) => id !== null) as string[]
   );
 

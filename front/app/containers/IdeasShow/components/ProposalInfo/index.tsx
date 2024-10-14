@@ -12,7 +12,7 @@ interface Props {
 
 const ProposalInfo = ({ idea, compact }: Props) => {
   const { data: ideaStatus } = useIdeaStatus(
-    idea.data.relationships.idea_status?.data?.id || ''
+    idea.data.relationships.idea_status.data?.id || ''
   );
 
   if (!ideaStatus) return null;

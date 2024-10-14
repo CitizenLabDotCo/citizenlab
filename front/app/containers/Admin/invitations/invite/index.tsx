@@ -408,6 +408,7 @@ const Invitations = () => {
         <Section>
           <StyledTabs
             items={invitationTabs}
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             selectedValue={selectedView || 'import'}
             onClick={resetWithView}
           />

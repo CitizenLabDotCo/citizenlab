@@ -50,7 +50,7 @@ export const handleOnSSOClick = (
   verification: boolean,
   flow: 'signup' | 'signin'
 ) => {
-  if (metaData?.successAction) {
+  if (metaData.successAction) {
     localStorage.setItem(
       'auth_success_action',
       JSON.stringify(metaData.successAction)
@@ -76,9 +76,9 @@ function setHref(
     sso_flow: flow,
     sso_pathname: pathname, // Also used by back-end to set user.locale following successful signup
     sso_verification: verification === true ? 'true' : undefined,
-    sso_verification_action: context?.action,
+    sso_verification_action: context.action,
     sso_verification_id: isProjectContext(context) ? context.id : undefined,
-    sso_verification_type: context?.type,
+    sso_verification_type: context.type,
   };
   const urlSearchParams = stringify(omitBy(ssoParams, isNil));
   window.location.href = `${AUTH_PATH}/${provider}?${urlSearchParams}`;

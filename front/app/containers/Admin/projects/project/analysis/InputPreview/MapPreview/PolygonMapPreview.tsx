@@ -36,13 +36,13 @@ const PolygonMapPreview = ({ rawValue }: Props) => {
           type: 'Feature',
           geometry: {
             type: 'Polygon',
-            coordinates: polygon?.coordinates,
+            coordinates: polygon.coordinates,
           },
           properties: null,
         },
       ],
     }),
-    [polygon?.coordinates]
+    [polygon.coordinates]
   );
 
   const mapLayer: IMapLayerAttributes = useMemo(
@@ -69,7 +69,8 @@ const PolygonMapPreview = ({ rawValue }: Props) => {
 
   return (
     <Box>
-      {polygon?.coordinates ? (
+      {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
+      {polygon.coordinates ? (
         <EsriMap
           layers={layers}
           initialData={{
@@ -77,7 +78,7 @@ const PolygonMapPreview = ({ rawValue }: Props) => {
             showFullscreenOption: true,
             center: {
               type: 'Point',
-              coordinates: polygon?.coordinates[0][0],
+              coordinates: polygon.coordinates[0][0],
             },
           }}
           height="180px"
