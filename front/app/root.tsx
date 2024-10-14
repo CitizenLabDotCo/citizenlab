@@ -22,6 +22,9 @@ import {
   unstable_HistoryRouter as HistoryRouter,
 } from 'react-router-dom';
 
+import homepageBuilderKeys from 'api/home_page_layout/keys';
+import { fetchHomepageBuilderLayout } from 'api/home_page_layout/useHomepageLayout';
+
 import App from 'containers/App';
 import LanguageProvider from 'containers/LanguageProvider';
 import OutletsProvider from 'containers/OutletsProvider';
@@ -60,7 +63,18 @@ function Routes() {
   return useSentryRoutes(routes);
 }
 
+const prefetchData = () => {
+  queryClient.prefetchQuery({
+    queryKey: homepageBuilderKeys.items(),
+    queryFn: fetchHomepageBuilderLayout,
+  });
+};
+
 const Root = () => {
+  useEffect(() => {
+    prefetchData();
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <OutletsProvider>
