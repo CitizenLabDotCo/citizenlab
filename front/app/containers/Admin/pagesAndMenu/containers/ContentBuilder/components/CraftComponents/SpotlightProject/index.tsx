@@ -1,9 +1,10 @@
 import React from 'react';
 
+import messages from './messages';
 import Settings from './Settings';
 
 const SpotlightProject = () => {
-  return <></>;
+  return <div>Sup</div>;
 };
 
 SpotlightProject.craft = {
@@ -11,5 +12,7 @@ SpotlightProject.craft = {
     settings: Settings,
   },
 };
+
+export const spotlightProjectTitle = messages.spotlightProject;
 
 export default SpotlightProject;
