@@ -31,8 +31,7 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
       params.merge(
         current_user: current_user,
         publication_statuses: %w[published archived],
-        remove_not_allowed_parents: true,
-        depth: 0
+        remove_not_allowed_parents: true
       )
     )
 
