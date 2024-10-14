@@ -259,6 +259,23 @@ resource 'AdminPublication' do
       end
     end
 
+    get 'web_api/v1/admin_publications/homepage_legacy_projects_widget_publications' do
+      with_options scope: :page do
+        parameter :number, 'Page number'
+        parameter :size, 'Number of projects per page'
+      end
+      parameter :topics, 'Filter by topics (AND)', required: false
+      parameter :areas, 'Filter by areas (AND)', required: false
+
+      example 'Includes only published and archived publications', document: false do
+        do_request
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+        expect(json_response[:data].map { |d| d.dig(:attributes, :publication_status) }.uniq)
+          .to match_array %w[published archived]
+      end
+    end
+
     patch 'web_api/v1/admin_publications/:id/reorder' do
       with_options scope: :admin_publication do
         parameter :ordering, 'The position, starting from 0, where the folder or project should be at. Publications after will move down.', required: true
@@ -326,6 +343,60 @@ resource 'AdminPublication' do
     let!(:_custom_folder) { create(:project_folder, projects: projects.take(3)) }
     let(:draft_project) { create(:project, slug: 'draft-project', admin_publication_attributes: { publication_status: 'draft' }) }
     let!(:folder_with_draft_project) { create(:project_folder, projects: [draft_project]) }
+
+    get 'web_api/v1/admin_publications/homepage_legacy_projects_widget_publications' do
+      with_options scope: :page do
+        parameter :number, 'Page number'
+        parameter :size, 'Number of projects per page'
+      end
+      parameter :topics, 'Filter by topics (AND)', required: false
+      parameter :areas, 'Filter by areas (AND)', required: false
+
+      example 'Includes only published and archived publications', document: false do
+        do_request
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+        expect(json_response[:data].map { |d| d.dig(:attributes, :publication_status) }.uniq)
+          .to match_array %w[published archived]
+      end
+
+      example 'Filters out folders with no visible children for the current user', document: false do
+        do_request
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+        expect(json_response[:data].pluck(:id)).not_to include folder_with_draft_project.admin_publication.id
+      end
+
+      example 'Returns only publications with depth 0', document: false do
+        do_request
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+        expect(json_response[:data].map { |d| d.dig(:attributes, :depth) }.uniq).to eq [0]
+      end
+
+      example 'Returns an empty list success response if there are no publications', document: false do
+        AdminPublication.publication_types.each { |claz| claz.all.each(&:destroy!) }
+        do_request
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq 0
+      end
+
+      example 'Visible children counts are correct', document: false do
+        do_request(remove_not_allowed_parents: true)
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+        # Only 3 of initial 6 projects are not in folder
+        expect(json_response[:data].size).to eq 3
+        # Only 1 folder expected - Draft folder created at top of file is not visible to resident,
+        # nor should a folder with only a draft project in it
+        expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('folder')).to eq 1
+        # 3 projects are inside folder, 3 top-level projects remain, of which 1 is not visible (draft)
+        expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('project')).to eq 2
+        # Only the two non-draft projects are visible to resident
+        expect(json_response[:data].find { |d| d.dig(:relationships, :publication, :data, :type) == 'folder' }.dig(:attributes, :visible_children_count)).to eq 2
+      end
+    end
 
     get 'web_api/v1/admin_publications' do
       with_options scope: :page do

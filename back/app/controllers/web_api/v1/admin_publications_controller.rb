@@ -34,7 +34,15 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
   def homepage_legacy_projects_widget_publications
     publication_filterer = AdminPublicationsFilteringService.new
     publications = policy_scope(AdminPublication.includes(:parent))
-    publications = publication_filterer.filter(publications, params.merge(current_user: current_user))
+    publications = publication_filterer.filter(
+      publications,
+      params.merge(
+        current_user: current_user,
+        publication_statuses: %w[published archived],
+        remove_not_allowed_parents: true,
+        depth: 0
+      )
+    )
 
     # A flattened ordering, such that project publications with a parent (projects in folders) are ordered
     # first by their parent's :ordering, and then by their own :ordering (their ordering within the folder).
