@@ -34,3 +34,11 @@ export interface AddProjectFileObject {
     file: string;
   };
 }
+
+export interface UpdateProjectFileObject {
+  projectId: string;
+  fileId: string;
+  file: {
+    ordering?: number;
+  };
+}

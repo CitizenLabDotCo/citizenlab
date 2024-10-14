@@ -152,9 +152,10 @@ interface Props {
   onAdd: (file: UploadFile) => void;
   className?: string;
   id: string;
+  multiple?: boolean;
 }
 
-const FileInput = ({ className, id, onAdd }: Props) => {
+const FileInput = ({ className, id, onAdd, multiple = false }: Props) => {
   const onClick = (event: FormEvent<any>) => {
     // reset the value of the input field
     // so we can upload the same file again after deleting it
@@ -191,6 +192,7 @@ const FileInput = ({ className, id, onAdd }: Props) => {
         accept={fileAccept.join(',')}
         tabIndex={0}
         data-testid="fileInput"
+        multiple={multiple}
       />
       <Label aria-hidden htmlFor={id}>
         <StyledIcon name="upload-file" ariaHidden />

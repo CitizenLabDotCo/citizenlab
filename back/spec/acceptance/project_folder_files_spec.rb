@@ -34,6 +34,23 @@ resource 'ProjectFolderFile' do
     end
   end
 
+  patch 'web_api/v1/project_folders/:folder_id/files/:file_id' do
+    with_options scope: :file do
+      parameter :ordering, 'An integer to update the order of the file attachments', required: false
+    end
+
+    let(:folder_id) { @folder.id }
+    let(:file_id) { ProjectFolders::File.first.id }
+    let(:ordering) { 3 }
+
+    example_request 'Update the ordering of a file attachment' do
+      do_request(ordering: ordering)
+      assert_status 200
+      json_response = json_parse(response_body)
+      expect(json_response.dig(:data, :attributes, :ordering)).to eq(3)
+    end
+  end
+
   post 'web_api/v1/project_folders/:folder_id/files' do
     with_options scope: :file do
       parameter :file, 'The base64 encoded file', required: true
