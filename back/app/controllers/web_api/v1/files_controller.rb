@@ -72,7 +72,7 @@ class WebApi::V1::FilesController < ApplicationController
   end
 
   def create
-    @file = @container.send(secure_constantize(:file_relationship)).new file_params
+    @file = @container.send(secure_constantize(:file_relationship)).new create_file_params
     authorize @file
     if @file.save
       render json: WebApi::V1::FileSerializer.new(
@@ -85,7 +85,7 @@ class WebApi::V1::FilesController < ApplicationController
   end
 
   def update
-    if @file.update(file_params)
+    if @file.update(update_file_params)
       render json: WebApi::V1::FileSerializer.new(@file, params: jsonapi_serializer_params).serializable_hash, status: :ok
     else
       render json: { errors: transform_carrierwave_error_details(@file.errors, :file) }, status: :unprocessable_entity
@@ -103,7 +103,7 @@ class WebApi::V1::FilesController < ApplicationController
 
   private
 
-  def file_params
+  def create_file_params
     params_of_file = params.require(:file).permit(
       :file,
       :ordering,
@@ -118,6 +118,10 @@ class WebApi::V1::FilesController < ApplicationController
     end
     returned_file_params[:ordering] ||= params_of_file[:ordering]
     returned_file_params
+  end
+
+  def update_file_params
+    params.require(:file).permit(:ordering)
   end
 
   def set_file
