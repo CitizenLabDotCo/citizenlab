@@ -6,7 +6,10 @@ import {
   Text,
   Button,
   stylingConsts,
+  useBreakpoint,
 } from '@citizenlab/cl2-component-library';
+
+import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
 
 import citySrc from './city.png';
 
@@ -17,16 +20,18 @@ interface Props {
 }
 
 const SpotlightProject = ({ title, description, buttonText }: Props) => {
+  const isSmallerThanTablet = useBreakpoint('tablet');
+
   return (
-    <Box px="40px" w="100%">
+    <Box px={isSmallerThanTablet ? DEFAULT_PADDING : '40px'} w="100%">
       <Box
         w="100%"
         maxWidth="1000px"
         display="flex"
-        flexDirection="row"
-        justifyContent="space-between"
+        flexDirection={isSmallerThanTablet ? 'column' : 'row'}
+        justifyContent={isSmallerThanTablet ? 'flex-start' : 'space-between'}
       >
-        <Box w="500px">
+        <Box w={isSmallerThanTablet ? undefined : '500px'}>
           <Title variant="h2" fontSize="xxxxl" mt="0">
             {title ?? 'TODO'}
           </Title>
@@ -37,7 +42,10 @@ const SpotlightProject = ({ title, description, buttonText }: Props) => {
             </Box>
           )}
         </Box>
-        <Box ml="40px">
+        <Box
+          mt={isSmallerThanTablet ? '20px' : '0px'}
+          ml={isSmallerThanTablet ? '0px' : '40px'}
+        >
           <img
             src={citySrc}
             width="100%"
