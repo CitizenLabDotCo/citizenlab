@@ -22,7 +22,6 @@ const useHomepageLayout = () => {
   >({
     queryKey: homepageBuilderKeys.items(),
     queryFn: () => fetchHomepageBuilderLayout(),
-    staleTime: 0,
   });
 };
 
