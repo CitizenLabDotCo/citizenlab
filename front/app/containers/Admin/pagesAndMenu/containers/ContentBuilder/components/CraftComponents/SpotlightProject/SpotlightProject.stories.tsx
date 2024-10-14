@@ -15,7 +15,10 @@ type Story = StoryObj<typeof meta>;
 
 export const Standard: Story = {
   args: {
-    title_multiloc: { en: 'Spotlight Project' },
+    title: 'People at the Heart of Everything We Do',
+    description:
+      'Join local projects, sharing your ideas, or contributing to discussions, your voice is key to building a better Newham.',
+    buttonText: 'Join other residents',
   },
   parameters: {},
 };
