@@ -40,7 +40,7 @@ describe SettingsService do
       expect(updated_settings['verification']['enabled']).to be false
     end
 
-    it 'does not disable verification if at least one methods is NOT hidden from the profile' do
+    it 'does not disable verification if at least one method is NOT hidden from the profile' do
       settings = {
         'verification' => {
           'allowed' => true,

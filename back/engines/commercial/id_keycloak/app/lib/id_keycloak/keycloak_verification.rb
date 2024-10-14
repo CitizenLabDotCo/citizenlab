@@ -27,8 +27,6 @@ module IdKeycloak
       ]
     end
 
-    # TODO: JS - Implement hide_from_profile
-
     def config_parameters_schema
       {
         ui_method_name: {
@@ -73,6 +71,10 @@ module IdKeycloak
 
     def enabled_for_verified_actions?
       config[:enabled_for_verified_actions] || false
+    end
+
+    def ui_method_name
+      config[:ui_method_name] || name
     end
   end
 end
