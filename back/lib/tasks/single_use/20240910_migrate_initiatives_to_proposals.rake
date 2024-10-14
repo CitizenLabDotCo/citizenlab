@@ -3,56 +3,54 @@ namespace :initiatives_to_proposals do
   task :migrate_proposals, [] => [:environment] do
     reporter = ScriptReporter.new
     Tenant.safe_switch_each do |tenant|
-      begin
-        puts "Migrating initiatives to proposals for #{tenant.host}"
-        # next if %w[copenhagenmigrated.epic.citizenlab.co kobenhavntaler.kk.dk].exclude? tenant.host ### TODO: DELETE THIS LINE
-        next if !AppConfiguration.instance.feature_activated?('initiatives') && !Initiative.exists?
+      puts "Migrating initiatives to proposals for #{tenant.host}"
+      # next if %w[copenhagenmigrated.epic.citizenlab.co kobenhavntaler.kk.dk].exclude? tenant.host ### TODO: DELETE THIS LINE
+      next if !AppConfiguration.instance.feature_activated?('initiatives') && !Initiative.exists?
 
-        SettingsService.new.activate_feature!('input_cosponsorship') if AppConfiguration.instance.feature_activated?('initiative_cosponsors')
+      SettingsService.new.activate_feature!('input_cosponsorship') if AppConfiguration.instance.feature_activated?('initiative_cosponsors')
 
-        project = rake_20240910_create_proposals_project(reporter)
-        next if !project
+      project = rake_20240910_create_proposals_project(reporter)
+      next if !project
 
-        rake_20240910_substitute_homepage_element(project, reporter)
-        rake_20240910_replace_navbaritem(project, reporter)
-        rake_20240910_migrate_input_statuses(reporter)
-        Initiative.where.not(publication_status: 'draft').each do |initiative|
-          proposal_attributes = rake_20240910_proposal_attributes(initiative, project)
-          proposal = Idea.new proposal_attributes
-          next if !rake_20240910_assign_idea_status(proposal, initiative, reporter)
+      rake_20240910_substitute_homepage_element(project, reporter)
+      rake_20240910_replace_navbaritem(project, reporter)
+      rake_20240910_migrate_input_statuses(reporter)
+      Initiative.where.not(publication_status: 'draft').each do |initiative|
+        proposal_attributes = rake_20240910_proposal_attributes(initiative, project)
+        proposal = Idea.new proposal_attributes
+        next if !rake_20240910_assign_idea_status(proposal, initiative, reporter)
 
-          rake_20240910_assign_publication(proposal, initiative)
-          if proposal.save
-            reporter.add_create(
-              'Proposal',
-              proposal_attributes,
-              context: { tenant: tenant.host, proposal: initiative.slug }
-            )
-          else
-            reporter.add_error(
-              proposal.errors.details,
-              context: { tenant: tenant.host, proposal: proposal.slug }
-            )
-            next
-          end
-          rake_20240910_migrate_activities(proposal, initiative, reporter)
-          rake_20240910_migrate_images_files(proposal, initiative, reporter) ### TODO: RESTORE THIS LINE
-          rake_20240910_migrate_topics(proposal, initiative, reporter)
-          rake_20240910_migrate_reactions(proposal, initiative, reporter)
-          rake_20240910_migrate_spam_reports(proposal, initiative, reporter)
-          rake_20240910_migrate_comments(proposal, initiative, reporter)
-          rake_20240910_migrate_official_feedback(proposal, initiative, reporter)
-          rake_20240910_migrate_followers(proposal, initiative, reporter)
-          rake_20240910_migrate_cosponsors(proposal, initiative, reporter)
+        rake_20240910_assign_publication(proposal, initiative)
+        if proposal.save
+          reporter.add_create(
+            'Proposal',
+            proposal_attributes,
+            context: { tenant: tenant.host, proposal: initiative.slug }
+          )
+        else
+          reporter.add_error(
+            proposal.errors.details,
+            context: { tenant: tenant.host, proposal: proposal.slug }
+          )
+          next
         end
-        rake_20240910_migrate_initiatives_static_page(reporter)
-        SettingsService.new.deactivate_feature!('initiatives')
-        reporter.report!('migrate_initiatives_to_proposals.json', verbose: false)
-      rescue ActiveRecord::StatementInvalid => e
-        puts "Error occurred during migration: #{e.message}"
-        reporter.add_error(e.message)
-        sleep(20 * 60)
+        rake_20240910_migrate_activities(proposal, initiative, reporter)
+        rake_20240910_migrate_images_files(proposal, initiative, reporter) ### TODO: RESTORE THIS LINE
+        rake_20240910_migrate_topics(proposal, initiative, reporter)
+        rake_20240910_migrate_reactions(proposal, initiative, reporter)
+        rake_20240910_migrate_spam_reports(proposal, initiative, reporter)
+        rake_20240910_migrate_comments(proposal, initiative, reporter)
+        rake_20240910_migrate_official_feedback(proposal, initiative, reporter)
+        rake_20240910_migrate_followers(proposal, initiative, reporter)
+        rake_20240910_migrate_cosponsors(proposal, initiative, reporter)
       end
+      rake_20240910_migrate_initiatives_static_page(reporter)
+      SettingsService.new.deactivate_feature!('initiatives')
+      reporter.report!('migrate_initiatives_to_proposals.json', verbose: false)
+    rescue ActiveRecord::StatementInvalid => e
+      puts "Error occurred during migration: #{e.message}"
+      reporter.add_error(e.message)
+      sleep(20 * 60)
     end
     reporter.report!('migrate_initiatives_to_proposals.json', verbose: true)
   end
@@ -218,7 +216,7 @@ def rake_20240910_migrate_input_statuses(reporter)
     'threshold_reached' => '#008300',
     'expired' => '#B22222',
     'answered' => '#1E3A8A',
-    'ineligible' => '#8B0000',
+    'ineligible' => '#8B0000'
   }
   custom_titles = ['archived', 'closed', 'on hold', 'open', 'uegnet']
   IdeaStatus.where.not(code: 'custom').each do |status|
