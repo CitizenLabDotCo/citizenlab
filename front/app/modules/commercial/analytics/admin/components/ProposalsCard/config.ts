@@ -82,7 +82,7 @@ export const proposalsConfig: StatCardConfig = {
           all: 'count',
         },
         filters: {
-          'dimension_type.name': 'initiative',
+          'dimension_type.name': 'proposal',
           publication_status: 'published',
           ...successStatus,
           ...getProjectFilter('dimension_project', projectId),

@@ -143,9 +143,9 @@ de:
     cosponsor_of_your_idea:
       cta_reply_to: 'Eigenen Vorschlag ansehen'
       event_description: 'Herzlichen Glückwunsch! %{cosponsorName} hat Ihre Einladung zur Unterstützung Ihres Vorschlags angenommen.'
-      main_header: '%{cosponsorName} hat Ihre Einladung angenommen, Ihren Vorschlag mit zu unterstützen'
-      subject: '%{cosponsorName} hat Ihre Einladung angenommen, Ihren Vorschlag mit zu unterstützen'
-      preheader: '%{cosponsorName} hat Ihre Einladung angenommen, Ihren Vorschlag mit zu unterstützen'
+      main_header: '%{cosponsorName} hat die Einladung angenommen, Ihren Vorschlag mit zu unterstützen'
+      subject: '%{cosponsorName} hat die Einladung angenommen, Ihren Vorschlag mit zu unterstützen'
+      preheader: '%{cosponsorName} hat die Einladung angenommen, Ihren Vorschlag mit zu unterstützen'
     cosponsor_of_your_initiative:
       cta_reply_to: 'Eigenen Vorschlag ansehen'
       event_description_initiative: 'Herzlichen Glückwunsch! %{cosponsorName} hat Ihre Einladung zur Unterstützung Ihres Vorschlags angenommen.'

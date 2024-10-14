@@ -705,15 +705,13 @@ const ProjectCard = memo<InputProps>(
                   className={`${size} ${!showFooter ? 'hidden' : ''}`}
                 >
                   <Box h="100%" display="flex" alignItems="center">
-                    {hasAvatars && (
-                      <AvatarBubbles
-                        size={32}
-                        limit={3}
-                        userCountBgColor={theme.colors.tenantPrimary}
-                        avatarIds={avatarIds}
-                        userCount={project.data.attributes.participants_count}
-                      />
-                    )}
+                    <AvatarBubbles
+                      size={32}
+                      limit={3}
+                      userCountBgColor={theme.colors.tenantPrimary}
+                      avatarIds={avatarIds}
+                      userCount={project.data.attributes.participants_count}
+                    />
                   </Box>
                 </ContentFooter>
               </Box>
