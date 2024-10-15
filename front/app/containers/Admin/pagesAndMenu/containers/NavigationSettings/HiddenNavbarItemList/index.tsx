@@ -84,13 +84,7 @@ const HiddenNavbarItemList = ({
   };
 
   const getViewButtonLink = (item: IItemNotInNavbar): RouteType | null => {
-    return (
-      getNavbarItemSlug(
-        item.type === 'default_item' ? item.navbarCode : 'custom',
-        pageSlugById,
-        item.type === 'page' ? item.pageId : undefined
-      ) || '/'
-    );
+    return getNavbarItemSlug(item) || '/';
   };
 
   return (

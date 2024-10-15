@@ -3,9 +3,7 @@ import React from 'react';
 import { media, isRtl } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import useCustomPageSlugById from 'api/custom_pages/useCustomPageSlugById';
 import useNavbarItems from 'api/navbar/useNavbarItems';
-import useProjectSlugById from 'api/projects/useProjectSlugById';
 
 import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
@@ -42,17 +40,11 @@ const NavbarItems = styled.ul`
 
 const DesktopNavItems = () => {
   const { data: navbarItems } = useNavbarItems();
-  const pageSlugById = useCustomPageSlugById();
-  const projectSlugById = useProjectSlugById();
   const { formatMessage } = useIntl();
 
-  if (isNilOrError(navbarItems) || isNilOrError(pageSlugById)) return null;
+  if (isNilOrError(navbarItems)) return null;
 
-  const navbarItemPropsArray = getNavbarItemPropsArray(
-    navbarItems.data,
-    pageSlugById,
-    projectSlugById
-  );
+  const navbarItemPropsArray = getNavbarItemPropsArray(navbarItems.data);
 
   return (
     <Container aria-label={formatMessage(messages.ariaLabel)}>
