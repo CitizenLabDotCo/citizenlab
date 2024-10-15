@@ -21,6 +21,10 @@ class AdminPublicationPolicy < ApplicationPolicy
     Pundit.policy(user, record.publication).show?
   end
 
+  def homepage_legacy_projects_widget_publications?
+    true
+  end
+
   def reorder?
     return false unless user&.active?
     return true if user.admin?
