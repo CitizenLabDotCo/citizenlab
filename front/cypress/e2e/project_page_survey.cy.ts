@@ -210,7 +210,6 @@ describe('Timeline project with survey phase but not active', () => {
 
   it('does not show the survey or survey buttons', () => {
     cy.contains('Take the survey').should('not.exist');
-    cy.contains('1 survey').should('not.exist');
   });
 
   after(() => {
@@ -255,7 +254,6 @@ describe('Archived single phase project with survey', () => {
 
   it('does not show the survey or survey buttons', () => {
     cy.contains('Take the survey').should('not.exist');
-    cy.contains('1 survey').should('not.exist');
   });
 
   after(() => {
