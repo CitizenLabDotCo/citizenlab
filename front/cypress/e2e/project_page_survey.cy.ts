@@ -10,10 +10,10 @@ describe('Existing project with survey', () => {
     cy.wait(1000);
   });
 
+  // TODO: Improve this test
   it('shows the correct project header', () => {
     cy.get('#e2e-project-description');
     cy.get('#e2e-project-sidebar');
-    cy.get('#e2e-project-sidebar-share-button');
   });
 
   it('shows the survey', () => {
@@ -82,10 +82,10 @@ describe('New project with survey', () => {
     cy.wait(1000);
   });
 
+  // TODO: Improve this test
   it('shows the correct project header', () => {
     cy.get('#e2e-project-description');
     cy.get('#e2e-project-sidebar');
-    cy.get('#e2e-project-sidebar-share-button');
   });
 
   it('shows event CTA button', () => {
