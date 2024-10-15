@@ -8,6 +8,7 @@ import { IPhaseData } from 'api/phases/types';
 
 import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
 import { pastPresentOrFuture } from 'utils/dateUtils';
+import { isPhaseActive } from 'utils/projectUtils';
 
 type Props = {
   idea: IIdea;
@@ -17,6 +18,7 @@ type Props = {
 const Interactions = ({ idea, phase }: Props) => {
   const isGeneralIdeasPage = window.location.pathname.endsWith('/ideas');
   const votingMethod = phase?.attributes.voting_method;
+
   const config = getVotingMethodConfig(votingMethod);
   const { data: basket } = useBasket(
     phase?.relationships?.user_basket?.data?.id
@@ -24,12 +26,12 @@ const Interactions = ({ idea, phase }: Props) => {
 
   if (!config || !phase) return null;
 
-  if (
-    pastPresentOrFuture([
-      phase.attributes.start_at,
-      phase.attributes.end_at,
-    ]) !== 'present'
-  ) {
+  const hideVoteInteractions =
+    !isPhaseActive(phase) &&
+    phase?.attributes.participation_method === 'voting' &&
+    phase?.attributes.autoshare_results_enabled;
+
+  if ((!isPhaseActive(phase) && !votingMethod) || hideVoteInteractions) {
     return null;
   }
 

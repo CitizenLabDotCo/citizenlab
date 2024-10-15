@@ -224,7 +224,7 @@ const VotingResultCard = ({ idea, phaseId, rank }: Props) => {
         </Header>
 
         <Body>
-          <Box h="100%" display="flex" alignItems="flex-end">
+          <Box h="100%" alignContent="flex-end">
             <ProgressBar idea={idea} phase={phase} />
           </Box>
         </Body>

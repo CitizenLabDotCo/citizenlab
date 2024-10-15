@@ -4,7 +4,9 @@ import {
   IIdeaJsonFormSchemas,
   CustomFieldCodes,
 } from 'api/idea_json_form_schema/types';
+import { IPhaseData } from 'api/phases/types';
 
+import { pastPresentOrFuture } from './dateUtils';
 import { isNilOrError } from './helperUtils';
 
 export function isFieldEnabled(
@@ -22,4 +24,13 @@ export function isFieldEnabled(
   }
 
   return true;
+}
+
+export function isPhaseActive(phase: IPhaseData): boolean {
+  return (
+    pastPresentOrFuture([
+      phase.attributes.start_at,
+      phase.attributes.end_at,
+    ]) === 'present'
+  );
 }
