@@ -84,6 +84,7 @@ const ProjectAndFolderCards = ({
     topicIds,
     areaIds,
     search,
+    include_publications: true,
   });
 
   const onChangeTopics = (topics: string[]) => {
