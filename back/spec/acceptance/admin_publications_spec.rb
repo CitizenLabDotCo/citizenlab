@@ -652,7 +652,7 @@ resource 'AdminPublication' do
     end
   end
 
-  context 'when :include_publications is true' do
+  context "when include_publications parameter is 'true'" do
     shared_examples 'include_publications' do
       get 'web_api/v1/admin_publications' do
         parameter :include_publications, 'Include the related publications and associated items', required: false
