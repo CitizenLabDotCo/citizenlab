@@ -28,7 +28,7 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
       params: jsonapi_serializer_params(
         visible_children_count_by_parent_id: publication_filterer.visible_children_counts_by_parent_id
       ),
-      include: %i[publication]
+      include: %i[publication publication.avatars]
     )
   end
 
