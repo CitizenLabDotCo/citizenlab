@@ -55,7 +55,6 @@ const ProjectFolderProjectCards = ({ folderId, className }: Props) => {
   const { data } = useAdminPublications({
     childrenOfId: folderId,
     publicationStatusFilter: publicationStatuses,
-    include_publications: true,
   });
 
   const adminPublications = data?.pages.map((page) => page.data).flat();

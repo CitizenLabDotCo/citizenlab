@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { Multiloc } from 'typings';
@@ -58,36 +58,24 @@ const ProjectAndFolderCardsInner = ({
   hasMore,
   currentlyWorkingOnText,
 }: Props) => {
-  const [currentTab, setCurrentTab] = useState<PublicationTab | null>(null);
+  const [currentTab, setCurrentTab] = useState<PublicationTab | null>(
+    getCurrentTab(statusCounts, null)
+  );
   const { formatMessage } = useIntl();
-
-  useEffect(() => {
-    if (currentTab) return;
-    setCurrentTab((currentTab) => getCurrentTab(statusCounts, currentTab));
-  }, [statusCounts, currentTab]);
 
   const onChangeTab = (tab: PublicationTab) => {
     setCurrentTab(tab);
+
+    const publicationStatusesForCurrentTab = currentTab
+      ? currentTab === 'all'
+        ? publicationStatusFilter
+        : [currentTab]
+      : null;
+
+    if (publicationStatusesForCurrentTab) {
+      onChangePublicationStatus?.(publicationStatusesForCurrentTab);
+    }
   };
-
-  const publicationStatusesForCurrentTab = currentTab
-    ? currentTab === 'all'
-      ? publicationStatusFilter
-      : [currentTab]
-    : null;
-
-  const publicationStatusesForCurrentTabStringified = JSON.stringify(
-    publicationStatusesForCurrentTab
-  );
-
-  useEffect(() => {
-    const publicationStatusesForCurrentTab = JSON.parse(
-      publicationStatusesForCurrentTabStringified
-    );
-    if (!publicationStatusesForCurrentTab) return;
-    onChangePublicationStatus &&
-      onChangePublicationStatus(publicationStatusesForCurrentTab);
-  }, [publicationStatusesForCurrentTabStringified, onChangePublicationStatus]);
 
   const handleChangeSearch = React.useCallback(
     (search: string | null) => {
