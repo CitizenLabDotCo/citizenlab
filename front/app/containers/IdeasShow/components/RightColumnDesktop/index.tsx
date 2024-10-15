@@ -109,7 +109,11 @@ const RightColumnDesktop = ({
                 <GoToCommentsButton />
               </Box>
             )}
-            <Box pb="12px" bg={colors.white} px="12px">
+            <Box
+              pb={participationMethod === 'proposals' ? '12px' : '0px'}
+              px={participationMethod === 'proposals' ? '12px' : '0px'}
+              bg={colors.white}
+            >
               <FollowUnfollow
                 followableType="ideas"
                 followableId={ideaId}
