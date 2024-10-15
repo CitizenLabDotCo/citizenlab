@@ -2125,7 +2125,7 @@
   "app.containers.AdminPage.SettingsPage.urlPatternError": "Enter a valid URL.",
   "app.containers.AdminPage.SettingsPage.urlTitle": "Website",
   "app.containers.AdminPage.SettingsPage.urlTitleTooltip": "You can add a link to your own website. This link will be used on the bottom of the homepage.",
-  "app.containers.AdminPage.SideBar.academy": "Academy",
+  "app.containers.AdminPage.SideBar.academy": "Akademie",
   "app.containers.AdminPage.SideBar.administrator": "Administrateur",
   "app.containers.AdminPage.SideBar.communityPlatform": "Communautéit Plattform",
   "app.containers.AdminPage.SideBar.dashboard": "Dashboard",
