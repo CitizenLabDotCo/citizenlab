@@ -9,7 +9,7 @@ resource 'SEO' do
   get '/sitemap.xml' do
     let(:sitemap) { Nokogiri::XML(response_body) }
     let(:locales_count) { AppConfiguration.instance.settings.dig('core', 'locales').count }
-    let(:base_count) { 27 }
+    let(:base_count) { 24 }
     let(:url_count_per_project) { 4 }
     let(:url_count_per_idea) { 1 }
 
@@ -19,7 +19,7 @@ resource 'SEO' do
 
     context 'when the platform has no resources' do
       before do
-        %w[all_input proposals].each { |code| create(:nav_bar_item, code: code) }
+        %w[all_input events].each { |code| create(:nav_bar_item, code: code) }
         do_request
       end
 
@@ -36,7 +36,7 @@ resource 'SEO' do
       let(:project_count) { 2 }
 
       before do
-        %w[all_input proposals].each { |code| create(:nav_bar_item, code: code) }
+        %w[all_input events].each { |code| create(:nav_bar_item, code: code) }
         create_list(:project, project_count)
         do_request
       end
@@ -56,7 +56,7 @@ resource 'SEO' do
       let(:project_count) { 1 }
 
       before do
-        %w[all_input proposals].each { |code| create(:nav_bar_item, code: code) }
+        %w[all_input events].each { |code| create(:nav_bar_item, code: code) }
         projects = create_list(:project, project_count)
         create(:project_folder)
         create_list(:idea, idea_count, project: projects.first)
@@ -77,7 +77,6 @@ resource 'SEO' do
                          (idea_count * url_count_per_idea * locales_count) +
                          ((project_count + 2) * url_count_per_project * locales_count) +
                          (1 * locales_count) + # project folders
-                         (1 * locales_count) + # initiatives
                          (1 * locales_count) + # proposals
                          (1 * locales_count) + # static pages
                          0 # native survery response
