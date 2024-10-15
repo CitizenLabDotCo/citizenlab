@@ -2551,6 +2551,7 @@
   "app.containers.admin.ContentBuilder.delete": "Izbriši",
   "app.containers.admin.ContentBuilder.error": "pogreška",
   "app.containers.admin.ContentBuilder.errorMessage": "Pojavila se pogreška na {locale} sadržaju, ispravite problem kako biste mogli spremiti promjene",
+  "app.containers.admin.ContentBuilder.hideParticipationAvatarsText": "Sakrij avatare sudjelovanja",
   "app.containers.admin.ContentBuilder.homepage.default": "zadano",
   "app.containers.admin.ContentBuilder.homepage.events.eventsTitle": "Događaji",
   "app.containers.admin.ContentBuilder.homepage.eventsTitle": "Događaji",
