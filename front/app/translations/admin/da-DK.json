@@ -2551,7 +2551,6 @@
   "app.containers.admin.ContentBuilder.delete": "Slet",
   "app.containers.admin.ContentBuilder.error": "fejl",
   "app.containers.admin.ContentBuilder.errorMessage": "Der er en fejl i {locale}-indholdet, ret venligst problemet for at kunne gemme dine ændringer",
-  "app.containers.admin.ContentBuilder.hideParticipationNumbersText": "Skjul tal for deltagelse",
   "app.containers.admin.ContentBuilder.homepage.default": "standard",
   "app.containers.admin.ContentBuilder.homepage.events.eventsTitle": "Begivenheder",
   "app.containers.admin.ContentBuilder.homepage.eventsTitle": "Begivenheder",

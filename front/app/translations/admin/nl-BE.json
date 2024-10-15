@@ -2551,7 +2551,6 @@
   "app.containers.admin.ContentBuilder.delete": "Verwijder",
   "app.containers.admin.ContentBuilder.error": "fout",
   "app.containers.admin.ContentBuilder.errorMessage": "Er is een fout opgetreden in de {locale} inhoud, los het probleem op om je wijzigingen op te kunnen slaan",
-  "app.containers.admin.ContentBuilder.hideParticipationNumbersText": "Verberg deelnamecijfers",
   "app.containers.admin.ContentBuilder.homepage.default": "standaard",
   "app.containers.admin.ContentBuilder.homepage.events.eventsTitle": "Activiteiten",
   "app.containers.admin.ContentBuilder.homepage.eventsTitle": "Activiteiten",

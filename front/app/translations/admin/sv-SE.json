@@ -2551,7 +2551,6 @@
   "app.containers.admin.ContentBuilder.delete": "Radera",
   "app.containers.admin.ContentBuilder.error": "fel",
   "app.containers.admin.ContentBuilder.errorMessage": "Det finns ett fel i innehållet på {locale} – åtgärda problemet för att kunna spara dina ändringar",
-  "app.containers.admin.ContentBuilder.hideParticipationNumbersText": "Dölj deltagarsiffror",
   "app.containers.admin.ContentBuilder.homepage.default": "standard",
   "app.containers.admin.ContentBuilder.homepage.events.eventsTitle": "Händelser",
   "app.containers.admin.ContentBuilder.homepage.eventsTitle": "Händelser",

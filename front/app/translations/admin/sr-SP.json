@@ -2551,7 +2551,6 @@
   "app.containers.admin.ContentBuilder.delete": "Избриши",
   "app.containers.admin.ContentBuilder.error": "грешка",
   "app.containers.admin.ContentBuilder.errorMessage": "Постоји грешка на {locale} садржају, решите проблем да бисте могли да сачувате промене",
-  "app.containers.admin.ContentBuilder.hideParticipationNumbersText": "Hide participation numbers",
   "app.containers.admin.ContentBuilder.homepage.default": "Уобичајено",
   "app.containers.admin.ContentBuilder.homepage.events.eventsTitle": "Догађаји",
   "app.containers.admin.ContentBuilder.homepage.eventsTitle": "Догађаји",

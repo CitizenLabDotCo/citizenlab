@@ -2551,7 +2551,6 @@
   "app.containers.admin.ContentBuilder.delete": "Slett",
   "app.containers.admin.ContentBuilder.error": "feil",
   "app.containers.admin.ContentBuilder.errorMessage": "Det oppstod en feil med innhold på {locale}, løs problemet for å lagre endringene",
-  "app.containers.admin.ContentBuilder.hideParticipationNumbersText": "Skjul deltakernummer",
   "app.containers.admin.ContentBuilder.homepage.default": "misligholde",
   "app.containers.admin.ContentBuilder.homepage.events.eventsTitle": "Arrangementer",
   "app.containers.admin.ContentBuilder.homepage.eventsTitle": "Arrangementer",

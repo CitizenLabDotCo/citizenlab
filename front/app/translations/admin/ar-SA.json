@@ -2551,7 +2551,6 @@
   "app.containers.admin.ContentBuilder.delete": "حذف",
   "app.containers.admin.ContentBuilder.error": "خطأ",
   "app.containers.admin.ContentBuilder.errorMessage": "يوجد خطأ في محتوى {locale}، يرجى حل المشكلة لتتمكن من حفظ التغييرات التي أجريتها",
-  "app.containers.admin.ContentBuilder.hideParticipationNumbersText": "إخفاء أرقام المشاركة",
   "app.containers.admin.ContentBuilder.homepage.default": "تقصير",
   "app.containers.admin.ContentBuilder.homepage.events.eventsTitle": "الأحداث",
   "app.containers.admin.ContentBuilder.homepage.eventsTitle": "الأحداث",

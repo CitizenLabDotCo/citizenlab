@@ -2551,7 +2551,6 @@
   "app.containers.admin.ContentBuilder.delete": "Sil",
   "app.containers.admin.ContentBuilder.error": "hata",
   "app.containers.admin.ContentBuilder.errorMessage": "{locale} içeriğinde bir hata var, değişikliklerinizi kaydedebilmek için lütfen sorunu düzeltin",
-  "app.containers.admin.ContentBuilder.hideParticipationNumbersText": "Katılım sayılarını gizleyin",
   "app.containers.admin.ContentBuilder.homepage.default": "varsayılan",
   "app.containers.admin.ContentBuilder.homepage.events.eventsTitle": "Etkinlikler",
   "app.containers.admin.ContentBuilder.homepage.eventsTitle": "Etkinlikler",

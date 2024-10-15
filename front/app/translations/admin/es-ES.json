@@ -2551,7 +2551,6 @@
   "app.containers.admin.ContentBuilder.delete": "Eliminar",
   "app.containers.admin.ContentBuilder.error": "error",
   "app.containers.admin.ContentBuilder.errorMessage": "Hay un error en el contenido de {locale}, arregle el problema para poder guardar sus cambios",
-  "app.containers.admin.ContentBuilder.hideParticipationNumbersText": "Ocultar las cifras de participación",
   "app.containers.admin.ContentBuilder.homepage.default": "por defecto",
   "app.containers.admin.ContentBuilder.homepage.events.eventsTitle": "Eventos",
   "app.containers.admin.ContentBuilder.homepage.eventsTitle": "Eventos",

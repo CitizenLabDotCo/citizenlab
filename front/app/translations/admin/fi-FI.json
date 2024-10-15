@@ -2551,7 +2551,6 @@
   "app.containers.admin.ContentBuilder.delete": "Poistaa",
   "app.containers.admin.ContentBuilder.error": "virhe",
   "app.containers.admin.ContentBuilder.errorMessage": "Sisällössä {locale} on virhe. Korjaa ongelma, jotta voit tallentaa muutokset",
-  "app.containers.admin.ContentBuilder.hideParticipationNumbersText": "Piilota osallistumisnumerot",
   "app.containers.admin.ContentBuilder.homepage.default": "oletuksena",
   "app.containers.admin.ContentBuilder.homepage.events.eventsTitle": "Tapahtumat",
   "app.containers.admin.ContentBuilder.homepage.eventsTitle": "Tapahtumat",
