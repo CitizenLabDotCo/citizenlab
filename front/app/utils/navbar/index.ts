@@ -8,6 +8,7 @@ interface IDefaultItemNotInNavbar {
   navbarCode: TNavbarItemCode;
   navbarId: string;
   titleMultiloc: Multiloc;
+  slug: string | null;
 }
 
 interface ICustomPageNotInNavbar {
@@ -15,12 +16,14 @@ interface ICustomPageNotInNavbar {
   pageCode: TCustomPageCode;
   pageId: string;
   titleMultiloc: Multiloc;
+  slug: string | null;
 }
 
 interface IProjectNotInNavbar {
   type: 'project';
   projectId: string;
   titleMultiloc: Multiloc;
+  slug: string | null;
 }
 
 export type IItemNotInNavbar =
@@ -36,6 +39,7 @@ function getDefaultItemsNotInNavbar(
     navbarCode: navbarItem.attributes.code,
     navbarId: navbarItem.id,
     titleMultiloc: navbarItem.attributes.title_multiloc,
+    slug: navbarItem.attributes.slug,
   }));
 }
 
@@ -57,6 +61,7 @@ function getPagesNotInNavbar(
       pageCode: page.attributes.code,
       pageId: page.id,
       titleMultiloc: page.attributes.nav_bar_item_title_multiloc,
+      slug: page.attributes.slug,
     }));
 }
 

@@ -9,7 +9,7 @@ import useCustomPageSlugById from 'api/custom_pages/useCustomPageSlugById';
 import useDeleteCustomPage from 'api/custom_pages/useDeleteCustomPage';
 import useAddNavbarItem from 'api/navbar/useAddNavbarItem';
 import useNavbarItems from 'api/navbar/useNavbarItems';
-import { getNavbarItemSlug, MAX_NAVBAR_ITEMS } from 'api/navbar/util';
+import { DEFAULT_PAGE_SLUGS, MAX_NAVBAR_ITEMS } from 'api/navbar/util';
 
 import NavbarItemRow from 'containers/Admin/pagesAndMenu/containers/NavigationSettings/NavbarItemRow';
 import { ADMIN_PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
@@ -84,7 +84,19 @@ const HiddenNavbarItemList = ({
   };
 
   const getViewButtonLink = (item: IItemNotInNavbar): RouteType | null => {
-    return getNavbarItemSlug(item) || '/';
+    if (item.type === 'page') {
+      return `/pages/${item.slug}`;
+    }
+
+    if (item.type === 'project') {
+      return `/projects/${item.slug}`;
+    }
+
+    if (item.type === 'default_item') {
+      return DEFAULT_PAGE_SLUGS[item.navbarCode];
+    }
+
+    return null;
   };
 
   return (
