@@ -538,18 +538,15 @@ def rake_20240910_migrate_initiatives_static_page(reporter)
 
   page.code = 'custom'
 
-  def substitue_text(text, locale, config)
+  substitue_text = proc do |locale, text|
+    config = AppConfiguration.instance
     text.gsub!('$|initiativesVotingThreshold|', config.settings('initiatives', 'reacting_threshold').to_s)
     text.gsub!('$|initiativesDaysLimit|', config.settings('initiatives', 'days_limit').to_s)
     text.gsub!('$|initiativesEligibilityCriteria|',((config.settings('initiatives', 'eligibility_criteria') || {})[locale] || ''))
     text.gsub!('$|initiativesThresholdReachedMessage|', ((config.settings('initiatives', 'threshold_reached_message') || {})[locale] || ''))
   end
-  page.top_info_section_multiloc&.each do |locale, text|
-    substitue_text(text, locale, config)
-  end
-  page.bottom_info_section_multiloc&.each do |locale, text|
-    substitue_text(text, locale, config)
-  end
+  page.top_info_section_multiloc&.each(&substitue_text)
+  page.bottom_info_section_multiloc&.each(&substitue_text)
 
   if !page.save
     reporter.add_error(
