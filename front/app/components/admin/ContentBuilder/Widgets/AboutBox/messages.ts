@@ -6,7 +6,7 @@ export default defineMessages({
     defaultMessage: 'Participation Box',
   },
   hideParticipationAvatarsText: {
-    id: 'app.containers.admin.ContentBuilder.hideParticipationNumbersText',
+    id: 'app.containers.admin.ContentBuilder.hideParticipationAvatarsText',
     defaultMessage: 'Hide participation avatars',
   },
 });
