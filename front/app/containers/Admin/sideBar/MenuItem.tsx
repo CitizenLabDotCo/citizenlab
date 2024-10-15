@@ -11,6 +11,8 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import useAuthUser from 'api/me/useAuthUser';
+
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useFeatureFlags from 'hooks/useFeatureFlags';
 
@@ -19,6 +21,7 @@ import CountBadge from 'components/UI/CountBadge';
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { usePermission } from 'utils/permissions';
+import { isSuperAdmin } from 'utils/permissions/roles';
 
 import tooltipImage from './assets/tooltip.png';
 import messages from './messages';
@@ -98,6 +101,7 @@ const MenuItem = ({ navItem }: Props) => {
     names: navItem.featureNames ?? [],
     onlyCheckAllowed: navItem.onlyCheckAllowed,
   });
+  const { data: user } = useAuthUser();
 
   const hasPermission = usePermission({
     action: 'access',
@@ -114,7 +118,12 @@ const MenuItem = ({ navItem }: Props) => {
   const isItemDisabled =
     isProjectProposalsEnabled && navItem.name === 'initiatives';
 
-  if (!featuresEnabled || !hasPermission) return null;
+  if (navItem.name === 'reporting') {
+    if (!isSuperAdmin(user) && (!featuresEnabled || !hasPermission))
+      return null;
+  } else {
+    if (!featuresEnabled || !hasPermission) return null;
+  }
 
   return (
     <Tooltip
