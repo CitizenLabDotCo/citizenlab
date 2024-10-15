@@ -26,6 +26,9 @@ type EditorProps = {
   onNodesChange?: (nodes: SerializedNodes) => void;
 };
 
+// TODO: Remove after proposals migration is done
+const Proposals = () => <></>;
+
 const Editor: React.FC<EditorProps> = ({
   onNodesChange,
   isPreview,
@@ -49,6 +52,7 @@ const Editor: React.FC<EditorProps> = ({
         Projects,
         Events,
         Highlight,
+        Proposals,
       }}
       isPreview={isPreview}
       onNodesChange={onNodesChange}
