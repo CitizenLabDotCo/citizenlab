@@ -337,6 +337,8 @@ de:
       you_can_sign_in_again_from: "Sie können sich ab dem %{date} erneut anmelden"
   user:
     anon_first_name: "Nutzer*in"
+    anon_scheme:
+      animals: 'Alligator, Krokodil, Alpaka, Ameise, Antilope, Affe, Gürteltier, Pavian, Dachs, Fledermaus, Bär, Biber, Biene, Käfer, Büffel, Schmetterling, Kamel, Wasserbüffel, Karibu, Katze, Rind, Gepard, Schimpanse, Chinchilla, Zikade, Muschel, Schabe, Kabeljau, Kojote, Krabbe, Grille, Krähe, Rabe,Hirsch, Dinosaurier, Hund, Delphin, Tümmler, Ente, Adler, Aal, Elefant, Elch, Frettchen, Fisch, Fliege, Fuchs, Frosch, Kröte, Rennmaus, Giraffe, Mücke, Gnu, Gnu, Ziege, Goldfisch, Gans, Gorilla, Grashüpfer, Meerschweinchen, Hamster, Hase, Igel, Hering, Flusspferd, Hornisse, Pferd, Hund,Hyäne,Impala,Schakal,Qualle,Känguru,Wallaby,Koala,Leopard,Löwe,Eidechse,Lama,Heuschrecke,Laus,Ara,Stockente,Mammut,Seekuh,Marder,Nerz,Elritze,Elch,Mücke,Maus,Ratte,Maultier,Bisamratte,Otter,Ochse,Auster,Panda,Schwein,Schnabeltier,Stachelschwein,Präriehund,Mops,Kaninchen,Waschbär,Rentier,Nashorn,Lachs,Sardine,Skorpion,Robbe,Seelöwe,Serval,Hai,Schaf,Stinktier,Schnecke,Schlange,Spinne,Eichhörnchen,Schwan,Termite,Tiger,Forelle,Schildkröte,Schildkröte,Walross,Wespe,Wal,Wolf,Wombat,Murmeltier,Wurm,Yak,Yellowjacket,Zebra'
   time:
     am: am
     formats:
