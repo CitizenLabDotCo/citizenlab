@@ -17,6 +17,7 @@ interface Props {
   alignment: 'left' | 'right';
   onChange: (value: string[]) => void;
   participationMethod: 'ideation' | 'proposals';
+  isScreeningEnabled?: boolean;
 }
 
 const StatusFilterDropdown = ({
@@ -24,6 +25,7 @@ const StatusFilterDropdown = ({
   alignment,
   onChange,
   participationMethod,
+  isScreeningEnabled,
 }: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
@@ -39,13 +41,23 @@ const StatusFilterDropdown = ({
             text: formatMessage(messages.allStatuses),
             value: '',
           },
-          ...ideaStatuses.data.map((status) => ({
-            text: capitalize(localize(status.attributes.title_multiloc)),
-            value: status.id,
-          })),
+          ...ideaStatuses.data
+            // Filter out the screening status from the list if screening is not enabled
+            .filter((status) => {
+              if (!isScreeningEnabled) {
+                return status.attributes.code !== 'prescreening';
+              }
+
+              return true;
+            })
+
+            .map((status) => ({
+              text: capitalize(localize(status.attributes.title_multiloc)),
+              value: status.id,
+            })),
         ]
       : [];
-  }, [ideaStatuses, localize, formatMessage]);
+  }, [ideaStatuses, localize, formatMessage, isScreeningEnabled]);
 
   if (!ideaStatuses || ideaStatuses.data.length === 0) {
     return null;
