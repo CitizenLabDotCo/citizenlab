@@ -542,7 +542,7 @@ def rake_20240910_migrate_initiatives_static_page(reporter)
     config = AppConfiguration.instance
     text.gsub!('$|initiativesVotingThreshold|', config.settings('initiatives', 'reacting_threshold').to_s)
     text.gsub!('$|initiativesDaysLimit|', config.settings('initiatives', 'days_limit').to_s)
-    text.gsub!('$|initiativesEligibilityCriteria|',((config.settings('initiatives', 'eligibility_criteria') || {})[locale] || ''))
+    text.gsub!('$|initiativesEligibilityCriteria|', ((config.settings('initiatives', 'eligibility_criteria') || {})[locale] || ''))
     text.gsub!('$|initiativesThresholdReachedMessage|', ((config.settings('initiatives', 'threshold_reached_message') || {})[locale] || ''))
   end
   page.top_info_section_multiloc&.each(&substitue_text)
