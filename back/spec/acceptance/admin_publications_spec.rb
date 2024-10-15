@@ -365,42 +365,6 @@ resource 'AdminPublication' do
         expect(json_response[:data].find { |d| d.dig(:relationships, :publication, :data, :type) == 'folder' }.dig(:attributes, :visible_children_count)).to eq 1
       end
 
-      example ':include_publications includes the related publications & expected associations', document: false do
-        project = create(:project_with_active_ideation_phase)
-        project_image = create(:project_image, project: project)
-        folder = create(:project_folder)
-        folder_image = create(:project_folder_image, project_folder: folder)
-
-        # We need a participant, to get included avatar data
-        participant = create(:user)
-        create(:idea, project: project, author: participant)
-
-        do_request include_publications: 'true'
-        expect(status).to eq(200)
-        json_response = json_parse(response_body)
-
-        relationships_data = json_response[:data].map { |d| d.dig(:relationships, :publication, :data) }
-
-        related_project_ids = relationships_data.select { |d| d[:type] == 'project' }.pluck(:id)
-        related_folder_ids = relationships_data.select { |d| d[:type] == 'folder' }.pluck(:id)
-
-        included_projects = json_response[:included].select { |d| d[:type] == 'project' }
-        included_folder_ids = json_response[:included].select { |d| d[:type] == 'folder' }.pluck(:id)
-        included_phase_ids = json_response[:included].select { |d| d[:type] == 'phase' }.pluck(:id)
-        included_avatar_ids = json_response[:included].select { |d| d[:type] == 'avatar' }.pluck(:id)
-        included_image_ids = json_response[:included].select { |d| d[:type] == 'image' }.pluck(:id)
-
-        current_phase_ids = included_projects.filter_map { |d| d.dig(:relationships, :current_phase, :data, :id) }
-        avatar_ids = included_projects.map { |d| d.dig(:relationships, :avatars, :data) }.flatten.pluck(:id)
-
-        expect(related_project_ids).to match included_projects.pluck(:id)
-        expect(related_folder_ids).to match included_folder_ids
-        expect(current_phase_ids).to match included_phase_ids
-        expect(avatar_ids).to match included_avatar_ids
-        expect(included_image_ids).to include project_image.id
-        expect(included_image_ids).to include folder_image.id
-      end
-
       context 'search param' do
         example 'Search param should return the proper projects and folders', document: false do
           p1 = create(
@@ -685,6 +649,87 @@ resource 'AdminPublication' do
           expect(second_publication.reload.ordering).to eq publication_ordering
         end
       end
+    end
+  end
+
+  context 'when :include_publications is true' do
+    shared_examples 'include_publications' do
+      get 'web_api/v1/admin_publications' do
+        parameter :include_publications, 'Include the related publications and associated items', required: false
+
+        example ':include_publications includes the related publications & expected associations', document: false do
+          project = create(:project_with_active_ideation_phase)
+          project_image = create(:project_image, project: project)
+          folder = create(:project_folder)
+          folder_image = create(:project_folder_image, project_folder: folder)
+
+          # We need a participant, to get some included avatar data
+          participant = create(:user)
+          create(:idea, project: project, author: participant)
+
+          do_request include_publications: 'true'
+          expect(status).to eq(200)
+          json_response = json_parse(response_body)
+
+          relationships_data = json_response[:data].map { |d| d.dig(:relationships, :publication, :data) }
+
+          related_project_ids = relationships_data.select { |d| d[:type] == 'project' }.pluck(:id)
+          related_folder_ids = relationships_data.select { |d| d[:type] == 'folder' }.pluck(:id)
+
+          included_projects = json_response[:included].select { |d| d[:type] == 'project' }
+          included_folder_ids = json_response[:included].select { |d| d[:type] == 'folder' }.pluck(:id)
+          included_phase_ids = json_response[:included].select { |d| d[:type] == 'phase' }.pluck(:id)
+          included_avatar_ids = json_response[:included].select { |d| d[:type] == 'avatar' }.pluck(:id)
+          included_image_ids = json_response[:included].select { |d| d[:type] == 'image' }.pluck(:id)
+
+          current_phase_ids = included_projects.filter_map { |d| d.dig(:relationships, :current_phase, :data, :id) }
+          avatar_ids = included_projects.map { |d| d.dig(:relationships, :avatars, :data) }.flatten.pluck(:id)
+
+          expect(related_project_ids).to match included_projects.pluck(:id)
+          expect(related_folder_ids).to match included_folder_ids
+          expect(current_phase_ids).to match included_phase_ids
+          expect(avatar_ids).to match included_avatar_ids
+          expect(included_image_ids).to include project_image.id
+          expect(included_image_ids).to include folder_image.id
+        end
+      end
+    end
+
+    describe 'when admin' do
+      before do
+        @admin = create(:admin)
+        header_token_for(@admin)
+      end
+
+      include_examples 'include_publications'
+    end
+
+    describe 'when project moderator' do
+      before do
+        @moderator = create(:project_moderator, projects: [published_projects[0], published_projects[1]])
+        header_token_for(@moderator)
+      end
+
+      include_examples 'include_publications'
+    end
+
+    describe 'when project folder moderator' do
+      before do
+        @moderator = create(:project_folder_moderator, project_folders: [create(:project_folder)])
+        header_token_for(@moderator)
+      end
+
+      include_examples 'include_publications'
+    end
+
+    describe 'when resident' do
+      before { resident_header_token }
+
+      include_examples 'include_publications'
+    end
+
+    describe 'when not logged in' do
+      include_examples 'include_publications'
     end
   end
 end
