@@ -1009,7 +1009,7 @@
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.emailConfirmation": "Confirmación por correo electrónico",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.emailConfirmationSubtitle": "Los participantes deben confirmar su correo electrónico con un código de un solo uso.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.extraQuestions": "Preguntas adicionales a los participantes",
-  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.none": "Ninguno",
+  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.none": "Cualquiera",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.noneSubtitle": "Cualquiera puede participar sin registrarse ni iniciar sesión.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.resetExtraQuestionsAndGroups": "Restablecer preguntas y grupos adicionales",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.restrictParticipation": "Restringir la participación a grupos de usuarios",
