@@ -5,7 +5,6 @@ import { RouteType } from 'routes';
 
 import { ICustomPageData, TCustomPageCode } from 'api/custom_pages/types';
 import useCustomPages from 'api/custom_pages/useCustomPages';
-import useCustomPageSlugById from 'api/custom_pages/useCustomPageSlugById';
 import useDeleteCustomPage from 'api/custom_pages/useDeleteCustomPage';
 import useAddNavbarItem from 'api/navbar/useAddNavbarItem';
 import useNavbarItems from 'api/navbar/useNavbarItems';
@@ -43,13 +42,11 @@ const HiddenNavbarItemList = ({
   });
 
   const { data: pages } = useCustomPages();
-  const pageSlugById = useCustomPageSlugById();
 
   const notAllHooksRendered =
     isNilOrError(navbarItems) ||
     isNilOrError(removedDefaultNavbarItems) ||
-    isNilOrError(pages) ||
-    isNilOrError(pageSlugById);
+    isNilOrError(pages);
 
   const itemsNotInNavbar = useMemo(() => {
     if (notAllHooksRendered) return null;
