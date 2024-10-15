@@ -119,8 +119,9 @@ const MenuItem = ({ navItem }: Props) => {
     isProjectProposalsEnabled && navItem.name === 'initiatives';
 
   if (navItem.name === 'reporting') {
-    if (!isSuperAdmin(user) && (!featuresEnabled || !hasPermission))
+    if (!isSuperAdmin(user) && (!featuresEnabled || !hasPermission)) {
       return null;
+    }
   } else {
     if (!featuresEnabled || !hasPermission) return null;
   }
