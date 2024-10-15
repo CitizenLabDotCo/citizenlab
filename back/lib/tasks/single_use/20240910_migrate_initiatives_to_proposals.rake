@@ -35,7 +35,7 @@ namespace :initiatives_to_proposals do
           next
         end
         rake_20240910_migrate_activities(proposal, initiative, reporter)
-        rake_20240910_migrate_images_files(proposal, initiative, reporter) ### TODO: RESTORE THIS LINE
+        # rake_20240910_migrate_images_files(proposal, initiative, reporter) ### TODO: RESTORE THIS LINE
         rake_20240910_migrate_topics(proposal, initiative, reporter)
         rake_20240910_migrate_reactions(proposal, initiative, reporter)
         rake_20240910_migrate_spam_reports(proposal, initiative, reporter)
@@ -141,7 +141,7 @@ def rake_20240910_create_proposals_project(reporter)
         custom_field_id: old_custom_field.custom_field_id,
         required: old_custom_field.required
       )
-      if new_custom_field.save
+      if !new_custom_field.save
         reporter.add_error(
           new_custom_field.errors.details,
           context: { tenant: config.host, permissions_custom_field: old_custom_field.id }
@@ -536,7 +536,22 @@ def rake_20240910_migrate_initiatives_static_page(reporter)
   page = StaticPage.find_by(code: 'proposals')
   return if !page
 
-  if !page.update(code: 'custom')
+  page.code = 'custom'
+
+  def substitue_text(text, locale, config)
+    text.gsub!('$|initiativesVotingThreshold|', config.settings('initiatives', 'reacting_threshold').to_s)
+    text.gsub!('$|initiativesDaysLimit|', config.settings('initiatives', 'days_limit').to_s)
+    text.gsub!('$|initiativesEligibilityCriteria|',((config.settings('initiatives', 'eligibility_criteria') || {})[locale] || ''))
+    text.gsub!('$|initiativesThresholdReachedMessage|', ((config.settings('initiatives', 'threshold_reached_message') || {})[locale] || ''))
+  end
+  page.top_info_section_multiloc&.each do |locale, text|
+    substitue_text(text, locale, config)
+  end
+  page.bottom_info_section_multiloc&.each do |locale, text|
+    substitue_text(text, locale, config)
+  end
+
+  if !page.save
     reporter.add_error(
       page.errors.details,
       context: { tenant: AppConfiguration.instance.host, static_page: page.id }
