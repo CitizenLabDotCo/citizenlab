@@ -159,10 +159,6 @@ export default defineMessages({
     defaultMessage:
       '{projectName} | from the participation platform of {orgName}',
   },
-  about: {
-    id: 'app.containers.Projects.about',
-    defaultMessage: 'About',
-  },
   xIdeas: {
     id: 'app.containers.Projects.xIdeas',
     defaultMessage:
@@ -257,25 +253,9 @@ export default defineMessages({
     id: 'app.containers.Projects.oneSurvey',
     defaultMessage: '1 survey',
   },
-  oneSurveyInCurrentPhase: {
-    id: 'app.containers.Projects.oneSurveyInCurrentPhase',
-    defaultMessage: '1 survey in the current phase',
-  },
   oneDocToReview: {
     id: 'app.containers.Projects.oneDocToReview',
     defaultMessage: '1 document to review',
-  },
-  oneDocToReviewInCurrentPhase: {
-    id: 'app.containers.Projects.oneDocToReviewInCurrentPhase',
-    defaultMessage: '1 document to review in the current phase',
-  },
-  poll: {
-    id: 'app.containers.Projects.poll',
-    defaultMessage: '1 poll',
-  },
-  pollInCurrentPhase: {
-    id: 'app.containers.Projects.pollInCurrentPhase',
-    defaultMessage: '1 poll in the current phase',
   },
   budget: {
     id: 'app.containers.Projects.budget',
@@ -373,10 +353,6 @@ export default defineMessages({
     id: 'app.containers.Projects.readLess',
     defaultMessage: 'Read less',
   },
-  xEvents: {
-    id: 'app.containers.Projects.xEvents',
-    defaultMessage: '{eventsCount, plural, one {# event} other {# events}}',
-  },
   seeTheIdeas: {
     id: 'app.containers.Projects.seeTheIdeas',
     defaultMessage: 'See the ideas',
@@ -438,14 +414,6 @@ export default defineMessages({
   participants: {
     id: 'app.containers.Projects.participants',
     defaultMessage: 'Participants',
-  },
-  surveySubmissionsTooltip: {
-    id: 'app.containers.Projects.surveySubmissionsTooltip3',
-    defaultMessage: 'External survey submissions are not counted.',
-  },
-  surveySubmissions: {
-    id: 'app.containers.Projects.surveySubmissions',
-    defaultMessage: 'survey submissions',
   },
   noEndDate: {
     id: 'app.containers.Projects.noEndDate',
