@@ -1016,7 +1016,7 @@
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.emailConfirmation": "Bekræftelse via e-mail",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.emailConfirmationSubtitle": "Deltagerne skal bekræfte deres e-mail med en engangskode.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.extraQuestions": "Ekstra spørgsmål til deltagerne",
-  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.none": "Ingen",
+  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.none": "Nogen",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.noneSubtitle": "Alle kan deltage uden at tilmelde sig eller logge ind.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.resetExtraQuestionsAndGroups": "Nulstil ekstra spørgsmål og grupper",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.restrictParticipation": "Begræns deltagelse til brugergruppe(r)",
