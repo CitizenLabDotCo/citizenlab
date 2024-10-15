@@ -1016,7 +1016,7 @@
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.emailConfirmation": "Email confirmation",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.emailConfirmationSubtitle": "Participants need to confirm their email with a one-time code.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.extraQuestions": "Extra questions asked to participants",
-  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.none": "None",
+  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.none": "Anyone",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.noneSubtitle": "Anyone can participate without signing up or logging in.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.resetExtraQuestionsAndGroups": "Reset extra questions and groups",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.restrictParticipation": "Restrict participation to user group(s)",
