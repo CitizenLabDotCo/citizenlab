@@ -1682,7 +1682,7 @@
   "app.containers.AdminPage.ProjectEdit.inputsDefaultView": "Widok domyślny",
   "app.containers.AdminPage.ProjectEdit.inputsDefaultViewTooltip": "Wybierz domyślny widok inicjatyw użytkowników: karty w widoku siatki lub pinezki na mapie. Uczestnicy mogą ręcznie przełączać się pomiędzy oboma widokami.",
   "app.containers.AdminPage.ProjectEdit.konveioDocumentAnnotationEmbedUrl": "Osadź adres URL Konveio",
-  "app.containers.AdminPage.ProjectEdit.likingMethodTitle": "Liczba polubień na uczestnika",
+  "app.containers.AdminPage.ProjectEdit.likingMethodTitle": "Max number of inputs a participant can like (in ideation) or vote for (in proposals)",
   "app.containers.AdminPage.ProjectEdit.limited": "Ograniczona",
   "app.containers.AdminPage.ProjectEdit.loadMoreTemplates": "Załaduj więcej szablonów",
   "app.containers.AdminPage.ProjectEdit.mapDisplay": "Na mapie",
