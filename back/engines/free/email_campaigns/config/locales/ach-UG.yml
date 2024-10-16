@@ -10,6 +10,7 @@ ach:
       "comment_on_idea_you_follow": crwdns3286883:0crwdne3286883:0
       "comment_on_initiative_you_follow": crwdns3286885:0crwdne3286885:0
       "cosponsor_of_your_initiative": crwdns3286887:0crwdne3286887:0
+      "cosponsor_of_your_idea": crwdns3312033:0crwdne3312033:0
       "event_registration_confirmation": crwdns3286889:0crwdne3286889:0
       "first_idea_published": crwdns3286891:0crwdne3286891:0
       "idea_marked_as_spam": crwdns3286893:0crwdne3286893:0
@@ -18,6 +19,7 @@ ach:
       "initiative_marked_as_spam": crwdns3286899:0crwdne3286899:0
       "initiative_published": crwdns3286901:0crwdne3286901:0
       "invitation_to_cosponsor_initiative": crwdns3286903:0crwdne3286903:0
+      "invitation_to_cosponsor_idea": crwdns3312035:0crwdne3312035:0
       "initiative_resubmitted_for_review": crwdns3286905:0crwdne3286905:0
       "invite_received": crwdns3286907:0crwdne3286907:0
       "invite_reminder": crwdns3286909:0crwdne3286909:0
@@ -138,6 +140,12 @@ ach:
       today: crwdns3287119:0crwdne3287119:0
       wrong_content: 'crwdns3287121:0crwdne3287121:0'
       yesterday: crwdns3287123:0crwdne3287123:0
+    cosponsor_of_your_idea:
+      cta_reply_to: 'crwdns3312037:0crwdne3312037:0'
+      event_description: 'crwdns3312039:0%{cosponsorName}crwdne3312039:0'
+      main_header: 'crwdns3312041:0%{cosponsorName}crwdne3312041:0'
+      subject: 'crwdns3312043:0%{cosponsorName}crwdne3312043:0'
+      preheader: 'crwdns3312045:0%{cosponsorName}crwdne3312045:0'
     cosponsor_of_your_initiative:
       cta_reply_to: 'crwdns3287125:0crwdne3287125:0'
       event_description_initiative: 'crwdns3287127:0%{cosponsorName}crwdne3287127:0'
@@ -181,6 +189,15 @@ ach:
       main_header: 'crwdns3287195:0%{firstName}crwdne3287195:0'
       subject: 'crwdns3287197:0%{organizationName}crwdne3287197:0'
       preheader_initiative: 'crwdns3287199:0%{authorName}crwdne3287199:0'
+    invitation_to_cosponsor_idea:
+      cta_reply_to: 'crwdns3312047:0crwdne3312047:0'
+      event_description: 'crwdns3312049:0%{authorName}crwdne3312049:0'
+      event_description_cosponsoring: 'crwdns3312051:0crwdne3312051:0'
+      event_description_before_action: 'crwdns3312053:0crwdne3312053:0'
+      event_description_action: 'crwdns3312055:0crwdne3312055:0'
+      main_header: 'crwdns3312057:0crwdne3312057:0'
+      subject: 'crwdns3312059:0crwdne3312059:0'
+      preheader: 'crwdns3312061:0%{authorName}crwdne3312061:0'
     invitation_to_cosponsor_initiative:
       cta_reply_to: 'crwdns3287201:0crwdne3287201:0'
       event_description_initiative: 'crwdns3287203:0%{authorName}crwdne3287203:0'
