@@ -1682,7 +1682,7 @@
   "app.containers.AdminPage.ProjectEdit.inputsDefaultView": "Gwedd ddiofyn",
   "app.containers.AdminPage.ProjectEdit.inputsDefaultViewTooltip": "Dewiswch y golwg rhagosodedig i ddangos mewnbwn: cardiau mewn golwg grid neu binnau ar fap. Gall cyfranogwyr newid â llaw rhwng y ddau olwg.",
   "app.containers.AdminPage.ProjectEdit.konveioDocumentAnnotationEmbedUrl": "Mewnosod URL Konveio",
-  "app.containers.AdminPage.ProjectEdit.likingMethodTitle": "Nifer hoffterau fesul cyfranogwr",
+  "app.containers.AdminPage.ProjectEdit.likingMethodTitle": "Max number of inputs a participant can like (in ideation) or vote for (in proposals)",
   "app.containers.AdminPage.ProjectEdit.limited": "Cyfyngedig",
   "app.containers.AdminPage.ProjectEdit.loadMoreTemplates": "Llwythwch fwy o dempledi",
   "app.containers.AdminPage.ProjectEdit.mapDisplay": "Map",
