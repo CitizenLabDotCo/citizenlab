@@ -11,7 +11,6 @@ import { fireEvent, render, screen } from 'utils/testUtils/rtl';
 import VisibleNavbarItemList from '.';
 
 jest.mock('api/navbar/useNavbarItems');
-jest.mock('api/custom_pages/useCustomPageSlugById');
 
 const mockReorderNavbarItem = jest.fn();
 

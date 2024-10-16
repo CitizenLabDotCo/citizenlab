@@ -27,7 +27,6 @@ jest.mock('api/navbar/useAddNavbarItem', () =>
 );
 
 jest.mock('api/custom_pages/useCustomPages');
-jest.mock('api/custom_pages/useCustomPageSlugById');
 
 const mockDeleteCustomPage = jest.fn();
 
