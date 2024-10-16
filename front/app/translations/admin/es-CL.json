@@ -1682,7 +1682,7 @@
   "app.containers.AdminPage.ProjectEdit.inputsDefaultView": "Vista predeterminada",
   "app.containers.AdminPage.ProjectEdit.inputsDefaultViewTooltip": "Elija la vista predeterminada de los aportes de los participantes: como vista de tarjetas en una cuadrícula o puntos en un mapa. Los participantes pueden cambiar manualmente entre las dos visualizaciones.",
   "app.containers.AdminPage.ProjectEdit.konveioDocumentAnnotationEmbedUrl": "Incrustar URL de Konveio",
-  "app.containers.AdminPage.ProjectEdit.likingMethodTitle": "Máximo número de 'me gusta' por participante",
+  "app.containers.AdminPage.ProjectEdit.likingMethodTitle": "Número máximo de aportes en los que un participante puede darle a me gusta (en la ideación) o votar (en las propuestas)",
   "app.containers.AdminPage.ProjectEdit.limited": "Limitada",
   "app.containers.AdminPage.ProjectEdit.loadMoreTemplates": "Cargar más plantillas",
   "app.containers.AdminPage.ProjectEdit.mapDisplay": "En una mapa",
