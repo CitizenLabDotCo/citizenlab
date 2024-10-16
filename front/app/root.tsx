@@ -22,16 +22,6 @@ import {
   unstable_HistoryRouter as HistoryRouter,
 } from 'react-router-dom';
 
-import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/constants';
-import { fetchAuthenticationRequirements } from 'api/authentication/authentication_requirements/getAuthenticationRequirements';
-import requirementKeys from 'api/authentication/authentication_requirements/keys';
-import customPagesKeys from 'api/custom_pages/keys';
-import { fetchCustomPages } from 'api/custom_pages/useCustomPages';
-import homepageBuilderKeys from 'api/home_page_layout/keys';
-import { fetchHomepageBuilderLayout } from 'api/home_page_layout/useHomepageLayout';
-import navbarKeys from 'api/navbar/keys';
-import { fetchNavbarItems } from 'api/navbar/useNavbarItems';
-
 import App from 'containers/App';
 import LanguageProvider from 'containers/LanguageProvider';
 import OutletsProvider from 'containers/OutletsProvider';
@@ -39,6 +29,7 @@ import OutletsProvider from 'containers/OutletsProvider';
 import history from 'utils/browserHistory';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 
+import prefetchData from './prefetchData';
 import createRoutes from './routes';
 
 Sentry.init({
@@ -69,28 +60,6 @@ function Routes() {
 
   return useSentryRoutes(routes);
 }
-
-const prefetchData = () => {
-  queryClient.prefetchQuery({
-    queryKey: homepageBuilderKeys.items(),
-    queryFn: fetchHomepageBuilderLayout,
-  });
-
-  queryClient.prefetchQuery({
-    queryKey: navbarKeys.list({}),
-    queryFn: () => fetchNavbarItems({}),
-  });
-
-  queryClient.prefetchQuery({
-    queryKey: customPagesKeys.lists(),
-    queryFn: fetchCustomPages,
-  });
-
-  queryClient.prefetchQuery({
-    queryKey: requirementKeys.item(GLOBAL_CONTEXT),
-    queryFn: () => fetchAuthenticationRequirements(GLOBAL_CONTEXT),
-  });
-};
 
 const Root = () => {
   useEffect(() => {
