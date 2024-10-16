@@ -29,6 +29,7 @@ import OutletsProvider from 'containers/OutletsProvider';
 import history from 'utils/browserHistory';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 
+import prefetchData from './prefetchData';
 import createRoutes from './routes';
 
 Sentry.init({
@@ -61,6 +62,10 @@ function Routes() {
 }
 
 const Root = () => {
+  useEffect(() => {
+    prefetchData();
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <OutletsProvider>

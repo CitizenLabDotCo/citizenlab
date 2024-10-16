@@ -6,7 +6,7 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import customPagesKeys from './keys';
 import { ICustomPages, CustomPagesKeys } from './types';
 
-const fetchCustomPages = () => {
+export const fetchCustomPages = () => {
   return fetcher<ICustomPages>({
     path: '/static_pages',
     action: 'get',
