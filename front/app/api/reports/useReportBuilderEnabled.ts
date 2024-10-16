@@ -11,6 +11,7 @@ const useReportBuilderEnabled = ({ onlyCheckAllowed = false } = {}) => {
   });
   const { data: user } = useAuthUser();
 
+  // Super admins need to have access to the global report builder
   return featureFlagEnabled || isSuperAdmin(user);
 };
 

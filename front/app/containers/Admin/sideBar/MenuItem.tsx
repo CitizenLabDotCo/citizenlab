@@ -118,12 +118,15 @@ const MenuItem = ({ navItem }: Props) => {
   const isItemDisabled =
     isProjectProposalsEnabled && navItem.name === 'initiatives';
 
+  const enabledAndHasPermission = featuresEnabled && hasPermission;
+
   if (navItem.name === 'reporting') {
-    if (!isSuperAdmin(user) && (!featuresEnabled || !hasPermission)) {
+    if (!isSuperAdmin(user) && !enabledAndHasPermission) {
+      // Super admins need to have access to the global report builder
       return null;
     }
   } else {
-    if (!featuresEnabled || !hasPermission) return null;
+    if (!enabledAndHasPermission) return null;
   }
 
   return (
