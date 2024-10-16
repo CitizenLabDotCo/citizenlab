@@ -27,7 +27,8 @@ export default defineMessages({
     defaultMessage: 'Read more about how auto-sharing works in this article.',
   },
   autoshareResultSupportArticleLinkUrl: {
-    id: 'app.containers.AdminPage.ProjectEdit.PhaseParticipationConfig.autoshareResultSupportArticleLinkUrl',
-    defaultMessage: 'https://www.example.com',
+    id: 'app.containers.AdminPage.ProjectEdit.PhaseParticipationConfig.autoshareResultSupportArticleLinkUrl2',
+    defaultMessage:
+      'https://support.govocal.com/en/articles/8124630-voting-and-prioritization-methods-for-enhanced-decision-making#h_dde3253b64',
   },
 });
