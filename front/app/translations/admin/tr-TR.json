@@ -1682,7 +1682,7 @@
   "app.containers.AdminPage.ProjectEdit.inputsDefaultView": "Varsayılan görünüm",
   "app.containers.AdminPage.ProjectEdit.inputsDefaultViewTooltip": "Girdi görüntülemek için varsayılan görünümü seçin: ızgara görünümünde kartlar veya harita üzerinde iğneler. Katılımcılar iki görünüm arasında manuel olarak geçiş yapabilirler.",
   "app.containers.AdminPage.ProjectEdit.konveioDocumentAnnotationEmbedUrl": "Konveio URL'sini gömün",
-  "app.containers.AdminPage.ProjectEdit.likingMethodTitle": "Katılımcı başına beğeni sayısı",
+  "app.containers.AdminPage.ProjectEdit.likingMethodTitle": "Max number of inputs a participant can like (in ideation) or vote for (in proposals)",
   "app.containers.AdminPage.ProjectEdit.limited": "Sınırlı",
   "app.containers.AdminPage.ProjectEdit.loadMoreTemplates": "Daha fazla şablon yükle",
   "app.containers.AdminPage.ProjectEdit.mapDisplay": "Harita",
