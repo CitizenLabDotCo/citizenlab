@@ -1521,7 +1521,7 @@
   "app.containers.AdminPage.ProjectEdit.NativeSurvey.userAnonymityLabelTooltip": "Users will still need to comply with participation requirements under the access 'Access Rights' tab. User profile data will not be available in the survey data export.",
   "app.containers.AdminPage.ProjectEdit.PhaseParticipationConfig.autoshareResultSupportArticleLink": "{link}",
   "app.containers.AdminPage.ProjectEdit.PhaseParticipationConfig.autoshareResultSupportArticleLinkText": "Read more about how auto-sharing works in this article.",
-  "app.containers.AdminPage.ProjectEdit.PhaseParticipationConfig.autoshareResultSupportArticleLinkUrl": "https://www.example.com",
+  "app.containers.AdminPage.ProjectEdit.PhaseParticipationConfig.autoshareResultSupportArticleLinkUrl2": "https://support.govocal.com/en/articles/8124630-voting-and-prioritization-methods-for-enhanced-decision-making#h_dde3253b64",
   "app.containers.AdminPage.ProjectEdit.PhaseParticipationConfig.autoshareResults": "Auto-share results",
   "app.containers.AdminPage.ProjectEdit.PhaseParticipationConfig.autoshareResultsToggleDescription": "Voting results are shared on the platform and via email to participants when the phase ends. This ensures transparency by default.",
   "app.containers.AdminPage.ProjectEdit.PhaseParticipationConfig.resultSharing": "Result sharing",
