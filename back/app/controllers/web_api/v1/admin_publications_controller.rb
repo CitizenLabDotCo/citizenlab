@@ -26,19 +26,18 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
     # Disambiguation: @publications is a collection of AdminPublication records, whereas :publication in the includes()
     # method, and/or the `included` array passed to the serializer, refers to the associated project or folder.
     if params[:include_publications] == 'true'
-      @publications = @publications.includes(:publication, :children)
-      # @publications = @publications.includes(
-      #   {
-      #     publication: [
-      #       { phases: %i[report custom_form permissions] },
-      #       :admin_publication,
-      #       :images,
-      #       :project_images,
-      #       :content_builder_layouts
-      #     ]
-      #   },
-      #   :children
-      # )
+      @publications = @publications.includes(
+        {
+          publication: [
+            { phases: %i[report custom_form permissions] },
+            :admin_publication,
+            :images,
+            :project_images,
+            :content_builder_layouts
+          ]
+        },
+        :children
+      )
       included = %i[
         publication
         publication.avatars
