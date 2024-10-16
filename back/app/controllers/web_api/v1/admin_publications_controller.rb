@@ -20,12 +20,32 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
       .order('root_ordering, admin_publications.ordering')
 
     @publications = paginate publications
-    @publications = @publications.includes(:publication, :children)
 
-    included = if params[:include_publications] == 'true'
-      %i[publication publication.avatars publication.project_images publication.images publication.current_phase]
+    included = []
+
+    if params[:include_publications] == 'true'
+      @publications = @publications.includes(
+        {
+          publication: [
+            { phases: %i[report custom_form permissions] },
+            :admin_publication,
+            :images,
+            :project_images,
+            :content_builder_layouts
+          ]
+        },
+        :children
+      )
+      included = %i[
+        publication
+        publication.avatars
+        publication.project_images
+        publication.images
+        publication.current_phase
+        publication.phases
+      ]
     else
-      []
+      @publications = @publications.includes(:publication, :children)
     end
 
     render json: linked_json(
