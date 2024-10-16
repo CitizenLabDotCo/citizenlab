@@ -337,6 +337,7 @@ resource 'AdminPublication' do
       parameter :publication_statuses, 'Return only publications with the specified publication statuses (i.e. given an array of publication statuses); always includes folders; returns all publications by default', required: false
       parameter :remove_not_allowed_parents, 'Filter out folders with no visible children for the current user', required: false
       parameter :folder, 'Filter by folder (project folder id)', required: false
+      parameter :include_publications, 'Include the related publications and associated items', required: false
 
       example 'Listed admin publications have correct visible children count', document: false do
         do_request(folder: nil, remove_not_allowed_parents: true)
@@ -648,6 +649,87 @@ resource 'AdminPublication' do
           expect(second_publication.reload.ordering).to eq publication_ordering
         end
       end
+    end
+  end
+
+  context "when include_publications parameter is 'true'" do
+    shared_examples 'include_publications' do
+      get 'web_api/v1/admin_publications' do
+        parameter :include_publications, 'Include the related publications and associated items', required: false
+
+        example ':include_publications includes the related publications & expected associations', document: false do
+          project = create(:project_with_active_ideation_phase)
+          project_image = create(:project_image, project: project)
+          folder = create(:project_folder)
+          folder_image = create(:project_folder_image, project_folder: folder)
+
+          # We need a participant, to get some included avatar data
+          participant = create(:user)
+          create(:idea, project: project, author: participant)
+
+          do_request include_publications: 'true'
+          expect(status).to eq(200)
+          json_response = json_parse(response_body)
+
+          relationships_data = json_response[:data].map { |d| d.dig(:relationships, :publication, :data) }
+
+          related_project_ids = relationships_data.select { |d| d[:type] == 'project' }.pluck(:id)
+          related_folder_ids = relationships_data.select { |d| d[:type] == 'folder' }.pluck(:id)
+
+          included_projects = json_response[:included].select { |d| d[:type] == 'project' }
+          included_folder_ids = json_response[:included].select { |d| d[:type] == 'folder' }.pluck(:id)
+          included_phase_ids = json_response[:included].select { |d| d[:type] == 'phase' }.pluck(:id)
+          included_avatar_ids = json_response[:included].select { |d| d[:type] == 'avatar' }.pluck(:id)
+          included_image_ids = json_response[:included].select { |d| d[:type] == 'image' }.pluck(:id)
+
+          current_phase_ids = included_projects.filter_map { |d| d.dig(:relationships, :current_phase, :data, :id) }
+          avatar_ids = included_projects.map { |d| d.dig(:relationships, :avatars, :data) }.flatten.pluck(:id)
+
+          expect(related_project_ids).to match included_projects.pluck(:id)
+          expect(related_folder_ids).to match included_folder_ids
+          expect(current_phase_ids).to match included_phase_ids
+          expect(avatar_ids).to match included_avatar_ids
+          expect(included_image_ids).to include project_image.id
+          expect(included_image_ids).to include folder_image.id
+        end
+      end
+    end
+
+    describe 'when admin' do
+      before do
+        @admin = create(:admin)
+        header_token_for(@admin)
+      end
+
+      include_examples 'include_publications'
+    end
+
+    describe 'when project moderator' do
+      before do
+        @moderator = create(:project_moderator, projects: [published_projects[0], published_projects[1]])
+        header_token_for(@moderator)
+      end
+
+      include_examples 'include_publications'
+    end
+
+    describe 'when project folder moderator' do
+      before do
+        @moderator = create(:project_folder_moderator, project_folders: [create(:project_folder)])
+        header_token_for(@moderator)
+      end
+
+      include_examples 'include_publications'
+    end
+
+    describe 'when resident' do
+      before { resident_header_token }
+
+      include_examples 'include_publications'
+    end
+
+    describe 'when not logged in' do
+      include_examples 'include_publications'
     end
   end
 end
