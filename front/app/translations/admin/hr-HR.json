@@ -1682,7 +1682,7 @@
   "app.containers.AdminPage.ProjectEdit.inputsDefaultView": "Zadani prikaz",
   "app.containers.AdminPage.ProjectEdit.inputsDefaultViewTooltip": "Odaberite zadani prikaz korisničkih unosa: kartice ili tačke na mapi. Sudionici mogu samostalno odlučivati o izboru ova dva prikaza.",
   "app.containers.AdminPage.ProjectEdit.konveioDocumentAnnotationEmbedUrl": "Ugradite Konveio URL",
-  "app.containers.AdminPage.ProjectEdit.likingMethodTitle": "Broj lajkova po sudioniku",
+  "app.containers.AdminPage.ProjectEdit.likingMethodTitle": "Max number of inputs a participant can like (in ideation) or vote for (in proposals)",
   "app.containers.AdminPage.ProjectEdit.limited": "Ograničeno",
   "app.containers.AdminPage.ProjectEdit.loadMoreTemplates": "Učitajte još predložaka",
   "app.containers.AdminPage.ProjectEdit.mapDisplay": "Karta",
