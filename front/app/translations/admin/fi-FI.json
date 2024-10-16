@@ -1682,7 +1682,7 @@
   "app.containers.AdminPage.ProjectEdit.inputsDefaultView": "Oletusnäkymä",
   "app.containers.AdminPage.ProjectEdit.inputsDefaultViewTooltip": "Valitse oletusnäkymä syötettä varten: kortit ruudukkonäkymässä tai nastat kartalla. Osallistujat voivat vaihtaa manuaalisesti kahden näkymän välillä.",
   "app.containers.AdminPage.ProjectEdit.konveioDocumentAnnotationEmbedUrl": "Upota Konveion URL-osoite",
-  "app.containers.AdminPage.ProjectEdit.likingMethodTitle": "Tykkäyksiä per osallistuja",
+  "app.containers.AdminPage.ProjectEdit.likingMethodTitle": "Max number of inputs a participant can like (in ideation) or vote for (in proposals)",
   "app.containers.AdminPage.ProjectEdit.limited": "Rajoitettu",
   "app.containers.AdminPage.ProjectEdit.loadMoreTemplates": "Lataa lisää malleja",
   "app.containers.AdminPage.ProjectEdit.mapDisplay": "Kartta",
