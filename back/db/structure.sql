@@ -2732,7 +2732,7 @@ CREATE VIEW public.moderation_moderations AS
     'Idea'::text AS moderatable_type,
     NULL::text AS post_type,
     NULL::uuid AS post_id,
-    NULL::text AS post_slug,
+    NULL::character varying AS post_slug,
     NULL::jsonb AS post_title_multiloc,
     projects.id AS project_id,
     projects.slug AS project_slug,
@@ -2745,23 +2745,6 @@ CREATE VIEW public.moderation_moderations AS
    FROM ((public.ideas
      LEFT JOIN public.moderation_moderation_statuses ON ((moderation_moderation_statuses.moderatable_id = ideas.id)))
      LEFT JOIN public.projects ON ((projects.id = ideas.project_id)))
-UNION ALL
- SELECT initiatives.id,
-    'Initiative'::text AS moderatable_type,
-    NULL::text AS post_type,
-    NULL::uuid AS post_id,
-    NULL::text AS post_slug,
-    NULL::jsonb AS post_title_multiloc,
-    NULL::uuid AS project_id,
-    NULL::character varying AS project_slug,
-    NULL::jsonb AS project_title_multiloc,
-    initiatives.title_multiloc AS content_title_multiloc,
-    initiatives.body_multiloc AS content_body_multiloc,
-    initiatives.slug AS content_slug,
-    initiatives.published_at AS created_at,
-    moderation_moderation_statuses.status AS moderation_status
-   FROM (public.initiatives
-     LEFT JOIN public.moderation_moderation_statuses ON ((moderation_moderation_statuses.moderatable_id = initiatives.id)))
 UNION ALL
  SELECT comments.id,
     'Comment'::text AS moderatable_type,
@@ -2781,26 +2764,7 @@ UNION ALL
      LEFT JOIN public.moderation_moderation_statuses ON ((moderation_moderation_statuses.moderatable_id = comments.id)))
      LEFT JOIN public.ideas ON ((ideas.id = comments.post_id)))
      LEFT JOIN public.projects ON ((projects.id = ideas.project_id)))
-  WHERE ((comments.post_type)::text = 'Idea'::text)
-UNION ALL
- SELECT comments.id,
-    'Comment'::text AS moderatable_type,
-    'Initiative'::text AS post_type,
-    initiatives.id AS post_id,
-    initiatives.slug AS post_slug,
-    initiatives.title_multiloc AS post_title_multiloc,
-    NULL::uuid AS project_id,
-    NULL::character varying AS project_slug,
-    NULL::jsonb AS project_title_multiloc,
-    NULL::jsonb AS content_title_multiloc,
-    comments.body_multiloc AS content_body_multiloc,
-    NULL::character varying AS content_slug,
-    comments.created_at,
-    moderation_moderation_statuses.status AS moderation_status
-   FROM ((public.comments
-     LEFT JOIN public.moderation_moderation_statuses ON ((moderation_moderation_statuses.moderatable_id = comments.id)))
-     LEFT JOIN public.initiatives ON ((initiatives.id = comments.post_id)))
-  WHERE ((comments.post_type)::text = 'Initiative'::text);
+  WHERE ((comments.post_type)::text = 'Idea'::text);
 
 
 --
@@ -7542,6 +7506,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240923112801'),
 ('20240926175000'),
 ('20241001101704'),
-('20241002200522');
+('20241002200522'),
+('20241016201503');
 
 
