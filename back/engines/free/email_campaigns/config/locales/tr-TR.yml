@@ -10,6 +10,7 @@ tr:
       "comment_on_idea_you_follow": Takip ettiğiniz bir fikir hakkında yorum
       "comment_on_initiative_you_follow": Takip ettiğiniz bir teklif hakkında yorum
       "cosponsor_of_your_initiative": Bir kullanıcı teklifime ortak sponsor olma davetimi kabul ediyor
+      "cosponsor_of_your_idea": Bir kullanıcı teklifime ortak sponsor olma davetimi kabul ediyor
       "event_registration_confirmation": Etkinlik kayıt onayı
       "first_idea_published": İlk fikrimin yayımlanması
       "idea_marked_as_spam": Fikrin spam olarak bildirilmesi
@@ -18,6 +19,7 @@ tr:
       "initiative_marked_as_spam": Önerinin spam olarak bildirilmesi
       "initiative_published": Önerimin yayımlanması
       "invitation_to_cosponsor_initiative": Bir teklifin ortak sponsorluğuna davet
+      "invitation_to_cosponsor_idea": Bir teklifin ortak sponsorluğuna davet
       "initiative_resubmitted_for_review": Teklif incelenmek üzere yeniden sunuldu
       "invite_received": Davetiye
       "invite_reminder": Davetiye anımsatıcısı
@@ -138,6 +140,12 @@ tr:
       today: Bugün
       wrong_content: 'Bu yorum konuyla alakasız.'
       yesterday: Dün
+    cosponsor_of_your_idea:
+      cta_reply_to: 'Teklifinizi görüntüleyin'
+      event_description: 'Tebrikler! %{cosponsorName} teklifinize eş sponsorluk yapma davetinizi kabul etti.'
+      main_header: '%{cosponsorName} teklifinize eş sponsorluk yapma davetinizi kabul etti'
+      subject: '%{cosponsorName} teklifinize eş sponsorluk yapma davetinizi kabul etti'
+      preheader: '%{cosponsorName} teklifinize eş sponsorluk yapma davetinizi kabul etti'
     cosponsor_of_your_initiative:
       cta_reply_to: 'Teklifinizi görüntüleyin'
       event_description_initiative: 'Tebrikler! %{cosponsorName} teklifinize eş sponsorluk yapma davetinizi kabul etti.'
@@ -181,6 +189,15 @@ tr:
       main_header: '%{firstName}, yeni bir atamanız var'
       subject: '%{organizationName} platformunda bir atamanız var'
       preheader_initiative: '%{authorName} adlı kişinin önerisi size atandı'
+    invitation_to_cosponsor_idea:
+      cta_reply_to: 'Bu teklife eş sponsor olun'
+      event_description: '%{authorName} yeni bir teklif hazırladı ve sizin de bu teklife destek vermenizi istiyor.'
+      event_description_cosponsoring: 'Bir teklife eş-sponsorluk yapmak, <strong>adınızın</strong> teklifin diğer eş-sponsorlarının <strong>adlarıyla</strong> birlikte <strong>görüntüleneceği</strong> anlamına gelir.'
+      event_description_before_action: 'Teklifi görmek ve daveti kabul etmek için hesabınıza giriş yapmış olmanız gerekmektedir.'
+      event_description_action: 'Teklifi okumak için aşağıya tıklayın.'
+      main_header: 'Bir teklife eş sponsorluk yapmaya davet edildiniz'
+      subject: 'Bir teklife eş sponsorluk yapmaya davet edildiniz'
+      preheader: '%{authorName}adresindeki teklife eş sponsorluk yapmaya davet edildiniz.'
     invitation_to_cosponsor_initiative:
       cta_reply_to: 'Bu teklife eş sponsorluk yapın'
       event_description_initiative: '%{authorName} yeni bir teklif hazırladı ve sizin de bu teklife destek vermenizi istiyor.'
