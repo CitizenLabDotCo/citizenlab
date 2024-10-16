@@ -102,6 +102,7 @@ describe('<HiddenNavbarItemList />', () => {
       pageId: 'e7854e94-3074-4607-b66e-0422aa3d8359',
       titleMultiloc: { en: 'About' },
       type: 'page',
+      slug: 'about',
     };
 
     fireEvent.click(addButtons[1]);
