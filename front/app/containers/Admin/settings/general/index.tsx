@@ -178,10 +178,10 @@ const SettingsGeneralTab = () => {
 
           <Box mt="30px">
             <SubSectionTitle>
-              <FormattedMessage {...messages.anonymousNameTitle} />
+              <FormattedMessage {...messages.userNameDisplayTitle} />
             </SubSectionTitle>
             <Text mt="-10px">
-              <FormattedMessage {...messages.anonymousNameDescription} />
+              <FormattedMessage {...messages.userNameDisplayDescription} />
             </Text>
             {anomymousNameSchemes.map((scheme) => (
               <Radio
