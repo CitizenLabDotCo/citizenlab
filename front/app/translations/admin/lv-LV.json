@@ -1682,7 +1682,7 @@
   "app.containers.AdminPage.ProjectEdit.inputsDefaultView": "Noklusējuma skatījums",
   "app.containers.AdminPage.ProjectEdit.inputsDefaultViewTooltip": "Izvēlēties noklusējuma skatījumu ievades datu parādīšanai: kartes režģa skatā vai kā spraudītes kartē. Dalībnieki var manuāli pārslēgties starp abiem skatījumiem.",
   "app.containers.AdminPage.ProjectEdit.konveioDocumentAnnotationEmbedUrl": "Iebildēt Konveio URL",
-  "app.containers.AdminPage.ProjectEdit.likingMethodTitle": "\"Patīk\" skaits uz dalībnieku",
+  "app.containers.AdminPage.ProjectEdit.likingMethodTitle": "Max number of inputs a participant can like (in ideation) or vote for (in proposals)",
   "app.containers.AdminPage.ProjectEdit.limited": "Ierobežoti",
   "app.containers.AdminPage.ProjectEdit.loadMoreTemplates": "Ielādēt vairāk veidņu",
   "app.containers.AdminPage.ProjectEdit.mapDisplay": "Karte",
