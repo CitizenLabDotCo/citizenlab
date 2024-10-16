@@ -2551,7 +2551,7 @@
   "app.containers.admin.ContentBuilder.delete": "Löschen",
   "app.containers.admin.ContentBuilder.error": "Fehler",
   "app.containers.admin.ContentBuilder.errorMessage": "Es liegt ein Fehler im Inhalt von {locale} vor. Bitte beheben Sie das Problem, um Ihre Änderungen speichern zu können.",
-  "app.containers.admin.ContentBuilder.hideParticipationAvatarsText": "Teilnahme-Avatare ausblenden",
+  "app.containers.admin.ContentBuilder.hideParticipationAvatarsText": "Avatare der Teilnehmenden ausblenden",
   "app.containers.admin.ContentBuilder.homepage.default": "Standard",
   "app.containers.admin.ContentBuilder.homepage.events.eventsTitle": "Veranstaltungen",
   "app.containers.admin.ContentBuilder.homepage.eventsTitle": "Veranstaltungen",
