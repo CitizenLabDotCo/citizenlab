@@ -41,7 +41,7 @@ module Analysis
       'sr-SP' => 'srp_Cyrl',
       'sv-SE' => 'swe_Latn',
       'tr-TR' => 'tur_Latn',
-      'ur' => nil        # Urdu is not present
+      'ur' => nil # Urdu is not present
     }.with_indifferent_access.freeze
 
     def retry_rate_limit(retry_count = 10, interval = 5)
