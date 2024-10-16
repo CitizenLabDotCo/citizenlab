@@ -1682,7 +1682,7 @@
   "app.containers.AdminPage.ProjectEdit.inputsDefaultView": "Подразумевани приказ",
   "app.containers.AdminPage.ProjectEdit.inputsDefaultViewTooltip": "Изаберите подразумевани приказ за приказ уноса: картице у приказу мреже или игле на мапи. Учесници могу ручно да прелазе између два приказа.",
   "app.containers.AdminPage.ProjectEdit.konveioDocumentAnnotationEmbedUrl": "Угради Конвеио УРЛ",
-  "app.containers.AdminPage.ProjectEdit.likingMethodTitle": "Број лајкова по учеснику",
+  "app.containers.AdminPage.ProjectEdit.likingMethodTitle": "Max number of inputs a participant can like (in ideation) or vote for (in proposals)",
   "app.containers.AdminPage.ProjectEdit.limited": "Ограничен",
   "app.containers.AdminPage.ProjectEdit.loadMoreTemplates": "Учитајте више шаблона",
   "app.containers.AdminPage.ProjectEdit.mapDisplay": "Мапа",
