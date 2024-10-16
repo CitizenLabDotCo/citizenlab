@@ -30,6 +30,7 @@ const TopBar = ({ project }: Props) => {
   const handleGoBack = useCallback(() => {
     if (goBack) {
       clHistory.back();
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     } else if (project) {
       clHistory.push(`/projects/${project.attributes.slug}`);
     } else {

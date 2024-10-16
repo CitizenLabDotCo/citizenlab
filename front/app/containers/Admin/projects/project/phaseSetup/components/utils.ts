@@ -9,6 +9,7 @@ export const getDefaultMonth = (
   if (from) return from;
 
   const lastDisabledRange = disabledRanges[disabledRanges.length - 1];
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!lastDisabledRange) return undefined;
 
   if (lastDisabledRange.to) {

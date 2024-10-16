@@ -71,7 +71,7 @@ const CommentsMoreActions = ({
   initiativeId,
 }: Props) => {
   const moreActionsButtonRef = useRef<HTMLButtonElement>(null);
-  const parentCommentId = comment.relationships?.parent?.data?.id;
+  const parentCommentId = comment.relationships.parent.data?.id;
   const { mutate: markForDeletion, isLoading } = useMarkCommentForDeletion({
     ideaId,
     initiativeId,

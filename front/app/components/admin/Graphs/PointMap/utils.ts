@@ -22,10 +22,12 @@ export const applyMapRenderer = (
   showHeatmap: boolean
 ) => {
   const hasRenderer = !!layer.renderer;
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const hasHeatmap = hasRenderer && layer.renderer.type === 'heatmap';
 
   // If there is a renderer, and it already is the correct one,
   // no need to do anything
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (hasRenderer && hasHeatmap === showHeatmap) return;
 
   if (showHeatmap) {

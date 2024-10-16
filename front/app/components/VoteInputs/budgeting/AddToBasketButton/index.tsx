@@ -52,7 +52,7 @@ const AddToBasketButton = ({
   const { getVotes, setVotes, numberOfVotesCast } = useVoting();
   const { formatMessage } = useIntl();
 
-  const basketId = phase.relationships?.user_basket?.data?.id;
+  const basketId = phase.relationships.user_basket?.data?.id;
   const { data: basket } = useBasket(basketId);
   const ideaBudget = idea?.data.attributes.budget;
   const currency = appConfig?.data.attributes.settings.core.currency;

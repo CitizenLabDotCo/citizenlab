@@ -50,7 +50,7 @@ const CreateProject = () => {
     const subscription = eventEmitter
       .observeEvent<INewProjectCreatedEvent>('NewProjectCreated')
       .subscribe(({ eventValue }) => {
-        const projectId = eventValue?.projectId;
+        const projectId = eventValue.projectId;
 
         if (projectId) {
           setTimeout(() => {

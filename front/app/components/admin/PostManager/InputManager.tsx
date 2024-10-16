@@ -94,7 +94,7 @@ const InputManager = ({
     const topicIdsSet = topicIds.length > 0 ? new Set(topicIds) : undefined;
 
     if (topicIdsSet) {
-      return ideaTopics?.data.filter((topic) => topicIdsSet?.has(topic.id));
+      return ideaTopics?.data.filter((topic) => topicIdsSet.has(topic.id));
     }
 
     return ideaTopics?.data;
@@ -300,7 +300,7 @@ const InputManager = ({
           <SearchInput
             debounce={1500}
             onChange={onChangeSearchTerm}
-            a11y_numberOfSearchResults={ideas?.data.length}
+            a11y_numberOfSearchResults={ideas.data.length}
           />
         </MiddleColumnTop>
       </ThreeColumns>

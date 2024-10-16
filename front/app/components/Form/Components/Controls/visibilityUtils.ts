@@ -119,6 +119,7 @@ const evalVisibility = (
 ): boolean => {
   if (
     !uischema.ruleArray ||
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     (uischema.ruleArray && uischema.ruleArray.length === 0)
   ) {
     return true;
@@ -126,7 +127,7 @@ const evalVisibility = (
 
   const fulfilledRule = uischema.ruleArray.every((currentRule) => {
     const pageWithId = (pages || []).find(
-      (page) => page.options?.id === currentRule.condition?.pageId
+      (page) => page.options.id === currentRule.condition.pageId
     );
     const hasQuestionRule = pageWithId?.elements.find(
       (element) => element.options?.hasRule

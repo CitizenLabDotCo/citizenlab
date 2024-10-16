@@ -36,6 +36,7 @@ const UserForm = ({ userFormData, setUserFormData }: Props) => {
   const updateUserFormData = (newData: Partial<UserFormData>) => {
     setUserFormData((oldData) => {
       const updatedData = {
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         ...(oldData ? oldData : userFormData),
         ...newData,
       };

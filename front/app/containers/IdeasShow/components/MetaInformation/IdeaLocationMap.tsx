@@ -21,8 +21,8 @@ const IdeaLocationMap = memo<Props>(({ location }: Props) => {
     // Create point graphic for event location
     const pointGraphic = new Graphic({
       geometry: new Point({
-        longitude: locationPoint?.current?.coordinates[0],
-        latitude: locationPoint?.current?.coordinates[1],
+        longitude: locationPoint.current?.coordinates[0],
+        latitude: locationPoint.current?.coordinates[1],
       }),
       symbol: getMapPinSymbol({ color: theme.colors.tenantPrimary }),
     });

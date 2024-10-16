@@ -82,6 +82,7 @@ const IdeasEditForm = ({ ideaId }: Props) => {
 
   useEffect(() => {
     if (idea && authUser !== undefined && !granted) {
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       clHistory.replace(previousPathName || (!authUser ? '/sign-up' : '/'));
     }
   }, [idea, granted, previousPathName, authUser]);
@@ -105,13 +106,13 @@ const IdeasEditForm = ({ ideaId }: Props) => {
         messages[
           `ajv_error_${uiSchema?.options?.inputTerm}_${
             getFieldNameFromPath(error.instancePath) ||
-            error?.params?.missingProperty
+            error.params.missingProperty
           }_${error.keyword}`
         ] ||
         messages[
           `ajv_error_${
             getFieldNameFromPath(error.instancePath) ||
-            error?.params?.missingProperty
+            error.params.missingProperty
           }_${error.keyword}`
         ] ||
         undefined
@@ -127,6 +128,7 @@ const IdeasEditForm = ({ ideaId }: Props) => {
     !schema ||
     !uiSchema ||
     !projectId ||
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     !idea
   ) {
     return null;
@@ -140,6 +142,7 @@ const IdeasEditForm = ({ ideaId }: Props) => {
   );
 
   // Set initial location point if exists
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (initialFormData && idea.data.attributes.location_point_geojson) {
     initialFormData['location_point_geojson'] =
       idea.data.attributes.location_point_geojson;
@@ -179,10 +182,10 @@ const IdeasEditForm = ({ ideaId }: Props) => {
     );
 
     const isImageNew =
-      idea_images_attributes !== initialFormData?.idea_images_attributes;
+      idea_images_attributes !== initialFormData.idea_images_attributes;
 
     // Delete a remote image only on submission
-    if (isImageNew && initialFormData?.idea_images_attributes[0]?.id) {
+    if (isImageNew && initialFormData.idea_images_attributes[0]?.id) {
       deleteIdeaImage({
         ideaId,
         imageId: initialFormData.idea_images_attributes[0].id,
@@ -250,7 +253,8 @@ const IdeasEditForm = ({ ideaId }: Props) => {
                       issue: messages.issueFormTitle,
                       contribution: messages.contributionFormTitle,
                     }[
-                      uiSchema && uiSchema?.options?.inputTerm
+                      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+                      uiSchema && uiSchema.options?.inputTerm
                         ? uiSchema.options.inputTerm
                         : 'idea'
                     ]}

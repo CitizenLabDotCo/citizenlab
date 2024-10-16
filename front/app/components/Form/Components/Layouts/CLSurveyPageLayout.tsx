@@ -114,13 +114,13 @@ const CLSurveyPageLayout = memo(
       phaseIdFromSearchParams || getCurrentPhase(phases?.data)?.id;
     const { data: phase } = usePhase(phaseId);
     const allowAnonymousPosting =
-      phase?.data?.attributes.allow_anonymous_participation;
+      phase?.data.attributes.allow_anonymous_participation;
 
     // Map-related variables
     const { data: projectMapConfig } = useProjectMapConfig(project?.data.id);
     const isMapPage = uiPages[currentStep].options.page_layout === 'map';
     const mapConfigId =
-      uiPages[currentStep].options.map_config_id || projectMapConfig?.data?.id;
+      uiPages[currentStep].options.map_config_id || projectMapConfig?.data.id;
     const { data: fetchedMapConfig, isFetching: isFetchingMapConfig } =
       useMapConfigById(mapConfigId);
     const [mapConfig, setMapConfig] = useState<IMapConfig | null | undefined>(
@@ -200,7 +200,7 @@ const CLSurveyPageLayout = memo(
 
     const scrollToTop = () => {
       // Scroll inner container to top
-      if (pagesRef?.current) {
+      if (pagesRef.current) {
         pagesRef.current.scrollIntoView({
           block: 'start',
         });
@@ -250,7 +250,7 @@ const CLSurveyPageLayout = memo(
           return element.options?.hasRule;
         })
         .flatMap((filteredElement) => {
-          const elementScope = filteredElement.scope?.split('/').pop();
+          const elementScope = filteredElement.scope.split('/').pop();
           return elementScope || '';
         });
 
@@ -277,7 +277,7 @@ const CLSurveyPageLayout = memo(
     const onDragDivider = (event) => {
       event.preventDefault();
       // Change the height of the map container to match the drag event
-      if (draggableDivRef?.current) {
+      if (draggableDivRef.current) {
         const clientY = event?.changedTouches?.[0]?.clientY;
         // Don't allow the div to be dragged outside bounds of survey page
         if (clientY > 0 && clientY < document.body.clientHeight - 180) {
@@ -286,7 +286,7 @@ const CLSurveyPageLayout = memo(
       }
     };
 
-    dragDividerRef?.current?.addEventListener('touchmove', onDragDivider);
+    dragDividerRef.current?.addEventListener('touchmove', onDragDivider);
 
     if (isFetchingMapConfig) {
       return (
@@ -323,8 +323,8 @@ const CLSurveyPageLayout = memo(
                   showLayerVisibilityControl: true,
                   showLegendExpanded: true,
                   showZoomControls: isMobileOrSmaller ? false : true,
-                  zoom: Number(mapConfig?.data?.attributes.zoom_level),
-                  center: mapConfig?.data?.attributes.center_geojson,
+                  zoom: Number(mapConfig?.data.attributes.zoom_level),
+                  center: mapConfig?.data.attributes.center_geojson,
                 }}
                 webMapId={mapConfig?.data.attributes.esri_web_map_id}
                 height="100%"

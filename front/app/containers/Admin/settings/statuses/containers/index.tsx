@@ -85,7 +85,7 @@ const IdeaStatuses = ({ variant }: { variant: 'ideation' | 'proposals' }) => {
   }
 
   if (ideaStatuses) {
-    const defaultStatuses = ideaStatuses?.data.filter(
+    const defaultStatuses = ideaStatuses.data.filter(
       (ideaStatus) => ideaStatus.attributes.locked === true
     );
 

@@ -33,7 +33,7 @@ const ExampleModal = ({
   );
 
   useEffect(() => {
-    if (examples?.data?.length) {
+    if (examples?.data.length) {
       setSelectedExampleIdx(0);
     }
   }, [examples]);
@@ -47,7 +47,7 @@ const ExampleModal = ({
   if (isNilOrError(examples)) return null;
 
   const selectedExample =
-    selectedExampleIdx === null ? null : examples?.data[selectedExampleIdx];
+    selectedExampleIdx === null ? null : examples.data[selectedExampleIdx];
 
   return (
     <Modal

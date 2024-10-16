@@ -36,7 +36,7 @@ const Analyses = ({
   const relevantAnalyses = questionId
     ? analyses?.data.filter(
         (analysis) =>
-          analysis.relationships.main_custom_field?.data?.id === questionId
+          analysis.relationships.main_custom_field?.data.id === questionId
       )
     : analyses?.data;
 

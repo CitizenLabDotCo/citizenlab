@@ -37,11 +37,12 @@ const useInitiativeOfficialFeedback = (params: IParameters) => {
       return fetchOfficialFeedback({ ...params, pageNumber: pageParam });
     },
     getNextPageParam: (lastPage) => {
-      const hasNextPage = lastPage?.links?.next;
+      const hasNextPage = lastPage.links.next;
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       const pageNumber = lastPage && getPageNumberFromUrl(lastPage.links.self);
       return hasNextPage && pageNumber ? pageNumber + 1 : null;
     },
-    enabled: !!params?.initiativeId,
+    enabled: !!params.initiativeId,
   });
 };
 

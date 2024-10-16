@@ -21,6 +21,7 @@ export const trackEvent = (
     window._paq.push([
       'trackEvent',
       event.name,
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       ...(Object.values(properties || {}) || []).filter(
         (item) => typeof item === 'string'
       ),

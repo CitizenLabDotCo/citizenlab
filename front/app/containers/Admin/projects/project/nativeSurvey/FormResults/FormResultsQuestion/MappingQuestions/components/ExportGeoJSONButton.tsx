@@ -26,9 +26,10 @@ const ExportGeoJSONButton = ({ phaseId, customFieldId }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const { data: phase } = usePhase(phaseId);
-  const phaseTitle = localize(
-    phase?.data?.attributes?.title_multiloc
-  )?.replaceAll(' ', '_');
+  const phaseTitle = localize(phase?.data.attributes.title_multiloc).replaceAll(
+    ' ',
+    '_'
+  );
 
   const handleExportInputs = async () => {
     try {

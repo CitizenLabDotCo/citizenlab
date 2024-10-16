@@ -32,6 +32,7 @@ const LanguageProvider = ({ children }: Props) => {
     if (!tenantLocales) return;
 
     for (const locale of tenantLocales) {
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (!messages[locale]) {
         import(`i18n/${locale}`).then((translationMessages) => {
           const intlCache = createIntlCache();
@@ -57,6 +58,7 @@ const LanguageProvider = ({ children }: Props) => {
     }
   }, [tenantLocales, messages]);
 
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (locale && messages[locale]) {
     return (
       <CustomIntlContext.Provider value={intlShapes}>

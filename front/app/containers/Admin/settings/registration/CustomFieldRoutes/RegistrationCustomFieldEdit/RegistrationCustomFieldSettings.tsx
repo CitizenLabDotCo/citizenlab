@@ -19,6 +19,7 @@ const RegistrationCustomFieldSettings = () => {
 
   const initialValues = () => {
     return (
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       customField && {
         input_type: customField.data.attributes.input_type,
         title_multiloc: customField.data.attributes.title_multiloc,

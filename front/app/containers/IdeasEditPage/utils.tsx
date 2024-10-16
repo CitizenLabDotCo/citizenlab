@@ -20,6 +20,7 @@ export const getLocationGeojson = async (
   // If initial data has location point and location is unchanged, add point to data
   if (
     !isNilOrError(initialFormData) &&
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     (data && data.location_description) === initialFormData.location_description
   ) {
     location_point_geojson = initialFormData.location_point_geojson;
@@ -40,28 +41,28 @@ export const getFormValues = (
   return Object.fromEntries(
     Object.keys(schema.properties).map((prop) => {
       if (prop === 'author_id') {
-        return [prop, idea.data.relationships?.author?.data?.id];
-      } else if (idea.data.attributes?.[prop]) {
-        return [prop, idea.data.attributes?.[prop]];
+        return [prop, idea.data.relationships.author?.data?.id];
+      } else if (idea.data.attributes[prop]) {
+        return [prop, idea.data.attributes[prop]];
       } else if (
         prop === 'topic_ids' &&
-        Array.isArray(idea.data.relationships?.topics?.data)
+        Array.isArray(idea.data.relationships.topics?.data)
       ) {
         return [
           prop,
-          idea.data.relationships?.topics?.data.map((rel) => rel.id),
+          idea.data.relationships.topics?.data.map((rel) => rel.id),
         ];
       } else if (
         prop === 'cosponsor_ids' &&
-        Array.isArray(idea.data.relationships?.cosponsors?.data)
+        Array.isArray(idea.data.relationships.cosponsors?.data)
       ) {
         return [
           prop,
-          idea.data.relationships?.cosponsors?.data.map((rel) => rel.id),
+          idea.data.relationships.cosponsors?.data.map((rel) => rel.id),
         ];
       } else if (
         prop === 'idea_images_attributes' &&
-        Array.isArray(idea.data.relationships?.idea_images?.data)
+        Array.isArray(idea.data.relationships.idea_images.data)
       ) {
         return [prop, remoteImages?.data];
       } else if (prop === 'idea_files_attributes') {

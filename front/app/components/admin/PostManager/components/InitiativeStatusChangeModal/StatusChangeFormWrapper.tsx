@@ -156,6 +156,7 @@ const StatusChangeFormWrapper = ({
             onSuccess: closeModal,
           }
         );
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       } else if (mode === 'latest' && !isNilOrError(officialFeedbacksList)) {
         updateInitiativeStatus(
           {

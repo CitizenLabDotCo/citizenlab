@@ -76,21 +76,21 @@ const InitiativeMap = ({ list }: Props) => {
   // Loop through initatives with locations and create array of graphics
   const initiativesWithLocation = useMemo(() => {
     return list.filter(
-      (initiative) => initiative?.attributes?.location_point_geojson
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      (initiative) => initiative.attributes.location_point_geojson
     );
   }, [list]);
 
   const graphics = useMemo(() => {
-    return initiativesWithLocation?.map((initiative) => {
+    return initiativesWithLocation.map((initiative) => {
       return new Graphic({
         geometry: new Point({
           longitude:
-            initiative?.attributes?.location_point_geojson?.coordinates[0],
-          latitude:
-            initiative?.attributes?.location_point_geojson?.coordinates[1],
+            initiative.attributes.location_point_geojson.coordinates[0],
+          latitude: initiative.attributes.location_point_geojson.coordinates[1],
         }),
         attributes: {
-          initiativeId: initiative?.id,
+          initiativeId: initiative.id,
         },
       });
     });
@@ -98,6 +98,7 @@ const InitiativeMap = ({ list }: Props) => {
 
   // Create an Esri map layer from the graphics so we can add a cluster display
   const initiativesLayer = useMemo(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (graphics) {
       return new FeatureLayer({
         source: graphics, // Array of initiative graphics
@@ -153,7 +154,7 @@ const InitiativeMap = ({ list }: Props) => {
               return;
             } else if (graphicId) {
               // User clicked an initiative pin. Zoom to pin & open the information panel.
-              const initiativeId = graphics?.at(graphicId - 1)?.attributes
+              const initiativeId = graphics.at(graphicId - 1)?.attributes
                 .initiativeId;
 
               if (initiativeId) {
@@ -191,7 +192,7 @@ const InitiativeMap = ({ list }: Props) => {
 
       // Check permissions
       if (initiativePermissions?.enabled) {
-        if (initiativePermissions?.authenticationRequirements) {
+        if (initiativePermissions.authenticationRequirements) {
           // If the user needs to be authenticated, trigger the authentication flow
           const context = {
             type: 'initiative',

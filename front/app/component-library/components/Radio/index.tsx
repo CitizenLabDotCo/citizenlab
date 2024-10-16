@@ -134,7 +134,9 @@ const Radio = ({
     if (!disabled && onChange) {
       const targetElement = get(event, 'target') as HTMLElement;
       const targetElementIsLink =
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         targetElement &&
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         targetElement.hasAttribute &&
         targetElement.hasAttribute('href');
 

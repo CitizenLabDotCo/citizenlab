@@ -93,7 +93,7 @@ export const getFormActionsConfig = (
 
 // Remove the IDs from the options - for when the form is not persisted
 export const clearOptionIds = (customFields: IFlatCustomField[]) => {
-  return customFields?.map((field: IFlatCustomField) => {
+  return customFields.map((field: IFlatCustomField) => {
     if (field.options && field.options.length > 0) {
       field.options = field.options.map((option: IOptionsType) => {
         delete option.id;

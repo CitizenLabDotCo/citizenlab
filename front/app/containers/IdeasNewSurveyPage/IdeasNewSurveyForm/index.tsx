@@ -128,13 +128,13 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
         ideaFormMessages[
           `ajv_error_${uiSchema?.options?.inputTerm}_${
             getFieldNameFromPath(error.instancePath) ||
-            error?.params?.missingProperty
+            error.params.missingProperty
           }_${error.keyword}`
         ] ||
         ideaFormMessages[
           `ajv_error_${
             getFieldNameFromPath(error.instancePath) ||
-            error?.params?.missingProperty
+            error.params.missingProperty
           }_${error.keyword}`
         ] ||
         undefined

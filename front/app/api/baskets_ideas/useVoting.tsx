@@ -50,7 +50,7 @@ const useVotingInterface = (projectId?: string) => {
 
   const { voteForIdea, processing } = useVoteForIdea(phase);
 
-  const basketId = phase?.relationships?.user_basket?.data?.id;
+  const basketId = phase?.relationships.user_basket?.data?.id;
   const { data: basketIdeas, isFetching: basketIdeasLoading } =
     useBasketsIdeas(basketId);
 

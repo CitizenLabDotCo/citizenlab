@@ -69,7 +69,7 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
   const { mutate: updateBasket } = useUpdateBasket();
   const basketStatus = phaseHasEnded
     ? 'submissionEnded'
-    : basket?.data.attributes?.submitted_at
+    : basket?.data.attributes.submitted_at
     ? 'hasSubmitted'
     : 'hasNotSubmitted';
   const showDate = !phaseHasEnded && basketStatus === 'hasNotSubmitted';
@@ -130,9 +130,7 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
             </Text>
             <Text m="0px">
               {config?.getStatusSubmissionCountCopy &&
-                formatMessage(
-                  config?.getStatusSubmissionCountCopy(basketCount)
-                )}
+                formatMessage(config.getStatusSubmissionCountCopy(basketCount))}
             </Text>
           </>
         )}

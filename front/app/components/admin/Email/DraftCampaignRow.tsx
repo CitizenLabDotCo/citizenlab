@@ -52,7 +52,7 @@ const DraftCampaignRow = ({ campaign, context }: Props) => {
           {context === 'global' && project && (
             <Text m="0px">
               {formatMessage(messages.project)}:{' '}
-              {localize(project?.data.attributes.title_multiloc)}
+              {localize(project.data.attributes.title_multiloc)}
             </Text>
           )}
         </Box>

@@ -57,7 +57,7 @@ const Location = memo<Props>(({ ideaId, compact, className }) => {
   const { data: idea } = useIdeaById(ideaId);
   const isTabletOrSmaller = useBreakpoint('tablet');
 
-  const point = idea?.data.attributes?.location_point_geojson;
+  const point = idea?.data.attributes.location_point_geojson;
 
   const address = !isNilOrError(idea)
     ? getAddressOrFallbackDMS(
@@ -80,7 +80,7 @@ const Location = memo<Props>(({ ideaId, compact, className }) => {
                   p="0px"
                   fontSize="m"
                   buttonStyle="text"
-                  linkTo={`https://www.google.com/maps/search/?api=1&query=${point?.coordinates[1]},${point?.coordinates[0]}`}
+                  linkTo={`https://www.google.com/maps/search/?api=1&query=${point.coordinates[1]},${point.coordinates[0]}`}
                   openLinkInNewTab={isTabletOrSmaller ? false : true} // On tablet/mobile devices, this will open the app instead
                   pl="0px"
                   style={{
@@ -104,7 +104,7 @@ const Location = memo<Props>(({ ideaId, compact, className }) => {
               {!compact && (
                 <Box width="100%" mt="8px" id="e2e-location-map">
                   <IdeaLocationMap
-                    location={idea?.data.attributes?.location_point_geojson}
+                    location={idea.data.attributes.location_point_geojson}
                   />
                 </Box>
               )}

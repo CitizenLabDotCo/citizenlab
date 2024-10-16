@@ -101,7 +101,7 @@ const ManagementFeed = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {managementFeed?.data.map((item) => (
+            {managementFeed.data.map((item) => (
               <ManagementFeedRow key={item.id} item={item} />
             ))}
           </Tbody>

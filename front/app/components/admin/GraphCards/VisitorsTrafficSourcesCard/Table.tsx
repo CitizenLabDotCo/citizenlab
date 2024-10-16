@@ -64,6 +64,7 @@ const TableComponent = ({
 
   // Reduce 'flickering' effect of component collapsing
   // while data is available yet
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (tableData === undefined) {
     return <Box mx="20px" height="164px" />;
   }

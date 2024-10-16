@@ -104,12 +104,17 @@ export const shutdownFor = (destination: IDestination) => {
 
 export function tenantInfo(tenant: IAppConfigurationData) {
   return {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     tenantId: tenant && tenant.id,
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     tenantName: tenant && tenant.attributes.name,
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     tenantHost: tenant && tenant.attributes.host,
     tenantOrganizationType:
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       tenant && tenant.attributes.settings.core.organization_type,
     tenantLifecycleStage:
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       tenant && tenant.attributes.settings.core.lifecycle_stage,
   };
 }

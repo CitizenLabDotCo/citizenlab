@@ -44,7 +44,7 @@ const SortFilterDropdown = ({ alignment, value, onChange, phase }: Props) => {
 
   if (!isNilOrError(phase)) {
     const config = getMethodConfig(phase.attributes.participation_method);
-    if (config?.postSortingOptions) {
+    if (config.postSortingOptions) {
       options = config.postSortingOptions;
     }
   }

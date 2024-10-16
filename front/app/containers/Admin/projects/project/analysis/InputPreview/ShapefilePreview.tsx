@@ -39,7 +39,7 @@ const ShapefilePreview = ({ inputId, file }: Props) => {
   // Get Shapefile URL
   const fileUrl = inputFiles?.data.find(
     (inputFile) => inputFile.id === file?.id
-  )?.attributes?.file?.url;
+  )?.attributes.file.url;
 
   // Convert the shapefile to GeoJSON
   useEffect(() => {
@@ -73,7 +73,7 @@ const ShapefilePreview = ({ inputId, file }: Props) => {
   }
 
   const esriLayers = createEsriGeoJsonLayers(mapLayers, localize);
-  const initialMapCenter = esriLayers?.[0]?.fullExtent?.center;
+  const initialMapCenter = esriLayers[0]?.fullExtent?.center;
 
   esriLayers.map((layer) => {
     layer.opacity = 0.8;
@@ -87,21 +87,21 @@ const ShapefilePreview = ({ inputId, file }: Props) => {
   };
 
   useEffect(() => {
-    const firstLayer = mapView?.map?.layers?.['items']?.[0];
+    const firstLayer = mapView?.map.layers['items']?.[0];
     if (firstLayer) {
       firstLayer.on('layerview-create', () => {
         // Zoom the map to the extent of the layer
         goToLayerExtent(firstLayer, mapView, true);
       });
     }
-  }, [esriLayers, mapView?.map?.layers, mapView]);
+  }, [esriLayers, mapView?.map.layers, mapView]);
 
   if (!fileUrl) {
     // No file was uploaded
     return (
       <Text fontStyle="italic">{formatMessage(messages.noFileUploaded)}</Text>
     );
-  } else if (!fileUrl?.endsWith('.zip')) {
+  } else if (!fileUrl.endsWith('.zip')) {
     // This is not a valid file for this question type
     return (
       <Text fontStyle="italic">{formatMessage(messages.invalidShapefile)}</Text>
@@ -120,8 +120,8 @@ const ShapefilePreview = ({ inputId, file }: Props) => {
           center: {
             type: 'Point',
             coordinates: [
-              initialMapCenter?.latitude,
-              initialMapCenter?.longitude,
+              initialMapCenter.latitude,
+              initialMapCenter.longitude,
             ],
           },
         }}

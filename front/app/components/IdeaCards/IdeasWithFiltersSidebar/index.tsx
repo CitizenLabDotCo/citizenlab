@@ -156,6 +156,7 @@ const IdeaCards = ({ ideaQueryParameters, onUpdateQuery }: Props) => {
 
   const handleSearchOnChange = useCallback(
     (search: string) => {
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       onUpdateQuery({ search: search ?? undefined });
     },
     [onUpdateQuery]
@@ -229,6 +230,7 @@ const IdeaCards = ({ ideaQueryParameters, onUpdateQuery }: Props) => {
                 selectedIdeaFilters={ideaQueryParameters}
                 filtersActive={filtersActive}
                 ideasFilterCounts={ideasFilterCounts}
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 numberOfSearchResults={list ? list.length : 0}
                 onClearFilters={clearFilters}
                 onSearch={handleSearchOnChange}
@@ -307,6 +309,7 @@ const IdeaCards = ({ ideaQueryParameters, onUpdateQuery }: Props) => {
                   selectedIdeaFilters={ideaQueryParameters}
                   filtersActive={filtersActive}
                   ideasFilterCounts={ideasFilterCounts}
+                  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                   numberOfSearchResults={list ? list.length : 0}
                   onClearFilters={clearFilters}
                   onSearch={handleSearchOnChange}

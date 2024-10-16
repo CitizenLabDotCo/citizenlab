@@ -62,7 +62,7 @@ const ProjectTemplateContent = ({ reportId, projectId }: Props) => {
   const { data: surveyQuestions } = useRawCustomFields({
     phaseId:
       templateData?.participationMethod === 'native_survey'
-        ? templateData?.phaseId
+        ? templateData.phaseId
         : undefined,
   });
 
@@ -92,7 +92,7 @@ const ProjectTemplateContent = ({ reportId, projectId }: Props) => {
   if (!appConfigurationLocales) return null;
 
   const reportTitle = report.data.attributes.name;
-  const projectTitle = project?.data.attributes.title_multiloc;
+  const projectTitle = project.data.attributes.title_multiloc;
 
   const reportTitleMultiloc = reportTitle
     ? createMultiloc(appConfigurationLocales, (_locale) => {
@@ -116,7 +116,7 @@ const ProjectTemplateContent = ({ reportId, projectId }: Props) => {
         <ul>
           <li>
             <b>${formatMessage(messages.projectLabel)}</b>:
-            ${` ${projectTitle?.[locale] ?? ''}`}
+            ${` ${projectTitle[locale] ?? ''}`}
           </li>
           ${period ? `<li>${period}</li>` : ''}
           <li>

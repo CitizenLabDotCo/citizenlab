@@ -70,7 +70,7 @@ const LocationControl = ({
             : null
         }
         onChange={(location: Option) => {
-          handleChange(path, location?.value ? location.value : undefined);
+          handleChange(path, location.value ? location.value : undefined);
         }}
         placeholder={''}
         onBlur={() => setDidBlur(true)}

@@ -92,6 +92,7 @@ const IdeasNewSurveyPage = () => {
     return <SurveyNotActiveNotice project={project.data} />;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if ((enabled === 'maybe' && authenticationRequirements) || disabledReason) {
     const triggerAuthFlow = () => {
       triggerAuthenticationFlow({

@@ -66,14 +66,14 @@ const TextAreaControl = ({
           value={data}
           id={sanitizeForClassname(id)}
           onBlur={() => {
-            uischema?.options?.transform === 'trim_on_blur' &&
+            uischema.options?.transform === 'trim_on_blur' &&
               isString(data) &&
               handleChange(path, data.trim());
             setDidBlur(true);
           }}
-          disabled={uischema?.options?.readonly}
+          disabled={uischema.options?.readonly}
         />
-        <VerificationIcon show={uischema?.options?.verificationLocked} />
+        <VerificationIcon show={uischema.options?.verificationLocked} />
       </Box>
       <ErrorDisplay
         inputId={sanitizeForClassname(id)}

@@ -50,7 +50,7 @@ const RemoveButton = ({
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const { data: folder } = useAdminPublication(
-    item.relationships.parent?.data?.id || null
+    item.relationships.parent.data?.id || null
   );
   const {
     mutate: deleteProjectModerator,
@@ -111,7 +111,7 @@ const UserAssignedItems = ({ user }: { user: IUserData }) => {
   const { data: assignedItems } = useAdminPublications({
     filter_user_is_moderator_of: user.id,
   });
-  const flatAssignedItems = assignedItems?.pages?.flatMap((page) => page.data);
+  const flatAssignedItems = assignedItems?.pages.flatMap((page) => page.data);
 
   const isFolder = (item: IAdminPublicationData) =>
     item.relationships.publication.data.type === 'folder';
@@ -133,7 +133,7 @@ const UserAssignedItems = ({ user }: { user: IUserData }) => {
     Boolean(
       item.relationships.parent.data?.id &&
         moderatedAdminPublicationFolderIds?.includes(
-          item.relationships.parent.data?.id
+          item.relationships.parent.data.id
         )
     );
 

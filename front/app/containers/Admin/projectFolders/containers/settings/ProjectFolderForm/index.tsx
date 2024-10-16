@@ -323,6 +323,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
                       })
                     );
 
+                    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                     (cardImageToAddPromise || filesToAddPromises) &&
                       (await Promise.all<any>([
                         cardImageToAddPromise,

@@ -34,13 +34,14 @@ const CosponsorsList = ({ ideaId }: { ideaId: string }) => {
   }
 
   const viewPendingCosponsors =
-    authUser?.data?.id === idea?.data?.relationships?.author?.data?.id ||
+    authUser?.data.id === idea?.data.relationships.author?.data?.id ||
     isAdmin(authUser);
 
   const relevantCosponsors =
     cosponsors?.data.filter(
       (cosponsor) =>
         cosponsor.attributes.status === 'accepted' ||
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         (viewPendingCosponsors && cosponsor.attributes.status === 'pending')
     ) || [];
 

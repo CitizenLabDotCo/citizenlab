@@ -63,6 +63,7 @@ const InitiativeMoreActions = ({ initiative, className, color, id }: Props) => {
     clHistory.push(`/initiatives/edit/${initiative.id}`, { scrollToTop: true });
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!initiative) {
     return null;
   }

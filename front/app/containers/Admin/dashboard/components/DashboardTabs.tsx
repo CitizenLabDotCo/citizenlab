@@ -25,7 +25,7 @@ const DashboardTabs = ({ children, tabs }: Props) => {
           {tabs.map((tab) => {
             const active = isTopBarNavActive(
               '/admin/dashboard',
-              location?.pathname,
+              location.pathname,
               tab.url
             );
 

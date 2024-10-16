@@ -80,6 +80,7 @@ const AdminProjectIdeas = () => {
         </Text>
       </Box>
 
+      {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
       {project && (
         <InputManager
           key={phaseId}

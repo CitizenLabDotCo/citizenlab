@@ -37,7 +37,7 @@ const CustomEmails = () => {
 
   if (!campaignsList) return null;
 
-  const lastPage = getPageNumberFromUrl(campaigns?.pages[0].links.last) || 1;
+  const lastPage = getPageNumberFromUrl(campaigns.pages[0].links.last) || 1;
 
   const goToPage = (page: number) => {
     setCurrentPage(page);

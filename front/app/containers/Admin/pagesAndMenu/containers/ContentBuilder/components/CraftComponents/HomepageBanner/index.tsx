@@ -275,9 +275,10 @@ const HomepageBannerSettings = () => {
     );
 
     if (!validation) {
-      const newErrorTypes = errors?.includes(field)
+      const newErrorTypes = errors.includes(field)
         ? [...errors]
-        : [...(errors || []), field];
+        : // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+          [...(errors || []), field];
 
       setErrors(newErrorTypes);
       setHasError(true);
@@ -288,8 +289,10 @@ const HomepageBannerSettings = () => {
         },
       });
     } else {
-      const newErrorTypes = errors?.filter((errorType) => errorType !== field);
+      const newErrorTypes = errors.filter((errorType) => errorType !== field);
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       setErrors(newErrorTypes || []);
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (newErrorTypes && newErrorTypes.length === 0) {
         setHasError(false);
         eventEmitter.emit(CONTENT_BUILDER_ERROR_EVENT, {
@@ -313,14 +316,16 @@ const HomepageBannerSettings = () => {
       }
     });
     if (value !== 'customized_button') {
-      const newErrorTypes = errors?.filter(
+      const newErrorTypes = errors.filter(
         (errorType) =>
           errorType !==
           (field === 'banner_cta_signed_out_type'
             ? 'banner_cta_signed_out_url'
             : 'banner_cta_signed_in_url')
       );
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       setErrors(newErrorTypes || []);
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (newErrorTypes && newErrorTypes.length === 0) {
         setHasError(false);
         eventEmitter.emit(CONTENT_BUILDER_ERROR_EVENT, {

@@ -135,7 +135,7 @@ class Select extends PureComponent<Props> {
   };
 
   handleOnBlur = (event: FocusEvent<HTMLSelectElement>) => {
-    this.props?.onBlur?.(event);
+    this.props.onBlur?.(event);
   };
 
   render() {

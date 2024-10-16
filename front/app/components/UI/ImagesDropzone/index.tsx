@@ -308,6 +308,7 @@ class ImagesDropzone extends PureComponent<
           : formatMessage(messages.onlyXImages, { maxItemsCount });
       this.setState({ errorMessage });
       setTimeout(() => this.setState({ errorMessage: null }), 6000);
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     } else if (images && images.length > 0) {
       for (let i = 0; i < images.length; i += 1) {
         if (!images[i].base64) {
@@ -444,6 +445,7 @@ class ImagesDropzone extends PureComponent<
                 maxWidth={maxImagePreviewWidth}
                 ratio={imagePreviewRatio}
                 className={
+                  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                   images && maxNumberOfImages > 1 && index !== images.length - 1
                     ? 'hasRightMargin'
                     : ''

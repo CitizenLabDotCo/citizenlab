@@ -72,7 +72,7 @@ const PointSettings = ({ mapConfigIdName, pageLayoutName, field }: Props) => {
   const mapConfigId =
     watch(mapConfigIdName) ||
     rawCustomFields?.data.find((rawField) => rawField.id === field.id)
-      ?.relationships?.map_config?.data?.id;
+      ?.relationships.map_config?.data.id;
 
   // Load map config
   const { data: fieldMapConfig, isLoading: isLoadingFieldConfig } =
@@ -100,7 +100,7 @@ const PointSettings = ({ mapConfigIdName, pageLayoutName, field }: Props) => {
         });
       };
 
-      const projectMapConfigId = projectMapConfig?.data?.id;
+      const projectMapConfigId = projectMapConfig?.data.id;
       if (projectMapConfigId) {
         // Duplicate the project map config if it exists
         duplicateAndOpenModal(projectMapConfigId);
@@ -134,7 +134,7 @@ const PointSettings = ({ mapConfigIdName, pageLayoutName, field }: Props) => {
     createMapConfig,
     appConfig?.data,
     mapConfigId,
-    projectMapConfig?.data?.id,
+    projectMapConfig?.data.id,
     duplicateMapConfig,
     mapConfigIdName,
     setValue,
@@ -149,8 +149,8 @@ const PointSettings = ({ mapConfigIdName, pageLayoutName, field }: Props) => {
     });
 
     // Get attributes from the map config
-    const centerPoint = mapConfig?.data?.attributes?.center_geojson;
-    const zoom = Number(mapConfig?.data?.attributes?.zoom_level);
+    const centerPoint = mapConfig?.data.attributes.center_geojson;
+    const zoom = Number(mapConfig?.data.attributes.zoom_level);
 
     // Go to current map extent
     if (centerPoint && mapView) {
@@ -160,8 +160,8 @@ const PointSettings = ({ mapConfigIdName, pageLayoutName, field }: Props) => {
   }, [
     projectId,
     phaseId,
-    mapConfig?.data?.attributes?.center_geojson,
-    mapConfig?.data?.attributes?.zoom_level,
+    mapConfig?.data.attributes.center_geojson,
+    mapConfig?.data.attributes.zoom_level,
     mapView,
   ]);
 
@@ -193,15 +193,15 @@ const PointSettings = ({ mapConfigIdName, pageLayoutName, field }: Props) => {
           height="400px"
           layers={mapLayers}
           initialData={{
-            zoom: Number(mapConfig?.data?.attributes?.zoom_level),
-            center: mapConfig?.data?.attributes?.center_geojson,
+            zoom: Number(mapConfig?.data.attributes.zoom_level),
+            center: mapConfig?.data.attributes.center_geojson,
             showLayerVisibilityControl: true,
             showLegend: true,
             onInit: onMapInit,
           }}
           webMapId={mapConfig?.data.attributes.esri_web_map_id}
         />
-        {(field?.input_type === 'line' || field?.input_type === 'polygon') && (
+        {(field.input_type === 'line' || field.input_type === 'polygon') && (
           <Box my="8px">
             <Warning>
               <FormattedMessage

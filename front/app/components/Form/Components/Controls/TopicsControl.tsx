@@ -31,6 +31,7 @@ const TopicsControl = ({
 }: ControlProps) => {
   const availableTopics =
     (!Array.isArray(schema.items) &&
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       (schema.items?.oneOf as { const: string; title: string }[])) ||
     [];
 

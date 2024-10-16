@@ -118,7 +118,7 @@ const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
     };
 
     const removeLayer = (layerId: string) => (event: React.FormEvent) => {
-      event?.preventDefault();
+      event.preventDefault();
 
       const message = formatMessage(messages.deleteConfirmation);
 
@@ -128,16 +128,16 @@ const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
     };
 
     const removeWebMap = () => {
-      if (mapConfig?.data.id) {
+      if (mapConfig.data.id) {
         updateMapConfig({
-          mapConfigId: mapConfig?.data.id,
+          mapConfigId: mapConfig.data.id,
           esri_web_map_id: null,
         });
       }
     };
 
     const toggleLayerConfig = (layerId: string) => (event: React.FormEvent) => {
-      event?.preventDefault();
+      event.preventDefault();
       onEditLayer(layerId);
     };
 
@@ -149,8 +149,9 @@ const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
       </a>
     );
 
-    const layers = mapConfig?.data.attributes?.layers;
+    const layers = mapConfig.data.attributes.layers;
     const layersWithOrdering =
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       layers && layers.length > 0 ? addOrderingToLayers(layers) : null;
 
     return (
@@ -268,14 +269,14 @@ const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
             )}
           </StyledSortableList>
         )}
-        {mapConfig?.data.attributes.esri_web_map_id && (
+        {mapConfig.data.attributes.esri_web_map_id && (
           <Box borderBottom={`1px solid ${colors.divider}`} mb="36px">
             <Box mb="24px" ml="32px">
               <ListItem>
                 <LayerIcon name="map" color={colors.coolGrey600} />
                 <LayerName>
                   {formatMessage(messages.esriWebMap)}:{' '}
-                  {mapConfig?.data.attributes.esri_web_map_id}
+                  {mapConfig.data.attributes.esri_web_map_id}
                 </LayerName>
                 <Buttons>
                   <Spacer />
@@ -301,7 +302,7 @@ const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
           </Box>
         )}
 
-        {mapConfig?.data?.id && (
+        {mapConfig.data.id && (
           <>
             {isEsriIntegrationEnabled && ( // TODO: Remove hiding of buttons once Esri integration is released + internal training done
               <EsriImportOptions setView={setView} mapConfig={mapConfig} />

@@ -49,14 +49,15 @@ const Step2LabelClassification = ({ onLaunch }: Props) => {
             <CheckboxWithLabel
               indeterminate={
                 selectedTagIds.length > 0 &&
-                selectedTagIds.length !== customTags?.length
+                selectedTagIds.length !== customTags.length
               }
-              checked={selectedTagIds.length === customTags?.length}
+              checked={selectedTagIds.length === customTags.length}
               onChange={() =>
                 setSelectedTagIds(
-                  selectedTagIds.length === customTags?.length
+                  selectedTagIds.length === customTags.length
                     ? []
-                    : customTags?.map((t) => t.id) || []
+                    : // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+                      customTags.map((t) => t.id) || []
                 )
               }
               label={formatMessage(messages.selectAll)}

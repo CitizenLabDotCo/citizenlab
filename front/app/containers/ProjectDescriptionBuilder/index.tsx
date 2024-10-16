@@ -121,6 +121,7 @@ const ProjectDescriptionBuilderPage = () => {
     setSelectedLocale(locale);
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!project || (project && !project.data.attributes.uses_content_builder)) {
     return null;
   }

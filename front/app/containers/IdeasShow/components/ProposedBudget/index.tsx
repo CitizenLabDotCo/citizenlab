@@ -45,7 +45,7 @@ const ProposedBudget = ({ projectId, ideaId }: Props) => {
     locale
   );
 
-  const proposedBudget = idea?.data.attributes?.proposed_budget;
+  const proposedBudget = idea?.data.attributes.proposed_budget;
 
   if (!proposedBudgetEnabled || !proposedBudget) return null;
 

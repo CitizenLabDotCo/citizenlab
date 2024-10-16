@@ -300,7 +300,7 @@ const Timeline = ({
   const [tooltipVisible, setTooltipVisible] = useState(false);
 
   useEffect(() => {
-    const showTooltip = phases?.data?.length === 1;
+    const showTooltip = phases?.data.length === 1;
     setTooltipVisible(showTooltip);
 
     const timeout = setTimeout(() => {

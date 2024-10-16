@@ -29,7 +29,7 @@ export function isProjectFolderModerator(
   user?: IUser,
   folderId?: string
 ): boolean {
-  const roles = user?.data.attributes?.roles;
+  const roles = user?.data.attributes.roles;
   if (!roles) return false;
 
   if (folderId) {

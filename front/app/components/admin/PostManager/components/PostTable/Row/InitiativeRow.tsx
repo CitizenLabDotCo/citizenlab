@@ -89,6 +89,7 @@ const InitiativeRow = ({
         id: string;
       }>();
 
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (dropResult && dropResult.type) {
         let droppedIniatitives: IInitiativeData[] = [];
         if (selection.has(item.id)) {
@@ -102,6 +103,7 @@ const InitiativeRow = ({
         }
 
         droppedIniatitives.map((initiative) => {
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           if (dropResult.type === 'topic') {
             const currentTopics = initiative.relationships.topics.data.map(
               (d) => d.id

@@ -78,6 +78,7 @@ const Combobox = ({
   useEffect(() => {
     if (focusedIndex !== null && listboxRef.current) {
       const items = listboxRef.current.querySelectorAll('li');
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (items[focusedIndex]) {
         (items[focusedIndex] as HTMLElement).focus();
       }
@@ -109,6 +110,7 @@ const Combobox = ({
           if (focusedIndex !== null) {
             event.preventDefault();
             const selectedItem = items[focusedIndex];
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             if (selectedItem) {
               selectedItem.click();
             }

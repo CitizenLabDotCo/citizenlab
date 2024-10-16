@@ -382,7 +382,7 @@ const ProjectCard = memo<InputProps>(
     });
 
     const currentPhaseId =
-      project?.data?.relationships?.current_phase?.data?.id ?? null;
+      project?.data.relationships.current_phase?.data?.id ?? null;
     const { data: phase } = usePhase(currentPhaseId);
     const localize = useLocalize();
 
@@ -416,7 +416,7 @@ const ProjectCard = memo<InputProps>(
 
     if (project) {
       const postingPermission = getIdeaPostingRules({
-        project: project?.data,
+        project: project.data,
         phase: phase?.data,
         authUser: authUser?.data,
       });
@@ -431,7 +431,7 @@ const ProjectCard = memo<InputProps>(
 
       const imageUrl = !projectImage
         ? null
-        : projectImage.data.attributes.versions?.large;
+        : projectImage.data.attributes.versions.large;
 
       const projectUrl: RouteType = getProjectUrl(project.data);
       const isFinished = project.data.attributes.timeline_active === 'past';
@@ -722,9 +722,7 @@ const ProjectCard = memo<InputProps>(
                   followableType="projects"
                   followableId={project.data.id}
                   followersCount={project.data.attributes.followers_count}
-                  followerId={
-                    project.data.relationships.user_follower?.data?.id
-                  }
+                  followerId={project.data.relationships.user_follower.data?.id}
                   w="100%"
                   toolTipType="projectOrFolder"
                 />

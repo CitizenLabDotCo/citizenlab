@@ -36,13 +36,13 @@ const LineMapPreview = ({ rawValue }: Props) => {
           type: 'Feature',
           geometry: {
             type: 'LineString',
-            coordinates: line?.coordinates,
+            coordinates: line.coordinates,
           },
           properties: null,
         },
       ],
     }),
-    [line?.coordinates]
+    [line.coordinates]
   );
 
   const mapLayer: IMapLayerAttributes = useMemo(
@@ -69,7 +69,8 @@ const LineMapPreview = ({ rawValue }: Props) => {
 
   return (
     <Box>
-      {line?.coordinates ? (
+      {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
+      {line.coordinates ? (
         <EsriMap
           layers={layers}
           initialData={{
@@ -77,7 +78,7 @@ const LineMapPreview = ({ rawValue }: Props) => {
             showFullscreenOption: true,
             center: {
               type: 'Point',
-              coordinates: line?.coordinates[0],
+              coordinates: line.coordinates[0],
             },
           }}
           height="180px"

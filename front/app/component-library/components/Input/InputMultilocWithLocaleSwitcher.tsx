@@ -61,7 +61,7 @@ const InputMultilocWithLocaleSwitcher = memo<Props>((props) => {
   useEffect(() => {
     if (errorMultiloc) {
       const localesWithError = Object.keys(errorMultiloc).filter((locale) => {
-        const errorForLocale = errorMultiloc?.[locale];
+        const errorForLocale = errorMultiloc[locale];
         return (
           errorForLocale &&
           typeof errorForLocale === 'string' &&

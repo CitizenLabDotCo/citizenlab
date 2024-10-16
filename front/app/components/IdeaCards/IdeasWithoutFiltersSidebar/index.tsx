@@ -141,6 +141,7 @@ const IdeasWithoutFiltersSidebar = ({
 
   const handleSearchOnChange = useCallback(
     (search: string) => {
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       onUpdateQuery({ search: search ?? undefined });
     },
     [onUpdateQuery]

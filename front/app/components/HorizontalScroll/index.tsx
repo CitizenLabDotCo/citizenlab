@@ -54,9 +54,9 @@ const HorizontalScroll = ({ children, containerRole }: Props) => {
   const [atScrollEnd, setAtScrollEnd] = useState(false);
 
   useEffect(() => {
-    containerRef?.current?.addEventListener('scroll', () => {
+    containerRef.current?.addEventListener('scroll', () => {
       // Update scroll states
-      if (!containerRef?.current) return;
+      if (!containerRef.current) return;
       setAtScrollStart(containerRef.current.scrollLeft === 0);
       const maxScrollLeft =
         containerRef.current.scrollWidth - containerRef.current.clientWidth;
@@ -66,21 +66,21 @@ const HorizontalScroll = ({ children, containerRole }: Props) => {
 
   // Determine if the width of the container is large enough to require horizontal scrolling
   const showArrows =
-    containerRef?.current &&
+    containerRef.current &&
     containerRef.current.scrollWidth > containerRef.current.clientWidth;
   const [showArrowButtons, setShowArrowButtons] = useState(showArrows);
 
   // Update whether arrows/horizontal scrolling is required when the width of the container changes
   useEffect(() => {
     setShowArrowButtons(
-      containerRef?.current &&
+      containerRef.current &&
         containerRef.current.scrollWidth > containerRef.current.clientWidth
     );
   }, [containerRef, showArrows]);
 
   // Scroll the container by the specified offset
   const horizontalScroll = (scrollOffset: number) => {
-    if (!containerRef?.current) return;
+    if (!containerRef.current) return;
     containerRef.current.scrollLeft += scrollOffset;
   };
 

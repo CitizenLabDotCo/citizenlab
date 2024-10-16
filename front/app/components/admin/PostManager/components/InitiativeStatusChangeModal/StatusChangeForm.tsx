@@ -129,6 +129,7 @@ const StatusChangeForm = ({
     value: string,
     locale: SupportedLocale | undefined
   ) => {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (locale && onChangeBody) {
       onChangeBody({
         ...newOfficialFeedback.body_multiloc,
@@ -141,6 +142,7 @@ const StatusChangeForm = ({
     value: string,
     locale: SupportedLocale | undefined
   ) => {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (locale && onChangeAuthor) {
       onChangeAuthor({
         ...newOfficialFeedback.author_multiloc,
@@ -167,14 +169,14 @@ const StatusChangeForm = ({
             background="#fff"
             ariaLabel={formatMessage(messages.officialUpdateBody)}
             name="body_multiloc"
-            value={newOfficialFeedback.body_multiloc?.[selectedLocale] || ''}
+            value={newOfficialFeedback.body_multiloc[selectedLocale] || ''}
             locale={selectedLocale}
             onChange={handleBodyOnChange}
           />
 
           <StyledInput
             type="text"
-            value={newOfficialFeedback?.author_multiloc?.[selectedLocale] || ''}
+            value={newOfficialFeedback.author_multiloc[selectedLocale] || ''}
             locale={selectedLocale}
             placeholder={formatMessage(messages.feedbackAuthorPlaceholder)}
             ariaLabel={formatMessage(messages.officialUpdateAuthor)}

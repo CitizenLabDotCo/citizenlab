@@ -37,7 +37,7 @@ const ImageMultiloc = ({ alt = {}, image, stretch = true }: Props) => {
 
   const emitImageLoaded = useCallback(() => {
     if (!image?.imageUrl) return;
-    eventEmitter.emit(IMAGE_LOADED_EVENT, image?.imageUrl);
+    eventEmitter.emit(IMAGE_LOADED_EVENT, image.imageUrl);
   }, [image?.imageUrl]);
 
   return (
@@ -54,9 +54,9 @@ const ImageMultiloc = ({ alt = {}, image, stretch = true }: Props) => {
       {image?.imageUrl && (
         <ImageComponent
           width={stretch ? '100%' : undefined}
-          src={image?.imageUrl}
+          src={image.imageUrl}
           alt={localize(alt) || ''}
-          data-code={image?.dataCode}
+          data-code={image.dataCode}
           onLoad={emitImageLoaded}
         />
       )}

@@ -195,6 +195,7 @@ const OptionList = ({
                                     size="small"
                                     type="text"
                                     value={
+                                      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                                       option.title_multiloc &&
                                       option.title_multiloc[selectedLocale]
                                     }

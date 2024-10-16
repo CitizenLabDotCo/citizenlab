@@ -93,6 +93,7 @@ const ideationConfig: ParticipationMethodConfig = {
   onFormSubmission: (props: FormSubmissionMethodProps) => {
     if (props.ideaId && props.idea) {
       const urlParameters = `?new_idea_id=${props.ideaId}`;
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (props.idea) {
         clHistory.push({
           pathname: `/ideas/${props.idea.data.attributes.slug}`,
@@ -148,6 +149,7 @@ const proposalsConfig: ParticipationMethodConfig = {
   onFormSubmission: (props: FormSubmissionMethodProps) => {
     if (props.ideaId && props.idea) {
       const urlParameters = `?new_idea_id=${props.ideaId}`;
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (props.idea) {
         clHistory.push({
           pathname: `/ideas/${props.idea.data.attributes.slug}`,
@@ -201,7 +203,7 @@ const nativeSurveyConfig: ParticipationMethodConfig = {
   onFormSubmission: (props: FormSubmissionMethodProps) => {
     if (props.project) {
       clHistory.push({
-        pathname: `/projects/${props.project?.attributes.slug}`,
+        pathname: `/projects/${props.project.attributes.slug}`,
         search: `?show_modal=true`.concat(
           props.phaseId ? `&phase_id=${props.phaseId}` : ''
         ),
@@ -288,6 +290,7 @@ const votingConfig: ParticipationMethodConfig = {
   onFormSubmission: (props: FormSubmissionMethodProps) => {
     if (props.ideaId && props.idea) {
       const urlParameters = `?new_idea_id=${props.ideaId}`;
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (props.idea) {
         clHistory.push({
           pathname: `/ideas/${props.idea.data.attributes.slug}`,

@@ -50,6 +50,7 @@ interface Props {
 }
 
 const InfoSection = ({ multilocContent, fragmentName }: Props) => {
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!multilocContent || isEmptyMultiloc(multilocContent)) {
     return null;
   }

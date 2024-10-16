@@ -16,6 +16,7 @@ export const createNavbarItemUpdateData = (
   navbarItem: INavbarItem,
   values: FormValues
 ): Omit<INavbarItemUpdate, 'id'> => ({
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   title_multiloc: values.nav_bar_item_title_multiloc
     ? values.nav_bar_item_title_multiloc
     : navbarItem.attributes.title_multiloc,

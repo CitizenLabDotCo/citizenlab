@@ -54,6 +54,7 @@ const IdeasView = ({
 
   return (
     <>
+      {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
       {view === 'card' && list && (
         <IdeasList
           ariaLabelledBy={hasMoreThanOneView ? 'view-tab-1' : undefined}

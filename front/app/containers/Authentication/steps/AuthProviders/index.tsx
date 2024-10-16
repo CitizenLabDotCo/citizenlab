@@ -121,6 +121,7 @@ const AuthProviders = memo<Props>(
     const isPasswordSigninOrSignupAllowed =
       passwordLoginEnabled &&
       (flow === 'signin' ||
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         (flow === 'signup' && tenantSettings?.password_login?.enable_signup));
 
     const showFCButton =

@@ -205,19 +205,18 @@ const IdeasMap = memo<Props>(
 
     // Create a point graphics layer for idea pins
     const graphics = useMemo(() => {
-      const ideasWithLocations = ideaMarkers?.data?.filter(
-        (idea) => idea?.attributes?.location_point_geojson
+      const ideasWithLocations = ideaMarkers?.data.filter(
+        (idea) => idea.attributes.location_point_geojson
       );
       return ideasWithLocations?.map((idea) => {
-        const coordinates =
-          idea?.attributes?.location_point_geojson?.coordinates;
+        const coordinates = idea.attributes.location_point_geojson?.coordinates;
         return new Graphic({
           geometry: new Point({
             longitude: coordinates?.[0],
             latitude: coordinates?.[1],
           }),
           attributes: {
-            ideaId: idea?.id,
+            ideaId: idea.id,
           },
         });
       });
@@ -279,7 +278,7 @@ const IdeasMap = memo<Props>(
 
           // If an idea was selected in the URL params, move map to that idea
           if (selectedIdea) {
-            const point = ideaMarkers?.data?.find(
+            const point = ideaMarkers?.data.find(
               (idea) => idea.id === selectedIdea
             )?.attributes.location_point_geojson;
 
@@ -313,9 +312,8 @@ const IdeasMap = memo<Props>(
             const topElement = elements[0];
 
             if (topElement.type === 'graphic') {
-              const graphicId = topElement?.graphic?.attributes?.ID;
-              const clusterCount =
-                topElement?.graphic?.attributes?.cluster_count;
+              const graphicId = topElement.graphic.attributes?.ID;
+              const clusterCount = topElement.graphic.attributes?.cluster_count;
               if (clusterCount) {
                 // User clicked a cluster. Zoom in on the cluster.
                 goToMapLocation(
@@ -325,12 +323,12 @@ const IdeasMap = memo<Props>(
                 );
               } else if (graphicId) {
                 // User clicked an idea pin or layer.
-                const ideaId = topElement?.graphic?.attributes?.ideaId;
+                const ideaId = topElement.graphic.attributes?.ideaId;
 
                 const ideasAtClickCount = elements.filter(
                   (element) =>
                     element.type === 'graphic' &&
-                    element?.graphic?.layer.id === 'ideasLayer'
+                    element.graphic.layer.id === 'ideasLayer'
                 ).length;
 
                 // If there are multiple ideas at this same location (overlapping pins), show the idea selection popup.
@@ -342,8 +340,8 @@ const IdeasMap = memo<Props>(
                     const ideaIds = elements.map((element) => {
                       // Get list of idea ids at this location
                       if (element.type === 'graphic') {
-                        const layerId = element?.graphic?.layer?.id;
-                        const ideaId = element?.graphic?.attributes?.ideaId;
+                        const layerId = element.graphic.layer.id;
+                        const ideaId = element.graphic.attributes?.ideaId;
                         if (ideaId && layerId === 'ideasLayer') {
                           return ideaId;
                         }
@@ -432,6 +430,7 @@ const IdeasMap = memo<Props>(
           if (topElement.type === 'graphic') {
             // Set the hovered layer id
             const customParameters =
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
               topElement.layer && topElement.layer['customParameters'];
             setHoveredLayerId(customParameters?.layerId || null);
           }
@@ -443,9 +442,9 @@ const IdeasMap = memo<Props>(
 
     const onSelectIdeaFromList = useCallback(
       (selectedIdeaId: string | null) => {
-        const ideaPoint = ideaMarkers?.data?.find(
+        const ideaPoint = ideaMarkers?.data.find(
           (idea) => idea.id === selectedIdeaId
-        )?.attributes?.location_point_geojson;
+        )?.attributes.location_point_geojson;
 
         if (selectedIdeaId && ideaPoint && esriMapView) {
           goToMapLocation(ideaPoint, esriMapView).then(() => {
@@ -490,7 +489,7 @@ const IdeasMap = memo<Props>(
                 zoomWidgetLocation: 'right',
                 onInit: onMapInit,
               }}
-              webMapId={mapConfig?.data?.attributes?.esri_web_map_id}
+              webMapId={mapConfig?.data.attributes.esri_web_map_id}
               height={isMobileOrSmaller ? '68vh' : '80vh'}
               layers={layers}
               onHover={onMapHover}
@@ -513,7 +512,7 @@ const IdeasMap = memo<Props>(
             <IdeasAtLocationPopup
               setSelectedIdea={setSelectedIdea}
               portalElement={ideasAtLocationNode}
-              ideas={ideaMarkers?.data?.filter((idea) =>
+              ideas={ideaMarkers?.data.filter((idea) =>
                 ideasSharingLocation?.includes(idea.id)
               )}
               mapView={esriMapView}

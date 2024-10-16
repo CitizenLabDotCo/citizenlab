@@ -18,7 +18,7 @@ export const parseRequiredMultilocsSchema = (
     const requiredFieldsObject = Object.fromEntries(
       requiredMultilocFields.map((req) => [
         req,
-        { ...schema?.properties?.[req], required: [locale] },
+        { ...schema.properties?.[req], required: [locale] },
       ])
     );
     return {

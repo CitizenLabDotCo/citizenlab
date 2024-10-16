@@ -16,6 +16,7 @@ export const parseQuestionResult = (
 ): Answer[] => {
   if (result.grouped) {
     const { multilocs, answers, totalPickCount } = result;
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (!multilocs) throw new Error('Multilocs are missing');
 
     const colorSchemeMap = constructColorSchemeMap(result.legend, colorScheme);

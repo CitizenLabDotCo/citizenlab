@@ -95,6 +95,7 @@ const TopicsPicker = memo(
       event.preventDefault();
       const newTopics = [...selectedTopicIds];
 
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (!selectedTopicIds) {
         onClick([topicId]);
       } else {

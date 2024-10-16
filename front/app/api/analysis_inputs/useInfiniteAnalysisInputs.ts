@@ -37,7 +37,7 @@ const useInfiniteAnalysisInputs = ({
         pageNumber: pageParam,
       }),
     getNextPageParam: (lastPage) => {
-      const hasNextPage = lastPage.links?.next;
+      const hasNextPage = lastPage.links.next;
       const pageNumber = getPageNumberFromUrl(lastPage.links.self);
       return hasNextPage && pageNumber ? pageNumber + 1 : null;
     },

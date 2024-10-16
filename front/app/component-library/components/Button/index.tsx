@@ -192,12 +192,13 @@ function getButtonStyle(
     darken(0.12, backgroundColor);
   const backgroundActiveColor =
     backgroundHoverColor !== 'transparent'
-      ? backgroundHoverColor?.startsWith('rgba')
+      ? backgroundHoverColor.startsWith('rgba')
         ? opacify(0.12, backgroundHoverColor)
         : darken(0.12, backgroundHoverColor)
       : 'inherit';
   const backgroundDisabledColor =
     props.bgDisabledColor ||
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     get(defaultStyleValues, `${props.buttonStyle}.bgDisabledColor`) ||
     backgroundColor;
   const textColor =
@@ -217,6 +218,7 @@ function getButtonStyle(
     darken(0.2, iconColor);
   const textDisabledColor =
     props.textDisabledColor ||
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     get(defaultStyleValues, `${props.buttonStyle}.textDisabledColor`) ||
     textColor;
   const borderColor =
@@ -229,6 +231,7 @@ function getButtonStyle(
     darken(0.2, borderColor);
   const borderDisabledColor =
     props.borderDisabledColor ||
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     get(defaultStyleValues, `${props.buttonStyle}.borderDisabledColor`) ||
     borderColor;
   const boxShadow =
@@ -241,14 +244,17 @@ function getButtonStyle(
     'none';
   const borderRadius =
     props.borderRadius ||
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     get(defaultStyleValues, `${props.buttonStyle}.borderRadius`) ||
     props.theme.borderRadius;
   const textDecoration =
     props.textDecoration ||
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     get(defaultStyleValues, `${props.buttonStyle}.textDecoration`) ||
     'none';
   const textDecorationHover =
     props.textDecorationHover ||
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     get(defaultStyleValues, `${props.buttonStyle}.textDecorationHover`) ||
     'none';
   const padding =
@@ -597,6 +603,7 @@ const Button = (props: Props) => {
   const iconPos = props.iconPos || 'left';
   const spinnerSize = getSpinnerSize(size);
   const hasText = !isNil(text) || !isNil(children);
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const buttonType = type && !as ? type : undefined;
   const containerClassNames = [
     className,

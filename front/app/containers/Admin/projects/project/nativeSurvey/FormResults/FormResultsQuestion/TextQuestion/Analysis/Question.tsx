@@ -86,7 +86,7 @@ const Question = ({
             projectId={projectId}
             phaseId={phaseId}
             generatedAt={generatedAt}
-            backgroundTaskId={data?.data.relationships.background_task.data.id}
+            backgroundTaskId={data.data.relationships.background_task.data.id}
           />
         </Box>
         <InsightFooter
@@ -95,7 +95,7 @@ const Question = ({
           analysisId={analysisId}
           projectId={projectId}
           phaseId={phaseId}
-          customFieldIds={data?.data.attributes.custom_field_ids}
+          customFieldIds={data.data.attributes.custom_field_ids}
         />
         <Box display="flex" gap="16px">
           <Button

@@ -29,6 +29,7 @@ const DateFilterDropdown = ({
   const dateFilterFromUrl: string[] = dateParam ? JSON.parse(dateParam) : null;
 
   const [selectedValue, setSelectedValue] = useState<string[]>(
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     dateFilterFromUrl || []
   );
 

@@ -110,7 +110,7 @@ const AdminProjectEventEdit = () => {
     useState(false);
   const [uploadedImage, setUploadedImage] = useState<UploadFile | null>(null);
   const [locationPoint, setLocationPoint] = useState<GeoJSON.Point | null>(
-    event?.data?.attributes?.location_point_geojson || null
+    event?.data.attributes.location_point_geojson || null
   );
   const [geocodedPoint, setGeocodedPoint] = useState<GeoJSON.Point | null>(
     null
@@ -121,10 +121,10 @@ const AdminProjectEventEdit = () => {
   const [successfulGeocode, setSuccessfulGeocode] = useState(false);
 
   // Remote values
-  const remotePoint = event?.data?.attributes?.location_point_geojson;
+  const remotePoint = event?.data.attributes.location_point_geojson;
 
   const eventAttrs = event
-    ? { ...event?.data.attributes, ...attributeDiff }
+    ? { ...event.data.attributes, ...attributeDiff }
     : { ...attributeDiff };
 
   useEffect(() => {
@@ -359,7 +359,7 @@ const AdminProjectEventEdit = () => {
   const handleEventImage = async (data: IEvent) => {
     const hasRemoteImage = !isNilOrError(remoteEventImage);
     const remoteImageId = hasRemoteImage
-      ? event?.data?.relationships?.event_images?.data?.[0].id
+      ? event?.data.relationships.event_images.data[0].id
       : undefined;
     if (
       (uploadedImage === null || !uploadedImage.remote) &&
@@ -384,6 +384,7 @@ const AdminProjectEventEdit = () => {
   const handleEventFiles = async (data: IEvent) => {
     setSubmitState('success');
 
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (data) {
       const { id: eventId } = data.data;
       eventFiles
@@ -415,6 +416,7 @@ const AdminProjectEventEdit = () => {
               {
                 onSuccess: () => {
                   setEventFilesToRemove(
+                    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                     eventFilesToRemove.filter((fileToRemove) => {
                       fileToRemove.id !== file.id;
                     })
@@ -446,6 +448,7 @@ const AdminProjectEventEdit = () => {
       setSaving(true);
 
       // If only files have changed
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (isEmpty(attributeDiff) && eventFilesToRemove) {
         if (event) {
           handleEventFiles(event);
@@ -465,12 +468,12 @@ const AdminProjectEventEdit = () => {
         if (event) {
           updateEvent(
             {
-              eventId: event?.data.id,
+              eventId: event.data.id,
               event: {
                 ...attributeDiff,
                 location_point_geojson: locationPointChanged
                   ? locationPointUpdated
-                  : event?.data.attributes.location_point_geojson,
+                  : event.data.attributes.location_point_geojson,
               },
             },
             {
@@ -701,7 +704,7 @@ const AdminProjectEventEdit = () => {
                           setLocationPoint={setLocationPoint}
                           position={
                             geocodedPoint || // Present when an address is geocoded but hasn't been saved yet
-                            event?.data?.attributes?.location_point_geojson
+                            event?.data.attributes.location_point_geojson
                           }
                         />
                       </Box>
@@ -782,6 +785,7 @@ const AdminProjectEventEdit = () => {
                         minWidth="160px"
                         iconPos={'right'}
                         icon={
+                          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                           attendanceOptionsVisible ? undefined : 'plus-circle'
                         }
                         iconSize="20px"
@@ -789,8 +793,8 @@ const AdminProjectEventEdit = () => {
                         linkTo={eventAttrs.using_url}
                         openLinkInNewTab={true}
                       >
-                        {eventAttrs?.attend_button_multiloc?.[locale]
-                          ? eventAttrs?.attend_button_multiloc[locale]
+                        {eventAttrs.attend_button_multiloc?.[locale]
+                          ? eventAttrs.attend_button_multiloc[locale]
                           : formatMessage(messages.attend)}
                       </Button>
                     </Box>

@@ -49,7 +49,7 @@ const ReferenceLink = ({
   const localize = useLocalize();
   const { data: analysis } = useAnalysis(analysisId);
   const { data: input } = useAnalysisInput(analysisId, match);
-  const mainQuestion = analysis?.data.relationships.main_custom_field?.data?.id;
+  const mainQuestion = analysis?.data.relationships.main_custom_field?.data.id;
   const { data: customField } = useIdeaCustomField({
     projectId: phaseId ? undefined : projectId,
     phaseId,
@@ -60,7 +60,7 @@ const ReferenceLink = ({
   const customFieldKey = customField?.data.attributes.key;
   const mainQuestionResponse =
     customFieldKey &&
-    input?.data.attributes.custom_field_values?.[customFieldKey];
+    input?.data.attributes.custom_field_values[customFieldKey];
 
   const isAnalysisScreen = pathname.includes('/analysis/');
   return (

@@ -101,7 +101,7 @@ const IdeaShowPageTopBar = ({
       project &&
       isFixableByAuthentication(disabled_reason)
     ) {
-      const phaseId = project.data.relationships?.current_phase?.data?.id;
+      const phaseId = project.data.relationships.current_phase?.data?.id;
       if (phaseId) {
         triggerAuthenticationFlow({
           context: {

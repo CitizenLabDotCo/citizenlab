@@ -97,6 +97,7 @@ const CustomPageShow = () => {
     // If page loaded but it's /pages/initiatives but
     // the initiatives feature is not enabled also show
     // not found
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     (!isError && page.data.attributes.code === 'proposals' && !proposalsEnabled)
   ) {
     return <PageNotFound />;
@@ -104,7 +105,7 @@ const CustomPageShow = () => {
 
   const pageAttributes = page.data.attributes;
   const localizedOrgName = localize(
-    appConfiguration?.data.attributes.settings.core.organization_name
+    appConfiguration.data.attributes.settings.core.organization_name
   );
   return (
     <>

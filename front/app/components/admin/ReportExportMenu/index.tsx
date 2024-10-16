@@ -120,6 +120,7 @@ const ReportExportMenu = ({
     svgNodes.forEach((svgNode_, i) => {
       // eslint-disable-next-line react/no-find-dom-node
       const node = findDOMNode(
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         svgNode_ && svgNode_.current.container.children[0]
       );
       if (node) {
@@ -142,6 +143,7 @@ const ReportExportMenu = ({
     svgNodes.forEach(async (svgNode_, i) => {
       // eslint-disable-next-line react/no-find-dom-node
       const node = findDOMNode(
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         svgNode_ && svgNode_.current.container.children[0]
       );
       if (node) {

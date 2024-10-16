@@ -181,7 +181,7 @@ const Form = memo(
               <ButtonBar
                 onSubmit={handleSubmit}
                 apiErrors={Boolean(
-                  apiErrors?.values?.length && apiErrors?.values?.length > 0
+                  apiErrors?.values?.length && apiErrors.values.length > 0
                 )}
                 processing={loading}
               />

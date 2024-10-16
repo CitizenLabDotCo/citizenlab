@@ -87,6 +87,7 @@ export const UserComments = () => {
   }
 
   if (
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     commentsList === null ||
     (!isNilOrError(commentsList) && commentsList.length === 0)
   ) {

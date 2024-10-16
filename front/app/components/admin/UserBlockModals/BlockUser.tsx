@@ -89,7 +89,7 @@ const BlockUserModal = ({ open, setClose, user, returnFocusRef }: Props) => {
     return (
       <SuccessfulUserBlock
         name={getFullName(user)}
-        date={moment(updatedUser?.attributes.block_end_at).format('LL')}
+        date={moment(updatedUser.attributes.block_end_at).format('LL')}
         resetSuccess={() => setSuccess(false)}
         opened={true}
       />

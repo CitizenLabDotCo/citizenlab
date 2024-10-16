@@ -82,7 +82,7 @@ const FullscreenMapInput = memo<Props>(
     const [mapView, setMapView] = useState<MapView | null>(null);
     const modalPortalElement = document.getElementById('modal-portal');
     const isWebMap = !!mapConfig?.data.attributes.esri_web_map_id;
-    const layerCount = mapConfig?.data?.attributes?.layers?.length || 0;
+    const layerCount = mapConfig?.data.attributes.layers.length || 0;
 
     // Create refs for dragging/editing a user's points on the map
     const pointBeingDragged = useRef<Graphic | null>(null);
@@ -117,8 +117,8 @@ const FullscreenMapInput = memo<Props>(
 
     // Add the custom UI elements to the map
     useEffect(() => {
-      mapView?.ui?.add(resetButtonRef?.current || '', 'top-right');
-      mapView?.ui?.add(instructionRef?.current || '', 'bottom-left');
+      mapView?.ui.add(resetButtonRef.current || '', 'top-right');
+      mapView?.ui.add(instructionRef.current || '', 'bottom-left');
     }, [instructionRef, mapView?.ui, resetButtonRef]);
 
     // Show graphic(s) on the map for user input
@@ -139,8 +139,8 @@ const FullscreenMapInput = memo<Props>(
 
     // Get map height by calculating the height of the bottom section
     const getMapHeight = () => {
-      return bottomSectionRef?.current?.clientHeight
-        ? clientHeight - bottomSectionRef?.current?.clientHeight
+      return bottomSectionRef.current?.clientHeight
+        ? clientHeight - bottomSectionRef.current.clientHeight
         : clientHeight;
     };
 

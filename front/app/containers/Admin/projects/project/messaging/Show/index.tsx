@@ -110,7 +110,7 @@ const Show = () => {
       senderName = getFullName(sender.data);
     } else if (senderType === 'organization' && tenant) {
       senderName = localize(
-        tenant?.data.attributes.settings.core.organization_name
+        tenant.data.attributes.settings.core.organization_name
       );
     }
 

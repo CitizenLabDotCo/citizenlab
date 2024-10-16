@@ -36,6 +36,7 @@ const Meta = () => {
   ) {
     const tenantLocales = tenant.data.attributes.settings.core.locales;
 
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     const headerBg = homepageLayout.data.attributes.craftjs_json
       ? Object.values(homepageLayout.data.attributes.craftjs_json).find(
           (node) => node.displayName === 'HomepageBanner'

@@ -45,6 +45,7 @@ const HeaderImage = ({
 }) => {
   const theme = useTheme();
 
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (homepageSettings) {
     const tenantHeaderImage = homepageSettings.header_bg
       ? homepageSettings.header_bg.large

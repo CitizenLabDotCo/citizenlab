@@ -37,7 +37,7 @@ const UserPickerControl = ({
     return (
       <Box display="flex">
         {getLabel(uischema, schema, path)}
-        {uischema?.options?.isAdminField && (
+        {uischema.options?.isAdminField && (
           <IconTooltip
             iconColor={colors.grey800}
             marginLeft="4px"

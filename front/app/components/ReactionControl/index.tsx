@@ -80,7 +80,7 @@ const ReactionControl = ({
   );
 
   const reactionId =
-    authUser && idea?.data?.relationships?.user_reaction?.data?.id;
+    authUser && idea?.data.relationships.user_reaction?.data?.id;
   const myReactionMode = reactionId ? reactionData?.data.attributes.mode : null;
 
   const setScreenReaderCancelReactionMessage = useCallback(
@@ -174,12 +174,12 @@ const ReactionControl = ({
   const cancellingEnabled = reactingActionDescriptor.cancelling_enabled;
 
   // participationContext
-  const ideaPhaseIds = idea?.data?.relationships?.phases?.data?.map(
+  const ideaPhaseIds = idea.data.relationships.phases.data.map(
     (item) => item.id
   );
   const ideaPhases =
     phases &&
-    phases?.data
+    phases.data
       .filter((phase) => includes(ideaPhaseIds, phase.id))
       .map((phase) => phase);
   const latestRelevantIdeaPhase = ideaPhases
@@ -256,6 +256,7 @@ const ReactionControl = ({
   // we don't show the dislike button
   const showDislike =
     reactingActionDescriptor.down.enabled === true ||
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     (reactingActionDescriptor.down.enabled === false &&
       reactingActionDescriptor.down.disabled_reason !==
         'reacting_dislike_disabled');

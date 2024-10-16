@@ -46,7 +46,7 @@ export const setupMatomo = (
         window._paq.push(['setTrackerUrl', `${MATOMO_HOST}/matomo.php`]);
         window._paq.push([
           'setSiteId',
-          appConfiguration.data.attributes.settings.matomo?.product_site_id,
+          appConfiguration.data.attributes.settings.matomo.product_site_id,
         ]);
       }
       // Configure tracking data to the tenant-specific site
@@ -54,7 +54,7 @@ export const setupMatomo = (
         window._paq.push([
           'addTracker',
           `${MATOMO_HOST}/matomo.php`,
-          appConfiguration.data.attributes.settings.matomo?.tenant_site_id,
+          appConfiguration.data.attributes.settings.matomo.tenant_site_id,
         ]);
       }
 
@@ -76,7 +76,7 @@ export const setupMatomo = (
       g.async = true;
       g.src = `${MATOMO_HOST}/matomo.js`;
       g.id = 'internal_matomo_analytics';
-      s?.parentNode?.insertBefore(g, s);
+      s.parentNode?.insertBefore(g, s);
     })();
   }
 };

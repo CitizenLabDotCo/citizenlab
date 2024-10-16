@@ -86,6 +86,7 @@ export const QuestionRuleInput = ({
       }
       // Update rule variable
       const required =
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         logic.rules && logic.rules.length > 0 ? true : field.required;
       setValue(name, { ...field, logic, required }, { shouldDirty: true });
       trigger();

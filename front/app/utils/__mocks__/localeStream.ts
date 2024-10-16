@@ -7,6 +7,7 @@ const LocaleSubject: BehaviorSubject<SupportedLocale> = new BehaviorSubject(
 );
 const $locale = LocaleSubject.pipe(
   distinctUntilChanged(),
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   filter((locale) => locale !== null)
 );
 

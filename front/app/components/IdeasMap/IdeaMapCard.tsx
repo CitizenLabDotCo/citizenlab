@@ -138,7 +138,7 @@ const IdeaMapCard = memo<Props>(
       phaseData?.attributes.voting_method === 'budgeting';
 
     const handleOnClick = (event: React.FormEvent) => {
-      event?.preventDefault();
+      event.preventDefault();
       updateSearchParams({ idea_map_id: idea.id });
       onSelectIdea(idea.id);
       const mapElement = document.getElementById('e2e-ideas-map');
@@ -148,7 +148,7 @@ const IdeaMapCard = memo<Props>(
     };
 
     const handleOnKeyPress = (event: React.KeyboardEvent) => {
-      if (event?.['key'] === 'Enter') {
+      if (event['key'] === 'Enter') {
         handleOnClick(event);
       }
     };
@@ -160,12 +160,13 @@ const IdeaMapCard = memo<Props>(
 
     if (!isNilOrError(appConfig) && !isNilOrError(idea) && project) {
       const tenantCurrency = appConfig.data.attributes.settings.core.currency;
-      const ideaBudget = idea.attributes?.budget;
+      const ideaBudget = idea.attributes.budget;
       const reactingActionDescriptor =
         project.data.attributes.action_descriptors.reacting_idea;
 
       const showDislike =
         reactingActionDescriptor.down.enabled === true ||
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         (reactingActionDescriptor.down.enabled === false &&
           reactingActionDescriptor.down.disabled_reason !==
             'reacting_dislike_disabled');
@@ -214,6 +215,7 @@ const IdeaMapCard = memo<Props>(
           )}
           <Box display="flex" alignItems="center">
             {isParticipatoryBudgetPhase &&
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
               tenantCurrency &&
               ideaBudget &&
               !showVoteInput && (

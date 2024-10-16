@@ -61,6 +61,7 @@ function useReferenceData(
         return;
       }
 
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (!usersByAge.data.attributes.series.reference_population) {
         setReferenceDataUploaded(false);
         return;

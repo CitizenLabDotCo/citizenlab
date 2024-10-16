@@ -39,7 +39,7 @@ const CosponsorsControlInner = ({
 }: ControlProps & WrappedComponentProps & { users: IUser[] }) => {
   const initialCosponsorsText = users.reduce(
     (acc, cosponsor) =>
-      `${acc}@[${getFullName(cosponsor?.data)}](${cosponsor?.data.id}) `,
+      `${acc}@[${getFullName(cosponsor.data)}](${cosponsor.data.id}) `,
     ''
   );
 

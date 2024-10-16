@@ -53,7 +53,7 @@ const FieldTypeSwitcher = ({ field, formHasSubmissions }: Props) => {
                   shouldDirty: true,
                 }
               );
-              setValue(inputTypeName, value?.value, { shouldDirty: true });
+              setValue(inputTypeName, value.value, { shouldDirty: true });
             }}
             value={watch(inputTypeName)}
             label={formatMessage(messages.type)}

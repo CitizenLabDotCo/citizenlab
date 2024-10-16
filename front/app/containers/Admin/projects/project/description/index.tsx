@@ -149,7 +149,7 @@ const ProjectDescription = memo<
             />
             <Error
               fieldName="description_preview_multiloc"
-              apiErrors={apiError?.description_preview_multiloc}
+              apiErrors={apiError.description_preview_multiloc}
             />
           </SectionField>
 
@@ -173,7 +173,7 @@ const ProjectDescription = memo<
               />
               <Error
                 fieldName="description_multiloc"
-                apiErrors={apiError?.description_multiloc}
+                apiErrors={apiError.description_multiloc}
               />
             </SectionField>
           </Box>

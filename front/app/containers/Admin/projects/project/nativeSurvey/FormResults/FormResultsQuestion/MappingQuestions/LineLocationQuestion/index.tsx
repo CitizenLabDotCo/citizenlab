@@ -40,7 +40,7 @@ const LineLocationQuestion = ({
 
   // Add reset button to the map
   useEffect(() => {
-    mapView?.ui?.add(resetButtonRef?.current || '', 'top-right');
+    mapView?.ui.add(resetButtonRef.current || '', 'top-right');
   }, [mapView?.ui, resetButtonRef]);
 
   // Either get the custom map configuration or project level one
@@ -53,7 +53,7 @@ const LineLocationQuestion = ({
     (isLoadingCustomMapConfig && mapConfigId) || isLoadingProjectMapConfig;
 
   const lines = useMemo(() => {
-    return lineResponses?.map(({ answer }) => answer);
+    return lineResponses.map(({ answer }) => answer);
   }, [lineResponses]);
 
   return (

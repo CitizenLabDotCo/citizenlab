@@ -180,7 +180,7 @@ const CauseCard = ({ cause, className, project }: Props) => {
   const { windowWidth } = useWindowSize();
 
   const volunteer = useCallback(() => {
-    if (cause.relationships?.user_volunteer?.data) {
+    if (cause.relationships.user_volunteer?.data) {
       deleteVolunteer({
         causeId: cause.id,
         volunteerId: cause.relationships.user_volunteer.data.id,
@@ -221,7 +221,7 @@ const CauseCard = ({ cause, className, project }: Props) => {
     }
   };
 
-  const isVolunteer = !!cause.relationships?.user_volunteer?.data;
+  const isVolunteer = !!cause.relationships.user_volunteer?.data;
   const smallerThanSmallTablet = windowWidth <= viewportWidths.tablet;
 
   return (

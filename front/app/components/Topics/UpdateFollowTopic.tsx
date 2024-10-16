@@ -32,7 +32,7 @@ const UpdateFollowTopic = ({ topic }: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const isLoading = isAddingFollower || isDeletingFollower;
-  const followerId = topic.relationships.user_follower?.data?.id;
+  const followerId = topic.relationships.user_follower.data?.id;
   const isFollowing = !!followerId;
   const topicButtonContentColor = isFollowing
     ? colors.white

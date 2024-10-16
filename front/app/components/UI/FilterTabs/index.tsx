@@ -125,7 +125,7 @@ const Tabs = <ShowCount extends boolean>({
 
           {getScreenReaderTextForTab && (
             <ScreenReaderOnly>
-              {getScreenReaderTextForTab(tab, tabData[tab]?.count)}
+              {getScreenReaderTextForTab(tab, tabData[tab].count)}
             </ScreenReaderOnly>
           )}
         </Tab>

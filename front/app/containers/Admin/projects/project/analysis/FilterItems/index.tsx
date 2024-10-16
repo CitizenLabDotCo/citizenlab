@@ -134,7 +134,7 @@ const FilterItems = ({ filters, isEditable, analysisId }: FilterItemsProps) => {
           return (
             <>
               {tags?.data
-                .filter((tag) => (value as string[])?.includes(tag.id))
+                .filter((tag) => (value as string[]).includes(tag.id))
                 .map((tag) => (
                   <Tag
                     key={tag.id}

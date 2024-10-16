@@ -50,6 +50,7 @@ const InitiativesNewFormWrapper = (_props: Props) => {
         onSuccess: async (initiative) => {
           const initiativeId = initiative.data.id;
 
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           if (local_initiative_files) {
             local_initiative_files.map(async (file) => {
               addInitiativeFile({

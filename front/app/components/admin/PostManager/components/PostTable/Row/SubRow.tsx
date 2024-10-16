@@ -73,6 +73,7 @@ const SubRow = ({
         {activeFilterMenu === 'statuses' &&
           postType === 'initiative' &&
           statuses &&
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           allowedTransitions !== undefined && (
             <InitiativesStatusSelector
               statuses={statuses as IInitiativeStatusData[]}

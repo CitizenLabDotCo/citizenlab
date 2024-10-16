@@ -53,13 +53,14 @@ const DateControl = ({
           onChange={(value) => {
             handleChange(
               path,
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
               value ? moment(value).format('YYYY-MM-DD') : null
             );
             setDidBlur(true);
           }}
-          disabled={uischema?.options?.readonly}
+          disabled={uischema.options?.readonly}
         />
-        <VerificationIcon show={uischema?.options?.verificationLocked} />
+        <VerificationIcon show={uischema.options?.verificationLocked} />
       </Box>
       <ErrorDisplay
         inputId={sanitizeForClassname(id)}

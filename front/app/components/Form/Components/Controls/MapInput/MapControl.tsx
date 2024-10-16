@@ -99,11 +99,11 @@ const MapControl = ({ ...props }: ControlProps) => {
 
   const getInstructionMessage = () => {
     if (isTabletOrSmaller) {
-      return uischema?.options?.input_type === 'point'
+      return uischema.options?.input_type === 'point'
         ? formatMessage(messages.tapOnMapToAddOrType)
         : formatMessage(messages.tapOnMapMultipleToAdd);
     } else {
-      return uischema?.options?.input_type === 'point'
+      return uischema.options?.input_type === 'point'
         ? formatMessage(messages.clickOnMapToAddOrType)
         : formatMessage(messages.clickOnMapMultipleToAdd);
     }
@@ -135,14 +135,14 @@ const MapControl = ({ ...props }: ControlProps) => {
           handleSinglePointChange={handleSinglePointChange}
           handleMultiPointChange={handleMultiPointChange}
           didBlur={didBlur}
-          inputType={uischema?.options?.input_type}
+          inputType={uischema.options?.input_type}
           {...props}
         />
       ) : (
         <DesktopTabletView
           mapConfig={mapConfig}
           mapLayers={mapLayers}
-          inputType={uischema?.options?.input_type}
+          inputType={uischema.options?.input_type}
           onMapInit={onMapInit}
           mapView={mapView}
           handleSinglePointChange={handleSinglePointChange}

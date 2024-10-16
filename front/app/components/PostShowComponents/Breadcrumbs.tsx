@@ -74,6 +74,7 @@ interface ILink {
 }
 
 function isIMessageInfo(text: Message | Multiloc): text is Message {
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   return (text as Message).message !== undefined;
 }
 

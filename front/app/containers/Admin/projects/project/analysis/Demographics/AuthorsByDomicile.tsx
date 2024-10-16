@@ -87,7 +87,7 @@ const AuthorsByDomicile = ({ customFieldId }: Props) => {
 
   const chartData =
     totalAuthorsByDomicile &&
-    Object.entries(totalAuthorsByDomicile?.data.attributes.series.users).map(
+    Object.entries(totalAuthorsByDomicile.data.attributes.series.users).map(
       ([optionId, count]) => {
         const option = options?.data.find((o) => o.id === optionId);
 

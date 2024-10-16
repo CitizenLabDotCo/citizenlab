@@ -21,7 +21,7 @@ export const handleMapClickPoint = (
   // Center the clicked location on the map
   goToMapLocation(esriPointToGeoJson(event.mapPoint), mapView).then(() => {
     // Update the form data
-    handlePointChange?.(esriPointToGeoJson(event.mapPoint));
+    handlePointChange(esriPointToGeoJson(event.mapPoint));
   });
 };
 

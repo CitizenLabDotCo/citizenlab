@@ -43,7 +43,7 @@ const EventPreviews = ({ projectId }: EventPreviewsProps) => {
     ],
   });
 
-  if (events && events?.data?.length > 0) {
+  if (events && events.data.length > 0) {
     return (
       <>
         <Title

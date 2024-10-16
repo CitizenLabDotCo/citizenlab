@@ -33,6 +33,7 @@ export default function useTranslation({
     enabled:
       machineTranslationButtonClicked &&
       isMachineTranslationsEnabled &&
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       localeTo &&
       context === 'initiative',
   });
@@ -45,6 +46,7 @@ export default function useTranslation({
     enabled:
       machineTranslationButtonClicked &&
       isMachineTranslationsEnabled &&
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       localeTo &&
       context === 'idea',
   });
@@ -57,6 +59,7 @@ export default function useTranslation({
     enabled:
       machineTranslationButtonClicked &&
       isMachineTranslationsEnabled &&
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       localeTo &&
       context === 'comment',
   });
@@ -65,6 +68,7 @@ export default function useTranslation({
     return ideaTranslation?.data;
   } else if (context === 'initiative') {
     return initiativeTranslation?.data;
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   } else if (context === 'comment') {
     return commentTranslation?.data;
   }

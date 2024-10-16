@@ -14,6 +14,7 @@ type Props = {
 
 const StartInitiativeButton = ({ modalPortalElement, onClick }: Props) => {
   const { formatMessage } = useIntl();
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!modalPortalElement) return null;
 
   // A portal is needed here as we're inserting our React component into the Esri Map popup as its content

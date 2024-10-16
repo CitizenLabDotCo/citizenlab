@@ -22,8 +22,10 @@ export default function updateLocationDescriptor(
     : null;
 
   if (descriptor.pathname) {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (!urlLocale && locale) {
       descriptor.pathname = setPathnameLocale(descriptor.pathname, locale);
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     } else if (urlLocale && locale && urlLocale !== locale) {
       descriptor.pathname = replacePathnameLocale(descriptor.pathname, locale);
     }

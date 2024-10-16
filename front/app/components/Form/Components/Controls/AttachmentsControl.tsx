@@ -119,6 +119,7 @@ const AttachmentsControl = ({
             )
           )
         ).filter((f) => f);
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         newRemoteFiles && setFiles(newRemoteFiles as UploadFile[]);
       })();
     }

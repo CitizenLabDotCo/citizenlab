@@ -31,7 +31,7 @@ const NumberResponses = ({ numberResponses }: NumberResponsesProps) => {
   // The virtualizer
   const { measureElement, getTotalSize, getVirtualItems } = useVirtualizer({
     count: numberResponses.length,
-    getScrollElement: () => parentRef?.current,
+    getScrollElement: () => parentRef.current,
     estimateSize: () => 100,
   });
 

@@ -75,6 +75,7 @@ const InternalParentComment = ({
     const projectId = idea?.data.relationships.project.data.id || null;
     const commentDeleted =
       comment.data.attributes.publication_status === 'deleted';
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     const hasChildComments = childCommentIds && childCommentIds.length > 0;
     const modifiedChildCommentIds = childComments
       ? childComments

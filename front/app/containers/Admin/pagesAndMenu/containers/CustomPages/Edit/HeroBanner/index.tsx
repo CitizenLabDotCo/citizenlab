@@ -82,7 +82,7 @@ const EditCustomPageHeroBannerForm = ({
     // to trigger the FE error message. the triple equals is on purpose, we want to
     // only trigger this when the value is explicitly null and not undefined
     if (
-      localSettings.header_bg?.large === null &&
+      localSettings.header_bg.large === null &&
       customPage.data.attributes.header_bg?.large === null
     ) {
       setLocalSettings({

@@ -77,8 +77,7 @@ const ProjectHeader = memo<Props>(({ projectId, className }) => {
   const projectFolderId = project?.data.attributes.folder_id;
 
   if (project) {
-    const projectHeaderImageLargeUrl =
-      project.data.attributes?.header_bg?.large;
+    const projectHeaderImageLargeUrl = project.data.attributes.header_bg.large;
     const userCanEditProject =
       !isNilOrError(authUser) && canModerateProject(project.data, authUser);
 
@@ -122,7 +121,7 @@ const ProjectHeader = memo<Props>(({ projectId, className }) => {
                 followableType="projects"
                 followableId={project.data.id}
                 followersCount={project.data.attributes.followers_count}
-                followerId={project.data.relationships.user_follower?.data?.id}
+                followerId={project.data.relationships.user_follower.data?.id}
                 py="6px"
                 iconSize="20px"
                 toolTipType="projectOrFolder"

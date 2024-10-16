@@ -89,7 +89,7 @@ const ManagementFeedRow = ({ item }: { item: ManagementFeedData }) => {
         <Td>
           {user && (
             <Box display="flex" gap="8px" alignItems="center">
-              <Avatar userId={user?.data.id} size={24} />
+              <Avatar userId={user.data.id} size={24} />
               {getFullName(user.data)}
             </Box>
           )}

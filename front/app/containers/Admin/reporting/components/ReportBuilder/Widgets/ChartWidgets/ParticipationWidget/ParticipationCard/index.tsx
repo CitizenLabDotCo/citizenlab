@@ -33,8 +33,8 @@ const ParticipationCard = ({
 
   if (
     stats?.inputs.value === 0 &&
-    stats?.comments.value === 0 &&
-    stats?.votes.value === 0
+    stats.comments.value === 0 &&
+    stats.votes.value === 0
   ) {
     return <NoData message={chartWidgetMessages.noData} />;
   }

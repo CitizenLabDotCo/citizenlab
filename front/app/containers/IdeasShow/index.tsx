@@ -87,7 +87,7 @@ export const IdeasShow = ({
 
   const authorId = idea.data.relationships.author?.data?.id || null;
   const statusId = idea.data.relationships.idea_status.data?.id;
-  const ideaImageLarge = ideaImages?.data[0]?.attributes?.versions?.large;
+  const ideaImageLarge = ideaImages?.data[0]?.attributes.versions.large;
   const participationContext = getCurrentPhase(phases?.data);
   const wasImported = !!idea.data.relationships.idea_import?.data;
 
@@ -139,7 +139,7 @@ export const IdeasShow = ({
             <Body
               postType="idea"
               postId={ideaId}
-              body={localize(idea.data.attributes?.body_multiloc)}
+              body={localize(idea.data.attributes.body_multiloc)}
               translateButtonClicked={translateButtonIsClicked}
             />
           </Box>
@@ -187,7 +187,7 @@ export const IdeasShow = ({
                 followableType="ideas"
                 followableId={ideaId}
                 followersCount={idea.data.attributes.followers_count}
-                followerId={idea.data.relationships.user_follower?.data?.id}
+                followerId={idea.data.relationships.user_follower.data?.id}
                 width="100%"
                 toolTipType="input"
               />

@@ -47,6 +47,7 @@ const ShortUserFieldValue = ({ customField, rawValue }: Props) => {
     case 'multiline_text':
     case 'number':
     case 'checkbox':
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (rawValue === null || rawValue === undefined || rawValue === '') {
         return <>{formatMessage(messages.noAnswer)}</>;
       } else {

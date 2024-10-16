@@ -145,6 +145,7 @@ const InternalChildCommentForm = ({
   }
 
   const setCaretAtEnd = (element: HTMLTextAreaElement) => {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (element.setSelectionRange && element.textContent) {
       element.setSelectionRange(
         element.textContent.length,
@@ -242,6 +243,7 @@ const InternalChildCommentForm = ({
   const setRef = (element: HTMLTextAreaElement) => {
     textareaElement.current = element;
 
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (textareaElement.current) {
       textareaElement.current.scrollIntoView({
         behavior: 'smooth',
@@ -250,7 +252,7 @@ const InternalChildCommentForm = ({
       });
 
       setTimeout(() => {
-        textareaElement?.current?.focus();
+        textareaElement.current?.focus();
       }, 100);
 
       if (tagValue === inputValue) {
@@ -273,15 +275,16 @@ const InternalChildCommentForm = ({
     return (
       <Container className={`${className || ''}`}>
         <StyledAvatar
-          userId={authUser?.data.id}
+          userId={authUser.data.id}
           size={30}
-          isLinkToProfile={!!authUser?.data.id}
+          isLinkToProfile={!!authUser.data.id}
           showModeratorStyles
         />
         <FormContainer
           onClickOutside={onCancel}
           closeOnClickOutsideEnabled={false}
         >
+          {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
           <Form className={focused ? 'focused' : ''}>
             <label>
               <HiddenLabel>

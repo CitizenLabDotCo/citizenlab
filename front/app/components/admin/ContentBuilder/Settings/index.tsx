@@ -22,7 +22,7 @@ const ContentBuilderSettings = () => {
         title: state.nodes[currentNodeId].data.custom?.title as
           | MessageDescriptor
           | undefined,
-        settings: state.nodes[currentNodeId].related?.settings,
+        settings: state.nodes[currentNodeId].related.settings,
         isDeletable: query.node(currentNodeId).isDeletable(),
         custom: state.nodes[currentNodeId].data.custom,
       };

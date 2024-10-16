@@ -145,7 +145,7 @@ const ErrorDisplay = ({ fieldPath, ajvErrors, didBlur, inputId }: Props) => {
     ...(allApiErrors?.base?.filter(
       (err) =>
         err.error === 'includes_banned_words' &&
-        err?.blocked_words?.find((e) => e?.attribute === fieldName)
+        err.blocked_words?.find((e) => e?.attribute === fieldName)
     ) || []),
   ];
 
@@ -153,7 +153,7 @@ const ErrorDisplay = ({ fieldPath, ajvErrors, didBlur, inputId }: Props) => {
 
   const show =
     (showAllErrors || didBlur === undefined || didBlur === true) &&
-    Boolean(ajvErrors?.length || fieldErrors?.length);
+    Boolean(ajvErrors?.length || fieldErrors.length);
 
   useEffect(() => {
     if (errorToReadId === `error-display-${inputId}`) {
@@ -187,12 +187,12 @@ const ErrorDisplay = ({ fieldPath, ajvErrors, didBlur, inputId }: Props) => {
             <ErrorList>
               {ajvErrors && (
                 <ErrorListItem key={'FEErrors'}>
-                  {dedupApiErrors?.length > 0 && <Bullet aria-hidden>•</Bullet>}
+                  {dedupApiErrors.length > 0 && <Bullet aria-hidden>•</Bullet>}
                   {ajvErrors}
                 </ErrorListItem>
               )}
 
-              {dedupApiErrors?.map((error, index) => (
+              {dedupApiErrors.map((error, index) => (
                 <ErrorListItem key={index}>
                   {(dedupApiErrors.length > 1 ||
                     (ajvErrors && dedupApiErrors.length === 1)) && (
@@ -204,12 +204,12 @@ const ErrorDisplay = ({ fieldPath, ajvErrors, didBlur, inputId }: Props) => {
                       getDefaultApiErrorMessage(error.error, fieldName))}
                     values={{
                       ...error,
-                      row: <strong>{error?.row}</strong>,
-                      rows: error?.rows ? (
-                        <strong>{error?.rows.join(', ')}</strong>
+                      row: <strong>{error.row}</strong>,
+                      rows: error.rows ? (
+                        <strong>{error.rows.join(', ')}</strong>
                       ) : null,
                       // eslint-disable-next-line react/no-unescaped-entities
-                      value: <strong>'{error?.value}'</strong>,
+                      value: <strong>'{error.value}'</strong>,
                       guidelinesLink: (
                         <Link to="/pages/faq" target="_blank">
                           <FormattedMessage {...messages.guidelinesLinkText} />

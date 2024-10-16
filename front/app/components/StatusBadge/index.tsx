@@ -36,7 +36,7 @@ const StatusBadge = memo<Props>(({ statusId, id, className, maxLength }) => {
   const { data: ideaStatus } = useIdeaStatus(statusId);
 
   if (ideaStatus) {
-    const color = ideaStatus?.data.attributes?.color || '#bbb';
+    const color = ideaStatus.data.attributes.color || '#bbb';
 
     return (
       <Container id={id} className={className || ''} color={color}>

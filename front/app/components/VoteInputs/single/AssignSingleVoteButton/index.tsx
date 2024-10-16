@@ -43,16 +43,14 @@ const AssignSingleVoteButton = ({
   const { formatMessage } = useIntl();
 
   const { data: idea } = useIdeaById(ideaId);
-  const { data: basket } = useBasket(
-    phase.relationships?.user_basket?.data?.id
-  );
+  const { data: basket } = useBasket(phase.relationships.user_basket?.data?.id);
   const { getVotes, setVotes, numberOfVotesCast } = useVoting();
   const ideaInBasket = !!getVotes?.(ideaId);
 
   const [searchParams] = useSearchParams();
   const isProcessing = searchParams.get('processing_vote') === ideaId;
 
-  const maxVotes = phase?.attributes.voting_max_total;
+  const maxVotes = phase.attributes.voting_max_total;
   const maxVotesReached = maxVotes && numberOfVotesCast === maxVotes;
 
   const actionDescriptor = idea?.data.attributes.action_descriptors.voting;
@@ -121,7 +119,7 @@ const AssignSingleVoteButton = ({
       return formatMessage(permissionDisabledMessage);
     }
 
-    if (basket?.data?.attributes.submitted_at) {
+    if (basket?.data.attributes.submitted_at) {
       return formatMessage(
         onIdeaPage ? messages.votesSubmittedIdeaPage : messages.votesSubmitted,
         { votes: numberOfVotesCast ?? 0 }

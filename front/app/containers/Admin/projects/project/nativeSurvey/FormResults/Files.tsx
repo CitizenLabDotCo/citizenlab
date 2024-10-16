@@ -32,7 +32,7 @@ const Files = ({ files }: FilesProps) => {
   // The virtualizer
   const { measureElement, getTotalSize, getVirtualItems } = useVirtualizer({
     count: files.length,
-    getScrollElement: () => parentRef?.current,
+    getScrollElement: () => parentRef.current,
     estimateSize: () => 100,
   });
 

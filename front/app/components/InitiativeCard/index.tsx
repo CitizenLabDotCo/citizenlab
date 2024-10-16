@@ -137,7 +137,7 @@ const InitiativeCard = ({
                 followableId={initiative.data.id}
                 followersCount={initiative.data.attributes.followers_count}
                 followerId={
-                  initiative.data.relationships.user_follower?.data?.id
+                  initiative.data.relationships.user_follower.data?.id
                 }
                 w="100%"
                 toolTipType="input"

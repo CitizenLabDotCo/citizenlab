@@ -333,12 +333,12 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
 
   const callLifecycleMethods = (lifecycleMethod: LifecycleMethod) => () => {
     moduleConfigurations.forEach((module: ModuleConfiguration) =>
-      module?.[lifecycleMethod]?.()
+      module[lifecycleMethod]?.()
     );
   };
 
-  const citizenRoutes = parseModuleRoutes(mergedRoutes?.citizen);
-  const adminRoutes = parseModuleRoutes(mergedRoutes?.admin, RouteTypes.ADMIN);
+  const citizenRoutes = parseModuleRoutes(mergedRoutes.citizen);
+  const adminRoutes = parseModuleRoutes(mergedRoutes.admin, RouteTypes.ADMIN);
 
   return {
     outlets: mergedOutlets,
@@ -346,39 +346,39 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
       citizen: citizenRoutes,
       admin: adminRoutes,
       'admin.initiatives': parseModuleRoutes(
-        mergedRoutes?.['admin.initiatives'],
+        mergedRoutes['admin.initiatives'],
         RouteTypes.ADMIN
       ),
       'admin.ideas': parseModuleRoutes(
-        mergedRoutes?.['admin.ideas'],
+        mergedRoutes['admin.ideas'],
         RouteTypes.ADMIN
       ),
       'admin.pages-menu': parseModuleRoutes(
-        mergedRoutes?.['admin.pages-menu'],
+        mergedRoutes['admin.pages-menu'],
         RouteTypes.ADMIN
       ),
       'admin.dashboards': parseModuleRoutes(
-        mergedRoutes?.['admin.dashboards'],
+        mergedRoutes['admin.dashboards'],
         RouteTypes.ADMIN
       ),
       'admin.projects': parseModuleRoutes(
-        mergedRoutes?.['admin.projects'],
+        mergedRoutes['admin.projects'],
         RouteTypes.ADMIN
       ),
       'admin.project_templates': parseModuleRoutes(
-        mergedRoutes?.['admin.project_templates'],
+        mergedRoutes['admin.project_templates'],
         RouteTypes.ADMIN
       ),
       'admin.settings': parseModuleRoutes(
-        mergedRoutes?.['admin.settings'],
+        mergedRoutes['admin.settings'],
         RouteTypes.ADMIN
       ),
       'admin.tools': parseModuleRoutes(
-        mergedRoutes?.['admin.tools'],
+        mergedRoutes['admin.tools'],
         RouteTypes.ADMIN
       ),
       'admin.reporting': parseModuleRoutes(
-        mergedRoutes?.['admin.reporting'],
+        mergedRoutes['admin.reporting'],
         RouteTypes.ADMIN
       ),
     },
@@ -386,7 +386,7 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
     afterMountApplication: callLifecycleMethods('afterMountApplication'),
     streamsToReset: moduleConfigurations.reduce(
       (acc: string[], module: ModuleConfiguration) => {
-        return [...acc, ...(module?.streamsToReset ?? [])];
+        return [...acc, ...(module.streamsToReset ?? [])];
       },
       []
     ),
@@ -426,6 +426,7 @@ export const insertConfiguration =
     const isItemInsertedAfter =
       itemAlreadyInserted &&
       insertAfterName &&
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       itemAtInsertIndex &&
       itemAtInsertIndex.name === insertAfterName;
 

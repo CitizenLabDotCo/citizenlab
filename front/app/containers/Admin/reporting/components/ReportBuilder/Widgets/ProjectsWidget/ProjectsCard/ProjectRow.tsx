@@ -78,7 +78,7 @@ const ProjectRow = ({ project, projectImage, period, participants }: Props) => {
     <Box display="flex" flexDirection="row" pb="16px">
       {projectImage?.attributes.versions.large ? (
         <Image
-          src={projectImage?.attributes.versions.large}
+          src={projectImage.attributes.versions.large}
           alt={''}
           w="52px"
           h="52px"

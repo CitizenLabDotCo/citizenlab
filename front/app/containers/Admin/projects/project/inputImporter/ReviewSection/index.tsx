@@ -106,7 +106,7 @@ const ReviewSection = ({
 
   const pages =
     ideaMetadata?.data.attributes.import_type === 'pdf'
-      ? ideaMetadata?.data.attributes.page_range.map((page) => Number(page))
+      ? ideaMetadata.data.attributes.page_range.map((page) => Number(page))
       : null;
 
   const goToNextPage = () => setCurrentPageIndex((index) => index + 1);
@@ -183,7 +183,7 @@ const ReviewSection = ({
           {pages && (
             <PDFPageControl
               currentPageNumber={currentPageIndex + 1}
-              numberOfPages={pages?.length}
+              numberOfPages={pages.length}
               goToNextPage={goToNextPage}
               goToPreviousPage={goToPreviousPage}
             />
@@ -203,6 +203,7 @@ const ReviewSection = ({
           pr="8px"
           overflowY="scroll"
         >
+          {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
           {(importing || importFailed || isLoadingIdeas) && (
             <Box
               py="8px"

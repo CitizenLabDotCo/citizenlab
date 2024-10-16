@@ -62,7 +62,9 @@ const validateLogic = (message: string) => {
             // Extract current state of customFields
             const fields = obj.from[2].value.customFields;
 
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             if (!isNilOrError(obj) && value && fields) {
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
               return (value.rules || []).every((rule) =>
                 isRuleValid(rule, obj.parent.id, fields)
               );
@@ -77,7 +79,7 @@ const validateLogic = (message: string) => {
           (value: LogicType, obj) => {
             const fields = obj.from[2].value.customFields;
 
-            if (!isNilOrError(obj) && value?.next_page_id && fields) {
+            if (!isNilOrError(obj) && value.next_page_id && fields) {
               return isPageRuleValid(fields, obj.parent.id, value.next_page_id);
             }
             return true;

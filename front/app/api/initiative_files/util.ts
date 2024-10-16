@@ -104,6 +104,7 @@ export async function handleAddFiles(
     addFile
   );
 
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (filesToAddPromises) {
     await Promise.all(filesToAddPromises);
   }

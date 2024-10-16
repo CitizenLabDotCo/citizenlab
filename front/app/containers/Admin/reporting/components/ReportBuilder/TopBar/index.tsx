@@ -145,10 +145,10 @@ const ContentBuilderTopBar = ({
 
     const interval = setInterval(() => {
       const nodes = query.getSerializedNodes();
-      const firstNode = nodes.ROOT?.nodes[0];
+      const firstNode = nodes.ROOT.nodes[0];
       if (!firstNode) return;
 
-      const type = nodes?.[firstNode].type;
+      const type = nodes[firstNode].type;
       const resolvedName =
         typeof type === 'object' ? type.resolvedName : undefined;
 

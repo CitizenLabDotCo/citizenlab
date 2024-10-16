@@ -42,7 +42,7 @@ const NonSortableFolderRow = ({
 
   const showProjects =
     !!folderChildAdminPublications &&
-    folderChildAdminPublications?.length > 0 &&
+    folderChildAdminPublications.length > 0 &&
     !search;
 
   const toggleFolder = () => {

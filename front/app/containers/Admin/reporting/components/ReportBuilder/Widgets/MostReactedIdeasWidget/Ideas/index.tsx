@@ -34,6 +34,7 @@ const Ideas = ({ phase, ideas, images, collapseLongText }: Props) => {
           <IdeaCard
             rank={i + 1}
             idea={idea}
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             images={images[idea.id] || []}
             phase={phase}
             collapseLongText={collapseLongText}

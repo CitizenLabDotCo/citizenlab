@@ -33,7 +33,7 @@ const IdeaMeta = ({ ideaId }: Props) => {
   const { data: idea } = useIdeaById(ideaId);
   const { data: ideaImages } = useIdeaImages(ideaId);
   const { data: author } = useUserById(
-    idea?.data.relationships?.author?.data?.id
+    idea?.data.relationships.author?.data?.id
   );
   const { data: project } = useProjectById(
     idea?.data.relationships.project.data.id

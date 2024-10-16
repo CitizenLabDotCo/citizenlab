@@ -23,7 +23,7 @@ const appConfigurationQueryObserver = new QueryObserver<
 });
 
 appConfigurationQueryObserver.subscribe((query) => {
-  return appConfigurationStream.next(query?.data);
+  return appConfigurationStream.next(query.data);
 });
 
 /** @deprecated Only used for backwards compatibility reasons with streams. Do not use in React components or hooks */

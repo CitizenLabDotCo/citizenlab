@@ -115,7 +115,7 @@ const InsightFooter = ({
         </Box>
       </Tooltip>
 
-      {mainCustomFieldId && additionalCustomFieldIds?.length > 0 && (
+      {mainCustomFieldId && additionalCustomFieldIds.length > 0 && (
         <Tooltip
           zIndex={99999}
           content={
@@ -129,7 +129,7 @@ const InsightFooter = ({
                     phaseId={phaseId}
                   />
                 </li>
-                {additionalCustomFieldIds?.map((customFieldId) => (
+                {additionalCustomFieldIds.map((customFieldId) => (
                   <li key={customFieldId}>
                     <CustomFieldTitle
                       customFieldId={customFieldId}

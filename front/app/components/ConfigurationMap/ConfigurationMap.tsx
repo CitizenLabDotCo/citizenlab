@@ -75,7 +75,7 @@ const ConfigurationMap = memo<Props>(
         />
         <LayerHoverLabel
           layer={mapConfig.data.attributes.layers.find(
-            (layer) => layer?.id === hoveredLayerId
+            (layer) => layer.id === hoveredLayerId
           )}
         />
         <MapHelperOptions mapView={mapView} mapConfig={mapConfig} />

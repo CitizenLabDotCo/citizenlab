@@ -104,7 +104,7 @@ const Show = () => {
     campaign?.data.attributes.context_id
   );
 
-  const authorId = campaign?.data.relationships.author.data?.id;
+  const authorId = campaign?.data.relationships.author.data.id;
   const { data: sender } = useUserById(authorId);
 
   const {
@@ -161,7 +161,7 @@ const Show = () => {
       senderName = getFullName(sender.data);
     } else if (senderType === 'organization' && tenant) {
       senderName = localize(
-        tenant?.data.attributes.settings.core.organization_name
+        tenant.data.attributes.settings.core.organization_name
       );
     }
 
@@ -267,7 +267,7 @@ const Show = () => {
                       to={`/admin/projects/${project.data.id}`}
                       target="_blank"
                     >
-                      {localize(project?.data.attributes.title_multiloc)}
+                      {localize(project.data.attributes.title_multiloc)}
                     </Link>
                   </span>
                 )}

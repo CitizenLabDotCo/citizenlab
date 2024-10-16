@@ -55,9 +55,9 @@ const CustomFields = ({
   }, []);
 
   const schema =
-    userCustomFieldsSchema?.data.attributes?.json_schema_multiloc[locale];
+    userCustomFieldsSchema?.data.attributes.json_schema_multiloc[locale];
   const uiSchema =
-    userCustomFieldsSchema?.data.attributes?.ui_schema_multiloc[locale];
+    userCustomFieldsSchema?.data.attributes.ui_schema_multiloc[locale];
 
   if (!authUser || !userCustomFieldsSchema || !schema || !uiSchema) {
     return null;
@@ -83,7 +83,7 @@ const CustomFields = ({
       pb={smallerThanPhone ? '14px' : '28px'}
       id="e2e-signup-custom-fields-container"
     >
-      <FormWrapper formId={uiSchema?.options?.formId}>
+      <FormWrapper formId={uiSchema.options?.formId}>
         <UserCustomFieldsForm
           authenticationContext={authenticationData.context}
           showAllErrors={showAllErrors}

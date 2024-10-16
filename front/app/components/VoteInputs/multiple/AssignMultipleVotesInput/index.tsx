@@ -55,7 +55,7 @@ const AssignMultipleVotesInput = ({
   const isProcessing = searchParams.get('processing_vote') === ideaId;
 
   // participation context
-  const basketId = phase.relationships?.user_basket?.data?.id;
+  const basketId = phase.relationships.user_basket?.data?.id;
 
   const { data: basket } = useBasket(basketId);
   const { data: idea } = useIdeaById(ideaId);
@@ -140,7 +140,7 @@ const AssignMultipleVotesInput = ({
     localize(voting_term_plural_multiloc) ||
     formatMessage(messages.votes).toLowerCase();
 
-  const basketSubmitted = !!basket?.data?.attributes.submitted_at;
+  const basketSubmitted = !!basket?.data.attributes.submitted_at;
   const maxVotesPerIdeaReached = votes === voting_max_votes_per_idea;
   const maxVotes = voting_max_total ?? 0;
 
@@ -207,7 +207,7 @@ const AssignMultipleVotesInput = ({
         <Box
           onClick={(event) => {
             event.stopPropagation();
-            event?.preventDefault();
+            event.preventDefault();
           }}
           display="flex"
           background={colors.grey100}

@@ -99,7 +99,7 @@ const Insights = () => {
             )}
           </div>
         ))}
-        {!isLoading && insights?.data?.length === 0 && (
+        {!isLoading && insights?.data.length === 0 && (
           <>
             <Text px="24px" color="grey600">
               {formatMessage(messages.emptyList)}

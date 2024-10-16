@@ -78,6 +78,7 @@ const IdeasNewPage = () => {
       authUser: authUser?.data,
     });
 
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if ((enabled === 'maybe' && authenticationRequirements) || disabledReason) {
     const triggerAuthFlow = () => {
       triggerAuthenticationFlow({

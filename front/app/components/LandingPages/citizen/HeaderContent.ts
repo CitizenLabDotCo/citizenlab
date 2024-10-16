@@ -4,6 +4,7 @@ import styled, { css } from 'styled-components';
 export type TAlign = 'center' | 'left';
 export const getAlignItems = (align: TAlign) => {
   if (align === 'center') return 'center';
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (align === 'left') return 'flex-start';
 
   return undefined;

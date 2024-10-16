@@ -45,7 +45,7 @@ const SetAsProjectModerator = ({
 
   if (!flatAdminPublications) return null;
 
-  const options = flatAdminPublications?.map((publication) => ({
+  const options = flatAdminPublications.map((publication) => ({
     value: publication.id,
     label: isFolder(publication)
       ? `${formatMessage(messages.folder)}: ${localize(

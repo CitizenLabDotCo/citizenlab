@@ -112,7 +112,7 @@ const BinModal = ({ open, bins, onClose, onSave }: Props) => {
     const activeElement = document.activeElement;
 
     if (activeElement && activeElement.className === 'bin-input') {
-      (activeElement as HTMLElement)?.blur();
+      (activeElement as HTMLElement).blur();
 
       setTimeout(() => {
         setSaveScheduled(true);

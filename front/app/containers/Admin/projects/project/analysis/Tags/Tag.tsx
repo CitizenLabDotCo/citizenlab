@@ -67,7 +67,7 @@ const Tag = ({ name, tagType, tagginsConfig }: TagProps) => {
   };
   return (
     <Box
-      bg={TagTypeColorMap[tagType]?.background}
+      bg={TagTypeColorMap[tagType].background}
       px="12px"
       py="4px"
       opacity={tagginsConfig?.isSelectedAsTagging === false ? 0.5 : 1}
@@ -77,7 +77,7 @@ const Tag = ({ name, tagType, tagginsConfig }: TagProps) => {
       borderRadius="3px"
       gap="4px"
       as={tagginsConfig ? 'button' : 'div'}
-      border={`1px solid ${TagTypeColorMap[tagType]?.text}`}
+      border={`1px solid ${TagTypeColorMap[tagType].text}`}
       onClick={tagginsConfig ? handleTagClick : undefined}
       tabIndex={tagginsConfig ? 0 : undefined}
       style={{
@@ -85,11 +85,11 @@ const Tag = ({ name, tagType, tagginsConfig }: TagProps) => {
       }}
       data-cy="e2e-analysis-tag"
     >
-      <Box color={TagTypeColorMap[tagType]?.text}>{name}</Box>
+      <Box color={TagTypeColorMap[tagType].text}>{name}</Box>
       {tagginsConfig?.isSelectedAsTagging === true && (
         <Icon
           name="close"
-          fill={TagTypeColorMap[tagType]?.text}
+          fill={TagTypeColorMap[tagType].text}
           width="16px"
           height="16px"
         />
@@ -99,7 +99,7 @@ const Tag = ({ name, tagType, tagginsConfig }: TagProps) => {
           name="plus"
           width="16px"
           height="16px"
-          fill={TagTypeColorMap[tagType]?.text}
+          fill={TagTypeColorMap[tagType].text}
         />
       )}
     </Box>

@@ -22,13 +22,13 @@ const Location = ({ event }: Props) => {
   const isPhoneOrSmaller = useBreakpoint('phone');
   const currentLocale = useLocale();
   const position = event?.attributes.location_point_geojson;
-  const address1 = event?.attributes?.address_1;
+  const address1 = event?.attributes.address_1;
 
   if (isNilOrError(currentLocale) || !address1) {
     return null;
   }
 
-  const address2 = event?.attributes?.address_2_multiloc[currentLocale];
+  const address2 = event.attributes.address_2_multiloc[currentLocale];
 
   if (address1) {
     return (

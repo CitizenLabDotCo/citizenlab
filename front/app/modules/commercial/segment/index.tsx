@@ -51,7 +51,7 @@ const configuration: ModuleConfiguration = {
           isSegmentEnabled = Boolean(
             // Feature flag is in place
             segmentFeatureFlag?.allowed &&
-              segmentFeatureFlag?.enabled &&
+              segmentFeatureFlag.enabled &&
               // User is admin or moderator
               !isNilOrError(user) &&
               !isRegularUser(user)
@@ -120,6 +120,7 @@ const configuration: ModuleConfiguration = {
           } else {
             // no user
             analytics.identify(tenantInfo(tenant.data), {
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
               integrations: integrations(user || null),
               Intercom: { hideDefaultLauncher: true },
             } as any);
@@ -136,7 +137,7 @@ const configuration: ModuleConfiguration = {
               event.name,
               {
                 ...tenantInfo(tenant.data),
-                location: window?.location?.pathname,
+                location: window.location.pathname,
                 ...event.properties,
               },
               { integrations: integrations(user || null) }

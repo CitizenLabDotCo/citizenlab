@@ -30,7 +30,7 @@ const FullscreenImage = ({ src, altText }: Props) => {
     setFullscreen(!fullscreen);
   };
 
-  const modalPortalElement = document?.getElementById('modal-portal');
+  const modalPortalElement = document.getElementById('modal-portal');
 
   const handleKeyup = useCallback(
     (event: KeyboardEvent) => {

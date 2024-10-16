@@ -93,6 +93,7 @@ const ProposalsList = ({
     onLoadMore();
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const hasInitiatives = list && list.length > 0;
 
   return (

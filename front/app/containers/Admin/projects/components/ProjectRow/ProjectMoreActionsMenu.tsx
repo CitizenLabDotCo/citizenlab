@@ -55,6 +55,7 @@ const ProjectMoreActionsMenu = ({
   ) => {
     if (type === 'copying') {
       setIsCopying(isLoading);
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     } else if (type === 'deleting') {
       setIsDeleting(isLoading);
     }

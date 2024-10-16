@@ -144,6 +144,7 @@ const PostTable = ({
   };
 
   const toggleSelectAll = () => {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (!posts) return;
 
     onChangeSelection((currentSelection) => {
@@ -189,6 +190,7 @@ const PostTable = ({
           />
         ) : type === 'AllIdeas' ||
           type === 'ProjectIdeas' ||
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           type === 'ProjectProposals' ? (
           <IdeaHeaderRow
             type={type}

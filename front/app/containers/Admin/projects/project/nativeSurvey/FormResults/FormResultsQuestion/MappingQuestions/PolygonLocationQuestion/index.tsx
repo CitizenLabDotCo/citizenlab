@@ -40,7 +40,7 @@ const PolygonLocationQuestion = ({
 
   // Add reset button to the map
   useEffect(() => {
-    mapView?.ui?.add(resetButtonRef?.current || '', 'top-right');
+    mapView?.ui.add(resetButtonRef.current || '', 'top-right');
   }, [mapView?.ui, resetButtonRef]);
 
   // Either get the custom map configuration or project level one
@@ -53,7 +53,7 @@ const PolygonLocationQuestion = ({
     (isLoadingCustomMapConfig && mapConfigId) || isLoadingProjectMapConfig;
 
   const polygons = useMemo(() => {
-    return polygonResponses?.map(({ answer }) => answer);
+    return polygonResponses.map(({ answer }) => answer);
   }, [polygonResponses]);
 
   return (

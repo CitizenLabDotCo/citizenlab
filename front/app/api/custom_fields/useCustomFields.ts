@@ -25,15 +25,15 @@ const useCustomFields = ({
 
         return (
           option.data?.data.id &&
-          relationshipOptionIds.includes(option.data?.data.id)
+          relationshipOptionIds.includes(option.data.data.id)
         );
       });
 
       return {
         ...customField,
         ...customField.attributes,
-        map_config: customField.relationships?.map_config,
-        map_config_id: customField.relationships?.map_config?.data?.id,
+        map_config: customField.relationships.map_config,
+        map_config_id: customField.relationships.map_config?.data.id,
         options:
           optionsForCustomField.length > 0
             ? optionsForCustomField.map((option) => ({
@@ -41,7 +41,7 @@ const useCustomFields = ({
                 title_multiloc:
                   option.data?.data.attributes.title_multiloc || {},
                 other: option.data?.data.attributes.other || false,
-                image_id: option.data?.data.relationships.image?.data?.id,
+                image_id: option.data?.data.relationships.image.data?.id,
                 temp_id: option.data?.data.attributes.temp_id,
               }))
             : [],
