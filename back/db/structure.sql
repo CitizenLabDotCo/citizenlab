@@ -92,6 +92,7 @@ ALTER TABLE IF EXISTS ONLY public.groups_permissions DROP CONSTRAINT IF EXISTS f
 ALTER TABLE IF EXISTS ONLY public.initiatives_topics DROP CONSTRAINT IF EXISTS fk_rails_6ee3ffe8e1;
 ALTER TABLE IF EXISTS ONLY public.report_builder_reports DROP CONSTRAINT IF EXISTS fk_rails_6988c9886e;
 ALTER TABLE IF EXISTS ONLY public.idea_imports DROP CONSTRAINT IF EXISTS fk_rails_67f00886f9;
+ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_67be9591a3;
 ALTER TABLE IF EXISTS ONLY public.idea_imports DROP CONSTRAINT IF EXISTS fk_rails_636c77bdd1;
 ALTER TABLE IF EXISTS ONLY public.internal_comments DROP CONSTRAINT IF EXISTS fk_rails_617a7ea994;
 ALTER TABLE IF EXISTS ONLY public.analysis_taggings DROP CONSTRAINT IF EXISTS fk_rails_604cfbcd8d;
@@ -213,6 +214,7 @@ DROP INDEX IF EXISTS public.index_notifications_on_internal_comment_id;
 DROP INDEX IF EXISTS public.index_notifications_on_initiating_user_id;
 DROP INDEX IF EXISTS public.index_notifications_on_inappropriate_content_flag_id;
 DROP INDEX IF EXISTS public.index_notifications_on_created_at;
+DROP INDEX IF EXISTS public.index_notifications_on_cosponsorship_id;
 DROP INDEX IF EXISTS public.index_notifications_on_cosponsors_initiative_id;
 DROP INDEX IF EXISTS public.index_notifications_on_basket_id;
 DROP INDEX IF EXISTS public.index_nav_bar_items_on_static_page_id;
@@ -333,6 +335,7 @@ DROP INDEX IF EXISTS public.index_baskets_ideas_on_idea_id;
 DROP INDEX IF EXISTS public.index_baskets_ideas_on_basket_id_and_idea_id;
 DROP INDEX IF EXISTS public.index_areas_static_pages_on_static_page_id;
 DROP INDEX IF EXISTS public.index_areas_static_pages_on_area_id;
+DROP INDEX IF EXISTS public.index_areas_projects_on_project_id_and_area_id;
 DROP INDEX IF EXISTS public.index_areas_projects_on_project_id;
 DROP INDEX IF EXISTS public.index_areas_projects_on_area_id;
 DROP INDEX IF EXISTS public.index_areas_on_include_in_onboarding;
@@ -1399,9 +1402,11 @@ CREATE VIEW public.analytics_fact_email_deliveries AS
  SELECT ecd.id,
     (ecd.sent_at)::date AS dimension_date_sent_id,
     ecd.campaign_id,
-    ((ecc.type)::text <> 'EmailCampaigns::Campaigns::Manual'::text) AS automated
-   FROM (public.email_campaigns_deliveries ecd
-     JOIN public.email_campaigns_campaigns ecc ON ((ecc.id = ecd.campaign_id)));
+    p.id AS dimension_project_id,
+    ((ecc.type)::text <> ALL ((ARRAY['EmailCampaigns::Campaigns::Manual'::character varying, 'EmailCampaigns::Campaigns::ManualProjectParticipants'::character varying])::text[])) AS automated
+   FROM ((public.email_campaigns_deliveries ecd
+     JOIN public.email_campaigns_campaigns ecc ON ((ecc.id = ecd.campaign_id)))
+     LEFT JOIN public.projects p ON ((p.id = ecc.context_id)));
 
 
 --
@@ -1830,10 +1835,16 @@ CREATE VIEW public.analytics_fact_posts AS
     i.likes_count,
     i.dislikes_count,
     i.publication_status
-   FROM ((public.ideas i
-     JOIN public.analytics_dimension_types adt ON (((adt.name)::text = 'idea'::text)))
+   FROM (((public.ideas i
      LEFT JOIN public.analytics_build_feedbacks abf ON ((abf.post_id = i.id)))
-  WHERE (i.creation_phase_id IS NULL)
+     LEFT JOIN public.phases creation_phase ON ((i.creation_phase_id = creation_phase.id)))
+     JOIN public.analytics_dimension_types adt ON (((adt.name)::text =
+        CASE
+            WHEN (creation_phase.* IS NULL) THEN 'idea'::text
+            WHEN ((creation_phase.participation_method)::text = 'proposals'::text) THEN 'proposal'::text
+            ELSE NULL::text
+        END)))
+  WHERE ((creation_phase.* IS NULL) OR ((creation_phase.participation_method)::text = 'proposals'::text))
 UNION ALL
  SELECT i.id,
     i.author_id AS user_id,
@@ -2839,7 +2850,8 @@ CREATE TABLE public.notifications (
     inappropriate_content_flag_id uuid,
     internal_comment_id uuid,
     basket_id uuid,
-    cosponsors_initiative_id uuid
+    cosponsors_initiative_id uuid,
+    cosponsorship_id uuid
 );
 
 
@@ -4669,6 +4681,13 @@ CREATE INDEX index_areas_projects_on_project_id ON public.areas_projects USING b
 
 
 --
+-- Name: index_areas_projects_on_project_id_and_area_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_areas_projects_on_project_id_and_area_id ON public.areas_projects USING btree (project_id, area_id);
+
+
+--
 -- Name: index_areas_static_pages_on_area_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -5506,6 +5525,13 @@ CREATE INDEX index_notifications_on_basket_id ON public.notifications USING btre
 --
 
 CREATE INDEX index_notifications_on_cosponsors_initiative_id ON public.notifications USING btree (cosponsors_initiative_id);
+
+
+--
+-- Name: index_notifications_on_cosponsorship_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_notifications_on_cosponsorship_id ON public.notifications USING btree (cosponsorship_id);
 
 
 --
@@ -6391,6 +6417,14 @@ ALTER TABLE ONLY public.internal_comments
 
 ALTER TABLE ONLY public.idea_imports
     ADD CONSTRAINT fk_rails_636c77bdd1 FOREIGN KEY (file_id) REFERENCES public.idea_import_files(id);
+
+
+--
+-- Name: notifications fk_rails_67be9591a3; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.notifications
+    ADD CONSTRAINT fk_rails_67be9591a3 FOREIGN KEY (cosponsorship_id) REFERENCES public.cosponsorships(id);
 
 
 --
@@ -7516,6 +7550,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240917181018'),
 ('20240923112800'),
 ('20240923112801'),
-('20241001101704');
-
-
+('20240926175000'),
+('20241001101704'),
+('20241002200522'),
+('20241008143004'),
+('20241011101454');

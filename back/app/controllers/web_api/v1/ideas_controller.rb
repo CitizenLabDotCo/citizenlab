@@ -48,7 +48,7 @@ class WebApi::V1::IdeasController < ApplicationController
   def index_mini
     ideas = IdeasFinder.new(
       params,
-      scope: policy_scope(Idea).where(publication_status: 'published'),
+      scope: policy_scope(Idea).submitted_or_published,
       current_user: current_user
     ).find_records
     ideas = paginate SortByParamsService.new.sort_ideas(ideas, params, current_user)
@@ -60,7 +60,7 @@ class WebApi::V1::IdeasController < ApplicationController
   def index_idea_markers
     ideas = IdeasFinder.new(
       params,
-      scope: policy_scope(Idea).where(publication_status: 'published'),
+      scope: policy_scope(Idea).submitted_or_published,
       current_user: current_user
     ).find_records
     ideas = paginate SortByParamsService.new.sort_ideas(ideas, params, current_user)
@@ -72,7 +72,7 @@ class WebApi::V1::IdeasController < ApplicationController
   def index_xlsx
     ideas = IdeasFinder.new(
       params.merge(filter_can_moderate: true),
-      scope: policy_scope(Idea).where(publication_status: 'published'),
+      scope: policy_scope(Idea).submitted_or_published,
       current_user: current_user
     ).find_records
     ideas = SortByParamsService.new.sort_ideas(ideas, params, current_user)
@@ -199,6 +199,7 @@ class WebApi::V1::IdeasController < ApplicationController
 
   def update
     input = Idea.find params[:id]
+
     authorize input
 
     if invalid_blank_author_for_update? input, params
@@ -228,12 +229,12 @@ class WebApi::V1::IdeasController < ApplicationController
     end
 
     sidefx.before_update(input, current_user)
-
+    cosponsor_ids = input.cosponsors.map(&:id)
     save_options = {}
     save_options[:context] = :publication if params.dig(:idea, :publication_status) == 'published'
     ActiveRecord::Base.transaction do
       if input.save(**save_options)
-        sidefx.after_update(input, current_user)
+        sidefx.after_update(input, current_user, cosponsor_ids)
         update_file_upload_fields input, input.custom_form, update_params
         render json: WebApi::V1::IdeaSerializer.new(
           input.reload,
