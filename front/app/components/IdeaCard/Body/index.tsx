@@ -81,6 +81,7 @@ const Body = ({ idea }: Props) => {
     .replace(/<[^>]*>?/gm, '')
     .replaceAll('&amp;', '&')
     .trim();
+  const publishedAt = idea.data.attributes.published_at;
 
   return (
     <BodyWrapper>
@@ -96,10 +97,8 @@ const Body = ({ idea }: Props) => {
           anonymous={idea.data.attributes.anonymous}
         />
         <Separator aria-hidden>&bull;</Separator>
-        {!isNilOrError(locale) && (
-          <TimeAgo>
-            {timeAgo(Date.parse(idea.data.attributes.created_at), locale)}
-          </TimeAgo>
+        {!isNilOrError(locale) && publishedAt && (
+          <TimeAgo>{timeAgo(Date.parse(publishedAt), locale)}</TimeAgo>
         )}
         <span aria-hidden> {bodyText}</span>
       </BodyDiv>
