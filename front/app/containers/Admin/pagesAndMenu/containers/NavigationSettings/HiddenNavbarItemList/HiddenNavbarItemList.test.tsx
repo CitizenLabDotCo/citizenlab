@@ -88,6 +88,7 @@ describe('<HiddenNavbarItemList />', () => {
 
     const faqItem = {
       pageCode: 'faq',
+      slug: 'faq',
       pageId: '793d56cc-c8b3-4422-b393-972b71f82aa2',
       titleMultiloc: { en: 'FAQ' },
       type: 'page',
