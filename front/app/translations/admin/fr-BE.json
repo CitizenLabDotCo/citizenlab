@@ -1558,7 +1558,7 @@
   "app.containers.AdminPage.ProjectEdit.PostManager.titleInputManager": "Gestion des contributions",
   "app.containers.AdminPage.ProjectEdit.PostManager.votingShareResultsTurnedOff": "Le partage des résultats est désactivé.",
   "app.containers.AdminPage.ProjectEdit.PostManager.votingShareResultsTurnedOff2": "Les résultats du vote ne seront pas partagés à la fin de la phase, sauf si vous les modifiez dans la configuration de la phase.",
-  "app.containers.AdminPage.ProjectEdit.PostManager.votingShareResultsTurnedOn2": "Ces résultats seront automatiquement partagés à la fin de la phase. Modifiez la date de fin de cette phase pour changer le moment où les résultats seront partagés.",
+  "app.containers.AdminPage.ProjectEdit.PostManager.votingShareResultsTurnedOn2": "Ces résultats seront partagés automatiquement une fois la phase terminée. Modifiez la date de fin de cette phase pour changer la date à laquelle les résultats seront communiqués.",
   "app.containers.AdminPage.ProjectEdit.SurveyResults.exportSurveyResults": "Exporter les résultats de l'enquête (.xslx)",
   "app.containers.AdminPage.ProjectEdit.SurveyResults.subtitleSurveyResults": "Ici, vous pouvez télécharger un fichier Excel contenant les résultats des enquêtes présentes dans le projet. Pour l'instant, seules les enquêtes Typeform sont disponibles.",
   "app.containers.AdminPage.ProjectEdit.SurveyResults.surveyResultsTab": "Résultats de l'enquête",
