@@ -46,13 +46,13 @@ namespace :initiatives_to_proposals do
       end
       rake_20240910_migrate_initiatives_static_page(reporter)
       SettingsService.new.deactivate_feature!('initiatives')
-      reporter.report!('migrate_initiatives_to_proposals.json', verbose: false)
+      reporter.report!("migrate_initiatives_to_proposals_#{ENV.fetch('POSTGRES_HOST')}.json", verbose: false)
     rescue ActiveRecord::StatementInvalid => e
       puts "Error occurred during migration: #{e.message}"
       reporter.add_error(e.message)
-      sleep(20 * 60)
+      sleep(60 * 60)
     end
-    reporter.report!('migrate_initiatives_to_proposals.json', verbose: true)
+    reporter.report!("migrate_initiatives_to_proposals_#{ENV.fetch('POSTGRES_HOST')}.json", verbose: true)
   end
 end
 
