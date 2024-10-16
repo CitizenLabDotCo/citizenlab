@@ -53,6 +53,14 @@ resource 'AdminPublication' do
         expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('folder')).to eq 2
       end
 
+      example 'Includes the related publications (projects and folders)', document: false do
+        do_request
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+        expect(json_response[:included].map { |d| d.dig(:attributes, :slug) })
+          .to match_array(json_response[:data].map { |d| d.dig(:attributes, :publication_slug) })
+      end
+
       example 'List all top-level admin publications' do
         do_request(depth: 0)
         json_response = json_parse(response_body)
@@ -130,6 +138,14 @@ resource 'AdminPublication' do
           expect(publication_ids).to match_array [
             @moderated_project1.id, @moderated_project2.id, @moderated_folder1.id, @moderated_folder2.id
           ]
+        end
+
+        example 'Includes the related publications (projects and folders)', document: false do
+          do_request filter_is_moderator_of: true
+          expect(status).to eq(200)
+          json_response = json_parse(response_body)
+          expect(json_response[:included].map { |d| d.dig(:attributes, :slug) })
+            .to match_array(json_response[:data].map { |d| d.dig(:attributes, :publication_slug) })
         end
 
         example 'List only projects admin is moderator of', document: false do
@@ -353,6 +369,14 @@ resource 'AdminPublication' do
         expect(json_response[:data].find { |d| d.dig(:relationships, :publication, :data, :type) == 'folder' }.dig(:attributes, :visible_children_count)).to eq 2
       end
 
+      example 'Includes the related publications (projects and folders)', document: false do
+        do_request
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+        expect(json_response[:included].map { |d| d.dig(:attributes, :slug) })
+          .to match_array(json_response[:data].map { |d| d.dig(:attributes, :publication_slug) })
+      end
+
       example 'Visible children count should take account with applied filters', document: false do
         projects.first.admin_publication.update! publication_status: 'archived'
         do_request(folder: nil, publication_statuses: ['published'], remove_not_allowed_parents: true)
@@ -569,6 +593,14 @@ resource 'AdminPublication' do
         expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :id) })
           .to match_array [published_projects[0].id, published_projects[1].id]
       end
+
+      example 'Includes the related publications (projects and folders)', document: false do
+        do_request(filter_is_moderator_of: true, only_projects: true)
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+        expect(json_response[:included].map { |d| d.dig(:attributes, :slug) })
+          .to match_array(json_response[:data].map { |d| d.dig(:attributes, :publication_slug) })
+      end
     end
   end
 
@@ -610,6 +642,14 @@ resource 'AdminPublication' do
         do_request filter_is_moderator_of: true
         assert_status 200
         expect(publication_ids).to match_array [project_folder.id, @folder.id, @folder.projects.pluck(:id)].flatten
+      end
+
+      example 'Includes the related publications (projects and folders)', document: false do
+        do_request(filter_is_moderator_of: true)
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+        expect(json_response[:included].map { |d| d.dig(:attributes, :slug) })
+          .to match_array(json_response[:data].map { |d| d.dig(:attributes, :publication_slug) })
       end
 
       example 'List only projects user is moderator of' do
