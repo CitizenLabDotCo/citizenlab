@@ -6,7 +6,7 @@ namespace :tenant_settings do
     feature = args[:feature]
     failed = []
     Tenant.where.not(host: 'i18n.stg.citizenlab.co').each do |tn|
-      Apartment::Tenant.switch(tn.schema_name) do
+      tn.switch do
         app_config = AppConfiguration.instance
         app_config.settings[feature]['allowed'] = true
         app_config.settings[feature]['enabled'] = true
@@ -25,7 +25,7 @@ namespace :tenant_settings do
     feature = args[:feature]
     failed = []
     Tenant.where.not(host: 'i18n.stg.citizenlab.co').each do |tn|
-      Apartment::Tenant.switch(tn.schema_name) do
+      tn.switch do
         app_config = AppConfiguration.instance
         app_config.settings[feature]['allowed'] = false
         app_config.settings[feature]['enabled'] = false
