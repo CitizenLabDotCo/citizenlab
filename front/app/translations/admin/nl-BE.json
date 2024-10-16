@@ -2119,7 +2119,7 @@
   "app.containers.AdminPage.SettingsPage.urlTitle": "Website",
   "app.containers.AdminPage.SettingsPage.urlTitleTooltip": "Voeg de URL toe van de website die je aan dit platform wil linken. Deze wordt gebruikt in de footer op de homepagina.",
   "app.containers.AdminPage.SettingsPage.userNameDisplayDescription": "Kies hoe gebruikers zonder naam in hun profiel worden weergegeven in het platform. Dit gebeurt wanneer je de toegangsrechten voor een fase instelt op 'E-mailbevestiging'. In alle gevallen kunnen gebruikers bij deelname de profielnaam bijwerken die we automatisch voor hen hebben gegenereerd.",
-  "app.containers.AdminPage.SettingsPage.userNameDisplayTitle": "Weergave gebruikersnaam (alleen voor gebruikers met bevestigde e-mail)",
+  "app.containers.AdminPage.SettingsPage.userNameDisplayTitle": "Weergave gebruikersnaam (voor gebruikers met alleen een bevestigd emailadres)",
   "app.containers.AdminPage.SideBar.academy": "Academie",
   "app.containers.AdminPage.SideBar.administrator": "Platformbeheerder",
   "app.containers.AdminPage.SideBar.communityPlatform": "Community platform",
