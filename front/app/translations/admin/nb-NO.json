@@ -1682,7 +1682,7 @@
   "app.containers.AdminPage.ProjectEdit.inputsDefaultView": "Standardvisning",
   "app.containers.AdminPage.ProjectEdit.inputsDefaultViewTooltip": "Velg standardvisningen for å vise oppføringer: kort i en rutenettvisning eller nåler på et kart. Deltakerne kan manuelt bytte mellom de to visningene.",
   "app.containers.AdminPage.ProjectEdit.konveioDocumentAnnotationEmbedUrl": "Bygg inn Konveio URL",
-  "app.containers.AdminPage.ProjectEdit.likingMethodTitle": "Antall likes per deltaker",
+  "app.containers.AdminPage.ProjectEdit.likingMethodTitle": "Max number of inputs a participant can like (in ideation) or vote for (in proposals)",
   "app.containers.AdminPage.ProjectEdit.limited": "Begrenset",
   "app.containers.AdminPage.ProjectEdit.loadMoreTemplates": "Last inn flere maler",
   "app.containers.AdminPage.ProjectEdit.mapDisplay": "Kart",
