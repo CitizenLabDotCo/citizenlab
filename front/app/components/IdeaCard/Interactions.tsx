@@ -26,12 +26,14 @@ const Interactions = ({ idea, phase }: Props) => {
 
   if (!config || !phase) return null;
 
-  const hideVoteInteractions =
+  const showingVotingResults =
     !isPhaseActive(phase) &&
     phase?.attributes.participation_method === 'voting' &&
     phase?.attributes.autoshare_results_enabled;
 
-  if ((!isPhaseActive(phase) && !votingMethod) || hideVoteInteractions) {
+  const phaseNotActiveAndNotVoting = !isPhaseActive(phase) && !votingMethod;
+
+  if (phaseNotActiveAndNotVoting || showingVotingResults) {
     return null;
   }
 
