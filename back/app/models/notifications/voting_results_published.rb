@@ -76,7 +76,7 @@ module Notifications
     def self.make_notifications_on(activity)
       phase = activity.item
 
-      if phase.voting? && phase.show_results_toggle_enabled
+      if phase.voting? && phase.autoshare_results_enabled
         user_scope = ParticipantsService.new.projects_participants(Project.where(id: phase.project_id))
         ProjectPolicy::InverseScope.new(phase.project, user_scope).resolve.filter_map do |recipient|
           next if Permissions::PhasePermissionsService.new(phase, recipient).denied_reason_for_action 'voting'

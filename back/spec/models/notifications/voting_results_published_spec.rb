@@ -7,7 +7,7 @@ RSpec.describe Notifications::VotingResultsPublished do
     let(:participant) { create(:user) }
 
     it 'makes a notification when a voting phase has ended' do
-      phase = create(:budgeting_phase)
+      phase = create(:budgeting_phase, autoshare_results_enabled: true)
       create(:idea, project_id: phase.project.id, author_id: participant.id)
       activity = create(:activity, item: phase, action: 'ended')
 
