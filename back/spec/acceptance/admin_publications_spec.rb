@@ -731,14 +731,23 @@ resource 'AdminPublication' do
         parameter :include_publications, 'Include the related publications and associated items', required: false
 
         example_request 'Index action does invoke unnecessary queries' do
+          project = create(:project_with_active_ideation_phase)
+          create(:project_image, project: project)
+          folder = create(:project_folder)
+          create(:project_folder_image, project_folder: folder)
+
+          # We need a participant, to get some included avatar data
+          participant = create(:user)
+          create(:idea, project: project, author: participant)
+
           # There is probably lots more that could be done to improve the query count here, but this test
           # is here to help ensure that we don't make things worse.
           #
-          # Down from 93, before adding more items to @publications = @publications.includes(...) in TAN-2806 #9110
+          # Down from 152, before adding more items to @publications = @publications.includes(...) in TAN-2806 #9110
           # in the case where we make use of the include_publications parameter
           expect do
             do_request include_publications: 'true'
-          end.not_to exceed_query_limit(73)
+          end.not_to exceed_query_limit(127)
 
           assert_status 200
         end
