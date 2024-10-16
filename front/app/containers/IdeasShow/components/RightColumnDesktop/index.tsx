@@ -13,6 +13,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import FollowUnfollow from 'components/FollowUnfollow';
 import ReactionControl from 'components/ReactionControl';
+import { showIdeaReactions } from 'components/ReactionControl/utils';
 
 import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
 
@@ -23,7 +24,6 @@ import SharingButtonComponent from '../Buttons/SharingButtonComponent';
 import Cosponsorship from '../Cosponsorship';
 import MetaInformation from '../MetaInformation';
 import ProposalInfo from '../ProposalInfo';
-import { showIdeaReactions } from 'components/ReactionControl/utils';
 
 interface Props {
   ideaId: string;

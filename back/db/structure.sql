@@ -2125,7 +2125,7 @@ CREATE TABLE public.cosponsors_initiatives (
 --
 
 CREATE TABLE public.cosponsorships (
-    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
     status character varying DEFAULT 'pending'::character varying NOT NULL,
     user_id uuid NOT NULL,
     idea_id uuid NOT NULL,
@@ -7555,3 +7555,5 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20241002200522'),
 ('20241008143004'),
 ('20241011101454');
+
+

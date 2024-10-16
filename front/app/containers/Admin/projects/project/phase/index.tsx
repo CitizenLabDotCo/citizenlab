@@ -21,8 +21,8 @@ import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 
-import { FeatureFlags, getTabs, IPhaseTab } from '../tabs';
 import { getTimelineTab } from '../phaseSetup/utils';
+import { FeatureFlags, getTabs, IPhaseTab } from '../tabs';
 
 import { PhaseHeader } from './PhaseHeader';
 

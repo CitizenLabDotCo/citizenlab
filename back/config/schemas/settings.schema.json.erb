@@ -433,11 +433,12 @@
             "type": "string",
             "description": "The Login Mechanism Name is used for user-facing copy. For instance, \"Sign up with {login_mechanism_name}.\"."
           },
-          "admin_only": {
-            "title": "Admin only",
-            "type": "boolean",
-            "default": false,
-            "description": "Should this login mechanism be available only for admins at /sign-in/admin ?"
+          "visibility": {
+            "title": "Visibility",
+            "type": "string",
+            "enum": ["show", "link", "hide"],
+            "default": "show",
+            "description": "Should this login mechanism be shown with other options to everyone, be hidden but available at /sign-in/admin or linked from the login modal via an 'admin options' link?"
           }
         }
       },
