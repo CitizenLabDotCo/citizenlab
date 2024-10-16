@@ -2119,7 +2119,7 @@
   "app.containers.AdminPage.SettingsPage.urlTitle": "Site internet",
   "app.containers.AdminPage.SettingsPage.urlTitleTooltip": "Ajoutez l’URL du site que vous souhaitez lier à cette plateforme. Ce site sera accessible au bas de page d’accueil.",
   "app.containers.AdminPage.SettingsPage.userNameDisplayDescription": "Choisissez comment les utilisateurs sans nom dans leur profil apparaîtront dans la plate-forme. C'est le cas lorsque vous définissez les droits d'accès d'une phase sur \"Confirmation par courrier électronique\". Dans tous les cas, lors de leur participation, les utilisateurs pourront mettre à jour le nom de profil que nous avons généré pour eux.",
-  "app.containers.AdminPage.SettingsPage.userNameDisplayTitle": "Affichage du nom de l'utilisateur (uniquement pour les utilisateurs confirmés par e-mail)",
+  "app.containers.AdminPage.SettingsPage.userNameDisplayTitle": "Affichage du nom d'utilisateur (concerne uniquement les utilisateurs dont l'e-mail est confirmé)",
   "app.containers.AdminPage.SideBar.academy": "Academy",
   "app.containers.AdminPage.SideBar.administrator": "Administrateur",
   "app.containers.AdminPage.SideBar.communityPlatform": "Communauté Go Vocal",
