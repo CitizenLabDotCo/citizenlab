@@ -44,7 +44,7 @@ module EmailCampaigns
     end
 
     def activity_triggers
-      { 'Notifications::VotingResults' => { 'created' => true } }
+      { 'Notifications::VotingResultsPublished' => { 'created' => true } }
     end
 
     def filter_recipient(users_scope, activity:, time: nil)
