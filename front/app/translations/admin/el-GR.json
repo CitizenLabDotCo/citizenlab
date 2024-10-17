@@ -1525,7 +1525,6 @@
   "app.containers.AdminPage.ProjectEdit.PhaseParticipationConfig.autoshareResults": "Αποτελέσματα αυτόματης κοινής χρήσης",
   "app.containers.AdminPage.ProjectEdit.PhaseParticipationConfig.autoshareResultsToggleDescription": "Τα αποτελέσματα της ψηφοφορίας κοινοποιούνται στην πλατφόρμα και μέσω ηλεκτρονικού ταχυδρομείου στους συμμετέχοντες όταν λήξει η φάση. Αυτό διασφαλίζει τη διαφάνεια εξ ορισμού.",
   "app.containers.AdminPage.ProjectEdit.PhaseParticipationConfig.resultSharing": "Κοινή χρήση αποτελεσμάτων",
-  "app.containers.AdminPage.ProjectEdit.PhaseParticipationConfig.resultSharingDescription": "Περιγραφή κοινής χρήσης αποτελεσμάτων",
   "app.containers.AdminPage.ProjectEdit.PollTab.addAnswerOption": "Προσθέστε μια επιλογή απάντησης",
   "app.containers.AdminPage.ProjectEdit.PollTab.addPollQuestion": "Προσθήκη ερώτησης δημοσκόπησης",
   "app.containers.AdminPage.ProjectEdit.PollTab.cancelEditAnswerOptions": "Ακύρωση",
