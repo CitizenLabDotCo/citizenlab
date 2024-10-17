@@ -5,19 +5,9 @@ import { keys } from 'utils/helperUtils';
 
 import { PublicationTab } from './';
 
-export function getCurrentTab(
-  statusCounts: IStatusCountsAll,
-  currentTab: PublicationTab | null
-): PublicationTab {
+export function getCurrentTab(statusCounts: IStatusCountsAll): PublicationTab {
   const { published, archived, draft, all } = statusCounts;
 
-  if (currentTab) {
-    const count = statusCounts[currentTab];
-
-    if (count && count > 0) {
-      return currentTab;
-    }
-  }
   if (published && published > 0) return 'published';
   if (archived && all > archived) return 'archived';
   if (draft && all > draft) return 'draft';

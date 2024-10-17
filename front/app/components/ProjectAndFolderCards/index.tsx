@@ -50,7 +50,7 @@ const ProjectAndFolderCards = ({
   const [topicIds, setTopicsIds] = useState<string[] | null>(null);
   const [areaIds, setAreasIds] = useState<string[] | null>(null);
   const [currentTab, setCurrentTab] = useState<PublicationTab>(
-    getCurrentTab(allStatusCountsWithoutFilters, null)
+    getCurrentTab(allStatusCountsWithoutFilters)
   );
 
   // with a search string, return projects within folders
