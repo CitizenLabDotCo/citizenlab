@@ -273,7 +273,7 @@ ar-MA:
       main_header: '%{authorNameFirst} ذكرك في تعليق داخلي.'
       preheader: '%{authorNameFull} ذكرك في تعليق داخلي.'
     moderator_digest:
-      subject: 'تقرير المدير الاسبوعي "%{project_title}"'
+      subject: 'تقرير مدير المشروع الأسبوعي الخاص بك لـ%{time}'
       preheader: 'ملخص مدير المشروع لـ %{organizationName}'
       title_your_weekly_report: '%{firstName}، تقريرك الأسبوعي'
       text_introduction: "قمنا بتحضير قائمة تضم جميع الأفكار التي ولّدت أكبر تفاعل ونشاط على مدار الأسبوع الماضي.اكتشف ما يحدث في مشروعك!\n     "
@@ -493,7 +493,7 @@ ar-MA:
     threshold_reached_for_admin:
       cta_process_initiative: 'خذ هذه المبادرة إلى الخطوات التالية'
       main_header: 'بلغت المبادرة حد التصويت المطلوب!'
-      subject: '"%{input_title}" وصلت إلى الحد الأقصى للتصويت'
+      subject: 'بلغت المبادرة حد التصويت المطلوب على منصتك'
       preheader: 'تأكد من اتخاذ الخطوات التالية'
     welcome:
       cta_join_platform: 'استكشف المنصة'
@@ -512,7 +512,7 @@ ar-MA:
         proposal: 'لقد تم نشر اقتراحك'
         initiative: 'لقد تم نشر مبادرتك'
         petition: 'لقد تم نشر عريضتك'
-      main_header: 'لقد قمت بنشر "%{input_title}"'
+      main_header: 'لقد نشرت فكرة! دعنا نحرص على قراءة الآخرين لها.'
       header_message: 'دعونا نتأكد من قراءته.'
       message_get_votes: 'بلغ فكرتك إلى المزيد من الأشخاص:'
       action_published_idea: 'فكرة منشورة'
