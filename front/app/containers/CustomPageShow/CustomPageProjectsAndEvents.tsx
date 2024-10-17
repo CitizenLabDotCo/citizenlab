@@ -13,8 +13,10 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import ContentContainer from 'components/ContentContainer';
 import EventsWidget from 'components/LandingPages/citizen/EventsWidget';
-import { PublicationTab } from 'components/ProjectAndFolderCards';
-import { PUBLICATION_STATUSES } from 'components/ProjectAndFolderCards';
+import {
+  PublicationTab,
+  PUBLICATION_STATUSES,
+} from 'components/ProjectAndFolderCards';
 import ProjectAndFolderCardsInner from 'components/ProjectAndFolderCards/ProjectAndFolderCardsInner';
 import {
   getCurrentTab,
