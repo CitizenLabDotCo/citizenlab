@@ -109,6 +109,8 @@ const AdminInitiativeContent = ({
   const { mutate: deleteInitiative } = useDeleteInitiative();
   const { data: initiative } = useInitiativeById(initiativeId);
   const { data: initiativeImages } = useInitiativeImages(initiativeId);
+  const tenantTimezone =
+    appConfiguration?.data.attributes.settings?.core.timezone;
 
   const handleClickDelete = () => {
     const message = formatMessage(messages.deleteInitiativeConfirmation);
@@ -127,7 +129,7 @@ const AdminInitiativeContent = ({
     }
   };
 
-  if (initiative) {
+  if (initiative && tenantTimezone) {
     const initiativeTitle = localize(initiative.data.attributes.title_multiloc);
     const initiativeImageLarge =
       initiativeImages && initiativeImages.data.length > 0
@@ -138,7 +140,9 @@ const AdminInitiativeContent = ({
     const initiativeAddress =
       initiative.data.attributes.location_description || null;
     const daysLeft = getPeriodRemainingUntil(
-      initiative.data.attributes.expires_at
+      initiative.data.attributes.expires_at,
+      tenantTimezone,
+      'days'
     );
 
     return (
