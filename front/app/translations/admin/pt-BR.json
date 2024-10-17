@@ -1525,7 +1525,6 @@
   "app.containers.AdminPage.ProjectEdit.PhaseParticipationConfig.autoshareResults": "Compartilhamento automático de resultados",
   "app.containers.AdminPage.ProjectEdit.PhaseParticipationConfig.autoshareResultsToggleDescription": "Os resultados da votação são compartilhados na plataforma e por e-mail para os participantes quando a fase termina. Isso garante a transparência por padrão.",
   "app.containers.AdminPage.ProjectEdit.PhaseParticipationConfig.resultSharing": "Compartilhamento de resultados",
-  "app.containers.AdminPage.ProjectEdit.PhaseParticipationConfig.resultSharingDescription": "Descrição do compartilhamento de resultados",
   "app.containers.AdminPage.ProjectEdit.PollTab.addAnswerOption": "Adicione uma opção de resposta",
   "app.containers.AdminPage.ProjectEdit.PollTab.addPollQuestion": "Adicionar uma pergunta de pesquisa",
   "app.containers.AdminPage.ProjectEdit.PollTab.cancelEditAnswerOptions": "Cancelar",
