@@ -8,6 +8,8 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
 import { FormattedMessage } from 'utils/cl-intl';
 
 import CopyLink from '../buttons/CopyLink';
@@ -46,6 +48,9 @@ const SharingButtons = ({
 }: Props) => {
   const [searchParams] = useSearchParams();
   const phaseContext = searchParams.get('phase_context');
+  const { data: appConfiguration } = useAppConfiguration();
+  const isSharingEnabled =
+    appConfiguration?.data.attributes.settings.core.allow_sharing;
 
   const isSmallerThanTablet = useBreakpoint('tablet');
 
@@ -71,6 +76,10 @@ const SharingButtons = ({
     }
     return url;
   };
+
+  if (!isSharingEnabled) {
+    return null;
+  }
 
   return (
     <>
