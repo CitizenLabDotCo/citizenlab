@@ -32,7 +32,7 @@ const SpotlightProject = ({ title, description, buttonText }: Props) => {
         justifyContent={isSmallerThanPhone ? 'flex-start' : 'space-between'}
       >
         <Box w={isSmallerThanPhone ? undefined : '50%'}>
-          <Title variant="h2" fontSize="xxxxl" mt="0">
+          <Title variant="h2" fontSize="xxxxl" mt="0px" lineHeight="1">
             {title ?? 'TODO'}
           </Title>
           {description && <Text>{description}</Text>}
