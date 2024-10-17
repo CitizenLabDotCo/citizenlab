@@ -103,8 +103,12 @@ const ProjectTimelineContainer = ({ projectId, className }: Props) => {
     const showIdeas =
       participationMethod === 'ideation' ||
       participationMethod === 'proposals' ||
-      (isVotingPhase && !isPastPhase);
-    const showVotingResults = isVotingPhase && isPastPhase;
+      (isVotingPhase && !isPastPhase) ||
+      (isVotingPhase && !selectedPhase.attributes.autoshare_results_enabled);
+    const showVotingResults =
+      isVotingPhase &&
+      isPastPhase &&
+      selectedPhase.attributes.autoshare_results_enabled;
 
     const reportId = selectedPhase.relationships.report?.data?.id;
 

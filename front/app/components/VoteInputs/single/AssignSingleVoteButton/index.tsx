@@ -24,6 +24,7 @@ import {
 } from 'utils/actionDescriptors';
 import { useIntl } from 'utils/cl-intl';
 import eventEmitter from 'utils/eventEmitter';
+import { isPhaseActive } from 'utils/projectUtils';
 
 import messages from './messages';
 
@@ -119,6 +120,10 @@ const AssignSingleVoteButton = ({
     );
     if (permissionDisabledMessage) {
       return formatMessage(permissionDisabledMessage);
+    }
+
+    if (!isPhaseActive(phase)) {
+      return formatMessage(messages.phaseNotActive);
     }
 
     if (basket?.data?.attributes.submitted_at) {

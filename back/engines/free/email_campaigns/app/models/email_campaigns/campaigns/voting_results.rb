@@ -44,7 +44,7 @@ module EmailCampaigns
     end
 
     def activity_triggers
-      { 'Notifications::VotingResults' => { 'created' => true } }
+      { 'Notifications::VotingResultsPublished' => { 'created' => true } }
     end
 
     def filter_recipient(users_scope, activity:, time: nil)
@@ -68,12 +68,12 @@ module EmailCampaigns
     end
 
     def generate_commands(recipient:, activity:)
-      basket = activity.item
+      notification = activity.item
       [{
         event_payload: {
-          project_url: Frontend::UrlService.new.model_to_url(project, locale: Locale.new(recipient.locale)),
-          phase_title_multiloc: basket.participation_context.title_multiloc,
-          project_title_multiloc: basket.participation_context.project.title_multiloc
+          project_url: Frontend::UrlService.new.model_to_url(notification.project, locale: Locale.new(recipient.locale)),
+          phase_title_multiloc: notification.phase.title_multiloc,
+          project_title_multiloc: notification.phase.project.title_multiloc
         }
       }]
     end
