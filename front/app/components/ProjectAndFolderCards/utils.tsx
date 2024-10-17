@@ -56,6 +56,6 @@ export const getPublicationStatuses = (
     case 'draft':
       return ['draft'];
     default:
-      return ['published', 'archived', 'draft'];
+      return ['published', 'archived'];
   }
 };
