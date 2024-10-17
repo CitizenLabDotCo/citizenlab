@@ -4,6 +4,7 @@ namespace :initiatives_to_proposals do
     reporter = ScriptReporter.new
     Tenant.safe_switch_each do |tenant|
       puts "Migrating initiatives to proposals for #{tenant.host}"
+      reporter.add_processed_tenant(tenant)
       # next if %w[copenhagenmigrated.epic.citizenlab.co kobenhavntaler.kk.dk].exclude? tenant.host ### TODO: DELETE THIS LINE
       next if !AppConfiguration.instance.feature_activated?('initiatives') && !Initiative.exists?
 
@@ -79,6 +80,7 @@ def rake_20240910_create_proposals_project(reporter)
     )
     return false
   end
+  project.admin_publication.move_to_bottom
   project.set_default_topics!
 
   phase = Phase.new(
@@ -533,7 +535,7 @@ def rake_20240910_migrate_cosponsors(proposal, initiative, reporter)
 end
 
 def rake_20240910_migrate_initiatives_static_page(reporter)
-  page = StaticPage.find_by(code: 'proposals')
+  page = rake_20240910_initiatives_page
   return if !page
 
   page.code = 'custom'
@@ -554,6 +556,10 @@ def rake_20240910_migrate_initiatives_static_page(reporter)
       context: { tenant: AppConfiguration.instance.host, static_page: page.id }
     )
   end
+end
+
+def rake_20240910_initiatives_page
+  StaticPage.find_by(code: 'proposals') || StaticPage.find_by(slug: 'initiatives')
 end
 
 # rubocop:disable Style/StringLiterals
@@ -610,7 +616,7 @@ def rake_20240910_migrate_project_description_multiloc
   config = AppConfiguration.instance
   expire_days_limit = config.settings('initiatives', 'days_limit')
   reacting_threshold = config.settings('initiatives', 'reacting_threshold')
-  page_slug = StaticPage.find_by(code: 'proposals')&.slug
+  page_slug = rake_20240910_initiatives_page&.slug
   multiloc_content = {
     "ar-MA" => "ألديك مُقترح ما ترغب في إرساله إلى {orgName}، وتشعر بالفضول لمعرفة مدى دعم الناس له أيضًا؟ انشر مُقترحك هنا، وأثبت دعم الناس له من خلال جمع {constraints}، وستقوم {orgName} بمعاودة التواصل معك. {link}",
     "ar-SA" => "ألديك مُقترح ما ترغب في إرساله إلى {orgName}، وتشعر بالفضول لمعرفة مدى دعم الناس له أيضًا؟ انشر مُقترحك هنا، وأثبت دعم الناس له من خلال جمع {constraints}، وستقوم {orgName} بمعاودة التواصل معك. {link}",
@@ -741,7 +747,7 @@ def rake_20240910_migrate_project_description_multiloc
     else
       new_value.gsub('{link}', '')
     end
-    constraints_text = multiloc_constraints[key]
+    constraints_text = "<strong>#{multiloc_constraints[key]}</strong>"
     new_value = new_value.gsub(
       '{constraints}',
       constraints_text.gsub('{daysLimit}', expire_days_limit.to_s).gsub('{voteThreshold}', reacting_threshold.to_s)

@@ -219,6 +219,12 @@
             "title": "Additional number of manager seats",
             "description": "Number of project and folder manager seats bought additionally over the contract limit.",
             "type": ["integer", "null"]
+          },
+          "customer_portal_url": {
+            "title": "Customer portal URL",
+            "description": "Link to the customer portal in Planhat.",
+            "type": "string",
+            "format": "uri"
           }
         }
       },
@@ -1368,6 +1374,8 @@
     "id_gent_rrn": ["verification"],
     "id_oostende_rrn": ["verification"],
     "id_id_card_lookup": ["verification"],
+    "id_keycloak": ["verification"],
+
     "power_bi": ["public_api_tokens"],
     "large_summaries": ["analysis"],
     "ask_a_question": ["analysis"],

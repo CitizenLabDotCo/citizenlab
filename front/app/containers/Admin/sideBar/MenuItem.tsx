@@ -11,6 +11,8 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import useAuthUser from 'api/me/useAuthUser';
+
 import useFeatureFlags from 'hooks/useFeatureFlags';
 
 import CountBadge from 'components/UI/CountBadge';
@@ -18,6 +20,7 @@ import CountBadge from 'components/UI/CountBadge';
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { usePermission } from 'utils/permissions';
+import { isSuperAdmin } from 'utils/permissions/roles';
 
 import tooltipImage from './assets/tooltip.png';
 import messages from './messages';
@@ -97,6 +100,7 @@ const MenuItem = ({ navItem }: Props) => {
     names: navItem.featureNames ?? [],
     onlyCheckAllowed: navItem.onlyCheckAllowed,
   });
+  const { data: user } = useAuthUser();
 
   const hasPermission = usePermission({
     action: 'access',
@@ -108,7 +112,16 @@ const MenuItem = ({ navItem }: Props) => {
 
   const isItemDisabled = navItem.name === 'initiatives';
 
-  if (!featuresEnabled || !hasPermission) return null;
+  const enabledAndHasPermission = featuresEnabled && hasPermission;
+
+  if (navItem.name === 'reporting') {
+    if (!isSuperAdmin(user) && !enabledAndHasPermission) {
+      // Super admins need to have access to the global report builder
+      return null;
+    }
+  } else {
+    if (!enabledAndHasPermission) return null;
+  }
 
   return (
     <Tooltip
