@@ -27,7 +27,6 @@ jest.mock('api/navbar/useAddNavbarItem', () =>
 );
 
 jest.mock('api/custom_pages/useCustomPages');
-jest.mock('api/custom_pages/useCustomPageSlugById');
 
 const mockDeleteCustomPage = jest.fn();
 
@@ -89,6 +88,7 @@ describe('<HiddenNavbarItemList />', () => {
 
     const faqItem = {
       pageCode: 'faq',
+      slug: 'faq',
       pageId: '793d56cc-c8b3-4422-b393-972b71f82aa2',
       titleMultiloc: { en: 'FAQ' },
       type: 'page',
@@ -102,6 +102,7 @@ describe('<HiddenNavbarItemList />', () => {
       pageId: 'e7854e94-3074-4607-b66e-0422aa3d8359',
       titleMultiloc: { en: 'About' },
       type: 'page',
+      slug: 'about',
     };
 
     fireEvent.click(addButtons[1]);
