@@ -5,9 +5,8 @@ import { useParams } from 'react-router-dom';
 
 import usePhase from 'api/phases/usePhase';
 import useReport from 'api/reports/useReport';
+import useReportBuilderEnabled from 'api/reports/useReportBuilderEnabled';
 import useUpdateReport from 'api/reports/useUpdateReport';
-
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import Buttons from 'containers/Admin/reporting/components/ReportBuilderPage/ReportRow/Buttons';
 import { MAX_REPORT_WIDTH } from 'containers/Admin/reporting/constants';
@@ -28,7 +27,7 @@ const ReportTab = () => {
     phase?.data.relationships.report?.data?.id
   );
 
-  const reportBuilderEnabled = useFeatureFlag({ name: 'report_builder' });
+  const reportBuilderEnabled = useReportBuilderEnabled();
   const { formatMessage } = useIntl();
 
   const { mutate: updateReport } = useUpdateReport();
