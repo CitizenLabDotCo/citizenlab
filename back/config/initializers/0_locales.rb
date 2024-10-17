@@ -33,7 +33,6 @@ CL2_SUPPORTED_LOCALES = %i[
   nl-BE
   nl-NL
   pa-IN
-  pa-Arab
   pl-PL
   pt-BR
   ro-RO
@@ -41,7 +40,7 @@ CL2_SUPPORTED_LOCALES = %i[
   sr-SP
   sv-SE
   tr-TR
-  ur
+  ur-PK
 ].freeze
 
 fallback_locales =

@@ -66,7 +66,6 @@ exports.locales = [
   'nl',
   'nl-BE',
   'nl-NL',
-  'pa-Arab',
   'pa-IN',
   'pl-PL',
   'pt-BR',
@@ -75,7 +74,7 @@ exports.locales = [
   'sr-SP',
   'sv-SE',
   'tr-TR',
-  'ur',
+  'ur-PK',
 ];
 // the locales we really support, ie we have translations for these ect
 exports.appLocalePairs = {
@@ -105,7 +104,6 @@ exports.appLocalePairs = {
   'nb-NO': 'Norsk (Bokmål)',
   'nl-BE': 'Nederlands (België)',
   'nl-NL': 'Nederlands (Nederland)',
-  'pa-Arab': 'پنجابی (Shahmukhi)',
   'pa-IN': 'ਪੰਜਾਬੀ (Gurmukhi)',
   'pl-PL': 'Polski',
   'pt-BR': 'Português (Brasil)',
@@ -114,7 +112,7 @@ exports.appLocalePairs = {
   'sr-SP': 'Српски (Ћирилица)',
   'sv-SE': 'Svenska',
   'tr-TR': 'Türkçe',
-  ur: 'اردو (Urdu)',
+  'ur-PK': 'اردو (Urdu)',
 };
 exports.appGraphqlLocalePairs = {
   arMa: 'ar-MA',

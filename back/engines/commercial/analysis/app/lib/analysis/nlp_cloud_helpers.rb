@@ -33,7 +33,6 @@ module Analysis
       'nl-BE' => 'nld_Latn',
       'nl-NL' => 'nld_Latn',
       'pa-IN' => nil,   # Punjabi (Gurmukhi) is not present
-      'pa-Arab' => nil, # Punjabi (Shahmukhi) is not present
       'pl-PL' => 'pol_Latn',
       'pt-BR' => 'por_Latn',
       'ro-RO' => 'ron_Latn',
@@ -41,7 +40,7 @@ module Analysis
       'sr-SP' => 'srp_Cyrl',
       'sv-SE' => 'swe_Latn',
       'tr-TR' => 'tur_Latn',
-      'ur' => nil # Urdu is not present
+      'ur-PK' => 'urd_Arab'
     }.with_indifferent_access.freeze
 
     def retry_rate_limit(retry_count = 10, interval = 5)
