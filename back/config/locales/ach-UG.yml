@@ -212,6 +212,12 @@ ach:
           title: crwdns3335573:0crwdne3335573:0
         option:
           title: crwdns3335575:0crwdne3335575:0
+        proposal:
+          title: crwdns3337197:0crwdne3337197:0
+        initiative:
+          title: crwdns3337199:0crwdne3337199:0
+        petition:
+          title: crwdns3337201:0crwdne3337201:0
   custom_field_options:
     gender:
       male: crwdns3335577:0crwdne3335577:0
