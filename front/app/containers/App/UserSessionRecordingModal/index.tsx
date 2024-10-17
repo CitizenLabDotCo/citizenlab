@@ -10,6 +10,8 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { get, set } from 'js-cookie';
 
+import Link from 'utils/cl-router/Link';
+
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import Modal from 'components/UI/Modal';
@@ -52,6 +54,8 @@ const UserSessionRecordingModal = () => {
     set('user_session_recording_modal', 'true');
   };
 
+  // https://docs.google.com/document/d/1a1hlDcMHIJrSJb2sD1AenOGfWpjxcsrzkjrDhlTtzNw/edit?tab=t.0
+
   return (
     <Modal opened={modalOpened} close={onClose}>
       <Box p="24px">
@@ -66,7 +70,15 @@ const UserSessionRecordingModal = () => {
         </Box>
 
         <Text fontSize="l">{formatMessage(messages.modalDescription1)}</Text>
-        <Text fontSize="l">{formatMessage(messages.modalDescription2)}</Text>
+        <Text fontSize="l">
+          {formatMessage(messages.modalDescription2)}{' '}
+          <Link
+            to="https://docs.google.com/document/d/1a1hlDcMHIJrSJb2sD1AenOGfWpjxcsrzkjrDhlTtzNw"
+            target="_blank"
+          >
+            {formatMessage(messages.modalDescriptionFaq)}
+          </Link>
+        </Text>
         <Text fontSize="l">{formatMessage(messages.modalDescription3)}</Text>
 
         <Box display="flex" justifyContent="flex-end" gap="16px" mt="48px">
