@@ -1525,7 +1525,6 @@
   "app.containers.AdminPage.ProjectEdit.PhaseParticipationConfig.autoshareResults": "Sonuçları otomatik paylaş",
   "app.containers.AdminPage.ProjectEdit.PhaseParticipationConfig.autoshareResultsToggleDescription": "Oylama sonuçları platformda ve aşama sona erdiğinde katılımcılara e-posta yoluyla paylaşılır. Bu, varsayılan olarak şeffaflık sağlar.",
   "app.containers.AdminPage.ProjectEdit.PhaseParticipationConfig.resultSharing": "Sonuç paylaşımı",
-  "app.containers.AdminPage.ProjectEdit.PhaseParticipationConfig.resultSharingDescription": "Sonuç paylaşımı açıklaması",
   "app.containers.AdminPage.ProjectEdit.PollTab.addAnswerOption": "Bir yanıt seçeneği ekleyin",
   "app.containers.AdminPage.ProjectEdit.PollTab.addPollQuestion": "Bir oylama sorusu ekleyin",
   "app.containers.AdminPage.ProjectEdit.PollTab.cancelEditAnswerOptions": "İptal",
