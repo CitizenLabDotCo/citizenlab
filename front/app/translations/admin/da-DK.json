@@ -1525,7 +1525,6 @@
   "app.containers.AdminPage.ProjectEdit.PhaseParticipationConfig.autoshareResults": "Automatisk deling af resultater",
   "app.containers.AdminPage.ProjectEdit.PhaseParticipationConfig.autoshareResultsToggleDescription": "Afstemningsresultaterne deles på platformen og via e-mail til deltagerne, når fasen slutter. Dette sikrer gennemsigtighed.",
   "app.containers.AdminPage.ProjectEdit.PhaseParticipationConfig.resultSharing": "Deling af resultater",
-  "app.containers.AdminPage.ProjectEdit.PhaseParticipationConfig.resultSharingDescription": "Beskrivelse af resultatdeling",
   "app.containers.AdminPage.ProjectEdit.PollTab.addAnswerOption": "Tilføj en svarmulighed",
   "app.containers.AdminPage.ProjectEdit.PollTab.addPollQuestion": "Tilføj et afstemningsspørgsmål",
   "app.containers.AdminPage.ProjectEdit.PollTab.cancelEditAnswerOptions": "Annuller",
