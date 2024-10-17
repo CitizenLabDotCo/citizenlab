@@ -5,10 +5,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.PhaseParticipationConfig.resultSharing',
     defaultMessage: 'Result sharing',
   },
-  resultSharingDescription: {
-    id: 'app.containers.AdminPage.ProjectEdit.PhaseParticipationConfig.resultSharingDescription',
-    defaultMessage: 'Result sharing description',
-  },
   autoshareResults: {
     id: 'app.containers.AdminPage.ProjectEdit.PhaseParticipationConfig.autoshareResults',
     defaultMessage: 'Auto-share results',
