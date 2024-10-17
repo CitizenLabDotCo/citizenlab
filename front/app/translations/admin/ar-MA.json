@@ -1525,7 +1525,6 @@
   "app.containers.AdminPage.ProjectEdit.PhaseParticipationConfig.autoshareResults": "مشاركة النتائج تلقائيًا",
   "app.containers.AdminPage.ProjectEdit.PhaseParticipationConfig.autoshareResultsToggleDescription": "تتم مشاركة نتائج التصويت على المنصة وعبر البريد الإلكتروني للمشاركين عند انتهاء المرحلة. وهذا يضمن الشفافية بشكل افتراضي.",
   "app.containers.AdminPage.ProjectEdit.PhaseParticipationConfig.resultSharing": "مشاركة النتائج",
-  "app.containers.AdminPage.ProjectEdit.PhaseParticipationConfig.resultSharingDescription": "وصف مشاركة النتائج",
   "app.containers.AdminPage.ProjectEdit.PollTab.addAnswerOption": "أضف خيار إجابة",
   "app.containers.AdminPage.ProjectEdit.PollTab.addPollQuestion": "إضافة سؤال استطلاع",
   "app.containers.AdminPage.ProjectEdit.PollTab.cancelEditAnswerOptions": "يلغي",
