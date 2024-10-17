@@ -2,15 +2,15 @@ pa:
   email_campaigns:
     campaign_type_description:
       "manual": ਅਧਿਕਾਰਤ ਸੰਦੇਸ਼
-      "manual_project_participants": Official messages to project participants
+      "manual_project_participants": ਪ੍ਰੋਜੈਕਟ ਭਾਗੀਦਾਰਾਂ ਨੂੰ ਅਧਿਕਾਰਤ ਸੰਦੇਸ਼
       "admin_rights_received": ਐਡਮਿਨ ਅਧਿਕਾਰ ਪ੍ਰਾਪਤ ਹੋਏ
       "comment_deleted_by_admin": ਮੇਰੀ ਟਿੱਪਣੀ ਨੂੰ ਹਟਾਉਣਾ
       "comment_marked_as_spam": ਟਿੱਪਣੀ ਸਪੈਮ ਰਿਪੋਰਟ
       "comment_on_your_comment": ਮੇਰੀ ਟਿੱਪਣੀ 'ਤੇ ਇੱਕ ਜਵਾਬ
-      "comment_on_idea_you_follow": A comment on an idea that you follow
-      "comment_on_initiative_you_follow": A comment on a proposal that you follow
+      "comment_on_idea_you_follow": ਇੱਕ ਵਿਚਾਰ 'ਤੇ ਇੱਕ ਟਿੱਪਣੀ ਜਿਸਦਾ ਤੁਸੀਂ ਅਨੁਸਰਣ ਕਰਦੇ ਹੋ
+      "comment_on_initiative_you_follow": ਇੱਕ ਪ੍ਰਸਤਾਵ 'ਤੇ ਇੱਕ ਟਿੱਪਣੀ ਜਿਸਦਾ ਤੁਸੀਂ ਪਾਲਣ ਕਰਦੇ ਹੋ
       "cosponsor_of_your_initiative": ਇੱਕ ਉਪਭੋਗਤਾ ਮੇਰੇ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰਨ ਲਈ ਮੇਰੇ ਸੱਦੇ ਨੂੰ ਸਵੀਕਾਰ ਕਰਦਾ ਹੈ
-      "cosponsor_of_your_idea": A user accepts my invitation to co-sponsor my proposal
+      "cosponsor_of_your_idea": ਇੱਕ ਉਪਭੋਗਤਾ ਮੇਰੇ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰਨ ਲਈ ਮੇਰੇ ਸੱਦੇ ਨੂੰ ਸਵੀਕਾਰ ਕਰਦਾ ਹੈ
       "event_registration_confirmation": ਘਟਨਾ ਰਜਿਸਟ੍ਰੇਸ਼ਨ ਪੁਸ਼ਟੀ
       "first_idea_published": ਮੇਰੇ ਪਹਿਲੇ ਵਿਚਾਰ ਦਾ ਪ੍ਰਕਾਸ਼ਨ
       "idea_marked_as_spam": ਆਈਡੀਆ ਸਪੈਮ ਰਿਪੋਰਟ
@@ -19,7 +19,7 @@ pa:
       "initiative_marked_as_spam": ਪ੍ਰਸਤਾਵ ਸਪੈਮ ਰਿਪੋਰਟ
       "initiative_published": ਮੇਰੇ ਪ੍ਰਸਤਾਵ ਦਾ ਪ੍ਰਕਾਸ਼ਨ
       "invitation_to_cosponsor_initiative": ਇੱਕ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰਨ ਲਈ ਸੱਦਾ
-      "invitation_to_cosponsor_idea": Invitation to co-sponsor a proposal
+      "invitation_to_cosponsor_idea": ਇੱਕ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰਨ ਲਈ ਸੱਦਾ
       "initiative_resubmitted_for_review": ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਮੀਖਿਆ ਲਈ ਮੁੜ-ਸਪੁਰਦ ਕੀਤਾ ਗਿਆ
       "invite_received": ਸੱਦਾ
       "invite_reminder": ਸੱਦਾ ਰੀਮਾਈਂਡਰ
@@ -36,16 +36,16 @@ pa:
       "new_comment_for_admin": ਇੱਕ ਪ੍ਰੋਜੈਕਟ ਵਿੱਚ ਨਵੀਂ ਟਿੱਪਣੀ ਜੋ ਮੈਂ ਸੰਚਾਲਿਤ ਕਰਦੀ ਹਾਂ
       "new_idea_for_admin": ਇੱਕ ਪ੍ਰੋਜੈਕਟ ਵਿੱਚ ਨਵਾਂ ਵਿਚਾਰ ਜੋ ਮੈਂ ਸੰਚਾਲਿਤ ਕਰਦਾ ਹਾਂ
       "new_initiative_for_admin": ਨਵਾਂ ਪ੍ਰਸਤਾਵ
-      "official_feedback_on_idea_you_follow": Update on an idea that you follow
-      "official_feedback_on_initiative_you_follow": Update on a proposal that you follow
+      "official_feedback_on_idea_you_follow": ਉਸ ਵਿਚਾਰ 'ਤੇ ਅੱਪਡੇਟ ਕਰੋ ਜਿਸਦੀ ਤੁਸੀਂ ਪਾਲਣਾ ਕਰਦੇ ਹੋ
+      "official_feedback_on_initiative_you_follow": ਉਸ ਪ੍ਰਸਤਾਵ 'ਤੇ ਅੱਪਡੇਟ ਕਰੋ ਜਿਸਦੀ ਤੁਸੀਂ ਪਾਲਣਾ ਕਰਦੇ ਹੋ
       "password_reset": ਪਾਸਵਰਡ ਰੀਸੈੱਟ
       "project_moderation_rights_received": ਪ੍ਰੋਜੈਕਟ ਸੰਚਾਲਨ ਅਧਿਕਾਰ ਪ੍ਰਾਪਤ ਹੋਏ
       "project_folder_moderation_rights_received": ਫੋਲਡਰ ਪ੍ਰਬੰਧਕ ਅਧਿਕਾਰ ਪ੍ਰਾਪਤ ਹੋਏ
       "project_phase_started": ਨਵਾਂ ਪ੍ਰੋਜੈਕਟ ਪੜਾਅ
       "project_phase_upcoming": ਆਗਾਮੀ ਨਵਾਂ ਪ੍ਰੋਜੈਕਟ ਪੜਾਅ
-      "project_published": Project published
-      "status_change_on_idea_you_follow": Status change of an idea that you follow
-      "status_change_on_initiative_you_follow": Status change of a proposal that you follow
+      "project_published": ਪ੍ਰੋਜੈਕਟ ਪ੍ਰਕਾਸ਼ਿਤ ਕੀਤਾ ਗਿਆ ਹੈ
+      "status_change_on_idea_you_follow": ਕਿਸੇ ਵਿਚਾਰ ਦੀ ਸਥਿਤੀ ਤਬਦੀਲੀ ਜਿਸਦਾ ਤੁਸੀਂ ਅਨੁਸਰਣ ਕਰਦੇ ਹੋ
+      "status_change_on_initiative_you_follow": ਇੱਕ ਪ੍ਰਸਤਾਵ ਦੀ ਸਥਿਤੀ ਤਬਦੀਲੀ ਜਿਸਦਾ ਤੁਸੀਂ ਅਨੁਸਰਣ ਕਰਦੇ ਹੋ
       "threshold_reached_for_admin": ਪ੍ਰਸਤਾਵ ਵੋਟਿੰਗ ਸੀਮਾ ਤੱਕ ਪਹੁੰਚ ਗਿਆ
       "welcome": ਰਜਿਸਟਰੇਸ਼ਨ ਦੇ ਬਾਅਦ
       "admin_digest": ਪ੍ਰਸ਼ਾਸਕਾਂ ਲਈ ਹਫਤਾਵਾਰੀ ਸੰਖੇਪ ਜਾਣਕਾਰੀ
@@ -53,18 +53,18 @@ pa:
       "assignee_digest": ਨਿਰਧਾਰਤ ਵਿਚਾਰਾਂ ਦੀ ਹਫਤਾਵਾਰੀ ਸੰਖੇਪ ਜਾਣਕਾਰੀ
       "user_digest": ਹਫਤਾਵਾਰੀ ਸੰਖੇਪ ਜਾਣਕਾਰੀ
       "voting_basket_submitted": ਵੋਟਿੰਗ ਦੀ ਪੁਸ਼ਟੀ
-      "native_survey_not_submitted": Survey not submitted
+      "native_survey_not_submitted": ਸਰਵੇਖਣ ਜਮ੍ਹਾਂ ਨਹੀਂ ਹੋਇਆ
       "voting_basket_not_submitted": ਵੋਟਾਂ ਜਮ੍ਹਾਂ ਨਹੀਂ ਹੋਈਆਂ
       "voting_last_chance": ਵੋਟ ਪਾਉਣ ਦਾ ਆਖਰੀ ਮੌਕਾ
-      "voting_phase_started": New project phase with voting
+      "voting_phase_started": ਵੋਟਿੰਗ ਦੇ ਨਾਲ ਨਵਾਂ ਪ੍ਰੋਜੈਕਟ ਪੜਾਅ
       "voting_results": ਵੋਟਿੰਗ ਨਤੀਜੇ
       "your_proposed_initiatives_digest": ਤੁਹਾਡੇ ਪ੍ਰਸਤਾਵਾਂ ਦੀ ਹਫਤਾਵਾਰੀ ਸੰਖੇਪ ਜਾਣਕਾਰੀ
     general:
-      by_author: 'by %{authorName}'
-      author_wrote: '%{authorName} wrote:'
-      cta_goto_idea: 'Go to this idea'
-      cta_goto_proposal: 'Go to this proposal'
-      cta_goto_project: 'Go to this project'
+      by_author: '%{authorName}ਦੁਆਰਾ'
+      author_wrote: '%{authorName} ਨੇ ਲਿਖਿਆ:'
+      cta_goto_idea: 'ਇਸ ਵਿਚਾਰ ''ਤੇ ਜਾਓ'
+      cta_goto_proposal: 'ਇਸ ਪ੍ਰਸਤਾਵ ''ਤੇ ਜਾਓ'
+      cta_goto_project: 'ਇਸ ਪ੍ਰੋਜੈਕਟ ''ਤੇ ਜਾਓ'
     schedules:
       weekly:
         "0": "ਹਫਤਾਵਾਰੀ, ਐਤਵਾਰ ਨੂੰ %{hourOfDay}'ਤੇ"
@@ -79,13 +79,13 @@ pa:
       "link_terms_conditions": "ਨਿਯਮ ਅਤੇ ਸ਼ਰਤਾਂ"
       "link_unsubscribe": "ਗਾਹਕੀ ਰੱਦ ਕਰੋ"
       "powered_by": "ਦੁਆਰਾ ਸੰਚਾਲਿਤ"
-      "recipient_statement": "This e-mail was sent to you by Go Vocal on behalf of %{organizationName}, because you are a registered user of %{organizationLink}."
-      "unsubscribe_statement": "You can %{unsubscribeLink} if you do not want to receive these e-mails in the future."
+      "recipient_statement": "ਇਹ ਈ-ਮੇਲ ਤੁਹਾਨੂੰ ਗੋ ਵੋਕਲ ਦੁਆਰਾ %{organizationName}ਦੀ ਤਰਫੋਂ ਭੇਜੀ ਗਈ ਸੀ, ਕਿਉਂਕਿ ਤੁਸੀਂ %{organizationLink}ਦੇ ਇੱਕ ਰਜਿਸਟਰਡ ਉਪਭੋਗਤਾ ਹੋ।"
+      "unsubscribe_statement": "ਜੇਕਰ ਤੁਸੀਂ ਭਵਿੱਖ ਵਿੱਚ ਇਹ ਈ-ਮੇਲ ਪ੍ਰਾਪਤ ਨਹੀਂ ਕਰਨਾ ਚਾਹੁੰਦੇ ਤਾਂ ਤੁਸੀਂ %{unsubscribeLink} ਕਰ ਸਕਦੇ ਹੋ।"
       "unsubscribe_text": "ਗਾਹਕੀ ਰੱਦ ਕਰੋ"
     follow:
-      "unfollow_here": "You have received this notification because of an item that you follow. <a href=\"%{unfollow_url}\">You can unfollow it here.</a>"
+      "unfollow_here": "ਤੁਹਾਨੂੰ ਇਹ ਸੂਚਨਾ ਉਸ ਆਈਟਮ ਦੇ ਕਾਰਨ ਪ੍ਰਾਪਤ ਹੋਈ ਹੈ ਜਿਸਦਾ ਤੁਸੀਂ ਅਨੁਸਰਣ ਕਰਦੇ ਹੋ। <a href=\"%{unfollow_url}\">ਤੁਸੀਂ ਇਸਨੂੰ ਇੱਥੇ ਅਨਫਾਲੋ ਕਰ ਸਕਦੇ ਹੋ।</a>"
     manual:
-      preheader: 'You have mail from %{organizationName}'
+      preheader: 'ਤੁਹਾਡੇ ਕੋਲ %{organizationName}ਤੋਂ ਮੇਲ ਹੈ'
     comment_deleted_by_admin:
       reason: 'ਤੁਹਾਡੀ ਟਿੱਪਣੀ ਨੂੰ ਮਿਟਾਉਣ ਦਾ ਕਾਰਨ:'
       cta_view: 'ਇਸ ਵਿਚਾਰ ਨੂੰ ਵੇਖੋ'
@@ -141,11 +141,11 @@ pa:
       wrong_content: 'ਟਿੱਪਣੀ ਢੁਕਵੀਂ ਨਹੀਂ ਹੈ।'
       yesterday: ਕੱਲ੍ਹ
     cosponsor_of_your_idea:
-      cta_reply_to: 'View your proposal'
-      event_description: 'Congratulations! %{cosponsorName} has accepted your invitation to co-sponsor your proposal.'
-      main_header: '%{cosponsorName} has accepted your invitation to co-sponsor your proposal'
-      subject: '%{cosponsorName} has accepted your invitation to co-sponsor your proposal'
-      preheader: '%{cosponsorName} has accepted your invitation to co-sponsor your proposal'
+      cta_reply_to: 'ਆਪਣਾ ਪ੍ਰਸਤਾਵ ਦੇਖੋ'
+      event_description: 'ਵਧਾਈਆਂ! %{cosponsorName} ਨੇ ਤੁਹਾਡੇ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰਨ ਲਈ ਤੁਹਾਡੇ ਸੱਦੇ ਨੂੰ ਸਵੀਕਾਰ ਕਰ ਲਿਆ ਹੈ।'
+      main_header: '%{cosponsorName} ਨੇ ਤੁਹਾਡੇ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰਨ ਲਈ ਤੁਹਾਡੇ ਸੱਦੇ ਨੂੰ ਸਵੀਕਾਰ ਕਰ ਲਿਆ ਹੈ'
+      subject: '%{cosponsorName} ਨੇ ਤੁਹਾਡੇ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰਨ ਲਈ ਤੁਹਾਡੇ ਸੱਦੇ ਨੂੰ ਸਵੀਕਾਰ ਕਰ ਲਿਆ ਹੈ'
+      preheader: '%{cosponsorName} ਨੇ ਤੁਹਾਡੇ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰਨ ਲਈ ਤੁਹਾਡੇ ਸੱਦੇ ਨੂੰ ਸਵੀਕਾਰ ਕਰ ਲਿਆ ਹੈ'
     cosponsor_of_your_initiative:
       cta_reply_to: 'ਆਪਣਾ ਪ੍ਰਸਤਾਵ ਦੇਖੋ'
       event_description_initiative: 'ਵਧਾਈਆਂ! %{cosponsorName} ਨੇ ਤੁਹਾਡੇ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰਨ ਲਈ ਤੁਹਾਡੇ ਸੱਦੇ ਨੂੰ ਸਵੀਕਾਰ ਕਰ ਲਿਆ ਹੈ।'
@@ -190,14 +190,14 @@ pa:
       subject: 'ਤੁਹਾਡੇ ਕੋਲ %{organizationName}ਦੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਇੱਕ ਅਸਾਈਨਮੈਂਟ ਹੈ'
       preheader_initiative: '%{authorName} ਦਾ ਪ੍ਰਸਤਾਵ ਤੁਹਾਨੂੰ ਸੌਂਪਿਆ ਗਿਆ ਹੈ'
     invitation_to_cosponsor_idea:
-      cta_reply_to: 'Co-sponsor this proposal'
-      event_description: '%{authorName} has created a new proposal and would like you to co-sponsor it.'
-      event_description_cosponsoring: 'Co-sponsoring a proposal means that <strong>your name will be displayed</strong> with the names of other co-sponsors of the proposal.'
-      event_description_before_action: 'To see the proposal and accept the invitation, you must be logged in to your account.'
-      event_description_action: 'Click below to read the proposal.'
-      main_header: 'You have been invited to co-sponsor a proposal'
-      subject: 'You have been invited to co-sponsor a proposal'
-      preheader: 'You have been invited to co-sponsor the proposal of %{authorName}'
+      cta_reply_to: 'ਇਸ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰੋ'
+      event_description: '%{authorName} ਨੇ ਇੱਕ ਨਵਾਂ ਪ੍ਰਸਤਾਵ ਬਣਾਇਆ ਹੈ ਅਤੇ ਤੁਸੀਂ ਇਸਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ।'
+      event_description_cosponsoring: 'ਕਿਸੇ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰਨ ਦਾ ਮਤਲਬ ਹੈ ਕਿ <strong>ਤੁਹਾਡਾ ਨਾਮ ਪ੍ਰਸਤਾਵ ਦੇ ਹੋਰ ਸਹਿ-ਪ੍ਰਾਯੋਜਕਾਂ ਦੇ ਨਾਵਾਂ ਦੇ ਨਾਲ</strong> ਪ੍ਰਦਰਸ਼ਿਤ ਕੀਤਾ ਜਾਵੇਗਾ।'
+      event_description_before_action: 'ਪ੍ਰਸਤਾਵ ਨੂੰ ਦੇਖਣ ਅਤੇ ਸੱਦਾ ਸਵੀਕਾਰ ਕਰਨ ਲਈ, ਤੁਹਾਨੂੰ ਆਪਣੇ ਖਾਤੇ ਵਿੱਚ ਲੌਗਇਨ ਕਰਨਾ ਪਵੇਗਾ।'
+      event_description_action: 'ਪ੍ਰਸਤਾਵ ਨੂੰ ਪੜ੍ਹਨ ਲਈ ਹੇਠਾਂ ਕਲਿੱਕ ਕਰੋ।'
+      main_header: 'ਤੁਹਾਨੂੰ ਇੱਕ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰਨ ਲਈ ਸੱਦਾ ਦਿੱਤਾ ਗਿਆ ਹੈ'
+      subject: 'ਤੁਹਾਨੂੰ ਇੱਕ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰਨ ਲਈ ਸੱਦਾ ਦਿੱਤਾ ਗਿਆ ਹੈ'
+      preheader: 'ਤੁਹਾਨੂੰ %{authorName}ਦੇ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰਨ ਲਈ ਸੱਦਾ ਦਿੱਤਾ ਗਿਆ ਹੈ'
     invitation_to_cosponsor_initiative:
       cta_reply_to: 'ਇਸ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰੋ'
       event_description_initiative: '%{authorName} ਨੇ ਇੱਕ ਨਵਾਂ ਪ੍ਰਸਤਾਵ ਬਣਾਇਆ ਹੈ ਅਤੇ ਤੁਸੀਂ ਇਸਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ।'
@@ -528,12 +528,12 @@ pa:
       cta_see_votes_submitted: 'ਸਪੁਰਦ ਕੀਤੀਆਂ ਵੋਟਾਂ ਦੇਖੋ'
       cta_message: 'ਭਾਗ ਲੈਣ ਲਈ ਹੇਠਾਂ ਦਿੱਤੇ ਬਟਨ ''ਤੇ ਕਲਿੱਕ ਕਰੋ'
     native_survey_not_submitted:
-      subject: '%{organizationName}: Almost there! Submit your answers'
-      preheader: 'You didn''t complete your survey response on the participation platform of %{organizationName}'
-      title_native_survey_not_submitted: 'Almost there! Submit your answers'
-      body_native_survey_not_submitted: 'You started sharing your answers on %{phaseTitle} but didn''t submit them. Submissions will close on %{phaseEndDate}. Click on the button below to continue where you left off.'
-      body_native_survey_not_submitted_no_date: 'You started sharing your answers on %{phaseTitle} but didn''t submit them. Click on the button below to continue where you left off.'
-      cta_complete_your_survey_response: 'Resume your survey response'
+      subject: '%{organizationName}: ਲਗਭਗ ਉੱਥੇ! ਆਪਣੇ ਜਵਾਬ ਦਰਜ ਕਰੋ'
+      preheader: 'ਤੁਸੀਂ %{organizationName}ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ''ਤੇ ਆਪਣਾ ਸਰਵੇਖਣ ਜਵਾਬ ਪੂਰਾ ਨਹੀਂ ਕੀਤਾ'
+      title_native_survey_not_submitted: 'ਲਗਭਗ ਉੱਥੇ! ਆਪਣੇ ਜਵਾਬ ਦਰਜ ਕਰੋ'
+      body_native_survey_not_submitted: 'ਤੁਸੀਂ %{phaseTitle} ''ਤੇ ਆਪਣੇ ਜਵਾਬ ਸਾਂਝੇ ਕਰਨੇ ਸ਼ੁਰੂ ਕਰ ਦਿੱਤੇ ਪਰ ਉਹਨਾਂ ਨੂੰ ਜਮ੍ਹਾ ਨਹੀਂ ਕੀਤਾ। ਸਬਮਿਸ਼ਨ %{phaseEndDate}ਨੂੰ ਬੰਦ ਹੋ ਜਾਣਗੇ। ਜਿੱਥੇ ਤੁਸੀਂ ਛੱਡਿਆ ਸੀ ਉੱਥੇ ਜਾਰੀ ਰੱਖਣ ਲਈ ਹੇਠਾਂ ਦਿੱਤੇ ਬਟਨ ''ਤੇ ਕਲਿੱਕ ਕਰੋ।'
+      body_native_survey_not_submitted_no_date: 'ਤੁਸੀਂ %{phaseTitle} ''ਤੇ ਆਪਣੇ ਜਵਾਬ ਸਾਂਝੇ ਕਰਨੇ ਸ਼ੁਰੂ ਕਰ ਦਿੱਤੇ ਪਰ ਉਹਨਾਂ ਨੂੰ ਜਮ੍ਹਾ ਨਹੀਂ ਕੀਤਾ। ਜਿੱਥੇ ਤੁਸੀਂ ਛੱਡਿਆ ਸੀ ਉੱਥੇ ਜਾਰੀ ਰੱਖਣ ਲਈ ਹੇਠਾਂ ਦਿੱਤੇ ਬਟਨ ''ਤੇ ਕਲਿੱਕ ਕਰੋ।'
+      cta_complete_your_survey_response: 'ਆਪਣੇ ਸਰਵੇਖਣ ਦੇ ਜਵਾਬ ਨੂੰ ਮੁੜ ਸ਼ੁਰੂ ਕਰੋ'
     voting_basket_not_submitted:
       subject: '%{organizationName}: ਤੁਸੀਂ ਆਪਣੀਆਂ ਵੋਟਾਂ ਜਮ੍ਹਾਂ ਨਹੀਂ ਕਰਵਾਈਆਂ'
       preheader: 'ਤੁਸੀਂ %{organizationName}ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ''ਤੇ ਆਪਣੀਆਂ ਵੋਟਾਂ ਜਮ੍ਹਾ ਨਹੀਂ ਕੀਤੀਆਂ'
@@ -559,7 +559,7 @@ pa:
       cta_see_results: 'ਪਲੇਟਫਾਰਮ ਵਿੱਚ ਨਤੀਜੇ ਵੇਖੋ'
     event_registration_confirmation:
       subject: "ਤੁਸੀਂ ਅੰਦਰ ਹੋ! \"%{eventTitle}\" ਲਈ ਤੁਹਾਡੀ ਰਜਿਸਟ੍ਰੇਸ਼ਨ ਦੀ ਪੁਸ਼ਟੀ ਹੋ ਗਈ ਹੈ"
-      preheader: "%{firstName}, thanks for registering for %{eventTitle}"
+      preheader: "%{firstName}, %{eventTitle}ਲਈ ਰਜਿਸਟਰ ਕਰਨ ਲਈ ਧੰਨਵਾਦ"
       header_message: "%{firstName}, ਲਈ ਰਜਿਸਟਰ ਕਰਨ ਲਈ ਧੰਨਵਾਦ"
       event_details:
         labels:
@@ -581,7 +581,7 @@ pa:
         admins: 'ਪ੍ਰਬੰਧਕਾਂ ਨੂੰ'
         admins_and_managers: 'ਪ੍ਰਬੰਧਕਾਂ ਅਤੇ ਪ੍ਰਬੰਧਕਾਂ ਨੂੰ'
         managers: 'ਪ੍ਰਬੰਧਕਾਂ ਨੂੰ'
-        project_participants: 'To project participants'
+        project_participants: 'ਪ੍ਰੋਜੈਕਟ ਭਾਗੀਦਾਰਾਂ ਨੂੰ'
         registered_users: 'ਰਜਿਸਟਰਡ ਉਪਭੋਗਤਾਵਾਂ ਨੂੰ'
       recipient_segment:
         admins: 'ਪ੍ਰਸ਼ਾਸਕ'
@@ -605,13 +605,13 @@ pa:
         user_who_registers: 'ਰਜਿਸਟਰ ਕਰਨ ਵਾਲੇ ਉਪਭੋਗਤਾ'
         user_who_was_invited: 'ਉਪਭੋਗਤਾ ਜਿਸਨੂੰ ਸੱਦਾ ਦਿੱਤਾ ਗਿਆ ਸੀ'
         users_who_engaged_with_the_project: 'ਪ੍ਰੋਜੈਕਟ ਨਾਲ ਜੁੜੇ ਉਪਭੋਗਤਾ'
-        users_who_follow_the_proposal: 'Users who follow the proposal'
-        users_who_follow_the_input: 'Users who follow the input'
+        users_who_follow_the_proposal: 'ਪ੍ਰਸਤਾਵ ਦੀ ਪਾਲਣਾ ਕਰਨ ਵਾਲੇ ਉਪਭੋਗਤਾ'
+        users_who_follow_the_input: 'ਉਪਭੋਗਤਾ ਜੋ ਇਨਪੁਟ ਦੀ ਪਾਲਣਾ ਕਰਦੇ ਹਨ'
         users_who_follow_the_project: 'ਪ੍ਰੋਜੈਕਟ ਦੀ ਪਾਲਣਾ ਕਰਨ ਵਾਲੇ ਉਪਭੋਗਤਾ'
         user_who_voted: 'ਵੋਟ ਕਰਨ ਵਾਲੇ ਉਪਭੋਗਤਾ'
         user_with_unsubmitted_votes: 'ਉਹ ਉਪਭੋਗਤਾ ਜਿਨ੍ਹਾਂ ਨੇ ਆਪਣੀਆਂ ਵੋਟਾਂ ਜਮ੍ਹਾਂ ਨਹੀਂ ਕਰਵਾਈਆਂ ਹਨ'
         users_who_engaged_but_not_voted: 'ਉਹ ਉਪਭੋਗਤਾ ਜੋ ਪ੍ਰੋਜੈਕਟ ਨਾਲ ਜੁੜੇ ਹੋਏ ਹਨ ਪਰ ਵੋਟ ਨਹੀਂ ਪਾਈ ਹੈ'
-        user_with_unsubmitted_survey: 'User who has started but not submitted their survey'
+        user_with_unsubmitted_survey: 'ਉਪਭੋਗਤਾ ਜਿਸ ਨੇ ਸ਼ੁਰੂ ਕੀਤਾ ਹੈ ਪਰ ਆਪਣਾ ਸਰਵੇਖਣ ਜਮ੍ਹਾ ਨਹੀਂ ਕੀਤਾ ਹੈ'
       content_type:
         comments: 'ਟਿੱਪਣੀਆਂ'
         content_moderation: 'ਸਮੱਗਰੀ ਸੰਚਾਲਨ'
@@ -624,7 +624,7 @@ pa:
         proposals: 'ਪ੍ਰਸਤਾਵ'
         reactions: 'ਪ੍ਰਤੀਕਰਮ'
         voting: 'ਵੋਟਿੰਗ'
-        surveys: 'Surveys'
+        surveys: 'ਸਰਵੇਖਣ'
       trigger:
         comment_is_deleted: 'ਟਿੱਪਣੀ ਮਿਟਾ ਦਿੱਤੀ ਗਈ ਹੈ'
         comment_is_flagged_as_spam: 'ਟਿੱਪਣੀ ਨੂੰ ਸਪੈਮ ਵਜੋਂ ਫਲੈਗ ਕੀਤਾ ਗਿਆ ਹੈ'
@@ -673,4 +673,4 @@ pa:
         7_days_after_invite_is_sent: 'ਸੱਦਾ ਭੇਜਣ ਤੋਂ 7 ਦਿਨ ਬਾਅਦ'
         7_days_before_the_project_changes_phase: 'ਪ੍ਰੋਜੈਕਟ ਬਦਲਣ ਦੇ ਪੜਾਅ ਤੋਂ 7 ਦਿਨ ਪਹਿਲਾਂ'
         registration_to_event: 'ਇੱਕ ਘਟਨਾ ਲਈ ਰਜਿਸਟ੍ਰੇਸ਼ਨ'
-        survey_1_day_after_draft_saved: '1 day after user last saved the survey in draft'
+        survey_1_day_after_draft_saved: 'ਉਪਭੋਗਤਾ ਦੁਆਰਾ ਆਖਰੀ ਵਾਰ ਡਰਾਫਟ ਵਿੱਚ ਸਰਵੇਖਣ ਨੂੰ ਸੁਰੱਖਿਅਤ ਕਰਨ ਤੋਂ 1 ਦਿਨ ਬਾਅਦ'
