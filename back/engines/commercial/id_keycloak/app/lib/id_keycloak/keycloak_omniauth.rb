@@ -46,8 +46,8 @@ module IdKeycloak
     end
 
     def email_confirmed?(auth)
-      # Response will tell us if the email is verified
-      auth&.info&.email_verified
+      # Even if the response says the email is NOT verified, we assume that it is if email is present
+      auth&.info&.email.present?
     end
 
     def filter_auth_to_persist(auth)

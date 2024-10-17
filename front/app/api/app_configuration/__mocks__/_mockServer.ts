@@ -40,15 +40,7 @@ export const getAppConfigurationData = (
         maximum_moderators_number: 14,
         additional_admins_number: 0,
         additional_moderators_number: 0,
-      },
-      initiatives: {
-        allowed: true,
-        enabled: true,
-        days_limit: 50,
-        eligibility_criteria: {},
-        posting_tips: {},
-        threshold_reached_message: {},
-        reacting_threshold: 1,
+        allow_sharing: true,
       },
       advanced_custom_pages: {
         allowed: true,

@@ -27,7 +27,6 @@ import messages from './messages';
 const FIXED_PAGES_SET = new Set<TCustomPageCode>([
   'terms-and-conditions',
   'privacy-policy',
-  'proposals',
 ]);
 const isNotFixedPage = (page: ICustomPageData) =>
   !FIXED_PAGES_SET.has(page.attributes.code);

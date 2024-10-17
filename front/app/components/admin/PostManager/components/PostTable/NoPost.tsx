@@ -7,7 +7,6 @@ import Button from 'components/UI/Button';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import { ManagerType } from '../..';
 import messages from '../../messages';
 
 export const NoPostPage = styled.div`
@@ -71,7 +70,6 @@ export const NoPostDescription = styled.p`
 `;
 
 interface Props {
-  type: ManagerType;
   handleSeeAll: () => void;
 }
 
@@ -79,11 +77,7 @@ export default (props: Props) => (
   <NoPostPage>
     <Icon name="sidebar-pages-menu" />
     <NoPostHeader>
-      {props.type === 'Initiatives' ? (
-        <FormattedMessage {...messages.noInitiativesHere} />
-      ) : (
-        <FormattedMessage {...messages.noFilteredResults} />
-      )}
+      <FormattedMessage {...messages.noFilteredResults} />
     </NoPostHeader>
     <NoPostDescription>
       <FormattedMessage {...messages.resetInputFiltersDescription} />

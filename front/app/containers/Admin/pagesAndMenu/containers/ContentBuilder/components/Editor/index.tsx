@@ -19,7 +19,6 @@ import Events from '../CraftComponents/Events';
 import Highlight from '../CraftComponents/Highlight';
 import HomepageBanner from '../CraftComponents/HomepageBanner';
 import Projects from '../CraftComponents/Projects';
-import Proposals from '../CraftComponents/Proposals';
 import SpotlightProject from '../CraftComponents/SpotlightProject';
 
 type EditorProps = {
@@ -27,6 +26,9 @@ type EditorProps = {
   isPreview: boolean;
   onNodesChange?: (nodes: SerializedNodes) => void;
 };
+
+// TODO: Remove after proposals migration is done
+const Proposals = () => <></>;
 
 const Editor: React.FC<EditorProps> = ({
   onNodesChange,
@@ -49,10 +51,10 @@ const Editor: React.FC<EditorProps> = ({
         ButtonMultiloc,
         HomepageBanner,
         Projects,
-        Proposals,
         Events,
         Highlight,
         SpotlightProject,
+        Proposals,
       }}
       isPreview={isPreview}
       onNodesChange={onNodesChange}

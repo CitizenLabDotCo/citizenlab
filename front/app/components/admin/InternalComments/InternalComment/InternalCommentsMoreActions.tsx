@@ -55,7 +55,6 @@ export interface Props {
   onCommentEdit: () => void;
   className?: string;
   ideaId: string | undefined;
-  initiativeId: string | undefined;
 }
 
 const InternalCommentsMoreActions = ({
@@ -63,7 +62,6 @@ const InternalCommentsMoreActions = ({
   comment,
   className,
   ideaId,
-  initiativeId,
 }: Props) => {
   const moreActionsButtonRef = useRef<HTMLButtonElement>(null);
   const parentCommentId = comment.relationships?.parent?.data?.id;
@@ -71,7 +69,6 @@ const InternalCommentsMoreActions = ({
   const { mutate: markForDeletion, isLoading } =
     useMarkInternalCommentForDeletion({
       ideaId,
-      initiativeId,
       parentCommentId,
     });
   const [modalVisible_delete, setModalVisible_delete] = useState(false);

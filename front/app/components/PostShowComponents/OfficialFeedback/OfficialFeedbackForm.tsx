@@ -14,9 +14,6 @@ import { Multiloc, SupportedLocale } from 'typings';
 import { IOfficialFeedbackData as IIdeaOfficialFeedbackData } from 'api/idea_official_feedback/types';
 import useAddIdeaOfficialFeedback from 'api/idea_official_feedback/useAddIdeaOfficialFeedback';
 import useUpdateIdeaOfficialFeedback from 'api/idea_official_feedback/useUpdateIdeaOfficialFeedback';
-import { IOfficialFeedbackData as IInitiativeOfficialFeedbackData } from 'api/initiative_official_feedback/types';
-import useAddInitiativeOfficialFeedback from 'api/initiative_official_feedback/useAddInitiativeOfficialFeedback';
-import useUpdateInitiativeOfficialFeedback from 'api/initiative_official_feedback/useUpdateInitiativeOfficialFeedback';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocale from 'hooks/useLocale';
@@ -93,9 +90,8 @@ export interface OfficialFeedbackFormValues {
 
 interface Props {
   postId?: string;
-  postType: 'idea' | 'initiative';
   formType: 'new' | 'edit';
-  feedback?: IIdeaOfficialFeedbackData | IInitiativeOfficialFeedbackData;
+  feedback?: IIdeaOfficialFeedbackData;
   className?: string;
   onClose?: () => void;
 }
@@ -104,7 +100,6 @@ const OfficialFeedbackForm = ({
   formType,
   feedback,
   postId,
-  postType,
   onClose,
   className,
 }: Props) => {
@@ -112,12 +107,8 @@ const OfficialFeedbackForm = ({
   const locale = useLocale();
   const tenantLocales = useAppConfigurationLocales();
   const { mutate: addOfficialFeedbackToIdea } = useAddIdeaOfficialFeedback();
-  const { mutate: addOfficialFeedbackToInitiative } =
-    useAddInitiativeOfficialFeedback();
   const { mutate: updateIdeaOfficialFeedback } =
     useUpdateIdeaOfficialFeedback();
-  const { mutate: updateInitiativeOfficialFeedback } =
-    useUpdateInitiativeOfficialFeedback();
 
   const [selectedLocale, setSelectedLocale] = useState<SupportedLocale | null>(
     null
@@ -272,7 +263,7 @@ const OfficialFeedbackForm = ({
         setSuccess(false);
       };
 
-      if (formType === 'new' && postId && postType === 'idea') {
+      if (formType === 'new' && postId) {
         addOfficialFeedbackToIdea(
           { ideaId: postId, ...feedbackValues },
           {
@@ -287,50 +278,9 @@ const OfficialFeedbackForm = ({
         });
       }
 
-      if (formType === 'new' && postId && postType === 'initiative') {
-        addOfficialFeedbackToInitiative(
-          { initiativeId: postId, ...feedbackValues },
-          {
-            onSuccess,
-            onError,
-          }
-        );
-        trackEventByName(tracks.officialFeedbackGiven, {
-          location: isPage('admin', location.pathname)
-            ? 'Admin/initiative manager'
-            : 'Citizen/initiative page',
-        });
-      }
-
-      if (
-        formType === 'edit' &&
-        !isNilOrError(feedback) &&
-        onClose &&
-        postType === 'idea'
-      ) {
+      if (formType === 'edit' && !isNilOrError(feedback) && onClose) {
         updateIdeaOfficialFeedback(
           { id: feedback.id, requestBody: feedbackValues },
-          {
-            onSuccess: () => {
-              onSuccess();
-              onClose();
-            },
-            onError,
-          }
-        );
-      }
-
-      if (
-        formType === 'edit' &&
-        !isNilOrError(feedback) &&
-        onClose &&
-        postType === 'initiative'
-      ) {
-        updateInitiativeOfficialFeedback(
-          {
-            id: feedback.id,
-            requestBody: feedbackValues,
-          },
           {
             onSuccess: () => {
               onSuccess();
