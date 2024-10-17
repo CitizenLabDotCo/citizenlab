@@ -75,6 +75,7 @@ export interface UploadFile extends File {
   remote: boolean;
   extension?: string;
   error?: string[];
+  ordering?: number;
 }
 
 export interface IOption {
