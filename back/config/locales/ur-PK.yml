@@ -212,6 +212,12 @@ ur:
           title: آپ کا کیا تبصرہ ہے؟
         option:
           title: آپ کا آپشن کیا ہے؟
+        proposal:
+          title: آپ کی تجویز کیا ہے؟
+        initiative:
+          title: آپ کی پہل کیا ہے؟
+        petition:
+          title: آپ کی درخواست کیا ہے؟
   custom_field_options:
     gender:
       male: مرد
