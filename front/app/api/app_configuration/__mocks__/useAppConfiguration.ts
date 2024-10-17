@@ -32,6 +32,7 @@ export const appConfigurationData: IAppConfigurationData = {
         maximum_moderators_number: 4,
         additional_admins_number: 4,
         additional_moderators_number: 4,
+        allow_sharing: true,
       },
       advanced_custom_pages: {
         allowed: true,
