@@ -50,7 +50,7 @@ const SharingButtons = ({
   const phaseContext = searchParams.get('phase_context');
   const { data: appConfiguration } = useAppConfiguration();
   const isSharingEnabled =
-    appConfiguration?.data.attributes.settings?.core.allow_sharing;
+    appConfiguration?.data.attributes.settings.core.allow_sharing;
 
   const isSmallerThanTablet = useBreakpoint('tablet');
 
