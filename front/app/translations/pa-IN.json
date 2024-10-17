@@ -625,7 +625,7 @@
   "app.components.anonymousParticipationModal.participateAnonymously": "ਅਗਿਆਤ ਰੂਪ ਵਿੱਚ ਹਿੱਸਾ ਲਓ",
   "app.components.anonymousParticipationModal.participateAnonymouslyModalText": "This will safely <b>hide your profile</b> from admins, project managers and other residents for this specific contribution so that nobody is able to link this contribution to you. Anonymous contributions cannot be edited, and are considered final.",
   "app.components.anonymousParticipationModal.participateAnonymouslyModalTextSection2": "ਸਾਡੇ ਪਲੇਟਫਾਰਮ ਨੂੰ ਹਰੇਕ ਉਪਭੋਗਤਾ ਲਈ ਸੁਰੱਖਿਅਤ ਬਣਾਉਣਾ ਸਾਡੇ ਲਈ ਇੱਕ ਪ੍ਰਮੁੱਖ ਤਰਜੀਹ ਹੈ। ਸ਼ਬਦ ਮਾਇਨੇ ਰੱਖਦੇ ਹਨ, ਇਸ ਲਈ ਕਿਰਪਾ ਕਰਕੇ ਇੱਕ ਦੂਜੇ ਨਾਲ ਦਿਆਲੂ ਬਣੋ।",
-  "app.components.avatar.titleForAccessibility": "Profile of {fullName}",
+  "app.components.avatar.titleForAccessibility": "{fullName}ਦਾ ਪ੍ਰੋਫਾਈਲ",
   "app.components.followUnfollow.follow": "ਦਾ ਪਾਲਣ ਕਰੋ",
   "app.components.followUnfollow.followADiscussion": "ਚਰਚਾ ਦੀ ਪਾਲਣਾ ਕਰੋ",
   "app.components.followUnfollow.followTooltipInputPage2": "ਇਸ ਤੋਂ ਬਾਅਦ ਸਥਿਤੀ ਤਬਦੀਲੀਆਂ, ਅਧਿਕਾਰਤ ਅੱਪਡੇਟਾਂ, ਅਤੇ ਟਿੱਪਣੀਆਂ ਬਾਰੇ ਈਮੇਲ ਅੱਪਡੇਟ ਸ਼ੁਰੂ ਹੁੰਦੇ ਹਨ। ਤੁਸੀਂ ਕਿਸੇ ਵੀ ਸਮੇਂ {unsubscribeLink} ਕਰ ਸਕਦੇ ਹੋ।",
