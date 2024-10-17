@@ -2551,6 +2551,7 @@
   "app.containers.admin.ContentBuilder.delete": "Dileu",
   "app.containers.admin.ContentBuilder.error": "gwall",
   "app.containers.admin.ContentBuilder.errorMessage": "Mae gwall ar gynnwys {locale} , trwsiwch y mater er mwyn gallu arbed eich newidiadau",
+  "app.containers.admin.ContentBuilder.hideParticipationAvatarsText": "Cuddio afatarau cyfranogiad",
   "app.containers.admin.ContentBuilder.homepage.default": "rhagosodedig",
   "app.containers.admin.ContentBuilder.homepage.events.eventsTitle": "Digwyddiadau",
   "app.containers.admin.ContentBuilder.homepage.eventsTitle": "Digwyddiadau",

@@ -2551,6 +2551,7 @@
   "app.containers.admin.ContentBuilder.delete": "Izbriši",
   "app.containers.admin.ContentBuilder.error": "greška",
   "app.containers.admin.ContentBuilder.errorMessage": "Došlo je do greške u sadržaju {locale}, rešite problem kako bi vaše promene bile sačuvane",
+  "app.containers.admin.ContentBuilder.hideParticipationAvatarsText": "Hide participation avatars",
   "app.containers.admin.ContentBuilder.homepage.default": "default",
   "app.containers.admin.ContentBuilder.homepage.events.eventsTitle": "Events",
   "app.containers.admin.ContentBuilder.homepage.eventsTitle": "Events",

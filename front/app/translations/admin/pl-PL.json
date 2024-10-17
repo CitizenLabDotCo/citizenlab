@@ -2551,6 +2551,7 @@
   "app.containers.admin.ContentBuilder.delete": "Usuń",
   "app.containers.admin.ContentBuilder.error": "błąd",
   "app.containers.admin.ContentBuilder.errorMessage": "Wystąpił błąd w treści {locale}, proszę naprawić ten błąd, aby móc zapisać zmiany",
+  "app.containers.admin.ContentBuilder.hideParticipationAvatarsText": "Ukryj awatary uczestnictwa",
   "app.containers.admin.ContentBuilder.homepage.default": "domyślny",
   "app.containers.admin.ContentBuilder.homepage.events.eventsTitle": "Wydarzenia",
   "app.containers.admin.ContentBuilder.homepage.eventsTitle": "Wydarzenia",

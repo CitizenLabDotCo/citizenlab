@@ -2551,6 +2551,7 @@
   "app.containers.admin.ContentBuilder.delete": "Dzēst",
   "app.containers.admin.ContentBuilder.error": "kļūda",
   "app.containers.admin.ContentBuilder.errorMessage": "{locale} saturā ir kļūda. Lūdzu, novērsiet šo kļūdu, lai varētu saglabāt izmaiņas.",
+  "app.containers.admin.ContentBuilder.hideParticipationAvatarsText": "Paslēpt dalības avatārus",
   "app.containers.admin.ContentBuilder.homepage.default": "noklusējuma",
   "app.containers.admin.ContentBuilder.homepage.events.eventsTitle": "Notikumi",
   "app.containers.admin.ContentBuilder.homepage.eventsTitle": "Notikumi",
