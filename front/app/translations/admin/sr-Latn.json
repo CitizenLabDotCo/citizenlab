@@ -1525,7 +1525,6 @@
   "app.containers.AdminPage.ProjectEdit.PhaseParticipationConfig.autoshareResults": "Auto-share results",
   "app.containers.AdminPage.ProjectEdit.PhaseParticipationConfig.autoshareResultsToggleDescription": "Voting results are shared on the platform and via email to participants when the phase ends. This ensures transparency by default.",
   "app.containers.AdminPage.ProjectEdit.PhaseParticipationConfig.resultSharing": "Result sharing",
-  "app.containers.AdminPage.ProjectEdit.PhaseParticipationConfig.resultSharingDescription": "Result sharing description",
   "app.containers.AdminPage.ProjectEdit.PollTab.addAnswerOption": "Додајте опцију одговора",
   "app.containers.AdminPage.ProjectEdit.PollTab.addPollQuestion": "Dodajte pitanje",
   "app.containers.AdminPage.ProjectEdit.PollTab.cancelEditAnswerOptions": "Поништити, отказати",
