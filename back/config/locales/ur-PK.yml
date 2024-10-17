@@ -258,7 +258,7 @@ ur:
       dislikes_count: 'ناپسندیدگی'
       email: 'ای میل'
       first_name: 'پہلا نام'
-      image_url: 'Image URL'
+      image_url: 'تصویری URL'
       input_id: 'ID'
       input_url: 'URL'
       last_name: 'آخری نام'
@@ -286,29 +286,29 @@ ur:
       title_text: 'تقریباً ہو چکا ہے۔'
       description_text_2: "آپ اپنے جوابات جمع کرنے والے ہیں۔ 'جمع کروائیں' پر کلک کرکے آپ ہمیں اپنے جوابات کا تجزیہ کرنے کی اجازت دیتے ہیں۔<br/>آپ کے جمع کرانے کے بعد، آپ واپس جا کر اپنے کسی بھی جواب کو تبدیل نہیں کر سکیں گے۔"
     pdf_export:
-      personal_data: 'Personal data'
+      personal_data: 'ذاتی ڈیٹا'
       personal_data_explanation_public: "ہم آپ کا ان پٹ %{organizationName}کے آن لائن شرکت کے پلیٹ فارم پر جمع کرائیں گے۔ اگر آپ چاہتے ہیں کہ آپ کا نام اس ان پٹ کے مصنف کے طور پر ظاہر ہو اور ای میل کے ذریعے آپ کے ان پٹ سے متعلقہ اپ ڈیٹس حاصل کریں، تو براہ کرم اس صفحہ پر درج ذیل فیلڈز کو پُر کریں اور ہم آپ کے لیے ایک اکاؤنٹ بنائیں گے۔ آپ کا ای میل عوامی نہیں ہوگا اور صرف %{organizationName}کے ذریعے استعمال کیا جائے گا۔ اگر آپ گمنام رہنا چاہتے ہیں، یا آپ کے ذاتی ڈیٹا کو اس طرح استعمال کرنے کے لیے ہم سے اتفاق نہیں کرتے، تو آپ انہیں خالی چھوڑ سکتے ہیں۔"
       personal_data_explanation_private: "ہم آپ کا ان پٹ %{organizationName}کے آن لائن شرکت کے پلیٹ فارم پر جمع کرائیں گے۔ اگر آپ ای میل کے ذریعے اپنے ان پٹ سے متعلقہ اپ ڈیٹس حاصل کرنا چاہتے ہیں، تو براہ کرم اس صفحہ پر درج ذیل فیلڈز کو پُر کریں اور ہم آپ کے لیے ایک اکاؤنٹ بنائیں گے۔ آپ کا ڈیٹا عوامی نہیں ہوگا اور صرف %{organizationName}کے ذریعے استعمال کیا جائے گا۔ اگر آپ اس طرح سے اپنا ذاتی ڈیٹا استعمال کرنے پر راضی نہیں ہیں تو آپ انہیں خالی چھوڑ سکتے ہیں۔"
-      first_name: 'First name(s)'
-      last_name: 'Last name'
-      email_address: 'Email address'
-      by_checking_this_box: "By checking this box I consent to my data being used to create an account on %{organizationName}'s participation platform."
-      optional: 'optional'
-      permission: 'Permission'
-      choose_as_many: 'Choose as many as you like'
+      first_name: 'پہلا نام'
+      last_name: 'آخری نام'
+      email_address: 'ای میل ایڈریس'
+      by_checking_this_box: "اس باکس کو نشان زد کر کے میں %{organizationName}کے شرکت کے پلیٹ فارم پر اکاؤنٹ بنانے کے لیے اپنے ڈیٹا کے استعمال کی منظوری دیتا ہوں۔"
+      optional: 'اختیاری'
+      permission: 'اجازت'
+      choose_as_many: 'جتنے چاہیں منتخب کریں۔'
       choose_exactly:
-        one: 'Choose exactly %{count} option'
-        other: 'Choose exactly %{count} options'
-      choose_between: 'Choose between %{min} and %{max} options'
-      choose_at_least: 'Choose at least %{count} options'
-      choose_at_most: 'Choose at most %{count} options'
-      this_answer: 'This answer will only be shared with moderators, and not to the public.'
-      page: 'Page'
-      date_published: 'Date Published (dd-mm-yyyy)'
-      instructions: 'Instructions'
-      write_as_clearly: 'Write as <b>clearly</b> as you can— these forms might be scanned'
-      write_in_language: 'Write your answers in the same language as this form'
-      linear_scale_print_description: 'Please write a number between %{min_label} and %{max_label} only'
+        one: 'بالکل %{count} اختیار کا انتخاب کریں۔'
+        other: 'بالکل %{count} اختیارات کا انتخاب کریں۔'
+      choose_between: '%{min} اور %{max} اختیارات کے درمیان انتخاب کریں۔'
+      choose_at_least: 'کم از کم %{count} اختیارات کا انتخاب کریں۔'
+      choose_at_most: 'زیادہ سے زیادہ %{count} اختیارات کا انتخاب کریں۔'
+      this_answer: 'یہ جواب صرف ماڈریٹرز کے ساتھ شیئر کیا جائے گا، عوام کے ساتھ نہیں۔'
+      page: 'صفحہ'
+      date_published: 'تاریخ اشاعت (dd-mm-yyyy)'
+      instructions: 'ہدایات'
+      write_as_clearly: '<b>واضح طور پر لکھیں</b> جیسا آپ کر سکتے ہیں— ان فارمز کو سکین کیا جا سکتا ہے'
+      write_in_language: 'اپنے جوابات اسی زبان میں لکھیں جس زبان میں یہ فارم ہے۔'
+      linear_scale_print_description: 'براہ کرم صرف %{min_label} اور %{max_label} کے درمیان نمبر لکھیں۔'
   project_copy:
     title_suffix: 'کاپی'
   confirmations_mailer:
