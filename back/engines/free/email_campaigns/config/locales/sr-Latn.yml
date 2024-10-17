@@ -273,7 +273,7 @@ sr-Latn:
       main_header: '%{authorNameFirst} вас је поменуо у интерном коментару.'
       preheader: '%{authorNameFull} вас је поменуо у интерном коментару.'
     moderator_digest:
-      subject: 'Weekly manager report of "%{project_title}"'
+      subject: 'Vaš nedeljni izveštaj za menadžere projekta od %{time}'
       preheader: 'Sažetak za menadžere projekta %{organizationName}'
       title_your_weekly_report: '%{firstName}, vaš nedeljni izveštaj'
       text_introduction: 'Odabrali smo objave koje su bile najpopularnije tokom prethodne nedelje. Budite u toku sa dešavanjima u vezi vašeg projekta!'
@@ -493,7 +493,7 @@ sr-Latn:
     threshold_reached_for_admin:
       cta_process_initiative: 'Pomozite ovoj inicijativi da pređe u narednu fazu'
       main_header: 'Inicijativa je dostigla neophodan broj glasova!'
-      subject: '"%{input_title}" reached the voting threshold'
+      subject: 'Inicijativa je dostigla neophodan broj glasova na vašoj platformi'
       preheader: 'Obavezno preduzmite sledeće korake'
     welcome:
       cta_join_platform: 'Otkrijte platformu'
@@ -512,7 +512,7 @@ sr-Latn:
         proposal: 'Your proposal has been published'
         initiative: 'Your initiative has been published'
         petition: 'Your petition has been published'
-      main_header: 'You posted "%{input_title}"'
+      main_header: 'Objavili ste ideju! Hajde da se pobrinemo da bude pročitana.'
       header_message: 'Let''s make sure it gets read.'
       message_get_votes: 'Dođite do još više ljudi putem svoje objave:'
       action_published_idea: 'Postavljena objava'
