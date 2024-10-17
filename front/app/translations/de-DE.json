@@ -228,7 +228,7 @@
   "app.components.InitiativeCards.popular": "Beliebt",
   "app.components.InitiativeCards.random": "Zufällig",
   "app.components.InitiativeCards.resetFilters": "Filter zurücksetzen",
-  "app.components.InitiativeCards.searchPlaceholder": "Vorschlag suchen",
+  "app.components.InitiativeCards.searchPlaceholder": "Suche nach einem Vorschlag",
   "app.components.InitiativeCards.showInitiatives": "Vorschläge anzeigen",
   "app.components.InitiativeCards.showMore": "Mehr anzeigen",
   "app.components.InitiativeCards.showXInitiatives": "{initiativesCount, plural, no {# Vorschläge} one {# Vorschlag} other {# Vorschläge}} anzeigen",
