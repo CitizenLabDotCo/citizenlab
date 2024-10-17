@@ -1525,7 +1525,6 @@
   "app.containers.AdminPage.ProjectEdit.PhaseParticipationConfig.autoshareResults": "خودکار اشتراک کے نتائج",
   "app.containers.AdminPage.ProjectEdit.PhaseParticipationConfig.autoshareResultsToggleDescription": "ووٹنگ کے نتائج پلیٹ فارم پر اور ای میل کے ذریعے شرکاء کو اس وقت شیئر کیے جاتے ہیں جب مرحلہ ختم ہوتا ہے۔ یہ طے شدہ طور پر شفافیت کو یقینی بناتا ہے۔",
   "app.containers.AdminPage.ProjectEdit.PhaseParticipationConfig.resultSharing": "نتیجہ کا اشتراک",
-  "app.containers.AdminPage.ProjectEdit.PhaseParticipationConfig.resultSharingDescription": "نتیجہ شیئرنگ کی تفصیل",
   "app.containers.AdminPage.ProjectEdit.PollTab.addAnswerOption": "جواب کا اختیار شامل کریں۔",
   "app.containers.AdminPage.ProjectEdit.PollTab.addPollQuestion": "رائے شماری کا سوال شامل کریں۔",
   "app.containers.AdminPage.ProjectEdit.PollTab.cancelEditAnswerOptions": "منسوخ کریں۔",
