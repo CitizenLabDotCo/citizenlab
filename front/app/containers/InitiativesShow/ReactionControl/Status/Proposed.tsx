@@ -2,6 +2,8 @@ import React from 'react';
 
 import { Text } from '@citizenlab/cl2-component-library';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
 import { FormattedMessage } from 'utils/cl-intl';
 import { getPeriodRemainingUntil } from 'utils/dateUtils';
 
@@ -11,8 +13,16 @@ import { StatusComponentProps } from '../StatusWrapper';
 import Status from '.';
 
 const Proposed = (props: StatusComponentProps) => {
+  const { data: appConfiguration } = useAppConfiguration();
+  const tenantTimezone =
+    appConfiguration?.data.attributes.settings?.core.timezone;
+
+  if (!tenantTimezone) return null;
+
   const daysLeft = getPeriodRemainingUntil(
-    props.initiative.attributes.expires_at
+    props.initiative.attributes.expires_at,
+    tenantTimezone,
+    'days'
   );
 
   return (
