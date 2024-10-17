@@ -1525,7 +1525,6 @@
   "app.containers.AdminPage.ProjectEdit.PhaseParticipationConfig.autoshareResults": "Automatisk delning av resultat",
   "app.containers.AdminPage.ProjectEdit.PhaseParticipationConfig.autoshareResultsToggleDescription": "Röstningsresultaten delas på plattformen och via e-post till deltagarna när fasen avslutas. Detta säkerställer transparens som standard.",
   "app.containers.AdminPage.ProjectEdit.PhaseParticipationConfig.resultSharing": "Resultatdelning",
-  "app.containers.AdminPage.ProjectEdit.PhaseParticipationConfig.resultSharingDescription": "Beskrivning av resultatdelning",
   "app.containers.AdminPage.ProjectEdit.PollTab.addAnswerOption": "Lägg till ett svarsalternativ",
   "app.containers.AdminPage.ProjectEdit.PollTab.addPollQuestion": "Lägg till en omröstningsfråga",
   "app.containers.AdminPage.ProjectEdit.PollTab.cancelEditAnswerOptions": "Avbryt",
