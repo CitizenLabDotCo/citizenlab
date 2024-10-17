@@ -1804,6 +1804,7 @@
   "app.containers.SignIn.signInError": "De angivne oplysninger er ikke korrekte. Klik \"Glemt dit password\" for at nulstille dit password.",
   "app.containers.SignIn.useFranceConnectToLoginCreateOrVerifyYourAccount": "Brug FranceConnect til at logge ind, tilmelde dig eller verificere din konto.",
   "app.containers.SignIn.whatIsFranceConnect": "Hvad er France Connect?",
+  "app.containers.SignUp.adminOptions2": "Til administratorer og projektledere",
   "app.containers.SignUp.backToSignUpOptions": "Gå tilbage til registrerings indstillinger",
   "app.containers.SignUp.continue": "Fortsæt",
   "app.containers.SignUp.emailConsent": "Ved at registrere dig, accepterer du at modtage e-mails fra denne platform. Du kan vælge, hvilke e-mails du ønsker at modtage i dine brugerindstillinger.",
