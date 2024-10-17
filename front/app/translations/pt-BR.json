@@ -1804,6 +1804,7 @@
   "app.containers.SignIn.signInError": "A informação fornecida não está correcta. Clique em 'Senha esquecida' para redefinir sua senha.",
   "app.containers.SignIn.useFranceConnectToLoginCreateOrVerifyYourAccount": "Utilize FranceConnect para iniciar sessão, inscrever-se ou verificar a sua conta.",
   "app.containers.SignIn.whatIsFranceConnect": "O que é a France Connect?",
+  "app.containers.SignUp.adminOptions2": "Para administradores e gerentes de projeto",
   "app.containers.SignUp.backToSignUpOptions": "Voltar às opções de cadastro",
   "app.containers.SignUp.continue": "Continuar",
   "app.containers.SignUp.emailConsent": "Ao inscrever-se, você concorda em receber e-mails desta plataforma. Você pode selecionar quais e-mails deseja receber de suas configurações de usuário.",
