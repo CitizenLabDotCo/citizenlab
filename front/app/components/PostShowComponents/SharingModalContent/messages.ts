@@ -5,6 +5,7 @@ export default defineMessages({
     id: 'app.components.PostComponents.SharingModalContent.twitterMessage',
     defaultMessage: 'Vote for {postTitle} on',
   },
+  // #input_term_copy
   ideaEmailSharingSubjectText: {
     id: 'app.components.PostComponents.SharingModalContent.ideaEmailSharingSubjectText',
     defaultMessage: 'Support my idea: {postTitle}',
@@ -29,9 +30,17 @@ export default defineMessages({
     id: 'app.components.PostComponents.SharingModalContent.projectEmailSharingSubject',
     defaultMessage: 'Support my project: {postTitle}.',
   },
+  proposalEmailSharingSubject: {
+    id: 'app.components.PostComponents.SharingModalContent.proposalEmailSharingSubject',
+    defaultMessage: 'Support my proposal: {postTitle}.',
+  },
   initiativeEmailSharingSubject: {
     id: 'app.components.PostComponents.SharingModalContent.initiativeEmailSharingSubject',
     defaultMessage: 'Support my initiative: {postTitle}.',
+  },
+  petitionEmailSharingSubject: {
+    id: 'app.components.PostComponents.SharingModalContent.petitionEmailSharingSubject',
+    defaultMessage: 'Support my petition: {postTitle}.',
   },
   ideaEmailSharingBody: {
     id: 'app.components.PostComponents.SharingModalContent.ideaEmailSharingBody',
@@ -58,10 +67,18 @@ export default defineMessages({
     id: 'app.components.PostComponents.SharingModalContent.projectEmailSharingBody',
     defaultMessage: "Support my project '{postTitle}' at {postUrl}!",
   },
+  proposalEmailSharingBody: {
+    id: 'app.components.PostComponents.SharingModalContent.proposalEmailSharingBody',
+    defaultMessage: "Support my proposal '{postTitle}' at {postUrl}!",
+  },
   initiativeEmailSharingBody: {
     id: 'app.components.PostComponents.SharingModalContent.initiativeEmailSharingBody',
     defaultMessage:
       'What do you think of this initiative? Vote on it and share the discussion at {postUrl} to make your voice heard!',
+  },
+  petitionEmailSharingBody: {
+    id: 'app.components.PostComponents.SharingModalContent.petitionEmailSharingBody',
+    defaultMessage: "Support my petition '{postTitle}' at {postUrl}!",
   },
   ideaWhatsAppMessage: {
     id: 'app.components.PostComponents.SharingModalContent.ideaWhatsAppMessage',
@@ -87,8 +104,16 @@ export default defineMessages({
     id: 'app.components.PostComponents.SharingModalContent.issueWhatsAppMessage',
     defaultMessage: 'I just posted an issue: {postTitle}.',
   },
-  whatsAppMessageProposal: {
-    id: 'app.components.PostComponents.SharingModalContent.whatsAppMessageProposal',
+  proposalWhatsAppMessage: {
+    id: 'app.components.PostComponents.SharingModalContent.proposalWhatsAppMessage',
     defaultMessage: 'I just posted a proposal for {orgName}: {postTitle}',
+  },
+  initiativeWhatsAppMessage: {
+    id: 'app.components.PostComponents.SharingModalContent.initiativeWhatsAppMessage',
+    defaultMessage: 'Support my initiative: {postTitle}.',
+  },
+  petitionWhatsAppMessage: {
+    id: 'app.components.PostComponents.SharingModalContent.petitionWhatsAppMessage',
+    defaultMessage: 'Support my petition: {postTitle}.',
   },
 });

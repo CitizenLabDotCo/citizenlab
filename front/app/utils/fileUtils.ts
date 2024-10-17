@@ -21,11 +21,6 @@ export const imageSizes = {
     medium: [298, 135],
     small: [96, 96],
   },
-  initiativeImg: {
-    fb: [1200, 630],
-    medium: [298, 135],
-    small: [96, 96],
-  },
 };
 
 export async function getBase64FromFile(file: File) {

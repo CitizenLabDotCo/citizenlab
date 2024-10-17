@@ -3,7 +3,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-# TODO: move-old-proposals-test
+# TODO: cleanup-after-proposals-migration
 resource 'Reactions' do
   explanation 'Reactions are used to express agreement on content (i.e. ideas). Ideally, the city would accept the most reactiond initiatives.'
 

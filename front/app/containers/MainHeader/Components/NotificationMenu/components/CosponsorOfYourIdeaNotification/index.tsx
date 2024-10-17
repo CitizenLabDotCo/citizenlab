@@ -23,7 +23,7 @@ const CosponsorOfYourIdeaNotification = memo<Props>((props) => {
 
   return (
     <NotificationWrapper
-      linkTo={`/initiatives/${notification.attributes.post_slug}`}
+      linkTo={`/ideas/${notification.attributes.post_slug}`}
       timing={notification.attributes.created_at}
       icon="label"
       isRead={!!notification.attributes.read_at}

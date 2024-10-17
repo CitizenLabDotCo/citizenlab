@@ -58,9 +58,6 @@ describe('Admin: proposal phase', () => {
 
     // Verify proposal phase is created and published
     cy.get('#e2e-project-page').should('contain.text', projectTitleEN);
-    cy.get('#e2e-ideation-cta-button').should(
-      'have.text',
-      'Submit your idea' // Change to proposal later
-    );
+    cy.get('#e2e-ideation-cta-button').should('have.text', 'Add a proposal');
   });
 });

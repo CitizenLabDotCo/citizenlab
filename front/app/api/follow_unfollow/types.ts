@@ -36,13 +36,11 @@ export type FollowableType =
   | 'projects'
   | 'project_folders'
   | 'ideas'
-  | 'initiatives'
   | 'topics'
   | 'areas';
 
 export type FollowableObject =
   | 'Idea'
-  | 'Initiative'
   | 'ProjectFolders::Folder'
   | 'Project'
   | 'Topic'

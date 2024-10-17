@@ -43,14 +43,12 @@ const IdeaTitle = ({ idea, projectId, translateButtonClicked }: Props) => {
       <div aria-live="polite">
         {ideaTitle && (
           <Title
-            postType="idea"
             postId={idea.data.id}
             title={ideaTitle}
             translateButtonClicked={translateButtonClicked}
           />
         )}
       </div>
-
       <Box ml="30px">
         <IdeaMoreActions idea={idea.data} projectId={projectId} />
       </Box>

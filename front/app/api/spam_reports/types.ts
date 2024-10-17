@@ -15,7 +15,7 @@ export interface ISpamReport {
 }
 
 export type ISpamReportAdd = {
-  targetType: 'comments' | 'ideas' | 'initiatives';
+  targetType: 'comments' | 'ideas';
   targetId: string;
   spam_report: {
     user_id?: string;

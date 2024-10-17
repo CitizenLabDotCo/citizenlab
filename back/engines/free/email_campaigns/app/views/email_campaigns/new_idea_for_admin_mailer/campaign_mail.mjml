@@ -1,4 +1,14 @@
-<% @diff_days = (Time.zone.today - event.post_published_at.to_date).to_i %>
+<% @diff_days = (Time.zone.today - event.post_submitted_at.to_date).to_i %>
+
+<% if prescreening_version? %>
+  <mj-section padding="0 25px 20px" border-radius="5px" text-align="left">
+    <mj-column> 
+      <mj-text>
+        <%= format_message('input_not_visible_prescreening', escape_html: false) %>
+      </mj-text>
+    </mj-column>
+  </mj-section>
+<% end %>
 
 <!-- Idea description box -->
 <mj-section padding="0 25px 25px"
@@ -27,4 +37,10 @@
 </mj-section>
 
 
-<%= render partial: 'application/cta_button', locals: { href: event.post_url, message: format_message('cta_reply_to', values: { authorName: event.post_author_name }) } %>
+<%= render(
+  partial: 'application/cta_button',
+  locals: { 
+    href: event.post_url,
+    message: prescreening_version? ? format_message('cta_prescreening') : format_message('cta_publication', values: { authorName: event.post_author_name })
+  }
+ ) %>

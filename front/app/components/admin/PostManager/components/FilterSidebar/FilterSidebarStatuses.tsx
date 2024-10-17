@@ -4,7 +4,6 @@ import { Box, Text } from '@citizenlab/cl2-component-library';
 import { Menu, Divider } from 'semantic-ui-react';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
-import { IInitiativeStatusData } from 'api/initiative_statuses/types';
 import useAuthUser from 'api/me/useAuthUser';
 
 import Button from 'components/UI/Button';
@@ -20,7 +19,7 @@ import FilterSidebarStatusesItem from './FilterSidebarStatusesItem';
 
 interface Props {
   type: ManagerType;
-  statuses?: IIdeaStatusData[] | IInitiativeStatusData[] | null;
+  statuses?: IIdeaStatusData[] | null;
   selectedStatus?: string | null;
   onChangeStatusFilter: (status: string | null) => void;
 }
@@ -81,16 +80,14 @@ const FilterSidebarStatuses = ({
               </Button>
             </Box>
           )}
-        {(statuses as (IIdeaStatusData | IInitiativeStatusData)[]).map(
-          (status) => (
-            <FilterSidebarStatusesItem
-              key={status.id}
-              status={status}
-              active={isActive(status.id)}
-              onClick={() => handleItemClick(status.id)}
-            />
-          )
-        )}
+        {(statuses as IIdeaStatusData[]).map((status) => (
+          <FilterSidebarStatusesItem
+            key={status.id}
+            status={status}
+            active={isActive(status.id)}
+            onClick={() => handleItemClick(status.id)}
+          />
+        ))}
       </Menu>
     );
   }

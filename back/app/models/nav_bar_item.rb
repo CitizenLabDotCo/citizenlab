@@ -27,7 +27,7 @@
 #
 class NavBarItem < ApplicationRecord
   # The codes must be listed in the correct default ordering
-  CODES = %w[home projects proposals events all_input custom].freeze
+  CODES = %w[home projects events all_input custom].freeze
 
   acts_as_list column: :ordering, top_of_list: 0, add_new_at: :bottom
 

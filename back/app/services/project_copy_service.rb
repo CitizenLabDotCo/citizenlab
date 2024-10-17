@@ -309,7 +309,9 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
         'input_term' => phase.input_term,
         'baskets_count' => @local_copy || !@include_ideas ? 0 : phase.baskets_count,
         'votes_count' => @local_copy || !@include_ideas ? 0 : phase.votes_count,
-        'prescreening_enabled' => phase.prescreening_enabled
+        'prescreening_enabled' => phase.prescreening_enabled,
+        'expire_days_limit' => phase.expire_days_limit,
+        'reacting_threshold' => phase.reacting_threshold
       }
       if yml_phase['participation_method'] == 'voting'
         yml_phase['voting_method'] = phase.voting_method
@@ -563,7 +565,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
       yml_permission = {
         'action' => p.action,
         'permitted_by' => p.permitted_by,
-        'permission_scope_ref' => lookup_ref(p.permission_scope_id, %i[project phase]),
+        'permission_scope_ref' => lookup_ref(p.permission_scope_id, :phase),
         'global_custom_fields' => p.global_custom_fields,
         'created_at' => shift_timestamp(p.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(p.updated_at, shift_timestamps)&.iso8601

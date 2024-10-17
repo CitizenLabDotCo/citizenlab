@@ -1,12 +1,11 @@
 # frozen_string_literal: true
 
-# TODO: move-old-proposals-test
 module EmailCampaigns
   class InappropriateContentFlaggedPreview < ActionMailer::Preview
     include EmailCampaigns::MailerPreviewRecipient
 
     def campaign_mail
-      flaggable = Initiative.first
+      flaggable = Idea.first
       # TODO: generate commands with campaign#generate_commands method
       command = {
         recipient: recipient_user,

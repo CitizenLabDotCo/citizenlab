@@ -165,7 +165,8 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
     isNumber(ideas_count) &&
     ideas_count > 0;
   const showPostIdeaButton =
-    generalShowCTAButtonCondition && participationMethod === 'ideation';
+    generalShowCTAButtonCondition &&
+    (participationMethod === 'ideation' || participationMethod === 'proposals');
   const showTakeNativeSurveyButton =
     generalShowCTAButtonCondition && participationMethod === 'native_survey';
   const showTakeSurveyButton =
@@ -202,6 +203,9 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
               question: messages.seeTheQuestions,
               issue: messages.seeTheIssues,
               contribution: messages.seeTheContributions,
+              proposal: messages.seeTheProposals,
+              initiative: messages.seeTheInitiatives,
+              petition: messages.seeThePetitions,
             })}
           />
         </SeeIdeasButton>

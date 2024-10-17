@@ -1,5 +1,4 @@
 import { IFollowingAction } from 'api/authentication/authentication_requirements/types';
-import { IInitiativeAction } from 'api/initiative_action_descriptors/types';
 import { IPhasePermissionAction } from 'api/phase_permissions/types';
 
 import errorMessages from 'components/UI/Error/messages';
@@ -55,11 +54,7 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
 
 export const getHeaderMessage = (
   step: Step,
-  action:
-    | 'visiting'
-    | IInitiativeAction
-    | IPhasePermissionAction
-    | IFollowingAction
+  action: 'visiting' | IPhasePermissionAction | IFollowingAction
 ) => {
   if (
     action === 'following' &&

@@ -188,7 +188,6 @@ const ProjectProposalsManager = ({
       <ThreeColumns>
         <LeftColumn>
           <ActionBar
-            type={'ProjectProposals'}
             selection={selection}
             resetSelection={resetSelection}
             handleClickEdit={openPreviewEdit}

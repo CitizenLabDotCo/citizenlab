@@ -3,7 +3,7 @@ import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
-import initiativesKeys from './keys';
+import invitesKeys from './keys';
 import { IInvites, IQueryParameters, InvitesKeys } from './types';
 
 export const defaultPageSize = 20;
@@ -25,7 +25,7 @@ const fetchInvites = ({
 
 const useInvites = (queryParams: IQueryParameters) => {
   return useQuery<IInvites, CLErrors, IInvites, InvitesKeys>({
-    queryKey: initiativesKeys.list(queryParams),
+    queryKey: invitesKeys.list(queryParams),
     queryFn: () => fetchInvites(queryParams),
   });
 };
