@@ -22,12 +22,19 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
     @publications = paginate publications
     @publications = @publications.includes(:publication, :children)
 
+    included = if params[:include_publications] == 'true'
+      %i[publication publication.avatars publication.project_images publication.images publication.current_phase]
+    else
+      []
+    end
+
     render json: linked_json(
       @publications,
       WebApi::V1::AdminPublicationSerializer,
       params: jsonapi_serializer_params(
         visible_children_count_by_parent_id: publication_filterer.visible_children_counts_by_parent_id
-      )
+      ),
+      include: included
     )
   end
 
