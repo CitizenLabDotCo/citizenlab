@@ -259,6 +259,8 @@ class User < ApplicationRecord
       # Allow authentication without password - but only if confirmation is required on the user
       unencrypted_password.empty? && confirmation_required? ? self : false
     else
+      return false unless AppConfiguration.instance.feature_activated?('password_login') || super_admin?
+
       BCrypt::Password.new(password_digest).is_password?(unencrypted_password) && self
     end
   end
