@@ -21,6 +21,9 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../../messages';
 import Events from '../CraftComponents/Events';
 import Highlight from '../CraftComponents/Highlight';
+import SpotlightProject, {
+  spotlightProjectTitle,
+} from '../CraftComponents/SpotlightProject';
 
 type HomepageBuilderToolboxProps = {
   selectedLocale: SupportedLocale;
@@ -44,7 +47,7 @@ const HomepageBuilderToolbox = ({
         label={formatMessage(messages.eventsTitle)}
       />
       <DraggableElement
-        id="e2e-draggable-events"
+        id="e2e-draggable-highlight"
         component={
           <Highlight primaryButtonText={{}} secondaryButtonText={{}} />
         }
@@ -57,7 +60,12 @@ const HomepageBuilderToolbox = ({
         icon="section-image-text"
         label={formatMessage(messages.imageTextCards)}
       />
-
+      <DraggableElement
+        id="e2e-draggable-spotlight-project"
+        component={<SpotlightProject />}
+        icon="projects"
+        label={formatMessage(spotlightProjectTitle)}
+      />
       <SectionTitle>
         <FormattedMessage {...contentBuilderMessages.layout} />
       </SectionTitle>

@@ -19,6 +19,7 @@ import Events from '../CraftComponents/Events';
 import Highlight from '../CraftComponents/Highlight';
 import HomepageBanner from '../CraftComponents/HomepageBanner';
 import Projects from '../CraftComponents/Projects';
+import SpotlightProject from '../CraftComponents/SpotlightProject';
 
 type EditorProps = {
   children?: React.ReactNode;
@@ -52,6 +53,7 @@ const Editor: React.FC<EditorProps> = ({
         Projects,
         Events,
         Highlight,
+        SpotlightProject,
         Proposals,
       }}
       isPreview={isPreview}
