@@ -1525,7 +1525,6 @@
   "app.containers.AdminPage.ProjectEdit.PhaseParticipationConfig.autoshareResults": "Automātiskās kopīgošanas rezultāti",
   "app.containers.AdminPage.ProjectEdit.PhaseParticipationConfig.autoshareResultsToggleDescription": "Pēc posma beigām balsošanas rezultāti tiek paziņoti platformā un pa e-pastu dalībniekiem. Tas nodrošina pārredzamību pēc noklusējuma.",
   "app.containers.AdminPage.ProjectEdit.PhaseParticipationConfig.resultSharing": "Rezultātu koplietošana",
-  "app.containers.AdminPage.ProjectEdit.PhaseParticipationConfig.resultSharingDescription": "Rezultātu kopīgošanas apraksts",
   "app.containers.AdminPage.ProjectEdit.PollTab.addAnswerOption": "Pievienot atbildes iespēju",
   "app.containers.AdminPage.ProjectEdit.PollTab.addPollQuestion": "Pievienot aptaujas jautājumu",
   "app.containers.AdminPage.ProjectEdit.PollTab.cancelEditAnswerOptions": "Atcelt",
