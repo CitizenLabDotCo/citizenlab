@@ -212,6 +212,12 @@ da:
           title: Hvad er dit input?
         option:
           title: Hvad er din mulighed?
+        proposal:
+          title: Hvad er dit forslag?
+        initiative:
+          title: Hvad er dit forslag?
+        petition:
+          title: Hvad er din anmodning?
   custom_field_options:
     gender:
       male: Mand
