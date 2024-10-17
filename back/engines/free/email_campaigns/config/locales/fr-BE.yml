@@ -273,7 +273,7 @@ fr-BE:
       main_header: '%{authorNameFirst} vous a mentionné dans un commentaire interne.'
       preheader: '%{authorNameFull} vous a mentionné dans un commentaire interne.'
     moderator_digest:
-      subject: 'Rapport hebdomadaires du projet « %{project_title} »'
+      subject: 'Votre rapport modérateur hebdomadaire du %{time}'
       preheader: 'Résumé du rapport modérateur de %{organizationName}'
       title_your_weekly_report: '%{firstName}, votre rapport hebdomadaire'
       text_introduction: 'Voici une sélection des idées qui ont généré le plus d''activité la semaine dernière. Découvrez ce qui se passe sur votre plateforme!'
@@ -493,7 +493,7 @@ fr-BE:
     threshold_reached_for_admin:
       cta_process_initiative: 'Passez cette initiative à l''étape suivante'
       main_header: 'Une initiative a atteint le nombre de voix requis!'
-      subject: '« %{input_title} » a atteint le nombre de votes requis'
+      subject: 'Une initiative a atteint le nombre de voix requis sur votre plateforme'
       preheader: 'Assurez-vous de passer aux étapes suivantes'
     welcome:
       cta_join_platform: 'Découvrir la plateforme'
@@ -512,7 +512,7 @@ fr-BE:
         proposal: 'Votre proposition a été publiée'
         initiative: 'Votre initiative a été publiée'
         petition: 'Votre pétition a été publiée'
-      main_header: 'Vous avez posté « %{input_title} »'
+      main_header: 'Vous avez posté une idée ! Faisons en sorte qu''elle soit lue.'
       header_message: 'Assurons-nous qu''il soit lu.'
       message_get_votes: 'Atteignez plus de gens avec votre idée :'
       action_published_idea: 'Publiez votre idée'
