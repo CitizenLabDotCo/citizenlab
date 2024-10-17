@@ -1525,7 +1525,6 @@
   "app.containers.AdminPage.ProjectEdit.PhaseParticipationConfig.autoshareResults": "ਆਟੋ-ਸ਼ੇਅਰ ਨਤੀਜੇ",
   "app.containers.AdminPage.ProjectEdit.PhaseParticipationConfig.autoshareResultsToggleDescription": "ਵੋਟਿੰਗ ਨਤੀਜੇ ਪਲੇਟਫਾਰਮ 'ਤੇ ਅਤੇ ਭਾਗੀਦਾਰਾਂ ਨੂੰ ਈਮੇਲ ਰਾਹੀਂ ਸਾਂਝੇ ਕੀਤੇ ਜਾਂਦੇ ਹਨ ਜਦੋਂ ਪੜਾਅ ਖਤਮ ਹੁੰਦਾ ਹੈ। ਇਹ ਮੂਲ ਰੂਪ ਵਿੱਚ ਪਾਰਦਰਸ਼ਤਾ ਨੂੰ ਯਕੀਨੀ ਬਣਾਉਂਦਾ ਹੈ।",
   "app.containers.AdminPage.ProjectEdit.PhaseParticipationConfig.resultSharing": "ਨਤੀਜਾ ਸਾਂਝਾ ਕਰਨਾ",
-  "app.containers.AdminPage.ProjectEdit.PhaseParticipationConfig.resultSharingDescription": "ਨਤੀਜਾ ਸਾਂਝਾਕਰਨ ਵੇਰਵਾ",
   "app.containers.AdminPage.ProjectEdit.PollTab.addAnswerOption": "ਇੱਕ ਜਵਾਬ ਵਿਕਲਪ ਸ਼ਾਮਲ ਕਰੋ",
   "app.containers.AdminPage.ProjectEdit.PollTab.addPollQuestion": "ਇੱਕ ਪੋਲ ਸਵਾਲ ਸ਼ਾਮਲ ਕਰੋ",
   "app.containers.AdminPage.ProjectEdit.PollTab.cancelEditAnswerOptions": "ਰੱਦ ਕਰੋ",
