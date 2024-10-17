@@ -1804,6 +1804,7 @@
   "app.containers.SignIn.signInError": "Den angivna informationen är inte korrekt. Klicka på Har du glömt ditt lösenord? för att återställa ditt lösenord.",
   "app.containers.SignIn.useFranceConnectToLoginCreateOrVerifyYourAccount": "Använd FranceConnect för att logga in, registrera dig eller verifiera ditt konto.",
   "app.containers.SignIn.whatIsFranceConnect": "Vad är FranceConnect?",
+  "app.containers.SignUp.adminOptions2": "För administratörer och projektledare",
   "app.containers.SignUp.backToSignUpOptions": "Gå tillbaka till registreringsalternativ",
   "app.containers.SignUp.continue": "Fortsätta",
   "app.containers.SignUp.emailConsent": "Genom att registrera dig godkänner du att ta emot e-postmeddelanden från den här plattformen. Du kan välja vilka e-postmeddelanden du vill ta emot på sidan Mina inställningar.",
