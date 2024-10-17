@@ -61,10 +61,14 @@ const AuthProviders = memo<Props>(
     const [searchParams] = useSearchParams();
     const providerForTest = searchParams.get('provider');
 
+    // To allow super admins to sign in with password when password login is disabled
+    const superAdmin = searchParams.get('super_admin') !== null;
+
     // A hidden path that will show all methods inc any that are admin only
     const showAdminOnlyMethods = pathname.endsWith('/sign-in/admin');
 
-    const passwordLoginEnabled = useFeatureFlag({ name: 'password_login' });
+    const passwordLoginEnabled =
+      useFeatureFlag({ name: 'password_login' }) || superAdmin;
     const googleLoginEnabled = useFeatureFlag({ name: 'google_login' });
     const facebookLoginEnabled = useFeatureFlag({ name: 'facebook_login' });
     const azureAdLoginEnabled =
