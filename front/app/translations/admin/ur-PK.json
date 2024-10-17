@@ -1688,7 +1688,7 @@
   "app.containers.AdminPage.ProjectEdit.inputsDefaultView": "پہلے سے طے شدہ منظر",
   "app.containers.AdminPage.ProjectEdit.inputsDefaultViewTooltip": "ان پٹ دکھانے کے لیے ڈیفالٹ ویو کا انتخاب کریں: گرڈ ویو میں کارڈز یا نقشے پر پن۔ شرکاء دستی طور پر دونوں آراء کے درمیان سوئچ کر سکتے ہیں۔",
   "app.containers.AdminPage.ProjectEdit.konveioDocumentAnnotationEmbedUrl": "Konveio URL کو ایمبیڈ کریں۔",
-  "app.containers.AdminPage.ProjectEdit.likingMethodTitle": "فی شریک پسند کی تعداد",
+  "app.containers.AdminPage.ProjectEdit.likingMethodTitle": "ان پٹ کی زیادہ سے زیادہ تعداد جو ایک حصہ لینے والا پسند کر سکتا ہے (خیال میں) یا ووٹ دے سکتا ہے (تجاویز میں)",
   "app.containers.AdminPage.ProjectEdit.limited": "محدود",
   "app.containers.AdminPage.ProjectEdit.loadMoreTemplates": "مزید ٹیمپلیٹس لوڈ کریں۔",
   "app.containers.AdminPage.ProjectEdit.mapDisplay": "نقشہ",
