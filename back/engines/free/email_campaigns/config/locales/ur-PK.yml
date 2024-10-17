@@ -53,7 +53,7 @@ ur:
       "assignee_digest": تفویض کردہ خیالات کا ہفتہ وار جائزہ
       "user_digest": ہفتہ وار جائزہ
       "voting_basket_submitted": ووٹنگ کی تصدیق
-      "native_survey_not_submitted": Survey not submitted
+      "native_survey_not_submitted": سروے جمع نہیں ہوا۔
       "voting_basket_not_submitted": ووٹ جمع نہیں ہوئے۔
       "voting_last_chance": ووٹ ڈالنے کا آخری موقع
       "voting_phase_started": ووٹنگ کے ساتھ نیا پروجیکٹ مرحلہ
@@ -528,12 +528,12 @@ ur:
       cta_see_votes_submitted: 'جمع کرائے گئے ووٹ دیکھیں'
       cta_message: 'حصہ لینے کے لیے نیچے دیئے گئے بٹن پر کلک کریں۔'
     native_survey_not_submitted:
-      subject: '%{organizationName}: Almost there! Submit your answers'
-      preheader: 'You didn''t complete your survey response on the participation platform of %{organizationName}'
-      title_native_survey_not_submitted: 'Almost there! Submit your answers'
-      body_native_survey_not_submitted: 'You started sharing your answers on %{phaseTitle} but didn''t submit them. Submissions will close on %{phaseEndDate}. Click on the button below to continue where you left off.'
-      body_native_survey_not_submitted_no_date: 'You started sharing your answers on %{phaseTitle} but didn''t submit them. Click on the button below to continue where you left off.'
-      cta_complete_your_survey_response: 'Resume your survey response'
+      subject: '%{organizationName}: قریب قریب! اپنے جوابات جمع کروائیں۔'
+      preheader: 'آپ نے اپنا سروے کا جواب %{organizationName}کے شرکت کے پلیٹ فارم پر مکمل نہیں کیا۔'
+      title_native_survey_not_submitted: 'تقریباً وہاں! اپنے جوابات جمع کروائیں۔'
+      body_native_survey_not_submitted: 'آپ نے %{phaseTitle} پر اپنے جوابات کا اشتراک کرنا شروع کیا لیکن انہیں جمع نہیں کرایا۔ گذارشات %{phaseEndDate}کو بند ہو جائیں گی۔ جہاں آپ نے چھوڑا تھا وہاں جاری رکھنے کے لیے نیچے والے بٹن پر کلک کریں۔'
+      body_native_survey_not_submitted_no_date: 'آپ نے %{phaseTitle} پر اپنے جوابات کا اشتراک کرنا شروع کیا لیکن انہیں جمع نہیں کرایا۔ جہاں آپ نے چھوڑا تھا وہاں جاری رکھنے کے لیے نیچے والے بٹن پر کلک کریں۔'
+      cta_complete_your_survey_response: 'اپنے سروے کے جواب کو دوبارہ شروع کریں۔'
     voting_basket_not_submitted:
       subject: '%{organizationName}: آپ نے اپنا ووٹ جمع نہیں کرایا'
       preheader: 'آپ نے اپنا ووٹ %{organizationName}کے شرکت کے پلیٹ فارم پر جمع نہیں کرایا'
@@ -611,7 +611,7 @@ ur:
         user_who_voted: 'ووٹ دینے والا صارف'
         user_with_unsubmitted_votes: 'وہ صارف جس نے اپنا ووٹ جمع نہیں کرایا'
         users_who_engaged_but_not_voted: 'وہ صارفین جو پروجیکٹ کے ساتھ مشغول ہیں لیکن ووٹ نہیں دیا ہے۔'
-        user_with_unsubmitted_survey: 'User who has started but not submitted their survey'
+        user_with_unsubmitted_survey: 'وہ صارف جس نے اپنا سروے شروع کیا ہے لیکن جمع نہیں کیا ہے۔'
       content_type:
         comments: 'تبصرے'
         content_moderation: 'مواد کی اعتدال پسندی۔'
@@ -624,7 +624,7 @@ ur:
         proposals: 'تجاویز'
         reactions: 'رد عمل'
         voting: 'ووٹنگ'
-        surveys: 'Surveys'
+        surveys: 'سروے'
       trigger:
         comment_is_deleted: 'تبصرہ حذف کر دیا گیا ہے۔'
         comment_is_flagged_as_spam: 'تبصرہ سپیم کے طور پر جھنڈا لگایا گیا ہے۔'
@@ -673,4 +673,4 @@ ur:
         7_days_after_invite_is_sent: 'دعوت نامہ بھیجنے کے 7 دن بعد'
         7_days_before_the_project_changes_phase: 'منصوبے کے مرحلے میں تبدیلی سے 7 دن پہلے'
         registration_to_event: 'کسی تقریب کی رجسٹریشن'
-        survey_1_day_after_draft_saved: '1 day after user last saved the survey in draft'
+        survey_1_day_after_draft_saved: 'صارف کے آخری بار سروے کو ڈرافٹ میں محفوظ کرنے کے 1 دن بعد'
