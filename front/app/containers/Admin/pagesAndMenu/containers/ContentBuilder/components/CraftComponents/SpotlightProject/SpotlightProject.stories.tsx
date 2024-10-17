@@ -1,3 +1,7 @@
+import React from 'react';
+
+import { Box } from '@citizenlab/cl2-component-library';
+
 import SpotlightProject from './SpotlightProject';
 
 import type { Meta, StoryObj } from '@storybook/react';
@@ -5,6 +9,13 @@ import type { Meta, StoryObj } from '@storybook/react';
 const meta = {
   title: 'HomepageBuilder/SpotlightProject',
   component: SpotlightProject,
+  render: (props) => {
+    return (
+      <Box w="100%" display="flex" justifyContent="center">
+        <SpotlightProject {...props} />
+      </Box>
+    );
+  },
   parameters: {
     chromatic: { disableSnapshot: false },
   },

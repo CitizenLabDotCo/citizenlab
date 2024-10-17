@@ -5,7 +5,7 @@ import {
   Title,
   Text,
   Button,
-  stylingConsts,
+  Image,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 
@@ -20,18 +20,18 @@ interface Props {
 }
 
 const SpotlightProject = ({ title, description, buttonText }: Props) => {
-  const isSmallerThanTablet = useBreakpoint('tablet');
+  const isSmallerThanPhone = useBreakpoint('phone');
 
   return (
-    <Box px={isSmallerThanTablet ? DEFAULT_PADDING : '40px'} w="100%">
+    <Box px={isSmallerThanPhone ? DEFAULT_PADDING : '40px'} w="100%">
       <Box
         w="100%"
-        maxWidth="1000px"
+        maxWidth="1200px"
         display="flex"
-        flexDirection={isSmallerThanTablet ? 'column' : 'row'}
-        justifyContent={isSmallerThanTablet ? 'flex-start' : 'space-between'}
+        flexDirection={isSmallerThanPhone ? 'column' : 'row'}
+        justifyContent={isSmallerThanPhone ? 'flex-start' : 'space-between'}
       >
-        <Box w={isSmallerThanTablet ? undefined : '500px'}>
+        <Box w={isSmallerThanPhone ? undefined : '50%'}>
           <Title variant="h2" fontSize="xxxxl" mt="0">
             {title ?? 'TODO'}
           </Title>
@@ -43,19 +43,14 @@ const SpotlightProject = ({ title, description, buttonText }: Props) => {
           )}
         </Box>
         <Box
-          mt={isSmallerThanTablet ? '20px' : '0px'}
-          ml={isSmallerThanTablet ? '0px' : '40px'}
+          mt={isSmallerThanPhone ? '20px' : '0px'}
+          ml={isSmallerThanPhone ? '0px' : '40px'}
+          w={isSmallerThanPhone ? '100%' : '50%'}
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
         >
-          <img
-            src={citySrc}
-            width="100%"
-            height="100%"
-            alt="placeholder"
-            style={{
-              borderRadius: stylingConsts.borderRadius,
-              maxHeight: '300px',
-            }}
-          />
+          <Image src={citySrc} width="100%" alt="placeholder" />
         </Box>
       </Box>
     </Box>
