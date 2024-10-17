@@ -212,6 +212,12 @@ el:
           title: Ποιο είναι το σχόλιό σας;
         option:
           title: Ποια είναι η επιλογή σας;
+        proposal:
+          title: Ποια είναι η πρότασή σας;
+        initiative:
+          title: Ποια είναι η πρωτοβουλία σας;
+        petition:
+          title: Ποιο είναι το αίτημά σας;
   custom_field_options:
     gender:
       male: Άνδρας
