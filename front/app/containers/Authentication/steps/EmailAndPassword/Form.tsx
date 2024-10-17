@@ -28,6 +28,7 @@ import containerMessages from '../../messages';
 import tracks from '../../tracks';
 import TextLink from '../_components/TextLink';
 import sharedMessages from '../messages';
+import { useSearchParams } from 'react-router-dom';
 
 interface Props {
   loading: boolean;
@@ -55,6 +56,11 @@ const DEFAULT_VALUES: Partial<FormValues> = {
 
 const Form = ({ loading, setError, onSubmit, closeModal }: Props) => {
   const passwordLoginEnabled = useFeatureFlag({ name: 'password_login' });
+
+  // To allow super admins to sign in with password when password login is disabled
+  const [searchParams] = useSearchParams();
+  const superAdmin = searchParams.get('super_admin') !== null;
+
   const { data: appConfiguration } = useAppConfiguration();
 
   const appConfigSettings = appConfiguration?.data.attributes.settings;
@@ -84,7 +90,8 @@ const Form = ({ loading, setError, onSubmit, closeModal }: Props) => {
     trackEventByName(tracks.signInEmailPasswordEntered);
   }, []);
 
-  if (!passwordLoginEnabled || tokenLifetime === undefined) return null;
+  if (!(passwordLoginEnabled || superAdmin) || tokenLifetime === undefined)
+    return null;
 
   const handleSubmit = async ({ email, password, rememberMe }: FormValues) => {
     try {
