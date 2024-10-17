@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { Multiloc } from 'typings';
@@ -10,7 +10,6 @@ import { PublicationStatus } from 'api/projects/types';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
 
 import EmptyContainer from './components/EmptyContainer';
 import Footer from './components/Footer';
@@ -19,24 +18,26 @@ import PublicationStatusTabs from './components/PublicationStatusTabs';
 import Topbar from './components/Topbar';
 import messages from './messages';
 import tracks from './tracks';
-import { getAvailableTabs, getCurrentTab } from './utils';
+import { getAvailableTabs } from './utils';
 
 import { PublicationTab, Props as BaseProps } from '.';
 
 interface Props extends BaseProps {
   statusCounts: IStatusCountsAll;
-  onChangeTopics?: (topics: string[]) => void;
-  onChangeAreas?: (areas: string[]) => void;
-  onChangeSearch?: (search: string | null) => void;
   showFilters: boolean;
   adminPublications: IAdminPublicationData[];
   statusCountsWithoutFilters: IStatusCountsAll;
-  onChangePublicationStatus?: (publicationStatus: PublicationStatus[]) => void;
-  onLoadMore?: () => void;
   loadingInitial?: boolean;
   loadingMore?: boolean;
   hasMore?: boolean;
   currentlyWorkingOnText?: Multiloc;
+  currentTab: PublicationTab;
+  onChangeTopics?: (topics: string[]) => void;
+  onChangeAreas?: (areas: string[]) => void;
+  onChangeSearch?: (search: string | null) => void;
+  onChangePublicationStatus?: (publicationStatus: PublicationStatus[]) => void;
+  onLoadMore?: () => void;
+  onChangeCurrentTab: (tab: PublicationTab) => void;
 }
 
 const ProjectAndFolderCardsInner = ({
@@ -45,37 +46,20 @@ const ProjectAndFolderCardsInner = ({
   showSearch,
   showFilters,
   layout,
-  onChangeTopics,
-  onChangeAreas,
-  onChangeSearch,
   adminPublications,
   statusCountsWithoutFilters,
-  onChangePublicationStatus,
-  onLoadMore,
   loadingInitial,
   loadingMore,
   hasMore,
   currentlyWorkingOnText,
+  currentTab,
+  onChangeTopics,
+  onChangeAreas,
+  onChangeSearch,
+  onLoadMore,
+  onChangeCurrentTab,
 }: Props) => {
-  const [currentTab, setCurrentTab] = useState<PublicationTab | null>(
-    getCurrentTab(statusCounts, null)
-  );
   const { formatMessage } = useIntl();
-
-  const onChangeTab = (tab: PublicationTab) => {
-    setCurrentTab(tab);
-
-    const publicationStatusesForCurrentTab: PublicationStatus[] | null =
-      currentTab
-        ? currentTab === 'all'
-          ? ['published', 'archived']
-          : [currentTab]
-        : null;
-
-    if (publicationStatusesForCurrentTab) {
-      onChangePublicationStatus?.(publicationStatusesForCurrentTab);
-    }
-  };
 
   const handleChangeSearch = React.useCallback(
     (search: string | null) => {
@@ -104,8 +88,7 @@ const ProjectAndFolderCardsInner = ({
     onChangeAreas?.(areas);
   };
 
-  const hasPublications =
-    !isNilOrError(adminPublications) && adminPublications.length > 0;
+  const hasPublications = adminPublications && adminPublications.length > 0;
 
   return (
     <Box id="e2e-projects-container" display="flex" flexDirection="column">
@@ -127,7 +110,7 @@ const ProjectAndFolderCardsInner = ({
           onChangeTopics={handleChangeTopics}
           onChangeAreas={handleChangeAreas}
           onChangeSearch={handleChangeSearch}
-          onChangeTab={onChangeTab}
+          onChangeTab={onChangeCurrentTab}
           currentlyWorkingOnText={currentlyWorkingOnText}
         />
       </Box>

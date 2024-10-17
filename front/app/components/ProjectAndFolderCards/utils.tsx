@@ -1,4 +1,5 @@
 import { IStatusCountsAll } from 'api/admin_publications_status_counts/types';
+import { PublicationStatus } from 'api/projects/types';
 
 import { keys } from 'utils/helperUtils';
 
@@ -53,3 +54,18 @@ function sortInPreferredOrder(tabs: PublicationTab[]) {
   const tabsSet = new Set(tabs);
   return PREFERRED_ORDER.filter((tab) => tabsSet.has(tab));
 }
+
+export const getPublicationStatuses = (
+  currentTab: PublicationTab
+): PublicationStatus[] => {
+  switch (currentTab) {
+    case 'published':
+      return ['published'];
+    case 'archived':
+      return ['archived'];
+    case 'draft':
+      return ['draft'];
+    default:
+      return ['published', 'archived', 'draft'];
+  }
+};
