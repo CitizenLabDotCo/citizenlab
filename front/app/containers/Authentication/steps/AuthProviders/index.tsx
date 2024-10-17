@@ -312,43 +312,41 @@ const AuthProviders = memo<Props>(
             />
           </StyledAuthProviderButton>
         )}
-        <Box display="flex" width="100%">
-          <Box width="75%">
-            <Text m="0">
-              <FormattedMessage
-                {...(flow === 'signup'
-                  ? messages.goToLogIn
-                  : messages.goToSignUp)}
-                values={{
-                  goToOtherFlowLink: (
-                    <TextButton
-                      id="e2e-goto-signup"
-                      onClick={handleGoToOtherFlow}
-                      className="link"
-                    >
-                      {formatMessage(
-                        flow === 'signup' ? messages.logIn2 : messages.signUp2
-                      )}
-                    </TextButton>
-                  ),
-                }}
-              />
+
+        {passwordLoginEnabled && (
+          <Text m="0">
+            <FormattedMessage
+              {...(flow === 'signup'
+                ? messages.goToLogIn
+                : messages.goToSignUp)}
+              values={{
+                goToOtherFlowLink: (
+                  <TextButton
+                    id="e2e-goto-signup"
+                    onClick={handleGoToOtherFlow}
+                    className="link"
+                  >
+                    {formatMessage(
+                      flow === 'signup' ? messages.logIn2 : messages.signUp2
+                    )}
+                  </TextButton>
+                ),
+              }}
+            />
+          </Text>
+        )}
+
+        {showAdminLoginLink && (
+          <Link to="/sign-in/admin">
+            <Text
+              fontSize="xs"
+              textDecoration="underline"
+              color="textSecondary"
+            >
+              <FormattedMessage {...messages.adminOptions} />
             </Text>
-          </Box>
-          {showAdminLoginLink && (
-            <Box width="25%" text-align="center">
-              <Link to="/sign-in/admin">
-                <Text
-                  fontSize="xs"
-                  textDecoration="underline"
-                  color="textSecondary"
-                >
-                  <FormattedMessage {...messages.adminOptions} />
-                </Text>
-              </Link>
-            </Box>
-          )}
-        </Box>
+          </Link>
+        )}
       </Container>
     );
   }
