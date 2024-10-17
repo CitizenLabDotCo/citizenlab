@@ -5,8 +5,6 @@ import { useNode } from '@craftjs/core';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
 
-import { PublicationStatus } from 'api/projects/types';
-
 import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
 import ProjectAndFolderCards from 'components/ProjectAndFolderCards';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
@@ -28,8 +26,6 @@ const ProjectSection = styled.div`
   `}
 `;
 
-const PUBLICATION_STATUS_FILTER: PublicationStatus[] = ['published'];
-
 const Projects = ({
   currentlyWorkingOnText,
 }: {
@@ -40,7 +36,6 @@ const Projects = ({
       <Box maxWidth="1200px" margin="0 auto">
         <ProjectSection id="e2e-landing-page-project-section">
           <ProjectAndFolderCards
-            publicationStatusFilter={PUBLICATION_STATUS_FILTER}
             showTitle={true}
             layout="dynamic"
             currentlyWorkingOnText={currentlyWorkingOnText}

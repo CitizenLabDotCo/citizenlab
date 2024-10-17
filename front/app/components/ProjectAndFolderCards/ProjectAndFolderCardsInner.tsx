@@ -45,7 +45,6 @@ const ProjectAndFolderCardsInner = ({
   showSearch,
   showFilters,
   layout,
-  publicationStatusFilter,
   onChangeTopics,
   onChangeAreas,
   onChangeSearch,
@@ -66,11 +65,12 @@ const ProjectAndFolderCardsInner = ({
   const onChangeTab = (tab: PublicationTab) => {
     setCurrentTab(tab);
 
-    const publicationStatusesForCurrentTab = currentTab
-      ? currentTab === 'all'
-        ? publicationStatusFilter
-        : [currentTab]
-      : null;
+    const publicationStatusesForCurrentTab: PublicationStatus[] | null =
+      currentTab
+        ? currentTab === 'all'
+          ? ['published', 'archived']
+          : [currentTab]
+        : null;
 
     if (publicationStatusesForCurrentTab) {
       onChangePublicationStatus?.(publicationStatusesForCurrentTab);

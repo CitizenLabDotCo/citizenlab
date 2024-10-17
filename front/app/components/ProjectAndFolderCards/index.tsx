@@ -21,13 +21,16 @@ export type TLayout = 'dynamic' | 'threecolumns';
 export interface Props {
   showTitle: boolean;
   layout: TLayout;
-  publicationStatusFilter: PublicationStatus[];
   showSearch?: boolean;
   currentlyWorkingOnText?: Multiloc;
 }
 
+const INITIAL_PUBLICATION_STATUSES: PublicationStatus[] = [
+  'published',
+  'archived',
+];
+
 const ProjectAndFolderCards = ({
-  publicationStatusFilter,
   showSearch = false,
   ...otherProps
 }: Props) => {
@@ -35,9 +38,9 @@ const ProjectAndFolderCards = ({
   const [search, setSearch] = useState<string | null>(null);
   const [topicIds, setTopicsIds] = useState<string[] | null>(null);
   const [areaIds, setAreasIds] = useState<string[] | null>(null);
-  const [publicationStatus, setPublicationStatus] = useState<
-    PublicationStatus[]
-  >(publicationStatusFilter);
+  const [publicationStatus, setPublicationStatus] = useState(
+    INITIAL_PUBLICATION_STATUSES
+  );
 
   // with a search string, return projects within folders
   // if no search string exists, do not return projects in folders
@@ -51,7 +54,7 @@ const ProjectAndFolderCards = ({
   const { data: counts } = useAdminPublicationsStatusCounts(
     omitBy(
       {
-        publicationStatusFilter,
+        publicationStatusFilter: INITIAL_PUBLICATION_STATUSES,
         rootLevelOnly,
         removeNotAllowedParents: true,
         topicIds,
@@ -64,7 +67,7 @@ const ProjectAndFolderCards = ({
 
   const { data: statusCountsWithoutFilters } = useAdminPublicationsStatusCounts(
     {
-      publicationStatusFilter,
+      publicationStatusFilter: INITIAL_PUBLICATION_STATUSES,
       rootLevelOnly: true,
       removeNotAllowedParents: true,
     }
@@ -120,7 +123,6 @@ const ProjectAndFolderCards = ({
   return (
     <ProjectAndFolderCardsInner
       statusCounts={getStatusCounts(counts)}
-      publicationStatusFilter={publicationStatusFilter}
       onChangeTopics={onChangeTopics}
       onChangeAreas={onChangeAreas}
       onChangeSearch={handleSearchChange}

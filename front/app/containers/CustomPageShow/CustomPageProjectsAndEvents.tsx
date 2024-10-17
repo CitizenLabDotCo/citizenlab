@@ -32,15 +32,13 @@ interface Props {
   page: ICustomPageData;
 }
 
+const publicationStatusFilter: PublicationStatus[] = ['published', 'archived'];
+
 const CustomPageProjectsAndEvents = ({ page }: Props) => {
   // There will be either topic or area ids if this component renders.
   // To enable it, the page needs either a topic or area associated with it.
   const topicIds = page.relationships.topics.data.map((topic) => topic.id);
   const areaIds = page.relationships.areas.data.map((area) => area.id);
-  const publicationStatusFilter: PublicationStatus[] = [
-    'published',
-    'archived',
-  ];
 
   const {
     data,
@@ -89,7 +87,6 @@ const CustomPageProjectsAndEvents = ({ page }: Props) => {
         <ProjectCardsContentContainer mode="page">
           <ProjectAndFolderCardsInner
             statusCounts={getStatusCounts(statusCountsWithoutFilters)}
-            publicationStatusFilter={publicationStatusFilter}
             showTitle={false}
             showFilters={false}
             showSearch={false}
