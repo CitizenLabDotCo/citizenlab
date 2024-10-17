@@ -273,7 +273,7 @@ kl:
       main_header: '%{firstName} mentioned you in an internal comment.'
       preheader: '%{authorNameFull} mentioned you in an internal comment.'
     moderator_digest:
-      subject: 'Weekly manager report of "%{project_title}"'
+      subject: 'Sapaatip akunnikkaartumik suliami oqallinnermi aqutsisutut %{time}'
       preheader: '%{organizationName}mut suliami oqallinnermi aqutsinermi eqikkaaneq'
       title_your_weekly_report: '%{firstName}, sapaatip akunnikkaartumik nalunaarusiat'
       text_introduction: 'Sapaatip akunnerani kingullermi isumassarsiat suliat malunnaataanerusut allattorlugit katersorpavut. Illit sulianni susoqarnersoq paasiniaruk!'
@@ -493,7 +493,7 @@ kl:
     threshold_reached_for_admin:
       cta_process_initiative: 'Suliniut una tullianut ingerlateqqiguk'
       main_header: 'Suliniutip taasinermi killiffissani anguaa!'
-      subject: '"%{input_title}" reached the voting threshold'
+      subject: 'Platforminni suliniutip taasinermi killiffissani anguaa'
       preheader: 'Tulliata naammassinissaa qulakkeeruk'
     welcome:
       cta_join_platform: 'Platformi misissuataaruk'
@@ -512,7 +512,7 @@ kl:
         proposal: 'Your proposal has been published'
         initiative: 'Your initiative has been published'
         petition: 'Your petition has been published'
-      main_header: 'You posted "%{input_title}"'
+      main_header: 'Isumassarsiamik saqqummiivutit! Atuarneqarnissaa qulakkeeriartigu.'
       header_message: 'Let''s make sure it gets read.'
       message_get_votes: 'Isumassarsiannik inuit amerlanerit angukkit.'
       action_published_idea: 'Isumassarsiaq saqqummeriigaq'
