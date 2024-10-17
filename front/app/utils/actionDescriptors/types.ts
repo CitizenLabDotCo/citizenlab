@@ -7,7 +7,8 @@ export type DisabledReasonFixable =
 type DisabledReasonUnfixable =
   | 'user_not_permitted'
   | 'user_not_in_group'
-  | 'user_blocked';
+  | 'user_blocked'
+  | 'not_supported';
 
 export type UserDisabledReason =
   | DisabledReasonFixable

@@ -533,7 +533,7 @@ describe IdeaPolicy do
     it_behaves_like 'policy for blocked user'
   end
 
-  context 'with phase permissions' do
+  context 'with phase permissions - permitted_by admins' do
     let(:author) { create(:user) }
     let(:permitted_by) { 'admins_moderators' }
     let(:participation_method) { 'ideation' }
@@ -593,11 +593,10 @@ describe IdeaPolicy do
       let(:submission_enabled) { false }
 
       it do
-        is_expected.to permit(:show)
         expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError)
-        is_expected.to permit(:update)
-        expect(editing_idea_disabled_reason).to be_nil
-        is_expected.to permit(:destroy)
+        expect { policy.update? }.to raise_error(Pundit::NotAuthorizedError)
+        expect { policy.destroy? }.to raise_error(Pundit::NotAuthorizedError)
+        expect(editing_idea_disabled_reason).to eq 'user_not_permitted'
         is_expected.not_to permit(:index_xlsx)
 
         expect(scope.resolve.size).to eq 1
