@@ -273,7 +273,7 @@ sr-Cyrl:
       main_header: '%{firstName} вас је поменуо у интерном коментару.'
       preheader: '%{authorNameFull} вас је поменуо у интерном коментару.'
     moderator_digest:
-      subject: 'Weekly manager report of "%{project_title}"'
+      subject: 'Ваш недељни извештај менаџера пројекта од %{time}'
       preheader: 'Сажетак менаџера пројекта од %{organizationName}'
       title_your_weekly_report: '%{firstName}, ваш недељни извештај'
       text_introduction: 'За вас смо припремили унос који је генерисао највише активности током протекле недеље. Сазнајте шта се дешава са вашим пројектом!'
@@ -493,7 +493,7 @@ sr-Cyrl:
     threshold_reached_for_admin:
       cta_process_initiative: 'Пренесите ову иницијативу на следеће кораке'
       main_header: 'Иницијатива је стигла до гласачког цензуса!'
-      subject: '"%{input_title}" reached the voting threshold'
+      subject: 'Иницијатива је достигла праг за гласање на вашој платформи'
       preheader: 'Обавезно предузмите следеће кораке'
     welcome:
       cta_join_platform: 'Откријте платформу'
@@ -512,7 +512,7 @@ sr-Cyrl:
         proposal: 'Your proposal has been published'
         initiative: 'Your initiative has been published'
         petition: 'Your petition has been published'
-      main_header: 'You posted "%{input_title}"'
+      main_header: 'Поставили сте идеју! Хајде да се побринемо да буде прочитано.'
       header_message: 'Let''s make sure it gets read.'
       message_get_votes: 'Досегните више људи својом идејом:'
       action_published_idea: 'Објављена идеја'
