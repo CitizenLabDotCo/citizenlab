@@ -54,8 +54,6 @@ const UserSessionRecordingModal = () => {
     set('user_session_recording_modal', 'true');
   };
 
-  // https://docs.google.com/document/d/1a1hlDcMHIJrSJb2sD1AenOGfWpjxcsrzkjrDhlTtzNw/edit?tab=t.0
-
   return (
     <Modal opened={modalOpened} close={onClose}>
       <Box p="24px">
