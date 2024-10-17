@@ -159,6 +159,12 @@
             "type": "boolean",
             "default": false
           },
+          "allow_sharing":  {
+            "title": "Sharing content on socials",
+            "description": "Allow users to share content via social media or email.",
+            "type": "boolean",
+            "default": true
+          },
           "areas_term": {
             "title": "Geographic Units",
             "description": "What a geographic unit should be called on this platform (e.g., neighbourhoods, districts, etc.). Input the plural form here with all lowercase letters. If left blank, this field defaults to 'areas'.",
@@ -219,6 +225,12 @@
             "title": "Additional number of manager seats",
             "description": "Number of project and folder manager seats bought additionally over the contract limit.",
             "type": ["integer", "null"]
+          },
+          "customer_portal_url": {
+            "title": "Customer portal URL",
+            "description": "Link to the customer portal in Planhat.",
+            "type": "string",
+            "format": "uri"
           }
         }
       },
