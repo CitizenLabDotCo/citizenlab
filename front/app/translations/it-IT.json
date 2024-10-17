@@ -1804,6 +1804,7 @@
   "app.containers.SignIn.signInError": "Le informazioni fornite non sono corrette. Clicca su \"Hai dimenticato la password?\" per reimpostare la tua password.",
   "app.containers.SignIn.useFranceConnectToLoginCreateOrVerifyYourAccount": "Usa FranceConnect per accedere, iscriverti o verificare il tuo account.",
   "app.containers.SignIn.whatIsFranceConnect": "Cos'è France Connect?",
+  "app.containers.SignUp.adminOptions2": "Per amministratori e project manager",
   "app.containers.SignUp.backToSignUpOptions": "Torna alle opzioni di accesso",
   "app.containers.SignUp.continue": "Continua",
   "app.containers.SignUp.emailConsent": "Iscrivendosi, si accetta di ricevere e-mail da questa piattaforma. Puoi selezionare quali email desideri ricevere nella pagina \"Le mie impostazioni\".",

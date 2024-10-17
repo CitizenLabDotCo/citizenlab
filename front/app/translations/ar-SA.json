@@ -1804,6 +1804,7 @@
   "app.containers.SignIn.signInError": "المعلومات المقدمة غير صحيحة. انقر على \"هل نسيت كلمة المرور؟\" لإعادة تعيين كلمة المرور الخاصة بك.",
   "app.containers.SignIn.useFranceConnectToLoginCreateOrVerifyYourAccount": "استخدم FranceConnect لتسجيل الدخول أو تسجيل الاشتراك أو التحقق من حسابك.",
   "app.containers.SignIn.whatIsFranceConnect": "ما هي خدمة France Connect؟",
+  "app.containers.SignUp.adminOptions2": "للمسؤولين ومديري المشاريع",
   "app.containers.SignUp.backToSignUpOptions": "العودة إلى خيارات التسجيل",
   "app.containers.SignUp.continue": "يكمل",
   "app.containers.SignUp.emailConsent": "بالتسجيل، فإنك توافق على استلام رسائل إلكترونية من هذه المنصة. يمكنك اختيار الرسائل التي ترغب في استلامها من إعدادات المستخدم لديك.",

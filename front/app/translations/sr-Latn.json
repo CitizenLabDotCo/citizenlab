@@ -1804,6 +1804,7 @@
   "app.containers.SignIn.signInError": "Unesene informacije nisu tačne. Kliknite na link za zaboravljenu lozinku kako biste je resetovali.",
   "app.containers.SignIn.useFranceConnectToLoginCreateOrVerifyYourAccount": "Koristite FranceConnect da biste se prijavili, prijavili ili verifikovali svoj nalog.",
   "app.containers.SignIn.whatIsFranceConnect": "Šta je FranceConnect?",
+  "app.containers.SignUp.adminOptions2": "For admins and project managers",
   "app.containers.SignUp.backToSignUpOptions": "Vratite se na opcije registracije",
   "app.containers.SignUp.continue": "Continue",
   "app.containers.SignUp.emailConsent": "Registrujući se dajete saglasnost da primate email obaveštenja sa ove platforme. Na stranici „Moja podešavanja“ možete da odaberete koju obaveštenja želite da primate.",

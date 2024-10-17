@@ -1804,6 +1804,7 @@
   "app.containers.SignIn.signInError": "Girilen bilgiler doğru değil. Parolanızı sıfırlamak için \"Parolanızı mı unuttunuz?\" seçeneğine tıklayın.",
   "app.containers.SignIn.useFranceConnectToLoginCreateOrVerifyYourAccount": "Oturum açmak, kaydolmak veya hesabınızı doğrulamak için FranceConnect'i kullanın.",
   "app.containers.SignIn.whatIsFranceConnect": "FranceConnect nedir?",
+  "app.containers.SignUp.adminOptions2": "Yöneticiler ve proje yöneticileri için",
   "app.containers.SignUp.backToSignUpOptions": "Kaydolma seçeneklerine dönün",
   "app.containers.SignUp.continue": "Devam et",
   "app.containers.SignUp.emailConsent": "Kaydolduğunuzda bu platformdan e-postalar almayı kabul etmiş olursunuz. Hangi e-postaları almak istediğinizi 'Ayarlarım' sayfasından belirleyebilirsiniz.",
