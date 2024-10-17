@@ -1,43 +1,43 @@
 pa:
   locales:
-    en: English
-    ar-MA: Arabic (Morocco)
-    ar-SA: Arabic (Saudi Arabia)
-    ca-ES: Catalan
-    cy-GB: Welsh
-    da-DK: Danish
-    de-DE: German
-    el-GR: Greek
-    en-CA: English (Canada)
-    en-GB: English (UK)
-    en-IE: English (Ireland)
-    es-CL: Spanish (Chile)
-    es-ES: Spanish (Spain)
-    fi-FI: Finnish
-    fr-BE: French (Belgium)
-    fr-FR: French
-    hr-HR: Croatian
-    hu-HU: Hungarian
-    it-IT: Italian
-    kl-GL: Greenlandic
-    lb-LU: Luxembourgish
-    lv-LV: Latvian
-    mi: Maori
-    nb-NO: Norwegian (Bokmål)
-    nl-BE: Dutch (Belgium)
-    nl-NL: Dutch
-    pl-PL: Polish
-    pt-BR: Portuguese (Brazil)
-    ro-RO: Romanian
-    sr-Latn: Serbian (Latin)
-    sr-SP: Serbian (Cyrillic)
-    sv-SE: Swedish
-    tr-TR: Turkish
+    en: ਅੰਗਰੇਜ਼ੀ
+    ar-MA: ਅਰਬੀ (ਮੋਰੋਕੋ)
+    ar-SA: ਅਰਬੀ (ਸਾਊਦੀ ਅਰਬ)
+    ca-ES: ਕੈਟਲਨ
+    cy-GB: ਵੈਲਸ਼
+    da-DK: ਡੈਨਿਸ਼
+    de-DE: ਜਰਮਨ
+    el-GR: ਯੂਨਾਨੀ
+    en-CA: ਅੰਗਰੇਜ਼ੀ (ਕੈਨੇਡਾ)
+    en-GB: ਅੰਗਰੇਜ਼ੀ (ਯੂਕੇ)
+    en-IE: ਅੰਗਰੇਜ਼ੀ (ਆਇਰਲੈਂਡ)
+    es-CL: ਸਪੇਨੀ (ਚਿਲੀ)
+    es-ES: ਸਪੇਨੀ (ਸਪੇਨ)
+    fi-FI: ਫਿਨਿਸ਼
+    fr-BE: ਫ੍ਰੈਂਚ (ਬੈਲਜੀਅਮ)
+    fr-FR: ਫ੍ਰੈਂਚ
+    hr-HR: ਕਰੋਸ਼ੀਅਨ
+    hu-HU: ਹੰਗੇਰੀਅਨ
+    it-IT: ਇਤਾਲਵੀ
+    kl-GL: ਗ੍ਰੀਨਲੈਂਡਿਕ
+    lb-LU: ਲਕਸਮਬਰਗਿਸ਼
+    lv-LV: ਲਾਤਵੀਅਨ
+    mi: ਮਾਓਰੀ
+    nb-NO: ਨਾਰਵੇਜੀਅਨ (ਬੋਕਮਾਲ)
+    nl-BE: ਡੱਚ (ਬੈਲਜੀਅਮ)
+    nl-NL: ਡੱਚ
+    pl-PL: ਪੋਲਿਸ਼
+    pt-BR: ਪੁਰਤਗਾਲੀ (ਬ੍ਰਾਜ਼ੀਲ)
+    ro-RO: ਰੋਮਾਨੀਅਨ
+    sr-Latn: ਸਰਬੀਆਈ (ਲਾਤੀਨੀ)
+    sr-SP: ਸਰਬੀਆਈ (ਸਿਰਿਲਿਕ)
+    sv-SE: ਸਵੀਡਿਸ਼
+    tr-TR: ਤੁਰਕੀ
   symbols:
     outside: ਕਿਤੇ ਹੋਰ
   idea_statuses:
-    prescreening: screening
-    prescreening_description: This input is currently under review by the project manager and is not yet visible to the public.
+    prescreening: ਸਕ੍ਰੀਨਿੰਗ
+    prescreening_description: ਇਹ ਇਨਪੁਟ ਵਰਤਮਾਨ ਵਿੱਚ ਪ੍ਰੋਜੈਕਟ ਮੈਨੇਜਰ ਦੁਆਰਾ ਸਮੀਖਿਆ ਅਧੀਨ ਹੈ ਅਤੇ ਅਜੇ ਤੱਕ ਜਨਤਾ ਲਈ ਦਿਖਾਈ ਨਹੀਂ ਦੇ ਰਿਹਾ ਹੈ।
     proposed: ਪ੍ਰਸਤਾਵਿਤ
     proposed_description: ਇਹ ਇਨਪੁਟ ਸਪੁਰਦ ਕੀਤਾ ਗਿਆ ਹੈ ਅਤੇ ਹੁਣ ਜਨਤਕ ਸਮਰਥਨ ਲਈ ਖੁੱਲ੍ਹਾ ਹੈ। ਇਸਨੂੰ ਅਗਲੇ ਪੜਾਅ 'ਤੇ ਲਿਜਾਣ ਵਿੱਚ ਮਦਦ ਕਰਨ ਲਈ ਵੋਟਾਂ ਇਕੱਠੀਆਂ ਕਰੋ।
     viewed: ਦੇਖਿਆ ਗਿਆ
@@ -50,14 +50,14 @@ pa:
     implemented_description: ਇਸ ਇਨਪੁਟ ਨੂੰ ਪ੍ਰੋਜੈਕਟ ਮੈਨੇਜਰ ਦੁਆਰਾ ਲਾਗੂ ਕੀਤਾ ਗਿਆ ਹੈ।
     rejected: ਰੱਦ ਕਰ ਦਿੱਤਾ
     rejected_description: ਇਸ ਇਨਪੁਟ ਨੂੰ ਅਸਵੀਕਾਰ ਕਰ ਦਿੱਤਾ ਗਿਆ ਹੈ।
-    expired: expired
-    expired_description: This input is no longer active and has been closed due to time constraints or inactivity.
-    threshold_reached: threshold reached
-    threshold_reached_description: This input has met the required support threshold and will now be considered for further action.
-    answered: answered
-    answered_description: The project manager has published an official feedback on this input.
-    ineligible: ineligible
-    ineligible_description: This input has been reviewed and, unfortunately, has been rejected. An official update has been provided with more details.
+    expired: ਮਿਆਦ ਪੁੱਗ ਗਈ
+    expired_description: ਇਹ ਇਨਪੁਟ ਹੁਣ ਕਿਰਿਆਸ਼ੀਲ ਨਹੀਂ ਹੈ ਅਤੇ ਸਮੇਂ ਦੀ ਕਮੀ ਜਾਂ ਅਕਿਰਿਆਸ਼ੀਲਤਾ ਦੇ ਕਾਰਨ ਬੰਦ ਕਰ ਦਿੱਤਾ ਗਿਆ ਹੈ।
+    threshold_reached: ਥ੍ਰੈਸ਼ਹੋਲਡ 'ਤੇ ਪਹੁੰਚ ਗਿਆ
+    threshold_reached_description: ਇਹ ਇੰਪੁੱਟ ਲੋੜੀਂਦੇ ਸਮਰਥਨ ਥ੍ਰੈਸ਼ਹੋਲਡ ਨੂੰ ਪੂਰਾ ਕਰ ਚੁੱਕਾ ਹੈ ਅਤੇ ਹੁਣ ਅਗਲੀ ਕਾਰਵਾਈ ਲਈ ਵਿਚਾਰਿਆ ਜਾਵੇਗਾ।
+    answered: ਜਵਾਬ ਦਿੱਤਾ
+    answered_description: ਪ੍ਰੋਜੈਕਟ ਮੈਨੇਜਰ ਨੇ ਇਸ ਇਨਪੁਟ 'ਤੇ ਇੱਕ ਅਧਿਕਾਰਤ ਫੀਡਬੈਕ ਪ੍ਰਕਾਸ਼ਿਤ ਕੀਤਾ ਹੈ।
+    ineligible: ਅਯੋਗ
+    ineligible_description: ਇਸ ਇਨਪੁਟ ਦੀ ਸਮੀਖਿਆ ਕੀਤੀ ਗਈ ਹੈ ਅਤੇ, ਬਦਕਿਸਮਤੀ ਨਾਲ, ਅਸਵੀਕਾਰ ਕਰ ਦਿੱਤਾ ਗਿਆ ਹੈ। ਵਧੇਰੇ ਵੇਰਵਿਆਂ ਦੇ ਨਾਲ ਇੱਕ ਅਧਿਕਾਰਤ ਅਪਡੇਟ ਪ੍ਰਦਾਨ ਕੀਤੀ ਗਈ ਹੈ।
   initiative_statuses:
     review_pending: ਸਮੀਖਿਆ ਬਕਾਇਆ
     review_pending_description: ਸਮੀਖਿਆ ਬਕਾਇਆ
@@ -141,9 +141,9 @@ pa:
     open_idea_project_description: >
       <p>ਇੱਥੇ, ਤੁਸੀਂ ਆਪਣਾ ਖੁਦ ਦਾ ਵਿਚਾਰ ਸ਼ੁਰੂ ਕਰ ਸਕਦੇ ਹੋ ਜੇਕਰ ਇਹ ਮੌਜੂਦਾ ਪ੍ਰੋਜੈਕਟਾਂ ਵਿੱਚੋਂ ਇੱਕ ਵਿੱਚ ਫਿੱਟ ਨਹੀਂ ਹੁੰਦਾ ਹੈ।</p><p><strong>ਉਦੇਸ਼?</strong> ਸਿਆਸੀ ਏਜੰਡੇ 'ਤੇ ਆਪਣੇ ਵਿਚਾਰ ਪ੍ਰਾਪਤ ਕਰਨ ਲਈ।</p><p><strong>ਕਿਵੇਂ?</strong> ਸਮਰਥਨ ਇਕੱਠਾ ਕਰਕੇ, ਅਰਥਾਤ 3 ਮਹੀਨਿਆਂ ਵਿੱਚ ਘੱਟੋ-ਘੱਟ 100 ਵੋਟਾਂ। ਤੁਸੀਂ ਪਹਿਲਾਂ ਆਪਣੇ ਵਿਚਾਰ ਨੂੰ 'ਆਕਰਸ਼ਕ' ਬਣਾ ਕੇ ਅਜਿਹਾ ਕਰ ਸਕਦੇ ਹੋ। ਇਸ ਨੂੰ ਸਪਸ਼ਟ ਅਤੇ ਦਿਲਚਸਪ ਤਰੀਕੇ ਨਾਲ ਲਿਖੋ, ਚਿੱਤਰ ਸ਼ਾਮਲ ਕਰੋ, ਤੱਥਾਂ ਦੇ ਆਧਾਰ 'ਤੇ ਮਜ਼ਬੂਤ ਦਲੀਲਾਂ ਦਿਓ, ਹੋਰ ਵੇਰਵਿਆਂ ਜਾਂ ਪਿਛੋਕੜ ਦੀ ਜਾਣਕਾਰੀ ਦੇ ਨਾਲ ਅਟੈਚਮੈਂਟ ਸ਼ਾਮਲ ਕਰੋ, ... ਅਜਿਹਾ ਕਰਨ ਤੋਂ ਬਾਅਦ, ਸੋਸ਼ਲ ਮੀਡੀਆ ਜਾਂ ਈਮੇਲ ਰਾਹੀਂ ਆਪਣੇ ਵਿਚਾਰ ਸਾਂਝੇ ਕਰਨਾ ਸ਼ੁਰੂ ਕਰੋ। ਆਪਣੇ ਵਿਚਾਰ 'ਤੇ ਚਰਚਾ ਵਿੱਚ ਸ਼ਾਮਲ ਹੋਣ ਲਈ ਲੋਕਾਂ ਨੂੰ ਸੱਦਾ ਦਿਓ, ਜਾਂ ਸਿਰਫ਼ ਉਨ੍ਹਾਂ ਨੂੰ ਹੱਕ ਵਿੱਚ ਵੋਟ ਦੇ ਕੇ ਇਸਦਾ ਸਮਰਥਨ ਕਰਨ ਲਈ ਯਕੀਨ ਦਿਵਾਓ।</p><p><strong>ਕਿਸ ਬਾਰੇ?</strong> ਤੁਹਾਡਾ ਵਿਚਾਰ ਬਹੁਤ ਸਾਰੀਆਂ ਚੀਜ਼ਾਂ ਬਾਰੇ ਹੋ ਸਕਦਾ ਹੈ, ਜਦੋਂ ਤੱਕ ਇਹ ਤੁਹਾਡੇ ਸ਼ਹਿਰ ਅਤੇ ਇਸਦੀ ਨੀਤੀ ਨਾਲ ਸਬੰਧਤ ਹੈ। ਇਹ ਇੱਕ ਸਮੱਸਿਆ ਹੋ ਸਕਦੀ ਹੈ ਜਿਸਦਾ ਤੁਸੀਂ ਅਨੁਭਵ ਕਰਦੇ ਹੋ, ਇੱਕ ਹੱਲ ਜੋ ਤੁਸੀਂ ਕਲਪਨਾ ਕਰਦੇ ਹੋ ਜਾਂ ਦੋਵਾਂ ਦਾ ਸੁਮੇਲ ਵੀ ਹੋ ਸਕਦਾ ਹੈ। ਇਹ ਜੰਗਲੀ ਅਤੇ ਲੰਬੇ ਸਮੇਂ ਲਈ, ਜਾਂ ਬਹੁਤ ਹੀ ਠੋਸ ਅਤੇ ਇੱਕ ਤੇਜ਼ ਜਿੱਤ ਹੋ ਸਕਦਾ ਹੈ।</p><p><strong>ਅਤੇ ਫਿਰ? </strong>ਕੀ ਤੁਸੀਂ 3 ਮਹੀਨਿਆਂ ਵਿੱਚ 100 ਵੋਟਾਂ ਤੱਕ ਪਹੁੰਚ ਗਏ ਹੋ? ਵਧਾਈਆਂ! ਸ਼ਹਿਰ ਹੁਣ ਤੁਹਾਡੇ ਵਿਚਾਰ ਨੂੰ ਧਿਆਨ ਵਿੱਚ ਰੱਖੇਗਾ। ਜੇਕਰ ਤੁਹਾਡੇ ਵਿਚਾਰ ਨੂੰ ਵਿਵਹਾਰਕ ਮੰਨਿਆ ਜਾਂਦਾ ਹੈ ਅਤੇ ਖਾਸ ਸਮੂਹਾਂ ਜਾਂ ਵਿਅਕਤੀਆਂ ਨੂੰ ਨੁਕਸਾਨ ਨਹੀਂ ਪਹੁੰਚਾਉਂਦਾ ਹੈ, ਤਾਂ ਤੁਹਾਨੂੰ ਕੌਂਸਲ ਦੀ ਮੀਟਿੰਗ ਦੌਰਾਨ ਆਪਣਾ ਪ੍ਰਸਤਾਵ ਪੇਸ਼ ਕਰਨ ਦਾ ਮੌਕਾ ਮਿਲੇਗਾ। ਉਸੇ ਮੀਟਿੰਗ ਦੌਰਾਨ, ਕੌਂਸਲ ਦੇ ਮੈਂਬਰ ਤੁਹਾਨੂੰ ਸਿੱਧੇ ਫੀਡਬੈਕ ਦੇਣਗੇ ਕਿ ਉਹ ਤੁਹਾਡੇ ਵਿਚਾਰ ਨਾਲ ਕੀ ਕਰਨਗੇ ਜਾਂ ਨਹੀਂ ਕਰਨਗੇ ਅਤੇ ਕਿਉਂ। ਜੇਕਰ ਤੁਸੀਂ 3 ਮਹੀਨਿਆਂ ਵਿੱਚ 100 ਵੋਟਾਂ ਇਕੱਠੀਆਂ ਨਹੀਂ ਕਰਦੇ, ਤਾਂ ਤੁਹਾਡੇ ਪ੍ਰਸਤਾਵ 'ਤੇ ਵਿਚਾਰ ਨਹੀਂ ਕੀਤਾ ਜਾਵੇਗਾ।</p><p>ਅਸੀਂ ਤੁਹਾਡੇ ਵਿਚਾਰਾਂ ਬਾਰੇ ਜਾਣਨ ਲਈ ਉਤਸੁਕ ਹਾਂ!</p>
   phases:
-    open_idea_phase_title: Current phase
-    native_survey_title: Survey
-    native_survey_button: Take the survey
+    open_idea_phase_title: ਮੌਜੂਦਾ ਪੜਾਅ
+    native_survey_title: ਸਰਵੇਖਣ
+    native_survey_button: ਸਰਵੇਖਣ ਲਵੋ
   events:
     council_meeting_title: ਕੌਂਸਲ ਦੀ ਮੀਟਿੰਗ
     council_meeting_description: >
@@ -171,8 +171,8 @@ pa:
         title: ਟੈਗਸ
         description:
       consponsor_ids:
-        title: Co-sponsors
-        description: Invite co-sponsors through the field below. The invited co-sponsor(s) will receive an email.
+        title: ਸਹਿ-ਪ੍ਰਾਯੋਜਕ
+        description: ਹੇਠਾਂ ਦਿੱਤੇ ਖੇਤਰ ਰਾਹੀਂ ਸਹਿ-ਪ੍ਰਾਯੋਜਕਾਂ ਨੂੰ ਸੱਦਾ ਦਿਓ। ਸੱਦੇ ਗਏ ਸਹਿ-ਪ੍ਰਯੋਜਕ(ਆਂ) ਨੂੰ ਇੱਕ ਈਮੇਲ ਪ੍ਰਾਪਤ ਹੋਵੇਗੀ।
       location:
         title: ਟਿਕਾਣਾ
         description:
@@ -196,7 +196,7 @@ pa:
         title: ਵੇਰਵੇ
         description:
       other_input_field:
-        title: Type your answer
+        title: ਆਪਣਾ ਜਵਾਬ ਟਾਈਪ ਕਰੋ
   custom_forms:
     categories:
       main_content:
@@ -236,7 +236,7 @@ pa:
       <ul><li>ਆਪਣੇ ਪ੍ਰਸਤਾਵ ਨੂੰ ਵਿਸਤ੍ਰਿਤ ਕਰਨ ਲਈ ਸਮਾਂ ਕੱਢੋ। ਜੇ ਜਰੂਰੀ ਹੋਵੇ, ਪਹਿਲਾਂ ਇੱਕ ਡਰਾਫਟ ਟਾਈਪ ਕਰੋ ਅਤੇ ਫਿਰ ਇਸਨੂੰ ਇੱਥੇ ਕਾਪੀ-ਪੇਸਟ ਕਰੋ।</li><li>ਇੱਕ ਅਰਥਪੂਰਨ ਸਿਰਲੇਖ ਚੁਣੋ ਜੋ ਸਪਸ਼ਟ ਤੌਰ 'ਤੇ ਦੱਸਦਾ ਹੈ ਕਿ ਤੁਹਾਡੇ ਪ੍ਰਸਤਾਵ ਵਿੱਚ ਕੀ ਸ਼ਾਮਲ ਹੈ।</li><li>ਆਪਣੇ ਪ੍ਰਸਤਾਵ ਨੂੰ ਵੱਖਰਾ ਬਣਾਉਣ ਵਿੱਚ ਮਦਦ ਕਰਨ ਲਈ ਇੱਕ ਢੁਕਵੇਂ ਚਿੱਤਰ ਨਾਲ ਕਲਪਨਾ ਕਰੋ!</li><li>ਸੰਬੰਧਿਤ ਅਟੈਚਮੈਂਟ ਸ਼ਾਮਲ ਕਰੋ, ਜਿਵੇਂ ਕਿ ਵੀਡੀਓਜ਼, ਪ੍ਰੇਰਨਾਦਾਇਕ ਉਦਾਹਰਨਾਂ, ਤਕਨੀਕੀ ਵੇਰਵੇ ਜਾਂ ਯੋਜਨਾਵਾਂ।</li><li>ਦੂਜਿਆਂ ਤੋਂ ਸਮਰਥਨ ਇਕੱਠਾ ਕਰਨ ਲਈ ਸੋਸ਼ਲ ਮੀਡੀਆ ਅਤੇ ਹੋਰ ਚੈਨਲਾਂ 'ਤੇ ਆਪਣੇ ਵਿਚਾਰ ਸਾਂਝੇ ਕਰੋ।</li></ul>
   reset_password_mailer:
     send_reset_password:
-      preheader: 'Reset your password for %{organizationName}'
+      preheader: '%{organizationName}ਲਈ ਆਪਣਾ ਪਾਸਵਰਡ ਰੀਸੈਟ ਕਰੋ'
       cta_reset_password: 'ਆਪਣਾ ਪਾਸਵਰਡ ਰੀਸੈਟ ਕਰੋ'
       message_you_reset_your_password: 'ਤੁਸੀਂ %{organizationName}ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ਲਈ ਇੱਕ ਪਾਸਵਰਡ ਰੀਸੈਟ ਕਰਨ ਦੀ ਬੇਨਤੀ ਕੀਤੀ ਹੈ। ਇੱਕ ਨਵਾਂ, ਸੁਰੱਖਿਅਤ ਪਾਸਵਰਡ ਚੁਣਨ ਲਈ ਹੇਠਾਂ ਦਿੱਤੇ ਬਟਨ ''ਤੇ ਕਲਿੱਕ ਕਰੋ। ਲਿੰਕ ਦੀ ਮਿਆਦ 1 ਘੰਟੇ ਵਿੱਚ ਸਮਾਪਤ ਹੋ ਜਾਵੇਗੀ।'
       subject: '%{organizationName}: ਆਪਣਾ ਪਾਸਵਰਡ ਰੀਸੈਟ ਕਰੋ'
@@ -246,36 +246,36 @@ pa:
     column_headers:
       assignee_fullname: 'ਸੌਂਪਣ ਵਾਲਾ'
       assignee_email: 'ਜ਼ਿੰਮੇਦਾਰ ਈਮੇਲ'
-      attachments: 'Attachments'
+      attachments: 'ਅਟੈਚਮੈਂਟਸ'
       author_email: 'ਲੇਖਕ ਦੀ ਈਮੇਲ'
       author_fullname: 'ਲੇਖਕ ਦਾ ਨਾਮ'
       author_id: 'ਲੇਖਕ ਆਈ.ਡੀ'
       budget: 'ਬਜਟ'
       comments_count: 'ਟਿੱਪਣੀਆਂ'
-      cost: 'Cost'
+      cost: 'ਲਾਗਤ'
       created_at: 'ਵਿਖੇ ਦਰਜ ਕਰਵਾਈ ਗਈ'
-      description: 'Description'
+      description: 'ਵਰਣਨ'
       dislikes_count: 'ਨਾਪਸੰਦ'
-      email: 'Email'
-      first_name: 'First name(s)'
+      email: 'ਈਮੇਲ'
+      first_name: 'ਪਹਿਲਾ ਨਾਂ(ਨਾਂ)'
       image_url: 'ਚਿੱਤਰ URL'
       input_id: 'ਆਈ.ਡੀ'
       input_url: 'URL'
-      last_name: 'Last name'
+      last_name: 'ਆਖਰੀ ਨਾਂਮ'
       latitude: 'ਵਿਥਕਾਰ'
       likes_count: 'ਪਸੰਦ ਹੈ'
-      location: 'Location'
+      location: 'ਟਿਕਾਣਾ'
       longitude: 'ਲੰਬਕਾਰ'
       participants: 'ਭਾਗ ਲੈਣ ਵਾਲੇ'
       picks: 'ਪਿਕਸ'
       project: 'ਪ੍ਰੋਜੈਕਟ'
       published_at: '''ਤੇ ਪ੍ਰਕਾਸ਼ਿਤ'
-      registration_completed_at: 'Registration completed at'
+      registration_completed_at: '''ਤੇ ਰਜਿਸਟ੍ਰੇਸ਼ਨ ਮੁਕੰਮਲ ਹੋਈ'
       status: 'ਸਥਿਤੀ'
-      submitted_at: 'Submitted at'
-      tags: 'Tags'
-      title: 'Title'
-      user_data: 'User data'
+      submitted_at: 'ਵਿਖੇ ਦਰਜ ਕਰਵਾਈ ਗਈ'
+      tags: 'ਟੈਗਸ'
+      title: 'ਸਿਰਲੇਖ'
+      user_data: 'ਉਪਭੋਗਤਾ ਡੇਟਾ'
       votes_count: 'ਵੋਟਾਂ'
   form_builder:
     default_select_field:
@@ -283,42 +283,42 @@ pa:
       option1: 'ਵਿਕਲਪ 1'
       option2: 'ਵਿਕਲਪ 2'
     form_end_page:
-      title_text: 'Almost done'
-      description_text_2: "You are about to submit your answers. By clicking 'Submit' you give us permission to analyse your answers.<br/>After you submit, you will no longer be able to go back and change any of your answers."
+      title_text: 'ਲਗਭਗ ਪੂਰਾ ਹੋ ਗਿਆ ਹੈ'
+      description_text_2: "ਤੁਸੀਂ ਆਪਣੇ ਜਵਾਬ ਦਰਜ ਕਰਨ ਜਾ ਰਹੇ ਹੋ। 'ਸਬਮਿਟ' 'ਤੇ ਕਲਿੱਕ ਕਰਕੇ ਤੁਸੀਂ ਸਾਨੂੰ ਆਪਣੇ ਜਵਾਬਾਂ ਦਾ ਵਿਸ਼ਲੇਸ਼ਣ ਕਰਨ ਦੀ ਇਜਾਜ਼ਤ ਦਿੰਦੇ ਹੋ।<br/>ਤੁਹਾਡੇ ਸਪੁਰਦ ਕਰਨ ਤੋਂ ਬਾਅਦ, ਤੁਸੀਂ ਹੁਣ ਵਾਪਸ ਜਾ ਕੇ ਆਪਣੇ ਕਿਸੇ ਵੀ ਜਵਾਬ ਨੂੰ ਬਦਲਣ ਦੇ ਯੋਗ ਨਹੀਂ ਹੋਵੋਗੇ।"
     pdf_export:
-      personal_data: 'Personal data'
-      personal_data_explanation_public: "We will submit your input to %{organizationName}'s online participation platform. If you want your name to be displayed as author of this input and receive updates relevant to your input by email, please fill out the following fields on this page and we will create an account for you. Your email will not be public and will only be used by %{organizationName}. If you want to remain anonymous, or do not agree for us to use your personal data in this way, you can leave them empty."
-      personal_data_explanation_private: "We will submit your input to %{organizationName}'s online participation platform. If you want to receive updates relevant to your input by email, please fill out the following fields on this page and we will create an account for you. Your data will not be public and will only be used by %{organizationName}. If you do not agree for us to use your personal data in this way, you can leave them empty."
-      first_name: 'First name(s)'
-      last_name: 'Last name'
+      personal_data: 'ਨਿੱਜੀ ਡਾਟਾ'
+      personal_data_explanation_public: "ਅਸੀਂ ਤੁਹਾਡੇ ਇਨਪੁਟ ਨੂੰ %{organizationName}ਦੇ ਔਨਲਾਈਨ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ 'ਤੇ ਜਮ੍ਹਾਂ ਕਰਾਵਾਂਗੇ। ਜੇਕਰ ਤੁਸੀਂ ਚਾਹੁੰਦੇ ਹੋ ਕਿ ਤੁਹਾਡਾ ਨਾਮ ਇਸ ਇਨਪੁਟ ਦੇ ਲੇਖਕ ਵਜੋਂ ਪ੍ਰਦਰਸ਼ਿਤ ਕੀਤਾ ਜਾਵੇ ਅਤੇ ਈਮੇਲ ਦੁਆਰਾ ਤੁਹਾਡੇ ਇਨਪੁਟ ਨਾਲ ਸੰਬੰਧਿਤ ਅੱਪਡੇਟ ਪ੍ਰਾਪਤ ਕਰੋ, ਤਾਂ ਕਿਰਪਾ ਕਰਕੇ ਇਸ ਪੰਨੇ 'ਤੇ ਹੇਠਾਂ ਦਿੱਤੇ ਖੇਤਰਾਂ ਨੂੰ ਭਰੋ ਅਤੇ ਅਸੀਂ ਤੁਹਾਡੇ ਲਈ ਇੱਕ ਖਾਤਾ ਬਣਾਵਾਂਗੇ। ਤੁਹਾਡੀ ਈਮੇਲ ਜਨਤਕ ਨਹੀਂ ਹੋਵੇਗੀ ਅਤੇ ਸਿਰਫ਼ %{organizationName}ਦੁਆਰਾ ਵਰਤੀ ਜਾਵੇਗੀ। ਜੇ ਤੁਸੀਂ ਅਗਿਆਤ ਰਹਿਣਾ ਚਾਹੁੰਦੇ ਹੋ, ਜਾਂ ਇਸ ਤਰੀਕੇ ਨਾਲ ਤੁਹਾਡੇ ਨਿੱਜੀ ਡੇਟਾ ਦੀ ਵਰਤੋਂ ਕਰਨ ਲਈ ਸਾਡੇ ਲਈ ਸਹਿਮਤ ਨਹੀਂ ਹੋ, ਤਾਂ ਤੁਸੀਂ ਉਹਨਾਂ ਨੂੰ ਖਾਲੀ ਛੱਡ ਸਕਦੇ ਹੋ।"
+      personal_data_explanation_private: "ਅਸੀਂ ਤੁਹਾਡੇ ਇਨਪੁਟ ਨੂੰ %{organizationName}ਦੇ ਔਨਲਾਈਨ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ 'ਤੇ ਜਮ੍ਹਾਂ ਕਰਾਵਾਂਗੇ। ਜੇਕਰ ਤੁਸੀਂ ਈਮੇਲ ਰਾਹੀਂ ਆਪਣੇ ਇਨਪੁਟ ਨਾਲ ਸੰਬੰਧਿਤ ਅੱਪਡੇਟ ਪ੍ਰਾਪਤ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ, ਤਾਂ ਕਿਰਪਾ ਕਰਕੇ ਇਸ ਪੰਨੇ 'ਤੇ ਹੇਠਾਂ ਦਿੱਤੇ ਖੇਤਰਾਂ ਨੂੰ ਭਰੋ ਅਤੇ ਅਸੀਂ ਤੁਹਾਡੇ ਲਈ ਇੱਕ ਖਾਤਾ ਬਣਾਵਾਂਗੇ। ਤੁਹਾਡਾ ਡੇਟਾ ਜਨਤਕ ਨਹੀਂ ਹੋਵੇਗਾ ਅਤੇ ਸਿਰਫ %{organizationName}ਦੁਆਰਾ ਵਰਤਿਆ ਜਾਵੇਗਾ। ਜੇਕਰ ਤੁਸੀਂ ਇਸ ਤਰੀਕੇ ਨਾਲ ਤੁਹਾਡੇ ਨਿੱਜੀ ਡੇਟਾ ਦੀ ਵਰਤੋਂ ਕਰਨ ਲਈ ਸਾਡੇ ਲਈ ਸਹਿਮਤ ਨਹੀਂ ਹੋ, ਤਾਂ ਤੁਸੀਂ ਉਹਨਾਂ ਨੂੰ ਖਾਲੀ ਛੱਡ ਸਕਦੇ ਹੋ।"
+      first_name: 'ਪਹਿਲਾ ਨਾਂ(ਨਾਂ)'
+      last_name: 'ਆਖਰੀ ਨਾਂਮ'
       email_address: 'ਈਮੇਲ ਪਤਾ'
-      by_checking_this_box: "By checking this box I consent to my data being used to create an account on %{organizationName}'s participation platform."
+      by_checking_this_box: "ਇਸ ਬਾਕਸ 'ਤੇ ਨਿਸ਼ਾਨ ਲਗਾ ਕੇ ਮੈਂ %{organizationName}ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ 'ਤੇ ਖਾਤਾ ਬਣਾਉਣ ਲਈ ਮੇਰੇ ਡੇਟਾ ਦੀ ਵਰਤੋਂ ਕਰਨ ਲਈ ਸਹਿਮਤੀ ਦਿੰਦਾ ਹਾਂ।"
       optional: 'ਵਿਕਲਪਿਕ'
       permission: 'ਇਜਾਜ਼ਤ'
       choose_as_many: 'ਜਿੰਨੇ ਤੁਸੀਂ ਚਾਹੁੰਦੇ ਹੋ ਚੁਣੋ'
       choose_exactly:
-        one: 'Choose exactly %{count} option'
-        other: 'Choose exactly %{count} options'
-      choose_between: 'Choose between %{min} and %{max} options'
-      choose_at_least: 'Choose at least %{count} options'
-      choose_at_most: 'Choose at most %{count} options'
+        one: 'ਬਿਲਕੁਲ %{count} ਵਿਕਲਪ ਚੁਣੋ'
+        other: 'ਬਿਲਕੁਲ %{count} ਵਿਕਲਪ ਚੁਣੋ'
+      choose_between: '%{min} ਅਤੇ %{max} ਵਿਕਲਪਾਂ ਵਿੱਚੋਂ ਚੁਣੋ'
+      choose_at_least: 'ਘੱਟੋ-ਘੱਟ %{count} ਵਿਕਲਪ ਚੁਣੋ'
+      choose_at_most: 'ਵੱਧ ਤੋਂ ਵੱਧ %{count} ਵਿਕਲਪ ਚੁਣੋ'
       this_answer: 'ਇਹ ਜਵਾਬ ਸਿਰਫ਼ ਸੰਚਾਲਕਾਂ ਨਾਲ ਸਾਂਝਾ ਕੀਤਾ ਜਾਵੇਗਾ, ਨਾ ਕਿ ਜਨਤਾ ਨਾਲ।'
       page: 'ਪੰਨਾ'
       date_published: 'ਪ੍ਰਕਾਸ਼ਿਤ ਹੋਣ ਦੀ ਮਿਤੀ (dd-mm-yyyy)'
       instructions: 'ਹਦਾਇਤਾਂ'
       write_as_clearly: 'ਜਿਵੇਂ ਤੁਸੀਂ ਕਰ ਸਕਦੇ ਹੋ <b>ਸਪਸ਼ਟ ਤੌਰ ''ਤੇ</b> ਲਿਖੋ— ਇਹ ਫਾਰਮ ਸਕੈਨ ਕੀਤੇ ਜਾ ਸਕਦੇ ਹਨ'
       write_in_language: 'ਆਪਣੇ ਜਵਾਬ ਉਸੇ ਭਾਸ਼ਾ ਵਿੱਚ ਲਿਖੋ ਜਿਸ ਭਾਸ਼ਾ ਵਿੱਚ ਇਹ ਫਾਰਮ ਹੈ'
-      linear_scale_print_description: 'Please write a number between %{min_label} and %{max_label} only'
+      linear_scale_print_description: 'ਕਿਰਪਾ ਕਰਕੇ ਸਿਰਫ਼ %{min_label} ਅਤੇ %{max_label} ਦੇ ਵਿਚਕਾਰ ਇੱਕ ਨੰਬਰ ਲਿਖੋ'
   project_copy:
     title_suffix: 'ਕਾਪੀ ਕਰੋ'
   confirmations_mailer:
     send_confirmation_code:
       subject: "%{organizationName}ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ਲਈ ਆਪਣੇ ਈਮੇਲ ਪਤੇ ਦੀ ਪੁਸ਼ਟੀ ਕਰੋ"
-      preheader: 'Confirm your email address for %{organizationName}'
+      preheader: '%{organizationName}ਲਈ ਆਪਣੇ ਈਮੇਲ ਪਤੇ ਦੀ ਪੁਸ਼ਟੀ ਕਰੋ'
       header: "ਤੁਹਾਡਾ ਪੁਸ਼ਟੀਕਰਨ ਕੋਡ"
       header_message: "ਹੈਲੋ %{firstName}!"
       confirm_email_address: "ਆਪਣੇ ਈਮੇਲ ਪਤੇ ਦੀ ਪੁਸ਼ਟੀ ਕਰੋ"
-      thanks_for_signing_up1: "Thank you for your participation. Please enter this confirmation code in the window on %{organizationName}'s participation platform:"
+      thanks_for_signing_up1: "ਤੁਹਾਡੀ ਭਾਗੀਦਾਰੀ ਲਈ ਧੰਨਵਾਦ। ਕਿਰਪਾ ਕਰਕੇ %{organizationName}ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ 'ਤੇ ਵਿੰਡੋ ਵਿੱਚ ਇਹ ਪੁਸ਼ਟੀਕਰਨ ਕੋਡ ਦਾਖਲ ਕਰੋ:"
       best_regards: "ਉੱਤਮ ਸਨਮਾਨ,"
       ignore_email: "ਜੇਕਰ ਤੁਸੀਂ ਕੋਡ ਦੀ ਬੇਨਤੀ ਨਹੀਂ ਕੀਤੀ ਹੈ, ਤਾਂ ਤੁਸੀਂ ਸੁਰੱਖਿਅਤ ਰੂਪ ਨਾਲ ਇਸ ਈਮੇਲ ਨੂੰ ਅਣਡਿੱਠ ਕਰ ਸਕਦੇ ਹੋ।"
       expire_code: "ਇਸ ਕੋਡ ਦੀ ਮਿਆਦ ਸਮਾਪਤ ਹੋ ਜਾਵੇਗੀ "
@@ -329,7 +329,7 @@ pa:
   user_blocked_mailer:
     send_user_blocked_email:
       subject: 'ਤੁਹਾਡਾ ਖਾਤਾ ਅਸਥਾਈ ਤੌਰ ''ਤੇ ਅਯੋਗ ਕਰ ਦਿੱਤਾ ਗਿਆ ਹੈ'
-      preheader: 'Your account on the participation platform of %{organizationName} has been temporarily disabled'
+      preheader: '%{organizationName} ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ''ਤੇ ਤੁਹਾਡਾ ਖਾਤਾ ਅਸਥਾਈ ਤੌਰ ''ਤੇ ਅਯੋਗ ਕਰ ਦਿੱਤਾ ਗਿਆ ਹੈ'
       title_user_blocked: 'ਤੁਹਾਡਾ ਖਾਤਾ ਅਸਥਾਈ ਤੌਰ ''ਤੇ ਅਯੋਗ ਕਰ ਦਿੱਤਾ ਗਿਆ ਹੈ'
       paragraph_1_without_reason: "%{organizationName} ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ 'ਤੇ ਤੁਹਾਡੇ ਖਾਤੇ ਨੂੰ ਕਮਿਊਨਿਟੀ ਦਿਸ਼ਾ-ਨਿਰਦੇਸ਼ਾਂ ਦੀ ਉਲੰਘਣਾ ਲਈ ਅਸਥਾਈ ਤੌਰ 'ਤੇ ਅਸਮਰੱਥ ਕਰ ਦਿੱਤਾ ਗਿਆ ਹੈ।"
       paragraph_1_with_reason: "%{organizationName} ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ 'ਤੇ ਤੁਹਾਡਾ ਖਾਤਾ ਹੇਠਾਂ ਦਿੱਤੇ ਕਾਰਨਾਂ ਕਰਕੇ ਅਸਥਾਈ ਤੌਰ 'ਤੇ ਅਸਮਰੱਥ ਕਰ ਦਿੱਤਾ ਗਿਆ ਹੈ:"
@@ -346,4 +346,4 @@ pa:
     default_voting_term_singular: "ਵੋਟ"
     default_voting_term_plural: "ਵੋਟਾਂ"
   ics_calendar_event:
-    event_details: "Event details"
+    event_details: "ਘਟਨਾ ਦੇ ਵੇਰਵੇ"
