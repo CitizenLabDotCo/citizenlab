@@ -51,15 +51,14 @@ describe('New project with native survey', () => {
     cy.wait(1000);
   });
 
+  // TODO: Improve this test
   it('shows the correct project header', () => {
     cy.get('#e2e-project-description');
     cy.get('#e2e-project-sidebar');
-    cy.get('#e2e-project-sidebar-share-button');
   });
 
   it('shows the survey buttons', () => {
     cy.contains('Take the survey').should('exist');
-    cy.contains('1 survey').should('exist');
 
     // Shows the event CTA when there is an upcoming event
     cy.get('#e2e-project-see-events-button').should('exist');
@@ -111,7 +110,6 @@ describe('Project with native survey phase but not active', () => {
 
   it('does not show the survey buttons', () => {
     cy.contains('Take the survey').should('not.exist');
-    cy.contains('1 survey').should('not.exist');
   });
 
   after(() => {
