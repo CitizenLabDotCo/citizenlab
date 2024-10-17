@@ -163,6 +163,7 @@ export default defineMessages({
     id: 'app.containers.Projects.about',
     defaultMessage: 'About',
   },
+  // #input_term_copy
   xIdeas: {
     id: 'app.containers.Projects.xIdeas',
     defaultMessage:
@@ -253,6 +254,51 @@ export default defineMessages({
     defaultMessage:
       '{ideasCount, plural, no {# questions} one {# question} other {# questions}} in the final phase',
   },
+  xProposals: {
+    id: 'app.containers.Projects.xProposals',
+    defaultMessage:
+      '{ideasCount, plural, no {# proposals} one {# proposal} other {# proposals}}',
+  },
+  xProposalsInCurrentPhase: {
+    id: 'app.containers.Projects.xProposalsInCurrentPhase',
+    defaultMessage:
+      '{ideasCount, plural, no {# proposals} one {# proposal} other {# proposals}} in the current phase',
+  },
+  xProposalsInFinalPhase: {
+    id: 'app.containers.Projects.xProposalsInFinalPhase',
+    defaultMessage:
+      '{ideasCount, plural, no {# proposals} one {# proposal} other {# proposals}} in the final phase',
+  },
+  xInitiatives: {
+    id: 'app.containers.Projects.xInitiatives',
+    defaultMessage:
+      '{ideasCount, plural, no {# initiatives} one {# initiative} other {# initiatives}}',
+  },
+  xInitiativesInCurrentPhase: {
+    id: 'app.containers.Projects.xInitiativesInCurrentPhase',
+    defaultMessage:
+      '{ideasCount, plural, no {# initiatives} one {# initiative} other {# initiatives}} in the current phase',
+  },
+  xInitiativesInFinalPhase: {
+    id: 'app.containers.Projects.xInitiativesInFinalPhase',
+    defaultMessage:
+      '{ideasCount, plural, no {# initiatives} one {# initiative} other {# initiatives}} in the final phase',
+  },
+  xPetitions: {
+    id: 'app.containers.Projects.xPetitions',
+    defaultMessage:
+      '{ideasCount, plural, no {# petitions} one {# petition} other {# petitions}}',
+  },
+  xPetitionsInCurrentPhase: {
+    id: 'app.containers.Projects.xPetitionsInCurrentPhase',
+    defaultMessage:
+      '{ideasCount, plural, no {# petitions} one {# petition} other {# petitions}} in the current phase',
+  },
+  xPetitionsInFinalPhase: {
+    id: 'app.containers.Projects.xPetitionsInFinalPhase',
+    defaultMessage:
+      '{ideasCount, plural, no {# petitions} one {# petition} other {# petitions}} in the final phase',
+  },
   oneSurvey: {
     id: 'app.containers.Projects.oneSurvey',
     defaultMessage: '1 survey',
@@ -321,6 +367,7 @@ export default defineMessages({
     id: 'app.containers.Projects.takeThePoll',
     defaultMessage: 'Take the poll',
   },
+  // #input_term_copy
   ideas: {
     id: 'app.containers.Projects.ideas',
     defaultMessage: 'Ideas',
@@ -344,6 +391,18 @@ export default defineMessages({
   projects: {
     id: 'app.containers.Projects.projects',
     defaultMessage: 'Projects',
+  },
+  proposals: {
+    id: 'app.containers.Projects.proposals',
+    defaultMessage: 'Proposals',
+  },
+  initiatives: {
+    id: 'app.containers.Projects.initiatives',
+    defaultMessage: 'Initiatives',
+  },
+  petitions: {
+    id: 'app.containers.Projects.petitions',
+    defaultMessage: 'Petitions',
   },
   survey: {
     id: 'app.containers.Projects.survey',
@@ -377,6 +436,7 @@ export default defineMessages({
     id: 'app.containers.Projects.xEvents',
     defaultMessage: '{eventsCount, plural, one {# event} other {# events}}',
   },
+  // #input_term_copy
   seeTheIdeas: {
     id: 'app.containers.Projects.seeTheIdeas',
     defaultMessage: 'See the ideas',
@@ -400,6 +460,18 @@ export default defineMessages({
   seeTheContributions: {
     id: 'app.containers.Projects.seeTheContributions',
     defaultMessage: 'See the contributions',
+  },
+  seeTheProposals: {
+    id: 'app.containers.Projects.seeTheProposals',
+    defaultMessage: 'See the proposals',
+  },
+  seeTheInitiatives: {
+    id: 'app.containers.Projects.seeTheInitiatives',
+    defaultMessage: 'See the initiatives',
+  },
+  seeThePetitions: {
+    id: 'app.containers.Projects.seeThePetitions',
+    defaultMessage: 'See the petitions',
   },
   meetMinBudgetRequirement: {
     id: 'app.containers.Projects.meetMinBudgetRequirement',
