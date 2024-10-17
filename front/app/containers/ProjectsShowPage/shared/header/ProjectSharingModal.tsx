@@ -89,14 +89,11 @@ const ProjectSharingModal = memo<Props & WrappedComponentProps>(
                           messages.emailSharingSubject,
                           {
                             projectName: title,
-                            initiativeTitle: title,
-                            initiativeUrl: url,
                           }
                         )}
                         emailBody={formatMessage(messages.emailSharingBody, {
                           projectUrl: url,
                           projectName: title,
-                          initiativeUrl: url,
                         })}
                         utmParams={utmParams}
                       />

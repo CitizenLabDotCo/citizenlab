@@ -88,7 +88,7 @@ export const proposalsDefaultConfig: IUpdatedPhaseProperties = {
   allow_anonymous_participation: false,
   reacting_dislike_limited_max: null,
   presentation_mode: 'card',
-  // input_term: 'proposal', // TODO: add later
+  input_term: 'proposal',
   ideas_order: 'trending',
   expire_days_limit: 90,
   reacting_threshold: 300,

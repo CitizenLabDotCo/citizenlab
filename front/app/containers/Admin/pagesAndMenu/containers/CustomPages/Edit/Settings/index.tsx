@@ -20,7 +20,6 @@ const customPageSlugAllowedToEdit: { [key in TCustomPageCode]: boolean } = {
   about: true,
   custom: true,
   faq: false,
-  proposals: false,
   'privacy-policy': false,
   'terms-and-conditions': false,
 };

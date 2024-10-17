@@ -33,6 +33,7 @@ module MultiTenancy
               additional_admins_number: 1,
               additional_moderators_number: 1,
               population: 27_500,
+              allow_sharing: true,
               google_search_console_meta_attribute: 'fake_meta_attribute'
             },
             password_login: {

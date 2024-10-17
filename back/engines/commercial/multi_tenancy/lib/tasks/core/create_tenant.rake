@@ -23,7 +23,8 @@ namespace :cl2_back do
           maximum_admins_number: 2,
           maximum_moderators_number: 2,
           additional_admins_number: 2,
-          additional_moderators_number: 1
+          additional_moderators_number: 1,
+          allow_sharing: true
         },
         maps: {
           enabled: true,
