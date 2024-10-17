@@ -1,5 +1,5 @@
 import { isString } from 'lodash-es';
-import moment, { unitOfTime, Moment } from 'moment';
+import moment, { unitOfTime, Moment } from 'moment-timezone';
 import { SupportedLocale } from 'typings';
 
 import { IEventData } from 'api/events/types';
@@ -142,9 +142,17 @@ export const momentToIsoDate = (moment: Moment | null | undefined) => {
 
 export function getPeriodRemainingUntil(
   date: string,
-  timeUnit: unitOfTime.Diff = 'days'
+  tenantTimezone: string,
+  timeUnit: unitOfTime.Diff
 ): number {
-  return moment(new Date(date)).diff(moment({ hours: 0 }), timeUnit);
+  // Parse the target date in the tenant's timezone
+  const targetDate = moment.tz(date, tenantTimezone);
+
+  // Get the current date at midnight in the tenant's timezone
+  const now = moment.tz(tenantTimezone).startOf('day');
+
+  // Calculate and return the difference
+  return targetDate.diff(now, timeUnit);
 }
 
 export function convertSecondsToDDHHMM(seconds: number) {
