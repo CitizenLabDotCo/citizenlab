@@ -55,6 +55,8 @@ export type IAppConfigurationSettingsCore = {
   additional_admins_number: TSeatNumber;
   additional_moderators_number: TSeatNumber;
   onboarding?: boolean;
+  allow_sharing: boolean;
+  customer_portal_url?: string | null;
 };
 
 export type TSeatNumber = number | null | undefined;
