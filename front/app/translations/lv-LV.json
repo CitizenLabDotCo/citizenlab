@@ -1804,6 +1804,7 @@
   "app.containers.SignIn.signInError": "Sniegtā informācija nav pareiza. Lai atiestatītu paroli, nospiediet uz “Aizmirsāt paroli?”.",
   "app.containers.SignIn.useFranceConnectToLoginCreateOrVerifyYourAccount": "Izmantot FranceConnect, lai pierakstītos, reģistrētos vai pārbaudītu savu kontu.",
   "app.containers.SignIn.whatIsFranceConnect": "Kas ir France Connect?",
+  "app.containers.SignUp.adminOptions2": "Administratoriem un projektu vadītājiem",
   "app.containers.SignUp.backToSignUpOptions": "Atgriezties pie reģistrēšanās iespējām",
   "app.containers.SignUp.continue": "Turpināt",
   "app.containers.SignUp.emailConsent": "Reģistrējoties jūs piekrītat saņemt e-pasta ziņojumus no šīs platformas. Lapā \"Mani iestatījumi\" jūs varat izvēlēties, kurus e-pastus vēlaties saņemt.",
