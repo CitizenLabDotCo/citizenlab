@@ -374,10 +374,13 @@ const ProjectCard = memo<InputProps>(
 
     // We use this hook instead of useProjectImages,
     // because that one doesn't work with our caching system.
-    const { data: projectImage } = useProjectImage({
+    const imageId = project?.data.relationships.project_images?.data[0]?.id;
+    const { data: _projectImage } = useProjectImage({
       projectId,
-      imageId: project?.data.relationships.project_images?.data[0]?.id,
+      imageId,
     });
+
+    const projectImage = imageId ? _projectImage : undefined;
 
     const currentPhaseId =
       project?.data?.relationships?.current_phase?.data?.id ?? null;

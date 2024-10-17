@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
 import useAdminPublicationsStatusCounts from 'api/admin_publications_status_counts/useAdminPublicationsStatusCounts';
-import getStatusCounts from 'api/admin_publications_status_counts/util/getAdminPublicationsStatusCount';
+// import getStatusCounts from 'api/admin_publications_status_counts/util/getAdminPublicationsStatusCount';
 import { ICustomPageData } from 'api/custom_pages/types';
 import { PublicationStatus } from 'api/projects/types';
 
@@ -13,7 +13,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import ContentContainer from 'components/ContentContainer';
 import EventsWidget from 'components/LandingPages/citizen/EventsWidget';
-import ProjectAndFolderCardsInner from 'components/ProjectAndFolderCards/ProjectAndFolderCardsInner';
+// import ProjectAndFolderCardsInner from 'components/ProjectAndFolderCards/ProjectAndFolderCardsInner';
 
 const ProjectCardsContentContainer = styled(ContentContainer)`
   padding-top: 50px;
@@ -42,10 +42,10 @@ const CustomPageProjectsAndEvents = ({ page }: Props) => {
 
   const {
     data,
-    isInitialLoading,
-    hasNextPage,
-    fetchNextPage,
-    isFetchingNextPage,
+    // isInitialLoading,
+    // hasNextPage,
+    // fetchNextPage,
+    // isFetchingNextPage,
   } = useAdminPublications({
     pageSize: 6,
     topicIds,
@@ -57,6 +57,7 @@ const CustomPageProjectsAndEvents = ({ page }: Props) => {
   });
 
   const adminPublications = data?.pages.map((page) => page.data).flat();
+  console.log(adminPublications);
 
   const { data: statusCountsWithoutFilters } = useAdminPublicationsStatusCounts(
     {
@@ -85,7 +86,7 @@ const CustomPageProjectsAndEvents = ({ page }: Props) => {
     <>
       {page.attributes.projects_enabled && (
         <ProjectCardsContentContainer mode="page">
-          <ProjectAndFolderCardsInner
+          {/* <ProjectAndFolderCardsInner
             statusCounts={getStatusCounts(statusCountsWithoutFilters)}
             showTitle={false}
             showFilters={false}
@@ -99,7 +100,7 @@ const CustomPageProjectsAndEvents = ({ page }: Props) => {
             loadingMore={isFetchingNextPage}
             onLoadMore={fetchNextPage}
             hasMore={hasNextPage}
-          />
+          /> */}
         </ProjectCardsContentContainer>
       )}
       {page.attributes.events_widget_enabled && (
