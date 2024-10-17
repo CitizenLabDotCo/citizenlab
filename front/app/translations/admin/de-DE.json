@@ -1525,7 +1525,6 @@
   "app.containers.AdminPage.ProjectEdit.PhaseParticipationConfig.autoshareResults": "Ergebnisse automatisch freigeben",
   "app.containers.AdminPage.ProjectEdit.PhaseParticipationConfig.autoshareResultsToggleDescription": "Die Abstimmungsergebnisse werden auf der Plattform und per E-Mail an die Teilnehmer weitergegeben, wenn die Phase endet. Dies gewährleistet standardmäßig Transparenz.",
   "app.containers.AdminPage.ProjectEdit.PhaseParticipationConfig.resultSharing": "Ergebnis teilen",
-  "app.containers.AdminPage.ProjectEdit.PhaseParticipationConfig.resultSharingDescription": "Beschreibung der Ergebnisfreigabe",
   "app.containers.AdminPage.ProjectEdit.PollTab.addAnswerOption": "Antwortmöglichkeit hinzufügen",
   "app.containers.AdminPage.ProjectEdit.PollTab.addPollQuestion": "Frage hinzufügen",
   "app.containers.AdminPage.ProjectEdit.PollTab.cancelEditAnswerOptions": "Abbrechen",
