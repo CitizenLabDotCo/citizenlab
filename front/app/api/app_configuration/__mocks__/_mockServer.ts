@@ -40,6 +40,7 @@ export const getAppConfigurationData = (
         maximum_moderators_number: 14,
         additional_admins_number: 0,
         additional_moderators_number: 0,
+        allow_sharing: true,
       },
       initiatives: {
         allowed: true,
