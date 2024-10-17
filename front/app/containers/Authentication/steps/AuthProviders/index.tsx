@@ -16,6 +16,7 @@ import FranceConnectButton from 'components/UI/FranceConnectButton';
 import Or from 'components/UI/Or';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
 
 import TextButton from '../_components/TextButton';
 
@@ -64,12 +65,19 @@ const AuthProviders = memo<Props>(
     // A hidden path that will show all methods inc any that are admin only
     const showAdminOnlyMethods = pathname.endsWith('/sign-in/admin');
 
+    // Show link to the above hidden path
+    const showAdminLoginLink =
+      flow === 'signin' &&
+      tenantSettings?.azure_ad_login?.visibility === 'link';
+
     const passwordLoginEnabled = useFeatureFlag({ name: 'password_login' });
     const googleLoginEnabled = useFeatureFlag({ name: 'google_login' });
     const facebookLoginEnabled = useFeatureFlag({ name: 'facebook_login' });
     const azureAdLoginEnabled =
       useFeatureFlag({ name: 'azure_ad_login' }) &&
-      (!tenantSettings?.azure_ad_login?.admin_only || showAdminOnlyMethods);
+      ((tenantSettings?.azure_ad_login?.visibility !== 'link' &&
+        tenantSettings?.azure_ad_login?.visibility !== 'hide') ||
+        showAdminOnlyMethods);
     const azureAdB2cLoginEnabled = useFeatureFlag({
       name: 'azure_ad_b2c_login',
     });
@@ -304,24 +312,40 @@ const AuthProviders = memo<Props>(
           </StyledAuthProviderButton>
         )}
 
-        <Text m="0">
-          <FormattedMessage
-            {...(flow === 'signup' ? messages.goToLogIn : messages.goToSignUp)}
-            values={{
-              goToOtherFlowLink: (
-                <TextButton
-                  id="e2e-goto-signup"
-                  onClick={handleGoToOtherFlow}
-                  className="link"
-                >
-                  {formatMessage(
-                    flow === 'signup' ? messages.logIn2 : messages.signUp2
-                  )}
-                </TextButton>
-              ),
-            }}
-          />
-        </Text>
+        {passwordLoginEnabled && (
+          <Text m="0">
+            <FormattedMessage
+              {...(flow === 'signup'
+                ? messages.goToLogIn
+                : messages.goToSignUp)}
+              values={{
+                goToOtherFlowLink: (
+                  <TextButton
+                    id="e2e-goto-signup"
+                    onClick={handleGoToOtherFlow}
+                    className="link"
+                  >
+                    {formatMessage(
+                      flow === 'signup' ? messages.logIn2 : messages.signUp2
+                    )}
+                  </TextButton>
+                ),
+              }}
+            />
+          </Text>
+        )}
+
+        {showAdminLoginLink && (
+          <Link to="/sign-in/admin">
+            <Text
+              fontSize="xs"
+              textDecoration="underline"
+              color="textSecondary"
+            >
+              <FormattedMessage {...messages.adminOptions} />
+            </Text>
+          </Link>
+        )}
       </Container>
     );
   }

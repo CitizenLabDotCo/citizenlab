@@ -10,13 +10,14 @@ import {
 import { RouteType } from 'routes';
 import { Popup } from 'semantic-ui-react';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useAuthUser from 'api/me/useAuthUser';
+
 import { useIntl } from 'utils/cl-intl';
+import { isAdmin } from 'utils/permissions/roles';
 
 import messages from './messages';
 import { ItemMenu, StyledBox } from './styles';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import { isAdmin } from 'utils/permissions/roles';
-import useAuthUser from 'api/me/useAuthUser';
 
 export const SupportMenu = () => {
   const { formatMessage } = useIntl();
