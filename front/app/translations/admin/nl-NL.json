@@ -1525,7 +1525,6 @@
   "app.containers.AdminPage.ProjectEdit.PhaseParticipationConfig.autoshareResults": "Resultaten automatisch delen",
   "app.containers.AdminPage.ProjectEdit.PhaseParticipationConfig.autoshareResultsToggleDescription": "De stemresultaten worden gedeeld op het platform en via e-mail aan de deelnemers wanneer de fase eindigt. Dit zorgt standaard voor transparantie.",
   "app.containers.AdminPage.ProjectEdit.PhaseParticipationConfig.resultSharing": "Resultaat delen",
-  "app.containers.AdminPage.ProjectEdit.PhaseParticipationConfig.resultSharingDescription": "Beschrijving van het delen van resultaten",
   "app.containers.AdminPage.ProjectEdit.PollTab.addAnswerOption": "Voeg een antwoordmogelijkheid toe",
   "app.containers.AdminPage.ProjectEdit.PollTab.addPollQuestion": "Voeg een peilingvraag toe",
   "app.containers.AdminPage.ProjectEdit.PollTab.cancelEditAnswerOptions": "Annuleren",
