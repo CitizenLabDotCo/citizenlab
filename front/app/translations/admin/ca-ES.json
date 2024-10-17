@@ -1691,7 +1691,7 @@
   "app.containers.AdminPage.ProjectEdit.inputsDefaultView": "Vista per defecte",
   "app.containers.AdminPage.ProjectEdit.inputsDefaultViewTooltip": "Trieu la vista predeterminada per mostrar l'entrada: targetes en una vista de quadrícula o agulles en un mapa. Els participants poden canviar manualment entre les dues vistes.",
   "app.containers.AdminPage.ProjectEdit.konveioDocumentAnnotationEmbedUrl": "Insereix l'URL de Konveio",
-  "app.containers.AdminPage.ProjectEdit.likingMethodTitle": "Nombre de likes per participant",
+  "app.containers.AdminPage.ProjectEdit.likingMethodTitle": "Number of likes per participant",
   "app.containers.AdminPage.ProjectEdit.limited": "Limitat",
   "app.containers.AdminPage.ProjectEdit.loadMoreTemplates": "Carregueu més plantilles",
   "app.containers.AdminPage.ProjectEdit.mapDisplay": "Map",
