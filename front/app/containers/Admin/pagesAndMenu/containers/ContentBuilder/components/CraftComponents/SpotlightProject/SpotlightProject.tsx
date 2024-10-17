@@ -15,7 +15,7 @@ import AvatarBubbles from 'components/AvatarBubbles';
 import citySrc from './city.png';
 
 interface Props {
-  title?: string;
+  title: string;
   description?: string;
   buttonText?: string;
   avatarIds?: string[];
@@ -40,7 +40,7 @@ const SpotlightProject = ({
       >
         <Box w={isSmallerThanPhone ? undefined : '50%'}>
           <Title variant="h2" fontSize="xxxxl" mt="0px" lineHeight="1">
-            {title ?? 'TODO'}
+            {title}
           </Title>
           {description && <Text>{description}</Text>}
           {buttonText && (
