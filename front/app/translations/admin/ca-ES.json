@@ -1525,7 +1525,6 @@
   "app.containers.AdminPage.ProjectEdit.PhaseParticipationConfig.autoshareResults": "Compartiu automàticament els resultats",
   "app.containers.AdminPage.ProjectEdit.PhaseParticipationConfig.autoshareResultsToggleDescription": "Els resultats de la votació es comparteixen a la plataforma i per correu electrònic als participants quan finalitza la fase. Això garanteix la transparència per defecte.",
   "app.containers.AdminPage.ProjectEdit.PhaseParticipationConfig.resultSharing": "Compartició de resultats",
-  "app.containers.AdminPage.ProjectEdit.PhaseParticipationConfig.resultSharingDescription": "Descripció de l'intercanvi de resultats",
   "app.containers.AdminPage.ProjectEdit.PollTab.addAnswerOption": "Afegeix una opció de resposta",
   "app.containers.AdminPage.ProjectEdit.PollTab.addPollQuestion": "Afegir una pregunta d'enquesta",
   "app.containers.AdminPage.ProjectEdit.PollTab.cancelEditAnswerOptions": "Cancel · lar",
