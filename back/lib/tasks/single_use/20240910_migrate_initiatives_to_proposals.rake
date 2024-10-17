@@ -35,7 +35,7 @@ namespace :initiatives_to_proposals do
           next
         end
         rake_20240910_migrate_activities(proposal, initiative, reporter)
-        # rake_20240910_migrate_images_files(proposal, initiative, reporter) ### TODO: RESTORE THIS LINE
+        rake_20240910_migrate_images_files(proposal, initiative, reporter) ### TODO: RESTORE THIS LINE
         rake_20240910_migrate_topics(proposal, initiative, reporter)
         rake_20240910_migrate_reactions(proposal, initiative, reporter)
         rake_20240910_migrate_spam_reports(proposal, initiative, reporter)
