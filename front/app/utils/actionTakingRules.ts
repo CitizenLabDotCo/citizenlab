@@ -149,10 +149,11 @@ export const getIdeaPostingRules = ({
 
     // timeline
     if (phase) {
-      // not an enabled ideation or native survey phase
+      // not an enabled ideation or native survey or proposals phase
       if (
         !(
           (phase.attributes.participation_method === 'ideation' ||
+            phase.attributes.participation_method === 'proposals' ||
             phase.attributes.participation_method === 'native_survey') &&
           phase.attributes.submission_enabled &&
           disabled_reason !== 'posting_not_supported'

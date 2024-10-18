@@ -1,6 +1,5 @@
 import useMachineTranslationByCommentId from 'modules/commercial/machine_translations/api/useMachineTranslationByCommentId';
 import useMachineTranslationByIdeaId from 'modules/commercial/machine_translations/api/useMachineTranslationByIdeaId';
-import useMachineTranslationByInitiativeId from 'modules/commercial/machine_translations/api/useMachineTranslationByInitiativeId';
 import { SupportedLocale } from 'typings';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -9,7 +8,7 @@ interface Parameters {
   attributeName: 'body_multiloc' | 'title_multiloc';
   localeTo: SupportedLocale;
   id: string;
-  context: 'idea' | 'initiative' | 'comment';
+  context: 'idea' | 'comment';
   machineTranslationButtonClicked: boolean;
 }
 
@@ -24,18 +23,6 @@ export default function useTranslation({
     name: 'machine_translations',
   });
 
-  const { data: initiativeTranslation } = useMachineTranslationByInitiativeId({
-    initiativeId: id,
-    machine_translation: {
-      locale_to: localeTo,
-      attribute_name: attributeName,
-    },
-    enabled:
-      machineTranslationButtonClicked &&
-      isMachineTranslationsEnabled &&
-      localeTo &&
-      context === 'initiative',
-  });
   const { data: ideaTranslation } = useMachineTranslationByIdeaId({
     ideaId: id,
     machine_translation: {
@@ -63,8 +50,6 @@ export default function useTranslation({
 
   if (context === 'idea') {
     return ideaTranslation?.data;
-  } else if (context === 'initiative') {
-    return initiativeTranslation?.data;
   } else if (context === 'comment') {
     return commentTranslation?.data;
   }

@@ -1,6 +1,7 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  // #input_term_copy
   ideaNewMetaTitle1: {
     id: 'app.containers.IdeasNewPage.ideaNewMetaTitle1',
     defaultMessage: 'Add new idea to project | {orgName}',
@@ -25,12 +26,23 @@ export default defineMessages({
     id: 'app.containers.IdeasNewPage.contributionMetaTitle1',
     defaultMessage: 'Add new contribution to project | {orgName}',
   },
+  proposalMetaTitle1: {
+    id: 'app.containers.IdeasNewPage.proposalMetaTitle1',
+    defaultMessage: 'Add new proposal to project | {orgName}',
+  },
+  initiativeMetaTitle1: {
+    id: 'app.containers.IdeasNewPage.initiativeMetaTitle1',
+    defaultMessage: 'Add new initiative to project | {orgName}',
+  },
+  petitionMetaTitle1: {
+    id: 'app.containers.IdeasNewPage.petitionMetaTitle1',
+    defaultMessage: 'Add new petition to project | {orgName}',
+  },
   ideaNewMetaDescription: {
     id: 'app.containers.IdeasNewPage.ideaNewMetaDescription',
     defaultMessage:
       "Post a submission and join the conversation at {orgName}'s participation platform.",
   },
-
   api_error_title_multiloc_blank: {
     id: 'app.containers.IdeasNewPage.api_error_idea_title_multiloc_blank',
     defaultMessage: 'Please provide a title',
@@ -44,7 +56,7 @@ export default defineMessages({
     defaultMessage:
       'You may have used one or more words that are considered profanity by {guidelinesLink}. Please alter your text to remove any profanities that might be present.',
   },
-
+  // #input_term_copy
   api_error_idea_title_multiloc_too_long: {
     id: 'app.containers.IdeasNewPage.api_error_idea_title_multiloc_too_long',
     defaultMessage: 'The idea title must be less than 80 characters long',
@@ -158,6 +170,64 @@ export default defineMessages({
       'The option description must be at least 30 characters long',
   },
 
+  api_error_proposal_title_multiloc_too_long: {
+    id: 'app.containers.IdeasNewPage.api_error_proposal_title_multiloc_too_long',
+    defaultMessage: 'The proposal title must be less than 80 characters long',
+  },
+  api_error_proposal_title_multiloc_too_short: {
+    id: 'app.containers.IdeasNewPage.api_error_proposal_title_multiloc_too_short',
+    defaultMessage: 'The proposal title must be at least 10 characters long',
+  },
+  api_error_proposal_description_multiloc_too_long: {
+    id: 'app.containers.IdeasNewPage.api_error_proposal_description_multiloc_too_long',
+    defaultMessage:
+      'The proposal description must be less than 80 characters long',
+  },
+  api_error_proposal_description_multiloc_too_short: {
+    id: 'app.containers.IdeasNewPage.api_error_proposal_description_multiloc_too_short',
+    defaultMessage:
+      'The proposal description must be at least 30 characters long',
+  },
+
+  api_error_initiative_title_multiloc_too_long: {
+    id: 'app.containers.IdeasNewPage.api_error_initiative_title_multiloc_too_long',
+    defaultMessage: 'The initiative title must be less than 80 characters long',
+  },
+  api_error_initiative_title_multiloc_too_short: {
+    id: 'app.containers.IdeasNewPage.api_error_initiative_title_multiloc_too_short',
+    defaultMessage: 'The initiative title must be at least 10 characters long',
+  },
+  api_error_initiative_description_multiloc_too_long: {
+    id: 'app.containers.IdeasNewPage.api_error_initiative_description_multiloc_too_long',
+    defaultMessage:
+      'The initiative description must be less than 80 characters long',
+  },
+  api_error_initiative_description_multiloc_too_short: {
+    id: 'app.containers.IdeasNewPage.api_error_initiative_description_multiloc_too_short',
+    defaultMessage:
+      'The initiative description must be at least 30 characters long',
+  },
+
+  api_error_petition_title_multiloc_too_long: {
+    id: 'app.containers.IdeasNewPage.api_error_petition_title_multiloc_too_long',
+    defaultMessage: 'The petition title must be less than 80 characters long',
+  },
+  api_error_petition_title_multiloc_too_short: {
+    id: 'app.containers.IdeasNewPage.api_error_petition_title_multiloc_too_short',
+    defaultMessage: 'The petition title must be at least 10 characters long',
+  },
+  api_error_petition_description_multiloc_too_long: {
+    id: 'app.containers.IdeasNewPage.api_error_petition_description_multiloc_too_long',
+    defaultMessage:
+      'The petition description must be less than 80 characters long',
+  },
+  api_error_petition_description_multiloc_too_short: {
+    id: 'app.containers.IdeasNewPage.api_error_petition_description_multiloc_too_short',
+    defaultMessage:
+      'The petition description must be at least 30 characters long',
+  },
+
+  // #input_term_copy
   ajv_error_title_multiloc_required: {
     id: 'app.containers.IdeasNewPage.ajv_error_title_multiloc_required',
     defaultMessage: 'Please provide a title',
@@ -169,6 +239,10 @@ export default defineMessages({
   ajv_error_topic_ids_minItems: {
     id: 'app.containers.IdeasNewPage.ajv_error_option_topic_ids_minItems',
     defaultMessage: 'Please select at least one tag',
+  },
+  ajv_error_cosponsor_ids_required: {
+    id: 'app.containers.IdeasNewPage.ajv_error_cosponsor_ids_required',
+    defaultMessage: 'Please select at least one cosponsor',
   },
   ajv_error_proposed_budget_required: {
     id: 'app.containers.IdeasNewPage.ajv_error_proposed_budget_required',
@@ -300,6 +374,70 @@ export default defineMessages({
     defaultMessage:
       'The option description must be more than {limit} characters long',
   },
+
+  ajv_error_proposal_title_multiloc_maxLength: {
+    id: 'app.containers.IdeasNewPage.ajv_error_proposal_title_multiloc_maxLength',
+    defaultMessage:
+      'The proposal title must be less than {limit} characters long',
+  },
+  ajv_error_proposal_title_multiloc_minLength: {
+    id: 'app.containers.IdeasNewPage.ajv_error_proposal_title_multiloc_minLength1',
+    defaultMessage:
+      'The proposal title must be more than {limit} characters long',
+  },
+  ajv_error_proposal_body_multiloc_maxLength: {
+    id: 'app.containers.IdeasNewPage.ajv_error_proposal_body_multiloc_maxLength',
+    defaultMessage:
+      'The proposal description must be less than {limit} characters long',
+  },
+  ajv_error_proposal_body_multiloc_minLength: {
+    id: 'app.containers.IdeasNewPage.ajv_error_proposal_body_multiloc_minLength',
+    defaultMessage:
+      'The proposal description must be more than {limit} characters long',
+  },
+
+  ajv_error_initiative_title_multiloc_maxLength: {
+    id: 'app.containers.IdeasNewPage.ajv_error_initiative_title_multiloc_maxLength',
+    defaultMessage:
+      'The initiative title must be less than {limit} characters long',
+  },
+  ajv_error_initiative_title_multiloc_minLength: {
+    id: 'app.containers.IdeasNewPage.ajv_error_initiative_title_multiloc_minLength1',
+    defaultMessage:
+      'The initiative title must be more than {limit} characters long',
+  },
+  ajv_error_initiative_body_multiloc_maxLength: {
+    id: 'app.containers.IdeasNewPage.ajv_error_initiative_body_multiloc_maxLength',
+    defaultMessage:
+      'The initiative description must be less than {limit} characters long',
+  },
+  ajv_error_initiative_body_multiloc_minLength: {
+    id: 'app.containers.IdeasNewPage.ajv_error_initiative_body_multiloc_minLength',
+    defaultMessage:
+      'The initiative description must be more than {limit} characters long',
+  },
+
+  ajv_error_petition_title_multiloc_maxLength: {
+    id: 'app.containers.IdeasNewPage.ajv_error_petition_title_multiloc_maxLength',
+    defaultMessage:
+      'The petition title must be less than {limit} characters long',
+  },
+  ajv_error_petition_title_multiloc_minLength: {
+    id: 'app.containers.IdeasNewPage.ajv_error_petition_title_multiloc_minLength1',
+    defaultMessage:
+      'The petition title must be more than {limit} characters long',
+  },
+  ajv_error_petition_body_multiloc_maxLength: {
+    id: 'app.containers.IdeasNewPage.ajv_error_petition_body_multiloc_maxLength',
+    defaultMessage:
+      'The petition description must be less than {limit} characters long',
+  },
+  ajv_error_petition_body_multiloc_minLength: {
+    id: 'app.containers.IdeasNewPage.ajv_error_petition_body_multiloc_minLength',
+    defaultMessage:
+      'The petition description must be more than {limit} characters long',
+  },
+
   ajv_error_number_required: {
     id: 'app.containers.IdeasNewPage.ajv_error_number_required',
     defaultMessage: 'This field is required, please enter a valid number',

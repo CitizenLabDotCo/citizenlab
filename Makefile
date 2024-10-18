@@ -13,22 +13,22 @@
 # =================
 
 build:
-	docker-compose build
+	docker compose build
 	cd front && npm install
 
 reset-dev-env:
 	# -v removes volumes with all the data inside https://docs.docker.com/compose/reference/down/
-	docker-compose down -v || true # do not exit on error (some networks may be present, volumes may be used, which is often fine)
+	docker compose down -v || true # do not exit on error (some networks may be present, volumes may be used, which is often fine)
 	make build
 	# https://citizenlabco.slack.com/archives/C016C2EHURY/p1644234622002569
-	docker-compose run --rm web "bin/rails db:create && bin/rails db:reset"
-	docker-compose run --rm -e RAILS_ENV=test web bin/rails db:drop db:create db:schema:load
+	docker compose run --rm web "bin/rails db:create && bin/rails db:reset"
+	docker compose run --rm -e RAILS_ENV=test web bin/rails db:drop db:create db:schema:load
 
 migrate:
-	docker-compose run --rm web bin/rails db:migrate cl2back:clean_tenant_settings email_campaigns:assure_campaign_records fix_existing_tenants:update_permissions cl2back:clear_cache_store email_campaigns:remove_deprecated
+	docker compose run --rm web bin/rails db:migrate cl2back:clean_tenant_settings email_campaigns:assure_campaign_records fix_existing_tenants:update_permissions cl2back:clear_cache_store email_campaigns:remove_deprecated
 
 be-up:
-	docker-compose up
+	docker compose up
 
 fe-up:
 	cd front && npm start
@@ -36,12 +36,33 @@ fe-up:
 up:
 	make -j 2 be-up fe-up
 
+# For testing different SSO methods
+be-up-claveunica:
+	docker compose down
+	BASE_DEV_URI=https://claveunica-h2dkc.loca.lt docker compose up -d
+	lt --print-requests --port 3000 --subdomain claveunica-h2dkc
+
+be-up-nemlogin:
+	docker compose down
+	BASE_DEV_URI=https://nemlogin-k3kd.loca.lt docker compose up -d
+	lt --print-requests --port 3000 --subdomain nemlogin-k3kd
+
+be-up-idaustria:
+	docker compose down
+	BASE_DEV_URI=https://idaustria-g3fy.loca.lt docker compose up -d
+	lt --print-requests --port 3000 --subdomain idaustria-g3fy
+
+be-up-keycloak:
+	docker compose down
+	BASE_DEV_URI=https://keycloak-r3tyu.loca.lt docker compose up -d
+	lt --print-requests --port 3000 --subdomain keycloak-r3tyu
+
 # Run it with:
 # make c
 # # or
 # make rails-console
 c rails-console:
-	docker-compose run --rm web bin/rails c
+	docker compose run --rm web bin/rails c
 
 # Runs rails console in an existing web container. May be useful if you need to access localhost:4000 in the console.
 # E.g., this command works in this console `curl http://localhost:4000`
@@ -50,7 +71,7 @@ rails-console-exec:
 
 # search_path=localhost specifies the schema of localhost tenant
 psql:
-	docker-compose run -it -e PGPASSWORD=postgres -e PGOPTIONS="--search_path=localhost" postgres psql -U postgres -h postgres -d cl2_back_development
+	docker compose run -it -e PGPASSWORD=postgres -e PGOPTIONS="--search_path=localhost" postgres psql -U postgres -h postgres -d cl2_back_development
 
 # Run it with:
 # make copy-paste-code-entity source=initiative_resubmitted_for_review target=new_cosponsor_added
@@ -64,12 +85,12 @@ blint back-lint-autocorrect:
 # Usage example:
 # make r file=spec/models/idea_spec.rb
 r rspec:
-	docker-compose run --rm web bin/rspec ${file}
+	docker compose run --rm web bin/rspec ${file}
 
 # Usage example:
 # make feature-toggle feature=initiative_cosponsors enabled=true
 feature-toggle:
-	docker-compose run web "bin/rails runner \"enabled = ${enabled}; feature = '${feature}'; Tenant.find_by(host: 'localhost').switch!; c = AppConfiguration.instance; c.settings['${feature}'] ||= {}; c.settings['${feature}']['allowed'] = ${enabled}; c.settings['${feature}']['enabled'] = ${enabled}; c.save!\""
+	docker compose run web "bin/rails runner \"enabled = ${enabled}; feature = '${feature}'; Tenant.find_by(host: 'localhost').switch!; c = AppConfiguration.instance; c.settings['${feature}'] ||= {}; c.settings['${feature}']['allowed'] = ${enabled}; c.settings['${feature}']['enabled'] = ${enabled}; c.save!\""
 
 # =================
 # E2E tests
@@ -80,8 +101,8 @@ feature-toggle:
 # After running this command, start the dev servers as usual (make up)
 e2e-setup:
 	make build
-	docker-compose run --rm web bin/rails db:drop db:create db:schema:load
-	docker-compose run --rm web bin/rails cl2_back:create_tenant[localhost,e2etests_template]
+	docker compose run --rm web bin/rails db:drop db:create db:schema:load
+	docker compose run --rm web bin/rails cl2_back:create_tenant[localhost,e2etests_template]
 
 e2e-setup-and-up:
 	make e2e-setup

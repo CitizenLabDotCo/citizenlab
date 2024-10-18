@@ -170,6 +170,9 @@ de:
       topic_ids:
         title: Themen
         description:
+      consponsor_ids:
+        title: Unterstützer*innen
+        description: Laden Sie Unterstützer*innen über das unten stehende Feld ein. Unterstützende werden eine E-Mail erhalten.
       location:
         title: Standort
         description:
@@ -209,6 +212,12 @@ de:
           title: Was ist Ihr Vorhaben?
         option:
           title: Was ist Ihre Option?
+        proposal:
+          title: Wie lautet Ihr Vorschlag?
+        initiative:
+          title: Was ist Ihre Initiative?
+        petition:
+          title: Was ist Ihre Petition?
   custom_field_options:
     gender:
       male: Männlich

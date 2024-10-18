@@ -170,6 +170,9 @@
       topic_ids:
         title: Emner
         description:
+      consponsor_ids:
+        title: Medsponsorer
+        description: Inviter medsponsorer gjennom feltet nedenfor. Den/de inviterte medsponsoren(e) vil motta en e-post.
       location:
         title: Lokalitet
         description:

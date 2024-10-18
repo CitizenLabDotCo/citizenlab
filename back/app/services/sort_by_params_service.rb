@@ -55,6 +55,8 @@ class SortByParamsService
     when '-likes_count' then scope.order(likes_count: :asc)
     when 'comments_count' then scope.order(comments_count: :desc)
     when '-comments_count' then scope.order(comments_count: :asc)
+    when 'accepted_cosponsorships_count' then scope.order_accepted_cosponsorships(:desc)
+    when '-accepted_cosponsorships_count' then scope.order_accepted_cosponsorships(:asc)
     else
       raise "Unsupported sorting parameter #{params[:sort]}"
     end

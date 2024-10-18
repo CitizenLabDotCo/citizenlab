@@ -1,8 +1,12 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  aboutBox: {
-    id: 'app.containers.admin.ContentBuilder.aboutBox',
-    defaultMessage: 'About Box',
+  participationBox: {
+    id: 'app.containers.admin.ContentBuilder.participationBox',
+    defaultMessage: 'Participation Box',
+  },
+  hideParticipationNumbersText: {
+    id: 'app.containers.admin.ContentBuilder.hideParticipationNumbersText',
+    defaultMessage: 'Hide participation numbers',
   },
 });

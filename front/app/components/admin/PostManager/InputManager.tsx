@@ -286,7 +286,6 @@ const InputManager = ({
       <ThreeColumns>
         <LeftColumn>
           <ActionBar
-            type={type}
             selection={selection}
             resetSelection={resetSelection}
             handleClickEdit={openPreviewEdit}
@@ -335,7 +334,7 @@ const InputManager = ({
             sortDirection={
               queryParameters.sort
                 ? getSortDirection(queryParameters.sort)
-                : 'ascending'
+                : 'descending'
             }
             onChangeSort={onChangeSorting}
             posts={ideas.data}

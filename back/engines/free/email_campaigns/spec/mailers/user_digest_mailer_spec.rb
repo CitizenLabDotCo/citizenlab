@@ -14,8 +14,7 @@ RSpec.describe EmailCampaigns::UserDigestMailer do
           notifications_count: 2,
           top_ideas: [],
           discover_projects: [],
-          new_initiatives: [],
-          successful_initiatives: []
+          successful_proposals: []
         }
       }
     end
@@ -52,7 +51,7 @@ RSpec.describe EmailCampaigns::UserDigestMailer do
           top_ideas: [],
           discover_projects: [],
           new_initiatives: [],
-          successful_initiatives: []
+          successful_proposals: []
         }
       end
 

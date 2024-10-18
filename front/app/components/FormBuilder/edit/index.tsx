@@ -249,6 +249,7 @@ const FormEdit = ({
           maximum: field.maximum?.toString() || '5',
         }),
       }));
+
       await updateFormCustomFields(
         {
           projectId,
@@ -407,7 +408,7 @@ const FormEdit = ({
                       field={selectedField}
                       closeSettings={closeSettings}
                       builderConfig={builderConfig}
-                      surveyHasSubmissions={totalSubmissions > 0}
+                      formHasSubmissions={totalSubmissions > 0}
                     />
                   </Box>
                 )}

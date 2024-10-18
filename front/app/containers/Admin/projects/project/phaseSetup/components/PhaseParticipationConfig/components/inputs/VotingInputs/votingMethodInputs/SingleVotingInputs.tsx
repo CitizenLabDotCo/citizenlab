@@ -3,8 +3,6 @@ import React, { useState } from 'react';
 import { Input, Box, Radio } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
-import { StyledSectionDescription } from 'containers/Admin/initiatives/settings';
-
 import {
   SectionField,
   SubSectionTitleWithDescription,
@@ -12,6 +10,7 @@ import {
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
+import { StyledSectionDescription } from '..';
 import { VotingAmountInputError } from '../../../shared/styling';
 import messages from '../messages';
 

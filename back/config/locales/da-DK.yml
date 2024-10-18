@@ -170,6 +170,9 @@ da:
       topic_ids:
         title: Emner
         description:
+      consponsor_ids:
+        title: Medstillere
+        description: Inviter Medstillere via feltet nedenfor. De inviterede medstillere vil modtage en e-mail.
       location:
         title: Beliggenhed
         description:
@@ -209,6 +212,12 @@ da:
           title: Hvad er dit input?
         option:
           title: Hvad er din mulighed?
+        proposal:
+          title: Hvad er dit forslag?
+        initiative:
+          title: Hvad er dit forslag?
+        petition:
+          title: Hvad er din anmodning?
   custom_field_options:
     gender:
       male: Mand

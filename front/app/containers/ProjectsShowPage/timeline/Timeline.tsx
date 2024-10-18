@@ -483,13 +483,13 @@ const Timeline = ({
                 </Box>
               )}
             </RtlBox>
-            {!isBackoffice && selectedPhaseId && (
-              <PhaseDescription
-                projectId={projectId}
-                selectedPhaseId={selectedPhaseId}
-              />
-            )}
           </Phases>
+          {!isBackoffice && selectedPhaseId && (
+            <PhaseDescription
+              projectId={projectId}
+              selectedPhaseId={selectedPhaseId}
+            />
+          )}
         </ContainerInner>
       </Container>
     );

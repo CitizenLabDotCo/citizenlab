@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Spinner, Tooltip } from '@citizenlab/cl2-component-library';
+import { Spinner, Box, Tooltip } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
@@ -110,14 +110,16 @@ const IdeaStatuses = ({ variant }: { variant: 'ideation' | 'proposals' }) => {
             content={<FormattedMessage {...messages.pricingPlanUpgrade} />}
             trigger="mouseenter"
           >
-            <Button
-              buttonStyle="admin-dark"
-              icon="plus-circle"
-              linkTo={`/admin/settings/${variant}/statuses/new`}
-              disabled={!customIdeaStatusesAllowed}
-            >
-              <FormattedMessage {...messages.addIdeaStatus} />
-            </Button>
+            <Box>
+              <Button
+                buttonStyle="admin-dark"
+                icon="plus-circle"
+                linkTo={`/admin/settings/${variant}/statuses/new`}
+                disabled={!customIdeaStatusesAllowed}
+              >
+                <FormattedMessage {...messages.addIdeaStatus} />
+              </Button>
+            </Box>
           </Tooltip>
         </ButtonWrapper>
 

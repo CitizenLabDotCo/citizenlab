@@ -31,7 +31,7 @@ export const builtInFieldKeys = [
   'location_description',
   'idea_images_attributes',
   'idea_files_attributes',
-  'topic_ids',
+  'cosponsor_ids',
 ];
 
 export type BuiltInKeyType = (typeof builtInFieldKeys)[number];
@@ -202,6 +202,9 @@ const getBuiltInFieldStringKey = (
       break;
     case 'topic_ids':
       translatedStringKey = messages.tags;
+      break;
+    case 'cosponsor_ids':
+      translatedStringKey = messages.cosponsors;
       break;
     case 'proposed_budget':
       translatedStringKey = messages.proposedBudget;

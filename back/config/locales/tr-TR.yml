@@ -170,6 +170,9 @@ tr:
       topic_ids:
         title: Etiketler
         description:
+      consponsor_ids:
+        title: Eş sponsorlar
+        description: Aşağıdaki alan aracılığıyla eş sponsorları davet edin. Davet edilen eş sponsor(lar) bir e-posta alacaktır.
       location:
         title: Konum
         description:
@@ -209,6 +212,12 @@ tr:
           title: Sorununuz nedir?
         option:
           title: Seçeneğiniz nedir ?
+        proposal:
+          title: Teklifiniz nedir?
+        initiative:
+          title: Girişiminiz nedir?
+        petition:
+          title: Dilekçeniz nedir?
   custom_field_options:
     gender:
       male: Erkek

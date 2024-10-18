@@ -72,10 +72,8 @@ const PREDICATE_MESSAGES: Record<TPredicate, MessageDescriptor> = {
   is_not_project: messages.predicate_is_not_project,
   is_one_of_folders: messages.predicate_is_one_of_folders,
   is_not_folder: messages.predicate_is_not_folder,
-  is_one_of_ideas: messages.predicate_is_one_of_ideas,
-  is_not_idea: messages.predicate_is_not_idea,
-  is_one_of_initiatives: messages.predicate_is_one_of_initiatives,
-  is_not_initiative: messages.predicate_is_not_initiative,
+  is_one_of_inputs: messages.predicate_is_one_of_inputs,
+  is_not_input: messages.predicate_is_not_input,
 
   // Event attendance
   attends_something: messages.predicate_attends_something,

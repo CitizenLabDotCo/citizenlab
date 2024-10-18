@@ -31,6 +31,7 @@ development:
   <<: *default
   database: <%= ENV.fetch("POSTGRES_DB", 'cl2_back_development') %>
   schema_search_path: public,shared_extensions
+  sslmode: <%= ENV.fetch("POSTGRES_SSLMODE", 'prefer') %>
 
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.

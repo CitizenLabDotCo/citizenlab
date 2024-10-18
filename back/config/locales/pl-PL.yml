@@ -170,6 +170,9 @@ pl:
       topic_ids:
         title: Tematy
         description:
+      consponsor_ids:
+        title: Współsponsorzy
+        description: Zaproś współsponsorów za pomocą poniższego pola. Zaproszeni współsponsorzy otrzymają wiadomość e-mail.
       location:
         title: Lokalizacja
         description:
@@ -209,6 +212,12 @@ pl:
           title: Jaka jest Twoja sprawa ?
         option:
           title: Jaka jest Twója opcja?
+        proposal:
+          title: Jaka jest twoja propozycja?
+        initiative:
+          title: Jaka jest twoja inicjatywa?
+        petition:
+          title: Jaka jest twoja petycja?
   custom_field_options:
     gender:
       male: Mężczyzna

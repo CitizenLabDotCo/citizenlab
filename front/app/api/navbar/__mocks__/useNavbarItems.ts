@@ -10,6 +10,7 @@ export const navbarItemsData: INavbarItem[] = [
         'nl-BE': 'Home',
         'fr-BE': 'Accueil',
       },
+      slug: null,
       code: 'home',
       ordering: 0,
       created_at: '2021-12-10T10:36:36.742Z',
@@ -33,6 +34,7 @@ export const navbarItemsData: INavbarItem[] = [
         'nl-BE': 'Alle projecten',
         'fr-BE': 'Tous les projets',
       },
+      slug: null,
       code: 'projects',
       ordering: 1,
       created_at: '2021-12-10T10:36:36.750Z',
@@ -56,33 +58,11 @@ export const navbarItemsData: INavbarItem[] = [
         'nl-BE': 'Bijdragen',
         'fr-BE': 'Contributions',
       },
+      slug: null,
       code: 'all_input',
       ordering: 2,
       created_at: '2021-12-10T10:36:36.759Z',
       updated_at: '2021-12-10T10:36:36.759Z',
-    },
-    relationships: {
-      static_page: {
-        data: null,
-      },
-      project: {
-        data: null,
-      },
-    },
-  },
-  {
-    id: '037c953a-f717-4d17-beca-b0b684335b7b',
-    type: 'nav_bar_item',
-    attributes: {
-      title_multiloc: {
-        en: 'Proposals',
-        'nl-BE': 'Voorstellen',
-        'fr-BE': 'Propositions',
-      },
-      code: 'proposals',
-      ordering: 3,
-      created_at: '2021-12-10T10:36:36.767Z',
-      updated_at: '2021-12-10T10:41:30.660Z',
     },
     relationships: {
       static_page: {
@@ -102,6 +82,7 @@ export const navbarItemsData: INavbarItem[] = [
         'fr-BE': 'Événements',
         'nl-BE': 'Activiteiten',
       },
+      slug: null,
       code: 'events',
       ordering: 4,
       created_at: '2021-12-10T10:41:46.617Z',
@@ -125,6 +106,7 @@ export const navbarItemsData: INavbarItem[] = [
         'nl-BE': 'Over',
         'fr-BE': 'À propos',
       },
+      slug: 'about',
       code: 'custom',
       ordering: 5,
       created_at: '2021-12-10T10:36:36.784Z',
@@ -151,6 +133,7 @@ export const navbarItemsData: INavbarItem[] = [
         'nl-BE': 'Veelgestelde vragen',
         'fr-BE': 'Foire aux questions (FAQ)',
       },
+      slug: 'custom',
       code: 'custom',
       ordering: 6,
       created_at: '2021-12-10T10:36:36.793Z',
@@ -162,6 +145,30 @@ export const navbarItemsData: INavbarItem[] = [
           id: '793d56cc-c8b3-4422-b393-972b71f82aa2',
           type: 'static_page',
         },
+      },
+      project: {
+        data: null,
+      },
+    },
+  },
+  {
+    id: '037c953a-f717-4d17-beca-b0b684335b7b',
+    type: 'nav_bar_item',
+    attributes: {
+      title_multiloc: {
+        en: 'Proposals',
+        'nl-BE': 'Voorstellen',
+        'fr-BE': 'Propositions',
+      },
+      code: 'custom',
+      ordering: 3,
+      created_at: '2021-12-10T10:36:36.767Z',
+      updated_at: '2021-12-10T10:41:30.660Z',
+      slug: null,
+    },
+    relationships: {
+      static_page: {
+        data: null,
       },
       project: {
         data: null,

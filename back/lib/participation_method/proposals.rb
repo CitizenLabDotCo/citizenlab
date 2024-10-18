@@ -18,6 +18,10 @@ module ParticipationMethod
       false
     end
 
+    def cosponsors_in_form?
+      true
+    end
+
     def supports_automated_statuses?
       true
     end
@@ -36,6 +40,10 @@ module ParticipationMethod
 
     def use_reactions_as_votes?
       true
+    end
+
+    def default_input_term
+      'proposal'
     end
 
     private

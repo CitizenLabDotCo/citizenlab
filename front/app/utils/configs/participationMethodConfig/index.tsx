@@ -108,7 +108,6 @@ const ideationConfig: ParticipationMethodConfig = {
     if (props.ideaIdForSocialSharing && props.title && props.subtitle) {
       return (
         <SharingModalContent
-          postType="idea"
           postId={props.ideaIdForSocialSharing}
           title={props.title}
           subtitle={props.subtitle}
@@ -127,6 +126,9 @@ const ideationConfig: ParticipationMethodConfig = {
           question: messages.questionFormTitle,
           issue: messages.issueFormTitle1,
           contribution: messages.contributionFormTitle,
+          proposal: messages.proposalFormTitle,
+          petition: messages.petitionFormTitle,
+          initiative: messages.initiativeFormTitle,
         }[getInputTerm(props.phases, props.phaseFromUrl)]}
       />
     );
@@ -150,7 +152,7 @@ const proposalsConfig: ParticipationMethodConfig = {
       const urlParameters = `?new_idea_id=${props.ideaId}`;
       if (props.idea) {
         clHistory.push({
-          pathname: `/projects/${props.project?.attributes.slug}/ideas/${props.idea.data.attributes.slug}`,
+          pathname: `/ideas/${props.idea.data.attributes.slug}`,
           search: urlParameters.concat(
             props.phaseId ? `&phase_id=${props.phaseId}` : ''
           ),
@@ -163,7 +165,6 @@ const proposalsConfig: ParticipationMethodConfig = {
     if (props.ideaIdForSocialSharing && props.title && props.subtitle) {
       return (
         <SharingModalContent
-          postType="idea"
           postId={props.ideaIdForSocialSharing}
           title={props.title}
           subtitle={props.subtitle}
@@ -182,6 +183,9 @@ const proposalsConfig: ParticipationMethodConfig = {
           question: messages.questionFormTitle,
           issue: messages.issueFormTitle1,
           contribution: messages.contributionFormTitle,
+          proposal: messages.proposalFormTitle,
+          petition: messages.petitionFormTitle,
+          initiative: messages.initiativeFormTitle,
         }[getInputTerm(props.phases, props.phaseFromUrl)]}
       />
     );

@@ -8,6 +8,8 @@ import ReactionControl from 'components/ReactionControl';
 import StatusBadge from 'components/StatusBadge';
 
 import CommentCount from './CommentCount';
+import { ParticipationMethod } from 'api/phases/types';
+import { showIdeaReactions } from 'components/ReactionControl/utils';
 
 const Container = styled.footer`
   display: flex;
@@ -36,6 +38,7 @@ const StyledReactionControl = styled(ReactionControl)`
 
 interface Props {
   idea: IIdeaData;
+  participationMethod: ParticipationMethod;
   hideIdeaStatus?: boolean;
   className?: string;
   showCommentCount: boolean;
@@ -43,16 +46,20 @@ interface Props {
 
 const IdeaFooter = ({
   idea,
+  participationMethod,
   hideIdeaStatus,
   className,
   showCommentCount,
 }: Props) => {
   const ideaStatusId = idea.relationships.idea_status.data?.id;
+  const showReactionControl = showIdeaReactions(idea, participationMethod);
 
   return (
     <Container className={className || ''}>
       <Left>
-        <StyledReactionControl styleType="border" ideaId={idea.id} size="1" />
+        {showReactionControl && (
+          <StyledReactionControl styleType="border" ideaId={idea.id} size="1" />
+        )}
 
         {showCommentCount && (
           <CommentCount commentCount={idea.attributes.comments_count} />

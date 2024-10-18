@@ -170,6 +170,9 @@ sr-Latn:
       topic_ids:
         title: Tema
         description:
+      consponsor_ids:
+        title: Co-sponsors
+        description: Invite co-sponsors through the field below. The invited co-sponsor(s) will receive an email.
       location:
         title: Lokacija
         description:
@@ -209,6 +212,12 @@ sr-Latn:
           title: Šta je vaša tema ?
         option:
           title: Šta je vaša opcija ?
+        proposal:
+          title: What is your proposal?
+        initiative:
+          title: What is your initiative?
+        petition:
+          title: What is your petition?
   custom_field_options:
     gender:
       male: Muškarac
