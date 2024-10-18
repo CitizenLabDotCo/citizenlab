@@ -1,5 +1,3 @@
-// TODO: Skipping this for now as the registration work doesn't include tracking yet.
-// Will re-enable the tests once tracking is introduced again.
 describe('Impact tracking: Session tracking', () => {
   // Following test cases accept both a 200 or a 204 response. The sessions
   // endpoints don't do anything and return 204 (no content) when they detect
