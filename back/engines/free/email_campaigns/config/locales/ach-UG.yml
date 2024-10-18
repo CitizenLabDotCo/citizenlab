@@ -58,7 +58,6 @@ ach:
       "voting_phase_started": crwdns1336704:0crwdne1336704:0
       "voting_results": crwdns777343:0crwdne777343:0
       "your_input_in_screening": crwdns3324669:0crwdne3324669:0
-      "your_proposed_initiatives_digest": crwdns208148:0crwdne208148:0
     general:
       by_author: 'crwdns1081674:0%{authorName}crwdne1081674:0'
       author_wrote: 'crwdns1081676:0%{authorName}crwdne1081676:0'
@@ -539,16 +538,6 @@ ach:
       message: 'crwdns3324797:0%{input_title}crwdne3324797:0'
       subject: 'crwdns3324799:0%{input_title}crwdne3324799:0'
       preheader: 'crwdns3324801:0%{prescreening_status_title}crwdne3324801:0'
-    your_proposed_initiatives_digest:
-      subject: 'crwdns209048:0crwdne209048:0'
-      preheader: 'crwdns209050:0crwdne209050:0'
-      title_your_weekly_report: 'crwdns209052:0crwdne209052:0'
-      text_introduction: 'crwdns209054:0crwdne209054:0'
-      cta_see_your_initiative: 'crwdns209056:0crwdne209056:0'
-      total_votes: 'crwdns209058:0crwdne209058:0'
-      new_votes: 'crwdns209060:0crwdne209060:0'
-      remaining_votes: 'crwdns209062:0crwdne209062:0'
-      remaining_days: 'crwdns209064:0crwdne209064:0'
     voting_basket_submitted:
       subject: 'crwdns777427:0%{organizationName}crwdne777427:0'
       preheader: 'crwdns777429:0%{organizationName}crwdne777429:0'
