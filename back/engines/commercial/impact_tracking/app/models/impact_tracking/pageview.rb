@@ -5,7 +5,6 @@
 #  id         :uuid             not null, primary key
 #  session_id :uuid             not null
 #  path       :string           not null
-#  route      :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
