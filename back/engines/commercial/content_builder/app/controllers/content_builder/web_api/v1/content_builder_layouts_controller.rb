@@ -106,3 +106,5 @@ module ContentBuilder
     end
   end
 end
+
+ContentBuilder::WebApi::V1::ContentBuilderLayoutsController.include(AggressiveCaching::Patches::WebApi::V1::ContentBuilderLayoutsController)

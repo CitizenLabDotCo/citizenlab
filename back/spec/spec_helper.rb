@@ -222,6 +222,14 @@ RSpec.configure do |config|
 
   # By default, skip the slow tests and template tests. Can be overriden on the command line.
   config.filter_run_excluding template_test: true
+
+  config.before(:example, clear_cache: true) do
+    Rails.cache.clear
+  end
+
+  config.after(:example, clear_cache: true) do
+    Rails.cache.clear
+  end
 end
 
 RSpec::Matchers.define_negated_matcher :not_change, :change

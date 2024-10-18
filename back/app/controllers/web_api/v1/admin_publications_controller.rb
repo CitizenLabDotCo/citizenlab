@@ -96,3 +96,5 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
     authorize @admin_publication
   end
 end
+
+WebApi::V1::AdminPublicationsController.include(AggressiveCaching::Patches::WebApi::V1::AdminPublicationsController)

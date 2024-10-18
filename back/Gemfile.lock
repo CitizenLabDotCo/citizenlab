@@ -10,6 +10,13 @@ PATH
       ros-apartment (>= 2.9.0)
 
 PATH
+  remote: engines/commercial/aggressive_caching
+  specs:
+    aggressive_caching (0.1.0)
+      actionpack-action_caching (~> 1.2)
+      rails (~> 7.0)
+
+PATH
   remote: engines/commercial/analysis
   specs:
     analysis (0.1.0)
@@ -402,6 +409,8 @@ GEM
       rack-test (>= 0.6.3)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.0, >= 1.2.0)
+    actionpack-action_caching (1.2.2)
+      actionpack (>= 4.0.0)
     actiontext (7.0.8.5)
       actionpack (= 7.0.8.5)
       activerecord (= 7.0.8.5)
@@ -1245,6 +1254,7 @@ DEPENDENCIES
   activerecord-postgis-adapter (~> 8.0)
   acts_as_list (~> 1.1)
   admin_api!
+  aggressive_caching!
   analysis!
   analytics!
   annotate

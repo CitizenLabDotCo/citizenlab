@@ -106,3 +106,5 @@ class WebApi::V1::AreasController < ApplicationController
     @side_fx_service = SideFxAreaService.new
   end
 end
+
+WebApi::V1::AreasController.include(AggressiveCaching::Patches::WebApi::V1::AreasController)

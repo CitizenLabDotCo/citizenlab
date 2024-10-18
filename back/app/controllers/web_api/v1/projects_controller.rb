@@ -215,3 +215,5 @@ class WebApi::V1::ProjectsController < ApplicationController
     end
   end
 end
+
+WebApi::V1::ProjectsController.include(AggressiveCaching::Patches::WebApi::V1::ProjectsController)

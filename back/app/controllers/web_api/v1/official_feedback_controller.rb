@@ -97,3 +97,5 @@ class WebApi::V1::OfficialFeedbackController < ApplicationController
     )
   end
 end
+
+WebApi::V1::OfficialFeedbackController.include(AggressiveCaching::Patches::WebApi::V1::OfficialFeedbackController)

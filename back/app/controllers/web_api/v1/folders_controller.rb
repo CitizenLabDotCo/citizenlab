@@ -126,3 +126,5 @@ class WebApi::V1::FoldersController < ApplicationController
     )
   end
 end
+
+WebApi::V1::FoldersController.include(AggressiveCaching::Patches::WebApi::V1::FoldersController)

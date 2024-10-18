@@ -192,3 +192,5 @@ class WebApi::V1::EventsController < ApplicationController
     @sidefx ||= SideFxEventService.new
   end
 end
+
+WebApi::V1::EventsController.include(AggressiveCaching::Patches::WebApi::V1::EventsController)

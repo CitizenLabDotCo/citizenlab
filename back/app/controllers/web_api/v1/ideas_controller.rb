@@ -477,3 +477,4 @@ class WebApi::V1::IdeasController < ApplicationController
 end
 
 WebApi::V1::IdeasController.prepend(IdeaAssignment::Patches::WebApi::V1::IdeasController)
+WebApi::V1::IdeasController.include(AggressiveCaching::Patches::WebApi::V1::IdeasController)

@@ -72,3 +72,5 @@ class WebApi::V1::NavBarItemsController < ApplicationController
     authorize @item
   end
 end
+
+WebApi::V1::NavBarItemsController.include(AggressiveCaching::Patches::WebApi::V1::NavBarItemsController)
