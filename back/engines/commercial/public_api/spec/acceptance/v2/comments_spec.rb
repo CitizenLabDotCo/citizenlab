@@ -63,6 +63,7 @@ resource 'Comments' do
       end
     end
 
+    # TODO: cleanup-after-proposals-migration
     context "when the value of the 'post_type' parameter is invalid" do
       let(:post_type) { 'invalid-post-type' }
 
@@ -81,6 +82,7 @@ resource 'Comments' do
       end
     end
 
+    # TODO: cleanup-after-proposals-migration
     context "when the value of 'post_type' is 'idea'" do
       let(:post_type) { 'idea' }
 
@@ -92,7 +94,7 @@ resource 'Comments' do
       end
     end
 
-    # TODO: move-old-proposals-test
+    # TODO: cleanup-after-proposals-migration
     context "when the value of 'post_type' is 'initiative'" do
       let(:post_type) { 'initiative' }
 

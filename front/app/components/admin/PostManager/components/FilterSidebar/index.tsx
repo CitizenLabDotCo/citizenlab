@@ -8,7 +8,6 @@ import { Segment, Menu, Popup } from 'semantic-ui-react';
 import styled from 'styled-components';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
-import { IInitiativeStatusData } from 'api/initiative_statuses/types';
 import useAuthUser from 'api/me/useAuthUser';
 import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
@@ -40,7 +39,7 @@ const InfoIcon = styled(Icon)`
 interface Props {
   phases?: IPhaseData[];
   projects?: IProjectData[];
-  statuses: IIdeaStatusData[] | IInitiativeStatusData[];
+  statuses: IIdeaStatusData[];
   topics: ITopicData[];
   selectedTopics?: string[] | null;
   selectedPhase?: string | null;
@@ -91,7 +90,7 @@ const FilterSidebar = ({
     ) {
       return `/admin/projects/${projectId}/settings/tags`;
     } else if (isAdmin(authUser)) {
-      // For admins, both for /admin/ideas (type 'AllIdeas') and /admin/initiatives, we show the link to the platform-wide tag manager
+      // For admins we show the link to the platform-wide tag manager
       return '/admin/settings/topics';
     } else {
       // Don't show the link to the platform-wide tag manager if the user is not an admin.

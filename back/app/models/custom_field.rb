@@ -324,7 +324,7 @@ class CustomField < ApplicationRecord
     else
       resource.participation_context
     end
-    phase&.input_term || Phase::DEFAULT_INPUT_TERM
+    phase&.input_term || Phase::FALLBACK_INPUT_TERM
   end
 
   private

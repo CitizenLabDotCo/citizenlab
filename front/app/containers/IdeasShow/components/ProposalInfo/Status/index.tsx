@@ -97,14 +97,12 @@ const Status = ({ idea, ideaStatus, compact = false }: Props) => {
         </Box>
       )}
       {showVoteButtons && !compact && (
-        <Box mb="8px">
-          <ReactionControl
-            styleType="shadow"
-            ideaId={idea.id}
-            size="4"
-            variant="text"
-          />
-        </Box>
+        <ReactionControl
+          styleType="shadow"
+          ideaId={idea.id}
+          size="4"
+          variant="text"
+        />
       )}
     </Box>
   );

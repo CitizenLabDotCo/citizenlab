@@ -96,7 +96,6 @@ export type ActionDescriptorAction =
   | 'posting_idea'
   | 'commenting_idea'
   | 'reacting_idea'
-  | 'commenting_initiative'
   | 'voting'
   | 'budgeting'
   | 'annotating_document'

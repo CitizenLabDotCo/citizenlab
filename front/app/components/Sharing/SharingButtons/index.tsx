@@ -8,6 +8,8 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
 import { FormattedMessage } from 'utils/cl-intl';
 
 import CopyLink from '../buttons/CopyLink';
@@ -20,7 +22,7 @@ import messages from '../messages';
 import { getUrlWithUtm, UtmParams, Medium } from '../utils';
 
 interface Props {
-  context: 'idea' | 'project' | 'initiative' | 'folder' | 'event';
+  context: 'idea' | 'project' | 'folder' | 'event';
   url: string;
   twitterMessage: string;
   whatsAppMessage: string;
@@ -46,6 +48,9 @@ const SharingButtons = ({
 }: Props) => {
   const [searchParams] = useSearchParams();
   const phaseContext = searchParams.get('phase_context');
+  const { data: appConfiguration } = useAppConfiguration();
+  const isSharingEnabled =
+    appConfiguration?.data.attributes.settings.core.allow_sharing;
 
   const isSmallerThanTablet = useBreakpoint('tablet');
 
@@ -55,7 +60,6 @@ const SharingButtons = ({
   const titleMessage = {
     idea: <FormattedMessage {...messages.share} />,
     project: <FormattedMessage {...messages.shareThisProject} />,
-    initiative: <FormattedMessage {...messages.shareThisInitiative} />,
     folder: <FormattedMessage {...messages.shareThisFolder} />,
     event: <FormattedMessage {...messages.shareThisEvent} />,
   }[context];
@@ -71,6 +75,10 @@ const SharingButtons = ({
     }
     return url;
   };
+
+  if (!isSharingEnabled) {
+    return null;
+  }
 
   return (
     <>
