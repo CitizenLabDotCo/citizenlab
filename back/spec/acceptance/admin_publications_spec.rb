@@ -747,9 +747,6 @@ resource 'AdminPublication' do
           participant = create(:user)
           create(:idea, project: project, author: participant)
 
-          puts "Projects: #{Project.count}"
-          puts "Folders: #{ProjectFolders::Folder.count}"
-
           # There is probably lots more that could be done to improve the query count here, but this test
           # is here to help ensure that we don't make things worse.
           #
