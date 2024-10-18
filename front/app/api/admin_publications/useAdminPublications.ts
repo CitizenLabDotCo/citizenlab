@@ -11,7 +11,7 @@ import {
   IQueryParameters,
 } from './types';
 
-const fetchAdminPublications = (filters: IQueryParameters) => {
+export const fetchAdminPublications = (filters: IQueryParameters) => {
   const {
     pageNumber,
     pageSize,
