@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# This migration comes from impact_tracking (originally 20220927133822)
+# This migration comes from impact_tracking (originally 20241018143900)
 
 class CreatePageviews < ActiveRecord::Migration[7.0]
   def change
