@@ -1,0 +1,29 @@
+
+[1mFrom:[0m /cl2_back/engines/commercial/impact_tracking/app/controllers/impact_tracking/web_api/v1/sessions_controller.rb:14 ImpactTracking::WebApi::V1::SessionsController#create:
+
+    [1;34m12[0m: [32mdef[0m [1;34mcreate[0m
+    [1;34m13[0m:   binding.pry
+ => [1;34m14[0m:   session = [1;34;4mSession[0m.create(
+    [1;34m15[0m:     [35mmonthly_user_hash[0m: generate_hash,
+    [1;34m16[0m:     [35mhighest_role[0m: current_user&.highest_role,
+    [1;34m17[0m:     [35muser_id[0m: current_user&.id,
+    [1;34m18[0m:     **session_params.reject { |key| key == [33m:entry_path[0m }
+    [1;34m19[0m:   )
+    [1;34m20[0m: 
+    [1;34m21[0m:   pageview = [1;34;4mPageview[0m.create(
+    [1;34m22[0m:     [35msession_id[0m: session.id,
+    [1;34m23[0m:     [35mpath[0m: session_params[[31m[1;31m'[0m[31mentry_path[1;31m'[0m[31m[0m]
+    [1;34m24[0m:   )
+    [1;34m25[0m: 
+    [1;34m26[0m:   [32mif[0m session && pageview
+    [1;34m27[0m:     side_fx_session_service.after_create(current_user)
+    [1;34m28[0m: 
+    [1;34m29[0m:     render [35mjson[0m: [1;34;4mWebApi[0m::[1;34;4mV1[0m::[1;34;4mSessionSerializer[0m.new(
+    [1;34m30[0m:       session,
+    [1;34m31[0m:       [35mparams[0m: jsonapi_serializer_params
+    [1;34m32[0m:     ).serializable_hash, [35mstatus[0m: [33m:ok[0m
+    [1;34m33[0m:   [32melse[0m
+    [1;34m34[0m:     head [33m:internal_server_error[0m
+    [1;34m35[0m:   [32mend[0m
+    [1;34m36[0m: [32mend[0m
+

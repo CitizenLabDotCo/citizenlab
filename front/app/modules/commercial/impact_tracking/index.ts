@@ -16,24 +16,26 @@ const trackSessionStarted = async () => {
   const uaResult = uaParser.getResult();
 
   const referrer = document.referrer ?? window.frames?.top?.document.referrer;
-  const deviceType = uaResult.device.type ?? 'desktop';
-  const browserName = uaResult.browser.name;
-  const browserVersion = uaResult.browser.major;
-  const osName = uaResult.os.name;
-  const osVersion = uaResult.os.version;
-  const entryPath = window.location.pathname;
+  const device_type = uaResult.device.type ?? 'desktop';
+  const browser_name = uaResult.browser.name;
+  const browser_version = uaResult.browser.major;
+  const os_name = uaResult.os.name;
+  const os_version = uaResult.os.version;
+  const entry_path = window.location.pathname;
 
   const response: any = await fetcher({
     path: `/sessions`,
     action: 'post',
     body: {
-      referrer,
-      deviceType,
-      browserName,
-      browserVersion,
-      osName,
-      osVersion,
-      entryPath,
+      session: {
+        referrer,
+        device_type,
+        browser_name,
+        browser_version,
+        os_name,
+        os_version,
+        entry_path,
+      },
     },
   });
 

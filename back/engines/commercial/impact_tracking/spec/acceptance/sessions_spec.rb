@@ -13,15 +13,17 @@ resource 'Impact tracking session' do
   post 'web_api/v1/sessions' do
     with_options scope: :session do
       parameter :referrer, 'The referrer URL of the user'
-      # parameter :deviceType, 'The device type of the user'
-      # parameter :browserName, 'The browser name of the user'
-      # parameter :browserVersion, 'The browser version of the user'
-      # parameter :osName, 'The OS name of the user'
-      # parameter :osVersion, 'The OS version of the user'
+      parameter :device_type, 'The device type of the user'
+      parameter :browser_name, 'The browser name of the user'
+      parameter :browser_version, 'The browser version of the user'
+      parameter :os_name, 'The OS name of the user'
+      parameter :os_version, 'The OS version of the user'
+      parameter :entry_path, 'The path where the user entered'
     end
 
     let(:referrer) { 'https://www.google.com' }
-    # let!(:deviceType) { 'desktop' }
+    let(:device_type) { 'desktop' }
+    let(:entry_path) { '/en/' }
 
     example 'Track the start of a session of an unauthenticated user' do
       do_request
@@ -31,8 +33,12 @@ resource 'Impact tracking session' do
         monthly_user_hash: be_present,
         created_at: be_present,
         highest_role: nil,
-        referrer: referrer
-        # device_type: deviceType
+        referrer: referrer,
+        device_type: device_type
+      })
+      expect(ImpactTracking::Pageview.count).to eq 1
+      expect(ImpactTracking::Pageview.first).to have_attributes({
+        path: '/en/'
       })
     end
 

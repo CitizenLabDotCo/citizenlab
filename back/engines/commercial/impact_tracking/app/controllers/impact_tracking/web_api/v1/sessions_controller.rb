@@ -14,17 +14,12 @@ module ImpactTracking
           monthly_user_hash: generate_hash,
           highest_role: current_user&.highest_role,
           user_id: current_user&.id,
-          referrer: params['referrer'],
-          device_type: params['deviceType'],
-          browser_name: params['browserName'],
-          browser_version: params['browserVersion'],
-          os_name: params['osName'],
-          os_version: params['osVersion']
+          **session_params.reject { |key| key == 'entry_path' }
         )
 
         pageview = Pageview.create(
           session_id: session.id,
-          path: params['entryPath']
+          path: session_params['entry_path']
         )
 
         if session && pageview
@@ -73,6 +68,18 @@ module ImpactTracking
       def ignore_crawlers
         detector = CrawlerDetect.new(request.user_agent)
         head :no_content if detector.is_crawler?
+      end
+
+      def session_params
+        params.require(:session).permit(
+          :referrer,
+          :device_type,
+          :browser_name,
+          :browser_version,
+          :os_name,
+          :os_version,
+          :entry_path
+        )
       end
 
       def generate_hash
