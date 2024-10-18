@@ -20,8 +20,6 @@ import styled, { useTheme } from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
 import usePhase from 'api/phases/usePhase';
-import usePhases from 'api/phases/usePhases';
-import { getInputTerm } from 'api/phases/utils';
 import useProjectImage from 'api/project_images/useProjectImage';
 import { CARD_IMAGE_ASPECT_RATIO } from 'api/project_images/useProjectImages';
 import useProjectById from 'api/projects/useProjectById';
@@ -376,27 +374,18 @@ const ProjectCard = memo<InputProps>(
 
     // We use this hook instead of useProjectImages,
     // because that one doesn't work with our caching system.
-    const { data: projectImage } = useProjectImage({
+    const imageId = project?.data.relationships.project_images?.data[0]?.id;
+    const { data: _projectImage } = useProjectImage({
       projectId,
-      imageId: project?.data.relationships.project_images?.data[0]?.id,
+      imageId,
     });
+
+    const projectImage = imageId ? _projectImage : undefined;
 
     const currentPhaseId =
       project?.data?.relationships?.current_phase?.data?.id ?? null;
     const { data: phase } = usePhase(currentPhaseId);
     const localize = useLocalize();
-
-    // We only need the phases for the input term, and only
-    // in case there is no current phase in a timeline project.
-    // This is quite an edge case.
-    // With this check, we only fetch the phases if the project has loaded already
-    // AND there is no current phase, instead of always fetching all the phases
-    // for every project for which we're showing a card.
-    const fetchPhases = project && !currentPhaseId;
-
-    const { data: phases } = usePhases(
-      fetchPhases ? project.data.id : undefined
-    );
 
     const theme = useTheme();
 
@@ -451,7 +440,7 @@ const ProjectCard = memo<InputProps>(
       const endAt = phase?.data.attributes.end_at;
 
       let countdown: JSX.Element | null = null;
-      const inputTerm = getInputTerm(phases?.data, phase?.data);
+      const inputTerm = phase?.data.attributes.input_term ?? 'idea';
 
       if (isArchived) {
         countdown = (
