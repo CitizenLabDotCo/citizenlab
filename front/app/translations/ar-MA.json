@@ -2038,6 +2038,7 @@
   "app.sessionRecording.modalDescription1": "من أجل فهم مستخدمينا بشكل أفضل، نطلب بشكل عشوائي من نسبة صغيرة من الزوار تتبع جلسة التصفح الخاصة بهم بالتفصيل.",
   "app.sessionRecording.modalDescription2": "الغرض الوحيد من البيانات المسجلة هو تحسين الموقع. لن تتم مشاركة أي من بياناتك مع طرف ثالث. سيتم تصفية أي معلومات حساسة تقوم بإدخالها.",
   "app.sessionRecording.modalDescription3": "هل تقبل؟",
+  "app.sessionRecording.modalDescriptionFaq": "الأسئلة الشائعة هنا.",
   "app.sessionRecording.modalTitle": "ساعدونا في تحسين هذا الموقع",
   "app.sessionRecording.reject": "لا، أنا أرفض",
   "app.utils.AdminPage.ProjectEdit.conductParticipatoryBudgetingText": "إجراء تمرين على تخصيص ميزانية",
