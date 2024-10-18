@@ -12,7 +12,6 @@ ach:
       "cosponsor_of_your_initiative": crwdns3322879:0crwdne3322879:0
       "cosponsor_of_your_idea": crwdns3322881:0crwdne3322881:0
       "event_registration_confirmation": crwdns3322883:0crwdne3322883:0
-      "first_idea_published": crwdns3322885:0crwdne3322885:0
       "idea_marked_as_spam": crwdns3322887:0crwdne3322887:0
       "idea_published": crwdns3322889:0crwdne3322889:0
       "initiative_assigned_to_you": crwdns3322891:0crwdne3322891:0
@@ -58,11 +57,33 @@ ach:
       "voting_last_chance": crwdns3322971:0crwdne3322971:0
       "voting_phase_started": crwdns3322973:0crwdne3322973:0
       "voting_results": crwdns3322975:0crwdne3322975:0
+      "your_input_in_screening": crwdns3337893:0crwdne3337893:0
       "your_proposed_initiatives_digest": crwdns3322977:0crwdne3322977:0
     general:
       by_author: 'crwdns3322979:0%{authorName}crwdne3322979:0'
       author_wrote: 'crwdns3322981:0%{authorName}crwdne3322981:0'
       cta_goto_idea: 'crwdns3322983:0crwdne3322983:0'
+      cta_goto_input: 'crwdns3337895:0crwdne3337895:0'
+      cta_goto:
+        idea: 'crwdns3337897:0crwdne3337897:0'
+        question: 'crwdns3337899:0crwdne3337899:0'
+        contribution: 'crwdns3337901:0crwdne3337901:0'
+        project: 'crwdns3337903:0crwdne3337903:0'
+        issue: 'crwdns3337905:0crwdne3337905:0'
+        option: 'crwdns3337907:0crwdne3337907:0'
+        proposal: 'crwdns3337909:0crwdne3337909:0'
+        initiative: 'crwdns3337911:0crwdne3337911:0'
+        petition: 'crwdns3337913:0crwdne3337913:0'
+      cta_goto_your:
+        idea: 'crwdns3337915:0crwdne3337915:0'
+        question: 'crwdns3337917:0crwdne3337917:0'
+        contribution: 'crwdns3337919:0crwdne3337919:0'
+        project: 'crwdns3337921:0crwdne3337921:0'
+        issue: 'crwdns3337923:0crwdne3337923:0'
+        option: 'crwdns3337925:0crwdne3337925:0'
+        proposal: 'crwdns3337927:0crwdne3337927:0'
+        initiative: 'crwdns3337929:0crwdne3337929:0'
+        petition: 'crwdns3337931:0crwdne3337931:0'
       cta_goto_proposal: 'crwdns3322985:0crwdne3322985:0'
       cta_goto_project: 'crwdns3322987:0crwdne3322987:0'
     schedules:
@@ -104,12 +125,12 @@ ach:
       text_introduction: 'crwdns3323047:0crwdne3323047:0'
       cta_visit_the_platform: 'crwdns3323049:0crwdne3323049:0'
       new_users: 'crwdns3323051:0crwdne3323051:0'
-      new_ideas: 'crwdns3323053:0crwdne3323053:0'
+      new_inputs: 'crwdns3337933:0crwdne3337933:0'
       new_comments: 'crwdns3323055:0crwdne3323055:0'
       title_activity_past_week: 'crwdns3323057:0crwdne3323057:0'
       title_no_activity_past_week: 'crwdns3323059:0crwdne3323059:0'
       title_initiatives_past_week: 'crwdns3323061:0crwdne3323061:0'
-      title_successful_initiatives_past_week: 'crwdns3323063:0crwdne3323063:0'
+      reached_threshold: 'crwdns3337935:0crwdne3337935:0'
       yesterday_by_author: 'crwdns3323065:0%{author}crwdne3323065:0'
       today_by_author: 'crwdns3323067:0%{author}crwdne3323067:0'
       x_days_ago_by_author: 'crwdns3323069:0%{x}crwdnd3323069:0%{author}crwdne3323069:0'
@@ -157,18 +178,15 @@ ach:
       preheader: 'crwdns3323143:0%{organizationName}crwdne3323143:0'
       title_your_weekly_report: 'crwdns3323145:0%{firstName}crwdne3323145:0'
       cta_manage_your_input: 'crwdns3323147:0crwdne3323147:0'
-      assigned_ideas: 'crwdns3323149:0crwdne3323149:0'
+      x_inputs_need_your_feedback: 'crwdns3337937:0crwdne3337937:0'
       title_assignment_past_week: 'crwdns3323151:0crwdne3323151:0'
       title_no_assignment_past_week: 'crwdns3323153:0crwdne3323153:0'
       yesterday_by_author: 'crwdns3323155:0%{author}crwdne3323155:0'
       today_by_author: 'crwdns3323157:0%{author}crwdne3323157:0'
       x_days_ago_by_author: 'crwdns3323159:0%{x}crwdnd3323159:0%{author}crwdne3323159:0'
-      idea_section: crwdns3323161:0crwdne3323161:0
-      initiative_section: crwdns3323163:0crwdne3323163:0
-      title_initiatives_past_week: 'crwdns3323165:0crwdne3323165:0'
-      title_successful_initiatives_past_week: 'crwdns3323167:0crwdne3323167:0'
+      title_successful_past_week: 'crwdns3337939:0crwdne3337939:0'
     idea_marked_as_spam:
-      cta_review_idea: 'crwdns3323169:0crwdne3323169:0'
+      cta_review: 'crwdns3337941:0crwdne3337941:0'
       report_inappropriate_offensive_content: 'crwdns3323171:0crwdne3323171:0'
       report_not_an_idea: 'crwdns3323173:0crwdne3323173:0'
       subject: 'crwdns3323175:0%{organizationName}crwdne3323175:0'
@@ -255,7 +273,7 @@ ach:
       main_header: 'crwdns3323317:0%{firstName}crwdne3323317:0'
       preheader: 'crwdns3323319:0%{authorNameFull}crwdne3323319:0'
     moderator_digest:
-      subject: 'crwdns3323321:0%{time}crwdne3323321:0'
+      subject: 'crwdns3323321:0%{project_title}crwdne3323321:0'
       preheader: 'crwdns3323323:0%{organizationName}crwdne3323323:0'
       title_your_weekly_report: 'crwdns3323325:0%{firstName}crwdne3323325:0'
       text_introduction: 'crwdns3323327:0crwdne3323327:0'
@@ -265,6 +283,7 @@ ach:
       new_comments: 'crwdns3323335:0crwdne3323335:0'
       title_inputs_past_week: 'crwdns3323337:0crwdne3323337:0'
       title_no_inputs_past_week: 'crwdns3323339:0crwdne3323339:0'
+      title_threshold_reached: crwdns3337943:0crwdne3337943:0
       yesterday_by_author: 'crwdns3323341:0%{author}crwdne3323341:0'
       today_by_author: 'crwdns3323343:0%{author}crwdne3323343:0'
       x_days_ago_by_author: 'crwdns3323345:0%{x}crwdnd3323345:0%{author}crwdne3323345:0'
@@ -280,9 +299,18 @@ ach:
       yesterday: crwdns3323363:0crwdne3323363:0
     comment_on_idea_you_follow:
       cta_reply_to: 'crwdns3323365:0%{commentAuthor}crwdne3323365:0'
-      event_description: 'crwdns3323367:0%{authorNameFull}crwdnd3323367:0%{ideaTitle}crwdnd3323367:0%{authorName}crwdne3323367:0'
-      main_header: 'crwdns3323369:0%{authorName}crwdne3323369:0'
-      subject: 'crwdns3323371:0crwdne3323371:0'
+      event_description: 'crwdns3323367:0%{authorNameFull}crwdnd3323367:0%{inputTitle}crwdnd3323367:0%{authorName}crwdne3323367:0'
+      main_header:
+        idea: 'crwdns3337945:0%{authorName}crwdne3337945:0'
+        question: 'crwdns3337947:0%{authorName}crwdne3337947:0'
+        contribution: 'crwdns3337949:0%{authorName}crwdne3337949:0'
+        project: 'crwdns3337951:0%{authorName}crwdne3337951:0'
+        issue: 'crwdns3337953:0%{authorName}crwdne3337953:0'
+        option: 'crwdns3337955:0%{authorName}crwdne3337955:0'
+        proposal: 'crwdns3337957:0%{authorName}crwdne3337957:0'
+        initiative: 'crwdns3337959:0%{authorName}crwdne3337959:0'
+        petition: 'crwdns3337961:0%{authorName}crwdne3337961:0'
+      subject: 'crwdns3323371:0%{input_title}crwdne3323371:0'
       preheader: 'crwdns3323373:0%{authorName}crwdnd3323373:0%{organizationName}crwdne3323373:0'
     comment_on_initiative_you_follow:
       cta_reply_to: 'crwdns3323375:0%{commentAuthor}crwdne3323375:0'
@@ -297,12 +325,14 @@ ach:
       subject: 'crwdns3323391:0%{organizationName}crwdne3323391:0'
       preheader: 'crwdns3323393:0%{authorName}crwdne3323393:0'
     new_idea_for_admin:
-      commented: 'crwdns3323395:0%{authorFirstName}crwdne3323395:0'
-      cta_reply_to: 'crwdns3323397:0%{authorName}crwdne3323397:0'
+      main_header_publication: 'crwdns3337963:0crwdne3337963:0'
+      event_description_publication: 'crwdns3337965:0%{authorName}crwdne3337965:0'
+      cta_publication: 'crwdns3337967:0%{authorName}crwdne3337967:0'
+      main_header_prescreening: 'crwdns3337969:0crwdne3337969:0'
+      event_description_prescreening: 'crwdns3337971:0%{authorName}crwdne3337971:0'
+      input_not_visible_prescreening: 'crwdns3337973:0crwdne3337973:0'
+      cta_prescreening: 'crwdns3337975:0crwdne3337975:0'
       days_ago: 'crwdns3323399:0%{numberOfDays}crwdne3323399:0'
-      event_description: 'crwdns3323401:0%{authorName}crwdne3323401:0'
-      main_header: 'crwdns3323403:0%{firstName}crwdne3323403:0'
-      subject: 'crwdns3323405:0%{organizationName}crwdne3323405:0'
       preheader: 'crwdns3323407:0%{authorName}crwdne3323407:0'
       today: crwdns3323409:0crwdne3323409:0
       yesterday: crwdns3323411:0crwdne3323411:0
@@ -362,9 +392,9 @@ ach:
       main_header: 'crwdns3323501:0%{post}crwdne3323501:0'
       preheader: 'crwdns3323503:0%{post}crwdne3323503:0'
     official_feedback_on_idea_you_follow:
-      header_message: 'crwdns3323505:0%{officialName}crwdnd3323505:0%{ideaTitle}crwdnd3323505:0%{officialName}crwdne3323505:0'
-      header_title: 'crwdns3323507:0crwdne3323507:0'
-      subject: 'crwdns3323509:0%{organizationName}crwdne3323509:0'
+      header_message: 'crwdns3323505:0%{feedback_author_name}crwdnd3323505:0%{input_title}crwdne3323505:0'
+      header_title: 'crwdns3323507:0%{input_title}crwdne3323507:0'
+      subject: 'crwdns3323509:0%{input_title}crwdne3323509:0'
       preheader: 'crwdns3323511:0crwdne3323511:0'
     official_feedback_on_initiative_you_follow:
       header_message: 'crwdns3323513:0%{officialName}crwdnd3323513:0%{initiativeTitle}crwdnd3323513:0%{organizationName}crwdne3323513:0'
@@ -429,10 +459,10 @@ ach:
       header_message: 'crwdns3323619:0%{organizationName}crwdne3323619:0'
       preheader: 'crwdns3323621:0crwdne3323621:0'
     status_change_on_idea_you_follow:
-      status_change: 'crwdns3323623:0%{ideaStatus}crwdne3323623:0'
-      header_message: 'crwdns3323625:0%{organizationName}crwdnd3323625:0%{ideaTitle}crwdne3323625:0'
+      status_change: 'crwdns3323623:0%{status}crwdne3323623:0'
+      header_message: 'crwdns3323625:0%{organizationName}crwdnd3323625:0%{input_title}crwdne3323625:0'
       header_title: 'crwdns3323627:0crwdne3323627:0'
-      subject: 'crwdns3323629:0crwdne3323629:0'
+      subject: 'crwdns3323629:0%{input_title}crwdne3323629:0'
       preheader: 'crwdns3323631:0crwdne3323631:0'
     status_change_on_initiative_you_follow:
       status_change: 'crwdns3323633:0%{initiativeStatus}crwdne3323633:0'
@@ -448,15 +478,13 @@ ach:
       intro_text: "crwdns3323651:0%{organizationName}crwdne3323651:0"
       cta_go_to_the_platform: "crwdns3323653:0crwdne3323653:0"
       title_no_activity_past_week: "crwdns3323655:0crwdne3323655:0"
-      title_proposals: "crwdns3323657:0crwdne3323657:0"
-      proposals_started_text: "crwdns3323659:0crwdne3323659:0"
-      title_successful_proposals: "crwdns3323661:0crwdne3323661:0"
+      successful_proposals_title: "crwdns3337977:0crwdne3337977:0"
       successful_proposals_text: "crwdns3323663:0crwdne3323663:0"
       today_by_author: "crwdns3323665:0%{author}crwdne3323665:0"
       yesterday_by_author: "crwdns3323667:0%{author}crwdne3323667:0"
       x_days_ago_by_author: "crwdns3323669:0%{x}crwdnd3323669:0%{author}crwdne3323669:0"
-      trending_ideas: "crwdns3323671:0crwdne3323671:0"
-      trending_ideas_text: "crwdns3323673:0crwdne3323673:0"
+      trending_title: "crwdns3337979:0crwdne3337979:0"
+      trending_text: "crwdns3337981:0crwdne3337981:0"
       no_notifications: "crwdns3323675:0crwdne3323675:0"
       one_notification: "crwdns3323677:0crwdne3323677:0"
       multiple_notifications: "crwdns3323679:0%{notifCount}crwdne3323679:0"
@@ -464,28 +492,9 @@ ach:
       unread_notifications: "crwdns3323683:0crwdne3323683:0"
     threshold_reached_for_admin:
       cta_process_initiative: 'crwdns3323685:0crwdne3323685:0'
-      event_description: 'crwdns3323687:0crwdne3323687:0'
       main_header: 'crwdns3323689:0crwdne3323689:0'
-      subject: 'crwdns3323691:0crwdne3323691:0'
+      subject: 'crwdns3323691:0%{input_title}crwdne3323691:0'
       preheader: 'crwdns3323693:0crwdne3323693:0'
-    first_idea_published:
-      action_add_image: 'crwdns3323695:0%{addImageLink}crwdne3323695:0'
-      action_comment: 'crwdns3323697:0%{textComment}crwdne3323697:0'
-      action_published_idea: 'crwdns3323699:0crwdne3323699:0'
-      action_send_email: 'crwdns3323701:0%{sendEmailLink}crwdne3323701:0'
-      action_share_fb: 'crwdns3323703:0%{fbLink}crwdne3323703:0'
-      action_share_link: 'crwdns3323705:0%{link}crwdne3323705:0'
-      action_share_twitter: 'crwdns3323707:0%{twitterLink}crwdne3323707:0'
-      add_image: 'crwdns3323709:0crwdne3323709:0'
-      cta_view_idea: 'crwdns3323711:0crwdne3323711:0'
-      event_description: 'crwdns3323713:0%{firstName}crwdnd3323713:0%{organizationName}crwdne3323713:0'
-      link: crwdns3323715:0crwdne3323715:0
-      main_header: 'crwdns3323717:0%{firstName}crwdne3323717:0'
-      message_get_votes: 'crwdns3323719:0crwdne3323719:0'
-      preheader: 'crwdns3323721:0%{firstName}crwdnd3323721:0%{organizationName}crwdne3323721:0'
-      see_you: 'crwdns3323723:0crwdne3323723:0'
-      send_email: crwdns3323725:0crwdne3323725:0
-      subject: 'crwdns3323727:0%{organizationName}crwdne3323727:0'
     welcome:
       cta_join_platform: 'crwdns3323729:0crwdne3323729:0'
       subject: 'crwdns3323731:0%{organizationName}crwdne3323731:0'
@@ -493,23 +502,43 @@ ach:
       message_welcome: 'crwdns3323735:0%{organizationName}crwdne3323735:0'
       preheader: 'crwdns3323737:0%{organizationName}crwdne3323737:0'
     idea_published:
-      action_add_image: 'crwdns3323739:0%{addImageLink}crwdne3323739:0'
-      action_published_idea: 'crwdns3323741:0crwdne3323741:0'
-      action_send_email: 'crwdns3323743:0%{sendEmailLink}crwdne3323743:0'
-      action_share_fb: 'crwdns3323745:0%{fbLink}crwdne3323745:0'
-      action_share_link: 'crwdns3323747:0%{link}crwdne3323747:0'
-      action_share_twitter: 'crwdns3323749:0%{twitterLink}crwdne3323749:0'
-      add_image: 'crwdns3323751:0crwdne3323751:0'
-      cta_view_idea: 'crwdns3323753:0crwdne3323753:0'
-      event_description: 'crwdns3323755:0%{firstName}crwdnd3323755:0%{organizationName}crwdne3323755:0'
-      link: crwdns3323757:0crwdne3323757:0
-      main_header: 'crwdns3323759:0crwdne3323759:0'
+      subject:
+        idea: 'crwdns3337983:0crwdne3337983:0'
+        question: 'crwdns3337985:0crwdne3337985:0'
+        contribution: 'crwdns3337987:0crwdne3337987:0'
+        project: 'crwdns3337989:0crwdne3337989:0'
+        issue: 'crwdns3337991:0crwdne3337991:0'
+        option: 'crwdns3337993:0crwdne3337993:0'
+        proposal: 'crwdns3337995:0crwdne3337995:0'
+        initiative: 'crwdns3337997:0crwdne3337997:0'
+        petition: 'crwdns3337999:0crwdne3337999:0'
+      main_header: 'crwdns3323759:0%{input_title}crwdne3323759:0'
+      header_message: 'crwdns3338001:0crwdne3338001:0'
       message_get_votes: 'crwdns3323761:0crwdne3323761:0'
-      preheader: 'crwdns3323763:0%{firstName}crwdnd3323763:0%{organizationName}crwdne3323763:0'
-      see_you: 'crwdns3323765:0crwdne3323765:0'
+      action_published_idea: 'crwdns3323741:0crwdne3323741:0'
+      action_add_image: 'crwdns3323739:0%{addImageLink}crwdne3323739:0'
+      add_image: 'crwdns3323751:0crwdne3323751:0'
+      action_share_fb: 'crwdns3323745:0%{fbLink}crwdne3323745:0'
+      action_share_twitter: 'crwdns3323749:0%{twitterLink}crwdne3323749:0'
+      action_send_email: 'crwdns3323743:0%{sendEmailLink}crwdne3323743:0'
       send_email: crwdns3323767:0crwdne3323767:0
-      subject: 'crwdns3323769:0%{organizationName}crwdne3323769:0'
-      message_next_steps: "crwdns3323771:0crwdne3323771:0"
+      action_share_link: 'crwdns3323747:0%{link}crwdne3323747:0'
+      link: crwdns3323757:0crwdne3323757:0
+      preheader: 'crwdns3323763:0%{firstName}crwdnd3323763:0%{organizationName}crwdne3323763:0'
+    your_input_in_screening:
+      main_header:
+        idea: 'crwdns3338003:0%{prescreening_status_title}crwdne3338003:0'
+        question: 'crwdns3338005:0%{prescreening_status_title}crwdne3338005:0'
+        contribution: 'crwdns3338007:0%{prescreening_status_title}crwdne3338007:0'
+        project: 'crwdns3338009:0%{prescreening_status_title}crwdne3338009:0'
+        issue: 'crwdns3338011:0%{prescreening_status_title}crwdne3338011:0'
+        option: 'crwdns3338013:0%{prescreening_status_title}crwdne3338013:0'
+        proposal: 'crwdns3338015:0%{prescreening_status_title}crwdne3338015:0'
+        initiative: 'crwdns3338017:0%{prescreening_status_title}crwdne3338017:0'
+        petition: 'crwdns3338019:0%{prescreening_status_title}crwdne3338019:0'
+      message: 'crwdns3338021:0%{input_title}crwdne3338021:0'
+      subject: 'crwdns3338023:0%{input_title}crwdne3338023:0'
+      preheader: 'crwdns3338025:0%{prescreening_status_title}crwdne3338025:0'
     your_proposed_initiatives_digest:
       subject: 'crwdns3323773:0crwdne3323773:0'
       preheader: 'crwdns3323775:0crwdne3323775:0'
@@ -602,6 +631,7 @@ ach:
         user_who_is_mentioned: 'crwdns3323925:0crwdne3323925:0'
         user_who_published_the_proposal: 'crwdns3323927:0crwdne3323927:0'
         user_who_published_the_input: 'crwdns3323929:0crwdne3323929:0'
+        user_who_submitted_the_input: 'crwdns3338027:0crwdne3338027:0'
         user_who_registers: 'crwdns3323931:0crwdne3323931:0'
         user_who_was_invited: 'crwdns3323933:0crwdne3323933:0'
         users_who_engaged_with_the_project: 'crwdns3323935:0crwdne3323935:0'
@@ -646,6 +676,7 @@ ach:
         user_is_invited_to_cosponsor_a_proposal: 'crwdns3324009:0crwdne3324009:0'
         user_is_mentioned_in_internal_comment: 'crwdns3324011:0crwdne3324011:0'
         new_input_is_published: 'crwdns3324013:0crwdne3324013:0'
+        new_input_awaits_screening: 'crwdns3338029:0crwdne3338029:0'
         new_proposal_is_posted: 'crwdns3324015:0crwdne3324015:0'
         project_phase_changes: 'crwdns3324017:0crwdne3324017:0'
         project_published: 'crwdns3324019:0crwdne3324019:0'
