@@ -13,7 +13,7 @@ resource 'Impact tracking session' do
   post 'web_api/v1/sessions' do
     example 'Track the start of a session of an unauthenticated user' do
       do_request
-      expect(response_status).to eq 201
+      expect(response_status).to eq 200
       expect(ImpactTracking::Session.count).to eq 1
       expect(ImpactTracking::Session.first).to have_attributes({
         monthly_user_hash: be_present,
@@ -26,7 +26,7 @@ resource 'Impact tracking session' do
       resident = create(:user)
       header_token_for(resident)
       do_request
-      expect(response_status).to eq 201
+      expect(response_status).to eq 200
       expect(ImpactTracking::Session.count).to eq 1
       expect(ImpactTracking::Session.first).to have_attributes({
         highest_role: 'user',
@@ -58,7 +58,7 @@ resource 'Impact tracking session' do
       user = create(:admin)
       header_token_for(user)
       do_request
-      expect(response_status).to eq 201
+      expect(response_status).to eq 200
       expect(ImpactTracking::Session.count).to eq 1
       expect(ImpactTracking::Session.first).to have_attributes({
         highest_role: 'admin',
@@ -70,7 +70,7 @@ resource 'Impact tracking session' do
       user = create(:super_admin)
       header_token_for(user)
       do_request
-      expect(response_status).to eq 201
+      expect(response_status).to eq 200
       expect(ImpactTracking::Session.count).to eq 1
       expect(ImpactTracking::Session.first).to have_attributes({
         highest_role: 'super_admin',

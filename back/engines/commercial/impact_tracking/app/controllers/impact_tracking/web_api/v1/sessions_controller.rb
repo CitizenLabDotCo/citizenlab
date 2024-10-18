@@ -22,11 +22,9 @@ module ImpactTracking
           os_version: params['osVersion']
         )
 
-        entry_path = params['entryPath']
-
         pageview = Pageview.create(
           session_id: session.id,
-          path: entry_path
+          path: params['entryPath']
         )
 
         if session && pageview
