@@ -95,21 +95,6 @@ module ImpactTracking
       def side_fx_session_service
         @side_fx_session_service ||= SideFxSessionService.new
       end
-
-      def entry_project_id(entry_path, entry_route)
-        if entry_route.include? 'projects/:slug'
-          routes = entry_path.split('/')
-          projects_index = routes.find_index('projects')
-          entry_project_slug = routes[projects_index + 1] if projects_index
-
-          return unless entry_project_slug
-
-          entry_project = Project.find_by(slug: entry_project_slug)
-          return unless entry_project
-
-          entry_project.id
-        end
-      end
     end
   end
 end
