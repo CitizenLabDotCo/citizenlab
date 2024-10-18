@@ -19,7 +19,6 @@ const SpotlightProject = (_: Props) => {
     projectId: PROJECT_ID,
     imageId: project?.data.relationships.project_images?.data[0].id,
   });
-  console.log({ image });
   const localize = useLocalize();
 
   if (!project) return null;
