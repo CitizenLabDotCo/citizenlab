@@ -6,13 +6,11 @@ ach:
       "inappropriate_content_flagged": crwdns3324089:0crwdne3324089:0
     inappropriate_content_flagged:
       subject: 'crwdns3324091:0crwdne3324091:0'
-      preheader: 'crwdns3324093:0crwdne3324093:0'
       header_title: 'crwdns3324095:0crwdne3324095:0'
-      comment_author: 'crwdns3324097:0%{authorName}crwdne3324097:0'
-      idea_author: 'crwdns3324099:0%{authorName}crwdne3324099:0'
-      initiative_author: 'crwdns3324101:0%{authorName}crwdne3324101:0'
+      author_wrote: 'crwdns3338235:0%{authorName}crwdne3338235:0'
+      preheader: 'crwdns3324093:0crwdne3324093:0'
       automatically_flagged: >
         crwdns3324103:0crwdne3324103:0
       how_to_review: >
         crwdns3324105:0crwdne3324105:0
-      cta_review_post: 'crwdns3324107:0crwdne3324107:0'
+      cta_review: 'crwdns3338237:0crwdne3338237:0'
