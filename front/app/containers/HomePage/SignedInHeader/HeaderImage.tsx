@@ -20,13 +20,13 @@ const HeaderImageContainerInner = styled.div`
 
 const StyledImage = styled(Image)`
   width: 100%;
-  height: auto; // Maintain aspect ratio for the image.
-  object-fit: cover; // Ensure the image covers the entire container.
+  height: auto;
+  object-fit: cover;
 
   ${media.tablet`
     width: 100%;
     height: auto;
-    object-fit: cover; // Maintain object-fit to ensure proper scaling.
+    object-fit: cover;
   `}
 `;
 
