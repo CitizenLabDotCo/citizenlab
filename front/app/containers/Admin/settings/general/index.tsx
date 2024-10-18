@@ -176,7 +176,12 @@ const SettingsGeneralTab = () => {
             </Setting>
           )}
 
-          <Box mt="30px">
+          <Outlet
+            id="app.containers.Admin.settings.general.form"
+            onSettingChange={handleSettingChange}
+          />
+
+          <Box mt="30px" mb="20px">
             <SubSectionTitle>
               <FormattedMessage {...messages.userNameDisplayTitle} />
             </SubSectionTitle>
@@ -198,10 +203,6 @@ const SettingsGeneralTab = () => {
             ))}
           </Box>
 
-          <Outlet
-            id="app.containers.Admin.settings.general.form"
-            onSettingChange={handleSettingChange}
-          />
           {settingsUpdatedSuccessFully && (
             <Success
               showBackground
