@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
+import { useSearchParams } from 'react-router-dom';
 import { string, object, boolean } from 'yup';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -28,7 +29,6 @@ import containerMessages from '../../messages';
 import tracks from '../../tracks';
 import TextLink from '../_components/TextLink';
 import sharedMessages from '../messages';
-import { useSearchParams } from 'react-router-dom';
 
 interface Props {
   loading: boolean;
@@ -90,8 +90,9 @@ const Form = ({ loading, setError, onSubmit, closeModal }: Props) => {
     trackEventByName(tracks.signInEmailPasswordEntered);
   }, []);
 
-  if (!(passwordLoginEnabled || superAdmin) || tokenLifetime === undefined)
+  if (!(passwordLoginEnabled || superAdmin) || tokenLifetime === undefined) {
     return null;
+  }
 
   const handleSubmit = async ({ email, password, rememberMe }: FormValues) => {
     try {
