@@ -2038,6 +2038,7 @@
   "app.sessionRecording.modalDescription1": "Προκειμένου να κατανοήσουμε καλύτερα τους χρήστες μας, ζητάμε τυχαία από ένα μικρό ποσοστό επισκεπτών να παρακολουθήσουμε λεπτομερώς τη συνεδρία περιήγησής τους.",
   "app.sessionRecording.modalDescription2": "Ο μοναδικός σκοπός των καταγεγραμμένων δεδομένων είναι η βελτίωση του ιστότοπου. Κανένα από τα δεδομένα σας δεν θα κοινοποιηθεί σε 3ο μέρος. Οποιαδήποτε ευαίσθητη πληροφορία εισάγετε θα φιλτράρεται.",
   "app.sessionRecording.modalDescription3": "Δέχεστε;",
+  "app.sessionRecording.modalDescriptionFaq": "Συχνές ερωτήσεις εδώ.",
   "app.sessionRecording.modalTitle": "Βοηθήστε μας να βελτιώσουμε αυτή την ιστοσελίδα",
   "app.sessionRecording.reject": "Όχι, απορρίπτω",
   "app.utils.AdminPage.ProjectEdit.conductParticipatoryBudgetingText": "Διεξαγωγή άσκησης κατανομής του προϋπολογισμού",
