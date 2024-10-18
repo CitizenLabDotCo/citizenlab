@@ -33,11 +33,8 @@ const Header = styled.div`
   flex-direction: column;
 
   ${media.tablet`
-    height: 320px;
-  `}
-
-  ${media.phone`
-    height: 400px;
+    height: auto;
+    max-height: 320px;
   `}
 `;
 
