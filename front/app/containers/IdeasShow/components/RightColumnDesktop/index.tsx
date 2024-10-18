@@ -66,7 +66,6 @@ const RightColumnDesktop = ({
 
   const showInteractionsContainer =
     ideaIsInParticipationContext || commentingEnabled || followEnabled;
-
   return (
     <Box
       flex={`0 0 ${rightColumnWidthDesktop}px`}
@@ -105,7 +104,11 @@ const RightColumnDesktop = ({
             )}
 
             {commentingEnabled && (
-              <Box mb="10px">
+              <Box
+                pb={participationMethod === 'proposals' ? '12px' : '0px'}
+                px={participationMethod === 'proposals' ? '12px' : '0px'}
+                bg={colors.white}
+              >
                 <GoToCommentsButton />
               </Box>
             )}
