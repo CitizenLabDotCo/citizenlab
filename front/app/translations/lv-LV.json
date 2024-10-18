@@ -2037,6 +2037,7 @@
   "app.sessionRecording.modalDescription1": "Lai labāk izprastu savus lietotājus, nelielai daļai apmeklētāju izlases veidā lūdzam detalizēti izsekot viņu pārlūkošanas sesijai.",
   "app.sessionRecording.modalDescription2": "Vienīgais reģistrēto datu mērķis ir uzlabot tīmekļa vietni. Neviens no jūsu datiem netiks nodots trešajām pusēm. Jebkura jūsu ievadītā sensitīvā informācija tiks filtrēta.",
   "app.sessionRecording.modalDescription3": "Vai jūs piekrītat?",
+  "app.sessionRecording.modalDescriptionFaq": "Biežāk uzdotie jautājumi šeit.",
   "app.sessionRecording.modalTitle": "Palīdziet mums uzlabot šo vietni",
   "app.sessionRecording.reject": "Nē, es noraidu",
   "app.utils.AdminPage.ProjectEdit.conductParticipatoryBudgetingText": "Veikt budžeta sadali",
