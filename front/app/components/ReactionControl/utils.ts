@@ -1,5 +1,6 @@
 import { IIdeaData } from 'api/ideas/types';
 import { ParticipationMethod } from 'api/phases/types';
+
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
 
 export const showIdeaReactions = (
