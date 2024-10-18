@@ -69,6 +69,12 @@ class NavBarItem < ApplicationRecord
     fallback_title_multiloc.merge(title_multiloc || {})
   end
 
+  def item_slug
+    return project.slug if project?
+
+    static_page.slug if page?
+  end
+
   private
 
   def set_code

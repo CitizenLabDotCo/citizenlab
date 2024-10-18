@@ -4,9 +4,7 @@ import { Box, media, colors } from '@citizenlab/cl2-component-library';
 import { darken } from 'polished';
 import styled from 'styled-components';
 
-import useCustomPageSlugById from 'api/custom_pages/useCustomPageSlugById';
 import useNavbarItems from 'api/navbar/useNavbarItems';
-import useProjectSlugById from 'api/projects/useProjectSlugById';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -100,18 +98,12 @@ const FullMobileNavMenu = ({
   isFullMenuOpened,
 }: Props) => {
   const { data: navbarItems } = useNavbarItems();
-  const pageSlugById = useCustomPageSlugById();
-  const projectSlugById = useProjectSlugById();
   const localize = useLocalize();
   const { formatMessage } = useIntl();
 
-  if (isNilOrError(navbarItems) || isNilOrError(pageSlugById)) return null;
+  if (isNilOrError(navbarItems)) return null;
 
-  const navbarItemPropsArray = getNavbarItemPropsArray(
-    navbarItems.data,
-    pageSlugById,
-    projectSlugById
-  );
+  const navbarItemPropsArray = getNavbarItemPropsArray(navbarItems.data);
 
   const modalPortalElement = document?.getElementById('mobile-nav-portal');
 

@@ -5,11 +5,10 @@ import { RouteType } from 'routes';
 
 import { ICustomPageData, TCustomPageCode } from 'api/custom_pages/types';
 import useCustomPages from 'api/custom_pages/useCustomPages';
-import useCustomPageSlugById from 'api/custom_pages/useCustomPageSlugById';
 import useDeleteCustomPage from 'api/custom_pages/useDeleteCustomPage';
 import useAddNavbarItem from 'api/navbar/useAddNavbarItem';
 import useNavbarItems from 'api/navbar/useNavbarItems';
-import { getNavbarItemSlug, MAX_NAVBAR_ITEMS } from 'api/navbar/util';
+import { DEFAULT_PAGE_SLUGS, MAX_NAVBAR_ITEMS } from 'api/navbar/util';
 
 import NavbarItemRow from 'containers/Admin/pagesAndMenu/containers/NavigationSettings/NavbarItemRow';
 import { ADMIN_PAGES_MENU_PATH } from 'containers/Admin/pagesAndMenu/routes';
@@ -42,13 +41,11 @@ const HiddenNavbarItemList = ({
   });
 
   const { data: pages } = useCustomPages();
-  const pageSlugById = useCustomPageSlugById();
 
   const notAllHooksRendered =
     isNilOrError(navbarItems) ||
     isNilOrError(removedDefaultNavbarItems) ||
-    isNilOrError(pages) ||
-    isNilOrError(pageSlugById);
+    isNilOrError(pages);
 
   const itemsNotInNavbar = useMemo(() => {
     if (notAllHooksRendered) return null;
@@ -58,7 +55,6 @@ const HiddenNavbarItemList = ({
       removedDefaultNavbarItems.data,
       pages.data.filter(isNotFixedPage)
     );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [notAllHooksRendered, navbarItems, removedDefaultNavbarItems, pages]);
 
   if (notAllHooksRendered || isNilOrError(itemsNotInNavbar)) {
@@ -83,13 +79,19 @@ const HiddenNavbarItemList = ({
   };
 
   const getViewButtonLink = (item: IItemNotInNavbar): RouteType | null => {
-    return (
-      getNavbarItemSlug(
-        item.type === 'default_item' ? item.navbarCode : 'custom',
-        pageSlugById,
-        item.type === 'page' ? item.pageId : undefined
-      ) || '/'
-    );
+    if (item.type === 'page') {
+      return `/pages/${item.slug}`;
+    }
+
+    if (item.type === 'project') {
+      return `/projects/${item.slug}`;
+    }
+
+    if (item.type === 'default_item') {
+      return DEFAULT_PAGE_SLUGS[item.navbarCode];
+    }
+
+    return null;
   };
 
   return (
