@@ -1,9 +1,9 @@
 // TODO: Skipping this for now as the registration work doesn't include tracking yet.
 // Will re-enable the tests once tracking is introduced again.
 describe('Impact tracking: Session tracking', () => {
-  // Following test cases accept both a 201/200 or a 204 response. The sessions
+  // Following test cases accept both a 200 or a 204 response. The sessions
   // endpoints don't do anything and return 204 (no content) when they detect
-  // that a session is logged by a crawler and 200/201 when a session is logged
+  // that a session is logged by a crawler and 200 when a session is logged
   // by a normal browser. Cypress is seen as a crawler when running in headless
   // mode, like in CI, but as a real user in interactive mode. There seems to be
   // no elegant way to set the user-agent on a per test-suite basis, so we
@@ -13,7 +13,7 @@ describe('Impact tracking: Session tracking', () => {
     cy.intercept('POST', '**/web_api/v1/sessions').as('createSession');
     cy.goToLandingPage();
     cy.wait('@createSession').then((interception) => {
-      expect(interception.response?.statusCode).to.be.oneOf([201, 204]);
+      expect(interception.response?.statusCode).to.be.oneOf([200, 204]);
     });
   });
 
@@ -22,7 +22,7 @@ describe('Impact tracking: Session tracking', () => {
     cy.intercept('POST', '**/web_api/v1/sessions').as('createSession');
     cy.goToLandingPage();
     cy.wait('@createSession').then((interception) => {
-      expect(interception.response?.statusCode).to.be.oneOf([201, 204]);
+      expect(interception.response?.statusCode).to.be.oneOf([200, 204]);
     });
   });
 
@@ -33,6 +33,20 @@ describe('Impact tracking: Session tracking', () => {
     cy.login('mortal@govocal.com', 'democracy2.0');
     cy.wait('@upgradeSession').then((interception) => {
       expect(interception.response?.statusCode).to.be.oneOf([200, 204]);
+    });
+  });
+
+  it('Does a POST request to /sessions/:id/track_pageview when user navigates', () => {
+    cy.intercept('POST', '**/web_api/v1/sessions').as('createSession');
+    cy.goToLandingPage();
+    cy.wait('@createSession');
+
+    cy.intercept('POST', '**/web_api/v1/sessions/*/track_pageview').as(
+      'trackPageview'
+    );
+    cy.get('.e2e-admin-publication-card').first().click();
+    cy.wait('@trackPageview').then((interception) => {
+      expect(interception.response?.statusCode).to.be.oneOf([201, 204]);
     });
   });
 
