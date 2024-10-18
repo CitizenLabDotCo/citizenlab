@@ -10,9 +10,6 @@ module ImpactTracking
       before_action :set_current_session, only: %i[upgrade track_pageview]
 
       def create
-        entry_path = params['entryPath']
-        entry_route = params['entryRoute']
-
         session = Session.create(
           monthly_user_hash: generate_hash,
           highest_role: current_user&.highest_role,
@@ -22,14 +19,17 @@ module ImpactTracking
           browser_name: params['browserName'],
           browser_version: params['browserVersion'],
           os_name: params['osName'],
-          os_version: params['osVersion'],
-          entry_path: entry_path,
-          entry_route: entry_route,
-          entry_locale: params['entryLocale'],
-          entry_project_id: entry_project_id(entry_path, entry_route)
+          os_version: params['osVersion']
         )
 
-        if session
+        entry_path = params['entryPath']
+
+        pageview = Pageview.create(
+          session_id: session.id,
+          path: entry_path
+        )
+
+        if session && pageview
           side_fx_session_service.after_create(current_user)
 
           head :created
