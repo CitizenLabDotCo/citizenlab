@@ -16,7 +16,11 @@ import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
 import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import {
+  FormattedMessage,
+  useIntl,
+  useFormatMessageWithLocale,
+} from 'utils/cl-intl';
 
 import messages from '../../messages';
 import Events from '../CraftComponents/Events';
@@ -33,6 +37,9 @@ const HomepageBuilderToolbox = ({
   selectedLocale,
 }: HomepageBuilderToolboxProps) => {
   const { formatMessage } = useIntl();
+  const formatMessageWithLocale = useFormatMessageWithLocale();
+
+  // TODO add defaults
 
   return (
     <Container>
@@ -62,7 +69,7 @@ const HomepageBuilderToolbox = ({
       />
       <DraggableElement
         id="e2e-draggable-spotlight-project"
-        component={<SpotlightProject />}
+        component={<SpotlightProject buttonTextMultiloc={{}} />}
         icon="projects"
         label={formatMessage(spotlightProjectTitle)}
       />

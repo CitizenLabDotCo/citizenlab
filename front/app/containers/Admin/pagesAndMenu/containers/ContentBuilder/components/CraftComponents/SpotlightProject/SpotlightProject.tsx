@@ -18,6 +18,7 @@ interface Props {
   description?: string;
   buttonText?: string;
   avatarIds?: string[];
+  userCount?: number;
 }
 
 const SpotlightProject = ({
@@ -26,6 +27,7 @@ const SpotlightProject = ({
   description,
   buttonText,
   avatarIds,
+  userCount,
 }: Props) => {
   const isSmallerThanPhone = useBreakpoint('phone');
 
@@ -48,12 +50,9 @@ const SpotlightProject = ({
               <Button w="auto">{buttonText}</Button>
             </Box>
           )}
-          {avatarIds && (
+          {avatarIds && userCount && (
             <Box mt="16px">
-              <AvatarBubbles
-                avatarIds={avatarIds}
-                userCount={avatarIds.length}
-              />
+              <AvatarBubbles avatarIds={avatarIds} userCount={userCount} />
             </Box>
           )}
         </Box>
