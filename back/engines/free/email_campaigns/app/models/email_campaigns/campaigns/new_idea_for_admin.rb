@@ -57,7 +57,8 @@ module EmailCampaigns
     def filter_recipient(users_scope, activity:, time: nil)
       input = activity.item
       initiator = input.author
-      return users_scope.none if UserRoleService.new.moderates_something? initiator
+      return users_scope.none if !input.participation_method_on_creation.supports_public_visibility?
+      return users_scope.none if initiator && UserRoleService.new.moderates_something?(initiator)
 
       UserRoleService.new.moderators_for(input, users_scope)
     end
