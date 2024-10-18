@@ -59,32 +59,32 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
   end
 
   def reorder
-    if @publication.insert_at(permitted_attributes(@publication)[:ordering])
-      SideFxAdminPublicationService.new.after_update(@publication, current_user)
+    if @admin_publication.insert_at(permitted_attributes(@admin_publication)[:ordering])
+      SideFxAdminPublicationService.new.after_update(@admin_publication, current_user)
       render json: WebApi::V1::AdminPublicationSerializer.new(
-        @publication,
+        @admin_publication,
         params: jsonapi_serializer_params
       ).serializable_hash, status: :ok
     else
-      render json: { errors: @publication.errors.details }, status: :unprocessable_entity
+      render json: { errors: @admin_publication.errors.details }, status: :unprocessable_entity
     end
   end
 
   def status_counts
     authorize :admin_publication, :status_counts
 
-    publication_filterer = AdminPublicationsFilteringService.new
-    publications = policy_scope(AdminPublication.includes(:parent))
-    publications = publication_filterer.filter(publications, params)
+    admin_publication_filterer = AdminPublicationsFilteringService.new
+    admin_publications = policy_scope(AdminPublication.includes(:parent))
+    admin_publications = admin_publication_filterer.filter(admin_publications, params)
 
-    counts = publications.group(:publication_status).count
+    counts = admin_publications.group(:publication_status).count
 
     render json: raw_json({ status_counts: counts })
   end
 
   def show
     render json: WebApi::V1::AdminPublicationSerializer.new(
-      @publication,
+      @admin_publication,
       params: jsonapi_serializer_params
     ).serializable_hash, status: :ok
   end
@@ -92,7 +92,7 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
   private
 
   def set_admin_publication
-    @publication = AdminPublication.find params[:id]
-    authorize @publication
+    @admin_publication = AdminPublication.find params[:id]
+    authorize @admin_publication
   end
 end
