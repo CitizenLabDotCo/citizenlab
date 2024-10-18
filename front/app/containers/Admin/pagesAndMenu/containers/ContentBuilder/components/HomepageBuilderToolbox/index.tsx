@@ -62,7 +62,7 @@ const HomepageBuilderToolbox = ({
       />
       <DraggableElement
         id="e2e-draggable-spotlight-project"
-        component={<SpotlightProject title_multiloc={{ en: 'Test title' }} />}
+        component={<SpotlightProject />}
         icon="projects"
         label={formatMessage(spotlightProjectTitle)}
       />

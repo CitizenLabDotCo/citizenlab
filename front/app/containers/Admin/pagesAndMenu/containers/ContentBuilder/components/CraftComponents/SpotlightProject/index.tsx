@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { Multiloc } from 'typings';
+import useProjectImage from 'api/project_images/useProjectImage';
+import useProjectById from 'api/projects/useProjectById';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -8,14 +9,27 @@ import messages from './messages';
 import Settings from './Settings';
 import SpotlightProjectInner from './SpotlightProject';
 
-interface Props {
-  title_multiloc: Multiloc;
-}
+interface Props {}
 
-const SpotlightProject = ({ title_multiloc }: Props) => {
+const PROJECT_ID = '825ed7f5-0aa2-4cf4-93c7-083e0b05e639';
+
+const SpotlightProject = (_: Props) => {
+  const { data: project } = useProjectById(PROJECT_ID);
+  const { data: image } = useProjectImage({
+    projectId: PROJECT_ID,
+    imageId: project?.data.relationships.project_images?.data[0].id,
+  });
+  console.log({ image });
   const localize = useLocalize();
 
-  return <SpotlightProjectInner title={localize(title_multiloc)} />;
+  if (!project) return null;
+
+  return (
+    <SpotlightProjectInner
+      title={localize(project.data.attributes.title_multiloc)}
+      imgSrc={image?.data.attributes.versions.large ?? undefined}
+    />
+  );
 };
 
 SpotlightProject.craft = {

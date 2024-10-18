@@ -12,10 +12,9 @@ import {
 import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
 import AvatarBubbles from 'components/AvatarBubbles';
 
-import citySrc from './city.png';
-
 interface Props {
   title: string;
+  imgSrc?: string;
   description?: string;
   buttonText?: string;
   avatarIds?: string[];
@@ -23,6 +22,7 @@ interface Props {
 
 const SpotlightProject = ({
   title,
+  imgSrc,
   description,
   buttonText,
   avatarIds,
@@ -65,7 +65,9 @@ const SpotlightProject = ({
           justifyContent="center"
           alignItems="center"
         >
-          <Image src={citySrc} width="100%" alt="placeholder" />
+          {imgSrc ? (
+            <Image src={imgSrc} width="100%" alt="placeholder" />
+          ) : null}
         </Box>
       </Box>
     </Box>
