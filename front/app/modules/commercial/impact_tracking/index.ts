@@ -66,7 +66,9 @@ const configuration: ModuleConfiguration = {
         path: `/sessions/${sessionId}/track_pageview`,
         action: 'post',
         body: {
-          path: e.path,
+          pageview: {
+            page_path: e.path,
+          },
         },
       });
     });

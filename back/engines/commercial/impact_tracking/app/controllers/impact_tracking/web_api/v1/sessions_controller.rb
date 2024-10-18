@@ -51,9 +51,11 @@ module ImpactTracking
 
       # POST /sessions/:id/track_pageview
       def track_pageview
+        return head(:not_found) unless Session.exists?(params[:id])
+
         pageview = Pageview.create(
           session_id: params[:id],
-          path: params[:path]
+          path: pageview_params[:page_path]
         )
 
         if pageview
@@ -79,6 +81,12 @@ module ImpactTracking
           :os_name,
           :os_version,
           :entry_path
+        )
+      end
+
+      def pageview_params
+        params.require(:pageview).permit(
+          :page_path
         )
       end
 

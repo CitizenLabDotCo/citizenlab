@@ -145,7 +145,36 @@ resource 'Impact tracking session' do
     end
   end
 
-  # post 'web_api/v1/sessions/:id/track_pageview' do
-  # TODO
-  # end
+  post 'web_api/v1/sessions/:id/track_pageview' do
+    with_options scope: :pageview do
+      parameter :id, 'The id of the session'
+      parameter :page_path, 'The path of the pageview'
+    end
+
+    let(:id) do
+      session = create(:session)
+      create(:pageview, session_id: session.id, path: '/en/')
+      session.id
+    end
+
+    let(:page_path) { '/en/projects/my_project' }
+
+    example 'Track a pageview when a session already exists' do
+      do_request
+      expect(response_status).to eq 201
+      expect(ImpactTracking::Pageview.count).to eq 2
+      expect(ImpactTracking::Pageview.order(created_at: :asc).last).to have_attributes({
+        path: '/en/projects/my_project'
+      })
+    end
+
+    example 'Reject a pageview when a session does not exists' do
+      do_request(id: 'fake-id')
+      expect(response_status).to eq 404
+      expect(ImpactTracking::Pageview.count).to eq 1
+      expect(ImpactTracking::Pageview.last).to have_attributes({
+        path: '/en/'
+      })
+    end
+  end
 end
