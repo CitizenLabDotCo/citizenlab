@@ -93,7 +93,6 @@ describe('<HiddenNavbarItemList />', () => {
       titleMultiloc: { en: 'FAQ' },
       type: 'page',
     };
-
     fireEvent.click(addButtons[0]);
     expect(mockAddNavbarItem).toHaveBeenCalledWith(faqItem);
 
@@ -121,7 +120,7 @@ describe('<HiddenNavbarItemList />', () => {
 
     fireEvent.click(deleteButtons[1]);
     expect(mockDeleteCustomPage).toHaveBeenCalledWith(
-      'e7854e94-3074-4607-b66e-0422aa3d8359'
+      '1b095a31-72e1-450a-81be-f6e7a9296553'
     );
   });
 
@@ -129,6 +128,6 @@ describe('<HiddenNavbarItemList />', () => {
     render(<HiddenNavbarItemList />);
 
     const viewButtons = screen.getAllByText('View');
-    expect(viewButtons).toHaveLength(4);
+    expect(viewButtons).toHaveLength(3);
   });
 });

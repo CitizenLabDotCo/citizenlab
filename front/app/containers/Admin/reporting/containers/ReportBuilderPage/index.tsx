@@ -10,9 +10,8 @@ import {
 import { useSearchParams } from 'react-router-dom';
 
 import useAuthUser from 'api/me/useAuthUser';
+import useReportBuilderEnabled from 'api/reports/useReportBuilderEnabled';
 import useReports from 'api/reports/useReports';
-
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import NavigationTabs from 'components/admin/NavigationTabs';
 import Tab from 'components/admin/NavigationTabs/Tab';
@@ -80,8 +79,7 @@ const ReportBuilderPage = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [search, setSearch] = useState<string | undefined>();
 
-  const isReportBuilderAllowed = useFeatureFlag({
-    name: 'report_builder',
+  const isReportBuilderAllowed = useReportBuilderEnabled({
     onlyCheckAllowed: true,
   });
 
@@ -95,7 +93,7 @@ const ReportBuilderPage = () => {
   }
 
   const { data: yourReports, isLoading: isLoadingYourRpts } = useReports(getParams('your-reports')); // prettier-ignore
-  const { data: serviceReports, isLoading: isLoadingServiceRpts} = useReports(getParams('service-reports')); // prettier-ignore
+  const { data: serviceReports, isLoading: isLoadingServiceRpts } = useReports(getParams('service-reports')); // prettier-ignore
   const { data: allReports, isLoading: isLoadingAllRpts } = useReports(getParams('all-reports')); // prettier-ignore
 
   if (isLoadingYourRpts || isLoadingServiceRpts || isLoadingAllRpts) {

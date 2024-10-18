@@ -21,10 +21,6 @@ export default defineMessages({
     id: 'app.containers.Admin.Moderation.post',
     defaultMessage: 'Post',
   },
-  initiative: {
-    id: 'app.containers.Admin.Moderation.initiative',
-    defaultMessage: 'Initiative',
-  },
   comment: {
     id: 'app.containers.Admin.Moderation.comment',
     defaultMessage: 'Comment',

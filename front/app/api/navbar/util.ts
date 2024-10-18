@@ -6,7 +6,6 @@ export const DEFAULT_PAGE_SLUGS: Record<TDefaultNavbarItemCode, RouteType> = {
   home: '/',
   projects: '/projects',
   all_input: '/ideas',
-  proposals: '/initiatives',
   events: '/events',
 };
 

@@ -86,10 +86,6 @@ export default defineMessages({
     id: 'containers.SiteMap.timeline',
     defaultMessage: 'Project phases',
   },
-  initiativesSection: {
-    id: 'containers.SiteMap.initiativesSection',
-    defaultMessage: 'Initiatives',
-  },
   signInPage: {
     id: 'containers.SiteMap.signInPage',
     defaultMessage: 'Sign in',
@@ -101,14 +97,6 @@ export default defineMessages({
   successStories: {
     id: 'containers.SiteMap.successStories',
     defaultMessage: 'Success Stories',
-  },
-  initiativesList: {
-    id: 'containers.SiteMap.initiativesList',
-    defaultMessage: 'All initiatives on this platform',
-  },
-  initiativesInfo: {
-    id: 'containers.SiteMap.initiativesInfo',
-    defaultMessage: 'More information about initiatives',
   },
   userSpaceSection: {
     id: 'containers.SiteMap.userSpaceSection',

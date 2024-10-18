@@ -15,7 +15,6 @@ export type TDefaultNavbarItemCode =
   | 'home'
   | 'projects'
   | 'all_input'
-  | 'proposals'
   | 'events';
 
 export type TNavbarItemCode = TDefaultNavbarItemCode | 'custom';

@@ -8,7 +8,6 @@ import { Title } from 'components/PostShowComponents/Title';
 
 interface Props {
   postId: string;
-  postType: 'idea' | 'initiative';
   title: string;
   translateButtonClicked?: boolean;
   color?: string;
@@ -18,7 +17,6 @@ interface Props {
 const PostShowTranslatedTitle = ({
   translateButtonClicked,
   postId,
-  postType,
   color,
   align,
   title,
@@ -28,7 +26,7 @@ const PostShowTranslatedTitle = ({
     attributeName: 'title_multiloc',
     localeTo: locale,
     id: postId,
-    context: postType,
+    context: 'idea',
     machineTranslationButtonClicked: translateButtonClicked || false,
   });
   const showTranslatedContent = translateButtonClicked && translation && locale;
@@ -38,7 +36,7 @@ const PostShowTranslatedTitle = ({
 
   return (
     <Title
-      id={`e2e-${postType}-title`}
+      id={`e2e-idea-title`}
       color={color}
       align={align}
       aria-live={showTranslatedContent ? 'polite' : undefined}

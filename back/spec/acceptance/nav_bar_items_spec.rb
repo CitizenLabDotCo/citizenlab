@@ -4,7 +4,7 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'NavBarItems' do
-  explanation 'E.g. home, projects, proposals, events...'
+  explanation 'E.g. home, projects, events...'
 
   before { header 'Content-Type', 'application/json' }
 
@@ -15,8 +15,8 @@ resource 'NavBarItems' do
       @items = [
         create(:nav_bar_item, code: 'custom', project: nil, static_page: @static_page),
         create(:nav_bar_item, code: 'custom', project: @project, static_page: nil),
-        create(:nav_bar_item, code: 'proposals'),
         create(:nav_bar_item, code: 'events'),
+        create(:nav_bar_item, code: 'all_input'),
         create(:nav_bar_item, code: 'home')
       ]
       @items.last.move_to_top # home, custom, events
@@ -30,17 +30,7 @@ resource 'NavBarItems' do
         .to eq [nil, @static_page.slug, @project.slug, nil, nil]
 
       expect(json_response_body[:data].map { |d| d.dig(:attributes, :code) })
-        .to eq %w[home custom custom proposals events]
-    end
-
-    context 'when NavBarItem is disabled by corresponding disabled feature' do
-      before do
-        SettingsService.new.deactivate_feature!('initiatives')
-      end
-
-      example_request 'Does not list feature-disabled NavBarItems' do
-        expect(json_response_body[:data].map { |d| d.dig(:attributes, :code) }).to eq %w[home custom custom events]
-      end
+        .to eq %w[home custom custom events all_input]
     end
   end
 
@@ -58,7 +48,6 @@ resource 'NavBarItems' do
         assert_status 200
         expect(json_response_body[:data].size).to be > 0
         expect(codes).to include 'home'
-        expect(codes).to include 'proposals'
         expect(codes).not_to include 'events'
       end
 
@@ -69,7 +58,6 @@ resource 'NavBarItems' do
 
         example_request 'Does not list removed default but feature-disabled NavBarItems' do
           expect(codes).to include 'home'
-          expect(codes).not_to include 'proposals'
           expect(codes).not_to include 'events'
         end
       end

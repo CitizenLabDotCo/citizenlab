@@ -58,6 +58,7 @@ module EmailCampaigns
       Campaigns::VotingPhaseStarted,
       Campaigns::VotingResults,
       Campaigns::Welcome,
+      Campaigns::YourInputInScreening,
       Campaigns::YourProposedInitiativesDigest
     ].freeze
 

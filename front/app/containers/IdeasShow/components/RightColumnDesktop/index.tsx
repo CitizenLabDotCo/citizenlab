@@ -13,6 +13,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import FollowUnfollow from 'components/FollowUnfollow';
 import ReactionControl from 'components/ReactionControl';
+import { showIdeaReactions } from 'components/ReactionControl/utils';
 
 import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
 
@@ -23,7 +24,6 @@ import SharingButtonComponent from '../Buttons/SharingButtonComponent';
 import Cosponsorship from '../Cosponsorship';
 import MetaInformation from '../MetaInformation';
 import ProposalInfo from '../ProposalInfo';
-import { showIdeaReactions } from 'components/ReactionControl/utils';
 
 interface Props {
   ideaId: string;
@@ -66,7 +66,6 @@ const RightColumnDesktop = ({
 
   const showInteractionsContainer =
     ideaIsInParticipationContext || commentingEnabled || followEnabled;
-
   return (
     <Box
       flex={`0 0 ${rightColumnWidthDesktop}px`}
@@ -90,12 +89,12 @@ const RightColumnDesktop = ({
               </Box>
             )}
             {showIdeaReactionControl && (
-              <Box pb="23px" mb="23px" borderBottom="solid 1px #ccc">
+              <Box pb="24px" mb="24px" borderBottom="solid 1px #ccc">
                 <ReactionControl styleType="shadow" ideaId={ideaId} size="4" />
               </Box>
             )}
             {phase && ideaIsInParticipationContext && votingConfig && (
-              <Box pb="23px" mb="23px" borderBottom="solid 1px #ccc">
+              <Box pb="24px" mb="24px" borderBottom="solid 1px #ccc">
                 {votingConfig.getIdeaPageVoteInput({
                   ideaId,
                   phase,
@@ -105,20 +104,32 @@ const RightColumnDesktop = ({
             )}
 
             {commentingEnabled && (
-              <Box mb="10px">
+              <Box
+                pb={participationMethod === 'proposals' ? '12px' : '0px'}
+                px={participationMethod === 'proposals' ? '12px' : '0px'}
+                bg={colors.white}
+              >
                 <GoToCommentsButton />
               </Box>
             )}
-            <FollowUnfollow
-              followableType="ideas"
-              followableId={ideaId}
-              followersCount={idea.data.attributes.followers_count}
-              followerId={idea.data.relationships.user_follower?.data?.id}
-              toolTipType="input"
-              buttonStyle={
-                participationMethod === 'proposals' ? 'white' : 'primary'
-              }
-            />
+            <Box
+              pb={participationMethod === 'proposals' ? '12px' : '0px'}
+              px={participationMethod === 'proposals' ? '12px' : '0px'}
+              bg={colors.white}
+            >
+              <FollowUnfollow
+                followableType="ideas"
+                followableId={ideaId}
+                followersCount={idea.data.attributes.followers_count}
+                followerId={idea.data.relationships.user_follower?.data?.id}
+                toolTipType="input"
+                buttonStyle={
+                  participationMethod === 'proposals'
+                    ? 'secondary-outlined'
+                    : 'primary'
+                }
+              />
+            </Box>
           </Box>
         )}
         <Cosponsorship ideaId={ideaId} />
