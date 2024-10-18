@@ -726,6 +726,45 @@ resource 'AdminPublication' do
       before { resident_header_token }
 
       include_examples 'include_publications'
+
+      get 'web_api/v1/admin_publications' do
+        with_options scope: :page do
+          parameter :number, 'Page number'
+          parameter :size, 'Number of projects per page'
+        end
+        parameter :depth, 'Filter by depth', required: false
+        parameter :publication_statuses, 'Return only publications with the specified publication statuses (i.e. given an array of publication statuses); always includes folders; returns all publications by default (OR)', required: false
+        parameter :remove_not_allowed_parents, 'Filter out folders which contain only projects that are not visible to the user', required: false
+        parameter :include_publications, 'Include the related publications and associated items', required: false
+
+        example_request 'Index action does invoke unnecessary queries' do
+          project = create(:project_with_active_ideation_phase)
+          create(:project_image, project: project)
+          folder = create(:project_folder)
+          create(:project_folder_image, project_folder: folder)
+
+          # We need a participant, to get some included avatar data
+          participant = create(:user)
+          create(:idea, project: project, author: participant)
+
+          # There is probably lots more that could be done to improve the query count here, but this test
+          # is here to help ensure that we don't make things worse.
+          #
+          # Down from 138, before adding more items to @publications = @publications.includes(...) in TAN-2806 #9110
+          # in the case where we make use of the include_publications parameter
+          expect do
+            do_request(
+              page: { size: 6, number: 1 },
+              depth: 0,
+              remove_not_allowed_parents: 'true',
+              publication_statuses: %w[published archived],
+              include_publications: 'true'
+            )
+          end.not_to exceed_query_limit(121)
+
+          assert_status 200
+        end
+      end
     end
 
     describe 'when not logged in' do
