@@ -732,6 +732,9 @@ resource 'AdminPublication' do
           parameter :number, 'Page number'
           parameter :size, 'Number of projects per page'
         end
+        parameter :depth, 'Filter by depth', required: false
+        parameter :publication_statuses, 'Return only publications with the specified publication statuses (i.e. given an array of publication statuses); always includes folders; returns all publications by default (OR)', required: false
+        parameter :remove_not_allowed_parents, 'Filter out folders which contain only projects that are not visible to the user', required: false
         parameter :include_publications, 'Include the related publications and associated items', required: false
 
         example_request 'Index action does invoke unnecessary queries' do
@@ -743,6 +746,9 @@ resource 'AdminPublication' do
           # We need a participant, to get some included avatar data
           participant = create(:user)
           create(:idea, project: project, author: participant)
+
+          puts "Projects: #{Project.count}"
+          puts "Folders: #{ProjectFolders::Folder.count}"
 
           # There is probably lots more that could be done to improve the query count here, but this test
           # is here to help ensure that we don't make things worse.
