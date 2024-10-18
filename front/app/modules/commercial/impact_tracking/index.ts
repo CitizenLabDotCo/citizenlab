@@ -1,6 +1,6 @@
 import UAParser from 'ua-parser-js';
 
-import { events$ } from 'utils/analytics';
+import { events$, pageChanges$ } from 'utils/analytics';
 import fetcher from 'utils/cl-react-query/fetcher';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 
@@ -9,7 +9,9 @@ const signUpInTracks = {
   signUpFlowCompleted: 'Sign up flow completed',
 };
 
-const trackSessionStarted = () => {
+let sessionId: string;
+
+const trackSessionStarted = async () => {
   const uaParser = new UAParser();
   const uaResult = uaParser.getResult();
 
@@ -19,8 +21,9 @@ const trackSessionStarted = () => {
   const browserVersion = uaResult.browser.major;
   const osName = uaResult.os.name;
   const osVersion = uaResult.os.version;
+  const entryPath = window.location.pathname;
 
-  fetcher({
+  const response: any = await fetcher({
     path: `/sessions`,
     action: 'post',
     body: {
@@ -30,8 +33,11 @@ const trackSessionStarted = () => {
       browserVersion,
       osName,
       osVersion,
+      entryPath,
     },
   });
+
+  sessionId = response.data.id;
 };
 
 const upgradeSession = () => {
@@ -42,8 +48,27 @@ const upgradeSession = () => {
   });
 };
 
+let entryPointIgnored = false;
+
 const configuration: ModuleConfiguration = {
   beforeMountApplication: () => {
+    pageChanges$.subscribe((e) => {
+      // Ignore the first page change event,
+      // this is already handled by the session tracking start
+      if (!entryPointIgnored) {
+        entryPointIgnored = true;
+        return;
+      }
+
+      fetcher({
+        path: `/sessions/${sessionId}/track_pageview`,
+        action: 'post',
+        body: {
+          path: e.path,
+        },
+      });
+    });
+
     trackSessionStarted();
 
     events$.subscribe((event) => {

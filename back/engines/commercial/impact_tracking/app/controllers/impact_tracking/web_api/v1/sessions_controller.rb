@@ -3,11 +3,11 @@
 module ImpactTracking
   module WebApi::V1
     class SessionsController < ::ApplicationController
-      skip_before_action :authenticate_user, only: [:create]
-      skip_after_action :verify_authorized, only: %i[create upgrade]
+      skip_before_action :authenticate_user, only: %i[create track_pageview]
+      skip_after_action :verify_authorized, only: %i[create upgrade track_pageview]
 
       before_action :ignore_crawlers
-      before_action :set_current_session, only: %i[upgrade track_pageview]
+      before_action :set_current_session, only: %i[upgrade]
 
       def create
         session = Session.create(
@@ -32,7 +32,10 @@ module ImpactTracking
         if session && pageview
           side_fx_session_service.after_create(current_user)
 
-          head :created
+          render json: WebApi::V1::SessionSerializer.new(
+            session,
+            params: jsonapi_serializer_params
+          ).serializable_hash, status: :ok
         else
           head :internal_server_error
         end
@@ -53,11 +56,11 @@ module ImpactTracking
         end
       end
 
+      # POST /sessions/:id/track_pageview
       def track_pageview
         pageview = Pageview.create(
-          session_id: @session.id,
-          path: params[:path],
-          route: params[:route]
+          session_id: params[:id],
+          path: params[:path]
         )
 
         if pageview
