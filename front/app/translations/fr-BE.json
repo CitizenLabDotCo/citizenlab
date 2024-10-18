@@ -2037,6 +2037,7 @@
   "app.sessionRecording.modalDescription1": "Afin de mieux comprendre nos utilisateurs, nous demandons de manière aléatoire à un petit pourcentage de visiteurs de suivre en détail leur session de navigation.",
   "app.sessionRecording.modalDescription2": "Les données collectées ont pour seul but d'améliorer le site web. Aucune de vos données ne sera communiquée à un tiers. Toute information sensible que vous saisissez sera filtrée.",
   "app.sessionRecording.modalDescription3": "Acceptez-vous ?",
+  "app.sessionRecording.modalDescriptionFaq": "FAQ ici.",
   "app.sessionRecording.modalTitle": "Aidez-nous à améliorer ce site",
   "app.sessionRecording.reject": "Non, je refuse",
   "app.utils.AdminPage.ProjectEdit.conductParticipatoryBudgetingText": "Allouer un budget",
