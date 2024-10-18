@@ -148,6 +148,7 @@ exports.appGraphqlLocalePairs = {
   nl: 'nl',
   nlBe: 'nl-BE',
   nlNl: 'nl-NL',
+  paIn: 'pa-IN',
   plPl: 'pl-PL',
   ptBr: 'pt-BR',
   roRo: 'ro-RO',
@@ -155,6 +156,7 @@ exports.appGraphqlLocalePairs = {
   srSp: 'sr-SP',
   svSe: 'sv-SE',
   trTr: 'tr-TR',
+  urPk: 'ur-PK',
 };
 exports.shortenedAppLocalePairs = {
   'ar-MA': 'عربي',
@@ -183,6 +185,7 @@ exports.shortenedAppLocalePairs = {
   'nb-NO': 'Norsk',
   'nl-BE': 'Nederlands',
   'nl-NL': 'Nederlands',
+  'pa-IN': 'ਪੰਜਾਬੀ',
   'pl-PL': 'Polski',
   'pt-BR': 'Português',
   'ro-RO': 'Română',
@@ -190,6 +193,7 @@ exports.shortenedAppLocalePairs = {
   'sr-SP': 'Српски',
   'sv-SE': 'Svenska',
   'tr-TR': 'Türkçe',
+  'ur-PK': 'اردو',
 };
 // https://github.com/moment/moment/tree/develop/locale lists the supported locales by moment.js
 exports.appLocalesMomentPairs = {
@@ -218,6 +222,7 @@ exports.appLocalesMomentPairs = {
   'nb-NO': 'nb',
   'nl-BE': 'nl-be',
   'nl-NL': 'nl',
+  'pa-IN': 'pa-in',
   'pl-PL': 'pl',
   'pt-BR': 'pt-br',
   'ro-RO': 'ro',
@@ -225,4 +230,5 @@ exports.appLocalesMomentPairs = {
   'sr-SP': 'sr',
   'sv-SE': 'sv',
   'tr-TR': 'tr',
+  'ur-PK': 'ur',
 };

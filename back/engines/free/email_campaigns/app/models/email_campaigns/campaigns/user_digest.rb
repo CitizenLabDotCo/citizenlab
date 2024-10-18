@@ -102,7 +102,7 @@ module EmailCampaigns
     end
 
     # @return [Boolean]
-    def content_worth_sending?(time:)
+    def content_worth_sending?(time:, activity: nil)
       # Check positive? as fetching a non-integer env var would result in zero and this hook would return true,
       # whilst top_ideas would be limited to zero ideas, possibly resulting in no content being sent.
       @content_worth_sending ||=
