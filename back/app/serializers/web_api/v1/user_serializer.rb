@@ -27,6 +27,11 @@ class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
     name_service.first_name(object)
   end
 
+  attribute :display_name do |object, params|
+    name_service = UserDisplayNameService.new(AppConfiguration.instance, current_user(params))
+    name_service.display_name(object)
+  end
+
   attribute :no_name do |object|
     object.no_name?
   end
