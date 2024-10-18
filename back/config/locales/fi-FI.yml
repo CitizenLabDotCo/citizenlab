@@ -64,14 +64,14 @@ fi:
     ineligible: kelpaamattomia
     ineligible_description: kelpaamattomia
   topics:
-    nature: Luonto ja biologinen monimuotoisuus
-    nature_description: Luonto ja biologinen monimuotoisuus
+    nature: Luonto ja ympäristö
+    nature_description: Luonto ja ympäristö
     waste: Puhtaus ja hukka
     waste_description: Puhtaus ja hukka
     sustainability: Kestävä kehitys
     sustainability_description: Kestävä kehitys
-    mobility: Liikkuvuus
-    mobility_description: Liikkuvuus
+    mobility: Liikenne
+    mobility_description: Liikenne
     technology: Energia ja tekniikka
     technology_description: Energia ja tekniikka
     economy: Työ, talous ja matkailu
@@ -82,8 +82,8 @@ fi:
     public_space_description: Julkiset tilat ja rakennukset
     safety: Turvallisuus
     safety_description: Turvallisuus
-    education: Koulutus ja nuoriso
-    education_description: Koulutus ja nuoriso
+    education: Koulutus
+    education_description: Koulutus
     culture: Kulttuuria, urheilua ja tapahtumia
     culture_description: Kulttuuria, urheilua ja tapahtumia
     health: Terveys ja hyvinvointi
@@ -146,8 +146,6 @@ fi:
         title: Ikä
       domicile:
         title: Asuinpaikka
-      education:
-        title: koulutus
     ideas:
       title:
         title: Otsikko
@@ -212,14 +210,6 @@ fi:
       unspecified: Muu
     domicile:
       outside: Jossain muualla
-    education:
-      ISCED2: Alemman keskiasteen koulutus
-      ISCED3: Toisen asteen koulutus
-      ISCED4: Toisen asteen jälkeinen ei korkea-asteen koulutus
-      ISCED5: Lyhytjaksoinen korkea-asteen koulutus
-      ISCED6: Kandidaatin tai vastaava
-      ISCED7: Mestari tai vastaava
-      ISCED8: Tohtori tai vastaava
   initiatives:
     default_threshold_reached_message: >
       <p>Aloitteentekijöitä pyydetään esittelemään ehdotuksensa seuraavassa valtuuston kokouksessa. Lähetämme virallisen päivityksen.</p>

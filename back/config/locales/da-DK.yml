@@ -146,8 +146,6 @@ da:
         title: Fødselsår
       domicile:
         title: Lokalområde
-      education:
-        title: Uddannelse
     ideas:
       title:
         title: Titel
@@ -212,14 +210,6 @@ da:
       unspecified: Andet
     domicile:
       outside: Et andet sted
-    education:
-      ISCED2: Grundskole
-      ISCED3: Ungdomsuddannelse
-      ISCED4: Videregående uddannelse
-      ISCED5: Kort videregående uddannelse
-      ISCED6: Bachelorgrad eller tilsvarende
-      ISCED7: Kandidatgrad eller tilsvarende
-      ISCED8: Ph.d. eller tilsvarende
   initiatives:
     default_threshold_reached_message: >
       <p>Tagerne er inviteret til at præsentere deres forslag på næste rådsmøde. Vi bringer en officiel opdatering.</p>

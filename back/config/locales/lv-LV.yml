@@ -146,8 +146,6 @@ lv:
         title: Dzimšanas gads
       domicile:
         title: Dzīvesvieta
-      education:
-        title: Izglītība
     ideas:
       title:
         title: Nosaukums
@@ -212,14 +210,6 @@ lv:
       unspecified: Cits
     domicile:
       outside: Kaut kur citur
-    education:
-      ISCED2: Pirmās pakāpes vispārējā vidējā izglītība
-      ISCED3: Vidējā izglītība
-      ISCED4: Pēcvidusskolas neterciārā izglītība
-      ISCED5: Īsa cikla augstākā izglītība
-      ISCED6: Bakalaura grāds vai līdzvērtīgs grāds
-      ISCED7: Maģistra grāds vai līdzvērtīgs grāds
-      ISCED8: Doktora grāds vai līdzvērtīgs grāds
   initiatives:
     default_threshold_reached_message: >
       <p>Iniciatori tiek aicināti iepazīstināt ar saviem priekšlikumiem nākamajā padomes sēdē. Mēs sniegsim oficiālu atjauninātu informāciju.</p>

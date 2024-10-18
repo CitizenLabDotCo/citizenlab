@@ -146,8 +146,6 @@ ar:
         title: سنة الميلاد
       domicile:
         title: مكان الإقامة
-      education:
-        title: التعليم
     ideas:
       title:
         title: العنوان
@@ -212,14 +210,6 @@ ar:
       unspecified: غير محدد
     domicile:
       outside: في مكان آخر
-    education:
-      ISCED2: التعليم الثانوي الأدنى
-      ISCED3: التعليم الثانوي العالي
-      ISCED4: التعليم بعد الثانوي غير العالي
-      ISCED5: التعليم العالي قصير الأمد
-      ISCED6: شهادة البكالوريوس أو ما يعادلها
-      ISCED7: شهادة الماجستير أو ما يعادلها
-      ISCED8: شهادة الدكتوراه أو ما يعادلها
   initiatives:
     default_threshold_reached_message: >
       <p>تمت دعوة المبادرين لتقديم مُقترحهم في اجتماع المجلس القادم. سنقدم تحديثًا رسميًا بذلك.</p>

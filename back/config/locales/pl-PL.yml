@@ -146,8 +146,6 @@ pl:
         title: Rok urodzenia
       domicile:
         title: Miejsce zamieszkania
-      education:
-        title: Wykształcenie
     ideas:
       title:
         title: Tytuł
@@ -212,14 +210,6 @@ pl:
       unspecified: Nieokreślona
     domicile:
       outside: Gdzieś indziej
-    education:
-      ISCED2: Gimnazjalne
-      ISCED3: Ponadgimnazjalne
-      ISCED4: Policealne
-      ISCED5: Studia krótkiego cyklu (między średnim, a licencjackim)
-      ISCED6: Licencjackie lub ich odpowiednik
-      ISCED7: Magisterskie lub ich odpowiednik
-      ISCED8: Doktoranckie lub ich odpowiednik
   initiatives:
     default_threshold_reached_message: >
       <p>Inicjatorzy są proszeni o przedstawienie swojej propozycji na następnym posiedzeniu rady. Przedstawimy oficjalną aktualizację.</p>
