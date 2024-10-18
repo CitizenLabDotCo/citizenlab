@@ -236,22 +236,12 @@ class User < ApplicationRecord
   def full_name
     return [first_name, last_name].compact.join(' ') unless no_name?
 
-    [anon_first_name, anon_last_name].compact.join(' ')
+    anon = AnonymousNameService.new(self)
+    [anon.first_name, anon.last_name].compact.join(' ')
   end
 
   def no_name?
-    !self[:last_name] && !self[:first_name] && !invite_pending?
-  end
-
-  # Anonymous names to use if no first name and last name
-  def anon_first_name
-    I18n.t 'user.anon_first_name'
-  end
-
-  def anon_last_name
-    # Generate a numeric last name in the format of '123456'
-    name_key = email || unique_code || id
-    (name_key.sum**2).to_s[0, 6]
+    self[:last_name].blank? && self[:first_name].blank? && !invite_pending?
   end
 
   def authenticate(unencrypted_password)
