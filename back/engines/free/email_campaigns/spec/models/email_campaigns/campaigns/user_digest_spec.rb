@@ -77,6 +77,7 @@ RSpec.describe EmailCampaigns::Campaigns::UserDigest do
 
   describe 'before_send_hooks' do
     let(:campaign) { build(:user_digest_campaign) }
+
     let_it_be(:activity) { create(:activity) }
 
     it 'returns true when there are at least 3 ideas updated in the last week' do
