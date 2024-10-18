@@ -212,6 +212,12 @@ it:
           title: Qual è il suo commento?
         option:
           title: Qual è la sua opzione?
+        proposal:
+          title: Qual è la tua proposta?
+        initiative:
+          title: Qual è la tua iniziativa?
+        petition:
+          title: Qual è la tua petizione?
   custom_field_options:
     gender:
       male: Maschio
