@@ -4,11 +4,11 @@ module AggressiveCaching
   module Patches
     module WebApi
       module V1
-        module AppConfigurationsController
+        module StaticPagesController
           def self.included(base)
             base.class_eval do
               with_options if: :aggressive_caching_active? do
-                caches_action :show, expires_in: 1.minute
+                caches_action :index, :show, :by_slug, expires_in: 1.minute
               end
             end
           end

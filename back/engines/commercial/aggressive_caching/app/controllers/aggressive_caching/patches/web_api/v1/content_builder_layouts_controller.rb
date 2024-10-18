@@ -4,7 +4,7 @@ module AggressiveCaching
   module Patches
     module WebApi
       module V1
-        module AppConfigurationsController
+        module ContentBuilderLayoutsController
           def self.included(base)
             base.class_eval do
               with_options if: :aggressive_caching_active? do

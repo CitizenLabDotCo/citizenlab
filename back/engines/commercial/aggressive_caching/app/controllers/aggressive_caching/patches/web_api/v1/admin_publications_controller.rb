@@ -4,11 +4,12 @@ module AggressiveCaching
   module Patches
     module WebApi
       module V1
-        module AppConfigurationsController
+        module AdminPublicationsController
           def self.included(base)
             base.class_eval do
               with_options if: :aggressive_caching_active? do
-                caches_action :show, expires_in: 1.minute
+                caches_action :index, expires_in: 1.minute, cache_path: -> { params.to_s }
+                caches_action :show, :status_counts, expires_in: 1.minute
               end
             end
           end
