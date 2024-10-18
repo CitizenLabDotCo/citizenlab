@@ -21,6 +21,7 @@ resource 'Events' do
     parameter :start_at_lt, 'Filter by maximum start at', type: :string
     parameter :start_at_gteq, 'Filter by minimum start at', type: :string
     parameter :project_publication_statuses, 'The publication statuses of the project to filter events by', type: :array
+    parameter :include_images, 'Include the related event_images', required: false
     parameter :ongoing_during, <<~DESC, required: false, type: :string
       Filter events by date range. Only returns events that are ongoing during the 
       specified date range, meaning events that overlap with the given range. The date 
@@ -40,6 +41,20 @@ resource 'Events' do
       example_request 'List all events of a project' do
         assert_status 200
         expect(response_data.size).to eq 2
+      end
+    end
+
+    context 'passing parameter include_images = true' do
+      let!(:image1) { create(:event_image, event: @events[0]) }
+      let!(:image2) { create(:event_image, event: @events[1]) }
+      let(:include_images) { true }
+
+      example_request 'includes the event images in the response' do
+        json_response = json_parse(response_body)
+        included_image_ids = json_response[:included].select { |d| d[:type] == 'image' }.pluck(:id)
+
+        assert_status 200
+        expect(included_image_ids).to match_array([image1.id, image2.id])
       end
     end
 
