@@ -164,6 +164,7 @@ export const navbarItemsData: INavbarItem[] = [
       ordering: 3,
       created_at: '2021-12-10T10:36:36.767Z',
       updated_at: '2021-12-10T10:41:30.660Z',
+      slug: null,
     },
     relationships: {
       static_page: {

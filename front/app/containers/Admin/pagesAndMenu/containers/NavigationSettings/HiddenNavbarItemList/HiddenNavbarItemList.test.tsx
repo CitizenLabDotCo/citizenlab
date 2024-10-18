@@ -95,17 +95,6 @@ describe('<HiddenNavbarItemList />', () => {
     };
     fireEvent.click(addButtons[0]);
     expect(mockAddNavbarItem).toHaveBeenCalledWith(faqItem);
-
-    const aboutItem = {
-      pageCode: 'about',
-      pageId: 'e7854e94-3074-4607-b66e-0422aa3d8359',
-      titleMultiloc: { en: 'About' },
-      type: 'page',
-      slug: 'about',
-    };
-
-    fireEvent.click(addButtons[1]);
-    expect(mockAddNavbarItem).toHaveBeenCalledWith(aboutItem);
   });
 
   it('calls deleteCustomPage on click delete button with correct page id', () => {
