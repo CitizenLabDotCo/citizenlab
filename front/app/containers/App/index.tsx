@@ -36,13 +36,14 @@ import ErrorBoundary from 'components/ErrorBoundary';
 
 import { trackPage } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
 import Navigate from 'utils/cl-router/Navigate';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 import eventEmitter from 'utils/eventEmitter';
 import {
   endsWith,
+  initiativeShowPageSlug,
   isIdeaShowPage,
-  isInitiativeShowPage,
   isPage,
 } from 'utils/helperUtils';
 import { localeStream } from 'utils/localeStream';
@@ -259,29 +260,31 @@ const App = ({ children }: Props) => {
     trackPage(location.pathname);
   }, [location.pathname]);
 
+  const urlSegments = location.pathname.replace(/^\/+/g, '').split('/');
+
+  // Redirect from /initiatives/:slug to /ideas/:slug to make sure old initiative links still work
+  useEffect(() => {
+    if (initiativeShowPageSlug(urlSegments)) {
+      const slug = initiativeShowPageSlug(urlSegments);
+      clHistory.replace(`/ideas/${slug}`);
+    }
+  }, [urlSegments]);
+
   const closeUserDeletedModal = () => {
     setUserDeletedSuccessfullyModalOpened(false);
   };
 
   const isAdminPage = isPage('admin', location.pathname);
   const isPagesAndMenuPage = isPage('pages_menu', location.pathname);
-  const isInitiativeFormPage = isPage('initiative_form', location.pathname);
   const isIdeaFormPage = isPage('idea_form', location.pathname);
   const isIdeaEditPage = isPage('idea_edit', location.pathname);
-  const isInitiativeEditPage = isPage('initiative_edit', location.pathname);
   const isEventPage = isPage('event_page', location.pathname);
   const isNativeSurveyPage = isPage('native_survey', location.pathname);
 
   const theme = getTheme(appConfiguration);
   const showFooter =
-    !isAdminPage &&
-    !isIdeaFormPage &&
-    !isInitiativeFormPage &&
-    !isIdeaEditPage &&
-    !isInitiativeEditPage &&
-    !isNativeSurveyPage;
+    !isAdminPage && !isIdeaFormPage && !isIdeaEditPage && !isNativeSurveyPage;
   const { pathname } = removeLocale(location.pathname);
-  const urlSegments = location.pathname.replace(/^\/+/g, '').split('/');
   const disableScroll = fullscreenModalEnabled && signUpInModalOpened;
   const isAuthenticationPending = authUser === undefined;
   const canAccessRoute = usePermission({
@@ -301,11 +304,7 @@ const App = ({ children }: Props) => {
     if (isNativeSurveyPage) return false;
 
     if (isSmallerThanTablet) {
-      if (
-        isEventPage ||
-        isIdeaShowPage(urlSegments) ||
-        isInitiativeShowPage(urlSegments)
-      ) {
+      if (isEventPage || isIdeaShowPage(urlSegments)) {
         return false;
       }
     }

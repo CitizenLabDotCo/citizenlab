@@ -108,7 +108,6 @@ const ideationConfig: ParticipationMethodConfig = {
     if (props.ideaIdForSocialSharing && props.title && props.subtitle) {
       return (
         <SharingModalContent
-          postType="idea"
           postId={props.ideaIdForSocialSharing}
           title={props.title}
           subtitle={props.subtitle}
@@ -127,6 +126,9 @@ const ideationConfig: ParticipationMethodConfig = {
           question: messages.questionFormTitle,
           issue: messages.issueFormTitle1,
           contribution: messages.contributionFormTitle,
+          proposal: messages.proposalFormTitle,
+          petition: messages.petitionFormTitle,
+          initiative: messages.initiativeFormTitle,
         }[getInputTerm(props.phases, props.phaseFromUrl)]}
       />
     );
@@ -163,7 +165,6 @@ const proposalsConfig: ParticipationMethodConfig = {
     if (props.ideaIdForSocialSharing && props.title && props.subtitle) {
       return (
         <SharingModalContent
-          postType="idea"
           postId={props.ideaIdForSocialSharing}
           title={props.title}
           subtitle={props.subtitle}
@@ -182,6 +183,9 @@ const proposalsConfig: ParticipationMethodConfig = {
           question: messages.questionFormTitle,
           issue: messages.issueFormTitle1,
           contribution: messages.contributionFormTitle,
+          proposal: messages.proposalFormTitle,
+          petition: messages.petitionFormTitle,
+          initiative: messages.initiativeFormTitle,
         }[getInputTerm(props.phases, props.phaseFromUrl)]}
       />
     );

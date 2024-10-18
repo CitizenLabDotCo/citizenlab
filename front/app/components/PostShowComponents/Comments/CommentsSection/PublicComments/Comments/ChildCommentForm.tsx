@@ -8,7 +8,6 @@ import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAddCommentToIdea from 'api/comments/useAddCommentToIdea';
-import useAddCommentToInitiative from 'api/comments/useAddCommentToInitiative';
 import useAuthUser from 'api/me/useAuthUser';
 import useProjectById from 'api/projects/useProjectById';
 
@@ -24,7 +23,6 @@ import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clickOutside from 'utils/containers/clickOutside';
 import { isNilOrError } from 'utils/helperUtils';
-import { canModerateInitiative } from 'utils/permissions/rules/initiativePermissions';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import { commentReplyButtonClicked$, commentAdded } from '../../../events';
@@ -66,8 +64,6 @@ const HiddenLabel = styled.span`
 
 interface Props {
   ideaId: string | undefined;
-  initiativeId: string | undefined;
-  postType: 'idea' | 'initiative';
   projectId?: string | null;
   parentId: string;
   className?: string;
@@ -77,8 +73,6 @@ interface Props {
 const ChildCommentForm = ({
   parentId,
   ideaId,
-  initiativeId,
-  postType,
   projectId,
   className,
   allowAnonymousParticipation,
@@ -93,10 +87,7 @@ const ChildCommentForm = ({
     mutate: addCommentToIdeaComment,
     isLoading: isAddCommentToIdeaLoading,
   } = useAddCommentToIdea();
-  const {
-    mutate: addCommentToInitiativeComment,
-    isLoading: isAddCommentToInitiativeLoading,
-  } = useAddCommentToInitiative();
+
   const [inputValue, setInputValue] = useState('');
   const [focused, setFocused] = useState(false);
   const [canSubmit, setCanSubmit] = useState(false);
@@ -107,8 +98,7 @@ const ChildCommentForm = ({
   const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
     useState(false);
   const textareaElement = useRef<HTMLTextAreaElement | null>(null);
-  const processing =
-    isAddCommentToIdeaLoading || isAddCommentToInitiativeLoading;
+  const processing = isAddCommentToIdeaLoading;
   useEffect(() => {
     const subscriptions: Subscription[] = [
       commentReplyButtonClicked$
@@ -159,8 +149,8 @@ const ChildCommentForm = ({
   const onFocus = () => {
     trackEventByName(tracks.focusChildCommentEditor, {
       extra: {
-        postId: ideaId || initiativeId,
-        postType,
+        postId: ideaId,
+        postType: 'idea',
         parentId,
       },
     });
@@ -191,14 +181,14 @@ const ChildCommentForm = ({
 
       trackEventByName(tracks.clickChildCommentPublish, {
         extra: {
-          postId: ideaId || initiativeId,
-          postType,
+          postId: ideaId,
+          postType: 'idea',
           parentId,
           content: inputValue,
         },
       });
 
-      if (postType === 'idea' && projectId) {
+      if (projectId) {
         addCommentToIdeaComment(
           {
             ideaId,
@@ -225,54 +215,10 @@ const ChildCommentForm = ({
                 trackEventByName(tracks.childCommentProfanityError.name, {
                   locale,
                   ideaId,
-                  postType,
+                  postType: 'idea',
                   projectId,
                   profaneMessage: commentBodyMultiloc[locale],
                   location: 'Idea Child Comment Form (citizen side)',
-                  userId: authUser.data.id,
-                  host: appConfiguration
-                    ? appConfiguration.data.attributes.host
-                    : null,
-                });
-
-                setProfanityApiError(true);
-              }
-            },
-          }
-        );
-      }
-
-      if (postType === 'initiative') {
-        addCommentToInitiativeComment(
-          {
-            initiativeId,
-            author_id: authUser.data.id,
-            parent_id: parentId,
-            body_multiloc: commentBodyMultiloc,
-            anonymous: postAnonymously,
-          },
-          {
-            onSuccess: () => {
-              commentAdded();
-              setInputValue('');
-              setFocused(false);
-            },
-            onError: (error) => {
-              const apiErrors = error.errors;
-              const profanityApiError = apiErrors.base.find(
-                (apiError) => apiError.error === 'includes_banned_words'
-              );
-
-              setHasApiError(true);
-
-              if (profanityApiError) {
-                trackEventByName(tracks.childCommentProfanityError.name, {
-                  locale,
-                  initiativeId,
-                  postType,
-                  projectId,
-                  profaneMessage: commentBodyMultiloc[locale],
-                  location: 'Initiative Child Comment Form (citizen side)',
                   userId: authUser.data.id,
                   host: appConfiguration
                     ? appConfiguration.data.attributes.host
@@ -310,10 +256,9 @@ const ChildCommentForm = ({
     }
   };
 
-  const userCanModerate = {
-    idea: project ? canModerateProject(project.data, authUser) : false,
-    initiative: canModerateInitiative(authUser),
-  }[postType];
+  const userCanModerate = project
+    ? canModerateProject(project.data, authUser)
+    : false;
 
   if (focused) {
     return (
@@ -341,8 +286,7 @@ const ChildCommentForm = ({
               className={`childcommentform-${parentId}`}
               placeholder={formatMessage(messages.childCommentBodyPlaceholder)}
               rows={3}
-              postId={ideaId || initiativeId}
-              postType={postType}
+              postId={ideaId}
               value={inputValue}
               error={
                 hasApiError ? (

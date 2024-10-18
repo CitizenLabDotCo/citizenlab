@@ -11,7 +11,7 @@ import {
   IQueryParameters,
 } from './types';
 
-const fetchAdminPublications = (filters: IQueryParameters) => {
+export const fetchAdminPublications = (filters: IQueryParameters) => {
   const {
     pageNumber,
     pageSize,
@@ -42,7 +42,10 @@ const fetchAdminPublications = (filters: IQueryParameters) => {
   });
 };
 
-const useAdminPublications = (queryParams: IQueryParameters) => {
+const useAdminPublications = (
+  queryParams: IQueryParameters,
+  { enabled = true } = {}
+) => {
   return useInfiniteQuery<
     IAdminPublications,
     CLErrors,
@@ -57,6 +60,7 @@ const useAdminPublications = (queryParams: IQueryParameters) => {
       const pageNumber = getPageNumberFromUrl(lastPage.links.self);
       return hasNextPage && pageNumber ? pageNumber + 1 : null;
     },
+    enabled,
   });
 };
 

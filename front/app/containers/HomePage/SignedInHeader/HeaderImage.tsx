@@ -5,21 +5,12 @@ import styled, { useTheme } from 'styled-components';
 
 import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/HomepageBanner';
 
-const HeaderImageContainer = styled.div`
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-`;
-
 const HeaderImageContainerInner = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
   position: relative;
 
   ${isRtl`
@@ -30,10 +21,11 @@ const HeaderImageContainerInner = styled.div`
 const StyledImage = styled(Image)`
   width: 100%;
   height: auto;
+  object-fit: cover;
 
   ${media.tablet`
     width: 100%;
-    height: 100%;
+    height: auto;
     object-fit: cover;
   `}
 `;
@@ -50,7 +42,7 @@ const HeaderImage = ({
       ? homepageSettings.header_bg.large
       : null;
     return (
-      <HeaderImageContainer>
+      <Box position="relative" width="100%" height="auto" overflow="hidden">
         <HeaderImageContainerInner data-cy="e2e-signed-in-header-image-parent">
           {tenantHeaderImage && (
             <StyledImage
@@ -80,7 +72,7 @@ const HeaderImage = ({
             right="0"
           />
         </HeaderImageContainerInner>
-      </HeaderImageContainer>
+      </Box>
     );
   }
 

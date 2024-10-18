@@ -105,7 +105,7 @@ export interface IAppConfigurationSettings {
     client_id: string;
     logo_url: string;
     login_mechanism_name: string;
-    admin_only?: boolean;
+    visibility?: 'show' | 'link' | 'hide';
   };
   azure_ad_b2c_login?: {
     allowed: boolean;
@@ -147,9 +147,6 @@ export interface IAppConfigurationSettings {
     url?: string;
   };
   maps?: AppConfigurationMapSettings;
-  initiatives: ProposalsSettings;
-  initiative_review?: AppConfigurationFeature;
-  initiative_cosponsors?: AppConfigurationFeature;
   fragments?: {
     allowed: boolean;
     enabled: boolean;
@@ -243,7 +240,6 @@ export interface IAppConfigurationSettings {
   multi_language_platform?: AppConfigurationFeature;
   customisable_homepage_banner?: AppConfigurationFeature;
   management_feed?: AppConfigurationFeature;
-  proposals_participation_method?: AppConfigurationFeature;
   fake_sso?: AppConfigurationFeature;
   prescreening?: AppConfigurationFeature;
   input_cosponsorship?: AppConfigurationFeature;

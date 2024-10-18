@@ -1,0 +1,16 @@
+ur:
+  email_campaigns:
+    campaign_type_description:
+      "inappropriate_content_flagged": نامناسب مواد پر جھنڈا لگایا گیا۔
+    admin_campaign_type_description:
+      "inappropriate_content_flagged": نامناسب مواد پر جھنڈا لگایا گیا - منتظمین
+    inappropriate_content_flagged:
+      subject: 'آپ کے پلیٹ فارم پر ایک پوسٹ کو نظرثانی کے لیے جھنڈا لگا دیا گیا ہے۔'
+      header_title: 'آپ کے پلیٹ فارم پر ایک پوسٹ کو نظرثانی کے لیے جھنڈا لگا دیا گیا ہے۔'
+      author_wrote: '%{authorName} نے لکھا:'
+      preheader: 'آپ کے پلیٹ فارم پر ایک پوسٹ کو نظرثانی کے لیے جھنڈا لگا دیا گیا ہے۔'
+      automatically_flagged: >
+        اس پوسٹ میں ممکنہ طور پر نامناسب مواد کے طور پر خود بخود پتہ چلا۔ ہم آپ کو یہ اطلاع اس لیے بھیج رہے ہیں تاکہ آپ اپنی اعتدال پسندی کے رہنما خطوط کے مطابق پوسٹ کا جائزہ لے سکیں۔
+      how_to_review: >
+        اگر پوسٹ میں نامناسب مواد نہیں ہے، تو آپ ایڈمن پینل میں ایکٹیویٹی ٹیب میں اپنے پلیٹ فارم کے ذریعے وارننگ کو ہٹا سکتے ہیں۔
+      cta_review: 'جائزہ لیں'
