@@ -3,9 +3,8 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-# TODO: move-old-proposals-test
 resource 'Analytics - FactPosts model' do
-  explanation 'Queries to summarise posts - ideas & initiatives/proposals.'
+  explanation 'Queries to summarise posts - ideas & proposals.'
 
   before do
     header 'Content-Type', 'application/json'
@@ -34,7 +33,7 @@ resource 'Analytics - FactPosts model' do
     example 'returns posts by month' do
       # Create 3 posts in 2 months
       create(:idea, created_at: @dates[0])
-      create(:initiative, created_at: @dates[1])
+      create(:proposal, created_at: @dates[1])
       create(:idea, created_at: @dates[2])
       create(:proposal, created_at: @dates[2])
       do_request({
@@ -82,6 +81,7 @@ resource 'Analytics - FactPosts model' do
       ])
     end
 
+    # TODO: cleanup-after-proposals-migration
     example 'correctly filters initiatives by status', document: false do
       create(:initiative, created_at: @dates[0])
       create(:initiative, created_at: @dates[1])

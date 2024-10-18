@@ -189,13 +189,6 @@ const OverviewDashboard = () => {
           />
         </Column>
         <Column>
-          <Outlet
-            id="app.containers.Admin.dashboard.summary.proposals"
-            projectId={currentProjectFilter}
-            startAtMoment={startAtMoment}
-            endAtMoment={endAtMoment}
-            resolution={resolution}
-          />
           <SelectableResourceByProjectChart
             className="dynamicHeight fullWidth e2e-resource-by-project-chart"
             onResourceByProjectChange={onResourceByProjectChange}

@@ -26,7 +26,7 @@ describe('useDeleteFollower', () => {
       result.current.mutate({
         followerId: 'followerId',
         followableId: 'followableId',
-        followableType: 'initiatives',
+        followableType: 'ideas',
       });
     });
 
@@ -48,7 +48,7 @@ describe('useDeleteFollower', () => {
       result.current.mutate({
         followerId: 'followerId',
         followableId: 'followableId',
-        followableType: 'initiatives',
+        followableType: 'ideas',
       });
     });
 

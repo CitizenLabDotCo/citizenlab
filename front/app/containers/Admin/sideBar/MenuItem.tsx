@@ -11,7 +11,8 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
+import useAuthUser from 'api/me/useAuthUser';
+
 import useFeatureFlags from 'hooks/useFeatureFlags';
 
 import CountBadge from 'components/UI/CountBadge';
@@ -19,6 +20,7 @@ import CountBadge from 'components/UI/CountBadge';
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { usePermission } from 'utils/permissions';
+import { isSuperAdmin } from 'utils/permissions/roles';
 
 import tooltipImage from './assets/tooltip.png';
 import messages from './messages';
@@ -98,6 +100,7 @@ const MenuItem = ({ navItem }: Props) => {
     names: navItem.featureNames ?? [],
     onlyCheckAllowed: navItem.onlyCheckAllowed,
   });
+  const { data: user } = useAuthUser();
 
   const hasPermission = usePermission({
     action: 'access',
@@ -107,14 +110,18 @@ const MenuItem = ({ navItem }: Props) => {
   // Temporary proposal warning implementation, will be removed together with the navbar item
   // after users have had enough time to get used to the feature
 
-  const isProjectProposalsEnabled = useFeatureFlag({
-    name: 'proposals_participation_method',
-  });
+  const isItemDisabled = navItem.name === 'initiatives';
 
-  const isItemDisabled =
-    isProjectProposalsEnabled && navItem.name === 'initiatives';
+  const enabledAndHasPermission = featuresEnabled && hasPermission;
 
-  if (!featuresEnabled || !hasPermission) return null;
+  if (navItem.name === 'reporting') {
+    if (!isSuperAdmin(user) && !enabledAndHasPermission) {
+      // Super admins need to have access to the global report builder
+      return null;
+    }
+  } else {
+    if (!enabledAndHasPermission) return null;
+  }
 
   return (
     <Tooltip
@@ -124,6 +131,7 @@ const MenuItem = ({ navItem }: Props) => {
           flexDirection="column"
           alignItems="center"
           gap="20px"
+          p="8px"
         >
           <Image src={tooltipImage} alt="" w="250px" />
           <FormattedMessage {...messages.proposalsTooltip} />

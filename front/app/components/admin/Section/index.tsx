@@ -39,18 +39,6 @@ export const SectionField = styled(Box)`
   `}
 `;
 
-export const SectionFieldPageContent = styled.div`
-  margin-bottom: 35px;
-  transition: all 200ms ease-in-out;
-  max-width: calc(${(props) => props.theme.maxPageWidth}px - 118px);
-  display: flex;
-  flex-direction: column;
-
-  ${isRtl`
-    align-items: flex-end;
-  `}
-`;
-
 export const PageTitle = styled.h1`
   font-size: ${fontSizes.xxxl}px;
   line-height: 40px;

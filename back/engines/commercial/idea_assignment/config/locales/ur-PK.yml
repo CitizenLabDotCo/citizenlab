@@ -1,0 +1,13 @@
+ur:
+  email_campaigns:
+    campaign_type_description:
+      "idea_assigned_to_you": مجھے ایک خیال کی تفویض
+    admin_campaign_type_description:
+      "idea_assigned_to_you": ایک خیال کی تفویض - منتظمین اور پروجیکٹ مینیجرز
+    idea_assigned_to_you:
+      by_author: 'بذریعہ %{authorName}'
+      cta_reply_to: '%{authorName}کو رائے دیں۔'
+      event_description_idea: 'آپ کو ایک آئیڈیا تفویض کیا گیا ہے۔ آفیشل اپ ڈیٹ لکھ کر یا اس کی حیثیت تبدیل کر کے رائے دیں۔'
+      main_header: '%{firstName}، آپ کے پاس ایک نئی اسائنمنٹ ہے۔'
+      subject: 'آپ کے پاس %{organizationName}کے پلیٹ فارم پر ایک اسائنمنٹ ہے۔'
+      preheader_idea: '%{authorName} کا آئیڈیا آپ کو تفویض کیا گیا ہے۔'

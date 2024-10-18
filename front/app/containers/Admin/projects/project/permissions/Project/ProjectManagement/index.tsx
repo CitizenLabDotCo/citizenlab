@@ -13,10 +13,9 @@ import { Section } from 'components/admin/Section';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
+import messages from './messages';
 import ModeratorList from './ModeratorList';
 import UserSearch from './UserSearch';
-
-import messages from './messages';
 
 const ModeratorSubSection = styled(Section)`
   margin-bottom: 30px;

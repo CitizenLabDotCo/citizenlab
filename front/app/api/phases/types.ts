@@ -166,6 +166,9 @@ export type InputTerm =
   | 'project'
   | 'question'
   | 'issue'
-  | 'contribution';
+  | 'contribution'
+  | 'proposal'
+  | 'initiative'
+  | 'petition';
 
 export type PresentationMode = 'card' | 'map';
