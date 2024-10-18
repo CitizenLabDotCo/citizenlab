@@ -2038,6 +2038,7 @@
   "app.sessionRecording.modalDescription1": "Per capire meglio i nostri utenti, chiediamo a caso a una piccola percentuale di visitatori di tracciare in dettaglio la loro sessione di navigazione.",
   "app.sessionRecording.modalDescription2": "L'unico scopo dei dati registrati è quello di migliorare il sito web. Nessuno dei tuoi dati sarà condiviso con terzi. Qualsiasi informazione sensibile inserita verrà filtrata.",
   "app.sessionRecording.modalDescription3": "Accetti?",
+  "app.sessionRecording.modalDescriptionFaq": "FAQ qui.",
   "app.sessionRecording.modalTitle": "Aiutaci a migliorare questo sito",
   "app.sessionRecording.reject": "No, rifiuto",
   "app.utils.AdminPage.ProjectEdit.conductParticipatoryBudgetingText": "Condurre un esercizio di allocazione del budget",
