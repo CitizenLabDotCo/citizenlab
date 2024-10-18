@@ -5,13 +5,13 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
   before_action :set_admin_publication, only: %i[reorder show]
 
   def index
-    publication_filterer = AdminPublicationsFilteringService.new
-    publications = policy_scope(AdminPublication.includes(:parent))
-    publications = publication_filterer.filter(publications, params.merge(current_user: current_user))
+    admin_publication_filterer = AdminPublicationsFilteringService.new
+    admin_publications = policy_scope(AdminPublication.includes(:parent))
+    admin_publications = admin_publication_filterer.filter(admin_publications, params.merge(current_user: current_user))
 
     # A flattened ordering, such that project publications with a parent (projects in folders) are ordered
     # first by their parent's :ordering, and then by their own :ordering (their ordering within the folder).
-    publications = publications.select(
+    admin_publications = admin_publications.select(
       'admin_publications.*',
       'CASE WHEN admin_publications.parent_id IS NULL THEN admin_publications.ordering ELSE parents.ordering END
       AS root_ordering'
@@ -19,14 +19,12 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
       .joins('LEFT OUTER JOIN admin_publications AS parents ON parents.id = admin_publications.parent_id')
       .order('root_ordering, admin_publications.ordering')
 
-    @publications = paginate publications
+    @admin_publications = paginate admin_publications
 
     included = []
 
-    # Disambiguation: @publications is a collection of AdminPublication records, whereas :publication in the includes()
-    # method, and/or the `included` array passed to the serializer, refers to the associated project or folder.
     if params[:include_publications] == 'true'
-      @publications = @publications.includes(
+      @admin_publications = @admin_publications.includes(
         {
           publication: [
             { phases: %i[report custom_form permissions] },
@@ -47,14 +45,14 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
         publication.phases
       ]
     else
-      @publications = @publications.includes(:publication, :children)
+      @admin_publications = @admin_publications.includes(:publication, :children)
     end
 
     render json: linked_json(
-      @publications,
+      @admin_publications,
       WebApi::V1::AdminPublicationSerializer,
       params: jsonapi_serializer_params(
-        visible_children_count_by_parent_id: publication_filterer.visible_children_counts_by_parent_id
+        visible_children_count_by_parent_id: admin_publication_filterer.visible_children_counts_by_parent_id
       ),
       include: included
     )
