@@ -5,7 +5,6 @@ import { render, screen } from 'utils/testUtils/rtl';
 import DesktopNavbar from '.';
 
 jest.mock('api/navbar/useNavbarItems');
-jest.mock('api/custom_pages/useCustomPageSlugById');
 
 const mockAdminPublications = [
   {
@@ -39,7 +38,7 @@ describe('<DesktopNavbar />', () => {
 
   it('renders correct number of navbar items', () => {
     render(<DesktopNavbar />);
-    expect(screen.getAllByTestId('desktop-navbar-item')).toHaveLength(6);
+    expect(screen.getAllByTestId('desktop-navbar-item')).toHaveLength(5);
     expect(
       screen.getAllByTestId('admin-publications-navbar-item')
     ).toHaveLength(1);

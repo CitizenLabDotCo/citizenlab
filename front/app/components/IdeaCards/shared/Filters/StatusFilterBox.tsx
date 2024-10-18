@@ -35,7 +35,6 @@ const StatusFilterBox = ({
     return (
       <div className={className}>
         <StatusFilter
-          type="idea"
           statuses={ideaStatuses.data}
           filterCounts={ideasFilterCounts?.data.attributes}
           selectedStatusId={selectedStatusId}

@@ -102,8 +102,8 @@ const DateSetup = ({
           }));
           setFormData({
             ...formData,
-            start_at: from ? format(from, 'yyyy-MM-dd') : undefined,
-            end_at: to ? format(to, 'yyyy-MM-dd') : undefined,
+            start_at: from ? format(from, 'yyyy-MM-dd') : '',
+            end_at: to ? format(to, 'yyyy-MM-dd') : '',
           });
         }}
       />

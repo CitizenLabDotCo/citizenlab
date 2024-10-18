@@ -20,6 +20,9 @@ RSpec.describe EmailCampaigns::Campaigns::UserDigest do
     let!(:top_comment) { create(:comment, post: top_idea, created_at: Time.now - 3.minutes) }
     let!(:comments) { create_list(:comment, 3, post: top_idea, parent: top_comment) + create_list(:comment, 5, post: top_idea) + [top_comment] }
     let!(:draft_project) { create(:project, admin_publication_attributes: { publication_status: 'draft' }, created_at: Time.now - 2.minutes) }
+    let!(:threshold_reached_status) { create(:proposals_status, code: 'threshold_reached') }
+    let!(:proposal) { create(:proposal, idea_status: threshold_reached_status, published_at: 1.year.ago) }
+    let!(:proposal_changed_activity) { create(:idea_changed_status_activity, item: proposal, payload: { change: [nil, threshold_reached_status.id] }, acted_at: 1.day.ago) }
 
     it 'generates a command with the desired payload and tracked content' do
       command = campaign.generate_commands(recipient: user).first
@@ -36,6 +39,12 @@ RSpec.describe EmailCampaigns::Campaigns::UserDigest do
       expect(
         command.dig(:event_payload, :top_ideas).first[:top_comments].first[:created_at]
       ).to eq(top_comment.created_at.iso8601)
+      expect(
+        command.dig(:event_payload, :successful_proposals, 0)
+      ).to include(
+        id: proposal.id,
+        published_at: proposal.published_at.iso8601
+      )
     end
 
     it 'generates a command with abbreviated names' do
@@ -64,33 +73,21 @@ RSpec.describe EmailCampaigns::Campaigns::UserDigest do
       command = campaign.generate_commands(recipient: user).first
       expect(command.dig(:tracked_content, :idea_ids)).not_to include response.id
     end
-
-    it "only includes 'new' initiatives" do
-      create(:initiative_status_proposed)
-
-      old_initiative = create(:initiative, build_status_change: false)
-      old_initiative.initiative_status_changes.first.update!(created_at: 8.days.ago) # more than 1 week ago
-
-      new_initiative = create(:initiative, build_status_change: false)
-      new_initiative.initiative_status_changes.first.update!(created_at: 6.days.ago) # less than 1 week ago
-
-      command = campaign.generate_commands(recipient: user).first
-
-      expect(command.dig(:event_payload, :new_initiatives).pluck(:id)).to match_array [new_initiative.id]
-    end
   end
 
   describe 'before_send_hooks' do
     let(:campaign) { build(:user_digest_campaign) }
 
+    let_it_be(:activity) { create(:activity) }
+
     it 'returns true when there are at least 3 ideas updated in the last week' do
       create_list(:idea, 3, published_at: Time.now - 1.minute)
-      expect(campaign.content_worth_sending?({})).to be true
+      expect(campaign.content_worth_sending?(time: Time.now, activity:)).to be true
     end
 
     it 'returns false when there are less than 3 ideas updated in the last week' do
       create_list(:idea, 2, published_at: Time.now - 1.minute)
-      expect(campaign.content_worth_sending?({})).to be false
+      expect(campaign.content_worth_sending?(time: Time.now, activity:)).to be false
     end
 
     it 'returns true when there 3 ideas with comments or reactions updated in the last week' do
@@ -98,19 +95,14 @@ RSpec.describe EmailCampaigns::Campaigns::UserDigest do
       create(:comment, post: old_ideas.first, created_at: Time.now - 1.minute)
       create(:comment, post: old_ideas.second, created_at: Time.now - 1.minute)
       create(:reaction, reactable: old_ideas.last, created_at: Time.now - 1.minute)
-      expect(campaign.content_worth_sending?({})).to be true
+      expect(campaign.content_worth_sending?(time: Time.now, activity:)).to be true
     end
 
-    it 'returns true when there are any initiatives proposed or where the threshold is reached' do
-      proposed_status = create(:initiative_status_proposed)
-      initiative = create(:initiative)
-      create(
-        :initiative_status_change,
-        initiative: initiative,
-        initiative_status: proposed_status,
-        created_at: 1.day.ago
-      )
-      expect(campaign.content_worth_sending?({})).to be true
+    it 'returns true when there are proposals that reached the threshold' do
+      threshold_reached_status = create(:proposals_status, code: 'threshold_reached')
+      proposal = create(:proposal, idea_status: threshold_reached_status)
+      create(:idea_changed_status_activity, item: proposal, payload: { change: [nil, threshold_reached_status.id] }, acted_at: 1.day.ago)
+      expect(campaign.content_worth_sending?(time: Time.now, activity:)).to be true
     end
   end
 

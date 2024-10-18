@@ -36,15 +36,11 @@ declare global {
       getProjectBySlug: typeof getProjectBySlug;
       getProjectById: typeof getProjectById;
       getTopics: typeof getTopics;
-      getInitiativeStatuses: typeof getInitiativeStatuses;
       getUserBySlug: typeof getUserBySlug;
       getAuthUser: typeof getAuthUser;
       getArea: typeof getArea;
       apiCreateIdea: typeof apiCreateIdea;
-      apiCreateInitiative: typeof apiCreateInitiative;
       apiRemoveIdea: typeof apiRemoveIdea;
-      apiRemoveInitiative: typeof apiRemoveInitiative;
-      apiLikeInitiative: typeof apiLikeInitiative;
       apiLikeIdea: typeof apiLikeIdea;
       apiDislikeIdea: typeof apiDislikeIdea;
       apiCreateOfficialFeedbackForIdea: typeof apiCreateOfficialFeedbackForIdea;
@@ -527,16 +523,6 @@ function getTopics({ excludeCode }: { excludeCode?: string }) {
   });
 }
 
-function getInitiativeStatuses() {
-  return cy.request({
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    method: 'GET',
-    url: 'web_api/v1/topics',
-  });
-}
-
 function getAuthUser() {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
@@ -654,98 +640,6 @@ function apiRemoveIdea(ideaId: string) {
   });
 }
 
-function apiCreateInitiative({
-  initiativeTitle,
-  initiativeContent,
-  assigneeId,
-  locationGeoJSON,
-  locationDescription,
-  jwt,
-  topicIds,
-}: {
-  initiativeTitle: string;
-  initiativeContent: string;
-  assigneeId?: string;
-  locationGeoJSON?: { type: string; coordinates: number[] };
-  locationDescription?: string;
-  jwt?: string;
-  topicIds?: string[];
-}) {
-  let adminJwt: string;
-  let headers: { 'Content-Type': string; Authorization: string } | null = null;
-
-  if (jwt) {
-    headers = {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${jwt}`,
-    };
-  }
-
-  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
-    adminJwt = response.body.jwt;
-
-    return cy.request({
-      headers: headers || {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
-      },
-      method: 'POST',
-      url: 'web_api/v1/initiatives',
-      body: {
-        initiative: {
-          publication_status: 'published',
-          title_multiloc: {
-            en: initiativeTitle,
-            'nl-BE': initiativeTitle,
-          },
-          body_multiloc: {
-            en: initiativeContent,
-            'nl-BE': initiativeContent,
-          },
-          location_point_geojson: locationGeoJSON,
-          location_description: locationDescription,
-          assignee_id: assigneeId,
-          topic_ids: topicIds,
-        },
-      },
-    });
-  });
-}
-
-function apiRemoveInitiative(initiativeId: string) {
-  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
-    const adminJwt = response.body.jwt;
-
-    return cy.request({
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
-      },
-      method: 'DELETE',
-      url: `web_api/v1/initiatives/${initiativeId}`,
-    });
-  });
-}
-
-function apiLikeInitiative(
-  email: string,
-  password: string,
-  initiativeId: string
-) {
-  return cy.apiLogin(email, password).then((response) => {
-    const jwt = response.body.jwt;
-
-    return cy.request({
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${jwt}`,
-      },
-      method: 'POST',
-      url: `web_api/v1/initiatives/${initiativeId}/reactions/up`,
-    });
-  });
-}
-
 function apiLikeIdea(email: string, password: string, ideaId: string) {
   return cy.apiLogin(email, password).then((response) => {
     const jwt = response.body.jwt;
@@ -809,7 +703,6 @@ function apiCreateOfficialFeedbackForIdea(
 
 function apiAddComment(
   postId: string,
-  postType: 'idea' | 'initiative',
   commentContent: string,
   commentParentId?: string,
   jwt?: string
@@ -821,7 +714,7 @@ function apiAddComment(
         Authorization: `Bearer ${jwt}`,
       },
       method: 'POST',
-      url: `web_api/v1/${postType}s/${postId}/comments`,
+      url: `web_api/v1/ideas/${postId}/comments`,
       body: {
         comment: {
           body_multiloc: {
@@ -842,7 +735,7 @@ function apiAddComment(
           Authorization: `Bearer ${adminJwt}`,
         },
         method: 'POST',
-        url: `web_api/v1/${postType}s/${postId}/comments`,
+        url: `web_api/v1/ideas/${postId}/comments`,
         body: {
           comment: {
             body_multiloc: {
@@ -1922,14 +1815,11 @@ Cypress.Commands.add('getIdeaById', getIdeaById);
 Cypress.Commands.add('getProjectBySlug', getProjectBySlug);
 Cypress.Commands.add('getProjectById', getProjectById);
 Cypress.Commands.add('getTopics', getTopics);
-Cypress.Commands.add('getInitiativeStatuses', getInitiativeStatuses);
 Cypress.Commands.add('getUserBySlug', getUserBySlug);
 Cypress.Commands.add('getAuthUser', getAuthUser);
 Cypress.Commands.add('getArea', getArea);
 Cypress.Commands.add('apiCreateIdea', apiCreateIdea);
 Cypress.Commands.add('apiRemoveIdea', apiRemoveIdea);
-Cypress.Commands.add('apiCreateInitiative', apiCreateInitiative);
-Cypress.Commands.add('apiRemoveInitiative', apiRemoveInitiative);
 Cypress.Commands.add('apiLikeIdea', apiLikeIdea);
 Cypress.Commands.add('apiDislikeIdea', apiDislikeIdea);
 Cypress.Commands.add(
@@ -1981,7 +1871,6 @@ Cypress.Commands.add('apiUpdateHomepageLayout', apiUpdateHomepageLayout);
 Cypress.Commands.add('apiRemoveCustomPage', apiRemoveCustomPage);
 Cypress.Commands.add('apiCreateCustomPage', apiCreateCustomPage);
 Cypress.Commands.add('clickLocaleSwitcherAndType', clickLocaleSwitcherAndType);
-Cypress.Commands.add('apiLikeInitiative', apiLikeInitiative);
 Cypress.Commands.add(
   'apiCreateSmartGroupCustomField',
   apiCreateSmartGroupCustomField
