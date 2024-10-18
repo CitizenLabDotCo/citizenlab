@@ -20,10 +20,25 @@ module AggressiveCaching
         value
       end
 
-      # This method is typically overriden in the controller to determine for
-      # which users aggressive caching should be active
       def aggressive_caching_active?
         AppConfiguration.instance.feature_activated?('aggressive_caching')
+      end
+
+      # Helpers for the subclasses to determinte for whom to cache
+      def caching_and_visitor?
+        aggressive_caching_active? && current_user.nil?
+      end
+
+      def caching_and_non_admin?
+        aggressive_caching_active? && (current_user.nil? || current_user.normal_user?)
+      end
+
+      # Quite some API responses embed data about whether the current user
+      # follows the returned resource. This lets us still cache those responses
+      # for users that are not following anything
+      def caching_and_not_following?
+        aggressive_caching_active? &&
+          (current_user.nil? || (current_user.normal_user? && current_user&.follows&.none?))
       end
     end
   end

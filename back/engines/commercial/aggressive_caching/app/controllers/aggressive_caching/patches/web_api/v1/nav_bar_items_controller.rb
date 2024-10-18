@@ -7,14 +7,11 @@ module AggressiveCaching
         module NavBarItemsController
           def self.included(base)
             base.class_eval do
-              with_options if: :aggressive_caching_active? do
-                caches_action :index, expires_in: 1.minute
+              with_options if: :caching_and_non_admin? do
+                skip_after_action :verify_policy_scoped
+                caches_action :index, expires_in: 1.minute, cache_path: -> { request.query_parameters }
               end
             end
-          end
-
-          def aggressive_caching_active?
-            super && (!current_user || current_user.normal_user?)
           end
         end
       end

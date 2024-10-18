@@ -7,15 +7,12 @@ module AggressiveCaching
         module AdminPublicationsController
           def self.included(base)
             base.class_eval do
-              with_options if: :aggressive_caching_active? do
-                caches_action :index, expires_in: 1.minute, cache_path: -> { params.to_s }
+              # We can only cache for visitors, because permissions play a role in the admin publications shown
+              with_options if: :caching_and_visitor? do
+                caches_action :index, expires_in: 1.minute, cache_path: -> { request.query_parameters }
                 caches_action :show, :status_counts, expires_in: 1.minute
               end
             end
-          end
-
-          def aggressive_caching_active?
-            super && (!current_user || current_user.normal_user?)
           end
         end
       end

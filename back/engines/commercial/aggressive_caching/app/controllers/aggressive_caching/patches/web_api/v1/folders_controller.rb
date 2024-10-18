@@ -7,15 +7,11 @@ module AggressiveCaching
         module FoldersController
           def self.included(base)
             base.class_eval do
-              with_options if: :aggressive_caching_active? do
-                caches_action :index, expires_in: 1.minute, cache_path: -> { params.to_s }
+              with_options if: :caching_and_visitor? do
+                caches_action :index, expires_in: 1.minute, cache_path: -> { request.query_parameters }
                 caches_action :show, :by_slug, expires_in: 1.minute
               end
             end
-          end
-
-          def aggressive_caching_active?
-            super && (!current_user || current_user.normal_user?)
           end
         end
       end
