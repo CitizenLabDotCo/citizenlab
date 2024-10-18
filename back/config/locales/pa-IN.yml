@@ -212,6 +212,12 @@ pa:
           title: ਤੁਹਾਡੀ ਟਿੱਪਣੀ ਕੀ ਹੈ?
         option:
           title: ਤੁਹਾਡਾ ਵਿਕਲਪ ਕੀ ਹੈ?
+        proposal:
+          title: ਤੁਹਾਡਾ ਪ੍ਰਸਤਾਵ ਕੀ ਹੈ?
+        initiative:
+          title: ਤੁਹਾਡੀ ਪਹਿਲ ਕੀ ਹੈ?
+        petition:
+          title: ਤੁਹਾਡੀ ਪਟੀਸ਼ਨ ਕੀ ਹੈ?
   custom_field_options:
     gender:
       male: ਨਰ
