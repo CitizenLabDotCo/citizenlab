@@ -159,3 +159,5 @@ class ApplicationController < ActionController::API
     resource.public_send(:"remove_#{image_field_name}!")
   end
 end
+
+ApplicationController.include(AggressiveCaching::Patches::ApplicationController)
