@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { colors } from '@citizenlab/cl2-component-library';
-import { DayPicker } from 'react-day-picker';
+import { DayPicker, PropsBase } from 'react-day-picker';
 import 'react-day-picker/style.css';
 import styled from 'styled-components';
 
@@ -42,6 +42,18 @@ const Calendar = ({
     selectedDate: selectedRange.to,
   });
 
+  const handleDayClick: PropsBase['onDayClick'] = (day: Date) => {
+    if (!selectedRange.from || selectedRange.to) {
+      onUpdateRange({ from: day, to: undefined });
+      return;
+    }
+
+    onUpdateRange({
+      from: selectedRange.from,
+      to: day,
+    });
+  };
+
   return (
     <DayPickerStyles>
       <DayPicker
@@ -53,12 +65,16 @@ const Calendar = ({
         endMonth={endMonth}
         defaultMonth={defaultMonth}
         selected={{ from: selectedRange.from, to: selectedRange.to }}
-        onSelect={(newRange) => {
-          onUpdateRange(newRange ?? {});
-        }}
+        onDayClick={handleDayClick}
+        // This NOOP is necessary because otherwise the
+        // DayPicker will rely on its internal state to manage the selected
+        // range rather than being controlled by our state.
+        onSelect={NOOP}
       />
     </DayPickerStyles>
   );
 };
+
+const NOOP = () => {};
 
 export default Calendar;
