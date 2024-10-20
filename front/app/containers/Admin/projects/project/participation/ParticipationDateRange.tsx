@@ -43,9 +43,16 @@ const ParticipationDatesRange = ({
           {formatMessage(messages.selectPeriod)}
         </Text>
         <DateRangePicker
-          startDate={startAt ? moment(startAt) : null}
-          endDate={endAt ? moment(endAt) : null}
-          onDatesChange={handleChangeTimeRange}
+          selectedRange={{
+            from: startAt ? new Date(startAt) : undefined,
+            to: endAt ? new Date(endAt) : undefined,
+          }}
+          onUpdateRange={({ from, to }) => {
+            handleChangeTimeRange({
+              startDate: from ? moment(from) : null,
+              endDate: to ? moment(to) : null,
+            });
+          }}
         />
       </Box>
       <Box p="44px" m="44px" bg="white">
