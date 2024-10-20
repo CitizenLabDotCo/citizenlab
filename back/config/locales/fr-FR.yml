@@ -172,7 +172,7 @@ fr:
         description:
       consponsor_ids:
         title: Coparrainants
-        description: Invitez des co-parrains dans le champ ci-dessous. Le(s) co-sponsor(s) invité(s) recevra(ont) un courriel.
+        description: Invitez des soutiens via le champ ci-dessous. Les personnes invitées recevront un e-mail.
       location:
         title: Adresse
         description:
@@ -212,6 +212,12 @@ fr:
           title: Quel est votre problème ?
         option:
           title: Quelle est votre option ?
+        proposal:
+          title: Quelle est votre proposition ?
+        initiative:
+          title: Quelle est votre initiative ?
+        petition:
+          title: Quelle est votre pétition ?
   custom_field_options:
     gender:
       male: Masculin

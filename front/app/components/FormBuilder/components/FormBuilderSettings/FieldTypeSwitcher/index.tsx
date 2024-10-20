@@ -14,10 +14,10 @@ import { getFieldSwitchOptions } from './utils';
 
 type Props = {
   field: IFlatCustomFieldWithIndex;
-  surveyHasSubmissions: boolean;
+  formHasSubmissions: boolean;
 };
 
-const FieldTypeSwitcher = ({ field, surveyHasSubmissions }: Props) => {
+const FieldTypeSwitcher = ({ field, formHasSubmissions }: Props) => {
   const { formatMessage } = useIntl();
   const { setValue, watch } = useFormContext();
 
@@ -33,26 +33,32 @@ const FieldTypeSwitcher = ({ field, surveyHasSubmissions }: Props) => {
   return (
     <Box mb="24px">
       <Tooltip
-        disabled={!surveyHasSubmissions}
-        content={formatMessage(messages.surveyHasSubmissionsWarning)}
+        disabled={!formHasSubmissions}
+        content={formatMessage(messages.formHasSubmissionsWarning)}
       >
-        <Select
-          disabled={surveyHasSubmissions}
-          options={fieldSwitchOptions}
-          onChange={(value) => {
-            // Remove the current field ID, since we want to create a new field
-            setValue(`customFields.${field.index}.id`, undefined, {
-              shouldDirty: true,
-            });
-            // Generate a new temp ID for the field
-            setValue(`customFields.${field.index}.temp_id`, generateTempId(), {
-              shouldDirty: true,
-            });
-            setValue(inputTypeName, value?.value, { shouldDirty: true });
-          }}
-          value={watch(inputTypeName)}
-          label={formatMessage(messages.type)}
-        />
+        <Box>
+          <Select
+            disabled={formHasSubmissions}
+            options={fieldSwitchOptions}
+            onChange={(value) => {
+              // Remove the current field ID, since we want to create a new field
+              setValue(`customFields.${field.index}.id`, undefined, {
+                shouldDirty: true,
+              });
+              // Generate a new temp ID for the field
+              setValue(
+                `customFields.${field.index}.temp_id`,
+                generateTempId(),
+                {
+                  shouldDirty: true,
+                }
+              );
+              setValue(inputTypeName, value?.value, { shouldDirty: true });
+            }}
+            value={watch(inputTypeName)}
+            label={formatMessage(messages.type)}
+          />
+        </Box>
       </Tooltip>
     </Box>
   );

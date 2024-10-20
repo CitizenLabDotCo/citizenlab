@@ -17,9 +17,9 @@ class WebApi::V1::CosponsorshipsController < ApplicationController
   end
 
   def accept
-    if @cosponsorship.status == 'pending'
+    if @cosponsorship.save && @cosponsorship.status == 'pending'
       @cosponsorship.update(status: 'accepted')
-      # SideFxAcceptedCosponsorshipService.new.after_accept(@cosponsorship, current_user)
+      SideFxCosponsorshipService.new.after_accept(@cosponsorship, current_user)
       render json: WebApi::V1::CosponsorshipSerializer.new(@cosponsorship, params: jsonapi_serializer_params).serializable_hash
     else
       render json: { errors: @cosponsorship.errors.details }, status: :unprocessable_entity

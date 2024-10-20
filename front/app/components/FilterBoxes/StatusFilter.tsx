@@ -13,8 +13,6 @@ import styled from 'styled-components';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 import { IIdeasFilterCounts } from 'api/ideas_filter_counts/types';
-import { IInitiativeStatusData } from 'api/initiative_statuses/types';
-import { IInitiativesFilterCounts } from 'api/initiatives_filter_counts/types';
 
 import T from 'components/T';
 
@@ -108,13 +106,8 @@ const Status = styled.button`
 const AllStatus = styled(Status)``;
 
 interface Props {
-  type: 'idea' | 'initiative';
-  statuses: (IIdeaStatusData | IInitiativeStatusData)[];
-  filterCounts:
-    | IIdeasFilterCounts['data']['attributes']
-    | IInitiativesFilterCounts['data']['attributes']
-    | null
-    | undefined;
+  statuses: IIdeaStatusData[];
+  filterCounts: IIdeasFilterCounts['data']['attributes'] | null | undefined;
 
   selectedStatusId: string | null | undefined;
   onChange: (arg: string | null) => void;
@@ -122,7 +115,7 @@ interface Props {
 }
 
 const StatusFilter = memo<Props>(
-  ({ type, statuses, filterCounts, selectedStatusId, onChange, className }) => {
+  ({ statuses, filterCounts, selectedStatusId, onChange, className }) => {
     const handleOnClick = useCallback(
       (event: MouseEvent<HTMLElement>) => {
         event.preventDefault();
@@ -155,19 +148,11 @@ const StatusFilter = memo<Props>(
               <FormattedMessage {...messages.all} />
               <Count aria-hidden>{allPostsCount}</Count>
               <ScreenReaderOnly>
-                {/* Pronounce number of ideas/initiatives of All status when focus/hover it */}
-                {type === 'idea' && (
-                  <FormattedMessage
-                    {...messages.a11y_numberOfInputs}
-                    values={{ inputsCount: allPostsCount }}
-                  />
-                )}
-                {type === 'initiative' && (
-                  <FormattedMessage
-                    {...messages.a11y_numberOfInitiatives}
-                    values={{ initiativeCount: allPostsCount }}
-                  />
-                )}
+                {/* Pronounce number of ideas of All status when focus/hover it */}
+                <FormattedMessage
+                  {...messages.a11y_numberOfInputs}
+                  values={{ inputsCount: allPostsCount }}
+                />
               </ScreenReaderOnly>
               <ScreenReaderOnly aria-live="polite">
                 {/*
@@ -183,7 +168,7 @@ const StatusFilter = memo<Props>(
             {statuses.map((status) => {
               const filterPostCount = get(
                 filterCounts,
-                `${type}_status_id.${status.id}`,
+                `idea_status_id.${status.id}`,
                 0
               );
               const isFilterSelected = status.id === selectedStatusId;
@@ -212,18 +197,10 @@ const StatusFilter = memo<Props>(
 
                   <ScreenReaderOnly>
                     {/* Pronounce number of ideas per status when focus/hover it */}
-                    {type === 'idea' && (
-                      <FormattedMessage
-                        {...messages.a11y_numberOfInputs}
-                        values={{ inputsCount: filterPostCount }}
-                      />
-                    )}
-                    {type === 'initiative' && (
-                      <FormattedMessage
-                        {...messages.a11y_numberOfInitiatives}
-                        values={{ initiativeCount: filterPostCount }}
-                      />
-                    )}
+                    <FormattedMessage
+                      {...messages.a11y_numberOfInputs}
+                      values={{ inputsCount: filterPostCount }}
+                    />
                   </ScreenReaderOnly>
                   <ScreenReaderOnly aria-live="polite">
                     {/*

@@ -167,25 +167,27 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
         placement="bottom"
         content={disabledMessage}
       >
-        <Button
-          ml="auto"
-          width={'100%'}
-          iconPos={userIsAttending ? 'left' : 'right'}
-          icon={getButtonIcon()}
-          iconSize="20px"
-          bgColor={
-            userIsAttending ? colors.success : theme.colors.tenantPrimary
-          }
-          disabled={buttonDisabled}
-          onClick={(event) => {
-            event.preventDefault();
-            handleClick();
-          }}
-          processing={isLoading}
-          className="e2e-event-attendance-button"
-        >
-          {getButtonText()}
-        </Button>
+        <div>
+          <Button
+            ml="auto"
+            width={'100%'}
+            iconPos={userIsAttending ? 'left' : 'right'}
+            icon={getButtonIcon()}
+            iconSize="20px"
+            bgColor={
+              userIsAttending ? colors.success : theme.colors.tenantPrimary
+            }
+            disabled={buttonDisabled}
+            onClick={(event) => {
+              event.preventDefault();
+              handleClick();
+            }}
+            processing={isLoading}
+            className="e2e-event-attendance-button"
+          >
+            {getButtonText()}
+          </Button>
+        </div>
       </Tooltip>
       <ConfirmationModal
         opened={confirmationModalVisible}

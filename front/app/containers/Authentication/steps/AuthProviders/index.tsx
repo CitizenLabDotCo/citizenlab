@@ -1,6 +1,7 @@
 import React, { memo, useCallback } from 'react';
 
 import { Text } from '@citizenlab/cl2-component-library';
+import { useLocation, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -21,7 +22,6 @@ import TextButton from '../_components/TextButton';
 import AuthProviderButton, { TOnContinueFunction } from './AuthProviderButton';
 import ClaveUnicaExpandedAuthProviderButton from './ClaveUnicaExpandedAuthProviderButton';
 import messages from './messages';
-import { useLocation } from 'react-router-dom';
 
 const Container = styled.div`
   display: flex;
@@ -57,6 +57,11 @@ const AuthProviders = memo<Props>(
     const { pathname } = useLocation();
     const tenantSettings = tenant?.data.attributes.settings;
 
+    // Allows testing of specific SSO providers without showing to all users eg ?provider=keycloak
+    const [searchParams] = useSearchParams();
+    const providerForTest = searchParams.get('provider');
+
+    // A hidden path that will show all methods inc any that are admin only
     const showAdminOnlyMethods = pathname.endsWith('/sign-in/admin');
 
     const passwordLoginEnabled = useFeatureFlag({ name: 'password_login' });
@@ -87,6 +92,10 @@ const AuthProviders = memo<Props>(
     const nemlogInLoginEnabled = useFeatureFlag({
       name: 'nemlog_in_login',
     });
+    const keycloakLoginEnabled =
+      useFeatureFlag({
+        name: 'keycloak_login',
+      }) || providerForTest === 'keycloak';
 
     const azureProviderName =
       tenantSettings?.azure_ad_login?.login_mechanism_name;
@@ -127,6 +136,7 @@ const AuthProviders = memo<Props>(
       claveUnicaLoginEnabled ||
       hoplrLoginEnabled ||
       criiptoLoginEnabled ||
+      keycloakLoginEnabled ||
       nemlogInLoginEnabled;
 
     return (
@@ -201,6 +211,22 @@ const AuthProviders = memo<Props>(
                   process.env.NODE_ENV === 'development'
                     ? 'MitID (Criipto)'
                     : 'MitID',
+              }}
+            />
+          </StyledAuthProviderButton>
+        )}
+
+        {keycloakLoginEnabled && (
+          <StyledAuthProviderButton
+            icon="idporten"
+            flow={flow}
+            authProvider="keycloak"
+            onContinue={onSelectAuthProvider}
+          >
+            <FormattedMessage
+              {...messages.continueWithLoginMechanism}
+              values={{
+                loginMechanismName: 'ID-Porten',
               }}
             />
           </StyledAuthProviderButton>

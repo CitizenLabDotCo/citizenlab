@@ -66,17 +66,6 @@ xml.urlset xmlns: 'http://www.sitemaps.org/schemas/sitemap/0.9', 'xmlns:xhtml': 
     )
   end
 
-  if NavBarItem.where(code: 'proposals').exists?
-    @initiatives.each do |initiative|
-      multilingual_sitemap_entry(
-        xml,
-        front_end_url_for(initiative),
-        0.4,
-        initiative.updated_at
-      )
-    end
-  end
-
   @pages.each do |page|
     multilingual_sitemap_entry(
       xml,
@@ -98,14 +87,6 @@ xml.urlset xmlns: 'http://www.sitemaps.org/schemas/sitemap/0.9', 'xmlns:xhtml': 
       xml,
       "https://#{@host}/ideas",
       0.7
-    )
-  end
-
-  if NavBarItem.where(code: 'proposals').exists?
-    multilingual_sitemap_entry(
-      xml,
-      "https://#{@host}/initiatives",
-      0.8
     )
   end
 

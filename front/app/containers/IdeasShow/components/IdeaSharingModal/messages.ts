@@ -1,6 +1,7 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  // #input_term_copy
   sharingModalTitle: {
     id: 'app.containers.IdeasShow.sharingModalTitle',
     defaultMessage: 'Thanks for submitting your idea!',
@@ -25,7 +26,18 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.contributionSharingModalTitle',
     defaultMessage: 'Thanks for submitting your contribution!',
   },
-
+  proposalSharingModalTitle: {
+    id: 'app.containers.IdeasShow.proposalSharingModalTitle',
+    defaultMessage: 'Thanks for submitting your proposal!',
+  },
+  initiativeSharingModalTitle: {
+    id: 'app.containers.IdeasShow.initiativeSharingModalTitle',
+    defaultMessage: 'Thanks for submitting your initiative!',
+  },
+  petitionSharingModalTitle: {
+    id: 'app.containers.IdeasShow.petitionSharingModalTitle',
+    defaultMessage: 'Thanks for submitting your petition!',
+  },
   sharingModalSubtitle: {
     id: 'app.containers.IdeasShow.sharingModalSubtitle',
     defaultMessage: 'Reach more people and make your voice heard.',

@@ -15,9 +15,6 @@ import { usePermission } from 'utils/permissions';
 
 import createDashboardRoutes, { dashboardRouteTypes } from './dashboard/routes';
 import ideasRoutes, { ideaRouteTypes } from './ideas/routes';
-import createAdminInitiativesRoutes, {
-  initiativeRouteTypes,
-} from './initiatives/routes';
 import invitationsRoutes, { invitationRouteTypes } from './invitations/routes';
 import createAdminMessagingRoutes, {
   messagingRouteTypes,
@@ -49,7 +46,6 @@ export type AdminRoute<T extends string = string> = `/admin/${T}`;
 
 export type AdminRouteTypes =
   | '/admin'
-  | initiativeRouteTypes
   | ideaRouteTypes
   | userRouteTypes
   | invitationRouteTypes
@@ -143,7 +139,6 @@ const createAdminRoutes = () => {
         element: <Navigate to="dashboard/overview" />,
       },
       createDashboardRoutes(),
-      createAdminInitiativesRoutes(),
       createAdminUsersRoutes(),
       createAdminProjectsRoutes(),
       settingsRoutes(),

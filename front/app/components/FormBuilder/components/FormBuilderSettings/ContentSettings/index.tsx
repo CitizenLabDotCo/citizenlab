@@ -24,13 +24,13 @@ import FieldTypeSwitcher from '../FieldTypeSwitcher';
 type ContentSettingsProps = {
   field: IFlatCustomFieldWithIndex;
   locales: SupportedLocale[];
-  surveyHasSubmissions: boolean;
+  formHasSubmissions: boolean;
 };
 
 export const ContentSettings = ({
   field,
   locales,
-  surveyHasSubmissions,
+  formHasSubmissions,
 }: ContentSettingsProps) => {
   const { watch } = useFormContext();
   const logic = watch(`customFields.${field.index}.logic`);
@@ -53,7 +53,7 @@ export const ContentSettings = ({
           <>
             <FieldTypeSwitcher
               field={field}
-              surveyHasSubmissions={surveyHasSubmissions}
+              formHasSubmissions={formHasSubmissions}
             />
             {!lockedAttributes?.title_multiloc && (
               <SectionField>

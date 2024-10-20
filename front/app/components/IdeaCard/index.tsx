@@ -9,6 +9,7 @@ import {
   media,
 } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
+import { RouteType } from 'routes';
 import styled from 'styled-components';
 
 import useIdeaImage from 'api/idea_images/useIdeaImage';
@@ -129,7 +130,13 @@ const IdeaCard = ({
     e.stopPropagation();
     e.preventDefault();
     updateSearchParams({ scroll_to_card: idea.data.id });
-    clHistory.push(`/ideas/${slug}?go_back=true`, { scrollToTop: true });
+    let ideaUrl = `/ideas/${slug}?go_back=true`;
+    if (phaseId) {
+      ideaUrl += `&phase_context=${phaseId}`;
+    }
+    clHistory.push(ideaUrl as RouteType, {
+      scrollToTop: true,
+    });
   };
 
   const innerHeight = showFollowButton ? '192px' : '162px';

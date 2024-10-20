@@ -38,14 +38,14 @@ interface Props {
   field: IFlatCustomFieldWithIndex;
   closeSettings: (triggerAutosave?: boolean) => void;
   builderConfig: FormBuilderConfig;
-  surveyHasSubmissions: boolean;
+  formHasSubmissions: boolean;
 }
 
 const FormBuilderSettings = ({
   field,
   closeSettings,
   builderConfig,
-  surveyHasSubmissions,
+  formHasSubmissions,
 }: Props) => {
   const locales = useAppConfigurationLocales();
   const [currentTab, setCurrentTab] = useState<'content' | 'logic'>('content');
@@ -162,7 +162,7 @@ const FormBuilderSettings = ({
         <ContentSettings
           field={field}
           locales={locales}
-          surveyHasSubmissions={surveyHasSubmissions}
+          formHasSubmissions={formHasSubmissions}
         />
       )}
       {showTabbedSettings && currentTab === 'logic' && (

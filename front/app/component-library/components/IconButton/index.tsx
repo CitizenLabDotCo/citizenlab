@@ -52,10 +52,12 @@ export type IconButtonProps = {
   iconHeight?: string;
   iconColor: string;
   iconColorOnHover: string;
+  ariaHidden?: boolean;
   ariaExpanded?: boolean;
   ariaControls?: string;
   buttonType?: 'submit' | 'button' | 'reset';
   transform?: string;
+  opacity?: number;
   iconRef?: React.Ref<any>;
 } & BoxPositionProps &
   BoxMarginProps &
@@ -73,9 +75,11 @@ const IconButton = ({
   iconHeight = '24px',
   iconColor,
   iconColorOnHover,
+  ariaHidden,
   ariaExpanded,
   ariaControls,
   buttonType,
+  opacity,
   transform,
   iconRef,
   ...rest
@@ -88,10 +92,12 @@ const IconButton = ({
       iconColorOnHover={iconColorOnHover}
       aria-expanded={ariaExpanded}
       aria-controls={ariaControls}
+      aria-hidden={ariaHidden}
       type={buttonType}
       display="flex"
       alignItems="center"
       justifyContent="center"
+      opacity={opacity}
       role="button"
       ref={iconRef}
       {...rest}
