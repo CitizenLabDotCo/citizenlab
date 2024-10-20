@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import { Icon, Dropdown, colors } from '@citizenlab/cl2-component-library';
+import { getMonth } from 'date-fns';
 import moment, { Moment } from 'moment';
 import styled from 'styled-components';
 
@@ -196,9 +197,21 @@ const TimeControl = ({
           from: startAtMoment ? startAtMoment.toDate() : undefined,
           to: endAtMoment ? endAtMoment.toDate() : undefined,
         }}
-        onDatesChange={handleDatesChange}
         startMonth={minDate?.toDate()}
-        // disabled={[] TODO}
+        disabled={
+          minDate
+            ? {
+                from: new Date(getMonth(minDate.toDate())),
+                to: minDate.toDate(),
+              }
+            : undefined
+        }
+        onUpdateRange={({ from, to }) => {
+          handleDatesChange({
+            startDate: from ? moment(from) : null,
+            endDate: to ? moment(to) : null,
+          });
+        }}
       />
     </Container>
   );
