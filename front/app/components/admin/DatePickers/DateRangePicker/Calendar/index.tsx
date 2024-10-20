@@ -28,6 +28,7 @@ const Calendar = ({
   startMonth: _startMonth,
   endMonth: _endMonth,
   defaultMonth,
+  disabled,
   onUpdateRange,
 }: Props) => {
   const locale = useLocale();
@@ -65,6 +66,7 @@ const Calendar = ({
         endMonth={endMonth}
         defaultMonth={defaultMonth}
         selected={{ from: selectedRange.from, to: selectedRange.to }}
+        disabled={disabled}
         onDayClick={handleDayClick}
         // This NOOP is necessary because otherwise the
         // DayPicker will rely on its internal state to manage the selected

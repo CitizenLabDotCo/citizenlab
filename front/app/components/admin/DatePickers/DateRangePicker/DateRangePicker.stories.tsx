@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+import { getMonth, addDays } from 'date-fns';
+
 import { DateRange } from '../_shared/typings';
 
 import DateRangePicker from '.';
@@ -27,5 +29,25 @@ const WrapperStandard = () => {
 export const Standard = {
   render: () => {
     return <WrapperStandard />;
+  },
+};
+
+const WrapperDisabled = () => {
+  const [selectedRange, setSelectedRange] = useState<Partial<DateRange>>({});
+  const month = new Date(getMonth(new Date()));
+
+  return (
+    <DateRangePicker
+      selectedRange={selectedRange}
+      startMonth={month}
+      disabled={{ from: month, to: addDays(new Date(), -1) }}
+      onUpdateRange={setSelectedRange}
+    />
+  );
+};
+
+export const Disabled = {
+  render: () => {
+    return <WrapperDisabled />;
   },
 };
