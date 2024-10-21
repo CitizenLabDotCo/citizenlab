@@ -493,7 +493,7 @@ en-GB:
     threshold_reached_for_admin:
       cta_process_initiative: 'Take this initiative to the next steps'
       main_header: 'An initiative reached the voting threshold!'
-      subject: 'An initiative reached the voting threshold on your platform'
+      subject: '"%{input_title}" reached the voting threshold'
       preheader: 'Make sure to take the next steps'
     welcome:
       cta_join_platform: 'Discover the platform'
@@ -512,7 +512,7 @@ en-GB:
         proposal: 'Your proposal has been published'
         initiative: 'Your initiative has been published'
         petition: 'Your petition has been published'
-      main_header: 'You posted an idea! Let''s make sure it gets read.'
+      main_header: 'You posted "%{input_title}"'
       header_message: 'Let''s make sure it gets read.'
       message_get_votes: 'Reach more people with your idea:'
       action_published_idea: 'Published idea'
