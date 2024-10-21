@@ -174,3 +174,5 @@ class WebApi::V1::PhasesController < ApplicationController
     end
   end
 end
+
+WebApi::V1::PhasesController.include(AggressiveCaching::Patches::WebApi::V1::PhasesController)

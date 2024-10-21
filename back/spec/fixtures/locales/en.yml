@@ -85,6 +85,8 @@ en:
           title: What is your petition?
   user:
     anon_first_name: "User"
+    anon_scheme:
+      animals: 'Aardvark,Cat,Platypus,Giraffe,Zebra'
   xlsx_export:
     anonymous: 'Anonymous'
     column_headers:

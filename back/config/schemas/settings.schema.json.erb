@@ -231,6 +231,13 @@
             "description": "Link to the customer portal in Planhat.",
             "type": "string",
             "format": "uri"
+          },
+          "anonymous_name_scheme":  {
+            "title": "Scheme to use when displaying anonymous names",
+            "description": "Default is User 123456.",
+            "type": "string",
+            "enum": ["user", "animal"],
+            "default": "user"
           }
         }
       },
