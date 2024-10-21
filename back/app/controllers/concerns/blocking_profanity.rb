@@ -35,7 +35,7 @@ module BlockingProfanity
     violating_attributes = []
     service = ProfanityService.new
     attrs = DEFAULT_CLASS_ATTRS[object.class.name] || []
-    attrs += EXTENDED_CLASS_ATTRS[object.class.name] if AppConfiguration.instance.settings.dig('blocking_profanity', 'extended_blocking')
+    attrs += EXTENDED_CLASS_ATTRS[object.class.name] || [] if AppConfiguration.instance.settings.dig('blocking_profanity', 'extended_blocking')
     attrs&.each do |atr|
       next if object[atr].blank?
 
