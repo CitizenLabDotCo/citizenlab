@@ -212,6 +212,12 @@ ach:
           title: crwdns3310433:0crwdne3310433:0
         option:
           title: crwdns3310435:0crwdne3310435:0
+        proposal:
+          title: crwdns3338253:0crwdne3338253:0
+        initiative:
+          title: crwdns3338255:0crwdne3338255:0
+        petition:
+          title: crwdns3338257:0crwdne3338257:0
   custom_field_options:
     gender:
       male: crwdns3310437:0crwdne3310437:0
@@ -337,6 +343,8 @@ ach:
       you_can_sign_in_again_from: "crwdns3310635:0%{date}crwdne3310635:0"
   user:
     anon_first_name: "crwdns3310637:0crwdne3310637:0"
+    anon_scheme:
+      animals: 'crwdns3338259:0crwdne3338259:0'
   time:
     am: crwdns3310639:0crwdne3310639:0
     formats:
