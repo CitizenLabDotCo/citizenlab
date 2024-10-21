@@ -119,7 +119,7 @@ class SideFxIdeaService
     return unless idea.author
     return if Permissions::IdeaPermissionsService.new(idea, idea.author).denied_reason_for_action 'reacting_idea', reaction_mode: 'up'
 
-    idea.reactions.create!(mode: 'up', user: idea.author)
+    idea.reactions.create!(mode: 'up', user: idea.author) if !idea.reactions.where(mode: 'up', user: idea.author).exists?
     idea.reload
   end
 
