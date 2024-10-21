@@ -107,9 +107,8 @@ const EventsViewer = ({
 
   // Set state based on URL params
   const [projectIdList, setProjectIdList] = useState<string[] | undefined>(
-    // TODO: Fix this the next time the file is edited.
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    projectIdsFromUrl || projectId ? [projectId] : []
+    projectIdsFromUrl || (projectId ? [projectId] : [])
   );
   const [dateFilter, setDateFilter] = useState<dateFilterKey[]>(
     // TODO: Fix this the next time the file is edited.

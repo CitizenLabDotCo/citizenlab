@@ -39,6 +39,7 @@ const ShapefilePreview = ({ inputId, file }: Props) => {
   // Get Shapefile URL
   const fileUrl =
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     inputFiles?.data.find((inputFile) => inputFile.id === file?.id)?.attributes
       ?.file?.url;
 
