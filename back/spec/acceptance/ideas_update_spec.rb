@@ -481,7 +481,7 @@ resource 'Ideas' do
             before { create(:reaction, reactable: input, mode: 'up', user: input.author) }
 
             let(:input) { create(:proposal, idea_status: create(:proposals_status, code: 'prescreening'), publication_status: 'submitted') }
-  
+
             example 'Publish the proposal', document: false do
               do_request(idea: { idea_status_id: create(:proposals_status, code: 'proposed').id })
               assert_status 200
