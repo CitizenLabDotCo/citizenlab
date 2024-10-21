@@ -167,6 +167,7 @@ export default defineMessages({
     id: 'app.containers.Projects.takeThePoll',
     defaultMessage: 'Take the poll',
   },
+  // #input_term_copy
   ideas: {
     id: 'app.containers.Projects.ideas',
     defaultMessage: 'Ideas',
@@ -190,6 +191,18 @@ export default defineMessages({
   projects: {
     id: 'app.containers.Projects.projects',
     defaultMessage: 'Projects',
+  },
+  proposals: {
+    id: 'app.containers.Projects.proposals',
+    defaultMessage: 'Proposals',
+  },
+  initiatives: {
+    id: 'app.containers.Projects.initiatives',
+    defaultMessage: 'Initiatives',
+  },
+  petitions: {
+    id: 'app.containers.Projects.petitions',
+    defaultMessage: 'Petitions',
   },
   survey: {
     id: 'app.containers.Projects.survey',
@@ -242,6 +255,18 @@ export default defineMessages({
   seeTheContributions: {
     id: 'app.containers.Projects.seeTheContributions',
     defaultMessage: 'See the contributions',
+  },
+  seeTheProposals: {
+    id: 'app.containers.Projects.seeTheProposals',
+    defaultMessage: 'See the proposals',
+  },
+  seeTheInitiatives: {
+    id: 'app.containers.Projects.seeTheInitiatives',
+    defaultMessage: 'See the initiatives',
+  },
+  seeThePetitions: {
+    id: 'app.containers.Projects.seeThePetitions',
+    defaultMessage: 'See the petitions',
   },
   meetMinBudgetRequirement: {
     id: 'app.containers.Projects.meetMinBudgetRequirement',

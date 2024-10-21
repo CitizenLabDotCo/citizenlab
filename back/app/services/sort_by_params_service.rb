@@ -85,7 +85,7 @@ class SortByParamsService
   def idea_voting_count_sort(scope, sort, phase_id, direction)
     if phase_id
       ids = IdeasPhase.where(phase_id: phase_id).order("#{sort} #{direction}").pluck(:idea_id)
-      Idea.unscoped.where(id: ids).order_as_specified(id: ids)
+      scope.order_as_specified(id: ids)
     else
       scope.order("#{sort} #{direction}")
     end

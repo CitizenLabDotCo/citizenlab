@@ -53,7 +53,6 @@ type CustomErrorKey = 'includes_banned_words';
 // | 'too_many_retries'
 // | 'too_many_resets'
 // | 'idea_and_phase_not_same_project'
-// | 'assignee_can_not_moderate_initiatives'
 // | 'is_not_a_manual_group'
 // | 'is_not_timeline_project'
 // | 'has_other_overlapping_phases'

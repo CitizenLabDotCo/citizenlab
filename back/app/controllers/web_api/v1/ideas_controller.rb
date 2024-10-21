@@ -167,6 +167,8 @@ class WebApi::V1::IdeasController < ApplicationController
       input.anonymous = true
     end
     input.author ||= current_user
+    input.assign_defaults
+
     sidefx.before_create(input, current_user)
 
     authorize input
@@ -475,3 +477,4 @@ class WebApi::V1::IdeasController < ApplicationController
 end
 
 WebApi::V1::IdeasController.prepend(IdeaAssignment::Patches::WebApi::V1::IdeasController)
+WebApi::V1::IdeasController.include(AggressiveCaching::Patches::WebApi::V1::IdeasController)
