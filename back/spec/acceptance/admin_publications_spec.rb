@@ -259,7 +259,7 @@ resource 'AdminPublication' do
       end
     end
 
-    get 'web_api/v1/admin_publications/active_projects' do
+    get 'web_api/v1/admin_publications/projects_with_active_participatory_phase' do
       with_options scope: :page do
         parameter :number, 'Page number'
         parameter :size, 'Number of projects per page'

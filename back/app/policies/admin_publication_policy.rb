@@ -21,7 +21,7 @@ class AdminPublicationPolicy < ApplicationPolicy
     Pundit.policy(user, record.publication).show?
   end
 
-  def index_active_projects?
+  def index_projects_with_active_participatory_phase?
     true
   end
 

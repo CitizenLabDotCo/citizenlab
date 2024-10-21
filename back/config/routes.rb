@@ -207,7 +207,7 @@ Rails.application.routes.draw do
       resources :admin_publications, only: %i[index show] do
         patch 'reorder', on: :member
         get 'status_counts', on: :collection
-        get 'active_projects', on: :collection, action: 'index_active_projects'
+        get 'projects_with_active_participatory_phase', on: :collection, action: 'index_projects_with_active_participatory_phase'
       end
 
       resources :project_folders, controller: 'folders', concerns: [:followable], defaults: { followable: 'ProjectFolders::Folder' } do

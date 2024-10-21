@@ -58,7 +58,7 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
     )
   end
 
-  def index_active_projects
+  def index_projects_with_active_participatory_phase
     admin_publication_filterer = AdminPublicationsFilteringService.new
     admin_publications = policy_scope(AdminPublication.includes(:parent))
     admin_publications = admin_publication_filterer.filter(
@@ -105,7 +105,7 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
       :children
     )
 
-    authorize @admin_publications, :index_active_projects?
+    authorize @admin_publications, :index_projects_with_active_participatory_phase?
 
     render json: linked_json(
       @admin_publications,
