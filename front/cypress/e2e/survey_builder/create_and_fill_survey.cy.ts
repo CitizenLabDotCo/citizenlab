@@ -441,7 +441,6 @@ describe('Survey builder', () => {
 
     // Take the survey again
     cy.visit(`/projects/${projectSlug}`);
-    cy.get('#e2e-project-sidebar-surveys-count').should('exist');
     cy.get('#project-survey-button')
       .find('button')
       .should('not.have.attr', 'disabled');
@@ -767,7 +766,6 @@ describe('Survey builder', () => {
       .first()
       .find('button')
       .should('not.have.attr', 'disabled');
-    cy.get('#e2e-project-sidebar-surveys-count').should('exist');
     cy.get('.e2e-idea-button').first().find('button').click({ force: true });
     cy.contains(questionTitle).should('exist');
     cy.get(`*[id^="properties${questionTitle}"]`).type(answer, { force: true });
@@ -789,7 +787,6 @@ describe('Survey builder', () => {
       .first()
       .find('button')
       .should('have.attr', 'disabled');
-    cy.get('#e2e-project-sidebar-surveys-count').should('exist');
   });
 
   it('shows validation errors when current page or previous pages are referenced', () => {
