@@ -58,6 +58,72 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
     )
   end
 
+  def index_projects_with_active_participatory_phase
+    admin_publication_filterer = AdminPublicationsFilteringService.new
+    admin_publications = policy_scope(AdminPublication.includes(:parent))
+    admin_publications = admin_publication_filterer.filter(
+      admin_publications,
+      params.merge(
+        current_user: current_user,
+        only_projects: true,
+        publication_statuses: %w[published archived]
+      )
+    )
+
+    # We only want to show projects that are currently in a participatory phase (where user can do something).
+    allowed_participation_methods = %w[ideation native_survey poll proposals survey volunteering voting]
+
+    # Use a subquery to include the phases.end_at column
+    subquery = admin_publications
+      .joins('LEFT OUTER JOIN projects AS projects ON projects.id = admin_publications.publication_id')
+      .joins('INNER JOIN phases AS phases ON phases.project_id = projects.id')
+      .where(
+        'phases.start_at <= ? AND (phases.end_at >= ? OR phases.end_at IS NULL) AND phases.participation_method IN (?)',
+        Time.zone.now.to_fs(:db), Time.zone.now.to_fs(:db), allowed_participation_methods
+      )
+      .select('admin_publications.*, phases.end_at AS phase_end_at')
+
+    # Perform the SELECT DISTINCT on the outer query
+    admin_publications = AdminPublication
+      .from(subquery, :admin_publications)
+      .distinct
+      .order('phase_end_at ASC NULLS LAST')
+
+    # Just need to limit to only participatory phases & add ordering by phase end at, soonest first, nulls last
+
+    @admin_publications = paginate admin_publications
+
+    @admin_publications = @admin_publications.includes(
+      {
+        publication: [
+          { phases: %i[report custom_form permissions] },
+          :admin_publication,
+          :project_images,
+          :content_builder_layouts
+        ]
+      },
+      :children
+    )
+
+    authorize @admin_publications, :index_projects_with_active_participatory_phase?
+
+    render json: linked_json(
+      @admin_publications,
+      WebApi::V1::AdminPublicationSerializer,
+      params: jsonapi_serializer_params(
+        visible_children_count_by_parent_id: admin_publication_filterer.visible_children_counts_by_parent_id
+      ),
+      include: %i[
+        publication
+        publication.avatars
+        publication.project_images
+        publication.images
+        publication.current_phase
+        publication.phases
+      ]
+    )
+  end
+
   def reorder
     if @admin_publication.insert_at(permitted_attributes(@admin_publication)[:ordering])
       SideFxAdminPublicationService.new.after_update(@admin_publication, current_user)
