@@ -106,12 +106,12 @@ class SideFxIdeaService
   def before_publish(idea, _user); end
 
   def after_submission(idea, user)
+    add_autoreaction(idea)
+    create_followers(idea, user) unless idea.anonymous?
     LogActivityJob.set(wait: 20.seconds).perform_later(idea, 'submitted', user_for_activity_on_anonymizable_item(idea, user), idea.submitted_at.to_i)
   end
 
   def after_publish(idea, user)
-    add_autoreaction(idea)
-    create_followers(idea, user) unless idea.anonymous?
     log_activity_jobs_after_published(idea, user)
   end
 
