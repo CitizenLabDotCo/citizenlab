@@ -29,7 +29,7 @@ module Analysis
       'lb-LU' => 'ltz_Latn',
       'lv-LV' => 'lav_Latn',
       'mi' => nil,      # Maori is not present
-      'nb-NO' => 'nob_Latn',
+      'nb' => 'nob_Latn',
       'nl-BE' => 'nld_Latn',
       'nl-NL' => 'nld_Latn',
       'pa-IN' => nil,   # Punjabi (Gurmukhi) is not present
