@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import React, { useCallback, useMemo, useState } from 'react';
 
 import MapView from '@arcgis/core/views/MapView';
@@ -71,9 +72,7 @@ const PointSettings = ({ mapConfigIdName, pageLayoutName, field }: Props) => {
   // Get current map config ID for this field
   const mapConfigId =
     watch(mapConfigIdName) ||
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    rawCustomFields?.data.find((rawField) => rawField.id === field.id) // TODO: Fix this the next time the file is edited. // TODO: Fix this the next time the file is edited.
+    rawCustomFields?.data.find((rawField) => rawField.id === field.id)
       ?.relationships?.map_config?.data?.id;
 
   // Load map config
