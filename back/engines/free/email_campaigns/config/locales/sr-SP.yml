@@ -58,7 +58,6 @@ sr-Cyrl:
       "voting_phase_started": Нова фаза пројекта са гласањем
       "voting_results": Резултати гласања
       "your_input_in_screening": My input awaits screening
-      "your_proposed_initiatives_digest": Недељни преглед ваших предлога
     general:
       by_author: 'од %{authorName}'
       author_wrote: '%{authorName} је написао:'
@@ -539,16 +538,6 @@ sr-Cyrl:
       message: '"%{input_title}" will become visible to others once it has been reviewed and approved.'
       subject: '"%{input_title}" is almost published'
       preheader: 'It''s currently in %{prescreening_status_title}'
-    your_proposed_initiatives_digest:
-      subject: 'Седмично ажурирање ваших предлога'
-      preheader: 'Шта се десило са вашим предлозима прошле недеље?'
-      title_your_weekly_report: 'Како су прошли ваши предлози?'
-      text_introduction: 'Пронађите кључне бројеве испод и идите на платформу да предузмете акцију и прикупите довољно подршке на време.'
-      cta_see_your_initiative: 'Идите на своје предлоге'
-      total_votes: 'Укупно гласова'
-      new_votes: 'Нови гласови'
-      remaining_votes: 'Преостало гласова'
-      remaining_days: 'Преостали дана'
     voting_basket_submitted:
       subject: '%{organizationName}: Успешно сте гласали'
       preheader: 'Успешно сте гласали на платформи за учешће %{organizationName}'
