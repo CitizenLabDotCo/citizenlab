@@ -44,7 +44,7 @@ resource 'Events' do
       end
     end
 
-    context 'passing parameter include_images = true' do
+    context "passing parameter include_images = 'true'" do
       let!(:image1) { create(:event_image, event: @events[0]) }
       let!(:image2) { create(:event_image, event: @events[1]) }
       let(:include_images) { true }
