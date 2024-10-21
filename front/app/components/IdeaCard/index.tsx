@@ -195,6 +195,8 @@ const IdeaCard = ({
                 followableType="ideas"
                 followableId={idea.data.id}
                 followersCount={idea.data.attributes.followers_count}
+                // TODO: Fix this the next time the file is edited.
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 followerId={idea.data.relationships.user_follower?.data?.id}
                 w="auto"
                 toolTipType="input"

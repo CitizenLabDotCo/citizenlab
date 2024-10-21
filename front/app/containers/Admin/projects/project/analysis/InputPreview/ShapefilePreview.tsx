@@ -37,9 +37,10 @@ const ShapefilePreview = ({ inputId, file }: Props) => {
   >(null);
 
   // Get Shapefile URL
-  const fileUrl = inputFiles?.data.find(
-    (inputFile) => inputFile.id === file?.id
-  )?.attributes?.file?.url;
+  const fileUrl =
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    inputFiles?.data.find((inputFile) => inputFile.id === file?.id)?.attributes // TODO: Fix this the next time the file is edited.
+      ?.file?.url;
 
   // Convert the shapefile to GeoJSON
   useEffect(() => {
@@ -73,6 +74,8 @@ const ShapefilePreview = ({ inputId, file }: Props) => {
   }
 
   const esriLayers = createEsriGeoJsonLayers(mapLayers, localize);
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const initialMapCenter = esriLayers?.[0]?.fullExtent?.center;
 
   esriLayers.map((layer) => {
@@ -86,21 +89,29 @@ const ShapefilePreview = ({ inputId, file }: Props) => {
     setMapView(mapView);
   };
 
-  useEffect(() => {
-    const firstLayer = mapView?.map?.layers?.['items']?.[0];
-    if (firstLayer) {
-      firstLayer.on('layerview-create', () => {
-        // Zoom the map to the extent of the layer
-        goToLayerExtent(firstLayer, mapView, true);
-      });
-    }
-  }, [esriLayers, mapView?.map?.layers, mapView]);
+  useEffect(
+    () => {
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      const firstLayer = mapView?.map?.layers?.['items']?.[0];
+      if (firstLayer) {
+        firstLayer.on('layerview-create', () => {
+          // Zoom the map to the extent of the layer
+          goToLayerExtent(firstLayer, mapView, true);
+        });
+      }
+    }, // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    [esriLayers, mapView?.map?.layers, mapView]
+  );
 
   if (!fileUrl) {
     // No file was uploaded
     return (
       <Text fontStyle="italic">{formatMessage(messages.noFileUploaded)}</Text>
     );
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   } else if (!fileUrl?.endsWith('.zip')) {
     // This is not a valid file for this question type
     return (
@@ -120,7 +131,11 @@ const ShapefilePreview = ({ inputId, file }: Props) => {
           center: {
             type: 'Point',
             coordinates: [
+              // TODO: Fix this the next time the file is edited.
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
               initialMapCenter?.latitude,
+              // TODO: Fix this the next time the file is edited.
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
               initialMapCenter?.longitude,
             ],
           },

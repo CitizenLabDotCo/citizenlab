@@ -19,6 +19,8 @@ const Interactions = ({ idea, phase }: Props) => {
   const votingMethod = phase?.attributes.voting_method;
   const config = getVotingMethodConfig(votingMethod);
   const { data: basket } = useBasket(
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     phase?.relationships?.user_basket?.data?.id
   );
 
@@ -35,10 +37,13 @@ const Interactions = ({ idea, phase }: Props) => {
 
   const phaseEnded =
     phase.attributes.end_at &&
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     pastPresentOrFuture(phase?.attributes?.end_at) === 'past';
 
   const hideInteractions =
-    isGeneralIdeasPage ||
+    isGeneralIdeasPage || // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     (phaseEnded && basket?.data.attributes.submitted_at === null)
       ? true
       : false;

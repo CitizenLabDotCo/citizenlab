@@ -98,6 +98,8 @@ const PredicateSelector = memo(
     };
 
     const generateOptions = (): IOption[] => {
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (ruleType) {
         const ruleTypePredicates = keys(ruleTypeConstraints[ruleType]);
         return ruleTypePredicates.map((predicate) => {

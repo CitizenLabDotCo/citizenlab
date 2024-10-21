@@ -58,6 +58,8 @@ const SentCampaignRow = ({ campaign, context }: Props) => {
           {context === 'global' && project && (
             <Text m="0px" fontSize="s">
               {formatMessage(messages.project)}:{' '}
+              {/* TODO: Fix this the next time the file is edited. */}
+              {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
               {localize(project?.data.attributes.title_multiloc)}
             </Text>
           )}

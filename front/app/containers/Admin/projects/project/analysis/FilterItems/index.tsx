@@ -133,7 +133,8 @@ const FilterItems = ({ filters, isEditable, analysisId }: FilterItemsProps) => {
         } else if (key === 'tag_ids') {
           return (
             <>
-              {tags?.data
+              {tags?.data // TODO: Fix this the next time the file is edited.
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 .filter((tag) => (value as string[])?.includes(tag.id))
                 .map((tag) => (
                   <Tag

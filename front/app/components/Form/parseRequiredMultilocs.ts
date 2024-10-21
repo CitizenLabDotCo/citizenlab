@@ -18,7 +18,12 @@ export const parseRequiredMultilocsSchema = (
     const requiredFieldsObject = Object.fromEntries(
       requiredMultilocFields.map((req) => [
         req,
-        { ...schema?.properties?.[req], required: [locale] },
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        {
+          ...schema?.properties?.[req],
+          required: [locale],
+        },
       ])
     );
     return {

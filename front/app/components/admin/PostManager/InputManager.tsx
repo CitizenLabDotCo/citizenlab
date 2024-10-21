@@ -94,6 +94,8 @@ const InputManager = ({
     const topicIdsSet = topicIds.length > 0 ? new Set(topicIds) : undefined;
 
     if (topicIdsSet) {
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       return ideaTopics?.data.filter((topic) => topicIdsSet?.has(topic.id));
     }
 
@@ -299,6 +301,8 @@ const InputManager = ({
           <SearchInput
             debounce={1500}
             onChange={onChangeSearchTerm}
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             a11y_numberOfSearchResults={ideas?.data.length}
           />
         </MiddleColumnTop>

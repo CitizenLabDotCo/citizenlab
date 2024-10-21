@@ -50,6 +50,8 @@ const useVotingInterface = (projectId?: string) => {
 
   const { voteForIdea, processing } = useVoteForIdea(phase);
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const basketId = phase?.relationships?.user_basket?.data?.id;
   const { data: basketIdeas, isFetching: basketIdeasLoading } =
     useBasketsIdeas(basketId);

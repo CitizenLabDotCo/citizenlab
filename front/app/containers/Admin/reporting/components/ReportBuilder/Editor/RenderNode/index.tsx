@@ -50,8 +50,14 @@ const RenderNode = ({ render }) => {
   } = useNode((node) => {
     // This can sometimes be undefined, even though
     // craftjs says it can't
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (!node) return {};
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (!node.data) return {};
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (!node.events) return {};
 
     const name = node.data.name;
@@ -59,6 +65,8 @@ const RenderNode = ({ render }) => {
     return {
       props: node.data.props,
       name,
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       hasError: node.data.props?.hasError,
       title: WIDGET_TITLES[name],
       noPointerEvents: hasNoPointerEvents(name),
@@ -82,6 +90,8 @@ const RenderNode = ({ render }) => {
   });
 
   const parentNode = parentId ? node(parentId).get() : undefined;
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const parentName = parentNode?.data?.name;
   const isChildOfComplexComponent = parentName
     ? hasChildren(parentName)
