@@ -154,7 +154,7 @@ const AssignMultipleVotesInput = ({
 
   const minusButtonDisabledMessage =
     permissionsDisabledMessage ||
-    getMinusButtonDisabledMessage(basketSubmitted, onIdeaPage);
+    getMinusButtonDisabledMessage(basketSubmitted, phase, onIdeaPage);
 
   const plusButtonDisabledMessage =
     permissionsDisabledMessage ||
@@ -162,6 +162,7 @@ const AssignMultipleVotesInput = ({
       userHasVotesLeft,
       basketSubmitted,
       maxVotesPerIdeaReached,
+      phase,
       onIdeaPage
     );
 
