@@ -27,8 +27,6 @@ const StyledParentComment = styled(ParentComment)`
 
 interface Props {
   ideaId: string | undefined;
-  initiativeId: string | undefined;
-  postType: 'idea' | 'initiative';
   allComments: ICommentData[];
   loading: boolean;
   className?: string;
@@ -38,8 +36,6 @@ interface Props {
 const CommentsSection = memo<Props>(
   ({
     ideaId,
-    initiativeId,
-    postType,
     allComments,
     loading,
     className,
@@ -109,8 +105,6 @@ const CommentsSection = memo<Props>(
             <StyledParentComment
               key={parentComment.id}
               ideaId={ideaId}
-              initiativeId={initiativeId}
-              postType={postType}
               commentId={parentComment.id}
               childCommentIds={childCommentIds}
               className={loading ? 'loading' : ''}

@@ -62,6 +62,10 @@ FactoryBot.define do
     enabled { true }
   end
 
+  factory :your_input_in_screening_campaign, class: EmailCampaigns::Campaigns::YourInputInScreening do
+    enabled { true }
+  end
+
   factory :invite_received_campaign, class: EmailCampaigns::Campaigns::InviteReceived do
     enabled { true }
   end
@@ -206,11 +210,6 @@ FactoryBot.define do
   end
 
   factory :user_digest_campaign, class: EmailCampaigns::Campaigns::UserDigest do
-    enabled { true }
-    schedule { weekly_schedule }
-  end
-
-  factory :your_proposed_initiatives_digest_campaign, class: EmailCampaigns::Campaigns::YourProposedInitiativesDigest do
     enabled { true }
     schedule { weekly_schedule }
   end

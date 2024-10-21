@@ -209,6 +209,9 @@ const ProjectInfoSideBar = memo<Props>(
           ? project.data.relationships.avatars.data.map((avatar) => avatar.id)
           : [];
 
+      const ideationOrProposals =
+        currentPhaseParticipationMethod === 'ideation' ||
+        currentPhaseParticipationMethod === 'proposals';
       return (
         <Container id="e2e-project-sidebar" className={className || ''}>
           <About>
@@ -295,11 +298,13 @@ const ProjectInfoSideBar = memo<Props>(
                   </ListItemButton>
                 </ListItem>
               )}
-              {(currentPhaseParticipationMethod === 'ideation' ||
+              {(ideationOrProposals ||
                 (currentPhase &&
                   hasProjectEnded &&
-                  currentPhase?.attributes.participation_method ===
-                    'ideation')) &&
+                  (currentPhase?.attributes.participation_method ===
+                    'ideation' ||
+                    currentPhase?.attributes.participation_method ===
+                      'proposals'))) &&
                 typeof ideasCount === 'number' &&
                 ideasCount > 0 && (
                   <ListItem id="e2e-project-sidebar-ideas-count">
@@ -307,7 +312,7 @@ const ProjectInfoSideBar = memo<Props>(
                     {project.data.attributes.ideas_count > 0 ? (
                       <ListItemButton onClick={scrollTo('project-ideas')}>
                         {currentPhase &&
-                          currentPhaseParticipationMethod === 'ideation' &&
+                          ideationOrProposals &&
                           !hasProjectEnded && (
                             <FormattedMessage
                               {...getInputTermMessage(
@@ -320,13 +325,17 @@ const ProjectInfoSideBar = memo<Props>(
                                   issue: messages.xIssuesInCurrentPhase,
                                   contribution:
                                     messages.xContributionsInCurrentPhase,
+                                  proposal: messages.xProposalsInCurrentPhase,
+                                  initiative:
+                                    messages.xInitiativesInCurrentPhase,
+                                  petition: messages.xPetitionsInCurrentPhase,
                                 }
                               )}
                               values={{ ideasCount }}
                             />
                           )}
                         {currentPhase &&
-                          currentPhaseParticipationMethod === 'ideation' &&
+                          ideationOrProposals &&
                           hasProjectEnded && (
                             <FormattedMessage
                               {...getInputTermMessage(
@@ -339,6 +348,9 @@ const ProjectInfoSideBar = memo<Props>(
                                   issue: messages.xIssuesInFinalPhase,
                                   contribution:
                                     messages.xContributionsInFinalPhase,
+                                  proposal: messages.xProposalsInFinalPhase,
+                                  initiative: messages.xInitiativesInFinalPhase,
+                                  petition: messages.xPetitionsInFinalPhase,
                                 }
                               )}
                               values={{ ideasCount }}

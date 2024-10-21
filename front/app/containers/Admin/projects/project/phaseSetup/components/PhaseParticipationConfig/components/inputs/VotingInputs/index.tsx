@@ -8,13 +8,13 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
 import { Multiloc, CLErrors } from 'typings';
 
 import { VotingMethod } from 'api/phases/types';
 
-import { StyledSectionDescription } from 'containers/Admin/initiatives/settings';
-
 import {
+  SectionDescription,
   SectionField,
   SubSectionTitleWithDescription,
 } from 'components/admin/Section';
@@ -31,14 +31,21 @@ import { ToggleRow } from '../../shared/styling';
 
 import BudgetingInputs from './votingMethodInputs/BudgetingInputs';
 import MultipleVotingInputs from './votingMethodInputs/MultipleVotingInputs';
+import ShareResultsToggle from './votingMethodInputs/ShareResultsToggle/ShareResultsToggle';
 import SingleVotingInputs from './votingMethodInputs/SingleVotingInputs';
 import VotingMethodSelector from './VotingMethodSelector';
+
+export const StyledSectionDescription = styled(SectionDescription)`
+  margin-top: 0;
+  margin-bottom: 20px;
+`;
 
 export interface VotingInputsProps {
   voting_method: VotingMethod | null | undefined;
   voting_min_total: number | null | undefined;
   voting_max_total: number | null | undefined;
   commenting_enabled: boolean | null | undefined;
+  autoshare_results_enabled: boolean | null | undefined;
   voting_max_votes_per_idea?: number | null;
   voting_term_plural_multiloc?: Multiloc | null;
   voting_term_singular_multiloc?: Multiloc | null;
@@ -48,6 +55,7 @@ export interface VotingInputsProps {
   handleVoteTermPluralChange: (termMultiloc: Multiloc) => void;
   handleVoteTermSingularChange: (termMultiloc: Multiloc) => void;
   toggleCommentingEnabled: () => void;
+  toggleAutoshareResultsEnabled: () => void;
   apiErrors: CLErrors | null | undefined;
   validationErrors: ValidationErrors;
   presentation_mode: 'card' | 'map' | null | undefined;
@@ -60,12 +68,14 @@ export default ({
   voting_min_total,
   voting_max_total,
   commenting_enabled,
+  autoshare_results_enabled,
   voting_max_votes_per_idea,
   voting_term_plural_multiloc,
   voting_term_singular_multiloc,
   handleVotingMinTotalChange,
   handleVotingMaxTotalChange,
   toggleCommentingEnabled,
+  toggleAutoshareResultsEnabled,
   handleMaxVotesPerOptionAmountChange,
   handleVoteTermPluralChange,
   handleVoteTermSingularChange,
@@ -205,6 +215,12 @@ export default ({
           </Text>
           <Error apiErrors={apiErrors && apiErrors.commenting_enabled} />
         </SectionField>
+
+        <ShareResultsToggle
+          autoshare_results_enabled={autoshare_results_enabled}
+          toggleAutoshareResultsEnabled={toggleAutoshareResultsEnabled}
+          apiErrors={apiErrors}
+        />
 
         <DefaultViewPicker
           presentation_mode={presentation_mode}

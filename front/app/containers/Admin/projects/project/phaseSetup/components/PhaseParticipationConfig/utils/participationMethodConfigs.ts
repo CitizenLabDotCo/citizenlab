@@ -65,6 +65,7 @@ export const votingDefaultConfig: IUpdatedPhaseProperties = {
   voting_max_total: 100,
   voting_max_votes_per_idea: 1,
   commenting_enabled: true,
+  autoshare_results_enabled: true,
   presentation_mode: 'card',
   ideas_order: 'random',
   input_term: 'idea',
@@ -88,7 +89,7 @@ export const proposalsDefaultConfig: IUpdatedPhaseProperties = {
   allow_anonymous_participation: false,
   reacting_dislike_limited_max: null,
   presentation_mode: 'card',
-  // input_term: 'proposal', // TODO: add later
+  input_term: 'proposal',
   ideas_order: 'trending',
   expire_days_limit: 90,
   reacting_threshold: 300,

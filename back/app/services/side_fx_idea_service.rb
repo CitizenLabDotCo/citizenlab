@@ -22,6 +22,7 @@ class SideFxIdeaService
       payload: { idea: serialize_idea(idea) }
     )
 
+    after_submission idea, user if idea.submitted_or_published?
     after_publish idea, user if idea.published?
 
     log_activities_if_cosponsors_added(idea, user, _old_cosponsor_ids = [])
@@ -36,6 +37,7 @@ class SideFxIdeaService
   def after_update(idea, user, old_cosponsor_ids)
     remove_user_from_past_activities_with_item(idea, user) if idea.anonymous_previously_changed?(to: true)
 
+    after_submission idea, user if idea.just_submitted?
     if idea.just_published?
       after_publish idea, user
     elsif idea.published?
@@ -102,6 +104,10 @@ class SideFxIdeaService
   private
 
   def before_publish(idea, _user); end
+
+  def after_submission(idea, user)
+    LogActivityJob.set(wait: 20.seconds).perform_later(idea, 'submitted', user_for_activity_on_anonymizable_item(idea, user), idea.submitted_at.to_i)
+  end
 
   def after_publish(idea, user)
     add_autoreaction(idea)

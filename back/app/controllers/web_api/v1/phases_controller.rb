@@ -111,6 +111,7 @@ class WebApi::V1::PhasesController < ApplicationController
       :participation_method,
       :submission_enabled,
       :commenting_enabled,
+      :autoshare_results_enabled,
       :reacting_enabled,
       :reacting_like_method,
       :reacting_like_limited_max,
@@ -173,3 +174,5 @@ class WebApi::V1::PhasesController < ApplicationController
     end
   end
 end
+
+WebApi::V1::PhasesController.include(AggressiveCaching::Patches::WebApi::V1::PhasesController)

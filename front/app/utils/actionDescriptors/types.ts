@@ -68,6 +68,7 @@ export type IdeaCommentingDisabledReason =
 
 export type IdeaVotingDisabledReason =
   | 'idea_not_in_current_phase'
+  | 'inactive_phase'
   | ProjectVotingDisabledReason;
 
 export type IdeaEditingDisabledReason =
@@ -96,7 +97,6 @@ export type ActionDescriptorAction =
   | 'posting_idea'
   | 'commenting_idea'
   | 'reacting_idea'
-  | 'commenting_initiative'
   | 'voting'
   | 'budgeting'
   | 'annotating_document'

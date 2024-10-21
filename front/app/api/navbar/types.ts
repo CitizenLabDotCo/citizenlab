@@ -15,7 +15,6 @@ export type TDefaultNavbarItemCode =
   | 'home'
   | 'projects'
   | 'all_input'
-  | 'proposals'
   | 'events';
 
 export type TNavbarItemCode = TDefaultNavbarItemCode | 'custom';
@@ -26,6 +25,7 @@ export interface INavbarItem {
   attributes: {
     title_multiloc: Multiloc;
     code: TNavbarItemCode;
+    slug: string | null;
     ordering: number;
     created_at: string;
     updated_at: string;

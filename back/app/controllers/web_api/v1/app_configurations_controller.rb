@@ -43,3 +43,5 @@ class WebApi::V1::AppConfigurationsController < ApplicationController
       .permit(:logo, :favicon, settings: {}, style: {})
   end
 end
+
+WebApi::V1::AppConfigurationsController.include(AggressiveCaching::Patches::WebApi::V1::AppConfigurationsController)

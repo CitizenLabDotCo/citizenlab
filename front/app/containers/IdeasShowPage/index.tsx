@@ -104,7 +104,10 @@ const IdeasShowPage = () => {
   return (
     <>
       <IdeaMeta ideaId={idea.data.id} />
-      <VotingContext projectId={project.data.id}>
+      <VotingContext
+        projectId={project.data.id}
+        phaseId={phaseContext || phase?.id}
+      >
         <Box
           background={colors.white}
           pt={

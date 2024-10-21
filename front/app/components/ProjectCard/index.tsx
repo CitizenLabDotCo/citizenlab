@@ -20,8 +20,6 @@ import styled, { useTheme } from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
 import usePhase from 'api/phases/usePhase';
-import usePhases from 'api/phases/usePhases';
-import { getInputTerm } from 'api/phases/utils';
 import useProjectImage from 'api/project_images/useProjectImage';
 import { CARD_IMAGE_ASPECT_RATIO } from 'api/project_images/useProjectImages';
 import useProjectById from 'api/projects/useProjectById';
@@ -376,27 +374,18 @@ const ProjectCard = memo<InputProps>(
 
     // We use this hook instead of useProjectImages,
     // because that one doesn't work with our caching system.
-    const { data: projectImage } = useProjectImage({
+    const imageId = project?.data.relationships.project_images?.data[0]?.id;
+    const { data: _projectImage } = useProjectImage({
       projectId,
-      imageId: project?.data.relationships.project_images?.data[0]?.id,
+      imageId,
     });
+
+    const projectImage = imageId ? _projectImage : undefined;
 
     const currentPhaseId =
       project?.data?.relationships?.current_phase?.data?.id ?? null;
     const { data: phase } = usePhase(currentPhaseId);
     const localize = useLocalize();
-
-    // We only need the phases for the input term, and only
-    // in case there is no current phase in a timeline project.
-    // This is quite an edge case.
-    // With this check, we only fetch the phases if the project has loaded already
-    // AND there is no current phase, instead of always fetching all the phases
-    // for every project for which we're showing a card.
-    const fetchPhases = project && !currentPhaseId;
-
-    const { data: phases } = usePhases(
-      fetchPhases ? project.data.id : undefined
-    );
 
     const theme = useTheme();
 
@@ -451,7 +440,7 @@ const ProjectCard = memo<InputProps>(
       const endAt = phase?.data.attributes.end_at;
 
       let countdown: JSX.Element | null = null;
-      const inputTerm = getInputTerm(phases?.data, phase?.data);
+      const inputTerm = phase?.data.attributes.input_term ?? 'idea';
 
       if (isArchived) {
         countdown = (
@@ -492,71 +481,67 @@ const ProjectCard = memo<InputProps>(
 
       const getCTAMessage = () => {
         let ctaMessage: JSX.Element | null = null;
-
-        switch (participationMethod) {
-          case 'voting':
-            if (votingMethod === 'budgeting') {
-              ctaMessage = (
-                <FormattedMessage {...messages.allocateYourBudget} />
-              );
-            } else {
-              ctaMessage = <FormattedMessage {...messages.vote} />;
-            }
-            break;
-          case 'information':
-            ctaMessage = <FormattedMessage {...messages.learnMore} />;
-            break;
-          case 'survey':
-            ctaMessage = <FormattedMessage {...messages.takeTheSurvey} />;
-            break;
-          case 'native_survey':
+        if (participationMethod === 'voting') {
+          if (votingMethod === 'budgeting') {
+            ctaMessage = <FormattedMessage {...messages.allocateYourBudget} />;
+          } else {
+            ctaMessage = <FormattedMessage {...messages.vote} />;
+          }
+        } else if (participationMethod === 'information') {
+          ctaMessage = <FormattedMessage {...messages.learnMore} />;
+        } else if (participationMethod === 'survey') {
+          ctaMessage = <FormattedMessage {...messages.takeTheSurvey} />;
+        } else if (participationMethod === 'native_survey') {
+          ctaMessage = (
+            <>
+              {localize(phase?.data.attributes.native_survey_button_multiloc)}
+            </>
+          );
+        } else if (participationMethod === 'document_annotation') {
+          ctaMessage = <FormattedMessage {...messages.reviewDocument} />;
+        } else if (participationMethod === 'poll') {
+          ctaMessage = <FormattedMessage {...messages.takeThePoll} />;
+        } else if (
+          participationMethod === 'ideation' ||
+          participationMethod === 'proposals'
+        ) {
+          if (canPost) {
             ctaMessage = (
-              <>
-                {localize(phase?.data.attributes.native_survey_button_multiloc)}
-              </>
+              <FormattedMessage
+                {...getInputTermMessage(inputTerm, {
+                  idea: messages.submitYourIdea,
+                  option: messages.addYourOption,
+                  project: messages.submitYourProject,
+                  question: messages.joinDiscussion,
+                  issue: messages.submitAnIssue,
+                  contribution: messages.contributeYourInput,
+                  initiative: messages.submitYourInitiative,
+                  proposal: messages.submitYourProposal,
+                  petition: messages.submitYourPetition,
+                })}
+              />
             );
-            break;
-          case 'document_annotation':
-            ctaMessage = <FormattedMessage {...messages.reviewDocument} />;
-            break;
-          case 'poll':
-            ctaMessage = <FormattedMessage {...messages.takeThePoll} />;
-            break;
-          case 'ideation':
-            if (canPost) {
-              ctaMessage = (
-                <FormattedMessage
-                  {...getInputTermMessage(inputTerm, {
-                    idea: messages.submitYourIdea,
-                    option: messages.addYourOption,
-                    project: messages.submitYourProject,
-                    question: messages.joinDiscussion,
-                    issue: messages.submitAnIssue,
-                    contribution: messages.contributeYourInput,
-                  })}
-                />
-              );
-            } else if (canReact) {
-              ctaMessage = <FormattedMessage {...messages.reaction} />;
-            } else if (canComment) {
-              ctaMessage = <FormattedMessage {...messages.comment} />;
-            } else {
-              ctaMessage = (
-                <FormattedMessage
-                  {...getInputTermMessage(inputTerm, {
-                    idea: messages.viewTheIdeas,
-                    option: messages.viewTheOptions,
-                    project: messages.viewTheProjects,
-                    question: messages.viewTheQuestions,
-                    issue: messages.viewTheIssues,
-                    contribution: messages.viewTheContributions,
-                  })}
-                />
-              );
-            }
-            break;
-          default:
-            ctaMessage = null;
+          } else if (canReact) {
+            ctaMessage = <FormattedMessage {...messages.reaction} />;
+          } else if (canComment) {
+            ctaMessage = <FormattedMessage {...messages.comment} />;
+          } else {
+            ctaMessage = (
+              <FormattedMessage
+                {...getInputTermMessage(inputTerm, {
+                  idea: messages.viewTheIdeas,
+                  option: messages.viewTheOptions,
+                  project: messages.viewTheProjects,
+                  question: messages.viewTheQuestions,
+                  issue: messages.viewTheIssues,
+                  contribution: messages.viewTheContributions,
+                  proposal: messages.viewTheProposals,
+                  initiative: messages.viewTheInitiatives,
+                  petition: messages.viewThePetitions,
+                })}
+              />
+            );
+          }
         }
 
         return ctaMessage;

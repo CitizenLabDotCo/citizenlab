@@ -58,7 +58,7 @@ module EmailCampaigns
       Campaigns::VotingPhaseStarted,
       Campaigns::VotingResults,
       Campaigns::Welcome,
-      Campaigns::YourProposedInitiativesDigest
+      Campaigns::YourInputInScreening
     ].freeze
 
     def campaign_classes

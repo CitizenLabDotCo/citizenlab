@@ -11,7 +11,7 @@ RSpec.describe Analytics::DimensionStatus do
     end
   end
 
-  # TODO: move-old-proposals-test
+  # TODO: cleanup-after-proposals-migration
   context 'when an initiative status is created' do
     let!(:initiative_status) { create(:initiative_status) }
 
