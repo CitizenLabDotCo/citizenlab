@@ -35,10 +35,15 @@ class SideFxIdeaService
   end
 
   def after_update(idea, user, old_cosponsor_ids)
+    # We need to check if the idea was just submitted or just published before
+    # we do anything else because updates to the idea can change this state.
+    just_submitted = idea.just_submitted?
+    just_published = idea.just_published?
+
     remove_user_from_past_activities_with_item(idea, user) if idea.anonymous_previously_changed?(to: true)
 
-    after_submission idea, user if idea.just_submitted?
-    if idea.just_published?
+    after_submission idea, user if just_submitted
+    if just_published
       after_publish idea, user
     elsif idea.published?
       change = idea.saved_changes
@@ -119,7 +124,7 @@ class SideFxIdeaService
     return unless idea.author
     return if Permissions::IdeaPermissionsService.new(idea, idea.author).denied_reason_for_action 'reacting_idea', reaction_mode: 'up'
 
-    idea.reactions.create!(mode: 'up', user: idea.author) if !idea.reactions.where(mode: 'up', user: idea.author).exists?
+    idea.reactions.create!(mode: 'up', user: idea.author) if !idea.reactions.exists?(mode: 'up', user: idea.author)
     idea.reload
   end
 
