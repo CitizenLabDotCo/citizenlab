@@ -16,6 +16,7 @@ import messages from '../../../../../../messages';
 import CustomFieldPicker from '../../shared/CustomFieldPicker';
 import DefaultViewPicker from '../../shared/DefaultViewPicker';
 import { ReactingLimitInput } from '../../shared/styling';
+import PrescreeningToggle from '../_shared/PrescreeningToggle';
 import SortingPicker from '../_shared/SortingPicker';
 import UserActions from '../_shared/UserActions';
 
@@ -57,6 +58,8 @@ interface Props {
   handleIdeaDefaultSortMethodChange: (
     ideas_order: IdeaDefaultSortMethod
   ) => void;
+  prescreening_enabled: boolean | null | undefined;
+  togglePrescreeningEnabled: (prescreening_enabled: boolean) => void;
 }
 
 const IdeationInputs = ({
@@ -87,6 +90,8 @@ const IdeationInputs = ({
   handleIdeasDisplayChange,
   ideas_order,
   handleIdeaDefaultSortMethodChange,
+  prescreening_enabled,
+  togglePrescreeningEnabled,
 }: Props) => {
   return (
     <>
@@ -99,6 +104,10 @@ const IdeationInputs = ({
       <CustomFieldPicker
         input_term={input_term}
         handleInputTermChange={handleInputTermChange}
+      />
+      <PrescreeningToggle
+        prescreening_enabled={prescreening_enabled}
+        togglePrescreeningEnabled={togglePrescreeningEnabled}
       />
       <UserActions
         submission_enabled={submission_enabled || false}

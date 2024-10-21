@@ -1,18 +1,9 @@
 import React from 'react';
 
-import {
-  Input,
-  IOption,
-  Box,
-  Text,
-  Toggle,
-  Tooltip,
-} from '@citizenlab/cl2-component-library';
+import { Input, IOption } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
 import { IdeaDefaultSortMethod, InputTerm } from 'api/phases/types';
-
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import AnonymousPostingToggle from 'components/admin/AnonymousPostingToggle/AnonymousPostingToggle';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
@@ -23,6 +14,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../../../../../messages';
 import CustomFieldPicker from '../../shared/CustomFieldPicker';
 import DefaultViewPicker from '../../shared/DefaultViewPicker';
+import PrescreeningToggle from '../_shared/PrescreeningToggle';
 import SortingPicker from '../_shared/SortingPicker';
 import UserActions from '../_shared/UserActions';
 
@@ -60,7 +52,7 @@ interface Props {
   handleDaysLimitChange: (limit: string) => void;
   handleReactingThresholdChange: (threshold: string) => void;
   prescreening_enabled: boolean | null | undefined;
-  toggleReviewingEnabled: (prescreening_enabled: boolean) => void;
+  togglePrescreeningEnabled: (prescreening_enabled: boolean) => void;
 }
 
 const ProposalsInputs = ({
@@ -91,10 +83,8 @@ const ProposalsInputs = ({
   handleDaysLimitChange,
   handleReactingThresholdChange,
   prescreening_enabled,
-  toggleReviewingEnabled,
+  togglePrescreeningEnabled,
 }: Props) => {
-  const prescreeningEnabled = useFeatureFlag({ name: 'prescreening' });
-
   return (
     <>
       <CustomFieldPicker
@@ -141,43 +131,10 @@ const ProposalsInputs = ({
           handleAllowAnonymousParticipationOnChange
         }
       />
-      <SectionField>
-        <SubSectionTitle style={{ marginBottom: '0px' }}>
-          <FormattedMessage {...messages.participationOptions} />
-        </SubSectionTitle>
-        <Tooltip
-          disabled={prescreeningEnabled}
-          content={<FormattedMessage {...messages.prescreeningTooltip} />}
-        >
-          <Box>
-            <Toggle
-              disabled={!prescreeningEnabled}
-              checked={prescreening_enabled || false}
-              onChange={() => {
-                toggleReviewingEnabled(!prescreening_enabled);
-              }}
-              label={
-                <Box ml="8px" id="e2e-participation-options-toggle">
-                  <Box display="flex">
-                    <Text
-                      color="primary"
-                      mb="0px"
-                      fontSize="m"
-                      style={{ fontWeight: 600 }}
-                    >
-                      <FormattedMessage {...messages.prescreeningText} />
-                    </Text>
-                  </Box>
-
-                  <Text color="coolGrey600" mt="0px" fontSize="m">
-                    <FormattedMessage {...messages.prescreeningSubtext} />
-                  </Text>
-                </Box>
-              }
-            />
-          </Box>
-        </Tooltip>
-      </SectionField>
+      <PrescreeningToggle
+        prescreening_enabled={prescreening_enabled}
+        togglePrescreeningEnabled={togglePrescreeningEnabled}
+      />
       <UserActions
         submission_enabled={submission_enabled || false}
         commenting_enabled={commenting_enabled || false}
