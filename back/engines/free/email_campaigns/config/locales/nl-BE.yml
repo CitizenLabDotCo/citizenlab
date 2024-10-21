@@ -272,7 +272,7 @@ nl-BE:
       main_header: '%{firstName} noemde je in een interne reactie.'
       preheader: '%{authorNameFull} noemde je in een interne reactie.'
     moderator_digest:
-      subject: 'Je weekoverzicht als projectbeheerder van %{time}'
+      subject: 'Je weekoverzicht als projectbeheerder van "%{project_title}"'
       preheader: 'Het weekoverzicht voor projectbeheerders van %{organizationName}'
       title_your_weekly_report: '%{firstName}, je wekelijkse overzicht'
       text_introduction: 'Ontdek rond welke ideeën er het meest werd gediscussieerd de afgelopen week. Hieronder kom je te weten wat er gebeurt met je project!'
