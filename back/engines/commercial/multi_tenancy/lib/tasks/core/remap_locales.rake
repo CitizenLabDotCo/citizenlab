@@ -114,8 +114,11 @@ def generate_generic_locale_mapping
     'da' => {
       'fallback' => 'da-DK'
     },
+    'nb' => {
+      'fallback' => 'nb'
+    },
     'no' => {
-      'fallback' => 'nb-NO'
+      'fallback' => 'nb'
     },
     'en-GB' => {
       'fallback' => 'en-GB'
@@ -141,9 +144,6 @@ def generate_generic_locale_mapping
     'da-DK' => {
       'fallback' => 'da-DK'
     },
-    'nb-NO' => {
-      'fallback' => 'nb-NO'
-    }
   }
 end
 

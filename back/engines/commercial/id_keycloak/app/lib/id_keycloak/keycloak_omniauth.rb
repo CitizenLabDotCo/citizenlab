@@ -9,7 +9,7 @@ module IdKeycloak
         first_name: auth.info.first_name,
         last_name: auth.info.last_name,
         email: auth.info.email,
-        locale: AppConfiguration.instance.closest_locale_to('nb-NO') # No need to get the locale from the provider
+        locale: AppConfiguration.instance.closest_locale_to('nb') # No need to get the locale from the provider
       }
     end
 
