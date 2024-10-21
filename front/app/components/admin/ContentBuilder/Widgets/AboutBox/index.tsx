@@ -47,20 +47,20 @@ const AboutBoxSettings = () => {
   const { formatMessage } = useIntl();
   const {
     actions: { setProp },
-    hideParticipationAvatarsText,
+    hideParticipationAvatars,
   } = useNode((node) => ({
-    hideParticipationAvatarsText: node.data.props.hideParticipationAvatarsText,
+    hideParticipationAvatars: node.data.props.hideParticipationAvatars,
     id: node.id,
   }));
 
   return (
     <Box background={colors.white} my="32px">
       <Toggle
-        checked={hideParticipationAvatarsText}
+        checked={hideParticipationAvatars}
         onChange={() => {
           setProp(
             (props: AboutBoxProps) =>
-              (props.hideParticipationAvatars = !hideParticipationAvatarsText)
+              (props.hideParticipationAvatars = !hideParticipationAvatars)
           );
         }}
         label={formatMessage(messages.hideParticipationAvatarsText)}
