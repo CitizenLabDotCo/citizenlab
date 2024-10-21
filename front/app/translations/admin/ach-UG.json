@@ -2509,7 +2509,7 @@
   "app.containers.admin.ContentBuilder.delete": "crwdns212344:0crwdne212344:0",
   "app.containers.admin.ContentBuilder.error": "crwdns212358:0crwdne212358:0",
   "app.containers.admin.ContentBuilder.errorMessage": "crwdns212360:0{locale}crwdne212360:0",
-  "app.containers.admin.ContentBuilder.hideParticipationNumbersText": "crwdns3263245:0crwdne3263245:0",
+  "app.containers.admin.ContentBuilder.hideParticipationAvatarsText": "crwdns3338661:0crwdne3338661:0",
   "app.containers.admin.ContentBuilder.homepage.default": "crwdns1252866:0crwdne1252866:0",
   "app.containers.admin.ContentBuilder.homepage.events.eventsTitle": "crwdns1347292:0crwdne1347292:0",
   "app.containers.admin.ContentBuilder.homepage.eventsTitle": "crwdns1252868:0crwdne1252868:0",
