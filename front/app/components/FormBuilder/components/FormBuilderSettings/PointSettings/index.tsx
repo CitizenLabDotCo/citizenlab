@@ -72,7 +72,8 @@ const PointSettings = ({ mapConfigIdName, pageLayoutName, field }: Props) => {
   const mapConfigId =
     watch(mapConfigIdName) ||
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    rawCustomFields?.data.find((rawField) => rawField.id === field.id) // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    rawCustomFields?.data.find((rawField) => rawField.id === field.id) // TODO: Fix this the next time the file is edited. // TODO: Fix this the next time the file is edited.
       ?.relationships?.map_config?.data?.id;
 
   // Load map config

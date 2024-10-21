@@ -21,6 +21,8 @@ export const parseRequiredMultilocsSchema = (
         // TODO: Fix this the next time the file is edited.
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         {
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           ...schema?.properties?.[req],
           required: [locale],
         },

@@ -471,7 +471,8 @@ const IdeasMap = memo<Props>(
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         const ideaPoint =
           // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-          ideaMarkers?.data?.find((idea) => idea.id === selectedIdeaId) // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+          ideaMarkers?.data?.find((idea) => idea.id === selectedIdeaId) // TODO: Fix this the next time the file is edited. // TODO: Fix this the next time the file is edited.
             ?.attributes?.location_point_geojson;
 
         if (selectedIdeaId && ideaPoint && esriMapView) {
