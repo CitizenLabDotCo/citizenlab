@@ -1611,7 +1611,8 @@ CREATE TABLE public.phases (
     native_survey_button_multiloc jsonb DEFAULT '{}'::jsonb,
     expire_days_limit integer,
     reacting_threshold integer,
-    prescreening_enabled boolean DEFAULT false NOT NULL
+    prescreening_enabled boolean DEFAULT false NOT NULL,
+    autoshare_results_enabled boolean DEFAULT true
 );
 
 
@@ -7519,7 +7520,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20241002200522'),
 ('20241008143004'),
 ('20241011101454'),
-('20241016201503');
+('20241016201503'),
+('20241011816395');
 
 
 
