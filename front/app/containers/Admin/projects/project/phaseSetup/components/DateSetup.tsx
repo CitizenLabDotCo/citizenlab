@@ -102,6 +102,8 @@ const DateSetup = ({
           }));
           setFormData({
             ...formData,
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             start_at: from ? format(from, 'yyyy-MM-dd') : '',
             end_at: to ? format(to, 'yyyy-MM-dd') : '',
           });

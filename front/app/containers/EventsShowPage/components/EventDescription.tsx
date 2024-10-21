@@ -24,6 +24,8 @@ const EventDescription = ({ event }: Props) => {
           <ReadMoreWrapper
             fontSize="base"
             contentId="event-description"
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             value={event.attributes?.description_multiloc}
           />
         </Box>

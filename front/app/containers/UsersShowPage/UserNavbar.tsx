@@ -133,10 +133,14 @@ const UserNavbar = memo<Props>(({ user }) => {
   const { data: authUser } = useAuthUser();
 
   const eventsCount = events?.data.length;
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const showEventTab = authUser?.data?.id === user.id;
   const isFollowingEnabled = useFeatureFlag({
     name: 'follow',
   });
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const showFollowingTab = isFollowingEnabled && authUser?.data?.id === user.id;
 
   const followingTab: TabData = {

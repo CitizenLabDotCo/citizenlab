@@ -39,6 +39,8 @@ async function getIdea(slug: string) {
 
 async function getProjectIdFromIdeaSlug(slug: string) {
   const idea = await getIdea(slug);
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   return idea?.data.relationships?.project?.data?.id;
 }
 

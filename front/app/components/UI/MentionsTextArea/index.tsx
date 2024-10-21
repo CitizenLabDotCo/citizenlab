@@ -208,6 +208,8 @@ const MentionsTextArea = ({
   };
 
   const setMentionsInputRef = () => {
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (textareaElement && textareaElement.current && getTextareaRef) {
       getTextareaRef(textareaElement.current as HTMLTextAreaElement);
     }
@@ -228,6 +230,8 @@ const MentionsTextArea = ({
 
       const response = await getMentions(queryParameters);
 
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (response && response.data && response.data.length > 0) {
         users = response.data.map((user) => ({
           display: `${user.attributes.first_name} ${
@@ -248,6 +252,8 @@ const MentionsTextArea = ({
     }
   };
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (getStyle()) {
     return (
       <Container className={className}>

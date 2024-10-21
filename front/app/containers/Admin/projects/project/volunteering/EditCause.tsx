@@ -25,6 +25,8 @@ const EditCause = () => {
   const handleOnSubmit = async (formValues: SubmitValues) => {
     const { title_multiloc, description_multiloc, image } = formValues;
 
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (title_multiloc && description_multiloc) {
       await updateCause(
         {

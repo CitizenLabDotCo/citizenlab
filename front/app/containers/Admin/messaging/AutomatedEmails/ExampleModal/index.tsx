@@ -33,6 +33,8 @@ const ExampleModal = ({
   );
 
   useEffect(() => {
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (examples?.data?.length) {
       setSelectedExampleIdx(0);
     }
@@ -47,6 +49,8 @@ const ExampleModal = ({
   if (isNilOrError(examples)) return null;
 
   const selectedExample =
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     selectedExampleIdx === null ? null : examples?.data[selectedExampleIdx];
 
   return (

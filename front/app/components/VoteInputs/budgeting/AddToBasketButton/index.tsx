@@ -52,6 +52,8 @@ const AddToBasketButton = ({
   const { getVotes, setVotes, numberOfVotesCast } = useVoting();
   const { formatMessage } = useIntl();
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const basketId = phase.relationships?.user_basket?.data?.id;
   const { data: basket } = useBasket(basketId);
   const ideaBudget = idea?.data.attributes.budget;

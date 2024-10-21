@@ -275,9 +275,11 @@ const HomepageBannerSettings = () => {
     );
 
     if (!validation) {
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       const newErrorTypes = errors?.includes(field)
         ? [...errors]
-        : [...(errors || []), field];
+        : // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+          [...(errors || []), field];
 
       setErrors(newErrorTypes);
       setHasError(true);
@@ -288,8 +290,11 @@ const HomepageBannerSettings = () => {
         },
       });
     } else {
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       const newErrorTypes = errors?.filter((errorType) => errorType !== field);
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       setErrors(newErrorTypes || []);
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (newErrorTypes && newErrorTypes.length === 0) {
         setHasError(false);
         eventEmitter.emit(CONTENT_BUILDER_ERROR_EVENT, {
@@ -313,6 +318,7 @@ const HomepageBannerSettings = () => {
       }
     });
     if (value !== 'customized_button') {
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       const newErrorTypes = errors?.filter(
         (errorType) =>
           errorType !==
@@ -320,7 +326,9 @@ const HomepageBannerSettings = () => {
             ? 'banner_cta_signed_out_url'
             : 'banner_cta_signed_in_url')
       );
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       setErrors(newErrorTypes || []);
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (newErrorTypes && newErrorTypes.length === 0) {
         setHasError(false);
         eventEmitter.emit(CONTENT_BUILDER_ERROR_EVENT, {

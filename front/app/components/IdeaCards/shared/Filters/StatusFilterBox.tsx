@@ -36,6 +36,8 @@ const StatusFilterBox = ({
       <div className={className}>
         <StatusFilter
           statuses={ideaStatuses.data}
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           filterCounts={ideasFilterCounts?.data.attributes}
           selectedStatusId={selectedStatusId}
           onChange={handleOnChange}

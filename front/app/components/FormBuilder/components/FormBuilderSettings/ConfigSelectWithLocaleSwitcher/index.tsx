@@ -72,6 +72,8 @@ const ConfigSelectWithLocaleSwitcher = ({
 
   useEffect(() => {
     if (
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       customFieldOptionImages &&
       customFieldOptionImages.length !== prevImageQueries?.length
     ) {
@@ -79,11 +81,15 @@ const ConfigSelectWithLocaleSwitcher = ({
         const promises = customFieldOptionImages.map(
           async (customFieldOptionImage) => {
             if (
+              // TODO: Fix this the next time the file is edited.
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
               !customFieldOptionImage?.data?.data.attributes.versions.medium
             ) {
               return;
             }
             const imageData = await convertUrlToUploadFile(
+              // TODO: Fix this the next time the file is edited.
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
               customFieldOptionImage?.data?.data.attributes.versions.medium
             );
             return { [customFieldOptionImage.data.data.id]: imageData };
@@ -234,8 +240,11 @@ const ConfigSelectWithLocaleSwitcher = ({
                   </Box>
                 </Box>
                 <DndProvider backend={HTML5Backend}>
+                  {/* TODO: Fix this the next time the file is edited. */}
+                  {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
                   <List key={choices?.length}>
-                    {choices
+                    {choices // TODO: Fix this the next time the file is edited.
+                      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                       ?.sort((a, b) => {
                         const aValue = a.other ? 1 : 0;
                         const bValue = b.other ? 1 : 0;

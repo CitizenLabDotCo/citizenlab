@@ -221,6 +221,7 @@ module.exports = {
         markers: ['/'],
       },
     ],
+    '@typescript-eslint/no-unnecessary-condition': 'error',
   },
   ignorePatterns: [
     '.rollup.config.cjs',

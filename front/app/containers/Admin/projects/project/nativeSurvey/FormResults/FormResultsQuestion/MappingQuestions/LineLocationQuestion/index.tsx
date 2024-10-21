@@ -40,6 +40,8 @@ const LineLocationQuestion = ({
 
   // Add reset button to the map
   useEffect(() => {
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     mapView?.ui?.add(resetButtonRef?.current || '', 'top-right');
   }, [mapView?.ui, resetButtonRef]);
 
@@ -53,6 +55,8 @@ const LineLocationQuestion = ({
     (isLoadingCustomMapConfig && mapConfigId) || isLoadingProjectMapConfig;
 
   const lines = useMemo(() => {
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     return lineResponses?.map(({ answer }) => answer);
   }, [lineResponses]);
 

@@ -41,12 +41,18 @@ export const getFormSchemaAndData = (
       data?.publication_status === 'draft'
     ) {
       // Get the index of the current page we're iterating in the uiSchema.
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       const indexCurrentElement = uiSchema?.elements?.findIndex(
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         (page) => page?.options?.id === parentSchema?.options?.id
       );
 
       // If the index of the current page is greater than the latest completed page
       // we don't want to include it in our validation check.
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (indexCurrentElement > data?.latest_complete_page) {
         return;
       }
@@ -58,6 +64,8 @@ export const getFormSchemaAndData = (
       data,
       '',
       ajv,
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       uiSchema?.elements as PageType[]
     );
 
@@ -132,5 +140,7 @@ export const customAjv = createAjv({
 customAjv.addKeyword('image');
 
 export const dropdownLayoutTester: Tester = (uischema) => {
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   return uischema?.options?.dropdown_layout || false;
 };

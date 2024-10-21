@@ -46,6 +46,8 @@ export const setupMatomo = (
         window._paq.push(['setTrackerUrl', `${MATOMO_HOST}/matomo.php`]);
         window._paq.push([
           'setSiteId',
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           appConfiguration.data.attributes.settings.matomo?.product_site_id,
         ]);
       }
@@ -54,6 +56,8 @@ export const setupMatomo = (
         window._paq.push([
           'addTracker',
           `${MATOMO_HOST}/matomo.php`,
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           appConfiguration.data.attributes.settings.matomo?.tenant_site_id,
         ]);
       }
@@ -76,6 +80,8 @@ export const setupMatomo = (
       g.async = true;
       g.src = `${MATOMO_HOST}/matomo.js`;
       g.id = 'internal_matomo_analytics';
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       s?.parentNode?.insertBefore(g, s);
     })();
   }

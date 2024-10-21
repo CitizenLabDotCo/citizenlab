@@ -22,6 +22,8 @@ const ReportBuilderSettings = () => {
         id: currentNodeId,
         name,
         title: WIDGET_TITLES[name],
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         settings: state.nodes[currentNodeId].related?.settings,
         isDeletable: query.node(currentNodeId).isDeletable(),
         custom: state.nodes[currentNodeId].data.custom,

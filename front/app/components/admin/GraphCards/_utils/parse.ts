@@ -36,7 +36,11 @@ export const getFormattedNumbers = (
   formattedSerieChange: string | null;
 } => {
   if (!isNilOrError(serie)) {
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     const firstSerieValue = serie && serie[0].total;
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     const lastSerieValue = serie && serie[serie.length - 1].total;
     const serieChange = lastSerieValue - firstSerieValue + firstSerieBar;
     let typeOfChange: 'increase' | 'decrease' | null = null;

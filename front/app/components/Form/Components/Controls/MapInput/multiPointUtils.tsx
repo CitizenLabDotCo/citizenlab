@@ -40,6 +40,8 @@ export const handleMapClickMultipoint = (
   const currentPointCoordinates = getUserInputPoints(mapView);
 
   // Update the form data
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (currentPointCoordinates) {
     // Add to existing points
     currentPointCoordinates.push([newPoint[0], newPoint[1]]);
@@ -76,18 +78,28 @@ export const setupPointDrag = ({
   // Using the mapView on 'drag' event, we handle the dragging of the point & updating the form data
 
   mapView?.on('drag', (event) => {
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (event?.action === 'start') {
       // START ACTION: Store the point that the user is trying to drag
 
       mapView.hitTest(event).then((response) => {
         // Get the first element under the mouse click
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         const clickedElement = response?.results?.[0];
         if (
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           clickedElement?.layer.title === 'User Input' &&
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           clickedElement?.type === 'graphic' &&
           clickedElement.graphic.geometry.type === 'point'
         ) {
           event.stopPropagation();
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           pointBeingDragged.current = clickedElement?.graphic;
         }
       });
@@ -102,6 +114,8 @@ export const setupPointDrag = ({
           mapView.graphics.remove(temporaryDragGraphic.current);
 
         // Create a temporary "preview" point graphic and add it to the map view
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         temporaryDragGraphic.current = pointBeingDragged?.current?.clone();
 
         // Change the symbol colour so we can identify it as the preview point
@@ -114,6 +128,8 @@ export const setupPointDrag = ({
         });
 
         // Generate temporary line graphics between the preview point and existing vertices
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         mapView &&
           generateLinePreview({
             mapView,
@@ -124,6 +140,8 @@ export const setupPointDrag = ({
           });
 
         // Add the preview graphic to the map
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (temporaryDragGraphic.current) {
           temporaryDragGraphic.current.geometry = mapView.toMap(event);
           mapView.graphics.add(temporaryDragGraphic.current);
@@ -132,6 +150,8 @@ export const setupPointDrag = ({
     } else if (event.action === 'end') {
       // END ACTION: Update the form data with the new coordinates and remove temporary graphics
 
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (pointBeingDragged?.current) {
         event.stopPropagation();
         if (temporaryDragGraphic.current) {
@@ -149,13 +169,21 @@ export const setupPointDrag = ({
             const latitude = coordinates[1];
             if (
               longitude ===
+                // TODO: Fix this the next time the file is edited.
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 pointBeingDragged?.current?.geometry?.['longitude'] &&
+              // TODO: Fix this the next time the file is edited.
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
               latitude === pointBeingDragged?.current?.geometry?.['latitude']
             ) {
               // This is the original point the user tried to drag, so
               // now we update the geometry.
               return [
+                // TODO: Fix this the next time the file is edited.
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 temporaryDragGraphic?.current?.geometry?.['longitude'],
+                // TODO: Fix this the next time the file is edited.
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 temporaryDragGraphic?.current?.geometry?.['latitude'],
               ];
             } else {
@@ -207,7 +235,10 @@ export const generateLinePreview = ({
 
   const indexOfDragPoint = currentDataCoordinates.findIndex(
     (coordinates: number[][]) =>
-      coordinates[0] === pointBeingDragged?.current?.geometry?.['longitude'] &&
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      coordinates[0] === pointBeingDragged?.current?.geometry?.['longitude'] && // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       coordinates[1] === pointBeingDragged?.current?.geometry?.['latitude']
   );
 
@@ -283,6 +314,8 @@ export const convertCoordinatesToGeoJSON = (
   coordinates: number[][],
   uiSchema: ControlElement
 ) => {
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (coordinates) {
     const geoJsonType =
       uiSchema.options?.input_type === 'line' ? 'LineString' : 'Polygon';
@@ -313,6 +346,8 @@ export const updateMultiPointsDataAndDisplay = ({
   const coordinates = data;
 
   // Create graphics for the user input points
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const pointGraphics = coordinates?.map((coordinates) => {
     return new Graphic({
       geometry: new Point({
@@ -330,12 +365,16 @@ export const updateMultiPointsDataAndDisplay = ({
   });
 
   // Create an Esri line graphic to connect the points
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const pointsForLine = coordinates?.map((coordinates) => [
     coordinates[0],
     coordinates[1],
   ]);
   // If we have a polygon, we want to close the shape by connecting the first and last points
   if (inputType === 'polygon') {
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     pointsForLine?.push(coordinates[0]);
   }
   // Create the Esri line object

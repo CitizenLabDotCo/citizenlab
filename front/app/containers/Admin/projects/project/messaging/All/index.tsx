@@ -37,6 +37,8 @@ const CustomEmails = () => {
 
   if (!campaignsList) return null;
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const lastPage = getPageNumberFromUrl(campaigns?.pages[0].links.last) || 1;
 
   const goToPage = (page: number) => {

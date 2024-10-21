@@ -78,6 +78,8 @@ const ProjectHeader = memo<Props>(({ projectId, className }) => {
 
   if (project) {
     const projectHeaderImageLargeUrl =
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       project.data.attributes?.header_bg?.large;
     const userCanEditProject =
       !isNilOrError(authUser) && canModerateProject(project.data, authUser);
@@ -122,6 +124,8 @@ const ProjectHeader = memo<Props>(({ projectId, className }) => {
                 followableType="projects"
                 followableId={project.data.id}
                 followersCount={project.data.attributes.followers_count}
+                // TODO: Fix this the next time the file is edited.
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 followerId={project.data.relationships.user_follower?.data?.id}
                 py="6px"
                 iconSize="20px"

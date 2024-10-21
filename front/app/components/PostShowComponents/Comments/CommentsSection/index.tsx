@@ -56,7 +56,11 @@ const CommentsSection = ({
   const publicCommentCount = idea.data.attributes.comments_count;
   const internalCommentCount = idea.data.attributes.internal_comments_count;
   const commenting_idea =
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     idea?.data.attributes.action_descriptors.commenting_idea;
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const commentingEnabled = commenting_idea?.enabled;
 
   const tabs: NavTab[] = [

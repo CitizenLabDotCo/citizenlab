@@ -53,12 +53,18 @@ const DateControl = ({
           onChange={(value) => {
             handleChange(
               path,
+              // TODO: Fix this the next time the file is edited.
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
               value ? moment(value).format('YYYY-MM-DD') : null
             );
             setDidBlur(true);
           }}
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           disabled={uischema?.options?.readonly}
         />
+        {/* TODO: Fix this the next time the file is edited. */}
+        {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
         <VerificationIcon show={uischema?.options?.verificationLocked} />
       </Box>
       <ErrorDisplay

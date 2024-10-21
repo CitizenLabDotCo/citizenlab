@@ -146,9 +146,15 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
 
   const { publication_status } = project.data.attributes;
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const participationMethod = currentPhase?.attributes.participation_method;
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const ideas_count = currentPhase?.attributes.ideas_count;
   // For a continuous project, hasCurrentPhaseEnded will always return false.
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const hasCurrentPhaseEnded = currentPhase
     ? pastPresentOrFuture([
         currentPhase.attributes.start_at,
@@ -182,6 +188,8 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
     generalShowCTAButtonCondition &&
     participationMethod === 'document_annotation' &&
     !hasCurrentPhaseEnded;
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const showEventsCTAButton = !!events?.data?.length;
 
   return (

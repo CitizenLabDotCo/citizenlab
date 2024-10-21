@@ -32,6 +32,8 @@ const UpdateFollowArea = ({ area }: Props) => {
   const { formatMessage } = useIntl();
   const theme = useTheme();
   const isLoading = isAddingFollower || isDeletingFollower;
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const followerId = area.relationships.user_follower?.data?.id;
   const isFollowing = !!followerId;
   const areaButtonContentColor = isFollowing

@@ -94,6 +94,8 @@ const MapCenterAndZoomConfig = memo<Props & WrappedComponentProps>(
     const defaultLatLng = getCenter(
       undefined,
       appConfig?.data,
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       mapConfig?.data
     );
     const defaultLat = defaultLatLng[0];
@@ -101,6 +103,8 @@ const MapCenterAndZoomConfig = memo<Props & WrappedComponentProps>(
     const defaultZoom = getZoomLevel(
       undefined,
       appConfig?.data,
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       mapConfig?.data
     );
 
@@ -114,17 +118,27 @@ const MapCenterAndZoomConfig = memo<Props & WrappedComponentProps>(
     });
 
     useEffect(() => {
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (!isNilOrError(appConfig) && mapConfig) {
         const defaultLatLng = getCenter(
           undefined,
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           appConfig?.data,
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           mapConfig?.data
         );
         const defaultLat = defaultLatLng[0];
         const defaultLng = defaultLatLng[1];
         const defaultZoom = getZoomLevel(
           undefined,
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           appConfig?.data,
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           mapConfig?.data
         );
 
@@ -217,6 +231,8 @@ const MapCenterAndZoomConfig = memo<Props & WrappedComponentProps>(
     const handleOnSave = async (event: React.FormEvent) => {
       event.preventDefault();
 
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (mapConfig && validate()) {
         try {
           formProcessing();

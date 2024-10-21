@@ -354,12 +354,19 @@ const ProjectFolderCard = memo<Props>(
 
     // Footer
     const avatarIds =
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       projectFolder?.data.relationships.avatars &&
-      projectFolder?.data.relationships.avatars.data
-        ? projectFolder?.data.relationships.avatars.data.map(
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      projectFolder?.data.relationships.avatars.data // TODO: Fix this the next time the file is edited.
+        ? // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+          projectFolder?.data.relationships.avatars.data.map(
             (avatar) => avatar.id
           )
         : [];
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     const showAvatarBubbles = avatarIds ? avatarIds.length > 0 : false;
     const showFooter = showAvatarBubbles;
 
@@ -488,6 +495,8 @@ const ProjectFolderCard = memo<Props>(
                     userCountBgColor={theme.colors.tenantPrimary}
                     avatarIds={avatarIds}
                     userCount={
+                      // TODO: Fix this the next time the file is edited.
+                      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                       projectFolder?.data.attributes.participants_count
                     }
                   />
@@ -502,6 +511,8 @@ const ProjectFolderCard = memo<Props>(
                 followableId={projectFolder.data.id}
                 followersCount={projectFolder.data.attributes.followers_count}
                 followerId={
+                  // TODO: Fix this the next time the file is edited.
+                  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                   projectFolder.data.relationships.user_follower?.data?.id
                 }
                 w="100%"

@@ -135,6 +135,8 @@ export const AvatarBubbles = ({
     enabled: !avatarIds,
   });
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const currentUserCount = userCount || randomAvatars?.meta?.total;
 
   const avatarsWithIdsQueries = useAvatarsWithIds(avatarIds);
@@ -154,7 +156,11 @@ export const AvatarBubbles = ({
 
     const avatarsWithImage = avatars.filter(
       (avatar) =>
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         avatar &&
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         avatar.attributes?.avatar &&
         avatar.attributes.avatar[imageSize]
     ) as IAvatarData[];

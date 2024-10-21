@@ -64,6 +64,8 @@ const FilterSidebarStatuses = ({
         {isAdmin(authUser) &&
           (type === 'AllIdeas' ||
             type === 'ProjectIdeas' ||
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             type === 'ProjectProposals') && (
             <Box display="inline-flex">
               <Button

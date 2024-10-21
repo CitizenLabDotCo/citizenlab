@@ -53,6 +53,8 @@ const configuration: ModuleConfiguration = {
         const dl = l !== 'dataLayer' ? `&l=${l}` : '';
         j.async = true;
         j.src = `https://www.googletagmanager.com/gtm.js?id=${i}${dl}`;
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         f?.parentNode?.insertBefore(j, f);
       })(
         window,

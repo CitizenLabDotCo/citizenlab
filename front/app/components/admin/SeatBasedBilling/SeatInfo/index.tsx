@@ -50,6 +50,8 @@ const SeatInfo = ({ seatType }: SeatInfoProps) => {
   const { data: appConfiguration } = useAppConfiguration();
   const { data: seats } = useSeats();
   const adminsAndMangersLink: RouteType =
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     '/admin/users/admins' || '/admin/users/moderators';
   const isOnAdminsAndManagersPage = pathname.includes(adminsAndMangersLink);
 

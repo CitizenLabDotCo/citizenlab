@@ -33,10 +33,16 @@ const useIdeaOfficialFeedback = (params: IParameters) => {
       return fetchOfficialFeedback({ ...params, pageNumber: pageParam });
     },
     getNextPageParam: (lastPage) => {
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       const hasNextPage = lastPage?.links?.next;
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       const pageNumber = lastPage && getPageNumberFromUrl(lastPage.links.self);
       return hasNextPage && pageNumber ? pageNumber + 1 : null;
     },
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     enabled: !!params?.ideaId,
   });
 };

@@ -66,13 +66,19 @@ const TextAreaControl = ({
           value={data}
           id={sanitizeForClassname(id)}
           onBlur={() => {
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             uischema?.options?.transform === 'trim_on_blur' &&
               isString(data) &&
               handleChange(path, data.trim());
             setDidBlur(true);
           }}
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           disabled={uischema?.options?.readonly}
         />
+        {/* TODO: Fix this the next time the file is edited. */}
+        {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
         <VerificationIcon show={uischema?.options?.verificationLocked} />
       </Box>
       <ErrorDisplay

@@ -71,6 +71,8 @@ const Comment = ({
 }: Props) => {
   const { data: comment } = useComment(commentId);
   const { data: author } = useUserById(
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     comment?.data.relationships?.author?.data?.id
   );
   const { data: project } = useProjectById(projectId);

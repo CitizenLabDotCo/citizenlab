@@ -87,6 +87,8 @@ const CustomPageProjectsAndEvents = ({
     !advancedCustomPagesEnabled ||
     page.attributes.projects_filter_type === 'no_filter';
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (hideProjects || !statusCountsWithoutFilters) {
     return null;
   }

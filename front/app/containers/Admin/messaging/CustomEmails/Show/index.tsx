@@ -104,6 +104,7 @@ const Show = () => {
     campaign?.data.attributes.context_id
   );
 
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const authorId = campaign?.data.relationships.author.data?.id;
   const { data: sender } = useUserById(authorId);
 
@@ -161,6 +162,7 @@ const Show = () => {
       senderName = getFullName(sender.data);
     } else if (senderType === 'organization' && tenant) {
       senderName = localize(
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         tenant?.data.attributes.settings.core.organization_name
       );
     }
@@ -267,7 +269,7 @@ const Show = () => {
                       to={`/admin/projects/${project.data.id}`}
                       target="_blank"
                     >
-                      {localize(project?.data.attributes.title_multiloc)}
+                      {localize(project.data.attributes.title_multiloc)}
                     </Link>
                   </span>
                 )}

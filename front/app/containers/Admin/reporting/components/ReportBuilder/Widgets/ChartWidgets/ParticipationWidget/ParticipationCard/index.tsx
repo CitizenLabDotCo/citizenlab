@@ -33,7 +33,11 @@ const ParticipationCard = ({
 
   if (
     stats?.inputs.value === 0 &&
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     stats?.comments.value === 0 &&
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     stats?.votes.value === 0
   ) {
     return <NoData message={chartWidgetMessages.noData} />;

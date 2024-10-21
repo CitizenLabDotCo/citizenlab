@@ -45,7 +45,11 @@ const PointMap = ({
     return points.map(({ coordinates }) => {
       return new Graphic({
         geometry: new Point({
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           longitude: coordinates?.[0],
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           latitude: coordinates?.[1],
         }),
       });
@@ -69,6 +73,8 @@ const PointMap = ({
   }, [graphics, layerId, layerTitle]);
 
   const layers = useMemo(() => {
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     return responsesLayer && mapConfigLayers
       ? [...mapConfigLayers, responsesLayer]
       : [];
@@ -83,7 +89,11 @@ const PointMap = ({
       showLegend: true,
       showLegendExpanded: false,
       showLayerVisibilityControl: true,
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       zoom: Number(mapConfig?.data?.attributes.zoom_level),
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       center: mapConfig?.data?.attributes.center_geojson,
     }),
     [mapConfig, onInit]
@@ -116,8 +126,12 @@ const PointMap = ({
 
     // Update heatmap when map extent changes
     const handle = reactiveUtilsWhen(
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       () => mapView?.stationary === true,
       () => {
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (mapView?.extent && responsesLayer.renderer?.type === 'heatmap') {
           applyHeatMapRenderer(responsesLayer, mapView);
         }
@@ -130,6 +144,8 @@ const PointMap = ({
   return (
     <EsriMap
       initialData={initialData}
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       webMapId={mapConfig?.data?.attributes.esri_web_map_id}
       height="440px"
       layers={layers}

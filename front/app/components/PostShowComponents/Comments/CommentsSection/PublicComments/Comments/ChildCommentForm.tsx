@@ -130,6 +130,8 @@ const ChildCommentForm = ({
   }
 
   const setCaretAtEnd = (element: HTMLTextAreaElement) => {
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (element.setSelectionRange && element.textContent) {
       element.setSelectionRange(
         element.textContent.length,
@@ -237,6 +239,8 @@ const ChildCommentForm = ({
   const setRef = (element: HTMLTextAreaElement) => {
     textareaElement.current = element;
 
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (textareaElement.current) {
       textareaElement.current.scrollIntoView({
         behavior: 'smooth',
@@ -267,8 +271,12 @@ const ChildCommentForm = ({
         className={`${className || ''} e2e-childcomment-form`}
       >
         <StyledAvatar
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           userId={authUser?.data.id}
           size={30}
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           isLinkToProfile={!!authUser?.data.id}
           showModeratorStyles={userCanModerate}
         />
@@ -276,6 +284,8 @@ const ChildCommentForm = ({
           onClickOutside={onCancel}
           closeOnClickOutsideEnabled={false}
         >
+          {/* TODO: Fix this the next time the file is edited. */}
+          {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
           <Form className={focused ? 'focused' : ''}>
             <label>
               <HiddenLabel>

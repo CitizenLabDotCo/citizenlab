@@ -128,6 +128,8 @@ const ProjectTopicSelector = memo(
             icon="plus-circle"
             onClick={handleOnAddTopicsClick}
             disabled={
+              // TODO: Fix this the next time the file is edited.
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
               !selectedTopicOptions || selectedTopicOptions.length === 0
             }
             processing={processing}

@@ -145,9 +145,13 @@ const ContentBuilderTopBar = ({
 
     const interval = setInterval(() => {
       const nodes = query.getSerializedNodes();
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       const firstNode = nodes.ROOT?.nodes[0];
       if (!firstNode) return;
 
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       const type = nodes?.[firstNode].type;
       const resolvedName =
         typeof type === 'object' ? type.resolvedName : undefined;

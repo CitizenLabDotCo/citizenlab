@@ -39,6 +39,8 @@ const CosponsorsControlInner = ({
 }: ControlProps & WrappedComponentProps & { users: IUser[] }) => {
   const initialCosponsorsText = users.reduce(
     (acc, cosponsor) =>
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       `${acc}@[${getFullName(cosponsor?.data)}](${cosponsor?.data.id}) `,
     ''
   );

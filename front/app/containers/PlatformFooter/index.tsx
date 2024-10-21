@@ -308,6 +308,8 @@ const PlatformFooter = ({ className }: Props) => {
                     customizedA11yHref ? (
                       <StyledA
                         href={customizedA11yHref}
+                        // TODO: Fix this the next time the file is edited.
+                        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                         target={hasCustomizedA11yFooterLink && '_blank'}
                         className={index === 0 ? 'first' : ''}
                       >

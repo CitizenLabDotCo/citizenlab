@@ -29,12 +29,16 @@ const Edit = () => {
   const handleSubmit = async (values: FormValues) => {
     await updateCampaign({ id: campaign.data.id, campaign: values });
     clHistory.push(
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       `/admin/projects/${projectId}/messaging/${campaign?.data.id}`
     );
   };
 
   const goBack = () => {
     clHistory.push(
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       `/admin/projects/${projectId}/messaging/${campaign?.data.id}`
     );
   };

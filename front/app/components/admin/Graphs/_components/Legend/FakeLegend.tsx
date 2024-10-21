@@ -78,6 +78,8 @@ const FakeLegend = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [calculationScheduled]);
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const rightLegend = position?.includes('right');
   const stringWidth = rightLegend
     ? 'auto'

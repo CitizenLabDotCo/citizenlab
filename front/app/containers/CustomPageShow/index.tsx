@@ -98,6 +98,8 @@ const CustomPageShow = () => {
 
   const pageAttributes = page.data.attributes;
   const localizedOrgName = localize(
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     appConfiguration?.data.attributes.settings.core.organization_name
   );
   return (

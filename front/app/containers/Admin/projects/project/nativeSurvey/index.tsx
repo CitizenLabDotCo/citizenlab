@@ -95,6 +95,8 @@ const Forms = () => {
   const handleDownloadResults = async () => {
     try {
       setIsDownloading(true);
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       await downloadSurveyResults(locale, phase?.data);
     } catch (error) {
       // Not handling errors for now

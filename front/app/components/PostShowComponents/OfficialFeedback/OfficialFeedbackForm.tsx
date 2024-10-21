@@ -335,6 +335,8 @@ const OfficialFeedbackForm = ({
             name="official-feedback-form-mentions-textarea"
             locale={selectedLocale}
             ariaLabel={formatMessage(messages.officialUpdateBody)}
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             value={formValues.bodyMultiloc?.[selectedLocale] || ''}
             onChange={handleBodyOnChange}
             placeholder={formatMessage(messages.textAreaPlaceholder)}
@@ -347,6 +349,8 @@ const OfficialFeedbackForm = ({
           <StyledInput
             type="text"
             locale={selectedLocale}
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             value={formValues.authorMultiloc?.[selectedLocale] || ''}
             onChange={handleAuthorOnChange}
             placeholder={formatMessage(messages.officialNamePlaceholder)}

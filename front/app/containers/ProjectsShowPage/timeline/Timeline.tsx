@@ -300,6 +300,8 @@ const Timeline = ({
   const [tooltipVisible, setTooltipVisible] = useState(false);
 
   useEffect(() => {
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     const showTooltip = phases?.data?.length === 1;
     setTooltipVisible(showTooltip);
 

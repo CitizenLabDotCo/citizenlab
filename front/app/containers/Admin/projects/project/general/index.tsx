@@ -168,6 +168,8 @@ const AdminProjectsProjectGeneral = () => {
          */
         setInitialProjectFilesOrdering(
           nextProjectFiles.reduce((acc, file) => {
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             if (file?.id) {
               acc[file.id] = file.ordering;
             }

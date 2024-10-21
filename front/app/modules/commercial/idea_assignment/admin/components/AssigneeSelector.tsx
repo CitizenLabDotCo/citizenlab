@@ -63,6 +63,8 @@ const IdeaAssignment = ({ projectId }: Props) => {
 
   if (project) {
     const defaultAssigneeId =
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       project.data.relationships?.default_assignee?.data?.id;
     // If defaultAssigneeValue is not a string, it's null, so we convert it to a string (see getoptions)
     const defaultAssigneeValue =

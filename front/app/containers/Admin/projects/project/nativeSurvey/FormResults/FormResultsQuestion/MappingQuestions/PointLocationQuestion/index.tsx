@@ -43,6 +43,8 @@ const PointLocationQuestion = ({
 
   // Add reset button to the map
   useEffect(() => {
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     mapView?.ui?.add(resetButtonRef?.current || '', 'top-right');
   }, [mapView?.ui, resetButtonRef]);
 
@@ -56,6 +58,8 @@ const PointLocationQuestion = ({
     (isLoadingCustomMapConfig && mapConfigId) || isLoadingProjectMapConfig;
 
   const points = useMemo(() => {
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     return pointResponses?.map(({ answer }) => answer);
   }, [pointResponses]);
 

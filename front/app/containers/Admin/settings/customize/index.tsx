@@ -77,8 +77,12 @@ const SettingsCustomizeTab = () => {
   ) => {
     const hasRemoteLogo = has(tenant, 'data.attributes.logo.large');
     const localLogoIsNotSet = !has(attributesDiff, 'logo');
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     const localLogoIsNull = !localLogoIsNotSet && attributesDiff.logo === null;
     const logoError =
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       !localLogoIsNull || (hasRemoteLogo && localLogoIsNotSet)
         ? null
         : formatMessage(messages.noLogo);
@@ -110,6 +114,8 @@ const SettingsCustomizeTab = () => {
 
   const getSetting = (setting: string) => {
     return (
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       get(attributesDiff, `settings.${setting}`) ??
       get(appConfiguration, `data.attributes.settings.${setting}`)
     );

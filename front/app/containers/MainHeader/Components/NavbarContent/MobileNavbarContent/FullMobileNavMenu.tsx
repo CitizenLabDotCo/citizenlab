@@ -105,6 +105,8 @@ const FullMobileNavMenu = ({
 
   const navbarItemPropsArray = getNavbarItemPropsArray(navbarItems.data);
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const modalPortalElement = document?.getElementById('mobile-nav-portal');
 
   const handleOnCloseButtonClick = () => {

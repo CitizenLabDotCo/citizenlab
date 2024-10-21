@@ -186,6 +186,8 @@ const ProjectInfoSideBar = memo<Props>(
       const postingIsEnabled = currentPhase?.attributes.submission_enabled;
       const projectParticipantsCount =
         project.data.attributes.participants_count;
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       const maxBudget = currentPhase?.attributes?.voting_max_total || null;
       const hasProjectEnded = currentPhase
         ? pastPresentOrFuture([
@@ -196,12 +198,16 @@ const ProjectInfoSideBar = memo<Props>(
 
       const ideasCount = currentPhase?.attributes.ideas_count;
       const currentPhaseParticipationMethod =
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         currentPhase?.attributes?.participation_method;
       const surveyMessage = messages.oneSurveyInCurrentPhase;
       const docAnnotationMessage = messages.oneDocToReviewInCurrentPhase;
 
       const isParticipatoryBudgeting =
         currentPhase?.attributes.participation_method === 'voting' &&
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         currentPhase?.attributes.voting_method === 'budgeting';
       const avatarIds =
         project.data.relationships.avatars &&
@@ -300,9 +306,11 @@ const ProjectInfoSideBar = memo<Props>(
               )}
               {(ideationOrProposals ||
                 (currentPhase &&
-                  hasProjectEnded &&
+                  hasProjectEnded && // TODO: Fix this the next time the file is edited.
+                  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                   (currentPhase?.attributes.participation_method ===
-                    'ideation' ||
+                    'ideation' || // TODO: Fix this the next time the file is edited.
+                    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                     currentPhase?.attributes.participation_method ===
                       'proposals'))) &&
                 typeof ideasCount === 'number' &&
@@ -367,6 +375,8 @@ const ProjectInfoSideBar = memo<Props>(
                   <Box>
                     <ListItem>
                       <ListItemIcon ariaHidden name="chart-bar" />
+                      {/* TODO: Fix this the next time the file is edited. */}
+                      {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
                       {surveySubmissionCount &&
                         surveySubmissionCount.data.attributes.totalSubmissions}
                       <Box ml="4px">

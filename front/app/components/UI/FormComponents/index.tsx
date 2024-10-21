@@ -182,6 +182,8 @@ interface FormLabelPropsValue extends FormLabelGenericProps {
 type FormLabelProps = FormLabelPropsMessages | FormLabelPropsValue;
 
 function propsHasValues(props: FormLabelProps): props is FormLabelPropsValue {
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   return (props as FormLabelPropsValue).labelValue !== undefined;
 }
 

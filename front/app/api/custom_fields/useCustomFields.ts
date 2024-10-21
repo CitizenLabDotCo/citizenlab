@@ -25,6 +25,8 @@ const useCustomFields = ({
 
         return (
           option.data?.data.id &&
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           relationshipOptionIds.includes(option.data?.data.id)
         );
       });
@@ -32,7 +34,11 @@ const useCustomFields = ({
       return {
         ...customField,
         ...customField.attributes,
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         map_config: customField.relationships?.map_config,
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         map_config_id: customField.relationships?.map_config?.data?.id,
         options:
           optionsForCustomField.length > 0
@@ -41,6 +47,8 @@ const useCustomFields = ({
                 title_multiloc:
                   option.data?.data.attributes.title_multiloc || {},
                 other: option.data?.data.attributes.other || false,
+                // TODO: Fix this the next time the file is edited.
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 image_id: option.data?.data.relationships.image?.data?.id,
                 temp_id: option.data?.data.attributes.temp_id,
               }))

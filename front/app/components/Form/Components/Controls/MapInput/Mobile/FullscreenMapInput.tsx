@@ -82,6 +82,8 @@ const FullscreenMapInput = memo<Props>(
     const [mapView, setMapView] = useState<MapView | null>(null);
     const modalPortalElement = document.getElementById('modal-portal');
     const isWebMap = !!mapConfig?.data.attributes.esri_web_map_id;
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     const layerCount = mapConfig?.data?.attributes?.layers?.length || 0;
 
     // Create refs for dragging/editing a user's points on the map
@@ -117,7 +119,11 @@ const FullscreenMapInput = memo<Props>(
 
     // Add the custom UI elements to the map
     useEffect(() => {
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       mapView?.ui?.add(resetButtonRef?.current || '', 'top-right');
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       mapView?.ui?.add(instructionRef?.current || '', 'bottom-left');
     }, [instructionRef, mapView?.ui, resetButtonRef]);
 
@@ -139,8 +145,12 @@ const FullscreenMapInput = memo<Props>(
 
     // Get map height by calculating the height of the bottom section
     const getMapHeight = () => {
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       return bottomSectionRef?.current?.clientHeight
-        ? clientHeight - bottomSectionRef?.current?.clientHeight
+        ? // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+          clientHeight - bottomSectionRef?.current?.clientHeight
         : clientHeight;
     };
 

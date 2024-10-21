@@ -164,6 +164,8 @@ const UserName = ({
     `;
 
     const isAuthorWithNoName =
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       user.data.id === authUser?.data.id && authUser?.data.attributes.no_name;
 
     const nameElement = (

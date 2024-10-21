@@ -44,6 +44,8 @@ const SortFilterDropdown = ({ alignment, value, onChange, phase }: Props) => {
 
   if (!isNilOrError(phase)) {
     const config = getMethodConfig(phase.attributes.participation_method);
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (config?.postSortingOptions) {
       options = config.postSortingOptions;
     }

@@ -215,6 +215,8 @@ export default class SideModal extends PureComponent<Props, State> {
 
   render(): React.ReactNode {
     const { children, opened, label } = this.props;
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     const modalPortalElement = document?.getElementById('modal-portal');
 
     if (modalPortalElement) {

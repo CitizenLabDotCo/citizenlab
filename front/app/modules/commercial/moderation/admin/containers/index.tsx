@@ -388,6 +388,8 @@ const Moderation = () => {
   };
 
   if (moderations) {
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     const lastPage = getPageNumberFromUrl(moderations.links?.last) || 1;
     return (
       <Container>

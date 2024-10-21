@@ -36,11 +36,15 @@ const InputListItem = memo(({ input, onSelect, selected }: Props) => {
   });
   const { formatDate, formatMessage } = useIntl();
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!analysis || !input) return null;
 
   const { title_multiloc } = input.attributes;
 
   const mainCustomFieldId =
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     analysis.data.relationships.main_custom_field?.data?.id;
 
   return (
@@ -98,7 +102,11 @@ const InputListItem = memo(({ input, onSelect, selected }: Props) => {
                 <InputShortFieldValue
                   customFieldId={mainCustomFieldId}
                   input={input}
+                  // TODO: Fix this the next time the file is edited.
+                  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                   projectId={analysis.data.relationships.project?.data?.id}
+                  // TODO: Fix this the next time the file is edited.
+                  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                   phaseId={analysis.data.relationships.phase?.data?.id}
                 />
               </Text>

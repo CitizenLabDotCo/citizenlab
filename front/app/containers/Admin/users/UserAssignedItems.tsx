@@ -50,6 +50,8 @@ const RemoveButton = ({
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const { data: folder } = useAdminPublication(
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     item.relationships.parent?.data?.id || null
   );
   const {
@@ -111,6 +113,8 @@ const UserAssignedItems = ({ user }: { user: IUserData }) => {
   const { data: assignedItems } = useAdminPublications({
     filter_user_is_moderator_of: user.id,
   });
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const flatAssignedItems = assignedItems?.pages?.flatMap((page) => page.data);
 
   const isFolder = (item: IAdminPublicationData) =>
@@ -133,6 +137,8 @@ const UserAssignedItems = ({ user }: { user: IUserData }) => {
     Boolean(
       item.relationships.parent.data?.id &&
         moderatedAdminPublicationFolderIds?.includes(
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           item.relationships.parent.data?.id
         )
     );

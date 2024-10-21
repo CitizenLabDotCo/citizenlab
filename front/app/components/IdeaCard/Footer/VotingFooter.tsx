@@ -19,6 +19,8 @@ const VotingFooter = ({ idea, showCommentCount }: Props) => {
     <Box as="footer" w="100%" display="flex" mt="16px" justifyContent="center">
       <ReadMoreButton
         onClick={() => {
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           clHistory.push(`/ideas/${idea?.attributes.slug}?go_back=true`, {
             scrollToTop: true,
           });

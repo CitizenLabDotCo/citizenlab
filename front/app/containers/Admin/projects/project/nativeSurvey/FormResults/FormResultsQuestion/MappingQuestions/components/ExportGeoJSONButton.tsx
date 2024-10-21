@@ -27,8 +27,12 @@ const ExportGeoJSONButton = ({ phaseId, customFieldId }: Props) => {
   const localize = useLocalize();
   const { data: phase } = usePhase(phaseId);
   const phaseTitle = localize(
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     phase?.data?.attributes?.title_multiloc
-  )?.replaceAll(' ', '_');
+  ) // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    ?.replaceAll(' ', '_');
 
   const handleExportInputs = async () => {
     try {

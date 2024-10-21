@@ -27,6 +27,8 @@ const InputType = ({
     ? formatMessage(messages.required)
     : formatMessage(messages.optional);
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const inputTypeLabel = inputTypeText
     ? `${totalResponses}/${totalSubmissions} - ${formatMessage(
         inputTypeText

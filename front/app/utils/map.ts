@@ -16,8 +16,12 @@ export const getCenter = (
   if (centerLatLng) return centerLatLng;
 
   const tenantCenterLat =
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     appConfig?.attributes?.settings?.maps?.map_center?.lat;
   const tenantCenterLong =
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     appConfig?.attributes?.settings?.maps?.map_center?.long;
 
   if (tenantCenterLat !== undefined && tenantCenterLong !== undefined) {
@@ -35,7 +39,8 @@ export const getZoomLevel = (
   appConfig?: IAppConfigurationData | null | Error
 ) => {
   const tenantZoomLevel =
-    !isNilOrError(appConfig) &&
+    !isNilOrError(appConfig) && // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     (appConfig?.attributes?.settings?.maps?.zoom_level as any);
   return parseInt(zoom || tenantZoomLevel || 13, 10);
 };
@@ -44,7 +49,8 @@ export const getTileProvider = (
   appConfig?: IAppConfigurationData | null | Error
 ) => {
   const tileProvider =
-    !isNilOrError(appConfig) &&
+    !isNilOrError(appConfig) && // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     (appConfig?.attributes?.settings?.maps?.tile_provider as string);
   return tileProvider || DEFAULT_TILE_PROVIDER;
 };
@@ -62,7 +68,11 @@ export const getAddressOrFallbackDMS = (
   location_point_geojson: GeoJSON.Point | null
 ) => {
   const point = location_point_geojson;
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const lat = point?.coordinates?.[1] || null;
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const lng = point?.coordinates?.[0] || null;
   const address = location_description || convertLatLngToDMS(lat, lng) || null;
   return address;
