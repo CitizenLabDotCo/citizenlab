@@ -58,7 +58,6 @@ it:
       "voting_phase_started": Nuova fase del progetto con votazione
       "voting_results": Risultati delle votazioni
       "your_input_in_screening": Il mio contributo è in attesa di essere vagliato
-      "your_proposed_initiatives_digest": Panoramica settimanale delle tue proposte
     general:
       by_author: 'da %{authorName}'
       author_wrote: '%{authorName} ha scritto:'
@@ -539,16 +538,6 @@ it:
       message: '"%{input_title}" diventerà visibile agli altri una volta che sarà stata rivista e approvata.'
       subject: '"%{input_title}" è quasi pubblicato'
       preheader: 'Attualmente si trova su %{prescreening_status_title}'
-    your_proposed_initiatives_digest:
-      subject: 'Aggiornamento settimanale delle sue proposte'
-      preheader: 'Cosa è successo con le tue proposte nell''ultima settimana?'
-      title_your_weekly_report: 'Come sono andate le tue proposte?'
-      text_introduction: 'Trova i numeri chiave qui sotto e vai alla piattaforma per agire e raccogliere abbastanza sostegno in tempo.'
-      cta_see_your_initiative: 'Vai alle tue proposte'
-      total_votes: 'Voti totali'
-      new_votes: 'Nuovi voti'
-      remaining_votes: 'Voti rimanenti'
-      remaining_days: 'Giorni rimanenti'
     voting_basket_submitted:
       subject: '%{organizationName}Hai votato con successo'
       preheader: 'Hai votato con successo sulla piattaforma di partecipazione di %{organizationName}'
