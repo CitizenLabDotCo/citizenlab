@@ -1,13 +1,13 @@
 nb:
   email_campaigns:
     campaign_type_description:
-      "idea_assigned_to_you": Assignment of an idea to me
+      "idea_assigned_to_you": Tildeling av en idé til meg
     admin_campaign_type_description:
-      "idea_assigned_to_you": Assignment of an idea - admins and project managers
+      "idea_assigned_to_you": Tildeling av en idé - administratorer og prosjektledere
     idea_assigned_to_you:
       by_author: 'av %{authorName}'
       cta_reply_to: 'Gi tilbakemelding til %{authorName}'
-      event_description_idea: 'An idea has been assigned to you. Give feedback by writing an official update or by changing its status.'
-      main_header: '%{firstName}, you have a new assignment'
-      subject: 'You have an assignment on the platform of %{organizationName}'
-      preheader_idea: 'The idea of %{authorName} has been assigned to you'
+      event_description_idea: 'Du har fått tildelt en idé. Gi tilbakemelding ved å skrive en offisiell oppdatering eller ved å endre status.'
+      main_header: '%{firstName}har du et nytt oppdrag'
+      subject: 'Du har et oppdrag på plattformen til %{organizationName}'
+      preheader_idea: 'Ideen til %{authorName} har blitt tildelt deg'
