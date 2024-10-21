@@ -73,7 +73,12 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
     admin_publications = admin_publications
       .joins('LEFT OUTER JOIN projects AS projects ON projects.id = admin_publications.publication_id')
       .joins('INNER JOIN phases AS phases ON phases.project_id = projects.id')
-      .where('phases.start_at <= ? AND phases.end_at >= ?', Time.zone.now.to_fs(:db), Time.zone.now.to_fs(:db))
+      .where(
+        'phases.start_at <= ? AND (phases.end_at >= ? OR phases.end_at IS NULL)',
+        Time.zone.now.to_fs(:db), Time.zone.now.to_fs(:db)
+      )
+
+    # Just need to limit to only participatory phases & add ordering by phase end at, soonest first, nulls last
 
     @admin_publications = paginate admin_publications
 
@@ -82,7 +87,6 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
         publication: [
           { phases: %i[report custom_form permissions] },
           :admin_publication,
-          :images,
           :project_images,
           :content_builder_layouts
         ]

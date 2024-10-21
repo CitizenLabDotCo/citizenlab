@@ -266,6 +266,7 @@ resource 'AdminPublication' do
       end
 
       let!(:active_project) { create(:project_with_active_ideation_phase) }
+      let!(:endless_project) { create(:single_phase_ideation_project) }
       let!(:past_project) { create(:project_with_two_past_ideation_phases) }
 
       example_request 'List all active projects' do
@@ -275,6 +276,7 @@ resource 'AdminPublication' do
         admin_publication_ids = json_response[:data].pluck(:id)
 
         expect(admin_publication_ids).to include active_project.admin_publication.id
+        expect(admin_publication_ids).to include endless_project.admin_publication.id
         expect(admin_publication_ids).not_to include past_project.admin_publication.id
       end
     end
