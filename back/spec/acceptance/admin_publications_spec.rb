@@ -259,6 +259,26 @@ resource 'AdminPublication' do
       end
     end
 
+    get 'web_api/v1/admin_publications/active_projects' do
+      with_options scope: :page do
+        parameter :number, 'Page number'
+        parameter :size, 'Number of projects per page'
+      end
+
+      let!(:active_project) { create(:project_with_active_ideation_phase) }
+      let!(:past_project) { create(:project_with_two_past_ideation_phases) }
+
+      example_request 'List all active projects' do
+        expect(status).to eq 200
+
+        json_response = json_parse(response_body)
+        admin_publication_ids = json_response[:data].pluck(:id)
+
+        expect(admin_publication_ids).to include active_project.admin_publication.id
+        expect(admin_publication_ids).not_to include past_project.admin_publication.id
+      end
+    end
+
     patch 'web_api/v1/admin_publications/:id/reorder' do
       with_options scope: :admin_publication do
         parameter :ordering, 'The position, starting from 0, where the folder or project should be at. Publications after will move down.', required: true

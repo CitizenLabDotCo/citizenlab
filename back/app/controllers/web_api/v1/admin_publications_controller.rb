@@ -70,15 +70,10 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
       )
     )
 
-    # A flattened ordering, such that project publications with a parent (projects in folders) are ordered
-    # first by their parent's :ordering, and then by their own :ordering (their ordering within the folder).
-    admin_publications = admin_publications.select(
-      'admin_publications.*',
-      'CASE WHEN admin_publications.parent_id IS NULL THEN admin_publications.ordering ELSE parents.ordering END
-      AS root_ordering'
-    )
-      .joins('LEFT OUTER JOIN admin_publications AS parents ON parents.id = admin_publications.parent_id')
-      .order('root_ordering, admin_publications.ordering')
+    admin_publications = admin_publications
+      .joins('LEFT OUTER JOIN projects AS projects ON projects.id = admin_publications.publication_id')
+      .joins('INNER JOIN phases AS phases ON phases.project_id = projects.id')
+      .where('phases.start_at <= ? AND phases.end_at >= ?', Time.zone.now.to_fs(:db), Time.zone.now.to_fs(:db))
 
     @admin_publications = paginate admin_publications
 
