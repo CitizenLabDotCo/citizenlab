@@ -58,7 +58,6 @@ nl:
       "voting_phase_started": Nieuwe projectfase met stemmen
       "voting_results": Stemresultaten
       "your_input_in_screening": Mijn input wacht op screening
-      "your_proposed_initiatives_digest": Weekoverzicht van je voorstellen
     general:
       by_author: 'door %{authorName}'
       author_wrote: '%{authorName} schreef:'
@@ -539,16 +538,6 @@ nl:
       message: '"%{input_title}" wordt zichtbaar voor anderen zodra het is beoordeeld en goedgekeurd.'
       subject: '"%{input_title}" is bijna gepubliceerd'
       preheader: 'Het staat momenteel in %{prescreening_status_title}'
-    your_proposed_initiatives_digest:
-      subject: 'Wekelijkse update van je voorstel'
-      preheader: 'Wat is er de afgelopen week met je voorstel gebeurd?'
-      title_your_weekly_report: 'Hoe gaat het met je voorstel?'
-      text_introduction: 'Hieronder vind je een update van de belangrijkste cijfers. Ga naar de pagina van je voorstel om actie te ondernemen en op tijd voldoende stemmen te verzamelen.'
-      cta_see_your_initiative: 'Ga naar je voorstel'
-      total_votes: 'Totale aantal stemmen'
-      new_votes: 'Nieuwe stemmen'
-      remaining_votes: 'Resterende stemmen'
-      remaining_days: 'Resterende dagen'
     voting_basket_submitted:
       subject: '%{organizationName}: Je hebt succesvol gestemd'
       preheader: 'Je hebt succesvol gestemd op het participatieplatform van %{organizationName}'

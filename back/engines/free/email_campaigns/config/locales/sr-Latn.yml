@@ -58,7 +58,6 @@ sr-Latn:
       "voting_phase_started": New project phase with voting
       "voting_results": Voting results
       "your_input_in_screening": My input awaits screening
-      "your_proposed_initiatives_digest": Nedeljni pregled vaših predloga
     general:
       by_author: 'od %{authorName}'
       author_wrote: '%{authorName} piše:'
@@ -539,16 +538,6 @@ sr-Latn:
       message: '"%{input_title}" will become visible to others once it has been reviewed and approved.'
       subject: '"%{input_title}" is almost published'
       preheader: 'It''s currently in %{prescreening_status_title}'
-    your_proposed_initiatives_digest:
-      subject: 'Nedeljno obaveštenje o vašim predlozima'
-      preheader: 'Šta se dogodilo sa vašim predlozima u proteklih nedelju dana?'
-      title_your_weekly_report: 'Kako stoje vaši predlozi?'
-      text_introduction: 'Pronađite ključne brojeve u nastavku i posetite platformu kako biste na vreme prikupili dovoljnu podršku.'
-      cta_see_your_initiative: 'Idite na svoje predloge'
-      total_votes: 'Ukupni glasovi'
-      new_votes: 'Novi glasovi'
-      remaining_votes: 'Preostali glasovi'
-      remaining_days: 'Preostalih dana'
     voting_basket_submitted:
       subject: '%{organizationName}: You voted successfully'
       preheader: 'You voted successfully on the participation platform of %{organizationName}'

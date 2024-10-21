@@ -58,7 +58,6 @@ de:
       "voting_phase_started": Neue Projektphase mit Abstimmung
       "voting_results": Abstimmungsergebnisse
       "your_input_in_screening": Mein Beitrag wartet auf Überprüfung
-      "your_proposed_initiatives_digest": Wöchentliche Übersicht eigener Vorschläge
     general:
       by_author: 'von %{authorName}'
       author_wrote: '%{authorName} schrieb:'
@@ -539,16 +538,6 @@ de:
       message: '"%{input_title}" wird für andere sichtbar, sobald es geprüft und genehmigt wurde.'
       subject: '"%{input_title}" ist fast veröffentlicht'
       preheader: 'Es befindet sich derzeit in %{prescreening_status_title}'
-    your_proposed_initiatives_digest:
-      subject: 'Wöchentliche Übersicht eigener Vorschläge'
-      preheader: 'Was ist in der vergangenen Woche mit Ihren Vorschlägen geschehen?'
-      title_your_weekly_report: 'Wie haben sich Ihre Vorschläge entwickelt?'
-      text_introduction: 'Unten finden Sie die wichtige Zahlen zu Ihrem Vorschlag. Gehen Sie auf die Plattform, um rechtzeitig zu handeln und genügend Unterstützung zu sammeln.'
-      cta_see_your_initiative: 'Zu deinen Vorschlägen'
-      total_votes: 'Gesamtzahl der Stimmen'
-      new_votes: 'Neue Stimmen'
-      remaining_votes: 'Verbleibende Stimmen'
-      remaining_days: 'Verbleibende Tage'
     voting_basket_submitted:
       subject: '%{organizationName}: Sie haben erfolgreich abgestimmt'
       preheader: 'Sie haben erfolgreich auf der Beteiligungsplattform von %{organizationName} abgestimmt'

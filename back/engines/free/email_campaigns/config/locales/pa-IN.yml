@@ -58,7 +58,6 @@ pa:
       "voting_phase_started": ਵੋਟਿੰਗ ਦੇ ਨਾਲ ਨਵਾਂ ਪ੍ਰੋਜੈਕਟ ਪੜਾਅ
       "voting_results": ਵੋਟਿੰਗ ਨਤੀਜੇ
       "your_input_in_screening": ਮੇਰਾ ਇੰਪੁੱਟ ਸਕ੍ਰੀਨਿੰਗ ਦੀ ਉਡੀਕ ਕਰ ਰਿਹਾ ਹੈ
-      "your_proposed_initiatives_digest": ਤੁਹਾਡੇ ਪ੍ਰਸਤਾਵਾਂ ਦੀ ਹਫਤਾਵਾਰੀ ਸੰਖੇਪ ਜਾਣਕਾਰੀ
     general:
       by_author: '%{authorName}ਦੁਆਰਾ'
       author_wrote: '%{authorName} ਨੇ ਲਿਖਿਆ:'
@@ -539,16 +538,6 @@ pa:
       message: '"%{input_title}" ਇੱਕ ਵਾਰ ਇਸਦੀ ਸਮੀਖਿਆ ਅਤੇ ਮਨਜ਼ੂਰੀ ਤੋਂ ਬਾਅਦ ਦੂਜਿਆਂ ਨੂੰ ਦਿਖਾਈ ਦੇਵੇਗਾ।'
       subject: '"%{input_title}" ਲਗਭਗ ਪ੍ਰਕਾਸ਼ਿਤ ਹੋ ਚੁੱਕਾ ਹੈ'
       preheader: 'ਇਹ ਵਰਤਮਾਨ ਵਿੱਚ %{prescreening_status_title}ਵਿੱਚ ਹੈ'
-    your_proposed_initiatives_digest:
-      subject: 'ਤੁਹਾਡੇ ਪ੍ਰਸਤਾਵਾਂ ਦਾ ਹਫਤਾਵਾਰੀ ਅਪਡੇਟ'
-      preheader: 'ਪਿਛਲੇ ਹਫ਼ਤੇ ਤੁਹਾਡੇ ਪ੍ਰਸਤਾਵਾਂ ਨਾਲ ਕੀ ਹੋਇਆ?'
-      title_your_weekly_report: 'ਤੁਹਾਡੇ ਪ੍ਰਸਤਾਵ ਕਿਵੇਂ ਕੰਮ ਕਰ ਰਹੇ ਹਨ?'
-      text_introduction: 'ਹੇਠਾਂ ਦਿੱਤੇ ਮੁੱਖ ਨੰਬਰਾਂ ਨੂੰ ਲੱਭੋ ਅਤੇ ਕਾਰਵਾਈ ਕਰਨ ਲਈ ਪਲੇਟਫਾਰਮ ''ਤੇ ਜਾਓ ਅਤੇ ਸਮੇਂ ਸਿਰ ਲੋੜੀਂਦਾ ਸਮਰਥਨ ਪ੍ਰਾਪਤ ਕਰੋ।'
-      cta_see_your_initiative: 'ਆਪਣੇ ਪ੍ਰਸਤਾਵਾਂ ''ਤੇ ਜਾਓ'
-      total_votes: 'ਕੁੱਲ ਵੋਟਾਂ'
-      new_votes: 'ਨਵੀਆਂ ਵੋਟਾਂ'
-      remaining_votes: 'ਬਾਕੀ ਵੋਟਾਂ'
-      remaining_days: 'ਦਿਨ ਬਾਕੀ'
     voting_basket_submitted:
       subject: '%{organizationName}: ਤੁਸੀਂ ਸਫਲਤਾਪੂਰਵਕ ਵੋਟ ਦਿੱਤੀ'
       preheader: 'ਤੁਸੀਂ %{organizationName}ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ''ਤੇ ਸਫਲਤਾਪੂਰਵਕ ਵੋਟ ਦਿੱਤੀ'

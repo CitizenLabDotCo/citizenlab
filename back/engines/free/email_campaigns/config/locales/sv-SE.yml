@@ -58,7 +58,6 @@ sv:
       "voting_phase_started": Ny projektfas med omröstning
       "voting_results": Resultat av omröstningen
       "your_input_in_screening": Min input väntar på screening
-      "your_proposed_initiatives_digest": Veckoöversikt över dina förslag
     general:
       by_author: 'av %{authorName}'
       author_wrote: '%{authorName} skrev:'
@@ -539,16 +538,6 @@ sv:
       message: '"%{input_title}" blir synligt för andra när det har granskats och godkänts.'
       subject: '"%{input_title}" är nästan publicerad'
       preheader: 'Den finns för närvarande på %{prescreening_status_title}'
-    your_proposed_initiatives_digest:
-      subject: 'Veckovis uppdatering av dina förslag'
-      preheader: 'Vad hände med dina förslag den senaste veckan?'
-      title_your_weekly_report: 'Hur har det gått med dina förslag?'
-      text_introduction: 'Hitta nyckelsiffrorna nedan och gå till plattformen för att vidta åtgärder och samla tillräckligt med stöd i tid.'
-      cta_see_your_initiative: 'Gå till dina förslag'
-      total_votes: 'Totalt antal röster'
-      new_votes: 'Nya röster'
-      remaining_votes: 'Röster kvar'
-      remaining_days: 'Dagar kvar'
     voting_basket_submitted:
       subject: '%{organizationName}: Du röstade framgångsrikt'
       preheader: 'Du röstade framgångsrikt på deltagandeplattformen för %{organizationName}'
