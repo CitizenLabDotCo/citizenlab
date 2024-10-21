@@ -70,12 +70,15 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
       )
     )
 
+    # We only want to show projects that are currently in a participatory phase (where user can do something).
+    allowed_participation_methods = %w[ideation native_survey poll proposals survey volunteering voting]
+
     admin_publications = admin_publications
       .joins('LEFT OUTER JOIN projects AS projects ON projects.id = admin_publications.publication_id')
       .joins('INNER JOIN phases AS phases ON phases.project_id = projects.id')
       .where(
-        'phases.start_at <= ? AND (phases.end_at >= ? OR phases.end_at IS NULL)',
-        Time.zone.now.to_fs(:db), Time.zone.now.to_fs(:db)
+        'phases.start_at <= ? AND (phases.end_at >= ? OR phases.end_at IS NULL) AND phases.participation_method IN (?)',
+        Time.zone.now.to_fs(:db), Time.zone.now.to_fs(:db), allowed_participation_methods
       )
 
     # Just need to limit to only participatory phases & add ordering by phase end at, soonest first, nulls last

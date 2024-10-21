@@ -265,19 +265,25 @@ resource 'AdminPublication' do
         parameter :size, 'Number of projects per page'
       end
 
-      let!(:active_project) { create(:project_with_active_ideation_phase) }
+      let!(:active_ideation_project) { create(:project_with_active_ideation_phase) }
       let!(:endless_project) { create(:single_phase_ideation_project) }
-      let!(:past_project) { create(:project_with_two_past_ideation_phases) }
 
-      example_request 'List all active projects' do
+      let!(:active_information_project) { create(:project_with_past_ideation_and_current_information_phase) }
+      let!(:past_project) { create(:project_with_two_past_ideation_phases) }
+      let!(:future_project) { create(:project_with_future_native_survey_phase) }
+
+      example_request 'List all active projects only returns projects with participatory active phase' do
         expect(status).to eq 200
 
         json_response = json_parse(response_body)
         admin_publication_ids = json_response[:data].pluck(:id)
 
-        expect(admin_publication_ids).to include active_project.admin_publication.id
+        expect(admin_publication_ids).to include active_ideation_project.admin_publication.id
         expect(admin_publication_ids).to include endless_project.admin_publication.id
+
+        expect(admin_publication_ids).not_to include active_information_project.admin_publication.id
         expect(admin_publication_ids).not_to include past_project.admin_publication.id
+        expect(admin_publication_ids).not_to include future_project.admin_publication.id
       end
     end
 
