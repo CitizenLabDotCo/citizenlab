@@ -58,7 +58,6 @@ en-GB:
       "voting_phase_started": New project phase with voting
       "voting_results": Voting results
       "your_input_in_screening": My input awaits screening
-      "your_proposed_initiatives_digest": Weekly overview of your proposals
     general:
       by_author: 'by %{authorName}'
       author_wrote: '%{authorName} wrote:'
@@ -273,7 +272,7 @@ en-GB:
       main_header: '%{firstName} mentioned you in an internal comment.'
       preheader: '%{authorNameFull} mentioned you in an internal comment.'
     moderator_digest:
-      subject: 'Your weekly project manager report of %{time}'
+      subject: 'Weekly manager report of "%{project_title}"'
       preheader: 'Project manager digest of %{organizationName}'
       title_your_weekly_report: '%{firstName}, your weekly report'
       text_introduction: 'We''ve curated for you the input that has generated the most activity over the past week. Find out what''s happening with your project!'
@@ -539,16 +538,6 @@ en-GB:
       message: '"%{input_title}" will become visible to others once it has been reviewed and approved.'
       subject: '"%{input_title}" is almost published'
       preheader: 'It''s currently in %{prescreening_status_title}'
-    your_proposed_initiatives_digest:
-      subject: 'Weekly update of your proposal'
-      preheader: 'What happened to your proposal in the past week?'
-      title_your_weekly_report: 'How has your proposal been doing?'
-      text_introduction: 'Find the key numbers below and go to your proposal''s page to take action and gather enough support in time.'
-      cta_see_your_initiative: 'Go to your petition'
-      total_votes: 'Total votes'
-      new_votes: 'New votes'
-      remaining_votes: 'Votes remaining'
-      remaining_days: 'Days remaining'
     voting_basket_submitted:
       subject: '%{organizationName}: You voted successfully'
       preheader: 'You voted successfully on the participation platform of %{organizationName}'
