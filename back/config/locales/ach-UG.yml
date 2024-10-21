@@ -343,6 +343,8 @@ ach:
       you_can_sign_in_again_from: "crwdns3322847:0%{date}crwdne3322847:0"
   user:
     anon_first_name: "crwdns3322849:0crwdne3322849:0"
+    anon_scheme:
+      animals: 'crwdns3338569:0crwdne3338569:0'
   time:
     am: crwdns3322851:0crwdne3322851:0
     formats:
