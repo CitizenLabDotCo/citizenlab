@@ -2509,6 +2509,7 @@
   "app.containers.admin.ContentBuilder.delete": "حذف کریں۔",
   "app.containers.admin.ContentBuilder.error": "غلطی",
   "app.containers.admin.ContentBuilder.errorMessage": "{locale} مواد میں ایک خرابی ہے، براہ کرم اپنی تبدیلیوں کو محفوظ کرنے کے لیے مسئلہ کو ٹھیک کریں۔",
+  "app.containers.admin.ContentBuilder.hideParticipationAvatarsText": "شرکت کے اوتار چھپائیں۔",
   "app.containers.admin.ContentBuilder.homepage.default": "پہلے سے طے شدہ",
   "app.containers.admin.ContentBuilder.homepage.events.eventsTitle": "واقعات",
   "app.containers.admin.ContentBuilder.homepage.eventsTitle": "واقعات",

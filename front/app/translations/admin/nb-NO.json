@@ -2509,6 +2509,7 @@
   "app.containers.admin.ContentBuilder.delete": "Slett",
   "app.containers.admin.ContentBuilder.error": "feil",
   "app.containers.admin.ContentBuilder.errorMessage": "Det har oppstått en feil på {locale} content, vennligst fiks problemet for å kunne lagre endringene dine",
+  "app.containers.admin.ContentBuilder.hideParticipationAvatarsText": "Skjul avatarer for deltakelse",
   "app.containers.admin.ContentBuilder.homepage.default": "standard",
   "app.containers.admin.ContentBuilder.homepage.events.eventsTitle": "Hendelser",
   "app.containers.admin.ContentBuilder.homepage.eventsTitle": "Hendelser",
