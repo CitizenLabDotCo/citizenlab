@@ -15,10 +15,10 @@ import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPaddi
 import messages from './messages';
 
 type AboutBoxProps = {
-  hideParticipationAvatarsText?: boolean;
+  hideParticipationAvatars?: boolean;
 };
 
-const AboutBox = ({ hideParticipationAvatarsText }: AboutBoxProps) => {
+const AboutBox = ({ hideParticipationAvatars }: AboutBoxProps) => {
   const { projectId, slug } = useParams() as {
     projectId: string;
     slug: string;
@@ -36,7 +36,7 @@ const AboutBox = ({ hideParticipationAvatarsText }: AboutBoxProps) => {
       {projectID && (
         <ProjectInfoSideBar
           projectId={projectID}
-          hideParticipationAvatarsText={hideParticipationAvatarsText}
+          hideParticipationAvatars={hideParticipationAvatars}
         />
       )}
     </Box>
@@ -60,8 +60,7 @@ const AboutBoxSettings = () => {
         onChange={() => {
           setProp(
             (props: AboutBoxProps) =>
-              (props.hideParticipationAvatarsText =
-                !hideParticipationAvatarsText)
+              (props.hideParticipationAvatars = !hideParticipationAvatarsText)
           );
         }}
         label={formatMessage(messages.hideParticipationAvatarsText)}

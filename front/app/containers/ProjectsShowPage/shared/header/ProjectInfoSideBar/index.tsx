@@ -22,12 +22,12 @@ const StyledProjectActionButtons = styled(ProjectActionButtons)`
 
 interface Props {
   projectId: string;
-  hideParticipationAvatarsText?: boolean;
+  hideParticipationAvatars?: boolean;
   className?: string;
 }
 
 const ProjectInfoSideBar = memo<Props>(
-  ({ projectId, className, hideParticipationAvatarsText = false }) => {
+  ({ projectId, className, hideParticipationAvatars = false }) => {
     const { data: authUser } = useAuthUser();
     const { data: project } = useProjectById(projectId, !isAdmin(authUser));
     const theme = useTheme();
@@ -42,7 +42,7 @@ const ProjectInfoSideBar = memo<Props>(
       return (
         <Box id="e2e-project-sidebar" className={className || ''}>
           <StyledProjectActionButtons projectId={projectId} />
-          {!hideParticipationAvatarsText && avatarIds.length > 0 && (
+          {!hideParticipationAvatars && avatarIds.length > 0 && (
             <Box my="8px" w="100%" display="flex" justifyContent="center">
               <AvatarBubbles
                 size={32}
