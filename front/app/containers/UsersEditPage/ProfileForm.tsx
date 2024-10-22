@@ -271,15 +271,6 @@ const ProfileForm = () => {
               )}
             </InputContainer>
           </SectionField>
-          {/* {apiErrors && (
-            <Error
-              fieldName={name as TFieldName}
-              apiErrors={apiError}
-              marginTop="8px"
-              marginBottom="8px"
-              scrollIntoView={false}
-            />
-          )} */}
           {!disableBio && (
             <SectionField>
               <QuillMultilocWithLocaleSwitcher
