@@ -2573,7 +2573,7 @@
   "app.containers.admin.ideaStatuses.all.titleIdeaStatuses1": "Beitragsstatus bearbeiten",
   "app.containers.admin.ideaStatuses.form.acceptedFieldCodeDescription": "Ausgewählt für Implementierung oder nächste Schritte",
   "app.containers.admin.ideaStatuses.form.acceptedFieldCodeTitle": "Akzeptiert",
-  "app.containers.admin.ideaStatuses.form.answeredFieldCodeDescription": "Offizielles Feedback gegeben",
+  "app.containers.admin.ideaStatuses.form.answeredFieldCodeDescription": "Offizielles Update gegeben",
   "app.containers.admin.ideaStatuses.form.answeredFieldCodeTitle": "Beantwortet",
   "app.containers.admin.ideaStatuses.form.category": "Kategorie",
   "app.containers.admin.ideaStatuses.form.categoryDescription": "Bitte wählen Sie die Kategorie, die Ihren Status am besten repräsentiert. Diese Auswahl hilft unserem Analysetool, Beiträge genauer zu verarbeiten und zu analysieren.",
