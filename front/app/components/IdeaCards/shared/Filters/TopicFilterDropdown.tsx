@@ -34,7 +34,17 @@ const TopicFilterDropdown = ({
   const { data: topics } = useTopics();
 
   const filteredTopics = useMemo(() => {
-    return topics?.data.filter((topic) => topicIds.includes(topic.id));
+    if (!topics) return [];
+
+    const topicsById = topics.data.reduce((acc, topic) => {
+      if (topicIds.includes(topic.id)) {
+        acc[topic.id] = topic;
+      }
+      return acc;
+    }, {});
+
+    // Return filtered topics in the order of topicIds
+    return topicIds.map((id) => topicsById[id]).filter(Boolean);
   }, [topics, topicIds]);
 
   const options = useMemo(() => {
