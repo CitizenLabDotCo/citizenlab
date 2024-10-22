@@ -2,6 +2,10 @@ import React from 'react';
 
 import { SupportedLocale } from 'typings';
 
+import useAppConfigurationLocales, {
+  createMultiloc,
+} from 'hooks/useAppConfigurationLocales';
+
 import contentBuilderMessages from 'components/admin/ContentBuilder/messages';
 import Container from 'components/admin/ContentBuilder/Toolbox/Container';
 import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
@@ -20,6 +24,7 @@ import {
   FormattedMessage,
   useIntl,
   useFormatMessageWithLocale,
+  MessageDescriptor,
 } from 'utils/cl-intl';
 
 import messages from '../../messages';
@@ -27,6 +32,7 @@ import Events from '../CraftComponents/Events';
 import Highlight from '../CraftComponents/Highlight';
 import SpotlightProject, {
   spotlightProjectTitle,
+  buttonTextDefault,
 } from '../CraftComponents/SpotlightProject';
 
 type HomepageBuilderToolboxProps = {
@@ -38,8 +44,15 @@ const HomepageBuilderToolbox = ({
 }: HomepageBuilderToolboxProps) => {
   const { formatMessage } = useIntl();
   const formatMessageWithLocale = useFormatMessageWithLocale();
+  const appConfigurationLocales = useAppConfigurationLocales();
 
-  // TODO add defaults
+  if (!appConfigurationLocales) return null;
+
+  const toMultiloc = (message: MessageDescriptor) => {
+    return createMultiloc(appConfigurationLocales, (locale) => {
+      return formatMessageWithLocale(locale, message);
+    });
+  };
 
   return (
     <Container>
@@ -69,7 +82,11 @@ const HomepageBuilderToolbox = ({
       />
       <DraggableElement
         id="e2e-draggable-spotlight-project"
-        component={<SpotlightProject buttonTextMultiloc={{}} />}
+        component={
+          <SpotlightProject
+            buttonTextMultiloc={toMultiloc(buttonTextDefault)}
+          />
+        }
         icon="projects"
         label={formatMessage(spotlightProjectTitle)}
       />

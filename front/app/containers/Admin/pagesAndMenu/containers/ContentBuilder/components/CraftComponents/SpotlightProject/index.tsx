@@ -50,5 +50,6 @@ SpotlightProject.craft = {
 };
 
 export const spotlightProjectTitle = messages.spotlightProject;
+export const buttonTextDefault = messages.buttonTextDefault;
 
 export default SpotlightProject;
