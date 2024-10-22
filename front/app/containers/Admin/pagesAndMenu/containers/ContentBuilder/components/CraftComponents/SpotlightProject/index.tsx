@@ -17,10 +17,8 @@ interface Props {
   projectId?: string;
 }
 
-const PROJECT_ID = '367ee225-e7f8-4e56-a874-204573ac812d';
-
 const SpotlightProject = ({ buttonTextMultiloc, projectId }: Props) => {
-  const { data: project } = useProjectById(PROJECT_ID);
+  const { data: project } = useProjectById(projectId);
   const { data: image } = useProjectImage({
     projectId,
     imageId: project?.data.relationships.project_images?.data[0].id,

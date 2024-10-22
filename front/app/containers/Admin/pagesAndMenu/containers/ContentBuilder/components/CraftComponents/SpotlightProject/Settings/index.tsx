@@ -26,7 +26,12 @@ const Settings = () => {
   return (
     <Box mt="48px" mb="20px">
       <Box mb="20px">
-        <ProjectSelect projectId={projectId} />
+        <ProjectSelect
+          projectId={projectId}
+          onSelect={(projectId) =>
+            setProp((props) => (props.projectId = projectId))
+          }
+        />
       </Box>
       <Box>
         <InputMultilocWithLocaleSwitcher

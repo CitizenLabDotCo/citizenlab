@@ -13,4 +13,8 @@ export default defineMessages({
     id: 'app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.SpotlightProject.buttonText',
     defaultMessage: 'Button text',
   },
+  selectProject: {
+    id: 'app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.SpotlightProject.selectProject',
+    defaultMessage: 'Select project',
+  },
 });
