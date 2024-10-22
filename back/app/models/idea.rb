@@ -4,46 +4,50 @@
 #
 # Table name: ideas
 #
-#  id                       :uuid             not null, primary key
-#  title_multiloc           :jsonb
-#  body_multiloc            :jsonb
-#  publication_status       :string
-#  published_at             :datetime
-#  project_id               :uuid
-#  author_id                :uuid
-#  created_at               :datetime         not null
-#  updated_at               :datetime         not null
-#  likes_count              :integer          default(0), not null
-#  dislikes_count           :integer          default(0), not null
-#  location_point           :geography        point, 4326
-#  location_description     :string
-#  comments_count           :integer          default(0), not null
-#  idea_status_id           :uuid
-#  slug                     :string
-#  budget                   :integer
-#  baskets_count            :integer          default(0), not null
-#  official_feedbacks_count :integer          default(0), not null
-#  assignee_id              :uuid
-#  assigned_at              :datetime
-#  proposed_budget          :integer
-#  custom_field_values      :jsonb            not null
-#  creation_phase_id        :uuid
-#  author_hash              :string
-#  anonymous                :boolean          default(FALSE), not null
-#  internal_comments_count  :integer          default(0), not null
-#  votes_count              :integer          default(0), not null
-#  followers_count          :integer          default(0), not null
-#  submitted_at             :datetime
+#  id                              :uuid             not null, primary key
+#  title_multiloc                  :jsonb
+#  body_multiloc                   :jsonb
+#  publication_status              :string
+#  published_at                    :datetime
+#  project_id                      :uuid
+#  author_id                       :uuid
+#  created_at                      :datetime         not null
+#  updated_at                      :datetime         not null
+#  likes_count                     :integer          default(0), not null
+#  dislikes_count                  :integer          default(0), not null
+#  location_point                  :geography        point, 4326
+#  location_description            :string
+#  comments_count                  :integer          default(0), not null
+#  idea_status_id                  :uuid
+#  slug                            :string
+#  budget                          :integer
+#  baskets_count                   :integer          default(0), not null
+#  official_feedbacks_count        :integer          default(0), not null
+#  assignee_id                     :uuid
+#  assigned_at                     :datetime
+#  proposed_budget                 :integer
+#  custom_field_values             :jsonb            not null
+#  creation_phase_id               :uuid
+#  author_hash                     :string
+#  anonymous                       :boolean          default(FALSE), not null
+#  internal_comments_count         :integer          default(0), not null
+#  votes_count                     :integer          default(0), not null
+#  followers_count                 :integer          default(0), not null
+#  submitted_at                    :datetime
+#  manual_votes_amount             :integer
+#  manual_votes_last_updated_by_id :uuid
+#  manual_votes_last_updated_at    :datetime
 #
 # Indexes
 #
-#  index_ideas_on_author_hash     (author_hash)
-#  index_ideas_on_author_id       (author_id)
-#  index_ideas_on_idea_status_id  (idea_status_id)
-#  index_ideas_on_location_point  (location_point) USING gist
-#  index_ideas_on_project_id      (project_id)
-#  index_ideas_on_slug            (slug) UNIQUE
-#  index_ideas_search             (((to_tsvector('simple'::regconfig, COALESCE((title_multiloc)::text, ''::text)) || to_tsvector('simple'::regconfig, COALESCE((body_multiloc)::text, ''::text))))) USING gin
+#  index_ideas_on_author_hash                      (author_hash)
+#  index_ideas_on_author_id                        (author_id)
+#  index_ideas_on_idea_status_id                   (idea_status_id)
+#  index_ideas_on_location_point                   (location_point) USING gist
+#  index_ideas_on_manual_votes_last_updated_by_id  (manual_votes_last_updated_by_id)
+#  index_ideas_on_project_id                       (project_id)
+#  index_ideas_on_slug                             (slug) UNIQUE
+#  index_ideas_search                              (((to_tsvector('simple'::regconfig, COALESCE((title_multiloc)::text, ''::text)) || to_tsvector('simple'::regconfig, COALESCE((body_multiloc)::text, ''::text))))) USING gin
 #
 # Foreign Keys
 #
@@ -51,6 +55,7 @@
 #  fk_rails_...  (author_id => users.id)
 #  fk_rails_...  (creation_phase_id => phases.id)
 #  fk_rails_...  (idea_status_id => idea_statuses.id)
+#  fk_rails_...  (manual_votes_last_updated_by_id => users.id)
 #  fk_rails_...  (project_id => projects.id)
 #
 class Idea < ApplicationRecord
