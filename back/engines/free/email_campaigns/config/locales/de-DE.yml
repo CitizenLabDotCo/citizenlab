@@ -509,7 +509,7 @@ de:
         project: 'Ihr Projekt wurde veröffentlicht'
         issue: 'Ihr Problem wurde veröffentlicht'
         option: 'Ihre Option wurde veröffentlicht'
-        proposal: 'Ihr Vorschlag wurde veröffentlicht'
+        proposal: 'Dein Vorschlag wurde veröffentlicht'
         initiative: 'Ihre Initiative wurde veröffentlicht'
         petition: 'Ihre Petition wurde veröffentlicht'
       main_header: 'Sie haben "%{input_title}" gepostet.'
