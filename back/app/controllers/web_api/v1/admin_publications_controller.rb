@@ -96,11 +96,11 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
 
     @admin_publications = @admin_publications.includes(
       {
-        publication: [
-          { phases: %i[report custom_form permissions] },
-          :admin_publication,
-          :project_images,
-          :content_builder_layouts
+        publication: %i[
+          phases
+          admin_publication
+          project_images
+          avatars
         ]
       },
       parent: [:publication]
@@ -118,7 +118,6 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
         publication
         publication.avatars
         publication.project_images
-        publication.images
         publication.current_phase
         publication.phases
         parent
