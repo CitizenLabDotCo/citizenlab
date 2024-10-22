@@ -17,7 +17,7 @@ module MultiTenancy
           idea = Idea.create!({
             title_multiloc: runner.create_for_some_locales { Faker::Lorem.sentence[0...80] },
             body_multiloc: runner.rand_description_multiloc,
-            idea_status: runner.rand_instance(IdeaStatus.all),
+            idea_status: runner.rand_instance(IdeaStatus.for_public_posts),
             topics: topics,
             author: runner.rand_instance(User.all),
             project: project,
