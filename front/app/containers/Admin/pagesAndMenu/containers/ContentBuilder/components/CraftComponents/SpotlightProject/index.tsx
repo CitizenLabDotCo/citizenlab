@@ -14,14 +14,15 @@ import SpotlightProjectInner from './SpotlightProject';
 
 interface Props {
   buttonTextMultiloc: Multiloc;
+  projectId?: string;
 }
 
 const PROJECT_ID = '367ee225-e7f8-4e56-a874-204573ac812d';
 
-const SpotlightProject = ({ buttonTextMultiloc }: Props) => {
+const SpotlightProject = ({ buttonTextMultiloc, projectId }: Props) => {
   const { data: project } = useProjectById(PROJECT_ID);
   const { data: image } = useProjectImage({
-    projectId: PROJECT_ID,
+    projectId,
     imageId: project?.data.relationships.project_images?.data[0].id,
   });
   const locale = useLocale();
