@@ -1,6 +1,13 @@
 import React, { useState } from 'react';
 
-import { Success, Error, Toggle } from '@citizenlab/cl2-component-library';
+import {
+  Success,
+  Error,
+  Toggle,
+  Text,
+} from '@citizenlab/cl2-component-library';
+import Box from 'component-library/components/Box';
+import Radio from 'component-library/components/Radio';
 import styled from 'styled-components';
 
 import {
@@ -91,6 +98,19 @@ const SettingsGeneralTab = () => {
     }
   };
 
+  const onChangeAnonymousNameScheme = (scheme: string) => {
+    if (!isNilOrError(appConfiguration)) {
+      updateAppConfiguration(
+        {
+          settings: {
+            core: { anonymous_name_scheme: scheme },
+          },
+        },
+        { onSuccess: () => setSettingsUpdatedSuccessFully(true) }
+      );
+    }
+  };
+
   const handleSettingChange = (settingName: TAppConfigurationSetting) => {
     if (!isNilOrError(appConfiguration)) {
       const setting = appConfiguration.data.attributes.settings[settingName];
@@ -116,6 +136,11 @@ const SettingsGeneralTab = () => {
 
     const { organization_name, organization_site, locales, population } =
       appConfiguration.data.attributes.settings.core;
+
+    const anomymousNameSchemes = ['user', 'animal'];
+    const currentAnonymousNameScheme =
+      appConfiguration.data.attributes.settings.core.anonymous_name_scheme ||
+      'user';
 
     return (
       <>
@@ -150,10 +175,34 @@ const SettingsGeneralTab = () => {
               </ToggleLabel>
             </Setting>
           )}
+
           <Outlet
             id="app.containers.Admin.settings.general.form"
             onSettingChange={handleSettingChange}
           />
+
+          <Box mt="30px" mb="20px">
+            <SubSectionTitle>
+              <FormattedMessage {...messages.userNameDisplayTitle} />
+            </SubSectionTitle>
+            <Text mt="-10px">
+              <FormattedMessage {...messages.userNameDisplayDescription} />
+            </Text>
+            {anomymousNameSchemes.map((scheme) => (
+              <Radio
+                key={scheme}
+                onChange={() => {
+                  onChangeAnonymousNameScheme(scheme);
+                }}
+                currentValue={currentAnonymousNameScheme}
+                value={scheme}
+                name={scheme}
+                id={scheme}
+                label={formatMessage(messages[`anonymousNameScheme_${scheme}`])}
+              />
+            ))}
+          </Box>
+
           {settingsUpdatedSuccessFully && (
             <Success
               showBackground

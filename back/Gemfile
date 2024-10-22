@@ -199,6 +199,7 @@ commercial_engines = [
   'multi_tenancy',
 
   'admin_api',
+  'aggressive_caching',
   'analysis',
   'analytics',
   'bulk_import_ideas',

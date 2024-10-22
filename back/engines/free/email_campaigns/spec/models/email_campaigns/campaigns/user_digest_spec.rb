@@ -78,14 +78,16 @@ RSpec.describe EmailCampaigns::Campaigns::UserDigest do
   describe 'before_send_hooks' do
     let(:campaign) { build(:user_digest_campaign) }
 
+    let_it_be(:activity) { create(:activity) }
+
     it 'returns true when there are at least 3 ideas updated in the last week' do
       create_list(:idea, 3, published_at: Time.now - 1.minute)
-      expect(campaign.content_worth_sending?(time: Time.now)).to be true
+      expect(campaign.content_worth_sending?(time: Time.now, activity:)).to be true
     end
 
     it 'returns false when there are less than 3 ideas updated in the last week' do
       create_list(:idea, 2, published_at: Time.now - 1.minute)
-      expect(campaign.content_worth_sending?(time: Time.now)).to be false
+      expect(campaign.content_worth_sending?(time: Time.now, activity:)).to be false
     end
 
     it 'returns true when there 3 ideas with comments or reactions updated in the last week' do
@@ -93,14 +95,14 @@ RSpec.describe EmailCampaigns::Campaigns::UserDigest do
       create(:comment, post: old_ideas.first, created_at: Time.now - 1.minute)
       create(:comment, post: old_ideas.second, created_at: Time.now - 1.minute)
       create(:reaction, reactable: old_ideas.last, created_at: Time.now - 1.minute)
-      expect(campaign.content_worth_sending?(time: Time.now)).to be true
+      expect(campaign.content_worth_sending?(time: Time.now, activity:)).to be true
     end
 
     it 'returns true when there are proposals that reached the threshold' do
       threshold_reached_status = create(:proposals_status, code: 'threshold_reached')
       proposal = create(:proposal, idea_status: threshold_reached_status)
       create(:idea_changed_status_activity, item: proposal, payload: { change: [nil, threshold_reached_status.id] }, acted_at: 1.day.ago)
-      expect(campaign.content_worth_sending?(time: Time.now)).to be true
+      expect(campaign.content_worth_sending?(time: Time.now, activity:)).to be true
     end
   end
 

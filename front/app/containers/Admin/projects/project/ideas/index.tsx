@@ -13,6 +13,7 @@ import InputManager, {
   TFilterMenu,
 } from 'components/admin/PostManager/InputManager';
 import Button from 'components/UI/Button';
+import Warning from 'components/UI/Warning';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -78,6 +79,31 @@ const AdminProjectIdeas = () => {
         <Text color="textSecondary">
           <FormattedMessage {...messages.subtitleInputManager} />
         </Text>
+        <Box display="flex">
+          {phase?.data.attributes.participation_method === 'voting' &&
+            (phase?.data.attributes.autoshare_results_enabled ? (
+              <Warning>
+                <Text color="teal700" m="0px" mr="4px">
+                  <FormattedMessage {...messages.votingShareResultsTurnedOn} />
+                </Text>
+              </Warning>
+            ) : (
+              <Warning>
+                <Box display="flex">
+                  <Text fontWeight="bold" color="teal700" m="0px" mr="4px">
+                    <FormattedMessage
+                      {...messages.votingShareResultsTurnedOff}
+                    />
+                  </Text>
+                  <Text color="teal700" m="0px">
+                    <FormattedMessage
+                      {...messages.votingShareResultsTurnedOff2}
+                    />
+                  </Text>
+                </Box>
+              </Warning>
+            ))}
+        </Box>
       </Box>
 
       {project && (

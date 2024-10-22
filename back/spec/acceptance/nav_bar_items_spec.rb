@@ -10,8 +10,11 @@ resource 'NavBarItems' do
 
   get 'web_api/v1/nav_bar_items' do
     before do
+      @static_page = create(:static_page, slug: 'static-page')
+      @project = create(:project, slug: 'project')
       @items = [
-        create(:nav_bar_item, code: 'custom'),
+        create(:nav_bar_item, code: 'custom', project: nil, static_page: @static_page),
+        create(:nav_bar_item, code: 'custom', project: @project, static_page: nil),
         create(:nav_bar_item, code: 'events'),
         create(:nav_bar_item, code: 'all_input'),
         create(:nav_bar_item, code: 'home')
@@ -21,9 +24,13 @@ resource 'NavBarItems' do
 
     example_request 'List all NavBarItems' do
       assert_status 200
-      expect(json_response_body[:data].size).to eq 4
-      expect(json_response_body[:data].map { |d| d.dig(:attributes, :ordering) }).to eq [0, 1, 2, 3]
-      expect(json_response_body[:data].map { |d| d.dig(:attributes, :code) }).to eq %w[home custom events all_input]
+      expect(json_response_body[:data].size).to eq 5
+      expect(json_response_body[:data].map { |d| d.dig(:attributes, :ordering) }).to eq [0, 1, 2, 3, 4]
+      expect(json_response_body[:data].map { |d| d.dig(:attributes, :slug) })
+        .to eq [nil, @static_page.slug, @project.slug, nil, nil]
+
+      expect(json_response_body[:data].map { |d| d.dig(:attributes, :code) })
+        .to eq %w[home custom custom events all_input]
     end
   end
 
