@@ -34,7 +34,7 @@ const TopicFilterDropdown = ({
   const { data: topics } = useTopics();
 
   const filteredTopics = useMemo(() => {
-    if (!topics || !topicIds) return [];
+    if (!topics) return [];
 
     const topicsById = topics.data.reduce((acc, topic) => {
       if (topicIds.includes(topic.id)) {
