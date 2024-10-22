@@ -30,6 +30,10 @@ module VotingMethod
       # Default is to do nothing.
     end
 
+    def votes_for_idea(idea) # TODO: Add to tests
+      idea.votes_count
+    end
+
     def export_columns
       []
     end

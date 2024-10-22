@@ -88,6 +88,7 @@ class Idea < ApplicationRecord
   )
 
   belongs_to :assignee, class_name: 'User', optional: true
+  belongs_to :manual_votes_last_updated_by, class_name: 'User', optional: true
 
   has_many :ideas_topics, dependent: :destroy
   has_many :topics, -> { order(:ordering) }, through: :ideas_topics
@@ -254,6 +255,19 @@ class Idea < ApplicationRecord
 
   def assign_defaults
     participation_method_on_creation.assign_defaults self
+  end
+
+  def total_votes(phase)
+    # TODO: test
+    Factory.instance.voting_method_for(phase).votes_for_idea + manual_votes_amount
+  end
+
+  def set_manual_votes(amount, user)
+    return if amount == manual_votes_amount
+
+    self.manual_votes_amount = amount
+    self.manual_votes_last_updated_by = user if user
+    self.manual_votes_last_updated_at = Time.now
   end
 
   private

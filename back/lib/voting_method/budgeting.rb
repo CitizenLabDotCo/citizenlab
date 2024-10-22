@@ -38,6 +38,10 @@ module VotingMethod
       end
     end
 
+    def votes_for_idea(idea)
+      idea.baskets_count
+    end
+
     def export_columns
       %w[picks budget]
     end
