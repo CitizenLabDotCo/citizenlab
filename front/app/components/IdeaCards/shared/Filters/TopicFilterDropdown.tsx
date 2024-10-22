@@ -9,7 +9,6 @@ import useLocalize from 'hooks/useLocalize';
 import FilterSelector from 'components/FilterSelector';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import { byId } from 'utils/helperUtils';
 
 import messages from '../../messages';
 
@@ -34,18 +33,19 @@ const TopicFilterDropdown = ({
   const topicIds = getTopicIds(allowedInputTopics?.data);
   const { data: topics } = useTopics();
 
-  const topicsById = useMemo(() => {
-    const filteredTopics =
-      topics?.data.filter((topic) => topicIds.includes(topic.id)) || [];
-    return !topics ? null : byId(filteredTopics);
-  }, [topics, topicIds]);
-
   const filteredTopics = useMemo(() => {
-    if (!topicsById) return [];
+    if (!topics || !topicIds) return [];
 
-    // Create filtered topics in the order of topicIds
+    const topicsById = topics.data.reduce((acc, topic) => {
+      if (topicIds.includes(topic.id)) {
+        acc[topic.id] = topic;
+      }
+      return acc;
+    }, {});
+
+    // Return filtered topics in the order of topicIds
     return topicIds.map((id) => topicsById[id]).filter(Boolean);
-  }, [topicsById, topicIds]);
+  }, [topics, topicIds]);
 
   const options = useMemo(() => {
     return (
