@@ -15,7 +15,7 @@ interface Props {
   buttonTextMultiloc: Multiloc;
 }
 
-const PROJECT_ID = '825ed7f5-0aa2-4cf4-93c7-083e0b05e639';
+const PROJECT_ID = '367ee225-e7f8-4e56-a874-204573ac812d';
 
 const SpotlightProject = ({ buttonTextMultiloc }: Props) => {
   const { data: project } = useProjectById(PROJECT_ID);
@@ -34,7 +34,9 @@ const SpotlightProject = ({ buttonTextMultiloc }: Props) => {
   return (
     <SpotlightProjectInner
       title={localize(project.data.attributes.title_multiloc)}
-      description={localize(project.data.attributes.description_multiloc)}
+      description={localize(
+        project.data.attributes.description_preview_multiloc
+      )}
       buttonText={localize(buttonTextMultiloc)}
       imgSrc={image?.data.attributes.versions.large ?? undefined}
       avatarIds={avatarIds}
