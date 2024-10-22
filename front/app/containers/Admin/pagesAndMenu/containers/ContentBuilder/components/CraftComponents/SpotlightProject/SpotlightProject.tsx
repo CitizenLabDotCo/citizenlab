@@ -6,6 +6,7 @@ import {
   Text,
   Image,
   useBreakpoint,
+  stylingConsts,
 } from '@citizenlab/cl2-component-library';
 
 import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
@@ -75,7 +76,12 @@ const SpotlightProject = ({
           alignItems="center"
         >
           {imgSrc ? (
-            <Image src={imgSrc} width="100%" alt="placeholder" />
+            <Image
+              src={imgSrc}
+              width="100%"
+              alt="placeholder"
+              borderRadius={stylingConsts.borderRadius}
+            />
           ) : null}
         </Box>
       </Box>
