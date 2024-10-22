@@ -58,9 +58,13 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
     )
   end
 
+  # For use with 'Open to participation' homepage widget.
+  # Returns all published or archived admin_publications for projects that are currently in an
+  # active participatory phase (where user can do something).
+  # Ordered by the end date of the current phase, soonest first (nulls last).
   def index_projects_with_active_participatory_phase
     admin_publication_filterer = AdminPublicationsFilteringService.new
-    admin_publications = policy_scope(AdminPublication.includes(:parent))
+    admin_publications = policy_scope(AdminPublication)
     admin_publications = admin_publication_filterer.filter(
       admin_publications,
       params.merge(
@@ -70,10 +74,9 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
       )
     )
 
-    # We only want to show projects that are currently in a participatory phase (where user can do something).
     allowed_participation_methods = %w[ideation native_survey poll proposals survey volunteering voting]
 
-    # Use a subquery to include the phases.end_at column
+    # Use a subquery to limit results to those related to current participatory phase & include the phases.end_at column
     subquery = admin_publications
       .joins('LEFT OUTER JOIN projects AS projects ON projects.id = admin_publications.publication_id')
       .joins('INNER JOIN phases AS phases ON phases.project_id = projects.id')
@@ -89,8 +92,6 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
       .distinct
       .order('phase_end_at ASC NULLS LAST')
 
-    # Just need to limit to only participatory phases & add ordering by phase end at, soonest first, nulls last
-
     @admin_publications = paginate admin_publications
 
     @admin_publications = @admin_publications.includes(
@@ -102,7 +103,7 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
           :content_builder_layouts
         ]
       },
-      :children
+      parent: [:publication]
     )
 
     authorize @admin_publications, :index_projects_with_active_participatory_phase?
@@ -120,6 +121,8 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
         publication.images
         publication.current_phase
         publication.phases
+        parent
+        parent.publication
       ]
     )
   end
