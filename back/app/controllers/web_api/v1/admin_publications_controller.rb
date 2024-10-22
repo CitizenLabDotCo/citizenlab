@@ -26,12 +26,11 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
     if params[:include_publications] == 'true'
       @admin_publications = @admin_publications.includes(
         {
-          publication: [
-            { phases: %i[report custom_form permissions] },
-            :admin_publication,
-            :images,
-            :project_images,
-            :content_builder_layouts
+          publication: %i[
+            phases
+            admin_publication
+            images
+            project_images
           ]
         },
         :children
