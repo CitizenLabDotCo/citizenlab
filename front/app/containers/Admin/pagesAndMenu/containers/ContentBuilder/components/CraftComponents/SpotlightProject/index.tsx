@@ -5,6 +5,7 @@ import { Multiloc } from 'typings';
 import useProjectImage from 'api/project_images/useProjectImage';
 import useProjectById from 'api/projects/useProjectById';
 
+import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
 import messages from './messages';
@@ -23,7 +24,7 @@ const SpotlightProject = ({ buttonTextMultiloc }: Props) => {
     projectId: PROJECT_ID,
     imageId: project?.data.relationships.project_images?.data[0].id,
   });
-
+  const locale = useLocale();
   const localize = useLocalize();
 
   if (!project) return null;
@@ -37,7 +38,10 @@ const SpotlightProject = ({ buttonTextMultiloc }: Props) => {
       description={localize(
         project.data.attributes.description_preview_multiloc
       )}
-      buttonText={localize(buttonTextMultiloc)}
+      buttonText={buttonTextMultiloc[locale]} // We don't use localize here because it
+      // always falls back to another locale when the value is an empty string.
+      // In this case we don't want that- we just want the empty string.
+      buttonLink={`/projects/${project.data.attributes.slug}`}
       imgSrc={image?.data.attributes.versions.large ?? undefined}
       avatarIds={avatarIds}
       userCount={project.data.attributes.participants_count}

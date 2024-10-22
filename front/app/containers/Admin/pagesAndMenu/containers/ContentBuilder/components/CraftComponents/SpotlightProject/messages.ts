@@ -9,4 +9,8 @@ export default defineMessages({
     id: 'app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.SpotlightProject.buttonTextDefault',
     defaultMessage: 'Participate now!',
   },
+  buttonText: {
+    id: 'app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.SpotlightProject.buttonText',
+    defaultMessage: 'Button text',
+  },
 });

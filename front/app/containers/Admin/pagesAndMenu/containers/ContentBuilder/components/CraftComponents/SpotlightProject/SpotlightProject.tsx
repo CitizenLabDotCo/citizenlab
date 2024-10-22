@@ -4,19 +4,20 @@ import {
   Box,
   Title,
   Text,
-  Button,
   Image,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 
 import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
 import AvatarBubbles from 'components/AvatarBubbles';
+import Button from 'components/UI/Button';
 
 interface Props {
   title: string;
   imgSrc?: string;
   description?: string;
   buttonText?: string;
+  buttonLink?: string;
   avatarIds?: string[];
   userCount?: number;
 }
@@ -26,13 +27,20 @@ const SpotlightProject = ({
   imgSrc,
   description,
   buttonText,
+  buttonLink,
   avatarIds,
   userCount,
 }: Props) => {
   const isSmallerThanPhone = useBreakpoint('phone');
 
   return (
-    <Box px={isSmallerThanPhone ? DEFAULT_PADDING : '40px'} w="100%">
+    <Box
+      px={isSmallerThanPhone ? DEFAULT_PADDING : '0px'}
+      py={DEFAULT_PADDING}
+      w="100%"
+      display="flex"
+      justifyContent="center"
+    >
       <Box
         w="100%"
         maxWidth="1200px"
@@ -45,9 +53,11 @@ const SpotlightProject = ({
             {title}
           </Title>
           {description && <Text>{description}</Text>}
-          {buttonText && (
+          {buttonText && buttonText !== '' && (
             <Box w="100%" display="flex" mt="20px">
-              <Button w="auto">{buttonText}</Button>
+              <Button w="auto" linkTo={buttonLink}>
+                {buttonText}
+              </Button>
             </Box>
           )}
           {avatarIds && userCount && (
