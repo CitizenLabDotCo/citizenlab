@@ -8,6 +8,8 @@ import useProjectById from 'api/projects/useProjectById';
 import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
+import { useIntl } from 'utils/cl-intl';
+
 import messages from './messages';
 import Settings from './Settings';
 import SpotlightProjectInner from './SpotlightProject';
@@ -25,6 +27,16 @@ const SpotlightProject = ({ buttonTextMultiloc, projectId }: Props) => {
   });
   const locale = useLocale();
   const localize = useLocalize();
+  const { formatMessage } = useIntl();
+
+  if (!projectId) {
+    return (
+      <SpotlightProjectInner
+        title={formatMessage(messages.selectProject)}
+        description={formatMessage(messages.pleaseSelectAProject)}
+      />
+    );
+  }
 
   if (!project) return null;
 

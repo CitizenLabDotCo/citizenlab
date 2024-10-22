@@ -17,4 +17,8 @@ export default defineMessages({
     id: 'app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.SpotlightProject.selectProject',
     defaultMessage: 'Select project',
   },
+  pleaseSelectAProject: {
+    id: 'app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.SpotlightProject.pleaseSelectAProject',
+    defaultMessage: 'Please select a project',
+  },
 });
