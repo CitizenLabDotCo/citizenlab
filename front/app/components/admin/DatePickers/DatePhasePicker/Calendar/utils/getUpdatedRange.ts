@@ -28,16 +28,17 @@ export const getUpdatedRange = ({
     };
   }
 
-  if (from > clickedDate) {
-    return {
-      from: clickedDate,
-    };
-  }
-
-  if (from.getTime() === clickedDate.getTime()) {
+  // We compare the day to allow single day phases
+  if (from.getDate() === clickedDate.getDate()) {
     return {
       from: clickedDate,
       to: clickedDate,
+    };
+  }
+
+  if (from > clickedDate) {
+    return {
+      from: clickedDate,
     };
   }
 
