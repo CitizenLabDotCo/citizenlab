@@ -2,8 +2,6 @@ import React from 'react';
 
 import { Box, Toggle, Tooltip, Text } from '@citizenlab/cl2-component-library';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 
 import { FormattedMessage } from 'utils/cl-intl';
