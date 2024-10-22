@@ -359,6 +359,7 @@ const InputManager = ({
         <LazyPostPreview
           type={type}
           postId={previewPostId}
+          selectedPhaseId={selectedPhaseId}
           mode={previewMode}
           onClose={closePreview}
           onSwitchPreviewMode={switchPreviewMode}
