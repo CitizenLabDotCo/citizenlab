@@ -21,7 +21,7 @@ class IdeaStatus < ApplicationRecord
   MANUAL_TRANSITION_NOT_ALLOWED_CODES = %w[prescreening threshold_reached expired].freeze
   NON_PUBLIC_CODES = %w[prescreening].freeze
 
-  scope :public, -> { where.not(code: NON_PUBLIC_CODES) }
+  scope :for_public_posts, -> { where.not(code: NON_PUBLIC_CODES) }
 
   acts_as_list column: :ordering, top_of_list: 0, scope: [:participation_method]
 
