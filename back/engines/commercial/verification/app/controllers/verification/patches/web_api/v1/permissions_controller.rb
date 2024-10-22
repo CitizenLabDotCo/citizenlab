@@ -8,6 +8,8 @@ module Verification
           private
 
           def user_ui_and_json_multiloc_schemas(fields)
+            return super if fields.empty?
+
             super.tap do |schemas|
               mark_locked_json_forms_fields(schemas) if current_user
             end
