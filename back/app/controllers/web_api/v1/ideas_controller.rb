@@ -416,6 +416,7 @@ class WebApi::V1::IdeasController < ApplicationController
       user_followers ||= {}
       {
         params: jsonapi_serializer_params(
+          phase: params[:phase],
           vbii: reactions.index_by(&:reactable_id),
           user_followers: user_followers,
           user_requirements_service: Permissions::UserRequirementsService.new(check_groups_and_verification: false)
@@ -439,24 +440,6 @@ class WebApi::V1::IdeasController < ApplicationController
     return false if input.idea_import && input.idea_import.approved_at.nil?
 
     !input.participation_method_on_creation.supports_inputs_without_author?
-  end
-
-  # Change counts on idea for values for phase, if filtered by phase
-  def convert_phase_voting_counts(ideas, params)
-    if params[:phase]
-      phase_id = params[:phase]
-      ideas.map do |idea|
-        next if idea.baskets_count == 0
-
-        idea.ideas_phases.each do |ideas_phase|
-          if ideas_phase.phase_id == phase_id
-            idea.baskets_count = ideas_phase.baskets_count
-            idea.votes_count = ideas_phase.votes_count
-          end
-        end
-      end
-    end
-    ideas
   end
 
   def not_allowed_update_errors(input)

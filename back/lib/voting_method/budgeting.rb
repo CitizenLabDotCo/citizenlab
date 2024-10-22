@@ -39,7 +39,7 @@ module VotingMethod
     end
 
     def votes_for_idea(idea)
-      idea.baskets_count
+      idea.ideas_phases.find { |ideas_phase| ideas_phase.phase_id == phase.id }&.baskets_count || idea.baskets_count
     end
 
     def export_columns
