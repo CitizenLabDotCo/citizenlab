@@ -24,7 +24,8 @@ export default defineMessages({
       'It will not be reflected in participation data dashboards.',
   },
   manualVoteAdjustmentTooltip5: {
-    id: 'app.components.admin.PostManager.PostPreview.OfflineVoteSettings.manualVoteAdjustmentTooltip5',
-    defaultMessage: 'Manual votes are shared between all phases of a project.',
+    id: 'app.components.admin.PostManager.PostPreview.OfflineVoteSettings.manualVoteAdjustmentTooltip6',
+    defaultMessage:
+      'Manual votes for an option are shared between all phases of a project.',
   },
 });
