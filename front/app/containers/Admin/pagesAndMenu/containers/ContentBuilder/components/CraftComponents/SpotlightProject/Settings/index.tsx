@@ -33,7 +33,7 @@ const Settings = () => {
           id="spotlight-button-text-multiloc"
           type="text"
           label={formatMessage(messages.buttonText)}
-          name="highlight_title"
+          name="spotlight-button-text-multiloc"
           valueMultiloc={buttonTextMultiloc}
           onChange={(valueMultiloc) =>
             setProp((props) => (props.buttonTextMultiloc = valueMultiloc))
