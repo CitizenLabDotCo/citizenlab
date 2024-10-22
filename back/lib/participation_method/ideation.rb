@@ -15,8 +15,7 @@ module ParticipationMethod
     end
 
     def assign_defaults(input)
-      current_phase = TimelineService.new.current_phase(input.project)
-      input_status_code = current_phase&.prescreening_enabled ? 'prescreening' : 'proposed'
+      input_status_code = phase&.prescreening_enabled ? 'prescreening' : 'proposed'
       input.idea_status ||= IdeaStatus.find_by!(code: input_status_code, participation_method: idea_status_method)
       input.publication_status ||= input.idea_status.public_post? ? 'published' : 'submitted'
     end
