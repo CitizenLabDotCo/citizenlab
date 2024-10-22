@@ -14,7 +14,6 @@ import useAnySSOEnabled from 'containers/Authentication/useAnySSOEnabled';
 import userEditMessages from 'containers/UsersEditPage/messages';
 
 import { SectionField } from 'components/admin/Section';
-import Feedback from 'components/HookForm/Feedback';
 import Input from 'components/HookForm/Input';
 import PasswordInput from 'components/HookForm/PasswordInput';
 import { StyledPasswordIconTooltip } from 'components/smallForm';
@@ -121,9 +120,6 @@ const EmailAndPasswordSignUp = ({
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(handleSubmit)}>
           <SectionField>
-            <Feedback
-              successMessage={formatMessage(userEditMessages.messageSuccess)}
-            />
             {profanityApiError && (
               <Error
                 text={
