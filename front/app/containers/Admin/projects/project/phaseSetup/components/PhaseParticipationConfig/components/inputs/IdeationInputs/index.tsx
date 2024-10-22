@@ -5,6 +5,8 @@ import { CLErrors } from 'typings';
 
 import { IdeaDefaultSortMethod, InputTerm } from 'api/phases/types';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import AnonymousPostingToggle from 'components/admin/AnonymousPostingToggle/AnonymousPostingToggle';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import FeatureFlag from 'components/FeatureFlag';
@@ -108,6 +110,10 @@ const IdeationInputs = ({
       <PrescreeningToggle
         prescreening_enabled={prescreening_enabled}
         togglePrescreeningEnabled={togglePrescreeningEnabled}
+        prescreeningFeatureAllowed={useFeatureFlag({
+          name: 'prescreening_ideation',
+          onlyCheckAllowed: true,
+        })}
       />
       <UserActions
         submission_enabled={submission_enabled || false}

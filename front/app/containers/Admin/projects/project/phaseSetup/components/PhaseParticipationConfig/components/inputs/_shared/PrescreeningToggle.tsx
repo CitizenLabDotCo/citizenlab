@@ -13,26 +13,26 @@ import messages from '../../../../../../messages';
 interface Props {
   prescreening_enabled: boolean | null | undefined;
   togglePrescreeningEnabled: (prescreening_enabled: boolean) => void;
+  prescreeningFeatureAllowed: boolean;
 }
 
 const PrescreeningToggle = ({
   prescreening_enabled,
   togglePrescreeningEnabled,
+  prescreeningFeatureAllowed,
 }: Props) => {
-  const prescreeningEnabled = useFeatureFlag({ name: 'prescreening' });
-
   return (
     <SectionField>
       <SubSectionTitle style={{ marginBottom: '0px' }}>
         <FormattedMessage {...messages.participationOptions} />
       </SubSectionTitle>
       <Tooltip
-        disabled={prescreeningEnabled}
+        disabled={prescreeningFeatureAllowed}
         content={<FormattedMessage {...messages.prescreeningTooltip} />}
       >
         <Box>
           <Toggle
-            disabled={!prescreeningEnabled}
+            disabled={!prescreeningFeatureAllowed}
             checked={prescreening_enabled || false}
             onChange={() => {
               togglePrescreeningEnabled(!prescreening_enabled);
