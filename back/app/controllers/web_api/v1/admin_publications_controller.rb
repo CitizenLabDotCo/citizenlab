@@ -28,7 +28,6 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
         {
           publication: %i[
             phases
-            admin_publication
             images
             project_images
           ]
