@@ -1,4 +1,4 @@
-import { addDays } from 'date-fns';
+import { addDays, isSameDay } from 'date-fns';
 
 import { ClosedDateRange, DateRange } from '../../typings';
 
@@ -28,8 +28,7 @@ export const getUpdatedRange = ({
     };
   }
 
-  // We compare the day to allow single day phases
-  if (from.getDate() === clickedDate.getDate()) {
+  if (isSameDay(from, clickedDate)) {
     return {
       from: clickedDate,
       to: clickedDate,
