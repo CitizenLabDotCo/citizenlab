@@ -205,6 +205,20 @@ resource 'Projects' do
           end
         end
       end
+
+      # This test is here to help ensure that we don't make the query chain more complex without realizing.
+      example_request 'Action does not invoke unnecessary queries' do
+        project = create(:project_with_active_ideation_phase)
+        create(:project_image, project: project)
+
+        # We need a participant, to get some included avatar data
+        participant = create(:user)
+        create(:idea, project: project, author: participant)
+
+        expect { do_request(page: { size: 6, number: 1 }) }.not_to exceed_query_limit(32)
+
+        assert_status 200
+      end
     end
 
     get 'web_api/v1/projects/:id' do
