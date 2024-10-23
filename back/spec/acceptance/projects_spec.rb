@@ -137,90 +137,6 @@ resource 'Projects' do
       end
     end
 
-    get 'web_api/v1/projects/with_active_participatory_phase' do
-      with_options scope: :page do
-        parameter :number, 'Page number'
-        parameter :size, 'Number of projects per page'
-      end
-
-      let!(:active_ideation_project) { create(:project_with_active_ideation_phase) }
-      let!(:endless_project) { create(:single_phase_ideation_project) }
-
-      let!(:active_information_project) { create(:project_with_past_ideation_and_current_information_phase) }
-      let!(:past_project) { create(:project_with_two_past_ideation_phases) }
-      let!(:future_project) { create(:project_with_future_native_survey_phase) }
-
-      example_request 'Lists only projects with a participatory active phase' do
-        expect(status).to eq 200
-
-        json_response = json_parse(response_body)
-        project_ids = json_response[:data].pluck(:id)
-
-        expect(project_ids).to include active_ideation_project.id
-        expect(project_ids).to include endless_project.id
-
-        expect(project_ids).not_to include active_information_project.id
-        expect(project_ids).not_to include past_project.id
-        expect(project_ids).not_to include future_project.id
-      end
-
-      example_request 'Lists only projects with published publication status' do
-        expect(status).to eq 200
-
-        json_response = json_parse(response_body)
-        project_ids = json_response[:data].pluck(:id)
-        admin_publications = AdminPublication.where(publication_id: project_ids)
-
-        expect(admin_publications.pluck(:publication_status)).to all(be_in(['published']))
-      end
-
-      example "List is ordered by end_at of project's active phase (ASC NULLS LAST)" do
-        soonest_end_at = active_ideation_project.phases.first.end_at
-
-        active_project2 = create(:project_with_active_ideation_phase)
-        active_project2.phases.first.update!(end_at: soonest_end_at + 1.day)
-        active_project3 = create(:project_with_active_ideation_phase)
-        active_project3.phases.first.update!(end_at: soonest_end_at + 2.days)
-
-        do_request
-        expect(status).to eq 200
-
-        json_response = json_parse(response_body)
-        project_ids = json_response[:data].pluck(:id)
-        projects = project_ids.map { |id| Project.find(id) }
-
-        active_phases_end_ats = projects.map do |p|
-          p.phases.where(
-            'phases.start_at <= ? AND (phases.end_at >= ? OR phases.end_at IS NULL)',
-            Time.zone.now.to_fs(:db), Time.zone.now.to_fs(:db)
-          ).pluck(:end_at)
-        end.flatten
-
-        active_phases_end_ats.each_with_index do |end_at, index|
-          if index.zero?
-            expect(end_at).not_to be_nil
-          else
-            is_expected_order = end_at.nil? || end_at >= active_phases_end_ats[index - 1]
-            expect(is_expected_order).to be true
-          end
-        end
-      end
-
-      # This test is here to help ensure that we don't make the query chain more complex without realizing.
-      example_request 'Action does not invoke unnecessary queries' do
-        project = create(:project_with_active_ideation_phase)
-        create(:project_image, project: project)
-
-        # We need a participant, to get some included avatar data
-        participant = create(:user)
-        create(:idea, project: project, author: participant)
-
-        expect { do_request(page: { size: 6, number: 1 }) }.not_to exceed_query_limit(29)
-
-        assert_status 200
-      end
-    end
-
     get 'web_api/v1/projects/:id' do
       let(:id) { @projects.first.id }
 
@@ -1261,6 +1177,110 @@ resource 'Projects' do
           assert_status 401
         end
       end
+    end
+  end
+
+  get 'web_api/v1/projects/with_active_participatory_phase' do
+    before do
+      @user = create(:user, roles: [])
+      header_token_for @user
+    end
+
+    with_options scope: :page do
+      parameter :number, 'Page number'
+      parameter :size, 'Number of projects per page'
+    end
+
+    let!(:active_ideation_project) { create(:project_with_active_ideation_phase) }
+    let!(:endless_project) { create(:single_phase_ideation_project) }
+
+    let!(:active_information_project) { create(:project_with_past_ideation_and_current_information_phase) }
+    let!(:past_project) { create(:project_with_two_past_ideation_phases) }
+    let!(:future_project) { create(:project_with_future_native_survey_phase) }
+
+    example_request 'Lists only projects with a participatory active phase' do
+      expect(status).to eq 200
+
+      json_response = json_parse(response_body)
+      project_ids = json_response[:data].pluck(:id)
+
+      expect(project_ids).to include active_ideation_project.id
+      expect(project_ids).to include endless_project.id
+
+      expect(project_ids).not_to include active_information_project.id
+      expect(project_ids).not_to include past_project.id
+      expect(project_ids).not_to include future_project.id
+    end
+
+    example_request 'Lists only projects with published publication status' do
+      expect(status).to eq 200
+
+      json_response = json_parse(response_body)
+      project_ids = json_response[:data].pluck(:id)
+      admin_publications = AdminPublication.where(publication_id: project_ids)
+
+      expect(admin_publications.pluck(:publication_status)).to all(be_in(['published']))
+    end
+
+    example "List is ordered by end_at of project's active phase (ASC NULLS LAST)" do
+      soonest_end_at = active_ideation_project.phases.first.end_at
+
+      active_project2 = create(:project_with_active_ideation_phase)
+      active_project2.phases.first.update!(end_at: soonest_end_at + 1.day)
+      active_project3 = create(:project_with_active_ideation_phase)
+      active_project3.phases.first.update!(end_at: soonest_end_at + 2.days)
+
+      do_request
+      expect(status).to eq 200
+
+      json_response = json_parse(response_body)
+      project_ids = json_response[:data].pluck(:id)
+      projects = project_ids.map { |id| Project.find(id) }
+
+      active_phases_end_ats = projects.map do |p|
+        p.phases.where(
+          'phases.start_at <= ? AND (phases.end_at >= ? OR phases.end_at IS NULL)',
+          Time.zone.now.to_fs(:db), Time.zone.now.to_fs(:db)
+        ).pluck(:end_at)
+      end.flatten
+
+      active_phases_end_ats.each_with_index do |end_at, index|
+        if index.zero?
+          expect(end_at).not_to be_nil
+        else
+          is_expected_order = end_at.nil? || end_at >= active_phases_end_ats[index - 1]
+          expect(is_expected_order).to be true
+        end
+      end
+    end
+
+    example 'Includes related avatars', document: false do
+      project = create(:project_with_active_ideation_phase)
+      create(:idea, project: project, author: @user)
+
+      do_request
+      expect(status).to eq(200)
+      json_response = json_parse(response_body)
+
+      included_avatar_ids = json_response[:included].select { |d| d[:type] == 'avatar' }.pluck(:id)
+      avatar_ids = json_response[:data].map { |d| d.dig(:relationships, :avatars, :data) }.flatten.pluck(:id)
+
+      expect(avatar_ids).to include @user.id
+      expect(included_avatar_ids).to include @user.id
+    end
+
+    # This test is helps ensure that we don't make the query chain more complex without realizing.
+    example_request 'Action does not invoke unnecessary queries' do
+      project = create(:project_with_active_ideation_phase)
+      create(:project_image, project: project)
+
+      # We need a participant, to get some included avatar data
+      participant = create(:user)
+      create(:idea, project: project, author: participant)
+
+      expect { do_request(page: { size: 6, number: 1 }) }.not_to exceed_query_limit(29)
+
+      assert_status 200
     end
   end
 end
