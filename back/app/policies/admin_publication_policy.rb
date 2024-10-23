@@ -21,10 +21,6 @@ class AdminPublicationPolicy < ApplicationPolicy
     Pundit.policy(user, record.publication).show?
   end
 
-  def index_projects_with_active_participatory_phase?
-    true
-  end
-
   def reorder?
     return false unless user&.active?
     return true if user.admin?

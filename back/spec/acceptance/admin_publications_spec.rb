@@ -259,65 +259,6 @@ resource 'AdminPublication' do
       end
     end
 
-    get 'web_api/v1/admin_publications/projects_with_active_participatory_phase' do
-      with_options scope: :page do
-        parameter :number, 'Page number'
-        parameter :size, 'Number of projects per page'
-      end
-
-      let!(:active_ideation_project) { create(:project_with_active_ideation_phase) }
-      let!(:endless_project) { create(:single_phase_ideation_project) }
-
-      let!(:active_information_project) { create(:project_with_past_ideation_and_current_information_phase) }
-      let!(:past_project) { create(:project_with_two_past_ideation_phases) }
-      let!(:future_project) { create(:project_with_future_native_survey_phase) }
-
-      example_request 'Lists only admin_publications for projects with a participatory active phase' do
-        expect(status).to eq 200
-
-        json_response = json_parse(response_body)
-        admin_publication_ids = json_response[:data].pluck(:id)
-
-        expect(admin_publication_ids).to include active_ideation_project.admin_publication.id
-        expect(admin_publication_ids).to include endless_project.admin_publication.id
-
-        expect(admin_publication_ids).not_to include active_information_project.admin_publication.id
-        expect(admin_publication_ids).not_to include past_project.admin_publication.id
-        expect(admin_publication_ids).not_to include future_project.admin_publication.id
-      end
-
-      example "Lists all admin_publications ordered by end_at of related project's active phase (ASC NULLS LAST)" do
-        soonest_end_at = active_ideation_project.phases.first.end_at
-
-        active_project2 = create(:project_with_active_ideation_phase)
-        active_project2.phases.first.update!(end_at: soonest_end_at + 1.day)
-        active_project3 = create(:project_with_active_ideation_phase)
-        active_project3.phases.first.update!(end_at: soonest_end_at + 2.days)
-
-        do_request
-        expect(status).to eq 200
-
-        json_response = json_parse(response_body)
-        project_ids = json_response[:data].map { |d| d.dig(:relationships, :publication, :data) }.pluck(:id)
-        projects = project_ids.map { |id| Project.find(id) }
-
-        active_phases_end_ats = projects.map do |p|
-          p.phases.where(
-            'phases.start_at <= ? AND (phases.end_at >= ? OR phases.end_at IS NULL)',
-            Time.zone.now.to_fs(:db), Time.zone.now.to_fs(:db)
-          ).pluck(:end_at)
-        end.flatten
-
-        active_phases_end_ats.each_with_index do |end_at, index|
-          next if index.zero?
-
-          after_previous = end_at.nil? || end_at >= active_phases_end_ats[index - 1]
-
-          expect(after_previous).to be true
-        end
-      end
-    end
-
     patch 'web_api/v1/admin_publications/:id/reorder' do
       with_options scope: :admin_publication do
         parameter :ordering, 'The position, starting from 0, where the folder or project should be at. Publications after will move down.', required: true
