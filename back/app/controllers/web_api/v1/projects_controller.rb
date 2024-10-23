@@ -52,6 +52,58 @@ class WebApi::V1::ProjectsController < ApplicationController
     )
   end
 
+  # For use with 'Open to participation' homepage widget.
+  # Returns all published or archived projects that are currently in an
+  # active participatory phase (where user can do something).
+  # Ordered by the end date of the current phase, soonest first (nulls last).
+  def index_projects_with_active_participatory_phase
+    @projects = policy_scope(Project)
+      .joins('INNER JOIN admin_publications AS admin_publications ON admin_publications.publication_id = projects.id')
+      .where(admin_publications: { publication_status: %w[published archived] })
+
+    # Not very satisfied with this ping-pong of SQL queries (knowing that the
+    # AdminPublicationsFilteringService is also making a request on projects).
+    # But could not find a way to eager-load the polymorphic type in the publication
+    # scope.
+
+    # `includes` tries to be smart & use joins here, but it makes the query complex and slow. So, we use `preload`.
+    # Using `pluck(:publication_id)` instead of `select(:publication_id)` also helps if used with `includes`,
+    # but it doesn't make any difference with `preload`. Still using it in case the query changes.
+    # @projects = Project.where(id: publications.pluck(:publication_id)).ordered
+    @projects = paginate @projects
+    @projects = @projects.preload(
+      :project_images,
+      :areas,
+      :topics,
+      :content_builder_layouts, # Defined in ContentBuilder engine
+      phases: [:report, { permissions: [:groups] }],
+      admin_publication: [:children]
+    )
+
+    authorize @projects, :index_projects_with_active_participatory_phase?
+
+    user_followers = current_user&.follows
+      &.where(followable_type: 'Project')
+      &.group_by do |follower|
+        [follower.followable_id, follower.followable_type]
+      end
+    user_followers ||= {}
+
+    instance_options = {
+      user_followers: user_followers,
+      timeline_active: TimelineService.new.timeline_active_on_collection(@projects.to_a),
+      visible_children_count_by_parent_id: {}, # projects don't have children
+      user_requirements_service: Permissions::UserRequirementsService.new(check_groups_and_verification: false)
+    }
+
+    render json: linked_json(
+      @projects,
+      WebApi::V1::ProjectSerializer,
+      params: jsonapi_serializer_params(instance_options),
+      include: %i[admin_publication project_images current_phase]
+    )
+  end
+
   def show
     render json: WebApi::V1::ProjectSerializer.new(
       @project,

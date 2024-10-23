@@ -137,6 +137,44 @@ resource 'Projects' do
       end
     end
 
+    get 'web_api/v1/projects/with_active_participatory_phase' do
+      with_options scope: :page do
+        parameter :number, 'Page number'
+        parameter :size, 'Number of projects per page'
+      end
+
+      let!(:active_ideation_project) { create(:project_with_active_ideation_phase) }
+      let!(:endless_project) { create(:single_phase_ideation_project) }
+
+      let!(:active_information_project) { create(:project_with_past_ideation_and_current_information_phase) }
+      let!(:past_project) { create(:project_with_two_past_ideation_phases) }
+      let!(:future_project) { create(:project_with_future_native_survey_phase) }
+
+      example_request 'Lists only projects with a participatory active phase' do
+        expect(status).to eq 200
+
+        json_response = json_parse(response_body)
+        project_ids = json_response[:data].pluck(:id)
+
+        expect(project_ids).to include active_ideation_project.id
+        expect(project_ids).to include endless_project.id
+
+        # expect(project_ids).not_to include active_information_project.id
+        # expect(project_ids).not_to include past_project.id
+        # expect(project_ids).not_to include future_project.id
+      end
+
+      example_request 'Lists only projects with published or archived publication status' do
+        expect(status).to eq 200
+
+        json_response = json_parse(response_body)
+        project_ids = json_response[:data].pluck(:id)
+        admin_publications = AdminPublication.where(publication_id: project_ids)
+
+        expect(admin_publications.pluck(:publication_status)).to all(be_in(%w[published archived]))
+      end
+    end
+
     get 'web_api/v1/projects/:id' do
       let(:id) { @projects.first.id }
 
