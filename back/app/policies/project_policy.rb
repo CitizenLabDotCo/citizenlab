@@ -2,10 +2,18 @@
 
 class ProjectPolicy < ApplicationPolicy
   class Scope
-    attr_reader :user, :scope
+    attr_reader :user, :scope, :context
 
-    def initialize(user, scope)
-      @user  = user
+    def initialize(context, scope)
+      if context.is_a?(User) || context.nil?
+        @user  = user
+        @context = {}
+      else
+        puts "contexxxxt", context.inspect
+        @user = context[:user]
+        @context = context
+      end
+
       @scope = scope.includes(:admin_publication)
     end
 
@@ -16,6 +24,8 @@ class ProjectPolicy < ApplicationPolicy
       # of the user gives access).
       moderator_scope = if user&.active?
         UserRoleService.new.moderatable_projects(user, scope)
+      elsif context[:preview_token] == '0123456789'
+        scope.all
       else
         scope.none
       end
@@ -60,6 +70,18 @@ class ProjectPolicy < ApplicationPolicy
     end
   end
 
+  attr_reader :context
+
+  def initialize(context, record)
+    if context.is_a?(User) || context.nil?
+      super(context, record)
+    else
+      @user = context[:user]
+      @context = context
+      @record = record
+    end
+  end
+
   def index_xlsx?
     active_moderator?
   end
@@ -81,8 +103,11 @@ class ProjectPolicy < ApplicationPolicy
 
   def show?
     return false if Permissions::ProjectPermissionsService.new(record, user).project_visible_disabled_reason
+    return true if active_moderator?
+    return true if %w[published archived].include?(record.admin_publication.publication_status)
 
-    active_moderator? || %w[published archived].include?(record.admin_publication.publication_status)
+    preview_token = context[:preview_token]
+    preview_token.present? && preview_token == '0123456789'
   end
 
   def by_slug?

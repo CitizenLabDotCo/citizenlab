@@ -5,6 +5,10 @@ class WebApi::V1::PhasesController < ApplicationController
   around_action :detect_invalid_timeline_changes, only: %i[create update destroy]
   skip_before_action :authenticate_user
 
+  def pundit_user
+    { user: current_user, preview_token: params[:preview_token] }
+  end
+
   def index
     @phases = policy_scope(Phase)
       .where(project_id: params[:project_id])
@@ -20,6 +24,8 @@ class WebApi::V1::PhasesController < ApplicationController
   end
 
   def create
+    puts current_user.attributes
+    require 'pry'; binding.pry
     @phase = Phase.new(phase_params)
     @phase.project_id = params[:project_id]
     sidefx.before_create(@phase, current_user)

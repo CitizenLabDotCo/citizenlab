@@ -44,6 +44,10 @@ const ReportPrintPage = lazy(
 );
 const DisabledAccount = lazy(() => import('containers/DisabledAccount'));
 
+const ProjectToken = () => {
+  return <>project token route</>;
+};
+
 export type RouteType =
   | AdminRouteTypes
   | moduleRouteTypes
@@ -76,6 +80,7 @@ export enum citizenRoutes {
   projectIdeaNew = `projects/:slug/ideas/new`,
   projectSurveyNew = `projects/:slug/surveys/new`,
   projectSlug = `projects/:slug`,
+  projectSlugToken = `projects/:slug/preview/:preview-token`,
   phaseNumber = ':phaseNumber',
   folders = 'folders',
   foldersSlug = `folders/:slug`,
@@ -112,6 +117,7 @@ type citizenRouteTypes =
   | `/${citizenRoutes.projects}?focusSearch=${string}`
   | `/${citizenRoutes.projects}/${string}/${citizenRoutes.ideas}/new`
   | `/${citizenRoutes.projects}/${string}`
+  | `/${citizenRoutes.projects}/${string}/preview/${string}`
   | `/${citizenRoutes.folders}`
   | `/${citizenRoutes.folders}/${string}`
   | `/${citizenRoutes.events}`
@@ -246,6 +252,14 @@ export default function createRoutes() {
             </PageLoading>
           ),
         },
+        {
+          path: citizenRoutes.projectSlugToken,
+          element: (
+            <PageLoading>
+              <ProjectToken />
+            </PageLoading>
+          ),
+        },
         createAdminRoutes(),
         {
           path: citizenRoutes.projects,
@@ -279,14 +293,14 @@ export default function createRoutes() {
                 </PageLoading>
               ),
             },
-            {
-              path: citizenRoutes.wildcard,
-              element: (
-                <PageLoading>
-                  <ProjectsShowPage />
-                </PageLoading>
-              ),
-            },
+            // {
+            //   path: citizenRoutes.wildcard,
+            //   element: (
+            //     <PageLoading>
+            //       <ProjectsShowPage />
+            //     </PageLoading>
+            //   ),
+            // },
           ],
         },
         {

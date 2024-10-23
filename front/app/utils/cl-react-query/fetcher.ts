@@ -90,10 +90,15 @@ async function fetcher({
     (value) => isNil(value) || value === ''
   );
 
+  const relevantQueryParamsWithToken = {
+    ...relevantQueryParams,
+    preview_token: '0123456789',
+  };
+
   // TODO: Fix this the next time the file is edited.
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  const requestQueryParams = relevantQueryParams
-    ? stringify(relevantQueryParams, {
+  const requestQueryParams = relevantQueryParamsWithToken
+    ? stringify(relevantQueryParamsWithToken, {
         arrayFormat: 'brackets',
         addQueryPrefix: true,
       })
