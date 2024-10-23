@@ -101,7 +101,7 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
     idea.ideas_phases.find { |ideas_phase| ideas_phase.phase_id == phase.id }
   end
 
-  attribute :baskets_count do |idea|
+  attribute :baskets_count do |idea, params|
     if params[:phase]
       find_ideas_phase(idea, params[:phase])&.baskets_count
     else
@@ -109,7 +109,7 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
     end
   end
 
-  attribute :votes_count do |idea|
+  attribute :votes_count do |idea, params|
     if params[:phase]
       find_ideas_phase(idea, params[:phase])&.votes_count
     else
@@ -117,9 +117,9 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
     end
   end
 
-  attribute :total_votes, if: proc { |idea, params|
+  attribute :total_votes, if: proc { |_, params|
     params[:phase]
-  } do |idea|
+  } do |idea, params|
     idea.total_votes(params[:phase])
   end
 
