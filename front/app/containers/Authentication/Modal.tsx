@@ -92,6 +92,8 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
   return (
     <Modal
       fullScreen={fullscreenModalEnabled}
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       zIndex={fullscreenModalEnabled ? 400 : 10000001}
       width="580px"
       opened={currentStep !== 'closed'}
@@ -101,6 +103,8 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
       header={
         headerMessage ? (
           <>
+            {/* TODO: Fix this the next time the file is edited. */}
+            {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
             {fullscreenModalEnabled ? (
               <Box w="100%" display="flex" justifyContent="center">
                 <Box w="580px" px={marginX}>
@@ -123,6 +127,8 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
         id="e2e-authentication-modal"
         px={marginX}
         py="32px"
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         w={fullscreenModalEnabled ? '580px' : '100%'}
       >
         {error && (

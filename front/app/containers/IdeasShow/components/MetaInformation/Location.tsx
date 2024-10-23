@@ -57,6 +57,8 @@ const Location = memo<Props>(({ ideaId, compact, className }) => {
   const { data: idea } = useIdeaById(ideaId);
   const isTabletOrSmaller = useBreakpoint('tablet');
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const point = idea?.data.attributes?.location_point_geojson;
 
   const address = !isNilOrError(idea)
@@ -80,6 +82,8 @@ const Location = memo<Props>(({ ideaId, compact, className }) => {
                   p="0px"
                   fontSize="m"
                   buttonStyle="text"
+                  // TODO: Fix this the next time the file is edited.
+                  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                   linkTo={`https://www.google.com/maps/search/?api=1&query=${point?.coordinates[1]},${point?.coordinates[0]}`}
                   openLinkInNewTab={isTabletOrSmaller ? false : true} // On tablet/mobile devices, this will open the app instead
                   pl="0px"
@@ -104,6 +108,8 @@ const Location = memo<Props>(({ ideaId, compact, className }) => {
               {!compact && (
                 <Box width="100%" mt="8px" id="e2e-location-map">
                   <IdeaLocationMap
+                    // TODO: Fix this the next time the file is edited.
+                    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                     location={idea?.data.attributes?.location_point_geojson}
                   />
                 </Box>

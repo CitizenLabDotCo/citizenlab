@@ -22,12 +22,16 @@ const Location = ({ event }: Props) => {
   const isPhoneOrSmaller = useBreakpoint('phone');
   const currentLocale = useLocale();
   const position = event?.attributes.location_point_geojson;
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const address1 = event?.attributes?.address_1;
 
   if (isNilOrError(currentLocale) || !address1) {
     return null;
   }
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const address2 = event?.attributes?.address_2_multiloc[currentLocale];
 
   if (address1) {

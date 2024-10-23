@@ -345,7 +345,7 @@ const PhaseParticipationConfig = ({
     }));
   };
 
-  const toggleReviewingEnabled = (prescreening_enabled: boolean) => {
+  const togglePrescreeningEnabled = (prescreening_enabled: boolean) => {
     updateFormData((state) => ({
       ...state,
       prescreening_enabled,
@@ -489,6 +489,8 @@ const PhaseParticipationConfig = ({
             handleIdeaDefaultSortMethodChange={
               handleIdeaDefaultSortMethodChange
             }
+            prescreening_enabled={prescreening_enabled}
+            togglePrescreeningEnabled={togglePrescreeningEnabled}
           />
         )}
 
@@ -525,7 +527,7 @@ const PhaseParticipationConfig = ({
             handleReactingThresholdChange={handleReactingThresholdChange}
             reactingThresholdError={validationErrors.reactingThresholdError}
             prescreening_enabled={prescreening_enabled}
-            toggleReviewingEnabled={toggleReviewingEnabled}
+            togglePrescreeningEnabled={togglePrescreeningEnabled}
           />
         )}
 

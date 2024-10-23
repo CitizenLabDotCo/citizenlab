@@ -227,15 +227,18 @@ const ProfileForm = () => {
             </SectionField>
           )}
 
+          {/* TODO: Fix this the next time the file is edited. */}
+          {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
           {authUser?.data.attributes.no_name && (
             <Text>
               <FormattedMessage
                 {...messages.noNameWarning}
+                // TODO: Fix this the next time the file is edited.
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 values={{ displayName: authUser?.data.attributes.display_name }}
               />
             </Text>
           )}
-
           <SectionField>
             <InputContainer>
               <Input
@@ -253,7 +256,6 @@ const ProfileForm = () => {
               )}
             </InputContainer>
           </SectionField>
-
           <SectionField>
             <InputContainer>
               <Input
@@ -282,7 +284,6 @@ const ProfileForm = () => {
               />
             </SectionField>
           )}
-
           <SectionField>
             <Select
               name="locale"

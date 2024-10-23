@@ -23,10 +23,14 @@ const fetchIdeaMarkers = ({
     },
   });
 
-const useIdeaMarkers = (queryParameters: QueryParameters) => {
+const useIdeaMarkers = (
+  queryParameters: QueryParameters,
+  loadIdeaMarkers = true
+) => {
   return useQuery<IIdeaMarkers, CLErrors, IIdeaMarkers, IdeaMarkersKeys>({
     queryKey: ideaMarkerKeys.list(queryParameters),
     queryFn: () => fetchIdeaMarkers(queryParameters),
+    enabled: loadIdeaMarkers,
   });
 };
 

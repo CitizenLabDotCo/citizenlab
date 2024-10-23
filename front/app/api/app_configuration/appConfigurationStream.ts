@@ -23,6 +23,8 @@ const appConfigurationQueryObserver = new QueryObserver<
 });
 
 appConfigurationQueryObserver.subscribe((query) => {
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   return appConfigurationStream.next(query?.data);
 });
 

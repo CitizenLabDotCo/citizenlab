@@ -104,12 +104,22 @@ export const shutdownFor = (destination: IDestination) => {
 
 export function tenantInfo(tenant: IAppConfigurationData) {
   return {
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     tenantId: tenant && tenant.id,
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     tenantName: tenant && tenant.attributes.name,
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     tenantHost: tenant && tenant.attributes.host,
     tenantOrganizationType:
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       tenant && tenant.attributes.settings.core.organization_type,
     tenantLifecycleStage:
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       tenant && tenant.attributes.settings.core.lifecycle_stage,
   };
 }

@@ -66,6 +66,8 @@ combineLatest([$authUser, $tenantLocales]).subscribe(
     // and checks if it's a possible locale to have on this tenant
     const userLocale: SupportedLocale | null =
       user &&
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       user.data.attributes.locale &&
       includes(tenantLocales, user.data.attributes.locale)
         ? user.data.attributes.locale

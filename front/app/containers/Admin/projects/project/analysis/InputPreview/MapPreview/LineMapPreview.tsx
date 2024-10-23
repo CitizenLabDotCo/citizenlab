@@ -36,12 +36,16 @@ const LineMapPreview = ({ rawValue }: Props) => {
           type: 'Feature',
           geometry: {
             type: 'LineString',
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             coordinates: line?.coordinates,
           },
           properties: null,
         },
       ],
     }),
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     [line?.coordinates]
   );
 
@@ -69,6 +73,8 @@ const LineMapPreview = ({ rawValue }: Props) => {
 
   return (
     <Box>
+      {/* TODO: Fix this the next time the file is edited. */}
+      {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
       {line?.coordinates ? (
         <EsriMap
           layers={layers}
@@ -77,6 +83,8 @@ const LineMapPreview = ({ rawValue }: Props) => {
             showFullscreenOption: true,
             center: {
               type: 'Point',
+              // TODO: Fix this the next time the file is edited.
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
               coordinates: line?.coordinates[0],
             },
           }}

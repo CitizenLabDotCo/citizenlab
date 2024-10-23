@@ -75,6 +75,8 @@ const ConfigurationMap = memo<Props>(
         />
         <LayerHoverLabel
           layer={mapConfig.data.attributes.layers.find(
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             (layer) => layer?.id === hoveredLayerId
           )}
         />
