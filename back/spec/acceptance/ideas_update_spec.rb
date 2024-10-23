@@ -718,7 +718,6 @@ resource 'Ideas' do
 
             expect(json_response_body.dig(:data, :attributes, :manual_votes_amount)).to eq manual_votes_amount
             expect(json_response_body.dig(:data, :relationships, :manual_votes_last_updated_by, :data, :id)).to eq admin.id
-            # expect(json_response_body.dig(:included).find { |i| i[:id] == admin.id }&.dig(:attributes, :email)).to eq admin.email # Move to index spec
             expect(json_response_body.dig(:data, :attributes, :manual_votes_last_updated_at)).to be_present
             expect(input.reload.manual_votes_amount).to eq manual_votes_amount
           end

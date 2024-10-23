@@ -48,7 +48,7 @@ resource 'Ideas' do
         input1_response = json_response_body[:data].find { |i| i[:id] == input1.id }
         expect(input1_response.dig(:attributes, :manual_votes_amount)).to eq 5
         expect(input1_response.dig(:relationships, :manual_votes_last_updated_by, :data, :id)).to eq admin.id
-        expect(json_response_body.dig(:included).find { |i| i[:id] == admin.id }&.dig(:attributes, :slug)).to eq admin.slug
+        expect(json_response_body[:included].find { |i| i[:id] == admin.id }&.dig(:attributes, :slug)).to eq admin.slug
         expect(input1_response.dig(:attributes, :manual_votes_last_updated_at)).to be_present
 
         input2_response = json_response_body[:data].find { |i| i[:id] == input2.id }
@@ -59,7 +59,7 @@ resource 'Ideas' do
         input3_response = json_response_body[:data].find { |i| i[:id] == input3.id }
         expect(input3_response.dig(:attributes, :manual_votes_amount)).to eq 8
         expect(input3_response.dig(:relationships, :manual_votes_last_updated_by, :data, :id)).to eq moderator.id
-        expect(json_response_body.dig(:included).find { |i| i[:id] == moderator.id }&.dig(:attributes, :slug)).to eq moderator.slug
+        expect(json_response_body[:included].find { |i| i[:id] == moderator.id }&.dig(:attributes, :slug)).to eq moderator.slug
         expect(input3_response.dig(:attributes, :manual_votes_last_updated_at)).to be_present
       end
     end
