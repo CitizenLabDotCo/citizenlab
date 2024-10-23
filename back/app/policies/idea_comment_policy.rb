@@ -19,6 +19,8 @@ class IdeaCommentPolicy < ApplicationPolicy
   end
 
   def create?
+    return false unless record.post
+
     (
       user&.active? &&
       (record.author_id == user.id) &&

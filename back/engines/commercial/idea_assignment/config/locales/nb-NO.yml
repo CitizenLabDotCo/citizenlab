@@ -1,13 +1,13 @@
-"nb-NO":
+nb:
   email_campaigns:
     campaign_type_description:
-      "idea_assigned_to_you": En idé tildelt meg
+      "idea_assigned_to_you": Tildeling av en inngang til meg
     admin_campaign_type_description:
-      "idea_assigned_to_you": Tildeling av en idé – administratorer og prosjektledere
+      "idea_assigned_to_you": Tildeling av en inngang - administratorer og prosjektledere
     idea_assigned_to_you:
       by_author: 'av %{authorName}'
-      cta_reply_to: 'Gi en tilbakemelding til %{authorName}'
-      event_description_idea: 'En idé har blitt tildelt deg. Gi en tilbakemelding ved å skrive en offsiel oppdatering eller ved å endre status. '
-      main_header: '%{firstName}, du har en ny oppgave'
-      subject: 'Du har en ny oppgave på plattformen til %{organizationName}'
-      preheader_idea: 'Ideen til %{authorName} har blitt tildelt deg'
+      cta_reply_to: 'Gi tilbakemelding til %{authorName}'
+      event_description_idea: 'Du har fått tildelt et innspill. Gi tilbakemelding ved å skrive en offisiell oppdatering eller ved å endre status.'
+      main_header: '%{firstName}, ble en inngang tildelt deg'
+      subject: 'Du ble tildelt et innspill på plattformen til %{organizationName}'
+      preheader_idea: 'Inngangen til %{authorName} har blitt tildelt deg'

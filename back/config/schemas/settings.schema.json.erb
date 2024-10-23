@@ -790,13 +790,25 @@
 
       "prescreening": {
         "type": "object",
-        "title": "Screening",
-        "description": "When active, screening can be activated on a per-project basis, which requires admins/moderators to explicitly approve each input before it becomes visible to the public.",
+        "title": "Screening (proposals)",
+        "description": "When active, screening can be activated for proposals phases, which requires admins/moderators to explicitly approve each input before it becomes visible to the public.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": true },
           "enabled": { "type": "boolean", "default": true }
+        }
+      },
+
+      "prescreening_ideation": {
+        "type": "object",
+        "title": "Screening (ideation)",
+        "description": "When active, screening can be activated for ideation phases, which requires admins/moderators to explicitly approve each input before it becomes visible to the public.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
         }
       },
 
@@ -959,7 +971,8 @@
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": false}
+          "enabled": { "type": "boolean", "default": false},
+          "extended_blocking": { "type": "boolean", "default": false}
         }
       },
 

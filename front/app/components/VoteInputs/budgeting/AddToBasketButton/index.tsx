@@ -29,6 +29,7 @@ import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import eventEmitter from 'utils/eventEmitter';
 import { isNil } from 'utils/helperUtils';
+import { isPhaseActive } from 'utils/projectUtils';
 
 import messages from './messages';
 import tracks from './tracks';
@@ -140,13 +141,17 @@ const AddToBasketButton = ({
     true
   );
 
-  const disabledMessage =
-    permissionsDisabledMessage ||
-    (basket?.data.attributes.submitted_at
-      ? onIdeaPage
-        ? messages.basketAlreadySubmittedIdeaPage
-        : messages.basketAlreadySubmitted
-      : undefined);
+  let disabledMessage = permissionsDisabledMessage || undefined;
+
+  if (basket?.data.attributes.submitted_at) {
+    disabledMessage = onIdeaPage
+      ? messages.basketAlreadySubmittedIdeaPage
+      : messages.basketAlreadySubmitted;
+  }
+
+  if (!isPhaseActive(phase)) {
+    disabledMessage = messages.phaseNotActive;
+  }
 
   const disabledExplanation = disabledMessage
     ? formatMessage(disabledMessage)

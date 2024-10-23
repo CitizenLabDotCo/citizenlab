@@ -83,14 +83,14 @@ module EmailCampaigns
         statistics = statistics project
         next if project.admin_publication.archived? || zero_statistics?(statistics)
 
-        project_name = project.title_multiloc[recipient.locale] || project.title_multiloc[I18n.default_locale]
+        project_title = project.title_multiloc[recipient.locale] || project.title_multiloc[I18n.default_locale]
         top_ideas = top_ideas(project, name_service)
         successful_proposals = successful_proposals(project, name_service)
         idea_ids = (top_ideas.pluck(:id) + successful_proposals.pluck(:id)).uniq
         {
           event_payload: {
             project_id: project.id,
-            project_name: project_name,
+            project_title: project_title,
             statistics:,
             top_ideas:,
             has_new_ideas: top_ideas.any?,

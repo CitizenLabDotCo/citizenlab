@@ -24,6 +24,7 @@ import {
 } from 'utils/actionDescriptors';
 import { useIntl } from 'utils/cl-intl';
 import eventEmitter from 'utils/eventEmitter';
+import { isPhaseActive } from 'utils/projectUtils';
 
 import messages from './messages';
 
@@ -125,7 +126,10 @@ const AssignSingleVoteButton = ({
       return formatMessage(permissionDisabledMessage);
     }
 
-    // TODO: Fix this the next time the file is edited.
+    if (!isPhaseActive(phase)) {
+      return formatMessage(messages.phaseNotActive);
+    }
+
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (basket?.data?.attributes.submitted_at) {
       return formatMessage(
