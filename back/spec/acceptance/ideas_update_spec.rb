@@ -705,7 +705,6 @@ resource 'Ideas' do
           let(:manual_votes_amount) { 10 }
 
           example 'Set offline votes' do
-            # TODO: Author not allowed
             expect { do_request }
               .to enqueue_job(LogActivityJob).with(
                 input,
