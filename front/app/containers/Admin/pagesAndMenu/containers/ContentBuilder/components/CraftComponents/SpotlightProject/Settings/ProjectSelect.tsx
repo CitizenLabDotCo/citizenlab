@@ -1,6 +1,6 @@
 import React, { KeyboardEvent } from 'react';
 
-import { Box, Label } from '@citizenlab/cl2-component-library';
+import { Box, Label, Spinner } from '@citizenlab/cl2-component-library';
 import { InfiniteData } from '@tanstack/react-query';
 import ReactSelect from 'react-select';
 import { IOption } from 'typings';
@@ -42,7 +42,9 @@ const ProjectSelect = ({ projectId, onSelect }: Props) => {
 
   const flattenedPublications = flattenPagesData(adminPublications);
 
-  if (!flattenedPublications) return null;
+  if (!flattenedPublications) {
+    return <Spinner />;
+  }
 
   const options: IOption[] = flattenedPublications.map(
     ({ id, attributes }) => ({
