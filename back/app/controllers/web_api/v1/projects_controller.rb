@@ -62,7 +62,7 @@ class WebApi::V1::ProjectsController < ApplicationController
     # Use a subquery to limit results to those related to current participatory phase & include the phases.end_at column
     subquery = policy_scope(Project)
       .joins('INNER JOIN admin_publications AS admin_publications ON admin_publications.publication_id = projects.id')
-      .where(admin_publications: { publication_status: %w[published archived] })
+      .where(admin_publications: { publication_status: 'published' })
       .joins('INNER JOIN phases AS phases ON phases.project_id = projects.id')
       .where(
         'phases.start_at <= ? AND (phases.end_at >= ? OR phases.end_at IS NULL) AND phases.participation_method IN (?)',

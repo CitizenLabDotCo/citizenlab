@@ -164,14 +164,14 @@ resource 'Projects' do
         expect(project_ids).not_to include future_project.id
       end
 
-      example_request 'Lists only projects with published or archived publication status' do
+      example_request 'Lists only projects with published publication status' do
         expect(status).to eq 200
 
         json_response = json_parse(response_body)
         project_ids = json_response[:data].pluck(:id)
         admin_publications = AdminPublication.where(publication_id: project_ids)
 
-        expect(admin_publications.pluck(:publication_status)).to all(be_in(%w[published archived]))
+        expect(admin_publications.pluck(:publication_status)).to all(be_in(['published']))
       end
 
       example "List is ordered by end_at of project's active phase (ASC NULLS LAST)" do
