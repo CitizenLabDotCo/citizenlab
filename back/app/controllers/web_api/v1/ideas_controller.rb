@@ -416,7 +416,7 @@ class WebApi::V1::IdeasController < ApplicationController
       user_followers ||= {}
       {
         params: jsonapi_serializer_params(
-          phase: (params[:phase] && Phase.find(params[:phase])),
+          phase: params[:phase] && Phase.find(params[:phase]),
           vbii: reactions.index_by(&:reactable_id),
           user_followers: user_followers,
           user_requirements_service: Permissions::UserRequirementsService.new(check_groups_and_verification: false)
