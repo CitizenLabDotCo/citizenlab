@@ -46,5 +46,7 @@ export const scrollToTop = (context?: 'link' | 'clHistory') => {
       : window.scrollTo(0, 0);
   }
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   return () => scrollWithTimeout && clearTimeout(scrollWithTimeout);
 };

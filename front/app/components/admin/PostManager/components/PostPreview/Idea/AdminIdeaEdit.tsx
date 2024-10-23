@@ -59,27 +59,43 @@ const AdminIdeaEdit = ({
     : Object.fromEntries(
         Object.keys(schema.properties).map((prop) => {
           if (prop === 'author_id') {
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             return [prop, idea.data.relationships?.author?.data?.id];
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           } else if (idea.data.attributes?.[prop]) {
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             return [prop, idea.data.attributes?.[prop]];
           } else if (
             prop === 'topic_ids' &&
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             Array.isArray(idea.data.relationships?.topics?.data)
           ) {
             return [
               prop,
+              // TODO: Fix this the next time the file is edited.
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
               idea.data.relationships?.topics?.data.map((rel) => rel.id),
             ];
           } else if (
             prop === 'cosponsor_ids' &&
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             Array.isArray(idea.data.relationships?.cosponsors?.data)
           ) {
             return [
               prop,
+              // TODO: Fix this the next time the file is edited.
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
               idea.data.relationships?.cosponsors?.data.map((rel) => rel.id),
             ];
           } else if (
             prop === 'idea_images_attributes' &&
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             Array.isArray(idea.data.relationships?.idea_images?.data)
           ) {
             return [prop, remoteImages?.data];
@@ -122,6 +138,8 @@ const AdminIdeaEdit = ({
       ...ideaWithoutImages,
       idea_images_attributes,
       location_point_geojson,
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       project_id: project?.data.id,
       publication_status: 'published',
     };
@@ -154,12 +172,16 @@ const AdminIdeaEdit = ({
       messages[
         `ajv_error_${uiSchema?.options?.inputTerm}_${
           getFieldNameFromPath(error.instancePath) ||
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           error?.params?.missingProperty
         }_${error.keyword}`
       ] ||
       messages[
         `ajv_error_${
           getFieldNameFromPath(error.instancePath) ||
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           error?.params?.missingProperty
         }_${error.keyword}`
       ] ||

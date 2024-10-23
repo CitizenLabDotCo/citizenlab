@@ -52,6 +52,8 @@ const IdeaNavigationButtons = ({ projectId, phaseContext }: Props) => {
       // Set the slugs for the next and previous idea buttons
       if (index + 1 < ideaListLength) {
         // Has next ideas
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         setNextIdeaSlug(ideasList?.data[index + 1]?.attributes.slug || '');
       } else {
         setNextIdeaSlug(undefined);
@@ -59,6 +61,8 @@ const IdeaNavigationButtons = ({ projectId, phaseContext }: Props) => {
 
       if (index - 1 >= 0) {
         // Has previous ideas
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         setPreviousIdeaSlug(ideasList?.data[index - 1]?.attributes.slug || '');
       } else {
         setPreviousIdeaSlug(undefined);

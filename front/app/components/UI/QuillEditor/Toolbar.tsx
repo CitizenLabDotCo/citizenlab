@@ -118,6 +118,8 @@ const Toolbar = ({
 
   const trackClickDropdown = (event: React.MouseEvent<HTMLElement>) => {
     if (
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       event.currentTarget &&
       event.currentTarget.classList.contains('ql-picker-item')
     ) {

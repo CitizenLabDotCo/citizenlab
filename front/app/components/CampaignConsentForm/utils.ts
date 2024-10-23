@@ -8,6 +8,8 @@ export const groupCampaignsConsent = (campaignConsents) => {
     ): Record<string, GroupedCampaignConsent> => {
       const { consented, content_type } = consent;
 
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       groups[content_type] = groups[content_type] ?? {
         children: [],
         group_consented: consented,

@@ -73,6 +73,8 @@ const Body = ({ idea }: Props) => {
   const locale = useLocale();
   const localize = useLocalize();
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const authorId = idea.data.relationships?.author?.data?.id || null;
   const authorHash = idea.data.attributes.author_hash;
 

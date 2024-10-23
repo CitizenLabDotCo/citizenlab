@@ -11,6 +11,8 @@ function usePrevious<T>(value: T) {
     ref.current = value;
   }, [value]); // Only re-run if value changes
   // Return previous value (happens before update in useEffect above)
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   return ref?.current;
 }
 

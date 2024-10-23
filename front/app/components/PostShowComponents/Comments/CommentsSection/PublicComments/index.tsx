@@ -84,6 +84,8 @@ const PublicComments = ({
 
   const commentsList = comments?.pages.flatMap((page) => page.data);
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const projectId = idea?.data.relationships?.project.data.id;
   const { data: project } = useProjectById(projectId);
 
@@ -100,6 +102,8 @@ const PublicComments = ({
     setPosting(isPosting);
   };
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const phaseId = project?.data.relationships?.current_phase?.data?.id;
   const commentCount = idea.data.attributes.comments_count;
   const hasComments = commentCount > 0;
@@ -107,6 +111,8 @@ const PublicComments = ({
   const showCommentCount = !isAdminPage && hasComments;
   const showHeader = !isAdminPage || hasComments;
   const canComment =
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     !idea?.data.attributes.action_descriptors.commenting_idea.disabled_reason;
 
   return (

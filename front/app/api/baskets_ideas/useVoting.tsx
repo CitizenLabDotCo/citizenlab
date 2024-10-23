@@ -54,13 +54,17 @@ const useVotingInterface = ({
   const { data: phases } = usePhases(projectId);
 
   const phase = phaseId
-    ? phases?.data?.find((phase) => phase.id === phaseId)
+    ? // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      phases?.data?.find((phase) => phase.id === phaseId)
     : getCurrentPhase(phases?.data);
 
   const [votesPerIdea, setVotesPerIdea] = useState<Record<string, number>>({});
 
   const { voteForIdea, processing } = useVoteForIdea(phase);
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const basketId = phase?.relationships?.user_basket?.data?.id;
   const { data: basketIdeas, isFetching: basketIdeasLoading } =
     useBasketsIdeas(basketId);

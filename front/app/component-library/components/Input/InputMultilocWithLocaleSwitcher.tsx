@@ -61,6 +61,8 @@ const InputMultilocWithLocaleSwitcher = memo<Props>((props) => {
   useEffect(() => {
     if (errorMultiloc) {
       const localesWithError = Object.keys(errorMultiloc).filter((locale) => {
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         const errorForLocale = errorMultiloc?.[locale];
         return (
           errorForLocale &&

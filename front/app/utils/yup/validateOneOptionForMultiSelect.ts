@@ -32,6 +32,8 @@ const validateOneOptionForMultiSelect = (
               if (testContext.parent.key === 'topic_ids') {
                 return true;
               }
+              // TODO: Fix this the next time the file is edited.
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
               return options
                 ? options.some((option: IOptionsType) => {
                     return Object.values(option.title_multiloc).some(
@@ -48,6 +50,8 @@ const validateOneOptionForMultiSelect = (
               if (testContext.parent.key === 'topic_ids') {
                 return true;
               }
+              // TODO: Fix this the next time the file is edited.
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
               return options
                 ? options.every((option: IOptionsType) => {
                     return (

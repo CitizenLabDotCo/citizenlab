@@ -26,7 +26,11 @@ const geocode = async (address: string | null | undefined) => {
       },
     });
 
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     const lat = result?.data.attributes.location.lat;
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     const lng = result?.data.attributes.location.lng;
 
     if (isNumber(lat) && isNumber(lng)) {
