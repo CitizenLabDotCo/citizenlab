@@ -159,9 +159,9 @@ resource 'Projects' do
         expect(project_ids).to include active_ideation_project.id
         expect(project_ids).to include endless_project.id
 
-        # expect(project_ids).not_to include active_information_project.id
-        # expect(project_ids).not_to include past_project.id
-        # expect(project_ids).not_to include future_project.id
+        expect(project_ids).not_to include active_information_project.id
+        expect(project_ids).not_to include past_project.id
+        expect(project_ids).not_to include future_project.id
       end
 
       example_request 'Lists only projects with published or archived publication status' do
@@ -172,6 +172,38 @@ resource 'Projects' do
         admin_publications = AdminPublication.where(publication_id: project_ids)
 
         expect(admin_publications.pluck(:publication_status)).to all(be_in(%w[published archived]))
+      end
+
+      example "List is ordered by end_at of project's active phase (ASC NULLS LAST)" do
+        soonest_end_at = active_ideation_project.phases.first.end_at
+
+        active_project2 = create(:project_with_active_ideation_phase)
+        active_project2.phases.first.update!(end_at: soonest_end_at + 1.day)
+        active_project3 = create(:project_with_active_ideation_phase)
+        active_project3.phases.first.update!(end_at: soonest_end_at + 2.days)
+
+        do_request
+        expect(status).to eq 200
+
+        json_response = json_parse(response_body)
+        project_ids = json_response[:data].pluck(:id)
+        projects = project_ids.map { |id| Project.find(id) }
+
+        active_phases_end_ats = projects.map do |p|
+          p.phases.where(
+            'phases.start_at <= ? AND (phases.end_at >= ? OR phases.end_at IS NULL)',
+            Time.zone.now.to_fs(:db), Time.zone.now.to_fs(:db)
+          ).pluck(:end_at)
+        end.flatten
+
+        active_phases_end_ats.each_with_index do |end_at, index|
+          if index.zero?
+            expect(end_at).not_to be_nil
+          else
+            is_expected_order = end_at.nil? || end_at >= active_phases_end_ats[index - 1]
+            expect(is_expected_order).to be true
+          end
+        end
       end
     end
 

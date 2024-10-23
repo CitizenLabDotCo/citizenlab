@@ -57,9 +57,24 @@ class WebApi::V1::ProjectsController < ApplicationController
   # active participatory phase (where user can do something).
   # Ordered by the end date of the current phase, soonest first (nulls last).
   def index_projects_with_active_participatory_phase
-    @projects = policy_scope(Project)
+    allowed_participation_methods = %w[ideation native_survey poll proposals survey volunteering voting]
+
+    # Use a subquery to limit results to those related to current participatory phase & include the phases.end_at column
+    subquery = policy_scope(Project)
       .joins('INNER JOIN admin_publications AS admin_publications ON admin_publications.publication_id = projects.id')
       .where(admin_publications: { publication_status: %w[published archived] })
+      .joins('INNER JOIN phases AS phases ON phases.project_id = projects.id')
+      .where(
+        'phases.start_at <= ? AND (phases.end_at >= ? OR phases.end_at IS NULL) AND phases.participation_method IN (?)',
+        Time.zone.now.to_fs(:db), Time.zone.now.to_fs(:db), allowed_participation_methods
+      )
+      .select('projects.*, phases.end_at AS phase_end_at')
+
+    # Perform the SELECT DISTINCT on the outer query
+    @projects = Project
+      .from(subquery, :projects)
+      .distinct
+      .order('phase_end_at ASC NULLS LAST')
 
     # Not very satisfied with this ping-pong of SQL queries (knowing that the
     # AdminPublicationsFilteringService is also making a request on projects).
