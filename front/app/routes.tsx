@@ -44,9 +44,9 @@ const ReportPrintPage = lazy(
 );
 const DisabledAccount = lazy(() => import('containers/DisabledAccount'));
 
-const ProjectToken = () => {
-  return <>project token route</>;
-};
+const ProjectPreviewToken = lazy(
+  () => import('containers/Admin/projects/project/previewToken')
+);
 
 export type RouteType =
   | AdminRouteTypes
@@ -80,7 +80,8 @@ export enum citizenRoutes {
   projectIdeaNew = `projects/:slug/ideas/new`,
   projectSurveyNew = `projects/:slug/surveys/new`,
   projectSlug = `projects/:slug`,
-  projectSlugToken = `projects/:slug/preview/:preview-token`,
+  projectSlugPreview = `projects/:slug/preview`,
+  projectSlugPreviewToken = `:token`,
   phaseNumber = ':phaseNumber',
   folders = 'folders',
   foldersSlug = `folders/:slug`,
@@ -253,13 +254,19 @@ export default function createRoutes() {
           ),
         },
         {
-          path: citizenRoutes.projectSlugToken,
-          element: (
-            <PageLoading>
-              <ProjectToken />
-            </PageLoading>
-          ),
+          path: citizenRoutes.projectSlugPreview,
+          children: [
+            {
+              path: citizenRoutes.projectSlugPreviewToken,
+              element: (
+                <PageLoading>
+                  <ProjectPreviewToken />
+                </PageLoading>
+              ),
+            },
+          ],
         },
+
         createAdminRoutes(),
         {
           path: citizenRoutes.projects,
@@ -285,6 +292,7 @@ export default function createRoutes() {
                 </PageLoading>
               ),
             },
+
             {
               path: citizenRoutes.phaseNumber,
               element: (
