@@ -15,6 +15,7 @@ import useAnySSOEnabled from 'containers/Authentication/useAnySSOEnabled';
 import { SectionField } from 'components/admin/Section';
 import Input from 'components/HookForm/Input';
 import PasswordInput from 'components/HookForm/PasswordInput';
+import commentsMessages from 'components/PostShowComponents/Comments/messages';
 import { StyledPasswordIconTooltip } from 'components/smallForm';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
@@ -123,11 +124,11 @@ const EmailAndPasswordSignUp = ({
               <Error
                 text={
                   <FormattedMessage
-                    {...messages.profanityError}
+                    {...commentsMessages.profanityError}
                     values={{
                       guidelinesLink: (
                         <Link to="/pages/faq" target="_blank">
-                          {formatMessage(messages.guidelinesLinkText)}
+                          {formatMessage(commentsMessages.guidelinesLinkText)}
                         </Link>
                       ),
                     }}

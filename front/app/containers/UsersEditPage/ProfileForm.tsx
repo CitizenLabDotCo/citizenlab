@@ -31,6 +31,7 @@ import ImagesDropzone from 'components/HookForm/ImagesDropzone';
 import Input from 'components/HookForm/Input';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
 import Select from 'components/HookForm/Select';
+import commentsMessages from 'components/PostShowComponents/Comments/messages';
 import Error from 'components/UI/Error';
 import { FormSection, FormSectionTitle } from 'components/UI/FormComponents';
 import UserCustomFieldsForm from 'components/UserCustomFields';
@@ -194,11 +195,11 @@ const ProfileForm = () => {
               <Error
                 text={
                   <FormattedMessage
-                    {...messages.profanityError}
+                    {...commentsMessages.profanityError}
                     values={{
                       guidelinesLink: (
                         <Link to="/pages/faq" target="_blank">
-                          {formatMessage(messages.guidelinesLinkText)}
+                          {formatMessage(commentsMessages.guidelinesLinkText)}
                         </Link>
                       ),
                     }}

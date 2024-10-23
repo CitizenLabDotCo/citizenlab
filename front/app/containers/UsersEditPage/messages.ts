@@ -30,15 +30,6 @@ export default defineMessages({
     id: 'app.containers.UsersEditPage.messageSuccess',
     defaultMessage: 'Your profile has been saved.',
   },
-  profanityError: {
-    id: 'app.containers.UsersEditPage.profanityError',
-    defaultMessage:
-      'You may have used one or more words that are considered profanity by {guidelinesLink}. Please alter your text to remove any profanities that might be present.',
-  },
-  guidelinesLinkText: {
-    id: 'app.containers.UsersEditPage.guidelinesLinkText',
-    defaultMessage: 'our guidelines',
-  },
   /*
    * Basic information
    */
