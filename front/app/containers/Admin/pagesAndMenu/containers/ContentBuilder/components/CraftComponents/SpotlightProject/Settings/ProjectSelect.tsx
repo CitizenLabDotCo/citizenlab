@@ -1,10 +1,15 @@
 import React, { KeyboardEvent } from 'react';
 
 import { Box, Label } from '@citizenlab/cl2-component-library';
+import { InfiniteData } from '@tanstack/react-query';
 import ReactSelect from 'react-select';
 import { IOption } from 'typings';
 
-import useProjects from 'api/projects/useProjects';
+import {
+  IAdminPublicationData,
+  IAdminPublications,
+} from 'api/admin_publications/types';
+import useAdminPublications from 'api/admin_publications/useAdminPublications';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -19,26 +24,42 @@ interface Props {
   onSelect: (projectId: string) => void;
 }
 
+const flattenPagesData = (
+  data?: InfiniteData<IAdminPublications>
+): IAdminPublicationData[] | undefined => {
+  return data?.pages
+    .map((page: { data: IAdminPublicationData[] }) => page.data)
+    .flat();
+};
+
 const ProjectSelect = ({ projectId, onSelect }: Props) => {
-  const { data: projects } = useProjects({
-    pageNumber: 1,
-    pageSize: 500,
-    publicationStatuses: ['published', 'archived'],
+  const { data: adminPublications } = useAdminPublications({
+    publicationStatusFilter: ['published', 'archived'],
+    onlyProjects: true,
   });
   const localize = useLocalize();
   const { formatMessage } = useIntl();
 
-  if (!projects) return null;
+  const flattenedPublications = flattenPagesData(adminPublications);
 
-  const options: IOption[] = projects.data.map((project) => ({
-    value: project.id,
-    label: localize(project.attributes.title_multiloc),
-  }));
+  if (!flattenedPublications) return null;
+
+  const options: IOption[] = flattenedPublications.map(
+    ({ id, attributes }) => ({
+      value: id,
+      label: localize(attributes.publication_title_multiloc),
+    })
+  );
 
   const selectedOption = options.find((option) => option.value === projectId);
 
   const handleChange = (value: IOption) => {
-    onSelect(value.value);
+    const adminPublicationId = value.value;
+    const adminPublication = flattenedPublications.find(
+      (publication) => publication.id === adminPublicationId
+    );
+    if (!adminPublication) return;
+    onSelect(adminPublication.relationships.publication.data.id);
   };
 
   return (

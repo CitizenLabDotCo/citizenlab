@@ -21,9 +21,10 @@ interface Props {
 
 const SpotlightProject = ({ buttonTextMultiloc, projectId }: Props) => {
   const { data: project } = useProjectById(projectId);
+  const imageId = project?.data.relationships.project_images?.data[0]?.id;
   const { data: image } = useProjectImage({
     projectId,
-    imageId: project?.data.relationships.project_images?.data[0].id,
+    imageId,
   });
   const locale = useLocale();
   const localize = useLocalize();
