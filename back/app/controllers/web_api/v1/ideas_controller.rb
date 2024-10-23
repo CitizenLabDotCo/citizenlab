@@ -40,8 +40,6 @@ class WebApi::V1::IdeasController < ApplicationController
     )
     ideas = ideas.includes(:idea_import) unless current_user&.normal_user? # defined through BulkImportIdeas engine
 
-    ideas = convert_phase_voting_counts ideas, params
-
     render json: linked_json(ideas, WebApi::V1::IdeaSerializer, serialization_options_for(ideas))
   end
 
