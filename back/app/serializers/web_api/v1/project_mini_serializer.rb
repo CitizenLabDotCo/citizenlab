@@ -46,14 +46,6 @@ class WebApi::V1::ProjectMiniSerializer < WebApi::V1::BaseSerializer
     end
   end
 
-  attribute :timeline_active do |object, params|
-    if params[:timeline_active]
-      params.dig(:timeline_active, object.id)
-    else
-      TimelineService.new.timeline_active object
-    end
-  end
-
   has_one :admin_publication
 
   has_many :project_images, serializer: WebApi::V1::ImageSerializer

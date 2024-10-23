@@ -88,12 +88,10 @@ class WebApi::V1::ProjectsController < ApplicationController
 
     authorize @projects, :index_projects_with_active_participatory_phase?
 
-    instance_options = { timeline_active: TimelineService.new.timeline_active_on_collection(@projects.to_a) }
-
     render json: linked_json(
       @projects,
       WebApi::V1::ProjectMiniSerializer,
-      params: jsonapi_serializer_params(instance_options),
+      params: jsonapi_serializer_params,
       include: %i[admin_publication project_images current_phase]
     )
   end

@@ -215,7 +215,7 @@ resource 'Projects' do
         participant = create(:user)
         create(:idea, project: project, author: participant)
 
-        expect { do_request(page: { size: 6, number: 1 }) }.not_to exceed_query_limit(32)
+        expect { do_request(page: { size: 6, number: 1 }) }.not_to exceed_query_limit(29)
 
         assert_status 200
       end
