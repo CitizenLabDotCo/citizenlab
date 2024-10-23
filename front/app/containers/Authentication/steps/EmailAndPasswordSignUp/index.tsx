@@ -11,7 +11,6 @@ import useLocale from 'hooks/useLocale';
 
 import { SetError, State } from 'containers/Authentication/typings';
 import useAnySSOEnabled from 'containers/Authentication/useAnySSOEnabled';
-import userEditMessages from 'containers/UsersEditPage/messages';
 
 import { SectionField } from 'components/admin/Section';
 import Input from 'components/HookForm/Input';
@@ -124,11 +123,11 @@ const EmailAndPasswordSignUp = ({
               <Error
                 text={
                   <FormattedMessage
-                    {...userEditMessages.profanityError}
+                    {...messages.profanityError}
                     values={{
                       guidelinesLink: (
                         <Link to="/pages/faq" target="_blank">
-                          {formatMessage(userEditMessages.guidelinesLinkText)}
+                          {formatMessage(messages.guidelinesLinkText)}
                         </Link>
                       ),
                     }}
