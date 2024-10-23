@@ -34,6 +34,8 @@ export const getOptions = (
     );
   } else if (fieldType === 'singleEnum') {
     return (
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       schema?.enum
         ?.map((option, index) => ({
           value: option.toString(),
@@ -43,6 +45,8 @@ export const getOptions = (
     );
   } else {
     return (
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       schema?.oneOf
         ?.map((option) => ({
           value: option.const,

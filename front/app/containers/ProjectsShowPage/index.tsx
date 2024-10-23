@@ -175,6 +175,8 @@ const ProjectsShowPage = ({ project }: Props) => {
     <main>
       <Container
         background={
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           events && events?.data.length > 0 ? colors.white : colors.background
         }
       >
@@ -223,6 +225,8 @@ const ProjectsShowPageWrapper = () => {
     );
   }
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const userJustLoggedOut = userWasLoggedIn && user === null;
   const unauthorized = statusProject === 'error' && isUnauthorizedRQ(error);
 
@@ -234,6 +238,8 @@ const ProjectsShowPageWrapper = () => {
     return <Unauthorized />;
   }
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (statusProject === 'error' || project === null) {
     return <PageNotFound />;
   }
@@ -262,7 +268,8 @@ const ProjectsShowPageWrapper = () => {
         projectId={project.data.id}
         phaseId={
           phaseIndex
-            ? phases?.data?.[phaseIndex]?.id
+            ? // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+              phases?.data?.[phaseIndex]?.id
             : phases?.data && getLatestRelevantPhase(phases.data)?.id
         }
       >

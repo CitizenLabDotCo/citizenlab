@@ -136,6 +136,8 @@ const handleCLErrorWrapper = (
   handleError: (error: string, options: Record<string, any>) => void,
   fieldArrayKey?: string
 ) => {
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   error.errors
     ? Object.keys(error.errors).forEach((key) => {
         if (fieldArrayKey) {

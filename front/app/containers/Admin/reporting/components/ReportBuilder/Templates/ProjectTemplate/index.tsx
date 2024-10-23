@@ -62,7 +62,9 @@ const ProjectTemplateContent = ({ reportId, projectId }: Props) => {
   const { data: surveyQuestions } = useRawCustomFields({
     phaseId:
       templateData?.participationMethod === 'native_survey'
-        ? templateData?.phaseId
+        ? // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+          templateData?.phaseId
         : undefined,
   });
 
@@ -92,6 +94,8 @@ const ProjectTemplateContent = ({ reportId, projectId }: Props) => {
   if (!appConfigurationLocales) return null;
 
   const reportTitle = report.data.attributes.name;
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const projectTitle = project?.data.attributes.title_multiloc;
 
   const reportTitleMultiloc = reportTitle
@@ -116,7 +120,11 @@ const ProjectTemplateContent = ({ reportId, projectId }: Props) => {
         <ul>
           <li>
             <b>${formatMessage(messages.projectLabel)}</b>:
-            ${` ${projectTitle?.[locale] ?? ''}`}
+            ${
+              // TODO: Fix this the next time the file is edited.
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+              ` ${projectTitle?.[locale] ?? ''}`
+            }
           </li>
           ${period ? `<li>${period}</li>` : ''}
           <li>

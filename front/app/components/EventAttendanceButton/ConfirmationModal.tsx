@@ -37,8 +37,12 @@ const ConfirmationModal = ({ opened, event, onClose }: Props) => {
       close={onClose}
       header={
         <Title mt="4px" mb="0px" variant="h3">
+          {/* TODO: Fix this the next time the file is edited. */}
+          {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
           {user?.data?.attributes?.first_name
             ? formatMessage(messages.seeYouThereName, {
+                // TODO: Fix this the next time the file is edited.
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 userFirstName: user?.data?.attributes?.first_name,
               })
             : formatMessage(messages.seeYouThere)}
@@ -49,12 +53,16 @@ const ConfirmationModal = ({ opened, event, onClose }: Props) => {
       <EventModalConfetti />
       <Box pt="0px" p="36px">
         <Title my="12px" variant="h3" style={{ fontWeight: 600 }}>
+          {/* TODO: Fix this the next time the file is edited. */}
+          {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
           {localize(event?.attributes?.title_multiloc)}
         </Title>
         <Text my="4px" color="coolGrey600" fontSize="m">
           {eventDateTime}
         </Text>
         <AddEventToCalendarButton eventId={event.id} />
+        {/* TODO: Fix this the next time the file is edited. */}
+        {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
         {event && (
           <Box mt="16px" width="100%" mx="auto">
             <Text

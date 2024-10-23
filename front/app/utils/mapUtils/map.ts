@@ -20,10 +20,14 @@ export const getCenter = (
   mapConfig: IMapConfigData | undefined
 ) => {
   const mapConfigLat = !isNilOrError(mapConfig)
-    ? mapConfig?.attributes.center_geojson?.coordinates[1]
+    ? // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      mapConfig?.attributes.center_geojson?.coordinates[1]
     : null;
   const mapConfigLng = !isNilOrError(mapConfig)
-    ? mapConfig?.attributes.center_geojson?.coordinates[0]
+    ? // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      mapConfig?.attributes.center_geojson?.coordinates[0]
     : null;
 
   if (centerLatLng) {
@@ -41,7 +45,9 @@ export const getZoomLevel = (
   mapConfig: IMapConfigData | undefined
 ) => {
   const mapConfigZoom = !isNilOrError(mapConfig)
-    ? mapConfig?.attributes.zoom_level
+    ? // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      mapConfig?.attributes.zoom_level
     : null;
 
   if (isNumber(zoom)) {
@@ -58,7 +64,9 @@ export const getTileProvider = (
   mapConfig: IMapConfigData | undefined
 ) => {
   const mapConfigTileProvider = !isNilOrError(mapConfig)
-    ? mapConfig?.attributes.tile_provider
+    ? // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      mapConfig?.attributes.tile_provider
     : null;
 
   if (!isNilOrError(mapConfigTileProvider)) {
@@ -71,14 +79,20 @@ export const getTileProvider = (
 export const getGeojsonLayerType = (
   mapLayer: IMapLayerAttributes | undefined
 ) => {
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   return mapLayer?.geojson?.features?.[0]?.geometry?.type || 'Point';
 };
 
 export const getLayerColor = (mapLayer: IMapLayerAttributes | undefined) => {
   const type = getGeojsonLayerType(mapLayer);
   const fillColor: string | undefined =
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     mapLayer?.geojson?.features?.[0]?.properties?.fill;
   const markerColor: string | undefined =
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     mapLayer?.geojson?.features?.[0]?.properties?.['marker-color'];
   const fallbackColor = '#7D7D7D';
 

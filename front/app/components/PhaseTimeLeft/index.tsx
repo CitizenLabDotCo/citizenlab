@@ -14,6 +14,7 @@ interface Props {
 const PhaseTimeLeft = ({ currentPhaseEndsAt }: Props) => {
   const { data: appConfiguration } = useAppConfiguration();
   const tenantTimezone =
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     appConfiguration?.data.attributes.settings?.core.timezone;
   const { formatMessage } = useIntl();
 

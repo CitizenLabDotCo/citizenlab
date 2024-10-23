@@ -49,6 +49,7 @@ const TopicFilterDropdown = ({
 
   const options = useMemo(() => {
     return (
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       filteredTopics?.map((topic) => ({
         text: localize(topic.attributes.title_multiloc),
         value: topic.id,
