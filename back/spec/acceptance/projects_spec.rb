@@ -1198,7 +1198,7 @@ resource 'Projects' do
     let!(:past_project) { create(:project_with_two_past_ideation_phases) }
     let!(:future_project) { create(:project_with_future_native_survey_phase) }
 
-    example_request 'Lists only projects with a participatory active phase' do
+    example_request 'Lists only projects with an active participatory phase' do
       expect(status).to eq 200
 
       json_response = json_parse(response_body)
@@ -1255,8 +1255,7 @@ resource 'Projects' do
     end
 
     example 'Includes related avatars', document: false do
-      project = create(:project_with_active_ideation_phase)
-      create(:idea, project: project, author: @user)
+      create(:idea, project: active_ideation_project, author: @user)
 
       do_request
       expect(status).to eq(200)
@@ -1270,8 +1269,7 @@ resource 'Projects' do
     end
 
     example 'Includes project images', document: false do
-      project = create(:project_with_active_ideation_phase)
-      project_image = create(:project_image, project: project)
+      project_image = create(:project_image, project: active_ideation_project)
 
       do_request
       expect(status).to eq(200)
@@ -1282,16 +1280,24 @@ resource 'Projects' do
       expect(included_image_ids).to include project_image.id
     end
 
+    example_request 'Includes current phase', document: false do
+      expect(status).to eq(200)
+      json_response = json_parse(response_body)
+
+      current_phase_ids = json_response[:data].filter_map { |d| d.dig(:relationships, :current_phase, :data, :id) }
+      included_phase_ids = json_response[:included].select { |d| d[:type] == 'phase' }.pluck(:id)
+
+      expect(current_phase_ids).to match included_phase_ids
+    end
+
     # This test is helps ensure that we don't make the query chain more complex without realizing.
     example_request 'Action does not invoke unnecessary queries' do
-      project = create(:project_with_active_ideation_phase)
-      create(:project_image, project: project)
+      create(:project_image, project: active_ideation_project)
 
       # We need a participant, to get some included avatar data
-      participant = create(:user)
-      create(:idea, project: project, author: participant)
+      create(:idea, project: active_ideation_project, author: @user)
 
-      expect { do_request(page: { size: 6, number: 1 }) }.not_to exceed_query_limit(29)
+      expect { do_request(page: { size: 6, number: 1 }) }.not_to exceed_query_limit(21)
 
       assert_status 200
     end
