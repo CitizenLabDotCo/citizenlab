@@ -33,6 +33,7 @@ class WebApi::V1::IdeasController < ApplicationController
       :topics,
       :phases,
       :creation_phase,
+      :manual_votes_last_updated_by,
       {
         project: [:phases, { phases: { permissions: [:groups] } }, { custom_form: [:custom_fields] }],
         author: [:unread_notifications]
@@ -401,7 +402,7 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def serialization_options_for(ideas)
-    include = %i[author idea_images ideas_phases cosponsors]
+    include = %i[author idea_images ideas_phases cosponsors manual_votes_last_updated_by]
     if current_user
       # I have no idea why but the trending query part
       # breaks if you don't fetch the ids in this way.
@@ -415,7 +416,7 @@ class WebApi::V1::IdeasController < ApplicationController
       user_followers ||= {}
       {
         params: jsonapi_serializer_params(
-          phase: params[:phase],
+          phase: (params[:phase] && Phase.find(params[:phase])),
           vbii: reactions.index_by(&:reactable_id),
           user_followers: user_followers,
           user_requirements_service: Permissions::UserRequirementsService.new(check_groups_and_verification: false)

@@ -259,7 +259,9 @@ class Idea < ApplicationRecord
 
   def total_votes(phase)
     # TODO: test
-    Factory.instance.voting_method_for(phase).votes_for_idea + manual_votes_amount
+    return if !manual_votes_amount
+
+    Factory.instance.voting_method_for(phase).votes_for_idea(self) + manual_votes_amount
   end
 
   def set_manual_votes(amount, user)
