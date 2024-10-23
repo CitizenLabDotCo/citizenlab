@@ -1269,6 +1269,19 @@ resource 'Projects' do
       expect(included_avatar_ids).to include @user.id
     end
 
+    example 'Includes project images', document: false do
+      project = create(:project_with_active_ideation_phase)
+      project_image = create(:project_image, project: project)
+
+      do_request
+      expect(status).to eq(200)
+      json_response = json_parse(response_body)
+
+      included_image_ids = json_response[:included].select { |d| d[:type] == 'image' }.pluck(:id)
+
+      expect(included_image_ids).to include project_image.id
+    end
+
     # This test is helps ensure that we don't make the query chain more complex without realizing.
     example_request 'Action does not invoke unnecessary queries' do
       project = create(:project_with_active_ideation_phase)
