@@ -219,6 +219,7 @@ class WebApi::V1::IdeasController < ApplicationController
     update_params = idea_params(input.custom_form, user_can_moderate_project).to_h
     update_params[:custom_field_values] = params_service.updated_custom_field_values(input.custom_field_values, update_params[:custom_field_values])
     CustomFieldService.new.compact_custom_field_values! update_params[:custom_field_values]
+    input.set_manual_votes(update_params[:manual_votes_amount], current_user) if update_params[:manual_votes_amount]
 
     ActiveRecord::Base.transaction do # Assigning relationships cause database changes
       input.assign_attributes update_params
@@ -332,7 +333,7 @@ class WebApi::V1::IdeasController < ApplicationController
     complex_attributes = idea_complex_attributes(custom_form, submittable_field_keys)
     attributes << complex_attributes if complex_attributes.any?
     if user_can_moderate_project
-      attributes.concat %i[author_id idea_status_id budget] + [phase_ids: []]
+      attributes.concat %i[author_id idea_status_id budget manual_votes_amount] + [phase_ids: []]
     end
     attributes
   end

@@ -23,6 +23,7 @@ resource 'Ideas' do
       parameter :author_id, 'The user id of the user owning the idea. This can only be specified by moderators and is inferred from the JWT token for residents.'
       parameter :publication_status, "Either #{Post::PUBLICATION_STATUSES.join(', ')}"
       parameter :anonymous, 'Post this idea anonymously'
+      parameter :manual_votes_amount, 'The amount of collected offline votes of the idea. Only allowed for moderators.'
     end
     ValidationErrorHelper.new.error_fields(self, Idea)
     response_field :ideas_phases, "Array containing objects with signature { error: 'invalid' }", scope: :errors
@@ -674,6 +675,20 @@ resource 'Ideas' do
               do_request
               assert_status 200
             end
+          end
+        end
+
+        describe do
+          let(:manual_votes_amount) { 10 }
+
+          example_request 'Set offline votes' do
+            # TODO: Check by who (include?) and at when
+            # TODO: Check activity logged
+            # TODO: Author not allowed
+            assert_status 200
+
+            expect(json_response_body.dig(:data, :attributes, :manual_votes_amount)).to eq manual_votes_amount
+            expect(input.reload.manual_votes_amount).to eq manual_votes_amount
           end
         end
       end

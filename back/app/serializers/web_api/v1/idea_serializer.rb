@@ -127,7 +127,7 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
     can_moderate?(idea, params)
   }
 
-  has_one :manual_votes_last_updated_by, if: proc { |idea, params|
+  has_one :manual_votes_last_updated_by, record_type: :user, serializer: WebApi::V1::UserSerializer, if: proc { |idea, params|
     can_moderate?(idea, params)
   }
 end
