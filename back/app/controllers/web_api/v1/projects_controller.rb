@@ -92,7 +92,7 @@ class WebApi::V1::ProjectsController < ApplicationController
       @projects,
       WebApi::V1::ProjectMiniSerializer,
       params: jsonapi_serializer_params,
-      include: %i[admin_publication project_images current_phase]
+      include: %i[admin_publication project_images current_phase avatars]
     )
   end
 
