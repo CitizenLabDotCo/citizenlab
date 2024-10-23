@@ -81,6 +81,7 @@ const AdminProjectIdeas = () => {
         </Text>
         <Box display="flex">
           {phase?.data.attributes.participation_method === 'voting' &&
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             (phase?.data.attributes.autoshare_results_enabled ? (
               <Warning>
                 <Text color="teal700" m="0px" mr="4px">

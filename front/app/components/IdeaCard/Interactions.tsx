@@ -30,8 +30,9 @@ const Interactions = ({ idea, phase }: Props) => {
 
   const showingVotingResults =
     !isPhaseActive(phase) &&
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     phase?.attributes.participation_method === 'voting' &&
-    phase?.attributes.autoshare_results_enabled;
+    phase.attributes.autoshare_results_enabled;
 
   const phaseNotActiveAndNotVoting = !isPhaseActive(phase) && !votingMethod;
 

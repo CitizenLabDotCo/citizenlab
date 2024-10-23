@@ -37,11 +37,10 @@ const ShapefilePreview = ({ inputId, file }: Props) => {
   >(null);
 
   // Get Shapefile URL
-  const fileUrl =
+  const fileUrl = inputFiles?.data.find(
+    (inputFile) => inputFile.id === file?.id
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    inputFiles?.data.find((inputFile) => inputFile.id === file?.id)?.attributes
-      ?.file?.url;
+  )?.attributes?.file?.url;
 
   // Convert the shapefile to GeoJSON
   useEffect(() => {

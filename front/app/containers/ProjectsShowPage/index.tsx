@@ -268,7 +268,8 @@ const ProjectsShowPageWrapper = () => {
         projectId={project.data.id}
         phaseId={
           phaseIndex
-            ? phases?.data?.[phaseIndex]?.id
+            ? // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+              phases?.data?.[phaseIndex]?.id
             : phases?.data && getLatestRelevantPhase(phases.data)?.id
         }
       >
