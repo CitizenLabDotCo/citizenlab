@@ -15,11 +15,18 @@ import Settings from './Settings';
 import SpotlightProjectInner from './SpotlightProject';
 
 interface Props {
-  buttonTextMultiloc: Multiloc;
   projectId?: string;
+  titleMultiloc?: Multiloc;
+  descriptionMultiloc?: Multiloc;
+  buttonTextMultiloc: Multiloc;
 }
 
-const SpotlightProject = ({ buttonTextMultiloc, projectId }: Props) => {
+const SpotlightProject = ({
+  projectId,
+  titleMultiloc,
+  descriptionMultiloc,
+  buttonTextMultiloc,
+}: Props) => {
   const { data: project } = useProjectById(projectId);
   const imageId = project?.data.relationships.project_images?.data[0]?.id;
   const { data: image } = useProjectImage({
@@ -46,10 +53,8 @@ const SpotlightProject = ({ buttonTextMultiloc, projectId }: Props) => {
 
   return (
     <SpotlightProjectInner
-      title={localize(project.data.attributes.title_multiloc)}
-      description={localize(
-        project.data.attributes.description_preview_multiloc
-      )}
+      title={localize(titleMultiloc)}
+      description={localize(descriptionMultiloc)}
       buttonText={buttonTextMultiloc[locale]} // We don't use localize here because it
       // always falls back to another locale when the value is an empty string.
       // In this case we don't want that- we just want the empty string.

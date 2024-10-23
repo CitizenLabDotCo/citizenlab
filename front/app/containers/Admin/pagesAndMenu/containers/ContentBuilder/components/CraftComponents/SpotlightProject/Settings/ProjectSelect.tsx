@@ -21,7 +21,7 @@ import messages from '../messages';
 
 interface Props {
   projectId: string;
-  onSelect: (projectId: string) => void;
+  onSelect: (adminPublication: IAdminPublicationData) => void;
 }
 
 const flattenPagesData = (
@@ -61,7 +61,8 @@ const ProjectSelect = ({ projectId, onSelect }: Props) => {
       (publication) => publication.id === adminPublicationId
     );
     if (!adminPublication) return;
-    onSelect(adminPublication.relationships.publication.data.id);
+    // onSelect(adminPublication.relationships.publication.data.id);
+    onSelect(adminPublication);
   };
 
   return (

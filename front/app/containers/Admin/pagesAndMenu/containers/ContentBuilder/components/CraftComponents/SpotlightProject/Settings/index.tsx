@@ -16,11 +16,15 @@ const Settings = () => {
 
   const {
     actions: { setProp },
-    buttonTextMultiloc,
     projectId,
+    titleMultiloc,
+    descriptionMultiloc,
+    buttonTextMultiloc,
   } = useNode((node) => ({
-    buttonTextMultiloc: node.data.props.buttonTextMultiloc,
     projectId: node.data.props.projectId,
+    titleMultiloc: node.data.props.titleMultiloc,
+    descriptionMultiloc: node.data.props.descriptionMultiloc,
+    buttonTextMultiloc: node.data.props.buttonTextMultiloc,
   }));
 
   return (
@@ -28,8 +32,44 @@ const Settings = () => {
       <Box mb="20px">
         <ProjectSelect
           projectId={projectId}
-          onSelect={(projectId) =>
-            setProp((props) => (props.projectId = projectId))
+          onSelect={(adminPublication) => {
+            const projectId =
+              adminPublication.relationships.publication.data.id;
+            setProp((props) => (props.projectId = projectId));
+            setProp(
+              (props) =>
+                (props.titleMultiloc =
+                  adminPublication.attributes.publication_title_multiloc)
+            );
+            setProp(
+              (props) =>
+                (props.descriptionMultiloc =
+                  adminPublication.attributes.publication_description_preview_multiloc)
+            );
+          }}
+        />
+      </Box>
+      <Box mb="20px">
+        <InputMultilocWithLocaleSwitcher
+          id="spotlight-title-multiloc"
+          type="text"
+          label={formatMessage(messages.title)}
+          name="spotlight-title-multiloc"
+          valueMultiloc={titleMultiloc}
+          onChange={(valueMultiloc) =>
+            setProp((props) => (props.titleMultiloc = valueMultiloc))
+          }
+        />
+      </Box>
+      <Box mb="20px">
+        <InputMultilocWithLocaleSwitcher
+          id="spotlight-button-text-multiloc"
+          type="text"
+          label={formatMessage(messages.description)}
+          name="spotlight-button-text-multiloc"
+          valueMultiloc={descriptionMultiloc}
+          onChange={(valueMultiloc) =>
+            setProp((props) => (props.descriptionMultiloc = valueMultiloc))
           }
         />
       </Box>
