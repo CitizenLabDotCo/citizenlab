@@ -52,6 +52,66 @@ class WebApi::V1::ProjectsController < ApplicationController
     )
   end
 
+  # For use with 'Open to participation' homepage widget.
+  # Returns all published or archived projects that are currently in an
+  # active participatory phase (where user can do something).
+  # Ordered by the end date of the current phase, soonest first (nulls last).
+  def index_projects_with_active_participatory_phase
+    allowed_participation_methods = %w[ideation native_survey poll proposals survey volunteering voting]
+
+    # Projects user can see, with active participatory phase & include the phases.end_at column
+    subquery = policy_scope(Project)
+      .joins('INNER JOIN admin_publications AS admin_publications ON admin_publications.publication_id = projects.id')
+      .where(admin_publications: { publication_status: 'published' })
+      .joins('INNER JOIN phases AS phases ON phases.project_id = projects.id')
+      .where(
+        'phases.start_at <= ? AND (phases.end_at >= ? OR phases.end_at IS NULL) AND phases.participation_method IN (?)',
+        Time.zone.now.to_fs(:db), Time.zone.now.to_fs(:db), allowed_participation_methods
+      )
+      .select('projects.*, phases.end_at AS phase_end_at')
+
+    # Perform the SELECT DISTINCT on the outer query
+    @projects = Project
+      .from(subquery, :projects)
+      .distinct
+      .order('phase_end_at ASC NULLS LAST')
+
+    # preload for permissions only? - look at performance spec in permissions svce
+
+    # Projects user can participate in, or where participation could be made possible by user/visitor
+    # (e.g. user not signed in).
+    # Unfortunately, this breaks the query chain, so we have to start a new one after this.
+    user_requirements_service = Permissions::UserRequirementsService.new(check_groups_and_verification: false)
+
+    project_ids = @projects.select do |project|
+      Permissions::ProjectPermissionsService
+        .new(project, current_user, user_requirements_service: user_requirements_service)
+        .participation_open_or_possible?
+    end.pluck(:id)
+
+    # Start a new query chain by selecting projects with the filtered projects' ids
+    @projects = @projects.where(id: project_ids)
+
+    # `includes` tries to be smart & use joins here, but it makes the query complex and slow. So, we use `preload`.
+    @projects = paginate @projects
+    @projects = @projects.preload(
+      :project_images,
+      :areas,
+      :topics,
+      phases: [:report, { permissions: [:groups] }],
+      admin_publication: [:children]
+    )
+
+    authorize @projects, :index_projects_with_active_participatory_phase?
+
+    render json: linked_json(
+      @projects,
+      WebApi::V1::ProjectMiniSerializer,
+      params: jsonapi_serializer_params,
+      include: %i[admin_publication project_images current_phase avatars]
+    )
+  end
+
   def show
     render json: WebApi::V1::ProjectSerializer.new(
       @project,
