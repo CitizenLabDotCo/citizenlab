@@ -59,7 +59,7 @@ class WebApi::V1::ProjectsController < ApplicationController
   def index_projects_with_active_participatory_phase
     allowed_participation_methods = %w[ideation native_survey poll proposals survey volunteering voting]
 
-    # Use a subquery to limit results to those related to current participatory phase & include the phases.end_at column
+    # Projects user can see, with active participatory phase & include the phases.end_at column
     subquery = policy_scope(Project)
       .joins('INNER JOIN admin_publications AS admin_publications ON admin_publications.publication_id = projects.id')
       .where(admin_publications: { publication_status: 'published' })
@@ -78,8 +78,9 @@ class WebApi::V1::ProjectsController < ApplicationController
 
     # preload for permissions only? - look at performance spec in permissions svce
 
-    # Select projects were user can participate, or where participation could be made possible by user/visitor
+    # Projects user can participate in, or where participation could be made possible by user/visitor
     # (e.g. user not signed in).
+    # Unfortunately, this breaks the query chain, so we have to start a new one after this.
     user_requirements_service = Permissions::UserRequirementsService.new(check_groups_and_verification: false)
 
     project_ids = @projects.select do |project|
@@ -88,8 +89,8 @@ class WebApi::V1::ProjectsController < ApplicationController
         .participation_open_or_possible?
     end.pluck(:id)
 
-    # Then, we restart a new query chain by selecting projects with ids
-    @projects = Project.where(id: project_ids)
+    # Start a new query chain by selecting projects with the filtered projects' ids
+    @projects = @projects.where(id: project_ids)
 
     # `includes` tries to be smart & use joins here, but it makes the query complex and slow. So, we use `preload`.
     @projects = paginate @projects
