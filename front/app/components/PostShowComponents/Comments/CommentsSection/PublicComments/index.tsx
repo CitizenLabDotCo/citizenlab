@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import {
   colors,
@@ -56,15 +56,9 @@ const PublicComments = ({
   className,
   allowAnonymousParticipation,
 }: Props) => {
-  const { ref } = useInView({
-    rootMargin: '3000px',
-    onChange: (inView) => {
-      if (inView) {
-        if (hasNextPage) {
-          fetchNextPage();
-        }
-      }
-    },
+  const { ref: loadMoreRef, inView } = useInView({
+    rootMargin: '200px',
+    threshold: 0,
   });
   const isSmallerThanPhone = useBreakpoint('phone');
 
@@ -80,6 +74,7 @@ const PublicComments = ({
   } = useComments({
     ideaId: postId,
     sort: sortOrder,
+    pageSize: 5,
   });
 
   const commentsList = comments?.pages.flatMap((page) => page.data);
@@ -90,6 +85,13 @@ const PublicComments = ({
   const { data: project } = useProjectById(projectId);
 
   const [posting, setPosting] = useState(false);
+
+  // Trigger fetching of next page when the user scrolls to the bottom
+  useEffect(() => {
+    if (inView && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, hasNextPage, fetchNextPage]);
 
   if (!idea || !commentsList) return null;
 
@@ -162,7 +164,9 @@ const PublicComments = ({
         allowAnonymousParticipation={allowAnonymousParticipation}
       />
 
-      {hasNextPage && !isFetchingNextPage && <Box ref={ref} w="100%" />}
+      {hasNextPage && !isFetchingNextPage && (
+        <Box ref={loadMoreRef} w="100%" h="50px" />
+      )}
 
       {isFetchingNextPage && !posting && (
         <Box
