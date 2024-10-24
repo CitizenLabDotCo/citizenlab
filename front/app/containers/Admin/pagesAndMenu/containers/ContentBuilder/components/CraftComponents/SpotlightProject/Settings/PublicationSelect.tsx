@@ -20,7 +20,7 @@ import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 interface Props {
-  projectId: string;
+  adminPublicationId?: string;
   onSelect: (adminPublication: IAdminPublicationData) => void;
 }
 
@@ -32,10 +32,9 @@ const flattenPagesData = (
     .flat();
 };
 
-const ProjectSelect = ({ projectId, onSelect }: Props) => {
+const PublicationSelect = ({ adminPublicationId, onSelect }: Props) => {
   const { data: adminPublications } = useAdminPublications({
     publicationStatusFilter: ['published', 'archived'],
-    onlyProjects: true,
   });
   const localize = useLocalize();
   const { formatMessage } = useIntl();
@@ -53,7 +52,9 @@ const ProjectSelect = ({ projectId, onSelect }: Props) => {
     })
   );
 
-  const selectedOption = options.find((option) => option.value === projectId);
+  const selectedOption = options.find(
+    (option) => option.value === adminPublicationId
+  );
 
   const handleChange = (value: IOption) => {
     const adminPublicationId = value.value;
@@ -61,7 +62,6 @@ const ProjectSelect = ({ projectId, onSelect }: Props) => {
       (publication) => publication.id === adminPublicationId
     );
     if (!adminPublication) return;
-    // onSelect(adminPublication.relationships.publication.data.id);
     onSelect(adminPublication);
   };
 
@@ -94,4 +94,4 @@ const preventModalCloseOnEscape = (event: KeyboardEvent) => {
   if (event.code === 'Escape') event.stopPropagation();
 };
 
-export default ProjectSelect;
+export default PublicationSelect;

@@ -2,6 +2,8 @@ import React from 'react';
 
 import { Multiloc } from 'typings';
 
+import useProjectFolderImage from 'api/project_folder_images/useProjectFolderImage';
+import useProjectFolderById from 'api/project_folders/useProjectFolderById';
 import useProjectImage from 'api/project_images/useProjectImage';
 import useProjectById from 'api/projects/useProjectById';
 
@@ -15,29 +17,44 @@ import Settings from './Settings';
 import SpotlightProjectInner from './SpotlightProject';
 
 interface Props {
-  projectId?: string;
+  publicationId?: string;
+  publicationType?: 'project' | 'folder';
   titleMultiloc?: Multiloc;
   descriptionMultiloc?: Multiloc;
   buttonTextMultiloc: Multiloc;
 }
 
 const SpotlightProject = ({
-  projectId,
+  publicationId,
+  publicationType,
   titleMultiloc,
   descriptionMultiloc,
   buttonTextMultiloc,
 }: Props) => {
+  // If publicationType === 'project'
+  const projectId = publicationType === 'project' ? publicationId : undefined;
   const { data: project } = useProjectById(projectId);
-  const imageId = project?.data.relationships.project_images?.data[0]?.id;
-  const { data: image } = useProjectImage({
+  const projectImageId =
+    project?.data.relationships.project_images?.data[0]?.id;
+  const { data: projectImage } = useProjectImage({
     projectId,
-    imageId,
+    imageId: projectImageId,
   });
+
+  // If publicationType === 'folder'
+  const folderId = publicationType === 'folder' ? publicationId : undefined;
+  const { data: folder } = useProjectFolderById(folderId);
+  const folderImageId = folder?.data.relationships.images?.data?.[0]?.id;
+  const { data: folderImage } = useProjectFolderImage({
+    folderId,
+    imageId: folderImageId,
+  });
+
   const locale = useLocale();
   const localize = useLocalize();
   const { formatMessage } = useIntl();
 
-  if (!projectId) {
+  if (!publicationId) {
     return (
       <SpotlightProjectInner
         title={formatMessage(messages.selectProject)}
@@ -46,10 +63,14 @@ const SpotlightProject = ({
     );
   }
 
-  if (!project) return null;
+  const publication = project ?? folder;
+  const image = projectImage ?? folderImage;
+
+  if (!publication) return null;
 
   const avatarIds =
-    project.data.relationships.avatars?.data?.map((avatar) => avatar.id) ?? [];
+    publication.data.relationships.avatars?.data?.map((avatar) => avatar.id) ??
+    [];
 
   return (
     <SpotlightProjectInner
@@ -58,10 +79,10 @@ const SpotlightProject = ({
       buttonText={buttonTextMultiloc[locale]} // We don't use localize here because it
       // always falls back to another locale when the value is an empty string.
       // In this case we don't want that- we just want the empty string.
-      buttonLink={`/projects/${project.data.attributes.slug}`}
+      buttonLink={`/projects/${publication.data.attributes.slug}`}
       imgSrc={image?.data.attributes.versions.large ?? undefined}
       avatarIds={avatarIds}
-      userCount={project.data.attributes.participants_count}
+      userCount={publication.data.attributes.participants_count}
     />
   );
 };
