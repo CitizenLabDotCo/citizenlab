@@ -77,7 +77,7 @@ const StyledPrimaryButton = styled(Button)`
   `}
 `;
 
-type HighlightProps = {
+type Props = {
   title?: Multiloc;
   description?: Multiloc;
   primaryButtonText?: Multiloc;
@@ -86,14 +86,14 @@ type HighlightProps = {
   secondaryButtonLink?: string;
 };
 
-const Highlight = ({
+const CallToAction = ({
   title,
   description,
   primaryButtonText,
   primaryButtonLink,
   secondaryButtonText,
   secondaryButtonLink,
-}: HighlightProps) => {
+}: Props) => {
   const { enabled } = useEditor((state) => {
     return {
       enabled: state.options.enabled,
@@ -192,7 +192,7 @@ const Highlight = ({
   );
 };
 
-const HighlightSettings = () => {
+const Settings = () => {
   const { formatMessage } = useIntl();
   const {
     actions: { setProp },
@@ -288,14 +288,16 @@ const HighlightSettings = () => {
   );
 };
 
-Highlight.craft = {
+CallToAction.craft = {
   related: {
-    settings: HighlightSettings,
+    settings: Settings,
   },
   custom: {
-    title: messages.highlightTitle,
+    title: messages.callToActionTitle,
     noPointerEvents: true,
   },
 };
 
-export default Highlight;
+export const callToActionTitle = messages.callToActionTitle;
+
+export default CallToAction;

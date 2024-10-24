@@ -1377,6 +1377,18 @@
           "allowed": { "type": "boolean", "default": false },
           "enabled": { "type": "boolean", "default": false }
         }
+      },
+
+      "new_homepage_widgets": {
+        "type": "object",
+        "title": "New homepage widgets",
+        "description": "New homepage widgets (sticky homepages tandem). Feature flagged until pricing plan stuff decided.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
       }
     },
   "dependencies": {

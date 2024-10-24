@@ -38,8 +38,4 @@ export default defineMessages({
     defaultMessage:
       'Enable proposals in the “Proposals” section in the admin panel to unlock them in the homepage',
   },
-  highlightTitle: {
-    id: 'app.containers.admin.ContentBuilder.homepage.highlightTitle',
-    defaultMessage: 'Highlight',
-  },
 });

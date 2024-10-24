@@ -2,6 +2,11 @@ import React from 'react';
 
 import { SupportedLocale } from 'typings';
 
+import useAppConfigurationLocales, {
+  createMultiloc,
+} from 'hooks/useAppConfigurationLocales';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import contentBuilderMessages from 'components/admin/ContentBuilder/messages';
 import Container from 'components/admin/ContentBuilder/Toolbox/Container';
 import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
@@ -16,11 +21,22 @@ import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
 import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import {
+  FormattedMessage,
+  useIntl,
+  useFormatMessageWithLocale,
+  MessageDescriptor,
+} from 'utils/cl-intl';
 
 import messages from '../../messages';
+import CallToAction, {
+  callToActionTitle,
+} from '../CraftComponents/CallToAction';
 import Events from '../CraftComponents/Events';
-import Highlight from '../CraftComponents/Highlight';
+import Spotlight, {
+  spotlightTitle,
+  buttonTextDefault,
+} from '../CraftComponents/Spotlight';
 
 type HomepageBuilderToolboxProps = {
   selectedLocale: SupportedLocale;
@@ -30,6 +46,19 @@ const HomepageBuilderToolbox = ({
   selectedLocale,
 }: HomepageBuilderToolboxProps) => {
   const { formatMessage } = useIntl();
+  const formatMessageWithLocale = useFormatMessageWithLocale();
+  const appConfigurationLocales = useAppConfigurationLocales();
+  const newHomepageWidgetsEnabled = useFeatureFlag({
+    name: 'new_homepage_widgets',
+  });
+
+  if (!appConfigurationLocales) return null;
+
+  const toMultiloc = (message: MessageDescriptor) => {
+    return createMultiloc(appConfigurationLocales, (locale) => {
+      return formatMessageWithLocale(locale, message);
+    });
+  };
 
   return (
     <Container>
@@ -44,20 +73,29 @@ const HomepageBuilderToolbox = ({
         label={formatMessage(messages.eventsTitle)}
       />
       <DraggableElement
-        id="e2e-draggable-events"
-        component={
-          <Highlight primaryButtonText={{}} secondaryButtonText={{}} />
-        }
-        icon="flash"
-        label={formatMessage(messages.highlightTitle)}
-      />
-      <DraggableElement
         id="e2e-draggable-image-text-cards"
         component={<ImageTextCards />}
         icon="section-image-text"
         label={formatMessage(messages.imageTextCards)}
       />
-
+      {newHomepageWidgetsEnabled && (
+        <DraggableElement
+          id="e2e-draggable-spotlight"
+          component={
+            <Spotlight buttonTextMultiloc={toMultiloc(buttonTextDefault)} />
+          }
+          icon="flash"
+          label={formatMessage(spotlightTitle)}
+        />
+      )}
+      <DraggableElement
+        id="e2e-draggable-call-to-action"
+        component={
+          <CallToAction primaryButtonText={{}} secondaryButtonText={{}} />
+        }
+        icon="button"
+        label={formatMessage(callToActionTitle)}
+      />
       <SectionTitle>
         <FormattedMessage {...contentBuilderMessages.layout} />
       </SectionTitle>

@@ -1,4 +1,4 @@
-import { SupportedLocale } from 'typings';
+import { Multiloc, SupportedLocale } from 'typings';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
@@ -15,3 +15,15 @@ export default function useAppConfigurationLocales() {
 
   return appConfigurationLocales;
 }
+
+export const createMultiloc = (
+  locales: SupportedLocale[],
+  getValue: (locale: SupportedLocale) => string
+): Multiloc => {
+  return locales.reduce((acc, locale) => {
+    return {
+      ...acc,
+      [locale]: getValue(locale),
+    };
+  }, {});
+};
