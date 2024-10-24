@@ -493,7 +493,7 @@ de:
       message_next_steps: ""
     your_proposed_initiatives_digest:
       subject: 'Wöchentliche Übersicht eigener Vorschläge'
-      preheader: 'Was ist in der vergangenen Woche mit Ihren Vorschlägen geschehen?'
+      preheader: 'Was ist in der vergangenen Woche mit deinen Vorschlägen geschehen?'
       title_your_weekly_report: 'Wie haben sich Ihre Vorschläge entwickelt?'
       text_introduction: 'Unten finden Sie die wichtige Zahlen zu Ihrem Vorschlag. Gehen Sie auf die Plattform, um rechtzeitig zu handeln und genügend Unterstützung zu sammeln.'
       cta_see_your_initiative: 'Zu deinen Vorschlägen'
