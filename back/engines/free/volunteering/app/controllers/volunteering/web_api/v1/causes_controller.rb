@@ -8,6 +8,10 @@ module Volunteering
         before_action :set_cause, only: %i[show update destroy reorder]
         skip_before_action :authenticate_user
 
+        def pundit_user
+          ApplicationPolicy::UserContext.new(current_user, { preview_token: params[:preview_token] })
+        end
+
         def index
           @causes = policy_scope(Cause)
             .where(phase: @phase)

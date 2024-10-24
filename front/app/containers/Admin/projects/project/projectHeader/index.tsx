@@ -25,6 +25,7 @@ import Button from 'components/UI/Button';
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
+import ShareLink from './ShareLink';
 
 const StyledTitle = styled(Title)`
   display: -webkit-box;
@@ -109,14 +110,13 @@ const ProjectHeader = ({ projectId }: Props) => {
           <StyledTitle color="primary" variant="h4" my="0px">
             {localize(project.data.attributes.title_multiloc)}
           </StyledTitle>
-          <Box display="flex">
+          <Box display="flex" gap="12px">
             <Button
               linkTo={`/projects/${project.data.attributes.slug}`}
-              buttonStyle="primary-inverse"
+              buttonStyle="secondary-outlined"
               icon="eye"
               size="s"
               padding="4px 8px"
-              mr="12px"
               id="e2e-view-project"
             >
               {formatMessage(messages.view)}
@@ -130,6 +130,10 @@ const ProjectHeader = ({ projectId }: Props) => {
             >
               {formatMessage(messages.projectSettings)}
             </Button>
+            <ShareLink
+              projectSlug={project.data.attributes.slug}
+              token={project.data.attributes.preview_token}
+            />
           </Box>
         </Box>
         <Box display="flex" gap="8px">

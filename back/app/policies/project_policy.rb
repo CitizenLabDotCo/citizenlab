@@ -1,15 +1,10 @@
 # frozen_string_literal: true
 
 class ProjectPolicy < ApplicationPolicy
-  class Scope
-    attr_reader :user, :scope
-
-    def initialize(user, scope)
-      @user  = user
-      @scope = scope.includes(:admin_publication)
-    end
-
+  class Scope < ApplicationPolicy::Scope
     def resolve
+      @scope = scope.includes(:admin_publication)
+
       # Resolves the scope as a disjunction (OR) of scopes, one scope (= one clause) for each 'role' a user can have.
       # It entails that scopes does not have to be redundant. In other words, each sub-scope (clause) should aim to
       # include only the projects to which this role gives access (without repeating projects to which lesser roles
@@ -19,7 +14,12 @@ class ProjectPolicy < ApplicationPolicy
       else
         scope.none
       end
+
+      preview_token = context[:preview_token]
+      preview_scope = preview_token.present? ? scope.where(preview_token: preview_token) : scope.none
+
       moderator_scope
+        .or(preview_scope)
         .or(resolve_for_visitor)
         .or(resolve_for_normal_user)
     end
@@ -81,8 +81,11 @@ class ProjectPolicy < ApplicationPolicy
 
   def show?
     return false if Permissions::ProjectPermissionsService.new(record, user).project_visible_disabled_reason
+    return true if active_moderator?
+    return true if %w[published archived].include?(record.admin_publication.publication_status)
 
-    active_moderator? || %w[published archived].include?(record.admin_publication.publication_status)
+    preview_token = context[:preview_token]
+    preview_token.present? && preview_token == record.preview_token
   end
 
   def by_slug?

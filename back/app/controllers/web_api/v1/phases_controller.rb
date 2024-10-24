@@ -5,6 +5,10 @@ class WebApi::V1::PhasesController < ApplicationController
   around_action :detect_invalid_timeline_changes, only: %i[create update destroy]
   skip_before_action :authenticate_user
 
+  def pundit_user
+    ApplicationPolicy::UserContext.new(current_user, { preview_token: params[:preview_token] })
+  end
+
   def index
     @phases = policy_scope(Phase)
       .where(project_id: params[:project_id])

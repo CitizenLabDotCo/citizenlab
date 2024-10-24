@@ -6,6 +6,10 @@ class WebApi::V1::ProjectsController < ApplicationController
   skip_before_action :authenticate_user
   skip_after_action :verify_policy_scoped, only: :index
 
+  def pundit_user
+    ApplicationPolicy::UserContext.new(current_user, { preview_token: params[:preview_token] })
+  end
+
   def index
     publications = policy_scope(AdminPublication)
     publications = AdminPublicationsFilteringService.new.filter(publications, params.merge(current_user: current_user))

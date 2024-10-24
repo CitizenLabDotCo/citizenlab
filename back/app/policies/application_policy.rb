@@ -1,11 +1,26 @@
 # frozen_string_literal: true
 
 class ApplicationPolicy
-  attr_reader :user, :record
+  attr_reader :record, :user_context
 
-  def initialize(user, record)
-    @user = user
+  delegate :context, :user, to: :user_context
+
+  class UserContext
+    attr_reader :user, :context
+
+    def initialize(user, context = {})
+      @user = user
+      @context = context
+    end
+  end
+
+  def initialize(user_context, record)
     @record = record
+    @user_context = case user_context
+    when UserContext then user_context
+    when User, NilClass then UserContext.new(user_context)
+    else raise ArgumentError, "Invalid user_context: #{user_context.inspect}"
+    end
   end
 
   def index?
@@ -37,11 +52,17 @@ class ApplicationPolicy
   end
 
   class Scope
-    attr_reader :user, :scope
+    attr_reader :scope, :user_context
 
-    def initialize(user, scope)
-      @user = user
+    delegate :user, :context, to: :user_context
+
+    def initialize(user_context, scope)
       @scope = scope
+      @user_context = case user_context
+      when UserContext then user_context
+      when User, NilClass then UserContext.new(user_context)
+      else raise ArgumentError, "Invalid user_context: #{user_context.inspect}"
+      end
     end
 
     def resolve
