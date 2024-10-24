@@ -1147,7 +1147,7 @@
   "app.containers.IdeaCard.xVotesOfY": "{xVotes, plural, =0 {no votes} one {1 vote} other {# votes}} out of {votingThreshold}",
   "app.containers.IdeaCards.a11y_totalItems": "Ukupno unosa: {ideasCount}",
   "app.containers.IdeaCards.all": "Sve",
-  "app.containers.IdeaCards.allStatuses": "All statuses",
+  "app.containers.IdeaCards.allStatuses": "Svi statusi",
   "app.containers.IdeaCards.filter": "Filter",
   "app.containers.IdeaCards.list": "Lista",
   "app.containers.IdeaCards.map": "Mapa",
