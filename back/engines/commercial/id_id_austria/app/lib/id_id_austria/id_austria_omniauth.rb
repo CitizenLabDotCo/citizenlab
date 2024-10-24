@@ -21,7 +21,7 @@ module IdIdAustria
 
       options[:scope] = %i[openid profile]
 
-      # it should get configuration from the default https://eid2.oesterreich.gv.at/.well-known/openid-configuration
+      # it should get configuration from the default https://eid.oesterreich.gv.at/.well-known/openid-configuration
       options[:discovery] = true
 
       options[:response_type] = :code
@@ -57,10 +57,7 @@ module IdIdAustria
     private
 
     def host
-      env = config['environment']
-      return 'eid.oesterreich.gv.at' if env == 'production'
-
-      'eid2.oesterreich.gv.at' # Test env
+      'eid.oesterreich.gv.at' # Test and production are both on the same host
     end
 
     def issuer

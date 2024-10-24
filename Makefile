@@ -13,16 +13,16 @@
 # =================
 
 build:
-	docker-compose build
+	docker compose build
 	cd front && npm install
 
 reset-dev-env:
 	# -v removes volumes with all the data inside https://docs.docker.com/compose/reference/down/
-	docker-compose down -v || true # do not exit on error (some networks may be present, volumes may be used, which is often fine)
+	docker compose down -v || true # do not exit on error (some networks may be present, volumes may be used, which is often fine)
 	make build
 	# https://citizenlabco.slack.com/archives/C016C2EHURY/p1644234622002569
-	docker-compose run --rm web "bin/rails db:create && bin/rails db:reset"
-	docker-compose run --rm -e RAILS_ENV=test web bin/rails db:drop db:create db:schema:load
+	docker compose run --rm web "bin/rails db:create && bin/rails db:reset"
+	docker compose run --rm -e RAILS_ENV=test web bin/rails db:drop db:create db:schema:load
 
 migrate:
 	docker-compose run --rm web bin/rails db:migrate cl2back:clean_tenant_settings email_campaigns:assure_campaign_records fix_existing_tenants:update_permissions cl2back:clear_cache_store email_campaigns:remove_deprecated
