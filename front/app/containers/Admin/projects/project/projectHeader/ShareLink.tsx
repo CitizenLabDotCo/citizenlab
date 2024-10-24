@@ -17,12 +17,16 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 
-const ShareLink = ({ projectSlug }: { projectSlug: string }) => {
+const ShareLink = ({
+  projectSlug,
+  token,
+}: {
+  projectSlug: string;
+  token: string;
+}) => {
   const { data: appConfiguration } = useAppConfiguration();
   const [shareDropdownIsOpen, setShareDropdownIsOpen] = useState(false);
   const [linkIsCopied, setLinkIsCopied] = useState(false);
-
-  const token = '0123456789'; // TODO: get token from API
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(

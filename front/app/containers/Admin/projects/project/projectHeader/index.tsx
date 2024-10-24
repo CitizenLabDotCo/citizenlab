@@ -130,7 +130,10 @@ const ProjectHeader = ({ projectId }: Props) => {
             >
               {formatMessage(messages.projectSettings)}
             </Button>
-            <ShareLink projectSlug={project.data.attributes.slug} />
+            <ShareLink
+              projectSlug={project.data.attributes.slug}
+              token={project.data.attributes.preview_token}
+            />
           </Box>
         </Box>
         <Box display="flex" gap="8px">
