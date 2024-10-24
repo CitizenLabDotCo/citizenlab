@@ -27,7 +27,7 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
       @admin_publications = @admin_publications.includes(
         {
           publication: [
-            { phases: %i[report custom_form permissions] },
+            { phases: %i[permissions] },
             :admin_publication,
             :images,
             :project_images,
