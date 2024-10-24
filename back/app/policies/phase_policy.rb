@@ -1,29 +1,15 @@
 # frozen_string_literal: true
 
 class PhasePolicy < ApplicationPolicy
-  class Scope
-    attr_reader :user, :scope, :context
-
-    def initialize(context, scope)
-      if context.is_a?(User) || context.nil?
-        @user  = user
-        @context = {}
-      else
-        @user = context[:user]
-        @context = context
-      end
-
-      @scope = scope
-    end
-
+  class Scope < ApplicationPolicy::Scope
     def resolve
-      project_ids = Pundit.policy_scope(context, Project).pluck(:id)
+      project_ids = Pundit.policy_scope(user_context, Project).pluck(:id)
       scope.where(project: project_ids)
     end
   end
 
   def create?
-    ProjectPolicy.new(user , record.project).update?
+    ProjectPolicy.new(user, record.project).update?
   end
 
   def show?

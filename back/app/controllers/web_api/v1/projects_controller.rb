@@ -7,7 +7,7 @@ class WebApi::V1::ProjectsController < ApplicationController
   skip_after_action :verify_policy_scoped, only: :index
 
   def pundit_user
-    {user: current_user, preview_token: params[:preview_token]}
+    ApplicationPolicy::UserContext.new(current_user, { preview_token: params[:preview_token] })
   end
 
   def index

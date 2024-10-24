@@ -1,23 +1,10 @@
 # frozen_string_literal: true
 
 class ProjectPolicy < ApplicationPolicy
-  class Scope
-    attr_reader :user, :scope, :context
-
-    def initialize(context, scope)
-      if context.is_a?(User) || context.nil?
-        @user  = user
-        @context = {}
-      else
-        puts "contexxxxt", context.inspect
-        @user = context[:user]
-        @context = context
-      end
-
-      @scope = scope.includes(:admin_publication)
-    end
-
+  class Scope < ApplicationPolicy::Scope
     def resolve
+      @scope = scope.includes(:admin_publication)
+
       # Resolves the scope as a disjunction (OR) of scopes, one scope (= one clause) for each 'role' a user can have.
       # It entails that scopes does not have to be redundant. In other words, each sub-scope (clause) should aim to
       # include only the projects to which this role gives access (without repeating projects to which lesser roles
@@ -67,18 +54,6 @@ class ProjectPolicy < ApplicationPolicy
       else
         moderator_scope
       end
-    end
-  end
-
-  attr_reader :context
-
-  def initialize(context, record)
-    if context.is_a?(User) || context.nil?
-      super(context, record)
-    else
-      @user = context[:user]
-      @context = context
-      @record = record
     end
   end
 
