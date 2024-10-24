@@ -15,8 +15,8 @@ import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
 import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 
+import CallToAction from '../CraftComponents/CallToAction';
 import Events from '../CraftComponents/Events';
-import Highlight from '../CraftComponents/Highlight';
 import HomepageBanner from '../CraftComponents/HomepageBanner';
 import Projects from '../CraftComponents/Projects';
 import Spotlight from '../CraftComponents/Spotlight';
@@ -52,7 +52,7 @@ const Editor: React.FC<EditorProps> = ({
         HomepageBanner,
         Projects,
         Events,
-        Highlight,
+        Highlight: CallToAction,
         Spotlight,
         Proposals,
       }}

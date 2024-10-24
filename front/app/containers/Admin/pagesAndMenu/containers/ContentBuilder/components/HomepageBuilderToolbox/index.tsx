@@ -28,8 +28,10 @@ import {
 } from 'utils/cl-intl';
 
 import messages from '../../messages';
+import CallToAction, {
+  callToActionTitle,
+} from '../CraftComponents/CallToAction';
 import Events from '../CraftComponents/Events';
-import Highlight from '../CraftComponents/Highlight';
 import Spotlight, {
   spotlightTitle,
   buttonTextDefault,
@@ -81,12 +83,12 @@ const HomepageBuilderToolbox = ({
         label={formatMessage(spotlightTitle)}
       />
       <DraggableElement
-        id="e2e-draggable-highlight"
+        id="e2e-draggable-call-to-action"
         component={
-          <Highlight primaryButtonText={{}} secondaryButtonText={{}} />
+          <CallToAction primaryButtonText={{}} secondaryButtonText={{}} />
         }
-        icon="flash"
-        label={formatMessage(messages.highlightTitle)}
+        icon="button"
+        label={formatMessage(callToActionTitle)}
       />
       <SectionTitle>
         <FormattedMessage {...contentBuilderMessages.layout} />
