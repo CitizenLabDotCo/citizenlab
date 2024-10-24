@@ -57,8 +57,8 @@ const SpotlightProject = ({
   if (!publicationId) {
     return (
       <SpotlightProjectInner
-        title={formatMessage(messages.selectProject)}
-        description={formatMessage(messages.pleaseSelectAProject)}
+        title={formatMessage(messages.selectProjectOrFolder)}
+        description={formatMessage(messages.pleaseSelectAProjectOrFolder)}
       />
     );
   }

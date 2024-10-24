@@ -13,9 +13,9 @@ export default defineMessages({
     id: 'app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.SpotlightProject.buttonText',
     defaultMessage: 'Button text',
   },
-  selectProject: {
-    id: 'app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.SpotlightProject.selectProject',
-    defaultMessage: 'Select project',
+  selectProjectOrFolder: {
+    id: 'app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.SpotlightProject.selectProjectOrFolder',
+    defaultMessage: 'Select project or folder',
   },
   title: {
     id: 'app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.SpotlightProject.title',
@@ -25,9 +25,9 @@ export default defineMessages({
     id: 'app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.SpotlightProject.description',
     defaultMessage: 'Description',
   },
-  pleaseSelectAProject: {
-    id: 'app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.SpotlightProject.pleaseSelectAProject',
-    defaultMessage: 'Please select a project',
+  pleaseSelectAProjectOrFolder: {
+    id: 'app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.SpotlightProject.pleaseSelectAProjectOrFolder',
+    defaultMessage: 'Please select a project or folder',
   },
   folder: {
     id: 'app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.SpotlightProject.folder',

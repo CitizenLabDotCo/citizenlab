@@ -44,12 +44,6 @@ const PublicationSelect = ({ publicationId, onSelect }: Props) => {
     ({ relationships }) => relationships.publication.data.id === publicationId
   );
 
-  console.log({
-    publicationId,
-    flattenedPublications,
-    options,
-  });
-
   const selectedOption = options.find(
     (option) => option.value === selectedPublication?.id
   );
@@ -66,7 +60,7 @@ const PublicationSelect = ({ publicationId, onSelect }: Props) => {
   return (
     <Box>
       <Label htmlFor="project-select">
-        {formatMessage(messages.selectProject)}
+        {formatMessage(messages.selectProjectOrFolder)}
       </Label>
       <ReactSelect
         inputId="project-select"
