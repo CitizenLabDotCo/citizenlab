@@ -113,8 +113,12 @@ class Project < ApplicationRecord
     includes(:admin_publication).order('admin_publications.ordering')
   }
 
+  scope :draft, lambda {
+    includes(:admin_publication).where(admin_publications: { publication_status: 'draft' })
+  }
+
   scope :not_draft, lambda {
-    includes(:admin_publication).where.not(admin_publications: { publication_status: 'draft' })
+    where.not(id: draft)
   }
 
   scope :publicly_visible, lambda {
