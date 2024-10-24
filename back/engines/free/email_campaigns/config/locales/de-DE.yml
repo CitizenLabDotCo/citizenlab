@@ -162,7 +162,7 @@ de:
       yesterday: Gestern
     cosponsor_of_your_idea:
       cta_reply_to: 'Eigenen Vorschlag ansehen'
-      event_description: 'Herzlichen Glückwunsch! %{cosponsorName} hat Ihre Einladung zur Unterstützung Ihres Vorschlags angenommen.'
+      event_description: 'Herzlichen Glückwunsch! %{cosponsorName} hat deine Einladung zum Unterstützen deines Vorschlags angenommen.'
       main_header: '%{cosponsorName} hat die Einladung angenommen, Ihren Vorschlag mit zu unterstützen'
       subject: '%{cosponsorName} hat die Einladung angenommen, Ihren Vorschlag mit zu unterstützen'
       preheader: '%{cosponsorName} hat die Einladung angenommen, Ihren Vorschlag mit zu unterstützen'
@@ -532,10 +532,10 @@ de:
         project: 'Ihr Projekt ist in "%{prescreening_status_title}"'
         issue: 'Ihr Problem ist in "%{prescreening_status_title}"'
         option: 'Ihre Option ist in "%{prescreening_status_title}"'
-        proposal: 'Ihr Vorschlag ist in "%{prescreening_status_title}"'
+        proposal: 'Dein Vorschlag ist in "%{prescreening_status_title}"'
         initiative: 'Ihre Initiative ist in "%{prescreening_status_title}"'
         petition: 'Ihre Petition ist in "%{prescreening_status_title}"'
-      message: '"%{input_title}" wird für andere sichtbar, sobald es geprüft und genehmigt wurde.'
+      message: '"%{input_title}" wird für andere sichtbar, sobald der Beitrag geprüft und genehmigt wurde.'
       subject: '"%{input_title}" ist fast veröffentlicht'
       preheader: 'Es befindet sich derzeit in %{prescreening_status_title}'
     voting_basket_submitted:
