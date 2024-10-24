@@ -59,6 +59,8 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
     end
   end
 
+  attribute :preview_token, if: proc { |object, params| can_moderate? object, params }
+
   has_one :admin_publication
 
   has_many :project_images, serializer: WebApi::V1::ImageSerializer
