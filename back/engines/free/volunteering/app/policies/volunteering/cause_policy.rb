@@ -2,16 +2,9 @@
 
 module Volunteering
   class CausePolicy < ApplicationPolicy
-    class Scope
-      attr_reader :user, :scope
-
-      def initialize(user, scope)
-        @user  = user
-        @scope = scope
-      end
-
+    class Scope < ApplicationPolicy::Scope
       def resolve
-        phases = Pundit.policy_scope(user, Phase)
+        phases = Pundit.policy_scope(user_context, Phase)
         scope.where(phase: phases)
       end
     end
