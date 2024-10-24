@@ -244,6 +244,7 @@ export interface IAppConfigurationSettings {
   fake_sso?: AppConfigurationFeature;
   prescreening?: AppConfigurationFeature;
   input_cosponsorship?: AppConfigurationFeature;
+  new_homepage_widgets?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;
