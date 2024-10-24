@@ -847,7 +847,7 @@
   "app.containers.Admin.project.emails.sending": "Sending",
   "app.containers.Admin.project.emails.sent": "Sent",
   "app.containers.Admin.project.emails.sentToUsers": "These are emails sent to users",
-  "app.containers.Admin.project.emails.status": "Status",
+  "app.containers.Admin.project.emails.status": "Статус",
   "app.containers.Admin.project.emails.subject": "Subject:",
   "app.containers.Admin.project.emails.to": "To:",
   "app.containers.Admin.project.messaging.helmetTitle": "Messaging",
