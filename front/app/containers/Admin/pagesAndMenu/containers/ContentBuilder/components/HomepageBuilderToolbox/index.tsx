@@ -5,6 +5,7 @@ import { SupportedLocale } from 'typings';
 import useAppConfigurationLocales, {
   createMultiloc,
 } from 'hooks/useAppConfigurationLocales';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import contentBuilderMessages from 'components/admin/ContentBuilder/messages';
 import Container from 'components/admin/ContentBuilder/Toolbox/Container';
@@ -47,6 +48,9 @@ const HomepageBuilderToolbox = ({
   const { formatMessage } = useIntl();
   const formatMessageWithLocale = useFormatMessageWithLocale();
   const appConfigurationLocales = useAppConfigurationLocales();
+  const newHomepageWidgetsEnabled = useFeatureFlag({
+    name: 'new_homepage_widgets',
+  });
 
   if (!appConfigurationLocales) return null;
 
@@ -74,14 +78,16 @@ const HomepageBuilderToolbox = ({
         icon="section-image-text"
         label={formatMessage(messages.imageTextCards)}
       />
-      <DraggableElement
-        id="e2e-draggable-spotlight"
-        component={
-          <Spotlight buttonTextMultiloc={toMultiloc(buttonTextDefault)} />
-        }
-        icon="flash"
-        label={formatMessage(spotlightTitle)}
-      />
+      {newHomepageWidgetsEnabled && (
+        <DraggableElement
+          id="e2e-draggable-spotlight"
+          component={
+            <Spotlight buttonTextMultiloc={toMultiloc(buttonTextDefault)} />
+          }
+          icon="flash"
+          label={formatMessage(spotlightTitle)}
+        />
+      )}
       <DraggableElement
         id="e2e-draggable-call-to-action"
         component={
