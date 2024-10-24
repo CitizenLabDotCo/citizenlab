@@ -14,7 +14,7 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 import Settings from './Settings';
-import SpotlightProjectInner from './SpotlightProject';
+import SpotlightProjectInner from './Spotlight';
 
 interface Props {
   publicationId?: string;
@@ -24,7 +24,7 @@ interface Props {
   buttonTextMultiloc: Multiloc;
 }
 
-const SpotlightProject = ({
+const Spotlight = ({
   publicationId,
   publicationType,
   titleMultiloc,
@@ -89,17 +89,17 @@ const SpotlightProject = ({
   );
 };
 
-SpotlightProject.craft = {
+Spotlight.craft = {
   related: {
     settings: Settings,
   },
   custom: {
-    title: messages.spotlightProjectOrFolder,
+    title: messages.spotlightTitle,
     noPointerEvents: true,
   },
 };
 
-export const spotlightProjectOrFolderTitle = messages.spotlightProjectOrFolder;
+export const spotlightTitle = messages.spotlightTitle;
 export const buttonTextDefault = messages.buttonTextDefault;
 
-export default SpotlightProject;
+export default Spotlight;

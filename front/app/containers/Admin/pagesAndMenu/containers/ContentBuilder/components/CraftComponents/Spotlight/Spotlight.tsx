@@ -23,7 +23,7 @@ interface Props {
   userCount?: number;
 }
 
-const SpotlightProject = ({
+const Spotlight = ({
   title,
   imgSrc,
   description,
@@ -89,4 +89,4 @@ const SpotlightProject = ({
   );
 };
 
-export default SpotlightProject;
+export default Spotlight;

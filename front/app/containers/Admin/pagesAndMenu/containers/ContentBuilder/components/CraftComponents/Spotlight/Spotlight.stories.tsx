@@ -4,24 +4,24 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 import { getOrigin } from 'utils/storybook/getOrigin';
 
-import SpotlightProject from './SpotlightProject';
+import Spotlight from './Spotlight';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
-  title: 'HomepageBuilder/SpotlightProject',
-  component: SpotlightProject,
+  title: 'HomepageBuilder/Spotlight',
+  component: Spotlight,
   render: (props) => {
     return (
       <Box w="100%" display="flex" justifyContent="center">
-        <SpotlightProject {...props} />
+        <Spotlight {...props} />
       </Box>
     );
   },
   parameters: {
     chromatic: { disableSnapshot: false },
   },
-} satisfies Meta<typeof SpotlightProject>;
+} satisfies Meta<typeof Spotlight>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

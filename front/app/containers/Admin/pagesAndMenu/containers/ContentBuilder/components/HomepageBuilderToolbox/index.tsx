@@ -30,10 +30,10 @@ import {
 import messages from '../../messages';
 import Events from '../CraftComponents/Events';
 import Highlight from '../CraftComponents/Highlight';
-import SpotlightProject, {
-  spotlightProjectOrFolderTitle,
+import Spotlight, {
+  spotlightTitle,
   buttonTextDefault,
-} from '../CraftComponents/SpotlightProject';
+} from '../CraftComponents/Spotlight';
 
 type HomepageBuilderToolboxProps = {
   selectedLocale: SupportedLocale;
@@ -67,28 +67,26 @@ const HomepageBuilderToolbox = ({
         label={formatMessage(messages.eventsTitle)}
       />
       <DraggableElement
-        id="e2e-draggable-highlight"
-        component={
-          <Highlight primaryButtonText={{}} secondaryButtonText={{}} />
-        }
-        icon="flash"
-        label={formatMessage(messages.highlightTitle)}
-      />
-      <DraggableElement
         id="e2e-draggable-image-text-cards"
         component={<ImageTextCards />}
         icon="section-image-text"
         label={formatMessage(messages.imageTextCards)}
       />
       <DraggableElement
-        id="e2e-draggable-spotlight-project"
+        id="e2e-draggable-spotlight"
         component={
-          <SpotlightProject
-            buttonTextMultiloc={toMultiloc(buttonTextDefault)}
-          />
+          <Spotlight buttonTextMultiloc={toMultiloc(buttonTextDefault)} />
         }
-        icon="projects"
-        label={formatMessage(spotlightProjectOrFolderTitle)}
+        icon="flash"
+        label={formatMessage(spotlightTitle)}
+      />
+      <DraggableElement
+        id="e2e-draggable-highlight"
+        component={
+          <Highlight primaryButtonText={{}} secondaryButtonText={{}} />
+        }
+        icon="flash"
+        label={formatMessage(messages.highlightTitle)}
       />
       <SectionTitle>
         <FormattedMessage {...contentBuilderMessages.layout} />

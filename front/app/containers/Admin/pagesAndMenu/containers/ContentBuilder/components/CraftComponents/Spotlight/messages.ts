@@ -1,9 +1,9 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  spotlightProjectOrFolder: {
-    id: 'app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.SpotlightProject.spotlightProjectOrFolder',
-    defaultMessage: 'Spotlight project or folder',
+  spotlightTitle: {
+    id: 'app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.SpotlightProject.spotlight',
+    defaultMessage: 'Spotlight',
   },
   buttonTextDefault: {
     id: 'app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.SpotlightProject.buttonTextDefault',
