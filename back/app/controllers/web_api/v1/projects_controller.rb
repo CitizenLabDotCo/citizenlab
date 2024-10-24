@@ -76,6 +76,11 @@ class WebApi::V1::ProjectsController < ApplicationController
       .distinct
       .order('phase_end_at ASC NULLS LAST')
 
+    # preload for permissions only - look at performance spec in permissions svce
+    # Here, we run projects through user requirements svce service & select... blah blah, and return project ids...
+    # Then, we continue the query chain by selecting projects with ids
+    # preload
+
     # `includes` tries to be smart & use joins here, but it makes the query complex and slow. So, we use `preload`.
     @projects = paginate @projects
     @projects = @projects.preload(

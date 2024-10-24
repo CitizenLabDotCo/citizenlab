@@ -1254,6 +1254,9 @@ resource 'Projects' do
       end
     end
 
+    # Excludes projects with active phase with all group permissions that exclude user
+    # Includes projects with one permission that includes user
+
     example 'Includes related avatars', document: false do
       create(:idea, project: active_ideation_project, author: @user)
 
