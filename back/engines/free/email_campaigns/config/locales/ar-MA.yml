@@ -58,7 +58,6 @@ ar-MA:
       "voting_phase_started": مرحلة المشروع الجديد مع التصويت
       "voting_results": نتائج التصويت
       "your_input_in_screening": مدخلاتي تنتظر الفحص
-      "your_proposed_initiatives_digest": نظرة عامة أسبوعية على مُقترحاتك
     general:
       by_author: 'بواسطة %{authorName}'
       author_wrote: '%{authorName} كتب:'
@@ -539,16 +538,6 @@ ar-MA:
       message: '"%{input_title}" سوف تصبح مرئية للآخرين بمجرد مراجعتها والموافقة عليها.'
       subject: '"%{input_title}" تم نشره تقريبًا'
       preheader: 'إنه حاليا في %{prescreening_status_title}'
-    your_proposed_initiatives_digest:
-      subject: 'تحديث أسبوعي على مُقترحك'
-      preheader: 'ما الذي حدث لمُقترحك في الأسبوع الماضي؟'
-      title_your_weekly_report: 'كيف كان أداء مُقترحك؟'
-      text_introduction: 'اطلع على الإحصائيات الرئيسية أدناه، وانتقل إلى صفحة المُقترح الخاص بك لاتخاذ الإجراءات المناسبة والحصول على الدعم الكافي في الوقت المناسب.'
-      cta_see_your_initiative: 'اذهب إلى مُقترحك'
-      total_votes: 'إجمالي الأصوات'
-      new_votes: 'الأصوات الجديدة'
-      remaining_votes: 'الأصوات المتبقية'
-      remaining_days: 'الأيام المتبقية'
     voting_basket_submitted:
       subject: '%{organizationName}: لقد قمت بالتصويت بنجاح'
       preheader: 'لقد قمت بالتصويت بنجاح على منصة المشاركة %{organizationName}'

@@ -33,14 +33,13 @@ class WebApi::V1::IdeasController < ApplicationController
       :topics,
       :phases,
       :creation_phase,
+      :manual_votes_last_updated_by,
       {
         project: [:phases, { phases: { permissions: [:groups] } }, { custom_form: [:custom_fields] }],
         author: [:unread_notifications]
       }
     )
     ideas = ideas.includes(:idea_import) unless current_user&.normal_user? # defined through BulkImportIdeas engine
-
-    ideas = convert_phase_voting_counts ideas, params
 
     render json: linked_json(ideas, WebApi::V1::IdeaSerializer, serialization_options_for(ideas))
   end
@@ -219,6 +218,7 @@ class WebApi::V1::IdeasController < ApplicationController
     update_params = idea_params(input.custom_form, user_can_moderate_project).to_h
     update_params[:custom_field_values] = params_service.updated_custom_field_values(input.custom_field_values, update_params[:custom_field_values])
     CustomFieldService.new.compact_custom_field_values! update_params[:custom_field_values]
+    input.set_manual_votes(update_params[:manual_votes_amount], current_user) if update_params[:manual_votes_amount]
 
     ActiveRecord::Base.transaction do # Assigning relationships cause database changes
       input.assign_attributes update_params
@@ -332,7 +332,7 @@ class WebApi::V1::IdeasController < ApplicationController
     complex_attributes = idea_complex_attributes(custom_form, submittable_field_keys)
     attributes << complex_attributes if complex_attributes.any?
     if user_can_moderate_project
-      attributes.concat %i[author_id idea_status_id budget] + [phase_ids: []]
+      attributes.concat %i[author_id idea_status_id budget manual_votes_amount] + [phase_ids: []]
     end
     attributes
   end
@@ -402,7 +402,7 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def serialization_options_for(ideas)
-    include = %i[author idea_images ideas_phases cosponsors]
+    include = %i[author idea_images ideas_phases cosponsors manual_votes_last_updated_by]
     if current_user
       # I have no idea why but the trending query part
       # breaks if you don't fetch the ids in this way.
@@ -416,6 +416,7 @@ class WebApi::V1::IdeasController < ApplicationController
       user_followers ||= {}
       {
         params: jsonapi_serializer_params(
+          phase: params[:phase] && Phase.find(params[:phase]),
           vbii: reactions.index_by(&:reactable_id),
           user_followers: user_followers,
           user_requirements_service: Permissions::UserRequirementsService.new(check_groups_and_verification: false)
@@ -439,24 +440,6 @@ class WebApi::V1::IdeasController < ApplicationController
     return false if input.idea_import && input.idea_import.approved_at.nil?
 
     !input.participation_method_on_creation.supports_inputs_without_author?
-  end
-
-  # Change counts on idea for values for phase, if filtered by phase
-  def convert_phase_voting_counts(ideas, params)
-    if params[:phase]
-      phase_id = params[:phase]
-      ideas.map do |idea|
-        next if idea.baskets_count == 0
-
-        idea.ideas_phases.each do |ideas_phase|
-          if ideas_phase.phase_id == phase_id
-            idea.baskets_count = ideas_phase.baskets_count
-            idea.votes_count = ideas_phase.votes_count
-          end
-        end
-      end
-    end
-    ideas
   end
 
   def not_allowed_update_errors(input)
