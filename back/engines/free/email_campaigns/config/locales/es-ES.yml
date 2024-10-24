@@ -58,7 +58,6 @@ es:
       "voting_phase_started": Nueva fase del proyecto con votación
       "voting_results": Resultados de la votación
       "your_input_in_screening": Mi aportación espera ser examinada
-      "your_proposed_initiatives_digest": Resumen semanal de tus propuestas
     general:
       by_author: 'por %{authorName}'
       author_wrote: '%{authorName} escribió:'
@@ -273,7 +272,7 @@ es:
       main_header: '%{firstName} te mencionó en un comentario interno.'
       preheader: '%{authorNameFull} te mencionó en un comentario interno.'
     moderator_digest:
-      subject: 'Tu reporte semanal como administrador de proyecto de %{time}'
+      subject: 'Tu reporte semanal como administrador del proyecto "%{project_title}"'
       preheader: 'Resumen del administrador de proyecto de %{organizationName}'
       title_your_weekly_report: '%{firstName}, tu reporte semanal'
       text_introduction: 'Hemos editado para ti la lista de ideas que han generado más actividad durante la última semana. Descubre lo que está sucediendo en tu proyecto!'
@@ -493,7 +492,7 @@ es:
     threshold_reached_for_admin:
       cta_process_initiative: 'Lleve esta propuesta a los siguientes pasos'
       main_header: 'Una propuesta alcanzó el número requerido de votos!'
-      subject: 'Una propuesta alcanzó el número requerido de votos'
+      subject: '"%{input_title}" alcanzó el número requerido de votos'
       preheader: 'Asegúrese de seguir los siguientes pasos'
     welcome:
       cta_join_platform: 'Descubre la plataforma'
@@ -512,7 +511,7 @@ es:
         proposal: 'Tu propuesta ha sido publicada'
         initiative: 'Tu iniciativa ha sido publicada'
         petition: 'Tu petición ha sido publicada'
-      main_header: '¡Publicó una idea! Asegurémonos de que se lea.'
+      main_header: 'Has publicado "%{input_title}"'
       header_message: 'Asegurémonos de que se lee.'
       message_get_votes: 'Llega a más gente con tu idea:'
       action_published_idea: 'Idea publicada'
@@ -539,16 +538,6 @@ es:
       message: '"%{input_title}" será visible para los demás una vez que haya sido revisado y aprobado.'
       subject: '"%{input_title}" está casi publicado'
       preheader: 'Actualmente está en %{prescreening_status_title}'
-    your_proposed_initiatives_digest:
-      subject: 'Actualización semanal de tu propuesta'
-      preheader: '¿Qué pasó con tu propuesta la semana pasada?'
-      title_your_weekly_report: '¿Cómo ha ido tu propuesta?'
-      text_introduction: 'Encuentre los números clave a continuación y vaya a la página de su propuesta para tomar medidas y obtener suficiente apoyo a tiempo.'
-      cta_see_your_initiative: 'Ir a tu propuesta'
-      total_votes: 'Total de votos'
-      new_votes: 'Nuevos votos'
-      remaining_votes: 'Votos restantes'
-      remaining_days: 'Días restantes'
     voting_basket_submitted:
       subject: '%{organizationName}Has votado correctamente'
       preheader: 'Has votado con éxito en la plataforma de participación de %{organizationName}'
