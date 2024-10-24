@@ -5,6 +5,23 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.PostPreview.OfflineVoteSettings.manualVoteAdjustment',
     defaultMessage: 'Manual vote adjustment',
   },
+  manualPickAdjustment: {
+    id: 'app.components.admin.PostManager.PostPreview.OfflineVoteSettings.manualPickAdjustment',
+    defaultMessage: 'Manual picks adjustment',
+  },
+  manualVotersTooltip: {
+    id: 'app.components.admin.PostManager.PostPreview.OfflineVoteSettings.manualVotersTooltip',
+    defaultMessage:
+      'In order to showcase the correct results, we need to know the total amount of participants for this phase. \n\nPlease indicate only those that have not participated online.',
+  },
+  manualVotersLabel: {
+    id: 'app.components.admin.PostManager.PostPreview.OfflineVoteSettings.manualVotersLabel',
+    defaultMessage: 'Total in-person participants',
+  },
+  modifiedBy: {
+    id: 'app.components.admin.PostManager.PostPreview.OfflineVoteSettings.modifiedBy',
+    defaultMessage: 'Modified by {name}',
+  },
   manualVoteAdjustmentTooltip1: {
     id: 'app.components.admin.PostManager.PostPreview.OfflineVoteSettings.manualVoteAdjustmentTooltip',
     defaultMessage:

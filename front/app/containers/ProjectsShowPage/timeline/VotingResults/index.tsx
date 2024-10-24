@@ -57,14 +57,7 @@ const VotingResults = ({ phaseId, votingMethod }: Props) => {
           <VotingResultCard
             idea={idea}
             phaseId={phaseId}
-            rank={
-              getRanks(
-                getCounts(
-                  ideasList,
-                  votingMethod === 'budgeting' ? 'baskets_count' : 'votes_count'
-                )
-              )[i]
-            }
+            rank={getRanks(getCounts(ideasList, 'total_votes_count'))[i]}
           />
         </Box>
       ))}
@@ -104,9 +97,7 @@ const getRanks = (counts: number[]) => {
   return ranks;
 };
 
-const getCounts = (
-  ideas: IIdeaData[],
-  attributeName: 'baskets_count' | 'votes_count'
-) => ideas.map((idea) => idea.attributes[attributeName]);
+const getCounts = (ideas: IIdeaData[], attributeName: 'total_votes_count') =>
+  ideas.map((idea) => idea.attributes[attributeName]);
 
 export default VotingResults;

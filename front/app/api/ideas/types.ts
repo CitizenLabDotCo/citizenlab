@@ -88,7 +88,8 @@ export interface IIdeaData {
     created_at: string;
     updated_at: string;
     published_at: string;
-    manual_votes_amount?: string | null;
+    manual_votes_amount?: number | null;
+    total_votes_count: number;
     action_descriptors: {
       reacting_idea: ReactingIdeaActionDescriptor & {
         up: ActionDescriptorFutureEnabled<IdeaReactingDisabledReason>;
@@ -192,7 +193,7 @@ export interface IIdeaUpdate {
   proposed_budget?: number | null;
   anonymous?: boolean;
   idea_images_attributes?: { image: string }[];
-  manual_votes_amount?: string | null;
+  manual_votes_amount?: number | null;
 }
 
 export interface IIdeas {

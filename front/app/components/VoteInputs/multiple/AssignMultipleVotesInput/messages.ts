@@ -5,6 +5,11 @@ export default defineMessages({
     id: 'app.components.AssignMultipleVotesControl.xVotes2',
     defaultMessage: '{votes, plural, one {{singular}} other {{plural}}}',
   },
+  numberManualVotes: {
+    id: 'app.components.AssignMultipleVotesControl.numberManualVotes',
+    defaultMessage:
+      '{manualVotes, plural, one {(incl. 1 in person)} other {(incl. # in person)}}',
+  },
   select: {
     id: 'app.components.AssignMultipleVotesControl.select',
     defaultMessage: 'Select',

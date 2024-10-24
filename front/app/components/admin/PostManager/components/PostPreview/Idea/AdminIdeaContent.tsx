@@ -203,6 +203,10 @@ const AdminIdeaContent = ({
   const allowAnonymousParticipation =
     currentPhase?.attributes.allow_anonymous_participation;
 
+  const votingMethod = phases?.data.find(
+    (phase) => phase.id === selectedPhaseId
+  )?.attributes.voting_method;
+
   return (
     <Container>
       <Top>
@@ -332,9 +336,12 @@ const AdminIdeaContent = ({
             )}
 
             <FeedbackSettings ideaId={ideaId} projectId={project.data.id} />
-            {phases?.data.find((phase) => phase.id === selectedPhaseId)
-              ?.attributes.voting_method && (
-              <OfflineVoteSettings ideaId={ideaId} />
+            {selectedPhaseId && votingMethod && (
+              <OfflineVoteSettings
+                phaseId={selectedPhaseId}
+                ideaId={ideaId}
+                votingMethod={votingMethod}
+              />
             )}
           </Right>
         </Row>
