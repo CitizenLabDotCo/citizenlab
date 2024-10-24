@@ -57,7 +57,7 @@ const VotingResults = ({ phaseId, votingMethod }: Props) => {
           <VotingResultCard
             idea={idea}
             phaseId={phaseId}
-            rank={getRanks(getCounts(ideasList, 'total_votes_count'))[i]}
+            rank={getRanks(getCounts(ideasList, 'total_votes'))[i]}
           />
         </Box>
       ))}
@@ -97,7 +97,7 @@ const getRanks = (counts: number[]) => {
   return ranks;
 };
 
-const getCounts = (ideas: IIdeaData[], attributeName: 'total_votes_count') =>
+const getCounts = (ideas: IIdeaData[], attributeName: 'total_votes') =>
   ideas.map((idea) => idea.attributes[attributeName]);
 
 export default VotingResults;

@@ -19,14 +19,19 @@ interface Props {
 }
 
 const VotingProgressBar = ({ phase, idea }: Props) => {
+  console.log({ idea });
+
   const { formatMessage } = useIntl();
   const localize = useLocalize();
-  const ideaVotes = 10; // idea.attributes.votes_count; ToDo: Remove hardcoding
-  const offlineIdeaVotes = 10; // idea.attributes.manual_votes_amount || 0; ToDo: Remove hardcoding
-  const totalIdeaVotes = 20; // idea.attributes.total_votes_count || 0; ToDo: Remove hardcoding
-  const totalPhaseVotes = phase.data.attributes.votes_count;
+  const onlineIdeaVotes = idea.attributes.votes_count;
+  const offlineIdeaVotes = idea.attributes.manual_votes_amount;
+  const totalIdeaVotes = idea.attributes.total_votes;
+  const totalPhaseVotes = 10; // phase.data.attributes.votes_count;
   const totalVotesPercentage = roundPercentage(totalIdeaVotes, totalPhaseVotes);
-  const votesOnlinePercentage = roundPercentage(ideaVotes, totalPhaseVotes);
+  const votesOnlinePercentage = roundPercentage(
+    onlineIdeaVotes,
+    totalPhaseVotes
+  );
   const manualVotesPercentage = offlineIdeaVotes
     ? roundPercentage(offlineIdeaVotes, totalPhaseVotes)
     : 0;

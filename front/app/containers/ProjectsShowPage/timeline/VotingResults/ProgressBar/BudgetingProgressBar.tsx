@@ -18,7 +18,7 @@ interface Props {
 
 const BudgetingProgressBar = ({ phase, idea }: Props) => {
   const { formatMessage } = useIntl();
-  const totalBasketsIdeaIsIn = 10; // idea.attributes.total_votes_count || 0; ToDo: Remove hardcoding
+  const totalBasketsIdeaIsIn = 10; // idea.attributes.total_votes || 0; ToDo: Remove hardcoding
   const totalBasketsInPhase = 30; // phase.data.attributes.baskets_count; ToDo: Remove hardcoding
   const manualVotersAmount = 5; // phase.data.attributes.manual_voters_amount || 0; ToDo: Remove hardcoding
   const tooltip = formatMessage(messages.budgetingTooltip);

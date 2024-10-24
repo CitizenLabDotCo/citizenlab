@@ -88,8 +88,8 @@ export interface IIdeaData {
     created_at: string;
     updated_at: string;
     published_at: string;
-    manual_votes_amount?: number | null;
-    total_votes_count: number;
+    manual_votes_amount: number;
+    total_votes: number;
     action_descriptors: {
       reacting_idea: ReactingIdeaActionDescriptor & {
         up: ActionDescriptorFutureEnabled<IdeaReactingDisabledReason>;

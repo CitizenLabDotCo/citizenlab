@@ -59,7 +59,7 @@ export const ideaDataWithVotes: IIdeaData[] = [
       budget: 60,
       proposed_budget: 45,
       baskets_count: 10,
-      total_votes_count: 10,
+      total_votes: 10,
       votes_count: 60,
       action_descriptors: {
         editing_idea: {
@@ -166,7 +166,7 @@ export const ideaDataWithVotes: IIdeaData[] = [
       comments_count: 2,
       internal_comments_count: 2,
       official_feedbacks_count: 0,
-      total_votes_count: 0,
+      total_votes: 0,
       location_point_geojson: {
         type: 'Point',
         coordinates: [4.418731568531502, 50.86899604801978],
@@ -277,7 +277,7 @@ export const ideaData: IIdeaData[] = [
       dislikes_count: 1,
       comments_count: 2,
       internal_comments_count: 2,
-      total_votes_count: 0,
+      total_votes: 0,
       official_feedbacks_count: 0,
       location_point_geojson: {
         type: 'Point',
@@ -407,7 +407,7 @@ export const ideaData: IIdeaData[] = [
       budget: 60,
       proposed_budget: 45,
       votes_count: 0,
-      total_votes_count: 0,
+      total_votes: 0,
       baskets_count: 0,
       action_descriptors: {
         editing_idea: {
