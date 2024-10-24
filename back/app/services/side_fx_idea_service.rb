@@ -90,6 +90,16 @@ class SideFxIdeaService
       )
     end
 
+    if idea.manual_votes_amount_previously_changed?
+      LogActivityJob.perform_later(
+        idea,
+        'changed_manual_votes_amount',
+        user_for_activity_on_anonymizable_item(idea, user),
+        idea.updated_at.to_i,
+        payload: { change: idea.manual_votes_amount_previous_change }
+      )
+    end
+
     log_activities_if_cosponsors_added(idea, user, old_cosponsor_ids)
   end
 
