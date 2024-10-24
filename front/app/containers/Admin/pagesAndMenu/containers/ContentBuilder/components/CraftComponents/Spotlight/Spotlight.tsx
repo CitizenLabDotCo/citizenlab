@@ -49,20 +49,28 @@ const Spotlight = ({
         flexDirection={isSmallerThanPhone ? 'column' : 'row'}
         justifyContent={isSmallerThanPhone ? 'flex-start' : 'space-between'}
       >
-        <Box w={isSmallerThanPhone ? undefined : '50%'}>
+        <Box w={isSmallerThanPhone ? undefined : '50%'} maxWidth="400px">
           <Title variant="h2" fontSize="xxxxl" mt="0px" lineHeight="1">
             {title}
           </Title>
           {description && <Text>{description}</Text>}
           {buttonText && buttonText !== '' && (
             <Box w="100%" display="flex" mt="20px">
-              <Button w="auto" linkTo={buttonLink}>
+              <Button
+                w={isSmallerThanPhone ? '100%' : 'auto'}
+                linkTo={buttonLink}
+              >
                 {buttonText}
               </Button>
             </Box>
           )}
           {avatarIds && avatarIds.length > 0 && userCount && (
-            <Box mt="16px">
+            <Box
+              mt="16px"
+              w="100%"
+              display="flex"
+              justifyContent={isSmallerThanPhone ? 'center' : 'flex-start'}
+            >
               <AvatarBubbles avatarIds={avatarIds} userCount={userCount} />
             </Box>
           )}
@@ -70,7 +78,7 @@ const Spotlight = ({
         <Box
           mt={isSmallerThanPhone ? '20px' : '0px'}
           ml={isSmallerThanPhone ? '0px' : '40px'}
-          w={isSmallerThanPhone ? '100%' : '50%'}
+          w={isSmallerThanPhone ? '100%' : 'calc(100% - 400px)'}
           display="flex"
           justifyContent="center"
           alignItems="center"

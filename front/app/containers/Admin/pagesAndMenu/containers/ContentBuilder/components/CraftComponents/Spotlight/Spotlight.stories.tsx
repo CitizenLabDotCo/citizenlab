@@ -34,6 +34,7 @@ export const Standard: Story = {
       'Join local projects, sharing your ideas, or contributing to discussions, your voice is key to building a better Newham.',
     buttonText: 'Join other residents',
     avatarIds: ['1', '2'],
+    userCount: 200,
   },
   parameters: {},
 };
