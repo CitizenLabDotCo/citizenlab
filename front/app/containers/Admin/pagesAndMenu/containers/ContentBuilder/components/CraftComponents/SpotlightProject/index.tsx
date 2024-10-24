@@ -72,6 +72,8 @@ const SpotlightProject = ({
     publication.data.relationships.avatars?.data?.map((avatar) => avatar.id) ??
     [];
 
+  const link = `/${publicationType}s/${publication.data.attributes.slug}`;
+
   return (
     <SpotlightProjectInner
       title={localize(titleMultiloc)}
@@ -79,7 +81,7 @@ const SpotlightProject = ({
       buttonText={buttonTextMultiloc[locale]} // We don't use localize here because it
       // always falls back to another locale when the value is an empty string.
       // In this case we don't want that- we just want the empty string.
-      buttonLink={`/projects/${publication.data.attributes.slug}`}
+      buttonLink={link}
       imgSrc={image?.data.attributes.versions.large ?? undefined}
       avatarIds={avatarIds}
       userCount={publication.data.attributes.participants_count}
