@@ -107,14 +107,19 @@ const IdeationInputs = ({
         input_term={input_term}
         handleInputTermChange={handleInputTermChange}
       />
-      <PrescreeningToggle
-        prescreening_enabled={prescreening_enabled}
-        togglePrescreeningEnabled={togglePrescreeningEnabled}
-        prescreeningFeatureAllowed={useFeatureFlag({
+      {
+        // Remove the following condition when pricing decision made
+        // And add feature flag with onlyCheckAllowed back into prescreeningFeatureAllowed
+        useFeatureFlag({
           name: 'prescreening_ideation',
-          onlyCheckAllowed: true,
-        })}
-      />
+        }) && (
+          <PrescreeningToggle
+            prescreening_enabled={prescreening_enabled}
+            togglePrescreeningEnabled={togglePrescreeningEnabled}
+            prescreeningFeatureAllowed={true}
+          />
+        )
+      }
       <UserActions
         submission_enabled={submission_enabled || false}
         commenting_enabled={commenting_enabled || false}
