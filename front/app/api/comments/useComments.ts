@@ -38,7 +38,8 @@ const fetchComments = (
   });
 
 const useComments = (
-  parameters: ICommentParameters & ICommentQueryParameters
+  parameters: ICommentParameters & ICommentQueryParameters,
+  hasComments = true
 ) => {
   return useInfiniteQuery<IComments, CLErrors, IComments, CommentsKeys>({
     queryKey: commentKeys.list(parameters),
@@ -53,7 +54,8 @@ const useComments = (
       return hasNextPage && pageNumber ? pageNumber + 1 : null;
     },
     enabled:
-      !!parameters.authorId || !!parameters.ideaId || !!parameters.commentId,
+      hasComments &&
+      (!!parameters.authorId || !!parameters.ideaId || !!parameters.commentId),
   });
 };
 
