@@ -11,12 +11,15 @@ class ProjectPolicy < ApplicationPolicy
       # of the user gives access).
       moderator_scope = if user&.active?
         UserRoleService.new.moderatable_projects(user, scope)
-      elsif context[:preview_token] == '0123456789'
-        scope.all
       else
         scope.none
       end
+
+      preview_token = context[:preview_token]
+      preview_scope = preview_token.present? ? scope.where(preview_token: preview_token) : scope.none
+
       moderator_scope
+        .or(preview_scope)
         .or(resolve_for_visitor)
         .or(resolve_for_normal_user)
     end
@@ -82,7 +85,7 @@ class ProjectPolicy < ApplicationPolicy
     return true if %w[published archived].include?(record.admin_publication.publication_status)
 
     preview_token = context[:preview_token]
-    preview_token.present? && preview_token == '0123456789'
+    preview_token.present? && preview_token == record.preview_token
   end
 
   def by_slug?
