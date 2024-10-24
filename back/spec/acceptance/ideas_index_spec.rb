@@ -61,6 +61,8 @@ resource 'Ideas' do
         expect(input3_response.dig(:relationships, :manual_votes_last_updated_by, :data, :id)).to eq moderator.id
         expect(json_response_body[:included].find { |i| i[:id] == moderator.id }&.dig(:attributes, :slug)).to eq moderator.slug
         expect(input3_response.dig(:attributes, :manual_votes_last_updated_at)).to be_present
+
+        # TODO: Add total votes
       end
     end
 
