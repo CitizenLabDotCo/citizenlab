@@ -61,7 +61,7 @@ const SpotlightProject = ({
               </Button>
             </Box>
           )}
-          {avatarIds && userCount && (
+          {avatarIds && avatarIds.length > 0 && userCount && (
             <Box mt="16px">
               <AvatarBubbles avatarIds={avatarIds} userCount={userCount} />
             </Box>

@@ -63,8 +63,8 @@ const SpotlightProject = ({
     );
   }
 
-  const publication = project ?? folder;
-  const image = projectImage ?? folderImage;
+  const publication = publicationType === 'project' ? project : folder;
+  const image = publicationType === 'project' ? projectImage : folderImage;
 
   if (!publication) return null;
 
