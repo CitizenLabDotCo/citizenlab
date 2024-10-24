@@ -4,6 +4,8 @@ module Permissions
       project_not_visible: 'project_not_visible'
     }.freeze
 
+    FIXABLE_DENIED_REASONS = %w[user_not_signed_in user_not_active user_not_verified user_missing_requirements].freeze
+
     def initialize(project, user, user_requirements_service: nil)
       @timeline_service = TimelineService.new
       phase = @timeline_service.current_phase_not_archived project
@@ -99,6 +101,15 @@ module Permissions
          (project&.visible_to == 'groups' && project.groups && !user&.in_any_groups?(project.groups))
         PROJECT_DENIED_REASONS[:project_not_visible]
       end
+    end
+
+    def participation_open_or_possible?
+      descriptors = action_descriptors.except(:attending_event, :annotating_document)
+
+      return true if descriptors.values.any? { |d| d[:enabled] }
+      return true if descriptors.values.any? { |d| FIXABLE_DENIED_REASONS.include?(d[:disabled_reason]) }
+
+      false
     end
 
     private

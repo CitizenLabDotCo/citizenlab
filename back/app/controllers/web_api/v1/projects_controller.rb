@@ -76,10 +76,20 @@ class WebApi::V1::ProjectsController < ApplicationController
       .distinct
       .order('phase_end_at ASC NULLS LAST')
 
-    # preload for permissions only - look at performance spec in permissions svce
-    # Here, we run projects through user requirements svce service & select... blah blah, and return project ids...
-    # Then, we continue the query chain by selecting projects with ids
-    # preload
+    # preload for permissions only? - look at performance spec in permissions svce
+
+    # Select projects were user can participate, or where participation could be made possible by user/visitor
+    # (e.g. user not signed in).
+    user_requirements_service = Permissions::UserRequirementsService.new(check_groups_and_verification: false)
+
+    project_ids = @projects.select do |project|
+      Permissions::ProjectPermissionsService
+        .new(project, current_user, user_requirements_service: user_requirements_service)
+        .participation_open_or_possible?
+    end.pluck(:id)
+
+    # Then, we restart a new query chain by selecting projects with ids
+    @projects = Project.where(id: project_ids)
 
     # `includes` tries to be smart & use joins here, but it makes the query complex and slow. So, we use `preload`.
     @projects = paginate @projects
