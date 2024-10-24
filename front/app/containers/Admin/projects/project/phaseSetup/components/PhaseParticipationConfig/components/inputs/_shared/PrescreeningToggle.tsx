@@ -19,8 +19,6 @@ const PrescreeningToggle = ({
   togglePrescreeningEnabled,
   prescreeningFeatureAllowed,
 }: Props) => {
-  if (!prescreening_enabled) return null; // Remove when pricing decision made
-
   return (
     <SectionField>
       <SubSectionTitle style={{ marginBottom: '0px' }}>
