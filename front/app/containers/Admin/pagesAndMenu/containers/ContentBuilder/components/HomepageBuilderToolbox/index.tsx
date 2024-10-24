@@ -31,7 +31,7 @@ import messages from '../../messages';
 import Events from '../CraftComponents/Events';
 import Highlight from '../CraftComponents/Highlight';
 import SpotlightProject, {
-  spotlightProjectTitle,
+  spotlightProjectOrFolderTitle,
   buttonTextDefault,
 } from '../CraftComponents/SpotlightProject';
 
@@ -88,7 +88,7 @@ const HomepageBuilderToolbox = ({
           />
         }
         icon="projects"
-        label={formatMessage(spotlightProjectTitle)}
+        label={formatMessage(spotlightProjectOrFolderTitle)}
       />
       <SectionTitle>
         <FormattedMessage {...contentBuilderMessages.layout} />

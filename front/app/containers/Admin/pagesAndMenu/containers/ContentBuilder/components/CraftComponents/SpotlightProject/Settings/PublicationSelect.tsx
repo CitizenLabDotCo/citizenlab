@@ -1,14 +1,10 @@
 import React, { KeyboardEvent } from 'react';
 
 import { Box, Label, Spinner } from '@citizenlab/cl2-component-library';
-import { InfiniteData } from '@tanstack/react-query';
 import ReactSelect from 'react-select';
 import { IOption } from 'typings';
 
-import {
-  IAdminPublicationData,
-  IAdminPublications,
-} from 'api/admin_publications/types';
+import { IAdminPublicationData } from 'api/admin_publications/types';
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
 
 import useLocalize from 'hooks/useLocalize';
@@ -19,20 +15,14 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
 
+import { flattenPagesData, getLabel } from './utils';
+
 interface Props {
-  adminPublicationId?: string;
+  publicationId?: string;
   onSelect: (adminPublication: IAdminPublicationData) => void;
 }
 
-const flattenPagesData = (
-  data?: InfiniteData<IAdminPublications>
-): IAdminPublicationData[] | undefined => {
-  return data?.pages
-    .map((page: { data: IAdminPublicationData[] }) => page.data)
-    .flat();
-};
-
-const PublicationSelect = ({ adminPublicationId, onSelect }: Props) => {
+const PublicationSelect = ({ publicationId, onSelect }: Props) => {
   const { data: adminPublications } = useAdminPublications({
     publicationStatusFilter: ['published', 'archived'],
   });
@@ -45,15 +35,23 @@ const PublicationSelect = ({ adminPublicationId, onSelect }: Props) => {
     return <Spinner />;
   }
 
-  const options: IOption[] = flattenedPublications.map(
-    ({ id, attributes }) => ({
-      value: id,
-      label: localize(attributes.publication_title_multiloc),
-    })
+  const options: IOption[] = flattenedPublications.map((adminPublication) => ({
+    value: adminPublication.id,
+    label: getLabel(adminPublication, localize, formatMessage),
+  }));
+
+  const selectedPublication = flattenedPublications.find(
+    ({ relationships }) => relationships.publication.data.id === publicationId
   );
 
+  console.log({
+    publicationId,
+    flattenedPublications,
+    options,
+  });
+
   const selectedOption = options.find(
-    (option) => option.value === adminPublicationId
+    (option) => option.value === selectedPublication?.id
   );
 
   const handleChange = (value: IOption) => {

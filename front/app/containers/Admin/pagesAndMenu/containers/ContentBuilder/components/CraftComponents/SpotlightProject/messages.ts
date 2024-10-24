@@ -1,9 +1,9 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  spotlightProject: {
-    id: 'app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.SpotlightProject.spotlightProject',
-    defaultMessage: 'Spotlight Project',
+  spotlightProjectOrFolder: {
+    id: 'app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.SpotlightProject.spotlightProjectOrFolder',
+    defaultMessage: 'Spotlight project or folder',
   },
   buttonTextDefault: {
     id: 'app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.SpotlightProject.buttonTextDefault',
@@ -28,5 +28,9 @@ export default defineMessages({
   pleaseSelectAProject: {
     id: 'app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.SpotlightProject.pleaseSelectAProject',
     defaultMessage: 'Please select a project',
+  },
+  folder: {
+    id: 'app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.SpotlightProject.folder',
+    defaultMessage: 'folder',
   },
 });

@@ -92,12 +92,12 @@ SpotlightProject.craft = {
     settings: Settings,
   },
   custom: {
-    title: messages.spotlightProject,
+    title: messages.spotlightProjectOrFolder,
     noPointerEvents: true,
   },
 };
 
-export const spotlightProjectTitle = messages.spotlightProject;
+export const spotlightProjectOrFolderTitle = messages.spotlightProjectOrFolder;
 export const buttonTextDefault = messages.buttonTextDefault;
 
 export default SpotlightProject;

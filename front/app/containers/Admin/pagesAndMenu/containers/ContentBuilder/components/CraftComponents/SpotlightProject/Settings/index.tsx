@@ -3,9 +3,6 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
 
-import useProjectFolderById from 'api/project_folders/useProjectFolderById';
-import useProjectById from 'api/projects/useProjectById';
-
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
 import { useIntl } from 'utils/cl-intl';
@@ -20,33 +17,22 @@ const Settings = () => {
   const {
     actions: { setProp },
     publicationId,
-    publicationType,
     titleMultiloc,
     descriptionMultiloc,
     buttonTextMultiloc,
   } = useNode((node) => ({
-    publicationId: node.data.props.projectId,
+    publicationId: node.data.props.publicationId,
     publicationType: node.data.props.publicationType,
     titleMultiloc: node.data.props.titleMultiloc,
     descriptionMultiloc: node.data.props.descriptionMultiloc,
     buttonTextMultiloc: node.data.props.buttonTextMultiloc,
   }));
 
-  const { data: project } = useProjectById(
-    publicationType === 'project' ? publicationId : undefined
-  );
-  const { data: folder } = useProjectFolderById(
-    publicationType === 'folder' ? publicationId : undefined
-  );
-  const publication = project ?? folder;
-  const adminPublicationId =
-    publication?.data.relationships.admin_publication.data?.id;
-
   return (
     <Box mt="48px" mb="20px">
       <Box mb="20px">
         <PublicationSelect
-          adminPublicationId={adminPublicationId}
+          publicationId={publicationId}
           onSelect={(adminPublication) => {
             const relationship =
               adminPublication.relationships.publication.data;
