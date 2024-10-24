@@ -21,6 +21,7 @@ export interface SSOProviderMap {
   criipto: 'criipto';
   fake_sso: 'fake_sso';
   nemlog_in: 'nemlog_in';
+  keycloak: 'keycloak';
 }
 
 export type SSOProvider = SSOProviderMap[keyof SSOProviderMap];
@@ -50,6 +51,8 @@ export const handleOnSSOClick = (
   verification: boolean,
   flow: 'signup' | 'signin'
 ) => {
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (metaData?.successAction) {
     localStorage.setItem(
       'auth_success_action',
@@ -76,8 +79,12 @@ function setHref(
     sso_flow: flow,
     sso_pathname: pathname, // Also used by back-end to set user.locale following successful signup
     sso_verification: verification === true ? 'true' : undefined,
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     sso_verification_action: context?.action,
     sso_verification_id: isProjectContext(context) ? context.id : undefined,
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     sso_verification_type: context?.type,
   };
   const urlSearchParams = stringify(omitBy(ssoParams, isNil));

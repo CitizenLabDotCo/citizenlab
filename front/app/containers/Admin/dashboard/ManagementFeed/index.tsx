@@ -101,6 +101,8 @@ const ManagementFeed = () => {
             </Tr>
           </Thead>
           <Tbody>
+            {/* TODO: Fix this the next time the file is edited. */}
+            {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
             {managementFeed?.data.map((item) => (
               <ManagementFeedRow key={item.id} item={item} />
             ))}

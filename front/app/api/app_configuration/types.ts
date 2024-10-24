@@ -55,6 +55,9 @@ export type IAppConfigurationSettingsCore = {
   additional_admins_number: TSeatNumber;
   additional_moderators_number: TSeatNumber;
   onboarding?: boolean;
+  allow_sharing: boolean;
+  customer_portal_url?: string | null;
+  anonymous_name_scheme?: string | null;
 };
 
 export type TSeatNumber = number | null | undefined;
@@ -103,7 +106,7 @@ export interface IAppConfigurationSettings {
     client_id: string;
     logo_url: string;
     login_mechanism_name: string;
-    admin_only?: boolean;
+    visibility?: 'show' | 'link' | 'hide';
   };
   azure_ad_b2c_login?: {
     allowed: boolean;
@@ -135,6 +138,10 @@ export interface IAppConfigurationSettings {
     allowed: boolean;
     enabled: boolean;
   };
+  keycloak_login?: {
+    allowed: boolean;
+    enabled: boolean;
+  };
   nemlog_in_login?: {
     allowed: boolean;
     enabled: boolean;
@@ -145,9 +152,6 @@ export interface IAppConfigurationSettings {
     url?: string;
   };
   maps?: AppConfigurationMapSettings;
-  initiatives: ProposalsSettings;
-  initiative_review?: AppConfigurationFeature;
-  initiative_cosponsors?: AppConfigurationFeature;
   fragments?: {
     allowed: boolean;
     enabled: boolean;
@@ -241,9 +245,10 @@ export interface IAppConfigurationSettings {
   multi_language_platform?: AppConfigurationFeature;
   customisable_homepage_banner?: AppConfigurationFeature;
   management_feed?: AppConfigurationFeature;
-  proposals_participation_method?: AppConfigurationFeature;
   fake_sso?: AppConfigurationFeature;
   prescreening?: AppConfigurationFeature;
+  prescreening_ideation?: AppConfigurationFeature;
+  input_cosponsorship?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;

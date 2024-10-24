@@ -190,7 +190,7 @@ describe ActivitiesService do
 
     describe '#create_survey_not_submitted_activities' do
       let(:updated_at) { Time.parse '2022-07-01 10:00:00 +0000' }
-      let!(:idea) { create(:native_survey_response, publication_status: 'draft', updated_at: updated_at) }
+      let!(:idea) { create(:native_survey_response, publication_status: 'draft').tap { |input| input.update!(updated_at: updated_at) } }
 
       it 'logs survey_not_submitted activity when a native survey response is in draft but was last updated over 1 day ago' do
         now = updated_at + 1.day

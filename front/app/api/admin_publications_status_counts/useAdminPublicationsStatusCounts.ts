@@ -8,7 +8,7 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import adminPublicationsStatusCountsKeys from './keys';
 import { IStatusCounts, AdminPublicationsStatusCountsKeys } from './types';
 
-const fetchStatusCounts = ({
+export const fetchStatusCounts = ({
   rootLevelOnly,
   removeNotAllowedParents,
   publicationStatusFilter,

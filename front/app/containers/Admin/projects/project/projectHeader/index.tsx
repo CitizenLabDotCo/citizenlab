@@ -7,6 +7,7 @@ import {
   Text,
   colors,
   IconNames,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
 import styled from 'styled-components';
@@ -21,7 +22,7 @@ import otherProjectMessages from 'containers/Admin/projects/all/messages';
 import NavigationTabs from 'components/admin/NavigationTabs';
 import Button from 'components/UI/Button';
 
-import { MessageDescriptor, useIntl } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 
@@ -116,6 +117,7 @@ const ProjectHeader = ({ projectId }: Props) => {
               size="s"
               padding="4px 8px"
               mr="12px"
+              id="e2e-view-project"
             >
               {formatMessage(messages.view)}
             </Button>
@@ -171,14 +173,57 @@ const ProjectHeader = ({ projectId }: Props) => {
           <Text color="coolGrey600" fontSize="s" my="0px">
             ·
           </Text>
-          <Box display="flex" alignItems="center">
-            <Icon name="user" fill={colors.coolGrey600} width="16px" />
-            <Text color="coolGrey600" fontSize="s" m="0px">
-              {formatMessage(messages.participants, {
-                participantsCount: project.data.attributes.participants_count,
-              })}
-            </Text>
-          </Box>
+          <Tooltip
+            theme="dark"
+            maxWidth={280}
+            placement="bottom"
+            content={
+              <Box p="8px">
+                <FormattedMessage {...messages.participantsInfoTitle} />
+                <ul
+                  style={{
+                    margin: '0',
+                    marginBottom: '8px',
+                    listStyleType: 'disc',
+                  }}
+                >
+                  <li>
+                    <FormattedMessage {...messages.users} />
+                  </li>
+                  <li>
+                    <FormattedMessage {...messages.attendees} />
+                  </li>
+                </ul>
+
+                <FormattedMessage {...messages.participantsExclusionTitle} />
+                <ul
+                  style={{
+                    margin: '0',
+                    marginBottom: '8px',
+                    listStyleType: 'disc',
+                  }}
+                >
+                  <li>
+                    <FormattedMessage {...messages.followers} />
+                  </li>
+                  <li>
+                    <FormattedMessage {...messages.embeddedMethods} />
+                  </li>
+                </ul>
+
+                <FormattedMessage {...messages.note} />
+              </Box>
+            }
+          >
+            <Box display="flex" alignItems="center">
+              <Icon name="user" fill={colors.coolGrey600} width="16px" />
+              <Text color="coolGrey600" fontSize="s" m="0px">
+                {formatMessage(messages.participants, {
+                  participantsCount: project.data.attributes.participants_count,
+                })}
+              </Text>
+            </Box>
+          </Tooltip>
         </Box>
       </Box>
     </NavigationTabs>

@@ -94,7 +94,7 @@ resource 'Ideas' do
 
         example '[error] Update an idea when there is a posting disabled reason' do
           expect_any_instance_of(Permissions::ProjectPermissionsService)
-            .to receive(:denied_reason_for_action).with('posting_idea').and_return('i_dont_like_you')
+            .to receive(:denied_reason_for_action).with('editing_idea', anything).and_return('i_dont_like_you')
 
           do_request
 
@@ -365,7 +365,7 @@ resource 'Ideas' do
       public_input_params(self)
       with_options scope: :idea do
         parameter :custom_field_name1, 'A value for one custom field'
-        # parameter :cosponsor_ids, 'Array of user ids of the desired cosponsors' # TODO: cosponsors
+        parameter :cosponsor_ids, 'Array of user ids of the desired cosponsors'
       end
 
       let(:input) { create(:proposal) }
@@ -443,7 +443,21 @@ resource 'Ideas' do
           end
         end
 
-        # TODO: Update the cosponsors
+        describe do
+          let(:new_cosponsor) { create(:user) }
+          let(:input) { create(:proposal, cosponsors: create_list(:user, 2)) }
+
+          example 'Update the cosponsors' do
+            create(:cosponsorship, user: new_cosponsor, idea: input)
+
+            do_request
+            assert_status 200
+            json_response = json_parse response_body
+
+            expect(json_response.dig(:data, :relationships, :cosponsors, :data).length).to eq 3
+            expect(json_response.dig(:data, :relationships, :cosponsors, :data).pluck(:id)).to include new_cosponsor.id
+          end
+        end
       end
 
       context 'when admin' do
@@ -461,6 +475,17 @@ resource 'Ideas' do
             assert_status 200
             json_response = json_parse response_body
             expect(json_response.dig(:data, :relationships, :idea_status, :data, :id)).to eq idea_status_id
+          end
+
+          context 'when the proposal has reactions' do
+            before { create(:reaction, reactable: input, mode: 'up', user: input.author) }
+
+            let(:input) { create(:proposal, idea_status: create(:proposals_status, code: 'prescreening'), publication_status: 'submitted') }
+
+            example 'Publish the proposal', document: false do
+              do_request(idea: { idea_status_id: create(:proposals_status, code: 'proposed').id })
+              assert_status 200
+            end
           end
         end
 

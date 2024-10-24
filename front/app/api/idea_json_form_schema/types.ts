@@ -17,6 +17,7 @@ export type CustomFieldCodes =
   | 'title_multiloc'
   | 'body_multiloc'
   | 'topic_ids'
+  | 'cosponsor_ids'
   | 'location_description'
   | 'idea_images_attributes'
   | 'idea_files_attributes'

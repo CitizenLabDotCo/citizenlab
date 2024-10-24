@@ -119,6 +119,10 @@ module Export
         topic_titles.join(VALUE_SEPARATOR)
       end
 
+      def visit_cosponsor_ids(_field)
+        ''
+      end
+
       private
 
       attr_reader :model, :option_index, :multiloc_service

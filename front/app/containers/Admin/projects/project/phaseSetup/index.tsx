@@ -7,7 +7,6 @@ import {
   IconTooltip,
   colors,
 } from '@citizenlab/cl2-component-library';
-import moment from 'moment';
 import { useParams } from 'react-router-dom';
 import { CLErrors, UploadFile, Multiloc } from 'typings';
 
@@ -51,12 +50,13 @@ import clHistory from 'utils/cl-router/history';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 
 import CampaignRow from './components/CampaignRow';
+// import DateSetup from './components/DateSetup';
 import DateSetup from './components/DateSetup';
 import PhaseParticipationConfig from './components/PhaseParticipationConfig';
 import { ideationDefaultConfig } from './components/PhaseParticipationConfig/utils/participationMethodConfigs';
 import messages from './messages';
 import { SubmitStateType, ValidationErrors } from './typings';
-import { getTimelineTab, getStartDate } from './utils';
+import { getTimelineTab } from './utils';
 import validate from './validate';
 
 const convertToFileType = (phaseFiles: IPhaseFiles | undefined) => {
@@ -211,7 +211,9 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
     setInStatePhaseFiles(
       isDuplicate
         ? inStatePhaseFiles
-        : [...(inStatePhaseFiles || []), modifiedNewFile]
+        : // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+          [...(inStatePhaseFiles || []), modifiedNewFile]
     );
     setSubmitState(isDuplicate ? submitState : 'enabled');
   };
@@ -220,6 +222,8 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
     setInStatePhaseFiles(
       inStatePhaseFiles.filter((file) => file.name !== fileToRemove.name)
     );
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     setPhaseFilesToRemove([...(phaseFilesToRemove || []), fileToRemove]);
     setSubmitState('enabled');
   };
@@ -230,6 +234,7 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
 
     const { isValidated, errors } = validate(
       formData,
+      phases,
       formatMessage,
       tenantLocales
     );
@@ -242,6 +247,8 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
   };
 
   const handleError = (error: { errors: CLErrors }) => {
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     setErrors(error.errors || null);
     setProcessing(false);
     setSubmitState('error');
@@ -296,31 +303,18 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
 
   const save = async (formData: IUpdatedPhaseProperties) => {
     if (processing) return;
-
     setProcessing(true);
-
-    const start = getStartDate({
-      phase: phase?.data,
-      phases,
-      formData,
-    });
-    const end = formData.end_at ? moment(formData.end_at) : null;
-
-    // If the start date was automatically calculated, we need to update the dates in submit if even if the user didn't change them
-    const updatedAttr = {
-      ...formData,
-      ...(!formData.start_at &&
-        start && {
-          start_at: start.locale('en').format('YYYY-MM-DD'),
-          end_at:
-            formData.end_at ||
-            (end ? end.locale('en').format('YYYY-MM-DD') : ''),
-        }),
-    };
 
     if (phase) {
       updatePhase(
-        { phaseId: phase?.data.id, ...updatedAttr },
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        {
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+          phaseId: phase?.data.id,
+          ...formData,
+        },
         {
           onSuccess: (response) => {
             handleSaveResponse(response, false);
@@ -332,7 +326,7 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
       addPhase(
         {
           projectId,
-          ...updatedAttr,
+          ...formData,
         },
         {
           onSuccess: (response) => {
@@ -377,14 +371,14 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
             />
             <Error apiErrors={errors && errors.title_multiloc} />
           </SectionField>
-
           <DateSetup
             formData={formData}
             errors={errors}
+            validationErrors={validationErrors}
             setSubmitState={setSubmitState}
             setFormData={setFormData}
+            setValidationErrors={setValidationErrors}
           />
-
           <PhaseParticipationConfig
             phase={phase}
             formData={formData}
@@ -414,7 +408,6 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
             />
             <Error apiErrors={errors && errors.description_multiloc} />
           </SectionField>
-
           <SectionField>
             <SubSectionTitle>
               <FormattedMessage {...messages.uploadAttachments} />
@@ -427,7 +420,6 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
               apiErrors={errors}
             />
           </SectionField>
-
           {Object.keys(flatCampaigns).length > 0 && (
             <SectionField>
               <SubSectionTitle>
@@ -440,6 +432,8 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
                 <CampaignRow
                   campaign={stringifyCampaignFields(campaign, localize)}
                   checked={
+                    // TODO: Fix this the next time the file is edited.
+                    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                     !!formData?.campaigns_settings?.[
                       campaign.attributes.campaign_name
                     ]
@@ -451,11 +445,15 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
             </SectionField>
           )}
 
+          {/* TODO: Fix this the next time the file is edited. */}
+          {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
           {errors && errors.project && (
             <SectionField>
               <Error apiErrors={errors.project} />
             </SectionField>
           )}
+          {/* TODO: Fix this the next time the file is edited. */}
+          {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
           {errors && errors.base && (
             <SectionField>
               <Error apiErrors={errors.base} />

@@ -87,6 +87,8 @@ export const UserComments = () => {
   }
 
   if (
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     commentsList === null ||
     (!isNilOrError(commentsList) && commentsList.length === 0)
   ) {
@@ -132,15 +134,11 @@ export const UserComments = () => {
           )}
           {Object.keys(commentGroups).map((postId) => {
             const commentGroup = commentGroups[postId];
-            const postType = commentGroup[0].relationships.post.data.type as
-              | 'idea'
-              | 'initiative';
 
             return (
               <PostCommentGroup
                 key={postId}
                 postId={postId}
-                postType={postType}
                 comments={commentGroup}
                 userId={user.data.id}
               />

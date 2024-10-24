@@ -170,6 +170,9 @@ ach:
       topic_ids:
         title: crwdns207874:0crwdne207874:0
         description: crwdns207876:0crwdne207876:0
+      consponsor_ids:
+        title: crwdns3238295:0crwdne3238295:0
+        description: crwdns3238297:0crwdne3238297:0
       location:
         title: crwdns207878:0crwdne207878:0
         description: crwdns207880:0crwdne207880:0
@@ -209,6 +212,12 @@ ach:
           title: crwdns207914:0crwdne207914:0
         option:
           title: crwdns207916:0crwdne207916:0
+        proposal:
+          title: crwdns3324807:0crwdne3324807:0
+        initiative:
+          title: crwdns3324809:0crwdne3324809:0
+        petition:
+          title: crwdns3324811:0crwdne3324811:0
   custom_field_options:
     gender:
       male: crwdns207924:0crwdne207924:0
@@ -334,6 +343,8 @@ ach:
       you_can_sign_in_again_from: "crwdns417908:0%{date}crwdne417908:0"
   user:
     anon_first_name: "crwdns523109:0crwdne523109:0"
+    anon_scheme:
+      animals: 'crwdns3338239:0crwdne3338239:0'
   time:
     am: crwdns522947:0crwdne522947:0
     formats:

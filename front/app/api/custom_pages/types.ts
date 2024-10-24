@@ -91,10 +91,7 @@ export type TCustomPageCode =
   | 'custom'
   // 'about' is just a custom page in the end, with a different page code (legacy)
   | 'about'
-  | 'faq'
-  // proposals here is the proposals about page (/pages/initiatives),
-  // not the proposals index page (/initiatives).
-  | 'proposals';
+  | 'faq';
 
 export enum POLICY_PAGE {
   termsAndConditions = 'terms-and-conditions',

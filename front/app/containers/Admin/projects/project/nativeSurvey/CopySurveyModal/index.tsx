@@ -78,6 +78,8 @@ const CopySurveyModal = ({
             emptyOptionMessage={messages.noProject}
             onProjectFilter={handleProjectFilter}
           />
+          {/* TODO: Fix this the next time the file is edited. */}
+          {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
           {projectId !== undefined && (
             <PhaseFilter
               label={formatMessage(messages.surveyPhase)}

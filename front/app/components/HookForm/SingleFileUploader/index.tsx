@@ -34,6 +34,8 @@ const SingleFileUploader = ({ name, accept }: Props) => {
         control={control}
         defaultValue={undefined}
         render={({ field: { ref: _ref, ...field } }) => {
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           const fileName = field?.value?.filename;
 
           return (

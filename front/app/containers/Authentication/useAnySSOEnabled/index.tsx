@@ -29,6 +29,10 @@ export default function useAnySSOEnabled() {
     name: 'criipto_login',
   });
 
+  const keycloakLoginEnabled = useFeatureFlag({
+    name: 'keycloak_login',
+  });
+
   const anySSOEnabled =
     fakeSSOEnabled ||
     googleLoginEnabled ||
@@ -39,8 +43,9 @@ export default function useAnySSOEnabled() {
     viennaCitizenLoginEnabled ||
     claveUnicaLoginEnabled ||
     hoplrLoginEnabled ||
-    idAustriaLoginEnabled ||
-    criiptoLoginEnabled;
+    criiptoLoginEnabled ||
+    keycloakLoginEnabled ||
+    idAustriaLoginEnabled;
 
   return anySSOEnabled;
 }

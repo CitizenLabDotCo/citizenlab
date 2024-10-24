@@ -71,7 +71,11 @@ const Fields = ({
         getAjvErrorMessage?.(error, uischema) ||
         getDefaultAjvErrorMessage({
           keyword: error.keyword,
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           format: error?.parentSchema?.format,
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           type: error?.parentSchema?.type,
         });
       return formatMessage(message, {

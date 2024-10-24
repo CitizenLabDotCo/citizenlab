@@ -7,15 +7,40 @@ RSpec.describe EmailCampaigns::UserDigestMailer do
   describe 'UserDigest' do
     let_it_be(:recipient) { create(:admin, locale: 'en') }
     let_it_be(:campaign) { EmailCampaigns::Campaigns::UserDigest.create! }
+    let_it_be(:proposal) { create(:proposal) }
+    let_it_be(:idea) { create(:idea) }
     let_it_be(:command) do
       {
         recipient: recipient,
         event_payload: {
           notifications_count: 2,
-          top_ideas: [],
+          top_ideas: [
+            {
+              title_multiloc: idea.title_multiloc,
+              body_multiloc: idea.body_multiloc,
+              author_name: 'Ned Chipshop',
+              likes_count: idea.likes_count,
+              dislikes_count: idea.dislikes_count,
+              comments_count: idea.comments_count,
+              published_at: idea.published_at&.iso8601,
+              url: 'http://www.example.com/idea',
+              idea_images: [],
+              top_comments: []
+            }
+          ],
           discover_projects: [],
-          new_initiatives: [],
-          successful_initiatives: []
+          successful_proposals: [
+            {
+              id: proposal.id,
+              title_multiloc: proposal.title_multiloc,
+              url: 'http://www.example.com/proposal',
+              published_at: proposal.published_at&.iso8601,
+              author_name: 'Bob Muttcutts',
+              likes_count: proposal.likes_count,
+              dislikes_count: nil,
+              comments_count: proposal.comments_count
+            }
+          ]
         }
       }
     end
@@ -40,6 +65,11 @@ RSpec.describe EmailCampaigns::UserDigestMailer do
       expect(mail.body.encoded).to match(AppConfiguration.instance.settings('core', 'organization_name')['en'])
     end
 
+    it 'contains the ideas and proposals' do
+      expect(mail.body.encoded).to match(idea.title_multiloc['en'])
+      expect(mail.body.encoded).to match(proposal.title_multiloc['en'])
+    end
+
     it 'assigns home url' do
       expect(mail.body.encoded).to match(Frontend::UrlService.new.home_url(app_configuration: AppConfiguration.instance, locale: Locale.new('en')))
     end
@@ -51,8 +81,7 @@ RSpec.describe EmailCampaigns::UserDigestMailer do
           notifications_count: 2,
           top_ideas: [],
           discover_projects: [],
-          new_initiatives: [],
-          successful_initiatives: []
+          successful_proposals: []
         }
       end
 

@@ -21,8 +21,8 @@ import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 
-import { FeatureFlags, getTabs, IPhaseTab } from '../tabs';
 import { getTimelineTab } from '../phaseSetup/utils';
+import { FeatureFlags, getTabs, IPhaseTab } from '../tabs';
 
 import { PhaseHeader } from './PhaseHeader';
 
@@ -117,6 +117,8 @@ export default () => {
       }
     }
 
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (phases.data.length === 0 && !isLoadingPhases && !isFetchingPhases) {
       clHistory.replace(`/admin/projects/${projectId}/phases/new`);
     } else if (phaseShown && pathname.endsWith('phases/setup')) {

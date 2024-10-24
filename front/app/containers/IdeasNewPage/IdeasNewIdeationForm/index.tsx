@@ -63,6 +63,7 @@ interface FormValues {
   location_description?: string;
   location_point_geojson?: GeoJSON.Point;
   topic_ids?: string[];
+  cosponsor_ids?: string[];
   publication_status?: IdeaPublicationStatus;
 }
 
@@ -90,7 +91,7 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
     phaseId,
   });
   const search = location.search;
-
+  const [loading, setLoading] = useState(false);
   const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
     useState(false);
   const [processingLocation, setProcessingLocation] = useState(false);
@@ -156,6 +157,7 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
   };
 
   const onSubmit = async (data: FormValues) => {
+    setLoading(true);
     const location_point_geojson = await getLocationGeojson(
       initialFormData,
       data
@@ -179,6 +181,7 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
       ideaId,
       idea,
     });
+    setLoading(false);
   };
 
   const getApiErrorMessage: ApiErrorGetter = useCallback(
@@ -198,12 +201,16 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
         messages[
           `ajv_error_${uiSchema?.options?.inputTerm}_${
             getFieldNameFromPath(error.instancePath) ||
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             error?.params?.missingProperty
           }_${error.keyword}`
         ] ||
         messages[
           `ajv_error_${
             getFieldNameFromPath(error.instancePath) ||
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             error?.params?.missingProperty
           }_${error.keyword}`
         ] ||
@@ -259,6 +266,7 @@ const IdeasNewIdeationForm = ({ project, phaseId }: Props) => {
               initialFormData={initialFormData}
               getAjvErrorMessage={getAjvErrorMessage}
               getApiErrorMessage={getApiErrorMessage}
+              loading={loading}
               title={
                 participationMethodConfig.getFormTitle ? (
                   <Box mb="40px">

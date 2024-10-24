@@ -33,6 +33,7 @@ module MultiTenancy
               additional_admins_number: 1,
               additional_moderators_number: 1,
               population: 27_500,
+              allow_sharing: true,
               google_search_console_meta_attribute: 'fake_meta_attribute'
             },
             password_login: {
@@ -60,7 +61,7 @@ module MultiTenancy
               client_id: ENV.fetch('DEFAULT_AZURE_AD_LOGIN_CLIENT_ID'),
               logo_url: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/microsoft-azure-logo.png',
               login_mechanism_name: 'Azure Active Directory',
-              admin_only: false
+              visibility: 'show'
             },
             azure_ad_b2c_login: {
               allowed: true,
@@ -463,6 +464,10 @@ module MultiTenancy
               allowed: true
             },
             proposals_participation_method: {
+              enabled: true,
+              allowed: true
+            },
+            input_cosponsorship: {
               enabled: true,
               allowed: true
             },

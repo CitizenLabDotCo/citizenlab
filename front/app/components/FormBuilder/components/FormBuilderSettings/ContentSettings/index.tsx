@@ -24,16 +24,18 @@ import FieldTypeSwitcher from '../FieldTypeSwitcher';
 type ContentSettingsProps = {
   field: IFlatCustomFieldWithIndex;
   locales: SupportedLocale[];
-  surveyHasSubmissions: boolean;
+  formHasSubmissions: boolean;
 };
 
 export const ContentSettings = ({
   field,
   locales,
-  surveyHasSubmissions,
+  formHasSubmissions,
 }: ContentSettingsProps) => {
   const { watch } = useFormContext();
   const logic = watch(`customFields.${field.index}.logic`);
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const lockedAttributes = field?.constraints?.locks;
   const platformLocale = useLocale();
   const hasRules = logic && logic.rules && logic.rules.length > 0;
@@ -53,7 +55,7 @@ export const ContentSettings = ({
           <>
             <FieldTypeSwitcher
               field={field}
-              surveyHasSubmissions={surveyHasSubmissions}
+              formHasSubmissions={formHasSubmissions}
             />
             {!lockedAttributes?.title_multiloc && (
               <SectionField>

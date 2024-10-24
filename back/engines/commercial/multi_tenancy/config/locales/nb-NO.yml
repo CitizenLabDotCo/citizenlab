@@ -1,11 +1,11 @@
 #Translations for continuous to timeline migration
-"nb-NO":
+nb:
   phase_title_default:
-    ideation: Samle innspill
+    ideation: Samle inn innspill
     voting: Stemmegivning
-    poll: avstemming
-    native_survey: undersøkelse
-    survey: undersøkelse
-    document_annotation: Dokument tilbakemelding
+    poll: Meningsmåling
+    native_survey: Spørreundersøkelse
+    survey: Spørreundersøkelse
+    document_annotation: Dokumenter tilbakemeldinger
     volunteering: Finn frivillige
     information: Informasjon

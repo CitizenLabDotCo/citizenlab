@@ -39,9 +39,6 @@ const Following = () => {
     Project: {
       label: messages.projects,
     },
-    Initiative: {
-      label: messages.proposals,
-    },
     Idea: {
       label: messages.inputs,
     },
@@ -56,6 +53,8 @@ const Following = () => {
     },
   };
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!user || (isFollowingEnabled && authUser?.data?.id !== user.data.id)) {
     return null;
   }
@@ -84,7 +83,6 @@ const Following = () => {
           availableTabs={[
             'Project',
             'Idea',
-            'Initiative',
             'ProjectFolders::Folder',
             'Topics',
             'Areas',

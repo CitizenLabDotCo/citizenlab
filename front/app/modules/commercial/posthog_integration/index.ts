@@ -180,6 +180,8 @@ const configuration: ModuleConfiguration = {
 
             // There seems to be no way to call opt_out_capturing without posthog
             // writing to localstorage. Clearing it, instead, seems to work fine.
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             posthogClient?.clear_opt_in_out_capturing({
               enable_persistence: false,
             });

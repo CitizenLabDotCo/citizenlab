@@ -15,7 +15,7 @@ RSpec.describe EmailCampaigns::ModeratorDigestMailer do
       {
         recipient: recipient,
         event_payload: {
-          project_name: project.title_multiloc[recipient.locale],
+          project_title: project.title_multiloc[recipient.locale],
           project_id: project.id,
           statistics: {
             activities: {
@@ -59,7 +59,8 @@ RSpec.describe EmailCampaigns::ModeratorDigestMailer do
               comments_increment: idea.comments.where('created_at > ?', Time.now - days_ago).count
             }
           end,
-          has_new_ideas: true
+          has_new_ideas: true,
+          successful_proposals: []
         },
         tracked_content: {
           idea_ids: [],
@@ -75,7 +76,8 @@ RSpec.describe EmailCampaigns::ModeratorDigestMailer do
     end
 
     it 'renders the subject' do
-      expect(mail.subject).to start_with('Your weekly project manager report')
+      expect(mail.subject).to start_with('Weekly manager report')
+      expect(mail.subject).to include(project.title_multiloc['en'])
     end
 
     it 'renders the receiver email' do

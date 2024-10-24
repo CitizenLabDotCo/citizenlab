@@ -188,7 +188,6 @@ const ProjectProposalsManager = ({
       <ThreeColumns>
         <LeftColumn>
           <ActionBar
-            type={'ProjectProposals'}
             selection={selection}
             resetSelection={resetSelection}
             handleClickEdit={openPreviewEdit}
@@ -227,7 +226,7 @@ const ProjectProposalsManager = ({
             sortDirection={
               queryParameters.sort
                 ? getSortDirection(queryParameters.sort)
-                : 'ascending'
+                : 'descending'
             }
             onChangeSort={onChangeSorting}
             posts={proposals.data}

@@ -41,9 +41,7 @@ export function isNonEmptyString(str: string) {
 type pageKeys =
   | 'admin'
   | 'idea_form'
-  | 'initiative_form'
   | 'idea_edit'
-  | 'initiative_edit'
   | 'native_survey'
   | 'sign_in'
   | 'sign_up'
@@ -68,16 +66,10 @@ export function isPage(pageKey: pageKeys, pathName: string) {
       return pathnameWithoutLocale.startsWith('/email-settings');
     case 'admin':
       return pathnameWithoutLocale.startsWith('/admin/');
-    case 'initiative_form':
-      // Needs to use endsWith
-      // Otherwise an initiative with the name 'new playground for our children' would also pass
-      return pathnameWithoutLocale.endsWith('/initiatives/new');
     case 'idea_form':
       return pathnameWithoutLocale.endsWith('/ideas/new');
     case 'idea_edit':
       return pathnameWithoutLocale.startsWith('/ideas/edit/');
-    case 'initiative_edit':
-      return pathnameWithoutLocale.startsWith('/initiatives/edit/');
     case 'native_survey':
       return pathnameWithoutLocale.endsWith('/surveys/new');
     case 'sign_in':
@@ -104,34 +96,25 @@ export const isIdeaShowPage = (urlSegments: string[]) => {
   );
 };
 
-export const isInitiativeShowPage = (urlSegments: string[]) => {
+export const initiativeShowPageSlug = (urlSegments: string[]) => {
   const firstUrlSegment = urlSegments[0];
   const secondUrlSegment = urlSegments[1];
   const lastUrlSegment = urlSegments[urlSegments.length - 1];
 
-  return (
+  if (
     urlSegments.length === 3 &&
     locales.includes(firstUrlSegment) &&
     secondUrlSegment === 'initiatives' &&
     lastUrlSegment !== 'new'
-  );
+  ) {
+    return lastUrlSegment;
+  } else {
+    return null;
+  }
 };
 
 export function stopPropagation(event) {
   event.stopPropagation();
-}
-
-// Still useful when checking lengt of content that gets wrapped with HTML
-// ===
-export function stripHtmlTags(str: string | null | undefined) {
-  if (str === null || str === undefined || str === '') {
-    return '';
-  } else {
-    return str.replace(
-      /<\/?(p|div|span|ul|ol|li|br|em|img|strong|a)[^>]{0,}\/?>/g,
-      ''
-    );
-  }
 }
 
 // e.g. 'en-GB' -> 'enGb'
@@ -200,6 +183,8 @@ export function removeFocusAfterMouseClick(event: React.MouseEvent) {
 }
 
 export const keys = <T extends object>(obj: T) =>
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   obj && (Object.keys(obj) as Array<keyof T>);
 
 export const get = <T, K extends keyof T>(obj: T, key: K) => obj[key];

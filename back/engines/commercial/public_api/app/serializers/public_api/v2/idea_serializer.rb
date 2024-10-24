@@ -9,6 +9,7 @@ class PublicApi::V2::IdeaSerializer < PublicApi::V2::BaseSerializer
     :dislikes_count,
     :comments_count,
     :published_at,
+    :submitted_at,
     :publication_status,
     :project_id,
     :project_title,

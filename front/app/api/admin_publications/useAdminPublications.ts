@@ -11,7 +11,7 @@ import {
   IQueryParameters,
 } from './types';
 
-const fetchAdminPublications = (filters: IQueryParameters) => {
+export const fetchAdminPublications = (filters: IQueryParameters) => {
   const {
     pageNumber,
     pageSize,
@@ -42,7 +42,10 @@ const fetchAdminPublications = (filters: IQueryParameters) => {
   });
 };
 
-const useAdminPublications = (queryParams: IQueryParameters) => {
+const useAdminPublications = (
+  queryParams: IQueryParameters,
+  { enabled = true } = {}
+) => {
   return useInfiniteQuery<
     IAdminPublications,
     CLErrors,
@@ -53,10 +56,13 @@ const useAdminPublications = (queryParams: IQueryParameters) => {
     queryFn: ({ pageParam }) =>
       fetchAdminPublications({ ...queryParams, pageNumber: pageParam }),
     getNextPageParam: (lastPage) => {
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       const hasNextPage = lastPage.links?.next;
       const pageNumber = getPageNumberFromUrl(lastPage.links.self);
       return hasNextPage && pageNumber ? pageNumber + 1 : null;
     },
+    enabled,
   });
 };
 

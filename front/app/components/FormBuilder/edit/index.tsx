@@ -206,6 +206,8 @@ const FormEdit = ({
             }),
         required: field.required,
         enabled: field.enabled,
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         title_multiloc: field.title_multiloc || {},
         key: field.key,
         code: field.code,
@@ -215,6 +217,8 @@ const FormEdit = ({
         ...(field.map_config_id && {
           map_config_id: field.map_config_id,
         }),
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         description_multiloc: field.description_multiloc || {},
         ...(['select', 'multiselect', 'multiselect_image'].includes(
           field.input_type
@@ -249,6 +253,7 @@ const FormEdit = ({
           maximum: field.maximum?.toString() || '5',
         }),
       }));
+
       await updateFormCustomFields(
         {
           projectId,
@@ -407,7 +412,7 @@ const FormEdit = ({
                       field={selectedField}
                       closeSettings={closeSettings}
                       builderConfig={builderConfig}
-                      surveyHasSubmissions={totalSubmissions > 0}
+                      formHasSubmissions={totalSubmissions > 0}
                     />
                   </Box>
                 )}

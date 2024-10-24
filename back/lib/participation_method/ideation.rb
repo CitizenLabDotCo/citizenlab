@@ -15,13 +15,14 @@ module ParticipationMethod
     end
 
     def assign_defaults(input)
-      input_status_code = input.creation_phase&.prescreening_enabled ? 'prescreening' : 'proposed'
+      input_status_code = phase&.prescreening_enabled ? 'prescreening' : 'proposed'
       input.idea_status ||= IdeaStatus.find_by!(code: input_status_code, participation_method: idea_status_method)
       input.publication_status ||= input.idea_status.public_post? ? 'published' : 'submitted'
     end
 
     def assign_defaults_for_phase
       phase.ideas_order ||= 'trending'
+      phase.input_term ||= default_input_term if supports_input_term?
     end
 
     def author_in_form?(user)
@@ -34,6 +35,10 @@ module ParticipationMethod
       phase.project.phases.any? do |phase|
         phase.participation_method == 'voting' && Factory.instance.voting_method_for(phase).budget_in_form?(user)
       end
+    end
+
+    def cosponsors_in_form?
+      false
     end
 
     # Locks mirror the name of the fields whose default values cannot be changed (ie are locked)
@@ -297,6 +302,32 @@ module ParticipationMethod
           answer_visible_to: CustomField::VISIBLE_TO_PUBLIC
         )
       end
+
+      if cosponsors_in_form?
+        fields << CustomField.new(
+          id: SecureRandom.uuid,
+          resource: custom_form,
+          key: 'cosponsor_ids',
+          code: 'cosponsor_ids',
+          input_type: 'cosponsor_ids',
+          title_multiloc: multiloc_service.i18n_to_multiloc(
+            'custom_fields.ideas.consponsor_ids.title',
+            locales: CL2_SUPPORTED_LOCALES
+          ),
+          description_multiloc: begin
+            multiloc_service.i18n_to_multiloc(
+              'custom_fields.ideas.consponsor_ids.description',
+              locales: CL2_SUPPORTED_LOCALES
+            )
+          rescue StandardError
+            {}
+          end,
+          required: false,
+          enabled: false,
+          ordering: proposed_budget_in_form? ? 10 : 9,
+          answer_visible_to: CustomField::VISIBLE_TO_PUBLIC
+        )
+      end
       fields
     end
 
@@ -327,6 +358,10 @@ module ParticipationMethod
 
     def supports_input_term?
       true
+    end
+
+    def default_input_term
+      'idea'
     end
 
     def supports_inputs_without_author?

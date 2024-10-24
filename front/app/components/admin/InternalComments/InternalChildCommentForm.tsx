@@ -11,7 +11,6 @@ import { filter, tap } from 'rxjs/operators';
 import styled from 'styled-components';
 
 import useAddInternalCommentToIdea from 'api/internal_comments/useAddInternalCommentToIdea';
-import useAddInternalCommentToInitiative from 'api/internal_comments/useAddInternalCommentToInitiative';
 import useAuthUser from 'api/me/useAuthUser';
 
 import Avatar from 'components/Avatar';
@@ -78,8 +77,6 @@ const CancelButton = styled(Button)`
 
 interface Props {
   ideaId: string | undefined;
-  initiativeId: string | undefined;
-  postType: 'idea' | 'initiative';
   projectId?: string | null;
   parentId: string;
   className?: string;
@@ -88,8 +85,6 @@ interface Props {
 const InternalChildCommentForm = ({
   parentId,
   ideaId,
-  initiativeId,
-  postType,
   projectId,
   className,
 }: Props) => {
@@ -101,18 +96,14 @@ const InternalChildCommentForm = ({
     mutate: addCommentToIdeaComment,
     isLoading: isAddCommentToIdeaLoading,
   } = useAddInternalCommentToIdea();
-  const {
-    mutate: addCommentToInitiativeComment,
-    isLoading: isAddCommentToInitiativeLoading,
-  } = useAddInternalCommentToInitiative();
+
   const [inputValue, setInputValue] = useState('');
   const [focused, setFocused] = useState(false);
   const [canSubmit, setCanSubmit] = useState(false);
   const [hasApiError, setHasApiError] = useState(false);
   const [tagValue, setTagValue] = useState('');
   const textareaElement = useRef<HTMLTextAreaElement | null>(null);
-  const processing =
-    isAddCommentToIdeaLoading || isAddCommentToInitiativeLoading;
+  const processing = isAddCommentToIdeaLoading;
 
   useEffect(() => {
     const subscriptions: Subscription[] = [
@@ -145,6 +136,8 @@ const InternalChildCommentForm = ({
   }
 
   const setCaretAtEnd = (element: HTMLTextAreaElement) => {
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (element.setSelectionRange && element.textContent) {
       element.setSelectionRange(
         element.textContent.length,
@@ -163,8 +156,8 @@ const InternalChildCommentForm = ({
   const onFocus = () => {
     trackEventByName(tracks.focusChildCommentEditor, {
       extra: {
-        postId: ideaId || initiativeId,
-        postType,
+        postId: ideaId,
+        postType: 'idea',
         parentId,
       },
     });
@@ -188,38 +181,17 @@ const InternalChildCommentForm = ({
 
       trackEventByName(tracks.clickChildCommentPublish, {
         extra: {
-          postId: ideaId || initiativeId,
-          postType,
+          postId: ideaId,
+          postType: 'idea',
           parentId,
           content: inputValue,
         },
       });
 
-      if (postType === 'idea' && projectId && ideaId) {
+      if (projectId && ideaId) {
         addCommentToIdeaComment(
           {
             ideaId,
-            author_id: authUser.data.id,
-            parent_id: parentId,
-            body: commentBodyText,
-          },
-          {
-            onSuccess: () => {
-              commentAdded();
-              setInputValue('');
-              setFocused(false);
-            },
-            onError: (_error) => {
-              setHasApiError(true);
-            },
-          }
-        );
-      }
-
-      if (postType === 'initiative' && initiativeId) {
-        addCommentToInitiativeComment(
-          {
-            initiativeId,
             author_id: authUser.data.id,
             parent_id: parentId,
             body: commentBodyText,
@@ -242,6 +214,8 @@ const InternalChildCommentForm = ({
   const setRef = (element: HTMLTextAreaElement) => {
     textareaElement.current = element;
 
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (textareaElement.current) {
       textareaElement.current.scrollIntoView({
         behavior: 'smooth',
@@ -250,6 +224,8 @@ const InternalChildCommentForm = ({
       });
 
       setTimeout(() => {
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         textareaElement?.current?.focus();
       }, 100);
 
@@ -273,8 +249,12 @@ const InternalChildCommentForm = ({
     return (
       <Container className={`${className || ''}`}>
         <StyledAvatar
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           userId={authUser?.data.id}
           size={30}
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           isLinkToProfile={!!authUser?.data.id}
           showModeratorStyles
         />
@@ -282,6 +262,8 @@ const InternalChildCommentForm = ({
           onClickOutside={onCancel}
           closeOnClickOutsideEnabled={false}
         >
+          {/* TODO: Fix this the next time the file is edited. */}
+          {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
           <Form className={focused ? 'focused' : ''}>
             <label>
               <HiddenLabel>
@@ -295,8 +277,7 @@ const InternalChildCommentForm = ({
                   commentsMessages.childCommentBodyPlaceholder
                 )}
                 rows={3}
-                postId={ideaId || initiativeId}
-                postType={postType}
+                postId={ideaId}
                 value={inputValue}
                 error={getErrorMessage()}
                 onChange={onChange}
@@ -307,7 +288,7 @@ const InternalChildCommentForm = ({
                 border="none"
                 boxShadow="none"
                 getTextareaRef={setRef}
-                roles={getMentionRoles(postType === 'idea')}
+                roles={getMentionRoles(true)}
               />
               <ButtonWrapper>
                 <CancelButton

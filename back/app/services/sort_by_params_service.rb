@@ -55,6 +55,8 @@ class SortByParamsService
     when '-likes_count' then scope.order(likes_count: :asc)
     when 'comments_count' then scope.order(comments_count: :desc)
     when '-comments_count' then scope.order(comments_count: :asc)
+    when 'accepted_cosponsorships_count' then scope.order_accepted_cosponsorships(:desc)
+    when '-accepted_cosponsorships_count' then scope.order_accepted_cosponsorships(:asc)
     else
       raise "Unsupported sorting parameter #{params[:sort]}"
     end
@@ -83,7 +85,7 @@ class SortByParamsService
   def idea_voting_count_sort(scope, sort, phase_id, direction)
     if phase_id
       ids = IdeasPhase.where(phase_id: phase_id).order("#{sort} #{direction}").pluck(:idea_id)
-      Idea.unscoped.where(id: ids).order_as_specified(id: ids)
+      scope.order_as_specified(id: ids)
     else
       scope.order("#{sort} #{direction}")
     end

@@ -420,6 +420,20 @@ export default defineMessages({
     defaultMessage:
       'Give feedback, assign topics or copy inputs to the next project phase.',
   },
+  votingShareResultsTurnedOff: {
+    id: 'app.containers.AdminPage.ProjectEdit.PostManager.votingShareResultsTurnedOff',
+    defaultMessage: 'Result sharing is turned off.',
+  },
+  votingShareResultsTurnedOff2: {
+    id: 'app.containers.AdminPage.ProjectEdit.PostManager.votingShareResultsTurnedOff2',
+    defaultMessage:
+      "Voting results won't be shared at the end of the phase unless you modify it in the phase setup.",
+  },
+  votingShareResultsTurnedOn: {
+    id: 'app.containers.AdminPage.ProjectEdit.PostManager.votingShareResultsTurnedOn2',
+    defaultMessage:
+      'These results will be automatically shared once the phase ends. Modify the end date of this phase to change when the results are shared.',
+  },
   subtitleInputProjectProposals: {
     id: 'app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputProjectProposals',
     defaultMessage: 'Manage proposals, give feedback and assign topics.',
@@ -437,6 +451,7 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.hiddenFieldsSupportArticleUrl',
     defaultMessage: 'https://support.citizenlab.co/en/articles/1641202',
   },
+  // #input_term_copy
   ideaTerm: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.ideaTerm',
     defaultMessage: 'Idea',
@@ -460,6 +475,18 @@ export default defineMessages({
   contributionTerm: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.contributionTerm',
     defaultMessage: 'Contribution',
+  },
+  proposalTerm: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.proposalTerm',
+    defaultMessage: 'Proposal',
+  },
+  initiativeTerm: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.initiativeTerm',
+    defaultMessage: 'Initiative',
+  },
+  petitionTerm: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.petitionTerm',
+    defaultMessage: 'Petition',
   },
   inputTermSelectLabel: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel',
@@ -586,5 +613,13 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.screeningTooltip',
     defaultMessage:
       'Screening is not included in your current plan. Talk to your Government Success Manager or admin to unlock it.',
+  },
+  missingStartDateError: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.missingStartDateError',
+    defaultMessage: 'Missing start date',
+  },
+  missingEndDateError: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.missingEndDateError',
+    defaultMessage: 'Missing end date',
   },
 });

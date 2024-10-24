@@ -10,6 +10,7 @@ hr:
       "comment_on_idea_you_follow": Komentar na ideju koju slijedite
       "comment_on_initiative_you_follow": Komentar na prijedlog koji slijedite
       "cosponsor_of_your_initiative": Korisnik prihvaća moj poziv da susponzorira moj prijedlog
+      "cosponsor_of_your_idea": Korisnik prihvaća moj poziv da susponzorira moj prijedlog
       "event_registration_confirmation": Potvrda prijave za događaj
       "first_idea_published": Objava moje prve ideje
       "idea_marked_as_spam": Izvješće o neželjenoj ideji
@@ -18,6 +19,7 @@ hr:
       "initiative_marked_as_spam": Izvješće o neželjenom prijedlogu
       "initiative_published": Objava mog prijedloga
       "invitation_to_cosponsor_initiative": Poziv za susponzoriranje prijedloga
+      "invitation_to_cosponsor_idea": Poziv za susponzoriranje prijedloga
       "initiative_resubmitted_for_review": Prijedlog ponovno poslan na pregled
       "invite_received": Pozivnica
       "invite_reminder": Podsjetnik o pozivnici
@@ -138,6 +140,12 @@ hr:
       today: Danas
       wrong_content: 'Komentar nije relevantan.'
       yesterday: Jučer
+    cosponsor_of_your_idea:
+      cta_reply_to: 'Pogledajte svoj prijedlog'
+      event_description: 'čestitamo! %{cosponsorName} je prihvatio vaš poziv da bude susponzor vašeg prijedloga.'
+      main_header: '%{cosponsorName} je prihvatio vaš poziv da bude susponzor vašeg prijedloga'
+      subject: '%{cosponsorName} je prihvatio vaš poziv da bude susponzor vašeg prijedloga'
+      preheader: '%{cosponsorName} je prihvatio vaš poziv da bude susponzor vašeg prijedloga'
     cosponsor_of_your_initiative:
       cta_reply_to: 'Pogledajte svoj prijedlog'
       event_description_initiative: 'Čestitamo! %{cosponsorName} je prihvatio vaš poziv da susponzorira vaš prijedlog.'
@@ -181,6 +189,15 @@ hr:
       main_header: '%{firstName}, imate novi zadatak'
       subject: 'Imate zadatak na %{organizationName} platformi '
       preheader_initiative: 'Dodijeljen vam je prijedlog od %{authorName}'
+    invitation_to_cosponsor_idea:
+      cta_reply_to: 'Susponzorirajte ovaj prijedlog'
+      event_description: '%{authorName} je stvorio novi prijedlog i želi da ga supokrovite.'
+      event_description_cosponsoring: 'Susponzoriranje prijedloga znači da će <strong>vaše ime biti prikazano</strong> s imenima ostalih susponzora prijedloga.'
+      event_description_before_action: 'Da biste vidjeli ponudu i prihvatili poziv, morate biti prijavljeni na svoj račun.'
+      event_description_action: 'Kliknite ispod kako biste pročitali prijedlog.'
+      main_header: 'Pozvani ste da budete supokrovitelj prijedloga'
+      subject: 'Pozvani ste da budete supokrovitelj prijedloga'
+      preheader: 'Pozvani ste da budete supokrovitelj prijedloga %{authorName}'
     invitation_to_cosponsor_initiative:
       cta_reply_to: 'Susponzorirajte ovaj prijedlog'
       event_description_initiative: '%{authorName} je stvorio novi prijedlog i želio bi da ga supokrovite.'

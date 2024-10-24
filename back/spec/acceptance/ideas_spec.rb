@@ -253,6 +253,7 @@ resource 'Ideas' do
       let!(:baskets) { create_list(:basket, 2, ideas: [idea], phase: project.phases.first) }
       let!(:topic) { create(:topic, ideas: [idea], projects: [idea.project]) }
       let!(:user_reaction) { create(:reaction, user: @user, reactable: idea) }
+      let!(:cosponsorship) { create(:cosponsorship, idea: idea, user: @user) }
       let(:id) { idea.id }
 
       example_request 'Get one idea by id' do
@@ -265,6 +266,11 @@ resource 'Ideas' do
           slug: idea.slug,
           budget: idea.budget,
           action_descriptors: {
+            editing_idea: {
+              enabled: false,
+              disabled_reason: 'not_author',
+              future_enabled_at: nil
+            },
             commenting_idea: {
               enabled: true,
               disabled_reason: nil,
@@ -303,7 +309,8 @@ resource 'Ideas' do
           },
           author: { data: { id: idea.author_id, type: 'user' } },
           idea_status: { data: { id: idea.idea_status_id, type: 'idea_status' } },
-          user_reaction: { data: { id: user_reaction.id, type: 'reaction' } }
+          user_reaction: { data: { id: user_reaction.id, type: 'reaction' } },
+          cosponsors: { data: [{ id: cosponsorship.user_id, type: 'user' }] }
         )
       end
     end
@@ -400,7 +407,7 @@ resource 'Ideas' do
 
         before do
           allow_any_instance_of(IdeaPolicy).to receive(:destroy?).and_return(true)
-          input.ideas_phases.create!(phase: phase)
+          input.update!(phases: [phase])
         end
 
         example 'the count starts at 1' do

@@ -12,7 +12,6 @@ import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
-import { IInitiativeStatusData } from 'api/initiative_statuses/types';
 import usePhase from 'api/phases/usePhase';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -38,7 +37,7 @@ const StatusText = styled.div`
 `;
 
 interface Props {
-  status: IIdeaStatusData | IInitiativeStatusData;
+  status: IIdeaStatusData;
   active: boolean;
   onClick: () => void;
 }
@@ -46,7 +45,16 @@ interface Props {
 const FilterSidebarStatusesItem = ({ status, active, onClick }: Props) => {
   const { phaseId } = useParams() as { phaseId: string };
   const { data: phase } = usePhase(phaseId);
-  const prescreeningEnabled = useFeatureFlag({ name: 'prescreening' });
+
+  const preScreeningFeatureFlag =
+    phase?.data.attributes.participation_method === 'ideation'
+      ? 'prescreening_ideation'
+      : 'prescreening';
+
+  const preScreeningFeatureAllowed = useFeatureFlag({
+    name: preScreeningFeatureFlag,
+    onlyCheckAllowed: true,
+  });
   const phasePrescreeningEnabled =
     phase?.data.attributes.prescreening_enabled === true;
 
@@ -63,24 +71,22 @@ const FilterSidebarStatusesItem = ({ status, active, onClick }: Props) => {
   });
 
   const showAutomaticStatusTooltip =
-    (status as IInitiativeStatusData).attributes.transition_type ===
-      'automatic' ||
-    (status as IIdeaStatusData).attributes.can_manually_transition_to === false;
+    status.attributes.can_manually_transition_to === false;
 
   const prescreeningButtonIsDisabled =
     status.attributes.code === 'prescreening' &&
-    (!phasePrescreeningEnabled || !prescreeningEnabled);
+    (!phasePrescreeningEnabled || !preScreeningFeatureAllowed);
 
   const prescreeningTooltipIsDisabled =
     status.attributes.code !== 'prescreening' ||
-    (phasePrescreeningEnabled && prescreeningEnabled);
+    (phasePrescreeningEnabled && preScreeningFeatureAllowed);
 
   return (
     <div ref={drop}>
       <Tooltip
         content={
           <div>
-            {!prescreeningEnabled ? (
+            {!preScreeningFeatureAllowed ? (
               <FormattedMessage {...messages.prescreeningTooltipUpsell} />
             ) : (
               <FormattedMessage
@@ -91,41 +97,43 @@ const FilterSidebarStatusesItem = ({ status, active, onClick }: Props) => {
         }
         disabled={prescreeningTooltipIsDisabled}
       >
-        <Button
-          onClick={onClick}
-          buttonStyle="text"
-          bgColor={
-            active || (isOver && canDrop) ? colors.background : 'transparent'
-          }
-          justify="left"
-          bgHoverColor={colors.background}
-          disabled={prescreeningButtonIsDisabled}
-        >
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="flex-start"
-            w="100%"
+        <Box>
+          <Button
+            onClick={onClick}
+            buttonStyle="text"
+            bgColor={
+              active || (isOver && canDrop) ? colors.background : 'transparent'
+            }
+            justify="left"
+            bgHoverColor={colors.background}
+            disabled={prescreeningButtonIsDisabled}
           >
-            <ColorIndicator color={status.attributes.color} />
-            <Box display="flex" alignItems="center" gap="4px">
-              <StatusText>
-                <T value={status.attributes.title_multiloc} />
-              </StatusText>
-              {showAutomaticStatusTooltip && (
-                <IconTooltip
-                  theme="light"
-                  iconSize="16px"
-                  content={
-                    <FormattedMessage
-                      {...messages.automatedStatusTooltipText}
-                    />
-                  }
-                />
-              )}
+            <Box
+              display="flex"
+              alignItems="center"
+              justifyContent="flex-start"
+              w="100%"
+            >
+              <ColorIndicator color={status.attributes.color} />
+              <Box display="flex" alignItems="center" gap="4px">
+                <StatusText>
+                  <T value={status.attributes.title_multiloc} />
+                </StatusText>
+                {showAutomaticStatusTooltip && (
+                  <IconTooltip
+                    theme="light"
+                    iconSize="16px"
+                    content={
+                      <FormattedMessage
+                        {...messages.automatedStatusTooltipText}
+                      />
+                    }
+                  />
+                )}
+              </Box>
             </Box>
-          </Box>
-        </Button>
+          </Button>
+        </Box>
       </Tooltip>
     </div>
   );
