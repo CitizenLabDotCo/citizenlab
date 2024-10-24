@@ -36,7 +36,7 @@ const SpotlightProject = ({
 
   return (
     <Box
-      px={isSmallerThanPhone ? DEFAULT_PADDING : '0px'}
+      px={DEFAULT_PADDING}
       py={DEFAULT_PADDING}
       w="100%"
       display="flex"
