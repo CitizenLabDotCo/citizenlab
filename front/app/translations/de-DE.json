@@ -1803,7 +1803,6 @@
   "app.containers.admin.ContentBuilder.infoWithAccordions": "Info & Akkordeons",
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 Spalte",
   "app.containers.admin.ContentBuilder.projectDescription": "Projektbeschreibung",
-  "app.containers.admin.ContentBuilder.sections": "ABSCHNITTE",
   "app.containers.app.navbar.admin": "Plattform verwalten",
   "app.containers.app.navbar.allProjects": "{orgName, select, München {Alle Bezirke oder Projekte} other {Alle Projekte}}",
   "app.containers.app.navbar.ariaLabel": "Primäre",

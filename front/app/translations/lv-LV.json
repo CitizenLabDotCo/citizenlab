@@ -1803,7 +1803,6 @@
   "app.containers.admin.ContentBuilder.infoWithAccordions": "Informācija un akordeoni",
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 sleja",
   "app.containers.admin.ContentBuilder.projectDescription": "Projekta apraksts",
-  "app.containers.admin.ContentBuilder.sections": "SECTIONS",
   "app.containers.app.navbar.admin": "Pārvaldīt platformu",
   "app.containers.app.navbar.allProjects": "Visi projekti",
   "app.containers.app.navbar.ariaLabel": "Primārais",

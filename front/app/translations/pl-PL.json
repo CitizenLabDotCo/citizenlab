@@ -1803,7 +1803,6 @@
   "app.containers.admin.ContentBuilder.infoWithAccordions": "Informacje i akordeony",
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 kolumna",
   "app.containers.admin.ContentBuilder.projectDescription": "Opis projektu",
-  "app.containers.admin.ContentBuilder.sections": "SEKCJE",
   "app.containers.app.navbar.admin": "Admin",
   "app.containers.app.navbar.allProjects": "Wszystkie projekty",
   "app.containers.app.navbar.ariaLabel": "Strona główna",

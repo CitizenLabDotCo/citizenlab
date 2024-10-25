@@ -1803,7 +1803,6 @@
   "app.containers.admin.ContentBuilder.infoWithAccordions": "Bilgi ve akordeonlar",
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 sütun",
   "app.containers.admin.ContentBuilder.projectDescription": "Proje Açıklaması",
-  "app.containers.admin.ContentBuilder.sections": "BÖLÜMLER",
   "app.containers.app.navbar.admin": "Platformu yönetin",
   "app.containers.app.navbar.allProjects": "Tüm projeler",
   "app.containers.app.navbar.ariaLabel": "Birincil",

@@ -1803,7 +1803,6 @@
   "app.containers.admin.ContentBuilder.infoWithAccordions": "Info & dragspel",
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 kolumn",
   "app.containers.admin.ContentBuilder.projectDescription": "Projektbeskrivning",
-  "app.containers.admin.ContentBuilder.sections": "SEKTIONER",
   "app.containers.app.navbar.admin": "Hantera plattform",
   "app.containers.app.navbar.allProjects": "Alla projekt",
   "app.containers.app.navbar.ariaLabel": "Primär",

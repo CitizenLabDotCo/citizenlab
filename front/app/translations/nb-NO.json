@@ -1803,7 +1803,6 @@
   "app.containers.admin.ContentBuilder.infoWithAccordions": "Info & trekkspill",
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 kolonne",
   "app.containers.admin.ContentBuilder.projectDescription": "Prosjektbeskrivelse",
-  "app.containers.admin.ContentBuilder.sections": "SEKSJONER",
   "app.containers.app.navbar.admin": "Administrer plattform",
   "app.containers.app.navbar.allProjects": "Alle prosjekter",
   "app.containers.app.navbar.ariaLabel": "Primær",
