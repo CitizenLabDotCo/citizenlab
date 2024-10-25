@@ -60,6 +60,7 @@ class WebApi::V1::ProjectsController < ApplicationController
     allowed_participation_methods = %w[ideation native_survey poll proposals survey volunteering voting]
 
     # Projects user can see, with active participatory phase & include the phases.end_at column
+    # We could use the ProjectPermissionSevice step to filter for active phases, but doing it here is more efficient.
     subquery = policy_scope(Project)
       .joins('INNER JOIN admin_publications AS admin_publications ON admin_publications.publication_id = projects.id')
       .where(admin_publications: { publication_status: 'published' })

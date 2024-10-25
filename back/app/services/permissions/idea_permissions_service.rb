@@ -12,11 +12,6 @@ module Permissions
       @idea ||= idea
     end
 
-    def all_reasons
-      self.class.constants.select { |c| c.to_s.include?('_DENIED_REASONS') }
-        .index_with { |c| self.class.const_get(c.to_s) }
-    end
-
     def denied_reason_for_action(action, reaction_mode: nil, delete_action: false)
       case action
       when 'editing_idea'
