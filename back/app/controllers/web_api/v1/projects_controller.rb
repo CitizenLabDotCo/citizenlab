@@ -74,8 +74,7 @@ class WebApi::V1::ProjectsController < ApplicationController
       .from(subquery, :projects)
       .distinct
       .order('phase_end_at ASC NULLS LAST')
-
-    # preload for permissions only? - look at performance spec in permissions svce
+      .preload(phases: { permissions: [:groups] })
 
     # Projects user can participate in, or where participation could be made possible by user/visitor
     # (e.g. user not signed in).
@@ -97,7 +96,7 @@ class WebApi::V1::ProjectsController < ApplicationController
       :project_images,
       :areas,
       :topics,
-      phases: [:report, { permissions: [:groups] }],
+      phases: [:report],
       admin_publication: [:children]
     )
 
