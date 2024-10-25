@@ -51,6 +51,7 @@
   "app.components.AuthProviders.signUpWithEmail": "E-posta ile kaydolun",
   "app.components.AuthProviders.verificationRequired": "Doğrulama gerekli",
   "app.components.Author.a11yPostedBy": "Tarafından gönderildi",
+  "app.components.AvatarBubbles.numberOfParticipants": "{numberOfParticipants} Katılımcılar",
   "app.components.AvatarBubbles.participants": "Katılımcılar",
   "app.components.CityLogoSection.iframeTitle": "{orgName} hakkında daha fazla bilgi",
   "app.components.Comments.cancel": "İptal",
