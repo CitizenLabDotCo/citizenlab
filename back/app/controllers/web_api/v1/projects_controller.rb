@@ -57,7 +57,7 @@ class WebApi::V1::ProjectsController < ApplicationController
   # active participatory phase (where user can do something).
   # Ordered by the end date of the current phase, soonest first (nulls last).
   def index_projects_with_active_participatory_phase
-    # Projects user can see, with active participatory phase & include the phases.end_at column
+    # Projects user can see, with active participatory (not information) phase & include the phases.end_at column
     # We could use the ProjectPermissionSevice step to filter for active phases, but doing it here is more efficient.
     subquery = policy_scope(Project)
       .joins('INNER JOIN admin_publications AS admin_publications ON admin_publications.publication_id = projects.id')
