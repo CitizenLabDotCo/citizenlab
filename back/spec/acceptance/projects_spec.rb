@@ -1244,14 +1244,16 @@ resource 'Projects' do
         ).pluck(:end_at)
       end.flatten
 
-      active_phases_end_ats.each_with_index do |end_at, index|
-        if index.zero?
-          expect(end_at).not_to be_nil
-        else
-          is_expected_order = end_at.nil? || end_at >= active_phases_end_ats[index - 1]
-          expect(is_expected_order).to be true
+      # https://stackoverflow.com/questions/808318/sorting-a-ruby-array-of-objects-by-an-attribute-that-could-be-nil
+      expect(active_phases_end_ats).to eq(
+        active_phases_end_ats.sort do |a, b|
+          if a && b
+            a <=> b
+          else
+            (a ? -1 : 1)
+          end
         end
-      end
+      )
     end
 
     # Excludes projects with active phase with all group permissions that exclude user
