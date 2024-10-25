@@ -49,7 +49,10 @@ const Spotlight = ({
         flexDirection={isSmallerThanPhone ? 'column' : 'row'}
         justifyContent={isSmallerThanPhone ? 'flex-start' : 'space-between'}
       >
-        <Box w={isSmallerThanPhone ? undefined : '50%'} maxWidth="400px">
+        <Box
+          w={isSmallerThanPhone ? undefined : '50%'}
+          maxWidth={isSmallerThanPhone ? undefined : '400px'}
+        >
           <Title variant="h2" fontSize="xxxxl" mt="0px" lineHeight="1">
             {title}
           </Title>
@@ -77,18 +80,20 @@ const Spotlight = ({
         </Box>
         <Box
           mt={isSmallerThanPhone ? '20px' : '0px'}
-          ml={isSmallerThanPhone ? '0px' : '40px'}
           w={isSmallerThanPhone ? '100%' : 'calc(100% - 400px)'}
           display="flex"
-          justifyContent="center"
+          justifyContent={isSmallerThanPhone ? 'center' : 'flex-end'}
           alignItems="center"
         >
           {imgSrc ? (
             <Image
               src={imgSrc}
               width="100%"
+              maxWidth="630px"
+              height={isSmallerThanPhone ? '188px' : '350px'}
               alt="placeholder"
               borderRadius={stylingConsts.borderRadius}
+              objectFit="cover"
             />
           ) : null}
         </Box>
