@@ -51,6 +51,7 @@
   "app.components.AuthProviders.signUpWithEmail": "Reģistrēties, izmantojot e-pastu",
   "app.components.AuthProviders.verificationRequired": "Nepieciešama verifikācija",
   "app.components.Author.a11yPostedBy": "Iesūtīja",
+  "app.components.AvatarBubbles.numberOfParticipants": "{numberOfParticipants} dalībnieki",
   "app.components.AvatarBubbles.participants": "dalībnieki",
   "app.components.CityLogoSection.iframeTitle": "Vairāk informācijas par {orgName}",
   "app.components.Comments.cancel": "Atcelt",
