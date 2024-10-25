@@ -113,9 +113,9 @@ const ProjectDescriptionBuilderTopBar = ({
           <FormattedMessage {...messages.viewProject} />
         </Button>
         <SaveButton
-          disabled={disableSave}
-          processing={isLoading}
-          onClick={handleSave}
+          isDisabled={disableSave}
+          isLoading={isLoading}
+          onSave={handleSave}
         />
         {isError && (
           <Text

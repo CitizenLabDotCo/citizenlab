@@ -263,16 +263,10 @@ const ContentBuilderTopBar = ({
           </Tooltip>
         </Box>
         <SaveButton
-          disabled={disableSave}
-          processing={isLoading}
-          bgColor={saved ? colors.success : undefined}
-          icon={saved ? 'check' : undefined}
-          onClick={handleSave}
-          fontSize="14px"
-          ml="8px"
-          px="12px"
-          pb="3px"
-          pt="4px"
+          isDisabled={disableSave}
+          isLoading={isLoading}
+          isSaved={saved}
+          onSave={handleSave}
         />
       </Box>
     </Container>

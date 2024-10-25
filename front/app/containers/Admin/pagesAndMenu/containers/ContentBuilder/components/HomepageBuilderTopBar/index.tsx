@@ -93,11 +93,10 @@ const BuilderTopBar = ({
         >
           {formatMessage(messages.viewHomepage)}
         </Button>
-
         <SaveButton
-          disabled={!!(disableSave || hasPendingState)}
-          processing={isLoading}
-          onClick={handleSave}
+          isDisabled={!!(disableSave || hasPendingState)}
+          isLoading={isLoading}
+          onSave={handleSave}
         />
         {isError && (
           <Text
