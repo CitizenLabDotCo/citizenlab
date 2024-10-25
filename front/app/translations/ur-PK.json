@@ -968,7 +968,6 @@
   "app.containers.AdminPage.ProjectDescription.saveError": "پروجیکٹ کی تفصیل محفوظ کرتے وقت کچھ غلط ہو گیا۔",
   "app.containers.AdminPage.ProjectDescription.toggleLabel": "تفصیل کے لیے Content Builder استعمال کریں۔",
   "app.containers.AdminPage.ProjectDescription.toggleTooltip": "Content Builder کا استعمال آپ کو لے آؤٹ کے مزید جدید اختیارات استعمال کرنے دے گا۔",
-  "app.containers.AdminPage.ProjectDescription.viewProject": "پروجیکٹ دیکھیں",
   "app.containers.AdminPage.ProjectDescription.viewPublicProject": "پروجیکٹ دیکھیں",
   "app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd": "سروے ختم",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "ایک سمارٹ گروپ بنائیں",

@@ -2449,7 +2449,6 @@
   "app.containers.ContentBuilder.homepage.PageTitle": "Page d’accueil",
   "app.containers.ContentBuilder.homepage.SaveError": "Un problème s'est produit lors de l'enregistrement de la page d'accueil.",
   "app.containers.ContentBuilder.homepage.TwoColumnLayout": "Deux colonnes",
-  "app.containers.ContentBuilder.homepage.View": "Voir",
   "app.containers.ContentBuilder.homepage.bannerImage": "Image de couverture",
   "app.containers.ContentBuilder.homepage.bannerSubtext": "Sous-texte de la bannière",
   "app.containers.ContentBuilder.homepage.bannerText": "Texte de la bannière",

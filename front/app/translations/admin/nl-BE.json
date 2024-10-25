@@ -2449,7 +2449,6 @@
   "app.containers.ContentBuilder.homepage.PageTitle": "Startpagina",
   "app.containers.ContentBuilder.homepage.SaveError": "Er is iets misgegaan bij het opslaan van de homepagina.",
   "app.containers.ContentBuilder.homepage.TwoColumnLayout": "Twee kolommen",
-  "app.containers.ContentBuilder.homepage.View": "Bekijk",
   "app.containers.ContentBuilder.homepage.bannerImage": "Bannerafbeelding",
   "app.containers.ContentBuilder.homepage.bannerSubtext": "Banner ondertitel",
   "app.containers.ContentBuilder.homepage.bannerText": "Bannertitel",

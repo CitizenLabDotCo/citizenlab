@@ -2449,7 +2449,6 @@
   "app.containers.ContentBuilder.homepage.PageTitle": "Почетна страница",
   "app.containers.ContentBuilder.homepage.SaveError": "Something went wrong while saving the homepage.",
   "app.containers.ContentBuilder.homepage.TwoColumnLayout": "Две колоне",
-  "app.containers.ContentBuilder.homepage.View": "Поглед",
   "app.containers.ContentBuilder.homepage.bannerImage": "Слика банера",
   "app.containers.ContentBuilder.homepage.bannerSubtext": "Подтекст банера",
   "app.containers.ContentBuilder.homepage.bannerText": "Текст банера",

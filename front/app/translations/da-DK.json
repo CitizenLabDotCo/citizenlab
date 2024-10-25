@@ -968,7 +968,6 @@
   "app.containers.AdminPage.ProjectDescription.saveError": "Noget gik galt, da jeg gemte projektbeskrivelsen.",
   "app.containers.AdminPage.ProjectDescription.toggleLabel": "Brug Content Builder til beskrivelse",
   "app.containers.AdminPage.ProjectDescription.toggleTooltip": "Ved at bruge Content Builder kan du bruge mere avancerede layoutmuligheder.",
-  "app.containers.AdminPage.ProjectDescription.viewProject": "Vis projekt",
   "app.containers.AdminPage.ProjectDescription.viewPublicProject": "Vis projekt",
   "app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd": "Undersøgelsens afslutning",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "Opret en smart gruppe",

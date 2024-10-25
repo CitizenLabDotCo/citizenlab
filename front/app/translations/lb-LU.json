@@ -946,7 +946,6 @@
   "app.containers.AdminPage.ProjectDescription.saveError": "Eppes ass falsch gaangen beim Späicheren vun der Projektbeschreiwung.",
   "app.containers.AdminPage.ProjectDescription.toggleLabel": "Benotzt Inhalt Builder fir Beschreiwung",
   "app.containers.AdminPage.ProjectDescription.toggleTooltip": "D'Benotzung vum Inhalt Builder léisst Iech méi fortgeschratt Layoutoptiounen benotzen.",
-  "app.containers.AdminPage.ProjectDescription.viewProject": "Kuckt de Projet",
   "app.containers.AdminPage.ProjectDescription.viewPublicProject": "Kuckt de Projet",
   "app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd": "Enn vun der Ëmfo",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "Eng Smart Grupp uleeën",

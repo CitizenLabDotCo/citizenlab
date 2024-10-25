@@ -2449,7 +2449,6 @@
   "app.containers.ContentBuilder.homepage.PageTitle": "Hjemmeside",
   "app.containers.ContentBuilder.homepage.SaveError": "Noe gikk galt under lagring av hjemmesiden.",
   "app.containers.ContentBuilder.homepage.TwoColumnLayout": "To kolonner",
-  "app.containers.ContentBuilder.homepage.View": "Utsikt",
   "app.containers.ContentBuilder.homepage.bannerImage": "Bannerbilde",
   "app.containers.ContentBuilder.homepage.bannerSubtext": "Bannerets undertekst",
   "app.containers.ContentBuilder.homepage.bannerText": "Bannertekst",

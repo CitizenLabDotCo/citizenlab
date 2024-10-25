@@ -968,7 +968,6 @@
   "app.containers.AdminPage.ProjectDescription.saveError": "Er is iets misgegaan bij het opslaan van de projectbeschrijving.",
   "app.containers.AdminPage.ProjectDescription.toggleLabel": "Gebruik de content builder voor de beschrijving",
   "app.containers.AdminPage.ProjectDescription.toggleTooltip": "Als je de content builder gebruikt, kun je geavanceerdere layout-opties gebruiken.",
-  "app.containers.AdminPage.ProjectDescription.viewProject": "Bekijk het project",
   "app.containers.AdminPage.ProjectDescription.viewPublicProject": "Bekijk het project",
   "app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd": "Einde enquête",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "Maak een slimme groep aan",

@@ -968,7 +968,6 @@
   "app.containers.AdminPage.ProjectDescription.saveError": "Qualcosa è andato storto durante il salvataggio della descrizione del progetto.",
   "app.containers.AdminPage.ProjectDescription.toggleLabel": "Usa il Content Builder per la descrizione",
   "app.containers.AdminPage.ProjectDescription.toggleTooltip": "Utilizzando il Content Builder potrai utilizzare opzioni di layout più avanzate.",
-  "app.containers.AdminPage.ProjectDescription.viewProject": "Visualizza il progetto",
   "app.containers.AdminPage.ProjectDescription.viewPublicProject": "Visualizza il progetto",
   "app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd": "Fine del sondaggio",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "Creare un gruppo intelligente",

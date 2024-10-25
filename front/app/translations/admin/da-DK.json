@@ -2449,7 +2449,6 @@
   "app.containers.ContentBuilder.homepage.PageTitle": "Hjemmeside",
   "app.containers.ContentBuilder.homepage.SaveError": "Noget gik galt, da jeg gemte hjemmesiden.",
   "app.containers.ContentBuilder.homepage.TwoColumnLayout": "To kolonner",
-  "app.containers.ContentBuilder.homepage.View": "Se",
   "app.containers.ContentBuilder.homepage.bannerImage": "Bannerbillede",
   "app.containers.ContentBuilder.homepage.bannerSubtext": "Bannerets undertekst",
   "app.containers.ContentBuilder.homepage.bannerText": "Bannertekst",

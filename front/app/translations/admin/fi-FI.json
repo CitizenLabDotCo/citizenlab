@@ -2424,7 +2424,6 @@
   "app.containers.ContentBuilder.homepage.PageTitle": "Kotisivu",
   "app.containers.ContentBuilder.homepage.SaveError": "Jotain meni pieleen etusivua tallennettaessa.",
   "app.containers.ContentBuilder.homepage.TwoColumnLayout": "Kaksi saraketta",
-  "app.containers.ContentBuilder.homepage.View": "Näytä",
   "app.containers.ContentBuilder.homepage.bannerImage": "Bannerikuva",
   "app.containers.ContentBuilder.homepage.bannerSubtext": "Bannerin alateksti",
   "app.containers.ContentBuilder.homepage.bannerText": "Bannerin teksti",
