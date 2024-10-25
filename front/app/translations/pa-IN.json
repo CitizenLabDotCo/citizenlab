@@ -51,6 +51,7 @@
   "app.components.AuthProviders.signUpWithEmail": "ਈਮੇਲ ਨਾਲ ਸਾਈਨ ਅੱਪ ਕਰੋ",
   "app.components.AuthProviders.verificationRequired": "ਪੁਸ਼ਟੀਕਰਨ ਦੀ ਲੋੜ ਹੈ",
   "app.components.Author.a11yPostedBy": "ਵੱਲੋਂ ਪੋਸਟ ਕੀਤਾ ਗਿਆ",
+  "app.components.AvatarBubbles.numberOfParticipants": "{numberOfParticipants} ਭਾਗੀਦਾਰ",
   "app.components.AvatarBubbles.participants": "ਭਾਗੀਦਾਰ",
   "app.components.CityLogoSection.iframeTitle": "{orgName}ਬਾਰੇ ਹੋਰ ਜਾਣਕਾਰੀ",
   "app.components.Comments.cancel": "ਰੱਦ ਕਰੋ",
