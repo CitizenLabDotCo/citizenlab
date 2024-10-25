@@ -34,6 +34,7 @@ const AvatarImageBubble = styled.img<{
 `;
 
 interface Props {
+  limit?: number;
   context?: {
     type: 'project' | 'group';
     id: string;
@@ -46,8 +47,6 @@ interface Props {
   showParticipantText?: boolean;
 }
 
-const defaultLimit = 4;
-
 export const AvatarBubbles = ({
   avatarIds,
   context,
@@ -56,10 +55,11 @@ export const AvatarBubbles = ({
   className,
   userCount,
   showParticipantText = true,
+  limit = 4,
 }: Props) => {
   const { formatMessage } = useIntl();
   const { data: randomAvatars } = useRandomAvatars({
-    limit: defaultLimit,
+    limit,
     context_type: context?.type,
     context_id: context?.id,
     enabled: !avatarIds,

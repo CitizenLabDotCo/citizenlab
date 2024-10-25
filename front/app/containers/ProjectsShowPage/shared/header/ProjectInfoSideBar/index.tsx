@@ -7,7 +7,7 @@ import {
   media,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
-import styled, { useTheme } from 'styled-components';
+import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
 import usePhases from 'api/phases/usePhases';
@@ -43,7 +43,6 @@ const ProjectInfoSideBar = memo<Props>(
     const { data: authUser } = useAuthUser();
     const { data: project } = useProjectById(projectId, !isAdmin(authUser));
     const { data: phases } = usePhases(projectId);
-    const theme = useTheme();
     const { formatMessage } = useIntl();
 
     if (project) {
@@ -75,7 +74,6 @@ const ProjectInfoSideBar = memo<Props>(
                   <AvatarBubbles
                     size={32}
                     limit={3}
-                    userCountBgColor={theme.colors.tenantPrimary}
                     avatarIds={avatarIds}
                     userCount={projectParticipantsCount}
                   />
