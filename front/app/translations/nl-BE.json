@@ -51,6 +51,7 @@
   "app.components.AuthProviders.signUpWithEmail": "Registreren met e-mail",
   "app.components.AuthProviders.verificationRequired": "Verificatie vereist",
   "app.components.Author.a11yPostedBy": "Geplaatst door",
+  "app.components.AvatarBubbles.numberOfParticipants": "{numberOfParticipants} gebruikers",
   "app.components.AvatarBubbles.participants": "deelnemers aan dit project",
   "app.components.CityLogoSection.iframeTitle": "Meer informatie over {orgName}",
   "app.components.Comments.cancel": "Annuleer",
