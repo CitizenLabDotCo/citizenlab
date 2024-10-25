@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
 import { SerializedNodes } from '@craftjs/core';
 import { isEmpty } from 'lodash-es';
-import { useTheme } from 'styled-components';
 import { SupportedLocale } from 'typings';
 
 import { IHomepageBuilderLayout } from 'api/home_page_layout/types';
@@ -32,8 +31,6 @@ const HomepageBuilder = ({ homepageLayout }: Props) => {
   const locale = useLocale();
   const [selectedLocale, setSelectedLocale] = useState(locale);
   const [view, setView] = useState<View>('document');
-
-  const theme = useTheme();
 
   const [initialData] = useState(() => {
     const { craftjs_json } = homepageLayout.data.attributes;
