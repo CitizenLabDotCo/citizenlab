@@ -51,7 +51,6 @@
   "app.components.AuthProviders.signUpWithEmail": "Iscriviti con l'e-mail",
   "app.components.AuthProviders.verificationRequired": "Verifica necessaria",
   "app.components.Author.a11yPostedBy": "Postato da",
-  "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} partecipanti",
   "app.components.CityLogoSection.iframeTitle": "Altre informazioni su {orgName}",
   "app.components.Comments.cancel": "Annulla",
   "app.components.Comments.commentingDisabledInCurrentPhase": "Non è possibile commentare nella fase attuale.",

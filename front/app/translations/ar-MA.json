@@ -51,7 +51,6 @@
   "app.components.AuthProviders.signUpWithEmail": "سجّل باستخدام البريد الإلكتروني",
   "app.components.AuthProviders.verificationRequired": "مطلوب التحقق",
   "app.components.Author.a11yPostedBy": "منشور من طرف",
-  "app.components.AvatarBubbles.numberOfUsers": "المشتركين / {numberOfUsers}",
   "app.components.CityLogoSection.iframeTitle": "المزيد من المعلومات حول {orgName}",
   "app.components.Comments.cancel": "إلغاء المحاولة",
   "app.components.Comments.commentingDisabledInCurrentPhase": "التعليق غير ممكن في المرحلة الحالية.",

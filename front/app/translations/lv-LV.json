@@ -51,7 +51,6 @@
   "app.components.AuthProviders.signUpWithEmail": "Reģistrēties, izmantojot e-pastu",
   "app.components.AuthProviders.verificationRequired": "Nepieciešama verifikācija",
   "app.components.Author.a11yPostedBy": "Iesūtīja",
-  "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} dalībnieki",
   "app.components.CityLogoSection.iframeTitle": "Vairāk informācijas par {orgName}",
   "app.components.Comments.cancel": "Atcelt",
   "app.components.Comments.commentingDisabledInCurrentPhase": "Pašreizējā posmā komentāri nav iespējami.",

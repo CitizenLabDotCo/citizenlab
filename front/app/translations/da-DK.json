@@ -51,7 +51,6 @@
   "app.components.AuthProviders.signUpWithEmail": "Registrer dig med Email",
   "app.components.AuthProviders.verificationRequired": "Bekræftelse påkrævet",
   "app.components.Author.a11yPostedBy": "Sendt af",
-  "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} brugere\n",
   "app.components.CityLogoSection.iframeTitle": "Flere oplysninger om {orgName}",
   "app.components.Comments.cancel": "Annuller",
   "app.components.Comments.commentingDisabledInCurrentPhase": "Det er ikke muligt at kommentere i den aktuelle fase.",

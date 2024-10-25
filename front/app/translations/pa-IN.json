@@ -51,7 +51,6 @@
   "app.components.AuthProviders.signUpWithEmail": "ਈਮੇਲ ਨਾਲ ਸਾਈਨ ਅੱਪ ਕਰੋ",
   "app.components.AuthProviders.verificationRequired": "ਪੁਸ਼ਟੀਕਰਨ ਦੀ ਲੋੜ ਹੈ",
   "app.components.Author.a11yPostedBy": "ਵੱਲੋਂ ਪੋਸਟ ਕੀਤਾ ਗਿਆ",
-  "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} ਭਾਗੀਦਾਰ",
   "app.components.CityLogoSection.iframeTitle": "{orgName}ਬਾਰੇ ਹੋਰ ਜਾਣਕਾਰੀ",
   "app.components.Comments.cancel": "ਰੱਦ ਕਰੋ",
   "app.components.Comments.commentingDisabledInCurrentPhase": "ਮੌਜੂਦਾ ਦੌਰ ਵਿੱਚ ਟਿੱਪਣੀ ਸੰਭਵ ਨਹੀਂ ਹੈ।",
