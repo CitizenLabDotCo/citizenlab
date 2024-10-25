@@ -21,7 +21,7 @@ import { useReportContext } from 'containers/Admin/reporting/context/ReportConte
 
 import { CONTENT_BUILDER_Z_INDEX } from 'components/admin/ContentBuilder/constants';
 import Container from 'components/admin/ContentBuilder/TopBar/Container';
-import GoBackButton from 'components/admin/ContentBuilder/TopBar/GoBackButton2';
+import GoBackButton from 'components/admin/ContentBuilder/TopBar/GoBackButton';
 import SaveButton from 'components/admin/ContentBuilder/TopBar/SaveButton';
 import Button from 'components/UI/Button';
 
