@@ -51,6 +51,7 @@
   "app.components.AuthProviders.signUpWithEmail": "سجّل باستخدام البريد الإلكتروني",
   "app.components.AuthProviders.verificationRequired": "مطلوب التحقق",
   "app.components.Author.a11yPostedBy": "منشور من طرف",
+  "app.components.AvatarBubbles.numberOfParticipants": "{numberOfParticipants} المشاركين",
   "app.components.AvatarBubbles.participants": "مشاركون",
   "app.components.CityLogoSection.iframeTitle": "المزيد من المعلومات حول {orgName}",
   "app.components.Comments.cancel": "إلغاء المحاولة",
