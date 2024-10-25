@@ -28,39 +28,42 @@ resource 'Ideas' do
       before { header_token_for(moderator) }
 
       let(:moderator) { create(:project_moderator, projects: [project]) }
-      let(:project) { create(:project) }
       let(:input1) { create(:idea, project: project) }
-      let(:input2) { create(:idea, project: create(:project)) }
-      let(:input3) { create(:idea, project: project) }
-      let!(:inputs) { [input1, input2, input3] }
+      let(:input2) { create(:idea, project: project) }
+      let!(:inputs) { [input1, input2] }
 
-      example 'Can only see who updated manual votes for moderatable inputs' do
-        admin = create(:admin)
-        input1.set_manual_votes(5, admin)
-        input2.set_manual_votes(3, admin)
-        input3.set_manual_votes(8, moderator)
-        inputs.each(&:save!)
+      context 'in a voting phase' do
+        let(:project) { create(:single_phase_single_voting_project) }
+        let(:phase) { project.phases.first.id }
+        let(:admin) { create(:admin) }
 
-        do_request
+        before do
+          input1.set_manual_votes(5, admin)
+          input2.set_manual_votes(8, moderator)
+          inputs.each do |input|
+            input.phases = project.phases
+            input.save!
+          end
+        end
 
-        assert_status 200
+        example_request 'Can only see who updated manual votes for moderatable inputs' do
+          # TODO: Test inputs cannot moderate (serializer spec)
+          assert_status 200
 
-        input1_response = json_response_body[:data].find { |i| i[:id] == input1.id }
-        expect(input1_response.dig(:attributes, :manual_votes_amount)).to eq 5
-        expect(input1_response.dig(:relationships, :manual_votes_last_updated_by, :data, :id)).to eq admin.id
-        expect(json_response_body[:included].find { |i| i[:id] == admin.id }&.dig(:attributes, :slug)).to eq admin.slug
-        expect(input1_response.dig(:attributes, :manual_votes_last_updated_at)).to be_present
+          input1_response = json_response_body[:data].find { |i| i[:id] == input1.id }
+          expect(input1_response.dig(:attributes, :manual_votes_amount)).to eq 5
+          expect(input1_response.dig(:attributes, :total_votes)).to eq 5
+          expect(input1_response.dig(:relationships, :manual_votes_last_updated_by, :data, :id)).to eq admin.id
+          expect(json_response_body[:included].find { |i| i[:id] == admin.id }&.dig(:attributes, :slug)).to eq admin.slug
+          expect(input1_response.dig(:attributes, :manual_votes_last_updated_at)).to be_present
 
-        input2_response = json_response_body[:data].find { |i| i[:id] == input2.id }
-        expect(input2_response.dig(:attributes, :manual_votes_amount)).to eq 3
-        expect(input2_response.dig(:relationships, :manual_votes_last_updated_by)).to be_nil
-        expect(input2_response.dig(:attributes, :manual_votes_last_updated_at)).to be_nil
-
-        input3_response = json_response_body[:data].find { |i| i[:id] == input3.id }
-        expect(input3_response.dig(:attributes, :manual_votes_amount)).to eq 8
-        expect(input3_response.dig(:relationships, :manual_votes_last_updated_by, :data, :id)).to eq moderator.id
-        expect(json_response_body[:included].find { |i| i[:id] == moderator.id }&.dig(:attributes, :slug)).to eq moderator.slug
-        expect(input3_response.dig(:attributes, :manual_votes_last_updated_at)).to be_present
+          input2_response = json_response_body[:data].find { |i| i[:id] == input2.id }
+          expect(input2_response.dig(:attributes, :manual_votes_amount)).to eq 8
+          expect(input2_response.dig(:attributes, :total_votes)).to eq 8
+          expect(input2_response.dig(:relationships, :manual_votes_last_updated_by, :data, :id)).to eq moderator.id
+          expect(json_response_body[:included].find { |i| i[:id] == moderator.id }&.dig(:attributes, :slug)).to eq moderator.slug
+          expect(input2_response.dig(:attributes, :manual_votes_last_updated_at)).to be_present
+        end
       end
     end
 
