@@ -51,6 +51,7 @@
   "app.components.AuthProviders.signUpWithEmail": "Iscriviti con l'e-mail",
   "app.components.AuthProviders.verificationRequired": "Verifica necessaria",
   "app.components.Author.a11yPostedBy": "Postato da",
+  "app.components.AvatarBubbles.numberOfParticipants": "{numberOfParticipants} partecipanti",
   "app.components.AvatarBubbles.participants": "partecipanti",
   "app.components.CityLogoSection.iframeTitle": "Altre informazioni su {orgName}",
   "app.components.Comments.cancel": "Annulla",
