@@ -171,8 +171,8 @@ export const AvatarBubbles = ({
             </Box>
           )}
           <ScreenReaderOnly>
-            {formatMessage(messages.numberOfUsers, {
-              numberOfUsers: currentUserCount,
+            {formatMessage(messages.numberOfParticipants, {
+              numberOfParticipants: currentUserCount,
             })}
           </ScreenReaderOnly>
         </Box>
