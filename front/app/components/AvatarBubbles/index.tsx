@@ -149,7 +149,7 @@ export const AvatarBubbles = ({
             ))}
           </Box>
           {remainingUsers > 0 && (
-            <Box>
+            <Box data-testid="userCountBubbleInner">
               +{truncatedUserCount}
               {letterAbbreviation}&nbsp;
               {formatMessage(messages.participants)}
