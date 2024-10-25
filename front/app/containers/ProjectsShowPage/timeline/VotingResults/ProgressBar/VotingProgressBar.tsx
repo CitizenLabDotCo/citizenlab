@@ -19,14 +19,12 @@ interface Props {
 }
 
 const VotingProgressBar = ({ phase, idea }: Props) => {
-  console.log({ idea });
-
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const onlineIdeaVotes = idea.attributes.votes_count;
   const offlineIdeaVotes = idea.attributes.manual_votes_amount;
   const totalIdeaVotes = idea.attributes.total_votes;
-  const totalPhaseVotes = 10; // phase.data.attributes.votes_count;
+  const totalPhaseVotes = phase.data.attributes.votes_count;
   const totalVotesPercentage = roundPercentage(totalIdeaVotes, totalPhaseVotes);
   const votesOnlinePercentage = roundPercentage(
     onlineIdeaVotes,
