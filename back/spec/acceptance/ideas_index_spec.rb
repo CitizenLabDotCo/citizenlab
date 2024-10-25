@@ -31,7 +31,7 @@ resource 'Ideas' do
       let(:input1) { create(:idea, project: project) }
       let(:input2) { create(:idea, project: project) }
       let!(:inputs) { [input1, input2] }
-      
+
       context 'in a voting phase' do
         let(:project) { create(:single_phase_single_voting_project) }
         let(:phase) { project.phases.first.id }
@@ -49,14 +49,14 @@ resource 'Ideas' do
         example_request 'Can only see who updated manual votes for moderatable inputs' do
           # TODO: Test inputs cannot moderate (serializer spec)
           assert_status 200
-  
+
           input1_response = json_response_body[:data].find { |i| i[:id] == input1.id }
           expect(input1_response.dig(:attributes, :manual_votes_amount)).to eq 5
           expect(input1_response.dig(:attributes, :total_votes)).to eq 5
           expect(input1_response.dig(:relationships, :manual_votes_last_updated_by, :data, :id)).to eq admin.id
           expect(json_response_body[:included].find { |i| i[:id] == admin.id }&.dig(:attributes, :slug)).to eq admin.slug
           expect(input1_response.dig(:attributes, :manual_votes_last_updated_at)).to be_present
-  
+
           input2_response = json_response_body[:data].find { |i| i[:id] == input2.id }
           expect(input2_response.dig(:attributes, :manual_votes_amount)).to eq 8
           expect(input2_response.dig(:attributes, :total_votes)).to eq 8
