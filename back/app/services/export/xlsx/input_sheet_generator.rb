@@ -101,10 +101,6 @@ module Export
         ComputedFieldForReport.new(column_header_for('votes_count'), ->(input) { voting_context(input, phase).votes_count })
       end
 
-      def manual_votes_amount_report_field
-        ComputedFieldForReport.new(column_header_for('manual_votes_amount'), ->(input) { voting_context(input, phase).manual_votes_amount })
-      end
-
       def input_url_report_field
         ComputedFieldForReport.new(
           column_header_for('input_url'),
@@ -174,7 +170,6 @@ module Export
           meta_fields << baskets_count_report_field('picks') if participation_method.additional_export_columns.include? 'picks'
           meta_fields << baskets_count_report_field('participants') if participation_method.additional_export_columns.include? 'participants'
           meta_fields << votes_count_report_field if participation_method.additional_export_columns.include? 'votes'
-          meta_fields << manual_votes_amount_report_field if participation_method.additional_export_columns.include? 'votes'
           meta_fields << budget_report_field if participation_method.additional_export_columns.include? 'budget'
           meta_fields << input_url_report_field if participation_method.supports_public_visibility?
           meta_fields << project_report_field
