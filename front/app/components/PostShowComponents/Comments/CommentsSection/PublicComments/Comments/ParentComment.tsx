@@ -59,7 +59,10 @@ const ParentComment = ({
     fetchNextPage,
     isFetchingNextPage,
     hasNextPage,
-  } = useComments({ commentId, pageSize: 5 });
+  } = useComments(
+    { commentId, pageSize: 5 },
+    !!comment?.data.attributes.children_count
+  );
   const childComments = childCommentsData?.pages
     .map((page) => page.data)
     .flat();
