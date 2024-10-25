@@ -51,6 +51,7 @@
   "app.components.AuthProviders.signUpWithEmail": "Εγγραφείτε με Email",
   "app.components.AuthProviders.verificationRequired": "Απαιτείται επαλήθευση",
   "app.components.Author.a11yPostedBy": "Αναρτήθηκε από",
+  "app.components.AvatarBubbles.numberOfParticipants": "{numberOfParticipants} συμμετέχοντες",
   "app.components.AvatarBubbles.participants": "συμμετέχοντες",
   "app.components.CityLogoSection.iframeTitle": "Περισσότερες πληροφορίες σχετικά με το {orgName}",
   "app.components.Comments.cancel": "Ακύρωση",
