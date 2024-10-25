@@ -107,7 +107,7 @@ module Permissions
       end
     end
 
-    def participation_open_or_possible?
+    def participation_possible?
       # Event participation not included, as we do not check if any ongoing/future events exist for the project,
       # nor if user is already attending such an event, in the interests of performance and simplicity.
       descriptors = action_descriptors.except(:attending_event, :annotating_document)

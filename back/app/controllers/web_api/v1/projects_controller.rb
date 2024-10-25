@@ -76,15 +76,14 @@ class WebApi::V1::ProjectsController < ApplicationController
       .order('phase_end_at ASC NULLS LAST')
       .preload(phases: { permissions: [:groups] })
 
-    # Projects user can participate in, or where participation could be made possible by user/visitor
+    # Projects user can participate in now, or where such participation could (probably) be made possible by user
     # (e.g. user not signed in).
     # Unfortunately, this breaks the query chain, so we have to start a new one after this.
     user_requirements_service = Permissions::UserRequirementsService.new(check_groups_and_verification: false)
 
     project_ids = @projects.select do |project|
       Permissions::ProjectPermissionsService
-        .new(project, current_user, user_requirements_service: user_requirements_service)
-        .participation_open_or_possible?
+        .new(project, current_user, user_requirements_service: user_requirements_service).participation_possible?
     end.pluck(:id)
 
     # Start a new query chain by selecting projects with the filtered projects' ids
