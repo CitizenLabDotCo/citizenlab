@@ -13,6 +13,7 @@ import useIdeaById from 'api/ideas/useIdeaById';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
 import useAuthUser from 'api/me/useAuthUser';
 import { VotingMethod } from 'api/phases/types';
+import usePhase from 'api/phases/usePhase';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
 
 import { trackEventByName } from 'utils/analytics';
@@ -34,6 +35,7 @@ const OfflineVoteSettings = ({ ideaId, votingMethod, phaseId }: Props) => {
   const { data: authUser } = useAuthUser();
   const { formatMessage } = useIntl();
   const { data: appConfig } = useAppConfiguration();
+  const { data: phase } = usePhase(phaseId);
   const tenantId = appConfig?.data.id;
   const { data: idea } = useIdeaById(ideaId);
   const { mutate: updateIdea } = useUpdateIdea();
@@ -43,7 +45,7 @@ const OfflineVoteSettings = ({ ideaId, votingMethod, phaseId }: Props) => {
   >(idea?.data.attributes.manual_votes_amount || null);
   const [manualVotersAmount, setManualVotersAmount] = React.useState<
     number | null
-  >(idea?.data.attributes.manual_votes_amount || null);
+  >(phase?.data.attributes.manual_voters_amount || null);
 
   const handleOfflineVotesChangedDebounced = useMemo(() => {
     return debounce(() => {
@@ -84,7 +86,7 @@ const OfflineVoteSettings = ({ ideaId, votingMethod, phaseId }: Props) => {
         <Box mb="20px">
           <Input
             type="number"
-            value={manualVotesAmount?.toString() || ''}
+            value={manualVotersAmount?.toString() || ''}
             label={
               <Box display="flex" gap="4px">
                 <FormattedMessage {...messages.manualVotersLabel} />
