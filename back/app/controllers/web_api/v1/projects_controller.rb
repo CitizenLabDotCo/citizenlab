@@ -53,8 +53,8 @@ class WebApi::V1::ProjectsController < ApplicationController
   end
 
   # For use with 'Open to participation' homepage widget.
-  # Returns all published or archived projects that are currently in an
-  # active participatory phase (where user can do something).
+  # Returns all published or archived projects that are visible to user
+  # and in an active participatory phase (where user can do something).
   # Ordered by the end date of the current phase, soonest first (nulls last).
   def index_projects_with_active_participatory_phase
     # Projects user can see, with active participatory (not information) phase & include the phases.end_at column
@@ -76,7 +76,7 @@ class WebApi::V1::ProjectsController < ApplicationController
       .order('phase_end_at ASC NULLS LAST')
       .preload(phases: { permissions: [:groups] })
 
-    # Projects user can participate in now, or where such participation could (probably) be made possible by user
+    # Projects user can participate in, or where such participation could (probably) be made possible by user
     # (e.g. user not signed in).
     # Unfortunately, this breaks the query chain, so we have to start a new one after this.
     project_ids = @projects.select do |project|
