@@ -74,7 +74,7 @@ const PublicComments = ({
   } = useComments({
     ideaId: postId,
     sort: sortOrder,
-    pageSize: 5,
+    pageSize: 10,
   });
 
   const commentsList = comments?.pages.flatMap((page) => page.data);
