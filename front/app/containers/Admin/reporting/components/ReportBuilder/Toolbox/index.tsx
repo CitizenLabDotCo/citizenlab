@@ -5,7 +5,6 @@ import {
   Spinner,
   stylingConsts,
   Button,
-  colors,
 } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
 import Transition from 'react-transition-group/Transition';
@@ -25,6 +24,7 @@ import { useReportContext } from 'containers/Admin/reporting/context/ReportConte
 
 import Container from 'components/admin/ContentBuilder/Toolbox/Container';
 import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
+import Section from 'components/admin/ContentBuilder/Toolbox/Section';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 
 import { trackEventByName } from 'utils/analytics';
@@ -59,12 +59,6 @@ import { findSurveyPhaseId, findIdeationPhaseId } from './utils';
 type ReportBuilderToolboxProps = {
   selectedLocale: SupportedLocale;
 };
-
-const Section = ({ children }) => (
-  <Box borderTop={`1px solid ${colors.divider}`} pt="12px" mb="12px">
-    {children}
-  </Box>
-);
 
 const ReportBuilderToolbox = ({
   selectedLocale,
