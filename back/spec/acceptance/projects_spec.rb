@@ -1256,8 +1256,44 @@ resource 'Projects' do
       )
     end
 
-    # Excludes projects with active phase with all group permissions that exclude user
-    # Includes projects with one permission that includes user
+    example "Excludes projects where only permitted action is attending_event & no permission is 'fixable'" do
+      group = create(:group)
+      permission = create(:permission, action: 'posting_idea', permission_scope: active_ideation_project.phases.first, permitted_by: 'users')
+      create(:groups_permission, permission_id: permission.id, group: group)
+      permission = create(:permission, action: 'commenting_idea', permission_scope: active_ideation_project.phases.first, permitted_by: 'users')
+      create(:groups_permission, permission_id: permission.id, group: group)
+      permission = create(:permission, action: 'reacting_idea', permission_scope: active_ideation_project.phases.first, permitted_by: 'users')
+      create(:groups_permission, permission_id: permission.id, group: group)
+
+      user_requirements_service = Permissions::UserRequirementsService.new(check_groups_and_verification: false)
+      action_descriptors = Permissions::ProjectPermissionsService.new(
+        active_ideation_project, @user, user_requirements_service: user_requirements_service
+      ).action_descriptors
+
+      expect(action_descriptors.except(:attending_event).all? { |_k, v| v[:enabled] == false }).to be true
+
+      do_request
+      expect(status).to eq(200)
+
+      expect(json_response[:data].pluck(:id)).not_to include active_ideation_project.id
+    end
+
+    example "Includes projects where no action permitted (excluding attending_event), but a permission is 'fixable'" do
+      create(:custom_field, required: true)
+
+      user_requirements_service = Permissions::UserRequirementsService.new(check_groups_and_verification: false)
+      action_descriptors = Permissions::ProjectPermissionsService.new(
+        active_ideation_project, @user, user_requirements_service: user_requirements_service
+      ).action_descriptors
+
+      expect(action_descriptors.except(:attending_event).all? { |_k, v| v[:enabled] == false }).to be true
+      expect(action_descriptors.except(:attending_event).count { |_k, v| v[:disabled_reason] == 'user_missing_requirements' }).to eq 4
+
+      do_request
+      expect(status).to eq(200)
+
+      expect(json_response[:data].pluck(:id)).to include active_ideation_project.id
+    end
 
     example 'Includes related avatars', document: false do
       create(:idea, project: active_ideation_project, author: @user)
