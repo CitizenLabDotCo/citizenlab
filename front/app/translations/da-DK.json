@@ -51,6 +51,7 @@
   "app.components.AuthProviders.signUpWithEmail": "Registrer dig med Email",
   "app.components.AuthProviders.verificationRequired": "Bekræftelse påkrævet",
   "app.components.Author.a11yPostedBy": "Sendt af",
+  "app.components.AvatarBubbles.numberOfParticipants": "{numberOfParticipants} brugere\n",
   "app.components.AvatarBubbles.participants": "deltagere",
   "app.components.CityLogoSection.iframeTitle": "Flere oplysninger om {orgName}",
   "app.components.Comments.cancel": "Annuller",
