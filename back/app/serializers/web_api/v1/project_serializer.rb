@@ -78,7 +78,7 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
   end
 
   def self.avatars_for_project(object, _params)
-    @avatars_for_project ||= AvatarsService.new(participants_service).avatars_for_project(object, limit: 3)
+    AvatarsService.new(participants_service).avatars_for_project(object, limit: 3)
   end
 
   def self.participants_service
