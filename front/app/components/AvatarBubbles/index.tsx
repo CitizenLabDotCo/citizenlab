@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Text } from '@citizenlab/cl2-component-library';
 import { isNumber } from 'lodash-es';
 import styled from 'styled-components';
 
@@ -24,7 +24,10 @@ const AvatarImageBubble = styled.img<{
   border: solid 2px #fff;
   text-indent: -9999px;
   z-index: ${(props) => props.index + 1};
-  // left: ${(props) => props.index * (props.size - props.overlap)}px;
+  position: absolute; /* Absolute positioning for stacking */
+  left: ${(props) =>
+    props.index *
+    (props.size - props.overlap)}px; /* Calculate left to overlap */
   object-fit: cover;
   object-position: center;
 `;
@@ -49,7 +52,7 @@ export const AvatarBubbles = ({
   avatarIds,
   context,
   size = 34,
-  overlap,
+  overlap = 12,
   className,
   userCount,
 }: Props) => {
@@ -61,9 +64,7 @@ export const AvatarBubbles = ({
     enabled: !avatarIds,
   });
 
-  // TODO: Fix this the next time the file is edited.
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  const currentUserCount = userCount || randomAvatars?.meta?.total;
+  const currentUserCount = userCount || randomAvatars?.meta.total;
   const avatarsWithIdsQueries = useAvatarsWithIds(avatarIds);
 
   const avatarsWithIds = avatarsWithIdsQueries
@@ -76,23 +77,15 @@ export const AvatarBubbles = ({
 
   if (avatars && isNumber(currentUserCount) && currentUserCount > 0) {
     const bubbleSize = size + 4;
-    const bubbleOverlap = overlap || 10;
+    const bubbleOverlap = overlap;
     const imageSize = bubbleSize > 160 ? 'large' : 'medium';
 
     const avatarsWithImage = avatars.filter(
-      (avatar) =>
-        // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        avatar &&
-        // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        avatar.attributes?.avatar &&
-        avatar.attributes.avatar[imageSize]
+      (avatar) => avatar.attributes.avatar[imageSize]
     ) as IAvatarData[];
 
     let avatarsToShow = avatarsWithImage;
 
-    // Use placeholder images only if there are less than 3 real avatars
     if (avatarsWithImage.length < 3) {
       const placeholdersNeeded = 3 - avatarsWithImage.length;
       avatarsToShow = [
@@ -106,6 +99,7 @@ export const AvatarBubbles = ({
     const avatarImagesCount = avatarsToShow.length;
     const remainingUsers = currentUserCount - avatarImagesCount;
     const containerHeight = bubbleSize + 2;
+
     let letterAbbreviation = '';
     let truncatedUserCount = remainingUsers;
 
@@ -132,10 +126,23 @@ export const AvatarBubbles = ({
           data-testid="avatarBubblesContainer"
           display="flex"
           alignItems="center"
-          justifyContent="center"
+          justifyContent="flex-start"
           flexShrink={0}
+          style={{ lineHeight: `${containerHeight}px` }}
         >
-          <Box display="flex">
+          <Box
+            display="flex"
+            style={{
+              position: 'relative',
+              width: `${
+                bubbleSize +
+                (avatarImagesCount - 1) * (bubbleSize - bubbleOverlap)
+              }px`,
+              minWidth: `${bubbleSize}px`,
+              height: `${containerHeight}px`,
+            }}
+            alignItems="center"
+          >
             {avatarsToShow.map((avatar, index) => (
               <AvatarImageBubble
                 key={index}
@@ -149,10 +156,17 @@ export const AvatarBubbles = ({
             ))}
           </Box>
           {remainingUsers > 0 && (
-            <Box data-testid="userCountBubbleInner">
-              +{truncatedUserCount}
-              {letterAbbreviation}&nbsp;
-              {formatMessage(messages.participants)}
+            <Box
+              data-testid="userCountBubbleInner"
+              ml="4px"
+              display="flex"
+              alignItems="center"
+            >
+              <Text fontSize="s" textAlign="left" my="0px">
+                +{truncatedUserCount}
+                {letterAbbreviation}&nbsp;
+                {formatMessage(messages.participants)}
+              </Text>
             </Box>
           )}
         </Box>
