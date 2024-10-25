@@ -58,7 +58,6 @@ export enum pagesAndMenuRoutes {
   pagesAndMenu = 'pages-menu',
   pagesAndMenuDefault = '',
   homepageBuilder = 'homepage-builder',
-  homepageBuilderPreview = 'homepage-builder/preview',
   pages = 'pages',
   pagesNew = 'new',
   customPageId = ':customPageId',
@@ -111,14 +110,6 @@ export default () => ({
       element: (
         <PageLoading>
           <ContentBuilder />
-        </PageLoading>
-      ),
-    },
-    {
-      path: pagesAndMenuRoutes.homepageBuilderPreview,
-      element: (
-        <PageLoading>
-          <FullScreenPreview />
         </PageLoading>
       ),
     },
