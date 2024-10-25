@@ -7,7 +7,7 @@ import { SupportedLocale } from 'typings';
 import useAddHomepageBuilderLayout from 'api/home_page_layout/useAddHomepageLayout';
 
 import Container from 'components/admin/ContentBuilder/TopBar/Container';
-import GoBackButton from 'components/admin/ContentBuilder/TopBar/GoBackButton';
+import GoBackButton from 'components/admin/ContentBuilder/TopBar/GoBackButton2';
 import LocaleSwitcher from 'components/admin/ContentBuilder/TopBar/LocaleSwitcher';
 import PreviewToggle from 'components/admin/ContentBuilder/TopBar/PreviewToggle';
 import SaveButton from 'components/admin/ContentBuilder/TopBar/SaveButton';
@@ -71,9 +71,11 @@ const BuilderTopBar = ({
   return (
     <Container>
       <GoBackButton onClick={goBack} />
-      <Box display="flex" p="15px" flexGrow={1} alignItems="center">
+      <Box display="flex" p="15px" pl="8px" flexGrow={1} alignItems="center">
         <Box flexGrow={2}>
-          <Title>{formatMessage(messages.homepage)}</Title>
+          <Title variant="h3" as="h1" mb="0px" mt="0px">
+            {formatMessage(messages.homepage)}
+          </Title>
         </Box>
         <LocaleSwitcher
           selectedLocale={selectedLocale}

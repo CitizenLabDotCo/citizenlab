@@ -4,7 +4,6 @@ import {
   Box,
   Text,
   colors,
-  IconButton,
   TooltipContentWrapper,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
@@ -22,6 +21,7 @@ import { useReportContext } from 'containers/Admin/reporting/context/ReportConte
 
 import { CONTENT_BUILDER_Z_INDEX } from 'components/admin/ContentBuilder/constants';
 import Container from 'components/admin/ContentBuilder/TopBar/Container';
+import GoBackButton from 'components/admin/ContentBuilder/TopBar/GoBackButton2';
 import SaveButton from 'components/admin/ContentBuilder/TopBar/SaveButton';
 import Button from 'components/UI/Button';
 
@@ -214,16 +214,7 @@ const ContentBuilderTopBar = ({
         onCloseModal={closeModal}
         onGoBack={doGoBack}
       />
-      <IconButton
-        iconName="arrow-left"
-        onClick={goBack}
-        buttonType="button"
-        iconColor={colors.textSecondary}
-        iconColorOnHover={colors.primary}
-        iconWidth="20px"
-        a11y_buttonActionMessage={formatMessage(messages.goBackButtonMessage)}
-        ml="8px"
-      />
+      <GoBackButton onClick={goBack} />
       <Box display="flex" p="15px" pl="8px" flexGrow={1} alignItems="center">
         <Box flexGrow={2}>
           <ReportTitle reportId={reportId} />
