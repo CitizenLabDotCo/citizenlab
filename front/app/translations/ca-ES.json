@@ -51,7 +51,6 @@
   "app.components.AuthProviders.signUpWithEmail": "Registreu-vos amb correu electrònic",
   "app.components.AuthProviders.verificationRequired": "Verificació necessària",
   "app.components.Author.a11yPostedBy": "publicat per",
-  "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} participants",
   "app.components.CityLogoSection.iframeTitle": "Més informació sobre {orgName}",
   "app.components.Comments.cancel": "Cancel·lar",
   "app.components.Comments.commentingDisabledInCurrentPhase": "No es poden fer comentaris en la fase actual.",

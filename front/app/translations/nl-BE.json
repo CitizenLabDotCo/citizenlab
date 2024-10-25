@@ -51,7 +51,6 @@
   "app.components.AuthProviders.signUpWithEmail": "Registreren met e-mail",
   "app.components.AuthProviders.verificationRequired": "Verificatie vereist",
   "app.components.Author.a11yPostedBy": "Geplaatst door",
-  "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} gebruikers",
   "app.components.CityLogoSection.iframeTitle": "Meer informatie over {orgName}",
   "app.components.Comments.cancel": "Annuleer",
   "app.components.Comments.commentingDisabledInCurrentPhase": "Reageren is in de huidige fase niet mogelijk.",
