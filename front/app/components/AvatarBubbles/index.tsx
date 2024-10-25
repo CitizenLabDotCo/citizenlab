@@ -8,6 +8,7 @@ import { IAvatarData } from 'api/avatars/types';
 import useAvatarsWithIds from 'api/avatars/useAvatarsWithIds';
 import useRandomAvatars from 'api/avatars/useRandomAvatars';
 
+import { ScreenReaderOnly } from 'utils/a11y';
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
@@ -162,13 +163,18 @@ export const AvatarBubbles = ({
               display="flex"
               alignItems="center"
             >
-              <Text fontSize="s" textAlign="left" my="0px">
+              <Text fontSize="s" textAlign="left" my="0px" aria-hidden="true">
                 +{truncatedUserCount}
                 {letterAbbreviation}&nbsp;
                 {formatMessage(messages.participants)}
               </Text>
             </Box>
           )}
+          <ScreenReaderOnly>
+            {formatMessage(messages.numberOfUsers, {
+              numberOfUsers: currentUserCount,
+            })}
+          </ScreenReaderOnly>
         </Box>
       );
     }
