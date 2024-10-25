@@ -10,6 +10,11 @@ module ImpactTracking
       before_action :set_current_session, only: %i[upgrade]
 
       def create
+        # parsed_ua = DeviceDetector.new(request.user_agent)
+        # device_type = parsed_ua.device_type
+        # browser_name = parsed_ua.name
+        # os_name = parsed_ua.os_name
+
         session = Session.create(
           monthly_user_hash: generate_hash,
           highest_role: current_user&.highest_role,
