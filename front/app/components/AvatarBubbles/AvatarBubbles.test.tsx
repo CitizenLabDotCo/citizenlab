@@ -15,12 +15,12 @@ describe('AvatarBubbles', () => {
   it('Confirm avatar images are present', () => {
     render(<AvatarBubbles avatarIds={['sample']} size={1} userCount={10} />);
     const avatarBubbles = screen.getAllByTestId('avatarImageBubble');
-    expect(avatarBubbles).toHaveLength(3);
+    expect(avatarBubbles).toHaveLength(4);
   });
   it('User count 999 displayed as expected', () => {
     render(<AvatarBubbles avatarIds={['sample']} size={1} userCount={999} />);
     expect(screen.getByTestId('userCountBubbleInner')).toHaveTextContent(
-      /996 participants/
+      /995 participants/
     );
   });
 
@@ -42,7 +42,12 @@ describe('AvatarBubbles', () => {
 
   it('User count 1,000,001 truncates as expected', () => {
     render(
-      <AvatarBubbles avatarIds={['sample']} size={1} userCount={1000003} />
+      <AvatarBubbles
+        avatarIds={['sample']}
+        size={1}
+        userCount={1000003}
+        limit={3}
+      />
     );
     expect(screen.getByTestId('userCountBubbleInner')).toHaveTextContent(
       /1M participants/

@@ -174,7 +174,7 @@ export const AvatarBubbles = ({
                 +{truncatedUserCount}
                 {letterAbbreviation}&nbsp;
                 {formatMessage(
-                  truncatedUserCount > 1
+                  truncatedUserCount > 1 || letterAbbreviation
                     ? messages.participants1
                     : messages.participant
                 )}
