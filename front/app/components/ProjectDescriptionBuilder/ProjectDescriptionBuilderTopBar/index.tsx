@@ -11,7 +11,7 @@ import useProjectById from 'api/projects/useProjectById';
 import useLocalize from 'hooks/useLocalize';
 
 import Container from 'components/admin/ContentBuilder/TopBar/Container';
-import GoBackButton from 'components/admin/ContentBuilder/TopBar/GoBackButton';
+import GoBackButton from 'components/admin/ContentBuilder/TopBar/GoBackButton2';
 import LocaleSwitcher from 'components/admin/ContentBuilder/TopBar/LocaleSwitcher';
 import PreviewToggle from 'components/admin/ContentBuilder/TopBar/PreviewToggle';
 import SaveButton from 'components/admin/ContentBuilder/TopBar/SaveButton';
@@ -80,18 +80,18 @@ const ProjectDescriptionBuilderTopBar = ({
   return (
     <Container>
       <GoBackButton onClick={goBack} />
-      <Box display="flex" p="15px" flexGrow={1} alignItems="center">
+      <Box display="flex" p="15px" pl="8px" flexGrow={1} alignItems="center">
         <Box flexGrow={2}>
           {!project ? (
             <Spinner />
           ) : (
             <>
-              <Text mb="0px" color="textSecondary">
-                {localize(project.data.attributes.title_multiloc)}
-              </Text>
-              <Title variant="h4" as="h1">
+              <Title variant="h3" as="h1" mb="0px" mt="0px">
                 <FormattedMessage {...messages.descriptionTopicManagerText} />
               </Title>
+              <Text m="0" color="textSecondary">
+                {localize(project.data.attributes.title_multiloc)}
+              </Text>
             </>
           )}
         </Box>
