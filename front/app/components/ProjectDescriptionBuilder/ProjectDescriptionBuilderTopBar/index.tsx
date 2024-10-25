@@ -12,7 +12,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import Container from 'components/admin/ContentBuilder/TopBar/Container';
 import GoBackButton from 'components/admin/ContentBuilder/TopBar/GoBackButton';
-import LocaleSwitcher from 'components/admin/ContentBuilder/TopBar/LocaleSwitcher';
+import LocaleSelect from 'components/admin/ContentBuilder/TopBar/LocaleSelect';
 import PreviewToggle from 'components/admin/ContentBuilder/TopBar/PreviewToggle';
 import SaveButton from 'components/admin/ContentBuilder/TopBar/SaveButton';
 import Button from 'components/UI/Button';
@@ -27,7 +27,7 @@ type ProjectDescriptionBuilderTopBarProps = {
   hasError?: boolean;
   previewEnabled: boolean;
   setPreviewEnabled: React.Dispatch<React.SetStateAction<boolean>>;
-  selectedLocale: SupportedLocale | undefined;
+  selectedLocale: SupportedLocale;
   onSelectLocale: (args: {
     locale: SupportedLocale;
     editorData: SerializedNodes;
@@ -95,10 +95,7 @@ const ProjectDescriptionBuilderTopBar = ({
             </>
           )}
         </Box>
-        <LocaleSwitcher
-          selectedLocale={selectedLocale}
-          onSelectLocale={handleSelectLocale}
-        />
+        <LocaleSelect locale={selectedLocale} setLocale={handleSelectLocale} />
         <Box ml="24px" />
         <PreviewToggle
           checked={previewEnabled}
