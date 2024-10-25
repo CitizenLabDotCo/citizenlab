@@ -9,7 +9,6 @@ import useAddHomepageBuilderLayout from 'api/home_page_layout/useAddHomepageLayo
 import Container from 'components/admin/ContentBuilder/TopBar/Container';
 import GoBackButton from 'components/admin/ContentBuilder/TopBar/GoBackButton';
 import LocaleSelect from 'components/admin/ContentBuilder/TopBar/LocaleSelect';
-import PreviewToggle from 'components/admin/ContentBuilder/TopBar/PreviewToggle';
 import SaveButton from 'components/admin/ContentBuilder/TopBar/SaveButton';
 import Button from 'components/UI/Button';
 
@@ -21,8 +20,6 @@ import messages from './messages';
 type BuilderTopBarProps = {
   hasPendingState?: boolean;
   hasError?: boolean;
-  previewEnabled: boolean;
-  setPreviewEnabled: React.Dispatch<React.SetStateAction<boolean>>;
   selectedLocale: SupportedLocale;
   onSelectLocale: (args: {
     locale: SupportedLocale;
@@ -31,8 +28,6 @@ type BuilderTopBarProps = {
 };
 
 const BuilderTopBar = ({
-  previewEnabled,
-  setPreviewEnabled,
   selectedLocale,
   onSelectLocale,
   hasError,
@@ -64,10 +59,6 @@ const BuilderTopBar = ({
     onSelectLocale({ locale, editorData });
   };
 
-  const handleTogglePreview = () => {
-    setPreviewEnabled((previewEnabled) => !previewEnabled);
-  };
-
   return (
     <Container>
       <GoBackButton onClick={goBack} />
@@ -79,10 +70,7 @@ const BuilderTopBar = ({
         </Box>
         <LocaleSelect locale={selectedLocale} setLocale={handleSelectLocale} />
         <Box ml="24px" />
-        <PreviewToggle
-          checked={previewEnabled}
-          onChange={handleTogglePreview}
-        />
+        {/* TODO */}
         <Button
           id="e2e-view-homepage-button"
           icon="eye"

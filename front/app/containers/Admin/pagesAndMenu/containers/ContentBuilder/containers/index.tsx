@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 
 import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
 import { SerializedNodes } from '@craftjs/core';
@@ -6,46 +6,51 @@ import { isEmpty } from 'lodash-es';
 import { useTheme } from 'styled-components';
 import { SupportedLocale } from 'typings';
 
+import { IHomepageBuilderLayout } from 'api/home_page_layout/types';
 import useHomepageLayout from 'api/home_page_layout/useHomepageLayout';
 
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocale from 'hooks/useLocale';
 
-import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
+import Frame from 'components/admin/ContentBuilder/Frame';
 import { StyledRightColumn } from 'components/admin/ContentBuilder/Frame/FrameWrapper';
 import FullscreenContentBuilder from 'components/admin/ContentBuilder/FullscreenContentBuilder';
 import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
 import ContentBuilderSettings from 'components/admin/ContentBuilder/Settings';
 import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
 
-import { isNilOrError } from 'utils/helperUtils';
-
 import HomepageBanner from '../components/CraftComponents/HomepageBanner';
 import Projects from '../components/CraftComponents/Projects';
 import Editor from '../components/Editor';
-import HomepageBuilderEditModePreview from '../components/HomepageBuilderEditModePreview';
 import HomepageBuilderToolbox from '../components/HomepageBuilderToolbox';
 import HomepageBuilderTopBar from '../components/HomepageBuilderTopBar';
 
-const HomepageBuilderPage = () => {
-  const [previewEnabled, setPreviewEnabled] = useState(false);
+interface Props {
+  homepageLayout: IHomepageBuilderLayout;
+}
+
+type View = 'phone' | 'desktop' | 'editor';
+
+const HomepageBuilder = ({ homepageLayout }: Props) => {
   const locale = useLocale();
   const [selectedLocale, setSelectedLocale] = useState(locale);
+  const [view, setView] = useState<View>('editor');
 
   const theme = useTheme();
-  const iframeRef = useRef<HTMLIFrameElement | null>(null);
 
-  const locales = useAppConfigurationLocales();
-  const { data: homepageLayout } = useHomepageLayout();
+  const [initialData] = useState(() => {
+    const { craftjs_json } = homepageLayout.data.attributes;
+
+    if (isEmpty(craftjs_json)) {
+      return undefined;
+    }
+
+    return craftjs_json;
+  });
 
   const [contentBuilderErrors, setContentBuilderErrors] =
     useState<ContentBuilderErrors>({});
 
   const [imageUploading, setImageUploading] = useState(false);
-
-  if (isNilOrError(locales)) {
-    return null;
-  }
 
   const hasError =
     Object.values(contentBuilderErrors).filter((node) => node.hasError).length >
@@ -76,12 +81,6 @@ const HomepageBuilderPage = () => {
     }
   };
 
-  const handleEditorChange = (nodes: SerializedNodes) => {
-    iframeRef.current &&
-      iframeRef.current.contentWindow &&
-      iframeRef.current.contentWindow.postMessage(nodes, window.location.href);
-  };
-
   const handleSelectedLocaleChange = ({
     locale,
   }: {
@@ -97,29 +96,22 @@ const HomepageBuilderPage = () => {
       onDeleteElement={handleDeleteElement}
       onUploadImage={setImageUploading}
     >
-      <Editor isPreview={false} onNodesChange={handleEditorChange}>
+      <Editor isPreview={false}>
         <HomepageBuilderTopBar
           hasError={hasError}
           hasPendingState={imageUploading}
-          previewEnabled={previewEnabled}
-          setPreviewEnabled={setPreviewEnabled}
           selectedLocale={selectedLocale}
           onSelectLocale={handleSelectedLocaleChange}
         />
-        <Box
-          mt={`${stylingConsts.menuHeight}px`}
-          display={previewEnabled ? 'none' : 'flex'}
-        >
-          {selectedLocale && (
-            <HomepageBuilderToolbox selectedLocale={selectedLocale} />
-          )}
-          <StyledRightColumn>
-            <LanguageProvider
-              contentBuilderLocale={selectedLocale}
-              platformLocale={locale}
-            >
+        <Box mt={`${stylingConsts.menuHeight}px`}>
+          <HomepageBuilderToolbox selectedLocale={selectedLocale} />
+          <LanguageProvider
+            contentBuilderLocale={selectedLocale}
+            platformLocale={locale}
+          >
+            <StyledRightColumn>
               <Box width="1000px">
-                <ContentBuilderFrame editorData={getEditorData()}>
+                <Frame editorData={initialData}>
                   <HomepageBanner
                     homepageSettings={{
                       banner_avatars_enabled: true,
@@ -142,21 +134,22 @@ const HomepageBuilderPage = () => {
                     }}
                   />
                   <Projects />
-                </ContentBuilderFrame>
+                </Frame>
               </Box>
-            </LanguageProvider>
-          </StyledRightColumn>
+            </StyledRightColumn>
+          </LanguageProvider>
           <ContentBuilderSettings />
         </Box>
       </Editor>
-      <Box justifyContent="center" display={previewEnabled ? 'flex' : 'none'}>
-        <HomepageBuilderEditModePreview
-          ref={iframeRef}
-          selectedLocale={selectedLocale}
-        />
-      </Box>
     </FullscreenContentBuilder>
   );
 };
 
-export default HomepageBuilderPage;
+const HomepageBuilderWrapper = () => {
+  const { data: homepageLayout } = useHomepageLayout();
+  if (!homepageLayout) return null;
+
+  return <HomepageBuilder homepageLayout={homepageLayout} />;
+};
+
+export default HomepageBuilderWrapper;
