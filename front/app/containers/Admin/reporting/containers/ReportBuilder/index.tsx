@@ -17,6 +17,8 @@ import Frame from 'components/admin/ContentBuilder/Frame';
 import { StyledRightColumn } from 'components/admin/ContentBuilder/Frame/FrameWrapper';
 import FullscreenContentBuilder from 'components/admin/ContentBuilder/FullscreenContentBuilder';
 import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
+import ViewContainer from 'components/admin/ContentBuilder/ViewContainer';
+import { View } from 'components/admin/ContentBuilder/ViewContainer/typings';
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -30,8 +32,6 @@ import PlatformTemplate from '../../components/ReportBuilder/Templates/PlatformT
 import ProjectTemplate from '../../components/ReportBuilder/Templates/ProjectTemplate';
 import Toolbox from '../../components/ReportBuilder/Toolbox';
 import TopBar from '../../components/ReportBuilder/TopBar';
-import ViewContainer from '../../components/ReportBuilder/ViewContainer';
-import { View } from '../../components/ReportBuilder/ViewContainer/typings';
 import { A4_WIDTH } from '../../constants';
 import { ReportContextProvider } from '../../context/ReportContext';
 import messages from '../../messages';
@@ -50,7 +50,7 @@ const ReportBuilder = ({ report, reportLayout, templateConfig }: Props) => {
   const phaseId = report.data.relationships.phase?.data?.id;
 
   const platformLocale = useLocale();
-  const [view, setView] = useState<View>('pdf');
+  const [view, setView] = useState<View>('document');
 
   const [initialData] = useState(() => {
     const { craftjs_json } = reportLayout.attributes;
@@ -75,7 +75,11 @@ const ReportBuilder = ({ report, reportLayout, templateConfig }: Props) => {
   };
 
   return (
-    <ReportContextProvider width={view} reportId={reportId} phaseId={phaseId}>
+    <ReportContextProvider
+      width={view === 'document' ? 'pdf' : view}
+      reportId={reportId}
+      phaseId={phaseId}
+    >
       <FullscreenContentBuilder onUploadImage={setImageUploading}>
         <Editor
           isPreview={false}

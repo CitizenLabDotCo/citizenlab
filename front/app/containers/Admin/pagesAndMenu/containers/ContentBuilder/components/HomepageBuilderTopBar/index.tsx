@@ -10,6 +10,8 @@ import Container from 'components/admin/ContentBuilder/TopBar/Container';
 import GoBackButton from 'components/admin/ContentBuilder/TopBar/GoBackButton';
 import LocaleSelect from 'components/admin/ContentBuilder/TopBar/LocaleSelect';
 import SaveButton from 'components/admin/ContentBuilder/TopBar/SaveButton';
+import { View } from 'components/admin/ContentBuilder/ViewContainer/typings';
+import ViewPicker from 'components/admin/ContentBuilder/ViewContainer/ViewPicker';
 import Button from 'components/UI/Button';
 
 import { useIntl } from 'utils/cl-intl';
@@ -21,6 +23,8 @@ type BuilderTopBarProps = {
   hasPendingState?: boolean;
   hasError?: boolean;
   selectedLocale: SupportedLocale;
+  view: View;
+  setView: (view: View) => void;
   onSelectLocale: (args: {
     locale: SupportedLocale;
     editorData: SerializedNodes;
@@ -29,9 +33,11 @@ type BuilderTopBarProps = {
 
 const BuilderTopBar = ({
   selectedLocale,
-  onSelectLocale,
   hasError,
   hasPendingState,
+  view,
+  setView,
+  onSelectLocale,
 }: BuilderTopBarProps) => {
   const { query } = useEditor();
   const {
@@ -69,8 +75,9 @@ const BuilderTopBar = ({
           </Title>
         </Box>
         <LocaleSelect locale={selectedLocale} setLocale={handleSelectLocale} />
-        <Box ml="24px" />
-        {/* TODO */}
+        <Box mx="32px">
+          <ViewPicker view={view} setView={setView} />
+        </Box>
         <Button
           id="e2e-view-homepage-button"
           icon="eye"

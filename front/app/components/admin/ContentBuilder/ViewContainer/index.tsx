@@ -19,7 +19,7 @@ interface Props {
 }
 
 const getBoxProps = (view: View) => {
-  if (view === 'pdf') {
+  if (view === 'document') {
     const outerBox: BoxProps = {
       width: A4_WIDTH,
     };

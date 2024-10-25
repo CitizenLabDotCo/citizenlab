@@ -29,10 +29,10 @@ import Button from 'components/UI/Button';
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
+import { View } from '../../../../../../components/admin/ContentBuilder/ViewContainer/typings';
+import ViewPicker from '../../../../../../components/admin/ContentBuilder/ViewContainer/ViewPicker';
 import { PLATFORM_TEMPLATE_MIN_NUMBER_OF_NODES_BEFORE_AUTOSAVE } from '../Templates/PlatformTemplate/constants';
 import { PROJECT_TEMPLATE_MIN_NUMBER_OF_NODES_BEFORE_AUTOSAVE } from '../Templates/ProjectTemplate/constants';
-import { View } from '../ViewContainer/typings';
-import ViewPicker from '../ViewContainer/ViewPicker';
 
 import messages from './messages';
 import QuitModal from './QuitModal';

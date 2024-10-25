@@ -26,11 +26,11 @@ const ViewPicker = ({ view, setView }: Props) => {
       <Button
         icon="file"
         buttonStyle="text"
-        bgColor={view === 'pdf' ? colors.white : colors.background}
+        bgColor={view === 'document' ? colors.white : colors.background}
         bgHoverColor={colors.white}
         iconColor={colors.textPrimary}
         iconSize="16px"
-        onClick={() => setView('pdf')}
+        onClick={() => setView('document')}
         p="4px 8px"
         mx="2px"
       />

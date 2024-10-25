@@ -17,6 +17,8 @@ import FullscreenContentBuilder from 'components/admin/ContentBuilder/Fullscreen
 import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
 import ContentBuilderSettings from 'components/admin/ContentBuilder/Settings';
 import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
+import ViewContainer from 'components/admin/ContentBuilder/ViewContainer';
+import { View } from 'components/admin/ContentBuilder/ViewContainer/typings';
 
 import HomepageBanner from '../components/CraftComponents/HomepageBanner';
 import Projects from '../components/CraftComponents/Projects';
@@ -28,12 +30,10 @@ interface Props {
   homepageLayout: IHomepageBuilderLayout;
 }
 
-type View = 'phone' | 'desktop' | 'editor';
-
 const HomepageBuilder = ({ homepageLayout }: Props) => {
   const locale = useLocale();
   const [selectedLocale, setSelectedLocale] = useState(locale);
-  const [view, setView] = useState<View>('editor');
+  const [view, setView] = useState<View>('document');
 
   const theme = useTheme();
 
@@ -90,6 +90,8 @@ const HomepageBuilder = ({ homepageLayout }: Props) => {
           hasError={hasError}
           hasPendingState={imageUploading}
           selectedLocale={selectedLocale}
+          view={view}
+          setView={setView}
           onSelectLocale={handleSelectedLocaleChange}
         />
         <Box mt={`${stylingConsts.menuHeight}px`}>
@@ -99,7 +101,7 @@ const HomepageBuilder = ({ homepageLayout }: Props) => {
             platformLocale={locale}
           >
             <StyledRightColumn>
-              <Box width="1000px">
+              <ViewContainer view={view}>
                 <Frame editorData={initialData}>
                   <HomepageBanner
                     homepageSettings={{
@@ -124,7 +126,7 @@ const HomepageBuilder = ({ homepageLayout }: Props) => {
                   />
                   <Projects />
                 </Frame>
-              </Box>
+              </ViewContainer>
             </StyledRightColumn>
           </LanguageProvider>
           <ContentBuilderSettings />
