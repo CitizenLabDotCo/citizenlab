@@ -16,7 +16,7 @@ import moment from 'moment';
 import { rgba, darken } from 'polished';
 import { useInView } from 'react-intersection-observer';
 import { RouteType } from 'routes';
-import styled, { useTheme } from 'styled-components';
+import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
 import usePhase from 'api/phases/usePhase';
@@ -389,8 +389,6 @@ const ProjectCard = memo<InputProps>(
     const { data: phase } = usePhase(currentPhaseId);
     const localize = useLocalize();
 
-    const theme = useTheme();
-
     const [visible, setVisible] = useState(false);
 
     const handleProjectCardOnClick = (projectId: string) => {
@@ -699,7 +697,6 @@ const ProjectCard = memo<InputProps>(
                     <AvatarBubbles
                       size={32}
                       limit={3}
-                      userCountBgColor={theme.colors.tenantPrimary}
                       avatarIds={avatarIds}
                       userCount={project.data.attributes.participants_count}
                     />

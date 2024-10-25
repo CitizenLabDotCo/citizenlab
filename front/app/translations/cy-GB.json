@@ -49,7 +49,6 @@
   "app.components.AuthProviders.signUpWithEmail": "Cofrestrwch gydag E-bost",
   "app.components.AuthProviders.verificationRequired": "Angen dilysu",
   "app.components.Author.a11yPostedBy": "Postiwyd gan",
-  "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} cyfranogwyr",
   "app.components.CityLogoSection.iframeTitle": "Mwy o wybodaeth am {orgName}",
   "app.components.Comments.cancel": "Canslo",
   "app.components.Comments.commentingDisabledInCurrentPhase": "Nid yw'n bosibl gwneud sylwadau yn y cyfnod presennol.",
