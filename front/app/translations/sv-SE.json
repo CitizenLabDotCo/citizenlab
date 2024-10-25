@@ -51,6 +51,7 @@
   "app.components.AuthProviders.signUpWithEmail": "Registrera dig med e-postadress",
   "app.components.AuthProviders.verificationRequired": "Verifiering krävs",
   "app.components.Author.a11yPostedBy": "Publicerad av",
+  "app.components.AvatarBubbles.numberOfParticipants": "{numberOfParticipants} deltagare",
   "app.components.AvatarBubbles.participants": "deltagare",
   "app.components.CityLogoSection.iframeTitle": "Mer information om {orgName}",
   "app.components.Comments.cancel": "Avbryt",
