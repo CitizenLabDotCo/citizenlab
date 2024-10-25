@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 
 import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
 import { SerializedNodes } from '@craftjs/core';
@@ -29,22 +29,14 @@ import HomepageBuilderTopBar from '../components/HomepageBuilderTopBar';
 
 const HomepageBuilderPage = () => {
   const [previewEnabled, setPreviewEnabled] = useState(false);
-  const [selectedLocale, setSelectedLocale] = useState<
-    SupportedLocale | undefined
-  >();
+  const locale = useLocale();
+  const [selectedLocale, setSelectedLocale] = useState(locale);
 
   const theme = useTheme();
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
 
-  const locale = useLocale();
   const locales = useAppConfigurationLocales();
   const { data: homepageLayout } = useHomepageLayout();
-
-  useEffect(() => {
-    if (!isNilOrError(locale)) {
-      setSelectedLocale(locale);
-    }
-  }, [locale]);
 
   const [contentBuilderErrors, setContentBuilderErrors] =
     useState<ContentBuilderErrors>({});
