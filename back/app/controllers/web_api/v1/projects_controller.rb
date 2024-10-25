@@ -41,7 +41,7 @@ class WebApi::V1::ProjectsController < ApplicationController
       user_followers: user_followers,
       timeline_active: TimelineService.new.timeline_active_on_collection(@projects.to_a),
       visible_children_count_by_parent_id: {}, # projects don't have children
-      user_requirements_service: Permissions::UserRequirementsService.new(check_groups_and_verification: false)
+      user_requirements_service: user_requirements_service
     }
 
     render json: linked_json(
@@ -79,14 +79,11 @@ class WebApi::V1::ProjectsController < ApplicationController
     # Projects user can participate in now, or where such participation could (probably) be made possible by user
     # (e.g. user not signed in).
     # Unfortunately, this breaks the query chain, so we have to start a new one after this.
-    user_requirements_service = Permissions::UserRequirementsService.new(check_groups_and_verification: false)
-
     project_ids = @projects.select do |project|
       Permissions::ProjectPermissionsService
         .new(project, current_user, user_requirements_service: user_requirements_service).participation_possible?
     end.pluck(:id)
 
-    # Start a new query chain by selecting projects with the filtered projects' ids
     @projects = @projects.where(id: project_ids)
 
     # `includes` tries to be smart & use joins here, but it makes the query complex and slow. So, we use `preload`.
@@ -270,6 +267,10 @@ class WebApi::V1::ProjectsController < ApplicationController
       # Validation errors will appear in the Sentry error 'Additional Data'
       ErrorReporter.report_msg("Project change would lead to inconsistencies! (id: #{project.id})", extra: errors || {})
     end
+  end
+
+  def user_requirements_service
+    @user_requirements_service ||= Permissions::UserRequirementsService.new(check_groups_and_verification: false)
   end
 end
 
