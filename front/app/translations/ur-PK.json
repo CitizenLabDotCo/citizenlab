@@ -51,6 +51,7 @@
   "app.components.AuthProviders.signUpWithEmail": "ای میل کے ساتھ سائن اپ کریں۔",
   "app.components.AuthProviders.verificationRequired": "تصدیق درکار ہے۔",
   "app.components.Author.a11yPostedBy": "کی طرف سے پوسٹ کیا گیا",
+  "app.components.AvatarBubbles.numberOfParticipants": "{numberOfParticipants} شرکاء",
   "app.components.AvatarBubbles.participants": "شرکاء",
   "app.components.CityLogoSection.iframeTitle": "{orgName}کے بارے میں مزید معلومات",
   "app.components.Comments.cancel": "منسوخ کریں۔",
