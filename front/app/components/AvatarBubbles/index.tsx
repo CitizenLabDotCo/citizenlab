@@ -34,17 +34,16 @@ const AvatarImageBubble = styled.img<{
 `;
 
 interface Props {
-  limit?: number;
   context?: {
     type: 'project' | 'group';
     id: string;
   };
   size?: number;
   overlap?: number;
-  userCountBgColor?: string;
   avatarIds?: string[];
   className?: string;
   userCount?: number;
+  showParticipantText?: boolean;
 }
 
 const defaultLimit = 4;
@@ -56,6 +55,7 @@ export const AvatarBubbles = ({
   overlap = 12,
   className,
   userCount,
+  showParticipantText = true,
 }: Props) => {
   const { formatMessage } = useIntl();
   const { data: randomAvatars } = useRandomAvatars({
@@ -156,14 +156,20 @@ export const AvatarBubbles = ({
               />
             ))}
           </Box>
-          {remainingUsers > 0 && (
+          {showParticipantText && remainingUsers > 0 && (
             <Box
               data-testid="userCountBubbleInner"
               ml="4px"
               display="flex"
               alignItems="center"
             >
-              <Text fontSize="s" textAlign="left" my="0px" aria-hidden="true">
+              <Text
+                fontSize="s"
+                textAlign="left"
+                my="0px"
+                aria-hidden="true"
+                color="coolGrey600"
+              >
                 +{truncatedUserCount}
                 {letterAbbreviation}&nbsp;
                 {formatMessage(messages.participants)}
