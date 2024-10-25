@@ -70,17 +70,6 @@ const HomepageBuilder = ({ homepageLayout }: Props) => {
     });
   };
 
-  const getEditorData = () => {
-    if (
-      homepageLayout &&
-      !isEmpty(homepageLayout.data.attributes.craftjs_json)
-    ) {
-      return homepageLayout.data.attributes.craftjs_json;
-    } else {
-      return undefined;
-    }
-  };
-
   const handleSelectedLocaleChange = ({
     locale,
   }: {
