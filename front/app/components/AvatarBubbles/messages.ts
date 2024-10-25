@@ -1,12 +1,17 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  numberOfParticipants: {
-    id: 'app.components.AvatarBubbles.numberOfParticipants',
-    defaultMessage: '{numberOfParticipants} participants',
+  numberOfParticipants1: {
+    id: 'app.components.AvatarBubbles.numberOfParticipants1',
+    defaultMessage:
+      '{numberOfParticipants, plural, one {1 participant} other {{numberOfParticipants} participants}}',
   },
-  participants: {
-    id: 'app.components.AvatarBubbles.participants',
+  participant: {
+    id: 'app.components.AvatarBubbles.participant',
+    defaultMessage: 'participant',
+  },
+  participants1: {
+    id: 'app.components.AvatarBubbles.participants1',
     defaultMessage: 'participants',
   },
 });

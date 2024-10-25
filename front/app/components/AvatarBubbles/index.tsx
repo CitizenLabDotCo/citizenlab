@@ -87,8 +87,9 @@ export const AvatarBubbles = ({
 
     let avatarsToShow = avatarsWithImage;
 
-    if (avatarsWithImage.length < 3) {
-      const placeholdersNeeded = 3 - avatarsWithImage.length;
+    if (avatarsWithImage.length < currentUserCount) {
+      const placeholdersNeeded =
+        Math.min(currentUserCount, limit) - avatarsWithImage.length;
       avatarsToShow = [
         ...avatarsWithImage,
         ...new Array(placeholdersNeeded).fill({
@@ -172,12 +173,16 @@ export const AvatarBubbles = ({
               >
                 +{truncatedUserCount}
                 {letterAbbreviation}&nbsp;
-                {formatMessage(messages.participants)}
+                {formatMessage(
+                  truncatedUserCount > 1
+                    ? messages.participants1
+                    : messages.participant
+                )}
               </Text>
             </Box>
           )}
           <ScreenReaderOnly>
-            {formatMessage(messages.numberOfParticipants, {
+            {formatMessage(messages.numberOfParticipants1, {
               numberOfParticipants: currentUserCount,
             })}
           </ScreenReaderOnly>
