@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Title, Text } from '@citizenlab/cl2-component-library';
+import { Box, Title, Text, colors } from '@citizenlab/cl2-component-library';
 import { useEditor, SerializedNodes } from '@craftjs/core';
 import { SupportedLocale } from 'typings';
 
@@ -84,15 +84,17 @@ const BuilderTopBar = ({
           onChange={handleTogglePreview}
         />
         <Button
-          id="e2e-view-project-button"
-          buttonStyle="secondary-outlined"
+          id="e2e-view-homepage-button"
           icon="eye"
-          mx="20px"
-          linkTo={`/`}
+          buttonStyle="secondary-outlined"
+          iconColor={colors.textPrimary}
+          iconSize="20px"
+          px="11px"
+          py="6px"
+          ml="32px"
+          linkTo="/"
           openLinkInNewTab
-        >
-          {formatMessage(messages.viewHomepage)}
-        </Button>
+        />
         <SaveButton
           isDisabled={!!(disableSave || hasPendingState)}
           isLoading={isLoading}

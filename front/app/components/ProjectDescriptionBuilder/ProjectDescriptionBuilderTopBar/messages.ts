@@ -9,10 +9,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectDescription.viewPublicProject',
     defaultMessage: 'View project',
   },
-  viewProject: {
-    id: 'app.containers.AdminPage.ProjectDescription.viewProject',
-    defaultMessage: 'View project',
-  },
   saveError: {
     id: 'app.containers.AdminPage.ProjectDescription.saveError',
     defaultMessage:

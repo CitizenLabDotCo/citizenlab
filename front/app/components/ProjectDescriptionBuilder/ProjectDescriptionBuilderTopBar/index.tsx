@@ -1,6 +1,12 @@
 import React from 'react';
 
-import { Box, Spinner, Text, Title } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Spinner,
+  Text,
+  Title,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import { useEditor, SerializedNodes } from '@craftjs/core';
 import { useParams } from 'react-router-dom';
 import { SupportedLocale } from 'typings';
@@ -103,15 +109,17 @@ const ProjectDescriptionBuilderTopBar = ({
         />
         <Button
           id="e2e-view-project-button"
-          buttonStyle="secondary-outlined"
           icon="eye"
-          mx="20px"
+          buttonStyle="secondary-outlined"
+          iconColor={colors.textPrimary}
+          iconSize="20px"
+          px="11px"
+          py="6px"
+          ml="32px"
           disabled={!project}
-          linkTo={`/projects/${project?.data.attributes.slug}`}
           openLinkInNewTab
-        >
-          <FormattedMessage {...messages.viewProject} />
-        </Button>
+          linkTo={`/projects/${project?.data.attributes.slug}`}
+        />
         <SaveButton
           isDisabled={disableSave}
           isLoading={isLoading}
