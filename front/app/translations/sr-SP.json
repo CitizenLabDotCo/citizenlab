@@ -583,7 +583,7 @@
   "app.components.followUnfollow.followTooltipInputPage2": "Праћење активира имејл обавештења о пројекту. {unsubscribeLink} у било ком тренутку.",
   "app.components.followUnfollow.followTooltipProjects2": "Праћење активира имејл обавештења о пројекту. {unsubscribeLink} у било ком тренутку.",
   "app.components.followUnfollow.unFollow": "Престани пратити",
-  "app.components.followUnfollow.unsubscribe": "unsubscribe",
+  "app.components.followUnfollow.unsubscribe": "Oдјавите се",
   "app.components.followUnfollow.unsubscribeUrl": "/profile/edit",
   "app.components.form.ErrorDisplay.guidelinesLinkText": "наше смернице",
   "app.components.form.ErrorDisplay.next": "Следећи",
