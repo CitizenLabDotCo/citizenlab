@@ -31,7 +31,6 @@ module VotingMethod
     end
 
     def votes_for_idea(idea)
-      # TODO: Add to tests
       idea.ideas_phases.find { |ideas_phase| ideas_phase.phase_id == phase&.id }&.votes_count || 0
     end
 

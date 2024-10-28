@@ -67,7 +67,7 @@ RSpec.describe VotingMethod::MultipleVoting do
       create(:baskets_idea, basket: create(:basket, phase: phase), idea: idea, votes: 3)
       create(:baskets_idea, basket: create(:basket, phase: phase), idea: idea, votes: 1)
       create(:baskets_idea, basket: create(:basket, phase: other_voting_phase), idea: idea, votes: 2)
-      Basket.update_counts(phase) # TODO: refactoring?
+      Basket.update_counts(phase)
     end
 
     context 'when the idea is in the voting phase' do

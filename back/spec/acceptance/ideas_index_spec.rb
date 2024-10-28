@@ -47,7 +47,6 @@ resource 'Ideas' do
         end
 
         example_request 'Can only see who updated manual votes for moderatable inputs' do
-          # TODO: Test inputs cannot moderate (serializer spec)
           assert_status 200
 
           input1_response = json_response_body[:data].find { |i| i[:id] == input1.id }
