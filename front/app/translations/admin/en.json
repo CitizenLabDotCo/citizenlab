@@ -247,6 +247,8 @@
   "app.components.admin.PostManager.officialFeedbackModal.title": "Explain your decision",
   "app.components.admin.PostManager.officialUpdateAuthor": "Choose how people will see your name",
   "app.components.admin.PostManager.officialUpdateBody": "Explain this status change",
+  "app.components.admin.PostManager.offlinePicks": "Offline picks",
+  "app.components.admin.PostManager.offlineVotes": "Offline votes",
   "app.components.admin.PostManager.optionFormTitle": "Edit option",
   "app.components.admin.PostManager.participants": "Participants",
   "app.components.admin.PostManager.participatoryBudgettingPicks": "Picks",
