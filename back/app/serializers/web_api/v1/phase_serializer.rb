@@ -91,6 +91,6 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
   }
 
   def self.can_moderate?(phase, params)
-    UserRoleService.new.can_moderate?(phase, current_user(params))
+    current_user(params) && UserRoleService.new.can_moderate?(phase, current_user(params))
   end
 end
