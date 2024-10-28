@@ -3,10 +3,10 @@ module Export
     class InputSheetGenerator
       US_DATE_TIME_FORMAT = 'mm/dd/yyyy hh:mm:ss'
 
-      def initialize(inputs, phase, include_private_attributes)
+      def initialize(inputs, phase)
         @inputs = inputs
         @phase = phase
-        @include_private_attributes = include_private_attributes
+        @include_private_attributes = phase.pmethod.supports_private_attributes_in_export?
         @participation_method = phase.pmethod
         @value_visitor = Xlsx::ValueVisitor
         @fields_in_form = IdeaCustomFieldsService.new(participation_method.custom_form).reportable_fields
