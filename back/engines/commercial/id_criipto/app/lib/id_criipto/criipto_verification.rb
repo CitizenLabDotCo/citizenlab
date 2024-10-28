@@ -19,6 +19,10 @@ module IdCriipto
       'criipto'
     end
 
+    def ui_method_name
+      config[:ui_method_name].presence || name
+    end
+
     def name_for_hashing
       config[:method_name_for_hashing].presence || config[:identity_source].presence || super
     end
