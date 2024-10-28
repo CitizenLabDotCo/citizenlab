@@ -1716,7 +1716,6 @@
   "app.containers.admin.ContentBuilder.infoWithAccordions": "Info & harmonikka",
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 sarake",
   "app.containers.admin.ContentBuilder.projectDescription": "Projektin kuvaus",
-  "app.containers.admin.ContentBuilder.sections": "OSIOT",
   "app.containers.app.navbar.admin": "Hallinnoi alustaa",
   "app.containers.app.navbar.allProjects": "Kaikki projektit",
   "app.containers.app.navbar.ariaLabel": "Ensisijainen",

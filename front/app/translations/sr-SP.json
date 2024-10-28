@@ -1803,7 +1803,6 @@
   "app.containers.admin.ContentBuilder.infoWithAccordions": "Info & accordions",
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 column",
   "app.containers.admin.ContentBuilder.projectDescription": "Project description",
-  "app.containers.admin.ContentBuilder.sections": "SECTIONS",
   "app.containers.app.navbar.admin": "Управљајте платформом",
   "app.containers.app.navbar.allProjects": "Сви пројекти",
   "app.containers.app.navbar.ariaLabel": "Примарна",

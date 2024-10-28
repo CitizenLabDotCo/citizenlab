@@ -1803,7 +1803,6 @@
   "app.containers.admin.ContentBuilder.infoWithAccordions": "معلومات و أكورديون",
   "app.containers.admin.ContentBuilder.oneColumnLayout": "عمود واحد",
   "app.containers.admin.ContentBuilder.projectDescription": "وصف المشروع",
-  "app.containers.admin.ContentBuilder.sections": "الأقسام",
   "app.containers.app.navbar.admin": "إدارة المنصة",
   "app.containers.app.navbar.allProjects": "جميع المشاريع",
   "app.containers.app.navbar.ariaLabel": "أساسي",

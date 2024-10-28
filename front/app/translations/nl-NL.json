@@ -1803,7 +1803,6 @@
   "app.containers.admin.ContentBuilder.infoWithAccordions": "Info & accordions",
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 kolom",
   "app.containers.admin.ContentBuilder.projectDescription": "Projectbeschrijving",
-  "app.containers.admin.ContentBuilder.sections": "SECTIES",
   "app.containers.app.navbar.admin": "Beheer platform",
   "app.containers.app.navbar.allProjects": "Alle projecten",
   "app.containers.app.navbar.ariaLabel": "Primair",

@@ -1716,7 +1716,6 @@
   "app.containers.admin.ContentBuilder.infoWithAccordions": "Gwybodaeth ac acordion",
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 golofn",
   "app.containers.admin.ContentBuilder.projectDescription": "Disgrifiad o'r prosiect",
-  "app.containers.admin.ContentBuilder.sections": "ADRAN",
   "app.containers.app.navbar.admin": "Rheoli platfform",
   "app.containers.app.navbar.allProjects": "Pob prosiect",
   "app.containers.app.navbar.ariaLabel": "Cynradd",

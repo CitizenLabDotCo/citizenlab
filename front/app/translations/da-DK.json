@@ -1803,7 +1803,6 @@
   "app.containers.admin.ContentBuilder.infoWithAccordions": "Info og harmonikaer",
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 kolonne",
   "app.containers.admin.ContentBuilder.projectDescription": "Projektbeskrivelse",
-  "app.containers.admin.ContentBuilder.sections": "AFSNIT",
   "app.containers.app.navbar.admin": "Administrator",
   "app.containers.app.navbar.allProjects": "{tenantName, select, DeloitteDK {Alle verdensmål} other {Alle projekter}}",
   "app.containers.app.navbar.ariaLabel": "Primært",

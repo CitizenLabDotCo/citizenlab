@@ -1714,7 +1714,6 @@
   "app.containers.admin.ContentBuilder.infoWithAccordions": "Info & Akkordeonen",
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 kolonne",
   "app.containers.admin.ContentBuilder.projectDescription": "Projet Beschreiwung",
-  "app.containers.admin.ContentBuilder.sections": "SECTIONS",
   "app.containers.app.navbar.admin": "Plattform verwalten",
   "app.containers.app.navbar.allProjects": "All Projeten",
   "app.containers.app.navbar.ariaLabel": "Primär",
