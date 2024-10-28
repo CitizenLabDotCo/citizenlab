@@ -2449,7 +2449,6 @@
   "app.containers.ContentBuilder.homepage.PageTitle": "Startseite",
   "app.containers.ContentBuilder.homepage.SaveError": "Beim Speichern der Homepage ist ein Fehler aufgetreten.",
   "app.containers.ContentBuilder.homepage.TwoColumnLayout": "Zwei Spalten",
-  "app.containers.ContentBuilder.homepage.View": "Vorschau",
   "app.containers.ContentBuilder.homepage.bannerImage": "Banner-Bild",
   "app.containers.ContentBuilder.homepage.bannerSubtext": "Banner-Subtext",
   "app.containers.ContentBuilder.homepage.bannerText": "Banner-Text",

@@ -2449,7 +2449,6 @@
   "app.containers.ContentBuilder.homepage.PageTitle": "Anasayfa",
   "app.containers.ContentBuilder.homepage.SaveError": "Ana sayfayı kaydederken bir şeyler ters gitti.",
   "app.containers.ContentBuilder.homepage.TwoColumnLayout": "İki sütun",
-  "app.containers.ContentBuilder.homepage.View": "Görünüm",
   "app.containers.ContentBuilder.homepage.bannerImage": "Banner görseli",
   "app.containers.ContentBuilder.homepage.bannerSubtext": "Banner alt metni",
   "app.containers.ContentBuilder.homepage.bannerText": "Afiş metni",

@@ -2449,7 +2449,6 @@
   "app.containers.ContentBuilder.homepage.PageTitle": "الصفحة الرئيسية",
   "app.containers.ContentBuilder.homepage.SaveError": "حدث خطأ ما أثناء حفظ الصفحة الرئيسية.",
   "app.containers.ContentBuilder.homepage.TwoColumnLayout": "عمودين",
-  "app.containers.ContentBuilder.homepage.View": "منظر",
   "app.containers.ContentBuilder.homepage.bannerImage": "صورة بانر",
   "app.containers.ContentBuilder.homepage.bannerSubtext": "نص فرعي للشعار",
   "app.containers.ContentBuilder.homepage.bannerText": "نص البانر",

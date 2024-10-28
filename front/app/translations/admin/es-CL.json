@@ -2449,7 +2449,6 @@
   "app.containers.ContentBuilder.homepage.PageTitle": "Página de inicio",
   "app.containers.ContentBuilder.homepage.SaveError": "Algo ha ido mal al guardar la página de inicio.",
   "app.containers.ContentBuilder.homepage.TwoColumnLayout": "Dos columnas",
-  "app.containers.ContentBuilder.homepage.View": "Ver",
   "app.containers.ContentBuilder.homepage.bannerImage": "Imagen del encabezado",
   "app.containers.ContentBuilder.homepage.bannerSubtext": "Subtexto del banner",
   "app.containers.ContentBuilder.homepage.bannerText": "Texto de banner",

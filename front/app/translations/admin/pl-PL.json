@@ -2449,7 +2449,6 @@
   "app.containers.ContentBuilder.homepage.PageTitle": "Strona główna",
   "app.containers.ContentBuilder.homepage.SaveError": "Coś poszło nie tak podczas zapisywania strony głównej.",
   "app.containers.ContentBuilder.homepage.TwoColumnLayout": "Dwie kolumny",
-  "app.containers.ContentBuilder.homepage.View": "Zobacz",
   "app.containers.ContentBuilder.homepage.bannerImage": "Obraz baneru",
   "app.containers.ContentBuilder.homepage.bannerSubtext": "Podtekst banera",
   "app.containers.ContentBuilder.homepage.bannerText": "Tekst banera",

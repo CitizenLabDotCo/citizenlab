@@ -2449,7 +2449,6 @@
   "app.containers.ContentBuilder.homepage.PageTitle": "Homepage",
   "app.containers.ContentBuilder.homepage.SaveError": "Something went wrong while saving the homepage.",
   "app.containers.ContentBuilder.homepage.TwoColumnLayout": "Two columns",
-  "app.containers.ContentBuilder.homepage.View": "View",
   "app.containers.ContentBuilder.homepage.bannerImage": "Banner image",
   "app.containers.ContentBuilder.homepage.bannerSubtext": "Banner subtext",
   "app.containers.ContentBuilder.homepage.bannerText": "Banner text",

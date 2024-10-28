@@ -2449,7 +2449,6 @@
   "app.containers.ContentBuilder.homepage.PageTitle": "Mājas lapa",
   "app.containers.ContentBuilder.homepage.SaveError": "Kaut kas notika nepareizi, saglabājot sākumlapu.",
   "app.containers.ContentBuilder.homepage.TwoColumnLayout": "Divas kolonnas",
-  "app.containers.ContentBuilder.homepage.View": "Skatīt",
   "app.containers.ContentBuilder.homepage.bannerImage": "Bannera attēls",
   "app.containers.ContentBuilder.homepage.bannerSubtext": "Bannera zemteksts",
   "app.containers.ContentBuilder.homepage.bannerText": "Bannera teksts",

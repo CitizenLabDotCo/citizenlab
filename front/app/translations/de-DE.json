@@ -968,7 +968,6 @@
   "app.containers.AdminPage.ProjectDescription.saveError": "Beim Speichern der Projektbeschreibung ist ein Fehler aufgetreten.",
   "app.containers.AdminPage.ProjectDescription.toggleLabel": "Content Builder für Beschreibung verwenden",
   "app.containers.AdminPage.ProjectDescription.toggleTooltip": "Mit dem Content Builder können Sie erweiterte Layout-Optionen nutzen.",
-  "app.containers.AdminPage.ProjectDescription.viewProject": "Projekt ansehen",
   "app.containers.AdminPage.ProjectDescription.viewPublicProject": "Projekt ansehen",
   "app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd": "Ende der Umfrage",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderRules": "Erstellen einer intelligenten Gruppe",
