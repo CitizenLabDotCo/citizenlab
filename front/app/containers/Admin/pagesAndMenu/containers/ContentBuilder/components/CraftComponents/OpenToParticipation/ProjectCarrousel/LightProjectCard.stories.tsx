@@ -17,6 +17,11 @@ export const Primary: Story = {
         title_multiloc: {
           en: 'My cool project',
         },
+        action_descriptors: {
+          posting_idea: { enabled: true },
+          reacting_idea: { enabled: false },
+          commenting_idea: { enabled: true },
+        },
       },
       relationships: {
         project_images: {
@@ -32,6 +37,7 @@ export const Primary: Story = {
     phase: {
       attributes: {
         participation_method: 'ideation',
+        input_term: 'idea',
       },
     } as any,
   },

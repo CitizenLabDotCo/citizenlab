@@ -60,7 +60,7 @@ const LightProjectCard = ({ project, phase }: Props) => {
           {imageUrl ? <Image src={imageUrl} alt="" /> : <ImagePlaceholder />}
         </ProjectImageContainer>
       </Box>
-      <Title variant="h4" mt="8px" mb="0px" fontWeight="600">
+      <Title variant="h4" mt="8px" mb="0px" fontWeight="bold">
         {title}
       </Title>
       <Box mt="8px">
@@ -72,14 +72,14 @@ const LightProjectCard = ({ project, phase }: Props) => {
           ml="-4px"
           transform="translate(0,-1)"
         />
-        <Text color="blue500" fontWeight="600" display="inline" m="0">
+        <Text color="blue500" fontWeight="bold" display="inline" m="0">
           {end_at ? (
             <PhaseTimeLeft currentPhaseEndsAt={end_at} />
           ) : (
             'No end date'
           )}
         </Text>
-        <Text>
+        <Text mt="4px" mb="0px" color="textSecondary" fontWeight="bold">
           {getCTAMessage({ phase, project, localize, formatMessage })}
         </Text>
       </Box>
