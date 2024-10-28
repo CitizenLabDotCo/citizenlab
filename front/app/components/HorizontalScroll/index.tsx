@@ -41,8 +41,8 @@ const StyledContainer = styled(Box)<{ snap: boolean }>`
 interface Props {
   children: ReactNode;
   containerRole?: string; // If the scrollable container needs a specific role, pass it in
-  snap?: boolean;
-  scrollOffset?: number;
+  snap?: boolean; // Whether the container should snap to elements
+  arrowScrollOffset?: number; // How many pixels you scroll when clicking the arrow buttons
 }
 
 /*
@@ -53,7 +53,7 @@ const HorizontalScroll = ({
   children,
   containerRole,
   snap = false,
-  scrollOffset,
+  arrowScrollOffset,
 }: Props) => {
   const theme = useTheme();
   const isSmallerThanPhone = useBreakpoint('phone');
@@ -105,7 +105,8 @@ const HorizontalScroll = ({
   // Scroll the container by the specified offset
   const horizontalScroll = (direction: 'backward' | 'forward') => {
     if (!containerRef.current) return;
-    const absoluteOffset = scrollOffset ?? (isSmallerThanPhone ? 350 : 200);
+    const absoluteOffset =
+      arrowScrollOffset ?? (isSmallerThanPhone ? 350 : 200);
     const offset = direction === 'backward' ? -absoluteOffset : absoluteOffset;
 
     containerRef.current.scrollLeft += offset;

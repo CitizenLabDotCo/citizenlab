@@ -17,7 +17,7 @@ const ProjectContainer = styled.div`
 
 const ProjectCarrousel = () => {
   return (
-    <HorizontalScroll snap scrollOffset={216}>
+    <HorizontalScroll snap arrowScrollOffset={216}>
       {PROJECTS.map((_, index) => (
         <ProjectContainer key={index}>Project {index}</ProjectContainer>
       ))}
