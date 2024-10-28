@@ -42,13 +42,19 @@ interface Props {
   children: ReactNode;
   containerRole?: string; // If the scrollable container needs a specific role, pass it in
   snap?: boolean;
+  scrollOffset?: number;
 }
 
 /*
  * HorizontalScroll:
  * Wraps children elements with a horizontal scroll container with arrow buttons to scroll left and right.
  */
-const HorizontalScroll = ({ children, containerRole, snap = false }: Props) => {
+const HorizontalScroll = ({
+  children,
+  containerRole,
+  snap = false,
+  scrollOffset,
+}: Props) => {
   const theme = useTheme();
   const isSmallerThanPhone = useBreakpoint('phone');
   const { formatMessage } = useIntl();
@@ -91,19 +97,18 @@ const HorizontalScroll = ({ children, containerRole, snap = false }: Props) => {
   // Update whether arrows/horizontal scrolling is required when the width of the container changes
   useEffect(() => {
     setShowArrowButtons(
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       containerRef.current &&
         containerRef.current.scrollWidth > containerRef.current.clientWidth
     );
   }, [containerRef, showArrows]);
 
   // Scroll the container by the specified offset
-  const horizontalScroll = (scrollOffset: number) => {
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (!containerRef?.current) return;
-    containerRef.current.scrollLeft += scrollOffset;
+  const horizontalScroll = (direction: 'backward' | 'forward') => {
+    if (!containerRef.current) return;
+    const absoluteOffset = scrollOffset ?? (isSmallerThanPhone ? 350 : 200);
+    const offset = direction === 'backward' ? -absoluteOffset : absoluteOffset;
+
+    containerRef.current.scrollLeft += offset;
   };
 
   return (
@@ -116,11 +121,7 @@ const HorizontalScroll = ({ children, containerRole, snap = false }: Props) => {
         <Button
           disabled={atScrollStart}
           onClick={() => {
-            horizontalScroll(
-              isSmallerThanPhone
-                ? -200 // Scroll by 200px on mobile
-                : -350 // Scroll by 350px on desktop
-            );
+            horizontalScroll('backward');
           }}
           icon={theme.isRtl ? 'chevron-right' : 'chevron-left'}
           buttonStyle="text"
@@ -141,7 +142,7 @@ const HorizontalScroll = ({ children, containerRole, snap = false }: Props) => {
         <Button
           disabled={atScrollEnd}
           onClick={() => {
-            horizontalScroll(isSmallerThanPhone ? 200 : 350);
+            horizontalScroll('forward');
           }}
           icon={theme.isRtl ? 'chevron-left' : 'chevron-right'}
           buttonStyle="text"

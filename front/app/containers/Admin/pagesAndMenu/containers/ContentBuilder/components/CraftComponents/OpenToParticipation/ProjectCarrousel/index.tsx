@@ -10,13 +10,14 @@ const ProjectContainer = styled.div`
   scroll-snap-align: start;
   background-color: blue;
   margin-right: 12px;
-  padding: 80px;
+  min-width: 200px;
+  height: 200px;
   scroll-snap-align: start;
 `;
 
 const ProjectCarrousel = () => {
   return (
-    <HorizontalScroll snap>
+    <HorizontalScroll snap scrollOffset={216}>
       {PROJECTS.map((_, index) => (
         <ProjectContainer key={index}>Project {index}</ProjectContainer>
       ))}
