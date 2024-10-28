@@ -101,6 +101,7 @@ export const ideaDataWithVotes: IIdeaData[] = [
       anonymous: false,
       author_hash: 'abc123',
       followers_count: 8,
+      manual_votes_amount: 0,
     },
     relationships: {
       topics: {
@@ -219,6 +220,7 @@ export const ideaDataWithVotes: IIdeaData[] = [
       anonymous: false,
       author_hash: 'abc123',
       followers_count: 7,
+      manual_votes_amount: 0,
     },
     relationships: {
       topics: {
@@ -331,6 +333,7 @@ export const ideaData: IIdeaData[] = [
       anonymous: false,
       author_hash: 'abc123',
       followers_count: 8,
+      manual_votes_amount: 0,
     },
     relationships: {
       topics: {
@@ -449,6 +452,7 @@ export const ideaData: IIdeaData[] = [
       anonymous: false,
       author_hash: 'abc123',
       followers_count: 7,
+      manual_votes_amount: 0,
     },
     relationships: {
       topics: {

@@ -1,6 +1,12 @@
 import React, { useMemo } from 'react';
 
-import { Box, Image, Input, Tooltip } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Image,
+  Input,
+  Text,
+  Tooltip,
+} from '@citizenlab/cl2-component-library';
 import { debounce } from 'lodash-es';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -10,6 +16,7 @@ import useAuthUser from 'api/me/useAuthUser';
 import { VotingMethod } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
+import useUserById from 'api/users/useUserById';
 
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
@@ -28,10 +35,14 @@ interface Props {
 
 const OfflineVoteSettings = ({ ideaId, votingMethod, phaseId }: Props) => {
   const { data: authUser } = useAuthUser();
+
   const { data: appConfig } = useAppConfiguration();
   const { data: phase } = usePhase(phaseId);
   const tenantId = appConfig?.data.id;
   const { data: idea } = useIdeaById(ideaId);
+  const { data: userLastModified } = useUserById(
+    idea?.data?.relationships?.manual_votes_last_updated_by?.data?.id
+  );
   const { mutate: updateIdea } = useUpdateIdea();
   const { mutate: updatePhase } = useUpdatePhase();
   const [manualVotesAmount, setManualVotesAmount] = React.useState<
@@ -111,46 +122,58 @@ const OfflineVoteSettings = ({ ideaId, votingMethod, phaseId }: Props) => {
         disabled={!!manualVotersAmount || !isBudgeting}
         content={<FormattedMessage {...messages.manualVotersDisabledTooltip} />}
       >
-        <Input
-          type="number"
-          value={manualVotesAmount?.toString() || ''}
-          disabled={!manualVotersAmount && isBudgeting}
-          labelTooltipText={
-            <Box>
-              <Box mb="12px">
-                <Image src={tooltipPreview} alt="info" />
+        <>
+          <Input
+            type="number"
+            value={manualVotesAmount?.toString() || ''}
+            disabled={!manualVotersAmount && isBudgeting}
+            labelTooltipText={
+              <Box>
+                <Box mb="12px">
+                  <Image src={tooltipPreview} alt="info" />
+                </Box>
+                <FormattedMessage {...messages.manualVoteAdjustmentTooltip1} />
+                <ListItemWithBullet
+                  message={messages.manualVoteAdjustmentTooltip2}
+                />
+                <ListItemWithBullet
+                  message={messages.manualVoteAdjustmentTooltip3}
+                />
+                <ListItemWithBullet
+                  message={messages.manualVoteAdjustmentTooltip4}
+                />
+                <ListItemWithBullet
+                  message={messages.manualVoteAdjustmentTooltip5}
+                />
               </Box>
-              <FormattedMessage {...messages.manualVoteAdjustmentTooltip1} />
-              <ListItemWithBullet
-                message={messages.manualVoteAdjustmentTooltip2}
+            }
+            label={
+              <Box display="flex" gap="4px">
+                {votingMethod === 'budgeting' ? (
+                  <FormattedMessage {...messages.manualPickAdjustment} />
+                ) : (
+                  <FormattedMessage {...messages.manualVoteAdjustment} />
+                )}
+              </Box>
+            }
+            onChange={(value) => {
+              setManualVotesAmount(parseInt(value, 10));
+            }}
+            onBlur={() => {
+              handleOfflineVotesChangedDebounced();
+            }}
+          />
+          {userLastModified?.data?.attributes?.first_name && (
+            <Text pt="4px" m="0px" color="textSecondary" fontSize="s">
+              <FormattedMessage
+                {...messages.modifiedBy}
+                values={{
+                  name: `${userLastModified?.data?.attributes?.first_name} ${userLastModified?.data?.attributes?.last_name}`,
+                }}
               />
-              <ListItemWithBullet
-                message={messages.manualVoteAdjustmentTooltip3}
-              />
-              <ListItemWithBullet
-                message={messages.manualVoteAdjustmentTooltip4}
-              />
-              <ListItemWithBullet
-                message={messages.manualVoteAdjustmentTooltip5}
-              />
-            </Box>
-          }
-          label={
-            <Box display="flex" gap="4px">
-              {votingMethod === 'budgeting' ? (
-                <FormattedMessage {...messages.manualPickAdjustment} />
-              ) : (
-                <FormattedMessage {...messages.manualVoteAdjustment} />
-              )}
-            </Box>
-          }
-          onChange={(value) => {
-            setManualVotesAmount(parseInt(value, 10));
-          }}
-          onBlur={() => {
-            handleOfflineVotesChangedDebounced();
-          }}
-        />
+            </Text>
+          )}
+        </>
       </Tooltip>
     </Box>
   );

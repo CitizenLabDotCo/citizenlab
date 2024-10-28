@@ -37,6 +37,10 @@ export type Sort =
   | '-status'
   | 'votes_count'
   | '-votes_count'
+  | 'total_votes'
+  | '-total_votes'
+  | 'manual_votes_amount'
+  | '-manual_votes_amount'
   | 'comments_count'
   | '-comments_count'
   | 'budget'
@@ -152,6 +156,9 @@ export interface IIdeaData {
       data: IRelationship | null;
     };
     cosponsors?: {
+      data: IRelationship | null;
+    };
+    manual_votes_last_updated_by?: {
       data: IRelationship | null;
     };
   };

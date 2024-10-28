@@ -107,6 +107,23 @@ const IdeaHeaderRow = ({
       },
     },
     {
+      name: 'offline_votes',
+      width: 1,
+      onChange: handleSortClick('manual_votes_amount'),
+      Component: (
+        props: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>
+      ) => {
+        return (
+          <SortableHeaderCell
+            {...props}
+            sortAttributeName="manual_votes_amount"
+          >
+            <FormattedMessage {...messages.offlineVotes} />
+          </SortableHeaderCell>
+        );
+      },
+    },
+    {
       name: 'picks',
       width: 1,
       onChange: handleSortClick('baskets_count'),
@@ -116,6 +133,23 @@ const IdeaHeaderRow = ({
         return (
           <SortableHeaderCell {...props} sortAttributeName="baskets_count">
             <FormattedMessage {...messages.participatoryBudgettingPicks} />
+          </SortableHeaderCell>
+        );
+      },
+    },
+    {
+      name: 'offline_picks',
+      width: 1,
+      onChange: handleSortClick('manual_votes_amount'),
+      Component: (
+        props: Override<IdeaHeaderCellComponentProps, { onChange: () => void }>
+      ) => {
+        return (
+          <SortableHeaderCell
+            {...props}
+            sortAttributeName="manual_votes_amount"
+          >
+            <FormattedMessage {...messages.offlinePicks} />
           </SortableHeaderCell>
         );
       },
