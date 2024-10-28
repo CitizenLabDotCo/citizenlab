@@ -66,12 +66,10 @@ const ProjectDescriptionBuilderTopBar = ({
   };
 
   const handleSave = async () => {
-    if (selectedLocale) {
-      addProjectDescriptionBuilderLayout({
-        projectId,
-        craftjs_json: query.getSerializedNodes(),
-      });
-    }
+    addProjectDescriptionBuilderLayout({
+      projectId,
+      craftjs_json: query.getSerializedNodes(),
+    });
   };
 
   const handleSelectLocale = (locale: SupportedLocale) => {
