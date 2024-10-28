@@ -178,21 +178,21 @@ class ParticipantsService
   def reset_participation_data(project)
     # Reset volunteers data
     Volunteering::Volunteer
-    .joins(cause: { phase: :project })
-    .where(cause: { phases: { project_id: project.id } })
-    .destroy_all
+      .joins(cause: { phase: :project })
+      .where(cause: { phases: { project_id: project.id } })
+      .destroy_all
 
     # Reset event attendance data
     Events::Attendance
-    .joins(event: :project)
-    .where(events: { project_id: project.id })
-    .destroy_all
+      .joins(event: :project)
+      .where(events: { project_id: project.id })
+      .destroy_all
 
     # Reset poll data
     Polls::Response
-    .joins(phase: :project)
-    .where(phases: { project_id: project.id })
-    .destroy_all
+      .joins(phase: :project)
+      .where(phases: { project_id: project.id })
+      .destroy_all
 
     project.ideas.destroy_all
   end

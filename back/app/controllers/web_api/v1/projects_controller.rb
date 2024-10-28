@@ -174,7 +174,7 @@ class WebApi::V1::ProjectsController < ApplicationController
   def reset_participation_data
     project = Project.find(params[:id])
     authorize project
-    
+
     ParticipantsService.new.reset_participation_data(project)
 
     render json: WebApi::V1::ProjectSerializer.new(

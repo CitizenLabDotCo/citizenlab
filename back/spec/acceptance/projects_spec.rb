@@ -464,7 +464,7 @@ resource 'Projects' do
           end_at: (Time.zone.today - 31.days)
         )
       end
-      
+
       let(:volunteering_phase) do
         create(
           :volunteering_phase,
@@ -486,7 +486,7 @@ resource 'Projects' do
       let!(:cause) { create(:cause, phase: volunteering_phase) }
 
       let!(:volunteer) { create(:volunteer, cause: cause) }
-      
+
       let!(:poll_response) { create(:poll_response, phase: poll_phase) }
 
       example_request 'Reset participation data of a project' do
