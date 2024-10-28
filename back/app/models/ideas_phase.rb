@@ -27,6 +27,11 @@ class IdeasPhase < ApplicationRecord
   belongs_to :idea, touch: true
   belongs_to :phase, touch: true
   counter_culture :phase, column_name: :ideas_count
+  counter_culture(
+    :phase,
+    column_name: 'manual_votes_count',
+    delta_magnitude: proc { |ideas_phase| ideas_phase.idea.manual_votes_amount || 0 }
+  )
 
   validates :idea, :phase, presence: true
   validates :phase_id, uniqueness: { scope: :idea_id }
