@@ -18,27 +18,37 @@ interface Props {
 
 const BudgetingProgressBar = ({ phase, idea }: Props) => {
   const { formatMessage } = useIntl();
-  const totalBasketsIdeaIsIn = 10; // idea.attributes.total_votes || 0; ToDo: Remove hardcoding
-  const totalBasketsInPhase = 30; // phase.data.attributes.baskets_count; ToDo: Remove hardcoding
-  const manualVotersAmount = 5; // phase.data.attributes.manual_voters_amount || 0; ToDo: Remove hardcoding
+  const totalBasketsIdeaIsIn = idea.attributes.total_votes;
+  const numberOnlinePicks = idea.attributes.baskets_count;
+  const numberOfflinePicks = idea.attributes.manual_votes_amount;
+  const totalOnlineBasketsInPhase = phase.data.attributes.baskets_count;
+  const manualVotersAmount = phase.data.attributes.manual_voters_amount || 0;
+  const totalBasketsInPhase = totalOnlineBasketsInPhase + manualVotersAmount;
+
   const tooltip = formatMessage(messages.budgetingTooltip);
-  const basketsPercentage = roundPercentage(
+
+  // Calculate percentages
+  const basketsOnlinePercentage = roundPercentage(
+    numberOnlinePicks,
+    totalBasketsInPhase
+  );
+  const totalBasketsPercentage = roundPercentage(
     totalBasketsIdeaIsIn,
-    totalBasketsInPhase + manualVotersAmount
+    totalBasketsInPhase
   );
   const manualBasketsPercentage = roundPercentage(
-    manualVotersAmount,
-    totalBasketsInPhase + manualVotersAmount
+    numberOfflinePicks,
+    totalBasketsInPhase
   );
 
   return (
     <Box w="100%">
       <ProgressBarWrapper
-        votesPercentage={basketsPercentage}
+        votesPercentage={basketsOnlinePercentage}
         manualVotesPercentage={manualBasketsPercentage}
         tooltip={tooltip}
       >
-        {`${basketsPercentage}% • ${formatMessage(messages.numberOfPicks, {
+        {`${totalBasketsPercentage}% • ${formatMessage(messages.numberOfPicks, {
           baskets: totalBasketsIdeaIsIn,
         })} ${
           manualVotersAmount > 0

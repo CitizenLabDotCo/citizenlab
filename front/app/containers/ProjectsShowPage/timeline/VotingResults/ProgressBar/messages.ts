@@ -6,9 +6,9 @@ export default defineMessages({
     defaultMessage: '{baskets, plural, one {1 pick} other {# picks}}',
   },
   numberManualVoters: {
-    id: 'app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBar.numberManualVoters',
+    id: 'app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBar.numberManualVoters2',
     defaultMessage:
-      '{manualVoters, plural, one {(incl. 1 in person)} other {(incl. # in person)}}',
+      '{manualVoters, plural, one {(incl. 1 offline)} other {(incl. # offline)}}',
   },
   budgetingTooltip: {
     id: 'app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.budgetingTooltip1',
