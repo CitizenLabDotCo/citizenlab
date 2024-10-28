@@ -5,10 +5,16 @@ import { useParams } from 'react-router-dom';
 
 import useResetProject from 'api/projects/useResetProject';
 
+import { useIntl } from 'utils/cl-intl';
+
+import messages from '../messages';
+
 const ResetParticipationData = () => {
   const { projectId } = useParams() as { projectId: string };
   const { mutate: resetProject, isLoading: isProjectResetLoading } =
     useResetProject();
+
+  const { formatMessage } = useIntl();
   return (
     <Button
       buttonStyle="delete"
@@ -16,7 +22,7 @@ const ResetParticipationData = () => {
       processing={isProjectResetLoading}
       ml="12px"
     >
-      Reset participation data
+      {formatMessage(messages.resetParticipationData)}
     </Button>
   );
 };
