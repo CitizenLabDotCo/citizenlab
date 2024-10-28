@@ -6,13 +6,14 @@ import {
   useBreakpoint,
   isRtl,
 } from '@citizenlab/cl2-component-library';
+import { debounce } from 'lodash-es';
 import styled, { useTheme } from 'styled-components';
 
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 
-const StyledContainer = styled(Box)`
+const StyledContainer = styled(Box)<{ snap: boolean }>`
   display: flex;
   gap: 16px;
   flex-direction: row;
@@ -33,18 +34,21 @@ const StyledContainer = styled(Box)`
   scroll-behavior: smooth;
   -ms-overflow-style: none !important;
   scrollbar-width: none !important;
+
+  ${({ snap }) => (snap ? 'scroll-snap-type: x mandatory;' : '')}
 `;
 
 interface Props {
   children: ReactNode;
   containerRole?: string; // If the scrollable container needs a specific role, pass it in
+  snap?: boolean;
 }
 
 /*
  * HorizontalScroll:
  * Wraps children elements with a horizontal scroll container with arrow buttons to scroll left and right.
  */
-const HorizontalScroll = ({ children, containerRole }: Props) => {
+const HorizontalScroll = ({ children, containerRole, snap = false }: Props) => {
   const theme = useTheme();
   const isSmallerThanPhone = useBreakpoint('phone');
   const { formatMessage } = useIntl();
@@ -54,25 +58,33 @@ const HorizontalScroll = ({ children, containerRole }: Props) => {
   const [atScrollEnd, setAtScrollEnd] = useState(false);
 
   useEffect(() => {
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    containerRef?.current?.addEventListener('scroll', () => {
+    if (!containerRef.current) return;
+
+    const handleScroll = debounce(() => {
+      if (!containerRef.current) return;
+
       // Update scroll states
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      if (!containerRef?.current) return;
-      setAtScrollStart(containerRef.current.scrollLeft === 0);
-      const maxScrollLeft =
-        containerRef.current.scrollWidth - containerRef.current.clientWidth;
-      setAtScrollEnd(containerRef.current.scrollLeft >= maxScrollLeft);
-    });
-  });
+      const scrollLeft = containerRef.current.scrollLeft;
+      setAtScrollStart(scrollLeft === 0);
+
+      const clientWidth = containerRef.current.clientWidth;
+      const scrollWidth = containerRef.current.scrollWidth;
+
+      const maxScrollLeft = scrollWidth - clientWidth;
+      setAtScrollEnd(scrollLeft >= maxScrollLeft);
+    }, 100);
+
+    const container = containerRef.current;
+    container.addEventListener('scroll', handleScroll);
+
+    return () => {
+      container.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   // Determine if the width of the container is large enough to require horizontal scrolling
   const showArrows =
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    containerRef?.current &&
+    containerRef.current &&
     containerRef.current.scrollWidth > containerRef.current.clientWidth;
   const [showArrowButtons, setShowArrowButtons] = useState(showArrows);
 
@@ -81,7 +93,7 @@ const HorizontalScroll = ({ children, containerRole }: Props) => {
     setShowArrowButtons(
       // TODO: Fix this the next time the file is edited.
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      containerRef?.current &&
+      containerRef.current &&
         containerRef.current.scrollWidth > containerRef.current.clientWidth
     );
   }, [containerRef, showArrows]);
@@ -118,7 +130,7 @@ const HorizontalScroll = ({ children, containerRole }: Props) => {
           ariaLabel={formatMessage(messages.scrollLeftLabel)}
         />
       </Box>
-      <StyledContainer ref={containerRef} role={containerRole}>
+      <StyledContainer ref={containerRef} role={containerRole} snap={snap}>
         {children}
       </StyledContainer>
       <Box
