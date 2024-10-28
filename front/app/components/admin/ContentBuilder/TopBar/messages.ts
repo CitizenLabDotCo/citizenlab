@@ -9,4 +9,8 @@ export default defineMessages({
     id: 'app.containers.ContentBuilder.Save',
     defaultMessage: 'Save',
   },
+  goBackButtonMessage: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.goBackButtonMessage',
+    defaultMessage: 'Go back',
+  },
 });

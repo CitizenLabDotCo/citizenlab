@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 
 import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
 import { SerializedNodes } from '@craftjs/core';
@@ -28,10 +28,9 @@ import ProjectDescriptionBuilderToolbox from '../../components/ProjectDescriptio
 import ProjectDescriptionBuilderTopBar from '../../components/ProjectDescriptionBuilder/ProjectDescriptionBuilderTopBar';
 
 const ProjectDescriptionBuilderPage = () => {
+  const locale = useLocale();
   const [previewEnabled, setPreviewEnabled] = useState(false);
-  const [selectedLocale, setSelectedLocale] = useState<
-    SupportedLocale | undefined
-  >();
+  const [selectedLocale, setSelectedLocale] = useState(locale);
   const [draftData, setDraftData] = useState<Record<string, SerializedNodes>>();
   const { pathname } = useLocation();
   const { projectId } = useParams() as { projectId: string };
@@ -41,17 +40,10 @@ const ProjectDescriptionBuilderPage = () => {
   const featureEnabled = useFeatureFlag({
     name: 'project_description_builder',
   });
-  const locale = useLocale();
   const locales = useAppConfigurationLocales();
   const { data: projectDescriptionBuilderLayout } =
     useProjectDescriptionBuilderLayout(projectId);
   const { data: project } = useProjectById(projectId);
-
-  useEffect(() => {
-    if (!isNilOrError(locale)) {
-      setSelectedLocale(locale);
-    }
-  }, [locale]);
 
   const [contentBuilderErrors, setContentBuilderErrors] =
     useState<ContentBuilderErrors>({});

@@ -1,9 +1,9 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  highlightTitle: {
-    id: 'app.containers.admin.ContentBuilder.homepage.highlight.highlightTitle',
-    defaultMessage: 'Highlight',
+  callToActionTitle: {
+    id: 'app.containers.admin.ContentBuilder.homepage.highlight.callToActionTitle',
+    defaultMessage: 'Call to action',
   },
   highlightTitleLabel: {
     id: 'app.containers.admin.ContentBuilder.homepage.highlight.highlightTitleLabel',
