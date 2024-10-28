@@ -111,6 +111,72 @@ describe WebApi::V1::IdeaSerializer do
     end
   end
 
+  describe 'manual votes' do
+    let(:admin) { create(:admin) }
+    let(:project) { create(:single_phase_single_voting_project) }
+    let(:phase) { project.phases.first }
+    let(:params) { { current_user: current_user, phase: phase } }
+    let(:input) do
+      create(:idea, project: project, phases: project.phases).tap do |idea|
+        idea.set_manual_votes(5, admin)
+        idea.save!
+      end
+    end
+    let(:result) { described_class.new(input, params: params).serializable_hash }
+    let(:current_user) { create(:project_moderator, projects: [project]) }
+
+    before do
+      create(:baskets_idea, basket: create(:basket, phase: phase), idea: input, votes: 1)
+      create(:baskets_idea, basket: create(:basket, phase: phase), idea: input, votes: 1)
+      phase.update!(end_at: phase.start_at + 1.day)
+      other_phase = create(:budgeting_phase, project: phase.project, start_at: phase.end_at + 1.day, end_at: phase.end_at + 10.days)
+      create(:baskets_idea, basket: create(:basket, phase: other_phase), idea: input, votes: 1)
+      Basket.update_counts(phase)
+    end
+
+    context 'when the current user moderates the idea' do
+      it 'includes who modified the manual votes when' do
+        expect(result.dig(:data, :attributes, :manual_votes_amount)).to eq 5
+        expect(result.dig(:data, :attributes, :total_votes)).to eq 7
+        expect(result.dig(:data, :relationships, :manual_votes_last_updated_by, :data, :id)).to eq admin.id
+        expect(result.dig(:data, :attributes, :manual_votes_last_updated_at)).to be_present
+      end
+
+      context 'without manual votes' do
+        let(:input) { create(:idea, project: project, phases: project.phases) }
+
+        it 'does not include manual votes' do
+          expect(result.dig(:data, :attributes, :manual_votes_amount)).to be_nil
+          expect(result.dig(:data, :attributes, :total_votes)).to eq 2
+          expect(result.dig(:data, :relationships, :manual_votes_last_updated_by, :data, :id)).to be_blank
+          expect(result.dig(:data, :attributes, :manual_votes_last_updated_at)).to be_blank
+        end
+      end
+
+      context 'without phase param' do
+        let(:params) { { current_user: current_user } }
+
+        it 'does not include the total votes' do
+          expect(result.dig(:data, :attributes, :manual_votes_amount)).to eq 5
+          expect(result.dig(:data, :attributes, :total_votes)).to be_nil
+          expect(result.dig(:data, :relationships, :manual_votes_last_updated_by, :data, :id)).to eq admin.id
+          expect(result.dig(:data, :attributes, :manual_votes_last_updated_at)).to be_present
+        end
+      end
+    end
+
+    context 'when the current user does not moderate the idea' do
+      let(:current_user) { create(:project_moderator) }
+
+      it 'does not include who modified the manual votes when' do
+        expect(result.dig(:data, :attributes, :manual_votes_amount)).to eq 5
+        expect(result.dig(:data, :attributes, :total_votes)).to eq 7
+        expect(result.dig(:data, :relationships, :manual_votes_last_updated_by, :data, :id)).to be_blank
+        expect(result.dig(:data, :attributes, :manual_votes_last_updated_at)).to be_blank
+      end
+    end
+  end
+
   def internal_comments_count_for_current_user(idea, current_user)
     described_class
       .new(idea, params: { current_user: current_user })
