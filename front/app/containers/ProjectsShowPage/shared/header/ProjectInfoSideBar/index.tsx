@@ -55,10 +55,15 @@ const ProjectInfoSideBar = memo<Props>(
           : [];
 
       return (
-        <Box id="e2e-project-sidebar" className={className || ''}>
+        <Box id="e2e-project-sidebar" className={className || ''} w="100%">
           <StyledProjectActionButtons projectId={projectId} />
           {!hideParticipationAvatars && (
-            <Box>
+            <Box
+              display="flex"
+              alignItems="center"
+              w="100%"
+              justifyContent="center"
+            >
               <Tooltip
                 disabled={!isAdmin(authUser)}
                 placement="bottom"
@@ -79,30 +84,31 @@ const ProjectInfoSideBar = memo<Props>(
                   />
                 </Box>
               </Tooltip>
-
-              {isAdmin(authUser) && hasNativeSurvey(phases?.data) && (
-                <Box ml="4px">
-                  <IconTooltip
-                    placement="auto"
-                    maxTooltipWidth={200}
-                    iconColor={colors.coolGrey500}
-                    content={
-                      <FormattedMessage
-                        {...messages.participantsTooltip}
-                        values={{
-                          accessRightsLink: (
-                            <Link
-                              to={`/admin/projects/${projectId}/settings/access-rights`}
-                            >
-                              <FormattedMessage {...messages.accessRights} />
-                            </Link>
-                          ),
-                        }}
-                      />
-                    }
-                  />
-                </Box>
-              )}
+              {projectParticipantsCount > 0 &&
+                isAdmin(authUser) &&
+                hasNativeSurvey(phases?.data) && (
+                  <Box ml="4px">
+                    <IconTooltip
+                      placement="auto"
+                      maxTooltipWidth={200}
+                      iconColor={colors.coolGrey500}
+                      content={
+                        <FormattedMessage
+                          {...messages.participantsTooltip}
+                          values={{
+                            accessRightsLink: (
+                              <Link
+                                to={`/admin/projects/${projectId}/settings/access-rights`}
+                              >
+                                <FormattedMessage {...messages.accessRights} />
+                              </Link>
+                            ),
+                          }}
+                        />
+                      }
+                    />
+                  </Box>
+                )}
             </Box>
           )}
         </Box>
