@@ -2,21 +2,29 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   manualVoteAdjustment: {
-    id: 'app.components.admin.PostManager.PostPreview.OfflineVoteSettings.manualVoteAdjustment',
-    defaultMessage: 'Manual vote adjustment',
+    id: 'app.components.admin.PostManager.PostPreview.OfflineVoteSettings.manualVoteAdjustment3',
+    defaultMessage: 'Offline votes adjustment',
   },
   manualPickAdjustment: {
-    id: 'app.components.admin.PostManager.PostPreview.OfflineVoteSettings.manualPickAdjustment',
-    defaultMessage: 'Manual picks adjustment',
+    id: 'app.components.admin.PostManager.PostPreview.OfflineVoteSettings.manualPickAdjustment2',
+    defaultMessage: 'Offline picks adjustment',
   },
-  manualVotersTooltip: {
-    id: 'app.components.admin.PostManager.PostPreview.OfflineVoteSettings.manualVotersTooltip',
+  manualVotersTooltip1: {
+    id: 'app.components.admin.PostManager.PostPreview.OfflineVoteSettings.manualVotersTooltip1a',
     defaultMessage:
-      'In order to showcase the correct results, we need to know the total amount of participants for this phase. \n\nPlease indicate only those that have not participated online.',
+      'In order to calculate the correct results, we need to know the <b>total amount of offline participants for this phase</b>.',
+  },
+  manualVotersTooltip2: {
+    id: 'app.components.admin.PostManager.PostPreview.OfflineVoteSettings.manualVotersTooltip2',
+    defaultMessage: 'Please indicate only those that participated offline.',
+  },
+  manualVotersDisabledTooltip: {
+    id: 'app.components.admin.PostManager.PostPreview.OfflineVoteSettings.manualVotersDisabledTooltip',
+    defaultMessage: 'You must enter the total offline participants first.',
   },
   manualVotersLabel: {
-    id: 'app.components.admin.PostManager.PostPreview.OfflineVoteSettings.manualVotersLabel',
-    defaultMessage: 'Total in-person participants',
+    id: 'app.components.admin.PostManager.PostPreview.OfflineVoteSettings.manualVotersLabel2',
+    defaultMessage: 'Total offline participants',
   },
   modifiedBy: {
     id: 'app.components.admin.PostManager.PostPreview.OfflineVoteSettings.modifiedBy',
@@ -41,8 +49,8 @@ export default defineMessages({
       'It will not be reflected in participation data dashboards.',
   },
   manualVoteAdjustmentTooltip5: {
-    id: 'app.components.admin.PostManager.PostPreview.OfflineVoteSettings.manualVoteAdjustmentTooltip6',
+    id: 'app.components.admin.PostManager.PostPreview.OfflineVoteSettings.manualVoteAdjustmentTooltip7',
     defaultMessage:
-      'Manual votes for an option are shared between all phases of a project.',
+      'Offline votes for an option can only be set once in a project, and are shared between all phases of a project.',
   },
 });

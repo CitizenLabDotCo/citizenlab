@@ -75,7 +75,7 @@ const IdeaCard = ({
   }, []);
 
   const textNumberOfVotes = getTextNumberOfVotes({
-    numberOfVotes: idea.attributes.votes_count,
+    numberOfVotes: idea.attributes.total_votes,
     phase,
     localize,
     formatMessage,

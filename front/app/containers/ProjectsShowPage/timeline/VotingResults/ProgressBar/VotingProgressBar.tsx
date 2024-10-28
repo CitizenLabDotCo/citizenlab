@@ -21,10 +21,13 @@ interface Props {
 const VotingProgressBar = ({ phase, idea }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
+
   const onlineIdeaVotes = idea.attributes.votes_count;
   const offlineIdeaVotes = idea.attributes.manual_votes_amount;
   const totalIdeaVotes = idea.attributes.total_votes;
   const totalPhaseVotes = phase.data.attributes.votes_count;
+
+  // Calculate percentages
   const totalVotesPercentage = roundPercentage(totalIdeaVotes, totalPhaseVotes);
   const votesOnlinePercentage = roundPercentage(
     onlineIdeaVotes,
@@ -34,6 +37,7 @@ const VotingProgressBar = ({ phase, idea }: Props) => {
     ? roundPercentage(offlineIdeaVotes, totalPhaseVotes)
     : 0;
 
+  // Voting term
   const { voting_term_singular_multiloc, voting_term_plural_multiloc } =
     phase.data.attributes;
   const votingTermSingular =

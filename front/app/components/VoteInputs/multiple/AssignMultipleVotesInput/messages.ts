@@ -6,9 +6,9 @@ export default defineMessages({
     defaultMessage: '{votes, plural, one {{singular}} other {{plural}}}',
   },
   numberManualVotes: {
-    id: 'app.components.AssignMultipleVotesControl.numberManualVotes',
+    id: 'app.components.AssignMultipleVotesControl.numberManualVotes2',
     defaultMessage:
-      '{manualVotes, plural, one {(incl. 1 in person)} other {(incl. # in person)}}',
+      '{manualVotes, plural, one {(incl. 1 offline)} other {(incl. # offline)}}',
   },
   select: {
     id: 'app.components.AssignMultipleVotesControl.select',
