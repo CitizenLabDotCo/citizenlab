@@ -27,6 +27,7 @@ module IdIdAustria
       options[:response_type] = :code
       # options[:acr_values] = acr_values # TODO: JS - check if needed
       options[:issuer] = issuer
+      options[:client_auth_method] = 'jwks' # invalid_grant :: Invalid grant
       options[:client_options] = {
         identifier: config[:client_id],
         secret: config[:client_secret],
