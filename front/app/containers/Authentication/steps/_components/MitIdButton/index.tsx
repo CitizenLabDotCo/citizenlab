@@ -32,7 +32,6 @@ const MitIdButton = ({
   onClickStandardSSO,
 }: Props) => {
   const handleOnClick = () => {
-    console.log(method);
     if (method && onClick) {
       onClick(method);
     }
