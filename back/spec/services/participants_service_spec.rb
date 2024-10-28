@@ -354,4 +354,57 @@ describe ParticipantsService do
       expect(service.idea_statuses_participants([s1, s2]).map(&:id)).to match_array participants.map(&:id)
     end
   end
+
+  describe 'reset_participation_data' do
+    it 'resets project participation data for ideas' do
+      project = create(:project)
+      pp1, pp2, pp3 = create_list(:user, 3)
+      idea = create(:idea, project: project, author: pp1)
+
+      expect(Idea.where(project: project).count).to eq 1
+      service.reset_participation_data(project)
+
+      expect(Idea.where(project: project).count).to eq 0
+    end
+
+    it 'resets project participation data for volunteers' do
+      project = create(:project)
+      pp1, pp2, pp3 = create_list(:user, 3)
+      phase = create(:phase, project: project, participation_method: 'volunteering')
+      cause = create(:cause, phase: phase)
+      create(:volunteer, user: pp1, cause: cause)
+      create(:volunteer, user: pp2, cause: cause)
+
+      expect(Volunteering::Volunteer.where(cause: cause).count).to eq 2
+      service.reset_participation_data(project)
+
+      expect(Volunteering::Volunteer.where(cause: cause).count).to eq 0
+    end
+
+    it 'resets project participation data for event attendees' do
+      project = create(:project)
+      pp1, pp2, pp3 = create_list(:user, 3)
+      event = create(:event, project: project)
+      create(:event_attendance, event: event, attendee: pp1)
+      create(:event_attendance, event: event, attendee: pp2)
+
+      expect(Events::Attendance.where(event: event).count).to eq 2
+      service.reset_participation_data(project)
+
+      expect(Events::Attendance.where(event: event).count).to eq 0
+    end
+
+    it 'resets project participation data for poll responses' do
+      project = create(:project)
+      pp1, pp2, pp3 = create_list(:user, 3)
+      phase = create(:phase, project: project, participation_method: 'poll')
+      create(:poll_response, user: pp1, phase: phase)
+      create(:poll_response, user: pp2, phase: phase)
+
+      expect(Polls::Response.where(phase: phase).count).to eq 2
+      service.reset_participation_data(project)
+
+      expect(Polls::Response.where(phase: phase).count).to eq 0
+    end
+  end
 end
