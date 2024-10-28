@@ -34,6 +34,16 @@ const ConsentManager = () => {
   const { data: appConfiguration } = useAppConfiguration();
   const { data: authUser } = useAuthUser();
 
+  const resetPreferences = useCallback(() => {
+    setPreferences(
+      getCurrentPreferences(
+        appConfiguration?.data,
+        authUser?.data,
+        cookieConsent
+      )
+    );
+  }, [appConfiguration, authUser, cookieConsent]);
+
   useEffect(() => {
     const cookieConsent = getConsent();
     setCookieConsent(cookieConsent);
@@ -44,15 +54,9 @@ const ConsentManager = () => {
     );
   }, []);
 
-  const resetPreferences = useCallback(() => {
-    setPreferences(
-      getCurrentPreferences(
-        appConfiguration?.data,
-        authUser?.data,
-        cookieConsent
-      )
-    );
-  }, [appConfiguration, authUser, cookieConsent]);
+  useEffect(() => {
+    resetPreferences();
+  }, [appConfiguration, authUser, resetPreferences]);
 
   const updatePreference = useCallback(
     (category: TCategory, value: boolean) => {
