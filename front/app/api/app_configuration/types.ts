@@ -243,6 +243,7 @@ export interface IAppConfigurationSettings {
   management_feed?: AppConfigurationFeature;
   fake_sso?: AppConfigurationFeature;
   prescreening?: AppConfigurationFeature;
+  prescreening_ideation?: AppConfigurationFeature;
   input_cosponsorship?: AppConfigurationFeature;
   new_homepage_widgets?: AppConfigurationFeature;
 }

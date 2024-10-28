@@ -99,7 +99,7 @@ const ProjectDescriptionBuilderPage = () => {
     locale: SupportedLocale;
     editorData: SerializedNodes;
   }) => {
-    if (selectedLocale && selectedLocale !== locale) {
+    if (selectedLocale !== locale) {
       setDraftData({ ...draftData, [selectedLocale]: editorData });
     }
 
@@ -113,6 +113,8 @@ const ProjectDescriptionBuilderPage = () => {
     setSelectedLocale(locale);
   };
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!project || (project && !project.data.attributes.uses_content_builder)) {
     return null;
   }
@@ -136,9 +138,7 @@ const ProjectDescriptionBuilderPage = () => {
           mt={`${stylingConsts.menuHeight}px`}
           display={previewEnabled ? 'none' : 'flex'}
         >
-          {selectedLocale && (
-            <ProjectDescriptionBuilderToolbox selectedLocale={selectedLocale} />
-          )}
+          <ProjectDescriptionBuilderToolbox selectedLocale={selectedLocale} />
           <LanguageProvider
             contentBuilderLocale={selectedLocale}
             platformLocale={locale}

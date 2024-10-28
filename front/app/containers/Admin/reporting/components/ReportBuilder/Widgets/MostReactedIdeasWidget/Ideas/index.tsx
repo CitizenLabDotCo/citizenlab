@@ -34,6 +34,8 @@ const Ideas = ({ phase, ideas, images, collapseLongText }: Props) => {
           <IdeaCard
             rank={i + 1}
             idea={idea}
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             images={images[idea.id] || []}
             phase={phase}
             collapseLongText={collapseLongText}

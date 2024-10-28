@@ -49,7 +49,6 @@
   "app.components.AuthProviders.signUpWithEmail": "Registrirajte se putem e-pošte",
   "app.components.AuthProviders.verificationRequired": "Potrebna verifikacija",
   "app.components.Author.a11yPostedBy": "Objavio",
-  "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} sudionika",
   "app.components.CityLogoSection.iframeTitle": "Više informacija o {orgName}",
   "app.components.Comments.cancel": "Odustani",
   "app.components.Comments.commentingDisabledInCurrentPhase": "Komentiranje nije moguće u trenutnoj fazi.",

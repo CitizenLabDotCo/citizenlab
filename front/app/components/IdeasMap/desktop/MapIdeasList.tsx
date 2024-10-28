@@ -135,6 +135,8 @@ const MapIdeasList = memo<Props>(
     if (isNilOrError(ideaCustomFieldsSchema)) return null;
 
     const methodConfig =
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       phase && getMethodConfig(phase.data.attributes?.participation_method);
 
     return (
@@ -159,7 +161,6 @@ const MapIdeasList = memo<Props>(
               <Spinner />
             </Centerer>
           )}
-
           {ideaMarkers &&
             ideaMarkers.data.length > 0 &&
             ideaMarkers.data.map((ideaMarker) => (
@@ -172,6 +173,8 @@ const MapIdeasList = memo<Props>(
               />
             ))}
 
+          {/* TODO: Fix this the next time the file is edited. */}
+          {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
           {(ideaMarkers === null || ideaMarkers?.data.length === 0) && (
             <EmptyContainer>
               <IdeaIcon ariaHidden name="idea" />

@@ -37,7 +37,11 @@ const InputFieldFilterItem = ({
   const { formatMessage } = useIntl();
   const { analysisId } = useParams() as { analysisId: string };
   const { data: analysis } = useAnalysis(analysisId);
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const projectId = analysis?.data.relationships.project?.data?.id;
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const phaseId = analysis?.data.relationships.phase?.data?.id;
   const containerId: { projectId?: string; phaseId?: string } = {};
   if (projectId) {
@@ -64,6 +68,8 @@ const InputFieldFilterItem = ({
       color={colors.success}
       display="flex"
     >
+      {/* TODO: Fix this the next time the file is edited. */}
+      {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
       <Box>Question {customField?.data.attributes.ordering}</Box>
       <Box mx="3px">{predicate}</Box>
       <EllipsisFilterValue>
@@ -84,7 +90,6 @@ const InputFieldFilterItem = ({
           <ShortFieldValue customField={customField} rawValue={filterValue} />
         )}
       </EllipsisFilterValue>
-
       {isEditable && (
         <IconButton
           iconName="close"

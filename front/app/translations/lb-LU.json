@@ -49,7 +49,6 @@
   "app.components.AuthProviders.signUpWithEmail": "Mat Ärer E-Mail-Adress aschreiwen",
   "app.components.AuthProviders.verificationRequired": "Verifikatioun erfuerderlech",
   "app.components.Author.a11yPostedBy": "Gepost vum",
-  "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} Participanten",
   "app.components.CityLogoSection.iframeTitle": "Weider Informatiounen iwwer {orgName}",
   "app.components.Comments.cancel": "Ofbriechen",
   "app.components.Comments.commentingDisabledInCurrentPhase": "Kommentéieren ass an der aktueller Phas net méiglech.",

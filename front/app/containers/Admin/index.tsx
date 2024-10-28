@@ -98,6 +98,8 @@ const AdminPage = memo<Props>(({ className }) => {
   });
 
   useEffect(() => {
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (authUser === null || (authUser !== undefined && !userCanViewPath)) {
       clHistory.push('/');
     }

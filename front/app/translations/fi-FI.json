@@ -49,7 +49,6 @@
   "app.components.AuthProviders.signUpWithEmail": "Rekisteröidy sähköpostilla",
   "app.components.AuthProviders.verificationRequired": "Vahvistus vaaditaan",
   "app.components.Author.a11yPostedBy": "lähettänyt",
-  "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} osallistujia",
   "app.components.CityLogoSection.iframeTitle": "Lisätietoja {orgName}",
   "app.components.Comments.cancel": "Peruuttaa",
   "app.components.Comments.commentingDisabledInCurrentPhase": "Kommentointi ei ole mahdollista nykyisessä vaiheessa.",

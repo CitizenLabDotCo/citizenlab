@@ -43,6 +43,8 @@ const EventPreviews = ({ projectId }: EventPreviewsProps) => {
     ],
   });
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (events && events?.data?.length > 0) {
     return (
       <>

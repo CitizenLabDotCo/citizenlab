@@ -10,13 +10,12 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { get, set } from 'js-cookie';
 
-import Link from 'utils/cl-router/Link';
-
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
 import eventEmitter from 'utils/eventEmitter';
 
 import messages from './messages';
