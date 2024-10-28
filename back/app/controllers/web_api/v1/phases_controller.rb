@@ -10,9 +10,9 @@ class WebApi::V1::PhasesController < ApplicationController
       .where(project_id: params[:project_id])
       .order(:start_at)
     @phases = paginate @phases
-    @phases = @phases.includes(:permissions, :report, :custom_form)
+    @phases = @phases.includes(:permissions, :report, :custom_form, :manual_voters_last_updated_by)
 
-    render json: linked_json(@phases, WebApi::V1::PhaseSerializer, params: jsonapi_serializer_params, include: %i[permissions])
+    render json: linked_json(@phases, WebApi::V1::PhaseSerializer, params: jsonapi_serializer_params, include: %i[permissions manual_voters_last_updated_by])
   end
 
   def show
@@ -35,6 +35,7 @@ class WebApi::V1::PhasesController < ApplicationController
 
   def update
     @phase.assign_attributes phase_params
+    @phase.set_manual_voters(phase_params[:manual_voters_amount], current_user) if phase_params[:manual_voters_amount]
     authorize @phase
     sidefx.before_update(@phase, current_user)
 
@@ -130,6 +131,7 @@ class WebApi::V1::PhasesController < ApplicationController
       :prescreening_enabled,
       :reacting_threshold,
       :expire_days_limit,
+      :manual_voters_amount,
       {
         title_multiloc: CL2_SUPPORTED_LOCALES,
         description_multiloc: CL2_SUPPORTED_LOCALES,

@@ -10,7 +10,7 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
     :reacting_enabled, :reacting_like_method, :reacting_like_limited_max,
     :reacting_dislike_enabled, :reacting_dislike_method, :reacting_dislike_limited_max,
     :allow_anonymous_participation, :presentation_mode, :ideas_order, :input_term,
-    :prescreening_enabled
+    :prescreening_enabled, :manual_voters_amount, :manual_votes_count
 
   %i[
     voting_method voting_max_total voting_min_total
@@ -76,5 +76,21 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
     preloaded_user_basket || current_user(params)&.baskets&.select do |basket|
       basket.phase_id == object.id
     end&.first
+  end
+
+  attribute :total_votes_amount do |phase, params|
+    123 # TODO: phase.total_votes
+  end
+
+  attribute :manual_voters_last_updated_at, if: proc { |phase, params|
+    can_moderate?(phase, params)
+  }
+
+  has_one :manual_voters_last_updated_by, record_type: :user, serializer: WebApi::V1::UserSerializer, if: proc { |phase, params|
+    can_moderate?(phase, params)
+  }
+
+  def self.can_moderate?(phase, params)
+    UserRoleService.new.can_moderate?(phase, current_user(params))
   end
 end

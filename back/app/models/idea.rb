@@ -87,6 +87,12 @@ class Idea < ApplicationRecord
     delta_magnitude: proc { |idea| idea.comments_count }
   )
 
+  counter_culture(
+    :phase,
+    column_name: 'manual_votes_count',
+    delta_magnitude: proc { |idea| idea.manual_votes_amount || 0 }
+  )
+
   belongs_to :assignee, class_name: 'User', optional: true
   belongs_to :manual_votes_last_updated_by, class_name: 'User', optional: true
 

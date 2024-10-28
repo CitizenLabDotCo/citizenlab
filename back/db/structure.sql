@@ -118,6 +118,7 @@ ALTER TABLE IF EXISTS ONLY public.nav_bar_items DROP CONSTRAINT IF EXISTS fk_rai
 ALTER TABLE IF EXISTS ONLY public.volunteering_volunteers DROP CONSTRAINT IF EXISTS fk_rails_33a154a9ba;
 ALTER TABLE IF EXISTS ONLY public.phase_files DROP CONSTRAINT IF EXISTS fk_rails_33852a9a71;
 ALTER TABLE IF EXISTS ONLY public.cosponsorships DROP CONSTRAINT IF EXISTS fk_rails_2d026b99a2;
+ALTER TABLE IF EXISTS ONLY public.phases DROP CONSTRAINT IF EXISTS fk_rails_2c74f68dd3;
 ALTER TABLE IF EXISTS ONLY public.analysis_analyses DROP CONSTRAINT IF EXISTS fk_rails_2a92a64a56;
 ALTER TABLE IF EXISTS ONLY public.events_attendances DROP CONSTRAINT IF EXISTS fk_rails_29ccdf5b04;
 ALTER TABLE IF EXISTS ONLY public.areas_static_pages DROP CONSTRAINT IF EXISTS fk_rails_231f268568;
@@ -192,6 +193,7 @@ DROP INDEX IF EXISTS public.index_polls_response_options_on_option_id;
 DROP INDEX IF EXISTS public.index_polls_questions_on_phase_id;
 DROP INDEX IF EXISTS public.index_polls_options_on_question_id;
 DROP INDEX IF EXISTS public.index_phases_on_project_id;
+DROP INDEX IF EXISTS public.index_phases_on_manual_voters_last_updated_by_id;
 DROP INDEX IF EXISTS public.index_phase_files_on_phase_id;
 DROP INDEX IF EXISTS public.index_permissions_on_permission_scope_id;
 DROP INDEX IF EXISTS public.index_permissions_on_action;
@@ -1617,7 +1619,11 @@ CREATE TABLE public.phases (
     expire_days_limit integer,
     reacting_threshold integer,
     prescreening_enabled boolean DEFAULT false NOT NULL,
-    autoshare_results_enabled boolean DEFAULT true
+    autoshare_results_enabled boolean DEFAULT true,
+    manual_votes_count integer DEFAULT 0 NOT NULL,
+    manual_voters_amount integer,
+    manual_voters_last_updated_by_id uuid,
+    manual_voters_last_updated_at timestamp(6) without time zone
 );
 
 
@@ -5673,6 +5679,13 @@ CREATE INDEX index_phase_files_on_phase_id ON public.phase_files USING btree (ph
 
 
 --
+-- Name: index_phases_on_manual_voters_last_updated_by_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_phases_on_manual_voters_last_updated_by_id ON public.phases USING btree (manual_voters_last_updated_by_id);
+
+
+--
 -- Name: index_phases_on_project_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6202,6 +6215,14 @@ ALTER TABLE ONLY public.events_attendances
 
 ALTER TABLE ONLY public.analysis_analyses
     ADD CONSTRAINT fk_rails_2a92a64a56 FOREIGN KEY (phase_id) REFERENCES public.phases(id);
+
+
+--
+-- Name: phases fk_rails_2c74f68dd3; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.phases
+    ADD CONSTRAINT fk_rails_2c74f68dd3 FOREIGN KEY (manual_voters_last_updated_by_id) REFERENCES public.users(id);
 
 
 --
@@ -7542,6 +7563,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20241011101454'),
 ('20241011816395'),
 ('20241016201503'),
-('20241022101049');
+('20241022101049'),
+('20241028162618');
 
 
