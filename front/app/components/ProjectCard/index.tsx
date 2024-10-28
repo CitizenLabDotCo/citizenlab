@@ -466,8 +466,8 @@ const ProjectCard = memo<InputProps>(
 
       const ctaMessage = phase
         ? getCTAMessage({
-            project,
-            phase,
+            project: project.data,
+            phase: phase.data,
             formatMessage,
             localize,
           })

@@ -1,7 +1,7 @@
 import { FormatMessage } from 'typings';
 
-import { IPhase } from 'api/phases/types';
-import { IProject } from 'api/projects/types';
+import { IPhaseData } from 'api/phases/types';
+import { IProjectData } from 'api/projects/types';
 
 import { Localize } from 'hooks/useLocalize';
 
@@ -10,20 +10,20 @@ import { getInputTermMessage } from 'utils/i18n';
 import messages from './messages';
 
 interface Params {
-  phase: IPhase;
-  project: IProject;
+  phase: IPhaseData;
+  project: IProjectData;
   formatMessage: FormatMessage;
   localize: Localize;
 }
 
 const getCTAMessage = ({ phase, project, formatMessage, localize }: Params) => {
-  const { participation_method, voting_method } = phase.data.attributes;
-  const { action_descriptors } = project.data.attributes;
+  const { participation_method, voting_method } = phase.attributes;
+  const { action_descriptors } = project.attributes;
 
   const canPost = action_descriptors.posting_idea.enabled;
   const canReact = action_descriptors.reacting_idea.enabled;
   const canComment = action_descriptors.commenting_idea.enabled;
-  const { input_term } = phase.data.attributes;
+  const { input_term } = phase.attributes;
 
   if (participation_method === 'voting') {
     if (voting_method === 'budgeting') {
@@ -36,7 +36,7 @@ const getCTAMessage = ({ phase, project, formatMessage, localize }: Params) => {
   } else if (participation_method === 'survey') {
     return formatMessage(messages.takeTheSurvey);
   } else if (participation_method === 'native_survey') {
-    return localize(phase.data.attributes.native_survey_button_multiloc);
+    return localize(phase.attributes.native_survey_button_multiloc);
   } else if (participation_method === 'document_annotation') {
     return formatMessage(messages.reviewDocument);
   } else if (participation_method === 'poll') {

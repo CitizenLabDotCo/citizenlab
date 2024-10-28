@@ -1,5 +1,3 @@
-import { getOrigin } from 'utils/storybook/getOrigin';
-
 import LightProjectCard from './LightProjectCard';
 
 import type { Meta, StoryObj } from '@storybook/react';
@@ -14,8 +12,27 @@ type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
   args: {
-    title: 'Amazing project',
-    imageUrl: `${getOrigin()}/images/image16.png`,
-    currentPhaseEndsAt: '2024-12-12',
+    project: {
+      attributes: {
+        title_multiloc: {
+          en: 'My cool project',
+        },
+      },
+      relationships: {
+        project_images: {
+          data: [
+            {
+              id: '1',
+              type: 'project_image',
+            },
+          ],
+        },
+      },
+    } as any,
+    phase: {
+      attributes: {
+        participation_method: 'ideation',
+      },
+    } as any,
   },
 };

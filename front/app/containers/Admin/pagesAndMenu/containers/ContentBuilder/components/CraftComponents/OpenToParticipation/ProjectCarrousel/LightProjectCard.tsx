@@ -11,16 +11,18 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import { IPhaseData } from 'api/phases/types';
+import useProjectImage from 'api/project_images/useProjectImage';
 import { CARD_IMAGE_ASPECT_RATIO } from 'api/project_images/useProjectImages';
+import { IProjectData } from 'api/projects/types';
+
+import useLocalize from 'hooks/useLocalize';
 
 import PhaseTimeLeft from 'components/PhaseTimeLeft';
+import getCTAMessage from 'components/ProjectCard/getCTAMessage';
 import ImagePlaceholder from 'components/ProjectCard/ImagePlaceholder';
 
-interface Props {
-  title: string;
-  imageUrl?: string;
-  currentPhaseEndsAt: string;
-}
+import { useIntl } from 'utils/cl-intl';
 
 const ProjectImageContainer = styled.div`
   width: 100%;
@@ -32,7 +34,25 @@ const ProjectImageContainer = styled.div`
   border-radius: ${stylingConsts.borderRadius};
 `;
 
-const LightProjectCard = ({ title, imageUrl, currentPhaseEndsAt }: Props) => {
+interface Props {
+  project: IProjectData;
+  phase: IPhaseData;
+}
+
+const LightProjectCard = ({ project, phase }: Props) => {
+  const localize = useLocalize();
+  const { formatMessage } = useIntl();
+
+  const imageId = project.relationships.project_images?.data[0]?.id;
+  const { data: image } = useProjectImage({
+    projectId: project.id,
+    imageId,
+  });
+
+  const title = localize(project.attributes.title_multiloc);
+  const imageUrl = image?.data.attributes.versions.medium;
+  const { end_at } = phase.attributes;
+
   return (
     <Box w="240px">
       <Box>
@@ -53,7 +73,14 @@ const LightProjectCard = ({ title, imageUrl, currentPhaseEndsAt }: Props) => {
           transform="translate(0,-1)"
         />
         <Text color="blue500" fontWeight="600" display="inline" m="0">
-          <PhaseTimeLeft currentPhaseEndsAt={currentPhaseEndsAt} />
+          {end_at ? (
+            <PhaseTimeLeft currentPhaseEndsAt={end_at} />
+          ) : (
+            'No end date'
+          )}
+        </Text>
+        <Text>
+          {getCTAMessage({ phase, project, localize, formatMessage })}
         </Text>
       </Box>
     </Box>
