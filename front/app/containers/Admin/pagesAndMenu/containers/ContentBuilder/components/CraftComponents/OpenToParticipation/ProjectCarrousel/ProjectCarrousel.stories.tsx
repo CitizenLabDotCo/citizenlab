@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { projects } from 'api/projects/__mocks__/_mockServer';
+
 import ProjectCarrousel from '.';
 
 import type { Meta, StoryObj } from '@storybook/react';
@@ -7,12 +9,10 @@ import type { Meta, StoryObj } from '@storybook/react';
 const meta = {
   title: 'HomepageBuilder/ProjectCarrousel',
   component: ProjectCarrousel,
-  render: () => {
+  render: (props) => {
     return (
-      <div
-        style={{ width: '500px', padding: '20px', backgroundColor: '#f3f3f3' }}
-      >
-        <ProjectCarrousel />
+      <div style={{ width: '500px' }}>
+        <ProjectCarrousel {...props} />
       </div>
     );
   },
@@ -22,5 +22,12 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
-  args: {},
+  args: {
+    projects: [...projects.data, ...projects.data, ...projects.data].map(
+      (project, index) => ({
+        ...project,
+        id: index.toString(),
+      })
+    ),
+  },
 };

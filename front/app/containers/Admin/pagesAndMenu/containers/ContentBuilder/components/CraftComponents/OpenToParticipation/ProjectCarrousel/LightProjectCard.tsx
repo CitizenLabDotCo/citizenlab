@@ -11,7 +11,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import { IPhaseData } from 'api/phases/types';
+import usePhase from 'api/phases/usePhase';
 import useProjectImage from 'api/project_images/useProjectImage';
 import { CARD_IMAGE_ASPECT_RATIO } from 'api/project_images/useProjectImages';
 import { IProjectData } from 'api/projects/types';
@@ -38,10 +38,9 @@ const ProjectImageContainer = styled.div`
 
 interface Props {
   project: IProjectData;
-  phase: IPhaseData;
 }
 
-const LightProjectCard = ({ project, phase }: Props) => {
+const LightProjectCard = ({ project }: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
 
@@ -51,9 +50,14 @@ const LightProjectCard = ({ project, phase }: Props) => {
     imageId,
   });
 
+  const phaseId = project.relationships.current_phase?.data?.id;
+  const { data: phase } = usePhase(phaseId);
+
+  if (!phase) return null;
+
   const title = localize(project.attributes.title_multiloc);
   const imageUrl = image?.data.attributes.versions.medium;
-  const { end_at } = phase.attributes;
+  const { end_at } = phase.data.attributes;
 
   return (
     <Box w="240px">
@@ -82,7 +86,12 @@ const LightProjectCard = ({ project, phase }: Props) => {
           )}
         </Text>
         <Text mt="4px" mb="0px" color="textSecondary" fontWeight="bold">
-          {getCTAMessage({ phase, project, localize, formatMessage })}
+          {getCTAMessage({
+            phase: phase.data,
+            project,
+            localize,
+            formatMessage,
+          })}
         </Text>
       </Box>
     </Box>

@@ -32,12 +32,11 @@ export const Primary: Story = {
             },
           ],
         },
-      },
-    } as any,
-    phase: {
-      attributes: {
-        participation_method: 'ideation',
-        input_term: 'idea',
+        current_phase: {
+          data: {
+            id: '1',
+          },
+        },
       },
     } as any,
   },

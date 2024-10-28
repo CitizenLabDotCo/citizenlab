@@ -2,24 +2,28 @@ import React from 'react';
 
 import styled from 'styled-components';
 
+import { IProjectData } from 'api/projects/types';
+
 import HorizontalScroll from 'components/HorizontalScroll';
 
-const PROJECTS = Array.from({ length: 5 }).fill(0);
+import LightProjectCard from './LightProjectCard';
 
 const ProjectContainer = styled.div`
   scroll-snap-align: start;
-  background-color: blue;
   margin-right: 12px;
-  min-width: 200px;
-  height: 200px;
-  scroll-snap-align: start;
 `;
 
-const ProjectCarrousel = () => {
+interface Props {
+  projects: IProjectData[];
+}
+
+const ProjectCarrousel = ({ projects }: Props) => {
   return (
     <HorizontalScroll snap arrowScrollOffset={216}>
-      {PROJECTS.map((_, index) => (
-        <ProjectContainer key={index}>Project {index}</ProjectContainer>
+      {projects.map((project) => (
+        <ProjectContainer key={project.id}>
+          <LightProjectCard project={project} />
+        </ProjectContainer>
       ))}
     </HorizontalScroll>
   );
