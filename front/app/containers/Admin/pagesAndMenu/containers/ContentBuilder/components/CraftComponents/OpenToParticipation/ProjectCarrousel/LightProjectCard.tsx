@@ -24,6 +24,8 @@ import ImagePlaceholder from 'components/ProjectCard/ImagePlaceholder';
 
 import { useIntl } from 'utils/cl-intl';
 
+import messages from './messages';
+
 const ProjectImageContainer = styled.div`
   width: 100%;
   display: flex;
@@ -76,7 +78,7 @@ const LightProjectCard = ({ project, phase }: Props) => {
           {end_at ? (
             <PhaseTimeLeft currentPhaseEndsAt={end_at} />
           ) : (
-            'No end date'
+            <>{formatMessage(messages.noEndDate)}</>
           )}
         </Text>
         <Text mt="4px" mb="0px" color="textSecondary" fontWeight="bold">
