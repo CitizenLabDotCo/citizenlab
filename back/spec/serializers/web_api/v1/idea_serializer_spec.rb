@@ -116,8 +116,8 @@ describe WebApi::V1::IdeaSerializer do
     let(:project) { create(:single_phase_single_voting_project) }
     let(:phase) { project.phases.first }
     let(:params) { { current_user: current_user, phase: phase } }
-    let(:input) do 
-      create(:idea, project: project, phases: project.phases).tap do |idea| 
+    let(:input) do
+      create(:idea, project: project, phases: project.phases).tap do |idea|
         idea.set_manual_votes(5, admin)
         idea.save!
       end
