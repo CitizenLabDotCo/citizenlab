@@ -1,3 +1,5 @@
+import { getOrigin } from 'utils/storybook/getOrigin';
+
 import LightProjectCard from './LightProjectCard';
 
 import type { Meta, StoryObj } from '@storybook/react';
@@ -11,5 +13,9 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
-  args: {},
+  args: {
+    title: 'Amazing project',
+    imageUrl: `${getOrigin()}/images/image16.png`,
+    currentPhaseEndsAt: '2024-12-12',
+  },
 };
