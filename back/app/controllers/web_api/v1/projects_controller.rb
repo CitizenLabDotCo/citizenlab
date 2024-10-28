@@ -171,6 +171,19 @@ class WebApi::V1::ProjectsController < ApplicationController
     end
   end
 
+  def reset_participation_data
+    project = Project.find(params[:id])
+    authorize project
+    
+    ParticipantsService.new.reset_participation_data(project)
+
+    render json: WebApi::V1::ProjectSerializer.new(
+      project,
+      params: jsonapi_serializer_params,
+      include: [:admin_publication]
+    ).serializable_hash, status: :ok
+  end
+
   private
 
   def sidefx

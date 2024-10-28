@@ -174,4 +174,19 @@ class ParticipantsService
     ideas = Idea.where(idea_status: idea_statuses)
     ideas_participants ideas, options
   end
+
+  def reset_participation_data(project)
+    # Reset volunteers data
+    causes = Volunteering::Cause.where(phase: project.phases)
+    volunteers = Volunteering::Volunteer.where(cause: causes)
+    volunteers.destroy_all
+    # Reset event attendance data
+    event_attendances = Events::Attendance.joins(:event).where(events: { project: project })
+    event_attendances.destroy_all 
+    # Reset poll data
+    poll_responses = Polls::Response.where(phase: Phase.where(project: project))
+    poll_responses.destroy_all
+
+    project.ideas.destroy_all
+  end
 end
