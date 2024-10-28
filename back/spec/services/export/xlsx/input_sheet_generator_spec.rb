@@ -46,7 +46,7 @@ describe Export::Xlsx::InputSheetGenerator do
                 'Project',
                 'Status',
                 'Assignee',
-                'Assignee email',
+                'Assignee email'
               ],
               rows: []
             }
@@ -159,65 +159,65 @@ describe Export::Xlsx::InputSheetGenerator do
         let!(:dislikes) { create_list(:dislike, 1, reactable: ideation_response1) }
         let(:inputs) { [ideation_response1.reload] }
 
-          it 'Generates an sheet with the phase inputs' do
-            expect(xlsx).to match([
-              {
-                sheet_name: 'My sheet',
-                column_headers: [
-                  'ID',
-                  'Title',
-                  'Description',
-                  'Attachments',
-                  'Tags',
-                  'Latitude',
-                  'Longitude',
-                  'Location',
-                  'Proposed Budget',
-                  extra_idea_field.title_multiloc['en'],
-                  'Author name',
-                  'Author email',
-                  'Author ID',
-                  'Submitted at',
-                  'Published at',
-                  'Comments',
-                  'Likes',
-                  'Dislikes',
-                  'URL',
-                  'Project',
-                  'Status',
-                  'Assignee',
-                  'Assignee email'
-                ],
-                rows: [
-                  [
-                    ideation_response1.id,
-                    ideation_response1.title_multiloc['en'],
-                    'It would improve the air quality!', # html tags are removed
-                    %r{\A/uploads/.+/idea_file/file/#{attachment1.id}/#{attachment1.name}\n/uploads/.+/idea_file/file/#{attachment2.id}/#{attachment2.name}\Z},
-                    "#{ideation_response1.topics[0].title_multiloc['en']}, #{ideation_response1.topics[1].title_multiloc['en']}",
-                    ideation_response1.location_point.coordinates.last,
-                    ideation_response1.location_point.coordinates.first,
-                    ideation_response1.location_description,
-                    ideation_response1.proposed_budget,
-                    'Answer',
-                    ideation_response1.author_name,
-                    ideation_response1.author.email,
-                    ideation_response1.author_id,
-                    an_instance_of(DateTime), # created_at
-                    an_instance_of(DateTime), # published_at
-                    1,
-                    2,
-                    1,
-                    "http://example.org/ideas/#{ideation_response1.slug}",
-                    phase.project.title_multiloc['en'],
-                    ideation_response1.idea_status.title_multiloc['en'],
-                    "#{assignee.first_name} #{assignee.last_name}",
-                    assignee.email
-                  ]
+        it 'Generates an sheet with the phase inputs' do
+          expect(xlsx).to match([
+            {
+              sheet_name: 'My sheet',
+              column_headers: [
+                'ID',
+                'Title',
+                'Description',
+                'Attachments',
+                'Tags',
+                'Latitude',
+                'Longitude',
+                'Location',
+                'Proposed Budget',
+                extra_idea_field.title_multiloc['en'],
+                'Author name',
+                'Author email',
+                'Author ID',
+                'Submitted at',
+                'Published at',
+                'Comments',
+                'Likes',
+                'Dislikes',
+                'URL',
+                'Project',
+                'Status',
+                'Assignee',
+                'Assignee email'
+              ],
+              rows: [
+                [
+                  ideation_response1.id,
+                  ideation_response1.title_multiloc['en'],
+                  'It would improve the air quality!', # html tags are removed
+                  %r{\A/uploads/.+/idea_file/file/#{attachment1.id}/#{attachment1.name}\n/uploads/.+/idea_file/file/#{attachment2.id}/#{attachment2.name}\Z},
+                  "#{ideation_response1.topics[0].title_multiloc['en']}, #{ideation_response1.topics[1].title_multiloc['en']}",
+                  ideation_response1.location_point.coordinates.last,
+                  ideation_response1.location_point.coordinates.first,
+                  ideation_response1.location_description,
+                  ideation_response1.proposed_budget,
+                  'Answer',
+                  ideation_response1.author_name,
+                  ideation_response1.author.email,
+                  ideation_response1.author_id,
+                  an_instance_of(DateTime), # created_at
+                  an_instance_of(DateTime), # published_at
+                  1,
+                  2,
+                  1,
+                  "http://example.org/ideas/#{ideation_response1.slug}",
+                  phase.project.title_multiloc['en'],
+                  ideation_response1.idea_status.title_multiloc['en'],
+                  "#{assignee.first_name} #{assignee.last_name}",
+                  assignee.email
                 ]
-              }
-            ])
-          end
+              ]
+            }
+          ])
+        end
       end
     end
 
@@ -313,48 +313,47 @@ describe Export::Xlsx::InputSheetGenerator do
           ])
         end
 
-      context 'when there are "other" options' do
-
-        it 'Generates an sheet with the phase inputs, including the "other" column' do
-          create(:custom_field_option, custom_field: multiselect_field, key: 'other', title_multiloc: { 'en' => 'Other' }, other: true)
-          survey_response1.update!(custom_field_values: { multiselect_field.key => %w[cat dog other], "#{multiselect_field.key}_other" => 'Fish' })
-          expect(xlsx).to match([
-            {
-              sheet_name: 'My sheet',
-              column_headers: [
-                'ID',
-                'What are your favourite pets?',
-                'Type your answer',
-                'Submitted at',
-                'Project'
-              ],
-              rows: [
-                [
-                  survey_response1.id,
-                  'Cat, Dog, Other',
-                  'Fish',
-                  an_instance_of(DateTime), # created_at
-                  phase.project.title_multiloc['en']
+        context 'when there are "other" options' do
+          it 'Generates an sheet with the phase inputs, including the "other" column' do
+            create(:custom_field_option, custom_field: multiselect_field, key: 'other', title_multiloc: { 'en' => 'Other' }, other: true)
+            survey_response1.update!(custom_field_values: { multiselect_field.key => %w[cat dog other], "#{multiselect_field.key}_other" => 'Fish' })
+            expect(xlsx).to match([
+              {
+                sheet_name: 'My sheet',
+                column_headers: [
+                  'ID',
+                  'What are your favourite pets?',
+                  'Type your answer',
+                  'Submitted at',
+                  'Project'
                 ],
-                [
-                  survey_response2.id,
-                  'Cat',
-                  '',
-                  an_instance_of(DateTime), # created_at
-                  phase.project.title_multiloc['en']
-                ],
-                [
-                  survey_response3.id,
-                  'Dog',
-                  '',
-                  an_instance_of(DateTime), # created_at
-                  phase.project.title_multiloc['en']
+                rows: [
+                  [
+                    survey_response1.id,
+                    'Cat, Dog, Other',
+                    'Fish',
+                    an_instance_of(DateTime), # created_at
+                    phase.project.title_multiloc['en']
+                  ],
+                  [
+                    survey_response2.id,
+                    'Cat',
+                    '',
+                    an_instance_of(DateTime), # created_at
+                    phase.project.title_multiloc['en']
+                  ],
+                  [
+                    survey_response3.id,
+                    'Dog',
+                    '',
+                    an_instance_of(DateTime), # created_at
+                    phase.project.title_multiloc['en']
+                  ]
                 ]
-              ]
-            }
-          ])
+              }
+            ])
+          end
         end
-      end
       end
 
       context 'with private attributes' do
@@ -369,20 +368,20 @@ describe Export::Xlsx::InputSheetGenerator do
 
           it 'Generates an empty sheet' do
             expect(xlsx).to eq([
-                                 {
-                                   sheet_name: 'My sheet',
-                                   column_headers: [
-                                     'ID',
-                                     'What are your favourite pets?',
-                                     'Author name',
-                                     'Author email',
-                                     'Author ID',
-                                     'Submitted at',
-                                     'Project'
-                                   ],
-                                   rows: []
-                                 }
-                               ])
+              {
+                sheet_name: 'My sheet',
+                column_headers: [
+                  'ID',
+                  'What are your favourite pets?',
+                  'Author name',
+                  'Author email',
+                  'Author ID',
+                  'Submitted at',
+                  'Project'
+                ],
+                rows: []
+              }
+            ])
           end
         end
 
