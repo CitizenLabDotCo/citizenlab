@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Title, Text } from '@citizenlab/cl2-component-library';
+import { Box, Title, Text, colors } from '@citizenlab/cl2-component-library';
 import { useEditor, SerializedNodes } from '@craftjs/core';
 import { SupportedLocale } from 'typings';
 
@@ -8,7 +8,7 @@ import useAddHomepageBuilderLayout from 'api/home_page_layout/useAddHomepageLayo
 
 import Container from 'components/admin/ContentBuilder/TopBar/Container';
 import GoBackButton from 'components/admin/ContentBuilder/TopBar/GoBackButton';
-import LocaleSwitcher from 'components/admin/ContentBuilder/TopBar/LocaleSwitcher';
+import LocaleSelect from 'components/admin/ContentBuilder/TopBar/LocaleSelect';
 import PreviewToggle from 'components/admin/ContentBuilder/TopBar/PreviewToggle';
 import SaveButton from 'components/admin/ContentBuilder/TopBar/SaveButton';
 import Button from 'components/UI/Button';
@@ -23,7 +23,7 @@ type BuilderTopBarProps = {
   hasError?: boolean;
   previewEnabled: boolean;
   setPreviewEnabled: React.Dispatch<React.SetStateAction<boolean>>;
-  selectedLocale: SupportedLocale | undefined;
+  selectedLocale: SupportedLocale;
   onSelectLocale: (args: {
     locale: SupportedLocale;
     editorData: SerializedNodes;
@@ -52,11 +52,9 @@ const BuilderTopBar = ({
   };
 
   const handleSave = () => {
-    if (selectedLocale) {
-      updateHomepage({
-        craftjs_json: query.getSerializedNodes(),
-      });
-    }
+    updateHomepage({
+      craftjs_json: query.getSerializedNodes(),
+    });
   };
 
   const handleSelectLocale = (locale: SupportedLocale) => {
@@ -71,34 +69,34 @@ const BuilderTopBar = ({
   return (
     <Container>
       <GoBackButton onClick={goBack} />
-      <Box display="flex" p="15px" flexGrow={1} alignItems="center">
+      <Box display="flex" p="15px" pl="8px" flexGrow={1} alignItems="center">
         <Box flexGrow={2}>
-          <Title>{formatMessage(messages.homepage)}</Title>
+          <Title variant="h3" as="h1" mb="0px" mt="0px">
+            {formatMessage(messages.homepage)}
+          </Title>
         </Box>
-        <LocaleSwitcher
-          selectedLocale={selectedLocale}
-          onSelectLocale={handleSelectLocale}
-        />
+        <LocaleSelect locale={selectedLocale} setLocale={handleSelectLocale} />
         <Box ml="24px" />
         <PreviewToggle
           checked={previewEnabled}
           onChange={handleTogglePreview}
         />
         <Button
-          id="e2e-view-project-button"
-          buttonStyle="secondary-outlined"
+          id="e2e-view-homepage-button"
           icon="eye"
-          mx="20px"
-          linkTo={`/`}
+          buttonStyle="secondary-outlined"
+          iconColor={colors.textPrimary}
+          iconSize="20px"
+          px="11px"
+          py="6px"
+          ml="32px"
+          linkTo="/"
           openLinkInNewTab
-        >
-          {formatMessage(messages.viewHomepage)}
-        </Button>
-
+        />
         <SaveButton
-          disabled={!!(disableSave || hasPendingState)}
-          processing={isLoading}
-          onClick={handleSave}
+          isDisabled={!!(disableSave || hasPendingState)}
+          isLoading={isLoading}
+          onSave={handleSave}
         />
         {isError && (
           <Text

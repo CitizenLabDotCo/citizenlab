@@ -8,10 +8,11 @@ import { useProjects } from 'api/graph_data_units';
 import { ProjectReportsPublicationStatus } from 'api/graph_data_units/requestTypes';
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useAppConfigurationLocales, {
+  createMultiloc,
+} from 'hooks/useAppConfigurationLocales';
 
 import useParticipants from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/ParticipantsWidget/useParticipants';
-import { createMultiloc } from 'containers/Admin/reporting/utils/multiloc';
 
 import Container from 'components/admin/ContentBuilder/Widgets/Container';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
