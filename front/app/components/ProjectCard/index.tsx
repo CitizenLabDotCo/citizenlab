@@ -1,7 +1,6 @@
 import React, { memo, useState } from 'react';
 
 import {
-  Icon,
   Box,
   media,
   colors,
@@ -41,6 +40,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { getInputTermMessage } from 'utils/i18n';
 
+import ImagePlaceholder from './ImagePlaceholder';
 import messages from './messages';
 import tracks from './tracks';
 
@@ -633,20 +633,7 @@ const ProjectCard = memo<InputProps>(
             {imageUrl ? (
               <ProjectImage src={imageUrl} alt="" cover={true} />
             ) : (
-              <Box
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-                flex="1"
-                background={colors.grey300}
-              >
-                <Icon
-                  name="building"
-                  width="80px"
-                  height="80px"
-                  fill={colors.white}
-                />
-              </Box>
+              <ImagePlaceholder />
             )}
           </ProjectImageContainer>
 
