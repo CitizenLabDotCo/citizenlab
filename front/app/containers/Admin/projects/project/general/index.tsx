@@ -60,6 +60,7 @@ import ProjectFolderSelect from './components/ProjectFolderSelect';
 import ProjectHeaderImageTooltip from './components/ProjectHeaderImageTooltip';
 import ProjectNameInput from './components/ProjectNameInput';
 import ProjectStatusPicker from './components/ProjectStatusPicker';
+import ResetParticipationData from './components/ResetParticipationData';
 import { StyledForm, StyledSectionField } from './components/styling';
 import TopicInputs from './components/TopicInputs';
 import messages from './messages';
@@ -78,6 +79,7 @@ const AdminProjectsProjectGeneral = () => {
   const { formatMessage } = useIntl();
   const { projectId } = useParams();
   const { data: project } = useProjectById(projectId);
+
   const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
   const appConfigLocales = useAppConfigurationLocales();
   const { width, containerRef } = useContainerWidthAndHeight();
@@ -625,6 +627,7 @@ const AdminProjectsProjectGeneral = () => {
                 messageSuccess: messages.saveSuccessMessage,
               }}
             />
+            <ResetParticipationData />
           </Box>
         </Section>
       </StyledForm>
