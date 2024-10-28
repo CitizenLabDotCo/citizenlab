@@ -64,6 +64,8 @@ class Project < ApplicationRecord
   has_many :project_files, -> { order(:ordering) }, dependent: :destroy
   has_many :followers, as: :followable, dependent: :destroy
 
+  after_initialize :refresh_preview_token
+
   before_validation :sanitize_description_multiloc, if: :description_multiloc
   before_validation :set_admin_publication, unless: proc { Current.loading_tenant_template }
   before_validation :set_visible_to, on: :create
@@ -196,6 +198,10 @@ class Project < ApplicationRecord
     # The following mimics the same behaviour now that participation method is not available on the project
     # TODO: Maybe change to find phase with ideation or voting where created date between start and end date?
     @pmethod ||= ParticipationMethod::Ideation.new(phases.first)
+  end
+
+  def refresh_preview_token
+    self.preview_token = SecureRandom.urlsafe_base64(64)
   end
 
   private

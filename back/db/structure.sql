@@ -1186,7 +1186,7 @@ CREATE TABLE public.projects (
     baskets_count integer DEFAULT 0 NOT NULL,
     votes_count integer DEFAULT 0 NOT NULL,
     followers_count integer DEFAULT 0 NOT NULL,
-    preview_token character varying DEFAULT gen_random_uuid() NOT NULL
+    preview_token character varying NOT NULL
 );
 
 

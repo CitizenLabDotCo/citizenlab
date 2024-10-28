@@ -96,6 +96,10 @@ class ProjectPolicy < ApplicationPolicy
     active_moderator?
   end
 
+  def refresh_preview_token?
+    update?
+  end
+
   def reorder?
     update?
   end
