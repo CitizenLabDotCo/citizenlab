@@ -36,6 +36,7 @@ module IdCriipto
         uid_field_pattern
         method_name_for_hashing
         minimum_age
+        enabled_for_verified_actions
       ]
     end
 
@@ -82,6 +83,11 @@ module IdCriipto
           private: true,
           type: 'integer',
           description: 'Minimum age required to verify (in years). No value means no age minimum.'
+        },
+        enabled_for_verified_actions: {
+          private: true,
+          type: 'boolean',
+          description: 'Whether this verification method should be enabled for verified actions.'
         }
       }
     end
