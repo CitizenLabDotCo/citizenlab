@@ -110,9 +110,7 @@ const HomepageBuilderPage = () => {
           mt={`${stylingConsts.menuHeight}px`}
           display={previewEnabled ? 'none' : 'flex'}
         >
-          {selectedLocale && (
-            <HomepageBuilderToolbox selectedLocale={selectedLocale} />
-          )}
+          <HomepageBuilderToolbox selectedLocale={selectedLocale} />
           <StyledRightColumn>
             <LanguageProvider
               contentBuilderLocale={selectedLocale}

@@ -52,11 +52,9 @@ const BuilderTopBar = ({
   };
 
   const handleSave = () => {
-    if (selectedLocale) {
-      updateHomepage({
-        craftjs_json: query.getSerializedNodes(),
-      });
-    }
+    updateHomepage({
+      craftjs_json: query.getSerializedNodes(),
+    });
   };
 
   const handleSelectLocale = (locale: SupportedLocale) => {

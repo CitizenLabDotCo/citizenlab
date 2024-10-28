@@ -99,7 +99,7 @@ const ProjectDescriptionBuilderPage = () => {
     locale: SupportedLocale;
     editorData: SerializedNodes;
   }) => {
-    if (selectedLocale && selectedLocale !== locale) {
+    if (selectedLocale !== locale) {
       setDraftData({ ...draftData, [selectedLocale]: editorData });
     }
 
@@ -138,9 +138,7 @@ const ProjectDescriptionBuilderPage = () => {
           mt={`${stylingConsts.menuHeight}px`}
           display={previewEnabled ? 'none' : 'flex'}
         >
-          {selectedLocale && (
-            <ProjectDescriptionBuilderToolbox selectedLocale={selectedLocale} />
-          )}
+          <ProjectDescriptionBuilderToolbox selectedLocale={selectedLocale} />
           <LanguageProvider
             contentBuilderLocale={selectedLocale}
             platformLocale={locale}
