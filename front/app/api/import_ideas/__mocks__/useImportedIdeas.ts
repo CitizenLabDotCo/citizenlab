@@ -69,6 +69,7 @@ export const ideasData: IIdeaData[] = [
       anonymous: false,
       author_hash: 'abc123',
       followers_count: 0,
+      manual_votes_amount: 0,
     },
     relationships: {
       topics: {
