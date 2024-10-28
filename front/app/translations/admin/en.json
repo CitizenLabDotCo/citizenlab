@@ -1696,6 +1696,7 @@
   "app.containers.AdminPage.ProjectEdit.purposes": "Purposes",
   "app.containers.AdminPage.ProjectEdit.qualtrics": "Qualtrics",
   "app.containers.AdminPage.ProjectEdit.randomSortingMethod": "Random",
+  "app.containers.AdminPage.ProjectEdit.resetParticipationData": "Reset participation data",
   "app.containers.AdminPage.ProjectEdit.saveErrorMessage": "An error occurred while saving your data. Please try again.",
   "app.containers.AdminPage.ProjectEdit.saveProject": "Save",
   "app.containers.AdminPage.ProjectEdit.saveSuccess": "Success!",
