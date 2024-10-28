@@ -116,7 +116,12 @@ describe WebApi::V1::IdeaSerializer do
     let(:project) { create(:single_phase_single_voting_project) }
     let(:phase) { project.phases.first }
     let(:params) { { current_user: current_user, phase: phase } }
-    let(:input) { create(:idea, project: project, phases: project.phases).tap { |idea| idea.set_manual_votes(5, admin); idea.save! } }
+    let(:input) do 
+      create(:idea, project: project, phases: project.phases).tap do |idea| 
+        idea.set_manual_votes(5, admin)
+        idea.save!
+      end
+    end
     let(:result) { described_class.new(input, params: params).serializable_hash }
     let(:current_user) { create(:project_moderator, projects: [project]) }
 
@@ -139,7 +144,7 @@ describe WebApi::V1::IdeaSerializer do
 
       context 'without manual votes' do
         let(:input) { create(:idea, project: project, phases: project.phases) }
-  
+
         it 'does not include manual votes' do
           expect(result.dig(:data, :attributes, :manual_votes_amount)).to be_nil
           expect(result.dig(:data, :attributes, :total_votes)).to eq 2
