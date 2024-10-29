@@ -61,7 +61,7 @@ describe('Project description builder language switch', () => {
     cy.get('.ql-editor').type('Language 1 text.', { force: true });
     cy.wait(1000);
     // NL
-    cy.get('.nl-BE').last().click();
+    cy.get('.e2e-localeswitcher.nl-BE').click();
     cy.get('.ql-editor').clear().type('Language 2 text.', { force: true });
     cy.wait(1000);
     cy.get('#e2e-content-builder-topbar-save').click();
@@ -85,8 +85,6 @@ describe('Project description builder language switch', () => {
     );
 
     // Delete content
-
-    cy.get('.en').click();
     cy.get('.e2e-text-box').click({ force: true });
     cy.get('#e2e-delete-button').click({ force: true });
 

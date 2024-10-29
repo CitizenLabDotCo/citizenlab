@@ -12,11 +12,12 @@ import useReport from 'api/reports/useReport';
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 import useUserById from 'api/users/useUserById';
 
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useAppConfigurationLocales, {
+  createMultiloc,
+} from 'hooks/useAppConfigurationLocales';
 
 import { WIDGET_TITLES } from 'containers/Admin/reporting/components/ReportBuilder/Widgets';
 import getProjectPeriod from 'containers/Admin/reporting/utils/getProjectPeriod';
-import { createMultiloc } from 'containers/Admin/reporting/utils/multiloc';
 
 import Container from 'components/admin/ContentBuilder/Widgets/Container';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
