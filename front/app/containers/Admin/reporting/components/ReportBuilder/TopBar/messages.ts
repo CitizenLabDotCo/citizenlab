@@ -21,10 +21,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.cancelQuitButtonText',
     defaultMessage: 'Cancel',
   },
-  goBackButtonMessage: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.goBackButtonMessage',
-    defaultMessage: 'Go back',
-  },
   cannotPrint: {
     id: 'app.containers.Admin.reporting.components.ReportBuilder.TopBar.cannotPrint',
     defaultMessage:
@@ -33,9 +29,5 @@ export default defineMessages({
   titleTaken: {
     id: 'app.containers.Admin.reporting.components.ReportBuilder.TopBar.titleTaken',
     defaultMessage: 'Title is already taken',
-  },
-  reportTitleTooltip: {
-    id: 'app.containers.Admin.reporting.components.ReportBuilder.TopBar.reportTitleTooltip',
-    defaultMessage: 'Rename',
   },
 });

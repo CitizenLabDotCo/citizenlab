@@ -57,6 +57,7 @@ import {
   hasOtherTextFieldBelow,
   isVisible,
 } from '../Controls/visibilityUtils';
+import { useErrorToRead } from '../Fields/ErrorToReadContext';
 
 import { SURVEY_PAGE_CHANGE_EVENT } from './events';
 import messages from './messages';
@@ -100,6 +101,7 @@ const CLSurveyPageLayout = memo(
     const draggableDivRef = useRef<HTMLDivElement>(null);
     const dragDividerRef = useRef<HTMLDivElement>(null);
     const pagesRef = useRef<HTMLDivElement>(null);
+    const { announceError } = useErrorToRead();
 
     // Get project and relevant phase data
     const { slug } = useParams() as {
@@ -112,12 +114,16 @@ const CLSurveyPageLayout = memo(
       phaseIdFromSearchParams || getCurrentPhase(phases?.data)?.id;
     const { data: phase } = usePhase(phaseId);
     const allowAnonymousPosting =
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       phase?.data?.attributes.allow_anonymous_participation;
 
     // Map-related variables
     const { data: projectMapConfig } = useProjectMapConfig(project?.data.id);
     const isMapPage = uiPages[currentStep].options.page_layout === 'map';
     const mapConfigId =
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       uiPages[currentStep].options.map_config_id || projectMapConfig?.data?.id;
     const { data: fetchedMapConfig, isFetching: isFetchingMapConfig } =
       useMapConfigById(mapConfigId);
@@ -156,15 +162,22 @@ const CLSurveyPageLayout = memo(
 
     useEffect(() => {
       if (scrollToError) {
-        // Scroll to the first field with an error
-        document.getElementById('error-display')?.scrollIntoView({
-          behavior: 'smooth',
-          block: 'nearest',
-          inline: 'start',
-        });
+        // Select the first error element by its class name
+        const firstErrorElement = document.querySelector(
+          '.error-display-container'
+        );
+        if (firstErrorElement) {
+          firstErrorElement.scrollIntoView({
+            behavior: 'smooth',
+            block: 'nearest',
+            inline: 'start',
+          });
+
+          announceError(firstErrorElement.id);
+        }
         setScrollToError(false);
       }
-    }, [scrollToError]);
+    }, [scrollToError, announceError]);
 
     useEffect(() => {
       if (currentStep === uiPages.length - 1) {
@@ -191,6 +204,8 @@ const CLSurveyPageLayout = memo(
 
     const scrollToTop = () => {
       // Scroll inner container to top
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (pagesRef?.current) {
         pagesRef.current.scrollIntoView({
           block: 'start',
@@ -241,6 +256,8 @@ const CLSurveyPageLayout = memo(
           return element.options?.hasRule;
         })
         .flatMap((filteredElement) => {
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           const elementScope = filteredElement.scope?.split('/').pop();
           return elementScope || '';
         });
@@ -268,6 +285,8 @@ const CLSurveyPageLayout = memo(
     const onDragDivider = (event) => {
       event.preventDefault();
       // Change the height of the map container to match the drag event
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (draggableDivRef?.current) {
         const clientY = event?.changedTouches?.[0]?.clientY;
         // Don't allow the div to be dragged outside bounds of survey page
@@ -277,6 +296,8 @@ const CLSurveyPageLayout = memo(
       }
     };
 
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     dragDividerRef?.current?.addEventListener('touchmove', onDragDivider);
 
     if (isFetchingMapConfig) {
@@ -314,7 +335,11 @@ const CLSurveyPageLayout = memo(
                   showLayerVisibilityControl: true,
                   showLegendExpanded: true,
                   showZoomControls: isMobileOrSmaller ? false : true,
+                  // TODO: Fix this the next time the file is edited.
+                  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                   zoom: Number(mapConfig?.data?.attributes.zoom_level),
+                  // TODO: Fix this the next time the file is edited.
+                  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                   center: mapConfig?.data?.attributes.center_geojson,
                 }}
                 webMapId={mapConfig?.data.attributes.esri_web_map_id}
@@ -425,19 +450,23 @@ const CLSurveyPageLayout = memo(
         </Box>
 
         {/*
-          TODO:
-          We should move the footer (progress bar and navigation buttons) into IdeasNewSurveyForm/index.tsx
-          if possible. It doesn't belong here as it's not part of the form fields layout. This would also allow us
-          to put the progress bar back on top of the form (as part of the survey header) without
-          the scroll bar of the form fields interfering with it. This in turn would allow us to improve
-          the form progress UX for screen readers. Our current stance is that it makes more sense to get a
-          progress update before entering a new page, rather than after leaving it.
-        */}
+        TODO:
+        We should move the footer (progress bar and navigation buttons) into IdeasNewSurveyForm/index.tsx
+        if possible. It doesn't belong here as it's not part of the form fields layout. This would also allow us
+        to put the progress bar back on top of the form (as part of the survey header) without
+        the scroll bar of the form fields interfering with it. This in turn would allow us to improve
+        the form progress UX for screen readers. Our current stance is that it makes more sense to get a
+        progress update before entering a new page, rather than after leaving it.
+      */}
         <Box
           maxWidth={isMapPage ? '1100px' : '700px'}
           w="100%"
           position="fixed"
           bottom={isMobileOrSmaller ? '0' : '40px'}
+          role="progressbar"
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-valuenow={percentageAnswered}
         >
           <Box background={colors.background}>
             <Box

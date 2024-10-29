@@ -50,7 +50,7 @@ type Props = {
   selectedFieldId?: string;
   builderConfig: FormBuilderConfig;
   fieldNumbers: Record<string, number>;
-  closeSettings: () => void;
+  closeSettings: (triggerAutosave?: boolean) => void;
 };
 
 export const FormField = ({
@@ -69,6 +69,8 @@ export const FormField = ({
   } = useFormContext();
   const moreActionsButtonRef = useRef<HTMLButtonElement>(null);
   const { formatMessage } = useIntl();
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const lockedAttributes = field?.constraints?.locks;
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const formCustomFields: IFlatCustomField[] = watch('customFields');
@@ -83,6 +85,8 @@ export const FormField = ({
   const hasErrors = !!errors.customFields?.[index];
 
   const showLogicOnRow =
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     field.input_type !== 'page' ? field.logic?.rules : field.logic;
 
   const isFieldGrouping = ['page', 'section'].includes(field.input_type);
@@ -92,6 +96,8 @@ export const FormField = ({
     formCustomFields.filter((field) => field.input_type === groupingType)
       .length > 1;
   const isDeleteShown =
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     !(field?.input_type !== groupingType || isGroupDeletable) ||
     get(lockedAttributes, 'enabled', false);
 
@@ -152,6 +158,8 @@ export const FormField = ({
     // Duplicate the map config if this is a mapping question
     if (
       originalField.input_type === 'point' &&
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       originalField.map_config?.data?.id
     ) {
       const newMapConfig = await duplicateMapConfig(
@@ -184,7 +192,7 @@ export const FormField = ({
         remove(fieldIndex);
       }
     }
-    closeSettings();
+    closeSettings(false);
     trigger();
   };
 
@@ -198,15 +206,22 @@ export const FormField = ({
   const deleteField = (fieldIndex: number) => {
     // Check if deleted field has linked logic
     const doesPageHaveLinkedLogic = formCustomFields.some((formField) => {
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (formField.logic && formField.logic.rules) {
         return formField.logic.rules.some(
           (rule) =>
             rule.goto_page_id === field.id ||
             rule.goto_page_id === field.temp_id
         );
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       } else if (formField.logic && formField.logic?.next_page_id) {
         return (
-          formField.logic?.next_page_id === field.id ||
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+          formField.logic?.next_page_id === field.id || // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           formField.logic?.next_page_id === field.temp_id
         );
       }
@@ -222,6 +237,8 @@ export const FormField = ({
 
   const removeLogicAndDelete = () => {
     formCustomFields.map((formField, i) => {
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (formField.logic && formField.logic.rules) {
         const updatedRules = formField.logic.rules.filter(
           (rule) =>
@@ -229,6 +246,8 @@ export const FormField = ({
             rule.goto_page_id !== field.temp_id
         );
         setValue(`customFields.${i}.logic.rules`, updatedRules);
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       } else if (formField.logic && formField.logic.next_page_id) {
         if (
           formField.logic.next_page_id === field.id ||

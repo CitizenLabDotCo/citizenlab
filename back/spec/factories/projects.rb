@@ -284,13 +284,13 @@ FactoryBot.define do
     end
 
     # Example usage: Create a project with 4 timeline phases, for which the 2nd
-    # is the current phase. The first phase has posting_enabled, the last 2 have
+    # is the current phase. The first phase has submission_enabled, the last 2 have
     # voting_disabled
     # create(
     #   :project_with_current_phase,
     #   phases_config: {
     #     sequence: 'xcyy',
-    #     x: { posting_enabled: false },
+    #     x: { submission_enabled: false },
     #     y: { reacting_enabled: false }
     #   },
     #   current_phase_attrs: {
@@ -321,21 +321,21 @@ FactoryBot.define do
         end_at = active_phase.start_at
         phases_before.to_s.chars.map(&:to_sym).reverse_each do |sequence_char|
           phase_config = evaluator.phases_config[sequence_char].clone || {}
-          project.phases << create(:phase,
+          project.phases << create(phase_config[:factory] || :phase,
             end_at: end_at - 1,
             start_at: end_at -= rand(1..120).days,
             project: project,
-            **phase_config)
+            **phase_config.except(:factory))
         end
 
         start_at = active_phase.end_at
         phases_after.to_s.chars.map(&:to_sym).each do |sequence_char|
           phase_config = evaluator.phases_config[sequence_char].clone || {}
-          project.phases << create(:phase,
+          project.phases << create(phase_config[:factory] || :phase,
             start_at: start_at + 1,
             end_at: start_at += rand(1..120).days,
             project: project,
-            **phase_config)
+            **phase_config.except(:factory))
         end
       end
     end

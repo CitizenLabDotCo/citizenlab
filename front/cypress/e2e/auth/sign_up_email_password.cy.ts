@@ -1,9 +1,8 @@
 import { randomString, randomEmail } from '../../support/commands';
 
-function signUp() {
+function signUp(email = randomEmail()) {
   const firstName = randomString();
   const lastName = randomString();
-  const email = randomEmail();
   const password = randomString();
 
   cy.get('#firstName').type(firstName);
@@ -36,8 +35,9 @@ describe('Sign up - Email + password step', () => {
   it('shows an error when no first name is provided', () => {
     cy.get('#e2e-signup-password-submit-button').should('exist');
     cy.get('#e2e-signup-password-submit-button').click();
-    cy.get('#e2e-firstName-container .e2e-error-message').should('exist');
     cy.scrollTo('top');
+    cy.wait(500);
+    cy.get('#e2e-firstName-container .e2e-error-message').should('exist');
     cy.get('#e2e-firstName-container .e2e-error-message').should(
       'contain',
       'Enter your first name'
@@ -140,9 +140,9 @@ describe('Sign up - Email + password step', () => {
     signUp();
     cy.get('#code').click().type('1234');
     cy.get('#e2e-verify-email-button').click();
-    cy.get('#e2e-success-continue-button').click();
-    cy.get('#e2e-authentication-modal').should('not.exist');
-    cy.get('#e2e-user-menu-container');
+    cy.wait(5000);
+    cy.get('#e2e-verify-email-button').should('not.exist');
+    cy.get('.e2e-error-message').should('not.exist');
     cy.clearCookies();
   });
 
@@ -151,5 +151,21 @@ describe('Sign up - Email + password step', () => {
     cy.get('#code').click().type('0000');
     cy.get('#e2e-verify-email-button').click();
     cy.get('.e2e-error-message');
+  });
+
+  it('allows changing email during sign-up flow', () => {
+    const oldEmail = randomEmail();
+    signUp(oldEmail);
+
+    cy.contains(oldEmail).should('exist');
+
+    cy.get('#e2e-go-to-change-email').click();
+
+    const newEmail = randomEmail();
+    cy.get('#email').focus().type(newEmail);
+    cy.get('#e2e-change-email-submit').click();
+
+    cy.contains(newEmail).should('exist');
+    cy.contains(oldEmail).should('not.exist');
   });
 });

@@ -2,7 +2,7 @@ import React from 'react';
 
 import moment from 'moment';
 
-import DateSinglePicker from 'components/admin/DateSinglePicker';
+import DateSinglePicker from 'components/admin/DatePickers/DateSinglePicker';
 
 type Props = {
   value?: string;
@@ -18,7 +18,7 @@ const DateValueSelector = ({ value, onChange }: Props) => {
 
   return (
     <DateSinglePicker
-      selectedDate={typeof value === 'string' ? new Date(value) : null}
+      selectedDate={typeof value === 'string' ? new Date(value) : undefined}
       onChange={handleOnChange}
     />
   );

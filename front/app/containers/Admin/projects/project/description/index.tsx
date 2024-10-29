@@ -9,6 +9,7 @@ import useProjectById from 'api/projects/useProjectById';
 import useUpdateProject from 'api/projects/useUpdateProject';
 
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import {
   Section,
@@ -16,7 +17,7 @@ import {
   SectionTitle,
   SectionDescription,
 } from 'components/admin/Section';
-import Outlet from 'components/Outlet';
+import ProjectDescriptionBuilderToggle from 'components/ProjectDescriptionBuilder/ProjectDescriptionBuilderToggle';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
@@ -48,7 +49,9 @@ const ProjectDescription = memo<
   } = props;
 
   const { mutate: updateProject, isLoading, error } = useUpdateProject();
-  const [moduleActive, setModuleActive] = useState(false);
+  const showProjectDescriptionBuilder = useFeatureFlag({
+    name: 'project_description_builder',
+  });
   const [touched, setTouched] = useState(false);
   const { width, containerRef } = useContainerWidthAndHeight();
 
@@ -58,7 +61,6 @@ const ProjectDescription = memo<
     description_multiloc: null,
   });
 
-  const setModuleToActive = () => setModuleActive(true);
   const { data: project } = useProjectById(props.params.projectId);
 
   useEffect(() => {
@@ -147,15 +149,17 @@ const ProjectDescription = memo<
             />
             <Error
               fieldName="description_preview_multiloc"
+              // TODO: Fix this the next time the file is edited.
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
               apiErrors={apiError?.description_preview_multiloc}
             />
           </SectionField>
 
           <Box mb="40px">
             <SectionField>
-              {!moduleActive && (
+              {!showProjectDescriptionBuilder && (
                 <QuillMultilocWithLocaleSwitcher
-                  id="project-description"
+                  id="project-description-module-inactive"
                   valueMultiloc={formValues.description_multiloc}
                   onChange={handleDescriptionOnChange}
                   label={formatMessage(messages.descriptionLabel)}
@@ -163,9 +167,7 @@ const ProjectDescription = memo<
                   withCTAButton
                 />
               )}
-              <Outlet
-                id="app.containers.Admin.projects.edit.description.projectDescriptionBuilder"
-                onMount={setModuleToActive}
+              <ProjectDescriptionBuilderToggle
                 valueMultiloc={formValues.description_multiloc}
                 onChange={handleDescriptionOnChange}
                 label={formatMessage(messages.descriptionLabel)}
@@ -173,6 +175,8 @@ const ProjectDescription = memo<
               />
               <Error
                 fieldName="description_multiloc"
+                // TODO: Fix this the next time the file is edited.
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 apiErrors={apiError?.description_multiloc}
               />
             </SectionField>

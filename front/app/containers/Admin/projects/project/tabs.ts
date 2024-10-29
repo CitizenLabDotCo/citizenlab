@@ -41,7 +41,8 @@ export const getTabs = (
       name: 'form',
     },
     (phase.attributes.participation_method === 'ideation' ||
-      phase.attributes.participation_method === 'voting') && {
+      phase.attributes.participation_method === 'voting' ||
+      phase.attributes.participation_method === 'proposals') && {
       label: formatMessage(messages.mapTab),
       url: 'map',
       name: 'map',
@@ -59,7 +60,8 @@ export const getTabs = (
     },
     phase.attributes.participation_method === 'survey' &&
       surveys_enabled &&
-      typeform_enabled &&
+      typeform_enabled && // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       (!surveys_enabled || phase.attributes.survey_service === 'typeform') && {
         label: formatMessage(messages.surveyResultsTab),
         url: 'survey-results',

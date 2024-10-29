@@ -57,12 +57,16 @@ const ParticipationReportPreview = ({
               title={{ [locale]: formatMessage(messages.participantsTimeline) }}
             />
             <WhiteSpace />
+            {/* TODO: Fix this the next time the file is edited. */}
+            {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
             {userFields?.data.map((field) => {
               return (
                 <Element is="div" canvas key={field.id}>
                   <DemographicsWidget
-                    startAt={startAt}
-                    endAt={endAt}
+                    // We don't filter by start and end date,
+                    // because start and end date refer to the
+                    // registration date of the user, not the
+                    // participation date of the user.
                     projectId={projectId}
                     customFieldId={field.id}
                     title={field.attributes.title_multiloc}
@@ -71,7 +75,6 @@ const ParticipationReportPreview = ({
                 </Element>
               );
             })}
-
             {hasIdeationPhase && (
               <Element is="div" canvas>
                 <ParticipationWidget

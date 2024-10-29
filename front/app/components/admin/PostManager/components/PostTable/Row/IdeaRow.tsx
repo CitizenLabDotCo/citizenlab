@@ -22,12 +22,16 @@ import Checkbox from 'components/UI/Checkbox';
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import { timeAgo } from 'utils/dateUtils';
+import eventEmitter from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
 
 import { TFilterMenu, ManagerType } from '../../..';
 import FormattedBudget from '../../../../../../utils/currency/FormattedBudget';
 import messages from '../../../messages';
 import tracks from '../../../tracks';
+import IdeaOfficialFeedbackModal, {
+  getIdeaOfficialFeedbackModalEventName,
+} from '../../IdeaOfficialFeedbackModal';
 
 import PhaseDeselectModal from './PhaseDeselectModal';
 import StyledRow from './StyledRow';
@@ -43,7 +47,7 @@ type Props = {
   statuses?: IIdeaStatusData[];
   selectedPhaseId?: string | null;
   selectedProjectId?: string | null;
-  /** A set of ids of ideas/initiatives that are currently selected */
+  /** A set of ids of ideas that are currently selected */
   selection: Set<string>;
   activeFilterMenu: TFilterMenu;
   className?: string;
@@ -239,7 +243,9 @@ const IdeaRow = ({
       name: 'published_on',
       Component: ({ idea }) => {
         if (!isNilOrError(locale)) {
-          return <>{timeAgo(Date.parse(idea.attributes.created_at), locale)}</>;
+          return (
+            <>{timeAgo(Date.parse(idea.attributes.published_at), locale)}</>
+          );
         }
         return null;
       },
@@ -284,6 +290,8 @@ const IdeaRow = ({
           location: 'Idea overview',
           method: 'Dragged and dropped idea(s) in manager',
         });
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       } else if (dropResult && dropResult.type) {
         const ideaIds = selection.has(item.id)
           ? [...selection].map((id) => id)
@@ -324,7 +332,8 @@ const IdeaRow = ({
 
           ideaIds.forEach((ideaId) => {
             if (
-              !hasPhases ||
+              !hasPhases || // TODO: Fix this the next time the file is edited.
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
               (hasPhases &&
                 window.confirm(
                   formatMessage(messages.loseIdeaPhaseInfoConfirmation)
@@ -367,6 +376,8 @@ const IdeaRow = ({
     };
 
     const Content =
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       displayColumns && !displayColumns.has(name) ? null : (
         <Td key={name} borderBottom="none !important">
           <Box
@@ -411,6 +422,8 @@ const IdeaRow = ({
       method: 'Clicked on the squares representing the statuses',
       idea: ideaId,
     });
+
+    eventEmitter.emit(getIdeaOfficialFeedbackModalEventName(ideaId));
   };
 
   return (
@@ -437,11 +450,9 @@ const IdeaRow = ({
           statuses,
           selectedStatus,
         }}
-        allowedTransitions={null}
         onUpdatePhases={onUpdateIdeaPhases}
         onUpdateTopics={onUpdateIdeaTopics}
         onUpdateStatus={onUpdateIdeaStatus}
-        postType="idea"
       />
       <PhaseDeselectModal
         open={phaseDeselectModalOpen}
@@ -449,6 +460,7 @@ const IdeaRow = ({
         onClose={closePhaseDeselectModal}
         onConfirm={handleConfirmDeselectPhase}
       />
+      <IdeaOfficialFeedbackModal ideaId={idea.id} />
     </>
   );
 };

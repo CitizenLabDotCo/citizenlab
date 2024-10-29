@@ -159,6 +159,12 @@
             "type": "boolean",
             "default": false
           },
+          "allow_sharing":  {
+            "title": "Sharing content on socials",
+            "description": "Allow users to share content via social media or email.",
+            "type": "boolean",
+            "default": true
+          },
           "areas_term": {
             "title": "Geographic Units",
             "description": "What a geographic unit should be called on this platform (e.g., neighbourhoods, districts, etc.). Input the plural form here with all lowercase letters. If left blank, this field defaults to 'areas'.",
@@ -219,6 +225,19 @@
             "title": "Additional number of manager seats",
             "description": "Number of project and folder manager seats bought additionally over the contract limit.",
             "type": ["integer", "null"]
+          },
+          "customer_portal_url": {
+            "title": "Customer portal URL",
+            "description": "Link to the customer portal in Planhat.",
+            "type": "string",
+            "format": "uri"
+          },
+          "anonymous_name_scheme":  {
+            "title": "Scheme to use when displaying anonymous names",
+            "description": "Default is User 123456.",
+            "type": "string",
+            "enum": ["user", "animal"],
+            "default": "user"
           }
         }
       },
@@ -246,6 +265,18 @@
       "user_avatars": {
         "type": "object",
         "title": "User avatars",
+        "description": "Allow users to upload a profile picture.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true },
+          "enabled": { "type": "boolean", "default": true }
+        }
+      },
+
+      "gravatar_avatars": {
+        "type": "object",
+        "title": "Automatically try to download an avatar from an external service called Gravatar when a user registers without an avatar",
         "description": "Allow users to upload a profile picture.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
@@ -414,6 +445,13 @@
             "title": "Login Mechanism Name",
             "type": "string",
             "description": "The Login Mechanism Name is used for user-facing copy. For instance, \"Sign up with {login_mechanism_name}.\"."
+          },
+          "visibility": {
+            "title": "Visibility",
+            "type": "string",
+            "enum": ["show", "link", "hide"],
+            "default": "show",
+            "description": "Should this login mechanism be shown with other options to everyone, be hidden but available at /sign-in/admin or linked from the login modal via an 'admin options' link?"
           }
         }
       },
@@ -750,6 +788,30 @@
         }
       },
 
+      "prescreening": {
+        "type": "object",
+        "title": "Screening (proposals)",
+        "description": "When active, screening can be activated for proposals phases, which requires admins/moderators to explicitly approve each input before it becomes visible to the public.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true },
+          "enabled": { "type": "boolean", "default": true }
+        }
+      },
+
+      "prescreening_ideation": {
+        "type": "object",
+        "title": "Screening (ideation)",
+        "description": "When active, screening can be activated for ideation phases, which requires admins/moderators to explicitly approve each input before it becomes visible to the public.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
       "surveys": {
         "type": "object",
         "title": "Surveys",
@@ -884,8 +946,8 @@
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
-          "allowed": { "type": "boolean", "default": true },
-          "enabled": { "type": "boolean", "default": false }
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": true }
         }
       },
 
@@ -909,7 +971,8 @@
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": false}
+          "enabled": { "type": "boolean", "default": false},
+          "extended_blocking": { "type": "boolean", "default": false}
         }
       },
 
@@ -1073,18 +1136,6 @@
               "type": "string"
             }
           }
-        }
-      },
-
-      "input_form_mapping_question": {
-        "type": "object",
-        "title": "Mapping question used in in-platform surveys",
-        "description":  "Allow mapping question(s) for use in in-platform surveys. Currently limited to one type: Select a point on a map.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false },
-          "enabled": { "type": "boolean", "default": false }
         }
       },
 
@@ -1299,6 +1350,18 @@
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
+          "allowed": { "type": "boolean", "default": true },
+          "enabled": { "type": "boolean", "default": true }
+        }
+      },
+
+      "input_cosponsorship": {
+        "type": "object",
+        "title": "Input co-sponsorship",
+        "description": "Enables the ability to invite co-sponsors to your inputs.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
           "allowed": { "type": "boolean", "default": false },
           "enabled": { "type": "boolean", "default": false }
         }
@@ -1308,6 +1371,18 @@
         "type": "object",
         "title": "Management Feed",
         "description": "Experimental feature: A minimal list of selected actions performed by admins or managers in the last 30 days. Not all actions are included.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "new_homepage_widgets": {
+        "type": "object",
+        "title": "New homepage widgets",
+        "description": "New homepage widgets (sticky homepages tandem). Feature flagged until pricing plan stuff decided.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -1338,6 +1413,8 @@
     "id_gent_rrn": ["verification"],
     "id_oostende_rrn": ["verification"],
     "id_id_card_lookup": ["verification"],
+    "id_keycloak": ["verification"],
+
     "power_bi": ["public_api_tokens"],
     "large_summaries": ["analysis"],
     "ask_a_question": ["analysis"],

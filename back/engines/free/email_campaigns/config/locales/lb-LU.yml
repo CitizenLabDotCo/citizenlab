@@ -10,6 +10,7 @@ lb:
       "comment_on_idea_you_follow": E Kommentar zu enger Iddi déi Dir verfollegt
       "comment_on_initiative_you_follow": E Kommentar zu enger Propositioun déi Dir verfollegt
       "cosponsor_of_your_initiative": E Benotzer akzeptéiert meng Invitatioun fir meng Propositioun ze sponsoren
+      "cosponsor_of_your_idea": E Benotzer akzeptéiert meng Invitatioun fir meng Propositioun ze sponsoren
       "event_registration_confirmation": Event Aschreiwung Bestätegung
       "first_idea_published": Verëffentlechung vu menger éischter Iddi
       "idea_marked_as_spam": Spambericht iwwer d'Iddien
@@ -18,6 +19,7 @@ lb:
       "initiative_marked_as_spam": Spambericht iwwer d'Virschléi
       "initiative_published": Verëffentlechung vu mengem Virschlag
       "invitation_to_cosponsor_initiative": Invitatioun fir eng Propositioun ze sponseren
+      "invitation_to_cosponsor_idea": Invitatioun fir eng Propositioun ze sponseren
       "initiative_resubmitted_for_review": Propositioun nees fir Iwwerpréiwung presentéiert
       "invite_received": Invitatioun
       "invite_reminder": Invitatiounserënnerung
@@ -82,6 +84,8 @@ lb:
       "unsubscribe_text": "ofmellen"
     follow:
       "unfollow_here": "Dir hutt dës Notifikatioun kritt wéinst engem Artikel deen Dir verfollegt. <a href=\"%{unfollow_url}\">Dir kënnt et hei ofschléissen.</a>"
+    manual:
+      preheader: 'Dir hutt Mail vun %{organizationName}'
     comment_deleted_by_admin:
       reason: 'De Grond, firwat Äre Kommentar geläscht gouf:'
       cta_view: 'Dës Iddi ukucken'
@@ -136,6 +140,12 @@ lb:
       today: Haut
       wrong_content: 'De Kommentar ass net relevant.'
       yesterday: Gëschter
+    cosponsor_of_your_idea:
+      cta_reply_to: 'Kuckt Är Propositioun'
+      event_description: 'Gratulatioun! %{cosponsorName} huet Är Invitatioun ugeholl fir Är Propositioun ze co-sponsoren.'
+      main_header: '%{cosponsorName} huet Är Invitatioun ugeholl fir Är Propositioun ze co-sponsoren'
+      subject: '%{cosponsorName} huet Är Invitatioun ugeholl fir Är Propositioun ze sponsoren'
+      preheader: '%{cosponsorName} huet Är Invitatioun ugeholl fir Är Propositioun ze co-sponsoren'
     cosponsor_of_your_initiative:
       cta_reply_to: 'Kuckt Är Propositioun'
       event_description_initiative: 'Gratulatioun! %{cosponsorName} huet Är Invitatioun ugeholl fir Är Propositioun ze co-sponsoren.'
@@ -179,6 +189,15 @@ lb:
       main_header: '%{firstName}, Dir hutt eng nei Zouweisung'
       subject: 'Dir hutt eng Zouweisung op der Plattform vun %{organizationName}'
       preheader_initiative: 'De Virschlag vum %{authorName} gouf Iech zougewisen'
+    invitation_to_cosponsor_idea:
+      cta_reply_to: 'Co-Sponsor dës Propositioun'
+      event_description: '%{authorName} huet eng nei Propositioun erstallt a géif gären datt Dir se matsponséiert.'
+      event_description_cosponsoring: 'Co-Sponsoréiere vun enger Propositioun bedeit datt <strong>Ären Numm</strong> mat den Nimm vun anere Co-Sponsoren vun der Propositioun ugewise gëtt.'
+      event_description_before_action: 'Fir d''Propositioun ze gesinn an d''Invitatioun unzehuelen, musst Dir op Äre Kont ageloggt sinn.'
+      event_description_action: 'Klickt hei ënnen fir d''Propositioun ze liesen.'
+      main_header: 'Dir sidd invitéiert fir eng Propositioun ze sponseren'
+      subject: 'Dir sidd invitéiert fir eng Propositioun ze sponseren'
+      preheader: 'Dir sidd invitéiert fir d''Propositioun vum %{authorName}ze sponseren'
     invitation_to_cosponsor_initiative:
       cta_reply_to: 'Co-Sponsor dës Propositioun'
       event_description_initiative: '%{authorName} huet eng nei Propositioun erstallt a géif gären datt Dir se matsponséiert.'
@@ -540,6 +559,7 @@ lb:
       cta_see_results: 'Gesinn Resultater an der Plattform'
     event_registration_confirmation:
       subject: "Dir sidd an! Är Umeldung fir \"%{eventTitle}\" ass bestätegt"
+      preheader: "%{firstName}, Merci fir d'Aschreiwung fir %{eventTitle}"
       header_message: "%{firstName}, merci fir Aschreiwung fir"
       event_details:
         labels:

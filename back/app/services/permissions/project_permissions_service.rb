@@ -12,7 +12,7 @@ module Permissions
       @project ||= project
     end
 
-    def denied_reason_for_action(action, reaction_mode: nil)
+    def denied_reason_for_action(action, reaction_mode: nil, delete_action: false)
       project_visible_disabled_reason || project_archived_disabled_reason || super
     end
 
@@ -91,11 +91,6 @@ module Permissions
       }
     end
 
-    private
-
-    attr_reader :project
-
-    # Project methods
     def project_visible_disabled_reason
       user_can_moderate = user && UserRoleService.new.can_moderate?(project, user)
       return if user_can_moderate
@@ -105,6 +100,10 @@ module Permissions
         PROJECT_DENIED_REASONS[:project_not_visible]
       end
     end
+
+    private
+
+    attr_reader :project
 
     def project_archived_disabled_reason
       return unless project.admin_publication.archived?

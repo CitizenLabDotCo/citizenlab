@@ -1,15 +1,13 @@
-import { IInitiativeAction } from 'api/initiative_action_descriptors/types';
-import { IPhasePermissionAction } from 'api/permissions/types';
+import {
+  IPhasePermissionAction,
+  PermittedBy,
+} from 'api/phase_permissions/types';
 
+import { DisabledReason } from 'utils/actionDescriptors/types';
 import { Keys } from 'utils/cl-react-query/types';
 
 import { GLOBAL_CONTEXT } from './constants';
 import keys from './keys';
-
-interface InitiativeContext {
-  type: 'initiative';
-  action: IInitiativeAction;
-}
 
 export type IFollowingAction = 'following';
 
@@ -32,43 +30,38 @@ interface IdeaContext {
 
 export type AuthenticationContext =
   | typeof GLOBAL_CONTEXT
-  | InitiativeContext
   | PhaseContext
   | IdeaContext
   | IFollowContext;
+
+type UserAttribute =
+  | 'first_name'
+  | 'last_name'
+  | 'email'
+  | 'password'
+  | 'confirmation';
 
 export interface AuthenticationRequirementsResponse {
   data: {
     type: 'requirements';
     attributes: {
-      requirements: AuthenticationRequirements;
-    };
-  };
-}
-
-type RequirementStatus = 'dont_ask' | 'require' | 'satisfied' | 'ask';
-
-export type OnboardingType = {
-  topics_and_areas?: RequirementStatus;
-};
-
-export interface AuthenticationRequirements {
-  permitted: boolean;
-  requirements: {
-    built_in: {
-      first_name: RequirementStatus;
-      last_name: RequirementStatus;
-      email: RequirementStatus;
-    };
-    custom_fields: Record<string, RequirementStatus>;
-    onboarding: OnboardingType;
-    special: {
-      password: RequirementStatus;
-      confirmation: RequirementStatus;
-      verification: RequirementStatus;
-      group_membership: RequirementStatus;
+      permitted: boolean;
+      disabled_reason: DisabledReason | null;
+      requirements: {
+        authentication: {
+          permitted_by: PermittedBy;
+          missing_user_attributes: UserAttribute[];
+        };
+        verification: boolean;
+        custom_fields: Record<string, 'required' | 'optional'>;
+        onboarding: boolean;
+        group_membership: boolean;
+      };
     };
   };
 }
 
 export type AuthenticationRequirementKeys = Keys<typeof keys>;
+
+export type AuthenticationRequirements =
+  AuthenticationRequirementsResponse['data']['attributes'];

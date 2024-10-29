@@ -33,6 +33,7 @@ import { isFieldEnabled } from 'utils/projectUtils';
 
 import messages from '../messages';
 import SelectSort, { Sort } from '../shared/Filters/SortFilterDropdown';
+import StatusFilterDropdown from '../shared/Filters/StatusFilterDropdown';
 import TopicFilterDropdown from '../shared/Filters/TopicFilterDropdown';
 import IdeasView from '../shared/IdeasView';
 import tracks from '../tracks';
@@ -75,6 +76,7 @@ export interface QueryParametersUpdate {
   sort?: Sort;
   projects?: string[];
   topics?: string[];
+  idea_status?: string;
 }
 
 export interface Props {
@@ -111,7 +113,6 @@ const IdeasWithoutFiltersSidebar = ({
   const selectedIdeaMarkerId = searchParams.get('idea_map_id');
   const smallerThanTablet = useBreakpoint('tablet');
   const smallerThanPhone = useBreakpoint('phone');
-
   const { data: project } = useProjectById(projectId);
 
   const selectedView =
@@ -133,14 +134,27 @@ const IdeasWithoutFiltersSidebar = ({
     return data?.pages.map((page) => page.data).flat();
   }, [data?.pages]);
   const { data: phase } = usePhase(phaseId);
-  const { data: ideaMarkers } = useIdeaMarkers({
-    projectIds: projectId ? [projectId] : null,
-    phaseId,
-    ...ideaQueryParameters,
-  });
+  const locationEnabled = !isNilOrError(ideaCustomFieldsSchemas)
+    ? isFieldEnabled(
+        'location_description',
+        ideaCustomFieldsSchemas.data.attributes,
+        locale
+      )
+    : false;
+  const loadIdeaMarkers = locationEnabled && selectedView === 'map';
+  const { data: ideaMarkers } = useIdeaMarkers(
+    {
+      projectIds: projectId ? [projectId] : null,
+      phaseId,
+      ...ideaQueryParameters,
+    },
+    loadIdeaMarkers
+  );
 
   const handleSearchOnChange = useCallback(
     (search: string) => {
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       onUpdateQuery({ search: search ?? undefined });
     },
     [onUpdateQuery]
@@ -168,13 +182,13 @@ const IdeasWithoutFiltersSidebar = ({
       : onUpdateQuery({ topics });
   };
 
-  const locationEnabled = !isNilOrError(ideaCustomFieldsSchemas)
-    ? isFieldEnabled(
-        'location_description',
-        ideaCustomFieldsSchemas.data.attributes,
-        locale
-      )
-    : false;
+  const handleStatusChange = (idea_status: string) => {
+    trackEventByName(tracks.statusesFilter, {
+      idea_status,
+    });
+
+    onUpdateQuery({ idea_status });
+  };
 
   const topicsEnabled = !isNilOrError(ideaCustomFieldsSchemas)
     ? isFieldEnabled(
@@ -183,8 +197,10 @@ const IdeasWithoutFiltersSidebar = ({
         locale
       )
     : false;
+
   const showViewButtons = !!(locationEnabled && showViewToggle);
   const showSearch = !(selectedView === 'map') && showSearchbar;
+  const participationMethod = phase?.data.attributes.participation_method;
 
   if (isLoading) return <Spinner />;
 
@@ -240,7 +256,23 @@ const IdeasWithoutFiltersSidebar = ({
                     projectId={projectId}
                     selectedTopicIds={ideaQueryParameters.topics ?? []}
                     onChange={handleTopicsOnChange}
-                    alignment={!smallerThanTablet ? 'right' : 'left'}
+                    alignment={smallerThanTablet ? 'right' : 'left'}
+                  />
+                )}
+                {(participationMethod === 'proposals' ||
+                  participationMethod === 'ideation') && (
+                  <StatusFilterDropdown
+                    selectedStatusIds={
+                      ideaQueryParameters.idea_status
+                        ? [ideaQueryParameters.idea_status]
+                        : []
+                    }
+                    onChange={(statuses) => handleStatusChange(statuses[0])}
+                    alignment={smallerThanTablet ? 'right' : 'left'}
+                    participationMethod={participationMethod}
+                    isScreeningEnabled={
+                      phase?.data.attributes.prescreening_enabled
+                    }
                   />
                 )}
               </Box>

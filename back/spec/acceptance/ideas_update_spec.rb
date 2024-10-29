@@ -94,7 +94,7 @@ resource 'Ideas' do
 
         example '[error] Update an idea when there is a posting disabled reason' do
           expect_any_instance_of(Permissions::ProjectPermissionsService)
-            .to receive(:denied_reason_for_action).with('posting_idea').and_return('i_dont_like_you')
+            .to receive(:denied_reason_for_action).with('editing_idea', anything).and_return('i_dont_like_you')
 
           do_request
 
@@ -365,7 +365,7 @@ resource 'Ideas' do
       public_input_params(self)
       with_options scope: :idea do
         parameter :custom_field_name1, 'A value for one custom field'
-        # parameter :cosponsor_ids, 'Array of user ids of the desired cosponsors' # TODO: cosponsors
+        parameter :cosponsor_ids, 'Array of user ids of the desired cosponsors'
       end
 
       let(:input) { create(:proposal) }
@@ -379,15 +379,85 @@ resource 'Ideas' do
         let(:author) { input.author }
         let(:title_multiloc) { { 'en' => 'Changed title' } }
 
-        example_request 'Update an initiative' do
+        example 'Update a proposal' do
+          create(:reaction, reactable: input, user: author, mode: 'up')
+          do_request
           assert_status 200
           json_response = json_parse(response_body)
           expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to eq title_multiloc
           expect(json_response.dig(:data, :attributes, :custom_field_name1)).to eq custom_field_name1
         end
 
-        # TODO: Do not allow changing the project or phases
-        # TODO: Update the cosponsors
+        context 'when the proposal has reactions' do
+          before { create(:reaction, reactable: input, mode: 'up') }
+
+          example '[error] Update a proposal', document: false do
+            do_request
+            assert_status 401
+          end
+        end
+
+        describe do
+          let(:input) { create(:proposal, publication_status: 'draft') }
+          let(:publication_status) { 'published' }
+
+          example 'Publish a proposal', document: false do
+            expect { do_request }.to change { input.reload.publication_status }.from('draft').to('published')
+            expect(input.published_at).to be_present
+          end
+        end
+
+        context 'when reviewing is enabled' do
+          let(:creation_phase) { create(:proposals_phase, prescreening_enabled: true) }
+          let(:input) { create(:proposal, idea_status: proposals_status, publication_status: publication_status, creation_phase: creation_phase, project: creation_phase.project) }
+
+          describe do
+            let(:proposals_status) { create(:proposals_status, code: 'prescreening') }
+            let(:publication_status) { 'submitted' }
+
+            example 'Update a proposal in prescreening', document: false do
+              do_request
+              assert_status 200
+              expect(input.reload.title_multiloc).to eq title_multiloc
+            end
+
+            example 'Submit a draft proposal', document: false do
+              input.update!(publication_status: 'draft')
+              do_request(idea: { publication_status: 'submitted' })
+
+              assert_status 200
+              expect(input.reload.publication_status).to eq 'submitted'
+              expect(input.submitted_at).to be_present
+            end
+          end
+
+          describe do
+            let(:proposals_status) { create(:proposals_status, code: 'proposed') }
+            let(:publication_status) { 'published' }
+
+            example '[error] Cannot update a proposal in proposed', document: false do
+              do_request
+              assert_status 401
+              expect(input.reload.title_multiloc).not_to eq title_multiloc
+            end
+          end
+        end
+
+        describe do
+          let(:new_cosponsor) { create(:user) }
+          let(:input) { create(:proposal, cosponsors: create_list(:user, 2)) }
+
+          example 'Update the cosponsors' do
+            create(:cosponsorship, user: new_cosponsor, idea: input)
+
+            do_request
+            assert_status 200
+            json_response = json_parse response_body
+
+            expect(json_response.dig(:data, :relationships, :cosponsors, :data).length).to eq 3
+            expect(json_response.dig(:data, :relationships, :cosponsors, :data).pluck(:id)).to include new_cosponsor.id
+          end
+        end
       end
 
       context 'when admin' do
@@ -406,21 +476,92 @@ resource 'Ideas' do
             json_response = json_parse response_body
             expect(json_response.dig(:data, :relationships, :idea_status, :data, :id)).to eq idea_status_id
           end
+
+          context 'when the proposal has reactions' do
+            before { create(:reaction, reactable: input, mode: 'up', user: input.author) }
+
+            let(:input) { create(:proposal, idea_status: create(:proposals_status, code: 'prescreening'), publication_status: 'submitted') }
+
+            example 'Publish the proposal', document: false do
+              do_request(idea: { idea_status_id: create(:proposals_status, code: 'proposed').id })
+              assert_status 200
+            end
+          end
         end
 
         describe do
           let(:input) { create(:proposal, idea_status: create(:proposals_status)) }
           let(:idea_status_id) { create(:proposals_status, code: 'threshold_reached').id }
 
-          example '[Error] Manually change the idea status to an automated status', document: false do
+          example '[error] Manually change the idea status to an automated status', document: false do
             do_request
             expect(input.reload.idea_status.code).not_to eq 'threshold_reached'
+          end
+        end
+
+        describe do
+          let(:phase) { create(:proposals_phase, project: input.project, start_at: 1.year.from_now, end_at: 2.years.from_now) }
+          let(:phase_ids) { [phase.id] }
+
+          example '[error] Move a proposal to a different phase', document: false do
+            do_request
+            assert_status 422
+            expect(json_response_body).to include_response_error(:phase_ids, 'Cannot change the phases of non-transitive inputs')
+            expect(input.reload.phase_ids).not_to include phase.id
+          end
+        end
+
+        describe do
+          let(:project) { create(:single_phase_proposals_project) }
+          let(:project_id) { project.id }
+
+          example '[error] Move a proposal to a different project', document: false do
+            do_request
+            assert_status 422
+            expect(json_response_body).to include_response_error(:project_id, 'Cannot change the project of non-transitive inputs')
+            expect(input.reload.project_id).not_to eq project_id
+          end
+        end
+
+        context 'when the proposal has reactions' do
+          before { create(:reaction, reactable: input, mode: 'up') }
+
+          example 'Update a proposal', document: false do
+            do_request
+            assert_status 200
+          end
+        end
+
+        context 'when reviewing is enabled' do
+          let(:creation_phase) { create(:proposals_phase, prescreening_enabled: true) }
+          let!(:prescreening) { create(:proposals_status, code: 'prescreening') }
+          let!(:proposed) { create(:proposals_status, code: 'proposed') }
+          let(:input) { create(:proposal, idea_status: proposed, creation_phase: creation_phase, project: creation_phase.project) }
+          let(:body_multiloc) { { 'en' => 'Changed body' } }
+
+          example 'Update a proposal in proposed', document: false do
+            do_request
+            assert_status 200
+            expect(input.reload.body_multiloc).to eq body_multiloc
+          end
+
+          describe do
+            let(:input) { create(:proposal, idea_status: prescreening, publication_status: 'submitted', creation_phase: creation_phase, project: creation_phase.project) }
+            let(:idea_status_id) { proposed.id }
+
+            example 'Move a proposal from prescreening to proposed', document: false do
+              expect { do_request }.to change { input.reload.publication_status }.from('submitted').to('published')
+              expect(input.published_at).to be_present
+              expect(input.idea_status.code).to eq 'proposed'
+            end
           end
         end
       end
     end
 
     context 'in a native survey phase' do
+      before_all { create(:idea_status_proposed) }
+
       let(:project) { create(:single_phase_native_survey_project) }
       let(:author) { create(:user) }
       let(:input) { create(:native_survey_response, project: project, author: author) }

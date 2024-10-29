@@ -14,7 +14,9 @@ import useAddReport from 'api/reports/useAddReport';
 
 import reportTitleIsTaken from 'containers/Admin/reporting/utils/reportTitleIsTaken';
 
-import DateRangePicker, { Dates } from 'components/admin/DateRangePicker';
+import DateRangePicker, {
+  Dates,
+} from 'components/admin/DatePickers/DateRangePicker';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import Modal from 'components/UI/Modal';

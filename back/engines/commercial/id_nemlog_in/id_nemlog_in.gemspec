@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
   s.licenses    = [Gem::Licenses::NONSTANDARD] # ['CitizenLab Commercial License V2']
   s.files = Dir['{app,config,db,lib}/**/*', 'Rakefile', 'README.md']
 
-  s.add_dependency 'omniauth-saml', '~> 1.10.3'
+  s.add_dependency 'omniauth-saml', '~> 2.2.0'
   s.add_dependency 'rails', '~> 7.0'
 
   s.add_development_dependency 'rspec_api_documentation'

@@ -9,27 +9,9 @@ export default defineMessages({
     id: 'app.containers.admin.project.permissions.permissionsAnyoneLabelDescription',
     defaultMessage: 'Anyone including unregistered users can participate.',
   },
-  permissionsEmailConfirmLabel: {
-    id: 'app.containers.admin.project.permissions.permissionsEmailConfirmLabel',
-    defaultMessage: 'Users with confirmed email',
-  },
-  permissionsEmailConfirmLabelDescription: {
-    id: 'app.containers.admin.project.permissions.permissionsEmailConfirmLabelDescription',
-    defaultMessage:
-      'Anyone can participate after submitting and confirming their email address.',
-  },
   permissionsAdministratorsAndManagers: {
     id: 'app.containers.admin.project.permissions.permissionsAdministratorsAndManagers',
     defaultMessage: 'Administrators and the managers of this project',
-  },
-  permissionsAdminsAndCollaborators: {
-    id: 'app.containers.admin.project.permissions.permissionsAdminsAndCollaborators',
-    defaultMessage: 'Admins and collaborators only',
-  },
-  permissionsAdminsAndCollaboratorsTooltip: {
-    id: 'app.containers.admin.project.permissions.permissionsAdminsAndCollaboratorsTooltip',
-    defaultMessage:
-      'Only platform admins, folder managers and project managers can take the action',
   },
   permissionsSelectionLabel: {
     id: 'app.containers.admin.project.permissions.permissionsSelectionLabel',

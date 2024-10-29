@@ -83,12 +83,14 @@ const BuiltInFields = ({
   const handleSubmit = async ({
     first_name,
     last_name,
+    email,
     password,
   }: BuiltInFieldsUpdate) => {
     try {
       await onSubmit(authUser.data.id, {
         first_name,
         last_name,
+        email,
         password,
       });
     } catch (e) {
@@ -101,11 +103,14 @@ const BuiltInFields = ({
     }
   };
 
-  const builtIn = authenticationRequirements.requirements.built_in;
-  const askFirstName = builtIn.first_name === 'require';
-  const askLastName = builtIn.last_name === 'require';
-  const askPassword =
-    authenticationRequirements.requirements.special.password === 'require';
+  const missingAttributes = new Set(
+    authenticationRequirements.requirements.authentication.missing_user_attributes
+  );
+
+  const askFirstName = missingAttributes.has('first_name');
+  const askLastName = missingAttributes.has('last_name');
+  const askEmail = missingAttributes.has('email');
+  const askPassword = missingAttributes.has('password');
 
   return (
     <Box id="e2e-built-in-fields-container">
@@ -133,6 +138,17 @@ const BuiltInFields = ({
                 type="text"
                 autocomplete="family-name"
                 label={formatMessage(sharedMessages.lastNameLabel)}
+              />
+            </Box>
+          )}
+          {askEmail && (
+            <Box id="e2e-email-container" mt="16px">
+              <Input
+                name="email"
+                id="email"
+                type="email"
+                autocomplete="email"
+                label={formatMessage(sharedMessages.email)}
               />
             </Box>
           )}
@@ -179,7 +195,7 @@ const BuiltInFieldsWrapper = ({
     <BuiltInFields
       {...otherProps}
       authenticationRequirements={
-        authenticationRequirementsResponse.data.attributes.requirements
+        authenticationRequirementsResponse.data.attributes
       }
     />
   );

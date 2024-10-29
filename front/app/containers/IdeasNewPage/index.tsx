@@ -78,10 +78,11 @@ const IdeasNewPage = () => {
       authUser: authUser?.data,
     });
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if ((enabled === 'maybe' && authenticationRequirements) || disabledReason) {
     const triggerAuthFlow = () => {
       triggerAuthenticationFlow({
-        flow: 'signup',
         context: {
           type: 'phase',
           action: 'posting_idea',

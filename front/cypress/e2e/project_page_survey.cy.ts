@@ -3,17 +3,17 @@ import { randomString } from '../support/commands';
 import { skipOn } from '@cypress/skip-test';
 
 describe('Existing project with survey', () => {
-  before(() => {
+  beforeEach(() => {
     cy.setAdminLoginCookie();
     cy.visit('/projects/charlie-crew-survey');
     cy.get('#e2e-project-page');
     cy.wait(1000);
   });
 
+  // TODO: Improve this test
   it('shows the correct project header', () => {
     cy.get('#e2e-project-description');
     cy.get('#e2e-project-sidebar');
-    cy.get('#e2e-project-sidebar-share-button');
   });
 
   it('shows the survey', () => {
@@ -82,10 +82,10 @@ describe('New project with survey', () => {
     cy.wait(1000);
   });
 
+  // TODO: Improve this test
   it('shows the correct project header', () => {
     cy.get('#e2e-project-description');
     cy.get('#e2e-project-sidebar');
-    cy.get('#e2e-project-sidebar-share-button');
   });
 
   it('shows event CTA button', () => {
@@ -210,7 +210,6 @@ describe('Timeline project with survey phase but not active', () => {
 
   it('does not show the survey or survey buttons', () => {
     cy.contains('Take the survey').should('not.exist');
-    cy.contains('1 survey').should('not.exist');
   });
 
   after(() => {
@@ -255,7 +254,6 @@ describe('Archived single phase project with survey', () => {
 
   it('does not show the survey or survey buttons', () => {
     cy.contains('Take the survey').should('not.exist');
-    cy.contains('1 survey').should('not.exist');
   });
 
   after(() => {

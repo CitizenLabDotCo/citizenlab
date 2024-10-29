@@ -174,7 +174,10 @@ resource 'Users' do
         end
 
         context 'when the user_avatars module is inactive' do
-          before { SettingsService.new.deactivate_feature!('user_avatars') }
+          before do
+            SettingsService.new.deactivate_feature!('gravatar_avatars')
+            SettingsService.new.deactivate_feature!('user_avatars')
+          end
 
           example_request 'Create a user without avatar' do
             assert_status 201
@@ -254,6 +257,30 @@ resource 'Users' do
           example '[error] Registering a user with case insensitive email duplicate', document: false do
             do_request
             assert_status 422
+          end
+        end
+
+        describe 'profanity in user fields' do
+          let(:first_name) { 'big fuck face' }
+          let(:last_name) { 'twat' }
+
+          example 'profanity is allowed if extended blocking is not enabled', document: false do
+            config = AppConfiguration.instance
+            config.settings['blocking_profanity'] = { allowed: true, enabled: true, extended_blocking: false }
+            config.save!
+            do_request
+            assert_status 201
+            expect(User.first.first_name).to eq first_name
+            expect(User.first.last_name).to eq last_name
+          end
+
+          example '[error] profanity is NOT allowed if extended blocking is enabled', document: false do
+            config = AppConfiguration.instance
+            config.settings['blocking_profanity'] = { allowed: true, enabled: true, extended_blocking: true }
+            config.save!
+            do_request
+            assert_status 422
+            expect(User.count).to eq 0
           end
         end
       end
@@ -826,7 +853,7 @@ resource 'Users' do
             ])
 
             project.phases.first.permissions.find_by(action: 'posting_idea')
-              .update!(permitted_by: 'groups', groups: [old_timers])
+              .update!(permitted_by: 'users', groups: [old_timers])
           end
 
           context 'on a resident' do
@@ -882,6 +909,26 @@ resource 'Users' do
               example 'Email cannot be changed', document: false do
                 do_request(user: { email: 'changed@email.com' })
                 expect(resident.reload.email).to eq 'original@email.com'
+              end
+            end
+
+            describe 'profanity in user fields' do
+              let(:bio_multiloc) { { en: 'I am a big fucking twat' } }
+
+              example 'profanity is allowed if extended blocking is not enabled', document: false do
+                config = AppConfiguration.instance
+                config.settings['blocking_profanity'] = { allowed: true, enabled: true, extended_blocking: false }
+                config.save!
+                do_request
+                assert_status 200
+              end
+
+              example '[error] profanity is NOT allowed if extended blocking is enabled', document: false do
+                config = AppConfiguration.instance
+                config.settings['blocking_profanity'] = { allowed: true, enabled: true, extended_blocking: true }
+                config.save!
+                do_request
+                assert_status 422
               end
             end
           end
@@ -1192,7 +1239,10 @@ resource 'Users' do
         end
 
         describe 'when user_avatars is disabled' do
-          before { SettingsService.new.deactivate_feature!('user_avatars') }
+          before do
+            SettingsService.new.deactivate_feature!('gravatar_avatars')
+            SettingsService.new.deactivate_feature!('user_avatars')
+          end
 
           example 'The user avatar can be removed' do
             @user.update!(avatar: Rails.root.join('spec/fixtures/male_avatar_1.jpg').open)
@@ -1354,7 +1404,7 @@ resource 'Users' do
         end
       end
 
-      # TODO: move-old-proposals-test
+      # TODO: cleanup-after-proposals-migration
       get 'web_api/v1/users/:id/initiatives_count' do
         let(:id) { @user.id }
 
@@ -1398,7 +1448,7 @@ resource 'Users' do
           expect(json_response.dig(:data, :attributes, :count)).to eq 2
         end
 
-        # TODO: move-old-proposals-test
+        # TODO: cleanup-after-proposals-migration
         example 'Get the number of comments on initiatives posted by one user' do
           create(:comment, author: @user, post: create(:initiative))
           create(:comment, author: @user, post: create(:initiative))

@@ -15,16 +15,20 @@ import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
 import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 
+import CallToAction from '../CraftComponents/CallToAction';
 import Events from '../CraftComponents/Events';
 import HomepageBanner from '../CraftComponents/HomepageBanner';
 import Projects from '../CraftComponents/Projects';
-import Proposals from '../CraftComponents/Proposals';
+import Spotlight from '../CraftComponents/Spotlight';
 
 type EditorProps = {
   children?: React.ReactNode;
   isPreview: boolean;
   onNodesChange?: (nodes: SerializedNodes) => void;
 };
+
+// TODO: Remove after proposals migration is done
+const Proposals = () => <></>;
 
 const Editor: React.FC<EditorProps> = ({
   onNodesChange,
@@ -47,8 +51,10 @@ const Editor: React.FC<EditorProps> = ({
         ButtonMultiloc,
         HomepageBanner,
         Projects,
-        Proposals,
         Events,
+        Highlight: CallToAction,
+        Spotlight,
+        Proposals,
       }}
       isPreview={isPreview}
       onNodesChange={onNodesChange}

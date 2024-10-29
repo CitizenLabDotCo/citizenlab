@@ -145,6 +145,8 @@ class User < ApplicationRecord
   has_many :attended_events, through: :event_attendances, source: :event
   has_many :follows, -> { order(:followable_id) }, class_name: 'Follower', dependent: :destroy
   has_many :cosponsors_initiatives, dependent: :destroy
+  has_many :cosponsorships, dependent: :destroy
+  has_many :cosponsored_ideas, through: :cosponsorships, source: :idea
 
   before_validation :sanitize_bio_multiloc, if: :bio_multiloc
   before_validation :complete_registration
@@ -212,7 +214,7 @@ class User < ApplicationRecord
     token_lifetime = AppConfiguration.instance.settings('core', 'authentication_token_lifetime_in_days').days
     {
       sub: id,
-      roles: compacted_roles,
+      roles: compress_roles,
       exp: token_lifetime.from_now.to_i,
       cluster: CL2_CLUSTER,
       tenant: Tenant.current.id
@@ -234,22 +236,12 @@ class User < ApplicationRecord
   def full_name
     return [first_name, last_name].compact.join(' ') unless no_name?
 
-    [anon_first_name, anon_last_name].compact.join(' ')
+    anon = AnonymousNameService.new(self)
+    [anon.first_name, anon.last_name].compact.join(' ')
   end
 
   def no_name?
-    !self[:last_name] && !self[:first_name] && !invite_pending?
-  end
-
-  # Anonymous names to use if no first name and last name
-  def anon_first_name
-    I18n.t 'user.anon_first_name'
-  end
-
-  def anon_last_name
-    # Generate a numeric last name in the format of '123456'
-    name_key = email || unique_code || id
-    (name_key.sum**2).to_s[0, 6]
+    self[:last_name].blank? && self[:first_name].blank? && !invite_pending?
   end
 
   def authenticate(unencrypted_password)
@@ -257,6 +249,8 @@ class User < ApplicationRecord
       # Allow authentication without password - but only if confirmation is required on the user
       unencrypted_password.empty? && confirmation_required? ? self : false
     else
+      return false unless AppConfiguration.instance.feature_activated?('password_login') || super_admin?
+
       BCrypt::Password.new(password_digest).is_password?(unencrypted_password) && self
     end
   end

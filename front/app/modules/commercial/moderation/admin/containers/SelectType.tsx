@@ -33,10 +33,6 @@ const SelectType = memo(({ onChange, selectedTypes }: Props) => {
           text: <FormattedMessage {...messages.post} />,
           value: 'Idea',
         },
-        {
-          text: <FormattedMessage {...messages.initiative} />,
-          value: 'Initiative',
-        },
       ]}
       onChange={handleOnChange}
       multipleSelectionAllowed={true}

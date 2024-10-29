@@ -33,19 +33,17 @@ const Edit = ({ variant }: { variant: 'ideation' | 'proposals' }) => {
   });
   const { statusId } = useParams() as { statusId: string };
   const { data: ideaStatus } = useIdeaStatus(statusId);
-  const { mutate: updateIdeaStatus } = useUpdateIdeaStatus();
+  const { mutateAsync: updateIdeaStatus } = useUpdateIdeaStatus();
   const tenantLocales = useAppConfigurationLocales();
 
   const handleSubmit = async (values: FormValues) => {
     const { ...params } = values;
 
-    updateIdeaStatus(
-      {
-        id: statusId,
-        requestBody: { ...params, participation_method: variant },
-      },
-      { onSuccess: goBack }
-    );
+    await updateIdeaStatus({
+      id: statusId,
+      requestBody: { ...params, participation_method: variant },
+    });
+    goBack();
   };
 
   const goBack = () => {
@@ -53,7 +51,7 @@ const Edit = ({ variant }: { variant: 'ideation' | 'proposals' }) => {
   };
 
   if (ideaStatuses && ideaStatus && tenantLocales) {
-    const { color, title_multiloc, description_multiloc, code, can_reorder } =
+    const { color, title_multiloc, description_multiloc, code, locked } =
       ideaStatus.data.attributes;
     return (
       <>
@@ -70,7 +68,7 @@ const Edit = ({ variant }: { variant: 'ideation' | 'proposals' }) => {
               code,
             }}
             onSubmit={handleSubmit}
-            showCategorySelector={can_reorder}
+            showCategorySelector={!locked}
             variant={variant}
           />
         </Section>

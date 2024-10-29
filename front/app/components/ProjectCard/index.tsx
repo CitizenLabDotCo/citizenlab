@@ -9,18 +9,17 @@ import {
   defaultCardStyle,
   defaultCardHoverStyle,
   isRtl,
+  Text,
 } from '@citizenlab/cl2-component-library';
 import { isEmpty, round } from 'lodash-es';
 import moment from 'moment';
 import { rgba, darken } from 'polished';
 import { useInView } from 'react-intersection-observer';
 import { RouteType } from 'routes';
-import styled, { useTheme } from 'styled-components';
+import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
 import usePhase from 'api/phases/usePhase';
-import usePhases from 'api/phases/usePhases';
-import { getInputTerm } from 'api/phases/utils';
 import useProjectImage from 'api/project_images/useProjectImage';
 import { CARD_IMAGE_ASPECT_RATIO } from 'api/project_images/useProjectImages';
 import useProjectById from 'api/projects/useProjectById';
@@ -30,6 +29,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import AvatarBubbles from 'components/AvatarBubbles';
 import FollowUnfollow from 'components/FollowUnfollow';
+import PhaseTimeLeft from 'components/PhaseTimeLeft';
 import { TLayout } from 'components/ProjectAndFolderCards';
 import T from 'components/T';
 import Image from 'components/UI/Image';
@@ -225,13 +225,6 @@ const ContentHeader = styled.div`
   }
 `;
 
-const TimeRemaining = styled.div`
-  color: ${({ theme }) => theme.colors.tenantText};
-  font-size: ${fontSizes.s}px;
-  font-weight: 400;
-  margin-bottom: 7px;
-`;
-
 const ProgressBar = styled.div`
   width: 100%;
   max-width: 130px;
@@ -381,29 +374,20 @@ const ProjectCard = memo<InputProps>(
 
     // We use this hook instead of useProjectImages,
     // because that one doesn't work with our caching system.
-    const { data: projectImage } = useProjectImage({
+    const imageId = project?.data.relationships.project_images?.data[0]?.id;
+    const { data: _projectImage } = useProjectImage({
       projectId,
-      imageId: project?.data.relationships.project_images?.data[0]?.id,
+      imageId,
     });
 
+    const projectImage = imageId ? _projectImage : undefined;
+
     const currentPhaseId =
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       project?.data?.relationships?.current_phase?.data?.id ?? null;
     const { data: phase } = usePhase(currentPhaseId);
     const localize = useLocalize();
-
-    // We only need the phases for the input term, and only
-    // in case there is no current phase in a timeline project.
-    // This is quite an edge case.
-    // With this check, we only fetch the phases if the project has loaded already
-    // AND there is no current phase, instead of always fetching all the phases
-    // for every project for which we're showing a card.
-    const fetchPhases = project && !currentPhaseId;
-
-    const { data: phases } = usePhases(
-      fetchPhases ? project.data.id : undefined
-    );
-
-    const theme = useTheme();
 
     const [visible, setVisible] = useState(false);
 
@@ -421,6 +405,8 @@ const ProjectCard = memo<InputProps>(
 
     if (project) {
       const postingPermission = getIdeaPostingRules({
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         project: project?.data,
         phase: phase?.data,
         authUser: authUser?.data,
@@ -436,7 +422,9 @@ const ProjectCard = memo<InputProps>(
 
       const imageUrl = !projectImage
         ? null
-        : projectImage.data.attributes.versions?.large;
+        : // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+          projectImage.data.attributes.versions?.large;
 
       const projectUrl: RouteType = getProjectUrl(project.data);
       const isFinished = project.data.attributes.timeline_active === 'past';
@@ -454,11 +442,9 @@ const ProjectCard = memo<InputProps>(
           : [];
       const startAt = phase?.data.attributes.start_at;
       const endAt = phase?.data.attributes.end_at;
-      const timeRemaining = endAt
-        ? moment.duration(moment(endAt).endOf('day').diff(moment())).humanize()
-        : null;
+
       let countdown: JSX.Element | null = null;
-      const inputTerm = getInputTerm(phases?.data, phase?.data);
+      const inputTerm = phase?.data.attributes.input_term ?? 'idea';
 
       if (isArchived) {
         countdown = (
@@ -472,7 +458,7 @@ const ProjectCard = memo<InputProps>(
             <FormattedMessage {...messages.finished} />
           </ContentHeaderLabel>
         );
-      } else if (timeRemaining) {
+      } else if (endAt) {
         const totalDays = moment
           .duration(moment(endAt).diff(moment(startAt)))
           .asDays();
@@ -484,12 +470,9 @@ const ProjectCard = memo<InputProps>(
           round((pastDays / totalDays) * 100, 1);
         countdown = (
           <Box mt="4px" className="e2e-project-card-time-remaining">
-            <TimeRemaining className={size}>
-              <FormattedMessage
-                {...messages.remaining}
-                values={{ timeRemaining }}
-              />
-            </TimeRemaining>
+            <Text color="textPrimary" fontSize="s" m="0">
+              <PhaseTimeLeft currentPhaseEndsAt={endAt} />
+            </Text>
             <ProgressBar ref={progressBarRef} aria-hidden>
               <ProgressBarOverlay
                 progress={progress}
@@ -502,71 +485,67 @@ const ProjectCard = memo<InputProps>(
 
       const getCTAMessage = () => {
         let ctaMessage: JSX.Element | null = null;
-
-        switch (participationMethod) {
-          case 'voting':
-            if (votingMethod === 'budgeting') {
-              ctaMessage = (
-                <FormattedMessage {...messages.allocateYourBudget} />
-              );
-            } else {
-              ctaMessage = <FormattedMessage {...messages.vote} />;
-            }
-            break;
-          case 'information':
-            ctaMessage = <FormattedMessage {...messages.learnMore} />;
-            break;
-          case 'survey':
-            ctaMessage = <FormattedMessage {...messages.takeTheSurvey} />;
-            break;
-          case 'native_survey':
+        if (participationMethod === 'voting') {
+          if (votingMethod === 'budgeting') {
+            ctaMessage = <FormattedMessage {...messages.allocateYourBudget} />;
+          } else {
+            ctaMessage = <FormattedMessage {...messages.vote} />;
+          }
+        } else if (participationMethod === 'information') {
+          ctaMessage = <FormattedMessage {...messages.learnMore} />;
+        } else if (participationMethod === 'survey') {
+          ctaMessage = <FormattedMessage {...messages.takeTheSurvey} />;
+        } else if (participationMethod === 'native_survey') {
+          ctaMessage = (
+            <>
+              {localize(phase?.data.attributes.native_survey_button_multiloc)}
+            </>
+          );
+        } else if (participationMethod === 'document_annotation') {
+          ctaMessage = <FormattedMessage {...messages.reviewDocument} />;
+        } else if (participationMethod === 'poll') {
+          ctaMessage = <FormattedMessage {...messages.takeThePoll} />;
+        } else if (
+          participationMethod === 'ideation' ||
+          participationMethod === 'proposals'
+        ) {
+          if (canPost) {
             ctaMessage = (
-              <>
-                {localize(phase?.data.attributes.native_survey_button_multiloc)}
-              </>
+              <FormattedMessage
+                {...getInputTermMessage(inputTerm, {
+                  idea: messages.submitYourIdea,
+                  option: messages.addYourOption,
+                  project: messages.submitYourProject,
+                  question: messages.joinDiscussion,
+                  issue: messages.submitAnIssue,
+                  contribution: messages.contributeYourInput,
+                  initiative: messages.submitYourInitiative,
+                  proposal: messages.submitYourProposal,
+                  petition: messages.submitYourPetition,
+                })}
+              />
             );
-            break;
-          case 'document_annotation':
-            ctaMessage = <FormattedMessage {...messages.reviewDocument} />;
-            break;
-          case 'poll':
-            ctaMessage = <FormattedMessage {...messages.takeThePoll} />;
-            break;
-          case 'ideation':
-            if (canPost) {
-              ctaMessage = (
-                <FormattedMessage
-                  {...getInputTermMessage(inputTerm, {
-                    idea: messages.submitYourIdea,
-                    option: messages.addYourOption,
-                    project: messages.submitYourProject,
-                    question: messages.joinDiscussion,
-                    issue: messages.submitAnIssue,
-                    contribution: messages.contributeYourInput,
-                  })}
-                />
-              );
-            } else if (canReact) {
-              ctaMessage = <FormattedMessage {...messages.reaction} />;
-            } else if (canComment) {
-              ctaMessage = <FormattedMessage {...messages.comment} />;
-            } else {
-              ctaMessage = (
-                <FormattedMessage
-                  {...getInputTermMessage(inputTerm, {
-                    idea: messages.viewTheIdeas,
-                    option: messages.viewTheOptions,
-                    project: messages.viewTheProjects,
-                    question: messages.viewTheQuestions,
-                    issue: messages.viewTheIssues,
-                    contribution: messages.viewTheContributions,
-                  })}
-                />
-              );
-            }
-            break;
-          default:
-            ctaMessage = null;
+          } else if (canReact) {
+            ctaMessage = <FormattedMessage {...messages.reaction} />;
+          } else if (canComment) {
+            ctaMessage = <FormattedMessage {...messages.comment} />;
+          } else {
+            ctaMessage = (
+              <FormattedMessage
+                {...getInputTermMessage(inputTerm, {
+                  idea: messages.viewTheIdeas,
+                  option: messages.viewTheOptions,
+                  project: messages.viewTheProjects,
+                  question: messages.viewTheQuestions,
+                  issue: messages.viewTheIssues,
+                  contribution: messages.viewTheContributions,
+                  proposal: messages.viewTheProposals,
+                  initiative: messages.viewTheInitiatives,
+                  petition: messages.viewThePetitions,
+                })}
+              />
+            );
+          }
         }
 
         return ctaMessage;
@@ -715,15 +694,12 @@ const ProjectCard = memo<InputProps>(
                   className={`${size} ${!showFooter ? 'hidden' : ''}`}
                 >
                   <Box h="100%" display="flex" alignItems="center">
-                    {hasAvatars && (
-                      <AvatarBubbles
-                        size={32}
-                        limit={3}
-                        userCountBgColor={theme.colors.tenantPrimary}
-                        avatarIds={avatarIds}
-                        userCount={project.data.attributes.participants_count}
-                      />
-                    )}
+                    <AvatarBubbles
+                      size={32}
+                      limit={3}
+                      avatarIds={avatarIds}
+                      userCount={project.data.attributes.participants_count}
+                    />
                   </Box>
                 </ContentFooter>
               </Box>
@@ -735,6 +711,8 @@ const ProjectCard = memo<InputProps>(
                   followableId={project.data.id}
                   followersCount={project.data.attributes.followers_count}
                   followerId={
+                    // TODO: Fix this the next time the file is edited.
+                    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                     project.data.relationships.user_follower?.data?.id
                   }
                   w="100%"

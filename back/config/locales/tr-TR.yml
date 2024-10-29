@@ -36,6 +36,8 @@ tr:
   symbols:
     outside: başka bir yerde
   idea_statuses:
+    prescreening: ön eleme
+    prescreening_description: Bu girdi şu anda proje yöneticisi tarafından incelenmektedir ve henüz kamuya açık değildir.
     proposed: önerilen
     proposed_description: Bu fikir kent yönetimine önerildi
     viewed: görüntülendi
@@ -168,6 +170,9 @@ tr:
       topic_ids:
         title: Etiketler
         description:
+      consponsor_ids:
+        title: Eş sponsorlar
+        description: Aşağıdaki alan aracılığıyla eş sponsorları davet edin. Davet edilen eş sponsor(lar) bir e-posta alacaktır.
       location:
         title: Konum
         description:
@@ -190,8 +195,8 @@ tr:
       section3:
         title: Detaylar
         description:
-      other_text_field:
-        title: Eğer '{other_option}' adresini seçtiyseniz, ne düşünüyorsunuz?
+      other_input_field:
+        title: Cevabınızı yazın
   custom_forms:
     categories:
       main_content:
@@ -207,12 +212,12 @@ tr:
           title: Sorununuz nedir?
         option:
           title: Seçeneğiniz nedir ?
-      details:
-        title: Ayrıntılar
-      attachements:
-        title: Görseller ve Ekler
-      extra:
-        title: Diğer bilgiler
+        proposal:
+          title: Teklifiniz nedir?
+        initiative:
+          title: Girişiminiz nedir?
+        petition:
+          title: Dilekçeniz nedir?
   custom_field_options:
     gender:
       male: Erkek
@@ -237,6 +242,7 @@ tr:
       <ul><li>Önerinizi daha detaylı açıklamak için acele etmeyin. Gerekirse, önce bir taslak yazın ve kopyalayıp buraya yapıştırın.</li><li>Önerinizin ne olduğunu net bir şekilde açıklayan anlamlı bir başlık seçin.</li><li>Öne çıkmasını sağlamak için önerinize uygun bir görsel ekleyin.</li><li>Videolar, ilham verici örnekler, teknik bilgiler veya planlar gibi ilgili ekleri ekleyin.</li><li>Başkalarından destek toplamak için fikrinizi sosyal medyada ve diğer kanallarda paylaşın.</li></ul>
   reset_password_mailer:
     send_reset_password:
+      preheader: '%{organizationName}için şifrenizi sıfırlayın'
       cta_reset_password: 'Parolanızı sıfırlayın'
       message_you_reset_your_password: '%{organizationName} katılım platformu için parola sıfırlama talebinde bulundunuz. Yeni ve güvenli bir parola seçmek için aşağıdaki düğmeye tıklayın. Bu bağlantı 1 saat için geçerlidir.'
       subject: '%{organizationName}: Parolanızı sıfırlayın'
@@ -283,8 +289,8 @@ tr:
       option1: 'Seçenek 1'
       option2: 'Seçenek 2'
     form_end_page:
-      title: 'Katıldığınız için teşekkürler'
-      description: "Lütfen cevaplarınızı aşağıdaki 'Gönder' butonuna basarak gönderiniz."
+      title_text: 'Neredeyse bitti'
+      description_text_2: "Cevaplarınızı göndermek üzeresiniz. 'Gönder'e tıklayarak bize cevaplarınızı analiz etme izni vermiş olursunuz.<br/>Gönderdikten sonra artık geri dönüp cevaplarınızdan herhangi birini değiştiremezsiniz."
     pdf_export:
       personal_data: 'Kişisel veriler'
       personal_data_explanation_public: "Girdinizi %{organizationName}'un çevrimiçi katılım platformuna göndereceğiz. Adınızın bu girdinin yazarı olarak görüntülenmesini ve girdinizle ilgili güncellemeleri e-posta ile almak istiyorsanız, lütfen bu sayfadaki aşağıdaki alanları doldurun ve sizin için bir hesap oluşturalım. E-postanız herkese açık olmayacak ve sadece %{organizationName}tarafından kullanılacaktır. Anonim kalmak istiyorsanız veya kişisel verilerinizi bu şekilde kullanmamızı kabul etmiyorsanız, bu alanları boş bırakabilirsiniz."
@@ -314,6 +320,7 @@ tr:
   confirmations_mailer:
     send_confirmation_code:
       subject: "%{organizationName} katılım platformu için e-posta adresinizi doğrulayın"
+      preheader: '%{organizationName}için e-posta adresinizi onaylayın'
       header: "Onay Kodunuz"
       header_message: "Merhaba %{firstName}!"
       confirm_email_address: "E-posta adresinizi onaylayın"
@@ -328,6 +335,7 @@ tr:
   user_blocked_mailer:
     send_user_blocked_email:
       subject: 'Hesabınız geçici olarak devre dışı bırakıldı'
+      preheader: '%{organizationName} katılım platformundaki hesabınız geçici olarak devre dışı bırakıldı'
       title_user_blocked: 'Hesabınız geçici olarak devre dışı bırakıldı'
       paragraph_1_without_reason: "%{organizationName} katılım platformundaki hesabınız, topluluk kurallarının ihlali nedeniyle geçici olarak devre dışı bırakılmıştır."
       paragraph_1_with_reason: "%{organizationName} katılım platformundaki hesabınız aşağıdaki nedenden dolayı geçici olarak devre dışı bırakılmıştır:"
@@ -335,6 +343,8 @@ tr:
       you_can_sign_in_again_from: "%{date}adresinden tekrar oturum açabilirsiniz."
   user:
     anon_first_name: "Kullanıcı"
+    anon_scheme:
+      animals: 'timsah,timsah,alpaka,karınca,antilop,maymun,armadillo,babun,porsuk,yarasa,ayı,kunduz,arı,böcek,bufalo,kelebek,deve,manda,karibu,kedi,sığır,çita,şempanze,çinçilla,ağustos böceği,istiridye,hamamböceği,morina,çakal,yengeç,kriket,karga,kuzgun,geyik,dinozor,köpek,yunus,domuzbalığı,ördek,kartal,yılanbalığı,fil,geyik,gelincik,balık,sinek,tilki,kurbağa,kurbağa,gerbil,zürafa,sivrisinek,gnu,antilop,keçi,Japon balığı,kaz,goril,çekirge,kobay,hamster,tavşan,kirpi,ringa balığı,su aygırı,eşekarısı,at,tazı,sırtlan,impala,çakal,denizanası,kanguru,wallaby,koala,leopar,aslan,kertenkele,lama,çekirge,bit,macaw,mallard,mammoth,manatee,sansar,mink,minnow,köstebek,geyik,sivrisinek,fare,sıçan,katır,muskrat,su samuru,öküz,istiridye,panda,domuz,platypus,kirpi,çayır köpeği,pug,tavşan,rakun,ren geyiği,gergedan,somon,sardalya,akrep,fok,deniz aslanı,serval,köpekbalığı,koyun,kokarca,salyangoz,yılan,örümcek,sincap,kuğu,termit,kaplan,alabalık,kaplumbağa,mors,eşekarısı,balina,kurt,vombat,ağaçkakan,solucan,yak,sarı ceket,zebra'
   time:
     am: am
     formats:
@@ -343,3 +353,5 @@ tr:
   voting_method:
     default_voting_term_singular: "oylama"
     default_voting_term_plural: "oylar"
+  ics_calendar_event:
+    event_details: "Etkinlik detayları"

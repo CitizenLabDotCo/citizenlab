@@ -1,15 +1,14 @@
-import React from 'react';
+import React, { lazy } from 'react';
 
 import { Navigate } from 'react-router-dom';
 
 import PageLoading from 'components/UI/PageLoading';
 
-import Following from './Following';
-import Submissions from './Submissions';
-import UserComments from './UserComments';
-import UserEvents from './UserEvents';
-
-import UsersShowPage from './';
+const UsersShowPage = lazy(() => import('./'));
+const Following = lazy(() => import('./Following'));
+const Submissions = lazy(() => import('./Submissions'));
+const UserComments = lazy(() => import('./UserComments'));
+const UserEvents = lazy(() => import('./UserEvents'));
 
 enum userShowPageRoutes {
   profile = 'profile',
@@ -44,33 +43,41 @@ export default () => ({
     {
       path: userShowPageRoutes.submissions,
       element: (
-        <div role="tabpanel" aria-labelledby="tab-submissions" tabIndex={0}>
-          <Submissions />
-        </div>
+        <PageLoading>
+          <div role="tabpanel" aria-labelledby="tab-submissions" tabIndex={0}>
+            <Submissions />
+          </div>
+        </PageLoading>
       ),
     },
     {
       path: userShowPageRoutes.comments,
       element: (
-        <div role="tabpanel" aria-labelledby="tab-comments" tabIndex={0}>
-          <UserComments />
-        </div>
+        <PageLoading>
+          <div role="tabpanel" aria-labelledby="tab-comments" tabIndex={0}>
+            <UserComments />
+          </div>
+        </PageLoading>
       ),
     },
     {
       path: userShowPageRoutes.following,
       element: (
-        <div role="tabpanel" aria-labelledby="tab-following" tabIndex={0}>
-          <Following />
-        </div>
+        <PageLoading>
+          <div role="tabpanel" aria-labelledby="tab-following" tabIndex={0}>
+            <Following />
+          </div>
+        </PageLoading>
       ),
     },
     {
       path: userShowPageRoutes.events,
       element: (
-        <div role="tabpanel" aria-labelledby="tab-events" tabIndex={0}>
-          <UserEvents />
-        </div>
+        <PageLoading>
+          <div role="tabpanel" aria-labelledby="tab-events" tabIndex={0}>
+            <UserEvents />
+          </div>
+        </PageLoading>
       ),
     },
   ],

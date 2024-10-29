@@ -35,7 +35,7 @@ module BulkImportIdeas
     belongs_to :project, optional: true
 
     belongs_to :parent, class_name: 'BulkImportIdeas::IdeaImportFile', optional: true
-    has_many :children, class_name: 'BulkImportIdeas::IdeaImportFile', foreign_key: 'parent_id'
+    has_many :children, class_name: 'BulkImportIdeas::IdeaImportFile', foreign_key: 'parent_id', dependent: :destroy
 
     validates :name, presence: true
     validates :file, presence: true, unless: proc { Current.loading_tenant_template }

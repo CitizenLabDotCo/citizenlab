@@ -12,6 +12,7 @@ import WebMap from '@arcgis/core/WebMap';
 import { Box, media, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { debounce } from 'lodash-es';
 import styled from 'styled-components';
+import '@arcgis/core/assets/esri/css/main.css';
 
 import { AppConfigurationMapSettings } from 'api/app_configuration/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -192,7 +193,11 @@ const EsriMap = ({
         }
 
         // Remove any internal layers that were passed in as props to the Web Map
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         map.layers?.forEach((layer) => {
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           if (layer.id?.includes('_internal')) {
             map.remove(layer);
           }
@@ -207,6 +212,8 @@ const EsriMap = ({
         });
 
         // If the WebMap has reference layers, save them in state
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         setReferenceLayers(map.basemap?.referenceLayers || null);
       });
     }

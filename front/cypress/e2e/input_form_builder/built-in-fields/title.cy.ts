@@ -43,16 +43,16 @@ describe('Input form builder', () => {
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/form`);
     cy.get('[data-cy="e2e-edit-input-form"]').click();
 
-    cy.get('[data-cy="e2e-field-row"]').within(() => {
+    cy.get('[data-cy="e2e-form-fields"]').within(() => {
       cy.contains('Title').should('exist');
       cy.contains('Title').click();
     });
 
-    cy.get('[data-cy="e2e-field-row"]')
-      .eq(0)
-      .within(() => {
+    cy.get('[data-cy="e2e-form-fields"]').within(() => {
+      cy.contains('Title').within(() => {
         cy.get('[data-cy="e2e-more-field-actions"]').should('not.exist');
       });
+    });
 
     cy.get('#e2e-title-multiloc').should('not.exist');
   });

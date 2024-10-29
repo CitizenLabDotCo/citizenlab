@@ -18,7 +18,8 @@ module UserConfirmation
 
   # true if the user has not yet confirmed their email address and the platform requires it
   def confirmation_required?
-    user_confirmation_enabled? && confirmation_required
+    user_confirmation_enabled? && confirmation_required &&
+      !(sso? && verified && email.nil?) # for verified SSO users without email, confirmation is not yet required
   end
 
   def confirm

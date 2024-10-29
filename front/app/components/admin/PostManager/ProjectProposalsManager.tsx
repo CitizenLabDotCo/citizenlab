@@ -17,7 +17,6 @@ import ActionBar from './components/ActionBar';
 import FilterSidebar from './components/FilterSidebar';
 import IdeasCount from './components/IdeasCount';
 import PostTable from './components/PostTable';
-import LazyStatusChangeModal from './components/StatusChangeModal/LazyStatusChangeModal';
 import IdeaFeedbackToggle from './components/TopLevelFilters/IdeaFeedbackToggle';
 
 import {
@@ -125,11 +124,11 @@ const ProjectProposalsManager = ({
     setQueryParameters({ ...queryParameters, 'page[number]': 1, topics });
   };
 
-  const onChangeStatus = (_initiativeStatus: string) => {
+  const onChangeStatus = (ideaStatus: string) => {
     setQueryParameters({
       ...queryParameters,
       'page[number]': 1,
-      // initiative_status: initiativeStatus, // Fix later when statuses are updated
+      idea_status: ideaStatus,
     });
   };
 
@@ -189,7 +188,6 @@ const ProjectProposalsManager = ({
       <ThreeColumns>
         <LeftColumn>
           <ActionBar
-            type={'ProjectProposals'}
             selection={selection}
             resetSelection={resetSelection}
             handleClickEdit={openPreviewEdit}
@@ -228,7 +226,7 @@ const ProjectProposalsManager = ({
             sortDirection={
               queryParameters.sort
                 ? getSortDirection(queryParameters.sort)
-                : 'ascending'
+                : 'descending'
             }
             onChangeSort={onChangeSorting}
             posts={proposals.data}
@@ -253,9 +251,6 @@ const ProjectProposalsManager = ({
           onClose={closePreview}
           onSwitchPreviewMode={switchPreviewMode}
         />
-      </Suspense>
-      <Suspense fallback={null}>
-        <LazyStatusChangeModal />
       </Suspense>
     </DndProvider>
   );

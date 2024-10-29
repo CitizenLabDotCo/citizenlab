@@ -200,3 +200,33 @@
     :why:
     :versions: []
     :when: 2024-07-31 07:25:20.671116169 Z
+- - :approve
+  - '@esri/arcgis-rest-request'
+  - :who:
+    :why:
+    :versions: []
+    :when: 2024-09-17 07:25:20.671116169 Z
+- - :approve
+  - clipboard-polyfill
+  - :who:
+    :why:
+    :versions: []
+    :when: 2024-09-17 07:25:20.671116169 Z
+- - :approve
+  - focus-visible
+  - :who:
+    :why:
+    :versions: []
+    :when: 2024-09-17 07:25:20.671116169 Z
+- - :approve
+  - formatcoords
+  - :who:
+    :why:
+    :versions: []
+    :when: 2024-09-17 07:25:20.671116169 Z
+- - :approve
+  - geojson-flatten
+  - :who:
+    :why:
+    :versions: []
+    :when: 2024-09-17 07:25:20.671116169 Z

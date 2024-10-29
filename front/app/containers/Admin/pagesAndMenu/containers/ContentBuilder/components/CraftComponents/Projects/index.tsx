@@ -36,7 +36,6 @@ const Projects = ({
       <Box maxWidth="1200px" margin="0 auto">
         <ProjectSection id="e2e-landing-page-project-section">
           <ProjectAndFolderCards
-            publicationStatusFilter={['published', 'archived']}
             showTitle={true}
             layout="dynamic"
             currentlyWorkingOnText={currentlyWorkingOnText}

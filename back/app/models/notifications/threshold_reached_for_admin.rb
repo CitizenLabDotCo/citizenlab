@@ -28,11 +28,13 @@
 #  internal_comment_id           :uuid
 #  basket_id                     :uuid
 #  cosponsors_initiative_id      :uuid
+#  cosponsorship_id              :uuid
 #
 # Indexes
 #
 #  index_notifications_on_basket_id                            (basket_id)
 #  index_notifications_on_cosponsors_initiative_id             (cosponsors_initiative_id)
+#  index_notifications_on_cosponsorship_id                     (cosponsorship_id)
 #  index_notifications_on_created_at                           (created_at)
 #  index_notifications_on_inappropriate_content_flag_id        (inappropriate_content_flag_id)
 #  index_notifications_on_initiating_user_id                   (initiating_user_id)
@@ -52,6 +54,7 @@
 #  fk_rails_...  (basket_id => baskets.id)
 #  fk_rails_...  (comment_id => comments.id)
 #  fk_rails_...  (cosponsors_initiative_id => cosponsors_initiatives.id)
+#  fk_rails_...  (cosponsorship_id => cosponsorships.id)
 #  fk_rails_...  (inappropriate_content_flag_id => flag_inappropriate_content_inappropriate_content_flags.id)
 #  fk_rails_...  (initiating_user_id => users.id)
 #  fk_rails_...  (internal_comment_id => internal_comments.id)
@@ -66,21 +69,22 @@ module Notifications
   class ThresholdReachedForAdmin < Notification
     validates :post, presence: true
 
-    ACTIVITY_TRIGGERS = { 'Initiative' => { 'reached_threshold' => true } }
+    ACTIVITY_TRIGGERS = { 'Idea' => { 'changed_status' => true } }
     EVENT_NAME = 'Threshold reached for admin'
 
     def self.make_notifications_on(activity)
-      initiative = activity.item
+      status = IdeaStatus.find(activity.payload['change'].last)
+      return [] unless status&.code == 'threshold_reached'
+
+      input = activity.item
       initiator_id = activity.user_id
 
-      User.admin.ids.reject do |recipient_id|
-        recipient_id == initiator_id
-      end.map do |recipient_id|
+      UserRoleService.new.moderators_for_project(input.project).map do |recipient|
         new(
-          recipient_id: recipient_id,
+          recipient: recipient,
           initiating_user_id: initiator_id,
-          post: initiative,
-          post_status: initiative.initiative_status
+          post: input,
+          post_status: status
         )
       end
     end

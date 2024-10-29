@@ -8,6 +8,7 @@ import { Multiloc, UploadFile, CLErrors } from 'typings';
 import useAddProjectFile from 'api/project_files/useAddProjectFile';
 import useDeleteProjectFile from 'api/project_files/useDeleteProjectFile';
 import useProjectFiles from 'api/project_files/useProjectFiles';
+import useUpdateProjectFile from 'api/project_files/useUpdateProjectFile';
 import useAddProjectImage from 'api/project_images/useAddProjectImage';
 import useDeleteProjectImage from 'api/project_images/useDeleteProjectImage';
 import useProjectImages, {
@@ -51,8 +52,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 import { validateSlug } from 'utils/textUtils';
 
-import { IPhaseParticipationConfig } from '../phase/phaseParticipationConfig/utils/participationMethodConfigs';
-
 import AttachmentsDropzone from './components/AttachmentsDropzone';
 import GeographicAreaInputs from './components/GeographicAreaInputs';
 import ProjectCardImageDropzone from './components/ProjectCardImageDropzone';
@@ -70,6 +69,10 @@ export type TOnProjectAttributesDiffChangeFunction = (
   projectAttributesDiff: IUpdatedProjectProperties,
   submitState?: ISubmitState
 ) => void;
+
+type FileOrdering = {
+  [id: string]: number | undefined;
+};
 
 const AdminProjectsProjectGeneral = () => {
   const { formatMessage } = useIntl();
@@ -91,6 +94,7 @@ const AdminProjectsProjectGeneral = () => {
 
   const { data: remoteProjectFiles } = useProjectFiles(projectId || null);
   const { mutateAsync: addProjectFile } = useAddProjectFile();
+  const { mutateAsync: updateProjectFile } = useUpdateProjectFile();
   const { mutateAsync: deleteProjectFile } = useDeleteProjectFile();
   const [submitState, setSubmitState] = useState<ISubmitState>('disabled');
 
@@ -102,6 +106,8 @@ const AdminProjectsProjectGeneral = () => {
   // We should probably not have slug, publicationStatus, etc.
   // both in projectAttributesDiff and as separate state.
   const [projectFiles, setProjectFiles] = useState<UploadFile[]>([]);
+  const [initialProjectFilesOrdering, setInitialProjectFilesOrdering] =
+    useState<FileOrdering>({});
   const [projectFilesToRemove, setProjectFilesToRemove] = useState<
     UploadFile[]
   >([]);
@@ -154,6 +160,22 @@ const AdminProjectsProjectGeneral = () => {
         ).filter(isUploadFile);
 
         setProjectFiles(nextProjectFiles);
+        /*
+         * Alternative deep copy methods like deepClone, structuredClone, and JSON.parse(JSON.stringify(obj))
+         * have inconsistencies, so we create an object with only the necessary properties for ordering.
+         * This approach is fine for now as the number of files is expected to be small. We can optimize if performance becomes an issue.
+         * We are also using an object here so lookup is O(1).
+         */
+        setInitialProjectFilesOrdering(
+          nextProjectFiles.reduce((acc, file) => {
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+            if (file?.id) {
+              acc[file.id] = file.ordering;
+            }
+            return acc;
+          }, {})
+        );
       }
     })();
   }, [remoteProjectFiles]);
@@ -255,9 +277,7 @@ const AdminProjectsProjectGeneral = () => {
     }));
   };
 
-  async function saveForm(
-    participationContextConfig: IPhaseParticipationConfig | null = null
-  ) {
+  async function saveForm() {
     // Should be split. Same func for existing/new project
     // Makes things unnecessarily complicated (e.g. projectId below).
     let isNewProject = false;
@@ -275,7 +295,6 @@ const AdminProjectsProjectGeneral = () => {
             project?.data.attributes.publication_status || 'draft',
         },
         ...projectAttributesDiff,
-        ...participationContextConfig,
       };
 
       try {
@@ -337,11 +356,37 @@ const AdminProjectsProjectGeneral = () => {
             return;
           });
 
+        const reorderedFiles = projectFiles.filter((file) => {
+          const initialOrdering = file.id
+            ? initialProjectFilesOrdering[file.id]
+            : undefined;
+          return (
+            file.remote &&
+            typeof file.ordering !== 'undefined' &&
+            (typeof initialOrdering === 'undefined' ||
+              file.ordering !== initialOrdering)
+          );
+        });
+
+        const filesToReorderPromises = reorderedFiles.map((file) => {
+          if (latestProjectId && file.id) {
+            return updateProjectFile({
+              projectId: latestProjectId,
+              fileId: file.id,
+              file: {
+                ordering: file.ordering,
+              },
+            });
+          }
+          return;
+        });
+
         await Promise.all([
           cardImageToAddPromise,
           cardImageToRemovePromise,
           ...filesToAddPromises,
           ...filesToRemovePromises,
+          ...filesToReorderPromises,
         ] as Promise<any>[]);
 
         setSubmitState('success');
@@ -443,6 +488,11 @@ const AdminProjectsProjectGeneral = () => {
   const projectCardImageShouldBeSaved = projectCardImage
     ? !projectCardImage.remote
     : false;
+
+  const handleFilesReorder = (updatedFiles: UploadFile[]) => {
+    setProjectFiles(updatedFiles);
+    setSubmitState('enabled');
+  };
 
   return (
     <Box ref={containerRef}>
@@ -546,6 +596,7 @@ const AdminProjectsProjectGeneral = () => {
             apiErrors={apiErrors}
             handleProjectFileOnAdd={handleProjectFileOnAdd}
             handleProjectFileOnRemove={handleProjectFileOnRemove}
+            onFileReorder={handleFilesReorder}
           />
 
           {/* 

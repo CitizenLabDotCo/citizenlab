@@ -7,13 +7,25 @@ import fetcher from 'utils/cl-react-query/fetcher';
 
 import projectsKeys from './keys';
 
-export const fetchProjectById = ({ id }: { id?: string | null }) =>
-  fetcher<IProject>({ path: `/projects/${id}`, action: 'get' });
+export const fetchProjectById = ({
+  id,
+  useCache = true,
+}: {
+  id?: string | null;
+  useCache?: boolean;
+}) =>
+  fetcher<IProject>({
+    path: `/projects/${id}`,
+    action: 'get',
+    queryParams: {
+      use_cache: useCache,
+    },
+  });
 
-const useProjectById = (id?: string | null) => {
+const useProjectById = (id?: string | null, useCache: boolean = true) => {
   return useQuery<IProject, CLErrors, IProject, ProjectsKeys>({
     queryKey: projectsKeys.item({ id }),
-    queryFn: () => fetchProjectById({ id }),
+    queryFn: () => fetchProjectById({ id, useCache }),
     enabled: !!id,
   });
 };

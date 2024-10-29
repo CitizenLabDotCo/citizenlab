@@ -31,7 +31,7 @@ module MultiTenancy
       def serialize_models
         email_campaigns = EmailCampaigns::Campaign.manual
         groups = Group.where(membership_type: 'manual')
-        ideas = Idea.published
+        ideas = Idea.submitted_or_published
         initiatives = Initiative.published
         users = User.where('invite_status IS NULL OR invite_status != ?', 'pending')
 

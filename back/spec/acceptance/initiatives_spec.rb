@@ -245,7 +245,7 @@ resource 'Initiatives' do
     end
   end
 
-  # TODO: move-old-proposals-test
+  # TODO: cleanup-after-proposals-migration
   get 'web_api/v1/initiatives/filter_counts' do
     before do
       Initiative.all.each(&:destroy!)
@@ -411,7 +411,7 @@ resource 'Initiatives' do
       before do
         Permissions::PermissionsUpdateService.new.update_global_permissions
         Permission.find_by(permission_scope: nil, action: 'posting_initiative')
-          .update!(permitted_by: 'groups', groups: [group])
+          .update!(permitted_by: 'users', groups: [group])
       end
 
       example '[error] Not authorized to create an initiative', document: false do
@@ -745,7 +745,7 @@ resource 'Initiatives' do
     end
   end
 
-  # TODO: move-old-proposals-test
+  # TODO: cleanup-after-proposals-migration
   delete 'web_api/v1/initiatives/:id' do
     before do
       @initiative = create(:initiative_with_topics, author: @user, publication_status: 'published')
@@ -759,7 +759,7 @@ resource 'Initiatives' do
     end
   end
 
-  # TODO: move-old-proposals-test
+  # TODO: cleanup-after-proposals-migration
   get 'web_api/v1/initiatives/:id/allowed_transitions' do
     before do
       admin_header_token

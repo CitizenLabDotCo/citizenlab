@@ -30,6 +30,7 @@ const EmailDeliveriesCard = ({
 
   const { currentResolution, stats, timeSeries, xlsxData } = useEmailDeliveries(
     {
+      projectId,
       startAtMoment,
       endAtMoment,
       resolution,

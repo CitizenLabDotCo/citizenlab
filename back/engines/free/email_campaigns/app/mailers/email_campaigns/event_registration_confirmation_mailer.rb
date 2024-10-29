@@ -20,6 +20,10 @@ module EmailCampaigns
 
     private
 
+    def preheader
+      format_message('preheader', values: { firstName: recipient.first_name, eventTitle: event_title })
+    end
+
     def subject
       format_message('subject', values: {
         organizationName: organization_name,
@@ -56,11 +60,6 @@ module EmailCampaigns
       end
 
       location.presence
-    end
-
-    def event_description
-      description = localize_for_recipient(event.event_attributes.description_multiloc)
-      strip_tags(description).presence
     end
 
     def project_title

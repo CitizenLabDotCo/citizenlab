@@ -4,6 +4,7 @@ import {
   Tooltip,
   TooltipProps,
   colors,
+  Box,
 } from '@citizenlab/cl2-component-library';
 
 import useDeleteIdeaStatus from 'api/idea_statuses/useDeleteIdeaStatus';
@@ -36,16 +37,18 @@ const DeleteStatusButton = ({
       content={tooltipContent}
       trigger="mouseenter"
     >
-      <Button
-        onClick={() => deleteIdeaStatus(ideaStatusId)}
-        buttonStyle="text"
-        disabled={buttonDisabled}
-        icon="delete"
-        iconHoverColor={colors.red600}
-        textHoverColor={colors.red600}
-      >
-        <FormattedMessage {...messages.deleteButtonLabel} />
-      </Button>
+      <Box>
+        <Button
+          onClick={() => deleteIdeaStatus(ideaStatusId)}
+          buttonStyle="text"
+          disabled={buttonDisabled}
+          icon="delete"
+          iconHoverColor={colors.red600}
+          textHoverColor={colors.red600}
+        >
+          <FormattedMessage {...messages.deleteButtonLabel} />
+        </Button>
+      </Box>
     </Tooltip>
   );
 };

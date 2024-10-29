@@ -1,0 +1,46 @@
+# This files should be used in a chained way with
+# `docker compose -f docker-compose.yml -f docker-compose.test.yml up`
+
+version: "3.8"
+
+services:
+  web:
+    image: citizenlabdotco/back-e2e:${CIRCLE_SHA1}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://e2e-web:4000"]
+      interval: 2s
+      timeout: 1s
+      retries: 20
+      start_period: 30s
+
+  front:
+    image: citizenlabdotco/cl2-devops-front-e2e-static:latest
+    build:
+      context: ../front/.
+      dockerfile: Dockerfile-static-hosting
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://e2e.front:3000"]
+      interval: 2s
+      timeout: 1s
+      retries: 10
+    environment:
+      API_HOST: e2e-web
+      API_PORT: 4000
+    command: node server/production.js
+
+  postgres:
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 1s
+      timeout: 1s
+      retries: 10
+
+  cypress:
+    profiles: [cypress]
+    image: citizenlabdotco/front-e2e:${CIRCLE_SHA1}
+    environment:
+      API_HOST: e2e.front
+      API_PORT: 3000
+    env_file:
+      - "../env_files/front-safe.env"
+      - "../env_files/front-secret.env"

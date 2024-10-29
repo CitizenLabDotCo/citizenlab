@@ -1,4 +1,4 @@
-import { isEqual } from 'lodash-es';
+import { isEqual, transform } from 'lodash-es';
 
 import {
   attendEvent,
@@ -12,17 +12,9 @@ import {
 } from './reactionOnComment';
 import { reactionOnIdea, ReactionOnIdeaParams } from './reactionOnIdea';
 import {
-  reactionOnInitiative,
-  ReactionOnInitiativeParams,
-} from './reactionOnInitiative';
-import {
   redirectToIdeaForm,
   RedirectToIdeaFormParams,
 } from './redirectToIdeaForm';
-import {
-  redirectToInitiativeForm,
-  RedirectToInitiativeFormParams,
-} from './redirectToInitiativeForm';
 import { replyToComment, ReplyToCommentParams } from './replyToComment';
 import { scrollTo, ScrollToParams } from './scrollTo';
 import { submitPoll, SubmitPollParams } from './submitPoll';
@@ -32,11 +24,6 @@ import { vote, VoteParams } from './vote';
 interface RedirectToIdeaFormAction {
   name: 'redirectToIdeaForm';
   params: RedirectToIdeaFormParams;
-}
-
-interface RedirectToInitiativeFormAction {
-  name: 'redirectToInitiativeForm';
-  params: RedirectToInitiativeFormParams;
 }
 
 interface FollowAction {
@@ -79,11 +66,6 @@ interface ReactionOnIdeaAction {
   params: ReactionOnIdeaParams;
 }
 
-interface ReactionOnInitiativeAction {
-  name: 'reactionOnInitiative';
-  params: ReactionOnInitiativeParams;
-}
-
 interface SubmitPollAction {
   name: 'submitPoll';
   params: SubmitPollParams;
@@ -91,14 +73,12 @@ interface SubmitPollAction {
 
 export type SuccessAction =
   | RedirectToIdeaFormAction
-  | RedirectToInitiativeFormAction
   | ReplyToCommentAction
   | ScrollToAction
   | VolunteerAction
   | VoteAction
   | ReactionOnCommentAction
   | ReactionOnIdeaAction
-  | ReactionOnInitiativeAction
   | FollowAction
   | SubmitPollAction
   | AttendEventAction;
@@ -142,7 +122,28 @@ type JSONCompatible<T> = unknown extends T
 const ensureJSONSerializable = <T extends Record<string, any>>(
   params: JSONCompatible<T>
 ) => {
-  if (!isEqual(JSON.parse(JSON.stringify(params)), params)) {
+  // We remove all undefined properties from the params.
+  // JSON.stringify below removes undefined properties. This means that the equality
+  // check fails if the params contain undefined properties.
+  // This would mean that an object like { a: 1, b: undefined } would be rejected,
+  // because it would be serialized to { a: 1 }.
+  // Since it's really fine to remove undefined properties, we want the check to pass,
+  // so we instead remove them here.
+  const paramsWithoutUndefinedProperties = transform(
+    params,
+    (result: any, value, key) => {
+      if (value !== undefined) {
+        result[key] = value;
+      }
+    }
+  );
+
+  if (
+    !isEqual(
+      JSON.parse(JSON.stringify(params)),
+      paramsWithoutUndefinedProperties
+    )
+  ) {
     // This should in theory never happen, since it should be caught
     // by the JSONCompatible type check.
     throw new Error('SuccessAction params are not JSON serializable');
@@ -153,11 +154,6 @@ export const getAction = ({ name, params }: SuccessAction) => {
   if (name === 'redirectToIdeaForm') {
     ensureJSONSerializable(params);
     return redirectToIdeaForm(params);
-  }
-
-  if (name === 'redirectToInitiativeForm') {
-    ensureJSONSerializable(params);
-    return redirectToInitiativeForm(params);
   }
 
   if (name === 'follow') {
@@ -200,11 +196,6 @@ export const getAction = ({ name, params }: SuccessAction) => {
     return submitPoll(params);
   }
 
-  if (name === 'attendEvent') {
-    ensureJSONSerializable(params);
-    return attendEvent(params);
-  }
-
   ensureJSONSerializable(params);
-  return reactionOnInitiative(params);
+  return attendEvent(params);
 };

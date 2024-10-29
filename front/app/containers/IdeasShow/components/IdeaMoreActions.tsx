@@ -70,6 +70,8 @@ const IdeaMoreActions = memo(({ idea, className, projectId }: Props) => {
     clHistory.push(`/ideas/edit/${idea.id}`, { scrollToTop: true });
   };
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!idea) return null;
 
   const ideaId = idea.id;
@@ -84,15 +86,16 @@ const IdeaMoreActions = memo(({ idea, className, projectId }: Props) => {
 
   if (!isNilOrError(authUser) && !isNilOrError(project)) {
     const currentPhase = getCurrentPhase(phases?.data);
-    const isIdeationPhase =
-      currentPhase?.attributes.participation_method === 'ideation';
+    const isIdeationOrProposalsPhase =
+      currentPhase?.attributes.participation_method === 'ideation' ||
+      currentPhase?.attributes.participation_method === 'proposals';
 
     const actions = [
       {
         label: <FormattedMessage {...messages.reportAsSpam} />,
         handler: openSpamModal,
       },
-      ...(isIdeationPhase && canEditIdea
+      ...(isIdeationOrProposalsPhase && canEditIdea
         ? [
             {
               label: <FormattedMessage {...messages.editPost} />,

@@ -34,7 +34,7 @@ RSpec.describe Analytics::FactParticipation do
       end
     end
 
-    # TODO: move-old-proposals-test
+    # TODO: cleanup-after-proposals-migration
     context 'when an initiative is created' do
       let!(:initiative) { create(:initiative) }
 
@@ -106,16 +106,6 @@ RSpec.describe Analytics::FactParticipation do
       it 'is also available as a participation fact' do
         participation = described_class.find(event_attendance.id)
         expect(participation.dimension_type.name).to eq('event_attendance')
-      end
-    end
-
-    context 'when a follower is created' do
-      let(:follower) { create(:follower) }
-
-      it 'is also available as a participation fact' do
-        participation = described_class.find(follower.id)
-        expect(participation.dimension_type.name).to eq('follower')
-        expect(participation.dimension_type.parent).to eq('project')
       end
     end
   end

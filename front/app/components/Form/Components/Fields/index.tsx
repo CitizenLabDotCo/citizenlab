@@ -16,6 +16,7 @@ import { APIErrorsContext, FormContext } from '../../contexts';
 import { ApiErrorGetter, AjvErrorGetter, FormData } from '../../typings';
 import { ExtendedUISchema } from '../Controls/visibilityUtils';
 
+import { ErrorToReadProvider } from './ErrorToReadContext';
 import { selectRenderers } from './formConfig';
 
 interface Props {
@@ -70,7 +71,11 @@ const Fields = ({
         getAjvErrorMessage?.(error, uischema) ||
         getDefaultAjvErrorMessage({
           keyword: error.keyword,
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           format: error?.parentSchema?.format,
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           type: error?.parentSchema?.type,
         });
       return formatMessage(message, {
@@ -96,20 +101,22 @@ const Fields = ({
           locale,
         }}
       >
-        <JsonForms
-          schema={parsedSchema}
-          uischema={uiSchema}
-          data={data}
-          renderers={renderers}
-          onChange={({ data }) => {
-            onChange(data);
-          }}
-          validationMode="ValidateAndShow"
-          ajv={customAjv}
-          i18n={{
-            translateError,
-          }}
-        />
+        <ErrorToReadProvider>
+          <JsonForms
+            schema={parsedSchema}
+            uischema={uiSchema}
+            data={data}
+            renderers={renderers}
+            onChange={({ data }) => {
+              onChange(data);
+            }}
+            validationMode="ValidateAndShow"
+            ajv={customAjv}
+            i18n={{
+              translateError,
+            }}
+          />
+        </ErrorToReadProvider>
       </FormContext.Provider>
     </APIErrorsContext.Provider>
   );

@@ -73,6 +73,8 @@ const Body = ({ idea }: Props) => {
   const locale = useLocale();
   const localize = useLocalize();
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const authorId = idea.data.relationships?.author?.data?.id || null;
   const authorHash = idea.data.attributes.author_hash;
 
@@ -81,6 +83,7 @@ const Body = ({ idea }: Props) => {
     .replace(/<[^>]*>?/gm, '')
     .replaceAll('&amp;', '&')
     .trim();
+  const publishedAt = idea.data.attributes.published_at;
 
   return (
     <BodyWrapper>
@@ -96,10 +99,8 @@ const Body = ({ idea }: Props) => {
           anonymous={idea.data.attributes.anonymous}
         />
         <Separator aria-hidden>&bull;</Separator>
-        {!isNilOrError(locale) && (
-          <TimeAgo>
-            {timeAgo(Date.parse(idea.data.attributes.created_at), locale)}
-          </TimeAgo>
+        {!isNilOrError(locale) && publishedAt && (
+          <TimeAgo>{timeAgo(Date.parse(publishedAt), locale)}</TimeAgo>
         )}
         <span aria-hidden> {bodyText}</span>
       </BodyDiv>

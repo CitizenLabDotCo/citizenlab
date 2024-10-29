@@ -5,6 +5,7 @@ class GenerateUserAvatarJob < ApplicationJob
 
   def run(user)
     return unless AppConfiguration.instance.feature_activated?('user_avatars')
+    return unless AppConfiguration.instance.feature_activated?('gravatar_avatars')
     return unless user && !user.avatar? && user.email
 
     hash = Digest::MD5.hexdigest(user.email)

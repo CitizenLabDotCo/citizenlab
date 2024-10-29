@@ -27,14 +27,6 @@
       } %>
     <% end %>
 
-    <% if event_description.present? %>
-      <%= render partial: 'event_details_generic_item', locals: {
-        label: format_message('event_details.labels.description'),
-        text: event_description,
-        color: "#892FD3"
-      } %>
-    <% end %>
-
     <%= render partial: 'event_details_project_item' %>
   </mj-column>
 </mj-section>

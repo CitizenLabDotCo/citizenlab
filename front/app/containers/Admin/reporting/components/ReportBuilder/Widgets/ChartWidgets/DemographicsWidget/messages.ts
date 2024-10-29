@@ -17,4 +17,8 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.unknown',
     defaultMessage: 'Unknown',
   },
+  registrationDateRange: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.UsersWidget.registrationDateRange',
+    defaultMessage: 'Registration date range',
+  },
 });

@@ -54,7 +54,7 @@ class IdeasFinder < ApplicationFinder
   end
 
   def feedback_needed_condition(feedback_needed)
-    feedback_needed ? scope(:feedback_needed) : scope(:no_feedback_needed)
+    scope(:feedback_needed) if feedback_needed
   end
 
   def search_condition(search)

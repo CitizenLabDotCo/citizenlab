@@ -255,16 +255,23 @@ describe SortByParamsService do
           { idea: ideas[2], phase: project_with_phases.phases.first, baskets_count: 3, votes_count: 3 }
         ]
           .map do |attributes|
+          attributes[:idea].update!(phases: [])
           create(:ideas_phase, **attributes)
         end
       end
       let(:phase_id) { project_with_phases.phases.first.id }
+      let(:idea_scope) { Idea.submitted_or_published.where(id: ideas) }
 
       describe 'baskets_count' do
         let(:sort) { 'baskets_count' }
         let(:expected_record_ids) { [ideas[0].id, ideas[2].id, ideas[1].id] }
 
         it 'returns the sorted records' do
+          expect(result_record_ids).to eq expected_record_ids
+        end
+
+        it 'does not return draft ideas' do
+          ideas << create(:idea, project: project_with_phases, publication_status: 'draft')
           expect(result_record_ids).to eq expected_record_ids
         end
       end
@@ -283,6 +290,11 @@ describe SortByParamsService do
         let(:expected_record_ids) { [ideas[1].id, ideas[2].id, ideas[0].id] }
 
         it 'returns the sorted records' do
+          expect(result_record_ids).to eq expected_record_ids
+        end
+
+        it 'does not return draft ideas' do
+          ideas << create(:idea, project: project_with_phases, publication_status: 'draft')
           expect(result_record_ids).to eq expected_record_ids
         end
       end

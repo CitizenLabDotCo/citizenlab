@@ -33,6 +33,7 @@ module MultiTenancy
               additional_admins_number: 1,
               additional_moderators_number: 1,
               population: 27_500,
+              allow_sharing: true,
               google_search_console_meta_attribute: 'fake_meta_attribute'
             },
             password_login: {
@@ -59,7 +60,8 @@ module MultiTenancy
               tenant: ENV.fetch('DEFAULT_AZURE_AD_LOGIN_TENANT_ID'),
               client_id: ENV.fetch('DEFAULT_AZURE_AD_LOGIN_CLIENT_ID'),
               logo_url: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/microsoft-azure-logo.png',
-              login_mechanism_name: 'Azure Active Directory'
+              login_mechanism_name: 'Azure Active Directory',
+              visibility: 'show'
             },
             azure_ad_b2c_login: {
               allowed: true,
@@ -287,6 +289,12 @@ module MultiTenancy
               enabled: true,
               allowed: true,
               verification_methods: [
+                # NOTE: for real platforms, you should never have
+                # more than one verification method enabled at a time.
+                # The below list is for testing purposes only.
+                {
+                  name: 'fake_sso'
+                },
                 {
                   name: 'cow',
                   api_username: 'fake_username',
@@ -329,7 +337,8 @@ module MultiTenancy
                   name: 'nemlog_in',
                   environment: 'pre_production_integration',
                   issuer: ENV.fetch('DEFAULT_NEMLOG_IN_ISSUER', 'fake issuer'),
-                  private_key: ENV.fetch('DEFAULT_NEMLOG_IN_PRIVATE_KEY', 'fake key')
+                  private_key: ENV.fetch('DEFAULT_NEMLOG_IN_PRIVATE_KEY', 'fake key'),
+                  enabled_for_verified_actions: true
                 },
                 {
                   name: 'criipto',
@@ -338,9 +347,6 @@ module MultiTenancy
                   client_secret: ENV.fetch('DEFAULT_CRIIPTO_CLIENT_SECRET', 'fake secret'),
                   identity_source: 'DK MitID',
                   ui_method_name: 'MitID (Criipto)'
-                },
-                {
-                  name: 'fake_sso'
                 }
               ]
             },
@@ -357,10 +363,6 @@ module MultiTenancy
               allowed: false
             },
             disable_disliking: {
-              enabled: true,
-              allowed: true
-            },
-            input_form_mapping_question: {
               enabled: true,
               allowed: true
             },
@@ -390,6 +392,10 @@ module MultiTenancy
               duration: 90
             },
             user_avatars: {
+              enabled: true,
+              allowed: true
+            },
+            gravatar_avatars: {
               enabled: true,
               allowed: true
             },
@@ -449,6 +455,10 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
+            input_cosponsorship: {
+              enabled: true,
+              allowed: true
+            },
             management_feed: {
               enabled: true,
               allowed: true
@@ -458,6 +468,11 @@ module MultiTenancy
               allowed: true
             },
             fake_sso: {
+              enabled: true,
+              allowed: true,
+              issuer: '' # Change this value to 'https://fake-sso.onrender.com' to test with the deployed version of the Fake SSO
+            },
+            new_homepage_widgets: {
               enabled: true,
               allowed: true
             }

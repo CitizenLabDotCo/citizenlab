@@ -56,7 +56,7 @@ describe('Input form builder', () => {
     cy.get('@tagsToolboxItem').should('exist');
     cy.get('@tagsToolboxItem').should('have.attr', 'disabled');
 
-    cy.get('[data-cy="e2e-field-row"]').within(() => {
+    cy.get('[data-cy="e2e-form-fields"]').within(() => {
       cy.contains('Tags').should('exist');
       cy.contains('Tags').click();
     });
@@ -71,7 +71,7 @@ describe('Input form builder', () => {
     cy.get('@tagsToolboxItem').should('not.have.attr', 'disabled');
 
     // Check to see that tags is removed from the canvas
-    cy.get('[data-cy="e2e-field-row"]').within(() => {
+    cy.get('[data-cy="e2e-form-fields"]').within(() => {
       cy.contains('Tags').should('not.exist');
     });
 

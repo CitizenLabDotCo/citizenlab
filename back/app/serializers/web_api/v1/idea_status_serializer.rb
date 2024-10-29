@@ -3,11 +3,11 @@
 class WebApi::V1::IdeaStatusSerializer < WebApi::V1::BaseSerializer
   attributes :title_multiloc, :color, :ordering, :code, :description_multiloc, :ideas_count, :participation_method
 
-  attribute :can_transition_manually do |status|
-    InputStatusService.new(status).can_transition_manually?
+  attribute :locked do |status|
+    status.locked?
   end
 
-  attribute :can_reorder do |status|
-    InputStatusService.new(status).can_reorder?
+  attribute :can_manually_transition_to do |status|
+    status.can_manually_transition_to?
   end
 end

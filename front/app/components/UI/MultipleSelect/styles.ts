@@ -5,7 +5,7 @@ import {
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
 
-function getSelectStyles(borderColor = colors.borderDark) {
+function getSelectStyles() {
   return {
     valueContainer: (base) => ({
       ...base,
@@ -24,7 +24,7 @@ function getSelectStyles(borderColor = colors.borderDark) {
       ...base,
       fontSize: `${fontSizes.base}px`,
       borderWidth: '1px',
-      borderColor: isFocused ? colors.black : `${borderColor}`,
+      borderColor: isFocused ? colors.black : `${colors.borderDark}`,
       borderRadius: stylingConsts.borderRadius,
       minHeight: '48px',
       backgroundColor: '#fff',
@@ -39,7 +39,7 @@ function getSelectStyles(borderColor = colors.borderDark) {
     }),
     dropdownIndicator: (base, { isFocused }) => ({
       ...base,
-      color: isFocused ? colors.black : `${borderColor}`,
+      color: isFocused ? colors.black : `${colors.borderDark}`,
       '&:hover': {
         color: colors.black,
       },

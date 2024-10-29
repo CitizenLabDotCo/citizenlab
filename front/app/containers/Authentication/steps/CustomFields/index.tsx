@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 import useCustomFieldsSchema from 'api/custom_fields_json_form_schema/useCustomFieldsSchema';
-import { hasRequiredFields } from 'api/custom_fields_json_form_schema/utils';
+import { hasRequiredNonLockedFields } from 'api/custom_fields_json_form_schema/utils';
 import useAuthUser from 'api/me/useAuthUser';
 
 import useLocale from 'hooks/useLocale';
@@ -55,8 +55,12 @@ const CustomFields = ({
   }, []);
 
   const schema =
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     userCustomFieldsSchema?.data.attributes?.json_schema_multiloc[locale];
   const uiSchema =
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     userCustomFieldsSchema?.data.attributes?.ui_schema_multiloc[locale];
 
   if (!authUser || !userCustomFieldsSchema || !schema || !uiSchema) {
@@ -75,10 +79,7 @@ const CustomFields = ({
     }
   };
 
-  const formHasRequiredFields = hasRequiredFields(
-    userCustomFieldsSchema,
-    locale
-  );
+  const allowSkip = !hasRequiredNonLockedFields(userCustomFieldsSchema, locale);
 
   return (
     <Box
@@ -86,6 +87,8 @@ const CustomFields = ({
       pb={smallerThanPhone ? '14px' : '28px'}
       id="e2e-signup-custom-fields-container"
     >
+      {/* TODO: Fix this the next time the file is edited. */}
+      {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
       <FormWrapper formId={uiSchema?.options?.formId}>
         <UserCustomFieldsForm
           authenticationContext={authenticationData.context}
@@ -108,7 +111,7 @@ const CustomFields = ({
             onClick={handleSubmit}
           />
 
-          {!formHasRequiredFields && (
+          {allowSkip && (
             <Button
               id="e2e-signup-custom-fields-skip-btn"
               buttonStyle="text"

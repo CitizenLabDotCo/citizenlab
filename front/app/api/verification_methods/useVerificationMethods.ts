@@ -19,7 +19,7 @@ const useVerificationMethods = () => {
     IVerificationMethods,
     VerificationMethodsKeys
   >({
-    queryKey: verificationMethodsKeys.all(),
+    queryKey: verificationMethodsKeys.list(),
     queryFn: () => fetchVerificationMethods(),
   });
 };

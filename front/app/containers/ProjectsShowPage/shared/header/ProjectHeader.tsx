@@ -14,12 +14,12 @@ import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 
 import ContentContainer from 'components/ContentContainer';
 import FollowUnfollow from 'components/FollowUnfollow';
-import Outlet from 'components/Outlet';
 import {
   HeaderImage,
   HeaderImageContainer,
 } from 'components/ProjectableHeader';
 import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
+import ContentViewer from 'components/ProjectDescriptionBuilder/ContentViewer';
 import Button from 'components/UI/Button';
 
 import { useIntl } from 'utils/cl-intl';
@@ -78,6 +78,8 @@ const ProjectHeader = memo<Props>(({ projectId, className }) => {
 
   if (project) {
     const projectHeaderImageLargeUrl =
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       project.data.attributes?.header_bg?.large;
     const userCanEditProject =
       !isNilOrError(authUser) && canModerateProject(project.data, authUser);
@@ -122,6 +124,8 @@ const ProjectHeader = memo<Props>(({ projectId, className }) => {
                 followableType="projects"
                 followableId={project.data.id}
                 followersCount={project.data.attributes.followers_count}
+                // TODO: Fix this the next time the file is edited.
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 followerId={project.data.relationships.user_follower?.data?.id}
                 py="6px"
                 iconSize="20px"
@@ -130,7 +134,7 @@ const ProjectHeader = memo<Props>(({ projectId, className }) => {
             </Box>
           </Box>
           {projectHeaderImageLargeUrl && (
-            <HeaderImageContainer id="e2e-project-header-image">
+            <HeaderImageContainer>
               <HeaderImage
                 id="e2e-project-header-image"
                 src={projectHeaderImageLargeUrl}
@@ -149,7 +153,7 @@ const ProjectHeader = memo<Props>(({ projectId, className }) => {
           {!projectDescriptionBuilderEnabled && (
             <ProjectInfo projectId={projectId} />
           )}
-          <Outlet id="app.ProjectsShowPage.shared.header.ProjectInfo.projectDescriptionBuilder" />
+          <ContentViewer />
         </ContentContainer>
       </Container>
     );

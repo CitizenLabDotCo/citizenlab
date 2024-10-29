@@ -6,6 +6,7 @@ cy:
       "inappropriate_content_flagged": Amlygwyd cynnwys amhriodol - gweinyddwyr
     inappropriate_content_flagged:
       subject: 'Mae postiad ar eich platfform wedi''i fflagio i''w adolygu'
+      preheader: 'Mae postiad ar eich platfform wedi''i fflagio i''w adolygu'
       header_title: 'Mae postiad ar eich platfform wedi''i fflagio i''w adolygu'
       comment_author: '%{authorName} sylw:'
       idea_author: '%{authorName} cyflwyno post:'

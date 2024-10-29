@@ -3,41 +3,36 @@ import React from 'react';
 import { Box, Text } from '@citizenlab/cl2-component-library';
 
 import useGroups from 'api/groups/useGroups';
-import { IPCPermissionData } from 'api/phase_permissions/types';
-
-import useLocalize from 'hooks/useLocalize';
+import { IPhasePermissionData } from 'api/phase_permissions/types';
 
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
 
 import messages from './messages';
 import {
-  getGroupMessage,
   getPartipationRequirementMessage,
   getParticipationActionLabel,
 } from './utils';
 
 type PermissionTooltipMessageProps = {
-  permissions?: IPCPermissionData[];
+  permissions?: IPhasePermissionData[];
 };
 
 const PermissionTooltipMessage = ({
   permissions,
 }: PermissionTooltipMessageProps) => {
   const { formatMessage } = useIntl();
-  const localize = useLocalize();
   const { data: groups } = useGroups({});
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!permissions || !permissions?.length || !groups) {
     return null;
   }
 
-  const getParticipantsInPermission = (permission: IPCPermissionData) => {
-    return permission.attributes.permitted_by === 'groups'
-      ? getGroupMessage(permission, groups.data, localize, formatMessage)
-      : getPartipationRequirementMessage(
-          permission.attributes.permitted_by,
-          permission.relationships.groups.data.length,
-          formatMessage
-        );
+  const getParticipantsInPermission = (permission: IPhasePermissionData) => {
+    return getPartipationRequirementMessage(
+      permission.attributes.permitted_by,
+      formatMessage
+    );
   };
 
   return (
@@ -54,8 +49,14 @@ const PermissionTooltipMessage = ({
           <Text my="0px" variant="bodyS">
             {formatMessage(messages.whoCanParticipate)}
           </Text>
+          {/* TODO: Fix this the next time the file is edited. */}
+          {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
           {permissions &&
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             permissions?.length > 1 &&
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             permissions?.map((permission) => {
               return (
                 <Text my="0px" variant="bodyS" key={permission.id}>

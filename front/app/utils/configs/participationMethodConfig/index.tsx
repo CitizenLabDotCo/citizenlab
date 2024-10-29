@@ -93,6 +93,8 @@ const ideationConfig: ParticipationMethodConfig = {
   onFormSubmission: (props: FormSubmissionMethodProps) => {
     if (props.ideaId && props.idea) {
       const urlParameters = `?new_idea_id=${props.ideaId}`;
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (props.idea) {
         clHistory.push({
           pathname: `/ideas/${props.idea.data.attributes.slug}`,
@@ -108,7 +110,6 @@ const ideationConfig: ParticipationMethodConfig = {
     if (props.ideaIdForSocialSharing && props.title && props.subtitle) {
       return (
         <SharingModalContent
-          postType="idea"
           postId={props.ideaIdForSocialSharing}
           title={props.title}
           subtitle={props.subtitle}
@@ -125,8 +126,11 @@ const ideationConfig: ParticipationMethodConfig = {
           option: messages.optionFormTitle,
           project: messages.projectFormTitle,
           question: messages.questionFormTitle,
-          issue: messages.issueFormTitle,
+          issue: messages.issueFormTitle1,
           contribution: messages.contributionFormTitle,
+          proposal: messages.proposalFormTitle,
+          petition: messages.petitionFormTitle,
+          initiative: messages.initiativeFormTitle,
         }[getInputTerm(props.phases, props.phaseFromUrl)]}
       />
     );
@@ -148,9 +152,11 @@ const proposalsConfig: ParticipationMethodConfig = {
   onFormSubmission: (props: FormSubmissionMethodProps) => {
     if (props.ideaId && props.idea) {
       const urlParameters = `?new_idea_id=${props.ideaId}`;
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (props.idea) {
         clHistory.push({
-          pathname: `/projects/${props.project?.attributes.slug}/ideas/${props.idea.data.attributes.slug}`,
+          pathname: `/ideas/${props.idea.data.attributes.slug}`,
           search: urlParameters.concat(
             props.phaseId ? `&phase_id=${props.phaseId}` : ''
           ),
@@ -163,7 +169,6 @@ const proposalsConfig: ParticipationMethodConfig = {
     if (props.ideaIdForSocialSharing && props.title && props.subtitle) {
       return (
         <SharingModalContent
-          postType="idea"
           postId={props.ideaIdForSocialSharing}
           title={props.title}
           subtitle={props.subtitle}
@@ -180,8 +185,11 @@ const proposalsConfig: ParticipationMethodConfig = {
           option: messages.optionFormTitle,
           project: messages.projectFormTitle,
           question: messages.questionFormTitle,
-          issue: messages.issueFormTitle,
+          issue: messages.issueFormTitle1,
           contribution: messages.contributionFormTitle,
+          proposal: messages.proposalFormTitle,
+          petition: messages.petitionFormTitle,
+          initiative: messages.initiativeFormTitle,
         }[getInputTerm(props.phases, props.phaseFromUrl)]}
       />
     );
@@ -201,6 +209,8 @@ const nativeSurveyConfig: ParticipationMethodConfig = {
   onFormSubmission: (props: FormSubmissionMethodProps) => {
     if (props.project) {
       clHistory.push({
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         pathname: `/projects/${props.project?.attributes.slug}`,
         search: `?show_modal=true`.concat(
           props.phaseId ? `&phase_id=${props.phaseId}` : ''
@@ -288,6 +298,8 @@ const votingConfig: ParticipationMethodConfig = {
   onFormSubmission: (props: FormSubmissionMethodProps) => {
     if (props.ideaId && props.idea) {
       const urlParameters = `?new_idea_id=${props.ideaId}`;
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (props.idea) {
         clHistory.push({
           pathname: `/ideas/${props.idea.data.attributes.slug}`,
@@ -306,7 +318,7 @@ const votingConfig: ParticipationMethodConfig = {
           option: messages.optionFormTitle,
           project: messages.projectFormTitle,
           question: messages.questionFormTitle,
-          issue: messages.issueFormTitle,
+          issue: messages.issueFormTitle1,
           contribution: messages.contributionFormTitle,
         }[getInputTerm(props.phases, props.phaseFromUrl)]}
       />

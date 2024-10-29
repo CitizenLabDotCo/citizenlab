@@ -7,11 +7,10 @@ nl-BE:
     inappropriate_content_flagged:
       subject: 'Een post op je platform werd gemarkeerd om na te kijken'
       header_title: 'Een bericht op je platform is gemarkeerd om na te kijken'
-      comment_author: '%{authorName} schreef:'
-      idea_author: '%{authorName} heeft een bijdrage geplaatst:'
-      initiative_author: '%{authorName} heeft een voorstel ingediend:'
+      author_wrote: '%{authorName} schreef:'
+      preheader: 'Een bericht op je platform is gemarkeerd om na te kijken'
       automatically_flagged: >
         Dit bericht is automatisch gedetecteerd als een bericht met mogelijk ongepaste inhoud. We sturen je deze melding zodat je het bericht kunt beoordelen volgens je eigen moderatierichtlijnen.
       how_to_review: >
         Als het bericht geen ongepaste inhoud bevat, kun je de waarschuwing verwijderen via je platform onder het tabblad Dashboard - Activiteit in het beheerderspaneel.
-      cta_review_post: 'Bijdrage nakijken'
+      cta_review: 'Beoordeling'

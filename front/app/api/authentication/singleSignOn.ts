@@ -19,6 +19,8 @@ export interface SSOProviderMap {
   hoplr: 'hoplr';
   criipto: 'criipto';
   fake_sso: 'fake_sso';
+  nemlog_in: 'nemlog_in';
+  keycloak: 'keycloak';
 }
 
 export type SSOProvider = SSOProviderMap[keyof SSOProviderMap];
@@ -45,8 +47,11 @@ const setHrefVienna = () => {
 export const handleOnSSOClick = (
   provider: SSOProvider,
   metaData: AuthenticationData,
-  verification: boolean
+  verification: boolean,
+  flow: 'signup' | 'signin'
 ) => {
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (metaData?.successAction) {
     localStorage.setItem(
       'auth_success_action',
@@ -56,24 +61,29 @@ export const handleOnSSOClick = (
 
   provider === 'id_vienna_saml'
     ? setHrefVienna()
-    : setHref(provider, metaData, verification);
+    : setHref(provider, metaData, verification, flow);
 };
 
 function setHref(
   provider: SSOProvider,
   authenticationData: AuthenticationData,
-  verification: boolean
+  verification: boolean,
+  flow: 'signup' | 'signin'
 ) {
-  const { context, flow } = authenticationData;
+  const { context } = authenticationData;
 
   const pathname = window.location.pathname as RouteType;
   const ssoParams: SSOParams = {
     sso_response: 'true',
     sso_flow: flow,
-    sso_pathname: pathname, // Also used by back-end to set user.locale following succesful signup
+    sso_pathname: pathname, // Also used by back-end to set user.locale following successful signup
     sso_verification: verification === true ? 'true' : undefined,
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     sso_verification_action: context?.action,
     sso_verification_id: isProjectContext(context) ? context.id : undefined,
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     sso_verification_type: context?.type,
   };
   const urlSearchParams = stringify(omitBy(ssoParams, isNil));

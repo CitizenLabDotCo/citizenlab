@@ -113,7 +113,6 @@ resource 'Ideas' do
       let(:default_assignee) { create(:admin) }
       let(:project) { create(:single_phase_ideation_project, default_assignee: default_assignee) }
       let(:project_id) { project.id }
-      let(:publication_status) { 'published' }
       let(:title_multiloc) { idea.title_multiloc }
       let(:body_multiloc) { idea.body_multiloc }
 
@@ -176,7 +175,7 @@ resource 'Ideas' do
         expect(json_response.dig(:data, :relationships, :assignee, :data, :id)).to eq assignee_id
       end
 
-      example 'Changing the project keeps the assignee valid', document: false, if: defined?(ProjectManagement::Engine) do
+      example 'Changing the project keeps the assignee valid', document: false do
         @idea.update! assignee: create(:project_moderator, projects: [@project])
         do_request project_id: create(:project).id
 
@@ -186,7 +185,7 @@ resource 'Ideas' do
       end
     end
 
-    context 'when moderator', if: defined?(ProjectManagement::Engine) do
+    context 'when moderator' do
       before { header_token_for create(:project_moderator, projects: [@project]) }
 
       let(:assignee_id) { create(:admin).id }

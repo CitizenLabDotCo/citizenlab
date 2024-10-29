@@ -1,10 +1,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  sections: {
-    id: 'app.containers.admin.ContentBuilder.homepage.sections',
-    defaultMessage: 'SECTIONS',
-  },
   oneColumn: {
     id: 'app.containers.admin.ContentBuilder.homepage.oneColumnLayout',
     defaultMessage: '1 column',

@@ -20,7 +20,7 @@ class WebApi::V1::IdeasController < ApplicationController
   def index
     ideas = IdeasFinder.new(
       params,
-      scope: policy_scope(Idea).where(publication_status: 'published'),
+      scope: policy_scope(Idea).submitted_or_published,
       current_user: current_user
     ).find_records
 
@@ -32,6 +32,7 @@ class WebApi::V1::IdeasController < ApplicationController
       :idea_trending_info,
       :topics,
       :phases,
+      :creation_phase,
       {
         project: [:phases, { phases: { permissions: [:groups] } }, { custom_form: [:custom_fields] }],
         author: [:unread_notifications]
@@ -47,7 +48,7 @@ class WebApi::V1::IdeasController < ApplicationController
   def index_mini
     ideas = IdeasFinder.new(
       params,
-      scope: policy_scope(Idea).where(publication_status: 'published'),
+      scope: policy_scope(Idea).submitted_or_published,
       current_user: current_user
     ).find_records
     ideas = paginate SortByParamsService.new.sort_ideas(ideas, params, current_user)
@@ -59,7 +60,7 @@ class WebApi::V1::IdeasController < ApplicationController
   def index_idea_markers
     ideas = IdeasFinder.new(
       params,
-      scope: policy_scope(Idea).where(publication_status: 'published'),
+      scope: policy_scope(Idea).submitted_or_published,
       current_user: current_user
     ).find_records
     ideas = paginate SortByParamsService.new.sort_ideas(ideas, params, current_user)
@@ -71,14 +72,17 @@ class WebApi::V1::IdeasController < ApplicationController
   def index_xlsx
     ideas = IdeasFinder.new(
       params.merge(filter_can_moderate: true),
-      scope: policy_scope(Idea).where(publication_status: 'published'),
+      scope: policy_scope(Idea).submitted_or_published,
       current_user: current_user
     ).find_records
     ideas = SortByParamsService.new.sort_ideas(ideas, params, current_user)
     ideas = ideas.includes(:author, :topics, :project, :idea_status, :idea_files)
 
+    with_cosponsors = AppConfiguration.instance.feature_activated?('input_cosponsorship')
+    ideas = ideas.includes(:cosponsors) if with_cosponsors
+
     I18n.with_locale(current_user&.locale) do
-      xlsx = XlsxService.new.generate_ideas_xlsx ideas, view_private_attributes: true
+      xlsx = XlsxService.new.generate_ideas_xlsx(ideas, view_private_attributes: true, with_cosponsors:)
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'ideas.xlsx'
     end
   end
@@ -163,6 +167,8 @@ class WebApi::V1::IdeasController < ApplicationController
       input.anonymous = true
     end
     input.author ||= current_user
+    phase.pmethod.assign_defaults(input)
+
     sidefx.before_create(input, current_user)
 
     authorize input
@@ -195,8 +201,7 @@ class WebApi::V1::IdeasController < ApplicationController
 
   def update
     input = Idea.find params[:id]
-    project = input.project
-    phase = TimelineService.new.current_phase_not_archived project
+
     authorize input
 
     if invalid_blank_author_for_update? input, params
@@ -206,37 +211,37 @@ class WebApi::V1::IdeasController < ApplicationController
 
     extract_custom_field_values_from_params!(input.custom_form)
     params[:idea][:topic_ids] ||= [] if params[:idea].key?(:topic_ids)
+    params[:idea][:cosponsor_ids] ||= [] if params[:idea].key?(:cosponsor_ids)
     params[:idea][:phase_ids] ||= [] if params[:idea].key?(:phase_ids)
     params_service.mark_custom_field_values_to_clear!(input.custom_field_values, params[:idea][:custom_field_values])
 
-    user_can_moderate_project = UserRoleService.new.can_moderate_project?(project, current_user)
+    user_can_moderate_project = UserRoleService.new.can_moderate_project?(input.project, current_user)
     update_params = idea_params(input.custom_form, user_can_moderate_project).to_h
     update_params[:custom_field_values] = params_service.updated_custom_field_values(input.custom_field_values, update_params[:custom_field_values])
     CustomFieldService.new.compact_custom_field_values! update_params[:custom_field_values]
-    input.assign_attributes update_params
-    authorize input
-    if anonymous_not_allowed?(phase)
-      render json: { errors: { base: [{ error: :anonymous_participation_not_allowed }] } }, status: :unprocessable_entity
-      return
+
+    ActiveRecord::Base.transaction do # Assigning relationships cause database changes
+      input.assign_attributes update_params
+      authorize input
+      if not_allowed_update_errors(input)
+        render json: not_allowed_update_errors(input), status: :unprocessable_entity
+        return # rubocop:disable Rails/TransactionExitStatement
+      end
+      verify_profanity input
     end
-    if idea_status_not_allowed?(input)
-      render json: { errors: { idea_status_id: [{ error: 'Cannot manually assign inputs to an automatic status', value: input.idea_status_id }] } }, status: :unprocessable_entity
-      return
-    end
-    verify_profanity input
 
     sidefx.before_update(input, current_user)
-
+    cosponsor_ids = input.cosponsors.map(&:id)
     save_options = {}
     save_options[:context] = :publication if params.dig(:idea, :publication_status) == 'published'
     ActiveRecord::Base.transaction do
       if input.save(**save_options)
-        sidefx.after_update(input, current_user)
+        sidefx.after_update(input, current_user, cosponsor_ids)
         update_file_upload_fields input, input.custom_form, update_params
         render json: WebApi::V1::IdeaSerializer.new(
           input.reload,
           params: jsonapi_serializer_params,
-          include: %i[author topics user_reaction idea_images]
+          include: %i[author topics user_reaction idea_images cosponsors]
         ).serializable_hash, status: :ok
       else
         render json: { errors: input.errors.details }, status: :unprocessable_entity
@@ -367,6 +372,10 @@ class WebApi::V1::IdeasController < ApplicationController
       complex_attributes[:topic_ids] = []
     end
 
+    if submittable_field_keys.include?(:cosponsor_ids)
+      complex_attributes[:cosponsor_ids] = []
+    end
+
     complex_attributes
   end
 
@@ -389,11 +398,11 @@ class WebApi::V1::IdeasController < ApplicationController
   def idea_status_not_allowed?(input)
     return false if params.dig(:idea, :idea_status_id).blank?
 
-    !InputStatusService.new(input.idea_status).can_transition_manually?
+    !input.idea_status.can_manually_transition_to?
   end
 
   def serialization_options_for(ideas)
-    include = %i[author idea_images ideas_phases]
+    include = %i[author idea_images ideas_phases cosponsors]
     if current_user
       # I have no idea why but the trending query part
       # breaks if you don't fetch the ids in this way.
@@ -409,7 +418,7 @@ class WebApi::V1::IdeasController < ApplicationController
         params: jsonapi_serializer_params(
           vbii: reactions.index_by(&:reactable_id),
           user_followers: user_followers,
-          user_requirements_service: Permissions::UserRequirementsService.new(check_groups: false)
+          user_requirements_service: Permissions::UserRequirementsService.new(check_groups_and_verification: false)
         ),
         include: include
       }
@@ -429,7 +438,7 @@ class WebApi::V1::IdeasController < ApplicationController
 
     return false if input.idea_import && input.idea_import.approved_at.nil?
 
-    input.participation_method_on_creation.sign_in_required_for_posting?
+    !input.participation_method_on_creation.supports_inputs_without_author?
   end
 
   # Change counts on idea for values for phase, if filtered by phase
@@ -449,6 +458,23 @@ class WebApi::V1::IdeasController < ApplicationController
     end
     ideas
   end
+
+  def not_allowed_update_errors(input)
+    if anonymous_not_allowed?(TimelineService.new.current_phase_not_archived(input.project))
+      return { errors: { base: [{ error: :anonymous_participation_not_allowed }] } }
+    end
+    if idea_status_not_allowed?(input)
+      return { errors: { idea_status_id: [{ error: 'Cannot manually assign inputs to this status', value: input.idea_status_id }] } }
+    end
+    if !input.participation_method_on_creation.transitive? && input.project_id_changed?
+      return { errors: { project_id: [{ error: 'Cannot change the project of non-transitive inputs', value: input.project_id }] } }
+    end
+
+    if !input.participation_method_on_creation.transitive? && input.ideas_phases.find_index(&:changed?)
+      { errors: { phase_ids: [{ error: 'Cannot change the phases of non-transitive inputs', value: input.phase_ids }] } }
+    end
+  end
 end
 
 WebApi::V1::IdeasController.prepend(IdeaAssignment::Patches::WebApi::V1::IdeasController)
+WebApi::V1::IdeasController.include(AggressiveCaching::Patches::WebApi::V1::IdeasController)

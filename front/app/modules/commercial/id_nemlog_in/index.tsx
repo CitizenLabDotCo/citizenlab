@@ -5,7 +5,9 @@ import { isLastVerificationMethod } from 'api/verification_methods/util';
 
 import { ModuleConfiguration } from 'utils/moduleUtils';
 
-const NemlogInButton = React.lazy(() => import('./components/NemlogInButton'));
+const NemlogInButton = React.lazy(
+  () => import('containers/Authentication/steps/_components/NemLogInButton')
+);
 
 const verificationMethodName: TVerificationMethodName = 'nemlog_in';
 const configuration: ModuleConfiguration = {

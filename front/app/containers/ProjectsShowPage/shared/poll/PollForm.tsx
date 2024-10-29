@@ -93,6 +93,8 @@ const PollForm = ({
   };
 
   const changeAnswerMultiple = (questionId: string, optionId: string) => () => {
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     const oldAnswer = answers[questionId] || [];
 
     toggleElementInArray(oldAnswer, optionId);
@@ -105,7 +107,6 @@ const PollForm = ({
       if (!phaseId) return;
 
       triggerAuthenticationFlow({
-        flow: 'signup',
         context: {
           action: 'taking_poll',
           id: phaseId,
@@ -134,6 +135,8 @@ const PollForm = ({
     return (
       // each question has at least one answer, and this answer is a string (representing the option) and...
       questions.every(
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         (question) => typeof (answers[question.id] || [])[0] === 'string'
       ) &&
       // for multiple options questions...
@@ -169,6 +172,8 @@ const PollForm = ({
                 key={questionIndex}
                 question={question}
                 index={questionIndex}
+                // TODO: Fix this the next time the file is edited.
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 value={(answers[question.id] || [])[0]}
                 disabled={actionDisabledAndNotFixable}
                 onChange={changeAnswerSingle}

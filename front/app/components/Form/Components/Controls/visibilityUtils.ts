@@ -118,7 +118,8 @@ const evalVisibility = (
   pages?: PageType[]
 ): boolean => {
   if (
-    !uischema.ruleArray ||
+    !uischema.ruleArray || // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     (uischema.ruleArray && uischema.ruleArray.length === 0)
   ) {
     return true;
@@ -126,6 +127,8 @@ const evalVisibility = (
 
   const fulfilledRule = uischema.ruleArray.every((currentRule) => {
     const pageWithId = (pages || []).find(
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       (page) => page.options?.id === currentRule.condition?.pageId
     );
     const hasQuestionRule = pageWithId?.elements.find(

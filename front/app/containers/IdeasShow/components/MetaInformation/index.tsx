@@ -57,6 +57,8 @@ const MetaInformation = ({
     const { anonymous } = idea.data.attributes;
     const hideAuthor =
       participationContext?.attributes.participation_method === 'voting';
+    const isProposal =
+      participationContext?.attributes.participation_method === 'proposals';
 
     const topicsEnabled = isFieldEnabled(
       'topic_ids',
@@ -86,7 +88,7 @@ const MetaInformation = ({
               compact={compact}
               anonymous={anonymous}
             />
-            <Status statusId={statusId} compact={compact} />
+            {!isProposal && <Status statusId={statusId} compact={compact} />}
           </>
         )}
         {topicsEnabled && <IdeaTopics ideaId={ideaId} compact={compact} />}

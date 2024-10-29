@@ -31,6 +31,8 @@ const useFollowers = (parameters: IParameters) => {
       queryFn: ({ pageParam }) =>
         fetchFollowers({ ...parameters, pageNumber: pageParam }),
       getNextPageParam: (lastPage) => {
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         const hasNextPage = lastPage.links?.next;
         const pageNumber = getPageNumberFromUrl(lastPage.links.self);
 

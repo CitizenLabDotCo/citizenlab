@@ -11,10 +11,7 @@ import {
 import { darken } from 'polished';
 import styled, { useTheme } from 'styled-components';
 
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';
-
-import useLocale from 'hooks/useLocale';
 
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
@@ -101,21 +98,16 @@ const RightItem = styled.div`
 `;
 
 const DesktopNavbarContent = () => {
-  const { data: appConfiguration } = useAppConfiguration();
   const { data: authUser } = useAuthUser();
-  const locale = useLocale();
   const theme = useTheme();
   const { formatMessage } = useIntl();
-  const tenantLocales = !isNilOrError(appConfiguration)
-    ? appConfiguration.data.attributes.settings.core.locales
-    : [];
   const isEmailSettingsPage = isPage('email-settings', location.pathname);
 
   const isSmallerThanTablet = useBreakpoint('tablet');
   const isDesktopUser = !isSmallerThanTablet;
 
   const signIn = () => {
-    triggerAuthenticationFlow({ flow: 'signin' });
+    triggerAuthenticationFlow({}, 'signin');
   };
 
   return (
@@ -162,11 +154,9 @@ const DesktopNavbarContent = () => {
         </>
       )}
 
-      {tenantLocales.length > 1 && locale && (
-        <RightItem className="noLeftMargin">
-          <StyledLanguageSelector />
-        </RightItem>
-      )}
+      <RightItem className="noLeftMargin">
+        <StyledLanguageSelector />
+      </RightItem>
     </Right>
   );
 };

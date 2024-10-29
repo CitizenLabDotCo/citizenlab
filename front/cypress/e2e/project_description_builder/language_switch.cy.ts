@@ -59,6 +59,7 @@ describe('Project description builder language switch', () => {
     cy.get('.e2e-text-box').click('center');
     cy.get('.ql-editor').click();
     cy.get('.ql-editor').type('Language 1 text.', { force: true });
+    cy.wait(1000);
     // NL
     cy.get('.nl-BE').last().click();
     cy.get('.ql-editor').clear().type('Language 2 text.', { force: true });

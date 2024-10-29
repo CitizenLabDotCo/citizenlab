@@ -10,11 +10,12 @@ import {
 } from 'api/user_custom_fields/types';
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useAppConfigurationLocales, {
+  createMultiloc,
+} from 'hooks/useAppConfigurationLocales';
 
 import GroupFilter from 'containers/Admin/dashboard/components/filters/GroupFilter';
 import groupFilterMessages from 'containers/Admin/dashboard/messages';
-import { createMultiloc } from 'containers/Admin/reporting/utils/multiloc';
 
 import {
   useIntl,
@@ -24,7 +25,11 @@ import {
 
 import platformTemplateMessages from '../../../Templates/PlatformTemplate/messages';
 import UserFieldSelect from '../../_shared/UserFieldSelect';
-import ChartWidgetSettings from '../_shared/ChartWidgetSettings';
+import {
+  TitleInput,
+  DateRangeInput,
+  ProjectInput,
+} from '../_shared/ChartWidgetSettings';
 
 import messages from './messages';
 import { Props } from './typings';
@@ -105,7 +110,11 @@ const Settings = () => {
         emptyOption={false}
         onChange={setCustomFieldId}
       />
-      <ChartWidgetSettings />
+      <Box>
+        <TitleInput />
+        <DateRangeInput label={formatMessage(messages.registrationDateRange)} />
+        <ProjectInput />
+      </Box>
       <Box mb="20px">
         <GroupFilter
           currentGroupFilter={groupId}

@@ -5,80 +5,93 @@ models:
       enabled: true
   idea_status:
     -
-      title_multiloc: idea_statuses.proposed
+      title_multiloc: idea_statuses.prescreening
       ordering: 0
+      code: prescreening
+      color: '#4B4B4B'
+      description_multiloc: idea_statuses.prescreening_description
+      participation_method: ideation
+    -
+      title_multiloc: idea_statuses.proposed
+      ordering: 1
       code: proposed
-      color: '#687782'
+      color: '#057ABE'
       description_multiloc: idea_statuses.proposed_description
       participation_method: ideation
     -
       title_multiloc: idea_statuses.viewed
-      ordering: 1
+      ordering: 2
       code: viewed
       color: '#01A1B1'
       description_multiloc: idea_statuses.viewed_description
       participation_method: ideation
     -
       title_multiloc: idea_statuses.under_consideration
-      ordering: 2
+      ordering: 3
       code: under_consideration
       color: '#0080A5'
       description_multiloc: idea_statuses.under_consideration_description
       participation_method: ideation
     -
       title_multiloc: idea_statuses.accepted
-      ordering: 3
+      ordering: 4
       code: accepted
       color: '#04884C'
       description_multiloc: idea_statuses.accepted_description
       participation_method: ideation
     -
       title_multiloc: idea_statuses.rejected
-      ordering: 4
+      ordering: 5
       code: rejected
       color: '#E52516'
       description_multiloc: idea_statuses.rejected_description
       participation_method: ideation
     -
       title_multiloc: idea_statuses.implemented
-      ordering: 5
+      ordering: 6
       code: implemented
       color: '#04884C'
       description_multiloc: idea_statuses.implemented_description
       participation_method: ideation
+      title_multiloc: idea_statuses.prescreening
+      ordering: 0
+      code: prescreening
+      color: '#4B4B4B'
+      description_multiloc: idea_statuses.prescreening_description
+      participation_method: proposals
     -
       title_multiloc: idea_statuses.proposed
-      ordering: 0
+      ordering: 1
       code: proposed
-      color: '#BEE7EB'
+      color: '#057ABE'
       description_multiloc: idea_statuses.proposed_description
       participation_method: proposals
     -
       title_multiloc: idea_statuses.threshold_reached
-      ordering: 1
+      ordering: 2
       code: threshold_reached
-      color: '#40B8C5'
+      color: '#008300'
       description_multiloc: idea_statuses.threshold_reached_description
       participation_method: proposals
     -
       title_multiloc: idea_statuses.expired
-      ordering: 2
+      ordering: 3
       code: expired
-      color: '#FF672F'
+      color: '#B22222'
       description_multiloc: idea_statuses.expired_description
       participation_method: proposals
     -
       title_multiloc: idea_statuses.answered
-      ordering: 3
+      ordering: 4
       code: answered
-      color: '#147985'
+      color: '#1E3A8A'
       description_multiloc: idea_statuses.answered_description
       participation_method: proposals
     -
       title_multiloc: idea_statuses.ineligible
-      ordering: 4
+      ordering: 5
       code: ineligible
-      color: '#E52516'
+      color: '#8B0000'
       description_multiloc: idea_statuses.ineligible_description
       participation_method: proposals
   initiative_status:
@@ -266,35 +279,6 @@ models:
     top_info_section_multiloc: static_pages.terms_and_conditions_body
     top_info_section_enabled: true
     slug: terms-and-conditions
-  - &initiatives-page
-    code: proposals
-    title_multiloc: static_pages.initiatives_title
-    top_info_section_multiloc: static_pages.initiatives_body
-    top_info_section_enabled: true
-    files_section_enabled: true
-    slug: initiatives
-    text_images_attributes:
-      - imageable_field: top_info_section_multiloc
-        remote_image_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_in_meeting_graphic.png
-        text_reference: 493c1992-608d-4666-90f0-20d38071353d
-      - imageable_field: top_info_section_multiloc
-        remote_image_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_in_meeting_graphic.png
-        text_reference: d5917ff6-985c-479b-bfb5-4b9d424f0933
-      - imageable_field: top_info_section_multiloc
-        remote_image_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_in_meeting_graphic.png
-        text_reference: b4e659ab-2830-48fd-b3ce-96e16856262f
-      - imageable_field: top_info_section_multiloc
-        remote_image_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_in_meeting_graphic.png
-        text_reference: 43f82d75-2aa1-41ab-8c45-9c8ba9dff49f
-      - imageable_field: top_info_section_multiloc
-        remote_image_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_in_meeting_graphic.png
-        text_reference: ba16670d-e551-46af-8ba4-51250fb97439
-      - imageable_field: top_info_section_multiloc
-        remote_image_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_in_meeting_graphic.png
-        text_reference: b4974fd9-7681-4acd-951b-a3979ffc55b0
-      - imageable_field: top_info_section_multiloc
-        remote_image_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_in_meeting_graphic.png
-        text_reference: 85a9e561-4c27-4f6b-949a-d8e06905787b
   - &faq-page
     code: faq
     title_multiloc: static_pages.faq_title
@@ -313,18 +297,15 @@ models:
       code: all_input
       ordering: 2
     -
-      code: proposals
+      code: events
       ordering: 3
     -
-      code: events
-      ordering: 4
-    -
       code: custom
-      ordering: 5
+      ordering: 4
       static_page_ref: *information-page
     -
       code: custom
-      ordering: 6
+      ordering: 5
       static_page_ref: *faq-page
   user:
   - &admin
@@ -1969,6 +1950,7 @@ models:
     project_ref: *76
     author_ref: *mortal1
     location_description: 8185 Austen Green
+    submitted_at: '2018-03-03 00:00:00'
     published_at: '2018-03-03 00:00:00'
     created_at: '2018-02-22 00:00:00'
     updated_at: '2018-03-28 13:35:10'
@@ -1981,6 +1963,7 @@ models:
     project_ref: *verifiedIdeation
     author_ref: *mortal1
     location_description: 8185 Austen Green
+    submitted_at: '2018-03-03 00:00:00'
     published_at: '2018-03-03 00:00:00'
     created_at: '2018-02-22 00:00:00'
     updated_at: '2018-03-28 13:35:10'
@@ -1993,6 +1976,7 @@ models:
     project_ref: *charliesIdeation
     author_ref: *charlie
     location_description: 8185 Austen Green
+    submitted_at: '2018-03-03 00:00:00'
     published_at: '2018-03-03 00:00:00'
     created_at: '2018-02-22 00:00:00'
     updated_at: '2018-03-28 13:35:10'
@@ -2012,6 +1996,7 @@ models:
     project_ref: *verifiedPb
     author_ref: *67
     location_description: 8185 Austen Green
+    submitted_at: '2018-03-03 00:00:00'
     published_at: '2018-03-03 00:00:00'
     created_at: '2018-02-22 00:00:00'
     updated_at: '2018-03-28 13:35:10'
@@ -2032,6 +2017,7 @@ models:
     project_ref: *charliesPb
     author_ref: *67
     location_description: 8185 Austen Green
+    submitted_at: '2018-03-03 00:00:00'
     published_at: '2018-03-03 00:00:00'
     created_at: '2018-02-22 00:00:00'
     updated_at: '2018-03-28 13:35:10'
@@ -2052,6 +2038,7 @@ models:
     project_ref: *Pb
     author_ref: *67
     location_description: 8185 Austen Green
+    submitted_at: '2018-03-03 00:00:00'
     published_at: '2018-03-03 00:00:00'
     created_at: '2018-02-22 00:00:00'
     updated_at: '2018-03-28 13:35:10'
@@ -2071,6 +2058,7 @@ models:
     project_ref: *verifiedPb
     author_ref: *77
     location_description:
+    submitted_at: '2017-11-24 00:00:00'
     published_at: '2017-11-24 00:00:00'
     created_at: '2017-06-09 00:00:00'
     updated_at: '2018-03-28 13:35:09'
@@ -2089,6 +2077,7 @@ models:
     project_ref: *project1
     author_ref: *admin
     location_description: 9908 Audra Place
+    submitted_at: '2017-12-30 00:00:00'
     published_at: '2017-12-30 00:00:00'
     created_at: '2017-10-16 00:00:00'
     updated_at: '2018-03-28 13:35:11'
@@ -2107,6 +2096,7 @@ models:
     project_ref: *85
     author_ref: *86
     location_description:
+    submitted_at: '2017-12-07 00:00:00'
     published_at: '2017-12-07 00:00:00'
     created_at: '2017-09-13 00:00:00'
     updated_at: '2018-03-28 13:35:11'
@@ -2124,6 +2114,7 @@ models:
     project_ref: *90
     author_ref: *67
     location_description:
+    submitted_at: '2018-02-19 00:00:00'
     published_at: '2018-02-19 00:00:00'
     created_at: '2017-09-29 00:00:00'
     updated_at: '2018-03-28 13:35:11'
@@ -2141,6 +2132,7 @@ models:
     project_ref: *66
     author_ref: *94
     location_description: 568 Nitzsche Roads
+    submitted_at: '2018-02-11 00:00:00'
     published_at: '2018-02-11 00:00:00'
     created_at: '2017-09-24 00:00:00'
     updated_at: '2018-03-28 13:35:14'
@@ -2159,6 +2151,7 @@ models:
     project_ref: *90
     author_ref: *98
     location_description: 48962 Alexander Parkways
+    submitted_at: '2018-03-25 00:00:00'
     published_at: '2018-03-25 00:00:00'
     created_at: '2018-01-28 00:00:00'
     updated_at: '2018-03-28 13:35:11'
@@ -2176,6 +2169,7 @@ models:
     project_ref: *project1
     author_ref: *102
     location_description: 7602 Kuhic Spurs
+    submitted_at: '2018-03-12 00:00:00'
     published_at: '2018-03-12 00:00:00'
     created_at: '2017-10-06 00:00:00'
     updated_at: '2018-03-28 13:35:14'
@@ -2193,6 +2187,7 @@ models:
     project_ref: *85
     author_ref: *mortal3
     location_description: 5106 Julio Extension
+    submitted_at: '2018-03-02 00:00:00'
     published_at: '2018-03-02 00:00:00'
     created_at: '2018-01-15 00:00:00'
     updated_at: '2018-03-28 13:35:12'
@@ -2212,6 +2207,7 @@ models:
     project_ref: *76
     author_ref: *110
     location_description:
+    submitted_at: '2017-06-29 00:00:00'
     published_at: '2017-06-29 00:00:00'
     created_at: '2017-04-04 00:00:00'
     updated_at: '2018-03-28 13:35:13'
@@ -2229,6 +2225,7 @@ models:
     project_ref: *project1
     author_ref: *114
     location_description: 164 Fahey Corners
+    submitted_at: '2017-11-10 00:00:00'
     published_at: '2017-11-10 00:00:00'
     created_at: '2017-05-25 00:00:00'
     updated_at: '2018-03-28 13:35:13'
@@ -2247,6 +2244,7 @@ models:
     project_ref: *project1
     author_ref: *110
     location_description: 30741 Crist Stream
+    submitted_at: '2018-03-13 00:00:00'
     published_at: '2018-03-13 00:00:00'
     created_at: '2018-01-15 00:00:00'
     updated_at: '2018-03-28 13:35:13'
@@ -2264,6 +2262,7 @@ models:
     project_ref: *121
     author_ref: *77
     location_description: 165 Terence Lodge
+    submitted_at: '2018-02-04 00:00:00'
     published_at: '2018-02-04 00:00:00'
     created_at: '2018-01-08 00:00:00'
     updated_at: '2018-03-28 13:35:15'
@@ -2282,6 +2281,7 @@ models:
     project_ref: *76
     author_ref: *mortal3
     location_description: 3201 Bogisich Meadows
+    submitted_at: '2017-11-24 00:00:00'
     published_at: '2017-11-24 00:00:00'
     created_at: '2017-11-16 00:00:00'
     updated_at: '2018-03-28 13:35:16'
@@ -2298,6 +2298,7 @@ models:
     project_ref: *76
     author_ref: *128
     location_description: 84767 Jonathon Ridge
+    submitted_at: '2018-03-04 00:00:00'
     published_at: '2018-03-04 00:00:00'
     created_at: '2017-07-07 00:00:00'
     updated_at: '2018-03-28 13:35:15'
@@ -2314,6 +2315,7 @@ models:
     project_ref: *85
     author_ref: *128
     location_description:
+    submitted_at: '2018-03-16 00:00:00'
     published_at: '2018-03-16 00:00:00'
     created_at: '2017-12-03 00:00:00'
     updated_at: '2018-03-28 13:35:16'
@@ -2331,6 +2333,7 @@ models:
     project_ref: *project1
     author_ref: *charlie
     location_description:
+    submitted_at: '2018-02-18 00:00:00'
     published_at: '2018-02-18 00:00:00'
     created_at: '2017-10-27 00:00:00'
     updated_at: '2018-03-28 13:35:17'
@@ -2350,6 +2353,7 @@ models:
     project_ref: *90
     author_ref: *143
     location_description:
+    submitted_at: '2018-02-13 00:00:00'
     published_at: '2018-02-13 00:00:00'
     created_at: '2018-01-07 00:00:00'
     updated_at: '2018-03-28 13:35:18'
@@ -2368,6 +2372,7 @@ models:
     project_ref: *76
     author_ref: *143
     location_description: 42594 Stanley Springs
+    submitted_at: '2018-01-13 00:00:00'
     published_at: '2018-01-13 00:00:00'
     created_at: '2017-11-25 00:00:00'
     updated_at: '2018-03-28 13:35:21'
@@ -2388,6 +2393,7 @@ models:
     project_ref: *76
     author_ref: *143
     location_description: 556 Shad Walks
+    submitted_at: '2017-10-14 00:00:00'
     published_at: '2017-10-14 00:00:00'
     created_at: '2017-07-14 00:00:00'
     updated_at: '2018-03-28 13:35:18'
@@ -2404,6 +2410,7 @@ models:
     project_ref: *66
     author_ref: *98
     location_description:
+    submitted_at: '2018-02-20 00:00:00'
     published_at: '2018-02-20 00:00:00'
     created_at: '2017-12-09 00:00:00'
     updated_at: '2018-03-28 13:35:19'
@@ -2422,6 +2429,7 @@ models:
     project_ref: *66
     author_ref: *159
     location_description: 773 Joanie Village
+    submitted_at: '2018-01-10 00:00:00'
     published_at: '2018-01-10 00:00:00'
     created_at: '2017-11-23 00:00:00'
     updated_at: '2018-03-28 13:35:19'
@@ -2439,6 +2447,7 @@ models:
     project_ref: *66
     author_ref: *163
     location_description:
+    submitted_at: '2017-09-15 00:00:00'
     published_at: '2017-09-15 00:00:00'
     created_at: '2017-05-02 00:00:00'
     updated_at: '2018-03-28 13:35:21'
@@ -2456,6 +2465,7 @@ models:
     project_ref: *76
     author_ref: *admin
     location_description:
+    submitted_at: '2018-03-24 00:00:00'
     published_at: '2018-03-24 00:00:00'
     created_at: '2017-10-21 00:00:00'
     updated_at: '2018-03-28 13:35:20'
@@ -2468,6 +2478,7 @@ models:
     project_ref: *76
     author_ref: *mortal1
     location_description:
+    submitted_at: '1990-08-01 00:00:00'
     published_at: '1990-08-01 00:00:00'
     created_at: '1990-05-15 00:00:00'
     updated_at: '1990-03-28 13:35:21'
@@ -2492,6 +2503,7 @@ models:
     project_ref: *76
     author_ref: *mortal1
     location_description:
+    submitted_at: '2017-09-01 00:00:00'
     published_at: '2017-09-01 00:00:00'
     created_at: '2017-10-15 00:00:00'
     updated_at: '2018-03-28 13:35:21'
@@ -2511,6 +2523,7 @@ models:
     project_ref: *85
     author_ref: *mortal1
     location_description:
+    submitted_at: '2017-08-01 00:00:00'
     published_at: '2017-08-01 00:00:00'
     created_at: '2017-05-15 00:00:00'
     updated_at: '2018-03-28 13:35:21'
@@ -2527,6 +2540,7 @@ models:
     project_ref: *66
     author_ref: *174
     location_description: 688 Kimberly Inlet
+    submitted_at: '2018-03-22 00:00:00'
     published_at: '2018-03-22 00:00:00'
     created_at: '2017-11-07 00:00:00'
     updated_at: '2018-03-28 13:35:20'
@@ -2544,6 +2558,7 @@ models:
     project_ref: *121
     author_ref: *admin
     location_description: 375 Wisozk Ports
+    submitted_at: '2018-01-23 00:00:00'
     published_at: '2018-01-23 00:00:00'
     created_at: '2017-12-10 00:00:00'
     updated_at: '2018-03-28 13:35:22'
@@ -2563,6 +2578,7 @@ models:
     project_ref: *project1
     author_ref: *admin
     location_description: 224 Raynor Coves
+    submitted_at: '2017-09-12 00:00:00'
     published_at: '2017-09-12 00:00:00'
     created_at: '2017-06-05 00:00:00'
     updated_at: '2018-03-28 13:35:22'
@@ -2581,6 +2597,7 @@ models:
     project_ref: *90
     author_ref: *charlie
     location_description: 651 Sanford Mountain
+    submitted_at: '2018-03-05 00:00:00'
     published_at: '2018-03-05 00:00:00'
     created_at: '2017-09-13 00:00:00'
     updated_at: '2018-03-28 13:35:23'
@@ -2598,6 +2615,7 @@ models:
     project_ref: *85
     author_ref: *98
     location_description:
+    submitted_at: '2018-02-28 00:00:00'
     published_at: '2018-02-28 00:00:00'
     created_at: '2017-12-28 00:00:00'
     updated_at: '2018-03-28 13:35:24'
@@ -2614,6 +2632,7 @@ models:
     project_ref: *121
     author_ref: *194
     location_description:
+    submitted_at: '2018-03-20 00:00:00'
     published_at: '2018-03-20 00:00:00'
     created_at: '2018-02-04 00:00:00'
     updated_at: '2018-03-28 13:35:24'
@@ -7051,7 +7070,7 @@ models:
       participation_method: voting
       created_at: '2018-03-28 13:35:04'
       updated_at: '2018-03-28 13:35:04'
-      posting_enabled: false
+      submission_enabled: false
       commenting_enabled: true
       reacting_enabled: true
       reacting_like_method: unlimited
@@ -7069,7 +7088,7 @@ models:
       participation_method: voting
       created_at: '2018-03-28 13:35:04'
       updated_at: '2018-03-28 13:35:04'
-      posting_enabled: false
+      submission_enabled: false
       commenting_enabled: true
       reacting_enabled: true
       reacting_like_method: unlimited
@@ -7087,7 +7106,7 @@ models:
       participation_method: voting
       created_at: '2018-03-28 13:35:04'
       updated_at: '2018-03-28 13:35:04'
-      posting_enabled: false
+      submission_enabled: false
       commenting_enabled: true
       reacting_enabled: true
       reacting_like_method: unlimited
@@ -7103,7 +7122,7 @@ models:
       title_multiloc:
         en: Current phase
       participation_method: ideation
-      posting_enabled: true
+      submission_enabled: true
       commenting_enabled: true
       reacting_enabled: true
       reacting_like_method: unlimited
@@ -7119,7 +7138,7 @@ models:
       presentation_mode: map
       created_at: '2018-03-28 13:35:06'
       updated_at: '2018-03-28 13:35:06'
-      posting_enabled: true
+      submission_enabled: true
       commenting_enabled: true
       reacting_enabled: true
       reacting_like_method: unlimited
@@ -7136,7 +7155,7 @@ models:
       presentation_mode: map
       created_at: '2018-03-28 13:35:06'
       updated_at: '2018-03-28 13:35:06'
-      posting_enabled: true
+      submission_enabled: true
       commenting_enabled: true
       reacting_enabled: true
       reacting_like_method: unlimited
@@ -7152,7 +7171,7 @@ models:
       participation_method: ideation
       created_at: '2018-03-28 13:35:06'
       updated_at: '2018-03-28 13:35:06'
-      posting_enabled: true
+      submission_enabled: true
       commenting_enabled: true
       reacting_enabled: true
       reacting_like_method: unlimited
@@ -7167,7 +7186,7 @@ models:
       participation_method: ideation
       created_at: '2018-03-28 13:35:06'
       updated_at: '2018-03-28 13:35:06'
-      posting_enabled: true
+      submission_enabled: true
       commenting_enabled: true
       reacting_enabled: true
       reacting_like_method: unlimited
@@ -7183,7 +7202,7 @@ models:
       presentation_mode: map
       created_at: '2018-03-28 13:35:06'
       updated_at: '2018-03-28 13:35:06'
-      posting_enabled: true
+      submission_enabled: true
       commenting_enabled: true
       reacting_enabled: true
       reacting_like_method: unlimited
@@ -7202,7 +7221,7 @@ models:
       presentation_mode: map
       created_at: '2018-03-28 13:35:06'
       updated_at: '2018-03-28 13:35:06'
-      posting_enabled: true
+      submission_enabled: true
       commenting_enabled: true
       reacting_enabled: true
       reacting_like_method: unlimited
@@ -7245,7 +7264,7 @@ models:
       presentation_mode: map
       created_at: '2018-03-28 13:35:06'
       updated_at: '2018-03-28 13:35:06'
-      posting_enabled: true
+      submission_enabled: true
       commenting_enabled: true
       reacting_enabled: true
       reacting_like_method: unlimited
@@ -7264,7 +7283,7 @@ models:
       presentation_mode: map
       created_at: '2018-03-28 13:35:06'
       updated_at: '2018-03-28 13:35:06'
-      posting_enabled: true
+      submission_enabled: true
       commenting_enabled: true
       reacting_enabled: true
       reacting_like_method: unlimited
@@ -7277,7 +7296,7 @@ models:
       title_multiloc:
         en: Current phase
       participation_method: native_survey
-      posting_enabled: true
+      submission_enabled: true
       commenting_enabled: true
       reacting_enabled: true
       reacting_like_method: unlimited
@@ -7315,7 +7334,7 @@ models:
         project_phase_started: true
       created_at: '2018-03-28 13:35:05'
       updated_at: '2018-03-28 13:35:05'
-      posting_enabled: true
+      submission_enabled: true
       commenting_enabled: true
       reacting_enabled: true
       reacting_like_method: limited
@@ -7347,7 +7366,7 @@ models:
         project_phase_started: true
       created_at: '2018-03-28 13:35:05'
       updated_at: '2018-03-28 13:35:05'
-      posting_enabled: false
+      submission_enabled: false
       commenting_enabled: true
       reacting_enabled: false
       reacting_like_method: unlimited
@@ -7378,7 +7397,7 @@ models:
         project_phase_started: true
       created_at: '2018-03-28 13:35:05'
       updated_at: '2018-03-28 13:35:05'
-      posting_enabled: true
+      submission_enabled: true
       commenting_enabled: true
       reacting_enabled: true
       reacting_like_method: unlimited
@@ -7413,7 +7432,7 @@ models:
         project_phase_started: true
       created_at: '2018-03-28 13:35:05'
       updated_at: '2018-03-28 13:35:05'
-      posting_enabled: false
+      submission_enabled: false
       commenting_enabled: true
       reacting_enabled: false
       reacting_like_method: unlimited
@@ -7444,7 +7463,7 @@ models:
         project_phase_started: true
       created_at: '2018-03-28 13:35:05'
       updated_at: '2018-03-28 13:35:05'
-      posting_enabled: true
+      submission_enabled: true
       commenting_enabled: true
       reacting_enabled: true
       reacting_like_method: unlimited
@@ -7491,7 +7510,7 @@ models:
         project_phase_started: true
       created_at: '2018-03-28 13:35:07'
       updated_at: '2018-03-28 13:35:07'
-      posting_enabled: false
+      submission_enabled: false
       commenting_enabled: true
       reacting_enabled: false
       reacting_like_method: unlimited
@@ -7524,7 +7543,7 @@ models:
         project_phase_started: true
       created_at: '2018-03-28 13:35:07'
       updated_at: '2018-03-28 13:35:07'
-      posting_enabled: true
+      submission_enabled: true
       commenting_enabled: false
       reacting_enabled: false
       reacting_like_method: unlimited
@@ -7552,7 +7571,7 @@ models:
         project_phase_started: true
       created_at: '2018-03-28 13:35:07'
       updated_at: '2018-03-28 13:35:07'
-      posting_enabled: true
+      submission_enabled: true
       commenting_enabled: true
       reacting_enabled: true
       reacting_like_method: unlimited
@@ -7582,7 +7601,7 @@ models:
         project_phase_started: true
       created_at: '2018-03-28 13:35:08'
       updated_at: '2018-03-28 13:35:08'
-      posting_enabled: true
+      submission_enabled: true
       commenting_enabled: true
       reacting_enabled: true
       reacting_like_method: unlimited
@@ -7616,7 +7635,7 @@ models:
         project_phase_started: true
       created_at: '2018-03-28 13:35:08'
       updated_at: '2018-03-28 13:35:08'
-      posting_enabled: true
+      submission_enabled: true
       commenting_enabled: true
       reacting_enabled: true
       reacting_like_method: unlimited
@@ -7645,7 +7664,7 @@ models:
         project_phase_started: true
       created_at: '2018-03-28 13:35:08'
       updated_at: '2018-03-28 13:35:08'
-      posting_enabled: true
+      submission_enabled: true
       commenting_enabled: true
       reacting_enabled: true
       reacting_like_method: unlimited
@@ -7675,7 +7694,7 @@ models:
         project_phase_started: true
       created_at: '2018-03-28 13:35:08'
       updated_at: '2018-03-28 13:35:08'
-      posting_enabled: true
+      submission_enabled: true
       commenting_enabled: false
       reacting_enabled: true
       reacting_like_method: unlimited
@@ -7702,7 +7721,7 @@ models:
         project_phase_started: true
       created_at: '2018-03-28 13:35:08'
       updated_at: '2018-03-28 13:35:08'
-      posting_enabled: true
+      submission_enabled: true
       commenting_enabled: true
       reacting_enabled: true
       reacting_like_method: unlimited
@@ -7732,7 +7751,7 @@ models:
         project_phase_started: true
       created_at: '2018-03-28 13:35:08'
       updated_at: '2018-03-28 13:35:08'
-      posting_enabled: false
+      submission_enabled: false
       commenting_enabled: true
       reacting_enabled: true
       reacting_like_method: limited
@@ -7761,7 +7780,7 @@ models:
         project_phase_started: true
       created_at: '2018-03-28 13:35:08'
       updated_at: '2018-03-28 13:35:08'
-      posting_enabled: true
+      submission_enabled: true
       commenting_enabled: true
       reacting_enabled: false
       reacting_like_method: limited
@@ -7790,7 +7809,7 @@ models:
         project_phase_started: true
       created_at: '2018-03-28 13:35:09'
       updated_at: '2018-03-28 13:35:09'
-      posting_enabled: true
+      submission_enabled: true
       commenting_enabled: true
       reacting_enabled: true
       reacting_like_method: unlimited
@@ -7822,7 +7841,7 @@ models:
         project_phase_started: true
       created_at: '2018-03-28 13:35:09'
       updated_at: '2018-03-28 13:35:09'
-      posting_enabled: true
+      submission_enabled: true
       commenting_enabled: true
       reacting_enabled: true
       reacting_like_method: unlimited
@@ -7853,7 +7872,7 @@ models:
         project_phase_started: true
       created_at: '2018-03-28 13:35:09'
       updated_at: '2018-03-28 13:35:09'
-      posting_enabled: true
+      submission_enabled: true
       commenting_enabled: true
       reacting_enabled: false
       reacting_like_method: unlimited
@@ -8215,35 +8234,35 @@ models:
   permissions:
     - &111
       action: posting_idea
-      permitted_by: groups
+      permitted_by: users
       permission_scope_ref: *verifiedIdeation_phase
     - &112
       action: reacting_idea
-      permitted_by: groups
+      permitted_by: users
       permission_scope_ref: *verifiedIdeation_phase
     - &113
       action: commenting_idea
-      permitted_by: groups
+      permitted_by: users
       permission_scope_ref: *verifiedIdeation_phase
     - &1132
       action: taking_poll
-      permitted_by: groups
+      permitted_by: users
       permission_scope_ref: *verifiedPoll_phase
     - &114
       action: voting
-      permitted_by: groups
+      permitted_by: users
       permission_scope_ref: *verifiedPb_phase
     - &115
       action: taking_survey
-      permitted_by: groups
+      permitted_by: users
       permission_scope_ref: *verifiedSurvey_phase
     - &1111
       action: posting_idea
-      permitted_by: groups
+      permitted_by: users
       permission_scope_ref: *charliesIdeation_phase
     - &1112
       action: reacting_idea
-      permitted_by: groups
+      permitted_by: users
       permission_scope_ref: *charliesIdeation_phase
     - &1113
       action: commenting_idea
@@ -8251,27 +8270,27 @@ models:
       permission_scope_ref: *charliesIdeation_phase
     - &1114
       action: voting
-      permitted_by: groups
+      permitted_by: users
       permission_scope_ref: *charliesPb_phase
     - &1115
       action: taking_survey
-      permitted_by: groups
+      permitted_by: users
       permission_scope_ref: *charliesSurvey_phase
     - &1116
       action: taking_poll
-      permitted_by: groups
+      permitted_by: users
       permission_scope_ref: *charliesPoll_phase
     - &1117
       action: posting_idea
-      permitted_by: groups
+      permitted_by: users
       permission_scope_ref: *charliesVerifiedPPlproject_phase
     - &1118
       action: reacting_idea
-      permitted_by: groups
+      permitted_by: users
       permission_scope_ref: *charliesVerifiedPPlproject_phase
     - &1119
       action: commenting_idea
-      permitted_by: groups
+      permitted_by: users
       permission_scope_ref: *charliesVerifiedPPlproject_phase
   groups_permissions:
   - permission_ref: *111

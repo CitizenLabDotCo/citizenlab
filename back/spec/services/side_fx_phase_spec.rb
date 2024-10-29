@@ -73,7 +73,7 @@ describe SideFxPhaseService do
         voting_max_votes_per_idea: 9,
         voting_max_total: 11,
         voting_min_total: 2,
-        posting_enabled: false,
+        submission_enabled: false,
         commenting_enabled: false,
         reacting_enabled: false,
         reacting_like_method: 'limited',

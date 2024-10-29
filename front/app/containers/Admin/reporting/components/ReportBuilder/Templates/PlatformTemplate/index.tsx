@@ -5,12 +5,14 @@ import { Element } from '@craftjs/core';
 import { FormatMessage } from 'typings';
 
 import { useProjects } from 'api/graph_data_units';
+import { ProjectReportsPublicationStatus } from 'api/graph_data_units/requestTypes';
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useAppConfigurationLocales, {
+  createMultiloc,
+} from 'hooks/useAppConfigurationLocales';
 
 import useParticipants from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/ParticipantsWidget/useParticipants';
-import { createMultiloc } from 'containers/Admin/reporting/utils/multiloc';
 
 import Container from 'components/admin/ContentBuilder/Widgets/Container';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
@@ -42,9 +44,14 @@ import { getCommunity, getComparedDateRange, getProjects } from './utils';
 interface Props {
   startDate: string;
   endDate: string;
+  publicationStatuses?: ProjectReportsPublicationStatus[];
 }
 
-const PlatformTemplateContent = ({ startDate, endDate }: Props) => {
+const PlatformTemplateContent = ({
+  startDate,
+  endDate,
+  publicationStatuses = ['published'],
+}: Props) => {
   const dateRange = {
     startAt: startDate,
     endAt: endDate,
@@ -70,6 +77,7 @@ const PlatformTemplateContent = ({ startDate, endDate }: Props) => {
   const { data: projects } = useProjects({
     start_at: startDate,
     end_at: endDate,
+    publication_statuses: publicationStatuses,
   });
 
   if (!appConfigurationLocales || !userFields || !stats || !projects) {

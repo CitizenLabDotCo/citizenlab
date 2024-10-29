@@ -9,6 +9,8 @@ const isAuthor = (idea: IIdeaData, user: IUser | undefined) => {
   return (
     user &&
     idea.relationships.author?.data &&
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     idea.relationships.author?.data.id === user.data.id
   );
 };
@@ -33,10 +35,13 @@ definePermissionRule(
 );
 
 definePermissionRule('idea', 'edit', (idea: IIdeaData, user) => {
-  return !!(
+  const userCanEditIdea = !!(
     isAuthor(idea, user) ||
     isAdmin(user) ||
     isIdeaProjectModerator(idea, user)
+  );
+  return (
+    userCanEditIdea && idea.attributes.action_descriptors.editing_idea.enabled
   );
 });
 

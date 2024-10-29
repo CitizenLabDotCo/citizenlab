@@ -14,6 +14,11 @@ export default defineMessages({
     defaultMessage:
       'If you have access to our AI package, you will be able to summarise and categorise text responses with AI',
   },
+  mappingNotInCurrentLicense: {
+    id: 'app.components.formBuilder.mappingNotInCurrentLicense',
+    defaultMessage:
+      'Survey mapping features are not included in your current license. Reach out to your GovSuccess Manager to learn more.',
+  },
   shortAnswer: {
     id: 'app.components.formBuilder.shortAnswer',
     defaultMessage: 'Short answer',
@@ -69,6 +74,10 @@ export default defineMessages({
   fileUpload: {
     id: 'app.components.formBuilder.fileUpload',
     defaultMessage: 'File upload',
+  },
+  cosponsors: {
+    id: 'app.components.formBuilder.cosponsors',
+    defaultMessage: 'Co-sponsors',
   },
   shapefileUpload: {
     id: 'app.components.formBuilder.shapefileUpload',

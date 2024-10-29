@@ -51,15 +51,14 @@ describe('New project with native survey', () => {
     cy.wait(1000);
   });
 
+  // TODO: Improve this test
   it('shows the correct project header', () => {
     cy.get('#e2e-project-description');
     cy.get('#e2e-project-sidebar');
-    cy.get('#e2e-project-sidebar-share-button');
   });
 
   it('shows the survey buttons', () => {
     cy.contains('Take the survey').should('exist');
-    cy.contains('1 survey').should('exist');
 
     // Shows the event CTA when there is an upcoming event
     cy.get('#e2e-project-see-events-button').should('exist');
@@ -111,7 +110,6 @@ describe('Project with native survey phase but not active', () => {
 
   it('does not show the survey buttons', () => {
     cy.contains('Take the survey').should('not.exist');
-    cy.contains('1 survey').should('not.exist');
   });
 
   after(() => {
@@ -169,6 +167,7 @@ describe('Native survey CTA bar', () => {
   const projectDescriptionPreview = randomString(30);
   let projectId: string;
   let projectSlug: string;
+  let phaseId: string;
 
   const firstName = randomString();
   const lastName = randomString();
@@ -189,17 +188,21 @@ describe('Native survey CTA bar', () => {
         }).then((project) => {
           projectId = project.body.data.id;
           projectSlug = project.body.data.attributes.slug;
-          return cy.apiCreatePhase({
-            projectId,
-            title: 'phaseTitle1',
-            startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
-            participationMethod: 'native_survey',
-            nativeSurveyButtonMultiloc: { en: 'Take the survey' },
-            nativeSurveyTitleMultiloc: { en: 'Survey' },
-            canPost: true,
-            canComment: true,
-            canReact: true,
-          });
+          return cy
+            .apiCreatePhase({
+              projectId,
+              title: 'phaseTitle1',
+              startAt: moment().subtract(9, 'month').format('DD/MM/YYYY'),
+              participationMethod: 'native_survey',
+              nativeSurveyButtonMultiloc: { en: 'Take the survey' },
+              nativeSurveyTitleMultiloc: { en: 'Survey' },
+              canPost: true,
+              canComment: true,
+              canReact: true,
+            })
+            .then((phase) => {
+              phaseId = phase.body.data.id;
+            });
         });
       });
   });
@@ -215,11 +218,13 @@ describe('Native survey CTA bar', () => {
     cy.acceptCookies();
     cy.setAdminLoginCookie();
 
-    cy.visit(`admin/projects/${projectId}/settings/access-rights`);
-    cy.get('#e2e-granular-permissions-phase-accordion').click();
-    cy.get('#e2e-granular-permissions').within(() => {
-      cy.get('#e2e-permission-registered-users').should('exist');
-      cy.get('#e2e-permission-registered-users').click();
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/access-rights`);
+
+    cy.get('.e2e-action-accordion-posting_idea').click();
+
+    cy.get('.e2e-action-form-posting_idea').within(() => {
+      cy.get('.e2e-permission-registered-users').should('exist');
+      cy.get('.e2e-permission-registered-users').first().click();
     });
 
     cy.logout();
@@ -231,7 +236,7 @@ describe('Native survey CTA bar', () => {
     cy.get('.e2e-idea-button')
       .find('button')
       .should('not.have.attr', 'disabled');
-    cy.get('.e2e-idea-button').find('button').click({ force: true });
+    cy.get('.e2e-idea-button').first().find('button').click({ force: true });
     cy.get('[data-cy="e2e-next-page"]').click();
 
     // Save survey response

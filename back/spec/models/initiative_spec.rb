@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-# TODO: move-old-proposals-test
+# TODO: cleanup-after-proposals-migration
 RSpec.describe Initiative do
   context 'associations' do
     it { is_expected.to have_many(:reactions) }

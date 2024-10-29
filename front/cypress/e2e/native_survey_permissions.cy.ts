@@ -66,19 +66,10 @@ describe('Native survey permissions', () => {
                           action: 'posting_idea',
                           permissionBody: {
                             permission: {
-                              // Don't ask global custom fields
-                              global_custom_fields: false,
-                              permitted_by: 'groups',
+                              permitted_by: 'users',
                               group_ids: [smartGroupId],
                             },
                           },
-                        }).then(() => {
-                          // Only ask this custom field
-                          cy.apiSetPermissionCustomField(
-                            phaseId,
-                            'posting_idea',
-                            customFieldId
-                          );
                         });
                       });
                     });
@@ -101,7 +92,7 @@ describe('Native survey permissions', () => {
       cy.visit(`/projects/${projectSlug}`);
 
       // Auth modal opens correctly
-      cy.get('.e2e-idea-button').find('button').click({ force: true });
+      cy.get('.e2e-idea-button').first().find('button').click({ force: true });
       cy.get('#e2e-authentication-modal').should('exist');
 
       // Complete email sign up
@@ -129,13 +120,13 @@ describe('Native survey permissions', () => {
       cy.get('#e2e-verify-email-button').click();
 
       // Enter custom fields step
-      // At this point there should be only one custom field shown
-      cy.get('#e2e-signup-custom-fields-container')
-        .get('label')
-        .should('have.length', 1);
+      cy.get('#e2e-signup-custom-fields-container');
 
       // Select Option A
-      cy.get('#e2e-signup-custom-fields-container').get('select').select(1);
+      cy.get('#e2e-signup-custom-fields-container')
+        .get('select')
+        .first()
+        .select(1);
 
       // Submit custom fields
       cy.get('#e2e-signup-custom-fields-submit-btn').click();
@@ -156,7 +147,7 @@ describe('Native survey permissions', () => {
       cy.visit(`/projects/${projectSlug}`);
 
       // Auth modal opens correctly
-      cy.get('.e2e-idea-button').find('button').click({ force: true });
+      cy.get('.e2e-idea-button').first().find('button').click({ force: true });
       cy.get('#e2e-authentication-modal').should('exist');
 
       // Complete email sign up
@@ -183,23 +174,27 @@ describe('Native survey permissions', () => {
       cy.get('#e2e-verify-email-button').click();
 
       // Enter custom fields step
-      // At this point there should be only one custom field shown
-      cy.get('#e2e-signup-custom-fields-container')
-        .get('label')
-        .should('have.length', 1);
+      cy.get('#e2e-signup-custom-fields-container');
 
       // Select Option B
-      cy.get('#e2e-signup-custom-fields-container').get('select').select(2);
+      cy.get('#e2e-signup-custom-fields-container')
+        .get('select')
+        .first()
+        .select(2);
 
       // Submit custom fields
       cy.get('#e2e-signup-custom-fields-submit-btn').click();
 
-      // Expect to be kicked out of auth modal
-      cy.get('#e2e-authentication-modal').should('not.exist');
+      // Expect to see access denied step
+      cy.get('#e2e-access-denied-step').should('exist');
+
+      // Close modal
+      cy.get('.e2e-modal-close-button').click();
 
       // Expect button to be disabled
       cy.wait(5000);
       cy.get('.e2e-idea-button')
+        .first()
         .find('button')
         .should('have.attr', 'aria-disabled', 'true');
     });

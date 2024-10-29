@@ -13,6 +13,11 @@ export default defineMessages({
     id: 'app.containers.admin.ReportBuilder.charts.analyticsChartDateRange',
     defaultMessage: 'Date range',
   },
+  adminInaccurateParticipantsWarning1: {
+    id: 'app.containers.admin.ReportBuilder.charts.adminInaccurateParticipantsWarning1',
+    defaultMessage:
+      'Please note that participation numbers may not be fully accurate as some data is captured in an external survey that we do not track.',
+  },
   visitorTimeline: {
     id: 'app.containers.admin.ReportBuilder.charts.visitorTimeline',
     defaultMessage: 'Visitor timeline',

@@ -385,7 +385,7 @@ describe Export::Xlsx::InputSheetGenerator do
               column_headers: [
                 'ID',
                 'What are your favourite pets?',
-                "If you picked 'Other', what are you thinking of?",
+                'Type your answer',
                 'Submitted at',
                 'Project'
               ],

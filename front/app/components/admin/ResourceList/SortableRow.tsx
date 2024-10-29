@@ -23,6 +23,7 @@ interface Props {
   children?: React.ReactNode;
   dataTestid?: string;
   dragByHandle?: boolean;
+  disableNestedStyles?: boolean;
 }
 
 interface DragItem {
@@ -44,6 +45,7 @@ const SortableRow = ({
   moveRow,
   dataTestid,
   dragByHandle = false,
+  disableNestedStyles,
 }: Props) => {
   const ref = useRef<HTMLDivElement | null>(null);
   const handleRef = useRef<HTMLDivElement | null>(null);
@@ -71,6 +73,8 @@ const SortableRow = ({
       }
 
       // Determine rectangle on screen
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       const hoverBoundingRect = ref.current?.getBoundingClientRect();
 
       // Get vertical middle
@@ -142,7 +146,7 @@ const SortableRow = ({
       data-handler-id={handlerId}
       data-testid={dataTestid}
     >
-      <Row isLastItem={isLastItem}>
+      <Row isLastItem={isLastItem} disableNestedStyles={disableNestedStyles}>
         <DragHandle className="sortablerow-draghandle" ref={handleRef}>
           <Icon width="12px" name="sort" />
         </DragHandle>

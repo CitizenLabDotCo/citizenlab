@@ -9,6 +9,7 @@ import {
   IconNames,
   Tooltip,
   Button as ButtonComponent,
+  Box,
 } from '@citizenlab/cl2-component-library';
 import { lighten } from 'polished';
 import { FormattedDate } from 'react-intl';
@@ -113,9 +114,11 @@ const ReactionIconContainer = styled.div<{
   }) => {
     if (buttonReactionModeIsActive) {
       if (
-        reactingEnabled ||
+        reactingEnabled || // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         (!reactingEnabled &&
-          disabledReason === 'reacting_dislike_limited_max_reached') ||
+          disabledReason === 'reacting_dislike_limited_max_reached') || // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         (!reactingEnabled &&
           disabledReason === 'reacting_like_limited_max_reached')
       ) {
@@ -260,6 +263,8 @@ const ReactionIcon = styled(Icon)<{
         `;
       }
 
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (!reactingEnabled) {
         return `
           fill: ${
@@ -418,12 +423,13 @@ const ReactionButton = ({
         trigger="mouseenter"
         width={variant === 'text' ? '100%' : 'fit-content'}
       >
-        <>
+        <Box>
           {variant === 'text' && (
             <ButtonComponent
               onClick={onClick}
               icon={buttonReactionModeIsActive ? 'check' : 'vote-ballot'}
               bgColor={buttonReactionModeIsActive ? colors.success : undefined}
+              className="e2e-ideacard-vote-button"
             >
               {buttonReactionModeIsActive ? (
                 <FormattedMessage {...messages.voted} />
@@ -495,7 +501,7 @@ const ReactionButton = ({
               {disabledMessage}
             </ScreenReaderOnly>
           )}
-        </>
+        </Box>
       </Tooltip>
     );
   }

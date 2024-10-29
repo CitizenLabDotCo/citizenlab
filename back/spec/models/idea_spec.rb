@@ -438,11 +438,11 @@ RSpec.describe Idea do
         create(:idea, idea_status: create(:idea_status_proposed)),
         create(:idea, idea_status: create(:idea_status, code: 'accepted')),
         create(:idea, idea_status: create(:idea_status_proposed)),
-        create(:idea, idea_status: create(:idea_status, code: 'viewed'))
+        create(:idea, idea_status: create(:idea_status, code: 'threshold_reached'))
       ]
       create(:official_feedback, post: ideas[0])
 
-      expect(described_class.feedback_needed.ids).to match_array [ideas[2].id]
+      expect(described_class.feedback_needed.ids).to match_array [ideas[2].id, ideas[3].id]
     end
   end
 
@@ -547,8 +547,8 @@ RSpec.describe Idea do
   end
 
   describe 'activity_after' do
-    let_it_be(:recent_idea) { create(:idea, updated_at: 1.day.ago) }
-    let_it_be(:old_idea) { create(:idea, updated_at: 30.days.ago) }
+    let_it_be(:recent_idea) { create(:idea).tap { |idea| idea.update!(updated_at: 1.day.ago) } }
+    let_it_be(:old_idea) { create(:idea).tap { |idea| idea.update!(updated_at: 30.days.ago) } }
 
     let(:recent_ideas) { described_class.activity_after(7.days.ago) }
 
@@ -678,6 +678,17 @@ RSpec.describe Idea do
         idea.update!(author: author)
         expect(idea.author_hash).not_to eq old_idea_hash
       end
+    end
+  end
+
+  describe 'where_pmethod scope' do
+    it 'returns only the ideas with a participation method that returns true for the given block' do
+      create(:idea_status_proposed)
+      idea = create(:idea)
+      proposal = create(:proposal)
+      _response = create(:native_survey_response)
+
+      expect(described_class.where_pmethod { |pmethod| %w[ideation proposals].include? pmethod.class.method_str }).to match_array [proposal, idea]
     end
   end
 end

@@ -411,10 +411,11 @@ describe('Survey builder', () => {
   });
 
   it('allows admins to fill in surveys as many times as they want when permissions are set to registered users', () => {
-    cy.visit(`admin/projects/${projectId}/settings/access-rights`);
-    cy.get('#e2e-granular-permissions-phase-accordion').click();
-    cy.get('#e2e-granular-permissions').within(() => {
-      cy.get('#e2e-permission-registered-users').click();
+    cy.visit(`/admin/projects/${projectId}/phases/${phaseId}/access-rights`);
+
+    cy.get('.e2e-action-accordion-posting_idea').click();
+    cy.get('.e2e-action-form-posting_idea').within(() => {
+      cy.get('.e2e-permission-registered-users').click();
     });
 
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/native-survey`);
@@ -440,7 +441,6 @@ describe('Survey builder', () => {
 
     // Take the survey again
     cy.visit(`/projects/${projectSlug}`);
-    cy.get('#e2e-project-sidebar-surveys-count').should('exist');
     cy.get('#project-survey-button')
       .find('button')
       .should('not.have.attr', 'disabled');
@@ -730,11 +730,11 @@ describe('Survey builder', () => {
     const email = randomEmail();
     const password = randomString();
 
-    cy.visit(`admin/projects/${projectId}/settings/access-rights`);
+    cy.visit(`/admin/projects/${projectId}/phases/${phaseId}/access-rights`);
 
-    cy.get('#e2e-granular-permissions-phase-accordion').click();
-    cy.get('#e2e-granular-permissions').within(() => {
-      cy.get('#e2e-permission-registered-users').click();
+    cy.get('.e2e-action-accordion-posting_idea').click();
+    cy.get('.e2e-action-form-posting_idea').within(() => {
+      cy.get('.e2e-permission-registered-users').click();
     });
 
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/native-survey`);
@@ -763,10 +763,10 @@ describe('Survey builder', () => {
     cy.visit(`/projects/${projectSlug}`);
     cy.acceptCookies();
     cy.get('.e2e-idea-button')
+      .first()
       .find('button')
       .should('not.have.attr', 'disabled');
-    cy.get('#e2e-project-sidebar-surveys-count').should('exist');
-    cy.get('.e2e-idea-button').find('button').click({ force: true });
+    cy.get('.e2e-idea-button').first().find('button').click({ force: true });
     cy.contains(questionTitle).should('exist');
     cy.get(`*[id^="properties${questionTitle}"]`).type(answer, { force: true });
 
@@ -783,8 +783,10 @@ describe('Survey builder', () => {
 
     // Try filling in the survey again
     cy.visit(`/projects/${projectSlug}`);
-    cy.get('.e2e-idea-button').find('button').should('have.attr', 'disabled');
-    cy.get('#e2e-project-sidebar-surveys-count').should('exist');
+    cy.get('.e2e-idea-button')
+      .first()
+      .find('button')
+      .should('have.attr', 'disabled');
   });
 
   it('shows validation errors when current page or previous pages are referenced', () => {

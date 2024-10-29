@@ -1,6 +1,8 @@
 module Permissions
   class BasePermissionsService
     SUPPORTED_ACTIONS = %w[
+      following
+      visiting
       posting_initiative
       commenting_initiative
       reacting_initiative
@@ -28,10 +30,12 @@ module Permissions
     def initialize(user, user_requirements_service: nil)
       @user = user
       @user_requirements_service = user_requirements_service
-      @user_requirements_service ||= Permissions::UserRequirementsService.new(check_groups: false)
+      @user_requirements_service ||= Permissions::UserRequirementsService.new(check_groups_and_verification: false)
     end
 
     def denied_reason_for_action(action, scope: nil)
+      return unless supported_action? action
+
       permission = find_permission(action, scope: scope)
       user_denied_reason(permission)
     end
@@ -41,9 +45,7 @@ module Permissions
     attr_reader :user, :user_requirements_service
 
     def supported_action?(action)
-      return true if SUPPORTED_ACTIONS.include? action
-
-      raise "Unsupported action: #{action}"
+      SUPPORTED_ACTIONS.include? action
     end
 
     def find_permission(action, scope: nil)
@@ -58,8 +60,6 @@ module Permissions
         end
       end
 
-      raise "Unknown action '#{action}' for scope: #{scope}" if !permission
-
       permission
     end
 
@@ -72,7 +72,7 @@ module Permissions
       return USER_DENIED_REASONS[:user_not_active] unless user.active?
       return if UserRoleService.new.can_moderate? scope, user
       return USER_DENIED_REASONS[:user_not_permitted] if permission.permitted_by == 'admins_moderators'
-      return USER_DENIED_REASONS[:user_missing_requirements] unless user_requirements_service.requirements(permission, user)[:permitted]
+      return USER_DENIED_REASONS[:user_missing_requirements] unless user_requirements_service.permitted_for_permission?(permission, user)
       return USER_DENIED_REASONS[:user_not_verified] if user_requirements_service.requires_verification?(permission, user)
       return USER_DENIED_REASONS[:user_not_in_group] if denied_when_permitted_by_groups?(permission)
 
@@ -80,7 +80,7 @@ module Permissions
     end
 
     def denied_when_permitted_by_groups?(permission)
-      permission.permitted_by == 'groups' && permission.groups && !user.in_any_groups?(permission.groups)
+      permission.groups.any? && !user.in_any_groups?(permission.groups)
     end
   end
 end

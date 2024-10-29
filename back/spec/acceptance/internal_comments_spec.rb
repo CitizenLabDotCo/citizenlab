@@ -295,7 +295,7 @@ resource 'InternalComments' do
     end
   end
 
-  # TODO: move-old-proposals-test
+  # TODO: cleanup-after-proposals-migration
   context 'when internal comments are on an initiative' do
     before { @initiative = create(:initiative) }
 

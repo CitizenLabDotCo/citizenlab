@@ -19,15 +19,23 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../../messages';
+import FieldTypeSwitcher from '../FieldTypeSwitcher';
 
 type ContentSettingsProps = {
   field: IFlatCustomFieldWithIndex;
   locales: SupportedLocale[];
+  formHasSubmissions: boolean;
 };
 
-export const ContentSettings = ({ field, locales }: ContentSettingsProps) => {
+export const ContentSettings = ({
+  field,
+  locales,
+  formHasSubmissions,
+}: ContentSettingsProps) => {
   const { watch } = useFormContext();
   const logic = watch(`customFields.${field.index}.logic`);
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const lockedAttributes = field?.constraints?.locks;
   const platformLocale = useLocale();
   const hasRules = logic && logic.rules && logic.rules.length > 0;
@@ -45,6 +53,10 @@ export const ContentSettings = ({ field, locales }: ContentSettingsProps) => {
       <Box mt="16px">
         {!isFieldGrouping && (
           <>
+            <FieldTypeSwitcher
+              field={field}
+              formHasSubmissions={formHasSubmissions}
+            />
             {!lockedAttributes?.title_multiloc && (
               <SectionField>
                 <InputMultilocWithLocaleSwitcher
@@ -68,7 +80,12 @@ export const ContentSettings = ({ field, locales }: ContentSettingsProps) => {
             </SectionField>
           </>
         )}
-        {getAdditionalSettings(field, locales, platformLocale)}
+        {getAdditionalSettings(
+          field,
+          watch(`customFields.${field.index}.input_type`),
+          locales,
+          platformLocale
+        )}
         {!isFieldGrouping && (
           <>
             <SectionField id="e2e-required-toggle">

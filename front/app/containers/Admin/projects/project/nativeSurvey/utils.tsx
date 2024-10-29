@@ -81,11 +81,11 @@ export const getFormActionsConfig = (
     downloadExcelLink: `${API_PATH}/phases/${phase.id}/importer/export_form/idea/xlsx`,
     downloadPdfLink: `${API_PATH}/phases/${phase.id}/importer/export_form/idea/pdf`,
     heading: phase.attributes.title_multiloc,
-    postingEnabled: phase.attributes.posting_enabled,
+    postingEnabled: phase.attributes.submission_enabled,
     togglePostingEnabled: () => {
       updatePhase({
         phaseId: phase.id,
-        posting_enabled: !phase.attributes.posting_enabled,
+        submission_enabled: !phase.attributes.submission_enabled,
       });
     },
   };
@@ -93,6 +93,8 @@ export const getFormActionsConfig = (
 
 // Remove the IDs from the options - for when the form is not persisted
 export const clearOptionIds = (customFields: IFlatCustomField[]) => {
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   return customFields?.map((field: IFlatCustomField) => {
     if (field.options && field.options.length > 0) {
       field.options = field.options.map((option: IOptionsType) => {

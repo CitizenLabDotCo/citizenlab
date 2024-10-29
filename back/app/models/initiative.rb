@@ -113,6 +113,12 @@ class Initiative < ApplicationRecord
       .order("initiative_statuses.ordering #{direction}, initiatives.published_at #{direction}, initiatives.id")
   }
 
+  scope :order_accepted_cosponsorships, lambda { |direction = :desc|
+    joins('LEFT OUTER JOIN cosponsors_initiatives ON initiatives.id = cosponsors_initiatives.initiative_id AND cosponsors_initiatives.status = \'accepted\'')
+      .group('cosponsors_initiatives.initiative_id', 'initiatives.id')
+      .order("COUNT(cosponsors_initiatives.id) #{direction}, initiatives.published_at #{direction}, initiatives.id")
+  }
+
   scope :feedback_needed, -> { with_status_code('threshold_reached') }
   scope :no_feedback_needed, -> { with_status_code(InitiativeStatus::CODES - ['threshold_reached']) }
   scope :proposed, -> { with_status_code('proposed') }

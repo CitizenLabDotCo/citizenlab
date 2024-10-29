@@ -67,7 +67,6 @@ const EmbeddedSurveyCTABar = ({ phases, project }: CTABarProps) => {
       };
 
       triggerAuthenticationFlow({
-        flow: 'signup',
         context: {
           type: 'phase',
           action: 'taking_survey',

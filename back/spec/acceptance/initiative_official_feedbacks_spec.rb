@@ -3,7 +3,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-# TODO: move-old-proposals-test
+# TODO: cleanup-after-proposals-migration
 resource 'OfficialFeedback' do
   explanation 'Official feedback is input from moderators on content (i.e. ideas), separated from comments.'
 

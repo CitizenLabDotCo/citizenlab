@@ -1,6 +1,11 @@
 import React, { useState, useEffect, FormEvent } from 'react';
 
-import { IconTooltip, Box, Button } from '@citizenlab/cl2-component-library';
+import {
+  IconTooltip,
+  Box,
+  Text,
+  Button,
+} from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { isEmpty } from 'lodash-es';
 import { useForm, FormProvider } from 'react-hook-form';
@@ -26,11 +31,14 @@ import ImagesDropzone from 'components/HookForm/ImagesDropzone';
 import Input from 'components/HookForm/Input';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
 import Select from 'components/HookForm/Select';
+import commentsMessages from 'components/PostShowComponents/Comments/messages';
+import Error from 'components/UI/Error';
 import { FormSection, FormSectionTitle } from 'components/UI/FormComponents';
 import UserCustomFieldsForm from 'components/UserCustomFields';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { queryClient } from 'utils/cl-react-query/queryClient';
+import Link from 'utils/cl-router/Link';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 
@@ -65,6 +73,7 @@ const ProfileForm = () => {
   const { formatMessage } = useIntl();
   const [extraFormData, setExtraFormData] = useState<Record<string, any>>({});
   const [showAllErrors, setShowAllErrors] = useState(false);
+  const [profanityApiError, setProfanityApiError] = useState(false);
 
   const schema = object({
     first_name: string().when('last_name', (last_name, schema) => {
@@ -156,7 +165,14 @@ const ProfileForm = () => {
       queryClient.invalidateQueries({
         queryKey: onboardingCampaignsKeys.all(),
       });
+      setProfanityApiError(false);
     } catch (error) {
+      const profanityApiError = error.errors.base.find(
+        (apiError) => apiError.error === 'includes_banned_words'
+      );
+      if (profanityApiError) {
+        setProfanityApiError(true);
+      }
       handleHookFormSubmissionError(error, methods.setError);
     }
   };
@@ -175,7 +191,24 @@ const ProfileForm = () => {
           />
           <SectionField>
             <Feedback successMessage={formatMessage(messages.messageSuccess)} />
+            {profanityApiError && (
+              <Error
+                text={
+                  <FormattedMessage
+                    {...commentsMessages.profanityError}
+                    values={{
+                      guidelinesLink: (
+                        <Link to="/pages/faq" target="_blank">
+                          {formatMessage(commentsMessages.guidelinesLinkText)}
+                        </Link>
+                      ),
+                    }}
+                  />
+                }
+              />
+            )}
           </SectionField>
+
           {userAvatarsEnabled && (
             <SectionField>
               <ImagesDropzone
@@ -195,6 +228,18 @@ const ProfileForm = () => {
             </SectionField>
           )}
 
+          {/* TODO: Fix this the next time the file is edited. */}
+          {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
+          {authUser?.data.attributes.no_name && (
+            <Text>
+              <FormattedMessage
+                {...messages.noNameWarning}
+                // TODO: Fix this the next time the file is edited.
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+                values={{ displayName: authUser?.data.attributes.display_name }}
+              />
+            </Text>
+          )}
           <SectionField>
             <InputContainer>
               <Input
@@ -212,7 +257,6 @@ const ProfileForm = () => {
               )}
             </InputContainer>
           </SectionField>
-
           <SectionField>
             <InputContainer>
               <Input
@@ -241,7 +285,6 @@ const ProfileForm = () => {
               />
             </SectionField>
           )}
-
           <SectionField>
             <Select
               name="locale"

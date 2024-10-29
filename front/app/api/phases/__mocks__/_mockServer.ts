@@ -14,7 +14,7 @@ export const phasesData: IPhaseData[] = [
       end_at: 'one week from now',
       created_at: 'yesterday',
       updated_at: 'yesterday but later',
-      posting_enabled: false,
+      submission_enabled: false,
       commenting_enabled: false,
       reacting_enabled: false,
       reacting_like_limited_max: 0,
@@ -58,7 +58,7 @@ export const phasesData: IPhaseData[] = [
       created_at: 'yesterday',
       updated_at: 'yesterday but later',
       participation_method: 'poll',
-      posting_enabled: false,
+      submission_enabled: false,
       commenting_enabled: false,
       reacting_enabled: false,
       reacting_like_method: 'limited',
@@ -99,7 +99,7 @@ export const phasesData: IPhaseData[] = [
       created_at: 'yesterday',
       updated_at: 'yesterday but later',
       participation_method: 'ideation',
-      posting_enabled: true,
+      submission_enabled: true,
       commenting_enabled: true,
       reacting_enabled: true,
       reacting_like_method: 'limited',
@@ -143,7 +143,7 @@ export const mockPhaseInformationData: IPhaseData = {
     end_at: 'one week from now',
     created_at: 'yesterday',
     updated_at: 'yesterday but later',
-    posting_enabled: false,
+    submission_enabled: false,
     commenting_enabled: false,
     reacting_enabled: false,
     reacting_like_limited_max: 0,
@@ -188,7 +188,7 @@ export const mockPhaseIdeationData: IPhaseData = {
     created_at: 'yesterday',
     updated_at: 'yesterday but later',
     participation_method: 'ideation',
-    posting_enabled: true,
+    submission_enabled: true,
     commenting_enabled: true,
     reacting_enabled: true,
     reacting_like_method: 'limited',
@@ -237,7 +237,7 @@ export const mockPhaseSurveyTypeformData: IPhaseData = {
     input_term: 'idea',
     presentation_mode: 'card',
     ideas_count: 3,
-    posting_enabled: false,
+    submission_enabled: false,
     commenting_enabled: false,
     reacting_enabled: false,
     reacting_like_limited_max: 0,
@@ -282,7 +282,7 @@ export const mockPhaseSurveyGoogleFormData: IPhaseData = {
     reacting_dislike_method: 'limited',
     input_term: 'idea',
     presentation_mode: 'card',
-    posting_enabled: false,
+    submission_enabled: false,
     commenting_enabled: false,
     reacting_enabled: false,
     reacting_like_limited_max: 0,
@@ -345,7 +345,7 @@ const votingPhase: IPhaseData = {
     campaigns_settings: {
       project_phase_started: true,
     },
-    posting_enabled: true,
+    submission_enabled: true,
     commenting_enabled: true,
     reacting_enabled: true,
     reacting_like_method: 'unlimited',
@@ -360,6 +360,7 @@ const votingPhase: IPhaseData = {
     voting_min_total: 0,
     voting_max_votes_per_idea: 1,
     baskets_count: 0,
+    votes_count: 100,
     voting_term_singular_multiloc: {
       en: 'vote',
       'nl-BE': 'stem',
@@ -378,7 +379,6 @@ const votingPhase: IPhaseData = {
       'sr-Latn': 'votes',
       'da-DK': 'afstemninger',
     },
-    votes_count: 0,
     report_public: false,
   },
   relationships: {
@@ -397,5 +397,43 @@ const votingPhase: IPhaseData = {
 export const votingPhaseHandler = http.get(apiPathPhase, () => {
   return HttpResponse.json({ data: votingPhase }, { status: 200 });
 });
+
+export const votingPastNoResultPhaseHandler = http.get(apiPathPhase, () => {
+  const votingPhasePastNoResultSharing = votingPhase;
+  votingPhasePastNoResultSharing.attributes.autoshare_results_enabled = false;
+  votingPhasePastNoResultSharing.attributes.start_at = '2023-11-10';
+  votingPhasePastNoResultSharing.attributes.end_at = '2023-11-19';
+
+  return HttpResponse.json(
+    { data: votingPhasePastNoResultSharing },
+    { status: 200 }
+  );
+});
+
+export const budgetingPastNoResultPhaseHandler = http.get(apiPathPhase, () => {
+  const votingPhasePastNoResultSharing = votingPhase;
+  votingPhasePastNoResultSharing.attributes.voting_method = 'budgeting';
+  votingPhasePastNoResultSharing.attributes.voting_max_total = 1000;
+  votingPhasePastNoResultSharing.attributes.start_at = '2023-11-10';
+  votingPhasePastNoResultSharing.attributes.end_at = '2023-11-19';
+
+  return HttpResponse.json(
+    { data: votingPhasePastNoResultSharing },
+    { status: 200 }
+  );
+});
+
+export const votingPhaseAutoshareDisabledHandler = http.get(
+  apiPathPhase,
+  () => {
+    const votingPhaseAutoshareDisabled = votingPhase;
+    votingPhaseAutoshareDisabled.attributes.autoshare_results_enabled = false;
+
+    return HttpResponse.json(
+      { data: votingPhaseAutoshareDisabled },
+      { status: 200 }
+    );
+  }
+);
 
 export default endpoints;

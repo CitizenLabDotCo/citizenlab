@@ -37,6 +37,12 @@ FactoryBot.define do
     initiating_user
   end
 
+  factory :cosponsor_of_your_idea, parent: :notification, class: 'Notifications::CosponsorOfYourIdea' do
+    association :post, factory: :idea
+    cosponsorship
+    initiating_user
+  end
+
   factory :internal_comment_on_idea_assigned_to_you,
     parent: :notification,
     class: 'Notifications::InternalComments::InternalCommentOnIdeaAssignedToYou' do
@@ -127,6 +133,12 @@ FactoryBot.define do
   factory :invitation_to_cosponsor_initiative, parent: :notification, class: 'Notifications::InvitationToCosponsorInitiative' do
     association :post, factory: :initiative
     cosponsors_initiative
+    initiating_user
+  end
+
+  factory :invitation_to_cosponsor_idea, parent: :notification, class: 'Notifications::InvitationToCosponsorIdea' do
+    association :post, factory: :idea
+    cosponsorship
     initiating_user
   end
 
@@ -223,10 +235,7 @@ FactoryBot.define do
 
   factory :threshold_reached_for_admin, parent: :notification, class: 'Notifications::ThresholdReachedForAdmin' do
     association :post, factory: :initiative
-    association :post_status, factory: :initiative_status
-    before(:create) do |notification|
-      notification.post.initiative_status_changes.create!(initiative_status: notification.post_status)
-    end
+    association :post_status, factory: :proposals_status
   end
 
   factory :native_survey_not_submitted, parent: :notification, class: 'Notifications::NativeSurveyNotSubmitted' do

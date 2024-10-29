@@ -5,7 +5,7 @@ import { useNode } from '@craftjs/core';
 import moment, { Moment } from 'moment';
 import { IOption, Multiloc } from 'typings';
 
-import DateRangePicker from 'components/admin/DateRangePicker';
+import DateRangePicker from 'components/admin/DatePickers/DateRangePicker';
 import { getComparedTimeRange } from 'components/admin/GraphCards/_utils/query';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
@@ -58,7 +58,15 @@ export const TitleInput = () => {
   );
 };
 
-export const DateRangeInput = ({ resetComparePeriod = false }) => {
+interface DateRangeProps {
+  resetComparePeriod?: boolean;
+  label?: string;
+}
+
+export const DateRangeInput = ({
+  resetComparePeriod = false,
+  label,
+}: DateRangeProps) => {
   const { formatMessage } = useIntl();
   const {
     actions: { setProp },
@@ -116,7 +124,7 @@ export const DateRangeInput = ({ resetComparePeriod = false }) => {
   return (
     <Box mb="20px">
       <Text variant="bodyM" color="textSecondary" mb="5px">
-        {formatMessage(messages.analyticsChartDateRange)}
+        {label ?? formatMessage(messages.analyticsChartDateRange)}
       </Text>
       <DateRangePicker
         startDate={startAtMoment}

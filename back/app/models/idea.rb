@@ -33,6 +33,7 @@
 #  internal_comments_count  :integer          default(0), not null
 #  votes_count              :integer          default(0), not null
 #  followers_count          :integer          default(0), not null
+#  submitted_at             :datetime
 #
 # Indexes
 #
@@ -92,6 +93,9 @@ class Idea < ApplicationRecord
   has_many :text_images, as: :imageable, dependent: :destroy
   has_many :followers, as: :followable, dependent: :destroy
 
+  has_many :cosponsorships, dependent: :destroy
+  has_many :cosponsors, through: :cosponsorships, source: :user
+
   has_many :idea_images, -> { order(:ordering) }, dependent: :destroy, inverse_of: :idea
   has_many :idea_files, -> { order(:ordering) }, dependent: :destroy, inverse_of: :idea
   has_one :idea_trending_info
@@ -100,17 +104,19 @@ class Idea < ApplicationRecord
 
   with_options unless: :draft? do |post|
     post.before_validation :strip_title
+    post.after_validation :set_submitted_at, if: ->(record) { record.submitted_or_published? && record.publication_status_changed? }
     post.after_validation :set_published_at, if: ->(record) { record.published? && record.publication_status_changed? }
     post.after_validation :set_assigned_at, if: ->(record) { record.assignee_id && record.assignee_id_changed? }
   end
 
-  with_options if: :validate_built_in_fields? do
+  with_options if: :supports_built_in_fields? do
     validates :title_multiloc, presence: true, multiloc: { presence: true }
     validates :body_multiloc, presence: true, multiloc: { presence: true, html: true }
-    validates :proposed_budget, numericality: { greater_than_or_equal_to: 0, if: :proposed_budget }
   end
+  validates :proposed_budget, numericality: { greater_than_or_equal_to: 0, if: :proposed_budget }
 
   validate :validate_creation_phase
+  validate :not_published_in_non_public_status
 
   # validates :custom_field_values, json: {
   #   schema: :schema_for_validation,
@@ -159,14 +165,14 @@ class Idea < ApplicationRecord
   }
 
   scope :feedback_needed, lambda {
-    joins(:idea_status).where(idea_statuses: { code: 'proposed' })
+    scope = joins(:idea_status)
+    scope.where(idea_statuses: { code: 'proposed' })
       .where('ideas.id NOT IN (SELECT DISTINCT(post_id) FROM official_feedbacks)')
+      .or(scope.where(idea_statuses: { code: 'threshold_reached' }))
   }
 
   scope :publicly_visible, lambda {
-    visible_methods = %w[ideation proposals] # TODO: delegate to participation methods
-    where(creation_phase: nil)
-      .or(where(creation_phase: Phase.where(participation_method: visible_methods)))
+    where_pmethod(&:supports_public_visibility?)
   }
   scope :transitive, -> { where creation_phase: nil }
 
@@ -175,17 +181,58 @@ class Idea < ApplicationRecord
     native_survey.where(publication_status: 'draft')
   }
 
+  # Filters out all the ideas for which the ParticipationMethod responds truety
+  # to the given block. The block receives the ParticipationMethod object as an
+  # argument
+  def self.where_pmethod(&)
+    all_pmethods = ParticipationMethod::Base.all_methods.map { |m| m.new(nil) }
+    truety_pmethods = all_pmethods.select(&)
+    truety_method_strs = truety_pmethods.map { |pmethod| pmethod.class.method_str }
+    result = where(creation_phase: Phase.where(participation_method: truety_method_strs))
+    if truety_pmethods.find(&:transitive?)
+      result.or(where(creation_phase: nil))
+    else
+      result
+    end
+  end
+
+  scope :with_status_code, lambda { |code|
+    joins(:idea_status).where(idea_statuses: { code: code })
+  }
+
+  # Is the performance of this code okay? We currently have no other data source for status changes
+  scope :with_status_transitioned_after, lambda { |time|
+    idea_ids = Activity.where(item_type: 'Idea', action: 'changed_status', created_at: time..).pluck(:item_id)
+    where(id: idea_ids)
+  }
+
+  def just_submitted?
+    # It would be better to foresee separate endpoints for submission,
+    # rather than relying on Rails dirty to detect publication.
+    from, to = publication_status_previous_change
+    SUBMISSION_STATUSES.exclude?(from) && SUBMISSION_STATUSES.include?(to)
+  end
+
   def just_published?
-    publication_status_previous_change == %w[draft published] || publication_status_previous_change == [nil, 'published']
+    # It would be better to foresee separate endpoints for publication,
+    # rather than relying on Rails dirty to detect publication.
+    from, to = publication_status_previous_change
+    from != 'published' && to == 'published'
   end
 
   def will_be_published?
-    publication_status_change == %w[draft published] || publication_status_change == [nil, 'published']
+    # It would be better to foresee separate endpoints for publication,
+    # rather than relying on Rails dirty to detect publication.
+    from, to = publication_status_change
+    from != 'published' && to == 'published'
+  end
+
+  def consultation_context
+    creation_phase || project
   end
 
   def custom_form
-    participation_context = creation_phase || project
-    participation_context.custom_form || CustomForm.new(participation_context: participation_context)
+    consultation_context.custom_form || CustomForm.new(participation_context: consultation_context)
   end
 
   def input_term
@@ -197,7 +244,11 @@ class Idea < ApplicationRecord
   end
 
   def participation_method_on_creation
-    (creation_phase || project).pmethod
+    consultation_context.pmethod
+  end
+
+  def assign_defaults
+    participation_method_on_creation.assign_defaults self
   end
 
   private
@@ -208,12 +259,8 @@ class Idea < ApplicationRecord
     multiloc_schema.values.first
   end
 
-  def validate_built_in_fields?
-    !draft? && participation_method_on_creation.validate_built_in_fields?
-  end
-
-  def assign_defaults
-    participation_method_on_creation.assign_defaults self
+  def supports_built_in_fields?
+    !draft? && participation_method_on_creation.supports_built_in_fields?
   end
 
   def sanitize_body_multiloc
@@ -261,6 +308,17 @@ class Idea < ApplicationRecord
     end
   end
 
+  def not_published_in_non_public_status
+    return if !published?
+    return if !idea_status || idea_status.public_post?
+
+    errors.add(
+      :publication_status,
+      :invalid_status,
+      message: 'Inputs can only be published in public statuses'
+    )
+  end
+
   # The FE sends geographic values as wkt strings, since GeoJSON often includes nested arrays
   # which are not supported by Rails strong params.
   # This method converts the wkt strings for geographic values (e.g. for point, line, polygon, etc.) to GeoJSON.
@@ -281,7 +339,7 @@ class Idea < ApplicationRecord
   end
 
   def transitive_input_term
-    current_phase_input_term || last_past_phase_input_term || first_future_phase_input_term || Phase::DEFAULT_INPUT_TERM
+    current_phase_input_term || last_past_phase_input_term || first_future_phase_input_term || Phase::FALLBACK_INPUT_TERM
   end
 
   def current_phase_input_term

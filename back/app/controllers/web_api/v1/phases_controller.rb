@@ -109,8 +109,9 @@ class WebApi::V1::PhasesController < ApplicationController
       :start_at,
       :end_at,
       :participation_method,
-      :posting_enabled,
+      :submission_enabled,
       :commenting_enabled,
+      :autoshare_results_enabled,
       :reacting_enabled,
       :reacting_like_method,
       :reacting_like_limited_max,
@@ -126,6 +127,7 @@ class WebApi::V1::PhasesController < ApplicationController
       :document_annotation_embed_url,
       :ideas_order,
       :input_term,
+      :prescreening_enabled,
       :reacting_threshold,
       :expire_days_limit,
       {
@@ -172,3 +174,5 @@ class WebApi::V1::PhasesController < ApplicationController
     end
   end
 end
+
+WebApi::V1::PhasesController.include(AggressiveCaching::Patches::WebApi::V1::PhasesController)

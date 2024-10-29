@@ -1,21 +1,39 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
-import { Box, colors } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Text,
+  colors,
+  fontSizes,
+} from '@citizenlab/cl2-component-library';
 
-import { BarProps } from './typings';
-import { getBorderRadius } from './utils';
+import { Bar as BarProps } from './typings';
+import { getBorderRadius, measureText } from './utils';
 
 const BORDER = `1px solid ${colors.divider}`;
 
-const Bar = ({ type = 'single', percentage, color }: BarProps) => {
+const Bar = ({ type, count, percentage, color }: BarProps) => {
+  const label = `${percentage}% (${count})`;
+
+  const labelOffset = useMemo(() => {
+    if (percentage > 80) {
+      const labelWidthPx = measureText(label, fontSizes.xs);
+      return `-${labelWidthPx + 12}px`;
+    }
+
+    return '8px';
+  }, [label, percentage]);
+
   return (
     <Box
-      height="16px"
+      height="20px"
       width="100%"
       borderRadius={getBorderRadius(type)}
       border={BORDER}
       borderBottom={['last', 'single'].includes(type) ? BORDER : 'none'}
       overflow="hidden"
+      display="flex"
+      flexDirection="row"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -27,6 +45,16 @@ const Bar = ({ type = 'single', percentage, color }: BarProps) => {
       >
         <rect width="100" height="100" fill={color} />
       </svg>
+      {type !== 'single' && (
+        <Text
+          m="0"
+          fontSize="xs"
+          ml={labelOffset}
+          color={percentage > 80 ? 'white' : undefined}
+        >
+          {label}
+        </Text>
+      )}
     </Box>
   );
 };

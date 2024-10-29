@@ -33,7 +33,7 @@ import useUpdateEvent from 'api/events/useUpdateEvent';
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 import useLocale from 'hooks/useLocale';
 
-import DateTimePicker from 'components/admin/DateTimePicker';
+import DateTimePicker from 'components/admin/DatePickers/DateTimePicker';
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import Button from 'components/UI/Button';
@@ -110,6 +110,8 @@ const AdminProjectEventEdit = () => {
     useState(false);
   const [uploadedImage, setUploadedImage] = useState<UploadFile | null>(null);
   const [locationPoint, setLocationPoint] = useState<GeoJSON.Point | null>(
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     event?.data?.attributes?.location_point_geojson || null
   );
   const [geocodedPoint, setGeocodedPoint] = useState<GeoJSON.Point | null>(
@@ -121,10 +123,19 @@ const AdminProjectEventEdit = () => {
   const [successfulGeocode, setSuccessfulGeocode] = useState(false);
 
   // Remote values
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const remotePoint = event?.data?.attributes?.location_point_geojson;
 
   const eventAttrs = event
-    ? { ...event?.data.attributes, ...attributeDiff }
+    ? // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      {
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        ...event?.data.attributes,
+        ...attributeDiff,
+      }
     : { ...attributeDiff };
 
   useEffect(() => {
@@ -359,7 +370,9 @@ const AdminProjectEventEdit = () => {
   const handleEventImage = async (data: IEvent) => {
     const hasRemoteImage = !isNilOrError(remoteEventImage);
     const remoteImageId = hasRemoteImage
-      ? event?.data?.relationships?.event_images?.data?.[0].id
+      ? // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        event?.data?.relationships?.event_images?.data?.[0].id
       : undefined;
     if (
       (uploadedImage === null || !uploadedImage.remote) &&
@@ -384,6 +397,8 @@ const AdminProjectEventEdit = () => {
   const handleEventFiles = async (data: IEvent) => {
     setSubmitState('success');
 
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (data) {
       const { id: eventId } = data.data;
       eventFiles
@@ -415,6 +430,8 @@ const AdminProjectEventEdit = () => {
               {
                 onSuccess: () => {
                   setEventFilesToRemove(
+                    // TODO: Fix this the next time the file is edited.
+                    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                     eventFilesToRemove.filter((fileToRemove) => {
                       fileToRemove.id !== file.id;
                     })
@@ -446,6 +463,8 @@ const AdminProjectEventEdit = () => {
       setSaving(true);
 
       // If only files have changed
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (isEmpty(attributeDiff) && eventFilesToRemove) {
         if (event) {
           handleEventFiles(event);
@@ -465,12 +484,16 @@ const AdminProjectEventEdit = () => {
         if (event) {
           updateEvent(
             {
+              // TODO: Fix this the next time the file is edited.
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
               eventId: event?.data.id,
               event: {
                 ...attributeDiff,
                 location_point_geojson: locationPointChanged
                   ? locationPointUpdated
-                  : event?.data.attributes.location_point_geojson,
+                  : // TODO: Fix this the next time the file is edited.
+                    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+                    event?.data.attributes.location_point_geojson,
               },
             },
             {
@@ -701,6 +724,8 @@ const AdminProjectEventEdit = () => {
                           setLocationPoint={setLocationPoint}
                           position={
                             geocodedPoint || // Present when an address is geocoded but hasn't been saved yet
+                            // TODO: Fix this the next time the file is edited.
+                            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                             event?.data?.attributes?.location_point_geojson
                           }
                         />
@@ -782,6 +807,8 @@ const AdminProjectEventEdit = () => {
                         minWidth="160px"
                         iconPos={'right'}
                         icon={
+                          // TODO: Fix this the next time the file is edited.
+                          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                           attendanceOptionsVisible ? undefined : 'plus-circle'
                         }
                         iconSize="20px"
@@ -789,8 +816,12 @@ const AdminProjectEventEdit = () => {
                         linkTo={eventAttrs.using_url}
                         openLinkInNewTab={true}
                       >
+                        {/* TODO: Fix this the next time the file is edited. */}
+                        {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
                         {eventAttrs?.attend_button_multiloc?.[locale]
-                          ? eventAttrs?.attend_button_multiloc[locale]
+                          ? // TODO: Fix this the next time the file is edited.
+                            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+                            eventAttrs?.attend_button_multiloc[locale]
                           : formatMessage(messages.attend)}
                       </Button>
                     </Box>

@@ -50,7 +50,7 @@ resource 'Followers' do
     end
   end
 
-  # TODO: move-old-proposals-test
+  # TODO: cleanup-after-proposals-migration
   get 'web_api/v1/followers/:id' do
     let(:id) { create(:follower, user: user).id }
 

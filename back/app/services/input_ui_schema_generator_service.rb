@@ -3,7 +3,7 @@
 class InputUiSchemaGeneratorService < UiSchemaGeneratorService
   def initialize(input_term, supports_answer_visible_to)
     super()
-    @input_term = input_term || Phase::DEFAULT_INPUT_TERM
+    @input_term = input_term || Phase::FALLBACK_INPUT_TERM
     @supports_answer_visible_to = supports_answer_visible_to
   end
 
@@ -25,6 +25,10 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
   end
 
   def visit_topic_ids(field)
+    default field
+  end
+
+  def visit_cosponsor_ids(field)
     default field
   end
 
@@ -96,8 +100,8 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
       type: 'Page',
       options: {
         id: 'survey_end',
-        title: I18n.t('form_builder.form_end_page.title'),
-        description: I18n.t('form_builder.form_end_page.description')
+        title: I18n.t('form_builder.form_end_page.title_text'),
+        description: I18n.t('form_builder.form_end_page.description_text_2')
       },
       elements: []
     }

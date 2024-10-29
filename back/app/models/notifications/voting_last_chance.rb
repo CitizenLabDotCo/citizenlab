@@ -28,11 +28,13 @@
 #  internal_comment_id           :uuid
 #  basket_id                     :uuid
 #  cosponsors_initiative_id      :uuid
+#  cosponsorship_id              :uuid
 #
 # Indexes
 #
 #  index_notifications_on_basket_id                            (basket_id)
 #  index_notifications_on_cosponsors_initiative_id             (cosponsors_initiative_id)
+#  index_notifications_on_cosponsorship_id                     (cosponsorship_id)
 #  index_notifications_on_created_at                           (created_at)
 #  index_notifications_on_inappropriate_content_flag_id        (inappropriate_content_flag_id)
 #  index_notifications_on_initiating_user_id                   (initiating_user_id)
@@ -52,6 +54,7 @@
 #  fk_rails_...  (basket_id => baskets.id)
 #  fk_rails_...  (comment_id => comments.id)
 #  fk_rails_...  (cosponsors_initiative_id => cosponsors_initiatives.id)
+#  fk_rails_...  (cosponsorship_id => cosponsorships.id)
 #  fk_rails_...  (inappropriate_content_flag_id => flag_inappropriate_content_inappropriate_content_flags.id)
 #  fk_rails_...  (initiating_user_id => users.id)
 #  fk_rails_...  (internal_comment_id => internal_comments.id)
@@ -75,6 +78,8 @@ module Notifications
 
       if phase.voting?
         user_scope = ParticipantsService.new.projects_participants(Project.where(id: phase.project_id))
+          .where.not(id: Basket.where(phase: phase).submitted.select(:user_id))
+
         ProjectPolicy::InverseScope.new(phase.project, user_scope).resolve.filter_map do |recipient|
           next if Permissions::PhasePermissionsService.new(phase, recipient).denied_reason_for_action 'voting'
 

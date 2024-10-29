@@ -42,6 +42,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.layers',
     defaultMessage: 'Map layers',
   },
+  unnamedLayer: {
+    id: 'app.containers.AdminPage.ProjectEdit.MapTab.unnamedLayer',
+    defaultMessage: 'Unnamed layer',
+  },
   mapConfigurationTitle: {
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.mapConfigurationTitle',
     defaultMessage: 'Map configuration',

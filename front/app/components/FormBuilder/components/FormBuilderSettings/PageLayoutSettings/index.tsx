@@ -6,6 +6,7 @@ import {
   Label,
   Radio,
   Text,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
 import { Controller, useFormContext } from 'react-hook-form';
 
@@ -14,6 +15,7 @@ import { IFlatCustomFieldWithIndex } from 'api/custom_fields/types';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import RadioGroup from 'components/HookForm/RadioGroup';
+import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -30,10 +32,6 @@ const PageLayoutSettings = ({ pageLayoutName }: Props) => {
   const isPageLayoutSettingsEnabled = useFeatureFlag({ name: 'form_mapping' });
   const { formatMessage } = useIntl();
   const { control, setValue } = useFormContext();
-
-  if (!isPageLayoutSettingsEnabled) {
-    return null;
-  }
 
   return (
     <>
@@ -75,38 +73,65 @@ const PageLayoutSettings = ({ pageLayoutName }: Props) => {
                       />
                     </Box>
                   </Box>
-
                   <Box display="flex">
                     <Image src={mapPageSvg} alt={''} />
-                    <Box my="auto" ml="8px">
-                      <Radio
-                        value={'map'}
-                        name="page_layout"
-                        currentValue={value}
-                        id={`page_layout_map`}
-                        label={
-                          <Box display="flex" flexDirection="column">
-                            <Text
-                              m="0px"
-                              fontWeight={value === 'map' ? 'bold' : undefined}
-                            >
-                              {formatMessage(messages.mapBasedPage)}
-                            </Text>
-                            <Text fontSize="s" color={'grey700'} m="0px">
-                              {formatMessage(messages.mapOptionDescription)}
-                            </Text>
-                          </Box>
-                        }
-                        onChange={() => {
-                          setValue(pageLayoutName, 'map', {
-                            shouldDirty: true,
-                          });
-                        }}
-                      />
-                    </Box>
+                    <Tooltip
+                      disabled={isPageLayoutSettingsEnabled}
+                      content={formatMessage(messages.notInCurrentLicense)}
+                    >
+                      <Box my="auto" ml="8px">
+                        <Radio
+                          disabled={!isPageLayoutSettingsEnabled}
+                          value={'map'}
+                          name="page_layout"
+                          currentValue={value}
+                          id={`page_layout_map`}
+                          label={
+                            <Box display="flex" flexDirection="column">
+                              <Text
+                                m="0px"
+                                fontWeight={
+                                  value === 'map' ? 'bold' : undefined
+                                }
+                                color={
+                                  isPageLayoutSettingsEnabled
+                                    ? 'black'
+                                    : 'grey500'
+                                }
+                              >
+                                {formatMessage(messages.mapBasedPage)}
+                              </Text>
+                              <Text
+                                fontSize="s"
+                                color={
+                                  isPageLayoutSettingsEnabled
+                                    ? 'black'
+                                    : 'grey500'
+                                }
+                                m="0px"
+                              >
+                                {formatMessage(messages.mapOptionDescription)}
+                              </Text>
+                            </Box>
+                          }
+                          onChange={() => {
+                            setValue(pageLayoutName, 'map', {
+                              shouldDirty: true,
+                            });
+                          }}
+                        />
+                      </Box>
+                    </Tooltip>
                   </Box>
                 </Box>
               </RadioGroup>
+              {value === 'map' && (
+                <Box mb="16px">
+                  <Warning>
+                    {formatMessage(messages.noMapInputQuestions)}
+                  </Warning>
+                </Box>
+              )}
             </>
           );
         }}

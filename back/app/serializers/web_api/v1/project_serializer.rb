@@ -32,7 +32,7 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
   end
 
   attribute :action_descriptors do |object, params|
-    user_requirements_service = params[:user_requirements_service] || Permissions::UserRequirementsService.new(check_groups: false)
+    user_requirements_service = params[:user_requirements_service] || Permissions::UserRequirementsService.new(check_groups_and_verification: false)
     Permissions::ProjectPermissionsService.new(object, current_user(params), user_requirements_service: user_requirements_service).action_descriptors
   end
 
@@ -40,9 +40,15 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
     avatars_for_project(object, params)[:total_count]
   end
 
-  attribute :participants_count do |object, _params|
-    @participants_service ||= ParticipantsService.new
-    @participants_service.project_participants_count(object)
+  attribute :participants_count do |object, params|
+    participants_service = ParticipantsService.new
+    use_cache = params[:use_cache].to_s != 'false'
+
+    if use_cache
+      participants_service.project_participants_count(object)
+    else
+      participants_service.project_participants_count_uncached(object)
+    end
   end
 
   attribute :timeline_active do |object, params|

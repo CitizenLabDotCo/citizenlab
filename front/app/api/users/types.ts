@@ -1,7 +1,5 @@
 import { ImageSizes, SupportedLocale, Multiloc } from 'typings';
 
-import { OnboardingType } from 'api/authentication/authentication_requirements/types';
-
 import { Keys } from 'utils/cl-react-query/types';
 import { TRole } from 'utils/permissions/roles';
 
@@ -19,6 +17,12 @@ export interface UserCheckResponse {
 }
 
 type Action = 'password' | 'confirm' | 'terms';
+
+type RequirementStatus = 'dont_ask' | 'require' | 'satisfied' | 'ask';
+
+export type OnboardingType = {
+  topics_and_areas?: RequirementStatus;
+};
 
 export interface IUserAttributes {
   first_name?: string | null;
@@ -53,6 +57,7 @@ export interface IUserAttributes {
   education?: string;
   verified?: boolean;
   no_name?: boolean;
+  display_name?: string | null;
   no_password?: boolean;
   followings_count: number;
   last_active_at?: string | null;
