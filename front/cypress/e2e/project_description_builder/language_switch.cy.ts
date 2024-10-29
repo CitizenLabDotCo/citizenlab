@@ -85,8 +85,6 @@ describe('Project description builder language switch', () => {
     );
 
     // Delete content
-    // cy.get('.e2e-localeswitcher.en').click();
-
     cy.get('.e2e-text-box').click({ force: true });
     cy.get('#e2e-delete-button').click({ force: true });
 
