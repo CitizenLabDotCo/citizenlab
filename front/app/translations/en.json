@@ -330,6 +330,8 @@
   "app.components.PostComponents.readMore": "Read more...",
   "app.components.PostComponents.topics": "Topics",
   "app.components.ProjectArchivedIndicator.archivedProject": "Unfortunately, you can't participate in this project anymore because it has been archived",
+  "app.components.ProjectArchivedIndicator.previewProject": "Draft project:",
+  "app.components.ProjectArchivedIndicator.previewProjectExplanation": "Visible only to moderators and those with a preview link.",
   "app.components.ProjectCard.a11y_projectDescription": "Project description:",
   "app.components.ProjectCard.a11y_projectTitle": "Project title:",
   "app.components.ProjectCard.addYourOption": "Add your option",
