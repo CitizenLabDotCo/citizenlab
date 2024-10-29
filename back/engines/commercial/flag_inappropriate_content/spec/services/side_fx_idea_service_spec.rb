@@ -24,7 +24,7 @@ describe SideFxIdeaService do
     it 'triggers toxicity detection for an idea' do
       idea = create(:idea)
       idea.update!(title_multiloc: { 'en' => 'Updated title' })
-      expect { service.after_update(idea, user, []) }.to have_enqueued_job(ToxicityDetectionJob).exactly(1).times
+      expect { service.after_update(idea, user) }.to have_enqueued_job(ToxicityDetectionJob).exactly(1).times
     end
 
     it "doesn't trigger toxicity detection for a native survey response" do
@@ -32,7 +32,7 @@ describe SideFxIdeaService do
       project = create(:single_phase_native_survey_project)
       response = create(:idea, project: project, creation_phase: project.phases.first)
       response.update!(title_multiloc: { 'en' => 'Updated title' })
-      expect { service.after_update(response, user, []) }.not_to have_enqueued_job(ToxicityDetectionJob)
+      expect { service.after_update(response, user) }.not_to have_enqueued_job(ToxicityDetectionJob)
     end
   end
 end

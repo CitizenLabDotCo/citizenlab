@@ -223,6 +223,8 @@ class WebApi::V1::IdeasController < ApplicationController
 
     ActiveRecord::Base.transaction do # Assigning relationships cause database changes
       input.assign_attributes update_params
+      sidefx.before_update(input, current_user)
+      input.phase_ids = phase_ids if phase_ids
       authorize input
       if not_allowed_update_errors(input)
         render json: not_allowed_update_errors(input), status: :unprocessable_entity
@@ -231,8 +233,6 @@ class WebApi::V1::IdeasController < ApplicationController
       verify_profanity input
     end
 
-    sidefx.before_update(input, current_user)
-    input.phase_ids = phase_ids if phase_ids
     save_options = {}
     save_options[:context] = :publication if params.dig(:idea, :publication_status) == 'published'
     ActiveRecord::Base.transaction do
