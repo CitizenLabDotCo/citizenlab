@@ -39,6 +39,8 @@ export type Sort =
   | '-votes_count'
   | 'total_votes'
   | '-total_votes'
+  | 'total_baskets'
+  | '-total_baskets'
   | 'manual_votes_amount'
   | '-manual_votes_amount'
   | 'comments_count'

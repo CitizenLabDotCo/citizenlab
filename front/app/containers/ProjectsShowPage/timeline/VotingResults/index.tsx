@@ -16,7 +16,7 @@ interface Props {
   votingMethod: VotingMethod;
 }
 
-const VotingResults = ({ phaseId }: Props) => {
+const VotingResults = ({ phaseId, votingMethod }: Props) => {
   const { formatMessage } = useIntl();
 
   const {
@@ -27,7 +27,7 @@ const VotingResults = ({ phaseId }: Props) => {
     isFetchingNextPage,
   } = useInfiniteIdeas({
     phase: phaseId,
-    sort: 'votes_count', // 'total_votes' TODO: Uncomment this out, once it's supported!,
+    sort: votingMethod === 'budgeting' ? 'total_baskets' : 'total_votes',
   });
 
   const smallerThanPhone = useBreakpoint('phone');
