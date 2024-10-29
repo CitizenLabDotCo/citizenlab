@@ -2,6 +2,8 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import adminPublicationsKeys from 'api/admin_publications/keys';
 import adminPublicationsStatusCountsKeys from 'api/admin_publications_status_counts/keys';
+import eventsKeys from 'api/events/keys';
+import ideasKeys from 'api/ideas/keys';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
@@ -27,6 +29,8 @@ const useResetProject = () => {
       queryClient.invalidateQueries({
         queryKey: adminPublicationsStatusCountsKeys.items(),
       });
+      queryClient.invalidateQueries({ queryKey: ideasKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: eventsKeys.lists() });
     },
   });
 };
