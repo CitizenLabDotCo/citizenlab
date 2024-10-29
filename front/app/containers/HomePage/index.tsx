@@ -7,6 +7,7 @@ import useAdminPublications from 'api/admin_publications/useAdminPublications';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useHomepageLayout from 'api/home_page_layout/useHomepageLayout';
 import useAuthUser from 'api/me/useAuthUser';
+import useProjectsWithActiveParticipatoryPhase from 'api/projects_mini/useProjectsWithActiveParticipatoryPhase';
 
 import useKeyPress from 'hooks/useKeyPress';
 
@@ -24,6 +25,14 @@ const HomePage = () => {
   const { data: homepageLayout } = useHomepageLayout();
   const { data: authUser } = useAuthUser();
   const { data: appConfiguration } = useAppConfiguration();
+
+  // TODO REMOVE
+  const { data: projects } = useProjectsWithActiveParticipatoryPhase({
+    'page[number]': 1,
+    'page[size]': 6,
+  });
+  console.log({ projects });
+  // TODO REMOVE
 
   // Hack to already fetch this data assuming the platform
   // will have published data. If not, worst case we make this request twice.
