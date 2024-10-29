@@ -358,8 +358,8 @@ describe ParticipantsService do
   describe 'reset_participation_data' do
     it 'resets project participation data for ideas' do
       project = create(:project)
-      pp1, pp2, pp3 = create_list(:user, 3)
-      idea = create(:idea, project: project, author: pp1)
+      user = create(:user)
+      create(:idea, project: project, author: user)
 
       expect(Idea.where(project: project).count).to eq 1
       service.reset_participation_data(project)
@@ -369,7 +369,7 @@ describe ParticipantsService do
 
     it 'resets project participation data for volunteers' do
       project = create(:project)
-      pp1, pp2, pp3 = create_list(:user, 3)
+      pp1, pp2 = create_list(:user, 2)
       phase = create(:phase, project: project, participation_method: 'volunteering')
       cause = create(:cause, phase: phase)
       create(:volunteer, user: pp1, cause: cause)
@@ -383,7 +383,7 @@ describe ParticipantsService do
 
     it 'resets project participation data for event attendees' do
       project = create(:project)
-      pp1, pp2, pp3 = create_list(:user, 3)
+      pp1, pp2 = create_list(:user, 2)
       event = create(:event, project: project)
       create(:event_attendance, event: event, attendee: pp1)
       create(:event_attendance, event: event, attendee: pp2)
@@ -396,7 +396,7 @@ describe ParticipantsService do
 
     it 'resets project participation data for poll responses' do
       project = create(:project)
-      pp1, pp2, pp3 = create_list(:user, 3)
+      pp1, pp2 = create_list(:user, 2)
       phase = create(:phase, project: project, participation_method: 'poll')
       create(:poll_response, user: pp1, phase: phase)
       create(:poll_response, user: pp2, phase: phase)
