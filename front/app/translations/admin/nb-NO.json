@@ -304,7 +304,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.minBudgetRequired": "Et minimumsbudsjett er påkrevd",
   "app.components.app.containers.AdminPage.ProjectEdit.minTotalVotesLargerThanMaxError": "Minimum antall stemmer kan ikke være større enn maksimum antall stemmer",
   "app.components.app.containers.AdminPage.ProjectEdit.minVotesRequired": "Det kreves et minimum antall stemmer",
-  "app.components.app.containers.AdminPage.ProjectEdit.optionTerm": "Alternativ",
+  "app.components.app.containers.AdminPage.ProjectEdit.optionTerm": "Innspill",
   "app.components.app.containers.AdminPage.ProjectEdit.optionsPageText2": "Fanen Input Manager",
   "app.components.app.containers.AdminPage.ProjectEdit.optionsToVoteOnDescWihoutPhase": "Konfigurer avstemningsalternativene i fanen Input manager etter at du har opprettet en fase.",
   "app.components.app.containers.AdminPage.ProjectEdit.optionsToVoteOnDescription2": "Konfigurer avstemningsalternativene i {optionsPageLink}.",
