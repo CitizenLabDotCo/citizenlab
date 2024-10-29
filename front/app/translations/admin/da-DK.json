@@ -1725,6 +1725,8 @@
   "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplate1": "Download en Excel-skabelon",
   "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplateTooltip": "Excel-skabeloner vil ikke indeholde spørgsmål om kortlægningsinput, da disse ikke understøttes til masseimport på nuværende tidspunkt.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadResults2": "Hent undersøgelsesresultater",
+  "app.containers.AdminPage.ProjectEdit.survey.downloadResultsSupportArticle": "Support-artikel",
+  "app.containers.AdminPage.ProjectEdit.survey.downloadResultsToolTip": "Hvis du vil vide, hvordan du får adgang til respondentens navn og e-mail, skal du gå ind på vores {supportArticleLink}.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadSurvey": "Download undersøgelsen som pdf",
   "app.containers.AdminPage.ProjectEdit.survey.duplicateAnotherSurvey": "Kopier en anden survey",
   "app.containers.AdminPage.ProjectEdit.survey.editSurvey1": "Rediger",
