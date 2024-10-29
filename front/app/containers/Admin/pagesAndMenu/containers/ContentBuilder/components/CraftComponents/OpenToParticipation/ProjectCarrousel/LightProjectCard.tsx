@@ -30,6 +30,19 @@ import Link from 'utils/cl-router/Link';
 import { CARD_WIDTH } from './constants';
 import messages from './messages';
 
+const CardContainer = styled(Box)`
+  &:hover {
+    h4 {
+      color: ${({ theme }) => theme.colors.tenantPrimary};
+      text-decoration: underline;
+    }
+
+    .project-image-container > * {
+      transform: scale(1.2);
+    }
+  }
+`;
+
 const ProjectImageContainer = styled.div`
   width: 100%;
   display: flex;
@@ -38,6 +51,10 @@ const ProjectImageContainer = styled.div`
   overflow: hidden;
   position: relative;
   border-radius: ${stylingConsts.borderRadius};
+
+  & > * {
+    transition: transform 0.3s;
+  }
 `;
 
 interface Props {
@@ -65,9 +82,14 @@ const LightProjectCard = ({ project }: Props) => {
   const projectUrl: RouteType = getProjectUrl(project);
 
   return (
-    <Box as={Link} w={`${CARD_WIDTH}px`} to={projectUrl} display="block">
+    <CardContainer
+      as={Link}
+      w={`${CARD_WIDTH}px`}
+      to={projectUrl}
+      display="block"
+    >
       <Box>
-        <ProjectImageContainer>
+        <ProjectImageContainer className="project-image-container">
           {imageUrl ? <Image src={imageUrl} alt="" /> : <ImagePlaceholder />}
         </ProjectImageContainer>
       </Box>
@@ -99,7 +121,7 @@ const LightProjectCard = ({ project }: Props) => {
           })}
         </Text>
       </Box>
-    </Box>
+    </CardContainer>
   );
 };
 
