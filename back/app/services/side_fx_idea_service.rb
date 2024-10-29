@@ -5,6 +5,8 @@ class SideFxIdeaService
 
   def initialize
     @automatic_assignment = false
+    @old_phase_ids = []
+    @old_cosponsor_ids = []
   end
 
   def before_create(idea, user)
@@ -26,26 +28,28 @@ class SideFxIdeaService
     after_submission idea, user if idea.submitted_or_published?
     after_publish idea, user if idea.published?
 
-    log_activities_if_cosponsors_added(idea, user, _old_cosponsor_ids = [])
+    log_activities_if_cosponsors_added(idea, user)
   end
 
   def before_update(idea, user)
+    @old_cosponsor_ids = idea.cosponsors.map(&:id) # TODO: cosponsor_ids
+    @old_phase_ids = idea.phase_ids
     idea.body_multiloc = TextImageService.new.swap_data_images_multiloc(idea.body_multiloc, field: :body_multiloc, imageable: idea)
     idea.publication_status = 'published' if idea.submitted_or_published? && idea.idea_status&.public_post?
     before_publish idea, user if idea.will_be_published?
   end
 
-  def after_update(idea, user, old_cosponsor_ids)
+  def after_update(idea, user)
     # We need to check if the idea was just submitted or just published before
     # we do anything else because updates to the idea can change this state.
     just_submitted = idea.just_submitted?
     just_published = idea.just_published?
     enabled_anonymous = idea.anonymous_previously_changed?(to: true)
     changed_manual_votes_amount = idea.manual_votes_amount_previously_changed?
-    changed_phases = idea.phases_previously_changed?
+    changed_phases = idea.phase_ids.sort != @old_phase_ids.sort
 
     remove_user_from_past_activities_with_item(idea, user) if enabled_anonymous
-    idea.phases.each(&:update_manual_votes_count!) if changed_manual_votes_amount || changed_phases
+    Phase.where(id: [idea.phase_ids + @old_phase_ids].uniq).each(&:update_manual_votes_count!) if changed_manual_votes_amount || changed_phases
 
     after_submission idea, user if just_submitted
     if just_published
@@ -105,7 +109,7 @@ class SideFxIdeaService
       )
     end
 
-    log_activities_if_cosponsors_added(idea, user, old_cosponsor_ids)
+    log_activities_if_cosponsors_added(idea, user)
   end
 
   def after_destroy(frozen_idea, user)
@@ -188,8 +192,8 @@ class SideFxIdeaService
     change
   end
 
-  def log_activities_if_cosponsors_added(idea, user, old_cosponsor_ids)
-    added_ids = idea.cosponsors.map(&:id) - old_cosponsor_ids
+  def log_activities_if_cosponsors_added(idea, user)
+    added_ids = idea.cosponsors.map(&:id) - @old_cosponsor_ids
     if added_ids.present?
       new_cosponsorships = idea.cosponsorships.where(user_id: added_ids)
       new_cosponsorships.each do |cosponsorship|

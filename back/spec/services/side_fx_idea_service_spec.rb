@@ -93,7 +93,8 @@ describe SideFxIdeaService do
 
     it 'sets the manual_votes_count of its phases' do
       project = create(:project)
-      phase1, phase2 = create_list(:phase, 2, project: project)
+      phase1 = create(:phase, project: project)
+      phase2 = create(:phase, project: project, start_at: phase1.end_at + 1.day, end_at: phase1.end_at + 2.days) # TODO: Make create_list(:phase, 2, project: project) work
       create(:idea, manual_votes_amount: 2, project: project, phases: [phase1])
       phase1.update_manual_votes_count!
       idea = create(:idea, manual_votes_amount: 3, project: project, phases: [phase1, phase2])
@@ -109,7 +110,7 @@ describe SideFxIdeaService do
       idea = create(:idea, publication_status: 'draft', author: user)
       idea.update!(publication_status: 'submitted')
 
-      expect { service.after_update(idea, user, []) }
+      expect { service.after_update(idea, user) }
         .to enqueue_job(LogActivityJob)
         .with(idea, 'submitted', user, idea.submitted_at.to_i, project_id: idea.project_id)
         .exactly(1).times
@@ -119,7 +120,7 @@ describe SideFxIdeaService do
       idea = create(:idea, publication_status: 'draft', author: user)
       idea.update!(publication_status: 'published')
 
-      expect { service.after_update(idea, user, []) }
+      expect { service.after_update(idea, user) }
         .to enqueue_job(LogActivityJob)
         .with(idea, 'submitted', user, idea.submitted_at.to_i, project_id: idea.project_id)
         .exactly(1).times
@@ -128,7 +129,7 @@ describe SideFxIdeaService do
     it "doesn't log a 'submitted' action job when the publication_status goes from submitted to published" do
       idea = create(:idea, publication_status: 'submitted', author: user)
       idea.update!(publication_status: 'published')
-      expect { service.after_update(idea, user, []) }
+      expect { service.after_update(idea, user) }
         .not_to enqueue_job(LogActivityJob)
         .with(idea, 'submitted', any_args)
     end
@@ -137,7 +138,7 @@ describe SideFxIdeaService do
       idea = create(:idea, publication_status: 'draft', author: user)
       idea.update!(publication_status: 'published')
 
-      expect { service.after_update(idea, user, []) }
+      expect { service.after_update(idea, user) }
         .to enqueue_job(LogActivityJob)
         .with(idea, 'published', user, idea.published_at.to_i, project_id: idea.project_id)
         .exactly(1).times
@@ -147,7 +148,7 @@ describe SideFxIdeaService do
       idea = create(:idea, publication_status: 'submitted', author: user)
       idea.update!(publication_status: 'published')
 
-      expect { service.after_update(idea, user, []) }
+      expect { service.after_update(idea, user) }
         .to enqueue_job(LogActivityJob)
         .with(idea, 'published', user, idea.published_at.to_i, project_id: idea.project_id)
         .exactly(1).times
@@ -158,7 +159,7 @@ describe SideFxIdeaService do
       old_title_multiloc = idea.title_multiloc
 
       idea.update!(title_multiloc: { en: 'something else' })
-      expect { service.after_update(idea, user, []) }
+      expect { service.after_update(idea, user) }
         .to enqueue_job(LogActivityJob).with(
           idea,
           'changed',
@@ -179,7 +180,7 @@ describe SideFxIdeaService do
 
       idea.update!(location_point_geojson: { 'type' => 'Point', 'coordinates' => [42.42, 42.42] })
 
-      expect { service.after_update(idea, user, []) }
+      expect { service.after_update(idea, user) }
         .to enqueue_job(LogActivityJob).with(
           idea,
           'changed',
@@ -199,7 +200,7 @@ describe SideFxIdeaService do
       old_idea_title = idea.title_multiloc
       idea.update!(title_multiloc: { en: 'changed' })
 
-      expect { service.after_update(idea, user, []) }
+      expect { service.after_update(idea, user) }
         .to enqueue_job(LogActivityJob).with(
           idea,
           'changed_title',
@@ -214,7 +215,7 @@ describe SideFxIdeaService do
       old_idea_body = idea.body_multiloc
       idea.update!(body_multiloc: { en: 'changed' })
 
-      expect { service.after_update(idea, user, []) }
+      expect { service.after_update(idea, user) }
         .to enqueue_job(LogActivityJob).with(
           idea,
           'changed_body',
@@ -230,7 +231,7 @@ describe SideFxIdeaService do
       new_idea_status = create(:idea_status)
       idea.update!(idea_status: new_idea_status)
 
-      expect { service.after_update(idea, user, []) }
+      expect { service.after_update(idea, user) }
         .to enqueue_job(LogActivityJob).with(
           idea,
           'changed_status',
@@ -247,7 +248,7 @@ describe SideFxIdeaService do
       idea = create(:idea)
       idea.update!(cosponsor_ids: [cosponsor.id])
 
-      expect { service.after_update(idea, user, []) }
+      expect { service.after_update(idea, user) }
         .to enqueue_job(LogActivityJob)
         .with(
           idea.cosponsorships.first,
@@ -256,6 +257,21 @@ describe SideFxIdeaService do
           idea.cosponsorships.first.created_at.to_i
         ).exactly(1).times
     end
+
+    it 'sets the manual_votes_count after removing a phase' do
+      phase = create(:phase)
+      create(:idea, manual_votes_amount: 2, project: phase.project, phases: [phase])
+      idea = create(:idea, manual_votes_amount: 1, project: phase.project, phases: [phase])
+      phase.update_manual_votes_count!
+      service.before_update(idea, user)
+      idea.update!(phase_ids: [])
+      service.after_update(idea, user)
+
+      expect(phase.reload.manual_votes_count).to eq 2
+    end
+
+    # Adding phase
+    # Changing manual_votes_amount (to zero or nil)
   end
 
   describe 'after_destroy' do

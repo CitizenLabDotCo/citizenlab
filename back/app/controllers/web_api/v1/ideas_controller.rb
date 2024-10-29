@@ -216,6 +216,7 @@ class WebApi::V1::IdeasController < ApplicationController
 
     user_can_moderate_project = UserRoleService.new.can_moderate_project?(input.project, current_user)
     update_params = idea_params(input.custom_form, user_can_moderate_project).to_h
+    phase_ids = update_params.delete(:phase_ids) if update_params[:phase_ids]
     update_params[:custom_field_values] = params_service.updated_custom_field_values(input.custom_field_values, update_params[:custom_field_values])
     CustomFieldService.new.compact_custom_field_values! update_params[:custom_field_values]
     input.set_manual_votes(update_params[:manual_votes_amount], current_user) if update_params[:manual_votes_amount]
@@ -231,12 +232,12 @@ class WebApi::V1::IdeasController < ApplicationController
     end
 
     sidefx.before_update(input, current_user)
-    cosponsor_ids = input.cosponsors.map(&:id)
+    input.phase_ids = phase_ids if phase_ids
     save_options = {}
     save_options[:context] = :publication if params.dig(:idea, :publication_status) == 'published'
     ActiveRecord::Base.transaction do
       if input.save(**save_options)
-        sidefx.after_update(input, current_user, cosponsor_ids)
+        sidefx.after_update(input, current_user)
         update_file_upload_fields input, input.custom_form, update_params
         render json: WebApi::V1::IdeaSerializer.new(
           input.reload,
