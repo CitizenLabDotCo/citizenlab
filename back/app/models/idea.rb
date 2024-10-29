@@ -92,7 +92,7 @@ class Idea < ApplicationRecord
 
   has_many :ideas_topics, dependent: :destroy
   has_many :topics, -> { order(:ordering) }, through: :ideas_topics
-  has_many :ideas_phases, dependent: :destroy, touch: true
+  has_many :ideas_phases, dependent: :destroy
   has_many :phases, through: :ideas_phases, after_add: :update_phase_counts, after_remove: :update_phase_counts
   has_many :baskets_ideas, dependent: :destroy
   has_many :baskets, through: :baskets_ideas
