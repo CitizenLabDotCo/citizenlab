@@ -21,11 +21,9 @@ const useUpdateProjectPreviewToken = () => {
   const queryClient = useQueryClient();
   return useMutation<IProject, CLErrorsWrapper, { projectId: string }>({
     mutationFn: updateProjectPreviewToken,
-    onSuccess: async (data) => {
+    onSuccess: async () => {
       queryClient.invalidateQueries({
-        queryKey: projectsKeys.item({
-          id: data.data.id,
-        }),
+        queryKey: projectsKeys.items(),
       });
     },
   });
