@@ -95,4 +95,13 @@ export default defineMessages({
     defaultMessage:
       'Note: Enabling anonymous or open participation permissions may allow users to participate multiple times, leading to misleading or incomplete user data.',
   },
+  refreshLink: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.refreshLink',
+    defaultMessage: 'Refresh project preview link',
+  },
+  refreshLinkTooltip: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.refreshLinkTooltip',
+    defaultMessage:
+      'Regenerate project preview link. This will invalidate the previous link.',
+  },
 });

@@ -131,6 +131,7 @@ const ProjectHeader = ({ projectId }: Props) => {
               {formatMessage(messages.projectSettings)}
             </Button>
             <ShareLink
+              projectId={project.data.id}
               projectSlug={project.data.attributes.slug}
               token={project.data.attributes.preview_token}
             />
