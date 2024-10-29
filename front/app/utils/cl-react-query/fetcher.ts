@@ -90,17 +90,10 @@ async function fetcher({
     (value) => isNil(value) || value === ''
   );
 
-  const preview_token = sessionStorage.getItem('project_preview_token');
-
-  const relevantQueryParamsWithToken = {
-    ...relevantQueryParams,
-    ...(preview_token && { preview_token }),
-  };
-
   // TODO: Fix this the next time the file is edited.
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  const requestQueryParams = relevantQueryParamsWithToken
-    ? stringify(relevantQueryParamsWithToken, {
+  const requestQueryParams = relevantQueryParams
+    ? stringify(relevantQueryParams, {
         arrayFormat: 'brackets',
         addQueryPrefix: true,
       })
