@@ -2,14 +2,7 @@
 
 module ProjectFolders
   class FolderPolicy < ApplicationPolicy
-    class Scope
-      attr_reader :user, :scope
-
-      def initialize(user, scope)
-        @user = user
-        @scope = scope
-      end
-
+    class Scope < ApplicationPolicy::Scope
       def resolve
         if user&.admin? || user&.project_folder_moderator? || user&.project_moderator?
           scope.all

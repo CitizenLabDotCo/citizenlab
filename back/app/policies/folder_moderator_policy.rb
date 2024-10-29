@@ -1,14 +1,7 @@
 # frozen_string_literal: true
 
 class FolderModeratorPolicy < ApplicationPolicy
-  class Scope
-    attr_reader :user, :scope
-
-    def initialize(user, scope)
-      @user = user
-      @scope = scope
-    end
-
+  class Scope < ApplicationPolicy::Scope
     def resolve
       if user&.project_folder_moderator?
         moderated_folders = user.moderated_project_folders

@@ -1,14 +1,7 @@
 # frozen_string_literal: true
 
 class IdeaCommentPolicy < ApplicationPolicy
-  class Scope
-    attr_reader :user, :scope
-
-    def initialize(user, scope)
-      @user  = user
-      @scope = scope
-    end
-
+  class Scope < ApplicationPolicy::Scope
     def resolve
       scope.where(post_id: Pundit.policy_scope(user, Idea))
     end

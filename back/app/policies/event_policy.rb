@@ -1,12 +1,11 @@
 # frozen_string_literal: true
 
 class EventPolicy < ApplicationPolicy
-  class Scope
-    attr_reader :user, :scope, :attendee_id
+  class Scope < ApplicationPolicy::Scope
+    attr_reader :attendee_id
 
     def initialize(user, scope, attendee_id = nil)
-      @user = user
-      @scope = scope
+      super(user, scope)
       @attendee_id = attendee_id
     end
 

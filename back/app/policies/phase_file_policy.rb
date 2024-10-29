@@ -1,14 +1,7 @@
 # frozen_string_literal: true
 
 class PhaseFilePolicy < ApplicationPolicy
-  class Scope
-    attr_reader :user, :scope
-
-    def initialize(user, scope)
-      @user  = user
-      @scope = scope
-    end
-
+  class Scope < ApplicationPolicy::Scope
     def resolve
       phase_ids = Pundit.policy_scope(user, Phase).ids
       scope.where(phase_id: phase_ids)

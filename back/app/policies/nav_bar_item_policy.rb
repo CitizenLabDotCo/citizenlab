@@ -3,14 +3,7 @@
 class NavBarItemPolicy < ApplicationPolicy
   FEATURES_CODES = { 'initiatives' => 'proposals' }.freeze
 
-  class Scope
-    attr_reader :user, :scope
-
-    def initialize(user, scope)
-      @user  = user
-      @scope = scope
-    end
-
+  class Scope < ApplicationPolicy::Scope
     def resolve
       scope.all.where.not(code: NavBarItemPolicy.feature_disabled_codes)
     end

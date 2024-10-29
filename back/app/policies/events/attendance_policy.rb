@@ -1,14 +1,7 @@
 # frozen_string_literal: true
 
 class Events::AttendancePolicy < ApplicationPolicy
-  class Scope
-    attr_reader :user, :scope
-
-    def initialize(user, scope)
-      @user  = user
-      @scope = scope
-    end
-
+  class Scope < ApplicationPolicy::Scope
     def resolve
       raise Pundit::NotAuthorizedError unless user&.active?
 

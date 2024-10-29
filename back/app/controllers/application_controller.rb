@@ -14,6 +14,7 @@ class ApplicationController < ActionController::API
   end
 
   before_action :authenticate_user
+  before_action :set_policy_context
 
   after_action :verify_authorized, except: :index
   after_action :verify_policy_scoped, only: :index
@@ -30,6 +31,14 @@ class ApplicationController < ActionController::API
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   rescue_from FeatureRequiredError, with: :feature_required_error
+
+  def pundit_user
+    ::ApplicationPolicy::UserContext.new(current_user, policy_context)
+  end
+
+  def policy_context
+    @policy_context ||= {}
+  end
 
   def send_error(error = nil, status = 400)
     render json: error, status: status
@@ -157,6 +166,12 @@ class ApplicationController < ActionController::API
 
     # setting the image attribute to nil will not remove the image
     resource.public_send(:"remove_#{image_field_name}!")
+  end
+
+  def set_policy_context
+    return unless (project_preview_token = params[:project_preview_token])
+
+    policy_context[:project_preview_token] = project_preview_token
   end
 end
 

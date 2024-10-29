@@ -1,15 +1,8 @@
 # frozen_string_literal: true
 
 module EmailCampaigns
-  class ExamplePolicy < EmailCampaignsPolicy
-    class Scope
-      attr_reader :user, :scope
-
-      def initialize(user, scope)
-        @user  = user
-        @scope = scope
-      end
-
+  class ExamplePolicy < ApplicationPolicy
+    class Scope < ApplicationPolicy::Scope
       def resolve
         if user&.active? && user&.admin?
           scope.all

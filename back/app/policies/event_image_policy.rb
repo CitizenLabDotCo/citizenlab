@@ -1,14 +1,7 @@
 # frozen_string_literal: true
 
 class EventImagePolicy < ApplicationPolicy
-  class Scope
-    attr_reader :user, :scope
-
-    def initialize(user, scope)
-      @user  = user
-      @scope = scope
-    end
-
+  class Scope < ApplicationPolicy::Scope
     def resolve
       scope.where(event: Pundit.policy_scope(user, Event))
     end
