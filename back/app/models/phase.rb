@@ -270,6 +270,7 @@ class Phase < ApplicationRecord
   end
 
   def update_manual_votes_count!
+    reload
     update!(manual_votes_count: ideas.map(&:manual_votes_amount).compact.sum)
   end
 
