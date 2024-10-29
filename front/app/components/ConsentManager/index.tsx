@@ -48,15 +48,23 @@ const ConsentManager = () => {
     const cookieConsent = getConsent();
     setCookieConsent(cookieConsent);
 
+    const defaultPreferences = getCurrentPreferences(
+      appConfiguration?.data,
+      authUser?.data,
+      cookieConsent
+    );
+
+    if (defaultPreferences.functional === undefined) {
+      defaultPreferences.functional = true;
+    }
+
+    setPreferences(defaultPreferences);
+
     eventEmitter.emit<ISavedDestinations>(
       'destinationConsentChanged',
       cookieConsent?.savedChoices || {}
     );
-  }, []);
-
-  useEffect(() => {
-    resetPreferences();
-  }, [appConfiguration, authUser, resetPreferences]);
+  }, [appConfiguration?.data, authUser?.data]);
 
   const updatePreference = useCallback(
     (category: TCategory, value: boolean) => {
