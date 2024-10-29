@@ -315,7 +315,7 @@
   "app.components.ParticipationCTABars.submit": "Send inn",
   "app.components.ParticipationCTABars.takeTheSurvey": "Ta del i undersøkelsen",
   "app.components.ParticipationCTABars.userHasParticipated": "Du har deltatt i dette prosjektet.",
-  "app.components.ParticipationCTABars.volunteer": "Frivillig",
+  "app.components.ParticipationCTABars.volunteer": "Engasjer deg",
   "app.components.ParticipationCTABars.votesCounter.vote": "stemme",
   "app.components.ParticipationCTABars.votesCounter.votes": "stemmer",
   "app.components.PasswordInput.a11y_passwordHidden": "Passord skjult",
