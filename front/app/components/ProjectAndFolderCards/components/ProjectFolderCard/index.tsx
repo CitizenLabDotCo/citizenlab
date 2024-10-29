@@ -12,7 +12,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
 import { RouteType } from 'routes';
-import styled, { useTheme } from 'styled-components';
+import styled from 'styled-components';
 
 import useAdminPublication from 'api/admin_publications/useAdminPublication';
 import {
@@ -328,7 +328,6 @@ const ProjectFolderCard = memo<Props>(
     const { data: publication } = useAdminPublication(
       projectFolder?.data.relationships.admin_publication.data?.id || null
     );
-    const theme = useTheme();
 
     const handleProjectCardOnClick = useCallback(
       (projectFolderId: string) => () => {
@@ -492,7 +491,6 @@ const ProjectFolderCard = memo<Props>(
                   <AvatarBubbles
                     size={32}
                     limit={3}
-                    userCountBgColor={theme.colors.tenantPrimary}
                     avatarIds={avatarIds}
                     userCount={
                       // TODO: Fix this the next time the file is edited.
