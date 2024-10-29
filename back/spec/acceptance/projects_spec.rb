@@ -468,7 +468,7 @@ resource 'Projects' do
       let(:volunteering_phase) do
         create(
           :volunteering_phase,
-          :project: project,
+          project: project,
           start_at: (Time.zone.today - 30.days),
           end_at: (Time.zone.today - 21.days)
         )
@@ -477,7 +477,7 @@ resource 'Projects' do
       let(:poll_phase) do
         create(
           :poll_phase,
-          :project: project,
+          project: project,
           start_at: (Time.zone.today - 20.days),
           end_at: (Time.zone.today - 11.days)
         )
