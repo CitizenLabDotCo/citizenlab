@@ -116,7 +116,8 @@ module ParticipationMethod
     end
 
     def supports_private_attributes_in_export?
-      AppConfiguration.instance.settings.dig('core', 'private_attributes_in_export')
+      setting = AppConfiguration.instance.settings.dig('core', 'private_attributes_in_export')
+      setting.nil? ? true : setting
     end
 
     def supports_toxicity_detection?

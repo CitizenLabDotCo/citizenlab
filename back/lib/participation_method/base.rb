@@ -151,7 +151,7 @@ module ParticipationMethod
     end
 
     def supports_private_attributes_in_export?
-      true
+      false
     end
 
     def transitive?
