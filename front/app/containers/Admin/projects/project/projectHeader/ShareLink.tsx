@@ -7,9 +7,13 @@ import {
   colors,
   Text,
   Icon,
+  IconButton,
+  Tooltip,
+  Spinner,
 } from '@citizenlab/cl2-component-library';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useRefreshProjectPreviewToken from 'api/projects/useRefreshProjectPreviewToken';
 
 import Divider from 'components/admin/Divider';
 
@@ -18,13 +22,17 @@ import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 const ShareLink = ({
+  projectId,
   projectSlug,
   token,
 }: {
+  projectId: string;
   projectSlug: string;
   token: string;
 }) => {
   const { data: appConfiguration } = useAppConfiguration();
+  const { mutate: refreshProjectPreviewToken, isLoading } =
+    useRefreshProjectPreviewToken();
   const [shareDropdownIsOpen, setShareDropdownIsOpen] = useState(false);
   const [linkIsCopied, setLinkIsCopied] = useState(false);
 
@@ -36,6 +44,17 @@ const ShareLink = ({
   };
 
   const { formatMessage } = useIntl();
+
+  const refreshLink = () => {
+    refreshProjectPreviewToken(
+      { projectId },
+      {
+        onSuccess: () => {
+          setLinkIsCopied(false);
+        },
+      }
+    );
+  };
   return (
     <Box position="relative">
       <Button
@@ -67,19 +86,43 @@ const ShareLink = ({
               <Text variant="bodyL" my="8px">
                 {formatMessage(messages.shareTitle)}
               </Text>
-              <Button
-                buttonStyle="text"
-                padding="8px 16px"
-                icon={linkIsCopied ? 'check-circle' : 'link'}
-                iconColor={linkIsCopied ? colors.success : colors.teal500}
-                textColor={colors.teal500}
-                size="s"
-                onClick={handleCopyLink}
-              >
-                {linkIsCopied
-                  ? formatMessage(messages.shareLinkCopied)
-                  : formatMessage(messages.shareLink)}
-              </Button>
+              <Box display="flex" alignItems="center">
+                <Button
+                  buttonStyle="text"
+                  padding="8px"
+                  icon={linkIsCopied ? 'check-circle' : 'link'}
+                  iconColor={linkIsCopied ? colors.success : colors.teal500}
+                  iconHoverColor={
+                    linkIsCopied ? colors.success : colors.teal700
+                  }
+                  textColor={colors.teal500}
+                  textHoverColor={colors.teal700}
+                  size="s"
+                  onClick={handleCopyLink}
+                >
+                  {linkIsCopied
+                    ? formatMessage(messages.shareLinkCopied)
+                    : formatMessage(messages.shareLink)}
+                </Button>
+                {isLoading ? (
+                  <Spinner size="20px" />
+                ) : (
+                  <Tooltip content={formatMessage(messages.refreshLinkTooltip)}>
+                    <IconButton
+                      iconWidth="28px"
+                      iconHeight="28px"
+                      iconName="refresh"
+                      onClick={refreshLink}
+                      a11y_buttonActionMessage={formatMessage(
+                        messages.refreshLink
+                      )}
+                      iconColor={colors.teal500}
+                      iconColorOnHover={colors.teal700}
+                      p="0px"
+                    />
+                  </Tooltip>
+                )}
+              </Box>
             </Box>
             <Divider />
             <Text variant="bodyL" fontSize="m">
