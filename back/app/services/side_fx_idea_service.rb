@@ -109,7 +109,7 @@ class SideFxIdeaService
   end
 
   def after_destroy(frozen_idea, user)
-    idea.phases.each(&:update_manual_votes_count!) if idea.manual_votes_amount.present?
+    frozen_idea.phases.each(&:update_manual_votes_count!) if frozen_idea.manual_votes_amount.present?
 
     serialized_idea = serialize_idea(frozen_idea)
 

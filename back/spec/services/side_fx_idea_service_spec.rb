@@ -90,6 +90,18 @@ describe SideFxIdeaService do
         )
         .exactly(1).times
     end
+
+    it 'sets the manual_votes_count of its phases' do
+      project = create(:project)
+      phase1, phase2 = create_list(:phase, 2, project: project)
+      create(:idea, manual_votes_amount: 2, project: project, phases: [phase1])
+      phase1.update_manual_votes_count!
+      idea = create(:idea, manual_votes_amount: 3, project: project, phases: [phase1, phase2])
+      service.after_create(idea, user)
+
+      expect(phase1.reload.manual_votes_count).to eq 5
+      expect(phase2.reload.manual_votes_count).to eq 3
+    end
   end
 
   describe 'after_update' do
