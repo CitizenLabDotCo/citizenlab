@@ -6,6 +6,7 @@ import {
   Spinner,
   Icon,
   colors,
+  useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 import { debounce } from 'lodash-es';
 import { useInView } from 'react-intersection-observer';
@@ -49,6 +50,7 @@ const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
   >(undefined);
   const [showPreviousButton, setShowPreviousButton] = useState(false);
   const [showNextButton, setShowNextButton] = useState(false);
+  const isSmallerThanPhone = useBreakpoint('phone');
 
   const { ref } = useInView({
     onChange: (inView) => {
@@ -60,6 +62,8 @@ const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
 
   const handleButtonVisiblity = useCallback(
     (ref: HTMLDivElement, hasMore: boolean) => {
+      if (isSmallerThanPhone) return;
+
       const scrollLeft = ref.scrollLeft;
       const scrollWidth = ref.scrollWidth;
       const clientWidth = ref.clientWidth;
@@ -75,7 +79,7 @@ const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
       const atStart = scrollLeft === 0;
       setShowPreviousButton(!atStart);
     },
-    []
+    [isSmallerThanPhone]
   );
 
   useEffect(() => {
@@ -125,7 +129,7 @@ const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
           </ProjectContainer>
         )}
       </HorizontalScroll>
-      {showPreviousButton && (
+      {showPreviousButton && !isSmallerThanPhone && (
         <Box
           as="button"
           className="scroll-button"
@@ -147,7 +151,7 @@ const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
           <Icon name="arrow-left" fill={colors.grey700} />
         </Box>
       )}
-      {showNextButton && (
+      {showNextButton && !isSmallerThanPhone && (
         <Box
           as="button"
           className="scroll-button"
