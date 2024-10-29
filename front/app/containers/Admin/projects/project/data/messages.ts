@@ -11,8 +11,8 @@ export default defineMessages({
       'Clear ideas, comments, votes, reactions, survey responses, poll responses, volunteers and event attendees.',
   },
   dataWarning: {
-    id: 'app.containers.AdminPage.Project.data.warning',
-    defaultMessage: 'This action can not be undone.',
+    id: 'app.containers.AdminPage.Project.data.warningMessage',
+    defaultMessage: 'This action cannot be undone.',
   },
   resetParticipationData: {
     id: 'app.containers.AdminPage.Project.resetParticipationData',
