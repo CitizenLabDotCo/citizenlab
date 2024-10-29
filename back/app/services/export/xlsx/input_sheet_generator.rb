@@ -154,7 +154,9 @@ module Export
             author_id_report_field
           ]
         else
-          []
+          [
+            author_id_report_field
+          ]
         end
       end
 

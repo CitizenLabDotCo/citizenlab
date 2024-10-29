@@ -286,6 +286,7 @@ describe Export::Xlsx::InputSheetGenerator do
               column_headers: [
                 'ID',
                 'What are your favourite pets?',
+                'Author ID',
                 'Submitted at',
                 'Project'
               ],
@@ -293,18 +294,21 @@ describe Export::Xlsx::InputSheetGenerator do
                 [
                   survey_response1.id,
                   'Cat, Dog',
+                  survey_response1.author_id,
                   an_instance_of(DateTime), # created_at
                   phase.project.title_multiloc['en']
                 ],
                 [
                   survey_response2.id,
                   'Cat',
+                  survey_response2.author_id,
                   an_instance_of(DateTime), # created_at
                   phase.project.title_multiloc['en']
                 ],
                 [
                   survey_response3.id,
                   'Dog',
+                  survey_response3.author_id,
                   an_instance_of(DateTime), # created_at
                   phase.project.title_multiloc['en']
                 ]
@@ -324,6 +328,7 @@ describe Export::Xlsx::InputSheetGenerator do
                   'ID',
                   'What are your favourite pets?',
                   'Type your answer',
+                  'Author ID',
                   'Submitted at',
                   'Project'
                 ],
@@ -332,6 +337,7 @@ describe Export::Xlsx::InputSheetGenerator do
                     survey_response1.id,
                     'Cat, Dog, Other',
                     'Fish',
+                    survey_response1.author_id,
                     an_instance_of(DateTime), # created_at
                     phase.project.title_multiloc['en']
                   ],
@@ -339,6 +345,7 @@ describe Export::Xlsx::InputSheetGenerator do
                     survey_response2.id,
                     'Cat',
                     '',
+                    survey_response2.author_id,
                     an_instance_of(DateTime), # created_at
                     phase.project.title_multiloc['en']
                   ],
@@ -346,6 +353,7 @@ describe Export::Xlsx::InputSheetGenerator do
                     survey_response3.id,
                     'Dog',
                     '',
+                    survey_response3.author_id,
                     an_instance_of(DateTime), # created_at
                     phase.project.title_multiloc['en']
                   ]
