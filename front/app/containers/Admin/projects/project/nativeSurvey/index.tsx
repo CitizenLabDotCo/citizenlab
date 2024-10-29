@@ -35,7 +35,7 @@ import PDFExportModal, {
 import Button from 'components/UI/Button';
 import Modal from 'components/UI/Modal';
 
-import { useIntl } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 import { requestBlob } from 'utils/requestBlob';
@@ -46,6 +46,7 @@ import FormResults from './FormResults';
 import messages from './messages';
 import { saveSurveyAsPDF } from './saveSurveyAsPDF';
 import { getFormActionsConfig } from './utils';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 const Forms = () => {
   const { projectId, phaseId } = useParams() as {
@@ -71,6 +72,11 @@ const Forms = () => {
     name: 'input_importer',
   });
   const { mutate: deleteFormResults } = useDeleteSurveyResults();
+
+  const { data: appConfiguration } = useAppConfiguration();
+  const privateAttributesInExport =
+    appConfiguration?.data.attributes.settings.core
+      .private_attributes_in_export;
 
   if (!project || isNilOrError(locale) || !phase || !submissionCount) {
     return null;
@@ -323,6 +329,33 @@ const Forms = () => {
                         <Text my="0px">
                           {formatMessage(messages.downloadResults)}
                         </Text>
+                        {!privateAttributesInExport && (
+                          <IconTooltip
+                            ml="4px"
+                            content={
+                              <FormattedMessage
+                                {...messages.downloadResultsTooltip}
+                                values={{
+                                  supportArticleLink: (
+                                    <a
+                                      href={'/#TODO'}
+                                      target="_blank"
+                                      rel="noreferrer"
+                                      style={{
+                                        textDecoration: 'underline',
+                                        color: colors.white,
+                                      }}
+                                    >
+                                      <FormattedMessage
+                                        {...messages.downloadResultsSupportArticle}
+                                      />
+                                    </a>
+                                  ),
+                                }}
+                              />
+                            }
+                          />
+                        )}
                       </Box>
                     </DropdownListItem>
                     {haveSubmissionsComeIn && (

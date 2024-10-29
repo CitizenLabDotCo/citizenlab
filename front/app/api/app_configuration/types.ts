@@ -58,6 +58,7 @@ export type IAppConfigurationSettingsCore = {
   allow_sharing: boolean;
   customer_portal_url?: string | null;
   anonymous_name_scheme?: string | null;
+  private_attributes_in_export: boolean;
 };
 
 export type TSeatNumber = number | null | undefined;
