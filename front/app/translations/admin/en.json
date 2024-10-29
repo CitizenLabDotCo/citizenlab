@@ -1391,7 +1391,7 @@
   "app.containers.AdminPage.Project.confirmation.yes": "Reset all participation data",
   "app.containers.AdminPage.Project.data.description": "Clear ideas, comments, votes, reactions, survey responses, poll responses, volunteers and event attendees.",
   "app.containers.AdminPage.Project.data.title": "Clear all participation data from this project",
-  "app.containers.AdminPage.Project.data.warning": "This action can not be undone.",
+  "app.containers.AdminPage.Project.data.warningMessage": "This action cannot be undone.",
   "app.containers.AdminPage.Project.resetParticipationData": "Reset all participation data",
   "app.containers.AdminPage.Project.settings.accessRights": "Access rights",
   "app.containers.AdminPage.Project.settings.back": "Back",
