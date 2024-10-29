@@ -46,7 +46,7 @@ const CardContainer = styled(Box)`
 const ProjectImageContainer = styled.div`
   width: 100%;
   display: flex;
-  aspect-ratio: ${CARD_IMAGE_ASPECT_RATIO} / 1;
+  aspect-ratio: ${CARD_IMAGE_ASPECT_RATIO};
   margin-right: 10px;
   overflow: hidden;
   position: relative;

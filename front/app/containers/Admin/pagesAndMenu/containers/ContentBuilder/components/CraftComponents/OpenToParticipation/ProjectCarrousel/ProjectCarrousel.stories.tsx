@@ -32,7 +32,7 @@ const createData = (offset: number) => {
   );
 };
 
-const PrimaryWrapper = ({ title }) => {
+const ManyProjectsWrapper = ({ title }) => {
   const [data, setData] = useState(createData(1));
   const [hasMore, setHasMore] = useState(true);
 
@@ -53,7 +53,7 @@ const PrimaryWrapper = ({ title }) => {
   );
 };
 
-export const Primary: Story = {
+export const ManyProjects: Story = {
   args: {
     title: 'Open to participation',
     // The next three props are not used in the component, but are required for the story to work
@@ -62,6 +62,15 @@ export const Primary: Story = {
     onLoadMore: () => {},
   },
   render: ({ title }) => {
-    return <PrimaryWrapper title={title} />;
+    return <ManyProjectsWrapper title={title} />;
+  },
+};
+
+export const OneProject: Story = {
+  args: {
+    title: 'Open to participation',
+    projects: [projects.data[0]],
+    hasMore: false,
+    onLoadMore: () => {},
   },
 };

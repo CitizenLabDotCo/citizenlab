@@ -3,9 +3,11 @@ import React, { ReactNode } from 'react';
 import { Box, isRtl } from '@citizenlab/cl2-component-library';
 import styled, { useTheme } from 'styled-components';
 
+import { CARD_GAP } from './constants';
+
 const StyledContainer = styled(Box)`
   display: flex;
-  gap: 16px;
+  gap: ${CARD_GAP}px;
   flex-direction: row;
   justify-content: flex-start;
   flex-wrap: nowrap;
@@ -29,14 +31,15 @@ const StyledContainer = styled(Box)`
 
 interface Props {
   children: ReactNode;
+  setRef: (instance: HTMLDivElement | null) => void;
 }
 
-const HorizontalScroll = ({ children }: Props) => {
+const HorizontalScroll = ({ children, setRef }: Props) => {
   const theme = useTheme();
 
   return (
     <Box display="flex" flexDirection={theme.isRtl ? 'row-reverse' : 'row'}>
-      <StyledContainer>{children}</StyledContainer>
+      <StyledContainer ref={setRef}>{children}</StyledContainer>
     </Box>
   );
 };
