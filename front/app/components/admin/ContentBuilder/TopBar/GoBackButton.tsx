@@ -1,24 +1,32 @@
 import React from 'react';
 
-import { Box, colors } from '@citizenlab/cl2-component-library';
+import { IconButton, colors } from '@citizenlab/cl2-component-library';
 
-import GoBackButton from 'components/UI/GoBackButton';
+import { useIntl } from 'utils/cl-intl';
+
+import messages from './messages';
 
 interface Props {
   onClick: () => void;
 }
 
-const GoBackButtonWrapped = ({ onClick }: Props) => (
-  <Box
-    p="15px"
-    w="210px"
-    h="100%"
-    borderRight={`1px solid ${colors.grey500}`}
-    display="flex"
-    alignItems="center"
-  >
-    <GoBackButton onClick={onClick} />
-  </Box>
-);
+const GoBackButton = ({ onClick }: Props) => {
+  const { formatMessage } = useIntl();
 
-export default GoBackButtonWrapped;
+  return (
+    <IconButton
+      data-testid="goBackButton"
+      id="e2e-go-back-button"
+      iconName="arrow-left"
+      buttonType="button"
+      iconColor={colors.textSecondary}
+      iconColorOnHover={colors.primary}
+      iconWidth="20px"
+      a11y_buttonActionMessage={formatMessage(messages.goBackButtonMessage)}
+      ml="8px"
+      onClick={onClick}
+    />
+  );
+};
+
+export default GoBackButton;

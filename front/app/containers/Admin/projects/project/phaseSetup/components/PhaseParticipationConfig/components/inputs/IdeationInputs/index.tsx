@@ -5,6 +5,8 @@ import { CLErrors } from 'typings';
 
 import { IdeaDefaultSortMethod, InputTerm } from 'api/phases/types';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import AnonymousPostingToggle from 'components/admin/AnonymousPostingToggle/AnonymousPostingToggle';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import FeatureFlag from 'components/FeatureFlag';
@@ -16,6 +18,7 @@ import messages from '../../../../../../messages';
 import CustomFieldPicker from '../../shared/CustomFieldPicker';
 import DefaultViewPicker from '../../shared/DefaultViewPicker';
 import { ReactingLimitInput } from '../../shared/styling';
+import PrescreeningToggle from '../_shared/PrescreeningToggle';
 import SortingPicker from '../_shared/SortingPicker';
 import UserActions from '../_shared/UserActions';
 
@@ -57,6 +60,8 @@ interface Props {
   handleIdeaDefaultSortMethodChange: (
     ideas_order: IdeaDefaultSortMethod
   ) => void;
+  prescreening_enabled: boolean | null | undefined;
+  togglePrescreeningEnabled: (prescreening_enabled: boolean) => void;
 }
 
 const IdeationInputs = ({
@@ -87,6 +92,8 @@ const IdeationInputs = ({
   handleIdeasDisplayChange,
   ideas_order,
   handleIdeaDefaultSortMethodChange,
+  prescreening_enabled,
+  togglePrescreeningEnabled,
 }: Props) => {
   return (
     <>
@@ -100,6 +107,19 @@ const IdeationInputs = ({
         input_term={input_term}
         handleInputTermChange={handleInputTermChange}
       />
+      {
+        // Remove the following condition when pricing decision made
+        // And add feature flag with onlyCheckAllowed back into prescreeningFeatureAllowed
+        useFeatureFlag({
+          name: 'prescreening_ideation',
+        }) && (
+          <PrescreeningToggle
+            prescreening_enabled={prescreening_enabled}
+            togglePrescreeningEnabled={togglePrescreeningEnabled}
+            prescreeningFeatureAllowed={true}
+          />
+        )
+      }
       <UserActions
         submission_enabled={submission_enabled || false}
         commenting_enabled={commenting_enabled || false}

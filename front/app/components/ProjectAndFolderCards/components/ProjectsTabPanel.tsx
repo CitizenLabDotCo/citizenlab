@@ -70,6 +70,8 @@ const ProjectsTabPanel = ({
         const getCardSize = (index: number) => {
           if (layout === 'dynamic') {
             return cardSizes[index];
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           } else if (layout === 'threecolumns') {
             return 'small';
           } else {

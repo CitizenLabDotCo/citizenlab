@@ -32,6 +32,8 @@ const StyledUserName = styled(UserName)`
 
 // Inspired by front/app/components/IdeaCard/Body/index.tsx
 const AuthorAvatar = ({ idea }: { idea: IIdeaData }) => {
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const authorId = idea.relationships?.author?.data?.id || null;
   const authorHash = idea.attributes.author_hash;
 

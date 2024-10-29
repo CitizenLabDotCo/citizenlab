@@ -790,13 +790,25 @@
 
       "prescreening": {
         "type": "object",
-        "title": "Screening",
-        "description": "When active, screening can be activated on a per-project basis, which requires admins/moderators to explicitly approve each input before it becomes visible to the public.",
+        "title": "Screening (proposals)",
+        "description": "When active, screening can be activated for proposals phases, which requires admins/moderators to explicitly approve each input before it becomes visible to the public.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": true },
           "enabled": { "type": "boolean", "default": true }
+        }
+      },
+
+      "prescreening_ideation": {
+        "type": "object",
+        "title": "Screening (ideation)",
+        "description": "When active, screening can be activated for ideation phases, which requires admins/moderators to explicitly approve each input before it becomes visible to the public.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
         }
       },
 
@@ -959,7 +971,8 @@
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": false}
+          "enabled": { "type": "boolean", "default": false},
+          "extended_blocking": { "type": "boolean", "default": false}
         }
       },
 
@@ -1358,6 +1371,18 @@
         "type": "object",
         "title": "Management Feed",
         "description": "Experimental feature: A minimal list of selected actions performed by admins or managers in the last 30 days. Not all actions are included.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "new_homepage_widgets": {
+        "type": "object",
+        "title": "New homepage widgets",
+        "description": "New homepage widgets (sticky homepages tandem). Feature flagged until pricing plan stuff decided.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {

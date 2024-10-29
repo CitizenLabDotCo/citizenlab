@@ -89,6 +89,8 @@ const ManagementFeedRow = ({ item }: { item: ManagementFeedData }) => {
         <Td>
           {user && (
             <Box display="flex" gap="8px" alignItems="center">
+              {/* TODO: Fix this the next time the file is edited. */}
+              {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
               <Avatar userId={user?.data.id} size={24} />
               {getFullName(user.data)}
             </Box>

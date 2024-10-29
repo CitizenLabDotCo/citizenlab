@@ -41,6 +41,7 @@ export interface IPhaseAttributes {
   updated_at: string;
   participation_method: ParticipationMethod;
   submission_enabled: boolean;
+  autoshare_results_enabled?: boolean;
   commenting_enabled: boolean;
   reacting_enabled: boolean;
   reacting_like_method: 'limited' | 'unlimited';
@@ -92,6 +93,7 @@ export interface IUpdatedPhaseProperties {
   voting_method?: VotingMethod | null;
   submission_enabled?: boolean | null;
   commenting_enabled?: boolean | null;
+  autoshare_results_enabled?: boolean | null;
   reacting_enabled?: boolean | null;
   reacting_like_method?: 'limited' | 'unlimited' | null;
   reacting_dislike_method?: 'limited' | 'unlimited' | null;

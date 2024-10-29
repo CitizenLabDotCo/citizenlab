@@ -58,7 +58,6 @@ en-CA:
       "voting_phase_started": New project phase with voting
       "voting_results": Voting results
       "your_input_in_screening": My input awaits screening
-      "your_proposed_initiatives_digest": Weekly overview of your proposals
     general:
       by_author: 'by %{authorName}'
       author_wrote: '%{authorName} wrote:'
@@ -493,7 +492,7 @@ en-CA:
     threshold_reached_for_admin:
       cta_process_initiative: 'Take this initiative to the next steps'
       main_header: 'An initiative reached the voting threshold!'
-      subject: 'An initiative reached the voting threshold on your platform'
+      subject: '"%{input_title}" reached the voting threshold'
       preheader: 'Make sure to take the next steps'
     welcome:
       cta_join_platform: 'Discover the platform'
@@ -539,16 +538,6 @@ en-CA:
       message: '"%{input_title}" will become visible to others once it has been reviewed and approved.'
       subject: '"%{input_title}" is almost published'
       preheader: 'It''s currently in %{prescreening_status_title}'
-    your_proposed_initiatives_digest:
-      subject: 'Weekly update of your initiative'
-      preheader: 'What happened to your initiative in the past week?'
-      title_your_weekly_report: 'How has your initiative been doing?'
-      text_introduction: 'Find the key numbers below and go to your initiative''s page to take action and gather enough support in time.'
-      cta_see_your_initiative: 'Go to your initiative'
-      total_votes: 'Total votes'
-      new_votes: 'New votes'
-      remaining_votes: 'Votes remaining'
-      remaining_days: 'Days remaining'
     voting_basket_submitted:
       subject: '%{organizationName}: You voted successfully'
       preheader: 'You voted successfully on the participation platform of %{organizationName}'

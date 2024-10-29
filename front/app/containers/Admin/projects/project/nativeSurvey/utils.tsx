@@ -93,6 +93,8 @@ export const getFormActionsConfig = (
 
 // Remove the IDs from the options - for when the form is not persisted
 export const clearOptionIds = (customFields: IFlatCustomField[]) => {
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   return customFields?.map((field: IFlatCustomField) => {
     if (field.options && field.options.length > 0) {
       field.options = field.options.map((option: IOptionsType) => {

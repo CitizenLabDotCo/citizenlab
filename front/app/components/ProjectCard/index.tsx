@@ -16,7 +16,7 @@ import moment from 'moment';
 import { rgba, darken } from 'polished';
 import { useInView } from 'react-intersection-observer';
 import { RouteType } from 'routes';
-import styled, { useTheme } from 'styled-components';
+import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
 import usePhase from 'api/phases/usePhase';
@@ -383,11 +383,11 @@ const ProjectCard = memo<InputProps>(
     const projectImage = imageId ? _projectImage : undefined;
 
     const currentPhaseId =
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       project?.data?.relationships?.current_phase?.data?.id ?? null;
     const { data: phase } = usePhase(currentPhaseId);
     const localize = useLocalize();
-
-    const theme = useTheme();
 
     const [visible, setVisible] = useState(false);
 
@@ -405,6 +405,8 @@ const ProjectCard = memo<InputProps>(
 
     if (project) {
       const postingPermission = getIdeaPostingRules({
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         project: project?.data,
         phase: phase?.data,
         authUser: authUser?.data,
@@ -420,7 +422,9 @@ const ProjectCard = memo<InputProps>(
 
       const imageUrl = !projectImage
         ? null
-        : projectImage.data.attributes.versions?.large;
+        : // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+          projectImage.data.attributes.versions?.large;
 
       const projectUrl: RouteType = getProjectUrl(project.data);
       const isFinished = project.data.attributes.timeline_active === 'past';
@@ -693,7 +697,6 @@ const ProjectCard = memo<InputProps>(
                     <AvatarBubbles
                       size={32}
                       limit={3}
-                      userCountBgColor={theme.colors.tenantPrimary}
                       avatarIds={avatarIds}
                       userCount={project.data.attributes.participants_count}
                     />
@@ -708,6 +711,8 @@ const ProjectCard = memo<InputProps>(
                   followableId={project.data.id}
                   followersCount={project.data.attributes.followers_count}
                   followerId={
+                    // TODO: Fix this the next time the file is edited.
+                    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                     project.data.relationships.user_follower?.data?.id
                   }
                   w="100%"

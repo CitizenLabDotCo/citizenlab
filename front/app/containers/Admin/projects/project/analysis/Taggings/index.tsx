@@ -29,6 +29,8 @@ const Taggings = ({
 
   const taggingsForInput = useMemo(
     () =>
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       taggings?.data?.filter(
         (tagging) => tagging.relationships.input.data.id === inputId
       ),
@@ -37,6 +39,8 @@ const Taggings = ({
 
   return (
     <Box display="flex" gap="8px" flexWrap="wrap">
+      {/* TODO: Fix this the next time the file is edited. */}
+      {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
       {tags?.data?.map((tag) => {
         const taggingForTag = taggingsForInput?.find(
           (tagging) => tagging.relationships.tag.data.id === tag.id
@@ -54,6 +58,8 @@ const Taggings = ({
               },
               onDeleteTagging: () => {
                 taggingForTag &&
+                  // TODO: Fix this the next time the file is edited.
+                  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                   deleteTagging({ analysisId, id: taggingForTag?.id });
               },
             }}

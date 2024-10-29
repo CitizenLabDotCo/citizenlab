@@ -19,6 +19,7 @@ import { VotingContext } from 'api/baskets_ideas/useVoting';
 import useEvents from 'api/events/useEvents';
 import useAuthUser from 'api/me/useAuthUser';
 import usePhases from 'api/phases/usePhases';
+import { getLatestRelevantPhase } from 'api/phases/utils';
 import { IProjectData } from 'api/projects/types';
 import useProjectBySlug from 'api/projects/useProjectBySlug';
 
@@ -174,6 +175,8 @@ const ProjectsShowPage = ({ project }: Props) => {
     <main>
       <Container
         background={
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           events && events?.data.length > 0 ? colors.white : colors.background
         }
       >
@@ -195,6 +198,8 @@ const ProjectsShowPageWrapper = () => {
   const { data: phases, isInitialLoading: isInitialPhasesLoading } = usePhases(
     project?.data.id
   );
+  const phaseIndex = phaseNumber ? parseInt(phaseNumber, 10) - 1 : undefined;
+
   const { data: user, isLoading: isUserLoading } = useAuthUser();
   const urlSegments = pathname
     .replace(/^\/|\/$/g, '')
@@ -220,6 +225,8 @@ const ProjectsShowPageWrapper = () => {
     );
   }
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const userJustLoggedOut = userWasLoggedIn && user === null;
   const unauthorized = statusProject === 'error' && isUnauthorizedRQ(error);
 
@@ -231,6 +238,8 @@ const ProjectsShowPageWrapper = () => {
     return <Unauthorized />;
   }
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (statusProject === 'error' || project === null) {
     return <PageNotFound />;
   }
@@ -255,7 +264,15 @@ const ProjectsShowPageWrapper = () => {
   return (
     <>
       <ProjectShowPageMeta project={project.data} />
-      <VotingContext projectId={project.data.id}>
+      <VotingContext
+        projectId={project.data.id}
+        phaseId={
+          phaseIndex
+            ? // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+              phases?.data?.[phaseIndex]?.id
+            : phases?.data && getLatestRelevantPhase(phases.data)?.id
+        }
+      >
         <ProjectsShowPage project={project.data} />
       </VotingContext>
     </>

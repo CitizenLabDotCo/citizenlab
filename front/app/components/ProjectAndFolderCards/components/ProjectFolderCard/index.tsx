@@ -12,7 +12,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
 import { RouteType } from 'routes';
-import styled, { useTheme } from 'styled-components';
+import styled from 'styled-components';
 
 import useAdminPublication from 'api/admin_publications/useAdminPublication';
 import {
@@ -328,7 +328,6 @@ const ProjectFolderCard = memo<Props>(
     const { data: publication } = useAdminPublication(
       projectFolder?.data.relationships.admin_publication.data?.id || null
     );
-    const theme = useTheme();
 
     const handleProjectCardOnClick = useCallback(
       (projectFolderId: string) => () => {
@@ -354,12 +353,19 @@ const ProjectFolderCard = memo<Props>(
 
     // Footer
     const avatarIds =
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       projectFolder?.data.relationships.avatars &&
-      projectFolder?.data.relationships.avatars.data
-        ? projectFolder?.data.relationships.avatars.data.map(
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      projectFolder?.data.relationships.avatars.data // TODO: Fix this the next time the file is edited.
+        ? // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+          projectFolder?.data.relationships.avatars.data.map(
             (avatar) => avatar.id
           )
         : [];
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     const showAvatarBubbles = avatarIds ? avatarIds.length > 0 : false;
     const showFooter = showAvatarBubbles;
 
@@ -485,9 +491,10 @@ const ProjectFolderCard = memo<Props>(
                   <AvatarBubbles
                     size={32}
                     limit={3}
-                    userCountBgColor={theme.colors.tenantPrimary}
                     avatarIds={avatarIds}
                     userCount={
+                      // TODO: Fix this the next time the file is edited.
+                      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                       projectFolder?.data.attributes.participants_count
                     }
                   />
@@ -502,6 +509,8 @@ const ProjectFolderCard = memo<Props>(
                 followableId={projectFolder.data.id}
                 followersCount={projectFolder.data.attributes.followers_count}
                 followerId={
+                  // TODO: Fix this the next time the file is edited.
+                  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                   projectFolder.data.relationships.user_follower?.data?.id
                 }
                 w="100%"

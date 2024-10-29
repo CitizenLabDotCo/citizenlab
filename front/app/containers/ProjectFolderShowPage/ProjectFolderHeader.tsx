@@ -29,10 +29,14 @@ const ProjectFolderHeader = memo<Props>(({ projectFolder, className }) => {
 
   const smallerThan1100px = windowWidth ? windowWidth <= 1100 : false;
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (projectFolder.attributes?.header_bg?.large) {
     return (
       <HeaderImageContainer className={`${className || ''} e2e-header-folder`}>
         <HeaderImage
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           src={projectFolder.attributes?.header_bg.large}
           cover={true}
           fadeIn={false}

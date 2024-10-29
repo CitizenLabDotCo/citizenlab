@@ -61,15 +61,23 @@ export const TitleControl = ({
           type={schema.type === 'number' ? 'number' : 'text'}
           value={data}
           onChange={onChange}
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           maxCharCount={schema?.maxLength}
           onBlur={() => {
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             uischema?.options?.transform === 'trim_on_blur' &&
               isString(data) &&
               onChange(data.trim());
             setDidBlur(true);
           }}
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           disabled={uischema?.options?.readonly}
         />
+        {/* TODO: Fix this the next time the file is edited. */}
+        {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
         <VerificationIcon show={uischema?.options?.verificationLocked} />
       </Box>
       <ErrorDisplay
