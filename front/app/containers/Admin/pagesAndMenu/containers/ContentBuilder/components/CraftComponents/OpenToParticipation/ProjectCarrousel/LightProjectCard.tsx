@@ -27,6 +27,7 @@ import ImagePlaceholder from 'components/ProjectCard/ImagePlaceholder';
 import { useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 
+import { CARD_WIDTH } from './constants';
 import messages from './messages';
 
 const ProjectImageContainer = styled.div`
@@ -64,7 +65,7 @@ const LightProjectCard = ({ project }: Props) => {
   const projectUrl: RouteType = getProjectUrl(project);
 
   return (
-    <Box as={Link} w="240px" to={projectUrl} display="block">
+    <Box as={Link} w={`${CARD_WIDTH}px`} to={projectUrl} display="block">
       <Box>
         <ProjectImageContainer>
           {imageUrl ? <Image src={imageUrl} alt="" /> : <ImagePlaceholder />}

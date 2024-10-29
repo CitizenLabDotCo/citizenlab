@@ -1,7 +1,6 @@
-import React, { useEffect, ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 
 import { Box, isRtl } from '@citizenlab/cl2-component-library';
-import { debounce } from 'lodash-es';
 import styled, { useTheme } from 'styled-components';
 
 const StyledContainer = styled(Box)`
@@ -34,26 +33,10 @@ interface Props {
 
 const HorizontalScroll = ({ children }: Props) => {
   const theme = useTheme();
-  const containerRef = React.useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!containerRef.current) return;
-
-    const handleScroll = debounce(() => {
-      // TODO
-    }, 100);
-
-    const container = containerRef.current;
-    container.addEventListener('scroll', handleScroll);
-
-    return () => {
-      container.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
 
   return (
     <Box display="flex" flexDirection={theme.isRtl ? 'row-reverse' : 'row'}>
-      <StyledContainer ref={containerRef}>{children}</StyledContainer>
+      <StyledContainer>{children}</StyledContainer>
     </Box>
   );
 };
