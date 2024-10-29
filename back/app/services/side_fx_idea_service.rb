@@ -13,6 +13,7 @@ class SideFxIdeaService
 
   def after_create(idea, user)
     idea.update!(body_multiloc: TextImageService.new.swap_data_images_multiloc(idea.body_multiloc, field: :body_multiloc, imageable: idea))
+    idea.phases.each(&:update_manual_votes_count!) if idea.manual_votes_amount.present?
 
     LogActivityJob.perform_later(
       idea,
@@ -39,8 +40,12 @@ class SideFxIdeaService
     # we do anything else because updates to the idea can change this state.
     just_submitted = idea.just_submitted?
     just_published = idea.just_published?
+    enabled_anonymous = idea.anonymous_previously_changed?(to: true)
+    changed_manual_votes_amount = idea.manual_votes_amount_previously_changed?
+    changed_phases = idea.phases_previously_changed?
 
-    remove_user_from_past_activities_with_item(idea, user) if idea.anonymous_previously_changed?(to: true)
+    remove_user_from_past_activities_with_item(idea, user) if enabled_anonymous
+    idea.phases.each(&:update_manual_votes_count!) if changed_manual_votes_amount || changed_phases
 
     after_submission idea, user if just_submitted
     if just_published
@@ -104,6 +109,8 @@ class SideFxIdeaService
   end
 
   def after_destroy(frozen_idea, user)
+    idea.phases.each(&:update_manual_votes_count!) if idea.manual_votes_amount.present?
+
     serialized_idea = serialize_idea(frozen_idea)
 
     LogActivityJob.perform_later(

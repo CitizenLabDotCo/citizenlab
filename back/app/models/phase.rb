@@ -108,6 +108,7 @@ class Phase < ApplicationRecord
   validate :validate_start_at_before_end_at
   validate :validate_no_other_overlapping_phases
   validate :validate_campaigns_settings_keys_and_values
+  # TODO: Validate manual votes attributes
 
   validates :participation_method, inclusion: { in: PARTICIPATION_METHODS }
 
@@ -266,6 +267,10 @@ class Phase < ApplicationRecord
     self.manual_voters_amount = amount
     self.manual_voters_last_updated_by = user if user
     self.manual_voters_last_updated_at = Time.now
+  end
+
+  def update_manual_votes_count!
+    update!(manual_votes_count: ideas.map(&:manual_votes_amount).compact.sum)
   end
 
   private

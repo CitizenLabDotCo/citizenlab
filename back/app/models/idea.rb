@@ -123,6 +123,7 @@ class Idea < ApplicationRecord
 
   validate :validate_creation_phase
   validate :not_published_in_non_public_status
+  # TODO: Validate manual votes attributes
 
   # validates :custom_field_values, json: {
   #   schema: :schema_for_validation,
