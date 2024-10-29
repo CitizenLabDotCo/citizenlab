@@ -258,6 +258,38 @@ describe SideFxIdeaService do
         ).exactly(1).times
     end
 
+    it 'sets the manual_votes_count after changing the manual votes amount' do
+      phase = create(:phase)
+      idea = create(:idea, manual_votes_amount: 2, project: phase.project, phases: [phase])
+      phase.update_manual_votes_count!
+      idea.update!(manual_votes_amount: 7)
+      service.after_update(idea, user)
+
+      expect(phase.reload.manual_votes_count).to eq 7
+    end
+
+    it 'sets the manual_votes_count after clearing the manual votes amount' do
+      phase = create(:phase)
+      idea = create(:idea, manual_votes_amount: 2, project: phase.project, phases: [phase])
+      phase.update_manual_votes_count!
+      idea.update!(manual_votes_amount: nil)
+      service.after_update(idea, user)
+
+      expect(phase.reload.manual_votes_count).to eq 0
+    end
+
+    it 'sets the manual_votes_count after adding a phase' do
+      phase = create(:phase)
+      create(:idea, manual_votes_amount: 2, project: phase.project, phases: [phase])
+      idea = create(:idea, manual_votes_amount: 1, project: phase.project, phases: [])
+      phase.update_manual_votes_count!
+      service.before_update(idea, user)
+      idea.update!(phase_ids: [phase.id])
+      service.after_update(idea, user)
+
+      expect(phase.reload.manual_votes_count).to eq 3
+    end
+
     it 'sets the manual_votes_count after removing a phase' do
       phase = create(:phase)
       create(:idea, manual_votes_amount: 2, project: phase.project, phases: [phase])
@@ -269,9 +301,6 @@ describe SideFxIdeaService do
 
       expect(phase.reload.manual_votes_count).to eq 2
     end
-
-    # Adding phase
-    # Changing manual_votes_amount (to zero or nil)
   end
 
   describe 'after_destroy' do
