@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { Title } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import { IProjectData } from 'api/projects/types';
@@ -12,18 +13,24 @@ const ProjectContainer = styled.div`
 `;
 
 interface Props {
+  title: string;
   projects: IProjectData[];
 }
 
-const ProjectCarrousel = ({ projects }: Props) => {
+const ProjectCarrousel = ({ title, projects }: Props) => {
   return (
-    <HorizontalScroll>
-      {projects.map((project) => (
-        <ProjectContainer key={project.id}>
-          <LightProjectCard project={project} />
-        </ProjectContainer>
-      ))}
-    </HorizontalScroll>
+    <>
+      <Title variant="h2" mt="0px">
+        {title}
+      </Title>
+      <HorizontalScroll>
+        {projects.map((project) => (
+          <ProjectContainer key={project.id}>
+            <LightProjectCard project={project} />
+          </ProjectContainer>
+        ))}
+      </HorizontalScroll>
+    </>
   );
 };
 

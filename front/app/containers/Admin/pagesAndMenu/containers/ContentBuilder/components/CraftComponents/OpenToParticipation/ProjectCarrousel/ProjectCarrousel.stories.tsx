@@ -23,6 +23,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
   args: {
+    title: 'Open to participation',
     projects: [...projects.data, ...projects.data, ...projects.data].map(
       (project, index) => ({
         ...project,
