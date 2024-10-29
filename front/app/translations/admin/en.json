@@ -371,6 +371,8 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.projectSettings": "Project settings",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.publishedActive1": "Published - Active",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.publishedFinished1": "Published - Finished",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.refreshLink": "Refresh project preview link",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.refreshLinkTooltip": "Regenerate project preview link. This will invalidate the previous link.",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.share": "Share",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareLink": "Copy link",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareLinkCopied": "Link copied",
