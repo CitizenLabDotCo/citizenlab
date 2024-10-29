@@ -1725,6 +1725,8 @@
   "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplate1": "Download een Excel-sjabloon",
   "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplateTooltip": "Excel-sjablonen bevatten geen kaart-gerelateerde vragen, omdat deze op dit moment niet worden ondersteund voor bulkimport.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadResults2": "Download de resultaten van de vragenlijst",
+  "app.containers.AdminPage.ProjectEdit.survey.downloadResultsSupportArticle": "Artikel ondersteunen",
+  "app.containers.AdminPage.ProjectEdit.survey.downloadResultsToolTip": "Ga naar {supportArticleLink}als je wilt weten hoe je toegang krijgt tot de naam en het e-mailadres van respondenten in de enquête.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadSurvey": "Download vragenlijst als pdf",
   "app.containers.AdminPage.ProjectEdit.survey.duplicateAnotherSurvey": "Een andere vragenlijst dupliceren",
   "app.containers.AdminPage.ProjectEdit.survey.editSurvey1": "Bewerk",
