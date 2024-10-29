@@ -1733,6 +1733,8 @@
   "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplate1": "Download an excel template",
   "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplateTooltip": "Excel templates will not include any mapping input questions as these are not supported for bulk importing at this time.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadResults2": "Download survey results",
+  "app.containers.AdminPage.ProjectEdit.survey.downloadResultsSupportArticle": "Support article",
+  "app.containers.AdminPage.ProjectEdit.survey.downloadResultsToolTip": "To learn how to access survey respondent name and email, head over to our {supportArticleLink}.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadSurvey": "Download survey as pdf",
   "app.containers.AdminPage.ProjectEdit.survey.duplicateAnotherSurvey": "Duplicate another survey",
   "app.containers.AdminPage.ProjectEdit.survey.editSurvey1": "Edit",
