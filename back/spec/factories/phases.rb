@@ -21,7 +21,7 @@ FactoryBot.define do
       }
     end
 
-    start_at { project.reload.phases.present? ? project.phases.maximum(:end_at) + 1.day : Date.new(2017, 5, 1) }
+    start_at { Date.new(2017, 5, 1) }
     end_at do
       start_date = start_at.is_a?(String) ? Date.parse(start_at) : start_at
       start_date + 60.days

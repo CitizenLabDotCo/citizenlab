@@ -267,5 +267,16 @@ describe SideFxIdeaService do
           .to enqueue_job(LogActivityJob).exactly(1).times
       end
     end
+
+    it 'sets the manual_votes_count of its phases' do
+      phase = create(:phase)
+      create(:idea, manual_votes_amount: 2, project: phase.project, phases: [phase])
+      idea = create(:idea, manual_votes_amount: 3, project: phase.project, phases: [phase])
+      phase.update_manual_votes_count!
+      idea.destroy!
+      service.after_destroy(idea, user)
+
+      expect(phase.reload.manual_votes_count).to eq 2
+    end
   end
 end
