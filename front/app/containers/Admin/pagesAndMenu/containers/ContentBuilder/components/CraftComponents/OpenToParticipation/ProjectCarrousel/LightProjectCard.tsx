@@ -9,12 +9,14 @@ import {
   Icon,
   colors,
 } from '@citizenlab/cl2-component-library';
+import { RouteType } from 'routes';
 import styled from 'styled-components';
 
 import usePhase from 'api/phases/usePhase';
 import useProjectImage from 'api/project_images/useProjectImage';
 import { CARD_IMAGE_ASPECT_RATIO } from 'api/project_images/useProjectImages';
 import { IProjectData } from 'api/projects/types';
+import { getProjectUrl } from 'api/projects/utils';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -23,6 +25,7 @@ import getCTAMessage from 'components/ProjectCard/getCTAMessage';
 import ImagePlaceholder from 'components/ProjectCard/ImagePlaceholder';
 
 import { useIntl } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
 
 import messages from './messages';
 
@@ -58,9 +61,10 @@ const LightProjectCard = ({ project }: Props) => {
   const title = localize(project.attributes.title_multiloc);
   const imageUrl = image?.data.attributes.versions.medium;
   const { end_at } = phase.data.attributes;
+  const projectUrl: RouteType = getProjectUrl(project);
 
   return (
-    <Box w="240px">
+    <Box as={Link} w="240px" to={projectUrl} display="block">
       <Box>
         <ProjectImageContainer>
           {imageUrl ? <Image src={imageUrl} alt="" /> : <ImagePlaceholder />}

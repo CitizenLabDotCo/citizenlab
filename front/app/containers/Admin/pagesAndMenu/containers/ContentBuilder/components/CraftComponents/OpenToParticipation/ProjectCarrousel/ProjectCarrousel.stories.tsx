@@ -11,7 +11,7 @@ const meta = {
   component: ProjectCarrousel,
   render: (props) => {
     return (
-      <div style={{ width: '100%', maxWidth: '500px' }}>
+      <div style={{ width: '100%', maxWidth: '500px', padding: '8px' }}>
         <ProjectCarrousel {...props} />
       </div>
     );

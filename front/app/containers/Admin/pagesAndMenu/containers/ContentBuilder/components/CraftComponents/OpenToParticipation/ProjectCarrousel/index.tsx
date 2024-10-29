@@ -10,7 +10,6 @@ import LightProjectCard from './LightProjectCard';
 
 const ProjectContainer = styled.div`
   scroll-snap-align: start;
-  margin-right: 12px;
 `;
 
 interface Props {
@@ -19,7 +18,7 @@ interface Props {
 
 const ProjectCarrousel = ({ projects }: Props) => {
   return (
-    <HorizontalScroll snap arrowScrollOffset={216}>
+    <HorizontalScroll snap hideArrowButtons>
       {projects.map((project) => (
         <ProjectContainer key={project.id}>
           <LightProjectCard project={project} />

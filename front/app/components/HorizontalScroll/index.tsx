@@ -42,7 +42,7 @@ interface Props {
   children: ReactNode;
   containerRole?: string; // If the scrollable container needs a specific role, pass it in
   snap?: boolean; // Whether the container should snap to elements
-  arrowScrollOffset?: number; // How many pixels you scroll when clicking the arrow buttons
+  hideArrowButtons?: boolean; // Whether to hide the arrow buttons;
 }
 
 /*
@@ -53,7 +53,7 @@ const HorizontalScroll = ({
   children,
   containerRole,
   snap = false,
-  arrowScrollOffset,
+  hideArrowButtons = false,
 }: Props) => {
   const theme = useTheme();
   const isSmallerThanPhone = useBreakpoint('phone');
@@ -92,7 +92,8 @@ const HorizontalScroll = ({
   const showArrows =
     containerRef.current &&
     containerRef.current.scrollWidth > containerRef.current.clientWidth;
-  const [showArrowButtons, setShowArrowButtons] = useState(showArrows);
+  const [_showArrowButtons, setShowArrowButtons] = useState(showArrows);
+  const showArrowButtons = _showArrowButtons && !hideArrowButtons;
 
   // Update whether arrows/horizontal scrolling is required when the width of the container changes
   useEffect(() => {
@@ -105,8 +106,7 @@ const HorizontalScroll = ({
   // Scroll the container by the specified offset
   const horizontalScroll = (direction: 'backward' | 'forward') => {
     if (!containerRef.current) return;
-    const absoluteOffset =
-      arrowScrollOffset ?? (isSmallerThanPhone ? 350 : 200);
+    const absoluteOffset = isSmallerThanPhone ? 350 : 200;
     const offset = direction === 'backward' ? -absoluteOffset : absoluteOffset;
 
     containerRef.current.scrollLeft += offset;

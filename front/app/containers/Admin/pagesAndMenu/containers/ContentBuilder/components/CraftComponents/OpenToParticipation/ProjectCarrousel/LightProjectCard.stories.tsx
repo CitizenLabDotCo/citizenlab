@@ -17,6 +17,7 @@ export const Primary: Story = {
         title_multiloc: {
           en: 'My cool project',
         },
+        slug: 'my-cool-project',
         action_descriptors: {
           posting_idea: { enabled: true },
           reacting_idea: { enabled: false },
