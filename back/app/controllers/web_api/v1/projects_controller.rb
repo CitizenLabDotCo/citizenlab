@@ -41,7 +41,7 @@ class WebApi::V1::ProjectsController < ApplicationController
       user_followers: user_followers,
       timeline_active: TimelineService.new.timeline_active_on_collection(@projects.to_a),
       visible_children_count_by_parent_id: {}, # projects don't have children
-      user_requirements_service: Permissions::UserRequirementsService.new(check_groups_and_verification: false)
+      user_requirements_service: user_requirements_service
     }
 
     render json: linked_json(
@@ -49,6 +49,60 @@ class WebApi::V1::ProjectsController < ApplicationController
       WebApi::V1::ProjectSerializer,
       params: jsonapi_serializer_params(instance_options),
       include: %i[admin_publication project_images current_phase]
+    )
+  end
+
+  # For use with 'Open to participation' homepage widget.
+  # Returns all published or archived projects that are visible to user
+  # and in an active participatory phase (where user can do something).
+  # Ordered by the end date of the current phase, soonest first (nulls last).
+  def index_projects_with_active_participatory_phase
+    # Projects user can see, with active participatory (not information) phase & include the phases.end_at column
+    # We could use the ProjectPermissionSevice step to filter for active phases, but doing it here is more efficient.
+    subquery = policy_scope(Project)
+      .joins('INNER JOIN admin_publications AS admin_publications ON admin_publications.publication_id = projects.id')
+      .where(admin_publications: { publication_status: 'published' })
+      .joins('INNER JOIN phases AS phases ON phases.project_id = projects.id')
+      .where(
+        'phases.start_at <= ? AND (phases.end_at >= ? OR phases.end_at IS NULL) AND phases.participation_method != ?',
+        Time.zone.now.to_fs(:db), Time.zone.now.to_fs(:db), 'information'
+      )
+      .select('projects.*, phases.end_at AS phase_end_at')
+
+    # Perform the SELECT DISTINCT on the outer query
+    @projects = Project
+      .from(subquery, :projects)
+      .distinct
+      .order('phase_end_at ASC NULLS LAST')
+      .preload(phases: { permissions: [:groups] })
+
+    # Projects user can participate in, or where such participation could (probably) be made possible by user
+    # (e.g. user not signed in).
+    # Unfortunately, this breaks the query chain, so we have to start a new one after this.
+    project_ids = @projects.select do |project|
+      Permissions::ProjectPermissionsService
+        .new(project, current_user, user_requirements_service: user_requirements_service).participation_possible?
+    end.pluck(:id)
+
+    @projects = @projects.where(id: project_ids)
+
+    # `includes` tries to be smart & use joins here, but it makes the query complex and slow. So, we use `preload`.
+    @projects = paginate @projects
+    @projects = @projects.preload(
+      :project_images,
+      :areas,
+      :topics,
+      phases: [:report],
+      admin_publication: [:children]
+    )
+
+    authorize @projects, :index_projects_with_active_participatory_phase?
+
+    render json: linked_json(
+      @projects,
+      WebApi::V1::ProjectMiniSerializer,
+      params: jsonapi_serializer_params,
+      include: %i[admin_publication project_images current_phase avatars]
     )
   end
 
@@ -213,6 +267,10 @@ class WebApi::V1::ProjectsController < ApplicationController
       # Validation errors will appear in the Sentry error 'Additional Data'
       ErrorReporter.report_msg("Project change would lead to inconsistencies! (id: #{project.id})", extra: errors || {})
     end
+  end
+
+  def user_requirements_service
+    @user_requirements_service ||= Permissions::UserRequirementsService.new(check_groups_and_verification: false)
   end
 end
 

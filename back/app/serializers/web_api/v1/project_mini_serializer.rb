@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
+class WebApi::V1::ProjectMiniSerializer < WebApi::V1::BaseSerializer
   attributes(
     :description_preview_multiloc,
     :title_multiloc,
@@ -31,11 +31,6 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
     object.header_bg && object.header_bg.versions.to_h { |k, v| [k.to_s, v.url] }
   end
 
-  attribute :action_descriptors do |object, params|
-    user_requirements_service = params[:user_requirements_service] || Permissions::UserRequirementsService.new(check_groups_and_verification: false)
-    Permissions::ProjectPermissionsService.new(object, current_user(params), user_requirements_service: user_requirements_service).action_descriptors
-  end
-
   attribute :avatars_count do |object, params|
     avatars_for_project(object, params)[:total_count]
   end
@@ -50,14 +45,6 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
     end
   end
 
-  attribute :timeline_active do |object, params|
-    if params[:timeline_active]
-      params.dig(:timeline_active, object.id)
-    else
-      TimelineService.new.timeline_active object
-    end
-  end
-
   has_one :admin_publication
 
   has_many :project_images, serializer: WebApi::V1::ImageSerializer
@@ -67,38 +54,16 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
     avatars_for_project(object, params)[:users]
   end
 
-  has_one :user_follower, record_type: :follower, if: proc { |object, params|
-    signed_in? object, params
-  } do |object, params|
-    user_follower object, params
-  end
-
   has_one :current_phase, serializer: WebApi::V1::PhaseSerializer, record_type: :phase do |object|
     TimelineService.new.current_phase(object)
   end
 
   def self.avatars_for_project(object, _params)
+    # TODO: call only once (not a second time for counts)
     AvatarsService.new(participants_service).avatars_for_project(object, limit: 3)
   end
 
   def self.participants_service
     @participants_service ||= ParticipantsService.new
   end
-
-  def self.user_follower(object, params)
-    if params[:user_followers]
-      params.dig(:user_followers, [object.id, 'Project'])&.first
-    else
-      current_user(params)&.follows&.find do |follow|
-        follow.followable_id == object.id && follow.followable_type == 'Project'
-      end
-    end
-  end
-
-  def self.can_moderate?(object, params)
-    current_user(params) && UserRoleService.new.can_moderate_project?(object, current_user(params))
-  end
 end
-
-WebApi::V1::ProjectSerializer.include(IdeaAssignment::Extensions::WebApi::V1::ProjectSerializer)
-WebApi::V1::ProjectSerializer.include(ContentBuilder::Extensions::WebApi::V1::ProjectSerializer)
