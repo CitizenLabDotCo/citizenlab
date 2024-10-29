@@ -1,11 +1,22 @@
 # frozen_string_literal: true
 
 class ApplicationPolicy
-  attr_reader :user, :record
+  attr_reader :record, :user_context
 
-  def initialize(user, record)
-    @user = user
+  delegate :context, :user, to: :user_context
+
+  class UserContext
+    attr_reader :user, :context
+
+    def initialize(user, context = {})
+      @user = user
+      @context = context
+    end
+  end
+
+  def initialize(user_context, record)
     @record = record
+    @user_context = user_context.is_a?(UserContext) ? user_context : UserContext.new(user_context)
   end
 
   def index?
@@ -37,11 +48,13 @@ class ApplicationPolicy
   end
 
   class Scope
-    attr_reader :user, :scope
+    attr_reader :scope, :user_context
 
-    def initialize(user, scope)
-      @user = user
+    delegate :user, :context, to: :user_context
+
+    def initialize(user_context, scope)
       @scope = scope
+      @user_context = user_context.is_a?(UserContext) ? user_context : UserContext.new(user_context)
     end
 
     def resolve
