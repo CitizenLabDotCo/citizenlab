@@ -1,6 +1,11 @@
 import React, { memo } from 'react';
 
-import { Box, media, isRtl } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  media,
+  isRtl,
+  useBreakpoint,
+} from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
@@ -18,7 +23,6 @@ import {
   HeaderImage,
   HeaderImageContainer,
 } from 'components/ProjectableHeader';
-import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
 import ContentViewer from 'components/ProjectDescriptionBuilder/ContentViewer';
 import Button from 'components/UI/Button';
 
@@ -26,8 +30,10 @@ import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
+import ProjectArchivedIndicator from './ProjectArchivedIndicator';
 import ProjectFolderGoBackButton from './ProjectFolderGoBackButton';
 import ProjectInfo from './ProjectInfo';
+import ProjectPreviewIndicator from './ProjectPreviewIndicator';
 
 const Container = styled.div`
   padding-top: 30px;
@@ -50,23 +56,13 @@ const EditButton = styled(Button)`
   `}
 `;
 
-const StyledProjectArchivedIndicator = styled(ProjectArchivedIndicator)<{
-  hasHeaderImage: boolean;
-}>`
-  margin-top: ${(props) => (props.hasHeaderImage ? '-20px' : '0px')};
-  margin-bottom: 25px;
-
-  ${media.tablet`
-    display: none;
-  `}
-`;
-
 interface Props {
   projectId: string;
   className?: string;
 }
 
 const ProjectHeader = memo<Props>(({ projectId, className }) => {
+  const isSmallerThanTablet = useBreakpoint('tablet');
   const { formatMessage } = useIntl();
   const projectDescriptionBuilderEnabled = useFeatureFlag({
     name: 'project_description_builder',
@@ -146,10 +142,20 @@ const ProjectHeader = memo<Props>(({ projectId, className }) => {
               />
             </HeaderImageContainer>
           )}
-          <StyledProjectArchivedIndicator
-            projectId={projectId}
-            hasHeaderImage={!!projectHeaderImageLargeUrl}
-          />
+          {!isSmallerThanTablet && (
+            <ProjectArchivedIndicator
+              projectId={projectId}
+              mb="24px"
+              mt={projectHeaderImageLargeUrl ? '-20px' : '0px'}
+            />
+          )}
+          {!isSmallerThanTablet && (
+            <ProjectPreviewIndicator
+              projectId={projectId}
+              mb="24px"
+              mt={projectHeaderImageLargeUrl ? '-20px' : '0px'}
+            />
+          )}
           {!projectDescriptionBuilderEnabled && (
             <ProjectInfo projectId={projectId} />
           )}
