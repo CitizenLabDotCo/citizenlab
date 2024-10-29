@@ -115,6 +115,10 @@ class ParticipantsService
       .count
   end
 
+  def clear_project_participants_count_cache(project)
+    Rails.cache.delete("#{project.cache_key}/participant_count")
+  end
+
   # Returns the total count of all folder participants including anonymous posts - cached
   def folder_participants_count(folder)
     Rails.cache.fetch("#{folder.cache_key}/participant_count", expires_in: 1.day) do
