@@ -1389,7 +1389,7 @@
   "app.containers.AdminPage.Project.confirmation.no": "Afbryd",
   "app.containers.AdminPage.Project.confirmation.title": "Er du sikker på, at du vil nulstille alle deltagelsesdata?",
   "app.containers.AdminPage.Project.confirmation.yes": "Nulstil alle deltagelsesdata",
-  "app.containers.AdminPage.Project.data.description": "Klare ideer, kommentarer, stemmer, reaktioner, svar på undersøgelser, svar på afstemninger, frivillige og deltagere i arrangementer.",
+  "app.containers.AdminPage.Project.data.description": "Slet ideer, kommentarer, stemmer, reaktioner, svar på undersøgelser, svar på afstemninger, frivillige og deltagere i arrangementer.",
   "app.containers.AdminPage.Project.data.title": "Slet alle deltagelsesdata fra dette projekt",
   "app.containers.AdminPage.Project.data.warning": "Denne handling kan ikke fortrydes.",
   "app.containers.AdminPage.Project.resetParticipationData": "Nulstil alle deltagelsesdata",
