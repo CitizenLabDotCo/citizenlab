@@ -60,7 +60,6 @@ import ProjectFolderSelect from './components/ProjectFolderSelect';
 import ProjectHeaderImageTooltip from './components/ProjectHeaderImageTooltip';
 import ProjectNameInput from './components/ProjectNameInput';
 import ProjectStatusPicker from './components/ProjectStatusPicker';
-import ResetParticipationData from './components/ResetParticipationData';
 import { StyledForm, StyledSectionField } from './components/styling';
 import TopicInputs from './components/TopicInputs';
 import messages from './messages';
@@ -627,7 +626,6 @@ const AdminProjectsProjectGeneral = () => {
                 messageSuccess: messages.saveSuccessMessage,
               }}
             />
-            <ResetParticipationData />
           </Box>
         </Section>
       </StyledForm>
