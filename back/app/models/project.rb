@@ -64,7 +64,7 @@ class Project < ApplicationRecord
   has_many :project_files, -> { order(:ordering) }, dependent: :destroy
   has_many :followers, as: :followable, dependent: :destroy
 
-  after_initialize :refresh_preview_token
+  after_initialize :init
 
   before_validation :sanitize_description_multiloc, if: :description_multiloc
   before_validation :set_admin_publication, unless: proc { Current.loading_tenant_template }
@@ -201,10 +201,18 @@ class Project < ApplicationRecord
   end
 
   def refresh_preview_token
-    self.preview_token = SecureRandom.urlsafe_base64(64)
+    self.preview_token = generate_preview_token
   end
 
   private
+
+  def init
+    self.preview_token ||= generate_preview_token
+  end
+
+  def generate_preview_token
+    SecureRandom.urlsafe_base64(64)
+  end
 
   def admin_publication_must_exist
     # Built-in presence validation does not work.
