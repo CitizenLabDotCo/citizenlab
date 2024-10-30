@@ -12,7 +12,7 @@ resource 'Phases' do
     header 'Content-Type', 'application/json'
     create(:idea_status_proposed)
     @project = create(:project)
-    @project.phases = create_list(:phase_sequence, 2, project: @project)
+    @project.phases = create_list(:phase_sequence, 2, project: @project, participation_method: 'voting', voting_method: 'single_voting')
   end
 
   get 'web_api/v1/projects/:project_id/phases' do
@@ -22,12 +22,50 @@ resource 'Phases' do
     end
     let(:project_id) { @project.id }
 
-    example 'List all phases of a project' do
-      Permissions::PermissionsUpdateService.new.update_all_permissions
-      do_request
-      assert_status 200
-      expect(json_response[:data].size).to eq 2
-      expect(json_response[:included].pluck(:type)).to include 'permission'
+    context 'when visitor' do
+      example 'List all phases of a project' do
+        Permissions::PermissionsUpdateService.new.update_all_permissions
+        do_request
+        assert_status 200
+        expect(json_response[:data].size).to eq 2
+        expect(json_response[:included].pluck(:type)).to include 'permission'
+      end
+    end
+
+    context 'when admin' do
+      before { admin_header_token }
+
+      example 'See the manual votes attributes' do
+        admin = create(:admin)
+        phase1, phase2 = @project.phases
+        phase1.set_manual_voters(10, admin)
+        phase1.save!
+        create(:idea, project: @project, phases: [phase1], manual_votes_amount: 5)
+        idea2 = create(:idea, project: @project, phases: [phase1, phase2], manual_votes_amount: 3)
+        @project.phases.each(&:update_manual_votes_count!)
+        create(:baskets_idea, basket: create(:basket, phase: phase1), idea: idea2, votes: 2)
+        Basket.update_counts(phase1)
+
+        do_request
+        assert_status 200
+
+        phase1_response = json_response_body[:data].find { |i| i[:id] == phase1.id }
+        expect(phase1_response.dig(:attributes, :manual_voters_amount)).to eq 10
+        expect(phase1_response.dig(:attributes, :manual_votes_count)).to eq 8
+        expect(phase1_response.dig(:attributes, :votes_count)).to eq 2
+        expect(phase1_response.dig(:attributes, :total_votes_amount)).to eq 10
+        expect(phase1_response.dig(:relationships, :manual_voters_last_updated_by, :data, :id)).to eq admin.id
+        expect(json_response_body[:included].find { |i| i[:id] == admin.id }&.dig(:attributes, :slug)).to eq admin.slug
+        expect(phase1_response.dig(:attributes, :manual_voters_last_updated_at)).to be_present
+
+        phase2_response = json_response_body[:data].find { |i| i[:id] == phase2.id }
+        expect(phase2_response.dig(:attributes, :manual_voters_amount)).to be_nil
+        expect(phase2_response.dig(:attributes, :manual_votes_count)).to eq 3
+        expect(phase2_response.dig(:attributes, :votes_count)).to eq 0
+        expect(phase2_response.dig(:attributes, :total_votes_amount)).to eq 3
+        expect(phase2_response.dig(:relationships, :manual_voters_last_updated_by, :data, :id)).to be_nil
+        expect(phase2_response.dig(:attributes, :manual_voters_last_updated_at)).to be_nil
+      end
     end
   end
 
