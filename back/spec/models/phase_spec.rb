@@ -465,21 +465,4 @@ RSpec.describe Phase do
       expect(phase).to be_valid
     end
   end
-
-  # describe '#manual_votes_count' do
-  #   it 'is automatically updated correctly' do
-  #     idea1 = create(:idea, manual_votes_amount: 1, project: subject.project, phases: [subject])
-  #     idea2 = create(:idea, manual_votes_amount: 2, project: subject.project, phases: [subject])
-  #     idea3 = create(:idea, manual_votes_amount: 3, project: subject.project)
-  #     idea4 = create(:idea, project: subject.project, phases: [subject])
-  #     idea3.update!(phases: [subject])
-  #     byebug
-  #     idea3.update!(manual_votes_amount: 4)
-  #     byebug
-  #     idea2.update!(phases: [])
-  #     byebug
-
-  #     expect(subject.reload.manual_votes_count).to eq 5
-  #   end 
-  # end
 end
