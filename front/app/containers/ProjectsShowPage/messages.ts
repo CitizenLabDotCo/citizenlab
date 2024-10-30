@@ -314,4 +314,9 @@ export default defineMessages({
     id: 'app.containers.Projects.newPhase',
     defaultMessage: 'New phase',
   },
+  liveDataMessage: {
+    id: 'app.containers.Projects.liveDataMessage',
+    defaultMessage:
+      "You're viewing real-time data. Participant counts are continuously updated for administrators. Please note that regular users see cached data, which may result in slight differences in the numbers.",
+  },
 });

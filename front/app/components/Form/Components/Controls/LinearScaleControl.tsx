@@ -39,6 +39,8 @@ const LinearScaleControl = ({
   const { formatMessage } = useIntl();
 
   const minimum = 1;
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const maximum = schema?.maximum ?? 7; // Seven since the maximum number of options is 7
   const answerNotPublic = uischema.options?.answer_visible_to === 'admins';
   const sliderRef = useRef<HTMLDivElement>(null);
@@ -46,14 +48,19 @@ const LinearScaleControl = ({
   const getAriaValueText = useCallback(
     (value: number, total: number) => {
       // If the value has a label, read it out
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (uischema?.options?.[`linear_scale_label${value}`]) {
         return formatMessage(messages.valueOutOfTotalWithLabel, {
           value,
           total,
           label: uischema.options[`linear_scale_label${value}`],
         });
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       }
       // If we don't have a label but we do have a maximum, read out the current value & maximum label
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       else if (uischema?.options?.[`linear_scale_label${maximum}`]) {
         return formatMessage(messages.valueOutOfTotalWithMaxExplanation, {
           value,
@@ -125,6 +132,8 @@ const LinearScaleControl = ({
 
   // Put all labels from the UI Schema in an array so we can easily access them
   const labelsFromSchema = Array.from({ length: maximum }, (_, index) => {
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     return uischema?.options?.[`linear_scale_label${index + 1}`];
   });
 
@@ -256,6 +265,8 @@ const LinearScaleControl = ({
             </Box>
           )}
         </Box>
+        {/* TODO: Fix this the next time the file is edited. */}
+        {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
         <VerificationIcon show={uischema?.options?.verificationLocked} />
       </Box>
       <ErrorDisplay
@@ -271,6 +282,8 @@ const LinearScaleControl = ({
 export default withJsonFormsControlProps(LinearScaleControl);
 
 export const linearScaleControlTester = (schema: UiSchema) => {
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (schema?.options?.linear_scale_label1?.length >= 0) {
     return 100;
   }

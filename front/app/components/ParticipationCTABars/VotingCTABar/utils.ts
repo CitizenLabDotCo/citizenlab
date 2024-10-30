@@ -33,6 +33,8 @@ export const getVoteSubmissionDisabledExplanation = (
   if (permissionsMessage) return formatMessage(permissionsMessage);
 
   const maxNumberOfVotesExceeded =
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     typeof maxVotes === 'number' && numberOfVotesCast !== undefined
       ? numberOfVotesCast > maxVotes
       : false;
@@ -92,6 +94,8 @@ export const getVoteSubmissionDisabledExplanation = (
     const minBudget = phase.attributes.voting_min_total ?? 0;
     const minBudgetRequired = minBudget > 0;
     const minBudgetReached =
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       numberOfVotesCast !== undefined ? numberOfVotesCast >= minBudget : false;
 
     const minBudgetRequiredNotReached = minBudgetRequired && !minBudgetReached;

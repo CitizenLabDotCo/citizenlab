@@ -41,6 +41,7 @@ export type TitleProps = {
   fontWeight?: FontWeight;
   fontStyle?: FontStyle;
   textAlign?: TextAlign;
+  lineHeight?: string;
 } & BoxMarginProps &
   BoxPaddingProps &
   BoxPositionProps &
@@ -53,7 +54,7 @@ export type TitleProps = {
   React.HTMLAttributes<HTMLHeadingElement>;
 
 const StyledTitle = styled(Box)`
-  line-height: 1.3;
+  line-height: ${({ lineHeight }) => lineHeight ?? '1.3'};
 
   ${isRtl`direction: rtl;`}
 
@@ -111,6 +112,7 @@ const Title: React.FC<TitleProps> = ({
   as,
   fontSize,
   fontWeight,
+  lineHeight,
   ...props
 }) => {
   const mb = props.mb || props.my || props.m || '16px';
@@ -123,6 +125,7 @@ const Title: React.FC<TitleProps> = ({
       fontSize={fontSize}
       fontWeight={fontWeight}
       mb={mb}
+      lineHeight={lineHeight}
       {...props}
     >
       {children}

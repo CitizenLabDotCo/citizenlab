@@ -21,7 +21,9 @@ const ProjectsCard = ({ startAt, endAt, publicationStatuses }: Props) => {
       {response.data.attributes.projects.map((project) => {
         const imageId = project.relationships.project_images?.data[0]?.id;
         const projectImage = imageId
-          ? response?.data.attributes.project_images[imageId]
+          ? // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+            response?.data.attributes.project_images[imageId]
           : undefined;
 
         const period = response.data.attributes.periods[project.id];

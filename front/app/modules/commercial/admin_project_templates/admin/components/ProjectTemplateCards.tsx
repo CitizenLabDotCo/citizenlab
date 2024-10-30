@@ -138,17 +138,20 @@ const ProjectTemplateCards = memo<Props & WrappedComponentProps>(
               placeholder={searchPlaceholder}
               ariaLabel={searchAriaLabel}
               onChange={onSearchChange}
+              // TODO: Fix this the next time the file is edited.
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
               a11y_numberOfSearchResults={templates?.edges.length || 0}
             />
           </Right>
         </Filters>
-
         {loading && !templates && (
           <Centerer height="500px">
             <Spinner />
           </Centerer>
         )}
 
+        {/* TODO: Fix this the next time the file is edited. */}
+        {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
         {templates && templates.edges && templates.edges.length > 0 && (
           <>
             <Cards>
@@ -183,6 +186,8 @@ const ProjectTemplateCards = memo<Props & WrappedComponentProps>(
           </>
         )}
 
+        {/* TODO: Fix this the next time the file is edited. */}
+        {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
         {templates && templates.edges && templates.edges.length === 0 && (
           <NoTemplates>
             <FormattedMessage {...messages.noTemplatesFound} />

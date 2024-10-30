@@ -44,6 +44,7 @@ export const ideationDefaultConfig: IUpdatedPhaseProperties = {
   presentation_mode: 'card',
   input_term: 'idea',
   ideas_order: 'trending',
+  prescreening_enabled: false,
 };
 
 export const nativeSurveyDefaultConfig: IUpdatedPhaseProperties = {

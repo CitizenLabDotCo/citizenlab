@@ -146,6 +146,8 @@ export const UserMenu = () => {
       wide
     >
       <Box width="224px">
+        {/* TODO: Fix this the next time the file is edited. */}
+        {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
         {tenantLocales.length > 1 && locale && (
           <ItemMenu
             buttonStyle="text"
