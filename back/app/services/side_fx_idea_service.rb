@@ -32,7 +32,7 @@ class SideFxIdeaService
   end
 
   def before_update(idea, user)
-    @old_cosponsor_ids = idea.cosponsors.map(&:id) # TODO: cosponsor_ids
+    @old_cosponsor_ids = idea.cosponsor_ids
     @old_phase_ids = idea.phase_ids
     idea.body_multiloc = TextImageService.new.swap_data_images_multiloc(idea.body_multiloc, field: :body_multiloc, imageable: idea)
     idea.publication_status = 'published' if idea.submitted_or_published? && idea.idea_status&.public_post?
