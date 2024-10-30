@@ -1,10 +1,12 @@
+import { Multiloc } from 'typings';
+
 import { Keys } from 'utils/cl-react-query/types';
 
 import miniProjectsKeys from './keys';
 
 export type QueryParameters = {
-  'page[number]': number;
-  'page[size]': number;
+  'page[number]'?: number;
+  'page[size]'?: number;
 };
 
 export type MiniProjectsKeys = Keys<typeof miniProjectsKeys>;
@@ -17,6 +19,7 @@ interface MiniProjectData {
   id: string;
   type: 'project_mini';
   attributes: {
-    bla: string;
+    title_multiloc: Multiloc;
+    slug: string;
   };
 }

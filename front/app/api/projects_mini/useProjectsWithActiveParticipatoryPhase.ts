@@ -13,12 +13,13 @@ const fetchProjectsWithActiveParticipatoryPhase = (
     path: '/projects/with_active_participatory_phase',
     action: 'get',
     queryParams: {
-      ...queryParameters,
+      'page[size]': queryParameters['page[size]'] ?? 6,
+      'page[number]': queryParameters['page[number]'] ?? 1,
     },
   });
 
 const useProjectsWithActiveParticipatoryPhase = (
-  queryParams: QueryParameters,
+  queryParams: QueryParameters = {},
   { enabled = true }: { enabled: boolean } = { enabled: true }
 ) => {
   return useQuery<MiniProjects, CLErrors, MiniProjects, MiniProjectsKeys>({
