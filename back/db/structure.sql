@@ -1403,7 +1403,7 @@ CREATE VIEW public.analytics_fact_email_deliveries AS
     (ecd.sent_at)::date AS dimension_date_sent_id,
     ecd.campaign_id,
     p.id AS dimension_project_id,
-    ((ecc.type)::text <> ALL ((ARRAY['EmailCampaigns::Campaigns::Manual'::character varying, 'EmailCampaigns::Campaigns::ManualProjectParticipants'::character varying])::text[])) AS automated
+    ((ecc.type)::text <> ALL (ARRAY[('EmailCampaigns::Campaigns::Manual'::character varying)::text, ('EmailCampaigns::Campaigns::ManualProjectParticipants'::character varying)::text])) AS automated
    FROM ((public.email_campaigns_deliveries ecd
      JOIN public.email_campaigns_campaigns ecc ON ((ecc.id = ecd.campaign_id)))
      LEFT JOIN public.projects p ON ((p.id = ecc.context_id)));
@@ -2325,7 +2325,8 @@ CREATE TABLE public.event_images (
     image character varying,
     ordering integer,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    alt_text_multiloc jsonb DEFAULT '{}'::jsonb
 );
 
 
@@ -2995,7 +2996,8 @@ CREATE TABLE public.project_images (
     image character varying,
     ordering integer,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    alt_text_multiloc jsonb DEFAULT '{}'::jsonb
 );
 
 
@@ -7520,9 +7522,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20241002200522'),
 ('20241008143004'),
 ('20241011101454'),
+('20241011816395'),
 ('20241016201503'),
-('20241011816395');
-
-
+('20241029080612');
 
 
