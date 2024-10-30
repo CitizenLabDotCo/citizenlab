@@ -3,6 +3,7 @@
 class ApplicationController < ActionController::API
   include AuthToken::Authenticable
   include Pundit::Authorization
+  include ActionController::Cookies
 
   class FeatureRequiredError < StandardError
     attr_reader :feature
@@ -169,7 +170,7 @@ class ApplicationController < ActionController::API
   end
 
   def set_policy_context
-    return unless (project_preview_token = params[:project_preview_token])
+    return unless (project_preview_token = cookies[:preview_token])
 
     policy_context[:project_preview_token] = project_preview_token
   end
