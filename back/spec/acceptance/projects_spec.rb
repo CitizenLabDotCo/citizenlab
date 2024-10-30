@@ -1324,7 +1324,7 @@ resource 'Projects' do
       # We need a participant, to get some included avatar data
       create(:idea, project: active_ideation_project, author: @user)
 
-      expect { do_request(page: { size: 6, number: 1 }) }.not_to exceed_query_limit(29)
+      expect { do_request(page: { size: 6, number: 1 }) }.not_to exceed_query_limit(21)
 
       assert_status 200
     end
