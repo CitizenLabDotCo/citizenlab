@@ -15,8 +15,8 @@ import styled from 'styled-components';
 import usePhase from 'api/phases/usePhase';
 import useProjectImage from 'api/project_images/useProjectImage';
 import { CARD_IMAGE_ASPECT_RATIO } from 'api/project_images/useProjectImages';
-import { IProjectData } from 'api/projects/types';
 import { getProjectUrl } from 'api/projects/utils';
+import { MiniProjectData } from 'api/projects_mini/types';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -58,20 +58,20 @@ const ProjectImageContainer = styled.div`
 `;
 
 interface Props {
-  project: IProjectData;
+  project: MiniProjectData;
 }
 
 const LightProjectCard = ({ project }: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
 
-  const imageId = project.relationships.project_images?.data[0]?.id;
+  const imageId = project.relationships.project_images.data[0]?.id;
   const { data: image } = useProjectImage({
     projectId: project.id,
     imageId,
   });
 
-  const phaseId = project.relationships.current_phase?.data?.id;
+  const phaseId = project.relationships.current_phase.data.id;
   const { data: phase } = usePhase(phaseId);
 
   if (!phase) return null;
@@ -79,7 +79,7 @@ const LightProjectCard = ({ project }: Props) => {
   const title = localize(project.attributes.title_multiloc);
   const imageUrl = image?.data.attributes.versions.medium;
   const { end_at } = phase.data.attributes;
-  const projectUrl: RouteType = getProjectUrl(project);
+  const projectUrl: RouteType = getProjectUrl(project.attributes.slug);
 
   return (
     <CardContainer
@@ -115,7 +115,7 @@ const LightProjectCard = ({ project }: Props) => {
         <Text mt="4px" mb="0px" color="textSecondary" fontWeight="bold">
           {getCTAMessage({
             phase: phase.data,
-            project,
+            actionDescriptors: project.attributes.action_descriptors,
             localize,
             formatMessage,
           })}

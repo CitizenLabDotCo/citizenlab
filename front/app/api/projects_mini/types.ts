@@ -18,12 +18,25 @@ export interface MiniProjects {
   links: ILinks;
 }
 
-interface MiniProjectData {
+export interface MiniProjectData {
   id: string;
   type: 'project_mini';
   attributes: {
     title_multiloc: Multiloc;
     slug: string;
     action_descriptors: ActionDescriptors;
+  };
+  relationships: {
+    current_phase: {
+      data: {
+        id: string;
+      };
+    };
+    project_images: {
+      data: {
+        id: string;
+        type: 'project_image';
+      }[];
+    };
   };
 }

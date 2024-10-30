@@ -408,7 +408,7 @@ const ProjectCard = memo<InputProps>(
           // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           projectImage.data.attributes.versions?.large;
 
-      const projectUrl: RouteType = getProjectUrl(project.data);
+      const projectUrl: RouteType = getProjectUrl(project.data.attributes.slug);
       const isFinished = project.data.attributes.timeline_active === 'past';
       const isArchived =
         project.data.attributes.publication_status === 'archived';
@@ -466,7 +466,7 @@ const ProjectCard = memo<InputProps>(
 
       const ctaMessage = phase
         ? getCTAMessage({
-            project: project.data,
+            actionDescriptors: project.data.attributes.action_descriptors,
             phase: phase.data,
             formatMessage,
             localize,

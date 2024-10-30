@@ -1,7 +1,7 @@
 import { FormatMessage } from 'typings';
 
 import { IPhaseData } from 'api/phases/types';
-import { IProjectData } from 'api/projects/types';
+import { ActionDescriptors } from 'api/projects/types';
 
 import { Localize } from 'hooks/useLocalize';
 
@@ -11,19 +11,22 @@ import messages from './messages';
 
 interface Params {
   phase: IPhaseData;
-  project: IProjectData;
+  actionDescriptors: ActionDescriptors;
   formatMessage: FormatMessage;
   localize: Localize;
 }
 
-const getCTAMessage = ({ phase, project, formatMessage, localize }: Params) => {
-  const { participation_method, voting_method } = phase.attributes;
-  const { action_descriptors } = project.attributes;
+const getCTAMessage = ({
+  phase,
+  actionDescriptors,
+  formatMessage,
+  localize,
+}: Params) => {
+  const { participation_method, voting_method, input_term } = phase.attributes;
 
-  const canPost = action_descriptors.posting_idea.enabled;
-  const canReact = action_descriptors.reacting_idea.enabled;
-  const canComment = action_descriptors.commenting_idea.enabled;
-  const { input_term } = phase.attributes;
+  const canPost = actionDescriptors.posting_idea.enabled;
+  const canReact = actionDescriptors.reacting_idea.enabled;
+  const canComment = actionDescriptors.commenting_idea.enabled;
 
   if (participation_method === 'voting') {
     if (voting_method === 'budgeting') {

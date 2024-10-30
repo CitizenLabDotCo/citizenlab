@@ -13,7 +13,7 @@ import { useInView } from 'react-intersection-observer';
 import styled from 'styled-components';
 
 import { CARD_IMAGE_ASPECT_RATIO } from 'api/project_images/useProjectImages';
-import { IProjectData } from 'api/projects/types';
+import { MiniProjectData } from 'api/projects_mini/types';
 
 import { CARD_GAP, CARD_WIDTH } from './constants';
 import HorizontalScroll from './HorizontalScroll';
@@ -39,7 +39,7 @@ const ProjectContainer = styled.div`
 
 interface Props {
   title: string;
-  projects: IProjectData[];
+  projects: MiniProjectData[];
   hasMore: boolean;
   onLoadMore: () => void;
 }
