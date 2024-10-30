@@ -463,6 +463,7 @@ resource 'Phases' do
         parameter :voting_min_total, 'The minimum value a basket can have.', required: false
         parameter :voting_max_total, 'The maximal value a basket can have during voting', required: false
         parameter :voting_max_votes_per_idea, 'The maximum amount of votes that can be assigned on the same idea.', required: false
+        parameter :manual_voters_amount, 'The number of voters from collected offline votes.', required: false
         parameter :voting_term_singular_multiloc, 'A multiloc term that is used to refer to the voting in singular form', required: false
         parameter :voting_term_plural_multiloc, 'A multiloc term that is used to refer to the voting in plural form', required: false
         parameter :start_at, 'The start date of the phase'
@@ -521,7 +522,8 @@ resource 'Phases' do
       end
 
       describe do
-        let(:id) { create(:budgeting_phase).id }
+        let(:phase) { create(:budgeting_phase) }
+        let(:id) { phase.id }
         let(:participation_method) { 'voting' }
         let(:voting_min_total) { 3 }
         let(:voting_max_total) { 15 }
@@ -537,6 +539,27 @@ resource 'Phases' do
           expect(json_response.dig(:data, :attributes, :voting_max_votes_per_idea)).to be_nil
           expect(json_response.dig(:data, :attributes, :voting_term_singular_multiloc, :en)).to eq 'Grocery shopping'
           expect(json_response.dig(:data, :attributes, :voting_term_plural_multiloc, :en)).to eq 'Groceries shoppings'
+        end
+
+        describe do
+          let(:manual_voters_amount) { 4 }
+
+          example 'Set offline voters' do
+            expect { do_request }
+              .to enqueue_job(LogActivityJob).with(
+                phase,
+                'changed_manual_voters_amount',
+                User.admin.first,
+                phase.updated_at.to_i,
+                payload: { change: [nil, manual_voters_amount] },
+                project_id: phase.project_id
+              ).exactly(1).times
+
+            phase.reload
+            expect(phase.manual_voters_amount).to eq manual_voters_amount
+            expect(phase.manual_voters_last_updated_by_id).to eq User.admin.first.id
+            expect(phase.manual_voters_last_updated_at).to be_present
+          end
         end
       end
 

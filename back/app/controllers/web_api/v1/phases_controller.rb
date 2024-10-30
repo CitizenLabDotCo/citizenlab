@@ -34,8 +34,8 @@ class WebApi::V1::PhasesController < ApplicationController
   end
 
   def update
-    @phase.assign_attributes phase_params
     @phase.set_manual_voters(phase_params[:manual_voters_amount], current_user) if phase_params[:manual_voters_amount]
+    @phase.assign_attributes phase_params
     authorize @phase
     sidefx.before_update(@phase, current_user)
 
