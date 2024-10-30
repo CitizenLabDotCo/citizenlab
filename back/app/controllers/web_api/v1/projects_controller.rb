@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class WebApi::V1::ProjectsController < ApplicationController
-  before_action :set_project, only: %i[show update reorder destroy index_xlsx votes_by_user_xlsx votes_by_input_xlsx delete_inputs]
+  before_action :set_project, only: %i[show update reorder destroy index_xlsx votes_by_user_xlsx votes_by_input_xlsx delete_inputs refresh_preview_token]
 
   skip_before_action :authenticate_user
   skip_after_action :verify_policy_scoped, only: :index
@@ -134,6 +134,20 @@ class WebApi::V1::ProjectsController < ApplicationController
     else
       head :internal_server_error
     end
+  end
+
+  def refresh_preview_token
+    @project.refresh_preview_token
+
+    sidefx.before_update(@project, current_user)
+    @project.save!
+    sidefx.after_update(@project, current_user)
+
+    render json: WebApi::V1::ProjectSerializer.new(
+      @project,
+      params: jsonapi_serializer_params,
+      include: [:admin_publication]
+    ).serializable_hash, status: :ok
   end
 
   def index_xlsx

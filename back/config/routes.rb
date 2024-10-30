@@ -193,11 +193,16 @@ Rails.application.routes.draw do
           get :users_search, on: :collection
         end
 
-        post 'copy', on: :member
         get 'by_slug/:slug', on: :collection, to: 'projects#by_slug'
-        get :as_xlsx, on: :member, action: 'index_xlsx'
-        get :votes_by_user_xlsx, on: :member, action: 'votes_by_user_xlsx'
-        get :votes_by_input_xlsx, on: :member, action: 'votes_by_input_xlsx'
+
+        member do
+          post :copy
+          post :refresh_preview_token
+
+          get :as_xlsx, action: 'index_xlsx'
+          get :votes_by_user_xlsx
+          get :votes_by_input_xlsx
+        end
       end
 
       resources :projects_allowed_input_topics, only: %i[show create destroy] do

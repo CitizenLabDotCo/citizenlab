@@ -103,4 +103,16 @@ RSpec.describe Project do
       expect(build(:project).pmethod).to be_an_instance_of(ParticipationMethod::Ideation)
     end
   end
+
+  describe '#refresh_preview_token' do
+    it 'replaces the preview token' do
+      project = build(:project)
+      old_token = project.preview_token
+
+      project.refresh_preview_token
+
+      expect(project.preview_token).to be_present
+      expect(project.preview_token).not_to eq(old_token)
+    end
+  end
 end

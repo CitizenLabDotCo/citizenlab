@@ -16,14 +16,15 @@ describe ProjectPolicy do
     context 'for a visitor' do
       let(:user) { nil }
 
-      it { is_expected.to     permit(:show)                }
-      it { is_expected.not_to permit(:create)              }
-      it { is_expected.not_to permit(:update)              }
-      it { is_expected.not_to permit(:reorder)             }
-      it { is_expected.not_to permit(:destroy)             }
-      it { is_expected.not_to permit(:index_xlsx)          }
-      it { is_expected.not_to permit(:votes_by_user_xlsx)  }
-      it { is_expected.not_to permit(:votes_by_input_xlsx) }
+      it { is_expected.to     permit(:show)                  }
+      it { is_expected.not_to permit(:create)                }
+      it { is_expected.not_to permit(:update)                }
+      it { is_expected.not_to permit(:reorder)               }
+      it { is_expected.not_to permit(:refresh_preview_token) }
+      it { is_expected.not_to permit(:destroy)               }
+      it { is_expected.not_to permit(:index_xlsx)            }
+      it { is_expected.not_to permit(:votes_by_user_xlsx)    }
+      it { is_expected.not_to permit(:votes_by_input_xlsx)   }
 
       it 'should index the project' do
         expect(scope.resolve.size).to eq 1
@@ -33,14 +34,15 @@ describe ProjectPolicy do
     context 'for a resident' do
       let(:user) { create(:user) }
 
-      it { is_expected.to     permit(:show)                }
-      it { is_expected.not_to permit(:create)              }
-      it { is_expected.not_to permit(:update)              }
-      it { is_expected.not_to permit(:reorder)             }
-      it { is_expected.not_to permit(:destroy)             }
-      it { is_expected.not_to permit(:index_xlsx)          }
-      it { is_expected.not_to permit(:votes_by_user_xlsx)  }
-      it { is_expected.not_to permit(:votes_by_input_xlsx) }
+      it { is_expected.to     permit(:show)                  }
+      it { is_expected.not_to permit(:create)                }
+      it { is_expected.not_to permit(:update)                }
+      it { is_expected.not_to permit(:reorder)               }
+      it { is_expected.not_to permit(:refresh_preview_token) }
+      it { is_expected.not_to permit(:destroy)               }
+      it { is_expected.not_to permit(:index_xlsx)            }
+      it { is_expected.not_to permit(:votes_by_user_xlsx)    }
+      it { is_expected.not_to permit(:votes_by_input_xlsx)   }
 
       it 'should index the project' do
         expect(scope.resolve.size).to eq 1
@@ -54,14 +56,15 @@ describe ProjectPolicy do
     context 'for an admin' do
       let(:user) { create(:admin) }
 
-      it { is_expected.to permit(:show)                }
-      it { is_expected.to permit(:create)              }
-      it { is_expected.to permit(:update)              }
-      it { is_expected.to permit(:reorder)             }
-      it { is_expected.to permit(:destroy)             }
-      it { is_expected.to permit(:index_xlsx)          }
-      it { is_expected.to permit(:votes_by_user_xlsx)  }
-      it { is_expected.to permit(:votes_by_input_xlsx) }
+      it { is_expected.to permit(:show)                  }
+      it { is_expected.to permit(:create)                }
+      it { is_expected.to permit(:update)                }
+      it { is_expected.to permit(:reorder)               }
+      it { is_expected.to permit(:refresh_preview_token) }
+      it { is_expected.to permit(:destroy)               }
+      it { is_expected.to permit(:index_xlsx)            }
+      it { is_expected.to permit(:votes_by_user_xlsx)    }
+      it { is_expected.to permit(:votes_by_input_xlsx)   }
 
       it 'should index the project' do
         expect(scope.resolve.size).to eq 1
@@ -75,14 +78,15 @@ describe ProjectPolicy do
     context 'for a moderator of the project' do
       let(:user) { create(:project_moderator, projects: [project]) }
 
-      it { is_expected.to permit(:show)                }
-      it { is_expected.not_to permit(:create)          }
-      it { is_expected.to permit(:update)              }
-      it { is_expected.to permit(:reorder)             }
-      it { is_expected.not_to permit(:destroy)         }
-      it { is_expected.to permit(:index_xlsx)          }
-      it { is_expected.to permit(:votes_by_user_xlsx)  }
-      it { is_expected.to permit(:votes_by_input_xlsx) }
+      it { is_expected.to permit(:show)                  }
+      it { is_expected.not_to permit(:create)            }
+      it { is_expected.to permit(:update)                }
+      it { is_expected.to permit(:reorder)               }
+      it { is_expected.to permit(:refresh_preview_token) }
+      it { is_expected.not_to permit(:destroy)           }
+      it { is_expected.to permit(:index_xlsx)            }
+      it { is_expected.to permit(:votes_by_user_xlsx)    }
+      it { is_expected.to permit(:votes_by_input_xlsx)   }
 
       it 'indexes the project' do
         expect(scope.resolve.size).to eq 1
@@ -96,14 +100,15 @@ describe ProjectPolicy do
     context 'for a moderator of another project' do
       let(:user) { create(:project_moderator, projects: [create(:project)]) }
 
-      it { is_expected.to permit(:show)                    }
-      it { is_expected.not_to permit(:create)              }
-      it { is_expected.not_to permit(:update)              }
-      it { is_expected.not_to permit(:reorder)             }
-      it { is_expected.not_to permit(:destroy)             }
-      it { is_expected.not_to permit(:index_xlsx)          }
-      it { is_expected.not_to permit(:votes_by_user_xlsx)  }
-      it { is_expected.not_to permit(:votes_by_input_xlsx) }
+      it { is_expected.to permit(:show)                      }
+      it { is_expected.not_to permit(:create)                }
+      it { is_expected.not_to permit(:update)                }
+      it { is_expected.not_to permit(:reorder)               }
+      it { is_expected.not_to permit(:refresh_preview_token) }
+      it { is_expected.not_to permit(:destroy)               }
+      it { is_expected.not_to permit(:index_xlsx)            }
+      it { is_expected.not_to permit(:votes_by_user_xlsx)    }
+      it { is_expected.not_to permit(:votes_by_input_xlsx)   }
 
       it 'indexes the project' do
         expect(scope.resolve.size).to eq 2
@@ -121,14 +126,15 @@ describe ProjectPolicy do
     context 'for a visitor' do
       let(:user) { nil }
 
-      it { is_expected.not_to permit(:show)                }
-      it { is_expected.not_to permit(:create)              }
-      it { is_expected.not_to permit(:update)              }
-      it { is_expected.not_to permit(:reorder)             }
-      it { is_expected.not_to permit(:destroy)             }
-      it { is_expected.not_to permit(:index_xlsx)          }
-      it { is_expected.not_to permit(:votes_by_user_xlsx)  }
-      it { is_expected.not_to permit(:votes_by_input_xlsx) }
+      it { is_expected.not_to permit(:show)                  }
+      it { is_expected.not_to permit(:create)                }
+      it { is_expected.not_to permit(:update)                }
+      it { is_expected.not_to permit(:reorder)               }
+      it { is_expected.not_to permit(:refresh_preview_token) }
+      it { is_expected.not_to permit(:destroy)               }
+      it { is_expected.not_to permit(:index_xlsx)            }
+      it { is_expected.not_to permit(:votes_by_user_xlsx)    }
+      it { is_expected.not_to permit(:votes_by_input_xlsx)   }
 
       it 'should not index the project'  do
         expect(scope.resolve.size).to eq 0
@@ -138,14 +144,15 @@ describe ProjectPolicy do
     context 'for a resident' do
       let(:user) { create(:user) }
 
-      it { is_expected.not_to permit(:show)                }
-      it { is_expected.not_to permit(:create)              }
-      it { is_expected.not_to permit(:update)              }
-      it { is_expected.not_to permit(:reorder)             }
-      it { is_expected.not_to permit(:destroy)             }
-      it { is_expected.not_to permit(:index_xlsx)          }
-      it { is_expected.not_to permit(:votes_by_user_xlsx)  }
-      it { is_expected.not_to permit(:votes_by_input_xlsx) }
+      it { is_expected.not_to permit(:show)                  }
+      it { is_expected.not_to permit(:create)                }
+      it { is_expected.not_to permit(:update)                }
+      it { is_expected.not_to permit(:reorder)               }
+      it { is_expected.not_to permit(:refresh_preview_token) }
+      it { is_expected.not_to permit(:destroy)               }
+      it { is_expected.not_to permit(:index_xlsx)            }
+      it { is_expected.not_to permit(:votes_by_user_xlsx)    }
+      it { is_expected.not_to permit(:votes_by_input_xlsx)   }
 
       it 'should not index the project'  do
         expect(scope.resolve.size).to eq 0
@@ -159,14 +166,15 @@ describe ProjectPolicy do
     context 'for an admin' do
       let(:user) { create(:admin) }
 
-      it { is_expected.to permit(:show)                }
-      it { is_expected.to permit(:create)              }
-      it { is_expected.to permit(:update)              }
-      it { is_expected.to permit(:reorder)             }
-      it { is_expected.to permit(:destroy)             }
-      it { is_expected.to permit(:index_xlsx)          }
-      it { is_expected.to permit(:votes_by_user_xlsx)  }
-      it { is_expected.to permit(:votes_by_input_xlsx) }
+      it { is_expected.to permit(:show)                  }
+      it { is_expected.to permit(:create)                }
+      it { is_expected.to permit(:update)                }
+      it { is_expected.to permit(:reorder)               }
+      it { is_expected.to permit(:refresh_preview_token) }
+      it { is_expected.to permit(:destroy)               }
+      it { is_expected.to permit(:index_xlsx)            }
+      it { is_expected.to permit(:votes_by_user_xlsx)    }
+      it { is_expected.to permit(:votes_by_input_xlsx)   }
 
       it 'should index the project' do
         expect(scope.resolve.size).to eq 1
@@ -182,14 +190,15 @@ describe ProjectPolicy do
     let!(:user) { nil }
     let!(:project) { create(:private_groups_project) }
 
-    it { is_expected.not_to permit(:show)                }
-    it { is_expected.not_to permit(:create)              }
-    it { is_expected.not_to permit(:update)              }
-    it { is_expected.not_to permit(:reorder)             }
-    it { is_expected.not_to permit(:destroy)             }
-    it { is_expected.not_to permit(:index_xlsx)          }
-    it { is_expected.not_to permit(:votes_by_user_xlsx)  }
-    it { is_expected.not_to permit(:votes_by_input_xlsx) }
+    it { is_expected.not_to permit(:show)                  }
+    it { is_expected.not_to permit(:create)                }
+    it { is_expected.not_to permit(:update)                }
+    it { is_expected.not_to permit(:reorder)               }
+    it { is_expected.not_to permit(:refresh_preview_token) }
+    it { is_expected.not_to permit(:destroy)               }
+    it { is_expected.not_to permit(:index_xlsx)            }
+    it { is_expected.not_to permit(:votes_by_user_xlsx)    }
+    it { is_expected.not_to permit(:votes_by_input_xlsx)   }
 
     it 'should not index the project'  do
       expect(scope.resolve.size).to eq 0
@@ -200,14 +209,15 @@ describe ProjectPolicy do
     let!(:user) { create(:user) }
     let!(:project) { create(:private_groups_project) }
 
-    it { is_expected.not_to permit(:show)                }
-    it { is_expected.not_to permit(:create)              }
-    it { is_expected.not_to permit(:update)              }
-    it { is_expected.not_to permit(:reorder)             }
-    it { is_expected.not_to permit(:destroy)             }
-    it { is_expected.not_to permit(:index_xlsx)          }
-    it { is_expected.not_to permit(:votes_by_user_xlsx)  }
-    it { is_expected.not_to permit(:votes_by_input_xlsx) }
+    it { is_expected.not_to permit(:show)                  }
+    it { is_expected.not_to permit(:create)                }
+    it { is_expected.not_to permit(:update)                }
+    it { is_expected.not_to permit(:reorder)               }
+    it { is_expected.not_to permit(:refresh_preview_token) }
+    it { is_expected.not_to permit(:destroy)               }
+    it { is_expected.not_to permit(:index_xlsx)            }
+    it { is_expected.not_to permit(:votes_by_user_xlsx)    }
+    it { is_expected.not_to permit(:votes_by_input_xlsx)   }
 
     context 'when a valid preview token is provided' do
       let(:context) { { preview_token: project.preview_token } }
@@ -228,14 +238,15 @@ describe ProjectPolicy do
     let!(:user) { create(:user) }
     let!(:project) { create(:private_groups_project, user: user, groups_count: 2) }
 
-    it { is_expected.to     permit(:show)                }
-    it { is_expected.not_to permit(:create)              }
-    it { is_expected.not_to permit(:update)              }
-    it { is_expected.not_to permit(:reorder)             }
-    it { is_expected.not_to permit(:destroy)             }
-    it { is_expected.not_to permit(:index_xlsx)          }
-    it { is_expected.not_to permit(:votes_by_user_xlsx)  }
-    it { is_expected.not_to permit(:votes_by_input_xlsx) }
+    it { is_expected.to     permit(:show)                  }
+    it { is_expected.not_to permit(:create)                }
+    it { is_expected.not_to permit(:update)                }
+    it { is_expected.not_to permit(:reorder)               }
+    it { is_expected.not_to permit(:refresh_preview_token) }
+    it { is_expected.not_to permit(:destroy)               }
+    it { is_expected.not_to permit(:index_xlsx)            }
+    it { is_expected.not_to permit(:votes_by_user_xlsx)    }
+    it { is_expected.not_to permit(:votes_by_input_xlsx)   }
 
     it 'should index the project' do
       expect(scope.resolve.size).to eq 1
@@ -250,14 +261,15 @@ describe ProjectPolicy do
     let!(:user) { create(:admin) }
     let!(:project) { create(:private_groups_project) }
 
-    it { is_expected.to permit(:show)                }
-    it { is_expected.to permit(:create)              }
-    it { is_expected.to permit(:update)              }
-    it { is_expected.to permit(:reorder)             }
-    it { is_expected.to permit(:destroy)             }
-    it { is_expected.to permit(:index_xlsx)          }
-    it { is_expected.to permit(:votes_by_user_xlsx)  }
-    it { is_expected.to permit(:votes_by_input_xlsx) }
+    it { is_expected.to permit(:show)                  }
+    it { is_expected.to permit(:create)                }
+    it { is_expected.to permit(:update)                }
+    it { is_expected.to permit(:reorder)               }
+    it { is_expected.to permit(:refresh_preview_token) }
+    it { is_expected.to permit(:destroy)               }
+    it { is_expected.to permit(:index_xlsx)            }
+    it { is_expected.to permit(:votes_by_user_xlsx)    }
+    it { is_expected.to permit(:votes_by_input_xlsx)   }
 
     it 'should index the project' do
       expect(scope.resolve.size).to eq 1
@@ -274,14 +286,15 @@ describe ProjectPolicy do
     context 'for a visitor' do
       let(:user) { nil }
 
-      it { is_expected.not_to permit(:show)                }
-      it { is_expected.not_to permit(:create)              }
-      it { is_expected.not_to permit(:update)              }
-      it { is_expected.not_to permit(:reorder)             }
-      it { is_expected.not_to permit(:destroy)             }
-      it { is_expected.not_to permit(:index_xlsx)          }
-      it { is_expected.not_to permit(:votes_by_user_xlsx)  }
-      it { is_expected.not_to permit(:votes_by_input_xlsx) }
+      it { is_expected.not_to permit(:show)                  }
+      it { is_expected.not_to permit(:create)                }
+      it { is_expected.not_to permit(:update)                }
+      it { is_expected.not_to permit(:reorder)               }
+      it { is_expected.not_to permit(:refresh_preview_token) }
+      it { is_expected.not_to permit(:destroy)               }
+      it { is_expected.not_to permit(:index_xlsx)            }
+      it { is_expected.not_to permit(:votes_by_user_xlsx)    }
+      it { is_expected.not_to permit(:votes_by_input_xlsx)   }
 
       context 'when a valid preview token is provided' do
         let(:context) { { preview_token: project.preview_token } }
@@ -297,14 +310,15 @@ describe ProjectPolicy do
     context 'for a resident' do
       let(:user) { create(:user) }
 
-      it { is_expected.not_to permit(:show)                }
-      it { is_expected.not_to permit(:create)              }
-      it { is_expected.not_to permit(:update)              }
-      it { is_expected.not_to permit(:reorder)             }
-      it { is_expected.not_to permit(:destroy)             }
-      it { is_expected.not_to permit(:index_xlsx)          }
-      it { is_expected.not_to permit(:votes_by_user_xlsx)  }
-      it { is_expected.not_to permit(:votes_by_input_xlsx) }
+      it { is_expected.not_to permit(:show)                  }
+      it { is_expected.not_to permit(:create)                }
+      it { is_expected.not_to permit(:update)                }
+      it { is_expected.not_to permit(:reorder)               }
+      it { is_expected.not_to permit(:refresh_preview_token) }
+      it { is_expected.not_to permit(:destroy)               }
+      it { is_expected.not_to permit(:index_xlsx)            }
+      it { is_expected.not_to permit(:votes_by_user_xlsx)    }
+      it { is_expected.not_to permit(:votes_by_input_xlsx)   }
 
       it 'should not index the project'  do
         expect(scope.resolve.size).to eq 0
@@ -318,14 +332,15 @@ describe ProjectPolicy do
     context 'for an admin' do
       let(:user) { create(:admin) }
 
-      it { is_expected.to permit(:show)                }
-      it { is_expected.to permit(:create)              }
-      it { is_expected.to permit(:update)              }
-      it { is_expected.to permit(:reorder)             }
-      it { is_expected.to permit(:destroy)             }
-      it { is_expected.to permit(:index_xlsx)          }
-      it { is_expected.to permit(:votes_by_user_xlsx)  }
-      it { is_expected.to permit(:votes_by_input_xlsx) }
+      it { is_expected.to permit(:show)                  }
+      it { is_expected.to permit(:create)                }
+      it { is_expected.to permit(:update)                }
+      it { is_expected.to permit(:reorder)               }
+      it { is_expected.to permit(:refresh_preview_token) }
+      it { is_expected.to permit(:destroy)               }
+      it { is_expected.to permit(:index_xlsx)            }
+      it { is_expected.to permit(:votes_by_user_xlsx)    }
+      it { is_expected.to permit(:votes_by_input_xlsx)   }
 
       it 'should index the project' do
         expect(scope.resolve.size).to eq 1
@@ -339,14 +354,15 @@ describe ProjectPolicy do
     context 'for a moderator' do
       let(:user) { create(:project_moderator, projects: [project]) }
 
-      it { is_expected.to permit(:show)                }
-      it { is_expected.not_to permit(:create)          }
-      it { is_expected.to permit(:update)              }
-      it { is_expected.to permit(:reorder)             }
-      it { is_expected.not_to permit(:destroy)         }
-      it { is_expected.to permit(:index_xlsx)          }
-      it { is_expected.to permit(:votes_by_user_xlsx)  }
-      it { is_expected.to permit(:votes_by_input_xlsx) }
+      it { is_expected.to permit(:show)                  }
+      it { is_expected.not_to permit(:create)            }
+      it { is_expected.to permit(:update)                }
+      it { is_expected.to permit(:reorder)               }
+      it { is_expected.to permit(:refresh_preview_token) }
+      it { is_expected.not_to permit(:destroy)           }
+      it { is_expected.to permit(:index_xlsx)            }
+      it { is_expected.to permit(:votes_by_user_xlsx)    }
+      it { is_expected.to permit(:votes_by_input_xlsx)   }
 
       it 'indexes the project' do
         expect(scope.resolve.size).to eq 1
@@ -360,14 +376,15 @@ describe ProjectPolicy do
     context 'for a moderator of another project' do
       let(:user) { create(:project_moderator) }
 
-      it { is_expected.not_to permit(:show)                }
-      it { is_expected.not_to permit(:create)              }
-      it { is_expected.not_to permit(:update)              }
-      it { is_expected.not_to permit(:reorder)             }
-      it { is_expected.not_to permit(:destroy)             }
-      it { is_expected.not_to permit(:index_xlsx)          }
-      it { is_expected.not_to permit(:votes_by_user_xlsx)  }
-      it { is_expected.not_to permit(:votes_by_input_xlsx) }
+      it { is_expected.not_to permit(:show)                  }
+      it { is_expected.not_to permit(:create)                }
+      it { is_expected.not_to permit(:update)                }
+      it { is_expected.not_to permit(:reorder)               }
+      it { is_expected.not_to permit(:refresh_preview_token) }
+      it { is_expected.not_to permit(:destroy)               }
+      it { is_expected.not_to permit(:index_xlsx)            }
+      it { is_expected.not_to permit(:votes_by_user_xlsx)    }
+      it { is_expected.not_to permit(:votes_by_input_xlsx)   }
 
       it { expect(scope.resolve).not_to include(project) }
       it { expect(inverse_scope.resolve).not_to include(user) }

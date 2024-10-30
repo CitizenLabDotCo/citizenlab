@@ -10,6 +10,7 @@ class AddPreviewTokenToProjects < ActiveRecord::Migration[7.0]
       WHERE preview_token IS NULL
     SQL
 
+    # The default value is handled in the Rails model.
     change_column_null :projects, :preview_token, false
   end
 end

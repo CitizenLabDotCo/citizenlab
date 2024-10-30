@@ -200,6 +200,10 @@ class Project < ApplicationRecord
     @pmethod ||= ParticipationMethod::Ideation.new(phases.first)
   end
 
+  def refresh_preview_token
+    self.preview_token = generate_preview_token
+  end
+
   private
 
   def init
