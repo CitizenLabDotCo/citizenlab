@@ -40,8 +40,11 @@ const OfflineVoteSettings = ({ ideaId, votingMethod, phaseId }: Props) => {
   const { data: phase } = usePhase(phaseId);
   const tenantId = appConfig?.data.id;
   const { data: idea } = useIdeaById(ideaId);
-  const { data: userLastModified } = useUserById(
+  const { data: userLastModifiedVotes } = useUserById(
     idea?.data?.relationships?.manual_votes_last_updated_by?.data?.id
+  );
+  const { data: userLastModifiedVoters } = useUserById(
+    phase?.data?.relationships?.manual_voters_last_updated_by?.data?.id
   );
   const { mutate: updateIdea } = useUpdateIdea();
   const { mutate: updatePhase } = useUpdatePhase();
@@ -116,6 +119,16 @@ const OfflineVoteSettings = ({ ideaId, votingMethod, phaseId }: Props) => {
               handleOfflineVotersChangedDebounced();
             }}
           />
+          {userLastModifiedVoters?.data?.attributes?.first_name && (
+            <Text pt="4px" m="0px" color="textSecondary" fontSize="s">
+              <FormattedMessage
+                {...messages.modifiedBy}
+                values={{
+                  name: `${userLastModifiedVoters?.data?.attributes?.first_name} ${userLastModifiedVoters?.data?.attributes?.last_name}`,
+                }}
+              />
+            </Text>
+          )}
         </Box>
       )}
       <Tooltip
@@ -163,12 +176,12 @@ const OfflineVoteSettings = ({ ideaId, votingMethod, phaseId }: Props) => {
               handleOfflineVotesChangedDebounced();
             }}
           />
-          {userLastModified?.data?.attributes?.first_name && (
+          {userLastModifiedVotes?.data?.attributes?.first_name && (
             <Text pt="4px" m="0px" color="textSecondary" fontSize="s">
               <FormattedMessage
                 {...messages.modifiedBy}
                 values={{
-                  name: `${userLastModified?.data?.attributes?.first_name} ${userLastModified?.data?.attributes?.last_name}`,
+                  name: `${userLastModifiedVotes?.data?.attributes?.first_name} ${userLastModifiedVotes?.data?.attributes?.last_name}`,
                 }}
               />
             </Text>

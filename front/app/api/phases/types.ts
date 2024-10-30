@@ -24,6 +24,9 @@ export interface IPhaseData {
     user_basket?: {
       data: IRelationship | null;
     };
+    manual_voters_last_updated_by?: {
+      data: IRelationship | null;
+    };
     report?: {
       data: IRelationship | null;
     };
