@@ -171,4 +171,17 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.supportPageLinkText',
     defaultMessage: 'visit our support center',
   },
+  projectImageAltTextTitle: {
+    id: 'app.containers.AdminPage.ProjectEdit.projectImageAltTextTitle',
+    defaultMessage: 'Project image alternative text',
+  },
+  altText: {
+    id: 'app.containers.AdminPage.ProjectEdit.altText',
+    defaultMessage: 'Alt text',
+  },
+  projectImageAltTextTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.projectImageAltTextTooltip',
+    defaultMessage:
+      'Provide a short description of the image for visually impaired users and for better SEO. This helps screen readers convey what the image is about.',
+  },
 });
