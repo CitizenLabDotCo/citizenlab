@@ -83,7 +83,7 @@ class WebApi::V1::ProjectsController < ApplicationController
 
     # Step 1: Create all action descriptors
     project_descriptor_pairs = @projects.each_with_object({}) do |project, acc|
-      service = Permissions::ProjectPermissionService.new(
+      service = Permissions::ProjectPermissionsService.new(
         project, current_user, user_requirements_service: user_requirements_service
       )
 
@@ -92,7 +92,7 @@ class WebApi::V1::ProjectsController < ApplicationController
 
     # Step 2: Filter out action descriptors where participation is not possible
     project_descriptor_pairs = project_descriptor_pairs.select do |_, action_descriptors|
-      Permissions::ProjectPermissionsServe.participation_possible?(action_descriptors)
+      Permissions::ProjectPermissionsService.participation_possible?(action_descriptors)
     end
 
     # Step 3: Use these to filter out projects
