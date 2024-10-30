@@ -1,4 +1,4 @@
-import { Multiloc } from 'typings';
+import { Multiloc, ILinks } from 'typings';
 
 import { Keys } from 'utils/cl-react-query/types';
 
@@ -13,6 +13,7 @@ export type MiniProjectsKeys = Keys<typeof miniProjectsKeys>;
 
 export interface MiniProjects {
   data: MiniProjectData[];
+  links: ILinks;
 }
 
 interface MiniProjectData {
