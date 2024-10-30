@@ -123,7 +123,7 @@ class Idea < ApplicationRecord
 
   validate :validate_creation_phase
   validate :not_published_in_non_public_status
-  validates :manual_votes_amount, numericality: { only_integer: true, greater_than: 0, allow_nil: true }
+  validates :manual_votes_amount, numericality: { only_integer: true, greater_than_or_equal_to: 0, allow_nil: true }
 
   # validates :custom_field_values, json: {
   #   schema: :schema_for_validation,

@@ -108,10 +108,10 @@ class Phase < ApplicationRecord
   validate :validate_start_at_before_end_at
   validate :validate_no_other_overlapping_phases
   validate :validate_campaigns_settings_keys_and_values
-  validates :manual_voters_amount, numericality: { only_integer: true, greater_than: 0, allow_nil: true }
+  validates :manual_voters_amount, numericality: { only_integer: true, greater_than_or_equal_to: 0, allow_nil: true }
   # This is a counter cache column, but it was too complex to implement it with counter_culture. It's
   # therefore updated manually by calling update_manual_votes_count! through the idea sidefx service.
-  validates :manual_votes_count, numericality: { only_integer: true, greater_than: 0, allow_nil: true }
+  validates :manual_votes_count, numericality: { only_integer: true, greater_than_or_equal_to: 0, allow_nil: true }
 
   validates :participation_method, inclusion: { in: PARTICIPATION_METHODS }
 

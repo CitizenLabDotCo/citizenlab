@@ -24,11 +24,21 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
   end
 
   attribute :votes_count, if: proc { |phase, params|
-    phase.pmethod.supports_serializing?(:votes_count) \
-    && (
-      (current_user(params) && UserRoleService.new.can_moderate?(phase, current_user(params))) \
-      || TimelineService.new.phase_is_complete?(phase)
-    )
+    phase.pmethod.supports_serializing?(:votes_count) && view_votes?(phase, current_user(params))
+  }
+
+  attribute :total_votes_amount, if: proc { |phase, params|
+    phase.pmethod.supports_serializing?(:total_votes_amount) && view_votes?(phase, current_user(params))
+  } do |phase, params|
+    phase.votes_count + phase.manual_votes_count
+  end
+
+  attribute :manual_voters_last_updated_at, if: proc { |phase, params|
+    can_moderate?(phase, params)
+  }
+
+  has_one :manual_voters_last_updated_by, record_type: :user, serializer: WebApi::V1::UserSerializer, if: proc { |phase, params|
+    can_moderate?(phase, params)
   }
 
   attribute :voting_term_singular_multiloc, if: proc { |phase|
@@ -78,19 +88,13 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
     end&.first
   end
 
-  attribute :total_votes_amount do |phase, params|
-    123 # TODO: phase.total_votes
-  end
-
-  attribute :manual_voters_last_updated_at, if: proc { |phase, params|
-    can_moderate?(phase, params)
-  }
-
-  has_one :manual_voters_last_updated_by, record_type: :user, serializer: WebApi::V1::UserSerializer, if: proc { |phase, params|
-    can_moderate?(phase, params)
-  }
-
   def self.can_moderate?(phase, params)
     current_user(params) && UserRoleService.new.can_moderate?(phase, current_user(params))
+  end
+
+  def self.view_votes?(phase, user)
+    return true if user && UserRoleService.new.can_moderate?(phase, user)
+
+    TimelineService.new.phase_is_complete?(phase)
   end
 end

@@ -42,8 +42,14 @@ module VotingMethod
       idea.ideas_phases.find { |ideas_phase| ideas_phase.phase_id == phase.id }&.baskets_count || 0
     end
 
-    def export_columns
+    def additional_export_columns
       %w[picks budget]
+    end
+
+    def supports_serializing?(attribute)
+      return false if %i[total_votes_amount].include?(attribute)
+
+      super
     end
   end
 end

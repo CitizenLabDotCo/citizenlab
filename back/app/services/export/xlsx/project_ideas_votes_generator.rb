@@ -28,7 +28,7 @@ module Export
           { header: I18n.t('description', scope: t_scope), f: ->(i) { multiloc_service.t(i.body_multiloc) } }
         ]
 
-        Factory.instance.voting_method_for(phase).export_columns.each do |column|
+        Factory.instance.voting_method_for(phase).additional_export_columns.each do |column|
           columns << send(:"#{column}_column", t_scope, phase)
         end
 
