@@ -3,10 +3,12 @@
 require 'rails_helper'
 
 describe ProjectPolicy do
-  subject { described_class.new(user, project) }
+  subject { described_class.new(user_context, project) }
 
-  let(:scope) { ProjectPolicy::Scope.new(user, Project) }
+  let(:scope) { ProjectPolicy::Scope.new(user_context, Project) }
   let(:inverse_scope) { ProjectPolicy::InverseScope.new(project, User) }
+  let(:user_context) { ApplicationPolicy::UserContext.new(user, context) }
+  let(:context) { {} }
 
   context 'on a public timeline project' do
     let!(:project) { create(:single_phase_ideation_project) }
@@ -207,6 +209,12 @@ describe ProjectPolicy do
     it { is_expected.not_to permit(:votes_by_user_xlsx)  }
     it { is_expected.not_to permit(:votes_by_input_xlsx) }
 
+    context 'when a valid preview token is provided' do
+      let(:context) { { preview_token: project.preview_token } }
+
+      it { is_expected.not_to permit(:show) }
+    end
+
     it 'should not index the project'  do
       expect(scope.resolve.size).to eq 0
     end
@@ -274,6 +282,12 @@ describe ProjectPolicy do
       it { is_expected.not_to permit(:index_xlsx)          }
       it { is_expected.not_to permit(:votes_by_user_xlsx)  }
       it { is_expected.not_to permit(:votes_by_input_xlsx) }
+
+      context 'when a valid preview token is provided' do
+        let(:context) { { preview_token: project.preview_token } }
+
+        it { is_expected.to permit(:show) }
+      end
 
       it 'should not index the project'  do
         expect(scope.resolve.size).to eq 0

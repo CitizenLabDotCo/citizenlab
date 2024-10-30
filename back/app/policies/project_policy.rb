@@ -77,7 +77,7 @@ class ProjectPolicy < ApplicationPolicy
   def show?
     return false if Permissions::ProjectPermissionsService.new(record, user).project_visible_disabled_reason
 
-    active_moderator? || %w[published archived].include?(record.admin_publication.publication_status)
+    active_moderator? || project_published_or_archived? || valid_preview_token?
   end
 
   def by_slug?
@@ -140,6 +140,16 @@ class ProjectPolicy < ApplicationPolicy
     return unless active?
 
     UserRoleService.new.can_moderate_project? record, user
+  end
+
+  private
+
+  def valid_preview_token?
+    context[:preview_token] && context[:preview_token] == record.preview_token
+  end
+
+  def project_published_or_archived?
+    %w[published archived].include?(record.admin_publication.publication_status)
   end
 end
 
