@@ -8,6 +8,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import messages from './messages';
 import ProjectCarrousel from './ProjectCarrousel';
+import Settings from './Settings';
 
 interface Props {
   titleMultiloc: Multiloc;
@@ -30,6 +31,16 @@ const OpenToParticipation = ({ titleMultiloc }: Props) => {
       onLoadMore={fetchNextPage}
     />
   );
+};
+
+OpenToParticipation.craft = {
+  related: {
+    settings: Settings,
+  },
+  custom: {
+    title: messages.openToParticipation,
+    noPointerEvents: true,
+  },
 };
 
 export const openToParticipationTitle = messages.openToParticipation;

@@ -15,6 +15,8 @@ import styled from 'styled-components';
 import { CARD_IMAGE_ASPECT_RATIO } from 'api/project_images/useProjectImages';
 import { MiniProjectData } from 'api/projects_mini/types';
 
+import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
+
 import { CARD_GAP, CARD_WIDTH } from './constants';
 import HorizontalScroll from './HorizontalScroll';
 import LightProjectCard from './LightProjectCard';
@@ -97,83 +99,91 @@ const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
   }, [scrollContainerRef, hasMore, handleButtonVisiblity]);
 
   return (
-    <Container position="relative">
-      <Title variant="h3" as="h2" mt="0px">
-        {title}
-      </Title>
-      <HorizontalScroll
-        setRef={(ref) => {
-          if (ref) {
-            setScrollContainerRef(ref);
-            handleButtonVisiblity(ref, hasMore);
-          }
-        }}
-      >
-        {projects.map((project) => (
-          <ProjectContainer key={project.id}>
-            <LightProjectCard project={project} />
-          </ProjectContainer>
-        ))}
-        {hasMore && (
-          <ProjectContainer>
-            <Box
-              ref={ref}
-              w={`${CARD_WIDTH}px`}
-              h={`${CARD_WIDTH / CARD_IMAGE_ASPECT_RATIO}px`}
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-            >
-              <Spinner />
-            </Box>
-          </ProjectContainer>
+    <Box
+      px={DEFAULT_PADDING}
+      py={DEFAULT_PADDING}
+      w="100%"
+      display="flex"
+      justifyContent="center"
+    >
+      <Container w="100%" maxWidth="1200px" position="relative">
+        <Title variant="h3" as="h2" mt="0px">
+          {title}
+        </Title>
+        <HorizontalScroll
+          setRef={(ref) => {
+            if (ref) {
+              setScrollContainerRef(ref);
+              handleButtonVisiblity(ref, hasMore);
+            }
+          }}
+        >
+          {projects.map((project) => (
+            <ProjectContainer key={project.id}>
+              <LightProjectCard project={project} />
+            </ProjectContainer>
+          ))}
+          {hasMore && (
+            <ProjectContainer>
+              <Box
+                ref={ref}
+                w={`${CARD_WIDTH}px`}
+                h={`${CARD_WIDTH / CARD_IMAGE_ASPECT_RATIO}px`}
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+              >
+                <Spinner />
+              </Box>
+            </ProjectContainer>
+          )}
+        </HorizontalScroll>
+        {showPreviousButton && !isSmallerThanPhone && (
+          <Box
+            as="button"
+            className="scroll-button"
+            position="absolute"
+            left="8px"
+            top="120px"
+            borderRadius="30px"
+            bgColor="white"
+            w="52px"
+            h="52px"
+            border={`1px solid ${colors.divider}`}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              if (!scrollContainerRef) return;
+              scrollContainerRef.scrollLeft -= CARD_WIDTH + CARD_GAP;
+            }}
+          >
+            <Icon name="arrow-left" fill={colors.grey700} />
+          </Box>
         )}
-      </HorizontalScroll>
-      {showPreviousButton && !isSmallerThanPhone && (
-        <Box
-          as="button"
-          className="scroll-button"
-          position="absolute"
-          left="8px"
-          top="120px"
-          borderRadius="30px"
-          bgColor="white"
-          w="52px"
-          h="52px"
-          border={`1px solid ${colors.divider}`}
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            if (!scrollContainerRef) return;
-            scrollContainerRef.scrollLeft -= CARD_WIDTH + CARD_GAP;
-          }}
-        >
-          <Icon name="arrow-left" fill={colors.grey700} />
-        </Box>
-      )}
-      {showNextButton && !isSmallerThanPhone && (
-        <Box
-          as="button"
-          className="scroll-button"
-          position="absolute"
-          right="8px"
-          top="120px"
-          borderRadius="30px"
-          bgColor="white"
-          w="52px"
-          h="52px"
-          border={`1px solid ${colors.divider}`}
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            if (!scrollContainerRef) return;
-            scrollContainerRef.scrollLeft += CARD_WIDTH + CARD_GAP;
-          }}
-        >
-          <Icon name="arrow-right" fill={colors.grey700} />
-        </Box>
-      )}
-    </Container>
+        {showNextButton && !isSmallerThanPhone && (
+          <Box
+            as="button"
+            className="scroll-button"
+            position="absolute"
+            right="8px"
+            top="120px"
+            borderRadius="30px"
+            bgColor="white"
+            w="52px"
+            h="52px"
+            border={`1px solid ${colors.divider}`}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              if (!scrollContainerRef) return;
+              scrollContainerRef.scrollLeft += CARD_WIDTH + CARD_GAP;
+            }}
+          >
+            <Icon name="arrow-right" fill={colors.grey700} />
+          </Box>
+        )}
+      </Container>
+    </Box>
   );
 };
 
