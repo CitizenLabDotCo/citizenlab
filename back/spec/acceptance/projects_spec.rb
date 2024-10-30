@@ -1295,20 +1295,6 @@ resource 'Projects' do
       expect(json_response[:data].pluck(:id)).to include active_ideation_project.id
     end
 
-    example 'Includes related avatars', document: false do
-      create(:idea, project: active_ideation_project, author: @user)
-
-      do_request
-      expect(status).to eq(200)
-      json_response = json_parse(response_body)
-
-      included_avatar_ids = json_response[:included].select { |d| d[:type] == 'avatar' }.pluck(:id)
-      avatar_ids = json_response[:data].map { |d| d.dig(:relationships, :avatars, :data) }.flatten.pluck(:id)
-
-      expect(avatar_ids).to include @user.id
-      expect(included_avatar_ids).to include @user.id
-    end
-
     example 'Includes project images', document: false do
       project_image = create(:project_image, project: active_ideation_project)
 
@@ -1338,7 +1324,7 @@ resource 'Projects' do
       # We need a participant, to get some included avatar data
       create(:idea, project: active_ideation_project, author: @user)
 
-      expect { do_request(page: { size: 6, number: 1 }) }.not_to exceed_query_limit(29)
+      expect { do_request(page: { size: 6, number: 1 }) }.not_to exceed_query_limit(21)
 
       assert_status 200
     end

@@ -79,21 +79,31 @@ class WebApi::V1::ProjectsController < ApplicationController
     # Projects user can participate in, or where such participation could (probably) be made possible by user
     # (e.g. user not signed in).
     # Unfortunately, this breaks the query chain, so we have to start a new one after this.
-    project_ids = @projects.select do |project|
-      Permissions::ProjectPermissionsService
-        .new(project, current_user, user_requirements_service: user_requirements_service).participation_possible?
-    end.pluck(:id)
+    # Also, we will need the action descriptors again later, so we will store them separately.
 
+    # Step 1: Create all action descriptors
+    project_descriptor_pairs = @projects.each_with_object({}) do |project, acc|
+      service = Permissions::ProjectPermissionsService.new(
+        project, current_user, user_requirements_service: user_requirements_service
+      )
+
+      acc[project.id] = service.action_descriptors
+    end
+
+    # Step 2: Filter out action descriptors where participation is not possible
+    project_descriptor_pairs = project_descriptor_pairs.select do |_, action_descriptors|
+      Permissions::ProjectPermissionsService.participation_possible?(action_descriptors)
+    end
+
+    # Step 3: Use these to filter out projects
+    project_ids = project_descriptor_pairs.keys
     @projects = @projects.where(id: project_ids)
 
     # `includes` tries to be smart & use joins here, but it makes the query complex and slow. So, we use `preload`.
     @projects = paginate @projects
     @projects = @projects.preload(
       :project_images,
-      :areas,
-      :topics,
-      phases: [:report],
-      admin_publication: [:children]
+      phases: [:report]
     )
 
     authorize @projects, :index_projects_with_active_participatory_phase?
@@ -101,8 +111,8 @@ class WebApi::V1::ProjectsController < ApplicationController
     render json: linked_json(
       @projects,
       WebApi::V1::ProjectMiniSerializer,
-      params: jsonapi_serializer_params,
-      include: %i[admin_publication project_images current_phase avatars]
+      params: jsonapi_serializer_params.merge(project_descriptor_pairs: project_descriptor_pairs),
+      include: %i[project_images current_phase]
     )
   end
 
