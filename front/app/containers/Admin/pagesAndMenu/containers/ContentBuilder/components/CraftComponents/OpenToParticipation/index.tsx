@@ -6,6 +6,7 @@ import useProjectsWithActiveParticipatoryPhase from 'api/projects_mini/useProjec
 
 import useLocalize from 'hooks/useLocalize';
 
+import messages from './messages';
 import ProjectCarrousel from './ProjectCarrousel';
 
 interface Props {
@@ -30,5 +31,7 @@ const OpenToParticipation = ({ titleMultiloc }: Props) => {
     />
   );
 };
+
+export const openToParticipationTitle = messages.openToParticipation;
 
 export default OpenToParticipation;
