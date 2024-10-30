@@ -176,7 +176,8 @@ resource 'Projects' do
             voting: { enabled: false, disabled_reason: 'project_inactive' },
             attending_event: { enabled: true, disabled_reason: nil },
             volunteering: { enabled: false, disabled_reason: 'project_inactive' }
-          }
+          },
+          preview_token: an_instance_of(String)
         )
         expect(json_response.dig(:data, :relationships)).to include(
           areas: { data: [] }

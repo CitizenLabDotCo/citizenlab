@@ -4,8 +4,12 @@ require 'rails_helper'
 
 RSpec.describe Project do
   describe 'Default factory' do
-    it 'is valid' do
-      expect(build(:project)).to be_valid
+    subject(:project) { build(:project) }
+
+    it { is_expected.to be_valid }
+
+    it 'has a preview token' do
+      expect(project.preview_token).to be_present
     end
   end
 
