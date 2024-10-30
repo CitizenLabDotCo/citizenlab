@@ -81,9 +81,9 @@ class WebApi::V1::ProjectsController < ApplicationController
     # Unfortunately, this breaks the query chain, so we have to start a new one after this.
     # Also, we will need the action descriptors again later, so we will store them.
 
-    # Step 1: Create pairs of project ids and action descriptors.
-    # Since this is the last filtering step, we will keep going
-    # until we reach the limit required for pagination.
+    # # Step 1: Create pairs of project ids and action descriptors.
+    # # Since this is the last filtering step, we will keep going
+    # # until we reach the limit required for pagination.
     pagination_limit = calculate_pagination_limit
 
     project_descriptor_pairs = @projects.each_with_object({}) do |project, acc|
@@ -98,7 +98,7 @@ class WebApi::V1::ProjectsController < ApplicationController
       end
     end
 
-    # Step 2: Use these to filter out projects
+    # # Step 2: Use these to filter out projects
     project_ids = project_descriptor_pairs.keys
     @projects = @projects.where(id: project_ids)
 
