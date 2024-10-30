@@ -29,7 +29,7 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
 
   attribute :total_votes_amount, if: proc { |phase, params|
     phase.pmethod.supports_serializing?(:total_votes_amount) && view_votes?(phase, current_user(params))
-  } do |phase, params|
+  } do |phase|
     phase.votes_count + phase.manual_votes_count
   end
 
