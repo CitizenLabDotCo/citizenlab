@@ -1,5 +1,7 @@
 import { Multiloc, ILinks } from 'typings';
 
+import { ActionDescriptors } from 'api/projects/types';
+
 import { Keys } from 'utils/cl-react-query/types';
 
 import miniProjectsKeys from './keys';
@@ -22,5 +24,6 @@ interface MiniProjectData {
   attributes: {
     title_multiloc: Multiloc;
     slug: string;
+    action_descriptors: ActionDescriptors;
   };
 }
