@@ -1298,7 +1298,6 @@
   "app.containers.IdeasNewPage.projectMetaTitle1": "Neues Projekt zum Projekt hinzufügen | {orgName}",
   "app.containers.IdeasNewPage.proposalMetaTitle1": "Neuen Vorschlag zum Projekt hinzufügen | {orgName}",
   "app.containers.IdeasNewPage.questionMetaTitle1": "Neue Frage zum Projekt hinzufügen | {orgName}",
-  "app.containers.IdeasNewPage.surveyNewMetaTitle1": "Umfrageantwort zum Projekt hinzufügen | {orgName}",
   "app.containers.IdeasShow.Cosponsorship.co-sponsorAcceptInvitation": "Einladung annehmen",
   "app.containers.IdeasShow.Cosponsorship.co-sponsorInvitation": "Einladung zum Unterstützen",
   "app.containers.IdeasShow.Cosponsorship.co-sponsors": "Unterstützer*innen",

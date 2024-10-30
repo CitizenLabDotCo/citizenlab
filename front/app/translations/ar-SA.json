@@ -1298,7 +1298,6 @@
   "app.containers.IdeasNewPage.projectMetaTitle1": "إضافة مشروع جديد للمشروع | {orgName}",
   "app.containers.IdeasNewPage.proposalMetaTitle1": "إضافة اقتراح جديد للمشروع | {orgName}",
   "app.containers.IdeasNewPage.questionMetaTitle1": "أضف سؤال جديد للمشروع | {orgName}",
-  "app.containers.IdeasNewPage.surveyNewMetaTitle1": "إضافة استجابة الاستطلاع للمشروع | {orgName}",
   "app.containers.IdeasShow.Cosponsorship.co-sponsorAcceptInvitation": "قبول الدعوة",
   "app.containers.IdeasShow.Cosponsorship.co-sponsorInvitation": "دعوة للمشاركة في الرعاية",
   "app.containers.IdeasShow.Cosponsorship.co-sponsors": "الرعاة المشاركون",
