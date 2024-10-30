@@ -79,23 +79,26 @@ class WebApi::V1::ProjectsController < ApplicationController
     # Projects user can participate in, or where such participation could (probably) be made possible by user
     # (e.g. user not signed in).
     # Unfortunately, this breaks the query chain, so we have to start a new one after this.
-    # Also, we will need the action descriptors again later, so we will store them separately.
+    # Also, we will need the action descriptors again later, so we will store them.
 
-    # Step 1: Create all action descriptors
+    # Step 1: Create pairs of project ids and action descriptors.
+    # Since this is the last filtering step, we will keep going
+    # until we reach the limit required for pagination.
+    pagination_limit = calculate_pagination_limit
+
     project_descriptor_pairs = @projects.each_with_object({}) do |project, acc|
       service = Permissions::ProjectPermissionsService.new(
         project, current_user, user_requirements_service: user_requirements_service
       )
+      action_descriptors = service.action_descriptors
 
-      acc[project.id] = service.action_descriptors
+      if Permissions::ProjectPermissionsService.participation_possible?(action_descriptors)
+        acc[project.id] = action_descriptors
+        break if acc.size >= pagination_limit
+      end
     end
 
-    # Step 2: Filter out action descriptors where participation is not possible
-    project_descriptor_pairs = project_descriptor_pairs.select do |_, action_descriptors|
-      Permissions::ProjectPermissionsService.participation_possible?(action_descriptors)
-    end
-
-    # Step 3: Use these to filter out projects
+    # Step 2: Use these to filter out projects
     project_ids = project_descriptor_pairs.keys
     @projects = @projects.where(id: project_ids)
 
@@ -281,6 +284,13 @@ class WebApi::V1::ProjectsController < ApplicationController
 
   def user_requirements_service
     @user_requirements_service ||= Permissions::UserRequirementsService.new(check_groups_and_verification: false)
+  end
+
+  def calculate_pagination_limit
+    page_size = (params.dig(:page, :size) || 500).to_i
+    page_number = (params.dig(:page, :number) || 1).to_i
+
+    page_size * page_number
   end
 end
 
