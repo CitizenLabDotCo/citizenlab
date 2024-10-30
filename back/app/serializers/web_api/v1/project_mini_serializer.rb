@@ -6,6 +6,10 @@ class WebApi::V1::ProjectMiniSerializer < WebApi::V1::BaseSerializer
     :slug
   )
 
+  attribute :action_descriptors do |object, params|
+    params[:project_descriptor_pairs][object.id]
+  end
+
   has_many :project_images, serializer: WebApi::V1::ImageSerializer
 
   has_one :current_phase, serializer: WebApi::V1::PhaseSerializer, record_type: :phase do |object|

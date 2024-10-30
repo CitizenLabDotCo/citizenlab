@@ -889,7 +889,7 @@ describe Permissions::ProjectPermissionsService do
     let(:user_requirements_service) { Permissions::UserRequirementsService.new(check_groups_and_verification: false) }
     let(:service) { described_class.new(project, user, user_requirements_service: user_requirements_service) }
     let(:action_descriptors) { service.action_descriptors }
-    let(:participation_possible) { service.participation_possible? }
+    let(:participation_possible) { described_class.participation_possible?(action_descriptors) }
 
     context 'when only permitted action is attending_event' do
       let(:current_phase_attrs) { { participation_method: 'information' } }
