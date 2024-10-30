@@ -90,10 +90,7 @@ class WebApi::V1::ProjectsController < ApplicationController
     @projects = paginate @projects
     @projects = @projects.preload(
       :project_images,
-      :areas,
-      :topics,
-      phases: [:report],
-      admin_publication: [:children]
+      phases: [:report]
     )
 
     authorize @projects, :index_projects_with_active_participatory_phase?
@@ -102,7 +99,7 @@ class WebApi::V1::ProjectsController < ApplicationController
       @projects,
       WebApi::V1::ProjectMiniSerializer,
       params: jsonapi_serializer_params,
-      include: %i[admin_publication project_images current_phase avatars]
+      include: %i[project_images current_phase]
     )
   end
 
