@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { projects } from 'api/projects/__mocks__/_mockServer';
+import { MiniProjectData } from 'api/projects_mini/types';
 
 import ProjectCarrousel from '.';
 
@@ -14,22 +14,32 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const createData = (offset: number) => {
-  return [...projects.data, ...projects.data, ...projects.data].map(
-    (project, index) => ({
-      ...project,
-      id: (offset + index).toString(),
-      attributes: {
-        ...project.attributes,
-        title_multiloc: {
-          ...project.attributes.title_multiloc,
-          en: `${offset + index} ${
-            project.attributes.title_multiloc.en as any
-          }`,
+const createData = (offset: number): MiniProjectData[] => {
+  return Array.from({ length: 6 }).map((_, index) => ({
+    id: (offset + index).toString(),
+    type: 'project_mini',
+    attributes: {
+      title_multiloc: {
+        en: `${offset + index} - Project title`,
+      },
+      slug: 'project-slug',
+      action_descriptors: {
+        posting_idea: { enabled: true },
+        reacting_idea: { enabled: false },
+        commenting_idea: { enabled: true },
+      } as any,
+    },
+    relationships: {
+      current_phase: {
+        data: {
+          id: 'phase-id',
         },
       },
-    })
-  );
+      project_images: {
+        data: [],
+      },
+    },
+  }));
 };
 
 const ManyProjectsWrapper = ({ title }) => {
@@ -69,7 +79,7 @@ export const ManyProjects: Story = {
 export const OneProject: Story = {
   args: {
     title: 'Open to participation',
-    projects: [projects.data[0]],
+    projects: [createData(0)[0]],
     hasMore: false,
     onLoadMore: () => {},
   },
