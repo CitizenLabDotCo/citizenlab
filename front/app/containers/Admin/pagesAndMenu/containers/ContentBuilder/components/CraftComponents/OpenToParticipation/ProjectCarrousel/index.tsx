@@ -100,14 +100,19 @@ const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
 
   return (
     <Box
-      px={DEFAULT_PADDING}
+      px={isSmallerThanPhone ? undefined : DEFAULT_PADDING}
       py={DEFAULT_PADDING}
       w="100%"
       display="flex"
       justifyContent="center"
     >
       <Container w="100%" maxWidth="1200px" position="relative">
-        <Title variant="h3" as="h2" mt="0px">
+        <Title
+          variant="h3"
+          as="h2"
+          mt="0px"
+          ml={isSmallerThanPhone ? DEFAULT_PADDING : undefined}
+        >
           {title}
         </Title>
         <HorizontalScroll
@@ -118,6 +123,11 @@ const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
             }
           }}
         >
+          {isSmallerThanPhone && (
+            <ProjectContainer>
+              <Box />
+            </ProjectContainer>
+          )}
           {projects.map((project) => (
             <ProjectContainer key={project.id}>
               <LightProjectCard project={project} />
