@@ -1298,6 +1298,7 @@
   "app.containers.IdeasNewPage.projectMetaTitle1": "Afegeix un nou projecte al projecte | {orgName}",
   "app.containers.IdeasNewPage.proposalMetaTitle1": "Afegeix una nova proposta al projecte | {orgName}",
   "app.containers.IdeasNewPage.questionMetaTitle1": "Afegeix una pregunta nova al projecte | {orgName}",
+  "app.containers.IdeasNewPage.surveyNewMetaTitle2": "{surveyTitle} | {orgName}",
   "app.containers.IdeasShow.Cosponsorship.co-sponsorAcceptInvitation": "Accepta la invitació",
   "app.containers.IdeasShow.Cosponsorship.co-sponsorInvitation": "Invitació de copatrocini",
   "app.containers.IdeasShow.Cosponsorship.co-sponsors": "Copatrocinadors",

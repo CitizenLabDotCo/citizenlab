@@ -1298,6 +1298,7 @@
   "app.containers.IdeasNewPage.projectMetaTitle1": "Add new project to project | {orgName}",
   "app.containers.IdeasNewPage.proposalMetaTitle1": "Add new proposal to project | {orgName}",
   "app.containers.IdeasNewPage.questionMetaTitle1": "Add new question to project | {orgName}",
+  "app.containers.IdeasNewPage.surveyNewMetaTitle2": "{surveyTitle} | {orgName}",
   "app.containers.IdeasShow.Cosponsorship.co-sponsorAcceptInvitation": "Accept invitation",
   "app.containers.IdeasShow.Cosponsorship.co-sponsorInvitation": "Co-sponsorship invitation",
   "app.containers.IdeasShow.Cosponsorship.co-sponsors": "Co-sponsors",
