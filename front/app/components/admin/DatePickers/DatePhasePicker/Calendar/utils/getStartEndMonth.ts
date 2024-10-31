@@ -52,7 +52,7 @@ export const getEndMonth = ({
   const times: number[] = [addYears(new Date(), 10).getTime()];
 
   if (selectedRange.to) {
-    times.push(addYears(selectedRange.to, 2).getTime());
+    times.push(addYears(selectedRange.to, 10).getTime());
   }
 
   if (disabledRanges.length > 0) {
