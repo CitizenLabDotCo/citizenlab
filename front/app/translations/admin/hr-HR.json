@@ -1991,7 +1991,6 @@
   "app.containers.AdminPage.SettingsPage.linkToActivityPageText": "Aktivnost",
   "app.containers.AdminPage.SettingsPage.logo": "Logotip",
   "app.containers.AdminPage.SettingsPage.noHeader": "Prenesite sliku zaglavlja",
-  "app.containers.AdminPage.SettingsPage.noLogo": "Prenesite logotip",
   "app.containers.AdminPage.SettingsPage.no_button": "Nema gumba",
   "app.containers.AdminPage.SettingsPage.organizationName": "Naziv grada ili organizacije",
   "app.containers.AdminPage.SettingsPage.organizationNameMultilocError": "Navedite naziv organizacije ili grad za sve jezike.",
