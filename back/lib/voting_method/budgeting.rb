@@ -43,7 +43,7 @@ module VotingMethod
     end
 
     def additional_export_columns
-      %w[picks budget]
+      super + %w[picks budget]
     end
 
     def supports_serializing?(attribute)

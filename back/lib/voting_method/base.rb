@@ -35,7 +35,7 @@ module VotingMethod
     end
 
     def additional_export_columns
-      []
+      %w[manual_votes]
     end
 
     def supports_serializing?(attribute)
