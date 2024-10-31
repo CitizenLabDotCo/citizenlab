@@ -60,7 +60,7 @@ describe Export::Xlsx::InputSheetGenerator do
             phases: [phase],
             author: create(:user, custom_field_values: { create(:custom_field_birthyear).code => 1999 }),
             assignee: assignee,
-            manual_votes_amount: 5,
+            manual_votes_amount: 5
           )
         end
         let!(:attachment1) { create(:idea_file, idea: ideation_response1) }
@@ -588,7 +588,7 @@ describe Export::Xlsx::InputSheetGenerator do
             phases: [phase],
             author: create(:user, custom_field_values: { create(:custom_field_birthyear).code => 1999 }),
             assignee: assignee,
-            manual_votes_amount: 12,
+            manual_votes_amount: 12
           )
         end
         let!(:attachment1) { create(:idea_file, idea: ideation_response1) }
