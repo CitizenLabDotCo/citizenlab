@@ -134,7 +134,7 @@ RSpec.describe ParticipationMethod::Voting do
   describe '#additional_export_columns' do
     context 'voting method is budgeting' do
       it 'returns [picks, budget]' do
-        expect(participation_method.additional_export_columns).to eq %w[picks budget]
+        expect(participation_method.additional_export_columns).to match_array %w[manual_votes picks budget]
       end
     end
 
@@ -142,7 +142,7 @@ RSpec.describe ParticipationMethod::Voting do
       let(:phase) { create(:multiple_voting_phase) }
 
       it 'returns [participants, votes]' do
-        expect(participation_method.additional_export_columns).to eq %w[participants votes]
+        expect(participation_method.additional_export_columns).to match_array %w[manual_votes participants votes]
       end
     end
 
@@ -150,7 +150,7 @@ RSpec.describe ParticipationMethod::Voting do
       let(:phase) { create(:single_voting_phase) }
 
       it 'returns [votes] if voting method is single_voting' do
-        expect(participation_method.additional_export_columns).to eq %w[votes]
+        expect(participation_method.additional_export_columns).to match_array %w[manual_votes votes]
       end
     end
   end
