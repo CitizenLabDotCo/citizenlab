@@ -89,11 +89,13 @@ class SortByParamsService
   private
 
   def idea_voting_count_sort(scope, sort, phase_id, direction: :asc, add_column: nil)
-    sort_part = add_column ? Arel.sql("#{sort} + COALESCE(#{add_column}, 0)") : sort
     if phase_id
-      ids = IdeasPhase.where(phase_id: phase_id).order(sort_part => direction).pluck(:idea_id)
-      scope.order_as_specified(id: ids)
+      sort_part = add_column ? Arel.sql("ideas_phases.#{sort} + COALESCE(ideas.#{add_column}, 0)") : "ideas_phases.#{sort}"
+      scope.left_outer_joins(:ideas_phases).where(ideas_phases: { phase_id: phase_id }).order(sort_part => direction)
+      # ids = IdeasPhase.where(phase_id: phase_id).order(sort_part => direction).pluck(:idea_id)
+      # scope.order_as_specified(id: ids)
     else
+      sort_part = add_column ? Arel.sql("#{sort} + COALESCE(#{add_column}, 0)") : sort
       scope.order(sort_part => direction)
     end
   end
