@@ -4,22 +4,20 @@ module Polls
   class OptionPolicy < ApplicationPolicy
     class Scope < ApplicationPolicy::Scope
       def resolve
-        scope.where(
-          question: Pundit.policy_scope(user, Question)
-        )
+        scope.where(question: scope_for(Question))
       end
     end
 
     def create?
-      record&.question && Pundit.policy!(user, record.question).update?
+      record&.question && policy_for(record.question).update?
     end
 
     def show?
-      record&.question && Pundit.policy!(user, record.question).show?
+      record&.question && policy_for(record.question).show?
     end
 
     def update?
-      record&.question && Pundit.policy!(user, record.question).update?
+      record&.question && policy_for(record.question).update?
     end
 
     def reorder?

@@ -22,7 +22,7 @@ module ProjectFolders
       return true if record.projects.empty?
 
       # We check if the user has access to at least one of the projects in the folder
-      ProjectPolicy::Scope.new(user, record.projects).resolve.exists?
+      scope_for(record.projects).exists?
     end
 
     def by_slug?

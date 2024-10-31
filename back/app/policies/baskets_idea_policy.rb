@@ -8,7 +8,7 @@ class BasketsIdeaPolicy < ApplicationPolicy
   end
 
   def show?
-    BasketPolicy.new(user, record.basket).show?
+    policy_for(record.basket).show?
   end
 
   def create?
@@ -30,6 +30,6 @@ class BasketsIdeaPolicy < ApplicationPolicy
   private
 
   def modify_basket?
-    !record.basket.submitted? && BasketPolicy.new(user, record.basket).update?
+    !record.basket.submitted? && policy_for(record.basket).update?
   end
 end

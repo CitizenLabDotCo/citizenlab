@@ -3,7 +3,7 @@
 class ProjectsAllowedInputTopicPolicy < ApplicationPolicy
   class Scope < ApplicationPolicy::Scope
     def resolve
-      scope.where(project: Pundit.policy_scope(user, Project))
+      scope.where(project: scope_for(Project))
     end
   end
 

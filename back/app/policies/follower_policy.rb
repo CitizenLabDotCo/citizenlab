@@ -18,7 +18,7 @@ class FollowerPolicy < ApplicationPolicy
 
     def filter_followables
       Follower::FOLLOWABLE_TYPES.each do |followable_type|
-        visible_records = Pundit.policy_scope user, followable_type.constantize
+        visible_records = scope_for(followable_type.constantize)
         @scope = scope.where(followable: visible_records).or(scope.where.not(followable_type: followable_type))
       end
     end
@@ -44,7 +44,7 @@ class FollowerPolicy < ApplicationPolicy
       else
         raise "Unsupported followable type: #{record.followable_type}"
       end
-      policy_class.new(user, record.followable).show?
+      policy_class.new(user_context, record.followable).show?
     else
       false
     end

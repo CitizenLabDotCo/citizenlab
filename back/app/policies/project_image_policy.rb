@@ -3,23 +3,23 @@
 class ProjectImagePolicy < ApplicationPolicy
   class Scope < ApplicationPolicy::Scope
     def resolve
-      scope.where(project: Pundit.policy_scope(user, Project))
+      scope.where(project: scope_for(Project))
     end
   end
 
   def create?
-    ProjectPolicy.new(user, record.project).update?
+    policy_for(record.project).update?
   end
 
   def show?
-    ProjectPolicy.new(user, record.project).show?
+    policy_for(record.project).show?
   end
 
   def update?
-    ProjectPolicy.new(user, record.project).update?
+    policy_for(record.project).update?
   end
 
   def destroy?
-    ProjectPolicy.new(user, record.project).update?
+    policy_for(record.project).update?
   end
 end

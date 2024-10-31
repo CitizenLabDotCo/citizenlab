@@ -3,23 +3,23 @@
 class EventImagePolicy < ApplicationPolicy
   class Scope < ApplicationPolicy::Scope
     def resolve
-      scope.where(event: Pundit.policy_scope(user, Event))
+      scope.where(event: scope_for(Event))
     end
   end
 
   def create?
-    EventPolicy.new(user, record.event).update?
+    policy_for(record.event).update?
   end
 
   def show?
-    EventPolicy.new(user, record.event).show?
+    policy_for(record.event).show?
   end
 
   def update?
-    EventPolicy.new(user, record.event).update?
+    policy_for(record.event).update?
   end
 
   def destroy?
-    EventPolicy.new(user, record.event).update?
+    policy_for(record.event).update?
   end
 end

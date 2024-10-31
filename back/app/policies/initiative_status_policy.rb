@@ -33,7 +33,7 @@ class InitiativeStatusPolicy < ApplicationPolicy
     end
 
     def initiatives
-      InitiativePolicy::Scope.new(user, Initiative).resolve
+      scope_for(Initiative)
     end
   end
 

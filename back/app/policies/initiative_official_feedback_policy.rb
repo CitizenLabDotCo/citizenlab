@@ -3,7 +3,7 @@
 class InitiativeOfficialFeedbackPolicy < ApplicationPolicy
   class Scope < ApplicationPolicy::Scope
     def resolve
-      scope.where(post: Pundit.policy_scope(user, Initiative))
+      scope.where(post: scope_for(Initiative))
     end
   end
 
@@ -12,7 +12,7 @@ class InitiativeOfficialFeedbackPolicy < ApplicationPolicy
   end
 
   def show?
-    InitiativePolicy.new(user, record.post).show?
+    policy_for(record.post).show?
   end
 
   def update?

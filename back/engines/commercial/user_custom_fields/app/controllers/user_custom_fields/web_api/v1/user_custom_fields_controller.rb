@@ -7,9 +7,8 @@ module UserCustomFields
     skip_after_action :verify_policy_scoped
 
     def index
-      @custom_fields = UserCustomFieldPolicy::Scope.new(current_user, CustomField.all).resolve
-        .registration
-        .order(:ordering)
+      @custom_fields = policy_scope(CustomField, policy_scope_class: UserCustomFieldPolicy::Scope)
+        .registration.order(:ordering)
       @custom_fields = @custom_fields.where(input_type: params[:input_types]) if params[:input_types]
 
       render json: serialize_custom_fields(@custom_fields, params: jsonapi_serializer_params, include: %i[projects])
@@ -77,12 +76,11 @@ module UserCustomFields
     end
 
     def custom_field_params(resource)
-      params
-        .require(:custom_field)
-        .permit(
-          UserCustomFieldPolicy.new(current_user, resource)
-            .send(:"permitted_attributes_for_#{params[:action]}")
-        )
+      permitted_attributes = UserCustomFieldPolicy
+        .new(pundit_user, resource)
+        .send(:"permitted_attributes_for_#{params[:action]}")
+
+      params.require(:custom_field).permit(permitted_attributes)
     end
 
     def serialize_custom_fields(...)

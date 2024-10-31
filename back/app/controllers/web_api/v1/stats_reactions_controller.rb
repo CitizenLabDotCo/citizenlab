@@ -4,7 +4,7 @@ class WebApi::V1::StatsReactionsController < WebApi::V1::StatsController
   @@multiloc_service = MultilocService.new
 
   def reactions_count
-    count = StatReactionPolicy::Scope.new(current_user, Reaction).resolve
+    count = policy_scope(Reaction, policy_scope_class: StatReactionPolicy::Scope)
       .where(reactable_type: 'Idea')
       .where(created_at: @start_at..@end_at)
       .group(:mode)
@@ -17,7 +17,7 @@ class WebApi::V1::StatsReactionsController < WebApi::V1::StatsController
   end
 
   def reactions_by_topic_serie
-    reactions = StatReactionPolicy::Scope.new(current_user, Reaction).resolve
+    reactions = policy_scope(Reaction, policy_scope_class: StatReactionPolicy::Scope)
       .where(reactable_type: 'Idea')
       .joins('JOIN ideas ON ideas.id = reactions.reactable_id')
 
@@ -55,7 +55,7 @@ class WebApi::V1::StatsReactionsController < WebApi::V1::StatsController
   end
 
   def reactions_by_project_serie
-    reactions = StatReactionPolicy::Scope.new(current_user, Reaction).resolve
+    reactions = policy_scope(Reaction, policy_scope_class: StatReactionPolicy::Scope)
       .where(reactable_type: 'Idea')
       .joins('JOIN ideas ON ideas.id = reactions.reactable_id')
 

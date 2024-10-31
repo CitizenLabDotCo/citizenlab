@@ -3,7 +3,7 @@
 class CustomFieldOptionImagePolicy < ApplicationPolicy
   class Scope < ApplicationPolicy::Scope
     def resolve
-      scope.where(custom_field_option: Pundit.policy_scope(user, CustomFieldOptionImage))
+      scope.where(custom_field_option: scope_for(CustomFieldOptionImage))
     end
   end
 
@@ -17,7 +17,7 @@ class CustomFieldOptionImagePolicy < ApplicationPolicy
 
   def update?
     if record.custom_field_option
-      CustomFieldOptionPolicy.new(user, record.custom_field_option).update?
+      policy_for(record.custom_field_option).update?
     else
       UserRoleService.new.moderates_something?(user)
     end
@@ -25,7 +25,7 @@ class CustomFieldOptionImagePolicy < ApplicationPolicy
 
   def destroy?
     if record.custom_field_option
-      CustomFieldOptionPolicy.new(user, record.custom_field_option).update?
+      policy_for(record.custom_field_option).update?
     else
       UserRoleService.new.moderates_something?(user)
     end

@@ -15,11 +15,11 @@ class StatCommentPolicy < ApplicationPolicy
     def resolve_for_project_moderator
       return scope.none unless user.project_moderator?
 
-      projects = ::ProjectPolicy::Scope.new(user, ::Project.all).resolve
       # we're deliberately avoiding to join ideas to the main scope itself,
       # because it conflicts with other queries modifying the scope (e.g.
       # filtering on projects)
-      scope.where(post_type: 'Idea', post_id: Idea.where(project: projects))
+      ideas = Idea.where(project: scope_for(Project))
+      scope.where(post_type: 'Idea', post_id: ideas)
     end
   end
 

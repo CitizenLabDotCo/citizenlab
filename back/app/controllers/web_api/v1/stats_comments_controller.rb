@@ -4,7 +4,7 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
   @@multiloc_service = MultilocService.new
 
   def comments_count
-    count = StatCommentPolicy::Scope.new(current_user, Comment.published).resolve
+    count = policy_scope(Comment.published, policy_scope_class: StatCommentPolicy::Scope)
       .where(created_at: @start_at..@end_at)
       .published
       .count
@@ -13,8 +13,7 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
   end
 
   def comments_by_topic_serie
-    comments = StatCommentPolicy::Scope.new(current_user, Comment.published).resolve
-
+    comments = policy_scope(Comment.published, policy_scope_class: StatCommentPolicy::Scope)
     comments = apply_project_filter(comments)
     comments = apply_group_filter(comments)
 
@@ -52,8 +51,7 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
   end
 
   def comments_by_project_serie
-    comments = StatCommentPolicy::Scope.new(current_user, Comment.published).resolve
-
+    comments = policy_scope(Comment.published, policy_scope_class: StatCommentPolicy::Scope)
     comments = apply_topic_filter(comments)
     comments = apply_group_filter(comments)
 

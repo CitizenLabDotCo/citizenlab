@@ -26,7 +26,7 @@ module Volunteering
       reason = service.denied_reason_for_action('volunteering')
       return false if reason
 
-      ProjectPolicy.new(user, record.cause.phase.project).show?
+      policy_for(record.cause.phase.project).show?
     end
 
     def destroy?

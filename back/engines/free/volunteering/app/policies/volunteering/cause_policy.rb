@@ -4,8 +4,7 @@ module Volunteering
   class CausePolicy < ApplicationPolicy
     class Scope < ApplicationPolicy::Scope
       def resolve
-        phases = Pundit.policy_scope(user, Phase)
-        scope.where(phase: phases)
+        scope.where(phase: scope_for(Phase))
       end
     end
 
@@ -14,7 +13,7 @@ module Volunteering
     end
 
     def show?
-      ProjectPolicy.new(user, record.phase.project).show?
+      policy_for(record.phase.project).show?
     end
 
     def update?

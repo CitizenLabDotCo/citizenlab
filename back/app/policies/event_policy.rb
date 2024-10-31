@@ -4,14 +4,13 @@ class EventPolicy < ApplicationPolicy
   class Scope < ApplicationPolicy::Scope
     attr_reader :attendee_id
 
-    def initialize(user, scope, attendee_id = nil)
-      super(user, scope)
+    def initialize(user_context, scope, attendee_id = nil)
+      super(user_context, scope)
       @attendee_id = attendee_id
     end
 
     def resolve
-      project_ids = Pundit.policy_scope(user, Project).pluck(:id)
-      result = scope.where(project: project_ids)
+      result = scope.where(project: scope_for(Project))
 
       # If the +attendee_id+ query parameter has been used to access the list of events
       # to which a user is registered, an additional set of permission rules is applied.
@@ -43,22 +42,22 @@ class EventPolicy < ApplicationPolicy
   end
 
   def create?
-    ProjectPolicy.new(user, record.project).update?
+    policy_for(record.project).update?
   end
 
   def show?
-    ProjectPolicy.new(user, record.project).show?
+    policy_for(record.project).show?
   end
 
   def update?
-    ProjectPolicy.new(user, record.project).update?
+    policy_for(record.project).update?
   end
 
   def destroy?
-    ProjectPolicy.new(user, record.project).update?
+    policy_for(record.project).update?
   end
 
   def attendees_xlsx?
-    ProjectPolicy.new(user, record.project).update?
+    policy_for(record.project).update?
   end
 end
