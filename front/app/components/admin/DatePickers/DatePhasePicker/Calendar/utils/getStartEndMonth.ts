@@ -20,7 +20,7 @@ export const getStartMonth = ({
   const times: number[] = [addYears(new Date(), -10).getTime()];
 
   if (selectedRange.from) {
-    times.push(addYears(selectedRange.from, -2).getTime());
+    times.push(addYears(selectedRange.from, -10).getTime());
   }
 
   if (disabledRanges.length > 0) {
