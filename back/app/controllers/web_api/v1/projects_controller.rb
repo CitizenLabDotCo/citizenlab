@@ -86,15 +86,16 @@ class WebApi::V1::ProjectsController < ApplicationController
     # # until we reach the limit required for pagination.
     pagination_limit = calculate_pagination_limit
 
-    project_descriptor_pairs = @projects.each_with_object({}) do |project, acc|
+    project_descriptor_pairs = {}
+    @projects.each do |project|
       service = Permissions::ProjectPermissionsService.new(
         project, current_user, user_requirements_service: user_requirements_service
       )
       action_descriptors = service.action_descriptors
 
       if Permissions::ProjectPermissionsService.participation_possible?(action_descriptors)
-        acc[project.id] = action_descriptors
-        break if acc.size >= pagination_limit
+        project_descriptor_pairs[project.id] = action_descriptors
+        break if project_descriptor_pairs.size >= pagination_limit
       end
     end
 
