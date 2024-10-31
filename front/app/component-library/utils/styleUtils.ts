@@ -341,6 +341,8 @@ export function quillEditedContent(
     }
 
     a {
+      color: #0000EE; /* Standard fallback for all browsers */
+      color: -webkit-link; /* Overrides the fallback in WebKit browsers */
       text-decoration: underline;
       overflow-wrap: break-word;
       word-wrap: break-word;
