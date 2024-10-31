@@ -1298,7 +1298,6 @@
   "app.containers.IdeasNewPage.projectMetaTitle1": "Lägg till nytt projekt till projekt | {orgName}",
   "app.containers.IdeasNewPage.proposalMetaTitle1": "Lägg till nytt förslag till projekt | {orgName}",
   "app.containers.IdeasNewPage.questionMetaTitle1": "Lägg till ny fråga i projektet | {orgName}",
-  "app.containers.IdeasNewPage.surveyNewMetaTitle1": "Lägg till enkätsvar i projektet | {orgName}",
   "app.containers.IdeasShow.Cosponsorship.co-sponsorAcceptInvitation": "Acceptera inbjudan",
   "app.containers.IdeasShow.Cosponsorship.co-sponsorInvitation": "Inbjudan till medsponsring",
   "app.containers.IdeasShow.Cosponsorship.co-sponsors": "Medförslagsställare",

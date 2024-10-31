@@ -1298,7 +1298,6 @@
   "app.containers.IdeasNewPage.projectMetaTitle1": "Voeg nieuwe project toe aan project | {orgName}",
   "app.containers.IdeasNewPage.proposalMetaTitle1": "Nieuw voorstel toevoegen aan project | {orgName}",
   "app.containers.IdeasNewPage.questionMetaTitle1": "Voeg nieuwe vraag toe aan project | {orgName}",
-  "app.containers.IdeasNewPage.surveyNewMetaTitle1": "Voeg vragenlijst-reactie toe aan project {orgName}",
   "app.containers.IdeasShow.Cosponsorship.co-sponsorAcceptInvitation": "Uitnodiging accepteren",
   "app.containers.IdeasShow.Cosponsorship.co-sponsorInvitation": "Uitnodiging tot ondersteuner",
   "app.containers.IdeasShow.Cosponsorship.co-sponsors": "Ondersteuners",
