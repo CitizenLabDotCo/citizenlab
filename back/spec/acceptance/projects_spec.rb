@@ -515,7 +515,7 @@ resource 'Projects' do
           project: project,
           custom_field_values: { extra_idea_field.key => 'Answer' },
           phases: [ideation_phase, single_voting_phase],
-          manual_votes_amount: 24,
+          manual_votes_amount: 24
         )
       end
       let!(:survey_response) do

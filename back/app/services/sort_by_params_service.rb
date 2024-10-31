@@ -92,8 +92,6 @@ class SortByParamsService
     if phase_id
       sort_part = add_column ? Arel.sql("ideas_phases.#{sort} + COALESCE(ideas.#{add_column}, 0)") : "ideas_phases.#{sort}"
       scope.left_outer_joins(:ideas_phases).where(ideas_phases: { phase_id: phase_id }).order(sort_part => direction)
-      # ids = IdeasPhase.where(phase_id: phase_id).order(sort_part => direction).pluck(:idea_id)
-      # scope.order_as_specified(id: ids)
     else
       sort_part = add_column ? Arel.sql("#{sort} + COALESCE(#{add_column}, 0)") : sort
       scope.order(sort_part => direction)
