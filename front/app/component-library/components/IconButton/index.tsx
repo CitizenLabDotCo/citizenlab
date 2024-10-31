@@ -43,6 +43,7 @@ const StyledBox = styled(Box)<{
 
 export type IconButtonProps = {
   className?: string;
+  id?: string;
   iconName: IconNames;
   // Provide a description that describes the button's task
   // E.g. close idea page modal
@@ -68,6 +69,7 @@ export type IconButtonProps = {
 
 const IconButton = ({
   className,
+  id,
   iconName,
   onClick,
   a11y_buttonActionMessage,
@@ -88,6 +90,7 @@ const IconButton = ({
     <StyledBox
       as="button"
       className={className ?? ''}
+      id={id}
       onClick={onClick}
       iconColorOnHover={iconColorOnHover}
       aria-expanded={ariaExpanded}
