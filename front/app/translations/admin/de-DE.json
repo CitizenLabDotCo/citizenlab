@@ -133,7 +133,7 @@
   "app.components.admin.PostManager.PostPreview.deleteInputInTimelineConfirmation": "Möchten Sie diesen Beitrag wirklich löschen? Er wird aus allen Projektphasen unwiderruflich gelöscht.",
   "app.components.admin.PostManager.PostPreview.edit": "Bearbeiten",
   "app.components.admin.PostManager.PostPreview.noOne": "Nicht zugewiesen",
-  "app.components.admin.PostManager.PostPreview.pbItemCountTooltip": "Wie oft ein Beitrag in die partizipativen Haushaltspläne anderer Teilnehmenden aufgenommen wurde",
+  "app.components.admin.PostManager.PostPreview.pbItemCountTooltip": "Wie oft ein Beitrag in den Warenkorb anderer Teilnehmenden aufgenommen wurde",
   "app.components.admin.PostManager.PostPreview.picks": "Auswahl: {picksNumber}",
   "app.components.admin.PostManager.PostPreview.reactionCounts": "Anzahl Reaktionen:",
   "app.components.admin.PostManager.PostPreview.save": "Speichern",
