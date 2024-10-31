@@ -2019,7 +2019,6 @@
   "app.containers.AdminPage.SettingsPage.linkToActivityPageText": "Teilnahme-Feed",
   "app.containers.AdminPage.SettingsPage.logo": "Logo",
   "app.containers.AdminPage.SettingsPage.noHeader": "Bitte lade ein Kopfzeilenbild hoch",
-  "app.containers.AdminPage.SettingsPage.noLogo": "Bitte laden Sie ein Logo hoch",
   "app.containers.AdminPage.SettingsPage.no_button": "Kein Button",
   "app.containers.AdminPage.SettingsPage.organizationName": "Name der Stadt oder Organisation",
   "app.containers.AdminPage.SettingsPage.organizationNameMultilocError": "Geben Sie für alle Sprachen einen Organisationsnamen oder eine Stadt an.",
