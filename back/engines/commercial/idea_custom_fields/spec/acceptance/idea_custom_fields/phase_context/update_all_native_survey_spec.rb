@@ -3182,7 +3182,7 @@ resource 'Idea Custom Fields' do
           ]
         }
 
-        expect{do_request(request)}.to enqueue_job(LogActivityJob).exactly(1).times
+        expect { do_request(request) }.to enqueue_job(LogActivityJob).exactly(1).times
       end
 
       context "Update custom field's map config relation" do
