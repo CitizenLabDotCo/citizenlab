@@ -77,7 +77,10 @@ const LightProjectCard = ({ project }: Props) => {
   if (!phase) return null;
 
   const title = localize(project.attributes.title_multiloc);
-  const imageUrl = image?.data.attributes.versions.medium;
+  const imageVersions = image?.data.attributes.versions;
+  const imageUrl = imageVersions?.large ?? imageVersions?.medium;
+
+  console.log({ image });
   const { end_at } = phase.data.attributes;
   const projectUrl: RouteType = getProjectUrl(project.attributes.slug);
 
