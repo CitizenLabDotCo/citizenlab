@@ -1,0 +1,106 @@
+import { isRtl, fontSizes, media } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
+import Avatar from 'components/Avatar';
+
+export const HeaderContent = styled.div`
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  padding-left: 75px;
+  padding-right: 75px;
+  overflow: hidden;
+
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
+
+  h2 {
+    color: #fff;
+    font-size: ${fontSizes.xxl}px;
+    line-height: 33px;
+    font-weight: 400;
+  }
+
+  ${media.tablet`
+    padding-left: 30px;
+    padding-right: 30px;
+  `}
+
+  ${media.tablet`
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+    padding-left: 15px;
+    padding-right: 15px;
+  `}
+`;
+
+export const Left = styled.div`
+  display: flex;
+  align-items: center;
+  margin-right: 60px;
+
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
+
+  ${media.tablet`
+    margin-right: 0;
+    flex-direction: column;
+    align-items: flex-start;
+  `}
+
+  ${media.phone`
+    align-items: center;
+    margin-bottom: 30px;
+  `}
+`;
+
+export const Text = styled.div`
+  ${isRtl`
+    direction: rtl;
+  `}
+
+  ${media.phone`
+    text-align: center;
+  `}
+`;
+
+export const Right = styled.div`
+  display: flex;
+
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
+
+  ${media.phone`
+    flex-direction: column;
+  `}
+`;
+
+export const StyledAvatar = styled(Avatar)`
+  margin-right: -3px;
+  z-index: 2;
+`;
+
+export const Icons = styled.div`
+  display: flex;
+  margin-right: 30px;
+
+  ${isRtl`
+    margin-right: 0px;
+    margin-left: 30px;
+  `}
+
+  ${media.phone`
+    margin-right: 0;
+  `}
+`;
