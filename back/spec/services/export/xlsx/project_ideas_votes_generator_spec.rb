@@ -152,7 +152,7 @@ describe Export::Xlsx::ProjectIdeasVotesGenerator do
         topics: [topic1, topic2],
         location_point: 'POINT(1.234 5.678)',
         location_description: '489 Calista Coves',
-        manual_votes_amount: 11,
+        manual_votes_amount: 11
       )
 
       header_row = workbook.worksheets[0][0].cells.map(&:value)
