@@ -18,7 +18,7 @@ const IdeasNewSurveyMeta = ({ surveyTitle }: Props) => {
   const { formatMessage } = useIntl();
   const locales = useAppConfigurationLocales();
   const { location } = window;
-  const title = formatMessage(messages.surveyNewMetaTitle2, {
+  const title = formatMessage(messages.surveyNewMetaTitle, {
     surveyTitle,
   });
 

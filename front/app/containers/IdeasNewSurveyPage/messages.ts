@@ -1,7 +1,7 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  surveyNewMetaTitle2: {
+  surveyNewMetaTitle: {
     id: 'app.containers.IdeasNewPage.surveyNewMetaTitle2',
     defaultMessage: '{surveyTitle} | {orgName}',
   },
