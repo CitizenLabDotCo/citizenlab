@@ -17,10 +17,10 @@ export const getStartMonth = ({
 }: GetStartMonthProps) => {
   if (startMonth) return startMonth;
 
-  const times: number[] = [addYears(new Date(), -2).getTime()];
+  const times: number[] = [addYears(new Date(), -10).getTime()];
 
   if (selectedRange.from) {
-    times.push(addYears(selectedRange.from, -2).getTime());
+    times.push(addYears(selectedRange.from, -10).getTime());
   }
 
   if (disabledRanges.length > 0) {
@@ -49,10 +49,10 @@ export const getEndMonth = ({
 }: GetEndMonthProps) => {
   if (endMonth) return endMonth;
 
-  const times: number[] = [addYears(new Date(), 2).getTime()];
+  const times: number[] = [addYears(new Date(), 10).getTime()];
 
   if (selectedRange.to) {
-    times.push(addYears(selectedRange.to, 2).getTime());
+    times.push(addYears(selectedRange.to, 10).getTime());
   }
 
   if (disabledRanges.length > 0) {

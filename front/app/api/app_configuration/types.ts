@@ -249,6 +249,7 @@ export interface IAppConfigurationSettings {
   prescreening?: AppConfigurationFeature;
   prescreening_ideation?: AppConfigurationFeature;
   input_cosponsorship?: AppConfigurationFeature;
+  new_homepage_widgets?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;
