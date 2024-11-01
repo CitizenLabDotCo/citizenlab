@@ -67,10 +67,18 @@ const OfflineVoteSettings = ({ ideaId, votingMethod, phaseId }: Props) => {
         tenant: tenantId,
         location: 'Manual vote input',
         idea: ideaId,
+        phase: phaseId,
         currentUser: authUser?.data?.id || null,
       });
     }, 300);
-  }, [authUser?.data?.id, ideaId, manualVotesAmount, tenantId, updateIdea]);
+  }, [
+    authUser?.data?.id,
+    ideaId,
+    manualVotesAmount,
+    phaseId,
+    tenantId,
+    updateIdea,
+  ]);
 
   const handleOfflineVotersChangedDebounced = useMemo(() => {
     return debounce(() => {
