@@ -77,6 +77,8 @@ const EventsShowPage = () => {
     event?.data.relationships.project.data.id
   );
   const { data: eventImage } = useEventImage(event?.data);
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const largeImage = eventImage?.data.attributes?.versions?.large;
 
   if (status === 'loading') {

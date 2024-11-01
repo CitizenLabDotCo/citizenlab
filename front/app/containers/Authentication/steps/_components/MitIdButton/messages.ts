@@ -1,7 +1,7 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  verifyNemLogIn: {
+  verifyMitId: {
     id: 'app.components.VerificationModal.verifyNemLogIn',
     defaultMessage: 'Verify with MitID',
   },

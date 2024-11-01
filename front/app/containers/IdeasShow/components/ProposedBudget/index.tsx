@@ -45,6 +45,8 @@ const ProposedBudget = ({ projectId, ideaId }: Props) => {
     locale
   );
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const proposedBudget = idea?.data.attributes?.proposed_budget;
 
   if (!proposedBudgetEnabled || !proposedBudget) return null;

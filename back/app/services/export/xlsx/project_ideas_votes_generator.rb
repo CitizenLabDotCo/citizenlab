@@ -28,7 +28,7 @@ module Export
           { header: I18n.t('description', scope: t_scope), f: ->(i) { multiloc_service.t(i.body_multiloc) } }
         ]
 
-        Factory.instance.voting_method_for(phase).export_columns.each do |column|
+        Factory.instance.voting_method_for(phase).additional_export_columns.each do |column|
           columns << send(:"#{column}_column", t_scope, phase)
         end
 
@@ -68,6 +68,10 @@ module Export
 
       def participants_column(translation_scope, phase)
         { header: I18n.t('participants', scope: translation_scope), f: picks_lambda(phase), skip_sanitization: true }
+      end
+
+      def manual_votes_column(translation_scope, _phase)
+        { header: I18n.t('manual_votes', scope: translation_scope), f: ->(idea) { idea.manual_votes_amount }, skip_sanitization: true }
       end
 
       def picks_lambda(phase)

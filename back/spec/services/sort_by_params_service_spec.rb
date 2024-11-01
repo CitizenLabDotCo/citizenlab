@@ -20,6 +20,7 @@ describe SortByParamsService do
           dislikes_count: 2,
           baskets_count: 1,
           votes_count: 2,
+          manual_votes_amount: 5,
           comments_count: 7,
           budget: 10
         },
@@ -40,6 +41,7 @@ describe SortByParamsService do
           dislikes_count: 0,
           baskets_count: 3,
           votes_count: 3,
+          manual_votes_amount: 2,
           comments_count: 2,
           budget: 30
         }
@@ -243,11 +245,71 @@ describe SortByParamsService do
           expect(result_record_ids).to eq expected_record_ids
         end
       end
+
+      describe 'total_votes' do
+        let(:sort) { 'total_votes' }
+        let(:expected_record_ids) { [ideas[0].id, ideas[2].id, ideas[1].id] }
+
+        it 'returns the sorted records' do
+          expect(result_record_ids).to eq expected_record_ids
+        end
+      end
+
+      describe '-total_votes' do
+        let(:sort) { '-total_votes' }
+        let(:expected_record_ids) { [ideas[1].id, ideas[2].id, ideas[0].id] }
+
+        it 'returns the sorted records' do
+          expect(result_record_ids).to eq expected_record_ids
+        end
+      end
+
+      describe 'total_baskets' do
+        let(:sort) { 'total_baskets' }
+        let(:expected_record_ids) { [ideas[0].id, ideas[2].id, ideas[1].id] }
+
+        it 'returns the sorted records' do
+          expect(result_record_ids).to eq expected_record_ids
+        end
+      end
+
+      describe '-total_baskets' do
+        let(:sort) { '-total_baskets' }
+        let(:expected_record_ids) { [ideas[1].id, ideas[2].id, ideas[0].id] }
+
+        it 'returns the sorted records' do
+          expect(result_record_ids).to eq expected_record_ids
+        end
+      end
+
+      describe 'manual_votes_amount' do
+        let(:sort) { 'manual_votes_amount' }
+        let(:expected_record_ids) { [ideas[0].id, ideas[2].id, ideas[1].id] }
+
+        it 'returns the sorted records' do
+          expect(result_record_ids).to eq expected_record_ids
+        end
+      end
+
+      describe '-manual_votes_amount' do
+        let(:sort) { '-manual_votes_amount' }
+        let(:expected_record_ids) { [ideas[2].id, ideas[0].id, ideas[1].id] }
+
+        it 'returns the sorted records' do
+          expect(result_record_ids).to eq expected_record_ids
+        end
+      end
     end
 
     context 'in a phase' do
       let(:project_with_phases) { create(:project_with_phases) }
-      let!(:ideas) { create_list(:idea, 3, project: project_with_phases) }
+      let!(:ideas) do
+        [
+          create(:idea, project: project_with_phases),
+          create(:idea, project: project_with_phases, manual_votes_amount: 2),
+          create(:idea, project: project_with_phases, manual_votes_amount: 10)
+        ]
+      end
       let!(:ideas_phases) do
         [
           { idea: ideas[0], phase: project_with_phases.phases.first, baskets_count: 5, votes_count: 2 },
@@ -302,6 +364,42 @@ describe SortByParamsService do
       describe '-votes_count' do
         let(:sort) { '-votes_count' }
         let(:expected_record_ids) { [ideas[0].id, ideas[2].id, ideas[1].id] }
+
+        it 'returns the sorted records' do
+          expect(result_record_ids).to eq expected_record_ids
+        end
+      end
+
+      describe 'total_votes' do
+        let(:sort) { 'total_votes' }
+        let(:expected_record_ids) { [ideas[2].id, ideas[1].id, ideas[0].id] }
+
+        it 'returns the sorted records' do
+          expect(result_record_ids).to eq expected_record_ids
+        end
+      end
+
+      describe '-total_votes' do
+        let(:sort) { '-total_votes' }
+        let(:expected_record_ids) { [ideas[0].id, ideas[1].id, ideas[2].id] }
+
+        it 'returns the sorted records' do
+          expect(result_record_ids).to eq expected_record_ids
+        end
+      end
+
+      describe 'total_baskets' do
+        let(:sort) { 'total_baskets' }
+        let(:expected_record_ids) { [ideas[2].id, ideas[0].id, ideas[1].id] }
+
+        it 'returns the sorted records' do
+          expect(result_record_ids).to eq expected_record_ids
+        end
+      end
+
+      describe '-total_baskets' do
+        let(:sort) { '-total_baskets' }
+        let(:expected_record_ids) { [ideas[1].id, ideas[0].id, ideas[2].id] }
 
         it 'returns the sorted records' do
           expect(result_record_ids).to eq expected_record_ids

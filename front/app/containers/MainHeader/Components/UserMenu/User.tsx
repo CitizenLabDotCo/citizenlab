@@ -64,6 +64,8 @@ const User = ({ userId, showVerificationBadge = true }: Props) => {
       <Avatar
         userId={userId}
         size={30}
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         fillColor={theme?.navbarTextColor || colors.textSecondary}
         addVerificationBadge
       />

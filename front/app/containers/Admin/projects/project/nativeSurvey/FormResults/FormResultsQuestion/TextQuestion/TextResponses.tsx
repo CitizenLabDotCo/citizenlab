@@ -35,6 +35,8 @@ const TextResponses = ({
   // The virtualizer
   const { measureElement, getTotalSize, getVirtualItems } = useVirtualizer({
     count: textResponses.length,
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     getScrollElement: () => parentRef?.current,
     estimateSize: () => 100,
   });

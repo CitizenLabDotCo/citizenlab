@@ -10,6 +10,8 @@ export const getOptionRule = (
   option: IOptionsType,
   field: IFlatCustomField
 ) => {
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const rules = field.logic?.rules;
   if (!isNilOrError(rules) && (option.id || option.temp_id)) {
     const rule = rules.find(
@@ -26,6 +28,8 @@ export const getLinearScaleRule = (
   option: { key: number; label: string },
   field: IFlatCustomField
 ) => {
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const rules = field.logic?.rules;
   if (!isNilOrError(rules) && option.key) {
     const rule = rules.find((rule) => rule.if === option.key);
@@ -59,6 +63,8 @@ export const getTitleFromAnswerId = (
       return answerId.toString();
     }
     // Otherwise this is an option ID, return the related option title
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     const option = field?.options?.find(
       (option) => option.id === answerId || option.temp_id === answerId
     );

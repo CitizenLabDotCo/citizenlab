@@ -48,6 +48,8 @@ export const geocodeAndSaveLocation = (
   location: Option,
   handlePointChange: (point: GeoJSON.Point) => void
 ) => {
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   location?.value &&
     geocode(location.value).then((point) => {
       point && handlePointChange(point);
@@ -65,6 +67,8 @@ export const getUserInputPoints = (
   // We store all user input data in it's own graphics layer
   const userGraphicsLayer = getUserInputGraphicsLayer(mapView);
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   userGraphicsLayer?.graphics?.forEach((graphic) => {
     if (graphic.geometry.type === 'point') {
       // We want just a list of the points
@@ -155,6 +159,8 @@ type UpdateDataAndDisplayProps = {
 // Description: Gets the user input graphics layer
 export const getUserInputGraphicsLayer = (mapView?: MapView | null) => {
   if (mapView) {
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     return mapView?.map?.layers?.find(
       (layer) => layer.title === 'User Input'
     ) as GraphicsLayer;

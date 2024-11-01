@@ -11,13 +11,9 @@ import { fetchNavbarItems } from 'api/navbar/useNavbarItems';
 import { PUBLICATION_STATUSES } from 'components/ProjectAndFolderCards';
 
 import { queryClient } from 'utils/cl-react-query/queryClient';
+import matchPath from 'utils/matchPath';
 
 const prefetchData = () => {
-  queryClient.prefetchQuery({
-    queryKey: homepageBuilderKeys.items(),
-    queryFn: fetchHomepageBuilderLayout,
-  });
-
   queryClient.prefetchQuery({
     queryKey: navbarKeys.list({}),
     queryFn: () => fetchNavbarItems({}),
@@ -34,10 +30,30 @@ const prefetchData = () => {
     removeNotAllowedParents: true,
   } as const;
 
-  queryClient.prefetchQuery({
-    queryKey: adminPublicationsStatusCountsKeys.item(statusCountParams),
-    queryFn: () => fetchStatusCounts(statusCountParams),
+  // console.log(window.location.pathname);
+  const pathname = window.location.pathname;
+
+  if (isHomepage(pathname)) {
+    queryClient.prefetchQuery({
+      queryKey: homepageBuilderKeys.items(),
+      queryFn: fetchHomepageBuilderLayout,
+    });
+
+    queryClient.prefetchQuery({
+      queryKey: adminPublicationsStatusCountsKeys.item(statusCountParams),
+      queryFn: () => fetchStatusCounts(statusCountParams),
+    });
+  }
+};
+
+const HOMEPAGE_PATHS = ['/', '/:locale'];
+
+const isHomepage = (pathname: string) => {
+  const matchedPath = matchPath(pathname, {
+    paths: HOMEPAGE_PATHS,
+    exact: true,
   });
+  return !!matchedPath?.isExact;
 };
 
 export default prefetchData;

@@ -514,7 +514,8 @@ resource 'Projects' do
           :idea,
           project: project,
           custom_field_values: { extra_idea_field.key => 'Answer' },
-          phases: [ideation_phase, single_voting_phase]
+          phases: [ideation_phase, single_voting_phase],
+          manual_votes_amount: 24
         )
       end
       let!(:survey_response) do
@@ -553,6 +554,7 @@ resource 'Projects' do
               'Comments',
               'Likes',
               'Dislikes',
+              'Offline votes',
               'URL',
               'Project',
               'Status',
@@ -579,6 +581,7 @@ resource 'Projects' do
                 0,
                 0,
                 0,
+                24,
                 "http://example.org/ideas/#{ideation_response.slug}",
                 project.title_multiloc['en'],
                 ideation_response.idea_status.title_multiloc['en'],
@@ -631,6 +634,7 @@ resource 'Projects' do
               'Published at',
               'Comments',
               'Votes',
+              'Offline votes',
               'URL',
               'Project',
               'Status',
@@ -656,6 +660,7 @@ resource 'Projects' do
                 an_instance_of(DateTime), # published_at
                 0,
                 0,
+                24,
                 "http://example.org/ideas/#{ideation_response.slug}",
                 project.title_multiloc['en'],
                 ideation_response.idea_status.title_multiloc['en'],
@@ -797,18 +802,19 @@ resource 'Projects' do
         ]
 
         expect(header_row1).to match_array(
-          expected_first_columns + [french_column_headers['votes_count']] + expected_last_columns
+          expected_first_columns + [french_column_headers['votes_count'], french_column_headers['manual_votes']] + expected_last_columns
         )
         expect(header_row2).to match_array(
           expected_first_columns +
-          [french_column_headers['votes_count'], french_column_headers['participants']] +
+          [french_column_headers['votes_count'], french_column_headers['participants'], french_column_headers['manual_votes']] +
           expected_last_columns
         )
         expect(header_row3).to match_array(
           expected_first_columns +
           [
             "#{french_column_headers['picks']} / #{french_column_headers['participants']}",
-            french_column_headers['cost']
+            french_column_headers['cost'],
+            french_column_headers['manual_votes']
           ] +
           expected_last_columns
         )
@@ -1014,6 +1020,7 @@ resource 'Projects' do
                 'Comments',
                 'Likes',
                 'Dislikes',
+                'Offline votes',
                 'URL',
                 'Project',
                 'Status',
@@ -1039,6 +1046,7 @@ resource 'Projects' do
                   0,
                   0,
                   0,
+                  nil,
                   "http://example.org/ideas/#{idea.slug}",
                   project.title_multiloc['en'],
                   idea.idea_status.title_multiloc['en'],

@@ -55,8 +55,12 @@ const CustomFields = ({
   }, []);
 
   const schema =
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     userCustomFieldsSchema?.data.attributes?.json_schema_multiloc[locale];
   const uiSchema =
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     userCustomFieldsSchema?.data.attributes?.ui_schema_multiloc[locale];
 
   if (!authUser || !userCustomFieldsSchema || !schema || !uiSchema) {
@@ -83,6 +87,8 @@ const CustomFields = ({
       pb={smallerThanPhone ? '14px' : '28px'}
       id="e2e-signup-custom-fields-container"
     >
+      {/* TODO: Fix this the next time the file is edited. */}
+      {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
       <FormWrapper formId={uiSchema?.options?.formId}>
         <UserCustomFieldsForm
           authenticationContext={authenticationData.context}

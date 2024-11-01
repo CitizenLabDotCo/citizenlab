@@ -43,19 +43,27 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
     useState(false);
 
   // Attendance API
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const { data: eventsAttending } = useEventsByUserId(user?.data?.id);
   const { mutate: addEventAttendance, isLoading: isAddingAttendance } =
     useAddEventAttendance(event.id);
   const { mutate: deleteEventAttendance, isLoading: isRemovingAttendance } =
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     useDeleteEventAttendance(event.id, user?.data?.id);
 
   // Attendance
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const userAttendingEventObject = eventsAttending?.data?.find(
     (eventAttending) => eventAttending.id === event.id
   );
   const userIsAttending = !!userAttendingEventObject;
   const attendanceId =
     userAttendingEventObject?.relationships.user_attendance.data.id || null;
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const customButtonText = localize(event?.attributes.attend_button_multiloc);
 
   // Permissions
@@ -82,6 +90,8 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
     project.data.attributes.action_descriptors.attending_event;
 
   const handleClick = () => {
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (event?.attributes.using_url) {
       window.open(event.attributes.using_url);
       return;
@@ -104,6 +114,8 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
         ? ({
             type: 'phase',
             action: 'attending_event',
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             id: currentPhase?.id,
           } as const)
         : ({
@@ -130,6 +142,8 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
   };
 
   const getButtonText = () => {
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (customButtonText && event?.attributes.using_url) {
       return customButtonText;
     } else if (userIsAttending) {
@@ -139,6 +153,8 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
   };
 
   const getButtonIcon = () => {
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (event?.attributes.using_url) {
       return undefined;
     } else if (userIsAttending) {

@@ -46,7 +46,7 @@ resource 'Ideas' do
           end
         end
 
-        example_request 'Can only see who updated manual votes for moderatable inputs' do
+        example_request 'See the manual votes attributes' do
           assert_status 200
 
           input1_response = json_response_body[:data].find { |i| i[:id] == input1.id }

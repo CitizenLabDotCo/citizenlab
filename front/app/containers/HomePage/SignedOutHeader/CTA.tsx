@@ -30,10 +30,14 @@ const CTA = ({ buttonStyle, signUpIn, homepageSettings }: Props) => {
 
     switch (ctaType) {
       case 'sign_up_button':
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         return signUpIn ? (
           <SignUpButton buttonStyle={buttonStyle} signUpIn={signUpIn} />
         ) : null;
       case 'customized_button':
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         return homepageSettings ? (
           <BannerButton
             buttonStyle={buttonStyle}

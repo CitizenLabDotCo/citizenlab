@@ -134,7 +134,7 @@ RSpec.describe ParticipationMethod::Voting do
   describe '#additional_export_columns' do
     context 'voting method is budgeting' do
       it 'returns [picks, budget]' do
-        expect(participation_method.additional_export_columns).to eq %w[picks budget]
+        expect(participation_method.additional_export_columns).to match_array %w[manual_votes picks budget]
       end
     end
 
@@ -142,7 +142,7 @@ RSpec.describe ParticipationMethod::Voting do
       let(:phase) { create(:multiple_voting_phase) }
 
       it 'returns [participants, votes]' do
-        expect(participation_method.additional_export_columns).to eq %w[participants votes]
+        expect(participation_method.additional_export_columns).to match_array %w[manual_votes participants votes]
       end
     end
 
@@ -150,21 +150,13 @@ RSpec.describe ParticipationMethod::Voting do
       let(:phase) { create(:single_voting_phase) }
 
       it 'returns [votes] if voting method is single_voting' do
-        expect(participation_method.additional_export_columns).to eq %w[votes]
+        expect(participation_method.additional_export_columns).to match_array %w[manual_votes votes]
       end
     end
   end
 
   describe '#supports_serializing?' do
-    it 'returns true for voting attributes' do
-      %i[
-        voting_method voting_max_total voting_min_total voting_max_votes_per_idea baskets_count
-        voting_term_singular_multiloc voting_term_plural_multiloc votes_count
-      ].each do |attribute|
-        expect(participation_method.supports_serializing?(attribute)).to be true
-      end
-    end
-
+    # Other attributes are delegated to the voting method
     it 'returns false for the other attributes' do
       %i[native_survey_title_multiloc native_survey_button_multiloc].each do |attribute|
         expect(participation_method.supports_serializing?(attribute)).to be false

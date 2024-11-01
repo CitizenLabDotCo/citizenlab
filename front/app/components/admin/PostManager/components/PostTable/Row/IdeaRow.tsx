@@ -302,6 +302,8 @@ const IdeaRow = ({
           location: 'Idea overview',
           method: 'Dragged and dropped idea(s) in manager',
         });
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       } else if (dropResult && dropResult.type) {
         const ideaIds = selection.has(item.id)
           ? [...selection].map((id) => id)
@@ -342,7 +344,8 @@ const IdeaRow = ({
 
           ideaIds.forEach((ideaId) => {
             if (
-              !hasPhases ||
+              !hasPhases || // TODO: Fix this the next time the file is edited.
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
               (hasPhases &&
                 window.confirm(
                   formatMessage(messages.loseIdeaPhaseInfoConfirmation)
@@ -385,6 +388,8 @@ const IdeaRow = ({
     };
 
     const Content =
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       displayColumns && !displayColumns.has(name) ? null : (
         <Td key={name} borderBottom="none !important">
           <Box

@@ -28,6 +28,18 @@ RSpec.describe User do
       expect { user.destroy }.not_to raise_error
       expect(idea_import.reload.import_user).to be_nil
     end
+
+    it 'nullifies manual_votes_last_updated_by association' do
+      idea = create(:idea, manual_votes_last_updated_by: user)
+      expect { user.destroy }.not_to raise_error
+      expect(idea.reload.manual_votes_last_updated_by).to be_nil
+    end
+
+    it 'nullifies manual_voters_last_updated_by association' do
+      phase = create(:phase, manual_voters_last_updated_by: user)
+      expect { user.destroy }.not_to raise_error
+      expect(phase.reload.manual_voters_last_updated_by).to be_nil
+    end
   end
 
   describe '.destroy_all_async' do
