@@ -206,7 +206,7 @@
     "babel-loader": "9.1.3",
     "babel-plugin-dynamic-import-node": "2.3.3",
     "babel-plugin-react-intl": "2.4.0",
-    "babel-plugin-styled-components": "2.0.7",
+    "babel-plugin-styled-components": "2.1.4",
     "chalk": "4.1.2",
     "chromatic": "10.2.1",
     "clean-webpack-plugin": "4.0.0",
