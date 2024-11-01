@@ -4,18 +4,17 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 context 'id_austria verification' do
-  # TODO: JS - Get actual request so we can mock it
   let(:auth_hash) do
     {
       'provider' => 'id_austria',
-      'uid' => '29d14ea0-6e16-4732-86ac-5de87a941784',
+      'uid' => 'RB64P3VMAPKD2S34D7HPMHHWO4BB7OEJ',
       'info' =>
-        { 'name' => 'Annika Schmidt',
+        { 'name' => nil,
           'email' => nil,
           'email_verified' => nil,
           'nickname' => nil,
-          'first_name' => nil,
-          'last_name' => nil,
+          'first_name' => 'Otto',
+          'last_name' => 'Ottakringer',
           'gender' => nil,
           'image' => nil,
           'phone' => nil,
@@ -31,59 +30,31 @@ context 'id_austria verification' do
           'scope' => nil },
       'extra' =>
         { 'raw_info' =>
-          { 'nonce' => 'bf5811df0cbf392754ca252a29c0cc36',
-            'identityscheme' => 'dkmitid',
-            'authenticationtype' => 'urn:grn:authn:dk:mitid:substantial',
-            'authenticationmethod' =>
-            'app:1692621888956:SUBSTANTIAL:SUBSTANTIAL:HIGH:HIGH',
-            'authenticationinstant' => '2023-08-21T12:45:01.733Z',
-            'nameidentifier' => '29d14ea06e16473286ac5de87a941784',
-            'sub' => '{29d14ea0-6e16-4732-86ac-5de87a941784}',
-            'sessionindex' => '531690ce-9792-4949-8a11-f3f5a4c504b5',
-            'loA' => 'SUBSTANTIAL',
-            'ial' => 'SUBSTANTIAL',
-            'aal' => 'SUBSTANTIAL',
-            'fal' => 'HIGH',
-            'uuid' => '410a77ec-4f85-46e4-aaef-bdbbd1a951f2',
-            'cprNumberIdentifier' => '3112772846',
-            'birthdate' => '1977-12-31',
-            'dateofbirth' => '1977-12-31',
-            'age' => '45',
-            'name' => 'Annika Schmidt',
-            'refTextHeader' => 'Log on at IdAustria',
-            'refTextBody' => 'local development test',
-            'country' => 'AT',
-            'iss' => 'https://kobenhavn-test.id_austria.id',
-            'aud' => 'urn:my:application:identifier:407793',
-            'iat' => 1_692_621_902,
-            'nbf' => 1_692_621_902,
-            'exp' => 1_692_639_888,
-            address: {
-              formatted: "Annika Schmidt\nGrusgraven 1,3 tv\n3400 Hillerød\n(Lokalitet ukendt)\nDanmark",
-              common_name: 'Annika Schmidt',
-              street_address: 'Grusgraven 1,3 tv',
-              postal_code: '3400',
-              city: 'Hillerød',
-              locality: '(Lokalitet ukendt)',
-              region: nil,
-              country: 'Danmark'
-            },
-            address_details: {
-              road: 'Grusgraven',
-              road_code: '1732',
-              municipality: 'Lyngby-Taarbæk',
-              municipality_code: '0173',
-              house_number: '001',
-              floor: '03',
-              apartment_code: ' tv'
-            }
-          }
-        }
+            { 'at_hash' => 'wRw4CZEwRrHwVEHwFucjQQ',
+              'sub' => 'RB64P3VMAPKD2S34D7HPMHHWO4BB7OEJ',
+              'birthdate' => '1983-01-01',
+              'urn:pvpgvat:oidc.eid_ccs_url' => 'https://service.a-trust.at/securitylayer2',
+              'urn:pvpgvat:oidc.pvp_version' => '2.2',
+              'urn:pvpgvat:oidc.eid_citizen_qaa_eidas_level' => 'http://eidas.europa.eu/LoA/high',
+              'urn:pvpgvat:oidc.eid_online_identity_link' =>
+               'eyJ4NWMiOlsiTUlJRlFqQ0NBeXFnQXdJQkFnSUVYMjJpUWpBTkJna3Foa2lHOXcwQkFRMEZBREJqTVFzd0NRWURWUVFHRXdKQlZERW5NQ1VHQTFVRUNoTWVRblZ1WkdWemJXbHVhWE4wWlhKcGRXMGdablZsY2lCSmJtNWxjbVZ6TVJNd0VRWURWUVFMRXdwQ1RVa2dTVll2TWk5RE1SWXdGQVlEVlFRRERBMVRXbEpmVTJsbmJsOVFjbTlrTUI0WERUSXdNRGt5TlRBM05UUTBNbG9YRFRNNU1URXlOVEEzTlRRME1sb3dZekVMTUFrR0ExVUVCaE1DUVZReEp6QWxCZ05WQkFvVEhrSjFibVJsYzIxcGJtbHpkR1Z5YVhWdElHWjFaWElnU1c1dVpYSmxjekVUTUJFR0ExVUVDeE1LUWsxSklFbFdMekl2UXpFV01CUUdBMVVFQXd3TlUxcFNYMU5wWjI1ZlVISnZaRENDQWlJd0RRWUpLb1pJaHZjTkFRRUJCUUFEZ2dJUEFEQ0NBZ29DZ2dJQkFMUUZqdk9xejJkMFI3UzFZamZXZEdndHh2bHRxbnBQc0QrMmJBNkt2R1VzUHZiYmFHRnY5Q0pQdUtBN3dkRDRPSVoyN09vN3pSNCtwZTd4Y0s3YTNiRmpMOTVTT0dxOWR2M21sL2k5bzg5eVlJT3NkVTNZNnhreCtiN0V5UzFielltMTRad0paZlJUQlFZSnNwUHR3TVVpUGx6NkVoa3Y0d3dOLzJLZjM1RU10aFp4bTM1dEZ6UmpLZGhDZ0RuWmkwcVd5MThZc1Y3STdYSnZVZlJXVW1adm5tZXlQNkN5SnM2L0kxcmJQNlBlbXVNTzJMTm5IZk9zTHYxWEtla25wUkppYTlTbkg2ZmNaakp0V3FvbFhIQ2dzeDNFU3hoZFZxZTVBR296Z0lrdlk0UkJPUS9VbGh3L2ExbS9GNlBxMU5xTDhTalpBTmFTYkE3TlloeEVpT09jdVBFNURUL2U3K3J4RGFiWStnZlJzckRUTWxNZEErTGlUZ2REVlk2MlNoRUZUbytCSTQ0MXk0ZW13Mm5yM3J1Uis1NXdiSytKcHUzUkkvSDY4NWpwQXB3dWFVQUsvMUU3aUZuSmhkeSszR080VDNTVHlrTmdsZWJqcldYMG81dXZQS2NWZlB2M3Y4VmhXaTZKV2tSdDhTdUJ5ZW1GWXovVnAyL0R6R2c2RWhZTlpCUWZKeFNid01HZzJvNVorUWpLb1U0MWd6Qzh4alFWb2JqelFudjZIVkExdmpoWTQrcmRBdnpwN3BKS2t6cHRUNjEzMHRmZWJyZ1pPOXRON2IvT2FPbDZxajJrR3cwRlJHeVBIMktJeDN6ZWwwbnM0L3BWblo4ZUpZVmJULzYzM1loQ3ZxOFFWRDlzS0QwVlFFdi9FM1MzbjJqWE1oUzFpU2xoQnp3SkFnTUJBQUV3RFFZSktvWklodmNOQVFFTkJRQURnZ0lCQUc3VytoQjJZdHFmMDFZNVYxOW8xTXZXNm83Z09KanZReFRVSEVYdFdVTDFheTdnbXFBcHU2Qk92UG95NGNHZy9RMHJnVUJYR254UXNtMXlIWlJtNHBlOGQvSjdFVU1sV0MxNjNvUi9Gdnl4WFI3YmhEMlZHYVZIbnRtTkFrYkpITnhpTnJTZEtrRmRMOXNpT0tSaTgwVlE1SXpISVc4ZTBkbmtHbzc2N2IzTHVROWRsMms4Z0VmaEFMaWVmM3hxaDVSb0dGT2MyVkNNTG52Ync3ZGh1NVRVaGtWM0hPU1pUUURsVlhaMVZpRWVPT3dxZGJ3eFVjdnBDYUZyYjlXemtYc1NPbjlZSENUcUJDZUppYTNyNjFFOGZ0Vlc3TmUxWVZJVCtLQXl4eXJ6bGJGM2ExeXhGTDVVT1BLWklwTTg2VXFZaHEwSURYeGM2NnBCSXhpS1hiNU9wNzE4Zlc2ZE8xMnp0WjJtUEF2dXh2OHQrUW1EQyswNUt1RW51WTNzZGJBK2IzZU1EcXIzL2U4T05RY2ZSc2J3dzhjbHc5eWtXMnRkVVIwWEZqZk8zclBWRE8xT3RuVjN6cEdoOVlORnhkc09TbjNXOXVxaU1aUmV5RC9WbEQ2NUQ5RGY3MzZrc0ZveGFFM2g3cEtSWUF5MjkyL09Cd0NzUlh0YXhjcjVZRW5BbVJEZXJ5dHJKTUdzWlpPYWRPbUJPVkNUUzVVSUpaUSt5b1NJTDlkTU9CeUZoL2g2bjN3L09Ibko2OERjV09zSUY4M1NMdm9yRC80TnFjQmZPNkVPOEhXSk5YbkViWUFHVXJWczJJQUtuVzcraTJ6OTE2TkhtMWZUeXl0dXloWklzRWNQdXFwV2M0NHovcWFyQW5LTUFobkE4d0NxM2x0N092TGNRcUxuIl0sImFsZyI6IlJTNTEyIn0.eyJhdHRyaWJ1dGVzIjpbeyJoYXNoIjoiWnpoR2hTZXB0dldPbnJaZXYxMzIycWl1blU1QlAxQTNPUGRBUGpCRndVVT0iLCJoYXNoQWxnIjoiaHR0cDovL3d3dy53My5vcmcvMjAwMS8wNC94bWxlbmMjc2hhMjU2IiwidXJuIjoidXJuOm9pZDoxLjIuNDAuMC4xMC4yLjEuMS4xNDkifSx7Imhhc2giOiIrQ2cyS0RGVlFwL3M3QzN4Z2hkYTVpMFdKamdBcXhUbGZWUC8xZ2ExSkJzPSIsImhhc2hBbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGVuYyNzaGEyNTYiLCJ1cm4iOiJ1cm46b2lkOjEuMi40MC4wLjEwLjIuMS4xLjI2MS4yMCJ9LHsiaGFzaCI6ImVqVWJVNXUvY0thbFN6TThaNWl4RUJnMTAvZXpUbWtEWTJNQTQ0WGNZUmc9IiwiaGFzaEFsZyI6Imh0dHA6Ly93d3cudzMub3JnLzIwMDEvMDQveG1sZW5jI3NoYTI1NiIsInVybiI6InVybjpvaWQ6MS4yLjQwLjAuMTAuMi4xLjEuNTUifSx7Imhhc2giOiJBSjAyeFNhcXoxSWZTMS84a1doaG9VUUx5NDI1UlFwbmxrY1Bock81RjZFPSIsImhhc2hBbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGVuYyNzaGEyNTYiLCJ1cm4iOiJ1cm46b2lkOjIuNS40LjQyIn1dLCJpZCI6IjA5M2IxYjY5LThlYWEtNGJkZi1iZTlmLTQyMTEyMDk4YzMwNCIsInZhbGlkRnJvbSI6IjIwMjQtMTEtMDFUMjA6Mzc6NDcuMDk4WiIsInZhbGlkVG8iOiIyMDI0LTExLTAxVDIwOjM4OjQ3LjA5OFoifQ.MCxrjvBM5gIeZvtpCtPp5N-g_dy0So-1nVt-V6rdueghk5Q9bVF4gWtVy3pSZqSA6r5m-nhMS1LQGbiuBeWu8hFntQxANlropBvHmjTiSZ2ee0mC9AQzxy1QbgXgObztDnL_vd6f1jamiSczcCOxeZCyWCamb1Jt1b4svm6_jmiEvTbefH-q3f0rKeJhuUlNoDELT8tHG4lSRbcJekU_QpsDUsqzLNRWcseORuuIn0lresgbLJiSpTpxWsPH6IPylCRC2pIP9W7h-RE_c2gEF8OGxyE6vabb9H1tHM5gUryGwOHDbg6rhiDolv2s5PMhmNn2ek0PsEPnRkRqB8fmGdyFtIGVanPWw9FWj_OXAYCrXsOqyTp0-sMjL2sA5_E8KYlRXg9hNONlGaPqayarnLsAeTs0qIPIixo6Qkws9MTLOVGTVyCo0baGDOo-ReQtn7hgyXMSZX4Cm_mFp8PwnUy8e2zHKg0RQoZQD7-HUsqaUyNCxVOUXEVL3C2gQmToKYcxgawg4_ImhZ2ucZvlQk6-ceX0o6MEHUnXR2_-cumoDdkKpDDrRSPXbGg90ecHJG15fhpGoOIwx1itbFLI0via7a4Wa1I1-134XZraaFe8_rfc4ELxGHB9ywWRRV7p35mPVRz2jXpBXqWcaPw902Wji1EvM4AFcnM72ccNpWU',
+              'iss' => 'https://eid.oesterreich.gv.at',
+              'given_name' => 'Otto',
+              'nonce' => 'cc21c70a72d8790c976d223d4ecb0841',
+              'sid' => '_f06a1c13c02c26d473d0924f9f34829f',
+              'aud' => 'https://www.example.org',
+              'acr' => 'http://eidas.europa.eu/LoA/high',
+              'urn:pvpgvat:oidc.eid_identity_status_level' => 'http://eid.gv.at/eID/status/testidentity',
+              'auth_time' => 1_730_493_456,
+              'urn:pvpgvat:oidc.bpk' => 'OI:GyevPYIgD8Kobm75nD3sTRJlDNc=',
+              'exp' => 1_730_497_067,
+              'iat' => 1_730_493_467,
+              'family_name' => 'Ottakringer' } }
     }
   end
 
   before do
-    @user = create(:user, first_name: 'Annika', last_name: 'Schmidt')
+    @user = create(:user, first_name: 'Otto', last_name: 'Ottakringer')
     @token = AuthToken::AuthToken.new(payload: @user.to_token_payload).token
 
     OmniAuth.config.test_mode = true
@@ -108,8 +79,8 @@ context 'id_austria verification' do
   def expect_to_create_verified_user(user)
     expect(user.reload).to have_attributes({
       verified: true,
-      first_name: 'Annika',
-      last_name: 'Schmidt'
+      first_name: 'Otto',
+      last_name: 'Ottakringer'
     })
     expect(user.verifications.first).to have_attributes({
       method_name: 'id_austria',
@@ -124,9 +95,10 @@ context 'id_austria verification' do
     expect(user.identities.first).to have_attributes({
       provider: 'id_austria',
       user_id: user.id,
-      uid: auth_hash['uid'],
-      auth_hash: nil
+      uid: auth_hash['uid']
     })
+    expect(user.identities.first.auth_hash['credentials']).not_to be_present
+    expect(user.identities.first.auth_hash.keys).to eq %w[uid info extra provider]
   end
 
   it 'successfully verifies a user' do
@@ -234,8 +206,8 @@ context 'id_austria verification' do
         expect(response).to redirect_to('/some-page?verification_error=true&error_code=taken')
         expect(@user.reload).to have_attributes({
           verified: false,
-          first_name: 'Annika',
-          last_name: 'Schmidt'
+          first_name: 'Otto',
+          last_name: 'Ottakringer'
         })
 
         expect(new_user.reload).to eq(new_user)
