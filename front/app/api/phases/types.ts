@@ -71,6 +71,7 @@ export interface IPhaseAttributes {
   /** For budgeting it's: for each idea multiply price of the idea
    * with the idea's baskets_count, then sum all those to get the total idea votes for the phase  */
   votes_count: number;
+  total_votes_amount: number;
   report_public: boolean;
   native_survey_title_multiloc?: Multiloc;
   native_survey_button_multiloc?: Multiloc;

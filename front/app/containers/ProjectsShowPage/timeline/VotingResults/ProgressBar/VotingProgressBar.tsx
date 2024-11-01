@@ -25,7 +25,7 @@ const VotingProgressBar = ({ phase, idea }: Props) => {
   const onlineIdeaVotes = idea.attributes.votes_count;
   const offlineIdeaVotes = idea.attributes.manual_votes_amount;
   const totalIdeaVotes = idea.attributes.total_votes;
-  const totalPhaseVotes = phase.data.attributes.votes_count;
+  const totalPhaseVotes = phase.data.attributes.total_votes_amount;
 
   // Calculate percentages
   const totalVotesPercentage = roundPercentage(totalIdeaVotes, totalPhaseVotes);

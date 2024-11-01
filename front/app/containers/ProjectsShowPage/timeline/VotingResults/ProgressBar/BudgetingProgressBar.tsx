@@ -51,9 +51,9 @@ const BudgetingProgressBar = ({ phase, idea }: Props) => {
         {`${totalBasketsPercentage}% • ${formatMessage(messages.numberOfPicks, {
           baskets: totalBasketsIdeaIsIn,
         })} ${
-          manualVotersAmount > 0
+          numberOfflinePicks > 0
             ? formatMessage(messages.numberManualVoters, {
-                manualVoters: manualVotersAmount,
+                manualVoters: numberOfflinePicks,
               })
             : ''
         }

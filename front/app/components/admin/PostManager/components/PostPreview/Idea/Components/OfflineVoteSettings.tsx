@@ -41,10 +41,10 @@ const OfflineVoteSettings = ({ ideaId, votingMethod, phaseId }: Props) => {
   const tenantId = appConfig?.data.id;
   const { data: idea } = useIdeaById(ideaId);
   const { data: userLastModifiedVotes } = useUserById(
-    idea?.data?.relationships?.manual_votes_last_updated_by?.data?.id
+    idea?.data.relationships.manual_votes_last_updated_by?.data?.id
   );
   const { data: userLastModifiedVoters } = useUserById(
-    phase?.data?.relationships?.manual_voters_last_updated_by?.data?.id
+    phase?.data.relationships.manual_voters_last_updated_by?.data?.id
   );
   const { mutate: updateIdea } = useUpdateIdea();
   const { mutate: updatePhase } = useUpdatePhase();
@@ -68,11 +68,11 @@ const OfflineVoteSettings = ({ ideaId, votingMethod, phaseId }: Props) => {
         location: 'Manual vote input',
         idea: ideaId,
         phase: phaseId,
-        currentUser: authUser?.data?.id || null,
+        currentUser: authUser?.data.id || null,
       });
     }, 300);
   }, [
-    authUser?.data?.id,
+    authUser?.data.id,
     ideaId,
     manualVotesAmount,
     phaseId,
@@ -92,10 +92,10 @@ const OfflineVoteSettings = ({ ideaId, votingMethod, phaseId }: Props) => {
         tenant: tenantId,
         location: 'Manual voters input',
         phase: phaseId,
-        currentUser: authUser?.data?.id || null,
+        currentUser: authUser?.data.id || null,
       });
     }, 300);
-  }, [authUser?.data?.id, manualVotersAmount, phaseId, tenantId, updatePhase]);
+  }, [authUser?.data.id, manualVotersAmount, phaseId, tenantId, updatePhase]);
 
   return (
     <Box mt="20px">
@@ -127,12 +127,12 @@ const OfflineVoteSettings = ({ ideaId, votingMethod, phaseId }: Props) => {
               handleOfflineVotersChangedDebounced();
             }}
           />
-          {userLastModifiedVoters?.data?.attributes?.first_name && (
+          {userLastModifiedVoters?.data.attributes.first_name && (
             <Text pt="4px" m="0px" color="textSecondary" fontSize="s">
               <FormattedMessage
                 {...messages.modifiedBy}
                 values={{
-                  name: `${userLastModifiedVoters?.data?.attributes?.first_name} ${userLastModifiedVoters?.data?.attributes?.last_name}`,
+                  name: `${userLastModifiedVoters.data.attributes.first_name} ${userLastModifiedVoters.data.attributes.last_name}`,
                 }}
               />
             </Text>
@@ -184,12 +184,12 @@ const OfflineVoteSettings = ({ ideaId, votingMethod, phaseId }: Props) => {
               handleOfflineVotesChangedDebounced();
             }}
           />
-          {userLastModifiedVotes?.data?.attributes?.first_name && (
+          {userLastModifiedVotes?.data.attributes.first_name && (
             <Text pt="4px" m="0px" color="textSecondary" fontSize="s">
               <FormattedMessage
                 {...messages.modifiedBy}
                 values={{
-                  name: `${userLastModifiedVotes?.data?.attributes?.first_name} ${userLastModifiedVotes?.data?.attributes?.last_name}`,
+                  name: `${userLastModifiedVotes.data.attributes.first_name} ${userLastModifiedVotes.data.attributes.last_name}`,
                 }}
               />
             </Text>

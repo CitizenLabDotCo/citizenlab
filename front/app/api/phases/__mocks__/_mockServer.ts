@@ -30,6 +30,7 @@ export const phasesData: IPhaseData[] = [
       votes_count: 0,
       baskets_count: 0,
       report_public: false,
+      total_votes_amount: 0,
     },
     relationships: {
       permissions: {
@@ -74,6 +75,7 @@ export const phasesData: IPhaseData[] = [
       votes_count: 0,
       baskets_count: 0,
       report_public: false,
+      total_votes_amount: 0,
     },
     relationships: {
       permissions: {
@@ -114,6 +116,7 @@ export const phasesData: IPhaseData[] = [
       votes_count: 0,
       baskets_count: 0,
       report_public: false,
+      total_votes_amount: 0,
     },
     relationships: {
       permissions: {
@@ -159,6 +162,7 @@ export const mockPhaseInformationData: IPhaseData = {
     votes_count: 0,
     baskets_count: 0,
     report_public: false,
+    total_votes_amount: 0,
   },
   relationships: {
     permissions: {
@@ -203,6 +207,7 @@ export const mockPhaseIdeationData: IPhaseData = {
     votes_count: 0,
     baskets_count: 0,
     report_public: false,
+    total_votes_amount: 0,
   },
   relationships: {
     permissions: {
@@ -249,6 +254,7 @@ export const mockPhaseSurveyTypeformData: IPhaseData = {
     votes_count: 0,
     baskets_count: 0,
     report_public: false,
+    total_votes_amount: 0,
   },
   relationships: {
     permissions: {
@@ -295,6 +301,7 @@ export const mockPhaseSurveyGoogleFormData: IPhaseData = {
     votes_count: 0,
     baskets_count: 0,
     report_public: false,
+    total_votes_amount: 0,
   },
   relationships: {
     permissions: {
@@ -380,6 +387,7 @@ const votingPhase: IPhaseData = {
       'da-DK': 'afstemninger',
     },
     report_public: false,
+    total_votes_amount: 0,
   },
   relationships: {
     permissions: {
