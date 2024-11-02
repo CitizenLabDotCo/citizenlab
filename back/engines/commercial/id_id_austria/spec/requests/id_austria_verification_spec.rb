@@ -297,7 +297,6 @@ context 'id_austria verification' do
 
         expect(ActionMailer::Base.deliveries).to be_empty
       end
-
     end
 
     context 'email confirmation disabled' do
