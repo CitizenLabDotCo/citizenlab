@@ -78,7 +78,7 @@ context 'id_austria verification' do
     host! 'example.org'
   end
 
-  def expect_to_create_verified_user(user)
+  def expect_user_to_be_verified(user)
     expect(user.reload).to have_attributes({
       verified: true,
       first_name: 'Otto',
@@ -92,8 +92,8 @@ context 'id_austria verification' do
     })
   end
 
-  def expect_to_create_verified_and_identified_user(user)
-    expect_to_create_verified_user(user)
+  def expect_user_to_be_verified_and_identified(user)
+    expect_user_to_be_verified(user)
     expect(user.identities.first).to have_attributes({
       provider: 'id_austria',
       user_id: user.id,
@@ -107,7 +107,7 @@ context 'id_austria verification' do
     get "/auth/id_austria?token=#{@token}&random-passthrough-param=somevalue&pathname=/yipie"
     follow_redirect!
 
-    expect_to_create_verified_user(@user)
+    expect_user_to_be_verified(@user)
 
     expect(response).to redirect_to('/en/yipie?random-passthrough-param=somevalue&verification_success=true')
   end
@@ -118,14 +118,14 @@ context 'id_austria verification' do
 
     expect(User.count).to eq(1)
     expect(@user.identities.count).to eq(0)
-    expect_to_create_verified_user(@user)
+    expect_user_to_be_verified(@user)
 
     get '/auth/id_austria'
     follow_redirect!
 
     expect(User.count).to eq(1)
     expect(@user.identities.count).to eq(1)
-    expect_to_create_verified_and_identified_user(@user)
+    expect_user_to_be_verified_and_identified(@user)
   end
 
   it 'successfully verifies another user with another ID Austria account' do
@@ -167,7 +167,7 @@ context 'id_austria verification' do
     expect(User.count).to eq(2)
 
     user = User.order(created_at: :asc).last
-    expect_to_create_verified_and_identified_user(user)
+    expect_user_to_be_verified_and_identified(user)
 
     expect(user).not_to eq(@user)
     expect(user).to have_attributes({
@@ -194,7 +194,7 @@ context 'id_austria verification' do
     let!(:new_user) do
       User.order(created_at: :asc).last.tap do |user|
         expect(user).to have_attributes({ email: nil })
-        expect_to_create_verified_and_identified_user(user)
+        expect_user_to_be_verified_and_identified(user)
       end
     end
 
@@ -222,7 +222,7 @@ context 'id_austria verification' do
         follow_redirect!
 
         expect(response).to redirect_to('/en/some-page?verification_success=true')
-        expect_to_create_verified_user(@user.reload)
+        expect_user_to_be_verified(@user.reload)
         expect { new_user.reload }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
@@ -251,20 +251,23 @@ context 'id_austria verification' do
         configuration.save!
       end
 
-      it 'creates user that can confirm her email' do
+      it 'creates user that can add and confirm her email' do
         get '/auth/id_austria'
         follow_redirect!
 
         user = User.order(created_at: :asc).last
-        expect_to_create_verified_and_identified_user(user)
+        expect_user_to_be_verified_and_identified(user)
 
         headers = { 'Authorization' => authorization_header(user) }
 
+        expect(user.email).to be_nil
+        expect(user.active?).to be(true)
+        expect(user.confirmation_required?).to be(false)
         expect(ActionMailer::Base.deliveries.count).to eq(0)
 
-        post '/web_api/v1/user/resend_code', params: { new_email: 'newcoolemail@example.org' }, headers: headers
+        patch "/web_api/v1/users/#{user.id}", params: { user: { email: 'newcoolemail@example.org' } }, headers: headers
         expect(response).to have_http_status(:ok)
-        expect(user.reload).to have_attributes({ new_email: 'newcoolemail@example.org' })
+        expect(user.reload).to have_attributes({ email: 'newcoolemail@example.org' })
         expect(user.confirmation_required?).to be(true)
         expect(ActionMailer::Base.deliveries.count).to eq(1)
 
@@ -272,10 +275,9 @@ context 'id_austria verification' do
         expect(response).to have_http_status(:ok)
         expect(user.reload.confirmation_required?).to be(false)
         expect(user).to have_attributes({ email: 'newcoolemail@example.org' })
-        expect(user.new_email).to be_nil
       end
 
-      it 'prevents bypassing email confirmation by logging in when signup is partially completed' do
+      it 'allows users to be active without adding an email & confirmation' do
         get '/auth/id_austria'
         follow_redirect!
 
@@ -283,13 +285,19 @@ context 'id_austria verification' do
         follow_redirect!
 
         user = User.order(created_at: :asc).last
-
-        token = AuthToken::AuthToken.new(payload: user.to_token_payload).token
-        headers = { 'Authorization' => "Bearer #{token}" }
-        post '/web_api/v1/user/resend_code', params: { new_email: 'newcoolemail@example.org' }, headers: headers
-
-        expect(user.confirmation_required?).to be(true)
+        expect_user_to_be_verified_and_identified(user)
+        expect(user.email).to be_nil
+        expect(user.confirmation_required?).to be(false)
+        expect(user.active?).to be(true)
       end
+
+      it 'does not send email to empty email address (when just registered)' do
+        get '/auth/id_austria'
+        follow_redirect!
+
+        expect(ActionMailer::Base.deliveries).to be_empty
+      end
+
     end
 
     context 'email confirmation disabled' do
@@ -307,7 +315,7 @@ context 'id_austria verification' do
         follow_redirect!
 
         user = User.order(created_at: :asc).last
-        expect_to_create_verified_and_identified_user(user)
+        expect_user_to_be_verified_and_identified(user)
 
         token = AuthToken::AuthToken.new(payload: user.to_token_payload).token
         headers = { 'Authorization' => "Bearer #{token}" }
