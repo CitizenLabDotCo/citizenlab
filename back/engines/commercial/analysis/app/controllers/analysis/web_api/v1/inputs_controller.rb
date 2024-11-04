@@ -51,6 +51,7 @@ module Analysis
           authorize(@analysis, :show?)
         end
 
+        # Whether to include private attributes in included authors (for native surveys).
         def view_private_attributes?
           return true unless @analysis.phase_id
 
