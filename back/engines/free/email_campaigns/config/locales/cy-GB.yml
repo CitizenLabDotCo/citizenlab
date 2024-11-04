@@ -512,7 +512,7 @@ cy:
         proposal: 'Mae eich cynnig wedi’i gyhoeddi'
         initiative: 'Mae eich menter wedi''i chyhoeddi'
         petition: 'Mae eich deiseb wedi''i chyhoeddi'
-      main_header: 'You posted "%{input_title}"'
+      main_header: 'Fe wnaethoch chi bostio syniad! Gadewch i ni sicrhau ei fod yn cael ei ddarllen.'
       header_message: 'Gadewch i ni sicrhau ei fod yn cael ei ddarllen.'
       message_get_votes: 'Cyrraedd mwy o bobl gyda''ch syniad:'
       action_published_idea: 'Syniad wedi''i gyhoeddi'
