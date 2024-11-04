@@ -1991,7 +1991,7 @@
   "app.containers.UsersShowPage.editProfile": "Golygu fy mhroffil",
   "app.containers.UsersShowPage.emptyInfoText": "Nid ydych yn dilyn unrhyw eitemau o'r hidlydd penodedig uchod.",
   "app.containers.UsersShowPage.eventsWithCount": "Digwyddiadau ({eventsCount})",
-  "app.containers.UsersShowPage.followingWithCount": "Following ({followingCount})",
+  "app.containers.UsersShowPage.followingWithCount": "Yn dilyn ({followingCount})",
   "app.containers.UsersShowPage.inputs": "Mewnbynnau",
   "app.containers.UsersShowPage.invisibleTitlePostsList": "Yr holl fewnbwn a gyflwynwyd gan y cyfranogwr hwn",
   "app.containers.UsersShowPage.invisibleTitleUserComments": "Pob sylw a bostiwyd gan y cyfranogwr hwn",
