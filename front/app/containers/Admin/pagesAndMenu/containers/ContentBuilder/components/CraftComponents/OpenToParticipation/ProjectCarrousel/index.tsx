@@ -43,7 +43,7 @@ const ProjectContainer = styled.div`
   scroll-snap-align: start;
 `;
 
-const SkipButton = styled.a`
+const SkipButton = styled.button`
   position: absolute;
   left: 0;
   top: 0;
@@ -120,14 +120,16 @@ const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
     };
   }, [scrollContainerRef, hasMore, handleButtonVisiblity]);
 
-  const skipCarrouselIfEscape = (e: React.KeyboardEvent<any>) => {
-    if (e.code === 'Escape') {
-      window.location.href = `#${endId}`;
-    }
+  const skipCarrousel = () => {
+    const element = document.getElementById(endId);
+    element?.setAttribute('tabindex', '-1');
+    element?.focus();
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<any>) => {
-    skipCarrouselIfEscape(e);
+    if (e.code === 'Escape') {
+      skipCarrousel();
+    }
 
     if (e.code === 'Tab' && scrollContainerRef) {
       setTimeout(() => {
@@ -149,9 +151,12 @@ const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
       >
         <Container w="100%" maxWidth="1200px" position="relative">
           <SkipButton
-            href={`#${endId}`}
             tabIndex={0}
-            onKeyDown={skipCarrouselIfEscape}
+            onKeyDown={(e) => {
+              if (e.code === 'Enter' || e.code === 'Escape') {
+                skipCarrousel();
+              }
+            }}
           >
             {formatMessage(messages.skipCarrousel)}
           </SkipButton>
