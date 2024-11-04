@@ -123,6 +123,22 @@ const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
     }
   };
 
+  const handleKeyDown2 = (e: React.KeyboardEvent<any>) => {
+    if (e.code === 'Escape') {
+      window.location.href = '#end-carrousel';
+    }
+
+    if (e.code === 'Tab' && scrollContainerRef) {
+      // e.preventDefault();
+      // e.stopPropagation();
+      setTimeout(() => {
+        e.shiftKey
+          ? (scrollContainerRef.scrollLeft -= CARD_WIDTH + CARD_GAP)
+          : (scrollContainerRef.scrollLeft += CARD_WIDTH + CARD_GAP);
+      }, 50);
+    }
+  };
+
   return (
     <>
       <Box
@@ -163,7 +179,10 @@ const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
             )}
             {projects.map((project) => (
               <ProjectContainer key={project.id}>
-                <LightProjectCard project={project} onKeyDown={handleKeyDown} />
+                <LightProjectCard
+                  project={project}
+                  onKeyDown={handleKeyDown2}
+                />
               </ProjectContainer>
             ))}
             {hasMore && (
