@@ -58,7 +58,7 @@ class WebApi::V1::ProjectsController < ApplicationController
   # Ordered by the end date of the current phase, soonest first (nulls last).
   def index_projects_with_active_participatory_phase
     projects = policy_scope(Project)
-    projects_and_descriptors = ProjectsFinderService.new.participation_possible(projects, current_user, params)
+    projects_and_descriptors = ProjectsFinderService.new(projects, current_user, params).participation_possible
     projects = projects_and_descriptors[:projects]
 
     @projects = paginate projects

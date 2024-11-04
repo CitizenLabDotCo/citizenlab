@@ -1,12 +1,18 @@
 class ProjectsFinderService
-  def participation_possible(projects, current_user, params)
-    return participation_possible_uncached(projects, current_user, params) if current_user
+  def initialize(projects, current_user = nil, params = {})
+    @projects = projects
+    @current_user = current_user
+    @params = params
+  end
+
+  def participation_possible
+    return participation_possible_uncached if @current_user
 
     Rails.cache.fetch(
-      "#{projects.cache_key}projects_finder_service/participation_possible/",
+      "#{@projects.cache_key}projects_finder_service/participation_possible/",
       expires_in: 1.hour
     ) do
-      participation_possible_uncached(projects, current_user, params)
+      participation_possible_uncached
     end
   end
 
@@ -16,8 +22,8 @@ class ProjectsFinderService
   # Returns all published projects that are visible to user
   # and in an active participatory phase (where user can probably do something).
   # Ordered by the end date of the current phase, soonest first (nulls last).
-  def participation_possible_uncached(projects, current_user, params)
-    subquery = projects
+  def participation_possible_uncached
+    subquery = @projects
       .joins('INNER JOIN admin_publications AS admin_publications ON admin_publications.publication_id = projects.id')
       .where(admin_publications: { publication_status: 'published' })
 
@@ -40,14 +46,14 @@ class ProjectsFinderService
 
     # Step 1: Create pairs of project ids and action descriptors.
     # Since this is the last filtering step, we will keep going, until we reach the limit required for pagination.
-    pagination_limit = calculate_pagination_limit(params)
+    pagination_limit = calculate_pagination_limit
 
     project_descriptor_pairs = {}
     filtered_projects = []
 
     projects.each do |project|
       service = Permissions::ProjectPermissionsService.new(
-        project, current_user, user_requirements_service: user_requirements_service
+        project, @current_user, user_requirements_service: user_requirements_service
       )
       action_descriptors = service.action_descriptors
 
@@ -80,9 +86,9 @@ class ProjectsFinderService
       .select('projects.*, phases.end_at AS phase_end_at')
   end
 
-  def calculate_pagination_limit(params)
-    page_size = (params.dig(:page, :size) || 500).to_i
-    page_number = (params.dig(:page, :number) || 1).to_i
+  def calculate_pagination_limit
+    page_size = (@params.dig(:page, :size) || 500).to_i
+    page_number = (@params.dig(:page, :number) || 1).to_i
 
     page_size * page_number
   end
