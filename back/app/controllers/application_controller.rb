@@ -88,7 +88,11 @@ class ApplicationController < ActionController::API
   end
 
   def jsonapi_serializer_params(extra_params = {})
-    { current_user: current_user, **extra_params.symbolize_keys }
+    {
+      current_user: current_user,
+      user_context: pundit_user,
+      **extra_params.symbolize_keys
+    }
   end
 
   def raw_json(json, type: nil)

@@ -73,6 +73,7 @@ class ApplicationPolicy
 
   delegate :context, :user, to: :user_context
 
+  # @param [UserContext,User,nil] user_context
   def initialize(user_context, record)
     @record = record
     @user_context = user_context.is_a?(UserContext) ? user_context : UserContext.new(user_context)

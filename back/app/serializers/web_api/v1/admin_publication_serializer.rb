@@ -29,7 +29,7 @@ class WebApi::V1::AdminPublicationSerializer < WebApi::V1::BaseSerializer
     if params.key? :visible_children_count_by_parent_id
       params.dig(:visible_children_count_by_parent_id, object.id) || 0
     else
-      Pundit.policy_scope(current_user(params), Project).where(id: object.children.map(&:publication_id)).count
+      Pundit.policy_scope(user_context(params), Project).where(id: object.children.map(&:publication_id)).count
     end
   end
 
