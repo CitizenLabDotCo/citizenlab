@@ -26,8 +26,8 @@ const PublicationStatusPicker = ({
         currentValue={publicationStatus}
         value="draft"
         name="projectstatus"
-        id="projecstatus-draft"
-        className="e2e-projecstatus-draft"
+        id="projectstatus-draft"
+        className="e2e-projectstatus-draft"
         label={
           <Box display="flex" flexDirection="column">
             <span>{formatMessage(messages.draftStatus)}</span>
@@ -43,8 +43,8 @@ const PublicationStatusPicker = ({
         currentValue={publicationStatus}
         value="published"
         name="projectstatus"
-        id="projecstatus-published"
-        className="e2e-projecstatus-published"
+        id="projectstatus-published"
+        className="e2e-projectstatus-published"
         label={
           <Box display="flex" flexDirection="column">
             <span>{formatMessage(messages.publishedStatus)}</span>
@@ -60,8 +60,8 @@ const PublicationStatusPicker = ({
         currentValue={publicationStatus}
         value="archived"
         name="projectstatus"
-        id="projecstatus-archived"
-        className="e2e-projecstatus-archived"
+        id="projectstatus-archived"
+        className="e2e-projectstatus-archived"
         label={
           <Box display="flex" flexDirection="column">
             <span>{formatMessage(messages.archivedStatus)}</span>

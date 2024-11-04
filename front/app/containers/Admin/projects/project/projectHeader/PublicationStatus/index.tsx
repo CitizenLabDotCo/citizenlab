@@ -112,6 +112,7 @@ const PublicationStatus = ({ project }: { project: IProject }) => {
         iconPos="right"
         onClick={() => setIsPickerOpen(!isPickerOpen)}
         processing={isLoading}
+        id="e2e-admin-edit-publication-status"
       >
         <Box display="flex" alignItems="center" gap="8px" as="span">
           <Icon
