@@ -59,9 +59,11 @@ const ProjectImageContainer = styled.div`
 
 interface Props {
   project: MiniProjectData;
+  onKeyDown?: React.KeyboardEventHandler<HTMLAnchorElement> &
+    React.KeyboardEventHandler<HTMLDivElement>;
 }
 
-const LightProjectCard = ({ project }: Props) => {
+const LightProjectCard = ({ project, onKeyDown }: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
 
@@ -86,9 +88,11 @@ const LightProjectCard = ({ project }: Props) => {
   return (
     <CardContainer
       as={Link}
+      tabIndex={0}
       w={`${CARD_WIDTH}px`}
       to={projectUrl}
       display="block"
+      onKeyDown={onKeyDown}
     >
       <Box>
         <ProjectImageContainer className="project-image-container">
