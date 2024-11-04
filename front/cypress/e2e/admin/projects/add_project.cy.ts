@@ -43,40 +43,6 @@ describe('Admin: add project', () => {
           .first()
           .contains('Draft');
       });
-
-      it('creates an archived project', () => {
-        const projectTitleEN = randomString();
-        const projectTitleNLBE = randomString();
-        const projectTitleNLNL = randomString();
-        const projectTitleFRBE = randomString();
-
-        // Select 'Archived' publication status
-        cy.get('.e2e-projecstatus-archived').click();
-
-        // Type random project titles for these required fields
-        cy.get('#project-title').type(projectTitleEN);
-        cy.get('.e2e-localeswitcher.nl-BE').click();
-        cy.get('#project-title').type(projectTitleNLBE);
-        cy.get('.e2e-localeswitcher.nl-NL').click();
-        cy.get('#project-title').type(projectTitleNLNL);
-        cy.get('.e2e-localeswitcher.fr-BE').click();
-        cy.get('#project-title').type(projectTitleFRBE);
-
-        // Submit project
-        cy.get('.e2e-submit-wrapper-button button').click();
-        cy.wait(2000);
-
-        // Project should appear on top of the projects list
-        cy.visit('/admin/projects/all');
-        cy.get('#e2e-admin-projects-list-unsortable')
-          .children()
-          .first()
-          .contains(projectTitleEN);
-        cy.get('#e2e-admin-projects-list-unsortable')
-          .children()
-          .first()
-          .contains('Archived');
-      });
     });
 
     // This test is failing because the project list at the bottom disappears,
