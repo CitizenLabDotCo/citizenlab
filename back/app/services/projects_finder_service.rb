@@ -41,7 +41,7 @@ class ProjectsFinderService
       )
       action_descriptors = service.action_descriptors
 
-      if Permissions::ProjectPermissionsService.participation_possible?(action_descriptors)
+      if service.participation_possible?(action_descriptors)
         project_descriptor_pairs[project.id] = action_descriptors
         filtered_projects << project
         break if project_descriptor_pairs.size >= pagination_limit
