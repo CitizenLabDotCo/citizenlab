@@ -15,7 +15,7 @@ export const getUpdatedRange = ({
   selectedRange: { from, to },
   disabledRanges,
   clickedDate,
-}: GetUpdatedRangeParams) => {
+}: GetUpdatedRangeParams): Partial<DateRange> => {
   const { valid, reason } = rangesValid({ from, to }, disabledRanges);
 
   if (!valid) {

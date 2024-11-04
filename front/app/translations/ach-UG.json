@@ -1298,7 +1298,7 @@
   "app.containers.IdeasNewPage.projectMetaTitle1": "crwdns2278738:0{orgName}crwdne2278738:0",
   "app.containers.IdeasNewPage.proposalMetaTitle1": "crwdns3335179:0{orgName}crwdne3335179:0",
   "app.containers.IdeasNewPage.questionMetaTitle1": "crwdns2278740:0{orgName}crwdne2278740:0",
-  "app.containers.IdeasNewPage.surveyNewMetaTitle1": "crwdns2278742:0{orgName}crwdne2278742:0",
+  "app.containers.IdeasNewPage.surveyNewMetaTitle2": "crwdns3420703:0{surveyTitle}crwdnd3420703:0{orgName}crwdne3420703:0",
   "app.containers.IdeasShow.Cosponsorship.co-sponsorAcceptInvitation": "crwdns3238309:0crwdne3238309:0",
   "app.containers.IdeasShow.Cosponsorship.co-sponsorInvitation": "crwdns3238311:0crwdne3238311:0",
   "app.containers.IdeasShow.Cosponsorship.co-sponsors": "crwdns3238313:0crwdne3238313:0",
