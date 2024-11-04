@@ -1991,7 +1991,6 @@
   "app.containers.AdminPage.SettingsPage.linkToActivityPageText": "Toiminta",
   "app.containers.AdminPage.SettingsPage.logo": "Logo",
   "app.containers.AdminPage.SettingsPage.noHeader": "Lähetä otsikkokuva",
-  "app.containers.AdminPage.SettingsPage.noLogo": "Lataa logo",
   "app.containers.AdminPage.SettingsPage.no_button": "Ei painiketta",
   "app.containers.AdminPage.SettingsPage.organizationName": "Kaupungin tai organisaation nimi",
   "app.containers.AdminPage.SettingsPage.organizationNameMultilocError": "Anna organisaation nimi tai kaupunki kaikille kielille.",
