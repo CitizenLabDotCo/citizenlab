@@ -2122,10 +2122,6 @@
   "app.utils.votingMethodUtils.singleVotingUnlimitedEnded": "<b>{endDate}ਨੂੰ ਵੋਟਿੰਗ ਬੰਦ ਹੋਈ।</b> ਭਾਗੀਦਾਰ <b>ਜਿੰਨੇ ਮਰਜ਼ੀ ਵਿਕਲਪਾਂ ਲਈ ਵੋਟ ਪਾ ਸਕਦੇ ਹਨ।</b>",
   "app.utils.votingMethodUtils.singleVotingUnlimitedVotesYouCanVote": "ਤੁਸੀਂ ਜਿੰਨੇ ਮਰਜ਼ੀ ਵਿਕਲਪਾਂ ਲਈ ਵੋਟ ਕਰ ਸਕਦੇ ਹੋ।",
   "app.utils.votingMethodUtils.submitYourBudget": "ਆਪਣਾ ਬਜਟ ਜਮ੍ਹਾਂ ਕਰੋ",
-  "app.utils.votingMethodUtils.submittedBudgetCountText": "ਵਿਅਕਤੀ ਨੇ ਆਪਣਾ ਬਜਟ ਪੇਸ਼ ਕੀਤਾ",
-  "app.utils.votingMethodUtils.submittedBudgetsCountText": "ਲੋਕਾਂ ਨੇ ਆਪਣੇ ਬਜਟ ਪੇਸ਼ ਕੀਤੇ",
-  "app.utils.votingMethodUtils.submittedVoteCountText": "ਵਿਅਕਤੀ ਨੇ ਆਪਣੀ ਵੋਟ ਜਮ੍ਹਾਂ ਕਰਵਾਈ",
-  "app.utils.votingMethodUtils.submittedVotesCountText": "ਲੋਕਾਂ ਨੇ ਆਪਣੀਆਂ ਵੋਟਾਂ ਪਾਈਆਂ",
   "app.utils.votingMethodUtils.vote": "ਵੋਟ ਕਰੋ",
   "app.utils.votingMethodUtils.voteSubmittedWithIcon": "ਵੋਟ ਸਪੁਰਦ ਕੀਤੀ ਗਈ 🎉",
   "app.utils.votingMethodUtils.votes": "ਵੋਟਾਂ",
