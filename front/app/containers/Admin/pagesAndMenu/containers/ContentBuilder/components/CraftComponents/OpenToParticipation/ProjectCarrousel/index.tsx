@@ -117,20 +117,16 @@ const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
     };
   }, [scrollContainerRef, hasMore, handleButtonVisiblity]);
 
-  const handleKeyDown = (e: React.KeyboardEvent<any>) => {
+  const skipCarrouselIfEscape = (e: React.KeyboardEvent<any>) => {
     if (e.code === 'Escape') {
       window.location.href = '#end-carrousel';
     }
   };
 
-  const handleKeyDown2 = (e: React.KeyboardEvent<any>) => {
-    if (e.code === 'Escape') {
-      window.location.href = '#end-carrousel';
-    }
+  const handleKeyDown = (e: React.KeyboardEvent<any>) => {
+    skipCarrouselIfEscape(e);
 
     if (e.code === 'Tab' && scrollContainerRef) {
-      // e.preventDefault();
-      // e.stopPropagation();
       setTimeout(() => {
         e.shiftKey
           ? (scrollContainerRef.scrollLeft -= CARD_WIDTH + CARD_GAP)
@@ -152,7 +148,7 @@ const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
           <SkipButton
             href={`#end-carrousel`}
             tabIndex={0}
-            onKeyDown={handleKeyDown}
+            onKeyDown={skipCarrouselIfEscape}
           >
             {formatMessage(messages.skipCarrousel)}
           </SkipButton>
@@ -179,10 +175,7 @@ const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
             )}
             {projects.map((project) => (
               <ProjectContainer key={project.id}>
-                <LightProjectCard
-                  project={project}
-                  onKeyDown={handleKeyDown2}
-                />
+                <LightProjectCard project={project} onKeyDown={handleKeyDown} />
               </ProjectContainer>
             ))}
             {hasMore && (
