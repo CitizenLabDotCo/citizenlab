@@ -1694,7 +1694,7 @@
   "app.containers.AdminPage.ProjectEdit.projectFolderSelectTitle": "Add project to a folder?",
   "app.containers.AdminPage.ProjectEdit.projectHeaderImageTooltip": "This image is shown at the top of the project page.\n\n    For more information on recommended image resolutions, {supportPageLink}.",
   "app.containers.AdminPage.ProjectEdit.projectImageAltTextTitle": "Project image alternative text",
-  "app.containers.AdminPage.ProjectEdit.projectImageAltTextTooltip": "Provide a short description of the image for visually impaired users and for better SEO. This helps screen readers convey what the image is about.",
+  "app.containers.AdminPage.ProjectEdit.projectImageAltTextTooltip1": "Provide a short description of the image for visually impaired users. This helps screen readers convey what the image is about.",
   "app.containers.AdminPage.ProjectEdit.projectManagementTitle": "Project management",
   "app.containers.AdminPage.ProjectEdit.projectManagerTooltipContent": "Project managers can edit projects, manage posts and email participants. You can {moderationInfoCenterLink} to find more information about the rights assigned to project managers.",
   "app.containers.AdminPage.ProjectEdit.projectName": "Project name",
