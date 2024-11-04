@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { Radio } from '@citizenlab/cl2-component-library';
+import { Radio, Text, Box } from '@citizenlab/cl2-component-library';
 
 import { PublicationStatus } from 'api/projects/types';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
 
@@ -16,36 +16,63 @@ interface Props {
 const PublicationStatusPicker = ({
   publicationStatus,
   handleStatusChange,
-}: Props) => (
-  <div>
-    <Radio
-      onChange={handleStatusChange}
-      currentValue={publicationStatus}
-      value="draft"
-      name="projectstatus"
-      id="projecstatus-draft"
-      className="e2e-projecstatus-draft"
-      label={<FormattedMessage {...messages.draftStatus} />}
-    />
-    <Radio
-      onChange={handleStatusChange}
-      currentValue={publicationStatus}
-      value="published"
-      name="projectstatus"
-      id="projecstatus-published"
-      className="e2e-projecstatus-published"
-      label={<FormattedMessage {...messages.publishedStatus} />}
-    />
-    <Radio
-      onChange={handleStatusChange}
-      currentValue={publicationStatus}
-      value="archived"
-      name="projectstatus"
-      id="projecstatus-archived"
-      className="e2e-projecstatus-archived"
-      label={<FormattedMessage {...messages.archivedStatus} />}
-    />
-  </div>
-);
+}: Props) => {
+  const { formatMessage } = useIntl();
+
+  return (
+    <Box p="8px" display="flex" flexDirection="column" gap="8px" pt="16px">
+      <Radio
+        onChange={handleStatusChange}
+        currentValue={publicationStatus}
+        value="draft"
+        name="projectstatus"
+        id="projecstatus-draft"
+        className="e2e-projecstatus-draft"
+        label={
+          <Box display="flex" flexDirection="column">
+            <span>{formatMessage(messages.draftStatus)}</span>
+            <Text m="0px" color="textSecondary" fontSize="s">
+              {formatMessage(messages.draftExplanation)}
+            </Text>
+          </Box>
+        }
+      />
+
+      <Radio
+        onChange={handleStatusChange}
+        currentValue={publicationStatus}
+        value="published"
+        name="projectstatus"
+        id="projecstatus-published"
+        className="e2e-projecstatus-published"
+        label={
+          <Box display="flex" flexDirection="column">
+            <span>{formatMessage(messages.publishedStatus)}</span>
+            <Text m="0px" color="textSecondary" fontSize="s">
+              {formatMessage(messages.publishedExplanation)}
+            </Text>
+          </Box>
+        }
+      />
+
+      <Radio
+        onChange={handleStatusChange}
+        currentValue={publicationStatus}
+        value="archived"
+        name="projectstatus"
+        id="projecstatus-archived"
+        className="e2e-projecstatus-archived"
+        label={
+          <Box display="flex" flexDirection="column">
+            <span>{formatMessage(messages.archivedStatus)}</span>
+            <Text m="0px" color="textSecondary" fontSize="s">
+              {formatMessage(messages.archivedExplanation)}
+            </Text>
+          </Box>
+        }
+      />
+    </Box>
+  );
+};
 
 export default PublicationStatusPicker;

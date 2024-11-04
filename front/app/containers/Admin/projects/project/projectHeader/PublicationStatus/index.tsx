@@ -138,6 +138,8 @@ const PublicationStatus = ({ project }: { project: IProject }) => {
         top="36px"
         right="0px"
         zIndex="10000"
+        maxHeight="400px"
+        width="300px"
       />
     </Box>
   );
