@@ -20,6 +20,7 @@ import useUserById from 'api/users/useUserById';
 
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../messages';
 import tracks from '../tracks';
@@ -82,7 +83,7 @@ const OfflineVoteSettings = ({ ideaId, votingMethod, phaseId }: Props) => {
 
   const handleOfflineVotersChangedDebounced = useMemo(() => {
     return debounce(() => {
-      manualVotersAmount &&
+      !isNilOrError(manualVotersAmount) &&
         updatePhase({
           phaseId,
           manual_voters_amount: manualVotersAmount,
