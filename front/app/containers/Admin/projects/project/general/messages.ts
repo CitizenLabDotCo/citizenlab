@@ -180,8 +180,8 @@ export default defineMessages({
     defaultMessage: 'Alt text',
   },
   projectImageAltTextTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.projectImageAltTextTooltip',
+    id: 'app.containers.AdminPage.ProjectEdit.projectImageAltTextTooltip1',
     defaultMessage:
-      'Provide a short description of the image for visually impaired users and for better SEO. This helps screen readers convey what the image is about.',
+      'Provide a short description of the image for visually impaired users. This helps screen readers convey what the image is about.',
   },
 });
