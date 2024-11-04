@@ -1,5 +1,7 @@
 class ProjectsFinderService
   def participation_possible(projects, current_user, params)
+    return participation_possible_uncached(projects, current_user, params) if current_user
+
     Rails.cache.fetch(
       "#{projects.cache_key}projects_finder_service/participation_possible/",
       expires_in: 1.hour
@@ -11,8 +13,8 @@ class ProjectsFinderService
   private
 
   # For use with 'Open to participation' homepage widget.
-  # Returns all published or archived projects that are visible to user
-  # and in an active participatory phase (where user can do something).
+  # Returns all published projects that are visible to user
+  # and in an active participatory phase (where user can probably do something).
   # Ordered by the end date of the current phase, soonest first (nulls last).
   def participation_possible_uncached(projects, current_user, params)
     subquery = projects
