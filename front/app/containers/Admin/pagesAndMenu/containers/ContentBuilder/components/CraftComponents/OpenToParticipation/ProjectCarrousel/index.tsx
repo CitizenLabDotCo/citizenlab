@@ -176,14 +176,13 @@ const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
               }
             }}
           >
-            {isSmallerThanPhone && (
-              <ProjectContainer>
-                <Box />
-              </ProjectContainer>
-            )}
-            {projects.map((project) => (
+            {projects.map((project, i) => (
               <ProjectContainer key={project.id}>
-                <LightProjectCard project={project} onKeyDown={handleKeyDown} />
+                <LightProjectCard
+                  ml={i === 0 && !isSmallerThanPhone ? '0px' : `${CARD_GAP}px`}
+                  project={project}
+                  onKeyDown={handleKeyDown}
+                />
               </ProjectContainer>
             ))}
             {hasMore && (
