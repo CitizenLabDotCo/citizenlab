@@ -194,6 +194,20 @@ class ParticipantsService
       .where(phases: { project_id: project.id })
       .destroy_all
 
-    project.ideas.destroy_all
+    # Reset basket data
+    Basket.where(phase: Phase.where(project: project)).destroy_all
+
+    # Filter ideas that belong to a voting phase, and destroy all comments and reactions that they have.
+    ideas = Idea.where(project: project).where(
+      id: IdeasPhase.where(phase: Phase.where(project: project, participation_method: 'voting')).select(:idea_id)
+    )
+
+    ideas.each do |idea|
+      idea.comments.destroy_all
+      idea.reactions.destroy_all
+    end
+
+    # Destroy all remaining ideas that are not in a voting phase
+    Idea.where(project: project).where.not(id: ideas).destroy_all
   end
 end

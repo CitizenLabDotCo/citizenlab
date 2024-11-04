@@ -406,5 +406,25 @@ describe ParticipantsService do
 
       expect(Polls::Response.where(phase: phase).count).to eq 0
     end
+
+    it 'resets project participation data for voting (without deleting the ideas)' do
+      project = create(:project)
+      pp1, pp2 = create_list(:user, 2)
+      phase = create(:phase, project: project, participation_method: 'voting', voting_method: 'single_voting')
+      idea = create(:idea, project: project, phases: [phase])
+      create(:basket, ideas: [idea], phase: phase, user: pp1)
+      create(:basket, ideas: [idea], phase: phase, user: pp2)
+      create(:comment, post: idea, author: pp1)
+
+      expect(Basket.where(phase: phase).count).to eq 2
+      expect(Comment.where(post: idea).count).to eq 1
+      expect(Idea.where(project: project).count).to eq 1
+
+      service.reset_participation_data(project)
+
+      expect(Basket.where(phase: phase).count).to eq 0
+      expect(Comment.where(post: idea).count).to eq 0
+      expect(Idea.where(project: project).count).to eq 1
+    end
   end
 end
