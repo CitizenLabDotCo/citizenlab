@@ -8,6 +8,7 @@ import {
   colors,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
+import useInstanceId from 'component-library/hooks/useInstanceId';
 import { debounce } from 'lodash-es';
 import { useInView } from 'react-intersection-observer';
 import styled from 'styled-components';
@@ -17,9 +18,12 @@ import { MiniProjectData } from 'api/projects_mini/types';
 
 import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
 
+import { useIntl } from 'utils/cl-intl';
+
 import { CARD_GAP, CARD_WIDTH } from './constants';
 import HorizontalScroll from './HorizontalScroll';
 import LightProjectCard from './LightProjectCard';
+import messages from './messages';
 
 const Container = styled(Box)`
   .scroll-button {
@@ -39,6 +43,21 @@ const ProjectContainer = styled.div`
   scroll-snap-align: start;
 `;
 
+const SkipButton = styled.a`
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  z-index: 2;
+  padding: 8px;
+  background: ${colors.white};
+
+  &:focus {
+    top: 40px;
+    opacity: 1;
+  }
+`;
+
 interface Props {
   title: string;
   projects: MiniProjectData[];
@@ -53,6 +72,9 @@ const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
   const [showPreviousButton, setShowPreviousButton] = useState(false);
   const [showNextButton, setShowNextButton] = useState(false);
   const isSmallerThanPhone = useBreakpoint('phone');
+  const { formatMessage } = useIntl();
+  const instanceId = useInstanceId();
+  const endId = `end-carrousel-${instanceId}`;
 
   const { ref } = useInView({
     onChange: (inView) => {
@@ -98,102 +120,130 @@ const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
     };
   }, [scrollContainerRef, hasMore, handleButtonVisiblity]);
 
+  const skipCarrouselIfEscape = (e: React.KeyboardEvent<any>) => {
+    if (e.code === 'Escape') {
+      window.location.href = `#${endId}`;
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<any>) => {
+    skipCarrouselIfEscape(e);
+
+    if (e.code === 'Tab' && scrollContainerRef) {
+      setTimeout(() => {
+        e.shiftKey
+          ? (scrollContainerRef.scrollLeft -= CARD_WIDTH + CARD_GAP)
+          : (scrollContainerRef.scrollLeft += CARD_WIDTH + CARD_GAP);
+      }, 50);
+    }
+  };
+
   return (
-    <Box
-      px={isSmallerThanPhone ? undefined : DEFAULT_PADDING}
-      py={DEFAULT_PADDING}
-      w="100%"
-      display="flex"
-      justifyContent="center"
-    >
-      <Container w="100%" maxWidth="1200px" position="relative">
-        <Title
-          variant="h3"
-          as="h2"
-          mt="0px"
-          ml={isSmallerThanPhone ? DEFAULT_PADDING : undefined}
-        >
-          {title}
-        </Title>
-        <HorizontalScroll
-          setRef={(ref) => {
-            if (ref) {
-              setScrollContainerRef(ref);
-              handleButtonVisiblity(ref, hasMore);
-            }
-          }}
-        >
-          {isSmallerThanPhone && (
-            <ProjectContainer>
-              <Box />
-            </ProjectContainer>
-          )}
-          {projects.map((project) => (
-            <ProjectContainer key={project.id}>
-              <LightProjectCard project={project} />
-            </ProjectContainer>
-          ))}
-          {hasMore && (
-            <ProjectContainer>
-              <Box
-                ref={ref}
-                w={`${CARD_WIDTH}px`}
-                h={`${CARD_WIDTH / CARD_IMAGE_ASPECT_RATIO}px`}
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-              >
-                <Spinner />
-              </Box>
-            </ProjectContainer>
-          )}
-        </HorizontalScroll>
-        {showPreviousButton && !isSmallerThanPhone && (
-          <Box
-            as="button"
-            className="scroll-button"
-            position="absolute"
-            left="8px"
-            top="120px"
-            borderRadius="30px"
-            bgColor="white"
-            w="52px"
-            h="52px"
-            border={`1px solid ${colors.divider}`}
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              if (!scrollContainerRef) return;
-              scrollContainerRef.scrollLeft -= CARD_WIDTH + CARD_GAP;
+    <>
+      <Box
+        px={isSmallerThanPhone ? undefined : DEFAULT_PADDING}
+        py={DEFAULT_PADDING}
+        w="100%"
+        display="flex"
+        justifyContent="center"
+      >
+        <Container w="100%" maxWidth="1200px" position="relative">
+          <SkipButton
+            href={`#${endId}`}
+            tabIndex={0}
+            onKeyDown={skipCarrouselIfEscape}
+          >
+            {formatMessage(messages.skipCarrousel)}
+          </SkipButton>
+          <Title
+            variant="h3"
+            as="h2"
+            mt="0px"
+            ml={isSmallerThanPhone ? DEFAULT_PADDING : undefined}
+          >
+            {title}
+          </Title>
+          <HorizontalScroll
+            setRef={(ref) => {
+              if (ref) {
+                setScrollContainerRef(ref);
+                handleButtonVisiblity(ref, hasMore);
+              }
             }}
           >
-            <Icon name="arrow-left" fill={colors.grey700} />
-          </Box>
-        )}
-        {showNextButton && !isSmallerThanPhone && (
-          <Box
-            as="button"
-            className="scroll-button"
-            position="absolute"
-            right="8px"
-            top="120px"
-            borderRadius="30px"
-            bgColor="white"
-            w="52px"
-            h="52px"
-            border={`1px solid ${colors.divider}`}
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              if (!scrollContainerRef) return;
-              scrollContainerRef.scrollLeft += CARD_WIDTH + CARD_GAP;
-            }}
-          >
-            <Icon name="arrow-right" fill={colors.grey700} />
-          </Box>
-        )}
-      </Container>
-    </Box>
+            {isSmallerThanPhone && (
+              <ProjectContainer>
+                <Box />
+              </ProjectContainer>
+            )}
+            {projects.map((project) => (
+              <ProjectContainer key={project.id}>
+                <LightProjectCard project={project} onKeyDown={handleKeyDown} />
+              </ProjectContainer>
+            ))}
+            {hasMore && (
+              <ProjectContainer>
+                <Box
+                  ref={ref}
+                  w={`${CARD_WIDTH}px`}
+                  h={`${CARD_WIDTH / CARD_IMAGE_ASPECT_RATIO}px`}
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                >
+                  <Spinner />
+                </Box>
+              </ProjectContainer>
+            )}
+          </HorizontalScroll>
+          {showPreviousButton && !isSmallerThanPhone && (
+            <Box
+              as="button"
+              className="scroll-button"
+              position="absolute"
+              left="8px"
+              top="120px"
+              borderRadius="30px"
+              bgColor="white"
+              w="52px"
+              h="52px"
+              border={`1px solid ${colors.divider}`}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                if (!scrollContainerRef) return;
+                scrollContainerRef.scrollLeft -= CARD_WIDTH + CARD_GAP;
+              }}
+            >
+              <Icon name="arrow-left" fill={colors.grey700} />
+            </Box>
+          )}
+          {showNextButton && !isSmallerThanPhone && (
+            <Box
+              as="button"
+              className="scroll-button"
+              position="absolute"
+              right="8px"
+              top="120px"
+              borderRadius="30px"
+              bgColor="white"
+              w="52px"
+              h="52px"
+              border={`1px solid ${colors.divider}`}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                if (!scrollContainerRef) return;
+                scrollContainerRef.scrollLeft += CARD_WIDTH + CARD_GAP;
+              }}
+            >
+              <Icon name="arrow-right" fill={colors.grey700} />
+            </Box>
+          )}
+        </Container>
+      </Box>
+      <i id={endId} />
+    </>
   );
 };
 

@@ -5,6 +5,9 @@ import type { Meta, StoryObj } from '@storybook/react';
 const meta = {
   title: 'HomepageBuilder/LightProjectCard',
   component: LightProjectCard,
+  parameters: {
+    chromatic: { disableSnapshot: false },
+  },
 } satisfies Meta<typeof LightProjectCard>;
 
 export default meta;

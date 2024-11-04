@@ -9,6 +9,9 @@ import type { Meta, StoryObj } from '@storybook/react';
 const meta = {
   title: 'HomepageBuilder/ProjectCarrousel',
   component: ProjectCarrousel,
+  parameters: {
+    chromatic: { disableSnapshot: false },
+  },
 } satisfies Meta<typeof ProjectCarrousel>;
 
 export default meta;
@@ -47,18 +50,26 @@ const ManyProjectsWrapper = ({ title }) => {
   const [hasMore, setHasMore] = useState(true);
 
   return (
-    <div style={{ width: '100%', maxWidth: '600px', padding: '8px' }}>
-      <ProjectCarrousel
-        title={title}
-        projects={data}
-        hasMore={hasMore}
-        onLoadMore={() => {
-          setTimeout(() => {
-            setData([...data, ...createData(data.length + 1)]);
-            setHasMore(false);
-          }, 2000);
-        }}
-      />
+    <div>
+      <button style={{ border: '1px solid grey', padding: '8px' }}>
+        Test button
+      </button>
+      <div style={{ width: '100%', maxWidth: '600px', padding: '8px' }}>
+        <ProjectCarrousel
+          title={title}
+          projects={data}
+          hasMore={hasMore}
+          onLoadMore={() => {
+            setTimeout(() => {
+              setData([...data, ...createData(data.length + 1)]);
+              setHasMore(false);
+            }, 2000);
+          }}
+        />
+      </div>
+      <button style={{ border: '1px solid grey', padding: '8px' }}>
+        Test button 2
+      </button>
     </div>
   );
 };
