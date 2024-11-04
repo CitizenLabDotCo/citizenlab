@@ -16,6 +16,7 @@ const GoBackButton = ({ onClick }: Props) => {
   return (
     <IconButton
       data-testid="goBackButton"
+      id="e2e-go-back-button"
       iconName="arrow-left"
       buttonType="button"
       iconColor={colors.textSecondary}

@@ -69,10 +69,6 @@ module IdKeycloak
       super + %i[first_name last_name]
     end
 
-    def enabled_for_verified_actions?
-      config[:enabled_for_verified_actions] || false
-    end
-
     def ui_method_name
       config[:ui_method_name] || name
     end

@@ -38,10 +38,7 @@ const TenantLogo = () => {
            */
           aria-label={formatMessage(messages.logoAltText)}
         >
-          {/* Used as main heading in case page has no headings for a11y.See https://html.com/semantic-markup/ */}
-          <h1>
-            <Logo src={tenantLogo} alt={formatMessage(messages.logoAltText)} />
-          </h1>
+          <Logo src={tenantLogo} alt={formatMessage(messages.logoAltText)} />
         </Link>
       );
     }

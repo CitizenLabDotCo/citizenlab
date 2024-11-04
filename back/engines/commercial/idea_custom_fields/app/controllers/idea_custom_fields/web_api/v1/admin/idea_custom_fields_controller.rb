@@ -110,7 +110,7 @@ module IdeaCustomFields
           options_params = field_params.delete :options
           if field_params[:id] && fields_by_id.key?(field_params[:id])
             field = fields_by_id[field_params[:id]]
-            next unless update_field! field, field_params, errors, index
+            next unless update_field!(field, field_params, errors, index)
           else
             field = create_field! field_params, errors, page_temp_ids_to_ids_mapping, index
             next unless field
@@ -164,6 +164,8 @@ module IdeaCustomFields
       field_params = idea_custom_field_service.remove_ignored_update_params field_params
       if field.errors.errors.empty?
         field.assign_attributes field_params
+        return true unless field.changed?
+
         SideFxCustomFieldService.new.before_update field, current_user
         if field.save
           SideFxCustomFieldService.new.after_update field, current_user
@@ -248,6 +250,7 @@ module IdeaCustomFields
     def update_option!(option, option_params, errors, field_index, option_index)
       update_params = option_params.except('image_id')
       option.assign_attributes update_params
+      return true unless option.changed?
 
       SideFxCustomFieldOptionService.new.before_update option, current_user
       if option.save

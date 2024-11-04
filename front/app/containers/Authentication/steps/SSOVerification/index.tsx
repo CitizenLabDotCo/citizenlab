@@ -12,7 +12,7 @@ import claveUnicaButtonMessages from 'components/UI/ClaveUnicaButton/messages';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import NemlogInButton from '../_components/NemLogInButton';
+import MitIdButton from '../_components/MitIdButton';
 import TextButton from '../_components/TextButton';
 import AuthProviderButton from '../AuthProviders/AuthProviderButton';
 import authProviderMessages from '../AuthProviders/messages';
@@ -33,16 +33,27 @@ const SSOVerification = ({ onClickSSO, onClickLogin }: Props) => {
   const isNemLogIn = verificationMethod.data.attributes.name === 'nemlog_in';
   const isClaveUnica =
     verificationMethod.data.attributes.name === 'clave_unica';
+  const isCriipto = verificationMethod.data.attributes.name === 'criipto';
 
   return (
     <Box>
       {isNemLogIn && (
-        <NemlogInButton
+        <MitIdButton
           last={false}
           grayBorder
           standardSSOBehavior
           onClickStandardSSO={() => {
             onClickSSO('nemlog_in');
+          }}
+        />
+      )}
+      {isCriipto && (
+        <MitIdButton
+          last={false}
+          grayBorder
+          standardSSOBehavior
+          onClickStandardSSO={() => {
+            onClickSSO('criipto');
           }}
         />
       )}
