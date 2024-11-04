@@ -223,8 +223,6 @@ resource 'Inputs' do
         expect(json_response_body[:included].first.dig(:attributes, :last_name)).to be_nil
         expect(json_response_body[:included].first.dig(:attributes, :slug)).to be_nil
       end
-
     end
-
   end
 end

@@ -27,7 +27,7 @@ module Analysis
 
         attribute :avatar, if: proc { |object|
           object.avatar
-        } do |object,params|
+        } do |object, params|
           object.avatar.versions.to_h { |k, v| [k.to_s, v.url] } if params[:view_private_attributes]
         end
       end
