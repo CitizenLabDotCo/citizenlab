@@ -17,6 +17,7 @@
   "app.components.AssignMultipleVotesControl.addVote": "ਵੋਟ ਸ਼ਾਮਲ ਕਰੋ",
   "app.components.AssignMultipleVotesControl.maxVotesPerIdeaReached": "ਤੁਸੀਂ ਪ੍ਰਤੀ ਵਿਚਾਰ {maxVotes} ਵੋਟਾਂ ਦੀ ਅਧਿਕਤਮ ਸੰਖਿਆ 'ਤੇ ਪਹੁੰਚ ਗਏ ਹੋ",
   "app.components.AssignMultipleVotesControl.maxVotesReached": "ਤੁਸੀਂ ਆਪਣੀਆਂ ਸਾਰੀਆਂ ਵੋਟਾਂ ਦੀ ਵਰਤੋਂ ਕੀਤੀ ਹੈ",
+  "app.components.AssignMultipleVotesControl.numberManualVotes2": "{manualVotes, plural, one {(1 ਔਫਲਾਈਨ ਸਮੇਤ)} other {(# ਔਫਲਾਈਨ ਸਮੇਤ)}}",
   "app.components.AssignMultipleVotesControl.phaseNotActive": "ਵੋਟਿੰਗ ਉਪਲਬਧ ਨਹੀਂ ਹੈ, ਕਿਉਂਕਿ ਇਹ ਪੜਾਅ ਕਿਰਿਆਸ਼ੀਲ ਨਹੀਂ ਹੈ।",
   "app.components.AssignMultipleVotesControl.removeVote": "ਵੋਟ ਹਟਾਓ",
   "app.components.AssignMultipleVotesControl.select": "ਚੁਣੋ",
@@ -1635,6 +1636,7 @@
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotPermitted": "ਬਦਕਿਸਮਤੀ ਨਾਲ, ਤੁਹਾਡੇ ਕੋਲ ਇਸ ਦਸਤਾਵੇਜ਼ ਦੀ ਸਮੀਖਿਆ ਕਰਨ ਦੇ ਅਧਿਕਾਰ ਨਹੀਂ ਹਨ।",
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotVerified": "ਇਸ ਦਸਤਾਵੇਜ਼ ਦੀ ਸਮੀਖਿਆ ਕਰਨ ਲਈ ਤੁਹਾਡੇ ਖਾਤੇ ਦੀ ਪੁਸ਼ਟੀ ਦੀ ਲੋੜ ਹੈ। {verificationLink}",
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledProjectInactive": "ਦਸਤਾਵੇਜ਼ ਹੁਣ ਉਪਲਬਧ ਨਹੀਂ ਹੈ, ਕਿਉਂਕਿ ਇਹ ਪ੍ਰੋਜੈਕਟ ਹੁਣ ਕਿਰਿਆਸ਼ੀਲ ਨਹੀਂ ਹੈ।",
+  "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBar.numberManualVoters2": "{manualVoters, plural, one {(1 ਔਫਲਾਈਨ ਸਮੇਤ)} other {(# ਔਫਲਾਈਨ ਸਮੇਤ)}}",
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBar.numberOfPicks": "{baskets, plural, one {1 ਪਿਕ} other {# ਪਿਕ}}",
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.budgetingTooltip1": "ਇਸ ਵਿਕਲਪ ਨੂੰ ਚੁਣਨ ਵਾਲੇ ਭਾਗੀਦਾਰਾਂ ਦੀ ਪ੍ਰਤੀਸ਼ਤਤਾ।",
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.votingTooltip": "ਇਸ ਵਿਕਲਪ ਨੂੰ ਪ੍ਰਾਪਤ ਹੋਈਆਂ ਕੁੱਲ ਵੋਟਾਂ ਦੀ ਪ੍ਰਤੀਸ਼ਤਤਾ।",
@@ -2122,6 +2124,10 @@
   "app.utils.votingMethodUtils.singleVotingUnlimitedEnded": "<b>{endDate}ਨੂੰ ਵੋਟਿੰਗ ਬੰਦ ਹੋਈ।</b> ਭਾਗੀਦਾਰ <b>ਜਿੰਨੇ ਮਰਜ਼ੀ ਵਿਕਲਪਾਂ ਲਈ ਵੋਟ ਪਾ ਸਕਦੇ ਹਨ।</b>",
   "app.utils.votingMethodUtils.singleVotingUnlimitedVotesYouCanVote": "ਤੁਸੀਂ ਜਿੰਨੇ ਮਰਜ਼ੀ ਵਿਕਲਪਾਂ ਲਈ ਵੋਟ ਕਰ ਸਕਦੇ ਹੋ।",
   "app.utils.votingMethodUtils.submitYourBudget": "ਆਪਣਾ ਬਜਟ ਜਮ੍ਹਾਂ ਕਰੋ",
+  "app.utils.votingMethodUtils.submittedBudgetCountText2": "ਵਿਅਕਤੀ ਨੇ ਆਪਣਾ ਬਜਟ ਔਨਲਾਈਨ ਜਮ੍ਹਾ ਕੀਤਾ",
+  "app.utils.votingMethodUtils.submittedBudgetsCountText2": "ਲੋਕਾਂ ਨੇ ਆਪਣੇ ਬਜਟ ਆਨਲਾਈਨ ਜਮ੍ਹਾ ਕਰਵਾਏ",
+  "app.utils.votingMethodUtils.submittedVoteCountText2": "ਵਿਅਕਤੀ ਨੇ ਆਪਣੀ ਵੋਟ ਆਨਲਾਈਨ ਜਮ੍ਹਾ ਕਰਵਾਈ",
+  "app.utils.votingMethodUtils.submittedVotesCountText2": "ਲੋਕਾਂ ਨੇ ਆਪਣੀਆਂ ਵੋਟਾਂ ਆਨਲਾਈਨ ਜਮ੍ਹਾਂ ਕਰਵਾਈਆਂ",
   "app.utils.votingMethodUtils.vote": "ਵੋਟ ਕਰੋ",
   "app.utils.votingMethodUtils.voteSubmittedWithIcon": "ਵੋਟ ਸਪੁਰਦ ਕੀਤੀ ਗਈ 🎉",
   "app.utils.votingMethodUtils.votes": "ਵੋਟਾਂ",
