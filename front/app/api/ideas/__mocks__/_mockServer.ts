@@ -59,7 +59,7 @@ export const ideaDataWithVotes: IIdeaData[] = [
       budget: 60,
       proposed_budget: 45,
       baskets_count: 10,
-      total_votes: 10,
+      total_votes: 60,
       votes_count: 60,
       action_descriptors: {
         editing_idea: {

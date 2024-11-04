@@ -101,7 +101,7 @@ const IdeaHeaderRow = ({
       ) => {
         return (
           <SortableHeaderCell {...props} sortAttributeName="votes_count">
-            <FormattedMessage {...messages.votes} />
+            <FormattedMessage {...messages.onlineVotes} />
           </SortableHeaderCell>
         );
       },
@@ -132,7 +132,9 @@ const IdeaHeaderRow = ({
       ) => {
         return (
           <SortableHeaderCell {...props} sortAttributeName="baskets_count">
-            <FormattedMessage {...messages.participatoryBudgettingPicks} />
+            <FormattedMessage
+              {...messages.participatoryBudgettingPicksOnline}
+            />
           </SortableHeaderCell>
         );
       },

@@ -50,6 +50,10 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.votes',
     defaultMessage: 'Votes',
   },
+  onlineVotes: {
+    id: 'app.components.admin.PostManager.onlineVotes',
+    defaultMessage: 'Online votes',
+  },
   offlineVotes: {
     id: 'app.components.admin.PostManager.offlineVotes',
     defaultMessage: 'Offline votes',
@@ -69,6 +73,10 @@ export default defineMessages({
   participatoryBudgettingPicks: {
     id: 'app.components.admin.PostManager.participatoryBudgettingPicks',
     defaultMessage: 'Picks',
+  },
+  participatoryBudgettingPicksOnline: {
+    id: 'app.components.admin.PostManager.participatoryBudgettingPicksOnline',
+    defaultMessage: 'Online picks',
   },
   timelineTab: {
     id: 'app.components.admin.PostManager.timelineTab',
