@@ -42,6 +42,18 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.publishedFinished1',
     defaultMessage: 'Published - Finished',
   },
+  draftStatus: {
+    id: 'app.containers.AdminPage.ProjectEdit.draftStatus',
+    defaultMessage: 'Draft',
+  },
+  publishedStatus: {
+    id: 'app.containers.AdminPage.ProjectEdit.publishedStatus',
+    defaultMessage: 'Published',
+  },
+  archivedStatus: {
+    id: 'app.containers.AdminPage.ProjectEdit.archivedStatus',
+    defaultMessage: 'Archived',
+  },
   participantsInfoTitle: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsInfoTitle',
     defaultMessage: 'Participants include:',

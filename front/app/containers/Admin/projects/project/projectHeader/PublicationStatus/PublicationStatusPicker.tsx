@@ -1,30 +1,23 @@
 import React from 'react';
 
-import { Radio, IconTooltip } from '@citizenlab/cl2-component-library';
+import { Radio } from '@citizenlab/cl2-component-library';
 
 import { PublicationStatus } from 'api/projects/types';
-
-import { SubSectionTitle } from 'components/admin/Section';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../messages';
-
-import { StyledSectionField } from './styling';
 
 interface Props {
   publicationStatus: PublicationStatus;
   handleStatusChange: (value: PublicationStatus) => void;
 }
 
-export default ({ publicationStatus, handleStatusChange }: Props) => (
-  <StyledSectionField>
-    <SubSectionTitle>
-      <FormattedMessage {...messages.statusLabel} />
-      <IconTooltip
-        content={<FormattedMessage {...messages.publicationStatusTooltip} />}
-      />
-    </SubSectionTitle>
+const PublicationStatusPicker = ({
+  publicationStatus,
+  handleStatusChange,
+}: Props) => (
+  <div>
     <Radio
       onChange={handleStatusChange}
       currentValue={publicationStatus}
@@ -52,5 +45,7 @@ export default ({ publicationStatus, handleStatusChange }: Props) => (
       className="e2e-projecstatus-archived"
       label={<FormattedMessage {...messages.archivedStatus} />}
     />
-  </StyledSectionField>
+  </div>
 );
+
+export default PublicationStatusPicker;
