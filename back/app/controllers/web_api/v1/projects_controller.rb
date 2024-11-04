@@ -62,12 +62,11 @@ class WebApi::V1::ProjectsController < ApplicationController
     subquery = policy_scope(Project)
       .joins('INNER JOIN admin_publications AS admin_publications ON admin_publications.publication_id = projects.id')
       .where(admin_publications: { publication_status: 'published' })
-      .joins('INNER JOIN phases AS phases ON phases.project_id = projects.id')
-      .where(
-        'phases.start_at <= ? AND (phases.end_at >= ? OR phases.end_at IS NULL) AND phases.participation_method != ?',
-        Time.zone.now.to_fs(:db), Time.zone.now.to_fs(:db), 'information'
-      )
-      .select('projects.*, phases.end_at AS phase_end_at')
+
+    subquery = projects_with_active_phase(subquery)
+      .joins('INNER JOIN phases AS active_phases ON active_phases.project_id = projects.id')
+      .where.not(phases: { participation_method: 'information' })
+      .select('projects.*')
 
     # Perform the SELECT DISTINCT on the outer query
     @projects = Project
@@ -87,6 +86,8 @@ class WebApi::V1::ProjectsController < ApplicationController
     pagination_limit = calculate_pagination_limit
 
     project_descriptor_pairs = {}
+    projects = []
+
     @projects.each do |project|
       service = Permissions::ProjectPermissionsService.new(
         project, current_user, user_requirements_service: user_requirements_service
@@ -95,13 +96,19 @@ class WebApi::V1::ProjectsController < ApplicationController
 
       if Permissions::ProjectPermissionsService.participation_possible?(action_descriptors)
         project_descriptor_pairs[project.id] = action_descriptors
+        projects << project
         break if project_descriptor_pairs.size >= pagination_limit
       end
     end
 
     # # Step 2: Use these to filter out projects
     project_ids = project_descriptor_pairs.keys
-    @projects = @projects.where(id: project_ids)
+
+    # We need to find current phases again here, to be able to order by them.
+    @projects = Project.where(id: project_ids)
+
+    @projects = projects_with_active_phase(@projects)
+      .order('phase_end_at ASC NULLS LAST')
 
     # `includes` tries to be smart & use joins here, but it makes the query complex and slow. So, we use `preload`.
     @projects = paginate @projects
@@ -118,6 +125,16 @@ class WebApi::V1::ProjectsController < ApplicationController
       params: jsonapi_serializer_params.merge(project_descriptor_pairs: project_descriptor_pairs),
       include: %i[project_images current_phase]
     )
+  end
+
+  def projects_with_active_phase(projects)
+    projects
+      .joins('LEFT JOIN phases AS phases ON phases.project_id = projects.id')
+      .where(
+        'phases.start_at <= ? AND (phases.end_at >= ? OR phases.end_at IS NULL)',
+        Time.zone.now.to_fs(:db), Time.zone.now.to_fs(:db)
+      )
+      .select('projects.*, phases.end_at AS phase_end_at')
   end
 
   def show
