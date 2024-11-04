@@ -41,7 +41,7 @@ class WebApi::V1::ProjectsController < ApplicationController
       user_followers: user_followers,
       timeline_active: TimelineService.new.timeline_active_on_collection(@projects.to_a),
       visible_children_count_by_parent_id: {}, # projects don't have children
-      user_requirements_service: user_requirements_service
+      user_requirements_service: Permissions::UserRequirementsService.new(check_groups_and_verification: false)
     }
 
     render json: linked_json(
@@ -57,61 +57,11 @@ class WebApi::V1::ProjectsController < ApplicationController
   # and in an active participatory phase (where user can do something).
   # Ordered by the end date of the current phase, soonest first (nulls last).
   def index_projects_with_active_participatory_phase
-    # Projects user can see, with active participatory (not information) phase & include the phases.end_at column
-    # We could use the ProjectPermissionSevice step to filter for active phases, but doing it here is more efficient.
-    subquery = policy_scope(Project)
-      .joins('INNER JOIN admin_publications AS admin_publications ON admin_publications.publication_id = projects.id')
-      .where(admin_publications: { publication_status: 'published' })
+    projects = policy_scope(Project)
+    projects_and_descriptors = ProjectsFinderService.new.participation_possible(projects, current_user, params)
+    projects = projects_and_descriptors[:projects]
 
-    subquery = projects_with_active_phase(subquery)
-      .joins('INNER JOIN phases AS active_phases ON active_phases.project_id = projects.id')
-      .where.not(phases: { participation_method: 'information' })
-      .select('projects.*')
-
-    # Perform the SELECT DISTINCT on the outer query
-    @projects = Project
-      .from(subquery, :projects)
-      .distinct
-      .order('phase_end_at ASC NULLS LAST')
-      .preload(phases: { permissions: [:groups] })
-
-    # Projects user can participate in, or where such participation could (probably) be made possible by user
-    # (e.g. user not signed in).
-    # Unfortunately, this breaks the query chain, so we have to start a new one after this.
-    # Also, we will need the action descriptors again later, so we will store them.
-
-    # # Step 1: Create pairs of project ids and action descriptors.
-    # # Since this is the last filtering step, we will keep going
-    # # until we reach the limit required for pagination.
-    pagination_limit = calculate_pagination_limit
-
-    project_descriptor_pairs = {}
-    projects = []
-
-    @projects.each do |project|
-      service = Permissions::ProjectPermissionsService.new(
-        project, current_user, user_requirements_service: user_requirements_service
-      )
-      action_descriptors = service.action_descriptors
-
-      if Permissions::ProjectPermissionsService.participation_possible?(action_descriptors)
-        project_descriptor_pairs[project.id] = action_descriptors
-        projects << project
-        break if project_descriptor_pairs.size >= pagination_limit
-      end
-    end
-
-    # # Step 2: Use these to filter out projects
-    project_ids = project_descriptor_pairs.keys
-
-    # We need to find current phases again here, to be able to order by them.
-    @projects = Project.where(id: project_ids)
-
-    @projects = projects_with_active_phase(@projects)
-      .order('phase_end_at ASC NULLS LAST')
-
-    # `includes` tries to be smart & use joins here, but it makes the query complex and slow. So, we use `preload`.
-    @projects = paginate @projects
+    @projects = paginate projects
     @projects = @projects.preload(
       :project_images,
       phases: [:report]
@@ -122,19 +72,9 @@ class WebApi::V1::ProjectsController < ApplicationController
     render json: linked_json(
       @projects,
       WebApi::V1::ProjectMiniSerializer,
-      params: jsonapi_serializer_params.merge(project_descriptor_pairs: project_descriptor_pairs),
+      params: jsonapi_serializer_params.merge(project_descriptor_pairs: projects_and_descriptors[:descriptor_pairs]),
       include: %i[project_images current_phase]
     )
-  end
-
-  def projects_with_active_phase(projects)
-    projects
-      .joins('LEFT JOIN phases AS phases ON phases.project_id = projects.id')
-      .where(
-        'phases.start_at <= ? AND (phases.end_at >= ? OR phases.end_at IS NULL)',
-        Time.zone.now.to_fs(:db), Time.zone.now.to_fs(:db)
-      )
-      .select('projects.*, phases.end_at AS phase_end_at')
   end
 
   def show
@@ -298,17 +238,6 @@ class WebApi::V1::ProjectsController < ApplicationController
       # Validation errors will appear in the Sentry error 'Additional Data'
       ErrorReporter.report_msg("Project change would lead to inconsistencies! (id: #{project.id})", extra: errors || {})
     end
-  end
-
-  def user_requirements_service
-    @user_requirements_service ||= Permissions::UserRequirementsService.new(check_groups_and_verification: false)
-  end
-
-  def calculate_pagination_limit
-    page_size = (params.dig(:page, :size) || 500).to_i
-    page_number = (params.dig(:page, :number) || 1).to_i
-
-    page_size * page_number
   end
 end
 
