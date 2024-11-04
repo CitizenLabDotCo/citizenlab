@@ -368,6 +368,7 @@ const votingPhase: IPhaseData = {
     voting_max_votes_per_idea: 1,
     baskets_count: 0,
     votes_count: 100,
+    total_votes_amount: 100,
     voting_term_singular_multiloc: {
       en: 'vote',
       'nl-BE': 'stem',
@@ -387,7 +388,6 @@ const votingPhase: IPhaseData = {
       'da-DK': 'afstemninger',
     },
     report_public: false,
-    total_votes_amount: 0,
   },
   relationships: {
     permissions: {
