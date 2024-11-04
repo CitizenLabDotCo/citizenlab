@@ -82,7 +82,7 @@ const MainHeader = () => {
       // Positive value means we've scrolled down
       const currentPosition = document.documentElement.scrollTop;
 
-      // not scrolled/at the top or downscroll
+      // not scrolled yet/still at the top or downscroll
       if (currentPosition <= 0 || currentPosition > lastScrollTop) {
         setShowMobileStickyNav(false);
         // upscroll
