@@ -1,9 +1,20 @@
 class ProjectsFinderService
+  def participation_possible(projects, current_user, params)
+    Rails.cache.fetch(
+      "#{projects.cache_key}projects_finder_service/participation_possible/",
+      expires_in: 1.hour
+    ) do
+      participation_possible_uncached(projects, current_user, params)
+    end
+  end
+
+  private
+
   # For use with 'Open to participation' homepage widget.
   # Returns all published or archived projects that are visible to user
   # and in an active participatory phase (where user can do something).
   # Ordered by the end date of the current phase, soonest first (nulls last).
-  def participation_possible(projects, current_user, params)
+  def participation_possible_uncached(projects, current_user, params)
     subquery = projects
       .joins('INNER JOIN admin_publications AS admin_publications ON admin_publications.publication_id = projects.id')
       .where(admin_publications: { publication_status: 'published' })
@@ -24,12 +35,9 @@ class ProjectsFinderService
     # Projects user can participate in, or where such participation could (probably) be made possible by user
     # (e.g. user not signed in).
     # Unfortunately, this breaks the query chain, so we have to start a new one after this.
-    # Also, we will pass the action descriptors to the serializer to avoid needing to get them again when serializing,
-    # so we will return them along with the filtered projects.
 
     # Step 1: Create pairs of project ids and action descriptors.
-    # Since this is the last filtering step, we will keep going
-    # until we reach the limit required for pagination.
+    # Since this is the last filtering step, we will keep going, until we reach the limit required for pagination.
     pagination_limit = calculate_pagination_limit(params)
 
     project_descriptor_pairs = {}
@@ -51,10 +59,12 @@ class ProjectsFinderService
     # # Step 2: Use project_descriptor_pairs keys (project IDs) to filter projects
     projects = Project.where(id: project_descriptor_pairs.keys)
 
-    # We need to join with active phases again here, to be able to order by their end dates.
+    # We need to join with active phases again here, to be reorder by their end dates.
     projects = projects_with_active_phase(projects)
       .order('phase_end_at ASC NULLS LAST')
 
+    # We will pass the action descriptors to the serializer to avoid needing to get them again when serializing,
+    # so we return them along with the filtered projects.
     { projects: projects, descriptor_pairs: project_descriptor_pairs }
   end
 
