@@ -8,6 +8,7 @@ import {
   colors,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
+import useInstanceId from 'component-library/hooks/useInstanceId';
 import { debounce } from 'lodash-es';
 import { useInView } from 'react-intersection-observer';
 import styled from 'styled-components';
@@ -72,6 +73,8 @@ const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
   const [showNextButton, setShowNextButton] = useState(false);
   const isSmallerThanPhone = useBreakpoint('phone');
   const { formatMessage } = useIntl();
+  const instanceId = useInstanceId();
+  const endId = `end-carrousel-${instanceId}`;
 
   const { ref } = useInView({
     onChange: (inView) => {
@@ -119,7 +122,7 @@ const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
 
   const skipCarrouselIfEscape = (e: React.KeyboardEvent<any>) => {
     if (e.code === 'Escape') {
-      window.location.href = '#end-carrousel';
+      window.location.href = `#${endId}`;
     }
   };
 
@@ -146,7 +149,7 @@ const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
       >
         <Container w="100%" maxWidth="1200px" position="relative">
           <SkipButton
-            href={`#end-carrousel`}
+            href={`#${endId}`}
             tabIndex={0}
             onKeyDown={skipCarrouselIfEscape}
           >
@@ -239,7 +242,7 @@ const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
           )}
         </Container>
       </Box>
-      <i id="end-carrousel" />
+      <i id={endId} />
     </>
   );
 };
