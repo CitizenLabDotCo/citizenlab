@@ -1298,7 +1298,7 @@
   "app.containers.IdeasNewPage.projectMetaTitle1": "Προσθήκη νέου έργου στο έργο | {orgName}",
   "app.containers.IdeasNewPage.proposalMetaTitle1": "Προσθήκη νέας πρότασης στο έργο | {orgName}",
   "app.containers.IdeasNewPage.questionMetaTitle1": "Προσθήκη νέας ερώτησης στο έργο | {orgName}",
-  "app.containers.IdeasNewPage.surveyNewMetaTitle1": "Προσθέστε την απάντηση της έρευνας στο έργο | {orgName}",
+  "app.containers.IdeasNewPage.surveyNewMetaTitle2": "{surveyTitle} | {orgName}",
   "app.containers.IdeasShow.Cosponsorship.co-sponsorAcceptInvitation": "Αποδοχή πρόσκλησης",
   "app.containers.IdeasShow.Cosponsorship.co-sponsorInvitation": "Πρόσκληση για συν-χορηγία",
   "app.containers.IdeasShow.Cosponsorship.co-sponsors": "Συν-χορηγοί",

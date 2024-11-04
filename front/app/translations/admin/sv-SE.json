@@ -2019,7 +2019,6 @@
   "app.containers.AdminPage.SettingsPage.linkToActivityPageText": "Aktivitet",
   "app.containers.AdminPage.SettingsPage.logo": "Logotyp",
   "app.containers.AdminPage.SettingsPage.noHeader": "Ladda upp en rubrikbild",
-  "app.containers.AdminPage.SettingsPage.noLogo": "Ladda upp en logotyp",
   "app.containers.AdminPage.SettingsPage.no_button": "Ingen knapp",
   "app.containers.AdminPage.SettingsPage.organizationName": "Namn på stad eller organisation",
   "app.containers.AdminPage.SettingsPage.organizationNameMultilocError": "Ange ett organisationsnamn eller en stad för alla språk.",

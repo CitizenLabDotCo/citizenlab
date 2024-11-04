@@ -1298,7 +1298,7 @@
   "app.containers.IdeasNewPage.projectMetaTitle1": "پروجیکٹ میں نیا پروجیکٹ شامل کریں | {orgName}",
   "app.containers.IdeasNewPage.proposalMetaTitle1": "پروجیکٹ میں نئی تجویز شامل کریں | {orgName}",
   "app.containers.IdeasNewPage.questionMetaTitle1": "پروجیکٹ میں نیا سوال شامل کریں | {orgName}",
-  "app.containers.IdeasNewPage.surveyNewMetaTitle1": "پروجیکٹ میں سروے کا جواب شامل کریں | {orgName}",
+  "app.containers.IdeasNewPage.surveyNewMetaTitle2": "{surveyTitle} | {orgName}",
   "app.containers.IdeasShow.Cosponsorship.co-sponsorAcceptInvitation": "دعوت قبول کریں۔",
   "app.containers.IdeasShow.Cosponsorship.co-sponsorInvitation": "شریک کفالت کی دعوت",
   "app.containers.IdeasShow.Cosponsorship.co-sponsors": "شریک سپانسرز",

@@ -2019,7 +2019,6 @@
   "app.containers.AdminPage.SettingsPage.linkToActivityPageText": "Aktivnosti",
   "app.containers.AdminPage.SettingsPage.logo": "Logo",
   "app.containers.AdminPage.SettingsPage.noHeader": "Molimo vas postavite header sliku",
-  "app.containers.AdminPage.SettingsPage.noLogo": "Molimo vas postavite logo",
   "app.containers.AdminPage.SettingsPage.no_button": "Nema dugmeta",
   "app.containers.AdminPage.SettingsPage.organizationName": "Ime grada ili organizacije",
   "app.containers.AdminPage.SettingsPage.organizationNameMultilocError": "Наведите назив организације или град за све језике.",
