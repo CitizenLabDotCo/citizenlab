@@ -65,7 +65,7 @@ const SkipLinkStyled = styled.a`
   background: ${colors.black};
   color: ${colors.white};
   padding: 8px;
-  z-index: 1000;
+  z-index: 10000;
   text-align: center;
   text-decoration: none;
   &:focus {
