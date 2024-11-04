@@ -100,7 +100,7 @@ class ParticipantsService
   # Returns the total count of all project participants including anonymous posts - cached
   def project_participants_count(project)
     is_active = TimelineService.new.timeline_active(project) == :present
-    expires_in = is_active ? 1.hour : 1.day
+    expires_in = is_active ? 30.minutes : 1.day
 
     Rails.cache.fetch("#{project.cache_key}/participant_count", expires_in: expires_in) do
       project_participants_count_uncached(project)
