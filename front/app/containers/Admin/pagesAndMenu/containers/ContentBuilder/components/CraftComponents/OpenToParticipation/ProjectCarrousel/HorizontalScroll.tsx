@@ -7,7 +7,7 @@ import { CARD_GAP } from './constants';
 
 const StyledContainer = styled(Box)`
   display: flex;
-  gap: ${CARD_GAP}px;
+  // gap: ${CARD_GAP}px;
   flex-direction: row;
   justify-content: flex-start;
   flex-wrap: nowrap;
