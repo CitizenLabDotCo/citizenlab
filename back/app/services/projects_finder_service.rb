@@ -19,9 +19,11 @@ class ProjectsFinderService
   private
 
   # For use with 'Open to participation' homepage widget.
-  # Returns all published projects that are visible to user
-  # and in an active participatory phase (where user can probably do something).
-  # Ordered by the end date of the current phase, soonest first (nulls last).
+  # Returns ActiveRecord collection of published projects that are visible to user
+  # and in an active participatory phase (where user can probably do something),
+  # ordered by the end date of the current phase, soonest first (nulls last).
+  # Also returns action descriptors for each project, to avoid getting them again when serializing.
+  # => { projects: [Project], descriptor_pairs: { <project.id>: { <action_descriptors> }, ... } }
   def participation_possible_uncached
     subquery = @projects
       .joins('INNER JOIN admin_publications AS admin_publications ON admin_publications.publication_id = projects.id')
@@ -59,7 +61,7 @@ class ProjectsFinderService
       break if accu.size >= pagination_limit
     end
 
-    # # Step 2: Use project_descriptor_pairs keys (project IDs) to filter projects
+    # Step 2: Use project_descriptor_pairs keys (project IDs) to filter projects
     projects = Project.where(id: project_descriptor_pairs.keys)
 
     # We need to join with active phases again here, to be reorder by their end dates.
