@@ -25,6 +25,10 @@ export default defineMessages({
     id: 'app.components.AuthProviders.continueWithNemlogIn',
     defaultMessage: 'Continue with MitID',
   },
+  continueWithIdAustria: {
+    id: 'app.components.AuthProviders.continueWithIdAustria',
+    defaultMessage: 'Continue with ID Austria',
+  },
   continueWithAzure: {
     id: 'app.components.AuthProviders.continueWithAzure',
     defaultMessage: 'Continue with {azureProviderName}',

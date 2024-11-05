@@ -34,6 +34,7 @@ const SSOVerification = ({ onClickSSO, onClickLogin }: Props) => {
   const isClaveUnica =
     verificationMethod.data.attributes.name === 'clave_unica';
   const isCriipto = verificationMethod.data.attributes.name === 'criipto';
+  const isIdAustria = verificationMethod.data.attributes.name === 'id_austria';
 
   return (
     <Box>
@@ -78,6 +79,18 @@ const SSOVerification = ({ onClickSSO, onClickLogin }: Props) => {
           onContinue={onClickSSO}
         >
           <FormattedMessage {...authProviderMessages.continueWithFakeSSO} />
+        </AuthProviderButton>
+      )}
+      {isIdAustria && (
+        <AuthProviderButton
+          icon="idaustria"
+          flow="signup"
+          showConsentOnFlow="signin"
+          authProvider="id_austria"
+          id="e2e-verified-action-id-austria-button"
+          onContinue={onClickSSO}
+        >
+          <FormattedMessage {...authProviderMessages.continueWithIdAustria} />
         </AuthProviderButton>
       )}
       <Text mt="20px" mb="0">

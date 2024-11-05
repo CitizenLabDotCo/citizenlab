@@ -354,11 +354,10 @@ module MultiTenancy
                 },
                 {
                   name: 'id_austria',
-                  domain: 'cl-test.id_austria.id',
-                  environment: 'test',
                   client_id: ENV.fetch('DEFAULT_ID_AUSTRIA_CLIENT_ID', 'fake id'),
                   client_secret: ENV.fetch('DEFAULT_ID_AUSTRIA_CLIENT_SECRET', 'fake secret'),
-                  ui_method_name: 'ID Austria'
+                  ui_method_name: 'ID Austria',
+                  enabled_for_verified_actions: true
                 }
               ]
             },

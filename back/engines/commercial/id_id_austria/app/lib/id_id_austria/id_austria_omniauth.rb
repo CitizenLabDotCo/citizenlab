@@ -19,30 +19,21 @@ module IdIdAustria
 
       # NOTE: OmniAuth::Strategies::OpenIDConnect has been monkey patched especially for this Auth method
       # Why? Gem does not support OpenID Connect without a userinfo endpoint
-
       options = env['omniauth.strategy'].options
+
+      # Get configuration from https://eid.oesterreich.gv.at/.well-known/openid-configuration
+      options[:discovery] = true
       options[:scope] = %i[openid profile]
-
-      # TODO: Can we turn back on auto discovery?
-      # it should get configuration from the default https://eid.oesterreich.gv.at/.well-known/openid-configuration
-      # options[:discovery] = true
-
-      options[:response_type] = :code # does this mean no userinfo_endpoint? TODO: Try monkey patching the gem
-      options[:issuer] = issuer
-      options[:client_auth_method] = 'jwks' # added because of invalid_grant :: Invalid grant
-      options[:client_signing_alg] = :RS256
-      options[:require_state] = true
       options[:response_type] = :code
+      options[:issuer] = issuer
+      options[:client_auth_method] = 'jwks'
       options[:client_options] = {
         identifier: config[:client_id],
         secret: config[:client_secret],
         scheme: 'https',
         host: host,
         port: 443,
-        redirect_uri: "#{configuration.base_backend_uri}/auth/id_austria/callback",
-        authorization_endpoint: "#{issuer}/auth/idp/profile/oidc/authorize",
-        token_endpoint: "#{issuer}/auth/idp/profile/oidc/token",
-        jwks_uri: "#{issuer}/auth/idp/profile/oidc/keyset"
+        redirect_uri: "#{configuration.base_backend_uri}/auth/id_austria/callback"
       }
     end
 
