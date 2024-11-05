@@ -1701,7 +1701,7 @@
   "app.containers.AdminPage.ProjectEdit.projectTypeWarning": "Projekta tipu vēlāk nevar mainīt.",
   "app.containers.AdminPage.ProjectEdit.projectVisibilitySubtitle": "Varat iestatīt, lai projekts būtu neredzams noteiktiem lietotājiem.",
   "app.containers.AdminPage.ProjectEdit.projectVisibilityTitle": "Projekta redzamība",
-  "app.containers.AdminPage.ProjectEdit.publicationStatusWarning": "Vai meklējat projekta statusu? Tagad to jebkurā laikā varat mainīt tieši no projekta lapas galvenes virsraksta.",
+  "app.containers.AdminPage.ProjectEdit.publicationStatusWarningMessage": "Vai meklējat projekta statusu? Tagad to jebkurā laikā varat mainīt tieši no projekta lapas galvenes.",
   "app.containers.AdminPage.ProjectEdit.publishedExplanation": "Publicētie projekti ir redzami visiem lietotājiem vai viedās grupas apakškopai, ja tā ir izvēlēta.",
   "app.containers.AdminPage.ProjectEdit.publishedStatus": "Publicēts",
   "app.containers.AdminPage.ProjectEdit.purposes": "Mērķi",
