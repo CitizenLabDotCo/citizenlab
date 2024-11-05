@@ -2029,7 +2029,6 @@
   "app.containers.AdminPage.SettingsPage.linkToActivityPageText": "النشاط",
   "app.containers.AdminPage.SettingsPage.logo": "الشعار",
   "app.containers.AdminPage.SettingsPage.noHeader": "يُرجى تحميل صورة للترويسة",
-  "app.containers.AdminPage.SettingsPage.noLogo": "يُرجى تحميل شعار",
   "app.containers.AdminPage.SettingsPage.no_button": "لا يوجد زر",
   "app.containers.AdminPage.SettingsPage.organizationName": "اسم المدينة أو المؤسسة",
   "app.containers.AdminPage.SettingsPage.organizationNameMultilocError": "أدخل اسم منظمة أو مدينة لجميع اللغات.",
