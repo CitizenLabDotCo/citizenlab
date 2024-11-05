@@ -1701,6 +1701,7 @@
   "app.containers.AdminPage.ProjectEdit.projectTypeWarning": "Het projecttype kan later niet meer worden gewijzigd.",
   "app.containers.AdminPage.ProjectEdit.projectVisibilitySubtitle": "Je kunt het project zo instellen dat het onzichtbaar is voor bepaalde gebruikers.",
   "app.containers.AdminPage.ProjectEdit.projectVisibilityTitle": "Zichtbaarheid van het project",
+  "app.containers.AdminPage.ProjectEdit.publicationStatusWarning": "Op zoek naar de projectstatus? Nu kun je die op elk moment direct wijzigen via de kop van de projectpagina hierboven.",
   "app.containers.AdminPage.ProjectEdit.publishedExplanation": "Gepubliceerde projecten zijn zichtbaar voor alle gebruikers of voor een deelverzameling van slimme groepen indien geselecteerd.",
   "app.containers.AdminPage.ProjectEdit.publishedStatus": "Gepubliceerd",
   "app.containers.AdminPage.ProjectEdit.purposes": "Doelstellingen",
