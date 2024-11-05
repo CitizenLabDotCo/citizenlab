@@ -234,6 +234,14 @@ const AdminProjectsProjectGeneral = () => {
     setSubmitState('enabled');
   };
 
+  const handleHeaderBgAltTextChange = (altText: Multiloc) => {
+    setProjectAttributesDiff((projectAttributesDiff) => ({
+      ...projectAttributesDiff,
+      header_bg_alt_text_multiloc: altText,
+    }));
+    setSubmitState('enabled');
+  };
+
   const handleProjectCardImageOnAdd = (projectImages: UploadFile[]) => {
     setSubmitState('enabled');
     setProjectCardImage(projectImages[0]);
@@ -594,7 +602,9 @@ const AdminProjectsProjectGeneral = () => {
             </SubSectionTitle>
             <HeaderBgUploader
               imageUrl={project?.data.attributes.header_bg.large}
+              headerImageAltText={projectAttrs.header_bg_alt_text_multiloc}
               onImageChange={handleHeaderBgChange}
+              onHeaderImageAltTextChange={handleHeaderBgAltTextChange}
             />
           </SectionField>
 
@@ -634,12 +644,10 @@ const AdminProjectsProjectGeneral = () => {
                 />
               </SubSectionTitle>
               <StyledInputMultiloc
-                id="project-title"
                 type="text"
                 valueMultiloc={projectCardImageAltText}
                 label={<FormattedMessage {...messages.altText} />}
                 onChange={handleAltTextMultilocOnChange}
-                errorMultiloc={titleError}
               />
             </StyledSectionField>
           )}
