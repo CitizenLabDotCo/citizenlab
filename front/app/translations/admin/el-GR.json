@@ -1314,7 +1314,6 @@
   "app.containers.AdminPage.SettingsPage.linkToActivityPageText": "Activity",
   "app.containers.AdminPage.SettingsPage.logo": "Λογότυπο",
   "app.containers.AdminPage.SettingsPage.noHeader": "Παρακαλούμε ανεβάστε μια εικόνα κεφαλίδας (1440 x 480 px)",
-  "app.containers.AdminPage.SettingsPage.noLogo": "Παρακαλούμε ανεβάστε ένα λογότυπο",
   "app.containers.AdminPage.SettingsPage.no_button": "Δεν υπάρχει κουμπί",
   "app.containers.AdminPage.SettingsPage.organizationName": "Όνομα πόλης ή οργανισμού",
   "app.containers.AdminPage.SettingsPage.organizationNameMultilocError": "Provide an organization name or city for all languages.",

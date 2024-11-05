@@ -51,9 +51,5 @@ module IdClaveUnica
     def locked_custom_fields
       []
     end
-
-    def enabled_for_verified_actions?
-      config[:enabled_for_verified_actions] || false
-    end
   end
 end

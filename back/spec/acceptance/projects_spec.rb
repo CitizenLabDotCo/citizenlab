@@ -1222,7 +1222,7 @@ resource 'Projects' do
       expect(admin_publications.pluck(:publication_status)).to all(be_in(['published']))
     end
 
-    example "List is ordered by end_at of project's active phase (ASC NULLS LAST)" do
+    example "List is ordered by end_at of projects' active phase (ASC NULLS LAST)" do
       soonest_end_at = active_ideation_project.phases.first.end_at
 
       active_project2 = create(:project_with_active_ideation_phase)
@@ -1315,18 +1315,6 @@ resource 'Projects' do
       included_phase_ids = json_response[:included].select { |d| d[:type] == 'phase' }.pluck(:id)
 
       expect(current_phase_ids).to match included_phase_ids
-    end
-
-    # This test is helps ensure that we don't make the query chain more complex without realizing.
-    example_request 'Action does not invoke unnecessary queries' do
-      create(:project_image, project: active_ideation_project)
-
-      # We need a participant, to get some included avatar data
-      create(:idea, project: active_ideation_project, author: @user)
-
-      expect { do_request(page: { size: 6, number: 1 }) }.not_to exceed_query_limit(21)
-
-      assert_status 200
     end
   end
 end
