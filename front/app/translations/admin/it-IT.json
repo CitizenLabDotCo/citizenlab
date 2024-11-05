@@ -2023,7 +2023,6 @@
   "app.containers.AdminPage.SettingsPage.linkToActivityPageText": "Attività",
   "app.containers.AdminPage.SettingsPage.logo": "Logo",
   "app.containers.AdminPage.SettingsPage.noHeader": "Please upload a header image",
-  "app.containers.AdminPage.SettingsPage.noLogo": "Carica un logo",
   "app.containers.AdminPage.SettingsPage.no_button": "No button",
   "app.containers.AdminPage.SettingsPage.organizationName": "Name of city or organization",
   "app.containers.AdminPage.SettingsPage.organizationNameMultilocError": "Provide an organization name or city for all languages.",
