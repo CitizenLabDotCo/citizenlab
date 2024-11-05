@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { media, isRtl, fontSizes } from '@citizenlab/cl2-component-library';
+import { media, isRtl, colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
@@ -31,17 +31,11 @@ const HeaderContent = styled.div`
   padding-bottom: 20px;
   padding-left: 75px;
   padding-right: 75px;
+  color: ${colors.white};
 
   ${isRtl`
     flex-direction: row-reverse;
   `}
-
-  h2 {
-    color: #fff;
-    font-size: ${fontSizes.xxl}px;
-    line-height: 33px;
-    font-weight: 400;
-  }
 
   ${media.tablet`
     text-align: center;

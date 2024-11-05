@@ -33,7 +33,7 @@ export const Container = styled.div<{
 `;
 
 export const HeadingFontStyle = css`
-  font-weight: ${({ theme }) => theme.signedOutHeaderTitleFontWeight || 600};
+  font-weight: ${({ theme }) => theme.signedOutHeaderTitleFontWeight || 'bold'};
   line-height: normal;
 `;
 
@@ -78,7 +78,8 @@ export const HeaderSubtitle = styled(H2)<{
       : theme.colors.tenantPrimary};
   font-size: ${fontSizes.l}px;
   text-align: ${({ align }) => align};
-  text-decoration: none;
+  text-decoration: normal;
+  font-weight: 400;
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;

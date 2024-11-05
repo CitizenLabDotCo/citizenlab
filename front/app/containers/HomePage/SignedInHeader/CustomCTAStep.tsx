@@ -33,7 +33,7 @@ const CustomCTAStep = ({ onSkip, currentOnboardingCampaignName }: Props) => {
       >
         <HeaderContent id="e2e-signed-in-header-custom-cta">
           <Left>
-            <H2 m="0">
+            <H2 m="0" color="white">
               <T
                 value={onboardingCampaign.data.attributes.cta_message_multiloc}
                 supportHtml

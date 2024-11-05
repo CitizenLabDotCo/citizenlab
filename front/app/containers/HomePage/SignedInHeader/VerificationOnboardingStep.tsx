@@ -63,7 +63,7 @@ const VerificationOnboardingStep = ({
                 <ShieldIcon name="shield-check" />
               </AvatarAndShield>
             </Icons>
-            <H2 m="0">
+            <H2 m="0" color="white">
               <FormattedMessage {...messages.verifyYourIdentity} />
             </H2>
           </Left>

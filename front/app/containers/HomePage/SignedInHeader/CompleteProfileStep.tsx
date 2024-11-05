@@ -55,7 +55,7 @@ const CompleteProfileStep = ({
               />
               <CompleteProfileIcon name="edit" fill="#fff" ariaHidden />
             </Icons>
-            <H2>
+            <H2 color="white">
               <FormattedMessage
                 {...messages.completeYourProfile}
                 values={{ firstName: authUser.data.attributes.first_name }}
