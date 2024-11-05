@@ -15,6 +15,7 @@ import {
 import useAddProjectFolderImage from 'api/project_folder_images/useAddProjectFolderImage';
 import useDeleteProjectFolderImage from 'api/project_folder_images/useDeleteProjectFolderImage';
 import useProjectFolderImages from 'api/project_folder_images/useProjectFolderImages';
+import useUpdateProjectFolderImage from 'api/project_folder_images/useUpdateProjectFolderImage';
 import useAddProjectFolder from 'api/project_folders/useAddProjectFolder';
 import useProjectFolderById from 'api/project_folders/useProjectFolderById';
 import useUpdateProjectFolder from 'api/project_folders/useUpdateProjectFolder';
@@ -80,6 +81,8 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     folderId: projectFolderId,
   });
   const { mutateAsync: addProjectFolderImage } = useAddProjectFolderImage();
+  const { mutateAsync: updateProjectFolderImage } =
+    useUpdateProjectFolderImage();
   const { mutateAsync: deleteProjectFolderImage } =
     useDeleteProjectFolderImage();
 
@@ -335,6 +338,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
                       ? addProjectFolderImage({
                           folderId: projectFolder.data.id,
                           base64: croppedFolderCardBase64,
+                          alt_text_multiloc: folderCardImageAltText,
                         })
                       : null;
 
@@ -381,6 +385,15 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
                   alt_text_multiloc: folderCardImageAltText,
                 })
               : null;
+            const cardToEditPromise =
+              folderCardImage && folderCardImage.id
+                ? updateProjectFolderImage({
+                    imageId: folderCardImage.id,
+                    folderId: projectFolder.data.id,
+                    base64: folderCardImage.base64,
+                    alt_text_multiloc: folderCardImageAltText,
+                  })
+                : null;
             const cardToRemovePromises =
               folderCardImageToRemove?.id &&
               deleteProjectFolderImage({
@@ -403,6 +416,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
 
             await Promise.all<any>([
               cardToAddPromise,
+              cardToEditPromise,
               cardToRemovePromises,
               ...filesToAddPromises,
               ...filesToRemovePromises,
