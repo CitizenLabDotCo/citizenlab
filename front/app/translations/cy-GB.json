@@ -1298,7 +1298,7 @@
   "app.containers.IdeasNewPage.projectMetaTitle1": "Ychwanegu prosiect newydd i'r prosiect | {orgName}",
   "app.containers.IdeasNewPage.proposalMetaTitle1": "Ychwanegu cynnig newydd i'r prosiect | {orgName}",
   "app.containers.IdeasNewPage.questionMetaTitle1": "Ychwanegu cwestiwn newydd i'r prosiect | {orgName}",
-  "app.containers.IdeasNewPage.surveyNewMetaTitle1": "Ychwanegu ymateb arolwg i'r prosiect | {orgName}",
+  "app.containers.IdeasNewPage.surveyNewMetaTitle2": "{surveyTitle} | {orgName}",
   "app.containers.IdeasShow.Cosponsorship.co-sponsorAcceptInvitation": "Derbyn gwahoddiad",
   "app.containers.IdeasShow.Cosponsorship.co-sponsorInvitation": "Gwahoddiad i gyd-noddi",
   "app.containers.IdeasShow.Cosponsorship.co-sponsors": "Cyd-noddwyr",
