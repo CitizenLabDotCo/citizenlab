@@ -13,3 +13,18 @@ export const WIDGETS = {
   Projects,
   Spotlight,
 };
+
+type WidgetName = keyof typeof WIDGETS;
+
+const WIDGETS_WITHOUT_POINTER_EVENTS = new Set<string>([
+  'CallToAction',
+  'Events',
+  'HomepageBanner',
+  'OpenToParticipation',
+  'Projects',
+  'Spotlight',
+] satisfies WidgetName[]);
+
+export const hasNoPointerEvents = (nodeName: string) => {
+  return WIDGETS_WITHOUT_POINTER_EVENTS.has(nodeName);
+};

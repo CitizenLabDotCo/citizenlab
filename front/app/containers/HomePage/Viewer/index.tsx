@@ -4,7 +4,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 import useHomepageLayout from 'api/home_page_layout/useHomepageLayout';
 
-import Editor from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Editor';
+import Editor from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Editor2';
 
 import { IMAGES_LOADED_EVENT } from 'components/admin/ContentBuilder/constants';
 import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
