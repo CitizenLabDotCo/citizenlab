@@ -38,6 +38,8 @@ const VotingResults = ({ phaseId, votingMethod }: Props) => {
   const getMx = (i: number) =>
     smallerThanPhone ? {} : i % 2 ? { ml: '8px' } : { mr: '8px' };
 
+  const ranks = getRanks(getCounts(ideasList));
+
   return (
     <Box
       mt={smallerThanPhone ? '4px' : '8px'}
@@ -54,11 +56,7 @@ const VotingResults = ({ phaseId, votingMethod }: Props) => {
           width={smallerThanPhone ? '100%' : 'calc(50% - 16px)'}
           {...getMx(i)}
         >
-          <VotingResultCard
-            idea={idea}
-            phaseId={phaseId}
-            rank={getRanks(getCounts(ideasList, 'total_votes'))[i]}
-          />
+          <VotingResultCard idea={idea} phaseId={phaseId} rank={ranks[i]} />
         </Box>
       ))}
       {hasNextPage && (
@@ -97,7 +95,7 @@ const getRanks = (counts: number[]) => {
   return ranks;
 };
 
-const getCounts = (ideas: IIdeaData[], attributeName: 'total_votes') =>
-  ideas.map((idea) => idea.attributes[attributeName]);
+const getCounts = (ideas: IIdeaData[]) =>
+  ideas.map((idea) => idea.attributes.total_votes);
 
 export default VotingResults;

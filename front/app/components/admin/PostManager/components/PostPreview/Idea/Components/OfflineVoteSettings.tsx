@@ -20,7 +20,7 @@ import useUserById from 'api/users/useUserById';
 
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
+import { getFullName } from 'utils/textUtils';
 
 import messages from '../messages';
 import tracks from '../tracks';
@@ -82,7 +82,7 @@ const OfflineVoteSettings = ({ ideaId, votingMethod, phaseId }: Props) => {
 
   const handleOfflineVotersChangedDebounced = useMemo(() => {
     return debounce(() => {
-      !isNilOrError(manualVotersAmount) &&
+      manualVotersAmount !== null &&
         updatePhase({
           phaseId,
           manual_voters_amount: manualVotersAmount,
@@ -197,7 +197,7 @@ const OfflineVoteSettings = ({ ideaId, votingMethod, phaseId }: Props) => {
               <FormattedMessage
                 {...messages.modifiedBy}
                 values={{
-                  name: `${userLastModifiedVotes.data.attributes.first_name} ${userLastModifiedVotes.data.attributes.last_name}`,
+                  name: getFullName(userLastModifiedVotes.data),
                 }}
               />
             </Text>
