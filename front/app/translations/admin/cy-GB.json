@@ -2029,7 +2029,6 @@
   "app.containers.AdminPage.SettingsPage.linkToActivityPageText": "Gweithgaredd",
   "app.containers.AdminPage.SettingsPage.logo": "Logo",
   "app.containers.AdminPage.SettingsPage.noHeader": "Uwchlwythwch ddelwedd pennawd",
-  "app.containers.AdminPage.SettingsPage.noLogo": "Llwythwch i fyny logo",
   "app.containers.AdminPage.SettingsPage.no_button": "Dim botwm",
   "app.containers.AdminPage.SettingsPage.organizationName": "Enw'r ddinas neu'r sefydliad",
   "app.containers.AdminPage.SettingsPage.organizationNameMultilocError": "Darparwch enw sefydliad neu ddinas ar gyfer pob iaith.",
