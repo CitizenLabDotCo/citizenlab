@@ -172,8 +172,8 @@ export default defineMessages({
     defaultMessage: 'visit our support center',
   },
   projectImageAltTextTitle: {
-    id: 'app.containers.AdminPage.ProjectEdit.projectImageAltTextTitle',
-    defaultMessage: 'Project image alternative text',
+    id: 'app.containers.AdminPage.ProjectEdit.projectImageAltTextTitle1',
+    defaultMessage: 'Project card image alternative text',
   },
   altText: {
     id: 'app.containers.AdminPage.ProjectEdit.altText',
@@ -183,5 +183,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.projectImageAltTextTooltip1',
     defaultMessage:
       'Provide a short description of the image for visually impaired users. This helps screen readers convey what the image is about.',
+  },
+  headerImageAltText: {
+    id: 'app.containers.AdminPage.ProjectEdit.headerImageAltText',
+    defaultMessage: 'Header image alt text',
   },
 });
