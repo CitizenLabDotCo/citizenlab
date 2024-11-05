@@ -26,7 +26,6 @@ import messages from '../messages';
 import tracks from '../tracks';
 
 import tooltipPreview from './assets/preview_for_tooltip.png';
-import ListItemWithBullet from './ListItemWithBullet';
 
 interface Props {
   ideaId: string;
@@ -155,18 +154,26 @@ const OfflineVoteSettings = ({ ideaId, votingMethod, phaseId }: Props) => {
                   <Image src={tooltipPreview} alt="info" />
                 </Box>
                 <FormattedMessage {...messages.manualVoteAdjustmentTooltip1} />
-                <ListItemWithBullet
-                  message={messages.manualVoteAdjustmentTooltip2}
-                />
-                <ListItemWithBullet
-                  message={messages.manualVoteAdjustmentTooltip3}
-                />
-                <ListItemWithBullet
-                  message={messages.manualVoteAdjustmentTooltip4}
-                />
-                <ListItemWithBullet
-                  message={messages.manualVoteAdjustmentTooltip5}
-                />
+                <li>
+                  <FormattedMessage
+                    {...messages.manualVoteAdjustmentTooltip2}
+                  />
+                </li>
+                <li>
+                  <FormattedMessage
+                    {...messages.manualVoteAdjustmentTooltip3}
+                  />
+                </li>
+                <li>
+                  <FormattedMessage
+                    {...messages.manualVoteAdjustmentTooltip4}
+                  />
+                </li>
+                <li>
+                  <FormattedMessage
+                    {...messages.manualVoteAdjustmentTooltip5}
+                  />
+                </li>
               </Box>
             }
             label={
