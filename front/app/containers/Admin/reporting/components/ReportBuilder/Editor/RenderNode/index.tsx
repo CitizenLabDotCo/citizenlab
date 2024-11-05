@@ -4,13 +4,12 @@ import { Box, colors } from '@citizenlab/cl2-component-library';
 import { useNode, useEditor, ROOT_NODE } from '@craftjs/core';
 import styled from 'styled-components';
 
+import messages from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Editor/RenderNode/messages';
 import {
   WIDGET_TITLES,
   hasNoPointerEvents,
   hasChildren,
 } from 'containers/Admin/reporting/components/ReportBuilder/Widgets';
-
-import messages from 'components/admin/ContentBuilder/Editor/RenderNode/messages';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
