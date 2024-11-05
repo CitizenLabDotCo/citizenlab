@@ -1238,7 +1238,6 @@
   "app.containers.IdeasNewPage.optionMetaTitle1": "Dodaj novu opciju projektu | {orgName}",
   "app.containers.IdeasNewPage.projectMetaTitle1": "Dodaj novi projekt projektu | {orgName}",
   "app.containers.IdeasNewPage.questionMetaTitle1": "Dodaj novo pitanje projektu | {orgName}",
-  "app.containers.IdeasNewPage.surveyNewMetaTitle1": "Dodajte odgovor na anketu projektu | {orgName}",
   "app.containers.IdeasShow.Cosponsorship.co-sponsorAcceptInvitation": "Prihvatite poziv",
   "app.containers.IdeasShow.Cosponsorship.co-sponsorInvitation": "Poziv za supokroviteljstvo",
   "app.containers.IdeasShow.Cosponsorship.co-sponsors": "Supokrovitelji",
