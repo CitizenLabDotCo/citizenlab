@@ -2029,7 +2029,6 @@
   "app.containers.AdminPage.SettingsPage.linkToActivityPageText": "Atividade",
   "app.containers.AdminPage.SettingsPage.logo": "Logotipo",
   "app.containers.AdminPage.SettingsPage.noHeader": "Faça upload de uma imagem de cabeçalho",
-  "app.containers.AdminPage.SettingsPage.noLogo": "Faça upload de um logotipo",
   "app.containers.AdminPage.SettingsPage.no_button": "Nenhum botão",
   "app.containers.AdminPage.SettingsPage.organizationName": "Nome da cidade ou organização",
   "app.containers.AdminPage.SettingsPage.organizationNameMultilocError": "Fornecer o nome de uma organização ou cidade para todas as línguas.",
