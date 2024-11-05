@@ -20,7 +20,11 @@ const ResetParticipationData = () => {
   const { formatMessage } = useIntl();
   return (
     <Box display="flex" mb="20px">
-      <Button buttonStyle="delete" onClick={() => setModalOpened(true)}>
+      <Button
+        buttonStyle="delete"
+        onClick={() => setModalOpened(true)}
+        id="e2e-reset-participation-data"
+      >
         {formatMessage(messages.resetParticipationData)}
       </Button>
       <Modal opened={modalOpened} close={() => setModalOpened(false)}>
@@ -34,6 +38,7 @@ const ResetParticipationData = () => {
             {formatMessage(messages.confirmationNo)}
           </Button>
           <Button
+            id="e2e-reset-participation-data-yes"
             buttonStyle="delete"
             onClick={() =>
               resetProject(projectId, {
