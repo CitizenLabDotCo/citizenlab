@@ -9,6 +9,7 @@ import {
   defaultCardHoverStyle,
   isRtl,
   Text,
+  H3,
 } from '@citizenlab/cl2-component-library';
 import { isEmpty, round } from 'lodash-es';
 import moment from 'moment';
@@ -272,17 +273,10 @@ const ContentBody = styled.div`
   }
 `;
 
-const ProjectTitle = styled.h3`
-  line-height: normal;
-  font-weight: 500;
-  font-size: ${fontSizes.xl}px;
+const ProjectTitle = styled(H3)`
   color: ${({ theme }) => theme.colors.tenantText};
   margin: 0;
   padding: 0;
-
-  ${isRtl`
-    text-align: right;
-    `}
 
   &:hover {
     text-decoration: underline;

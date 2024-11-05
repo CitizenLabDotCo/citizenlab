@@ -9,6 +9,7 @@ import {
   Icon,
   useBreakpoint,
   Box,
+  H3,
 } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
 import { RouteType } from 'routes';
@@ -241,10 +242,7 @@ const ContentHeaderLabel = styled.span`
   align-items: center;
 `;
 
-const FolderTitle = styled.h3`
-  line-height: normal;
-  font-weight: 500;
-  font-size: ${fontSizes.xl}px;
+const FolderTitle = styled(H3)`
   color: ${({ theme }) => theme.colors.tenantText};
   margin: 0;
   padding: 0;
