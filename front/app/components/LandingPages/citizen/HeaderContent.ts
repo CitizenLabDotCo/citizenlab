@@ -1,4 +1,4 @@
-import { fontSizes, media, H1, Text } from '@citizenlab/cl2-component-library';
+import { fontSizes, media, H1, H2 } from '@citizenlab/cl2-component-library';
 import styled, { css } from 'styled-components';
 
 export type TAlign = 'center' | 'left';
@@ -63,7 +63,7 @@ export const HeaderTitle = styled(H1)<{
   `}
 `;
 
-export const HeaderSubtitle = styled(Text)<{
+export const HeaderSubtitle = styled(H2)<{
   hasHeader: boolean;
   fontColors: 'light' | 'dark';
   align: 'center' | 'left';
