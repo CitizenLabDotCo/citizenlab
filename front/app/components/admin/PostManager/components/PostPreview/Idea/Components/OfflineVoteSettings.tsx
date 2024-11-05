@@ -61,6 +61,7 @@ const OfflineVoteSettings = ({ ideaId, votingMethod, phaseId }: Props) => {
       updateIdea({
         id: ideaId,
         requestBody: { manual_votes_amount: manualVotesAmount },
+        skipRefetchCounts: true,
       });
 
       trackEventByName(tracks.changeManualVoteAmount, {
