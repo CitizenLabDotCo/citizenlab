@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Icon, colors } from '@citizenlab/cl2-component-library';
+import { Icon, colors, H2 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
@@ -15,14 +15,7 @@ import messages from '../messages';
 
 import AcceptButton from './AcceptButton';
 import OnboardingStep from './OnboardingStep';
-import {
-  HeaderContent,
-  Left,
-  Right,
-  Text,
-  Icons,
-  StyledAvatar,
-} from './Shared';
+import { HeaderContent, Left, Right, Icons, StyledAvatar } from './Shared';
 import SkipButton from './SkipButton';
 
 const ShieldIcon = styled(Icon)`
@@ -70,9 +63,9 @@ const VerificationOnboardingStep = ({
                 <ShieldIcon name="shield-check" />
               </AvatarAndShield>
             </Icons>
-            <Text>
-              <FormattedMessage {...messages.verifyYourIdentity} tagName="h2" />
-            </Text>
+            <H2 m="0">
+              <FormattedMessage {...messages.verifyYourIdentity} />
+            </H2>
           </Left>
 
           <Right>

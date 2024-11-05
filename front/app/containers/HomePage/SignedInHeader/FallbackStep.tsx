@@ -77,7 +77,7 @@ const FallbackStep = ({
         <HeaderContent id="e2e-signed-in-header-default-cta">
           <Left>
             {defaultMessage && !isEmptyMultiloc(defaultMessage) ? (
-              <T as="h2" value={defaultMessage} supportHtml />
+              <T value={defaultMessage} supportHtml />
             ) : (
               <FormattedMessage
                 {...messages.defaultSignedInMessage}

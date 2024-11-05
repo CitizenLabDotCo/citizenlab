@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Icon, H2 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
@@ -13,14 +13,7 @@ import messages from '../messages';
 
 import AcceptButton from './AcceptButton';
 import OnboardingStep from './OnboardingStep';
-import {
-  Left,
-  Right,
-  Text,
-  HeaderContent,
-  Icons,
-  StyledAvatar,
-} from './Shared';
+import { Left, Right, HeaderContent, Icons, StyledAvatar } from './Shared';
 import SkipButton from './SkipButton';
 
 const CompleteProfileIcon = styled(Icon)`
@@ -62,13 +55,12 @@ const CompleteProfileStep = ({
               />
               <CompleteProfileIcon name="edit" fill="#fff" ariaHidden />
             </Icons>
-            <Text>
+            <H2>
               <FormattedMessage
                 {...messages.completeYourProfile}
-                tagName="h2"
                 values={{ firstName: authUser.data.attributes.first_name }}
               />
-            </Text>
+            </H2>
           </Left>
 
           <Right>
