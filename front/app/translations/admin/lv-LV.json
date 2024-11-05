@@ -2023,7 +2023,6 @@
   "app.containers.AdminPage.SettingsPage.linkToActivityPageText": "Pasākums",
   "app.containers.AdminPage.SettingsPage.logo": "Logotips",
   "app.containers.AdminPage.SettingsPage.noHeader": "Lūdzu, augšupielādējiet galvenes attēlu",
-  "app.containers.AdminPage.SettingsPage.noLogo": "Lūdzu, augšupielādējiet logotipu",
   "app.containers.AdminPage.SettingsPage.no_button": "Nav pogas",
   "app.containers.AdminPage.SettingsPage.organizationName": "Pilsētas vai organizācijas nosaukums",
   "app.containers.AdminPage.SettingsPage.organizationNameMultilocError": "Norādiet organizācijas nosaukumu vai pilsētu visām valodām.",
