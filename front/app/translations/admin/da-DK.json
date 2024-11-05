@@ -2029,7 +2029,6 @@
   "app.containers.AdminPage.SettingsPage.linkToActivityPageText": "Aktivitet",
   "app.containers.AdminPage.SettingsPage.logo": "Logo",
   "app.containers.AdminPage.SettingsPage.noHeader": "Upload venligst et header-billede",
-  "app.containers.AdminPage.SettingsPage.noLogo": "Upload venligst et logo",
   "app.containers.AdminPage.SettingsPage.no_button": "Ingen knap",
   "app.containers.AdminPage.SettingsPage.organizationName": "Navn på by eller organisation",
   "app.containers.AdminPage.SettingsPage.organizationNameMultilocError": "Angiv et organisationsnavn eller en by for alle sprog.",
