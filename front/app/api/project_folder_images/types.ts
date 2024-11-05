@@ -18,6 +18,13 @@ export interface addProjectFolderImageObject {
   alt_text_multiloc?: Multiloc;
 }
 
+export interface UpdateProjectFolderImageObject {
+  folderId: string;
+  base64: string;
+  alt_text_multiloc?: Multiloc;
+  imageId: string;
+}
+
 export const CARD_IMAGE_ASPECT_RATIO_WIDTH = 4;
 export const CARD_IMAGE_ASPECT_RATIO_HEIGHT = 3;
 export const CARD_IMAGE_ASPECT_RATIO =
