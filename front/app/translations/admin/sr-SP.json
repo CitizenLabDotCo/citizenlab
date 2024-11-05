@@ -2029,7 +2029,6 @@
   "app.containers.AdminPage.SettingsPage.linkToActivityPageText": "Активност",
   "app.containers.AdminPage.SettingsPage.logo": "Лого",
   "app.containers.AdminPage.SettingsPage.noHeader": "Отпремите слику заглавља",
-  "app.containers.AdminPage.SettingsPage.noLogo": "Отпремите лого",
   "app.containers.AdminPage.SettingsPage.no_button": "Нема дугмета",
   "app.containers.AdminPage.SettingsPage.organizationName": "Назив града или организације",
   "app.containers.AdminPage.SettingsPage.organizationNameMultilocError": "Наведите назив организације или град за све језике.",
