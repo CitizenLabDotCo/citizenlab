@@ -150,7 +150,7 @@ const CallToAction = ({
             w="100%"
             maxWidth={isSmallerThanTablet ? undefined : '400px'}
           >
-            <H2>{lоcalize(title)}</H2>
+            <H2 color="tenantText">{lоcalize(title)}</H2>
             <Text color="textSecondary">{lоcalize(description)}</Text>
           </Box>
           <ButtonContainer>
