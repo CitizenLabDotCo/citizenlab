@@ -106,11 +106,11 @@ class WebApi::V1::ImagesController < ApplicationController
   private
 
   def image_params
-    params.require(:image).permit(
-      :image,
-      :ordering,
-      alt_text_multiloc: CL2_SUPPORTED_LOCALES
-    )
+    permitted_attributes = [:image, :ordering]
+    if params[:container_type] == 'Project' || params[:container_type] == 'ProjectFolder'
+      permitted_attributes << { alt_text_multiloc: CL2_SUPPORTED_LOCALES }
+    end
+    params.require(:image).permit(permitted_attributes)
   end
 
   def set_image
