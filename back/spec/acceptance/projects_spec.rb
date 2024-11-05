@@ -1179,4 +1179,30 @@ resource 'Projects' do
       end
     end
   end
+
+  get 'web_api/v1/projects/for_followed_item' do
+    before do
+      @user = create(:user, roles: [])
+      header_token_for @user
+    end
+
+    with_options scope: :page do
+      parameter :number, 'Page number'
+      parameter :size, 'Number of projects per page'
+    end
+
+    let!(:followed_project) { create(:project) }
+    let!(:follower) { create(:follower, followable: followed_project, user: @user) }
+
+    let!(:_unfollowed_project) { create(:project) }
+
+    example_request 'It does not return unfollowed projects (given they also have no related followed items)' do
+      expect(status).to eq 200
+
+      json_response = json_parse(response_body)
+      project_ids = json_response[:data].pluck(:id)
+
+      expect(project_ids).to eq [followed_project.id]
+    end
+  end
 end

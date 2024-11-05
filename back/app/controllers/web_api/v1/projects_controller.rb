@@ -54,6 +54,7 @@ class WebApi::V1::ProjectsController < ApplicationController
 
   def index_projects_for_followed_item
     projects = policy_scope(Project)
+    projects = projects.where(id: current_user.follows.where(followable_type: 'Project').select(:followable_id))
 
     @projects = paginate projects
     @projects = @projects.preload(
