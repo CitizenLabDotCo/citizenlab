@@ -1701,7 +1701,7 @@
   "app.containers.AdminPage.ProjectEdit.projectTypeWarning": "Projekttypen kan inte ändras senare.",
   "app.containers.AdminPage.ProjectEdit.projectVisibilitySubtitle": "Du kan ställa in projektet så att det är osynligt för vissa användare.",
   "app.containers.AdminPage.ProjectEdit.projectVisibilityTitle": "Projektets synlighet",
-  "app.containers.AdminPage.ProjectEdit.publicationStatusWarning": "Letar du efter projektstatus? Nu kan du när som helst ändra den direkt från rubriken på projektsidan ovan.",
+  "app.containers.AdminPage.ProjectEdit.publicationStatusWarningMessage": "Letar du efter projektstatus? Nu kan du ändra den när som helst direkt från sidhuvudet på projektsidan.",
   "app.containers.AdminPage.ProjectEdit.publishedExplanation": "Publicerade projekt är synliga för alla användare eller för en del av en smart grupp om en sådan har valts.",
   "app.containers.AdminPage.ProjectEdit.publishedStatus": "Publicerad",
   "app.containers.AdminPage.ProjectEdit.purposes": "Syften",
