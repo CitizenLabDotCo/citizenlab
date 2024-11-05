@@ -53,7 +53,7 @@ export type TitleProps = {
   BoxVisibilityProps &
   React.HTMLAttributes<HTMLHeadingElement>;
 
-export const StyledTitle = styled(Box)`
+const StyledTitle = styled(Box)`
   line-height: ${({ lineHeight }) => lineHeight ?? '1.3'};
 
   ${isRtl`direction: rtl;`}
