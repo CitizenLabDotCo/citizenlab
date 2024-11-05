@@ -4,7 +4,12 @@ module GemExtensions
   module OmniAuth
     module Strategies
       module OpenIdConnect
-        # Patch +OmniAuth::Strategies::OpenIDConnect+ to allow dynamic specification of the issuer.
+        # Patch +OmniAuth::Strategies::OpenIdConnect+ to allow dynamic specification of the issuer.
+        def issuer
+          return options.issuer.call(env) if options.issuer.respond_to?(:call)
+
+          super
+        end
 
         # Patched to allow openid_connect without a userinfo endpoint (id_austria)
         def user_info
@@ -18,12 +23,6 @@ module GemExtensions
           else
             @user_info = access_token.userinfo!
           end
-        end
-
-        def issuer
-          return options.issuer.call(env) if options.issuer.respond_to?(:call)
-
-          super
         end
       end
     end
