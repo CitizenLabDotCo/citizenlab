@@ -14,6 +14,8 @@ describe('HeaderBgUploader', () => {
       <HeaderBgUploader
         imageUrl={'http://test.com/img.png'}
         onImageChange={jest.fn()}
+        headerImageAltText={{ en: 'alt text' }}
+        onHeaderImageAltTextChange={jest.fn()}
       />
     );
     expect(screen.getByTestId('images-dropzone')).toBeInTheDocument();
@@ -25,6 +27,8 @@ describe('HeaderBgUploader', () => {
       <HeaderBgUploader
         imageUrl={'http://test.com/img.png'}
         onImageChange={jest.fn()}
+        headerImageAltText={{ en: 'alt text' }}
+        onHeaderImageAltTextChange={jest.fn()}
       />
     );
     const dropZone = component.container.querySelector(

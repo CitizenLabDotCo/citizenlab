@@ -20,7 +20,7 @@ export interface INewProjectFolderDiff {
   description_multiloc: Multiloc;
   description_preview_multiloc: Multiloc;
   header_bg?: string | null;
-  header_bg_alt_text_multiloc: Multiloc;
+  header_bg_alt_text_multiloc?: Multiloc;
   admin_publication_attributes: {
     publication_status: PublicationStatus;
   };
