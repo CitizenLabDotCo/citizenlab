@@ -17,7 +17,7 @@ import { IIdea, IIdeaUpdate } from './types';
 type IUpdateIdeaObject = {
   id: string;
   requestBody: IIdeaUpdate;
-  skipRefetchCounts?: boolean; // Variable so we don't
+  skipRefetchCounts?: boolean; // Variable so we don't invalidate cache unnecessarily
 };
 
 const updateIdea = ({ id, requestBody }: IUpdateIdeaObject) =>
