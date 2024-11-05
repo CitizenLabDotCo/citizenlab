@@ -38,6 +38,7 @@
   "app.components.AuthProviders.continueWithFakeSSO": "ਜਾਅਲੀ SSO ਨਾਲ ਜਾਰੀ ਰੱਖੋ",
   "app.components.AuthProviders.continueWithGoogle": "Google ਨਾਲ ਜਾਰੀ ਰੱਖੋ",
   "app.components.AuthProviders.continueWithHoplr": "Hoplr ਨਾਲ ਜਾਰੀ ਰੱਖੋ",
+  "app.components.AuthProviders.continueWithIdAustria": "ID Austria ਨਾਲ ਜਾਰੀ ਰੱਖੋ",
   "app.components.AuthProviders.continueWithLoginMechanism": "{loginMechanismName}ਨਾਲ ਜਾਰੀ ਰੱਖੋ",
   "app.components.AuthProviders.continueWithNemlogIn": "MitID ਨਾਲ ਜਾਰੀ ਰੱਖੋ",
   "app.components.AuthProviders.franceConnectMergingFailed": "ਇਸ ਈਮੇਲ ਪਤੇ ਨਾਲ ਇੱਕ ਖਾਤਾ ਪਹਿਲਾਂ ਹੀ ਮੌਜੂਦ ਹੈ।{br}{br}ਤੁਸੀਂ FranceConnect ਦੀ ਵਰਤੋਂ ਕਰਕੇ ਪਲੇਟਫਾਰਮ ਤੱਕ ਪਹੁੰਚ ਨਹੀਂ ਕਰ ਸਕਦੇ ਕਿਉਂਕਿ ਨਿੱਜੀ ਵੇਰਵੇ ਮੇਲ ਨਹੀਂ ਖਾਂਦੇ। FranceConnect ਦੀ ਵਰਤੋਂ ਕਰਕੇ ਲੌਗ ਇਨ ਕਰਨ ਲਈ, ਤੁਹਾਨੂੰ ਆਪਣੇ ਅਧਿਕਾਰਤ ਵੇਰਵਿਆਂ ਨਾਲ ਮੇਲ ਕਰਨ ਲਈ ਪਹਿਲਾਂ ਇਸ ਪਲੇਟਫਾਰਮ 'ਤੇ ਆਪਣਾ ਪਹਿਲਾ ਨਾਮ ਜਾਂ ਆਖਰੀ ਨਾਮ ਬਦਲਣਾ ਹੋਵੇਗਾ।{br}{br}ਤੁਸੀਂ ਹੇਠਾਂ ਲੌਗਇਨ ਕਰ ਸਕਦੇ ਹੋ ਜਿਵੇਂ ਤੁਸੀਂ ਆਮ ਤੌਰ 'ਤੇ ਕਰਦੇ ਹੋ।",
