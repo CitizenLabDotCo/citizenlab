@@ -39,6 +39,7 @@ import {
 } from 'components/admin/Section';
 import SlugInput from 'components/admin/SlugInput';
 import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
+import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { queryClient } from 'utils/cl-react-query/queryClient';
@@ -486,7 +487,7 @@ const AdminProjectsProjectGeneral = () => {
               </SectionDescription>
             </>
           )}
-
+          <Warning>{formatMessage(messages.publicationStatusWarning)}</Warning>
           <ProjectNameInput
             titleMultiloc={projectAttrs.title_multiloc}
             titleError={titleError}
