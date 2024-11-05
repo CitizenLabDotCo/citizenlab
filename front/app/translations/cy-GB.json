@@ -38,6 +38,7 @@
   "app.components.AuthProviders.continueWithFakeSSO": "Parhewch gyda Fake SSO",
   "app.components.AuthProviders.continueWithGoogle": "Parhau gyda Google",
   "app.components.AuthProviders.continueWithHoplr": "Parhewch gyda Hoplr",
+  "app.components.AuthProviders.continueWithIdAustria": "Parhewch ag ID Awstria",
   "app.components.AuthProviders.continueWithLoginMechanism": "Parhewch gyda {loginMechanismName}",
   "app.components.AuthProviders.continueWithNemlogIn": "Parhewch gyda MitID",
   "app.components.AuthProviders.franceConnectMergingFailed": "Mae cyfrif eisoes yn bodoli gyda'r cyfeiriad e-bost hwn.{br}{br}Ni allwch gael mynediad i'r platfform gan ddefnyddio FranceConnect gan nad yw'r manylion personol yn cyfateb. I fewngofnodi gan ddefnyddio FranceConnect, yn gyntaf bydd yn rhaid i chi newid eich enw cyntaf neu'ch enw olaf ar y platfform hwn i gyd-fynd â'ch manylion swyddogol.{br}{br}Gallwch fewngofnodi fel y gwnewch fel arfer isod.",
