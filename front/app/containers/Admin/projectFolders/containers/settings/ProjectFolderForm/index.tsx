@@ -21,6 +21,8 @@ import useUpdateProjectFolder from 'api/project_folders/useUpdateProjectFolder';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
+import projectMessages from 'containers/Admin/projects/project/general/messages';
+
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 import HeaderBgUploader from 'components/admin/ProjectableHeaderBgUploader';
 import {
@@ -105,6 +107,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   const [descriptionMultiloc, setDescriptionMultiloc] =
     useState<Multiloc | null>(null);
   const [headerBgBase64, setHeaderBgBase64] = useState<string | null>(null);
+  const [headerImageAltText, setHeaderImageAltText] = useState<Multiloc>({});
   const [publicationStatus, setPublicationStatus] = useState<
     'published' | 'draft' | 'archived'
   >('published');
@@ -112,6 +115,8 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   const [folderCardImage, setFolderCardImage] = useState<UploadFile | null>(
     null
   );
+  const [folderCardImageAltText, setFolderCardImageAltText] =
+    useState<Multiloc>({});
   const [croppedFolderCardBase64, setCroppedFolderCardBase64] = useState<
     string | null
   >(null);
@@ -141,6 +146,9 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
         setShortDescriptionMultiloc(
           projectFolder.data.attributes.description_preview_multiloc
         );
+        setHeaderImageAltText(
+          projectFolder.data.attributes.header_bg_alt_text_multiloc
+        );
       }
     })();
   }, [mode, projectFolder]);
@@ -154,15 +162,19 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   useEffect(() => {
     (async () => {
       if (mode === 'edit' && projectFolderImagesRemote) {
-        const imagePromises = projectFolderImagesRemote.data.map((img) => {
+        for (const img of projectFolderImagesRemote.data) {
           const url = img.attributes.versions.large;
+          const altTextValue = img.attributes.alt_text_multiloc;
 
-          return url
-            ? convertUrlToUploadFile(url, img.id, null)
-            : new Promise<null>((resolve) => resolve(null));
-        });
-        const images = await Promise.all(imagePromises);
-        setFolderCardImage(images[0]);
+          if (url) {
+            const uploadFile = await convertUrlToUploadFile(url, img.id, null);
+            if (uploadFile) {
+              setFolderCardImage(uploadFile);
+              setFolderCardImageAltText(altTextValue);
+              break;
+            }
+          }
+        }
       }
     })();
   }, [mode, projectFolderImagesRemote]);
@@ -242,6 +254,16 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     });
   }, []);
 
+  const handleFolderImageAltTextChange = (altTextMultiloc: Multiloc) => {
+    setSubmitState('enabled');
+    setFolderCardImageAltText(altTextMultiloc);
+  };
+
+  const handleHeaderImageAltTextChange = (altTextMultiloc: Multiloc) => {
+    setSubmitState('enabled');
+    setHeaderImageAltText(altTextMultiloc);
+  };
+
   const handleProjectFolderFileOnRemove = useCallback(
     (fileToRemove: UploadFile) => {
       setSubmitState('enabled');
@@ -298,6 +320,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
                 description_multiloc: descriptionMultiloc,
                 description_preview_multiloc: shortDescriptionMultiloc,
                 header_bg: headerBgBase64,
+                header_bg_alt_text_multiloc: headerImageAltText,
                 admin_publication_attributes: {
                   publication_status: publicationStatus,
                 },
@@ -355,6 +378,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
               ? addProjectFolderImage({
                   folderId: projectFolder.data.id,
                   base64: croppedFolderCardBase64,
+                  alt_text_multiloc: folderCardImageAltText,
                 })
               : null;
             const cardToRemovePromises =
@@ -429,6 +453,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
                     ? shortDescriptionMultiloc
                     : undefined,
                   header_bg: changedHeaderBg ? headerBgBase64 : undefined,
+                  header_bg_alt_text_multiloc: headerImageAltText,
                   admin_publication_attributes: {
                     publication_status: publicationStatus,
                   },
@@ -576,6 +601,8 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
           <HeaderBgUploader
             imageUrl={projectFolder?.data.attributes.header_bg?.large}
             onImageChange={handleHeaderBgChange}
+            onHeaderImageAltTextChange={handleHeaderImageAltTextChange}
+            headerImageAltText={headerImageAltText}
           />
         </SectionField>
 
@@ -607,6 +634,26 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             />
           )}
         </SectionField>
+        {folderCardImage && (
+          <SectionField>
+            <SubSectionTitle>
+              <FormattedMessage {...messages.folderImageAltTextTitle} />
+              <IconTooltip
+                content={
+                  <FormattedMessage
+                    {...projectMessages.projectImageAltTextTooltip}
+                  />
+                }
+              />
+            </SubSectionTitle>
+            <InputMultilocWithLocaleSwitcher
+              type="text"
+              valueMultiloc={folderCardImageAltText}
+              label={<FormattedMessage {...projectMessages.altText} />}
+              onChange={handleFolderImageAltTextChange}
+            />
+          </SectionField>
+        )}
         <SectionField>
           <SubSectionTitle>
             <FormattedMessage {...messages.fileUploadLabel} />
