@@ -15,6 +15,7 @@ import useProjectImages, {
   CARD_IMAGE_ASPECT_RATIO_HEIGHT,
   CARD_IMAGE_ASPECT_RATIO_WIDTH,
 } from 'api/project_images/useProjectImages';
+import useUpdateProjectImage from 'api/project_images/useUpdateProjectImage';
 import projectPermissionKeys from 'api/project_permissions/keys';
 import projectsKeys from 'api/projects/keys';
 import {
@@ -92,6 +93,7 @@ const AdminProjectsProjectGeneral = () => {
 
   const { data: remoteProjectImages } = useProjectImages(projectId || null);
   const { mutateAsync: addProjectImage } = useAddProjectImage();
+  const { mutateAsync: updateProjectImage } = useUpdateProjectImage();
   const { mutateAsync: deleteProjectImage } = useDeleteProjectImage();
   const { mutateAsync: updateProject } = useUpdateProject();
   const { mutateAsync: addProject } = useAddProject();
@@ -336,6 +338,21 @@ const AdminProjectsProjectGeneral = () => {
               })
             : null;
 
+        const cardImageToUpdatePromise =
+          projectCardImage &&
+          projectCardImage.id &&
+          projectCardImageAltText &&
+          latestProjectId
+            ? updateProjectImage({
+                projectId: latestProjectId,
+                imageId: projectCardImage.id,
+                image: {
+                  image: projectCardImage.base64,
+                  alt_text_multiloc: projectCardImageAltText,
+                },
+              })
+            : null;
+
         const cardImageToRemovePromise =
           projectCardImageToRemove?.id && latestProjectId
             ? deleteProjectImage({
@@ -396,6 +413,7 @@ const AdminProjectsProjectGeneral = () => {
 
         await Promise.all([
           cardImageToAddPromise,
+          cardImageToUpdatePromise,
           cardImageToRemovePromise,
           ...filesToAddPromises,
           ...filesToRemovePromises,
