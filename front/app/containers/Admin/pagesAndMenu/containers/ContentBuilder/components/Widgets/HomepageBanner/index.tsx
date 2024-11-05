@@ -734,4 +734,6 @@ HomepageBanner.craft = {
   },
 };
 
+export const homepageBannerTitle = messages.homepageBannerTitle;
+
 export default HomepageBanner;

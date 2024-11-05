@@ -100,4 +100,6 @@ Projects.craft = {
   },
 };
 
+export const projectsTitle = messages.projectsTitle;
+
 export default Projects;

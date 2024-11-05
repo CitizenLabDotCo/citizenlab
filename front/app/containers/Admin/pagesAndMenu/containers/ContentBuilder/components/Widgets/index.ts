@@ -1,9 +1,13 @@
-import CallToAction from './CallToAction';
-import Events from './Events';
-import HomepageBanner from './HomepageBanner';
-import OpenToParticipation from './OpenToParticipation';
-import Projects from './Projects';
-import Spotlight from './Spotlight';
+import { MessageDescriptor } from 'utils/cl-intl';
+
+import CallToAction, { callToActionTitle } from './CallToAction';
+import Events, { eventsTitle } from './Events';
+import HomepageBanner, { homepageBannerTitle } from './HomepageBanner';
+import OpenToParticipation, {
+  openToParticipationTitle,
+} from './OpenToParticipation';
+import Projects, { projectsTitle } from './Projects';
+import Spotlight, { spotlightTitle } from './Spotlight';
 
 export const WIDGETS = {
   CallToAction,
@@ -15,6 +19,15 @@ export const WIDGETS = {
 };
 
 type WidgetName = keyof typeof WIDGETS;
+
+export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
+  CallToAction: callToActionTitle,
+  Events: eventsTitle,
+  HomepageBanner: homepageBannerTitle,
+  OpenToParticipation: openToParticipationTitle,
+  Projects: projectsTitle,
+  Spotlight: spotlightTitle,
+};
 
 const WIDGETS_WITHOUT_POINTER_EVENTS = new Set<string>([
   'CallToAction',

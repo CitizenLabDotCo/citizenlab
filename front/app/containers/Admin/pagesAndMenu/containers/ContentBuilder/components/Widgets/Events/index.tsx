@@ -58,4 +58,6 @@ Events.craft = {
   },
 };
 
+export const eventsTitle = messages.eventsTitle;
+
 export default Events;
