@@ -109,7 +109,7 @@ class WebApi::V1::ImagesController < ApplicationController
     params.require(:image).permit(
       :image,
       :ordering,
-      :alt_text_multiloc
+      alt_text_multiloc: CL2_SUPPORTED_LOCALES
     )
   end
 
