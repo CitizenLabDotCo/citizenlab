@@ -15,7 +15,6 @@ type Props = {
   BoxPaddingProps;
 
 export const H1 = (props: Props) => <Title variant="h1" {...props} />;
-
 export const H2 = (props: Props) => <Title variant="h2" {...props} />;
-
 export const H3 = (props: Props) => <Title variant="h3" {...props} />;
+export const H4 = (props: Props) => <Title variant="h4" {...props} />;

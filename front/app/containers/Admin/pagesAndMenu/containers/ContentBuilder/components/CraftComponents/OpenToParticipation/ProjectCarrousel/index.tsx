@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
 import {
-  Title,
   Box,
   Spinner,
   Icon,
   colors,
   useBreakpoint,
+  H3,
 } from '@citizenlab/cl2-component-library';
 import useInstanceId from 'component-library/hooks/useInstanceId';
 import { debounce } from 'lodash-es';
@@ -160,14 +160,9 @@ const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
           >
             {formatMessage(messages.skipCarrousel)}
           </SkipButton>
-          <Title
-            variant="h3"
-            as="h2"
-            mt="0px"
-            ml={isSmallerThanPhone ? DEFAULT_PADDING : undefined}
-          >
+          <H3 mt="0px" ml={isSmallerThanPhone ? DEFAULT_PADDING : undefined}>
             {title}
-          </Title>
+          </H3>
           <HorizontalScroll
             setRef={(ref) => {
               if (ref) {

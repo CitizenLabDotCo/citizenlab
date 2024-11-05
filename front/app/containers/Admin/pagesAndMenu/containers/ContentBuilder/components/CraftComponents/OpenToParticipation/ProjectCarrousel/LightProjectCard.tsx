@@ -3,11 +3,11 @@ import React from 'react';
 import {
   Box,
   Image,
-  Title,
   Text,
   stylingConsts,
   Icon,
   colors,
+  H4,
 } from '@citizenlab/cl2-component-library';
 import { RouteType } from 'routes';
 import styled from 'styled-components';
@@ -103,9 +103,9 @@ const LightProjectCard = ({ project, ml, onKeyDown }: Props) => {
           {imageUrl ? <Image src={imageUrl} alt="" /> : <ImagePlaceholder />}
         </ProjectImageContainer>
       </Box>
-      <Title variant="h4" mt="8px" mb="0px" fontWeight="bold">
+      <H4 mt="8px" mb="0px">
         {title}
-      </Title>
+      </H4>
       <Box mt="8px">
         <Icon
           name="clock-circle"

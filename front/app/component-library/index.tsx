@@ -67,7 +67,7 @@ import {
 } from './components/Table';
 import Text, { TextProps } from './components/Text';
 import Title, { TitleProps } from './components/Title';
-import { H1, H2, H3 } from './components/Title/StandardizedTitles';
+import { H1, H2, H3, H4 } from './components/Title/StandardizedTitles';
 import Toggle from './components/Toggle';
 import Tooltip, { TooltipProps } from './components/Tooltip';
 import useBreakpoint from './hooks/useBreakpoint';
@@ -193,6 +193,7 @@ export {
   H1,
   H2,
   H3,
+  H4,
   ListItem,
   Tooltip,
 };
