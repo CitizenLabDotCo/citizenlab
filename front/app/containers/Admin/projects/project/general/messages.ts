@@ -151,8 +151,8 @@ export default defineMessages({
     defaultMessage: 'visit our support center',
   },
   publicationStatusWarning: {
-    id: 'app.containers.AdminPage.ProjectEdit.publicationStatusWarning',
+    id: 'app.containers.AdminPage.ProjectEdit.publicationStatusWarningMessage',
     defaultMessage:
-      'Looking for the project status? Now you can change it at any time directly from the project page header above.',
+      'Looking for the project status? Now you can change it at any time directly from the project page header.',
   },
 });
