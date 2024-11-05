@@ -1,4 +1,4 @@
-import { fontSizes, media } from '@citizenlab/cl2-component-library';
+import { fontSizes, media, H1, Text } from '@citizenlab/cl2-component-library';
 import styled, { css } from 'styled-components';
 
 export type TAlign = 'center' | 'left';
@@ -37,7 +37,7 @@ export const HeadingFontStyle = css`
   line-height: normal;
 `;
 
-export const HeaderTitle = styled.h1<{
+export const HeaderTitle = styled(H1)<{
   hasHeader: boolean;
   fontColors: 'light' | 'dark';
   align: 'center' | 'left';
@@ -63,7 +63,7 @@ export const HeaderTitle = styled.h1<{
   `}
 `;
 
-export const HeaderSubtitle = styled.h2<{
+export const HeaderSubtitle = styled(Text)<{
   hasHeader: boolean;
   fontColors: 'light' | 'dark';
   align: 'center' | 'left';
@@ -77,8 +77,6 @@ export const HeaderSubtitle = styled.h2<{
         : theme.colors.tenantPrimary
       : theme.colors.tenantPrimary};
   font-size: ${fontSizes.l}px;
-  line-height: 28px;
-  font-weight: 400;
   text-align: ${({ align }) => align};
   text-decoration: none;
   overflow-wrap: break-word;
