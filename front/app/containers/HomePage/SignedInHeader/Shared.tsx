@@ -64,16 +64,6 @@ export const Left = styled.div`
   `}
 `;
 
-export const Text = styled.div`
-  ${isRtl`
-    direction: rtl;
-  `}
-
-  ${media.phone`
-    text-align: center;
-  `}
-`;
-
 export const Right = styled.div`
   display: flex;
 
