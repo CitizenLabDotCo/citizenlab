@@ -2029,7 +2029,6 @@
   "app.containers.AdminPage.SettingsPage.linkToActivityPageText": "Aktywności",
   "app.containers.AdminPage.SettingsPage.logo": "Logo",
   "app.containers.AdminPage.SettingsPage.noHeader": "Proszę prześlij obraz nagłówka",
-  "app.containers.AdminPage.SettingsPage.noLogo": "Prześlij logo",
   "app.containers.AdminPage.SettingsPage.no_button": "Brak przycisku",
   "app.containers.AdminPage.SettingsPage.organizationName": "Nazwa organizacji, miasto lub gmina",
   "app.containers.AdminPage.SettingsPage.organizationNameMultilocError": "Podaj nazwę organizacji lub miasto dla wszystkich języków.",
