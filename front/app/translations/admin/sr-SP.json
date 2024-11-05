@@ -1701,7 +1701,7 @@
   "app.containers.AdminPage.ProjectEdit.projectTypeWarning": "Тип пројекта се не може касније променити.",
   "app.containers.AdminPage.ProjectEdit.projectVisibilitySubtitle": "Можете подесити да пројекат буде невидљив одређеним корисницима.",
   "app.containers.AdminPage.ProjectEdit.projectVisibilityTitle": "Видљивост пројекта",
-  "app.containers.AdminPage.ProjectEdit.publicationStatusWarning": "Looking for the project status? Now you can change it at any time directly from the project page header above.",
+  "app.containers.AdminPage.ProjectEdit.publicationStatusWarningMessage": "Looking for the project status? Now you can change it at any time directly from the project page header.",
   "app.containers.AdminPage.ProjectEdit.publishedExplanation": "Published projects are visible to all users or to a smart group subset if selected.",
   "app.containers.AdminPage.ProjectEdit.publishedStatus": "Објављено",
   "app.containers.AdminPage.ProjectEdit.purposes": "сврхе",
