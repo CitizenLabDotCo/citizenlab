@@ -2023,7 +2023,6 @@
   "app.containers.AdminPage.SettingsPage.linkToActivityPageText": "Activité",
   "app.containers.AdminPage.SettingsPage.logo": "Logo",
   "app.containers.AdminPage.SettingsPage.noHeader": "Veuillez insérer une image de couverture",
-  "app.containers.AdminPage.SettingsPage.noLogo": "Veuillez insérer un logo",
   "app.containers.AdminPage.SettingsPage.no_button": "Aucun bouton",
   "app.containers.AdminPage.SettingsPage.organizationName": "Nom de l'organisation ou de la commune",
   "app.containers.AdminPage.SettingsPage.organizationNameMultilocError": "Indiquez le nom de l'organisation ou la ville pour toutes les langues.",
