@@ -6,10 +6,13 @@ class WebApi::V1::ProjectMiniSerializer < WebApi::V1::BaseSerializer
     :slug
   )
 
-  attribute :action_descriptors, if: proc { |_object, params|
-    params[:project_descriptor_pairs]
-  } do |object, params|
-    params[:project_descriptor_pairs][object.id]
+  attribute :action_descriptors do |object, params|
+    if params[:project_descriptor_pairs]
+      params[:project_descriptor_pairs][object.id]
+    else
+      user_requirements_service = params[:user_requirements_service] || Permissions::UserRequirementsService.new(check_groups_and_verification: false)
+      Permissions::ProjectPermissionsService.new(object, current_user(params), user_requirements_service: user_requirements_service).action_descriptors
+    end
   end
 
   has_many :project_images, serializer: WebApi::V1::ImageSerializer

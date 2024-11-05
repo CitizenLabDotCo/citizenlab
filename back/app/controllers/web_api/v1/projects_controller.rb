@@ -66,7 +66,9 @@ class WebApi::V1::ProjectsController < ApplicationController
     render json: linked_json(
       @projects,
       WebApi::V1::ProjectMiniSerializer,
-      params: jsonapi_serializer_params,
+      params: jsonapi_serializer_params({
+        user_requirements_service: Permissions::UserRequirementsService.new(check_groups_and_verification: false)
+      }),
       include: %i[project_images current_phase]
     )
   end
