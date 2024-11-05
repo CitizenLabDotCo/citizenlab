@@ -31,6 +31,7 @@
 module EmailCampaigns
   class Campaigns::StatusChangeOnInitiativeYouFollow < Campaign
     include Consentable
+    include Disableable
     include ActivityTriggerable
     include RecipientConfigurable
     include Trackable

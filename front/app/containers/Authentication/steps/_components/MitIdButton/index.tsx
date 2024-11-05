@@ -23,7 +23,7 @@ interface Props {
   onClickStandardSSO?: () => void;
 }
 
-const NemlogInButton = ({
+const MitIdButton = ({
   method,
   last,
   grayBorder,
@@ -40,9 +40,9 @@ const NemlogInButton = ({
       onClickStandardSSO?.();
     } else {
       const jwt = getJwt();
-      window.location.href = `${AUTH_PATH}/nemlog_in?token=${jwt}&pathname=${removeUrlLocale(
-        window.location.pathname
-      )}`;
+      window.location.href = `${AUTH_PATH}/${
+        method?.attributes.name
+      }?token=${jwt}&pathname=${removeUrlLocale(window.location.pathname)}`;
     }
   };
 
@@ -52,9 +52,9 @@ const NemlogInButton = ({
       onClick={handleOnClick}
       borderColor={grayBorder ? colors.grey500 : undefined}
     >
-      <FormattedMessage {...messages.verifyNemLogIn} />
+      <FormattedMessage {...messages.verifyMitId} />
     </VerificationMethodButton>
   );
 };
 
-export default NemlogInButton;
+export default MitIdButton;

@@ -1298,7 +1298,7 @@
   "app.containers.IdeasNewPage.projectMetaTitle1": "Adicionar novo projeto ao projeto | {orgName}",
   "app.containers.IdeasNewPage.proposalMetaTitle1": "Adicionar nova proposta ao projeto | {orgName}",
   "app.containers.IdeasNewPage.questionMetaTitle1": "Adicionar nova pergunta ao projeto | {orgName}",
-  "app.containers.IdeasNewPage.surveyNewMetaTitle1": "Adicione a resposta da pesquisa ao projeto | {orgName}",
+  "app.containers.IdeasNewPage.surveyNewMetaTitle2": "{surveyTitle} | {orgName}",
   "app.containers.IdeasShow.Cosponsorship.co-sponsorAcceptInvitation": "Aceitar o convite",
   "app.containers.IdeasShow.Cosponsorship.co-sponsorInvitation": "Convite de copatrocínio",
   "app.containers.IdeasShow.Cosponsorship.co-sponsors": "Co-patrocinadores",
