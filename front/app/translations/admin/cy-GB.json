@@ -1701,7 +1701,7 @@
   "app.containers.AdminPage.ProjectEdit.projectTypeWarning": "Ni ellir newid y math o brosiect yn ddiweddarach.",
   "app.containers.AdminPage.ProjectEdit.projectVisibilitySubtitle": "Gallwch chi osod y prosiect i fod yn anweledig i ddefnyddwyr penodol.",
   "app.containers.AdminPage.ProjectEdit.projectVisibilityTitle": "Gwelededd y prosiect",
-  "app.containers.AdminPage.ProjectEdit.publicationStatusWarning": "Chwilio am statws y prosiect? Nawr gallwch chi ei newid ar unrhyw adeg yn uniongyrchol o bennyn tudalen y prosiect uchod.",
+  "app.containers.AdminPage.ProjectEdit.publicationStatusWarningMessage": "Chwilio am statws y prosiect? Nawr gallwch chi ei newid ar unrhyw adeg yn uniongyrchol o bennyn tudalen y prosiect.",
   "app.containers.AdminPage.ProjectEdit.publishedExplanation": "Mae prosiectau cyhoeddedig yn weladwy i bob defnyddiwr neu i is-set grŵp clyfar os caiff ei ddewis.",
   "app.containers.AdminPage.ProjectEdit.publishedStatus": "Cyhoeddwyd",
   "app.containers.AdminPage.ProjectEdit.purposes": "Dibenion",
