@@ -1701,7 +1701,7 @@
   "app.containers.AdminPage.ProjectEdit.projectTypeWarning": "لا يمكن تغيير نوع المشروع لاحقًا.",
   "app.containers.AdminPage.ProjectEdit.projectVisibilitySubtitle": "يمكنك ضبط المشروع ليكون غير مرئي لبعض المستخدمين.",
   "app.containers.AdminPage.ProjectEdit.projectVisibilityTitle": "رؤية المشروع",
-  "app.containers.AdminPage.ProjectEdit.publicationStatusWarning": "هل تبحث عن حالة المشروع؟ يمكنك الآن تغييرها في أي وقت مباشرةً من رأس صفحة المشروع أعلاه.",
+  "app.containers.AdminPage.ProjectEdit.publicationStatusWarningMessage": "هل تبحث عن حالة المشروع؟ يمكنك الآن تغييرها في أي وقت مباشرةً من رأس صفحة المشروع.",
   "app.containers.AdminPage.ProjectEdit.publishedExplanation": "تصبح المشاريع المنشورة مرئية لجميع المستخدمين أو لمجموعة فرعية ذكية إذا تم تحديد ذلك.",
   "app.containers.AdminPage.ProjectEdit.publishedStatus": "منشور",
   "app.containers.AdminPage.ProjectEdit.purposes": "الأغراض",
