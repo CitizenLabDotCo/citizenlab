@@ -1,15 +1,18 @@
 import React from 'react';
 
-import { Color } from 'component-library/utils/styleUtils';
+import { Color, FontSizesType } from 'component-library/utils/styleUtils';
 
-import { BoxMarginProps } from '../Box';
+import { BoxMarginProps, BoxPaddingProps } from '../Box';
 
 import Title from '.';
 
 type Props = {
   color?: Color;
+  fontSize?: FontSizesType;
+  className?: string;
   children: React.ReactNode;
-} & BoxMarginProps;
+} & BoxMarginProps &
+  BoxPaddingProps;
 
 export const H1 = (props: Props) => <Title variant="h1" {...props} />;
 

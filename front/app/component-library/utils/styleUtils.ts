@@ -153,7 +153,7 @@ export const fontSizes = {
   xxxxxl: 42,
 };
 
-type FontSizesType = keyof typeof fontSizes;
+export type FontSizesType = keyof typeof fontSizes;
 
 export const boxShadow = css`
   box-shadow: 0px 4px 3px rgba(0, 0, 0, 0.05);
