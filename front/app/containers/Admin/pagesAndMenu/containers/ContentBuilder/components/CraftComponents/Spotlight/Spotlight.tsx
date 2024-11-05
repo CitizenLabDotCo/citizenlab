@@ -2,11 +2,11 @@ import React from 'react';
 
 import {
   Box,
-  Title,
   Text,
   Image,
   useBreakpoint,
   stylingConsts,
+  H1,
 } from '@citizenlab/cl2-component-library';
 
 import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
@@ -53,9 +53,7 @@ const Spotlight = ({
           w={isSmallerThanPhone ? undefined : '50%'}
           maxWidth={isSmallerThanPhone ? undefined : '400px'}
         >
-          <Title variant="h2" fontSize="xxxxl" mt="0px" lineHeight="1">
-            {title}
-          </Title>
+          <H1 mt="0px">{title}</H1>
           {description && <Text>{description}</Text>}
           {buttonText && buttonText !== '' && (
             <Box w="100%" display="flex" mt="20px">
