@@ -30,3 +30,9 @@ export interface AddProjectImageObject {
   projectId: string;
   image: { image: string; alt_text_multiloc?: Multiloc };
 }
+
+export interface UpdateProjectImageObject {
+  projectId: string;
+  imageId: string;
+  image: { image: string; alt_text_multiloc?: Multiloc };
+}
