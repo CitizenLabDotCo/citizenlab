@@ -494,8 +494,8 @@ resource 'Projects' do
       example_request 'Reset participation data of a project' do
         expect(response_status).to eq 200
         expect(project.ideas).to be_empty
-        # expect(cause.volunteers).to be_empty
-        # expect(poll_phase.poll_responses).to be_empty
+        expect(cause.volunteers).to be_empty
+        expect(poll_phase.poll_responses).to be_empty
       end
     end
 
