@@ -53,7 +53,9 @@ const Spotlight = ({
           w={isSmallerThanPhone ? undefined : '50%'}
           maxWidth={isSmallerThanPhone ? undefined : '400px'}
         >
-          <H1 mt="0px">{title}</H1>
+          <H1 mt="0px" color="tenantText">
+            {title}
+          </H1>
           {description && <Text>{description}</Text>}
           {buttonText && buttonText !== '' && (
             <Box w="100%" display="flex" mt="20px">
