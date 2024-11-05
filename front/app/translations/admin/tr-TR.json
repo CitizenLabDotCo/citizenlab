@@ -1701,6 +1701,7 @@
   "app.containers.AdminPage.ProjectEdit.projectTypeWarning": "Proje türü daha sonra değiştirilemez.",
   "app.containers.AdminPage.ProjectEdit.projectVisibilitySubtitle": "Projeyi belirli kullanıcılara görünmez olacak şekilde ayarlayabilirsiniz.",
   "app.containers.AdminPage.ProjectEdit.projectVisibilityTitle": "Proje görünürlüğü",
+  "app.containers.AdminPage.ProjectEdit.publicationStatusWarning": "Proje durumunu mu arıyorsunuz? Artık bunu istediğiniz zaman doğrudan yukarıdaki proje sayfası başlığından değiştirebilirsiniz.",
   "app.containers.AdminPage.ProjectEdit.publishedExplanation": "Yayınlanan projeler tüm kullanıcılar veya seçildiyse bir akıllı grup alt kümesi tarafından görülebilir.",
   "app.containers.AdminPage.ProjectEdit.publishedStatus": "Yayımlandı",
   "app.containers.AdminPage.ProjectEdit.purposes": "Amaçlar",
