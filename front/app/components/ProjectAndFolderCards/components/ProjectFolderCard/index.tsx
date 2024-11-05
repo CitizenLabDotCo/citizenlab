@@ -22,6 +22,8 @@ import {
 import useProjectFolderImage from 'api/project_folder_images/useProjectFolderImage';
 import useProjectFolderById from 'api/project_folders/useProjectFolderById';
 
+import useLocalize from 'hooks/useLocalize';
+
 import AvatarBubbles from 'components/AvatarBubbles';
 import FollowUnfollow from 'components/FollowUnfollow';
 import { TLayout } from 'components/ProjectAndFolderCards';
@@ -317,6 +319,7 @@ const ProjectFolderCard = memo<Props>(
   ({ folderId, size, layout, className, showFollowButton }) => {
     const isSmallerThanPhone = useBreakpoint('phone');
     const { data: projectFolder } = useProjectFolderById(folderId);
+    const localize = useLocalize();
 
     // We use this hook instead of useProjectFolderImages
     // because that one doesn't work well with our caching system
@@ -368,6 +371,9 @@ const ProjectFolderCard = memo<Props>(
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     const showAvatarBubbles = avatarIds ? avatarIds.length > 0 : false;
     const showFooter = showAvatarBubbles;
+    const folderImageAltText = localize(
+      projectFolderImage?.data.attributes.alt_text_multiloc
+    );
 
     // Images
     const imageVersions = !projectFolderImage
@@ -447,7 +453,9 @@ const ProjectFolderCard = memo<Props>(
             <FolderImagePlaceholderIcon name="building" />
           </FolderImagePlaceholder>
 
-          {imageUrl && <FolderImage src={imageUrl} alt="" cover={true} />}
+          {imageUrl && (
+            <FolderImage src={imageUrl} alt={folderImageAltText} cover={true} />
+          )}
         </FolderImageContainer>
 
         <FolderContent className={size}>
