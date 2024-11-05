@@ -93,11 +93,6 @@ Projects.craft = {
   related: {
     settings: ProjectsSettings,
   },
-  custom: {
-    title: messages.projectsTitle,
-    noPointerEvents: true,
-    noDelete: true,
-  },
 };
 
 export const projectsTitle = messages.projectsTitle;

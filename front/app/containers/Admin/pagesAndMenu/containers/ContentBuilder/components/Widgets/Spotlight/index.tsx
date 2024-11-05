@@ -93,10 +93,6 @@ Spotlight.craft = {
   related: {
     settings: Settings,
   },
-  custom: {
-    title: messages.spotlightTitle,
-    noPointerEvents: true,
-  },
 };
 
 export const spotlightTitle = messages.spotlightTitle;
