@@ -15,12 +15,7 @@ import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
 import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 
-import CallToAction from '../Widgets/CallToAction';
-import Events from '../Widgets/Events';
-import HomepageBanner from '../Widgets/HomepageBanner';
-import OpenToParticipation from '../Widgets/OpenToParticipation';
-import Projects from '../Widgets/Projects';
-import Spotlight from '../Widgets/Spotlight';
+import { WIDGETS } from '../Widgets';
 
 type EditorProps = {
   children?: React.ReactNode;
@@ -31,6 +26,23 @@ type EditorProps = {
 // TODO: Remove after proposals migration is done
 const Proposals = () => <></>;
 
+const resolver = {
+  Box,
+  Container,
+  TwoColumn,
+  ThreeColumn,
+  ImageMultiloc,
+  IframeMultiloc,
+  TextMultiloc,
+  AccordionMultiloc,
+  WhiteSpace,
+  ImageTextCards,
+  ButtonMultiloc,
+  Highlight: WIDGETS.CallToAction,
+  Proposals,
+  ...WIDGETS,
+};
+
 const Editor: React.FC<EditorProps> = ({
   onNodesChange,
   isPreview,
@@ -38,26 +50,7 @@ const Editor: React.FC<EditorProps> = ({
 }) => {
   return (
     <BaseEditor
-      resolver={{
-        Box,
-        Container,
-        TwoColumn,
-        ThreeColumn,
-        ImageMultiloc,
-        IframeMultiloc,
-        TextMultiloc,
-        AccordionMultiloc,
-        WhiteSpace,
-        ImageTextCards,
-        ButtonMultiloc,
-        HomepageBanner,
-        Projects,
-        Events,
-        Highlight: CallToAction,
-        Spotlight,
-        Proposals,
-        OpenToParticipation,
-      }}
+      resolver={resolver}
       isPreview={isPreview}
       onNodesChange={onNodesChange}
     >
