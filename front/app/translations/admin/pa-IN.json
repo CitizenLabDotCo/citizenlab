@@ -1701,6 +1701,7 @@
   "app.containers.AdminPage.ProjectEdit.projectTypeWarning": "ਪ੍ਰੋਜੈਕਟ ਦੀ ਕਿਸਮ ਨੂੰ ਬਾਅਦ ਵਿੱਚ ਬਦਲਿਆ ਨਹੀਂ ਜਾ ਸਕਦਾ ਹੈ।",
   "app.containers.AdminPage.ProjectEdit.projectVisibilitySubtitle": "ਤੁਸੀਂ ਪ੍ਰੋਜੈਕਟ ਨੂੰ ਕੁਝ ਉਪਭੋਗਤਾਵਾਂ ਲਈ ਅਦਿੱਖ ਹੋਣ ਲਈ ਸੈੱਟ ਕਰ ਸਕਦੇ ਹੋ।",
   "app.containers.AdminPage.ProjectEdit.projectVisibilityTitle": "ਪ੍ਰੋਜੈਕਟ ਦੀ ਦਿੱਖ",
+  "app.containers.AdminPage.ProjectEdit.publicationStatusWarning": "ਪ੍ਰੋਜੈਕਟ ਸਥਿਤੀ ਦੀ ਭਾਲ ਕਰ ਰਹੇ ਹੋ? ਹੁਣ ਤੁਸੀਂ ਇਸ ਨੂੰ ਕਿਸੇ ਵੀ ਸਮੇਂ ਸਿੱਧੇ ਉੱਪਰ ਦਿੱਤੇ ਪ੍ਰੋਜੈਕਟ ਪੇਜ ਹੈਡਰ ਤੋਂ ਬਦਲ ਸਕਦੇ ਹੋ।",
   "app.containers.AdminPage.ProjectEdit.publishedExplanation": "ਪ੍ਰਕਾਸ਼ਿਤ ਪ੍ਰੋਜੈਕਟ ਸਾਰੇ ਉਪਭੋਗਤਾਵਾਂ ਜਾਂ ਸਮਾਰਟ ਗਰੁੱਪ ਸਬਸੈੱਟ ਲਈ ਦਿਖਾਈ ਦਿੰਦੇ ਹਨ ਜੇਕਰ ਚੁਣਿਆ ਜਾਂਦਾ ਹੈ।",
   "app.containers.AdminPage.ProjectEdit.publishedStatus": "ਪ੍ਰਕਾਸ਼ਿਤ",
   "app.containers.AdminPage.ProjectEdit.purposes": "ਉਦੇਸ਼",
