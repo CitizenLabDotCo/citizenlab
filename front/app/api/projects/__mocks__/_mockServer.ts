@@ -88,6 +88,7 @@ export const project1: IProjectData = {
     avatars_count: 8,
     participants_count: 8,
     uses_content_builder: false,
+    preview_token: 'fake-token-0123456789',
     baskets_count: 0,
     votes_count: 0,
   },
@@ -223,6 +224,7 @@ export const project2: IProjectData = {
     avatars_count: 6,
     participants_count: 6,
     uses_content_builder: false,
+    preview_token: 'fake-token-0123456789',
     baskets_count: 0,
     votes_count: 0,
   },
@@ -361,6 +363,7 @@ const votingProject: IProject = {
       avatars_count: 2,
       participants_count: 2,
       uses_content_builder: true,
+      preview_token: 'fake-token-0123456789',
     },
     relationships: {
       admin_publication: {
