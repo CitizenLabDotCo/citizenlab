@@ -4,7 +4,9 @@ import { Box, colors } from '@citizenlab/cl2-component-library';
 import { useNode, useEditor, ROOT_NODE } from '@craftjs/core';
 import styled from 'styled-components';
 
-import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
+
+import { WIDGET_TITLES, hasNoPointerEvents } from '../../Widgets';
 
 import messages from './messages';
 
@@ -31,14 +33,27 @@ const RenderNode = ({ render }) => {
     title,
     noPointerEvents,
     connectors: { connect, drag },
-  } = useNode((node) => ({
-    props: node.data.props,
-    isHover: node.events.hovered,
-    name: node.data.name,
-    hasError: node.data.props.hasError,
-    title: node.data.custom?.title as MessageDescriptor | undefined,
-    noPointerEvents: node.data.custom?.noPointerEvents as boolean | undefined,
-  }));
+  } = useNode((node) => {
+    // This can sometimes be undefined, even though
+    // craftjs says it can't
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    if (!node) return {};
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    if (!node.data) return {};
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    if (!node.events) return {};
+
+    const name = node.data.name;
+
+    return {
+      props: node.data.props,
+      isHover: node.events.hovered,
+      name,
+      hasError: node.data.props.hasError,
+      title: WIDGET_TITLES[name],
+      noPointerEvents: hasNoPointerEvents(name),
+    };
+  });
 
   const {
     isActive,
