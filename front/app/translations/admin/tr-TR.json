@@ -2023,7 +2023,6 @@
   "app.containers.AdminPage.SettingsPage.linkToActivityPageText": "Etkinlik",
   "app.containers.AdminPage.SettingsPage.logo": "Logo",
   "app.containers.AdminPage.SettingsPage.noHeader": "Lütfen bir başlık görseli yükleyin",
-  "app.containers.AdminPage.SettingsPage.noLogo": "Lütfen bir logo yükleyin",
   "app.containers.AdminPage.SettingsPage.no_button": "Düğme yok",
   "app.containers.AdminPage.SettingsPage.organizationName": "Kentin veya kuruluşun adı",
   "app.containers.AdminPage.SettingsPage.organizationNameMultilocError": "Tüm diller için bir kuruluş adı veya şehir belirtin.",
