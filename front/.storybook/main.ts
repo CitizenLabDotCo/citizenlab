@@ -32,25 +32,33 @@ const CONSTANTS_ALIAS = {
   replacement: `${process.cwd()}/app/containers/App/constants.ts`
 }
 
+export const stories = ['../app/**/*.stories.@(js|jsx|mjs|ts|tsx)'];
+
+export const addons = [
+  // This plugin was causing a peer dependency conflict.
+  // We first need to upgrade our main app to react-router-dom >=6.4.0
+  // This upgrade has breaking changes so those need to be dealt with first.
+  // 'storybook-addon-react-router-v6',
+  'storybook-react-intl',
+  '@storybook/addon-viewport'
+]
+export const babel = async () => {
+  const opt = await import('./.babelrc.json');
+  return opt;
+};
+
+export const staticDirs = ['./public', './static'];
+
 const config: StorybookConfig = {
-  stories: ['../app/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
-  addons: [
-    // This plugin was causing a peer dependency conflict.
-    // We first need to upgrade our main app to react-router-dom >=6.4.0
-    // This upgrade has breaking changes so those need to be dealt with first.
-    // 'storybook-addon-react-router-v6',
-    'storybook-react-intl',
-    '@storybook/addon-viewport'
-  ],
+  stories,
+  addons,
+  babel,
+  staticDirs,
   framework: '@storybook/react-vite',
   core: {
     builder: '@storybook/builder-vite',
   },
   docs: {},
-  babel: async () => {
-    const opt = await import('./.babelrc.json');
-    return opt;
-  },
   async viteFinal(config) {
     // Merge custom configuration into the default config
     const { mergeConfig } = await import('vite');
@@ -68,6 +76,5 @@ const config: StorybookConfig = {
       }
     });
   },
-  staticDirs: ['./public', './static'],
 };
 export default config;

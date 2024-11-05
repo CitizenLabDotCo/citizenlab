@@ -4,28 +4,10 @@ import { setupServer } from 'msw/node';
 
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
-import { IOnboardingCampaign } from './types';
 import useCurrentOnboardingCampaign from './useCurrentOnboardingCampaign';
+import endpoints, { data, apiPath } from './__mocks__/_mockServer';
 
-export const data: IOnboardingCampaign = {
-  data: {
-    id: 'b869202f-7259-4d60-a5c2-266791f50b0d',
-    type: 'onboarding_campaign',
-    attributes: {
-      name: 'verification',
-      cta_message_multiloc: null,
-      cta_button_multiloc: null,
-      cta_button_link: null,
-    },
-  },
-};
-
-const apiPath = '*/onboarding_campaigns/current';
-const server = setupServer(
-  http.get(apiPath, () => {
-    return HttpResponse.json({ data }, { status: 200 });
-  })
-);
+const server = setupServer(endpoints['GET onboarding_campaigns/current']);
 
 describe('useCurrentOnboardingCampaign', () => {
   beforeAll(() => server.listen());
