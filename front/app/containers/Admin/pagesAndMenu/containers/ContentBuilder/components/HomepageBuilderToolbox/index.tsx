@@ -27,17 +27,15 @@ import {
 } from 'utils/cl-intl';
 
 import messages from '../../messages';
-import CallToAction, {
-  callToActionTitle,
-} from '../CraftComponents/CallToAction';
-import Events from '../CraftComponents/Events';
+import CallToAction, { callToActionTitle } from '../Widgets/CallToAction';
+import Events from '../Widgets/Events';
 import OpenToParticipation, {
   openToParticipationTitle,
-} from '../CraftComponents/OpenToParticipation';
+} from '../Widgets/OpenToParticipation';
 import Spotlight, {
   spotlightTitle,
   buttonTextDefault,
-} from '../CraftComponents/Spotlight';
+} from '../Widgets/Spotlight';
 
 type HomepageBuilderToolboxProps = {
   selectedLocale: SupportedLocale;

@@ -20,12 +20,12 @@ import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
 
 import { isNilOrError } from 'utils/helperUtils';
 
-import HomepageBanner from '../components/CraftComponents/HomepageBanner';
-import Projects from '../components/CraftComponents/Projects';
 import Editor from '../components/Editor';
 import HomepageBuilderEditModePreview from '../components/HomepageBuilderEditModePreview';
 import HomepageBuilderToolbox from '../components/HomepageBuilderToolbox';
 import HomepageBuilderTopBar from '../components/HomepageBuilderTopBar';
+import HomepageBanner from '../components/Widgets/HomepageBanner';
+import Projects from '../components/Widgets/Projects';
 
 const HomepageBuilderPage = () => {
   const [previewEnabled, setPreviewEnabled] = useState(false);

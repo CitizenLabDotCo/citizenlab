@@ -15,12 +15,12 @@ import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
 import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 
-import CallToAction from '../CraftComponents/CallToAction';
-import Events from '../CraftComponents/Events';
-import HomepageBanner from '../CraftComponents/HomepageBanner';
-import OpenToParticipation from '../CraftComponents/OpenToParticipation';
-import Projects from '../CraftComponents/Projects';
-import Spotlight from '../CraftComponents/Spotlight';
+import CallToAction from '../Widgets/CallToAction';
+import Events from '../Widgets/Events';
+import HomepageBanner from '../Widgets/HomepageBanner';
+import OpenToParticipation from '../Widgets/OpenToParticipation';
+import Projects from '../Widgets/Projects';
+import Spotlight from '../Widgets/Spotlight';
 
 type EditorProps = {
   children?: React.ReactNode;
