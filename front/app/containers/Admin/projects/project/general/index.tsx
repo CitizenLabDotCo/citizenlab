@@ -603,24 +603,28 @@ const AdminProjectsProjectGeneral = () => {
               />
             )}
           </StyledSectionField>
-          <StyledSectionField>
-            <SubSectionTitle>
-              <FormattedMessage {...messages.projectImageAltTextTitle} />
-              <IconTooltip
-                content={
-                  <FormattedMessage {...messages.projectImageAltTextTooltip} />
-                }
+          {projectCardImage && (
+            <StyledSectionField>
+              <SubSectionTitle>
+                <FormattedMessage {...messages.projectImageAltTextTitle} />
+                <IconTooltip
+                  content={
+                    <FormattedMessage
+                      {...messages.projectImageAltTextTooltip}
+                    />
+                  }
+                />
+              </SubSectionTitle>
+              <StyledInputMultiloc
+                id="project-title"
+                type="text"
+                valueMultiloc={projectCardImageAltText}
+                label={<FormattedMessage {...messages.altText} />}
+                onChange={handleAltTextMultilocOnChange}
+                errorMultiloc={titleError}
               />
-            </SubSectionTitle>
-            <StyledInputMultiloc
-              id="project-title"
-              type="text"
-              valueMultiloc={projectCardImageAltText}
-              label={<FormattedMessage {...messages.altText} />}
-              onChange={handleAltTextMultilocOnChange}
-              errorMultiloc={titleError}
-            />
-          </StyledSectionField>
+            </StyledSectionField>
+          )}
 
           <AttachmentsDropzone
             projectFiles={projectFiles}
