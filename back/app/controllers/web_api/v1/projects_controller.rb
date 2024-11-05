@@ -52,6 +52,25 @@ class WebApi::V1::ProjectsController < ApplicationController
     )
   end
 
+  def index_projects_for_followed_item
+    projects = policy_scope(Project)
+
+    @projects = paginate projects
+    @projects = @projects.preload(
+      :project_images,
+      phases: [:report]
+    )
+
+    authorize @projects, :index_projects_for_followed_item?
+
+    render json: linked_json(
+      @projects,
+      WebApi::V1::ProjectMiniSerializer,
+      params: jsonapi_serializer_params,
+      include: %i[project_images current_phase]
+    )
+  end
+
   def show
     render json: WebApi::V1::ProjectSerializer.new(
       @project,
