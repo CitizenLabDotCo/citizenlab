@@ -16,6 +16,9 @@ export const WIDGETS = {
   OpenToParticipation,
   Projects,
   Spotlight,
+
+  // RENAMED (TODO rename in migration)
+  Highlight: CallToAction,
 };
 
 type WidgetName = keyof typeof WIDGETS;
@@ -27,6 +30,7 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   OpenToParticipation: openToParticipationTitle,
   Projects: projectsTitle,
   Spotlight: spotlightTitle,
+  Highlight: callToActionTitle,
 };
 
 const WIDGETS_WITHOUT_POINTER_EVENTS = new Set<string>([
@@ -36,6 +40,7 @@ const WIDGETS_WITHOUT_POINTER_EVENTS = new Set<string>([
   'OpenToParticipation',
   'Projects',
   'Spotlight',
+  'Highlight',
 ] satisfies WidgetName[]);
 
 export const hasNoPointerEvents = (nodeName: string) => {

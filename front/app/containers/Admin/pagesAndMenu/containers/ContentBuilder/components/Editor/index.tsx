@@ -39,7 +39,6 @@ const resolver = {
   WhiteSpace,
   ImageTextCards,
   ButtonMultiloc,
-  Highlight: WIDGETS.CallToAction,
   Proposals,
   ...WIDGETS,
 };
