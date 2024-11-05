@@ -38,6 +38,7 @@
   "app.components.AuthProviders.continueWithFakeSSO": "Fortsett med falsk SSO",
   "app.components.AuthProviders.continueWithGoogle": "Fortsett med Google",
   "app.components.AuthProviders.continueWithHoplr": "Fortsett med Hoplr",
+  "app.components.AuthProviders.continueWithIdAustria": "Fortsett med ID Austria",
   "app.components.AuthProviders.continueWithLoginMechanism": "Fortsett med {loginMechanismName}",
   "app.components.AuthProviders.continueWithNemlogIn": "Fortsett med MitID",
   "app.components.AuthProviders.franceConnectMergingFailed": "Det finnes allerede en konto med denne e-postadressen.{br}{br}Du får ikke tilgang til plattformen ved hjelp av FranceConnect, ettersom personopplysningene ikke stemmer overens. For å logge inn med FranceConnect må du først endre fornavnet eller etternavnet ditt på denne plattformen slik at det stemmer overens med de offisielle opplysningene dine.{br}{br}Du kan logge på som normalt nedenfor.",
