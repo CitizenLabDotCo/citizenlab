@@ -18,8 +18,7 @@ class ProjectsFinderService
 
   private
 
-  # For use with 'Open to participation' homepage widget.
-  # Returns ActiveRecord collection of published projects that are visible to user
+  # Returns an ActiveRecord collection of published projects that are visible to user
   # and in an active participatory phase (where user can probably do something),
   # ordered by the end date of the current phase, soonest first (nulls last).
   # Also returns action descriptors for each project, to avoid getting them again when serializing.
@@ -35,7 +34,7 @@ class ProjectsFinderService
       .where.not(phases: { participation_method: 'information' })
       .select('projects.*')
 
-    # Perform the SELECT DISTINCT on the outer query
+    # Perform the SELECT DISTINCT on the outer query and order by the end date of the active phase.
     projects = Project
       .from(subquery, :projects)
       .distinct
@@ -45,7 +44,7 @@ class ProjectsFinderService
     # Projects user can participate in, or where such participation could (probably) be made possible by user
     # (e.g. user not signed in).
     # Unfortunately, this breaks the query chain, so we have to start a new one after this.
-
+    #
     # Step 1: Create pairs of project ids and action descriptors.
     # Since this is the last filtering step, we will keep going, until we reach the limit required for pagination.
     pagination_limit = calculate_pagination_limit
@@ -64,11 +63,11 @@ class ProjectsFinderService
     # Step 2: Use project_descriptor_pairs keys (project IDs) to filter projects
     projects = Project.where(id: project_descriptor_pairs.keys)
 
-    # We need to join with active phases again here, to be reorder by their end dates.
+    # We join with active phases again here, to reorder by their end dates.
     projects = projects_with_active_phase(projects)
       .order('phase_end_at ASC NULLS LAST')
 
-    # We will pass the action descriptors to the serializer to avoid needing to get them again when serializing,
+    # We pass the action descriptors to the serializer to avoid needing to get them again when serializing,
     # so we return them along with the filtered projects.
     { projects: projects, descriptor_pairs: project_descriptor_pairs }
   end
