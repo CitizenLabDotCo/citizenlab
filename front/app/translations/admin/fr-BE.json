@@ -1701,6 +1701,7 @@
   "app.containers.AdminPage.ProjectEdit.projectTypeWarning": "Le type de projet ne peut pas être modifié ultérieurement.",
   "app.containers.AdminPage.ProjectEdit.projectVisibilitySubtitle": "Vous pouvez masquer le projet à certains utilisateurs.",
   "app.containers.AdminPage.ProjectEdit.projectVisibilityTitle": "Visibilité du projet",
+  "app.containers.AdminPage.ProjectEdit.publicationStatusWarning": "Vous cherchez l'état d'avancement du projet ? Vous pouvez désormais le modifier à tout moment directement à partir de l'en-tête de la page du projet ci-dessus.",
   "app.containers.AdminPage.ProjectEdit.publishedExplanation": "Les projets publiés sont visibles par tous les utilisateurs ou par un sous-ensemble de groupes intelligents s'ils sont sélectionnés.",
   "app.containers.AdminPage.ProjectEdit.publishedStatus": "Publié",
   "app.containers.AdminPage.ProjectEdit.purposes": "Buts et objectifs",
