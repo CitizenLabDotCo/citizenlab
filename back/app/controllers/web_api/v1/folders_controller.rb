@@ -122,7 +122,8 @@ class WebApi::V1::FoldersController < ApplicationController
       admin_publication_attributes: [:publication_status],
       title_multiloc: CL2_SUPPORTED_LOCALES,
       description_multiloc: CL2_SUPPORTED_LOCALES,
-      description_preview_multiloc: CL2_SUPPORTED_LOCALES
+      description_preview_multiloc: CL2_SUPPORTED_LOCALES,
+      header_bg_alt_text_multiloc: CL2_SUPPORTED_LOCALES
     )
   end
 end
