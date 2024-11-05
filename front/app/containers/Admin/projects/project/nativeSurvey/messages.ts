@@ -32,7 +32,7 @@ export default defineMessages({
   downloadResultsTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.downloadResultsToolTip',
     defaultMessage:
-      'To learn how to access survey respondent name and email, head over to our {supportArticleLink}.',
+      'To learn how to access survey respondent name and email, head over to our {supportArticleLinkText}.',
   },
   downloadResultsSupportArticle: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.downloadResultsSupportArticle',

@@ -336,9 +336,11 @@ const Forms = () => {
                               <FormattedMessage
                                 {...messages.downloadResultsTooltip}
                                 values={{
-                                  supportArticleLink: (
+                                  supportArticleLinkText: (
                                     <a
-                                      href={'/#TODO'}
+                                      href={formatMessage(
+                                        messages.supportArticleLink
+                                      )}
                                       target="_blank"
                                       rel="noreferrer"
                                       style={{
