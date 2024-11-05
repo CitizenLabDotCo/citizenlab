@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { format } from 'date-fns';
+import { format, parseISO, startOfDay } from 'date-fns';
 import { useParams } from 'react-router-dom';
 import { CLErrors } from 'typings';
 
@@ -45,13 +45,12 @@ const DateSetup = ({
 
   const { start_at, end_at } = formData;
 
-  const selectedRange = useMemo(
-    () => ({
-      from: start_at ? new Date(start_at) : undefined,
-      to: end_at ? new Date(end_at) : undefined,
-    }),
-    [start_at, end_at]
-  );
+  const selectedRange = useMemo(() => {
+    return {
+      from: start_at ? startOfDay(parseISO(start_at)) : undefined,
+      to: end_at ? startOfDay(parseISO(end_at)) : undefined,
+    };
+  }, [start_at, end_at]);
 
   const disabledRanges = useMemo(() => {
     if (!phases) return undefined;

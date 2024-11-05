@@ -95,7 +95,7 @@ nb:
         "5": "Ukentlig, på fredager på %{hourOfDay}"
         "6": "Ukentlig, på lørdager på %{hourOfDay}"
     footer:
-      "link_privacy_policy": "Retningslinjer for personvern"
+      "link_privacy_policy": "Personvernerklæring"
       "link_terms_conditions": "Vilkår og betingelser"
       "link_unsubscribe": "Avslutt abonnementet"
       "powered_by": "Drevet av"
