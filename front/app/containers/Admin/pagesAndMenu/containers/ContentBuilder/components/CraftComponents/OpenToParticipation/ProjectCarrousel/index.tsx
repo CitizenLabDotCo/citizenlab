@@ -151,6 +151,14 @@ const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
         justifyContent="center"
       >
         <Container w="100%" maxWidth="1200px" position="relative">
+          <Title
+            variant="h3"
+            as="h2"
+            mt="0px"
+            ml={isSmallerThanPhone ? DEFAULT_PADDING : undefined}
+          >
+            {truncate(title, 50)}
+          </Title>
           <SkipButton
             tabIndex={0}
             onKeyDown={(e) => {
@@ -161,14 +169,6 @@ const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
           >
             {formatMessage(messages.skipCarrousel)}
           </SkipButton>
-          <Title
-            variant="h3"
-            as="h2"
-            mt="0px"
-            ml={isSmallerThanPhone ? DEFAULT_PADDING : undefined}
-          >
-            {truncate(title, 50)}
-          </Title>
           <HorizontalScroll
             setRef={(ref) => {
               if (ref) {
