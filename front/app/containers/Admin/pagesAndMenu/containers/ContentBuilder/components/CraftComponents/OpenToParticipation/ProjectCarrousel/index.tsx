@@ -177,10 +177,11 @@ const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
               }
             }}
           >
-            {projects.map((project, i) => (
+            {projects.map((project) => (
               <ProjectContainer key={project.id}>
                 <LightProjectCard
-                  ml={i === 0 && !isSmallerThanPhone ? '0px' : `${CARD_GAP}px`}
+                  ml={isSmallerThanPhone ? `${CARD_GAP}px` : undefined}
+                  mr={isSmallerThanPhone ? undefined : `${CARD_GAP}px`}
                   project={project}
                   onKeyDown={handleKeyDown}
                 />

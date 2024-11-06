@@ -30,9 +30,7 @@ import Link from 'utils/cl-router/Link';
 import { CARD_WIDTH } from './constants';
 import messages from './messages';
 
-const CardContainer = styled(Box)<{ ml?: string }>`
-  margin-left: ${({ ml }) => ml ?? 0}px;
-
+const CardContainer = styled(Box)`
   &:hover {
     h4 {
       color: ${({ theme }) => theme.colors.tenantPrimary};
@@ -62,11 +60,12 @@ const ProjectImageContainer = styled.div`
 interface Props {
   project: MiniProjectData;
   ml?: string;
+  mr?: string;
   onKeyDown?: React.KeyboardEventHandler<HTMLAnchorElement> &
     React.KeyboardEventHandler<HTMLDivElement>;
 }
 
-const LightProjectCard = ({ project, ml, onKeyDown }: Props) => {
+const LightProjectCard = ({ project, ml, mr, onKeyDown }: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
 
@@ -94,6 +93,7 @@ const LightProjectCard = ({ project, ml, onKeyDown }: Props) => {
       tabIndex={0}
       w={`${CARD_WIDTH}px`}
       ml={ml}
+      mr={mr}
       to={projectUrl}
       display="block"
       onKeyDown={onKeyDown}
