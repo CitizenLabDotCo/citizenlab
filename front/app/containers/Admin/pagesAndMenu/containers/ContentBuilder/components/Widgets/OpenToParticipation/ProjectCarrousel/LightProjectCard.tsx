@@ -30,9 +30,7 @@ import Link from 'utils/cl-router/Link';
 import { CARD_WIDTH } from './constants';
 import messages from './messages';
 
-const CardContainer = styled(Box)<{ ml?: string }>`
-  margin-left: ${({ ml }) => ml ?? 0}px;
-
+const CardContainer = styled(Box)`
   &:hover {
     h4 {
       color: ${({ theme }) => theme.colors.tenantPrimary};
@@ -62,11 +60,12 @@ const ProjectImageContainer = styled.div`
 interface Props {
   project: MiniProjectData;
   ml?: string;
+  mr?: string;
   onKeyDown?: React.KeyboardEventHandler<HTMLAnchorElement> &
     React.KeyboardEventHandler<HTMLDivElement>;
 }
 
-const LightProjectCard = ({ project, ml, onKeyDown }: Props) => {
+const LightProjectCard = ({ project, ml, mr, onKeyDown }: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
 
@@ -94,13 +93,26 @@ const LightProjectCard = ({ project, ml, onKeyDown }: Props) => {
       tabIndex={0}
       w={`${CARD_WIDTH}px`}
       ml={ml}
+      mr={mr}
       to={projectUrl}
       display="block"
       onKeyDown={onKeyDown}
     >
       <Box>
         <ProjectImageContainer className="project-image-container">
-          {imageUrl ? <Image src={imageUrl} alt="" /> : <ImagePlaceholder />}
+          {imageUrl ? (
+            <Image
+              src={imageUrl}
+              alt=""
+              position="absolute"
+              width="100%"
+              height="100%"
+              top="0"
+              left="0"
+            />
+          ) : (
+            <ImagePlaceholder />
+          )}
         </ProjectImageContainer>
       </Box>
       <Title variant="h4" mt="8px" mb="0px" fontWeight="bold">
