@@ -1397,7 +1397,7 @@
   "app.containers.AdminPage.Project.confirmation.no": "Annullamento",
   "app.containers.AdminPage.Project.confirmation.title": "Sei sicuro di voler resettare tutti i dati di partecipazione?",
   "app.containers.AdminPage.Project.confirmation.yes": "Azzera tutti i dati di partecipazione",
-  "app.containers.AdminPage.Project.data.description": "Idee chiare, commenti, voti, reazioni, risposte a sondaggi, risposte a sondaggi, volontari e partecipanti agli eventi.",
+  "app.containers.AdminPage.Project.data.descriptionText": "Cancella idee, commenti, voti, reazioni, risposte a sondaggi, risposte a sondaggi, volontari e partecipanti all'evento. Nel caso delle fasi di votazione, questa azione cancellerà i voti ma non le opzioni.",
   "app.containers.AdminPage.Project.data.title": "Cancella tutti i dati di partecipazione di questo progetto",
   "app.containers.AdminPage.Project.data.warningMessage": "Questa azione non può essere annullata.",
   "app.containers.AdminPage.Project.resetParticipationData": "Azzera tutti i dati di partecipazione",
