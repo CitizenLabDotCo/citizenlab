@@ -1733,8 +1733,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplate1": "Κατεβάστε ένα πρότυπο excel",
   "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplateTooltip": "Τα πρότυπα του Excel δεν θα περιλαμβάνουν ερωτήσεις εισαγωγής χαρτογράφησης, καθώς δεν υποστηρίζονται για μαζική εισαγωγή προς το παρόν.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadResults2": "Download survey results",
-  "app.containers.AdminPage.ProjectEdit.survey.downloadResultsSupportArticle": "Άρθρο υποστήριξης",
-  "app.containers.AdminPage.ProjectEdit.survey.downloadResultsToolTip": "Για να μάθετε πώς να αποκτήσετε πρόσβαση στο όνομα και το email των ερωτηθέντων στην έρευνα, επισκεφθείτε το {supportArticleLink}.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadSurvey": "Κατεβάστε την έρευνα ως pdf",
   "app.containers.AdminPage.ProjectEdit.survey.duplicateAnotherSurvey": "Αντιγραφή άλλης έρευνας",
   "app.containers.AdminPage.ProjectEdit.survey.editSurvey1": "Επεξεργασία",
