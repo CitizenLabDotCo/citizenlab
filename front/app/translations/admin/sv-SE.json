@@ -1733,8 +1733,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplate1": "Ladda ner en Excel-mall",
   "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplateTooltip": "Excel-mallarna kommer inte att innehålla några frågor om mappning eftersom dessa inte stöds för bulkimport för närvarande.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadResults2": "Ladda ner undersökningsresultat",
-  "app.containers.AdminPage.ProjectEdit.survey.downloadResultsSupportArticle": "Supportartikel",
-  "app.containers.AdminPage.ProjectEdit.survey.downloadResultsToolTip": "Om du vill veta hur du får tillgång till namn och e-post på respondenterna kan du gå till {supportArticleLink}.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadSurvey": "Ladda ner undersökningen som pdf",
   "app.containers.AdminPage.ProjectEdit.survey.duplicateAnotherSurvey": "Duplicera en annan undersökning",
   "app.containers.AdminPage.ProjectEdit.survey.editSurvey1": "Redigera",
