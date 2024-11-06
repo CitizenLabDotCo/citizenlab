@@ -1397,7 +1397,7 @@
   "app.containers.AdminPage.Project.confirmation.no": "Atcelt",
   "app.containers.AdminPage.Project.confirmation.title": "Vai esat pārliecināts, ka vēlaties atiestatīt visus dalības datus?",
   "app.containers.AdminPage.Project.confirmation.yes": "Visu dalības datu atiestatīšana",
-  "app.containers.AdminPage.Project.data.description": "Skaidras idejas, komentāri, balsojumi, reakcijas, aptaujas atbildes, aptaujas atbildes, brīvprātīgo un pasākumu apmeklētāju atbildes.",
+  "app.containers.AdminPage.Project.data.descriptionText": "Skaidras idejas, komentāri, balsojumi, reakcijas, aptaujas atbildes, aptaujas atbildes, brīvprātīgo un pasākumu apmeklētāju atbildes. Balsošanas posmu gadījumā šī darbība dzēsīs balsojumus, bet ne iespējas.",
   "app.containers.AdminPage.Project.data.title": "Izdzēst visus šā projekta dalības datus",
   "app.containers.AdminPage.Project.data.warningMessage": "Šo darbību nevar atcelt.",
   "app.containers.AdminPage.Project.resetParticipationData": "Visu dalības datu atiestatīšana",
