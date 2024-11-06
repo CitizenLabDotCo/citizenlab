@@ -104,6 +104,7 @@ const LightProjectCard = ({ project, ml, mr, onKeyDown }: Props) => {
             <Image
               src={imageUrl}
               alt=""
+              position="absolute"
               width="100%"
               height="100%"
               top="0"
