@@ -12,10 +12,7 @@ export const HeaderContent = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: 20px;
-  padding-bottom: 20px;
-  padding-left: 75px;
-  padding-right: 75px;
+  padding: 20px 75px;
   overflow: hidden;
 
   ${isRtl`
