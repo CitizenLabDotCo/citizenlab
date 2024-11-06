@@ -239,15 +239,22 @@ RSpec.describe SurveyResultsGeneratorService do
     )
   end
 
-  let_it_be(:user_custom_field) do
+  let_it_be(:gender_user_custom_field) do
     create(:custom_field_gender, :with_options)
+  end
+
+  let_it_be(:domicile_user_custom_field) do
+    field = create(:custom_field_domicile)
+    create(:area, title_multiloc: { 'en' => 'Area 1' })
+    create(:area, title_multiloc: { 'en' => 'Area 2' })
+    field
   end
 
   # Create responses
   let_it_be(:responses) do
     create(:idea_status_proposed)
-    male_user = create(:user, custom_field_values: { gender: 'male' })
-    female_user = create(:user, custom_field_values: { gender: 'female' })
+    male_user = create(:user, custom_field_values: { gender: 'male', domicile: domicile_user_custom_field.options[0].area.id })
+    female_user = create(:user, custom_field_values: { gender: 'female', domicile: domicile_user_custom_field.options[1].area.id })
     no_gender_user = create(:user, custom_field_values: {})
     idea_file1 = create(:idea_file)
     idea_file2 = create(:idea_file)
@@ -588,7 +595,7 @@ RSpec.describe SurveyResultsGeneratorService do
         it 'groups multiselect by user field' do
           generator = described_class.new(survey_phase,
             group_mode: 'user_field',
-            group_field_id: user_custom_field.id)
+            group_field_id: gender_user_custom_field.id)
           expect(generator.generate_results(
             field_id: multiselect_field.id
           )).to match expected_result_multiselect_with_user_field_grouping
@@ -808,7 +815,7 @@ RSpec.describe SurveyResultsGeneratorService do
       end
 
       context 'with grouping' do
-        let(:expected_result_select_with_user_field_grouping) do
+        let(:expected_result_select_with_gender_user_field_grouping) do
           expected_result_select.tap do |result|
             result[:grouped] = true
             result[:legend] = ['male', 'female', 'unspecified', nil]
@@ -846,6 +853,51 @@ RSpec.describe SurveyResultsGeneratorService do
               'female' => { title_multiloc: { 'en' => 'youth council', 'fr-FR' => 'conseil des jeunes', 'nl-NL' => 'jeugdraad' } },
               'male' => { title_multiloc: { 'en' => 'youth council', 'fr-FR' => 'conseil des jeunes', 'nl-NL' => 'jeugdraad' } },
               'unspecified' => { title_multiloc: { 'en' => 'youth council', 'fr-FR' => 'conseil des jeunes', 'nl-NL' => 'jeugdraad' } }
+            }
+          end
+        end
+
+        let(:expected_result_select_with_domicile_user_field_grouping) do
+          area_1_key = domicile_user_custom_field.options[0].key
+          area_2_key = domicile_user_custom_field.options[1].key
+          somewhere_else_key = domicile_user_custom_field.options.last.key
+          expected_result_select.tap do |result|
+            result[:grouped] = true
+            result[:legend] = [area_1_key, area_2_key, somewhere_else_key, nil]
+            result[:answers] = [
+              {
+                answer: nil,
+                count: 21,
+                groups: [
+                  { count: 1, group: area_2_key },
+                  { count: 20, group: nil }
+                ]
+              }, {
+                answer: 'la',
+                count: 2,
+                groups: [
+                  { count: 1, group: area_1_key },
+                  { count: 1, group: area_2_key }
+                ]
+              }, {
+                answer: 'ny',
+                count: 1,
+                groups: [
+                  { count: 1, group: area_2_key }
+                ]
+              }, {
+                answer: 'other',
+                count: 3,
+                groups: [
+                  { count: 2, group: area_1_key },
+                  { count: 1, group: area_2_key }
+                ]
+              }
+            ]
+            result[:multilocs][:group] = {
+              area_1_key => { title_multiloc: domicile_user_custom_field.options[0].title_multiloc },
+              area_2_key => { title_multiloc: domicile_user_custom_field.options[1].title_multiloc },
+              somewhere_else_key => { title_multiloc: domicile_user_custom_field.options.last.title_multiloc }
             }
           end
         end
@@ -926,13 +978,24 @@ RSpec.describe SurveyResultsGeneratorService do
           }
         end
 
-        it 'groups select by user field' do
+        it 'groups select by gender user field' do
           generator = described_class.new(survey_phase,
             group_mode: 'user_field',
-            group_field_id: user_custom_field.id)
+            group_field_id: gender_user_custom_field.id)
           expect(generator.generate_results(
             field_id: select_field.id
-          )).to match expected_result_select_with_user_field_grouping
+          )).to match expected_result_select_with_gender_user_field_grouping
+        end
+
+        it 'groups select by domicile user field' do
+          generator = described_class.new(survey_phase,
+            group_mode: 'user_field',
+            group_field_id: domicile_user_custom_field.id)
+          result = generator.generate_results(field_id: select_field.id)
+          expect(result).to match expected_result_select_with_domicile_user_field_grouping
+
+          # Additional check to ensure we're only making one query to fetch the areas
+          expect { generator.generate_results(field_id: select_field.id) }.not_to exceed_query_limit(1).with(/SELECT.*areas/)
         end
 
         it 'groups by linear scale' do
