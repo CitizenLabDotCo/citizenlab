@@ -49,16 +49,17 @@ class ProjectsFinderService
     # Step 1: Create pairs of project ids and action descriptors.
     # Since this is the last filtering step, we will keep going, until we reach the limit required for pagination.
     pagination_limit = @page_size * @page_number
+    project_descriptor_pairs = {}
 
-    project_descriptor_pairs = projects.each_with_object({}) do |project, accu|
+    projects.each do |project|
       service = Permissions::ProjectPermissionsService.new(
         project, @current_user, user_requirements_service: user_requirements_service
       )
       action_descriptors = service.action_descriptors
       next unless service.participation_possible?(action_descriptors)
 
-      accu[project.id] = action_descriptors
-      break if accu.size >= pagination_limit
+      project_descriptor_pairs[project.id] = action_descriptors
+      break if project_descriptor_pairs.size >= pagination_limit
     end
 
     # Step 2: Use project_descriptor_pairs keys (project IDs) to filter projects
