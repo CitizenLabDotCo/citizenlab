@@ -1733,8 +1733,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplate1": "crwdns3405031:0crwdne3405031:0",
   "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplateTooltip": "crwdns3405033:0crwdne3405033:0",
   "app.containers.AdminPage.ProjectEdit.survey.downloadResults2": "crwdns3405035:0crwdne3405035:0",
-  "app.containers.AdminPage.ProjectEdit.survey.downloadResultsSupportArticle": "crwdns3405037:0crwdne3405037:0",
-  "app.containers.AdminPage.ProjectEdit.survey.downloadResultsToolTip": "crwdns3405039:0{supportArticleLink}crwdne3405039:0",
   "app.containers.AdminPage.ProjectEdit.survey.downloadSurvey": "crwdns3405041:0crwdne3405041:0",
   "app.containers.AdminPage.ProjectEdit.survey.duplicateAnotherSurvey": "crwdns3405043:0crwdne3405043:0",
   "app.containers.AdminPage.ProjectEdit.survey.editSurvey1": "crwdns3405045:0crwdne3405045:0",
