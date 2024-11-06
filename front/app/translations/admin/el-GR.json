@@ -1397,7 +1397,7 @@
   "app.containers.AdminPage.Project.confirmation.no": "Ακύρωση",
   "app.containers.AdminPage.Project.confirmation.title": "Είστε σίγουροι ότι θέλετε να επαναφέρετε όλα τα δεδομένα συμμετοχής;",
   "app.containers.AdminPage.Project.confirmation.yes": "Επαναφορά όλων των δεδομένων συμμετοχής",
-  "app.containers.AdminPage.Project.data.description": "Καθαρές ιδέες, σχόλια, ψήφοι, αντιδράσεις, απαντήσεις σε έρευνες, απαντήσεις σε δημοσκοπήσεις, εθελοντές και συμμετέχοντες σε εκδηλώσεις.",
+  "app.containers.AdminPage.Project.data.descriptionText": "Καθαρές ιδέες, σχόλια, ψήφοι, αντιδράσεις, απαντήσεις σε έρευνες, απαντήσεις σε δημοσκοπήσεις, εθελοντές και συμμετέχοντες σε εκδηλώσεις. Στην περίπτωση φάσεων ψηφοφορίας, η ενέργεια αυτή θα διαγράψει τις ψήφους αλλά όχι τις επιλογές.",
   "app.containers.AdminPage.Project.data.title": "Διαγραφή όλων των δεδομένων συμμετοχής από αυτό το έργο",
   "app.containers.AdminPage.Project.data.warningMessage": "Αυτή η ενέργεια δεν μπορεί να αναιρεθεί.",
   "app.containers.AdminPage.Project.resetParticipationData": "Επαναφορά όλων των δεδομένων συμμετοχής",
