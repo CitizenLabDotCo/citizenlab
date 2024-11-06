@@ -141,6 +141,8 @@ const InputListItem = () => {
       {showAuthor && (
         <Box mt="20px" display="flex" alignItems="center">
           <Avatar size={40} userId={author.data.id} />
+          {/* TODO: Fix this the next time the file is edited. */}
+          {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
           <Text m="0px">{getFullName(author?.data)}</Text>
           <Divider />
         </Box>

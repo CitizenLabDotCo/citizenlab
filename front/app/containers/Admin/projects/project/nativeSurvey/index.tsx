@@ -46,7 +46,6 @@ import FormResults from './FormResults';
 import messages from './messages';
 import { saveSurveyAsPDF } from './saveSurveyAsPDF';
 import { getFormActionsConfig } from './utils';
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 const Forms = () => {
   const { projectId, phaseId } = useParams() as {
