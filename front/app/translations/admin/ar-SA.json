@@ -1733,8 +1733,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplate1": "تحميل قالب اكسل",
   "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplateTooltip": "لن تتضمن قوالب Excel أي أسئلة حول إدخال التعيينات، حيث إنها غير مدعومة للاستيراد المجمع في الوقت الحالي.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadResults2": "تنزيل نتائج الاستبيان",
-  "app.containers.AdminPage.ProjectEdit.survey.downloadResultsSupportArticle": "مقالة الدعم",
-  "app.containers.AdminPage.ProjectEdit.survey.downloadResultsToolTip": "لتعلم كيفية الوصول إلى اسم المستجيب للاستطلاع والبريد الإلكتروني، توجه إلى {supportArticleLink}.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadSurvey": "تحميل الاستبيان بصيغة pdf",
   "app.containers.AdminPage.ProjectEdit.survey.duplicateAnotherSurvey": "تكرار استطلاع آخر",
   "app.containers.AdminPage.ProjectEdit.survey.editSurvey1": "يحرر",
