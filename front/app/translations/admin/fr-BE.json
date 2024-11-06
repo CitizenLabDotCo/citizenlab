@@ -2522,7 +2522,7 @@
   "app.containers.admin.ContentBuilder.homepage.default": "par défaut",
   "app.containers.admin.ContentBuilder.homepage.events.eventsTitle": "Événements",
   "app.containers.admin.ContentBuilder.homepage.eventsTitle": "Événements",
-  "app.containers.admin.ContentBuilder.homepage.highlight.callToActionTitle": "Appel à l'action",
+  "app.containers.admin.ContentBuilder.homepage.highlight.callToActionTitle": "Appel à l'action (call-to-action)",
   "app.containers.admin.ContentBuilder.homepage.highlight.highlightDescriptionLabel": "Description",
   "app.containers.admin.ContentBuilder.homepage.highlight.highlightPrimaryButtonLinkLabel": "URL du bouton principal",
   "app.containers.admin.ContentBuilder.homepage.highlight.highlightPrimaryButtonLinkPlaceholder": "https://example.com",
