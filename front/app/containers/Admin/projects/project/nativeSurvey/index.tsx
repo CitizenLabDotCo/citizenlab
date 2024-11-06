@@ -73,8 +73,6 @@ const Forms = () => {
   });
   const { mutate: deleteFormResults } = useDeleteSurveyResults();
 
-  const { data: appConfiguration } = useAppConfiguration();
-
   if (!project || isNilOrError(locale) || !phase || !submissionCount) {
     return null;
   }
