@@ -1397,7 +1397,7 @@
   "app.containers.AdminPage.Project.confirmation.no": "Cancelar",
   "app.containers.AdminPage.Project.confirmation.title": "Você tem certeza de que deseja redefinir todos os dados de participação?",
   "app.containers.AdminPage.Project.confirmation.yes": "Redefinir todos os dados de participação",
-  "app.containers.AdminPage.Project.data.description": "Ideias claras, comentários, votos, reações, respostas a pesquisas, respostas a enquetes, voluntários e participantes de eventos.",
+  "app.containers.AdminPage.Project.data.descriptionText": "Limpar ideias, comentários, votos, reações, respostas a pesquisas, respostas a enquetes, voluntários e participantes de eventos. No caso das fases de votação, essa ação limpará os votos, mas não as opções.",
   "app.containers.AdminPage.Project.data.title": "Limpar todos os dados de participação desse projeto",
   "app.containers.AdminPage.Project.data.warningMessage": "Essa ação não pode ser desfeita.",
   "app.containers.AdminPage.Project.resetParticipationData": "Redefinir todos os dados de participação",
