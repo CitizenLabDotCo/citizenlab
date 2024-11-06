@@ -29,15 +29,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.downloadResults2',
     defaultMessage: 'Download survey results',
   },
-  downloadResultsTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.downloadResultsToolTip',
-    defaultMessage:
-      'To learn how to access survey respondent name and email, head over to our {supportArticleLinkText}.',
-  },
-  downloadResultsSupportArticle: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.downloadResultsSupportArticle',
-    defaultMessage: 'Support article',
-  },
   downloadSurvey: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.downloadSurvey',
     defaultMessage: 'Download survey as pdf',

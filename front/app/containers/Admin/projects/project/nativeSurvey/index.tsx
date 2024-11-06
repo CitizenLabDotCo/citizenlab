@@ -35,7 +35,6 @@ import PDFExportModal, {
 import Button from 'components/UI/Button';
 import Modal from 'components/UI/Modal';
 
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 import { requestBlob } from 'utils/requestBlob';
@@ -74,9 +73,6 @@ const Forms = () => {
   const { mutate: deleteFormResults } = useDeleteSurveyResults();
 
   const { data: appConfiguration } = useAppConfiguration();
-  const privateAttributesInExport =
-    appConfiguration?.data.attributes.settings.core
-      .private_attributes_in_export;
 
   if (!project || isNilOrError(locale) || !phase || !submissionCount) {
     return null;
@@ -329,35 +325,6 @@ const Forms = () => {
                         <Text my="0px">
                           {formatMessage(messages.downloadResults)}
                         </Text>
-                        {!privateAttributesInExport && (
-                          <IconTooltip
-                            ml="4px"
-                            content={
-                              <FormattedMessage
-                                {...messages.downloadResultsTooltip}
-                                values={{
-                                  supportArticleLinkText: (
-                                    <a
-                                      href={formatMessage(
-                                        messages.supportArticleLink
-                                      )}
-                                      target="_blank"
-                                      rel="noreferrer"
-                                      style={{
-                                        textDecoration: 'underline',
-                                        color: colors.white,
-                                      }}
-                                    >
-                                      <FormattedMessage
-                                        {...messages.downloadResultsSupportArticle}
-                                      />
-                                    </a>
-                                  ),
-                                }}
-                              />
-                            }
-                          />
-                        )}
                       </Box>
                     </DropdownListItem>
                     {haveSubmissionsComeIn && (
