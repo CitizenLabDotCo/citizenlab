@@ -91,6 +91,11 @@ module ParticipationMethod
       true
     end
 
+    def supports_private_attributes_in_export?
+      setting = AppConfiguration.instance.settings.dig('core', 'private_attributes_in_export')
+      setting.nil? ? true : setting
+    end
+
     def supports_multiple_posts?
       false
     end
