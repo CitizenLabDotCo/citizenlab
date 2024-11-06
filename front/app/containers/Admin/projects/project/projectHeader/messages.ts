@@ -42,6 +42,33 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.publishedFinished1',
     defaultMessage: 'Published - Finished',
   },
+  draftStatus: {
+    id: 'app.containers.AdminPage.ProjectEdit.draftStatus',
+    defaultMessage: 'Draft',
+  },
+  draftExplanation: {
+    id: 'app.containers.AdminPage.ProjectEdit.dradftExplanation',
+    defaultMessage:
+      'Draft projects are hidden to all users except for assigned PMs.',
+  },
+  publishedStatus: {
+    id: 'app.containers.AdminPage.ProjectEdit.publishedStatus',
+    defaultMessage: 'Published',
+  },
+
+  publishedExplanation: {
+    id: 'app.containers.AdminPage.ProjectEdit.publishedExplanation',
+    defaultMessage:
+      'Published projects are visible to all users or to a smart group subset if selected.',
+  },
+  archivedStatus: {
+    id: 'app.containers.AdminPage.ProjectEdit.archivedStatus',
+    defaultMessage: 'Archived',
+  },
+  archivedExplanation: {
+    id: 'app.containers.AdminPage.ProjectEdit.archivedExplanation',
+    defaultMessage: 'Archived projects do not allow further participation.',
+  },
   participantsInfoTitle: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsInfoTitle',
     defaultMessage: 'Participants include:',
