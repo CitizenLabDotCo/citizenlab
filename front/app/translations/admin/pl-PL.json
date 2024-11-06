@@ -1397,7 +1397,7 @@
   "app.containers.AdminPage.Project.confirmation.no": "Anuluj",
   "app.containers.AdminPage.Project.confirmation.title": "Czy na pewno chcesz zresetować wszystkie dane dotyczące uczestnictwa?",
   "app.containers.AdminPage.Project.confirmation.yes": "Zresetuj wszystkie dane dotyczące uczestnictwa",
-  "app.containers.AdminPage.Project.data.description": "Jasne pomysły, komentarze, głosy, reakcje, odpowiedzi na ankiety, odpowiedzi na ankiety, wolontariusze i uczestnicy wydarzeń.",
+  "app.containers.AdminPage.Project.data.descriptionText": "Wyczyść pomysły, komentarze, głosy, reakcje, odpowiedzi na ankiety, odpowiedzi na ankiety, wolontariuszy i uczestników wydarzenia. W przypadku faz głosowania ta akcja wyczyści głosy, ale nie opcje.",
   "app.containers.AdminPage.Project.data.title": "Wyczyść wszystkie dane dotyczące uczestnictwa w tym projekcie",
   "app.containers.AdminPage.Project.data.warningMessage": "Tego działania nie można cofnąć.",
   "app.containers.AdminPage.Project.resetParticipationData": "Zresetuj wszystkie dane dotyczące uczestnictwa",
