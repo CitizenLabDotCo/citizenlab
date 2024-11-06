@@ -70,20 +70,17 @@ const EventInformation = ({ event }: Props) => {
 
   // event image
   const { data: eventImage } = useEventImage(event);
-  // TODO: Fix this the next time the file is edited.
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  const mediumImage = eventImage?.data?.attributes?.versions?.medium;
+  const mediumImage = eventImage?.data.attributes.versions.medium;
+  const eventImageAltText = localize(
+    eventImage?.data.attributes.alt_text_multiloc
+  );
 
   const startAtMoment = moment(event.attributes.start_at);
   const endAtMoment = moment(event.attributes.end_at);
 
   const isPastEvent = moment().isAfter(endAtMoment);
-  // TODO: Fix this the next time the file is edited.
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  const address1 = event?.attributes?.address_1;
-  // TODO: Fix this the next time the file is edited.
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  const onlineLink = event?.attributes?.online_link;
+  const address1 = event.attributes.address_1;
+  const onlineLink = event.attributes.online_link;
   const eventDateTime = getEventDateString(event);
 
   return (
@@ -91,7 +88,11 @@ const EventInformation = ({ event }: Props) => {
       <Box className="e2e-event-card">
         {mediumImage && (
           <Box height="140px" m="-16px">
-            <EventCardImage src={mediumImage} cover={true} alt="" />
+            <EventCardImage
+              src={mediumImage}
+              cover={true}
+              alt={eventImageAltText}
+            />
           </Box>
         )}
         <Box
@@ -169,12 +170,8 @@ const EventInformation = ({ event }: Props) => {
                 />
               </Box>
               <Text m="0px" pt="2px" color={'coolGrey700'} fontSize="s">
-                {/* TODO: Fix this the next time the file is edited. */}
-                {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-                {address1?.includes(',')
-                  ? // TODO: Fix this the next time the file is edited.
-                    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-                    address1?.slice(0, address1.indexOf(','))
+                {address1.includes(',')
+                  ? address1.slice(0, address1.indexOf(','))
                   : address1}
               </Text>
             </Box>
