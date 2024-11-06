@@ -20,6 +20,7 @@ const ScrollButton = ({ variant, onClick }: Props) => {
       bgColor="white"
       w="52px"
       h="52px"
+      zIndex="3"
       border={`1px solid ${colors.divider}`}
       onClick={(e) => {
         e.preventDefault();

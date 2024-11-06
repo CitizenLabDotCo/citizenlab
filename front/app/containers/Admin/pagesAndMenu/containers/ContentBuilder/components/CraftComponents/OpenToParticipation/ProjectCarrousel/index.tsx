@@ -21,6 +21,7 @@ import { useIntl } from 'utils/cl-intl';
 import { truncate } from 'utils/textUtils';
 
 import { CARD_GAP, CARD_WIDTH } from './constants';
+import Gradient from './Gradient';
 import HorizontalScroll from './HorizontalScroll';
 import LightProjectCard from './LightProjectCard';
 import messages from './messages';
@@ -211,6 +212,7 @@ const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
                   scrollContainerRef.scrollLeft -= CARD_WIDTH + CARD_GAP;
                 }}
               />
+              <Gradient variant="left" />
             </>
           )}
           {showNextButton && !isSmallerThanPhone && (
@@ -222,6 +224,7 @@ const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
                   scrollContainerRef.scrollLeft += CARD_WIDTH + CARD_GAP;
                 }}
               />
+              <Gradient variant="right" />
             </>
           )}
         </Container>
