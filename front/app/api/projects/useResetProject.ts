@@ -1,9 +1,12 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import adminPublicationsKeys from 'api/admin_publications/keys';
-import adminPublicationsStatusCountsKeys from 'api/admin_publications_status_counts/keys';
+import basketsKeys from 'api/baskets/keys';
+import basketsIdeasKeys from 'api/baskets_ideas/keys';
+import causesKeys from 'api/causes/keys';
+import commentsKeys from 'api/comments/keys';
 import eventsKeys from 'api/events/keys';
 import ideasKeys from 'api/ideas/keys';
+import pollReponsesKeys from 'api/poll_responses/keys';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
@@ -21,16 +24,16 @@ const useResetProject = () => {
   return useMutation({
     mutationFn: resetProject,
     onSuccess: (_data, id) => {
-      queryClient.invalidateQueries({ queryKey: projectsKeys.lists() });
       queryClient.invalidateQueries({ queryKey: projectsKeys.item({ id }) });
-      queryClient.invalidateQueries({
-        queryKey: adminPublicationsKeys.lists(),
-      });
-      queryClient.invalidateQueries({
-        queryKey: adminPublicationsStatusCountsKeys.items(),
-      });
       queryClient.invalidateQueries({ queryKey: ideasKeys.lists() });
       queryClient.invalidateQueries({ queryKey: eventsKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: commentsKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: pollReponsesKeys.all() });
+      queryClient.invalidateQueries({ queryKey: causesKeys.all() });
+      // These queries need to be removed, not just invalidated because a 404 response is expected.
+      // Removing the queries will prevent stale data from being displayed.
+      queryClient.removeQueries({ queryKey: basketsKeys.all() });
+      queryClient.removeQueries({ queryKey: basketsIdeasKeys.all() });
     },
   });
 };
