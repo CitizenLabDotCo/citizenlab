@@ -527,6 +527,12 @@ resource 'Projects' do
         )
       end
 
+      before do
+        config = AppConfiguration.instance
+        config.settings['core']['private_attributes_in_export'] = true
+        config.save!
+      end
+
       example_request 'Download inputs of a timeline project with different phases in separate sheets' do
         assert_status 200
         xlsx = xlsx_contents response_body
@@ -986,7 +992,7 @@ resource 'Projects' do
 
         example 'Download phase inputs WITH private user data', document: false do
           phase = project.phases.first
-          expected_params = [[idea], project.phases.first, { view_private_attributes: true }]
+          expected_params = [[idea], project.phases.first]
           allow(Export::Xlsx::InputSheetGenerator).to receive(:new)
             .and_return(Export::Xlsx::InputSheetGenerator.new(*expected_params))
           do_request
