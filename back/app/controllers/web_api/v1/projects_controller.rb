@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class WebApi::V1::ProjectsController < ApplicationController
-  before_action :set_project, only: %i[show update reorder destroy index_xlsx votes_by_user_xlsx votes_by_input_xlsx delete_inputs participation_data]
+  before_action :set_project, only: %i[show update reorder destroy index_xlsx votes_by_user_xlsx votes_by_input_xlsx delete_inputs destroy_participation_data]
 
   skip_before_action :authenticate_user
   skip_after_action :verify_policy_scoped, only: :index
@@ -175,7 +175,7 @@ class WebApi::V1::ProjectsController < ApplicationController
     ParticipantsService.new.destroy_participation_data(@project)
 
     render json: WebApi::V1::ProjectSerializer.new(
-      project,
+      @project,
       params: jsonapi_serializer_params,
       include: [:admin_publication]
     ).serializable_hash, status: :ok

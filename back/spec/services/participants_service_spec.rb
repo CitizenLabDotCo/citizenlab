@@ -363,6 +363,7 @@ describe ParticipantsService do
         expect { service.destroy_participation_data(project) }.to change(Idea, :count).by(-2)
       end
     end
+
     context 'when the project has a voting phase' do
       before_all do
         phase = create(:single_voting_phase, project: project)
@@ -373,15 +374,18 @@ describe ParticipantsService do
       it 'does not delete ideas associated with the voting phase' do
         expect { service.destroy_participation_data(project) }.not_to change(Idea, :count)
       end
+
       it 'deletes votes on ideas associated with the voting phase' do
         expect { service.destroy_participation_data(project) }
           .to change(Basket, :count).by(-2)
       end
+
       it 'deletes comments on ideas associated with the voting phase' do
         expect { service.destroy_participation_data(project) }
           .to change(Comment, :count).by(-1)
       end
     end
+
     it 'deletes volunteering data' do
       phase = create(:volunteering_phase, project: project)
       cause = create(:cause, phase: phase)
@@ -389,12 +393,14 @@ describe ParticipantsService do
       expect { service.destroy_participation_data(project) }
         .to change(Volunteering::Volunteer, :count).by(-2)
     end
+
     it 'deletes event registrations' do
       event = create(:event, project: project)
       create_list(:event_attendance, 2, event: event)
       expect { service.destroy_participation_data(project) }
         .to change(Events::Attendance, :count).by(-2)
     end
+
     it 'deletes poll responses' do
       phase = create(:poll_phase, project: project)
       create_list(:poll_response, 2, phase: phase)

@@ -459,7 +459,6 @@ resource 'Projects' do
           :phase,
           project: project,
           participation_method: 'ideation',
-          title_multiloc: { 'en' => 'Phase 1: Ideation' },
           start_at: (Time.zone.today - 40.days),
           end_at: (Time.zone.today - 31.days)
         )
