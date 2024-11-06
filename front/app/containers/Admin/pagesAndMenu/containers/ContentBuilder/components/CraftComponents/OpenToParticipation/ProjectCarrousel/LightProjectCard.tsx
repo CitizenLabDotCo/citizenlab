@@ -100,7 +100,11 @@ const LightProjectCard = ({ project, ml, onKeyDown }: Props) => {
     >
       <Box>
         <ProjectImageContainer className="project-image-container">
-          {imageUrl ? <Image src={imageUrl} alt="" /> : <ImagePlaceholder />}
+          {imageUrl ? (
+            <Image src={imageUrl} alt="" objectFit="cover" />
+          ) : (
+            <ImagePlaceholder />
+          )}
         </ProjectImageContainer>
       </Box>
       <Title variant="h4" mt="8px" mb="0px" fontWeight="bold">
