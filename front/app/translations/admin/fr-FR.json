@@ -776,7 +776,7 @@
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.SpotlightProject.folder": "dossier",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.SpotlightProject.pleaseSelectAProjectOrFolder": "Veuillez sélectionner un projet ou un dossier",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.SpotlightProject.selectProjectOrFolder": "Sélectionnez un projet ou un dossier",
-  "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.SpotlightProject.spotlight": "Pleins feux sur",
+  "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.SpotlightProject.spotlight": "Spotlight",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.SpotlightProject.title": "Titre",
   "app.containers.Admin.project.Campaigns.campaignFrom": "De :",
   "app.containers.Admin.project.Campaigns.campaignTo": "À :",
