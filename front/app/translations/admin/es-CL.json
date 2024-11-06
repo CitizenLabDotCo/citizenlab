@@ -1397,7 +1397,7 @@
   "app.containers.AdminPage.Project.confirmation.no": "Cancelar",
   "app.containers.AdminPage.Project.confirmation.title": "¿Estás seguro de que quieres restablecer el estado original, y resetear todos los datos de participación?",
   "app.containers.AdminPage.Project.confirmation.yes": "Resetear los datos de participación",
-  "app.containers.AdminPage.Project.data.description": "Resetear ideas, comentarios, votos, reacciones, respuestas a encuestas, respuestas a sondeos, voluntarios y asistentes a eventos.",
+  "app.containers.AdminPage.Project.data.descriptionText": "Borra ideas, comentarios, votos, reacciones, respuestas a encuestas, respuestas a sondeos, voluntarios y asistentes al evento. En el caso de las fases de votación, esta acción borrará los votos pero no las opciones.",
   "app.containers.AdminPage.Project.data.title": "Borrar todos los datos de participación de este proyecto",
   "app.containers.AdminPage.Project.data.warningMessage": "Esta acción no se puede deshacer.",
   "app.containers.AdminPage.Project.resetParticipationData": "Resetear todos los datos de participación",
