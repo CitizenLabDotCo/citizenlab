@@ -198,6 +198,7 @@ Rails.application.routes.draw do
         get :as_xlsx, on: :member, action: 'index_xlsx'
         get :votes_by_user_xlsx, on: :member, action: 'votes_by_user_xlsx'
         get :votes_by_input_xlsx, on: :member, action: 'votes_by_input_xlsx'
+        get 'with_active_participatory_phase', on: :collection, action: 'index_projects_with_active_participatory_phase'
       end
 
       resources :projects_allowed_input_topics, only: %i[show create destroy] do

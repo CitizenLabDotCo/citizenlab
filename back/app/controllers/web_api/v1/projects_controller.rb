@@ -52,6 +52,31 @@ class WebApi::V1::ProjectsController < ApplicationController
     )
   end
 
+  # For use with 'Open to participation' homepage widget.
+  # Returns all published or archived projects that are visible to user
+  # and in an active participatory phase (where user can do something).
+  # Ordered by the end date of the current phase, soonest first (nulls last).
+  def index_projects_with_active_participatory_phase
+    projects = policy_scope(Project)
+    projects_and_descriptors = ProjectsFinderService.new(projects, current_user, params).participation_possible
+    projects = projects_and_descriptors[:projects]
+
+    @projects = paginate projects
+    @projects = @projects.preload(
+      :project_images,
+      phases: [:report]
+    )
+
+    authorize @projects, :index_projects_with_active_participatory_phase?
+
+    render json: linked_json(
+      @projects,
+      WebApi::V1::ProjectMiniSerializer,
+      params: jsonapi_serializer_params.merge(project_descriptor_pairs: projects_and_descriptors[:descriptor_pairs]),
+      include: %i[project_images current_phase]
+    )
+  end
+
   def show
     render json: WebApi::V1::ProjectSerializer.new(
       @project,
