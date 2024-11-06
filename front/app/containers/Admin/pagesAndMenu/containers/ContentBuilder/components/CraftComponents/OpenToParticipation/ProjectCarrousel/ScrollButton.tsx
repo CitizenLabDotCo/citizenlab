@@ -27,6 +27,7 @@ const ScrollButton = ({ variant, onClick }: Props) => {
         e.stopPropagation();
         onClick();
       }}
+      aria-hidden="true"
     >
       <Icon name={`arrow-${variant}`} fill={colors.grey700} />
     </Box>
