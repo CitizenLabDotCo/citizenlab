@@ -1397,7 +1397,7 @@
   "app.containers.AdminPage.Project.confirmation.no": "Avbryt",
   "app.containers.AdminPage.Project.confirmation.title": "Är du säker på att du vill återställa alla deltagardata?",
   "app.containers.AdminPage.Project.confirmation.yes": "Återställ alla deltagardata",
-  "app.containers.AdminPage.Project.data.description": "Tydliga idéer, kommentarer, röster, reaktioner, svar på enkäter, svar på opinionsundersökningar, volontärer och deltagare i evenemang.",
+  "app.containers.AdminPage.Project.data.descriptionText": "Rensa idéer, kommentarer, röster, reaktioner, enkätsvar, svar på opinionsundersökningar, volontärer och deltagare i evenemanget. När det gäller omröstningsfaser kommer denna åtgärd att rensa rösterna men inte alternativen.",
   "app.containers.AdminPage.Project.data.title": "Rensa alla deltagardata från detta projekt",
   "app.containers.AdminPage.Project.data.warningMessage": "Denna åtgärd kan inte ångras.",
   "app.containers.AdminPage.Project.resetParticipationData": "Återställ alla deltagardata",
