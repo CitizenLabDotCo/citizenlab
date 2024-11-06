@@ -44,7 +44,7 @@ const Spotlight = ({
   // If publicationType === 'folder'
   const folderId = publicationType === 'folder' ? publicationId : undefined;
   const { data: folder } = useProjectFolderById(folderId);
-  const folderImageId = folder?.data.relationships.images?.data?.[0]?.id;
+  const folderImageId = folder?.data.relationships.images.data?.[0]?.id;
   const { data: folderImage } = useProjectFolderImage({
     folderId,
     imageId: folderImageId,
