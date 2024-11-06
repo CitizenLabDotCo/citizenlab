@@ -13,7 +13,6 @@ type CollapsibleContainerProps = {
   title: string;
   children: ReactNode;
   isOpenByDefault?: boolean;
-  onChange?: (isOpen: boolean) => void;
 } & BoxMarginProps &
   BoxWidthProps &
   BoxPaddingProps;
@@ -100,7 +99,6 @@ const CollapseContainer = styled(Box)<{
 const CollapsibleContainer = ({
   isOpenByDefault,
   title,
-  onChange,
   children,
 }: CollapsibleContainerProps) => {
   const [isExpanded, setIsExpanded] = useState(isOpenByDefault);
@@ -112,7 +110,6 @@ const CollapsibleContainer = ({
 
   const handleChange = () => {
     setIsExpanded(!isExpanded);
-    onChange && onChange(!isExpanded);
   };
 
   return (
