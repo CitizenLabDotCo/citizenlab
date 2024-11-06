@@ -49,16 +49,12 @@ const TitleButton = styled(Box)`
   }
 `;
 
-const CollapseContainer = styled(Box)<{
-  timeout: number;
-  transitionHeight: number;
-}>`
+const CollapseContainer = styled(Box)`
   margin-bottom: 16px;
   opacity: 1;
   display: flex;
   flex-wrap: wrap;
-  transition: ${(props) =>
-    `all ${props.timeout}ms cubic-bezier(0.165, 0.84, 0.44, 1)`};
+  transition: 'all 1000ms cubic-bezier(0.165, 0.84, 0.44, 1)';
   will-change: opacity, height;
 
   ${isRtl`
@@ -73,7 +69,7 @@ const CollapseContainer = styled(Box)<{
 
     &.expanded-enter-active {
       opacity: 1;
-      max-height: ${(props) => `${props.transitionHeight}px`};
+      max-height: 1000px;
       overflow: hidden;
     }
   }
@@ -85,12 +81,12 @@ const CollapseContainer = styled(Box)<{
 
   &.expanded-exit {
     opacity: 1;
-    max-height: ${(props) => `${props.transitionHeight}px`};
+    max-height: 800px;
     overflow: hidden;
 
     &.collapsed-exit-active {
       opacity: 0;
-      max-height: 0px;
+      max-height: 1000px;
       overflow: hidden;
     }
   }
@@ -151,11 +147,7 @@ const CollapsibleContainer = ({
           exit={false}
           classNames={`expanded`}
         >
-          <CollapseContainer
-            aria-live="polite"
-            transitionHeight={600}
-            timeout={1500}
-          >
+          <CollapseContainer aria-live="polite">
             <Box display="block" width="100%">
               {children}
             </Box>
