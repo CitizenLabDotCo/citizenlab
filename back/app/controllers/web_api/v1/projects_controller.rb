@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class WebApi::V1::ProjectsController < ApplicationController
-  before_action :set_project, only: %i[show update reorder destroy index_xlsx votes_by_user_xlsx votes_by_input_xlsx delete_inputs]
+  before_action :set_project, only: %i[show update reorder destroy index_xlsx votes_by_user_xlsx votes_by_input_xlsx delete_inputs participation_data]
 
   skip_before_action :authenticate_user
   skip_after_action :verify_policy_scoped, only: :index
@@ -171,11 +171,8 @@ class WebApi::V1::ProjectsController < ApplicationController
     end
   end
 
-  def reset_participation_data
-    project = Project.find(params[:id])
-    authorize project
-
-    ParticipantsService.new.reset_participation_data(project)
+  def destroy_participation_data
+    ParticipantsService.new.destroy_participation_data(@project)
 
     render json: WebApi::V1::ProjectSerializer.new(
       project,

@@ -451,7 +451,7 @@ resource 'Projects' do
       end
     end
 
-    delete 'web_api/v1/projects/:id/reset_participation_data' do
+    delete 'web_api/v1/projects/:id/participation_data' do
       let(:project) { create(:project) }
       let(:id) { project.id }
       let(:ideation_phase) do

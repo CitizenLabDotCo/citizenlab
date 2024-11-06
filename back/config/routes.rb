@@ -198,7 +198,7 @@ Rails.application.routes.draw do
         get :as_xlsx, on: :member, action: 'index_xlsx'
         get :votes_by_user_xlsx, on: :member, action: 'votes_by_user_xlsx'
         get :votes_by_input_xlsx, on: :member, action: 'votes_by_input_xlsx'
-        delete :reset_participation_data, on: :member, action: 'reset_participation_data'
+        delete :participation_data, on: :member, action: 'destroy_participation_data'
       end
 
       resources :projects_allowed_input_topics, only: %i[show create destroy] do

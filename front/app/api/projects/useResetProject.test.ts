@@ -5,7 +5,7 @@ import { setupServer } from 'msw/node';
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 
 import useResetProject from './useResetProject';
-const apiPath = '*projects/:id/reset_participation_data';
+const apiPath = '*projects/:id/participation_data';
 
 const server = setupServer(
   http.delete(apiPath, () => {

@@ -11,7 +11,7 @@ import projectsKeys from './keys';
 
 const resetProject = (id: string) =>
   fetcher({
-    path: `/projects/${id}/reset_participation_data`,
+    path: `/projects/${id}/participation_data`,
     action: 'delete',
   });
 

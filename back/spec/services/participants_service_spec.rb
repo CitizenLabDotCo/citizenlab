@@ -355,76 +355,51 @@ describe ParticipantsService do
     end
   end
 
-  describe 'reset_participation_data' do
-    it 'resets project participation data for ideas' do
-      project = create(:project)
-      user = create(:user)
-      create(:idea, project: project, author: user)
-
-      expect(Idea.where(project: project).count).to eq 1
-      service.reset_participation_data(project)
-
-      expect(Idea.where(project: project).count).to eq 0
+  describe 'destroy_participation_data' do
+    let_it_be(:project) { create(:project) }
+    context "when the project doesn't have any voting phases" do
+      it 'deletes all project ideas' do
+        create_list(:idea, 2, project: project)
+        expect { service.destroy_participation_data(project) }.to change(Idea, :count).by(-2)
+      end
     end
-
-    it 'resets project participation data for volunteers' do
-      project = create(:project)
-      pp1, pp2 = create_list(:user, 2)
-      phase = create(:phase, project: project, participation_method: 'volunteering')
+    context 'when the project has a voting phase' do
+      before_all do
+        phase = create(:single_voting_phase, project: project)
+        idea = create(:idea, project: project, phases: [phase])
+        create_list(:basket, 2, ideas: [idea], phase: phase)
+        create(:comment, post: idea)
+      end
+      it 'does not delete ideas associated with the voting phase' do
+        expect { service.destroy_participation_data(project) }.not_to change(Idea, :count)
+      end
+      it 'deletes votes on ideas associated with the voting phase' do
+        expect { service.destroy_participation_data(project) }
+          .to change(Basket, :count).by(-2)
+      end
+      it 'deletes comments on ideas associated with the voting phase' do
+        expect { service.destroy_participation_data(project) }
+          .to change(Comment, :count).by(-1)
+      end
+    end
+    it 'deletes volunteering data' do
+      phase = create(:volunteering_phase, project: project)
       cause = create(:cause, phase: phase)
-      create(:volunteer, user: pp1, cause: cause)
-      create(:volunteer, user: pp2, cause: cause)
-
-      expect(Volunteering::Volunteer.where(cause: cause).count).to eq 2
-      service.reset_participation_data(project)
-
-      expect(Volunteering::Volunteer.where(cause: cause).count).to eq 0
+      create_list(:volunteer, 2, cause: cause)
+      expect { service.destroy_participation_data(project) }
+        .to change(Volunteering::Volunteer, :count).by(-2)
     end
-
-    it 'resets project participation data for event attendees' do
-      project = create(:project)
-      pp1, pp2 = create_list(:user, 2)
+    it 'deletes event registrations' do
       event = create(:event, project: project)
-      create(:event_attendance, event: event, attendee: pp1)
-      create(:event_attendance, event: event, attendee: pp2)
-
-      expect(Events::Attendance.where(event: event).count).to eq 2
-      service.reset_participation_data(project)
-
-      expect(Events::Attendance.where(event: event).count).to eq 0
+      create_list(:event_attendance, 2, event: event)
+      expect { service.destroy_participation_data(project) }
+        .to change(Events::Attendance, :count).by(-2)
     end
-
-    it 'resets project participation data for poll responses' do
-      project = create(:project)
-      pp1, pp2 = create_list(:user, 2)
-      phase = create(:phase, project: project, participation_method: 'poll')
-      create(:poll_response, user: pp1, phase: phase)
-      create(:poll_response, user: pp2, phase: phase)
-
-      expect(Polls::Response.where(phase: phase).count).to eq 2
-      service.reset_participation_data(project)
-
-      expect(Polls::Response.where(phase: phase).count).to eq 0
-    end
-
-    it 'resets project participation data for voting (without deleting the ideas)' do
-      project = create(:project)
-      pp1, pp2 = create_list(:user, 2)
-      phase = create(:phase, project: project, participation_method: 'voting', voting_method: 'single_voting')
-      idea = create(:idea, project: project, phases: [phase])
-      create(:basket, ideas: [idea], phase: phase, user: pp1)
-      create(:basket, ideas: [idea], phase: phase, user: pp2)
-      create(:comment, post: idea, author: pp1)
-
-      expect(Basket.where(phase: phase).count).to eq 2
-      expect(Comment.where(post: idea).count).to eq 1
-      expect(Idea.where(project: project).count).to eq 1
-
-      service.reset_participation_data(project)
-
-      expect(Basket.where(phase: phase).count).to eq 0
-      expect(Comment.where(post: idea).count).to eq 0
-      expect(Idea.where(project: project).count).to eq 1
+    it 'deletes poll responses' do
+      phase = create(:poll_phase, project: project)
+      create_list(:poll_response, 2, phase: phase)
+      expect { service.destroy_participation_data(project) }
+        .to change(Polls::Response, :count).by(-2)
     end
   end
 end

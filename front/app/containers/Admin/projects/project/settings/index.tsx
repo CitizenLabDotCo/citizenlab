@@ -44,7 +44,7 @@ const Settings = () => {
     },
     {
       label: formatMessage(messages.data),
-      name: 'permissions',
+      name: 'data',
       url: `/admin/projects/${projectId}/settings/data`,
     },
   ];

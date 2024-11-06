@@ -175,37 +175,34 @@ class ParticipantsService
     ideas_participants ideas, options
   end
 
-  def reset_participation_data(project)
-    # Reset volunteers data
+  def destroy_participation_data(project)
+    # Destroy volunteers data
     Volunteering::Volunteer
       .joins(cause: { phase: :project })
       .where(cause: { phases: { project_id: project.id } })
       .destroy_all
 
-    # Reset event attendance data
+    # Destroy event attendance data
     Events::Attendance
       .joins(event: :project)
       .where(events: { project_id: project.id })
       .destroy_all
 
-    # Reset poll data
+    # Destroy poll data
     Polls::Response
       .joins(phase: :project)
       .where(phases: { project_id: project.id })
       .destroy_all
 
-    # Reset basket data
+    # Destroy baskets, comments and reactions data
     Basket.where(phase: Phase.where(project: project)).destroy_all
+    Comment.where(post: project.ideas).destroy_all
+    Reaction.where(reactable: project.ideas).destroy_all
 
     # Filter ideas that belong to a voting phase, and destroy all comments and reactions that they have.
     ideas = Idea.where(project: project).where(
       id: IdeasPhase.where(phase: Phase.where(project: project, participation_method: 'voting')).select(:idea_id)
     )
-
-    ideas.each do |idea|
-      idea.comments.destroy_all
-      idea.reactions.destroy_all
-    end
 
     # Destroy all remaining ideas that are not in a voting phase
     Idea.where(project: project).where.not(id: ideas).destroy_all
