@@ -1397,7 +1397,7 @@
   "app.containers.AdminPage.Project.confirmation.no": "Cancel·la",
   "app.containers.AdminPage.Project.confirmation.title": "Esteu segur que voleu restablir totes les dades de participació?",
   "app.containers.AdminPage.Project.confirmation.yes": "Restableix totes les dades de participació",
-  "app.containers.AdminPage.Project.data.description": "Idees clares, comentaris, vots, reaccions, respostes a les enquestes, respostes a les enquestes, voluntaris i assistents a l'esdeveniment.",
+  "app.containers.AdminPage.Project.data.descriptionText": "Idees clares, comentaris, vots, reaccions, respostes a les enquestes, respostes a les enquestes, voluntaris i assistents a l'esdeveniment. En el cas de les fases de votació, aquesta acció esborrarà els vots però no les opcions.",
   "app.containers.AdminPage.Project.data.title": "Esborra totes les dades de participació d'aquest projecte",
   "app.containers.AdminPage.Project.data.warningMessage": "Aquesta acció no es pot desfer.",
   "app.containers.AdminPage.Project.resetParticipationData": "Restableix totes les dades de participació",
