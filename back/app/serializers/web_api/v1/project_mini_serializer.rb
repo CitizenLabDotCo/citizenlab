@@ -6,7 +6,9 @@ class WebApi::V1::ProjectMiniSerializer < WebApi::V1::BaseSerializer
     :slug
   )
 
-  attribute :action_descriptors do |object, params|
+  attribute :action_descriptors, if: proc { |_object, params|
+    params[:project_descriptor_pairs]
+  } do |object, params|
     params[:project_descriptor_pairs][object.id]
   end
 

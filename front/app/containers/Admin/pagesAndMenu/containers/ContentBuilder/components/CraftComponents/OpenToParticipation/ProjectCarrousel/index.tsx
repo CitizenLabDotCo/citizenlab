@@ -3,7 +3,6 @@ import React, { useState, useEffect, useCallback } from 'react';
 import {
   Box,
   Spinner,
-  Icon,
   colors,
   useBreakpoint,
   H3,
@@ -19,11 +18,14 @@ import { MiniProjectData } from 'api/projects_mini/types';
 import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
 
 import { useIntl } from 'utils/cl-intl';
+import { truncate } from 'utils/textUtils';
 
 import { CARD_GAP, CARD_WIDTH } from './constants';
+import Gradient from './Gradient';
 import HorizontalScroll from './HorizontalScroll';
 import LightProjectCard from './LightProjectCard';
 import messages from './messages';
+import ScrollButton from './ScrollButton';
 
 const Container = styled(Box)`
   .scroll-button {
@@ -150,6 +152,9 @@ const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
         justifyContent="center"
       >
         <Container w="100%" maxWidth="1200px" position="relative">
+          <H3 mt="0px" ml={isSmallerThanPhone ? DEFAULT_PADDING : undefined}>
+            {truncate(title, 50)}
+          </H3>
           <SkipButton
             tabIndex={0}
             onKeyDown={(e) => {
@@ -160,9 +165,6 @@ const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
           >
             {formatMessage(messages.skipCarrousel)}
           </SkipButton>
-          <H3 mt="0px" ml={isSmallerThanPhone ? DEFAULT_PADDING : undefined}>
-            {title}
-          </H3>
           <HorizontalScroll
             setRef={(ref) => {
               if (ref) {
@@ -171,10 +173,11 @@ const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
               }
             }}
           >
-            {projects.map((project, i) => (
+            {projects.map((project) => (
               <ProjectContainer key={project.id}>
                 <LightProjectCard
-                  ml={i === 0 && !isSmallerThanPhone ? '0px' : `${CARD_GAP}px`}
+                  ml={isSmallerThanPhone ? `${CARD_GAP}px` : undefined}
+                  mr={isSmallerThanPhone ? undefined : `${CARD_GAP}px`}
                   project={project}
                   onKeyDown={handleKeyDown}
                 />
@@ -196,48 +199,28 @@ const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
             )}
           </HorizontalScroll>
           {showPreviousButton && !isSmallerThanPhone && (
-            <Box
-              as="button"
-              className="scroll-button"
-              position="absolute"
-              left="8px"
-              top="120px"
-              borderRadius="30px"
-              bgColor="white"
-              w="52px"
-              h="52px"
-              border={`1px solid ${colors.divider}`}
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                if (!scrollContainerRef) return;
-                scrollContainerRef.scrollLeft -= CARD_WIDTH + CARD_GAP;
-              }}
-            >
-              <Icon name="arrow-left" fill={colors.grey700} />
-            </Box>
+            <>
+              <ScrollButton
+                variant="left"
+                onClick={() => {
+                  if (!scrollContainerRef) return;
+                  scrollContainerRef.scrollLeft -= CARD_WIDTH + CARD_GAP;
+                }}
+              />
+              <Gradient variant="left" />
+            </>
           )}
           {showNextButton && !isSmallerThanPhone && (
-            <Box
-              as="button"
-              className="scroll-button"
-              position="absolute"
-              right="8px"
-              top="120px"
-              borderRadius="30px"
-              bgColor="white"
-              w="52px"
-              h="52px"
-              border={`1px solid ${colors.divider}`}
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                if (!scrollContainerRef) return;
-                scrollContainerRef.scrollLeft += CARD_WIDTH + CARD_GAP;
-              }}
-            >
-              <Icon name="arrow-right" fill={colors.grey700} />
-            </Box>
+            <>
+              <ScrollButton
+                variant="right"
+                onClick={() => {
+                  if (!scrollContainerRef) return;
+                  scrollContainerRef.scrollLeft += CARD_WIDTH + CARD_GAP;
+                }}
+              />
+              <Gradient variant="right" />
+            </>
           )}
         </Container>
       </Box>

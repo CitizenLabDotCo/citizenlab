@@ -307,9 +307,4 @@ Rails.application.routes.draw do
   post '/auth/failure', to: 'omniauth_callback#failure'
   get '/auth/:provider/logout_data', to: 'omniauth_callback#logout_data'
   get '/auth/:provider/spslo', to: 'omniauth_callback#spslo'
-
-  if Rails.env.development?
-    require 'que/web'
-    mount Que::Web => '/que'
-  end
 end
