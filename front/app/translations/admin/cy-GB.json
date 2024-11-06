@@ -1397,7 +1397,7 @@
   "app.containers.AdminPage.Project.confirmation.no": "Canslo",
   "app.containers.AdminPage.Project.confirmation.title": "Ydych chi'n siŵr eich bod am ailosod yr holl ddata cyfranogiad?",
   "app.containers.AdminPage.Project.confirmation.yes": "Ailosod yr holl ddata cyfranogiad",
-  "app.containers.AdminPage.Project.data.description": "Syniadau clir, sylwadau, pleidleisiau, ymatebion, ymatebion arolwg, ymatebion pleidleisio, gwirfoddolwyr a mynychwyr digwyddiadau.",
+  "app.containers.AdminPage.Project.data.descriptionText": "Syniadau clir, sylwadau, pleidleisiau, ymatebion, ymatebion arolwg, ymatebion pleidleisio, gwirfoddolwyr a mynychwyr digwyddiadau. Yn achos cyfnodau pleidleisio, bydd y cam gweithredu hwn yn clirio'r pleidleisiau ond nid yr opsiynau.",
   "app.containers.AdminPage.Project.data.title": "Clirio'r holl ddata cyfranogiad o'r prosiect hwn",
   "app.containers.AdminPage.Project.data.warningMessage": "Ni ellir dadwneud y weithred hon.",
   "app.containers.AdminPage.Project.resetParticipationData": "Ailosod yr holl ddata cyfranogiad",
