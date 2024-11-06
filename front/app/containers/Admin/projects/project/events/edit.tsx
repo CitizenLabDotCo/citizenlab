@@ -25,6 +25,7 @@ import useEventFiles from 'api/event_files/useEventFiles';
 import useAddEventImage from 'api/event_images/useAddEventImage';
 import useDeleteEventImage from 'api/event_images/useDeleteEventImage';
 import useEventImage from 'api/event_images/useEventImage';
+import useUpdateEventImage from 'api/event_images/useUpdateEventImage';
 import { IEvent, IEventProperties } from 'api/events/types';
 import useAddEvent from 'api/events/useAddEvent';
 import useEvent from 'api/events/useEvent';
@@ -32,6 +33,8 @@ import useUpdateEvent from 'api/events/useUpdateEvent';
 
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 import useLocale from 'hooks/useLocale';
+
+import projectMessages from 'containers/Admin/projects/project/general/messages';
 
 import DateTimePicker from 'components/admin/DatePickers/DateTimePicker';
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';
@@ -95,6 +98,7 @@ const AdminProjectEventEdit = () => {
 
   // event image
   const { mutate: addEventImage } = useAddEventImage();
+  const { mutate: updateEventImage } = useUpdateEventImage();
   const { mutate: deleteEventImage } = useDeleteEventImage();
   const { data: remoteEventImage } = useEventImage(event?.data);
 
@@ -110,9 +114,7 @@ const AdminProjectEventEdit = () => {
     useState(false);
   const [uploadedImage, setUploadedImage] = useState<UploadFile | null>(null);
   const [locationPoint, setLocationPoint] = useState<GeoJSON.Point | null>(
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    event?.data?.attributes?.location_point_geojson || null
+    event?.data.attributes.location_point_geojson || null
   );
   const [geocodedPoint, setGeocodedPoint] = useState<GeoJSON.Point | null>(
     null
@@ -121,19 +123,19 @@ const AdminProjectEventEdit = () => {
     []
   );
   const [successfulGeocode, setSuccessfulGeocode] = useState(false);
+  const [eventImageAltText, setEventImagealtText] = useState<Multiloc | null>(
+    null
+  );
+  const [hasAltTextChanged, setHasAltTextChanged] = useState(false);
 
   // Remote values
-  // TODO: Fix this the next time the file is edited.
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  const remotePoint = event?.data?.attributes?.location_point_geojson;
+  const remotePoint = event?.data.attributes.location_point_geojson;
 
   const eventAttrs = event
     ? // TODO: Fix this the next time the file is edited.
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       {
-        // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        ...event?.data.attributes,
+        ...event.data.attributes,
         ...attributeDiff,
       }
     : { ...attributeDiff };
@@ -162,9 +164,12 @@ const AdminProjectEventEdit = () => {
     async function convertRemoteImage() {
       if (remoteEventImage) {
         const imageUrl = remoteEventImage.data.attributes.versions.medium;
+        const altTextValue = remoteEventImage.data.attributes.alt_text_multiloc;
         if (imageUrl) {
           const imageFile = await convertUrlToUploadFile(imageUrl);
           setUploadedImage(imageFile);
+          setEventImagealtText(altTextValue);
+          setHasAltTextChanged(false);
         }
       }
     }
@@ -367,12 +372,10 @@ const AdminProjectEventEdit = () => {
     );
   };
 
-  const handleEventImage = async (data: IEvent) => {
+  const addOrDeleteEventImage = async (data: IEvent) => {
     const hasRemoteImage = !isNilOrError(remoteEventImage);
     const remoteImageId = hasRemoteImage
-      ? // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        event?.data?.relationships?.event_images?.data?.[0].id
+      ? event?.data.relationships.event_images.data[0].id
       : undefined;
     if (
       (uploadedImage === null || !uploadedImage.remote) &&
@@ -389,6 +392,27 @@ const AdminProjectEventEdit = () => {
         eventId: data.data.id,
         image: {
           image: uploadedImage.base64,
+          ...(eventImageAltText
+            ? { alt_text_multiloc: eventImageAltText }
+            : {}),
+        },
+      });
+    }
+  };
+
+  const updateImage = async (data: IEvent) => {
+    const hasRemoteImage = !isNilOrError(remoteEventImage);
+    const remoteImageId = hasRemoteImage
+      ? event?.data.relationships.event_images.data[0].id
+      : undefined;
+
+    if (remoteImageId && uploadedImage && eventImageAltText) {
+      updateEventImage({
+        eventId: data.data.id,
+        imageId: remoteImageId,
+        image: {
+          image: uploadedImage.base64,
+          alt_text_multiloc: eventImageAltText,
         },
       });
     }
@@ -397,55 +421,49 @@ const AdminProjectEventEdit = () => {
   const handleEventFiles = async (data: IEvent) => {
     setSubmitState('success');
 
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (data) {
-      const { id: eventId } = data.data;
-      eventFiles
-        .filter((file) => !file.remote)
-        .map((file) =>
-          addEventFile(
-            {
-              eventId,
-              file: file.base64,
-              name: file.name,
-              ordering: null,
+    const { id: eventId } = data.data;
+    eventFiles
+      .filter((file) => !file.remote)
+      .map((file) =>
+        addEventFile(
+          {
+            eventId,
+            file: file.base64,
+            name: file.name,
+            ordering: null,
+          },
+          {
+            onSuccess: () => {
+              setSubmitState('success');
             },
+            onError: () => {
+              setSubmitState('error');
+            },
+          }
+        )
+      );
+    eventFilesToRemove
+      .filter((file) => !!file.remote)
+      .map((file) => {
+        if (file.id) {
+          deleteEventFile(
+            { eventId, fileId: file.id },
             {
               onSuccess: () => {
+                setEventFilesToRemove(
+                  eventFilesToRemove.filter(
+                    (fileToRemove) => fileToRemove.id !== file.id
+                  )
+                );
                 setSubmitState('success');
               },
               onError: () => {
                 setSubmitState('error');
               },
             }
-          )
-        );
-      eventFilesToRemove
-        .filter((file) => !!file.remote)
-        .map((file) => {
-          if (file.id) {
-            deleteEventFile(
-              { eventId, fileId: file.id },
-              {
-                onSuccess: () => {
-                  setEventFilesToRemove(
-                    // TODO: Fix this the next time the file is edited.
-                    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-                    eventFilesToRemove.filter((fileToRemove) => {
-                      fileToRemove.id !== file.id;
-                    })
-                  );
-                  setSubmitState('success');
-                },
-                onError: () => {
-                  setSubmitState('error');
-                },
-              }
-            );
-          }
-        });
-    }
+          );
+        }
+      });
   };
 
   const handleOnSubmit = async (e: FormEvent) => {
@@ -463,19 +481,17 @@ const AdminProjectEventEdit = () => {
       setSaving(true);
 
       // If only files have changed
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      if (isEmpty(attributeDiff) && eventFilesToRemove) {
-        if (event) {
-          handleEventFiles(event);
-        }
+      if (isEmpty(attributeDiff) && event) {
+        handleEventFiles(event);
       }
 
       // If only image has changed
-      if (isEmpty(attributeDiff) && imageChanged) {
-        if (event) {
-          handleEventImage(event);
-        }
+      if (isEmpty(attributeDiff) && imageChanged && event) {
+        addOrDeleteEventImage(event);
+      }
+
+      if (hasAltTextChanged && !imageChanged && event) {
+        updateImage(event);
       }
 
       // non-file input fields have changed
@@ -498,7 +514,7 @@ const AdminProjectEventEdit = () => {
             },
             {
               onSuccess: async (data) => {
-                handleEventImage(data);
+                addOrDeleteEventImage(data);
                 handleEventFiles(data);
                 setSubmitState('success');
               },
@@ -523,7 +539,7 @@ const AdminProjectEventEdit = () => {
               onSuccess: async (data) => {
                 setSubmitState('success');
                 handleEventFiles(data);
-                handleEventImage(data);
+                addOrDeleteEventImage(data);
                 clHistory.push(`/admin/projects/${projectId}/events`);
               },
               onError: async (errors) => {
@@ -545,6 +561,12 @@ const AdminProjectEventEdit = () => {
         setSubmitState('error');
       }
     }
+  };
+
+  const handleEventImageAltTextChange = (altTextMultiloc: Multiloc) => {
+    setSubmitState('enabled');
+    setEventImagealtText(altTextMultiloc);
+    setHasAltTextChanged(true);
   };
 
   if (event !== undefined && isInitialLoading) {
@@ -602,6 +624,26 @@ const AdminProjectEventEdit = () => {
                   imagePreviewRatio={1 / 2}
                 />
               </SectionField>
+              {uploadedImage && (
+                <SectionField>
+                  <Label>
+                    <FormattedMessage {...messages.eventImageAltTextTitle} />
+                    <IconTooltip
+                      content={
+                        <FormattedMessage
+                          {...projectMessages.projectImageAltTextTooltip}
+                        />
+                      }
+                    />
+                  </Label>
+                  <InputMultilocWithLocaleSwitcher
+                    type="text"
+                    valueMultiloc={eventImageAltText}
+                    label={<FormattedMessage {...projectMessages.altText} />}
+                    onChange={handleEventImageAltTextChange}
+                  />
+                </SectionField>
+              )}
               <Title
                 variant="h4"
                 fontWeight="bold"

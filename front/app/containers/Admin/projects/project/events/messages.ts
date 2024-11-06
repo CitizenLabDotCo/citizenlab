@@ -219,4 +219,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEvents.attendee',
     defaultMessage: 'attendee',
   },
+  eventImageAltTextTitle: {
+    id: 'app.containers.AdminPage.ProjectEvents.eventImageAltTextTitle',
+    defaultMessage: 'Event image alternative text',
+  },
 });
