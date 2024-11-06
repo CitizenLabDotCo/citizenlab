@@ -1733,8 +1733,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplate1": "Last ned en Excel-mal",
   "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplateTooltip": "Excel-maler vil ikke inneholde noen spørsmål om kartleggingsinndata, ettersom disse ikke støttes for masseimport på nåværende tidspunkt.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadResults2": "Last ned resultatene fra undersøkelsen",
-  "app.containers.AdminPage.ProjectEdit.survey.downloadResultsSupportArticle": "Støtteartikkel",
-  "app.containers.AdminPage.ProjectEdit.survey.downloadResultsToolTip": "Hvis du vil vite hvordan du får tilgang til respondentenes navn og e-postadresse, kan du gå til {supportArticleLink}.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadSurvey": "Last ned undersøkelsen som pdf",
   "app.containers.AdminPage.ProjectEdit.survey.duplicateAnotherSurvey": "Dupliser en annen undersøkelse",
   "app.containers.AdminPage.ProjectEdit.survey.editSurvey1": "Rediger",
