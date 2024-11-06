@@ -2,7 +2,8 @@ class ProjectsFinderService
   def initialize(projects, current_user = nil, params = {})
     @projects = projects
     @current_user = current_user
-    @params = params
+    @page_size = (params.dig(:page, :size) || 500).to_i
+    @page_number = (params.dig(:page, :number) || 1).to_i
   end
 
   def participation_possible
@@ -47,17 +48,18 @@ class ProjectsFinderService
     #
     # Step 1: Create pairs of project ids and action descriptors.
     # Since this is the last filtering step, we will keep going, until we reach the limit required for pagination.
-    pagination_limit = calculate_pagination_limit
+    pagination_limit = @page_size * @page_number
+    project_descriptor_pairs = {}
 
-    project_descriptor_pairs = projects.each_with_object({}) do |project, accu|
+    projects.each do |project|
       service = Permissions::ProjectPermissionsService.new(
         project, @current_user, user_requirements_service: user_requirements_service
       )
       action_descriptors = service.action_descriptors
       next unless service.participation_possible?(action_descriptors)
 
-      accu[project.id] = action_descriptors
-      break if accu.size >= pagination_limit
+      project_descriptor_pairs[project.id] = action_descriptors
+      break if project_descriptor_pairs.size >= pagination_limit
     end
 
     # Step 2: Use project_descriptor_pairs keys (project IDs) to filter projects
@@ -80,13 +82,6 @@ class ProjectsFinderService
         Time.zone.now.to_fs(:db), Time.zone.now.to_fs(:db)
       )
       .select('projects.*, phases.end_at AS phase_end_at')
-  end
-
-  def calculate_pagination_limit
-    page_size = (@params.dig(:page, :size) || 500).to_i
-    page_number = (@params.dig(:page, :number) || 1).to_i
-
-    page_size * page_number
   end
 
   def user_requirements_service
