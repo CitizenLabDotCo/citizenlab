@@ -1397,7 +1397,7 @@
   "app.containers.AdminPage.Project.confirmation.no": "يلغي",
   "app.containers.AdminPage.Project.confirmation.title": "هل أنت متأكد أنك تريد إعادة تعيين كافة بيانات المشاركة؟",
   "app.containers.AdminPage.Project.confirmation.yes": "إعادة تعيين كافة بيانات المشاركة",
-  "app.containers.AdminPage.Project.data.description": "أفكار واضحة، تعليقات، أصوات، ردود أفعال، استجابات استطلاع، استجابات استطلاع رأي، متطوعون ومشاركون في الحدث.",
+  "app.containers.AdminPage.Project.data.descriptionText": "قم بمسح الأفكار والتعليقات والأصوات وردود الأفعال واستجابات الاستطلاعات واستجابات استطلاعات الرأي والمتطوعين وحضور الفعاليات. في حالة مراحل التصويت، سيؤدي هذا الإجراء إلى مسح الأصوات ولكن ليس الخيارات.",
   "app.containers.AdminPage.Project.data.title": "مسح جميع بيانات المشاركة من هذا المشروع",
   "app.containers.AdminPage.Project.data.warningMessage": "لا يمكن التراجع عن هذا الإجراء.",
   "app.containers.AdminPage.Project.resetParticipationData": "إعادة تعيين كافة بيانات المشاركة",
