@@ -81,7 +81,7 @@ const CollapseContainer = styled(Box)`
 
   &.expanded-exit {
     opacity: 1;
-    max-height: 800px;
+    max-height: 1000px;
     overflow: hidden;
 
     &.collapsed-exit-active {
@@ -127,7 +127,7 @@ const CollapsibleContainer = ({
           className={isExpanded ? 'expanded' : 'collapsed'}
           onClick={handleChange}
         >
-          <Title fontSize="s" as="h3">
+          <Title fontSize="s" variant="h3">
             {title.toUpperCase()}
           </Title>
           <ChevronIcon name="chevron-right" />
