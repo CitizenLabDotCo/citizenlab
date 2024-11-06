@@ -1397,7 +1397,7 @@
   "app.containers.AdminPage.Project.confirmation.no": "ਰੱਦ ਕਰੋ",
   "app.containers.AdminPage.Project.confirmation.title": "ਕੀ ਤੁਸੀਂ ਯਕੀਨੀ ਤੌਰ 'ਤੇ ਸਾਰੇ ਭਾਗੀਦਾਰੀ ਡੇਟਾ ਨੂੰ ਰੀਸੈਟ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ?",
   "app.containers.AdminPage.Project.confirmation.yes": "ਸਾਰੇ ਭਾਗੀਦਾਰੀ ਡੇਟਾ ਨੂੰ ਰੀਸੈਟ ਕਰੋ",
-  "app.containers.AdminPage.Project.data.description": "ਸਪਸ਼ਟ ਵਿਚਾਰ, ਟਿੱਪਣੀਆਂ, ਵੋਟਾਂ, ਪ੍ਰਤੀਕਰਮ, ਸਰਵੇਖਣ ਜਵਾਬ, ਪੋਲ ਜਵਾਬ, ਵਾਲੰਟੀਅਰ ਅਤੇ ਇਵੈਂਟ ਹਾਜ਼ਰ।",
+  "app.containers.AdminPage.Project.data.descriptionText": "ਸਪਸ਼ਟ ਵਿਚਾਰ, ਟਿੱਪਣੀਆਂ, ਵੋਟਾਂ, ਪ੍ਰਤੀਕਰਮ, ਸਰਵੇਖਣ ਜਵਾਬ, ਪੋਲ ਜਵਾਬ, ਵਾਲੰਟੀਅਰ ਅਤੇ ਇਵੈਂਟ ਹਾਜ਼ਰ। ਮਤਦਾਨ ਪੜਾਵਾਂ ਦੇ ਮਾਮਲੇ ਵਿੱਚ, ਇਹ ਕਾਰਵਾਈ ਵੋਟਾਂ ਨੂੰ ਸਾਫ਼ ਕਰੇਗੀ ਪਰ ਵਿਕਲਪਾਂ ਨੂੰ ਨਹੀਂ।",
   "app.containers.AdminPage.Project.data.title": "ਇਸ ਪ੍ਰੋਜੈਕਟ ਤੋਂ ਸਾਰੇ ਭਾਗੀਦਾਰੀ ਡੇਟਾ ਨੂੰ ਸਾਫ਼ ਕਰੋ",
   "app.containers.AdminPage.Project.data.warningMessage": "ਇਸ ਕਾਰਵਾਈ ਨੂੰ ਅਣਕੀਤਾ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ।",
   "app.containers.AdminPage.Project.resetParticipationData": "ਸਾਰੇ ਭਾਗੀਦਾਰੀ ਡੇਟਾ ਨੂੰ ਰੀਸੈਟ ਕਰੋ",
