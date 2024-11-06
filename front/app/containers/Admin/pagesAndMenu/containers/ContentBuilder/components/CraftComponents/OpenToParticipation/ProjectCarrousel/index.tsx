@@ -4,7 +4,6 @@ import {
   Title,
   Box,
   Spinner,
-  Icon,
   colors,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
@@ -25,6 +24,7 @@ import { CARD_GAP, CARD_WIDTH } from './constants';
 import HorizontalScroll from './HorizontalScroll';
 import LightProjectCard from './LightProjectCard';
 import messages from './messages';
+import ScrollButton from './ScrollButton';
 
 const Container = styled(Box)`
   .scroll-button {
@@ -203,48 +203,26 @@ const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
             )}
           </HorizontalScroll>
           {showPreviousButton && !isSmallerThanPhone && (
-            <Box
-              as="button"
-              className="scroll-button"
-              position="absolute"
-              left="8px"
-              top="120px"
-              borderRadius="30px"
-              bgColor="white"
-              w="52px"
-              h="52px"
-              border={`1px solid ${colors.divider}`}
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                if (!scrollContainerRef) return;
-                scrollContainerRef.scrollLeft -= CARD_WIDTH + CARD_GAP;
-              }}
-            >
-              <Icon name="arrow-left" fill={colors.grey700} />
-            </Box>
+            <>
+              <ScrollButton
+                variant="left"
+                onClick={() => {
+                  if (!scrollContainerRef) return;
+                  scrollContainerRef.scrollLeft -= CARD_WIDTH + CARD_GAP;
+                }}
+              />
+            </>
           )}
           {showNextButton && !isSmallerThanPhone && (
-            <Box
-              as="button"
-              className="scroll-button"
-              position="absolute"
-              right="8px"
-              top="120px"
-              borderRadius="30px"
-              bgColor="white"
-              w="52px"
-              h="52px"
-              border={`1px solid ${colors.divider}`}
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                if (!scrollContainerRef) return;
-                scrollContainerRef.scrollLeft += CARD_WIDTH + CARD_GAP;
-              }}
-            >
-              <Icon name="arrow-right" fill={colors.grey700} />
-            </Box>
+            <>
+              <ScrollButton
+                variant="right"
+                onClick={() => {
+                  if (!scrollContainerRef) return;
+                  scrollContainerRef.scrollLeft += CARD_WIDTH + CARD_GAP;
+                }}
+              />
+            </>
           )}
         </Container>
       </Box>
