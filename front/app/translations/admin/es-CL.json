@@ -1605,7 +1605,7 @@
   "app.containers.AdminPage.ProjectEdit.documentAnnotationMethodDescription1": "Incrusta un PDF interactivo y recoge comentarios y opiniones con Konveio.",
   "app.containers.AdminPage.ProjectEdit.downvotingDisabled": "Desactivado",
   "app.containers.AdminPage.ProjectEdit.downvotingEnabled": "Activado",
-  "app.containers.AdminPage.ProjectEdit.dradftExplanation": "Los borradores de proyectos están ocultos para todos los usuarios excepto para los PMs asignados.",
+  "app.containers.AdminPage.ProjectEdit.dradftExplanation": "Los borradores de proyectos están ocultos para todos los usuarios excepto para los gestores de proyectos asignados.",
   "app.containers.AdminPage.ProjectEdit.draft": "Borrador",
   "app.containers.AdminPage.ProjectEdit.draftStatus": "Borrador",
   "app.containers.AdminPage.ProjectEdit.editButtonLabel": "Administrar",
