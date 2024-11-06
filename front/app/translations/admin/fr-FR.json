@@ -131,7 +131,7 @@
   "app.components.admin.PostManager.PostPreview.OfflineVoteSettings.manualVoteAdjustmentTooltip2": "Ils seront différenciés visuellement des votes en ligne.",
   "app.components.admin.PostManager.PostPreview.OfflineVoteSettings.manualVoteAdjustmentTooltip3": "Cela affectera les résultats du vote.",
   "app.components.admin.PostManager.PostPreview.OfflineVoteSettings.manualVoteAdjustmentTooltip4": "Cela n'affectera pas les tableaux de bord relatifs aux données de participation.",
-  "app.components.admin.PostManager.PostPreview.OfflineVoteSettings.manualVoteAdjustmentTooltip7": "Les votes hors ligne pour une option ne peuvent être définis qu'une seule fois dans un projet et sont partagés entre toutes les phases du projet.",
+  "app.components.admin.PostManager.PostPreview.OfflineVoteSettings.manualVoteAdjustmentTooltip7": "Le nombre de votes hors ligne pour une option ne peut être défini qu'à l'échelle du projet et est partagé entre toutes les phases du projet.",
   "app.components.admin.PostManager.PostPreview.OfflineVoteSettings.manualVotersDisabledTooltip": "Vous devez d'abord indiquer le nombre total de participants hors ligne.",
   "app.components.admin.PostManager.PostPreview.OfflineVoteSettings.manualVotersLabel2": "Nombre de participants hors ligne",
   "app.components.admin.PostManager.PostPreview.OfflineVoteSettings.manualVotersTooltip1a": "Pour pouvoir calculer les résultats, nous avons besoin de connaître le <b>nombre total de participants hors ligne pour cette phase</b>.",
