@@ -1733,8 +1733,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplate1": "Bir excel şablonu indirin",
   "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplateTooltip": "Şu anda toplu içe aktarma için desteklenmediğinden, Excel şablonları herhangi bir eşleme giriş sorusu içermeyecektir.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadResults2": "Anket sonuçlarını indirin",
-  "app.containers.AdminPage.ProjectEdit.survey.downloadResultsSupportArticle": "Destek makalesi",
-  "app.containers.AdminPage.ProjectEdit.survey.downloadResultsToolTip": "Anket katılımcısı adı ve e-postasına nasıl erişeceğinizi öğrenmek için {supportArticleLink}adresimize gidin.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadSurvey": "Anketi pdf olarak indirin",
   "app.containers.AdminPage.ProjectEdit.survey.duplicateAnotherSurvey": "Başka bir anketi çoğaltın",
   "app.containers.AdminPage.ProjectEdit.survey.editSurvey1": "Düzenle",
