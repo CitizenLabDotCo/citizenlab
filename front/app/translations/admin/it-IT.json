@@ -1733,8 +1733,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplate1": "Scarica un modello excel",
   "app.containers.AdminPage.ProjectEdit.survey.downloadExcelTemplateTooltip": "I modelli Excel non includeranno domande di inserimento della mappatura perché al momento non sono supportati per l'importazione in blocco.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadResults2": "Download survey results",
-  "app.containers.AdminPage.ProjectEdit.survey.downloadResultsSupportArticle": "Articolo di supporto",
-  "app.containers.AdminPage.ProjectEdit.survey.downloadResultsToolTip": "Per sapere come accedere al nome e all'e-mail dei partecipanti all'indagine, visita il nostro sito {supportArticleLink}.",
   "app.containers.AdminPage.ProjectEdit.survey.downloadSurvey": "Scarica il sondaggio in formato pdf",
   "app.containers.AdminPage.ProjectEdit.survey.duplicateAnotherSurvey": "Duplica un'altra indagine",
   "app.containers.AdminPage.ProjectEdit.survey.editSurvey1": "Modifica",
