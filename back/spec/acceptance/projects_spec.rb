@@ -1204,6 +1204,30 @@ resource 'Projects' do
 
       expect(project_ids).to eq [followed_project.id]
     end
+
+    example 'It returns projects containing an Idea the user has followed', document: false do
+      project = create(:project)
+      idea = create(:idea, project: project)
+      create(:follower, followable: idea, user: @user)
+
+      do_request
+      expect(status).to eq 200
+
+      json_response = json_parse(response_body)
+      project_ids = json_response[:data].pluck(:id)
+
+      expect(project_ids).to match_array [project.id, followed_project.id]
+    end
+
+    example 'It returns an empty list if the user is not signed in' do
+      header 'Authorization', nil
+
+      do_request
+      expect(status).to eq 200
+
+      json_response = json_parse(response_body)
+      expect(json_response[:data]).to be_empty
+    end
   end
 
   get 'web_api/v1/projects/with_active_participatory_phase' do

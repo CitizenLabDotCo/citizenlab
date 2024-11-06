@@ -2,6 +2,7 @@
 
 class WebApi::V1::ProjectsController < ApplicationController
   before_action :set_project, only: %i[show update reorder destroy index_xlsx votes_by_user_xlsx votes_by_input_xlsx delete_inputs]
+  before_action :not_signed_in, only: [:index_projects_for_followed_item]
 
   skip_before_action :authenticate_user
   skip_after_action :verify_policy_scoped, only: :index
@@ -54,7 +55,21 @@ class WebApi::V1::ProjectsController < ApplicationController
 
   def index_projects_for_followed_item
     projects = policy_scope(Project)
-    projects = projects.where(id: current_user.follows.where(followable_type: 'Project').select(:followable_id))
+    projects = projects
+      .joins('LEFT JOIN ideas ON ideas.project_id = projects.id')
+      .joins(
+        'LEFT JOIN followers AS idea_followers ON idea_followers.followable_id = ideas.id ' \
+        'AND idea_followers.followable_type = \'Idea\''
+      )
+      .joins(
+        'LEFT JOIN followers AS project_followers ON project_followers.followable_id = projects.id ' \
+        'AND project_followers.followable_type = \'Project\''
+      )
+      .where(
+        'project_followers.user_id = :user_id OR idea_followers.user_id = :user_id',
+        user_id: current_user.id
+      )
+      .distinct
 
     @projects = paginate projects
     @projects = @projects.preload(
@@ -259,6 +274,13 @@ class WebApi::V1::ProjectsController < ApplicationController
 
       # Validation errors will appear in the Sentry error 'Additional Data'
       ErrorReporter.report_msg("Project change would lead to inconsistencies! (id: #{project.id})", extra: errors || {})
+    end
+  end
+
+  def not_signed_in
+    unless current_user
+      render json: { data: [] }, status: :ok
+      nil
     end
   end
 end
