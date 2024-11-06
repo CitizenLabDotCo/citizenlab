@@ -64,6 +64,10 @@ class ProjectPolicy < ApplicationPolicy
     active_moderator?
   end
 
+  def index_projects_with_active_participatory_phase?
+    true
+  end
+
   def votes_by_user_xlsx?
     index_xlsx?
   end
