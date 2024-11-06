@@ -1696,7 +1696,7 @@
   "app.containers.AdminPage.ProjectEdit.projectFolderSelectTitle": "Ajouter un projet à un dossier ?",
   "app.containers.AdminPage.ProjectEdit.projectHeaderImageTooltip": "Cette image est affichée en haut de la page du projet.\n\n    Pour plus d'informations sur les résolutions d'image recommandées, {supportPageLink}.",
   "app.containers.AdminPage.ProjectEdit.projectImageAltTextTitle1": "Texte alternatif de l'image de la carte du projet",
-  "app.containers.AdminPage.ProjectEdit.projectImageAltTextTooltip1": "Fournissez une brève description de l'image pour les utilisateurs malvoyants. Cela aide les lecteurs d'écran à comprendre le contenu de l'image.",
+  "app.containers.AdminPage.ProjectEdit.projectImageAltTextTooltip1": "Fournissez une courte description de l'image, destinée à être lue à voix haute par les lecteurs d'écran pour les utilisateurs malvoyants.",
   "app.containers.AdminPage.ProjectEdit.projectManagementTitle": "Gestionnaires de projet",
   "app.containers.AdminPage.ProjectEdit.projectManagerTooltipContent": "Les chefs de projet peuvent éditer des projets, gérer les contributions et envoyer des e-mails aux participants. Vous pouvez {moderationInfoCenterLink} pour trouver plus d'informations sur les droits attribués aux chefs de projet.",
   "app.containers.AdminPage.ProjectEdit.projectName": "Nom du projet",
