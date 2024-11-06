@@ -106,7 +106,7 @@ class WebApi::V1::ImagesController < ApplicationController
   private
 
   def image_params
-    permitted_attributes = [:image, :ordering]
+    permitted_attributes = %i[image ordering]
     if params[:container_type] == 'Project' || params[:container_type] == 'ProjectFolder' || params[:container_type] == 'Event'
       permitted_attributes << { alt_text_multiloc: CL2_SUPPORTED_LOCALES }
     end
