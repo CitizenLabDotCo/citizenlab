@@ -326,6 +326,30 @@ resource 'Ideas' do
       end
     end
 
+    example 'Shows manual_votes in a voting phase' do
+      project = create(:single_phase_single_voting_project)
+      phase = project.phases.first.id
+      admin = create(:admin)
+      input1 = create(:idea, project: project)
+      input2 = create(:idea, project: project)
+      inputs = [input1, input2]
+
+      input1.set_manual_votes(5, admin)
+      inputs.each do |input|
+        input.phases = project.phases
+        input.save!
+      end
+
+      do_request
+      assert_status 200
+
+      input1_response = json_response_body[:data].find { |i| i[:id] == input1.id }
+      expect(input1_response.dig(:attributes, :manual_votes_amount)).to eq 5
+      expect(input1_response.dig(:attributes, :total_votes)).to eq 5
+      expect(input1_response.dig(:attributes, :manual_votes_last_updated_at)).to be_nil
+      expect(input1_response.dig(:relationships, :manual_votes_last_updated_by)).to be_nil
+    end
+
     describe 'visibility for submitted inputs' do
       let!(:prescreening) { create(:proposals_status, code: 'prescreening') }
       let!(:proposed) { create(:proposals_status, code: 'proposed') }
