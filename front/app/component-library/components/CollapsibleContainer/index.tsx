@@ -4,7 +4,7 @@ import { CSSTransition } from 'react-transition-group';
 import styled from 'styled-components';
 
 import useInstanceId from '../../hooks/useInstanceId';
-import { colors, isRtl } from '../../utils/styleUtils';
+import { isRtl } from '../../utils/styleUtils';
 import Box, { BoxMarginProps, BoxPaddingProps, BoxWidthProps } from '../Box';
 import Icon from '../Icon';
 
@@ -17,8 +17,6 @@ type CollapsibleContainerProps = {
   BoxPaddingProps;
 
 const ChevronIcon = styled(Icon)`
-  fill: ${colors.black};
-  margin-left: 20px;
   transition: fill 80ms ease-out, transform 200ms ease-out;
 `;
 
@@ -49,7 +47,6 @@ const TitleButton = styled(Box)`
 `;
 
 const CollapseContainer = styled(Box)`
-  margin-bottom: 16px;
   opacity: 1;
   display: flex;
   flex-wrap: wrap;
@@ -68,7 +65,7 @@ const CollapseContainer = styled(Box)`
 
     &.expanded-enter-active {
       opacity: 1;
-      max-height: 1000px;
+      max-height: 2000px;
       overflow: hidden;
     }
   }
@@ -80,12 +77,12 @@ const CollapseContainer = styled(Box)`
 
   &.expanded-exit {
     opacity: 1;
-    max-height: 1000px;
+    max-height: 2000px;
     overflow: hidden;
 
     &.collapsed-exit-active {
       opacity: 0;
-      max-height: 1000px;
+      max-height: 2000px;
       overflow: hidden;
     }
   }
@@ -104,11 +101,10 @@ const CollapsibleContainer = ({
   };
 
   return (
-    <Box display="flex" flexDirection="column" px="16px" borderRadius="4px">
+    <Box display="flex" flexDirection="column" bgColor="blue">
       <Box display="flex" alignItems="center">
         <TitleButton
           as="button"
-          padding="0"
           aria-expanded={isExpanded}
           aria-controls={`collapsed-section-${uuid}`}
           id={`accordion-title-${uuid}`}
@@ -134,9 +130,7 @@ const CollapsibleContainer = ({
           classNames={`expanded`}
         >
           <CollapseContainer aria-live="polite">
-            <Box display="block" width="100%">
-              {children}
-            </Box>
+            <Box width="100%">{children}</Box>
           </CollapseContainer>
         </CSSTransition>
       </Box>
