@@ -109,6 +109,10 @@ class ProjectPolicy < ApplicationPolicy
     create?
   end
 
+  def destroy_participation_data?
+    active_moderator?
+  end
+
   def shared_permitted_attributes
     shared = [
       :slug,

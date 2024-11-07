@@ -100,7 +100,7 @@ class ParticipantsService
   # Returns the total count of all project participants including anonymous posts - cached
   def project_participants_count(project)
     is_active = TimelineService.new.timeline_active(project) == :present
-    expires_in = is_active ? 1.hour : 1.day
+    expires_in = is_active ? 30.minutes : 1.day
 
     Rails.cache.fetch("#{project.cache_key}/participant_count", expires_in: expires_in) do
       project_participants_count_uncached(project)
@@ -113,6 +113,10 @@ class ParticipantsService
       .select(:participant_id)
       .distinct
       .count
+  end
+
+  def clear_project_participants_count_cache(project)
+    Rails.cache.delete("#{project.cache_key}/participant_count")
   end
 
   # Returns the total count of all folder participants including anonymous posts - cached
@@ -173,5 +177,38 @@ class ParticipantsService
   def idea_statuses_participants(idea_statuses, options = {})
     ideas = Idea.where(idea_status: idea_statuses)
     ideas_participants ideas, options
+  end
+
+  def destroy_participation_data(project)
+    # Destroy volunteers data
+    Volunteering::Volunteer
+      .joins(cause: { phase: :project })
+      .where(cause: { phases: { project_id: project.id } })
+      .destroy_all
+
+    # Destroy event attendance data
+    Events::Attendance
+      .joins(event: :project)
+      .where(events: { project_id: project.id })
+      .destroy_all
+
+    # Destroy poll data
+    Polls::Response
+      .joins(phase: :project)
+      .where(phases: { project_id: project.id })
+      .destroy_all
+
+    # Destroy baskets, comments and reactions data
+    Basket.where(phase: Phase.where(project: project)).destroy_all
+    Comment.where(post: project.ideas).destroy_all
+    Reaction.where(reactable: project.ideas).destroy_all
+
+    # Filter ideas that belong to a voting phase, and destroy all comments and reactions that they have.
+    ideas = Idea.where(project: project).where(
+      id: IdeasPhase.where(phase: Phase.where(project: project, participation_method: 'voting')).select(:idea_id)
+    )
+
+    # Destroy all remaining ideas that are not in a voting phase
+    Idea.where(project: project).where.not(id: ideas).destroy_all
   end
 end
