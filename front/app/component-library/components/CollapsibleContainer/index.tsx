@@ -113,7 +113,7 @@ const CollapsibleContainer = ({
           as="button"
           aria-expanded={isExpanded}
           aria-controls={`collapsed-section-${uuid}`}
-          id={`accordion-title-${uuid}`}
+          id={`collapse-container-title-${uuid}`}
           className={isExpanded ? 'expanded' : 'collapsed'}
           onClick={handleChange}
         >
@@ -125,7 +125,7 @@ const CollapsibleContainer = ({
         role="region"
         aria-live="polite"
         id={`collapsed-section-${uuid}`}
-        aria-labelledby={`accordion-title-${uuid}`}
+        aria-labelledby={`collapse-container-title-${uuid}`}
       >
         <CSSTransition
           in={isExpanded}
