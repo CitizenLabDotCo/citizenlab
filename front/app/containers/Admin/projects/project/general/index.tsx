@@ -17,11 +17,7 @@ import useProjectImages, {
 } from 'api/project_images/useProjectImages';
 import projectPermissionKeys from 'api/project_permissions/keys';
 import projectsKeys from 'api/projects/keys';
-import {
-  IUpdatedProjectProperties,
-  IProjectData,
-  PublicationStatus,
-} from 'api/projects/types';
+import { IUpdatedProjectProperties, IProjectData } from 'api/projects/types';
 import useAddProject from 'api/projects/useAddProject';
 import useProjectById from 'api/projects/useProjectById';
 import useUpdateProject from 'api/projects/useUpdateProject';
@@ -43,6 +39,7 @@ import {
 } from 'components/admin/Section';
 import SlugInput from 'components/admin/SlugInput';
 import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
+import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { queryClient } from 'utils/cl-react-query/queryClient';
@@ -59,7 +56,6 @@ import ProjectCardImageTooltip from './components/ProjectCardImageTooltip';
 import ProjectFolderSelect from './components/ProjectFolderSelect';
 import ProjectHeaderImageTooltip from './components/ProjectHeaderImageTooltip';
 import ProjectNameInput from './components/ProjectNameInput';
-import ProjectStatusPicker from './components/ProjectStatusPicker';
 import { StyledForm, StyledSectionField } from './components/styling';
 import TopicInputs from './components/TopicInputs';
 import messages from './messages';
@@ -127,13 +123,10 @@ const AdminProjectsProjectGeneral = () => {
 
   const [slug, setSlug] = useState<string | null>(null);
   const [showSlugErrorMessage, setShowSlugErrorMessage] = useState(false);
-  const [publicationStatus, setPublicationStatus] =
-    useState<PublicationStatus>('draft');
 
   useEffect(() => {
     (async () => {
       if (project) {
-        setPublicationStatus(project.data.attributes.publication_status);
         setSlug(project.data.attributes.slug);
       }
     })();
@@ -416,17 +409,6 @@ const AdminProjectsProjectGeneral = () => {
     saveForm();
   };
 
-  const handleStatusChange = (publicationStatus: PublicationStatus) => {
-    setSubmitState('enabled');
-    setPublicationStatus(publicationStatus);
-    setProjectAttributesDiff((projectAttributesDiff) => ({
-      ...projectAttributesDiff,
-      admin_publication_attributes: {
-        publication_status: publicationStatus,
-      },
-    }));
-  };
-
   const handleSlugOnChange = (slug: string) => {
     setProjectAttributesDiff((projectAttributesDiff) => {
       return {
@@ -506,12 +488,7 @@ const AdminProjectsProjectGeneral = () => {
               </SectionDescription>
             </>
           )}
-
-          <ProjectStatusPicker
-            publicationStatus={publicationStatus}
-            handleStatusChange={handleStatusChange}
-          />
-
+          <Warning>{formatMessage(messages.publicationStatusWarning)}</Warning>
           <ProjectNameInput
             titleMultiloc={projectAttrs.title_multiloc}
             titleError={titleError}

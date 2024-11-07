@@ -46,6 +46,15 @@ describe ProjectsFinderService do
       expect(result[:projects].map(&:id)).to eq [active_ideation_project.id, active_project2.id, active_project3.id]
     end
 
+    it 'handles case where n of projects is greater than page size * page number' do
+      _active_project2 = create(:project_with_active_ideation_phase)
+      _active_project3 = create(:project_with_active_ideation_phase)
+
+      result = service.new(Project.all, user, { page: { size: 2, number: 1 } }).participation_possible
+
+      expect(result[:projects].size).to eq 2
+    end
+
     it 'includes action descriptors for each returned project' do
       expect(Project.count).to eq 3
       expect(result[:projects].size).to eq 1

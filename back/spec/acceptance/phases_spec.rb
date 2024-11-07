@@ -734,6 +734,12 @@ resource 'Phases' do
           create(:custom_field_option, custom_field: multiselect_field, key: 'dog', title_multiloc: { 'en' => 'Dog' })
         end
 
+        before do
+          config = AppConfiguration.instance
+          config.settings['core']['private_attributes_in_export'] = true
+          config.save!
+        end
+
         context 'when there are inputs in the phase' do
           let!(:survey_response1) do
             create(
@@ -755,7 +761,7 @@ resource 'Phases' do
           end
 
           example 'Download native survey phase inputs in one sheet' do
-            expected_params = [[survey_response1, survey_response2], active_phase, { view_private_attributes: true }]
+            expected_params = [[survey_response1, survey_response2], active_phase]
             allow(Export::Xlsx::InputSheetGenerator).to receive(:new).and_return(Export::Xlsx::InputSheetGenerator.new(*expected_params))
             do_request
             expect(Export::Xlsx::InputSheetGenerator).to have_received(:new).with(*expected_params)
@@ -876,7 +882,10 @@ resource 'Phases' do
       end
 
       example 'Download phase inputs WITH private user data', document: false do
-        expected_params = [[survey_response], active_phase, { view_private_attributes: true }]
+        config = AppConfiguration.instance
+        config.settings['core']['private_attributes_in_export'] = true
+        config.save!
+        expected_params = [[survey_response], active_phase]
         allow(Export::Xlsx::InputSheetGenerator).to receive(:new).and_return(Export::Xlsx::InputSheetGenerator.new(*expected_params))
         do_request
         expect(Export::Xlsx::InputSheetGenerator).to have_received(:new).with(*expected_params)
