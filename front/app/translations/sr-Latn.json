@@ -38,6 +38,7 @@
   "app.components.AuthProviders.continueWithFakeSSO": "Continue with Fake SSO",
   "app.components.AuthProviders.continueWithGoogle": "Nastavite uz Google",
   "app.components.AuthProviders.continueWithHoplr": "Continue with Hoplr",
+  "app.components.AuthProviders.continueWithIdAustria": "Continue with ID Austria",
   "app.components.AuthProviders.continueWithLoginMechanism": "Наставите са {loginMechanismName}",
   "app.components.AuthProviders.continueWithNemlogIn": "Continue with MitID",
   "app.components.AuthProviders.franceConnectMergingFailed": "Već postoji nalog sa ovom adresom e-pošte.{br}{br}Platformi ne možete pristupiti pomoću FranceConnect, zato što se lični podaci ne poklapaju. Za prijavljivanje pomoću FranceConnect potrebno je najpre da izmenite ime ili prezime na ovoj platformi kako bi se poklopili sa vašim zvaničnim podacima.{br}{br}Ispod se možete prijaviti na uobičajeni način.",

@@ -38,6 +38,7 @@
   "app.components.AuthProviders.continueWithFakeSSO": "Continuar com o SSO falso",
   "app.components.AuthProviders.continueWithGoogle": "Continuar com o Google",
   "app.components.AuthProviders.continueWithHoplr": "Continuar com Hoplr",
+  "app.components.AuthProviders.continueWithIdAustria": "Continuar com a ID Áustria",
   "app.components.AuthProviders.continueWithLoginMechanism": "Continuar com {loginMechanismName}",
   "app.components.AuthProviders.continueWithNemlogIn": "Continuar com o MitID",
   "app.components.AuthProviders.franceConnectMergingFailed": "Já existe uma conta com este endereço de correio electrónico.{br}{br}Não é possível acessar à plataforma utilizando o FranceConnect, uma vez que os dados pessoais não correspondem. Para entrar na plataforma utilizando FranceConnect, terá primeiro de mudar o seu nome ou apelido nesta plataforma para corresponder aos seus dados oficiais.{br}{br}Pode iniciar sessão como normalmente faz abaixo.",

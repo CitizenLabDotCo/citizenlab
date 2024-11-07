@@ -38,6 +38,7 @@
   "app.components.AuthProviders.continueWithFakeSSO": "Sahte SSO ile devam edin",
   "app.components.AuthProviders.continueWithGoogle": "Google ile devam edin",
   "app.components.AuthProviders.continueWithHoplr": "Hoplr ile devam edin",
+  "app.components.AuthProviders.continueWithIdAustria": "ID Avusturya ile devam edin",
   "app.components.AuthProviders.continueWithLoginMechanism": "{loginMechanismName}ile devam edin",
   "app.components.AuthProviders.continueWithNemlogIn": "MitID ile devam edin",
   "app.components.AuthProviders.franceConnectMergingFailed": "Bu e-posta adresiyle zaten bir hesap var.{br}{br}Kişisel bilgiler eşleşmediği için FranceConnect'i kullanarak platforma erişemezsiniz. FranceConnect'i kullanarak giriş yapmak için öncelikle bu platformdaki adınızı veya soyadınızı resmi bilgilerinizle eşleşecek şekilde değiştirmeniz gerekecektir.{br}{br}Aşağıda normalde yaptığınız gibi giriş yapabilirsiniz.",
