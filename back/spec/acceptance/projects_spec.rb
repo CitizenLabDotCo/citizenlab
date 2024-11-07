@@ -1219,6 +1219,36 @@ resource 'Projects' do
       expect(project_ids).to match_array [project.id, followed_project.id]
     end
 
+    example 'it returns projects for an Area the user follows' do
+      project = create(:project)
+      area = create(:area)
+      create(:areas_project, project: project, area: area)
+      create(:follower, followable: area, user: @user)
+
+      do_request
+      expect(status).to eq 200
+
+      json_response = json_parse(response_body)
+      project_ids = json_response[:data].pluck(:id)
+
+      expect(project_ids).to match_array [project.id, followed_project.id]
+    end
+
+    example 'it returns projects for a Topic the user follows' do
+      project = create(:project)
+      topic = create(:topic)
+      create(:projects_topic, project: project, topic: topic)
+      create(:follower, followable: topic, user: @user)
+
+      do_request
+      expect(status).to eq 200
+
+      json_response = json_parse(response_body)
+      project_ids = json_response[:data].pluck(:id)
+
+      expect(project_ids).to match_array [project.id, followed_project.id]
+    end
+
     example 'It returns an empty list if the user is not signed in' do
       header 'Authorization', nil
 

@@ -65,8 +65,23 @@ class WebApi::V1::ProjectsController < ApplicationController
         'LEFT JOIN followers AS project_followers ON project_followers.followable_id = projects.id ' \
         'AND project_followers.followable_type = \'Project\''
       )
+      .joins(
+        'LEFT JOIN areas_projects ON areas_projects.project_id = projects.id'
+      )
+      .joins(
+        'LEFT JOIN followers AS area_followers ON area_followers.followable_id = areas_projects.area_id ' \
+        'AND area_followers.followable_type = \'Area\''
+      )
+      .joins(
+        'LEFT JOIN projects_topics ON projects_topics.project_id = projects.id'
+      )
+      .joins(
+        'LEFT JOIN followers AS topic_followers ON topic_followers.followable_id = projects_topics.topic_id ' \
+        'AND topic_followers.followable_type = \'Topic\''
+      )
       .where(
-        'project_followers.user_id = :user_id OR idea_followers.user_id = :user_id',
+        'project_followers.user_id = :user_id OR idea_followers.user_id = :user_id ' \
+        'OR area_followers.user_id = :user_id OR topic_followers.user_id = :user_id',
         user_id: current_user.id
       )
       .distinct
