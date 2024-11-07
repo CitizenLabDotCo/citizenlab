@@ -4,21 +4,19 @@ import useTranslation from 'modules/commercial/machine_translations/hooks/useTra
 
 import useLocale from 'hooks/useLocale';
 
-import { Title } from 'components/PostShowComponents/Title';
+import { StyledH1 } from 'components/PostShowComponents/Title';
 
 interface Props {
   postId: string;
   title: string;
   translateButtonClicked?: boolean;
   color?: string;
-  align: 'left' | 'center';
 }
 
 const PostShowTranslatedTitle = ({
   translateButtonClicked,
   postId,
   color,
-  align,
   title,
 }: Props) => {
   const locale = useLocale();
@@ -35,14 +33,14 @@ const PostShowTranslatedTitle = ({
     : title;
 
   return (
-    <Title
-      id={`e2e-idea-title`}
-      color={color}
-      align={align}
+    <StyledH1
+      id="e2e-idea-title"
+      customColor={color}
+      m="0"
       aria-live={showTranslatedContent ? 'polite' : undefined}
     >
       {content}
-    </Title>
+    </StyledH1>
   );
 };
 
