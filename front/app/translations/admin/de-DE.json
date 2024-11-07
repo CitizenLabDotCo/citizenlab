@@ -759,7 +759,7 @@
   "app.containers.Admin.messaging.newProjectPhaseModal.turnEmailCampaignOn1": "E-Mails „{emailCampaignName}“ aktivieren?",
   "app.containers.Admin.messaging.newProjectPhaseModal.turnOff": "Ja, ausschalten",
   "app.containers.Admin.messaging.newProjectPhaseModal.turnOn": "Ja, einschalten",
-  "app.containers.Admin.pagesAndMenu.ContentBuilder.CraftComponents.OpenToParticipation.openToParticipation": "Offen für die Teilnahme",
+  "app.containers.Admin.pagesAndMenu.ContentBuilder.CraftComponents.OpenToParticipation.openToParticipation": "Offen für Beteiligung",
   "app.containers.Admin.pagesAndMenu.ContentBuilder.CraftComponents.OpenToParticipation.title": "Titel",
   "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.emptyNameErrorText": "Geben Sie einen Namen für alle Sprachen an",
   "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.emptyProjectError": "Das Projekt kann nicht leer sein",
