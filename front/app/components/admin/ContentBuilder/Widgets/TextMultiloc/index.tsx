@@ -77,4 +77,6 @@ TextMultiloc.craft = {
   },
 };
 
+export const textMultilocTitle = messages.textMultiloc;
+
 export default TextMultiloc;

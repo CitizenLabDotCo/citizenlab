@@ -3,16 +3,8 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import { SerializedNodes } from '@craftjs/core';
 
-import AccordionMultiloc from 'components/admin/ContentBuilder/Widgets/AccordionMultiloc';
-import ButtonMultiloc from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
 import Container from 'components/admin/ContentBuilder/Widgets/Container';
-import IframeMultiloc from 'components/admin/ContentBuilder/Widgets/IframeMultiloc';
-import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
 import ImageTextCards from 'components/admin/ContentBuilder/Widgets/ImageTextCards';
-import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
-import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
-import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
-import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 
 import { WIDGETS } from '../Widgets';
 
@@ -24,22 +16,10 @@ type EditorProps = {
   onNodesChange?: (nodes: SerializedNodes) => void;
 };
 
-// TODO: Remove after proposals migration is done
-const Proposals = () => <></>;
-
 const resolver = {
   Box,
   Container,
-  TwoColumn,
-  ThreeColumn,
-  ImageMultiloc,
-  IframeMultiloc,
-  TextMultiloc,
-  AccordionMultiloc,
-  WhiteSpace,
   ImageTextCards,
-  ButtonMultiloc,
-  Proposals,
   ...WIDGETS,
 };
 

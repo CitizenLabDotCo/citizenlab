@@ -124,4 +124,6 @@ Accordion.craft = {
   },
 };
 
+export const accordionMultilocTitle = messages.accordionMultiloc;
+
 export default Accordion;

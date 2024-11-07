@@ -235,4 +235,6 @@ Button.craft = {
   },
 };
 
+export const buttonMultilocTitle = messages.buttonMultiloc;
+
 export default Button;
