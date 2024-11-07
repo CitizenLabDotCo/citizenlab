@@ -82,6 +82,10 @@ export interface IAppConfigurationSettings {
     allowed: boolean;
     enabled: boolean;
   };
+  pages: {
+    allowed: boolean;
+    enabled: boolean;
+  };
   password_login?: {
     allowed: boolean;
     enabled: boolean;
