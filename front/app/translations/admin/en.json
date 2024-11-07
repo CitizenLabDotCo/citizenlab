@@ -549,6 +549,7 @@
   "app.containers.Admin.PagesAndMenu.containers.BottomInfoSection.pageTitle": "Bottom info section",
   "app.containers.Admin.PagesAndMenu.containers.BottomInfoSection.saveAndEnableButton": "Save and enable bottom info section",
   "app.containers.Admin.PagesAndMenu.containers.BottomInfoSection.saveButton": "Save bottom info section",
+  "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage..contactGovSuccessToAccessPages": "Creating custom pages is not included in your current license. Reach out to your GovSuccess Manager to learn more about it.",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.atLeastOneTag": "Please select at least one tag",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.buttonSuccess": "Success",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.byAreaFilter": "By area",
