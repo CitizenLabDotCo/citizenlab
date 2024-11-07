@@ -1302,6 +1302,34 @@ resource 'Projects' do
       expect(project_ids).to match_array [project.id, followed_project.id]
     end
 
+    example 'it orders the projects by the creation date of follows (most recent first)', document: false do
+      project1 = create(:project)
+      project2 = create(:project)
+      project3 = create(:project)
+
+      follower1 = create(:follower, followable: project1, user: @user)
+      follower2 = create(:follower, followable: project2, user: @user)
+      follower3 = create(:follower, followable: project3, user: @user)
+
+      area = create(:area)
+      create(:areas_project, project: project3, area: area)
+      follower4 = create(:follower, followable: area, user: @user)
+
+      follower1.update!(created_at: 3.days.ago) # user follows project1, 3 days ago, so project1 should be first
+      follower2.update!(created_at: 1.day.ago)  # user follows project2, 1 day ago, so project2 should be second
+      follower3.update!(created_at: 2.days.ago) # user follows project3, 2 days ago, ...
+      follower4.update!(created_at: 1.hour.ago) # user follows area of project3, 1 hour ago, so project3 should be first
+      follower.update!(created_at: 4.days.ago)  # user follows followed_project, 4 days ago, so followed_project should be last
+
+      do_request
+      expect(status).to eq 200
+
+      json_response = json_parse(response_body)
+      project_ids = json_response[:data].pluck(:id)
+
+      expect(project_ids).to eq [project3.id, project2.id, project1.id, followed_project.id]
+    end
+
     example 'It returns an empty list if the user is not signed in' do
       header 'Authorization', nil
 
@@ -1310,6 +1338,28 @@ resource 'Projects' do
 
       json_response = json_parse(response_body)
       expect(json_response[:data]).to be_empty
+    end
+
+    example 'Includes project images', document: false do
+      project_image = create(:project_image, project: followed_project)
+
+      do_request
+      expect(status).to eq(200)
+      json_response = json_parse(response_body)
+
+      included_image_ids = json_response[:included].select { |d| d[:type] == 'image' }.pluck(:id)
+
+      expect(included_image_ids).to include project_image.id
+    end
+
+    example_request 'Includes current phase', document: false do
+      expect(status).to eq(200)
+      json_response = json_parse(response_body)
+
+      current_phase_ids = json_response[:data].filter_map { |d| d.dig(:relationships, :current_phase, :data, :id) }
+      included_phase_ids = json_response[:included].select { |d| d[:type] == 'phase' }.pluck(:id)
+
+      expect(current_phase_ids).to match included_phase_ids
     end
   end
 
