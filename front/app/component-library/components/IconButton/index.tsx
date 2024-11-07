@@ -42,6 +42,7 @@ const StyledBox = styled(Box)<{
 `;
 
 export type IconButtonProps = {
+  id?: string;
   className?: string;
   iconName: IconNames;
   // Provide a description that describes the button's task

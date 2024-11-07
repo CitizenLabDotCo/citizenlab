@@ -36,10 +36,10 @@ const ShareLink = ({
   const [shareDropdownIsOpen, setShareDropdownIsOpen] = useState(false);
   const [linkIsCopied, setLinkIsCopied] = useState(false);
 
+  const link = `${appConfiguration?.data.attributes.host}/projects/${projectSlug}/preview/${token}`;
+
   const handleCopyLink = () => {
-    navigator.clipboard.writeText(
-      `${appConfiguration?.data.attributes.host}/projects/${projectSlug}/preview/${token}`
-    );
+    navigator.clipboard.writeText(link);
     setLinkIsCopied(true);
   };
 
@@ -58,6 +58,7 @@ const ShareLink = ({
   return (
     <Box position="relative">
       <Button
+        id="e2e-share-link"
         buttonStyle="admin-dark"
         icon="share"
         size="s"
@@ -88,6 +89,7 @@ const ShareLink = ({
               </Text>
               <Box display="flex" alignItems="center">
                 <Button
+                  id="e2e-copy-link"
                   buttonStyle="text"
                   padding="8px"
                   icon={linkIsCopied ? 'check-circle' : 'link'}
@@ -104,11 +106,15 @@ const ShareLink = ({
                     ? formatMessage(messages.shareLinkCopied)
                     : formatMessage(messages.shareLink)}
                 </Button>
+                <Box display="none" id="e2e-link">
+                  {link}
+                </Box>
                 {isLoading ? (
                   <Spinner size="20px" />
                 ) : (
                   <Tooltip content={formatMessage(messages.refreshLinkTooltip)}>
                     <IconButton
+                      id="e2e-refresh-link"
                       iconWidth="28px"
                       iconHeight="28px"
                       iconName="refresh"
