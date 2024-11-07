@@ -29,10 +29,6 @@ class ProjectsFinderService
         'LEFT JOIN followers AS project_followers ON project_followers.followable_id = projects.id ' \
         'AND project_followers.followable_type = \'Project\''
       )
-      .joins(
-        'LEFT JOIN followers AS project_followers ON project_followers.followable_id = projects.id ' \
-        'AND project_followers.followable_type = \'Project\''
-      )
       .joins('LEFT JOIN ideas ON ideas.project_id = projects.id')
       .joins(
         'LEFT JOIN followers AS idea_followers ON idea_followers.followable_id = ideas.id ' \
@@ -58,20 +54,22 @@ class ProjectsFinderService
         user_id: @user.id
       )
       .select(
-        'projects.*, ' \
-        'GREATEST(' \
+        'projects.id AS project_id, ' \
+        'MAX(GREATEST(' \
         'COALESCE(project_followers.created_at, \'1970-01-01\'), ' \
         'COALESCE(idea_followers.created_at, \'1970-01-01\'), ' \
         'COALESCE(area_followers.created_at, \'1970-01-01\'), ' \
         'COALESCE(topic_followers.created_at, \'1970-01-01\')' \
-        ') AS greatest_created_at'
+        ')) AS greatest_created_at'
       )
+      .group('projects.id')
 
     Project
-      .from(subquery, :projects)
-      .select('DISTINCT ON (projects.id) projects.*, greatest_created_at')
+      .from("(#{subquery.to_sql}) AS subquery")
+      .joins('INNER JOIN projects ON projects.id = subquery.project_id')
+      .select('projects.*, subquery.greatest_created_at')
       .order(
-        'projects.id, greatest_created_at DESC'
+        Arel.sql('subquery.greatest_created_at DESC')
       )
   end
 
