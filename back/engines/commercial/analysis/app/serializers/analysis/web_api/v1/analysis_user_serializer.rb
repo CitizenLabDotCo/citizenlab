@@ -9,25 +9,26 @@ module Analysis
       class AnalysisUserSerializer < ::WebApi::V1::BaseSerializer
         set_type :analysis_user
 
-        attributes :slug,
-          :locale,
-          :created_at,
-          :updated_at
+        attributes :locale, :created_at, :updated_at
+
+        attribute :slug do |object, params|
+          object.slug if params[:view_private_attributes]
+        end
 
         attribute :last_name do |object, params|
           name_service = UserDisplayNameService.new(params[:app_configuration], current_user(params))
-          name_service.last_name(object)
+          name_service.last_name(object) if params[:view_private_attributes]
         end
 
         attribute :first_name do |object, params|
           name_service = UserDisplayNameService.new(params[:app_configuration], current_user(params))
-          name_service.first_name(object)
+          name_service.first_name(object) if params[:view_private_attributes]
         end
 
         attribute :avatar, if: proc { |object|
           object.avatar
-        } do |object|
-          object.avatar.versions.to_h { |k, v| [k.to_s, v.url] }
+        } do |object, params|
+          object.avatar.versions.to_h { |k, v| [k.to_s, v.url] } if params[:view_private_attributes]
         end
       end
     end
