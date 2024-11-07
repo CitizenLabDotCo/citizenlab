@@ -39,6 +39,10 @@ export const appConfigurationData: IAppConfigurationData = {
         allowed: true,
         enabled: true,
       },
+      pages: {
+        allowed: true,
+        enabled: true,
+      },
       custom_accessibility_statement_link: {
         allowed: false,
         enabled: false,
