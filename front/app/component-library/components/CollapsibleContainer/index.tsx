@@ -101,7 +101,7 @@ const CollapsibleContainer = ({
   };
 
   return (
-    <Box display="flex" flexDirection="column" bgColor="blue">
+    <Box display="flex" flexDirection="column">
       <Box display="flex" alignItems="center">
         <TitleButton
           as="button"
