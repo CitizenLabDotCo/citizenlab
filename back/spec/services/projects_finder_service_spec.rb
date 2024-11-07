@@ -242,8 +242,18 @@ describe ProjectsFinderService do
       follower4.update!(created_at: 2.days.ago) # user follows project4, 2 days ago, but ...
       follower5.update!(created_at: 1.hour.ago) # user follows area of project4, 1 hour ago, so project4 should be first
 
-      expect(result).to eq [project4.reload, project3, project2, followed_project]
-      # expect(result).to eq [project3.reload, project4, project2, followed_project]
+      expect(result).to eq [project4, project3, project2, followed_project]
+    end
+
+    # Regression test to catch bug that is easy to introduce by 'simplifying' the way we select distinct projects.
+    it 'does not return duplicates' do
+      area = create(:area)
+      create(:areas_project, project: followed_project, area: area)
+      area2 = create(:area)
+      create(:areas_project, project: followed_project, area: area2)
+      create(:follower, followable: area, user: user)
+
+      expect(result).to eq [followed_project]
     end
   end
 end

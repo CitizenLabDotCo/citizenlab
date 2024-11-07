@@ -64,6 +64,10 @@ class ProjectsFinderService
       )
       .group('projects.id')
 
+    # The rather counter-intuitive `.group('projects.id')` at the end of the preceding suquery, followed by
+    # this join with the projects table, is necessary to avoid introducing duplicates AND maintain the desired ordering.
+    # For example, if a user follows an area for a project and the project is also associated with another area,
+    # the project would appear twice in the results without this approach.
     Project
       .from("(#{subquery.to_sql}) AS subquery")
       .joins('INNER JOIN projects ON projects.id = subquery.project_id')
