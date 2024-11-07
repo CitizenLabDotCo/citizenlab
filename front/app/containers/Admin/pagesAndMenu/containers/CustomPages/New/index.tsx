@@ -1,7 +1,8 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { WrappedComponentProps } from 'react-intl';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import {
   pagesAndMenuBreadcrumb,
@@ -11,16 +12,20 @@ import {
 import TabbedResource from 'components/admin/TabbedResource';
 import HelmetIntl from 'components/HelmetIntl';
 import Breadcrumbs from 'components/UI/Breadcrumbs';
+import Warning from 'components/UI/Warning';
 
-import { injectIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
 
 import NewCustomPage from './NewCustomPage';
 
-const CustomPagesNewSettings = ({
-  intl: { formatMessage },
-}: WrappedComponentProps) => {
+const CustomPagesNewSettings = () => {
+  const { formatMessage } = useIntl();
+  const canCreateCustomPages = useFeatureFlag({
+    name: 'pages',
+    onlyCheckAllowed: true,
+  });
   return (
     <>
       <HelmetIntl title={messages.newCustomPageMetaTitle} />
@@ -35,23 +40,31 @@ const CustomPagesNewSettings = ({
           ]}
         />
       </Box>
-      <TabbedResource
-        resource={{
-          title: formatMessage(messages.newCustomPagePageTitle),
-        }}
-        tabs={[
-          {
-            label: formatMessage(messages.pageSettingsTab),
-            name: 'settings',
-            url: '/admin/pages-menu/pages/new',
-          },
-        ]}
-        contentWrapper={false}
-      >
-        <NewCustomPage />
-      </TabbedResource>
+      {!canCreateCustomPages ? (
+        <Box padding="20px" background="white">
+          <Warning>
+            {formatMessage(messages.contactGovSuccessToAccessPages)}
+          </Warning>
+        </Box>
+      ) : (
+        <TabbedResource
+          resource={{
+            title: formatMessage(messages.newCustomPagePageTitle),
+          }}
+          tabs={[
+            {
+              label: formatMessage(messages.pageSettingsTab),
+              name: 'settings',
+              url: '/admin/pages-menu/pages/new',
+            },
+          ]}
+          contentWrapper={false}
+        >
+          <NewCustomPage />
+        </TabbedResource>
+      )}
     </>
   );
 };
 
-export default injectIntl(CustomPagesNewSettings);
+export default CustomPagesNewSettings;
