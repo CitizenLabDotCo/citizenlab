@@ -15,7 +15,6 @@ import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
 import { StyledRightColumn } from 'components/admin/ContentBuilder/Frame/FrameWrapper';
 import FullscreenContentBuilder from 'components/admin/ContentBuilder/FullscreenContentBuilder';
 import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
-import ContentBuilderSettings from 'components/admin/ContentBuilder/Settings';
 import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
 
 import { isNilOrError } from 'utils/helperUtils';
@@ -24,6 +23,7 @@ import Editor from '../components/Editor';
 import HomepageBuilderEditModePreview from '../components/HomepageBuilderEditModePreview';
 import HomepageBuilderToolbox from '../components/HomepageBuilderToolbox';
 import HomepageBuilderTopBar from '../components/HomepageBuilderTopBar';
+import Settings from '../components/Settings';
 import HomepageBanner from '../components/Widgets/HomepageBanner';
 import Projects from '../components/Widgets/Projects';
 
@@ -144,7 +144,7 @@ const HomepageBuilderPage = () => {
               </Box>
             </LanguageProvider>
           </StyledRightColumn>
-          <ContentBuilderSettings />
+          <Settings />
         </Box>
       </Editor>
       <Box justifyContent="center" display={previewEnabled ? 'flex' : 'none'}>
