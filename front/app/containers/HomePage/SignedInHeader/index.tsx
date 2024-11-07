@@ -85,7 +85,7 @@ const SignedInHeader = ({
     <Container
       data-testid="full-width-banner-layout"
       data-cy="e2e-full-width-banner-layout-container"
-      className={`e2e-signed-out-header`}
+      className={`e2e-signed-in-header`}
     >
       <Header id="hook-header">
         <HeaderImage id="hook-header-image">
