@@ -86,7 +86,7 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
           </Warning>
         </Box>
       )}
-      <H2>
+      <H2 color="tenantText">
         {config?.getStatusTitle &&
           formatMessage(config.getStatusHeader(basketStatus))}
       </H2>

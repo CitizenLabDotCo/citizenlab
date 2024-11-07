@@ -117,7 +117,7 @@ const ProjectTimelineContainer = ({ projectId, className }: Props) => {
           {!hideTimelineUI(phases?.data, currentLocale) && (
             <>
               <Header>
-                <H2 m="0">
+                <H2 m="0" color="tenantText">
                   <FormattedMessage {...messages.phases} />
                 </H2>
                 <PhaseNavigation projectId={projectId} buttonStyle="white" />

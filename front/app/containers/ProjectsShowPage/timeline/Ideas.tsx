@@ -80,7 +80,7 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
       className={`e2e-timeline-project-idea-cards ${className || ''}`}
     >
       {!isVotingContext && (
-        <H2 mt="0px" mb="20px">
+        <H2 mt="0px" mb="20px" color="tenantText">
           <FormattedMessage
             {...getInputTermMessage(inputTerm, {
               idea: messages.ideas,

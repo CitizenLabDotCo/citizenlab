@@ -27,7 +27,7 @@ const PollContainer = memo<Props>(({ projectId, phaseId, className }) => {
       <Container
         className={`e2e-timeline-project-poll-container ${className || ''}`}
       >
-        <H2 m="0">
+        <H2 m="0" color="tenantText">
           <FormattedMessage {...messages.navPoll} />
         </H2>
         <Poll phaseId={phaseId} projectId={projectId} />
