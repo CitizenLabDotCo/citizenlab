@@ -5,7 +5,12 @@ import styled from 'styled-components';
 
 import useInstanceId from '../../hooks/useInstanceId';
 import { isRtl } from '../../utils/styleUtils';
-import Box, { BoxMarginProps, BoxPaddingProps, BoxWidthProps } from '../Box';
+import Box, {
+  BoxMarginProps,
+  BoxPaddingProps,
+  BoxProps,
+  BoxWidthProps,
+} from '../Box';
 import Icon from '../Icon';
 
 type CollapsibleContainerProps = {
@@ -92,7 +97,8 @@ const CollapsibleContainer = ({
   isOpenByDefault,
   title,
   children,
-}: CollapsibleContainerProps) => {
+  ...rest
+}: CollapsibleContainerProps & BoxProps) => {
   const [isExpanded, setIsExpanded] = useState(isOpenByDefault);
   const uuid = useInstanceId();
 
@@ -101,7 +107,7 @@ const CollapsibleContainer = ({
   };
 
   return (
-    <Box display="flex" flexDirection="column">
+    <Box display="flex" flexDirection="column" {...rest}>
       <Box display="flex" alignItems="center">
         <TitleButton
           as="button"

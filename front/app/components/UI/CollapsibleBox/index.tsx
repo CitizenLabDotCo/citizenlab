@@ -171,4 +171,5 @@ const CollapsibleBox = memo<Props>((props) => {
   );
 });
 
+/** @deprecated Use CollapsibleContainer from the component library instead.*/
 export default CollapsibleBox;
