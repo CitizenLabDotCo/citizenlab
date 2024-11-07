@@ -1,12 +1,11 @@
 import React from 'react';
 
+import { H2 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
 import { TSurveyService } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
-
-import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { getPermissionsDisabledMessage } from 'utils/actionDescriptors';
@@ -71,9 +70,9 @@ const Survey = ({
       disabledMessage={disabledMessage}
     >
       <Container className={`${className} e2e-${surveyService}-survey enabled`}>
-        <ProjectPageSectionTitle>
+        <H2 m="0">
           <FormattedMessage {...messages.survey} />
-        </ProjectPageSectionTitle>
+        </H2>
 
         <ScreenReaderOnly>
           <FormattedMessage {...messages.embeddedSurveyScreenReaderWarning1} />
