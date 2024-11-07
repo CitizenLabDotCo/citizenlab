@@ -3,10 +3,10 @@ import React, { useEffect } from 'react';
 import {
   useBreakpoint,
   Box,
-  Title,
   defaultCardStyle,
   defaultCardHoverStyle,
   media,
+  H3,
 } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 import { RouteType } from 'routes';
@@ -171,14 +171,9 @@ const IdeaCard = ({
           }
         >
           <Link to={`/ideas/${slug}?go_back=true`} onClick={handleClick}>
-            <Title
-              variant="h3"
-              mt="4px"
-              mb="16px"
-              className="e2e-idea-card-title"
-            >
+            <H3 mt="4px" mb="16px" className="e2e-idea-card-title">
               {ideaTitle}
-            </Title>
+            </H3>
             {!hideBody && <Body idea={idea} />}
           </Link>
         </Box>
