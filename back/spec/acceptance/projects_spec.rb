@@ -451,6 +451,53 @@ resource 'Projects' do
       end
     end
 
+    delete 'web_api/v1/projects/:id/participation_data' do
+      let(:project) { create(:project) }
+      let(:id) { project.id }
+      let(:ideation_phase) do
+        create(
+          :phase,
+          project: project,
+          participation_method: 'ideation',
+          start_at: (Time.zone.today - 40.days),
+          end_at: (Time.zone.today - 31.days)
+        )
+      end
+
+      let(:volunteering_phase) do
+        create(
+          :volunteering_phase,
+          project: project,
+          start_at: (Time.zone.today - 30.days),
+          end_at: (Time.zone.today - 21.days)
+        )
+      end
+
+      let(:poll_phase) do
+        create(
+          :poll_phase,
+          project: project,
+          start_at: (Time.zone.today - 20.days),
+          end_at: (Time.zone.today - 11.days)
+        )
+      end
+
+      let!(:idea) { create(:idea, project: project) }
+
+      let!(:cause) { create(:cause, phase: volunteering_phase) }
+
+      let!(:volunteer) { create(:volunteer, cause: cause) }
+
+      let!(:poll_response) { create(:poll_response, phase: poll_phase) }
+
+      example_request 'Reset participation data of a project' do
+        expect(response_status).to eq 200
+        expect(project.ideas).to be_empty
+        expect(cause.volunteers).to be_empty
+        expect(poll_phase.poll_responses).to be_empty
+      end
+    end
+
     post 'web_api/v1/projects/:id/copy' do
       let(:source_project) { create(:single_phase_ideation_project) }
       let(:id) { source_project.id }
