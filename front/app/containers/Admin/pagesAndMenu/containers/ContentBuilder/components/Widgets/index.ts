@@ -92,6 +92,11 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
 };
 
 const WIDGETS_WITHOUT_POINTER_EVENTS = new Set<string>([
+  // Shared widgets
+  'ButtonMultiloc',
+  'IframeMultiloc',
+
+  // Homepage builder widgets
   'CallToAction',
   'Events',
   'HomepageBanner',
