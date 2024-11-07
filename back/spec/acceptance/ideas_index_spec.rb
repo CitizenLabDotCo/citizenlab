@@ -340,12 +340,13 @@ resource 'Ideas' do
         input.save!
       end
 
-      do_request
+      do_request(phase:)
       assert_status 200
 
       input1_response = json_response_body[:data].find { |i| i[:id] == input1.id }
       expect(input1_response.dig(:attributes, :manual_votes_amount)).to eq 5
       expect(input1_response.dig(:attributes, :total_votes)).to eq 5
+      # These are only for admins/moderators
       expect(input1_response.dig(:attributes, :manual_votes_last_updated_at)).to be_nil
       expect(input1_response.dig(:relationships, :manual_votes_last_updated_by)).to be_nil
     end

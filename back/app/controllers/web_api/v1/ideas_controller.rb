@@ -426,7 +426,9 @@ class WebApi::V1::IdeasController < ApplicationController
       }
     else
       {
-        params: jsonapi_serializer_params,
+        params: jsonapi_serializer_params(
+          phase: params[:phase] && Phase.find(params[:phase])
+        ),
         include: include
       }
     end
