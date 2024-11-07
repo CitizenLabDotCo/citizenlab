@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useState } from 'react';
+import React, { ReactNode, useState } from 'react';
 
 import { CSSTransition } from 'react-transition-group';
 import styled from 'styled-components';
@@ -115,10 +115,6 @@ const Accordion = ({
 }: AccordionProps) => {
   const [isExpanded, setIsExpanded] = useState(isOpenByDefault);
   const uuid = useInstanceId();
-
-  useEffect(() => {
-    setIsExpanded(isOpenByDefault);
-  }, [isOpenByDefault]);
 
   const handleChange = () => {
     setIsExpanded(!isExpanded);
