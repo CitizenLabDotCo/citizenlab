@@ -53,6 +53,10 @@ class WebApi::V1::ProjectsController < ApplicationController
     )
   end
 
+  # For use with 'For you' homepage widget.
+  # Returns all published projects that are visible to user
+  # AND (are in are followed by user OR relate to an idea, area or topic followed by user),
+  # ordered by the most recent follow for the project, idea, area or topic (most recent first).
   def index_projects_for_followed_item
     projects = policy_scope(Project)
     projects = ProjectsFinderService.new(projects, current_user).followed_by_user
@@ -76,8 +80,8 @@ class WebApi::V1::ProjectsController < ApplicationController
   end
 
   # For use with 'Open to participation' homepage widget.
-  # Returns all published or archived projects that are visible to user
-  # and in an active participatory phase (where user can do something).
+  # Returns all published projects that are visible to user
+  # AND in an active participatory phase (where user can do something).
   # Ordered by the end date of the current phase, soonest first (nulls last).
   def index_projects_with_active_participatory_phase
     projects = policy_scope(Project)

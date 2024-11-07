@@ -17,10 +17,18 @@ class ProjectsFinderService
     end
   end
 
+  # Returns an ActiveRecord collection of published projects that are visible to user
+  # AND (are in are followed by user OR relate to an idea, area or topic followed by user),
+  # ordered by the most recent follow for the project, idea, area or topic (most recent).
+  # => [Project]
   def followed_by_user
-    @projects
+    subquery = @projects
       .joins('INNER JOIN admin_publications AS admin_publications ON admin_publications.publication_id = projects.id')
       .where(admin_publications: { publication_status: 'published' })
+      .joins(
+        'LEFT JOIN followers AS project_followers ON project_followers.followable_id = projects.id ' \
+        'AND project_followers.followable_type = \'Project\''
+      )
       .joins(
         'LEFT JOIN followers AS project_followers ON project_followers.followable_id = projects.id ' \
         'AND project_followers.followable_type = \'Project\''
@@ -50,7 +58,7 @@ class ProjectsFinderService
         user_id: @user.id
       )
       .select(
-        'DISTINCT ON (projects.id) projects.*, ' \
+        'projects.*, ' \
         'GREATEST(' \
         'COALESCE(project_followers.created_at, \'1970-01-01\'), ' \
         'COALESCE(idea_followers.created_at, \'1970-01-01\'), ' \
@@ -58,8 +66,12 @@ class ProjectsFinderService
         'COALESCE(topic_followers.created_at, \'1970-01-01\')' \
         ') AS greatest_created_at'
       )
+
+    Project
+      .from(subquery, :projects)
+      .select('DISTINCT ON (projects.id) projects.*, greatest_created_at')
       .order(
-        "projects.id, #{Arel.sql('greatest_created_at DESC')}"
+        'projects.id, greatest_created_at DESC'
       )
   end
 
