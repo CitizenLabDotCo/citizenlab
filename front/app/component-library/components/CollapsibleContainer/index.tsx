@@ -70,7 +70,7 @@ const CollapseContainer = styled(Box)`
 
     &.expanded-enter-active {
       opacity: 1;
-      max-height: 2000px;
+      max-height: 1500px;
       overflow: hidden;
     }
   }
@@ -82,12 +82,12 @@ const CollapseContainer = styled(Box)`
 
   &.expanded-exit {
     opacity: 1;
-    max-height: 2000px;
+    max-height: 1500px;
     overflow: hidden;
 
     &.collapsed-exit-active {
       opacity: 0;
-      max-height: 2000px;
+      max-height: 1500px;
       overflow: hidden;
     }
   }
