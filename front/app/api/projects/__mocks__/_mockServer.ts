@@ -98,6 +98,12 @@ export const project1: IProjectData = {
         type: 'admin_publication',
       },
     },
+    current_phase: {
+      data: {
+        id: '123',
+        type: 'phase',
+      },
+    },
     project_images: {
       data: [
         {
@@ -231,6 +237,12 @@ export const project2: IProjectData = {
       data: {
         id: '9512ba9a-2f7a-4e5b-9003-95c4b8e1367e',
         type: 'admin_publication',
+      },
+    },
+    current_phase: {
+      data: {
+        id: '123',
+        type: 'phase',
       },
     },
     project_images: {

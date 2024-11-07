@@ -4,6 +4,8 @@ class WebApi::V1::ProjectsController < ApplicationController
   before_action :set_project, only: %i[show update reorder destroy index_xlsx votes_by_user_xlsx votes_by_input_xlsx delete_inputs]
   before_action :not_signed_in, only: [:index_projects_for_followed_item]
 
+  before_action :set_project, only: %i[show update reorder destroy index_xlsx votes_by_user_xlsx votes_by_input_xlsx delete_inputs destroy_participation_data]
+
   skip_before_action :authenticate_user
   skip_after_action :verify_policy_scoped, only: :index
 
@@ -215,7 +217,7 @@ class WebApi::V1::ProjectsController < ApplicationController
 
   def index_xlsx
     I18n.with_locale(current_user.locale) do
-      xlsx = Export::Xlsx::InputsGenerator.new.generate_inputs_for_project @project.id, view_private_attributes: true
+      xlsx = Export::Xlsx::InputsGenerator.new.generate_inputs_for_project @project.id
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'inputs.xlsx'
     end
   end
@@ -246,6 +248,16 @@ class WebApi::V1::ProjectsController < ApplicationController
     else
       raise 'Project has no voting phase.'
     end
+  end
+
+  def destroy_participation_data
+    ParticipantsService.new.destroy_participation_data(@project)
+
+    render json: WebApi::V1::ProjectSerializer.new(
+      @project,
+      params: jsonapi_serializer_params,
+      include: [:admin_publication]
+    ).serializable_hash, status: :ok
   end
 
   private

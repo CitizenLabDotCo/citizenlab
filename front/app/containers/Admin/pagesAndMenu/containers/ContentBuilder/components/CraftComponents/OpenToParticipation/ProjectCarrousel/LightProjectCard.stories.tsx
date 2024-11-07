@@ -1,0 +1,47 @@
+import LightProjectCard from './LightProjectCard';
+
+import type { Meta, StoryObj } from '@storybook/react';
+
+const meta = {
+  title: 'HomepageBuilder/LightProjectCard',
+  component: LightProjectCard,
+  parameters: {
+    chromatic: { disableSnapshot: false },
+  },
+} satisfies Meta<typeof LightProjectCard>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Primary: Story = {
+  args: {
+    project: {
+      attributes: {
+        title_multiloc: {
+          en: 'My cool project',
+        },
+        slug: 'my-cool-project',
+        action_descriptors: {
+          posting_idea: { enabled: true },
+          reacting_idea: { enabled: false },
+          commenting_idea: { enabled: true },
+        },
+      },
+      relationships: {
+        project_images: {
+          data: [
+            {
+              id: '1',
+              type: 'project_image',
+            },
+          ],
+        },
+        current_phase: {
+          data: {
+            id: '1',
+          },
+        },
+      },
+    } as any,
+  },
+};
