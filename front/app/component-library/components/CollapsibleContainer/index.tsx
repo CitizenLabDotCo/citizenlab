@@ -136,7 +136,7 @@ const CollapsibleContainer = ({
           classNames={`expanded`}
         >
           <CollapseContainer aria-live="polite">
-            <Box width="100%">{children}</Box>
+            <Box>{children}</Box>
           </CollapseContainer>
         </CSSTransition>
       </Box>
