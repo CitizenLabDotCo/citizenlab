@@ -2,9 +2,7 @@
 
 class WebApi::V1::ProjectsController < ApplicationController
   before_action :set_project, only: %i[show update reorder destroy index_xlsx votes_by_user_xlsx votes_by_input_xlsx delete_inputs]
-  before_action :not_signed_in, only: [:index_projects_for_followed_item]
-
-  before_action :set_project, only: %i[show update reorder destroy index_xlsx votes_by_user_xlsx votes_by_input_xlsx delete_inputs destroy_participation_data]
+  before_action :empty_data_for_visitor, only: [:index_projects_for_followed_item]
 
   skip_before_action :authenticate_user
   skip_after_action :verify_policy_scoped, only: :index
@@ -275,7 +273,7 @@ class WebApi::V1::ProjectsController < ApplicationController
     end
   end
 
-  def not_signed_in
+  def empty_data_for_visitor
     unless current_user
       render json: { data: [] }, status: :ok
       nil

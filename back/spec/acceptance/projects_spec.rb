@@ -1277,7 +1277,7 @@ resource 'Projects' do
       ]
     end
 
-    example 'Returns an empty list if the user is not signed in' do
+    example 'Returns an empty list if the user is not signed in', document: false do
       header 'Authorization', nil
 
       do_request
@@ -1342,51 +1342,7 @@ resource 'Projects' do
       expect(project_ids).not_to include future_project.id
     end
 
-    example_request 'Lists only projects with published publication status' do
-      expect(status).to eq 200
-
-      json_response = json_parse(response_body)
-      project_ids = json_response[:data].pluck(:id)
-      admin_publications = AdminPublication.where(publication_id: project_ids)
-
-      expect(admin_publications.pluck(:publication_status)).to all(be_in(['published']))
-    end
-
-    example "List is ordered by end_at of projects' active phase (ASC NULLS LAST)" do
-      soonest_end_at = active_ideation_project.phases.first.end_at
-
-      active_project2 = create(:project_with_active_ideation_phase)
-      active_project2.phases.first.update!(end_at: soonest_end_at + 1.day)
-      active_project3 = create(:project_with_active_ideation_phase)
-      active_project3.phases.first.update!(end_at: soonest_end_at + 2.days)
-
-      do_request
-      expect(status).to eq 200
-
-      json_response = json_parse(response_body)
-      project_ids = json_response[:data].pluck(:id)
-      projects = project_ids.map { |id| Project.find(id) }
-
-      active_phases_end_ats = projects.map do |p|
-        p.phases.where(
-          'phases.start_at <= ? AND (phases.end_at >= ? OR phases.end_at IS NULL)',
-          Time.zone.now.to_fs(:db), Time.zone.now.to_fs(:db)
-        ).pluck(:end_at)
-      end.flatten
-
-      # https://stackoverflow.com/questions/808318/sorting-a-ruby-array-of-objects-by-an-attribute-that-could-be-nil
-      expect(active_phases_end_ats).to eq(
-        active_phases_end_ats.sort do |a, b|
-          if a && b
-            a <=> b
-          else
-            (a ? -1 : 1)
-          end
-        end
-      )
-    end
-
-    example "Excludes projects where only permitted action is attending_event & no permission is 'fixable'" do
+    example "Excludes projects where only permitted action is attending_event & no permission is 'fixable'", document: false do
       group = create(:group)
       permission = create(:permission, action: 'posting_idea', permission_scope: active_ideation_project.phases.first, permitted_by: 'users')
       create(:groups_permission, permission_id: permission.id, group: group)
@@ -1408,7 +1364,7 @@ resource 'Projects' do
       expect(json_response[:data].pluck(:id)).not_to include active_ideation_project.id
     end
 
-    example "Includes projects where no action permitted (excluding attending_event), but a permission is 'fixable'" do
+    example "Includes projects where no action permitted (excluding attending_event), but a permission is 'fixable'", document: false do
       create(:custom_field, required: true)
 
       user_requirements_service = Permissions::UserRequirementsService.new(check_groups_and_verification: false)

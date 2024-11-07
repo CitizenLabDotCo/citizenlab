@@ -50,7 +50,7 @@ class ProjectsFinderService
         user_id: @user.id
       )
       .select(
-        'projects.*, ' \
+        'DISTINCT ON (projects.id) projects.*, ' \
         'GREATEST(' \
         'COALESCE(project_followers.created_at, \'1970-01-01\'), ' \
         'COALESCE(idea_followers.created_at, \'1970-01-01\'), ' \
@@ -58,9 +58,8 @@ class ProjectsFinderService
         'COALESCE(topic_followers.created_at, \'1970-01-01\')' \
         ') AS greatest_created_at'
       )
-      .distinct
       .order(
-        Arel.sql('greatest_created_at DESC')
+        "projects.id, #{Arel.sql('greatest_created_at DESC')}"
       )
   end
 
