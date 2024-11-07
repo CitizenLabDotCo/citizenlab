@@ -9,6 +9,7 @@ import {
   useBreakpoint,
   defaultStyles,
   fontSizes,
+  H2,
 } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
 
@@ -19,8 +20,6 @@ import { IPhaseData, VotingMethod } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 
 import useLocalize from 'hooks/useLocalize';
-
-import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
 
 import Warning from 'components/UI/Warning';
 
@@ -87,10 +86,10 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
           </Warning>
         </Box>
       )}
-      <ProjectPageSectionTitle>
+      <H2>
         {config?.getStatusTitle &&
           formatMessage(config.getStatusHeader(basketStatus))}
-      </ProjectPageSectionTitle>
+      </H2>
       <Box
         mb="16px"
         p="20px"
