@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useState } from 'react';
+import React, { ReactNode, useState } from 'react';
 
 import { CSSTransition } from 'react-transition-group';
 import styled from 'styled-components';
@@ -7,11 +7,10 @@ import useInstanceId from '../../hooks/useInstanceId';
 import { colors, isRtl } from '../../utils/styleUtils';
 import Box, { BoxMarginProps, BoxPaddingProps, BoxWidthProps } from '../Box';
 import Icon from '../Icon';
-import Title from '../Title';
 
 type CollapsibleContainerProps = {
-  title: string;
   children: ReactNode;
+  title: ReactNode;
   isOpenByDefault?: boolean;
 } & BoxMarginProps &
   BoxWidthProps &
@@ -100,23 +99,12 @@ const CollapsibleContainer = ({
   const [isExpanded, setIsExpanded] = useState(isOpenByDefault);
   const uuid = useInstanceId();
 
-  useEffect(() => {
-    setIsExpanded(isOpenByDefault);
-  }, [isOpenByDefault]);
-
   const handleChange = () => {
     setIsExpanded(!isExpanded);
   };
 
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      background={colors.white}
-      px="16px"
-      borderRadius="4px"
-      minWidth="300px"
-    >
+    <Box display="flex" flexDirection="column" px="16px" borderRadius="4px">
       <Box display="flex" alignItems="center">
         <TitleButton
           as="button"
@@ -127,9 +115,7 @@ const CollapsibleContainer = ({
           className={isExpanded ? 'expanded' : 'collapsed'}
           onClick={handleChange}
         >
-          <Title fontSize="s" variant="h3">
-            {title.toUpperCase()}
-          </Title>
+          {title}
           <ChevronIcon name="chevron-right" />
         </TitleButton>
       </Box>
