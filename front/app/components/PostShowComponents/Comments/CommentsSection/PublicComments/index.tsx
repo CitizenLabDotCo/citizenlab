@@ -5,8 +5,8 @@ import {
   fontSizes,
   isRtl,
   Box,
-  Title,
   useBreakpoint,
+  H2,
 } from '@citizenlab/cl2-component-library';
 import { useInView } from 'react-intersection-observer';
 import { useLocation } from 'react-router-dom';
@@ -126,15 +126,14 @@ const PublicComments = ({
           justifyContent="space-between"
           mt="16px"
         >
-          <Title
+          <H2
             color="tenantText"
-            variant="h2"
             fontSize={isSmallerThanPhone ? 'xl' : 'xxl'}
             id="comments-main-title"
           >
             <FormattedMessage {...messages.invisibleTitleComments} />
             {showCommentCount && <CommentCount>({commentCount})</CommentCount>}
-          </Title>
+          </H2>
 
           <CommentingIdeaDisabled idea={idea} phaseId={phaseId} />
 
