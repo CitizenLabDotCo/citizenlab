@@ -1,14 +1,13 @@
 import React, { useMemo } from 'react';
 
+import { Box, H2 } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
-import styled from 'styled-components';
 
 import { IPhaseData } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
 import { ideaDefaultSortMethodFallback } from 'api/phases/utils';
 
 import messages from 'containers/ProjectsShowPage/messages';
-import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
 
 import { IdeaCardsWithoutFiltersSidebar } from 'components/IdeaCards';
 import { Sort } from 'components/IdeaCards/shared/Filters/SortFilterDropdown';
@@ -17,12 +16,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import { getInputTermMessage } from 'utils/i18n';
-
-const Container = styled.div``;
-
-const StyledProjectPageSectionTitle = styled(ProjectPageSectionTitle)`
-  margin-bottom: 20px;
-`;
 
 interface InnerProps {
   projectId: string;
@@ -82,12 +75,12 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
   const inputTerm = phase.attributes.input_term;
 
   return (
-    <Container
+    <Box
       id="project-ideas"
       className={`e2e-timeline-project-idea-cards ${className || ''}`}
     >
       {!isVotingContext && (
-        <StyledProjectPageSectionTitle>
+        <H2 mt="0px" mb="20px">
           <FormattedMessage
             {...getInputTermMessage(inputTerm, {
               idea: messages.ideas,
@@ -101,7 +94,7 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
               petition: messages.petitions,
             })}
           />
-        </StyledProjectPageSectionTitle>
+        </H2>
       )}
       <IdeaCardsWithoutFiltersSidebar
         ideaQueryParameters={ideaQueryParameters}
@@ -118,7 +111,7 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
         showDropdownFilters={isVotingContext ? false : true}
         showSearchbar={isVotingContext ? false : true}
       />
-    </Container>
+    </Box>
   );
 };
 
