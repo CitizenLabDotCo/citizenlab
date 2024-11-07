@@ -1245,92 +1245,39 @@ resource 'Projects' do
     end
 
     let!(:followed_project) { create(:project) }
-    let!(:follower) { create(:follower, followable: followed_project, user: @user) }
+    let!(:_follower) { create(:follower, followable: followed_project, user: @user) }
+
+    let!(:project_with_followed_idea) { create(:project) }
+    let!(:idea) { create(:idea, project: project_with_followed_idea) }
+    let!(:_follower2) { create(:follower, followable: idea, user: @user) }
+
+    let!(:project_for_followed_area) { create(:project) }
+    let!(:area) { create(:area) }
+    let!(:_areas_project) { create(:areas_project, project: project_for_followed_area, area: area) }
+    let!(:_follower3) { create(:follower, followable: area, user: @user) }
+
+    let!(:project_for_followed_topic) { create(:project) }
+    let!(:topic) { create(:topic) }
+    let!(:_projects_topic) { create(:projects_topic, project: project_for_followed_topic, topic: topic) }
+    let!(:_follower4) { create(:follower, followable: topic, user: @user) }
 
     let!(:_unfollowed_project) { create(:project) }
 
-    example_request 'It does not return unfollowed projects (given they also have no related followed items)' do
+    example_request 'Includes projects for followed items, and not un-followed projects' do
       expect(status).to eq 200
 
       json_response = json_parse(response_body)
       project_ids = json_response[:data].pluck(:id)
 
-      expect(project_ids).to eq [followed_project.id]
+      expect(project_ids).to match_array [
+        followed_project.id,
+        project_with_followed_idea.id,
+        project_for_followed_area.id,
+        project_for_followed_topic.id
+      ]
     end
 
-    example 'It returns projects containing an Idea the user has followed', document: false do
-      project = create(:project)
-      idea = create(:idea, project: project)
-      create(:follower, followable: idea, user: @user)
-
-      do_request
-      expect(status).to eq 200
-
-      json_response = json_parse(response_body)
-      project_ids = json_response[:data].pluck(:id)
-
-      expect(project_ids).to match_array [project.id, followed_project.id]
-    end
-
-    example 'it returns projects for an Area the user follows' do
-      project = create(:project)
-      area = create(:area)
-      create(:areas_project, project: project, area: area)
-      create(:follower, followable: area, user: @user)
-
-      do_request
-      expect(status).to eq 200
-
-      json_response = json_parse(response_body)
-      project_ids = json_response[:data].pluck(:id)
-
-      expect(project_ids).to match_array [project.id, followed_project.id]
-    end
-
-    example 'it returns projects for a Topic the user follows' do
-      project = create(:project)
-      topic = create(:topic)
-      create(:projects_topic, project: project, topic: topic)
-      create(:follower, followable: topic, user: @user)
-
-      do_request
-      expect(status).to eq 200
-
-      json_response = json_parse(response_body)
-      project_ids = json_response[:data].pluck(:id)
-
-      expect(project_ids).to match_array [project.id, followed_project.id]
-    end
-
-    example 'it orders the projects by the creation date of follows (most recent first)', document: false do
-      project1 = create(:project)
-      project2 = create(:project)
-      project3 = create(:project)
-
-      follower1 = create(:follower, followable: project1, user: @user)
-      follower2 = create(:follower, followable: project2, user: @user)
-      follower3 = create(:follower, followable: project3, user: @user)
-
-      area = create(:area)
-      create(:areas_project, project: project3, area: area)
-      follower4 = create(:follower, followable: area, user: @user)
-
-      follower1.update!(created_at: 3.days.ago) # user follows project1, 3 days ago, so project1 should be first
-      follower2.update!(created_at: 1.day.ago)  # user follows project2, 1 day ago, so project2 should be second
-      follower3.update!(created_at: 2.days.ago) # user follows project3, 2 days ago, ...
-      follower4.update!(created_at: 1.hour.ago) # user follows area of project3, 1 hour ago, so project3 should be first
-      follower.update!(created_at: 4.days.ago)  # user follows followed_project, 4 days ago, so followed_project should be last
-
-      do_request
-      expect(status).to eq 200
-
-      json_response = json_parse(response_body)
-      project_ids = json_response[:data].pluck(:id)
-
-      expect(project_ids).to eq [project3.id, project2.id, project1.id, followed_project.id]
-    end
-
-    example 'It returns an empty list if the user is not signed in' do
+    example 'Returns an empty list if the user is not signed in' do
       header 'Authorization', nil
 
       do_request

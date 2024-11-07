@@ -57,48 +57,7 @@ class WebApi::V1::ProjectsController < ApplicationController
 
   def index_projects_for_followed_item
     projects = policy_scope(Project)
-    projects = projects
-      .joins(
-        'LEFT JOIN followers AS project_followers ON project_followers.followable_id = projects.id ' \
-        'AND project_followers.followable_type = \'Project\''
-      )
-      .joins('LEFT JOIN ideas ON ideas.project_id = projects.id')
-      .joins(
-        'LEFT JOIN followers AS idea_followers ON idea_followers.followable_id = ideas.id ' \
-        'AND idea_followers.followable_type = \'Idea\''
-      )
-      .joins(
-        'LEFT JOIN areas_projects ON areas_projects.project_id = projects.id'
-      )
-      .joins(
-        'LEFT JOIN followers AS area_followers ON area_followers.followable_id = areas_projects.area_id ' \
-        'AND area_followers.followable_type = \'Area\''
-      )
-      .joins(
-        'LEFT JOIN projects_topics ON projects_topics.project_id = projects.id'
-      )
-      .joins(
-        'LEFT JOIN followers AS topic_followers ON topic_followers.followable_id = projects_topics.topic_id ' \
-        'AND topic_followers.followable_type = \'Topic\''
-      )
-      .where(
-        'project_followers.user_id = :user_id OR idea_followers.user_id = :user_id ' \
-        'OR area_followers.user_id = :user_id OR topic_followers.user_id = :user_id',
-        user_id: current_user.id
-      )
-      .select(
-        'projects.*, ' \
-        'GREATEST(' \
-        'COALESCE(project_followers.created_at, \'1970-01-01\'), ' \
-        'COALESCE(idea_followers.created_at, \'1970-01-01\'), ' \
-        'COALESCE(area_followers.created_at, \'1970-01-01\'), ' \
-        'COALESCE(topic_followers.created_at, \'1970-01-01\')' \
-        ') AS greatest_created_at'
-      )
-      .distinct
-      .order(
-        Arel.sql('greatest_created_at DESC')
-      )
+    projects = ProjectsFinderService.new(projects, current_user).followed_by_user
 
     @projects = paginate projects
     @projects = @projects.preload(

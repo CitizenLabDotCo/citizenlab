@@ -1,13 +1,13 @@
 class ProjectsFinderService
-  def initialize(projects, current_user = nil, params = {})
+  def initialize(projects, user = nil, params = {})
     @projects = projects
-    @current_user = current_user
+    @user = user
     @page_size = (params.dig(:page, :size) || 500).to_i
     @page_number = (params.dig(:page, :number) || 1).to_i
   end
 
   def participation_possible
-    return participation_possible_uncached if @current_user
+    return participation_possible_uncached if @user
 
     Rails.cache.fetch(
       "#{@projects.cache_key}projects_finder_service/participation_possible/",
@@ -15,6 +15,53 @@ class ProjectsFinderService
     ) do
       participation_possible_uncached
     end
+  end
+
+  def followed_by_user
+    @projects
+      .joins('INNER JOIN admin_publications AS admin_publications ON admin_publications.publication_id = projects.id')
+      .where(admin_publications: { publication_status: 'published' })
+      .joins(
+        'LEFT JOIN followers AS project_followers ON project_followers.followable_id = projects.id ' \
+        'AND project_followers.followable_type = \'Project\''
+      )
+      .joins('LEFT JOIN ideas ON ideas.project_id = projects.id')
+      .joins(
+        'LEFT JOIN followers AS idea_followers ON idea_followers.followable_id = ideas.id ' \
+        'AND idea_followers.followable_type = \'Idea\''
+      )
+      .joins(
+        'LEFT JOIN areas_projects ON areas_projects.project_id = projects.id'
+      )
+      .joins(
+        'LEFT JOIN followers AS area_followers ON area_followers.followable_id = areas_projects.area_id ' \
+        'AND area_followers.followable_type = \'Area\''
+      )
+      .joins(
+        'LEFT JOIN projects_topics ON projects_topics.project_id = projects.id'
+      )
+      .joins(
+        'LEFT JOIN followers AS topic_followers ON topic_followers.followable_id = projects_topics.topic_id ' \
+        'AND topic_followers.followable_type = \'Topic\''
+      )
+      .where(
+        'project_followers.user_id = :user_id OR idea_followers.user_id = :user_id ' \
+        'OR area_followers.user_id = :user_id OR topic_followers.user_id = :user_id',
+        user_id: @user.id
+      )
+      .select(
+        'projects.*, ' \
+        'GREATEST(' \
+        'COALESCE(project_followers.created_at, \'1970-01-01\'), ' \
+        'COALESCE(idea_followers.created_at, \'1970-01-01\'), ' \
+        'COALESCE(area_followers.created_at, \'1970-01-01\'), ' \
+        'COALESCE(topic_followers.created_at, \'1970-01-01\')' \
+        ') AS greatest_created_at'
+      )
+      .distinct
+      .order(
+        Arel.sql('greatest_created_at DESC')
+      )
   end
 
   private
@@ -53,7 +100,7 @@ class ProjectsFinderService
 
     projects.each do |project|
       service = Permissions::ProjectPermissionsService.new(
-        project, @current_user, user_requirements_service: user_requirements_service
+        project, @user, user_requirements_service: user_requirements_service
       )
       action_descriptors = service.action_descriptors
       next unless service.participation_possible?(action_descriptors)
