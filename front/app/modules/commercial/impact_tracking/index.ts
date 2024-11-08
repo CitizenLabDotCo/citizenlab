@@ -10,17 +10,8 @@ const signUpInTracks = {
 let sessionId: string;
 
 const trackSessionStarted = async () => {
-  // const uaParser = new UAParser();
-  // const uaResult = uaParser.getResult();
-
   // eslint-disable-next-line
   const referrer = document.referrer ?? window.frames?.top?.document.referrer;
-  // const device_type = uaResult.device.type ?? 'desktop';
-  // const browser_name = uaResult.browser.name;
-  // const browser_version = uaResult.browser.major;
-  // const os_name = uaResult.os.name;
-  // const os_version = uaResult.os.version;
-  const entry_path = window.location.pathname;
 
   const response: any = await fetcher({
     path: `/sessions`,
@@ -28,12 +19,6 @@ const trackSessionStarted = async () => {
     body: {
       session: {
         referrer,
-        // device_type,
-        // browser_name,
-        // browser_version,
-        // os_name,
-        // os_version,
-        entry_path,
       },
     },
   });
@@ -49,24 +34,15 @@ const upgradeSession = () => {
   });
 };
 
-let entryPointIgnored = false;
-
 const configuration: ModuleConfiguration = {
   beforeMountApplication: () => {
     pageChanges$.subscribe((e) => {
-      // Ignore the first page change event,
-      // this is already handled by the session tracking start
-      if (!entryPointIgnored) {
-        entryPointIgnored = true;
-        return;
-      }
-
       fetcher({
         path: `/sessions/${sessionId}/track_pageview`,
         action: 'post',
         body: {
           pageview: {
-            page_path: e.path,
+            path: e.path,
           },
         },
       });
