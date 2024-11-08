@@ -172,7 +172,19 @@ const App = ({ children }: Props) => {
       }
       setIsAppInitialized(true);
     }
-  }, [appConfiguration, isAppInitialized]);
+  }, [appConfiguration, isAppInitialized, setIsAppInitialized]);
+
+  useEffect(() => {
+    const newPreviousPathname = location.pathname as RouteType;
+    const pathsToIgnore = ['sign-up', 'sign-in', 'invite'];
+    if (newPreviousPathname === previousPathname) return;
+
+    setPreviousPathname(
+      !endsWith(newPreviousPathname, pathsToIgnore)
+        ? newPreviousPathname
+        : previousPathname
+    );
+  }, [location, previousPathname]);
 
   useEffect(() => {
     const handleCustomRedirect = () => {
@@ -200,13 +212,6 @@ const App = ({ children }: Props) => {
       }
     };
 
-    const newPreviousPathname = location.pathname as RouteType;
-    const pathsToIgnore = ['sign-up', 'sign-in', 'invite'];
-    setPreviousPathname(
-      !endsWith(newPreviousPathname, pathsToIgnore)
-        ? newPreviousPathname
-        : previousPathname
-    );
     if (redirectsEnabled) {
       handleCustomRedirect();
     }
