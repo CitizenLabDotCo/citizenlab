@@ -7,8 +7,8 @@ import { CONTENT_BUILDER_DELETE_ELEMENT_EVENT } from 'components/admin/ContentBu
 import { MessageDescriptor } from 'utils/cl-intl';
 import eventEmitter from 'utils/eventEmitter';
 
-import Settings from './Settings';
-import { SelectedNode } from './typings';
+import Settings from '../../admin/ContentBuilder/Settings/Settings';
+import { SelectedNode } from '../../admin/ContentBuilder/Settings/typings';
 
 const ContentBuilderSettings = () => {
   const { actions, selectedNode, isEnabled } = useEditor((state, query) => {
