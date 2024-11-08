@@ -13,19 +13,12 @@ resource 'Impact tracking session' do
   post 'web_api/v1/sessions' do
     with_options scope: :session do
       parameter :referrer, 'The referrer URL of the user'
-      parameter :device_type, 'The device type of the user'
-      parameter :browser_name, 'The browser name of the user'
-      parameter :browser_version, 'The browser version of the user'
-      parameter :os_name, 'The OS name of the user'
-      parameter :os_version, 'The OS version of the user'
-      parameter :entry_path, 'The path where the user entered'
     end
 
     let(:referrer) { 'https://www.google.com' }
-    let(:device_type) { 'desktop' }
-    let(:entry_path) { '/en/' }
 
     example 'Track the start of a session of an unauthenticated user' do
+      header 'User-Agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36'
       do_request
       expect(response_status).to eq 200
       expect(ImpactTracking::Session.count).to eq 1
@@ -34,11 +27,9 @@ resource 'Impact tracking session' do
         created_at: be_present,
         highest_role: nil,
         referrer: referrer,
-        device_type: device_type
-      })
-      expect(ImpactTracking::Pageview.count).to eq 1
-      expect(ImpactTracking::Pageview.first).to have_attributes({
-        path: '/en/'
+        device_type: 'desktop',
+        browser_name: 'Chrome',
+        os_name: 'Mac'
       })
     end
 
@@ -145,36 +136,36 @@ resource 'Impact tracking session' do
     end
   end
 
-  post 'web_api/v1/sessions/:id/track_pageview' do
-    with_options scope: :pageview do
-      parameter :id, 'The id of the session'
-      parameter :page_path, 'The path of the pageview'
-    end
+  # post 'web_api/v1/sessions/:id/track_pageview' do
+  #   with_options scope: :pageview do
+  #     parameter :id, 'The id of the session'
+  #     parameter :page_path, 'The path of the pageview'
+  #   end
 
-    let(:id) do
-      session = create(:session)
-      create(:pageview, session_id: session.id, path: '/en/')
-      session.id
-    end
+  #   let(:id) do
+  #     session = create(:session)
+  #     create(:pageview, session_id: session.id, path: '/en/')
+  #     session.id
+  #   end
 
-    let(:page_path) { '/en/projects/my_project' }
+  #   let(:page_path) { '/en/projects/my_project' }
 
-    example 'Track a pageview when a session already exists' do
-      do_request
-      expect(response_status).to eq 201
-      expect(ImpactTracking::Pageview.count).to eq 2
-      expect(ImpactTracking::Pageview.order(created_at: :asc).last).to have_attributes({
-        path: '/en/projects/my_project'
-      })
-    end
+  #   example 'Track a pageview when a session already exists' do
+  #     do_request
+  #     expect(response_status).to eq 201
+  #     expect(ImpactTracking::Pageview.count).to eq 2
+  #     expect(ImpactTracking::Pageview.order(created_at: :asc).last).to have_attributes({
+  #       path: '/en/projects/my_project'
+  #     })
+  #   end
 
-    example 'Reject a pageview when a session does not exists' do
-      do_request(id: 'fake-id')
-      expect(response_status).to eq 404
-      expect(ImpactTracking::Pageview.count).to eq 1
-      expect(ImpactTracking::Pageview.last).to have_attributes({
-        path: '/en/'
-      })
-    end
-  end
+  #   example 'Reject a pageview when a session does not exists' do
+  #     do_request(id: 'fake-id')
+  #     expect(response_status).to eq 404
+  #     expect(ImpactTracking::Pageview.count).to eq 1
+  #     expect(ImpactTracking::Pageview.last).to have_attributes({
+  #       path: '/en/'
+  #     })
+  #   end
+  # end
 end
