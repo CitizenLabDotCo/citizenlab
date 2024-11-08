@@ -9,7 +9,7 @@ import VerificationMethodButton from 'components/UI/VerificationMethodButton';
 import { getJwt } from 'utils/auth/jwt';
 import { removeUrlLocale } from 'utils/removeUrlLocale';
 import { colors } from '@citizenlab/cl2-component-library';
-import messages from './messages';
+import messages from 'containers/Authentication/steps/_components/IdAustriaButton/messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 interface Props {
@@ -47,6 +47,7 @@ const IdAustriaButton = ({
   return (
     <VerificationMethodButton
       id="e2e-id-austria-button"
+      icon="idaustria"
       last={last}
       onClick={handleOnClick}
       borderColor={grayBorder ? colors.grey500 : undefined}

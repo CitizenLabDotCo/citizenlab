@@ -13,12 +13,12 @@ import claveUnicaButtonMessages from 'components/UI/ClaveUnicaButton/messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 import MitIdButton from '../_components/MitIdButton';
+import IdAustriaButton from '../_components/IdAustriaButton';
 import TextButton from '../_components/TextButton';
 import AuthProviderButton from '../AuthProviders/AuthProviderButton';
 import authProviderMessages from '../AuthProviders/messages';
 
 import messages from './messages';
-import IdAustriaButton from 'modules/commercial/id_id_austria/components/IdAustriaButton';
 
 interface Props {
   onClickSSO: (ssoProvider: SSOProvider) => void;
