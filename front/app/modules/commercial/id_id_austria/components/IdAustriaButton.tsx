@@ -46,7 +46,7 @@ const IdAustriaButton = ({
 
   return (
     <VerificationMethodButton
-      id="e2e-id_austria-button"
+      id="e2e-id-austria-button"
       last={last}
       onClick={handleOnClick}
       borderColor={grayBorder ? colors.grey500 : undefined}
