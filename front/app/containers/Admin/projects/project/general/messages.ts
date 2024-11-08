@@ -150,6 +150,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.supportPageLinkText',
     defaultMessage: 'visit our support center',
   },
+  resetParticipationData: {
+    id: 'app.containers.AdminPage.ProjectEdit.resetParticipationData',
+    defaultMessage: 'Reset participation data',
+  },
   publicationStatusWarning: {
     id: 'app.containers.AdminPage.ProjectEdit.publicationStatusWarningMessage',
     defaultMessage:
