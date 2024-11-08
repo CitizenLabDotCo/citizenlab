@@ -299,7 +299,7 @@ es-CL:
       yesterday: Ayer
     comment_on_idea_you_follow:
       cta_reply_to: 'Responder a %{commentAuthor}'
-      event_description: '%{authorNameFull} ha enviado una reacción a ''%{inputTitle}''. Haz clic en el botón de abajo para continuar la conversación con %{authorName}.'
+      event_description: '%{authorNameFull} ha reaccionado a ''%{inputTitle}''. Haz clic en el botón de abajo para continuar la conversación con %{authorName}.'
       main_header:
         idea: '%{authorName} comentó en una idea que sigues'
         question: '%{authorName} comentó una pregunta que sigues'
@@ -459,7 +459,7 @@ es-CL:
       header_message: 'La plataforma de participación de %{organizationName} acaba de publicar el siguiente proyecto:'
       preheader: 'Se ha publicado un nuevo proyecto'
     status_change_on_idea_you_follow:
-      status_change: 'El nuevo estado de esta entrada es ''%{status}'''
+      status_change: 'El nuevo estado de este aporte es ''%{status}'''
       header_message: '%{organizationName} actualizó el estado del aporte ''%{input_title}'' en su plataforma digital de participación.'
       header_title: 'Una idea que sigues tiene un nuevo estado'
       subject: 'El estatus de "%{input_title}" ha cambiando'
