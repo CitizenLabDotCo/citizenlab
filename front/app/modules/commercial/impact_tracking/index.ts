@@ -61,7 +61,7 @@ const trackPageView = async (path: string) => {
     action: 'post',
     body: {
       pageview: {
-        path,
+        client_path: path,
         route,
       },
     },
