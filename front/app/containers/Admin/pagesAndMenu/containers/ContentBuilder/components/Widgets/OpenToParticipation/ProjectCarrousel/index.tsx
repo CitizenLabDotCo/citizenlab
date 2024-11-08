@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
 import {
-  Title,
   Box,
   Spinner,
   colors,
   useBreakpoint,
+  H3,
 } from '@citizenlab/cl2-component-library';
 import useInstanceId from 'component-library/hooks/useInstanceId';
 import { debounce } from 'lodash-es';
@@ -152,14 +152,9 @@ const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
         justifyContent="center"
       >
         <Container w="100%" maxWidth="1200px" position="relative">
-          <Title
-            variant="h3"
-            as="h2"
-            mt="0px"
-            ml={isSmallerThanPhone ? DEFAULT_PADDING : undefined}
-          >
+          <H3 mt="0px" ml={isSmallerThanPhone ? DEFAULT_PADDING : undefined}>
             {truncate(title, 50)}
-          </Title>
+          </H3>
           <SkipButton
             tabIndex={0}
             onKeyDown={(e) => {

@@ -1,12 +1,6 @@
 import React from 'react';
 
-import {
-  Icon,
-  Box,
-  Title,
-  Text,
-  colors,
-} from '@citizenlab/cl2-component-library';
+import { Icon, Box, H3, Text, colors } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
 import styled, { useTheme } from 'styled-components';
 
@@ -101,10 +95,8 @@ const EventInformation = ({ event }: Props) => {
           mt={eventImage ? '32px' : 'auto'}
         >
           <PrimaryLink to={`/events/${event.id}`}>
-            <Title
-              variant="h4"
-              as="h3"
-              style={{ fontWeight: '600' }}
+            <H3
+              fontSize="l"
               pr="8px"
               color="tenantText"
               m="0px"
@@ -112,7 +104,7 @@ const EventInformation = ({ event }: Props) => {
               mb="auto"
             >
               <T value={event.attributes.title_multiloc} />
-            </Title>
+            </H3>
           </PrimaryLink>
           <DateBlocks
             startAtMoment={startAtMoment}

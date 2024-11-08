@@ -6,6 +6,7 @@ import {
   LocaleSwitcher,
   colors,
   fontSizes,
+  H2,
 } from '@citizenlab/cl2-component-library';
 import { forOwn, isEmpty } from 'lodash-es';
 import styled from 'styled-components';
@@ -37,15 +38,6 @@ const FormLabel = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-bottom: 15px;
-`;
-
-const AddOfficialUpdateTitle = styled.h2`
-  color: ${({ theme }) => theme.colors.tenantText};
-  font-size: ${fontSizes.m}px;
-  line-height: normal;
-  font-weight: 600;
-  padding: 0;
-  margin: 0;
 `;
 
 const StyledLocaleSwitcher = styled(LocaleSwitcher)`
@@ -315,9 +307,9 @@ const OfficialFeedbackForm = ({
             >
               <Box my="auto">
                 {formType === 'new' && (
-                  <AddOfficialUpdateTitle>
+                  <H2 fontSize="m" color="tenantText" m="0">
                     <FormattedMessage {...messages.addOfficalUpdate} />
-                  </AddOfficialUpdateTitle>
+                  </H2>
                 )}
               </Box>
               <Box my="auto">
