@@ -15,9 +15,15 @@ import messages from '../messages';
 
 import AcceptButton from './AcceptButton';
 import OnboardingStep from './OnboardingStep';
+import {
+  HeaderContent,
+  Left,
+  Right,
+  Text,
+  Icons,
+  StyledAvatar,
+} from './Shared';
 import SkipButton from './SkipButton';
-
-import { HeaderContent, Left, Right, Text, Icons, StyledAvatar } from '.';
 
 const ShieldIcon = styled(Icon)`
   fill: ${colors.white};

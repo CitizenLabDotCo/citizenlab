@@ -106,4 +106,5 @@ RSpec.describe ParticipationMethod::Poll do
   its(:supports_toxicity_detection?) { is_expected.to be true }
   its(:use_reactions_as_votes?) { is_expected.to be false }
   its(:transitive?) { is_expected.to be false }
+  its(:supports_private_attributes_in_export?) { is_expected.to be false }
 end

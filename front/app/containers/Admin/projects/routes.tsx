@@ -66,6 +66,8 @@ const ReportTab = lazy(() => import('./project/information/ReportTab'));
 
 const AdminProjectProposals = lazy(() => import('./project/proposals'));
 
+const AdminProjectsData = lazy(() => import('./project/data'));
+
 export function adminProjectsProjectPath(projectId: string): RouteType {
   return `/admin/projects/${projectId}`;
 }
@@ -91,6 +93,7 @@ export enum projectsRoutes {
   projectEventsId = 'events/:id',
   projectSettingsTags = 'tags',
   projectSettingsAccessRights = 'access-rights',
+  projectSettingsData = 'data',
   projectId = ':projectId',
   projectIdPhases = 'phases',
   projectPhasesSetup = 'setup',
@@ -254,6 +257,14 @@ const createAdminProjectsRoutes = () => {
             element: (
               <PageLoading>
                 <AdminProjectPermissions />
+              </PageLoading>
+            ),
+          },
+          {
+            path: projectsRoutes.projectSettingsData,
+            element: (
+              <PageLoading>
+                <AdminProjectsData />
               </PageLoading>
             ),
           },

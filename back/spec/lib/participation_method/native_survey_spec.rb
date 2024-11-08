@@ -148,6 +148,26 @@ RSpec.describe ParticipationMethod::NativeSurvey do
     end
   end
 
+  describe '#supports_private_attributes_in_export?' do
+    it 'returns true if config setting is set to true' do
+      config = AppConfiguration.instance
+      config.settings['core']['private_attributes_in_export'] = true
+      config.save!
+      expect(participation_method.supports_private_attributes_in_export?).to be true
+    end
+
+    it 'returns false if config setting is set to false' do
+      config = AppConfiguration.instance
+      config.settings['core']['private_attributes_in_export'] = false
+      config.save!
+      expect(participation_method.supports_private_attributes_in_export?).to be false
+    end
+
+    it 'returns true if the setting is not present' do
+      expect(participation_method.supports_private_attributes_in_export?).to be true
+    end
+  end
+
   its(:additional_export_columns) { is_expected.to eq [] }
   its(:allowed_ideas_orders) { is_expected.to be_empty }
   its(:proposed_budget_in_form?) { is_expected.to be false }

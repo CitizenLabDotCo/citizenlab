@@ -451,6 +451,53 @@ resource 'Projects' do
       end
     end
 
+    delete 'web_api/v1/projects/:id/participation_data' do
+      let(:project) { create(:project) }
+      let(:id) { project.id }
+      let(:ideation_phase) do
+        create(
+          :phase,
+          project: project,
+          participation_method: 'ideation',
+          start_at: (Time.zone.today - 40.days),
+          end_at: (Time.zone.today - 31.days)
+        )
+      end
+
+      let(:volunteering_phase) do
+        create(
+          :volunteering_phase,
+          project: project,
+          start_at: (Time.zone.today - 30.days),
+          end_at: (Time.zone.today - 21.days)
+        )
+      end
+
+      let(:poll_phase) do
+        create(
+          :poll_phase,
+          project: project,
+          start_at: (Time.zone.today - 20.days),
+          end_at: (Time.zone.today - 11.days)
+        )
+      end
+
+      let!(:idea) { create(:idea, project: project) }
+
+      let!(:cause) { create(:cause, phase: volunteering_phase) }
+
+      let!(:volunteer) { create(:volunteer, cause: cause) }
+
+      let!(:poll_response) { create(:poll_response, phase: poll_phase) }
+
+      example_request 'Reset participation data of a project' do
+        expect(response_status).to eq 200
+        expect(project.ideas).to be_empty
+        expect(cause.volunteers).to be_empty
+        expect(poll_phase.poll_responses).to be_empty
+      end
+    end
+
     post 'web_api/v1/projects/:id/copy' do
       let(:source_project) { create(:single_phase_ideation_project) }
       let(:id) { source_project.id }
@@ -525,6 +572,12 @@ resource 'Projects' do
           phases: [native_survey_phase],
           custom_field_values: { linear_scale_field.key => 2 }
         )
+      end
+
+      before do
+        config = AppConfiguration.instance
+        config.settings['core']['private_attributes_in_export'] = true
+        config.save!
       end
 
       example_request 'Download inputs of a timeline project with different phases in separate sheets' do
@@ -986,7 +1039,7 @@ resource 'Projects' do
 
         example 'Download phase inputs WITH private user data', document: false do
           phase = project.phases.first
-          expected_params = [[idea], project.phases.first, { view_private_attributes: true }]
+          expected_params = [[idea], project.phases.first]
           allow(Export::Xlsx::InputSheetGenerator).to receive(:new)
             .and_return(Export::Xlsx::InputSheetGenerator.new(*expected_params))
           do_request
@@ -1177,6 +1230,144 @@ resource 'Projects' do
           assert_status 401
         end
       end
+    end
+  end
+
+  get 'web_api/v1/projects/with_active_participatory_phase' do
+    before do
+      @user = create(:user, roles: [])
+      header_token_for @user
+    end
+
+    with_options scope: :page do
+      parameter :number, 'Page number'
+      parameter :size, 'Number of projects per page'
+    end
+
+    let!(:active_ideation_project) { create(:project_with_active_ideation_phase) }
+    let!(:endless_project) { create(:single_phase_ideation_project) }
+
+    let!(:active_information_project) { create(:project_with_past_ideation_and_current_information_phase) }
+    let!(:past_project) { create(:project_with_two_past_ideation_phases) }
+    let!(:future_project) { create(:project_with_future_native_survey_phase) }
+
+    example_request 'Lists only projects with an active participatory phase' do
+      expect(status).to eq 200
+
+      json_response = json_parse(response_body)
+      project_ids = json_response[:data].pluck(:id)
+
+      expect(project_ids).to include active_ideation_project.id
+      expect(project_ids).to include endless_project.id
+
+      expect(project_ids).not_to include active_information_project.id
+      expect(project_ids).not_to include past_project.id
+      expect(project_ids).not_to include future_project.id
+    end
+
+    example_request 'Lists only projects with published publication status' do
+      expect(status).to eq 200
+
+      json_response = json_parse(response_body)
+      project_ids = json_response[:data].pluck(:id)
+      admin_publications = AdminPublication.where(publication_id: project_ids)
+
+      expect(admin_publications.pluck(:publication_status)).to all(be_in(['published']))
+    end
+
+    example "List is ordered by end_at of projects' active phase (ASC NULLS LAST)" do
+      soonest_end_at = active_ideation_project.phases.first.end_at
+
+      active_project2 = create(:project_with_active_ideation_phase)
+      active_project2.phases.first.update!(end_at: soonest_end_at + 1.day)
+      active_project3 = create(:project_with_active_ideation_phase)
+      active_project3.phases.first.update!(end_at: soonest_end_at + 2.days)
+
+      do_request
+      expect(status).to eq 200
+
+      json_response = json_parse(response_body)
+      project_ids = json_response[:data].pluck(:id)
+      projects = project_ids.map { |id| Project.find(id) }
+
+      active_phases_end_ats = projects.map do |p|
+        p.phases.where(
+          'phases.start_at <= ? AND (phases.end_at >= ? OR phases.end_at IS NULL)',
+          Time.zone.now.to_fs(:db), Time.zone.now.to_fs(:db)
+        ).pluck(:end_at)
+      end.flatten
+
+      # https://stackoverflow.com/questions/808318/sorting-a-ruby-array-of-objects-by-an-attribute-that-could-be-nil
+      expect(active_phases_end_ats).to eq(
+        active_phases_end_ats.sort do |a, b|
+          if a && b
+            a <=> b
+          else
+            (a ? -1 : 1)
+          end
+        end
+      )
+    end
+
+    example "Excludes projects where only permitted action is attending_event & no permission is 'fixable'" do
+      group = create(:group)
+      permission = create(:permission, action: 'posting_idea', permission_scope: active_ideation_project.phases.first, permitted_by: 'users')
+      create(:groups_permission, permission_id: permission.id, group: group)
+      permission = create(:permission, action: 'commenting_idea', permission_scope: active_ideation_project.phases.first, permitted_by: 'users')
+      create(:groups_permission, permission_id: permission.id, group: group)
+      permission = create(:permission, action: 'reacting_idea', permission_scope: active_ideation_project.phases.first, permitted_by: 'users')
+      create(:groups_permission, permission_id: permission.id, group: group)
+
+      user_requirements_service = Permissions::UserRequirementsService.new(check_groups_and_verification: false)
+      action_descriptors = Permissions::ProjectPermissionsService.new(
+        active_ideation_project, @user, user_requirements_service: user_requirements_service
+      ).action_descriptors
+
+      expect(action_descriptors.except(:attending_event).all? { |_k, v| v[:enabled] == false }).to be true
+
+      do_request
+      expect(status).to eq(200)
+
+      expect(json_response[:data].pluck(:id)).not_to include active_ideation_project.id
+    end
+
+    example "Includes projects where no action permitted (excluding attending_event), but a permission is 'fixable'" do
+      create(:custom_field, required: true)
+
+      user_requirements_service = Permissions::UserRequirementsService.new(check_groups_and_verification: false)
+      action_descriptors = Permissions::ProjectPermissionsService.new(
+        active_ideation_project, @user, user_requirements_service: user_requirements_service
+      ).action_descriptors
+
+      expect(action_descriptors.except(:attending_event).all? { |_k, v| v[:enabled] == false }).to be true
+      expect(action_descriptors.except(:attending_event).count { |_k, v| v[:disabled_reason] == 'user_missing_requirements' }).to eq 4
+
+      do_request
+      expect(status).to eq(200)
+
+      expect(json_response[:data].pluck(:id)).to include active_ideation_project.id
+    end
+
+    example 'Includes project images', document: false do
+      project_image = create(:project_image, project: active_ideation_project)
+
+      do_request
+      expect(status).to eq(200)
+      json_response = json_parse(response_body)
+
+      included_image_ids = json_response[:included].select { |d| d[:type] == 'image' }.pluck(:id)
+
+      expect(included_image_ids).to include project_image.id
+    end
+
+    example_request 'Includes current phase', document: false do
+      expect(status).to eq(200)
+      json_response = json_parse(response_body)
+
+      current_phase_ids = json_response[:data].filter_map { |d| d.dig(:relationships, :current_phase, :data, :id) }
+      included_phase_ids = json_response[:included].select { |d| d[:type] == 'phase' }.pluck(:id)
+
+      expect(current_phase_ids).to match included_phase_ids
     end
   end
 end

@@ -86,24 +86,26 @@ export interface IProjectAttributes {
   publication_status: PublicationStatus;
   include_all_areas: boolean;
   folder_id?: string | null;
-  action_descriptors: {
-    posting_idea: ActionDescriptorFutureEnabled<ProjectPostingDisabledReason>;
-    commenting_idea: ActionDescriptor<ProjectCommentingDisabledReason>;
-    // Same disabled reasons as commenting_idea at time of writing
-    comment_reacting_idea: ActionDescriptor<ProjectCommentingDisabledReason>;
-    reacting_idea: ActionDescriptor<ProjectReactingDisabledReason> & {
-      up: ActionDescriptor<ProjectReactingDisabledReason>;
-      down: ActionDescriptor<ProjectReactingDisabledReason>;
-    };
-    taking_survey: ActionDescriptor<ProjectSurveyDisabledReason>;
-    taking_poll: ActionDescriptor<ProjectPollDisabledReason>;
-    annotating_document: ActionDescriptor<ProjectDocumentAnnotationDisabledReason>;
-    voting: ActionDescriptor<ProjectVotingDisabledReason>;
-    attending_event: ActionDescriptor<ProjectDisabledReason>;
-    volunteering: ActionDescriptor<ProjectVolunteeringDisabledReason>;
-  };
+  action_descriptors: ActionDescriptors;
   uses_content_builder: boolean;
 }
+
+export type ActionDescriptors = {
+  posting_idea: ActionDescriptorFutureEnabled<ProjectPostingDisabledReason>;
+  commenting_idea: ActionDescriptor<ProjectCommentingDisabledReason>;
+  // Same disabled reasons as commenting_idea at time of writing
+  comment_reacting_idea: ActionDescriptor<ProjectCommentingDisabledReason>;
+  reacting_idea: ActionDescriptor<ProjectReactingDisabledReason> & {
+    up: ActionDescriptor<ProjectReactingDisabledReason>;
+    down: ActionDescriptor<ProjectReactingDisabledReason>;
+  };
+  taking_survey: ActionDescriptor<ProjectSurveyDisabledReason>;
+  taking_poll: ActionDescriptor<ProjectPollDisabledReason>;
+  annotating_document: ActionDescriptor<ProjectDocumentAnnotationDisabledReason>;
+  voting: ActionDescriptor<ProjectVotingDisabledReason>;
+  attending_event: ActionDescriptor<ProjectDisabledReason>;
+  volunteering: ActionDescriptor<ProjectVolunteeringDisabledReason>;
+};
 
 export interface IProjectData {
   id: string;
