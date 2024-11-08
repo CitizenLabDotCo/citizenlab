@@ -473,6 +473,7 @@
   "app.components.UserName.verified": "Verificado",
   "app.components.VerificationModal.verifyBOSA": "Verificar com o seu nome ou seu usuário",
   "app.components.VerificationModal.verifyClaveUnica": "Verificar com Chave Única",
+  "app.components.VerificationModal.verifyIdAustria": "Verificar com o ID Áustria",
   "app.components.VerificationModal.verifyNemLogIn": "Verificar com MitID",
   "app.components.VerificationModal.verifyYourIdentity": "Verifique o seu usuário",
   "app.components.VoteControl.budgetingFutureEnabled": "Você pode alocar seu orçamento a partir de {enabledFromDate}.",
