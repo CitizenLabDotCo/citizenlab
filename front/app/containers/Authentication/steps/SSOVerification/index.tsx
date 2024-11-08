@@ -18,6 +18,7 @@ import AuthProviderButton from '../AuthProviders/AuthProviderButton';
 import authProviderMessages from '../AuthProviders/messages';
 
 import messages from './messages';
+import IdAustriaButton from 'modules/commercial/id_id_austria/components/IdAustriaButton';
 
 interface Props {
   onClickSSO: (ssoProvider: SSOProvider) => void;
@@ -69,6 +70,16 @@ const SSOVerification = ({ onClickSSO, onClickLogin }: Props) => {
           }}
         />
       )}
+      {isIdAustria && (
+        <IdAustriaButton
+          last={false}
+          grayBorder
+          standardSSOBehavior
+          onClickStandardSSO={() => {
+            onClickSSO('id_austria');
+          }}
+        />
+      )}
       {fakeSsoEnabled && (
         <AuthProviderButton
           icon="bullseye"
@@ -79,18 +90,6 @@ const SSOVerification = ({ onClickSSO, onClickLogin }: Props) => {
           onContinue={onClickSSO}
         >
           <FormattedMessage {...authProviderMessages.continueWithFakeSSO} />
-        </AuthProviderButton>
-      )}
-      {isIdAustria && (
-        <AuthProviderButton
-          icon="idaustria"
-          flow="signup"
-          showConsentOnFlow="signin"
-          authProvider="id_austria"
-          id="e2e-verified-action-id-austria-button"
-          onContinue={onClickSSO}
-        >
-          <FormattedMessage {...authProviderMessages.continueWithIdAustria} />
         </AuthProviderButton>
       )}
       <Text mt="20px" mb="0">

@@ -28,7 +28,7 @@ const configuration: ModuleConfiguration = {
         );
         return (
           <IdAustriaButton
-            verificationMethod={method as IDIdAustriaMethod}
+            method={method as IDIdAustriaMethod}
             last={last}
             {...props}
           />
