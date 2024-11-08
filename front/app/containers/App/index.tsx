@@ -87,7 +87,7 @@ const App = ({ children }: Props) => {
   const { mutate: signOutAndDeleteAccount } = useDeleteSelf();
   const [isAppInitialized, setIsAppInitialized] = useState(false);
   const [previousPathname, setPreviousPathname] = useState<RouteType | null>(
-    null
+    location.pathname as RouteType
   );
   const { data: appConfiguration } = useAppConfiguration();
   const { data: authUser } = useAuthUser();
@@ -177,14 +177,11 @@ const App = ({ children }: Props) => {
   useEffect(() => {
     const newPreviousPathname = location.pathname as RouteType;
     const pathsToIgnore = ['sign-up', 'sign-in', 'invite'];
-    if (newPreviousPathname === previousPathname) return;
 
-    setPreviousPathname(
-      !endsWith(newPreviousPathname, pathsToIgnore)
-        ? newPreviousPathname
-        : previousPathname
-    );
-  }, [location, previousPathname]);
+    if (!endsWith(newPreviousPathname, pathsToIgnore)) {
+      setPreviousPathname(newPreviousPathname);
+    }
+  }, [location.pathname, previousPathname]);
 
   useEffect(() => {
     const handleCustomRedirect = () => {
