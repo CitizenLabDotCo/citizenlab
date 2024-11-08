@@ -16,8 +16,6 @@ import IframeMultiloc from 'components/admin/ContentBuilder/Widgets/IframeMultil
 import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
 import ImageTextCards from 'components/admin/ContentBuilder/Widgets/ImageTextCards';
 import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
-import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
-import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 
 import {
@@ -107,30 +105,16 @@ const HomepageBuilderToolbox = ({
       </Section>
       <Section>
         <DraggableElement
-          id="e2e-draggable-two-column"
-          component={<TwoColumn columnLayout="1-1" />}
-          icon="layout-2column-1"
-          label={formatMessage(TwoColumn.craft.custom.title)}
-        />
-        <DraggableElement
-          id="e2e-draggable-three-column"
-          component={<ThreeColumn />}
-          icon="layout-3column"
-          label={formatMessage(ThreeColumn.craft.custom.title)}
+          id="e2e-draggable-text-multiloc"
+          component={<TextMultiloc text={{}} />}
+          icon="text"
+          label={formatMessage(TextMultiloc.craft.custom.title)}
         />
         <DraggableElement
           id="e2e-draggable-white-space"
           component={<WhiteSpace size="small" />}
           icon="layout-white-space"
           label={formatMessage(WhiteSpace.craft.custom.title)}
-        />
-      </Section>
-      <Section>
-        <DraggableElement
-          id="e2e-draggable-text-multiloc"
-          component={<TextMultiloc text={{}} />}
-          icon="text"
-          label={formatMessage(TextMultiloc.craft.custom.title)}
         />
         <DraggableElement
           id="e2e-draggable-button"

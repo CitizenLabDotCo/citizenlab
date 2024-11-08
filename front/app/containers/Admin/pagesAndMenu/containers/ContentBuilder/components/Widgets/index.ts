@@ -44,8 +44,6 @@ export const WIDGETS = {
   IframeMultiloc,
   ImageMultiloc,
   TextMultiloc,
-  ThreeColumn,
-  TwoColumn,
   WhiteSpace,
 
   // Homepage builder widgets
@@ -59,8 +57,10 @@ export const WIDGETS = {
   // RENAMED (TODO rename in migration)
   Highlight: CallToAction,
 
-  // DEPRECATED
+  // DEPRECATED (TODO remove in migration)
   Proposals,
+  ThreeColumn,
+  TwoColumn,
 };
 
 type WidgetName = keyof typeof WIDGETS;
