@@ -9,8 +9,6 @@ const HOMEPAGE_BANNER_DEFAULT_BASE_SETTINGS = {
   banner_cta_signed_in_url: null,
   banner_signed_out_header_multiloc: {},
   banner_signed_out_subheader_multiloc: {},
-  // banner_signed_out_header_overlay_color:
-  // theme.colors.tenantPrimary,
   banner_signed_out_header_overlay_opacity: 90,
   banner_signed_in_header_overlay_opacity: 90,
   banner_cta_signed_out_text_multiloc: {},
