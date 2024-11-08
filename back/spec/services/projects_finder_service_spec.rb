@@ -237,10 +237,10 @@ describe ProjectsFinderService do
       follower5 = create(:follower, followable: area, user: user)
 
       follower.update!(created_at: 4.days.ago)  # user follows followed_project, 4 days ago, so followed_project should be last
-      follower2.update!(created_at: 3.days.ago) # user follows project2, 3 days ago, so project2 should be first
+      follower2.update!(created_at: 3.days.ago) # user follows project2, 3 days ago, so project2 should be third
       follower3.update!(created_at: 1.day.ago)  # user follows project3, 1 day ago, so project3 should be second
       follower4.update!(created_at: 2.days.ago) # user follows project4, 2 days ago, but ...
-      follower5.update!(created_at: 1.hour.ago) # user follows area of project4, 1 hour ago, so project4 should be first
+      follower5.update!(created_at: 1.hour.ago) # user also follows area of project4, 1 hour ago, so project4 should be first
 
       expect(result).to eq [project4, project3, project2, followed_project]
     end
