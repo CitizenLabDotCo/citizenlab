@@ -3,7 +3,6 @@ import React, { useState, useRef } from 'react';
 import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
 import { SerializedNodes } from '@craftjs/core';
 import { isEmpty } from 'lodash-es';
-import { useTheme } from 'styled-components';
 import { SupportedLocale } from 'typings';
 
 import useHomepageLayout from 'api/home_page_layout/useHomepageLayout';
@@ -24,16 +23,12 @@ import HomepageBuilderEditModePreview from '../components/HomepageBuilderEditMod
 import HomepageBuilderToolbox from '../components/HomepageBuilderToolbox';
 import HomepageBuilderTopBar from '../components/HomepageBuilderTopBar';
 import Settings from '../components/Settings';
-import HomepageBanner from '../components/Widgets/HomepageBanner';
-import { getHomepageBannerDefaultSettings } from '../components/Widgets/HomepageBanner/utils';
-import Projects from '../components/Widgets/Projects';
 
 const HomepageBuilderPage = () => {
   const [previewEnabled, setPreviewEnabled] = useState(false);
   const locale = useLocale();
   const [selectedLocale, setSelectedLocale] = useState(locale);
 
-  const theme = useTheme();
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
 
   const locales = useAppConfigurationLocales();
@@ -118,15 +113,7 @@ const HomepageBuilderPage = () => {
               platformLocale={locale}
             >
               <Box width="1000px">
-                <ContentBuilderFrame editorData={getEditorData()}>
-                  <HomepageBanner
-                    homepageSettings={getHomepageBannerDefaultSettings(
-                      // theme.colors.tenantPrimary
-                      'white'
-                    )}
-                  />
-                  <Projects />
-                </ContentBuilderFrame>
+                <ContentBuilderFrame editorData={getEditorData()} />
               </Box>
             </LanguageProvider>
           </StyledRightColumn>
