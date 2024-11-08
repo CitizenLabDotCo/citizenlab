@@ -121,7 +121,8 @@ const HomepageBuilderPage = () => {
                 <ContentBuilderFrame editorData={getEditorData()}>
                   <HomepageBanner
                     homepageSettings={getHomepageBannerDefaultSettings(
-                      theme.colors.tenantPrimary
+                      // theme.colors.tenantPrimary
+                      'white'
                     )}
                   />
                   <Projects />
