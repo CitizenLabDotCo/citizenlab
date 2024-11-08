@@ -473,6 +473,7 @@
   "app.components.UserName.verified": "crwdns3455479:0crwdne3455479:0",
   "app.components.VerificationModal.verifyBOSA": "crwdns3455481:0crwdne3455481:0",
   "app.components.VerificationModal.verifyClaveUnica": "crwdns3455483:0crwdne3455483:0",
+  "app.components.VerificationModal.verifyIdAustria": "crwdns3501539:0crwdne3501539:0",
   "app.components.VerificationModal.verifyNemLogIn": "crwdns3455485:0crwdne3455485:0",
   "app.components.VerificationModal.verifyYourIdentity": "crwdns3455487:0crwdne3455487:0",
   "app.components.VoteControl.budgetingFutureEnabled": "crwdns3455489:0{enabledFromDate}crwdne3455489:0",
