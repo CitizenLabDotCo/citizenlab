@@ -13,9 +13,7 @@
 #  referrer          :string
 #  device_type       :string
 #  browser_name      :string
-#  browser_version   :string
 #  os_name           :string
-#  os_version        :string
 #
 # Indexes
 #

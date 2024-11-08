@@ -75,6 +75,7 @@ ALTER TABLE IF EXISTS ONLY public.email_campaigns_campaigns DROP CONSTRAINT IF E
 ALTER TABLE IF EXISTS ONLY public.analysis_additional_custom_fields DROP CONSTRAINT IF EXISTS fk_rails_857115261d;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_849e0c7eb7;
 ALTER TABLE IF EXISTS ONLY public.ideas_phases DROP CONSTRAINT IF EXISTS fk_rails_845d7ca944;
+ALTER TABLE IF EXISTS ONLY public.impact_tracking_pageviews DROP CONSTRAINT IF EXISTS fk_rails_82dc979276;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_828a073a04;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_81c11ef894;
 ALTER TABLE IF EXISTS ONLY public.areas_initiatives DROP CONSTRAINT IF EXISTS fk_rails_81a9922de4;
@@ -1944,9 +1945,7 @@ CREATE TABLE public.impact_tracking_sessions (
     referrer character varying,
     device_type character varying,
     browser_name character varying,
-    browser_version character varying,
-    os_name character varying,
-    os_version character varying
+    os_name character varying
 );
 
 
@@ -2575,6 +2574,7 @@ CREATE TABLE public.impact_tracking_pageviews (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     session_id uuid NOT NULL,
     path character varying NOT NULL,
+    project_id uuid,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -6567,6 +6567,14 @@ ALTER TABLE ONLY public.notifications
 
 
 --
+-- Name: impact_tracking_pageviews fk_rails_82dc979276; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.impact_tracking_pageviews
+    ADD CONSTRAINT fk_rails_82dc979276 FOREIGN KEY (project_id) REFERENCES public.projects(id);
+
+
+--
 -- Name: ideas_phases fk_rails_845d7ca944; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7558,5 +7566,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20241002200522'),
 ('20241008143004'),
 ('20241011101454'),
+('20241011816395'),
 ('20241016201503'),
-('20241011816395');
+('20241018143800'),
+('20241018143900');
+
+
