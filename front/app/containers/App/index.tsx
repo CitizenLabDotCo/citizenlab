@@ -100,11 +100,11 @@ const App = ({ children }: Props) => {
   const [userSuccessfullyDeleted, setUserSuccessfullyDeleted] = useState(false);
 
   const [locale, setLocale] = useState<SupportedLocale | null>(null);
-  const [signUpInModalOpened, setSignUpInModalOpened] = useState(false);
+  const [disableScroll, setDisableScroll] = useState(false);
 
   const redirectsEnabled = useFeatureFlag({ name: 'redirects' });
 
-  const fullscreenModalEnabled = useFeatureFlag({
+  const franceConnectLoginEnabled = useFeatureFlag({
     name: 'franceconnect_login',
   });
 
@@ -285,7 +285,6 @@ const App = ({ children }: Props) => {
   const showFooter =
     !isAdminPage && !isIdeaFormPage && !isIdeaEditPage && !isNativeSurveyPage;
   const { pathname } = removeLocale(location.pathname);
-  const disableScroll = fullscreenModalEnabled && signUpInModalOpened;
   const isAuthenticationPending = authUser === undefined;
   const canAccessRoute = usePermission({
     item: {
@@ -361,7 +360,13 @@ const App = ({ children }: Props) => {
               </Suspense>
             </ErrorBoundary>
             <ErrorBoundary>
-              <Authentication setModalOpen={setSignUpInModalOpened} />
+              <Authentication
+                setModalOpen={(open) => {
+                  if (franceConnectLoginEnabled) {
+                    setDisableScroll(open);
+                  }
+                }}
+              />
             </ErrorBoundary>
             <ErrorBoundary>
               <div id="modal-portal" />
