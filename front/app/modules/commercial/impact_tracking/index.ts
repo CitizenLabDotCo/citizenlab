@@ -12,6 +12,7 @@ const signUpInTracks = {
 
 let sessionId: string;
 let allAppPaths: string[] | undefined;
+let firstPageViewTracked = false;
 
 const trackSessionStarted = async () => {
   // eslint-disable-next-line
@@ -28,6 +29,11 @@ const trackSessionStarted = async () => {
   });
 
   sessionId = response.data.id;
+
+  // Because the first page view depends on the response of the session creation,
+  // we handle it here and ignore the first page view event (see below).
+  await trackPageView(window.location.pathname);
+  firstPageViewTracked = true;
 };
 
 const upgradeSession = () => {
@@ -38,33 +44,38 @@ const upgradeSession = () => {
   });
 };
 
+const trackPageView = async (path: string) => {
+  if (allAppPaths === undefined) {
+    allAppPaths = getAllPathsFromRoutes(createRoutes()[0]);
+  }
+
+  const routeMatch = matchPath(path, {
+    paths: allAppPaths,
+    exact: true,
+  });
+
+  const route = routeMatch?.path;
+
+  await fetcher({
+    path: `/sessions/${sessionId}/track_pageview`,
+    action: 'post',
+    body: {
+      pageview: {
+        path,
+        route,
+      },
+    },
+  });
+};
+
 const configuration: ModuleConfiguration = {
   beforeMountApplication: () => {
-    pageChanges$.subscribe((e) => {
-      if (allAppPaths === undefined) {
-        allAppPaths = getAllPathsFromRoutes(createRoutes()[0]);
-      }
-
-      const routeMatch = matchPath(e.path, {
-        paths: allAppPaths,
-        exact: true,
-      });
-
-      const route = routeMatch?.path;
-
-      fetcher({
-        path: `/sessions/${sessionId}/track_pageview`,
-        action: 'post',
-        body: {
-          pageview: {
-            path: e.path,
-            route,
-          },
-        },
-      });
-    });
-
     trackSessionStarted();
+
+    pageChanges$.subscribe((e) => {
+      if (!firstPageViewTracked) return;
+      trackPageView(e.path);
+    });
 
     events$.subscribe((event) => {
       if (
