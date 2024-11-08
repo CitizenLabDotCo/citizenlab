@@ -3,8 +3,8 @@
 module ImpactTracking
   module WebApi::V1
     class SessionsController < ::ApplicationController
-      skip_before_action :authenticate_user, only: %i[create track_pageview]
-      skip_after_action :verify_authorized, only: %i[create upgrade track_pageview]
+      skip_before_action :authenticate_user, only: %i[create]
+      skip_after_action :verify_authorized, only: %i[create upgrade]
 
       before_action :ignore_crawlers
       before_action :set_current_session, only: %i[upgrade]
@@ -18,16 +18,10 @@ module ImpactTracking
         session = Session.create(
           monthly_user_hash: generate_hash,
           highest_role: current_user&.highest_role,
-          user_id: current_user&.id,
-          **session_params.reject { |key| key == 'entry_path' }
+          user_id: current_user&.id
         )
 
-        pageview = Pageview.create(
-          session_id: session.id,
-          path: session_params['entry_path']
-        )
-
-        if session && pageview
+        if session
           side_fx_session_service.after_create(current_user)
 
           render json: WebApi::V1::SessionSerializer.new(
@@ -54,22 +48,6 @@ module ImpactTracking
         end
       end
 
-      # POST /sessions/:id/track_pageview
-      def track_pageview
-        return head(:not_found) unless Session.exists?(params[:id])
-
-        pageview = Pageview.create(
-          session_id: params[:id],
-          path: pageview_params[:page_path]
-        )
-
-        if pageview
-          head :created
-        else
-          head :internal_server_error
-        end
-      end
-
       private
 
       def ignore_crawlers
@@ -84,14 +62,7 @@ module ImpactTracking
           :browser_name,
           :browser_version,
           :os_name,
-          :os_version,
-          :entry_path
-        )
-      end
-
-      def pageview_params
-        params.require(:pageview).permit(
-          :page_path
+          :os_version
         )
       end
 
