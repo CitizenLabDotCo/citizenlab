@@ -473,6 +473,7 @@
   "app.components.UserName.verified": "Verifisert",
   "app.components.VerificationModal.verifyBOSA": "Verifiser med itsme eller eID",
   "app.components.VerificationModal.verifyClaveUnica": "Verifiser med Clave Unica",
+  "app.components.VerificationModal.verifyIdAustria": "Bekreft med ID Austria",
   "app.components.VerificationModal.verifyNemLogIn": "Verifiser med MitID",
   "app.components.VerificationModal.verifyYourIdentity": "Bekreft identiteten din",
   "app.components.VoteControl.budgetingFutureEnabled": "Du kan tildele budsjettet ditt fra {enabledFromDate}.",
