@@ -4,14 +4,14 @@ import Modal from './Modal';
 import SuccessActions from './SuccessActions';
 
 export interface Props {
-  setModalOpen: (bool: boolean) => void;
+  onToggleModal: (opened: boolean) => void;
 }
 
-const Authentication = ({ setModalOpen }: Props) => {
+const Authentication = ({ onToggleModal: setModalOpen }: Props) => {
   return (
     <>
       <SuccessActions />
-      <Modal setModalOpen={setModalOpen} />
+      <Modal onToggleModal={setModalOpen} />
     </>
   );
 };

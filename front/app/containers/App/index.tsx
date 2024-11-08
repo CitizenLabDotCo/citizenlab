@@ -361,9 +361,9 @@ const App = ({ children }: Props) => {
             </ErrorBoundary>
             <ErrorBoundary>
               <Authentication
-                setModalOpen={(open) => {
+                onToggleModal={(opened) => {
                   if (franceConnectLoginEnabled) {
-                    setDisableScroll(open);
+                    setDisableScroll(opened);
                   }
                 }}
               />

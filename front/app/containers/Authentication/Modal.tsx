@@ -45,7 +45,7 @@ import useSteps from './useSteps';
 // but this one was the worst in terms of bundle size impact
 const CustomFields = lazy(() => import('./steps/CustomFields'));
 
-const AuthModal = ({ setModalOpen }: ModalProps) => {
+const AuthModal = ({ onToggleModal }: ModalProps) => {
   const {
     currentStep,
     state,
@@ -60,8 +60,8 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
   const theme = useTheme();
 
   useEffect(() => {
-    setModalOpen?.(currentStep !== 'closed');
-  }, [currentStep, setModalOpen]);
+    onToggleModal?.(currentStep !== 'closed');
+  }, [currentStep, onToggleModal]);
 
   const smallerThanPhone = useBreakpoint('phone');
   const { formatMessage } = useIntl();
