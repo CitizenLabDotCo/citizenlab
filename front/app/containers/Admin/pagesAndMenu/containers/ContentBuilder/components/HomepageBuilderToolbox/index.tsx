@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { useTheme } from 'styled-components';
 import { SupportedLocale } from 'typings';
 
 import useAppConfigurationLocales, {
@@ -27,9 +28,13 @@ import {
 import messages from '../../messages';
 import CallToAction, { callToActionTitle } from '../Widgets/CallToAction';
 import Events from '../Widgets/Events';
+import HomepageBanner, { homepageBannerTitle } from '../Widgets/HomepageBanner';
+import { getHomepageBannerDefaultSettings } from '../Widgets/HomepageBanner/utils';
 import OpenToParticipation, {
   openToParticipationTitle,
 } from '../Widgets/OpenToParticipation';
+import Projects, { projectsTitle } from '../Widgets/Projects';
+import projectsMessages from '../Widgets/Projects/messages';
 import Spotlight, {
   spotlightTitle,
   buttonTextDefault,
@@ -42,6 +47,7 @@ type HomepageBuilderToolboxProps = {
 const HomepageBuilderToolbox = ({
   selectedLocale,
 }: HomepageBuilderToolboxProps) => {
+  const theme = useTheme();
   const { formatMessage } = useIntl();
   const formatMessageWithLocale = useFormatMessageWithLocale();
   const appConfigurationLocales = useAppConfigurationLocales();
@@ -101,6 +107,30 @@ const HomepageBuilderToolbox = ({
           }
           icon="button"
           label={formatMessage(callToActionTitle)}
+        />
+        <DraggableElement
+          id="e2e-draggable-homepage-banner"
+          component={
+            <HomepageBanner
+              homepageSettings={getHomepageBannerDefaultSettings(
+                theme.colors.tenantPrimary
+              )}
+            />
+          }
+          icon="rectangle"
+          label={formatMessage(homepageBannerTitle)}
+        />
+        <DraggableElement
+          id="e2e-draggable-projects"
+          component={
+            <Projects
+              currentlyWorkingOnText={toMultiloc(
+                projectsMessages.projectsTitlePlaceholder
+              )}
+            />
+          }
+          icon="projects"
+          label={formatMessage(projectsTitle)}
         />
       </Section>
       <Section>
