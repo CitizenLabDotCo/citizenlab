@@ -59,7 +59,7 @@ class ProjectsFinderService
       next unless service.participation_possible?(action_descriptors)
 
       project_descriptor_pairs[project.id] = action_descriptors
-      break if project_descriptor_pairs.size >= pagination_limit
+      break if project_descriptor_pairs.size >= pagination_limit + 1 # +1 needed to produce pagination link to next page
     end
 
     # Step 2: Use project_descriptor_pairs keys (project IDs) to filter projects
