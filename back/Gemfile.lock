@@ -156,7 +156,7 @@ PATH
 PATH
   remote: engines/commercial/id_id_austria
   specs:
-    id_id_austria (0.1.0)
+    id_id_austria (1.0.0)
       omniauth_openid_connect (~> 0.7.1)
       rails (~> 7.0)
       verification
