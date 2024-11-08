@@ -6,20 +6,9 @@ class ProjectsFinderService
     @page_number = (params.dig(:page, :number) || 1).to_i
   end
 
-  def participation_possible
-    return participation_possible_uncached if @user
-
-    Rails.cache.fetch(
-      "#{@projects.cache_key}projects_finder_service/participation_possible/",
-      expires_in: 1.hour
-    ) do
-      participation_possible_uncached
-    end
-  end
-
-  # Returns an ActiveRecord collection of published projects that are visible to user
-  # AND (are in are followed by user OR relate to an idea, area or topic followed by user),
-  # ordered by the most recent follow for the project, idea, area or topic (most recent).
+  # Returns an ActiveRecord collection of published projects that are also
+  # followed by user OR relate to an idea, area or topic followed by user,
+  # ordered by the follow created_at (most recent first).
   # => [Project]
   def followed_by_user
     subquery = @projects
@@ -64,7 +53,7 @@ class ProjectsFinderService
       )
       .group('projects.id')
 
-    # The rather counter-intuitive `.group('projects.id')` at the end of the preceding suquery, followed by
+    # The rather counter-intuitive `.group('projects.id')` at the end of the preceding subquery, followed by
     # this join with the projects table, is necessary to avoid introducing duplicates AND maintain the desired ordering.
     # For example, if a user follows an area for a project and the project is also associated with another area,
     # the project would appear twice in the results without this approach.
@@ -77,10 +66,21 @@ class ProjectsFinderService
       )
   end
 
+  def participation_possible
+    return participation_possible_uncached if @user
+
+    Rails.cache.fetch(
+      "#{@projects.cache_key}projects_finder_service/participation_possible/",
+      expires_in: 1.hour
+    ) do
+      participation_possible_uncached
+    end
+  end
+
   private
 
-  # Returns an ActiveRecord collection of published projects that are visible to user
-  # and in an active participatory phase (where user can probably do something),
+  # Returns an ActiveRecord collection of published projects that are
+  # in an active participatory phase (where user can probably do something),
   # ordered by the end date of the current phase, soonest first (nulls last).
   # Also returns action descriptors for each project, to avoid getting them again when serializing.
   # => { projects: [Project], descriptor_pairs: { <project.id>: { <action_descriptors> }, ... } }

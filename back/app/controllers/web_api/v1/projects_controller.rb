@@ -56,8 +56,8 @@ class WebApi::V1::ProjectsController < ApplicationController
 
   # For use with 'For you' homepage widget.
   # Returns all published projects that are visible to user
-  # AND (are in are followed by user OR relate to an idea, area or topic followed by user),
-  # ordered by the most recent follow for the project, idea, area or topic (most recent first).
+  # AND (are followed by user OR relate to an idea, area or topic followed by user),
+  # ordered by the follow created_at (most recent first).
   def index_projects_for_followed_item
     projects = policy_scope(Project)
     projects = ProjectsFinderService.new(projects, current_user).followed_by_user
