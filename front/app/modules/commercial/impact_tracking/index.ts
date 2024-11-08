@@ -1,5 +1,3 @@
-import UAParser from 'ua-parser-js';
-
 import { events$, pageChanges$ } from 'utils/analytics';
 import fetcher from 'utils/cl-react-query/fetcher';
 import { ModuleConfiguration } from 'utils/moduleUtils';
@@ -12,15 +10,16 @@ const signUpInTracks = {
 let sessionId: string;
 
 const trackSessionStarted = async () => {
-  const uaParser = new UAParser();
-  const uaResult = uaParser.getResult();
+  // const uaParser = new UAParser();
+  // const uaResult = uaParser.getResult();
 
+  // eslint-disable-next-line
   const referrer = document.referrer ?? window.frames?.top?.document.referrer;
-  const device_type = uaResult.device.type ?? 'desktop';
-  const browser_name = uaResult.browser.name;
-  const browser_version = uaResult.browser.major;
-  const os_name = uaResult.os.name;
-  const os_version = uaResult.os.version;
+  // const device_type = uaResult.device.type ?? 'desktop';
+  // const browser_name = uaResult.browser.name;
+  // const browser_version = uaResult.browser.major;
+  // const os_name = uaResult.os.name;
+  // const os_version = uaResult.os.version;
   const entry_path = window.location.pathname;
 
   const response: any = await fetcher({
@@ -29,11 +28,11 @@ const trackSessionStarted = async () => {
     body: {
       session: {
         referrer,
-        device_type,
-        browser_name,
-        browser_version,
-        os_name,
-        os_version,
+        // device_type,
+        // browser_name,
+        // browser_version,
+        // os_name,
+        // os_version,
         entry_path,
       },
     },
