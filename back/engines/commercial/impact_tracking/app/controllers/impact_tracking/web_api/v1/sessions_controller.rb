@@ -10,15 +10,19 @@ module ImpactTracking
       before_action :set_current_session, only: %i[upgrade]
 
       def create
-        # parsed_ua = DeviceDetector.new(request.user_agent)
-        # device_type = parsed_ua.device_type
-        # browser_name = parsed_ua.name
-        # os_name = parsed_ua.os_name
+        parsed_ua = DeviceDetector.new(request.user_agent)
+        device_type = parsed_ua.device_type
+        browser_name = parsed_ua.name
+        os_name = parsed_ua.os_name
 
         session = Session.create(
           monthly_user_hash: generate_hash,
           highest_role: current_user&.highest_role,
-          user_id: current_user&.id
+          user_id: current_user&.id,
+          referrer: session_params[:referrer],
+          device_type: device_type,
+          browser_name: browser_name,
+          os_name: os_name
         )
 
         if session
@@ -56,14 +60,7 @@ module ImpactTracking
       end
 
       def session_params
-        params.require(:session).permit(
-          :referrer,
-          :device_type,
-          :browser_name,
-          :browser_version,
-          :os_name,
-          :os_version
-        )
+        params.require(:session).permit(:referrer)
       end
 
       def generate_hash
