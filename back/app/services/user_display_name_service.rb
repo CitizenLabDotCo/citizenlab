@@ -36,7 +36,7 @@ class UserDisplayNameService
   def display_name!(user)
     return nil if user.nil?
 
-    [user.first_name, last_name(user)].join(' ')
+    [first_name(user), last_name(user)].join(' ')
   end
 
   # Returns nil when user is nil, but logs a warning.
@@ -60,7 +60,8 @@ class UserDisplayNameService
   # @param [User, nil] user
   # @return [String]
   def last_name!(user)
-    return user&.anon_last_name if user&.no_name?
+    anon = AnonymousNameService.new(user)
+    return anon.last_name if user&.no_name?
 
     return nil if user&.last_name.nil?
 
@@ -68,7 +69,8 @@ class UserDisplayNameService
   end
 
   def first_name(user)
-    return user&.anon_first_name if user&.no_name?
+    anon = AnonymousNameService.new(user)
+    return anon.first_name if user&.no_name?
 
     user.first_name
   end

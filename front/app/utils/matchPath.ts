@@ -44,6 +44,8 @@ interface MatchPathOptions {
 function matchPath(pathname: string, { paths, exact }: MatchPathOptions) {
   return paths.reduce((matched, path) => {
     if (!path && path !== '') return null;
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (matched) return matched;
 
     const { regexp, keys } = compilePath(path, {

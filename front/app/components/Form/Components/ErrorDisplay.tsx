@@ -145,6 +145,8 @@ const ErrorDisplay = ({ fieldPath, ajvErrors, didBlur, inputId }: Props) => {
     ...(allApiErrors?.base?.filter(
       (err) =>
         err.error === 'includes_banned_words' &&
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         err?.blocked_words?.find((e) => e?.attribute === fieldName)
     ) || []),
   ];
@@ -153,6 +155,8 @@ const ErrorDisplay = ({ fieldPath, ajvErrors, didBlur, inputId }: Props) => {
 
   const show =
     (showAllErrors || didBlur === undefined || didBlur === true) &&
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     Boolean(ajvErrors?.length || fieldErrors?.length);
 
   useEffect(() => {
@@ -187,11 +191,15 @@ const ErrorDisplay = ({ fieldPath, ajvErrors, didBlur, inputId }: Props) => {
             <ErrorList>
               {ajvErrors && (
                 <ErrorListItem key={'FEErrors'}>
+                  {/* TODO: Fix this the next time the file is edited. */}
+                  {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
                   {dedupApiErrors?.length > 0 && <Bullet aria-hidden>•</Bullet>}
                   {ajvErrors}
                 </ErrorListItem>
               )}
 
+              {/* TODO: Fix this the next time the file is edited. */}
+              {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
               {dedupApiErrors?.map((error, index) => (
                 <ErrorListItem key={index}>
                   {(dedupApiErrors.length > 1 ||
@@ -204,11 +212,17 @@ const ErrorDisplay = ({ fieldPath, ajvErrors, didBlur, inputId }: Props) => {
                       getDefaultApiErrorMessage(error.error, fieldName))}
                     values={{
                       ...error,
+                      // TODO: Fix this the next time the file is edited.
+                      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                       row: <strong>{error?.row}</strong>,
+                      // TODO: Fix this the next time the file is edited.
+                      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                       rows: error?.rows ? (
+                        // TODO: Fix this the next time the file is edited.
+                        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                         <strong>{error?.rows.join(', ')}</strong>
                       ) : null,
-                      // eslint-disable-next-line react/no-unescaped-entities
+                      // eslint-disable-next-line react/no-unescaped-entities, @typescript-eslint/no-unnecessary-condition
                       value: <strong>'{error?.value}'</strong>,
                       guidelinesLink: (
                         <Link to="/pages/faq" target="_blank">

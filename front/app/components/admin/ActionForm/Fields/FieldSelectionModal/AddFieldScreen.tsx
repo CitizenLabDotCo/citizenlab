@@ -93,9 +93,14 @@ export const AddFieldScreen = ({
           });
 
           if (
-            (newField.data.id && formValues?.input_type === 'multiselect') ||
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+            (newField.data.id && formValues?.input_type === 'multiselect') || // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             formValues?.input_type === 'select'
           ) {
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             formValues?.options?.forEach(async (option) => {
               await addUserCustomFieldOption({
                 customFieldId: newField.data.id,

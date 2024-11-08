@@ -52,7 +52,6 @@ en:
       "voting_last_chance": Last chance to vote
       "voting_phase_started": New project phase with voting
       "voting_results": Voting results
-      "your_proposed_initiatives_digest": Weekly overview of your proposals
     general:
       by_author: 'by %{authorName}'
       author_wrote: '%{authorName} wrote:'
@@ -240,7 +239,7 @@ en:
       main_header: '%{firstName} mentioned you in an internal comment.'
       preheader: '%{authorNameFull} mentioned you in an internal comment.'
     moderator_digest:
-      subject: 'Your weekly project manager report'
+      subject: 'Weekly manager report of "%{project_title}"'
       preheader: 'Project manager digest of %{organizationName}'
       title_your_weekly_report: '%{firstName}, your weekly report'
       text_introduction: 'We''ve curated for you the input that has generated the most activity over the past week. Find out what''s happening with your project!'
@@ -490,16 +489,6 @@ en:
       link: link
       cta_view_idea: 'Go to your input'
       preheader: '%{firstName}, congratulations on posting your input on the platform of %{organizationName}. Now gather support.'
-    your_proposed_initiatives_digest:
-      subject: 'Weekly update of your proposals'
-      preheader: 'What happened with your proposals in the past week?'
-      title_your_weekly_report: 'How have your proposals been doing?'
-      text_introduction: 'Find the key numbers below and go to the platform to take action and gather enough support in time.'
-      cta_see_your_initiative: 'Go to your proposals'
-      total_votes: 'Total votes'
-      new_votes: 'New votes'
-      remaining_votes: 'Votes remaining'
-      remaining_days: 'Days remaining'
     voting_basket_submitted:
       subject: '%{organizationName}: You voted successfully'
       preheader: 'You voted successfully on the participation platform of %{organizationName}'

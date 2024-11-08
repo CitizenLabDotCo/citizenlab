@@ -46,4 +46,8 @@ export default defineMessages({
     defaultMessage:
       'You have already submitted your votes. To change your votes, go back to the project page and click "Modify your vote".',
   },
+  phaseNotActive: {
+    id: 'app.components.AssignMultipleVotesControl.phaseNotActive',
+    defaultMessage: 'Voting is not available, since this phase is not active.',
+  },
 });

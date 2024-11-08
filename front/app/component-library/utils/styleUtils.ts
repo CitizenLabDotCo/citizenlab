@@ -274,7 +274,6 @@ type StylingConstsType = {
 // Reusable text styling
 export function quillEditedContent(
   buttonColor = colors.teal,
-  linkColor = colors.teal,
   textColor = colors.textPrimary,
   mentionColor = colors.textPrimary,
   fontSize: 's' | 'base' | 'm' | 'l' = 'base',
@@ -295,7 +294,7 @@ export function quillEditedContent(
   return `
     ${defaultFontStyle}
 
-    a, li, p {
+    li, p {
       ${defaultFontStyle}
     }
 
@@ -315,7 +314,7 @@ export function quillEditedContent(
       a {
         font-size: inherit;
         font-weight: inherit;
-        text-decoration: inherit;
+        text-decoration: underline;
       }
     }
 
@@ -329,7 +328,7 @@ export function quillEditedContent(
       a {
         font-size: inherit;
         font-weight: inherit;
-        text-decoration: inherit;
+        text-decoration: underline;
       }
     }
 
@@ -342,7 +341,8 @@ export function quillEditedContent(
     }
 
     a {
-      color: ${linkColor};
+      color: #0000EE; /* Standard fallback for all browsers */
+      color: -webkit-link; /* Overrides the fallback in WebKit browsers */
       text-decoration: underline;
       overflow-wrap: break-word;
       word-wrap: break-word;
@@ -350,12 +350,6 @@ export function quillEditedContent(
       word-break: break-word;
       hyphens: auto;
       transition: background 80ms ease-out;
-
-      &:hover {
-        color: ${darken(0.15, linkColor)};
-        background: ${transparentize(0.91, linkColor)};
-        text-decoration: underline;
-      }
     }
 
     ul, ol {

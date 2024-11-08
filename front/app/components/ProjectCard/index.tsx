@@ -1,7 +1,6 @@
 import React, { memo, useState } from 'react';
 
 import {
-  Icon,
   Box,
   media,
   colors,
@@ -16,9 +15,8 @@ import moment from 'moment';
 import { rgba, darken } from 'polished';
 import { useInView } from 'react-intersection-observer';
 import { RouteType } from 'routes';
-import styled, { useTheme } from 'styled-components';
+import styled from 'styled-components';
 
-import useAuthUser from 'api/me/useAuthUser';
 import usePhase from 'api/phases/usePhase';
 import useProjectImage from 'api/project_images/useProjectImage';
 import { CARD_IMAGE_ASPECT_RATIO } from 'api/project_images/useProjectImages';
@@ -35,12 +33,12 @@ import T from 'components/T';
 import Image from 'components/UI/Image';
 
 import { ScreenReaderOnly } from 'utils/a11y';
-import { getIdeaPostingRules } from 'utils/actionTakingRules';
 import { trackEventByName } from 'utils/analytics';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
-import { getInputTermMessage } from 'utils/i18n';
 
+import getCTAMessage from './getCTAMessage';
+import ImagePlaceholder from './ImagePlaceholder';
 import messages from './messages';
 import tracks from './tracks';
 
@@ -370,7 +368,6 @@ const ProjectCard = memo<InputProps>(
       },
     });
     const { data: project } = useProjectById(projectId);
-    const { data: authUser } = useAuthUser();
 
     // We use this hook instead of useProjectImages,
     // because that one doesn't work with our caching system.
@@ -383,11 +380,12 @@ const ProjectCard = memo<InputProps>(
     const projectImage = imageId ? _projectImage : undefined;
 
     const currentPhaseId =
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       project?.data?.relationships?.current_phase?.data?.id ?? null;
     const { data: phase } = usePhase(currentPhaseId);
     const localize = useLocalize();
-
-    const theme = useTheme();
+    const { formatMessage } = useIntl();
 
     const [visible, setVisible] = useState(false);
 
@@ -404,25 +402,13 @@ const ProjectCard = memo<InputProps>(
     };
 
     if (project) {
-      const postingPermission = getIdeaPostingRules({
-        project: project?.data,
-        phase: phase?.data,
-        authUser: authUser?.data,
-      });
-      const participationMethod = phase?.data.attributes.participation_method;
-      const votingMethod = phase?.data.attributes.voting_method;
-
-      const canPost = !!postingPermission.enabled;
-      const canReact =
-        project.data.attributes.action_descriptors.reacting_idea.enabled;
-      const canComment =
-        project.data.attributes.action_descriptors.commenting_idea.enabled;
-
       const imageUrl = !projectImage
         ? null
-        : projectImage.data.attributes.versions?.large;
+        : // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+          projectImage.data.attributes.versions?.large;
 
-      const projectUrl: RouteType = getProjectUrl(project.data);
+      const projectUrl: RouteType = getProjectUrl(project.data.attributes.slug);
       const isFinished = project.data.attributes.timeline_active === 'past';
       const isArchived =
         project.data.attributes.publication_status === 'archived';
@@ -440,7 +426,6 @@ const ProjectCard = memo<InputProps>(
       const endAt = phase?.data.attributes.end_at;
 
       let countdown: JSX.Element | null = null;
-      const inputTerm = phase?.data.attributes.input_term ?? 'idea';
 
       if (isArchived) {
         countdown = (
@@ -479,75 +464,14 @@ const ProjectCard = memo<InputProps>(
         );
       }
 
-      const getCTAMessage = () => {
-        let ctaMessage: JSX.Element | null = null;
-        if (participationMethod === 'voting') {
-          if (votingMethod === 'budgeting') {
-            ctaMessage = <FormattedMessage {...messages.allocateYourBudget} />;
-          } else {
-            ctaMessage = <FormattedMessage {...messages.vote} />;
-          }
-        } else if (participationMethod === 'information') {
-          ctaMessage = <FormattedMessage {...messages.learnMore} />;
-        } else if (participationMethod === 'survey') {
-          ctaMessage = <FormattedMessage {...messages.takeTheSurvey} />;
-        } else if (participationMethod === 'native_survey') {
-          ctaMessage = (
-            <>
-              {localize(phase?.data.attributes.native_survey_button_multiloc)}
-            </>
-          );
-        } else if (participationMethod === 'document_annotation') {
-          ctaMessage = <FormattedMessage {...messages.reviewDocument} />;
-        } else if (participationMethod === 'poll') {
-          ctaMessage = <FormattedMessage {...messages.takeThePoll} />;
-        } else if (
-          participationMethod === 'ideation' ||
-          participationMethod === 'proposals'
-        ) {
-          if (canPost) {
-            ctaMessage = (
-              <FormattedMessage
-                {...getInputTermMessage(inputTerm, {
-                  idea: messages.submitYourIdea,
-                  option: messages.addYourOption,
-                  project: messages.submitYourProject,
-                  question: messages.joinDiscussion,
-                  issue: messages.submitAnIssue,
-                  contribution: messages.contributeYourInput,
-                  initiative: messages.submitYourInitiative,
-                  proposal: messages.submitYourProposal,
-                  petition: messages.submitYourPetition,
-                })}
-              />
-            );
-          } else if (canReact) {
-            ctaMessage = <FormattedMessage {...messages.reaction} />;
-          } else if (canComment) {
-            ctaMessage = <FormattedMessage {...messages.comment} />;
-          } else {
-            ctaMessage = (
-              <FormattedMessage
-                {...getInputTermMessage(inputTerm, {
-                  idea: messages.viewTheIdeas,
-                  option: messages.viewTheOptions,
-                  project: messages.viewTheProjects,
-                  question: messages.viewTheQuestions,
-                  issue: messages.viewTheIssues,
-                  contribution: messages.viewTheContributions,
-                  proposal: messages.viewTheProposals,
-                  initiative: messages.viewTheInitiatives,
-                  petition: messages.viewThePetitions,
-                })}
-              />
-            );
-          }
-        }
-
-        return ctaMessage;
-      };
-
-      const ctaMessage: JSX.Element | null = getCTAMessage();
+      const ctaMessage = phase
+        ? getCTAMessage({
+            actionDescriptors: project.data.attributes.action_descriptors,
+            phase: phase.data,
+            formatMessage,
+            localize,
+          })
+        : undefined;
 
       const contentHeader = (
         <ContentHeader
@@ -571,7 +495,7 @@ const ProjectCard = memo<InputProps>(
             </Box>
           )}
 
-          {ctaMessage !== null && !isFinished && !isArchived && (
+          {ctaMessage && !isFinished && !isArchived && (
             <Box
               minHeight={`${ContentHeaderHeight}px`}
               className={`${size} ${countdown ? 'hasProgressBar' : ''}`}
@@ -629,20 +553,7 @@ const ProjectCard = memo<InputProps>(
             {imageUrl ? (
               <ProjectImage src={imageUrl} alt="" cover={true} />
             ) : (
-              <Box
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-                flex="1"
-                background={colors.grey300}
-              >
-                <Icon
-                  name="building"
-                  width="80px"
-                  height="80px"
-                  fill={colors.white}
-                />
-              </Box>
+              <ImagePlaceholder />
             )}
           </ProjectImageContainer>
 
@@ -693,7 +604,6 @@ const ProjectCard = memo<InputProps>(
                     <AvatarBubbles
                       size={32}
                       limit={3}
-                      userCountBgColor={theme.colors.tenantPrimary}
                       avatarIds={avatarIds}
                       userCount={project.data.attributes.participants_count}
                     />
@@ -708,6 +618,8 @@ const ProjectCard = memo<InputProps>(
                   followableId={project.data.id}
                   followersCount={project.data.attributes.followers_count}
                   followerId={
+                    // TODO: Fix this the next time the file is edited.
+                    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                     project.data.relationships.user_follower?.data?.id
                   }
                   w="100%"

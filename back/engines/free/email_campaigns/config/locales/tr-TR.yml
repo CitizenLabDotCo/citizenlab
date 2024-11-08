@@ -58,7 +58,6 @@ tr:
       "voting_phase_started": Oylama ile yeni proje aşaması
       "voting_results": Oylama sonuçları
       "your_input_in_screening": Girdilerim taranmayı bekliyor
-      "your_proposed_initiatives_digest": Önerilerinize haftalık genel bakış
     general:
       by_author: 'tarafından %{authorName}'
       author_wrote: '%{authorName} yazdı:'
@@ -539,16 +538,6 @@ tr:
       message: '"%{input_title}" ifadesi incelendikten ve onaylandıktan sonra başkaları tarafından görülebilir hale gelecektir.'
       subject: '"%{input_title}" neredeyse yayınlandı'
       preheader: 'Şu anda %{prescreening_status_title}adresinde'
-    your_proposed_initiatives_digest:
-      subject: 'Önerilerinizle ilgili haftalık bildirim'
-      preheader: 'Geçtiğimiz hafta önerilerinizle ilgili ne oldu?'
-      title_your_weekly_report: 'Önerileriniz ne durumdaydı?'
-      text_introduction: 'Aşağıda verilen performansla ilgili değerlere bakın, platforma gidin ve yeterli desteği zamanında toplamak için yapmanız gerekenleri yapın.'
-      cta_see_your_initiative: 'Önerilerinize gidin'
-      total_votes: 'Toplam oy sayısı'
-      new_votes: 'Yeni oy sayısı'
-      remaining_votes: 'Kalan oy sayısı'
-      remaining_days: 'Kalan gün sayısı'
     voting_basket_submitted:
       subject: '%{organizationName}: Başarılı bir şekilde oy kullandınız'
       preheader: '%{organizationName}katılım platformunda başarıyla oy kullandınız'

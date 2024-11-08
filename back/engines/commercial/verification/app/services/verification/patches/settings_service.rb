@@ -8,8 +8,6 @@ module Verification
         super
       end
 
-      private
-
       # Ensures the FE does not show verification if:
       # a) There are no verification methods
       # b) All verification methods are flagged as 'hide_from_profile'

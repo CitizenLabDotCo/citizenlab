@@ -1,5 +1,5 @@
+import { mockRoutes } from './__mocks__/mockRoutes.mock';
 import { getAllPathsFromRoutes } from './matchPath';
-import { mockRoutes } from './mockRoutes.mock';
 
 describe('getAllPathsFromRoutes', () => {
   it('should return all paths from routes', () => {

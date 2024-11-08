@@ -156,6 +156,8 @@ const budgetingConfig: VotingMethodConfig = {
       );
     }
     if (submissionState === 'hasSubmitted') {
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (phase?.attributes.end_at) {
         return (
           <FormattedMessage
@@ -163,11 +165,15 @@ const budgetingConfig: VotingMethodConfig = {
               b: (chunks) => (
                 <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
               ),
+              // TODO: Fix this the next time the file is edited.
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
               endDate: getLocalisedDateString(phase?.attributes.end_at),
             }}
             {...messages.budgetingSubmittedInstructions}
           />
         );
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       } else if (phase && !phase.attributes.end_at) {
         return (
           <FormattedMessage
@@ -190,6 +196,8 @@ const budgetingConfig: VotingMethodConfig = {
           {...messages.budgetingSubmittedInstructionsContinuous}
         />
       );
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     } else if (submissionState === 'submissionEnded') {
       return (
         <FormattedMessage
@@ -197,9 +205,15 @@ const budgetingConfig: VotingMethodConfig = {
             b: (chunks) => (
               <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
             ),
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             endDate: getLocalisedDateString(phase?.attributes.end_at),
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             maxBudget: phase?.attributes.voting_max_total?.toLocaleString(),
             currency,
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             optionCount: phase?.attributes.ideas_count,
           }}
           {...messages.budgetParticipationEnded}
@@ -277,9 +291,13 @@ const multipleVotingConfig: VotingMethodConfig = {
     const fallbackVotesTerm = formatMessage(messages.votes).toLowerCase();
 
     const voteTerm =
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       localize(phase?.attributes?.voting_term_singular_multiloc) ??
       fallbackVoteTerm;
     const votesTerm =
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       localize(phase?.attributes?.voting_term_plural_multiloc) ??
       fallbackVotesTerm;
 
@@ -329,6 +347,8 @@ const multipleVotingConfig: VotingMethodConfig = {
       );
     }
     if (submissionState === 'hasSubmitted') {
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (phase?.attributes.end_at) {
         return (
           <FormattedMessage
@@ -336,11 +356,15 @@ const multipleVotingConfig: VotingMethodConfig = {
               b: (chunks) => (
                 <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
               ),
+              // TODO: Fix this the next time the file is edited.
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
               endDate: getLocalisedDateString(phase?.attributes.end_at),
             }}
             {...messages.votingSubmittedInstructions}
           />
         );
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       } else if (phase) {
         return (
           <FormattedMessage
@@ -364,7 +388,10 @@ const multipleVotingConfig: VotingMethodConfig = {
         />
       );
     } else if (
-      submissionState === 'submissionEnded' &&
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      submissionState === 'submissionEnded' && // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       phase?.attributes.end_at
     ) {
       return (
@@ -373,7 +400,11 @@ const multipleVotingConfig: VotingMethodConfig = {
             b: (chunks) => (
               <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
             ),
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             endDate: getLocalisedDateString(phase?.attributes.end_at),
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             maxVotes: phase?.attributes.voting_max_total?.toLocaleString(),
             voteTerm: maxVotesTerm,
             optionCount: phase.attributes.ideas_count,
@@ -487,6 +518,8 @@ const singleVotingConfig: VotingMethodConfig = {
               b: (chunks) => (
                 <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
               ),
+              // TODO: Fix this the next time the file is edited.
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
               endDate: getLocalisedDateString(phase?.attributes.end_at),
             }}
             {...messages.votingSubmittedInstructions}
@@ -514,7 +547,11 @@ const singleVotingConfig: VotingMethodConfig = {
           {...messages.votingSubmittedInstructionsContinuous}
         />
       );
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     } else if (submissionState === 'submissionEnded') {
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       const votingMax = phase?.attributes?.voting_max_total;
       if (votingMax) {
         if (votingMax > 1 && phase.attributes.end_at) {
@@ -524,7 +561,11 @@ const singleVotingConfig: VotingMethodConfig = {
                 b: (chunks) => (
                   <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
                 ),
+                // TODO: Fix this the next time the file is edited.
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 endDate: getLocalisedDateString(phase?.attributes.end_at),
+                // TODO: Fix this the next time the file is edited.
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 maxVotes: votingMax?.toLocaleString(),
                 optionCount: phase.attributes.ideas_count,
               }}
@@ -538,7 +579,11 @@ const singleVotingConfig: VotingMethodConfig = {
                 b: (chunks) => (
                   <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
                 ),
+                // TODO: Fix this the next time the file is edited.
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 endDate: getLocalisedDateString(phase?.attributes.end_at),
+                // TODO: Fix this the next time the file is edited.
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 maxVotes: votingMax?.toLocaleString(),
                 optionCount: phase.attributes.ideas_count,
               }}
@@ -555,6 +600,8 @@ const singleVotingConfig: VotingMethodConfig = {
               b: (chunks) => (
                 <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
               ),
+              // TODO: Fix this the next time the file is edited.
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
               endDate: getLocalisedDateString(phase?.attributes.end_at),
             }}
             {...messages.singleVotingUnlimitedEnded}

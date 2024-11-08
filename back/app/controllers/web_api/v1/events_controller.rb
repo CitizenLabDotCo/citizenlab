@@ -178,6 +178,8 @@ class WebApi::V1::EventsController < ApplicationController
   end
 
   def parse_date(date_str)
+    return nil unless date_str
+
     date_str = date_str.strip
     return nil if date_str.in?(['null', ''])
 
@@ -192,3 +194,5 @@ class WebApi::V1::EventsController < ApplicationController
     @sidefx ||= SideFxEventService.new
   end
 end
+
+WebApi::V1::EventsController.include(AggressiveCaching::Patches::WebApi::V1::EventsController)

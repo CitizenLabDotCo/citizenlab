@@ -117,6 +117,8 @@ class SpamReportForm extends React.PureComponent<
                     id="text-area-reason"
                     name="reasonText"
                     value={
+                      // TODO: Fix this the next time the file is edited.
+                      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                       this.props.diff ? this.props.diff.other_reason || '' : ''
                     }
                     onChange={this.props.onTextChange}

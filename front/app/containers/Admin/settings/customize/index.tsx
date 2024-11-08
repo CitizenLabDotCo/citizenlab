@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 
-import { get, has, isEmpty, omitBy } from 'lodash-es';
+import { get, isEmpty, omitBy } from 'lodash-es';
 import styled from 'styled-components';
 import { UploadFile, Multiloc } from 'typings';
 
 import {
   IAppConfigurationStyle,
-  IAppConfiguration,
   IAppConfigurationSettings,
 } from 'api/app_configuration/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -17,7 +16,6 @@ import useLocale from 'hooks/useLocale';
 import { Section, SectionTitle } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 
-import { useIntl } from 'utils/cl-intl';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -25,7 +23,6 @@ import sharedSettingsMessages from '../messages';
 
 import Branding from './Branding';
 import getSubmitState from './getSubmitState';
-import messages from './messages';
 
 export interface IAttributesDiff {
   settings?: Partial<IAppConfigurationSettings>;
@@ -43,12 +40,9 @@ export const StyledSectionTitle = styled(SectionTitle)`
 
 const SettingsCustomizeTab = () => {
   const [logo, setLogo] = useState<UploadFile[] | null>(null);
-  const [logoError, setLogoError] = useState<string | null>(null);
   const [attributesDiff, setAttributesDiff] = useState<IAttributesDiff>({});
   const [titleError, setTitleError] = useState<Multiloc>({});
   const [subtitleError, setSubtitleError] = useState<Multiloc>({});
-
-  const { formatMessage } = useIntl();
 
   const locale = useLocale();
   const { data: appConfiguration } = useAppConfiguration();
@@ -71,33 +65,19 @@ const SettingsCustomizeTab = () => {
     }
   }, [appConfiguration]);
 
-  const validate = (
-    tenant: IAppConfiguration,
-    attributesDiff: IAttributesDiff
-  ) => {
-    const hasRemoteLogo = has(tenant, 'data.attributes.logo.large');
-    const localLogoIsNotSet = !has(attributesDiff, 'logo');
-    const localLogoIsNull = !localLogoIsNotSet && attributesDiff.logo === null;
-    const logoError =
-      !localLogoIsNull || (hasRemoteLogo && localLogoIsNotSet)
-        ? null
-        : formatMessage(messages.noLogo);
+  const validate = () => {
     const hasTitleError = !isEmpty(omitBy(titleError, isEmpty));
     const hasSubtitleError = !isEmpty(omitBy(subtitleError, isEmpty));
 
-    setLogoError(logoError);
     setTitleError(titleError);
     setSubtitleError(subtitleError);
-    return !logoError && !hasTitleError && !hasSubtitleError;
+    return !hasTitleError && !hasSubtitleError;
   };
 
   const save = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (
-      !isNilOrError(appConfiguration) &&
-      validate(appConfiguration, attributesDiff)
-    ) {
+    if (!isNilOrError(appConfiguration) && validate()) {
       if (!isEmpty(attributesDiff)) {
         updateAppConfiguration(attributesDiff, {
           onSuccess: () => {
@@ -110,6 +90,8 @@ const SettingsCustomizeTab = () => {
 
   const getSetting = (setting: string) => {
     return (
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       get(attributesDiff, `settings.${setting}`) ??
       get(appConfiguration, `data.attributes.settings.${setting}`)
     );
@@ -120,7 +102,6 @@ const SettingsCustomizeTab = () => {
       <form onSubmit={save}>
         <Branding
           logo={logo}
-          logoError={logoError}
           setAttributesDiff={setAttributesDiff}
           setLogo={setLogo}
           getSetting={getSetting}

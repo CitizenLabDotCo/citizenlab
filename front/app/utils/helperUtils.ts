@@ -183,6 +183,8 @@ export function removeFocusAfterMouseClick(event: React.MouseEvent) {
 }
 
 export const keys = <T extends object>(obj: T) =>
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   obj && (Object.keys(obj) as Array<keyof T>);
 
 export const get = <T, K extends keyof T>(obj: T, key: K) => obj[key];

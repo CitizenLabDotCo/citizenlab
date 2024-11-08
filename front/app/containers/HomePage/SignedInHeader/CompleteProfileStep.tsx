@@ -13,9 +13,15 @@ import messages from '../messages';
 
 import AcceptButton from './AcceptButton';
 import OnboardingStep from './OnboardingStep';
+import {
+  Left,
+  Right,
+  Text,
+  HeaderContent,
+  Icons,
+  StyledAvatar,
+} from './Shared';
 import SkipButton from './SkipButton';
-
-import { Left, Right, Text, HeaderContent, Icons, StyledAvatar } from './';
 
 const CompleteProfileIcon = styled(Icon)`
   width: 48px;
@@ -46,6 +52,8 @@ const CompleteProfileStep = ({
           <Left>
             <Icons>
               <StyledAvatar
+                // TODO: Fix this the next time the file is edited.
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 userId={authUser?.data.id}
                 size={50}
                 fillColor="#fff"

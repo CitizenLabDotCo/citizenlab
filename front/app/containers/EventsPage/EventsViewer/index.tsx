@@ -107,9 +107,12 @@ const EventsViewer = ({
 
   // Set state based on URL params
   const [projectIdList, setProjectIdList] = useState<string[] | undefined>(
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     projectIdsFromUrl || (projectId ? [projectId] : [])
   );
   const [dateFilter, setDateFilter] = useState<dateFilterKey[]>(
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     dateFilterFromUrl || []
   );
 
@@ -177,6 +180,8 @@ const EventsViewer = ({
   };
 
   const lastPageNumber =
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     (events && getPageNumberFromUrl(events.links?.last)) ?? 1;
 
   return (

@@ -70,6 +70,8 @@ const MultiSelectControl = ({
             options={options}
             onChange={(vals) => {
               setDidBlur(true);
+              // TODO: Fix this the next time the file is edited.
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
               if (vals?.length === 0) {
                 handleChange(path, undefined);
               } else {
@@ -80,6 +82,8 @@ const MultiSelectControl = ({
               }
             }}
             inputId={sanitizeForClassname(id)}
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             disabled={uischema?.options?.readonly}
             // On phones, the keyboard that appears is too large
             // and covers the options. So we disable the search functionality
@@ -87,6 +91,8 @@ const MultiSelectControl = ({
           />
         </Box>
 
+        {/* TODO: Fix this the next time the file is edited. */}
+        {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
         <VerificationIcon show={uischema?.options?.verificationLocked} />
       </Box>
       <Box mt="4px">
@@ -108,6 +114,8 @@ export const multiSelectControlTester = (
   jsonSchema: JsonSchema
 ) => {
   if (
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     uiSchema?.options?.input_type === 'multiselect' &&
     dropdownLayoutTester(uiSchema, jsonSchema)
   ) {

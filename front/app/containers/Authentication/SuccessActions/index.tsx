@@ -21,6 +21,8 @@ const getAuthUser = () => {
   const promise = new Promise<IUserData>((resolve, reject) => {
     streamSubscription = authUserStream.subscribe((response) => {
       if (response === undefined) return;
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (response === null) {
         reject();
         return;

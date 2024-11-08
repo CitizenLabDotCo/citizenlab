@@ -27,6 +27,8 @@ const AssignSingleVoteBox = memo(({ ideaId, phase }: Props) => {
   const { numberOfVotesCast } = useVoting();
 
   const { data: basket } = useBasket(
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     phase.relationships?.user_basket?.data?.id
   );
   const actionDescriptor = idea?.data.attributes.action_descriptors.voting;
@@ -36,6 +38,8 @@ const AssignSingleVoteBox = memo(({ ideaId, phase }: Props) => {
 
   const votesLeft = (voting_max_total ?? 0) - (numberOfVotesCast ?? 0);
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const totalVotes = basket?.data?.attributes?.total_votes;
   const totalVotesGreaterThanZero = totalVotes !== undefined && totalVotes > 0;
 

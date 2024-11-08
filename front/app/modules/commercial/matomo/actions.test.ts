@@ -2,8 +2,9 @@ import ideasKeys from 'api/ideas/keys';
 
 import { queryClient } from 'utils/cl-react-query/queryClient';
 
-import { trackPageChange } from './actions';
 import { mockRoutes } from '../../../utils/mockRoutes.mock';
+
+import { trackPageChange } from './actions';
 
 jest.mock('routes', () => ({
   __esModule: true,

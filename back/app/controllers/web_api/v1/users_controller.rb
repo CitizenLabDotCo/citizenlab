@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class WebApi::V1::UsersController < ApplicationController
+  include BlockingProfanity
+
   before_action :set_user, only: %i[show update destroy ideas_count initiatives_count comments_count block unblock]
   skip_before_action :authenticate_user, only: %i[create show check by_slug by_invite ideas_count initiatives_count comments_count]
 
@@ -111,6 +113,7 @@ class WebApi::V1::UsersController < ApplicationController
   def create
     @user = User.new
     saved = UserService.upsert_in_web_api(@user, permitted_attributes(@user)) do
+      verify_profanity @user
       authorize @user
     end
     if saved
@@ -132,6 +135,7 @@ class WebApi::V1::UsersController < ApplicationController
 
   def update
     saved = UserService.upsert_in_web_api(@user, update_params) do
+      verify_profanity @user
       remove_image_if_requested!(@user, update_params, :avatar)
       authorize(@user)
     end

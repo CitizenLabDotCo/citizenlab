@@ -45,7 +45,16 @@ interface Props {
 const FilterSidebarStatusesItem = ({ status, active, onClick }: Props) => {
   const { phaseId } = useParams() as { phaseId: string };
   const { data: phase } = usePhase(phaseId);
-  const prescreeningEnabled = useFeatureFlag({ name: 'prescreening' });
+
+  const preScreeningFeatureFlag =
+    phase?.data.attributes.participation_method === 'ideation'
+      ? 'prescreening_ideation'
+      : 'prescreening';
+
+  const preScreeningFeatureAllowed = useFeatureFlag({
+    name: preScreeningFeatureFlag,
+    onlyCheckAllowed: true,
+  });
   const phasePrescreeningEnabled =
     phase?.data.attributes.prescreening_enabled === true;
 
@@ -66,18 +75,18 @@ const FilterSidebarStatusesItem = ({ status, active, onClick }: Props) => {
 
   const prescreeningButtonIsDisabled =
     status.attributes.code === 'prescreening' &&
-    (!phasePrescreeningEnabled || !prescreeningEnabled);
+    (!phasePrescreeningEnabled || !preScreeningFeatureAllowed);
 
   const prescreeningTooltipIsDisabled =
     status.attributes.code !== 'prescreening' ||
-    (phasePrescreeningEnabled && prescreeningEnabled);
+    (phasePrescreeningEnabled && preScreeningFeatureAllowed);
 
   return (
     <div ref={drop}>
       <Tooltip
         content={
           <div>
-            {!prescreeningEnabled ? (
+            {!preScreeningFeatureAllowed ? (
               <FormattedMessage {...messages.prescreeningTooltipUpsell} />
             ) : (
               <FormattedMessage

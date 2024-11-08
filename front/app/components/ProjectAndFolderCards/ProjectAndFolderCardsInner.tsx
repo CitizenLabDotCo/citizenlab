@@ -68,6 +68,8 @@ const ProjectAndFolderCardsInner = ({
     [onChangeSearch]
   );
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!currentTab) {
     return null;
   }
@@ -88,6 +90,8 @@ const ProjectAndFolderCardsInner = ({
     onChangeAreas?.(areas);
   };
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const hasPublications = adminPublications && adminPublications.length > 0;
 
   return (

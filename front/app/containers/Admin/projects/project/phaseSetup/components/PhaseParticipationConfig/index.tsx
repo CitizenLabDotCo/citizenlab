@@ -151,6 +151,13 @@ const PhaseParticipationConfig = ({
     }));
   };
 
+  const toggleAutoshareResultsEnabled = () => {
+    updateFormData((state) => ({
+      ...state,
+      autoshare_results_enabled: !state.autoshare_results_enabled,
+    }));
+  };
+
   const toggleReactingEnabled = () => {
     updateFormData((state) => ({
       ...state,
@@ -338,7 +345,7 @@ const PhaseParticipationConfig = ({
     }));
   };
 
-  const toggleReviewingEnabled = (prescreening_enabled: boolean) => {
+  const togglePrescreeningEnabled = (prescreening_enabled: boolean) => {
     updateFormData((state) => ({
       ...state,
       prescreening_enabled,
@@ -375,6 +382,7 @@ const PhaseParticipationConfig = ({
     participation_method,
     submission_enabled,
     commenting_enabled,
+    autoshare_results_enabled,
     reacting_enabled,
     reacting_like_method,
     reacting_like_limited_max,
@@ -425,11 +433,13 @@ const PhaseParticipationConfig = ({
             voting_min_total={voting_min_total}
             voting_max_total={voting_max_total}
             commenting_enabled={commenting_enabled}
+            autoshare_results_enabled={autoshare_results_enabled}
             handleVotingMinTotalChange={handleVotingMinTotalChange}
             handleVotingMaxTotalChange={handleVotingMaxTotalChange}
             handleVoteTermPluralChange={handleVoteTermPluralChange}
             handleVoteTermSingularChange={handleVoteTermSingularChange}
             toggleCommentingEnabled={toggleCommentingEnabled}
+            toggleAutoshareResultsEnabled={toggleAutoshareResultsEnabled}
             apiErrors={apiErrors}
             validationErrors={validationErrors}
             presentation_mode={presentation_mode}
@@ -479,6 +489,8 @@ const PhaseParticipationConfig = ({
             handleIdeaDefaultSortMethodChange={
               handleIdeaDefaultSortMethodChange
             }
+            prescreening_enabled={prescreening_enabled}
+            togglePrescreeningEnabled={togglePrescreeningEnabled}
           />
         )}
 
@@ -515,7 +527,7 @@ const PhaseParticipationConfig = ({
             handleReactingThresholdChange={handleReactingThresholdChange}
             reactingThresholdError={validationErrors.reactingThresholdError}
             prescreening_enabled={prescreening_enabled}
-            toggleReviewingEnabled={toggleReviewingEnabled}
+            togglePrescreeningEnabled={togglePrescreeningEnabled}
           />
         )}
 

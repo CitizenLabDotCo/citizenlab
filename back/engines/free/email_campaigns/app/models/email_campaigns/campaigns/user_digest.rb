@@ -191,6 +191,7 @@ module EmailCampaigns
         published_at: proposal.published_at&.iso8601,
         author_name: name_service.display_name!(proposal.author),
         likes_count: proposal.likes_count,
+        dislikes_count: nil, # needed in object as template is shared with ideas
         comments_count: proposal.comments_count
       }
     end

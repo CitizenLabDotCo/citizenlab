@@ -114,7 +114,9 @@ const HeaderContent = ({
           {headerSubtitle}
         </HeaderSubtitle>
 
-        {displayHeaderAvatars && <StyledAvatarBubbles />}
+        {displayHeaderAvatars && (
+          <StyledAvatarBubbles showParticipantText={false} />
+        )}
 
         <CTA
           buttonStyle={buttonStyle}

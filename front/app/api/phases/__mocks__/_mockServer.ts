@@ -1,3 +1,4 @@
+import { addDays, format } from 'date-fns';
 import { http, HttpResponse } from 'msw';
 
 import { IPhaseData } from '../types';
@@ -11,7 +12,7 @@ export const phasesData: IPhaseData[] = [
       title_multiloc: { en: 'A Mock Information phase' },
       description_multiloc: { en: 'For testing purposes' },
       start_at: 'today',
-      end_at: 'one week from now',
+      end_at: format(addDays(new Date(), 21), 'yyyy-MM-dd'),
       created_at: 'yesterday',
       updated_at: 'yesterday but later',
       submission_enabled: false,
@@ -20,7 +21,7 @@ export const phasesData: IPhaseData[] = [
       reacting_like_limited_max: 0,
       reacting_dislike_enabled: false,
       reacting_dislike_limited_max: 0,
-      participation_method: 'information',
+      participation_method: 'ideation',
       reacting_like_method: 'limited',
       reacting_dislike_method: 'limited',
       input_term: 'idea',
@@ -360,6 +361,7 @@ const votingPhase: IPhaseData = {
     voting_min_total: 0,
     voting_max_votes_per_idea: 1,
     baskets_count: 0,
+    votes_count: 100,
     voting_term_singular_multiloc: {
       en: 'vote',
       'nl-BE': 'stem',
@@ -378,7 +380,6 @@ const votingPhase: IPhaseData = {
       'sr-Latn': 'votes',
       'da-DK': 'afstemninger',
     },
-    votes_count: 0,
     report_public: false,
   },
   relationships: {
@@ -397,5 +398,43 @@ const votingPhase: IPhaseData = {
 export const votingPhaseHandler = http.get(apiPathPhase, () => {
   return HttpResponse.json({ data: votingPhase }, { status: 200 });
 });
+
+export const votingPastNoResultPhaseHandler = http.get(apiPathPhase, () => {
+  const votingPhasePastNoResultSharing = votingPhase;
+  votingPhasePastNoResultSharing.attributes.autoshare_results_enabled = false;
+  votingPhasePastNoResultSharing.attributes.start_at = '2023-11-10';
+  votingPhasePastNoResultSharing.attributes.end_at = '2023-11-19';
+
+  return HttpResponse.json(
+    { data: votingPhasePastNoResultSharing },
+    { status: 200 }
+  );
+});
+
+export const budgetingPastNoResultPhaseHandler = http.get(apiPathPhase, () => {
+  const votingPhasePastNoResultSharing = votingPhase;
+  votingPhasePastNoResultSharing.attributes.voting_method = 'budgeting';
+  votingPhasePastNoResultSharing.attributes.voting_max_total = 1000;
+  votingPhasePastNoResultSharing.attributes.start_at = '2023-11-10';
+  votingPhasePastNoResultSharing.attributes.end_at = '2023-11-19';
+
+  return HttpResponse.json(
+    { data: votingPhasePastNoResultSharing },
+    { status: 200 }
+  );
+});
+
+export const votingPhaseAutoshareDisabledHandler = http.get(
+  apiPathPhase,
+  () => {
+    const votingPhaseAutoshareDisabled = votingPhase;
+    votingPhaseAutoshareDisabled.attributes.autoshare_results_enabled = false;
+
+    return HttpResponse.json(
+      { data: votingPhaseAutoshareDisabled },
+      { status: 200 }
+    );
+  }
+);
 
 export default endpoints;

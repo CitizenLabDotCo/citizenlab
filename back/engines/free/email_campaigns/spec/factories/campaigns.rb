@@ -214,11 +214,6 @@ FactoryBot.define do
     schedule { weekly_schedule }
   end
 
-  factory :your_proposed_initiatives_digest_campaign, class: EmailCampaigns::Campaigns::YourProposedInitiativesDigest do
-    enabled { true }
-    schedule { weekly_schedule }
-  end
-
   factory :voting_basket_submitted_campaign, class: EmailCampaigns::Campaigns::VotingBasketSubmitted do
     enabled { true }
   end

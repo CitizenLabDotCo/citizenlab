@@ -135,6 +135,8 @@ class PasswordReset extends React.PureComponent<Props, State> {
         const apiErrors = errors.errors;
         const tokenErrors: CLError[] = apiErrors.token;
 
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (tokenErrors && tokenErrors.length > 0) {
           const invalidTokenErrorIndex = tokenErrors
             .map((tokenError) => tokenError.error)

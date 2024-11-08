@@ -1,5 +1,6 @@
 import React, { createElement } from 'react';
 
+import { trim } from 'lodash-es';
 import { Multiloc } from 'typings';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
@@ -30,6 +31,8 @@ const T = (props: Props) => {
   const locale = useLocale();
   const currentTenantLocales = useAppConfigurationLocales();
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (locale && currentTenantLocales) {
     const {
       value,
@@ -51,6 +54,10 @@ const T = (props: Props) => {
       maxLength,
       fallback
     );
+
+    if (trim(localizedText) === '') {
+      return null;
+    }
 
     if (children) {
       return children(localizedText);

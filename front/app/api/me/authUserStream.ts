@@ -24,6 +24,8 @@ const authUserStreamQueryObserver = new QueryObserver<
 });
 
 authUserStreamQueryObserver.subscribe((query) => {
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   return authUserStream.next(query?.data);
 });
 

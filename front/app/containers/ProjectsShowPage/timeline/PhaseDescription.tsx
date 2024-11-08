@@ -70,6 +70,8 @@ const PhaseDescription = ({ projectId, selectedPhaseId }: Props) => {
     return null;
   }
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const content = phase
     ? localize(phase.data.attributes.description_multiloc)
     : '';
@@ -93,11 +95,15 @@ const PhaseDescription = ({ projectId, selectedPhaseId }: Props) => {
         phaseId={selectedPhaseId}
         descriptionHasContent={descriptionHasContent}
       />
+      {/* TODO: Fix this the next time the file is edited. */}
+      {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
       {phase && descriptionHasContent && (
         <>
           <ReadMoreWrapper
             fontSize="base"
             contentId="phase-description"
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             value={phase.data.attributes?.description_multiloc}
           />
 
@@ -107,6 +113,8 @@ const PhaseDescription = ({ projectId, selectedPhaseId }: Props) => {
         </>
       )}
       {isActivePhase && (
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         <EventPreviews projectId={phase?.data.relationships.project.data.id} />
       )}
     </Container>

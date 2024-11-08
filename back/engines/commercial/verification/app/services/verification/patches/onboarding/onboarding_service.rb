@@ -27,7 +27,8 @@ module Verification
         private
 
         def needs_verification?(user)
-          AppConfiguration.instance.feature_activated?('verification') && !user.verified
+          settings = ::SettingsService.new.disable_verification_if_no_methods_enabled(AppConfiguration.instance.settings)
+          settings['verification']['enabled'] && !user.verified
         end
       end
     end

@@ -47,6 +47,9 @@ class SideFxCommentService
   def before_destroy(comment, user); end
 
   def after_destroy(frozen_comment, user)
+    # Refresh the count of project participants by clearing the cache
+    ParticipantsService.new.clear_project_participants_count_cache(frozen_comment.post.project) if frozen_comment.post.project
+
     serialized_comment = clean_time_attributes(frozen_comment.attributes)
     LogActivityJob.perform_later(encode_frozen_resource(frozen_comment), 'deleted', user, Time.now.to_i, payload: { comment: serialized_comment })
   end

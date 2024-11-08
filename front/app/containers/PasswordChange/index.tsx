@@ -44,6 +44,8 @@ const ChangePassword = () => {
   const { formatMessage } = useIntl();
   const [success, setSuccess] = useState(false);
   const userHasPreviousPassword =
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     !isNilOrError(authUser) && !authUser.data.attributes?.no_password;
   const pageTitle = userHasPreviousPassword
     ? messages.titleChangePassword

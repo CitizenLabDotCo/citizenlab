@@ -23,8 +23,12 @@ const DemographicsLegend = ({ items, legendDimensions }: CustomLegendProps) => {
         flexWrap="wrap"
         margin="0 auto"
       >
+        {/* TODO: Fix this the next time the file is edited. */}
+        {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
         {items &&
           items.map((item, index) => {
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             const isZeroValue = item?.value === 0;
             const color = isZeroValue ? colors.coolGrey300 : item.color;
 

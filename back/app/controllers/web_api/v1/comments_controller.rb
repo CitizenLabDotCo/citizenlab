@@ -279,3 +279,5 @@ class WebApi::V1::CommentsController < ApplicationController
     end
   end
 end
+
+WebApi::V1::CommentsController.include(AggressiveCaching::Patches::WebApi::V1::CommentsController)

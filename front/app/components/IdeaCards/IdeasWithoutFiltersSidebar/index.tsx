@@ -134,14 +134,27 @@ const IdeasWithoutFiltersSidebar = ({
     return data?.pages.map((page) => page.data).flat();
   }, [data?.pages]);
   const { data: phase } = usePhase(phaseId);
-  const { data: ideaMarkers } = useIdeaMarkers({
-    projectIds: projectId ? [projectId] : null,
-    phaseId,
-    ...ideaQueryParameters,
-  });
+  const locationEnabled = !isNilOrError(ideaCustomFieldsSchemas)
+    ? isFieldEnabled(
+        'location_description',
+        ideaCustomFieldsSchemas.data.attributes,
+        locale
+      )
+    : false;
+  const loadIdeaMarkers = locationEnabled && selectedView === 'map';
+  const { data: ideaMarkers } = useIdeaMarkers(
+    {
+      projectIds: projectId ? [projectId] : null,
+      phaseId,
+      ...ideaQueryParameters,
+    },
+    loadIdeaMarkers
+  );
 
   const handleSearchOnChange = useCallback(
     (search: string) => {
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       onUpdateQuery({ search: search ?? undefined });
     },
     [onUpdateQuery]
@@ -176,13 +189,6 @@ const IdeasWithoutFiltersSidebar = ({
 
     onUpdateQuery({ idea_status });
   };
-  const locationEnabled = !isNilOrError(ideaCustomFieldsSchemas)
-    ? isFieldEnabled(
-        'location_description',
-        ideaCustomFieldsSchemas.data.attributes,
-        locale
-      )
-    : false;
 
   const topicsEnabled = !isNilOrError(ideaCustomFieldsSchemas)
     ? isFieldEnabled(

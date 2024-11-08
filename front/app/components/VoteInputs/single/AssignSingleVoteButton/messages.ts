@@ -24,4 +24,8 @@ export default defineMessages({
     defaultMessage:
       'You have reached the maximum number of votes you can submit.',
   },
+  phaseNotActive: {
+    id: 'app.components.AssignVoteControl.phaseNotActive',
+    defaultMessage: 'Voting is not available, since this phase is not active.',
+  },
 });

@@ -1614,7 +1614,8 @@ CREATE TABLE public.phases (
     native_survey_button_multiloc jsonb DEFAULT '{}'::jsonb,
     expire_days_limit integer,
     reacting_threshold integer,
-    prescreening_enabled boolean DEFAULT false NOT NULL
+    prescreening_enabled boolean DEFAULT false NOT NULL,
+    autoshare_results_enabled boolean DEFAULT true
 );
 
 
@@ -2134,7 +2135,7 @@ CREATE TABLE public.cosponsors_initiatives (
 --
 
 CREATE TABLE public.cosponsorships (
-    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
     status character varying DEFAULT 'pending'::character varying NOT NULL,
     user_id uuid NOT NULL,
     idea_id uuid NOT NULL,
@@ -7558,7 +7559,4 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20241008143004'),
 ('20241011101454'),
 ('20241016201503'),
-('20241018143800'),
-('20241018143900');
-
-
+('20241011816395');

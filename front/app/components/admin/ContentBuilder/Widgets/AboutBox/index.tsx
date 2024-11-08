@@ -15,10 +15,10 @@ import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPaddi
 import messages from './messages';
 
 type AboutBoxProps = {
-  hideParticipationNumbers?: boolean;
+  hideParticipationAvatars?: boolean;
 };
 
-const AboutBox = ({ hideParticipationNumbers }: AboutBoxProps) => {
+const AboutBox = ({ hideParticipationAvatars }: AboutBoxProps) => {
   const { projectId, slug } = useParams() as {
     projectId: string;
     slug: string;
@@ -36,7 +36,7 @@ const AboutBox = ({ hideParticipationNumbers }: AboutBoxProps) => {
       {projectID && (
         <ProjectInfoSideBar
           projectId={projectID}
-          hideParticipationNumbers={hideParticipationNumbers}
+          hideParticipationAvatars={hideParticipationAvatars}
         />
       )}
     </Box>
@@ -47,23 +47,23 @@ const AboutBoxSettings = () => {
   const { formatMessage } = useIntl();
   const {
     actions: { setProp },
-    hideParticipationNumbers,
+    hideParticipationAvatars,
   } = useNode((node) => ({
-    hideParticipationNumbers: node.data.props.hideParticipationNumbers,
+    hideParticipationAvatars: node.data.props.hideParticipationAvatars,
     id: node.id,
   }));
 
   return (
     <Box background={colors.white} my="32px">
       <Toggle
-        checked={hideParticipationNumbers}
+        checked={hideParticipationAvatars}
         onChange={() => {
           setProp(
             (props: AboutBoxProps) =>
-              (props.hideParticipationNumbers = !hideParticipationNumbers)
+              (props.hideParticipationAvatars = !hideParticipationAvatars)
           );
         }}
-        label={formatMessage(messages.hideParticipationNumbersText)}
+        label={formatMessage(messages.hideParticipationAvatarsText)}
       />
     </Box>
   );

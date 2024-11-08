@@ -58,7 +58,6 @@ lv:
       "voting_phase_started": Jauns projekta posms ar balsošanu
       "voting_results": Balsošanas rezultāti
       "your_input_in_screening": Mans ieguldījums gaida skrīningu
-      "your_proposed_initiatives_digest": Nedēļas pārskats par jūsu priekšlikumiem
     general:
       by_author: 'līdz %{authorName}'
       author_wrote: '%{authorName} rakstīja:'
@@ -539,16 +538,6 @@ lv:
       message: '"%{input_title}" kļūs redzams citiem, kad tas būs pārskatīts un apstiprināts.'
       subject: '"%{input_title}" ir gandrīz publicēts'
       preheader: 'Pašlaik tas ir %{prescreening_status_title}'
-    your_proposed_initiatives_digest:
-      subject: 'Nedēļas jaunumi par jūsu priekšlikumiem'
-      preheader: 'Kas notika ar jūsu priekšlikumiem pagājušajā nedēļā?'
-      title_your_weekly_report: 'Kā jums ir veicies ar priekšlikumiem?'
-      text_introduction: 'Atrodiet zemāk norādītos galvenos skaitļus un dodieties uz platformu, lai laikus sāktu rīkoties un savlaicīgi savāktu pietiekamu atbalstu.'
-      cta_see_your_initiative: 'Dodieties uz saviem priekšlikumiem'
-      total_votes: 'Kopējais balsu skaits'
-      new_votes: 'Jaunas balsis'
-      remaining_votes: 'Atlikušās balsis'
-      remaining_days: 'Atlikušās dienas'
     voting_basket_submitted:
       subject: '%{organizationName}: Jūs veiksmīgi nobalsojāt'
       preheader: 'Jūs veiksmīgi balsojāt %{organizationName}līdzdalības platformā.'

@@ -32,6 +32,8 @@ export default function useTranslation({
     enabled:
       machineTranslationButtonClicked &&
       isMachineTranslationsEnabled &&
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       localeTo &&
       context === 'idea',
   });
@@ -44,12 +46,16 @@ export default function useTranslation({
     enabled:
       machineTranslationButtonClicked &&
       isMachineTranslationsEnabled &&
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       localeTo &&
       context === 'comment',
   });
 
   if (context === 'idea') {
     return ideaTranslation?.data;
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   } else if (context === 'comment') {
     return commentTranslation?.data;
   }

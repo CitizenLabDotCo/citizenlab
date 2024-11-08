@@ -63,6 +63,8 @@ const UserCustomFieldsForm = ({
   const getAjvErrorMessage = (error: ErrorObject) => {
     switch (error.keyword) {
       case 'required':
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         return messages[`ajv_error_${error?.params?.missingProperty}_required`];
       default:
         return undefined;
@@ -82,6 +84,8 @@ const UserCustomFieldsForm = ({
         showAllErrors={showAllErrors}
         setShowAllErrors={setShowAllErrors}
         onChange={(data) => {
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           data && onChange?.(data);
         }}
       />
@@ -102,8 +106,12 @@ const UserCustomFieldsFormWrapper = ({
   if (!authUser || !userCustomFieldsSchema) return null;
 
   const schema =
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     userCustomFieldsSchema.data.attributes?.json_schema_multiloc[locale];
   const uiSchema =
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     userCustomFieldsSchema.data.attributes?.ui_schema_multiloc[locale];
 
   if (!schema || !uiSchema) return null;

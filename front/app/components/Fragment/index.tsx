@@ -79,6 +79,8 @@ class Fragment extends PureComponent<Props, State> {
   };
 
   setIframeHeight = () => {
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (this.iframeNode && this.iframeNode.contentWindow) {
       this.setState({
         iframeHeight:

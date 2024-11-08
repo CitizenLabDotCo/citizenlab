@@ -84,6 +84,8 @@ const AuthorsByAge = ({ customFieldId }: Props) => {
 
   const chartData =
     totalAuthorsByAge &&
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     totalAuthorsByAge?.data.attributes.series.bins.map((fromAge, index) => {
       let name;
       let shortName;
@@ -93,11 +95,15 @@ const AuthorsByAge = ({ customFieldId }: Props) => {
       if (fromAge === null) {
         name = formatMessage(messages.unknown);
         shortName = '?';
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         total = totalAuthorsByAge?.data.attributes.unknown_age_count;
         filtered = filteredAuthorsByAge?.data.attributes.unknown_age_count;
       } else {
         name = `${fromAge} - ${fromAge + 9}`;
         shortName = fromAge;
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         total = totalAuthorsByAge?.data.attributes.series.user_counts[index];
         filtered =
           filteredAuthorsByAge?.data.attributes.series.user_counts[index];

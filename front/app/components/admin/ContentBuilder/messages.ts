@@ -1,14 +1,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  content: {
-    id: 'app.containers.admin.ContentBuilder.content',
-    defaultMessage: 'CONTENT',
-  },
-  layout: {
-    id: 'app.containers.admin.ContentBuilder.layout',
-    defaultMessage: 'LAYOUT',
-  },
   urlPlaceholder: {
     id: 'app.containers.admin.ContentBuilder.urlPlaceholder',
     defaultMessage: 'https://example.com',

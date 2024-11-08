@@ -78,7 +78,7 @@ class WebApi::V1::PhasesController < ApplicationController
 
   def index_xlsx
     I18n.with_locale(current_user.locale) do
-      xlsx = Export::Xlsx::InputsGenerator.new.generate_inputs_for_phase @phase.id, view_private_attributes: true
+      xlsx = Export::Xlsx::InputsGenerator.new.generate_inputs_for_phase @phase.id
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'inputs.xlsx'
     end
   end
@@ -111,6 +111,7 @@ class WebApi::V1::PhasesController < ApplicationController
       :participation_method,
       :submission_enabled,
       :commenting_enabled,
+      :autoshare_results_enabled,
       :reacting_enabled,
       :reacting_like_method,
       :reacting_like_limited_max,
@@ -173,3 +174,5 @@ class WebApi::V1::PhasesController < ApplicationController
     end
   end
 end
+
+WebApi::V1::PhasesController.include(AggressiveCaching::Patches::WebApi::V1::PhasesController)

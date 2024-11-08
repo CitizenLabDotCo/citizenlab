@@ -98,6 +98,8 @@ const ideaPostingDisabledReason = (
         disabledReason: backendReason,
         authenticationRequirements: null,
       };
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     case 'user_not_permitted' || 'user_blocked':
       return {
         disabledReason: backendReason,

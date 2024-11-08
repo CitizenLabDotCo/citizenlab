@@ -167,7 +167,7 @@ class WebApi::V1::IdeasController < ApplicationController
       input.anonymous = true
     end
     input.author ||= current_user
-    input.assign_defaults
+    phase.pmethod.assign_defaults(input)
 
     sidefx.before_create(input, current_user)
 
@@ -477,3 +477,4 @@ class WebApi::V1::IdeasController < ApplicationController
 end
 
 WebApi::V1::IdeasController.prepend(IdeaAssignment::Patches::WebApi::V1::IdeasController)
+WebApi::V1::IdeasController.include(AggressiveCaching::Patches::WebApi::V1::IdeasController)

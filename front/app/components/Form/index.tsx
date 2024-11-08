@@ -181,6 +181,8 @@ const Form = memo(
               <ButtonBar
                 onSubmit={handleSubmit}
                 apiErrors={Boolean(
+                  // TODO: Fix this the next time the file is edited.
+                  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                   apiErrors?.values?.length && apiErrors?.values?.length > 0
                 )}
                 processing={loading}

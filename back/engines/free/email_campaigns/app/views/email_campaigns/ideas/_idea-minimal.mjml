@@ -21,14 +21,14 @@
     <span style="font-size: 14px; font-weight: 700;"><%= serialized_idea.likes_count %></span>
 
   </td>
-  <mj-raw><% if serialized_idea.dislikes_count %></mj-raw>
+  <% if serialized_idea.dislikes_count %>
     <td style="width: 40px">
       <span style="font-size: 24px; font-weight: 700; color: rgb(111, 119, 125);">
         <img width="18px" src="https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/icons/icon_thumb_down.png" alt="Thumbs down">
       </span>
       <span style="font-size: 14px; font-weight: 700;"><%= serialized_idea.dislikes_count %></span>
     </td>
-  </mj-raw><% end %></mj-raw>
+  <% end %>
   <td style="width: 40px">
     <span style="font-size: 16px; font-weight: 700; color: rgb(111, 119, 125);">
       <img width="18px" src="https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/icons/icon_comment.png" alt="Comment">

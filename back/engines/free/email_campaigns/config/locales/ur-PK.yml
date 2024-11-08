@@ -58,7 +58,6 @@ ur:
       "voting_phase_started": ووٹنگ کے ساتھ نیا پروجیکٹ مرحلہ
       "voting_results": ووٹنگ کے نتائج
       "your_input_in_screening": میرا ان پٹ اسکریننگ کا منتظر ہے۔
-      "your_proposed_initiatives_digest": آپ کی تجاویز کا ہفتہ وار جائزہ
     general:
       by_author: 'بذریعہ %{authorName}'
       author_wrote: '%{authorName} نے لکھا:'
@@ -539,16 +538,6 @@ ur:
       message: '"%{input_title}" ایک بار نظرثانی اور منظوری کے بعد دوسروں کے لیے مرئی ہو جائے گا۔'
       subject: '"%{input_title}" تقریباً شائع ہو چکا ہے۔'
       preheader: 'یہ فی الحال %{prescreening_status_title}میں ہے۔'
-    your_proposed_initiatives_digest:
-      subject: 'آپ کی تجاویز کی ہفتہ وار تازہ کاری'
-      preheader: 'پچھلے ہفتے آپ کی تجاویز کے ساتھ کیا ہوا؟'
-      title_your_weekly_report: 'آپ کی تجاویز کیسی رہی ہیں؟'
-      text_introduction: 'ذیل میں کلیدی نمبر تلاش کریں اور پلیٹ فارم پر جا کر کارروائی کریں اور وقت پر کافی تعاون حاصل کریں۔'
-      cta_see_your_initiative: 'اپنی تجاویز پر جائیں۔'
-      total_votes: 'کل ووٹ'
-      new_votes: 'نئے ووٹ'
-      remaining_votes: 'باقی ووٹ'
-      remaining_days: 'باقی دن'
     voting_basket_submitted:
       subject: '%{organizationName}: آپ نے کامیابی سے ووٹ دیا۔'
       preheader: 'آپ نے %{organizationName}کے شرکت کے پلیٹ فارم پر کامیابی سے ووٹ دیا۔'

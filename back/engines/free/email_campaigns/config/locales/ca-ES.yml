@@ -58,7 +58,6 @@ ca:
       "voting_phase_started": Nova fase del projecte amb votació
       "voting_results": Resultats de les votacions
       "your_input_in_screening": La meva aportació està pendent de la projecció
-      "your_proposed_initiatives_digest": Resum setmanal de les vostres propostes
     general:
       by_author: 'per %{authorName}'
       author_wrote: '%{authorName} va escriure:'
@@ -539,16 +538,6 @@ ca:
       message: '"%{input_title}" serà visible per als altres un cop hagi estat revisat i aprovat.'
       subject: '"%{input_title}" gairebé està publicat'
       preheader: 'Actualment és a %{prescreening_status_title}'
-    your_proposed_initiatives_digest:
-      subject: 'Actualització setmanal de les vostres propostes'
-      preheader: 'Què ha passat amb les vostres propostes la setmana passada?'
-      title_your_weekly_report: 'Com han anat les vostres propostes?'
-      text_introduction: 'Trobeu els números clau a continuació i aneu a la plataforma per prendre mesures i reunir prou suport a temps.'
-      cta_see_your_initiative: 'Aneu a les vostres propostes'
-      total_votes: 'Total de vots'
-      new_votes: 'Nous vots'
-      remaining_votes: 'Vots restants'
-      remaining_days: 'Dies restants'
     voting_basket_submitted:
       subject: '%{organizationName}: has votat correctament'
       preheader: 'Heu votat amb èxit a la plataforma de participació de %{organizationName}'

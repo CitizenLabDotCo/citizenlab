@@ -107,6 +107,8 @@ const ProjectGroupsList = ({ projectId, onAddButtonClicked }: Props) => {
     groups: IGroups | null,
     groupsProjects: IProjectGroupData[]
   ) => {
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (groupsProjects && groups) {
       return groups.data
         .filter((group) => {

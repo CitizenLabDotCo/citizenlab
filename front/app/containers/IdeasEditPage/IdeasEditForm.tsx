@@ -82,6 +82,8 @@ const IdeasEditForm = ({ ideaId }: Props) => {
 
   useEffect(() => {
     if (idea && authUser !== undefined && !granted) {
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       clHistory.replace(previousPathName || (!authUser ? '/sign-up' : '/'));
     }
   }, [idea, granted, previousPathName, authUser]);
@@ -105,12 +107,16 @@ const IdeasEditForm = ({ ideaId }: Props) => {
         messages[
           `ajv_error_${uiSchema?.options?.inputTerm}_${
             getFieldNameFromPath(error.instancePath) ||
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             error?.params?.missingProperty
           }_${error.keyword}`
         ] ||
         messages[
           `ajv_error_${
             getFieldNameFromPath(error.instancePath) ||
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             error?.params?.missingProperty
           }_${error.keyword}`
         ] ||
@@ -127,6 +133,8 @@ const IdeasEditForm = ({ ideaId }: Props) => {
     !schema ||
     !uiSchema ||
     !projectId ||
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     !idea
   ) {
     return null;
@@ -140,6 +148,8 @@ const IdeasEditForm = ({ ideaId }: Props) => {
   );
 
   // Set initial location point if exists
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (initialFormData && idea.data.attributes.location_point_geojson) {
     initialFormData['location_point_geojson'] =
       idea.data.attributes.location_point_geojson;
@@ -179,9 +189,13 @@ const IdeasEditForm = ({ ideaId }: Props) => {
     );
 
     const isImageNew =
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       idea_images_attributes !== initialFormData?.idea_images_attributes;
 
     // Delete a remote image only on submission
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (isImageNew && initialFormData?.idea_images_attributes[0]?.id) {
       deleteIdeaImage({
         ideaId,
@@ -253,6 +267,8 @@ const IdeasEditForm = ({ ideaId }: Props) => {
                       petition: messages.petitionFormTitle,
                       proposal: messages.proposalFormTitle,
                     }[
+                      // TODO: Fix this the next time the file is edited.
+                      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                       uiSchema && uiSchema?.options?.inputTerm
                         ? uiSchema.options.inputTerm
                         : 'idea'

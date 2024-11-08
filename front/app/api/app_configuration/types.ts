@@ -57,6 +57,8 @@ export type IAppConfigurationSettingsCore = {
   onboarding?: boolean;
   allow_sharing: boolean;
   customer_portal_url?: string | null;
+  anonymous_name_scheme?: string | null;
+  private_attributes_in_export: boolean;
 };
 
 export type TSeatNumber = number | null | undefined;
@@ -105,7 +107,7 @@ export interface IAppConfigurationSettings {
     client_id: string;
     logo_url: string;
     login_mechanism_name: string;
-    admin_only?: boolean;
+    visibility?: 'show' | 'link' | 'hide';
   };
   azure_ad_b2c_login?: {
     allowed: boolean;
@@ -242,7 +244,9 @@ export interface IAppConfigurationSettings {
   management_feed?: AppConfigurationFeature;
   fake_sso?: AppConfigurationFeature;
   prescreening?: AppConfigurationFeature;
+  prescreening_ideation?: AppConfigurationFeature;
   input_cosponsorship?: AppConfigurationFeature;
+  new_homepage_widgets?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;

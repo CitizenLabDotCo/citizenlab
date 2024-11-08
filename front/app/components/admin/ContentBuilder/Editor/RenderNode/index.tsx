@@ -56,6 +56,8 @@ const RenderNode = ({ render }) => {
 
   const parentNode = parentId && node(parentId).get();
   const isChildOfComplexComponent =
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     parentNode === '' ? false : !!parentNode?.data.custom?.hasChildren;
 
   // Handle multi-column hover state

@@ -5,48 +5,54 @@ models:
       enabled: true
   idea_status:
     -
-      title_multiloc: idea_statuses.proposed
+      title_multiloc: idea_statuses.prescreening
       ordering: 0
+      code: prescreening
+      color: '#4B4B4B'
+      description_multiloc: idea_statuses.prescreening_description
+      participation_method: ideation
+    -
+      title_multiloc: idea_statuses.proposed
+      ordering: 1
       code: proposed
       color: '#057ABE'
       description_multiloc: idea_statuses.proposed_description
       participation_method: ideation
     -
       title_multiloc: idea_statuses.viewed
-      ordering: 1
+      ordering: 2
       code: viewed
       color: '#01A1B1'
       description_multiloc: idea_statuses.viewed_description
       participation_method: ideation
     -
       title_multiloc: idea_statuses.under_consideration
-      ordering: 2
+      ordering: 3
       code: under_consideration
       color: '#0080A5'
       description_multiloc: idea_statuses.under_consideration_description
       participation_method: ideation
     -
       title_multiloc: idea_statuses.accepted
-      ordering: 3
+      ordering: 4
       code: accepted
       color: '#04884C'
       description_multiloc: idea_statuses.accepted_description
       participation_method: ideation
     -
       title_multiloc: idea_statuses.rejected
-      ordering: 4
+      ordering: 5
       code: rejected
       color: '#E52516'
       description_multiloc: idea_statuses.rejected_description
       participation_method: ideation
     -
       title_multiloc: idea_statuses.implemented
-      ordering: 5
+      ordering: 6
       code: implemented
       color: '#04884C'
       description_multiloc: idea_statuses.implemented_description
       participation_method: ideation
-    -
       title_multiloc: idea_statuses.prescreening
       ordering: 0
       code: prescreening

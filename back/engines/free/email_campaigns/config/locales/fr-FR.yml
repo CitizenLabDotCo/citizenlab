@@ -58,7 +58,6 @@ fr:
       "voting_phase_started": Nouvelle phase de projet avec vote
       "voting_results": Résultats du vote
       "your_input_in_screening": Ma contribution est en attente de validation
-      "your_proposed_initiatives_digest": Aperçu hebdomadaire de vos propositions
     general:
       by_author: 'par %{authorName}'
       author_wrote: '%{authorName} a écrit :'
@@ -273,7 +272,7 @@ fr:
       main_header: '%{authorNameFirst} vous a mentionné dans un commentaire interne.'
       preheader: '%{authorNameFull} vous a mentionné dans un commentaire interne.'
     moderator_digest:
-      subject: 'Votre rapport hebdomadaire de gestionnaire de projets du %{time}'
+      subject: 'Votre rapport hebdomadaire de gestionnaire de projet pour "%{project_title}"'
       preheader: 'Résumé du rapport administrateur projet de %{organizationName}'
       title_your_weekly_report: '%{firstName}, voici votre rapport hebdomadaire !'
       text_introduction: 'Voici une sélection des idées qui ont généré le plus d''activité la semaine dernière. Découvrez ce qui se passe sur votre plateforme !'
@@ -493,7 +492,7 @@ fr:
     threshold_reached_for_admin:
       cta_process_initiative: 'Passez cette proposition à l''étape suivante'
       main_header: 'Une proposition a atteint le nombre de voix requis!'
-      subject: 'Une proposition a atteint le nombre de voix requis sur votre plateforme'
+      subject: '"%{input_title}" a atteint le nombre de voix requis sur votre plateforme'
       preheader: 'Assurez-vous de passer aux étapes suivantes'
     welcome:
       cta_join_platform: 'Découvrir la plateforme'
@@ -512,7 +511,7 @@ fr:
         proposal: 'Votre proposition a été publiée'
         initiative: 'Votre initiative a été publiée'
         petition: 'Votre pétition a été publiée'
-      main_header: 'Votre idée a bien été postée. Partagez-la à votre entourage !'
+      main_header: 'Vous avez posté « %{input_title} »'
       header_message: 'Assurons-nous qu''il soit lu.'
       message_get_votes: 'Partagez-la autour de vous :'
       action_published_idea: 'Publiez votre idée'
@@ -539,16 +538,6 @@ fr:
       message: 'Votre contribution « %{input_title} » deviendra visible pour les autres une fois qu''elle aura été relue et approuvée.'
       subject: '« %{input_title} » est presque publié'
       preheader: 'Le statut de votre contribution est actuellement « %{prescreening_status_title} »'
-    your_proposed_initiatives_digest:
-      subject: 'Mise à jour hebdomadaire de votre proposition'
-      preheader: 'Qu''est-il arrivé à votre proposition la semaine dernière ?'
-      title_your_weekly_report: 'Comment s''est déroulée votre proposition ?'
-      text_introduction: 'Trouvez les chiffres clés ci-dessous et rendez-vous sur la page de votre proposition pour passer à l''action et obtenir suffisamment de soutien à temps.'
-      cta_see_your_initiative: 'Accédez à vos propositions'
-      total_votes: 'Total des votes'
-      new_votes: 'Nouveaux votes'
-      remaining_votes: 'Votes restants'
-      remaining_days: 'Jours restants'
     voting_basket_submitted:
       subject: '%{organizationName}: Vous avez voté avec succès'
       preheader: 'Votre vote a bien été enregistré sur la plateforme de participation de %{organizationName}'

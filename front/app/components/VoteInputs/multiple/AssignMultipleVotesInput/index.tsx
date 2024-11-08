@@ -55,6 +55,8 @@ const AssignMultipleVotesInput = ({
   const isProcessing = searchParams.get('processing_vote') === ideaId;
 
   // participation context
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const basketId = phase.relationships?.user_basket?.data?.id;
 
   const { data: basket } = useBasket(basketId);
@@ -140,6 +142,8 @@ const AssignMultipleVotesInput = ({
     localize(voting_term_plural_multiloc) ||
     formatMessage(messages.votes).toLowerCase();
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const basketSubmitted = !!basket?.data?.attributes.submitted_at;
   const maxVotesPerIdeaReached = votes === voting_max_votes_per_idea;
   const maxVotes = voting_max_total ?? 0;
@@ -154,7 +158,7 @@ const AssignMultipleVotesInput = ({
 
   const minusButtonDisabledMessage =
     permissionsDisabledMessage ||
-    getMinusButtonDisabledMessage(basketSubmitted, onIdeaPage);
+    getMinusButtonDisabledMessage(basketSubmitted, phase, onIdeaPage);
 
   const plusButtonDisabledMessage =
     permissionsDisabledMessage ||
@@ -162,6 +166,7 @@ const AssignMultipleVotesInput = ({
       userHasVotesLeft,
       basketSubmitted,
       maxVotesPerIdeaReached,
+      phase,
       onIdeaPage
     );
 
@@ -207,6 +212,8 @@ const AssignMultipleVotesInput = ({
         <Box
           onClick={(event) => {
             event.stopPropagation();
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             event?.preventDefault();
           }}
           display="flex"

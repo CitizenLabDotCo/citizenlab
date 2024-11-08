@@ -131,6 +131,8 @@ export default class CheckboxWithPartialCheck extends PureComponent<Props> {
         parentElement.hasAttribute('href');
 
       if (!targetElementIsLink && !parentElementIsLink) {
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         event && event.preventDefault();
         this.props.onChange(event);
       }
@@ -157,6 +159,8 @@ export default class CheckboxWithPartialCheck extends PureComponent<Props> {
         !parentElementIsLink &&
         event.keyCode === 32
       ) {
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         event && event.preventDefault();
         this.props.onChange(event);
       }

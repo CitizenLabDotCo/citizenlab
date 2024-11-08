@@ -69,7 +69,9 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
   const { mutate: updateBasket } = useUpdateBasket();
   const basketStatus = phaseHasEnded
     ? 'submissionEnded'
-    : basket?.data.attributes?.submitted_at
+    : // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    basket?.data.attributes?.submitted_at
     ? 'hasSubmitted'
     : 'hasNotSubmitted';
   const showDate = !phaseHasEnded && basketStatus === 'hasNotSubmitted';
@@ -131,6 +133,8 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
             <Text m="0px">
               {config?.getStatusSubmissionCountCopy &&
                 formatMessage(
+                  // TODO: Fix this the next time the file is edited.
+                  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                   config?.getStatusSubmissionCountCopy(basketCount)
                 )}
             </Text>

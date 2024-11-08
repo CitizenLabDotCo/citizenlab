@@ -50,6 +50,8 @@ const MostReactedIdeasWidget = ({
     idea_images: ideaImages,
   } = data.data.attributes;
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!project || !phase) return null;
 
   return (

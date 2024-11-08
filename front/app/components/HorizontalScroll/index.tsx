@@ -54,8 +54,12 @@ const HorizontalScroll = ({ children, containerRole }: Props) => {
   const [atScrollEnd, setAtScrollEnd] = useState(false);
 
   useEffect(() => {
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     containerRef?.current?.addEventListener('scroll', () => {
       // Update scroll states
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (!containerRef?.current) return;
       setAtScrollStart(containerRef.current.scrollLeft === 0);
       const maxScrollLeft =
@@ -66,6 +70,8 @@ const HorizontalScroll = ({ children, containerRole }: Props) => {
 
   // Determine if the width of the container is large enough to require horizontal scrolling
   const showArrows =
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     containerRef?.current &&
     containerRef.current.scrollWidth > containerRef.current.clientWidth;
   const [showArrowButtons, setShowArrowButtons] = useState(showArrows);
@@ -73,6 +79,8 @@ const HorizontalScroll = ({ children, containerRole }: Props) => {
   // Update whether arrows/horizontal scrolling is required when the width of the container changes
   useEffect(() => {
     setShowArrowButtons(
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       containerRef?.current &&
         containerRef.current.scrollWidth > containerRef.current.clientWidth
     );
@@ -80,6 +88,8 @@ const HorizontalScroll = ({ children, containerRole }: Props) => {
 
   // Scroll the container by the specified offset
   const horizontalScroll = (scrollOffset: number) => {
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (!containerRef?.current) return;
     containerRef.current.scrollLeft += scrollOffset;
   };

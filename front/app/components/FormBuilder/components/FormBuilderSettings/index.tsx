@@ -61,6 +61,8 @@ const FormBuilderSettings = ({
     const fieldNumbers = getFieldNumbers(formCustomFields);
     const pageArray: { value: string; label: string }[] = [];
 
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     formCustomFields?.forEach((field) => {
       if (field.input_type === 'page') {
         pageArray.push({
@@ -157,7 +159,8 @@ const FormBuilderSettings = ({
         </Box>
       )}
       {(!showTabbedSettings ||
-        !builderConfig.isLogicEnabled ||
+        !builderConfig.isLogicEnabled || // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         (showTabbedSettings && currentTab === 'content')) && (
         <ContentSettings
           field={field}

@@ -116,6 +116,7 @@ const LayoutSettingField = ({ bannerLayout, onChange }: Props) => {
             </LayoutOptionTop>
             <LayoutPreview
               src={
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 bannerLayout === 'two_column_layout'
                   ? TwoColumnLayoutActive
                   : TwoColumnLayoutInactive

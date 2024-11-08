@@ -180,6 +180,8 @@ const CauseCard = ({ cause, className, project }: Props) => {
   const { windowWidth } = useWindowSize();
 
   const volunteer = useCallback(() => {
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (cause.relationships?.user_volunteer?.data) {
       deleteVolunteer({
         causeId: cause.id,
@@ -221,6 +223,8 @@ const CauseCard = ({ cause, className, project }: Props) => {
     }
   };
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const isVolunteer = !!cause.relationships?.user_volunteer?.data;
   const smallerThanSmallTablet = windowWidth <= viewportWidths.tablet;
 
