@@ -7,11 +7,11 @@ export interface Props {
   onToggleModal: (opened: boolean) => void;
 }
 
-const Authentication = ({ onToggleModal: setModalOpen }: Props) => {
+const Authentication = ({ onToggleModal }: Props) => {
   return (
     <>
       <SuccessActions />
-      <Modal onToggleModal={setModalOpen} />
+      <Modal onToggleModal={onToggleModal} />
     </>
   );
 };
