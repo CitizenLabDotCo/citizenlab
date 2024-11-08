@@ -1369,5 +1369,25 @@ resource 'Projects' do
 
       expect(current_phase_ids).to match included_phase_ids
     end
+
+    example 'includes next page link in response when appropriate', document: false do
+      Project.destroy_all
+
+      create_list(:project_with_active_ideation_phase, 5)
+
+      do_request page: { number: 1, size: 2 }
+      json_response = json_parse(response_body)
+      expect(json_response[:links][:next])
+        .to eq 'http://example.org/web_api/v1/projects/with_active_participatory_phase?page%5Bnumber%5D=2&page%5Bsize%5D=2'
+
+      do_request page: { number: 2, size: 2 }
+      json_response = json_parse(response_body)
+      expect(json_response[:links][:next])
+        .to eq 'http://example.org/web_api/v1/projects/with_active_participatory_phase?page%5Bnumber%5D=3&page%5Bsize%5D=2'
+
+      do_request page: { number: 3, size: 2 }
+      json_response = json_parse(response_body)
+      expect(json_response[:links][:next]).to be_nil
+    end
   end
 end
