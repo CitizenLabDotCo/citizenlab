@@ -1,5 +1,8 @@
+import createRoutes from 'routes';
+
 import { events$, pageChanges$ } from 'utils/analytics';
 import fetcher from 'utils/cl-react-query/fetcher';
+import matchPath, { getAllPathsFromRoutes } from 'utils/matchPath';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 
 const signUpInTracks = {
@@ -8,6 +11,7 @@ const signUpInTracks = {
 };
 
 let sessionId: string;
+let allAppPaths: string[] | undefined;
 
 const trackSessionStarted = async () => {
   // eslint-disable-next-line
@@ -37,12 +41,24 @@ const upgradeSession = () => {
 const configuration: ModuleConfiguration = {
   beforeMountApplication: () => {
     pageChanges$.subscribe((e) => {
+      if (allAppPaths === undefined) {
+        allAppPaths = getAllPathsFromRoutes(createRoutes()[0]);
+      }
+
+      const routeMatch = matchPath(e.path, {
+        paths: allAppPaths,
+        exact: true,
+      });
+
+      const route = routeMatch?.path;
+
       fetcher({
         path: `/sessions/${sessionId}/track_pageview`,
         action: 'post',
         body: {
           pageview: {
             path: e.path,
+            route,
           },
         },
       });

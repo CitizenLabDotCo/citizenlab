@@ -12,7 +12,7 @@ module ImpactTracking
 
       pageview = Pageview.create(
         session_id: params[:id],
-        path: pageview_params[:page_path]
+        path: pageview_params[:path]
       )
 
       if pageview
@@ -25,7 +25,7 @@ module ImpactTracking
     private
 
     def pageview_params
-      params.require(:pageview).permit(:path)
+      params.require(:pageview).permit(:path, :route)
     end
   end
 end
