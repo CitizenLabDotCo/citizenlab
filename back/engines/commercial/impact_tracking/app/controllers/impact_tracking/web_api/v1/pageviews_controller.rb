@@ -39,7 +39,7 @@ module ImpactTracking
 
       def derive_project_id(path, route)
         if route.include? 'projects/:slug'
-          get_project_from_project_slug(path)&.id
+          return get_project_from_project_slug(path)&.id
         end
 
         if route.include? 'ideas/:slug'

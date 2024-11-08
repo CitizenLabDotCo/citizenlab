@@ -18,22 +18,53 @@ resource 'Impact tracking pageview' do
     end
 
     let(:id) { create(:session).id }
-    let(:client_path) { '/en/' }
-    let(:route) { '/:locale' }
+    let(:project) { create(:project) }
 
-    example 'Track a pageview when a session already exists' do
-      do_request
-      expect(response_status).to eq 201
-      expect(ImpactTracking::Pageview.count).to eq 1
-      expect(ImpactTracking::Pageview.last).to have_attributes({
-        path: '/en/'
-      })
+    context 'when path is index' do
+      let(:client_path) { '/en/' }
+      let(:route) { '/:locale' }
+
+      example 'Track a pageview when a session already exists' do
+        do_request
+        expect(response_status).to eq 201
+        expect(ImpactTracking::Pageview.count).to eq 1
+        expect(ImpactTracking::Pageview.last).to have_attributes({
+          path: '/en/'
+        })
+      end
+
+      example 'Reject a pageview when a session does not exists' do
+        do_request(id: 'fake-id')
+        expect(response_status).to eq 404
+        expect(ImpactTracking::Pageview.count).to eq 0
+      end
     end
 
-    example 'Reject a pageview when a session does not exists' do
-      do_request(id: 'fake-id')
-      expect(response_status).to eq 404
-      expect(ImpactTracking::Pageview.count).to eq 0
+    context 'when path is a project' do
+      let(:client_path) { "/en/projects/#{project.slug}" }
+      let(:route) { '/:locale/projects/:slug' }
+
+      example 'Derive the project id from project slug' do
+        do_request
+        expect(response_status).to eq 201
+        expect(ImpactTracking::Pageview.last).to have_attributes({
+          project_id: project.id
+        })
+      end
+    end
+
+    context 'when path is an idea' do
+      let(:idea) { create(:idea, project: project) }
+      let(:client_path) { "/en/ideas/#{idea.slug}" }
+      let(:route) { '/:locale/ideas/:slug' }
+
+      example 'Derive the project id from idea slug' do
+        do_request
+        expect(response_status).to eq 201
+        expect(ImpactTracking::Pageview.last).to have_attributes({
+          project_id: project.id
+        })
+      end
     end
   end
 end
