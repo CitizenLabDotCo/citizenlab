@@ -20,23 +20,25 @@ interface Props {
   last: boolean;
   verificationMethodName?: TVerificationMethodName; // TODO: JS - tidy up the fact we have both here
   verificationMethod?: TVerificationMethod;
-  icon?: IconNames;
   grayBorder?: boolean;
   standardSSOBehavior?: boolean;
   onClick?: (method: TVerificationMethod) => void;
   onClickStandardSSO?: () => void;
 }
 
-const Index = ({
+const SSOVerificationButton = ({
   verificationMethodName,
   verificationMethod,
-  icon,
   last,
   grayBorder,
   standardSSOBehavior,
   onClick,
   onClickStandardSSO,
 }: Props) => {
+  const methodName =
+    verificationMethodName || verificationMethod?.attributes.name;
+  if (!methodName) return null;
+
   const handleOnClick = () => {
     if (verificationMethod && onClick) {
       onClick(verificationMethod);
@@ -70,13 +72,6 @@ const Index = ({
     fake_sso: 'bullseye',
   };
 
-  const methodName =
-    verificationMethodName || verificationMethod?.attributes.name;
-  if (!methodName) return null;
-
-  console.log('methodName', methodName);
-  console.log('icon', icon);
-
   return (
     <VerificationMethodButton
       id={`e2e-${methodName}-verification-button`}
@@ -90,4 +85,4 @@ const Index = ({
   );
 };
 
-export default Index;
+export default SSOVerificationButton;

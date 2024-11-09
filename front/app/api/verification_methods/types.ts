@@ -20,6 +20,7 @@ export const verificationTypesLeavingPlatform = [
 export type TVerificationMethodName =
   | 'auth0'
   | 'bogus'
+  | 'fake_sso'
   | 'bosa_fas'
   | 'clave_unica'
   | 'cow'
@@ -58,7 +59,7 @@ type TGenericMethod = {
   };
 };
 
-type FakeSSOMethod = {
+export type IDFakeSSOMethod = {
   id: string;
   type: 'verification_method';
   attributes: {
@@ -123,9 +124,11 @@ export type IDIdAustriaMethod = {
 
 export type TVerificationMethod =
   | TGenericMethod
-  | FakeSSOMethod
+  | IDFakeSSOMethod
   | IDLookupMethod
   | IDCriiptoMethod
   | IDKeycloakMethod
   | IDAuth0Method
   | IDIdAustriaMethod;
+// TODO: JS - No Fake SSO?
+// TODO: JS - Can we add the icon name into the method type?

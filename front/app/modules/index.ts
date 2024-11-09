@@ -14,6 +14,7 @@ import googleAnalyticsConfiguration from './commercial/google_analytics';
 import googleTagManagerConfiguration from './commercial/google_tag_manager';
 import idAuth0Configuration from './commercial/id_auth0';
 import idBogusConfiguration from './commercial/id_bogus';
+import idFakeSSO from './commercial/id_fake_sso';
 import idBosaFasConfiguration from './commercial/id_bosa_fas';
 import IdClaveUnicaConfiguration from './commercial/id_clave_unica';
 import idCowConfiguration from './commercial/id_cow';
@@ -93,6 +94,9 @@ export default loadModules([
   },
   {
     configuration: idAuth0Configuration,
+  },
+  {
+    configuration: idFakeSSO,
   },
   {
     configuration: idBosaFasConfiguration,

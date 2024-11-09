@@ -28,7 +28,6 @@ const configuration: ModuleConfiguration = {
         );
         return (
           <SSOVerificationButton
-            icon="bullseye"
             verificationMethod={method as IDFakeSSOMethod}
             last={last}
             {...props}
