@@ -27,8 +27,6 @@ const SSOVerification = ({ onClickSSO, onClickLogin }: Props) => {
 
   const methodName = verificationMethod.data.attributes.name;
 
-  console.log('SSOVerification');
-
   return (
     <Box>
       {methodName === 'clave_unica' ? (

@@ -61,6 +61,7 @@ const SSOVerificationButton = ({
     criipto: messages.verifyMitId,
     nemlog_in: messages.verifyMitId,
     fake_sso: messages.verifyFakeSSO,
+    keycloak: messages.verifyKeycloak,
   };
 
   const icons: {
@@ -70,6 +71,7 @@ const SSOVerificationButton = ({
     criipto: 'mitid',
     nemlog_in: 'mitid',
     fake_sso: 'bullseye',
+    keycloak: 'idporten',
   };
 
   return (

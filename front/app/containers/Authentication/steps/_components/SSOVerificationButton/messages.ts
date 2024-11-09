@@ -13,4 +13,8 @@ export default defineMessages({
     id: 'app.components.VerificationModal.verifyFakeSSO',
     defaultMessage: 'Verify with Fake SSO',
   },
+  verifyKeycloak: {
+    id: 'app.components.VerificationModal.verifyKeycloak',
+    defaultMessage: 'Verify with ID-Porten',
+  },
 });
