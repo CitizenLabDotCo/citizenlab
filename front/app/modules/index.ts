@@ -14,18 +14,18 @@ import googleAnalyticsConfiguration from './commercial/google_analytics';
 import googleTagManagerConfiguration from './commercial/google_tag_manager';
 import idAuth0Configuration from './commercial/id_auth0';
 import idBogusConfiguration from './commercial/id_bogus';
-import idFakeSSO from './commercial/id_fake_sso';
+import idFakeSSOConfiguration from './commercial/id_fake_sso';
 import idBosaFasConfiguration from './commercial/id_bosa_fas';
-import IdClaveUnicaConfiguration from './commercial/id_clave_unica';
+import idClaveUnicaConfiguration from './commercial/id_clave_unica';
 import idCowConfiguration from './commercial/id_cow';
 import idIdAustriaConfiguration from './commercial/id_id_austria';
 import idCriiptoConfiguration from './commercial/id_criipto';
-import IdFranceConnectConfiguration from './commercial/id_franceconnect';
-import IdGentRrnConfiguration from './commercial/id_gent_rrn';
+import idFranceConnectConfiguration from './commercial/id_franceconnect';
+import idGentRrnConfiguration from './commercial/id_gent_rrn';
 import idIdCardLookupConfiguration from './commercial/id_id_card_lookup';
 import idKeycloakConfiguration from './commercial/id_keycloak';
 import idNemLogInConfiguration from './commercial/id_nemlog_in';
-import IdOostendeRrnConfiguration from './commercial/id_oostende_rrn';
+import idOostendeRrnConfiguration from './commercial/id_oostende_rrn';
 import idViennaSamlConfiguration from './commercial/id_vienna_saml';
 import ideaAssignmentConfiguration from './commercial/idea_assignment';
 import impactTrackingConfiguration from './commercial/impact_tracking';
@@ -96,7 +96,7 @@ export default loadModules([
     configuration: idAuth0Configuration,
   },
   {
-    configuration: idFakeSSO,
+    configuration: idFakeSSOConfiguration,
   },
   {
     configuration: idBosaFasConfiguration,
@@ -123,16 +123,16 @@ export default loadModules([
     configuration: idIdCardLookupConfiguration,
   },
   {
-    configuration: IdFranceConnectConfiguration,
+    configuration: idFranceConnectConfiguration,
   },
   {
-    configuration: IdGentRrnConfiguration,
+    configuration: idGentRrnConfiguration,
   },
   {
-    configuration: IdOostendeRrnConfiguration,
+    configuration: idOostendeRrnConfiguration,
   },
   {
-    configuration: IdClaveUnicaConfiguration,
+    configuration: idClaveUnicaConfiguration,
   },
   {
     configuration: machineTranslationsConfiguration,
