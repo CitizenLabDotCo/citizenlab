@@ -11,23 +11,22 @@ const mediaQueries = {
 type BreakpointType = keyof typeof mediaQueries;
 
 const useBreakpoint = (breakpointType: BreakpointType) => {
-  const [breakpoint, setBreakpoint] = useState(
-    window.matchMedia(mediaQueries[breakpointType]).matches
+  const mediaQueryList = window.matchMedia(mediaQueries[breakpointType]);
+  const [matchesBreakpoint, setMatchesBreakpoint] = useState(
+    mediaQueryList.matches
   );
 
   useEffect(() => {
-    const media = window.matchMedia(mediaQueries[breakpointType]);
-    if (media.matches !== breakpoint) {
-      setBreakpoint(media.matches);
-    }
+    const listener = (e: MediaQueryListEvent) => {
+      setMatchesBreakpoint(e.matches);
+    };
 
-    const listener = () => setBreakpoint(media.matches);
-    media.addEventListener('change', listener);
+    mediaQueryList.addEventListener('change', listener);
 
-    return () => media.removeEventListener('change', listener);
-  }, [breakpointType, breakpoint]);
+    return () => mediaQueryList.removeEventListener('change', listener);
+  }, [mediaQueryList]);
 
-  return breakpoint;
+  return matchesBreakpoint;
 };
 
 export default useBreakpoint;
