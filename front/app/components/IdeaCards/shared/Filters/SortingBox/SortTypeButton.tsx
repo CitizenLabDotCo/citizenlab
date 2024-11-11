@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Box, Text, Icon, colors } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
@@ -26,16 +26,10 @@ const SortTypeButton = ({
 }: SortTypeButtonProps) => {
   const theme = useTheme();
   const { formatMessage } = useIntl();
-  const [isHover, setIsHover] = React.useState(false);
+  const [isHover, setIsHover] = useState(false);
 
   return (
-    <Box
-      as="button"
-      display="flex"
-      py="8px"
-      w="100%"
-      justifyContent="flex-start"
-      borderRadius="3px"
+    <button
       onClick={() => handleSortOnChange(sortType)}
       onMouseEnter={() => {
         setIsHover(true);
@@ -43,19 +37,27 @@ const SortTypeButton = ({
       onMouseLeave={() => {
         setIsHover(false);
       }}
-      bgColor={getButtonBackgroundColor(isSelected, isHover, theme)}
-      style={{ cursor: 'pointer' }}
+      style={{ width: '100%' }}
     >
-      <Icon
-        fill={isSelected ? colors.white : theme.colors.textPrimary}
-        height="14px"
-        name={getIconNameForSortingOption(sortType)}
-        my="auto"
-      />
-      <Text color={isSelected ? 'white' : 'textPrimary'} m="0px">
-        {formatMessage(getLabelForSortingOption(sortType))}
-      </Text>
-    </Box>
+      <Box
+        display="flex"
+        py="8px"
+        w="100%"
+        justifyContent="flex-start"
+        borderRadius="3px"
+        bgColor={getButtonBackgroundColor(isSelected, isHover, theme)}
+      >
+        <Icon
+          fill={isSelected ? colors.white : theme.colors.textPrimary}
+          height="14px"
+          name={getIconNameForSortingOption(sortType)}
+          my="auto"
+        />
+        <Text color={isSelected ? 'white' : 'textPrimary'} m="0px">
+          {formatMessage(getLabelForSortingOption(sortType))}
+        </Text>
+      </Box>
+    </button>
   );
 };
 
