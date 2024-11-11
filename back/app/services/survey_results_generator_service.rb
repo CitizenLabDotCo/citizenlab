@@ -249,7 +249,9 @@ class SurveyResultsGeneratorService < FieldVisitorService
     group_field_keys = generate_answer_keys(group_field)
 
     # Create hash of grouped answers
-    grouped_answers_hash = group_query(query, group: true)
+    answer_groups = group_query(query, group: true)
+    answer_groups = normalise_domicile_keys(answer_groups, group_field) if group_field.code == 'domicile'
+    grouped_answers_hash = answer_groups
       .each_with_object({}) do |((answer, group), count), accu|
       # We treat 'faulty' values (i.e. that don't exist in options) as nil
       valid_answer = answer_keys.include?(answer) ? answer : nil
@@ -290,6 +292,21 @@ class SurveyResultsGeneratorService < FieldVisitorService
 
   def generate_answer_keys(field)
     (field.input_type == 'linear_scale' ? (1..field.maximum).reverse_each.to_a : field.options.map(&:key)) + [nil]
+  end
+
+  # Convert stored user keys for domicile field to match the options keys eg "f6319053-d521-4b28-9d71-a3693ec95f45" => "north_london_8rg"
+  def normalise_domicile_keys(answer_groups, domicile_field)
+    # Load all the areas in one query as they are not preloaded elsewhere
+    areas = Area.where(custom_field_option_id: domicile_field.options.pluck(:id))
+    area_id_map = areas.map { |a| { a.custom_field_option_id => a.id } }.reduce({}, :merge)
+    options_map = domicile_field.options.map { |o| { area_id_map[o.id] || 'outside' => o.key } }.reduce({}, :merge)
+
+    new_groups = {}
+    answer_groups.each do |(answer, group), count|
+      new_group = options_map[group]
+      new_groups[[answer, new_group]] = count
+    end
+    new_groups
   end
 
   def build_linear_scale_multilocs(field)

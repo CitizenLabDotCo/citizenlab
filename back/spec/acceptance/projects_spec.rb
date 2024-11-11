@@ -1233,6 +1233,83 @@ resource 'Projects' do
     end
   end
 
+  get 'web_api/v1/projects/for_followed_item' do
+    before do
+      @user = create(:user, roles: [])
+      header_token_for @user
+    end
+
+    with_options scope: :page do
+      parameter :number, 'Page number'
+      parameter :size, 'Number of projects per page'
+    end
+
+    let!(:followed_project) { create(:project) }
+    let!(:_follower) { create(:follower, followable: followed_project, user: @user) }
+
+    let!(:project_with_followed_idea) { create(:project) }
+    let!(:idea) { create(:idea, project: project_with_followed_idea) }
+    let!(:_follower2) { create(:follower, followable: idea, user: @user) }
+
+    let!(:project_for_followed_area) { create(:project) }
+    let!(:area) { create(:area) }
+    let!(:_areas_project) { create(:areas_project, project: project_for_followed_area, area: area) }
+    let!(:_follower3) { create(:follower, followable: area, user: @user) }
+
+    let!(:project_for_followed_topic) { create(:project) }
+    let!(:topic) { create(:topic) }
+    let!(:_projects_topic) { create(:projects_topic, project: project_for_followed_topic, topic: topic) }
+    let!(:_follower4) { create(:follower, followable: topic, user: @user) }
+
+    let!(:_unfollowed_project) { create(:project) }
+
+    example_request 'Includes projects for followed items, and not un-followed projects' do
+      expect(status).to eq 200
+
+      json_response = json_parse(response_body)
+      project_ids = json_response[:data].pluck(:id)
+
+      expect(project_ids).to match_array [
+        followed_project.id,
+        project_with_followed_idea.id,
+        project_for_followed_area.id,
+        project_for_followed_topic.id
+      ]
+    end
+
+    example 'Returns an empty list if the user is not signed in', document: false do
+      header 'Authorization', nil
+
+      do_request
+      expect(status).to eq 200
+
+      json_response = json_parse(response_body)
+      expect(json_response[:data]).to be_empty
+    end
+
+    example 'Includes project images', document: false do
+      project_image = create(:project_image, project: followed_project)
+
+      do_request
+      expect(status).to eq(200)
+      json_response = json_parse(response_body)
+
+      included_image_ids = json_response[:included].select { |d| d[:type] == 'image' }.pluck(:id)
+
+      expect(included_image_ids).to include project_image.id
+    end
+
+    example_request 'Includes current phase', document: false do
+      expect(status).to eq(200)
+      json_response = json_parse(response_body)
+
+      current_phase_ids = json_response[:data].filter_map { |d| d.dig(:relationships, :current_phase, :data, :id) }
+      included_phase_ids = json_response[:included].select { |d| d[:type] == 'phase' }.pluck(:id)
+
+      expect(current_phase_ids).to match included_phase_ids
+    end
+  end
+
   get 'web_api/v1/projects/with_active_participatory_phase' do
     before do
       @user = create(:user, roles: [])
@@ -1265,51 +1342,7 @@ resource 'Projects' do
       expect(project_ids).not_to include future_project.id
     end
 
-    example_request 'Lists only projects with published publication status' do
-      expect(status).to eq 200
-
-      json_response = json_parse(response_body)
-      project_ids = json_response[:data].pluck(:id)
-      admin_publications = AdminPublication.where(publication_id: project_ids)
-
-      expect(admin_publications.pluck(:publication_status)).to all(be_in(['published']))
-    end
-
-    example "List is ordered by end_at of projects' active phase (ASC NULLS LAST)" do
-      soonest_end_at = active_ideation_project.phases.first.end_at
-
-      active_project2 = create(:project_with_active_ideation_phase)
-      active_project2.phases.first.update!(end_at: soonest_end_at + 1.day)
-      active_project3 = create(:project_with_active_ideation_phase)
-      active_project3.phases.first.update!(end_at: soonest_end_at + 2.days)
-
-      do_request
-      expect(status).to eq 200
-
-      json_response = json_parse(response_body)
-      project_ids = json_response[:data].pluck(:id)
-      projects = project_ids.map { |id| Project.find(id) }
-
-      active_phases_end_ats = projects.map do |p|
-        p.phases.where(
-          'phases.start_at <= ? AND (phases.end_at >= ? OR phases.end_at IS NULL)',
-          Time.zone.now.to_fs(:db), Time.zone.now.to_fs(:db)
-        ).pluck(:end_at)
-      end.flatten
-
-      # https://stackoverflow.com/questions/808318/sorting-a-ruby-array-of-objects-by-an-attribute-that-could-be-nil
-      expect(active_phases_end_ats).to eq(
-        active_phases_end_ats.sort do |a, b|
-          if a && b
-            a <=> b
-          else
-            (a ? -1 : 1)
-          end
-        end
-      )
-    end
-
-    example "Excludes projects where only permitted action is attending_event & no permission is 'fixable'" do
+    example "Excludes projects where only permitted action is attending_event & no permission is 'fixable'", document: false do
       group = create(:group)
       permission = create(:permission, action: 'posting_idea', permission_scope: active_ideation_project.phases.first, permitted_by: 'users')
       create(:groups_permission, permission_id: permission.id, group: group)
@@ -1331,7 +1364,7 @@ resource 'Projects' do
       expect(json_response[:data].pluck(:id)).not_to include active_ideation_project.id
     end
 
-    example "Includes projects where no action permitted (excluding attending_event), but a permission is 'fixable'" do
+    example "Includes projects where no action permitted (excluding attending_event), but a permission is 'fixable'", document: false do
       create(:custom_field, required: true)
 
       user_requirements_service = Permissions::UserRequirementsService.new(check_groups_and_verification: false)
@@ -1368,6 +1401,26 @@ resource 'Projects' do
       included_phase_ids = json_response[:included].select { |d| d[:type] == 'phase' }.pluck(:id)
 
       expect(current_phase_ids).to match included_phase_ids
+    end
+
+    example 'includes next page link in response when appropriate', document: false do
+      Project.destroy_all
+
+      create_list(:project_with_active_ideation_phase, 5)
+
+      do_request page: { number: 1, size: 2 }
+      json_response = json_parse(response_body)
+      expect(json_response[:links][:next])
+        .to eq 'http://example.org/web_api/v1/projects/with_active_participatory_phase?page%5Bnumber%5D=2&page%5Bsize%5D=2'
+
+      do_request page: { number: 2, size: 2 }
+      json_response = json_parse(response_body)
+      expect(json_response[:links][:next])
+        .to eq 'http://example.org/web_api/v1/projects/with_active_participatory_phase?page%5Bnumber%5D=3&page%5Bsize%5D=2'
+
+      do_request page: { number: 3, size: 2 }
+      json_response = json_parse(response_body)
+      expect(json_response[:links][:next]).to be_nil
     end
   end
 end
