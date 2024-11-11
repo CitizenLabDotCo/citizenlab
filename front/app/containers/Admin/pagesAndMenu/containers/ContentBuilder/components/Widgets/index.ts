@@ -30,6 +30,7 @@ import { MessageDescriptor } from 'utils/cl-intl';
 import Proposals from './_deprecated/Proposals';
 import CallToAction, { callToActionTitle } from './CallToAction';
 import Events, { eventsTitle } from './Events';
+import FollowedItems, { followedItemsTitle } from './FollowedItems';
 import HomepageBanner, { homepageBannerTitle } from './HomepageBanner';
 import OpenToParticipation, {
   openToParticipationTitle,
@@ -49,6 +50,7 @@ export const WIDGETS = {
   // Homepage builder widgets
   CallToAction,
   Events,
+  FollowedItems,
   HomepageBanner,
   OpenToParticipation,
   Projects,
@@ -77,6 +79,7 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   // Homepage builder widgets
   CallToAction: callToActionTitle,
   Events: eventsTitle,
+  FollowedItems: followedItemsTitle,
   HomepageBanner: homepageBannerTitle,
   OpenToParticipation: openToParticipationTitle,
   Projects: projectsTitle,
@@ -99,10 +102,13 @@ const WIDGETS_WITHOUT_POINTER_EVENTS = new Set<string>([
   // Homepage builder widgets
   'CallToAction',
   'Events',
+  'FollowedItems',
   'HomepageBanner',
   'OpenToParticipation',
   'Projects',
   'Spotlight',
+
+  // RENAMED
   'Highlight',
 ] satisfies WidgetName[]);
 
