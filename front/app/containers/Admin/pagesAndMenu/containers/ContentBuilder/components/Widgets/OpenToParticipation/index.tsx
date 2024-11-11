@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Multiloc } from 'typings';
 
-import useProjectsWithActiveParticipatoryPhase from 'api/projects_mini/useProjectsWithActiveParticipatoryPhase';
+import useProjectsMini from 'api/projects_mini/useProjectsMini';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -16,8 +16,9 @@ interface Props {
 
 const OpenToParticipation = ({ titleMultiloc }: Props) => {
   const localize = useLocalize();
-  const { data, hasNextPage, fetchNextPage } =
-    useProjectsWithActiveParticipatoryPhase();
+  const { data, hasNextPage, fetchNextPage } = useProjectsMini({
+    endpoint: 'with_active_participatory_phase',
+  });
   const projects = data?.pages.map((page) => page.data).flat();
 
   if (!projects) return null;

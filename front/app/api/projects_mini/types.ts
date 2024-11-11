@@ -6,7 +6,10 @@ import { Keys } from 'utils/cl-react-query/types';
 
 import miniProjectsKeys from './keys';
 
+type Endpoint = 'with_active_participatory_phase' | 'for_followed_item';
+
 export type QueryParameters = {
+  endpoint: Endpoint;
   'page[number]'?: number;
   'page[size]'?: number;
 };

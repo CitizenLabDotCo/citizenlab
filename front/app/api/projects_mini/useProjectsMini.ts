@@ -7,11 +7,11 @@ import { getPageNumberFromUrl } from 'utils/paginationUtils';
 import miniProjectsKeys from './keys';
 import { MiniProjects, MiniProjectsKeys, QueryParameters } from './types';
 
-const fetchProjectsWithActiveParticipatoryPhase = (
-  queryParameters: QueryParameters
-) =>
+const PATH = 'with_active_participatory_phase';
+
+const fetchProjectsMini = (queryParameters: QueryParameters) =>
   fetcher<MiniProjects>({
-    path: '/projects/with_active_participatory_phase',
+    path: `/projects/${PATH}`,
     action: 'get',
     queryParams: {
       'page[size]': queryParameters['page[size]'] ?? 6,
@@ -19,8 +19,8 @@ const fetchProjectsWithActiveParticipatoryPhase = (
     },
   });
 
-const useProjectsWithActiveParticipatoryPhase = (
-  queryParams: QueryParameters = {},
+const useProjectsMini = (
+  queryParams: QueryParameters,
   { enabled = true }: { enabled: boolean } = { enabled: true }
 ) => {
   return useInfiniteQuery<
@@ -31,7 +31,7 @@ const useProjectsWithActiveParticipatoryPhase = (
   >({
     queryKey: miniProjectsKeys.list(queryParams),
     queryFn: ({ pageParam }) => {
-      return fetchProjectsWithActiveParticipatoryPhase({
+      return fetchProjectsMini({
         ...queryParams,
         'page[number]': pageParam,
       });
@@ -45,4 +45,4 @@ const useProjectsWithActiveParticipatoryPhase = (
   });
 };
 
-export default useProjectsWithActiveParticipatoryPhase;
+export default useProjectsMini;
