@@ -20,13 +20,13 @@ type SortingBoxProps = {
 const SortingBox = ({ handleSortOnChange, phaseId }: SortingBoxProps) => {
   const { formatMessage } = useIntl();
   const { data: phase } = usePhase(phaseId);
-  const defaultSort = phase?.data.attributes.ideas_order;
+  const phaseDefaultSort = phase?.data.attributes.ideas_order;
 
   const [searchParams] = useSearchParams();
   let currentSortType = searchParams.get('sort');
 
   if (!currentSortType) {
-    currentSortType = defaultSort || 'trending';
+    currentSortType = phaseDefaultSort || 'trending';
   }
 
   return (
