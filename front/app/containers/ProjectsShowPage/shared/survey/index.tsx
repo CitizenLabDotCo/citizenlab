@@ -70,7 +70,7 @@ const Survey = ({
       disabledMessage={disabledMessage}
     >
       <Container className={`${className} e2e-${surveyService}-survey enabled`}>
-        <Title variant="h2" m="0" color="tenantText">
+        <Title variant="h2" mt="0" color="tenantText">
           <FormattedMessage {...messages.survey} />
         </Title>
 
