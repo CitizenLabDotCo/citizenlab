@@ -37,10 +37,8 @@ export type TitleProps = {
   color?: Color;
   fontSize?: FontSize;
   as?: Variant;
-  // fontWeight?: FontWeight;
   fontStyle?: FontStyle;
   textAlign?: TextAlign;
-  // lineHeight?: string;
 } & BoxMarginProps &
   BoxPaddingProps &
   BoxPositionProps &
@@ -55,14 +53,7 @@ export type TitleProps = {
 const StyledTitle = styled(Box)`
   ${isRtl`direction: rtl;`}
 
-  ${({
-    variant,
-    color,
-    fontSize,
-    // fontWeight,
-    fontStyle,
-    textAlign,
-  }: TitleProps) => css`
+  ${({ variant, color, fontSize, fontStyle, textAlign }: TitleProps) => css`
     color: ${({ theme }: { theme: MainThemeProps }) =>
       color ? theme.colors[color] : colors.textPrimary};
     font-style: ${fontStyle ? fontStyle : 'normal'};
@@ -107,8 +98,6 @@ const Title: React.FC<TitleProps> = ({
   color,
   as,
   fontSize,
-  // fontWeight,
-  // lineHeight,
   ...props
 }) => {
   const mb = props.mb || props.my || props.m || '16px';
@@ -119,9 +108,7 @@ const Title: React.FC<TitleProps> = ({
       color={color}
       as={as || variant}
       fontSize={fontSize}
-      // fontWeight={fontWeight}
       mb={mb}
-      // lineHeight={lineHeight}
       {...props}
     >
       {children}
