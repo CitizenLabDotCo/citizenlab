@@ -20,20 +20,12 @@ const ChevronIcon = styled(Icon)`
   transition: fill 80ms ease-out, transform 200ms ease-out;
 `;
 
-const TitleButton = styled(Box)`
+const TitleButton = styled.button`
   align-items: center;
   display: flex;
   justify-content: space-between;
-  cursor: pointer;
   width: 100%;
-  text-align: left;
-  ${isRtl`
-    text-align: right;
-    direction: rtl;
-    ${ChevronIcon} {
-        transform: rotate(180deg);
-    }
-`}
+
   &.expanded {
     ${ChevronIcon} {
       transform: rotate(90deg);
@@ -44,6 +36,14 @@ const TitleButton = styled(Box)`
       fill: #000;
     }
   }
+
+  ${isRtl`
+    text-align: right;
+    direction: rtl;
+    ${ChevronIcon} {
+        transform: rotate(180deg);
+    }
+  `}
 `;
 
 const CollapseContainer = styled(Box)`
@@ -92,7 +92,7 @@ const CollapsibleContainer = ({
   isOpenByDefault,
   title,
   children,
-  ...rest
+  ...boxProps
 }: CollapsibleContainerProps) => {
   const [isExpanded, setIsExpanded] = useState(isOpenByDefault);
   const uuid = useInstanceId();
@@ -102,25 +102,23 @@ const CollapsibleContainer = ({
   };
 
   return (
-    <Box display="flex" flexDirection="column" {...rest}>
-      <Box display="flex" alignItems="center">
-        <TitleButton
-          as="button"
-          aria-expanded={isExpanded}
-          aria-controls={`collapsed-section-${uuid}`}
-          id={`collapse-container-title-${uuid}`}
-          className={isExpanded ? 'expanded' : 'collapsed'}
-          onClick={handleChange}
-        >
-          {title}
-          <ChevronIcon name="chevron-right" />
-        </TitleButton>
-      </Box>
+    <Box {...boxProps}>
+      <TitleButton
+        aria-expanded={isExpanded}
+        aria-controls={`collapsed-section-${uuid}`}
+        id={`collapse-container-title-${uuid}`}
+        className={isExpanded ? 'expanded' : 'collapsed'}
+        onClick={handleChange}
+      >
+        {title}
+        <ChevronIcon name="chevron-right" />
+      </TitleButton>
       <Box
         role="region"
         aria-live="polite"
         id={`collapsed-section-${uuid}`}
         aria-labelledby={`collapse-container-title-${uuid}`}
+        hidden={!isExpanded}
       >
         <CSSTransition
           in={isExpanded}
