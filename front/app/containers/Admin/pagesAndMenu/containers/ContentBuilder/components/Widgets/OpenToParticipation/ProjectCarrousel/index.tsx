@@ -5,7 +5,7 @@ import {
   Spinner,
   colors,
   useBreakpoint,
-  H3,
+  Title,
 } from '@citizenlab/cl2-component-library';
 import useInstanceId from 'component-library/hooks/useInstanceId';
 import { debounce } from 'lodash-es';
@@ -152,9 +152,13 @@ const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
         justifyContent="center"
       >
         <Container w="100%" maxWidth="1200px" position="relative">
-          <H3 mt="0px" ml={isSmallerThanPhone ? DEFAULT_PADDING : undefined}>
+          <Title
+            variant="h3"
+            mt="0px"
+            ml={isSmallerThanPhone ? DEFAULT_PADDING : undefined}
+          >
             {truncate(title, 50)}
-          </H3>
+          </Title>
           <SkipButton
             tabIndex={0}
             onKeyDown={(e) => {

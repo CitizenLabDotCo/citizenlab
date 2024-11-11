@@ -7,7 +7,7 @@ import {
   fontSizes,
   viewportWidths,
   isRtl,
-  H3,
+  Title,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
@@ -134,13 +134,14 @@ const PhaseTitle = ({
           {phaseNumber}
         </PhaseNumber>
         <HeaderTitleWrapper>
-          <H3
+          <Title
+            variant="h3"
             className={`e2e-phase-title ${phaseStatus}`}
             m="0"
             color={phaseStatus === 'present' ? 'success' : 'textSecondary'}
           >
             {phaseTitle || <FormattedMessage {...messages.noPhaseSelected} />}
-          </H3>
+          </Title>
           <PhaseDate className={phaseStatus}>
             {isOneDayPhase ? startDate : `${startDate} - ${endDate}`}
           </PhaseDate>

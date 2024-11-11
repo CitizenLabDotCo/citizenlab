@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 
-import { media, fontSizes, H1 } from '@citizenlab/cl2-component-library';
+import { media, fontSizes, Title } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import Outlet from 'components/Outlet';
@@ -9,7 +9,7 @@ const Container = styled.div<{ align: 'left' | 'center' }>`
   width: ${({ align }) => (align === 'left' ? '100%' : 'auto')};
 `;
 
-export const StyledH1 = styled(H1)<{
+export const StyledH1 = styled(Title)<{
   customColor: string | undefined;
 }>`
   color: ${({ customColor, theme }) => customColor || theme.colors.tenantText};

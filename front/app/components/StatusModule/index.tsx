@@ -9,7 +9,6 @@ import {
   useBreakpoint,
   defaultStyles,
   fontSizes,
-  H2,
 } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
 
@@ -86,10 +85,10 @@ const StatusModule = ({ votingMethod, phase, project }: StatusModuleProps) => {
           </Warning>
         </Box>
       )}
-      <H2 color="tenantText">
+      <Title variant="h2" color="tenantText">
         {config?.getStatusTitle &&
           formatMessage(config.getStatusHeader(basketStatus))}
-      </H2>
+      </Title>
       <Box
         mb="16px"
         p="20px"

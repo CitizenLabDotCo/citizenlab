@@ -2,6 +2,7 @@
 
 class WebApi::V1::ProjectsController < ApplicationController
   before_action :set_project, only: %i[show update reorder destroy index_xlsx votes_by_user_xlsx votes_by_input_xlsx delete_inputs destroy_participation_data]
+  before_action :empty_data_for_visitor, only: [:index_projects_for_followed_item]
 
   skip_before_action :authenticate_user
   skip_after_action :verify_policy_scoped, only: :index
@@ -52,9 +53,32 @@ class WebApi::V1::ProjectsController < ApplicationController
     )
   end
 
+  # For use with 'For you' homepage widget.
+  # Returns all published projects that are visible to user
+  # AND (are followed by user OR relate to an idea, area or topic followed by user),
+  # ordered by the follow created_at (most recent first).
+  def index_projects_for_followed_item
+    projects = policy_scope(Project)
+    projects = ProjectsFinderService.new(projects, current_user).followed_by_user
+
+    @projects = paginate projects
+    @projects = @projects.preload(:project_images, :phases)
+
+    authorize @projects, :index_projects_for_followed_item?
+
+    render json: linked_json(
+      @projects,
+      WebApi::V1::ProjectMiniSerializer,
+      params: jsonapi_serializer_params({
+        user_requirements_service: Permissions::UserRequirementsService.new(check_groups_and_verification: false)
+      }),
+      include: %i[project_images current_phase]
+    )
+  end
+
   # For use with 'Open to participation' homepage widget.
-  # Returns all published or archived projects that are visible to user
-  # and in an active participatory phase (where user can do something).
+  # Returns all published projects that are visible to user
+  # AND in an active participatory phase (where user can do something).
   # Ordered by the end date of the current phase, soonest first (nulls last).
   def index_projects_with_active_participatory_phase
     projects = policy_scope(Project)
@@ -62,10 +86,7 @@ class WebApi::V1::ProjectsController < ApplicationController
     projects = projects_and_descriptors[:projects]
 
     @projects = paginate projects
-    @projects = @projects.preload(
-      :project_images,
-      phases: [:report]
-    )
+    @projects = @projects.preload(:project_images, :phases)
 
     authorize @projects, :index_projects_with_active_participatory_phase?
 
@@ -247,6 +268,13 @@ class WebApi::V1::ProjectsController < ApplicationController
 
       # Validation errors will appear in the Sentry error 'Additional Data'
       ErrorReporter.report_msg("Project change would lead to inconsistencies! (id: #{project.id})", extra: errors || {})
+    end
+  end
+
+  def empty_data_for_visitor
+    unless current_user
+      render json: { data: [] }, status: :ok
+      nil
     end
   end
 end

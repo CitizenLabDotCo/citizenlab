@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 
-import { Box, H2, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
 import styled, { useTheme } from 'styled-components';
 
 import ProjectFilterDropdown from 'components/ProjectFilterDropdown';
@@ -52,14 +52,15 @@ const TopBar = memo<Props>(
         mb="28px"
         flexDirection={theme.isRtl ? 'row-reverse' : 'row'}
       >
-        <H2
+        <Title
+          variant="h2"
           color="tenantText"
           m="0px"
           my="auto"
           fontSize={isSmallerThanPhone ? 'xl' : 'xxl'}
         >
           {title}
-        </H2>
+        </Title>
         <ProjectFilterDropdownPositioner>
           <Box
             display="flex"

@@ -7,7 +7,7 @@ import {
   Text,
   defaultCardStyle,
   media,
-  H2,
+  Title,
   Input,
 } from '@citizenlab/cl2-component-library';
 import { useEditor, useNode } from '@craftjs/core';
@@ -150,7 +150,9 @@ const CallToAction = ({
             w="100%"
             maxWidth={isSmallerThanTablet ? undefined : '400px'}
           >
-            <H2 color="tenantText">{lоcalize(title)}</H2>
+            <Title variant="h2" color="tenantText">
+              {lоcalize(title)}
+            </Title>
             <Text color="textSecondary">{lоcalize(description)}</Text>
           </Box>
           <ButtonContainer>

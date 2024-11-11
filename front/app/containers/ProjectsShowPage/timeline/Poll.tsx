@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 
-import { H2 } from '@citizenlab/cl2-component-library';
+import { Title } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import usePhase from 'api/phases/usePhase';
@@ -27,9 +27,9 @@ const PollContainer = memo<Props>(({ projectId, phaseId, className }) => {
       <Container
         className={`e2e-timeline-project-poll-container ${className || ''}`}
       >
-        <H2 m="0" color="tenantText">
+        <Title variant="h2" mt="0" color="tenantText">
           <FormattedMessage {...messages.navPoll} />
-        </H2>
+        </Title>
         <Poll phaseId={phaseId} projectId={projectId} />
       </Container>
     );

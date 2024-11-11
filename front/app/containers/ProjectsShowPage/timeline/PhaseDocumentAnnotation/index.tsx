@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, H2 } from '@citizenlab/cl2-component-library';
+import { Box, Title } from '@citizenlab/cl2-component-library';
 
 import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
@@ -22,9 +22,9 @@ const PhaseDocumentAnnotation = ({ phase, project }: Props) => {
   if (documentUrl) {
     return (
       <Box position="relative" minHeight="500px">
-        <H2 m="0" color="tenantText">
+        <Title variant="h2" mt="0" color="tenantText">
           <FormattedMessage {...messages.document} />
-        </H2>
+        </Title>
 
         <DocumentAnnotation
           project={project}

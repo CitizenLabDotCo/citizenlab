@@ -23,7 +23,6 @@ import Box, {
 
 type Variant = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 type FontSize = keyof typeof fontSizes;
-type FontWeight = 'bold' | 'normal';
 type FontStyle = 'italic' | 'normal';
 export type TextAlign =
   | 'left'
@@ -38,10 +37,8 @@ export type TitleProps = {
   color?: Color;
   fontSize?: FontSize;
   as?: Variant;
-  fontWeight?: FontWeight;
   fontStyle?: FontStyle;
   textAlign?: TextAlign;
-  lineHeight?: string;
 } & BoxMarginProps &
   BoxPaddingProps &
   BoxPositionProps &
@@ -54,21 +51,11 @@ export type TitleProps = {
   React.HTMLAttributes<HTMLHeadingElement>;
 
 const StyledTitle = styled(Box)`
-  line-height: ${({ lineHeight }) => lineHeight ?? '1.3'};
-
   ${isRtl`direction: rtl;`}
 
-  ${({
-    variant,
-    color,
-    fontSize,
-    fontWeight,
-    fontStyle,
-    textAlign,
-  }: TitleProps) => css`
+  ${({ variant, color, fontSize, fontStyle, textAlign }: TitleProps) => css`
     color: ${({ theme }: { theme: MainThemeProps }) =>
       color ? theme.colors[color] : colors.textPrimary};
-    font-weight: ${fontWeight ? fontWeight : 'bold'};
     font-style: ${fontStyle ? fontStyle : 'normal'};
 
     ${textAlign ? `text-align: ${textAlign};` : ''}
@@ -111,8 +98,6 @@ const Title: React.FC<TitleProps> = ({
   color,
   as,
   fontSize,
-  fontWeight,
-  lineHeight,
   ...props
 }) => {
   const mb = props.mb || props.my || props.m || '16px';
@@ -123,9 +108,7 @@ const Title: React.FC<TitleProps> = ({
       color={color}
       as={as || variant}
       fontSize={fontSize}
-      fontWeight={fontWeight}
       mb={mb}
-      lineHeight={lineHeight}
       {...props}
     >
       {children}

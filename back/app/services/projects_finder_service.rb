@@ -1,13 +1,73 @@
 class ProjectsFinderService
-  def initialize(projects, current_user = nil, params = {})
+  def initialize(projects, user = nil, params = {})
     @projects = projects
-    @current_user = current_user
+    @user = user
     @page_size = (params.dig(:page, :size) || 500).to_i
     @page_number = (params.dig(:page, :number) || 1).to_i
   end
 
+  # Returns an ActiveRecord collection of published projects that are also
+  # followed by user OR relate to an idea, area or topic followed by user,
+  # ordered by the follow created_at (most recent first).
+  # => [Project]
+  def followed_by_user
+    subquery = @projects
+      .joins('INNER JOIN admin_publications AS admin_publications ON admin_publications.publication_id = projects.id')
+      .where(admin_publications: { publication_status: 'published' })
+      .joins(
+        'LEFT JOIN followers AS project_followers ON project_followers.followable_id = projects.id ' \
+        'AND project_followers.followable_type = \'Project\''
+      )
+      .joins('LEFT JOIN ideas ON ideas.project_id = projects.id')
+      .joins(
+        'LEFT JOIN followers AS idea_followers ON idea_followers.followable_id = ideas.id ' \
+        'AND idea_followers.followable_type = \'Idea\''
+      )
+      .joins(
+        'LEFT JOIN areas_projects ON areas_projects.project_id = projects.id'
+      )
+      .joins(
+        'LEFT JOIN followers AS area_followers ON area_followers.followable_id = areas_projects.area_id ' \
+        'AND area_followers.followable_type = \'Area\''
+      )
+      .joins(
+        'LEFT JOIN projects_topics ON projects_topics.project_id = projects.id'
+      )
+      .joins(
+        'LEFT JOIN followers AS topic_followers ON topic_followers.followable_id = projects_topics.topic_id ' \
+        'AND topic_followers.followable_type = \'Topic\''
+      )
+      .where(
+        'project_followers.user_id = :user_id OR idea_followers.user_id = :user_id ' \
+        'OR area_followers.user_id = :user_id OR topic_followers.user_id = :user_id',
+        user_id: @user.id
+      )
+      .select(
+        'projects.id AS project_id, ' \
+        'MAX(GREATEST(' \
+        'project_followers.created_at, ' \
+        'idea_followers.created_at, ' \
+        'area_followers.created_at, ' \
+        'topic_followers.created_at' \
+        ')) AS greatest_created_at'
+      )
+      .group('projects.id')
+
+    # The rather counter-intuitive `.group('projects.id')` at the end of the preceding subquery, followed by
+    # this join with the projects table, is necessary to avoid introducing duplicates AND maintain the desired ordering.
+    # For example, if a user follows an area for a project and the project is also associated with another area,
+    # the project would appear twice in the results without this approach.
+    Project
+      .from("(#{subquery.to_sql}) AS subquery")
+      .joins('INNER JOIN projects ON projects.id = subquery.project_id')
+      .select('projects.*, subquery.greatest_created_at')
+      .order(
+        Arel.sql('subquery.greatest_created_at DESC')
+      )
+  end
+
   def participation_possible
-    return participation_possible_uncached if @current_user
+    return participation_possible_uncached if @user
 
     Rails.cache.fetch(
       "#{@projects.cache_key}projects_finder_service/participation_possible/",
@@ -19,8 +79,8 @@ class ProjectsFinderService
 
   private
 
-  # Returns an ActiveRecord collection of published projects that are visible to user
-  # and in an active participatory phase (where user can probably do something),
+  # Returns an ActiveRecord collection of published projects that are
+  # in an active participatory phase (where user can probably do something),
   # ordered by the end date of the current phase, soonest first (nulls last).
   # Also returns action descriptors for each project, to avoid getting them again when serializing.
   # => { projects: [Project], descriptor_pairs: { <project.id>: { <action_descriptors> }, ... } }
@@ -53,13 +113,13 @@ class ProjectsFinderService
 
     projects.each do |project|
       service = Permissions::ProjectPermissionsService.new(
-        project, @current_user, user_requirements_service: user_requirements_service
+        project, @user, user_requirements_service: user_requirements_service
       )
       action_descriptors = service.action_descriptors
       next unless service.participation_possible?(action_descriptors)
 
       project_descriptor_pairs[project.id] = action_descriptors
-      break if project_descriptor_pairs.size >= pagination_limit
+      break if project_descriptor_pairs.size >= pagination_limit + 1 # +1 needed to produce pagination link to next page
     end
 
     # Step 2: Use project_descriptor_pairs keys (project IDs) to filter projects

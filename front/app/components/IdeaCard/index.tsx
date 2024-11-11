@@ -6,7 +6,7 @@ import {
   defaultCardStyle,
   defaultCardHoverStyle,
   media,
-  H3,
+  Title,
 } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 import { RouteType } from 'routes';
@@ -171,9 +171,14 @@ const IdeaCard = ({
           }
         >
           <Link to={`/ideas/${slug}?go_back=true`} onClick={handleClick}>
-            <H3 mt="4px" mb="16px" className="e2e-idea-card-title">
+            <Title
+              variant="h3"
+              mt="4px"
+              mb="16px"
+              className="e2e-idea-card-title"
+            >
               {ideaTitle}
-            </H3>
+            </Title>
             {!hideBody && <Body idea={idea} />}
           </Link>
         </Box>

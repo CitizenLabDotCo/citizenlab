@@ -6,7 +6,7 @@ import {
   media,
   isRtl,
   Box,
-  H2,
+  Title,
 } from '@citizenlab/cl2-component-library';
 import { darken } from 'polished';
 import styled from 'styled-components';
@@ -50,7 +50,7 @@ const Header = styled.div`
   `}
 `;
 
-const Title = styled(H2)`
+const StyledTitle = styled(Title)`
   ${media.phone`
     text-align: center;
     margin: 0;
@@ -87,9 +87,9 @@ const EventsWidget = ({ staticPageId }: Props) => {
   return (
     <Box display="flex" flexDirection="column">
       <Header>
-        <Title color="tenantText" m="0">
+        <StyledTitle variant="h2" color="tenantText" m="0">
           {formatMessage(messages.upcomingEventsWidgetTitle)}
-        </Title>
+        </StyledTitle>
       </Header>
 
       {eventsLoading ? (

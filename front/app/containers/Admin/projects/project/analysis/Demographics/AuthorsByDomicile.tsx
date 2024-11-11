@@ -158,7 +158,7 @@ const AuthorsByDomicile = ({ customFieldId }: Props) => {
 
   return (
     <Box display="flex" flexDirection="column" alignItems="center">
-      <Title my="0" variant="h6" fontWeight="normal">
+      <Title my="0" variant="h6">
         <FormattedMessage {...messages.authorsByDomicile} />
       </Title>
       <ResponsiveContainer width="100%" height={100}>

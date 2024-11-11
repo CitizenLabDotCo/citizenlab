@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 
-import { Box, colors, isRtl, H2 } from '@citizenlab/cl2-component-library';
+import { Box, colors, isRtl, Title } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -117,9 +117,9 @@ const ProjectTimelineContainer = ({ projectId, className }: Props) => {
           {!hideTimelineUI(phases?.data, currentLocale) && (
             <>
               <Header>
-                <H2 m="0" color="tenantText">
+                <Title variant="h2" m="0" color="tenantText">
                   <FormattedMessage {...messages.phases} />
-                </H2>
+                </Title>
                 <PhaseNavigation projectId={projectId} buttonStyle="white" />
               </Header>
               <Box mb="22px">

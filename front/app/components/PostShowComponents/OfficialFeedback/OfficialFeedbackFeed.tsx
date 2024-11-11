@@ -5,7 +5,7 @@ import {
   fontSizes,
   media,
   isRtl,
-  H2,
+  Title,
 } from '@citizenlab/cl2-component-library';
 import { FormattedDate } from 'react-intl';
 import styled from 'styled-components';
@@ -127,9 +127,9 @@ const OfficialFeedbackFeed = ({
         id="official-feedback-feed"
       >
         <FeedbackHeader>
-          <H2 m="0" color="red600" fontSize="l">
+          <Title variant="h2" m="0" color="red600" fontSize="l">
             <FormattedMessage {...messages.officialUpdates} />
-          </H2>
+          </Title>
           <FeedbackSubtitle>
             <FormattedMessage
               {...messages.lastUpdate}

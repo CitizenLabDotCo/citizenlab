@@ -6,7 +6,7 @@ import {
   Image,
   useBreakpoint,
   stylingConsts,
-  H1,
+  Title,
 } from '@citizenlab/cl2-component-library';
 
 import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
@@ -53,9 +53,9 @@ const Spotlight = ({
           w={isSmallerThanPhone ? undefined : '50%'}
           maxWidth={isSmallerThanPhone ? undefined : '400px'}
         >
-          <H1 mt="0px" color="tenantText">
+          <Title mt="0px" color="tenantText">
             {title}
-          </H1>
+          </Title>
           {description && <Text>{description}</Text>}
           {buttonText && buttonText !== '' && (
             <Box w="100%" display="flex" mt="20px">
