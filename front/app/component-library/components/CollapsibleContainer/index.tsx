@@ -27,6 +27,8 @@ const TitleButton = styled(Box)`
   cursor: pointer;
   width: 100%;
   text-align: left;
+  margin: 0px !important;
+  padding: 0px !important;
   ${isRtl`
     text-align: right;
     direction: rtl;
@@ -48,8 +50,6 @@ const TitleButton = styled(Box)`
 
 const CollapseContainer = styled(Box)`
   opacity: 1;
-  display: flex;
-  flex-wrap: wrap;
   transition: 'all 1000ms cubic-bezier(0.165, 0.84, 0.44, 1)';
   will-change: opacity, height;
 
