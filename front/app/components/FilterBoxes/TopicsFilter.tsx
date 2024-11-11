@@ -4,7 +4,9 @@ import {
   fontSizes,
   colors,
   defaultCardStyle,
+  Title,
 } from '@citizenlab/cl2-component-library';
+import CollapsibleContainer from 'component-library/components/CollapsibleContainer';
 import { isError, includes } from 'lodash-es';
 import { darken } from 'polished';
 import styled from 'styled-components';
@@ -14,24 +16,24 @@ import { ITopicData } from 'api/topics/types';
 import T from 'components/T';
 
 import { ScreenReaderOnly } from 'utils/a11y';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
 import messages from './messages';
-import { Header, Title } from './styles';
 
 const Container = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  padding: 20px;
-  padding-top: 25px;
+  padding: 12px;
   ${defaultCardStyle};
 `;
 
-const Topics = styled.div``;
+const Topics = styled.div`
+  margin-top: 16px;
+`;
 
 const Topic = styled.button`
   color: ${colors.textSecondary};
@@ -81,6 +83,8 @@ interface Props {
 
 const TopicsFilter = memo<Props & InjectedLocalized>(
   ({ topics, selectedTopicIds, onChange, className, localize }) => {
+    const { formatMessage } = useIntl();
+
     const handleOnClick = useCallback(
       (event: MouseEvent<HTMLElement>) => {
         const topicId = event.currentTarget.dataset.id as string;
@@ -115,29 +119,33 @@ const TopicsFilter = memo<Props & InjectedLocalized>(
 
       return (
         <Container className={className}>
-          <Header>
-            <Title>
-              <FormattedMessage {...messages.topicsTitle} />
-            </Title>
-          </Header>
+          <CollapsibleContainer
+            title={
+              <Title m="0px" variant="h6" fontWeight="bold">
+                {formatMessage(messages.topicsTitle).toUpperCase()}
+              </Title>
+            }
+            isOpenByDefault={true}
+          >
+            <Topics className="e2e-topics-filters">
+              {topics
+                .filter((topic) => !isError(topic))
+                .map((topic: ITopicData) => (
+                  <Topic
+                    key={topic.id}
+                    data-id={topic.id}
+                    onMouseDown={removeFocusAfterMouseClick}
+                    onClick={handleOnClick}
+                    className={`e2e-topic ${
+                      includes(selectedTopicIds, topic.id) ? 'selected' : ''
+                    }`}
+                  >
+                    <T value={topic.attributes.title_multiloc} />
+                  </Topic>
+                ))}
+            </Topics>
+          </CollapsibleContainer>
 
-          <Topics className="e2e-topics-filters">
-            {topics
-              .filter((topic) => !isError(topic))
-              .map((topic: ITopicData) => (
-                <Topic
-                  key={topic.id}
-                  data-id={topic.id}
-                  onMouseDown={removeFocusAfterMouseClick}
-                  onClick={handleOnClick}
-                  className={`e2e-topic ${
-                    includes(selectedTopicIds, topic.id) ? 'selected' : ''
-                  }`}
-                >
-                  <T value={topic.attributes.title_multiloc} />
-                </Topic>
-              ))}
-          </Topics>
           <ScreenReaderOnly aria-live="polite">
             {/* Pronounces numbers of selected topics + selected topic names */}
             <FormattedMessage

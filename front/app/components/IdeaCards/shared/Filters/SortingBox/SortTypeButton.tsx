@@ -52,11 +52,7 @@ const SortTypeButton = ({
         name={getIconNameForSortingOption(sortType)}
         my="auto"
       />
-      <Text
-        color={isHoverOrSelected ? 'white' : 'textPrimary'}
-        m="0px"
-        fontWeight="semi-bold"
-      >
+      <Text color={isHoverOrSelected ? 'white' : 'textPrimary'} m="0px">
         {formatMessage(getLabelForSortingOption(sortType))}
       </Text>
     </StyledBox>
