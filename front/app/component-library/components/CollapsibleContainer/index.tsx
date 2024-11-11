@@ -35,7 +35,6 @@ const TitleButton = styled.button`
   display: flex;
   justify-content: space-between;
   width: 100%;
-
   &.expanded {
     ${ChevronIcon} {
       transform: rotate(90deg);
@@ -63,8 +62,6 @@ const TitleButton = styled.button`
 
 const CollapseContainer = styled(Box)`
   opacity: 1;
-  display: flex;
-  flex-wrap: wrap;
   transition: 'all 1000ms cubic-bezier(0.165, 0.84, 0.44, 1)';
   will-change: opacity, height;
 
