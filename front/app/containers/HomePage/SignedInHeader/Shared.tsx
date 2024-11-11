@@ -1,4 +1,4 @@
-import { isRtl, fontSizes, media } from '@citizenlab/cl2-component-library';
+import { isRtl, media } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import Avatar from 'components/Avatar';
@@ -15,13 +15,6 @@ export const HeaderContent = styled.div`
   ${isRtl`
     flex-direction: row-reverse;
   `}
-
-  h2 {
-    color: #fff;
-    font-size: ${fontSizes.xxl}px;
-    line-height: 33px;
-    font-weight: 400;
-  }
 
   ${media.tablet`
     padding-left: 30px;
@@ -55,16 +48,6 @@ export const Left = styled.div`
   ${media.phone`
     align-items: center;
     margin-bottom: 30px;
-  `}
-`;
-
-export const Text = styled.div`
-  ${isRtl`
-    direction: rtl;
-  `}
-
-  ${media.phone`
-    text-align: center;
   `}
 `;
 

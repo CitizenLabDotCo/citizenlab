@@ -9,6 +9,7 @@ import {
   defaultCardHoverStyle,
   isRtl,
   Text,
+  Title,
 } from '@citizenlab/cl2-component-library';
 import { isEmpty, round } from 'lodash-es';
 import moment from 'moment';
@@ -272,17 +273,10 @@ const ContentBody = styled.div`
   }
 `;
 
-const ProjectTitle = styled.h3`
-  line-height: normal;
-  font-weight: 500;
-  font-size: ${fontSizes.xl}px;
+const ProjectTitle = styled(Title)`
   color: ${({ theme }) => theme.colors.tenantText};
   margin: 0;
   padding: 0;
-
-  ${isRtl`
-    text-align: right;
-    `}
 
   &:hover {
     text-decoration: underline;
@@ -515,7 +509,7 @@ const ProjectCard = memo<InputProps>(
 
       const screenReaderContent = (
         <ScreenReaderOnly>
-          <ProjectTitle>
+          <ProjectTitle variant="h3">
             <FormattedMessage {...messages.a11y_projectTitle} />
             <T value={project.data.attributes.title_multiloc} />
           </ProjectTitle>
@@ -562,6 +556,7 @@ const ProjectCard = memo<InputProps>(
 
             <ContentBody className={size} aria-hidden>
               <ProjectTitle
+                variant="h3"
                 className="e2e-project-card-project-title"
                 data-testid="project-card-project-title"
                 onClick={() => {
