@@ -255,7 +255,7 @@ describe ProjectsFinderService do
     describe "when passed 'finished' parameter" do
       let(:result) { service.new(Project.all, user, { finished: true }).finished_or_archived }
 
-      it 'excludes unfinished projects (without a report in the last phase)' do
+      it 'includes finished projects' do
         expect(Project.count).to eq 2
         expect(result).to eq [finished_project1]
       end
@@ -274,16 +274,16 @@ describe ProjectsFinderService do
         expect(result).to eq [finished_project1]
       end
 
-      it 'includes finished projects with a last phase that contains a report' do
+      it 'includes unfinished projects with a last phase that contains a report' do
         finished_project2 = create(:project)
-        create(:phase, project: finished_project2, start_at: 2.days.ago, end_at: 1.day.ago)
+        create(:phase, project: finished_project2, start_at: 2.days.ago, end_at: 2.days.from_now)
         create(:report, phase: finished_project2.phases.last)
 
         expect(Project.count).to eq 3
         expect(result).to match_array([finished_project1, finished_project2])
       end
 
-      it 'excludes finished projects with a phase containing a report that is not the final phase' do
+      it 'excludes unfinished projects with a phase containing a report that is not the final phase' do
         finished_project2 = create(:project)
         phase1 = create(:phase, project: finished_project2, start_at: 3.days.ago, end_at: 2.days.ago)
         _phase2 = create(:phase, project: finished_project2, start_at: 1.day.ago, end_at: 1.day.from_now)
