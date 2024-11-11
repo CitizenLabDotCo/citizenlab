@@ -13,14 +13,18 @@ type CollapsibleContainerProps = {
   children: ReactNode;
   title: ReactNode;
   isOpenByDefault?: boolean;
+  useRegionRole?: boolean;
+} & BoxMarginProps &
+  BoxWidthProps &
+  BoxPaddingProps &
+  TitleProps;
+
+type TitleProps = {
   titleVariant?: Variant;
   titleFontSize?: FontSize;
   titlePadding?: string;
   titleFontWeight?: FontWeight;
-  useRegionRole?: boolean;
-} & BoxMarginProps &
-  BoxWidthProps &
-  BoxPaddingProps;
+};
 
 const ChevronIcon = styled(Icon)`
   transition: fill 80ms ease-out, transform 200ms ease-out;
