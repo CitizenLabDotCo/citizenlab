@@ -7,11 +7,17 @@ import useInstanceId from '../../hooks/useInstanceId';
 import { isRtl } from '../../utils/styleUtils';
 import Box, { BoxMarginProps, BoxPaddingProps, BoxWidthProps } from '../Box';
 import Icon from '../Icon';
+import Title, { Variant, FontSize, FontWeight } from '../Title';
 
 type CollapsibleContainerProps = {
   children: ReactNode;
   title: ReactNode;
   isOpenByDefault?: boolean;
+  titleVariant?: Variant;
+  titleFontSize?: FontSize;
+  titlePadding?: string;
+  titleFontWeight?: FontWeight;
+  useRegionRole?: boolean;
 } & BoxMarginProps &
   BoxWidthProps &
   BoxPaddingProps;
@@ -35,6 +41,11 @@ const TitleButton = styled.button`
     ${ChevronIcon} {
       fill: #000;
     }
+  }
+
+  &:focus-visible {
+    outline: 2px solid black;
+    border-radius: 4px;
   }
 
   ${isRtl`
@@ -92,6 +103,11 @@ const CollapsibleContainer = ({
   isOpenByDefault = false,
   title,
   children,
+  titleVariant,
+  titlePadding,
+  titleFontSize,
+  titleFontWeight,
+  useRegionRole,
   ...boxProps
 }: CollapsibleContainerProps) => {
   const [isExpanded, setIsExpanded] = useState(isOpenByDefault);
@@ -103,18 +119,26 @@ const CollapsibleContainer = ({
 
   return (
     <Box {...boxProps}>
-      <TitleButton
-        aria-expanded={isExpanded}
-        aria-controls={`collapsed-section-${uuid}`}
-        id={`collapse-container-title-${uuid}`}
-        className={isExpanded ? 'expanded' : 'collapsed'}
-        onClick={handleChange}
+      <Title
+        variant={titleVariant || 'h3'}
+        fontSize={titleFontSize}
+        m="0px"
+        p={titlePadding || '0px'}
       >
-        {title}
-        <ChevronIcon name="chevron-right" />
-      </TitleButton>
+        <TitleButton
+          aria-expanded={isExpanded}
+          aria-controls={`collapsed-section-${uuid}`}
+          id={`collapse-container-title-${uuid}`}
+          className={isExpanded ? 'expanded' : 'collapsed'}
+          onClick={handleChange}
+        >
+          <span style={{ fontWeight: titleFontWeight }}>{title}</span>
+          <ChevronIcon name="chevron-right" />
+        </TitleButton>
+      </Title>
+
       <Box
-        role="region"
+        role={useRegionRole ? 'region' : undefined}
         aria-live="polite"
         id={`collapsed-section-${uuid}`}
         aria-labelledby={`collapse-container-title-${uuid}`}
