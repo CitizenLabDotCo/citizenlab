@@ -3,7 +3,7 @@ import React from 'react';
 import { Box, Text, Icon, colors } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
 
-import { FrontOfficeSort } from 'api/ideas/types';
+import { FrontOfficeSortOptions } from 'api/ideas/types';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -14,7 +14,7 @@ import {
 } from './utils';
 
 type SortTypeButtonProps = {
-  sortType: FrontOfficeSort;
+  sortType: FrontOfficeSortOptions;
   handleSortOnChange: (sort: string) => void;
   isSelected: boolean;
 };

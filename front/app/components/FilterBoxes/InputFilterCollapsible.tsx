@@ -27,7 +27,9 @@ const InputFilterCollapsible = ({ title, children, className }: Props) => {
         title={title.toUpperCase()}
         isOpenByDefault={true}
       >
-        <Box mt="12px">{children}</Box>
+        <Box mt="12px" display="block">
+          {children}
+        </Box>
       </CollapsibleContainer>
     </Box>
   );

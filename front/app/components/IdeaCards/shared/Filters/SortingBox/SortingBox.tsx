@@ -3,7 +3,7 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 
-import { FrontOfficeSort } from 'api/ideas/types';
+import { FrontOfficeSortOptions } from 'api/ideas/types';
 import usePhase from 'api/phases/usePhase';
 
 import InputFilterCollapsible from 'components/FilterBoxes/InputFilterCollapsible';
@@ -15,7 +15,7 @@ import messages from '../messages';
 import SortTypeButton from './SortTypeButton';
 
 type SortingBoxProps = {
-  handleSortOnChange: (sort: FrontOfficeSort) => void;
+  handleSortOnChange: (sort: FrontOfficeSortOptions) => void;
   phaseId?: string;
 };
 const SortingBox = ({ handleSortOnChange, phaseId }: SortingBoxProps) => {
@@ -27,12 +27,13 @@ const SortingBox = ({ handleSortOnChange, phaseId }: SortingBoxProps) => {
   let currentSortType = searchParams.get('sort');
 
   if (!currentSortType) {
+    // 'trending' is the global default type
     currentSortType = phaseDefaultSort || 'trending';
   }
 
   return (
     <InputFilterCollapsible title={formatMessage(messages.sortBy)}>
-      <Box display="block" width="100%" mt="12px">
+      <Box>
         <SortTypeButton
           sortType="popular"
           handleSortOnChange={handleSortOnChange}

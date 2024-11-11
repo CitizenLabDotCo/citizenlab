@@ -5,6 +5,7 @@ import {
   colors,
   isRtl,
   Icon,
+  Box,
 } from '@citizenlab/cl2-component-library';
 import { capitalize, get } from 'lodash-es';
 import { darken } from 'polished';
@@ -43,10 +44,6 @@ const CloseIcon = styled(Icon)`
     margin-left: 0;
     margin-right: auto;
   `}
-`;
-
-const StatusesContainer = styled.div`
-  margin-top: 16px;
 `;
 
 const Status = styled.button`
@@ -126,7 +123,7 @@ const StatusFilter = memo<Props>(
           title={formatMessage(messages.statusTitle)}
           className={`e2e-statuses-filters ${className}`}
         >
-          <StatusesContainer>
+          <Box>
             <AllStatus
               data-id={null}
               onMouseDown={removeFocusAfterMouseClick}
@@ -209,7 +206,7 @@ const StatusFilter = memo<Props>(
                 </Status>
               );
             })}
-          </StatusesContainer>
+          </Box>
         </InputFilterCollapsible>
       );
     }
