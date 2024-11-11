@@ -122,6 +122,7 @@ const Accordion = ({
   };
 
   return (
+    // In the future, ideally use the CollapsibleContainer component here insetad.
     <ListItem className={className} {...rest}>
       <Box display="flex" alignItems="center">
         {prefix}
