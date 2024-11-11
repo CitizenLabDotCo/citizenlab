@@ -62,10 +62,7 @@ class WebApi::V1::ProjectsController < ApplicationController
     projects = ProjectsFinderService.new(projects, current_user).followed_by_user
 
     @projects = paginate projects
-    @projects = @projects.preload(
-      :project_images,
-      phases: [:report]
-    )
+    @projects = @projects.preload(:project_images, :phases)
 
     authorize @projects, :index_projects_for_followed_item?
 
@@ -89,10 +86,7 @@ class WebApi::V1::ProjectsController < ApplicationController
     projects = projects_and_descriptors[:projects]
 
     @projects = paginate projects
-    @projects = @projects.preload(
-      :project_images,
-      phases: [:report]
-    )
+    @projects = @projects.preload(:project_images, :phases)
 
     authorize @projects, :index_projects_with_active_participatory_phase?
 
