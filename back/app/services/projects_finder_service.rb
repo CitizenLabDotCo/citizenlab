@@ -26,15 +26,10 @@ class ProjectsFinderService
     archived_scope = base_scope.where(admin_publications: { publication_status: 'archived' }) if @archived
     archived_scope = joins_last_phases_with_reports(archived_scope) if @archived && @finished
 
-    if @finished && @archived
-      combined_scope = finished_scope.or(archived_scope)
-    elsif @finished
-      combined_scope = finished_scope
-    elsif @archived
-      combined_scope = archived_scope
-    end
+    return finished_scope.or(archived_scope).distinct if @finished && @archived
+    return finished_scope.distinct if @finished
 
-    combined_scope.distinct
+    archived_scope.distinct
   end
 
   # Returns an ActiveRecord collection of published projects that are also
