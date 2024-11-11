@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { H2 } from '@citizenlab/cl2-component-library';
+import { Title } from '@citizenlab/cl2-component-library';
 
 import { OnboardingCampaignName } from 'api/onboarding_campaigns/types';
 import useCurrentOnboardingCampaign from 'api/onboarding_campaigns/useCurrentOnboardingCampaign';
@@ -33,12 +33,12 @@ const CustomCTAStep = ({ onSkip, currentOnboardingCampaignName }: Props) => {
       >
         <HeaderContent id="e2e-signed-in-header-custom-cta">
           <Left>
-            <H2 m="0" color="white">
+            <Title variant="h2" m="0" color="white">
               <T
                 value={onboardingCampaign.data.attributes.cta_message_multiloc}
                 supportHtml
               />
-            </H2>
+            </Title>
           </Left>
 
           <Right>

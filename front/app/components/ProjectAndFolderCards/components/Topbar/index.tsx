@@ -6,7 +6,7 @@ import {
   isRtl,
   fontSizes,
   colors,
-  H2,
+  Title,
 } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -196,7 +196,8 @@ const Header = ({
   return (
     <div className={className}>
       {showTitle ? (
-        <H2
+        <Title
+          variant="h2"
           data-testid="currently-working-on-text"
           color="tenantText"
           m="0"
@@ -205,7 +206,7 @@ const Header = ({
           textAlign={isSmallerThanPhone ? 'left' : 'center'}
         >
           {currentlyWorkingOn}
-        </H2>
+        </Title>
       ) : (
         <ScreenReaderOnly>{currentlyWorkingOn}</ScreenReaderOnly>
       )}

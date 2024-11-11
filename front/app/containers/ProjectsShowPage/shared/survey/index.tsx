@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { H2 } from '@citizenlab/cl2-component-library';
+import { Title } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
@@ -70,9 +70,9 @@ const Survey = ({
       disabledMessage={disabledMessage}
     >
       <Container className={`${className} e2e-${surveyService}-survey enabled`}>
-        <H2 m="0" color="tenantText">
+        <Title variant="h2" m="0" color="tenantText">
           <FormattedMessage {...messages.survey} />
-        </H2>
+        </Title>
 
         <ScreenReaderOnly>
           <FormattedMessage {...messages.embeddedSurveyScreenReaderWarning1} />

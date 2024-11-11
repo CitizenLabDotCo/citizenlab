@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 
-import { Box, H2 } from '@citizenlab/cl2-component-library';
+import { Box, Title } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 
 import { IPhaseData } from 'api/phases/types';
@@ -80,7 +80,7 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
       className={`e2e-timeline-project-idea-cards ${className || ''}`}
     >
       {!isVotingContext && (
-        <H2 mt="0px" mb="20px" color="tenantText">
+        <Title variant="h2" mt="0px" mb="20px" color="tenantText">
           <FormattedMessage
             {...getInputTermMessage(inputTerm, {
               idea: messages.ideas,
@@ -94,7 +94,7 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
               petition: messages.petitions,
             })}
           />
-        </H2>
+        </Title>
       )}
       <IdeaCardsWithoutFiltersSidebar
         ideaQueryParameters={ideaQueryParameters}

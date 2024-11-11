@@ -6,7 +6,7 @@ import {
   LocaleSwitcher,
   colors,
   fontSizes,
-  H2,
+  Title,
 } from '@citizenlab/cl2-component-library';
 import { forOwn, isEmpty } from 'lodash-es';
 import styled from 'styled-components';
@@ -307,9 +307,9 @@ const OfficialFeedbackForm = ({
             >
               <Box my="auto">
                 {formType === 'new' && (
-                  <H2 fontSize="m" color="tenantText" m="0">
+                  <Title variant="h2" fontSize="m" color="tenantText" m="0">
                     <FormattedMessage {...messages.addOfficalUpdate} />
-                  </H2>
+                  </Title>
                 )}
               </Box>
               <Box my="auto">

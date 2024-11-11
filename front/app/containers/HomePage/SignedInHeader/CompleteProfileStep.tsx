@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Icon, H2 } from '@citizenlab/cl2-component-library';
+import { Icon, Title } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
@@ -55,12 +55,12 @@ const CompleteProfileStep = ({
               />
               <CompleteProfileIcon name="edit" fill="#fff" ariaHidden />
             </Icons>
-            <H2 color="white">
+            <Title variant="h2" color="white">
               <FormattedMessage
                 {...messages.completeYourProfile}
                 values={{ firstName: authUser.data.attributes.first_name }}
               />
-            </H2>
+            </Title>
           </Left>
 
           <Right>
