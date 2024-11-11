@@ -3,12 +3,9 @@ import React, { memo, useCallback, MouseEvent } from 'react';
 import {
   fontSizes,
   colors,
-  defaultCardStyle,
   isRtl,
   Icon,
-  Title,
 } from '@citizenlab/cl2-component-library';
-import CollapsibleContainer from 'component-library/components/CollapsibleContainer';
 import { capitalize, get } from 'lodash-es';
 import { darken } from 'polished';
 import styled from 'styled-components';
@@ -22,16 +19,8 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 
+import InputFilterCollapsible from './InputFilterCollapsible';
 import messages from './messages';
-
-const Container = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  padding: 12px;
-  ${defaultCardStyle};
-`;
 
 const Count = styled.span`
   color: ${colors.textSecondary};
@@ -133,103 +122,95 @@ const StatusFilter = memo<Props>(
       const allPostsCount = filterCounts?.total || 0;
       const allFilterSelected = !selectedStatusId;
       return (
-        <Container className={`e2e-statuses-filters ${className}`}>
-          <CollapsibleContainer
-            title={
-              <Title m="0px" variant="h6" fontWeight="bold">
-                {formatMessage(messages.statusTitle).toUpperCase()}
-              </Title>
-            }
-            isOpenByDefault={true}
-          >
-            <StatusesContainer>
-              <AllStatus
-                data-id={null}
-                onMouseDown={removeFocusAfterMouseClick}
-                onClick={handleOnClick}
-                className={allFilterSelected ? 'selected' : ''}
-              >
-                <FormattedMessage {...messages.all} />
-                <Count aria-hidden>{allPostsCount}</Count>
-                <ScreenReaderOnly>
-                  {/* Pronounce number of ideas of All status when focus/hover it */}
-                  <FormattedMessage
-                    {...messages.a11y_numberOfInputs}
-                    values={{ inputsCount: allPostsCount }}
-                  />
-                </ScreenReaderOnly>
-                <ScreenReaderOnly aria-live="polite">
-                  {/*
+        <InputFilterCollapsible
+          title={formatMessage(messages.statusTitle)}
+          className={`e2e-statuses-filters ${className}`}
+        >
+          <StatusesContainer>
+            <AllStatus
+              data-id={null}
+              onMouseDown={removeFocusAfterMouseClick}
+              onClick={handleOnClick}
+              className={allFilterSelected ? 'selected' : ''}
+            >
+              <FormattedMessage {...messages.all} />
+              <Count aria-hidden>{allPostsCount}</Count>
+              <ScreenReaderOnly>
+                {/* Pronounce number of ideas of All status when focus/hover it */}
+                <FormattedMessage
+                  {...messages.a11y_numberOfInputs}
+                  values={{ inputsCount: allPostsCount }}
+                />
+              </ScreenReaderOnly>
+              <ScreenReaderOnly aria-live="polite">
+                {/*
               When we focus a selected status filter and hit enter again, this filter gets removed and
               the 'all' status filter is selected again. Screen readers don't pick this up, so hence this helper text
             */}
-                  {allFilterSelected && (
-                    <FormattedMessage {...messages.a11y_allFilterSelected} />
+                {allFilterSelected && (
+                  <FormattedMessage {...messages.a11y_allFilterSelected} />
+                )}
+              </ScreenReaderOnly>
+            </AllStatus>
+
+            {statuses.map((status) => {
+              const filterPostCount = get(
+                filterCounts,
+                `idea_status_id.${status.id}`,
+                0
+              );
+              const isFilterSelected = status.id === selectedStatusId;
+
+              return (
+                <Status
+                  key={status.id}
+                  data-id={status.id}
+                  onMouseDown={removeFocusAfterMouseClick}
+                  onClick={handleOnClick}
+                  className={`e2e-status ${isFilterSelected ? 'selected' : ''}`}
+                >
+                  <T value={status.attributes.title_multiloc}>
+                    {(statusTitle) => <>{capitalize(statusTitle)}</>}
+                  </T>
+                  {!isFilterSelected ? (
+                    <Count aria-hidden>{filterPostCount}</Count>
+                  ) : (
+                    <>
+                      <CloseIcon name="close" />
+                      <ScreenReaderOnly>
+                        <FormattedMessage {...messages.a11y_removeFilter} />
+                      </ScreenReaderOnly>
+                    </>
                   )}
-                </ScreenReaderOnly>
-              </AllStatus>
 
-              {statuses.map((status) => {
-                const filterPostCount = get(
-                  filterCounts,
-                  `idea_status_id.${status.id}`,
-                  0
-                );
-                const isFilterSelected = status.id === selectedStatusId;
-
-                return (
-                  <Status
-                    key={status.id}
-                    data-id={status.id}
-                    onMouseDown={removeFocusAfterMouseClick}
-                    onClick={handleOnClick}
-                    className={`e2e-status ${
-                      isFilterSelected ? 'selected' : ''
-                    }`}
-                  >
-                    <T value={status.attributes.title_multiloc}>
-                      {(statusTitle) => <>{capitalize(statusTitle)}</>}
-                    </T>
-                    {!isFilterSelected ? (
-                      <Count aria-hidden>{filterPostCount}</Count>
-                    ) : (
-                      <>
-                        <CloseIcon name="close" />
-                        <ScreenReaderOnly>
-                          <FormattedMessage {...messages.a11y_removeFilter} />
-                        </ScreenReaderOnly>
-                      </>
-                    )}
-
-                    <ScreenReaderOnly>
-                      {/* Pronounce number of ideas per status when focus/hover it */}
-                      <FormattedMessage
-                        {...messages.a11y_numberOfInputs}
-                        values={{ inputsCount: filterPostCount }}
-                      />
-                    </ScreenReaderOnly>
-                    <ScreenReaderOnly aria-live="polite">
-                      {/*
+                  <ScreenReaderOnly>
+                    {/* Pronounce number of ideas per status when focus/hover it */}
+                    <FormattedMessage
+                      {...messages.a11y_numberOfInputs}
+                      values={{ inputsCount: filterPostCount }}
+                    />
+                  </ScreenReaderOnly>
+                  <ScreenReaderOnly aria-live="polite">
+                    {/*
                     Added this for consistency with the all filter, see comment above AllStatus component.
                     Pronounces the selected filter.
                   */}
-                      {isFilterSelected && (
-                        <FormattedMessage
-                          {...messages.a11y_selectedFilter}
-                          values={{
-                            filter: (
-                              <T value={status.attributes.title_multiloc} />
-                            ),
-                          }}
-                        />
-                      )}
-                    </ScreenReaderOnly>
-                  </Status>
-                );
-              })}
-            </StatusesContainer>
-          </CollapsibleContainer>
-        </Container>
+                    {isFilterSelected && (
+                      <FormattedMessage
+                        {...messages.a11y_selectedFilter}
+                        values={{
+                          filter: (
+                            <T value={status.attributes.title_multiloc} />
+                          ),
+                        }}
+                      />
+                    )}
+                  </ScreenReaderOnly>
+                </Status>
+              );
+            })}
+          </StatusesContainer>
+        </InputFilterCollapsible>
       );
     }
 

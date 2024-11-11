@@ -1,12 +1,6 @@
 import React, { memo, useCallback, MouseEvent } from 'react';
 
-import {
-  fontSizes,
-  colors,
-  defaultCardStyle,
-  Title,
-} from '@citizenlab/cl2-component-library';
-import CollapsibleContainer from 'component-library/components/CollapsibleContainer';
+import { fontSizes, colors, Box } from '@citizenlab/cl2-component-library';
 import { isError, includes } from 'lodash-es';
 import { darken } from 'polished';
 import styled from 'styled-components';
@@ -20,16 +14,8 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
+import InputFilterCollapsible from './InputFilterCollapsible';
 import messages from './messages';
-
-const Container = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  padding: 12px;
-  ${defaultCardStyle};
-`;
 
 const Topics = styled.div`
   margin-top: 16px;
@@ -118,15 +104,11 @@ const TopicsFilter = memo<Props & InjectedLocalized>(
         .join(', ');
 
       return (
-        <Container className={className}>
-          <CollapsibleContainer
-            title={
-              <Title m="0px" variant="h6" fontWeight="bold">
-                {formatMessage(messages.topicsTitle).toUpperCase()}
-              </Title>
-            }
-            isOpenByDefault={true}
-          >
+        <InputFilterCollapsible
+          title={formatMessage(messages.topicsTitle)}
+          className={className}
+        >
+          <Box>
             <Topics className="e2e-topics-filters">
               {topics
                 .filter((topic) => !isError(topic))
@@ -144,16 +126,16 @@ const TopicsFilter = memo<Props & InjectedLocalized>(
                   </Topic>
                 ))}
             </Topics>
-          </CollapsibleContainer>
 
-          <ScreenReaderOnly aria-live="polite">
-            {/* Pronounces numbers of selected topics + selected topic names */}
-            <FormattedMessage
-              {...messages.a11y_selectedTopicFilters}
-              values={{ numberOfSelectedTopics, selectedTopicNames }}
-            />
-          </ScreenReaderOnly>
-        </Container>
+            <ScreenReaderOnly aria-live="polite">
+              {/* Pronounces numbers of selected topics + selected topic names */}
+              <FormattedMessage
+                {...messages.a11y_selectedTopicFilters}
+                values={{ numberOfSelectedTopics, selectedTopicNames }}
+              />
+            </ScreenReaderOnly>
+          </Box>
+        </InputFilterCollapsible>
       );
     }
 
