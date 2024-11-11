@@ -7,11 +7,9 @@ import { getPageNumberFromUrl } from 'utils/paginationUtils';
 import miniProjectsKeys from './keys';
 import { MiniProjects, MiniProjectsKeys, QueryParameters } from './types';
 
-const PATH = 'with_active_participatory_phase';
-
 const fetchProjectsMini = (queryParameters: QueryParameters) =>
   fetcher<MiniProjects>({
-    path: `/projects/${PATH}`,
+    path: `/projects/${queryParameters.endpoint}`,
     action: 'get',
     queryParams: {
       'page[size]': queryParameters['page[size]'] ?? 6,
