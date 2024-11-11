@@ -20,8 +20,8 @@ import { isNilOrError } from 'utils/helperUtils';
 
 import Editor from '../components/Editor';
 import HomepageBuilderEditModePreview from '../components/HomepageBuilderEditModePreview';
-import HomepageBuilderToolbox from '../components/HomepageBuilderToolbox';
 import Settings from '../components/Settings';
+import Toolbox from '../components/Toolbox';
 import TopBar from '../components/TopBar';
 
 const HomepageBuilderPage = () => {
@@ -106,7 +106,7 @@ const HomepageBuilderPage = () => {
           mt={`${stylingConsts.menuHeight}px`}
           display={previewEnabled ? 'none' : 'flex'}
         >
-          <HomepageBuilderToolbox selectedLocale={selectedLocale} />
+          <Toolbox selectedLocale={selectedLocale} />
           <StyledRightColumn>
             <LanguageProvider
               contentBuilderLocale={selectedLocale}
