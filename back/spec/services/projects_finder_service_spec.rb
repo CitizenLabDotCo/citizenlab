@@ -323,15 +323,27 @@ describe ProjectsFinderService do
     end
 
     describe "when passed 'finished' AND 'archived' parameter" do
+      # Should include `finished_project1` and:
+      let!(:finished_project2) { create(:project) }
+      let!(:phase) { create(:phase, project: finished_project2, start_at: 2.days.ago, end_at: 2.days.from_now) }
+      let!(:_report1) { create(:report, phase: finished_project2.phases.last) }
+
       let!(:archived_project) { create(:project, admin_publication_attributes: { publication_status: 'archived' }) }
+
+      # Should NOT include:
       let!(:_draft_project) { create(:project, admin_publication_attributes: { publication_status: 'draft' }) }
       let!(:_published_project) { create(:project, admin_publication_attributes: { publication_status: 'published' }) }
+
+      let!(:finished_project3) { create(:project) }
+      let!(:phase1) { create(:phase, project: finished_project3, start_at: 3.days.ago, end_at: 2.days.ago) }
+      let!(:_phase2) { create(:phase, project: finished_project3, start_at: 1.day.ago, end_at: 1.day.from_now) }
+      let!(:_report2) { create(:report, phase: phase1) }
 
       let(:result) { service.new(Project.all, user, { finished: true, archived: true }).finished_or_archived }
 
       it 'includes expected projects' do
-        expect(Project.count).to eq 5
-        expect(result).to match_array [finished_project1, archived_project]
+        expect(Project.count).to eq 7
+        expect(result).to match_array [finished_project1, archived_project, finished_project2]
       end
     end
   end

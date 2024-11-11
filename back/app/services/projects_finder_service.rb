@@ -11,47 +11,57 @@ class ProjectsFinderService
   def finished_or_archived
     return @projects.none unless @finished || @archived
 
-    finished_projects = @finished ? finished : @projects.none
-    archived_projects = @archived ? archived : @projects.none
-
-    union_scope(finished_projects, archived_projects).distinct
-  end
-
-  def union_scope(scope1, scope2)
-    scope1_sql = scope1.to_sql
-    scope2_sql = scope2.to_sql
-
-    union_sql = "#{scope1_sql} UNION #{scope2_sql}"
-
-    Project.from("(#{union_sql}) AS projects")
-  end
-
-  def archived
-    @projects
+    base_scope = @projects
       .joins('INNER JOIN admin_publications AS admin_publications ON admin_publications.publication_id = projects.id')
-      .where(admin_publications: { publication_status: 'archived' })
-  end
 
-  def finished
-    @projects
-      .joins('INNER JOIN admin_publications AS admin_publications ON admin_publications.publication_id = projects.id')
-      .where(admin_publications: { publication_status: 'published' })
-      .joins(
-        'LEFT JOIN LATERAL (' \
-        'SELECT phases.id AS last_phase_id, phases.end_at AS last_phase_end_at ' \
-        'FROM phases ' \
-        'WHERE phases.project_id = projects.id ' \
-        'ORDER BY phases.end_at DESC ' \
-        'LIMIT 1' \
-        ') AS last_phases ON true'
-      )
-      .joins(
-        'LEFT JOIN report_builder_reports AS reports ON reports.phase_id = last_phases.last_phase_id'
-      )
-      .where(
-        'last_phases.last_phase_end_at < ? OR reports.id IS NOT NULL',
-        Time.zone.now
-      )
+    finished_scope = base_scope.where(admin_publications: { publication_status: 'published' })
+    archived_scope = base_scope.where(admin_publications: { publication_status: 'archived' })
+
+    if @finished
+      finished_scope = finished_scope
+        .joins(
+          'LEFT JOIN LATERAL (' \
+          'SELECT phases.id AS last_phase_id, phases.end_at AS last_phase_end_at ' \
+          'FROM phases ' \
+          'WHERE phases.project_id = projects.id ' \
+          'ORDER BY phases.end_at DESC ' \
+          'LIMIT 1' \
+          ') AS last_phases ON true'
+        )
+        .joins(
+          'LEFT JOIN report_builder_reports AS reports ON reports.phase_id = last_phases.last_phase_id'
+        )
+        .where(
+          '(last_phases.last_phase_end_at < ? OR reports.id IS NOT NULL) AND admin_publications.publication_status = ?',
+          Time.zone.now, 'published'
+        )
+    end
+
+    if @archived
+      archived_scope = archived_scope
+        .joins(
+          'LEFT JOIN LATERAL (' \
+          'SELECT phases.id AS last_phase_id, phases.end_at AS last_phase_end_at ' \
+          'FROM phases ' \
+          'WHERE phases.project_id = projects.id ' \
+          'ORDER BY phases.end_at DESC ' \
+          'LIMIT 1' \
+          ') AS last_phases ON true'
+        )
+        .joins(
+          'LEFT JOIN report_builder_reports AS reports ON reports.phase_id = last_phases.last_phase_id'
+        )
+    end
+
+    if @finished && @archived
+      combined_scope = finished_scope.or(archived_scope)
+    elsif @finished
+      combined_scope = finished_scope
+    elsif @archived
+      combined_scope = archived_scope
+    end
+
+    combined_scope.distinct
   end
 
   # Returns an ActiveRecord collection of published projects that are also
