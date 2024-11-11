@@ -21,8 +21,8 @@ import { isNilOrError } from 'utils/helperUtils';
 import Editor from '../components/Editor';
 import HomepageBuilderEditModePreview from '../components/HomepageBuilderEditModePreview';
 import HomepageBuilderToolbox from '../components/HomepageBuilderToolbox';
-import HomepageBuilderTopBar from '../components/HomepageBuilderTopBar';
 import Settings from '../components/Settings';
+import TopBar from '../components/TopBar';
 
 const HomepageBuilderPage = () => {
   const [previewEnabled, setPreviewEnabled] = useState(false);
@@ -94,7 +94,7 @@ const HomepageBuilderPage = () => {
       onUploadImage={setImageUploading}
     >
       <Editor isPreview={false} onNodesChange={handleEditorChange}>
-        <HomepageBuilderTopBar
+        <TopBar
           hasError={hasError}
           hasPendingState={imageUploading}
           previewEnabled={previewEnabled}
