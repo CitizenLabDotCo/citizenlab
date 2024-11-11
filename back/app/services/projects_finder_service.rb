@@ -45,10 +45,10 @@ class ProjectsFinderService
       .select(
         'projects.id AS project_id, ' \
         'MAX(GREATEST(' \
-        'COALESCE(project_followers.created_at, \'1970-01-01\'), ' \
-        'COALESCE(idea_followers.created_at, \'1970-01-01\'), ' \
-        'COALESCE(area_followers.created_at, \'1970-01-01\'), ' \
-        'COALESCE(topic_followers.created_at, \'1970-01-01\')' \
+        'project_followers.created_at, ' \
+        'idea_followers.created_at, ' \
+        'area_followers.created_at, ' \
+        'topic_followers.created_at' \
         ')) AS greatest_created_at'
       )
       .group('projects.id')
