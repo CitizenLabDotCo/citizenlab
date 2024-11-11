@@ -247,4 +247,28 @@ describe ProjectsFinderService do
       expect(result).to eq [followed_project]
     end
   end
+
+  describe 'finished_or_archived' do
+    let!(:finished_project1) { create(:project_with_two_past_ideation_phases) }
+    let!(:unfinished_project) { create(:project_with_active_ideation_phase) }
+
+    describe "when passed 'finished' parameter" do
+      let(:result) { service.new(Project.all, user, { finished: true }).finished_or_archived }
+
+      it 'excludes finished projects' do
+        expect(Project.count).to eq 2
+        expect(result).to eq [finished_project1]
+      end
+
+      it 'excludes projects without a published status' do
+        _draft_finished_project = create(
+          :project_with_two_past_ideation_phases,
+          admin_publication_attributes: { publication_status: 'draft' }
+        )
+
+        expect(Project.count).to eq 3
+        expect(result).to eq [finished_project1]
+      end
+    end
+  end
 end

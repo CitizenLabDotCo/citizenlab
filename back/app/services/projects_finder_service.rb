@@ -4,6 +4,27 @@ class ProjectsFinderService
     @user = user
     @page_size = (params.dig(:page, :size) || 500).to_i
     @page_number = (params.dig(:page, :number) || 1).to_i
+    @finished = params[:finished]
+    @archived = params[:archived]
+  end
+
+  def finished_or_archived
+    return @projects.none unless @finished || @archived
+
+    @projects = finished if @finished
+
+    # @projects = or_archived(@projects) if @archived
+
+    @projects
+  end
+
+  def finished
+    @projects
+      .joins('INNER JOIN admin_publications AS admin_publications ON admin_publications.publication_id = projects.id')
+      .where(admin_publications: { publication_status: 'published' })
+      .joins('LEFT JOIN phases AS phases ON phases.project_id = projects.id')
+      .where('phases.end_at < ?', Time.zone.now)
+      .distinct
   end
 
   # Returns an ActiveRecord collection of published projects that are also

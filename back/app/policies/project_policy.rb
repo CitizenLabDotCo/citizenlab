@@ -64,7 +64,7 @@ class ProjectPolicy < ApplicationPolicy
     active_moderator?
   end
 
-  def index_finished_and_archived?
+  def index_finished_or_archived?
     true
   end
 
@@ -143,6 +143,11 @@ class ProjectPolicy < ApplicationPolicy
       shared += %i[reacting_dislike_enabled reacting_dislike_method reacting_dislike_limited_max]
     end
     shared
+  end
+
+  def permitted_attributes_for_index_finished_or_archived
+    shared_permitted_attributes
+    # [:finished]
   end
 
   def permitted_attributes_for_create

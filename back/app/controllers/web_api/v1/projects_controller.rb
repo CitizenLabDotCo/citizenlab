@@ -53,13 +53,14 @@ class WebApi::V1::ProjectsController < ApplicationController
     )
   end
 
-  def index_finished_and_archived
+  def index_finished_or_archived
     projects = policy_scope(Project)
+    projects = ProjectsFinderService.new(projects, current_user, params).finished_or_archived
 
     @projects = paginate projects
     @projects = @projects.preload(:project_images, :phases)
 
-    authorize @projects, :index_finished_and_archived?
+    authorize @projects, :index_finished_or_archived?
 
     render json: linked_json(
       @projects,
