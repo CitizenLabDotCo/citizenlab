@@ -8,7 +8,7 @@ import messages from 'components/admin/ContentBuilder/messages';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import { WIDGET_TITLES, hasNoPointerEvents } from '../../Widgets';
+import { WIDGET_TITLES, hasNoPointerEvents } from '../../CraftComponents';
 
 const StyledBox = styled(Box)`
   ${({ isRoot }: { isRoot: boolean }) =>

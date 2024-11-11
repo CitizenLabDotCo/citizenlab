@@ -9,7 +9,7 @@ import { TCustomPageCTAType } from 'api/custom_pages/types';
 import {
   CTASignedInType,
   CTASignedOutType,
-} from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Widgets/HomepageBanner';
+} from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/HomepageBanner';
 
 import Error, { TFieldName } from 'components/UI/Error';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';

@@ -26,22 +26,26 @@ import {
 } from 'utils/cl-intl';
 
 import messages from '../../messages';
-import CallToAction, { callToActionTitle } from '../Widgets/CallToAction';
-import Events from '../Widgets/Events';
-import HomepageBanner, { homepageBannerTitle } from '../Widgets/HomepageBanner';
+import CallToAction, {
+  callToActionTitle,
+} from '../CraftComponents/CallToAction';
+import Events from '../CraftComponents/Events';
+import HomepageBanner, {
+  homepageBannerTitle,
+} from '../CraftComponents/HomepageBanner';
 import {
   getHomepageBannerDefaultImage,
   getHomepageBannerDefaultSettings,
-} from '../Widgets/HomepageBanner/utils';
+} from '../CraftComponents/HomepageBanner/utils';
 import OpenToParticipation, {
   openToParticipationTitle,
-} from '../Widgets/OpenToParticipation';
-import Projects, { projectsTitle } from '../Widgets/Projects';
-import projectsMessages from '../Widgets/Projects/messages';
+} from '../CraftComponents/OpenToParticipation';
+import Projects, { projectsTitle } from '../CraftComponents/Projects';
+import projectsMessages from '../CraftComponents/Projects/messages';
 import Spotlight, {
   spotlightTitle,
   buttonTextDefault,
-} from '../Widgets/Spotlight';
+} from '../CraftComponents/Spotlight';
 
 type HomepageBuilderToolboxProps = {
   selectedLocale: SupportedLocale;
