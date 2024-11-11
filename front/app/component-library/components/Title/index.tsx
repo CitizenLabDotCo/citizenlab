@@ -57,6 +57,7 @@ const StyledTitle = styled(Box)`
     color: ${({ theme }: { theme: MainThemeProps }) =>
       color ? theme.colors[color] : colors.textPrimary};
     font-style: ${fontStyle ? fontStyle : 'normal'};
+    font-weight: bold;
 
     ${textAlign ? `text-align: ${textAlign};` : ''}
     ${variant === 'h1'
