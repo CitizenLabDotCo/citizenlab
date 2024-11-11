@@ -7,7 +7,7 @@ import {
   stylingConsts,
   Icon,
   colors,
-  H4,
+  Title,
 } from '@citizenlab/cl2-component-library';
 import { RouteType } from 'routes';
 import styled from 'styled-components';
@@ -115,9 +115,9 @@ const LightProjectCard = ({ project, ml, mr, onKeyDown }: Props) => {
           )}
         </ProjectImageContainer>
       </Box>
-      <H4 mt="8px" mb="0px">
+      <Title variant="h4" mt="8px" mb="0px">
         {title}
-      </H4>
+      </Title>
       <Box mt="8px">
         <Icon
           name="clock-circle"
