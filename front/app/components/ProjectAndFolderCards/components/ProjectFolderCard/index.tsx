@@ -9,7 +9,7 @@ import {
   Icon,
   useBreakpoint,
   Box,
-  H3,
+  Title,
 } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
 import { RouteType } from 'routes';
@@ -242,7 +242,7 @@ const ContentHeaderLabel = styled.span`
   align-items: center;
 `;
 
-const FolderTitle = styled(H3)`
+const FolderTitle = styled(Title)`
   color: ${({ theme }) => theme.colors.tenantText};
   margin: 0;
   padding: 0;
@@ -409,7 +409,7 @@ const ProjectFolderCard = memo<Props>(
 
     const screenReaderContent = (
       <ScreenReaderOnly>
-        <FolderTitle>
+        <FolderTitle variant="h3">
           <FormattedMessage {...messages.a11y_folderTitle} />
           <T value={publication.data.attributes.publication_title_multiloc} />
         </FolderTitle>
@@ -453,6 +453,7 @@ const ProjectFolderCard = memo<Props>(
 
           <ContentBody className={size} aria-hidden>
             <FolderTitle
+              variant="h3"
               onClick={handleProjectTitleOnClick(
                 publication.data.relationships.publication.data.id
               )}

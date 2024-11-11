@@ -10,7 +10,7 @@ import {
   defaultCardStyle,
   isRtl,
   Tooltip,
-  H3,
+  Title,
 } from '@citizenlab/cl2-component-library';
 import styled, { useTheme } from 'styled-components';
 
@@ -253,9 +253,9 @@ const CauseCard = ({ cause, className, project }: Props) => {
 
       <Right>
         <Content>
-          <H3 color="tenantText" mt="0px">
+          <Title variant="h3" color="tenantText" mt="0px">
             <T value={cause.attributes.title_multiloc} />
-          </H3>
+          </Title>
           <ScreenReaderOnly>
             <FormattedMessage
               {...messages.xVolunteers}
