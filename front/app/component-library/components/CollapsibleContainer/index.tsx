@@ -89,7 +89,7 @@ const CollapseContainer = styled(Box)`
 `;
 
 const CollapsibleContainer = ({
-  isOpenByDefault,
+  isOpenByDefault = false,
   title,
   children,
   ...boxProps
