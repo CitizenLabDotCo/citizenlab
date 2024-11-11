@@ -13,6 +13,8 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 import messages from '../messages';
+import { Sort } from '../shared/Filters/SortFilterDropdown';
+import SortingBox from '../shared/Filters/SortingBox/SortingBox';
 import StatusFilterBox from '../shared/Filters/StatusFilterBox';
 import TopicFilterBox from '../shared/Filters/TopicFilterBox';
 
@@ -72,6 +74,8 @@ export interface Props {
   onSearch: (searchTerm: string) => void;
   onChangeStatus: (ideaStatus: string | null) => void;
   onChangeTopics: (topics: string[] | null) => void;
+  handleSortOnChange: (sort: Sort) => void;
+  phaseId?: string;
 }
 
 const FiltersSideBar = ({
@@ -81,10 +85,12 @@ const FiltersSideBar = ({
   ideasFilterCounts,
   numberOfSearchResults,
   selectedIdeaFilters,
+  phaseId,
   onClearFilters,
   onSearch,
   onChangeStatus,
   onChangeTopics,
+  handleSortOnChange,
 }: Props) => {
   return (
     <FiltersSidebarContainer className={className}>
@@ -111,6 +117,7 @@ const FiltersSideBar = ({
         debounce={1500}
         a11y_numberOfSearchResults={numberOfSearchResults}
       />
+      <SortingBox handleSortOnChange={handleSortOnChange} phaseId={phaseId} />
       <StyledIdeasStatusFilter
         selectedStatusId={selectedIdeaFilters.idea_status}
         selectedIdeaFilters={selectedIdeaFilters}
