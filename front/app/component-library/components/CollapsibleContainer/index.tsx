@@ -27,8 +27,9 @@ const TitleButton = styled(Box)`
   cursor: pointer;
   width: 100%;
   text-align: left;
-  margin: 0px !important;
-  padding: 0px !important;
+  margin: 0px;
+  padding: 0px;
+
   ${isRtl`
     text-align: right;
     direction: rtl;

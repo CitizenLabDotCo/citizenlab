@@ -7,7 +7,11 @@ import { FrontOfficeSort } from 'api/ideas/types';
 
 import { useIntl } from 'utils/cl-intl';
 
-import { getIconNameForSortingOption, getLabelForSortingOption } from './utils';
+import {
+  getButtonBackgroundColor,
+  getIconNameForSortingOption,
+  getLabelForSortingOption,
+} from './utils';
 
 type SortTypeButtonProps = {
   sortType: FrontOfficeSort;
@@ -22,6 +26,7 @@ const StyledBox = styled(Box)`
   width: 100% !important;
   justify-content: left;
   border-radius: 3px;
+  cursor: pointer;
 `;
 
 const SortTypeButton = ({
@@ -32,7 +37,6 @@ const SortTypeButton = ({
   const theme = useTheme();
   const { formatMessage } = useIntl();
   const [isHover, setIsHover] = React.useState(false);
-  const isHoverOrSelected = isHover || isSelected;
 
   return (
     <StyledBox
@@ -44,15 +48,15 @@ const SortTypeButton = ({
       onMouseLeave={() => {
         setIsHover(false);
       }}
-      bgColor={isHoverOrSelected ? theme.colors.tenantPrimary : 'white'}
+      bgColor={getButtonBackgroundColor(isSelected, isHover, theme)}
     >
       <Icon
-        fill={isHoverOrSelected ? colors.white : theme.colors.textPrimary}
+        fill={isSelected ? colors.white : theme.colors.textPrimary}
         height="14px"
         name={getIconNameForSortingOption(sortType)}
         my="auto"
       />
-      <Text color={isHoverOrSelected ? 'white' : 'textPrimary'} m="0px">
+      <Text color={isSelected ? 'white' : 'textPrimary'} m="0px">
         {formatMessage(getLabelForSortingOption(sortType))}
       </Text>
     </StyledBox>
