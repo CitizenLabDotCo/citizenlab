@@ -5,6 +5,7 @@ import {
   IconButton,
   Text,
   colors,
+  Tooltip,
   Button,
 } from '@citizenlab/cl2-component-library';
 
@@ -12,6 +13,7 @@ import { Action } from 'api/permissions/types';
 import { IPermissionsCustomFieldData } from 'api/permissions_custom_fields/types';
 import useDeletePermissionsCustomField from 'api/permissions_custom_fields/useDeletePermissionsCustomField';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
 import { useIntl } from 'utils/cl-intl';
@@ -31,6 +33,10 @@ const CustomField = ({ field, phaseId, action }: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const isPermissionsCustomFieldsAllowed = useFeatureFlag({
+    name: 'permissions_custom_fields',
+    onlyCheckAllowed: true,
+  });
 
   const { mutate: deletePermissionsCustomField } =
     useDeletePermissionsCustomField({
@@ -60,19 +66,29 @@ const CustomField = ({ field, phaseId, action }: Props) => {
         </Box>
         {!disableEditAndDelete && (
           <Box display="flex">
-            <Button
-              icon="edit"
-              buttonStyle="text"
-              p="0"
-              m="0"
-              mr="28px"
-              onClick={(e) => {
-                e.preventDefault();
-                setIsModalOpen(true);
-              }}
+            <Tooltip
+              content={formatMessage(
+                messages.contactGovSuccessToAccessAddingAQuestion
+              )}
+              disabled={isPermissionsCustomFieldsAllowed}
             >
-              {formatMessage(messages.edit)}
-            </Button>
+              <Box>
+                <Button
+                  icon="edit"
+                  buttonStyle="text"
+                  p="0"
+                  m="0"
+                  mr="28px"
+                  disabled={!isPermissionsCustomFieldsAllowed}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setIsModalOpen(true);
+                  }}
+                >
+                  {formatMessage(messages.edit)}
+                </Button>
+              </Box>
+            </Tooltip>
             <IconButton
               iconName="delete"
               iconColor={colors.grey700}
