@@ -72,8 +72,6 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   IframeMultiloc: iframeTitle,
   ImageMultiloc: imageMultilocTitle,
   TextMultiloc: textMultilocTitle,
-  ThreeColumn: threeColumnTitle,
-  TwoColumn: twoColumnTitle,
   WhiteSpace: whiteSpaceTitle,
 
   // Homepage builder widgets
@@ -89,6 +87,8 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
 
   // DEPRECATED
   Proposals: callToActionTitle,
+  ThreeColumn: threeColumnTitle,
+  TwoColumn: twoColumnTitle,
 };
 
 const WIDGETS_WITHOUT_POINTER_EVENTS = new Set<string>([
