@@ -292,6 +292,21 @@ describe ProjectsFinderService do
         expect(Project.count).to eq 3
         expect(result).to match_array([finished_project1])
       end
+
+      it 'excludes projects with an endless phase' do
+        endless_project = create(:project)
+        create(:phase, project: endless_project, start_at: 3.days.ago, end_at: nil)
+
+        expect(Project.count).to eq 3
+        expect(result).to match_array([finished_project1])
+      end
+
+      it 'excludes projects with no phase' do
+        _phaseless_project = create(:project, phases: [])
+
+        expect(Project.count).to eq 3
+        expect(result).to match_array([finished_project1])
+      end
     end
   end
 end
