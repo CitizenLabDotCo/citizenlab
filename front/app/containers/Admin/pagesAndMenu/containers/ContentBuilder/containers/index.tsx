@@ -18,8 +18,8 @@ import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
 
 import { isNilOrError } from 'utils/helperUtils';
 
+import EditModePreview from '../components/EditModePreview';
 import Editor from '../components/Editor';
-import HomepageBuilderEditModePreview from '../components/HomepageBuilderEditModePreview';
 import Settings from '../components/Settings';
 import Toolbox from '../components/Toolbox';
 import TopBar from '../components/TopBar';
@@ -121,10 +121,7 @@ const HomepageBuilderPage = () => {
         </Box>
       </Editor>
       <Box justifyContent="center" display={previewEnabled ? 'flex' : 'none'}>
-        <HomepageBuilderEditModePreview
-          ref={iframeRef}
-          selectedLocale={selectedLocale}
-        />
+        <EditModePreview ref={iframeRef} selectedLocale={selectedLocale} />
       </Box>
     </FullscreenContentBuilder>
   );
