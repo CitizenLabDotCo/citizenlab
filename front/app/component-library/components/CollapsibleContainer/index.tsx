@@ -20,7 +20,7 @@ type CollapsibleContainerProps = {
   TitleProps;
 
 type TitleProps = {
-  titleVariant?: Variant;
+  titleVariant: Variant;
   titleFontSize?: FontSize;
   titlePadding?: string;
   titleFontWeight?: FontWeight;
@@ -124,7 +124,7 @@ const CollapsibleContainer = ({
   return (
     <Box {...boxProps}>
       <Title
-        variant={titleVariant || 'h3'}
+        variant={titleVariant}
         fontSize={titleFontSize}
         m="0px"
         p={titlePadding || '0px'}
