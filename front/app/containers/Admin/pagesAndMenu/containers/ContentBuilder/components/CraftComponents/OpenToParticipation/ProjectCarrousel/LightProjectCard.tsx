@@ -3,11 +3,11 @@ import React from 'react';
 import {
   Box,
   Image,
-  Title,
   Text,
   stylingConsts,
   Icon,
   colors,
+  Title,
 } from '@citizenlab/cl2-component-library';
 import { RouteType } from 'routes';
 import styled from 'styled-components';
@@ -115,7 +115,7 @@ const LightProjectCard = ({ project, ml, mr, onKeyDown }: Props) => {
           )}
         </ProjectImageContainer>
       </Box>
-      <Title variant="h4" mt="8px" mb="0px" fontWeight="bold">
+      <Title variant="h4" mt="8px" mb="0px">
         {title}
       </Title>
       <Box mt="8px">
