@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Box, Text, Icon, colors } from '@citizenlab/cl2-component-library';
-import styled, { useTheme } from 'styled-components';
+import { useTheme } from 'styled-components';
 
 import { FrontOfficeSort } from 'api/ideas/types';
 
@@ -19,16 +19,6 @@ type SortTypeButtonProps = {
   isSelected: boolean;
 };
 
-const StyledBox = styled(Box)`
-  display: flex;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  width: 100% !important;
-  justify-content: left;
-  border-radius: 3px;
-  cursor: pointer;
-`;
-
 const SortTypeButton = ({
   sortType,
   handleSortOnChange,
@@ -39,8 +29,13 @@ const SortTypeButton = ({
   const [isHover, setIsHover] = React.useState(false);
 
   return (
-    <StyledBox
+    <Box
       as="button"
+      display="flex"
+      py="8px"
+      w="100%"
+      justifyContent="flex-start"
+      borderRadius="3px"
       onClick={() => handleSortOnChange(sortType)}
       onMouseEnter={() => {
         setIsHover(true);
@@ -49,6 +44,7 @@ const SortTypeButton = ({
         setIsHover(false);
       }}
       bgColor={getButtonBackgroundColor(isSelected, isHover, theme)}
+      style={{ cursor: 'pointer' }}
     >
       <Icon
         fill={isSelected ? colors.white : theme.colors.textPrimary}
@@ -59,7 +55,7 @@ const SortTypeButton = ({
       <Text color={isSelected ? 'white' : 'textPrimary'} m="0px">
         {formatMessage(getLabelForSortingOption(sortType))}
       </Text>
-    </StyledBox>
+    </Box>
   );
 };
 
