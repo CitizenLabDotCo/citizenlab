@@ -29,7 +29,10 @@ import messages from '../../messages';
 import CallToAction, { callToActionTitle } from '../Widgets/CallToAction';
 import Events from '../Widgets/Events';
 import HomepageBanner, { homepageBannerTitle } from '../Widgets/HomepageBanner';
-import { getHomepageBannerDefaultSettings } from '../Widgets/HomepageBanner/utils';
+import {
+  getHomepageBannerDefaultImage,
+  getHomepageBannerDefaultSettings,
+} from '../Widgets/HomepageBanner/utils';
 import OpenToParticipation, {
   openToParticipationTitle,
 } from '../Widgets/OpenToParticipation';
@@ -115,6 +118,7 @@ const HomepageBuilderToolbox = ({
               homepageSettings={getHomepageBannerDefaultSettings(
                 theme.colors.tenantPrimary
               )}
+              image={getHomepageBannerDefaultImage()}
             />
           }
           icon="rectangle"
