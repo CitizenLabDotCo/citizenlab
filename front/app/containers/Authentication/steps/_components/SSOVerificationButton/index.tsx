@@ -1,5 +1,8 @@
 import React from 'react';
 
+import { colors, IconNames } from '@citizenlab/cl2-component-library';
+import { MessageDescriptor } from 'react-intl';
+
 import {
   TVerificationMethod,
   TVerificationMethodName,
@@ -10,10 +13,9 @@ import { AUTH_PATH } from 'containers/App/constants';
 import VerificationMethodButton from 'components/UI/VerificationMethodButton';
 
 import { getJwt } from 'utils/auth/jwt';
-import { removeUrlLocale } from 'utils/removeUrlLocale';
-import { colors, IconNames } from '@citizenlab/cl2-component-library';
 import { FormattedMessage } from 'utils/cl-intl';
-import { MessageDescriptor } from 'react-intl';
+import { removeUrlLocale } from 'utils/removeUrlLocale';
+
 import messages from './messages';
 
 interface Props {

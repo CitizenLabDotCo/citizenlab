@@ -5,8 +5,6 @@ import { isLastVerificationMethod } from 'api/verification_methods/util';
 
 import { ModuleConfiguration } from 'utils/moduleUtils';
 
-// TODO: JS - Check if we need this lazy import everywhere?
-// Could we do a lazy import for sso icons?
 const SSOVerificationButton = React.lazy(
   () =>
     import('containers/Authentication/steps/_components/SSOVerificationButton')

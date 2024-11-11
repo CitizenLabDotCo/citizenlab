@@ -6,9 +6,9 @@ import {
 } from 'api/verification_methods/types';
 import { isLastVerificationMethod } from 'api/verification_methods/util';
 
-import { ModuleConfiguration } from 'utils/moduleUtils';
-
 import SSOVerificationButton from 'containers/Authentication/steps/_components/SSOVerificationButton';
+
+import { ModuleConfiguration } from 'utils/moduleUtils';
 
 const verificationMethodName: TVerificationMethodName = 'id_austria';
 const configuration: ModuleConfiguration = {

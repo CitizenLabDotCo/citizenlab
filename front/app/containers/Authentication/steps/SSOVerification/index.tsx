@@ -5,6 +5,8 @@ import { Box, Text } from '@citizenlab/cl2-component-library';
 import { SSOProvider } from 'api/authentication/singleSignOn';
 import useVerificationMethodVerifiedActions from 'api/verification_methods/useVerificationMethodVerifiedActions';
 
+import SSOVerificationButton from 'containers/Authentication/steps/_components/SSOVerificationButton';
+
 import ClaveUnicaButton from 'components/UI/ClaveUnicaButton/ClaveUnicaButton';
 import claveUnicaButtonMessages from 'components/UI/ClaveUnicaButton/messages';
 
@@ -13,7 +15,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import TextButton from '../_components/TextButton';
 
 import messages from './messages';
-import SSOVerificationButton from 'containers/Authentication/steps/_components/SSOVerificationButton';
 
 interface Props {
   onClickSSO: (ssoProvider: SSOProvider) => void;
