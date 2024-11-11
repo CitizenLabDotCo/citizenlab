@@ -11,11 +11,25 @@ class ProjectsFinderService
   def finished_or_archived
     return @projects.none unless @finished || @archived
 
-    @projects = finished if @finished
+    finished_projects = @finished ? finished : @projects.none
+    archived_projects = @archived ? archived : @projects.none
 
-    # @projects = or_archived(@projects) if @archived
+    union_scope(finished_projects, archived_projects).distinct
+  end
 
+  def union_scope(scope1, scope2)
+    scope1_sql = scope1.to_sql
+    scope2_sql = scope2.to_sql
+
+    union_sql = "#{scope1_sql} UNION #{scope2_sql}"
+
+    Project.from("(#{union_sql}) AS projects")
+  end
+
+  def archived
     @projects
+      .joins('INNER JOIN admin_publications AS admin_publications ON admin_publications.publication_id = projects.id')
+      .where(admin_publications: { publication_status: 'archived' })
   end
 
   def finished
@@ -38,7 +52,6 @@ class ProjectsFinderService
         'last_phases.last_phase_end_at < ? OR reports.id IS NOT NULL',
         Time.zone.now
       )
-      .distinct
   end
 
   # Returns an ActiveRecord collection of published projects that are also

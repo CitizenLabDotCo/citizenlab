@@ -308,5 +308,31 @@ describe ProjectsFinderService do
         expect(result).to match_array([finished_project1])
       end
     end
+
+    describe "when passed 'archived' parameter" do
+      let!(:archived_project) { create(:project, admin_publication_attributes: { publication_status: 'archived' }) }
+      let!(:_draft_project) { create(:project, admin_publication_attributes: { publication_status: 'draft' }) }
+      let!(:_published_project) { create(:project, admin_publication_attributes: { publication_status: 'published' }) }
+
+      let(:result) { service.new(Project.all, user, { archived: true }).finished_or_archived }
+
+      it 'includes archived projects' do
+        expect(Project.count).to eq 5
+        expect(result).to eq [archived_project]
+      end
+    end
+
+    describe "when passed 'finished' AND 'archived' parameter" do
+      let!(:archived_project) { create(:project, admin_publication_attributes: { publication_status: 'archived' }) }
+      let!(:_draft_project) { create(:project, admin_publication_attributes: { publication_status: 'draft' }) }
+      let!(:_published_project) { create(:project, admin_publication_attributes: { publication_status: 'published' }) }
+
+      let(:result) { service.new(Project.all, user, { finished: true, archived: true }).finished_or_archived }
+
+      it 'includes expected projects' do
+        expect(Project.count).to eq 5
+        expect(result).to match_array [finished_project1, archived_project]
+      end
+    end
   end
 end
