@@ -22,8 +22,22 @@ class ProjectsFinderService
     @projects
       .joins('INNER JOIN admin_publications AS admin_publications ON admin_publications.publication_id = projects.id')
       .where(admin_publications: { publication_status: 'published' })
-      .joins('LEFT JOIN phases AS phases ON phases.project_id = projects.id')
-      .where('phases.end_at < ?', Time.zone.now)
+      .joins(
+        'LEFT JOIN LATERAL (' \
+        'SELECT phases.id AS last_phase_id, phases.end_at AS last_phase_end_at ' \
+        'FROM phases ' \
+        'WHERE phases.project_id = projects.id ' \
+        'ORDER BY phases.end_at DESC ' \
+        'LIMIT 1' \
+        ') AS last_phases ON true'
+      )
+      .joins(
+        'LEFT JOIN report_builder_reports AS reports ON reports.phase_id = last_phases.last_phase_id'
+      )
+      .where(
+        'last_phases.last_phase_end_at < ? OR reports.id IS NOT NULL',
+        Time.zone.now
+      )
       .distinct
   end
 

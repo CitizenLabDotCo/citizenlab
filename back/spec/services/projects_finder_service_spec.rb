@@ -255,7 +255,7 @@ describe ProjectsFinderService do
     describe "when passed 'finished' parameter" do
       let(:result) { service.new(Project.all, user, { finished: true }).finished_or_archived }
 
-      it 'excludes finished projects' do
+      it 'excludes unfinished projects (without a report in the last phase)' do
         expect(Project.count).to eq 2
         expect(result).to eq [finished_project1]
       end
@@ -265,9 +265,32 @@ describe ProjectsFinderService do
           :project_with_two_past_ideation_phases,
           admin_publication_attributes: { publication_status: 'draft' }
         )
+        _archived_finished_project = create(
+          :project_with_two_past_ideation_phases,
+          admin_publication_attributes: { publication_status: 'archived' }
+        )
+
+        expect(Project.count).to eq 4
+        expect(result).to eq [finished_project1]
+      end
+
+      it 'includes finished projects with a last phase that contains a report' do
+        finished_project2 = create(:project)
+        create(:phase, project: finished_project2, start_at: 2.days.ago, end_at: 1.day.ago)
+        create(:report, phase: finished_project2.phases.last)
 
         expect(Project.count).to eq 3
-        expect(result).to eq [finished_project1]
+        expect(result).to match_array([finished_project1, finished_project2])
+      end
+
+      it 'excludes finished projects with a phase containing a report that is not the final phase' do
+        finished_project2 = create(:project)
+        phase1 = create(:phase, project: finished_project2, start_at: 3.days.ago, end_at: 2.days.ago)
+        _phase2 = create(:phase, project: finished_project2, start_at: 1.day.ago, end_at: 1.day.from_now)
+        create(:report, phase: phase1)
+
+        expect(Project.count).to eq 3
+        expect(result).to match_array([finished_project1])
       end
     end
   end
