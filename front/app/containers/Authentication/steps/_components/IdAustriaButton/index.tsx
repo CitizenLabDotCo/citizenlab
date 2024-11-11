@@ -1,16 +1,17 @@
 import React from 'react';
 
+import { colors } from '@citizenlab/cl2-component-library';
+
 import { TVerificationMethod } from 'api/verification_methods/types';
 
 import { AUTH_PATH } from 'containers/App/constants';
+import messages from 'containers/Authentication/steps/_components/IdAustriaButton/messages';
 
 import VerificationMethodButton from 'components/UI/VerificationMethodButton';
 
 import { getJwt } from 'utils/auth/jwt';
-import { removeUrlLocale } from 'utils/removeUrlLocale';
-import { colors } from '@citizenlab/cl2-component-library';
-import messages from 'containers/Authentication/steps/_components/IdAustriaButton/messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import { removeUrlLocale } from 'utils/removeUrlLocale';
 
 interface Props {
   method?: TVerificationMethod;

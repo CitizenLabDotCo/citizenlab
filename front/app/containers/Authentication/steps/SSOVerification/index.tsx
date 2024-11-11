@@ -12,8 +12,8 @@ import claveUnicaButtonMessages from 'components/UI/ClaveUnicaButton/messages';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import MitIdButton from '../_components/MitIdButton';
 import IdAustriaButton from '../_components/IdAustriaButton';
+import MitIdButton from '../_components/MitIdButton';
 import TextButton from '../_components/TextButton';
 import AuthProviderButton from '../AuthProviders/AuthProviderButton';
 import authProviderMessages from '../AuthProviders/messages';
