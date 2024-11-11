@@ -94,8 +94,10 @@ class SideFxIdeaService
   end
 
   def after_destroy(frozen_idea, user)
-    serialized_idea = serialize_idea(frozen_idea)
+    # Refresh the count of project participants by clearing the cache
+    ParticipantsService.new.clear_project_participants_count_cache(frozen_idea.project) if frozen_idea.project
 
+    serialized_idea = serialize_idea(frozen_idea)
     LogActivityJob.perform_later(
       encode_frozen_resource(frozen_idea),
       'deleted',

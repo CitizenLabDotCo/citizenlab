@@ -356,6 +356,10 @@ module ParticipationMethod
       true
     end
 
+    def supports_private_attributes_in_export?
+      true
+    end
+
     def supports_input_term?
       true
     end

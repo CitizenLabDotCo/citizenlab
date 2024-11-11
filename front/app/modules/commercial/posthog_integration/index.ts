@@ -54,8 +54,8 @@ const initializePosthog = async (
     autocapture: false,
     persistence: 'memory', // no cookies
     loaded(ph) {
-      if (posthog.has_opted_out_capturing({ enable_persistence: false })) {
-        posthog.opt_in_capturing({ enable_persistence: false });
+      if (posthog.has_opted_out_capturing()) {
+        posthog.opt_in_capturing();
       }
 
       if (user) {
@@ -182,9 +182,7 @@ const configuration: ModuleConfiguration = {
             // writing to localstorage. Clearing it, instead, seems to work fine.
             // TODO: Fix this the next time the file is edited.
             // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-            posthogClient?.clear_opt_in_out_capturing({
-              enable_persistence: false,
-            });
+            posthogClient?.clear_opt_in_out_capturing();
           }
         }
       }

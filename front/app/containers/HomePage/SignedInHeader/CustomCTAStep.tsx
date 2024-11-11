@@ -11,9 +11,8 @@ import { isNilOrError } from 'utils/helperUtils';
 
 import AcceptButton from './AcceptButton';
 import OnboardingStep from './OnboardingStep';
+import { HeaderContent, Left, Text, Right } from './Shared';
 import SkipButton from './SkipButton';
-
-import { HeaderContent, Left, Text, Right } from './';
 
 interface Props {
   currentOnboardingCampaignName: OnboardingCampaignName;

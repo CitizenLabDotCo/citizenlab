@@ -17,8 +17,7 @@ import messages from '../messages';
 
 import CTA from './CTA';
 import OnboardingStep from './OnboardingStep';
-
-import { Left, Right } from './';
+import { Left, Right } from './Shared';
 
 const HeaderContent = styled.div`
   position: absolute;

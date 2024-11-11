@@ -192,4 +192,5 @@ RSpec.describe ParticipationMethod::Voting do
   its(:supports_submission?) { is_expected.to be false }
   its(:use_reactions_as_votes?) { is_expected.to be false }
   its(:transitive?) { is_expected.to be true }
+  its(:supports_private_attributes_in_export?) { is_expected.to be true }
 end

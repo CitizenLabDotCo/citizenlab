@@ -23,10 +23,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.logo',
     defaultMessage: 'Logo',
   },
-  noLogo: {
-    id: 'app.containers.AdminPage.SettingsPage.noLogo',
-    defaultMessage: 'Please upload a logo',
-  },
   homePageCustomizableSection: {
     id: 'app.components.AdminPage.SettingsPage.homePageCustomizableSection',
     defaultMessage: 'Homepage customizable section',

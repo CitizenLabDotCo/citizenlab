@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class WebApi::V1::ProjectsController < ApplicationController
-  before_action :set_project, only: %i[show update reorder destroy index_xlsx votes_by_user_xlsx votes_by_input_xlsx delete_inputs]
+  before_action :set_project, only: %i[show update reorder destroy index_xlsx votes_by_user_xlsx votes_by_input_xlsx delete_inputs destroy_participation_data]
 
   skip_before_action :authenticate_user
   skip_after_action :verify_policy_scoped, only: :index
@@ -49,6 +49,31 @@ class WebApi::V1::ProjectsController < ApplicationController
       WebApi::V1::ProjectSerializer,
       params: jsonapi_serializer_params(instance_options),
       include: %i[admin_publication project_images current_phase]
+    )
+  end
+
+  # For use with 'Open to participation' homepage widget.
+  # Returns all published or archived projects that are visible to user
+  # and in an active participatory phase (where user can do something).
+  # Ordered by the end date of the current phase, soonest first (nulls last).
+  def index_projects_with_active_participatory_phase
+    projects = policy_scope(Project)
+    projects_and_descriptors = ProjectsFinderService.new(projects, current_user, params).participation_possible
+    projects = projects_and_descriptors[:projects]
+
+    @projects = paginate projects
+    @projects = @projects.preload(
+      :project_images,
+      phases: [:report]
+    )
+
+    authorize @projects, :index_projects_with_active_participatory_phase?
+
+    render json: linked_json(
+      @projects,
+      WebApi::V1::ProjectMiniSerializer,
+      params: jsonapi_serializer_params.merge(project_descriptor_pairs: projects_and_descriptors[:descriptor_pairs]),
+      include: %i[project_images current_phase]
     )
   end
 
@@ -138,7 +163,7 @@ class WebApi::V1::ProjectsController < ApplicationController
 
   def index_xlsx
     I18n.with_locale(current_user.locale) do
-      xlsx = Export::Xlsx::InputsGenerator.new.generate_inputs_for_project @project.id, view_private_attributes: true
+      xlsx = Export::Xlsx::InputsGenerator.new.generate_inputs_for_project @project.id
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'inputs.xlsx'
     end
   end
@@ -169,6 +194,16 @@ class WebApi::V1::ProjectsController < ApplicationController
     else
       raise 'Project has no voting phase.'
     end
+  end
+
+  def destroy_participation_data
+    ParticipantsService.new.destroy_participation_data(@project)
+
+    render json: WebApi::V1::ProjectSerializer.new(
+      @project,
+      params: jsonapi_serializer_params,
+      include: [:admin_publication]
+    ).serializable_hash, status: :ok
   end
 
   private

@@ -70,30 +70,32 @@ const MainHeader = () => {
 
   const [showMobileStickyNav, setShowMobileStickyNav] =
     useState<boolean>(false);
-  const [scrollTop, setScrollTop] = useState(0);
 
   const isSmallerThanTablet = useBreakpoint('tablet');
   const isDesktopUser = !isSmallerThanTablet;
 
-  // Used to show/hide the mobile navbar on scroll
+  // Used to show the mobile navbar on scrolling up, or hide it on scrolling down
   useEffect(() => {
+    let lastScrollTop = 0;
+
     function onScroll() {
+      // Positive value means we've scrolled down
       const currentPosition = document.documentElement.scrollTop;
-      if (currentPosition <= 0) {
-        setShowMobileStickyNav(false); // Don't show if we're at the top already
-      } else if (currentPosition > scrollTop) {
-        // downscroll
+
+      // not scrolled yet/still at the top or downscroll
+      if (currentPosition <= 0 || currentPosition > lastScrollTop) {
         setShowMobileStickyNav(false);
-      } else {
         // upscroll
+      } else {
         setShowMobileStickyNav(true);
       }
-      setScrollTop(currentPosition <= 0 ? 0 : currentPosition);
+
+      lastScrollTop = currentPosition <= 0 ? 0 : currentPosition;
     }
 
     window.addEventListener('scroll', onScroll);
     return () => window.removeEventListener('scroll', onScroll);
-  }, [scrollTop]);
+  }, []);
 
   return (
     <Container
