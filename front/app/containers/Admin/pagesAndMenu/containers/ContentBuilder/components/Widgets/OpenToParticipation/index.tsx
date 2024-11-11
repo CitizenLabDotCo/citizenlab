@@ -6,8 +6,9 @@ import useProjectsMini from 'api/projects_mini/useProjectsMini';
 
 import useLocalize from 'hooks/useLocalize';
 
+import ProjectCarrousel from '../_shared/ProjectCarrousel';
+
 import messages from './messages';
-import ProjectCarrousel from './ProjectCarrousel';
 import Settings from './Settings';
 
 interface Props {
