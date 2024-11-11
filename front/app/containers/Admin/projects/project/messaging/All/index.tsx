@@ -57,12 +57,7 @@ const CustomEmails = () => {
             padding="80px 0 100px"
           >
             <Icon name="email-2" width="80px" height="80px" />
-            <Title
-              fontSize="xl"
-              fontWeight="bold"
-              marginBottom="10px"
-              color="primary"
-            >
+            <Title fontSize="xl" marginBottom="10px" color="primary">
               <FormattedMessage {...messages.noCampaignsHeader} />
             </Title>
             <Text color="textSecondary" mb="30px" maxWidth="450px">
