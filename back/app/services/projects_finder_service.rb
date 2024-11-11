@@ -14,23 +14,9 @@ class ProjectsFinderService
     base_scope = @projects
       .joins('INNER JOIN admin_publications AS admin_publications ON admin_publications.publication_id = projects.id')
 
-    finished_scope = base_scope.where(admin_publications: { publication_status: 'published' })
-    archived_scope = base_scope.where(admin_publications: { publication_status: 'archived' })
-
     if @finished
-      finished_scope = finished_scope
-        .joins(
-          'LEFT JOIN LATERAL (' \
-          'SELECT phases.id AS last_phase_id, phases.end_at AS last_phase_end_at ' \
-          'FROM phases ' \
-          'WHERE phases.project_id = projects.id ' \
-          'ORDER BY phases.end_at DESC ' \
-          'LIMIT 1' \
-          ') AS last_phases ON true'
-        )
-        .joins(
-          'LEFT JOIN report_builder_reports AS reports ON reports.phase_id = last_phases.last_phase_id'
-        )
+      finished_scope = base_scope.where(admin_publications: { publication_status: 'published' })
+      finished_scope = joins_last_phases_with_reports(finished_scope)
         .where(
           '(last_phases.last_phase_end_at < ? OR reports.id IS NOT NULL) AND admin_publications.publication_status = ?',
           Time.zone.now, 'published'
@@ -38,19 +24,8 @@ class ProjectsFinderService
     end
 
     if @archived
-      archived_scope = archived_scope
-        .joins(
-          'LEFT JOIN LATERAL (' \
-          'SELECT phases.id AS last_phase_id, phases.end_at AS last_phase_end_at ' \
-          'FROM phases ' \
-          'WHERE phases.project_id = projects.id ' \
-          'ORDER BY phases.end_at DESC ' \
-          'LIMIT 1' \
-          ') AS last_phases ON true'
-        )
-        .joins(
-          'LEFT JOIN report_builder_reports AS reports ON reports.phase_id = last_phases.last_phase_id'
-        )
+      archived_scope = base_scope.where(admin_publications: { publication_status: 'archived' })
+      archived_scope = joins_last_phases_with_reports(archived_scope)
     end
 
     if @finished && @archived
@@ -200,6 +175,22 @@ class ProjectsFinderService
         Time.zone.now.to_fs(:db), Time.zone.now.to_fs(:db)
       )
       .select('projects.*, phases.end_at AS phase_end_at')
+  end
+
+  def joins_last_phases_with_reports(projects)
+    projects
+      .joins(
+        'LEFT JOIN LATERAL (' \
+        'SELECT phases.id AS last_phase_id, phases.end_at AS last_phase_end_at ' \
+        'FROM phases ' \
+        'WHERE phases.project_id = projects.id ' \
+        'ORDER BY phases.end_at DESC ' \
+        'LIMIT 1' \
+        ') AS last_phases ON true'
+      )
+      .joins(
+        'LEFT JOIN report_builder_reports AS reports ON reports.phase_id = last_phases.last_phase_id'
+      )
   end
 
   def user_requirements_service
