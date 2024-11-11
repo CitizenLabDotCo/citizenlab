@@ -23,10 +23,8 @@ class ProjectsFinderService
         )
     end
 
-    if @archived
-      archived_scope = base_scope.where(admin_publications: { publication_status: 'archived' })
-      archived_scope = joins_last_phases_with_reports(archived_scope)
-    end
+    archived_scope = base_scope.where(admin_publications: { publication_status: 'archived' }) if @archived
+    archived_scope = joins_last_phases_with_reports(archived_scope) if @archived && @finished
 
     if @finished && @archived
       combined_scope = finished_scope.or(archived_scope)
