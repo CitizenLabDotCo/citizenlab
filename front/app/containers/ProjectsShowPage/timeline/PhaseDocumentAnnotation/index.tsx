@@ -22,7 +22,7 @@ const PhaseDocumentAnnotation = ({ phase, project }: Props) => {
   if (documentUrl) {
     return (
       <Box position="relative" minHeight="500px">
-        <Title variant="h2" m="0" color="tenantText">
+        <Title variant="h2" mt="0" color="tenantText">
           <FormattedMessage {...messages.document} />
         </Title>
 
