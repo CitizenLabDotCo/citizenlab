@@ -104,7 +104,7 @@ const StatusFilter = memo<Props>(
                 <Box my="auto" w="14px" h="14px" bgColor={colors.grey500} />
                 <Text
                   m="0px"
-                  color={allFilterSelected ? 'white' : 'textSecondary'}
+                  color={allFilterSelected ? 'white' : 'textPrimary'}
                 >
                   <FormattedMessage {...messages.all} />
                 </Text>
@@ -153,7 +153,7 @@ const StatusFilter = memo<Props>(
                     />
                     <Text
                       m="0px"
-                      color={isFilterSelected ? 'white' : 'textSecondary'}
+                      color={isFilterSelected ? 'white' : 'textPrimary'}
                     >
                       <T value={status.attributes.title_multiloc}>
                         {(statusTitle) => <>{capitalize(statusTitle)}</>}
