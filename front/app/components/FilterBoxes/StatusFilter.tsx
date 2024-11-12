@@ -8,7 +8,6 @@ import {
   Text,
 } from '@citizenlab/cl2-component-library';
 import { capitalize, get } from 'lodash-es';
-import { darken } from 'polished';
 import styled from 'styled-components';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
@@ -50,10 +49,6 @@ const Status = styled.button`
   &.selected {
     color: #fff;
     background: ${({ theme }) => theme.colors.tenantPrimary};
-
-    &:hover {
-      background: ${({ theme }) => darken(0.15, theme.colors.tenantPrimary)};
-    }
 
     ${Count} {
       color: #fff;
@@ -107,7 +102,12 @@ const StatusFilter = memo<Props>(
             >
               <Box display="flex" gap="8px">
                 <Box my="auto" w="14px" h="14px" bgColor={colors.grey500} />
-                <FormattedMessage {...messages.all} />
+                <Text
+                  m="0px"
+                  color={allFilterSelected ? 'white' : 'textSecondary'}
+                >
+                  <FormattedMessage {...messages.all} />
+                </Text>
               </Box>
               <Count aria-hidden>{allPostsCount}</Count>
               <ScreenReaderOnly>
@@ -151,7 +151,10 @@ const StatusFilter = memo<Props>(
                       h="14px"
                       bgColor={status.attributes.color}
                     />
-                    <Text m="0px">
+                    <Text
+                      m="0px"
+                      color={isFilterSelected ? 'white' : 'textSecondary'}
+                    >
                       <T value={status.attributes.title_multiloc}>
                         {(statusTitle) => <>{capitalize(statusTitle)}</>}
                       </T>
