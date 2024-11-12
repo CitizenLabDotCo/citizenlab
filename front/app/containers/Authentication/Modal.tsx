@@ -60,7 +60,7 @@ const AuthModal = ({ onToggleModal }: ModalProps) => {
   const theme = useTheme();
 
   useEffect(() => {
-    onToggleModal?.(currentStep !== 'closed');
+    onToggleModal(currentStep !== 'closed');
   }, [currentStep, onToggleModal]);
 
   const smallerThanPhone = useBreakpoint('phone');
