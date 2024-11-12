@@ -26,6 +26,7 @@ import ImagePlaceholder from 'components/ProjectCard/ImagePlaceholder';
 
 import { useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
+import { truncate } from 'utils/textUtils';
 
 import { CARD_WIDTH } from './constants';
 import messages from './messages';
@@ -116,7 +117,7 @@ const LightProjectCard = ({ project, ml, mr, onKeyDown }: Props) => {
         </ProjectImageContainer>
       </Box>
       <Title variant="h4" mt="8px" mb="0px">
-        {title}
+        {truncate(title, 50)}
       </Title>
       <Box mt="8px">
         <Icon

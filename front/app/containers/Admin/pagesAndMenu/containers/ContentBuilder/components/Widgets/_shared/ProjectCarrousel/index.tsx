@@ -18,7 +18,6 @@ import { MiniProjectData } from 'api/projects_mini/types';
 import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
 
 import { useIntl } from 'utils/cl-intl';
-import { truncate } from 'utils/textUtils';
 
 import { CARD_GAP, CARD_WIDTH } from './constants';
 import Gradient from './Gradient';
@@ -157,7 +156,7 @@ const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
             mt="0px"
             ml={isSmallerThanPhone ? DEFAULT_PADDING : undefined}
           >
-            {truncate(title, 50)}
+            {title}
           </Title>
           <SkipButton
             tabIndex={0}
