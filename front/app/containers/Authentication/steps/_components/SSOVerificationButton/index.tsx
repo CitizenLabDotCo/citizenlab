@@ -41,50 +41,63 @@ const SSOVerificationButton = ({
     verificationMethodName || verificationMethod?.attributes.name;
   if (!methodName) return null;
 
+  const verificationButtonConfigs: {
+    [methodName in TVerificationMethodName]?: {
+      label: MessageDescriptor;
+      icon: IconNames;
+    };
+  } = {
+    id_austria: {
+      label: messages.verifyIdAustria,
+      icon: 'idaustria',
+    },
+    criipto: {
+      label: messages.verifyMitId,
+      icon: 'mitid',
+    },
+    nemlog_in: {
+      label: messages.verifyMitId,
+      icon: 'mitid',
+    },
+    fake_sso: {
+      label: messages.verifyFakeSSO,
+      icon: 'bullseye',
+    },
+    keycloak: {
+      label: messages.verifyKeycloak,
+      icon: 'idporten',
+    },
+  };
+
+  const buttonConfig = verificationButtonConfigs[methodName];
+  if (!buttonConfig) return null;
+
   const handleOnClick = () => {
     if (verificationMethod && onClick) {
       onClick(verificationMethod);
+      return;
     }
 
     if (standardSSOBehavior) {
       onClickStandardSSO?.();
-    } else {
-      const jwt = getJwt();
-      window.location.href = `${AUTH_PATH}/${
-        verificationMethod?.attributes.name
-      }?token=${jwt}&pathname=${removeUrlLocale(window.location.pathname)}`;
+      return;
     }
-  };
 
-  const buttonLabelMessages: {
-    [methodName in TVerificationMethodName]?: MessageDescriptor;
-  } = {
-    id_austria: messages.verifyIdAustria,
-    criipto: messages.verifyMitId,
-    nemlog_in: messages.verifyMitId,
-    fake_sso: messages.verifyFakeSSO,
-    keycloak: messages.verifyKeycloak,
-  };
-
-  const icons: {
-    [methodName in TVerificationMethodName]?: IconNames;
-  } = {
-    id_austria: 'idaustria',
-    criipto: 'mitid',
-    nemlog_in: 'mitid',
-    fake_sso: 'bullseye',
-    keycloak: 'idporten',
+    const jwt = getJwt();
+    window.location.href = `${AUTH_PATH}/${
+      verificationMethod?.attributes.name
+    }?token=${jwt}&pathname=${removeUrlLocale(window.location.pathname)}`;
   };
 
   return (
     <VerificationMethodButton
       id={`e2e-${methodName}-verification-button`}
-      icon={icons[methodName]}
+      icon={buttonConfig.icon}
       last={last}
       onClick={handleOnClick}
       borderColor={grayBorder ? colors.grey500 : undefined}
     >
-      <FormattedMessage {...buttonLabelMessages[methodName]} />
+      <FormattedMessage {...buttonConfig.label} />
     </VerificationMethodButton>
   );
 };
