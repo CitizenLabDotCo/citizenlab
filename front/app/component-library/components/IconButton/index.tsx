@@ -1,6 +1,6 @@
 import React, { MouseEvent, KeyboardEvent } from 'react';
 
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import Box, {
   BoxPositionProps,
@@ -30,14 +30,21 @@ const StyledIcon = styled(Icon)<{
 
 const StyledBox = styled(Box)<{
   iconColorOnHover: string;
+  disabled?: boolean;
 }>`
-  cursor: pointer;
+  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
+  opacity: ${({ disabled }) => (disabled ? 0.37 : 1)};
+  pointer-events: ${({ disabled }) => (disabled ? 'none' : 'auto')};
 
   &:hover,
   &:focus {
-    ${StyledIcon} {
-      fill: ${({ iconColorOnHover }) => iconColorOnHover};
-    }
+    ${({ disabled, iconColorOnHover }) =>
+      !disabled &&
+      css`
+        ${StyledIcon} {
+          fill: ${iconColorOnHover};
+        }
+      `}
   }
 `;
 
@@ -60,6 +67,7 @@ export type IconButtonProps = {
   transform?: string;
   opacity?: number;
   iconRef?: React.Ref<any>;
+  disabled?: boolean;
 } & BoxPositionProps &
   BoxMarginProps &
   BoxPaddingProps &
@@ -84,6 +92,7 @@ const IconButton = ({
   opacity,
   transform,
   iconRef,
+  disabled,
   ...rest
 }: IconButtonProps) => {
   return (
@@ -101,6 +110,7 @@ const IconButton = ({
       alignItems="center"
       justifyContent="center"
       opacity={opacity}
+      disabled={disabled}
       role="button"
       ref={iconRef}
       {...rest}
