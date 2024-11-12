@@ -9,6 +9,7 @@ import {
   getTheme,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
+import { SafetyCheckTwoTone } from '@mui/icons-material';
 import { configureScope } from '@sentry/react';
 import { PreviousPathnameContext } from 'context';
 import GlobalStyle from 'global-styles';
@@ -382,6 +383,7 @@ const App = ({ children }: Props) => {
             {showFrontOfficeNavbar() && (
               <ErrorBoundary>
                 <MainHeader />
+                <SafetyCheckTwoTone />
               </ErrorBoundary>
             )}
             {!isAuthenticationPending && (

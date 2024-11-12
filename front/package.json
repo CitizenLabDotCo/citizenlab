@@ -63,6 +63,7 @@
     "@jsonforms/core": "3.0.0-beta.0",
     "@jsonforms/react": "3.0.0-beta.1",
     "@jsonforms/vanilla-renderers": "3.0.0-beta.1",
+    "@mui/icons-material": "^6.1.6",
     "@segment/snippet": "5.2.1",
     "@sentry/integrations": "7.50.0",
     "@sentry/react": "7.50.0",
