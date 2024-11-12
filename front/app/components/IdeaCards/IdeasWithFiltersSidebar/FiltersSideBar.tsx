@@ -125,6 +125,7 @@ const FiltersSideBar = ({
       />
       <StyledIdeasTopicsFilter
         selectedTopicIds={selectedIdeaFilters.topics}
+        selectedIdeaFilters={selectedIdeaFilters}
         onChange={onChangeTopics}
       />
     </FiltersSidebarContainer>

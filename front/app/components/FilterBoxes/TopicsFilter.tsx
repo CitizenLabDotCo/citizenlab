@@ -1,21 +1,29 @@
-import React, { memo, useCallback, MouseEvent } from 'react';
+import React, { useCallback, MouseEvent } from 'react';
 
-import { fontSizes, colors, Box } from '@citizenlab/cl2-component-library';
-import { isError, includes } from 'lodash-es';
-import { darken } from 'polished';
+import {
+  fontSizes,
+  colors,
+  Box,
+  Text,
+  isRtl,
+} from '@citizenlab/cl2-component-library';
+import { isError, includes, get } from 'lodash-es';
 import styled from 'styled-components';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { ITopicData } from 'api/topics/types';
+
+import useLocalize from 'hooks/useLocalize';
 
 import T from 'components/T';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
 import InputFilterCollapsible from './InputFilterCollapsible';
 import messages from './messages';
+import { FilterCounts } from './types';
 
 const Topics = styled.div`
   margin-top: 16px;
@@ -25,6 +33,9 @@ const Topic = styled.button`
   color: ${colors.textSecondary};
   font-size: ${fontSizes.s}px;
   font-weight: 400;
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
   line-height: normal;
   display: inline-block;
   padding-left: 14px;
@@ -36,26 +47,30 @@ const Topic = styled.button`
   margin-bottom: 8px;
   cursor: pointer;
   user-select: none;
-  border: solid 1px ${colors.divider};
+  border: solid 1px ${colors.white};
   border-radius: ${(props) => props.theme.borderRadius};
   transition: all 80ms ease-out;
 
+  ${isRtl`
+        text-align: right;
+        direction: rtl;
+    `}
+
   &:not(.selected) {
     &:hover {
-      color: ${({ theme }) => theme.colors.tenantSecondary};
-      border-color: ${({ theme }) => theme.colors.tenantSecondary};
+      color: ${({ theme }) => theme.colors.tenantPrimary};
+      border-color: ${({ theme }) => theme.colors.tenantPrimary};
     }
   }
 
   &.selected {
     color: #fff;
-    background: ${({ theme }) => theme.colors.tenantSecondary};
-    border-color: ${({ theme }) => theme.colors.tenantSecondary};
+    background: ${({ theme }) => theme.colors.tenantPrimary};
+    border-color: ${({ theme }) => theme.colors.tenantPrimary};
 
     &:hover {
-      background: ${({ theme }) => darken(0.15, theme.colors.tenantSecondary)};
-      border-color: ${({ theme }) =>
-        darken(0.15, theme.colors.tenantSecondary)};
+      background: ${({ theme }) => theme.colors.tenantPrimary};
+      border-color: ${({ theme }) => theme.colors.tenantPrimary};
     }
   }
 `;
@@ -65,82 +80,114 @@ interface Props {
   selectedTopicIds: string[] | null | undefined;
   onChange: (arg: string[] | null) => void;
   className?: string;
+  filterCounts?: FilterCounts;
 }
 
-const TopicsFilter = memo<Props & InjectedLocalized>(
-  ({ topics, selectedTopicIds, onChange, className, localize }) => {
-    const { formatMessage } = useIntl();
+const TopicsFilter = ({
+  topics,
+  selectedTopicIds,
+  filterCounts,
+  onChange,
+  className,
+}: Props) => {
+  const localize = useLocalize();
+  const { data: appConfig } = useAppConfiguration();
+  const { formatMessage } = useIntl();
+  const customTopicsTerm = appConfig?.data.attributes.settings.core.topics_term;
 
-    const handleOnClick = useCallback(
-      (event: MouseEvent<HTMLElement>) => {
-        const topicId = event.currentTarget.dataset.id as string;
-        let output: string[] = [];
+  const handleOnClick = useCallback(
+    (event: MouseEvent<HTMLElement>) => {
+      const topicId = event.currentTarget.dataset.id as string;
+      let output: string[] = [];
 
-        if (selectedTopicIds && includes(selectedTopicIds, topicId)) {
-          output = selectedTopicIds.filter(
-            (selectedTopicId) => selectedTopicId !== topicId
-          );
-        } else {
-          output = [...(selectedTopicIds || []), topicId];
-        }
+      if (selectedTopicIds && includes(selectedTopicIds, topicId)) {
+        output = selectedTopicIds.filter(
+          (selectedTopicId) => selectedTopicId !== topicId
+        );
+      } else {
+        output = [...(selectedTopicIds || []), topicId];
+      }
 
-        onChange(output.length > 0 ? output : null);
-      },
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      [selectedTopicIds]
+      onChange(output.length > 0 ? output : null);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [selectedTopicIds]
+  );
+
+  if (!isNilOrError(topics) && topics.length > 0) {
+    const selectedTopics = topics.filter((topic) =>
+      includes(selectedTopicIds, topic.id)
     );
+    const numberOfSelectedTopics = selectedTopics.length;
+    const selectedTopicNames = selectedTopics
+      .map((topic) => {
+        return (
+          !isNilOrError(topic) && localize(topic.attributes.title_multiloc)
+        );
+      })
+      .join(', ');
 
-    if (!isNilOrError(topics) && topics.length > 0) {
-      const selectedTopics = topics.filter((topic) =>
-        includes(selectedTopicIds, topic.id)
-      );
-      const numberOfSelectedTopics = selectedTopics.length;
-      const selectedTopicNames = selectedTopics
-        .map((topic) => {
-          return (
-            !isNilOrError(topic) && localize(topic.attributes.title_multiloc)
-          );
-        })
-        .join(', ');
+    return (
+      <InputFilterCollapsible
+        title={
+          customTopicsTerm
+            ? localize(customTopicsTerm)
+            : formatMessage(messages.topicsTitle)
+        }
+        className={className}
+      >
+        <Box>
+          <Topics className="e2e-topics-filters">
+            {topics
+              .filter((topic) => !isError(topic))
+              .map((topic: ITopicData) => {
+                const filterPostCount = get(
+                  filterCounts,
+                  `topic_id.${topic.id}`,
+                  0
+                );
 
-      return (
-        <InputFilterCollapsible
-          title={formatMessage(messages.topicsTitle)}
-          className={className}
-        >
-          <Box>
-            <Topics className="e2e-topics-filters">
-              {topics
-                .filter((topic) => !isError(topic))
-                .map((topic: ITopicData) => (
+                const topicSelected = includes(selectedTopicIds, topic.id);
+
+                return (
                   <Topic
                     key={topic.id}
                     data-id={topic.id}
                     onMouseDown={removeFocusAfterMouseClick}
                     onClick={handleOnClick}
-                    className={`e2e-topic ${
-                      includes(selectedTopicIds, topic.id) ? 'selected' : ''
-                    }`}
+                    className={`e2e-topic ${topicSelected ? 'selected' : ''}`}
+                    style={{ display: 'flex' }}
                   >
-                    <T value={topic.attributes.title_multiloc} />
+                    <Box maxWidth="90%">
+                      <Text
+                        fontSize="s"
+                        m="0px"
+                        color={topicSelected ? 'white' : 'textPrimary'}
+                        wordBreak="break-word"
+                      >
+                        <T value={topic.attributes.title_multiloc} />
+                      </Text>
+                    </Box>
+
+                    <Box>{filterPostCount}</Box>
                   </Topic>
-                ))}
-            </Topics>
+                );
+              })}
+          </Topics>
 
-            <ScreenReaderOnly aria-live="polite">
-              {/* Pronounces numbers of selected topics + selected topic names */}
-              <FormattedMessage
-                {...messages.a11y_selectedTopicFilters}
-                values={{ numberOfSelectedTopics, selectedTopicNames }}
-              />
-            </ScreenReaderOnly>
-          </Box>
-        </InputFilterCollapsible>
-      );
-    }
-
-    return null;
+          <ScreenReaderOnly aria-live="polite">
+            {/* Pronounces numbers of selected topics + selected topic names */}
+            <FormattedMessage
+              {...messages.a11y_selectedTopicFilters}
+              values={{ numberOfSelectedTopics, selectedTopicNames }}
+            />
+          </ScreenReaderOnly>
+        </Box>
+      </InputFilterCollapsible>
+    );
   }
-);
 
-export default injectLocalize(TopicsFilter);
+  return null;
+};
+
+export default TopicsFilter;
