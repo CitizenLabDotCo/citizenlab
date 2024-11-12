@@ -108,7 +108,7 @@ const CollapsibleContainer = ({
   titlePadding,
   titleFontSize,
   titleFontWeight,
-  useRegionRole,
+  useRegionRole = false,
   ...boxProps
 }: CollapsibleContainerProps) => {
   const [isExpanded, setIsExpanded] = useState(isOpenByDefault);
