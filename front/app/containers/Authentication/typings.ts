@@ -8,7 +8,7 @@ import { SuccessAction } from './SuccessActions/actions';
 import { getStepConfig } from './useSteps/stepConfig';
 
 export interface ModalProps {
-  onToggleModal?: (opened: boolean) => void;
+  onToggleModal: (opened: boolean) => void;
 }
 
 export type ErrorCode =
