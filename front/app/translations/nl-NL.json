@@ -183,7 +183,7 @@
   "app.components.IdeaCards.a11y_ideasHaveBeenSorted": "{sortOder} ideeën zijn geladen.",
   "app.components.IdeaCards.filters.newest": "Nieuw",
   "app.components.IdeaCards.filters.oldest": "Oud",
-  "app.components.IdeaCards.filters.popular": "Meest geliefd",
+  "app.components.IdeaCards.filters.popular": "Meest geliked",
   "app.components.IdeaCards.filters.random": "Willekeurig",
   "app.components.IdeaCards.filters.sortBy": "Sorteren op",
   "app.components.IdeaCards.filters.trending": "Populair",
