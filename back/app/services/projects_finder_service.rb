@@ -26,10 +26,10 @@ class ProjectsFinderService
     archived_scope = base_scope.where(admin_publications: { publication_status: 'archived' }) if @archived
     archived_scope = joins_last_phases_with_reports(archived_scope) if @archived && @finished
 
-    return finished_scope.or(archived_scope).distinct if @finished && @archived
-    return finished_scope.distinct if @finished
+    return order_by_created_at_and_id_with_distinct_on(finished_scope.or(archived_scope)) if @finished && @archived
+    return order_by_created_at_and_id_with_distinct_on(finished_scope) if @finished
 
-    archived_scope.distinct
+    order_by_created_at_and_id_with_distinct_on(archived_scope)
   end
 
   # Returns an ActiveRecord collection of published projects that are also
@@ -184,6 +184,12 @@ class ProjectsFinderService
       .joins(
         'LEFT JOIN report_builder_reports AS reports ON reports.phase_id = last_phases.last_phase_id'
       )
+  end
+
+  def order_by_created_at_and_id_with_distinct_on(projects)
+    projects
+      .select('DISTINCT ON (projects.created_at, projects.id) projects.*')
+      .order('projects.created_at ASC, projects.id ASC')
   end
 
   def user_requirements_service

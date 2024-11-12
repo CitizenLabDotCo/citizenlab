@@ -307,6 +307,19 @@ describe ProjectsFinderService do
         expect(Project.count).to eq 3
         expect(result).to match_array([finished_project1])
       end
+
+      it 'lists projects ordered by created_at ASC' do
+        finished_project2 = create(:project_with_two_past_ideation_phases)
+        finished_project3 = create(:project_with_two_past_ideation_phases)
+        finished_project4 = create(:project_with_two_past_ideation_phases)
+
+        finished_project1.update!(created_at: 3.days.ago)
+        finished_project2.update!(created_at: 1.day.ago)
+        finished_project3.update!(created_at: 2.days.ago)
+        finished_project4.update!(created_at: 5.days.ago)
+
+        expect(result).to eq [finished_project4, finished_project1, finished_project3, finished_project2]
+      end
     end
 
     describe "when passed 'archived' parameter" do
@@ -319,6 +332,19 @@ describe ProjectsFinderService do
       it 'includes archived projects' do
         expect(Project.count).to eq 5
         expect(result).to eq [archived_project]
+      end
+
+      it 'lists projects ordered by created_at ASC' do
+        archived_project2 = create(:project, admin_publication_attributes: { publication_status: 'archived' })
+        archived_project3 = create(:project, admin_publication_attributes: { publication_status: 'archived' })
+        archived_project4 = create(:project, admin_publication_attributes: { publication_status: 'archived' })
+
+        archived_project.update!(created_at: 3.days.ago)
+        archived_project2.update!(created_at: 1.day.ago)
+        archived_project3.update!(created_at: 2.days.ago)
+        archived_project4.update!(created_at: 4.days.ago)
+
+        expect(result).to eq [archived_project4, archived_project, archived_project3, archived_project2]
       end
     end
 
@@ -344,6 +370,14 @@ describe ProjectsFinderService do
       it 'includes expected projects' do
         expect(Project.count).to eq 7
         expect(result).to match_array [finished_project1, archived_project, finished_project2]
+      end
+
+      it 'lists projects ordered by created_at ASC' do
+        finished_project1.update!(created_at: 3.days.ago)
+        finished_project2.update!(created_at: 1.day.ago)
+        archived_project.update!(created_at: 2.days.ago)
+
+        expect(result).to eq [finished_project1, archived_project, finished_project2]
       end
     end
   end
