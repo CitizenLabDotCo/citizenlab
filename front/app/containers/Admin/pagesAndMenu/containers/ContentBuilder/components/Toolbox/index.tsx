@@ -17,6 +17,12 @@ import IframeMultiloc from 'components/admin/ContentBuilder/Widgets/IframeMultil
 import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
 import ImageTextCards from 'components/admin/ContentBuilder/Widgets/ImageTextCards';
 import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
+import ThreeColumn, {
+  threeColumnTitle,
+} from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
+import TwoColumn, {
+  twoColumnTitle,
+} from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 
 import {
@@ -201,6 +207,18 @@ const HomepageBuilderToolbox = ({
           component={<AccordionMultiloc title={{}} text={{}} />}
           icon="accordion"
           label={formatMessage(AccordionMultiloc.craft.custom.title)}
+        />
+        <DraggableElement
+          id="e2e-draggable-two-column"
+          component={<TwoColumn columnLayout="1-1" />}
+          icon="layout-2column-1"
+          label={formatMessage(twoColumnTitle)}
+        />
+        <DraggableElement
+          id="e2e-draggable-two-column"
+          component={<ThreeColumn />}
+          icon="layout-3column"
+          label={formatMessage(threeColumnTitle)}
         />
       </Section>
     </Container>
