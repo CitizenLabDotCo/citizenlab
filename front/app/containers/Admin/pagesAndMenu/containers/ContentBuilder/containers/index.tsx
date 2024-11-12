@@ -18,11 +18,11 @@ import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
 
 import { isNilOrError } from 'utils/helperUtils';
 
+import EditModePreview from '../components/EditModePreview';
 import Editor from '../components/Editor';
-import HomepageBuilderEditModePreview from '../components/HomepageBuilderEditModePreview';
-import HomepageBuilderToolbox from '../components/HomepageBuilderToolbox';
-import HomepageBuilderTopBar from '../components/HomepageBuilderTopBar';
 import Settings from '../components/Settings';
+import Toolbox from '../components/Toolbox';
+import TopBar from '../components/TopBar';
 
 const HomepageBuilderPage = () => {
   const [previewEnabled, setPreviewEnabled] = useState(false);
@@ -94,7 +94,7 @@ const HomepageBuilderPage = () => {
       onUploadImage={setImageUploading}
     >
       <Editor isPreview={false} onNodesChange={handleEditorChange}>
-        <HomepageBuilderTopBar
+        <TopBar
           hasError={hasError}
           hasPendingState={imageUploading}
           previewEnabled={previewEnabled}
@@ -106,7 +106,7 @@ const HomepageBuilderPage = () => {
           mt={`${stylingConsts.menuHeight}px`}
           display={previewEnabled ? 'none' : 'flex'}
         >
-          <HomepageBuilderToolbox selectedLocale={selectedLocale} />
+          <Toolbox selectedLocale={selectedLocale} />
           <StyledRightColumn>
             <LanguageProvider
               contentBuilderLocale={selectedLocale}
@@ -121,10 +121,7 @@ const HomepageBuilderPage = () => {
         </Box>
       </Editor>
       <Box justifyContent="center" display={previewEnabled ? 'flex' : 'none'}>
-        <HomepageBuilderEditModePreview
-          ref={iframeRef}
-          selectedLocale={selectedLocale}
-        />
+        <EditModePreview ref={iframeRef} selectedLocale={selectedLocale} />
       </Box>
     </FullscreenContentBuilder>
   );

@@ -6,7 +6,7 @@ import { SerializedNodes } from '@craftjs/core';
 import Container from 'components/admin/ContentBuilder/Widgets/Container';
 import ImageTextCards from 'components/admin/ContentBuilder/Widgets/ImageTextCards';
 
-import { WIDGETS } from '../CraftComponents';
+import { WIDGETS } from '../Widgets';
 
 import BaseEditor from './Editor';
 
