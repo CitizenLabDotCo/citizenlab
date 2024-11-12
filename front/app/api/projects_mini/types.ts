@@ -30,10 +30,10 @@ export interface MiniProjectData {
     action_descriptors: ActionDescriptors;
   };
   relationships: {
-    current_phase: {
+    current_phase?: {
       data: {
         id: string;
-      };
+      } | null;
     };
     project_images: {
       data: {

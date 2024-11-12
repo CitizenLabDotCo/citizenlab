@@ -76,16 +76,14 @@ const LightProjectCard = ({ project, ml, mr, onKeyDown }: Props) => {
     imageId,
   });
 
-  const phaseId = project.relationships.current_phase.data.id;
+  const phaseId = project.relationships.current_phase?.data?.id;
   const { data: phase } = usePhase(phaseId);
-
-  if (!phase) return null;
 
   const title = localize(project.attributes.title_multiloc);
   const imageVersions = image?.data.attributes.versions;
   const imageUrl = imageVersions?.large ?? imageVersions?.medium;
 
-  const { end_at } = phase.data.attributes;
+  const end_at = phase?.data.attributes.end_at;
   const projectUrl: RouteType = getProjectUrl(project.attributes.slug);
 
   return (
@@ -119,31 +117,33 @@ const LightProjectCard = ({ project, ml, mr, onKeyDown }: Props) => {
       <Title variant="h4" mt="8px" mb="0px">
         {truncate(title, 50)}
       </Title>
-      <Box mt="8px">
-        <Icon
-          name="clock-circle"
-          fill={colors.blue500}
-          height="16px"
-          mr="4px"
-          ml="-4px"
-          transform="translate(0,-1)"
-        />
-        <Text color="blue500" fontWeight="bold" display="inline" m="0">
-          {end_at ? (
-            <PhaseTimeLeft currentPhaseEndsAt={end_at} />
-          ) : (
-            <>{formatMessage(messages.noEndDate)}</>
-          )}
-        </Text>
-        <Text mt="4px" mb="0px" color="textSecondary" fontWeight="bold">
-          {getCTAMessage({
-            phase: phase.data,
-            actionDescriptors: project.attributes.action_descriptors,
-            localize,
-            formatMessage,
-          })}
-        </Text>
-      </Box>
+      {phase && (
+        <Box mt="8px">
+          <Icon
+            name="clock-circle"
+            fill={colors.blue500}
+            height="16px"
+            mr="4px"
+            ml="-4px"
+            transform="translate(0,-1)"
+          />
+          <Text color="blue500" fontWeight="bold" display="inline" m="0">
+            {end_at ? (
+              <PhaseTimeLeft currentPhaseEndsAt={end_at} />
+            ) : (
+              <>{formatMessage(messages.noEndDate)}</>
+            )}
+          </Text>
+          <Text mt="4px" mb="0px" color="textSecondary" fontWeight="bold">
+            {getCTAMessage({
+              phase: phase.data,
+              actionDescriptors: project.attributes.action_descriptors,
+              localize,
+              formatMessage,
+            })}
+          </Text>
+        </Box>
+      )}
     </CardContainer>
   );
 };
