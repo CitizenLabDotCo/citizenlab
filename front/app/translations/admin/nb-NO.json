@@ -235,7 +235,7 @@
   "app.components.admin.PostManager.officialFeedbackModal.title": "Begrunn avgjørelsen din",
   "app.components.admin.PostManager.officialUpdateAuthor": "Velg hvordan folk skal se navnet ditt",
   "app.components.admin.PostManager.officialUpdateBody": "Forklar denne statusendringen",
-  "app.components.admin.PostManager.optionFormTitle": "Redigeringsalternativ",
+  "app.components.admin.PostManager.optionFormTitle": "Rediger alternativ",
   "app.components.admin.PostManager.participants": "Deltakere",
   "app.components.admin.PostManager.participatoryBudgettingPicks": "Valg",
   "app.components.admin.PostManager.pbItemCountTooltip": "Antall ganger dette har blitt inkludert i andre deltakeres deltakende budsjetter",
