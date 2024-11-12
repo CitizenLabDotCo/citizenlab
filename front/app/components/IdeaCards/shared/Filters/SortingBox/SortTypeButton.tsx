@@ -1,17 +1,36 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-import { Box, Text, Icon, colors } from '@citizenlab/cl2-component-library';
-import { useTheme } from 'styled-components';
+import { Box } from '@citizenlab/cl2-component-library';
+import { hideVisually } from 'polished';
+import styled from 'styled-components';
 
 import { FrontOfficeSortOptions } from 'api/ideas/types';
 
 import { useIntl } from 'utils/cl-intl';
 
-import {
-  getButtonBackgroundColor,
-  getIconNameForSortingOption,
-  getLabelForSortingOption,
-} from './utils';
+import { getLabelForSortingOption } from './utils';
+
+const HiddenRadio = styled.input.attrs({ type: 'radio' })`
+  // ${hideVisually()};
+  display: block;
+`;
+
+const Label = styled.label<{ selected: boolean }>`
+  padding: 8px;
+  cursor: pointer;
+  border-radius: ${({ theme }) => theme.borderRadius};
+
+  ${({ theme: { colors }, selected }) =>
+    selected
+      ? `
+    background: ${colors.tenantPrimary};
+    color: ${colors.white};
+  `
+      : `
+    background: ${colors.white};
+    color: ${colors.textPrimary};
+  `}
+`;
 
 type SortTypeButtonProps = {
   sortType: FrontOfficeSortOptions;
@@ -24,40 +43,44 @@ const SortTypeButton = ({
   handleSortOnChange,
   isSelected,
 }: SortTypeButtonProps) => {
-  const theme = useTheme();
   const { formatMessage } = useIntl();
-  const [isHover, setIsHover] = useState(false);
+
+  const handleOnChange = () => {
+    handleSortOnChange(sortType);
+  };
 
   return (
-    <button
-      onClick={() => handleSortOnChange(sortType)}
-      onMouseEnter={() => {
-        setIsHover(true);
-      }}
-      onMouseLeave={() => {
-        setIsHover(false);
-      }}
-      style={{ width: '100%' }}
-    >
-      <Box
-        display="flex"
-        py="8px"
-        w="100%"
-        justifyContent="flex-start"
-        borderRadius="3px"
-        bgColor={getButtonBackgroundColor(isSelected, isHover, theme)}
-      >
-        <Icon
-          fill={isSelected ? colors.white : theme.colors.textPrimary}
-          height="14px"
-          name={getIconNameForSortingOption(sortType)}
-          my="auto"
-        />
-        <Text color={isSelected ? 'white' : 'textPrimary'} m="0px">
-          {formatMessage(getLabelForSortingOption(sortType))}
-        </Text>
-      </Box>
-    </button>
+    // <Button
+    //   py="8px"
+    //   bgColor={getButtonBackgroundColor(isSelected, isHover, theme)}
+    //   icon={getIconNameForSortingOption(sortType)}
+    //   iconColor={isSelected ? 'white' : 'textPrimary'}
+    //   iconHoverColor={isSelected ? 'white' : 'textPrimary'}
+    //   textColor={isSelected ? 'white' : 'textPrimary'}
+    //   textHoverColor="textPrimary"
+    //   type="button"
+    // >
+    //   {formatMessage(getLabelForSortingOption(sortType))}
+    //   {/* <Box>
+    //     <Icon
+    //       fill={isSelected ? colors.white : theme.colors.textPrimary}
+    //       height="14px"
+    //       name={getIconNameForSortingOption(sortType)}
+    //       my="auto"
+    //     />
+    //   </Box> */}
+    // </Button>
+    <Box display="flex" alignItems="center">
+      <HiddenRadio
+        id={sortType}
+        name="sortType"
+        value={sortType}
+        onChange={handleOnChange}
+      />
+      <Label htmlFor={sortType} onClick={handleOnChange} selected={isSelected}>
+        {formatMessage(getLabelForSortingOption(sortType))}
+      </Label>
+    </Box>
   );
 };
 

@@ -33,7 +33,7 @@ const SortingBox = ({ handleSortOnChange, phaseId }: SortingBoxProps) => {
 
   return (
     <InputFilterCollapsible title={formatMessage(messages.sortBy)}>
-      <Box>
+      <Box display="flex" flexDirection="column">
         <SortTypeButton
           sortType="popular"
           handleSortOnChange={handleSortOnChange}

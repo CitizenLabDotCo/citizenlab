@@ -14,7 +14,7 @@ import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 import messages from '../messages';
 import { Sort } from '../shared/Filters/SortFilterDropdown';
-import SortingBox from '../shared/Filters/SortingBox/SortingBox';
+import SortingBox from '../shared/Filters/SortingBox';
 import StatusFilterBox from '../shared/Filters/StatusFilterBox';
 import TopicFilterBox from '../shared/Filters/TopicFilterBox';
 
