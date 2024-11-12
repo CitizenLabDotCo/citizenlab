@@ -95,8 +95,8 @@ class ProjectsFinderService
       .where.not(phases: { participation_method: 'information' })
       .select('projects.*, projects.created_at AS projects_created_at')
 
-    # Perform the SELECT DISTINCT on the outer query and order by the end date of the active phase.
-    # We also order by the project creation date to break ties where the end dates are equal.
+    # Perform the SELECT DISTINCT on the outer query and order first by the end date of the active phase,
+    # and second by project creation date. The secondary ordering prevents duplicates when paginating.
     projects = Project
       .from(subquery, :projects)
       .distinct
@@ -127,6 +127,7 @@ class ProjectsFinderService
     projects = Project.where(id: project_descriptor_pairs.keys)
 
     # We join with active phases again here, to reorder by their end dates first, and projects.created_at second.
+    # The secondary ordering prevents duplicates when paginating.
     projects = projects_with_active_phase(projects)
       .order('phase_end_at ASC NULLS LAST, projects.created_at ASC')
 
