@@ -30,6 +30,7 @@ const Count = styled(Text)`
 
 const Status = styled.button`
   display: flex;
+  cursor: pointer;
   align-items: center;
   justify-content: space-between;
 
