@@ -7,6 +7,7 @@ import {
   isRtl,
   Icon,
   Title,
+  Box,
 } from '@citizenlab/cl2-component-library';
 import CollapsibleContainer from 'component-library/components/CollapsibleContainer';
 import { capitalize, get } from 'lodash-es';
@@ -149,7 +150,10 @@ const StatusFilter = memo<Props>(
                 onClick={handleOnClick}
                 className={allFilterSelected ? 'selected' : ''}
               >
-                <FormattedMessage {...messages.all} />
+                <Box display="flex" gap="8px">
+                  <Box my="auto" w="14px" h="14px" bgColor={colors.grey500} />
+                  <FormattedMessage {...messages.all} />
+                </Box>
                 <Count aria-hidden>{allPostsCount}</Count>
                 <ScreenReaderOnly>
                   {/* Pronounce number of ideas of All status when focus/hover it */}
@@ -187,9 +191,18 @@ const StatusFilter = memo<Props>(
                       isFilterSelected ? 'selected' : ''
                     }`}
                   >
-                    <T value={status.attributes.title_multiloc}>
-                      {(statusTitle) => <>{capitalize(statusTitle)}</>}
-                    </T>
+                    <Box display="flex" gap="8px">
+                      <Box
+                        my="auto"
+                        w="14px"
+                        h="14px"
+                        bgColor={status.attributes.color}
+                      />
+                      <T value={status.attributes.title_multiloc}>
+                        {(statusTitle) => <>{capitalize(statusTitle)}</>}
+                      </T>
+                    </Box>
+
                     {!isFilterSelected ? (
                       <Count aria-hidden>{filterPostCount}</Count>
                     ) : (
