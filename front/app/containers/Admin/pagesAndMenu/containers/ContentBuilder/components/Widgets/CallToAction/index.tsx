@@ -292,10 +292,6 @@ CallToAction.craft = {
   related: {
     settings: Settings,
   },
-  custom: {
-    title: messages.callToActionTitle,
-    noPointerEvents: true,
-  },
 };
 
 export const callToActionTitle = messages.callToActionTitle;

@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import useAuthUser from 'api/me/useAuthUser';
 import { OnboardingCampaignName } from 'api/onboarding_campaigns/types';
 
-import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/HomepageBanner';
+import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Widgets/HomepageBanner';
 
 import T from 'components/T';
 

@@ -3,28 +3,25 @@ import React from 'react';
 import { useEditor, ROOT_NODE } from '@craftjs/core';
 
 import { CONTENT_BUILDER_DELETE_ELEMENT_EVENT } from 'components/admin/ContentBuilder/constants';
-import Settings from 'components/admin/ContentBuilder/Settings/Settings';
-import { SelectedNode } from 'components/admin/ContentBuilder/Settings/typings';
 
 import { MessageDescriptor } from 'utils/cl-intl';
 import eventEmitter from 'utils/eventEmitter';
 
-interface Props {
-  titles: Record<string, MessageDescriptor>;
-}
+import Settings from '../../admin/ContentBuilder/Settings/Settings';
+import { SelectedNode } from '../../admin/ContentBuilder/Settings/typings';
 
-const SettingsWrapper = ({ titles }: Props) => {
+const ContentBuilderSettings = () => {
   const { actions, selectedNode, isEnabled } = useEditor((state, query) => {
     const currentNodeId: string = query.getEvent('selected').last();
     let selectedNode: SelectedNode | undefined;
 
     if (currentNodeId) {
-      const name = state.nodes[currentNodeId].data.name;
-
       selectedNode = {
         id: currentNodeId,
-        name,
-        title: titles[name],
+        name: state.nodes[currentNodeId].data.name,
+        title: state.nodes[currentNodeId].data.custom?.title as
+          | MessageDescriptor
+          | undefined,
         // TODO: Fix this the next time the file is edited.
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         settings: state.nodes[currentNodeId].related?.settings,
@@ -43,15 +40,10 @@ const SettingsWrapper = ({ titles }: Props) => {
     actions.selectNode();
   };
 
-  const showSettings =
-    selectedNode &&
+  return selectedNode &&
     isEnabled &&
     selectedNode.id !== ROOT_NODE &&
-    selectedNode.name !== 'Box';
-
-  if (!showSettings) return null;
-
-  return (
+    selectedNode.name !== 'Box' ? (
     <Settings
       selectedNode={selectedNode}
       onClose={closeSettings}
@@ -63,7 +55,7 @@ const SettingsWrapper = ({ titles }: Props) => {
         );
       }}
     />
-  );
+  ) : null;
 };
 
-export default SettingsWrapper;
+export default ContentBuilderSettings;

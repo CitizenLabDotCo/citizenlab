@@ -52,10 +52,8 @@ Events.craft = {
   related: {
     settings: EventsSettings,
   },
-  custom: {
-    title: messages.eventsTitle,
-    noPointerEvents: true,
-  },
 };
+
+export const eventsTitle = messages.eventsTitle;
 
 export default Events;

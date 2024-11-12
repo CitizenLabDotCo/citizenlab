@@ -4,8 +4,8 @@ import SettingsWrapper from 'components/admin/ContentBuilder/Settings';
 
 import { WIDGET_TITLES } from '../Widgets';
 
-const ReportBuilderSettings = () => {
+const HomepageBuilderSettings = () => {
   return <SettingsWrapper titles={WIDGET_TITLES} />;
 };
 
-export default ReportBuilderSettings;
+export default HomepageBuilderSettings;
