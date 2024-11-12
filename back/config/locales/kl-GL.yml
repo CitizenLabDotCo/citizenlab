@@ -213,9 +213,9 @@ kl:
         option:
           title: Suna toqqagassaraajuk?
         proposal:
-          title: What is your proposal?
+          title: Innuttaasutut siunnersuutit sunaava?
         initiative:
-          title: What is your initiative?
+          title: Innuttaasutut siunnersuutit sunaava?
         petition:
           title: What is your petition?
   custom_field_options:
