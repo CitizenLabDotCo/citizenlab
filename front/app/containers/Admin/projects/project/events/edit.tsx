@@ -644,12 +644,7 @@ const AdminProjectEventEdit = () => {
                   />
                 </SectionField>
               )}
-              <Title
-                variant="h4"
-                fontWeight="bold"
-                color="primary"
-                style={{ fontWeight: '600' }}
-              >
+              <Title variant="h4" color="primary" style={{ fontWeight: '600' }}>
                 {formatMessage(messages.eventDates)}
               </Title>
               <Box display="flex" flexDirection="column" maxWidth="400px">
@@ -676,12 +671,7 @@ const AdminProjectEventEdit = () => {
                 </SectionField>
               </Box>
 
-              <Title
-                variant="h4"
-                fontWeight="bold"
-                color="primary"
-                style={{ fontWeight: '600' }}
-              >
+              <Title variant="h4" color="primary" style={{ fontWeight: '600' }}>
                 {formatMessage(messages.eventLocation)}
               </Title>
 
@@ -779,7 +769,6 @@ const AdminProjectEventEdit = () => {
 
               <Title
                 variant="h4"
-                fontWeight="bold"
                 color="primary"
                 style={{ fontWeight: '600' }}
                 mt="48px"
@@ -873,7 +862,6 @@ const AdminProjectEventEdit = () => {
 
               <Title
                 variant="h4"
-                fontWeight="bold"
                 color="primary"
                 style={{ fontWeight: '600' }}
                 mt="48px"

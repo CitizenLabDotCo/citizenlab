@@ -31,6 +31,9 @@ import CallToAction, {
   callToActionTitle,
 } from '../CraftComponents/CallToAction';
 import Events from '../CraftComponents/Events';
+import OpenToParticipation, {
+  openToParticipationTitle,
+} from '../CraftComponents/OpenToParticipation';
 import Spotlight, {
   spotlightTitle,
   buttonTextDefault,
@@ -81,6 +84,18 @@ const HomepageBuilderToolbox = ({
             }
             icon="flash"
             label={formatMessage(spotlightTitle)}
+          />
+        )}
+        {newHomepageWidgetsEnabled && (
+          <DraggableElement
+            id="e2e-draggable-open-to-participation"
+            component={
+              <OpenToParticipation
+                titleMultiloc={toMultiloc(openToParticipationTitle)}
+              />
+            }
+            icon="projects"
+            label={formatMessage(openToParticipationTitle)}
           />
         )}
         <DraggableElement

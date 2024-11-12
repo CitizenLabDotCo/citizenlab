@@ -105,6 +105,7 @@ const HeaderContent = ({
         </HeaderTitle>
 
         <HeaderSubtitle
+          variant="h2"
           hasHeader={!!headerImage}
           className="e2e-signed-out-header-subtitle"
           fontColors={fontColors}

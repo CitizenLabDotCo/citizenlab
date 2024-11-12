@@ -451,6 +451,53 @@ resource 'Projects' do
       end
     end
 
+    delete 'web_api/v1/projects/:id/participation_data' do
+      let(:project) { create(:project) }
+      let(:id) { project.id }
+      let(:ideation_phase) do
+        create(
+          :phase,
+          project: project,
+          participation_method: 'ideation',
+          start_at: (Time.zone.today - 40.days),
+          end_at: (Time.zone.today - 31.days)
+        )
+      end
+
+      let(:volunteering_phase) do
+        create(
+          :volunteering_phase,
+          project: project,
+          start_at: (Time.zone.today - 30.days),
+          end_at: (Time.zone.today - 21.days)
+        )
+      end
+
+      let(:poll_phase) do
+        create(
+          :poll_phase,
+          project: project,
+          start_at: (Time.zone.today - 20.days),
+          end_at: (Time.zone.today - 11.days)
+        )
+      end
+
+      let!(:idea) { create(:idea, project: project) }
+
+      let!(:cause) { create(:cause, phase: volunteering_phase) }
+
+      let!(:volunteer) { create(:volunteer, cause: cause) }
+
+      let!(:poll_response) { create(:poll_response, phase: poll_phase) }
+
+      example_request 'Reset participation data of a project' do
+        expect(response_status).to eq 200
+        expect(project.ideas).to be_empty
+        expect(cause.volunteers).to be_empty
+        expect(poll_phase.poll_responses).to be_empty
+      end
+    end
+
     post 'web_api/v1/projects/:id/copy' do
       let(:source_project) { create(:single_phase_ideation_project) }
       let(:id) { source_project.id }
@@ -525,6 +572,12 @@ resource 'Projects' do
           phases: [native_survey_phase],
           custom_field_values: { linear_scale_field.key => 2 }
         )
+      end
+
+      before do
+        config = AppConfiguration.instance
+        config.settings['core']['private_attributes_in_export'] = true
+        config.save!
       end
 
       example_request 'Download inputs of a timeline project with different phases in separate sheets' do
@@ -986,7 +1039,7 @@ resource 'Projects' do
 
         example 'Download phase inputs WITH private user data', document: false do
           phase = project.phases.first
-          expected_params = [[idea], project.phases.first, { view_private_attributes: true }]
+          expected_params = [[idea], project.phases.first]
           allow(Export::Xlsx::InputSheetGenerator).to receive(:new)
             .and_return(Export::Xlsx::InputSheetGenerator.new(*expected_params))
           do_request
@@ -1177,6 +1230,197 @@ resource 'Projects' do
           assert_status 401
         end
       end
+    end
+  end
+
+  get 'web_api/v1/projects/for_followed_item' do
+    before do
+      @user = create(:user, roles: [])
+      header_token_for @user
+    end
+
+    with_options scope: :page do
+      parameter :number, 'Page number'
+      parameter :size, 'Number of projects per page'
+    end
+
+    let!(:followed_project) { create(:project) }
+    let!(:_follower) { create(:follower, followable: followed_project, user: @user) }
+
+    let!(:project_with_followed_idea) { create(:project) }
+    let!(:idea) { create(:idea, project: project_with_followed_idea) }
+    let!(:_follower2) { create(:follower, followable: idea, user: @user) }
+
+    let!(:project_for_followed_area) { create(:project) }
+    let!(:area) { create(:area) }
+    let!(:_areas_project) { create(:areas_project, project: project_for_followed_area, area: area) }
+    let!(:_follower3) { create(:follower, followable: area, user: @user) }
+
+    let!(:project_for_followed_topic) { create(:project) }
+    let!(:topic) { create(:topic) }
+    let!(:_projects_topic) { create(:projects_topic, project: project_for_followed_topic, topic: topic) }
+    let!(:_follower4) { create(:follower, followable: topic, user: @user) }
+
+    let!(:_unfollowed_project) { create(:project) }
+
+    example_request 'Includes projects for followed items, and not un-followed projects' do
+      expect(status).to eq 200
+
+      json_response = json_parse(response_body)
+      project_ids = json_response[:data].pluck(:id)
+
+      expect(project_ids).to match_array [
+        followed_project.id,
+        project_with_followed_idea.id,
+        project_for_followed_area.id,
+        project_for_followed_topic.id
+      ]
+    end
+
+    example 'Returns an empty list if the user is not signed in', document: false do
+      header 'Authorization', nil
+
+      do_request
+      expect(status).to eq 200
+
+      json_response = json_parse(response_body)
+      expect(json_response[:data]).to be_empty
+    end
+
+    example 'Includes project images', document: false do
+      project_image = create(:project_image, project: followed_project)
+
+      do_request
+      expect(status).to eq(200)
+      json_response = json_parse(response_body)
+
+      included_image_ids = json_response[:included].select { |d| d[:type] == 'image' }.pluck(:id)
+
+      expect(included_image_ids).to include project_image.id
+    end
+
+    example_request 'Includes current phase', document: false do
+      expect(status).to eq(200)
+      json_response = json_parse(response_body)
+
+      current_phase_ids = json_response[:data].filter_map { |d| d.dig(:relationships, :current_phase, :data, :id) }
+      included_phase_ids = json_response[:included].select { |d| d[:type] == 'phase' }.pluck(:id)
+
+      expect(current_phase_ids).to match included_phase_ids
+    end
+  end
+
+  get 'web_api/v1/projects/with_active_participatory_phase' do
+    before do
+      @user = create(:user, roles: [])
+      header_token_for @user
+    end
+
+    with_options scope: :page do
+      parameter :number, 'Page number'
+      parameter :size, 'Number of projects per page'
+    end
+
+    let!(:active_ideation_project) { create(:project_with_active_ideation_phase) }
+    let!(:endless_project) { create(:single_phase_ideation_project) }
+
+    let!(:active_information_project) { create(:project_with_past_ideation_and_current_information_phase) }
+    let!(:past_project) { create(:project_with_two_past_ideation_phases) }
+    let!(:future_project) { create(:project_with_future_native_survey_phase) }
+
+    example_request 'Lists only projects with an active participatory phase' do
+      expect(status).to eq 200
+
+      json_response = json_parse(response_body)
+      project_ids = json_response[:data].pluck(:id)
+
+      expect(project_ids).to include active_ideation_project.id
+      expect(project_ids).to include endless_project.id
+
+      expect(project_ids).not_to include active_information_project.id
+      expect(project_ids).not_to include past_project.id
+      expect(project_ids).not_to include future_project.id
+    end
+
+    example "Excludes projects where only permitted action is attending_event & no permission is 'fixable'", document: false do
+      group = create(:group)
+      permission = create(:permission, action: 'posting_idea', permission_scope: active_ideation_project.phases.first, permitted_by: 'users')
+      create(:groups_permission, permission_id: permission.id, group: group)
+      permission = create(:permission, action: 'commenting_idea', permission_scope: active_ideation_project.phases.first, permitted_by: 'users')
+      create(:groups_permission, permission_id: permission.id, group: group)
+      permission = create(:permission, action: 'reacting_idea', permission_scope: active_ideation_project.phases.first, permitted_by: 'users')
+      create(:groups_permission, permission_id: permission.id, group: group)
+
+      user_requirements_service = Permissions::UserRequirementsService.new(check_groups_and_verification: false)
+      action_descriptors = Permissions::ProjectPermissionsService.new(
+        active_ideation_project, @user, user_requirements_service: user_requirements_service
+      ).action_descriptors
+
+      expect(action_descriptors.except(:attending_event).all? { |_k, v| v[:enabled] == false }).to be true
+
+      do_request
+      expect(status).to eq(200)
+
+      expect(json_response[:data].pluck(:id)).not_to include active_ideation_project.id
+    end
+
+    example "Includes projects where no action permitted (excluding attending_event), but a permission is 'fixable'", document: false do
+      create(:custom_field, required: true)
+
+      user_requirements_service = Permissions::UserRequirementsService.new(check_groups_and_verification: false)
+      action_descriptors = Permissions::ProjectPermissionsService.new(
+        active_ideation_project, @user, user_requirements_service: user_requirements_service
+      ).action_descriptors
+
+      expect(action_descriptors.except(:attending_event).all? { |_k, v| v[:enabled] == false }).to be true
+      expect(action_descriptors.except(:attending_event).count { |_k, v| v[:disabled_reason] == 'user_missing_requirements' }).to eq 4
+
+      do_request
+      expect(status).to eq(200)
+
+      expect(json_response[:data].pluck(:id)).to include active_ideation_project.id
+    end
+
+    example 'Includes project images', document: false do
+      project_image = create(:project_image, project: active_ideation_project)
+
+      do_request
+      expect(status).to eq(200)
+      json_response = json_parse(response_body)
+
+      included_image_ids = json_response[:included].select { |d| d[:type] == 'image' }.pluck(:id)
+
+      expect(included_image_ids).to include project_image.id
+    end
+
+    example_request 'Includes current phase', document: false do
+      expect(status).to eq(200)
+      json_response = json_parse(response_body)
+
+      current_phase_ids = json_response[:data].filter_map { |d| d.dig(:relationships, :current_phase, :data, :id) }
+      included_phase_ids = json_response[:included].select { |d| d[:type] == 'phase' }.pluck(:id)
+
+      expect(current_phase_ids).to match included_phase_ids
+    end
+
+    example 'includes next page link in response when appropriate', document: false do
+      Project.destroy_all
+
+      create_list(:project_with_active_ideation_phase, 5)
+
+      do_request page: { number: 1, size: 2 }
+      json_response = json_parse(response_body)
+      expect(json_response[:links][:next])
+        .to eq 'http://example.org/web_api/v1/projects/with_active_participatory_phase?page%5Bnumber%5D=2&page%5Bsize%5D=2'
+
+      do_request page: { number: 2, size: 2 }
+      json_response = json_parse(response_body)
+      expect(json_response[:links][:next])
+        .to eq 'http://example.org/web_api/v1/projects/with_active_participatory_phase?page%5Bnumber%5D=3&page%5Bsize%5D=2'
+
+      do_request page: { number: 3, size: 2 }
+      json_response = json_parse(response_body)
+      expect(json_response[:links][:next]).to be_nil
     end
   end
 end

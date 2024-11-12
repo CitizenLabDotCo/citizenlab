@@ -1,3 +1,4 @@
+import { addDays, format } from 'date-fns';
 import { http, HttpResponse } from 'msw';
 
 import { IPhaseData } from '../types';
@@ -11,7 +12,7 @@ export const phasesData: IPhaseData[] = [
       title_multiloc: { en: 'A Mock Information phase' },
       description_multiloc: { en: 'For testing purposes' },
       start_at: 'today',
-      end_at: 'one week from now',
+      end_at: format(addDays(new Date(), 21), 'yyyy-MM-dd'),
       created_at: 'yesterday',
       updated_at: 'yesterday but later',
       submission_enabled: false,
@@ -20,7 +21,7 @@ export const phasesData: IPhaseData[] = [
       reacting_like_limited_max: 0,
       reacting_dislike_enabled: false,
       reacting_dislike_limited_max: 0,
-      participation_method: 'information',
+      participation_method: 'ideation',
       reacting_like_method: 'limited',
       reacting_dislike_method: 'limited',
       input_term: 'idea',

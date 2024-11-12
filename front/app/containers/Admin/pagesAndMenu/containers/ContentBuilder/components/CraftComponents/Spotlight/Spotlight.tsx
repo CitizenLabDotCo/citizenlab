@@ -2,11 +2,11 @@ import React from 'react';
 
 import {
   Box,
-  Title,
   Text,
   Image,
   useBreakpoint,
   stylingConsts,
+  Title,
 } from '@citizenlab/cl2-component-library';
 
 import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
@@ -53,7 +53,7 @@ const Spotlight = ({
           w={isSmallerThanPhone ? undefined : '50%'}
           maxWidth={isSmallerThanPhone ? undefined : '400px'}
         >
-          <Title variant="h2" fontSize="xxxxl" mt="0px" lineHeight="1">
+          <Title mt="0px" color="tenantText">
             {title}
           </Title>
           {description && <Text>{description}</Text>}

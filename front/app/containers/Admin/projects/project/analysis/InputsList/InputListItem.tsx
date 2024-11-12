@@ -36,6 +36,8 @@ const InputListItem = memo(({ input, onSelect, selected }: Props) => {
   });
   const { formatDate, formatMessage } = useIntl();
 
+  const showAuthor = author && author?.data.attributes.first_name;
+
   // TODO: Fix this the next time the file is edited.
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!analysis || !input) return null;
@@ -71,11 +73,11 @@ const InputListItem = memo(({ input, onSelect, selected }: Props) => {
           justifyContent="space-between"
         >
           {!title_multiloc ||
-            (isEmpty(title_multiloc) && author && (
+            (isEmpty(title_multiloc) && showAuthor && (
               <Text m="0px">{getFullName(author.data)}</Text>
             ))}
           {!title_multiloc ||
-            (isEmpty(title_multiloc) && !author && (
+            (isEmpty(title_multiloc) && !showAuthor && (
               <Text m="0px">{formatMessage(messages.anonymous)}</Text>
             ))}
           {title_multiloc && (

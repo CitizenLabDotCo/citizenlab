@@ -238,6 +238,12 @@
             "type": "string",
             "enum": ["user", "animal"],
             "default": "user"
+          },
+          "private_attributes_in_export":  {
+            "title": "Allow private attributes (user name & email) in native survey exports & analysis?",
+            "description": "When disabled exports and analyses on native survey phases will not return any private attributes.",
+            "type": "boolean",
+            "default": true
           }
         }
       },

@@ -18,6 +18,7 @@ import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 import CallToAction from '../CraftComponents/CallToAction';
 import Events from '../CraftComponents/Events';
 import HomepageBanner from '../CraftComponents/HomepageBanner';
+import OpenToParticipation from '../CraftComponents/OpenToParticipation';
 import Projects from '../CraftComponents/Projects';
 import Spotlight from '../CraftComponents/Spotlight';
 
@@ -55,6 +56,7 @@ const Editor: React.FC<EditorProps> = ({
         Highlight: CallToAction,
         Spotlight,
         Proposals,
+        OpenToParticipation,
       }}
       isPreview={isPreview}
       onNodesChange={onNodesChange}
