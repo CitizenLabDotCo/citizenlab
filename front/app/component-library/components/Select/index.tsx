@@ -59,7 +59,7 @@ const Container = styled.div`
   }
 `;
 
-export const SelectWrapper = styled.div`
+export const SelectWrapper = styled.div<{ size?: InputSize }>`
   width: 100%;
   position: relative;
   select {

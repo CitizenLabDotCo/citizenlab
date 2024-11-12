@@ -8,8 +8,8 @@ import messages from 'components/admin/ContentBuilder/messages';
 
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 
-const StyledBox = styled(Box)`
-  ${({ isRoot }: { isRoot: boolean }) =>
+const StyledBox = styled(Box)<{ isRoot: boolean }>`
+  ${({ isRoot }) =>
     isRoot
       ? `cursor: auto;
           padding: 4px;

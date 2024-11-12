@@ -193,7 +193,7 @@ export const defaultOutline = css`
   box-shadow: ${defaultStyles.boxShadowFocused};
 `;
 
-export const defaultInputStyle = css`
+export const defaultInputStyle = css<{ size?: InputSize }>`
   color: ${colors.textPrimary};
   font-size: ${fontSizes.base}px;
   line-height: normal;
@@ -238,7 +238,7 @@ export const defaultInputStyle = css`
     border-color: #ccc;
     cursor: not-allowed;
   }
-  ${(props: { size?: InputSize }) =>
+  ${(props) =>
     props.size === 'small' &&
     css`
       font-size: ${fontSizes.s}px;

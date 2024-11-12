@@ -25,7 +25,7 @@ const CardButton = ({
   onMouseEnter,
   onMouseLeave,
   ...rest
-}: CardButtonProps & BoxProps) => {
+}: CardButtonProps & Omit<BoxProps, 'children'>) => {
   const [isHover, setIsHover] = useState(false);
 
   return (
@@ -51,7 +51,6 @@ const CardButton = ({
       flexDirection="column"
       alignItems="flex-start"
       justifyContent="flex-start"
-      disabled={disabled}
       {...rest}
     >
       {iconName && (

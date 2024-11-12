@@ -10,8 +10,8 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 import { WIDGET_TITLES, hasChildren, hasNoPointerEvents } from '../../Widgets';
 
-const StyledBox = styled(Box)`
-  ${({ isRoot }: { isRoot: boolean }) =>
+const StyledBox = styled(Box)<{ isRoot: boolean }>`
+  ${({ isRoot }) =>
     isRoot
       ? `cursor: auto;
           padding: 4px;

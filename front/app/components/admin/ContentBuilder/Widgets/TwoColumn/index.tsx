@@ -24,7 +24,7 @@ type TwoColumnProps = {
   children?: React.ReactNode;
 };
 
-export const TwoColumnWrapper = styled(Box)`
+export const TwoColumnWrapper = styled(Box)<TwoColumnProps>`
   min-height: 40px;
   width: 100%;
   gap: 24px;
@@ -34,7 +34,7 @@ export const TwoColumnWrapper = styled(Box)`
     grid-template-columns: 1fr;
   `}
 
-  grid-template-columns: ${(props: TwoColumnProps) =>
+  grid-template-columns: ${(props) =>
     props.columnLayout === '1-1'
       ? '1fr 1fr'
       : props.columnLayout === '2-1'

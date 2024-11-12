@@ -29,7 +29,7 @@ interface Props {
   showAIUpsell?: boolean;
 }
 
-const AddIcon = styled(Icon).attrs({ name: 'plus' })`
+const AddIcon = styled(Icon)`
   margin-left: auto;
   margin-right: 12px;
   fill: ${colors.textSecondary};
@@ -138,7 +138,7 @@ const ToolboxItem = ({
               </Box>
             </Tooltip>
           )}
-          {!disabled && <AddIcon />}
+          {!disabled && <AddIcon name="plus" />}
         </StyledBox>
       </Box>
     </Tooltip>

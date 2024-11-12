@@ -24,8 +24,8 @@ type ContainerProps = {
 };
 
 // very similar to front/app/components/admin/TabbedResource/Tab.tsx
-const Container = styled.div`
-  ${({ active, disable }: ContainerProps) => css`
+const Container = styled.div<ContainerProps>`
+  ${({ active, disable }) => css`
     list-style: none;
     display: flex;
     align-items: center;

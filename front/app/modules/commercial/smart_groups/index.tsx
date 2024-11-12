@@ -76,14 +76,14 @@ const configuration: ModuleConfiguration = {
       type,
     }: RenderOnTypeProps) => (
       <RenderOnType type={type}>
-        <ListItemIcon />
+        <ListItemIcon name="flash" />
       </RenderOnType>
     ),
     'app.containers.Admin.users.UsersHeader.icon': ({
       type,
     }: RenderOnTypeProps) => (
       <RenderOnType type={type}>
-        <HeaderIcon />
+        <HeaderIcon name="flash" />
       </RenderOnType>
     ),
     'app.containers.Admin.users.form': ModalFormOutlet,

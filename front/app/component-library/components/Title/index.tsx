@@ -50,10 +50,10 @@ export type TitleProps = {
   BoxVisibilityProps &
   React.HTMLAttributes<HTMLHeadingElement>;
 
-const StyledTitle = styled(Box)`
+const StyledTitle = styled(Box)<TitleProps>`
   ${isRtl`direction: rtl;`}
 
-  ${({ variant, color, fontSize, fontStyle, textAlign }: TitleProps) => css`
+  ${({ variant, color, fontSize, fontStyle, textAlign }) => css`
     color: ${({ theme }: { theme: MainThemeProps }) =>
       color ? theme.colors[color] : colors.textPrimary};
     font-style: ${fontStyle ? fontStyle : 'normal'};

@@ -1,7 +1,7 @@
 import { Icon, colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-const HeaderIcon = styled(Icon).attrs({ name: 'flash' })`
+const HeaderIcon = styled(Icon)`
   flex: 0 0 28px;
   width: 28px;
   height: 28px;
