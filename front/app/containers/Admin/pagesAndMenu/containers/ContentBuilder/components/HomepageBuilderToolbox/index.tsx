@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { useTheme } from 'styled-components';
 import { SupportedLocale } from 'typings';
 
 import useAppConfigurationLocales, {
@@ -16,8 +17,6 @@ import IframeMultiloc from 'components/admin/ContentBuilder/Widgets/IframeMultil
 import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
 import ImageTextCards from 'components/admin/ContentBuilder/Widgets/ImageTextCards';
 import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
-import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
-import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 
 import {
@@ -31,9 +30,18 @@ import CallToAction, {
   callToActionTitle,
 } from '../CraftComponents/CallToAction';
 import Events from '../CraftComponents/Events';
+import HomepageBanner, {
+  homepageBannerTitle,
+} from '../CraftComponents/HomepageBanner';
+import {
+  getHomepageBannerDefaultImage,
+  getHomepageBannerDefaultSettings,
+} from '../CraftComponents/HomepageBanner/utils';
 import OpenToParticipation, {
   openToParticipationTitle,
 } from '../CraftComponents/OpenToParticipation';
+import Projects, { projectsTitle } from '../CraftComponents/Projects';
+import projectsMessages from '../CraftComponents/Projects/messages';
 import Spotlight, {
   spotlightTitle,
   buttonTextDefault,
@@ -46,6 +54,7 @@ type HomepageBuilderToolboxProps = {
 const HomepageBuilderToolbox = ({
   selectedLocale,
 }: HomepageBuilderToolboxProps) => {
+  const theme = useTheme();
   const { formatMessage } = useIntl();
   const formatMessageWithLocale = useFormatMessageWithLocale();
   const appConfigurationLocales = useAppConfigurationLocales();
@@ -106,25 +115,30 @@ const HomepageBuilderToolbox = ({
           icon="button"
           label={formatMessage(callToActionTitle)}
         />
-      </Section>
-      <Section>
         <DraggableElement
-          id="e2e-draggable-two-column"
-          component={<TwoColumn columnLayout="1-1" />}
-          icon="layout-2column-1"
-          label={formatMessage(TwoColumn.craft.custom.title)}
+          id="e2e-draggable-homepage-banner"
+          component={
+            <HomepageBanner
+              homepageSettings={getHomepageBannerDefaultSettings(
+                theme.colors.tenantPrimary
+              )}
+              image={getHomepageBannerDefaultImage()}
+            />
+          }
+          icon="rectangle"
+          label={formatMessage(homepageBannerTitle)}
         />
         <DraggableElement
-          id="e2e-draggable-three-column"
-          component={<ThreeColumn />}
-          icon="layout-3column"
-          label={formatMessage(ThreeColumn.craft.custom.title)}
-        />
-        <DraggableElement
-          id="e2e-draggable-white-space"
-          component={<WhiteSpace size="small" />}
-          icon="layout-white-space"
-          label={formatMessage(WhiteSpace.craft.custom.title)}
+          id="e2e-draggable-projects"
+          component={
+            <Projects
+              currentlyWorkingOnText={toMultiloc(
+                projectsMessages.projectsTitlePlaceholder
+              )}
+            />
+          }
+          icon="projects"
+          label={formatMessage(projectsTitle)}
         />
       </Section>
       <Section>
@@ -133,6 +147,12 @@ const HomepageBuilderToolbox = ({
           component={<TextMultiloc text={{}} />}
           icon="text"
           label={formatMessage(TextMultiloc.craft.custom.title)}
+        />
+        <DraggableElement
+          id="e2e-draggable-white-space"
+          component={<WhiteSpace size="small" />}
+          icon="layout-white-space"
+          label={formatMessage(WhiteSpace.craft.custom.title)}
         />
         <DraggableElement
           id="e2e-draggable-button"

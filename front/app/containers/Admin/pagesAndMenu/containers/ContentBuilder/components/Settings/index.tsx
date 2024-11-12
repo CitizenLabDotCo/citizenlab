@@ -2,10 +2,10 @@ import React from 'react';
 
 import SettingsWrapper from 'components/admin/ContentBuilder/Settings';
 
-import { WIDGET_TITLES } from '../Widgets';
+import { WIDGET_TITLES } from '../CraftComponents';
 
-const ReportBuilderSettings = () => {
+const HomepageBuilderSettings = () => {
   return <SettingsWrapper titles={WIDGET_TITLES} />;
 };
 
-export default ReportBuilderSettings;
+export default HomepageBuilderSettings;

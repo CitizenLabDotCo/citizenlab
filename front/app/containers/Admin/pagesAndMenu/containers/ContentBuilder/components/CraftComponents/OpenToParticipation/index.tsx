@@ -37,10 +37,6 @@ OpenToParticipation.craft = {
   related: {
     settings: Settings,
   },
-  custom: {
-    title: messages.openToParticipation,
-    noPointerEvents: true,
-  },
 };
 
 export const openToParticipationTitle = messages.openToParticipation;
