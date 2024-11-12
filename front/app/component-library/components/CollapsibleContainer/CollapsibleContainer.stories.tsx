@@ -3,7 +3,6 @@ import React from 'react';
 import { Meta, StoryObj } from '@storybook/react';
 
 import Box from '../Box';
-import Title from '../Title';
 
 import CollapsibleContainer from '.';
 
@@ -19,11 +18,10 @@ export const Default: Story = {
   args: {
     isOpenByDefault: false,
     children: <Box>Some content in the collapsible container</Box>,
-    title: (
-      <Title fontSize="s" variant="h3">
-        Title of a collapsible container
-      </Title>
-    ),
+    title: 'Title of a collapsible container',
+    titleVariant: 'h3',
+    titleFontSize: 's',
+    titleFontWeight: 'bold',
     width: '800px',
   },
 };

@@ -7,36 +7,34 @@ import useInstanceId from '../../hooks/useInstanceId';
 import { isRtl } from '../../utils/styleUtils';
 import Box, { BoxMarginProps, BoxPaddingProps, BoxWidthProps } from '../Box';
 import Icon from '../Icon';
+import Title, { Variant, FontSize, FontWeight } from '../Title';
 
 type CollapsibleContainerProps = {
   children: ReactNode;
   title: ReactNode;
   isOpenByDefault?: boolean;
+  useRegionRole?: boolean;
 } & BoxMarginProps &
   BoxWidthProps &
-  BoxPaddingProps;
+  BoxPaddingProps &
+  TitleProps;
+
+type TitleProps = {
+  titleVariant: Variant;
+  titleFontSize?: FontSize;
+  titlePadding?: string;
+  titleFontWeight?: FontWeight;
+};
 
 const ChevronIcon = styled(Icon)`
   transition: fill 80ms ease-out, transform 200ms ease-out;
 `;
 
-const TitleButton = styled(Box)`
+const TitleButton = styled.button`
   align-items: center;
   display: flex;
   justify-content: space-between;
-  cursor: pointer;
   width: 100%;
-  text-align: left;
-  margin: 0px;
-  padding: 0px;
-
-  ${isRtl`
-    text-align: right;
-    direction: rtl;
-    ${ChevronIcon} {
-        transform: rotate(180deg);
-    }
-`}
   &.expanded {
     ${ChevronIcon} {
       transform: rotate(90deg);
@@ -47,6 +45,19 @@ const TitleButton = styled(Box)`
       fill: #000;
     }
   }
+
+  &:focus-visible {
+    outline: 2px solid black;
+    border-radius: 4px;
+  }
+
+  ${isRtl`
+    text-align: right;
+    direction: rtl;
+    ${ChevronIcon} {
+        transform: rotate(180deg);
+    }
+  `}
 `;
 
 const CollapseContainer = styled(Box)`
@@ -90,10 +101,15 @@ const CollapseContainer = styled(Box)`
 `;
 
 const CollapsibleContainer = ({
-  isOpenByDefault,
+  isOpenByDefault = false,
   title,
   children,
-  ...rest
+  titleVariant,
+  titlePadding,
+  titleFontSize,
+  titleFontWeight,
+  useRegionRole,
+  ...boxProps
 }: CollapsibleContainerProps) => {
   const [isExpanded, setIsExpanded] = useState(isOpenByDefault);
   const uuid = useInstanceId();
@@ -103,25 +119,31 @@ const CollapsibleContainer = ({
   };
 
   return (
-    <Box display="flex" flexDirection="column" {...rest}>
-      <Box display="flex" alignItems="center">
+    <Box {...boxProps}>
+      <Title
+        variant={titleVariant}
+        fontSize={titleFontSize}
+        m="0px"
+        p={titlePadding || '0px'}
+      >
         <TitleButton
-          as="button"
           aria-expanded={isExpanded}
           aria-controls={`collapsed-section-${uuid}`}
           id={`collapse-container-title-${uuid}`}
           className={isExpanded ? 'expanded' : 'collapsed'}
           onClick={handleChange}
         >
-          {title}
+          <span style={{ fontWeight: titleFontWeight }}>{title}</span>
           <ChevronIcon name="chevron-right" />
         </TitleButton>
-      </Box>
+      </Title>
+
       <Box
-        role="region"
+        role={useRegionRole ? 'region' : undefined}
         aria-live="polite"
         id={`collapsed-section-${uuid}`}
         aria-labelledby={`collapse-container-title-${uuid}`}
+        hidden={!isExpanded}
       >
         <CSSTransition
           in={isExpanded}
