@@ -8,28 +8,26 @@ class ProjectsFinderService
     @archived = params[:archived]
   end
 
-  def finished_or_archived
-    return @projects.none unless @finished || @archived
+  def participation_possible
+    return participation_possible_uncached if @user
 
-    base_scope = @projects
-      .joins('INNER JOIN admin_publications AS admin_publications ON admin_publications.publication_id = projects.id')
-
-    if @finished
-      finished_scope = base_scope.where(admin_publications: { publication_status: 'published' })
-      finished_scope = joins_last_phases_with_reports(finished_scope)
-        .where(
-          '(last_phases.last_phase_end_at < ? OR reports.id IS NOT NULL) AND admin_publications.publication_status = ?',
-          Time.zone.now, 'published'
-        )
+    Rails.cache.fetch(
+      "#{@projects.cache_key}projects_finder_service/participation_possible/",
+      expires_in: 1.hour
+    ) do
+      participation_possible_uncached
     end
+  end
 
-    archived_scope = base_scope.where(admin_publications: { publication_status: 'archived' }) if @archived
-    archived_scope = joins_last_phases_with_reports(archived_scope) if @archived && @finished
+  def finished_or_archived
+    return finished_or_archived_uncached if @user
 
-    return order_by_created_at_and_id_with_distinct_on(finished_scope.or(archived_scope)) if @finished && @archived
-    return order_by_created_at_and_id_with_distinct_on(finished_scope) if @finished
-
-    order_by_created_at_and_id_with_distinct_on(archived_scope)
+    Rails.cache.fetch(
+      "#{@projects.cache_key}-f-#{@finished}-a-#{@archived}projects_finder_service/finished_or_archived/",
+      expires_in: 1.hour
+    ) do
+      finished_or_archived_uncached
+    end
   end
 
   # Returns an ActiveRecord collection of published projects that are also
@@ -90,17 +88,6 @@ class ProjectsFinderService
       .order(
         Arel.sql('subquery.greatest_created_at DESC')
       )
-  end
-
-  def participation_possible
-    return participation_possible_uncached if @user
-
-    Rails.cache.fetch(
-      "#{@projects.cache_key}projects_finder_service/participation_possible/",
-      expires_in: 1.hour
-    ) do
-      participation_possible_uncached
-    end
   end
 
   private
@@ -170,6 +157,39 @@ class ProjectsFinderService
       .select('projects.*, phases.end_at AS phase_end_at')
   end
 
+  # Returns ActiveRecord collection of projects that are either (finished OR have a last phase that contains a report)
+  # OR are archived, ordered by creation date first and ID second.
+  # => [Project]
+  def finished_or_archived_uncached
+    return @projects.none unless @finished || @archived
+
+    base_scope = @projects
+      .joins('INNER JOIN admin_publications AS admin_publications ON admin_publications.publication_id = projects.id')
+
+    if @finished
+      finished_scope = base_scope.where(admin_publications: { publication_status: 'published' })
+      finished_scope = joins_last_phases_with_reports(finished_scope)
+        .where(
+          '(last_phases.last_phase_end_at < ? OR reports.id IS NOT NULL) AND admin_publications.publication_status = ?',
+          Time.zone.now, 'published'
+        )
+    end
+
+    archived_scope = base_scope.where(admin_publications: { publication_status: 'archived' }) if @archived
+    archived_scope = joins_last_phases_with_reports(archived_scope) if @archived && @finished
+
+    return order_by_created_at_and_id_with_distinct_on(finished_scope.or(archived_scope)) if @finished && @archived
+    return order_by_created_at_and_id_with_distinct_on(finished_scope) if @finished
+
+    order_by_created_at_and_id_with_distinct_on(archived_scope)
+  end
+
+  def order_by_created_at_and_id_with_distinct_on(projects)
+    projects
+      .select('DISTINCT ON (projects.created_at, projects.id) projects.*')
+      .order('projects.created_at ASC, projects.id ASC') # secondary ordering by ID prevents duplicates when paginating
+  end
+
   def joins_last_phases_with_reports(projects)
     projects
       .joins(
@@ -184,12 +204,6 @@ class ProjectsFinderService
       .joins(
         'LEFT JOIN report_builder_reports AS reports ON reports.phase_id = last_phases.last_phase_id'
       )
-  end
-
-  def order_by_created_at_and_id_with_distinct_on(projects)
-    projects
-      .select('DISTINCT ON (projects.created_at, projects.id) projects.*')
-      .order('projects.created_at ASC, projects.id ASC') # secondary ordering by ID prevents duplicates when paginating
   end
 
   def user_requirements_service

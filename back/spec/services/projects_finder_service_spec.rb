@@ -284,9 +284,9 @@ describe ProjectsFinderService do
       end
 
       it 'excludes unfinished projects with a phase containing a report that is not the final phase' do
-        finished_project2 = create(:project)
-        phase1 = create(:phase, project: finished_project2, start_at: 3.days.ago, end_at: 2.days.ago)
-        _phase2 = create(:phase, project: finished_project2, start_at: 1.day.ago, end_at: 1.day.from_now)
+        unfinished_project2 = create(:project)
+        phase1 = create(:phase, project: unfinished_project2, start_at: 3.days.ago, end_at: 2.days.ago)
+        _phase2 = create(:phase, project: unfinished_project2, start_at: 1.day.ago, end_at: 1.day.from_now)
         create(:report, phase: phase1)
 
         expect(Project.count).to eq 3
@@ -350,9 +350,9 @@ describe ProjectsFinderService do
 
     describe "when passed 'finished' AND 'archived' parameter" do
       # Should include `finished_project1` and:
-      let!(:finished_project2) { create(:project) }
-      let!(:phase) { create(:phase, project: finished_project2, start_at: 2.days.ago, end_at: 2.days.from_now) }
-      let!(:_report1) { create(:report, phase: finished_project2.phases.last) }
+      let!(:unfinished_project1) { create(:project) }
+      let!(:phase) { create(:phase, project: unfinished_project1, start_at: 2.days.ago, end_at: 2.days.from_now) }
+      let!(:_report1) { create(:report, phase: phase) }
 
       let!(:archived_project) { create(:project, admin_publication_attributes: { publication_status: 'archived' }) }
 
@@ -360,24 +360,24 @@ describe ProjectsFinderService do
       let!(:_draft_project) { create(:project, admin_publication_attributes: { publication_status: 'draft' }) }
       let!(:_published_project) { create(:project, admin_publication_attributes: { publication_status: 'published' }) }
 
-      let!(:finished_project3) { create(:project) }
-      let!(:phase1) { create(:phase, project: finished_project3, start_at: 3.days.ago, end_at: 2.days.ago) }
-      let!(:_phase2) { create(:phase, project: finished_project3, start_at: 1.day.ago, end_at: 1.day.from_now) }
+      let!(:unfinished_project2) { create(:project) }
+      let!(:phase1) { create(:phase, project: unfinished_project2, start_at: 3.days.ago, end_at: 2.days.ago) }
+      let!(:_phase2) { create(:phase, project: unfinished_project2, start_at: 1.day.ago, end_at: 1.day.from_now) }
       let!(:_report2) { create(:report, phase: phase1) }
 
       let(:result) { service.new(Project.all, user, { finished: true, archived: true }).finished_or_archived }
 
       it 'includes expected projects' do
         expect(Project.count).to eq 7
-        expect(result).to match_array [finished_project1, archived_project, finished_project2]
+        expect(result).to match_array [finished_project1, archived_project, unfinished_project1]
       end
 
       it 'lists projects ordered by created_at ASC' do
         finished_project1.update!(created_at: 3.days.ago)
-        finished_project2.update!(created_at: 1.day.ago)
+        unfinished_project1.update!(created_at: 1.day.ago)
         archived_project.update!(created_at: 2.days.ago)
 
-        expect(result).to eq [finished_project1, archived_project, finished_project2]
+        expect(result).to eq [finished_project1, archived_project, unfinished_project1]
       end
     end
   end
