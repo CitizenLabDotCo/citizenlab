@@ -1398,7 +1398,7 @@
   "app.containers.AdminPage.PagesEdition.privacy-policy": "Nammineq inuunermut politikki",
   "app.containers.AdminPage.PagesEdition.terms-and-conditions": "Atugassarititaasut",
   "app.containers.AdminPage.Project.confirmation.description": "This action cannot be undone.",
-  "app.containers.AdminPage.Project.confirmation.no": "Cancel",
+  "app.containers.AdminPage.Project.confirmation.no": "Taamaatiinnaruk",
   "app.containers.AdminPage.Project.confirmation.title": "Are you sure you want to reset all participation data?",
   "app.containers.AdminPage.Project.confirmation.yes": "Reset all participation data",
   "app.containers.AdminPage.Project.data.descriptionText": "Clear ideas, comments, votes, reactions, survey responses, poll responses, volunteers and event attendees. In the case of voting phases, this action will clear the votes but not the options.",
