@@ -1840,7 +1840,7 @@
   "app.containers.AdminPage.ProjectEvents.eventAttendanceExport": "لإرسال بريد إلكتروني إلى الحضور مباشرةً من النظام الأساسي، يجب على مسؤولي النظام الأساسي إنشاء مجموعة مستخدمين في علامة التبويب  {userTabLink} . {supportArticleLink}.",
   "app.containers.AdminPage.ProjectEvents.eventDates": "تواريخ الحدث",
   "app.containers.AdminPage.ProjectEvents.eventImage": "صورة الحدث",
-  "app.containers.AdminPage.ProjectEvents.eventImageAltTextTitle": "Event image alternative text",
+  "app.containers.AdminPage.ProjectEvents.eventImageAltTextTitle": "نص بديل لصورة الحدث",
   "app.containers.AdminPage.ProjectEvents.eventLocation": "موقع الحدث",
   "app.containers.AdminPage.ProjectEvents.exportAttendees": "تصدير الحضور",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabel": "المُرفقات (بحجم أقصى 50 ميغابايت)",
