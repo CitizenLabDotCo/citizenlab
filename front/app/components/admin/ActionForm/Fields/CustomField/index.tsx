@@ -89,23 +89,33 @@ const CustomField = ({ field, phaseId, action }: Props) => {
                 </Button>
               </Box>
             </Tooltip>
-            <IconButton
-              iconName="delete"
-              iconColor={colors.grey700}
-              iconColorOnHover={colors.black}
-              iconWidth="20px"
-              mr="8px"
-              className="e2e-delete-custom-field"
-              a11y_buttonActionMessage={formatMessage(messages.removeField)}
-              onClick={(e) => {
-                e?.preventDefault();
-                deletePermissionsCustomField({
-                  id: field.id,
-                  permission_id: field.relationships.permission.data.id,
-                  custom_field_id: field.relationships.custom_field.data.id,
-                });
-              }}
-            />
+            <Tooltip
+              content={formatMessage(
+                messages.contactGovSuccessToAccessAddingAQuestion
+              )}
+              disabled={isPermissionsCustomFieldsAllowed}
+            >
+              <Box>
+                <IconButton
+                  iconName="delete"
+                  iconColor={colors.grey700}
+                  iconColorOnHover={colors.black}
+                  iconWidth="20px"
+                  mr="8px"
+                  className="e2e-delete-custom-field"
+                  a11y_buttonActionMessage={formatMessage(messages.removeField)}
+                  disabled={!isPermissionsCustomFieldsAllowed}
+                  onClick={(e) => {
+                    e?.preventDefault();
+                    deletePermissionsCustomField({
+                      id: field.id,
+                      permission_id: field.relationships.permission.data.id,
+                      custom_field_id: field.relationships.custom_field.data.id,
+                    });
+                  }}
+                />
+              </Box>
+            </Tooltip>
           </Box>
         )}
       </Box>
