@@ -939,6 +939,7 @@
   "app.containers.Admin.projects.project.participation.usersByGender": "Brugere efter køn",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.EmailModal.required": "Påkrævet",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.addAQuestion": "Tilføj et spørgsmål",
+  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.contactGovSuccessToAccessAddingAQuestion": "Muligheden for at tilføje eller redigere brugerfelter på faseniveau er ikke inkluderet i din nuværende licens. Kontakt din GovSuccess Manager for at få mere at vide om det.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.customFieldNameOptions": "{customFieldName} muligheder",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.fieldStatus": "Feltstatus",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.noExtraQuestions": "Der vil ikke blive stillet ekstra spørgsmål.",
