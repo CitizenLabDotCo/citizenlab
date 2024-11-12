@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import useInstanceId from '../../hooks/useInstanceId';
 import { isRtl } from '../../utils/styleUtils';
-import Box, { BoxMarginProps, BoxPaddingProps, BoxWidthProps } from '../Box';
+import Box, { BoxProps } from '../Box';
 import Icon from '../Icon';
 import Title, { Variant, FontSize, FontWeight } from '../Title';
 
@@ -14,9 +14,7 @@ type CollapsibleContainerProps = {
   title: ReactNode;
   isOpenByDefault?: boolean;
   useRegionRole?: boolean;
-} & BoxMarginProps &
-  BoxWidthProps &
-  BoxPaddingProps &
+} & BoxProps &
   TitleProps;
 
 type TitleProps = {
@@ -35,6 +33,10 @@ const TitleButton = styled.button`
   display: flex;
   justify-content: space-between;
   width: 100%;
+  background-color: white;
+  border-radius: 3px;
+  padding: 12px;
+
   &.expanded {
     ${ChevronIcon} {
       transform: rotate(90deg);
