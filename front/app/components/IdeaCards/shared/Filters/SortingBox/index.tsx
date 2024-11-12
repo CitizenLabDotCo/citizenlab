@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 
 import { FrontOfficeSortOptions } from 'api/ideas/types';
@@ -33,7 +33,13 @@ const SortingBox = ({ handleSortOnChange, phaseId }: SortingBoxProps) => {
 
   return (
     <InputFilterCollapsible title={formatMessage(messages.sortBy)}>
-      <Box display="flex" flexDirection="column">
+      <Box
+        bgColor={colors.white}
+        display="flex"
+        flexDirection="column"
+        p="12px"
+        pt="0"
+      >
         <SortTypeButton
           sortType="popular"
           handleSortOnChange={handleSortOnChange}

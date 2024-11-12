@@ -1,6 +1,11 @@
 import React from 'react';
 
-import { colors, fontSizes, media } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  colors,
+  fontSizes,
+  media,
+} from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import { IQueryParameters } from 'api/ideas/types';
@@ -117,7 +122,9 @@ const FiltersSideBar = ({
         debounce={1500}
         a11y_numberOfSearchResults={numberOfSearchResults}
       />
-      <SortingBox handleSortOnChange={handleSortOnChange} phaseId={phaseId} />
+      <Box mb="20px">
+        <SortingBox handleSortOnChange={handleSortOnChange} phaseId={phaseId} />
+      </Box>
       <StyledIdeasStatusFilter
         selectedStatusId={selectedIdeaFilters.idea_status}
         selectedIdeaFilters={selectedIdeaFilters}
