@@ -93,13 +93,14 @@ class ProjectsFinderService
     subquery = projects_with_active_phase(subquery)
       .joins('INNER JOIN phases AS active_phases ON active_phases.project_id = projects.id')
       .where.not(phases: { participation_method: 'information' })
-      .select('projects.*')
+      .select('projects.*, projects.created_at AS created_at_1')
 
     # Perform the SELECT DISTINCT on the outer query and order by the end date of the active phase.
+    # We also order by the project creation date to break ties where the end dates are equal.
     projects = Project
       .from(subquery, :projects)
       .distinct
-      .order('phase_end_at ASC NULLS LAST')
+      .order('phase_end_at ASC NULLS LAST, created_at_1 ASC')
       .preload(phases: { permissions: [:groups] })
 
     # Projects user can participate in, or where such participation could (probably) be made possible by user
@@ -127,7 +128,7 @@ class ProjectsFinderService
 
     # We join with active phases again here, to reorder by their end dates.
     projects = projects_with_active_phase(projects)
-      .order('phase_end_at ASC NULLS LAST')
+      .order('phase_end_at ASC NULLS LAST, projects.created_at ASC')
 
     # We pass the action descriptors to the serializer to avoid needing to get them again when serializing,
     # so we return them along with the filtered projects.
@@ -141,7 +142,7 @@ class ProjectsFinderService
         'phases.start_at <= ? AND (phases.end_at >= ? OR phases.end_at IS NULL)',
         Time.zone.now.to_fs(:db), Time.zone.now.to_fs(:db)
       )
-      .select('projects.*, phases.end_at AS phase_end_at')
+      .select('projects.* AS projects, phases.end_at AS phase_end_at')
   end
 
   def user_requirements_service

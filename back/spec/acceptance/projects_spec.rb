@@ -1403,7 +1403,7 @@ resource 'Projects' do
       expect(current_phase_ids).to match included_phase_ids
     end
 
-    example 'includes next page link in response when appropriate', document: false do
+    example 'Includes next page link in response when appropriate', document: false do
       Project.destroy_all
 
       create_list(:project_with_active_ideation_phase, 5)
@@ -1421,6 +1421,23 @@ resource 'Projects' do
       do_request page: { number: 3, size: 2 }
       json_response = json_parse(response_body)
       expect(json_response[:links][:next]).to be_nil
+    end
+
+    # Test to catch duplicates that can occur when active phase end dates match, and no secondary sorting is applied.
+    example 'Does not duplicate projects on different pages when phase end dates are the same', document: false do
+      Project.destroy_all
+
+      create_list(:project_with_active_ideation_phase, 10)
+
+      do_request page: { number: 1, size: 4 }
+      json_response = json_parse(response_body)
+      project_ids_page1 = json_response[:data].pluck(:id)
+
+      do_request page: { number: 2, size: 4 }
+      json_response = json_parse(response_body)
+      project_ids_page2 = json_response[:data].pluck(:id)
+
+      expect(project_ids_page1 & project_ids_page2).to be_empty
     end
   end
 end
