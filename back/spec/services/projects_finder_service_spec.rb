@@ -252,7 +252,7 @@ describe ProjectsFinderService do
     let!(:finished_project1) { create(:project_with_two_past_ideation_phases) }
     let!(:unfinished_project) { create(:project_with_active_ideation_phase) }
 
-    describe "when passed 'finished' parameter" do
+    describe "when passed only the 'finished' parameter" do
       let(:result) { service.new(Project.all, user, { finished: true }).finished_or_archived }
 
       it 'includes finished projects' do
@@ -275,12 +275,12 @@ describe ProjectsFinderService do
       end
 
       it 'includes unfinished projects with a last phase that contains a report' do
-        finished_project2 = create(:project)
-        create(:phase, project: finished_project2, start_at: 2.days.ago, end_at: 2.days.from_now)
-        create(:report, phase: finished_project2.phases.last)
+        unfinished_project2 = create(:project)
+        create(:phase, project: unfinished_project2, start_at: 2.days.ago, end_at: 2.days.from_now)
+        create(:report, phase: unfinished_project2.phases.last)
 
         expect(Project.count).to eq 3
-        expect(result).to match_array([finished_project1, finished_project2])
+        expect(result).to match_array([finished_project1, unfinished_project2])
       end
 
       it 'excludes unfinished projects with a phase containing a report that is not the final phase' do
@@ -322,7 +322,7 @@ describe ProjectsFinderService do
       end
     end
 
-    describe "when passed 'archived' parameter" do
+    describe "when passed only the 'archived' parameter" do
       let!(:archived_project) { create(:project, admin_publication_attributes: { publication_status: 'archived' }) }
       let!(:_draft_project) { create(:project, admin_publication_attributes: { publication_status: 'draft' }) }
       let!(:_published_project) { create(:project, admin_publication_attributes: { publication_status: 'published' }) }

@@ -189,7 +189,7 @@ class ProjectsFinderService
   def order_by_created_at_and_id_with_distinct_on(projects)
     projects
       .select('DISTINCT ON (projects.created_at, projects.id) projects.*')
-      .order('projects.created_at ASC, projects.id ASC')
+      .order('projects.created_at ASC, projects.id ASC') # secondary ordering by ID prevents duplicates when paginating
   end
 
   def user_requirements_service
