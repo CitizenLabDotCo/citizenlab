@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 import { IIdeasFilterCountsQueryParameters } from 'api/ideas_filter_counts/types';
 import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
@@ -13,32 +13,29 @@ interface Props {
   className?: string;
 }
 
-const TopicFilterBox = ({
-  selectedTopicIds,
-  selectedIdeaFilters,
-  onChange,
-  className,
-}: Props) => {
-  const { data: topics } = useTopics();
+const TopicFilterBox = memo<Props>(
+  ({ selectedTopicIds, selectedIdeaFilters, onChange, className }) => {
+    const { data: topics } = useTopics();
 
-  const { data: ideasFilterCounts } = useIdeasFilterCounts({
-    ...selectedIdeaFilters,
-    idea_status: selectedIdeaFilters.idea_status,
-  });
+    const { data: ideasFilterCounts } = useIdeasFilterCounts({
+      ...selectedIdeaFilters,
+      idea_status: selectedIdeaFilters.idea_status,
+    });
 
-  if (topics && topics.data.length > 0 && ideasFilterCounts) {
-    return (
-      <TopicsFilter
-        className={className}
-        topics={topics.data}
-        selectedTopicIds={selectedTopicIds}
-        onChange={onChange}
-        filterCounts={ideasFilterCounts.data.attributes}
-      />
-    );
+    if (topics && topics.data.length > 0 && ideasFilterCounts) {
+      return (
+        <TopicsFilter
+          className={className}
+          topics={topics.data}
+          selectedTopicIds={selectedTopicIds}
+          onChange={onChange}
+          filterCounts={ideasFilterCounts.data.attributes}
+        />
+      );
+    }
+
+    return null;
   }
-
-  return null;
-};
+);
 
 export default TopicFilterBox;

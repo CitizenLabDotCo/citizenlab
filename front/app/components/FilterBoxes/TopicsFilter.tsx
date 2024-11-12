@@ -1,4 +1,4 @@
-import React, { useCallback, MouseEvent } from 'react';
+import React, { useCallback, MouseEvent, memo } from 'react';
 
 import {
   fontSizes,
@@ -47,7 +47,7 @@ const Topic = styled.button`
   margin-bottom: 8px;
   cursor: pointer;
   user-select: none;
-  border: solid 1px ${colors.white};
+  border: solid 1px transparent;
   border-radius: ${(props) => props.theme.borderRadius};
   transition: all 80ms ease-out;
 
@@ -83,111 +83,108 @@ interface Props {
   filterCounts?: FilterCounts;
 }
 
-const TopicsFilter = ({
-  topics,
-  selectedTopicIds,
-  filterCounts,
-  onChange,
-  className,
-}: Props) => {
-  const localize = useLocalize();
-  const { data: appConfig } = useAppConfiguration();
-  const { formatMessage } = useIntl();
-  const customTopicsTerm = appConfig?.data.attributes.settings.core.topics_term;
+const TopicsFilter = memo<Props>(
+  ({ topics, selectedTopicIds, filterCounts, onChange, className }) => {
+    const localize = useLocalize();
+    const { data: appConfig } = useAppConfiguration();
+    const { formatMessage } = useIntl();
+    const customTopicsTerm =
+      appConfig?.data.attributes.settings.core.topics_term;
 
-  const handleOnClick = useCallback(
-    (event: MouseEvent<HTMLElement>) => {
-      const topicId = event.currentTarget.dataset.id as string;
-      let output: string[] = [];
+    const handleOnClick = useCallback(
+      (event: MouseEvent<HTMLElement>) => {
+        const topicId = event.currentTarget.dataset.id as string;
+        let output: string[] = [];
 
-      if (selectedTopicIds && includes(selectedTopicIds, topicId)) {
-        output = selectedTopicIds.filter(
-          (selectedTopicId) => selectedTopicId !== topicId
-        );
-      } else {
-        output = [...(selectedTopicIds || []), topicId];
-      }
-
-      onChange(output.length > 0 ? output : null);
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [selectedTopicIds]
-  );
-
-  if (!isNilOrError(topics) && topics.length > 0) {
-    const selectedTopics = topics.filter((topic) =>
-      includes(selectedTopicIds, topic.id)
-    );
-    const numberOfSelectedTopics = selectedTopics.length;
-    const selectedTopicNames = selectedTopics
-      .map((topic) => {
-        return (
-          !isNilOrError(topic) && localize(topic.attributes.title_multiloc)
-        );
-      })
-      .join(', ');
-
-    return (
-      <InputFilterCollapsible
-        title={
-          customTopicsTerm
-            ? localize(customTopicsTerm)
-            : formatMessage(messages.topicsTitle)
+        if (selectedTopicIds && includes(selectedTopicIds, topicId)) {
+          output = selectedTopicIds.filter(
+            (selectedTopicId) => selectedTopicId !== topicId
+          );
+        } else {
+          output = [...(selectedTopicIds || []), topicId];
         }
-        className={className}
-      >
-        <Box>
-          <Topics className="e2e-topics-filters">
-            {topics
-              .filter((topic) => !isError(topic))
-              .map((topic: ITopicData) => {
-                const filterPostCount = get(
-                  filterCounts,
-                  `topic_id.${topic.id}`,
-                  0
-                );
 
-                const topicSelected = includes(selectedTopicIds, topic.id);
-
-                return (
-                  <Topic
-                    key={topic.id}
-                    data-id={topic.id}
-                    onMouseDown={removeFocusAfterMouseClick}
-                    onClick={handleOnClick}
-                    className={`e2e-topic ${topicSelected ? 'selected' : ''}`}
-                    style={{ display: 'flex' }}
-                  >
-                    <Box maxWidth="90%">
-                      <Text
-                        fontSize="s"
-                        m="0px"
-                        color={topicSelected ? 'white' : 'textPrimary'}
-                        wordBreak="break-word"
-                      >
-                        <T value={topic.attributes.title_multiloc} />
-                      </Text>
-                    </Box>
-
-                    <Box>{filterPostCount}</Box>
-                  </Topic>
-                );
-              })}
-          </Topics>
-
-          <ScreenReaderOnly aria-live="polite">
-            {/* Pronounces numbers of selected topics + selected topic names */}
-            <FormattedMessage
-              {...messages.a11y_selectedTopicFilters}
-              values={{ numberOfSelectedTopics, selectedTopicNames }}
-            />
-          </ScreenReaderOnly>
-        </Box>
-      </InputFilterCollapsible>
+        onChange(output.length > 0 ? output : null);
+      },
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      [selectedTopicIds]
     );
-  }
 
-  return null;
-};
+    if (!isNilOrError(topics) && topics.length > 0) {
+      const selectedTopics = topics.filter((topic) =>
+        includes(selectedTopicIds, topic.id)
+      );
+      const numberOfSelectedTopics = selectedTopics.length;
+      const selectedTopicNames = selectedTopics
+        .map((topic) => {
+          return (
+            !isNilOrError(topic) && localize(topic.attributes.title_multiloc)
+          );
+        })
+        .join(', ');
+
+      return (
+        <InputFilterCollapsible
+          title={
+            customTopicsTerm
+              ? localize(customTopicsTerm)
+              : formatMessage(messages.topicsTitle)
+          }
+          className={className}
+        >
+          <Box>
+            <Topics className="e2e-topics-filters">
+              {topics
+                .filter((topic) => !isError(topic))
+                .map((topic: ITopicData) => {
+                  const filterPostCount = get(
+                    filterCounts,
+                    `topic_id.${topic.id}`,
+                    0
+                  );
+
+                  const topicSelected = includes(selectedTopicIds, topic.id);
+
+                  return (
+                    <Topic
+                      key={topic.id}
+                      data-id={topic.id}
+                      onMouseDown={removeFocusAfterMouseClick}
+                      onClick={handleOnClick}
+                      className={`e2e-topic ${topicSelected ? 'selected' : ''}`}
+                      style={{ display: 'flex' }}
+                    >
+                      <Box maxWidth="90%">
+                        <Text
+                          fontSize="s"
+                          m="0px"
+                          color={topicSelected ? 'white' : 'textPrimary'}
+                          wordBreak="break-word"
+                        >
+                          <T value={topic.attributes.title_multiloc} />
+                        </Text>
+                      </Box>
+
+                      <Box>{filterPostCount}</Box>
+                    </Topic>
+                  );
+                })}
+            </Topics>
+
+            <ScreenReaderOnly aria-live="polite">
+              {/* Pronounces numbers of selected topics + selected topic names */}
+              <FormattedMessage
+                {...messages.a11y_selectedTopicFilters}
+                values={{ numberOfSelectedTopics, selectedTopicNames }}
+              />
+            </ScreenReaderOnly>
+          </Box>
+        </InputFilterCollapsible>
+      );
+    }
+
+    return null;
+  }
+);
 
 export default TopicsFilter;
