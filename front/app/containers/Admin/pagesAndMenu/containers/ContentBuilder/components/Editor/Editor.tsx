@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { colors } from '@citizenlab/cl2-component-library';
 import {
   Editor as CraftEditor,
   SerializedNodes,
@@ -25,7 +26,7 @@ const Editor: React.FC<EditorProps> = ({
     <CraftEditor
       resolver={resolver}
       indicator={{
-        success: 'rgb(98, 196, 98)',
+        success: colors.green300,
         error: 'red',
         transition: 'none',
       }}
