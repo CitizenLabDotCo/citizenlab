@@ -1,11 +1,11 @@
 import React from 'react';
 
 import {
-  Title,
   Box,
   useBreakpoint,
   media,
   isRtl,
+  Title,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
@@ -80,7 +80,7 @@ const ProjectInfo = ({ projectId, className }: Props) => {
       <Container className={`${className || ''} e2e-project-info`}>
         <Fragment name={`projects/${project.data.id}/info`}>
           <Left>
-            <Title variant="h1" color="tenantText">
+            <Title color="tenantText">
               <T value={project.data.attributes.title_multiloc} />
             </Title>
 
