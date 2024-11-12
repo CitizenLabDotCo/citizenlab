@@ -94,6 +94,15 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   Proposals: callToActionTitle,
 };
 
+const WIDGETS_WITH_CHILDREN = new Set<string>([
+  'TwoColumn',
+  'ThreeColumn',
+] satisfies WidgetName[]);
+
+export const hasChildren = (nodeName: string) => {
+  return WIDGETS_WITH_CHILDREN.has(nodeName);
+};
+
 const WIDGETS_WITHOUT_POINTER_EVENTS = new Set<string>([
   // Shared widgets
   'ButtonMultiloc',
