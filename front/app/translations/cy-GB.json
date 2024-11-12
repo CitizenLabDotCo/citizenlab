@@ -267,7 +267,7 @@
   "app.components.PasswordInput.a11y_strength4Password": "Cryfder cyfrinair cryf",
   "app.components.PasswordInput.a11y_strength5Password": "Cryfder cyfrinair cryf iawn",
   "app.components.PasswordInput.hidePassword": "Cuddio cyfrinair",
-  "app.components.PasswordInput.initialPasswordStrengthCheckerMessage": "Rhy fyr (min. {minimumPasswordLength} cymeriadau)",
+  "app.components.PasswordInput.initialPasswordStrengthCheckerMessage": "Rhy fyr (lleiafswm {minimumPasswordLength} cymeriadau)",
   "app.components.PasswordInput.minimumPasswordLengthError": "Darparwch gyfrinair sydd o leiaf {minimumPasswordLength} nod o hyd",
   "app.components.PasswordInput.passwordEmptyError": "Rhowch eich cyfrinair",
   "app.components.PasswordInput.passwordStrengthTooltip1": "I wneud eich cyfrinair yn gryfach:",
