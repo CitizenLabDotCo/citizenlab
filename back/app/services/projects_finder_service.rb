@@ -126,7 +126,7 @@ class ProjectsFinderService
     # Step 2: Use project_descriptor_pairs keys (project IDs) to filter projects
     projects = Project.where(id: project_descriptor_pairs.keys)
 
-    # We join with active phases again here, to reorder by their end dates.
+    # We join with active phases again here, to reorder by their end dates first, and projects.created_at second.
     projects = projects_with_active_phase(projects)
       .order('phase_end_at ASC NULLS LAST, projects.created_at ASC')
 
