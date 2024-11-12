@@ -5,10 +5,11 @@ import {
   colors,
   fontSizes,
   Icon,
+  InputSize,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-const Container = styled.button<{ disabled: boolean }>`
+const Container = styled.button<{ disabled: boolean; size?: InputSize }>`
   ${defaultInputStyle};
   cursor: pointer;
   display: flex;

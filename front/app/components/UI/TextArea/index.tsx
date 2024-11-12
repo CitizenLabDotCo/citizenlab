@@ -5,6 +5,7 @@ import {
   Label,
   colors,
   defaultInputStyle,
+  InputSize,
   isRtl,
 } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
@@ -16,7 +17,7 @@ import Error from 'components/UI/Error';
 
 const Container = styled.div``;
 
-const TextAreaContainer = styled.div`
+const TextAreaContainer = styled.div<{ size?: InputSize }>`
   width: 100%;
   position: relative;
   padding: 2px;

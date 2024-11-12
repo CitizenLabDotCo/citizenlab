@@ -91,7 +91,7 @@ import {
   Color,
   isRtl,
 } from './utils/styleUtils';
-import { IGraphPoint, IOption, Locale } from './utils/typings';
+import { IGraphPoint, IOption, Locale, InputSize } from './utils/typings';
 
 export type {
   RadioProps,
@@ -116,6 +116,7 @@ export type {
   IOption,
   Locale,
   ImageProps,
+  InputSize,
   TextProps,
   TitleProps,
   Color,

@@ -31,7 +31,7 @@ const IconWrapper = styled(BaseIconWrapper)`
   background: ${transparentize(0.9, colors.orange500)};
 `;
 
-const LightningBoltIcon = styled(Icon).attrs({ name: 'flash' })`
+const LightningBoltIcon = styled(Icon)`
   width: 28px;
   height: 28px;
   fill: ${colors.orange500};
@@ -88,7 +88,7 @@ const SmartGroupType: FC<SmartGroupTypeProps> = ({
   return (
     <GroupType className="rules">
       <IconWrapper>
-        <LightningBoltIcon />
+        <LightningBoltIcon name="flash" />
       </IconWrapper>
       <GroupName>
         <FormattedMessage {...adminUsersMessages.step1TypeNameSmart} />

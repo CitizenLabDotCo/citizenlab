@@ -42,7 +42,7 @@ export const IconWrapper = styled.div`
   background: ${transparentize(0.9, colors.primary)};
 `;
 
-const ManualGroupIcon = styled(Icon).attrs({ name: 'database' })`
+const ManualGroupIcon = styled(Icon)`
   width: 28px;
   height: 28px;
   fill: ${colors.primary};
@@ -100,7 +100,7 @@ const GroupCreationStep1 = memo(
       <Container>
         <GroupType className="manual">
           <IconWrapper>
-            <ManualGroupIcon />
+            <ManualGroupIcon name="database" />
           </IconWrapper>
           <GroupName>
             <FormattedMessage {...messages.step1TypeNameNormal} />
