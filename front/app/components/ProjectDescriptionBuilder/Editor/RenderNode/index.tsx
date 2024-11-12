@@ -4,9 +4,9 @@ import { Box, colors } from '@citizenlab/cl2-component-library';
 import { useNode, useEditor, ROOT_NODE } from '@craftjs/core';
 import styled from 'styled-components';
 
-import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
+import messages from 'components/admin/ContentBuilder/messages';
 
-import messages from './messages';
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 
 const StyledBox = styled(Box)`
   ${({ isRoot }: { isRoot: boolean }) =>

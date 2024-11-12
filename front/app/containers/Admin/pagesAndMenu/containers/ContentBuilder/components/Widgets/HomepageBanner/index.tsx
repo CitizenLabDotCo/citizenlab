@@ -727,11 +727,8 @@ HomepageBanner.craft = {
   rules: {
     canDrag: () => false,
   },
-  custom: {
-    title: messages.homepageBannerTitle,
-    noPointerEvents: true,
-    noDelete: true,
-  },
 };
+
+export const homepageBannerTitle = messages.homepageBannerTitle;
 
 export default HomepageBanner;

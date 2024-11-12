@@ -150,7 +150,7 @@ const CallToAction = ({
             w="100%"
             maxWidth={isSmallerThanTablet ? undefined : '400px'}
           >
-            <Title fontSize="xxl" color="tenantText">
+            <Title variant="h2" color="tenantText">
               {lоcalize(title)}
             </Title>
             <Text color="textSecondary">{lоcalize(description)}</Text>
@@ -291,10 +291,6 @@ const Settings = () => {
 CallToAction.craft = {
   related: {
     settings: Settings,
-  },
-  custom: {
-    title: messages.callToActionTitle,
-    noPointerEvents: true,
   },
 };
 

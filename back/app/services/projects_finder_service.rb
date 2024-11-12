@@ -106,13 +106,15 @@ class ProjectsFinderService
     subquery = projects_with_active_phase(subquery)
       .joins('INNER JOIN phases AS active_phases ON active_phases.project_id = projects.id')
       .where.not(phases: { participation_method: 'information' })
-      .select('projects.*')
+      .select('projects.*, projects.created_at AS projects_created_at, projects.id AS projects_id')
 
-    # Perform the SELECT DISTINCT on the outer query and order by the end date of the active phase.
+    # Perform the SELECT DISTINCT on the outer query and order first by the end date of the active phase,
+    # second by project created_at, and third by project ID.
+    # Secondary & ternary orderings prevent duplicates when paginating, when prior ordering involves equivalent values
     projects = Project
       .from(subquery, :projects)
       .distinct
-      .order('phase_end_at ASC NULLS LAST')
+      .order('phase_end_at ASC NULLS LAST, projects_created_at ASC, projects_id ASC')
       .preload(phases: { permissions: [:groups] })
 
     # Projects user can participate in, or where such participation could (probably) be made possible by user
@@ -138,9 +140,10 @@ class ProjectsFinderService
     # Step 2: Use project_descriptor_pairs keys (project IDs) to filter projects
     projects = Project.where(id: project_descriptor_pairs.keys)
 
-    # We join with active phases again here, to reorder by their end dates.
+    # We join with active phases again, to reorder by phases.end_at first, projects.created_at second, project ID third.
+    # Secondary & ternary orderings prevent duplicates when paginating, when prior ordering involves equivalent values.
     projects = projects_with_active_phase(projects)
-      .order('phase_end_at ASC NULLS LAST')
+      .order('phase_end_at ASC NULLS LAST, projects.created_at ASC, projects.id ASC')
 
     # We pass the action descriptors to the serializer to avoid needing to get them again when serializing,
     # so we return them along with the filtered projects.

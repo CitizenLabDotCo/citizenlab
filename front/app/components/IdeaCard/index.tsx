@@ -3,10 +3,10 @@ import React, { useEffect } from 'react';
 import {
   useBreakpoint,
   Box,
-  Title,
   defaultCardStyle,
   defaultCardHoverStyle,
   media,
+  Title,
 } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 import { RouteType } from 'routes';

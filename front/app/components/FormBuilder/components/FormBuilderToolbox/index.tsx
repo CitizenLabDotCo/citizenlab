@@ -125,7 +125,6 @@ const FormBuilderToolbox = ({
         )}
         <Box display="flex" alignItems="center" ml="16px" mt="16px">
           <Title
-            fontWeight="normal"
             variant="h6"
             m="0px"
             as="h3"
@@ -232,7 +231,6 @@ const FormBuilderToolbox = ({
           {!builderConfig.toolboxFieldsToExclude.includes('point') && ( // We want to show the mapping section
             <>
               <Title
-                fontWeight="normal"
                 ml="16px"
                 mt="16px"
                 variant="h6"
