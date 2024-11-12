@@ -178,7 +178,7 @@ const StatusFilter = memo<Props>(
                     />
                     <T value={status.attributes.title_multiloc}>
                       {(statusTitle) => <>{capitalize(statusTitle)}</>}
-                    </T>{' '}
+                    </T>
                   </Box>
 
                   {!isFilterSelected ? (
