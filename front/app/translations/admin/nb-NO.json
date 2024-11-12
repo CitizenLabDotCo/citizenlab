@@ -250,7 +250,7 @@
   "app.components.admin.PostManager.offlinePicks": "Frakoblede valg",
   "app.components.admin.PostManager.offlineVotes": "Frakoblede stemmer",
   "app.components.admin.PostManager.onlineVotes": "Stemmer på nett",
-  "app.components.admin.PostManager.optionFormTitle": "Redigeringsalternativ",
+  "app.components.admin.PostManager.optionFormTitle": "Rediger alternativ",
   "app.components.admin.PostManager.participants": "Deltakere",
   "app.components.admin.PostManager.participatoryBudgettingPicks": "Valg",
   "app.components.admin.PostManager.participatoryBudgettingPicksOnline": "Valg på nett",
