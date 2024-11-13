@@ -48,9 +48,9 @@ const TitleButton = styled.button`
     }
   }
 
-  &:focus-visible {
+  &.focus-visible {
     outline: 2px solid black;
-    border-radius: 4px;
+    border-radius: ${({ theme }) => `${theme.borderRadius}px`};
   }
 
   ${isRtl`

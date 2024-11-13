@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, colors, Icon } from '@citizenlab/cl2-component-library';
+import { Box, BoxProps, colors, Icon } from '@citizenlab/cl2-component-library';
 import { hideVisually, darken } from 'polished';
 import styled, { useTheme } from 'styled-components';
 
@@ -39,6 +39,10 @@ const Label = styled.label<{ selected: boolean }>`
     &:hover {
       background: rgba(132, 147, 158, 0.15);
     }`}
+
+  ${HiddenRadio}.focus-visible + & {
+    outline: 2px solid black;
+  }
 `;
 
 type SortTypeButtonProps = {
@@ -51,7 +55,8 @@ const SortTypeButton = ({
   sortType,
   handleSortOnChange,
   isSelected,
-}: SortTypeButtonProps) => {
+  ...boxProps
+}: SortTypeButtonProps & BoxProps) => {
   const theme = useTheme();
   const { formatMessage } = useIntl();
 
@@ -60,22 +65,12 @@ const SortTypeButton = ({
   };
 
   return (
-    // <Button
-    //   py="8px"
-    //   bgColor={getButtonBackgroundColor(isSelected, isHover, theme)}
-    //   icon={getIconNameForSortingOption(sortType)}
-    //   iconColor={isSelected ? 'white' : 'textPrimary'}
-    //   iconHoverColor={isSelected ? 'white' : 'textPrimary'}
-    //   textColor={isSelected ? 'white' : 'textPrimary'}
-    //   textHoverColor="textPrimary"
-    //   type="button"
-    // >
-    // </Button>
-    <Box display="flex" alignItems="center">
+    <Box display="flex" alignItems="center" {...boxProps}>
       <HiddenRadio
         id={sortType}
         name="sortType"
         value={sortType}
+        checked={isSelected}
         onChange={handleOnChange}
       />
       <Label htmlFor={sortType} onClick={handleOnChange} selected={isSelected}>

@@ -26,6 +26,7 @@ const SortingBox = ({ handleSortOnChange, phaseId }: SortingBoxProps) => {
   const [searchParams] = useSearchParams();
   const currentSortType =
     searchParams.get('sort') || phaseDefaultSort || 'trending';
+  const marginBottom = '4px';
 
   return (
     <InputFilterCollapsible title={formatMessage(messages.sortBy)}>
@@ -40,21 +41,25 @@ const SortingBox = ({ handleSortOnChange, phaseId }: SortingBoxProps) => {
           sortType="popular"
           handleSortOnChange={handleSortOnChange}
           isSelected={currentSortType === 'popular'}
+          mb={marginBottom}
         />
         <SortTypeButton
           sortType="trending"
           handleSortOnChange={handleSortOnChange}
           isSelected={currentSortType === 'trending'}
+          mb={marginBottom}
         />
         <SortTypeButton
           sortType="random"
           handleSortOnChange={handleSortOnChange}
           isSelected={currentSortType === 'random'}
+          mb={marginBottom}
         />
         <SortTypeButton
           sortType="new"
           handleSortOnChange={handleSortOnChange}
           isSelected={currentSortType === 'new'}
+          mb={marginBottom}
         />
         <SortTypeButton
           sortType="-new"
