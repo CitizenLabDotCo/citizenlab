@@ -145,11 +145,6 @@ class ProjectPolicy < ApplicationPolicy
     shared
   end
 
-  def permitted_attributes_for_index_finished_or_archived
-    shared_permitted_attributes
-    # [:finished]
-  end
-
   def permitted_attributes_for_create
     shared_permitted_attributes
   end
