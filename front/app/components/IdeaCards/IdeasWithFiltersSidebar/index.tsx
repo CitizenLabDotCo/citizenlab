@@ -122,9 +122,13 @@ const ContentRight = styled.div<{ filterColumnWidth: number }>`
   justify-content: flex-start;
   align-self: flex-start;
   margin-left: ${gapWidth}px;
-  position: relative;
+  max-height: 86vh;
   position: sticky;
-  top: 100px;
+  position: -webkit-sticky;
+  top: 100px; /* required */
+  overflow-y: scroll;
+  padding-left: 8px;
+  padding-right: 8px;
 `;
 
 export interface QueryParametersUpdate {

@@ -390,7 +390,6 @@ const App = ({ children }: Props) => {
                 flexDirection="column"
                 alignItems="stretch"
                 flex="1"
-                overflowY="auto"
                 id="main-content"
                 pt={
                   showFrontOfficeNavbar()
