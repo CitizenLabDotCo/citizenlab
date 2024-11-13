@@ -18,6 +18,7 @@ const InputFilterCollapsible = ({ title, children, className }: Props) => {
       titleVariant="h6"
       titleFontWeight="bold"
       title={title.toUpperCase()}
+      titlePadding="12px"
       background="white"
       borderRadius={theme.borderRadius}
       isOpenByDefault={true}

@@ -18,9 +18,6 @@ const TitleButton = styled.button`
   display: flex;
   justify-content: space-between;
   width: 100%;
-  background-color: white;
-  border-radius: 3px;
-  padding: 12px;
 
   &.expanded {
     ${ChevronIcon} {
