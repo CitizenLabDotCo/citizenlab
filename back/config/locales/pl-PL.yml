@@ -266,6 +266,7 @@ pl:
       first_name: 'Imię (imiona)'
       image_url: 'Adres URL obrazu'
       input_id: 'ID'
+      manual_votes: 'Głosowania offline'
       input_url: 'URL'
       last_name: 'Nazwisko'
       latitude: 'Szerokość geograficzna'
