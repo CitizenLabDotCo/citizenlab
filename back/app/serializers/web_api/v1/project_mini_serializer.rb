@@ -8,17 +8,19 @@ class WebApi::V1::ProjectMiniSerializer < WebApi::V1::BaseSerializer
 
   attribute :starts_days_from_now do |object|
     first_phase = object.phases.order(start_at: :asc).first
+    today = Time.zone.now.to_date
 
-    if first_phase&.start_at && first_phase.start_at > Time.zone.now
-      (first_phase.start_at.to_date - Time.zone.now.to_date).to_i
+    if first_phase&.start_at && first_phase.start_at > today
+      (first_phase.start_at.to_date - today).to_i
     end
   end
 
   attribute :ended_days_ago do |object|
     last_phase = object.phases.order(end_at: :desc).first
+    today = Time.zone.now.to_date
 
-    if last_phase&.end_at && last_phase.end_at <= Time.zone.now
-      (Time.zone.now.to_date - last_phase.end_at.to_date).to_i
+    if last_phase&.end_at && last_phase.end_at < today
+      (today - last_phase.end_at.to_date).to_i
     end
   end
 
