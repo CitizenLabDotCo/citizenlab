@@ -266,6 +266,7 @@ lv:
       first_name: 'Vārds(-i)'
       image_url: 'Attēla URL'
       input_id: 'ID'
+      manual_votes: 'Bezsaistes balsojumi'
       input_url: 'URL'
       last_name: 'Uzvārds'
       latitude: 'Ģeogrāfiskais platums'

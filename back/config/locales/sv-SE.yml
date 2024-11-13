@@ -266,6 +266,7 @@ sv:
       first_name: 'Förnamn(en)'
       image_url: 'URL för bild'
       input_id: 'ID'
+      manual_votes: 'Offline röster'
       input_url: 'Webbadress'
       last_name: 'Efternamn'
       latitude: 'Latitud'
