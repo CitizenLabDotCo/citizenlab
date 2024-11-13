@@ -74,19 +74,18 @@ const SSOVerificationButton = ({
 
   const handleOnClick = () => {
     if (verificationMethod && onClick) {
+      console.log('OnClick');
       onClick(verificationMethod);
-      return;
     }
 
     if (standardSSOBehavior) {
       onClickStandardSSO?.();
-      return;
+    } else {
+      const jwt = getJwt();
+      window.location.href = `${AUTH_PATH}/${
+        verificationMethod?.attributes.name
+      }?token=${jwt}&pathname=${removeUrlLocale(window.location.pathname)}`;
     }
-
-    const jwt = getJwt();
-    window.location.href = `${AUTH_PATH}/${
-      verificationMethod?.attributes.name
-    }?token=${jwt}&pathname=${removeUrlLocale(window.location.pathname)}`;
   };
 
   return (
