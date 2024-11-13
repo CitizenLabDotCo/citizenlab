@@ -3,7 +3,7 @@ import React from 'react';
 import { Box, colors } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 
-import { FrontOfficeSortOptions } from 'api/ideas/types';
+import { IdeaDefaultSortMethod } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
 
 import InputFilterCollapsible from 'components/FilterBoxes/InputFilterCollapsible';
@@ -15,7 +15,7 @@ import messages from '../messages';
 import SortTypeButton from './SortTypeButton';
 
 type SortingBoxProps = {
-  handleSortOnChange: (sort: FrontOfficeSortOptions) => void;
+  handleSortOnChange: (sort: IdeaDefaultSortMethod) => void;
   phaseId?: string;
 };
 const SortingBox = ({ handleSortOnChange, phaseId }: SortingBoxProps) => {

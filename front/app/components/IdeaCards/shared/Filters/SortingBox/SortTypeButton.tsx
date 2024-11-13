@@ -4,7 +4,7 @@ import { Box, colors, Icon } from '@citizenlab/cl2-component-library';
 import { hideVisually, darken } from 'polished';
 import styled, { useTheme } from 'styled-components';
 
-import { FrontOfficeSortOptions } from 'api/ideas/types';
+import { IdeaDefaultSortMethod } from 'api/phases/types';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -42,7 +42,7 @@ const Label = styled.label<{ selected: boolean }>`
 `;
 
 type SortTypeButtonProps = {
-  sortType: FrontOfficeSortOptions;
+  sortType: IdeaDefaultSortMethod;
   handleSortOnChange: (sort: string) => void;
   isSelected: boolean;
 };

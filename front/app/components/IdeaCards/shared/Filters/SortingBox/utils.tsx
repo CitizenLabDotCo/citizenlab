@@ -2,7 +2,7 @@ import { colors, IconNames } from '@citizenlab/cl2-component-library';
 import { MessageDescriptor } from 'react-intl';
 import { DefaultTheme } from 'styled-components';
 
-import { FrontOfficeSortOptions } from 'api/ideas/types';
+import { IdeaDefaultSortMethod } from 'api/phases/types';
 
 import messages from '../messages';
 
@@ -20,7 +20,7 @@ export const getButtonBackgroundColor = (
 };
 
 export const getLabelForSortingOption = (
-  sortType: FrontOfficeSortOptions
+  sortType: IdeaDefaultSortMethod
 ): MessageDescriptor => {
   switch (sortType) {
     case 'trending':
@@ -37,7 +37,7 @@ export const getLabelForSortingOption = (
 };
 
 export const getIconNameForSortingOption = (
-  sortType: FrontOfficeSortOptions
+  sortType: IdeaDefaultSortMethod
 ): IconNames => {
   switch (sortType) {
     case 'trending':
