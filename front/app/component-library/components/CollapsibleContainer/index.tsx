@@ -33,7 +33,7 @@ const TitleButton = styled.button`
     }
   }
 
-  &.focus-visible {
+  &:focus {
     outline: 2px solid black;
     border-radius: ${({ theme }) => `${theme.borderRadius}px`};
   }
