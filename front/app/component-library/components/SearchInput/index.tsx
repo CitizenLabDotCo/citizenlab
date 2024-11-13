@@ -9,11 +9,13 @@ import React, {
 import { isEmpty, debounce as debounceFn } from 'lodash-es';
 import styled from 'styled-components';
 
-import { colors, isRtl } from '../../utils/styleUtils';
+import { colors, isRtl, defaultStyles } from '../../utils/styleUtils';
+import testEnv from '../../utils/testUtils/testEnv';
 import { InputSize } from '../../utils/typings';
 import Box from '../Box';
 import Icon from '../Icon';
 import IconButton from '../IconButton';
+import Input from '../Input';
 
 const StyledInputWrapper = styled.div`
   position: relative;
@@ -24,12 +26,13 @@ const StyledLabel = styled.label<{ isFloating: boolean }>`
   position: absolute;
   left: 12px;
   top: ${({ isFloating }) => (isFloating ? '0px' : '50%')};
-  font-size: ${({ isFloating }) => (isFloating ? '12px' : '16px')};
-  background-color: white; /* Matches the input background */
-  padding: 0 4px; /* Adds a bit of spacing to cover the border */
+  font-size: ${({ isFloating }) => (isFloating ? '14px' : '16px')};
+  background-color: white;
+  padding: 0 4px;
   pointer-events: none;
   transform: translateY(-50%);
   transition: all 0.2s ease;
+  z-index: 2;
 
   ${isRtl`
     left: auto;
@@ -37,17 +40,21 @@ const StyledLabel = styled.label<{ isFloating: boolean }>`
   `}
 `;
 
-const StyledInput = styled.input`
-  padding: 20px 40px 8px 12px; /* Padding for the floating label */
-  width: 100%;
-  border: 1px solid ${colors.black};
-  border-radius: 4px;
-  background-color: white; /* Ensures the background matches */
+const StyledInput = styled(Input)`
+  input {
+    padding-right: 40px;
+    width: 100%;
 
-  &:focus {
-    outline: none;
-    border-color: ${colors.primary};
+    &::-ms-clear {
+      display: none;
+    }
   }
+  ${isRtl`
+    input{
+        padding-right: ${defaultStyles.inputPadding};
+        padding-left: 40px;
+    }
+  `}
 `;
 
 const IconContainer = styled.div<{ inputSize?: InputSize }>`
@@ -87,7 +94,7 @@ const SearchInput = ({
   setInputRef,
 }: Props) => {
   const [internalSearchTerm, setInternalSearchTerm] = useState(
-    defaultValue ?? ''
+    defaultValue ?? null
   );
   const [isFocused, setIsFocused] = useState(false);
 
@@ -100,11 +107,11 @@ const SearchInput = ({
   );
 
   const handleOnChange = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      const value = event.target.value;
-      const newValue = !isEmpty(value) ? value : '';
+    (value: string) => {
+      const newValue = !isEmpty(value) ? value : null;
+
       setInternalSearchTerm(newValue);
-      debouncedOnChange(newValue || null);
+      debouncedOnChange(newValue);
     },
     [debouncedOnChange]
   );
@@ -137,12 +144,17 @@ const SearchInput = ({
         </StyledLabel>
         <StyledInput
           id={id}
+          className="e2e-search-input"
+          type="text"
           aria-label={ariaLabel}
-          value={internalSearchTerm}
+          placeholder={isLabelFloating ? '' : placeholder}
+          value={internalSearchTerm || ''}
           onChange={handleOnChange}
+          size={size}
+          data-testid={testEnv('input-field')}
+          setRef={handleRef}
           onFocus={handleFocus}
           onBlur={handleBlur}
-          ref={handleRef}
         />
         <IconContainer inputSize={size}>
           {internalSearchTerm ? (
