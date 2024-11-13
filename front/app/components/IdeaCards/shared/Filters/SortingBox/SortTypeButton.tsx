@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, BoxProps, colors, Icon } from '@citizenlab/cl2-component-library';
+import { Box, colors, Icon } from '@citizenlab/cl2-component-library';
 import { hideVisually, darken } from 'polished';
 import styled, { useTheme } from 'styled-components';
 
@@ -55,8 +55,7 @@ const SortTypeButton = ({
   sortType,
   handleSortOnChange,
   isSelected,
-  ...boxProps
-}: SortTypeButtonProps & BoxProps) => {
+}: SortTypeButtonProps) => {
   const theme = useTheme();
   const { formatMessage } = useIntl();
 
@@ -65,7 +64,7 @@ const SortTypeButton = ({
   };
 
   return (
-    <Box display="flex" alignItems="center" {...boxProps}>
+    <Box display="flex" alignItems="center">
       <HiddenRadio
         id={sortType}
         name="sortType"
