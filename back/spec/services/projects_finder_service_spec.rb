@@ -110,47 +110,6 @@ describe ProjectsFinderService do
       expect(result[:projects][0].id).to eq active_ideation_project.id
     end
 
-    it 'caches the result for 1 hour if user is not logged in' do
-      Rails.cache.clear
-      start_at = Time.zone.now
-      result = service.new(Project.all, nil).participation_possible
-
-      expect(Project.count).to eq 3
-      expect(result[:projects].size).to eq 1
-      expect(result[:projects][0].id).to eq active_ideation_project.id
-
-      active_ideation_project2 = create(:project_with_active_ideation_phase)
-      result = service.new(Project.all, nil).participation_possible
-
-      expect(Project.count).to eq 4
-      expect(result[:projects].size).to eq 1
-      expect(result[:projects][0].id).to eq active_ideation_project.id
-
-      travel_to(start_at + 61.minutes) do
-        result = service.new(Project.all, nil).participation_possible
-
-        expect(Project.count).to eq 4
-        expect(result[:projects].size).to eq 2
-        expect(result[:projects].map(&:id)).to match_array([active_ideation_project.id, active_ideation_project2.id])
-      end
-    end
-
-    it 'does not use cached result if user is logged in' do
-      Rails.cache.clear
-      result = service.new(Project.all, nil).participation_possible
-
-      expect(Project.count).to eq 3
-      expect(result[:projects].size).to eq 1
-      expect(result[:projects][0].id).to eq active_ideation_project.id
-
-      active_ideation_project2 = create(:project_with_active_ideation_phase)
-      result = service.new(Project.all, user).participation_possible
-
-      expect(Project.count).to eq 4
-      expect(result[:projects].size).to eq 2
-      expect(result[:projects].map(&:id)).to match_array([active_ideation_project.id, active_ideation_project2.id])
-    end
-
     it 'does not invoke unnecessary queries' do
       expect(Project.count).to eq 3
 

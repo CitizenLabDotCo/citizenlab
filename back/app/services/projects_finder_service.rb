@@ -8,96 +8,12 @@ class ProjectsFinderService
     @archived = params[:archived]
   end
 
-  def participation_possible
-    return participation_possible_uncached if @user
-
-    Rails.cache.fetch(
-      "#{@projects.cache_key}projects_finder_service/participation_possible/",
-      expires_in: 1.hour
-    ) do
-      participation_possible_uncached
-    end
-  end
-
-  def finished_or_archived
-    return finished_or_archived_uncached if @user
-
-    Rails.cache.fetch(
-      "#{@projects.cache_key}-f-#{@finished}-a-#{@archived}projects_finder_service/finished_or_archived/",
-      expires_in: 1.hour
-    ) do
-      finished_or_archived_uncached
-    end
-  end
-
-  # Returns an ActiveRecord collection of published projects that are also
-  # followed by user OR relate to an idea, area or topic followed by user,
-  # ordered by the follow created_at (most recent first).
-  # => [Project]
-  def followed_by_user
-    subquery = @projects
-      .joins('INNER JOIN admin_publications AS admin_publications ON admin_publications.publication_id = projects.id')
-      .where(admin_publications: { publication_status: 'published' })
-      .joins(
-        'LEFT JOIN followers AS project_followers ON project_followers.followable_id = projects.id ' \
-        'AND project_followers.followable_type = \'Project\''
-      )
-      .joins('LEFT JOIN ideas ON ideas.project_id = projects.id')
-      .joins(
-        'LEFT JOIN followers AS idea_followers ON idea_followers.followable_id = ideas.id ' \
-        'AND idea_followers.followable_type = \'Idea\''
-      )
-      .joins(
-        'LEFT JOIN areas_projects ON areas_projects.project_id = projects.id'
-      )
-      .joins(
-        'LEFT JOIN followers AS area_followers ON area_followers.followable_id = areas_projects.area_id ' \
-        'AND area_followers.followable_type = \'Area\''
-      )
-      .joins(
-        'LEFT JOIN projects_topics ON projects_topics.project_id = projects.id'
-      )
-      .joins(
-        'LEFT JOIN followers AS topic_followers ON topic_followers.followable_id = projects_topics.topic_id ' \
-        'AND topic_followers.followable_type = \'Topic\''
-      )
-      .where(
-        'project_followers.user_id = :user_id OR idea_followers.user_id = :user_id ' \
-        'OR area_followers.user_id = :user_id OR topic_followers.user_id = :user_id',
-        user_id: @user.id
-      )
-      .select(
-        'projects.id AS project_id, ' \
-        'MAX(GREATEST(' \
-        'project_followers.created_at, ' \
-        'idea_followers.created_at, ' \
-        'area_followers.created_at, ' \
-        'topic_followers.created_at' \
-        ')) AS greatest_created_at'
-      )
-      .group('projects.id')
-
-    # The rather counter-intuitive `.group('projects.id')` at the end of the preceding subquery, followed by
-    # this join with the projects table, is necessary to avoid introducing duplicates AND maintain the desired ordering.
-    # For example, if a user follows an area for a project and the project is also associated with another area,
-    # the project would appear twice in the results without this approach.
-    Project
-      .from("(#{subquery.to_sql}) AS subquery")
-      .joins('INNER JOIN projects ON projects.id = subquery.project_id')
-      .select('projects.*, subquery.greatest_created_at')
-      .order(
-        Arel.sql('subquery.greatest_created_at DESC')
-      )
-  end
-
-  private
-
   # Returns an ActiveRecord collection of published projects that are
   # in an active participatory phase (where user can probably do something),
   # ordered by the end date of the current phase, soonest first (nulls last).
   # Also returns action descriptors for each project, to avoid getting them again when serializing.
   # => { projects: [Project], descriptor_pairs: { <project.id>: { <action_descriptors> }, ... } }
-  def participation_possible_uncached
+  def participation_possible
     subquery = @projects
       .joins('INNER JOIN admin_publications AS admin_publications ON admin_publications.publication_id = projects.id')
       .where(admin_publications: { publication_status: 'published' })
@@ -160,10 +76,70 @@ class ProjectsFinderService
       .select('projects.*, phases.end_at AS phase_end_at')
   end
 
+  # Returns an ActiveRecord collection of published projects that are also
+  # followed by user OR relate to an idea, area or topic followed by user,
+  # ordered by the follow created_at (most recent first).
+  # => [Project]
+  def followed_by_user
+    subquery = @projects
+      .joins('INNER JOIN admin_publications AS admin_publications ON admin_publications.publication_id = projects.id')
+      .where(admin_publications: { publication_status: 'published' })
+      .joins(
+        'LEFT JOIN followers AS project_followers ON project_followers.followable_id = projects.id ' \
+        'AND project_followers.followable_type = \'Project\''
+      )
+      .joins('LEFT JOIN ideas ON ideas.project_id = projects.id')
+      .joins(
+        'LEFT JOIN followers AS idea_followers ON idea_followers.followable_id = ideas.id ' \
+        'AND idea_followers.followable_type = \'Idea\''
+      )
+      .joins(
+        'LEFT JOIN areas_projects ON areas_projects.project_id = projects.id'
+      )
+      .joins(
+        'LEFT JOIN followers AS area_followers ON area_followers.followable_id = areas_projects.area_id ' \
+        'AND area_followers.followable_type = \'Area\''
+      )
+      .joins(
+        'LEFT JOIN projects_topics ON projects_topics.project_id = projects.id'
+      )
+      .joins(
+        'LEFT JOIN followers AS topic_followers ON topic_followers.followable_id = projects_topics.topic_id ' \
+        'AND topic_followers.followable_type = \'Topic\''
+      )
+      .where(
+        'project_followers.user_id = :user_id OR idea_followers.user_id = :user_id ' \
+        'OR area_followers.user_id = :user_id OR topic_followers.user_id = :user_id',
+        user_id: @user.id
+      )
+      .select(
+        'projects.id AS project_id, ' \
+        'MAX(GREATEST(' \
+        'project_followers.created_at, ' \
+        'idea_followers.created_at, ' \
+        'area_followers.created_at, ' \
+        'topic_followers.created_at' \
+        ')) AS greatest_created_at'
+      )
+      .group('projects.id')
+
+    # The rather counter-intuitive `.group('projects.id')` at the end of the preceding subquery, followed by
+    # this join with the projects table, is necessary to avoid introducing duplicates AND maintain the desired ordering.
+    # For example, if a user follows an area for a project and the project is also associated with another area,
+    # the project would appear twice in the results without this approach.
+    Project
+      .from("(#{subquery.to_sql}) AS subquery")
+      .joins('INNER JOIN projects ON projects.id = subquery.project_id')
+      .select('projects.*, subquery.greatest_created_at')
+      .order(
+        Arel.sql('subquery.greatest_created_at DESC')
+      )
+  end
+
   # Returns ActiveRecord collection of projects that are either (finished OR have a last phase that contains a report)
   # OR are archived, ordered by creation date first and ID second.
   # => [Project]
-  def finished_or_archived_uncached
+  def finished_or_archived
     return @projects.none unless @finished || @archived
 
     base_scope = @projects
@@ -186,6 +162,8 @@ class ProjectsFinderService
 
     order_by_created_at_and_id_with_distinct_on(archived_scope)
   end
+
+  private
 
   def order_by_created_at_and_id_with_distinct_on(projects)
     projects
