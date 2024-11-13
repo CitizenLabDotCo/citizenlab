@@ -266,6 +266,7 @@ da:
       first_name: 'Fornavn(e)'
       image_url: 'Billed-URL'
       input_id: 'ID'
+      manual_votes: 'Offline-stemmer'
       input_url: 'URL'
       last_name: 'Efternavn'
       latitude: 'Breddegrad'
