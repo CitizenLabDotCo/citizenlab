@@ -21,6 +21,10 @@ export default function useAnySSOEnabled() {
     name: 'hoplr_login',
   });
 
+  const idAustriaLoginEnabled = useFeatureFlag({
+    name: 'id_austria_login',
+  });
+
   const criiptoLoginEnabled = useFeatureFlag({
     name: 'criipto_login',
   });
@@ -40,7 +44,8 @@ export default function useAnySSOEnabled() {
     claveUnicaLoginEnabled ||
     hoplrLoginEnabled ||
     criiptoLoginEnabled ||
-    keycloakLoginEnabled;
+    keycloakLoginEnabled ||
+    idAustriaLoginEnabled;
 
   return anySSOEnabled;
 }
