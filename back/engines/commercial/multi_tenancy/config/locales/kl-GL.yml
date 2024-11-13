@@ -2,10 +2,10 @@
 kl:
   phase_title_default:
     ideation: Collect input
-    voting: Voting
-    poll: Poll
-    native_survey: Survey
-    survey: Survey
+    voting: Taasisitsineq
+    poll: Taasineq
+    native_survey: Immersuilluni apersuineq
+    survey: Immersuilluni apersuineq
     document_annotation: Document feedback
     volunteering: Find volunteers
     information: Information
