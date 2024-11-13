@@ -79,7 +79,6 @@ const SortTypeButton = ({
           height="14px"
           name={getIconNameForSortingOption(sortType)}
           mr="4px"
-          ariaHidden
         />
         {formatMessage(getLabelForSortingOption(sortType))}
       </Label>
