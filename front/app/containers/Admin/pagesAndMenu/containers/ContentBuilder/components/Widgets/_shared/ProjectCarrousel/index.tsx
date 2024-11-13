@@ -153,6 +153,7 @@ const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
         <Container w="100%" maxWidth="1200px" position="relative">
           <Title
             variant="h3"
+            as="h2"
             mt="0px"
             ml={isSmallerThanPhone ? DEFAULT_PADDING : undefined}
           >

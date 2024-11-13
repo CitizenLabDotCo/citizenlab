@@ -114,27 +114,28 @@ const LightProjectCard = ({ project, ml, mr, onKeyDown }: Props) => {
           )}
         </ProjectImageContainer>
       </Box>
-      <Title variant="h4" mt="8px" mb="0px">
+      <Title variant="h4" as="h3" mt="8px" mb="0px">
         {truncate(title, 50)}
       </Title>
       {phase && (
         <Box mt="8px">
-          <Icon
-            name="clock-circle"
-            fill={colors.blue500}
-            height="16px"
-            mr="4px"
-            ml="-4px"
-            transform="translate(0,-1)"
-          />
-          <Text color="blue500" fontWeight="bold" display="inline" m="0">
-            {end_at ? (
-              <PhaseTimeLeft currentPhaseEndsAt={end_at} />
-            ) : (
-              <>{formatMessage(messages.noEndDate)}</>
-            )}
-          </Text>
-          <Text mt="4px" mb="0px" color="textSecondary" fontWeight="bold">
+          <Box display="flex" flexDirection="row" alignItems="center">
+            <Icon
+              name="clock-circle"
+              fill={colors.blue500}
+              height="16px"
+              mr="4px"
+              ml="-4px"
+            />
+            <Text color="blue500" display="inline" m="0">
+              {end_at ? (
+                <PhaseTimeLeft currentPhaseEndsAt={end_at} />
+              ) : (
+                <>{formatMessage(messages.noEndDate)}</>
+              )}
+            </Text>
+          </Box>
+          <Text mt="2px" mb="0px" color="textSecondary">
             {getCTAMessage({
               phase: phase.data,
               actionDescriptors: project.attributes.action_descriptors,
