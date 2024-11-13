@@ -74,7 +74,6 @@ const SSOVerificationButton = ({
 
   const handleOnClick = () => {
     if (verificationMethod && onClick) {
-      console.log('OnClick');
       onClick(verificationMethod);
     }
 
