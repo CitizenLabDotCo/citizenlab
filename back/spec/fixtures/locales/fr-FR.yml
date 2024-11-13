@@ -101,6 +101,7 @@ fr:
       email: 'E-mail'
       first_name: 'Prénom(s)'
       image_url: "URL de l'image"
+      manual_votes: 'Votes hors ligne'
       input_id: 'Identifiant'
       input_url: 'URL'
       last_name: 'Nom de famille'
