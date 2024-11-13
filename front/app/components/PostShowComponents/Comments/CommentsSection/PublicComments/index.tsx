@@ -5,8 +5,8 @@ import {
   fontSizes,
   isRtl,
   Box,
-  Title,
   useBreakpoint,
+  Title,
 } from '@citizenlab/cl2-component-library';
 import { useInView } from 'react-intersection-observer';
 import { useLocation } from 'react-router-dom';
@@ -127,8 +127,8 @@ const PublicComments = ({
           mt="16px"
         >
           <Title
-            color="tenantText"
             variant="h2"
+            color="tenantText"
             fontSize={isSmallerThanPhone ? 'xl' : 'xxl'}
             id="comments-main-title"
           >

@@ -18,4 +18,8 @@ export default defineMessages({
     defaultMessage:
       'There is an error on { locale } content, please fix the issue to be able to save your changes',
   },
+  error: {
+    id: 'app.containers.admin.ContentBuilder.error',
+    defaultMessage: 'error',
+  },
 });
