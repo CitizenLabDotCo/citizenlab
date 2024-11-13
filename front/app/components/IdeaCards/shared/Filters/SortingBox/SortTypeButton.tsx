@@ -37,7 +37,7 @@ const Label = styled.label<{ selected: boolean }>`
     color: ${colors.textPrimary};
     
     &:hover {
-      background: rgba(132, 147, 158, 0.15);
+      background: ${colors.grey200};
     }`}
 
   ${HiddenRadio}.focus-visible + & {
