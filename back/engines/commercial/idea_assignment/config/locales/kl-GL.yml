@@ -9,5 +9,5 @@ kl:
       cta_reply_to: '%{authorName} utertitsiffigiuk'
       event_description_idea: 'Isumassarsiamik tunineqarputit. Tamanut paasittutissat kingulliit ilanngullugit takussutissiinikkut imaluunniit isumassarsiap killiffiata allanngortinneratigut utimut tunniussigit.'
       main_header: '%{firstName}, nutaamik tunineqarputit'
-      subject: 'Platformimi %{organizationName}mi nutaamik tunineqarputit'
-      preheader_idea: '%{authorName}p isumassarsiaanik tunineqarputit'
+      subject: 'Platformimi %{organizationName} mi nutaamik tunineqarputit'
+      preheader_idea: '%{authorName} p isumassarsiaanik tunineqarputit'

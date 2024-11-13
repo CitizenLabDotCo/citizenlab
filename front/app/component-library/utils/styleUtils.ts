@@ -92,6 +92,7 @@ export const themeColors = {
   green700: '#024D2B',
   green500: '#04884C', // formerly clGreen
   green400: '#32B67A',
+  green300: '#62C462',
   green100: '#e4f7ef', // formerly clGreenSuccessBackground
 
   /**
@@ -153,7 +154,7 @@ export const fontSizes = {
   xxxxxl: 42,
 };
 
-type FontSizesType = keyof typeof fontSizes;
+export type FontSizesType = keyof typeof fontSizes;
 
 export const boxShadow = css`
   box-shadow: 0px 4px 3px rgba(0, 0, 0, 0.05);

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 import { Editor as CraftEditor, QueryMethods } from '@craftjs/core';
 import { QueryCallbacksFor } from '@craftjs/utils';
 
@@ -43,7 +43,7 @@ const Editor: React.FC<EditorProps> = ({
     <CraftEditor
       resolver={resolver}
       indicator={{
-        success: 'rgb(98, 196, 98)',
+        success: colors.green300,
         error: 'red',
         transition: 'none',
       }}

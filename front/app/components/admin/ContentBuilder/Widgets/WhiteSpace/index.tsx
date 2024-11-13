@@ -116,4 +116,6 @@ WhiteSpace.craft = {
   },
 };
 
+export const whiteSpaceTitle = messages.whiteSpace;
+
 export default WhiteSpace;
