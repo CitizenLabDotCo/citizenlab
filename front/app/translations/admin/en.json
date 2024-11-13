@@ -759,6 +759,7 @@
   "app.containers.Admin.messaging.newProjectPhaseModal.turnEmailCampaignOn1": "Enable the {emailCampaignName} email campaign setting?",
   "app.containers.Admin.messaging.newProjectPhaseModal.turnOff": "Yes, turn off",
   "app.containers.Admin.messaging.newProjectPhaseModal.turnOn": "Yes, turn on",
+  "app.containers.Admin.pagesAndMenu.ContentBuilder.CraftComponents.OpenToParticipation.noData": "This widget will only be shown to the user if there are projects where they can participate. If you see this message, it means that you (the admin) cannot participate in any projects at this moment. This message will not be visible on the real homepage.",
   "app.containers.Admin.pagesAndMenu.ContentBuilder.CraftComponents.OpenToParticipation.openToParticipation": "Open to participation",
   "app.containers.Admin.pagesAndMenu.ContentBuilder.CraftComponents.OpenToParticipation.title": "Title",
   "app.containers.Admin.pagesAndMenu.ContentBuilder.FollowedItems.defaultTitle": "For you",
