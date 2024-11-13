@@ -114,7 +114,7 @@ const LightProjectCard = ({ project, ml, mr, onKeyDown }: Props) => {
           )}
         </ProjectImageContainer>
       </Box>
-      <Title variant="h4" mt="8px" mb="0px">
+      <Title variant="h4" as="h3" mt="8px" mb="0px">
         {truncate(title, 50)}
       </Title>
       {phase && (
