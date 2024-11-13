@@ -6,6 +6,7 @@ import useProjectsMini from 'api/projects_mini/useProjectsMini';
 
 import useLocalize from 'hooks/useLocalize';
 
+import EmptyState from '../_shared/EmptyState';
 import ProjectCarrousel from '../_shared/ProjectCarrousel';
 
 import messages from './messages';
@@ -23,7 +24,11 @@ const OpenToParticipation = ({ titleMultiloc }: Props) => {
   const projects = data?.pages.map((page) => page.data).flat();
 
   if (!projects) return null;
-  if (projects.length === 0) return null;
+  if (projects.length === 0) {
+    return (
+      <EmptyState titleMultiloc={titleMultiloc} explanation={messages.noData} />
+    );
+  }
 
   return (
     <ProjectCarrousel
