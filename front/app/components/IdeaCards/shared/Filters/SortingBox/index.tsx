@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
+import { useTheme } from 'styled-components';
 
 import { IdeaDefaultSortMethod } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
@@ -21,6 +22,7 @@ type SortingBoxProps = {
 const SortingBox = ({ handleSortOnChange, phaseId }: SortingBoxProps) => {
   const { formatMessage } = useIntl();
   const { data: phase } = usePhase(phaseId);
+  const theme = useTheme();
   const phaseDefaultSort = phase?.data.attributes.ideas_order;
 
   const [searchParams] = useSearchParams();
@@ -36,6 +38,7 @@ const SortingBox = ({ handleSortOnChange, phaseId }: SortingBoxProps) => {
         flexDirection="column"
         p="12px"
         pt="0"
+        borderRadius={theme.borderRadius}
       >
         <SortTypeButton
           sortType="popular"

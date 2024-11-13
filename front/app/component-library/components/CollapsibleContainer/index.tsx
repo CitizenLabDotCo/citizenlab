@@ -129,6 +129,8 @@ const CollapsibleContainer = ({
         variant={titleVariant}
         fontSize={titleFontSize}
         m="0px"
+        // mb is needed to ensure we can see the border of TitleButton when it's focused
+        mb="2px"
         p={titlePadding || '0px'}
       >
         <TitleButton
