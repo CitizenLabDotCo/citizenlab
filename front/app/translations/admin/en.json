@@ -762,6 +762,7 @@
   "app.containers.Admin.pagesAndMenu.ContentBuilder.CraftComponents.OpenToParticipation.openToParticipation": "Open to participation",
   "app.containers.Admin.pagesAndMenu.ContentBuilder.CraftComponents.OpenToParticipation.title": "Title",
   "app.containers.Admin.pagesAndMenu.ContentBuilder.FollowedItems.defaultTitle": "For you",
+  "app.containers.Admin.pagesAndMenu.ContentBuilder.FollowedItems.noData": "This widget will only be shown to the user if there are projects relevant for them based on their follow preferences. If you see this message, it means that you (the admin) are not following anything at the moment.",
   "app.containers.Admin.pagesAndMenu.ContentBuilder.FollowedItems.title": "Followed items",
   "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.emptyNameErrorText": "Provide a name for all languages",
   "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.emptyProjectError": "The project cannot be empty",
