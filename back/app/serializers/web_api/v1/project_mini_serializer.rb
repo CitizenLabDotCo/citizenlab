@@ -6,6 +6,22 @@ class WebApi::V1::ProjectMiniSerializer < WebApi::V1::BaseSerializer
     :slug
   )
 
+  attribute :starts_days_from_now do |object|
+    first_phase = object.phases.order(start_at: :asc).first
+
+    if first_phase&.start_at && first_phase.start_at > Time.zone.now
+      (first_phase.start_at.to_date - Time.zone.now.to_date).to_i
+    end
+  end
+
+  attribute :ended_days_ago do |object|
+    last_phase = object.phases.order(end_at: :desc).first
+
+    if last_phase&.end_at && last_phase.end_at <= Time.zone.now
+      (Time.zone.now.to_date - last_phase.end_at.to_date).to_i
+    end
+  end
+
   attribute :action_descriptors do |object, params|
     if params[:project_descriptor_pairs]
       params[:project_descriptor_pairs][object.id]
