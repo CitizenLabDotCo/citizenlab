@@ -266,6 +266,7 @@ nb:
       first_name: 'Fornavn(er)'
       image_url: 'Bilde-URL'
       input_id: 'ID'
+      manual_votes: 'Frakoblede stemmer'
       input_url: 'URL'
       last_name: 'Etternavn'
       latitude: 'Breddegrad'
