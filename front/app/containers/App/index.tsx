@@ -239,14 +239,7 @@ const App = ({ children }: Props) => {
     return () => {
       subscriptions.forEach((subscription) => subscription.unsubscribe());
     };
-  }, [
-    location.pathname,
-    previousPathname,
-    redirectsEnabled,
-    appConfiguration,
-    location,
-    signOutAndDeleteAccount,
-  ]);
+  }, [redirectsEnabled, appConfiguration, location, signOutAndDeleteAccount]);
 
   useEffect(() => {
     if (authUser) {
@@ -312,6 +305,8 @@ const App = ({ children }: Props) => {
 
     return true;
   };
+
+  console.log('App');
 
   return (
     <>
