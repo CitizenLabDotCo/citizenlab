@@ -1,23 +1,9 @@
-import { colors, IconNames } from '@citizenlab/cl2-component-library';
+import { IconNames } from '@citizenlab/cl2-component-library';
 import { MessageDescriptor } from 'react-intl';
-import { DefaultTheme } from 'styled-components';
 
 import { IdeaDefaultSortMethod } from 'api/phases/types';
 
 import messages from '../messages';
-
-export const getButtonBackgroundColor = (
-  isSelected: boolean,
-  isHovered: boolean,
-  theme: DefaultTheme
-) => {
-  if (isSelected) {
-    return theme.colors.tenantPrimary;
-  } else if (isHovered) {
-    return theme.colors.grey100;
-  }
-  return colors.white;
-};
 
 export const getLabelForSortingOption = (
   sortType: IdeaDefaultSortMethod
