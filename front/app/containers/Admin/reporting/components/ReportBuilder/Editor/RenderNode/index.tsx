@@ -10,7 +10,7 @@ import {
   hasChildren,
 } from 'containers/Admin/reporting/components/ReportBuilder/Widgets';
 
-import messages from 'components/admin/ContentBuilder/Editor/RenderNode/messages';
+import messages from 'components/admin/ContentBuilder/messages';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -50,13 +50,10 @@ const RenderNode = ({ render }) => {
   } = useNode((node) => {
     // This can sometimes be undefined, even though
     // craftjs says it can't
-    // TODO: Fix this the next time the file is edited.
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (!node) return {};
-    // TODO: Fix this the next time the file is edited.
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (!node.data) return {};
-    // TODO: Fix this the next time the file is edited.
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (!node.events) return {};
 

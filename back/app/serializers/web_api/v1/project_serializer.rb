@@ -41,7 +41,6 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
   end
 
   attribute :participants_count do |object, params|
-    participants_service = ParticipantsService.new
     use_cache = params[:use_cache].to_s != 'false'
 
     if use_cache
@@ -79,9 +78,11 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
   end
 
   def self.avatars_for_project(object, _params)
-    # TODO: call only once (not a second time for counts)
+    AvatarsService.new(participants_service).avatars_for_project(object, limit: 3)
+  end
+
+  def self.participants_service
     @participants_service ||= ParticipantsService.new
-    AvatarsService.new(@participants_service).avatars_for_project(object, limit: 3)
   end
 
   def self.user_follower(object, params)

@@ -125,7 +125,7 @@ const FeatureLayerUpload = ({ mapConfigId, setView }: Props) => {
   return (
     <>
       <Box mt="12px" display="flex" gap="8px" alignContent="center">
-        <Title my="4px" variant="h5" color={'coolGrey600'} fontWeight="bold">
+        <Title my="4px" variant="h5" color={'coolGrey600'}>
           {formatMessage(messages.addFeatureLayer)}
         </Title>
         <IconTooltip

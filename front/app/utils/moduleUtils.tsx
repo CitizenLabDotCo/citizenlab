@@ -163,7 +163,6 @@ export interface OutletsPropertyMap {
     title: string;
     translateButtonClicked?: boolean;
     color?: string;
-    align: 'left' | 'center';
   };
   'app.containers.Admin.settings.general.form': {
     onSettingChange: (settingName: string, settingValue: any) => void;
