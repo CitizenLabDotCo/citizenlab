@@ -24,6 +24,9 @@ export interface IPhaseData {
     user_basket?: {
       data: IRelationship | null;
     };
+    manual_voters_last_updated_by?: {
+      data: IRelationship | null;
+    };
     report?: {
       data: IRelationship | null;
     };
@@ -68,10 +71,12 @@ export interface IPhaseAttributes {
   /** For budgeting it's: for each idea multiply price of the idea
    * with the idea's baskets_count, then sum all those to get the total idea votes for the phase  */
   votes_count: number;
+  total_votes_amount: number;
   report_public: boolean;
   native_survey_title_multiloc?: Multiloc;
   native_survey_button_multiloc?: Multiloc;
   prescreening_enabled?: boolean;
+  manual_voters_amount?: number;
 }
 
 export interface IPhases {
@@ -120,6 +125,7 @@ export interface IUpdatedPhaseProperties {
   prescreening_enabled?: boolean | null;
   allow_anonymous_participation?: boolean;
   expire_days_limit?: number;
+  manual_voters_amount?: number;
 }
 
 export interface AddPhaseObject extends IUpdatedPhaseProperties {

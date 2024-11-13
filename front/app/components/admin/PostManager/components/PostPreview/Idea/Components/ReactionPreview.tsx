@@ -8,7 +8,7 @@ import useIdeaById from 'api/ideas/useIdeaById';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
-import messages from '../messages';
+import messages from '../../messages';
 
 const Container = styled.div`
   display: flex;

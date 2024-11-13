@@ -42,6 +42,7 @@ describe Export::Xlsx::InputSheetGenerator do
                 'Comments',
                 'Likes',
                 'Dislikes',
+                'Offline votes',
                 'URL',
                 'Project',
                 'Status',
@@ -62,7 +63,8 @@ describe Export::Xlsx::InputSheetGenerator do
             project: phase.project,
             phases: [phase],
             author: create(:user, custom_field_values: { create(:custom_field_birthyear).code => 1999 }),
-            assignee: assignee
+            assignee: assignee,
+            manual_votes_amount: 5
           )
         end
         let!(:attachment1) { create(:idea_file, idea: ideation_response1) }
@@ -93,6 +95,7 @@ describe Export::Xlsx::InputSheetGenerator do
                 'Comments',
                 'Likes',
                 'Dislikes',
+                'Offline votes',
                 'URL',
                 'Project',
                 'Status',
@@ -119,6 +122,7 @@ describe Export::Xlsx::InputSheetGenerator do
                   1,
                   2,
                   1,
+                  5,
                   "http://example.org/ideas/#{ideation_response1.slug}",
                   phase.project.title_multiloc['en'],
                   ideation_response1.idea_status.title_multiloc['en'],
@@ -182,6 +186,7 @@ describe Export::Xlsx::InputSheetGenerator do
                 'Comments',
                 'Likes',
                 'Dislikes',
+                'Offline votes',
                 'URL',
                 'Project',
                 'Status',
@@ -208,6 +213,7 @@ describe Export::Xlsx::InputSheetGenerator do
                   1,
                   2,
                   1,
+                  nil,
                   "http://example.org/ideas/#{ideation_response1.slug}",
                   phase.project.title_multiloc['en'],
                   ideation_response1.idea_status.title_multiloc['en'],
@@ -469,6 +475,7 @@ describe Export::Xlsx::InputSheetGenerator do
                   'Published at',
                   'Comments',
                   'Votes',
+                  'Offline votes',
                   'URL',
                   'Project',
                   'Status',
@@ -506,6 +513,7 @@ describe Export::Xlsx::InputSheetGenerator do
                   'Comments',
                   'Participants',
                   'Votes',
+                  'Offline votes',
                   'URL',
                   'Project',
                   'Status',
@@ -543,6 +551,7 @@ describe Export::Xlsx::InputSheetGenerator do
                   'Comments',
                   'Picks',
                   'Budget',
+                  'Offline votes',
                   'URL',
                   'Project',
                   'Status',
@@ -564,7 +573,8 @@ describe Export::Xlsx::InputSheetGenerator do
             project: phase.project,
             phases: [phase],
             author: create(:user, custom_field_values: { create(:custom_field_birthyear).code => 1999 }),
-            assignee: assignee
+            assignee: assignee,
+            manual_votes_amount: 12
           )
         end
         let!(:attachment1) { create(:idea_file, idea: ideation_response1) }
@@ -596,6 +606,7 @@ describe Export::Xlsx::InputSheetGenerator do
                 'Published at',
                 'Comments',
                 'Votes',
+                'Offline votes',
                 'URL',
                 'Project',
                 'Status',
@@ -621,6 +632,7 @@ describe Export::Xlsx::InputSheetGenerator do
                   an_instance_of(DateTime), # published_at
                   1,
                   2,
+                  12,
                   "http://example.org/ideas/#{ideation_response1.slug}",
                   phase.project.title_multiloc['en'],
                   ideation_response1.idea_status.title_multiloc['en'],
@@ -697,6 +709,7 @@ describe Export::Xlsx::InputSheetGenerator do
                   'Published at',
                   'Comments',
                   'Votes',
+                  'Offline votes',
                   'URL',
                   'Project',
                   'Status',
@@ -722,6 +735,7 @@ describe Export::Xlsx::InputSheetGenerator do
                     an_instance_of(DateTime), # published_at
                     1,
                     4,
+                    nil,
                     "http://example.org/ideas/#{ideation_response1.slug}",
                     phase.project.title_multiloc['en'],
                     ideation_response1.idea_status.title_multiloc['en'],
@@ -759,6 +773,7 @@ describe Export::Xlsx::InputSheetGenerator do
                   'Published at',
                   'Comments',
                   'Votes',
+                  'Offline votes',
                   'URL',
                   'Project',
                   'Status',
@@ -784,6 +799,7 @@ describe Export::Xlsx::InputSheetGenerator do
                     an_instance_of(DateTime), # published_at
                     1,
                     4,
+                    nil,
                     "http://example.org/ideas/#{ideation_response1.slug}",
                     phase.project.title_multiloc['en'],
                     ideation_response1.idea_status.title_multiloc['en'],

@@ -23,9 +23,9 @@ import eventEmitter from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
 import { getFullName } from 'utils/textUtils';
 
-import tracks from '../../../tracks';
-import { getIdeaOfficialFeedbackModalEventName } from '../../IdeaOfficialFeedbackModal';
-import messages from '../messages';
+import tracks from '../../../../tracks';
+import { getIdeaOfficialFeedbackModalEventName } from '../../../IdeaOfficialFeedbackModal';
+import messages from '../../messages';
 
 const StyledLabel = styled(Label)`
   margin-top: 20px;
