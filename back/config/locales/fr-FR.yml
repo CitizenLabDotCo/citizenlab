@@ -266,6 +266,7 @@ fr:
       first_name: 'Prénom(s)'
       image_url: 'URL de l''image'
       input_id: 'ID'
+      manual_votes: 'Votes hors ligne'
       input_url: 'URL'
       last_name: 'Nom'
       latitude: 'Latitude'
