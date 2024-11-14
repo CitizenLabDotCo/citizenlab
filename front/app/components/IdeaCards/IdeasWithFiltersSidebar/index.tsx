@@ -124,7 +124,6 @@ const ContentRight = styled.div<{ filterColumnWidth: number }>`
   margin-left: ${gapWidth}px;
   max-height: calc(100vh - 120px);
   position: sticky;
-  position: -webkit-sticky;
   top: 100px;
   overflow-y: scroll;
   padding-left: 8px;
