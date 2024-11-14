@@ -61,11 +61,11 @@ const DesktopSearchInput = styled(SearchInput)`
 `;
 
 const StyledIdeasStatusFilter = styled(StatusFilterBox)`
-  margin-bottom: 20px;
+  margin-bottom: 0px;
 `;
 
 const StyledIdeasTopicsFilter = styled(TopicFilterBox)`
-  margin-bottom: 0px;
+  margin-bottom: 20px;
 `;
 
 export interface Props {
@@ -125,14 +125,14 @@ const FiltersSideBar = ({
       <Box mb="20px">
         <SortingBox handleSortOnChange={handleSortOnChange} phaseId={phaseId} />
       </Box>
+      <StyledIdeasTopicsFilter
+        selectedTopicIds={selectedIdeaFilters.topics}
+        onChange={onChangeTopics}
+      />
       <StyledIdeasStatusFilter
         selectedStatusId={selectedIdeaFilters.idea_status}
         selectedIdeaFilters={selectedIdeaFilters}
         onChange={onChangeStatus}
-      />
-      <StyledIdeasTopicsFilter
-        selectedTopicIds={selectedIdeaFilters.topics}
-        onChange={onChangeTopics}
       />
     </FiltersSidebarContainer>
   );
