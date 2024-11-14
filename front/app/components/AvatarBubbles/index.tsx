@@ -67,7 +67,6 @@ const UserCountBubble = styled.div<{
   overlap: number;
   index: number;
   size: number;
-  bgColor: string;
 }>`
   width: ${(props) => props.size}px;
   height: ${(props) => props.size}px;
@@ -76,9 +75,8 @@ const UserCountBubble = styled.div<{
   justify-content: center;
   padding-bottom: 0;
   border-radius: 50%;
-  border: solid 2px #fff;
-  background: ${(props) => props.bgColor};
-  // position: absolute;
+  border: solid 2px ${colors.white};
+  background: ${colors.textSecondary};
   z-index: ${(props) => props.index + 1};
   left: ${(props) => props.index * (props.size - props.overlap)}px;
 `;
@@ -135,7 +133,6 @@ export const AvatarBubbles = ({
 
   if (avatars && isNumber(currentUserCount) && currentUserCount > 0) {
     const bubbleSize = size + 4;
-    const bubbleOverlap = overlap;
     const imageSize = bubbleSize > 160 ? 'large' : 'medium';
 
     const avatarsWithImage = avatars.filter(
@@ -194,8 +191,7 @@ export const AvatarBubbles = ({
             style={{
               position: 'relative',
               width: `${
-                bubbleSize +
-                (avatarImagesCount - 1) * (bubbleSize - bubbleOverlap)
+                bubbleSize + (avatarImagesCount - 1) * (bubbleSize - overlap)
               }px`,
               minWidth: `${bubbleSize}px`,
               height: `${containerHeight}px`,
@@ -206,7 +202,7 @@ export const AvatarBubbles = ({
               <AvatarImageBubble
                 key={index}
                 index={index}
-                overlap={bubbleOverlap}
+                overlap={overlap}
                 size={bubbleSize}
                 src={avatar.attributes.avatar[imageSize]}
                 alt=""
@@ -242,9 +238,8 @@ export const AvatarBubbles = ({
               <>
                 <UserCountBubble
                   index={avatarsWithImage.length}
-                  overlap={bubbleOverlap}
+                  overlap={overlap}
                   size={bubbleSize}
-                  bgColor={colors.textSecondary}
                 >
                   <UserCountBubbleInner
                     size={bubbleSize}
