@@ -8,6 +8,7 @@ import {
   timeAgo,
   roundToNearestMultipleOfFive,
   calculateRoundedEndDate,
+  getPeriodRemainingUntil,
 } from './dateUtils';
 import 'moment-timezone';
 
@@ -317,5 +318,37 @@ describe('calculateRoundedEndDate', () => {
     const startDate = new Date(2024, 0, 1, 12, 0); // January 1, 2024, 12:00 PM
     const expectedEndDate = new Date(2024, 0, 1, 12, 45); // Start date + 45 minutes
     expect(calculateRoundedEndDate(startDate, 45)).toEqual(expectedEndDate);
+  });
+});
+
+describe('getPeriodRemainingUntil', () => {
+  const tz = 'Europe/Brussels';
+
+  // Just a test to document this behavior
+  it('rounds weeks down correctly', () => {
+    // 9 days: expected to round down to 1 week
+    const date = moment
+      .tz('2024-11-14', tz)
+      .add(9, 'days')
+      .format('YYYY-MM-DD');
+    const remainingWeeks = getPeriodRemainingUntil(
+      date,
+      'Europe/Brussels',
+      'weeks'
+    );
+    expect(remainingWeeks).toEqual(1);
+
+    // 12 days: you could in theory also consider rounding this up,
+    // but the behavior is to round it down.
+    const date2 = moment
+      .tz('2024-11-14', tz)
+      .add(12, 'days')
+      .format('YYYY-MM-DD');
+    const remainingWeeks2 = getPeriodRemainingUntil(
+      date2,
+      'Europe/Brussels',
+      'weeks'
+    );
+    expect(remainingWeeks2).toEqual(1);
   });
 });
