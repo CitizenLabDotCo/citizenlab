@@ -62,7 +62,7 @@ class WebApi::V1::ProjectsController < ApplicationController
     projects = ProjectsFinderService.new(projects, current_user, params).finished_or_archived
 
     @projects = paginate projects
-    @projects = @projects.preload(:project_images, :phases)
+    @projects = @projects.includes(:project_images, :phases)
 
     authorize @projects, :index_finished_or_archived?
 
@@ -78,7 +78,7 @@ class WebApi::V1::ProjectsController < ApplicationController
     projects = ProjectsFinderService.new(projects, current_user).followed_by_user
 
     @projects = paginate projects
-    @projects = @projects.preload(:project_images, :phases)
+    @projects = @projects.includes(:project_images, :phases)
 
     authorize @projects, :index_projects_for_followed_item?
 
@@ -95,7 +95,7 @@ class WebApi::V1::ProjectsController < ApplicationController
     projects = projects_and_descriptors[:projects]
 
     @projects = paginate projects
-    @projects = @projects.preload(:project_images, :phases)
+    @projects = @projects.includes(:project_images, :phases)
 
     authorize @projects, :index_projects_with_active_participatory_phase?
 
@@ -109,10 +109,10 @@ class WebApi::V1::ProjectsController < ApplicationController
 
   def index_for_areas
     projects = policy_scope(Project)
-    projects = projects.with_some_areas(params[:areas])
+    projects = projects.with_some_areas(params[:areas]).order(created_at: :desc)
 
     @projects = paginate projects
-    @projects = @projects.preload(:project_images, :phases)
+    @projects = @projects.includes(:project_images, :phases)
 
     authorize @projects, :index_for_areas?
 
@@ -121,10 +121,10 @@ class WebApi::V1::ProjectsController < ApplicationController
 
   def index_for_topics
     projects = policy_scope(Project)
-    projects = projects.with_some_topics(params[:topics])
+    projects = projects.with_some_topics(params[:topics]).order(created_at: :desc)
 
     @projects = paginate projects
-    @projects = @projects.preload(:project_images, :phases)
+    @projects = @projects.includes(:project_images, :phases)
 
     authorize @projects, :index_for_topics?
 
