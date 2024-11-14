@@ -37,11 +37,31 @@ const TimeIndicator = ({
   }
 
   if (projectStartsInDays) {
-    return <></>; // TODO
+    if (projectStartsInDays > 13) {
+      const weeks = Math.floor(projectStartsInDays / 7);
+      return (
+        <Wrapper>{formatMessage(messages.startingInXWeeks, { weeks })}</Wrapper>
+      );
+    }
+
+    return (
+      <Wrapper>
+        {formatMessage(messages.startingInXDays, { days: projectStartsInDays })}
+      </Wrapper>
+    );
   }
 
   if (projectEndedDaysAgo) {
-    return <></>; // TODO
+    if (projectEndedDaysAgo > 13) {
+      const weeks = Math.floor(projectEndedDaysAgo / 7);
+      return <Wrapper>{formatMessage(messages.xWeeksAgo, { weeks })}</Wrapper>;
+    }
+
+    return (
+      <Wrapper>
+        {formatMessage(messages.xDaysAgo, { days: projectEndedDaysAgo })}
+      </Wrapper>
+    );
   }
 
   return (
