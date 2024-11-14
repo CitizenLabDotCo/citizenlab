@@ -53,6 +53,10 @@ class WebApi::V1::ProjectsController < ApplicationController
     )
   end
 
+  # For use with 'Finished or archived' homepage widget. Uses ProjectMiniSerializer.
+  # Returns projects that are either ( published AND (finished OR have a last phase that contains a report))
+  # OR are archived, ordered by creation date first and ID second.
+  # => [Project]
   def index_finished_or_archived
     projects = policy_scope(Project)
     projects = ProjectsFinderService.new(projects, current_user, params).finished_or_archived
@@ -62,17 +66,10 @@ class WebApi::V1::ProjectsController < ApplicationController
 
     authorize @projects, :index_finished_or_archived?
 
-    render json: linked_json(
-      @projects,
-      WebApi::V1::ProjectMiniSerializer,
-      params: jsonapi_serializer_params({
-        user_requirements_service: Permissions::UserRequirementsService.new(check_groups_and_verification: false)
-      }),
-      include: %i[project_images current_phase]
-    )
+    base_render_mini_index
   end
 
-  # For use with 'For you' homepage widget.
+  # For use with 'For you' homepage widget. Uses ProjectMiniSerializer.
   # Returns all published projects that are visible to user
   # AND (are followed by user OR relate to an idea, area or topic followed by user),
   # ordered by the follow created_at (most recent first).
@@ -85,17 +82,10 @@ class WebApi::V1::ProjectsController < ApplicationController
 
     authorize @projects, :index_projects_for_followed_item?
 
-    render json: linked_json(
-      @projects,
-      WebApi::V1::ProjectMiniSerializer,
-      params: jsonapi_serializer_params({
-        user_requirements_service: Permissions::UserRequirementsService.new(check_groups_and_verification: false)
-      }),
-      include: %i[project_images current_phase]
-    )
+    base_render_mini_index
   end
 
-  # For use with 'Open to participation' homepage widget.
+  # For use with 'Open to participation' homepage widget. Uses ProjectMiniSerializer.
   # Returns all published projects that are visible to user
   # AND in an active participatory phase (where user can do something).
   # Ordered by the end date of the current phase, soonest first (nulls last).
@@ -115,6 +105,18 @@ class WebApi::V1::ProjectsController < ApplicationController
       params: jsonapi_serializer_params.merge(project_descriptor_pairs: projects_and_descriptors[:descriptor_pairs]),
       include: %i[project_images current_phase]
     )
+  end
+
+  def index_for_areas
+    projects = policy_scope(Project)
+    projects = projects.with_some_areas(params[:areas])
+
+    @projects = paginate projects
+    @projects = @projects.preload(:project_images, :phases)
+
+    authorize @projects, :index_projects_for_followed_item?
+
+    base_render_mini_index
   end
 
   def show
@@ -288,6 +290,17 @@ class WebApi::V1::ProjectsController < ApplicationController
       # Validation errors will appear in the Sentry error 'Additional Data'
       ErrorReporter.report_msg("Project change would lead to inconsistencies! (id: #{project.id})", extra: errors || {})
     end
+  end
+
+  def base_render_mini_index
+    render json: linked_json(
+      @projects,
+      WebApi::V1::ProjectMiniSerializer,
+      params: jsonapi_serializer_params({
+        user_requirements_service: Permissions::UserRequirementsService.new(check_groups_and_verification: false)
+      }),
+      include: %i[project_images current_phase]
+    )
   end
 
   def empty_data_for_visitor

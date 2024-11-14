@@ -76,6 +76,10 @@ class ProjectPolicy < ApplicationPolicy
     true
   end
 
+  def index_for_areas?
+    true
+  end
+
   def votes_by_user_xlsx?
     index_xlsx?
   end
