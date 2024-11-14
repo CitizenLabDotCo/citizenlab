@@ -1,10 +1,7 @@
 import React from 'react';
 
-import {
-  Box,
-  CollapsibleContainer,
-  colors,
-} from '@citizenlab/cl2-component-library';
+import { CollapsibleContainer } from '@citizenlab/cl2-component-library';
+import { useTheme } from 'styled-components';
 
 interface Props {
   title: string;
@@ -13,25 +10,22 @@ interface Props {
 }
 
 const InputFilterCollapsible = ({ title, children, className }: Props) => {
+  const theme = useTheme();
+
   return (
-    <Box
+    <CollapsibleContainer
+      titleAs="h2"
+      titleVariant="h6"
+      titleFontWeight="bold"
+      title={title.toUpperCase()}
+      titlePadding="12px"
+      background="white"
+      borderRadius={theme.borderRadius}
+      isOpenByDefault={true}
       className={className}
-      background={colors.white}
-      borderRadius="3px"
-      mb="20px"
-      p="12px"
     >
-      <CollapsibleContainer
-        titleVariant="h6"
-        titleFontWeight="bold"
-        title={title.toUpperCase()}
-        isOpenByDefault={true}
-      >
-        <Box mt="12px" display="block">
-          {children}
-        </Box>
-      </CollapsibleContainer>
-    </Box>
+      {children}
+    </CollapsibleContainer>
   );
 };
 

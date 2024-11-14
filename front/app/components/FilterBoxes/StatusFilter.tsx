@@ -1,12 +1,6 @@
 import React, { memo, useCallback, MouseEvent } from 'react';
 
-import {
-  fontSizes,
-  colors,
-  isRtl,
-  Icon,
-  Box,
-} from '@citizenlab/cl2-component-library';
+import { fontSizes, isRtl, Icon, Box } from '@citizenlab/cl2-component-library';
 import { capitalize, get } from 'lodash-es';
 import { darken } from 'polished';
 import styled from 'styled-components';
@@ -24,7 +18,7 @@ import InputFilterCollapsible from './InputFilterCollapsible';
 import messages from './messages';
 
 const Count = styled.span`
-  color: ${colors.textSecondary};
+  color: ${({ theme }) => theme.colors.textSecondary};
   font-size: ${fontSizes.base}px;
   font-weight: 300;
   transition: all 80ms ease-out;
@@ -72,7 +66,7 @@ const Status = styled.button`
   `}
 
   &:not(.selected):hover {
-    background: rgba(132, 147, 158, 0.15);
+    background: ${({ theme }) => theme.colors.grey200};
   }
 
   &.selected {

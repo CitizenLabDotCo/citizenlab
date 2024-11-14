@@ -159,8 +159,7 @@ export type IdeaDefaultSortMethod =
   | 'random'
   | 'popular'
   | 'new'
-  | '-new'
-  | null;
+  | '-new';
 
 export type InputTerm =
   | 'idea'

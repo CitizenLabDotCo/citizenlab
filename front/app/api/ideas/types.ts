@@ -17,13 +17,6 @@ export type IdeasKeys = Keys<typeof ideasKeys>;
 
 export type IdeaPublicationStatus = 'draft' | 'published' | 'archived' | 'spam';
 
-export type FrontOfficeSortOptions =
-  | 'random'
-  | 'new'
-  | '-new'
-  | 'trending'
-  | 'popular';
-
 export type Sort =
   | 'random'
   | 'new'

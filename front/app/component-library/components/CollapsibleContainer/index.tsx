@@ -5,26 +5,9 @@ import styled from 'styled-components';
 
 import useInstanceId from '../../hooks/useInstanceId';
 import { isRtl } from '../../utils/styleUtils';
-import Box, { BoxMarginProps, BoxPaddingProps, BoxWidthProps } from '../Box';
+import Box, { BoxProps } from '../Box';
 import Icon from '../Icon';
-import Title, { Variant, FontSize, FontWeight } from '../Title';
-
-type CollapsibleContainerProps = {
-  children: ReactNode;
-  title: ReactNode;
-  isOpenByDefault?: boolean;
-  useRegionRole?: boolean;
-} & BoxMarginProps &
-  BoxWidthProps &
-  BoxPaddingProps &
-  TitleProps;
-
-type TitleProps = {
-  titleVariant: Variant;
-  titleFontSize?: FontSize;
-  titlePadding?: string;
-  titleFontWeight?: FontWeight;
-};
+import Title, { TitleProps } from '../Title';
 
 const ChevronIcon = styled(Icon)`
   transition: fill 80ms ease-out, transform 200ms ease-out;
@@ -35,6 +18,7 @@ const TitleButton = styled.button`
   display: flex;
   justify-content: space-between;
   width: 100%;
+
   &.expanded {
     ${ChevronIcon} {
       transform: rotate(90deg);
@@ -48,7 +32,7 @@ const TitleButton = styled.button`
 
   &:focus-visible {
     outline: 2px solid black;
-    border-radius: 4px;
+    border-radius: ${({ theme }) => `${theme.borderRadius}px`};
   }
 
   ${isRtl`
@@ -100,6 +84,22 @@ const CollapseContainer = styled(Box)`
   }
 `;
 
+type CollapsibleContainerTitleProps = {
+  titleVariant: TitleProps['variant'];
+  titleFontSize?: TitleProps['fontSize'];
+  titlePadding?: TitleProps['padding'];
+  titleFontWeight?: TitleProps['fontWeight'];
+  titleAs: TitleProps['as'];
+};
+
+type CollapsibleContainerProps = {
+  children: ReactNode;
+  title: ReactNode;
+  isOpenByDefault?: boolean;
+  useRegionRole?: boolean;
+} & BoxProps &
+  CollapsibleContainerTitleProps;
+
 const CollapsibleContainer = ({
   isOpenByDefault = false,
   title,
@@ -108,6 +108,7 @@ const CollapsibleContainer = ({
   titlePadding,
   titleFontSize,
   titleFontWeight,
+  titleAs,
   useRegionRole,
   ...boxProps
 }: CollapsibleContainerProps) => {
@@ -121,9 +122,12 @@ const CollapsibleContainer = ({
   return (
     <Box {...boxProps}>
       <Title
+        as={titleAs}
         variant={titleVariant}
         fontSize={titleFontSize}
         m="0px"
+        // mb is needed to ensure we can see the border of TitleButton when it's focused
+        mb="2px"
         p={titlePadding || '0px'}
       >
         <TitleButton
