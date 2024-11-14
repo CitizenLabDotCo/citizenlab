@@ -565,6 +565,7 @@
   "app.containers.Admin.PagesAndMenu.containers.BottomInfoSection.pageTitle": "Sección de información inferior",
   "app.containers.Admin.PagesAndMenu.containers.BottomInfoSection.saveAndEnableButton": "Guarda y habilita la sección de información inferior",
   "app.containers.Admin.PagesAndMenu.containers.BottomInfoSection.saveButton": "Guardar la sección de información inferior",
+  "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage..contactGovSuccessToAccessPages": "La creación de páginas personalizadas no está incluida en tu licencia actual. Ponte en contacto con tu gestor de GovSuccess para obtener más información al respecto.",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.atLeastOneTag": "Seleccione al menos una etiqueta",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.buttonSuccess": "¡Perfecto",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.byAreaFilter": "Por área",
