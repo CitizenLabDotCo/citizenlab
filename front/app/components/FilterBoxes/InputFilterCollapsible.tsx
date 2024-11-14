@@ -1,11 +1,15 @@
 import React from 'react';
 
-import { CollapsibleContainer } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  CollapsibleContainer,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
 
 interface Props {
   title: string;
-  children: JSX.Element;
+  children: JSX.Element | JSX.Element[];
   className?: string;
 }
 
@@ -24,7 +28,14 @@ const InputFilterCollapsible = ({ title, children, className }: Props) => {
       isOpenByDefault={true}
       className={className}
     >
-      {children}
+      <Box
+        bgColor={colors.white}
+        p="16px"
+        pt="0"
+        borderRadius={theme.borderRadius}
+      >
+        {children}
+      </Box>
     </CollapsibleContainer>
   );
 };

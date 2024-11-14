@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode, useRef, useState } from 'react';
 
 import { CSSTransition } from 'react-transition-group';
 import styled from 'styled-components';
@@ -8,6 +8,10 @@ import { isRtl } from '../../utils/styleUtils';
 import Box, { BoxProps } from '../Box';
 import Icon from '../Icon';
 import Title, { TitleProps } from '../Title';
+
+const ANIMATION_TIMEOUT = 1500;
+const ANIMATION_SPEED_IN = 400;
+const ANIMATION_SPEED_OUT = 150;
 
 const ChevronIcon = styled(Icon)`
   transition: fill 80ms ease-out, transform 200ms ease-out;
@@ -45,42 +49,32 @@ const TitleButton = styled.button`
 `;
 
 const CollapseContainer = styled(Box)`
-  opacity: 1;
-  transition: 'all 1000ms cubic-bezier(0.165, 0.84, 0.44, 1)';
-  will-change: opacity, height;
+  will-change: opacity, max-height;
 
   ${isRtl`
     text-align: right;
     direction: rtl;
 `}
-
   &.expanded-enter {
     opacity: 0;
-    max-height: 0px;
-    overflow: hidden;
-
-    &.expanded-enter-active {
-      opacity: 1;
-      max-height: 1500px;
-      overflow: hidden;
-    }
+    max-height: 0;
   }
 
-  &.expanded-enter-done {
+  &.expanded-enter-active {
     opacity: 1;
-    overflow: visible;
+    max-height: 1500px;
+    transition: all ${ANIMATION_SPEED_IN}ms;
   }
 
   &.expanded-exit {
     opacity: 1;
     max-height: 1500px;
-    overflow: hidden;
+  }
 
-    &.collapsed-exit-active {
-      opacity: 0;
-      max-height: 1500px;
-      overflow: hidden;
-    }
+  &.expanded-exit-active {
+    opacity: 0;
+    max-height: 0;
+    transition: max-height ${ANIMATION_SPEED_OUT}ms;
   }
 `;
 
@@ -114,6 +108,7 @@ const CollapsibleContainer = ({
 }: CollapsibleContainerProps) => {
   const [isExpanded, setIsExpanded] = useState(isOpenByDefault);
   const uuid = useInstanceId();
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const handleChange = () => {
     setIsExpanded(!isExpanded);
@@ -141,25 +136,21 @@ const CollapsibleContainer = ({
           <ChevronIcon name="chevron-right" />
         </TitleButton>
       </Title>
-
       <Box
         role={useRegionRole ? 'region' : undefined}
         aria-live="polite"
         id={`collapsed-section-${uuid}`}
         aria-labelledby={`collapse-container-title-${uuid}`}
-        hidden={!isExpanded}
       >
         <CSSTransition
           in={isExpanded}
-          timeout={1500}
-          mountOnEnter={true}
-          unmountOnExit={true}
-          exit={false}
-          classNames={`expanded`}
+          timeout={ANIMATION_TIMEOUT}
+          classNames="expanded"
+          mountOnEnter
+          unmountOnExit
+          nodeRef={containerRef}
         >
-          <CollapseContainer aria-live="polite">
-            <Box>{children}</Box>
-          </CollapseContainer>
+          <CollapseContainer ref={containerRef}>{children}</CollapseContainer>
         </CSSTransition>
       </Box>
     </Box>
