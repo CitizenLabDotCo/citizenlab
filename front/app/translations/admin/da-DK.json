@@ -565,6 +565,7 @@
   "app.containers.Admin.PagesAndMenu.containers.BottomInfoSection.pageTitle": "Nederste info-afsnit",
   "app.containers.Admin.PagesAndMenu.containers.BottomInfoSection.saveAndEnableButton": "Gem og aktiver nederste info-afsnit",
   "app.containers.Admin.PagesAndMenu.containers.BottomInfoSection.saveButton": "Gem nederste info-afsnit",
+  "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage..contactGovSuccessToAccessPages": "Oprettelse af brugerdefinerede sider er ikke inkluderet i din nuværende licens. Kontakt din GovSuccess Manager for at få mere at vide om det.",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.atLeastOneTag": "Vælg venligst mindst ét tag",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.buttonSuccess": "Succes",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.byAreaFilter": "Efter område",
