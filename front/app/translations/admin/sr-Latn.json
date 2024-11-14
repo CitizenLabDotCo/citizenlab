@@ -565,6 +565,7 @@
   "app.containers.Admin.PagesAndMenu.containers.BottomInfoSection.pageTitle": "Odeljak za informacije u dnu",
   "app.containers.Admin.PagesAndMenu.containers.BottomInfoSection.saveAndEnableButton": "Sačuvaj i omogući donju sekciju sa informacijama",
   "app.containers.Admin.PagesAndMenu.containers.BottomInfoSection.saveButton": "Sačuvaj odeljak za informacije u dnu",
+  "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage..contactGovSuccessToAccessPages": "Creating custom pages is not included in your current license. Reach out to your GovSuccess Manager to learn more about it.",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.atLeastOneTag": "Dodajte najmanje jednu kategoriju",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.buttonSuccess": "Uspeh",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.byAreaFilter": "Po oblasti",
