@@ -2,7 +2,7 @@
 
 class WebApi::V1::ProjectsController < ApplicationController
   before_action :set_project, only: %i[show update reorder destroy index_xlsx votes_by_user_xlsx votes_by_input_xlsx delete_inputs destroy_participation_data]
-  before_action :empty_data_for_visitor, only: [:index_projects_for_followed_item]
+  before_action :empty_data_for_visitor, only: [:index_for_followed_item]
 
   skip_before_action :authenticate_user
   skip_after_action :verify_policy_scoped, only: :index
@@ -73,14 +73,14 @@ class WebApi::V1::ProjectsController < ApplicationController
   # Returns all published projects that are visible to user
   # AND (are followed by user OR relate to an idea, area or topic followed by user),
   # ordered by the follow created_at (most recent first).
-  def index_projects_for_followed_item
+  def index_for_followed_item
     projects = policy_scope(Project)
     projects = ProjectsFinderService.new(projects, current_user).followed_by_user
 
     @projects = paginate projects
     @projects = @projects.includes(:project_images, :phases)
 
-    authorize @projects, :index_projects_for_followed_item?
+    authorize @projects, :index_for_followed_item?
 
     base_render_mini_index
   end
@@ -89,7 +89,7 @@ class WebApi::V1::ProjectsController < ApplicationController
   # Returns all published projects that are visible to user
   # AND in an active participatory phase (where user can do something).
   # Ordered by the end date of the current phase, soonest first (nulls last).
-  def index_projects_with_active_participatory_phase
+  def index_with_active_participatory_phase
     projects = policy_scope(Project)
     projects_and_descriptors = ProjectsFinderService.new(projects, current_user, params).participation_possible
     projects = projects_and_descriptors[:projects]
@@ -97,7 +97,7 @@ class WebApi::V1::ProjectsController < ApplicationController
     @projects = paginate projects
     @projects = @projects.includes(:project_images, :phases)
 
-    authorize @projects, :index_projects_with_active_participatory_phase?
+    authorize @projects, :index_with_active_participatory_phase?
 
     render json: linked_json(
       @projects,

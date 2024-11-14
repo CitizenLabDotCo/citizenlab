@@ -201,8 +201,8 @@ Rails.application.routes.draw do
         get :for_areas, on: :collection, action: 'index_for_areas'
         get :for_topics, on: :collection, action: 'index_for_topics'
         get 'finished_or_archived', on: :collection, action: 'index_finished_or_archived'
-        get 'for_followed_item', on: :collection, action: 'index_projects_for_followed_item'
-        get 'with_active_participatory_phase', on: :collection, action: 'index_projects_with_active_participatory_phase'
+        get 'for_followed_item', on: :collection, action: 'index_for_followed_item'
+        get 'with_active_participatory_phase', on: :collection, action: 'index_with_active_participatory_phase'
         delete :participation_data, on: :member, action: 'destroy_participation_data'
       end
 
