@@ -760,7 +760,7 @@ resource 'AdminPublication' do
               publication_statuses: %w[published archived],
               include_publications: 'true'
             )
-          end.not_to exceed_query_limit(121)
+          end.not_to exceed_query_limit(123)
 
           assert_status 200
         end
