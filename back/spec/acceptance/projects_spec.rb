@@ -1625,6 +1625,24 @@ resource 'Projects' do
 
       expect(json_response[:data]).to eq []
     end
+
+    context 'when admin' do
+      before do
+        @user = create(:admin)
+        header_token_for @user
+      end
+
+      example_request 'Does not include draft projects' do
+        project_with_areas.update!(admin_publication_attributes: { publication_status: 'draft' })
+
+        do_request areas: [area1.id]
+        expect(status).to eq 200
+
+        json_response = json_parse(response_body)
+
+        expect(json_response[:data]).to eq []
+      end
+    end
   end
 
   get 'web_api/v1/projects/for_topics' do
@@ -1698,6 +1716,24 @@ resource 'Projects' do
       json_response = json_parse(response_body)
 
       expect(json_response[:data]).to eq []
+    end
+
+    context 'when admin' do
+      before do
+        @user = create(:admin)
+        header_token_for @user
+      end
+
+      example_request 'Does not include draft projects' do
+        project_with_topics.update!(admin_publication_attributes: { publication_status: 'draft' })
+
+        do_request topics: [topic1.id]
+        expect(status).to eq 200
+
+        json_response = json_parse(response_body)
+
+        expect(json_response[:data]).to eq []
+      end
     end
   end
 end

@@ -109,7 +109,10 @@ class WebApi::V1::ProjectsController < ApplicationController
 
   def index_for_areas
     projects = policy_scope(Project)
-    projects = projects.with_some_areas(params[:areas]).order(created_at: :desc)
+    projects = projects
+      .not_draft
+      .with_some_areas(params[:areas])
+      .order(created_at: :desc)
 
     @projects = paginate projects
     @projects = @projects.includes(:project_images, :phases)
@@ -121,7 +124,10 @@ class WebApi::V1::ProjectsController < ApplicationController
 
   def index_for_topics
     projects = policy_scope(Project)
-    projects = projects.with_some_topics(params[:topics]).order(created_at: :desc)
+    projects = projects
+      .not_draft
+      .with_some_topics(params[:topics])
+      .order(created_at: :desc)
 
     @projects = paginate projects
     @projects = @projects.includes(:project_images, :phases)
