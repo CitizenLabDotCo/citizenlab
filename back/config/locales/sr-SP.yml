@@ -266,6 +266,7 @@ sr-Cyrl:
       first_name: 'First name(s)'
       image_url: 'УРЛ слике'
       input_id: 'ИД'
+      manual_votes: 'Offline votes'
       input_url: 'УРЛ'
       last_name: 'Last name'
       latitude: 'Географска ширина'
