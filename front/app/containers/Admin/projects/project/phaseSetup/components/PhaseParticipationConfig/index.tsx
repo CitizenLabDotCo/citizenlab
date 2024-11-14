@@ -103,6 +103,9 @@ const PhaseParticipationConfig = ({
     const proposals = participation_method === 'proposals';
 
     updateFormData(() => ({
+      // These two lines should not be needed as we use defaultParticipationConfig
+      // already in the participationMethodConfigs.ts file for each specific config
+      // as its starting point.
       ...defaultParticipationConfig,
       participation_method,
 
