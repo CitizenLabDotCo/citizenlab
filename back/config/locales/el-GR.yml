@@ -266,6 +266,7 @@ el:
       first_name: 'Όνομα(-α)'
       image_url: 'URL εικόνας'
       input_id: 'ID'
+      manual_votes: 'Ψηφοφορία εκτός σύνδεσης'
       input_url: 'ΔΙΕΎΘΥΝΣΗ URL'
       last_name: 'Επώνυμο'
       latitude: 'Γεωγραφικό πλάτος'
