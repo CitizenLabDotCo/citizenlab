@@ -17,6 +17,7 @@
   "app.components.AssignMultipleVotesControl.addVote": "أضف التصويت",
   "app.components.AssignMultipleVotesControl.maxVotesPerIdeaReached": "لقد وصلت إلى الحد الأقصى من الأصوات وهو {maxVotes} لكل فكرة",
   "app.components.AssignMultipleVotesControl.maxVotesReached": "لقد استخدمت كل أصواتك",
+  "app.components.AssignMultipleVotesControl.numberManualVotes2": "{manualVotes, plural, one {(بما في ذلك 1 غير متصل بالإنترنت)} other {(بما في ذلك # غير متصل بالإنترنت)}}",
   "app.components.AssignMultipleVotesControl.phaseNotActive": "التصويت غير متاح، حيث أن هذه المرحلة غير نشطة.",
   "app.components.AssignMultipleVotesControl.removeVote": "إزالة التصويت",
   "app.components.AssignMultipleVotesControl.select": "يختار",
@@ -38,6 +39,7 @@
   "app.components.AuthProviders.continueWithFakeSSO": "تابع مع تسجيل الدخول الموحّد (SSO) المزيف",
   "app.components.AuthProviders.continueWithGoogle": "تابع باستخدام جوجل",
   "app.components.AuthProviders.continueWithHoplr": "تواصل مع Hoplr",
+  "app.components.AuthProviders.continueWithIdAustria": "متابعة مع ID النمسا",
   "app.components.AuthProviders.continueWithLoginMechanism": "تواصل مع {loginMechanismName}",
   "app.components.AuthProviders.continueWithNemlogIn": "متابعة مع MitID",
   "app.components.AuthProviders.franceConnectMergingFailed": "يوجد بالفعل حساب يحمل عنوان البريد الإلكتروني هذا.{br}{br}لا يمكنك الوصول إلى المنصة باستخدام FranceConnect بسبب عدم تطابق البيانات الشخصية. لتسجيل الدخول باستخدام FranceConnect, سيتعين عليك تغيير اسمك الأول أو اسمك الأخير في هذه المنصة ليطابق بياناتك الرسمية.{br}{br}يمكنك تسجيل الدخول كالمعتاد أدناه.",
@@ -478,6 +480,7 @@
   "app.components.UserName.verified": "تم التحقق منه",
   "app.components.VerificationModal.verifyBOSA": "تحقق باستخدام itsme أو eID",
   "app.components.VerificationModal.verifyClaveUnica": "تحقق باستخدام Clave Unica",
+  "app.components.VerificationModal.verifyIdAustria": "التحقق من خلال هوية النمسا",
   "app.components.VerificationModal.verifyNemLogIn": "تحقق مع MitID",
   "app.components.VerificationModal.verifyYourIdentity": "تحقق من هويتك",
   "app.components.VoteControl.budgetingFutureEnabled": "يُمكنك تخصيص ميزانيتك بداية من {enabledFromDate}. ",
@@ -1641,6 +1644,7 @@
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotPermitted": "للأسف ، ليس لديك حقوق مراجعة هذا المستند.",
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotVerified": "مراجعة هذا المستند يتطلب التحقق من حسابك. {verificationLink}",
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledProjectInactive": "لم يعد المستند متاحًا ، نظرًا لأن هذا المشروع لم يعد نشطًا.",
+  "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBar.numberManualVoters2": "{manualVoters, plural, one {(بما في ذلك 1 غير متصل بالإنترنت)} other {(بما في ذلك # غير متصل بالإنترنت)}}",
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBar.numberOfPicks": "{baskets, plural, one {اختيار واحد} other {# اختيارات}}",
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.budgetingTooltip1": "النسبة المئوية للمشاركين الذين اختاروا هذا الخيار.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.votingTooltip": "النسبة المئوية لإجمالي الأصوات التي حصل عليها هذا الخيار.",
@@ -2128,10 +2132,10 @@
   "app.utils.votingMethodUtils.singleVotingUnlimitedEnded": "أغلق التصويت يوم <b>{endDate}.</b> يمكن للمشاركين التصويت <b>من الخيارات كما يرغبون.</b>",
   "app.utils.votingMethodUtils.singleVotingUnlimitedVotesYouCanVote": "يمكنك التصويت لأكبر عدد تريده من الخيارات.",
   "app.utils.votingMethodUtils.submitYourBudget": "أرسل ميزانيتك",
-  "app.utils.votingMethodUtils.submittedBudgetCountText": "قدم شخص ميزانيته",
-  "app.utils.votingMethodUtils.submittedBudgetsCountText": "قدم الناس ميزانياتهم",
-  "app.utils.votingMethodUtils.submittedVoteCountText": "قدم شخص تصويتهم",
-  "app.utils.votingMethodUtils.submittedVotesCountText": "قدم من الأشخاص أصواتهم",
+  "app.utils.votingMethodUtils.submittedBudgetCountText2": "قام الشخص بتقديم ميزانيته عبر الإنترنت",
+  "app.utils.votingMethodUtils.submittedBudgetsCountText2": "قدم الناس ميزانياتهم عبر الإنترنت",
+  "app.utils.votingMethodUtils.submittedVoteCountText2": "قام الشخص بتقديم تصويته عبر الإنترنت",
+  "app.utils.votingMethodUtils.submittedVotesCountText2": "أرسل الناس أصواتهم عبر الإنترنت",
   "app.utils.votingMethodUtils.vote": "تصويت",
   "app.utils.votingMethodUtils.voteSubmittedWithIcon": "تم إرسال التصويت 🎉",
   "app.utils.votingMethodUtils.votes": "الأصوات",
