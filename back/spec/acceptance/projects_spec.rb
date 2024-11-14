@@ -6,6 +6,13 @@ require 'rspec_api_documentation/dsl'
 resource 'Projects' do
   explanation 'Ideas have to be posted in a city project, or they can be posted in the open idea box.'
 
+  shared_examples 'Unauthorized (401)' do
+    example 'Unauthorized (401)', document: false do
+      do_request
+      expect(status).to eq 401
+    end
+  end
+
   let(:json_response) { json_parse(response_body) }
 
   before do
@@ -964,6 +971,48 @@ resource 'Projects' do
         do_request
         assert_status 200
         expect(json_response[:data].size).to eq 0
+      end
+    end
+
+    get 'web_api/v1/projects/:id' do
+      let(:id) { project.id }
+
+      context 'when the project is in draft' do
+        let_it_be(:project) { create(:project, admin_publication_attributes: { publication_status: 'draft' }) }
+
+        context 'and the project_preview_link feature flag is enabled' do
+          before do
+            settings = AppConfiguration.instance.settings
+            settings['project_preview_link'] = { 'enabled' => true, 'allowed' => true }
+            AppConfiguration.instance.update!(settings: settings)
+          end
+
+          context 'and a valid preview_token is provided in cookies' do
+            before { header('Cookie', "preview_token=#{project.preview_token}") }
+
+            example 'Get a project by id', document: false do
+              do_request
+              assert_status 200
+              expect(json_response.dig(:data, :id)).to eq project.id
+            end
+          end
+
+          context 'and an invalid preview_token is provided in cookies' do
+            before { header('Cookie', 'preview_token=invalid') }
+
+            include_examples 'Unauthorized (401)'
+          end
+
+          context 'and no preview_token is provided in cookies' do
+            include_examples 'Unauthorized (401)'
+          end
+        end
+
+        context 'and the project_preview_link feature flag is disabled and a valid preview_token is provided in cookies' do
+          before { header('Cookie', "preview_token=#{project.preview_token}") }
+
+          include_examples 'Unauthorized (401)'
+        end
       end
     end
   end
