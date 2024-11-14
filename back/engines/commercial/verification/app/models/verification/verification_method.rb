@@ -7,6 +7,10 @@ module Verification
       name
     end
 
+    def name
+      nil
+    end
+
     # @return [Hash, nil]
     def config
       AppConfiguration.instance
