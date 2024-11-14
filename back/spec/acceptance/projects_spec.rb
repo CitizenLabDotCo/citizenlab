@@ -1585,6 +1585,28 @@ resource 'Projects' do
       expect(project_ids).to match_array [project_with_areas.id]
     end
 
+    example 'Orders projects by created_at DESC', document: false do
+      project2 = create(:project)
+      project3 = create(:project)
+      project4 = create(:project)
+      create(:areas_project, project: project2, area: area1)
+      create(:areas_project, project: project3, area: area1)
+      create(:areas_project, project: project4, area: area1)
+
+      project_with_areas.update!(created_at: 4.days.ago)
+      project2.update!(created_at: 1.day.ago)
+      project3.update!(created_at: 3.days.ago)
+      project4.update!(created_at: 2.days.ago)
+
+      do_request areas: [area1.id]
+      expect(status).to eq 200
+
+      json_response = json_parse(response_body)
+      project_ids = json_response[:data].pluck(:id)
+
+      expect(project_ids).to eq [project2.id, project4.id, project3.id, project_with_areas.id]
+    end
+
     example_request 'Does not return duplicate projects when more than one areas_project matches' do
       do_request areas: [area1.id, area2.id]
       expect(status).to eq 200
@@ -1637,7 +1659,29 @@ resource 'Projects' do
       expect(project_ids).to match_array [project_with_topics.id]
     end
 
-    example_request 'Does not return duplicate projects when more than one projects_topic matches' do
+    example 'Orders projects by created_at DESC', document: false do
+      project2 = create(:project)
+      project3 = create(:project)
+      project4 = create(:project)
+      create(:projects_topic, project: project2, topic: topic1)
+      create(:projects_topic, project: project3, topic: topic1)
+      create(:projects_topic, project: project4, topic: topic1)
+
+      project_with_topics.update!(created_at: 4.days.ago)
+      project2.update!(created_at: 1.day.ago)
+      project3.update!(created_at: 3.days.ago)
+      project4.update!(created_at: 2.days.ago)
+
+      do_request topics: [topic1.id]
+      expect(status).to eq 200
+
+      json_response = json_parse(response_body)
+      project_ids = json_response[:data].pluck(:id)
+
+      expect(project_ids).to eq [project2.id, project4.id, project3.id, project_with_topics.id]
+    end
+
+    example_request 'Does not return duplicate projects when more than one projects_topic matches', document: false do
       do_request topics: [topic1.id, topic2.id]
       expect(status).to eq 200
 
@@ -1647,7 +1691,7 @@ resource 'Projects' do
       expect(project_ids).to match_array [project_with_topics.id]
     end
 
-    example_request 'Returns an empty list when topics parameter is nil' do
+    example_request 'Returns an empty list when topics parameter is nil', document: false do
       do_request
       expect(status).to eq 200
 
