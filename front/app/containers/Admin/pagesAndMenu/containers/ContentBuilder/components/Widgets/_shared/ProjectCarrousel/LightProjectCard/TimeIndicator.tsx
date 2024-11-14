@@ -40,12 +40,14 @@ const TimeIndicator = ({
     if (projectStartsInDays > 13) {
       const weeks = Math.floor(projectStartsInDays / 7);
       return (
-        <Wrapper>{formatMessage(messages.startingInXWeeks, { weeks })}</Wrapper>
+        <Wrapper icon="clock-circle" color="coolGrey600">
+          {formatMessage(messages.startingInXWeeks, { weeks })}
+        </Wrapper>
       );
     }
 
     return (
-      <Wrapper>
+      <Wrapper icon="clock-circle" color="coolGrey600">
         {formatMessage(messages.startingInXDays, { days: projectStartsInDays })}
       </Wrapper>
     );
@@ -54,11 +56,15 @@ const TimeIndicator = ({
   if (projectEndedDaysAgo) {
     if (projectEndedDaysAgo > 13) {
       const weeks = Math.floor(projectEndedDaysAgo / 7);
-      return <Wrapper>{formatMessage(messages.xWeeksAgo, { weeks })}</Wrapper>;
+      return (
+        <Wrapper icon="check-circle" color="green500">
+          {formatMessage(messages.xWeeksAgo, { weeks })}
+        </Wrapper>
+      );
     }
 
     return (
-      <Wrapper>
+      <Wrapper icon="check-circle" color="green500">
         {formatMessage(messages.xDaysAgo, { days: projectEndedDaysAgo })}
       </Wrapper>
     );
