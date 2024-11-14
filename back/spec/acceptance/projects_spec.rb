@@ -1552,4 +1552,54 @@ resource 'Projects' do
       end
     end
   end
+
+  get 'web_api/v1/projects/for_areas' do
+    before do
+      @user = create(:user, roles: [])
+      header_token_for @user
+    end
+
+    with_options scope: :page do
+      parameter :number, 'Page number'
+      parameter :size, 'Number of projects per page'
+      parameter :areas, 'Array of area IDs', required: false
+    end
+
+    let!(:area1) { create(:area) }
+    let!(:area2) { create(:area) }
+    let!(:project_with_areas) { create(:project) }
+    let!(:_areas_project1) { create(:areas_project, project: project_with_areas, area: area1) }
+    let!(:_areas_project2) { create(:areas_project, project: project_with_areas, area: area2) }
+
+    let!(:project_without_area) { create(:project) }
+
+    example_request 'Lists projects for a given area' do
+      do_request areas: [area1.id]
+      expect(status).to eq 200
+
+      json_response = json_parse(response_body)
+      project_ids = json_response[:data].pluck(:id)
+
+      expect(project_ids).to match_array [project_with_areas.id]
+    end
+
+    example_request 'Does not return duplicate projects when more than one areas_project matches' do
+      do_request areas: [area1.id, area2.id]
+      expect(status).to eq 200
+
+      json_response = json_parse(response_body)
+      project_ids = json_response[:data].pluck(:id)
+
+      expect(project_ids).to match_array [project_with_areas.id]
+    end
+
+    example_request 'Returns an empty list when areas parameter is nil' do
+      do_request
+      expect(status).to eq 200
+
+      json_response = json_parse(response_body)
+
+      expect(json_response[:data]).to eq []
+    end
+  end
 end
