@@ -54,6 +54,7 @@
   "app.components.AuthProviders.verificationRequired": "مطلوب التحقق",
   "app.components.Author.a11yPostedBy": "منشور من طرف",
   "app.components.AvatarBubbles.numberOfParticipants1": "{numberOfParticipants, plural, one {1 مشارك} other {{numberOfParticipants} مشاركين}}",
+  "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} المستخدمين",
   "app.components.AvatarBubbles.participant": "مشارك",
   "app.components.AvatarBubbles.participants1": "مشاركون",
   "app.components.CityLogoSection.iframeTitle": "المزيد من المعلومات حول {orgName}",
