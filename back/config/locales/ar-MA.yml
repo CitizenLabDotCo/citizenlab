@@ -266,6 +266,7 @@ ar-MA:
       first_name: 'الأسماء الأولى)'
       image_url: 'رابط الصورة'
       input_id: 'المعرِّف'
+      manual_votes: 'الأصوات غير المتصلة بالإنترنت'
       input_url: 'URL'
       last_name: 'اسم العائلة'
       latitude: 'دائرة العرض'

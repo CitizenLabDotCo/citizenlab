@@ -429,7 +429,7 @@ nb:
       subject: 'Du ble prosjektmappeansvarlig på medvirkningsplattformen %{organizationName}'
       text_manage_folder: 'En mappe er en måte å organisere flere deltakelsesprosjekter sammen på. Som mappeansvarlig kan du redigere mappen og mappebeskrivelsen og opprette nye prosjekter (for å slette prosjekter må du kontakte plattformadministratoren). Du har også prosjektadministrasjonsrettigheter for alle prosjektene i mappen, slik at du kan redigere prosjektene, administrere innspillene og sende e-post til deltakerne.'
       text_moderate_analyse_input: 'Når prosjektene er lansert, vil de første innspillene begynne å komme inn. Du vil motta ukentlige rapporter med de viktigste aktivitetene, slik at du kan holde deg oppdatert på hva som skjer. Med Input Manager i "Administrer plattform"-panelet kan du se og administrere innspillene, blant annet ved å tildele statuser og svare på innlegg og kommentarer.'
-      text_design_participatory_process: 'Du kan administrere de ulike deltakelsesprosjektene i mappen din - konfigurere deltakelsesmetoden, legge til en prosjektbeskrivelse, legge ved bilder og kommunisere relaterte hendelser. Du kan også administrere hvordan deltakerne samhandler med prosjektene dine, blant annet ved å angi tilgangsrettigheter og konfigurere innstillinger for publisering, stemmegivning og kommentering.'
+      text_design_participatory_process: 'Du kan administrere de ulike deltakelsesprosjektene i mappen din - konfigurere deltakelsesmetoden, legge til en prosjektbeskrivelse, legge ved bilder og kommunisere relaterte arrangementer. Du kan også administrere hvordan deltakerne samhandler med prosjektene dine, blant annet ved å angi tilgangsrettigheter og konfigurere innstillinger for publisering, stemmegivning og kommentering.'
       title_design_participatory_process: 'Utform deltakelsesprosessen'
       title_moderate_analyse_input: 'Moderere og analysere innspillene'
       title_manage_folder: 'Administrer mappeinnstillingene og opprett nye prosjekter.'
@@ -634,7 +634,7 @@ nb:
       content_type:
         comments: 'Kommentarer'
         content_moderation: 'Moderering av innhold'
-        events: 'Hendelser'
+        events: 'Arrangementer'
         general: 'Generelt'
         inputs: 'Innganger'
         internal_comments: 'Interne kommentarer'

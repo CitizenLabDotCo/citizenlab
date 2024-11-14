@@ -16,9 +16,6 @@ describe('Admin: proposal phase', () => {
     const projectTitleNLNL = randomString();
     const projectTitleFRBE = randomString();
 
-    // Select 'Published' publication status
-    cy.get('.e2e-projecstatus-published').click();
-
     // Type random project titles for these required fields
     cy.get('#project-title').type(projectTitleEN);
     cy.get('.e2e-localeswitcher.nl-BE').click();
