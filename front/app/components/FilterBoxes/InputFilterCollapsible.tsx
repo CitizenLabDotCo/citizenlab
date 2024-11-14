@@ -4,6 +4,7 @@ import {
   Box,
   CollapsibleContainer,
   colors,
+  Title,
 } from '@citizenlab/cl2-component-library';
 
 interface Props {
@@ -22,9 +23,11 @@ const InputFilterCollapsible = ({ title, children, className }: Props) => {
       p="12px"
     >
       <CollapsibleContainer
-        titleVariant="h6"
-        titleFontWeight="bold"
-        title={title.toUpperCase()}
+        title={
+          <Title m="0px" variant="h6" fontWeight="bold">
+            {title.toUpperCase()}
+          </Title>
+        }
         isOpenByDefault={true}
       >
         <Box mt="12px" display="block">

@@ -7,7 +7,6 @@ import useInstanceId from '../../hooks/useInstanceId';
 import { isRtl } from '../../utils/styleUtils';
 import Box, { BoxMarginProps, BoxPaddingProps, BoxWidthProps } from '../Box';
 import Icon from '../Icon';
-import Title, { Variant, FontSize, FontWeight } from '../Title';
 
 type CollapsibleContainerProps = {
   children: ReactNode;
@@ -16,15 +15,7 @@ type CollapsibleContainerProps = {
   useRegionRole?: boolean;
 } & BoxMarginProps &
   BoxWidthProps &
-  BoxPaddingProps &
-  TitleProps;
-
-type TitleProps = {
-  titleVariant: Variant;
-  titleFontSize?: FontSize;
-  titlePadding?: string;
-  titleFontWeight?: FontWeight;
-};
+  BoxPaddingProps;
 
 const ChevronIcon = styled(Icon)`
   transition: fill 80ms ease-out, transform 200ms ease-out;
@@ -104,10 +95,6 @@ const CollapsibleContainer = ({
   isOpenByDefault = false,
   title,
   children,
-  titleVariant,
-  titlePadding,
-  titleFontSize,
-  titleFontWeight,
   useRegionRole,
   ...boxProps
 }: CollapsibleContainerProps) => {
@@ -120,23 +107,16 @@ const CollapsibleContainer = ({
 
   return (
     <Box {...boxProps}>
-      <Title
-        variant={titleVariant}
-        fontSize={titleFontSize}
-        m="0px"
-        p={titlePadding || '0px'}
+      <TitleButton
+        aria-expanded={isExpanded}
+        aria-controls={`collapsed-section-${uuid}`}
+        id={`collapse-container-title-${uuid}`}
+        className={isExpanded ? 'expanded' : 'collapsed'}
+        onClick={handleChange}
       >
-        <TitleButton
-          aria-expanded={isExpanded}
-          aria-controls={`collapsed-section-${uuid}`}
-          id={`collapse-container-title-${uuid}`}
-          className={isExpanded ? 'expanded' : 'collapsed'}
-          onClick={handleChange}
-        >
-          <span style={{ fontWeight: titleFontWeight }}>{title}</span>
-          <ChevronIcon name="chevron-right" />
-        </TitleButton>
-      </Title>
+        {title}
+        <ChevronIcon name="chevron-right" />
+      </TitleButton>
 
       <Box
         role={useRegionRole ? 'region' : undefined}
