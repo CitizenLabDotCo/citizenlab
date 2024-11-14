@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import { Box, colors, Text } from '@citizenlab/cl2-component-library';
 import { isNumber } from 'lodash-es';
 import styled from 'styled-components';
 
@@ -13,6 +13,36 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 import placeholderImage from './user.png';
+
+const getFontSize = (size: number, digits: number) => {
+  if (size >= 34) {
+    if (digits <= 2) {
+      return 14;
+    }
+
+    if (digits === 3) {
+      return 12;
+    }
+
+    if (digits >= 4) {
+      return 11;
+    }
+  } else {
+    if (digits <= 2) {
+      return 12;
+    }
+
+    if (digits === 3) {
+      return 11;
+    }
+
+    if (digits >= 4) {
+      return 10;
+    }
+  }
+
+  return 14;
+};
 
 const AvatarImageBubble = styled.img<{
   overlap: number;
@@ -31,6 +61,33 @@ const AvatarImageBubble = styled.img<{
     (props.size - props.overlap)}px; /* Calculate left to overlap */
   object-fit: cover;
   object-position: center;
+`;
+
+const UserCountBubble = styled.div<{
+  overlap: number;
+  index: number;
+  size: number;
+  bgColor: string;
+}>`
+  width: ${(props) => props.size}px;
+  height: ${(props) => props.size}px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 0;
+  border-radius: 50%;
+  border: solid 2px #fff;
+  background: ${(props) => props.bgColor};
+  // position: absolute;
+  z-index: ${(props) => props.index + 1};
+  left: ${(props) => props.index * (props.size - props.overlap)}px;
+`;
+
+const UserCountBubbleInner = styled.div<{ size: number; digits: number }>`
+  color: #fff;
+  font-size: ${({ size, digits }) => getFontSize(size, digits)}px;
+  font-weight: 500;
+  display: flex;
 `;
 
 interface Props {
@@ -157,30 +214,55 @@ export const AvatarBubbles = ({
               />
             ))}
           </Box>
-          {showParticipantText && remainingUsers > 0 && (
-            <Box
-              data-testid="userCountBubbleInner"
-              ml="4px"
-              display="flex"
-              alignItems="center"
-            >
-              <Text
-                fontSize="s"
-                textAlign="left"
-                my="0px"
-                aria-hidden="true"
-                color="coolGrey600"
+          {remainingUsers > 0 &&
+            (showParticipantText ? (
+              <Box
+                data-testid="userCountBubbleInner"
+                ml="4px"
+                display="flex"
+                alignItems="center"
               >
-                +{truncatedUserCount}
-                {letterAbbreviation}&nbsp;
-                {formatMessage(
-                  truncatedUserCount > 1 || letterAbbreviation
-                    ? messages.participants1
-                    : messages.participant
-                )}
-              </Text>
-            </Box>
-          )}
+                <Text
+                  fontSize="s"
+                  textAlign="left"
+                  my="0px"
+                  aria-hidden="true"
+                  color="coolGrey600"
+                >
+                  +{truncatedUserCount}
+                  {letterAbbreviation}&nbsp;
+                  {formatMessage(
+                    truncatedUserCount > 1 || letterAbbreviation
+                      ? messages.participants1
+                      : messages.participant
+                  )}
+                </Text>
+              </Box>
+            ) : (
+              <>
+                <UserCountBubble
+                  index={avatarsWithImage.length}
+                  overlap={bubbleOverlap}
+                  size={bubbleSize}
+                  bgColor={colors.textSecondary}
+                >
+                  <UserCountBubbleInner
+                    size={bubbleSize}
+                    digits={remainingUsers.toString().length}
+                    aria-hidden
+                    data-testid="userCountBubbleInner"
+                  >
+                    +{truncatedUserCount}
+                    {letterAbbreviation}
+                  </UserCountBubbleInner>
+                  <ScreenReaderOnly>
+                    {formatMessage(messages.numberOfUsers, {
+                      numberOfUsers: currentUserCount,
+                    })}
+                  </ScreenReaderOnly>
+                </UserCountBubble>
+              </>
+            ))}
           <ScreenReaderOnly>
             {formatMessage(messages.numberOfParticipants1, {
               numberOfParticipants: currentUserCount,
