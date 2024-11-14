@@ -3,7 +3,6 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import { SerializedNodes } from '@craftjs/core';
 
-import BaseEditor from 'components/admin/ContentBuilder/Editor';
 import AboutBox from 'components/admin/ContentBuilder/Widgets/AboutBox';
 import AccordionMultiloc from 'components/admin/ContentBuilder/Widgets/AccordionMultiloc';
 import ButtonMultiloc from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
@@ -17,6 +16,8 @@ import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 
 import InfoWithAccordions from '../CraftSections/InfoWithAccordions';
+
+import BaseEditor from './Editor';
 
 type EditorProps = {
   children?: React.ReactNode;

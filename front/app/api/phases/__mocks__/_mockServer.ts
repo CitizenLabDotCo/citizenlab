@@ -1,3 +1,4 @@
+import { addDays, format } from 'date-fns';
 import { http, HttpResponse } from 'msw';
 
 import { IPhaseData } from '../types';
@@ -11,7 +12,7 @@ export const phasesData: IPhaseData[] = [
       title_multiloc: { en: 'A Mock Information phase' },
       description_multiloc: { en: 'For testing purposes' },
       start_at: 'today',
-      end_at: 'one week from now',
+      end_at: format(addDays(new Date(), 21), 'yyyy-MM-dd'),
       created_at: 'yesterday',
       updated_at: 'yesterday but later',
       submission_enabled: false,
@@ -20,7 +21,7 @@ export const phasesData: IPhaseData[] = [
       reacting_like_limited_max: 0,
       reacting_dislike_enabled: false,
       reacting_dislike_limited_max: 0,
-      participation_method: 'information',
+      participation_method: 'ideation',
       reacting_like_method: 'limited',
       reacting_dislike_method: 'limited',
       input_term: 'idea',
@@ -30,6 +31,7 @@ export const phasesData: IPhaseData[] = [
       votes_count: 0,
       baskets_count: 0,
       report_public: false,
+      total_votes_amount: 0,
     },
     relationships: {
       permissions: {
@@ -74,6 +76,7 @@ export const phasesData: IPhaseData[] = [
       votes_count: 0,
       baskets_count: 0,
       report_public: false,
+      total_votes_amount: 0,
     },
     relationships: {
       permissions: {
@@ -114,6 +117,7 @@ export const phasesData: IPhaseData[] = [
       votes_count: 0,
       baskets_count: 0,
       report_public: false,
+      total_votes_amount: 0,
     },
     relationships: {
       permissions: {
@@ -159,6 +163,7 @@ export const mockPhaseInformationData: IPhaseData = {
     votes_count: 0,
     baskets_count: 0,
     report_public: false,
+    total_votes_amount: 0,
   },
   relationships: {
     permissions: {
@@ -203,6 +208,7 @@ export const mockPhaseIdeationData: IPhaseData = {
     votes_count: 0,
     baskets_count: 0,
     report_public: false,
+    total_votes_amount: 0,
   },
   relationships: {
     permissions: {
@@ -249,6 +255,7 @@ export const mockPhaseSurveyTypeformData: IPhaseData = {
     votes_count: 0,
     baskets_count: 0,
     report_public: false,
+    total_votes_amount: 0,
   },
   relationships: {
     permissions: {
@@ -295,6 +302,7 @@ export const mockPhaseSurveyGoogleFormData: IPhaseData = {
     votes_count: 0,
     baskets_count: 0,
     report_public: false,
+    total_votes_amount: 0,
   },
   relationships: {
     permissions: {
@@ -361,6 +369,7 @@ const votingPhase: IPhaseData = {
     voting_max_votes_per_idea: 1,
     baskets_count: 0,
     votes_count: 100,
+    total_votes_amount: 100,
     voting_term_singular_multiloc: {
       en: 'vote',
       'nl-BE': 'stem',

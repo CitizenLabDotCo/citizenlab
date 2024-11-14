@@ -3,10 +3,10 @@ module Export
     class InputSheetGenerator
       US_DATE_TIME_FORMAT = 'mm/dd/yyyy hh:mm:ss'
 
-      def initialize(inputs, phase, include_private_attributes)
+      def initialize(inputs, phase)
         @inputs = inputs
         @phase = phase
-        @include_private_attributes = include_private_attributes
+        @include_private_attributes = phase.pmethod.supports_private_attributes_in_export?
         @participation_method = phase.pmethod
         @value_visitor = Xlsx::ValueVisitor
         @fields_in_form = IdeaCustomFieldsService.new(participation_method.custom_form).reportable_fields
@@ -101,6 +101,10 @@ module Export
         ComputedFieldForReport.new(column_header_for('votes_count'), ->(input) { voting_context(input, phase).votes_count })
       end
 
+      def manual_votes_amount_report_field
+        ComputedFieldForReport.new(column_header_for('manual_votes'), ->(input) { input.manual_votes_amount })
+      end
+
       def input_url_report_field
         ComputedFieldForReport.new(
           column_header_for('input_url'),
@@ -154,7 +158,9 @@ module Export
             author_id_report_field
           ]
         else
-          []
+          [
+            author_id_report_field
+          ]
         end
       end
 
@@ -171,6 +177,7 @@ module Export
           meta_fields << baskets_count_report_field('participants') if participation_method.additional_export_columns.include? 'participants'
           meta_fields << votes_count_report_field if participation_method.additional_export_columns.include? 'votes'
           meta_fields << budget_report_field if participation_method.additional_export_columns.include? 'budget'
+          meta_fields << manual_votes_amount_report_field if participation_method.additional_export_columns.include? 'manual_votes'
           meta_fields << input_url_report_field if participation_method.supports_public_visibility?
           meta_fields << project_report_field
           meta_fields << status_report_field if participation_method.supports_status?

@@ -81,7 +81,7 @@ describe SideFxIdeaService do
       service.before_update(idea, user)
       idea.save!
 
-      expect { service.after_update(idea, user, []) }
+      expect { service.after_update(idea, user) }
         .to enqueue_job(LogActivityJob).with(
           idea,
           'changed_assignee',

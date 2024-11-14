@@ -17,7 +17,6 @@ import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
 import { StyledRightColumn } from 'components/admin/ContentBuilder/Frame/FrameWrapper';
 import FullscreenContentBuilder from 'components/admin/ContentBuilder/FullscreenContentBuilder';
 import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
-import ContentBuilderSettings from 'components/admin/ContentBuilder/Settings';
 import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
 import Editor from 'components/ProjectDescriptionBuilder/Editor';
 
@@ -26,6 +25,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import ProjectDescriptionBuilderEditModePreview from '../../components/ProjectDescriptionBuilder/ProjectDescriptionBuilderEditModePreview';
 import ProjectDescriptionBuilderToolbox from '../../components/ProjectDescriptionBuilder/ProjectDescriptionBuilderToolbox';
 import ProjectDescriptionBuilderTopBar from '../../components/ProjectDescriptionBuilder/ProjectDescriptionBuilderTopBar';
+import ContentBuilderSettings from '../../components/ProjectDescriptionBuilder/Settings';
 
 const ProjectDescriptionBuilderPage = () => {
   const locale = useLocale();
