@@ -40,6 +40,7 @@ export type TitleProps = {
   as?: Variant;
   fontStyle?: FontStyle;
   textAlign?: TextAlign;
+  fontWeight?: FontWeight;
 } & BoxMarginProps &
   BoxPaddingProps &
   BoxPositionProps &
