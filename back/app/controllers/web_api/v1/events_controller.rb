@@ -24,13 +24,21 @@ class WebApi::V1::EventsController < ApplicationController
 
     events = paginate SortByParamsService.new.sort_events(events, params)
 
+    included = []
+
+    if params[:include_images] == 'true'
+      events = events.includes(:event_images)
+      included = [:event_images]
+    end
+
     serializer_params = jsonapi_serializer_params
       .merge(current_user_attendances: current_user_attendances(events))
 
     render json: linked_json(
       events,
       WebApi::V1::EventSerializer,
-      params: serializer_params
+      params: serializer_params,
+      include: included
     )
   end
 
