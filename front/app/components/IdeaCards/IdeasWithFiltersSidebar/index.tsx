@@ -122,10 +122,10 @@ const ContentRight = styled.div<{ filterColumnWidth: number }>`
   justify-content: flex-start;
   align-self: flex-start;
   margin-left: ${gapWidth}px;
-  max-height: 86vh;
+  max-height: calc(100vh - 120px);
   position: sticky;
   position: -webkit-sticky;
-  top: 100px; /* required */
+  top: 100px;
   overflow-y: scroll;
   padding-left: 8px;
   padding-right: 8px;
