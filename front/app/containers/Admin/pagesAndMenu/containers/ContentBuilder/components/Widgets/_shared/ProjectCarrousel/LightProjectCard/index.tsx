@@ -28,8 +28,8 @@ import { useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { truncate } from 'utils/textUtils';
 
-import { CARD_WIDTH } from './constants';
-import messages from './messages';
+import { CARD_WIDTH } from '../constants';
+import messages from '../messages';
 
 const CardContainer = styled(Box)`
   &:hover {
