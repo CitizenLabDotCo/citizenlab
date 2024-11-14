@@ -1,4 +1,4 @@
-import { fontSizes, media } from '@citizenlab/cl2-component-library';
+import { fontSizes, media, Title } from '@citizenlab/cl2-component-library';
 import styled, { css } from 'styled-components';
 
 export type TAlign = 'center' | 'left';
@@ -33,22 +33,23 @@ export const Container = styled.div<{
 `;
 
 export const HeadingFontStyle = css`
-  font-weight: ${({ theme }) => theme.signedOutHeaderTitleFontWeight || 600};
+  font-weight: ${({ theme }) => theme.signedOutHeaderTitleFontWeight || 'bold'};
   line-height: normal;
 `;
 
-export const HeaderTitle = styled.h1<{
+export const HeaderTitle = styled(Title)<{
   hasHeader: boolean;
   fontColors: 'light' | 'dark';
   align: 'center' | 'left';
 }>`
   width: 100%;
-  color: ${({ hasHeader, fontColors, theme }) =>
-    hasHeader
+  color: ${({ hasHeader, fontColors, theme }) => {
+    return hasHeader
       ? fontColors === 'light'
         ? '#fff'
         : theme.colors.tenantPrimary
-      : theme.colors.tenantPrimary};
+      : theme.colors.tenantPrimary;
+  }};
   font-size: ${({ theme }) =>
     theme.signedOutHeaderTitleFontSize || fontSizes.xxxl}px;
   ${HeadingFontStyle};
@@ -63,7 +64,7 @@ export const HeaderTitle = styled.h1<{
   `}
 `;
 
-export const HeaderSubtitle = styled.h2<{
+export const HeaderSubtitle = styled(Title)<{
   hasHeader: boolean;
   fontColors: 'light' | 'dark';
   align: 'center' | 'left';
@@ -77,10 +78,9 @@ export const HeaderSubtitle = styled.h2<{
         : theme.colors.tenantPrimary
       : theme.colors.tenantPrimary};
   font-size: ${fontSizes.l}px;
-  line-height: 28px;
-  font-weight: 400;
   text-align: ${({ align }) => align};
-  text-decoration: none;
+  text-decoration: normal;
+  font-weight: 400;
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;

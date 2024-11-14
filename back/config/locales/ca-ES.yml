@@ -266,6 +266,7 @@ ca:
       first_name: 'Primers noms)'
       image_url: 'URL de la imatge'
       input_id: 'ID'
+      manual_votes: 'Vots fora de línia'
       input_url: 'URL'
       last_name: 'Cognom'
       latitude: 'Latitud'
