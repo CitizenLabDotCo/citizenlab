@@ -107,6 +107,9 @@ class WebApi::V1::ProjectsController < ApplicationController
     )
   end
 
+  # For use with 'Areas or topics' homepage widget. Uses ProjectMiniSerializer.
+  # Returns all non-draft projects that are visible to user, for the selected areas.
+  # Ordered by created_at, newest first.
   def index_for_areas
     projects = policy_scope(Project)
     projects = projects
@@ -122,6 +125,9 @@ class WebApi::V1::ProjectsController < ApplicationController
     base_render_mini_index
   end
 
+  # For use with 'Areas or topics' homepage widget. Uses ProjectMiniSerializer.
+  # Returns all non-draft projects that are visible to user, for the selected topics.
+  # Ordered by created_at, newest first.
   def index_for_topics
     projects = policy_scope(Project)
     projects = projects
