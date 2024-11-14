@@ -114,7 +114,19 @@ class WebApi::V1::ProjectsController < ApplicationController
     @projects = paginate projects
     @projects = @projects.preload(:project_images, :phases)
 
-    authorize @projects, :index_projects_for_followed_item?
+    authorize @projects, :index_for_areas?
+
+    base_render_mini_index
+  end
+
+  def index_for_topics
+    projects = policy_scope(Project)
+    projects = projects.with_some_topics(params[:topics])
+
+    @projects = paginate projects
+    @projects = @projects.preload(:project_images, :phases)
+
+    authorize @projects, :index_for_topics?
 
     base_render_mini_index
   end

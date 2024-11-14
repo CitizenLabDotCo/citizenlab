@@ -199,6 +199,7 @@ Rails.application.routes.draw do
         get :votes_by_user_xlsx, on: :member, action: 'votes_by_user_xlsx'
         get :votes_by_input_xlsx, on: :member, action: 'votes_by_input_xlsx'
         get :for_areas, on: :collection, action: 'index_for_areas'
+        get :for_topics, on: :collection, action: 'index_for_topics'
         get 'finished_or_archived', on: :collection, action: 'index_finished_or_archived'
         get 'for_followed_item', on: :collection, action: 'index_projects_for_followed_item'
         get 'with_active_participatory_phase', on: :collection, action: 'index_projects_with_active_participatory_phase'

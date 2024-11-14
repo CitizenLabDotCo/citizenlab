@@ -1571,11 +1571,13 @@ resource 'Projects' do
     let!(:_areas_project1) { create(:areas_project, project: project_with_areas, area: area1) }
     let!(:_areas_project2) { create(:areas_project, project: project_with_areas, area: area2) }
 
-    let!(:project_without_area) { create(:project) }
+    let!(:_project_without_area) { create(:project) }
 
     example_request 'Lists projects for a given area' do
       do_request areas: [area1.id]
       expect(status).to eq 200
+
+      expect(Project.count).to eq 2
 
       json_response = json_parse(response_body)
       project_ids = json_response[:data].pluck(:id)
@@ -1594,6 +1596,58 @@ resource 'Projects' do
     end
 
     example_request 'Returns an empty list when areas parameter is nil' do
+      do_request
+      expect(status).to eq 200
+
+      json_response = json_parse(response_body)
+
+      expect(json_response[:data]).to eq []
+    end
+  end
+
+  get 'web_api/v1/projects/for_topics' do
+    before do
+      @user = create(:user, roles: [])
+      header_token_for @user
+    end
+
+    with_options scope: :page do
+      parameter :number, 'Page number'
+      parameter :size, 'Number of projects per page'
+      parameter :topics, 'Array of topic IDs', required: false
+    end
+
+    let!(:topic1) { create(:topic) }
+    let!(:topic2) { create(:topic) }
+    let!(:project_with_topics) { create(:project) }
+    let!(:_projects_topic1) { create(:projects_topic, project: project_with_topics, topic: topic1) }
+    let!(:_projects_topic2) { create(:projects_topic, project: project_with_topics, topic: topic2) }
+
+    let!(:_project_without_topic) { create(:project) }
+
+    example_request 'Lists projects for a given topic' do
+      do_request topics: [topic1.id]
+      expect(status).to eq 200
+
+      expect(Project.count).to eq 2
+
+      json_response = json_parse(response_body)
+      project_ids = json_response[:data].pluck(:id)
+
+      expect(project_ids).to match_array [project_with_topics.id]
+    end
+
+    example_request 'Does not return duplicate projects when more than one projects_topic matches' do
+      do_request topics: [topic1.id, topic2.id]
+      expect(status).to eq 200
+
+      json_response = json_parse(response_body)
+      project_ids = json_response[:data].pluck(:id)
+
+      expect(project_ids).to match_array [project_with_topics.id]
+    end
+
+    example_request 'Returns an empty list when topics parameter is nil' do
       do_request
       expect(status).to eq 200
 
