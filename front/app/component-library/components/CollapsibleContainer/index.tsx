@@ -9,6 +9,10 @@ import Box, { BoxProps } from '../Box';
 import Icon from '../Icon';
 import Title, { TitleProps } from '../Title';
 
+const ANIMATION_TIMEOUT = 100;
+const ANIMATION_SPEED_IN = 200;
+const ANIMATION_SPEED_OUT = 10000;
+
 const ChevronIcon = styled(Icon)`
   transition: fill 80ms ease-out, transform 200ms ease-out;
 `;
@@ -45,8 +49,7 @@ const TitleButton = styled.button`
 `;
 
 const CollapseContainer = styled(Box)`
-  opacity: 1;
-  transition: 'all 1000ms cubic-bezier(0.165, 0.84, 0.44, 1)';
+  max-height: 1500px;
   will-change: opacity, height;
 
   ${isRtl`
@@ -56,31 +59,26 @@ const CollapseContainer = styled(Box)`
 
   &.expanded-enter {
     opacity: 0;
-    max-height: 0px;
-    overflow: hidden;
-
-    &.expanded-enter-active {
-      opacity: 1;
-      max-height: 1500px;
-      overflow: hidden;
-    }
+    height: 0px;
   }
 
-  &.expanded-enter-done {
+  &.expanded-enter-active {
     opacity: 1;
-    overflow: visible;
+    height: 100%;
+    transition: max-height ${ANIMATION_SPEED_IN}ms,
+      opacity ${ANIMATION_SPEED_IN}ms;
   }
 
   &.expanded-exit {
     opacity: 1;
-    max-height: 1500px;
-    overflow: hidden;
+    height: 100%;
+  }
 
-    &.collapsed-exit-active {
-      opacity: 0;
-      max-height: 1500px;
-      overflow: hidden;
-    }
+  &.expanded-exit-active {
+    opacity: 0;
+    height: 0px;
+    transition: max-height ${ANIMATION_SPEED_OUT}ms,
+      opacity ${ANIMATION_SPEED_OUT}ms;
   }
 `;
 
@@ -141,25 +139,20 @@ const CollapsibleContainer = ({
           <ChevronIcon name="chevron-right" />
         </TitleButton>
       </Title>
-
       <Box
         role={useRegionRole ? 'region' : undefined}
         aria-live="polite"
         id={`collapsed-section-${uuid}`}
         aria-labelledby={`collapse-container-title-${uuid}`}
-        hidden={!isExpanded}
       >
         <CSSTransition
           in={isExpanded}
-          timeout={1500}
+          timeout={ANIMATION_TIMEOUT}
           mountOnEnter={true}
           unmountOnExit={true}
-          exit={false}
           classNames={`expanded`}
         >
-          <CollapseContainer aria-live="polite">
-            <Box>{children}</Box>
-          </CollapseContainer>
+          <CollapseContainer>{children}</CollapseContainer>
         </CSSTransition>
       </Box>
     </Box>
