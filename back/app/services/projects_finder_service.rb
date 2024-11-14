@@ -4,6 +4,76 @@ class ProjectsFinderService
     @user = user
     @page_size = (params.dig(:page, :size) || 500).to_i
     @page_number = (params.dig(:page, :number) || 1).to_i
+    @finished = params[:finished]
+    @archived = params[:archived]
+  end
+
+  # Returns an ActiveRecord collection of published projects that are
+  # in an active participatory phase (where user can probably do something),
+  # ordered by the end date of the current phase, soonest first (nulls last).
+  # Also returns action descriptors for each project, to avoid getting them again when serializing.
+  # => { projects: [Project], descriptor_pairs: { <project.id>: { <action_descriptors> }, ... } }
+  def participation_possible
+    subquery = @projects
+      .joins('INNER JOIN admin_publications AS admin_publications ON admin_publications.publication_id = projects.id')
+      .where(admin_publications: { publication_status: 'published' })
+
+    # Projects with active participatory (not information) phase & include the phases.end_at column
+    subquery = projects_with_active_phase(subquery)
+      .joins('INNER JOIN phases AS active_phases ON active_phases.project_id = projects.id')
+      .where.not(phases: { participation_method: 'information' })
+      .select('projects.*, projects.created_at AS projects_created_at, projects.id AS projects_id')
+
+    # Perform the SELECT DISTINCT on the outer query and order first by the end date of the active phase,
+    # second by project created_at, and third by project ID.
+    # Secondary & ternary orderings prevent duplicates when paginating, when prior ordering involves equivalent values
+    projects = Project
+      .from(subquery, :projects)
+      .distinct
+      .order('phase_end_at ASC NULLS LAST, projects_created_at ASC, projects_id ASC')
+      .preload(phases: { permissions: [:groups] })
+
+    # Projects user can participate in, or where such participation could (probably) be made possible by user
+    # (e.g. user not signed in).
+    # Unfortunately, this breaks the query chain, so we have to start a new one after this.
+    #
+    # Step 1: Create pairs of project ids and action descriptors.
+    # Since this is the last filtering step, we will keep going, until we reach the limit required for pagination.
+    pagination_limit = @page_size * @page_number
+    project_descriptor_pairs = {}
+
+    projects.each do |project|
+      service = Permissions::ProjectPermissionsService.new(
+        project, @user, user_requirements_service: user_requirements_service
+      )
+      action_descriptors = service.action_descriptors
+      next unless service.participation_possible?(action_descriptors)
+
+      project_descriptor_pairs[project.id] = action_descriptors
+      break if project_descriptor_pairs.size >= pagination_limit + 1 # +1 needed to produce pagination link to next page
+    end
+
+    # Step 2: Use project_descriptor_pairs keys (project IDs) to filter projects
+    projects = Project.where(id: project_descriptor_pairs.keys)
+
+    # We join with active phases again, to reorder by phases.end_at first, projects.created_at second, project ID third.
+    # Secondary & ternary orderings prevent duplicates when paginating, when prior ordering involves equivalent values.
+    projects = projects_with_active_phase(projects)
+      .order('phase_end_at ASC NULLS LAST, projects.created_at ASC, projects.id ASC')
+
+    # We pass the action descriptors to the serializer to avoid needing to get them again when serializing,
+    # so we return them along with the filtered projects.
+    { projects: projects, descriptor_pairs: project_descriptor_pairs }
+  end
+
+  def projects_with_active_phase(projects)
+    projects
+      .joins('INNER JOIN phases AS phases ON phases.project_id = projects.id')
+      .where(
+        'phases.start_at <= ? AND (phases.end_at >= ? OR phases.end_at IS NULL)',
+        Time.zone.now.to_fs(:db), Time.zone.now.to_fs(:db)
+      )
+      .select('projects.*, phases.end_at AS phase_end_at')
   end
 
   # Returns an ActiveRecord collection of published projects that are also
@@ -66,85 +136,55 @@ class ProjectsFinderService
       )
   end
 
-  def participation_possible
-    return participation_possible_uncached if @user
+  # Returns ActiveRecord collection of projects that are either (finished OR have a last phase that contains a report)
+  # OR are archived, ordered by creation date first and ID second.
+  # => [Project]
+  def finished_or_archived
+    return @projects.none unless @finished || @archived
 
-    Rails.cache.fetch(
-      "#{@projects.cache_key}projects_finder_service/participation_possible/",
-      expires_in: 1.hour
-    ) do
-      participation_possible_uncached
+    base_scope = @projects
+      .joins('INNER JOIN admin_publications AS admin_publications ON admin_publications.publication_id = projects.id')
+
+    if @finished
+      finished_scope = base_scope.where(admin_publications: { publication_status: 'published' })
+      finished_scope = joins_last_phases_with_reports(finished_scope)
+        .where(
+          '(last_phases.last_phase_end_at < ? OR reports.id IS NOT NULL) AND admin_publications.publication_status = ?',
+          Time.zone.now, 'published'
+        )
     end
+
+    archived_scope = base_scope.where(admin_publications: { publication_status: 'archived' }) if @archived
+    archived_scope = joins_last_phases_with_reports(archived_scope) if @archived && @finished
+
+    return order_by_created_at_and_id_with_distinct_on(finished_scope.or(archived_scope)) if @finished && @archived
+    return order_by_created_at_and_id_with_distinct_on(finished_scope) if @finished
+
+    order_by_created_at_and_id_with_distinct_on(archived_scope)
   end
 
   private
 
-  # Returns an ActiveRecord collection of published projects that are
-  # in an active participatory phase (where user can probably do something),
-  # ordered by the end date of the current phase, soonest first (nulls last).
-  # Also returns action descriptors for each project, to avoid getting them again when serializing.
-  # => { projects: [Project], descriptor_pairs: { <project.id>: { <action_descriptors> }, ... } }
-  def participation_possible_uncached
-    subquery = @projects
-      .joins('INNER JOIN admin_publications AS admin_publications ON admin_publications.publication_id = projects.id')
-      .where(admin_publications: { publication_status: 'published' })
-
-    # Projects with active participatory (not information) phase & include the phases.end_at column
-    subquery = projects_with_active_phase(subquery)
-      .joins('INNER JOIN phases AS active_phases ON active_phases.project_id = projects.id')
-      .where.not(phases: { participation_method: 'information' })
-      .select('projects.*, projects.created_at AS projects_created_at, projects.id AS projects_id')
-
-    # Perform the SELECT DISTINCT on the outer query and order first by the end date of the active phase,
-    # second by project created_at, and third by project ID.
-    # Secondary & ternary orderings prevent duplicates when paginating, when prior ordering involves equivalent values
-    projects = Project
-      .from(subquery, :projects)
-      .distinct
-      .order('phase_end_at ASC NULLS LAST, projects_created_at ASC, projects_id ASC')
-      .preload(phases: { permissions: [:groups] })
-
-    # Projects user can participate in, or where such participation could (probably) be made possible by user
-    # (e.g. user not signed in).
-    # Unfortunately, this breaks the query chain, so we have to start a new one after this.
-    #
-    # Step 1: Create pairs of project ids and action descriptors.
-    # Since this is the last filtering step, we will keep going, until we reach the limit required for pagination.
-    pagination_limit = @page_size * @page_number
-    project_descriptor_pairs = {}
-
-    projects.each do |project|
-      service = Permissions::ProjectPermissionsService.new(
-        project, @user, user_requirements_service: user_requirements_service
-      )
-      action_descriptors = service.action_descriptors
-      next unless service.participation_possible?(action_descriptors)
-
-      project_descriptor_pairs[project.id] = action_descriptors
-      break if project_descriptor_pairs.size >= pagination_limit + 1 # +1 needed to produce pagination link to next page
-    end
-
-    # Step 2: Use project_descriptor_pairs keys (project IDs) to filter projects
-    projects = Project.where(id: project_descriptor_pairs.keys)
-
-    # We join with active phases again, to reorder by phases.end_at first, projects.created_at second, project ID third.
-    # Secondary & ternary orderings prevent duplicates when paginating, when prior ordering involves equivalent values.
-    projects = projects_with_active_phase(projects)
-      .order('phase_end_at ASC NULLS LAST, projects.created_at ASC, projects.id ASC')
-
-    # We pass the action descriptors to the serializer to avoid needing to get them again when serializing,
-    # so we return them along with the filtered projects.
-    { projects: projects, descriptor_pairs: project_descriptor_pairs }
+  def order_by_created_at_and_id_with_distinct_on(projects)
+    projects
+      .select('DISTINCT ON (projects.created_at, projects.id) projects.*')
+      .order('projects.created_at ASC, projects.id ASC') # secondary ordering by ID prevents duplicates when paginating
   end
 
-  def projects_with_active_phase(projects)
+  def joins_last_phases_with_reports(projects)
     projects
-      .joins('INNER JOIN phases AS phases ON phases.project_id = projects.id')
-      .where(
-        'phases.start_at <= ? AND (phases.end_at >= ? OR phases.end_at IS NULL)',
-        Time.zone.now.to_fs(:db), Time.zone.now.to_fs(:db)
+      .joins(
+        'LEFT JOIN LATERAL (' \
+        'SELECT phases.id AS last_phase_id, phases.end_at AS last_phase_end_at ' \
+        'FROM phases ' \
+        'WHERE phases.project_id = projects.id ' \
+        'ORDER BY phases.end_at DESC ' \
+        'LIMIT 1' \
+        ') AS last_phases ON true'
       )
-      .select('projects.*, phases.end_at AS phase_end_at')
+      .joins(
+        'LEFT JOIN report_builder_reports AS reports ON reports.phase_id = last_phases.last_phase_id'
+      )
   end
 
   def user_requirements_service
