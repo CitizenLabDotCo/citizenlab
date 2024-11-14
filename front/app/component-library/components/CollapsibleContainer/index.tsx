@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode, useRef, useState } from 'react';
 
 import { CSSTransition } from 'react-transition-group';
 import styled from 'styled-components';
@@ -9,9 +9,9 @@ import Box, { BoxProps } from '../Box';
 import Icon from '../Icon';
 import Title, { TitleProps } from '../Title';
 
-const ANIMATION_TIMEOUT = 100;
-const ANIMATION_SPEED_IN = 200;
-const ANIMATION_SPEED_OUT = 10000;
+const ANIMATION_TIMEOUT = 1500;
+const ANIMATION_SPEED_IN = 400;
+const ANIMATION_SPEED_OUT = 150;
 
 const ChevronIcon = styled(Icon)`
   transition: fill 80ms ease-out, transform 200ms ease-out;
@@ -49,36 +49,32 @@ const TitleButton = styled.button`
 `;
 
 const CollapseContainer = styled(Box)`
-  max-height: 1500px;
-  will-change: opacity, height;
+  will-change: opacity, max-height;
 
   ${isRtl`
     text-align: right;
     direction: rtl;
 `}
-
   &.expanded-enter {
     opacity: 0;
-    height: 0px;
+    max-height: 0;
   }
 
   &.expanded-enter-active {
     opacity: 1;
-    height: 100%;
-    transition: max-height ${ANIMATION_SPEED_IN}ms,
-      opacity ${ANIMATION_SPEED_IN}ms;
+    max-height: 1500px;
+    transition: all ${ANIMATION_SPEED_IN}ms;
   }
 
   &.expanded-exit {
     opacity: 1;
-    height: 100%;
+    max-height: 1500px;
   }
 
   &.expanded-exit-active {
     opacity: 0;
-    height: 0px;
-    transition: max-height ${ANIMATION_SPEED_OUT}ms,
-      opacity ${ANIMATION_SPEED_OUT}ms;
+    max-height: 0;
+    transition: max-height ${ANIMATION_SPEED_OUT}ms;
   }
 `;
 
@@ -112,6 +108,7 @@ const CollapsibleContainer = ({
 }: CollapsibleContainerProps) => {
   const [isExpanded, setIsExpanded] = useState(isOpenByDefault);
   const uuid = useInstanceId();
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const handleChange = () => {
     setIsExpanded(!isExpanded);
@@ -148,11 +145,12 @@ const CollapsibleContainer = ({
         <CSSTransition
           in={isExpanded}
           timeout={ANIMATION_TIMEOUT}
-          mountOnEnter={true}
-          unmountOnExit={true}
-          classNames={`expanded`}
+          classNames="expanded"
+          mountOnEnter
+          unmountOnExit
+          nodeRef={containerRef}
         >
-          <CollapseContainer>{children}</CollapseContainer>
+          <CollapseContainer ref={containerRef}>{children}</CollapseContainer>
         </CSSTransition>
       </Box>
     </Box>
