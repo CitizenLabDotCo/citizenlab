@@ -2425,7 +2425,6 @@
   "app.containers.AdminPage.projects.project.analysis.invalidShapefile": "Ein ungültiges Shapefile wurde hochgeladen und kann nicht angezeigt werden.",
   "app.containers.AdminPage.projects.project.analysis.limit": "Limit",
   "app.containers.AdminPage.projects.project.analysis.mainQuestion": "Hauptfrage",
-  "app.containers.AdminPage.projects.project.analysis.manageIdea": "Idee verwalten",
   "app.containers.AdminPage.projects.project.analysis.noAnswer": "Keine Antwort",
   "app.containers.AdminPage.projects.project.analysis.noAnswerProvided2": "Keine Antwort gegeben.",
   "app.containers.AdminPage.projects.project.analysis.noFileUploaded": "Kein Shapefile hochgeladen.",
