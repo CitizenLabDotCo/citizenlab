@@ -40,14 +40,14 @@ const TimeIndicator = ({
     if (projectStartsInDays > 13) {
       const weeks = Math.floor(projectStartsInDays / 7);
       return (
-        <Wrapper icon="clock-circle" color="coolGrey600">
+        <Wrapper icon="twilight" color="coolGrey600">
           {formatMessage(messages.startingInXWeeks, { weeks })}
         </Wrapper>
       );
     }
 
     return (
-      <Wrapper icon="clock-circle" color="coolGrey600">
+      <Wrapper icon="twilight" color="coolGrey600">
         {formatMessage(messages.startingInXDays, { days: projectStartsInDays })}
       </Wrapper>
     );
