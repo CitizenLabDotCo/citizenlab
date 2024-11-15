@@ -266,6 +266,7 @@ ur:
       first_name: 'پہلا نام'
       image_url: 'تصویری URL'
       input_id: 'ID'
+      manual_votes: 'آف لائن ووٹ'
       input_url: 'URL'
       last_name: 'آخری نام'
       latitude: 'عرض بلد'
