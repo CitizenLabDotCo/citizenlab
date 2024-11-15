@@ -92,6 +92,7 @@ const Footer = styled.div`
   display: flex;
 `;
 
+// Props interfaces
 interface ContainerProps {
   top: string;
   left: string;
@@ -192,12 +193,24 @@ const Dropdown: React.FC<Props> = ({
       }
     };
 
+    const handleScroll = (event: WheelEvent) => {
+      if (dropdownContentRef.current) {
+        const deltaY = event.deltaMode === 1 ? event.deltaY * 20 : event.deltaY;
+        dropdownContentRef.current.scrollTop += deltaY;
+        event.preventDefault();
+      }
+    };
+
+    const dropdownContent = dropdownContentRef.current;
+
     if (opened) {
       document.addEventListener('keydown', handleKeyDown);
+      dropdownContent?.addEventListener('wheel', handleScroll);
     }
 
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
+      dropdownContent?.removeEventListener('wheel', handleScroll);
     };
   }, [opened, footer]);
 
