@@ -955,6 +955,7 @@
   "app.containers.Admin.projects.project.participation.usersByGender": "Użytkownicy według płci",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.EmailModal.required": "Wymagane",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.addAQuestion": "Dodaj pytanie",
+  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.contactGovSuccessToAccessAddingAQuestion": "Możliwość dodawania lub edytowania pól użytkownika na poziomie fazy nie jest objęta Twoją obecną licencją. Skontaktuj się ze swoim GovSuccess Managerem, aby dowiedzieć się więcej na ten temat.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.customFieldNameOptions": "{customFieldName} opcje",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.fieldStatus": "Status pola",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.noExtraQuestions": "Nie będą zadawane żadne dodatkowe pytania.",
