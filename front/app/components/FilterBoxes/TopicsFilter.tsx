@@ -1,10 +1,6 @@
 import React, { memo, useCallback, MouseEvent } from 'react';
 
-import {
-  fontSizes,
-  colors,
-  defaultCardStyle,
-} from '@citizenlab/cl2-component-library';
+import { fontSizes, colors, Box } from '@citizenlab/cl2-component-library';
 import { isError, includes } from 'lodash-es';
 import { darken } from 'polished';
 import styled from 'styled-components';
@@ -14,24 +10,12 @@ import { ITopicData } from 'api/topics/types';
 import T from 'components/T';
 
 import { ScreenReaderOnly } from 'utils/a11y';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
+import InputFilterCollapsible from './InputFilterCollapsible';
 import messages from './messages';
-import { Header, Title } from './styles';
-
-const Container = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  padding: 20px;
-  padding-top: 25px;
-  ${defaultCardStyle};
-`;
-
-const Topics = styled.div``;
 
 const Topic = styled.button`
   color: ${colors.textSecondary};
@@ -81,6 +65,8 @@ interface Props {
 
 const TopicsFilter = memo<Props & InjectedLocalized>(
   ({ topics, selectedTopicIds, onChange, className, localize }) => {
+    const { formatMessage } = useIntl();
+
     const handleOnClick = useCallback(
       (event: MouseEvent<HTMLElement>) => {
         const topicId = event.currentTarget.dataset.id as string;
@@ -114,14 +100,11 @@ const TopicsFilter = memo<Props & InjectedLocalized>(
         .join(', ');
 
       return (
-        <Container className={className}>
-          <Header>
-            <Title>
-              <FormattedMessage {...messages.topicsTitle} />
-            </Title>
-          </Header>
-
-          <Topics className="e2e-topics-filters">
+        <InputFilterCollapsible
+          title={formatMessage(messages.topicsTitle)}
+          className={className}
+        >
+          <Box className="e2e-topics-filters">
             {topics
               .filter((topic) => !isError(topic))
               .map((topic: ITopicData) => (
@@ -137,7 +120,7 @@ const TopicsFilter = memo<Props & InjectedLocalized>(
                   <T value={topic.attributes.title_multiloc} />
                 </Topic>
               ))}
-          </Topics>
+          </Box>
           <ScreenReaderOnly aria-live="polite">
             {/* Pronounces numbers of selected topics + selected topic names */}
             <FormattedMessage
@@ -145,7 +128,7 @@ const TopicsFilter = memo<Props & InjectedLocalized>(
               values={{ numberOfSelectedTopics, selectedTopicNames }}
             />
           </ScreenReaderOnly>
-        </Container>
+        </InputFilterCollapsible>
       );
     }
 

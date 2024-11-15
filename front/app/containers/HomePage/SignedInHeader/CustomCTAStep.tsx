@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { Title } from '@citizenlab/cl2-component-library';
+
 import { OnboardingCampaignName } from 'api/onboarding_campaigns/types';
 import useCurrentOnboardingCampaign from 'api/onboarding_campaigns/useCurrentOnboardingCampaign';
 
@@ -11,9 +13,8 @@ import { isNilOrError } from 'utils/helperUtils';
 
 import AcceptButton from './AcceptButton';
 import OnboardingStep from './OnboardingStep';
+import { HeaderContent, Left, Right } from './Shared';
 import SkipButton from './SkipButton';
-
-import { HeaderContent, Left, Text, Right } from './';
 
 interface Props {
   currentOnboardingCampaignName: OnboardingCampaignName;
@@ -32,13 +33,12 @@ const CustomCTAStep = ({ onSkip, currentOnboardingCampaignName }: Props) => {
       >
         <HeaderContent id="e2e-signed-in-header-custom-cta">
           <Left>
-            <Text>
+            <Title variant="h2" m="0" color="white">
               <T
-                as="h2"
                 value={onboardingCampaign.data.attributes.cta_message_multiloc}
                 supportHtml
               />
-            </Text>
+            </Title>
           </Left>
 
           <Right>

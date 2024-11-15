@@ -60,6 +60,18 @@ class ProjectPolicy < ApplicationPolicy
     active_moderator?
   end
 
+  def index_finished_or_archived?
+    true
+  end
+
+  def index_projects_for_followed_item?
+    true
+  end
+
+  def index_projects_with_active_participatory_phase?
+    true
+  end
+
   def votes_by_user_xlsx?
     index_xlsx?
   end
@@ -103,6 +115,10 @@ class ProjectPolicy < ApplicationPolicy
 
   def copy?
     create?
+  end
+
+  def destroy_participation_data?
+    active_moderator?
   end
 
   def shared_permitted_attributes

@@ -59,7 +59,7 @@ const Settings = ({ selectedNode, onClose, onDelete }: Props) => {
         </Title>
       )}
       {selectedNode.settings && React.createElement(selectedNode.settings)}
-      {selectedNode.isDeletable && !selectedNode.custom?.noDelete ? (
+      {selectedNode.isDeletable ? (
         <Box display="flex">
           <Button
             id="e2e-delete-button"

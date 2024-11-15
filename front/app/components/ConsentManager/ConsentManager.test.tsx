@@ -118,7 +118,7 @@ describe('<ConsentManager />', () => {
       });
     });
 
-    it('rejects all cookies except functional if preference modal is openend and confirmed without changes', () => {
+    it('rejects all cookies except functional if preference modal is opened and confirmed without changes', () => {
       const { container } = render(<ConsentManager />);
       fireEvent.click(container.querySelector('.integration-open-modal'));
       fireEvent.click(container.querySelector('#e2e-preferences-save'));

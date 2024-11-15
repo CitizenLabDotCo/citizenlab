@@ -214,7 +214,7 @@ RSpec.describe ParticipationMethod::Proposals do
     end
   end
 
-  its(:additional_export_columns) { is_expected.to eq [] }
+  its(:additional_export_columns) { is_expected.to eq %w[manual_votes] }
   its(:allowed_ideas_orders) { is_expected.to eq %w[trending random popular -new new] }
   its(:proposed_budget_in_form?) { is_expected.to be false }
   its(:return_disabled_actions?) { is_expected.to be false }
@@ -235,4 +235,5 @@ RSpec.describe ParticipationMethod::Proposals do
   its(:supports_toxicity_detection?) { is_expected.to be true }
   its(:use_reactions_as_votes?) { is_expected.to be true }
   its(:transitive?) { is_expected.to be false }
+  its(:supports_private_attributes_in_export?) { is_expected.to be true }
 end

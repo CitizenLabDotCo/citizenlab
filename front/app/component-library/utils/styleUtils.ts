@@ -92,6 +92,7 @@ export const themeColors = {
   green700: '#024D2B',
   green500: '#04884C', // formerly clGreen
   green400: '#32B67A',
+  green300: '#62C462',
   green100: '#e4f7ef', // formerly clGreenSuccessBackground
 
   /**
@@ -153,7 +154,7 @@ export const fontSizes = {
   xxxxxl: 42,
 };
 
-type FontSizesType = keyof typeof fontSizes;
+export type FontSizesType = keyof typeof fontSizes;
 
 export const boxShadow = css`
   box-shadow: 0px 4px 3px rgba(0, 0, 0, 0.05);
@@ -274,7 +275,6 @@ type StylingConstsType = {
 // Reusable text styling
 export function quillEditedContent(
   buttonColor = colors.teal,
-  linkColor = colors.teal,
   textColor = colors.textPrimary,
   mentionColor = colors.textPrimary,
   fontSize: 's' | 'base' | 'm' | 'l' = 'base',
@@ -295,7 +295,7 @@ export function quillEditedContent(
   return `
     ${defaultFontStyle}
 
-    a, li, p {
+    li, p {
       ${defaultFontStyle}
     }
 
@@ -315,7 +315,7 @@ export function quillEditedContent(
       a {
         font-size: inherit;
         font-weight: inherit;
-        text-decoration: inherit;
+        text-decoration: underline;
       }
     }
 
@@ -329,7 +329,7 @@ export function quillEditedContent(
       a {
         font-size: inherit;
         font-weight: inherit;
-        text-decoration: inherit;
+        text-decoration: underline;
       }
     }
 
@@ -342,7 +342,8 @@ export function quillEditedContent(
     }
 
     a {
-      color: ${linkColor};
+      color: #0000EE; /* Standard fallback for all browsers */
+      color: -webkit-link; /* Overrides the fallback in WebKit browsers */
       text-decoration: underline;
       overflow-wrap: break-word;
       word-wrap: break-word;
@@ -350,12 +351,6 @@ export function quillEditedContent(
       word-break: break-word;
       hyphens: auto;
       transition: background 80ms ease-out;
-
-      &:hover {
-        color: ${darken(0.15, linkColor)};
-        background: ${transparentize(0.91, linkColor)};
-        text-decoration: underline;
-      }
     }
 
     ul, ol {

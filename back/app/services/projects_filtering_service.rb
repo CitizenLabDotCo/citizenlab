@@ -7,6 +7,10 @@ class ProjectsFilteringService
 
   class << self
     def for_homepage_filter(current_user)
+      # TODO: Find a way to pass the policy context when instantiating the scope.
+      #   This should not cause any issue since the current usage of the policy context
+      #   does not impact the homepage content. But for consistency, we should find a way
+      #   to pass the policy context.
       homepage_publications =
         AdminPublicationsFilteringService.for_homepage_filter AdminPublicationPolicy::Scope.new(
           current_user,

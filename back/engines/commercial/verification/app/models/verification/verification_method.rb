@@ -7,6 +7,10 @@ module Verification
       name
     end
 
+    def name
+      nil
+    end
+
     # @return [Hash, nil]
     def config
       AppConfiguration.instance
@@ -16,6 +20,10 @@ module Verification
         .except('allowed', 'enabled')
         .symbolize_keys
         .presence
+    end
+
+    def enabled_for_verified_actions?
+      config[:enabled_for_verified_actions] || false
     end
   end
 end

@@ -83,10 +83,6 @@ module IdNemlogIn
       true
     end
 
-    def enabled_for_verified_actions?
-      config[:enabled_for_verified_actions] || false
-    end
-
     def ui_method_name
       'NemLog-in'
     end

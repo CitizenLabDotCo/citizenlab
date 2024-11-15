@@ -10,7 +10,7 @@ import useLocale from 'hooks/useLocale';
 import { getLocale } from '../../_shared/locales';
 import { CalendarProps } from '../typings';
 
-import { getEndMonth, getStartMonth } from './utils/getStartEndMonth';
+import { getEndMonth } from './utils/getStartEndMonth';
 
 const DayPickerStyles = styled.div`
   .rdp-root {
@@ -34,8 +34,7 @@ const Calendar = ({
   onChange,
 }: CalendarProps) => {
   const locale = useLocale();
-
-  const startMonth = getStartMonth({ startMonth: _startMonth, selectedDate });
+  const startMonth = new Date(1900, 0);
   const endMonth = getEndMonth({ endMonth: _endMonth, selectedDate });
 
   return (

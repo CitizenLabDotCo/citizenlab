@@ -9,16 +9,12 @@ import {
   IconNames,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
-import moment from 'moment';
 import styled from 'styled-components';
 
-import usePhases from 'api/phases/usePhases';
 import useProjectById from 'api/projects/useProjectById';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
-
-import otherProjectMessages from 'containers/Admin/projects/all/messages';
 
 import NavigationTabs from 'components/admin/NavigationTabs';
 import Button from 'components/UI/Button';
@@ -26,6 +22,7 @@ import Button from 'components/UI/Button';
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
+import PublicationStatus from './PublicationStatus';
 import ShareLink from './ShareLink';
 
 const StyledTitle = styled(Title)`
@@ -43,16 +40,11 @@ const ProjectHeader = ({ projectId }: Props) => {
   const shareLinkEnabled = useFeatureFlag({ name: 'project_preview_link' });
 
   const { data: project } = useProjectById(projectId);
-  const { data: phases } = usePhases(projectId);
+
   const { formatMessage } = useIntl();
   const localize = useLocalize();
 
   if (!project) return null;
-  const isOngoingProject = phases?.data.some(
-    (phase) =>
-      !phase.attributes.end_at ||
-      moment(phase.attributes.end_at).isSameOrAfter(moment().startOf('day'))
-  );
 
   let visibilityMessage: MessageDescriptor = messages.everyone;
   let visibilityIcon: IconNames = 'lock';
@@ -66,37 +58,6 @@ const ProjectHeader = ({ projectId }: Props) => {
       break;
     case 'admins':
       visibilityMessage = messages.adminsOnly;
-      break;
-  }
-
-  let statusMessage = messages.draft;
-  let publicationStatusIcon: IconNames = 'flag';
-  let publicationStatusIconColor = colors.orange500;
-  switch (project.data.attributes.publication_status) {
-    case 'published':
-      if (phases?.data.length === 0) {
-        publicationStatusIcon = 'check-circle';
-        publicationStatusIconColor = colors.green500;
-        statusMessage = otherProjectMessages.published;
-      } else {
-        publicationStatusIcon = isOngoingProject ? 'check-circle' : 'bullseye';
-        publicationStatusIconColor = isOngoingProject
-          ? colors.green500
-          : colors.coolGrey600;
-        statusMessage = isOngoingProject
-          ? messages.publishedActive
-          : messages.publishedFinished;
-      }
-      break;
-    case 'draft':
-      publicationStatusIcon = 'flag';
-      publicationStatusIconColor = colors.orange500;
-      statusMessage = messages.draft;
-      break;
-    case 'archived':
-      publicationStatusIcon = 'inbox';
-      publicationStatusIconColor = colors.coolGrey600;
-      statusMessage = messages.archived;
       break;
   }
 
@@ -121,9 +82,8 @@ const ProjectHeader = ({ projectId }: Props) => {
               size="s"
               padding="4px 8px"
               id="e2e-view-project"
-            >
-              {formatMessage(messages.view)}
-            </Button>
+            />
+            <PublicationStatus project={project} />
             <Button
               linkTo={`/admin/projects/${project.data.id}/settings`}
               buttonStyle="secondary-outlined"
@@ -143,26 +103,6 @@ const ProjectHeader = ({ projectId }: Props) => {
           </Box>
         </Box>
         <Box display="flex" gap="8px">
-          <Button
-            linkTo={`/admin/projects/${project.data.id}/settings`}
-            buttonStyle="text"
-            size="s"
-            padding="0px"
-          >
-            <Box display="flex" alignItems="center">
-              <Icon
-                name={publicationStatusIcon}
-                fill={publicationStatusIconColor}
-                width="16px"
-              />
-              <Text color="coolGrey600" fontSize="s" m="0px">
-                {formatMessage(statusMessage)}
-              </Text>
-            </Box>
-          </Button>
-          <Text color="coolGrey600" fontSize="s" my="0px">
-            ·
-          </Text>
           <Button
             linkTo={`/admin/projects/${project.data.id}/settings/access-rights`}
             buttonStyle="text"

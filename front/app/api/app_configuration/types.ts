@@ -58,6 +58,7 @@ export type IAppConfigurationSettingsCore = {
   allow_sharing: boolean;
   customer_portal_url?: string | null;
   anonymous_name_scheme?: string | null;
+  private_attributes_in_export: boolean;
 };
 
 export type TSeatNumber = number | null | undefined;
@@ -127,6 +128,10 @@ export interface IAppConfigurationSettings {
     enabled: boolean;
   };
   hoplr_login?: {
+    allowed: boolean;
+    enabled: boolean;
+  };
+  id_austria_login?: {
     allowed: boolean;
     enabled: boolean;
   };

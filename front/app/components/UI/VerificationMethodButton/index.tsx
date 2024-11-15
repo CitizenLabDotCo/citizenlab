@@ -1,16 +1,21 @@
 import React, { ReactNode } from 'react';
 
-import { Button, ButtonProps } from '@citizenlab/cl2-component-library';
+import {
+  Button,
+  ButtonProps,
+  IconNames,
+} from '@citizenlab/cl2-component-library';
 
 interface Props extends Partial<ButtonProps> {
   children: ReactNode;
   last: boolean;
+  icon?: IconNames;
 }
 
 const VerificationMethodButton = (props: Props) => {
   return (
     <Button
-      icon="shield-check"
+      icon={props.icon ? props.icon : 'shield-check'}
       buttonStyle="white"
       fullWidth={true}
       justify="left"

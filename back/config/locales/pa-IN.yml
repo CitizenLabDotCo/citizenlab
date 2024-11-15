@@ -266,6 +266,7 @@ pa:
       first_name: 'ਪਹਿਲਾ ਨਾਂ(ਨਾਂ)'
       image_url: 'ਚਿੱਤਰ URL'
       input_id: 'ਆਈ.ਡੀ'
+      manual_votes: 'ਔਫਲਾਈਨ ਵੋਟਾਂ'
       input_url: 'URL'
       last_name: 'ਆਖਰੀ ਨਾਂਮ'
       latitude: 'ਵਿਥਕਾਰ'
