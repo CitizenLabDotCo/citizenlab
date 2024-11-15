@@ -129,7 +129,11 @@ const HomepageBuilderToolbox = ({
         {newHomepageWidgetsEnabled && (
           <DraggableElement
             id="e2e-draggable-finished-or-archived"
-            component={<FinishedOrArchived />} // TODO
+            component={
+              <FinishedOrArchived
+                titleMultiloc={toMultiloc(finishedOrArchivedTitle)}
+              />
+            }
             icon="sportsScore"
             label={formatMessage(finishedOrArchivedTitle)}
           />

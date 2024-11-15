@@ -1,9 +1,15 @@
 import React from 'react';
 
+import { Multiloc } from 'typings';
+
 import messages from './messages';
 import Settings from './Settings';
 
-const FinishedOrArchived = () => {
+interface Props {
+  titleMultiloc: Multiloc;
+}
+
+const FinishedOrArchived = (_props: Props) => {
   return <></>;
 };
 
