@@ -9,6 +9,7 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 import { capitalize, get } from 'lodash-es';
+import { darken } from 'polished';
 import styled from 'styled-components';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
@@ -22,6 +23,7 @@ import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 import InputFilterCollapsible from './InputFilterCollapsible';
 import messages from './messages';
+import { scrollToTopIdeasList } from './utils';
 
 const Count = styled.span`
   color: ${({ theme }) => theme.colors.textSecondary};
@@ -59,6 +61,10 @@ const Status = styled.button`
     color: #fff;
     background: ${({ theme }) => theme.colors.tenantPrimary};
 
+    &:hover {
+      background: ${({ theme }) => darken(0.15, theme.colors.tenantPrimary)};
+    }
+
     ${Count} {
       color: #fff;
     }
@@ -90,6 +96,7 @@ const StatusFilter = memo<Props>(
           selectedStatusId !== statusId ? statusId : null;
 
         onChange(nextSelectedStatusId);
+        scrollToTopIdeasList();
       },
       [selectedStatusId, onChange]
     );
