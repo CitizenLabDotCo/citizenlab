@@ -81,7 +81,7 @@ class WebApi::V1::ProjectsController < ApplicationController
     projects = ProjectsFinderService.new(projects, current_user).followed_by_user
 
     @projects = paginate projects
-    @projects = @projects.preload(:project_images, :phases)
+    @projects = @projects.includes(:project_images, :admin_publication, phases: %i[custom_form report permissions])
 
     authorize @projects, :index_projects_for_followed_item?
 
