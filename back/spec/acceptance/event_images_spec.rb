@@ -43,16 +43,19 @@ resource 'EventImage' do
       with_options scope: :image do
         parameter :image, 'The base64 encoded image', required: true
         parameter :ordering, 'An integer that is used to order the images within an idea', required: false
+        parameter :alt_text_multiloc, 'The alt text in multiple locales', required: false
       end
       ValidationErrorHelper.new.error_fields(self, IdeaImage)
       let(:image) { png_image_as_base64 'image13.png' }
       let(:ordering) { 1 }
+      let(:alt_text_multiloc) { { 'en' => 'A cute puppy' } }
 
       example_request 'Add an image to an event' do
         expect(response_status).to eq 201
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :attributes, :versions).keys).to match %i[small medium large fb]
         expect(json_response.dig(:data, :attributes, :ordering)).to eq(1)
+        expect(json_response.dig(:data, :attributes, :alt_text_multiloc).stringify_keys).to match alt_text_multiloc
       end
     end
 
@@ -60,16 +63,19 @@ resource 'EventImage' do
       with_options scope: :image do
         parameter :image, 'The base64 encoded image'
         parameter :ordering, 'An integer that is used to order the images within an idea'
+        parameter :alt_text_multiloc, 'The updated alt text in multiple locales', required: false
       end
       ValidationErrorHelper.new.error_fields(self, EventImage)
       let(:image) { png_image_as_base64 'image14.png' }
       let(:ordering) { 2 }
+      let(:alt_text_multiloc) { { 'en' => 'A cute puppy' } }
 
       example_request 'Update an image for an event' do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :attributes, :versions).keys).to match %i[small medium large fb]
         expect(json_response.dig(:data, :attributes, :ordering)).to eq(2)
+        expect(json_response.dig(:data, :attributes, :alt_text_multiloc).stringify_keys).to match alt_text_multiloc
       end
     end
 
