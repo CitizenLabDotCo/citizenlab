@@ -245,19 +245,24 @@ const ProgressBarOverlay = styled.div<{ progress: number }>`
   }
 `;
 
-const ProjectLabel = styled.div`
-  // darkened to have higher chances of solid color contrast
+const ProjectLabel = styled.button`
   color: ${({ theme }) => darken(0.05, theme.colors.tenantSecondary)};
   font-size: ${fontSizes.s}px;
   font-weight: 400;
   text-align: center;
   white-space: nowrap;
-  padding-left: 14px;
-  padding-right: 14px;
-  padding-top: 8px;
-  padding-bottom: 8px;
+  padding: 8px 14px;
   border-radius: ${(props) => props.theme.borderRadius};
-  background: ${({ theme }) => rgba(theme.colors.tenantSecondary, 0.1)};
+  border: 1px solid ${({ theme }) => darken(0.05, theme.colors.tenantSecondary)};
+  background: transparent;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: ${({ theme }) => rgba(theme.colors.tenantSecondary, 0.1)};
+    color: ${({ theme }) => theme.colors.tenantSecondary};
+    border-color: ${({ theme }) => theme.colors.tenantSecondary};
+    cursor: pointer;
+  }
 `;
 
 const ContentBody = styled.div`

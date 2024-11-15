@@ -9,6 +9,7 @@ export interface Props {
   ideaId: string | null;
   onSwitchPreviewMode: () => void;
   mode: PreviewMode;
+  selectedPhaseId?: string;
 }
 
 const IdeaPostPreview = ({
@@ -16,6 +17,7 @@ const IdeaPostPreview = ({
   ideaId,
   onSwitchPreviewMode,
   mode,
+  selectedPhaseId,
 }: Props) => {
   if (!ideaId) {
     return null;
@@ -27,6 +29,7 @@ const IdeaPostPreview = ({
         ideaId={ideaId}
         closePreview={onClose}
         handleClickEdit={onSwitchPreviewMode}
+        selectedPhaseId={selectedPhaseId}
       />
     ),
     edit: <AdminIdeaEdit ideaId={ideaId} goBack={onSwitchPreviewMode} />,

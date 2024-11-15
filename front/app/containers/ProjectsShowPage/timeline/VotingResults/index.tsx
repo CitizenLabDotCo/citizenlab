@@ -27,7 +27,7 @@ const VotingResults = ({ phaseId, votingMethod }: Props) => {
     isFetchingNextPage,
   } = useInfiniteIdeas({
     phase: phaseId,
-    sort: votingMethod === 'budgeting' ? 'baskets_count' : 'votes_count',
+    sort: votingMethod === 'budgeting' ? 'total_baskets' : 'total_votes',
   });
 
   const smallerThanPhone = useBreakpoint('phone');
@@ -37,6 +37,8 @@ const VotingResults = ({ phaseId, votingMethod }: Props) => {
 
   const getMx = (i: number) =>
     smallerThanPhone ? {} : i % 2 ? { ml: '8px' } : { mr: '8px' };
+
+  const ranks = getRanks(getCounts(ideasList));
 
   return (
     <Box
@@ -54,18 +56,7 @@ const VotingResults = ({ phaseId, votingMethod }: Props) => {
           width={smallerThanPhone ? '100%' : 'calc(50% - 16px)'}
           {...getMx(i)}
         >
-          <VotingResultCard
-            idea={idea}
-            phaseId={phaseId}
-            rank={
-              getRanks(
-                getCounts(
-                  ideasList,
-                  votingMethod === 'budgeting' ? 'baskets_count' : 'votes_count'
-                )
-              )[i]
-            }
-          />
+          <VotingResultCard idea={idea} phaseId={phaseId} rank={ranks[i]} />
         </Box>
       ))}
       {hasNextPage && (
@@ -104,9 +95,7 @@ const getRanks = (counts: number[]) => {
   return ranks;
 };
 
-const getCounts = (
-  ideas: IIdeaData[],
-  attributeName: 'baskets_count' | 'votes_count'
-) => ideas.map((idea) => idea.attributes[attributeName]);
+const getCounts = (ideas: IIdeaData[]) =>
+  ideas.map((idea) => idea.attributes.total_votes);
 
 export default VotingResults;

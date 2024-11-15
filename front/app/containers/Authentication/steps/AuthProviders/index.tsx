@@ -97,6 +97,9 @@ const AuthProviders = memo<Props>(
     const hoplrLoginEnabled = useFeatureFlag({
       name: 'hoplr_login',
     });
+    const idAustriaLoginEnabled = useFeatureFlag({
+      name: 'id_austria_login',
+    });
     const criiptoLoginEnabled = useFeatureFlag({
       name: 'criipto_login',
     });
@@ -150,7 +153,8 @@ const AuthProviders = memo<Props>(
       hoplrLoginEnabled ||
       criiptoLoginEnabled ||
       keycloakLoginEnabled ||
-      nemlogInLoginEnabled;
+      nemlogInLoginEnabled ||
+      idAustriaLoginEnabled;
 
     return (
       <Container
@@ -210,6 +214,21 @@ const AuthProviders = memo<Props>(
           </StyledAuthProviderButton>
         )}
 
+        {idAustriaLoginEnabled && (
+          <StyledAuthProviderButton
+            icon="idaustria"
+            flow={flow}
+            authProvider="id_austria"
+            onContinue={onSelectAuthProvider}
+          >
+            <FormattedMessage
+              {...messages.continueWithLoginMechanism}
+              values={{
+                loginMechanismName: 'ID Austria',
+              }}
+            />
+          </StyledAuthProviderButton>
+        )}
         {criiptoLoginEnabled && (
           <StyledAuthProviderButton
             icon="mitid"

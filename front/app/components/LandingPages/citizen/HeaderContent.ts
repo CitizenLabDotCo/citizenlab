@@ -43,12 +43,13 @@ export const HeaderTitle = styled(Title)<{
   align: 'center' | 'left';
 }>`
   width: 100%;
-  color: ${({ hasHeader, fontColors, theme }) =>
-    hasHeader
+  color: ${({ hasHeader, fontColors, theme }) => {
+    return hasHeader
       ? fontColors === 'light'
         ? '#fff'
         : theme.colors.tenantPrimary
-      : theme.colors.tenantPrimary};
+      : theme.colors.tenantPrimary;
+  }};
   font-size: ${({ theme }) =>
     theme.signedOutHeaderTitleFontSize || fontSizes.xxxl}px;
   ${HeadingFontStyle};

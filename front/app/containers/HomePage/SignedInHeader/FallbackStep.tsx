@@ -1,12 +1,12 @@
 import React from 'react';
 
-import { media, isRtl, colors } from '@citizenlab/cl2-component-library';
+import { media, isRtl, colors, Title } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
 import { OnboardingCampaignName } from 'api/onboarding_campaigns/types';
 
-import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/HomepageBanner';
+import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Widgets/HomepageBanner';
 
 import T from 'components/T';
 
@@ -70,15 +70,16 @@ const FallbackStep = ({
       >
         <HeaderContent id="e2e-signed-in-header-default-cta">
           <Left>
-            {defaultMessage && !isEmptyMultiloc(defaultMessage) ? (
-              <T value={defaultMessage} supportHtml />
-            ) : (
-              <FormattedMessage
-                {...messages.defaultSignedInMessage}
-                tagName="h2"
-                values={{ firstName: authUser.data.attributes.first_name }}
-              />
-            )}
+            <Title variant="h2" m="0" color="white">
+              {defaultMessage && !isEmptyMultiloc(defaultMessage) ? (
+                <T value={defaultMessage} supportHtml />
+              ) : (
+                <FormattedMessage
+                  {...messages.defaultSignedInMessage}
+                  values={{ firstName: authUser.data.attributes.first_name }}
+                />
+              )}
+            </Title>
           </Left>
           <Right>
             <CTA

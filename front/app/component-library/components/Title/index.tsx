@@ -21,8 +21,9 @@ import Box, {
   BoxVisibilityProps,
 } from '../Box';
 
-type Variant = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
-type FontSize = keyof typeof fontSizes;
+export type Variant = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+export type FontSize = keyof typeof fontSizes;
+export type FontWeight = 'bold' | 'normal';
 type FontStyle = 'italic' | 'normal';
 export type TextAlign =
   | 'left'
@@ -39,6 +40,7 @@ export type TitleProps = {
   as?: Variant;
   fontStyle?: FontStyle;
   textAlign?: TextAlign;
+  fontWeight?: FontWeight;
 } & BoxMarginProps &
   BoxPaddingProps &
   BoxPositionProps &
@@ -58,6 +60,8 @@ const StyledTitle = styled(Box)`
       color ? theme.colors[color] : colors.textPrimary};
     font-style: ${fontStyle ? fontStyle : 'normal'};
     font-weight: bold;
+    line-height: 1.3;
+    word-break: break-word;
 
     ${textAlign ? `text-align: ${textAlign};` : ''}
     ${variant === 'h1'

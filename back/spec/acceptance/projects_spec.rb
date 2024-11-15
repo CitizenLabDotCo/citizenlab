@@ -4,7 +4,7 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'Projects' do
-  explanation 'Ideas have to be posted in a city project, or they can be posted in the open idea box.'
+  explanation 'Projects can have phases which can be of different participation methods.'
 
   let(:json_response) { json_parse(response_body) }
 
@@ -561,7 +561,8 @@ resource 'Projects' do
           :idea,
           project: project,
           custom_field_values: { extra_idea_field.key => 'Answer' },
-          phases: [ideation_phase, single_voting_phase]
+          phases: [ideation_phase, single_voting_phase],
+          manual_votes_amount: 24
         )
       end
       let!(:survey_response) do
@@ -606,6 +607,7 @@ resource 'Projects' do
               'Comments',
               'Likes',
               'Dislikes',
+              'Offline votes',
               'URL',
               'Project',
               'Status',
@@ -632,6 +634,7 @@ resource 'Projects' do
                 0,
                 0,
                 0,
+                24,
                 "http://example.org/ideas/#{ideation_response.slug}",
                 project.title_multiloc['en'],
                 ideation_response.idea_status.title_multiloc['en'],
@@ -684,6 +687,7 @@ resource 'Projects' do
               'Published at',
               'Comments',
               'Votes',
+              'Offline votes',
               'URL',
               'Project',
               'Status',
@@ -709,6 +713,7 @@ resource 'Projects' do
                 an_instance_of(DateTime), # published_at
                 0,
                 0,
+                24,
                 "http://example.org/ideas/#{ideation_response.slug}",
                 project.title_multiloc['en'],
                 ideation_response.idea_status.title_multiloc['en'],
@@ -850,18 +855,19 @@ resource 'Projects' do
         ]
 
         expect(header_row1).to match_array(
-          expected_first_columns + [french_column_headers['votes_count']] + expected_last_columns
+          expected_first_columns + [french_column_headers['votes_count'], french_column_headers['manual_votes']] + expected_last_columns
         )
         expect(header_row2).to match_array(
           expected_first_columns +
-          [french_column_headers['votes_count'], french_column_headers['participants']] +
+          [french_column_headers['votes_count'], french_column_headers['participants'], french_column_headers['manual_votes']] +
           expected_last_columns
         )
         expect(header_row3).to match_array(
           expected_first_columns +
           [
             "#{french_column_headers['picks']} / #{french_column_headers['participants']}",
-            french_column_headers['cost']
+            french_column_headers['cost'],
+            french_column_headers['manual_votes']
           ] +
           expected_last_columns
         )
@@ -1067,6 +1073,7 @@ resource 'Projects' do
                 'Comments',
                 'Likes',
                 'Dislikes',
+                'Offline votes',
                 'URL',
                 'Project',
                 'Status',
@@ -1092,6 +1099,7 @@ resource 'Projects' do
                   0,
                   0,
                   0,
+                  nil,
                   "http://example.org/ideas/#{idea.slug}",
                   project.title_multiloc['en'],
                   idea.idea_status.title_multiloc['en'],
@@ -1403,7 +1411,7 @@ resource 'Projects' do
       expect(current_phase_ids).to match included_phase_ids
     end
 
-    example 'includes next page link in response when appropriate', document: false do
+    example 'Includes next page link in response when appropriate', document: false do
       Project.destroy_all
 
       create_list(:project_with_active_ideation_phase, 5)
@@ -1421,6 +1429,127 @@ resource 'Projects' do
       do_request page: { number: 3, size: 2 }
       json_response = json_parse(response_body)
       expect(json_response[:links][:next]).to be_nil
+    end
+
+    # Test to catch duplicates that can occur when active phase end dates match, and no secondary sorting is applied,
+    # or when project created_at dates also match, and no ternary sorting is applied.
+    # This would cuase duplicates to appear on different pages.
+    example 'Does not duplicate projects on different pages when phase end dates are the same', document: false do
+      Project.destroy_all
+
+      create_list(:project_with_active_ideation_phase, 10)
+
+      created_at = 1.day.ago
+      Project.all.each { |p| p.update!(created_at: created_at) }
+
+      do_request page: { number: 1, size: 4 }
+      json_response = json_parse(response_body)
+      project_ids_page1 = json_response[:data].pluck(:id)
+
+      do_request page: { number: 2, size: 4 }
+      json_response = json_parse(response_body)
+      project_ids_page2 = json_response[:data].pluck(:id)
+
+      expect(project_ids_page1 & project_ids_page2).to be_empty
+    end
+  end
+
+  get 'web_api/v1/projects/finished_or_archived' do
+    before do
+      @user = create(:user, roles: [])
+      header_token_for @user
+    end
+
+    with_options scope: :page do
+      parameter :number, 'Page number'
+      parameter :size, 'Number of projects per page'
+      parameter :finished, 'Include projects with all phases finished or with a report in last phase', required: false
+      parameter :archived, 'Include archived projects', required: false
+    end
+
+    context "when passed only the 'finished' parameter" do
+      let!(:finished_project1) { create(:project_with_two_past_ideation_phases) }
+      let!(:_unfinished_project1) { create(:project_with_active_ideation_phase) }
+      let!(:unfinished_project2) { create(:project) }
+      let!(:phase) { create(:phase, project: unfinished_project2, start_at: 2.days.ago, end_at: 2.days.from_now) }
+      let!(:_report) { create(:report, phase: phase) }
+
+      example 'Lists only projects with all phases finished or with a report in the last phase' do
+        do_request finished: true
+        expect(status).to eq 200
+
+        json_response = json_parse(response_body)
+        project_ids = json_response[:data].pluck(:id)
+
+        expect(project_ids).to match_array [finished_project1.id, unfinished_project2.id]
+      end
+
+      example 'Excludes projects that are not published' do
+        create(:project_with_two_past_ideation_phases, admin_publication_attributes: { publication_status: 'draft' })
+        create(:project_with_two_past_ideation_phases, admin_publication_attributes: { publication_status: 'archived' })
+
+        do_request finished: true
+        expect(status).to eq 200
+
+        json_response = json_parse(response_body)
+        project_ids = json_response[:data].pluck(:id)
+
+        expect(project_ids).to match_array [finished_project1.id, unfinished_project2.id]
+      end
+    end
+
+    context "when passed only the 'archived' parameter" do
+      let!(:archived_project) { create(:project, admin_publication_attributes: { publication_status: 'archived' }) }
+      let!(:published_project) { create(:project, admin_publication_attributes: { publication_status: 'published' }) }
+      let!(:draft_project) { create(:project, admin_publication_attributes: { publication_status: 'draft' }) }
+
+      example 'Lists only archived projects' do
+        do_request archived: true
+        expect(status).to eq 200
+
+        json_response = json_parse(response_body)
+        project_ids = json_response[:data].pluck(:id)
+
+        expect(project_ids).to eq [archived_project.id]
+      end
+    end
+
+    context "when passed both the 'finished' and the 'archived' parameter" do
+      let!(:archived_project) { create(:project, admin_publication_attributes: { publication_status: 'archived' }) }
+      let!(:published_project) { create(:project, admin_publication_attributes: { publication_status: 'published' }) }
+      let!(:draft_project) { create(:project, admin_publication_attributes: { publication_status: 'draft' }) }
+
+      let!(:finished_project1) { create(:project_with_two_past_ideation_phases) }
+      let!(:_unfinished_project1) { create(:project_with_active_ideation_phase) } # we do not expect this one
+      let!(:unfinished_project2) { create(:project) }
+      let!(:phase) { create(:phase, project: unfinished_project2, start_at: 2.days.ago, end_at: 2.days.from_now) }
+      let!(:_report) { create(:report, phase: phase) }
+
+      example 'Lists (published projects with phases finished OR with a report in last phase) OR archived projects' do
+        do_request({ archived: true, finished: true })
+        expect(status).to eq 200
+
+        json_response = json_parse(response_body)
+        project_ids = json_response[:data].pluck(:id)
+
+        expect(project_ids).to match_array [archived_project.id, finished_project1.id, unfinished_project2.id]
+      end
+
+      # Test to catch duplicates that can occur when created_at dates match, and no secondary sorting is applied.
+      # Identical created_at dates are possible when tenant templates are applied.
+      example 'Does not duplicate projects on different pages when created_at dates are the same', document: false do
+        create_list(:project_with_two_past_ideation_phases, 10)
+
+        do_request page: { number: 1, size: 4 }
+        json_response = json_parse(response_body)
+        project_ids_page1 = json_response[:data].pluck(:id)
+
+        do_request page: { number: 2, size: 4 }
+        json_response = json_parse(response_body)
+        project_ids_page2 = json_response[:data].pluck(:id)
+
+        expect(project_ids_page1 & project_ids_page2).to be_empty
+      end
     end
   end
 end
