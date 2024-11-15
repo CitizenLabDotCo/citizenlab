@@ -24,6 +24,7 @@ import Button, {
 import CardButton from './components/CardButton';
 import Checkbox from './components/Checkbox';
 import CheckboxWithLabel from './components/CheckboxWithLabel';
+import CollapsibleContainer from './components/CollapsibleContainer';
 import ColorPickerInput, {
   Props as ColorPickerInputProps,
 } from './components/ColorPickerInput';
@@ -150,6 +151,7 @@ export {
   ColorPickerInput,
   Badge,
   Accordion,
+  CollapsibleContainer,
   CardButton,
   Dropdown,
   DropdownListItem,
