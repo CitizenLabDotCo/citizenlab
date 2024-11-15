@@ -7,6 +7,8 @@ import Settings from './Settings';
 
 interface Props {
   titleMultiloc: Multiloc;
+  finished: boolean;
+  archived: boolean;
 }
 
 const FinishedOrArchived = (_props: Props) => {
