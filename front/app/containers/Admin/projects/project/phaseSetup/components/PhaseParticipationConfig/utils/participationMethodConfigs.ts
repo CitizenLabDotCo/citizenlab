@@ -18,7 +18,7 @@ export const defaultParticipationConfig: IUpdatedPhaseProperties = {
   voting_term_singular_multiloc: null,
   voting_term_plural_multiloc: null,
   presentation_mode: 'card',
-  ideas_order: null,
+  ideas_order: undefined,
   input_term: 'idea',
   poll_anonymous: false,
   document_annotation_embed_url: null,
