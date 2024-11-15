@@ -955,6 +955,7 @@
   "app.containers.Admin.projects.project.participation.usersByGender": "Defnyddwyr yn ôl rhyw",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.EmailModal.required": "Angenrheidiol",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.addAQuestion": "Ychwanegu cwestiwn",
+  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.contactGovSuccessToAccessAddingAQuestion": "Nid yw'r gallu i ychwanegu neu olygu meysydd defnyddiwr ar lefel cyfnod wedi'i gynnwys yn eich trwydded gyfredol. Cysylltwch â'ch Rheolwr GovSuccess i ddysgu mwy amdano.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.customFieldNameOptions": "{customFieldName} opsiynau",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.fieldStatus": "Statws maes",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.Fields.noExtraQuestions": "Ni ofynnir cwestiynau ychwanegol.",
