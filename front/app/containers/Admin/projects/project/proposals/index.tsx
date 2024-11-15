@@ -10,6 +10,7 @@ import ProjectProposalsManager from 'components/admin/PostManager/ProjectProposa
 
 import { FormattedMessage } from 'utils/cl-intl';
 
+import AnalysisBanner from '../../components/AnalysisBanner';
 import NewIdeaButton from '../../components/NewIdeaButton';
 import messages from '../messages';
 
@@ -33,6 +34,7 @@ const AdminProjectProposals = () => {
 
   return (
     <>
+      <AnalysisBanner phaseId={phaseId} />
       <Box mb="30px">
         <Box
           display="flex"

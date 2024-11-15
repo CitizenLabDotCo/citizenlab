@@ -1,12 +1,9 @@
 export default {
-  analysisForSurveyCreated: {
-    name: 'Analysis for survey created',
-  },
   analysisForSurveyDeleted: {
     name: 'Analysis for survey deleted',
   },
-  analysisForIdeationCreated: {
-    name: 'Analysis for ideation created',
+  analysisCreated: {
+    name: 'Analysis created',
   },
   manualTagCreated: {
     name: 'Manual tag created',

@@ -21,6 +21,7 @@ import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisIn
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { useIntl } from 'utils/cl-intl';
+import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 
 import messages from '../messages';
 
@@ -77,6 +78,8 @@ const Step1 = ({
     analysisId,
     queryParams: filters,
   });
+  const method =
+    analysis && getMethodConfig(analysis.data.attributes.participation_method);
   const allInputsCount = allInputs?.pages[0].meta.filtered_count;
   const filteredInputsCount = filteredInputs?.pages[0].meta.filtered_count;
   const { formatMessage } = useIntl();
@@ -171,7 +174,7 @@ const Step1 = ({
         >
           {formatMessage(messages.classificationByExampleDescription)}
         </AutoTagOption>
-        {analysis?.data.attributes.participation_method === 'ideation' && (
+        {method?.supportsTopicsCustomField && (
           <AutoTagOption
             tagType="platform_topic"
             title={formatMessage(messages.platformTagsTitle)}
@@ -191,7 +194,7 @@ const Step1 = ({
         >
           {formatMessage(messages.sentimentTagDescription)}
         </AutoTagOption>
-        {analysis?.data.attributes.participation_method === 'ideation' && (
+        {method?.supportsReactions && (
           <AutoTagOption
             tagType="controversial"
             title={formatMessage(messages.controversialTagTitle)}
