@@ -12,6 +12,7 @@ import {
 import { Action } from 'api/permissions/types';
 import { IPermissionsCustomFieldData } from 'api/permissions_custom_fields/types';
 import useDeletePermissionsCustomField from 'api/permissions_custom_fields/useDeletePermissionsCustomField';
+import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
@@ -33,10 +34,15 @@ const CustomField = ({ field, phaseId, action }: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const isPermissionsCustomFieldsAllowed = useFeatureFlag({
-    name: 'permissions_custom_fields',
-    onlyCheckAllowed: true,
-  });
+  const { data: permissions } = usePhasePermissions({ phaseId });
+  const globalCustomFieldsSetting =
+    permissions?.data[0].attributes.global_custom_fields;
+  // We check if globalCustomFieldsSetting is false to allow users who edited the before the feature flag was enabled to still see the custom fields
+  const isPermissionsCustomFieldsAllowed =
+    useFeatureFlag({
+      name: 'permissions_custom_fields',
+      onlyCheckAllowed: true,
+    }) || globalCustomFieldsSetting === false;
 
   const { mutate: deletePermissionsCustomField } =
     useDeletePermissionsCustomField({
