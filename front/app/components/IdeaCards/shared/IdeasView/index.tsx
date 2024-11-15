@@ -54,9 +54,7 @@ const IdeasView = ({
 
   return (
     <>
-      {/* TODO: Fix this the next time the file is edited. */}
-      {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-      {view === 'card' && list && (
+      {view === 'card' && (
         <IdeasList
           ariaLabelledBy={hasMoreThanOneView ? 'view-tab-1' : undefined}
           id={'view-panel-1'}
@@ -66,7 +64,6 @@ const IdeasView = ({
           hasIdeas={list.length > 0}
           loadingMore={loadingMore}
           list={list}
-          tabIndex={0}
           hideImage={hideImage}
           hideImagePlaceholder={hideImagePlaceholder}
           hideIdeaStatus={hideIdeaStatus}

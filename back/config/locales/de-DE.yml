@@ -266,6 +266,7 @@ de:
       first_name: 'Vorname(n)'
       image_url: 'Bild-URL'
       input_id: 'ID'
+      manual_votes: 'Analoge Stimmen'
       input_url: 'URL'
       last_name: 'Familienname'
       latitude: 'Breitengrad'

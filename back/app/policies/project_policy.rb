@@ -64,6 +64,10 @@ class ProjectPolicy < ApplicationPolicy
     active_moderator?
   end
 
+  def index_finished_or_archived?
+    true
+  end
+
   def index_projects_for_followed_item?
     true
   end
@@ -131,7 +135,8 @@ class ProjectPolicy < ApplicationPolicy
         voting_term_singular_multiloc: CL2_SUPPORTED_LOCALES,
         voting_term_plural_multiloc: CL2_SUPPORTED_LOCALES,
         area_ids: [],
-        topic_ids: []
+        topic_ids: [],
+        header_bg_alt_text_multiloc: CL2_SUPPORTED_LOCALES
       }
     ]
 

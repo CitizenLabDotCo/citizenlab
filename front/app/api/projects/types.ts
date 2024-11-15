@@ -73,6 +73,7 @@ export interface IProjectAttributes {
   created_at: string;
   updated_at: string;
   header_bg: ProjectHeaderBgImageSizes;
+  header_bg_alt_text_multiloc: Multiloc;
   comments_count: number;
   avatars_count: number;
   followers_count: number;

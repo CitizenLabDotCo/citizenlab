@@ -86,7 +86,7 @@ const Overlay = styled.div`
 
     ${ModalContainer} {
       opacity: 0;
-      transform: translateX(940px);
+      transform: translateX(400px);
     }
 
     &.modal-enter-active {

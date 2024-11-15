@@ -92,6 +92,7 @@ export const themeColors = {
   green700: '#024D2B',
   green500: '#04884C', // formerly clGreen
   green400: '#32B67A',
+  green300: '#62C462',
   green100: '#e4f7ef', // formerly clGreenSuccessBackground
 
   /**

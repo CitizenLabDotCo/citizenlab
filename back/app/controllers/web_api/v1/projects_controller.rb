@@ -53,6 +53,25 @@ class WebApi::V1::ProjectsController < ApplicationController
     )
   end
 
+  def index_finished_or_archived
+    projects = policy_scope(Project)
+    projects = ProjectsFinderService.new(projects, current_user, params).finished_or_archived
+
+    @projects = paginate projects
+    @projects = @projects.preload(:project_images, :phases)
+
+    authorize @projects, :index_finished_or_archived?
+
+    render json: linked_json(
+      @projects,
+      WebApi::V1::ProjectMiniSerializer,
+      params: jsonapi_serializer_params({
+        user_requirements_service: Permissions::UserRequirementsService.new(check_groups_and_verification: false)
+      }),
+      include: %i[project_images current_phase]
+    )
+  end
+
   # For use with 'For you' homepage widget.
   # Returns all published projects that are visible to user
   # AND (are followed by user OR relate to an idea, area or topic followed by user),
