@@ -217,7 +217,7 @@ cy:
     gender:
       male: Gwryw
       female: Benyw
-      unspecified: Arall
+      unspecified: Amhenodol
     domicile:
       outside: Rhywle arall
     education:
