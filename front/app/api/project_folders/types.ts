@@ -20,6 +20,7 @@ export interface INewProjectFolderDiff {
   description_multiloc: Multiloc;
   description_preview_multiloc: Multiloc;
   header_bg?: string | null;
+  header_bg_alt_text_multiloc?: Multiloc;
   admin_publication_attributes: {
     publication_status: PublicationStatus;
   };
@@ -43,6 +44,7 @@ export interface IProjectFolderData {
     description_preview_multiloc: Multiloc;
     slug: string;
     header_bg?: ImageSizes;
+    header_bg_alt_text_multiloc: Multiloc;
     publication_status: PublicationStatus;
     followers_count: number;
   };
@@ -69,6 +71,7 @@ export interface IUpdatedProjectFolder {
   description_multiloc?: Multiloc;
   description_preview_multiloc?: Multiloc;
   header_bg?: string | null;
+  header_bg_alt_text_multiloc?: Multiloc;
   admin_publication_attributes?: {
     publication_status?: PublicationStatus;
   };

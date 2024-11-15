@@ -4,27 +4,28 @@ import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import projectFolderImagesKeys from './keys';
-import { IProjectFolderImage, addProjectFolderImageObject } from './types';
+import { IProjectFolderImage, UpdateProjectFolderImageObject } from './types';
 
-const addProjectFolderImage = async ({
+const updateProjectFolderImage = async ({
   folderId,
   base64,
   alt_text_multiloc,
-}: addProjectFolderImageObject) =>
+  imageId,
+}: UpdateProjectFolderImageObject) =>
   fetcher<IProjectFolderImage>({
-    path: `/project_folders/${folderId}/images`,
-    action: 'post',
+    path: `/project_folders/${folderId}/images/${imageId}`,
+    action: 'patch',
     body: { image: { image: base64, alt_text_multiloc } },
   });
 
-const useAddProjectFolderImage = () => {
+const useUpdateProjectFolderImage = () => {
   const queryClient = useQueryClient();
   return useMutation<
     IProjectFolderImage,
     CLErrors,
-    addProjectFolderImageObject
+    UpdateProjectFolderImageObject
   >({
-    mutationFn: addProjectFolderImage,
+    mutationFn: updateProjectFolderImage,
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({
         queryKey: projectFolderImagesKeys.list({
@@ -35,4 +36,4 @@ const useAddProjectFolderImage = () => {
   });
 };
 
-export default useAddProjectFolderImage;
+export default useUpdateProjectFolderImage;
