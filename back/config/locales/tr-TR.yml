@@ -266,6 +266,7 @@ tr:
       first_name: 'İlk isim(ler)'
       image_url: 'Resim URL''si'
       input_id: 'KIMLIK'
+      manual_votes: 'Çevrimdışı oylar'
       input_url: 'URL'
       last_name: 'Soyadı'
       latitude: 'Enlem'
