@@ -5,11 +5,11 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
 import miniProjectsKeys from './keys';
-import { MiniProjects, MiniProjectsKeys, QueryParameters } from './types';
+import { MiniProjects, MiniProjectsKeys, Parameters } from './types';
 
-const fetchProjectsMini = (queryParameters: QueryParameters) =>
+const fetchProjectsMini = ({ endpoint, ...queryParameters }: Parameters) =>
   fetcher<MiniProjects>({
-    path: `/projects/${queryParameters.endpoint}`,
+    path: `/projects/${endpoint}`,
     action: 'get',
     queryParams: {
       'page[size]': queryParameters['page[size]'] ?? 6,
@@ -18,7 +18,7 @@ const fetchProjectsMini = (queryParameters: QueryParameters) =>
   });
 
 const useProjectsMini = (
-  queryParams: QueryParameters,
+  queryParams: Parameters,
   { enabled = true }: { enabled: boolean } = { enabled: true }
 ) => {
   return useInfiniteQuery<
