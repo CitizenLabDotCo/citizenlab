@@ -19,6 +19,7 @@ export const Default: Story = {
     isOpenByDefault: false,
     children: <Box>Some content in the collapsible container</Box>,
     title: 'Title of a collapsible container',
+    titleAs: 'h3',
     titleVariant: 'h3',
     titleFontSize: 's',
     titleFontWeight: 'bold',

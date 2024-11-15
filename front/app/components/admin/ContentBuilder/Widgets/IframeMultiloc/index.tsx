@@ -166,4 +166,6 @@ Iframe.craft = {
   },
 };
 
+export const iframeTitle = messages.url;
+
 export default Iframe;

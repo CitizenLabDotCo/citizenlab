@@ -50,9 +50,16 @@ export interface Props {
   postId: string | null;
   onSwitchPreviewMode: () => void;
   mode: PreviewMode;
+  selectedPhaseId?: string;
 }
 
-const PostPreview = ({ onClose, postId, onSwitchPreviewMode, mode }: Props) => {
+const PostPreview = ({
+  onClose,
+  postId,
+  onSwitchPreviewMode,
+  mode,
+  selectedPhaseId,
+}: Props) => {
   const [opened, setOpened] = useState(false);
 
   useEffect(() => {
@@ -73,6 +80,7 @@ const PostPreview = ({ onClose, postId, onSwitchPreviewMode, mode }: Props) => {
         ideaId={postId}
         onSwitchPreviewMode={onSwitchPreviewMode}
         mode={mode}
+        selectedPhaseId={selectedPhaseId}
       />
     </SideModal>
   );

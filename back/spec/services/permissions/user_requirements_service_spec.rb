@@ -201,6 +201,42 @@ describe Permissions::UserRequirementsService do
             group_membership: false
           })
         end
+
+        context 'when the action is following' do
+          before { permission.update!(permission_scope: nil, action: 'following') }
+
+          it 'does not permit a visitor when password login is enabled' do
+            requirements = service.requirements(permission, nil)
+            expect(service.permitted?(requirements)).to be false
+            expect(requirements).to eq({
+              authentication: {
+                permitted_by: 'everyone_confirmed_email',
+                missing_user_attributes: %i[email confirmation]
+              },
+              verification: false,
+              custom_fields: { 'birthyear' => 'optional' },
+              onboarding: false,
+              group_membership: false
+            })
+          end
+
+          it 'does not permit a visitor and returns the requirements for "users" instead when password login is NOT enabled' do
+            SettingsService.new.deactivate_feature! 'password_login'
+
+            requirements = service.requirements(permission, nil)
+            expect(service.permitted?(requirements)).to be false
+            expect(requirements).to eq({
+              authentication: {
+                permitted_by: 'users',
+                missing_user_attributes: %i[first_name last_name email confirmation password]
+              },
+              verification: false,
+              custom_fields: { 'birthyear' => 'optional' },
+              onboarding: true,
+              group_membership: false
+            })
+          end
+        end
       end
 
       context 'when permitted_by is set to users' do

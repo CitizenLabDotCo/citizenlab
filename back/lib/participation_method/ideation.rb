@@ -6,6 +6,10 @@ module ParticipationMethod
       'ideation'
     end
 
+    def additional_export_columns
+      %w[manual_votes]
+    end
+
     def allowed_extra_field_input_types
       %w[section number linear_scale text multiline_text select multiselect multiselect_image]
     end
@@ -353,6 +357,10 @@ module ParticipationMethod
     end
 
     def supports_exports?
+      true
+    end
+
+    def supports_private_attributes_in_export?
       true
     end
 

@@ -12,8 +12,8 @@ module VotingMethod
       end
     end
 
-    def export_columns
-      %w[votes]
+    def additional_export_columns
+      super + %w[votes]
     end
   end
 end

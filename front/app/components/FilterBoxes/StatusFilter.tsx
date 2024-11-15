@@ -1,11 +1,12 @@
 import React, { memo, useCallback, MouseEvent } from 'react';
 
 import {
-  colors,
+  fontSizes,
   isRtl,
   Icon,
   Box,
   Text,
+  colors,
 } from '@citizenlab/cl2-component-library';
 import { capitalize, get } from 'lodash-es';
 import styled from 'styled-components';
@@ -17,14 +18,22 @@ import T from 'components/T';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
+import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 import InputFilterCollapsible from './InputFilterCollapsible';
 import messages from './messages';
 
-const Count = styled(Text)`
-  color: ${colors.textSecondary};
-  margin: 0px;
+const Count = styled.span`
+  color: ${({ theme }) => theme.colors.textSecondary};
+  font-size: ${fontSizes.base}px;
+  font-weight: 300;
+  transition: all 80ms ease-out;
+  margin-left: auto;
+
+  ${isRtl`
+    margin-left: 0;
+    margin-right: auto;
+  `}
 `;
 
 const Status = styled.button`
@@ -43,7 +52,7 @@ const Status = styled.button`
   `}
 
   &:not(.selected):hover {
-    background: ${colors.grey100};
+    background: ${({ theme }) => theme.colors.grey200};
   }
 
   &.selected {
@@ -85,7 +94,7 @@ const StatusFilter = memo<Props>(
       [selectedStatusId, onChange]
     );
 
-    if (!isNilOrError(statuses) && statuses.length > 0) {
+    if (statuses.length > 0) {
       const allPostsCount = filterCounts?.total || 0;
       const allFilterSelected = !selectedStatusId;
       return (
@@ -93,41 +102,38 @@ const StatusFilter = memo<Props>(
           title={formatMessage(messages.statusTitle)}
           className={`e2e-statuses-filters ${className}`}
         >
-          <Box>
-            <AllStatus
-              data-id={null}
-              onMouseDown={removeFocusAfterMouseClick}
-              onClick={handleOnClick}
-              className={allFilterSelected ? 'selected' : ''}
-            >
-              <Box display="flex" gap="8px">
-                <Box my="auto" w="14px" h="14px" bgColor={colors.grey500} />
-                <Text
-                  m="0px"
-                  color={allFilterSelected ? 'white' : 'textPrimary'}
-                >
-                  <FormattedMessage {...messages.all} />
-                </Text>
-              </Box>
-              <Count aria-hidden>{allPostsCount}</Count>
-              <ScreenReaderOnly>
-                {/* Pronounce number of ideas of All status when focus/hover it */}
-                <FormattedMessage
-                  {...messages.a11y_numberOfInputs}
-                  values={{ inputsCount: allPostsCount }}
-                />
-              </ScreenReaderOnly>
-              <ScreenReaderOnly aria-live="polite">
-                {/*
+          <AllStatus
+            data-id={null}
+            onMouseDown={removeFocusAfterMouseClick}
+            onClick={handleOnClick}
+            className={allFilterSelected ? 'selected' : ''}
+          >
+            <Box display="flex" gap="8px">
+              <Box my="auto" w="14px" h="14px" bgColor={colors.grey500} />
+              <Text m="0px" color={allFilterSelected ? 'white' : 'textPrimary'}>
+                <FormattedMessage {...messages.all} />
+              </Text>
+            </Box>
+            <Count aria-hidden>{allPostsCount}</Count>
+            <ScreenReaderOnly>
+              {/* Pronounce number of ideas of All status when focus/hover it */}
+              <FormattedMessage
+                {...messages.a11y_numberOfInputs}
+                values={{ inputsCount: allPostsCount }}
+              />
+            </ScreenReaderOnly>
+            <ScreenReaderOnly aria-live="polite">
+              {/*
               When we focus a selected status filter and hit enter again, this filter gets removed and
               the 'all' status filter is selected again. Screen readers don't pick this up, so hence this helper text
             */}
-                {allFilterSelected && (
-                  <FormattedMessage {...messages.a11y_allFilterSelected} />
-                )}
-              </ScreenReaderOnly>
-            </AllStatus>
+              {allFilterSelected && (
+                <FormattedMessage {...messages.a11y_allFilterSelected} />
+              )}
+            </ScreenReaderOnly>
+          </AllStatus>
 
+          <>
             {statuses.map((status) => {
               const filterPostCount = get(
                 filterCounts,
@@ -198,7 +204,7 @@ const StatusFilter = memo<Props>(
                 </Status>
               );
             })}
-          </Box>
+          </>
         </InputFilterCollapsible>
       );
     }

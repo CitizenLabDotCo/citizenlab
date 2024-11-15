@@ -1,6 +1,11 @@
 import React from 'react';
 
-import { colors, fontSizes, media } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  colors,
+  fontSizes,
+  media,
+} from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import { IQueryParameters } from 'api/ideas/types';
@@ -14,7 +19,7 @@ import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 import messages from '../messages';
 import { Sort } from '../shared/Filters/SortFilterDropdown';
-import SortingBox from '../shared/Filters/SortingBox/SortingBox';
+import SortingBox from '../shared/Filters/SortingBox';
 import StatusFilterBox from '../shared/Filters/StatusFilterBox';
 import TopicFilterBox from '../shared/Filters/TopicFilterBox';
 
@@ -56,11 +61,11 @@ const DesktopSearchInput = styled(SearchInput)`
 `;
 
 const StyledIdeasStatusFilter = styled(StatusFilterBox)`
-  margin-bottom: 20px;
+  margin-bottom: 0px;
 `;
 
 const StyledIdeasTopicsFilter = styled(TopicFilterBox)`
-  margin-bottom: 0px;
+  margin-bottom: 20px;
 `;
 
 export interface Props {
@@ -117,15 +122,17 @@ const FiltersSideBar = ({
         debounce={1500}
         a11y_numberOfSearchResults={numberOfSearchResults}
       />
-      <SortingBox handleSortOnChange={handleSortOnChange} phaseId={phaseId} />
+      <Box mb="20px">
+        <SortingBox handleSortOnChange={handleSortOnChange} phaseId={phaseId} />
+      </Box>
+      <StyledIdeasTopicsFilter
+        selectedTopicIds={selectedIdeaFilters.topics}
+        onChange={onChangeTopics}
+      />
       <StyledIdeasStatusFilter
         selectedStatusId={selectedIdeaFilters.idea_status}
         selectedIdeaFilters={selectedIdeaFilters}
         onChange={onChangeStatus}
-      />
-      <StyledIdeasTopicsFilter
-        selectedTopicIds={selectedIdeaFilters.topics}
-        onChange={onChangeTopics}
       />
     </FiltersSidebarContainer>
   );

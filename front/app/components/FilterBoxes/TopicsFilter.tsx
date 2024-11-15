@@ -17,10 +17,6 @@ import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import InputFilterCollapsible from './InputFilterCollapsible';
 import messages from './messages';
 
-const Topics = styled.div`
-  margin-top: 16px;
-`;
-
 const Topic = styled.button`
   color: ${colors.textSecondary};
   font-size: ${fontSizes.s}px;
@@ -108,33 +104,30 @@ const TopicsFilter = memo<Props & InjectedLocalized>(
           title={formatMessage(messages.topicsTitle)}
           className={className}
         >
-          <Box>
-            <Topics className="e2e-topics-filters">
-              {topics
-                .filter((topic) => !isError(topic))
-                .map((topic: ITopicData) => (
-                  <Topic
-                    key={topic.id}
-                    data-id={topic.id}
-                    onMouseDown={removeFocusAfterMouseClick}
-                    onClick={handleOnClick}
-                    className={`e2e-topic ${
-                      includes(selectedTopicIds, topic.id) ? 'selected' : ''
-                    }`}
-                  >
-                    <T value={topic.attributes.title_multiloc} />
-                  </Topic>
-                ))}
-            </Topics>
-
-            <ScreenReaderOnly aria-live="polite">
-              {/* Pronounces numbers of selected topics + selected topic names */}
-              <FormattedMessage
-                {...messages.a11y_selectedTopicFilters}
-                values={{ numberOfSelectedTopics, selectedTopicNames }}
-              />
-            </ScreenReaderOnly>
+          <Box className="e2e-topics-filters">
+            {topics
+              .filter((topic) => !isError(topic))
+              .map((topic: ITopicData) => (
+                <Topic
+                  key={topic.id}
+                  data-id={topic.id}
+                  onMouseDown={removeFocusAfterMouseClick}
+                  onClick={handleOnClick}
+                  className={`e2e-topic ${
+                    includes(selectedTopicIds, topic.id) ? 'selected' : ''
+                  }`}
+                >
+                  <T value={topic.attributes.title_multiloc} />
+                </Topic>
+              ))}
           </Box>
+          <ScreenReaderOnly aria-live="polite">
+            {/* Pronounces numbers of selected topics + selected topic names */}
+            <FormattedMessage
+              {...messages.a11y_selectedTopicFilters}
+              values={{ numberOfSelectedTopics, selectedTopicNames }}
+            />
+          </ScreenReaderOnly>
         </InputFilterCollapsible>
       );
     }
