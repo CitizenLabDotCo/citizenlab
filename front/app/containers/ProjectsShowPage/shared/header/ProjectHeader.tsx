@@ -7,6 +7,7 @@ import useAuthUser from 'api/me/useAuthUser';
 import useProjectById from 'api/projects/useProjectById';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useLocalize from 'hooks/useLocalize';
 
 import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
 import messages from 'containers/ProjectsShowPage/messages';
@@ -68,6 +69,7 @@ interface Props {
 
 const ProjectHeader = memo<Props>(({ projectId, className }) => {
   const { formatMessage } = useIntl();
+  const localize = useLocalize();
   const projectDescriptionBuilderEnabled = useFeatureFlag({
     name: 'project_description_builder',
   });
@@ -77,10 +79,10 @@ const ProjectHeader = memo<Props>(({ projectId, className }) => {
   const projectFolderId = project?.data.attributes.folder_id;
 
   if (project) {
-    const projectHeaderImageLargeUrl =
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      project.data.attributes?.header_bg?.large;
+    const projectHeaderImageLargeUrl = project.data.attributes.header_bg.large;
+    const projectHeaderImageAltText = localize(
+      project.data.attributes.header_bg_alt_text_multiloc
+    );
     const userCanEditProject =
       !isNilOrError(authUser) && canModerateProject(project.data, authUser);
 
@@ -142,7 +144,7 @@ const ProjectHeader = memo<Props>(({ projectId, className }) => {
                 fadeIn={false}
                 isLazy={false}
                 placeholderBg="transparent"
-                alt=""
+                alt={projectHeaderImageAltText}
               />
             </HeaderImageContainer>
           )}
