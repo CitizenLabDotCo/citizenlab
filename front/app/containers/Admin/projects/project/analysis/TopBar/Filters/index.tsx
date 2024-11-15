@@ -14,6 +14,7 @@ import useAnalysis from 'api/analyses/useAnalysis';
 import CloseIconButton from 'components/UI/CloseIconButton';
 
 import { useIntl } from 'utils/cl-intl';
+import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 
 import messages from '../messages';
 
@@ -21,7 +22,6 @@ import AuthorFilters from './AuthorFilters';
 import EmptyCustomFieldsFilter from './EmptyCustomFieldsFilter';
 import EngagementFilter from './EngagementFilter';
 import TimeFilter from './TimeFilter';
-import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 
 interface FilterProps {
   onClose: () => void;
