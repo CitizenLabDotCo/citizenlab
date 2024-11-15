@@ -266,6 +266,7 @@ pt:
       first_name: 'Nome(s) próprio(s)'
       image_url: 'imagem URL'
       input_id: 'ID'
+      manual_votes: 'Votações off-line'
       input_url: 'URL'
       last_name: 'Sobrenome'
       latitude: 'Latitude'
