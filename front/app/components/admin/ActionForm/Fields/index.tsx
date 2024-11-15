@@ -11,6 +11,7 @@ import {
 import { Action } from 'api/permissions/types';
 import useAddPermissionsCustomField from 'api/permissions_custom_fields/useAddPermissionsCustomField';
 import usePermissionsCustomFields from 'api/permissions_custom_fields/usePermissionsCustomFields';
+import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -33,10 +34,15 @@ const Fields = ({ phaseId, action, showAddQuestion }: Props) => {
     phaseId,
     action,
   });
-  const isPermissionsCustomFieldsAllowed = useFeatureFlag({
-    name: 'permissions_custom_fields',
-    onlyCheckAllowed: true,
-  });
+  const { data: permissions } = usePhasePermissions({ phaseId });
+  const globalCustomFieldsSetting =
+    permissions?.data[0].attributes.global_custom_fields;
+  // We check if globalCustomFieldsSetting is false to allow users who edited the fields before the feature flag was enabled to still see the custom fields
+  const isPermissionsCustomFieldsAllowed =
+    useFeatureFlag({
+      name: 'permissions_custom_fields',
+      onlyCheckAllowed: true,
+    }) || globalCustomFieldsSetting === false;
   const { mutate: addPermissionsCustomField, isLoading } =
     useAddPermissionsCustomField({
       phaseId,
