@@ -78,6 +78,7 @@ export interface QueryParameters {
   'page[size]': number;
   project_publication_status: 'published';
   publication_status: 'published';
+  phase?: string;
 
   // filters
   sort: Sort;
