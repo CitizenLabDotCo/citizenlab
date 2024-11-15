@@ -63,31 +63,6 @@ const AvatarImageBubble = styled.img<{
   object-position: center;
 `;
 
-const UserCountBubble = styled.div<{
-  overlap: number;
-  index: number;
-  size: number;
-}>`
-  width: ${(props) => props.size}px;
-  height: ${(props) => props.size}px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding-bottom: 0;
-  border-radius: 50%;
-  border: solid 2px ${colors.white};
-  background: ${colors.textSecondary};
-  z-index: ${(props) => props.index + 1};
-  left: ${(props) => props.index * (props.size - props.overlap)}px;
-`;
-
-const UserCountBubbleInner = styled.div<{ size: number; digits: number }>`
-  color: #fff;
-  font-size: ${({ size, digits }) => getFontSize(size, digits)}px;
-  font-weight: 500;
-  display: flex;
-`;
-
 interface Props {
   limit?: number;
   context?: {
@@ -235,28 +210,45 @@ export const AvatarBubbles = ({
                 </Text>
               </Box>
             ) : (
-              <>
-                <UserCountBubble
-                  index={avatarsWithImage.length}
-                  overlap={overlap}
-                  size={bubbleSize}
+              <Box
+                w={`${bubbleSize}px`}
+                h={`${bubbleSize}px`}
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                pb="0px"
+                borderRadius="50%"
+                border={`solid 2px ${colors.white}`}
+                bg={colors.textSecondary}
+                zIndex={`${avatarsWithImage.length + 1}`}
+                left={`${avatarsWithImage.length * (bubbleSize - overlap)}px`}
+              >
+                <Box
+                  aria-hidden
+                  data-testid="userCountBubbleInner"
+                  display="flex"
                 >
-                  <UserCountBubbleInner
-                    size={bubbleSize}
-                    digits={remainingUsers.toString().length}
-                    aria-hidden
-                    data-testid="userCountBubbleInner"
+                  <Text
+                    fontSize="s"
+                    color="white"
+                    display="flex"
+                    style={{
+                      fontSize: getFontSize(
+                        bubbleSize,
+                        remainingUsers.toString().length
+                      ),
+                    }}
                   >
                     +{truncatedUserCount}
                     {letterAbbreviation}
-                  </UserCountBubbleInner>
-                  <ScreenReaderOnly>
-                    {formatMessage(messages.numberOfUsers, {
-                      numberOfUsers: currentUserCount,
-                    })}
-                  </ScreenReaderOnly>
-                </UserCountBubble>
-              </>
+                  </Text>
+                </Box>
+                <ScreenReaderOnly>
+                  {formatMessage(messages.numberOfUsers, {
+                    numberOfUsers: currentUserCount,
+                  })}
+                </ScreenReaderOnly>
+              </Box>
             ))}
           <ScreenReaderOnly>
             {formatMessage(messages.numberOfParticipants1, {
