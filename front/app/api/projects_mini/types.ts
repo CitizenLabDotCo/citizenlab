@@ -8,7 +8,7 @@ import miniProjectsKeys from './keys';
 
 type Endpoint = 'with_active_participatory_phase' | 'for_followed_item';
 
-export type QueryParameters = {
+export type Parameters = {
   endpoint: Endpoint;
   'page[number]'?: number;
   'page[size]'?: number;
