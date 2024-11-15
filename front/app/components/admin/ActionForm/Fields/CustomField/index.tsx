@@ -37,7 +37,7 @@ const CustomField = ({ field, phaseId, action }: Props) => {
   const { data: permissions } = usePhasePermissions({ phaseId });
   const globalCustomFieldsSetting =
     permissions?.data[0].attributes.global_custom_fields;
-  // We check if globalCustomFieldsSetting is false to allow users who edited the before the feature flag was enabled to still see the custom fields
+  // We check if globalCustomFieldsSetting is false to allow users who edited the fields before the feature flag was enforced to still access the functionality
   const isPermissionsCustomFieldsAllowed =
     useFeatureFlag({
       name: 'permissions_custom_fields',
