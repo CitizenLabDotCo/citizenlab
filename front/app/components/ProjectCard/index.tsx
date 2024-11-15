@@ -403,9 +403,10 @@ const ProjectCard = memo<InputProps>(
     if (project) {
       const imageUrl = !projectImage
         ? null
-        : // TODO: Fix this the next time the file is edited.
-          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-          projectImage.data.attributes.versions?.large;
+        : projectImage.data.attributes.versions.large;
+      const projectImageAltText = localize(
+        projectImage?.data.attributes.alt_text_multiloc
+      );
 
       const projectUrl: RouteType = getProjectUrl(project.data.attributes.slug);
       const isFinished = project.data.attributes.timeline_active === 'past';
@@ -550,7 +551,11 @@ const ProjectCard = memo<InputProps>(
 
           <ProjectImageContainer className={size}>
             {imageUrl ? (
-              <ProjectImage src={imageUrl} alt="" cover={true} />
+              <ProjectImage
+                src={imageUrl}
+                alt={projectImageAltText}
+                cover={true}
+              />
             ) : (
               <ImagePlaceholder />
             )}

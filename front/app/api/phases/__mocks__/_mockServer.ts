@@ -31,6 +31,7 @@ export const phasesData: IPhaseData[] = [
       votes_count: 0,
       baskets_count: 0,
       report_public: false,
+      total_votes_amount: 0,
     },
     relationships: {
       permissions: {
@@ -75,6 +76,7 @@ export const phasesData: IPhaseData[] = [
       votes_count: 0,
       baskets_count: 0,
       report_public: false,
+      total_votes_amount: 0,
     },
     relationships: {
       permissions: {
@@ -115,6 +117,7 @@ export const phasesData: IPhaseData[] = [
       votes_count: 0,
       baskets_count: 0,
       report_public: false,
+      total_votes_amount: 0,
     },
     relationships: {
       permissions: {
@@ -160,6 +163,7 @@ export const mockPhaseInformationData: IPhaseData = {
     votes_count: 0,
     baskets_count: 0,
     report_public: false,
+    total_votes_amount: 0,
   },
   relationships: {
     permissions: {
@@ -204,6 +208,7 @@ export const mockPhaseIdeationData: IPhaseData = {
     votes_count: 0,
     baskets_count: 0,
     report_public: false,
+    total_votes_amount: 0,
   },
   relationships: {
     permissions: {
@@ -250,6 +255,7 @@ export const mockPhaseSurveyTypeformData: IPhaseData = {
     votes_count: 0,
     baskets_count: 0,
     report_public: false,
+    total_votes_amount: 0,
   },
   relationships: {
     permissions: {
@@ -296,6 +302,7 @@ export const mockPhaseSurveyGoogleFormData: IPhaseData = {
     votes_count: 0,
     baskets_count: 0,
     report_public: false,
+    total_votes_amount: 0,
   },
   relationships: {
     permissions: {
@@ -362,6 +369,7 @@ const votingPhase: IPhaseData = {
     voting_max_votes_per_idea: 1,
     baskets_count: 0,
     votes_count: 100,
+    total_votes_amount: 100,
     voting_term_singular_multiloc: {
       en: 'vote',
       'nl-BE': 'stem',

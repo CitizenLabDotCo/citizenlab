@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useState } from 'react';
+import React, { ReactNode, useState } from 'react';
 
 import { CSSTransition } from 'react-transition-group';
 import styled from 'styled-components';
@@ -116,16 +116,13 @@ const Accordion = ({
   const [isExpanded, setIsExpanded] = useState(isOpenByDefault);
   const uuid = useInstanceId();
 
-  useEffect(() => {
-    setIsExpanded(isOpenByDefault);
-  }, [isOpenByDefault]);
-
   const handleChange = () => {
     setIsExpanded(!isExpanded);
     onChange && onChange(!isExpanded);
   };
 
   return (
+    // In the future, ideally use the CollapsibleContainer component here insetad.
     <ListItem className={className} {...rest}>
       <Box display="flex" alignItems="center">
         {prefix}

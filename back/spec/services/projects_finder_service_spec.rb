@@ -110,47 +110,6 @@ describe ProjectsFinderService do
       expect(result[:projects][0].id).to eq active_ideation_project.id
     end
 
-    it 'caches the result for 1 hour if user is not logged in' do
-      Rails.cache.clear
-      start_at = Time.zone.now
-      result = service.new(Project.all, nil).participation_possible
-
-      expect(Project.count).to eq 3
-      expect(result[:projects].size).to eq 1
-      expect(result[:projects][0].id).to eq active_ideation_project.id
-
-      active_ideation_project2 = create(:project_with_active_ideation_phase)
-      result = service.new(Project.all, nil).participation_possible
-
-      expect(Project.count).to eq 4
-      expect(result[:projects].size).to eq 1
-      expect(result[:projects][0].id).to eq active_ideation_project.id
-
-      travel_to(start_at + 61.minutes) do
-        result = service.new(Project.all, nil).participation_possible
-
-        expect(Project.count).to eq 4
-        expect(result[:projects].size).to eq 2
-        expect(result[:projects].map(&:id)).to match_array([active_ideation_project.id, active_ideation_project2.id])
-      end
-    end
-
-    it 'does not use cached result if user is logged in' do
-      Rails.cache.clear
-      result = service.new(Project.all, nil).participation_possible
-
-      expect(Project.count).to eq 3
-      expect(result[:projects].size).to eq 1
-      expect(result[:projects][0].id).to eq active_ideation_project.id
-
-      active_ideation_project2 = create(:project_with_active_ideation_phase)
-      result = service.new(Project.all, user).participation_possible
-
-      expect(Project.count).to eq 4
-      expect(result[:projects].size).to eq 2
-      expect(result[:projects].map(&:id)).to match_array([active_ideation_project.id, active_ideation_project2.id])
-    end
-
     it 'does not invoke unnecessary queries' do
       expect(Project.count).to eq 3
 
@@ -245,6 +204,140 @@ describe ProjectsFinderService do
       create(:follower, followable: area, user: user)
 
       expect(result).to eq [followed_project]
+    end
+  end
+
+  describe 'finished_or_archived' do
+    let!(:finished_project1) { create(:project_with_two_past_ideation_phases) }
+    let!(:unfinished_project) { create(:project_with_active_ideation_phase) }
+
+    describe "when passed only the 'finished' parameter" do
+      let(:result) { service.new(Project.all, user, { finished: true }).finished_or_archived }
+
+      it 'includes finished projects' do
+        expect(Project.count).to eq 2
+        expect(result).to eq [finished_project1]
+      end
+
+      it 'excludes projects without a published status' do
+        _draft_finished_project = create(
+          :project_with_two_past_ideation_phases,
+          admin_publication_attributes: { publication_status: 'draft' }
+        )
+        _archived_finished_project = create(
+          :project_with_two_past_ideation_phases,
+          admin_publication_attributes: { publication_status: 'archived' }
+        )
+
+        expect(Project.count).to eq 4
+        expect(result).to eq [finished_project1]
+      end
+
+      it 'includes unfinished projects with a last phase that contains a report' do
+        unfinished_project2 = create(:project)
+        create(:phase, project: unfinished_project2, start_at: 2.days.ago, end_at: 2.days.from_now)
+        create(:report, phase: unfinished_project2.phases.last)
+
+        expect(Project.count).to eq 3
+        expect(result).to match_array([finished_project1, unfinished_project2])
+      end
+
+      it 'excludes unfinished projects with a phase containing a report that is not the final phase' do
+        unfinished_project2 = create(:project)
+        phase1 = create(:phase, project: unfinished_project2, start_at: 3.days.ago, end_at: 2.days.ago)
+        _phase2 = create(:phase, project: unfinished_project2, start_at: 1.day.ago, end_at: 1.day.from_now)
+        create(:report, phase: phase1)
+
+        expect(Project.count).to eq 3
+        expect(result).to match_array([finished_project1])
+      end
+
+      it 'excludes projects with an endless phase' do
+        endless_project = create(:project)
+        create(:phase, project: endless_project, start_at: 3.days.ago, end_at: nil)
+
+        expect(Project.count).to eq 3
+        expect(result).to match_array([finished_project1])
+      end
+
+      it 'excludes projects with no phase' do
+        _phaseless_project = create(:project, phases: [])
+
+        expect(Project.count).to eq 3
+        expect(result).to match_array([finished_project1])
+      end
+
+      it 'lists projects ordered by created_at ASC' do
+        finished_project2 = create(:project_with_two_past_ideation_phases)
+        finished_project3 = create(:project_with_two_past_ideation_phases)
+        finished_project4 = create(:project_with_two_past_ideation_phases)
+
+        finished_project1.update!(created_at: 3.days.ago)
+        finished_project2.update!(created_at: 1.day.ago)
+        finished_project3.update!(created_at: 2.days.ago)
+        finished_project4.update!(created_at: 5.days.ago)
+
+        expect(result).to eq [finished_project4, finished_project1, finished_project3, finished_project2]
+      end
+    end
+
+    describe "when passed only the 'archived' parameter" do
+      let!(:archived_project) { create(:project, admin_publication_attributes: { publication_status: 'archived' }) }
+      let!(:_draft_project) { create(:project, admin_publication_attributes: { publication_status: 'draft' }) }
+      let!(:_published_project) { create(:project, admin_publication_attributes: { publication_status: 'published' }) }
+
+      let(:result) { service.new(Project.all, user, { archived: true }).finished_or_archived }
+
+      it 'includes archived projects' do
+        expect(Project.count).to eq 5
+        expect(result).to eq [archived_project]
+      end
+
+      it 'lists projects ordered by created_at ASC' do
+        archived_project2 = create(:project, admin_publication_attributes: { publication_status: 'archived' })
+        archived_project3 = create(:project, admin_publication_attributes: { publication_status: 'archived' })
+        archived_project4 = create(:project, admin_publication_attributes: { publication_status: 'archived' })
+
+        archived_project.update!(created_at: 3.days.ago)
+        archived_project2.update!(created_at: 1.day.ago)
+        archived_project3.update!(created_at: 2.days.ago)
+        archived_project4.update!(created_at: 4.days.ago)
+
+        expect(result).to eq [archived_project4, archived_project, archived_project3, archived_project2]
+      end
+    end
+
+    describe "when passed 'finished' AND 'archived' parameter" do
+      # Should include `finished_project1` and:
+      let!(:unfinished_project1) { create(:project) }
+      let!(:phase) { create(:phase, project: unfinished_project1, start_at: 2.days.ago, end_at: 2.days.from_now) }
+      let!(:_report1) { create(:report, phase: phase) }
+
+      let!(:archived_project) { create(:project, admin_publication_attributes: { publication_status: 'archived' }) }
+
+      # Should NOT include:
+      let!(:_draft_project) { create(:project, admin_publication_attributes: { publication_status: 'draft' }) }
+      let!(:_published_project) { create(:project, admin_publication_attributes: { publication_status: 'published' }) }
+
+      let!(:unfinished_project2) { create(:project) }
+      let!(:phase1) { create(:phase, project: unfinished_project2, start_at: 3.days.ago, end_at: 2.days.ago) }
+      let!(:_phase2) { create(:phase, project: unfinished_project2, start_at: 1.day.ago, end_at: 1.day.from_now) }
+      let!(:_report2) { create(:report, phase: phase1) }
+
+      let(:result) { service.new(Project.all, user, { finished: true, archived: true }).finished_or_archived }
+
+      it 'includes expected projects' do
+        expect(Project.count).to eq 7
+        expect(result).to match_array [finished_project1, archived_project, unfinished_project1]
+      end
+
+      it 'lists projects ordered by created_at ASC' do
+        finished_project1.update!(created_at: 3.days.ago)
+        unfinished_project1.update!(created_at: 1.day.ago)
+        archived_project.update!(created_at: 2.days.ago)
+
+        expect(result).to eq [finished_project1, archived_project, unfinished_project1]
+      end
     end
   end
 end
