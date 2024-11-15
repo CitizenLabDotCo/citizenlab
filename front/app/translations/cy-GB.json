@@ -616,7 +616,7 @@
   "app.components.form.controls.minimumCoordinates2": "Mae angen o leiaf {numPoints} pwyntiau map.",
   "app.components.form.controls.notPublic1": "*Bydd yr ateb hwn yn cael ei rannu â rheolwyr prosiect yn unig, ac nid â'r cyhoedd.",
   "app.components.form.controls.selectAsManyAsYouLike": "* Dewiswch gynifer ag y dymunwch",
-  "app.components.form.controls.selectBetween": "* Dewiswch rhwng opsiynau {minItems} a {maxItems}",
+  "app.components.form.controls.selectBetween": "* Dewiswch rhwng {minItems} a {maxItems} opsiynau",
   "app.components.form.controls.selectExactly2": "*Dewiswch yn union {selectExactly, plural, one {# opsiwn} other {# opsiwn}}",
   "app.components.form.controls.selectMany": "* Dewiswch gymaint ag y dymunwch",
   "app.components.form.controls.tapOnFullscreenMapToAdd4": "Tap ar y map i dynnu llun. Yna, llusgwch ar bwyntiau i'w symud.",
