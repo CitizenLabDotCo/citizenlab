@@ -4,6 +4,7 @@ import {
   Title,
   Box,
   Button,
+  Tooltip,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
 
@@ -11,7 +12,9 @@ import { Action } from 'api/permissions/types';
 import useAddPermissionsCustomField from 'api/permissions_custom_fields/useAddPermissionsCustomField';
 import usePermissionsCustomFields from 'api/permissions_custom_fields/usePermissionsCustomFields';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import FieldSelectionModal from './FieldSelectionModal';
 import FieldsList from './FieldsList';
@@ -24,10 +27,15 @@ interface Props {
 }
 
 const Fields = ({ phaseId, action, showAddQuestion }: Props) => {
+  const { formatMessage } = useIntl();
   const [showSelectionModal, setShowSelectionModal] = useState(false);
   const { data: permissionFields } = usePermissionsCustomFields({
     phaseId,
     action,
+  });
+  const isPermissionsCustomFieldsAllowed = useFeatureFlag({
+    name: 'permissions_custom_fields',
+    onlyCheckAllowed: true,
   });
   const { mutate: addPermissionsCustomField, isLoading } =
     useAddPermissionsCustomField({
@@ -49,20 +57,30 @@ const Fields = ({ phaseId, action, showAddQuestion }: Props) => {
           <FormattedMessage {...messages.extraQuestions} />
         </Title>
         {showAddQuestion && (
-          <Button
-            buttonStyle="admin-dark"
-            icon="plus-circle"
-            iconSize={`${fontSizes.s}px`}
-            fontSize={`${fontSizes.s}px`}
-            padding="4px 8px"
-            ml="16px"
-            onClick={(e) => {
-              e.preventDefault();
-              setShowSelectionModal(true);
-            }}
+          <Tooltip
+            content={formatMessage(
+              messages.contactGovSuccessToAccessAddingAQuestion
+            )}
+            disabled={isPermissionsCustomFieldsAllowed}
           >
-            <FormattedMessage {...messages.addAQuestion} />
-          </Button>
+            <Box>
+              <Button
+                buttonStyle="admin-dark"
+                icon="plus-circle"
+                iconSize={`${fontSizes.s}px`}
+                fontSize={`${fontSizes.s}px`}
+                padding="4px 8px"
+                ml="16px"
+                disabled={!isPermissionsCustomFieldsAllowed}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setShowSelectionModal(true);
+                }}
+              >
+                <FormattedMessage {...messages.addAQuestion} />
+              </Button>
+            </Box>
+          </Tooltip>
         )}
       </Box>
       <Box mt="20px">
