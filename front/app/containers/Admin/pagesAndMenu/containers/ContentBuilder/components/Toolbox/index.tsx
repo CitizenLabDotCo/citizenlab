@@ -34,6 +34,9 @@ import {
 import messages from '../../messages';
 import CallToAction, { callToActionTitle } from '../Widgets/CallToAction';
 import Events from '../Widgets/Events';
+import FinishedOrArchived, {
+  finishedOrArchivedTitle,
+} from '../Widgets/FinishedOrArchived';
 import FollowedItems, { followedItemsTitle } from '../Widgets/FollowedItems';
 import followedItemsMessages from '../Widgets/FollowedItems/messages';
 import HomepageBanner, { homepageBannerTitle } from '../Widgets/HomepageBanner';
@@ -121,6 +124,14 @@ const HomepageBuilderToolbox = ({
             }
             icon="projects"
             label={formatMessage(followedItemsTitle)}
+          />
+        )}
+        {newHomepageWidgetsEnabled && (
+          <DraggableElement
+            id="e2e-draggable-finished-or-archived"
+            component={<FinishedOrArchived />} // TODO
+            icon="projects" // TODO
+            label={formatMessage(finishedOrArchivedTitle)}
           />
         )}
         <DraggableElement
