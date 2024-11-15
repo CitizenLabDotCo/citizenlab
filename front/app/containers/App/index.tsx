@@ -197,14 +197,15 @@ const App = ({ children }: Props) => {
     if (redirectsEnabled) {
       handleCustomRedirect();
     }
+  }, [redirectsEnabled, appConfiguration, location]);
 
+  useEffect(() => {
     const subscriptions = [
       locale$.subscribe((locale) => {
         const momentLoc = appLocalesMomentPairs[locale] || 'en';
         moment.locale(momentLoc);
         setLocale(locale);
       }),
-
       eventEmitter
         .observeEvent('deleteProfileAndShowSuccessModal')
         .subscribe(() => {
@@ -224,7 +225,7 @@ const App = ({ children }: Props) => {
     return () => {
       subscriptions.forEach((subscription) => subscription.unsubscribe());
     };
-  }, [redirectsEnabled, appConfiguration, location, signOutAndDeleteAccount]);
+  }, [signOutAndDeleteAccount]);
 
   useEffect(() => {
     if (authUser) {
