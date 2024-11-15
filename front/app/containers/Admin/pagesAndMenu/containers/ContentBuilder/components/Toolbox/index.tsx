@@ -130,7 +130,7 @@ const HomepageBuilderToolbox = ({
           <DraggableElement
             id="e2e-draggable-finished-or-archived"
             component={<FinishedOrArchived />} // TODO
-            icon="projects" // TODO
+            icon="sportsScore"
             label={formatMessage(finishedOrArchivedTitle)}
           />
         )}
