@@ -26,4 +26,8 @@ export default defineMessages({
     id: 'app.containers.Admin.pagesAndMenu.ContentBuilder.Widgets.FinishedOrArchived.youSaidWeDid',
     defaultMessage: 'You said, we did...',
   },
+  noData: {
+    id: 'app.containers.Admin.pagesAndMenu.ContentBuilder.Widgets.FinishedOrArchived.noData',
+    defaultMessage: 'No data available',
+  },
 });
