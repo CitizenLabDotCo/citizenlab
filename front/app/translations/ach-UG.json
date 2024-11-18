@@ -54,6 +54,7 @@
   "app.components.AuthProviders.verificationRequired": "crwdns2888825:0crwdne2888825:0",
   "app.components.Author.a11yPostedBy": "crwdns2136230:0crwdne2136230:0",
   "app.components.AvatarBubbles.numberOfParticipants1": "crwdns3373801:0numberOfParticipants={numberOfParticipants}crwdnd3373801:0numberOfParticipants={numberOfParticipants}crwdne3373801:0",
+  "app.components.AvatarBubbles.numberOfUsers": "crwdns3561763:0{numberOfUsers}crwdne3561763:0",
   "app.components.AvatarBubbles.participant": "crwdns3373803:0crwdne3373803:0",
   "app.components.AvatarBubbles.participants1": "crwdns3373805:0crwdne3373805:0",
   "app.components.CityLogoSection.iframeTitle": "crwdns212862:0{orgName}crwdne212862:0",
