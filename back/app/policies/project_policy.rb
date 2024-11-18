@@ -1,24 +1,16 @@
 # frozen_string_literal: true
 
 class ProjectPolicy < ApplicationPolicy
-  class Scope
-    attr_reader :user, :scope
-
-    def initialize(user, scope)
-      @user  = user
-      @scope = scope.includes(:admin_publication)
-    end
-
+  class Scope < ApplicationPolicy::Scope
     def resolve
+      @scope = scope.includes(:admin_publication)
+
       # Resolves the scope as a disjunction (OR) of scopes, one scope (= one clause) for each 'role' a user can have.
       # It entails that scopes does not have to be redundant. In other words, each sub-scope (clause) should aim to
       # include only the projects to which this role gives access (without repeating projects to which lesser roles
       # of the user gives access).
-      moderator_scope = if user&.active?
-        UserRoleService.new.moderatable_projects(user, scope)
-      else
-        scope.none
-      end
+      moderator_scope = user&.active? ? UserRoleService.new.moderatable_projects(user, scope) : scope.none
+
       moderator_scope
         .or(resolve_for_visitor)
         .or(resolve_for_normal_user)
@@ -28,13 +20,17 @@ class ProjectPolicy < ApplicationPolicy
 
     # Filter the scope for a user that is not logged in.
     def resolve_for_visitor
-      scope.not_draft.publicly_visible
+      publicly_visible = scope.publicly_visible
+      publicly_visible.not_draft
+        .or(publicly_visible.draft.where(preview_token: context[:project_preview_token]))
     end
 
     def resolve_for_normal_user
       return scope.none unless user
 
-      scope.user_groups_visible(user).not_draft
+      user_groups_visible = scope.user_groups_visible(user)
+      user_groups_visible.not_draft
+        .or(user_groups_visible.draft.where(preview_token: context[:project_preview_token]))
     end
   end
 
@@ -94,7 +90,7 @@ class ProjectPolicy < ApplicationPolicy
   def show?
     return false if Permissions::ProjectPermissionsService.new(record, user).project_visible_disabled_reason
 
-    active_moderator? || %w[published archived].include?(record.admin_publication.publication_status)
+    active_moderator? || project_published_or_archived? || project_preview?
   end
 
   def by_slug?
@@ -103,6 +99,10 @@ class ProjectPolicy < ApplicationPolicy
 
   def update?
     active_moderator?
+  end
+
+  def refresh_preview_token?
+    update?
   end
 
   def reorder?
@@ -162,6 +162,18 @@ class ProjectPolicy < ApplicationPolicy
     return unless active?
 
     UserRoleService.new.can_moderate_project? record, user
+  end
+
+  private
+
+  def project_preview?
+    return false unless record.admin_publication.publication_status == 'draft'
+
+    context[:project_preview_token] && context[:project_preview_token] == record.preview_token
+  end
+
+  def project_published_or_archived?
+    %w[published archived].include?(record.admin_publication.publication_status)
   end
 end
 

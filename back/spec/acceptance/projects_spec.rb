@@ -6,6 +6,13 @@ require 'rspec_api_documentation/dsl'
 resource 'Projects' do
   explanation 'Projects can have phases which can be of different participation methods.'
 
+  shared_examples 'Unauthorized (401)' do
+    example 'Unauthorized (401)', document: false do
+      do_request
+      expect(status).to eq 401
+    end
+  end
+
   let(:json_response) { json_parse(response_body) }
 
   before do
@@ -176,7 +183,8 @@ resource 'Projects' do
             voting: { enabled: false, disabled_reason: 'project_inactive' },
             attending_event: { enabled: true, disabled_reason: nil },
             volunteering: { enabled: false, disabled_reason: 'project_inactive' }
-          }
+          },
+          preview_token: an_instance_of(String)
         )
         expect(json_response.dig(:data, :relationships)).to include(
           areas: { data: [] }
@@ -727,6 +735,38 @@ resource 'Projects' do
     end
   end
 
+  post 'web_api/v1/projects/:id/refresh_preview_token' do
+    context 'when admin' do
+      before do
+        @admin = create(:admin)
+        header_token_for(@admin)
+      end
+
+      let(:project) { create(:project) }
+      let(:id) { project.id }
+
+      example 'Refresh the preview token of a project' do
+        expect { do_request }.to change { project.reload.preview_token }
+        assert_status 200
+      end
+    end
+
+    context 'when regular user' do
+      before do
+        @user = create(:user)
+        header_token_for(@user)
+      end
+
+      let(:project) { create(:project) }
+      let(:id) { project.id }
+
+      example '[Unauthorized] Refresh the preview token of a project', document: false do
+        do_request
+        expect(status).to eq 401
+      end
+    end
+  end
+
   get 'web_api/v1/projects/:id/votes_by_user_xlsx' do
     let(:phase1) { create(:single_voting_phase, start_at: Time.now - 18.days, end_at: Time.now - 17.days) }
     let(:phase2) { create(:multiple_voting_phase, start_at: Time.now - 14.days, end_at: Time.now - 13.days) }
@@ -990,6 +1030,48 @@ resource 'Projects' do
         do_request
         assert_status 200
         expect(json_response[:data].size).to eq 0
+      end
+    end
+
+    get 'web_api/v1/projects/:id' do
+      let(:id) { project.id }
+
+      context 'when the project is in draft' do
+        let_it_be(:project) { create(:project, admin_publication_attributes: { publication_status: 'draft' }) }
+
+        context 'and the project_preview_link feature flag is enabled' do
+          before do
+            settings = AppConfiguration.instance.settings
+            settings['project_preview_link'] = { 'enabled' => true, 'allowed' => true }
+            AppConfiguration.instance.update!(settings: settings)
+          end
+
+          context 'and a valid preview_token is provided in cookies' do
+            before { header('Cookie', "preview_token=#{project.preview_token}") }
+
+            example 'Get a project by id', document: false do
+              do_request
+              assert_status 200
+              expect(json_response.dig(:data, :id)).to eq project.id
+            end
+          end
+
+          context 'and an invalid preview_token is provided in cookies' do
+            before { header('Cookie', 'preview_token=invalid') }
+
+            include_examples 'Unauthorized (401)'
+          end
+
+          context 'and no preview_token is provided in cookies' do
+            include_examples 'Unauthorized (401)'
+          end
+        end
+
+        context 'and the project_preview_link feature flag is disabled and a valid preview_token is provided in cookies' do
+          before { header('Cookie', "preview_token=#{project.preview_token}") }
+
+          include_examples 'Unauthorized (401)'
+        end
       end
     end
   end

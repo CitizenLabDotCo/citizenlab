@@ -9,6 +9,30 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.view',
     defaultMessage: 'View',
   },
+  share: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.share',
+    defaultMessage: 'Share',
+  },
+  shareTitle: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareTitle',
+    defaultMessage: 'Share this project',
+  },
+  shareLink: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareLink',
+    defaultMessage: 'Copy link',
+  },
+  shareLinkCopied: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareLinkCopied',
+    defaultMessage: 'Link copied',
+  },
+  shareWhoHasAccess: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareWhoHasAccess',
+    defaultMessage: 'Who has access',
+  },
+  anyoneWithLink: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.anyoneWithLink',
+    defaultMessage: 'Anyone with the link can interact with the draft project',
+  },
   participants: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participants',
     defaultMessage:
@@ -97,5 +121,14 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.note',
     defaultMessage:
       'Note: Enabling anonymous or open participation permissions may allow users to participate multiple times, leading to misleading or incomplete user data.',
+  },
+  refreshLink: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.refreshLink',
+    defaultMessage: 'Refresh project preview link',
+  },
+  refreshLinkTooltip: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.refreshLinkTooltip',
+    defaultMessage:
+      'Regenerate project preview link. This will invalidate the previous link.',
   },
 });

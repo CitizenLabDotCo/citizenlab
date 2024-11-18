@@ -365,6 +365,10 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
+            project_preview_link: {
+              enabled: true,
+              allowed: true
+            },
             moderation: {
               enabled: true,
               allowed: true
