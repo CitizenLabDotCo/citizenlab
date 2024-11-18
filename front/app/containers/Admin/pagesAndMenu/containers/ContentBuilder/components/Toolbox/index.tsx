@@ -132,8 +132,7 @@ const HomepageBuilderToolbox = ({
             component={
               <FinishedOrArchived
                 titleMultiloc={toMultiloc(finishedOrArchivedTitle)}
-                finished={true}
-                archived={false}
+                filterBy="finished"
               />
             }
             icon="sportsScore"
