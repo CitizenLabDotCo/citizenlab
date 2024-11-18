@@ -1535,6 +1535,18 @@ resource 'Projects' do
         expect(project_ids).to match_array [archived_project.id, finished_project1.id, unfinished_project2.id]
       end
 
+      example 'Includes correct ended_days_ago attribute value' do
+        finished_project1.phases[0].update!(start_at: 342.days.ago, end_at: 339.days.ago)
+        finished_project1.phases[1].update!(start_at: 338.days.ago, end_at: 335.days.ago)
+
+        do_request({ archived: true, finished: true })
+        expect(status).to eq 200
+
+        json_response = json_parse(response_body)
+        project = json_response[:data].find { |d| d[:id] == finished_project1.id }
+        expect(project[:attributes][:ended_days_ago]).to eq 335
+      end
+
       # Test to catch duplicates that can occur when created_at dates match, and no secondary sorting is applied.
       # Identical created_at dates are possible when tenant templates are applied.
       example 'Does not duplicate projects on different pages when created_at dates are the same', document: false do

@@ -3066,6 +3066,15 @@ export const icons = {
       <path d="M17.5412 12.4783C17.5412 15.898 14.7692 18.67 11.3495 18.67H4.20519V16.7649H11.3495C13.7309 16.7649 15.636 14.8597 15.636 12.4783C15.636 10.0969 13.7309 8.19171 11.3495 8.19171H5.9484L8.88232 11.1352L7.53919 12.4783L2.30005 7.23914L7.53919 2L8.89184 3.34313L5.9484 6.28657H11.3495C14.7692 6.28657 17.5412 9.05855 17.5412 12.4783Z" />
     </Svg>
   ),
+  twilight: (props: IconPropsWithoutName) => (
+    <Svg
+      className={`cl-icon ${props.className ? props.className : ''}`}
+      viewBox="0 -960 960 960"
+      {...props}
+    >
+      <path d="m734-556-56-58 86-84 56 56-86 86ZM80-160v-80h800v80H80Zm360-520v-120h80v120h-80ZM226-558l-84-86 56-56 86 86-58 56Zm-26 238q0-117 81.5-198.5T480-600q117 0 198.5 81.5T760-320H200Z" />
+    </Svg>
+  ),
   rocket: (props: IconPropsWithoutName) => (
     <Svg
       className={`cl-icon ${props.className ? props.className : ''}`}

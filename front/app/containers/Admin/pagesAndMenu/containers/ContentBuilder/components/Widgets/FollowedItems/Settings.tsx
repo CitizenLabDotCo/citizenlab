@@ -12,9 +12,9 @@ const Settings = () => {
   return (
     <Box my="20px">
       <Text mb="32px" color="textSecondary">
-        <FormattedMessage {...messages.thisWidgetWillShowcase} formatBold />
+        <FormattedMessage {...messages.thisWidgetShows} formatBold />
       </Text>
-      <TitleMultilocInput name="open_to_participation_title" />
+      <TitleMultilocInput name="followed_items_title" />
     </Box>
   );
 };

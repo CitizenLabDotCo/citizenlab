@@ -16,10 +16,10 @@ interface Props {
   titleMultiloc: Multiloc;
 }
 
-const OpenToParticipation = ({ titleMultiloc }: Props) => {
+const FollowedItems = ({ titleMultiloc }: Props) => {
   const localize = useLocalize();
   const { data, hasNextPage, fetchNextPage } = useProjectsMini({
-    endpoint: 'with_active_participatory_phase',
+    endpoint: 'for_followed_item',
   });
   const projects = data?.pages.map((page) => page.data).flat();
 
@@ -40,12 +40,12 @@ const OpenToParticipation = ({ titleMultiloc }: Props) => {
   );
 };
 
-OpenToParticipation.craft = {
+FollowedItems.craft = {
   related: {
     settings: Settings,
   },
 };
 
-export const openToParticipationTitle = messages.openToParticipation;
+export const followedItemsTitle = messages.followedItemsTitle;
 
-export default OpenToParticipation;
+export default FollowedItems;
