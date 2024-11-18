@@ -211,8 +211,8 @@ describe ProjectsFinderService do
     let!(:finished_project1) { create(:project_with_two_past_ideation_phases) }
     let!(:unfinished_project) { create(:project_with_active_ideation_phase) }
 
-    describe "when passed only the 'finished' parameter" do
-      let(:result) { service.new(Project.all, user, { finished: true }).finished_or_archived }
+    describe "when filtering by 'finished' projects" do
+      let(:result) { service.new(Project.all, user, { filter_by: 'finished' }).finished_or_archived }
 
       it 'includes finished projects' do
         expect(Project.count).to eq 2
@@ -281,12 +281,12 @@ describe ProjectsFinderService do
       end
     end
 
-    describe "when passed only the 'archived' parameter" do
+    describe "when filtering by 'archived' projects" do
       let!(:archived_project) { create(:project, admin_publication_attributes: { publication_status: 'archived' }) }
       let!(:_draft_project) { create(:project, admin_publication_attributes: { publication_status: 'draft' }) }
       let!(:_published_project) { create(:project, admin_publication_attributes: { publication_status: 'published' }) }
 
-      let(:result) { service.new(Project.all, user, { archived: true }).finished_or_archived }
+      let(:result) { service.new(Project.all, user, { filter_by: 'archived' }).finished_or_archived }
 
       it 'includes archived projects' do
         expect(Project.count).to eq 5
@@ -307,7 +307,7 @@ describe ProjectsFinderService do
       end
     end
 
-    describe "when passed 'finished' AND 'archived' parameter" do
+    describe "when filtering by 'finished_and_archived' projects" do
       # Should include `finished_project1` and:
       let!(:unfinished_project1) { create(:project) }
       let!(:phase) { create(:phase, project: unfinished_project1, start_at: 2.days.ago, end_at: 2.days.from_now) }
@@ -324,7 +324,7 @@ describe ProjectsFinderService do
       let!(:_phase2) { create(:phase, project: unfinished_project2, start_at: 1.day.ago, end_at: 1.day.from_now) }
       let!(:_report2) { create(:report, phase: phase1) }
 
-      let(:result) { service.new(Project.all, user, { finished: true, archived: true }).finished_or_archived }
+      let(:result) { service.new(Project.all, user, { filter_by: 'finished_and_archived' }).finished_or_archived }
 
       it 'includes expected projects' do
         expect(Project.count).to eq 7
