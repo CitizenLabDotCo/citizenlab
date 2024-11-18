@@ -17,4 +17,9 @@ export default defineMessages({
     id: 'app.containers.Admin.pagesAndMenu.ContentBuilder.Widgets.FinishedOrArchived.finishedAndArchived',
     defaultMessage: 'Finished and archived',
   },
+  thisWidgetShows: {
+    id: 'app.containers.Admin.pagesAndMenu.ContentBuilder.Widgets.FinishedOrArchived.thisWidgetShows',
+    defaultMessage:
+      'This widget shows <b>projects that are finished and/or archived.</b>. "Finished" also includes projects that are in the last phase, and where the last phase is a report.',
+  },
 });

@@ -31,9 +31,9 @@ const Settings = () => {
 
   return (
     <Box my="20px">
-      {/* <Text mb="32px" color="textSecondary">
+      <Text mb="32px" color="textSecondary">
         <FormattedMessage {...messages.thisWidgetShows} formatBold />
-      </Text> */}
+      </Text>
       <Box mb="20px">
         <TitleMultilocInput name="finished_or_archived_title" />
       </Box>
