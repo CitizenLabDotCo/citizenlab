@@ -19,7 +19,7 @@ type FollowedItemParams = {
   endpoint: 'for_followed_item';
 } & PageNumbers;
 
-type FinishedOrArchived = {
+export type FinishedOrArchived = {
   endpoint: 'finished_or_archived';
   filter_by: 'finished' | 'archived' | 'finished_and_archived';
 } & PageNumbers;

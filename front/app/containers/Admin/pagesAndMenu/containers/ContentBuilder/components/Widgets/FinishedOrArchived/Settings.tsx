@@ -1,34 +1,70 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Radio, Text } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
 
-// import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 
 import TitleMultilocInput from '../_shared/TitleMultilocInput';
 
-// import messages from './messages';
+import messages from './messages';
+
+const MESSAGES = {
+  finished: messages.finished,
+  archived: messages.archived,
+  finished_and_archived: messages.finishedAndArchived,
+} as const;
+
+const RADIO_OPTIONS: (keyof typeof MESSAGES)[] = [
+  'finished',
+  'archived',
+  'finished_and_archived',
+];
 
 const Settings = () => {
   const {
     actions: { setProp },
-    finished,
-    archived,
+    filterBy,
   } = useNode((node) => ({
-    finished: node.data.props.finished,
-    archived: node.data.props.archived,
+    filterBy: node.data.props.filterBy,
   }));
-
-  console.log({ finished, archived });
 
   return (
     <Box my="20px">
       {/* <Text mb="32px" color="textSecondary">
         <FormattedMessage {...messages.thisWidgetShows} formatBold />
       </Text> */}
-      <TitleMultilocInput name="finished_or_archived_title" />
+      <Box mb="20px">
+        <TitleMultilocInput name="finished_or_archived_title" />
+      </Box>
+      {RADIO_OPTIONS.map((option) => (
+        <Radio
+          key={option}
+          id={`${option}-radio`}
+          name={`${option}-radio`}
+          isRequired
+          value={option}
+          currentValue={filterBy}
+          label={<RadioLabel message={MESSAGES[option]} />}
+          onChange={(value) =>
+            setProp((props) => {
+              props.filterBy = value;
+            })
+          }
+        />
+      ))}
     </Box>
   );
 };
+
+interface RadioLabelProps {
+  message: MessageDescriptor;
+}
+
+const RadioLabel = ({ message }: RadioLabelProps) => (
+  <Text mt="0px" mb="0px" variant="bodyS" color="primary">
+    <FormattedMessage {...message} />
+  </Text>
+);
 
 export default Settings;
