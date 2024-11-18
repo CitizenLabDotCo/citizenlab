@@ -565,6 +565,7 @@
   "app.containers.Admin.PagesAndMenu.containers.BottomInfoSection.pageTitle": "Onderste infosectie",
   "app.containers.Admin.PagesAndMenu.containers.BottomInfoSection.saveAndEnableButton": "Opslaan en onderste infosectie inschakelen",
   "app.containers.Admin.PagesAndMenu.containers.BottomInfoSection.saveButton": "Onderste infosectie opslaan",
+  "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage..contactGovSuccessToAccessPages": "Het maken van aangepaste pagina's is niet inbegrepen in je huidige licentie. Neem contact op met je GovSuccess Manager voor meer informatie.",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.atLeastOneTag": "Selecteer ten minste één tag",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.buttonSuccess": "Opgeslagen",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.byAreaFilter": "Op gebied",
