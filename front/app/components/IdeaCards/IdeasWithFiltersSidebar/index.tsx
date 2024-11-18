@@ -29,7 +29,7 @@ import IdeasView from '../shared/IdeasView';
 import tracks from '../tracks';
 
 import FiltersModal from './FiltersModal';
-import FiltersSideBar from './FiltersSideBar';
+import InputFilters from './InputFilters';
 
 const gapWidth = 35;
 
@@ -296,7 +296,7 @@ const IdeaCards = ({ ideaQueryParameters, onUpdateQuery }: Props) => {
                 id="e2e-ideas-filters"
                 filterColumnWidth={filterColumnWidth}
               >
-                <FiltersSideBar
+                <InputFilters
                   defaultValue={ideaQueryParameters.search}
                   selectedIdeaFilters={ideaQueryParameters}
                   filtersActive={filtersActive}
