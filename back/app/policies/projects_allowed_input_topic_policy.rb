@@ -1,16 +1,9 @@
 # frozen_string_literal: true
 
 class ProjectsAllowedInputTopicPolicy < ApplicationPolicy
-  class Scope
-    attr_reader :user, :scope
-
-    def initialize(user, scope)
-      @user  = user
-      @scope = scope
-    end
-
+  class Scope < ApplicationPolicy::Scope
     def resolve
-      scope.where(project: Pundit.policy_scope(user, Project))
+      scope.where(project: scope_for(Project))
     end
   end
 

@@ -2,14 +2,7 @@
 
 module Polls
   class ResponsePolicy < ApplicationPolicy
-    class Scope
-      attr_reader :user, :scope
-
-      def initialize(user, scope)
-        @user  = user
-        @scope = scope
-      end
-
+    class Scope < ApplicationPolicy::Scope
       def resolve
         return scope.none unless user
 
@@ -30,7 +23,7 @@ module Polls
     def create?
       active? &&
         (record.user_id == user.id) &&
-        ProjectPolicy.new(user, record.phase.project).show? &&
+        policy_for(record.phase.project).show? &&
         check_responding_allowed(record, user)
     end
 

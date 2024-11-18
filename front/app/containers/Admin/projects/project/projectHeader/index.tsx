@@ -13,6 +13,7 @@ import styled from 'styled-components';
 
 import useProjectById from 'api/projects/useProjectById';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
 import NavigationTabs from 'components/admin/NavigationTabs';
@@ -22,6 +23,7 @@ import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 import PublicationStatus from './PublicationStatus';
+import ShareLink from './ShareLink';
 
 const StyledTitle = styled(Title)`
   display: -webkit-box;
@@ -35,6 +37,8 @@ interface Props {
 }
 
 const ProjectHeader = ({ projectId }: Props) => {
+  const shareLinkEnabled = useFeatureFlag({ name: 'project_preview_link' });
+
   const { data: project } = useProjectById(projectId);
 
   const { formatMessage } = useIntl();
@@ -89,6 +93,13 @@ const ProjectHeader = ({ projectId }: Props) => {
             >
               {formatMessage(messages.projectSettings)}
             </Button>
+            {shareLinkEnabled && (
+              <ShareLink
+                projectId={project.data.id}
+                projectSlug={project.data.attributes.slug}
+                token={project.data.attributes.preview_token}
+              />
+            )}
           </Box>
         </Box>
         <Box display="flex" gap="8px">

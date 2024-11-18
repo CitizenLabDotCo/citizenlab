@@ -1190,7 +1190,8 @@ CREATE TABLE public.projects (
     baskets_count integer DEFAULT 0 NOT NULL,
     votes_count integer DEFAULT 0 NOT NULL,
     followers_count integer DEFAULT 0 NOT NULL,
-    header_bg_alt_text_multiloc jsonb DEFAULT '{}'::jsonb
+    header_bg_alt_text_multiloc jsonb DEFAULT '{}'::jsonb,
+    preview_token character varying NOT NULL
 );
 
 
@@ -7569,6 +7570,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20241011816395'),
 ('20241016201503'),
 ('20241022101049'),
+('20241024110349'),
 ('20241028162618'),
 ('20241029080612'),
 ('20241105053818'),
