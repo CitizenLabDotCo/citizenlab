@@ -8,6 +8,7 @@ import {
   isRtl,
 } from '@citizenlab/cl2-component-library';
 import { isError, includes, get } from 'lodash-es';
+import { darken } from 'polished';
 import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -24,10 +25,6 @@ import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 import InputFilterCollapsible from './InputFilterCollapsible';
 import messages from './messages';
 import { FilterCounts } from './types';
-
-const Topics = styled.div`
-  margin-top: 16px;
-`;
 
 const Topic = styled.button`
   color: ${colors.textSecondary};
@@ -69,8 +66,9 @@ const Topic = styled.button`
     border-color: ${({ theme }) => theme.colors.tenantPrimary};
 
     &:hover {
-      background: ${({ theme }) => theme.colors.tenantPrimary};
-      border-color: ${({ theme }) => theme.colors.tenantPrimary};
+      background: ${({ theme }) => darken(0.15, theme.colors.tenantSecondary)};
+      border-color: ${({ theme }) =>
+        darken(0.15, theme.colors.tenantSecondary)};
     }
   }
 `;
@@ -133,7 +131,7 @@ const TopicsFilter = memo<Props>(
           className={className}
         >
           <Box>
-            <Topics className="e2e-topics-filters">
+            <Box className="e2e-topics-filters">
               {topics
                 .filter((topic) => !isError(topic))
                 .map((topic: ITopicData) => {
@@ -143,7 +141,7 @@ const TopicsFilter = memo<Props>(
                     0
                   );
 
-                  const topicSelected = includes(selectedTopicIds, topic.id);
+                  const topicSelected = selectedTopicIds?.includes(topic.id);
 
                   return (
                     <Topic
@@ -169,7 +167,7 @@ const TopicsFilter = memo<Props>(
                     </Topic>
                   );
                 })}
-            </Topics>
+            </Box>
 
             <ScreenReaderOnly aria-live="polite">
               {/* Pronounces numbers of selected topics + selected topic names */}
@@ -179,6 +177,13 @@ const TopicsFilter = memo<Props>(
               />
             </ScreenReaderOnly>
           </Box>
+          <ScreenReaderOnly aria-live="polite">
+            {/* Pronounces numbers of selected topics + selected topic names */}
+            <FormattedMessage
+              {...messages.a11y_selectedTopicFilters}
+              values={{ numberOfSelectedTopics, selectedTopicNames }}
+            />
+          </ScreenReaderOnly>
         </InputFilterCollapsible>
       );
     }

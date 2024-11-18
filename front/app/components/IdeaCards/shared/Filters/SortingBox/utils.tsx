@@ -1,26 +1,12 @@
-import { colors, IconNames } from '@citizenlab/cl2-component-library';
+import { IconNames } from '@citizenlab/cl2-component-library';
 import { MessageDescriptor } from 'react-intl';
-import { DefaultTheme } from 'styled-components';
 
-import { FrontOfficeSortOptions } from 'api/ideas/types';
+import { IdeaDefaultSortMethod } from 'api/phases/types';
 
 import messages from '../messages';
 
-export const getButtonBackgroundColor = (
-  isSelected: boolean,
-  isHovered: boolean,
-  theme: DefaultTheme
-) => {
-  if (isSelected) {
-    return theme.colors.tenantPrimary;
-  } else if (isHovered) {
-    return theme.colors.grey100;
-  }
-  return colors.white;
-};
-
 export const getLabelForSortingOption = (
-  sortType: FrontOfficeSortOptions
+  sortType: IdeaDefaultSortMethod
 ): MessageDescriptor => {
   switch (sortType) {
     case 'trending':
@@ -37,7 +23,7 @@ export const getLabelForSortingOption = (
 };
 
 export const getIconNameForSortingOption = (
-  sortType: FrontOfficeSortOptions
+  sortType: IdeaDefaultSortMethod
 ): IconNames => {
   switch (sortType) {
     case 'trending':
