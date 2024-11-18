@@ -565,6 +565,7 @@
   "app.containers.Admin.PagesAndMenu.containers.BottomInfoSection.pageTitle": "ਹੇਠਲਾ ਜਾਣਕਾਰੀ ਸੈਕਸ਼ਨ",
   "app.containers.Admin.PagesAndMenu.containers.BottomInfoSection.saveAndEnableButton": "ਹੇਠਾਂ ਜਾਣਕਾਰੀ ਸੈਕਸ਼ਨ ਨੂੰ ਸੁਰੱਖਿਅਤ ਕਰੋ ਅਤੇ ਚਾਲੂ ਕਰੋ",
   "app.containers.Admin.PagesAndMenu.containers.BottomInfoSection.saveButton": "ਹੇਠਲੇ ਜਾਣਕਾਰੀ ਭਾਗ ਨੂੰ ਸੁਰੱਖਿਅਤ ਕਰੋ",
+  "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage..contactGovSuccessToAccessPages": "ਕਸਟਮ ਪੰਨੇ ਬਣਾਉਣਾ ਤੁਹਾਡੇ ਮੌਜੂਦਾ ਲਾਇਸੰਸ ਵਿੱਚ ਸ਼ਾਮਲ ਨਹੀਂ ਹੈ। ਇਸ ਬਾਰੇ ਹੋਰ ਜਾਣਨ ਲਈ ਆਪਣੇ GovSuccess ਮੈਨੇਜਰ ਨਾਲ ਸੰਪਰਕ ਕਰੋ।",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.atLeastOneTag": "ਕਿਰਪਾ ਕਰਕੇ ਘੱਟੋ-ਘੱਟ ਇੱਕ ਟੈਗ ਚੁਣੋ",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.buttonSuccess": "ਸਫਲਤਾ",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.byAreaFilter": "ਖੇਤਰ ਦੁਆਰਾ",

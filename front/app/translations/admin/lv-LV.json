@@ -565,6 +565,7 @@
   "app.containers.Admin.PagesAndMenu.containers.BottomInfoSection.pageTitle": "Apakšējā informācijas sadaļa",
   "app.containers.Admin.PagesAndMenu.containers.BottomInfoSection.saveAndEnableButton": "Saglabāt un iespējot apakšējo informācijas sadaļu",
   "app.containers.Admin.PagesAndMenu.containers.BottomInfoSection.saveButton": "Saglabāt apakšējo informācijas sadaļu",
+  "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage..contactGovSuccessToAccessPages": "Pašreizējā licencē nav iekļauta pielāgotu lapu izveide. Sazinieties ar savu GovSuccess menedžeri, lai uzzinātu vairāk par to.",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.atLeastOneTag": "Lūdzu, izvēlieties vismaz vienu tagu",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.buttonSuccess": "Veiksmīgi",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.byAreaFilter": "Pēc apgabala",

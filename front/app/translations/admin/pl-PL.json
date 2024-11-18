@@ -565,6 +565,7 @@
   "app.containers.Admin.PagesAndMenu.containers.BottomInfoSection.pageTitle": "Stopka strony głównej",
   "app.containers.Admin.PagesAndMenu.containers.BottomInfoSection.saveAndEnableButton": "Zapisz i włącz dolną sekcję informacyjną",
   "app.containers.Admin.PagesAndMenu.containers.BottomInfoSection.saveButton": "Zapisz",
+  "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage..contactGovSuccessToAccessPages": "Tworzenie niestandardowych stron nie jest objęte Twoją obecną licencją. Skontaktuj się ze swoim GovSuccess Managerem, aby dowiedzieć się więcej na ten temat.",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.atLeastOneTag": "Proszę wybrać co najmniej jeden tag",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.buttonSuccess": "Sukces",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.byAreaFilter": "Po obszarze",
