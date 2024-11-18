@@ -15,6 +15,7 @@ import styled from 'styled-components';
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 import { IIdeasFilterCounts } from 'api/ideas_filter_counts/types';
 
+import { ColorIndicator } from 'components/ColorIndicator';
 import T from 'components/T';
 
 import { ScreenReaderOnly } from 'utils/a11y';
@@ -115,8 +116,8 @@ const StatusFilter = memo<Props>(
             onClick={handleOnClick}
             className={allFilterSelected ? 'selected' : ''}
           >
-            <Box display="flex" gap="8px">
-              <Box my="auto" w="14px" h="14px" bgColor={colors.grey500} />
+            <Box display="flex">
+              <ColorIndicator color={colors.grey500} />
               <Text m="0px" color={allFilterSelected ? 'white' : 'textPrimary'}>
                 <FormattedMessage {...messages.all} />
               </Text>
@@ -157,13 +158,8 @@ const StatusFilter = memo<Props>(
                   onClick={handleOnClick}
                   className={`e2e-status ${isFilterSelected ? 'selected' : ''}`}
                 >
-                  <Box display="flex" gap="8px">
-                    <Box
-                      my="auto"
-                      w="14px"
-                      h="14px"
-                      bgColor={status.attributes.color}
-                    />
+                  <Box display="flex">
+                    <ColorIndicator color={status.attributes.color} />
                     <Text
                       m="0px"
                       color={isFilterSelected ? 'white' : 'textPrimary'}

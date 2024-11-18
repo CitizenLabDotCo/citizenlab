@@ -16,19 +16,12 @@ import usePhase from 'api/phases/usePhase';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import { ColorIndicator } from 'components/ColorIndicator';
 import T from 'components/T';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../../messages';
-
-const ColorIndicator = styled.div`
-  width: 1rem;
-  height: 1rem;
-  background-color: ${(props) => props.color};
-  border-radius: ${(props) => props.theme.borderRadius};
-  margin-right: 0.5rem;
-`;
 
 const StatusText = styled.div`
   &:first-letter {
