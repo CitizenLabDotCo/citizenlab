@@ -30,6 +30,7 @@ import { MessageDescriptor } from 'utils/cl-intl';
 import Proposals from './_deprecated/Proposals';
 import CallToAction, { callToActionTitle } from './CallToAction';
 import Events, { eventsTitle } from './Events';
+import FollowedItems, { followedItemsTitle } from './FollowedItems';
 import HomepageBanner, { homepageBannerTitle } from './HomepageBanner';
 import OpenToParticipation, {
   openToParticipationTitle,
@@ -44,11 +45,14 @@ export const WIDGETS = {
   IframeMultiloc,
   ImageMultiloc,
   TextMultiloc,
+  ThreeColumn,
+  TwoColumn,
   WhiteSpace,
 
   // Homepage builder widgets
   CallToAction,
   Events,
+  FollowedItems,
   HomepageBanner,
   OpenToParticipation,
   Projects,
@@ -59,8 +63,6 @@ export const WIDGETS = {
 
   // DEPRECATED (TODO remove in migration)
   Proposals,
-  ThreeColumn,
-  TwoColumn,
 };
 
 type WidgetName = keyof typeof WIDGETS;
@@ -72,11 +74,14 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   IframeMultiloc: iframeTitle,
   ImageMultiloc: imageMultilocTitle,
   TextMultiloc: textMultilocTitle,
+  ThreeColumn: threeColumnTitle,
+  TwoColumn: twoColumnTitle,
   WhiteSpace: whiteSpaceTitle,
 
   // Homepage builder widgets
   CallToAction: callToActionTitle,
   Events: eventsTitle,
+  FollowedItems: followedItemsTitle,
   HomepageBanner: homepageBannerTitle,
   OpenToParticipation: openToParticipationTitle,
   Projects: projectsTitle,
@@ -87,8 +92,15 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
 
   // DEPRECATED
   Proposals: callToActionTitle,
-  ThreeColumn: threeColumnTitle,
-  TwoColumn: twoColumnTitle,
+};
+
+const WIDGETS_WITH_CHILDREN = new Set<string>([
+  'TwoColumn',
+  'ThreeColumn',
+] satisfies WidgetName[]);
+
+export const hasChildren = (nodeName: string) => {
+  return WIDGETS_WITH_CHILDREN.has(nodeName);
 };
 
 const WIDGETS_WITHOUT_POINTER_EVENTS = new Set<string>([
@@ -99,10 +111,13 @@ const WIDGETS_WITHOUT_POINTER_EVENTS = new Set<string>([
   // Homepage builder widgets
   'CallToAction',
   'Events',
+  'FollowedItems',
   'HomepageBanner',
   'OpenToParticipation',
   'Projects',
   'Spotlight',
+
+  // RENAMED
   'Highlight',
 ] satisfies WidgetName[]);
 

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import { Box, colors, Text } from '@citizenlab/cl2-component-library';
 import { isNumber } from 'lodash-es';
 import styled from 'styled-components';
 
@@ -13,6 +13,36 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 import placeholderImage from './user.png';
+
+const getFontSize = (size: number, digits: number) => {
+  if (size >= 34) {
+    if (digits <= 2) {
+      return 14;
+    }
+
+    if (digits === 3) {
+      return 12;
+    }
+
+    if (digits >= 4) {
+      return 11;
+    }
+  } else {
+    if (digits <= 2) {
+      return 12;
+    }
+
+    if (digits === 3) {
+      return 11;
+    }
+
+    if (digits >= 4) {
+      return 10;
+    }
+  }
+
+  return 14;
+};
 
 const AvatarImageBubble = styled.img<{
   overlap: number;
@@ -78,7 +108,6 @@ export const AvatarBubbles = ({
 
   if (avatars && isNumber(currentUserCount) && currentUserCount > 0) {
     const bubbleSize = size + 4;
-    const bubbleOverlap = overlap;
     const imageSize = bubbleSize > 160 ? 'large' : 'medium';
 
     const avatarsWithImage = avatars.filter(
@@ -137,8 +166,7 @@ export const AvatarBubbles = ({
             style={{
               position: 'relative',
               width: `${
-                bubbleSize +
-                (avatarImagesCount - 1) * (bubbleSize - bubbleOverlap)
+                bubbleSize + (avatarImagesCount - 1) * (bubbleSize - overlap)
               }px`,
               minWidth: `${bubbleSize}px`,
               height: `${containerHeight}px`,
@@ -149,7 +177,7 @@ export const AvatarBubbles = ({
               <AvatarImageBubble
                 key={index}
                 index={index}
-                overlap={bubbleOverlap}
+                overlap={overlap}
                 size={bubbleSize}
                 src={avatar.attributes.avatar[imageSize]}
                 alt=""
@@ -157,30 +185,71 @@ export const AvatarBubbles = ({
               />
             ))}
           </Box>
-          {showParticipantText && remainingUsers > 0 && (
-            <Box
-              data-testid="userCountBubbleInner"
-              ml="4px"
-              display="flex"
-              alignItems="center"
-            >
-              <Text
-                fontSize="s"
-                textAlign="left"
-                my="0px"
-                aria-hidden="true"
-                color="coolGrey600"
+          {remainingUsers > 0 &&
+            (showParticipantText ? (
+              <Box
+                data-testid="userCountBubbleInner"
+                ml="4px"
+                display="flex"
+                alignItems="center"
               >
-                +{truncatedUserCount}
-                {letterAbbreviation}&nbsp;
-                {formatMessage(
-                  truncatedUserCount > 1 || letterAbbreviation
-                    ? messages.participants1
-                    : messages.participant
-                )}
-              </Text>
-            </Box>
-          )}
+                <Text
+                  fontSize="s"
+                  textAlign="left"
+                  my="0px"
+                  aria-hidden="true"
+                  color="coolGrey600"
+                >
+                  +{truncatedUserCount}
+                  {letterAbbreviation}&nbsp;
+                  {formatMessage(
+                    truncatedUserCount > 1 || letterAbbreviation
+                      ? messages.participants1
+                      : messages.participant
+                  )}
+                </Text>
+              </Box>
+            ) : (
+              <Box
+                w={`${bubbleSize}px`}
+                h={`${bubbleSize}px`}
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                pb="0px"
+                borderRadius="50%"
+                border={`solid 2px ${colors.white}`}
+                bg={colors.textSecondary}
+                zIndex={`${avatarsWithImage.length + 1}`}
+                left={`${avatarsWithImage.length * (bubbleSize - overlap)}px`}
+              >
+                <Box
+                  aria-hidden
+                  data-testid="userCountBubbleInner"
+                  display="flex"
+                >
+                  <Text
+                    fontSize="s"
+                    color="white"
+                    display="flex"
+                    style={{
+                      fontSize: getFontSize(
+                        bubbleSize,
+                        remainingUsers.toString().length
+                      ),
+                    }}
+                  >
+                    +{truncatedUserCount}
+                    {letterAbbreviation}
+                  </Text>
+                </Box>
+                <ScreenReaderOnly>
+                  {formatMessage(messages.numberOfUsers, {
+                    numberOfUsers: currentUserCount,
+                  })}
+                </ScreenReaderOnly>
+              </Box>
+            ))}
           <ScreenReaderOnly>
             {formatMessage(messages.numberOfParticipants1, {
               numberOfParticipants: currentUserCount,

@@ -1,15 +1,10 @@
 # frozen_string_literal: true
 
 class IdeaPolicy < ApplicationPolicy
-  class Scope
-    attr_reader :user, :scope
-
-    def initialize(user, scope)
-      @user = user
-      @scope = scope
-    end
-
+  class Scope < ApplicationPolicy::Scope
     def resolve
+      project_scope = scope_for(Project)
+
       if user&.admin?
         scope.all
       elsif user&.project_or_folder_moderator? # We do this as a separate logic branch to avoid the moderatable_projects call for normal users
@@ -18,19 +13,19 @@ class IdeaPolicy < ApplicationPolicy
           .or(scope.published.where_pmethod(&:supports_public_visibility?))
           .or(scope.where(id: sponsored_ideas))
           .or(scope.where(project: UserRoleService.new.moderatable_projects(user)))
-          .where(project: Pundit.policy_scope(user, Project))
+          .where(project: project_scope)
       elsif user
         scope
           .submitted_or_published.where(author: user)
           .or(scope.published.where_pmethod(&:supports_public_visibility?))
           .or(scope.where(id: sponsored_ideas))
-          .where(project: Pundit.policy_scope(user, Project))
+          .where(project: project_scope)
       else
         scope
           .left_outer_joins(project: [:admin_publication])
           .published
           .where_pmethod(&:supports_public_visibility?)
-          .where(projects: { visible_to: 'public', admin_publications: { publication_status: %w[published archived] } })
+          .where(projects: project_scope)
       end
     end
 
@@ -62,12 +57,12 @@ class IdeaPolicy < ApplicationPolicy
     reason = Permissions::ProjectPermissionsService.new(record.project, user).denied_reason_for_action 'posting_idea'
     raise_not_authorized(reason) if reason
 
-    (!user || owner?) && ProjectPolicy.new(user, record.project).show?
+    (!user || owner?) && policy_for(record.project).show?
   end
 
   def show?
     if record.participation_method_on_creation.supports_public_visibility?
-      project_show = ProjectPolicy.new(user, record.project).show?
+      project_show = policy_for(record.project).show?
       return true if project_show && %w[draft published].include?(record.publication_status)
       return true if record.cosponsors.include?(user)
     elsif record.draft?

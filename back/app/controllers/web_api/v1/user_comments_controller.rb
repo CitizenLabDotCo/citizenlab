@@ -6,10 +6,10 @@ class WebApi::V1::UserCommentsController < ApplicationController
 
   def index
     # Get the posts the user is allowed to see
-    comment_allowed_ideas = IdeaCommentPolicy::Scope.new(current_user, Comment).resolve
+    comment_allowed_ideas = policy_scope(Comment, policy_scope_class: IdeaCommentPolicy::Scope)
       .published
       .where(author_id: params[:user_id])
-    comment_allowed_initiatives = InitiativeCommentPolicy::Scope.new(current_user, Comment).resolve
+    comment_allowed_initiatives = policy_scope(Comment, policy_scope_class: InitiativeCommentPolicy::Scope)
       .published
       .where(author_id: params[:user_id])
 

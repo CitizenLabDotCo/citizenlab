@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 
-import styled from 'styled-components';
+import { Box, BoxProps } from '@citizenlab/cl2-component-library';
 
 import useProjectById from 'api/projects/useProjectById';
 
@@ -10,25 +10,20 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from './messages';
 
-const Container = styled.div`
-  width: 100%;
-`;
-
-interface Props {
+type Props = {
   projectId: string;
-  className?: string;
-}
+} & BoxProps;
 
-const ProjectArchivedIndicator = memo<Props>(({ projectId, className }) => {
+const ProjectArchivedIndicator = memo<Props>(({ projectId, ...rest }) => {
   const { data: project } = useProjectById(projectId);
 
   if (project?.data.attributes.publication_status === 'archived') {
     return (
-      <Container className={className || ''}>
+      <Box width="100%" {...rest}>
         <Warning>
           <FormattedMessage {...messages.archivedProject} />
         </Warning>
-      </Container>
+      </Box>
     );
   }
 
