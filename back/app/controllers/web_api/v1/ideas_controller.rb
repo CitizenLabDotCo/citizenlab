@@ -94,22 +94,23 @@ class WebApi::V1::IdeasController < ApplicationController
     ).find_records
     all_ideas = paginate SortByParamsService.new.sort_ideas(all_ideas, params, current_user)
     all_ideas = all_ideas.includes(:idea_trending_info)
-    counts = {
-      'idea_status_id' => {},
-      'topic_id' => {}
-    }
-    attributes = %w[idea_status_id topic_id]
-    all_ideas.published
-      .joins('FULL OUTER JOIN ideas_topics ON ideas_topics.idea_id = ideas.id')
-      .select('idea_status_id, ideas_topics.topic_id, COUNT(DISTINCT(ideas.id)) as count')
-      .reorder(nil) # Avoids SQL error on GROUP BY when a search string was used
-      .group('GROUPING SETS (idea_status_id, ideas_topics.topic_id)')
-      .each do |record|
-      attributes.each do |attribute|
-        id = record.send attribute
-        counts[attribute][id] = record.count if id
-      end
-    end
+    counts = IdeasCountService::counts(all_ideas)
+    # {
+    #   'idea_status_id' => {},
+    #   'topic_id' => {}
+    # }
+    # attributes = %w[idea_status_id topic_id]
+    # all_ideas.published
+    #   .joins('FULL OUTER JOIN ideas_topics ON ideas_topics.idea_id = ideas.id')
+    #   .select('idea_status_id, ideas_topics.topic_id, COUNT(DISTINCT(ideas.id)) as count')
+    #   .reorder(nil) # Avoids SQL error on GROUP BY when a search string was used
+    #   .group('GROUPING SETS (idea_status_id, ideas_topics.topic_id)')
+    #   .each do |record|
+    #   attributes.each do |attribute|
+    #     id = record.send attribute
+    #     counts[attribute][id] = record.count if id
+    #   end
+    # end
     counts['total'] = all_ideas.count
     render json: raw_json(counts)
   end
