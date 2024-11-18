@@ -1,7 +1,11 @@
 export const scrollToTopIdeasList = () => {
-  const ideasListPanel = document.getElementById('view-panel-1');
+  const ideasListPanel = document.getElementById('ideas-with-filter-sidebar');
   const boundingBox = ideasListPanel?.getBoundingClientRect();
   if (boundingBox) {
-    window.scrollBy(0, boundingBox.top - 100);
+    ideasListPanel?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+      inline: 'start',
+    });
   }
 };

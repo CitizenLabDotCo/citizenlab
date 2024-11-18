@@ -113,7 +113,7 @@ export default () => {
     <>
       <IdeasIndexMeta />
       <main>
-        <Container>
+        <Container id="ideas-with-filter-sidebar">
           <StyledContentContainer maxWidth="100%">
             <PageTitle>
               <FormattedMessage {...messages.inputsPageTitle} />
