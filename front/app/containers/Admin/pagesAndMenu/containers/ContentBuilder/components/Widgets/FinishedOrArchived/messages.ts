@@ -20,7 +20,7 @@ export default defineMessages({
   thisWidgetShows: {
     id: 'app.containers.Admin.pagesAndMenu.ContentBuilder.Widgets.FinishedOrArchived.thisWidgetShows',
     defaultMessage:
-      'This widget shows <b>projects that are finished and/or archived.</b>. "Finished" also includes projects that are in the last phase, and where the last phase is a report.',
+      'This widget shows <b>projects that are finished and/or archived</b>. "Finished" also includes projects that are in the last phase, and where the last phase is a report.',
   },
   youSaidWeDid: {
     id: 'app.containers.Admin.pagesAndMenu.ContentBuilder.Widgets.FinishedOrArchived.youSaidWeDid',
@@ -28,6 +28,7 @@ export default defineMessages({
   },
   noData: {
     id: 'app.containers.Admin.pagesAndMenu.ContentBuilder.Widgets.FinishedOrArchived.noData',
-    defaultMessage: 'No data available',
+    defaultMessage:
+      'This widget will only be shown to the user if there are finished or archived projects that they have permission to see. If you see this message, it means that there are no finished or archived projects that you (the admin) have permission to see. This message will not be visible on the real homepage.',
   },
 });
