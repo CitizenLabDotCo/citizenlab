@@ -87,7 +87,7 @@ const RenderNode = ({ render }) => {
   });
 
   const parentNode = parentId ? node(parentId).get() : undefined;
-  // TODO: Fix this the next time the file is edited.
+
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const parentName = parentNode?.data?.name;
   const isChildOfComplexComponent = parentName

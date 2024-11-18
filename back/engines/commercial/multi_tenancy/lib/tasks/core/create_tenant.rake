@@ -236,6 +236,10 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        project_preview_link: {
+          enabled: true,
+          allowed: true
+        },
         project_description_builder: {
           enabled: true,
           allowed: true
