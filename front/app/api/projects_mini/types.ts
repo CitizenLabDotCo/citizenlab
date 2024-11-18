@@ -25,9 +25,11 @@ export interface MiniProjectData {
   id: string;
   type: 'project_mini';
   attributes: {
-    title_multiloc: Multiloc;
-    slug: string;
     action_descriptors: ActionDescriptors;
+    slug: string;
+    starts_days_from_now: number | null;
+    ended_days_ago: number | null;
+    title_multiloc: Multiloc;
   };
   relationships: {
     current_phase?: {

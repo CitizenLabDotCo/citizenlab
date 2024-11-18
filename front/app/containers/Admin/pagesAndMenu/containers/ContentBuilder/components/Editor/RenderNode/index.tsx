@@ -8,7 +8,7 @@ import messages from 'components/admin/ContentBuilder/messages';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import { WIDGET_TITLES, hasNoPointerEvents } from '../../Widgets';
+import { WIDGET_TITLES, hasChildren, hasNoPointerEvents } from '../../Widgets';
 
 const StyledBox = styled(Box)`
   ${({ isRoot }: { isRoot: boolean }) =>
@@ -69,11 +69,13 @@ const RenderNode = ({ render }) => {
     };
   });
 
-  const parentNode = parentId && node(parentId).get();
-  const isChildOfComplexComponent =
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    parentNode === '' ? false : !!parentNode?.data.custom?.hasChildren;
+  const parentNode = parentId ? node(parentId).get() : undefined;
+
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  const parentName = parentNode?.data?.name;
+  const isChildOfComplexComponent = parentName
+    ? hasChildren(parentName)
+    : false;
 
   // Handle multi-column hover state
   useEffect(() => {

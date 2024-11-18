@@ -5,8 +5,6 @@ import {
   Image,
   Text,
   stylingConsts,
-  Icon,
-  colors,
   Title,
 } from '@citizenlab/cl2-component-library';
 import { RouteType } from 'routes';
@@ -20,7 +18,6 @@ import { MiniProjectData } from 'api/projects_mini/types';
 
 import useLocalize from 'hooks/useLocalize';
 
-import PhaseTimeLeft from 'components/PhaseTimeLeft';
 import getCTAMessage from 'components/ProjectCard/getCTAMessage';
 import ImagePlaceholder from 'components/ProjectCard/ImagePlaceholder';
 
@@ -28,8 +25,9 @@ import { useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { truncate } from 'utils/textUtils';
 
-import { CARD_WIDTH } from './constants';
-import messages from './messages';
+import { CARD_WIDTH } from '../constants';
+
+import TimeIndicator from './TimeIndicator';
 
 const CardContainer = styled(Box)`
   &:hover {
@@ -83,7 +81,6 @@ const LightProjectCard = ({ project, ml, mr, onKeyDown }: Props) => {
   const imageVersions = image?.data.attributes.versions;
   const imageUrl = imageVersions?.large ?? imageVersions?.medium;
 
-  const end_at = phase?.data.attributes.end_at;
   const projectUrl: RouteType = getProjectUrl(project.attributes.slug);
 
   return (
@@ -117,24 +114,13 @@ const LightProjectCard = ({ project, ml, mr, onKeyDown }: Props) => {
       <Title variant="h4" as="h3" mt="8px" mb="0px">
         {truncate(title, 50)}
       </Title>
-      {phase && (
-        <Box mt="8px">
-          <Box display="flex" flexDirection="row" alignItems="center">
-            <Icon
-              name="clock-circle"
-              fill={colors.blue500}
-              height="16px"
-              mr="4px"
-              ml="-4px"
-            />
-            <Text color="blue500" display="inline" m="0">
-              {end_at ? (
-                <PhaseTimeLeft currentPhaseEndsAt={end_at} />
-              ) : (
-                <>{formatMessage(messages.noEndDate)}</>
-              )}
-            </Text>
-          </Box>
+      <Box mt="8px">
+        <TimeIndicator
+          currentPhaseEndsAt={phase?.data.attributes.end_at}
+          projectStartsInDays={project.attributes.starts_days_from_now}
+          projectEndedDaysAgo={project.attributes.ended_days_ago}
+        />
+        {phase && (
           <Text mt="2px" mb="0px" color="textSecondary">
             {getCTAMessage({
               phase: phase.data,
@@ -143,8 +129,8 @@ const LightProjectCard = ({ project, ml, mr, onKeyDown }: Props) => {
               formatMessage,
             })}
           </Text>
-        </Box>
-      )}
+        )}
+      </Box>
     </CardContainer>
   );
 };
