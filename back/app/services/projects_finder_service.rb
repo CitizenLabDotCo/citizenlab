@@ -71,8 +71,11 @@ class ProjectsFinderService
   # ordered by the follow created_at (most recent first).
   # => [Project]
   def followed_by_user
+    exclude_followable_types = ['ProjectFolders::Folder', 'Initiative']
+
     subquery = Follower
       .where(user_id: @user.id)
+      .where.not(followable_type: exclude_followable_types)
       .joins(
         'LEFT JOIN areas AS followed_areas ON followers.followable_type = \'Area\' ' \
         'AND followed_areas.id = followers.followable_id'
