@@ -66,16 +66,6 @@ class ProjectsFinderService
     { projects: projects, descriptor_pairs: project_descriptor_pairs }
   end
 
-  def projects_with_active_phase(projects)
-    projects
-      .joins('INNER JOIN phases AS phases ON phases.project_id = projects.id')
-      .where(
-        'phases.start_at <= ? AND (phases.end_at >= ? OR phases.end_at IS NULL)',
-        Time.zone.now.to_fs(:db), Time.zone.now.to_fs(:db)
-      )
-      .select('projects.*, phases.end_at AS phase_end_at')
-  end
-
   # Returns an ActiveRecord collection of published projects that are also
   # followed by user OR relate to an idea, area or topic followed by user,
   # ordered by the follow created_at (most recent first).
@@ -141,6 +131,16 @@ class ProjectsFinderService
   end
 
   private
+
+  def projects_with_active_phase(projects)
+    projects
+      .joins('INNER JOIN phases AS phases ON phases.project_id = projects.id')
+      .where(
+        'phases.start_at <= ? AND (phases.end_at >= ? OR phases.end_at IS NULL)',
+        Time.zone.now.to_fs(:db), Time.zone.now.to_fs(:db)
+      )
+      .select('projects.*, phases.end_at AS phase_end_at')
+  end
 
   def order_by_created_at_and_id_with_distinct_on(projects)
     projects
