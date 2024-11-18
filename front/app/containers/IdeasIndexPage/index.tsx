@@ -119,6 +119,9 @@ export default () => {
             <PageTitle>
               <FormattedMessage {...messages.inputsPageTitle} />
             </PageTitle>
+            {/* Needed to add an anchor here so that we can scroll up the page correctly
+                when fitlers are changed in the IdeaCardsWithFiltersSidebar component and scrollToTopIdeasList util.
+            */}
             <Box
               position="absolute"
               mt="-100px"
