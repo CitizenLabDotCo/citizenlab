@@ -98,7 +98,7 @@ class ProjectsFinderService
         'AND followed_ideas.id = followers.followable_id'
       )
       .joins(
-        'LEFT JOIN projects ON ' \
+        'INNER JOIN projects ON ' \
         '(followers.followable_type = \'Project\' AND followers.followable_id = projects.id) ' \
         'OR (areas_projects.project_id = projects.id) ' \
         'OR (projects_topics.project_id = projects.id) ' \
