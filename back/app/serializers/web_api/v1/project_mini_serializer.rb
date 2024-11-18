@@ -16,7 +16,7 @@ class WebApi::V1::ProjectMiniSerializer < WebApi::V1::BaseSerializer
   end
 
   attribute :ended_days_ago do |object|
-    last_phase = object.phases.order(end_at: :desc).first
+    last_phase = object.phases.order(end_at: :desc).last
     today = Time.zone.now.to_date
 
     if last_phase&.end_at && last_phase.end_at < today
