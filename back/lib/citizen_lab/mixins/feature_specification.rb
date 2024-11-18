@@ -52,6 +52,10 @@ module CitizenLab
         true
       end
 
+      def pricing
+        false
+      end
+
       # @return [Array<Setting>]
       def settings
         @settings ||= []

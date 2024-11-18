@@ -253,6 +253,7 @@
         "title": "User blocking",
         "description": "Admin can block or unblock users.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "required-settings": ["duration"],
         "properties": {
@@ -297,6 +298,7 @@
         "title": "Internal commenting",
         "description": "Admins and managers can comment internally on ideas and proposals.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false },
@@ -333,6 +335,7 @@
         "title": "Advanced Custom Pages",
         "description":	"Advanced Custom Pages features.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false },
@@ -346,6 +349,7 @@
         "description": "Allow project folders.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
+        "pricing": true,
         "properties": {
           "allowed": { "type": "boolean", "default": true },
           "enabled": { "type": "boolean", "default": true }
@@ -426,6 +430,7 @@
         "title": "Azure AD Login",
         "description":  "Allow users to register and sign in with Entra ID (fka Azure Active Directory).",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false},
@@ -467,6 +472,7 @@
         "title": "Azure AD B2C Login",
         "description":  "Allow users to register and sign in with Azure AD B2C.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false},
@@ -583,6 +589,7 @@
         "title": "Esri Integration",
         "description":  "Esri integration for maps. Enables the use of Esri layers and Esri web maps with our maps. An add-on that can be purchased, and is not restricted to specific pricing plan(s).",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false},
@@ -775,6 +782,7 @@
         "title": "Proposal Review",
         "description": "Allow proposal review. When this is enabled, the feature is activated. When disabled the require_review toggle in the BO & Proposal settings here will be ignored.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false },
@@ -811,6 +819,7 @@
         "title": "Screening (ideation)",
         "description": "When active, screening can be activated for ideation phases, which requires admins/moderators to explicitly approve each input before it becomes visible to the public.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false },
@@ -823,6 +832,7 @@
         "title": "Surveys",
         "description":  "Allow external surveys to be embedded.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": true},
@@ -835,6 +845,7 @@
         "title": "Typeform Surveys",
         "description":  "Allow Typeform surveys to be embedded.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": true},
@@ -854,6 +865,7 @@
         "title": "Google Forms Surveys",
         "description":  "Allow Google Form surveys to be embedded.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": true},
@@ -866,6 +878,7 @@
         "title": "Enalyzer Forms Surveys",
         "description":  "Allow Enalyzer surveys to be embedded.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false},
@@ -878,6 +891,7 @@
         "title": "Survey Xact Forms Surveys",
         "description":  "Allow Survey Xact surveys to be embedded.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false},
@@ -890,6 +904,7 @@
         "title": "Surveymonkey Surveys",
         "description":  "Allow the embedding of Surveymonkey surveys. Deprecated, since not supported on mobile.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false},
@@ -902,6 +917,7 @@
         "title": "Snap Survey Surveys",
         "description":  "Allow the embedding of Snap Survey surveys.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false},
@@ -914,6 +930,7 @@
         "title": "Qualtrics Surveys",
         "description":  "Allow Qualtrics surveys to be embedded.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false},
@@ -926,6 +943,7 @@
         "title": "Microsoft Forms Surveys",
         "description":  "Allow Microsoft Forms surveys to be embedded.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false},
@@ -938,6 +956,7 @@
         "title": "SmartSurvey Surveys",
         "description":  "Allow SmartSurvey surveys to be embedded.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false},
@@ -950,6 +969,7 @@
         "title": "Konveio Document Annotation",
         "description":  "Allow Konveio document annotation to be embedded.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false },
@@ -974,6 +994,7 @@
         "title": "Block Profanity",
         "description": "Prevent input with profanity in it from being posted (can be turned on/off from the platform)",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": true},
@@ -1018,6 +1039,7 @@
         "title": "Granular Permissions",
         "description": "Admin can specify permissions for specific projects and project phases (e.g., who can post, react, etc.).",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": true},
@@ -1042,6 +1064,7 @@
         "title": "Custom Pages",
         "description":	"Allow custom pages to be made and added to the platform's navigation.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": true},
@@ -1150,6 +1173,7 @@
         "title": "Mapping features used in in-platform surveys",
         "description":  "Alpha version - do not enable for active platform(s) unless agreed with Product. Mapping questions (pin, route & area), Esri Shapefile upload, and map page.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false },
@@ -1162,6 +1186,7 @@
         "title": "Input form builder custom fields",
         "description": "Enables the ability to create custom fields within the ideation form builder.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": true },
@@ -1186,6 +1211,7 @@
         "title": "Permission custom fields on project actions",
         "description": "Enables the option for admins to add custom questions to project action permissions.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false },
@@ -1210,6 +1236,7 @@
         "title": "Custom Input Statuses",
         "description": "Allows admin to define custom input statuses.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": true },
@@ -1234,6 +1261,7 @@
         "title": "Power BI",
         "description": "Allows downloading of pre-configured templates for PowerBI.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false },
@@ -1246,6 +1274,7 @@
         "title": "Form Sync (fka import printed forms)",
         "description": "Enables the importing of PDF files from handwritten ideas and surveys on printed forms.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false },
@@ -1282,6 +1311,7 @@
         "title": "AI-powered analysis for surveys and ideation",
         "description": "Enables the use of AI-powered analysis for surveys and ideation.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": true },
@@ -1294,6 +1324,7 @@
         "title": "AI-powered analysis for surveys and ideation (large summaries)",
         "description": "Enables the use of AI-powered analysis for surveys and ideation for a large number of inputs.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false },
@@ -1306,6 +1337,7 @@
         "title": "AI-powered questions and answers feature for surveys and ideation",
         "description": "Enables the use of AI-powered questions and answers feature for surveys and ideation.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false },
@@ -1318,6 +1350,7 @@
         "title": "AI-powered advanced autotagging for surveys and ideation",
         "description": "Enables the use of AI-powered advanced autotagging feature for surveys and ideation.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false },
@@ -1330,6 +1363,7 @@
         "title": "Multi-language platform",
         "description": "Enables the ability to add multiple languages on the platform.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false },
@@ -1378,6 +1412,7 @@
         "title": "Management Feed",
         "description": "Experimental feature: A minimal list of selected actions performed by admins or managers in the last 30 days. Not all actions are included.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false },

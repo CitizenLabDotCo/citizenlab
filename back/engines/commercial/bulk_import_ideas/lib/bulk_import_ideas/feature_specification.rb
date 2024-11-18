@@ -15,5 +15,9 @@ module BulkImportIdeas
     def self.feature_description
       'Create many ideas at once by importing an XLSX sheet.'
     end
+
+    def self.pricing
+      true
+    end
   end
 end
