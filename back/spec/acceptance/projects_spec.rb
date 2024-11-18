@@ -1398,6 +1398,23 @@ resource 'Projects' do
 
       expect(current_phase_ids).to match included_phase_ids
     end
+
+    context 'when admin' do
+      before do
+        @user = create(:admin)
+        header_token_for @user
+
+        followed_project.update!(admin_publication_attributes: { publication_status: 'draft' })
+        create(:follower, followable: followed_project, user: @user)
+      end
+
+      example_request 'Does not include draft projects', document: false do
+        expect(status).to eq 200
+
+        json_response = json_parse(response_body)
+        expect(json_response[:data]).to eq []
+      end
+    end
   end
 
   get 'web_api/v1/projects/with_active_participatory_phase' do

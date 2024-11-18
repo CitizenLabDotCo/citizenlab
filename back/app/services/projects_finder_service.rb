@@ -108,10 +108,7 @@ class ProjectsFinderService
       .group('projects.id')
 
     @projects
-      .from("(#{subquery.to_sql}) AS subquery")
-      .joins('INNER JOIN projects ON projects.id = subquery.project_id')
-      .joins('INNER JOIN admin_publications AS admin_publications ON admin_publications.publication_id = projects.id')
-      .where(admin_publications: { publication_status: 'published' })
+      .joins("INNER JOIN (#{subquery.to_sql}) AS subquery ON projects.id = subquery.project_id")
       .select('projects.*, subquery.latest_follower_created_at')
       .order('subquery.latest_follower_created_at DESC')
   end
