@@ -130,7 +130,7 @@ nb:
     proposals:
       title: Forslag
     events:
-      title: Hendelser
+      title: Arrangementer
     about:
       title: Om
     faq:
@@ -211,7 +211,7 @@ nb:
         issue:
           title: Hva er din kommentar?
         option:
-          title: Hva er ditt alternativ?
+          title: Hva er ditt innspill?
         proposal:
           title: Hva er forslaget ditt?
         initiative:
