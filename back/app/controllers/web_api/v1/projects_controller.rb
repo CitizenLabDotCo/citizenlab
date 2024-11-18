@@ -78,6 +78,7 @@ class WebApi::V1::ProjectsController < ApplicationController
   # ordered by the follow created_at (most recent first).
   def index_projects_for_followed_item
     projects = policy_scope(Project)
+    projects = projects.not_draft
     projects = ProjectsFinderService.new(projects, current_user).followed_by_user
 
     @projects = paginate projects
