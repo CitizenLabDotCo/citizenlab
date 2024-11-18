@@ -565,6 +565,7 @@
   "app.containers.Admin.PagesAndMenu.containers.BottomInfoSection.pageTitle": "Section d'information inférieure",
   "app.containers.Admin.PagesAndMenu.containers.BottomInfoSection.saveAndEnableButton": "Enregistrer et activer la section d'information inférieure",
   "app.containers.Admin.PagesAndMenu.containers.BottomInfoSection.saveButton": "Sauvegarder la section d'information inférieure",
+  "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage..contactGovSuccessToAccessPages": "La création de pages personnalisées n'est pas incluse dans votre licence actuelle. Contactez votre Spécialiste en participation Go Vocal pour en savoir plus.",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.atLeastOneTag": "Veuillez sélectionner au moins un tag",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.buttonSuccess": "Enregistré !",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.byAreaFilter": "Par zone",

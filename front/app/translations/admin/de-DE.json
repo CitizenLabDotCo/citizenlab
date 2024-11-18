@@ -565,6 +565,7 @@
   "app.containers.Admin.PagesAndMenu.containers.BottomInfoSection.pageTitle": "Unterer Infobereich",
   "app.containers.Admin.PagesAndMenu.containers.BottomInfoSection.saveAndEnableButton": "Unteren Infobereich speichern und aktivieren",
   "app.containers.Admin.PagesAndMenu.containers.BottomInfoSection.saveButton": "Unteren Infobereich speichern",
+  "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage..contactGovSuccessToAccessPages": "Die Erstellung benutzerdefinierter Seiten ist nicht in Ihrer aktuellen Lizenz enthalten. Wenden Sie sich an Ihre Kundenbetreuerin, um mehr darüber zu erfahren.",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.atLeastOneTag": "Bitte wählen Sie mindestens einen Tag aus",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.buttonSuccess": "Gespeichert!",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.byAreaFilter": "Nach Gebiet",

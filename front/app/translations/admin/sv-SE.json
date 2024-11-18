@@ -565,6 +565,7 @@
   "app.containers.Admin.PagesAndMenu.containers.BottomInfoSection.pageTitle": "Nedre informationsavsnitt",
   "app.containers.Admin.PagesAndMenu.containers.BottomInfoSection.saveAndEnableButton": "Salvați și activați secțiunea de informații de jos",
   "app.containers.Admin.PagesAndMenu.containers.BottomInfoSection.saveButton": "Spara nedre informationsavsnitt",
+  "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage..contactGovSuccessToAccessPages": "Att skapa anpassade sidor ingår inte i din nuvarande licens. Kontakta din GovSuccess Manager för att lära dig mer om det.",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.atLeastOneTag": "Välj minst ett ämne",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.buttonSuccess": "Lyckades",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.byAreaFilter": "Efter område",
