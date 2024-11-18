@@ -14,9 +14,9 @@ import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../messages';
 
-import FiltersSideBar, { Props as FiltersSideBarProps } from './FiltersSideBar';
+import InputFilters, { Props as InputFiltersProps } from './InputFilters';
 
-interface Props extends FiltersSideBarProps {
+interface Props extends InputFiltersProps {
   opened: boolean;
   onClose: () => void;
 }
@@ -26,7 +26,7 @@ const FiltersModal = ({
   selectedIdeaFilters,
   onClearFilters,
   onClose,
-  ...filtersSideBarProps
+  ...filtersProps
 }: Props) => {
   const { data: ideasFilterCounts } = useIdeasFilterCounts(selectedIdeaFilters);
   const total = isNilOrError(ideasFilterCounts)
@@ -58,10 +58,10 @@ const FiltersModal = ({
       }
     >
       <Box background={colors.background} padding="15px">
-        <FiltersSideBar
+        <InputFilters
           selectedIdeaFilters={selectedIdeaFilters}
           onClearFilters={onClearFilters}
-          {...filtersSideBarProps}
+          {...filtersProps}
         />
       </Box>
     </FullscreenModal>
