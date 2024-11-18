@@ -37,6 +37,7 @@ import Events from '../Widgets/Events';
 import FinishedOrArchived, {
   finishedOrArchivedTitle,
 } from '../Widgets/FinishedOrArchived';
+import finishedOrArchivedMessages from '../Widgets/FinishedOrArchived/messages';
 import FollowedItems, { followedItemsTitle } from '../Widgets/FollowedItems';
 import followedItemsMessages from '../Widgets/FollowedItems/messages';
 import HomepageBanner, { homepageBannerTitle } from '../Widgets/HomepageBanner';
@@ -131,7 +132,9 @@ const HomepageBuilderToolbox = ({
             id="e2e-draggable-finished-or-archived"
             component={
               <FinishedOrArchived
-                titleMultiloc={toMultiloc(finishedOrArchivedTitle)}
+                titleMultiloc={toMultiloc(
+                  finishedOrArchivedMessages.youSaidWeDid
+                )}
                 filterBy="finished"
               />
             }

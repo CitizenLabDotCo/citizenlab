@@ -22,4 +22,8 @@ export default defineMessages({
     defaultMessage:
       'This widget shows <b>projects that are finished and/or archived.</b>. "Finished" also includes projects that are in the last phase, and where the last phase is a report.',
   },
+  youSaidWeDid: {
+    id: 'app.containers.Admin.pagesAndMenu.ContentBuilder.Widgets.FinishedOrArchived.youSaidWeDid',
+    defaultMessage: 'You said, we did...',
+  },
 });
