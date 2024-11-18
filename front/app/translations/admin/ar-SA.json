@@ -565,6 +565,7 @@
   "app.containers.Admin.PagesAndMenu.containers.BottomInfoSection.pageTitle": "قسم المعلومات السفلي",
   "app.containers.Admin.PagesAndMenu.containers.BottomInfoSection.saveAndEnableButton": "حفظ قسم المعلومات السفلي وتمكينه",
   "app.containers.Admin.PagesAndMenu.containers.BottomInfoSection.saveButton": "حفظ قسم المعلومات السفلي",
+  "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage..contactGovSuccessToAccessPages": "لا يتضمن ترخيصك الحالي إنشاء صفحات مخصصة. تواصل مع مدير GovSuccess الخاص بك لمعرفة المزيد حول هذا الأمر.",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.atLeastOneTag": "يرجى تحديد وسم واحد على الأقل",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.buttonSuccess": "نجاح",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.byAreaFilter": "حسب المنطقة",
