@@ -7,7 +7,7 @@ import TitleMultilocInput from '../_shared/TitleMultilocInput';
 const Settings = () => {
   return (
     <Box my="20px">
-      <TitleMultilocInput name="open_to_participation_title" />
+      <TitleMultilocInput name="followed_items_title" />
     </Box>
   );
 };

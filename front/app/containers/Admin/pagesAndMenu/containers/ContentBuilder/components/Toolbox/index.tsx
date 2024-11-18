@@ -28,6 +28,8 @@ import {
 import messages from '../../messages';
 import CallToAction, { callToActionTitle } from '../Widgets/CallToAction';
 import Events from '../Widgets/Events';
+import FollowedItems, { followedItemsTitle } from '../Widgets/FollowedItems';
+import followedItemsMessages from '../Widgets/FollowedItems/messages';
 import HomepageBanner, { homepageBannerTitle } from '../Widgets/HomepageBanner';
 import {
   getHomepageBannerDefaultImage,
@@ -101,6 +103,18 @@ const HomepageBuilderToolbox = ({
             }
             icon="projects"
             label={formatMessage(openToParticipationTitle)}
+          />
+        )}
+        {newHomepageWidgetsEnabled && (
+          <DraggableElement
+            id="e2e-draggable-followed-items"
+            component={
+              <FollowedItems
+                titleMultiloc={toMultiloc(followedItemsMessages.defaultTitle)}
+              />
+            }
+            icon="projects"
+            label={formatMessage(followedItemsTitle)}
           />
         )}
         <DraggableElement
