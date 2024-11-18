@@ -47,7 +47,7 @@ const Status = styled.button`
   width: 100%;
   padding: 8px;
   margin-top: 4px;
-  border-radius: 3px;
+  border-radius: ${({ theme }) => `${theme.borderRadius}px`};
 
   ${isRtl`
     flex-direction: row-reverse;
