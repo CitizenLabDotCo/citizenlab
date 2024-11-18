@@ -54,6 +54,7 @@
   "app.components.AuthProviders.verificationRequired": "Απαιτείται επαλήθευση",
   "app.components.Author.a11yPostedBy": "Αναρτήθηκε από",
   "app.components.AvatarBubbles.numberOfParticipants1": "{numberOfParticipants, plural, one {1 συμμετέχων} other {{numberOfParticipants} συμμετέχοντες}}",
+  "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} χρήστες",
   "app.components.AvatarBubbles.participant": "συμμετέχων",
   "app.components.AvatarBubbles.participants1": "συμμετέχοντες",
   "app.components.CityLogoSection.iframeTitle": "Περισσότερες πληροφορίες σχετικά με το {orgName}",

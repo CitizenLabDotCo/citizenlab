@@ -54,6 +54,7 @@
   "app.components.AuthProviders.verificationRequired": "تصدیق درکار ہے۔",
   "app.components.Author.a11yPostedBy": "کی طرف سے پوسٹ کیا گیا",
   "app.components.AvatarBubbles.numberOfParticipants1": "{numberOfParticipants, plural, one {1 شریک} other {{numberOfParticipants} شرکاء}}",
+  "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} صارفین",
   "app.components.AvatarBubbles.participant": "شریک",
   "app.components.AvatarBubbles.participants1": "شرکاء",
   "app.components.CityLogoSection.iframeTitle": "{orgName}کے بارے میں مزید معلومات",
