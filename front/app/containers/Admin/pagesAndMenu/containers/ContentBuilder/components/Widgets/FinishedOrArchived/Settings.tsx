@@ -62,7 +62,7 @@ interface RadioLabelProps {
 }
 
 const RadioLabel = ({ message }: RadioLabelProps) => (
-  <Text mt="0px" mb="0px" variant="bodyS" color="primary">
+  <Text mt="0px" mb="0px" variant="bodyS" color="textSecondary">
     <FormattedMessage {...message} />
   </Text>
 );
