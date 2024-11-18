@@ -21,8 +21,7 @@ type FollowedItemParams = {
 
 type FinishedOrArchived = {
   endpoint: 'finished_or_archived';
-  finished?: boolean;
-  archived?: boolean;
+  filter_by: 'finished' | 'archived' | 'finished_and_archived';
 } & PageNumbers;
 
 export type Parameters =
