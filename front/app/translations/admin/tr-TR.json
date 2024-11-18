@@ -565,6 +565,7 @@
   "app.containers.Admin.PagesAndMenu.containers.BottomInfoSection.pageTitle": "Alt bilgi bölümü",
   "app.containers.Admin.PagesAndMenu.containers.BottomInfoSection.saveAndEnableButton": "Alt bilgi bölümünü kaydedin ve etkinleştirin",
   "app.containers.Admin.PagesAndMenu.containers.BottomInfoSection.saveButton": "Alt bilgi bölümünü kaydet",
+  "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage..contactGovSuccessToAccessPages": "Özel sayfalar oluşturmak mevcut lisansınıza dahil değildir. Bu konuda daha fazla bilgi edinmek için GovSuccess Yöneticinize ulaşın.",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.atLeastOneTag": "Lütfen en az bir etiket seçin",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.buttonSuccess": "Başarılı",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.byAreaFilter": "Bölgeye göre",

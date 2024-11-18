@@ -565,6 +565,7 @@
   "app.containers.Admin.PagesAndMenu.containers.BottomInfoSection.pageTitle": "Доњи одељак са информацијама",
   "app.containers.Admin.PagesAndMenu.containers.BottomInfoSection.saveAndEnableButton": "Сачувајте и омогућите доњи одељак са информацијама",
   "app.containers.Admin.PagesAndMenu.containers.BottomInfoSection.saveButton": "Сачувајте доњи одељак са информацијама",
+  "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage..contactGovSuccessToAccessPages": "Creating custom pages is not included in your current license. Reach out to your GovSuccess Manager to learn more about it.",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.atLeastOneTag": "Изаберите најмање једну ознаку",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.buttonSuccess": "Успех",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.byAreaFilter": "По области",
