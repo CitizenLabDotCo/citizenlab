@@ -5,6 +5,7 @@ import {
   fontSizes,
   colors,
   isRtl,
+  Box,
 } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -113,11 +114,17 @@ export default () => {
     <>
       <IdeasIndexMeta />
       <main>
-        <Container id="ideas-with-filter-sidebar">
+        <Container>
           <StyledContentContainer maxWidth="100%">
             <PageTitle>
               <FormattedMessage {...messages.inputsPageTitle} />
             </PageTitle>
+            <Box
+              position="absolute"
+              mt="-100px"
+              id="ideas-list-scroll-anchor"
+              aria-hidden={true}
+            />
             <IdeaCardsWithFiltersSidebar
               invisibleTitleMessage={messages.a11y_IdeasListTitle1}
               ideaQueryParameters={ideasQueryParameters}
