@@ -12,8 +12,8 @@ resource 'Analyses' do
   end
 
   get 'web_api/v1/analyses' do
-    parameter :project_id, 'Only returns analyses scoped to the project (use for ideation-like methods)', required: false
-    parameter :phase_id, 'Only returns anlyses scoped to the phase (use for survey-like methods)', required: false
+    parameter :project_id, 'Only returns analyses scoped to the project (use for methods where the form lives on the project)', required: false
+    parameter :phase_id, 'Only returns anlyses scoped to the phase (use for method where the form lives on the phase)', required: false
 
     with_options scope: :page do
       parameter :number, 'Page number'
@@ -23,11 +23,12 @@ resource 'Analyses' do
     before do
       @survey_analysis = create(:survey_analysis)
       @ideation_analysis = create(:ideation_analysis)
+      @proposals_analysis = create(:proposals_analysis)
     end
 
     example_request 'List all analyses' do
       expect(status).to eq(200)
-      expect(response_data.size).to eq 2
+      expect(response_data.size).to eq 3
     end
 
     example 'List analyses linked to project (ideation)', document: false do
@@ -40,6 +41,12 @@ resource 'Analyses' do
       do_request(phase_id: @survey_analysis.phase_id)
       expect(response_data.size).to eq 1
       expect(response_data[0][:id]).to eq @survey_analysis.id
+    end
+
+    example 'List analyses linked to phase (proposals)', document: false do
+      do_request(phase_id: @proposals_analysis.phase_id)
+      expect(response_data.size).to eq 1
+      expect(response_data[0][:id]).to eq @proposals_analysis.id
     end
   end
 
@@ -67,8 +74,8 @@ resource 'Analyses' do
 
   post 'web_api/v1/analyses' do
     with_options scope: :analysis do
-      parameter :project_id, 'The project to analyze, only in case of project with ideation or voting phases. Mandatory to pass either project_id or phase_id.', required: false
-      parameter :phase_id, 'The phase to analyze, only in case of survey. Mandatory to pass either project_id or phase_id.', required: false
+      parameter :project_id, 'The project to analyze, if the custom form lives on the project. Mandatory to pass either project_id or phase_id.', required: false
+      parameter :phase_id, 'The phase to analyze, if the custom form lives on the phase. Mandatory to pass either project_id or phase_id.', required: false
       parameter :main_custom_field_id, 'The main custom field to analyze. Must be textual fields. If not passed, only the additional fields will be analyzed.', required: false
       parameter :additional_custom_field_ids, 'The additional custom fields that should be part of the analysis.', required: false
       parameter :show_insights, 'Whether to show insights or not', required: false

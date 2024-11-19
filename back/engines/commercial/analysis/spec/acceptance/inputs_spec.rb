@@ -224,5 +224,14 @@ resource 'Inputs' do
         expect(json_response_body[:included].first.dig(:attributes, :slug)).to be_nil
       end
     end
+
+    context 'proposals analysis' do
+      let(:analysis) { create(:proposals_analysis) }
+      let(:input) { create(:proposal, project: analysis.source_project, phases: [analysis.phase]) }
+
+      example_request 'get one proposal in the analysis by id' do
+        assert_status 200
+      end
+    end
   end
 end
