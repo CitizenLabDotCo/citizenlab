@@ -75,7 +75,7 @@ export const AdminPubCard = ({
             <Icon
               name="folder-solid"
               height="20px"
-              ml="-4px"
+              ml="-2px"
               mr="4px"
               mt="0px"
             />

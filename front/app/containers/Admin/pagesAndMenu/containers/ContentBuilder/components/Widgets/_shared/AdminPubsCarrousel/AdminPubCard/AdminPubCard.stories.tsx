@@ -1,4 +1,4 @@
-import { mockFolderChildAdminPublicationsList } from 'api/admin_publications/__mocks__/useAdminPublications';
+import { mockFolderChildAdminPublicationsList } from 'api/admin_publications/__mocks__/data';
 
 import { getOrigin } from 'utils/storybook/getOrigin';
 
