@@ -16,7 +16,7 @@ module MachineTranslations
         end
       else raise "#{record.translatable_type} has no known policy"
       end
-      record.translatable && translatable_policy.new(user, record.translatable).show?
+      record.translatable && translatable_policy.new(user_context, record.translatable).show?
     end
   end
 end

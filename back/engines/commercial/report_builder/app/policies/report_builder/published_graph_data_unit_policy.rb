@@ -3,7 +3,7 @@
 module ReportBuilder
   class PublishedGraphDataUnitPolicy < ::ApplicationPolicy
     def published?
-      ReportPolicy.new(user, record.report).layout?
+      policy_for(record.report).layout?
     end
   end
 end

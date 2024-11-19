@@ -284,6 +284,7 @@ DROP INDEX IF EXISTS public.index_groups_permissions_on_permission_id;
 DROP INDEX IF EXISTS public.index_groups_permissions_on_group_id;
 DROP INDEX IF EXISTS public.index_groups_on_slug;
 DROP INDEX IF EXISTS public.index_followers_on_user_id;
+DROP INDEX IF EXISTS public.index_followers_on_followable_id_and_followable_type;
 DROP INDEX IF EXISTS public.index_followers_on_followable;
 DROP INDEX IF EXISTS public.index_followers_followable_type_id_user_id;
 DROP INDEX IF EXISTS public.index_events_on_project_id;
@@ -367,6 +368,7 @@ DROP INDEX IF EXISTS public.index_analysis_additional_custom_fields_on_custom_fi
 DROP INDEX IF EXISTS public.index_analysis_additional_custom_fields_on_analysis_id;
 DROP INDEX IF EXISTS public.index_admin_publications_on_rgt;
 DROP INDEX IF EXISTS public.index_admin_publications_on_publication_type_and_publication_id;
+DROP INDEX IF EXISTS public.index_admin_publications_on_publication_status;
 DROP INDEX IF EXISTS public.index_admin_publications_on_parent_id;
 DROP INDEX IF EXISTS public.index_admin_publications_on_ordering;
 DROP INDEX IF EXISTS public.index_admin_publications_on_lft;
@@ -1190,7 +1192,8 @@ CREATE TABLE public.projects (
     baskets_count integer DEFAULT 0 NOT NULL,
     votes_count integer DEFAULT 0 NOT NULL,
     followers_count integer DEFAULT 0 NOT NULL,
-    header_bg_alt_text_multiloc jsonb DEFAULT '{}'::jsonb
+    header_bg_alt_text_multiloc jsonb DEFAULT '{}'::jsonb,
+    preview_token character varying NOT NULL
 );
 
 
@@ -4473,6 +4476,13 @@ CREATE INDEX index_admin_publications_on_parent_id ON public.admin_publications 
 
 
 --
+-- Name: index_admin_publications_on_publication_status; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_admin_publications_on_publication_status ON public.admin_publications USING btree (publication_status);
+
+
+--
 -- Name: index_admin_publications_on_publication_type_and_publication_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -5051,6 +5061,13 @@ CREATE UNIQUE INDEX index_followers_followable_type_id_user_id ON public.followe
 --
 
 CREATE INDEX index_followers_on_followable ON public.followers USING btree (followable_type, followable_id);
+
+
+--
+-- Name: index_followers_on_followable_id_and_followable_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_followers_on_followable_id_and_followable_type ON public.followers USING btree (followable_id, followable_type);
 
 
 --
@@ -7569,8 +7586,11 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20241011816395'),
 ('20241016201503'),
 ('20241022101049'),
+('20241024110349'),
 ('20241028162618'),
 ('20241029080612'),
 ('20241105053818'),
 ('20241105053934'),
-('20241105081014');
+('20241105081014'),
+('20241115141553'),
+('20241115141717');
