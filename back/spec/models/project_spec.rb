@@ -7,6 +7,7 @@ RSpec.describe Project do
     subject(:project) { build(:project) }
 
     it { is_expected.to be_valid }
+    it { is_expected.to have_one(:review).class_name('ProjectReview').dependent(:destroy) }
 
     it 'has a preview token' do
       expect(project.preview_token).to be_present

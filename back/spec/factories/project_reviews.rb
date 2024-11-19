@@ -3,8 +3,8 @@
 FactoryBot.define do
   factory :project_review do
     project
-    requester { association :user }
-    reviewer { association :user }
+    requester { association :project_moderator, projects: [project] }
+    reviewer { association :admin }
 
     trait :approved do
       approved_at { Time.current }

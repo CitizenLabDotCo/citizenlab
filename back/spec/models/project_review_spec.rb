@@ -4,7 +4,7 @@ require 'rails_helper'
 require 'test_prof/recipes/rspec/factory_default'
 
 RSpec.describe ProjectReview do
-  subject(:project_review) { build(:project_review) }
+  subject(:project_review) { create(:project_review) }
 
   it { is_expected.to be_valid }
   it { is_expected.to belong_to(:project) }
@@ -14,24 +14,48 @@ RSpec.describe ProjectReview do
   describe 'validations' do
     describe 'on create' do
       it 'is invalid without a requester' do
-        project_review.requester = nil
+        project_review = build(:project_review, requester: nil)
         expect(project_review).not_to be_valid
         expect(project_review.errors[:requester]).to include('must be present')
+      end
+
+      it 'is invalid if the reviewer is not an admin or a moderator of the project folder' do
+        project_review = build(:project_review)
+        project_review.reviewer = create(:user)
+        expect(project_review).not_to be_valid
+        expect(project_review.errors[:reviewer]).to include('must be an admin or a moderator of the project folder')
+      end
+
+      it 'valid if the reviewer is an admin' do
+        project_review = build_stubbed(:project_review)
+        project_review.reviewer = create(:admin)
+        expect(project_review).to be_valid
+      end
+
+      it 'valid if the reviewer is a moderator of the project folder' do
+        project = build_stubbed(:project)
+        folder = build_stubbed(:project_folder, projects: [project])
+        project_review = build(:project_review, project: project)
+        project_review.reviewer = create(:project_folder_moderator, project_folders: [folder])
+        expect(project_review).to be_valid
       end
     end
 
     describe 'on update' do
-      let(:project_review) { create(:project_review) }
-
       it 'allows nullifying the requester' do
-        project_review.requester = nil
-        expect(project_review).to be_valid
+        project_review.requester.destroy!
+        expect(project_review.reload.requester).to be_nil
       end
 
       it 'prevents changing the requester' do
         project_review.requester = create(:user)
         expect(project_review).not_to be_valid
         expect(project_review.errors[:requester]).to include('cannot be changed')
+      end
+
+      it 'allows nullifying the reviewer' do
+        project_review.reviewer.destroy!
+        expect(project_review.reload.reviewer).to be_nil
       end
 
       it 'prevents changing the project' do
@@ -41,7 +65,7 @@ RSpec.describe ProjectReview do
       end
 
       it 'prevents removing approval' do
-        project_review.approve!(create(:user))
+        project_review.approve!(project_review.reviewer)
         project_review.approved_at = nil
         expect(project_review).not_to be_valid
         expect(project_review.errors[:approved_at]).to include('cannot be removed once set (cannot remove approval)')
@@ -78,12 +102,16 @@ RSpec.describe ProjectReview do
   end
 
   describe '#approve!' do
+    let_it_be(:project) { create(:project) }
+    let_it_be(:folder) { create(:project_folder, projects: [project]) }
+    let_it_be(:project_review, reload: true) { create(:project_review, project: project) }
+
     it 'approves the project review' do
       old_reviewer = project_review.reviewer
-      new_reviewer = create(:user)
+      new_reviewer = create(:project_folder_moderator, project_folders: [folder])
 
       expect { project_review.approve!(new_reviewer) }
-        .to  change(project_review, :approved_at).from(nil).to(be_within(1.second).of(Time.current))
+        .to change(project_review, :approved_at).from(nil).to(be_within(1.second).of(Time.current))
         .and change(project_review, :reviewer).from(old_reviewer).to(new_reviewer)
         .and change(project_review, :approved?).from(false).to(true)
 
@@ -91,8 +119,8 @@ RSpec.describe ProjectReview do
     end
 
     it 'fails if the project review is already approved' do
-      review = create(:project_review, :approved)
-      expect { review.approve!(create(:user)) }
+      project_review.approve!(project_review.reviewer)
+      expect { project_review.approve!(project_review.reviewer) }
         .to raise_error(ActiveRecord::RecordInvalid)
         .with_message('Validation failed: Project review is already approved')
     end
@@ -102,6 +130,13 @@ RSpec.describe ProjectReview do
       expect { review.approve!(nil) }
         .to raise_error(ActiveRecord::RecordInvalid)
         .with_message('Validation failed: Reviewer must be present when approving')
+    end
+
+    it 'fails if the reviewer is not an admin or a moderator of the project folder' do
+      review = create(:project_review)
+      expect { review.approve!(create(:user)) }
+        .to raise_error(ActiveRecord::RecordInvalid)
+        .with_message('Validation failed: Reviewer must be an admin or a moderator of the project folder')
     end
   end
 end

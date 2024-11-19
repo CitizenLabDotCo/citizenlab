@@ -163,6 +163,9 @@ class User < ApplicationRecord
   before_destroy :destroy_baskets
   has_many :initiative_status_changes, dependent: :nullify
 
+  has_many :requested_project_reviews, class_name: 'ProjectReview', foreign_key: :requester_id, dependent: :nullify
+  has_many :assigned_project_reviews, class_name: 'ProjectReview', foreign_key: :reviewer_id, dependent: :nullify
+
   store_accessor :custom_field_values, :gender, :birthyear, :domicile, :education
   store_accessor :onboarding, :topics_and_areas
 

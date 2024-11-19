@@ -39,26 +39,46 @@ class ProjectReview < ApplicationRecord
 
   # @param [User] reviewer
   def approve!(reviewer)
+    approve(reviewer)
+    save!
+  end
+
+  def approve(reviewer)
     # We set `updated_at` explicitly to ensure it has the same value as `approved_at`.
     now = Time.current
-    update!(reviewer: reviewer, approved_at: now, updated_at: now)
+
+    self.reviewer = reviewer
+    self.approved_at = now
+    self.updated_at = now
   end
 
   private
 
+  def validate_reviewer
+    return if reviewer.nil?
+    return if reviewer.admin?
+    return if reviewer.project_folder_moderator?(project.folder_id)
+
+    errors.add(:reviewer, 'must be an admin or a moderator of the project folder')
+  end
+
   def validate_create
-    errors.add(:requester, 'must be present') if requester.nil?
+    validate_reviewer
+
+    if requester.nil?
+      errors.add(:requester, 'must be present')
+    elsif !UserRoleService.new.can_moderate_project?(project, requester)
+      errors.add(:requester, 'must be able to moderate the project (admin or moderator)')
+    end
   end
 
   def validate_update
-    if project_changed?
-      errors.add(:project, 'cannot be changed')
-    end
-
+    # We validate the reviewer only if it has changed to prevent the project review to
+    # become invalid if the roles of the reviewer change.
+    validate_reviewer if reviewer_changed?
     # The requester cannot be changed, but can be nullified.
-    if requester_changed? && !requester.nil?
-      errors.add(:requester, 'cannot be changed')
-    end
+    errors.add(:requester, 'cannot be changed') if requester_changed? && !requester.nil?
+    errors.add(:project, 'cannot be changed') if project_changed?
 
     if approved_at_changed?
       if approved_at.nil?
