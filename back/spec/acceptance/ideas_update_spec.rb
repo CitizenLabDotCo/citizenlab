@@ -631,10 +631,10 @@ resource 'Ideas' do
           example 'Set offline votes' do
             expect { do_request }
               .not_to enqueue_job(LogActivityJob).with(
-                input,
+                input.reload,
                 'changed_manual_votes_amount',
                 author,
-                anything,
+                input.updated_at.to_i,
                 payload: { change: [nil, manual_votes_amount] },
                 project_id: input.project_id
               ).exactly(1).times
