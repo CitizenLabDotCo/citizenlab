@@ -19,7 +19,8 @@ const image = `${getOrigin()}/images/image16.png`;
 
 export const Primary: Story = {
   args: {
-    projectUrl: '/path/to/project',
+    publicationUrl: '/projects/test',
+    publicationTitle: 'Admin pub card',
     imageUrl: image,
     onKeyDown: () => {},
   },

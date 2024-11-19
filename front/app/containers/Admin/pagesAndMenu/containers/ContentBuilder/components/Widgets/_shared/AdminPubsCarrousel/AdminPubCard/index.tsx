@@ -4,6 +4,7 @@ import { Title } from '@citizenlab/cl2-component-library';
 import { RouteType } from 'routes';
 
 import Link from 'utils/cl-router/Link';
+import { truncate } from 'utils/textUtils';
 
 import { CardContainer, CardImage } from '../../BaseCard';
 
@@ -11,6 +12,7 @@ const CARD_WIDTH = 376;
 
 interface Props {
   publicationUrl: RouteType;
+  publicationTitle: string;
   imageUrl?: string;
   ml?: string;
   mr?: string;
@@ -20,6 +22,7 @@ interface Props {
 
 const AdminPubCard = ({
   publicationUrl,
+  publicationTitle,
   imageUrl,
   ml,
   mr,
@@ -38,7 +41,7 @@ const AdminPubCard = ({
     >
       <CardImage imageUrl={imageUrl} />
       <Title variant="h4" as="h3" mt="8px" mb="0px">
-        Test title
+        {truncate(publicationTitle, 50)}
       </Title>
     </CardContainer>
   );
