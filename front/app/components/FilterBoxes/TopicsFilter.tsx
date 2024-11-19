@@ -164,7 +164,6 @@ const TopicsFilter = memo<Props>(
                       onClick={handleOnClick}
                       className={`e2e-topic ${topicSelected ? 'selected' : ''}`}
                       style={{ display: 'flex' }}
-                      tabIndex={index === 6 ? -1 : undefined}
                     >
                       <Box maxWidth="90%">
                         <Text

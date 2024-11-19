@@ -110,8 +110,7 @@ const CollapsibleContainer = ({
   const uuid = useInstanceId();
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const handleChange = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
+  const handleChange = () => {
     setIsExpanded(!isExpanded);
   };
 
