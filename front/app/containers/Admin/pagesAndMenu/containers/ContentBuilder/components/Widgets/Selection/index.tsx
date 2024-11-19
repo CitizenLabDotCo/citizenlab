@@ -1,9 +1,15 @@
 import React from 'react';
 
+import { Multiloc } from 'typings';
+
 import messages from './messages';
 import Settings from './Settings';
 
-const Selection = () => {
+interface Props {
+  titleMultiloc: Multiloc;
+}
+
+const Selection = (_props: Props) => {
   return <></>;
 };
 
