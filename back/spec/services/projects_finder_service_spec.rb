@@ -129,14 +129,12 @@ describe ProjectsFinderService do
 
     let!(:unfollowed_project) { create(:project) }
 
-    it 'excludes projects without a published status' do
-      followed_project2 = create(:project, admin_publication_attributes: { publication_status: 'draft' })
+    it 'includes projects with an archived status' do
+      followed_project2 = create(:project, admin_publication_attributes: { publication_status: 'archived' })
       create(:follower, followable: followed_project2, user: user)
-      followed_project3 = create(:project, admin_publication_attributes: { publication_status: 'archived' })
-      create(:follower, followable: followed_project3, user: user)
 
-      expect(Project.count).to eq 4
-      expect(result).to eq [followed_project]
+      expect(Project.count).to eq 3
+      expect(result).to match_array [followed_project, followed_project2]
     end
 
     it 'excludes projects not followed by user' do

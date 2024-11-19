@@ -294,7 +294,7 @@ class WebApi::V1::UsersController < ApplicationController
   end
 
   def view_private_attributes?
-    Pundit.policy!(current_user, (@user || User)).view_private_attributes?
+    policy(@user || User).view_private_attributes?
   end
 
   def update_params

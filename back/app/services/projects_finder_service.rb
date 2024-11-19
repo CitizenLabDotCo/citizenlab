@@ -65,74 +65,44 @@ class ProjectsFinderService
     { projects: projects, descriptor_pairs: project_descriptor_pairs }
   end
 
-  def projects_with_active_phase(projects)
-    projects
-      .joins('INNER JOIN phases AS phases ON phases.project_id = projects.id')
-      .where(
-        'phases.start_at <= ? AND (phases.end_at >= ? OR phases.end_at IS NULL)',
-        Time.zone.now.to_fs(:db), Time.zone.now.to_fs(:db)
-      )
-      .select('projects.*, phases.end_at AS phase_end_at')
-  end
-
   # Returns an ActiveRecord collection of published projects that are also
   # followed by user OR relate to an idea, area or topic followed by user,
   # ordered by the follow created_at (most recent first).
   # => [Project]
   def followed_by_user
-    subquery = @projects
-      .joins('INNER JOIN admin_publications AS admin_publications ON admin_publications.publication_id = projects.id')
-      .where(admin_publications: { publication_status: 'published' })
+    exclude_followable_types = ['ProjectFolders::Folder', 'Initiative']
+
+    subquery = Follower
+      .where(user_id: @user.id)
+      .where.not(followable_type: exclude_followable_types)
       .joins(
-        'LEFT JOIN followers AS project_followers ON project_followers.followable_id = projects.id ' \
-        'AND project_followers.followable_type = \'Project\''
+        'LEFT JOIN areas AS followed_areas ON followers.followable_type = \'Area\' ' \
+        'AND followed_areas.id = followers.followable_id'
       )
-      .joins('LEFT JOIN ideas ON ideas.project_id = projects.id')
+      .joins('LEFT JOIN areas_projects ON areas_projects.area_id = followed_areas.id')
       .joins(
-        'LEFT JOIN followers AS idea_followers ON idea_followers.followable_id = ideas.id ' \
-        'AND idea_followers.followable_type = \'Idea\''
+        'LEFT JOIN topics AS followed_topics ON followers.followable_type = \'Topic\' ' \
+        'AND followed_topics.id = followers.followable_id'
       )
+      .joins('LEFT JOIN projects_topics ON projects_topics.topic_id = followed_topics.id')
       .joins(
-        'LEFT JOIN areas_projects ON areas_projects.project_id = projects.id'
-      )
-      .joins(
-        'LEFT JOIN followers AS area_followers ON area_followers.followable_id = areas_projects.area_id ' \
-        'AND area_followers.followable_type = \'Area\''
-      )
-      .joins(
-        'LEFT JOIN projects_topics ON projects_topics.project_id = projects.id'
+        'LEFT JOIN ideas AS followed_ideas ON followers.followable_type = \'Idea\' ' \
+        'AND followed_ideas.id = followers.followable_id'
       )
       .joins(
-        'LEFT JOIN followers AS topic_followers ON topic_followers.followable_id = projects_topics.topic_id ' \
-        'AND topic_followers.followable_type = \'Topic\''
+        'INNER JOIN projects ON ' \
+        '(followers.followable_type = \'Project\' AND followers.followable_id = projects.id) ' \
+        'OR (areas_projects.project_id = projects.id) ' \
+        'OR (projects_topics.project_id = projects.id) ' \
+        'OR (followed_ideas.project_id = projects.id)'
       )
-      .where(
-        'project_followers.user_id = :user_id OR idea_followers.user_id = :user_id ' \
-        'OR area_followers.user_id = :user_id OR topic_followers.user_id = :user_id',
-        user_id: @user.id
-      )
-      .select(
-        'projects.id AS project_id, ' \
-        'MAX(GREATEST(' \
-        'project_followers.created_at, ' \
-        'idea_followers.created_at, ' \
-        'area_followers.created_at, ' \
-        'topic_followers.created_at' \
-        ')) AS greatest_created_at'
-      )
+      .select('projects.id AS project_id, MAX(followers.created_at) AS latest_follower_created_at')
       .group('projects.id')
 
-    # The rather counter-intuitive `.group('projects.id')` at the end of the preceding subquery, followed by
-    # this join with the projects table, is necessary to avoid introducing duplicates AND maintain the desired ordering.
-    # For example, if a user follows an area for a project and the project is also associated with another area,
-    # the project would appear twice in the results without this approach.
-    Project
-      .from("(#{subquery.to_sql}) AS subquery")
-      .joins('INNER JOIN projects ON projects.id = subquery.project_id')
-      .select('projects.*, subquery.greatest_created_at')
-      .order(
-        Arel.sql('subquery.greatest_created_at DESC')
-      )
+    @projects
+      .joins("INNER JOIN (#{subquery.to_sql}) AS subquery ON projects.id = subquery.project_id")
+      .select('projects.*, subquery.latest_follower_created_at')
+      .order('subquery.latest_follower_created_at DESC')
   end
 
   # Returns ActiveRecord collection of projects that are either (finished OR have a last phase that contains a report)
@@ -167,6 +137,16 @@ class ProjectsFinderService
   end
 
   private
+
+  def projects_with_active_phase(projects)
+    projects
+      .joins('INNER JOIN phases AS phases ON phases.project_id = projects.id')
+      .where(
+        'phases.start_at <= ? AND (phases.end_at >= ? OR phases.end_at IS NULL)',
+        Time.zone.now.to_fs(:db), Time.zone.now.to_fs(:db)
+      )
+      .select('projects.*, phases.end_at AS phase_end_at')
+  end
 
   def order_by_created_at_and_id_with_distinct_on(projects)
     projects

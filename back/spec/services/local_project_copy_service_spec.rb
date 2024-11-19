@@ -62,8 +62,9 @@ describe LocalProjectCopyService do
     it 'copies basic project attributes' do
       copied_project = service.copy(open_ended_project)
 
-      expect(copied_project.as_json(except: %i[id title_mutliloc slug updated_at created_at]))
-        .to eq open_ended_project.as_json(except: %i[id title_mutliloc slug updated_at created_at])
+      except_attributes = %i[id title_mutliloc slug preview_token updated_at created_at]
+      expect(copied_project.as_json(except: except_attributes))
+        .to eq open_ended_project.as_json(except: except_attributes)
     end
 
     it 'creates a copied project with an associated publication status of draft' do
@@ -85,6 +86,12 @@ describe LocalProjectCopyService do
 
       copied_project2 = service.copy(open_ended_project.reload)
       expect(copied_project2.slug).to eq "#{open_ended_project.slug}-copy-1"
+    end
+
+    it 'creates a new preview token' do
+      copied_project = service.copy(open_ended_project)
+
+      expect(copied_project.preview_token).not_to eq open_ended_project.preview_token
     end
 
     it 'copies project to same folder as source project' do

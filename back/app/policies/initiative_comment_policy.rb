@@ -1,16 +1,9 @@
 # frozen_string_literal: true
 
 class InitiativeCommentPolicy < ApplicationPolicy
-  class Scope
-    attr_reader :user, :scope
-
-    def initialize(user, scope)
-      @user  = user
-      @scope = scope
-    end
-
+  class Scope < ApplicationPolicy::Scope
     def resolve
-      scope.where(post: InitiativePolicy::Scope.new(user, Initiative).resolve)
+      scope.where(post: scope_for(Initiative))
     end
   end
 
@@ -30,7 +23,7 @@ class InitiativeCommentPolicy < ApplicationPolicy
   end
 
   def show?
-    InitiativePolicy.new(user, record.post).show?
+    policy_for(record.post).show?
   end
 
   def update?

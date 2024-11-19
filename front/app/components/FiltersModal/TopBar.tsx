@@ -1,8 +1,14 @@
 import React, { MouseEvent } from 'react';
 
-import { media, colors, fontSizes } from '@citizenlab/cl2-component-library';
+import {
+  colors,
+  Box,
+  Button,
+  fontSizes,
+  Title,
+} from '@citizenlab/cl2-component-library';
 import { lighten } from 'polished';
-import styled from 'styled-components';
+import { useTheme } from 'styled-components';
 
 import CloseIconButton from 'components/UI/CloseIconButton';
 
@@ -10,82 +16,51 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from './messages';
 
-const Container = styled.div`
-  height: ${(props) => props.theme.mobileTopBarHeight}px;
-  background: #fff;
-  border-bottom: solid 1px ${lighten(0.4, colors.textSecondary)};
-`;
-
-const StyledCloseIconButton = styled(CloseIconButton)`
-  padding: 20px;
-`;
-
-const StyledButton = styled.button`
-  cursor: pointer;
-`;
-
-const TopBarInner = styled.div`
-  height: 100%;
-  padding-left: 15px;
-  padding-right: 15px;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  ${media.desktop`
-    padding-left: 30px;
-    padding-right: 30px;
-  `}
-`;
-
-const Left = styled.div`
-  height: 48px;
-  align-items: center;
-  display: flex;
-`;
-
-const Center = styled.h1`
-  flex: 1;
-  font-size: ${fontSizes.m}px;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0;
-  padding: 0;
-`;
-
-const Right = styled.div``;
-
 interface Props {
   onClose: () => void;
   onReset: (event: MouseEvent) => void;
-  className?: string;
 }
 
-const TopBar = ({ onClose, onReset, className }: Props) => {
+const TopBar = ({ onClose, onReset }: Props) => {
+  const theme = useTheme();
+
   return (
-    <Container className={className}>
-      <TopBarInner>
-        <Left>
-          <StyledCloseIconButton
-            a11y_buttonActionMessage={messages.a11y_closeFilterPanel}
-            onClick={onClose}
-            iconColor={colors.textSecondary}
-            iconColorOnHover={'#000'}
-          />
-        </Left>
-        <Center>
-          <FormattedMessage {...messages.filters} />
-        </Center>
-        <Right>
-          <StyledButton onClick={onReset}>
-            <FormattedMessage {...messages.resetFilters} />
-          </StyledButton>
-        </Right>
-      </TopBarInner>
-    </Container>
+    <Box
+      height={`${theme.mobileTopBarHeight}px`}
+      bgColor={colors.white}
+      borderBottom={`solid 1px ${lighten(0.4, colors.textSecondary)}`}
+      display="flex"
+      alignItems="center"
+      justifyContent="space-between"
+      px="16px"
+    >
+      <Title
+        as="h2"
+        variant="h5"
+        fontWeight="bold"
+        // CloseIconButton has margin or padding on the right,
+        // which makes the px from Box above look assymetical
+        // This ml visually corrects this.
+        ml="8px"
+      >
+        <FormattedMessage {...messages.filters} />
+      </Title>
+      <Box display="flex">
+        <Button
+          onClick={onReset}
+          buttonStyle="text"
+          fontSize={`${fontSizes.s}px`}
+        >
+          <FormattedMessage {...messages.resetFilters} />
+        </Button>
+        <CloseIconButton
+          a11y_buttonActionMessage={messages.a11y_closeFilterPanel}
+          onClick={onClose}
+          iconColor={colors.textSecondary}
+          iconColorOnHover={'#000'}
+        />
+      </Box>
+    </Box>
   );
 };
 

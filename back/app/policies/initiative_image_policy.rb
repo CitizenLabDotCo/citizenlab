@@ -1,32 +1,25 @@
 # frozen_string_literal: true
 
 class InitiativeImagePolicy < ApplicationPolicy
-  class Scope
-    attr_reader :user, :scope
-
-    def initialize(user, scope)
-      @user  = user
-      @scope = scope
-    end
-
+  class Scope < ApplicationPolicy::Scope
     def resolve
-      scope.where(initiative: Pundit.policy_scope(user, Initiative))
+      scope.where(initiative: scope_for(Initiative))
     end
   end
 
   def create?
-    InitiativePolicy.new(user, record.initiative).update?
+    policy_for(record.initiative).update?
   end
 
   def show?
-    InitiativePolicy.new(user, record.initiative).show?
+    policy_for(record.initiative).show?
   end
 
   def update?
-    InitiativePolicy.new(user, record.initiative).update?
+    policy_for(record.initiative).update?
   end
 
   def destroy?
-    InitiativePolicy.new(user, record.initiative).update?
+    policy_for(record.initiative).update?
   end
 end
