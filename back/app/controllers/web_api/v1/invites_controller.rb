@@ -60,7 +60,7 @@ class WebApi::V1::InvitesController < ApplicationController
 
     I18n.with_locale(current_user&.locale) do
       @invites = policy_scope(Invite).includes(invitee: [:manual_groups])
-      xlsx = XlsxService.new.generate_invites_xlsx @invites, view_private_attributes: Pundit.policy!(current_user, User).view_private_attributes?
+      xlsx = XlsxService.new.generate_invites_xlsx @invites, view_private_attributes: policy(User).view_private_attributes?
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'invites.xlsx'
     end
   end

@@ -70,9 +70,11 @@ export interface IProjectAttributes {
   description_multiloc: Multiloc;
   description_preview_multiloc: Multiloc;
   slug: string;
+  preview_token: string;
   created_at: string;
   updated_at: string;
   header_bg: ProjectHeaderBgImageSizes;
+  header_bg_alt_text_multiloc: Multiloc;
   comments_count: number;
   avatars_count: number;
   followers_count: number;

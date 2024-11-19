@@ -83,7 +83,7 @@ export interface Props {
   phaseId?: string;
 }
 
-const FiltersSideBar = ({
+const InputFilters = ({
   defaultValue,
   className,
   filtersActive,
@@ -139,4 +139,4 @@ const FiltersSideBar = ({
   );
 };
 
-export default FiltersSideBar;
+export default InputFilters;

@@ -13,8 +13,10 @@ class WebApi::V1::FoldersController < ApplicationController
 
     # Array of publication IDs for folders that
     # still have visible children left.
-    parent_ids_for_visible_children = Pundit.policy_scope(current_user, Project)
-      .includes(:admin_publication).pluck('admin_publications.parent_id').compact
+    parent_ids_for_visible_children = policy_scope(Project)
+      .includes(:admin_publication)
+      .pluck('admin_publications.parent_id')
+      .compact
     # Caches the counts of visible children for
     # the current user.
     visible_children_count_by_parent_id = Hash.new(0).tap { |h| parent_ids_for_visible_children.each { |id| h[id] += 1 } }
@@ -122,7 +124,8 @@ class WebApi::V1::FoldersController < ApplicationController
       admin_publication_attributes: [:publication_status],
       title_multiloc: CL2_SUPPORTED_LOCALES,
       description_multiloc: CL2_SUPPORTED_LOCALES,
-      description_preview_multiloc: CL2_SUPPORTED_LOCALES
+      description_preview_multiloc: CL2_SUPPORTED_LOCALES,
+      header_bg_alt_text_multiloc: CL2_SUPPORTED_LOCALES
     )
   end
 end
