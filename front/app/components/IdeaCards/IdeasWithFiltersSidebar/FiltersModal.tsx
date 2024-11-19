@@ -56,8 +56,9 @@ const FiltersModal = ({
           onClick={onClose}
         />
       }
+      contentBgColor="background"
     >
-      <Box py="8px">
+      <Box p="16px">
         <InputFilters
           selectedIdeaFilters={selectedIdeaFilters}
           onClearFilters={onClearFilters}
