@@ -58,6 +58,7 @@ export type IAppConfigurationSettingsCore = {
   allow_sharing: boolean;
   customer_portal_url?: string | null;
   anonymous_name_scheme?: string | null;
+  private_attributes_in_export: boolean;
 };
 
 export type TSeatNumber = number | null | undefined;
@@ -79,6 +80,10 @@ export type ProposalsSettings = {
 export interface IAppConfigurationSettings {
   core: IAppConfigurationSettingsCore;
   advanced_custom_pages: {
+    allowed: boolean;
+    enabled: boolean;
+  };
+  pages: {
     allowed: boolean;
     enabled: boolean;
   };
@@ -130,6 +135,10 @@ export interface IAppConfigurationSettings {
     allowed: boolean;
     enabled: boolean;
   };
+  id_austria_login?: {
+    allowed: boolean;
+    enabled: boolean;
+  };
   criipto_login?: {
     allowed: boolean;
     enabled: boolean;
@@ -174,6 +183,7 @@ export interface IAppConfigurationSettings {
   survey_xact_surveys?: AppConfigurationFeature;
   snap_survey_surveys?: AppConfigurationFeature;
   project_folders?: AppConfigurationFeature;
+  project_preview_link?: AppConfigurationFeature;
   bulk_import_ideas?: AppConfigurationFeature;
   granular_permissions?: AppConfigurationFeature;
   machine_translations?: AppConfigurationFeature;

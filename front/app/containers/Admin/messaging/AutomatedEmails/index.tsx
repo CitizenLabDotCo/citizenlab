@@ -127,7 +127,7 @@ const CampaignsSubGroup = ({
   onClickViewExample,
 }: CampaignsSubGroupProps) => (
   <Box>
-    <Title color="primary" variant="h4" mt="24px" fontWeight="normal">
+    <Title color="primary" variant="h4" mt="24px">
       {content_type}
     </Title>
     {campaigns.map((campaign: CampaignData) => (

@@ -90,6 +90,7 @@ ALTER TABLE IF EXISTS ONLY public.ideas DROP CONSTRAINT IF EXISTS fk_rails_73040
 ALTER TABLE IF EXISTS ONLY public.email_campaigns_campaigns_groups DROP CONSTRAINT IF EXISTS fk_rails_712f4ad915;
 ALTER TABLE IF EXISTS ONLY public.groups_permissions DROP CONSTRAINT IF EXISTS fk_rails_6fa6389d80;
 ALTER TABLE IF EXISTS ONLY public.initiatives_topics DROP CONSTRAINT IF EXISTS fk_rails_6ee3ffe8e1;
+ALTER TABLE IF EXISTS ONLY public.ideas DROP CONSTRAINT IF EXISTS fk_rails_6c9ab6d4f8;
 ALTER TABLE IF EXISTS ONLY public.report_builder_reports DROP CONSTRAINT IF EXISTS fk_rails_6988c9886e;
 ALTER TABLE IF EXISTS ONLY public.idea_imports DROP CONSTRAINT IF EXISTS fk_rails_67f00886f9;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_67be9591a3;
@@ -117,6 +118,7 @@ ALTER TABLE IF EXISTS ONLY public.nav_bar_items DROP CONSTRAINT IF EXISTS fk_rai
 ALTER TABLE IF EXISTS ONLY public.volunteering_volunteers DROP CONSTRAINT IF EXISTS fk_rails_33a154a9ba;
 ALTER TABLE IF EXISTS ONLY public.phase_files DROP CONSTRAINT IF EXISTS fk_rails_33852a9a71;
 ALTER TABLE IF EXISTS ONLY public.cosponsorships DROP CONSTRAINT IF EXISTS fk_rails_2d026b99a2;
+ALTER TABLE IF EXISTS ONLY public.phases DROP CONSTRAINT IF EXISTS fk_rails_2c74f68dd3;
 ALTER TABLE IF EXISTS ONLY public.analysis_analyses DROP CONSTRAINT IF EXISTS fk_rails_2a92a64a56;
 ALTER TABLE IF EXISTS ONLY public.events_attendances DROP CONSTRAINT IF EXISTS fk_rails_29ccdf5b04;
 ALTER TABLE IF EXISTS ONLY public.areas_static_pages DROP CONSTRAINT IF EXISTS fk_rails_231f268568;
@@ -191,6 +193,7 @@ DROP INDEX IF EXISTS public.index_polls_response_options_on_option_id;
 DROP INDEX IF EXISTS public.index_polls_questions_on_phase_id;
 DROP INDEX IF EXISTS public.index_polls_options_on_question_id;
 DROP INDEX IF EXISTS public.index_phases_on_project_id;
+DROP INDEX IF EXISTS public.index_phases_on_manual_voters_last_updated_by_id;
 DROP INDEX IF EXISTS public.index_phase_files_on_phase_id;
 DROP INDEX IF EXISTS public.index_permissions_on_permission_scope_id;
 DROP INDEX IF EXISTS public.index_permissions_on_action;
@@ -261,6 +264,7 @@ DROP INDEX IF EXISTS public.index_ideas_phases_on_idea_id_and_phase_id;
 DROP INDEX IF EXISTS public.index_ideas_phases_on_idea_id;
 DROP INDEX IF EXISTS public.index_ideas_on_slug;
 DROP INDEX IF EXISTS public.index_ideas_on_project_id;
+DROP INDEX IF EXISTS public.index_ideas_on_manual_votes_last_updated_by_id;
 DROP INDEX IF EXISTS public.index_ideas_on_location_point;
 DROP INDEX IF EXISTS public.index_ideas_on_idea_status_id;
 DROP INDEX IF EXISTS public.index_ideas_on_author_id;
@@ -1186,6 +1190,7 @@ CREATE TABLE public.projects (
     baskets_count integer DEFAULT 0 NOT NULL,
     votes_count integer DEFAULT 0 NOT NULL,
     followers_count integer DEFAULT 0 NOT NULL,
+    header_bg_alt_text_multiloc jsonb DEFAULT '{}'::jsonb,
     preview_token character varying NOT NULL
 );
 
@@ -1533,7 +1538,10 @@ CREATE TABLE public.ideas (
     internal_comments_count integer DEFAULT 0 NOT NULL,
     votes_count integer DEFAULT 0 NOT NULL,
     followers_count integer DEFAULT 0 NOT NULL,
-    submitted_at timestamp(6) without time zone
+    submitted_at timestamp(6) without time zone,
+    manual_votes_amount integer,
+    manual_votes_last_updated_by_id uuid,
+    manual_votes_last_updated_at timestamp(6) without time zone
 );
 
 
@@ -1613,7 +1621,11 @@ CREATE TABLE public.phases (
     expire_days_limit integer,
     reacting_threshold integer,
     prescreening_enabled boolean DEFAULT false NOT NULL,
-    autoshare_results_enabled boolean DEFAULT true
+    autoshare_results_enabled boolean DEFAULT true,
+    manual_votes_count integer DEFAULT 0 NOT NULL,
+    manual_voters_amount integer,
+    manual_voters_last_updated_by_id uuid,
+    manual_voters_last_updated_at timestamp(6) without time zone
 );
 
 
@@ -2326,7 +2338,8 @@ CREATE TABLE public.event_images (
     image character varying,
     ordering integer,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    alt_text_multiloc jsonb DEFAULT '{}'::jsonb
 );
 
 
@@ -2968,7 +2981,8 @@ CREATE TABLE public.project_folders_folders (
     slug character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    followers_count integer DEFAULT 0 NOT NULL
+    followers_count integer DEFAULT 0 NOT NULL,
+    header_bg_alt_text_multiloc jsonb DEFAULT '{}'::jsonb
 );
 
 
@@ -2982,7 +2996,8 @@ CREATE TABLE public.project_folders_images (
     image character varying,
     ordering integer,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    alt_text_multiloc jsonb DEFAULT '{}'::jsonb
 );
 
 
@@ -2996,7 +3011,8 @@ CREATE TABLE public.project_images (
     image character varying,
     ordering integer,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    alt_text_multiloc jsonb DEFAULT '{}'::jsonb
 );
 
 
@@ -5172,6 +5188,13 @@ CREATE INDEX index_ideas_on_location_point ON public.ideas USING gist (location_
 
 
 --
+-- Name: index_ideas_on_manual_votes_last_updated_by_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_ideas_on_manual_votes_last_updated_by_id ON public.ideas USING btree (manual_votes_last_updated_by_id);
+
+
+--
 -- Name: index_ideas_on_project_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -5659,6 +5682,13 @@ CREATE INDEX index_permissions_on_permission_scope_id ON public.permissions USIN
 --
 
 CREATE INDEX index_phase_files_on_phase_id ON public.phase_files USING btree (phase_id);
+
+
+--
+-- Name: index_phases_on_manual_voters_last_updated_by_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_phases_on_manual_voters_last_updated_by_id ON public.phases USING btree (manual_voters_last_updated_by_id);
 
 
 --
@@ -6194,6 +6224,14 @@ ALTER TABLE ONLY public.analysis_analyses
 
 
 --
+-- Name: phases fk_rails_2c74f68dd3; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.phases
+    ADD CONSTRAINT fk_rails_2c74f68dd3 FOREIGN KEY (manual_voters_last_updated_by_id) REFERENCES public.users(id);
+
+
+--
 -- Name: cosponsorships fk_rails_2d026b99a2; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -6407,6 +6445,14 @@ ALTER TABLE ONLY public.idea_imports
 
 ALTER TABLE ONLY public.report_builder_reports
     ADD CONSTRAINT fk_rails_6988c9886e FOREIGN KEY (phase_id) REFERENCES public.phases(id);
+
+
+--
+-- Name: ideas fk_rails_6c9ab6d4f8; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ideas
+    ADD CONSTRAINT fk_rails_6c9ab6d4f8 FOREIGN KEY (manual_votes_last_updated_by_id) REFERENCES public.users(id);
 
 
 --
@@ -7523,6 +7569,10 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20241011101454'),
 ('20241011816395'),
 ('20241016201503'),
-('20241024110349');
-
-
+('20241022101049'),
+('20241024110349'),
+('20241028162618'),
+('20241029080612'),
+('20241105053818'),
+('20241105053934'),
+('20241105081014');

@@ -151,7 +151,7 @@ cy:
   custom_fields:
     users:
       gender:
-        title: Rhyw
+        title: Rhywedd
       birthyear:
         title: Blwyddyn geni
       domicile:
@@ -212,11 +212,17 @@ cy:
           title: Beth yw eich sylw?
         option:
           title: Beth yw eich opsiwn?
+        proposal:
+          title: Beth yw eich cynnig?
+        initiative:
+          title: Beth yw eich menter?
+        petition:
+          title: Beth yw eich deiseb?
   custom_field_options:
     gender:
       male: Gwryw
       female: Benyw
-      unspecified: Arall
+      unspecified: Amhenodol
     domicile:
       outside: Rhywle arall
     education:
@@ -260,6 +266,7 @@ cy:
       first_name: 'Enw(au) cyntaf'
       image_url: 'URL delwedd'
       input_id: 'ID'
+      manual_votes: 'Pleidleisiau all-lein'
       input_url: 'URL'
       last_name: 'Enw olaf'
       latitude: 'Lledred'
@@ -341,6 +348,8 @@ cy:
       you_can_sign_in_again_from: "Gallwch fewngofnodi eto o %{date}"
   user:
     anon_first_name: "Defnyddiwr"
+    anon_scheme:
+      animals: 'aligator, crocodeil, alpaca, morgrug, antelop, epa, armadillo, babi, mochyn daear, ystlum, arth, afanc, gwenyn, chwilen, byfflo, pili pala, camel, byfflo dŵr, caribou, cath, gwartheg, cheetah, tsimpansî, chinchilla, cicada , cregyn bylchog, penfras, coyote, cranc, criced, brân, cigfran, ceirw, deinosor, ci, dolffin, llamhidydd, hwyaden, eryr, llysywen, eliffant, elc, ffuret, pysgodyn, pryf, llwynog, llyffant, llyffant, gerbil ,jiráff, gwybed, gnu, helbyest, gafr, pysgod aur, gŵydd, gorila, ceiliog rhedyn, mochyn cwta, bochdew, ysgyfarnog, penwaig, hipopotamws, cornet, ceffyl, cwn, hyena, impala, jacal, slefrod môr, cangarŵ, walabi, coala, llewpard, llew, madfall, lama, locust, lleuen, macaw, mallard, mamoth, manatee, marten, mincod, minwan, man geni, elc, mosgito, llygoden, llygod mawr, mul, mwscrat, dyfrgi, ych, wystrys, panda, mochyn, platypus, porcupine, ci paith, pug, cwningen, raccoon, ceirw, rhinoseros, eog, sardin, sgorpion, morlo, llew môr, serfal, siarc, defaid, sgync, malwen, neidr, pry copyn, gwiwer, alarch, termite, teigr, brithyll, crwban, crwban, walrws, cacwn, morfil, blaidd, wombat, hwyaden goch, mwydyn, iacod, siaced felen, sebra'
   time:
     am: yn
     formats:

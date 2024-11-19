@@ -1,3 +1,5 @@
+import { Multiloc } from 'typings';
+
 import { TProjectFolderCardSize } from 'components/ProjectAndFolderCards/components/ProjectFolderCard';
 
 import { Keys } from 'utils/cl-react-query/types';
@@ -13,6 +15,14 @@ export type IQueryParameters = {
 export interface addProjectFolderImageObject {
   folderId: string;
   base64: string;
+  alt_text_multiloc?: Multiloc;
+}
+
+export interface UpdateProjectFolderImageObject {
+  folderId: string;
+  base64: string;
+  alt_text_multiloc?: Multiloc;
+  imageId: string;
 }
 
 export const CARD_IMAGE_ASPECT_RATIO_WIDTH = 4;
@@ -46,6 +56,7 @@ export interface IProjectFolderImageData {
     ordering: string | null;
     created_at: string;
     updated_at: string;
+    alt_text_multiloc: Multiloc;
   };
 }
 

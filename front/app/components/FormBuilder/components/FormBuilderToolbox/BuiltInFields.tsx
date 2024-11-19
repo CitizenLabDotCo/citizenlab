@@ -54,7 +54,6 @@ const BuiltInFields = ({ move, builderConfig }: BuiltInFieldsProps) => {
   return (
     <Box w="100%" display="inline">
       <Title
-        fontWeight="normal"
         mb="4px"
         ml="16px"
         variant="h6"

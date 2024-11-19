@@ -192,4 +192,6 @@ Image.craft = {
   },
 };
 
+export const imageMultilocTitle = messages.imageMultiloc;
+
 export default Image;

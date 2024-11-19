@@ -292,7 +292,6 @@ export default function createRoutes() {
                 </PageLoading>
               ),
             },
-
             {
               path: citizenRoutes.phaseNumber,
               element: (
@@ -301,14 +300,6 @@ export default function createRoutes() {
                 </PageLoading>
               ),
             },
-            // {
-            //   path: citizenRoutes.wildcard,
-            //   element: (
-            //     <PageLoading>
-            //       <ProjectsShowPage />
-            //     </PageLoading>
-            //   ),
-            // },
           ],
         },
         {

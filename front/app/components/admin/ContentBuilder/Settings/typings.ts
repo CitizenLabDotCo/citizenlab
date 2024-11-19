@@ -6,7 +6,5 @@ export interface SelectedNode {
   title: MessageDescriptor | undefined;
   settings: React.ElementType<any> | undefined;
   isDeletable: boolean;
-  custom?: {
-    noDelete?: boolean;
-  };
+  custom?: Record<string, any>;
 }

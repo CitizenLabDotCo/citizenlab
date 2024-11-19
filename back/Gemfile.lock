@@ -154,6 +154,14 @@ PATH
       rails (~> 7.0)
 
 PATH
+  remote: engines/commercial/id_id_austria
+  specs:
+    id_id_austria (1.0.0)
+      omniauth_openid_connect (~> 0.7.1)
+      rails (~> 7.0)
+      verification
+
+PATH
   remote: engines/commercial/id_id_card_lookup
   specs:
     id_id_card_lookup (0.1.0)
@@ -822,8 +830,6 @@ GEM
       bigdecimal (~> 3.1)
     multipart-post (2.4.1)
     mustache (1.1.1)
-    mustermann (3.0.0)
-      ruby2_keywords (~> 0.0.1)
     mutex_m (0.2.0)
     nanoid (2.0.0)
     net-http (0.4.1)
@@ -946,9 +952,6 @@ GEM
       activesupport (>= 3.0.0)
     qonfig (0.29.0)
     que (2.3.0)
-    que-web (0.10.0)
-      que (>= 1)
-      sinatra
     racc (1.8.1)
     rack (2.2.9)
     rack-attack (6.7.0)
@@ -1021,7 +1024,7 @@ GEM
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
     retriable (3.1.2)
-    rexml (3.3.7)
+    rexml (3.3.9)
     rgeo (3.0.1)
     rgeo-activerecord (7.0.1)
       activerecord (>= 5.0)
@@ -1168,11 +1171,6 @@ GEM
     simplecov-rcov (0.3.7)
       simplecov (>= 0.4.1)
     simplecov_json_formatter (0.1.4)
-    sinatra (3.0.6)
-      mustermann (~> 3.0)
-      rack (~> 2.2, >= 2.2.4)
-      rack-protection (= 3.0.6)
-      tilt (~> 2.0)
     sorted_set (1.0.3)
       rbtree
       set (~> 1.0)
@@ -1197,7 +1195,6 @@ GEM
     tiktoken_ruby (0.0.8-arm64-darwin)
     tiktoken_ruby (0.0.8-x86_64-darwin)
     tiktoken_ruby (0.0.8-x86_64-linux)
-    tilt (2.1.0)
     timeout (0.4.1)
     tomlrb (2.0.3)
     trailblazer-option (0.1.2)
@@ -1305,6 +1302,7 @@ DEPENDENCIES
   id_franceconnect!
   id_gent_rrn!
   id_hoplr!
+  id_id_austria!
   id_id_card_lookup!
   id_keycloak!
   id_nemlog_in!
@@ -1357,7 +1355,6 @@ DEPENDENCIES
   puma (~> 6.4.3)
   pundit (~> 2.3.2)
   que (~> 2.3.0)
-  que-web (~> 0.10.0)
   rack-attack (~> 6)
   rack-cors (= 2.0.0)
   rack-mini-profiler

@@ -13,27 +13,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.noTitleErrorMessage',
     defaultMessage: 'Please enter a project title',
   },
-  statusLabel: {
-    id: 'app.containers.AdminPage.ProjectEdit.statusLabel',
-    defaultMessage: 'Publication status',
-  },
-  publicationStatusTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.generalTab.publicationStatusTooltip',
-    defaultMessage:
-      'Choose whether this project is "draft", "published" or "archived" (not shown, shown and active, shown but inactive)',
-  },
-  draftStatus: {
-    id: 'app.containers.AdminPage.ProjectEdit.draftStatus',
-    defaultMessage: 'Draft',
-  },
-  publishedStatus: {
-    id: 'app.containers.AdminPage.ProjectEdit.publishedStatus',
-    defaultMessage: 'Published',
-  },
-  archivedStatus: {
-    id: 'app.containers.AdminPage.ProjectEdit.archivedStatus',
-    defaultMessage: 'Archived',
-  },
   titleLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.titleLabel',
     defaultMessage: 'Title',
@@ -170,5 +149,31 @@ export default defineMessages({
   supportPageLinkText: {
     id: 'app.containers.AdminPage.ProjectEdit.supportPageLinkText',
     defaultMessage: 'visit our support center',
+  },
+  projectImageAltTextTitle: {
+    id: 'app.containers.AdminPage.ProjectEdit.projectImageAltTextTitle1',
+    defaultMessage: 'Project card image alternative text',
+  },
+  altText: {
+    id: 'app.containers.AdminPage.ProjectEdit.altText',
+    defaultMessage: 'Alt text',
+  },
+  projectImageAltTextTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.projectImageAltTextTooltip1',
+    defaultMessage:
+      'Provide a short description of the image for visually impaired users. This helps screen readers convey what the image is about.',
+  },
+  headerImageAltText: {
+    id: 'app.containers.AdminPage.ProjectEdit.headerImageAltText',
+    defaultMessage: 'Header image alt text',
+  },
+  resetParticipationData: {
+    id: 'app.containers.AdminPage.ProjectEdit.resetParticipationData',
+    defaultMessage: 'Reset participation data',
+  },
+  publicationStatusWarning: {
+    id: 'app.containers.AdminPage.ProjectEdit.publicationStatusWarningMessage',
+    defaultMessage:
+      'Looking for the project status? Now you can change it at any time directly from the project page header.',
   },
 });

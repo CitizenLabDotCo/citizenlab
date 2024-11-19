@@ -190,9 +190,21 @@ const IdeaRow = ({
       },
     },
     {
+      name: 'offline_votes',
+      Component: ({ idea }: IdeaCellComponentProps) => {
+        return <>{idea.attributes.manual_votes_amount || 0}</>;
+      },
+    },
+    {
       name: 'picks',
       Component: ({ idea }: IdeaCellComponentProps) => {
         return <>{idea.attributes.baskets_count}</>;
+      },
+    },
+    {
+      name: 'offline_picks',
+      Component: ({ idea }: IdeaCellComponentProps) => {
+        return <>{idea.attributes.manual_votes_amount || 0}</>;
       },
     },
     {

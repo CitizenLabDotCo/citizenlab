@@ -1,7 +1,6 @@
 import React, { memo, useState } from 'react';
 
 import {
-  Icon,
   Box,
   media,
   colors,
@@ -10,6 +9,7 @@ import {
   defaultCardHoverStyle,
   isRtl,
   Text,
+  Title,
 } from '@citizenlab/cl2-component-library';
 import { isEmpty, round } from 'lodash-es';
 import moment from 'moment';
@@ -18,7 +18,6 @@ import { useInView } from 'react-intersection-observer';
 import { RouteType } from 'routes';
 import styled from 'styled-components';
 
-import useAuthUser from 'api/me/useAuthUser';
 import usePhase from 'api/phases/usePhase';
 import useProjectImage from 'api/project_images/useProjectImage';
 import { CARD_IMAGE_ASPECT_RATIO } from 'api/project_images/useProjectImages';
@@ -35,12 +34,12 @@ import T from 'components/T';
 import Image from 'components/UI/Image';
 
 import { ScreenReaderOnly } from 'utils/a11y';
-import { getIdeaPostingRules } from 'utils/actionTakingRules';
 import { trackEventByName } from 'utils/analytics';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
-import { getInputTermMessage } from 'utils/i18n';
 
+import getCTAMessage from './getCTAMessage';
+import ImagePlaceholder from './ImagePlaceholder';
 import messages from './messages';
 import tracks from './tracks';
 
@@ -246,19 +245,24 @@ const ProgressBarOverlay = styled.div<{ progress: number }>`
   }
 `;
 
-const ProjectLabel = styled.div`
-  // darkened to have higher chances of solid color contrast
+const ProjectLabel = styled.button`
   color: ${({ theme }) => darken(0.05, theme.colors.tenantSecondary)};
   font-size: ${fontSizes.s}px;
   font-weight: 400;
   text-align: center;
   white-space: nowrap;
-  padding-left: 14px;
-  padding-right: 14px;
-  padding-top: 8px;
-  padding-bottom: 8px;
+  padding: 8px 14px;
   border-radius: ${(props) => props.theme.borderRadius};
-  background: ${({ theme }) => rgba(theme.colors.tenantSecondary, 0.1)};
+  border: 1px solid ${({ theme }) => darken(0.05, theme.colors.tenantSecondary)};
+  background: transparent;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: ${({ theme }) => rgba(theme.colors.tenantSecondary, 0.1)};
+    color: ${({ theme }) => theme.colors.tenantSecondary};
+    border-color: ${({ theme }) => theme.colors.tenantSecondary};
+    cursor: pointer;
+  }
 `;
 
 const ContentBody = styled.div`
@@ -274,17 +278,10 @@ const ContentBody = styled.div`
   }
 `;
 
-const ProjectTitle = styled.h3`
-  line-height: normal;
-  font-weight: 500;
-  font-size: ${fontSizes.xl}px;
+const ProjectTitle = styled(Title)`
   color: ${({ theme }) => theme.colors.tenantText};
   margin: 0;
   padding: 0;
-
-  ${isRtl`
-    text-align: right;
-    `}
 
   &:hover {
     text-decoration: underline;
@@ -370,7 +367,6 @@ const ProjectCard = memo<InputProps>(
       },
     });
     const { data: project } = useProjectById(projectId);
-    const { data: authUser } = useAuthUser();
 
     // We use this hook instead of useProjectImages,
     // because that one doesn't work with our caching system.
@@ -388,6 +384,7 @@ const ProjectCard = memo<InputProps>(
       project?.data?.relationships?.current_phase?.data?.id ?? null;
     const { data: phase } = usePhase(currentPhaseId);
     const localize = useLocalize();
+    const { formatMessage } = useIntl();
 
     const [visible, setVisible] = useState(false);
 
@@ -404,29 +401,14 @@ const ProjectCard = memo<InputProps>(
     };
 
     if (project) {
-      const postingPermission = getIdeaPostingRules({
-        // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        project: project?.data,
-        phase: phase?.data,
-        authUser: authUser?.data,
-      });
-      const participationMethod = phase?.data.attributes.participation_method;
-      const votingMethod = phase?.data.attributes.voting_method;
-
-      const canPost = !!postingPermission.enabled;
-      const canReact =
-        project.data.attributes.action_descriptors.reacting_idea.enabled;
-      const canComment =
-        project.data.attributes.action_descriptors.commenting_idea.enabled;
-
       const imageUrl = !projectImage
         ? null
-        : // TODO: Fix this the next time the file is edited.
-          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-          projectImage.data.attributes.versions?.large;
+        : projectImage.data.attributes.versions.large;
+      const projectImageAltText = localize(
+        projectImage?.data.attributes.alt_text_multiloc
+      );
 
-      const projectUrl: RouteType = getProjectUrl(project.data);
+      const projectUrl: RouteType = getProjectUrl(project.data.attributes.slug);
       const isFinished = project.data.attributes.timeline_active === 'past';
       const isArchived =
         project.data.attributes.publication_status === 'archived';
@@ -444,7 +426,6 @@ const ProjectCard = memo<InputProps>(
       const endAt = phase?.data.attributes.end_at;
 
       let countdown: JSX.Element | null = null;
-      const inputTerm = phase?.data.attributes.input_term ?? 'idea';
 
       if (isArchived) {
         countdown = (
@@ -483,75 +464,14 @@ const ProjectCard = memo<InputProps>(
         );
       }
 
-      const getCTAMessage = () => {
-        let ctaMessage: JSX.Element | null = null;
-        if (participationMethod === 'voting') {
-          if (votingMethod === 'budgeting') {
-            ctaMessage = <FormattedMessage {...messages.allocateYourBudget} />;
-          } else {
-            ctaMessage = <FormattedMessage {...messages.vote} />;
-          }
-        } else if (participationMethod === 'information') {
-          ctaMessage = <FormattedMessage {...messages.learnMore} />;
-        } else if (participationMethod === 'survey') {
-          ctaMessage = <FormattedMessage {...messages.takeTheSurvey} />;
-        } else if (participationMethod === 'native_survey') {
-          ctaMessage = (
-            <>
-              {localize(phase?.data.attributes.native_survey_button_multiloc)}
-            </>
-          );
-        } else if (participationMethod === 'document_annotation') {
-          ctaMessage = <FormattedMessage {...messages.reviewDocument} />;
-        } else if (participationMethod === 'poll') {
-          ctaMessage = <FormattedMessage {...messages.takeThePoll} />;
-        } else if (
-          participationMethod === 'ideation' ||
-          participationMethod === 'proposals'
-        ) {
-          if (canPost) {
-            ctaMessage = (
-              <FormattedMessage
-                {...getInputTermMessage(inputTerm, {
-                  idea: messages.submitYourIdea,
-                  option: messages.addYourOption,
-                  project: messages.submitYourProject,
-                  question: messages.joinDiscussion,
-                  issue: messages.submitAnIssue,
-                  contribution: messages.contributeYourInput,
-                  initiative: messages.submitYourInitiative,
-                  proposal: messages.submitYourProposal,
-                  petition: messages.submitYourPetition,
-                })}
-              />
-            );
-          } else if (canReact) {
-            ctaMessage = <FormattedMessage {...messages.reaction} />;
-          } else if (canComment) {
-            ctaMessage = <FormattedMessage {...messages.comment} />;
-          } else {
-            ctaMessage = (
-              <FormattedMessage
-                {...getInputTermMessage(inputTerm, {
-                  idea: messages.viewTheIdeas,
-                  option: messages.viewTheOptions,
-                  project: messages.viewTheProjects,
-                  question: messages.viewTheQuestions,
-                  issue: messages.viewTheIssues,
-                  contribution: messages.viewTheContributions,
-                  proposal: messages.viewTheProposals,
-                  initiative: messages.viewTheInitiatives,
-                  petition: messages.viewThePetitions,
-                })}
-              />
-            );
-          }
-        }
-
-        return ctaMessage;
-      };
-
-      const ctaMessage: JSX.Element | null = getCTAMessage();
+      const ctaMessage = phase
+        ? getCTAMessage({
+            actionDescriptors: project.data.attributes.action_descriptors,
+            phase: phase.data,
+            formatMessage,
+            localize,
+          })
+        : undefined;
 
       const contentHeader = (
         <ContentHeader
@@ -575,7 +495,7 @@ const ProjectCard = memo<InputProps>(
             </Box>
           )}
 
-          {ctaMessage !== null && !isFinished && !isArchived && (
+          {ctaMessage && !isFinished && !isArchived && (
             <Box
               minHeight={`${ContentHeaderHeight}px`}
               className={`${size} ${countdown ? 'hasProgressBar' : ''}`}
@@ -595,7 +515,7 @@ const ProjectCard = memo<InputProps>(
 
       const screenReaderContent = (
         <ScreenReaderOnly>
-          <ProjectTitle>
+          <ProjectTitle variant="h3">
             <FormattedMessage {...messages.a11y_projectTitle} />
             <T value={project.data.attributes.title_multiloc} />
           </ProjectTitle>
@@ -631,22 +551,13 @@ const ProjectCard = memo<InputProps>(
 
           <ProjectImageContainer className={size}>
             {imageUrl ? (
-              <ProjectImage src={imageUrl} alt="" cover={true} />
+              <ProjectImage
+                src={imageUrl}
+                alt={projectImageAltText}
+                cover={true}
+              />
             ) : (
-              <Box
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-                flex="1"
-                background={colors.grey300}
-              >
-                <Icon
-                  name="building"
-                  width="80px"
-                  height="80px"
-                  fill={colors.white}
-                />
-              </Box>
+              <ImagePlaceholder />
             )}
           </ProjectImageContainer>
 
@@ -655,6 +566,7 @@ const ProjectCard = memo<InputProps>(
 
             <ContentBody className={size} aria-hidden>
               <ProjectTitle
+                variant="h3"
                 className="e2e-project-card-project-title"
                 data-testid="project-card-project-title"
                 onClick={() => {

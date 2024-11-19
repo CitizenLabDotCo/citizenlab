@@ -41,8 +41,13 @@ export const getAppConfigurationData = (
         additional_admins_number: 0,
         additional_moderators_number: 0,
         allow_sharing: true,
+        private_attributes_in_export: true,
       },
       advanced_custom_pages: {
+        allowed: true,
+        enabled: true,
+      },
+      pages: {
         allowed: true,
         enabled: true,
       },

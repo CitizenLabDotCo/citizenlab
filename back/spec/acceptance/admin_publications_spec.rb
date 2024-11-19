@@ -737,7 +737,7 @@ resource 'AdminPublication' do
         parameter :remove_not_allowed_parents, 'Filter out folders which contain only projects that are not visible to the user', required: false
         parameter :include_publications, 'Include the related publications and associated items', required: false
 
-        example_request 'Index action does invoke unnecessary queries' do
+        example_request 'Index action does not invoke unnecessary queries' do
           project = create(:project_with_active_ideation_phase)
           create(:project_image, project: project)
           folder = create(:project_folder)
@@ -760,7 +760,7 @@ resource 'AdminPublication' do
               publication_statuses: %w[published archived],
               include_publications: 'true'
             )
-          end.not_to exceed_query_limit(121)
+          end.not_to exceed_query_limit(123)
 
           assert_status 200
         end

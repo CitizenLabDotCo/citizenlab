@@ -1,7 +1,6 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
-import { PreviousPathnameContext } from 'context';
 import { omit } from 'lodash-es';
 import { Multiloc } from 'typings';
 
@@ -11,7 +10,6 @@ import useIdeaImages from 'api/idea_images/useIdeaImages';
 import { IIdeaUpdate } from 'api/ideas/types';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
-import useAuthUser from 'api/me/useAuthUser';
 
 import useInputSchema from 'hooks/useInputSchema';
 
@@ -27,7 +25,6 @@ import PageContainer from 'components/UI/PageContainer';
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
-import { usePermission } from 'utils/permissions';
 
 import IdeasEditMeta from './IdeasEditMeta';
 import messages from './messages';
@@ -52,18 +49,11 @@ interface Props {
 }
 
 const IdeasEditForm = ({ ideaId }: Props) => {
-  const previousPathName = useContext(PreviousPathnameContext);
   const [isDisclaimerOpened, setIsDisclaimerOpened] = useState(false);
   const [formData, setFormData] = useState<FormValues | null>(null);
   const [loading, setLoading] = useState(false);
-  const { data: authUser } = useAuthUser();
   const { data: idea } = useIdeaById(ideaId);
   const { mutate: deleteIdeaImage } = useDeleteIdeaImage();
-  const granted = usePermission({
-    item: idea?.data || null,
-    action: 'edit',
-    context: idea?.data || null,
-  });
 
   const { mutateAsync: updateIdea } = useUpdateIdea();
   const { data: remoteImages } = useIdeaImages(ideaId);
@@ -79,14 +69,6 @@ const IdeasEditForm = ({ ideaId }: Props) => {
     projectId,
     inputId: ideaId,
   });
-
-  useEffect(() => {
-    if (idea && authUser !== undefined && !granted) {
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      clHistory.replace(previousPathName || (!authUser ? '/sign-up' : '/'));
-    }
-  }, [idea, granted, previousPathName, authUser]);
 
   const getApiErrorMessage: ApiErrorGetter = useCallback(
     (error) => {

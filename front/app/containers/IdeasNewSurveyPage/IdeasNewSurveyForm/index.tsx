@@ -283,9 +283,15 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
     return `${dynamicHeight}px`;
   }
 
+  if (!phase) {
+    return null;
+  }
+
   return (
     <>
-      <IdeasNewSurveyMeta />
+      <IdeasNewSurveyMeta
+        surveyTitle={localize(phase.attributes.native_survey_title_multiloc)}
+      />
       <Box
         w="100%"
         bgColor={colors.grey100}
@@ -300,7 +306,7 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
           maxWidth={usingMapView ? '1100px' : '700px'}
         >
           <SurveyHeading
-            titleText={localize(phase?.attributes.native_survey_title_multiloc)}
+            titleText={localize(phase.attributes.native_survey_title_multiloc)}
             phaseId={phaseId}
           />
         </Box>

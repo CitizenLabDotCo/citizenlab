@@ -1,5 +1,6 @@
 import React, { createElement } from 'react';
 
+import { trim } from 'lodash-es';
 import { Multiloc } from 'typings';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
@@ -53,6 +54,10 @@ const T = (props: Props) => {
       maxLength,
       fallback
     );
+
+    if (trim(localizedText) === '') {
+      return null;
+    }
 
     if (children) {
       return children(localizedText);

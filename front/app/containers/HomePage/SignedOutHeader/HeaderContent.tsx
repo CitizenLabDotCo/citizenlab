@@ -6,7 +6,7 @@ import styled from 'styled-components';
 
 import useLocalize from 'hooks/useLocalize';
 
-import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/HomepageBanner';
+import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Widgets/HomepageBanner';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 import AvatarBubbles from 'components/AvatarBubbles';
@@ -105,6 +105,7 @@ const HeaderContent = ({
         </HeaderTitle>
 
         <HeaderSubtitle
+          variant="h2"
           hasHeader={!!headerImage}
           className="e2e-signed-out-header-subtitle"
           fontColors={fontColors}
