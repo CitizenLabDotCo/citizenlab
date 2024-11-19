@@ -1,5 +1,7 @@
 import React, { memo } from 'react';
 
+import { omit } from 'lodash-es';
+
 import { IIdeasFilterCountsQueryParameters } from 'api/ideas_filter_counts/types';
 import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
 import useTopics from 'api/topics/useTopics';
@@ -17,14 +19,14 @@ const TopicFilterBox = memo<Props>(
   ({ selectedTopicIds, selectedIdeaFilters, onChange, className }) => {
     const { data: topics } = useTopics();
 
-    // remove topics from selected idea filters
-    const { topics: _, ...selectedIdeaFiltersWithoutTopics } =
-      selectedIdeaFilters;
+    // Remove topics from selected idea filters so we get counts that aren't impacted by the selected topics.
+    // Otherwise the counts change each time a topic is selected/deselected which isn't expected behaviour.
+    const ideaFiltersWithoutTopics = omit(selectedIdeaFilters, 'topics');
 
     const { data: ideasFilterCounts } = useIdeasFilterCounts({
-      ...selectedIdeaFiltersWithoutTopics,
+      ...ideaFiltersWithoutTopics,
       topics: undefined,
-      idea_status: selectedIdeaFiltersWithoutTopics.idea_status,
+      idea_status: ideaFiltersWithoutTopics.idea_status,
     });
 
     if (topics && topics.data.length > 0 && ideasFilterCounts) {
