@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, colors } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import { isNumber } from 'lodash-es';
 
 import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
@@ -56,8 +56,9 @@ const FiltersModal = ({
           onClick={onClose}
         />
       }
+      contentBgColor="background"
     >
-      <Box background={colors.background} padding="15px">
+      <Box p="16px">
         <InputFilters
           selectedIdeaFilters={selectedIdeaFilters}
           onClearFilters={onClearFilters}
