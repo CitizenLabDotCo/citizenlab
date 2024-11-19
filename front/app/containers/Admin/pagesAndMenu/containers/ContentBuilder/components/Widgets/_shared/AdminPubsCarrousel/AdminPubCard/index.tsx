@@ -10,10 +10,9 @@ import Link from 'utils/cl-router/Link';
 import { truncate } from 'utils/textUtils';
 
 import { CardContainer, CardImage } from '../../BaseCard';
+import { CARD_WIDTH } from '../constants';
 
 import messages from './messages';
-
-const CARD_WIDTH = 376;
 
 interface Props {
   publicationUrl: RouteType;

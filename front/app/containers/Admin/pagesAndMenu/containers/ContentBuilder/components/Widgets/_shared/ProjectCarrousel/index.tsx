@@ -15,6 +15,7 @@ import { MiniProjectData } from 'api/projects_mini/types';
 
 import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
 
+import { CARD_GAP } from '../BaseCarrousel/constants';
 import { CarrouselContainer, CardContainer } from '../BaseCarrousel/Containers';
 import Gradient from '../BaseCarrousel/Gradient';
 import HorizontalScroll from '../BaseCarrousel/HorizontalScroll';
@@ -25,7 +26,7 @@ import {
   skipCarrousel,
 } from '../BaseCarrousel/utils';
 
-import { CARD_GAP, CARD_WIDTH } from './constants';
+import { CARD_WIDTH } from './constants';
 import LightProjectCard from './LightProjectCard';
 
 interface Props {
