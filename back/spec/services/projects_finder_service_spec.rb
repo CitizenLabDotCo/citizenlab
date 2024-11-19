@@ -265,24 +265,31 @@ describe ProjectsFinderService do
         expect(result).to match_array([finished_project1])
       end
 
-      it 'lists projects ordered by created_at ASC' do
+      it 'lists projects ordered by last phase end_at DESC' do
         finished_project2 = create(:project_with_two_past_ideation_phases)
+        finished_project2.phases[1].update!(end_at: 5.days.ago)
         finished_project3 = create(:project_with_two_past_ideation_phases)
-        finished_project4 = create(:project_with_two_past_ideation_phases)
+        finished_project3.phases[1].update!(end_at: 10.days.ago)
 
-        finished_project1.update!(created_at: 3.days.ago)
-        finished_project2.update!(created_at: 1.day.ago)
-        finished_project3.update!(created_at: 2.days.ago)
-        finished_project4.update!(created_at: 5.days.ago)
+        expect(finished_project3.phases[1].end_at).to be_after(finished_project1.phases[1].end_at)
+        expect(finished_project2.phases[1].end_at).to be_after(finished_project3.phases[1].end_at)
 
-        expect(result).to eq [finished_project4, finished_project1, finished_project3, finished_project2]
+        expect(result).to eq [finished_project2, finished_project3, finished_project1]
       end
     end
 
     describe "when passed only the 'archived' parameter" do
-      let!(:archived_project) { create(:project, admin_publication_attributes: { publication_status: 'archived' }) }
-      let!(:_draft_project) { create(:project, admin_publication_attributes: { publication_status: 'draft' }) }
-      let!(:_published_project) { create(:project, admin_publication_attributes: { publication_status: 'published' }) }
+      let!(:archived_project) do
+        create(:project_with_past_information_phase, admin_publication_attributes: { publication_status: 'archived' })
+      end
+
+      let!(:_draft_project) do
+        create(:project, admin_publication_attributes: { publication_status: 'draft' })
+      end
+
+      let!(:_published_project) do
+        create(:project, admin_publication_attributes: { publication_status: 'published' })
+      end
 
       let(:result) { service.new(Project.all, user, { archived: true }).finished_or_archived }
 
@@ -291,17 +298,34 @@ describe ProjectsFinderService do
         expect(result).to eq [archived_project]
       end
 
-      it 'lists projects ordered by created_at ASC' do
-        archived_project2 = create(:project, admin_publication_attributes: { publication_status: 'archived' })
-        archived_project3 = create(:project, admin_publication_attributes: { publication_status: 'archived' })
-        archived_project4 = create(:project, admin_publication_attributes: { publication_status: 'archived' })
+      it 'excludes projects with no phase' do
+        phaseless_project = create(:project, admin_publication_attributes: { publication_status: 'archived' })
 
-        archived_project.update!(created_at: 3.days.ago)
-        archived_project2.update!(created_at: 1.day.ago)
-        archived_project3.update!(created_at: 2.days.ago)
-        archived_project4.update!(created_at: 4.days.ago)
+        expect(phaseless_project.phases).to be_empty
+        expect(Project.count).to eq 6
+        expect(result).to eq [archived_project]
+      end
 
-        expect(result).to eq [archived_project4, archived_project, archived_project3, archived_project2]
+      it 'lists projects ordered by last_phase end_at DESC' do
+        archived_project2 = create(
+          :project_with_past_information_phase,
+          admin_publication_attributes: { publication_status: 'archived' }
+        )
+        archived_project3 = create(
+          :project_with_past_information_phase,
+          admin_publication_attributes: { publication_status: 'archived' }
+        )
+        archived_project4 = create(
+          :project_with_past_ideation_and_current_information_phase,
+          admin_publication_attributes: { publication_status: 'archived' }
+        )
+
+        archived_project.phases[0].update!(end_at: 3.days.ago)
+        archived_project2.phases[0].update!(end_at: 1.day.ago)
+        archived_project3.phases[0].update!(end_at: 2.days.ago)
+
+        expect(archived_project4.phases[1].end_at).to be_after(archived_project2.phases[0].end_at)
+        expect(result).to eq [archived_project4, archived_project2, archived_project3, archived_project]
       end
     end
 
@@ -311,7 +335,9 @@ describe ProjectsFinderService do
       let!(:phase) { create(:phase, project: unfinished_project1, start_at: 2.days.ago, end_at: 2.days.from_now) }
       let!(:_report1) { create(:report, phase: phase) }
 
-      let!(:archived_project) { create(:project, admin_publication_attributes: { publication_status: 'archived' }) }
+      let!(:archived_project) do
+        create(:project_with_past_information_phase, admin_publication_attributes: { publication_status: 'archived' })
+      end
 
       # Should NOT include:
       let!(:_draft_project) { create(:project, admin_publication_attributes: { publication_status: 'draft' }) }
@@ -329,12 +355,13 @@ describe ProjectsFinderService do
         expect(result).to match_array [finished_project1, archived_project, unfinished_project1]
       end
 
-      it 'lists projects ordered by created_at ASC' do
-        finished_project1.update!(created_at: 3.days.ago)
-        unfinished_project1.update!(created_at: 1.day.ago)
-        archived_project.update!(created_at: 2.days.ago)
+      it 'lists projects ordered by last phase end_at DESC' do
+        finished_project1.phases[1].update!(end_at: 3.days.ago)
+        archived_project.phases[0].update!(end_at: 5.days.ago)
 
-        expect(result).to eq [finished_project1, archived_project, unfinished_project1]
+        expect(unfinished_project1.phases[0].end_at).to be_after(finished_project1.phases[1].end_at)
+
+        expect(result).to eq [unfinished_project1, finished_project1, archived_project]
       end
     end
   end

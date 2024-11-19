@@ -114,6 +114,7 @@ class ProjectsFinderService
 
     base_scope = @projects
       .joins('INNER JOIN admin_publications AS admin_publications ON admin_publications.publication_id = projects.id')
+      .joins('INNER JOIN phases ON phases.project_id = projects.id')
 
     if @finished
       finished_scope = base_scope.where(admin_publications: { publication_status: 'published' })
@@ -125,7 +126,7 @@ class ProjectsFinderService
     end
 
     archived_scope = base_scope.where(admin_publications: { publication_status: 'archived' }) if @archived
-    archived_scope = joins_last_phases_with_reports(archived_scope) if @archived && @finished
+    archived_scope = joins_last_phases_with_reports(archived_scope) if @archived
 
     return order_by_created_at_and_id_with_distinct_on(finished_scope.or(archived_scope)) if @finished && @archived
     return order_by_created_at_and_id_with_distinct_on(finished_scope) if @finished
@@ -147,8 +148,8 @@ class ProjectsFinderService
 
   def order_by_created_at_and_id_with_distinct_on(projects)
     projects
-      .select('DISTINCT ON (projects.created_at, projects.id) projects.*')
-      .order('projects.created_at ASC, projects.id ASC') # secondary ordering by ID prevents duplicates when paginating
+      .select('DISTINCT ON (last_phase_end_at, projects.created_at, projects.id) projects.*')
+      .order('last_phase_end_at DESC, projects.created_at ASC, projects.id ASC') # secondary ordering by ID prevents duplicates when paginating
   end
 
   def joins_last_phases_with_reports(projects)
