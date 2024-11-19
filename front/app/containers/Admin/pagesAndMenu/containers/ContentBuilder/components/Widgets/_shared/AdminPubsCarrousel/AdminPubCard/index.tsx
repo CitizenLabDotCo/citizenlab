@@ -1,7 +1,14 @@
 import React from 'react';
 
 import { Box, Text, Icon, Title } from '@citizenlab/cl2-component-library';
-import { RouteType } from 'routes';
+
+import { IAdminPublicationData } from 'api/admin_publications/types';
+import useProjectFolderImage from 'api/project_folder_images/useProjectFolderImage';
+import useProjectFolderById from 'api/project_folders/useProjectFolderById';
+import useProjectImage from 'api/project_images/useProjectImage';
+import useProjectById from 'api/projects/useProjectById';
+
+import useLocalize from 'hooks/useLocalize';
 
 import AvatarBubbles from 'components/AvatarBubbles';
 
@@ -13,32 +20,39 @@ import { CardContainer, CardImage } from '../../BaseCard';
 import { CARD_WIDTH } from '../constants';
 
 import messages from './messages';
+import { getPublicationURL } from './utils';
 
 interface Props {
-  publicationUrl: RouteType;
-  imageUrl?: string;
-  publicationTitle: string;
-  projectCount?: number;
-  avatarIds?: string[];
-  description: string;
+  adminPublication: IAdminPublicationData;
   ml?: string;
   mr?: string;
   onKeyDown?: React.KeyboardEventHandler<HTMLAnchorElement> &
     React.KeyboardEventHandler<HTMLDivElement>;
 }
 
-const AdminPubCard = ({
-  publicationUrl,
+interface InnerProps extends Props {
+  imageUrl?: string;
+  avatarIds: string[];
+  userCount?: number;
+}
+
+export const AdminPubCard = ({
+  adminPublication,
   imageUrl,
-  publicationTitle,
-  projectCount,
   avatarIds,
-  description,
+  userCount,
   ml,
   mr,
   onKeyDown,
-}: Props) => {
+}: InnerProps) => {
   const { formatMessage } = useIntl();
+  const localize = useLocalize();
+
+  const {
+    visible_children_count,
+    publication_title_multiloc,
+    publication_description_preview_multiloc,
+  } = adminPublication.attributes;
 
   return (
     <CardContainer
@@ -47,16 +61,16 @@ const AdminPubCard = ({
       w={`${CARD_WIDTH}px`}
       ml={ml}
       mr={mr}
-      to={publicationUrl}
+      to={getPublicationURL(adminPublication)}
       display="block"
       onKeyDown={onKeyDown}
     >
       <CardImage imageUrl={imageUrl} />
       <Title variant="h4" as="h3" mt="8px" mb="0px">
-        {truncate(publicationTitle, 50)}
+        {truncate(localize(publication_title_multiloc), 50)}
       </Title>
       <Box display="flex" flexDirection="row" alignItems="center" mt="8px">
-        {projectCount && (
+        {typeof visible_children_count === 'number' && (
           <>
             <Icon
               name="folder-solid"
@@ -67,7 +81,7 @@ const AdminPubCard = ({
             />
             <Text m="0px" mr="12px">
               {formatMessage(messages.xProjects, {
-                numberOfProjects: projectCount,
+                numberOfProjects: visible_children_count,
               })}
             </Text>
           </>
@@ -76,12 +90,62 @@ const AdminPubCard = ({
           avatarIds={avatarIds}
           size={16}
           limit={3}
-          userCount={10}
+          userCount={userCount}
         />
       </Box>
-      <Text mt="8px">{description}</Text>
+      <Text mt="8px">{localize(publication_description_preview_multiloc)}</Text>
     </CardContainer>
   );
 };
 
-export default AdminPubCard;
+const AdminPubCardWrapper = ({ adminPublication, ...props }: Props) => {
+  const { id, type } = adminPublication.relationships.publication.data;
+
+  const projectId = type === 'project' ? id : undefined;
+  const folderId = type === 'folder' ? id : undefined;
+
+  const { data: project } = useProjectById(projectId);
+  const { data: folder } = useProjectFolderById(folderId);
+
+  const projectImageId = project?.data.relationships.project_images?.data[0].id;
+  const folderImageId = folder?.data.relationships.images.data?.[0].id;
+
+  const { data: projectImage } = useProjectImage({
+    projectId,
+    imageId: projectImageId,
+  });
+
+  const { data: folderImage } = useProjectFolderImage({
+    folderId,
+    imageId: folderImageId,
+  });
+
+  const imageUrl =
+    type === 'project'
+      ? projectImage?.data.attributes.versions.large
+      : folderImage?.data.attributes.versions.large;
+
+  const avatarsRelation =
+    type === 'project'
+      ? project?.data.relationships.avatars
+      : folder?.data.relationships.avatars;
+
+  const avatarIds = avatarsRelation?.data?.map((avatar) => avatar.id) ?? [];
+
+  const userCount =
+    type === 'project'
+      ? project?.data.attributes.participants_count
+      : folder?.data.attributes.participants_count;
+
+  return (
+    <AdminPubCard
+      adminPublication={adminPublication}
+      imageUrl={imageUrl ?? undefined}
+      avatarIds={avatarIds}
+      userCount={userCount}
+      {...props}
+    />
+  );
+};
+
+export default AdminPubCardWrapper;

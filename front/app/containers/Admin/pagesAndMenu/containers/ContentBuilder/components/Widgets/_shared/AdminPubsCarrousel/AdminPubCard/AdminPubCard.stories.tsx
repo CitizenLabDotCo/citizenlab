@@ -1,6 +1,8 @@
+import { IAdminPublicationData } from 'api/admin_publications/types';
+
 import { getOrigin } from 'utils/storybook/getOrigin';
 
-import AdminPubCard from '.';
+import { AdminPubCard } from '.';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -17,15 +19,16 @@ type Story = StoryObj<typeof meta>;
 
 const image = `${getOrigin()}/images/image16.png`;
 
+const ADMIN_PUBLICATION: IAdminPublicationData = {
+  // TODO
+};
+
 export const Primary: Story = {
   args: {
-    publicationUrl: '/projects/test',
-    publicationTitle: 'Admin pub card',
+    adminPublication: ADMIN_PUBLICATION,
     imageUrl: image,
-    projectCount: 4,
     avatarIds: ['1', '2', '3'],
-    description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.',
+    userCount: 20,
     onKeyDown: () => {},
   },
 };
