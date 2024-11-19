@@ -21,7 +21,7 @@ RSpec.shared_examples 'publication filtering model' do |model_name|
     end
 
     example "List only selected #{model_name_plural} does not include #{model_name_plural} only used by draft projects" do
-    topic_projects[0].update!(admin_publication_attributes: { publication_status: 'draft' })
+      topic_projects[0].update!(admin_publication_attributes: { publication_status: 'draft' })
 
       do_request(for_homepage_filter: true)
       expect(status).to eq(200)

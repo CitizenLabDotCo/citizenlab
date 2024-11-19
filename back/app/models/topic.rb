@@ -62,7 +62,8 @@ class Topic < ApplicationRecord
     sorted_ids = ids.sort_by do |id|
       next Float::INFINITY if other_ids.include?(id)
 
-      direction == :desc ? -topics_counts[id] : topics_counts[id]
+      count = topics_counts[id] || 0
+      direction == :desc ? -count : count
     end
     order_as_specified(id: sorted_ids)
   }
