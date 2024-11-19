@@ -16,7 +16,7 @@ import usePhase from 'api/phases/usePhase';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import { ColorIndicator } from 'components/ColorIndicator';
+import ColorIndicator from 'components/ColorIndicator';
 import T from 'components/T';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -107,7 +107,7 @@ const FilterSidebarStatusesItem = ({ status, active, onClick }: Props) => {
               justifyContent="flex-start"
               w="100%"
             >
-              <ColorIndicator color={status.attributes.color} />
+              <ColorIndicator bgColor={status.attributes.color} />
               <Box display="flex" alignItems="center" gap="4px">
                 <StatusText>
                   <T value={status.attributes.title_multiloc} />
