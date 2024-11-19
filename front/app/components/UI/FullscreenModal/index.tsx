@@ -19,7 +19,6 @@ const slideInOutEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
 
 const Container = styled.div<{
   windowHeight: number;
-  zIndex?: number;
   contentBgColor?: InputProps['contentBgColor'];
 }>`
   width: 100vw;
@@ -32,7 +31,7 @@ const Container = styled.div<{
   overflow: hidden;
   background: ${({ contentBgColor }) =>
     contentBgColor ? colors[contentBgColor] : colors.white};
-  z-index: ${({ zIndex }) => (!zIndex ? '1003' : zIndex.toString())};
+  z-index: 1003;
 
   &.modal-enter {
     transform: translateY(100vh);
@@ -89,7 +88,6 @@ interface InputProps {
   mobileNavbarRef?: HTMLElement | null;
   children: JSX.Element | null | undefined;
   modalPortalElement?: HTMLElement;
-  zIndex?: number;
   contentBgColor?: Color;
 }
 
@@ -150,7 +148,6 @@ class FullscreenModal extends PureComponent<Props, State> {
       animateInOut,
       mobileNavbarRef,
       className,
-      zIndex,
       contentBgColor,
     } = this.props;
     const shards = compact([mobileNavbarRef]);
@@ -168,7 +165,6 @@ class FullscreenModal extends PureComponent<Props, State> {
           id="e2e-fullscreenmodal-content"
           className={[bottomBar ? 'hasBottomBar' : '', className].join()}
           windowHeight={windowHeight}
-          zIndex={zIndex}
           contentBgColor={contentBgColor}
         >
           <StyledFocusOn autoFocus={false} shards={shards}>
