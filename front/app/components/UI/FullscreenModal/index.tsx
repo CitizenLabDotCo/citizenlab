@@ -86,7 +86,6 @@ interface InputProps {
   topBar?: JSX.Element | null;
   bottomBar?: JSX.Element | null;
   animateInOut?: boolean;
-  navbarRef?: HTMLElement | null;
   mobileNavbarRef?: HTMLElement | null;
   children: JSX.Element | null | undefined;
   modalPortalElement?: HTMLElement;
@@ -149,13 +148,12 @@ class FullscreenModal extends PureComponent<Props, State> {
       topBar,
       bottomBar,
       animateInOut,
-      navbarRef,
       mobileNavbarRef,
       className,
       zIndex,
       contentBgColor,
     } = this.props;
-    const shards = compact([navbarRef, mobileNavbarRef]);
+    const shards = compact([mobileNavbarRef]);
     const modalPortalElement =
       // TODO: Fix this the next time the file is edited.
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
