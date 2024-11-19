@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 
-import { Box, media } from '@citizenlab/cl2-component-library';
+import { Box, Color, colors, media } from '@citizenlab/cl2-component-library';
 import { isFunction, compact } from 'lodash-es';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
@@ -22,16 +22,21 @@ import { isNilOrError } from 'utils/helperUtils';
 const slideInOutTimeout = 500;
 const slideInOutEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
 
-const Container = styled.div<{ windowHeight: number; zIndex?: number }>`
+const Container = styled.div<{
+  windowHeight: number;
+  zIndex?: number;
+  contentBgColor?: InputProps['contentBgColor'];
+}>`
   width: 100vw;
-  height: ${(props) =>
-    `calc(${props.windowHeight}px - ${props.theme.menuHeight}px)`};
+  height: ${({ windowHeight, theme }) =>
+    `calc(${windowHeight}px - ${theme.menuHeight}px)`};
   position: fixed;
   top: ${({ theme }) => theme.menuHeight}px;
   left: 0;
   display: flex;
   overflow: hidden;
-  background: #fff;
+  background: ${({ contentBgColor }) =>
+    contentBgColor ? colors[contentBgColor] : colors.white};
   z-index: ${({ zIndex }) => (!zIndex ? '1003' : zIndex.toString())};
 
   &.modal-enter {
@@ -94,6 +99,7 @@ interface InputProps {
   modalPortalElement?: HTMLElement;
   disableFocusOn?: boolean;
   zIndex?: number;
+  contentBgColor?: Color;
 }
 
 interface Props extends InputProps {
@@ -208,6 +214,7 @@ class FullscreenModal extends PureComponent<Props, State> {
       className,
       disableFocusOn,
       zIndex,
+      contentBgColor,
     } = this.props;
     const shards = compact([navbarRef, mobileNavbarRef]);
     const modalPortalElement =
@@ -225,6 +232,7 @@ class FullscreenModal extends PureComponent<Props, State> {
           className={[bottomBar ? 'hasBottomBar' : '', className].join()}
           windowHeight={windowHeight}
           zIndex={zIndex}
+          contentBgColor={contentBgColor}
         >
           {disableFocusOn ? (
             <Box
