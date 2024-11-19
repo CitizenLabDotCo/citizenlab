@@ -64,11 +64,19 @@ class ProjectPolicy < ApplicationPolicy
     true
   end
 
-  def index_projects_for_followed_item?
+  def index_for_followed_item?
     true
   end
 
-  def index_projects_with_active_participatory_phase?
+  def index_with_active_participatory_phase?
+    true
+  end
+
+  def index_for_areas?
+    true
+  end
+
+  def index_for_topics?
     true
   end
 
