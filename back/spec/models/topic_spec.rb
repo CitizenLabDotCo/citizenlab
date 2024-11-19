@@ -16,13 +16,13 @@ RSpec.describe Topic do
     # topic 3: idea 6
     # topic 4: ideas 2, 4, 5
     # topic 5: ideas 1, 2, 3, 4, 5
-    let!(:topics) { create_list(:topic, 6).tap { |topics| topics[2].update!(code: 'other') } }
-    let!(:idea1) { create(:idea, topics: [topics[0], topics[2], topics[5]]) }
-    let!(:idea2) { create(:idea, topics: [topics[2], topics[4], topics[5]]) }
-    let!(:idea3) { create(:idea, topics: [topics[0], topics[5]]) }
-    let!(:idea4) { create(:idea, topics: [topics[2], topics[4], topics[5]]) }
-    let!(:idea5) { create(:idea, topics: [topics[2], topics[4], topics[5]]) }
-    let!(:idea6) { create(:idea, topics: [topics[0], topics[3]]) }
+    let_it_be(:topics) { create_list(:topic, 6).tap { |topics| topics[2].update!(code: 'other') } }
+    let_it_be(:idea1) { create(:idea, topics: [topics[0], topics[2], topics[5]]) }
+    let_it_be(:idea2) { create(:idea, topics: [topics[2], topics[4], topics[5]]) }
+    let_it_be(:idea3) { create(:idea, topics: [topics[0], topics[5]]) }
+    let_it_be(:idea4) { create(:idea, topics: [topics[2], topics[4], topics[5]]) }
+    let_it_be(:idea5) { create(:idea, topics: [topics[2], topics[4], topics[5]]) }
+    let_it_be(:idea6) { create(:idea, topics: [topics[0], topics[3]]) }
 
     it 'sorts from fewest ideas to most ideas when asking asc' do
       sorted_topics = described_class.order_ideas_count(Idea.where(id: [idea2.id, idea3.id, idea4.id, idea5.id, idea6.id]), direction: :asc)
