@@ -7,6 +7,7 @@ import Settings from './Settings';
 
 interface Props {
   titleMultiloc: Multiloc;
+  adminPublicationIds: string[];
 }
 
 const Selection = (_props: Props) => {
