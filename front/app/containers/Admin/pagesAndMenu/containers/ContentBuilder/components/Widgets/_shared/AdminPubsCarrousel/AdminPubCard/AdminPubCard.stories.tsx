@@ -1,4 +1,4 @@
-import { IAdminPublicationData } from 'api/admin_publications/types';
+import { mockFolderChildAdminPublicationsList } from 'api/admin_publications/__mocks__/useAdminPublications';
 
 import { getOrigin } from 'utils/storybook/getOrigin';
 
@@ -19,13 +19,9 @@ type Story = StoryObj<typeof meta>;
 
 const image = `${getOrigin()}/images/image16.png`;
 
-const ADMIN_PUBLICATION: IAdminPublicationData = {
-  // TODO
-};
-
 export const Primary: Story = {
   args: {
-    adminPublication: ADMIN_PUBLICATION,
+    adminPublication: mockFolderChildAdminPublicationsList[0],
     imageUrl: image,
     avatarIds: ['1', '2', '3'],
     userCount: 20,

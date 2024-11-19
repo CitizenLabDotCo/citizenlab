@@ -1,3 +1,5 @@
+import { mockFolderChildAdminPublicationsList } from 'api/admin_publications/__mocks__/useAdminPublications';
+
 import AdminPubsCarrousel from '.';
 
 import type { Meta, StoryObj } from '@storybook/react';
@@ -11,5 +13,10 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
-  args: {},
+  args: {
+    title: 'AdminPubsCarrousel',
+    adminPublications: mockFolderChildAdminPublicationsList,
+    hasMore: false,
+    onLoadMore: () => {},
+  },
 };

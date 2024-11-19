@@ -10,8 +10,8 @@ import useInstanceId from 'component-library/hooks/useInstanceId';
 import { debounce } from 'lodash-es';
 import { useInView } from 'react-intersection-observer';
 
+import { IAdminPublicationData } from 'api/admin_publications/types';
 import { CARD_IMAGE_ASPECT_RATIO } from 'api/project_images/useProjectImages';
-import { MiniProjectData } from 'api/projects_mini/types';
 
 import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
 
@@ -31,14 +31,14 @@ import { CARD_WIDTH } from './constants';
 
 interface Props {
   title: string;
-  projects: MiniProjectData[];
+  adminPublications: IAdminPublicationData[];
   hasMore: boolean;
   onLoadMore: () => void;
 }
 
 const AdminPubsCarrousel = ({
   title,
-  projects,
+  adminPublications,
   hasMore,
   onLoadMore,
 }: Props) => {
@@ -121,12 +121,12 @@ const AdminPubsCarrousel = ({
             }
           }}
         >
-          {projects.map((project) => (
-            <CardContainer key={project.id}>
+          {adminPublications.map((adminPublication) => (
+            <CardContainer key={adminPublication.id}>
               <AdminPubCard
                 ml={isSmallerThanPhone ? `${CARD_GAP}px` : undefined}
                 mr={isSmallerThanPhone ? undefined : `${CARD_GAP}px`}
-                // project={project}
+                adminPublication={adminPublication}
                 onKeyDown={handleKeyDown}
               />
             </CardContainer>
