@@ -280,7 +280,7 @@
   "app.components.admin.PostManager.timelineTabTooltipText": "Yayınları farklı proje aşamalarına kopyalamak için sürükleyip bırakın.",
   "app.components.admin.PostManager.title": "Başlık",
   "app.components.admin.PostManager.topicsTab": "Etiketler",
-  "app.components.admin.PostManager.topicsTabTooltipText": "Sürükle ve bırak yöntemini kullanarak bir girdiye etiket ekleyin.",
+  "app.components.admin.PostManager.topicsTabTooltipText": "Drag and drop input into the tag title to add tag to input",
   "app.components.admin.PostManager.view": "Görünüm",
   "app.components.admin.PostManager.votes": "Oylar",
   "app.components.admin.PostManager.votesByInputExportFileName": "votes_by_input",
