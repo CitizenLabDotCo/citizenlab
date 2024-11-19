@@ -101,9 +101,6 @@ interface State {
 
 class FullscreenModal extends PureComponent<Props, State> {
   subscription: Subscription | null = null;
-  unlisten: { (): void } | null = null;
-  url: string | null | undefined = null;
-  goBackUrl: string | null | undefined = null;
 
   constructor(props: Props) {
     super(props);
