@@ -1,3 +1,5 @@
+import { getOrigin } from 'utils/storybook/getOrigin';
+
 import AdminPubCard from '.';
 
 import type { Meta, StoryObj } from '@storybook/react';
@@ -13,6 +15,12 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+const image = `${getOrigin()}/images/image16.png`;
+
 export const Primary: Story = {
-  args: {},
+  args: {
+    projectUrl: '/path/to/project',
+    imageUrl: image,
+    onKeyDown: () => {},
+  },
 };
