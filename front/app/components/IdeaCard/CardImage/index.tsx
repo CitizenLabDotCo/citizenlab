@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { media } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import { IPhaseData } from 'api/phases/types';
@@ -19,11 +18,8 @@ const IdeaCardImageWrapper = styled.div<{ $cardInnerHeight: string }>`
   margin-right: 18px;
   overflow: hidden;
   border-radius: ${(props) => props.theme.borderRadius};
-
-  ${media.tablet`
-    width: 100%;
-    margin-bottom: 18px;
-  `}
+  width: 100%;
+  margin-bottom: 18px;
 `;
 
 const IdeaCardImage = styled(Image)`

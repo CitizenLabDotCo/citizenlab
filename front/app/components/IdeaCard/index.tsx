@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react';
 
 import {
-  useBreakpoint,
   Box,
   defaultCardStyle,
   defaultCardHoverStyle,
-  media,
   Title,
+  useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 import { RouteType } from 'routes';
@@ -52,10 +51,7 @@ const Container = styled(Box)`
   width: 100%;
   display: flex;
   padding: 17px;
-
-  ${media.tablet`
-    flex-direction: column;
-  `}
+  flex-direction: column;
 `;
 
 const IdeaLoading = (props: Props) => {
@@ -89,7 +85,6 @@ const IdeaCard = ({
     !hideImage && ideaImage ? ideaImage.data.attributes.versions.medium : null;
 
   const smallerThanPhone = useBreakpoint('phone');
-  const smallerThanTablet = useBreakpoint('tablet');
 
   const localize = useLocalize();
 
@@ -146,6 +141,7 @@ const IdeaCard = ({
       className="e2e-card e2e-idea-card"
       id={idea.data.id}
       onClick={handleClick}
+      height="100%"
     >
       <CardImage
         phase={phaseData}
@@ -161,15 +157,7 @@ const IdeaCard = ({
         w="100%"
         overflowX="hidden"
       >
-        <Box
-          mb={
-            smallerThanTablet
-              ? '24px'
-              : !image && hideImagePlaceholder
-              ? '36px'
-              : '8px'
-          }
-        >
+        <Box mb={'24px'}>
           <Link to={`/ideas/${slug}?go_back=true`} onClick={handleClick}>
             <Title
               variant="h3"

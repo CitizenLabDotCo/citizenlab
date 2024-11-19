@@ -211,7 +211,6 @@ const IdeaCards = ({ ideaQueryParameters, onUpdateQuery }: Props) => {
   const biggerThanLargeTablet = !!(
     windowWidth && windowWidth >= viewportWidths.tablet
   );
-  const smallerThan1440px = !!(windowWidth && windowWidth <= 1440);
   const smallerThanPhone = !!(
     windowWidth && windowWidth <= viewportWidths.phone
   );
@@ -286,12 +285,9 @@ const IdeaCards = ({ ideaQueryParameters, onUpdateQuery }: Props) => {
                 onLoadMore={fetchNextPage}
                 hasMore={!!hasNextPage}
                 loadingMore={isFetchingNextPage}
-                hideImage={biggerThanLargeTablet && smallerThan1440px}
-                hideImagePlaceholder={smallerThan1440px}
-                hideIdeaStatus={
-                  (biggerThanLargeTablet && smallerThan1440px) ||
-                  smallerThanPhone
-                }
+                hideImage={false}
+                hideImagePlaceholder={true}
+                hideIdeaStatus={smallerThanPhone}
                 view="card"
                 hasMoreThanOneView={false}
               />
