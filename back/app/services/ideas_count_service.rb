@@ -18,11 +18,11 @@ module IdeasCountService
       .reorder(nil) # Avoids SQL error on GROUP BY when a search string was used
       .group("GROUPING SETS (#{column_names(attributes).join(', ')})")
       .each do |record|
-      attributes.each do |attribute|
-        id = record.send attribute
-        result[attribute][id] = record.count if id
+        attributes.each do |attribute|
+          id = record.send attribute
+          result[attribute][id] = record.count if id
+        end
       end
-    end
 
     result
   end
