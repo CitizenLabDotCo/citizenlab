@@ -70,6 +70,7 @@ export interface IProjectAttributes {
   description_multiloc: Multiloc;
   description_preview_multiloc: Multiloc;
   slug: string;
+  preview_token: string;
   created_at: string;
   updated_at: string;
   header_bg: ProjectHeaderBgImageSizes;

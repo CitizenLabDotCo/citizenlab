@@ -356,6 +356,18 @@
         }
       },
 
+      "project_preview_link" : {
+        "type": "object",
+        "title": "Project Preview Link",
+        "description": "Allows sharing a preview of a draft project via a link, which can be found in the project's settings.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
       "password_login": {
         "type": "object",
         "title": "Password Login",
