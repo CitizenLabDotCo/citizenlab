@@ -391,10 +391,10 @@ da:
       main_header: '''%{post}'' har en ny intern kommentar'
       preheader: '''%{post}'' har en ny intern kommentar'
     official_feedback_on_idea_you_follow:
-      header_message: '%{feedback_author_name} gave an update on ''%{input_title}''.'
-      header_title: 'There''s an update on "%{input_title}"'
-      subject: 'Official feedback was posted on "%{input_title}"'
-      preheader: 'There''s an update on an input you follow'
+      header_message: '%{feedback_author_name} kom med en officiel opdatering på %{input_title}''.'
+      header_title: 'Der er en opdatering på "%{input_title}"'
+      subject: 'Officiel feedback blev lagt ud på "%{input_title}"'
+      preheader: 'Der er en opdatering på et input, du følger'
     official_feedback_on_initiative_you_follow:
       header_message: '%{officialName} har en opdatering til forslaget ''%{initiativeTitle}''. Klik på knappen nedenfor for at gå ind i samtalen med %{organizationName}.'
       header_title: 'Der er en opdatering på et forslag, du følger'
@@ -458,11 +458,11 @@ da:
       header_message: 'Borgerinddragelsesplatformen %{organizationName} har netop offentliggjort følgende projekt:'
       preheader: 'Et nyt projekt blev offentliggjort'
     status_change_on_idea_you_follow:
-      status_change: 'The new status of this input is ''%{status}'''
-      header_message: '%{organizationName} updated the status of the input ''%{input_title}'' on their digital participation platform.'
-      header_title: 'An input you follow has a new status'
-      subject: 'The status of "%{input_title}" has changed'
-      preheader: 'An input you follow has a new status'
+      status_change: 'Den nye status for dette input er ''%{status}'''
+      header_message: '%{organizationName} opdaterede status for input ''%{input_title}'' på deres digitale platform.'
+      header_title: 'Et input, du følger, har fået ny status'
+      subject: 'Status for "%{input_title}" er ændret'
+      preheader: 'Et input, du følger, har fået ny status'
     status_change_on_initiative_you_follow:
       status_change: 'Den nye status for dette forslag er ''%{initiativeStatus}'''
       header_message: 'Status for forslag ''%{initiativeTitle}'' er blevet opdateret på den digitale borgerinddragelsesplatform for %{organizationName}.'
