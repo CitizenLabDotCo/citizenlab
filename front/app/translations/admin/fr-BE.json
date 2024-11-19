@@ -790,7 +790,7 @@
   "app.containers.Admin.pagesAndMenu.ContentBuilder.CraftComponents.OpenToParticipation.thisWidgetWillShowcase": "Ce widget mettra en avant les projets auxquels l'utilisateur peut actuellement <b>participer</b>.",
   "app.containers.Admin.pagesAndMenu.ContentBuilder.CraftComponents.OpenToParticipation.title": "Titre",
   "app.containers.Admin.pagesAndMenu.ContentBuilder.FollowedItems.defaultTitle": "Pour vous",
-  "app.containers.Admin.pagesAndMenu.ContentBuilder.FollowedItems.noData2": "Ce widget ne sera affiché à l'utilisateur que s'il existe des projets pertinents pour lui en fonction de ses préférences de suivi. Si vous voyez ce message, cela signifie que vous (l'administrateur) ne suivez rien pour le moment. Ce message ne sera pas visible sur la page d'accueil réelle.",
+  "app.containers.Admin.pagesAndMenu.ContentBuilder.FollowedItems.noData2": "Ce widget ne sera visible par l'utilisateur que s'il y a des projets pertinents pour lui en fonction du contenu qu'il suit sur la plateforme. Vous voyez ce message, en tant qu'administrateur, car vous ne suivez actuellement aucun projet (directement ou indirectement). Ce message n'apparaîtra pas sur la page d'accueil en ligne.",
   "app.containers.Admin.pagesAndMenu.ContentBuilder.FollowedItems.title": "Contenu suivi",
   "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.emptyNameErrorText": "Fournissez un nom dans toutes les langues",
   "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.emptyProjectError": "Le projet ne peut pas être vide",
