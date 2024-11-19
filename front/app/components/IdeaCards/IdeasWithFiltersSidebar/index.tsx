@@ -8,6 +8,7 @@ import {
   isRtl,
   Spinner,
   useWindowSize,
+  Title,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
@@ -16,9 +17,11 @@ import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
 
 import { QueryParameters } from 'containers/IdeasIndexPage';
 
+import filterModalMessages from 'components/FiltersModal/messages';
 import Button from 'components/UI/Button';
 import SearchInput from 'components/UI/SearchInput';
 
+import { ScreenReaderOnly } from 'utils/a11y';
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
@@ -29,7 +32,7 @@ import IdeasView from '../shared/IdeasView';
 import tracks from '../tracks';
 
 import FiltersModal from './FiltersModal';
-import FiltersSideBar from './FiltersSideBar';
+import InputFilters from './InputFilters';
 
 const gapWidth = 35;
 
@@ -118,9 +121,12 @@ const ContentRight = styled.div<{ filterColumnWidth: number }>`
   justify-content: flex-start;
   align-self: flex-start;
   margin-left: ${gapWidth}px;
-  position: relative;
+  max-height: calc(100vh - 120px);
   position: sticky;
   top: 100px;
+  overflow-y: scroll;
+  padding-left: 8px;
+  padding-right: 8px;
 `;
 
 export interface QueryParametersUpdate {
@@ -296,7 +302,16 @@ const IdeaCards = ({ ideaQueryParameters, onUpdateQuery }: Props) => {
                 id="e2e-ideas-filters"
                 filterColumnWidth={filterColumnWidth}
               >
-                <FiltersSideBar
+                {/*
+                  We have this Filters heading in the filters modal on mobile. 
+                  This title streamlines the experience on desktop (for screen reader users).
+                */}
+                <ScreenReaderOnly>
+                  <Title as="h2">
+                    <FormattedMessage {...filterModalMessages.filters} />
+                  </Title>
+                </ScreenReaderOnly>
+                <InputFilters
                   defaultValue={ideaQueryParameters.search}
                   selectedIdeaFilters={ideaQueryParameters}
                   filtersActive={filtersActive}

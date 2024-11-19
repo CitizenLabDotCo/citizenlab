@@ -1,14 +1,7 @@
 # frozen_string_literal: true
 
 class InitiativePolicy < ApplicationPolicy
-  class Scope
-    attr_reader :user, :scope
-
-    def initialize(user, scope)
-      @user  = user
-      @scope = scope
-    end
-
+  class Scope < ApplicationPolicy::Scope
     def resolve
       published = scope.where(publication_status: 'published')
 

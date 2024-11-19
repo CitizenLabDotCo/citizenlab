@@ -4,8 +4,12 @@ require 'rails_helper'
 
 RSpec.describe Project do
   describe 'Default factory' do
-    it 'is valid' do
-      expect(build(:project)).to be_valid
+    subject(:project) { build(:project) }
+
+    it { is_expected.to be_valid }
+
+    it 'has a preview token' do
+      expect(project.preview_token).to be_present
     end
   end
 
@@ -97,6 +101,18 @@ RSpec.describe Project do
   describe 'pmethod' do
     it 'returns an instance of ParticipationMethod::Ideation' do
       expect(build(:project).pmethod).to be_an_instance_of(ParticipationMethod::Ideation)
+    end
+  end
+
+  describe '#refresh_preview_token' do
+    it 'replaces the preview token' do
+      project = build(:project)
+      old_token = project.preview_token
+
+      project.refresh_preview_token
+
+      expect(project.preview_token).to be_present
+      expect(project.preview_token).not_to eq(old_token)
     end
   end
 end

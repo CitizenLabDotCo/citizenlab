@@ -6,6 +6,13 @@ require 'rspec_api_documentation/dsl'
 resource 'Projects' do
   explanation 'Projects can have phases which can be of different participation methods.'
 
+  shared_examples 'Unauthorized (401)' do
+    example 'Unauthorized (401)', document: false do
+      do_request
+      expect(status).to eq 401
+    end
+  end
+
   let(:json_response) { json_parse(response_body) }
 
   before do
@@ -176,7 +183,8 @@ resource 'Projects' do
             voting: { enabled: false, disabled_reason: 'project_inactive' },
             attending_event: { enabled: true, disabled_reason: nil },
             volunteering: { enabled: false, disabled_reason: 'project_inactive' }
-          }
+          },
+          preview_token: an_instance_of(String)
         )
         expect(json_response.dig(:data, :relationships)).to include(
           areas: { data: [] }
@@ -727,6 +735,38 @@ resource 'Projects' do
     end
   end
 
+  post 'web_api/v1/projects/:id/refresh_preview_token' do
+    context 'when admin' do
+      before do
+        @admin = create(:admin)
+        header_token_for(@admin)
+      end
+
+      let(:project) { create(:project) }
+      let(:id) { project.id }
+
+      example 'Refresh the preview token of a project' do
+        expect { do_request }.to change { project.reload.preview_token }
+        assert_status 200
+      end
+    end
+
+    context 'when regular user' do
+      before do
+        @user = create(:user)
+        header_token_for(@user)
+      end
+
+      let(:project) { create(:project) }
+      let(:id) { project.id }
+
+      example '[Unauthorized] Refresh the preview token of a project', document: false do
+        do_request
+        expect(status).to eq 401
+      end
+    end
+  end
+
   get 'web_api/v1/projects/:id/votes_by_user_xlsx' do
     let(:phase1) { create(:single_voting_phase, start_at: Time.now - 18.days, end_at: Time.now - 17.days) }
     let(:phase2) { create(:multiple_voting_phase, start_at: Time.now - 14.days, end_at: Time.now - 13.days) }
@@ -990,6 +1030,48 @@ resource 'Projects' do
         do_request
         assert_status 200
         expect(json_response[:data].size).to eq 0
+      end
+    end
+
+    get 'web_api/v1/projects/:id' do
+      let(:id) { project.id }
+
+      context 'when the project is in draft' do
+        let_it_be(:project) { create(:project, admin_publication_attributes: { publication_status: 'draft' }) }
+
+        context 'and the project_preview_link feature flag is enabled' do
+          before do
+            settings = AppConfiguration.instance.settings
+            settings['project_preview_link'] = { 'enabled' => true, 'allowed' => true }
+            AppConfiguration.instance.update!(settings: settings)
+          end
+
+          context 'and a valid preview_token is provided in cookies' do
+            before { header('Cookie', "preview_token=#{project.preview_token}") }
+
+            example 'Get a project by id', document: false do
+              do_request
+              assert_status 200
+              expect(json_response.dig(:data, :id)).to eq project.id
+            end
+          end
+
+          context 'and an invalid preview_token is provided in cookies' do
+            before { header('Cookie', 'preview_token=invalid') }
+
+            include_examples 'Unauthorized (401)'
+          end
+
+          context 'and no preview_token is provided in cookies' do
+            include_examples 'Unauthorized (401)'
+          end
+        end
+
+        context 'and the project_preview_link feature flag is disabled and a valid preview_token is provided in cookies' do
+          before { header('Cookie', "preview_token=#{project.preview_token}") }
+
+          include_examples 'Unauthorized (401)'
+        end
       end
     end
   end
@@ -1316,6 +1398,23 @@ resource 'Projects' do
 
       expect(current_phase_ids).to match included_phase_ids
     end
+
+    context 'when admin' do
+      before do
+        @user = create(:admin)
+        header_token_for @user
+
+        followed_project.update!(admin_publication_attributes: { publication_status: 'draft' })
+        create(:follower, followable: followed_project, user: @user)
+      end
+
+      example_request 'Does not include draft projects', document: false do
+        expect(status).to eq 200
+
+        json_response = json_parse(response_body)
+        expect(json_response[:data]).to eq []
+      end
+    end
   end
 
   get 'web_api/v1/projects/with_active_participatory_phase' do
@@ -1535,6 +1634,18 @@ resource 'Projects' do
         expect(project_ids).to match_array [archived_project.id, finished_project1.id, unfinished_project2.id]
       end
 
+      example 'Includes correct ended_days_ago attribute value' do
+        finished_project1.phases[0].update!(start_at: 342.days.ago, end_at: 339.days.ago)
+        finished_project1.phases[1].update!(start_at: 338.days.ago, end_at: 335.days.ago)
+
+        do_request({ archived: true, finished: true })
+        expect(status).to eq 200
+
+        json_response = json_parse(response_body)
+        project = json_response[:data].find { |d| d[:id] == finished_project1.id }
+        expect(project[:attributes][:ended_days_ago]).to eq 335
+      end
+
       # Test to catch duplicates that can occur when created_at dates match, and no secondary sorting is applied.
       # Identical created_at dates are possible when tenant templates are applied.
       example 'Does not duplicate projects on different pages when created_at dates are the same', document: false do
@@ -1549,6 +1660,190 @@ resource 'Projects' do
         project_ids_page2 = json_response[:data].pluck(:id)
 
         expect(project_ids_page1 & project_ids_page2).to be_empty
+      end
+    end
+  end
+
+  get 'web_api/v1/projects/for_areas' do
+    before do
+      @user = create(:user, roles: [])
+      header_token_for @user
+    end
+
+    with_options scope: :page do
+      parameter :number, 'Page number'
+      parameter :size, 'Number of projects per page'
+      parameter :areas, 'Array of area IDs', required: false
+    end
+
+    let!(:area1) { create(:area) }
+    let!(:area2) { create(:area) }
+    let!(:project_with_areas) { create(:project) }
+    let!(:_areas_project1) { create(:areas_project, project: project_with_areas, area: area1) }
+    let!(:_areas_project2) { create(:areas_project, project: project_with_areas, area: area2) }
+
+    let!(:_project_without_area) { create(:project) }
+
+    example_request 'Lists projects for a given area' do
+      do_request areas: [area1.id]
+      expect(status).to eq 200
+
+      expect(Project.count).to eq 2
+
+      json_response = json_parse(response_body)
+      project_ids = json_response[:data].pluck(:id)
+
+      expect(project_ids).to match_array [project_with_areas.id]
+    end
+
+    example 'Orders projects by created_at DESC', document: false do
+      project2 = create(:project)
+      project3 = create(:project)
+      project4 = create(:project)
+      create(:areas_project, project: project2, area: area1)
+      create(:areas_project, project: project3, area: area1)
+      create(:areas_project, project: project4, area: area1)
+
+      project_with_areas.update!(created_at: 4.days.ago)
+      project2.update!(created_at: 1.day.ago)
+      project3.update!(created_at: 3.days.ago)
+      project4.update!(created_at: 2.days.ago)
+
+      do_request areas: [area1.id]
+      expect(status).to eq 200
+
+      json_response = json_parse(response_body)
+      project_ids = json_response[:data].pluck(:id)
+
+      expect(project_ids).to eq [project2.id, project4.id, project3.id, project_with_areas.id]
+    end
+
+    example_request 'Does not return duplicate projects when more than one areas_project matches' do
+      do_request areas: [area1.id, area2.id]
+      expect(status).to eq 200
+
+      json_response = json_parse(response_body)
+      project_ids = json_response[:data].pluck(:id)
+
+      expect(project_ids).to match_array [project_with_areas.id]
+    end
+
+    example_request 'Returns an empty list when areas parameter is nil' do
+      do_request
+      expect(status).to eq 200
+
+      json_response = json_parse(response_body)
+
+      expect(json_response[:data]).to eq []
+    end
+
+    context 'when admin' do
+      before do
+        @user = create(:admin)
+        header_token_for @user
+      end
+
+      example_request 'Does not include draft projects' do
+        project_with_areas.update!(admin_publication_attributes: { publication_status: 'draft' })
+
+        do_request areas: [area1.id]
+        expect(status).to eq 200
+
+        json_response = json_parse(response_body)
+
+        expect(json_response[:data]).to eq []
+      end
+    end
+  end
+
+  get 'web_api/v1/projects/for_topics' do
+    before do
+      @user = create(:user, roles: [])
+      header_token_for @user
+    end
+
+    with_options scope: :page do
+      parameter :number, 'Page number'
+      parameter :size, 'Number of projects per page'
+      parameter :topics, 'Array of topic IDs', required: false
+    end
+
+    let!(:topic1) { create(:topic) }
+    let!(:topic2) { create(:topic) }
+    let!(:project_with_topics) { create(:project) }
+    let!(:_projects_topic1) { create(:projects_topic, project: project_with_topics, topic: topic1) }
+    let!(:_projects_topic2) { create(:projects_topic, project: project_with_topics, topic: topic2) }
+
+    let!(:_project_without_topic) { create(:project) }
+
+    example_request 'Lists projects for a given topic' do
+      do_request topics: [topic1.id]
+      expect(status).to eq 200
+
+      expect(Project.count).to eq 2
+
+      json_response = json_parse(response_body)
+      project_ids = json_response[:data].pluck(:id)
+
+      expect(project_ids).to match_array [project_with_topics.id]
+    end
+
+    example 'Orders projects by created_at DESC', document: false do
+      project2 = create(:project)
+      project3 = create(:project)
+      project4 = create(:project)
+      create(:projects_topic, project: project2, topic: topic1)
+      create(:projects_topic, project: project3, topic: topic1)
+      create(:projects_topic, project: project4, topic: topic1)
+
+      project_with_topics.update!(created_at: 4.days.ago)
+      project2.update!(created_at: 1.day.ago)
+      project3.update!(created_at: 3.days.ago)
+      project4.update!(created_at: 2.days.ago)
+
+      do_request topics: [topic1.id]
+      expect(status).to eq 200
+
+      json_response = json_parse(response_body)
+      project_ids = json_response[:data].pluck(:id)
+
+      expect(project_ids).to eq [project2.id, project4.id, project3.id, project_with_topics.id]
+    end
+
+    example_request 'Does not return duplicate projects when more than one projects_topic matches', document: false do
+      do_request topics: [topic1.id, topic2.id]
+      expect(status).to eq 200
+
+      json_response = json_parse(response_body)
+      project_ids = json_response[:data].pluck(:id)
+
+      expect(project_ids).to match_array [project_with_topics.id]
+    end
+
+    example_request 'Returns an empty list when topics parameter is nil', document: false do
+      do_request
+      expect(status).to eq 200
+
+      json_response = json_parse(response_body)
+
+      expect(json_response[:data]).to eq []
+    end
+
+    context 'when admin' do
+      before do
+        @user = create(:admin)
+        header_token_for @user
+      end
+
+      example_request 'Does not include draft projects' do
+        project_with_topics.update!(admin_publication_attributes: { publication_status: 'draft' })
+
+        do_request topics: [topic1.id]
+        expect(status).to eq 200
+
+        json_response = json_parse(response_body)
+
+        expect(json_response[:data]).to eq []
       end
     end
   end

@@ -46,6 +46,7 @@
 #  index_admin_publications_on_lft                                  (lft)
 #  index_admin_publications_on_ordering                             (ordering)
 #  index_admin_publications_on_parent_id                            (parent_id)
+#  index_admin_publications_on_publication_status                   (publication_status)
 #  index_admin_publications_on_publication_type_and_publication_id  (publication_type,publication_id)
 #  index_admin_publications_on_rgt                                  (rgt)
 #
