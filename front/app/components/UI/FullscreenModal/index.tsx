@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 
 import { Color, colors, media } from '@citizenlab/cl2-component-library';
-import { isFunction, compact } from 'lodash-es';
+import { compact } from 'lodash-es';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import CSSTransition from 'react-transition-group/CSSTransition';
@@ -11,11 +11,6 @@ import styled from 'styled-components';
 import { SupportedLocale } from 'typings';
 
 import useLocale from 'hooks/useLocale';
-
-import { trackPage } from 'utils/analytics';
-import clHistory from 'utils/cl-router/history';
-import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
-import { isNilOrError } from 'utils/helperUtils';
 
 // resource
 
@@ -88,7 +83,6 @@ interface InputProps {
   className?: string;
   opened: boolean;
   close: () => void;
-  url?: string | null;
   topBar?: JSX.Element | null;
   bottomBar?: JSX.Element | null;
   animateInOut?: boolean;
@@ -107,8 +101,6 @@ interface Props extends InputProps {
 interface State {
   windowHeight: number;
 }
-
-const useCapture = false;
 
 class FullscreenModal extends PureComponent<Props, State> {
   subscription: Subscription | null = null;
@@ -134,36 +126,9 @@ class FullscreenModal extends PureComponent<Props, State> {
       });
   }
 
-  componentDidUpdate(prevProps: Props) {
-    if (!prevProps.opened && this.props.opened) {
-      this.openModal();
-    } else if (prevProps.opened && !this.props.opened) {
-      this.cleanup();
-    }
-  }
-
   componentWillUnmount() {
     this.subscription?.unsubscribe();
-    this.cleanup();
   }
-
-  openModal = () => {
-    const { locale, url } = this.props;
-
-    if (!isNilOrError(locale) && url) {
-      const { pathname } = removeLocale(url);
-      this.url = `${window.location.origin}/${locale}${pathname}`;
-      this.goBackUrl = `${window.location.origin}/${locale}${
-        removeLocale(window.location.pathname).pathname
-      }`;
-      window.history.pushState({ path: this.url }, '', this.url);
-      window.addEventListener('popstate', this.handlePopstateEvent, useCapture);
-      window.addEventListener('keydown', this.handleKeypress, useCapture);
-      this.unlisten = clHistory.listen(() => this.props.close());
-
-      trackPage(this.url, { modal: true });
-    }
-  };
 
   handleKeypress = (event: KeyboardEvent) => {
     if (event.type === 'keydown' && event.key === 'Escape') {
@@ -174,29 +139,6 @@ class FullscreenModal extends PureComponent<Props, State> {
 
   handlePopstateEvent = () => {
     this.props.close();
-  };
-
-  cleanup = () => {
-    if (this.goBackUrl) {
-      window.removeEventListener(
-        'popstate',
-        this.handlePopstateEvent,
-        useCapture
-      );
-      window.removeEventListener('keydown', this.handleKeypress, useCapture);
-
-      if (window.location.href === this.url) {
-        window.history.pushState({ path: this.goBackUrl }, '', this.goBackUrl);
-      }
-    }
-
-    this.url = null;
-    this.goBackUrl = null;
-
-    if (isFunction(this.unlisten)) {
-      this.unlisten();
-      this.unlisten = null;
-    }
   };
 
   render() {
