@@ -20,8 +20,11 @@
 #  index_topics_on_include_in_onboarding  (include_in_onboarding)
 #
 class Topic < ApplicationRecord
+  extend OrderAsSpecified
+
   DEFAULT_CODES = %w[nature waste sustainability mobility technology economy housing public_space safety education culture health inclusion community services other].freeze
   CUSTOM_CODE = 'custom'
+  OTHER_CODE = 'other'
   CODES = DEFAULT_CODES + [CUSTOM_CODE]
 
   acts_as_list column: :ordering, top_of_list: 0, add_new_at: :top
@@ -53,6 +56,16 @@ class Topic < ApplicationRecord
       .group(:id)
       .order("COUNT(projects_topics.project_id) #{safe_dir}, ordering")
   }
+  scope :order_ideas_count, ->(ideas, direction: :asc) do
+    topics_counts = IdeasCountService.counts(ideas, ['topic_id'])['topic_id']
+    other_ids = where(code: OTHER_CODE).ids
+    sorted_ids = ids.sort_by do |id|
+      next Float::INFINITY if other_ids.include?(id)
+
+      direction == :desc ? -topics_counts[id] : topics_counts[id]
+    end
+    order_as_specified(id: sorted_ids)
+  end
   scope :defaults, -> { where(code: DEFAULT_CODES) }
 
   def custom?
