@@ -9,9 +9,6 @@ import type { Meta, StoryObj } from '@storybook/react';
 const meta = {
   title: 'HomepageBuilder/ProjectCarrousel',
   component: ProjectCarrousel,
-  parameters: {
-    chromatic: { disableSnapshot: false },
-  },
 } satisfies Meta<typeof ProjectCarrousel>;
 
 export default meta;
