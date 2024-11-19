@@ -20,6 +20,10 @@ import Gradient from '../BaseCarrousel/Gradient';
 import HorizontalScroll from '../BaseCarrousel/HorizontalScroll';
 import ScrollButton from '../BaseCarrousel/ScrollButton';
 import SkipButton from '../BaseCarrousel/SkipButton';
+import {
+  getUpdatedButtonVisibility,
+  skipCarrousel,
+} from '../BaseCarrousel/utils';
 
 import { CARD_GAP, CARD_WIDTH } from './constants';
 import LightProjectCard from './LightProjectCard';
@@ -52,21 +56,13 @@ const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
   const handleButtonVisiblity = useCallback(
     (ref: HTMLDivElement, hasMore: boolean) => {
       if (isSmallerThanPhone) return;
+      const { showNextButton, showPreviousButton } = getUpdatedButtonVisibility(
+        ref,
+        hasMore
+      );
 
-      const scrollLeft = ref.scrollLeft;
-      const scrollWidth = ref.scrollWidth;
-      const clientWidth = ref.clientWidth;
-
-      const atEnd = scrollLeft >= scrollWidth - clientWidth;
-
-      if (atEnd && !hasMore) {
-        setShowNextButton(false);
-      } else {
-        setShowNextButton(true);
-      }
-
-      const atStart = scrollLeft === 0;
-      setShowPreviousButton(!atStart);
+      setShowNextButton(showNextButton);
+      setShowPreviousButton(showPreviousButton);
     },
     [isSmallerThanPhone]
   );
@@ -85,15 +81,9 @@ const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
     };
   }, [scrollContainerRef, hasMore, handleButtonVisiblity]);
 
-  const skipCarrousel = () => {
-    const element = document.getElementById(endId);
-    element?.setAttribute('tabindex', '-1');
-    element?.focus();
-  };
-
   const handleKeyDown = (e: React.KeyboardEvent<any>) => {
     if (e.code === 'Escape') {
-      skipCarrousel();
+      skipCarrousel(endId);
     }
 
     if (e.code === 'Tab' && scrollContainerRef) {
@@ -116,7 +106,7 @@ const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
         >
           {title}
         </Title>
-        <SkipButton onSkip={skipCarrousel} />
+        <SkipButton onSkip={() => skipCarrousel(endId)} />
         <HorizontalScroll
           setRef={(ref) => {
             if (ref) {
