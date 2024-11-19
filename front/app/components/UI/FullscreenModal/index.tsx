@@ -97,7 +97,6 @@ interface InputProps {
   mobileNavbarRef?: HTMLElement | null;
   children: JSX.Element | null | undefined;
   modalPortalElement?: HTMLElement;
-  disableFocusOn?: boolean;
   zIndex?: number;
   contentBgColor?: Color;
 }
