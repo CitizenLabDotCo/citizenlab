@@ -404,6 +404,8 @@ const ReactionButton = ({
     const projectName = localize(project.data.attributes.title_multiloc);
     const buttonReactionModeIsActive = buttonReactionMode === userReactionMode;
 
+    const describedById = disabledReason ? `tooltip-${ideaId}` : undefined;
+
     const disabledMessage = disabledReasonMessage && (
       <FormattedMessage
         {...disabledReasonMessage}
@@ -411,6 +413,7 @@ const ReactionButton = ({
           enabledFromDate,
           projectName,
         }}
+        id={describedById}
       />
     );
 
@@ -430,6 +433,7 @@ const ReactionButton = ({
               icon={buttonReactionModeIsActive ? 'check' : 'vote-ballot'}
               bgColor={buttonReactionModeIsActive ? colors.success : undefined}
               className="e2e-ideacard-vote-button"
+              aria-describedby={describedById}
             >
               {buttonReactionModeIsActive ? (
                 <FormattedMessage {...messages.voted} />
@@ -460,6 +464,7 @@ const ReactionButton = ({
                 }[buttonReactionMode],
                 buttonReactionModeEnabled ? 'enabled' : '',
               ].join(' ')}
+              aria-describedby={describedById}
             >
               <ReactionIconContainer
                 styleType={styleType}
@@ -495,8 +500,7 @@ const ReactionButton = ({
             </Button>
           )}
           {disabledReason && (
-            // Adding a dot as a hack to make the screen reader read the message with the correct pause after the previous text. Ideally all messages should have a dot at the end.
-            <ScreenReaderOnly>
+            <ScreenReaderOnly id={describedById}>
               {`. `}
               {disabledMessage}
             </ScreenReaderOnly>
