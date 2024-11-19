@@ -56,7 +56,7 @@ class Topic < ApplicationRecord
       .group(:id)
       .order("COUNT(projects_topics.project_id) #{safe_dir}, ordering")
   }
-  scope :order_ideas_count, ->(ideas, direction: :asc) do
+  scope :order_ideas_count, lambda { |ideas, direction: :asc|
     topics_counts = IdeasCountService.counts(ideas, ['topic_id'])['topic_id']
     other_ids = where(code: OTHER_CODE).ids
     sorted_ids = ids.sort_by do |id|
@@ -65,7 +65,7 @@ class Topic < ApplicationRecord
       direction == :desc ? -topics_counts[id] : topics_counts[id]
     end
     order_as_specified(id: sorted_ids)
-  end
+  }
   scope :defaults, -> { where(code: DEFAULT_CODES) }
 
   def custom?
