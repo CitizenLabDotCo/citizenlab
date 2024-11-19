@@ -1,4 +1,4 @@
-import React, { useCallback, MouseEvent, memo } from 'react';
+import React, { useCallback, MouseEvent, memo, useState } from 'react';
 
 import {
   fontSizes,
@@ -6,6 +6,7 @@ import {
   Box,
   Text,
   isRtl,
+  Button,
 } from '@citizenlab/cl2-component-library';
 import { isError, includes, get } from 'lodash-es';
 import { darken } from 'polished';
@@ -20,7 +21,11 @@ import T from 'components/T';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
+import {
+  isNil,
+  isNilOrError,
+  removeFocusAfterMouseClick,
+} from 'utils/helperUtils';
 
 import InputFilterCollapsible from './InputFilterCollapsible';
 import messages from './messages';
@@ -84,8 +89,11 @@ interface Props {
 const TopicsFilter = memo<Props>(
   ({ topics, selectedTopicIds, filterCounts, onChange, className }) => {
     const localize = useLocalize();
-    const { data: appConfig } = useAppConfiguration();
     const { formatMessage } = useIntl();
+    const { data: appConfig } = useAppConfiguration();
+
+    const [showFullList, setShowFullList] = useState(false);
+
     const customTopicsTerm =
       appConfig?.data.attributes.settings.core.topics_term;
 
@@ -134,7 +142,7 @@ const TopicsFilter = memo<Props>(
             <Box className="e2e-topics-filters">
               {topics
                 .filter((topic) => !isError(topic))
-                .map((topic: ITopicData) => {
+                .map((topic: ITopicData, index) => {
                   const filterPostCount = get(
                     filterCounts,
                     `topic_id.${topic.id}`,
@@ -142,6 +150,15 @@ const TopicsFilter = memo<Props>(
                   );
 
                   const topicSelected = selectedTopicIds?.includes(topic.id);
+
+                  if (
+                    (filterPostCount === 0 &&
+                      (isNil(selectedTopicIds) ||
+                        selectedTopicIds.length === 0)) ||
+                    (!showFullList && index > 5)
+                  ) {
+                    return null;
+                  }
 
                   return (
                     <Topic
@@ -168,6 +185,27 @@ const TopicsFilter = memo<Props>(
                   );
                 })}
             </Box>
+            <Button
+              onClick={() => {
+                setShowFullList((curentValue) => !curentValue);
+              }}
+              buttonStyle="text"
+              p="0px"
+              mt="12px"
+              fontSize="s"
+              style={{ alignContent: 'right' }}
+              aria-label={
+                showFullList
+                  ? `${formatMessage(messages.showAllNumberTags, {
+                      numberTags: topics.length,
+                    })}`
+                  : formatMessage(messages.showFewerTags)
+              }
+            >
+              {showFullList
+                ? formatMessage(messages.showLess)
+                : `${formatMessage(messages.showAll)} (${topics.length})`}
+            </Button>
 
             <ScreenReaderOnly aria-live="polite">
               {/* Pronounces numbers of selected topics + selected topic names */}
