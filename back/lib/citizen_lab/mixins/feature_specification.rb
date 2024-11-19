@@ -13,6 +13,7 @@ module CitizenLab
           'title' => feature_title,
           'description' => feature_description,
           'additionalProperties' => false,
+          'pricing' => pricing,
           'required' => %w[allowed enabled],
           'required-settings' => required_settings.presence,
           'properties' => {
