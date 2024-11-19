@@ -66,23 +66,16 @@ class ProjectsFinderService
     { projects: projects, descriptor_pairs: project_descriptor_pairs }
   end
 
-  def projects_with_active_phase(projects)
-    projects
-      .joins('INNER JOIN phases AS phases ON phases.project_id = projects.id')
-      .where(
-        'phases.start_at <= ? AND (phases.end_at >= ? OR phases.end_at IS NULL)',
-        Time.zone.now.to_fs(:db), Time.zone.now.to_fs(:db)
-      )
-      .select('projects.*, phases.end_at AS phase_end_at')
-  end
-
   # Returns an ActiveRecord collection of published projects that are also
   # followed by user OR relate to an idea, area or topic followed by user,
   # ordered by the follow created_at (most recent first).
   # => [Project]
   def followed_by_user
+    exclude_followable_types = ['ProjectFolders::Folder', 'Initiative']
+
     subquery = Follower
       .where(user_id: @user.id)
+      .where.not(followable_type: exclude_followable_types)
       .joins(
         'LEFT JOIN areas AS followed_areas ON followers.followable_type = \'Area\' ' \
         'AND followed_areas.id = followers.followable_id'
@@ -108,10 +101,7 @@ class ProjectsFinderService
       .group('projects.id')
 
     @projects
-      .from("(#{subquery.to_sql}) AS subquery")
-      .joins('INNER JOIN projects ON projects.id = subquery.project_id')
-      .joins('INNER JOIN admin_publications AS admin_publications ON admin_publications.publication_id = projects.id')
-      .where(admin_publications: { publication_status: 'published' })
+      .joins("INNER JOIN (#{subquery.to_sql}) AS subquery ON projects.id = subquery.project_id")
       .select('projects.*, subquery.latest_follower_created_at')
       .order('subquery.latest_follower_created_at DESC')
   end
@@ -144,6 +134,16 @@ class ProjectsFinderService
   end
 
   private
+
+  def projects_with_active_phase(projects)
+    projects
+      .joins('INNER JOIN phases AS phases ON phases.project_id = projects.id')
+      .where(
+        'phases.start_at <= ? AND (phases.end_at >= ? OR phases.end_at IS NULL)',
+        Time.zone.now.to_fs(:db), Time.zone.now.to_fs(:db)
+      )
+      .select('projects.*, phases.end_at AS phase_end_at')
+  end
 
   def order_by_created_at_and_id_with_distinct_on(projects)
     projects
