@@ -9,11 +9,12 @@ import { isNilOrError } from 'utils/helperUtils';
 import { FilterCounts } from './types';
 
 export const scrollToTopIdeasList = () => {
-  const ideasListPanel = document.getElementById('view-panel-1');
-  const boundingBox = ideasListPanel?.getBoundingClientRect();
-  if (boundingBox) {
-    window.scrollBy(0, boundingBox.top - 100);
-  }
+  const ideasListPanel = document.getElementById('ideas-list-scroll-anchor');
+  ideasListPanel?.scrollIntoView({
+    behavior: 'smooth',
+    block: 'start',
+    inline: 'start',
+  });
 };
 
 export const getTopicsWithIdeas = (
