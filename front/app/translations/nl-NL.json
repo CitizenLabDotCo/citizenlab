@@ -341,7 +341,7 @@
   "app.components.PostComponents.readMore": "Lees meer...",
   "app.components.PostComponents.topics": "Tags",
   "app.components.ProjectArchivedIndicator.archivedProject": "Je kan niet langer deelnemen aan dit project omdat het afgerond is",
-  "app.components.ProjectArchivedIndicator.previewProject": "Ontwerpproject:",
+  "app.components.ProjectArchivedIndicator.previewProject": "Conceptproject:",
   "app.components.ProjectArchivedIndicator.previewProjectExplanation": "Alleen zichtbaar voor moderators en degenen met een voorbeeldlink.",
   "app.components.ProjectCard.a11y_projectDescription": "Projectbeschrijving:",
   "app.components.ProjectCard.a11y_projectTitle": "Titel van het project:",
