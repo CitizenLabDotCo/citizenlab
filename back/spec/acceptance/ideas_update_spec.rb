@@ -634,7 +634,7 @@ resource 'Ideas' do
                 input,
                 'changed_manual_votes_amount',
                 author,
-                input.updated_at.to_i,
+                anything,
                 payload: { change: [nil, manual_votes_amount] },
                 project_id: input.project_id
               ).exactly(1).times
