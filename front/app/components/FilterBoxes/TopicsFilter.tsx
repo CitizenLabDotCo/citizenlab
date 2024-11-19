@@ -26,6 +26,7 @@ import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 import InputFilterCollapsible from './InputFilterCollapsible';
 import messages from './messages';
 import { FilterCounts } from './types';
+import { getSelectedTopicNames, getTopicsWithIdeas } from './utils';
 
 const Topic = styled.button`
   color: ${colors.textSecondary};
@@ -117,18 +118,11 @@ const TopicsFilter = memo<Props>(
         includes(selectedTopicIds, topic.id)
       );
       const numberOfSelectedTopics = selectedTopics.length;
-      const selectedTopicNames = selectedTopics
-        .map((topic) => {
-          return (
-            !isNilOrError(topic) && localize(topic.attributes.title_multiloc)
-          );
-        })
-        .join(', ');
-
-      const topicsWithIdeas = topics.filter((topic) => {
-        const filterPostCount = get(filterCounts, `topic_id.${topic.id}`, 0);
-        return filterPostCount > 0;
-      });
+      const selectedTopicNames = getSelectedTopicNames(
+        selectedTopics,
+        localize
+      );
+      const topicsWithIdeas = getTopicsWithIdeas(topics, filterCounts);
 
       return (
         <InputFilterCollapsible
@@ -140,15 +134,11 @@ const TopicsFilter = memo<Props>(
           className={className}
         >
           <Box>
-            <Box
-              id="e2e-topics-filter-container"
-              className="e2e-topics-filters"
-              aria-live="polite"
-            >
+            <Box className="e2e-topics-filters" aria-live="polite">
               {topicsWithIdeas
                 .filter((topic) => !isError(topic))
                 .map((topic: ITopicData, index) => {
-                  const filterPostCount = get(
+                  const postCount = get(
                     filterCounts,
                     `topic_id.${topic.id}`,
                     0
@@ -156,7 +146,8 @@ const TopicsFilter = memo<Props>(
 
                   const topicSelected = selectedTopicIds?.includes(topic.id);
 
-                  if (filterPostCount === 0 || (!showFullList && index > 4)) {
+                  if (!showFullList && index > 4) {
+                    // Only show the first 5 topics by default
                     return null;
                   }
 
@@ -177,38 +168,34 @@ const TopicsFilter = memo<Props>(
                           color={topicSelected ? 'white' : 'textPrimary'}
                           wordBreak="break-word"
                         >
-                          <T
-                            value={topic.attributes.title_multiloc}
-                            aria-label={`${localize(
-                              topic.attributes.title_multiloc
-                            )} (${filterPostCount} ${formatMessage(
-                              messages.inputs
-                            )})`}
-                          />
+                          <T value={topic.attributes.title_multiloc} />
+                          <ScreenReaderOnly>
+                            {`${postCount} ${formatMessage(messages.inputs)}`}
+                          </ScreenReaderOnly>
                         </Text>
                       </Box>
-
-                      <Box aria-hidden>{filterPostCount}</Box>
+                      <Box aria-hidden>{postCount}</Box>
                     </Topic>
                   );
                 })}
             </Box>
-            <Button
-              onClick={() => {
-                setShowFullList((curentValue) => !curentValue);
-              }}
-              buttonStyle="text"
-              p="0px"
-              mt="12px"
-              fontSize="s"
-              style={{ alignContent: 'right' }}
-            >
-              {showFullList
-                ? formatMessage(messages.showLess)
-                : `${formatMessage(messages.showTagsWithNumber, {
-                    numberTags: topicsWithIdeas.length,
-                  })}`}
-            </Button>
+            {topicsWithIdeas.length > 5 && (
+              <Button
+                onClick={() => {
+                  setShowFullList((curentValue) => !curentValue);
+                }}
+                buttonStyle="text"
+                p="0px"
+                mt="12px"
+                fontSize="s"
+              >
+                {showFullList
+                  ? formatMessage(messages.showLess)
+                  : `${formatMessage(messages.showTagsWithNumber, {
+                      numberTags: topicsWithIdeas.length,
+                    })}`}
+              </Button>
+            )}
 
             <ScreenReaderOnly aria-live="polite">
               {/* Pronounces numbers of selected topics + selected topic names */}
