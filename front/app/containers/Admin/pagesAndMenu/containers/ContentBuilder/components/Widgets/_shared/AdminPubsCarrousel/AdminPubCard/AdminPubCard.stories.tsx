@@ -24,6 +24,8 @@ export const Primary: Story = {
     imageUrl: image,
     projectCount: 4,
     avatarIds: ['1', '2', '3'],
+    description:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.',
     onKeyDown: () => {},
   },
 };

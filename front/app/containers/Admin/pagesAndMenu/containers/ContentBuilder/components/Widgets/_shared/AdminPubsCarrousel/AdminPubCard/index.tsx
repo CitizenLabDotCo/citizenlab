@@ -21,6 +21,7 @@ interface Props {
   publicationTitle: string;
   projectCount?: number;
   avatarIds?: string[];
+  description: string;
   ml?: string;
   mr?: string;
   onKeyDown?: React.KeyboardEventHandler<HTMLAnchorElement> &
@@ -33,6 +34,7 @@ const AdminPubCard = ({
   publicationTitle,
   projectCount,
   avatarIds,
+  description,
   ml,
   mr,
   onKeyDown,
@@ -78,6 +80,7 @@ const AdminPubCard = ({
           userCount={10}
         />
       </Box>
+      <Text mt="8px">{description}</Text>
     </CardContainer>
   );
 };
