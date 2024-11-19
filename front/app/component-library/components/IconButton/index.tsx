@@ -49,7 +49,6 @@ const StyledBox = styled(Box)<{
 `;
 
 export type IconButtonProps = {
-  id?: string;
   className?: string;
   id?: string;
   iconName: IconNames;
