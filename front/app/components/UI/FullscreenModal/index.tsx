@@ -89,7 +89,6 @@ interface InputProps {
   opened: boolean;
   close: () => void;
   url?: string | null;
-  goBackUrl?: string | null;
   topBar?: JSX.Element | null;
   bottomBar?: JSX.Element | null;
   animateInOut?: boolean;
@@ -149,13 +148,13 @@ class FullscreenModal extends PureComponent<Props, State> {
   }
 
   openModal = () => {
-    const { locale, url, goBackUrl } = this.props;
+    const { locale, url } = this.props;
 
     if (!isNilOrError(locale) && url) {
       const { pathname } = removeLocale(url);
       this.url = `${window.location.origin}/${locale}${pathname}`;
       this.goBackUrl = `${window.location.origin}/${locale}${
-        removeLocale(goBackUrl || window.location.pathname).pathname
+        removeLocale(window.location.pathname).pathname
       }`;
       window.history.pushState({ path: this.url }, '', this.url);
       window.addEventListener('popstate', this.handlePopstateEvent, useCapture);
