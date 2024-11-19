@@ -280,7 +280,7 @@
   "app.components.admin.PostManager.timelineTabTooltipText": "Træk og slip input for at kopiere dem til forskellige projektfaser.",
   "app.components.admin.PostManager.title": "Titel",
   "app.components.admin.PostManager.topicsTab": "Emner",
-  "app.components.admin.PostManager.topicsTabTooltipText": "Føj emner til et input ved hjælp af træk og slip.",
+  "app.components.admin.PostManager.topicsTabTooltipText": "Drag and drop input into the tag title to add tag to input",
   "app.components.admin.PostManager.view": "Se",
   "app.components.admin.PostManager.votes": "Stemmer",
   "app.components.admin.PostManager.votesByInputExportFileName": "votes_by_input",
