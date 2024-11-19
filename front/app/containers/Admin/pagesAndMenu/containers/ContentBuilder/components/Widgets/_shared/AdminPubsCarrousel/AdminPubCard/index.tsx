@@ -1,19 +1,26 @@
 import React from 'react';
 
-import { Title } from '@citizenlab/cl2-component-library';
+import { Box, Text, Icon, Title } from '@citizenlab/cl2-component-library';
 import { RouteType } from 'routes';
 
+import AvatarBubbles from 'components/AvatarBubbles';
+
+import { useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { truncate } from 'utils/textUtils';
 
 import { CardContainer, CardImage } from '../../BaseCard';
 
+import messages from './messages';
+
 const CARD_WIDTH = 376;
 
 interface Props {
   publicationUrl: RouteType;
-  publicationTitle: string;
   imageUrl?: string;
+  publicationTitle: string;
+  projectCount?: number;
+  avatarIds?: string[];
   ml?: string;
   mr?: string;
   onKeyDown?: React.KeyboardEventHandler<HTMLAnchorElement> &
@@ -22,12 +29,16 @@ interface Props {
 
 const AdminPubCard = ({
   publicationUrl,
-  publicationTitle,
   imageUrl,
+  publicationTitle,
+  projectCount,
+  avatarIds,
   ml,
   mr,
   onKeyDown,
 }: Props) => {
+  const { formatMessage } = useIntl();
+
   return (
     <CardContainer
       as={Link}
@@ -43,6 +54,30 @@ const AdminPubCard = ({
       <Title variant="h4" as="h3" mt="8px" mb="0px">
         {truncate(publicationTitle, 50)}
       </Title>
+      <Box display="flex" flexDirection="row" alignItems="center" mt="8px">
+        {projectCount && (
+          <>
+            <Icon
+              name="folder-solid"
+              height="20px"
+              ml="-4px"
+              mr="4px"
+              mt="0px"
+            />
+            <Text m="0px" mr="12px">
+              {formatMessage(messages.xProjects, {
+                numberOfProjects: projectCount,
+              })}
+            </Text>
+          </>
+        )}
+        <AvatarBubbles
+          avatarIds={avatarIds}
+          size={16}
+          limit={3}
+          userCount={10}
+        />
+      </Box>
     </CardContainer>
   );
 };

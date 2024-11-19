@@ -22,6 +22,8 @@ export const Primary: Story = {
     publicationUrl: '/projects/test',
     publicationTitle: 'Admin pub card',
     imageUrl: image,
+    projectCount: 4,
+    avatarIds: ['1', '2', '3'],
     onKeyDown: () => {},
   },
 };
