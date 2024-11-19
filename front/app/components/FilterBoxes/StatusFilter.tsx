@@ -15,7 +15,7 @@ import styled from 'styled-components';
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 import { IIdeasFilterCounts } from 'api/ideas_filter_counts/types';
 
-import ColorIndicator from 'components/ColorIndicator';
+import ColorIndicator from 'component-library/components/ColorIndicator';
 import T from 'components/T';
 
 import { ScreenReaderOnly } from 'utils/a11y';
