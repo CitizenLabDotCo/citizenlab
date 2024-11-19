@@ -34,7 +34,15 @@ const TopBar = ({ onClose, onReset }: Props) => {
       justifyContent="space-between"
       px="16px"
     >
-      <Title as="h2" variant="h5" fontWeight="bold">
+      <Title
+        as="h2"
+        variant="h5"
+        fontWeight="bold"
+        // CloseIconButton has margin or padding on the right,
+        // which makes the px from Box above look assymetical
+        // This ml visually corrects this.
+        ml="8px"
+      >
         <FormattedMessage {...messages.filters} />
       </Title>
       <Box display="flex">
