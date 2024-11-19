@@ -5,14 +5,12 @@ import {
   colors,
   fontSizes,
   media,
-  Title,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import { IQueryParameters } from 'api/ideas/types';
 import { IIdeasFilterCounts } from 'api/ideas_filter_counts/types';
 
-import filterModalMessages from 'components/FiltersModal/messages';
 import SearchInput from 'components/UI/SearchInput';
 
 import { ScreenReaderOnly } from 'utils/a11y';
@@ -124,11 +122,6 @@ const InputFilters = ({
         debounce={1500}
         a11y_numberOfSearchResults={numberOfSearchResults}
       />
-      <ScreenReaderOnly>
-        <Title as="h2">
-          <FormattedMessage {...filterModalMessages.filters} />
-        </Title>
-      </ScreenReaderOnly>
       <Box mb="20px">
         <SortingBox handleSortOnChange={handleSortOnChange} phaseId={phaseId} />
       </Box>
