@@ -280,7 +280,7 @@
   "app.components.admin.PostManager.timelineTabTooltipText": "ਪੋਸਟਾਂ ਨੂੰ ਵੱਖ-ਵੱਖ ਪ੍ਰੋਜੈਕਟ ਪੜਾਵਾਂ 'ਤੇ ਕਾਪੀ ਕਰਨ ਲਈ ਖਿੱਚੋ ਅਤੇ ਸੁੱਟੋ।",
   "app.components.admin.PostManager.title": "ਸਿਰਲੇਖ",
   "app.components.admin.PostManager.topicsTab": "ਟੈਗਸ",
-  "app.components.admin.PostManager.topicsTabTooltipText": "ਡਰੈਗ ਅਤੇ ਡ੍ਰੌਪ ਦੀ ਵਰਤੋਂ ਕਰਕੇ ਇੱਕ ਇਨਪੁਟ ਵਿੱਚ ਟੈਗ ਸ਼ਾਮਲ ਕਰੋ।",
+  "app.components.admin.PostManager.topicsTabTooltipText": "Drag and drop input into the tag title to add tag to input",
   "app.components.admin.PostManager.view": "ਦੇਖੋ",
   "app.components.admin.PostManager.votes": "ਵੋਟਾਂ",
   "app.components.admin.PostManager.votesByInputExportFileName": "ਇਨਪੁਟ ਦੁਆਰਾ_ਵੋਟਾਂ",
