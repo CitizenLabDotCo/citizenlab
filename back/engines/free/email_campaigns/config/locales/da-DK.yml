@@ -298,7 +298,7 @@ da:
       yesterday: I går
     comment_on_idea_you_follow:
       cta_reply_to: 'Svar til %{commentAuthor}'
-      event_description: '%{authorNameFull} placed a reaction on ''%{inputTitle}''. Click the button below to continue the conversation with %{authorName}.'
+      event_description: '%{authorNameFull} kom med en reaktion på ''%{inputTitle}''. Klik på knappen nedenfor for at fortsætte samtalen med %{authorName}.'
       main_header:
         idea: '%{authorName} kommenterede på en idé, du følger'
         question: '%{authorName} kommenterede på et spørgsmål, du følger'
@@ -309,7 +309,7 @@ da:
         proposal: '%{authorName} kommenterede på et initiativ, du følger'
         initiative: '%{authorName} kommenterede et initiativ, du følger'
         petition: '%{authorName} kommenterede en underskriftindsamling, du følger'
-      subject: 'There''s a new comment on "%{input_title}"'
+      subject: 'Der er en ny kommentar til "%{input_title}"'
       preheader: '%{authorName} efterlod en kommentar til en idé til %{organizationName}'
     comment_on_initiative_you_follow:
       cta_reply_to: 'Svar til %{commentAuthor}'
