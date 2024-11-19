@@ -302,6 +302,10 @@ const IdeaCards = ({ ideaQueryParameters, onUpdateQuery }: Props) => {
                 id="e2e-ideas-filters"
                 filterColumnWidth={filterColumnWidth}
               >
+                {/*
+                  We have this Filters heading in the filters modal on mobile. 
+                  This title streamlines the experience on desktop (for screen reader users).
+                */}
                 <ScreenReaderOnly>
                   <Title as="h2">
                     <FormattedMessage {...filterModalMessages.filters} />
