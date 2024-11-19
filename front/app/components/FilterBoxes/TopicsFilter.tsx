@@ -26,7 +26,11 @@ import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 import InputFilterCollapsible from './InputFilterCollapsible';
 import messages from './messages';
 import { FilterCounts } from './types';
-import { getSelectedTopicNames, getTopicsWithIdeas } from './utils';
+import {
+  getSelectedTopicNames,
+  getTopicsWithIdeas,
+  scrollToTopIdeasList,
+} from './utils';
 
 const Topic = styled.button`
   color: ${colors.textSecondary};
@@ -108,6 +112,7 @@ const TopicsFilter = memo<Props>(
         }
 
         onChange(output.length > 0 ? output : null);
+        scrollToTopIdeasList();
       },
       // eslint-disable-next-line react-hooks/exhaustive-deps
       [selectedTopicIds]
