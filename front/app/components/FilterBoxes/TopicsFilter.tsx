@@ -21,11 +21,7 @@ import T from 'components/T';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import {
-  isNil,
-  isNilOrError,
-  removeFocusAfterMouseClick,
-} from 'utils/helperUtils';
+import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 import InputFilterCollapsible from './InputFilterCollapsible';
 import messages from './messages';
@@ -129,6 +125,11 @@ const TopicsFilter = memo<Props>(
         })
         .join(', ');
 
+      const topicsWithIdeas = topics.filter((topic) => {
+        const filterPostCount = get(filterCounts, `topic_id.${topic.id}`, 0);
+        return filterPostCount > 0;
+      });
+
       return (
         <InputFilterCollapsible
           title={
@@ -139,8 +140,12 @@ const TopicsFilter = memo<Props>(
           className={className}
         >
           <Box>
-            <Box className="e2e-topics-filters">
-              {topics
+            <Box
+              id="e2e-topics-filter-container"
+              className="e2e-topics-filters"
+              aria-live="polite"
+            >
+              {topicsWithIdeas
                 .filter((topic) => !isError(topic))
                 .map((topic: ITopicData, index) => {
                   const filterPostCount = get(
@@ -151,12 +156,7 @@ const TopicsFilter = memo<Props>(
 
                   const topicSelected = selectedTopicIds?.includes(topic.id);
 
-                  if (
-                    (filterPostCount === 0 &&
-                      (isNil(selectedTopicIds) ||
-                        selectedTopicIds.length === 0)) ||
-                    (!showFullList && index > 5)
-                  ) {
+                  if (filterPostCount === 0 || (!showFullList && index > 4)) {
                     return null;
                   }
 
@@ -168,6 +168,7 @@ const TopicsFilter = memo<Props>(
                       onClick={handleOnClick}
                       className={`e2e-topic ${topicSelected ? 'selected' : ''}`}
                       style={{ display: 'flex' }}
+                      tabIndex={index === 6 ? -1 : undefined}
                     >
                       <Box maxWidth="90%">
                         <Text
@@ -176,11 +177,18 @@ const TopicsFilter = memo<Props>(
                           color={topicSelected ? 'white' : 'textPrimary'}
                           wordBreak="break-word"
                         >
-                          <T value={topic.attributes.title_multiloc} />
+                          <T
+                            value={topic.attributes.title_multiloc}
+                            aria-label={`${localize(
+                              topic.attributes.title_multiloc
+                            )} (${filterPostCount} ${formatMessage(
+                              messages.inputs
+                            )})`}
+                          />
                         </Text>
                       </Box>
 
-                      <Box>{filterPostCount}</Box>
+                      <Box aria-hidden>{filterPostCount}</Box>
                     </Topic>
                   );
                 })}
@@ -194,17 +202,12 @@ const TopicsFilter = memo<Props>(
               mt="12px"
               fontSize="s"
               style={{ alignContent: 'right' }}
-              aria-label={
-                showFullList
-                  ? `${formatMessage(messages.showAllNumberTags, {
-                      numberTags: topics.length,
-                    })}`
-                  : formatMessage(messages.showFewerTags)
-              }
             >
               {showFullList
                 ? formatMessage(messages.showLess)
-                : `${formatMessage(messages.showAll)} (${topics.length})`}
+                : `${formatMessage(messages.showTagsWithNumber, {
+                    numberTags: topicsWithIdeas.length,
+                  })}`}
             </Button>
 
             <ScreenReaderOnly aria-live="polite">

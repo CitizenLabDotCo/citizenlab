@@ -13,6 +13,10 @@ export default defineMessages({
     id: 'app.components.FilterBoxes.areas',
     defaultMessage: 'Areas',
   },
+  inputs: {
+    id: 'app.components.FilterBoxes.inputs',
+    defaultMessage: 'inputs',
+  },
   topicsTitle: {
     id: 'app.components.FilterBoxes.topicsTitle',
     defaultMessage: 'Topics',
@@ -21,9 +25,9 @@ export default defineMessages({
     id: 'app.components.FilterBoxes.showLess',
     defaultMessage: 'Show less',
   },
-  showAll: {
-    id: 'app.components.FilterBoxes.showAll',
-    defaultMessage: 'Show all',
+  showTagsWithNumber: {
+    id: 'app.components.FilterBoxes.showTagsWithNumber',
+    defaultMessage: 'Show all ({numberTags})',
   },
   showAllNumberTags: {
     id: 'app.components.FilterBoxes.showAllNumberTags',

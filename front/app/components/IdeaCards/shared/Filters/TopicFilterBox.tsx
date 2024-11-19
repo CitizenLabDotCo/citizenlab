@@ -17,9 +17,14 @@ const TopicFilterBox = memo<Props>(
   ({ selectedTopicIds, selectedIdeaFilters, onChange, className }) => {
     const { data: topics } = useTopics();
 
+    // remove topics from selected idea filters
+    const { topics: _, ...selectedIdeaFiltersWithoutTopics } =
+      selectedIdeaFilters;
+
     const { data: ideasFilterCounts } = useIdeasFilterCounts({
-      ...selectedIdeaFilters,
-      idea_status: selectedIdeaFilters.idea_status,
+      ...selectedIdeaFiltersWithoutTopics,
+      topics: undefined,
+      idea_status: selectedIdeaFiltersWithoutTopics.idea_status,
     });
 
     if (topics && topics.data.length > 0 && ideasFilterCounts) {
