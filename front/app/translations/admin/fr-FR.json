@@ -280,7 +280,7 @@
   "app.components.admin.PostManager.timelineTabTooltipText": "Faites glisser et déposez les contributions pour les copier dans différentes phases du projet.",
   "app.components.admin.PostManager.title": "Titre",
   "app.components.admin.PostManager.topicsTab": "Étiquettes",
-  "app.components.admin.PostManager.topicsTabTooltipText": "Ajoutez des étiquettes à une contribution en les glissant vers l'étiquette de votre choix.",
+  "app.components.admin.PostManager.topicsTabTooltipText": "Drag and drop input into the tag title to add tag to input",
   "app.components.admin.PostManager.view": "Voir",
   "app.components.admin.PostManager.votes": "Votes",
   "app.components.admin.PostManager.votesByInputExportFileName": "votes_par_contribution",
