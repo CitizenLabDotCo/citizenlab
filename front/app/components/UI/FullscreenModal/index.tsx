@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 
-import { Box, Color, colors, media } from '@citizenlab/cl2-component-library';
+import { Color, colors, media } from '@citizenlab/cl2-component-library';
 import { isFunction, compact } from 'lodash-es';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
@@ -212,7 +212,6 @@ class FullscreenModal extends PureComponent<Props, State> {
       navbarRef,
       mobileNavbarRef,
       className,
-      disableFocusOn,
       zIndex,
       contentBgColor,
     } = this.props;
@@ -234,28 +233,13 @@ class FullscreenModal extends PureComponent<Props, State> {
           zIndex={zIndex}
           contentBgColor={contentBgColor}
         >
-          {disableFocusOn ? (
-            <Box
-              flex="1"
-              display="flex"
-              flexDirection="column"
-              alignItems="stretch"
-            >
-              {topBar}
-              <Content className="fullscreenmodal-scrollcontainer">
-                {children}
-              </Content>
-              {bottomBar}
-            </Box>
-          ) : (
-            <StyledFocusOn autoFocus={false} shards={shards}>
-              {topBar}
-              <Content className="fullscreenmodal-scrollcontainer">
-                {children}
-              </Content>
-              {bottomBar}
-            </StyledFocusOn>
-          )}
+          <StyledFocusOn autoFocus={false} shards={shards}>
+            {topBar}
+            <Content className="fullscreenmodal-scrollcontainer">
+              {children}
+            </Content>
+            {bottomBar}
+          </StyledFocusOn>
         </Container>
       );
     }
