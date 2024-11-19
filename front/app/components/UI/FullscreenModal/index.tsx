@@ -127,17 +127,6 @@ class FullscreenModal extends PureComponent<Props, State> {
     this.subscription?.unsubscribe();
   }
 
-  handleKeypress = (event: KeyboardEvent) => {
-    if (event.type === 'keydown' && event.key === 'Escape') {
-      event.preventDefault();
-      this.props.close();
-    }
-  };
-
-  handlePopstateEvent = () => {
-    this.props.close();
-  };
-
   render() {
     const { windowHeight } = this.state;
     const {
