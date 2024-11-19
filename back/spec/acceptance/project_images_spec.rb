@@ -38,17 +38,20 @@ resource 'ProjectImage' do
     with_options scope: :image do
       parameter :image, 'The base64 encoded image', required: true
       parameter :ordering, 'An integer that is used to order the images within a project', required: false
+      parameter :alt_text_multiloc, 'The alt text in multiple locales', required: false
     end
     ValidationErrorHelper.new.error_fields(self, ProjectImage)
     let(:project_id) { @project.id }
     let(:image) { png_image_as_base64 'image13.png' }
     let(:ordering) { 1 }
+    let(:alt_text_multiloc) { { 'en' => 'A cute puppy' } }
 
     example_request 'Add an image to a project' do
       assert_status 201
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :attributes, :versions).keys).to match %i[large]
       expect(json_response.dig(:data, :attributes, :ordering)).to eq(1)
+      expect(json_response.dig(:data, :attributes, :alt_text_multiloc).stringify_keys).to match alt_text_multiloc
     end
 
     describe do
@@ -77,6 +80,7 @@ resource 'ProjectImage' do
     with_options scope: :image do
       parameter :image, 'The base64 encoded image'
       parameter :ordering, 'An integer that is used to order the images within a project'
+      parameter :alt_text_multiloc, 'The updated alt text in multiple locales', required: false
     end
 
     ValidationErrorHelper.new.error_fields(self, ProjectImage)
@@ -84,12 +88,14 @@ resource 'ProjectImage' do
     let(:image_id) { ProjectImage.first.id }
     let(:image) { png_image_as_base64 'image14.png' }
     let(:ordering) { 2 }
+    let(:alt_text_multiloc) { { 'en' => 'A cute puppy' } }
 
     example_request 'Edit an image for a project' do
       expect(response_status).to eq 200
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :attributes, :versions).keys).to match %i[large]
       expect(json_response.dig(:data, :attributes, :ordering)).to eq(2)
+      expect(json_response.dig(:data, :attributes, :alt_text_multiloc).stringify_keys).to match alt_text_multiloc
     end
   end
 

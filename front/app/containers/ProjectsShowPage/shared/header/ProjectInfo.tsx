@@ -13,12 +13,13 @@ import useProjectFiles from 'api/project_files/useProjectFiles';
 import useProjectById from 'api/projects/useProjectById';
 
 import Fragment from 'components/Fragment';
-import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
 import ReadMoreWrapper from 'components/ReadMoreWrapper/ReadMoreWrapper';
 import T from 'components/T';
 import FileAttachments from 'components/UI/FileAttachments';
 
+import ProjectArchivedIndicator from './ProjectArchivedIndicator';
 import ProjectInfoSideBar from './ProjectInfoSideBar';
+import ProjectPreviewIndicator from './ProjectPreviewIndicator';
 
 const Container = styled.div`
   display: flex;
@@ -61,10 +62,6 @@ const Right = styled.div`
   `}
 `;
 
-const StyledProjectArchivedIndicator = styled(ProjectArchivedIndicator)`
-  margin-bottom: 20px;
-`;
-
 interface Props {
   projectId: string;
   className?: string;
@@ -85,9 +82,12 @@ const ProjectInfo = ({ projectId, className }: Props) => {
             </Title>
 
             {isSmallerThanTablet && (
-              <StyledProjectArchivedIndicator projectId={projectId} />
+              <ProjectArchivedIndicator projectId={projectId} mb="20px" />
             )}
 
+            {isSmallerThanTablet && (
+              <ProjectPreviewIndicator projectId={projectId} mb="20px" />
+            )}
             <Box mb="24px">
               <ReadMoreWrapper
                 fontSize="m"
