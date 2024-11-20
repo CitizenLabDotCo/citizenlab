@@ -6,6 +6,8 @@ import styled, { useTheme } from 'styled-components';
 
 import { IdeaDefaultSortMethod } from 'api/phases/types';
 
+import { scrollToTopIdeasList } from 'components/FilterBoxes/utils';
+
 import { useIntl } from 'utils/cl-intl';
 
 import { getIconNameForSortingOption, getLabelForSortingOption } from './utils';
@@ -61,6 +63,7 @@ const SortTypeButton = ({
 
   const handleOnChange = () => {
     handleSortOnChange(sortType);
+    scrollToTopIdeasList();
   };
 
   return (
