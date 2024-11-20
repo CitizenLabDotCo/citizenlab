@@ -32,7 +32,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { isFieldEnabled } from 'utils/projectUtils';
 
 import messages from '../messages';
-import SelectSort, { Sort } from '../shared/Filters/SortFilterDropdown';
+import SelectSort from '../shared/Filters/SortFilterDropdown';
 import StatusFilterDropdown from '../shared/Filters/StatusFilterDropdown';
 import TopicFilterDropdown from '../shared/Filters/TopicFilterDropdown';
 import IdeasView from '../shared/IdeasView';
@@ -73,7 +73,7 @@ const StyledSearchInput = styled(SearchInput)`
 
 export interface QueryParametersUpdate {
   search?: string;
-  sort?: Sort;
+  sort?: IdeaDefaultSortMethod;
   projects?: string[];
   topics?: string[];
   idea_status?: string;
@@ -164,7 +164,7 @@ const IdeasWithoutFiltersSidebar = ({
     onUpdateQuery({ projects });
   };
 
-  const handleSortOnChange = (sort: Sort) => {
+  const handleSortOnChange = (sort: IdeaDefaultSortMethod) => {
     trackEventByName(tracks.sortingFilter, {
       sort,
     });
