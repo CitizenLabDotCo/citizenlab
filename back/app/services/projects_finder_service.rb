@@ -106,7 +106,7 @@ class ProjectsFinderService
   end
 
   # Returns ActiveRecord collection of projects that are either (finished OR have a last phase that contains a report)
-  # OR are archived, ordered by creation date first and ID second.
+  # OR are archived, ordered by last phase end_at (nulls first), creation date second and ID third.
   # => [Project]
   def finished_or_archived
     return @projects.none unless @filter_by
