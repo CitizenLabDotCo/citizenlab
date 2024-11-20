@@ -113,7 +113,6 @@ resource 'Ideas' do
       let(:default_assignee) { create(:admin) }
       let(:project) { create(:single_phase_ideation_project, default_assignee: default_assignee) }
       let(:project_id) { project.id }
-      let(:publication_status) { 'published' }
       let(:title_multiloc) { idea.title_multiloc }
       let(:body_multiloc) { idea.body_multiloc }
 

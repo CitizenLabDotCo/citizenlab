@@ -28,6 +28,8 @@ const ReportRow = ({ report }: Props) => {
           <EditedText
             createdAt={report.attributes.created_at}
             updatedAt={report.attributes.updated_at}
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             userId={report.relationships.owner?.data?.id}
           />
         </Box>

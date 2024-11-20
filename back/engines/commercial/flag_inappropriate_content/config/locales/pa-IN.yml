@@ -1,0 +1,16 @@
+pa:
+  email_campaigns:
+    campaign_type_description:
+      "inappropriate_content_flagged": ਅਣਉਚਿਤ ਸਮਗਰੀ ਫਲੈਗ ਕੀਤੀ ਗਈ
+    admin_campaign_type_description:
+      "inappropriate_content_flagged": ਅਣਉਚਿਤ ਸਮਗਰੀ ਫਲੈਗ ਕੀਤੀ ਗਈ - ਪ੍ਰਸ਼ਾਸਕ
+    inappropriate_content_flagged:
+      subject: 'ਤੁਹਾਡੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਇੱਕ ਪੋਸਟ ਨੂੰ ਸਮੀਖਿਆ ਲਈ ਫਲੈਗ ਕੀਤਾ ਗਿਆ ਹੈ'
+      header_title: 'ਤੁਹਾਡੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਇੱਕ ਪੋਸਟ ਨੂੰ ਸਮੀਖਿਆ ਲਈ ਫਲੈਗ ਕੀਤਾ ਗਿਆ ਹੈ'
+      author_wrote: '%{authorName} ਨੇ ਲਿਖਿਆ:'
+      preheader: 'ਤੁਹਾਡੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਇੱਕ ਪੋਸਟ ਨੂੰ ਸਮੀਖਿਆ ਲਈ ਫਲੈਗ ਕੀਤਾ ਗਿਆ ਹੈ'
+      automatically_flagged: >
+        ਇਸ ਪੋਸਟ ਵਿੱਚ ਸੰਭਾਵੀ ਤੌਰ 'ਤੇ ਅਣਉਚਿਤ ਸਮਗਰੀ ਦੇ ਰੂਪ ਵਿੱਚ ਆਪਣੇ ਆਪ ਖੋਜਿਆ ਗਿਆ ਸੀ। ਅਸੀਂ ਤੁਹਾਨੂੰ ਇਹ ਸੂਚਨਾ ਭੇਜ ਰਹੇ ਹਾਂ ਤਾਂ ਜੋ ਤੁਸੀਂ ਆਪਣੇ ਖੁਦ ਦੇ ਸੰਚਾਲਨ ਦਿਸ਼ਾ-ਨਿਰਦੇਸ਼ਾਂ ਦੇ ਅਨੁਸਾਰ ਪੋਸਟ ਦੀ ਸਮੀਖਿਆ ਕਰ ਸਕੋ।
+      how_to_review: >
+        ਜੇਕਰ ਪੋਸਟ ਵਿੱਚ ਅਣਉਚਿਤ ਸਮੱਗਰੀ ਨਹੀਂ ਹੈ, ਤਾਂ ਤੁਸੀਂ ਐਡਮਿਨ ਪੈਨਲ ਵਿੱਚ ਸਰਗਰਮੀ ਟੈਬ ਵਿੱਚ ਆਪਣੇ ਪਲੇਟਫਾਰਮ ਰਾਹੀਂ ਚੇਤਾਵਨੀ ਨੂੰ ਹਟਾ ਸਕਦੇ ਹੋ।
+      cta_review: 'ਸਮੀਖਿਆ'

@@ -52,6 +52,8 @@ const ExampleFrame = ({
             <FormattedMessage {...messages.to} />
           </Text>
           <Text my="0">
+            {/* TODO: Fix this the next time the file is edited. */}
+            {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
             <T value={campaign?.data.attributes.recipient_segment_multiloc} />
           </Text>
         </Box>

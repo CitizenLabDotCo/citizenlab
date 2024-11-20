@@ -129,6 +129,8 @@ const ProjectFolderShowPage = ({ projectFolder }: Props) => {
                 followableType="project_folders"
                 followableId={projectFolder.id}
                 followersCount={projectFolder.attributes.followers_count}
+                // TODO: Fix this the next time the file is edited.
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 followerId={projectFolder.relationships.user_follower?.data?.id}
                 followableSlug={projectFolder.attributes.slug}
                 w="auto"

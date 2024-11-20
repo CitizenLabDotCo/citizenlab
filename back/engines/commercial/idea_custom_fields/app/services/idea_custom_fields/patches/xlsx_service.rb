@@ -3,7 +3,7 @@
 module IdeaCustomFields
   module Patches
     module XlsxService
-      def generate_idea_xlsx_columns(ideas, view_private_attributes: false, with_tags: false)
+      def generate_idea_xlsx_columns(ideas, view_private_attributes: false, with_tags: false, with_cosponsors: false)
         super + custom_form_custom_field_columns(ideas)
       end
 

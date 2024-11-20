@@ -31,6 +31,7 @@
 module EmailCampaigns
   class Campaigns::CommentOnIdeaYouFollow < Campaign
     include Consentable
+    include Disableable
     include ActivityTriggerable
     include RecipientConfigurable
     include LifecycleStageRestrictable
@@ -79,6 +80,7 @@ module EmailCampaigns
           comment_url: Frontend::UrlService.new.model_to_url(notification.comment, locale: Locale.new(recipient.locale)),
           post_published_at: notification.post.published_at.iso8601,
           post_title_multiloc: notification.post.title_multiloc,
+          post_input_term: notification.post.input_term,
           post_author_name: name_service.display_name!(notification.post.author),
           unfollow_url: Frontend::UrlService.new.unfollow_url(Follower.new(followable: notification.post, user: recipient))
         }

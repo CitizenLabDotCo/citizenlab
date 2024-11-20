@@ -58,6 +58,8 @@ module Permissions
       phase_denied_reason = case action
       when 'posting_idea'
         posting_idea_denied_reason_for_action
+      when 'editing_idea'
+        editing_idea_denied_reason_for_action
       when 'commenting_idea'
         commenting_idea_denied_reason_for_action
       when 'reacting_idea'
@@ -73,11 +75,9 @@ module Permissions
       when 'volunteering'
         volunteering_denied_reason_for_phase
       else
-        raise "Unsupported action: #{action}" unless SUPPORTED_ACTIONS.include?(action)
+        raise "Unsupported action: #{action}" if !supported_action? action
       end
       return phase_denied_reason if phase_denied_reason
-
-      return unless supported_action? action
 
       super(action, scope: phase)
     end
@@ -94,6 +94,12 @@ module Permissions
         POSTING_DENIED_REASONS[:posting_disabled] # TODO: Rename to sumbission_disabled
       elsif user && posting_limit_reached?
         POSTING_DENIED_REASONS[:posting_limited_max_reached]
+      end
+    end
+
+    def editing_idea_denied_reason_for_action
+      if !participation_method.supports_submission?
+        POSTING_DENIED_REASONS[:posting_not_supported] # TODO: Rename to sumbission_not_supported
       end
     end
 

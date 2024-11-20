@@ -35,8 +35,9 @@ describe('Sign up - Email + password step', () => {
   it('shows an error when no first name is provided', () => {
     cy.get('#e2e-signup-password-submit-button').should('exist');
     cy.get('#e2e-signup-password-submit-button').click();
-    cy.get('#e2e-firstName-container .e2e-error-message').should('exist');
     cy.scrollTo('top');
+    cy.wait(500);
+    cy.get('#e2e-firstName-container .e2e-error-message').should('exist');
     cy.get('#e2e-firstName-container .e2e-error-message').should(
       'contain',
       'Enter your first name'

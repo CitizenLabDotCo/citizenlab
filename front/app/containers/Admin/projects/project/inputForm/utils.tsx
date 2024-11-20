@@ -22,6 +22,7 @@ export const ideationConfig: FormBuilderConfig = {
     'point',
     'line',
     'polygon',
+    'cosponsor_ids',
   ],
   displayBuiltInFields: true,
   builtInFields: [
@@ -32,7 +33,6 @@ export const ideationConfig: FormBuilderConfig = {
     'location_description',
     'idea_images_attributes',
     'idea_files_attributes',
-    'topic_ids',
   ],
   formCustomFields: undefined,
 
@@ -59,7 +59,14 @@ export const proposalsConfig: FormBuilderConfig = {
   formSavedSuccessMessage: messages.successMessage,
   toolboxTitle: messages.customToolboxTitle,
 
-  toolboxFieldsToExclude: ['page', 'file_upload', 'point'],
+  toolboxFieldsToExclude: [
+    'page',
+    'file_upload',
+    'shapefile_upload',
+    'point',
+    'line',
+    'polygon',
+  ],
   displayBuiltInFields: true,
   builtInFields: [
     'title_multiloc',
@@ -68,7 +75,7 @@ export const proposalsConfig: FormBuilderConfig = {
     'location_description',
     'idea_images_attributes',
     'idea_files_attributes',
-    'topic_ids',
+    'cosponsor_ids',
   ],
   formCustomFields: undefined,
 

@@ -10,6 +10,7 @@ export type TooltipProps = Omit<
   'interactive' | 'plugins' | 'role'
 > & {
   width?: string;
+  useWrapper?: boolean;
 };
 
 const useActiveElement = () => {
@@ -44,6 +45,7 @@ const Tooltip = ({
   children,
   theme = 'light',
   width,
+  useWrapper = true,
   ...rest
 }: TooltipProps) => {
   const tooltipId = useRef(
@@ -68,47 +70,92 @@ const Tooltip = ({
     }
   }, [activeElement, isFocused]);
 
-  return (
-    <Tippy
-      key={key}
-      plugins={[
-        {
-          name: 'hideOnEsc',
-          defaultValue: true,
-          fn({ hide }) {
-            function onKeyDown(event: KeyboardEvent) {
-              if (event.key === 'Escape') {
-                hide();
+  if (useWrapper) {
+    return (
+      <Tippy
+        key={key}
+        plugins={[
+          {
+            name: 'hideOnEsc',
+            defaultValue: true,
+            fn({ hide }) {
+              function onKeyDown(event: KeyboardEvent) {
+                if (event.key === 'Escape') {
+                  hide();
+                }
               }
-            }
 
-            return {
-              onShow() {
-                document.addEventListener('keydown', onKeyDown);
-              },
-              onHide() {
-                document.removeEventListener('keydown', onKeyDown);
-              },
-            };
+              return {
+                onShow() {
+                  document.addEventListener('keydown', onKeyDown);
+                },
+                onHide() {
+                  document.removeEventListener('keydown', onKeyDown);
+                },
+              };
+            },
           },
-        },
-      ]}
-      interactive={true}
-      role="tooltip"
-      visible={isFocused}
-      // Ensures tippy works with both keyboard and mouse
-      onHidden={() => {
-        setIsFocused(undefined);
-        setKey((prev) => prev + 1);
-      }}
-      theme={theme}
-      {...rest}
-    >
+        ]}
+        interactive={true}
+        role="tooltip"
+        visible={isFocused}
+        // Ensures tippy works with both keyboard and mouse
+        onHidden={() => {
+          setIsFocused(undefined);
+          setKey((prev) => prev + 1);
+        }}
+        theme={theme}
+        {...rest}
+      >
+        <Box as="span" id={tooltipId.current} w={width || 'fit-content'}>
+          {children}
+        </Box>
+      </Tippy>
+    );
+  } else {
+    return (
+      // This option is used for more accessible tooltips when useWrapper is false
       <Box as="span" id={tooltipId.current} w={width || 'fit-content'}>
-        {children}
+        <Tippy
+          key={key}
+          plugins={[
+            {
+              name: 'hideOnEsc',
+              defaultValue: true,
+              fn({ hide }) {
+                function onKeyDown(event: KeyboardEvent) {
+                  if (event.key === 'Escape') {
+                    hide();
+                  }
+                }
+
+                return {
+                  onShow() {
+                    document.addEventListener('keydown', onKeyDown);
+                  },
+                  onHide() {
+                    document.removeEventListener('keydown', onKeyDown);
+                  },
+                };
+              },
+            },
+          ]}
+          interactive={true}
+          role="tooltip"
+          visible={isFocused}
+          // Ensures tippy works with both keyboard and mouse
+          onHidden={() => {
+            setIsFocused(undefined);
+            setKey((prev) => prev + 1);
+          }}
+          theme={theme}
+          {...rest}
+        >
+          {children}
+        </Tippy>
       </Box>
-    </Tippy>
-  );
+    );
+  }
 };
 
 export default Tooltip;

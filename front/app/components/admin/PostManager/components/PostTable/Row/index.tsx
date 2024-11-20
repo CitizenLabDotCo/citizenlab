@@ -5,8 +5,6 @@ import styled from 'styled-components';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 import { IIdeaData } from 'api/ideas/types';
-import { IInitiativeStatusData } from 'api/initiative_statuses/types';
-import { IInitiativeData } from 'api/initiatives/types';
 import { IPhaseData } from 'api/phases/types';
 
 import useLocale from 'hooks/useLocale';
@@ -16,7 +14,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import { ManagerType, TFilterMenu } from '../../..';
 
 import IdeaRow from './IdeaRow';
-import InitiativeRow from './InitiativeRow';
 
 export const TitleLink = styled.a`
   display: block;
@@ -39,16 +36,14 @@ export const TitleLink = styled.a`
   }
 `;
 
-function nothingHappens() {}
-
 type Props = {
   type: ManagerType;
-  post: IIdeaData | IInitiativeData;
-  /** A set of ids of ideas/initiatives that are currently selected */
+  post: IIdeaData;
+  /** A set of ids of ideas that are currently selected */
   selection: Set<string>;
   activeFilterMenu: TFilterMenu;
   phases?: IPhaseData[];
-  statuses?: IIdeaStatusData[] | IInitiativeStatusData[];
+  statuses?: IIdeaStatusData[];
   selectedPhaseId?: string | null;
   selectedProjectId?: string | null;
   onToggleSelect: () => void;
@@ -84,45 +79,23 @@ const Row = ({
     return null;
   }
 
-  if (
-    type === 'AllIdeas' ||
-    type === 'ProjectIdeas' ||
-    type === 'ProjectProposals'
-  ) {
-    return (
-      <Suspense fallback={null}>
-        <IdeaRow
-          type={type}
-          idea={post as IIdeaData}
-          statuses={statuses as IIdeaStatusData[]}
-          selectedProjectId={selectedProjectId}
-          selectedPhaseId={selectedPhaseId}
-          phases={phases}
-          selection={selection}
-          activeFilterMenu={activeFilterMenu}
-          onClickCheckbox={onClickCheckbox}
-          onClickTitle={onClickTitle}
-          locale={locale}
-        />
-      </Suspense>
-    );
-  } else if (type === 'Initiatives') {
-    return (
-      <Suspense fallback={null}>
-        <InitiativeRow
-          type={type}
-          initiative={post as IInitiativeData}
-          statuses={statuses as IInitiativeStatusData[]}
-          selection={selection}
-          activeFilterMenu={activeFilterMenu}
-          onClickCheckbox={onClickCheckbox}
-          onClickTitle={onClickTitle}
-          nothingHappens={nothingHappens}
-        />
-      </Suspense>
-    );
-  }
-  return null;
+  return (
+    <Suspense fallback={null}>
+      <IdeaRow
+        type={type}
+        idea={post as IIdeaData}
+        statuses={statuses as IIdeaStatusData[]}
+        selectedProjectId={selectedProjectId}
+        selectedPhaseId={selectedPhaseId}
+        phases={phases}
+        selection={selection}
+        activeFilterMenu={activeFilterMenu}
+        onClickCheckbox={onClickCheckbox}
+        onClickTitle={onClickTitle}
+        locale={locale}
+      />
+    </Suspense>
+  );
 };
 
 export default Row;

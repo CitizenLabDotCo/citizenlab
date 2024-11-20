@@ -10,13 +10,13 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
     :reacting_enabled, :reacting_like_method, :reacting_like_limited_max,
     :reacting_dislike_enabled, :reacting_dislike_method, :reacting_dislike_limited_max,
     :allow_anonymous_participation, :presentation_mode, :ideas_order, :input_term,
-    :prescreening_enabled
+    :prescreening_enabled, :manual_voters_amount, :manual_votes_count
 
   %i[
     voting_method voting_max_total voting_min_total
     voting_max_votes_per_idea baskets_count
     native_survey_title_multiloc native_survey_button_multiloc
-    expire_days_limit reacting_threshold
+    expire_days_limit reacting_threshold autoshare_results_enabled
   ].each do |attribute_name|
     attribute attribute_name, if: proc { |phase|
       phase.pmethod.supports_serializing?(attribute_name)
@@ -24,11 +24,21 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
   end
 
   attribute :votes_count, if: proc { |phase, params|
-    phase.pmethod.supports_serializing?(:votes_count) \
-    && (
-      (current_user(params) && UserRoleService.new.can_moderate?(phase, current_user(params))) \
-      || TimelineService.new.phase_is_complete?(phase)
-    )
+    phase.pmethod.supports_serializing?(:votes_count) && view_votes?(phase, current_user(params))
+  }
+
+  attribute :total_votes_amount, if: proc { |phase, params|
+    phase.pmethod.supports_serializing?(:total_votes_amount) && view_votes?(phase, current_user(params))
+  } do |phase|
+    phase.votes_count + phase.manual_votes_count
+  end
+
+  attribute :manual_voters_last_updated_at, if: proc { |phase, params|
+    can_moderate?(phase, params)
+  }
+
+  has_one :manual_voters_last_updated_by, record_type: :user, serializer: WebApi::V1::UserSerializer, if: proc { |phase, params|
+    can_moderate?(phase, params)
   }
 
   attribute :voting_term_singular_multiloc, if: proc { |phase|
@@ -76,5 +86,15 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
     preloaded_user_basket || current_user(params)&.baskets&.select do |basket|
       basket.phase_id == object.id
     end&.first
+  end
+
+  def self.can_moderate?(phase, params)
+    current_user(params) && UserRoleService.new.can_moderate?(phase, current_user(params))
+  end
+
+  def self.view_votes?(phase, user)
+    return true if user && UserRoleService.new.can_moderate?(phase, user)
+
+    TimelineService.new.phase_is_complete?(phase)
   end
 end

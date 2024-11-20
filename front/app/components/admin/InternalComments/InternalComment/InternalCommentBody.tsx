@@ -50,7 +50,6 @@ const ButtonsWrapper = styled.div`
 
 interface Props {
   ideaId: string | undefined;
-  initiativeId: string | undefined;
   commentId: string;
   commentType: 'parent' | 'child';
   editing: boolean;
@@ -67,14 +66,12 @@ const InternalCommentBody = ({
   onCommentSaved,
   className,
   ideaId,
-  initiativeId,
 }: Props) => {
   const theme = useTheme();
   const { data: comment } = useInternalComment(commentId);
   const { mutate: updateComment, isLoading: processing } =
     useUpdateInternalComment({
       ideaId,
-      initiativeId,
     });
   const locale = useLocale();
 
@@ -105,6 +102,8 @@ const InternalCommentBody = ({
   const setNewTextAreaRef = (element: HTMLTextAreaElement) => {
     textareaElement.current = element;
 
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (textareaElement.current) {
       textareaElement.current.scrollIntoView({
         behavior: 'smooth',
@@ -115,6 +114,8 @@ const InternalCommentBody = ({
   };
 
   const focusEndOfEditingArea = (element: HTMLTextAreaElement) => {
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (element.setSelectionRange && element.textContent) {
       element.setSelectionRange(
         element.textContent.length,
@@ -145,6 +146,8 @@ const InternalCommentBody = ({
           setCommentContent('');
         },
         onError: (error) => {
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           const apiErrors = error?.errors;
           setApiErrors(apiErrors);
         },
@@ -182,6 +185,8 @@ const InternalCommentBody = ({
           </QuillEditedContent>
           <ButtonsWrapper>
             {apiErrors &&
+              // TODO: Fix this the next time the file is edited.
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
               apiErrors.body_multiloc &&
               apiErrors.body_multiloc[locale] && (
                 <Error apiErrors={apiErrors.body_multiloc[locale]} />

@@ -27,3 +27,5 @@ class WebApi::V1::ProjectCustomFieldsController < ApplicationController
     IdeaCustomFieldsService.new(phase.pmethod.custom_form).enabled_fields
   end
 end
+
+WebApi::V1::ProjectCustomFieldsController.include(AggressiveCaching::Patches::WebApi::V1::ProjectCustomFieldsController)

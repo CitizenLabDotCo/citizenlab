@@ -158,6 +158,8 @@ const SelectableResourceChart = ({
     if (
       showMore == null &&
       containerRef.current &&
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       containerRef.current?.clientHeight > 300
     ) {
       setShowMore(true);

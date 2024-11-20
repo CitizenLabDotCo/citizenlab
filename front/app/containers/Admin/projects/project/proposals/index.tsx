@@ -40,7 +40,7 @@ const AdminProjectProposals = () => {
           justifyContent="space-between"
           alignItems="center"
         >
-          <Title variant="h3" color="primary" fontWeight="normal" my="0px">
+          <Title variant="h3" color="primary" my="0px">
             <FormattedMessage {...messages.titleInputManager} />
           </Title>
           <Box display="flex" gap="8px">
@@ -57,6 +57,8 @@ const AdminProjectProposals = () => {
         </Text>
       </Box>
 
+      {/* TODO: Fix this the next time the file is edited. */}
+      {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
       {project && (
         <ProjectProposalsManager
           key={phaseId}

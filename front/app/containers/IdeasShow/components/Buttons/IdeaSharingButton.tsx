@@ -61,6 +61,9 @@ const Component = ({ ideaId }: Props) => {
             question: messages.questionWhatsAppMessage,
             issue: messages.issueWhatsAppMessage,
             contribution: messages.contributionWhatsAppMessage,
+            proposal: messages.proposalWhatsAppMessage,
+            initiative: messages.initiativeWhatsAppMessage,
+            petition: messages.petitionWhatsAppMessage,
           }),
           {
             postTitle,
@@ -74,6 +77,9 @@ const Component = ({ ideaId }: Props) => {
             question: messages.questionTwitterMessage,
             issue: messages.issueTwitterMessage,
             contribution: messages.contributionTwitterMessage,
+            proposal: messages.proposalTwitterMessage,
+            initiative: messages.initiativeTwitterMessage,
+            petition: messages.petitionTwitterMessage,
           }),
           {
             postTitle,
@@ -87,6 +93,9 @@ const Component = ({ ideaId }: Props) => {
             question: messages.questionEmailSharingSubject,
             issue: messages.issueEmailSharingSubject,
             contribution: messages.contributionEmailSharingSubject,
+            proposal: messages.proposalEmailSharingSubject,
+            initiative: messages.initiativeEmailSharingSubject,
+            petition: messages.petitionEmailSharingSubject,
           }),
           {
             ideaTitle: postTitle,
@@ -100,6 +109,9 @@ const Component = ({ ideaId }: Props) => {
             question: messages.questionEmailSharingBody,
             issue: messages.issueEmailSharingBody,
             contribution: messages.contributionEmailSharingBody,
+            proposal: messages.proposalEmailSharingBody,
+            initiative: messages.initiativeEmailSharingBody,
+            petition: messages.petitionEmailSharingBody,
           }),
           {
             ideaUrl: postUrl,

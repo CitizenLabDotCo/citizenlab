@@ -170,6 +170,9 @@ hr:
       topic_ids:
         title: Oznake
         description:
+      consponsor_ids:
+        title: Supokrovitelji
+        description: Pozovite susponzore putem donjeg polja. Pozvani susponzor(i) primit će e-poruku.
       location:
         title: Lokacija
         description:

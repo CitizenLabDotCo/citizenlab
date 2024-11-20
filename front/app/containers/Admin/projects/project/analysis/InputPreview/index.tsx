@@ -49,6 +49,8 @@ const InputListItem = () => {
       id: authorId ?? null,
       analysisId,
     });
+  const showAuthor =
+    authorId && author?.data.attributes.first_name && !isRefetchingAuthor;
 
   if (!analysis || !input || !selectedInputId) return null;
 
@@ -59,15 +61,21 @@ const InputListItem = () => {
     analysis.data.attributes.participation_method === 'native_survey';
 
   const mainCustomFieldId =
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     analysis.data.relationships?.main_custom_field?.data?.id;
 
   const additionalCustomFieldIds =
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     analysis.data.relationships?.additional_custom_fields?.data.map(
       (field) => field.id
     );
 
   const allCustomFields = analysis.data.relationships.all_custom_fields.data;
   const customFieldsInAnalysisIds =
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     [mainCustomFieldId, ...(additionalCustomFieldIds || [])] || [];
 
   const handleAddRemoveAdditionalCustomField = (customFieldId: string) => {
@@ -99,6 +107,8 @@ const InputListItem = () => {
       {showManageIdeaButton && (
         <Box display="flex" justifyContent="flex-end">
           <Button
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             linkTo={`/admin/projects/${analysis.data.relationships.project?.data?.id}/phases/${phaseId}/ideas?selected_idea_id=${selectedInputId}`}
             openLinkInNewTab
             buttonStyle="secondary-outlined"
@@ -128,9 +138,11 @@ const InputListItem = () => {
               })`}
         </Button>
       )}
-      {authorId && author && !isRefetchingAuthor && (
+      {showAuthor && (
         <Box mt="20px" display="flex" alignItems="center">
           <Avatar size={40} userId={author.data.id} />
+          {/* TODO: Fix this the next time the file is edited. */}
+          {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
           <Text m="0px">{getFullName(author?.data)}</Text>
           <Divider />
         </Box>
@@ -205,7 +217,11 @@ const InputListItem = () => {
               <LongFieldValue
                 customFieldId={customField.id}
                 input={input.data}
+                // TODO: Fix this the next time the file is edited.
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 projectId={analysis.data.relationships.project?.data?.id}
+                // TODO: Fix this the next time the file is edited.
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 phaseId={analysis.data.relationships.phase?.data?.id}
               />
             </Box>

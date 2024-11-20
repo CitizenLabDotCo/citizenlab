@@ -51,6 +51,9 @@ const CommentOnIdeaYouFollowNotification = memo<Props>((props) => {
             question: messages.userCommentedOnQuestionYouFollow,
             issue: messages.userCommentedOnIssueYouFollow,
             contribution: messages.userCommentedOnContributionYouFollow,
+            proposal: messages.userCommentedOnProposalYouFollow,
+            initiative: messages.userCommentedOnInitiativeYouFollow,
+            petition: messages.userCommentedOnPetitionYouFollow,
           })}
           values={{
             name: deletedUser ? (

@@ -2,14 +2,7 @@
 
 module Volunteering
   class VolunteerPolicy < ApplicationPolicy
-    class Scope
-      attr_reader :user, :scope
-
-      def initialize(user, scope)
-        @user  = user
-        @scope = scope
-      end
-
+    class Scope < ApplicationPolicy::Scope
       def resolve
         return scope.none unless user
 
@@ -33,7 +26,7 @@ module Volunteering
       reason = service.denied_reason_for_action('volunteering')
       return false if reason
 
-      ProjectPolicy.new(user, record.cause.phase.project).show?
+      policy_for(record.cause.phase.project).show?
     end
 
     def destroy?

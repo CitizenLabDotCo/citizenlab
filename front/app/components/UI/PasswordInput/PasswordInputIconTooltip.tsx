@@ -16,6 +16,7 @@ const PasswordInputIconTooltip = ({ className }: Props) => {
     <IconTooltip
       placement="top-start"
       className={className}
+      iconAriaTitle={formatMessage(messages.passwordStrengthTooltip1)}
       content={
         <>
           <p>{formatMessage(messages.passwordStrengthTooltip1)}</p>

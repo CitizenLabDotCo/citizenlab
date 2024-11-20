@@ -4,33 +4,26 @@ require 'rails_helper'
 
 RSpec.describe EmailCampaigns::IdeaPublishedMailer do
   describe 'campaign_mail' do
-    let_it_be(:recipient) { create(:user, locale: 'en') }
-    let_it_be(:campaign) { EmailCampaigns::Campaigns::IdeaPublished.create! }
-    let_it_be(:idea) { create(:idea, author: recipient) }
-    let_it_be(:command) do
-      {
-        recipient: recipient,
-        event_payload: {
-          post_id: idea.id,
-          post_title_multiloc: idea.title_multiloc,
-          post_body_multiloc: idea.body_multiloc,
-          post_url: Frontend::UrlService.new.model_to_url(idea, locale: Locale.new(recipient.locale)),
-          post_images: idea.idea_images.map do |image|
-            {
-              ordering: image.ordering,
-              versions: image.image.versions.to_h { |k, v| [k.to_s, v.url] }
-            }
-          end
-        }
-      }
+    before_all do
+      config = AppConfiguration.instance
+      config.settings['core']['organization_name'] = { 'en' => 'Vaudeville' }
+      config.save!
     end
 
+    let_it_be(:recipient) { create(:user, locale: 'en') }
+    let_it_be(:campaign) { EmailCampaigns::Campaigns::IdeaPublished.create! }
+    let_it_be(:input) { create(:idea, author: recipient) }
+    let_it_be(:command) do
+      activity = create(:activity, item: input, action: 'published')
+      create(:idea_published_campaign).generate_commands(
+        activity: activity,
+        recipient: recipient
+      ).first.merge({ recipient: recipient })
+    end
     let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
 
-    before_all { EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id) }
-
     it 'renders the subject' do
-      expect(mail.subject).to start_with('Your idea on the platform of')
+      expect(mail.subject).to eq('Your idea has been published')
     end
 
     it 'renders the receiver email' do
@@ -41,13 +34,26 @@ RSpec.describe EmailCampaigns::IdeaPublishedMailer do
       expect(mail.from).to all(end_with('@citizenlab.co'))
     end
 
-    it 'assigns organisation name' do
-      expect(mail.body.encoded).to match(AppConfiguration.instance.settings('core', 'organization_name', 'en'))
+    it 'includes the header' do
+      expect(mail.body.encoded).to have_tag('div') do
+        with_tag 'h1' do
+          with_text(/You posted/)
+        end
+      end
     end
 
-    it 'assigns go to idea CTA' do
-      idea_url = Frontend::UrlService.new.model_to_url(idea, locale: Locale.new(recipient.locale))
-      expect(mail.body.encoded).to match(idea_url)
+    it 'includes the input box' do
+      expect(mail.body.encoded).to have_tag('table') do
+        with_tag 'p' do
+          with_text(/Reach more people/)
+        end
+      end
+    end
+
+    it 'includes the CTA' do
+      expect(mail.body.encoded).to have_tag('a', with: { href: "http://example.org/en/ideas/#{input.slug}" }) do
+        with_text(/Go to your idea/)
+      end
     end
   end
 end

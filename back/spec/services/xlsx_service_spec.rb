@@ -143,6 +143,23 @@ describe XlsxService do
         expect(worksheet[0].cells.map(&:value)).to include custom_field.title_multiloc['en']
       end
     end
+
+    describe 'cosponsorship' do
+      it 'does not contain the cosponsors by default' do
+        expect(worksheet[0].cells.map(&:value)).not_to include 'cosponsors'
+      end
+
+      it 'contains the cosponsors if with_cosponsors is set to true' do
+        cosponsorship = create(:cosponsorship, idea: ideas.first)
+
+        xlsx = service.generate_ideas_xlsx(ideas, with_cosponsors: true)
+        workbook = RubyXL::Parser.parse_buffer(xlsx)
+        worksheet = workbook.worksheets[0]
+
+        expect(worksheet[0].cells.map(&:value)).to include 'cosponsors'
+        expect(worksheet[1].cells.map(&:value)).to include(cosponsorship.user.full_name)
+      end
+    end
   end
 
   # TODO: move-old-proposals-test

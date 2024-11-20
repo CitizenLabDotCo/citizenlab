@@ -39,19 +39,21 @@ export const PublicAPI = () => {
           placement="top"
           theme="dark"
         >
-          <Button
-            disabled={!isPublicAPIEnabled}
-            height="45px"
-            icon={isPublicAPIEnabled ? 'arrow-right' : 'lock'}
-            iconColor={colors.white}
-            iconPos="right"
-            width="fit-content"
-            linkTo="/admin/tools/public-api-tokens"
-            textColor="white"
-            bgColor={colors.primary}
-          >
-            {formatMessage(messages.managePublicAPIKeys)}
-          </Button>
+          <Box>
+            <Button
+              disabled={!isPublicAPIEnabled}
+              height="45px"
+              icon={isPublicAPIEnabled ? 'arrow-right' : 'lock'}
+              iconColor={colors.white}
+              iconPos="right"
+              width="fit-content"
+              linkTo="/admin/tools/public-api-tokens"
+              textColor="white"
+              bgColor={colors.primary}
+            >
+              {formatMessage(messages.managePublicAPIKeys)}
+            </Button>
+          </Box>
         </Tooltip>
       </Box>
     </Box>

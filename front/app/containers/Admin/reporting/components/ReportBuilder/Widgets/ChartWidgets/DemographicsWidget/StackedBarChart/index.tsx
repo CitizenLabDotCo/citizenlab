@@ -14,6 +14,7 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
 
+import DemographicsLegend from './DemographicsLegend';
 import { parseResponse } from './parse';
 import { tooltip } from './tooltip';
 
@@ -71,6 +72,7 @@ const StackedBarChart = ({ response }: Props) => {
       }}
       onMouseOver={onMouseOverStackedBar}
       onMouseOut={onMouseOutStackedBar}
+      CustomLegend={DemographicsLegend}
     />
   );
 };

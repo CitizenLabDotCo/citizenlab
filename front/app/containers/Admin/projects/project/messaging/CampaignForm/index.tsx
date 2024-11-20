@@ -162,7 +162,7 @@ const CampaignForm = ({
 
             <Text m="0px 0px 8px 0px" fontSize="l">
               <FormattedMessage
-                {...messages.allParticipants}
+                {...messages.allParticipantsAndFollowers}
                 values={{
                   participants: (
                     <Tooltip

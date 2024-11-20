@@ -1,14 +1,13 @@
 import React, { useMemo } from 'react';
 
+import { Box, Title } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
-import styled from 'styled-components';
 
 import { IPhaseData } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
 import { ideaDefaultSortMethodFallback } from 'api/phases/utils';
 
 import messages from 'containers/ProjectsShowPage/messages';
-import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
 
 import { IdeaCardsWithoutFiltersSidebar } from 'components/IdeaCards';
 import { Sort } from 'components/IdeaCards/shared/Filters/SortFilterDropdown';
@@ -17,12 +16,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import { getInputTermMessage } from 'utils/i18n';
-
-const Container = styled.div``;
-
-const StyledProjectPageSectionTitle = styled(ProjectPageSectionTitle)`
-  margin-bottom: 20px;
-`;
 
 interface InnerProps {
   projectId: string;
@@ -40,6 +33,7 @@ interface QueryParameters {
   search?: string;
   sort: Sort;
   topics?: string[];
+  idea_status?: string;
 }
 
 const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
@@ -47,6 +41,7 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
   const sortParam = searchParams.get('sort') as Sort | null;
   const searchParam = searchParams.get('search');
   const topicsParam = searchParams.get('topics');
+  const ideaStatusParam = searchParams.get('idea_status');
   const config = getMethodConfig(phase.attributes.participation_method);
 
   const ideaQueryParameters = useMemo<QueryParameters>(
@@ -61,8 +56,17 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
         ideaDefaultSortMethodFallback,
       search: searchParam ?? undefined,
       topics: topicsParam ? JSON.parse(topicsParam) : undefined,
+      idea_status: ideaStatusParam ?? undefined,
     }),
-    [config, projectId, sortParam, searchParam, phase, topicsParam]
+    [
+      config,
+      projectId,
+      sortParam,
+      searchParam,
+      phase,
+      topicsParam,
+      ideaStatusParam,
+    ]
   );
 
   const participationMethod = phase.attributes.participation_method;
@@ -71,12 +75,12 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
   const inputTerm = phase.attributes.input_term;
 
   return (
-    <Container
+    <Box
       id="project-ideas"
       className={`e2e-timeline-project-idea-cards ${className || ''}`}
     >
       {!isVotingContext && (
-        <StyledProjectPageSectionTitle>
+        <Title variant="h2" mt="0px" mb="20px" color="tenantText">
           <FormattedMessage
             {...getInputTermMessage(inputTerm, {
               idea: messages.ideas,
@@ -85,9 +89,12 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
               question: messages.questions,
               issue: messages.issues,
               contribution: messages.contributions,
+              proposal: messages.proposals,
+              initiative: messages.initiatives,
+              petition: messages.petitions,
             })}
           />
-        </StyledProjectPageSectionTitle>
+        </Title>
       )}
       <IdeaCardsWithoutFiltersSidebar
         ideaQueryParameters={ideaQueryParameters}
@@ -95,6 +102,8 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
         className={participationMethod}
         projectId={projectId}
         showViewToggle={true}
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         defaultSortingMethod={ideaQueryParameters.sort || null}
         defaultView={phase.attributes.presentation_mode}
         invisibleTitleMessage={messages.a11y_titleInputsPhase}
@@ -102,7 +111,7 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
         showDropdownFilters={isVotingContext ? false : true}
         showSearchbar={isVotingContext ? false : true}
       />
-    </Container>
+    </Box>
   );
 };
 

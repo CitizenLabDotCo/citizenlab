@@ -5,6 +5,7 @@ import {
   Dropdown,
   fontSizes,
   isRtl,
+  Spinner,
 } from '@citizenlab/cl2-component-library';
 import { rgba, darken } from 'polished';
 import { RouteType } from 'routes';
@@ -21,7 +22,7 @@ import T from 'components/T';
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
+import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 import messages from '../../messages';
 import ProjectsListItem from '../ProjectsListItem';
@@ -149,11 +150,14 @@ const AdminPublicationsNavbarItem = ({
   const localize = useLocalize();
   const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
 
-  const { data } = useAdminPublications({
-    publicationStatusFilter: ['published', 'archived'],
-    rootLevelOnly: true,
-    removeNotAllowedParents: true,
-  });
+  const { data } = useAdminPublications(
+    {
+      publicationStatusFilter: ['published', 'archived'],
+      rootLevelOnly: true,
+      removeNotAllowedParents: true,
+    },
+    { enabled: projectsDropdownOpened }
+  );
 
   const adminPublications = data?.pages.map((page) => page.data).flat();
 
@@ -165,7 +169,7 @@ const AdminPublicationsNavbarItem = ({
     (secondUrlSegment === 'projects' || secondUrlSegment === 'folders') &&
     !thirdUrlSegment;
 
-  const totalProjectsListLength = !isNilOrError(adminPublications)
+  const totalProjectsListLength = adminPublications
     ? adminPublications.length
     : 0;
 
@@ -180,77 +184,79 @@ const AdminPublicationsNavbarItem = ({
     );
   };
 
-  if (!isNilOrError(adminPublications) && adminPublications.length > 0) {
-    return (
-      <NavigationDropdown>
-        <NavigationDropdownItem
-          tabIndex={0}
-          className={[
-            'e2e-projects-dropdown-link',
-            projectsDropdownOpened ? 'opened' : 'closed',
-            isActive ? 'active' : '',
-          ].join(' ')}
-          aria-expanded={projectsDropdownOpened}
-          onMouseDown={removeFocusAfterMouseClick}
-          onClick={toggleProjectsDropdown}
-          data-testid="admin-publications-navbar-item"
-        >
-          <NavigationItemBorder />
-          <T value={navigationItemTitle} />
-          <NavigationDropdownItemIcon name="chevron-down" />
-        </NavigationDropdownItem>
-        <Dropdown
-          top="68px"
-          left="10px"
-          opened={projectsDropdownOpened}
-          onClickOutside={toggleProjectsDropdown}
-          zIndex="500"
-          content={
-            <ProjectsList id="e2e-projects-dropdown-content">
-              {adminPublications.map((item) => (
-                <React.Fragment key={item.id}>
-                  {item.relationships.publication.data.type === 'project' && (
-                    <ProjectsListItem
-                      to={
-                        `${linkTo}/${item.attributes.publication_slug}` as RouteType
-                      }
-                      scrollToTop
-                    >
-                      {localize(item.attributes.publication_title_multiloc)}
-                    </ProjectsListItem>
-                  )}
-                  {isProjectFoldersEnabled &&
-                    item.relationships.publication.data.type === 'folder' && (
+  return (
+    <NavigationDropdown>
+      <NavigationDropdownItem
+        tabIndex={0}
+        className={[
+          'e2e-projects-dropdown-link',
+          projectsDropdownOpened ? 'opened' : 'closed',
+          isActive ? 'active' : '',
+        ].join(' ')}
+        aria-expanded={projectsDropdownOpened}
+        onMouseDown={removeFocusAfterMouseClick}
+        onClick={toggleProjectsDropdown}
+        data-testid="admin-publications-navbar-item"
+      >
+        <NavigationItemBorder />
+        <T value={navigationItemTitle} />
+        <NavigationDropdownItemIcon name="chevron-down" />
+      </NavigationDropdownItem>
+      <Dropdown
+        top="68px"
+        left="10px"
+        opened={projectsDropdownOpened}
+        onClickOutside={toggleProjectsDropdown}
+        zIndex="500"
+        content={
+          <ProjectsList id="e2e-projects-dropdown-content">
+            {adminPublications ? (
+              <>
+                {adminPublications.map((item) => (
+                  <React.Fragment key={item.id}>
+                    {item.relationships.publication.data.type === 'project' && (
                       <ProjectsListItem
-                        to={`/folders/${item.attributes.publication_slug}`}
+                        to={
+                          `${linkTo}/${item.attributes.publication_slug}` as RouteType
+                        }
                         scrollToTop
                       >
                         {localize(item.attributes.publication_title_multiloc)}
                       </ProjectsListItem>
                     )}
-                </React.Fragment>
-              ))}
-            </ProjectsList>
-          }
-          footer={
-            <>
-              {totalProjectsListLength > 9 && (
-                <ProjectsListFooter
-                  to={linkTo}
-                  id="e2e-all-projects-link"
-                  scrollToTop
-                >
-                  <FormattedMessage {...messages.allProjects} />
-                </ProjectsListFooter>
-              )}
-            </>
-          }
-        />
-      </NavigationDropdown>
-    );
-  }
-
-  return null;
+                    {isProjectFoldersEnabled &&
+                      item.relationships.publication.data.type === 'folder' && (
+                        <ProjectsListItem
+                          to={`/folders/${item.attributes.publication_slug}`}
+                          scrollToTop
+                        >
+                          {localize(item.attributes.publication_title_multiloc)}
+                        </ProjectsListItem>
+                      )}
+                  </React.Fragment>
+                ))}
+              </>
+            ) : (
+              <Spinner />
+            )}
+          </ProjectsList>
+        }
+        footer={
+          <>
+            {totalProjectsListLength > 9 && (
+              <ProjectsListFooter
+                to={linkTo}
+                id="e2e-all-projects-link"
+                scrollToTop
+              >
+                <FormattedMessage {...messages.allProjects} />
+              </ProjectsListFooter>
+            )}
+          </>
+        }
+      />
+    </NavigationDropdown>
+  );
 };
 
 export default withRouter(AdminPublicationsNavbarItem);

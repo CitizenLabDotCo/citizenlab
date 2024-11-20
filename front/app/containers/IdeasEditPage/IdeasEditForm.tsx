@@ -1,7 +1,6 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
-import { PreviousPathnameContext } from 'context';
 import { omit } from 'lodash-es';
 import { Multiloc } from 'typings';
 
@@ -11,7 +10,6 @@ import useIdeaImages from 'api/idea_images/useIdeaImages';
 import { IIdeaUpdate } from 'api/ideas/types';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
-import useAuthUser from 'api/me/useAuthUser';
 
 import useInputSchema from 'hooks/useInputSchema';
 
@@ -27,7 +25,6 @@ import PageContainer from 'components/UI/PageContainer';
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
-import { usePermission } from 'utils/permissions';
 
 import IdeasEditMeta from './IdeasEditMeta';
 import messages from './messages';
@@ -45,24 +42,18 @@ interface FormValues {
   location_description?: string;
   location_point_geojson?: GeoJSON.Point;
   topic_ids?: string[];
+  cosponsor_ids?: string[];
 }
 interface Props {
   ideaId: string;
 }
 
 const IdeasEditForm = ({ ideaId }: Props) => {
-  const previousPathName = useContext(PreviousPathnameContext);
   const [isDisclaimerOpened, setIsDisclaimerOpened] = useState(false);
   const [formData, setFormData] = useState<FormValues | null>(null);
-
-  const { data: authUser } = useAuthUser();
+  const [loading, setLoading] = useState(false);
   const { data: idea } = useIdeaById(ideaId);
   const { mutate: deleteIdeaImage } = useDeleteIdeaImage();
-  const granted = usePermission({
-    item: idea?.data || null,
-    action: 'edit',
-    context: idea?.data || null,
-  });
 
   const { mutateAsync: updateIdea } = useUpdateIdea();
   const { data: remoteImages } = useIdeaImages(ideaId);
@@ -78,12 +69,6 @@ const IdeasEditForm = ({ ideaId }: Props) => {
     projectId,
     inputId: ideaId,
   });
-
-  useEffect(() => {
-    if (idea && authUser !== undefined && !granted) {
-      clHistory.replace(previousPathName || (!authUser ? '/sign-up' : '/'));
-    }
-  }, [idea, granted, previousPathName, authUser]);
 
   const getApiErrorMessage: ApiErrorGetter = useCallback(
     (error) => {
@@ -104,12 +89,16 @@ const IdeasEditForm = ({ ideaId }: Props) => {
         messages[
           `ajv_error_${uiSchema?.options?.inputTerm}_${
             getFieldNameFromPath(error.instancePath) ||
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             error?.params?.missingProperty
           }_${error.keyword}`
         ] ||
         messages[
           `ajv_error_${
             getFieldNameFromPath(error.instancePath) ||
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             error?.params?.missingProperty
           }_${error.keyword}`
         ] ||
@@ -126,6 +115,8 @@ const IdeasEditForm = ({ ideaId }: Props) => {
     !schema ||
     !uiSchema ||
     !projectId ||
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     !idea
   ) {
     return null;
@@ -139,6 +130,8 @@ const IdeasEditForm = ({ ideaId }: Props) => {
   );
 
   // Set initial location point if exists
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (initialFormData && idea.data.attributes.location_point_geojson) {
     initialFormData['location_point_geojson'] =
       idea.data.attributes.location_point_geojson;
@@ -169,6 +162,7 @@ const IdeasEditForm = ({ ideaId }: Props) => {
   };
 
   const onSubmit = async (data: FormValues) => {
+    setLoading(true);
     const { idea_images_attributes, ...ideaWithoutImages } = data;
 
     const location_point_geojson = await getLocationGeojson(
@@ -177,9 +171,13 @@ const IdeasEditForm = ({ ideaId }: Props) => {
     );
 
     const isImageNew =
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       idea_images_attributes !== initialFormData?.idea_images_attributes;
 
     // Delete a remote image only on submission
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (isImageNew && initialFormData?.idea_images_attributes[0]?.id) {
       deleteIdeaImage({
         ideaId,
@@ -208,6 +206,7 @@ const IdeasEditForm = ({ ideaId }: Props) => {
       },
       { scrollToTop: true }
     );
+    setLoading(false);
   };
 
   return (
@@ -228,6 +227,7 @@ const IdeasEditForm = ({ ideaId }: Props) => {
               getAjvErrorMessage={getAjvErrorMessage}
               getApiErrorMessage={getApiErrorMessage}
               config={'input'}
+              loading={loading}
               title={
                 <Box
                   width="100%"
@@ -245,7 +245,12 @@ const IdeasEditForm = ({ ideaId }: Props) => {
                       question: messages.questionFormTitle,
                       issue: messages.issueFormTitle,
                       contribution: messages.contributionFormTitle,
+                      initiative: messages.initiativeFormTitle,
+                      petition: messages.petitionFormTitle,
+                      proposal: messages.proposalFormTitle,
                     }[
+                      // TODO: Fix this the next time the file is edited.
+                      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                       uiSchema && uiSchema?.options?.inputTerm
                         ? uiSchema.options.inputTerm
                         : 'idea'

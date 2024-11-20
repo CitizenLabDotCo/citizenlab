@@ -37,23 +37,6 @@ export default defineMessages({
     id: 'app.containers.landing.defaultSignedInMessage',
     defaultMessage: '{firstName}, inspire change today!',
   },
-  initiativesBoxTitle: {
-    id: 'app.containers.landing.initiativesBoxTitle',
-    defaultMessage: 'Your plans don’t fit? Start your own initiative!',
-  },
-  initiativesBoxText: {
-    id: 'app.containers.landing.initiativesBoxText',
-    defaultMessage:
-      'Your plans don’t fit in the consultations above? Start your own initiative, gather support and make your voice heard!',
-  },
-  startInitiative: {
-    id: 'app.containers.landing.startInitiative',
-    defaultMessage: 'Start an initiative',
-  },
-  browseInitiative: {
-    id: 'app.containers.landing.browseInitiative',
-    defaultMessage: 'Browse initiatives',
-  },
   new: {
     id: 'app.containers.landing.new',
     defaultMessage: 'new',

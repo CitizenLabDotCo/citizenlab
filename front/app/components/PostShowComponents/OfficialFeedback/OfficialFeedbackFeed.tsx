@@ -5,12 +5,12 @@ import {
   fontSizes,
   media,
   isRtl,
+  Title,
 } from '@citizenlab/cl2-component-library';
 import { FormattedDate } from 'react-intl';
 import styled from 'styled-components';
 
 import useIdeaOfficialFeedback from 'api/idea_official_feedback/useIdeaOfficialFeedback';
-import useInitiativeOfficialFeedback from 'api/initiative_official_feedback/useInitiativeOfficialFeedback';
 
 import Button from 'components/UI/Button';
 
@@ -40,15 +40,6 @@ const FeedbackHeader = styled.div`
     align-items: stretch;
     justify-content: left;
   `}
-`;
-
-const FeedbackTitle = styled.h2`
-  color: ${colors.red600};
-  font-size: ${fontSizes.l}px;
-  line-height: normal;
-  font-weight: 600;
-  padding: 0;
-  margin: 0;
 `;
 
 const FeedbackSubtitle = styled.div`
@@ -83,7 +74,6 @@ const LoadMoreButton = styled(Button)`
 
 interface Props {
   postId: string;
-  postType: 'idea' | 'initiative';
   editingAllowed: boolean | undefined;
   className?: string;
   a11y_pronounceLatestOfficialFeedbackPost?: boolean;
@@ -91,7 +81,6 @@ interface Props {
 
 const OfficialFeedbackFeed = ({
   postId,
-  postType,
   editingAllowed,
   className,
   a11y_pronounceLatestOfficialFeedbackPost,
@@ -103,24 +92,12 @@ const OfficialFeedbackFeed = ({
     hasNextPage: hasNextPageIdeasFeedback,
     isFetchingNextPage: isFetchingNextPageIdeasFeedback,
   } = useIdeaOfficialFeedback({
-    ideaId: postId && postType === 'idea' ? postId : undefined,
-    pageSize,
-  });
-
-  const {
-    data: initiativeFeedbacks,
-    fetchNextPage: fetchNextPageInitiativeFeedback,
-    hasNextPage: hasNextPageInitiativesFeedback,
-    isFetchingNextPage: isFetchingNextPageInitiativesFeedback,
-  } = useInitiativeOfficialFeedback({
-    initiativeId: postId && postType === 'initiative' ? postId : undefined,
+    ideaId: postId ? postId : undefined,
     pageSize,
   });
 
   const officialFeedbacksList =
-    postType === 'idea'
-      ? ideaFeedbacks?.pages.flatMap((page) => page.data) || []
-      : initiativeFeedbacks?.pages.flatMap((page) => page.data) || [];
+    ideaFeedbacks?.pages.flatMap((page) => page.data) || [];
 
   if (officialFeedbacksList.length > 0) {
     const updateDate =
@@ -136,18 +113,12 @@ const OfficialFeedbackFeed = ({
     );
 
     const onLoadMore = () => {
-      if (postType === 'idea') {
-        fetchNextPageIdeasFeedback();
-      } else {
-        fetchNextPageInitiativeFeedback();
-      }
+      fetchNextPageIdeasFeedback();
+
       setPageSize(10);
     };
 
-    const hasMore =
-      postType === 'idea'
-        ? hasNextPageIdeasFeedback
-        : hasNextPageInitiativesFeedback;
+    const hasMore = hasNextPageIdeasFeedback;
 
     return (
       <Container
@@ -156,9 +127,9 @@ const OfficialFeedbackFeed = ({
         id="official-feedback-feed"
       >
         <FeedbackHeader>
-          <FeedbackTitle>
+          <Title variant="h2" m="0" color="red600" fontSize="l">
             <FormattedMessage {...messages.officialUpdates} />
-          </FeedbackTitle>
+          </Title>
           <FeedbackSubtitle>
             <FormattedMessage
               {...messages.lastUpdate}
@@ -175,7 +146,6 @@ const OfficialFeedbackFeed = ({
               key={officialFeedbackPost.id}
               editingAllowed={editingAllowed}
               officialFeedbackPost={officialFeedbackPost}
-              postType={postType}
               a11y_pronounceLatestOfficialFeedbackPost={
                 i === 0 && a11y_pronounceLatestOfficialFeedbackPost
               }
@@ -189,10 +159,7 @@ const OfficialFeedbackFeed = ({
             icon="refresh"
             onClick={onLoadMore}
             text={<FormattedMessage {...messages.showPreviousUpdates} />}
-            processing={
-              isFetchingNextPageIdeasFeedback ||
-              isFetchingNextPageInitiativesFeedback
-            }
+            processing={isFetchingNextPageIdeasFeedback}
           />
         )}
       </Container>

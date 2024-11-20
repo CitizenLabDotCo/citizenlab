@@ -55,18 +55,18 @@ export default defineMessages({
     id: 'app.containers.Admin.project.emails.fieldTo',
     defaultMessage: 'To',
   },
-  allParticipants: {
-    id: 'app.containers.Admin.project.emails.allParticipants',
-    defaultMessage: 'All {participants} from the project',
+  allParticipantsAndFollowers: {
+    id: 'app.containers.Admin.project.emails.allParticipantsAndFollowers',
+    defaultMessage: 'All {participants} and followers from the project',
   },
   participants: {
     id: 'app.containers.Admin.project.emails.participants',
     defaultMessage: 'participants',
   },
   allParticipantsTooltip: {
-    id: 'app.containers.Admin.project.emails.allParticipantsTooltipText',
+    id: 'app.containers.Admin.project.emails.allParticipantsTooltipText2',
     defaultMessage:
-      'This includes registered users that performed any action in the project (including follow). Unregistered or anonymized users are not included.',
+      'This includes registered users that performed any action in the project. Unregistered or anonymized users are not included.',
   },
   infoboxModerator: {
     id: 'app.containers.Admin.project.emails.infoboxModeratorText',

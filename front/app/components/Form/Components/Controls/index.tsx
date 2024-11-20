@@ -54,6 +54,9 @@ import OrderedLayout, {
   orderedLayoutTester,
 } from 'components/Form/Components/Layouts/OrderedLayout';
 
+import CosponsorsControl, {
+  cosponsorsControlTester,
+} from './CosponsorsControl';
 import ImageMultichoiceControl, {
   imageMultichoiceControlTester,
 } from './ImageMultichoiceControl';
@@ -135,4 +138,6 @@ export {
   singleAttachmentControlTester,
   ShapefileUploadControl,
   shapefileUploadControlTester,
+  CosponsorsControl,
+  cosponsorsControlTester,
 };

@@ -8,6 +8,7 @@ import {
   Cell,
   LabelList,
   Tooltip,
+  Legend as RechartsLegend,
 } from 'recharts';
 
 import {
@@ -47,6 +48,7 @@ const StackedBarChart = <Row,>({
   innerRef,
   onMouseOver,
   onMouseOut,
+  CustomLegend,
 }: Props<Row>) => {
   const [graphDimensions, setGraphDimensions] = useState<
     GraphDimensions | undefined
@@ -120,7 +122,18 @@ const StackedBarChart = <Row,>({
         barCategoryGap={bars?.categoryGap}
         accessibilityLayer
       >
-        {legend && graphDimensions && legendDimensions && (
+        {CustomLegend && legend && legendDimensions && (
+          <RechartsLegend
+            content={() => (
+              <CustomLegend
+                legendDimensions={legendDimensions}
+                items={legend.items}
+              />
+            )}
+          />
+        )}
+
+        {!CustomLegend && legend && graphDimensions && legendDimensions && (
           <g className="graph-legend">
             <Legend
               items={legend.items}
@@ -147,6 +160,8 @@ const StackedBarChart = <Row,>({
             onMouseOver={handleMouseOver(barIndex)}
             onMouseOut={handleMouseOut(barIndex)}
             stackId="a"
+            stroke="white"
+            strokeWidth={1}
           >
             {(typeof labels === 'object' || labels === true) && (
               <LabelList {...labelConfig} />

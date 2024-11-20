@@ -79,6 +79,7 @@ nl:
       email: 'E-mail'
       first_name: 'Voornamen'
       image_url: 'Afbeelding URL'
+      manual_votes: 'Offline stemmen'
       input_id: 'ID'
       input_url: 'URL'
       last_name: 'Achternaam'

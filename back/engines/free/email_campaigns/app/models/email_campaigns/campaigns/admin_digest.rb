@@ -82,26 +82,20 @@ module EmailCampaigns
     def generate_commands(recipient:, time: Time.now)
       [{
         event_payload: {
-          statistics: statistics,
-          top_project_ideas: top_project_ideas,
-          new_initiatives: new_initiatives(time: time),
-          successful_initiatives: successful_initiatives(time: time)
+          statistics:,
+          top_project_inputs:,
+          successful_proposals: successful_proposals(time: time)
         },
         tracked_content: {
-          idea_ids: idea_ids(time: time),
-          initiative_ids: initiative_ids(time: time)
+          idea_ids: idea_ids(time: time)
         }
       }]
     end
 
     private
 
-    def initiative_ids(time:)
-      @initiative_ids ||= (new_initiatives(time: time) + successful_initiatives(time: time)).pluck(:id).compact
-    end
-
     def idea_ids(time:)
-      @idea_ids ||= top_project_ideas.flat_map { |tpi| tpi[:top_ideas].pluck(:id) }
+      @idea_ids ||= (top_project_inputs.flat_map { |tpi| tpi[:top_ideas].pluck(:id) } + successful_proposals(time: time).pluck(:id)).compact.uniq
     end
 
     def user_filter_admin_only(users_scope, _options = {})
@@ -114,7 +108,7 @@ module EmailCampaigns
 
     def content_worth_sending?(_)
       [
-        statistics[:new_ideas_increase],
+        statistics[:new_inputs_increase],
         statistics[:new_comments_increase],
         statistics[:new_users_increase]
       ].any?(&:positive?)
@@ -122,7 +116,7 @@ module EmailCampaigns
 
     def statistics
       @statistics ||= {
-        new_ideas_increase: stat_increase(Idea.pluck(:published_at).compact),
+        new_inputs_increase: stat_increase(Idea.pluck(:published_at).compact),
         new_comments_increase: stat_increase(Comment.pluck(:created_at)),
         new_users_increase: stat_increase(User.pluck(:registration_completed_at).compact)
       }
@@ -138,13 +132,13 @@ module EmailCampaigns
       stat_dates.count { |t| t > (Time.now - days_ago) }
     end
 
-    def top_project_ideas
-      @top_project_ideas ||= Project.where(id: top_project_ids).map do |project|
+    def top_project_inputs
+      @top_project_inputs ||= Project.where(id: top_project_ids).map do |project|
         phase = TimelineService.new.current_phase project
         {
           project: serialize_project(project),
           current_phase: phase ? serialize_phase(phase) : nil,
-          top_ideas: top_ideas_grouped_by_project[project.id].map { |idea| serialize_idea(idea) }
+          top_ideas: top_ideas_grouped_by_project[project.id].map { |idea| serialize_input(idea) }
         }
       end
     end
@@ -197,22 +191,13 @@ module EmailCampaigns
       published_ideas_activity.dig(idea.id, key)
     end
 
-    def new_initiatives(time: Time.zone.today)
-      @new_initiatives ||= Initiative.published.proposed_after(1.week.ago)
-        .order(published_at: :desc)
-        .includes(:initiative_images)
-        .map { |initiative| serialize_initiative(initiative) }
-    end
-
-    def successful_initiatives(time: Time.zone.today)
-      @successful_initiatives ||= Initiative
+    def successful_proposals(time: Time.zone.today)
+      @successful_proposals ||= Idea
         .published
-        .joins(initiative_status_changes: :initiative_status)
-        .includes(:initiative_images)
         .with_status_code('threshold_reached')
-        .where('initiative_status_changes.created_at > ?', time - 1.week)
-        .feedback_needed
-        .map { |initiative| serialize_initiative(initiative) }
+        .with_status_transitioned_after(time - 1.week)
+        .includes(:idea_images)
+        .map { |idea| serialize_proposal(idea) }
     end
 
     def ideas_activity_counts(ideas)
@@ -251,7 +236,7 @@ module EmailCampaigns
       }
     end
 
-    def serialize_idea(idea)
+    def serialize_input(idea)
       {
         id: idea.id,
         title_multiloc: idea.title_multiloc,
@@ -267,18 +252,15 @@ module EmailCampaigns
       }
     end
 
-    def serialize_initiative(initiative)
+    def serialize_proposal(proposal)
       {
-        id: initiative.id,
-        title_multiloc: initiative.title_multiloc,
-        url: Frontend::UrlService.new.model_to_url(initiative),
-        published_at: initiative.published_at&.iso8601,
-        author_name: initiative.author_name,
-        likes_count: initiative.likes_count,
-        comments_count: initiative.comments_count,
-        threshold_reached_at: initiative.threshold_reached_at&.iso8601,
-        images: initiative.initiative_images.map { |image| serialize_image(image) },
-        header_bg: { versions: version_urls(initiative.header_bg) }
+        id: proposal.id,
+        title_multiloc: proposal.title_multiloc,
+        url: Frontend::UrlService.new.model_to_url(proposal),
+        published_at: proposal.published_at.iso8601,
+        author_name: proposal.author_name,
+        likes_count: proposal.likes_count,
+        comments_count: proposal.comments_count
       }
     end
 

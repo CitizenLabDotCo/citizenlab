@@ -17,6 +17,7 @@ import useVoteForIdea from './useVoteForIdea';
 
 interface Props {
   projectId?: string;
+  phaseId?: string;
   children: React.ReactNode;
 }
 
@@ -30,8 +31,8 @@ interface VotingInterface {
 
 const VotingInterfaceContext = createContext<VotingInterface | null>(null);
 
-export const VotingContext = ({ projectId, children }: Props) => {
-  const votingInterface = useVotingInterface(projectId);
+export const VotingContext = ({ projectId, children, phaseId }: Props) => {
+  const votingInterface = useVotingInterface({ projectId, phaseId });
 
   return (
     <VotingInterfaceContext.Provider value={votingInterface}>
@@ -40,16 +41,30 @@ export const VotingContext = ({ projectId, children }: Props) => {
   );
 };
 
-const useVotingInterface = (projectId?: string) => {
+type UseVotingInterfaceProps = {
+  projectId?: string;
+  phaseId?: string;
+};
+
+const useVotingInterface = ({
+  projectId,
+  phaseId,
+}: UseVotingInterfaceProps) => {
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
 
-  const phase = getCurrentPhase(phases?.data);
+  const phase = phaseId
+    ? // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      phases?.data?.find((phase) => phase.id === phaseId)
+    : getCurrentPhase(phases?.data);
 
   const [votesPerIdea, setVotesPerIdea] = useState<Record<string, number>>({});
 
   const { voteForIdea, processing } = useVoteForIdea(phase);
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const basketId = phase?.relationships?.user_basket?.data?.id;
   const { data: basketIdeas, isFetching: basketIdeasLoading } =
     useBasketsIdeas(basketId);

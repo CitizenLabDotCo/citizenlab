@@ -1,6 +1,6 @@
 import React, { MouseEvent, KeyboardEvent } from 'react';
 
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import Box, {
   BoxPositionProps,
@@ -30,19 +30,27 @@ const StyledIcon = styled(Icon)<{
 
 const StyledBox = styled(Box)<{
   iconColorOnHover: string;
+  disabled?: boolean;
 }>`
-  cursor: pointer;
+  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
+  opacity: ${({ disabled }) => (disabled ? 0.37 : 1)};
+  pointer-events: ${({ disabled }) => (disabled ? 'none' : 'auto')};
 
   &:hover,
   &:focus {
-    ${StyledIcon} {
-      fill: ${({ iconColorOnHover }) => iconColorOnHover};
-    }
+    ${({ disabled, iconColorOnHover }) =>
+      !disabled &&
+      css`
+        ${StyledIcon} {
+          fill: ${iconColorOnHover};
+        }
+      `}
   }
 `;
 
 export type IconButtonProps = {
   className?: string;
+  id?: string;
   iconName: IconNames;
   // Provide a description that describes the button's task
   // E.g. close idea page modal
@@ -52,11 +60,14 @@ export type IconButtonProps = {
   iconHeight?: string;
   iconColor: string;
   iconColorOnHover: string;
+  ariaHidden?: boolean;
   ariaExpanded?: boolean;
   ariaControls?: string;
   buttonType?: 'submit' | 'button' | 'reset';
   transform?: string;
+  opacity?: number;
   iconRef?: React.Ref<any>;
+  disabled?: boolean;
 } & BoxPositionProps &
   BoxMarginProps &
   BoxPaddingProps &
@@ -66,6 +77,7 @@ export type IconButtonProps = {
 
 const IconButton = ({
   className,
+  id,
   iconName,
   onClick,
   a11y_buttonActionMessage,
@@ -73,25 +85,32 @@ const IconButton = ({
   iconHeight = '24px',
   iconColor,
   iconColorOnHover,
+  ariaHidden,
   ariaExpanded,
   ariaControls,
   buttonType,
+  opacity,
   transform,
   iconRef,
+  disabled,
   ...rest
 }: IconButtonProps) => {
   return (
     <StyledBox
       as="button"
       className={className ?? ''}
+      id={id}
       onClick={onClick}
       iconColorOnHover={iconColorOnHover}
       aria-expanded={ariaExpanded}
       aria-controls={ariaControls}
+      aria-hidden={ariaHidden}
       type={buttonType}
       display="flex"
       alignItems="center"
       justifyContent="center"
+      opacity={opacity}
+      disabled={disabled}
       role="button"
       ref={iconRef}
       {...rest}

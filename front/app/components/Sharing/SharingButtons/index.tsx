@@ -6,6 +6,9 @@ import {
   Title,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
+import { useSearchParams } from 'react-router-dom';
+
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -19,7 +22,7 @@ import messages from '../messages';
 import { getUrlWithUtm, UtmParams, Medium } from '../utils';
 
 interface Props {
-  context: 'idea' | 'project' | 'initiative' | 'folder' | 'event';
+  context: 'idea' | 'project' | 'folder' | 'event';
   url: string;
   twitterMessage: string;
   whatsAppMessage: string;
@@ -43,6 +46,12 @@ const SharingButtons = ({
   hideTitle,
   justifyContent,
 }: Props) => {
+  const [searchParams] = useSearchParams();
+  const phaseContext = searchParams.get('phase_context');
+  const { data: appConfiguration } = useAppConfiguration();
+  const isSharingEnabled =
+    appConfiguration?.data.attributes.settings.core.allow_sharing;
+
   const isSmallerThanTablet = useBreakpoint('tablet');
 
   const getUrl = (medium: Medium) => {
@@ -51,10 +60,25 @@ const SharingButtons = ({
   const titleMessage = {
     idea: <FormattedMessage {...messages.share} />,
     project: <FormattedMessage {...messages.shareThisProject} />,
-    initiative: <FormattedMessage {...messages.shareThisInitiative} />,
     folder: <FormattedMessage {...messages.shareThisFolder} />,
     event: <FormattedMessage {...messages.shareThisEvent} />,
   }[context];
+
+  const addPhaseContext = (url: string) => {
+    const hasExistingParams = url.indexOf('?') >= 0;
+    if (phaseContext) {
+      if (hasExistingParams) {
+        return `${url}&phase_context=${phaseContext}`;
+      } else {
+        return `${url}?phase_context=${phaseContext}`;
+      }
+    }
+    return url;
+  };
+
+  if (!isSharingEnabled) {
+    return null;
+  }
 
   return (
     <>
@@ -80,12 +104,17 @@ const SharingButtons = ({
       >
         <Box display="flex" gap="4px">
           <Facebook url={getUrl('facebook')} />
-          {isSmallerThanTablet && <Messenger url={getUrl('messenger')} />}
+          {isSmallerThanTablet && (
+            <Messenger url={addPhaseContext(getUrl('messenger'))} />
+          )}
           <WhatsApp
             whatsAppMessage={whatsAppMessage}
             url={getUrl('whatsapp')}
           />
-          <Twitter twitterMessage={twitterMessage} url={getUrl('twitter')} />
+          <Twitter
+            twitterMessage={twitterMessage}
+            url={addPhaseContext(getUrl('twitter'))}
+          />
           <Email
             emailSubject={emailSubject}
             emailBody={emailBody}
@@ -97,7 +126,7 @@ const SharingButtons = ({
             <FormattedMessage {...messages.or} />
           </Box>
         )}
-        <CopyLink copyLink={url} />
+        <CopyLink copyLink={addPhaseContext(url)} />
       </Box>
     </>
   );

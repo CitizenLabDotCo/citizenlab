@@ -59,7 +59,6 @@ export interface Props {
   onCommentEdit: () => void;
   className?: string;
   ideaId: string | undefined;
-  initiativeId: string | undefined;
 }
 
 const CommentsMoreActions = ({
@@ -68,13 +67,13 @@ const CommentsMoreActions = ({
   comment,
   className,
   ideaId,
-  initiativeId,
 }: Props) => {
   const moreActionsButtonRef = useRef<HTMLButtonElement>(null);
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const parentCommentId = comment.relationships?.parent?.data?.id;
   const { mutate: markForDeletion, isLoading } = useMarkCommentForDeletion({
     ideaId,
-    initiativeId,
     parentCommentId,
   });
 

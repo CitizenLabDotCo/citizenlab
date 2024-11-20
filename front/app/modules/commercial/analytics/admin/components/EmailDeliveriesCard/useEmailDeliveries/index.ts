@@ -18,12 +18,14 @@ export default function useEmailDeliveriesData({
   startAtMoment,
   endAtMoment,
   resolution,
+  projectId,
 }: QueryParameters) {
   const { formatMessage } = useIntl();
   const [currentResolution, setCurrentResolution] = useState(resolution);
 
   const { data: analytics } = useAnalytics<Response>(
     query({
+      projectId,
       startAtMoment,
       endAtMoment,
       resolution,

@@ -194,7 +194,7 @@ describe SettingsService do
     end
   end
 
-  describe 'remove_private_settings' do
+  describe 'format_for_front_end' do
     let(:schema) do
       {
         'type' => 'object',
@@ -214,7 +214,7 @@ describe SettingsService do
       settings = {
         'a' => { 'settings1' => true }
       }
-      expect(ss.remove_private_settings(settings, schema)).to eq settings
+      expect(ss.format_for_front_end(settings, schema)).to eq settings
     end
 
     it 'removes private settings' do
@@ -224,7 +224,7 @@ describe SettingsService do
       expected_settings = {
         'a' => { 'settings1' => true }
       }
-      expect(ss.remove_private_settings(settings, schema)).to eq expected_settings
+      expect(ss.format_for_front_end(settings, schema)).to eq expected_settings
     end
   end
 end

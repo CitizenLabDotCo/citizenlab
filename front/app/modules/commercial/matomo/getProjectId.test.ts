@@ -44,13 +44,11 @@ describe('getProjectId', () => {
     expect(projectId).toEqual('project-id2');
   });
 
-  it.each([
-    '/en/',
-    '/en/initiatives/lorem-ipsum',
-    '/initiatives/lorem-ipsum',
-    '/en/pages/cookie-policy',
-  ])('returns null when the path is %s', async (path) => {
-    const projectId = await getProjectId(path);
-    expect(projectId).toBeNull();
-  });
+  it.each(['/en/', '/en/pages/cookie-policy'])(
+    'returns null when the path is %s',
+    async (path) => {
+      const projectId = await getProjectId(path);
+      expect(projectId).toBeNull();
+    }
+  );
 });

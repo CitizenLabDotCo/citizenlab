@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 
-import { Box, colors, isRtl } from '@citizenlab/cl2-component-library';
+import { Box, colors, isRtl, Title } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -12,10 +12,7 @@ import useProjectById from 'api/projects/useProjectById';
 import useLocale from 'hooks/useLocale';
 
 import messages from 'containers/ProjectsShowPage/messages';
-import {
-  ProjectPageSectionTitle,
-  maxPageWidth,
-} from 'containers/ProjectsShowPage/styles';
+import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 
 import ContentContainer from 'components/ContentContainer';
 import SectionContainer from 'components/SectionContainer';
@@ -54,11 +51,6 @@ const Header = styled.div`
   ${isRtl`
     flex-direction: row-reverse;
   `}
-`;
-
-const StyledProjectPageSectionTitle = styled(ProjectPageSectionTitle)`
-  margin: 0px;
-  padding: 0px;
 `;
 
 interface Props {
@@ -103,8 +95,12 @@ const ProjectTimelineContainer = ({ projectId, className }: Props) => {
     const showIdeas =
       participationMethod === 'ideation' ||
       participationMethod === 'proposals' ||
-      (isVotingPhase && !isPastPhase);
-    const showVotingResults = isVotingPhase && isPastPhase;
+      (isVotingPhase && !isPastPhase) ||
+      (isVotingPhase && !selectedPhase.attributes.autoshare_results_enabled);
+    const showVotingResults =
+      isVotingPhase &&
+      isPastPhase &&
+      selectedPhase.attributes.autoshare_results_enabled;
 
     const reportId = selectedPhase.relationships.report?.data?.id;
 
@@ -121,9 +117,9 @@ const ProjectTimelineContainer = ({ projectId, className }: Props) => {
           {!hideTimelineUI(phases?.data, currentLocale) && (
             <>
               <Header>
-                <StyledProjectPageSectionTitle>
+                <Title variant="h2" m="0" color="tenantText">
                   <FormattedMessage {...messages.phases} />
-                </StyledProjectPageSectionTitle>
+                </Title>
                 <PhaseNavigation projectId={projectId} buttonStyle="white" />
               </Header>
               <Box mb="22px">

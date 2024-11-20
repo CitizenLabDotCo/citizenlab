@@ -109,9 +109,7 @@ const Container = styled.div<{
   }
 
   .ql-tooltip {
-    top: 20px !important;
-    left: 50% !important;
-    transform: translate(-50%);
+    left: 0 !important;
   }
 
   .ql-tooltip[data-mode='link']::before {

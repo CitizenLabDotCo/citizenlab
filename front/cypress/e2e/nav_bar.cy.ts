@@ -1,6 +1,5 @@
 const PAGES = [
   { url: 'ideas', container: '#e2e-ideas-container' },
-  { url: 'initiatives', container: '#e2e-initiatives-container' },
   { url: 'events', container: '#e2e-events-container' },
   { url: 'pages/information', container: '.e2e-page-information' },
   { url: 'pages/faq', container: '.e2e-page-faq' },

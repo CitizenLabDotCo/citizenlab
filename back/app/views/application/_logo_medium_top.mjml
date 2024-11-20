@@ -2,7 +2,8 @@
   <mj-column>
     <mj-raw>
       <%= link_to home_url do %>
-        <%= image_tag tenant_logo_url, alt: 'Organization logo' %>
+        <%#  We don't add an alt-text, as this will be visible in mail clients mail list, appended to the preheader text %>
+        <%= image_tag tenant_logo_url %>
       <% end %>
     </mj-raw>
   </mj-column>

@@ -1,9 +1,8 @@
 import React, { memo, useEffect, useState } from 'react';
 
-import { useBreakpoint } from '@citizenlab/cl2-component-library';
+import { useBreakpoint, Box } from '@citizenlab/cl2-component-library';
 import { isNumber } from 'lodash-es';
 import { useLocation } from 'react-router-dom';
-import styled from 'styled-components';
 
 import useEvents from 'api/events/useEvents';
 import { IPhaseData } from 'api/phases/types';
@@ -25,12 +24,6 @@ import { pastPresentOrFuture } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { getInputTermMessage } from 'utils/i18n';
 import { scrollToElement } from 'utils/scroll';
-
-const Container = styled.div``;
-
-const SeeIdeasButton = styled(Button)`
-  margin-bottom: 10px;
-`;
 
 interface Props {
   projectId: string;
@@ -146,9 +139,15 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
 
   const { publication_status } = project.data.attributes;
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const participationMethod = currentPhase?.attributes.participation_method;
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const ideas_count = currentPhase?.attributes.ideas_count;
   // For a continuous project, hasCurrentPhaseEnded will always return false.
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const hasCurrentPhaseEnded = currentPhase
     ? pastPresentOrFuture([
         currentPhase.attributes.start_at,
@@ -165,7 +164,8 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
     isNumber(ideas_count) &&
     ideas_count > 0;
   const showPostIdeaButton =
-    generalShowCTAButtonCondition && participationMethod === 'ideation';
+    generalShowCTAButtonCondition &&
+    (participationMethod === 'ideation' || participationMethod === 'proposals');
   const showTakeNativeSurveyButton =
     generalShowCTAButtonCondition && participationMethod === 'native_survey';
   const showTakeSurveyButton =
@@ -181,43 +181,17 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
     generalShowCTAButtonCondition &&
     participationMethod === 'document_annotation' &&
     !hasCurrentPhaseEnded;
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const showEventsCTAButton = !!events?.data?.length;
 
   return (
-    <Container className={className || ''}>
-      {showSeeIdeasButton ? (
-        <SeeIdeasButton
-          id="e2e-project-see-ideas-button"
-          buttonStyle="secondary-outlined"
-          onClick={() => {
-            scrollToElementWithId('project-ideas');
-          }}
-          fontWeight="500"
-        >
-          <FormattedMessage
-            {...getInputTermMessage(inputTerm, {
-              idea: messages.seeTheIdeas,
-              option: messages.seeTheOptions,
-              project: messages.seeTheProjects,
-              question: messages.seeTheQuestions,
-              issue: messages.seeTheIssues,
-              contribution: messages.seeTheContributions,
-            })}
-          />
-        </SeeIdeasButton>
-      ) : showEventsCTAButton ? (
-        <Button
-          id="e2e-project-see-events-button"
-          buttonStyle="secondary-outlined"
-          onClick={() => {
-            scrollToElement({ id: 'e2e-events-section-project-page' });
-          }}
-          fontWeight="500"
-          mb="8px"
-        >
-          <FormattedMessage {...messages.seeUpcomingEvents} />
-        </Button>
-      ) : null}
+    <Box
+      gap="8px"
+      display="flex"
+      flexDirection="column"
+      className={className || ''}
+    >
       {showPostIdeaButton && !hasCurrentPhaseEnded && (
         <IdeaButton
           id="project-ideabutton"
@@ -261,7 +235,43 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
           <FormattedMessage {...messages.reviewDocument} />
         </Button>
       )}
-    </Container>
+      {showSeeIdeasButton ? (
+        <Button
+          id="e2e-project-see-ideas-button"
+          buttonStyle="secondary-outlined"
+          onClick={() => {
+            scrollToElementWithId('project-ideas');
+          }}
+          fontWeight="500"
+        >
+          <FormattedMessage
+            {...getInputTermMessage(inputTerm, {
+              idea: messages.seeTheIdeas,
+              option: messages.seeTheOptions,
+              project: messages.seeTheProjects,
+              question: messages.seeTheQuestions,
+              issue: messages.seeTheIssues,
+              contribution: messages.seeTheContributions,
+              proposal: messages.seeTheProposals,
+              initiative: messages.seeTheInitiatives,
+              petition: messages.seeThePetitions,
+            })}
+          />
+        </Button>
+      ) : showEventsCTAButton ? (
+        <Button
+          id="e2e-project-see-events-button"
+          buttonStyle="secondary-outlined"
+          onClick={() => {
+            scrollToElement({ id: 'e2e-events-section-project-page' });
+          }}
+          fontWeight="500"
+          mb="8px"
+        >
+          <FormattedMessage {...messages.seeUpcomingEvents} />
+        </Button>
+      ) : null}
+    </Box>
   );
 });
 

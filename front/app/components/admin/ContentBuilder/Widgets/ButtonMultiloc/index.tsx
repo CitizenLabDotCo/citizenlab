@@ -68,6 +68,8 @@ const Button = ({ text, url, type, alignment }: ButtonProps) => {
     >
       {/* In edit view, show the button regardless if URL is set. The button should
           not be shown though in the live view if the URL is not set. */}
+      {/* TODO: Fix this the next time the file is edited. */}
+      {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
       {((enabled && text) || (text && url)) && (
         <ButtonComponent
           linkTo={url}
@@ -232,5 +234,7 @@ Button.craft = {
     noPointerEvents: true,
   },
 };
+
+export const buttonMultilocTitle = messages.buttonMultiloc;
 
 export default Button;

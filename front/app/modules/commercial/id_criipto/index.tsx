@@ -1,21 +1,20 @@
 import React from 'react';
 
-import {
-  IDCriiptoMethod,
-  TVerificationMethodName,
-} from 'api/verification_methods/types';
+import { TVerificationMethodName } from 'api/verification_methods/types';
 import { isLastVerificationMethod } from 'api/verification_methods/util';
 
 import { ModuleConfiguration } from 'utils/moduleUtils';
 
-import CriiptoButton from './components/CriiptoButton';
+const MitIdButton = React.lazy(
+  () => import('containers/Authentication/steps/_components/MitIdButton')
+);
 
 const verificationMethodName: TVerificationMethodName = 'criipto';
 const configuration: ModuleConfiguration = {
   outlets: {
     'app.components.VerificationModal.buttons': ({
       verificationMethods,
-      ...props
+      ...otherProps
     }) => {
       const method = verificationMethods.find(
         (vm) => vm.attributes.name === verificationMethodName
@@ -26,13 +25,7 @@ const configuration: ModuleConfiguration = {
           verificationMethodName,
           verificationMethods
         );
-        return (
-          <CriiptoButton
-            verificationMethod={method as IDCriiptoMethod}
-            last={last}
-            {...props}
-          />
-        );
+        return <MitIdButton last={last} method={method} {...otherProps} />;
       }
 
       return null;

@@ -1,5 +1,5 @@
 export default {
   sharingModalOpened: {
-    name: 'initiativeflow social sharing modal opened',
+    name: 'Idea social sharing modal opened',
   },
 };

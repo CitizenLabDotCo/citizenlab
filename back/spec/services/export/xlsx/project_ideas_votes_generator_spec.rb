@@ -72,8 +72,7 @@ describe Export::Xlsx::ProjectIdeasVotesGenerator do
     end
 
     it 'does not contain a row for an idea NOT assigned to a voting phase' do
-      idea_not_in_voting_phase = create(:idea, project: project)
-      create(:ideas_phase, idea: idea_not_in_voting_phase, phase: phase1)
+      idea_not_in_voting_phase = create(:idea, project: project, phases: [phase1])
       idea_id_column = workbook.worksheets[0].collect { |row| row[0].value }
 
       expect(project.ideas.count).to eq(5)
@@ -83,7 +82,7 @@ describe Export::Xlsx::ProjectIdeasVotesGenerator do
 
     context 'when sheet is for a single voting phase' do
       it 'contains a column with vote count values for each idea in the phase' do
-        votes_column = workbook.worksheets[0].collect { |row| { idea_id: row[0].value, votes: row[3].value } }
+        votes_column = workbook.worksheets[0].collect { |row| { idea_id: row[0].value, votes: row[4].value } }
         expect(votes_column).to match_array([
           { idea_id: 'ID', votes: 'Votes' },
           { idea_id: ideas[0].id, votes: 2 },
@@ -96,7 +95,7 @@ describe Export::Xlsx::ProjectIdeasVotesGenerator do
 
     context 'when sheet is for a multiple voting phase' do
       it 'contains a column with count of participants who voted for each idea in the phase' do
-        participants_column = workbook.worksheets[1].collect { |row| { idea_id: row[0].value, participants: row[3].value } }
+        participants_column = workbook.worksheets[1].collect { |row| { idea_id: row[0].value, participants: row[4].value } }
         expect(participants_column).to match_array([
           { idea_id: 'ID', participants: 'Participants' },
           { idea_id: ideas[0].id, participants: 2 },
@@ -107,7 +106,7 @@ describe Export::Xlsx::ProjectIdeasVotesGenerator do
       end
 
       it 'contains a column with vote count values for each idea in the phase' do
-        votes_column = workbook.worksheets[1].collect { |row| { idea_id: row[0].value, votes: row[4].value } }
+        votes_column = workbook.worksheets[1].collect { |row| { idea_id: row[0].value, votes: row[5].value } }
         expect(votes_column).to match_array([
           { idea_id: 'ID', votes: 'Votes' },
           { idea_id: ideas[0].id, votes: 63 },
@@ -120,7 +119,7 @@ describe Export::Xlsx::ProjectIdeasVotesGenerator do
 
     context 'when sheet is for a budget allocation phase' do
       it 'contains a column with count of participants who selected each idea in the phase' do
-        participants_column = workbook.worksheets[2].collect { |row| { idea_id: row[0].value, participants: row[3].value } }
+        participants_column = workbook.worksheets[2].collect { |row| { idea_id: row[0].value, participants: row[4].value } }
         expect(participants_column).to match_array([
           { idea_id: 'ID', participants: 'Picks / Participants' },
           { idea_id: ideas[0].id, participants: 1 },
@@ -132,7 +131,7 @@ describe Export::Xlsx::ProjectIdeasVotesGenerator do
 
       it 'contains a column with cost (budgeted cost) of each idea in the phase' do
         ideas[1].update!(budget: 42)
-        participants_column = workbook.worksheets[2].collect { |row| { idea_id: row[0].value, cost: row[4].value } }
+        participants_column = workbook.worksheets[2].collect { |row| { idea_id: row[0].value, cost: row[5].value } }
         expect(participants_column).to match_array([
           { idea_id: 'ID', cost: 'Cost' },
           { idea_id: ideas[0].id, cost: 500 },
@@ -152,7 +151,8 @@ describe Export::Xlsx::ProjectIdeasVotesGenerator do
         author: author,
         topics: [topic1, topic2],
         location_point: 'POINT(1.234 5.678)',
-        location_description: '489 Calista Coves'
+        location_description: '489 Calista Coves',
+        manual_votes_amount: 11
       )
 
       header_row = workbook.worksheets[0][0].cells.map(&:value)
@@ -175,6 +175,7 @@ describe Export::Xlsx::ProjectIdeasVotesGenerator do
       expect(idea_row[header_row.find_index 'Author email']).to eq author.email
       expect(idea_row[header_row.find_index 'Author ID']).to eq author.id
       expect(idea_row[header_row.find_index 'Published at'].to_i).to eq ideas[0].published_at.to_i
+      expect(idea_row[header_row.find_index 'Offline votes'].to_i).to eq 11
     end
   end
 end

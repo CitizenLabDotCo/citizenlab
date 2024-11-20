@@ -3,7 +3,7 @@ import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
-import initiativesKeys from './keys';
+import ideaFilterCountKeys from './keys';
 import {
   IIdeasFilterCounts,
   IIdeasFilterCountsQueryParameters,
@@ -32,7 +32,7 @@ const useIdeasFilterCounts = (
     IIdeasFilterCounts,
     IdeaFilterCountsKeys
   >({
-    queryKey: initiativesKeys.item(queryParams),
+    queryKey: ideaFilterCountKeys.item(queryParams),
     queryFn: () => fetchIdeaFilterCounts(queryParams),
   });
 };

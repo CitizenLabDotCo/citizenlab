@@ -1,44 +1,24 @@
 import React, { memo, useCallback, MouseEvent } from 'react';
 
-import {
-  fontSizes,
-  colors,
-  defaultCardStyle,
-  isRtl,
-  Icon,
-} from '@citizenlab/cl2-component-library';
+import { fontSizes, isRtl, Icon } from '@citizenlab/cl2-component-library';
 import { capitalize, get } from 'lodash-es';
 import { darken } from 'polished';
 import styled from 'styled-components';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 import { IIdeasFilterCounts } from 'api/ideas_filter_counts/types';
-import { IInitiativeStatusData } from 'api/initiative_statuses/types';
-import { IInitiativesFilterCounts } from 'api/initiatives_filter_counts/types';
 
 import T from 'components/T';
 
 import { ScreenReaderOnly } from 'utils/a11y';
-import { FormattedMessage } from 'utils/cl-intl';
-import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
+import InputFilterCollapsible from './InputFilterCollapsible';
 import messages from './messages';
-import { Header, Title } from './styles';
-
-const Container = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  padding-top: 25px;
-  padding-bottom: 20px;
-  padding-left: 20px;
-  padding-right: 20px;
-  ${defaultCardStyle};
-`;
 
 const Count = styled.span`
-  color: ${colors.textSecondary};
+  color: ${({ theme }) => theme.colors.textSecondary};
   font-size: ${fontSizes.base}px;
   font-weight: 300;
   transition: all 80ms ease-out;
@@ -59,8 +39,6 @@ const CloseIcon = styled(Icon)`
     margin-right: auto;
   `}
 `;
-
-const StatusesContainer = styled.div``;
 
 const Status = styled.button`
   color: ${({ theme }) => theme.colors.tenantText};
@@ -88,15 +66,15 @@ const Status = styled.button`
   `}
 
   &:not(.selected):hover {
-    background: rgba(132, 147, 158, 0.15);
+    background: ${({ theme }) => theme.colors.grey200};
   }
 
   &.selected {
     color: #fff;
-    background: ${({ theme }) => theme.colors.tenantSecondary};
+    background: ${({ theme }) => theme.colors.tenantPrimary};
 
     &:hover {
-      background: ${({ theme }) => darken(0.15, theme.colors.tenantSecondary)};
+      background: ${({ theme }) => darken(0.15, theme.colors.tenantPrimary)};
     }
 
     ${Count} {
@@ -108,13 +86,8 @@ const Status = styled.button`
 const AllStatus = styled(Status)``;
 
 interface Props {
-  type: 'idea' | 'initiative';
-  statuses: (IIdeaStatusData | IInitiativeStatusData)[];
-  filterCounts:
-    | IIdeasFilterCounts['data']['attributes']
-    | IInitiativesFilterCounts['data']['attributes']
-    | null
-    | undefined;
+  statuses: IIdeaStatusData[];
+  filterCounts: IIdeasFilterCounts['data']['attributes'] | null | undefined;
 
   selectedStatusId: string | null | undefined;
   onChange: (arg: string | null) => void;
@@ -122,7 +95,9 @@ interface Props {
 }
 
 const StatusFilter = memo<Props>(
-  ({ type, statuses, filterCounts, selectedStatusId, onChange, className }) => {
+  ({ statuses, filterCounts, selectedStatusId, onChange, className }) => {
+    const { formatMessage } = useIntl();
+
     const handleOnClick = useCallback(
       (event: MouseEvent<HTMLElement>) => {
         event.preventDefault();
@@ -134,56 +109,45 @@ const StatusFilter = memo<Props>(
       [selectedStatusId, onChange]
     );
 
-    if (!isNilOrError(statuses) && statuses.length > 0) {
+    if (statuses.length > 0) {
       const allPostsCount = filterCounts?.total || 0;
       const allFilterSelected = !selectedStatusId;
       return (
-        <Container className={`e2e-statuses-filters ${className}`}>
-          <Header>
-            <Title>
-              <FormattedMessage {...messages.statusTitle} />
-            </Title>
-          </Header>
-
-          <StatusesContainer>
-            <AllStatus
-              data-id={null}
-              onMouseDown={removeFocusAfterMouseClick}
-              onClick={handleOnClick}
-              className={allFilterSelected ? 'selected' : ''}
-            >
-              <FormattedMessage {...messages.all} />
-              <Count aria-hidden>{allPostsCount}</Count>
-              <ScreenReaderOnly>
-                {/* Pronounce number of ideas/initiatives of All status when focus/hover it */}
-                {type === 'idea' && (
-                  <FormattedMessage
-                    {...messages.a11y_numberOfInputs}
-                    values={{ inputsCount: allPostsCount }}
-                  />
-                )}
-                {type === 'initiative' && (
-                  <FormattedMessage
-                    {...messages.a11y_numberOfInitiatives}
-                    values={{ initiativeCount: allPostsCount }}
-                  />
-                )}
-              </ScreenReaderOnly>
-              <ScreenReaderOnly aria-live="polite">
-                {/*
+        <InputFilterCollapsible
+          title={formatMessage(messages.statusTitle)}
+          className={`e2e-statuses-filters ${className}`}
+        >
+          <AllStatus
+            data-id={null}
+            onMouseDown={removeFocusAfterMouseClick}
+            onClick={handleOnClick}
+            className={allFilterSelected ? 'selected' : ''}
+          >
+            <FormattedMessage {...messages.all} />
+            <Count aria-hidden>{allPostsCount}</Count>
+            <ScreenReaderOnly>
+              {/* Pronounce number of ideas of All status when focus/hover it */}
+              <FormattedMessage
+                {...messages.a11y_numberOfInputs}
+                values={{ inputsCount: allPostsCount }}
+              />
+            </ScreenReaderOnly>
+            <ScreenReaderOnly aria-live="polite">
+              {/*
               When we focus a selected status filter and hit enter again, this filter gets removed and
               the 'all' status filter is selected again. Screen readers don't pick this up, so hence this helper text
             */}
-                {allFilterSelected && (
-                  <FormattedMessage {...messages.a11y_allFilterSelected} />
-                )}
-              </ScreenReaderOnly>
-            </AllStatus>
+              {allFilterSelected && (
+                <FormattedMessage {...messages.a11y_allFilterSelected} />
+              )}
+            </ScreenReaderOnly>
+          </AllStatus>
 
+          <>
             {statuses.map((status) => {
               const filterPostCount = get(
                 filterCounts,
-                `${type}_status_id.${status.id}`,
+                `idea_status_id.${status.id}`,
                 0
               );
               const isFilterSelected = status.id === selectedStatusId;
@@ -212,18 +176,10 @@ const StatusFilter = memo<Props>(
 
                   <ScreenReaderOnly>
                     {/* Pronounce number of ideas per status when focus/hover it */}
-                    {type === 'idea' && (
-                      <FormattedMessage
-                        {...messages.a11y_numberOfInputs}
-                        values={{ inputsCount: filterPostCount }}
-                      />
-                    )}
-                    {type === 'initiative' && (
-                      <FormattedMessage
-                        {...messages.a11y_numberOfInitiatives}
-                        values={{ initiativeCount: filterPostCount }}
-                      />
-                    )}
+                    <FormattedMessage
+                      {...messages.a11y_numberOfInputs}
+                      values={{ inputsCount: filterPostCount }}
+                    />
                   </ScreenReaderOnly>
                   <ScreenReaderOnly aria-live="polite">
                     {/*
@@ -244,8 +200,8 @@ const StatusFilter = memo<Props>(
                 </Status>
               );
             })}
-          </StatusesContainer>
-        </Container>
+          </>
+        </InputFilterCollapsible>
       );
     }
 

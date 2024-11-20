@@ -1,19 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
+import { IStatusCounts } from 'api/admin_publications_status_counts/types';
 import useAdminPublicationsStatusCounts from 'api/admin_publications_status_counts/useAdminPublicationsStatusCounts';
 import getStatusCounts from 'api/admin_publications_status_counts/util/getAdminPublicationsStatusCount';
 import { ICustomPageData } from 'api/custom_pages/types';
-import { PublicationStatus } from 'api/projects/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import ContentContainer from 'components/ContentContainer';
 import EventsWidget from 'components/LandingPages/citizen/EventsWidget';
+import {
+  PublicationTab,
+  PUBLICATION_STATUSES,
+} from 'components/ProjectAndFolderCards';
 import ProjectAndFolderCardsInner from 'components/ProjectAndFolderCards/ProjectAndFolderCardsInner';
+import {
+  getCurrentTab,
+  getPublicationStatuses,
+} from 'components/ProjectAndFolderCards/utils';
 
 const ProjectCardsContentContainer = styled(ContentContainer)`
   padding-top: 50px;
@@ -32,15 +40,26 @@ interface Props {
   page: ICustomPageData;
 }
 
-const CustomPageProjectsAndEvents = ({ page }: Props) => {
+interface InnerProps extends Props {
+  statusCountsWithoutFilters: IStatusCounts;
+}
+
+const CustomPageProjectsAndEvents = ({
+  page,
+  statusCountsWithoutFilters,
+}: InnerProps) => {
+  const allStatusCountsWithoutFilters = getStatusCounts(
+    statusCountsWithoutFilters
+  );
+
+  const [currentTab, setCurrentTab] = useState<PublicationTab>(
+    getCurrentTab(allStatusCountsWithoutFilters)
+  );
+
   // There will be either topic or area ids if this component renders.
   // To enable it, the page needs either a topic or area associated with it.
   const topicIds = page.relationships.topics.data.map((topic) => topic.id);
   const areaIds = page.relationships.areas.data.map((area) => area.id);
-  const publicationStatusFilter: PublicationStatus[] = [
-    'published',
-    'archived',
-  ];
 
   const {
     data,
@@ -52,24 +71,13 @@ const CustomPageProjectsAndEvents = ({ page }: Props) => {
     pageSize: 6,
     topicIds,
     areaIds,
-    publicationStatusFilter,
+    publicationStatusFilter: getPublicationStatuses(currentTab),
     rootLevelOnly: false,
     removeNotAllowedParents: true,
     onlyProjects: true,
   });
 
   const adminPublications = data?.pages.map((page) => page.data).flat();
-
-  const { data: statusCountsWithoutFilters } = useAdminPublicationsStatusCounts(
-    {
-      topicIds,
-      areaIds,
-      publicationStatusFilter,
-      rootLevelOnly: false,
-      removeNotAllowedParents: true,
-      onlyProjects: true,
-    }
-  );
 
   const advancedCustomPagesEnabled = useFeatureFlag({
     name: 'advanced_custom_pages',
@@ -79,6 +87,8 @@ const CustomPageProjectsAndEvents = ({ page }: Props) => {
     !advancedCustomPagesEnabled ||
     page.attributes.projects_filter_type === 'no_filter';
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (hideProjects || !statusCountsWithoutFilters) {
     return null;
   }
@@ -88,20 +98,19 @@ const CustomPageProjectsAndEvents = ({ page }: Props) => {
       {page.attributes.projects_enabled && (
         <ProjectCardsContentContainer mode="page">
           <ProjectAndFolderCardsInner
-            statusCounts={getStatusCounts(statusCountsWithoutFilters)}
-            publicationStatusFilter={publicationStatusFilter}
+            statusCounts={allStatusCountsWithoutFilters}
             showTitle={false}
             showFilters={false}
             showSearch={false}
             adminPublications={adminPublications || []}
-            statusCountsWithoutFilters={getStatusCounts(
-              statusCountsWithoutFilters
-            )}
+            statusCountsWithoutFilters={allStatusCountsWithoutFilters}
             layout="dynamic"
             loadingInitial={isInitialLoading}
             loadingMore={isFetchingNextPage}
-            onLoadMore={fetchNextPage}
             hasMore={hasNextPage}
+            currentTab={currentTab}
+            onLoadMore={fetchNextPage}
+            onChangeCurrentTab={setCurrentTab}
           />
         </ProjectCardsContentContainer>
       )}
@@ -117,4 +126,31 @@ const CustomPageProjectsAndEvents = ({ page }: Props) => {
   );
 };
 
-export default CustomPageProjectsAndEvents;
+const CustomPageProjectsAndEventsWrapper = ({ page }: Props) => {
+  // There will be either topic or area ids if this component renders.
+  // To enable it, the page needs either a topic or area associated with it.
+  const topicIds = page.relationships.topics.data.map((topic) => topic.id);
+  const areaIds = page.relationships.areas.data.map((area) => area.id);
+
+  const { data: statusCountsWithoutFilters } = useAdminPublicationsStatusCounts(
+    {
+      topicIds,
+      areaIds,
+      publicationStatusFilter: PUBLICATION_STATUSES,
+      rootLevelOnly: false,
+      removeNotAllowedParents: true,
+      onlyProjects: true,
+    }
+  );
+
+  if (!statusCountsWithoutFilters) return null;
+
+  return (
+    <CustomPageProjectsAndEvents
+      page={page}
+      statusCountsWithoutFilters={statusCountsWithoutFilters}
+    />
+  );
+};
+
+export default CustomPageProjectsAndEventsWrapper;

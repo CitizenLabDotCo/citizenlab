@@ -4,6 +4,7 @@ import { omitBy } from 'lodash-es';
 import { Multiloc } from 'typings';
 
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
+import { IStatusCounts } from 'api/admin_publications_status_counts/types';
 import useAdminPublicationsStatusCounts from 'api/admin_publications_status_counts/useAdminPublicationsStatusCounts';
 import getStatusCounts from 'api/admin_publications_status_counts/util/getAdminPublicationsStatusCount';
 import { PublicationStatus } from 'api/projects/types';
@@ -13,6 +14,7 @@ import { isNil } from 'utils/helperUtils';
 
 import ProjectAndFolderCardsInner from './ProjectAndFolderCardsInner';
 import tracks from './tracks';
+import { getCurrentTab, getPublicationStatuses } from './utils';
 
 export type PublicationTab = PublicationStatus | 'all';
 
@@ -21,23 +23,35 @@ export type TLayout = 'dynamic' | 'threecolumns';
 export interface Props {
   showTitle: boolean;
   layout: TLayout;
-  publicationStatusFilter: PublicationStatus[];
   showSearch?: boolean;
   currentlyWorkingOnText?: Multiloc;
 }
 
+interface InnerProps extends Props {
+  statusCountsWithoutFilters: IStatusCounts;
+}
+
+export const PUBLICATION_STATUSES: PublicationStatus[] = [
+  'published',
+  'archived',
+];
+
 const ProjectAndFolderCards = ({
-  publicationStatusFilter,
   showSearch = false,
+  statusCountsWithoutFilters,
   ...otherProps
-}: Props) => {
+}: InnerProps) => {
+  const allStatusCountsWithoutFilters = getStatusCounts(
+    statusCountsWithoutFilters
+  );
+
   // used locally to keep track of the depth of the search
   const [search, setSearch] = useState<string | null>(null);
   const [topicIds, setTopicsIds] = useState<string[] | null>(null);
   const [areaIds, setAreasIds] = useState<string[] | null>(null);
-  const [publicationStatus, setPublicationStatus] = useState<
-    PublicationStatus[]
-  >(publicationStatusFilter);
+  const [currentTab, setCurrentTab] = useState<PublicationTab>(
+    getCurrentTab(allStatusCountsWithoutFilters)
+  );
 
   // with a search string, return projects within folders
   // if no search string exists, do not return projects in folders
@@ -51,7 +65,7 @@ const ProjectAndFolderCards = ({
   const { data: counts } = useAdminPublicationsStatusCounts(
     omitBy(
       {
-        publicationStatusFilter,
+        publicationStatusFilter: PUBLICATION_STATUSES,
         rootLevelOnly,
         removeNotAllowedParents: true,
         topicIds,
@@ -62,14 +76,6 @@ const ProjectAndFolderCards = ({
     )
   );
 
-  const { data: statusCountsWithoutFilters } = useAdminPublicationsStatusCounts(
-    {
-      publicationStatusFilter,
-      rootLevelOnly: true,
-      removeNotAllowedParents: true,
-    }
-  );
-
   const {
     data,
     isInitialLoading,
@@ -78,28 +84,14 @@ const ProjectAndFolderCards = ({
     isFetchingNextPage,
   } = useAdminPublications({
     pageSize: 6,
-    publicationStatusFilter: publicationStatus,
+    publicationStatusFilter: getPublicationStatuses(currentTab),
     rootLevelOnly,
     removeNotAllowedParents: true,
     topicIds,
     areaIds,
     search,
+    include_publications: true,
   });
-
-  const onChangeTopics = (topics: string[]) => {
-    setTopicsIds(topics);
-  };
-
-  const onChangeAreas = (areas: string[]) => {
-    setAreasIds(areas);
-  };
-
-  const onChangePublicationStatus = React.useCallback(
-    (publicationStatus: PublicationStatus[]) => {
-      setPublicationStatus(publicationStatus);
-    },
-    []
-  );
 
   const adminPublications = data?.pages.map((page) => page.data).flat();
 
@@ -112,29 +104,52 @@ const ProjectAndFolderCards = ({
     trackEventByName(tracks.searchTermChanged, { searchTerm: search });
   }, []);
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!counts || !statusCountsWithoutFilters) {
     return null;
   }
 
   return (
     <ProjectAndFolderCardsInner
+      currentTab={currentTab}
       statusCounts={getStatusCounts(counts)}
-      publicationStatusFilter={publicationStatusFilter}
-      onChangeTopics={onChangeTopics}
-      onChangeAreas={onChangeAreas}
-      onChangeSearch={handleSearchChange}
       showSearch={showSearch}
       showFilters={true}
       adminPublications={adminPublications || []}
-      statusCountsWithoutFilters={getStatusCounts(statusCountsWithoutFilters)}
+      statusCountsWithoutFilters={allStatusCountsWithoutFilters}
       loadingInitial={isInitialLoading}
       hasMore={hasNextPage}
-      onLoadMore={fetchNextPage}
-      onChangePublicationStatus={onChangePublicationStatus}
       loadingMore={isFetchingNextPage}
       {...otherProps}
+      onChangeTopics={setTopicsIds}
+      onChangeAreas={setAreasIds}
+      onChangeSearch={handleSearchChange}
+      onLoadMore={fetchNextPage}
+      onChangeCurrentTab={setCurrentTab}
     />
   );
 };
 
-export default ProjectAndFolderCards;
+const ProjectAndFolderCardsWrapper = (props: Props) => {
+  const { data: statusCountsWithoutFilters } = useAdminPublicationsStatusCounts(
+    {
+      publicationStatusFilter: PUBLICATION_STATUSES,
+      rootLevelOnly: true,
+      removeNotAllowedParents: true,
+    }
+  );
+
+  if (!statusCountsWithoutFilters) {
+    return null;
+  }
+
+  return (
+    <ProjectAndFolderCards
+      {...props}
+      statusCountsWithoutFilters={statusCountsWithoutFilters}
+    />
+  );
+};
+
+export default ProjectAndFolderCardsWrapper;

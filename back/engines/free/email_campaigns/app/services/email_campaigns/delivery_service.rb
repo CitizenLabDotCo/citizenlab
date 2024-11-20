@@ -12,6 +12,7 @@ module EmailCampaigns
       Campaigns::CommentOnInitiativeYouFollow,
       Campaigns::CommentOnYourComment,
       Campaigns::CosponsorOfYourInitiative,
+      Campaigns::CosponsorOfYourIdea,
       Campaigns::EventRegistrationConfirmation,
       Campaigns::IdeaMarkedAsSpam,
       Campaigns::IdeaPublished,
@@ -27,6 +28,7 @@ module EmailCampaigns
       Campaigns::InternalCommentOnUnassignedInitiative,
       Campaigns::InternalCommentOnUnassignedUnmoderatedIdea,
       Campaigns::InternalCommentOnYourInternalComment,
+      Campaigns::InvitationToCosponsorIdea,
       Campaigns::InvitationToCosponsorInitiative,
       Campaigns::InviteReceived,
       Campaigns::InviteReminder,
@@ -56,7 +58,7 @@ module EmailCampaigns
       Campaigns::VotingPhaseStarted,
       Campaigns::VotingResults,
       Campaigns::Welcome,
-      Campaigns::YourProposedInitiativesDigest
+      Campaigns::YourInputInScreening
     ].freeze
 
     def campaign_classes

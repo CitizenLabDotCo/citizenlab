@@ -59,6 +59,9 @@ Rails.application.routes.draw do
         defaults: { reactable: 'Idea', spam_reportable: 'Idea', post: 'Idea', followable: 'Idea', parent_param: :idea_id } do
         resources :images, defaults: { container_type: 'Idea' }
         resources :files, defaults: { container_type: 'Idea' }
+        resources :cosponsorships, defaults: { container_type: 'Idea' } do
+          patch 'accept', on: :member
+        end
 
         get :as_xlsx, on: :collection, action: 'index_xlsx'
         get :mini, on: :collection, action: 'index_mini'
@@ -190,11 +193,25 @@ Rails.application.routes.draw do
           get :users_search, on: :collection
         end
 
-        post 'copy', on: :member
-        get 'by_slug/:slug', on: :collection, to: 'projects#by_slug'
-        get :as_xlsx, on: :member, action: 'index_xlsx'
-        get :votes_by_user_xlsx, on: :member, action: 'votes_by_user_xlsx'
-        get :votes_by_input_xlsx, on: :member, action: 'votes_by_input_xlsx'
+        collection do
+          get 'by_slug/:slug', to: 'projects#by_slug'
+          get 'for_areas', action: 'index_for_areas'
+          get 'for_topics', action: 'index_for_topics'
+          get 'finished_or_archived', action: 'index_finished_or_archived'
+          get 'for_followed_item', action: 'index_for_followed_item'
+          get 'with_active_participatory_phase', action: 'index_with_active_participatory_phase'
+        end
+
+        member do
+          post :copy
+          post :refresh_preview_token
+
+          get :as_xlsx, action: 'index_xlsx'
+          get :votes_by_user_xlsx
+          get :votes_by_input_xlsx
+
+          delete :participation_data, action: 'destroy_participation_data'
+        end
       end
 
       resources :projects_allowed_input_topics, only: %i[show create destroy] do
@@ -303,9 +320,4 @@ Rails.application.routes.draw do
   post '/auth/failure', to: 'omniauth_callback#failure'
   get '/auth/:provider/logout_data', to: 'omniauth_callback#logout_data'
   get '/auth/:provider/spslo', to: 'omniauth_callback#spslo'
-
-  if Rails.env.development?
-    require 'que/web'
-    mount Que::Web => '/que'
-  end
 end

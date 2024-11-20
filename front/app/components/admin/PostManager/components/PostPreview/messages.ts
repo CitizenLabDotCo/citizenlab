@@ -19,10 +19,6 @@ export default defineMessages({
     defaultMessage:
       'Are you sure you want to delete this input? The input will be deleted from all project phases and cannot be recovered.',
   },
-  deleteInitiativeConfirmation: {
-    id: 'app.components.admin.PostManager.PostPreview.deleteInitiativeConfirmation',
-    defaultMessage: 'Are you sure you want to delete this initiative?',
-  },
   reactionCounts: {
     id: 'app.components.admin.PostManager.PostPreview.reactionCounts',
     defaultMessage: 'Reaction counts:',
@@ -77,6 +73,7 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.bodyTitle',
     defaultMessage: 'Description',
   },
+  // #input_term_copy
   formTitle: {
     id: 'app.components.admin.PostManager.formTitle',
     defaultMessage: 'Edit idea',
@@ -100,6 +97,18 @@ export default defineMessages({
   contributionFormTitle: {
     id: 'app.components.admin.PostManager.contributionFormTitle',
     defaultMessage: 'Edit contribution',
+  },
+  initiativeFormTitle: {
+    id: 'app.components.admin.PostManager.initiativeFormTitle',
+    defaultMessage: 'Edit initiative',
+  },
+  proposalFormTitle: {
+    id: 'app.components.admin.PostManager.proposalFormTitle',
+    defaultMessage: 'Edit proposal',
+  },
+  petitionFormTitle: {
+    id: 'app.components.admin.PostManager.petitionFormTitle',
+    defaultMessage: 'Edit petition',
   },
   submitApiError: {
     id: 'app.components.admin.PostManager.submitApiError',

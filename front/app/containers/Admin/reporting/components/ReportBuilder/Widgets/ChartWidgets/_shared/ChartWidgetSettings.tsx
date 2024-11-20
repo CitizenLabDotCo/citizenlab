@@ -5,7 +5,7 @@ import { useNode } from '@craftjs/core';
 import moment, { Moment } from 'moment';
 import { IOption, Multiloc } from 'typings';
 
-import DateRangePicker from 'components/admin/DateRangePicker';
+import DateRangePicker from 'components/admin/DatePickers/DateRangePicker';
 import { getComparedTimeRange } from 'components/admin/GraphCards/_utils/query';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 

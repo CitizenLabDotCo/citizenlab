@@ -30,6 +30,10 @@ module ReportBuilder
 
     # Copied from UserCustomFields::...::StatsUsersController#find_users
     def find_users(start_at, end_at, project_id, group_id)
+      # TODO: Find a way to pass the policy context when instantiating the scope.
+      #   This should not cause any issue since the current usage of the policy context
+      #   does not impact the report queries. But for consistency, we should find a way
+      #   to pass the policy context.
       users = StatUserPolicy::Scope.new(@current_user, User.active).resolve
       start_date, end_date = TimeBoundariesParser.new(start_at, end_at).parse
       finder_params = {

@@ -78,6 +78,8 @@ const ProjectRow = ({ project, projectImage, period, participants }: Props) => {
     <Box display="flex" flexDirection="row" pb="16px">
       {projectImage?.attributes.versions.large ? (
         <Image
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           src={projectImage?.attributes.versions.large}
           alt={''}
           w="52px"

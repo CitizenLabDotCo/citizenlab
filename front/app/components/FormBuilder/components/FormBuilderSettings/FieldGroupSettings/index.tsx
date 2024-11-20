@@ -19,6 +19,8 @@ type Props = {
 };
 
 const FieldGroupSettings = ({ field, locale }: Props) => {
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const lockedAttributes = field?.constraints?.locks;
   const handleKeyDown = (event: React.KeyboardEvent<Element>) => {
     // We want to prevent the form builder from being closed when enter is pressed

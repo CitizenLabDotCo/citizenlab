@@ -5,6 +5,8 @@ import styled from 'styled-components';
 
 import { IProjectFolderData } from 'api/project_folders/types';
 
+import useLocalize from 'hooks/useLocalize';
+
 import {
   HeaderImage,
   HeaderImageContainer,
@@ -26,19 +28,23 @@ interface Props {
 
 const ProjectFolderHeader = memo<Props>(({ projectFolder, className }) => {
   const { windowWidth } = useWindowSize();
+  const localize = useLocalize();
 
   const smallerThan1100px = windowWidth ? windowWidth <= 1100 : false;
+  const folderHeaderImageAltText = localize(
+    projectFolder.attributes.header_bg_alt_text_multiloc
+  );
 
-  if (projectFolder.attributes?.header_bg?.large) {
+  if (projectFolder.attributes.header_bg?.large) {
     return (
       <HeaderImageContainer className={`${className || ''} e2e-header-folder`}>
         <HeaderImage
-          src={projectFolder.attributes?.header_bg.large}
+          src={projectFolder.attributes.header_bg.large}
           cover={true}
           fadeIn={false}
           isLazy={false}
           placeholderBg="transparent"
-          alt=""
+          alt={folderHeaderImageAltText}
         />
         <Box
           position="absolute"

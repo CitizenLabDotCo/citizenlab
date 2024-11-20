@@ -142,6 +142,8 @@ const IdeaButton = memo<Props>(
 
     const tippyEnabled = !enabled && !!disabledReason;
 
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (inMap && !enabled && !!disabledReason) {
       return (
         <TippyContent
@@ -194,6 +196,9 @@ const IdeaButton = memo<Props>(
                     question: messages.addAQuestion,
                     issue: messages.submitAnIssue,
                     contribution: messages.addAContribution,
+                    proposal: messages.addAProposal,
+                    initiative: messages.addAnInitiative,
+                    petition: messages.addAPetition,
                   })}
                 />
               )}

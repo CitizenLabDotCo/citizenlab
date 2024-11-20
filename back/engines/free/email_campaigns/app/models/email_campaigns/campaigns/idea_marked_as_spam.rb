@@ -41,7 +41,7 @@ module EmailCampaigns
     recipient_filter :filter_notification_recipient
 
     def self.consentable_roles
-      %w[admin project_moderator]
+      %w[admin project_moderator project_folder_moderator]
     end
 
     def mailer_class

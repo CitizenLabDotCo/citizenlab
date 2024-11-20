@@ -8,7 +8,7 @@
 #  moderatable_type       :text
 #  post_type              :text
 #  post_id                :uuid
-#  post_slug              :text
+#  post_slug              :string
 #  post_title_multiloc    :jsonb
 #  project_id             :uuid
 #  project_slug           :string

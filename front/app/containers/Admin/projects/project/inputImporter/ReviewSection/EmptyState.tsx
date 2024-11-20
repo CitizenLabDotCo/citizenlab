@@ -70,6 +70,8 @@ const EmptyState = () => {
   const handleExportPDF = async ({ personal_data }: FormValues) => {
     if (isNilOrError(locale)) return;
 
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (phase?.data.attributes.participation_method === 'native_survey') {
       await saveSurveyAsPDF({
         downloadPdfLink: surveyDownloadPdfLink,
@@ -138,6 +140,8 @@ const EmptyState = () => {
       <PDFExportModal
         open={exportModalOpen}
         formType={
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           phase?.data.attributes.participation_method === 'native_survey'
             ? 'survey'
             : 'idea_form'

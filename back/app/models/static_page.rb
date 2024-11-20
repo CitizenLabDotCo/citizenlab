@@ -35,7 +35,7 @@
 #  index_static_pages_on_slug  (slug) UNIQUE
 #
 class StaticPage < ApplicationRecord
-  CODES = %w[about terms-and-conditions privacy-policy faq proposals custom].freeze
+  CODES = %w[about terms-and-conditions privacy-policy faq custom].freeze
 
   slug from: proc { |page| page.title_multiloc.values.find(&:present?) }
 

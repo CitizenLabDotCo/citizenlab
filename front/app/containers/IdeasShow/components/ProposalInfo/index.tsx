@@ -12,6 +12,8 @@ interface Props {
 
 const ProposalInfo = ({ idea, compact }: Props) => {
   const { data: ideaStatus } = useIdeaStatus(
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     idea.data.relationships.idea_status?.data?.id || ''
   );
 

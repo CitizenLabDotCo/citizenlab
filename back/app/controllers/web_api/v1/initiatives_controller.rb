@@ -41,11 +41,13 @@ class WebApi::V1::InitiativesController < ApplicationController
     initiatives = SortByParamsService.new.sort_initiatives(initiatives, params, current_user)
 
     I18n.with_locale(current_user&.locale) do
-      xlsx = XlsxService.new.generate_initiatives_xlsx initiatives,
-        view_private_attributes: Pundit.policy!(current_user,
-          User).view_private_attributes?
-      send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-        filename: 'initiatives.xlsx'
+      xlsx = XlsxService.new.generate_initiatives_xlsx(
+        initiatives,
+        view_private_attributes: policy(User).view_private_attributes?
+      )
+
+      xlsx_content_type = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      send_data(xlsx, type: xlsx_content_type, filename: 'initiatives.xlsx')
     end
   end
 

@@ -17,6 +17,7 @@ import { IIdea, IIdeaUpdate } from './types';
 type IUpdateIdeaObject = {
   id: string;
   requestBody: IIdeaUpdate;
+  skipRefetchCounts?: boolean; // Variable so we don't invalidate cache unnecessarily
 };
 
 const updateIdea = ({ id, requestBody }: IUpdateIdeaObject) =>
@@ -30,11 +31,15 @@ const useUpdateIdea = () => {
   const queryClient = useQueryClient();
   return useMutation<IIdea, CLErrors, IUpdateIdeaObject>({
     mutationFn: updateIdea,
-    onSuccess: (idea) => {
+    onSuccess: (idea, variables) => {
       queryClient.invalidateQueries({ queryKey: ideasKeys.lists() });
       queryClient.invalidateQueries({ queryKey: ideaMarkersKeys.lists() });
-      queryClient.invalidateQueries({ queryKey: ideaFilterCountsKeys.all() });
-      queryClient.invalidateQueries({ queryKey: ideasCountKeys.items() });
+
+      if (!variables.skipRefetchCounts) {
+        queryClient.invalidateQueries({ queryKey: ideaFilterCountsKeys.all() });
+        queryClient.invalidateQueries({ queryKey: ideasCountKeys.items() });
+      }
+
       queryClient.invalidateQueries({
         queryKey: ideaImagesKeys.list({ ideaId: idea.data.id }),
       });
@@ -42,6 +47,8 @@ const useUpdateIdea = () => {
         queryKey: ideaImagesKeys.items(),
       });
 
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       const projectId = idea.data.relationships?.project.data.id;
 
       if (projectId) {

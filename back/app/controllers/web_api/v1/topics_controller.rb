@@ -112,3 +112,5 @@ class WebApi::V1::TopicsController < ApplicationController
     authorize @topic
   end
 end
+
+WebApi::V1::TopicsController.include(AggressiveCaching::Patches::WebApi::V1::TopicsController)

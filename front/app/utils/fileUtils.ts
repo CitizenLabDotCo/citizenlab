@@ -21,15 +21,11 @@ export const imageSizes = {
     medium: [298, 135],
     small: [96, 96],
   },
-  initiativeImg: {
-    fb: [1200, 630],
-    medium: [298, 135],
-    small: [96, 96],
-  },
 };
 
 export async function getBase64FromFile(file: File) {
   return new Promise<string>((resolve, reject) => {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (file && !isString(file)) {
       const reader = new FileReader();
       reader.onloadend = (event: any) => resolve(event.target.result);
@@ -100,6 +96,7 @@ export function getFilesToAdd(
     // filter out the local files that are already represent in the remote files
     return localFiles.filter((localFile) => {
       return !remoteFiles.some((remoteFile) =>
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         remoteFile ? remoteFile.filename === localFile.filename : true
       );
     });

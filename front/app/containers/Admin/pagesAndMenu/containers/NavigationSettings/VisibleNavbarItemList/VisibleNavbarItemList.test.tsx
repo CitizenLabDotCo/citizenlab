@@ -11,7 +11,6 @@ import { fireEvent, render, screen } from 'utils/testUtils/rtl';
 import VisibleNavbarItemList from '.';
 
 jest.mock('api/navbar/useNavbarItems');
-jest.mock('api/custom_pages/useCustomPageSlugById');
 
 const mockReorderNavbarItem = jest.fn();
 
@@ -86,10 +85,10 @@ describe('<VisibleNavbarItemList />', () => {
     const editButtons = screen.getAllByText('Edit');
 
     // 'About' edit button, 'Home' doesn't have one
-    fireEvent.click(editButtons[6]);
+    fireEvent.click(editButtons[5]);
 
     expect(clHistory.push).toHaveBeenCalledWith(
-      `${ADMIN_PAGES_MENU_PATH}/pages/${navbarItems[6].relationships.static_page.data?.id}/settings`
+      `${ADMIN_PAGES_MENU_PATH}/pages/${navbarItems[5].relationships.static_page.data?.id}/settings`
     );
   });
 
@@ -127,7 +126,7 @@ describe('<VisibleNavbarItemList />', () => {
     );
     fireEvent.click(removeButtons[1]);
     expect(mockRemoveNavbarItem).toHaveBeenLastCalledWith(
-      '037c953a-f717-4d17-beca-b0b684335b7b'
+      'f2e26926-40b6-4692-8321-d1a7ed7ee77c'
     );
   });
 });

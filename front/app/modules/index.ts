@@ -20,7 +20,9 @@ import idCowConfiguration from './commercial/id_cow';
 import idCriiptoConfiguration from './commercial/id_criipto';
 import IdFranceConnectConfiguration from './commercial/id_franceconnect';
 import IdGentRrnConfiguration from './commercial/id_gent_rrn';
+import idIdAustriaConfiguration from './commercial/id_id_austria';
 import idIdCardLookupConfiguration from './commercial/id_id_card_lookup';
+import idKeycloakConfiguration from './commercial/id_keycloak';
 import idNemLogInConfiguration from './commercial/id_nemlog_in';
 import IdOostendeRrnConfiguration from './commercial/id_oostende_rrn';
 import idViennaSamlConfiguration from './commercial/id_vienna_saml';
@@ -102,7 +104,13 @@ export default loadModules([
     configuration: idCowConfiguration,
   },
   {
+    configuration: idIdAustriaConfiguration,
+  },
+  {
     configuration: idCriiptoConfiguration,
+  },
+  {
+    configuration: idKeycloakConfiguration,
   },
   {
     configuration: idBogusConfiguration,

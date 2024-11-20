@@ -2,7 +2,7 @@ import React, { KeyboardEvent, MouseEvent } from 'react';
 
 import useLocalize from 'hooks/useLocalize';
 
-import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/HomepageBanner';
+import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Widgets/HomepageBanner';
 import SignUpButton from 'containers/HomePage/SignUpButton';
 
 import BannerButton, {
@@ -30,10 +30,14 @@ const CTA = ({ buttonStyle, signUpIn, homepageSettings }: Props) => {
 
     switch (ctaType) {
       case 'sign_up_button':
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         return signUpIn ? (
           <SignUpButton buttonStyle={buttonStyle} signUpIn={signUpIn} />
         ) : null;
       case 'customized_button':
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         return homepageSettings ? (
           <BannerButton
             buttonStyle={buttonStyle}

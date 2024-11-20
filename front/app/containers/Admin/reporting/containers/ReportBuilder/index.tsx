@@ -9,8 +9,8 @@ import { ReportLayout } from 'api/report_layout/types';
 import useReportLayout from 'api/report_layout/useReportLayout';
 import { ReportResponse } from 'api/reports/types';
 import useReport from 'api/reports/useReport';
+import useReportBuilderEnabled from 'api/reports/useReportBuilderEnabled';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
 import Frame from 'components/admin/ContentBuilder/Frame';
@@ -162,7 +162,7 @@ const ReportBuilder = ({ report, reportLayout, templateConfig }: Props) => {
 };
 
 const ReportBuilderWrapper = () => {
-  const reportBuilderEnabled = useFeatureFlag({ name: 'report_builder' });
+  const reportBuilderEnabled = useReportBuilderEnabled();
   const { pathname } = useLocation();
   const { reportId } = useParams();
   const { data: report } = useReport(reportId);

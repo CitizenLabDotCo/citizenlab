@@ -13,14 +13,15 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import FollowUnfollow from 'components/FollowUnfollow';
 import ReactionControl from 'components/ReactionControl';
+import { showIdeaReactions } from 'components/ReactionControl/utils';
 
-import { isFixableByAuthentication } from 'utils/actionDescriptors';
 import { getVotingMethodConfig } from 'utils/configs/votingMethodConfig';
 
 import { rightColumnWidthDesktop } from '../../styleConstants';
 import GoToCommentsButton from '../Buttons/GoToCommentsButton';
 import IdeaSharingButton from '../Buttons/IdeaSharingButton';
 import SharingButtonComponent from '../Buttons/SharingButtonComponent';
+import Cosponsorship from '../Cosponsorship';
 import MetaInformation from '../MetaInformation';
 import ProposalInfo from '../ProposalInfo';
 
@@ -51,36 +52,24 @@ const RightColumnDesktop = ({
   const votingConfig = getVotingMethodConfig(phase?.attributes.voting_method);
 
   const ideaIsInParticipationContext =
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     phase && idea ? isIdeaInParticipationContext(idea, phase) : undefined;
 
   const commentingEnabled =
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     !!idea?.data.attributes.action_descriptors.commenting_idea.enabled;
 
-  // showReactionControl
   const participationMethod = phase?.attributes.participation_method;
 
-  const reactingActionDescriptor =
-    idea.data.attributes.action_descriptors.reacting_idea;
-  const reactingFutureEnabled = !!(
-    reactingActionDescriptor.up.future_enabled_at ||
-    reactingActionDescriptor.down.future_enabled_at
+  const showIdeaReactionControl = showIdeaReactions(
+    idea.data,
+    participationMethod
   );
-  const cancellingEnabled = reactingActionDescriptor.cancelling_enabled;
-  const likesCount = idea.data.attributes.likes_count;
-  const dislikesCount = idea.data.attributes.dislikes_count;
-  const showReactionControl =
-    participationMethod !== 'voting' &&
-    participationMethod !== 'proposals' &&
-    (reactingActionDescriptor.enabled ||
-      isFixableByAuthentication(reactingActionDescriptor.disabled_reason) ||
-      cancellingEnabled ||
-      reactingFutureEnabled ||
-      likesCount > 0 ||
-      dislikesCount > 0);
 
   const showInteractionsContainer =
     ideaIsInParticipationContext || commentingEnabled || followEnabled;
-
   return (
     <Box
       flex={`0 0 ${rightColumnWidthDesktop}px`}
@@ -91,7 +80,7 @@ const RightColumnDesktop = ({
       className={className}
     >
       <Box display="flex" flexDirection="column">
-        {showInteractionsContainer && (
+        {showInteractionsContainer && participationMethod && (
           <Box
             padding="20px"
             borderRadius="3px"
@@ -103,38 +92,55 @@ const RightColumnDesktop = ({
                 <ProposalInfo idea={idea} />
               </Box>
             )}
-            {showReactionControl && (
-              <Box pb="23px" mb="23px">
+            {showIdeaReactionControl && (
+              <Box pb="24px" mb="24px" borderBottom="solid 1px #ccc">
                 <ReactionControl styleType="shadow" ideaId={ideaId} size="4" />
               </Box>
             )}
-            {phase && ideaIsInParticipationContext && (
-              <Box pb="23px" mb="23px" borderBottom="solid 1px #ccc">
-                {votingConfig?.getIdeaPageVoteInput({
+            {/* TODO: Fix this the next time the file is edited. */}
+            {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
+            {phase && ideaIsInParticipationContext && votingConfig && (
+              <Box pb="24px" mb="24px" borderBottom="solid 1px #ccc">
+                {votingConfig.getIdeaPageVoteInput({
                   ideaId,
                   phase,
                   compact: false,
                 })}
               </Box>
             )}
-
             {commentingEnabled && (
-              <Box mb="10px">
+              <Box
+                pb="12px"
+                px={participationMethod === 'proposals' ? '12px' : '0px'}
+                bg={colors.white}
+              >
                 <GoToCommentsButton />
               </Box>
             )}
-            <FollowUnfollow
-              followableType="ideas"
-              followableId={ideaId}
-              followersCount={idea.data.attributes.followers_count}
-              followerId={idea.data.relationships.user_follower?.data?.id}
-              toolTipType="input"
-              buttonStyle={
-                participationMethod === 'proposals' ? 'white' : 'primary'
-              }
-            />
+            <Box
+              pb={participationMethod === 'proposals' ? '12px' : '0px'}
+              px={participationMethod === 'proposals' ? '12px' : '0px'}
+              bg={colors.white}
+            >
+              <FollowUnfollow
+                followableType="ideas"
+                followableId={ideaId}
+                followersCount={idea.data.attributes.followers_count}
+                // TODO: Fix this the next time the file is edited.
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+                followerId={idea.data.relationships.user_follower?.data?.id}
+                toolTipType="input"
+                buttonStyle={
+                  participationMethod === 'proposals'
+                    ? 'secondary-outlined'
+                    : 'primary'
+                }
+              />
+            </Box>
           </Box>
         )}
+        <Cosponsorship ideaId={ideaId} />
+
         <Box mb="16px">
           <IdeaSharingButton
             ideaId={ideaId}

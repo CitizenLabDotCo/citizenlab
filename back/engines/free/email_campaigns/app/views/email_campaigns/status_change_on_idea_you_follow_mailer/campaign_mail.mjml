@@ -5,13 +5,13 @@
     <mj-text font-size="14px">
       <%= format_message('status_change', values: {
         organizationName: organization_name,
-        ideaStatus: localize_for_recipient(event.idea_status_title_multiloc)
+        status: localize_for_recipient(event.idea_status_title_multiloc)
       }) %>
     </mj-text>
   </mj-column>
 </mj-section>
 
-<%= render partial: 'application/cta_button', locals: { href: event.post_url , message: format_message('cta_goto_idea', component: 'general') } %>
+<%= render partial: 'application/cta_button', locals: { href: event.post_url , message: format_message('cta_goto_input', component: 'general') } %>
 
 
 <% if AppConfiguration.instance.feature_activated?('follow') %>

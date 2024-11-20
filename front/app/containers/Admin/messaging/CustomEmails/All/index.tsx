@@ -35,6 +35,8 @@ const CustomEmails = () => {
 
   if (!campaignsList) return null;
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const lastPage = getPageNumberFromUrl(campaigns?.pages[0].links.last) || 1;
 
   const goToPage = (page: number) => {
@@ -52,7 +54,7 @@ const CustomEmails = () => {
           padding="80px 0 100px"
         >
           <Icon name="email-2" width="80px" height="80px" />
-          <Title fontSize="xl" fontWeight="bold" marginBottom="10px">
+          <Title fontSize="xl" marginBottom="10px">
             <FormattedMessage {...messages.noCampaignsHeader} />
           </Title>
           <Text color="textSecondary" mb="30px" maxWidth="450px">

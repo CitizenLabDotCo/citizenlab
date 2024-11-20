@@ -3,7 +3,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-# TODO: move-old-proposals-test
+# TODO: cleanup-after-proposals-migration
 resource 'Initiatives' do
   before do
     header 'Content-Type', 'application/json'

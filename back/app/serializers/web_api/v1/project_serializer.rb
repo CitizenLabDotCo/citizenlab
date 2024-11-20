@@ -12,7 +12,8 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
     :slug,
     :visible_to,
     :created_at,
-    :updated_at
+    :updated_at,
+    :header_bg_alt_text_multiloc
   )
 
   attribute :folder_id do |project|
@@ -40,9 +41,14 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
     avatars_for_project(object, params)[:total_count]
   end
 
-  attribute :participants_count do |object, _params|
-    @participants_service ||= ParticipantsService.new
-    @participants_service.project_participants_count(object)
+  attribute :participants_count do |object, params|
+    use_cache = params[:use_cache].to_s != 'false'
+
+    if use_cache
+      participants_service.project_participants_count(object)
+    else
+      participants_service.project_participants_count_uncached(object)
+    end
   end
 
   attribute :timeline_active do |object, params|
@@ -52,6 +58,8 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
       TimelineService.new.timeline_active object
     end
   end
+
+  attribute :preview_token, if: proc { |object, params| can_moderate? object, params }
 
   has_one :admin_publication
 
@@ -73,9 +81,11 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
   end
 
   def self.avatars_for_project(object, _params)
-    # TODO: call only once (not a second time for counts)
+    AvatarsService.new(participants_service).avatars_for_project(object, limit: 3)
+  end
+
+  def self.participants_service
     @participants_service ||= ParticipantsService.new
-    AvatarsService.new(@participants_service).avatars_for_project(object, limit: 3)
   end
 
   def self.user_follower(object, params)

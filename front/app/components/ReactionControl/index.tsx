@@ -80,6 +80,8 @@ const ReactionControl = ({
   );
 
   const reactionId =
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     authUser && idea?.data?.relationships?.user_reaction?.data?.id;
   const myReactionMode = reactionId ? reactionData?.data.attributes.mode : null;
 
@@ -174,11 +176,15 @@ const ReactionControl = ({
   const cancellingEnabled = reactingActionDescriptor.cancelling_enabled;
 
   // participationContext
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const ideaPhaseIds = idea?.data?.relationships?.phases?.data?.map(
     (item) => item.id
   );
   const ideaPhases =
     phases &&
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     phases?.data
       .filter((phase) => includes(ideaPhaseIds, phase.id))
       .map((phase) => phase);
@@ -255,7 +261,8 @@ const ReactionControl = ({
   // Only when disliking is explicitly disabled,
   // we don't show the dislike button
   const showDislike =
-    reactingActionDescriptor.down.enabled === true ||
+    reactingActionDescriptor.down.enabled === true || // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     (reactingActionDescriptor.down.enabled === false &&
       reactingActionDescriptor.down.disabled_reason !==
         'reacting_dislike_disabled');
@@ -287,7 +294,7 @@ const ReactionControl = ({
           ideaId={idea.data.id}
           variant={variant}
         />
-        {showDislike && (
+        {variant === 'icon' && showDislike && (
           <ReactionButton
             buttonReactionMode="down"
             userReactionMode={myReactionMode}

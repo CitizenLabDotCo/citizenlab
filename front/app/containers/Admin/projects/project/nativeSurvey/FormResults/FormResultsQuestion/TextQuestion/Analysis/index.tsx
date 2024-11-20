@@ -55,8 +55,12 @@ const Analysis = ({
 
   const relevantAnalysis =
     analyses?.data &&
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     analyses?.data?.find(
       (analysis) =>
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         analysis.relationships.main_custom_field?.data?.id === customFieldId
     );
   const { data: insights, isLoading: isInsightsLoading } = useAnalysisInsights({

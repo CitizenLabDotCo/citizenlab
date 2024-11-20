@@ -30,16 +30,11 @@ describe('Idea card component', () => {
       })
       .then((idea) => {
         ideaId = idea.body.data.id;
-        return cy.apiAddComment(ideaId, 'idea', commentContent);
+        return cy.apiAddComment(ideaId, commentContent);
       })
       .then((parentComment) => {
         parentCommentId = parentComment.body.data.id;
-        return cy.apiAddComment(
-          ideaId,
-          'idea',
-          commentContent,
-          parentCommentId
-        );
+        return cy.apiAddComment(ideaId, commentContent, parentCommentId);
       })
       .then((childComment) => {
         childCommentId = childComment.body.data.id;

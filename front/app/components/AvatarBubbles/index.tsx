@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { colors } from '@citizenlab/cl2-component-library';
+import { Box, colors, Text } from '@citizenlab/cl2-component-library';
 import { isNumber } from 'lodash-es';
 import styled from 'styled-components';
 
@@ -12,6 +12,7 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
+import placeholderImage from './user.png';
 
 const getFontSize = (size: number, digits: number) => {
   if (size >= 34) {
@@ -43,15 +44,6 @@ const getFontSize = (size: number, digits: number) => {
   return 14;
 };
 
-const EmptyContainer = styled.div``;
-
-const Container = styled.div<{ width: number; height: number }>`
-  flex-shrink: 0;
-  width: ${(props) => props.width}px;
-  height: ${(props) => props.height}px;
-  position: relative;
-`;
-
 const AvatarImageBubble = styled.img<{
   overlap: number;
   index: number;
@@ -62,46 +54,15 @@ const AvatarImageBubble = styled.img<{
   border-radius: 50%;
   border: solid 2px #fff;
   text-indent: -9999px;
-  position: absolute;
   z-index: ${(props) => props.index + 1};
-  left: ${(props) => props.index * (props.size - props.overlap)}px;
+  position: absolute; /* Absolute positioning for stacking */
+  left: ${(props) =>
+    props.index *
+    (props.size - props.overlap)}px; /* Calculate left to overlap */
   object-fit: cover;
   object-position: center;
 `;
 
-const UserCountBubble = styled.div<{
-  overlap: number;
-  index: number;
-  size: number;
-  bgColor: string;
-}>`
-  width: ${(props) => props.size}px;
-  height: ${(props) => props.size}px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding-bottom: 0;
-  border-radius: 50%;
-  border: solid 2px #fff;
-  background: ${(props) => props.bgColor};
-  position: absolute;
-  z-index: ${(props) => props.index + 1};
-  left: ${(props) => props.index * (props.size - props.overlap)}px;
-`;
-
-const UserCountBubbleInner = styled.div<{ size: number; digits: number }>`
-  color: #fff;
-  font-size: ${({ size, digits }) => getFontSize(size, digits)}px;
-  font-weight: 500;
-  display: flex;
-`;
-
-/* InputProps
- * limit: the number of avatars you need, you'll get one extra bubble with the remaining count, defaults to 3
- * context: extra info if you use the component in a specific context, defaults to platform-wide
- * size: image size, each bubble will be 4px bigger because of margins, defaults to 30px
- * overlap: the number of pixel the bubbles overlap, defaults to 7
- */
 interface Props {
   limit?: number;
   context?: {
@@ -110,33 +71,31 @@ interface Props {
   };
   size?: number;
   overlap?: number;
-  userCountBgColor?: string;
   avatarIds?: string[];
   className?: string;
   userCount?: number;
+  showParticipantText?: boolean;
 }
-
-const defaultLimit = 4;
 
 export const AvatarBubbles = ({
   avatarIds,
   context,
   size = 34,
-  overlap,
+  overlap = 12,
   className,
-  userCountBgColor = colors.textSecondary,
   userCount,
+  showParticipantText = true,
+  limit = 4,
 }: Props) => {
   const { formatMessage } = useIntl();
   const { data: randomAvatars } = useRandomAvatars({
-    limit: defaultLimit,
+    limit,
     context_type: context?.type,
     context_id: context?.id,
     enabled: !avatarIds,
   });
 
-  const currentUserCount = userCount || randomAvatars?.meta?.total;
-
+  const currentUserCount = userCount || randomAvatars?.meta.total;
   const avatarsWithIdsQueries = useAvatarsWithIds(avatarIds);
 
   const avatarsWithIds = avatarsWithIdsQueries
@@ -149,23 +108,28 @@ export const AvatarBubbles = ({
 
   if (avatars && isNumber(currentUserCount) && currentUserCount > 0) {
     const bubbleSize = size + 4;
-    const bubbleOverlap = overlap || 10;
     const imageSize = bubbleSize > 160 ? 'large' : 'medium';
 
     const avatarsWithImage = avatars.filter(
-      (avatar) =>
-        avatar &&
-        avatar.attributes?.avatar &&
-        avatar.attributes.avatar[imageSize]
+      (avatar) => avatar.attributes.avatar[imageSize]
     ) as IAvatarData[];
 
-    const avatarImagesCount = avatarsWithImage.length;
+    let avatarsToShow = avatarsWithImage;
+
+    if (avatarsWithImage.length < currentUserCount) {
+      const placeholdersNeeded =
+        Math.min(currentUserCount, limit) - avatarsWithImage.length;
+      avatarsToShow = [
+        ...avatarsWithImage,
+        ...new Array(placeholdersNeeded).fill({
+          attributes: { avatar: { [imageSize]: placeholderImage } },
+        }),
+      ];
+    }
+
+    const avatarImagesCount = avatarsToShow.length;
     const remainingUsers = currentUserCount - avatarImagesCount;
-    const remainingUsersDigits = remainingUsers.toString().length;
-    const bubblesCount = avatarImagesCount + (remainingUsers > 0 ? 1 : 0);
     const containerHeight = bubbleSize + 2;
-    const containerWidth =
-      bubblesCount * (bubbleSize - bubbleOverlap) + bubbleOverlap + 2;
 
     let letterAbbreviation = '';
     let truncatedUserCount = remainingUsers;
@@ -187,51 +151,115 @@ export const AvatarBubbles = ({
 
     if (avatarIds || context || avatarImagesCount > 0) {
       return (
-        <Container
+        <Box
           className={className}
-          width={containerWidth}
-          height={containerHeight}
+          height={`${containerHeight}px`}
           data-testid="avatarBubblesContainer"
+          display="flex"
+          alignItems="center"
+          justifyContent="flex-start"
+          flexShrink={0}
+          style={{ lineHeight: `${containerHeight}px` }}
         >
-          {avatarsWithImage.map((avatar, index) => (
-            <AvatarImageBubble
-              key={index}
-              index={index}
-              overlap={bubbleOverlap}
-              size={bubbleSize}
-              src={avatar.attributes.avatar[imageSize]}
-              alt=""
-              data-testid="avatarImageBubble"
-            />
-          ))}
-          {remainingUsers > 0 && (
-            <UserCountBubble
-              index={avatarsWithImage.length}
-              overlap={bubbleOverlap}
-              size={bubbleSize}
-              bgColor={userCountBgColor}
-            >
-              <UserCountBubbleInner
+          <Box
+            display="flex"
+            style={{
+              position: 'relative',
+              width: `${
+                bubbleSize + (avatarImagesCount - 1) * (bubbleSize - overlap)
+              }px`,
+              minWidth: `${bubbleSize}px`,
+              height: `${containerHeight}px`,
+            }}
+            alignItems="center"
+          >
+            {avatarsToShow.map((avatar, index) => (
+              <AvatarImageBubble
+                key={index}
+                index={index}
+                overlap={overlap}
                 size={bubbleSize}
-                digits={remainingUsersDigits}
-                aria-hidden
+                src={avatar.attributes.avatar[imageSize]}
+                alt=""
+                data-testid="avatarImageBubble"
+              />
+            ))}
+          </Box>
+          {remainingUsers > 0 &&
+            (showParticipantText ? (
+              <Box
                 data-testid="userCountBubbleInner"
+                ml="4px"
+                display="flex"
+                alignItems="center"
               >
-                +{truncatedUserCount}
-                {letterAbbreviation}
-              </UserCountBubbleInner>
-              <ScreenReaderOnly>
-                {formatMessage(messages.numberOfUsers, {
-                  numberOfUsers: currentUserCount,
-                })}
-              </ScreenReaderOnly>
-            </UserCountBubble>
-          )}
-        </Container>
+                <Text
+                  fontSize="s"
+                  textAlign="left"
+                  my="0px"
+                  aria-hidden="true"
+                  color="coolGrey600"
+                >
+                  +{truncatedUserCount}
+                  {letterAbbreviation}&nbsp;
+                  {formatMessage(
+                    truncatedUserCount > 1 || letterAbbreviation
+                      ? messages.participants1
+                      : messages.participant
+                  )}
+                </Text>
+              </Box>
+            ) : (
+              <Box
+                w={`${bubbleSize}px`}
+                h={`${bubbleSize}px`}
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                pb="0px"
+                borderRadius="50%"
+                border={`solid 2px ${colors.white}`}
+                bg={colors.textSecondary}
+                zIndex={`${avatarsWithImage.length + 1}`}
+                left={`${avatarsWithImage.length * (bubbleSize - overlap)}px`}
+              >
+                <Box
+                  aria-hidden
+                  data-testid="userCountBubbleInner"
+                  display="flex"
+                >
+                  <Text
+                    fontSize="s"
+                    color="white"
+                    display="flex"
+                    style={{
+                      fontSize: getFontSize(
+                        bubbleSize,
+                        remainingUsers.toString().length
+                      ),
+                    }}
+                  >
+                    +{truncatedUserCount}
+                    {letterAbbreviation}
+                  </Text>
+                </Box>
+                <ScreenReaderOnly>
+                  {formatMessage(messages.numberOfUsers, {
+                    numberOfUsers: currentUserCount,
+                  })}
+                </ScreenReaderOnly>
+              </Box>
+            ))}
+          <ScreenReaderOnly>
+            {formatMessage(messages.numberOfParticipants1, {
+              numberOfParticipants: currentUserCount,
+            })}
+          </ScreenReaderOnly>
+        </Box>
       );
     }
   } else if (avatars !== undefined) {
-    return <EmptyContainer className={className} />;
+    return <div className={className} />;
   }
 
   return null;

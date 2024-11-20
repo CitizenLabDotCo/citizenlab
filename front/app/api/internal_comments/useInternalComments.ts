@@ -18,8 +18,6 @@ const getInternalCommentsEndpoint = (params: IInternalCommentParameters) => {
   switch (type) {
     case 'idea':
       return `ideas/${params.ideaId}/internal_comments`;
-    case 'initiative':
-      return `initiatives/${params.initiativeId}/internal_comments`;
     case 'comment':
       return `internal_comments/${params.commentId}/children`;
     case 'author':
@@ -54,6 +52,8 @@ const useInternalComments = (
     queryFn: ({ pageParam }) =>
       fetchInternalComments({ ...parameters, pageNumber: pageParam }),
     getNextPageParam: (lastPage) => {
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       const hasNextPage = lastPage.links?.next;
       const pageNumber = getPageNumberFromUrl(lastPage.links.self);
 

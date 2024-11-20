@@ -14,8 +14,10 @@ module Analytics
         types = [
           { name: 'idea', parent: 'post' },
           { name: 'initiative', parent: 'post' },
+          { name: 'proposal', parent: 'post' },
           { name: 'comment', parent: 'initiative' },
           { name: 'comment', parent: 'idea' },
+          { name: 'comment', parent: 'proposal' },
           { name: 'reaction', parent: 'initiative' },
           { name: 'reaction', parent: 'idea' },
           { name: 'reaction', parent: 'comment' },

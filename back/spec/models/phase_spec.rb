@@ -133,6 +133,14 @@ RSpec.describe Phase do
     end
   end
 
+  describe 'input_term' do
+    it 'default is set by the participation method defaults' do
+      phase = build(:phase, input_term: nil)
+      expect_any_instance_of(ParticipationMethod::Ideation).to receive(:assign_defaults_for_phase).and_call_original
+      expect { phase.validate }.to change { phase.input_term }.from(nil).to('idea')
+    end
+  end
+
   describe 'campaigns_settings validation' do
     it 'fails when null' do
       phase = build(:phase, campaigns_settings: nil)

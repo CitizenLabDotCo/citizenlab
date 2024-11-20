@@ -25,6 +25,8 @@ const IdeasAtLocationPopup = ({
 }: Props) => {
   const localize = useLocalize();
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!portalElement) return null;
 
   // A portal is needed here as we're inserting our React component into the Esri Map popup as its content

@@ -80,7 +80,7 @@ resource 'MachineTranslations' do
     end
   end
 
-  # TODO: move-old-proposals-test
+  # TODO: cleanup-after-proposals-migration
   get '/web_api/v1/initiatives/:initiative_id/machine_translation' do
     with_options scope: :machine_translation do
       parameter :attribute_name, 'The name of the attribute to translate (e.g. title_multiloc)'

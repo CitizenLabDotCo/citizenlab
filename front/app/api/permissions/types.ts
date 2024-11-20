@@ -12,11 +12,7 @@ import permissionsKeys from './keys';
 
 export type PermissionsKeys = Keys<typeof permissionsKeys>;
 
-export type IGlobalPermissionAction =
-  | 'reacting_initiative'
-  | 'commenting_initiative'
-  | 'posting_initiative'
-  | 'following';
+export type IGlobalPermissionAction = 'following';
 
 export interface IGlobalPermissionData {
   id: string;
@@ -62,8 +58,3 @@ export interface PermissionUpdateParams {
   verification_expiry: number | null;
   access_denied_explanation_multiloc: Multiloc;
 }
-
-export type ResetPermissionParams = {
-  permissionId: string;
-  action: IGlobalPermissionAction;
-};

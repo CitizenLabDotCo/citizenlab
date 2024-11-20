@@ -5,6 +5,11 @@ export default defineMessages({
     id: 'app.components.AssignMultipleVotesControl.xVotes2',
     defaultMessage: '{votes, plural, one {{singular}} other {{plural}}}',
   },
+  numberManualVotes: {
+    id: 'app.components.AssignMultipleVotesControl.numberManualVotes2',
+    defaultMessage:
+      '{manualVotes, plural, one {(incl. 1 offline)} other {(incl. # offline)}}',
+  },
   select: {
     id: 'app.components.AssignMultipleVotesControl.select',
     defaultMessage: 'Select',
@@ -45,5 +50,9 @@ export default defineMessages({
     id: 'app.components.AssignMultipleVotesControl.votesSubmittedIdeaPage',
     defaultMessage:
       'You have already submitted your votes. To change your votes, go back to the project page and click "Modify your vote".',
+  },
+  phaseNotActive: {
+    id: 'app.components.AssignMultipleVotesControl.phaseNotActive',
+    defaultMessage: 'Voting is not available, since this phase is not active.',
   },
 });

@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 class WebApi::V1::ProjectsController < ApplicationController
-  before_action :set_project, only: %i[show update reorder destroy index_xlsx votes_by_user_xlsx votes_by_input_xlsx delete_inputs]
+  before_action :set_project, only: %i[show update reorder destroy index_xlsx votes_by_user_xlsx votes_by_input_xlsx delete_inputs refresh_preview_token destroy_participation_data]
+  before_action :empty_data_for_visitor, only: [:index_for_followed_item]
 
   skip_before_action :authenticate_user
   skip_after_action :verify_policy_scoped, only: :index
@@ -52,10 +53,101 @@ class WebApi::V1::ProjectsController < ApplicationController
     )
   end
 
+  # For use with 'Finished or archived' homepage widget. Uses ProjectMiniSerializer.
+  # Returns projects that are either ( published AND (finished OR have a last phase that contains a report))
+  # OR are archived, ordered by creation date first and ID second.
+  # => [Project]
+  def index_finished_or_archived
+    projects = policy_scope(Project)
+    projects = ProjectsFinderService.new(projects, current_user, params).finished_or_archived
+
+    @projects = paginate projects
+    @projects = @projects.includes(:project_images, :phases)
+
+    authorize @projects, :index_finished_or_archived?
+
+    base_render_mini_index
+  end
+
+  # For use with 'For you' homepage widget. Uses ProjectMiniSerializer.
+  # Returns all published projects that are visible to user
+  # AND (are followed by user OR relate to an idea, area or topic followed by user),
+  # ordered by the follow created_at (most recent first).
+  def index_for_followed_item
+    projects = policy_scope(Project)
+    projects = projects.not_draft
+    projects = ProjectsFinderService.new(projects, current_user).followed_by_user
+
+    @projects = paginate projects
+    @projects = @projects.includes(:project_images, :admin_publication, phases: %i[custom_form report permissions])
+
+    authorize @projects, :index_for_followed_item?
+
+    base_render_mini_index
+  end
+
+  # For use with 'Open to participation' homepage widget. Uses ProjectMiniSerializer.
+  # Returns all published projects that are visible to user
+  # AND in an active participatory phase (where user can do something).
+  # Ordered by the end date of the current phase, soonest first (nulls last).
+  def index_with_active_participatory_phase
+    projects = policy_scope(Project)
+    projects_and_descriptors = ProjectsFinderService.new(projects, current_user, params).participation_possible
+    projects = projects_and_descriptors[:projects]
+
+    @projects = paginate projects
+    @projects = @projects.includes(:project_images, :phases)
+
+    authorize @projects, :index_with_active_participatory_phase?
+
+    render json: linked_json(
+      @projects,
+      WebApi::V1::ProjectMiniSerializer,
+      params: jsonapi_serializer_params.merge(project_descriptor_pairs: projects_and_descriptors[:descriptor_pairs]),
+      include: %i[project_images current_phase]
+    )
+  end
+
+  # For use with 'Areas or topics' homepage widget. Uses ProjectMiniSerializer.
+  # Returns all non-draft projects that are visible to user, for the selected areas.
+  # Ordered by created_at, newest first.
+  def index_for_areas
+    projects = policy_scope(Project)
+    projects = projects
+      .not_draft
+      .with_some_areas(params[:areas])
+      .order(created_at: :desc)
+
+    @projects = paginate projects
+    @projects = @projects.includes(:project_images, :phases)
+
+    authorize @projects, :index_for_areas?
+
+    base_render_mini_index
+  end
+
+  # For use with 'Areas or topics' homepage widget. Uses ProjectMiniSerializer.
+  # Returns all non-draft projects that are visible to user, for the selected topics.
+  # Ordered by created_at, newest first.
+  def index_for_topics
+    projects = policy_scope(Project)
+    projects = projects
+      .not_draft
+      .with_some_topics(params[:topics])
+      .order(created_at: :desc)
+
+    @projects = paginate projects
+    @projects = @projects.includes(:project_images, :phases)
+
+    authorize @projects, :index_for_topics?
+
+    base_render_mini_index
+  end
+
   def show
     render json: WebApi::V1::ProjectSerializer.new(
       @project,
-      params: jsonapi_serializer_params,
+      params: jsonapi_serializer_params.merge(use_cache: params[:use_cache]),
       include: %i[admin_publication project_images current_phase avatars]
     ).serializable_hash
   end
@@ -136,9 +228,23 @@ class WebApi::V1::ProjectsController < ApplicationController
     end
   end
 
+  def refresh_preview_token
+    @project.refresh_preview_token
+
+    sidefx.before_update(@project, current_user)
+    @project.save!
+    sidefx.after_update(@project, current_user)
+
+    render json: WebApi::V1::ProjectSerializer.new(
+      @project,
+      params: jsonapi_serializer_params,
+      include: [:admin_publication]
+    ).serializable_hash, status: :ok
+  end
+
   def index_xlsx
     I18n.with_locale(current_user.locale) do
-      xlsx = Export::Xlsx::InputsGenerator.new.generate_inputs_for_project @project.id, view_private_attributes: true
+      xlsx = Export::Xlsx::InputsGenerator.new.generate_inputs_for_project @project.id
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'inputs.xlsx'
     end
   end
@@ -169,6 +275,16 @@ class WebApi::V1::ProjectsController < ApplicationController
     else
       raise 'Project has no voting phase.'
     end
+  end
+
+  def destroy_participation_data
+    ParticipantsService.new.destroy_participation_data(@project)
+
+    render json: WebApi::V1::ProjectSerializer.new(
+      @project,
+      params: jsonapi_serializer_params,
+      include: [:admin_publication]
+    ).serializable_hash, status: :ok
   end
 
   private
@@ -214,4 +330,24 @@ class WebApi::V1::ProjectsController < ApplicationController
       ErrorReporter.report_msg("Project change would lead to inconsistencies! (id: #{project.id})", extra: errors || {})
     end
   end
+
+  def base_render_mini_index
+    render json: linked_json(
+      @projects,
+      WebApi::V1::ProjectMiniSerializer,
+      params: jsonapi_serializer_params({
+        user_requirements_service: Permissions::UserRequirementsService.new(check_groups_and_verification: false)
+      }),
+      include: %i[project_images current_phase]
+    )
+  end
+
+  def empty_data_for_visitor
+    unless current_user
+      render json: { data: [] }, status: :ok
+      nil
+    end
+  end
 end
+
+WebApi::V1::ProjectsController.include(AggressiveCaching::Patches::WebApi::V1::ProjectsController)

@@ -87,6 +87,8 @@ const AuthorsByDomicile = ({ customFieldId }: Props) => {
 
   const chartData =
     totalAuthorsByDomicile &&
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     Object.entries(totalAuthorsByDomicile?.data.attributes.series.users).map(
       ([optionId, count]) => {
         const option = options?.data.find((o) => o.id === optionId);
@@ -156,7 +158,7 @@ const AuthorsByDomicile = ({ customFieldId }: Props) => {
 
   return (
     <Box display="flex" flexDirection="column" alignItems="center">
-      <Title my="0" variant="h6" fontWeight="normal">
+      <Title my="0" variant="h6">
         <FormattedMessage {...messages.authorsByDomicile} />
       </Title>
       <ResponsiveContainer width="100%" height={100}>

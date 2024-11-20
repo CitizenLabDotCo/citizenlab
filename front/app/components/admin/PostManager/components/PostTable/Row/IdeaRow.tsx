@@ -47,7 +47,7 @@ type Props = {
   statuses?: IIdeaStatusData[];
   selectedPhaseId?: string | null;
   selectedProjectId?: string | null;
-  /** A set of ids of ideas/initiatives that are currently selected */
+  /** A set of ids of ideas that are currently selected */
   selection: Set<string>;
   activeFilterMenu: TFilterMenu;
   className?: string;
@@ -190,9 +190,21 @@ const IdeaRow = ({
       },
     },
     {
+      name: 'offline_votes',
+      Component: ({ idea }: IdeaCellComponentProps) => {
+        return <>{idea.attributes.manual_votes_amount || 0}</>;
+      },
+    },
+    {
       name: 'picks',
       Component: ({ idea }: IdeaCellComponentProps) => {
         return <>{idea.attributes.baskets_count}</>;
+      },
+    },
+    {
+      name: 'offline_picks',
+      Component: ({ idea }: IdeaCellComponentProps) => {
+        return <>{idea.attributes.manual_votes_amount || 0}</>;
       },
     },
     {
@@ -243,7 +255,9 @@ const IdeaRow = ({
       name: 'published_on',
       Component: ({ idea }) => {
         if (!isNilOrError(locale)) {
-          return <>{timeAgo(Date.parse(idea.attributes.created_at), locale)}</>;
+          return (
+            <>{timeAgo(Date.parse(idea.attributes.published_at), locale)}</>
+          );
         }
         return null;
       },
@@ -288,6 +302,8 @@ const IdeaRow = ({
           location: 'Idea overview',
           method: 'Dragged and dropped idea(s) in manager',
         });
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       } else if (dropResult && dropResult.type) {
         const ideaIds = selection.has(item.id)
           ? [...selection].map((id) => id)
@@ -328,7 +344,8 @@ const IdeaRow = ({
 
           ideaIds.forEach((ideaId) => {
             if (
-              !hasPhases ||
+              !hasPhases || // TODO: Fix this the next time the file is edited.
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
               (hasPhases &&
                 window.confirm(
                   formatMessage(messages.loseIdeaPhaseInfoConfirmation)
@@ -371,6 +388,8 @@ const IdeaRow = ({
     };
 
     const Content =
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       displayColumns && !displayColumns.has(name) ? null : (
         <Td key={name} borderBottom="none !important">
           <Box
@@ -443,11 +462,9 @@ const IdeaRow = ({
           statuses,
           selectedStatus,
         }}
-        allowedTransitions={null}
         onUpdatePhases={onUpdateIdeaPhases}
         onUpdateTopics={onUpdateIdeaTopics}
         onUpdateStatus={onUpdateIdeaStatus}
-        postType="idea"
       />
       <PhaseDeselectModal
         open={phaseDeselectModalOpen}

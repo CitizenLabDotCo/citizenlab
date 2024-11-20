@@ -6,6 +6,7 @@ module AdminApi
       :title_multiloc,
       :body_multiloc,
       :published_at,
+      :submitted_at,
       :project_id,
       :created_at,
       :updated_at

@@ -259,6 +259,30 @@ resource 'Users' do
             assert_status 422
           end
         end
+
+        describe 'profanity in user fields' do
+          let(:first_name) { 'big fuck face' }
+          let(:last_name) { 'twat' }
+
+          example 'profanity is allowed if extended blocking is not enabled', document: false do
+            config = AppConfiguration.instance
+            config.settings['blocking_profanity'] = { allowed: true, enabled: true, extended_blocking: false }
+            config.save!
+            do_request
+            assert_status 201
+            expect(User.first.first_name).to eq first_name
+            expect(User.first.last_name).to eq last_name
+          end
+
+          example '[error] profanity is NOT allowed if extended blocking is enabled', document: false do
+            config = AppConfiguration.instance
+            config.settings['blocking_profanity'] = { allowed: true, enabled: true, extended_blocking: true }
+            config.save!
+            do_request
+            assert_status 422
+            expect(User.count).to eq 0
+          end
+        end
       end
 
       context 'light registration without a password' do
@@ -885,6 +909,26 @@ resource 'Users' do
               example 'Email cannot be changed', document: false do
                 do_request(user: { email: 'changed@email.com' })
                 expect(resident.reload.email).to eq 'original@email.com'
+              end
+            end
+
+            describe 'profanity in user fields' do
+              let(:bio_multiloc) { { en: 'I am a big fucking twat' } }
+
+              example 'profanity is allowed if extended blocking is not enabled', document: false do
+                config = AppConfiguration.instance
+                config.settings['blocking_profanity'] = { allowed: true, enabled: true, extended_blocking: false }
+                config.save!
+                do_request
+                assert_status 200
+              end
+
+              example '[error] profanity is NOT allowed if extended blocking is enabled', document: false do
+                config = AppConfiguration.instance
+                config.settings['blocking_profanity'] = { allowed: true, enabled: true, extended_blocking: true }
+                config.save!
+                do_request
+                assert_status 422
               end
             end
           end

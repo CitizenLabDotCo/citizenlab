@@ -3,11 +3,13 @@ import { Query, QuerySchema } from 'api/analytics/types';
 import {
   getDateFilter,
   getInterval,
+  getProjectFilter,
 } from 'components/admin/GraphCards/_utils/query';
 
 import { QueryParameters } from './typings';
 
 export const query = ({
+  projectId,
   startAtMoment,
   endAtMoment,
   resolution,
@@ -20,7 +22,10 @@ export const query = ({
 
   const totalEmailsDeliveriesQuery: QuerySchema = {
     fact: 'email_delivery',
-    filters: dateFilter,
+    filters: {
+      ...dateFilter,
+      ...getProjectFilter('dimension_project', projectId),
+    },
     aggregations: {
       all: 'count',
     },
@@ -31,6 +36,7 @@ export const query = ({
     filters: {
       ...dateFilter,
       automated: false,
+      ...getProjectFilter('dimension_project', projectId),
     },
     aggregations: {
       all: 'count',
@@ -43,6 +49,7 @@ export const query = ({
     filters: {
       ...dateFilter,
       automated: true,
+      ...getProjectFilter('dimension_project', projectId),
     },
     aggregations: {
       all: 'count',
@@ -53,7 +60,10 @@ export const query = ({
   const date_group = `dimension_date_sent.${getInterval(resolution)}`;
   const timeSeriesQuery: QuerySchema = {
     fact: 'email_delivery',
-    filters: { ...dateFilter },
+    filters: {
+      ...dateFilter,
+      ...getProjectFilter('dimension_project', projectId),
+    },
     groups: [date_group, 'automated'],
     aggregations: {
       all: 'count',

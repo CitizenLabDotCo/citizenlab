@@ -4,7 +4,7 @@ module MultiTenancy
   module Templates
     module Serializers
       class NavBarItem < Base
-        ref_attribute :static_page
+        ref_attributes %i[static_page project]
         attributes %i[code ordering title_multiloc]
       end
     end

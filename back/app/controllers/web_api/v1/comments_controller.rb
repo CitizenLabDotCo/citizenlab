@@ -103,7 +103,7 @@ class WebApi::V1::CommentsController < ApplicationController
       when 'Idea'
         service.generate_idea_comments_xlsx @comments, view_private_attributes: true
       when 'Initiative'
-        service.generate_initiative_comments_xlsx @comments, view_private_attributes: Pundit.policy!(current_user, User).view_private_attributes?
+        service.generate_initiative_comments_xlsx @comments, view_private_attributes: policy(User).view_private_attributes?
       else
         raise "#{@post_type} has no functionality for exporting comments"
       end
@@ -166,7 +166,7 @@ class WebApi::V1::CommentsController < ApplicationController
   def update
     @comment.attributes = comment_update_params
     # We cannot pass policy class to permitted_attributes
-    # @comment.attributes = pundit_params_for(@comment).permit(@policy_class.new(current_user, @comment).permitted_attributes_for_update)
+    # @comment.attributes = pundit_params_for(@comment).permit(@policy_class.new(pundit_user, @comment).permitted_attributes_for_update)
     authorize @comment, policy_class: @policy_class
     if anonymous_not_allowed?
       render json: { errors: { base: [{ error: :anonymous_participation_not_allowed }] } }, status: :unprocessable_entity
@@ -279,3 +279,5 @@ class WebApi::V1::CommentsController < ApplicationController
     end
   end
 end
+
+WebApi::V1::CommentsController.include(AggressiveCaching::Patches::WebApi::V1::CommentsController)

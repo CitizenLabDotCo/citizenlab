@@ -75,7 +75,6 @@ const DeletedIcon = styled(Icon)`
 
 interface Props {
   ideaId: string | undefined;
-  initiativeId: string | undefined;
   projectId?: string | null;
   commentId: string;
   commentType: 'parent' | 'child';
@@ -86,7 +85,6 @@ interface Props {
 
 const InternalComment = ({
   ideaId,
-  initiativeId,
   projectId,
   commentType,
   commentId,
@@ -185,12 +183,10 @@ const InternalComment = ({
                     onCommentSaved={onCommentSaved}
                     onCancelEditing={onCancelEditing}
                     ideaId={ideaId}
-                    initiativeId={initiativeId}
                   />
                   <InternalCommentFooter
                     className={commentType}
                     ideaId={ideaId}
-                    initiativeId={initiativeId}
                     projectId={projectId}
                     commentId={commentId}
                     commentType={commentType}

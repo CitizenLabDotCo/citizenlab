@@ -12,17 +12,9 @@ import {
 } from './reactionOnComment';
 import { reactionOnIdea, ReactionOnIdeaParams } from './reactionOnIdea';
 import {
-  reactionOnInitiative,
-  ReactionOnInitiativeParams,
-} from './reactionOnInitiative';
-import {
   redirectToIdeaForm,
   RedirectToIdeaFormParams,
 } from './redirectToIdeaForm';
-import {
-  redirectToInitiativeForm,
-  RedirectToInitiativeFormParams,
-} from './redirectToInitiativeForm';
 import { replyToComment, ReplyToCommentParams } from './replyToComment';
 import { scrollTo, ScrollToParams } from './scrollTo';
 import { submitPoll, SubmitPollParams } from './submitPoll';
@@ -32,11 +24,6 @@ import { vote, VoteParams } from './vote';
 interface RedirectToIdeaFormAction {
   name: 'redirectToIdeaForm';
   params: RedirectToIdeaFormParams;
-}
-
-interface RedirectToInitiativeFormAction {
-  name: 'redirectToInitiativeForm';
-  params: RedirectToInitiativeFormParams;
 }
 
 interface FollowAction {
@@ -79,11 +66,6 @@ interface ReactionOnIdeaAction {
   params: ReactionOnIdeaParams;
 }
 
-interface ReactionOnInitiativeAction {
-  name: 'reactionOnInitiative';
-  params: ReactionOnInitiativeParams;
-}
-
 interface SubmitPollAction {
   name: 'submitPoll';
   params: SubmitPollParams;
@@ -91,14 +73,12 @@ interface SubmitPollAction {
 
 export type SuccessAction =
   | RedirectToIdeaFormAction
-  | RedirectToInitiativeFormAction
   | ReplyToCommentAction
   | ScrollToAction
   | VolunteerAction
   | VoteAction
   | ReactionOnCommentAction
   | ReactionOnIdeaAction
-  | ReactionOnInitiativeAction
   | FollowAction
   | SubmitPollAction
   | AttendEventAction;
@@ -176,11 +156,6 @@ export const getAction = ({ name, params }: SuccessAction) => {
     return redirectToIdeaForm(params);
   }
 
-  if (name === 'redirectToInitiativeForm') {
-    ensureJSONSerializable(params);
-    return redirectToInitiativeForm(params);
-  }
-
   if (name === 'follow') {
     ensureJSONSerializable(params);
     return follow(params);
@@ -221,11 +196,6 @@ export const getAction = ({ name, params }: SuccessAction) => {
     return submitPoll(params);
   }
 
-  if (name === 'attendEvent') {
-    ensureJSONSerializable(params);
-    return attendEvent(params);
-  }
-
   ensureJSONSerializable(params);
-  return reactionOnInitiative(params);
+  return attendEvent(params);
 };

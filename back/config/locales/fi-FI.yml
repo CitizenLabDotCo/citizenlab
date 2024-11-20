@@ -170,6 +170,9 @@ fi:
       topic_ids:
         title: Tunnisteet
         description:
+      consponsor_ids:
+        title: Yhteissponsorit
+        description: Kutsu sponsoreita alla olevan kentän kautta. Kutsutut tukisponsorit saavat sähköpostin.
       location:
         title: Sijainti
         description:

@@ -33,6 +33,8 @@ const IdeaMeta = ({ ideaId }: Props) => {
   const { data: idea } = useIdeaById(ideaId);
   const { data: ideaImages } = useIdeaImages(ideaId);
   const { data: author } = useUserById(
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     idea?.data.relationships?.author?.data?.id
   );
   const { data: project } = useProjectById(

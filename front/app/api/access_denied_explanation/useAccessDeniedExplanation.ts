@@ -30,7 +30,7 @@ const fetchAccessDeniedExplanation = (
 ) => {
   const { type, action } = authenticationContext;
 
-  if (type === 'initiative' || type === 'global' || type === 'follow') {
+  if (type === 'global' || type === 'follow') {
     return fetcher<AccessDeniedExplanationResponse>({
       path: `/permissions/${action}/access_denied_explanation`,
       action: 'get',

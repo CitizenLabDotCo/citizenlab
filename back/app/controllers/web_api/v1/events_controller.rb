@@ -7,7 +7,7 @@ class WebApi::V1::EventsController < ApplicationController
   skip_before_action :authenticate_user
 
   def index
-    scope = EventPolicy::Scope.new(current_user, Event, params[:attendee_id]).resolve
+    scope = EventPolicy::Scope.new(pundit_user, Event, params[:attendee_id]).resolve
     # Necessary because we instantiate the scope directly instead of using Pundit's
     # `policy_scope` method.
     skip_policy_scope
@@ -178,6 +178,8 @@ class WebApi::V1::EventsController < ApplicationController
   end
 
   def parse_date(date_str)
+    return nil unless date_str
+
     date_str = date_str.strip
     return nil if date_str.in?(['null', ''])
 
@@ -192,3 +194,5 @@ class WebApi::V1::EventsController < ApplicationController
     @sidefx ||= SideFxEventService.new
   end
 end
+
+WebApi::V1::EventsController.include(AggressiveCaching::Patches::WebApi::V1::EventsController)

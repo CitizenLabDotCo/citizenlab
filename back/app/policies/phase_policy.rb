@@ -1,34 +1,26 @@
 # frozen_string_literal: true
 
 class PhasePolicy < ApplicationPolicy
-  class Scope
-    attr_reader :user, :scope
-
-    def initialize(user, scope)
-      @user  = user
-      @scope = scope
-    end
-
+  class Scope < ApplicationPolicy::Scope
     def resolve
-      project_ids = Pundit.policy_scope(user, Project).pluck(:id)
-      scope.where(project: project_ids)
+      scope.where(project: scope_for(Project))
     end
   end
 
   def create?
-    ProjectPolicy.new(user, record.project).update?
+    policy_for(record.project).update?
   end
 
   def show?
-    ProjectPolicy.new(user, record.project).show?
+    policy_for(record.project).show?
   end
 
   def update?
-    ProjectPolicy.new(user, record.project).update?
+    policy_for(record.project).update?
   end
 
   def destroy?
-    ProjectPolicy.new(user, record.project).update?
+    policy_for(record.project).update?
   end
 
   def survey_results?
@@ -48,6 +40,6 @@ class PhasePolicy < ApplicationPolicy
   end
 
   def active_moderator?
-    ProjectPolicy.new(user, record.project).active_moderator?
+    policy_for(record.project).active_moderator?
   end
 end

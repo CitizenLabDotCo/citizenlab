@@ -34,6 +34,7 @@ export const project1: IProjectData = {
       large:
         'https://demo.stg.govocal.com/uploads/c7e20cb9-f253-4c0c-aea1-e6e3c23c04c7/project/header_bg/be3f645b-3e1d-4afc-b91b-d68c4dc0100b/large_header_bg.jpeg',
     },
+    header_bg_alt_text_multiloc: {},
     action_descriptors: {
       posting_idea: {
         enabled: true,
@@ -88,6 +89,7 @@ export const project1: IProjectData = {
     avatars_count: 8,
     participants_count: 8,
     uses_content_builder: false,
+    preview_token: 'fake-token-0123456789',
     baskets_count: 0,
     votes_count: 0,
   },
@@ -96,6 +98,12 @@ export const project1: IProjectData = {
       data: {
         id: 'bf9f26f1-678a-4af0-993c-cb1ebacca7f4',
         type: 'admin_publication',
+      },
+    },
+    current_phase: {
+      data: {
+        id: '123',
+        type: 'phase',
       },
     },
     project_images: {
@@ -169,6 +177,7 @@ export const project2: IProjectData = {
     header_bg: {
       large: null,
     },
+    header_bg_alt_text_multiloc: {},
     action_descriptors: {
       posting_idea: {
         enabled: true,
@@ -223,6 +232,7 @@ export const project2: IProjectData = {
     avatars_count: 6,
     participants_count: 6,
     uses_content_builder: false,
+    preview_token: 'fake-token-0123456789',
     baskets_count: 0,
     votes_count: 0,
   },
@@ -231,6 +241,12 @@ export const project2: IProjectData = {
       data: {
         id: '9512ba9a-2f7a-4e5b-9003-95c4b8e1367e',
         type: 'admin_publication',
+      },
+    },
+    current_phase: {
+      data: {
+        id: '123',
+        type: 'phase',
       },
     },
     project_images: {
@@ -307,6 +323,7 @@ const votingProject: IProject = {
       header_bg: {
         large: null,
       },
+      header_bg_alt_text_multiloc: {},
       action_descriptors: {
         posting_idea: {
           enabled: false,
@@ -361,6 +378,7 @@ const votingProject: IProject = {
       avatars_count: 2,
       participants_count: 2,
       uses_content_builder: true,
+      preview_token: 'fake-token-0123456789',
     },
     relationships: {
       admin_publication: {

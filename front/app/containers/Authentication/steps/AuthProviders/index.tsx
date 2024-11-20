@@ -1,6 +1,7 @@
 import React, { memo, useCallback } from 'react';
 
 import { Text } from '@citizenlab/cl2-component-library';
+import { useLocation, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -15,13 +16,13 @@ import FranceConnectButton from 'components/UI/FranceConnectButton';
 import Or from 'components/UI/Or';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import Link from 'utils/cl-router/Link';
 
 import TextButton from '../_components/TextButton';
 
 import AuthProviderButton, { TOnContinueFunction } from './AuthProviderButton';
 import ClaveUnicaExpandedAuthProviderButton from './ClaveUnicaExpandedAuthProviderButton';
 import messages from './messages';
-import { useLocation } from 'react-router-dom';
 
 const Container = styled.div`
   display: flex;
@@ -57,14 +58,30 @@ const AuthProviders = memo<Props>(
     const { pathname } = useLocation();
     const tenantSettings = tenant?.data.attributes.settings;
 
+    // Allows testing of specific SSO providers without showing to all users eg ?provider=keycloak
+    const [searchParams] = useSearchParams();
+    const providerForTest = searchParams.get('provider');
+
+    // To allow super admins to sign in with password when password login is disabled
+    const superAdmin = searchParams.get('super_admin') !== null;
+
+    // A hidden path that will show all methods inc any that are admin only
     const showAdminOnlyMethods = pathname.endsWith('/sign-in/admin');
 
-    const passwordLoginEnabled = useFeatureFlag({ name: 'password_login' });
+    // Show link to the above hidden path
+    const showAdminLoginLink =
+      flow === 'signin' &&
+      tenantSettings?.azure_ad_login?.visibility === 'link';
+
+    const passwordLoginEnabled =
+      useFeatureFlag({ name: 'password_login' }) || superAdmin;
     const googleLoginEnabled = useFeatureFlag({ name: 'google_login' });
     const facebookLoginEnabled = useFeatureFlag({ name: 'facebook_login' });
     const azureAdLoginEnabled =
       useFeatureFlag({ name: 'azure_ad_login' }) &&
-      (!tenantSettings?.azure_ad_login?.admin_only || showAdminOnlyMethods);
+      ((tenantSettings?.azure_ad_login?.visibility !== 'link' &&
+        tenantSettings?.azure_ad_login?.visibility !== 'hide') ||
+        showAdminOnlyMethods);
     const azureAdB2cLoginEnabled = useFeatureFlag({
       name: 'azure_ad_b2c_login',
     });
@@ -80,6 +97,9 @@ const AuthProviders = memo<Props>(
     const hoplrLoginEnabled = useFeatureFlag({
       name: 'hoplr_login',
     });
+    const idAustriaLoginEnabled = useFeatureFlag({
+      name: 'id_austria_login',
+    });
     const criiptoLoginEnabled = useFeatureFlag({
       name: 'criipto_login',
     });
@@ -87,6 +107,10 @@ const AuthProviders = memo<Props>(
     const nemlogInLoginEnabled = useFeatureFlag({
       name: 'nemlog_in_login',
     });
+    const keycloakLoginEnabled =
+      useFeatureFlag({
+        name: 'keycloak_login',
+      }) || providerForTest === 'keycloak';
 
     const azureProviderName =
       tenantSettings?.azure_ad_login?.login_mechanism_name;
@@ -111,7 +135,8 @@ const AuthProviders = memo<Props>(
 
     const isPasswordSigninOrSignupAllowed =
       passwordLoginEnabled &&
-      (flow === 'signin' ||
+      (flow === 'signin' || // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         (flow === 'signup' && tenantSettings?.password_login?.enable_signup));
 
     const showFCButton =
@@ -127,7 +152,9 @@ const AuthProviders = memo<Props>(
       claveUnicaLoginEnabled ||
       hoplrLoginEnabled ||
       criiptoLoginEnabled ||
-      nemlogInLoginEnabled;
+      keycloakLoginEnabled ||
+      nemlogInLoginEnabled ||
+      idAustriaLoginEnabled;
 
     return (
       <Container
@@ -187,6 +214,21 @@ const AuthProviders = memo<Props>(
           </StyledAuthProviderButton>
         )}
 
+        {idAustriaLoginEnabled && (
+          <StyledAuthProviderButton
+            icon="idaustria"
+            flow={flow}
+            authProvider="id_austria"
+            onContinue={onSelectAuthProvider}
+          >
+            <FormattedMessage
+              {...messages.continueWithLoginMechanism}
+              values={{
+                loginMechanismName: 'ID Austria',
+              }}
+            />
+          </StyledAuthProviderButton>
+        )}
         {criiptoLoginEnabled && (
           <StyledAuthProviderButton
             icon="mitid"
@@ -201,6 +243,22 @@ const AuthProviders = memo<Props>(
                   process.env.NODE_ENV === 'development'
                     ? 'MitID (Criipto)'
                     : 'MitID',
+              }}
+            />
+          </StyledAuthProviderButton>
+        )}
+
+        {keycloakLoginEnabled && (
+          <StyledAuthProviderButton
+            icon="idporten"
+            flow={flow}
+            authProvider="keycloak"
+            onContinue={onSelectAuthProvider}
+          >
+            <FormattedMessage
+              {...messages.continueWithLoginMechanism}
+              values={{
+                loginMechanismName: 'ID-Porten',
               }}
             />
           </StyledAuthProviderButton>
@@ -278,24 +336,40 @@ const AuthProviders = memo<Props>(
           </StyledAuthProviderButton>
         )}
 
-        <Text m="0">
-          <FormattedMessage
-            {...(flow === 'signup' ? messages.goToLogIn : messages.goToSignUp)}
-            values={{
-              goToOtherFlowLink: (
-                <TextButton
-                  id="e2e-goto-signup"
-                  onClick={handleGoToOtherFlow}
-                  className="link"
-                >
-                  {formatMessage(
-                    flow === 'signup' ? messages.logIn2 : messages.signUp2
-                  )}
-                </TextButton>
-              ),
-            }}
-          />
-        </Text>
+        {passwordLoginEnabled && (
+          <Text m="0">
+            <FormattedMessage
+              {...(flow === 'signup'
+                ? messages.goToLogIn
+                : messages.goToSignUp)}
+              values={{
+                goToOtherFlowLink: (
+                  <TextButton
+                    id="e2e-goto-signup"
+                    onClick={handleGoToOtherFlow}
+                    className="link"
+                  >
+                    {formatMessage(
+                      flow === 'signup' ? messages.logIn2 : messages.signUp2
+                    )}
+                  </TextButton>
+                ),
+              }}
+            />
+          </Text>
+        )}
+
+        {showAdminLoginLink && (
+          <Link to="/sign-in/admin">
+            <Text
+              fontSize="xs"
+              textDecoration="underline"
+              color="textSecondary"
+            >
+              <FormattedMessage {...messages.adminOptions} />
+            </Text>
+          </Link>
+        )}
       </Container>
     );
   }

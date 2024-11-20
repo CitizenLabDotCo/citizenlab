@@ -140,6 +140,8 @@ const CreateProjectFromTemplate = memo(
       (departments: string[]) => {
         trackEventByName(tracks.departmentFilterChanged, { departments });
         setDepartments(
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           departments && departments.length > 0 ? departments : null
         );
       },
@@ -148,6 +150,8 @@ const CreateProjectFromTemplate = memo(
 
     const handlePurposeFilterOnChange = useCallback((purposes: string[]) => {
       trackEventByName(tracks.purposeFilterChanged, { purposes });
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       setPurposes(purposes && purposes.length > 0 ? purposes : null);
     }, []);
 
@@ -157,6 +161,8 @@ const CreateProjectFromTemplate = memo(
           participationLevels,
         });
         setParticipationLevels(
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           participationLevels && participationLevels.length > 0
             ? participationLevels
             : null

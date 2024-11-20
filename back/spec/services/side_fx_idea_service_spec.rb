@@ -9,7 +9,6 @@ describe SideFxIdeaService do
   describe 'after_create' do
     it "logs a 'created' action activity job" do
       idea = create(:idea, author: user)
-
       expect { service.after_create(idea, user) }
         .to enqueue_job(LogActivityJob)
         .with(
@@ -23,17 +22,42 @@ describe SideFxIdeaService do
         .exactly(1).times
     end
 
-    it "logs a 'published' action job when publication_state is published" do
+    it "logs a 'submitted' action job when the publication_status is submitted" do
+      idea = create(:idea, publication_status: 'submitted', author: user)
+
+      expect { service.after_create(idea, user) }
+        .to enqueue_job(LogActivityJob)
+        .with(idea, 'submitted', user, idea.submitted_at.to_i, project_id: idea.project_id)
+        .exactly(1).times
+    end
+
+    it "logs a 'submitted' action job when the publication_status is published" do
       idea = create(:idea, publication_status: 'published', author: user)
 
       expect { service.after_create(idea, user) }
         .to enqueue_job(LogActivityJob)
-        .with(idea, 'published', user, idea.created_at.to_i, project_id: idea.project_id)
+        .with(idea, 'submitted', user, idea.submitted_at.to_i, project_id: idea.project_id)
+        .exactly(1).times
+    end
+
+    it "logs a 'published' action job when the publication_status is published" do
+      idea = create(:idea, publication_status: 'published', author: user)
+
+      expect { service.after_create(idea, user) }
+        .to enqueue_job(LogActivityJob)
+        .with(idea, 'published', user, idea.published_at.to_i, project_id: idea.project_id)
         .exactly(1).times
         .and enqueue_job(Seo::ScrapeFacebookJob).exactly(1).times
     end
 
-    it "doesn't log a 'published' action job when publication_state is draft" do
+    it "doesn't log a 'submitted' action job when the publication_status is draft" do
+      idea = create(:idea, publication_status: 'draft')
+      expect { service.after_create(idea, user) }
+        .not_to enqueue_job(LogActivityJob)
+        .with(idea, 'submitted', any_args)
+    end
+
+    it "doesn't log a 'published' action job when the publication_status is draft" do
       idea = create(:idea, publication_status: 'draft')
       expect { service.after_create(idea, user) }
         .not_to enqueue_job(LogActivityJob)
@@ -51,12 +75,77 @@ describe SideFxIdeaService do
 
       expect(user.follows.pluck(:followable_id)).to contain_exactly idea.id, project.id, folder.id
     end
+
+    it 'creates a cosponsorship' do
+      cosponsor = create(:user)
+      idea = create(:idea, cosponsor_ids: [cosponsor.id])
+
+      expect { service.after_create idea.reload, user }
+        .to enqueue_job(LogActivityJob)
+        .with(
+          idea.cosponsorships.first,
+          'created',
+          user,
+          idea.cosponsorships.first.created_at.to_i
+        )
+        .exactly(1).times
+    end
+
+    it 'sets the manual_votes_count of its phases' do
+      project = create(:project)
+      phase1, phase2 = create_list(:phase_sequence, 2, project: project)
+      create(:idea, manual_votes_amount: 2, project: project, phases: [phase1])
+      phase1.update_manual_votes_count!
+      idea = create(:idea, manual_votes_amount: 3, project: project, phases: [phase1, phase2])
+      service.after_create(idea, user)
+
+      expect(phase1.reload.manual_votes_count).to eq 5
+      expect(phase2.reload.manual_votes_count).to eq 3
+    end
   end
 
   describe 'after_update' do
-    it "logs a 'published' action job when publication_state goes from draft to published" do
+    it "logs a 'submitted' action job when the publication_status goes from draft to submitted" do
       idea = create(:idea, publication_status: 'draft', author: user)
-      idea.update(publication_status: 'published')
+      idea.update!(publication_status: 'submitted')
+
+      expect { service.after_update(idea, user) }
+        .to enqueue_job(LogActivityJob)
+        .with(idea, 'submitted', user, idea.submitted_at.to_i, project_id: idea.project_id)
+        .exactly(1).times
+    end
+
+    it "logs a 'submitted' action job when the publication_status goes from draft to published" do
+      idea = create(:idea, publication_status: 'draft', author: user)
+      idea.update!(publication_status: 'published')
+
+      expect { service.after_update(idea, user) }
+        .to enqueue_job(LogActivityJob)
+        .with(idea, 'submitted', user, idea.submitted_at.to_i, project_id: idea.project_id)
+        .exactly(1).times
+    end
+
+    it "doesn't log a 'submitted' action job when the publication_status goes from submitted to published" do
+      idea = create(:idea, publication_status: 'submitted', author: user)
+      idea.update!(publication_status: 'published')
+      expect { service.after_update(idea, user) }
+        .not_to enqueue_job(LogActivityJob)
+        .with(idea, 'submitted', any_args)
+    end
+
+    it "logs a 'published' action job when the publication_status goes from draft to published" do
+      idea = create(:idea, publication_status: 'draft', author: user)
+      idea.update!(publication_status: 'published')
+
+      expect { service.after_update(idea, user) }
+        .to enqueue_job(LogActivityJob)
+        .with(idea, 'published', user, idea.published_at.to_i, project_id: idea.project_id)
+        .exactly(1).times
+    end
+
+    it "logs a 'published' action job when the publication_status goes from submitted to published" do
+      idea = create(:idea, publication_status: 'submitted', author: user)
+      idea.update!(publication_status: 'published')
 
       expect { service.after_update(idea, user) }
         .to enqueue_job(LogActivityJob)
@@ -151,6 +240,66 @@ describe SideFxIdeaService do
           project_id: idea.project_id
         ).exactly(1).times
     end
+
+    it 'creates a cosponsorship when cosponsor_ids change' do
+      cosponsor = create(:user)
+
+      idea = create(:idea)
+      idea.update!(cosponsor_ids: [cosponsor.id])
+
+      expect { service.after_update(idea, user) }
+        .to enqueue_job(LogActivityJob)
+        .with(
+          idea.cosponsorships.first,
+          'created',
+          user,
+          idea.cosponsorships.first.created_at.to_i
+        ).exactly(1).times
+    end
+
+    it 'sets the manual_votes_count after changing the manual votes amount' do
+      phase = create(:phase)
+      idea = create(:idea, manual_votes_amount: 2, project: phase.project, phases: [phase])
+      phase.update_manual_votes_count!
+      idea.update!(manual_votes_amount: 7)
+      service.after_update(idea, user)
+
+      expect(phase.reload.manual_votes_count).to eq 7
+    end
+
+    it 'sets the manual_votes_count after clearing the manual votes amount' do
+      phase = create(:phase)
+      idea = create(:idea, manual_votes_amount: 2, project: phase.project, phases: [phase])
+      phase.update_manual_votes_count!
+      idea.update!(manual_votes_amount: nil)
+      service.after_update(idea, user)
+
+      expect(phase.reload.manual_votes_count).to eq 0
+    end
+
+    it 'sets the manual_votes_count after adding a phase' do
+      phase = create(:phase)
+      create(:idea, manual_votes_amount: 2, project: phase.project, phases: [phase])
+      idea = create(:idea, manual_votes_amount: 1, project: phase.project, phases: [])
+      phase.update_manual_votes_count!
+      service.before_update(idea, user)
+      idea.update!(phase_ids: [phase.id])
+      service.after_update(idea, user)
+
+      expect(phase.reload.manual_votes_count).to eq 3
+    end
+
+    it 'sets the manual_votes_count after removing a phase' do
+      phase = create(:phase)
+      create(:idea, manual_votes_amount: 2, project: phase.project, phases: [phase])
+      idea = create(:idea, manual_votes_amount: 1, project: phase.project, phases: [phase])
+      phase.update_manual_votes_count!
+      service.before_update(idea, user)
+      idea.update!(phase_ids: [])
+      service.after_update(idea, user)
+
+      expect(phase.reload.manual_votes_count).to eq 2
+    end
   end
 
   describe 'after_destroy' do
@@ -161,6 +310,17 @@ describe SideFxIdeaService do
         expect { service.after_destroy(frozen_idea, user) }
           .to enqueue_job(LogActivityJob).exactly(1).times
       end
+    end
+
+    it 'sets the manual_votes_count of its phases' do
+      phase = create(:phase)
+      create(:idea, manual_votes_amount: 2, project: phase.project, phases: [phase])
+      idea = create(:idea, manual_votes_amount: 3, project: phase.project, phases: [phase])
+      phase.update_manual_votes_count!
+      idea.destroy!
+      service.after_destroy(idea, user)
+
+      expect(phase.reload.manual_votes_count).to eq 2
     end
   end
 end

@@ -4,7 +4,6 @@ import {
   Box,
   Text,
   colors,
-  IconButton,
   TooltipContentWrapper,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
@@ -22,6 +21,8 @@ import { useReportContext } from 'containers/Admin/reporting/context/ReportConte
 
 import { CONTENT_BUILDER_Z_INDEX } from 'components/admin/ContentBuilder/constants';
 import Container from 'components/admin/ContentBuilder/TopBar/Container';
+import GoBackButton from 'components/admin/ContentBuilder/TopBar/GoBackButton';
+import LocaleSelect from 'components/admin/ContentBuilder/TopBar/LocaleSelect';
 import SaveButton from 'components/admin/ContentBuilder/TopBar/SaveButton';
 import Button from 'components/UI/Button';
 
@@ -33,7 +34,6 @@ import { PROJECT_TEMPLATE_MIN_NUMBER_OF_NODES_BEFORE_AUTOSAVE } from '../Templat
 import { View } from '../ViewContainer/typings';
 import ViewPicker from '../ViewContainer/ViewPicker';
 
-import LocaleSelect from './LocaleSelect';
 import messages from './messages';
 import QuitModal from './QuitModal';
 import ReportTitle from './ReportTitle';
@@ -145,9 +145,13 @@ const ContentBuilderTopBar = ({
 
     const interval = setInterval(() => {
       const nodes = query.getSerializedNodes();
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       const firstNode = nodes.ROOT?.nodes[0];
       if (!firstNode) return;
 
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       const type = nodes?.[firstNode].type;
       const resolvedName =
         typeof type === 'object' ? type.resolvedName : undefined;
@@ -214,16 +218,7 @@ const ContentBuilderTopBar = ({
         onCloseModal={closeModal}
         onGoBack={doGoBack}
       />
-      <IconButton
-        iconName="arrow-left"
-        onClick={goBack}
-        buttonType="button"
-        iconColor={colors.textSecondary}
-        iconColorOnHover={colors.primary}
-        iconWidth="20px"
-        a11y_buttonActionMessage={formatMessage(messages.goBackButtonMessage)}
-        ml="8px"
-      />
+      <GoBackButton onClick={goBack} />
       <Box display="flex" p="15px" pl="8px" flexGrow={1} alignItems="center">
         <Box flexGrow={2}>
           <ReportTitle reportId={reportId} />
@@ -272,16 +267,10 @@ const ContentBuilderTopBar = ({
           </Tooltip>
         </Box>
         <SaveButton
-          disabled={disableSave}
-          processing={isLoading}
-          bgColor={saved ? colors.success : undefined}
-          icon={saved ? 'check' : undefined}
-          onClick={handleSave}
-          fontSize="14px"
-          ml="8px"
-          px="12px"
-          pb="3px"
-          pt="4px"
+          isDisabled={disableSave}
+          isLoading={isLoading}
+          isSaved={saved}
+          onSave={handleSave}
         />
       </Box>
     </Container>

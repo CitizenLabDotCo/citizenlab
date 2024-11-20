@@ -31,6 +31,8 @@ export default class MultipleSelect extends React.PureComponent<Props, State> {
   }
 
   handleOnChange = (newValue: IOption[]) => {
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     this.props.onChange(newValue || this.emptyArray);
   };
 

@@ -74,7 +74,6 @@ const ProjectsIndex = () => {
               showTitle={false}
               showSearch={true}
               layout="threecolumns"
-              publicationStatusFilter={['published', 'archived']}
             />
           </StyledContentContainer>
           <CityLogoSection />

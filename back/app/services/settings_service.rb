@@ -67,14 +67,8 @@ class SettingsService
     res
   end
 
-  def remove_private_settings(settings, schema)
-    res = settings.deep_dup
-    schema['properties'].each do |feature, feature_schema|
-      feature_schema['properties'].each do |setting, setting_schema|
-        res[feature]&.delete(setting) if setting_schema['private']
-      end
-    end
-    res
+  def format_for_front_end(settings, schema)
+    remove_private_settings(settings, schema)
   end
 
   def activate_feature!(feature, config: nil, settings: {})
@@ -112,7 +106,19 @@ class SettingsService
 
   private
 
+  def remove_private_settings(settings, schema)
+    res = settings.deep_dup
+    schema['properties'].each do |feature, feature_schema|
+      feature_schema['properties'].each do |setting, setting_schema|
+        res[feature]&.delete(setting) if setting_schema['private']
+      end
+    end
+    res
+  end
+
   def default_setting(schema, feature, setting)
     schema.dig('properties', feature, 'properties', setting, 'default')
   end
 end
+
+SettingsService.prepend(Verification::Patches::SettingsService)

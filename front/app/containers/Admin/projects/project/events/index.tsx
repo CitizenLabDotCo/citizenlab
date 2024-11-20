@@ -96,7 +96,6 @@ const AdminProjectEventsIndex = () => {
           >
             <FormattedMessage {...messages.addEventButton} />
           </AddButton>
-
           <Box maxWidth="600px" mt="24px">
             <Warning>
               <FormattedMessage
@@ -129,6 +128,8 @@ const AdminProjectEventsIndex = () => {
             </Warning>
           </Box>
 
+          {/* TODO: Fix this the next time the file is edited. */}
+          {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
           {events && events?.data.length > 0 && (
             <StyledList>
               <>

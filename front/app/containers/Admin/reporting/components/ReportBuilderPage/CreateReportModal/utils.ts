@@ -1,6 +1,6 @@
 import { RouteType } from 'routes';
 
-import { Dates } from 'components/admin/DateRangePicker';
+import { Dates } from 'components/admin/DatePickers/DateRangePicker';
 
 import { Template } from './typings';
 

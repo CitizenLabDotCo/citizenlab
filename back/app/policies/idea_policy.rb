@@ -1,29 +1,42 @@
 # frozen_string_literal: true
 
 class IdeaPolicy < ApplicationPolicy
-  EXCLUDED_REASONS_FOR_UPDATE = %w[posting_disabled posting_limited_max_reached].freeze
-  class Scope
-    attr_reader :user, :scope
-
-    def initialize(user, scope)
-      @user = user
-      @scope = scope
-    end
-
+  class Scope < ApplicationPolicy::Scope
     def resolve
+      project_scope = scope_for(Project)
+
       if user&.admin?
         scope.all
+      elsif user&.project_or_folder_moderator? # We do this as a separate logic branch to avoid the moderatable_projects call for normal users
+        scope
+          .submitted_or_published.where(author: user)
+          .or(scope.published.where_pmethod(&:supports_public_visibility?))
+          .or(scope.where(id: sponsored_ideas))
+          .or(scope.where(project: UserRoleService.new.moderatable_projects(user)))
+          .where(project: project_scope)
       elsif user
         scope
           .submitted_or_published.where(author: user)
-          .or(scope.published)
-          .where(project: Pundit.policy_scope(user, Project))
+          .or(scope.published.where_pmethod(&:supports_public_visibility?))
+          .or(scope.where(id: sponsored_ideas))
+          .where(project: project_scope)
       else
         scope
           .left_outer_joins(project: [:admin_publication])
           .published
-          .where(projects: { visible_to: 'public', admin_publications: { publication_status: %w[published archived] } })
+          .where_pmethod(&:supports_public_visibility?)
+          .where(projects: project_scope)
       end
+    end
+
+    private
+
+    def sponsored_ideas
+      # Small optimization, where we check the feature flag to avoid the extra
+      # query, since this feature is turned off way more often than turned on
+      return [] unless AppConfiguration.instance.feature_activated?('input_cosponsorship')
+
+      Idea.joins(:cosponsorships).where(cosponsorships: { user_id: user.id })
     end
   end
 
@@ -44,14 +57,17 @@ class IdeaPolicy < ApplicationPolicy
     reason = Permissions::ProjectPermissionsService.new(record.project, user).denied_reason_for_action 'posting_idea'
     raise_not_authorized(reason) if reason
 
-    (!user || owner?) && ProjectPolicy.new(user, record.project).show?
+    (!user || owner?) && policy_for(record.project).show?
   end
 
   def show?
-    return false if !(record.draft? || record.participation_method_on_creation.supports_public_visibility?)
-
-    project_show = ProjectPolicy.new(user, record.project).show?
-    return true if project_show && %w[draft published].include?(record.publication_status)
+    if record.participation_method_on_creation.supports_public_visibility?
+      project_show = policy_for(record.project).show?
+      return true if project_show && %w[draft published].include?(record.publication_status)
+      return true if record.cosponsors.include?(user)
+    elsif record.draft?
+      return true
+    end
 
     active? && (owner? || UserRoleService.new.can_moderate_project?(record.project, user))
   end
@@ -67,16 +83,12 @@ class IdeaPolicy < ApplicationPolicy
   def update?
     return false if !record.participation_method_on_creation.supports_edits_after_publication? && record.published? && !record.will_be_published?
     return true if (record.draft? && owner?) || (user && UserRoleService.new.can_moderate_project?(record.project, user))
-    return false unless active? && owner? && ProjectPolicy.new(user, record.project).show?
-    return false if record.participation_method_on_creation.use_reactions_as_votes? && record.reactions.where.not(user_id: user.id).exists?
-    return false if record.creation_phase&.prescreening_enabled && record.published?
+    return false if !active? || !owner?
 
-    posting_denied_reason = Permissions::ProjectPermissionsService.new(record.project, user).denied_reason_for_action 'posting_idea'
+    permission_action = record.will_be_published? ? 'posting_idea' : 'editing_idea'
+    posting_denied_reason = Permissions::IdeaPermissionsService.new(record, user).denied_reason_for_action permission_action
+    raise_not_authorized(posting_denied_reason) if posting_denied_reason
 
-    if posting_denied_reason
-      ignored_reasons = record.will_be_published? ? [] : EXCLUDED_REASONS_FOR_UPDATE
-      raise_not_authorized(posting_denied_reason) unless posting_denied_reason.in?(ignored_reasons)
-    end
     true
   end
 

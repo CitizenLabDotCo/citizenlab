@@ -13,6 +13,7 @@ module EmailCampaigns
         comment: comment,
         project_id: comment.post.project_id
       )
+      comment.post.phases.first.update!(input_term: 'question')
       activity = Activity.new(item: notification, action: 'created')
 
       campaign = EmailCampaigns::Campaigns::CommentOnIdeaYouFollow.first

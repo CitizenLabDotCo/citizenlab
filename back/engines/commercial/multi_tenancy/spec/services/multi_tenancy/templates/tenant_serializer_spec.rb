@@ -300,5 +300,27 @@ describe MultiTenancy::Templates::TenantSerializer do
         expect(BasketsIdea.all.pluck(:votes)).to match_array([1, 2])
       end
     end
+
+    it 'adds a unique ID to SSO users with no email address' do
+      create(:user, email: nil, identities: [create(:identity, provider: 'fake_sso')])
+      template = tenant_serializer.run(deserializer_format: true)
+
+      # Main user
+      expect(template['models']['user'].first['email']).not_to be_nil
+      expect(template['models']['user'].first['unique_code']).to be_nil
+
+      # SSO user added above
+      expect(template['models']['user'].last['email']).to be_nil
+      expect(template['models']['user'].last['unique_code']).not_to be_nil
+    end
+
+    it 'changes "verified" permissions to "user" permissions' do
+      SettingsService.new.activate_feature! 'verification', settings: { verification_methods: [{ name: 'fake_sso' }] }
+      create(:permission, :by_admins_moderators)
+      create(:permission, :by_verified)
+      template = tenant_serializer.run(deserializer_format: true)
+      expect(template['models']['permission'].first['permitted_by']).to eq 'admins_moderators' # Not changed
+      expect(template['models']['permission'].last['permitted_by']).to eq 'users' # Changed
+    end
   end
 end

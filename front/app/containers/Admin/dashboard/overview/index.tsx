@@ -151,14 +151,7 @@ const OverviewDashboard = () => {
             hideParticipationRate
           />
         </Column>
-        <Title
-          ml="12px"
-          mt="40px"
-          width="100%"
-          variant="h2"
-          color="primary"
-          fontWeight="normal"
-        >
+        <Title ml="12px" mt="40px" width="100%" variant="h2" color="primary">
           {formatMessage(overviewMessages.projectsAndParticipation)}
         </Title>
         <Column>
@@ -189,13 +182,6 @@ const OverviewDashboard = () => {
           />
         </Column>
         <Column>
-          <Outlet
-            id="app.containers.Admin.dashboard.summary.proposals"
-            projectId={currentProjectFilter}
-            startAtMoment={startAtMoment}
-            endAtMoment={endAtMoment}
-            resolution={resolution}
-          />
           <SelectableResourceByProjectChart
             className="dynamicHeight fullWidth e2e-resource-by-project-chart"
             onResourceByProjectChange={onResourceByProjectChange}
@@ -210,14 +196,7 @@ const OverviewDashboard = () => {
           />
         </Column>
         <>
-          <Title
-            ml="12px"
-            mt="40px"
-            width="100%"
-            variant="h2"
-            color="primary"
-            fontWeight="normal"
-          >
+          <Title ml="12px" mt="40px" width="100%" variant="h2" color="primary">
             {formatMessage(overviewMessages.management)}
           </Title>
           <Column>

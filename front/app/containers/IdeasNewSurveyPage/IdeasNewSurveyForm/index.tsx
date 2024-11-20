@@ -128,12 +128,16 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
         ideaFormMessages[
           `ajv_error_${uiSchema?.options?.inputTerm}_${
             getFieldNameFromPath(error.instancePath) ||
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             error?.params?.missingProperty
           }_${error.keyword}`
         ] ||
         ideaFormMessages[
           `ajv_error_${
             getFieldNameFromPath(error.instancePath) ||
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             error?.params?.missingProperty
           }_${error.keyword}`
         ] ||
@@ -279,9 +283,15 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
     return `${dynamicHeight}px`;
   }
 
+  if (!phase) {
+    return null;
+  }
+
   return (
     <>
-      <IdeasNewSurveyMeta />
+      <IdeasNewSurveyMeta
+        surveyTitle={localize(phase.attributes.native_survey_title_multiloc)}
+      />
       <Box
         w="100%"
         bgColor={colors.grey100}
@@ -296,7 +306,7 @@ const IdeasNewSurveyForm = ({ project, phaseId }: Props) => {
           maxWidth={usingMapView ? '1100px' : '700px'}
         >
           <SurveyHeading
-            titleText={localize(phase?.attributes.native_survey_title_multiloc)}
+            titleText={localize(phase.attributes.native_survey_title_multiloc)}
             phaseId={phaseId}
           />
         </Box>

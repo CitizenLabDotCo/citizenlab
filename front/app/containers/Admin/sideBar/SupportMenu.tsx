@@ -10,7 +10,11 @@ import {
 import { RouteType } from 'routes';
 import { Popup } from 'semantic-ui-react';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import useAuthUser from 'api/me/useAuthUser';
+
 import { useIntl } from 'utils/cl-intl';
+import { isAdmin } from 'utils/permissions/roles';
 
 import messages from './messages';
 import { ItemMenu, StyledBox } from './styles';
@@ -19,6 +23,11 @@ export const SupportMenu = () => {
   const { formatMessage } = useIntl();
   const isSmallerThanPhone = useBreakpoint('tablet');
   const iconDivRef = useRef<HTMLDivElement | null>(null);
+  const { data: authUser } = useAuthUser();
+  const { data: tenant } = useAppConfiguration();
+
+  const customerPortalUrl =
+    tenant?.data.attributes.settings.core.customer_portal_url;
 
   return (
     <Popup
@@ -87,18 +96,6 @@ export const SupportMenu = () => {
           </Box>
         </ItemMenu>
         <ItemMenu
-          linkTo={formatMessage(messages.linkToAcademy) as RouteType}
-          buttonStyle="text"
-          openLinkInNewTab
-        >
-          <Box display="flex" justifyContent="space-between" w="100%">
-            <Text my="0px" color="coolGrey600">
-              {formatMessage({ ...messages.academy })}
-            </Text>
-            <Icon name="academy" fill={colors.grey600} />
-          </Box>
-        </ItemMenu>
-        <ItemMenu
           linkTo={formatMessage(messages.linkToCommunityPlatform) as RouteType}
           buttonStyle="text"
           openLinkInNewTab
@@ -110,6 +107,20 @@ export const SupportMenu = () => {
             <Icon name="community" fill={colors.grey600} />
           </Box>
         </ItemMenu>
+        {customerPortalUrl && isAdmin(authUser) && (
+          <ItemMenu
+            linkTo={customerPortalUrl}
+            buttonStyle="text"
+            openLinkInNewTab
+          >
+            <Box display="flex" justifyContent="space-between" w="100%">
+              <Text my="0px" color="coolGrey600">
+                {formatMessage({ ...messages.customerPortal })}
+              </Text>
+              <Icon name="users" fill={colors.grey600} />
+            </Box>
+          </ItemMenu>
+        )}
       </Box>
     </Popup>
   );

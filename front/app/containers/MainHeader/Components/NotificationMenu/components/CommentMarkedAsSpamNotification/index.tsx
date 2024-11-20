@@ -1,7 +1,5 @@
 import React, { memo } from 'react';
 
-import { RouteType } from 'routes';
-
 import { ICommentMarkedAsSpamNotificationData } from 'api/notifications/types';
 
 import T from 'components/T';
@@ -20,17 +18,6 @@ interface Props {
   notification: ICommentMarkedAsSpamNotificationData;
 }
 
-const mapPostTypeToLink = (
-  notification: ICommentMarkedAsSpamNotificationData
-): RouteType => {
-  switch (notification.attributes.post_type) {
-    case 'Idea':
-      return `/ideas/${notification.attributes.post_slug}`;
-    case 'Initiative':
-      return `/initiatives/${notification.attributes.post_slug}`;
-  }
-};
-
 const CommentMarkedAsSpamNotification = memo<Props>((props) => {
   const { notification } = props;
 
@@ -40,7 +27,7 @@ const CommentMarkedAsSpamNotification = memo<Props>((props) => {
 
   return (
     <NotificationWrapper
-      linkTo={mapPostTypeToLink(notification)}
+      linkTo={`/ideas/${notification.attributes.post_slug}`}
       timing={notification.attributes.created_at}
       icon="comments"
       isRead={!!notification.attributes.read_at}

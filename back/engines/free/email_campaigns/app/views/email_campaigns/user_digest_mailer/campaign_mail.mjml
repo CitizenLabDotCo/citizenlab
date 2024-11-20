@@ -40,12 +40,12 @@
     <mj-text padding="0 25px">
       <h2>
         <% if event.top_ideas.present? %>
-          <%= format_message('trending_ideas') %>
+          <%= format_message('trending_title') %>
         <% end %>
       </h2>
       <p>
         <% if event.top_ideas.present? %>
-          <%= format_message("trending_ideas_text") %>
+          <%= format_message("trending_text") %>
         <% end %>
       </p>
     </mj-text>
@@ -111,123 +111,27 @@
   </mj-wrapper>
 <mj-raw><% end %></mj-raw>
 
-<!-- New initiatives -->
-<mj-section padding="20px 25px 30px">
-  <mj-column>
-    <mj-text>
-      <h2>
-        <% if event.new_initiatives.present? %>
-          <%= format_message('title_proposals') %>
-        <% end %>
-      </h2>
-      <p>
-        <%  if event.new_initiatives.present? %>
-          <%= format_message('proposals_started_text') %>
-        <% end %>
-      </p>
-    </mj-text>
-
-    <mj-raw><% event.new_initiatives.each do |new_initiative| %></mj-raw>
-      <mj-table cellpadding="15" padding-top="20px">
-          <% @diff_days = ((Time.now - Time.parse(new_initiative.published_at)) / 1.day) %>
-
-          <tr style="border:1px solid #ecedee; background-color: #FFFFFF">
-            <td class="hide-on-mobile" style="width: 80px;">
-              <span style="font-size: 24px; font-weight: 700; color: rgb(111, 119, 125);">
-                <img width="96px" src="<%= new_initiative.images.first&.versions&.small %>">
-              </span>
-            </td>
-            <td width="200" style="text-align: left;">
-              <a style="font-size: 14px; font-weight: 300; color: #000; text-decoration: none;" href="<%= new_initiative.url %>">
-                <%= localize_for_recipient(new_initiative.title_multiloc).first(80) %>
-              </a>
-              <br/>
-              <span style="font-size: 12px; font-weight: 300; color: rgb(111, 119, 125)">
-                <% if @diff_days < 1 %>
-                  <%= format_message('today_by_author', values: {author: new_initiative.author_name}) %>
-                <% elsif @diff_days < 2 %>
-                  <%= format_message('yesterday_by_author', values: {author: new_initiative.author_name}) %>
-                <% else %>
-                  <%= format_message('x_days_ago_by_author', values: {x: @diff_days.round, author: new_initiative.author_name}) %>
-                <% end %>
-              </span>
-            </td>
-            <td style="width: 40px;">
-              <span style="font-size: 24px; font-weight: 700; color: rgb(111, 119, 125);">
-                <img width="18px" src="https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/icons/icon_thumb_up.png" alt="Thumbs up">
-              </span>
-              <span style="font-size: 14px; font-weight: 700;"><%= new_initiative.likes_count %></span>
-            </td>
-            <td style="width: 40px">
-              <span style="font-size: 16px; font-weight: 700; color: rgb(111, 119, 125);">
-                <img width="18px" src="https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/icons/icon_comment.png" alt="Comment">
-              </span>
-              <span style="font-size: 14px; font-weight: 700;"><%= new_initiative.comments_count %></span>
-            </td>
-          </tr>
-        <mj-text>&nbsp;</mj-text>
-      </mj-table>
-    <mj-raw><% end %></mj-raw>
-  </mj-column>
-</mj-section>
-
 <!-- Proposals that reached threshold -->
 <mj-section padding="0 25px 30px">
   <mj-column>
     <mj-text>
       <h2>
-        <% if event.successful_initiatives.present? %>
-          <%= format_message('title_successful_proposals') %>
+        <% if event.successful_proposals.present? %>
+          <%= format_message('successful_proposals_title') %>
         <% end %>
       </h2>
       <p>
-        <% if event.successful_initiatives.present? %>
+        <% if event.successful_proposals.present? %>
           <%= format_message('successful_proposals_text') %>
         <% end %>
       </p>
     </mj-text>
 
-    <mj-raw><% event.successful_initiatives.each do |succesful_initiative| %></mj-raw>
-      <mj-table cellpadding="15" padding-top="20px">
-          <% @diff_days = ((Time.now - Time.parse(succesful_initiative.published_at)) / 1.day) %>
-
-          <tr style="border:1px solid #ecedee; background-color: #FFFFFF">
-            <td class="hide-on-mobile" style="width: 80px;">
-              <span style="font-size: 24px; font-weight: 700; color: rgb(111, 119, 125);">
-                <img width="96px" src="<%= succesful_initiative.images.first&.versions&.small %>">
-              </span>
-            </td>
-            <td width="200" style="text-align: left;">
-              <a style="font-size: 14px; font-weight: 300; color: #000; text-decoration: none;" href="<%= succesful_initiative.url %>">
-                <%= localize_for_recipient(succesful_initiative.title_multiloc).first(80) %>
-              </a>
-              <br/>
-              <span style="font-size: 12px; font-weight: 300; color: rgb(111, 119, 125)">
-                <% if @diff_days < 1 %>
-                  <%= format_message('today_by_author', values: {author: succesful_initiative.author_name}) %>
-                <%  elsif @diff_days < 2 %>
-                  <%= format_message('yesterday_by_author', values: {author: succesful_initiative.author_name}) %>
-                <%  else %>
-                  <%= format_message('x_days_ago_by_author',  values: {x: @diff_days.round, author: succesful_initiative.author_name}) %>
-                <% end %>
-              </span>
-            </td>
-            <td style="width: 40px;">
-              <span style="font-size: 24px; font-weight: 700; color: rgb(111, 119, 125);">
-                <img width="18px" src="https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/icons/icon_thumb_up.png" alt="Thumbs up">
-              </span>
-              <span style="font-size: 14px; font-weight: 700;"><%= succesful_initiative.likes_count %></span>
-            </td>
-            <td style="width: 40px">
-              <span style="font-size: 16px; font-weight: 700; color: rgb(111, 119, 125);">
-                <img width="18px" src="https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/icons/icon_comment.png" alt="Comment">
-              </span>
-              <span style="font-size: 14px; font-weight: 700;"><%= succesful_initiative.comments_count %></span>
-            </td>
-          </tr>
-        <mj-text>&nbsp;</mj-text>
-      </mj-table>
-    <mj-raw><% end %></mj-raw>
+    <mj-table cellpadding="15">
+      <mj-raw><% event.successful_proposals.each do |serialized_proposal| %></mj-raw>
+        <%= render 'email_campaigns/ideas/idea-minimal', serialized_idea: serialized_proposal %>
+      <mj-raw><% end %></mj-raw>
+    </mj-table>
   </mj-column>
 </mj-section>
 

@@ -23,7 +23,8 @@ namespace :cl2_back do
           maximum_admins_number: 2,
           maximum_moderators_number: 2,
           additional_admins_number: 2,
-          additional_moderators_number: 1
+          additional_moderators_number: 1,
+          allow_sharing: true
         },
         maps: {
           enabled: true,
@@ -235,6 +236,10 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        project_preview_link: {
+          enabled: true,
+          allowed: true
+        },
         project_description_builder: {
           enabled: true,
           allowed: true
@@ -260,10 +265,6 @@ namespace :cl2_back do
           allowed: true
         },
         input_form_custom_fields: {
-          enabled: true,
-          allowed: true
-        },
-        input_form_mapping_question: {
           enabled: true,
           allowed: true
         },

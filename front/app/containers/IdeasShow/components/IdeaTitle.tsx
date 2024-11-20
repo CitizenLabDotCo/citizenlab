@@ -40,12 +40,15 @@ const IdeaTitle = ({ idea, projectId, translateButtonClicked }: Props) => {
 
   return (
     <IdeaHeader id="e2e-idea-title">
-      <Title
-        postType="idea"
-        postId={idea.data.id}
-        title={ideaTitle}
-        translateButtonClicked={translateButtonClicked}
-      />
+      <div aria-live="polite">
+        {ideaTitle && (
+          <Title
+            postId={idea.data.id}
+            title={ideaTitle}
+            translateButtonClicked={translateButtonClicked}
+          />
+        )}
+      </div>
       <Box ml="30px">
         <IdeaMoreActions idea={idea.data} projectId={projectId} />
       </Box>

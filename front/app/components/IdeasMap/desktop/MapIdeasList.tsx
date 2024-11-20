@@ -14,12 +14,7 @@ import useIdeaMarkers from 'api/idea_markers/useIdeaMarkers';
 import usePhase from 'api/phases/usePhase';
 import { ideaDefaultSortMethodFallback } from 'api/phases/utils';
 
-import useLocale from 'hooks/useLocale';
-
-import SelectSort, {
-  Sort,
-} from 'components/IdeaCards/shared/Filters/SortFilterDropdown';
-import TopicFilterDropdown from 'components/IdeaCards/shared/Filters/TopicFilterDropdown';
+import { Sort } from 'components/IdeaCards/shared/Filters/SortFilterDropdown';
 import Centerer from 'components/UI/Centerer';
 import SearchInput from 'components/UI/SearchInput';
 
@@ -27,7 +22,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import { isNilOrError } from 'utils/helperUtils';
-import { isFieldEnabled } from 'utils/projectUtils';
 
 import IdeaMapCard from '../IdeaMapCard';
 import messages from '../messages';
@@ -45,12 +39,6 @@ const Header = styled.div`
   align-items: stretch;
   padding: 20px;
   border-bottom: solid 1px #ccc;
-`;
-
-const DropdownFilters = styled.div`
-  display: flex;
-  align-items: center;
-  margin-bottom: 20px;
 `;
 
 const StyledSearchInput = styled(SearchInput)`
@@ -114,7 +102,6 @@ interface Props {
 
 const MapIdeasList = memo<Props>(
   ({ projectId, phaseId, className, onSelectIdea }) => {
-    const locale = useLocale();
     const [searchParams] = useSearchParams();
 
     const { data: ideaCustomFieldsSchema } = useIdeaJsonFormSchema({
@@ -143,49 +130,19 @@ const MapIdeasList = memo<Props>(
       updateSearchParams({ search });
     }, []);
 
-    const handleSortOnChange = useCallback((sort: Sort) => {
-      updateSearchParams({ sort });
-    }, []);
-
-    const handleTopicsOnChange = useCallback((topics: string[]) => {
-      topics.length === 0
-        ? updateSearchParams({ topics: undefined })
-        : updateSearchParams({ topics });
-    }, []);
-
     const isFiltered = (search && search.length > 0) || topics.length > 0;
 
     if (isNilOrError(ideaCustomFieldsSchema)) return null;
 
     const methodConfig =
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       phase && getMethodConfig(phase.data.attributes?.participation_method);
-
-    const topicsEnabled = isFieldEnabled(
-      'topic_ids',
-      ideaCustomFieldsSchema.data.attributes,
-      locale
-    );
 
     return (
       <Container className={className || ''}>
         {methodConfig?.showIdeaFilters && (
           <Header>
-            <DropdownFilters>
-              <SelectSort
-                value={sort}
-                onChange={handleSortOnChange}
-                alignment="left"
-              />
-              {topicsEnabled && (
-                <TopicFilterDropdown
-                  selectedTopicIds={topics}
-                  onChange={handleTopicsOnChange}
-                  alignment="left"
-                  projectId={projectId}
-                />
-              )}
-            </DropdownFilters>
-
             <StyledSearchInput
               defaultValue={search ?? undefined}
               onChange={handleSearchOnChange}
@@ -204,7 +161,6 @@ const MapIdeasList = memo<Props>(
               <Spinner />
             </Centerer>
           )}
-
           {ideaMarkers &&
             ideaMarkers.data.length > 0 &&
             ideaMarkers.data.map((ideaMarker) => (
@@ -217,6 +173,8 @@ const MapIdeasList = memo<Props>(
               />
             ))}
 
+          {/* TODO: Fix this the next time the file is edited. */}
+          {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
           {(ideaMarkers === null || ideaMarkers?.data.length === 0) && (
             <EmptyContainer>
               <IdeaIcon ariaHidden name="idea" />

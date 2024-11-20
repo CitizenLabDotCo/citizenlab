@@ -1,19 +1,12 @@
 import React, { useState, useEffect } from 'react';
 
-import {
-  Box,
-  Text,
-  colors,
-  useBreakpoint,
-  Spinner,
-} from '@citizenlab/cl2-component-library';
+import { Box, Text, colors, Spinner } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
 
 import { FollowableObject } from 'api/follow_unfollow/types';
 import useFollowers from 'api/follow_unfollow/useFollowers';
 
 import IdeaCard from 'components/IdeaCard';
-import InitiativeCard from 'components/InitiativeCard';
 import ProjectFolderCard from 'components/ProjectAndFolderCards/components/ProjectFolderCard';
 import ProjectCard from 'components/ProjectCard';
 import Button from 'components/UI/Button';
@@ -37,7 +30,6 @@ const UserFollowingList = ({ value }: Props) => {
   } = useFollowers({
     followableObject: value,
   });
-  const isSmallerThanPhone = useBreakpoint('phone');
   const { formatMessage } = useIntl();
 
   const theme = useTheme();
@@ -80,24 +72,6 @@ const UserFollowingList = ({ value }: Props) => {
                       showFollowButton
                     />
                   </Box>
-                </Box>
-              );
-            } else if (
-              follower.relationships.followable.data.type === 'initiative'
-            ) {
-              return (
-                <Box
-                  key={follower.id}
-                  display="flex"
-                  flexGrow={0}
-                  w={
-                    isSmallerThanPhone ? '100%' : 'calc(100% * (1 / 3) - 26px)'
-                  }
-                >
-                  <InitiativeCard
-                    initiativeId={follower.relationships.followable.data.id}
-                    showFollowButton
-                  />
                 </Box>
               );
             } else if (
