@@ -36,6 +36,11 @@ const SortingBox = ({ handleSortOnChange, phaseId }: SortingBoxProps) => {
           isSelected={currentSortType === 'popular'}
         />
         <SortTypeButton
+          sortType="comments_count"
+          handleSortOnChange={handleSortOnChange}
+          isSelected={currentSortType === 'comments_count'}
+        />
+        <SortTypeButton
           sortType="trending"
           handleSortOnChange={handleSortOnChange}
           isSelected={currentSortType === 'trending'}

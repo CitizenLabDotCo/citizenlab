@@ -11,6 +11,8 @@ export const getLabelForSortingOption = (
   switch (sortType) {
     case 'trending':
       return messages.trending;
+    case 'comments_count':
+      return messages.mostDiscussed;
     case 'random':
       return messages.random;
     case 'popular':
@@ -28,6 +30,8 @@ export const getIconNameForSortingOption = (
   switch (sortType) {
     case 'trending':
       return 'trendingUp';
+    case 'comments_count':
+      return 'comments';
     case 'random':
       return 'random';
     case 'popular':

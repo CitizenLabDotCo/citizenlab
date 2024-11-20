@@ -162,6 +162,7 @@ export type VotingMethod = 'budgeting' | 'multiple_voting' | 'single_voting';
 
 export type IdeaDefaultSortMethod =
   | 'trending'
+  | 'comments_count'
   | 'random'
   | 'popular'
   | 'new'
