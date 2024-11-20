@@ -29,10 +29,6 @@ export default defineMessages({
     id: 'app.components.FilterBoxes.showTagsWithNumber',
     defaultMessage: 'Show all ({numberTags})',
   },
-  showFewerTags: {
-    id: 'app.components.FilterBoxes.showFewerTags',
-    defaultMessage: 'Show fewer tags',
-  },
   a11y_numberOfInputs: {
     id: 'app.components.FilterBoxes.a11y_numberOfInputs',
     defaultMessage:
