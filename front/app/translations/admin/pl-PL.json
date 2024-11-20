@@ -280,7 +280,7 @@
   "app.components.admin.PostManager.timelineTabTooltipText": "Przeciągnij i upuść inicjatywy, aby skopiować je do różnych etapów projektu.",
   "app.components.admin.PostManager.title": "Tytuł",
   "app.components.admin.PostManager.topicsTab": "Tematy",
-  "app.components.admin.PostManager.topicsTabTooltipText": "Dodaj tematy do wkładu za pomocą metody \"przeciągnij i upuść\".",
+  "app.components.admin.PostManager.topicsTabTooltipText": "Add tags to an input using drag and drop.",
   "app.components.admin.PostManager.view": "Zobacz",
   "app.components.admin.PostManager.votes": "Głosy",
   "app.components.admin.PostManager.votesByInputExportFileName": "votes_by_input",
