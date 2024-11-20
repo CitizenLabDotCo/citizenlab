@@ -161,7 +161,6 @@
   "app.components.FilterBoxes.all": "Toutes",
   "app.components.FilterBoxes.areas": "Trier par lieux",
   "app.components.FilterBoxes.inputs": "Contributions",
-  "app.components.FilterBoxes.showFewerTags": "Afficher moins de tags",
   "app.components.FilterBoxes.showLess": "Montrer moins",
   "app.components.FilterBoxes.showTagsWithNumber": "Afficher tous ({numberTags})",
   "app.components.FilterBoxes.statusTitle": "Statut",
