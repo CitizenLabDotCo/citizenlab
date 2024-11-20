@@ -281,7 +281,7 @@
   "app.components.admin.PostManager.timelineTabTooltipText": "Превуците и испустите постове да бисте их копирали у различите фазе пројекта.",
   "app.components.admin.PostManager.title": "Наслов",
   "app.components.admin.PostManager.topicsTab": "Тема",
-  "app.components.admin.PostManager.topicsTabTooltipText": "Додајте ознаке улазу помоћу превлачења и отпуштања.",
+  "app.components.admin.PostManager.topicsTabTooltipText": "Add tags to an input using drag and drop.",
   "app.components.admin.PostManager.view": "View",
   "app.components.admin.PostManager.votes": "Гласови",
   "app.components.admin.PostManager.votesByInputExportFileName": "votes_by_input",
