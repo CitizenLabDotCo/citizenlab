@@ -266,33 +266,45 @@ resource 'AdminPublication' do
       end
       parameter :ids, 'Filter and order by IDs', required: false
 
-      let(:all_ids) { AdminPublication.all.pluck(:id) }
+      let(:draft_ids) { AdminPublication.all.draft.pluck(:id) }
+      let(:non_draft_ids) { AdminPublication.all.not_draft.pluck(:id) }
 
       example 'List records with specified ids, in order of ids' do
-        do_request(ids: [all_ids[3], all_ids[0], 'not_an_admin_publication_id', all_ids[1], all_ids[4], all_ids[2]])
+        do_request(ids: [
+          non_draft_ids[3],
+          non_draft_ids[0],
+          'not_an_admin_publication_id',
+          non_draft_ids[1],
+          non_draft_ids[4]
+        ])
 
         expect(status).to eq(200)
         json_response = json_parse(response_body)
 
-        expect(json_response[:data].pluck(:id)).to eq [all_ids[3], all_ids[0], all_ids[1], all_ids[4], all_ids[2]]
+        expect(json_response[:data].pluck(:id))
+          .to eq [non_draft_ids[3], non_draft_ids[0], non_draft_ids[1], non_draft_ids[4]]
       end
 
       example 'Maintains ordering by ids in pagination', document: false do
         do_request(
-          ids: [all_ids[3], all_ids[0], 'not_an_admin_publication_id', all_ids[1], all_ids[4], all_ids[2]],
+          ids: [
+            non_draft_ids[3],
+            non_draft_ids[0],
+            'not_an_admin_publication_id',
+            non_draft_ids[1],
+            non_draft_ids[4],
+            non_draft_ids[2]
+          ],
           page: { number: 2, size: 3 }
         )
 
         expect(status).to eq(200)
         json_response = json_parse(response_body)
 
-        expect(json_response[:data].pluck(:id)).to eq [all_ids[4], all_ids[2]]
+        expect(json_response[:data].pluck(:id)).to eq [non_draft_ids[4], non_draft_ids[2]]
       end
 
       example 'Does not include draft admin_publications', document: false do
-        draft_ids = AdminPublication.where(publication_status: 'draft').pluck(:id)
-        non_draft_ids = all_ids - draft_ids
-
         do_request(ids: [
           non_draft_ids[3],
           draft_ids[1],
