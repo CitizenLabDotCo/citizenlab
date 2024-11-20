@@ -258,7 +258,7 @@
   "app.components.admin.PostManager.timelineTabTooltipText": "Trascina e rilascia i post per copiarli in diverse fasi del progetto.",
   "app.components.admin.PostManager.title": "Title",
   "app.components.admin.PostManager.topicsTab": "Tags",
-  "app.components.admin.PostManager.topicsTabTooltipText": "Aggiungere tag a un input usando il drag and drop.",
+  "app.components.admin.PostManager.topicsTabTooltipText": "Add tags to an input using drag and drop.",
   "app.components.admin.PostManager.view": "View",
   "app.components.admin.PostManager.votes": "Voti",
   "app.components.admin.PostManager.votesByInputExportFileName": "voti_per_ingresso",
