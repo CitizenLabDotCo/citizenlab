@@ -59,22 +59,16 @@ const Topic = styled.button`
         direction: rtl;
     `}
 
-  &:not(.selected) {
-    &:hover {
-      color: ${({ theme }) => theme.colors.tenantPrimary};
-      border-color: ${({ theme }) => theme.colors.tenantPrimary};
-    }
+  &:not(.selected):hover {
+    background: ${({ theme }) => theme.colors.grey200};
   }
 
   &.selected {
     color: #fff;
     background: ${({ theme }) => theme.colors.tenantPrimary};
-    border-color: ${({ theme }) => theme.colors.tenantPrimary};
 
     &:hover {
-      background: ${({ theme }) => darken(0.15, theme.colors.tenantSecondary)};
-      border-color: ${({ theme }) =>
-        darken(0.15, theme.colors.tenantSecondary)};
+      background: ${({ theme }) => darken(0.15, theme.colors.tenantPrimary)};
     }
   }
 `;
