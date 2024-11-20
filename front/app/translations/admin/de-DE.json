@@ -280,7 +280,7 @@
   "app.components.admin.PostManager.timelineTabTooltipText": "Ziehen Sie Beiträge per Drag & Drop, um sie in verschiedene Projektphasen hineinzukopieren.",
   "app.components.admin.PostManager.title": "Titel",
   "app.components.admin.PostManager.topicsTab": "Themen",
-  "app.components.admin.PostManager.topicsTabTooltipText": "Fügen Sie Themen per Drag & Drop zu einem Eintrag hinzu.",
+  "app.components.admin.PostManager.topicsTabTooltipText": "Ziehen Sie Beiträge per Drag & Drop in den Tag-Titel, um dem Beitrag einen Tag hinzuzufügen",
   "app.components.admin.PostManager.view": "Vorschau",
   "app.components.admin.PostManager.votes": "Stimmen",
   "app.components.admin.PostManager.votesByInputExportFileName": "stimmen_nach_beitrag",
