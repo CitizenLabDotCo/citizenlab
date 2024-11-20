@@ -31,7 +31,7 @@ const StyledSortableRow = styled(SortableRow)`
     padding: 0px !important;
   }
 
-  .e2e-admin-list-row > p {
+  .e2e-admin-list-row > div > p {
     margin: 0;
   }
 `;
