@@ -761,7 +761,6 @@
         "title": "Proposal Review",
         "description": "Allow proposal review. When this is enabled, the feature is activated. When disabled the require_review toggle in the BO & Proposal settings here will be ignored.",
         "additionalProperties": false,
-        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false },
@@ -786,6 +785,7 @@
         "title": "Screening (proposals)",
         "description": "When active, screening can be activated for proposals phases, which requires admins/moderators to explicitly approve each input before it becomes visible to the public.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": true },
