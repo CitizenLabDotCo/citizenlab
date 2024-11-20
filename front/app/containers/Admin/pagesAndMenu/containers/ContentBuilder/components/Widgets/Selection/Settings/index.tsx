@@ -33,14 +33,19 @@ const Settings = () => {
     adminPublicationIds: node.data.props.adminPublicationIds,
   }));
 
-  const { data: selectedAdminPublications } = useAdminPublications({
-    ids: adminPublicationIds,
-    pageNumber: 1,
-    pageSize: 250,
-  });
+  const { data: selectedAdminPublications } = useAdminPublications(
+    {
+      ids: adminPublicationIds,
+      pageNumber: 1,
+      pageSize: 250,
+    },
+    { enabled: adminPublicationIds.length > 0 }
+  );
 
   const selectedAdminPublicationsFlat =
-    selectedAdminPublications?.pages.flatMap((page) => page.data);
+    adminPublicationIds.length > 0
+      ? selectedAdminPublications?.pages.flatMap((page) => page.data) ?? []
+      : [];
 
   const { data: adminPublications } = useAdminPublications({
     search,
@@ -50,7 +55,7 @@ const Settings = () => {
     (page) => page.data
   );
 
-  if (!selectedAdminPublicationsFlat || !adminPublicationsFlat) return null;
+  if (!adminPublicationsFlat) return null;
 
   const handleReorder = (draggedItemId: string, targetIndex: number) => {
     setProp((props) => {
