@@ -189,8 +189,7 @@ export const defaultCardHoverStyle = css`
 `;
 
 export const defaultOutline = css`
-  border-color: ${colors.black};
-  box-shadow: ${defaultStyles.boxShadowFocused};
+  border: 2px solid ${(props) => props.theme.colors.tenantPrimary};
 `;
 
 export const defaultInputStyle = css`
@@ -200,7 +199,7 @@ export const defaultInputStyle = css`
   font-weight: 400;
   padding: ${defaultStyles.inputPadding};
   border-radius: ${(props) => props.theme.borderRadius};
-  border: solid 1px ${colors.borderDark};
+  border: solid 1px ${(props) => props.theme.colors.tenantPrimary};
   background: #fff;
   cursor: text;
   outline: none;
