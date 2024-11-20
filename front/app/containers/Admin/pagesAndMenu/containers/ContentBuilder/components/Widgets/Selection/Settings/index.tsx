@@ -3,7 +3,10 @@ import React from 'react';
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
 
+import { IAdminPublicationData } from 'api/admin_publications/types';
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
+
+import useLocalize from 'hooks/useLocalize';
 
 import {
   SortableList,
@@ -16,7 +19,11 @@ import { FormattedMessage } from 'utils/cl-intl';
 import TitleMultilocInput from '../../_shared/TitleMultilocInput';
 import messages from '../messages';
 
+import { getNewIdsOnDrop } from './utils';
+
 const Settings = () => {
+  const localize = useLocalize();
+
   const {
     actions: { setProp },
     adminPublicationIds,
@@ -35,8 +42,14 @@ const Settings = () => {
   );
   if (!adminPublicationsFlat) return null;
 
-  const handleReorder = () => {
-    // TODO
+  const handleReorder = (draggedItemId: string, targetIndex: number) => {
+    setProp((props) => {
+      props.adminPublicationIds = getNewIdsOnDrop(
+        adminPublicationIds,
+        draggedItemId,
+        targetIndex
+      );
+    });
   };
 
   return (
@@ -54,7 +67,7 @@ const Settings = () => {
       >
         {({ itemsList, handleDragRow, handleDropRow }) => (
           <>
-            {itemsList.map((item, index) => (
+            {itemsList.map((item: IAdminPublicationData, index) => (
               <SortableRow
                 key={item.id}
                 id={item.id}
@@ -63,7 +76,9 @@ const Settings = () => {
                 dropRow={handleDropRow}
               >
                 <TextCell>
-                  <Text>{item.attributes.title_multiloc}</Text>
+                  <Text>
+                    {localize(item.attributes.publication_title_multiloc)}
+                  </Text>
                 </TextCell>
               </SortableRow>
             ))}
