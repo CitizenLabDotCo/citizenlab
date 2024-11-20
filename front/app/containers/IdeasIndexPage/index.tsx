@@ -5,7 +5,6 @@ import {
   fontSizes,
   colors,
   isRtl,
-  Box,
 } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -119,15 +118,6 @@ export default () => {
             <PageTitle>
               <FormattedMessage {...messages.inputsPageTitle} />
             </PageTitle>
-            {/* Needed to add an anchor here so that we can scroll up the page correctly
-                when fitlers are changed in the IdeaCardsWithFiltersSidebar component and scrollToTopIdeasList util.
-            */}
-            <Box
-              position="absolute"
-              mt="-100px"
-              id="ideas-list-scroll-anchor"
-              aria-hidden={true}
-            />
             <IdeaCardsWithFiltersSidebar
               invisibleTitleMessage={messages.a11y_IdeasListTitle1}
               ideaQueryParameters={ideasQueryParameters}

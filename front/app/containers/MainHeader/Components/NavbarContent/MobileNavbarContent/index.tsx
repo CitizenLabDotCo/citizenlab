@@ -1,4 +1,4 @@
-import React, { Suspense, useState } from 'react';
+import React, { Suspense, useRef, useState } from 'react';
 
 import { Box, Button, media, isRtl } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
@@ -84,6 +84,7 @@ const MobileNavbarContent = () => {
   const isEmailSettingsPage = isPage('email-settings', location.pathname);
 
   const [isFullMenuOpened, setIsFullMenuOpened] = useState(false);
+  const containerRef = useRef<HTMLElement>(null);
 
   const signIn = () => {
     triggerAuthenticationFlow({}, 'signin');
@@ -103,7 +104,7 @@ const MobileNavbarContent = () => {
   };
 
   return (
-    <nav>
+    <nav ref={containerRef}>
       <RightContainer>
         {!isEmailSettingsPage && (
           <>
@@ -139,10 +140,13 @@ const MobileNavbarContent = () => {
         )}
       </RightContainer>
       <Suspense fallback={null}>
-        <FullMobileNavMenu
-          isFullMenuOpened={isFullMenuOpened}
-          onClose={onCloseFullMenu}
-        />
+        {containerRef.current && (
+          <FullMobileNavMenu
+            isFullMenuOpened={isFullMenuOpened}
+            onClose={onCloseFullMenu}
+            mobileNavbarRef={containerRef.current}
+          />
+        )}
       </Suspense>
     </nav>
   );
