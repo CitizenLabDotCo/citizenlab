@@ -280,7 +280,7 @@
   "app.components.admin.PostManager.timelineTabTooltipText": "Ilanngussat nusukkit peerlugillu, pilersaarutinut immikkoortunut assigiinngitsunut kopeerniarukkit.",
   "app.components.admin.PostManager.title": "Atorfiup taaguutaa",
   "app.components.admin.PostManager.topicsTab": "Pineqartut",
-  "app.components.admin.PostManager.topicsTabTooltipText": "Tags-inik input-imut ilanngussigit, nusullugu iperarlugulu.",
+  "app.components.admin.PostManager.topicsTabTooltipText": "Add tags to an input using drag and drop.",
   "app.components.admin.PostManager.view": "View",
   "app.components.admin.PostManager.votes": "Stemmer",
   "app.components.admin.PostManager.votesByInputExportFileName": "votes_by_input",
