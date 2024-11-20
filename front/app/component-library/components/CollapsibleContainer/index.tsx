@@ -36,7 +36,7 @@ const TitleButton = styled.button`
 
   &:focus-visible {
     outline: 2px solid black;
-    border-radius: ${({ theme }) => `${theme.borderRadius}px`};
+    border-radius: ${({ theme }) => theme.borderRadius};
   }
 
   ${isRtl`
@@ -110,7 +110,8 @@ const CollapsibleContainer = ({
   const uuid = useInstanceId();
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const handleChange = () => {
+  const handleChange = (event: React.MouseEvent) => {
+    event.stopPropagation();
     setIsExpanded(!isExpanded);
   };
 

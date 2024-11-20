@@ -127,6 +127,7 @@ const InputFilters = ({
       </Box>
       <StyledIdeasTopicsFilter
         selectedTopicIds={selectedIdeaFilters.topics}
+        selectedIdeaFilters={selectedIdeaFilters}
         onChange={onChangeTopics}
       />
       <StyledIdeasStatusFilter
