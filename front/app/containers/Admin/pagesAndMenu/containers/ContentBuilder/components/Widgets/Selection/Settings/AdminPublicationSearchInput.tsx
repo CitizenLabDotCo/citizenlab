@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { debounce } from 'lodash-es';
@@ -26,24 +26,29 @@ const AdminPublicationSearchInput = ({
   onSearchInputChange,
 }: Props) => {
   const localize = useLocalize();
+  const [visibleSearchTerm, setVisibleSearchTerm] = useState(searchInputValue);
 
-  const handleInputChange = useMemo(() => {
+  const inputChangeDebounced = useMemo(() => {
     return debounce((searchTerm: string) => {
       onSearchInputChange(searchTerm);
-    }, 500);
+    }, 200);
   }, [onSearchInputChange]);
+
+  const handleInputChange = (searchTerm: string) => {
+    setVisibleSearchTerm(searchTerm);
+    inputChangeDebounced(searchTerm);
+  };
 
   return (
     <Box>
       <ReactSelect
-        // id={id}
         inputId="admin-publication-search-input"
         isSearchable
         blurInputOnSelect
         backspaceRemovesValue={false}
         menuShouldScrollIntoView={false}
         value={null}
-        inputValue={searchInputValue}
+        inputValue={visibleSearchTerm}
         placeholder={''}
         options={options}
         getOptionValue={getOptionId}
