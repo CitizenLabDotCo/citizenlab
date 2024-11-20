@@ -266,17 +266,27 @@ resource 'AdminPublication' do
       end
       parameter :ids, 'Filter and order by IDs', required: false
 
-      example 'List of records with specified ids, in order of ids' do
-        all_ids = AdminPublication.all.pluck(:id)
+      let(:all_ids) { AdminPublication.all.pluck(:id) }
 
-        do_request(ids: [
-          all_ids[3], all_ids[0], 'not_an_id_of_an_admin_publication', all_ids[1], all_ids[4], all_ids[2]
-        ])
+      example 'List records with specified ids, in order of ids' do
+        do_request(ids: [all_ids[3], all_ids[0], 'not_an_admin_publication_id', all_ids[1], all_ids[4], all_ids[2]])
 
         expect(status).to eq(200)
         json_response = json_parse(response_body)
 
         expect(json_response[:data].pluck(:id)).to eq [all_ids[3], all_ids[0], all_ids[1], all_ids[4], all_ids[2]]
+      end
+
+      example 'Maintains ordering by ids in pagination', document: false do
+        do_request(
+          ids: [all_ids[3], all_ids[0], 'not_an_admin_publication_id', all_ids[1], all_ids[4], all_ids[2]],
+          page: { number: 2, size: 3 }
+        )
+
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+
+        expect(json_response[:data].pluck(:id)).to eq [all_ids[4], all_ids[2]]
       end
     end
 
