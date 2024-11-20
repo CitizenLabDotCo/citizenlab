@@ -4,11 +4,10 @@ import {
   fontSizes,
   colors,
   Box,
-  Text,
   isRtl,
   Button,
 } from '@citizenlab/cl2-component-library';
-import { isError, includes, get } from 'lodash-es';
+import { includes, get } from 'lodash-es';
 import { darken } from 'polished';
 import styled from 'styled-components';
 
@@ -32,19 +31,14 @@ import {
   scrollToTopIdeasList,
 } from './utils';
 
-const Topic = styled.button`
-  color: ${colors.textSecondary};
-  font-size: ${fontSizes.s}px;
-  font-weight: 400;
+const Topic = styled.button<{ selected: boolean | undefined }>`
+  color: ${({ selected }) => (selected ? colors.white : colors.textPrimary)};
+  font-size: ${fontSizes.base}px;
   display: flex;
   width: 100%;
   justify-content: space-between;
   line-height: normal;
-  display: inline-block;
-  padding-left: 14px;
-  padding-right: 14px;
-  padding-top: 8px;
-  padding-bottom: 8px;
+  padding: 8px 14px;
   margin: 0px;
   margin-right: 6px;
   margin-bottom: 8px;
@@ -53,28 +47,23 @@ const Topic = styled.button`
   border: solid 1px transparent;
   border-radius: ${(props) => props.theme.borderRadius};
   transition: all 80ms ease-out;
+  word-break: break-word;
 
   ${isRtl`
-        text-align: right;
-        direction: rtl;
-    `}
+      text-align: right;
+      direction: rtl;
+  `}
 
-  &:not(.selected) {
-    &:hover {
-      color: ${({ theme }) => theme.colors.tenantPrimary};
-      border-color: ${({ theme }) => theme.colors.tenantPrimary};
-    }
+  &:not(.selected):hover {
+    background: ${({ theme }) => theme.colors.grey200};
   }
 
   &.selected {
     color: #fff;
     background: ${({ theme }) => theme.colors.tenantPrimary};
-    border-color: ${({ theme }) => theme.colors.tenantPrimary};
 
     &:hover {
-      background: ${({ theme }) => darken(0.15, theme.colors.tenantSecondary)};
-      border-color: ${({ theme }) =>
-        darken(0.15, theme.colors.tenantSecondary)};
+      background: ${({ theme }) => darken(0.15, theme.colors.tenantPrimary)};
     }
   }
 `;
@@ -127,6 +116,7 @@ const TopicsFilter = memo<Props>(
         selectedTopics,
         localize
       );
+
       const topicsWithIdeas = getTopicsWithIdeas(topics, filterCounts);
 
       return (
@@ -141,8 +131,8 @@ const TopicsFilter = memo<Props>(
           <Box>
             <Box className="e2e-topics-filters" aria-live="polite">
               {topicsWithIdeas
-                .filter((topic) => !isError(topic))
-                .map((topic: ITopicData, index) => {
+                .slice(0, showFullList ? undefined : 5) // We show only 5 topics by default with a "Show all" button.
+                .map((topic: ITopicData) => {
                   const postCount = get(
                     filterCounts,
                     `topic_id.${topic.id}`,
@@ -151,11 +141,6 @@ const TopicsFilter = memo<Props>(
 
                   const topicSelected = selectedTopicIds?.includes(topic.id);
 
-                  if (!showFullList && index > 4) {
-                    // Only show the first 5 topics by default
-                    return null;
-                  }
-
                   return (
                     <Topic
                       key={topic.id}
@@ -163,22 +148,13 @@ const TopicsFilter = memo<Props>(
                       onMouseDown={removeFocusAfterMouseClick}
                       onClick={handleOnClick}
                       className={`e2e-topic ${topicSelected ? 'selected' : ''}`}
-                      style={{ display: 'flex' }}
+                      selected={topicSelected}
                     >
-                      <Box maxWidth="90%">
-                        <Text
-                          fontSize="s"
-                          m="0px"
-                          color={topicSelected ? 'white' : 'textPrimary'}
-                          wordBreak="break-word"
-                        >
-                          <T value={topic.attributes.title_multiloc} />
-                          <ScreenReaderOnly>
-                            {`${postCount} ${formatMessage(messages.inputs)}`}
-                          </ScreenReaderOnly>
-                        </Text>
-                      </Box>
+                      <T value={topic.attributes.title_multiloc} />
                       <Box aria-hidden>{postCount}</Box>
+                      <ScreenReaderOnly>
+                        {`${postCount} ${formatMessage(messages.inputs)}`}
+                      </ScreenReaderOnly>
                     </Topic>
                   );
                 })}
@@ -193,11 +169,14 @@ const TopicsFilter = memo<Props>(
                 mt="12px"
                 fontSize="s"
               >
-                {showFullList
-                  ? formatMessage(messages.showLess)
-                  : `${formatMessage(messages.showTagsWithNumber, {
-                      numberTags: topicsWithIdeas.length,
-                    })}`}
+                {formatMessage(
+                  showFullList
+                    ? messages.showLess
+                    : messages.showTagsWithNumber,
+                  {
+                    numberTags: topicsWithIdeas.length,
+                  }
+                )}
               </Button>
             )}
 

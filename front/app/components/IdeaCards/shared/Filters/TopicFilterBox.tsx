@@ -25,7 +25,6 @@ const TopicFilterBox = memo<Props>(
 
     const { data: ideasFilterCounts } = useIdeasFilterCounts({
       ...ideaFiltersWithoutTopics,
-      topics: undefined,
       idea_status: ideaFiltersWithoutTopics.idea_status,
     });
 
