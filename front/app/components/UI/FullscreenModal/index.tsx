@@ -84,10 +84,8 @@ interface InputProps {
   close: () => void;
   topBar?: JSX.Element | null;
   bottomBar?: JSX.Element | null;
-  animateInOut?: boolean;
   mobileNavbarRef?: HTMLElement | null;
   children: JSX.Element | null | undefined;
-  modalPortalElement?: HTMLElement;
   contentBgColor?: Color;
 }
 
@@ -131,22 +129,25 @@ class FullscreenModal extends PureComponent<Props, State> {
       opened,
       topBar,
       bottomBar,
-      animateInOut,
       mobileNavbarRef,
       className,
       contentBgColor,
     } = this.props;
     const shards = compact([mobileNavbarRef]);
-    const modalPortalElement =
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      this.props.modalPortalElement || document?.getElementById('modal-portal');
-    let modalContent: React.ReactChild | null = null;
 
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (animateInOut || (!animateInOut && opened)) {
-      modalContent = (
+    return createPortal(
+      <CSSTransition
+        classNames="modal"
+        in={opened}
+        timeout={{
+          enter: slideInOutTimeout,
+          exit: slideInOutTimeout,
+        }}
+        mountOnEnter={true}
+        unmountOnExit={true}
+        enter={true}
+        exit={true}
+      >
         <Container
           id="e2e-fullscreenmodal-content"
           className={[bottomBar ? 'hasBottomBar' : '', className].join()}
@@ -161,36 +162,9 @@ class FullscreenModal extends PureComponent<Props, State> {
             {bottomBar}
           </StyledFocusOn>
         </Container>
-      );
-    }
-
-    if (animateInOut) {
-      return createPortal(
-        <CSSTransition
-          classNames="modal"
-          in={opened}
-          timeout={{
-            enter: slideInOutTimeout,
-            exit: slideInOutTimeout,
-          }}
-          mountOnEnter={true}
-          unmountOnExit={true}
-          enter={true}
-          exit={true}
-        >
-          {modalContent}
-        </CSSTransition>,
-        document.getElementById('modal-portal') as HTMLElement
-      );
-    }
-
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (!animateInOut && opened && modalPortalElement) {
-      return createPortal(modalContent, modalPortalElement);
-    }
-
-    return null;
+      </CSSTransition>,
+      document.getElementById('modal-portal') as HTMLElement
+    );
   }
 }
 
