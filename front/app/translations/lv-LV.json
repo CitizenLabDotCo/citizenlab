@@ -947,6 +947,8 @@
   "app.containers.AccessibilityStatement.contentConformanceExceptions": "Mēs cenšamies, lai mūsu saturs būtu pieejams visiem. Tomēr dažos gadījumos platformā var būt nepieejams saturs, kā norādīts turpmāk:",
   "app.containers.AccessibilityStatement.demoPlatformLinkText": "demo tīmekļa vietne",
   "app.containers.AccessibilityStatement.email": "E-pasts:",
+  "app.containers.AccessibilityStatement.embeddedSurveyTools": "Iebūvētie apsekojumu rīki",
+  "app.containers.AccessibilityStatement.embeddedSurveyToolsException": "Iebūvētie apsekojumu rīki, kas ir pieejami lietošanai šajā platformā, ir trešās puses programmatūra, un tie var nebūt pieejami.",
   "app.containers.AccessibilityStatement.exception_1": "Mūsu digitālās iesaistīšanās platformas atvieglo lietotāju radīto saturu, ko publicē privātpersonas un organizācijas. Iespējams, ka platformā kā pielikumus vai teksta laukos platformas lietotāji augšupielādējuši PDF failus, attēlus vai cita veida failus, tostarp multivides failus. Šie dokumenti var nebūt pilnībā pieejami.",
   "app.containers.AccessibilityStatement.feedbackProcessIntro": "Gaidām jūsu atsauksmes par šīs vietnes pieejamību. Lūdzu, sazinieties ar mums, izmantojot kādu no turpmāk minētajām metodēm:",
   "app.containers.AccessibilityStatement.feedbackProcessTitle": "Atgriezeniskās saites process",

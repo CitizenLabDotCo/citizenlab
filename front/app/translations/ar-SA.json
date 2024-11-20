@@ -947,6 +947,8 @@
   "app.containers.AccessibilityStatement.contentConformanceExceptions": "نسعى جاهدين إلى جعل المحتوى الخاص بنا شاملًا للجميع. مع ذلك، وفي بعض الحالات قد يكون هناك محتوىً لا يمكن الوصول إليه على المنصة كما هو موصح أدناه:",
   "app.containers.AccessibilityStatement.demoPlatformLinkText": "عرض توضيحي لموقع الويب",
   "app.containers.AccessibilityStatement.email": "البريد الإلكتروني:",
+  "app.containers.AccessibilityStatement.embeddedSurveyTools": "أدوات المسح المضمنة",
+  "app.containers.AccessibilityStatement.embeddedSurveyToolsException": "أدوات المسح المضمنة المتاحة للاستخدام على هذه المنصة عبارة عن برامج تابعة لجهات خارجية وقد لا تكون قابلة للوصول.",
   "app.containers.AccessibilityStatement.exception_1": "تُسهل منصات المشاركة الرقمية لدينا نشر المحتويات التي يولدها المُستخدمون بأنفسهم بواسطة أفراد ومؤسسات. من المحتمل أن يتم تحميل ملفات PDF والصور والأنواع الأخرى من الملفات التي تشمل وسائل الإعلام المتعددة إلى المنصة كمُلحقات أو إضافتها إلى خانات نصية بواسطة مُستخدمي المنصة. قد لا تكون هذه الوثائق مُتاحة كلياً. ",
   "app.containers.AccessibilityStatement.feedbackProcessIntro": "يُسعدنا سماع رأيك وملاحظاتك حول إمكانية الوصول لهذا الموقع. يُرجى التواصل معنا باستخدام إحدى الطرق التالية:",
   "app.containers.AccessibilityStatement.feedbackProcessTitle": "عملية تقديم الملاحظات",

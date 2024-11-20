@@ -947,6 +947,8 @@
   "app.containers.AccessibilityStatement.contentConformanceExceptions": "ہم اپنے مواد کو سب کے لیے شامل کرنے کی کوشش کرتے ہیں۔ تاہم، کچھ صورتوں میں پلیٹ فارم پر ناقابل رسائی مواد ہو سکتا ہے جیسا کہ ذیل میں بیان کیا گیا ہے:",
   "app.containers.AccessibilityStatement.demoPlatformLinkText": "ڈیمو ویب سائٹ",
   "app.containers.AccessibilityStatement.email": "ای میل:",
+  "app.containers.AccessibilityStatement.embeddedSurveyTools": "ایمبیڈڈ سروے ٹولز",
+  "app.containers.AccessibilityStatement.embeddedSurveyToolsException": "ایمبیڈڈ سروے ٹولز جو اس پلیٹ فارم پر استعمال کے لیے دستیاب ہیں وہ تھرڈ پارٹی سافٹ ویئر ہیں اور ممکن ہے قابل رسائی نہ ہوں۔",
   "app.containers.AccessibilityStatement.exception_1": "ہمارے ڈیجیٹل مصروفیت کے پلیٹ فارم افراد اور تنظیموں کے ذریعے پوسٹ کیے گئے صارف کے تیار کردہ مواد کی سہولت فراہم کرتے ہیں۔ یہ ممکن ہے کہ پی ڈی ایف، تصاویر یا دیگر فائل کی اقسام بشمول ملٹی میڈیا پلیٹ فارم پر اٹیچمنٹ کے طور پر اپ لوڈ کیے جائیں یا پلیٹ فارم صارفین کے ذریعے ٹیکسٹ فیلڈز میں شامل کیے جائیں۔ ہو سکتا ہے یہ دستاویزات پوری طرح سے قابل رسائی نہ ہوں۔",
   "app.containers.AccessibilityStatement.feedbackProcessIntro": "ہم اس سائٹ کی رسائی پر آپ کے تاثرات کا خیرمقدم کرتے ہیں۔ براہ کرم درج ذیل طریقوں میں سے کسی ایک کے ذریعے ہم سے رابطہ کریں:",
   "app.containers.AccessibilityStatement.feedbackProcessTitle": "تاثرات کا عمل",

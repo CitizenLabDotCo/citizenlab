@@ -947,6 +947,8 @@
   "app.containers.AccessibilityStatement.contentConformanceExceptions": "Vi bestreber oss på å gjøre innholdet vårt inkluderende for alle. I noen tilfeller kan det imidlertid finnes utilgjengelig innhold på plattformen, som beskrevet nedenfor:",
   "app.containers.AccessibilityStatement.demoPlatformLinkText": "demo-nettsted",
   "app.containers.AccessibilityStatement.email": "E-post:",
+  "app.containers.AccessibilityStatement.embeddedSurveyTools": "Innebygde undersøkelsesverktøy",
+  "app.containers.AccessibilityStatement.embeddedSurveyToolsException": "De innebygde undersøkelsesverktøyene som er tilgjengelige for bruk på denne plattformen, er tredjeparts programvare og er kanskje ikke tilgjengelige.",
   "app.containers.AccessibilityStatement.exception_1": "Våre digitale engasjementsplattformer legger til rette for brukergenerert innhold som legges ut av enkeltpersoner og organisasjoner. Det er mulig at PDF-filer, bilder eller andre filtyper, inkludert multimedier, lastes opp til plattformen som vedlegg eller legges inn i tekstfelt av plattformbrukere. Det er ikke sikkert at disse dokumentene er fullt tilgjengelige.",
   "app.containers.AccessibilityStatement.feedbackProcessIntro": "Vi ønsker tilbakemeldinger om tilgjengeligheten på dette nettstedet. Ta kontakt med oss på en av følgende måter:",
   "app.containers.AccessibilityStatement.feedbackProcessTitle": "Tilbakemeldingsprosessen",
