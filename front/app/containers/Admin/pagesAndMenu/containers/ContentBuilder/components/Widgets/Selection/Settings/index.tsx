@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import {
   Box,
@@ -39,7 +39,6 @@ const StyledSortableRow = styled(SortableRow)`
 
 const Settings = () => {
   const localize = useLocalize();
-  const [search, setSearch] = useState('');
 
   const {
     actions: { setProp },
@@ -51,8 +50,6 @@ const Settings = () => {
   const { data: selectedAdminPublications } = useAdminPublications(
     {
       ids: adminPublicationIds,
-      pageNumber: 1,
-      pageSize: 250,
     },
     // We don't make this request if adminPublicationIds is an empty array.
     // If it's an empty array, the FE removes it while parsing the query params
@@ -65,17 +62,6 @@ const Settings = () => {
     adminPublicationIds.length > 0
       ? selectedAdminPublications?.pages.flatMap((page) => page.data) ?? []
       : [];
-
-  const { data: adminPublications } = useAdminPublications({
-    search,
-    publicationStatusFilter: ['published', 'archived'],
-  });
-
-  const adminPublicationsFlat = adminPublications?.pages.flatMap(
-    (page) => page.data
-  );
-
-  if (!adminPublicationsFlat) return null;
 
   const loadingSelectedAdminPubs =
     selectedAdminPublicationsFlat.length < adminPublicationIds.length;
@@ -111,8 +97,6 @@ const Settings = () => {
           <FormattedMessage {...messages.selectProjectsOrFolders} />
         </Label>
         <AdminPublicationSearchInput
-          options={adminPublicationsFlat}
-          searchInputValue={search}
           onChange={(adminPublication) => {
             if (!adminPublication) return;
             setProp((props) => {
@@ -122,7 +106,6 @@ const Settings = () => {
               ];
             });
           }}
-          onSearchInputChange={setSearch}
         />
       </Box>
       <SortableList

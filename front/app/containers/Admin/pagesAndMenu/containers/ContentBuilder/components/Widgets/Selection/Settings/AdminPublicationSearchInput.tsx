@@ -5,34 +5,39 @@ import { debounce } from 'lodash-es';
 import ReactSelect from 'react-select';
 
 import { IAdminPublicationData } from 'api/admin_publications/types';
-
-import useLocalize from 'hooks/useLocalize';
+import useAdminPublications from 'api/admin_publications/useAdminPublications';
 
 import selectStyles from 'components/UI/MultipleSelect/styles';
 
+import OptionLabel from './OptionLabel';
+import { getOptionId } from './utils';
+
 interface Props {
-  options: IAdminPublicationData[];
-  searchInputValue: string;
   onChange: (option?: IAdminPublicationData) => void;
-  onSearchInputChange: (searchTerm: string) => void;
 }
 
-const getOptionId = (option: IAdminPublicationData) => option.id;
+const AdminPublicationSearchInput = ({ onChange }: Props) => {
+  const [visibleSearchTerm, setVisibleSearchTerm] = useState('');
+  const [search, setSearch] = useState('');
 
-const AdminPublicationSearchInput = ({
-  options,
-  searchInputValue,
-  onChange,
-  onSearchInputChange,
-}: Props) => {
-  const localize = useLocalize();
-  const [visibleSearchTerm, setVisibleSearchTerm] = useState(searchInputValue);
+  const {
+    data: adminPublications,
+    fetchNextPage,
+    hasNextPage,
+  } = useAdminPublications({
+    search,
+    publicationStatusFilter: ['published', 'archived'],
+    pageSize: 3,
+  });
+
+  const adminPublicationsFlat =
+    adminPublications?.pages.flatMap((page) => page.data) ?? [];
 
   const inputChangeDebounced = useMemo(() => {
     return debounce((searchTerm: string) => {
-      onSearchInputChange(searchTerm);
+      setSearch(searchTerm);
     }, 200);
-  }, [onSearchInputChange]);
+  }, []);
 
   const handleInputChange = (searchTerm: string) => {
     setVisibleSearchTerm(searchTerm);
@@ -50,20 +55,32 @@ const AdminPublicationSearchInput = ({
         value={null}
         inputValue={visibleSearchTerm}
         placeholder={''}
-        options={options}
+        options={
+          hasNextPage
+            ? [...adminPublicationsFlat, { value: 'loadMore' }]
+            : adminPublicationsFlat
+        }
         getOptionValue={getOptionId}
-        getOptionLabel={(adminPublication) => {
-          if (!adminPublication) return '';
-          return localize(
-            adminPublication.attributes.publication_title_multiloc
-          );
-        }}
+        getOptionLabel={(option) =>
+          (
+            <OptionLabel
+              option={option}
+              hasNextPage={hasNextPage}
+              isLoading={!adminPublications}
+              fetchNextPage={fetchNextPage}
+            />
+          ) as any
+        }
         menuPlacement="auto"
         styles={selectStyles()}
         filterOption={() => true}
         // components={components}
         onInputChange={handleInputChange}
-        // onMenuScrollToBottom={onMenuScrollToBottom}
+        onMenuScrollToBottom={() => {
+          if (hasNextPage) {
+            fetchNextPage();
+          }
+        }}
         onChange={onChange}
       />
     </Box>

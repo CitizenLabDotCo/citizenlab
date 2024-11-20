@@ -36,3 +36,13 @@ export const stabilizeOrdering = (
     .map((id) => adminPublicationsById[id])
     .filter(Boolean);
 };
+
+export type LoadMore = { value: 'loadMore' };
+export const isAdminPublication = (
+  option: IAdminPublicationData | LoadMore
+): option is IAdminPublicationData => {
+  return 'id' in option;
+};
+
+export const getOptionId = (option: IAdminPublicationData | LoadMore) =>
+  isAdminPublication(option) ? option.id : 'loadMore';
