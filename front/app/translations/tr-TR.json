@@ -161,7 +161,6 @@
   "app.components.FilterBoxes.all": "Tümü",
   "app.components.FilterBoxes.areas": "Alana göre filtrele",
   "app.components.FilterBoxes.inputs": "girdiler",
-  "app.components.FilterBoxes.showFewerTags": "Daha az etiket göster",
   "app.components.FilterBoxes.showLess": "Daha az göster",
   "app.components.FilterBoxes.showTagsWithNumber": "Hepsini göster ({numberTags})",
   "app.components.FilterBoxes.statusTitle": "Durum",
