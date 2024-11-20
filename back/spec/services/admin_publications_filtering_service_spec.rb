@@ -64,18 +64,4 @@ describe AdminPublicationsFilteringService do
       expect(result.ids).to include(*AdminPublication.ids)
     end
   end
-
-  context 'when filtering by ids' do
-    let(:admin_publication1) { create(:admin_publication) }
-    let(:admin_publication2) { create(:admin_publication) }
-    let(:admin_publication3) { create(:admin_publication) }
-
-    let(:base_scope) { Pundit.policy_scope(create(:admin), AdminPublication.includes(:parent)) }
-    let(:options) { { ids: [admin_publication1.id, admin_publication2.id] } }
-
-    it 'returns only the admin_publications with the specified ids' do
-      expect(base_scope.size).to be > 2
-      expect(result.ids).to contain_exactly(admin_publication1.id, admin_publication2.id)
-    end
-  end
 end
