@@ -947,6 +947,8 @@
   "app.containers.AccessibilityStatement.contentConformanceExceptions": "Nós nos esforçamos para tornar o nosso conteúdo inclusivo para todos. No entanto, em alguns casos, pode haver conteúdos inacessíveis na plataforma, conforme descrito abaixo:",
   "app.containers.AccessibilityStatement.demoPlatformLinkText": "site de demonstração",
   "app.containers.AccessibilityStatement.email": "E-mail:",
+  "app.containers.AccessibilityStatement.embeddedSurveyTools": "Ferramentas de pesquisa incorporadas",
+  "app.containers.AccessibilityStatement.embeddedSurveyToolsException": "As ferramentas de pesquisa incorporadas que estão disponíveis para uso nesta plataforma são softwares de terceiros e podem não estar acessíveis.",
   "app.containers.AccessibilityStatement.exception_1": "Nossas plataformas de engajamento digital facilitam o conteúdo gerado pelo usuário postado por indivíduos e organizações. É possível que PDFs, imagens ou outros tipos de arquivos, incluindo multimídia, sejam carregados na plataforma como anexos ou adicionados em campos de texto pelos usuários da plataforma. Esses documentos podem não estar totalmente acessíveis.",
   "app.containers.AccessibilityStatement.feedbackProcessIntro": "Agradecemos o seu feedback sobre a acessibilidade deste site. Por favor contate-nos através de um dos seguintes canais:",
   "app.containers.AccessibilityStatement.feedbackProcessTitle": "Processo de feedback",
