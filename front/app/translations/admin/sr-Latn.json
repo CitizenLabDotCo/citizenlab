@@ -258,7 +258,7 @@
   "app.components.admin.PostManager.timelineTabTooltipText": "Kliknite na unose, a zatim ih prevucite u željene faze projekta. ",
   "app.components.admin.PostManager.title": "Naziv",
   "app.components.admin.PostManager.topicsTab": "Teme",
-  "app.components.admin.PostManager.topicsTabTooltipText": "Kliknite i prevucite kako biste dodali teme ovom unosu.",
+  "app.components.admin.PostManager.topicsTabTooltipText": "Add tags to an input using drag and drop.",
   "app.components.admin.PostManager.view": "View",
   "app.components.admin.PostManager.votes": "Glasovi",
   "app.components.admin.PostManager.votesByInputExportFileName": "votes_by_input",
