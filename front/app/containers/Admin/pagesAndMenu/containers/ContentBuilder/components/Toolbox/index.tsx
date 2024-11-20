@@ -50,6 +50,7 @@ import OpenToParticipation, {
 } from '../Widgets/OpenToParticipation';
 import Projects, { projectsTitle } from '../Widgets/Projects';
 import projectsMessages from '../Widgets/Projects/messages';
+import Selection, { selectionTitle } from '../Widgets/Selection';
 import Spotlight, {
   spotlightTitle,
   buttonTextDefault,
@@ -140,6 +141,19 @@ const HomepageBuilderToolbox = ({
             }
             icon="sportsScore"
             label={formatMessage(finishedOrArchivedTitle)}
+          />
+        )}
+        {newHomepageWidgetsEnabled && (
+          <DraggableElement
+            id="e2e-draggable-selection"
+            component={
+              <Selection
+                titleMultiloc={toMultiloc(selectionTitle)}
+                adminPublicationIds={[]}
+              />
+            }
+            icon="projects"
+            label={formatMessage(selectionTitle)}
           />
         )}
         <DraggableElement

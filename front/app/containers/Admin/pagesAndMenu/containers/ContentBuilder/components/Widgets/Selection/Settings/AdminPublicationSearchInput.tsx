@@ -6,6 +6,8 @@ import ReactSelect from 'react-select';
 
 import { IAdminPublicationData } from 'api/admin_publications/types';
 
+import useLocalize from 'hooks/useLocalize';
+
 import selectStyles from 'components/UI/MultipleSelect/styles';
 
 interface Props {
@@ -15,12 +17,16 @@ interface Props {
   onSearchInputChange: (searchTerm: string) => void;
 }
 
+const getOptionId = (option: IAdminPublicationData) => option.id;
+
 const AdminPublicationSearchInput = ({
   options,
   searchInputValue,
   onChange,
   onSearchInputChange,
 }: Props) => {
+  const localize = useLocalize();
+
   const handleInputChange = useMemo(() => {
     return debounce((searchTerm: string) => {
       onSearchInputChange(searchTerm);
@@ -39,8 +45,13 @@ const AdminPublicationSearchInput = ({
         inputValue={searchInputValue}
         placeholder={''}
         options={options}
-        // getOptionValue={getOptionId}
-        // getOptionLabel={getOptionLabel}
+        getOptionValue={getOptionId}
+        getOptionLabel={(adminPublication) => {
+          if (!adminPublication) return '';
+          return localize(
+            adminPublication.attributes.publication_title_multiloc
+          );
+        }}
         menuPlacement="auto"
         styles={selectStyles()}
         filterOption={() => true}
