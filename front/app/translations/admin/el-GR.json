@@ -280,7 +280,7 @@
   "app.components.admin.PostManager.timelineTabTooltipText": "Σύρετε και αποθέστε δημοσιεύσεις για να τις αντιγράψετε σε διαφορετικές φάσεις του έργου.",
   "app.components.admin.PostManager.title": "Title",
   "app.components.admin.PostManager.topicsTab": "Tags",
-  "app.components.admin.PostManager.topicsTabTooltipText": "Προσθέστε ετικέτες σε μια εισήγηση χρησιμοποιώντας σύρσιμο και απόθεση.",
+  "app.components.admin.PostManager.topicsTabTooltipText": "Add tags to an input using drag and drop.",
   "app.components.admin.PostManager.view": "View",
   "app.components.admin.PostManager.votes": "Ψήφοι",
   "app.components.admin.PostManager.votesByInputExportFileName": "votes_by_input",
