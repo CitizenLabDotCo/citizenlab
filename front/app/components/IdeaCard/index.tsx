@@ -42,6 +42,7 @@ export interface Props {
   hideImagePlaceholder?: boolean;
   hideIdeaStatus?: boolean;
   showFollowButton?: boolean;
+  hasFilterSidebar?: boolean;
 }
 
 const Container = styled(Box)`
@@ -56,6 +57,10 @@ const Container = styled(Box)`
   ${media.tablet`
     flex-direction: column;
   `}
+
+  &.hasFilterSidebar {
+    flex-direction: column;
+  }
 `;
 
 const IdeaLoading = (props: Props) => {
@@ -79,6 +84,7 @@ const IdeaCard = ({
   hideImagePlaceholder = false,
   hideIdeaStatus = false,
   showFollowButton = false,
+  hasFilterSidebar = false,
 }: IdeaCardProps) => {
   const { data: ideaImage } = useIdeaImage(
     idea.data.id,
@@ -143,15 +149,19 @@ const IdeaCard = ({
 
   return (
     <Container
-      className="e2e-card e2e-idea-card"
+      className={`e2e-card e2e-idea-card ${
+        hasFilterSidebar ? 'hasFilterSidebar' : ''
+      }`}
       id={idea.data.id}
       onClick={handleClick}
+      height="100%"
     >
       <CardImage
         phase={phaseData}
         image={image}
         hideImagePlaceholder={hideImagePlaceholder}
         innerHeight={innerHeight}
+        hasFilterSidebar={hasFilterSidebar}
       />
 
       <Box
@@ -163,7 +173,7 @@ const IdeaCard = ({
       >
         <Box
           mb={
-            smallerThanTablet
+            smallerThanTablet || hasFilterSidebar
               ? '24px'
               : !image && hideImagePlaceholder
               ? '36px'
