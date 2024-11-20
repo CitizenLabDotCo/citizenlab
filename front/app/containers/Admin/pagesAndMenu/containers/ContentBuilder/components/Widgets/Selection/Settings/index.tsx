@@ -1,18 +1,22 @@
 import React, { useState } from 'react';
 
-import { Box, Label, Spinner, Text } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  IconButton,
+  Label,
+  Spinner,
+  Text,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
+import styled from 'styled-components';
 
 import { IAdminPublicationData } from 'api/admin_publications/types';
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
 
 import useLocalize from 'hooks/useLocalize';
 
-import {
-  SortableList,
-  SortableRow,
-  TextCell,
-} from 'components/admin/ResourceList';
+import { SortableList, SortableRow } from 'components/admin/ResourceList';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -20,7 +24,17 @@ import TitleMultilocInput from '../../_shared/TitleMultilocInput';
 import messages from '../messages';
 
 import AdminPublicationSearchInput from './AdminPublicationSearchInput';
-import { getNewIdsOnDrop } from './utils';
+import { getNewIdsOnDrop, stabilizeOrdering } from './utils';
+
+const StyledSortableRow = styled(SortableRow)`
+  .e2e-admin-list-row {
+    padding: 0px !important;
+  }
+
+  .e2e-admin-list-row > p {
+    margin: 0;
+  }
+`;
 
 const Settings = () => {
   const localize = useLocalize();
@@ -39,6 +53,10 @@ const Settings = () => {
       pageNumber: 1,
       pageSize: 250,
     },
+    // We don't make this request if adminPublicationIds is an empty array.
+    // If it's an empty array, the FE removes it while parsing the query params
+    // for some reason, and the BE will return all admin publications.
+    // This is not what we want.
     { enabled: adminPublicationIds.length > 0 }
   );
 
@@ -66,6 +84,14 @@ const Settings = () => {
         adminPublicationIds,
         draggedItemId,
         targetIndex
+      );
+    });
+  };
+
+  const handleDelete = (id: string) => {
+    setProp((props) => {
+      props.adminPublicationIds = adminPublicationIds.filter(
+        (adminPublicationId) => adminPublicationId !== id
       );
     });
   };
@@ -98,26 +124,42 @@ const Settings = () => {
         />
       </Box>
       <SortableList
-        items={selectedAdminPublicationsFlat}
+        items={stabilizeOrdering(
+          selectedAdminPublicationsFlat,
+          adminPublicationIds
+        )}
         onReorder={handleReorder}
         key={selectedAdminPublicationsFlat.length}
       >
         {({ itemsList, handleDragRow, handleDropRow }) => (
           <>
             {itemsList.map((item: IAdminPublicationData, index) => (
-              <SortableRow
+              <StyledSortableRow
                 key={item.id}
                 id={item.id}
                 index={index}
                 moveRow={handleDragRow}
                 dropRow={handleDropRow}
               >
-                <TextCell>
-                  <Text>
+                <Box
+                  w="100%"
+                  display="flex"
+                  flexDirection="row"
+                  justifyContent="space-between"
+                  alignItems="center"
+                >
+                  <Text m="0">
                     {localize(item.attributes.publication_title_multiloc)}
                   </Text>
-                </TextCell>
-              </SortableRow>
+                  <IconButton
+                    iconName="close"
+                    onClick={() => handleDelete(item.id)}
+                    iconColor={colors.textSecondary}
+                    iconColorOnHover="#000"
+                    a11y_buttonActionMessage=""
+                  />
+                </Box>
+              </StyledSortableRow>
             ))}
             {loadingSelectedAdminPubs && (
               <Box
