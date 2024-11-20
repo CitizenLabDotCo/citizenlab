@@ -58,7 +58,9 @@ const PostedBy = memo<Props>(
     const { data: user } = useUserById(authorId);
 
     if (!isNilOrError(idea)) {
-      const ideaPublishedAtDate = idea.data.attributes.published_at;
+      // Ideas in pre-screening don't have a published_at date so use the created_at date
+      const ideaPublishedAtDate =
+        idea.data.attributes.published_at ?? idea.data.attributes.created_at;
       const authorHash = idea.data.attributes.author_hash;
       const isLinkToProfile =
         user?.data.attributes.registration_completed_at !== null;
