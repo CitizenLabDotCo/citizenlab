@@ -161,7 +161,6 @@
   "app.components.FilterBoxes.all": "crwdns3585801:0crwdne3585801:0",
   "app.components.FilterBoxes.areas": "crwdns3585803:0crwdne3585803:0",
   "app.components.FilterBoxes.inputs": "crwdns3585805:0crwdne3585805:0",
-  "app.components.FilterBoxes.showFewerTags": "crwdns3585807:0crwdne3585807:0",
   "app.components.FilterBoxes.showLess": "crwdns3585809:0crwdne3585809:0",
   "app.components.FilterBoxes.showTagsWithNumber": "crwdns3585811:0{numberTags}crwdne3585811:0",
   "app.components.FilterBoxes.statusTitle": "crwdns3585813:0crwdne3585813:0",
