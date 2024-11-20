@@ -224,6 +224,7 @@ const IdeationInputs = ({
       <SortingPicker
         options={[
           { key: 'trending', value: 'trending' },
+          { key: 'comments_count', value: 'comments_count' },
           { key: 'random', value: 'random' },
           { key: 'popular', value: 'popular' },
           { key: 'newest', value: 'new' },

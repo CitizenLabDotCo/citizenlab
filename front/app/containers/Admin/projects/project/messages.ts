@@ -307,6 +307,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.trendingSortingMethod',
     defaultMessage: 'Trending',
   },
+  comments_countSortingMethod: {
+    id: 'app.containers.AdminPage.ProjectEdit.commens_countSortingMethod',
+    defaultMessage: 'Most discussed',
+  },
   randomSortingMethod: {
     id: 'app.containers.AdminPage.ProjectEdit.randomSortingMethod',
     defaultMessage: 'Random',

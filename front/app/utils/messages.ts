@@ -202,6 +202,10 @@ export default defineMessages({
     id: 'app.utils.IdeaCards.trending',
     defaultMessage: 'Trending',
   },
+  mostDiscussed: {
+    id: 'app.utils.IdeaCards.mostDiscussed',
+    defaultMessage: 'Most discussed',
+  },
   random: {
     id: 'app.utils.IdeaCards.random',
     defaultMessage: 'Random',
