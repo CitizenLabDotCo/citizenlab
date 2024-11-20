@@ -4,11 +4,10 @@ import {
   fontSizes,
   colors,
   Box,
-  Text,
   isRtl,
   Button,
 } from '@citizenlab/cl2-component-library';
-import { isError, includes, get } from 'lodash-es';
+import { includes, get } from 'lodash-es';
 import { darken } from 'polished';
 import styled from 'styled-components';
 
@@ -32,19 +31,14 @@ import {
   scrollToTopIdeasList,
 } from './utils';
 
-const Topic = styled.button`
-  color: ${colors.textSecondary};
-  font-size: ${fontSizes.s}px;
-  font-weight: 400;
+const Topic = styled.button<{ selected: boolean | undefined }>`
+  color: ${({ selected }) => (selected ? colors.white : colors.textPrimary)};
+  font-size: ${fontSizes.base}px;
   display: flex;
   width: 100%;
   justify-content: space-between;
   line-height: normal;
-  display: inline-block;
-  padding-left: 14px;
-  padding-right: 14px;
-  padding-top: 8px;
-  padding-bottom: 8px;
+  padding: 8px 14px;
   margin: 0px;
   margin-right: 6px;
   margin-bottom: 8px;
@@ -53,11 +47,12 @@ const Topic = styled.button`
   border: solid 1px transparent;
   border-radius: ${(props) => props.theme.borderRadius};
   transition: all 80ms ease-out;
+  word-break: break-word;
 
   ${isRtl`
-        text-align: right;
-        direction: rtl;
-    `}
+      text-align: right;
+      direction: rtl;
+  `}
 
   &:not(.selected) {
     &:hover {
@@ -127,7 +122,9 @@ const TopicsFilter = memo<Props>(
         selectedTopics,
         localize
       );
-      const topicsWithIdeas = getTopicsWithIdeas(topics, filterCounts);
+      const topicsWithIdeas = showFullList
+        ? getTopicsWithIdeas(topics, filterCounts)
+        : getTopicsWithIdeas(topics, filterCounts).slice(0, 5);
 
       return (
         <InputFilterCollapsible
@@ -140,48 +137,28 @@ const TopicsFilter = memo<Props>(
         >
           <Box>
             <Box className="e2e-topics-filters" aria-live="polite">
-              {topicsWithIdeas
-                .filter((topic) => !isError(topic))
-                .map((topic: ITopicData, index) => {
-                  const postCount = get(
-                    filterCounts,
-                    `topic_id.${topic.id}`,
-                    0
-                  );
+              {topicsWithIdeas.map((topic: ITopicData) => {
+                const postCount = get(filterCounts, `topic_id.${topic.id}`, 0);
 
-                  const topicSelected = selectedTopicIds?.includes(topic.id);
+                const topicSelected = selectedTopicIds?.includes(topic.id);
 
-                  if (!showFullList && index > 4) {
-                    // Only show the first 5 topics by default
-                    return null;
-                  }
-
-                  return (
-                    <Topic
-                      key={topic.id}
-                      data-id={topic.id}
-                      onMouseDown={removeFocusAfterMouseClick}
-                      onClick={handleOnClick}
-                      className={`e2e-topic ${topicSelected ? 'selected' : ''}`}
-                      style={{ display: 'flex' }}
-                    >
-                      <Box maxWidth="90%">
-                        <Text
-                          fontSize="s"
-                          m="0px"
-                          color={topicSelected ? 'white' : 'textPrimary'}
-                          wordBreak="break-word"
-                        >
-                          <T value={topic.attributes.title_multiloc} />
-                          <ScreenReaderOnly>
-                            {`${postCount} ${formatMessage(messages.inputs)}`}
-                          </ScreenReaderOnly>
-                        </Text>
-                      </Box>
-                      <Box aria-hidden>{postCount}</Box>
-                    </Topic>
-                  );
-                })}
+                return (
+                  <Topic
+                    key={topic.id}
+                    data-id={topic.id}
+                    onMouseDown={removeFocusAfterMouseClick}
+                    onClick={handleOnClick}
+                    className={`e2e-topic ${topicSelected ? 'selected' : ''}`}
+                    selected={topicSelected}
+                  >
+                    <T value={topic.attributes.title_multiloc} />
+                    <Box aria-hidden>{postCount}</Box>
+                    <ScreenReaderOnly>
+                      {`${postCount} ${formatMessage(messages.inputs)}`}
+                    </ScreenReaderOnly>
+                  </Topic>
+                );
+              })}
             </Box>
             {topicsWithIdeas.length > 5 && (
               <Button
