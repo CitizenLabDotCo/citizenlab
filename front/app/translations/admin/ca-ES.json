@@ -258,7 +258,7 @@
   "app.components.admin.PostManager.timelineTabTooltipText": "Arrossegueu i deixeu anar publicacions per copiar-les a diferents fases del projecte.",
   "app.components.admin.PostManager.title": "Title",
   "app.components.admin.PostManager.topicsTab": "Tags",
-  "app.components.admin.PostManager.topicsTabTooltipText": "Afegiu etiquetes a una entrada mitjançant arrossegar i deixar anar.",
+  "app.components.admin.PostManager.topicsTabTooltipText": "Add tags to an input using drag and drop.",
   "app.components.admin.PostManager.view": "View",
   "app.components.admin.PostManager.votes": "Vots",
   "app.components.admin.PostManager.votesByInputExportFileName": "vots_per_entrada",
