@@ -161,7 +161,6 @@
   "app.components.FilterBoxes.all": "I gyd",
   "app.components.FilterBoxes.areas": "Hidlo yn ôl ardal",
   "app.components.FilterBoxes.inputs": "mewnbynnau",
-  "app.components.FilterBoxes.showFewerTags": "Dangos llai o dagiau",
   "app.components.FilterBoxes.showLess": "Dangos llai",
   "app.components.FilterBoxes.showTagsWithNumber": "Show all ({numberTags})",
   "app.components.FilterBoxes.statusTitle": "Statws",
