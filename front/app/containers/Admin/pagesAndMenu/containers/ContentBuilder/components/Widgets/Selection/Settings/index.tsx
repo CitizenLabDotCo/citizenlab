@@ -3,6 +3,8 @@ import React from 'react';
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
 
+import useAdminPublications from 'api/admin_publications/useAdminPublications';
+
 import {
   SortableList,
   SortableRow,
@@ -22,6 +24,17 @@ const Settings = () => {
     adminPublicationIds: node.data.props.adminPublicationIds,
   }));
 
+  const { data: adminPublications } = useAdminPublications({
+    ids: adminPublicationIds,
+    pageNumber: 1,
+    pageSize: 250,
+  });
+
+  const adminPublicationsFlat = adminPublications?.pages.flatMap(
+    (page) => page.data
+  );
+  if (!adminPublicationsFlat) return null;
+
   const handleReorder = () => {
     // TODO
   };
@@ -35,9 +48,9 @@ const Settings = () => {
         <TitleMultilocInput name="selection_title" />
       </Box>
       <SortableList
-        items={adminPublicationIds}
+        items={adminPublicationsFlat}
         onReorder={handleReorder}
-        key={adminPublicationIds.length}
+        key={adminPublicationsFlat.length}
       >
         {({ itemsList, handleDragRow, handleDropRow }) => (
           <>
