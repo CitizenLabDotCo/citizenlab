@@ -432,9 +432,9 @@ GEM
       erubi (~> 1.4)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.1, >= 1.2.0)
-    active_model_serializers (0.10.13)
-      actionpack (>= 4.1, < 7.1)
-      activemodel (>= 4.1, < 7.1)
+    active_model_serializers (0.10.14)
+      actionpack (>= 4.1)
+      activemodel (>= 4.1)
       case_transform (>= 0.2)
       jsonapi-renderer (>= 0.1.1.beta1, < 0.3)
     activejob (7.0.8.5)
@@ -584,7 +584,7 @@ GEM
     easy_translate (0.5.1)
       thread
       thread_safe
-    erubi (1.12.0)
+    erubi (1.13.0)
     event_stream_parser (1.0.0)
     excon (0.111.0)
     factory_bot (6.4.6)
@@ -822,7 +822,7 @@ GEM
       rake
     mini_magick (4.13.2)
     mini_mime (1.1.5)
-    minitest (5.23.1)
+    minitest (5.24.0)
     mjml-rails (4.11.0)
     msgpack (1.7.2)
     multi_json (1.15.0)
@@ -1247,7 +1247,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
-  active_model_serializers (~> 0.10.12)
+  active_model_serializers (~> 0.10.14)
   activerecord-import (~> 1.7)
   activerecord-postgis-adapter (~> 8.0)
   acts_as_list (~> 1.1)
