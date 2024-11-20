@@ -947,6 +947,8 @@
   "app.containers.AccessibilityStatement.contentConformanceExceptions": "Nastojimo da naš sadržaj bude prilagođen svima. Ipak, u pojedinim situacijama se može dogoditi da određeni sadržaj ne bude dostupan, što je naglašeno u nastavku:",
   "app.containers.AccessibilityStatement.demoPlatformLinkText": "demo verzija veb sajta",
   "app.containers.AccessibilityStatement.email": "Email:",
+  "app.containers.AccessibilityStatement.embeddedSurveyTools": "Embedded survey tools",
+  "app.containers.AccessibilityStatement.embeddedSurveyToolsException": "The embedded survey tools that are available for use on this platform are third-party software and may not be accessible.",
   "app.containers.AccessibilityStatement.exception_1": "Naše platforme za digitalno učešće upravljaju korisničkim sadržajima koje objavljuju pojedinci i organizacije. Može se dogoditi da su PDF dokumenti, slike, i druge vrste dokumenata (uključujući i multi-mediju) dodati na platformu kao prilozi ili uneti u polja za tekst od strane korisnika. Ovakvi dokumenti mogu biti nepristupačni. ",
   "app.containers.AccessibilityStatement.feedbackProcessIntro": "Vaš utisak o pristupačnosti ove platforme je dobrodošao. Molimo vas kontaktirajte nas na jedan od sledećih načina:",
   "app.containers.AccessibilityStatement.feedbackProcessTitle": "Proces slanja utisaka",
