@@ -161,7 +161,6 @@
   "app.components.FilterBoxes.all": "ਸਾਰੇ",
   "app.components.FilterBoxes.areas": "ਖੇਤਰ ਦੁਆਰਾ ਫਿਲਟਰ ਕਰੋ",
   "app.components.FilterBoxes.inputs": "ਇਨਪੁੱਟ",
-  "app.components.FilterBoxes.showFewerTags": "ਘੱਟ ਟੈਗ ਦਿਖਾਓ",
   "app.components.FilterBoxes.showLess": "ਘੱਟ ਦਿਖਾਓ",
   "app.components.FilterBoxes.showTagsWithNumber": "ਸਭ ਦਿਖਾਓ ({numberTags})",
   "app.components.FilterBoxes.statusTitle": "ਸਥਿਤੀ",
