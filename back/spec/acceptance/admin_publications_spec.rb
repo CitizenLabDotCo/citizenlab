@@ -269,7 +269,7 @@ resource 'AdminPublication' do
       let(:draft_ids) { AdminPublication.all.draft.pluck(:id) }
       let(:non_draft_ids) { AdminPublication.all.not_draft.pluck(:id) }
 
-      example 'List records with specified ids, in order of ids' do
+      example 'List records with specified IDs, in order of IDs' do
         do_request(ids: [
           non_draft_ids[3],
           non_draft_ids[0],
@@ -285,7 +285,7 @@ resource 'AdminPublication' do
           .to eq [non_draft_ids[3], non_draft_ids[0], non_draft_ids[1], non_draft_ids[4]]
       end
 
-      example 'Maintains ordering by ids in pagination', document: false do
+      example 'Maintains ordering by IDs in pagination', document: false do
         do_request(
           ids: [
             non_draft_ids[3],
