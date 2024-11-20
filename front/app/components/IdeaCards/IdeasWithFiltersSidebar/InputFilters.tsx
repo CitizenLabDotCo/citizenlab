@@ -83,7 +83,7 @@ export interface Props {
   phaseId?: string;
 }
 
-const FiltersSideBar = ({
+const InputFilters = ({
   defaultValue,
   className,
   filtersActive,
@@ -127,6 +127,7 @@ const FiltersSideBar = ({
       </Box>
       <StyledIdeasTopicsFilter
         selectedTopicIds={selectedIdeaFilters.topics}
+        selectedIdeaFilters={selectedIdeaFilters}
         onChange={onChangeTopics}
       />
       <StyledIdeasStatusFilter
@@ -138,4 +139,4 @@ const FiltersSideBar = ({
   );
 };
 
-export default FiltersSideBar;
+export default InputFilters;

@@ -13,9 +13,21 @@ export default defineMessages({
     id: 'app.components.FilterBoxes.areas',
     defaultMessage: 'Areas',
   },
+  inputs: {
+    id: 'app.components.FilterBoxes.inputs',
+    defaultMessage: 'inputs',
+  },
   topicsTitle: {
     id: 'app.components.FilterBoxes.topicsTitle',
     defaultMessage: 'Topics',
+  },
+  showLess: {
+    id: 'app.components.FilterBoxes.showLess',
+    defaultMessage: 'Show less',
+  },
+  showTagsWithNumber: {
+    id: 'app.components.FilterBoxes.showTagsWithNumber',
+    defaultMessage: 'Show all ({numberTags})',
   },
   a11y_numberOfInputs: {
     id: 'app.components.FilterBoxes.a11y_numberOfInputs',
