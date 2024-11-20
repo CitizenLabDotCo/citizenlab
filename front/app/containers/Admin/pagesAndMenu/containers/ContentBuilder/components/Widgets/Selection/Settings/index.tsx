@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Box, Label, Text } from '@citizenlab/cl2-component-library';
+import { Box, Label, Spinner, Text } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
 
 import { IAdminPublicationData } from 'api/admin_publications/types';
@@ -56,6 +56,9 @@ const Settings = () => {
   );
 
   if (!adminPublicationsFlat) return null;
+
+  const loadingSelectedAdminPubs =
+    selectedAdminPublicationsFlat.length < adminPublicationIds.length;
 
   const handleReorder = (draggedItemId: string, targetIndex: number) => {
     setProp((props) => {
@@ -116,6 +119,16 @@ const Settings = () => {
                 </TextCell>
               </SortableRow>
             ))}
+            {loadingSelectedAdminPubs && (
+              <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                p="12px"
+              >
+                <Spinner />
+              </Box>
+            )}
           </>
         )}
       </SortableList>

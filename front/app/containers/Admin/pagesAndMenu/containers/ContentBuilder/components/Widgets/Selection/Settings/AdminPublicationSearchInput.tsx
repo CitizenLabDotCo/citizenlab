@@ -42,6 +42,7 @@ const AdminPublicationSearchInput = ({
         blurInputOnSelect
         backspaceRemovesValue={false}
         menuShouldScrollIntoView={false}
+        value={null}
         inputValue={searchInputValue}
         placeholder={''}
         options={options}
