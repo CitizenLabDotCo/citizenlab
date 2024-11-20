@@ -10,4 +10,8 @@ export default defineMessages({
     defaultMessage:
       'In this widget, you can select whichever projects and folders you want.',
   },
+  selectProjectsOrFolders: {
+    id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.selectProjectsOrFolders',
+    defaultMessage: 'Select projects or folders',
+  },
 });

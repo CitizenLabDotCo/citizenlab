@@ -37,7 +37,7 @@ const AdminPublicationSearchInput = ({
     <Box>
       <ReactSelect
         // id={id}
-        // inputId={inputId}
+        inputId="admin-publication-search-input"
         isSearchable
         blurInputOnSelect
         backspaceRemovesValue={false}
