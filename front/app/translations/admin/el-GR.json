@@ -879,7 +879,7 @@
   "app.containers.Admin.projects.all.PDFExportModal.selectIdeationPhase": "Παρακαλούμε επιλέξτε μια φάση ιδεοληψίας.",
   "app.containers.Admin.projects.all.askPersonalData": "Ζητήστε προσωπικά δεδομένα",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm": "Ερωτήσεις που δεν υποστηρίζονται επί του παρόντος: Εικόνες, ετικέτες και φόρτωση αρχείων.",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey2": "Ερωτήσεις που δεν υποστηρίζονται επί του παρόντος: Χαρτογραφικές ερωτήσεις (drop pin, draw route και draw area) και ερωτήσεις μεταφόρτωσης αρχείων.",
+  "app.containers.Admin.projects.all.clickExportToPDFSurvey3": "Ερωτήσεις που δεν υποστηρίζονται επί του παρόντος: ερωτήσεις επιλογής εικόνας και ερωτήσεις μεταφόρτωσης αρχείων.",
   "app.containers.Admin.projects.all.components.archived": "Archived",
   "app.containers.Admin.projects.all.components.draft": "Draft",
   "app.containers.Admin.projects.all.components.manageButtonLabel": "Edit",
