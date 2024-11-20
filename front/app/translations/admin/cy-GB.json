@@ -264,7 +264,7 @@
   "app.components.admin.PostManager.timelineTabTooltipText": "Llusgwch a gollyngwch bostiadau i'w copïo i wahanol gyfnodau prosiect.",
   "app.components.admin.PostManager.title": "Teitl",
   "app.components.admin.PostManager.topicsTab": "Tagiau",
-  "app.components.admin.PostManager.topicsTabTooltipText": "Ychwanegu tagiau at fewnbwn gan ddefnyddio llusgo a gollwng.",
+  "app.components.admin.PostManager.topicsTabTooltipText": "Add tags to an input using drag and drop.",
   "app.components.admin.PostManager.view": "Golwg",
   "app.components.admin.PostManager.votes": "Pleidleisiau",
   "app.components.admin.PostManager.votesByInputExportFileName": "pleidleisiau_yn_mewnbwn",
