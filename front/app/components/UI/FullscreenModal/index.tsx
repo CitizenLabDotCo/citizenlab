@@ -11,8 +11,6 @@ import { SupportedLocale } from 'typings';
 
 import useLocale from 'hooks/useLocale';
 
-// resource
-
 const slideInOutTimeout = 500;
 const slideInOutEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
 
@@ -89,6 +87,7 @@ interface InputProps {
 
 interface Props extends InputProps {
   locale: SupportedLocale;
+  modalPortalElement: HTMLElement;
 }
 
 interface State {
@@ -122,8 +121,15 @@ class FullscreenModal extends PureComponent<Props, State> {
 
   render() {
     const { windowHeight } = this.state;
-    const { children, opened, topBar, bottomBar, className, contentBgColor } =
-      this.props;
+    const {
+      children,
+      opened,
+      topBar,
+      bottomBar,
+      className,
+      contentBgColor,
+      modalPortalElement,
+    } = this.props;
 
     return createPortal(
       <CSSTransition
@@ -153,13 +159,20 @@ class FullscreenModal extends PureComponent<Props, State> {
           </StyledFocusOn>
         </Container>
       </CSSTransition>,
-      document.getElementById('modal-portal') as HTMLElement
+      modalPortalElement
     );
   }
 }
 
 export default (inputProps: InputProps) => {
   const locale = useLocale();
+  const modalPortalElement = document.getElementById('modal-portal');
 
-  return <FullscreenModal {...inputProps} locale={locale} />;
+  return modalPortalElement ? (
+    <FullscreenModal
+      {...inputProps}
+      locale={locale}
+      modalPortalElement={modalPortalElement}
+    />
+  ) : null;
 };
