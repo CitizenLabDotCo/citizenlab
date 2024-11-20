@@ -258,7 +258,7 @@
   "app.components.admin.PostManager.timelineTabTooltipText": "Dra og slipp innlegg for å kopiere dem til ulike prosjektfaser.",
   "app.components.admin.PostManager.title": "Tittel",
   "app.components.admin.PostManager.topicsTab": "Tagger",
-  "app.components.admin.PostManager.topicsTabTooltipText": "Legg til tagger i en inndata ved hjelp av dra og slipp.",
+  "app.components.admin.PostManager.topicsTabTooltipText": "Add tags to an input using drag and drop.",
   "app.components.admin.PostManager.view": "Vis",
   "app.components.admin.PostManager.votes": "Stemmer",
   "app.components.admin.PostManager.votesByInputExportFileName": "votes_by_input",
