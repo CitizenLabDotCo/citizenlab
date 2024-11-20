@@ -161,7 +161,6 @@
   "app.components.FilterBoxes.all": "Tamakkerlutik",
   "app.components.FilterBoxes.areas": "Sumiiffikkaarlugit immikkoortiterineq",
   "app.components.FilterBoxes.inputs": "inputs",
-  "app.components.FilterBoxes.showFewerTags": "Show fewer tags",
   "app.components.FilterBoxes.showLess": "Show less",
   "app.components.FilterBoxes.showTagsWithNumber": "Show all ({numberTags})",
   "app.components.FilterBoxes.statusTitle": "Killiffik",
