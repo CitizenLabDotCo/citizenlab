@@ -105,10 +105,6 @@ const FullMobileNavMenu = ({
 
   const navbarItemPropsArray = getNavbarItemPropsArray(navbarItems.data);
 
-  // TODO: Fix this the next time the file is edited.
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  const modalPortalElement = document?.getElementById('mobile-nav-portal');
-
   const handleOnCloseButtonClick = () => {
     onClose();
     trackEventByName(tracks.closeButtonClickedFullMenu);
@@ -121,63 +117,58 @@ const FullMobileNavMenu = ({
     });
   };
 
-  if (modalPortalElement) {
-    return (
-      <StyledFullscreenModal
-        opened={isFullMenuOpened}
-        close={onClose}
-        mobileNavbarRef={mobileNavbarRef}
-        modalPortalElement={modalPortalElement}
-      >
-        <Container>
-          <ContentContainer
-            // Screen reader will add "navigation", so this will become
-            // "Full mobile navigation"
-            // Needed because there's also a different nav (see MobileNavbarContent/index)
-            aria-label={formatMessage(messages.fullMobileNavigation)}
-          >
-            <Box mb="16px">
-              <TenantLogo />
-            </Box>
-            <MenuItems>
-              {navbarItemPropsArray.map((navbarItemProps) => {
-                const { linkTo, onlyActiveOnIndex, navigationItemTitle } =
-                  navbarItemProps;
-                if (linkTo) {
-                  return (
-                    <FullMobileNavMenuItem
-                      key={linkTo}
-                      linkTo={linkTo}
-                      onlyActiveOnIndex={onlyActiveOnIndex}
-                      navigationItemTitle={localize(navigationItemTitle)}
-                      onClick={handleOnMenuItemClick(linkTo)}
-                      scrollToTop
-                    />
-                  );
-                }
-                return null;
-              })}
-              <FullMobileNavMenuItem
-                linkTo={'/projects?focusSearch=true'}
-                navigationItemTitle={formatMessage(messages.search)}
-                onClick={handleOnMenuItemClick('/projects?focusSearch=true')}
-                iconName="search"
-                scrollToTop
-              />
-            </MenuItems>
-            <StyledCloseIconButton
-              a11y_buttonActionMessage={messages.closeMobileNavMenu}
-              onClick={handleOnCloseButtonClick}
-              iconColor={colors.textSecondary}
-              iconColorOnHover={darken(0.1, colors.textSecondary)}
+  return (
+    <StyledFullscreenModal
+      opened={isFullMenuOpened}
+      close={onClose}
+      mobileNavbarRef={mobileNavbarRef}
+    >
+      <Container>
+        <ContentContainer
+          // Screen reader will add "navigation", so this will become
+          // "Full mobile navigation"
+          // Needed because there's also a different nav (see MobileNavbarContent/index)
+          aria-label={formatMessage(messages.fullMobileNavigation)}
+        >
+          <Box mb="16px">
+            <TenantLogo />
+          </Box>
+          <MenuItems>
+            {navbarItemPropsArray.map((navbarItemProps) => {
+              const { linkTo, onlyActiveOnIndex, navigationItemTitle } =
+                navbarItemProps;
+              if (linkTo) {
+                return (
+                  <FullMobileNavMenuItem
+                    key={linkTo}
+                    linkTo={linkTo}
+                    onlyActiveOnIndex={onlyActiveOnIndex}
+                    navigationItemTitle={localize(navigationItemTitle)}
+                    onClick={handleOnMenuItemClick(linkTo)}
+                    scrollToTop
+                  />
+                );
+              }
+              return null;
+            })}
+            <FullMobileNavMenuItem
+              linkTo={'/projects?focusSearch=true'}
+              navigationItemTitle={formatMessage(messages.search)}
+              onClick={handleOnMenuItemClick('/projects?focusSearch=true')}
+              iconName="search"
+              scrollToTop
             />
-          </ContentContainer>
-        </Container>
-      </StyledFullscreenModal>
-    );
-  }
-
-  return null;
+          </MenuItems>
+          <StyledCloseIconButton
+            a11y_buttonActionMessage={messages.closeMobileNavMenu}
+            onClick={handleOnCloseButtonClick}
+            iconColor={colors.textSecondary}
+            iconColorOnHover={darken(0.1, colors.textSecondary)}
+          />
+        </ContentContainer>
+      </Container>
+    </StyledFullscreenModal>
+  );
 };
 
 export default FullMobileNavMenu;
