@@ -187,11 +187,14 @@ const TopicsFilter = memo<Props>(
                 mt="12px"
                 fontSize="s"
               >
-                {showFullList
-                  ? formatMessage(messages.showLess)
-                  : `${formatMessage(messages.showTagsWithNumber, {
-                      numberTags: topicsWithIdeas.length,
-                    })}`}
+{formatMessage(
+                  showFullList
+                    ? messages.showLess
+                    : messages.showTagsWithNumber,
+                  {
+                    numberTags: topicsWithIdeas.length,
+                  }
+                )}
               </Button>
             )}
 
