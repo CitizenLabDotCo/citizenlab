@@ -16,19 +16,12 @@ import usePhase from 'api/phases/usePhase';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import ColorIndicator from 'component-library/components/ColorIndicator';
 import T from 'components/T';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../../messages';
-
-const ColorIndicator = styled.div`
-  width: 1rem;
-  height: 1rem;
-  background-color: ${(props) => props.color};
-  border-radius: ${(props) => props.theme.borderRadius};
-  margin-right: 0.5rem;
-`;
 
 const StatusText = styled.div`
   &:first-letter {
@@ -114,7 +107,7 @@ const FilterSidebarStatusesItem = ({ status, active, onClick }: Props) => {
               justifyContent="flex-start"
               w="100%"
             >
-              <ColorIndicator color={status.attributes.color} />
+              <ColorIndicator bgColor={status.attributes.color} />
               <Box display="flex" alignItems="center" gap="4px">
                 <StatusText>
                   <T value={status.attributes.title_multiloc} />

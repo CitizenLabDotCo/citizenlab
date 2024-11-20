@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 
 import { Color, colors, media } from '@citizenlab/cl2-component-library';
-import { compact } from 'lodash-es';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import CSSTransition from 'react-transition-group/CSSTransition';
@@ -84,7 +83,6 @@ interface InputProps {
   close: () => void;
   topBar?: JSX.Element | null;
   bottomBar?: JSX.Element | null;
-  mobileNavbarRef?: HTMLElement | null;
   children: JSX.Element | null | undefined;
   contentBgColor?: Color;
 }
@@ -124,16 +122,8 @@ class FullscreenModal extends PureComponent<Props, State> {
 
   render() {
     const { windowHeight } = this.state;
-    const {
-      children,
-      opened,
-      topBar,
-      bottomBar,
-      mobileNavbarRef,
-      className,
-      contentBgColor,
-    } = this.props;
-    const shards = compact([mobileNavbarRef]);
+    const { children, opened, topBar, bottomBar, className, contentBgColor } =
+      this.props;
 
     return createPortal(
       <CSSTransition
@@ -154,7 +144,7 @@ class FullscreenModal extends PureComponent<Props, State> {
           windowHeight={windowHeight}
           contentBgColor={contentBgColor}
         >
-          <StyledFocusOn autoFocus={false} shards={shards}>
+          <StyledFocusOn autoFocus>
             {topBar}
             <Content className="fullscreenmodal-scrollcontainer">
               {children}
