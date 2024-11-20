@@ -947,6 +947,8 @@
   "app.containers.AccessibilityStatement.contentConformanceExceptions": "Wir bemühen uns unsere Inhalte für alle inklusiv zu gestalten. Allerdings sind bestimmte Inhalte der Plattform unter den folgenden Umständen nicht barrierefrei:",
   "app.containers.AccessibilityStatement.demoPlatformLinkText": "Demo-Webseite",
   "app.containers.AccessibilityStatement.email": "E-Mail:",
+  "app.containers.AccessibilityStatement.embeddedSurveyTools": "Eingebettete Umfrage-Tools",
+  "app.containers.AccessibilityStatement.embeddedSurveyToolsException": "Bei den eingebetteten Umfragetools, die auf dieser Plattform zur Verfügung stehen, handelt es sich um Software von Drittanbietern, die eingebettet wird und auf deren Barrierefreiheit wir keinen Einfluss haben.",
   "app.containers.AccessibilityStatement.exception_1": "Unsere Beteiligungsplattformen fördern die Veröffentlichung von nutzergenerierten Inhalten von Einzelpersonen und Organisationen. Sie ermöglichen den Nutzern unserer Plattformen das Hochladen von PDFs, Bildern, Multimediadateien und anderen Dateitypen in Form von Anhängen oder als Einfügungen in die Textfelder. Möglicherweise sind diese Dokumente nicht vollständig zugänglich.",
   "app.containers.AccessibilityStatement.feedbackProcessIntro": "Wir freuen uns über Rückmeldungen zur Barrierefreiheit dieser Webseite. Bitte kontaktieren Sie uns auf einem der folgenden Wege:",
   "app.containers.AccessibilityStatement.feedbackProcessTitle": "Feedbackprozess",
