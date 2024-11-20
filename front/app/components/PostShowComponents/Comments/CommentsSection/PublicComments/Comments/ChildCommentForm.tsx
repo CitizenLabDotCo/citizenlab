@@ -53,8 +53,7 @@ const Form = styled.form`
   }
 
   &.focused {
-    border-color: ${colors.black};
-    box-shadow: ${defaultStyles.boxShadowFocused};
+    border: solid 2px ${(props) => props.theme.colors.tenantPrimary};
   }
 `;
 
