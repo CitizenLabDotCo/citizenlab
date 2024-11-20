@@ -58,6 +58,47 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
     )
   end
 
+  def index_select_and_order_by_ids
+    admin_publication_filterer = AdminPublicationsFilteringService.new
+    admin_publications = policy_scope(AdminPublication.includes(:parent))
+    admin_publications = admin_publications.where(id: params[:ids]).in_order_of(:id, params[:ids])
+
+    @admin_publications = paginate admin_publications
+
+    @admin_publications = @admin_publications.includes(
+      {
+        publication: [
+          { phases: %i[report custom_form permissions] },
+          :admin_publication,
+          :images,
+          :project_images,
+          :content_builder_layouts
+        ]
+      },
+      :children
+    )
+
+    included = %i[
+      publication
+      publication.avatars
+      publication.project_images
+      publication.images
+      publication.current_phase
+      publication.phases
+    ]
+
+    authorize @admin_publications, :index_select_and_order_by_ids?
+
+    render json: linked_json(
+      @admin_publications,
+      WebApi::V1::AdminPublicationSerializer,
+      params: jsonapi_serializer_params(
+        visible_children_count_by_parent_id: admin_publication_filterer.visible_children_counts_by_parent_id
+      ),
+      include: included
+    )
+  end
+
   def reorder
     if @admin_publication.insert_at(permitted_attributes(@admin_publication)[:ordering])
       SideFxAdminPublicationService.new.after_update(@admin_publication, current_user)
