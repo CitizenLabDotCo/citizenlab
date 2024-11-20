@@ -161,7 +161,6 @@
   "app.components.FilterBoxes.all": "Alle",
   "app.components.FilterBoxes.areas": "Filtrer efter områder",
   "app.components.FilterBoxes.inputs": "Indlæg",
-  "app.components.FilterBoxes.showFewerTags": "Vis færre tags",
   "app.components.FilterBoxes.showLess": "Vis mindre",
   "app.components.FilterBoxes.showTagsWithNumber": "Vis alle ({numberTags})",
   "app.components.FilterBoxes.statusTitle": "Status",
