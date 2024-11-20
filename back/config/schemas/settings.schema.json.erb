@@ -1228,6 +1228,7 @@
         "title": "Public API tokens",
         "description": "Enables the ability to create API tokens for the public API.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": true },
@@ -1266,6 +1267,7 @@
         "title": "Input importer",
         "description": "Enables the importing of Excel (XLSX) files with ideas and surveys.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": true },
@@ -1355,6 +1357,7 @@
         "title": "Customisable homepage banner",
         "description": "Enables customization of various settings for the homepage banner, including layout options, overlay colors, and more, beyond just the banner text.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false },
@@ -1424,16 +1427,11 @@
     "microsoft_forms_surveys": ["surveys"],
     "smart_survey_surveys": ["surveys"],
 
-    "id_auth0": ["verification"],
-    "id_bogus": ["verification"],
-    "id_bosa_fas": ["verification"],
-    "id_clave_unica": ["verification"],
-    "id_cow": ["verification"],
-    "id_franceconnect": ["verification"],
-    "id_gent_rrn": ["verification"],
-    "id_oostende_rrn": ["verification"],
-    "id_id_card_lookup": ["verification"],
-    "id_keycloak": ["verification"],
+    "clave_unica_login": ["verification"],
+    "criipto_login": ["verification"],
+    "id_austria_login": ["verification"],
+    "keycloak_login": ["verification"],
+    "nemlog_in_login": ["verification"],
 
     "power_bi": ["public_api_tokens"],
     "large_summaries": ["analysis"],
