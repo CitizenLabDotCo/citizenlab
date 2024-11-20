@@ -39,6 +39,9 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
     )
   end
 
+  # For use with 'Selected items' homepage widget.
+  # Returns non-draft admin_publications for specified ids, ordered by order of the specified ids.
+  # => [AdminPublication]
   def index_select_and_order_by_ids
     ids = params[:ids]
 

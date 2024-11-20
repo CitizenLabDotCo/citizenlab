@@ -308,6 +308,15 @@ resource 'AdminPublication' do
         expect(json_response[:data].pluck(:id))
           .to eq [non_draft_ids[3], non_draft_ids[0], non_draft_ids[1], non_draft_ids[4]]
       end
+
+      example 'Returns empty data when no records are found', document: false do
+        do_request(ids: ['not_an_admin_publication_id'])
+
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+
+        expect(json_response[:data]).to be_empty
+      end
     end
 
     patch 'web_api/v1/admin_publications/:id/reorder' do
