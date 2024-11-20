@@ -161,7 +161,6 @@
   "app.components.FilterBoxes.all": "Wszystkie",
   "app.components.FilterBoxes.areas": "Filtr według dzielnic",
   "app.components.FilterBoxes.inputs": "wejścia",
-  "app.components.FilterBoxes.showFewerTags": "Pokaż mniej tagów",
   "app.components.FilterBoxes.showLess": "Pokaż mniej",
   "app.components.FilterBoxes.showTagsWithNumber": "Pokaż wszystkie ({numberTags})",
   "app.components.FilterBoxes.statusTitle": "Status",
