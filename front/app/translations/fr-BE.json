@@ -947,6 +947,8 @@
   "app.containers.AccessibilityStatement.contentConformanceExceptions": "Nous faisons le maximum pour fournir un contenu accessible à tous, quelles que soient sa situation ou ses capacités. Néanmoins, les situations suivantes peuvent ne pas nous le permettre :",
   "app.containers.AccessibilityStatement.demoPlatformLinkText": "site démo",
   "app.containers.AccessibilityStatement.email": "Adresse e-mail :",
+  "app.containers.AccessibilityStatement.embeddedSurveyTools": "Outils d'enquête tiers",
+  "app.containers.AccessibilityStatement.embeddedSurveyToolsException": "Il n'est pas garanti que les outils d'enquête proposés via des intégrations avec des services tiers respectent les normes d'accessibilité.",
   "app.containers.AccessibilityStatement.exception_1": "Nos plateformes d'engagement numérique facilitent le contenu généré par les utilisateurs publié par des individus et des organisations. Il est possible que des PDF, des images ou d'autres types de fichiers, y compris des fichiers multimédias, soient téléchargés sur la plate-forme en tant que pièces jointes ou ajoutés dans des champs de texte par les utilisateurs de la plate-forme. Ces documents peuvent ne pas être entièrement accessibles.",
   "app.containers.AccessibilityStatement.feedbackProcessIntro": "Vos commentaires nous aident à améliorer l'accessibilité de notre site. Merci de nous contacter par :",
   "app.containers.AccessibilityStatement.feedbackProcessTitle": "Remarques et suggestions",

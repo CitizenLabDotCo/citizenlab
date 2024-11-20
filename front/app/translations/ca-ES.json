@@ -947,6 +947,8 @@
   "app.containers.AccessibilityStatement.contentConformanceExceptions": "Ens esforcem perquè el nostre contingut sigui inclusiu per a tothom. Tanmateix, en alguns casos pot haver-hi contingut inaccessible a la plataforma, tal com es descriu a continuació:",
   "app.containers.AccessibilityStatement.demoPlatformLinkText": "lloc web de demostració",
   "app.containers.AccessibilityStatement.email": "Correu electrònic:",
+  "app.containers.AccessibilityStatement.embeddedSurveyTools": "Eines d'enquesta integrades",
+  "app.containers.AccessibilityStatement.embeddedSurveyToolsException": "Les eines d'enquesta incrustades que estan disponibles per utilitzar-les en aquesta plataforma són programari de tercers i és possible que no siguin accessibles.",
   "app.containers.AccessibilityStatement.exception_1": "Les nostres plataformes de participació digital faciliten el contingut generat pels usuaris publicat per persones i organitzacions. És possible que els usuaris de la plataforma carreguin PDF, imatges o altres tipus de fitxers, inclosos els multimèdia com a fitxers adjunts, o els afegeixin als camps de text. És possible que aquests documents no siguin totalment accessibles.",
   "app.containers.AccessibilityStatement.feedbackProcessIntro": "Agraïm els vostres comentaris sobre l'accessibilitat d'aquest lloc. Si us plau, poseu-vos en contacte amb nosaltres mitjançant un dels mètodes següents:",
   "app.containers.AccessibilityStatement.feedbackProcessTitle": "Procés de retroalimentació",
