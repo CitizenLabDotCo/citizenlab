@@ -161,7 +161,6 @@
   "app.components.FilterBoxes.all": "Alle",
   "app.components.FilterBoxes.areas": "Filter op gebied",
   "app.components.FilterBoxes.inputs": "invoeren",
-  "app.components.FilterBoxes.showFewerTags": "Minder tags tonen",
   "app.components.FilterBoxes.showLess": "Toon minder",
   "app.components.FilterBoxes.showTagsWithNumber": "Toon alle ({numberTags})",
   "app.components.FilterBoxes.statusTitle": "Status",
