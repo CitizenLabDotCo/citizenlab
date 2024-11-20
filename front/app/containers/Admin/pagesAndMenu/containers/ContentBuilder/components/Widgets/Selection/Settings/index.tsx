@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
+import { useNode } from '@craftjs/core';
 
 import {
   SortableList,
@@ -10,11 +11,17 @@ import {
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import TitleMultilocInput from '../_shared/TitleMultilocInput';
-
-import messages from './messages';
+import TitleMultilocInput from '../../_shared/TitleMultilocInput';
+import messages from '../messages';
 
 const Settings = () => {
+  const {
+    actions: { setProp },
+    adminPublicationIds,
+  } = useNode((node) => ({
+    adminPublicationIds: node.data.props.adminPublicationIds,
+  }));
+
   const handleReorder = () => {
     // TODO
   };
@@ -28,9 +35,9 @@ const Settings = () => {
         <TitleMultilocInput name="selection_title" />
       </Box>
       <SortableList
-        items={[]} // TODO
+        items={adminPublicationIds}
         onReorder={handleReorder}
-        key={0} // TODO
+        key={adminPublicationIds.length}
       >
         {({ itemsList, handleDragRow, handleDropRow }) => (
           <>

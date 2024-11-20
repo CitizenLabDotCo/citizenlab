@@ -3,7 +3,7 @@ import React from 'react';
 import { Multiloc } from 'typings';
 
 import messages from './messages';
-import Settings from './Settings';
+import Settings from './Settings/Settings';
 
 interface Props {
   titleMultiloc: Multiloc;
