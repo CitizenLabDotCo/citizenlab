@@ -1161,6 +1161,7 @@
   "app.containers.IdeaCards.filter": "Filter",
   "app.containers.IdeaCards.list": "List",
   "app.containers.IdeaCards.map": "Map",
+  "app.containers.IdeaCards.mostDiscussed": "Most discussed",
   "app.containers.IdeaCards.newest": "Most recent",
   "app.containers.IdeaCards.noFilteredResults": "No results found. Please try a different filter or search term.",
   "app.containers.IdeaCards.oldest": "Oldest",
