@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
@@ -19,10 +19,12 @@ import { FormattedMessage } from 'utils/cl-intl';
 import TitleMultilocInput from '../../_shared/TitleMultilocInput';
 import messages from '../messages';
 
+import AdminPublicationSearchInput from './AdminPublicationSearchInput';
 import { getNewIdsOnDrop } from './utils';
 
 const Settings = () => {
   const localize = useLocalize();
+  const [search, setSearch] = useState('');
 
   const {
     actions: { setProp },
@@ -31,16 +33,24 @@ const Settings = () => {
     adminPublicationIds: node.data.props.adminPublicationIds,
   }));
 
-  const { data: adminPublications } = useAdminPublications({
+  const { data: selectedAdminPublications } = useAdminPublications({
     ids: adminPublicationIds,
     pageNumber: 1,
     pageSize: 250,
   });
 
+  const selectedAdminPublicationsFlat =
+    selectedAdminPublications?.pages.flatMap((page) => page.data);
+
+  const { data: adminPublications } = useAdminPublications({
+    search,
+  });
+
   const adminPublicationsFlat = adminPublications?.pages.flatMap(
     (page) => page.data
   );
-  if (!adminPublicationsFlat) return null;
+
+  if (!selectedAdminPublicationsFlat || !adminPublicationsFlat) return null;
 
   const handleReorder = (draggedItemId: string, targetIndex: number) => {
     setProp((props) => {
@@ -60,10 +70,26 @@ const Settings = () => {
       <Box mb="20px">
         <TitleMultilocInput name="selection_title" />
       </Box>
+      <Box mb="20px">
+        <AdminPublicationSearchInput
+          options={adminPublicationsFlat}
+          searchInputValue={search}
+          onChange={(adminPublication) => {
+            if (!adminPublication) return;
+            setProp((props) => {
+              props.adminPublicationIds = [
+                ...adminPublicationIds,
+                adminPublication.id,
+              ];
+            });
+          }}
+          onSearchInputChange={setSearch}
+        />
+      </Box>
       <SortableList
-        items={adminPublicationsFlat}
+        items={selectedAdminPublicationsFlat}
         onReorder={handleReorder}
-        key={adminPublicationsFlat.length}
+        key={selectedAdminPublicationsFlat.length}
       >
         {({ itemsList, handleDragRow, handleDropRow }) => (
           <>
