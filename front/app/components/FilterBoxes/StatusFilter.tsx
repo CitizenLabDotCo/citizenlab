@@ -7,6 +7,7 @@ import {
   Box,
   Text,
   colors,
+  ColorIndicator,
 } from '@citizenlab/cl2-component-library';
 import { capitalize, get } from 'lodash-es';
 import { darken } from 'polished';
@@ -14,7 +15,6 @@ import styled from 'styled-components';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 
-import ColorIndicator from 'components/ColorIndicator';
 import T from 'components/T';
 
 import { ScreenReaderOnly } from 'utils/a11y';

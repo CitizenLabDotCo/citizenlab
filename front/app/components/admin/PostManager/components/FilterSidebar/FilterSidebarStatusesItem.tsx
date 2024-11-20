@@ -16,7 +16,7 @@ import usePhase from 'api/phases/usePhase';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import ColorIndicator from 'components/ColorIndicator';
+import ColorIndicator from 'component-library/components/ColorIndicator';
 import T from 'components/T';
 
 import { FormattedMessage } from 'utils/cl-intl';

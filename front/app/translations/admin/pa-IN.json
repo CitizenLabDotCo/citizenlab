@@ -879,7 +879,6 @@
   "app.containers.Admin.projects.all.PDFExportModal.selectIdeationPhase": "ਕਿਰਪਾ ਕਰਕੇ ਇੱਕ ਵਿਚਾਰ ਪੜਾਅ ਚੁਣੋ।",
   "app.containers.Admin.projects.all.askPersonalData": "ਨਿੱਜੀ ਡਾਟਾ ਪੁੱਛੋ",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm": "ਸਵਾਲ ਇਸ ਵੇਲੇ ਸਮਰਥਿਤ ਨਹੀਂ ਹਨ: ਚਿੱਤਰ, ਟੈਗਸ ਅਤੇ ਫਾਈਲ ਅਪਲੋਡ।",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey2": "ਸਵਾਲ ਇਸ ਵੇਲੇ ਸਮਰਥਿਤ ਨਹੀਂ ਹਨ: ਮੈਪਿੰਗ ਸਵਾਲ (ਡ੍ਰੌਪ ਪਿੰਨ, ਰੂਟ ਡਰਾਅ ਅਤੇ ਡਰਾਅ ਏਰੀਆ), ਅਤੇ ਫਾਈਲ ਅੱਪਲੋਡ ਸਵਾਲ।",
   "app.containers.Admin.projects.all.components.archived": "ਪੁਰਾਲੇਖ",
   "app.containers.Admin.projects.all.components.draft": "ਡਰਾਫਟ",
   "app.containers.Admin.projects.all.components.manageButtonLabel": "ਸੰਪਾਦਿਤ ਕਰੋ",
