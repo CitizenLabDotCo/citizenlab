@@ -281,7 +281,7 @@
   "app.components.admin.PostManager.timelineTabTooltipText": "Dra och släpp inlägg för att kopiera dem till olika projektfaser.",
   "app.components.admin.PostManager.title": "Titel",
   "app.components.admin.PostManager.topicsTab": "Ämnen",
-  "app.components.admin.PostManager.topicsTabTooltipText": "Lägg till ämnen till indata genom att dra och släppa.",
+  "app.components.admin.PostManager.topicsTabTooltipText": "Add tags to an input using drag and drop.",
   "app.components.admin.PostManager.view": "Utsikt",
   "app.components.admin.PostManager.votes": "Röster",
   "app.components.admin.PostManager.votesByInputExportFileName": "röster_per_inmatning",
