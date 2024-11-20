@@ -161,7 +161,6 @@
   "app.components.FilterBoxes.all": "الكل  ",
   "app.components.FilterBoxes.areas": "التصفية بحسب المنطقة",
   "app.components.FilterBoxes.inputs": "المدخلات",
-  "app.components.FilterBoxes.showFewerTags": "إظهار عدد أقل من العلامات",
   "app.components.FilterBoxes.showLess": "إظهار أقل",
   "app.components.FilterBoxes.showTagsWithNumber": "إظهار الكل ({numberTags})",
   "app.components.FilterBoxes.statusTitle": "الحالة",
