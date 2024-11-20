@@ -4,8 +4,7 @@ class ProjectsFinderService
     @user = user
     @page_size = (params.dig(:page, :size) || 500).to_i
     @page_number = (params.dig(:page, :number) || 1).to_i
-    @finished = params[:finished]
-    @archived = params[:archived]
+    @params = params
   end
 
   # Returns an ActiveRecord collection of published projects that are
@@ -110,13 +109,16 @@ class ProjectsFinderService
   # OR are archived, ordered by creation date first and ID second.
   # => [Project]
   def finished_or_archived
-    return @projects.none unless @finished || @archived
+    include_finished = %w[finished finished_and_archived].include?(@params[:filter_by])
+    include_archived = %w[archived finished_and_archived].include?(@params[:filter_by])
+
+    return @projects.none unless include_finished || include_archived
 
     base_scope = @projects
       .joins('INNER JOIN admin_publications AS admin_publications ON admin_publications.publication_id = projects.id')
       .joins('INNER JOIN phases ON phases.project_id = projects.id')
 
-    if @finished
+    if include_finished
       finished_scope = base_scope.where(admin_publications: { publication_status: 'published' })
       finished_scope = joins_last_phases_with_reports(finished_scope)
         .where(
@@ -125,11 +127,16 @@ class ProjectsFinderService
         )
     end
 
-    archived_scope = base_scope.where(admin_publications: { publication_status: 'archived' }) if @archived
-    archived_scope = joins_last_phases_with_reports(archived_scope) if @archived
+    if include_archived
+      archived_scope = base_scope.where(admin_publications: { publication_status: 'archived' })
+      archived_scope = joins_last_phases_with_reports(archived_scope)
+    end
 
-    return order_by_created_at_and_id_with_distinct_on(finished_scope.or(archived_scope)) if @finished && @archived
-    return order_by_created_at_and_id_with_distinct_on(finished_scope) if @finished
+    if include_finished && include_archived
+      return order_by_created_at_and_id_with_distinct_on(finished_scope.or(archived_scope))
+    end
+
+    return order_by_created_at_and_id_with_distinct_on(finished_scope) if include_finished
 
     order_by_created_at_and_id_with_distinct_on(archived_scope)
   end
