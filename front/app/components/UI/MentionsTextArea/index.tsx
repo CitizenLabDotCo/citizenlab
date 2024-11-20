@@ -24,8 +24,7 @@ const Container = styled.div`
   background: #fff;
 
   & .hasBorder textarea:focus {
-    border-color: ${colors.black} !important;
-    box-shadow: ${defaultStyles.boxShadowFocused} !important;
+    border: solid 2px ${(props) => props.theme.colors.tenantPrimary} !important;
   }
 
   & .textareaWrapper__suggestions__list li:last-child {
