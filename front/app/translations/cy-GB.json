@@ -947,6 +947,8 @@
   "app.containers.AccessibilityStatement.contentConformanceExceptions": "Rydym yn ymdrechu i wneud ein cynnwys yn gynhwysol i bawb. Fodd bynnag, mewn rhai achosion efallai y bydd cynnwys anhygyrch ar y platfform fel yr amlinellir isod:",
   "app.containers.AccessibilityStatement.demoPlatformLinkText": "gwefan demo",
   "app.containers.AccessibilityStatement.email": "E-bost:",
+  "app.containers.AccessibilityStatement.embeddedSurveyTools": "Offer arolwg wedi'i fewnosod",
+  "app.containers.AccessibilityStatement.embeddedSurveyToolsException": "Meddalwedd trydydd parti yw'r offer arolygu sydd wedi'u mewnosod sydd ar gael i'w defnyddio ar y platfform hwn ac efallai na fyddant yn hygyrch.",
   "app.containers.AccessibilityStatement.exception_1": "Mae ein llwyfannau ymgysylltu digidol yn hwyluso cynnwys a gynhyrchir gan ddefnyddwyr sy’n cael ei bostio gan unigolion a sefydliadau. Mae'n bosibl y bydd ffeiliau PDF, delweddau neu fathau eraill o ffeiliau gan gynnwys aml-gyfrwng yn cael eu huwchlwytho i'r platfform fel atodiadau neu eu hychwanegu at feysydd testun gan ddefnyddwyr y platfform. Efallai na fydd y dogfennau hyn yn gwbl hygyrch.",
   "app.containers.AccessibilityStatement.feedbackProcessIntro": "Rydym yn croesawu eich adborth ar hygyrchedd y wefan hon. Cysylltwch â ni trwy un o'r dulliau canlynol:",
   "app.containers.AccessibilityStatement.feedbackProcessTitle": "Proses adborth",
