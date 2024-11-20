@@ -109,7 +109,7 @@ class ProjectsFinderService
   # OR are archived, ordered by last phase end_at (nulls first), creation date second and ID third.
   # => [Project]
   def finished_or_archived
-    return @projects.none unless @filter_by
+    # return @projects.none unless @filter_by
 
     base_scope = @projects
       .joins('INNER JOIN admin_publications AS admin_publications ON admin_publications.publication_id = projects.id')

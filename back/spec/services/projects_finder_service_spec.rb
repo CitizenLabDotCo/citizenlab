@@ -209,7 +209,7 @@ describe ProjectsFinderService do
     let!(:finished_project1) { create(:project_with_two_past_ideation_phases) }
     let!(:unfinished_project) { create(:project_with_active_ideation_phase) }
 
-    describe "when passed only the 'finished' parameter" do
+    describe "when passed filter_by: 'finished'" do
       let(:result) { service.new(Project.all, user, { filter_by: 'finished' }).finished_or_archived }
 
       it 'includes finished projects' do
@@ -291,7 +291,7 @@ describe ProjectsFinderService do
       end
     end
 
-    describe "when passed only the 'archived' parameter" do
+    describe "when passed filter_by: 'archived'" do
       let!(:archived_project) do
         create(:project_with_past_information_phase, admin_publication_attributes: { publication_status: 'archived' })
       end
@@ -342,7 +342,7 @@ describe ProjectsFinderService do
       end
     end
 
-    describe "when passed 'finished' AND 'archived' parameter" do
+    describe "when passed filter_by: 'finished_and_archived'" do
       # Should include `finished_project1` and:
       let!(:unfinished_project1) { create(:project) }
       let!(:phase) { create(:phase, project: unfinished_project1, start_at: 2.days.ago, end_at: 2.days.from_now) }
