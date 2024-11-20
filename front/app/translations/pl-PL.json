@@ -947,6 +947,8 @@
   "app.containers.AccessibilityStatement.contentConformanceExceptions": "Staramy się, aby nasze treści były dostępne dla wszystkich. Jednakże w niektórych przypadkach treści na platformie mogą być niedostępne:",
   "app.containers.AccessibilityStatement.demoPlatformLinkText": "strona demo",
   "app.containers.AccessibilityStatement.email": "E-mail:",
+  "app.containers.AccessibilityStatement.embeddedSurveyTools": "Wbudowane narzędzia ankietowe",
+  "app.containers.AccessibilityStatement.embeddedSurveyToolsException": "Wbudowane narzędzia ankietowe, które są dostępne do użytku na tej platformie, są oprogramowaniem innych firm i mogą być niedostępne.",
   "app.containers.AccessibilityStatement.exception_1": "Nasze cyfrowe platformy partycypacji ułatwiają użytkownikom umieszczanie treści generowanych przez osoby prywatne i organizacje. Możliwe jest, że pliki PDF, obrazy lub inne typy plików, w tym multimedialne, są umieszczane na platformie jako załączniki lub dodawane do pól tekstowych przez użytkowników platformy. Dokumenty te mogą nie być w pełni dostępne.",
   "app.containers.AccessibilityStatement.feedbackProcessIntro": "Opinia na temat dostępności strony jest dla nas bardzo ważna. Prosimy o kontakt z nami w jeden z poniższych sposobów:",
   "app.containers.AccessibilityStatement.feedbackProcessTitle": "Proces przekazywania informacji zwrotnych",

@@ -947,6 +947,8 @@
   "app.containers.AccessibilityStatement.contentConformanceExceptions": "We strive to make our content inclusive for all. However, in some instances there may be inaccessible content on the platform as outlined below:",
   "app.containers.AccessibilityStatement.demoPlatformLinkText": "demo website",
   "app.containers.AccessibilityStatement.email": "Email:",
+  "app.containers.AccessibilityStatement.embeddedSurveyTools": "Embedded survey tools",
+  "app.containers.AccessibilityStatement.embeddedSurveyToolsException": "The embedded survey tools that are available for use on this platform are third-party software and may not be accessible.",
   "app.containers.AccessibilityStatement.exception_1": "Our digital engagement platforms facilitate user-generated content posted by individuals and organizations. It is possible that PDFs, images or other file types including multi-media are uploaded to the platform as attachments or added into text fields by platform users. These documents may not be fully accessible.",
   "app.containers.AccessibilityStatement.feedbackProcessIntro": "We welcome your feedback on the accessibility of this site. Please contact us via one of the following methods:",
   "app.containers.AccessibilityStatement.feedbackProcessTitle": "Feedback process",

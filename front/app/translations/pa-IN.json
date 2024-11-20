@@ -947,6 +947,8 @@
   "app.containers.AccessibilityStatement.contentConformanceExceptions": "ਅਸੀਂ ਆਪਣੀ ਸਮਗਰੀ ਨੂੰ ਸਾਰਿਆਂ ਲਈ ਸ਼ਾਮਲ ਕਰਨ ਦੀ ਕੋਸ਼ਿਸ਼ ਕਰਦੇ ਹਾਂ। ਹਾਲਾਂਕਿ, ਕੁਝ ਸਥਿਤੀਆਂ ਵਿੱਚ ਪਲੇਟਫਾਰਮ 'ਤੇ ਪਹੁੰਚਯੋਗ ਸਮੱਗਰੀ ਹੋ ਸਕਦੀ ਹੈ ਜਿਵੇਂ ਕਿ ਹੇਠਾਂ ਦੱਸਿਆ ਗਿਆ ਹੈ:",
   "app.containers.AccessibilityStatement.demoPlatformLinkText": "ਡੈਮੋ ਵੈੱਬਸਾਈਟ",
   "app.containers.AccessibilityStatement.email": "ਈਮੇਲ:",
+  "app.containers.AccessibilityStatement.embeddedSurveyTools": "ਏਮਬੈਡਡ ਸਰਵੇਖਣ ਟੂਲ",
+  "app.containers.AccessibilityStatement.embeddedSurveyToolsException": "ਏਮਬੇਡ ਕੀਤੇ ਸਰਵੇਖਣ ਟੂਲ ਜੋ ਇਸ ਪਲੇਟਫਾਰਮ 'ਤੇ ਵਰਤੋਂ ਲਈ ਉਪਲਬਧ ਹਨ, ਤੀਜੀ-ਧਿਰ ਦੇ ਸੌਫਟਵੇਅਰ ਹਨ ਅਤੇ ਹੋ ਸਕਦਾ ਹੈ ਕਿ ਪਹੁੰਚਯੋਗ ਨਾ ਹੋਵੇ।",
   "app.containers.AccessibilityStatement.exception_1": "ਸਾਡੇ ਡਿਜੀਟਲ ਸ਼ਮੂਲੀਅਤ ਪਲੇਟਫਾਰਮ ਵਿਅਕਤੀਆਂ ਅਤੇ ਸੰਸਥਾਵਾਂ ਦੁਆਰਾ ਪੋਸਟ ਕੀਤੀ ਉਪਭੋਗਤਾ ਦੁਆਰਾ ਤਿਆਰ ਕੀਤੀ ਸਮੱਗਰੀ ਦੀ ਸਹੂਲਤ ਦਿੰਦੇ ਹਨ। ਇਹ ਸੰਭਵ ਹੈ ਕਿ PDF, ਚਿੱਤਰ ਜਾਂ ਮਲਟੀ-ਮੀਡੀਆ ਸਮੇਤ ਹੋਰ ਫਾਈਲ ਕਿਸਮਾਂ ਨੂੰ ਪਲੇਟਫਾਰਮ 'ਤੇ ਅਟੈਚਮੈਂਟ ਵਜੋਂ ਅੱਪਲੋਡ ਕੀਤਾ ਜਾਂਦਾ ਹੈ ਜਾਂ ਪਲੇਟਫਾਰਮ ਉਪਭੋਗਤਾਵਾਂ ਦੁਆਰਾ ਟੈਕਸਟ ਖੇਤਰਾਂ ਵਿੱਚ ਜੋੜਿਆ ਜਾਂਦਾ ਹੈ। ਇਹ ਦਸਤਾਵੇਜ਼ ਪੂਰੀ ਤਰ੍ਹਾਂ ਪਹੁੰਚਯੋਗ ਨਹੀਂ ਹੋ ਸਕਦੇ ਹਨ।",
   "app.containers.AccessibilityStatement.feedbackProcessIntro": "ਅਸੀਂ ਇਸ ਸਾਈਟ ਦੀ ਪਹੁੰਚਯੋਗਤਾ 'ਤੇ ਤੁਹਾਡੇ ਫੀਡਬੈਕ ਦਾ ਸੁਆਗਤ ਕਰਦੇ ਹਾਂ। ਕਿਰਪਾ ਕਰਕੇ ਹੇਠਾਂ ਦਿੱਤੇ ਤਰੀਕਿਆਂ ਵਿੱਚੋਂ ਇੱਕ ਦੁਆਰਾ ਸਾਡੇ ਨਾਲ ਸੰਪਰਕ ਕਰੋ:",
   "app.containers.AccessibilityStatement.feedbackProcessTitle": "ਫੀਡਬੈਕ ਪ੍ਰਕਿਰਿਆ",

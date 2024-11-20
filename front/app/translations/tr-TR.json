@@ -947,6 +947,8 @@
   "app.containers.AccessibilityStatement.contentConformanceExceptions": "İçeriğimizi herkes için kapsayıcı hale getirmeye çalışıyoruz. Ancak, bazı durumlarda platformda, aşağıda açıklandığı gibi, erişilemeyen içerikler olabilir:",
   "app.containers.AccessibilityStatement.demoPlatformLinkText": "demo web sitesi",
   "app.containers.AccessibilityStatement.email": "E-posta:",
+  "app.containers.AccessibilityStatement.embeddedSurveyTools": "Yerleşik anket araçları",
+  "app.containers.AccessibilityStatement.embeddedSurveyToolsException": "Bu platformda kullanılabilen yerleşik anket araçları üçüncü taraf yazılımlardır ve erişilebilir olmayabilir.",
   "app.containers.AccessibilityStatement.exception_1": "Dijital katılım platformlarımız, bireyler ve kuruluşlar tarafından kullanıcı içerikleri yayınlanmasını kolaylaştırır. Platform kullanıcılarının dosya eki olarak platforma PDF'ler, görseller veya çoklu ortam dosyaları gibi dosya türleri yüklemeleri veya bunları metin alanlarına girmeleri mümkündür. Bu belgeler için erişilebilirlik özellikleri eksiksiz olmayabilir.",
   "app.containers.AccessibilityStatement.feedbackProcessIntro": "Bu sitenin erişilebilirliği hakkındaki görüşlerinizi bekliyoruz. Lütfen aşağıdaki yöntemlerden birini kullanarak bizimle iletişime geçin:",
   "app.containers.AccessibilityStatement.feedbackProcessTitle": "Geri bildirim süreci",

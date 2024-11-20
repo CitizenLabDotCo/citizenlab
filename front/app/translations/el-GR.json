@@ -947,6 +947,8 @@
   "app.containers.AccessibilityStatement.contentConformanceExceptions": "Προσπαθούμε να καταστήσουμε το περιεχόμενό μας χωρίς αποκλεισμούς για όλους. Ωστόσο, σε ορισμένες περιπτώσεις μπορεί να υπάρχει μη προσβάσιμο περιεχόμενο στην πλατφόρμα, όπως περιγράφεται παρακάτω:",
   "app.containers.AccessibilityStatement.demoPlatformLinkText": "δικτυακός τόπος επίδειξης",
   "app.containers.AccessibilityStatement.email": "Ηλεκτρονικό ταχυδρομείο:",
+  "app.containers.AccessibilityStatement.embeddedSurveyTools": "Ενσωματωμένα εργαλεία έρευνας",
+  "app.containers.AccessibilityStatement.embeddedSurveyToolsException": "Τα ενσωματωμένα εργαλεία έρευνας που είναι διαθέσιμα για χρήση σε αυτή την πλατφόρμα είναι λογισμικό τρίτων και ενδέχεται να μην είναι προσβάσιμα.",
   "app.containers.AccessibilityStatement.exception_1": "Οι πλατφόρμες ψηφιακής δέσμευσής μας διευκολύνουν το περιεχόμενο που δημιουργείται από χρήστες και δημοσιεύεται από άτομα και οργανισμούς. Είναι πιθανό να μεταφορτώνονται στην πλατφόρμα ως συνημμένα αρχεία PDF, εικόνες ή άλλοι τύποι αρχείων, συμπεριλαμβανομένων των πολυμέσων, ή να προστίθενται σε πεδία κειμένου από τους χρήστες της πλατφόρμας. Τα έγγραφα αυτά ενδέχεται να μην είναι πλήρως προσβάσιμα.",
   "app.containers.AccessibilityStatement.feedbackProcessIntro": "Καλωσορίζουμε την ανατροφοδότησή σας σχετικά με την προσβασιμότητα αυτού του ιστότοπου. Παρακαλούμε επικοινωνήστε μαζί μας με μία από τις ακόλουθες μεθόδους:",
   "app.containers.AccessibilityStatement.feedbackProcessTitle": "Διαδικασία ανατροφοδότησης",
