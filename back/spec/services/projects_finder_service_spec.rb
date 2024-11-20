@@ -250,7 +250,16 @@ describe ProjectsFinderService do
         expect(result).to match_array([finished_project1])
       end
 
-      it 'excludes projects with an endless phase' do
+      it 'inludes projects with an endless phase & report in last phase' do
+        endless_project = create(:project)
+        create(:phase, project: endless_project, start_at: 2.days.ago, end_at: nil)
+        create(:report, phase: endless_project.phases.last)
+
+        expect(Project.count).to eq 3
+        expect(result).to match_array([endless_project, finished_project1])
+      end
+
+      it 'excludes projects with an endless phase & NO report in last phase' do
         endless_project = create(:project)
         create(:phase, project: endless_project, start_at: 3.days.ago, end_at: nil)
 
@@ -266,6 +275,10 @@ describe ProjectsFinderService do
       end
 
       it 'lists projects ordered by last phase end_at DESC' do
+        endless_project = create(:project)
+        create(:phase, project: endless_project, start_at: 2.days.ago, end_at: nil)
+        create(:report, phase: endless_project.phases.last)
+
         finished_project2 = create(:project_with_two_past_ideation_phases)
         finished_project2.phases[1].update!(end_at: 5.days.ago)
         finished_project3 = create(:project_with_two_past_ideation_phases)
@@ -274,7 +287,7 @@ describe ProjectsFinderService do
         expect(finished_project3.phases[1].end_at).to be_after(finished_project1.phases[1].end_at)
         expect(finished_project2.phases[1].end_at).to be_after(finished_project3.phases[1].end_at)
 
-        expect(result).to eq [finished_project2, finished_project3, finished_project1]
+        expect(result).to eq [endless_project, finished_project2, finished_project3, finished_project1]
       end
     end
 
@@ -306,7 +319,7 @@ describe ProjectsFinderService do
         expect(result).to eq [archived_project]
       end
 
-      it 'lists projects ordered by last_phase end_at DESC' do
+      it 'lists projects ordered by last_phase end_at DESC (Nulls first)' do
         archived_project2 = create(
           :project_with_past_information_phase,
           admin_publication_attributes: { publication_status: 'archived' }
@@ -320,12 +333,12 @@ describe ProjectsFinderService do
           admin_publication_attributes: { publication_status: 'archived' }
         )
 
-        archived_project.phases[0].update!(end_at: 3.days.ago)
-        archived_project2.phases[0].update!(end_at: 1.day.ago)
-        archived_project3.phases[0].update!(end_at: 2.days.ago)
+        archived_project.phases[0].update!(end_at: nil)
+        archived_project2.phases[0].update!(end_at: 2.days.ago)
+        archived_project3.phases[0].update!(end_at: 1.day.ago)
 
-        expect(archived_project4.phases[1].end_at).to be_after(archived_project2.phases[0].end_at)
-        expect(result).to eq [archived_project4, archived_project2, archived_project3, archived_project]
+        expect(archived_project4.phases[1].end_at).to be_after(archived_project3.phases[0].end_at)
+        expect(result).to eq [archived_project, archived_project4, archived_project3, archived_project2]
       end
     end
 
@@ -355,13 +368,17 @@ describe ProjectsFinderService do
         expect(result).to match_array [finished_project1, archived_project, unfinished_project1]
       end
 
-      it 'lists projects ordered by last phase end_at DESC' do
+      it 'lists projects ordered by last phase end_at DESC (Nulls first)' do
+        endless_project = create(:project)
+        create(:phase, project: endless_project, start_at: 2.days.ago, end_at: nil)
+        create(:report, phase: endless_project.phases.last)
+
         finished_project1.phases[1].update!(end_at: 3.days.ago)
         archived_project.phases[0].update!(end_at: 5.days.ago)
 
         expect(unfinished_project1.phases[0].end_at).to be_after(finished_project1.phases[1].end_at)
 
-        expect(result).to eq [unfinished_project1, finished_project1, archived_project]
+        expect(result).to eq [endless_project, unfinished_project1, finished_project1, archived_project]
       end
     end
   end
