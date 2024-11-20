@@ -68,6 +68,7 @@ const Settings = () => {
 
   const { data: adminPublications } = useAdminPublications({
     search,
+    publicationStatusFilter: ['published', 'archived'],
   });
 
   const adminPublicationsFlat = adminPublications?.pages.flatMap(
