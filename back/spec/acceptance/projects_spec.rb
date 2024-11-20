@@ -1598,9 +1598,17 @@ resource 'Projects' do
     end
 
     context "when passed only the 'archived' parameter" do
-      let!(:archived_project) { create(:project, admin_publication_attributes: { publication_status: 'archived' }) }
-      let!(:published_project) { create(:project, admin_publication_attributes: { publication_status: 'published' }) }
-      let!(:draft_project) { create(:project, admin_publication_attributes: { publication_status: 'draft' }) }
+      let!(:archived_project) do
+        create(:project_with_past_information_phase, admin_publication_attributes: { publication_status: 'archived' })
+      end
+
+      let!(:published_project) do
+        create(:project_with_past_information_phase, admin_publication_attributes: { publication_status: 'published' })
+      end
+
+      let!(:draft_project) do
+        create(:project_with_past_information_phase, admin_publication_attributes: { publication_status: 'draft' })
+      end
 
       example 'Lists only archived projects' do
         do_request archived: true
@@ -1614,9 +1622,17 @@ resource 'Projects' do
     end
 
     context "when passed both the 'finished' and the 'archived' parameter" do
-      let!(:archived_project) { create(:project, admin_publication_attributes: { publication_status: 'archived' }) }
-      let!(:published_project) { create(:project, admin_publication_attributes: { publication_status: 'published' }) }
-      let!(:draft_project) { create(:project, admin_publication_attributes: { publication_status: 'draft' }) }
+      let!(:archived_project) do
+        create(:project_with_active_ideation_phase, admin_publication_attributes: { publication_status: 'archived' })
+      end
+
+      let!(:published_project) do
+        create(:project_with_active_ideation_phase, admin_publication_attributes: { publication_status: 'published' })
+      end
+
+      let!(:draft_project) do
+        create(:project_with_active_ideation_phase, admin_publication_attributes: { publication_status: 'draft' })
+      end
 
       let!(:finished_project1) { create(:project_with_two_past_ideation_phases) }
       let!(:_unfinished_project1) { create(:project_with_active_ideation_phase) } # we do not expect this one
