@@ -161,7 +161,6 @@
   "app.components.FilterBoxes.all": "Tots",
   "app.components.FilterBoxes.areas": "Filtrar per àrea",
   "app.components.FilterBoxes.inputs": "entrades",
-  "app.components.FilterBoxes.showFewerTags": "Mostra menys etiquetes",
   "app.components.FilterBoxes.showLess": "Mostra menys",
   "app.components.FilterBoxes.showTagsWithNumber": "Mostra-ho tot ({numberTags})",
   "app.components.FilterBoxes.statusTitle": "Estat",
