@@ -7,7 +7,7 @@ import {
   isRtl,
   Button,
 } from '@citizenlab/cl2-component-library';
-import { isError, includes, get } from 'lodash-es';
+import { includes, get } from 'lodash-es';
 import { darken } from 'polished';
 import styled from 'styled-components';
 
@@ -122,7 +122,9 @@ const TopicsFilter = memo<Props>(
         selectedTopics,
         localize
       );
-      const topicsWithIdeas = getTopicsWithIdeas(topics, filterCounts);
+      const topicsWithIdeas = showFullList
+        ? getTopicsWithIdeas(topics, filterCounts)
+        : getTopicsWithIdeas(topics, filterCounts).slice(0, 5);
 
       return (
         <InputFilterCollapsible
@@ -135,39 +137,28 @@ const TopicsFilter = memo<Props>(
         >
           <Box>
             <Box className="e2e-topics-filters" aria-live="polite">
-              {topicsWithIdeas
-                .filter((topic) => !isError(topic))
-                .map((topic: ITopicData, index) => {
-                  const postCount = get(
-                    filterCounts,
-                    `topic_id.${topic.id}`,
-                    0
-                  );
+              {topicsWithIdeas.map((topic: ITopicData) => {
+                const postCount = get(filterCounts, `topic_id.${topic.id}`, 0);
 
-                  const topicSelected = selectedTopicIds?.includes(topic.id);
+                const topicSelected = selectedTopicIds?.includes(topic.id);
 
-                  if (!showFullList && index > 4) {
-                    // Only show the first 5 topics by default
-                    return null;
-                  }
-
-                  return (
-                    <Topic
-                      key={topic.id}
-                      data-id={topic.id}
-                      onMouseDown={removeFocusAfterMouseClick}
-                      onClick={handleOnClick}
-                      className={`e2e-topic ${topicSelected ? 'selected' : ''}`}
-                      selected={topicSelected}
-                    >
-                      <T value={topic.attributes.title_multiloc} />
-                      <Box aria-hidden>{postCount}</Box>
-                      <ScreenReaderOnly>
-                        {`${postCount} ${formatMessage(messages.inputs)}`}
-                      </ScreenReaderOnly>
-                    </Topic>
-                  );
-                })}
+                return (
+                  <Topic
+                    key={topic.id}
+                    data-id={topic.id}
+                    onMouseDown={removeFocusAfterMouseClick}
+                    onClick={handleOnClick}
+                    className={`e2e-topic ${topicSelected ? 'selected' : ''}`}
+                    selected={topicSelected}
+                  >
+                    <T value={topic.attributes.title_multiloc} />
+                    <Box aria-hidden>{postCount}</Box>
+                    <ScreenReaderOnly>
+                      {`${postCount} ${formatMessage(messages.inputs)}`}
+                    </ScreenReaderOnly>
+                  </Topic>
+                );
+              })}
             </Box>
             {topicsWithIdeas.length > 5 && (
               <Button
