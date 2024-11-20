@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 
-import { Box, Color, colors, media } from '@citizenlab/cl2-component-library';
-import { isFunction, compact } from 'lodash-es';
+import { Color, colors, media } from '@citizenlab/cl2-component-library';
+import { compact } from 'lodash-es';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import CSSTransition from 'react-transition-group/CSSTransition';
@@ -12,11 +12,6 @@ import { SupportedLocale } from 'typings';
 
 import useLocale from 'hooks/useLocale';
 
-import { trackPage } from 'utils/analytics';
-import clHistory from 'utils/cl-router/history';
-import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
-import { isNilOrError } from 'utils/helperUtils';
-
 // resource
 
 const slideInOutTimeout = 500;
@@ -24,7 +19,6 @@ const slideInOutEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
 
 const Container = styled.div<{
   windowHeight: number;
-  zIndex?: number;
   contentBgColor?: InputProps['contentBgColor'];
 }>`
   width: 100vw;
@@ -37,7 +31,7 @@ const Container = styled.div<{
   overflow: hidden;
   background: ${({ contentBgColor }) =>
     contentBgColor ? colors[contentBgColor] : colors.white};
-  z-index: ${({ zIndex }) => (!zIndex ? '1003' : zIndex.toString())};
+  z-index: 1003;
 
   &.modal-enter {
     transform: translateY(100vh);
@@ -88,17 +82,12 @@ interface InputProps {
   className?: string;
   opened: boolean;
   close: () => void;
-  url?: string | null;
-  goBackUrl?: string | null;
   topBar?: JSX.Element | null;
   bottomBar?: JSX.Element | null;
   animateInOut?: boolean;
-  navbarRef?: HTMLElement | null;
   mobileNavbarRef?: HTMLElement | null;
   children: JSX.Element | null | undefined;
   modalPortalElement?: HTMLElement;
-  disableFocusOn?: boolean;
-  zIndex?: number;
   contentBgColor?: Color;
 }
 
@@ -110,13 +99,8 @@ interface State {
   windowHeight: number;
 }
 
-const useCapture = false;
-
 class FullscreenModal extends PureComponent<Props, State> {
   subscription: Subscription | null = null;
-  unlisten: { (): void } | null = null;
-  url: string | null | undefined = null;
-  goBackUrl: string | null | undefined = null;
 
   constructor(props: Props) {
     super(props);
@@ -136,70 +120,9 @@ class FullscreenModal extends PureComponent<Props, State> {
       });
   }
 
-  componentDidUpdate(prevProps: Props) {
-    if (!prevProps.opened && this.props.opened) {
-      this.openModal();
-    } else if (prevProps.opened && !this.props.opened) {
-      this.cleanup();
-    }
-  }
-
   componentWillUnmount() {
     this.subscription?.unsubscribe();
-    this.cleanup();
   }
-
-  openModal = () => {
-    const { locale, url, goBackUrl } = this.props;
-
-    if (!isNilOrError(locale) && url) {
-      const { pathname } = removeLocale(url);
-      this.url = `${window.location.origin}/${locale}${pathname}`;
-      this.goBackUrl = `${window.location.origin}/${locale}${
-        removeLocale(goBackUrl || window.location.pathname).pathname
-      }`;
-      window.history.pushState({ path: this.url }, '', this.url);
-      window.addEventListener('popstate', this.handlePopstateEvent, useCapture);
-      window.addEventListener('keydown', this.handleKeypress, useCapture);
-      this.unlisten = clHistory.listen(() => this.props.close());
-
-      trackPage(this.url, { modal: true });
-    }
-  };
-
-  handleKeypress = (event: KeyboardEvent) => {
-    if (event.type === 'keydown' && event.key === 'Escape') {
-      event.preventDefault();
-      this.props.close();
-    }
-  };
-
-  handlePopstateEvent = () => {
-    this.props.close();
-  };
-
-  cleanup = () => {
-    if (this.goBackUrl) {
-      window.removeEventListener(
-        'popstate',
-        this.handlePopstateEvent,
-        useCapture
-      );
-      window.removeEventListener('keydown', this.handleKeypress, useCapture);
-
-      if (window.location.href === this.url) {
-        window.history.pushState({ path: this.goBackUrl }, '', this.goBackUrl);
-      }
-    }
-
-    this.url = null;
-    this.goBackUrl = null;
-
-    if (isFunction(this.unlisten)) {
-      this.unlisten();
-      this.unlisten = null;
-    }
-  };
 
   render() {
     const { windowHeight } = this.state;
@@ -209,14 +132,11 @@ class FullscreenModal extends PureComponent<Props, State> {
       topBar,
       bottomBar,
       animateInOut,
-      navbarRef,
       mobileNavbarRef,
       className,
-      disableFocusOn,
-      zIndex,
       contentBgColor,
     } = this.props;
-    const shards = compact([navbarRef, mobileNavbarRef]);
+    const shards = compact([mobileNavbarRef]);
     const modalPortalElement =
       // TODO: Fix this the next time the file is edited.
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -231,31 +151,15 @@ class FullscreenModal extends PureComponent<Props, State> {
           id="e2e-fullscreenmodal-content"
           className={[bottomBar ? 'hasBottomBar' : '', className].join()}
           windowHeight={windowHeight}
-          zIndex={zIndex}
           contentBgColor={contentBgColor}
         >
-          {disableFocusOn ? (
-            <Box
-              flex="1"
-              display="flex"
-              flexDirection="column"
-              alignItems="stretch"
-            >
-              {topBar}
-              <Content className="fullscreenmodal-scrollcontainer">
-                {children}
-              </Content>
-              {bottomBar}
-            </Box>
-          ) : (
-            <StyledFocusOn autoFocus={false} shards={shards}>
-              {topBar}
-              <Content className="fullscreenmodal-scrollcontainer">
-                {children}
-              </Content>
-              {bottomBar}
-            </StyledFocusOn>
-          )}
+          <StyledFocusOn autoFocus={false} shards={shards}>
+            {topBar}
+            <Content className="fullscreenmodal-scrollcontainer">
+              {children}
+            </Content>
+            {bottomBar}
+          </StyledFocusOn>
         </Container>
       );
     }
