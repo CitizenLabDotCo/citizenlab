@@ -22,6 +22,7 @@ export interface IQueryParameters {
   filter_is_moderator_of?: boolean;
   filter_user_is_moderator_of?: string;
   include_publications?: boolean;
+  ids?: string[];
 }
 
 export type AdminPublicationType = 'project' | 'folder';
