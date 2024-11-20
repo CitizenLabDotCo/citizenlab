@@ -111,6 +111,8 @@ const CollapsibleContainer = ({
   const containerRef = useRef<HTMLDivElement>(null);
 
   const handleChange = (event: React.MouseEvent) => {
+    // We need to stop propagation to prevent the click event from being caught by the
+    // IdeasWithFiltersSidebar parent component which can cause a click of a filter button.
     event.stopPropagation();
     setIsExpanded(!isExpanded);
   };
