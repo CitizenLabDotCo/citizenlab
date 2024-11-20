@@ -161,7 +161,6 @@
   "app.components.FilterBoxes.all": "Tudo",
   "app.components.FilterBoxes.areas": "Filtrar por área",
   "app.components.FilterBoxes.inputs": "insumos",
-  "app.components.FilterBoxes.showFewerTags": "Mostrar menos tags",
   "app.components.FilterBoxes.showLess": "Mostrar menos",
   "app.components.FilterBoxes.showTagsWithNumber": "Mostrar tudo ({numberTags})",
   "app.components.FilterBoxes.statusTitle": "Status",
