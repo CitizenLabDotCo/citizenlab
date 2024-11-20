@@ -264,7 +264,7 @@
   "app.components.admin.PostManager.timelineTabTooltipText": "قُم بسحب وإسقاط المُدخلات لتنسخهم إلى مراحل مشروع مُختلفة. ",
   "app.components.admin.PostManager.title": "العنوان",
   "app.components.admin.PostManager.topicsTab": "الموضوعات",
-  "app.components.admin.PostManager.topicsTabTooltipText": "قُم بإضافة مواضيع إلى مُدخل باستخدام السحب والإسقاط. ",
+  "app.components.admin.PostManager.topicsTabTooltipText": "Add tags to an input using drag and drop.",
   "app.components.admin.PostManager.view": "منظر",
   "app.components.admin.PostManager.votes": "الأصوات",
   "app.components.admin.PostManager.votesByInputExportFileName": "voices_by_input",
