@@ -1,10 +1,6 @@
 import React, { useState, useRef } from 'react';
 
-import {
-  useBreakpoint,
-  colors,
-  defaultStyles,
-} from '@citizenlab/cl2-component-library';
+import { useBreakpoint, colors } from '@citizenlab/cl2-component-library';
 import { isString, trim } from 'lodash-es';
 import { hideVisually } from 'polished';
 import styled from 'styled-components';

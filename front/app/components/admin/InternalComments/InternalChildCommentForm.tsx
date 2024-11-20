@@ -1,10 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-import {
-  useBreakpoint,
-  colors,
-  defaultStyles,
-} from '@citizenlab/cl2-component-library';
+import { useBreakpoint, colors } from '@citizenlab/cl2-component-library';
 import { hideVisually } from 'polished';
 import { Subscription } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
