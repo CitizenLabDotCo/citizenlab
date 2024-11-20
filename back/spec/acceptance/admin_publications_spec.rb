@@ -288,6 +288,26 @@ resource 'AdminPublication' do
 
         expect(json_response[:data].pluck(:id)).to eq [all_ids[4], all_ids[2]]
       end
+
+      example 'Does not include draft admin_publications', document: false do
+        draft_ids = AdminPublication.where(publication_status: 'draft').pluck(:id)
+        non_draft_ids = all_ids - draft_ids
+
+        do_request(ids: [
+          non_draft_ids[3],
+          draft_ids[1],
+          non_draft_ids[0],
+          draft_ids[0],
+          non_draft_ids[1],
+          non_draft_ids[4]
+        ])
+
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+
+        expect(json_response[:data].pluck(:id))
+          .to eq [non_draft_ids[3], non_draft_ids[0], non_draft_ids[1], non_draft_ids[4]]
+      end
     end
 
     patch 'web_api/v1/admin_publications/:id/reorder' do

@@ -40,8 +40,10 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
   end
 
   def index_select_and_order_by_ids
+    ids = params[:ids]
+
     admin_publications = policy_scope(AdminPublication.includes(:parent))
-    admin_publications = admin_publications.where(id: params[:ids]).in_order_of(:id, params[:ids])
+    admin_publications = admin_publications.not_draft.where(id: ids).in_order_of(:id, ids)
 
     @admin_publications = paginate admin_publications
     @admin_publications = includes_publications(@admin_publications)
