@@ -156,7 +156,7 @@ const Container = styled.div<{
   }
 
   div.ql-container {
-    border: 1px solid ${colors.borderDark};
+    border: 1px solid ${(props) => props.theme.colors.tenantPrimary};
   }
 
   div.ql-container > div.ql-editor {
@@ -173,8 +173,7 @@ const Container = styled.div<{
   }
 
   &.focus div.ql-container > div.ql-editor {
-    border-color: ${colors.black};
-    box-shadow: inset ${defaultStyles.boxShadowFocused};
+    border: 2px solid ${(props) => props.theme.colors.tenantPrimary};
   }
 `;
 
