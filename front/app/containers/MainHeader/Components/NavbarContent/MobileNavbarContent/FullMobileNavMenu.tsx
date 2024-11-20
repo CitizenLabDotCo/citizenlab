@@ -89,9 +89,14 @@ const StyledFullscreenModal = styled(FullscreenModal)`
 interface Props {
   onClose: () => void;
   isFullMenuOpened: boolean;
+  mobileNavbarRef: HTMLElement;
 }
 
-const FullMobileNavMenu = ({ onClose, isFullMenuOpened }: Props) => {
+const FullMobileNavMenu = ({
+  mobileNavbarRef,
+  onClose,
+  isFullMenuOpened,
+}: Props) => {
   const { data: navbarItems } = useNavbarItems();
   const localize = useLocalize();
   const { formatMessage } = useIntl();
@@ -113,7 +118,11 @@ const FullMobileNavMenu = ({ onClose, isFullMenuOpened }: Props) => {
   };
 
   return (
-    <StyledFullscreenModal opened={isFullMenuOpened} close={onClose}>
+    <StyledFullscreenModal
+      opened={isFullMenuOpened}
+      close={onClose}
+      mobileNavbarRef={mobileNavbarRef}
+    >
       <Container>
         <ContentContainer
           // Screen reader will add "navigation", so this will become
