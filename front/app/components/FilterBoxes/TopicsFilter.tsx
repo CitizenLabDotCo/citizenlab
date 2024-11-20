@@ -116,9 +116,8 @@ const TopicsFilter = memo<Props>(
         selectedTopics,
         localize
       );
-      const topicsWithIdeas = showFullList
-        ? getTopicsWithIdeas(topics, filterCounts)
-        : getTopicsWithIdeas(topics, filterCounts).slice(0, 5);
+
+      const topicsWithIdeas = getTopicsWithIdeas(topics, filterCounts);
 
       return (
         <InputFilterCollapsible
@@ -131,28 +130,34 @@ const TopicsFilter = memo<Props>(
         >
           <Box>
             <Box className="e2e-topics-filters" aria-live="polite">
-              {topicsWithIdeas.map((topic: ITopicData) => {
-                const postCount = get(filterCounts, `topic_id.${topic.id}`, 0);
+              {topicsWithIdeas
+                .slice(0, showFullList ? -1 : 5) // We show only 5 topics by default with a "Show all" button.
+                .map((topic: ITopicData) => {
+                  const postCount = get(
+                    filterCounts,
+                    `topic_id.${topic.id}`,
+                    0
+                  );
 
-                const topicSelected = selectedTopicIds?.includes(topic.id);
+                  const topicSelected = selectedTopicIds?.includes(topic.id);
 
-                return (
-                  <Topic
-                    key={topic.id}
-                    data-id={topic.id}
-                    onMouseDown={removeFocusAfterMouseClick}
-                    onClick={handleOnClick}
-                    className={`e2e-topic ${topicSelected ? 'selected' : ''}`}
-                    selected={topicSelected}
-                  >
-                    <T value={topic.attributes.title_multiloc} />
-                    <Box aria-hidden>{postCount}</Box>
-                    <ScreenReaderOnly>
-                      {`${postCount} ${formatMessage(messages.inputs)}`}
-                    </ScreenReaderOnly>
-                  </Topic>
-                );
-              })}
+                  return (
+                    <Topic
+                      key={topic.id}
+                      data-id={topic.id}
+                      onMouseDown={removeFocusAfterMouseClick}
+                      onClick={handleOnClick}
+                      className={`e2e-topic ${topicSelected ? 'selected' : ''}`}
+                      selected={topicSelected}
+                    >
+                      <T value={topic.attributes.title_multiloc} />
+                      <Box aria-hidden>{postCount}</Box>
+                      <ScreenReaderOnly>
+                        {`${postCount} ${formatMessage(messages.inputs)}`}
+                      </ScreenReaderOnly>
+                    </Topic>
+                  );
+                })}
             </Box>
             {topicsWithIdeas.length > 5 && (
               <Button
@@ -164,7 +169,7 @@ const TopicsFilter = memo<Props>(
                 mt="12px"
                 fontSize="s"
               >
-{formatMessage(
+                {formatMessage(
                   showFullList
                     ? messages.showLess
                     : messages.showTagsWithNumber,
