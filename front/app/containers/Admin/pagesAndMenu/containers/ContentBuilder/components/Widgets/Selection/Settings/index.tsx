@@ -4,6 +4,7 @@ import {
   Box,
   IconButton,
   Label,
+  Icon,
   Spinner,
   Text,
   colors,
@@ -31,7 +32,7 @@ const StyledSortableRow = styled(SortableRow)`
     padding: 0px !important;
   }
 
-  .e2e-admin-list-row > div > p {
+  .e2e-admin-list-row p {
     margin: 0;
   }
 `;
@@ -148,9 +149,20 @@ const Settings = () => {
                   justifyContent="space-between"
                   alignItems="center"
                 >
-                  <Text m="0">
-                    {localize(item.attributes.publication_title_multiloc)}
-                  </Text>
+                  <Box display="flex" alignItems="center">
+                    {item.relationships.publication.data.type === 'folder' && (
+                      <Icon
+                        name="folder-outline"
+                        mt="-1px"
+                        mb="0"
+                        mr="8px"
+                        ml="-8px"
+                      />
+                    )}
+                    <Text m="0">
+                      {localize(item.attributes.publication_title_multiloc)}
+                    </Text>
+                  </Box>
                   <IconButton
                     iconName="close"
                     onClick={() => handleDelete(item.id)}
