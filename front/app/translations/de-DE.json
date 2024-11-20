@@ -161,7 +161,6 @@
   "app.components.FilterBoxes.all": "Alle",
   "app.components.FilterBoxes.areas": "Nach Gebieten filtern",
   "app.components.FilterBoxes.inputs": "Beiträge",
-  "app.components.FilterBoxes.showFewerTags": "Weniger Tags anzeigen",
   "app.components.FilterBoxes.showLess": "Weniger anzeigen",
   "app.components.FilterBoxes.showTagsWithNumber": "Alle anzeigen ({numberTags})",
   "app.components.FilterBoxes.statusTitle": "Status",
