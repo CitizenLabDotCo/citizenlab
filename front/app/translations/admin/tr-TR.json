@@ -1633,6 +1633,7 @@
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabel": "Seçim",
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabelDescription": "Proje seçilen alan filtrelerinde gösterilir.",
   "app.containers.AdminPage.ProjectEdit.cardDisplay": "Kartlar",
+  "app.containers.AdminPage.ProjectEdit.commens_countSortingMethod": "En çok tartışılanlar",
   "app.containers.AdminPage.ProjectEdit.conductVotingOrPrioritizationDescriptionText2": "Bir oylama yöntemi seçin ve kullanıcıların birkaç farklı seçenek arasında önceliklendirme yapmasını sağlayın.",
   "app.containers.AdminPage.ProjectEdit.conductVotingOrPrioritizationText": "Bir oylama veya önceliklendirme çalışması yapın",
   "app.containers.AdminPage.ProjectEdit.createAProjectFromATemplate": "Şablon kullanarak bir proje oluşturun",
