@@ -48,6 +48,12 @@ const CommentsSection = ({
   const isInternalCommentingEnabled = useFeatureFlag({
     name: 'internal_commenting',
   });
+  const isInternalCommentingAllowed = useFeatureFlag({
+    name: 'internal_commenting',
+    onlyCheckAllowed: true,
+  });
+  const isInternalCommentingAllowedAndDisabled =
+    isInternalCommentingAllowed && !isInternalCommentingEnabled;
 
   const [selectedTab, setSelectedTab] = useState<CommentType>('internal');
   const { data: idea } = useIdeaById(postId);
@@ -80,7 +86,7 @@ const CommentsSection = ({
     },
   ];
 
-  if (showInternalComments && isInternalCommentingEnabled) {
+  if (showInternalComments && !isInternalCommentingAllowedAndDisabled) {
     return (
       <Box mt="70px">
         <NavigationTabs>
@@ -114,7 +120,18 @@ const CommentsSection = ({
             </Box>
           )}
           {selectedTab === 'internal' && (
-            <InternalComments postId={postId} className={className} />
+            <>
+              {!isInternalCommentingAllowed && (
+                <Box mt="16px">
+                  <Warning>
+                    {formatMessage(messages.internalCommentingNudgeMessage)}
+                  </Warning>
+                </Box>
+              )}
+              {isInternalCommentingEnabled && (
+                <InternalComments postId={postId} className={className} />
+              )}
+            </>
           )}
         </Box>
       </Box>
