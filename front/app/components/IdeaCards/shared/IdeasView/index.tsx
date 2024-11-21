@@ -27,6 +27,7 @@ interface Props {
   loadingMore: boolean;
   ideaMarkers?: IIdeaMarkers;
   onLoadMore(): void;
+  hasFilterSidebar?: boolean;
 }
 
 const IdeasView = ({
@@ -43,6 +44,7 @@ const IdeasView = ({
   ideaMarkers,
   onLoadMore,
   hasMoreThanOneView = true,
+  hasFilterSidebar = false,
 }: Props) => {
   const { data: mapConfig, isLoading } = useProjectMapConfig(
     projectId || undefined
@@ -68,6 +70,7 @@ const IdeasView = ({
           hideImagePlaceholder={hideImagePlaceholder}
           hideIdeaStatus={hideIdeaStatus}
           phaseId={phaseId}
+          hasFilterSidebar={hasFilterSidebar}
         />
       )}
       {view === 'map' && projectId && (
