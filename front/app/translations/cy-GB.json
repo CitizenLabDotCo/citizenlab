@@ -659,6 +659,7 @@
   "app.components.formBuilder.deleteButtonLabel": "Dileu",
   "app.components.formBuilder.description": "Disgrifiad",
   "app.components.formBuilder.disabledBuiltInFieldTooltip": "Mae hwn eisoes wedi'i ychwanegu yn y ffurflen. Dim ond unwaith y gellir defnyddio cynnwys diofyn.",
+  "app.components.formBuilder.disabledCustomFieldsTooltip1": "Nid yw ychwanegu cynnwys wedi'i deilwra yn rhan o'ch trwydded gyfredol. Cysylltwch â'ch Rheolwr GovSuccess i ddysgu mwy amdano.",
   "app.components.formBuilder.displayAsDropdown": "Arddangos fel cwymplen",
   "app.components.formBuilder.displayAsDropdownTooltip": "Dangoswch yr opsiynau mewn cwymplen. Os oes gennych lawer o opsiynau, argymhellir hyn.",
   "app.components.formBuilder.done": "Wedi'i wneud",
