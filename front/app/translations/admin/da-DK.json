@@ -392,7 +392,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.share": "Del",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareLink": "Kopier link",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareLinkCopied": "Link kopieret",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareTitle": "{tenantName, select, DeloitteDK {Del dette} other {Del dette projekt}}",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareTitle": "Del dette projekt",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareWhoHasAccess": "Hvem har adgang",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.view": "Se",
   "app.components.app.containers.AdminPage.ProjectEdit.projectTerm": "Projekt",
