@@ -275,7 +275,6 @@
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.buttonSuccess": "Success",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.byAreaFilter": "No Regioun",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.byTagsFilter": "No Tag(en)",
-  "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.contactGovSuccessToAccess": "Projeten no Tag oder Regioun unzeweisen, ass Deel vun der Premiumlizenz. Wennt Iech un Äre GovSuccess Manager fir méi doriwwer gewuer ze ginn.",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.contentEditorTitle": "Content",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.editCustomPagePageTitle": "Edit custom page",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.linkedProjectsLabel": "Verbonne Projeten",
