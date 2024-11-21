@@ -25,7 +25,10 @@ const fetchAdminPublicationsByIds = ({ pageNumber, pageSize, ids }: Params) => {
   });
 };
 
-const useAdminPublications = (queryParams: Params, { enabled = true } = {}) => {
+const useAdminPublicationsByIds = (
+  queryParams: Params,
+  { enabled = true } = {}
+) => {
   return useInfiniteQuery<
     IAdminPublications,
     CLErrors,
@@ -44,4 +47,4 @@ const useAdminPublications = (queryParams: Params, { enabled = true } = {}) => {
   });
 };
 
-export default useAdminPublications;
+export default useAdminPublicationsByIds;

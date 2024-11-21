@@ -11,13 +11,11 @@ import {
 import styled from 'styled-components';
 
 import { IAdminPublicationData } from 'api/admin_publications/types';
-import useAdminPublications from 'api/admin_publications/useAdminPublications';
+import useAdminPublicationsByIds from 'api/admin_publications/useAdminPublicationsByIds';
 
 import useLocalize from 'hooks/useLocalize';
 
 import { SortableRow, SortableList } from 'components/admin/ResourceList';
-
-import { stabilizeOrdering } from './utils';
 
 const StyledSortableRow = styled(SortableRow)`
   .e2e-admin-list-row {
@@ -42,16 +40,17 @@ const AdminPublicationsList = ({
 }: Props) => {
   const localize = useLocalize();
 
-  const { data: selectedAdminPublications, isFetching } = useAdminPublications(
-    {
-      ids: adminPublicationIds,
-    },
-    // We don't make this request if adminPublicationIds is an empty array.
-    // If it's an empty array, the FE removes it while parsing the query params
-    // for some reason, and the BE will return all admin publications.
-    // This is not what we want.
-    { enabled: adminPublicationIds.length > 0 }
-  );
+  const { data: selectedAdminPublications, isFetching } =
+    useAdminPublicationsByIds(
+      {
+        ids: adminPublicationIds,
+      },
+      // We don't make this request if adminPublicationIds is an empty array.
+      // If it's an empty array, the FE removes it while parsing the query params
+      // for some reason, and the BE will return all admin publications.
+      // This is not what we want.
+      { enabled: adminPublicationIds.length > 0 }
+    );
 
   const selectedAdminPublicationsFlat =
     adminPublicationIds.length > 0
@@ -60,10 +59,7 @@ const AdminPublicationsList = ({
 
   return (
     <SortableList
-      items={stabilizeOrdering(
-        selectedAdminPublicationsFlat,
-        adminPublicationIds
-      )}
+      items={selectedAdminPublicationsFlat}
       onReorder={onReorder}
       key={selectedAdminPublicationsFlat.length}
     >
