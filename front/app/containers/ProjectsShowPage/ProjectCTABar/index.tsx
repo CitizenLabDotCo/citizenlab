@@ -16,12 +16,8 @@ import { isNilOrError } from 'utils/helperUtils';
 
 type ProjectCTABarProps = {
   projectId: string;
-  setIsCTABarVisible?: (visible: boolean) => void;
 };
-const ProjectCTABar = ({
-  projectId,
-  setIsCTABarVisible,
-}: ProjectCTABarProps) => {
+const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
   const isSmallerThanTablet = useBreakpoint('tablet');
   const isSmallerThanPhone = useBreakpoint('phone');
   const [isVisible, setIsVisible] = useState(false);
@@ -65,7 +61,6 @@ const ProjectCTABar = ({
     : undefined;
 
   if (isNilOrError(project) || !participationMethod) {
-    setIsCTABarVisible?.(false);
     return null;
   }
 

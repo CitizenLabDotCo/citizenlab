@@ -154,12 +154,7 @@ interface Props {
   isCTABarVisible?: boolean;
 }
 
-const IdeasContainerOuter = ({
-  phaseId,
-  projectId,
-  className,
-  isCTABarVisible,
-}: Props) => {
+const IdeasContainerOuter = ({ phaseId, projectId, className }: Props) => {
   const { data: phase } = usePhase(phaseId);
   if (!phase) return null;
   return (
@@ -167,7 +162,6 @@ const IdeasContainerOuter = ({
       projectId={projectId}
       phase={phase.data}
       className={className}
-      isCTABarVisible={isCTABarVisible}
     />
   );
 };

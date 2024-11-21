@@ -87,8 +87,6 @@ const ProjectsShowPage = ({ project }: Props) => {
   const scrollToStatusModule = search.get('scrollToStatusModule');
   const scrollToIdeas = search.get('scrollToIdeas');
 
-  const [isCTABarVisible, setIsCTABarVisible] = useState(true);
-
   const { data: events } = useEvents({
     projectIds: [projectId],
     sort: '-start_at',
@@ -133,16 +131,10 @@ const ProjectsShowPage = ({ project }: Props) => {
     content = (
       <ContentWrapper id="e2e-project-page">
         <ProjectHeader projectId={projectId} />
-        <ProjectCTABar
-          projectId={projectId}
-          setIsCTABarVisible={setIsCTABarVisible}
-        />
+        <ProjectCTABar projectId={projectId} />
 
         <div id="participation-detail">
-          <TimelineContainer
-            projectId={projectId}
-            isCTABarVisible={isCTABarVisible}
-          />
+          <TimelineContainer projectId={projectId} />
         </div>
         {!!events?.data.length && (
           <Box

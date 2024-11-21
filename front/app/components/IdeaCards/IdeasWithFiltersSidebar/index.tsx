@@ -152,7 +152,6 @@ export interface QueryParametersUpdate {
 
 export interface Props {
   ideaQueryParameters: QueryParameters;
-  isCTABarVisible?: boolean;
   onUpdateQuery: (newParams: QueryParametersUpdate) => void;
   showViewToggle?: boolean;
   defaultView?: PresentationMode;
@@ -163,7 +162,6 @@ export interface Props {
 
 const IdeaCards = ({
   ideaQueryParameters,
-  isCTABarVisible,
   projectId,
   phaseId,
   defaultView,
