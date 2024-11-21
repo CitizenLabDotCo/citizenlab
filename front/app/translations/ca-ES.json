@@ -2025,6 +2025,7 @@
   "app.utils.FormattedCurrency.multipleCredits": "{numberOfTokens} crèdits",
   "app.utils.FormattedCurrency.oneCredit": "1 crèdit",
   "app.utils.FormattedCurrency.tokens": "fitxes",
+  "app.utils.IdeaCards.mostDiscussed": "El més discutit",
   "app.utils.IdeaCards.mostReacted": "La majoria de reaccions",
   "app.utils.IdeaCards.newest": "El més nou",
   "app.utils.IdeaCards.oldest": "El més antic",
