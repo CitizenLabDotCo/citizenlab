@@ -2025,6 +2025,7 @@
   "app.utils.FormattedCurrency.multipleCredits": "crwdns3601579:0{numberOfTokens}crwdne3601579:0",
   "app.utils.FormattedCurrency.oneCredit": "crwdns3601581:0crwdne3601581:0",
   "app.utils.FormattedCurrency.tokens": "crwdns3601583:0crwdne3601583:0",
+  "app.utils.IdeaCards.mostDiscussed": "crwdns3609383:0crwdne3609383:0",
   "app.utils.IdeaCards.mostReacted": "crwdns3601585:0crwdne3601585:0",
   "app.utils.IdeaCards.newest": "crwdns3601587:0crwdne3601587:0",
   "app.utils.IdeaCards.oldest": "crwdns3601589:0crwdne3601589:0",
