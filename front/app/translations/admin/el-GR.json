@@ -1633,6 +1633,7 @@
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabel": "Επιλογή",
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabelDescription": "Το έργο θα εμφανιστεί στο(α) επιλεγμένο(α) φίλτρο(α) περιοχής.",
   "app.containers.AdminPage.ProjectEdit.cardDisplay": "Κάρτες",
+  "app.containers.AdminPage.ProjectEdit.commens_countSortingMethod": "Τα πιο συζητημένα",
   "app.containers.AdminPage.ProjectEdit.conductVotingOrPrioritizationDescriptionText2": "Επιλέξτε μια μέθοδο ψηφοφορίας και βάλτε τους χρήστες να δώσουν προτεραιότητα μεταξύ μερικών διαφορετικών επιλογών.",
   "app.containers.AdminPage.ProjectEdit.conductVotingOrPrioritizationText": "Διεξαγωγή ψηφοφορίας ή άσκησης ιεράρχησης",
   "app.containers.AdminPage.ProjectEdit.createAProjectFromATemplate": "Δημιουργία έργου από πρότυπο",
