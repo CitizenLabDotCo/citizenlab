@@ -2,6 +2,13 @@ import React from 'react';
 
 import { Multiloc } from 'typings';
 
+import useAdminPublications from 'api/admin_publications/useAdminPublications';
+
+import useLocalize from 'hooks/useLocalize';
+
+import AdminPubsCarrousel from '../_shared/AdminPubsCarrousel';
+import EmptyState from '../_shared/EmptyState';
+
 import messages from './messages';
 import Settings from './Settings';
 
@@ -9,8 +16,34 @@ interface Props {
   titleMultiloc: Multiloc;
 }
 
-const Published = (_props: Props) => {
-  return <></>;
+const Published = ({ titleMultiloc }: Props) => {
+  const localize = useLocalize();
+
+  const { data, hasNextPage, fetchNextPage } = useAdminPublications({
+    pageSize: 6,
+    publicationStatusFilter: ['published'],
+    rootLevelOnly: true,
+    removeNotAllowedParents: true,
+    include_publications: true,
+  });
+
+  const adminPublications = data?.pages.map((page) => page.data).flat();
+
+  if (!adminPublications) return null;
+  if (adminPublications.length === 0) {
+    return (
+      <EmptyState titleMultiloc={titleMultiloc} explanation={messages.noData} />
+    );
+  }
+
+  return (
+    <AdminPubsCarrousel
+      title={localize(titleMultiloc)}
+      adminPublications={adminPublications}
+      hasMore={!!hasNextPage}
+      onLoadMore={fetchNextPage}
+    />
+  );
 };
 
 Published.craft = {
