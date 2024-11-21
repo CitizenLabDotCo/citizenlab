@@ -6,13 +6,28 @@ import { Keys } from 'utils/cl-react-query/types';
 
 import miniProjectsKeys from './keys';
 
-type Endpoint = 'with_active_participatory_phase' | 'for_followed_item';
-
-export type Parameters = {
-  endpoint: Endpoint;
+type PageNumbers = {
   'page[number]'?: number;
   'page[size]'?: number;
 };
+
+type ActiveParticipatoryPhaseParams = {
+  endpoint: 'with_active_participatory_phase';
+} & PageNumbers;
+
+type FollowedItemParams = {
+  endpoint: 'for_followed_item';
+} & PageNumbers;
+
+export type FinishedOrArchived = {
+  endpoint: 'finished_or_archived';
+  filter_by: 'finished' | 'archived' | 'finished_and_archived';
+} & PageNumbers;
+
+export type Parameters =
+  | ActiveParticipatoryPhaseParams
+  | FollowedItemParams
+  | FinishedOrArchived;
 
 export type MiniProjectsKeys = Keys<typeof miniProjectsKeys>;
 
