@@ -2025,6 +2025,7 @@
   "app.utils.FormattedCurrency.multipleCredits": "{numberOfTokens} کریڈٹس",
   "app.utils.FormattedCurrency.oneCredit": "1 کریڈٹ",
   "app.utils.FormattedCurrency.tokens": "ٹوکن",
+  "app.utils.IdeaCards.mostDiscussed": "سب سے زیادہ زیر بحث",
   "app.utils.IdeaCards.mostReacted": "زیادہ تر رد عمل",
   "app.utils.IdeaCards.newest": "تازہ ترین",
   "app.utils.IdeaCards.oldest": "سب سے پرانا",
