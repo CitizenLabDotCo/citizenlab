@@ -659,6 +659,7 @@
   "app.components.formBuilder.deleteButtonLabel": "Suprimeix",
   "app.components.formBuilder.description": "Descripció",
   "app.components.formBuilder.disabledBuiltInFieldTooltip": "Això ja s'ha afegit al formulari. El contingut predeterminat només es pot utilitzar una vegada.",
+  "app.components.formBuilder.disabledCustomFieldsTooltip1": "L'addició de contingut personalitzat no forma part de la vostra llicència actual. Poseu-vos en contacte amb el vostre gestor de GovSuccess per obtenir-ne més informació.",
   "app.components.formBuilder.displayAsDropdown": "Mostra com a menú desplegable",
   "app.components.formBuilder.displayAsDropdownTooltip": "Mostra les opcions en un desplegable. Si teniu moltes opcions, això és recomanable.",
   "app.components.formBuilder.done": "Fet",
