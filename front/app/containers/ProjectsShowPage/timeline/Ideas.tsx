@@ -24,7 +24,6 @@ interface InnerProps {
   projectId: string;
   phase: IPhaseData;
   className?: string;
-  isCTABarVisible?: boolean;
 }
 
 interface QueryParameters {
@@ -40,12 +39,7 @@ interface QueryParameters {
   idea_status?: string;
 }
 
-const IdeasContainer = ({
-  projectId,
-  phase,
-  className,
-  isCTABarVisible,
-}: InnerProps) => {
+const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
   const [searchParams] = useSearchParams();
   const sortParam = searchParams.get('sort') as Sort | null;
   const searchParam = searchParams.get('search');
@@ -120,7 +114,6 @@ const IdeasContainer = ({
             invisibleTitleMessage={messages.a11y_titleInputsPhase}
             phaseId={phase.id}
             projectId={projectId}
-            isCTABarVisible={isCTABarVisible}
             title={
               <>
                 <Title variant="h2" mt="0px" mb="20px" color="tenantText">
@@ -151,7 +144,6 @@ interface Props {
   projectId: string;
   phaseId: string;
   className?: string;
-  isCTABarVisible?: boolean;
 }
 
 const IdeasContainerOuter = ({ phaseId, projectId, className }: Props) => {
