@@ -1633,6 +1633,7 @@
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabel": "Utvalg",
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabelDescription": "Prosjektet vil vises på valgt(e) områdefilter(er).",
   "app.containers.AdminPage.ProjectEdit.cardDisplay": "Kort",
+  "app.containers.AdminPage.ProjectEdit.commens_countSortingMethod": "Mest diskutert",
   "app.containers.AdminPage.ProjectEdit.conductVotingOrPrioritizationDescriptionText2": "Velg en avstemningsmetode, og la brukerne prioritere mellom noen ulike alternativer.",
   "app.containers.AdminPage.ProjectEdit.conductVotingOrPrioritizationText": "Gjennomfør en avstemnings- eller prioriteringsøvelse",
   "app.containers.AdminPage.ProjectEdit.createAProjectFromATemplate": "Opprett et prosjekt fra en mal",
