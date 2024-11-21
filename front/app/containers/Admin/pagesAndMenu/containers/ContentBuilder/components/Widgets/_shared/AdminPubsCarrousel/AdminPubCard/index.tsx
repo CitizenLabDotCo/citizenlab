@@ -54,6 +54,8 @@ export const AdminPubCard = ({
     publication_description_preview_multiloc,
   } = adminPublication.attributes;
 
+  const { type } = adminPublication.relationships.publication.data;
+
   return (
     <CardContainer
       as={Link}
@@ -70,7 +72,7 @@ export const AdminPubCard = ({
         {truncate(localize(publication_title_multiloc), 50)}
       </Title>
       <Box display="flex" flexDirection="row" alignItems="center" mt="8px">
-        {typeof visible_children_count === 'number' && (
+        {type === 'folder' && (
           <>
             <Icon
               name="folder-solid"
@@ -107,8 +109,9 @@ const AdminPubCardWrapper = ({ adminPublication, ...props }: Props) => {
   const { data: project } = useProjectById(projectId);
   const { data: folder } = useProjectFolderById(folderId);
 
-  const projectImageId = project?.data.relationships.project_images?.data[0].id;
-  const folderImageId = folder?.data.relationships.images.data?.[0].id;
+  const projectImageId =
+    project?.data.relationships.project_images?.data[0]?.id;
+  const folderImageId = folder?.data.relationships.images.data?.[0]?.id;
 
   const { data: projectImage } = useProjectImage({
     projectId,
