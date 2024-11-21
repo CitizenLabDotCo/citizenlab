@@ -145,6 +145,7 @@ const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
           <>
             <ScrollButton
               variant="left"
+              top="120px"
               onClick={() => {
                 if (!scrollContainerRef) return;
                 scrollContainerRef.scrollLeft -= CARD_WIDTH + CARD_GAP;
@@ -157,6 +158,7 @@ const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
           <>
             <ScrollButton
               variant="right"
+              top="120px"
               onClick={() => {
                 if (!scrollContainerRef) return;
                 scrollContainerRef.scrollLeft += CARD_WIDTH + CARD_GAP;

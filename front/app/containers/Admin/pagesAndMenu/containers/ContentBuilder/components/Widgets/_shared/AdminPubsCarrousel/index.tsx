@@ -150,6 +150,7 @@ const AdminPubsCarrousel = ({
           <>
             <ScrollButton
               variant="left"
+              top="200px"
               onClick={() => {
                 if (!scrollContainerRef) return;
                 scrollContainerRef.scrollLeft -= CARD_WIDTH + CARD_GAP;
@@ -162,6 +163,7 @@ const AdminPubsCarrousel = ({
           <>
             <ScrollButton
               variant="right"
+              top="200px"
               onClick={() => {
                 if (!scrollContainerRef) return;
                 scrollContainerRef.scrollLeft += CARD_WIDTH + CARD_GAP;
