@@ -10,13 +10,17 @@ import useAdminPublications from 'api/admin_publications/useAdminPublications';
 import selectStyles from 'components/UI/MultipleSelect/styles';
 
 import OptionLabel from './OptionLabel';
-import { getOptionId } from './utils';
+import { getOptionId, getOptions } from './utils';
 
 interface Props {
+  adminPublicationIds: string[];
   onChange: (option?: IAdminPublicationData) => void;
 }
 
-const AdminPublicationSearchInput = ({ onChange }: Props) => {
+const AdminPublicationSearchInput = ({
+  adminPublicationIds,
+  onChange,
+}: Props) => {
   const [visibleSearchTerm, setVisibleSearchTerm] = useState('');
   const [search, setSearch] = useState('');
 
@@ -31,9 +35,6 @@ const AdminPublicationSearchInput = ({ onChange }: Props) => {
     pageSize: 6,
   });
 
-  const adminPublicationsFlat =
-    adminPublications?.pages.flatMap((page) => page.data) ?? [];
-
   const inputChangeDebounced = useMemo(() => {
     return debounce((searchTerm: string) => {
       setSearch(searchTerm);
@@ -44,6 +45,12 @@ const AdminPublicationSearchInput = ({ onChange }: Props) => {
     setVisibleSearchTerm(searchTerm);
     inputChangeDebounced(searchTerm);
   };
+
+  const options = getOptions(
+    adminPublications,
+    adminPublicationIds,
+    hasNextPage
+  );
 
   return (
     <Box>
@@ -56,11 +63,7 @@ const AdminPublicationSearchInput = ({ onChange }: Props) => {
         value={null}
         inputValue={visibleSearchTerm}
         placeholder={''}
-        options={
-          hasNextPage
-            ? [...adminPublicationsFlat, { value: 'loadMore' }]
-            : adminPublicationsFlat
-        }
+        options={options}
         getOptionValue={getOptionId}
         getOptionLabel={(option) =>
           (

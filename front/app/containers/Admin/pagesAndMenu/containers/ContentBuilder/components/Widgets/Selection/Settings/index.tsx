@@ -30,10 +30,10 @@ const Settings = () => {
     });
   };
 
-  const handleDelete = (id: string) => {
+  const handleDelete = (deletedId: string) => {
     setProp((props) => {
       props.adminPublicationIds = adminPublicationIds.filter(
-        (adminPublicationId) => adminPublicationId !== id
+        (adminPublicationId) => adminPublicationId !== deletedId
       );
     });
   };
@@ -51,6 +51,7 @@ const Settings = () => {
           <FormattedMessage {...messages.selectProjectsOrFolders} />
         </Label>
         <AdminPublicationSearchInput
+          adminPublicationIds={adminPublicationIds}
           onChange={(adminPublication) => {
             if (!adminPublication) return;
             setProp((props) => {

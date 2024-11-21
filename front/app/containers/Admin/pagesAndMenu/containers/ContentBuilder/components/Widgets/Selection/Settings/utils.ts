@@ -1,4 +1,9 @@
-import { IAdminPublicationData } from 'api/admin_publications/types';
+import { InfiniteData } from '@tanstack/react-query';
+
+import {
+  IAdminPublicationData,
+  IAdminPublications,
+} from 'api/admin_publications/types';
 
 export const getNewIdsOnDrop = (
   ids: string[],
@@ -46,3 +51,23 @@ export const isAdminPublication = (
 
 export const getOptionId = (option: IAdminPublicationData | LoadMore) =>
   isAdminPublication(option) ? option.id : 'loadMore';
+
+export const getOptions = (
+  infiniteData: InfiniteData<IAdminPublications> | undefined,
+  adminPublicationIds: string[],
+  hasNextPage: boolean | undefined
+): (IAdminPublicationData | LoadMore)[] => {
+  if (!infiniteData) return [];
+  const adminPublicationIdsSet = new Set(adminPublicationIds);
+
+  const adminPublicationsFlat = infiniteData.pages
+    .flatMap((page) => page.data)
+    // Remove already selected admin publications
+    .filter(
+      (adminPublication) => !adminPublicationIdsSet.has(adminPublication.id)
+    );
+
+  return hasNextPage
+    ? [...adminPublicationsFlat, { value: 'loadMore' }]
+    : adminPublicationsFlat;
+};
