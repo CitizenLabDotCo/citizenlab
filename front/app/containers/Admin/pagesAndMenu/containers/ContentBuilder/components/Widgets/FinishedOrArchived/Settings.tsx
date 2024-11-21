@@ -29,6 +29,12 @@ const Settings = () => {
     filterBy: node.data.props.filterBy,
   }));
 
+  const setFilterByValue = (value: (typeof RADIO_OPTIONS)[number]) => {
+    setProp((props) => {
+      props.filterBy = value;
+    });
+  };
+
   return (
     <Box my="20px">
       <Text mb="32px" color="textSecondary">
@@ -37,22 +43,23 @@ const Settings = () => {
       <Box mb="20px">
         <TitleMultilocInput name="finished_or_archived_title" />
       </Box>
-      {RADIO_OPTIONS.map((option) => (
-        <Radio
-          key={option}
-          id={`${option}-radio`}
-          name={`${option}-radio`}
-          isRequired
-          value={option}
-          currentValue={filterBy}
-          label={<RadioLabel message={MESSAGES[option]} />}
-          onChange={(value) =>
-            setProp((props) => {
-              props.filterBy = value;
-            })
-          }
-        />
-      ))}
+      <fieldset>
+        <legend>
+          <FormattedMessage {...messages.filterBy} />
+        </legend>
+        {RADIO_OPTIONS.map((option) => (
+          <Radio
+            key={option}
+            id={`${option}-radio`}
+            name={`${option}-radio`}
+            isRequired
+            value={option}
+            currentValue={filterBy}
+            label={<RadioLabel message={MESSAGES[option]} />}
+            onChange={setFilterByValue}
+          />
+        ))}
+      </fieldset>
     </Box>
   );
 };
