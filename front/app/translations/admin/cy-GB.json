@@ -1633,6 +1633,7 @@
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabel": "Detholiad",
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabelDescription": "Bydd y prosiect yn dangos ar hidlydd(ion) ardal a ddewiswyd.",
   "app.containers.AdminPage.ProjectEdit.cardDisplay": "Cardiau",
+  "app.containers.AdminPage.ProjectEdit.commens_countSortingMethod": "Trafodwyd fwyaf",
   "app.containers.AdminPage.ProjectEdit.conductVotingOrPrioritizationDescriptionText2": "Dewiswch ddull pleidleisio, a gofynnwch i ddefnyddwyr flaenoriaethu rhwng ychydig o opsiynau gwahanol.",
   "app.containers.AdminPage.ProjectEdit.conductVotingOrPrioritizationText": "Cynnal ymarfer pleidleisio neu flaenoriaethu",
   "app.containers.AdminPage.ProjectEdit.createAProjectFromATemplate": "Creu prosiect o dempled",
