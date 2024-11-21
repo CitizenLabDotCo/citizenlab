@@ -31,4 +31,8 @@ export default defineMessages({
     defaultMessage:
       'This widget will only be shown to the user if there are finished or archived projects that they have permission to see. If you see this message, it means that there are no finished or archived projects that you (the admin) have permission to see. This message will not be visible on the real homepage.',
   },
+  filterBy: {
+    id: 'app.containers.Admin.pagesAndMenu.ContentBuilder.Widgets.FinishedOrArchived.filterBy',
+    defaultMessage: 'Filter by',
+  },
 });

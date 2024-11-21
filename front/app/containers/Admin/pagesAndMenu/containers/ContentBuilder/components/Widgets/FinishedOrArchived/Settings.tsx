@@ -43,18 +43,23 @@ const Settings = () => {
       <Box mb="20px">
         <TitleMultilocInput name="finished_or_archived_title" />
       </Box>
-      {RADIO_OPTIONS.map((option) => (
-        <Radio
-          key={option}
-          id={`${option}-radio`}
-          name={`${option}-radio`}
-          isRequired
-          value={option}
-          currentValue={filterBy}
-          label={<RadioLabel message={MESSAGES[option]} />}
-          onChange={setFilterByValue}
-        />
-      ))}
+      <fieldset>
+        <legend>
+          <FormattedMessage {...messages.filterBy} />
+        </legend>
+        {RADIO_OPTIONS.map((option) => (
+          <Radio
+            key={option}
+            id={`${option}-radio`}
+            name={`${option}-radio`}
+            isRequired
+            value={option}
+            currentValue={filterBy}
+            label={<RadioLabel message={MESSAGES[option]} />}
+            onChange={setFilterByValue}
+          />
+        ))}
+      </fieldset>
     </Box>
   );
 };
