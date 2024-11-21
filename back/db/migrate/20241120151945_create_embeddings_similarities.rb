@@ -1,0 +1,12 @@
+class CreateEmbeddingsSimilarities < ActiveRecord::Migration[7.0]
+  def change
+    enable_extension 'vector'
+
+    create_table :embeddings_similarities, id: :uuid do |t|
+      t.column :embedding, 'vector(1024)'
+      t.references :idea, foreign_key: true, type: :uuid, index: true, null: false
+
+      t.timestamps
+    end
+  end
+end
