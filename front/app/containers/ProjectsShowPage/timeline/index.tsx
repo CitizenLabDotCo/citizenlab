@@ -56,9 +56,14 @@ const Header = styled.div`
 interface Props {
   projectId: string;
   className?: string;
+  isCTABarVisible?: boolean;
 }
 
-const ProjectTimelineContainer = ({ projectId, className }: Props) => {
+const ProjectTimelineContainer = ({
+  projectId,
+  className,
+  isCTABarVisible,
+}: Props) => {
   const { phaseNumber } = useParams();
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
@@ -148,7 +153,11 @@ const ProjectTimelineContainer = ({ projectId, className }: Props) => {
           <PhasePoll projectId={projectId} phaseId={selectedPhaseId} />
           <PhaseVolunteering projectId={projectId} phaseId={selectedPhaseId} />
           {showIdeas && (
-            <PhaseIdeas projectId={projectId} phaseId={selectedPhaseId} />
+            <PhaseIdeas
+              projectId={projectId}
+              phaseId={selectedPhaseId}
+              isCTABarVisible={isCTABarVisible}
+            />
           )}
           {showVotingResults && votingMethod && (
             <VotingResults

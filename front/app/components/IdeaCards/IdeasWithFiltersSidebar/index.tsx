@@ -152,6 +152,7 @@ export interface QueryParametersUpdate {
 
 export interface Props {
   ideaQueryParameters: QueryParameters;
+  isCTABarVisible?: boolean;
   onUpdateQuery: (newParams: QueryParametersUpdate) => void;
   showViewToggle?: boolean;
   defaultView?: PresentationMode;
@@ -162,6 +163,7 @@ export interface Props {
 
 const IdeaCards = ({
   ideaQueryParameters,
+  isCTABarVisible,
   projectId,
   phaseId,
   defaultView,
@@ -173,7 +175,6 @@ const IdeaCards = ({
   const { windowWidth } = useWindowSize();
   const [searchParams] = useSearchParams();
   const selectedIdeaMarkerId = searchParams.get('idea_map_id');
-
   const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfiniteIdeas(ideaQueryParameters);
 
