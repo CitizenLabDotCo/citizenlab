@@ -1633,6 +1633,7 @@
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabel": "Urval",
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabelDescription": "Projektet kommer att visas i valda områdesfilter.",
   "app.containers.AdminPage.ProjectEdit.cardDisplay": "Kort",
+  "app.containers.AdminPage.ProjectEdit.commens_countSortingMethod": "Mest diskuterade",
   "app.containers.AdminPage.ProjectEdit.conductVotingOrPrioritizationDescriptionText2": "Välj en röstningsmetod och låt användarna prioritera mellan några olika alternativ.",
   "app.containers.AdminPage.ProjectEdit.conductVotingOrPrioritizationText": "Genomföra en omröstning eller prioriteringsövning",
   "app.containers.AdminPage.ProjectEdit.createAProjectFromATemplate": "Skapa ett projekt från en mall",
