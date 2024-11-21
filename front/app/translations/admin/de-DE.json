@@ -1633,6 +1633,7 @@
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabel": "Auswahl",
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabelDescription": "Das Projekt wird in dem/den ausgewählten Gebietsfilter(n) angezeigt.",
   "app.containers.AdminPage.ProjectEdit.cardDisplay": "Liste",
+  "app.containers.AdminPage.ProjectEdit.commens_countSortingMethod": "Meist diskutiert",
   "app.containers.AdminPage.ProjectEdit.conductVotingOrPrioritizationDescriptionText2": "Wählen Sie eine Abstimmungsmethode und lassen Sie die Nutzer*innen zwischen verschiedenen Optionen wählen.",
   "app.containers.AdminPage.ProjectEdit.conductVotingOrPrioritizationText": "Abstimmung oder Budgetzuweisung durchführen",
   "app.containers.AdminPage.ProjectEdit.createAProjectFromATemplate": "Erstellen eines Projekts aus einer Vorlage",
