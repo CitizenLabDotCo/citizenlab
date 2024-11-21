@@ -4,7 +4,7 @@ class ProjectsFinderService
     @user = user
     @page_size = (params.dig(:page, :size) || 500).to_i
     @page_number = (params.dig(:page, :number) || 1).to_i
-    @params = params
+    @filter_by = params[:filter_by]
   end
 
   # Returns an ActiveRecord collection of published projects that are
@@ -106,14 +106,15 @@ class ProjectsFinderService
   end
 
   # Returns ActiveRecord collection of projects that are either (finished OR have a last phase that contains a report)
-  # OR are archived, ordered by creation date first and ID second.
+  # OR are archived, ordered by last phase end_at (nulls first), creation date second and ID third.
   # => [Project]
   def finished_or_archived
     base_scope = @projects
       .joins('INNER JOIN admin_publications AS admin_publications ON admin_publications.publication_id = projects.id')
+      .joins('INNER JOIN phases ON phases.project_id = projects.id')
 
-    include_finished = %w[finished finished_and_archived].include?(@params[:filter_by])
-    include_archived = %w[archived finished_and_archived].include?(@params[:filter_by])
+    include_finished = %w[finished finished_and_archived].include?(@filter_by)
+    include_archived = %w[archived finished_and_archived].include?(@filter_by)
 
     if include_finished
       finished_scope = base_scope.where(admin_publications: { publication_status: 'published' })
@@ -124,10 +125,12 @@ class ProjectsFinderService
         )
     end
 
-    archived_scope = base_scope.where(admin_publications: { publication_status: 'archived' }) if include_archived
+    if include_archived
+      archived_scope = base_scope.where(admin_publications: { publication_status: 'archived' })
+      archived_scope = joins_last_phases_with_reports(archived_scope)
+    end
 
     if include_finished && include_archived
-      archived_scope = joins_last_phases_with_reports(archived_scope)
       return order_by_created_at_and_id_with_distinct_on(finished_scope.or(archived_scope))
     end
 
@@ -150,8 +153,8 @@ class ProjectsFinderService
 
   def order_by_created_at_and_id_with_distinct_on(projects)
     projects
-      .select('DISTINCT ON (projects.created_at, projects.id) projects.*')
-      .order('projects.created_at ASC, projects.id ASC') # secondary ordering by ID prevents duplicates when paginating
+      .select('DISTINCT ON (last_phase_end_at, projects.created_at, projects.id) projects.*')
+      .order('last_phase_end_at DESC, projects.created_at ASC, projects.id ASC') # secondary ordering by ID prevents duplicates when paginating
   end
 
   def joins_last_phases_with_reports(projects)

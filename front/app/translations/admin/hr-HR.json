@@ -826,7 +826,6 @@
   "app.containers.Admin.projects.all.PDFExportModal.selectIdeationPhase": "Odaberite fazu ideje.",
   "app.containers.Admin.projects.all.askPersonalData": "Pitajte osobne podatke",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm": "Pitanja koja trenutno nisu podržana: slike, oznake i prijenos datoteka.",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey2": "Pitanja koja trenutno nisu podržana: pitanja o kartiranju (spuštanje pribadače, crtanje rute i područja crtanja) i pitanja o učitavanju datoteka.",
   "app.containers.Admin.projects.all.components.archived": "Arhivirano",
   "app.containers.Admin.projects.all.components.draft": "Nacrt",
   "app.containers.Admin.projects.all.components.manageButtonLabel": "Uredi",

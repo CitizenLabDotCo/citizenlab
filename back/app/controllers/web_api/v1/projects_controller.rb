@@ -55,7 +55,7 @@ class WebApi::V1::ProjectsController < ApplicationController
 
   # For use with 'Finished or archived' homepage widget. Uses ProjectMiniSerializer.
   # Returns projects that are either ( published AND (finished OR have a last phase that contains a report))
-  # OR are archived, ordered by creation date first and ID second.
+  # OR are archived, ordered by last phase end_at (nulls first), creation date second and ID third.
   # => [Project]
   def index_finished_or_archived
     projects = policy_scope(Project)
