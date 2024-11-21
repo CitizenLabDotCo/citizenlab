@@ -2025,6 +2025,7 @@
   "app.utils.FormattedCurrency.multipleCredits": "{numberOfTokens} ਕ੍ਰੈਡਿਟ",
   "app.utils.FormattedCurrency.oneCredit": "1 ਕ੍ਰੈਡਿਟ",
   "app.utils.FormattedCurrency.tokens": "ਟੋਕਨ",
+  "app.utils.IdeaCards.mostDiscussed": "ਸਭ ਤੋਂ ਵੱਧ ਚਰਚਾ ਕੀਤੀ",
   "app.utils.IdeaCards.mostReacted": "ਜ਼ਿਆਦਾਤਰ ਪ੍ਰਤੀਕਰਮ",
   "app.utils.IdeaCards.newest": "ਸਭ ਤੋਂ ਨਵਾਂ",
   "app.utils.IdeaCards.oldest": "ਸਭ ਤੋਂ ਪੁਰਾਣਾ",
