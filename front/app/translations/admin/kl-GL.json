@@ -1633,6 +1633,7 @@
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabel": "Toqqaaneq",
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabelDescription": "Suliniut suliassaqarfinni toqqakkani immikkoortitani nuissaaq.",
   "app.containers.AdminPage.ProjectEdit.cardDisplay": "Nunap assinga",
+  "app.containers.AdminPage.ProjectEdit.commens_countSortingMethod": "Most discussed",
   "app.containers.AdminPage.ProjectEdit.conductVotingOrPrioritizationDescriptionText2": "Select a voting method, and have users prioritize between a few different options.",
   "app.containers.AdminPage.ProjectEdit.conductVotingOrPrioritizationText": "Conduct a voting or prioritization exercise",
   "app.containers.AdminPage.ProjectEdit.createAProjectFromATemplate": "Suliniummik skabelonimeersumik pilersitsigit",
