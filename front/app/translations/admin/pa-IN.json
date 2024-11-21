@@ -1633,6 +1633,7 @@
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabel": "ਚੋਣ",
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabelDescription": "ਪ੍ਰੋਜੈਕਟ ਚੁਣੇ ਹੋਏ ਖੇਤਰ ਫਿਲਟਰਾਂ 'ਤੇ ਦਿਖਾਈ ਦੇਵੇਗਾ।",
   "app.containers.AdminPage.ProjectEdit.cardDisplay": "ਕਾਰਡ",
+  "app.containers.AdminPage.ProjectEdit.commens_countSortingMethod": "ਸਭ ਤੋਂ ਵੱਧ ਚਰਚਾ ਕੀਤੀ",
   "app.containers.AdminPage.ProjectEdit.conductVotingOrPrioritizationDescriptionText2": "ਇੱਕ ਵੋਟਿੰਗ ਵਿਧੀ ਚੁਣੋ, ਅਤੇ ਉਪਭੋਗਤਾਵਾਂ ਨੂੰ ਕੁਝ ਵੱਖ-ਵੱਖ ਵਿਕਲਪਾਂ ਵਿਚਕਾਰ ਤਰਜੀਹ ਦਿਓ।",
   "app.containers.AdminPage.ProjectEdit.conductVotingOrPrioritizationText": "ਵੋਟਿੰਗ ਜਾਂ ਤਰਜੀਹੀ ਅਭਿਆਸ ਕਰੋ",
   "app.containers.AdminPage.ProjectEdit.createAProjectFromATemplate": "ਇੱਕ ਟੈਂਪਲੇਟ ਤੋਂ ਇੱਕ ਪ੍ਰੋਜੈਕਟ ਬਣਾਓ",
