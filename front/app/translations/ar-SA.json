@@ -2025,6 +2025,7 @@
   "app.utils.FormattedCurrency.multipleCredits": "{numberOfTokens} رمز/رموز ائتمان",
   "app.utils.FormattedCurrency.oneCredit": "رمز ائتمان واحد",
   "app.utils.FormattedCurrency.tokens": "رمز/رموز مميزة",
+  "app.utils.IdeaCards.mostDiscussed": "الأكثر مناقشة",
   "app.utils.IdeaCards.mostReacted": "معظم ردود الفعل",
   "app.utils.IdeaCards.newest": "الأحدث",
   "app.utils.IdeaCards.oldest": "الأقدم",
