@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 
 import {
   media,
@@ -152,6 +152,7 @@ export interface QueryParametersUpdate {
 
 export interface Props {
   ideaQueryParameters: QueryParameters;
+  isCTABarVisible?: boolean;
   onUpdateQuery: (newParams: QueryParametersUpdate) => void;
   showViewToggle?: boolean;
   defaultView?: PresentationMode;
@@ -162,6 +163,7 @@ export interface Props {
 
 const IdeaCards = ({
   ideaQueryParameters,
+  isCTABarVisible,
   projectId,
   phaseId,
   defaultView,
@@ -173,7 +175,6 @@ const IdeaCards = ({
   const { windowWidth } = useWindowSize();
   const [searchParams] = useSearchParams();
   const selectedIdeaMarkerId = searchParams.get('idea_map_id');
-
   const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfiniteIdeas(ideaQueryParameters);
 
@@ -264,15 +265,6 @@ const IdeaCards = ({
   const closeModal = useCallback(() => {
     setFiltersModalOpened(false);
   }, []);
-
-  const [top, setTop] = useState<number>(100);
-
-  const participationBar = document.getElementById('project-cta-bar');
-
-  useEffect(() => {
-    setTop(participationBar ? 400 : 120);
-    console.log(participationBar ? 400 : 120);
-  }, [participationBar]);
 
   const filterColumnWidth = windowWidth && windowWidth < 1400 ? 340 : 352;
   const filtersActive = !!(
@@ -380,8 +372,8 @@ const IdeaCards = ({
               <ContentRight
                 id="e2e-ideas-filters"
                 filterColumnWidth={filterColumnWidth}
-                top={top}
-                maxHeightOffset={120}
+                top={isCTABarVisible ? 160 : 100}
+                maxHeightOffset={isCTABarVisible ? 180 : 120}
               >
                 {/*
                   We have this Filters heading in the filters modal on mobile. 
