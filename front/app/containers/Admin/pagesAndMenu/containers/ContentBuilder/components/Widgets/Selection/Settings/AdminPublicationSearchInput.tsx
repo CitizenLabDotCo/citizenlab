@@ -24,10 +24,11 @@ const AdminPublicationSearchInput = ({ onChange }: Props) => {
     data: adminPublications,
     fetchNextPage,
     hasNextPage,
+    isFetchingNextPage,
   } = useAdminPublications({
     search,
     publicationStatusFilter: ['published', 'archived'],
-    pageSize: 3,
+    pageSize: 6,
   });
 
   const adminPublicationsFlat =
@@ -66,7 +67,7 @@ const AdminPublicationSearchInput = ({ onChange }: Props) => {
             <OptionLabel
               option={option}
               hasNextPage={hasNextPage}
-              isLoading={!adminPublications}
+              isLoading={isFetchingNextPage}
               fetchNextPage={fetchNextPage}
             />
           ) as any
