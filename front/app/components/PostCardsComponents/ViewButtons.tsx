@@ -28,7 +28,7 @@ const StyledIcon = styled(Icon)`
 `;
 
 const ViewButton = styled.button<{ active: boolean }>`
-  padding: 2px 4px !important;
+  padding: 4px 8px !important;
   font-size: ${fontSizes.base}px;
   border-radius: 3px;
   border-color: transparent;

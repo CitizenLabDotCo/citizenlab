@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 
 import {
   media,
@@ -265,15 +265,6 @@ const IdeaCards = ({
     setFiltersModalOpened(false);
   }, []);
 
-  const [top, setTop] = useState<number>(100);
-
-  const participationBar = document.getElementById('project-cta-bar');
-
-  useEffect(() => {
-    setTop(participationBar ? 400 : 120);
-    console.log(participationBar ? 400 : 120);
-  }, [participationBar]);
-
   const filterColumnWidth = windowWidth && windowWidth < 1400 ? 340 : 352;
   const filtersActive = !!(
     ideaQueryParameters.search ||
@@ -380,7 +371,7 @@ const IdeaCards = ({
               <ContentRight
                 id="e2e-ideas-filters"
                 filterColumnWidth={filterColumnWidth}
-                top={top}
+                top={100}
                 maxHeightOffset={120}
               >
                 {/*
