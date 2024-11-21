@@ -14,4 +14,8 @@ export default defineMessages({
     id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.selectProjectsOrFolders',
     defaultMessage: 'Select projects or folders',
   },
+  noData: {
+    id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.noData',
+    defaultMessage: 'No projects or folders selected',
+  },
 });
