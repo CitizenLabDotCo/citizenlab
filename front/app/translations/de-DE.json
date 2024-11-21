@@ -2025,6 +2025,7 @@
   "app.utils.FormattedCurrency.multipleCredits": "{numberOfTokens} Guthaben",
   "app.utils.FormattedCurrency.oneCredit": "1 Guthaben",
   "app.utils.FormattedCurrency.tokens": "Wertmarken",
+  "app.utils.IdeaCards.mostDiscussed": "Meist diskutiert",
   "app.utils.IdeaCards.mostReacted": "Meiste Reaktionen",
   "app.utils.IdeaCards.newest": "Neueste",
   "app.utils.IdeaCards.oldest": "Älteste",
