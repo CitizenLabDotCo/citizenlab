@@ -2025,6 +2025,7 @@
   "app.utils.FormattedCurrency.multipleCredits": "{numberOfTokens} credydau",
   "app.utils.FormattedCurrency.oneCredit": "1 credyd",
   "app.utils.FormattedCurrency.tokens": "tocynnau",
+  "app.utils.IdeaCards.mostDiscussed": "Trafodwyd fwyaf",
   "app.utils.IdeaCards.mostReacted": "Y rhan fwyaf o adweithiau",
   "app.utils.IdeaCards.newest": "mwyaf newydd",
   "app.utils.IdeaCards.oldest": "Hynaf",
