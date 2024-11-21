@@ -9,7 +9,10 @@ import { ideaDefaultSortMethodFallback } from 'api/phases/utils';
 
 import messages from 'containers/ProjectsShowPage/messages';
 
-import { IdeaCardsWithoutFiltersSidebar } from 'components/IdeaCards';
+import {
+  IdeaCardsWithFiltersSidebar,
+  IdeaCardsWithoutFiltersSidebar,
+} from 'components/IdeaCards';
 import { Sort } from 'components/IdeaCards/shared/Filters/SortFilterDropdown';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -79,38 +82,60 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
       id="project-ideas"
       className={`e2e-timeline-project-idea-cards ${className || ''}`}
     >
-      {!isVotingContext && (
-        <Title variant="h2" mt="0px" mb="20px" color="tenantText">
-          <FormattedMessage
-            {...getInputTermMessage(inputTerm, {
-              idea: messages.ideas,
-              option: messages.options,
-              project: messages.projects,
-              question: messages.questions,
-              issue: messages.issues,
-              contribution: messages.contributions,
-              proposal: messages.proposals,
-              initiative: messages.initiatives,
-              petition: messages.petitions,
-            })}
+      {isVotingContext ? (
+        <IdeaCardsWithoutFiltersSidebar
+          ideaQueryParameters={ideaQueryParameters}
+          onUpdateQuery={updateSearchParams}
+          className={participationMethod}
+          projectId={projectId}
+          showViewToggle={true}
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+          defaultSortingMethod={ideaQueryParameters.sort || null}
+          defaultView={phase.attributes.presentation_mode}
+          invisibleTitleMessage={messages.a11y_titleInputsPhase}
+          phaseId={phase.id}
+          showDropdownFilters={false}
+          showSearchbar={false}
+        />
+      ) : (
+        <>
+          <Box
+            position="absolute"
+            mt="-100px"
+            id="ideas-list-scroll-anchor"
+            aria-hidden={true}
           />
-        </Title>
+          <IdeaCardsWithFiltersSidebar
+            ideaQueryParameters={ideaQueryParameters}
+            onUpdateQuery={updateSearchParams}
+            className={participationMethod}
+            showViewToggle={true}
+            invisibleTitleMessage={messages.a11y_titleInputsPhase}
+            phaseId={phase.id}
+            projectId={projectId}
+            title={
+              <>
+                <Title variant="h2" mt="0px" mb="20px" color="tenantText">
+                  <FormattedMessage
+                    {...getInputTermMessage(inputTerm, {
+                      idea: messages.ideas,
+                      option: messages.options,
+                      project: messages.projects,
+                      question: messages.questions,
+                      issue: messages.issues,
+                      contribution: messages.contributions,
+                      proposal: messages.proposals,
+                      initiative: messages.initiatives,
+                      petition: messages.petitions,
+                    })}
+                  />
+                </Title>
+              </>
+            }
+          />
+        </>
       )}
-      <IdeaCardsWithoutFiltersSidebar
-        ideaQueryParameters={ideaQueryParameters}
-        onUpdateQuery={updateSearchParams}
-        className={participationMethod}
-        projectId={projectId}
-        showViewToggle={true}
-        // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        defaultSortingMethod={ideaQueryParameters.sort || null}
-        defaultView={phase.attributes.presentation_mode}
-        invisibleTitleMessage={messages.a11y_titleInputsPhase}
-        phaseId={phase.id}
-        showDropdownFilters={isVotingContext ? false : true}
-        showSearchbar={isVotingContext ? false : true}
-      />
     </Box>
   );
 };

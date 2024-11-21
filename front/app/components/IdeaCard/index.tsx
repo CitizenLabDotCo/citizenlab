@@ -169,6 +169,7 @@ const IdeaCard = ({
         flexDirection="column"
         justifyContent="space-between"
         w="100%"
+        h="100%"
         overflowX="hidden"
       >
         <Box
@@ -192,7 +193,7 @@ const IdeaCard = ({
             {!hideBody && <Body idea={idea} />}
           </Link>
         </Box>
-        <Box>
+        <Box marginTop="auto">
           <Interactions idea={idea} phase={phaseData || null} />
           <Footer
             idea={idea.data}

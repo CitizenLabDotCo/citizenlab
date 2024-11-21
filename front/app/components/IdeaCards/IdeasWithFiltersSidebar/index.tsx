@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import {
   media,
@@ -9,22 +9,32 @@ import {
   Spinner,
   useWindowSize,
   Title,
+  Box,
 } from '@citizenlab/cl2-component-library';
+import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
+import useIdeaCustomFieldsSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
+import useIdeaMarkers from 'api/idea_markers/useIdeaMarkers';
 import useInfiniteIdeas from 'api/ideas/useInfiniteIdeas';
 import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
+import { PresentationMode } from 'api/phases/types';
+
+import useLocale from 'hooks/useLocale';
 
 import { QueryParameters } from 'containers/IdeasIndexPage';
 
 import filterModalMessages from 'components/FiltersModal/messages';
+import ViewButtons from 'components/PostCardsComponents/ViewButtons';
 import Button from 'components/UI/Button';
 import SearchInput from 'components/UI/SearchInput';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { isNilOrError } from 'utils/helperUtils';
+import { isFieldEnabled } from 'utils/projectUtils';
 
 import messages from '../messages';
 import { Sort } from '../shared/Filters/SortFilterDropdown';
@@ -113,7 +123,11 @@ const ContentLeft = styled.div`
   position: relative;
 `;
 
-const ContentRight = styled.div<{ filterColumnWidth: number }>`
+const ContentRight = styled.div<{
+  filterColumnWidth: number;
+  top: number;
+  maxHeightOffset: number;
+}>`
   flex: 0 0 ${({ filterColumnWidth }) => filterColumnWidth}px;
   width: ${({ filterColumnWidth }) => filterColumnWidth}px;
   display: flex;
@@ -121,9 +135,9 @@ const ContentRight = styled.div<{ filterColumnWidth: number }>`
   justify-content: flex-start;
   align-self: flex-start;
   margin-left: ${gapWidth}px;
-  max-height: calc(100vh - 120px);
+  max-height: calc(100vh - ${({ maxHeightOffset }) => maxHeightOffset}px);
   position: sticky;
-  top: 100px;
+  top: ${({ top }) => top}px;
   overflow-y: scroll;
   padding-left: 8px;
   padding-right: 8px;
@@ -139,10 +153,26 @@ export interface QueryParametersUpdate {
 export interface Props {
   ideaQueryParameters: QueryParameters;
   onUpdateQuery: (newParams: QueryParametersUpdate) => void;
+  showViewToggle?: boolean;
+  defaultView?: PresentationMode;
+  projectId?: string;
+  phaseId?: string;
+  title?: JSX.Element;
 }
 
-const IdeaCards = ({ ideaQueryParameters, onUpdateQuery }: Props) => {
+const IdeaCards = ({
+  ideaQueryParameters,
+  projectId,
+  phaseId,
+  defaultView,
+  onUpdateQuery,
+  showViewToggle,
+  title,
+}: Props) => {
+  const locale = useLocale();
   const { windowWidth } = useWindowSize();
+  const [searchParams] = useSearchParams();
+  const selectedIdeaMarkerId = searchParams.get('idea_map_id');
 
   const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfiniteIdeas(ideaQueryParameters);
@@ -150,7 +180,40 @@ const IdeaCards = ({ ideaQueryParameters, onUpdateQuery }: Props) => {
   const list = data?.pages.map((page) => page.data).flat();
   const { data: ideasFilterCounts } = useIdeasFilterCounts(ideaQueryParameters);
 
+  const selectedView =
+    (searchParams.get('view') as 'card' | 'map' | null) ??
+    (selectedIdeaMarkerId ? 'map' : defaultView ?? 'card');
+
+  const { data: ideaCustomFieldsSchemas } = useIdeaCustomFieldsSchema({
+    phaseId: ideaQueryParameters.phase,
+    projectId,
+  });
+
+  const locationEnabled = !isNilOrError(ideaCustomFieldsSchemas)
+    ? isFieldEnabled(
+        'location_description',
+        ideaCustomFieldsSchemas.data.attributes,
+        locale
+      )
+    : false;
+
+  const showViewButtons = !!(locationEnabled && showViewToggle);
+
+  const setSelectedView = useCallback((view: 'card' | 'map') => {
+    updateSearchParams({ view });
+  }, []);
+
   const [filtersModalOpened, setFiltersModalOpened] = useState(false);
+
+  const loadIdeaMarkers = locationEnabled && selectedView === 'map';
+  const { data: ideaMarkers } = useIdeaMarkers(
+    {
+      projectIds: projectId ? [projectId] : null,
+      phaseId,
+      ...ideaQueryParameters,
+    },
+    loadIdeaMarkers
+  );
 
   const openFiltersModal = useCallback(() => {
     setFiltersModalOpened(true);
@@ -202,6 +265,15 @@ const IdeaCards = ({ ideaQueryParameters, onUpdateQuery }: Props) => {
     setFiltersModalOpened(false);
   }, []);
 
+  const [top, setTop] = useState<number>(100);
+
+  const participationBar = document.getElementById('project-cta-bar');
+
+  useEffect(() => {
+    setTop(participationBar ? 400 : 120);
+    console.log(participationBar ? 400 : 120);
+  }, [participationBar]);
+
   const filterColumnWidth = windowWidth && windowWidth < 1400 ? 340 : 352;
   const filtersActive = !!(
     ideaQueryParameters.search ||
@@ -217,6 +289,13 @@ const IdeaCards = ({ ideaQueryParameters, onUpdateQuery }: Props) => {
 
   return (
     <Container id="e2e-ideas-container">
+      <Box display="flex" justifyContent="space-between">
+        {title}
+        {showViewButtons && (
+          <ViewButtons selectedView={selectedView} onClick={setSelectedView} />
+        )}
+      </Box>
+
       {list === undefined && (
         <InitialLoading id="ideas-loading">
           <Spinner />
@@ -288,16 +367,21 @@ const IdeaCards = ({ ideaQueryParameters, onUpdateQuery }: Props) => {
                 hideImagePlaceholder={true}
                 hideImage={false}
                 hideIdeaStatus={smallerThanPhone}
-                view="card"
+                view={selectedView}
                 hasMoreThanOneView={false}
                 hasFilterSidebar={true}
+                projectId={projectId}
+                phaseId={phaseId}
+                ideaMarkers={ideaMarkers}
               />
             </ContentLeft>
 
-            {biggerThanLargeTablet && (
+            {biggerThanLargeTablet && selectedView === 'card' && (
               <ContentRight
                 id="e2e-ideas-filters"
                 filterColumnWidth={filterColumnWidth}
+                top={top}
+                maxHeightOffset={120}
               >
                 {/*
                   We have this Filters heading in the filters modal on mobile. 

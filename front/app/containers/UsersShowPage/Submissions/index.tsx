@@ -7,7 +7,7 @@ import { ideaDefaultSortMethodFallback } from 'api/phases/utils';
 import useUserIdeasCount from 'api/user_ideas_count/useUserIdeasCount';
 import useUserBySlug from 'api/users/useUserBySlug';
 
-import { IdeaCardsWithoutFiltersSidebar } from 'components/IdeaCards';
+import { IdeaCardsWithFiltersSidebar } from 'components/IdeaCards';
 import { Sort } from 'components/IdeaCards/shared/Filters/SortFilterDropdown';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -57,13 +57,16 @@ const Submissions = () => {
         </Title>
       )}
       <Box display="flex" w="100%" justifyContent="center">
-        <IdeaCardsWithoutFiltersSidebar
-          defaultSortingMethod={ideaQueryParameters.sort}
+        <Box
+          position="absolute"
+          mt="-100px"
+          id="ideas-list-scroll-anchor"
+          aria-hidden={true}
+        />
+        <IdeaCardsWithFiltersSidebar
           ideaQueryParameters={ideaQueryParameters}
           onUpdateQuery={updateSearchParams}
           invisibleTitleMessage={messages.invisibleTitlePostsList}
-          showSearchbar
-          showDropdownFilters
         />
       </Box>
     </Box>
