@@ -1562,7 +1562,7 @@ resource 'Projects' do
     with_options scope: :page do
       parameter :number, 'Page number'
       parameter :size, 'Number of projects per page'
-      parameter :filter_by, 'Whether to filter by finished or archived projects, or both', required: false
+      parameter :filter_by, 'Whether to filter by finished or archived projects, or both'
     end
 
     context "when passed filter_by: 'finished'" do
