@@ -879,7 +879,7 @@
   "app.containers.Admin.projects.all.PDFExportModal.selectIdeationPhase": "Seleziona una fase di ideazione.",
   "app.containers.Admin.projects.all.askPersonalData": "Richiedi i dati personali",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm": "Domande attualmente non supportate: Immagini, Tag e Caricamento file.",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey2": "Domande attualmente non supportate: Domande sulla mappatura (drop pin, disegna percorso e disegna area) e domande sul caricamento di file.",
+  "app.containers.Admin.projects.all.clickExportToPDFSurvey3": "Domande attualmente non supportate: Domande di mappatura (drop pin, disegna percorso e disegna area), domande a scelta di immagini e domande di caricamento di file.",
   "app.containers.Admin.projects.all.components.archived": "Archived",
   "app.containers.Admin.projects.all.components.draft": "Draft",
   "app.containers.Admin.projects.all.components.manageButtonLabel": "Edit",
