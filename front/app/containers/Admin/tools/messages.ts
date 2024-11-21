@@ -66,9 +66,9 @@ export default defineMessages({
     defaultMessage: 'Public API image',
   },
   publicAPIDisabled: {
-    id: 'app.containers.Admin.tools.publicAPIDisabled',
+    id: 'app.containers.Admin.tools.publicAPIDisabled1',
     defaultMessage:
-      'The public API is a Premium-only feature. Contact your GovSuccess Manager if you want more info on this.',
+      'The public API is not part of your current license. Contact your GovSuccess Manager if you want more info on this.',
   },
   powerBITitle: {
     id: 'app.containers.Admin.tools.powerBITitle',
@@ -88,9 +88,9 @@ export default defineMessages({
     defaultMessage: 'Power BI image',
   },
   powerBIDisabled: {
-    id: 'app.containers.Admin.tools.powerBIDisabled',
+    id: 'app.containers.Admin.tools.powerBIDisabled1',
     defaultMessage:
-      'Power BI is a Premium-only feature. Contact your GovSuccess Manager if you want more info on this.',
+      'Power BI is not part of your license. Contact your GovSuccess Manager if you want more info on this.',
   },
   esriIntegration: {
     id: 'app.containers.Admin.tools.esriIntegration2',
