@@ -1633,6 +1633,7 @@
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabel": "Selección",
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabelDescription": "El proyecto se mostrará en el(los) filtro(s) de área seleccionado(s).",
   "app.containers.AdminPage.ProjectEdit.cardDisplay": "En una lista",
+  "app.containers.AdminPage.ProjectEdit.commens_countSortingMethod": "Lo más discutido",
   "app.containers.AdminPage.ProjectEdit.conductVotingOrPrioritizationDescriptionText2": "Selecciona un método de votación, y haz que los usuarios prioricen entre algunas opciones diferentes.",
   "app.containers.AdminPage.ProjectEdit.conductVotingOrPrioritizationText": "Realizar un ejercicio de votación o priorización",
   "app.containers.AdminPage.ProjectEdit.createAProjectFromATemplate": "Crear un proyecto a partir de una plantilla",
