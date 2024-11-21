@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Icon, colors } from '@citizenlab/cl2-component-library';
 
 import { IAdminPublicationData } from 'api/admin_publications/types';
 
@@ -28,7 +28,24 @@ const OptionLabel = ({
   if (!option) return null;
 
   if (isAdminPublication(option)) {
-    return <Box>{localize(option.attributes.publication_title_multiloc)}</Box>;
+    if (option.relationships.publication.data.type === 'project') {
+      return (
+        <Box>{localize(option.attributes.publication_title_multiloc)}</Box>
+      );
+    } else {
+      return (
+        <Box display="flex" alignItems="center">
+          <Icon
+            name="folder-outline"
+            m="0"
+            mr="8px"
+            ml="-2px"
+            fill={colors.textSecondary}
+          />
+          {localize(option.attributes.publication_title_multiloc)}
+        </Box>
+      );
+    }
   }
 
   if (hasNextPage) {

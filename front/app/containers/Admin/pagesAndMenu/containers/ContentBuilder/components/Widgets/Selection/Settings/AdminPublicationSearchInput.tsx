@@ -75,7 +75,6 @@ const AdminPublicationSearchInput = ({ onChange }: Props) => {
         menuPlacement="auto"
         styles={selectStyles()}
         filterOption={() => true}
-        // components={components}
         onInputChange={handleInputChange}
         onMenuScrollToBottom={() => {
           if (hasNextPage) {
