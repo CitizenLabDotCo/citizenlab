@@ -1633,6 +1633,7 @@
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabel": "انتخاب",
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabelDescription": "پروجیکٹ منتخب ایریا فلٹر (فلٹر) پر ظاہر ہوگا۔",
   "app.containers.AdminPage.ProjectEdit.cardDisplay": "کارڈز",
+  "app.containers.AdminPage.ProjectEdit.commens_countSortingMethod": "سب سے زیادہ زیر بحث",
   "app.containers.AdminPage.ProjectEdit.conductVotingOrPrioritizationDescriptionText2": "ووٹنگ کا طریقہ منتخب کریں، اور صارفین کو چند مختلف اختیارات کے درمیان ترجیح دیں۔",
   "app.containers.AdminPage.ProjectEdit.conductVotingOrPrioritizationText": "ووٹنگ یا ترجیحی مشق کا انعقاد کریں۔",
   "app.containers.AdminPage.ProjectEdit.createAProjectFromATemplate": "ٹیمپلیٹ سے پروجیکٹ بنائیں",
