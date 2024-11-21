@@ -16,11 +16,17 @@ export const DashboardsPage = memo(() => {
   const { formatMessage } = useIntl();
   const moderationEnabled = useFeatureFlag({ name: 'moderation' });
   const managementFeedEnabled = useFeatureFlag({ name: 'management_feed' });
+  const managementFeedAllowed = useFeatureFlag({
+    name: 'management_feed',
+    onlyCheckAllowed: true,
+  });
+  const managementFeedAllowedAndDisabled =
+    managementFeedAllowed && !managementFeedEnabled;
 
   const tabs = getAdminTabs(
     {
       moderationEnabled,
-      managementFeedEnabled,
+      managementFeedAllowedAndDisabled,
     },
     formatMessage
   );
