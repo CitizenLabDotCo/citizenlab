@@ -2025,6 +2025,7 @@
   "app.utils.FormattedCurrency.multipleCredits": "{numberOfTokens} crediti",
   "app.utils.FormattedCurrency.oneCredit": "1 credito",
   "app.utils.FormattedCurrency.tokens": "gettoni",
+  "app.utils.IdeaCards.mostDiscussed": "I più discussi",
   "app.utils.IdeaCards.mostReacted": "La maggior parte delle reazioni",
   "app.utils.IdeaCards.newest": "Più recente",
   "app.utils.IdeaCards.oldest": "Il più vecchio",
