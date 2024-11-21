@@ -29,6 +29,12 @@ const Settings = () => {
     filterBy: node.data.props.filterBy,
   }));
 
+  const setFilterByValue = (value: (typeof RADIO_OPTIONS)[number]) => {
+    setProp((props) => {
+      props.filterBy = value;
+    });
+  };
+
   return (
     <Box my="20px">
       <Text mb="32px" color="textSecondary">
@@ -46,11 +52,7 @@ const Settings = () => {
           value={option}
           currentValue={filterBy}
           label={<RadioLabel message={MESSAGES[option]} />}
-          onChange={(value) =>
-            setProp((props) => {
-              props.filterBy = value;
-            })
-          }
+          onChange={setFilterByValue}
         />
       ))}
     </Box>
