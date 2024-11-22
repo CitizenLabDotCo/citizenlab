@@ -99,7 +99,7 @@ export enum citizenRoutes {
   emailSettings = 'email-settings',
   disabledAccount = 'disabled-account',
   reportPrintPage = `admin/reporting/report-builder/:reportId/print`,
-  IdeaMapFullscreen = `projects/:slug/:phaseId/map`,
+  IdeaMapFullscreen = `projects/:slug/:phaseId/fullscreen-map`,
 }
 
 type citizenRouteTypes =

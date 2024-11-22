@@ -35,14 +35,13 @@ const IdeaMapFullscreen = () => {
   }
 
   return (
-    <Box position="absolute" h="100vh" w="100vw">
-      <IdeasMap
-        projectId={projectId}
-        phaseId={phaseId}
-        mapConfig={mapConfig}
-        ideaMarkers={ideaMarkers}
-      />
-    </Box>
+    <IdeasMap
+      projectId={projectId}
+      phaseId={phaseId}
+      mapConfig={mapConfig}
+      ideaMarkers={ideaMarkers}
+      height="100vh"
+    />
   );
 };
 

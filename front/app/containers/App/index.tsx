@@ -261,6 +261,7 @@ const App = ({ children }: Props) => {
   const isIdeaEditPage = isPage('idea_edit', location.pathname);
   const isEventPage = isPage('event_page', location.pathname);
   const isNativeSurveyPage = isPage('native_survey', location.pathname);
+  const isFullscrenIdeaMapPage = isPage('fullscreen_map', location.pathname);
 
   const theme = getTheme(appConfiguration);
   const showFooter =
@@ -282,6 +283,7 @@ const App = ({ children }: Props) => {
 
     // citizen
     if (isNativeSurveyPage) return false;
+    if (isFullscrenIdeaMapPage) return false;
 
     if (isSmallerThanTablet) {
       if (isEventPage || isIdeaShowPage(urlSegments)) {

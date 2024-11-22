@@ -47,7 +47,8 @@ type pageKeys =
   | 'sign_up'
   | 'email-settings'
   | 'pages_menu'
-  | 'event_page';
+  | 'event_page'
+  | 'fullscreen_map';
 
 export function isPage(pageKey: pageKeys, pathName: string) {
   /**
@@ -80,6 +81,8 @@ export function isPage(pageKey: pageKeys, pathName: string) {
       return pathnameWithoutLocale.includes('/admin/pages-menu');
     case 'event_page':
       return pathnameWithoutLocale.startsWith('/events/');
+    case 'fullscreen_map':
+      return pathnameWithoutLocale.endsWith('/fullscreen-map');
   }
 }
 

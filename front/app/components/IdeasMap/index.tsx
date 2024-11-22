@@ -16,6 +16,7 @@ import Renderer from '@arcgis/core/renderers/SimpleRenderer';
 import MapView from '@arcgis/core/views/MapView';
 import {
   Box,
+  BoxProps,
   colors,
   useBreakpoint,
   useWindowSize,
@@ -109,8 +110,14 @@ export interface Props {
   ideaMarkers?: IIdeaMarkers;
 }
 
-const IdeasMap = memo<Props>(
-  ({ projectId, phaseId, mapConfig, ideaMarkers }: Props) => {
+const IdeasMap = memo<Props & BoxProps>(
+  ({
+    projectId,
+    phaseId,
+    mapConfig,
+    ideaMarkers,
+    ...boxProps
+  }: Props & BoxProps) => {
     const theme = useTheme();
     const localize = useLocalize();
     const { formatMessage } = useIntl();
@@ -525,6 +532,7 @@ const IdeasMap = memo<Props>(
               onHover={onMapHover}
               onClick={onMapClick}
               id="e2e-ideas-map"
+              {...boxProps}
             />
             <LayerHoverLabel
               layer={mapConfig?.data.attributes.layers.find(
