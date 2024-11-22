@@ -83,7 +83,8 @@ const AboveContent = styled.div<{
   flex-direction: row-reverse;
   align-items: center;
   justify-content: space-between;
-  margin-right: ${({ filterColumnWidth }) => filterColumnWidth + gapWidth}px;
+  margin-right: ${({ filterColumnWidth, isMapView }) =>
+    isMapView ? 0 : filterColumnWidth + gapWidth}px;
   margin-bottom: 8px;
 
   ${isRtl`
