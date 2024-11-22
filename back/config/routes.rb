@@ -70,6 +70,7 @@ Rails.application.routes.draw do
         get :filter_counts, on: :collection
         get :json_forms_schema, on: :member
         get 'draft/:phase_id', on: :collection, to: 'ideas#draft_by_phase'
+        get :similarities, on: :member
       end
 
       resources :initiatives,
