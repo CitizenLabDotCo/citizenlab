@@ -4,14 +4,12 @@ import {
   Box,
   IconButton,
   Icon,
-  Spinner,
   Text,
   colors,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import { IAdminPublicationData } from 'api/admin_publications/types';
-import useAdminPublicationsByIds from 'api/admin_publications/useAdminPublicationsByIds';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -23,45 +21,29 @@ const StyledSortableRow = styled(SortableRow)`
   }
 
   .e2e-admin-list-row p {
-    margin: 0;
+    margin-top: 0;
+    margin-bottom: 0;
   }
 `;
 
 interface Props {
-  adminPublicationIds: string[];
+  adminPublications: IAdminPublicationData[];
   onReorder: (draggedItemId: string, targetIndex: number) => void;
   onDelete: (id: string) => void;
 }
 
 const AdminPublicationsList = ({
-  adminPublicationIds,
+  adminPublications,
   onReorder,
   onDelete,
 }: Props) => {
   const localize = useLocalize();
 
-  const { data: selectedAdminPublications, isFetching } =
-    useAdminPublicationsByIds(
-      {
-        ids: adminPublicationIds,
-      },
-      // We don't make this request if adminPublicationIds is an empty array.
-      // If it's an empty array, the FE removes it while parsing the query params
-      // for some reason, and the BE will return all admin publications.
-      // This is not what we want.
-      { enabled: adminPublicationIds.length > 0 }
-    );
-
-  const selectedAdminPublicationsFlat =
-    adminPublicationIds.length > 0
-      ? selectedAdminPublications?.pages.flatMap((page) => page.data) ?? []
-      : [];
-
   return (
     <SortableList
-      items={selectedAdminPublicationsFlat}
+      items={adminPublications}
       onReorder={onReorder}
-      key={selectedAdminPublicationsFlat.length}
+      key={adminPublications.length}
     >
       {({ itemsList, handleDragRow, handleDropRow }) => (
         <>
@@ -72,6 +54,7 @@ const AdminPublicationsList = ({
               index={index}
               moveRow={handleDragRow}
               dropRow={handleDropRow}
+              disableNestedStyles
             >
               <Box
                 w="100%"
@@ -82,15 +65,9 @@ const AdminPublicationsList = ({
               >
                 <Box display="flex" alignItems="center">
                   {item.relationships.publication.data.type === 'folder' && (
-                    <Icon
-                      name="folder-outline"
-                      mt="-1px"
-                      mb="0"
-                      mr="8px"
-                      ml="-8px"
-                    />
+                    <Icon name="folder-outline" mt="-1px" mb="0" ml="8px" />
                   )}
-                  <Text m="0">
+                  <Text m="0" ml="8px">
                     {localize(item.attributes.publication_title_multiloc)}
                   </Text>
                 </Box>
@@ -104,16 +81,6 @@ const AdminPublicationsList = ({
               </Box>
             </StyledSortableRow>
           ))}
-          {isFetching && (
-            <Box
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              p="12px"
-            >
-              <Spinner />
-            </Box>
-          )}
         </>
       )}
     </SortableList>

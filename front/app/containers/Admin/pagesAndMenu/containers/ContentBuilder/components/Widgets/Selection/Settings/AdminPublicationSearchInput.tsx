@@ -13,7 +13,8 @@ import OptionLabel from './OptionLabel';
 import { getOptionId, getOptions } from './utils';
 
 interface Props {
-  adminPublicationIds: string[];
+  /* adminPublicationsIds is undefined if fetching new selections */
+  adminPublicationIds?: string[];
   onChange: (option?: IAdminPublicationData) => void;
 }
 
@@ -28,6 +29,7 @@ const AdminPublicationSearchInput = ({
     data: adminPublications,
     fetchNextPage,
     hasNextPage,
+    isFetching,
     isFetchingNextPage,
   } = useAdminPublications({
     search,
@@ -63,6 +65,7 @@ const AdminPublicationSearchInput = ({
         value={null}
         inputValue={visibleSearchTerm}
         placeholder={''}
+        isDisabled={!adminPublicationIds || isFetching}
         options={options}
         getOptionValue={getOptionId}
         getOptionLabel={(option) =>

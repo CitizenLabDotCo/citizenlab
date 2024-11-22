@@ -161,7 +161,7 @@ const HomepageBuilderToolbox = ({
                 adminPublicationIds={[]}
               />
             }
-            icon="projects"
+            icon="folder-outline"
             label={formatMessage(selectionTitle)}
           />
         )}

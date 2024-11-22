@@ -19,19 +19,28 @@ interface Props {
 
 const Selection = ({ titleMultiloc, adminPublicationIds }: Props) => {
   const localize = useLocalize();
-  const { data, hasNextPage, fetchNextPage } = useAdminPublicationsByIds({
-    ids: adminPublicationIds,
-    pageSize: 6,
-  });
+  const { data, hasNextPage, fetchNextPage } = useAdminPublicationsByIds(
+    {
+      ids: adminPublicationIds,
+      pageSize: 6,
+    },
+    {
+      enabled: adminPublicationIds.length > 0,
+    }
+  );
 
   const adminPublications = data?.pages.map((page) => page.data).flat();
 
-  if (!adminPublications) return null;
-  if (adminPublications.length === 0) {
+  const showEmptyState =
+    adminPublicationIds.length === 0 || adminPublications?.length === 0;
+
+  if (showEmptyState) {
     return (
       <EmptyState titleMultiloc={titleMultiloc} explanation={messages.noData} />
     );
   }
+
+  if (!adminPublications) return null;
 
   return (
     <AdminPubsCarrousel

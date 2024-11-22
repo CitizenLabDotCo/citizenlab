@@ -31,10 +31,12 @@ export const getOptionId = (option: IAdminPublicationData | LoadMore) =>
 
 export const getOptions = (
   infiniteData: InfiniteData<IAdminPublications> | undefined,
-  adminPublicationIds: string[],
+  adminPublicationIds: string[] | undefined,
   hasNextPage: boolean | undefined
 ): (IAdminPublicationData | LoadMore)[] => {
   if (!infiniteData) return [];
+  if (!adminPublicationIds) return [];
+
   const adminPublicationIdsSet = new Set(adminPublicationIds);
 
   const adminPublicationsFlat = infiniteData.pages
