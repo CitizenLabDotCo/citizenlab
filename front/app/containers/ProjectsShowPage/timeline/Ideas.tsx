@@ -89,9 +89,7 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
           className={participationMethod}
           projectId={projectId}
           showViewToggle={true}
-          // TODO: Fix this the next time the file is edited.
-          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-          defaultSortingMethod={ideaQueryParameters.sort || null}
+          defaultSortingMethod={ideaQueryParameters.sort}
           defaultView={phase.attributes.presentation_mode}
           invisibleTitleMessage={messages.a11y_titleInputsPhase}
           phaseId={phase.id}
