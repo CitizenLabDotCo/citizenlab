@@ -71,7 +71,7 @@ class WebApi::V1::ProjectsController < ApplicationController
 
   # For use with 'For you' homepage widget. Uses ProjectMiniSerializer.
   # Returns all published projects that are visible to user
-  # AND (are followed by user OR relate to an idea, area or topic followed by user),
+  # AND (are followed by user OR relate to an idea, area, topic or folder followed by user),
   # ordered by the follow created_at (most recent first).
   def index_for_followed_item
     projects = policy_scope(Project)
