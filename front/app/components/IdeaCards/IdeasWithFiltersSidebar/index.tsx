@@ -75,13 +75,17 @@ const MobileSearchInput = styled(SearchInput)`
 
 const MobileFilterButton = styled(Button)``;
 
-const AboveContent = styled.div<{ filterColumnWidth: number }>`
+const AboveContent = styled.div<{
+  filterColumnWidth: number;
+  isMapView: boolean;
+}>`
   display: flex;
   flex-direction: row-reverse;
   align-items: center;
   justify-content: space-between;
-  margin-right: ${({ filterColumnWidth }) => filterColumnWidth + gapWidth}px;
-  margin-bottom: 22px;
+  margin-right: ${({ filterColumnWidth, isMapView }) =>
+    isMapView ? 0 : filterColumnWidth + gapWidth}px;
+  margin-bottom: 8px;
 
   ${isRtl`
     flex-direction: row-reverse;
@@ -336,7 +340,10 @@ const IdeaCards = ({
             </>
           )}
 
-          <AboveContent filterColumnWidth={filterColumnWidth}>
+          <AboveContent
+            filterColumnWidth={filterColumnWidth}
+            isMapView={selectedView === 'map'}
+          >
             {/* This is effectively on the right,
               with the help of flexbox. The HTML order, however,
               needed to be like this for a11y (tab order).
