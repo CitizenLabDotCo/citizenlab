@@ -1505,7 +1505,7 @@ resource 'Projects' do
       json_response = json_parse(response_body)
 
       current_phase_ids = json_response[:data].filter_map { |d| d.dig(:relationships, :current_phase, :data, :id) }
-      included_phase_ids = json_response[:included].select { |d| d[:type] == 'phase' }.pluck(:id)
+      included_phase_ids = json_response[:included].select { |d| d[:type] == 'phase_mini' }.pluck(:id)
 
       expect(current_phase_ids).to match included_phase_ids
     end
