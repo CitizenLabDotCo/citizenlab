@@ -246,5 +246,24 @@ describe BulkImportIdeas::Importers::IdeaImporter do
         expect(User.count).to eq 2
       end
     end
+
+    context 'proposals' do
+      it 'can import proposals' do
+        project = create(:single_phase_proposals_project)
+        create(:custom_form, participation_context: project.phases.first)
+
+        idea_rows = [
+          {
+            title_multiloc: { 'en' => 'My proposal' },
+            body_multiloc: { 'en' => 'My proposal body' },
+            project_id: project.id,
+            user_email: 'proposalsimport@govocal.com'
+          }
+        ]
+        expect { service.import idea_rows }.to change(Idea, :count).from(0).to(1)
+
+        expect(User.count).to eq 2
+      end
+    end
   end
 end

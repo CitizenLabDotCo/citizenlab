@@ -6,7 +6,10 @@ import { useParams } from 'react-router-dom';
 import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import ProjectProposalsManager from 'components/admin/PostManager/ProjectProposalsManager';
+import Button from 'components/UI/Button';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -22,6 +25,9 @@ const timelineProjectVisibleFilterMenus: TFilterMenu[] = [
 ];
 
 const AdminProjectProposals = () => {
+  const inputImporterEnabled = useFeatureFlag({
+    name: 'input_importer',
+  });
   const { projectId, phaseId } = useParams() as {
     projectId: string;
     phaseId: string;
@@ -44,6 +50,16 @@ const AdminProjectProposals = () => {
             <FormattedMessage {...messages.titleInputManager} />
           </Title>
           <Box display="flex" gap="8px">
+            {inputImporterEnabled && (
+              <Button
+                width="auto"
+                linkTo={`/admin/projects/${projectId}/phases/${phaseId}/input-importer`}
+                icon="page"
+                buttonStyle="secondary-outlined"
+              >
+                <FormattedMessage {...messages.importInputs} />
+              </Button>
+            )}
             {phase && (
               <NewIdeaButton
                 inputTerm={phase.data.attributes.input_term}
