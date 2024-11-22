@@ -171,6 +171,16 @@ describe ProjectsFinderService do
         .to match_array([followed_project, project_for_followed_topic])
     end
 
+    it 'includes projects in a Folder the user follows' do
+      project_in_followed_folder = create(:project)
+      folder = create(:project_folder, projects: [project_in_followed_folder])
+      project_in_followed_folder.admin_publication.update!(parent: folder.admin_publication)
+      create(:follower, followable: folder, user: user)
+
+      expect(service.new(Project.all, user).followed_by_user)
+        .to match_array([followed_project, project_in_followed_folder])
+    end
+
     it 'orders the projects by the creation date of follows (most recent first)' do
       project2 = create(:project)
       project3 = create(:project)
