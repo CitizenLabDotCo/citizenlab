@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import {
   media,
@@ -109,10 +109,6 @@ const IdeasCount = styled.div`
   span > span {
     font-weight: 600;
   }
-`;
-
-const Content = styled.div`
-  display: flex;
 `;
 
 const ContentLeft = styled.div`
@@ -264,6 +260,19 @@ const IdeaCards = ({
     setFiltersModalOpened(false);
   }, []);
 
+  const [isCTABarVisible, setIsCTABarVisible] = useState(false);
+
+  useEffect(() => {
+    function checkCTABarVisibility() {
+      if (document.getElementById('project-cta-bar')) {
+        setIsCTABarVisible(true);
+      }
+    }
+
+    window.addEventListener('scrollend', checkCTABarVisibility);
+    return () => window.removeEventListener('scroll', checkCTABarVisibility);
+  }, []);
+
   const filterColumnWidth = windowWidth && windowWidth < 1400 ? 340 : 352;
   const filtersActive = !!(
     ideaQueryParameters.search ||
@@ -346,7 +355,7 @@ const IdeaCards = ({
             </AboveContentLeft>
           </AboveContent>
 
-          <Content>
+          <Box display={selectedView === 'map' ? 'block' : 'flex'}>
             <ContentLeft>
               <IdeasView
                 list={list}
@@ -370,8 +379,8 @@ const IdeaCards = ({
               <ContentRight
                 id="e2e-ideas-filters"
                 filterColumnWidth={filterColumnWidth}
-                top={100}
-                maxHeightOffset={120}
+                top={isCTABarVisible ? 160 : 100}
+                maxHeightOffset={isCTABarVisible ? 180 : 120}
               >
                 {/*
                   We have this Filters heading in the filters modal on mobile. 
@@ -397,7 +406,7 @@ const IdeaCards = ({
                 />
               </ContentRight>
             )}
-          </Content>
+          </Box>
         </>
       )}
     </Container>
