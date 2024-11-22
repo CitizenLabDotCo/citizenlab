@@ -799,7 +799,7 @@
   "app.containers.Admin.pagesAndMenu.ContentBuilder.Widgets.FinishedOrArchived.noData": "No hay datos disponibles",
   "app.containers.Admin.pagesAndMenu.ContentBuilder.Widgets.FinishedOrArchived.thisWidgetShows": "Este widget muestra <b>los proyectos que están finalizados y/o archivados.</b>. \"Finalizados\" también incluye los proyectos que están en la última fase, y en los que la última fase es un informe.",
   "app.containers.Admin.pagesAndMenu.ContentBuilder.Widgets.FinishedOrArchived.title": "Proyectos acabados",
-  "app.containers.Admin.pagesAndMenu.ContentBuilder.Widgets.FinishedOrArchived.youSaidWeDid": "Tú lo dijiste, nosotros lo hicimos...",
+  "app.containers.Admin.pagesAndMenu.ContentBuilder.Widgets.FinishedOrArchived.youSaidWeDid": "Lo que dijiste, lo que hicimos...",
   "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.emptyNameErrorText": "Proporciona un nombre para todas las lenguas",
   "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.emptyProjectError": "El proyecto no puede estar vacío",
   "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.navbarItemName": "Nombre de la tendencia",
