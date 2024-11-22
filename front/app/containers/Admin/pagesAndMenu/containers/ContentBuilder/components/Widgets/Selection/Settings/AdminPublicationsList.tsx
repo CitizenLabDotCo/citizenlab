@@ -4,7 +4,6 @@ import {
   Box,
   IconButton,
   Icon,
-  Spinner,
   Text,
   colors,
 } from '@citizenlab/cl2-component-library';
@@ -22,20 +21,19 @@ const StyledSortableRow = styled(SortableRow)`
   }
 
   .e2e-admin-list-row p {
-    margin: 0;
+    margin-top: 0;
+    margin-bottom: 0;
   }
 `;
 
 interface Props {
   adminPublications: IAdminPublicationData[];
-  isFetching: boolean;
   onReorder: (draggedItemId: string, targetIndex: number) => void;
   onDelete: (id: string) => void;
 }
 
 const AdminPublicationsList = ({
   adminPublications,
-  isFetching,
   onReorder,
   onDelete,
 }: Props) => {
@@ -56,6 +54,7 @@ const AdminPublicationsList = ({
               index={index}
               moveRow={handleDragRow}
               dropRow={handleDropRow}
+              disableNestedStyles
             >
               <Box
                 w="100%"
@@ -66,15 +65,9 @@ const AdminPublicationsList = ({
               >
                 <Box display="flex" alignItems="center">
                   {item.relationships.publication.data.type === 'folder' && (
-                    <Icon
-                      name="folder-outline"
-                      mt="-1px"
-                      mb="0"
-                      mr="8px"
-                      ml="-8px"
-                    />
+                    <Icon name="folder-outline" mt="-1px" mb="0" ml="8px" />
                   )}
-                  <Text m="0">
+                  <Text m="0" ml="8px">
                     {localize(item.attributes.publication_title_multiloc)}
                   </Text>
                 </Box>
@@ -88,16 +81,6 @@ const AdminPublicationsList = ({
               </Box>
             </StyledSortableRow>
           ))}
-          {isFetching && (
-            <Box
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              p="12px"
-            >
-              <Spinner />
-            </Box>
-          )}
         </>
       )}
     </SortableList>
