@@ -3,6 +3,9 @@ import React from 'react';
 import { Box, Label, Text } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
 
+import { IAdminPublicationData } from 'api/admin_publications/types';
+import useAdminPublicationsByIds from 'api/admin_publications/useAdminPublicationsByIds';
+
 import { FormattedMessage } from 'utils/cl-intl';
 
 import TitleMultilocInput from '../../_shared/TitleMultilocInput';
@@ -20,10 +23,49 @@ const Settings = () => {
     adminPublicationIds: node.data.props.adminPublicationIds,
   }));
 
+  const { data: selectedAdminPublications, isFetching } =
+    useAdminPublicationsByIds(
+      {
+        ids: adminPublicationIds,
+      },
+      // We don't make this request if adminPublicationIds is an empty array.
+      { enabled: adminPublicationIds.length > 0 }
+    );
+
+  console.log({ isFetching });
+
+  const selectedAdminPublicationsFlat =
+    adminPublicationIds.length > 0
+      ? selectedAdminPublications?.pages.flatMap((page) => page.data) ?? []
+      : [];
+
+  // We derive the ids from the BE response.
+  // This basically filters out any admin publication ids corresponding to
+  // admin publications that have been deleted.
+  const selectedAdminPublicationsIds = isFetching
+    ? undefined
+    : selectedAdminPublicationsFlat.map(
+        (adminPublication) => adminPublication.id
+      );
+
+  const handleAdd = (adminPublication?: IAdminPublicationData) => {
+    if (!adminPublication) return;
+    if (!selectedAdminPublicationsIds) return;
+
+    setProp((props) => {
+      props.adminPublicationIds = [
+        ...selectedAdminPublicationsIds,
+        adminPublication.id,
+      ];
+    });
+  };
+
   const handleReorder = (draggedItemId: string, targetIndex: number) => {
+    if (!selectedAdminPublicationsIds) return;
+
     setProp((props) => {
       props.adminPublicationIds = getNewIdsOnDrop(
-        adminPublicationIds,
+        selectedAdminPublicationsIds,
         draggedItemId,
         targetIndex
       );
@@ -31,8 +73,10 @@ const Settings = () => {
   };
 
   const handleDelete = (deletedId: string) => {
+    if (!selectedAdminPublicationsIds) return;
+
     setProp((props) => {
-      props.adminPublicationIds = adminPublicationIds.filter(
+      props.adminPublicationIds = selectedAdminPublicationsIds.filter(
         (adminPublicationId) => adminPublicationId !== deletedId
       );
     });
@@ -51,20 +95,13 @@ const Settings = () => {
           <FormattedMessage {...messages.selectProjectsOrFolders} />
         </Label>
         <AdminPublicationSearchInput
-          adminPublicationIds={adminPublicationIds}
-          onChange={(adminPublication) => {
-            if (!adminPublication) return;
-            setProp((props) => {
-              props.adminPublicationIds = [
-                ...adminPublicationIds,
-                adminPublication.id,
-              ];
-            });
-          }}
+          adminPublicationIds={selectedAdminPublicationsIds ?? []}
+          onChange={handleAdd}
         />
       </Box>
       <AdminPublicationsList
-        adminPublicationIds={adminPublicationIds}
+        adminPublications={selectedAdminPublicationsFlat}
+        isFetching={isFetching}
         onReorder={handleReorder}
         onDelete={handleDelete}
       />

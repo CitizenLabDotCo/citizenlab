@@ -11,7 +11,6 @@ import {
 import styled from 'styled-components';
 
 import { IAdminPublicationData } from 'api/admin_publications/types';
-import useAdminPublicationsByIds from 'api/admin_publications/useAdminPublicationsByIds';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -28,40 +27,25 @@ const StyledSortableRow = styled(SortableRow)`
 `;
 
 interface Props {
-  adminPublicationIds: string[];
+  adminPublications: IAdminPublicationData[];
+  isFetching: boolean;
   onReorder: (draggedItemId: string, targetIndex: number) => void;
   onDelete: (id: string) => void;
 }
 
 const AdminPublicationsList = ({
-  adminPublicationIds,
+  adminPublications,
+  isFetching,
   onReorder,
   onDelete,
 }: Props) => {
   const localize = useLocalize();
 
-  const { data: selectedAdminPublications, isFetching } =
-    useAdminPublicationsByIds(
-      {
-        ids: adminPublicationIds,
-      },
-      // We don't make this request if adminPublicationIds is an empty array.
-      // If it's an empty array, the FE removes it while parsing the query params
-      // for some reason, and the BE will return all admin publications.
-      // This is not what we want.
-      { enabled: adminPublicationIds.length > 0 }
-    );
-
-  const selectedAdminPublicationsFlat =
-    adminPublicationIds.length > 0
-      ? selectedAdminPublications?.pages.flatMap((page) => page.data) ?? []
-      : [];
-
   return (
     <SortableList
-      items={selectedAdminPublicationsFlat}
+      items={adminPublications}
       onReorder={onReorder}
-      key={selectedAdminPublicationsFlat.length}
+      key={adminPublications.length}
     >
       {({ itemsList, handleDragRow, handleDropRow }) => (
         <>
