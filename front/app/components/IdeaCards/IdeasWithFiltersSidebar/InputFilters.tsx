@@ -10,7 +10,7 @@ import styled from 'styled-components';
 
 import { IQueryParameters } from 'api/ideas/types';
 import { IIdeasFilterCounts } from 'api/ideas_filter_counts/types';
-import { IdeaDefaultSortMethod } from 'api/phases/types';
+import { IdeaSortMethod } from 'api/phases/types';
 
 import SearchInput from 'components/UI/SearchInput';
 
@@ -79,7 +79,7 @@ export interface Props {
   onSearch: (searchTerm: string) => void;
   onChangeStatus: (ideaStatus: string | null) => void;
   onChangeTopics: (topics: string[] | null) => void;
-  handleSortOnChange: (sort: IdeaDefaultSortMethod) => void;
+  handleSortOnChange: (sort: IdeaSortMethod) => void;
   phaseId?: string;
 }
 

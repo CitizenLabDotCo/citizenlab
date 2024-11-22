@@ -10,7 +10,7 @@ import {
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { IdeaDefaultSortMethod } from 'api/phases/types';
+import { IdeaSortMethod } from 'api/phases/types';
 
 import CityLogoSection from 'components/CityLogoSection';
 import ContentContainer from 'components/ContentContainer';
@@ -83,7 +83,7 @@ export interface QueryParameters {
   phase?: string;
 
   // filters
-  sort: IdeaDefaultSortMethod;
+  sort: IdeaSortMethod;
   search?: string;
   idea_status?: string;
   topics?: string[];
@@ -91,7 +91,7 @@ export interface QueryParameters {
 
 export default () => {
   const [searchParams] = useSearchParams();
-  const sortParam = searchParams.get('sort') as IdeaDefaultSortMethod | null;
+  const sortParam = searchParams.get('sort') as IdeaSortMethod | null;
   const searchParam = searchParams.get('search');
   const ideaStatusParam = searchParams.get('idea_status');
   const topicsParam = searchParams.get('topics');

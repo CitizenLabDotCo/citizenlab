@@ -9,7 +9,7 @@ import {
 import { CLErrors, Multiloc } from 'typings';
 
 import {
-  IdeaDefaultSortMethod,
+  IdeaSortMethod,
   InputTerm,
   IPhase,
   IUpdatedPhaseProperties,
@@ -251,9 +251,7 @@ const PhaseParticipationConfig = ({
     }));
   };
 
-  const handleIdeaDefaultSortMethodChange = (
-    ideas_order: IdeaDefaultSortMethod
-  ) => {
+  const handleIdeaDefaultSortMethodChange = (ideas_order: IdeaSortMethod) => {
     updateFormData((state) => ({
       ...state,
       ideas_order,

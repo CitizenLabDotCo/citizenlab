@@ -3,9 +3,9 @@ import React, { useMemo } from 'react';
 import { Box, Title } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 
-import { IdeaDefaultSortMethod, IPhaseData } from 'api/phases/types';
+import { IdeaSortMethod, IPhaseData } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
-import { ideaDefaultSortMethodFallback } from 'api/phases/utils';
+import { IdeaSortMethodFallback } from 'api/phases/utils';
 
 import messages from 'containers/ProjectsShowPage/messages';
 
@@ -30,14 +30,14 @@ interface QueryParameters {
 
   // filters
   search?: string;
-  sort: IdeaDefaultSortMethod;
+  sort: IdeaSortMethod;
   topics?: string[];
   idea_status?: string;
 }
 
 const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
   const [searchParams] = useSearchParams();
-  const sortParam = searchParams.get('sort') as IdeaDefaultSortMethod | null;
+  const sortParam = searchParams.get('sort') as IdeaSortMethod | null;
   const searchParam = searchParams.get('search');
   const topicsParam = searchParams.get('topics');
   const ideaStatusParam = searchParams.get('idea_status');
@@ -49,10 +49,7 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
       'page[size]': config.inputsPageSize || 24,
       projects: [projectId],
       phase: phase.id,
-      sort:
-        sortParam ??
-        phase.attributes.ideas_order ??
-        ideaDefaultSortMethodFallback,
+      sort: sortParam ?? phase.attributes.ideas_order ?? IdeaSortMethodFallback,
       search: searchParam ?? undefined,
       topics: topicsParam ? JSON.parse(topicsParam) : undefined,
       idea_status: ideaStatusParam ?? undefined,

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { IdeaDefaultSortMethod, IPhaseData } from 'api/phases/types';
+import { IdeaSortMethod, IPhaseData } from 'api/phases/types';
 
 import FilterSelector from 'components/FilterSelector';
 
@@ -11,7 +11,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../../messages';
 
-const optionMessages: { [key in IdeaDefaultSortMethod]: MessageDescriptor } = {
+const optionMessages: { [key in IdeaSortMethod]: MessageDescriptor } = {
   trending: messages.trending,
   random: messages.random,
   popular: messages.popular,
@@ -23,7 +23,7 @@ const optionMessages: { [key in IdeaDefaultSortMethod]: MessageDescriptor } = {
 type Props = {
   id?: string | undefined;
   alignment: 'left' | 'right';
-  value: IdeaDefaultSortMethod;
+  value: IdeaSortMethod;
   onChange: (value: string) => void;
   phase?: IPhaseData;
 };
