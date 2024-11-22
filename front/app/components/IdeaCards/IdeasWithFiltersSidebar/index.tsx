@@ -81,7 +81,7 @@ const AboveContent = styled.div<{ filterColumnWidth: number }>`
   align-items: center;
   justify-content: space-between;
   margin-right: ${({ filterColumnWidth }) => filterColumnWidth + gapWidth}px;
-  margin-bottom: 22px;
+  margin-bottom: 8px;
 
   ${isRtl`
     flex-direction: row-reverse;
