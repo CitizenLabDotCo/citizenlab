@@ -32,8 +32,6 @@ const Settings = () => {
       { enabled: adminPublicationIds.length > 0 }
     );
 
-  console.log({ isFetching });
-
   const selectedAdminPublicationsFlat =
     adminPublicationIds.length > 0
       ? selectedAdminPublications?.pages.flatMap((page) => page.data) ?? []
@@ -95,7 +93,7 @@ const Settings = () => {
           <FormattedMessage {...messages.selectProjectsOrFolders} />
         </Label>
         <AdminPublicationSearchInput
-          adminPublicationIds={selectedAdminPublicationsIds ?? []}
+          adminPublicationIds={selectedAdminPublicationsIds}
           onChange={handleAdd}
         />
       </Box>
