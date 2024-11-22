@@ -3,6 +3,7 @@ import React, { lazy } from 'react';
 import moduleConfiguration, { moduleRouteTypes } from 'modules';
 
 import createAdminRoutes, { AdminRouteTypes } from 'containers/Admin/routes';
+import IdeaMapFullscreen from 'containers/IdeaMapFullscreen';
 import userProfileRoutes, {
   userShowPageRouteTypes,
 } from 'containers/UsersShowPage/routes';
@@ -98,6 +99,7 @@ export enum citizenRoutes {
   emailSettings = 'email-settings',
   disabledAccount = 'disabled-account',
   reportPrintPage = `admin/reporting/report-builder/:reportId/print`,
+  mapFullscreen = `projects/:slug/:phaseId/map`,
 }
 
 type citizenRouteTypes =
@@ -132,7 +134,8 @@ type citizenRouteTypes =
   | `/${citizenRoutes.subscriptionEnded}`
   | `/${citizenRoutes.emailSettings}`
   | `/${citizenRoutes.disabledAccount}?${string}`
-  | `/admin/reporting/report-builder/${string}/print`;
+  | `/admin/reporting/report-builder/${string}/print`
+  | `/${citizenRoutes.projects}/${string}/${string}/map`;
 
 export default function createRoutes() {
   return [
@@ -397,6 +400,14 @@ export default function createRoutes() {
           element: (
             <PageLoading>
               <DisabledAccount />
+            </PageLoading>
+          ),
+        },
+        {
+          path: citizenRoutes.mapFullscreen,
+          element: (
+            <PageLoading>
+              <IdeaMapFullscreen />
             </PageLoading>
           ),
         },
