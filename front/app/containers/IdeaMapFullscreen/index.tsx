@@ -28,7 +28,7 @@ const IdeaMapFullscreen = () => {
     loadIdeaMarkers
   );
 
-  if (isLoading || !projectId) {
+  if (isLoading || !projectId || !loadIdeaMarkers) {
     return (
       <Box height="100vh">
         <Box mt="auto">
