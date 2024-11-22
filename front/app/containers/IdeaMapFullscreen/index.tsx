@@ -16,7 +16,7 @@ const IdeaMapFullscreen = () => {
   };
   const { data: project } = useProjectBySlug(slug);
   const projectId = project?.data.id;
-  const loadIdeaMarkers = window.URL.toString().includes('fullscreen-map');
+  const loadIdeaMarkers = window.location.toString().includes('fullscreen-map');
 
   const { data: mapConfig, isLoading } = useProjectMapConfig(projectId);
 
