@@ -135,7 +135,7 @@ type citizenRouteTypes =
   | `/${citizenRoutes.emailSettings}`
   | `/${citizenRoutes.disabledAccount}?${string}`
   | `/admin/reporting/report-builder/${string}/print`
-  | `/${citizenRoutes.projects}/${string}/${string}/map`;
+  | `/${citizenRoutes.projects}/${string}/${string}/fullscreen-map`;
 
 export default function createRoutes() {
   return [
