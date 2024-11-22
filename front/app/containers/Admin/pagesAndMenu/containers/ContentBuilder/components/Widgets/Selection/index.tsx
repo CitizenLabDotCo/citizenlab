@@ -19,10 +19,15 @@ interface Props {
 
 const Selection = ({ titleMultiloc, adminPublicationIds }: Props) => {
   const localize = useLocalize();
-  const { data, hasNextPage, fetchNextPage } = useAdminPublicationsByIds({
-    ids: adminPublicationIds,
-    pageSize: 6,
-  });
+  const { data, hasNextPage, fetchNextPage } = useAdminPublicationsByIds(
+    {
+      ids: adminPublicationIds,
+      pageSize: 6,
+    },
+    {
+      enabled: adminPublicationIds.length > 0,
+    }
+  );
 
   const adminPublications = data?.pages.map((page) => page.data).flat();
 
