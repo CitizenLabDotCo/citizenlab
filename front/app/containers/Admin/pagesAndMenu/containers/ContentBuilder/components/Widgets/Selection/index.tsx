@@ -29,8 +29,6 @@ const Selection = ({ titleMultiloc, adminPublicationIds }: Props) => {
     }
   );
 
-  true as any;
-
   const adminPublications = data?.pages.map((page) => page.data).flat();
 
   const showEmptyState =
