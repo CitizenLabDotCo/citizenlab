@@ -16,13 +16,17 @@ const IdeaMapFullscreen = () => {
   };
   const { data: project } = useProjectBySlug(slug);
   const projectId = project?.data.id;
+  const loadIdeaMarkers = window.URL.toString().includes('fullscreen-map');
 
   const { data: mapConfig, isLoading } = useProjectMapConfig(projectId);
 
-  const { data: ideaMarkers } = useIdeaMarkers({
-    projectIds: projectId ? [projectId] : null,
-    phaseId,
-  });
+  const { data: ideaMarkers } = useIdeaMarkers(
+    {
+      projectIds: projectId ? [projectId] : null,
+      phaseId,
+    },
+    loadIdeaMarkers
+  );
 
   if (isLoading || !projectId) {
     return (
