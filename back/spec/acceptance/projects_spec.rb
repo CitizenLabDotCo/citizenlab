@@ -1693,13 +1693,13 @@ resource 'Projects' do
 
     let!(:area1) { create(:area) }
     let!(:area2) { create(:area) }
-    let!(:project_with_areas) { create(:project) }
+    let!(:project_with_areas) { create(:project_with_active_ideation_phase) }
     let!(:_areas_project1) { create(:areas_project, project: project_with_areas, area: area1) }
     let!(:_areas_project2) { create(:areas_project, project: project_with_areas, area: area2) }
 
     let!(:_project_without_area) { create(:project) }
 
-    example_request 'Lists projects for a given area' do
+    example 'Lists projects for a given area' do
       do_request areas: [area1.id]
       expect(status).to eq 200
 
