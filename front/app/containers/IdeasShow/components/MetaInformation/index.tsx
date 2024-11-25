@@ -16,6 +16,7 @@ import Attachments from './Attachments';
 import IdeaTopics from './IdeaTopics';
 import Location from './Location';
 import PostedBy from './PostedBy';
+import SimilarIdeas from './SimilarIdeas';
 import Status from './Status';
 
 const Container = styled.div`
@@ -98,6 +99,7 @@ const MetaInformation = ({
         {attachmentsEnabled && (
           <Attachments ideaId={ideaId} compact={compact} />
         )}
+        <SimilarIdeas ideaId={ideaId} />
       </Container>
     );
   }
