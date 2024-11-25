@@ -77,7 +77,7 @@ const SurveyHeading = ({ titleText, phaseId }: Props) => {
         borderBottom={`1px solid ${colors.divider}`}
       >
         <StyledSurveyTitle
-          color={'tenantPrimary'}
+          color={'tenantText'}
           variant="bodyS"
           fontSize="m"
           my="0px"

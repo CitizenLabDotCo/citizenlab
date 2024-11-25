@@ -198,7 +198,7 @@ export const defaultInputStyle = css`
   font-weight: 400;
   padding: ${defaultStyles.inputPadding};
   border-radius: ${(props) => props.theme.borderRadius};
-  border: solid 1px ${(props) => props.theme.colors.tenantPrimary};
+  border: solid 1px ${colors.borderDark};
   background: #fff;
   cursor: text;
   outline: none;

@@ -155,7 +155,7 @@ const Container = styled.div<{
   }
 
   div.ql-container {
-    border: 1px solid ${(props) => props.theme.colors.tenantPrimary};
+    border: 1px solid ${colors.borderDark};
   }
 
   div.ql-container > div.ql-editor {

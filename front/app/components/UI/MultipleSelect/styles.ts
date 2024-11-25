@@ -24,7 +24,9 @@ function getSelectStyles(theme: DefaultTheme) {
       ...base,
       fontSize: `${fontSizes.base}px`,
       borderWidth: isFocused ? '2px' : '1px',
-      borderColor: `${theme.colors.tenantPrimary}`,
+      borderColor: isFocused
+        ? theme.colors.tenantPrimary
+        : `${colors.borderDark}`,
       borderRadius: stylingConsts.borderRadius,
       minHeight: '48px',
       backgroundColor: '#fff',
