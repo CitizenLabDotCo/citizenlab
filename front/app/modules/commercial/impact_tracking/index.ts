@@ -28,10 +28,6 @@ const trackSessionStarted = async () => {
     },
   });
 
-  if (response.data === null) {
-    throw new Error('Session creation failed!!!');
-  }
-
   sessionId = response.data.id;
 
   // Because the first page view depends on the response of the session creation,
