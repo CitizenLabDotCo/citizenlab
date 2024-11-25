@@ -6,8 +6,6 @@ import { transparentize } from 'polished';
 import { DayPicker, PropsBase } from 'react-day-picker';
 import styled from 'styled-components';
 
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-
 import useLocale from 'hooks/useLocale';
 
 import { getLocale } from '../../_shared/locales';
@@ -146,9 +144,7 @@ const Calendar = ({
   defaultMonth,
   onUpdateRange,
 }: Props) => {
-  const { data: appConfiguration } = useAppConfiguration();
-  const tenantTimezone =
-    appConfiguration?.data.attributes.settings.core.timezone;
+  const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   const startMonth = getStartMonth({
     startMonth: _startMonth,
     selectedRange,
@@ -214,7 +210,7 @@ const Calendar = ({
         // range rather than being controlled by our state.
         selected={[] as any}
         onSelect={NOOP}
-        timeZone={tenantTimezone}
+        timeZone={userTimezone}
       />
     </DayPickerStyles>
   );
