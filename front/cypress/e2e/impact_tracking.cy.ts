@@ -38,6 +38,7 @@ describe('Impact tracking: Session tracking', () => {
     cy.intercept('POST', '**/web_api/v1/sessions/*/track_pageview').as(
       'trackPageview'
     );
+    cy.wait(3000);
     cy.goToLandingPage();
     cy.wait('@trackPageview').then((interception) => {
       expect(interception.response?.statusCode).to.be.oneOf([201, 204]);
@@ -48,12 +49,14 @@ describe('Impact tracking: Session tracking', () => {
     cy.intercept('POST', '**/web_api/v1/sessions/*/track_pageview').as(
       'trackPageview'
     );
+    cy.wait(3000);
     cy.goToLandingPage();
     cy.wait('@trackPageview');
 
     cy.intercept('POST', '**/web_api/v1/sessions/*/track_pageview').as(
       'trackPageview'
     );
+    cy.wait(3000);
     cy.get('.e2e-admin-publication-card').first().click();
     cy.wait('@trackPageview').then((interception) => {
       expect(interception.response?.statusCode).to.be.oneOf([201, 204]);
