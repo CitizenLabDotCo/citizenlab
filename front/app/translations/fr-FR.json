@@ -162,7 +162,7 @@
   "app.components.FilterBoxes.areas": "Trier par lieux",
   "app.components.FilterBoxes.inputs": "contributions",
   "app.components.FilterBoxes.showLess": "Montrer moins",
-  "app.components.FilterBoxes.showTagsWithNumber": "Afficher tous ({numberTags})",
+  "app.components.FilterBoxes.showTagsWithNumber": "Tout montrer ({numberTags})",
   "app.components.FilterBoxes.statusTitle": "Statut",
   "app.components.FilterBoxes.topicsTitle": "Étiquettes",
   "app.components.FiltersModal.a11y_closeFilterPanel": "Fermer le panneau de filtrage",
