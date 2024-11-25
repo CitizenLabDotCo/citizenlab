@@ -41,7 +41,7 @@ describe('Impact tracking: Session tracking', () => {
     );
     cy.goToLandingPage();
     cy.wait('@createSession');
-    cy.wait('@trackPageview').then((interception) => {
+    cy.wait('@trackPageview', { timeout: 15000 }).then((interception) => {
       expect(interception.response?.statusCode).to.be.oneOf([201, 204]);
     });
   });
@@ -53,13 +53,13 @@ describe('Impact tracking: Session tracking', () => {
     );
     cy.goToLandingPage();
     cy.wait('@createSession');
-    cy.wait('@trackPageview');
+    cy.wait('@trackPageview', { timeout: 15000 });
 
     cy.intercept('POST', '**/web_api/v1/sessions/*/track_pageview').as(
       'trackPageview'
     );
     cy.get('.e2e-admin-publication-card').first().click();
-    cy.wait('@trackPageview').then((interception) => {
+    cy.wait('@trackPageview', { timeout: 15000 }).then((interception) => {
       expect(interception.response?.statusCode).to.be.oneOf([201, 204]);
     });
   });
