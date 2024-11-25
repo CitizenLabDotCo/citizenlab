@@ -10,12 +10,10 @@ interface Props {
 }
 
 const SimilarIdeas = ({ ideaId, className }: Props) => {
-  const similarIdeas = useSimilarIdeas(ideaId);
+  const { data: similarIdeas } = useSimilarIdeas(ideaId);
   const localize = useLocalize();
   console.log(similarIdeas);
-  console.log('Data');
-  console.log(similarIdeas.data);
-  if (similarIdeas.data) {
+  if (similarIdeas) {
     const ideasTitles = similarIdeas.data
       .map((similarIdea) => {
         // const ideasTitles = ideas?.map((idea) => idea.attributes.title_multiloc['en-GB']).join(', ');
@@ -25,6 +23,7 @@ const SimilarIdeas = ({ ideaId, className }: Props) => {
     console.log(ideasTitles);
     return <p>{ideasTitles}</p>;
   }
+  return null;
 };
 
 export default SimilarIdeas;

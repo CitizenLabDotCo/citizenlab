@@ -3,19 +3,18 @@ import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
-import ideasKeys from './keys';
-import { IIdeas, IdeasKeys } from './types';
+import { IIdeas } from './types';
 
 const fetchSimilarIdeas = ({ id }: { id?: string }) =>
   fetcher<IIdeas>({
     path: `/ideas/${id}/similarities`,
     action: 'get',
-    queryParams: { 'page[size]': 100000 }, // Can be removed?
+    queryParams: { 'page[size]': 10 }, // Can be removed?
   });
 
 const useSimilarIdeas = (id?: string) => {
-  return useQuery<IIdeas, CLErrors, IIdeas, IdeasKeys>({
-    queryKey: ideasKeys.item({ id }),
+  return useQuery<IIdeas, CLErrors, IIdeas>({
+    queryKey: ['ideas', 'similar', id],
     queryFn: () => fetchSimilarIdeas({ id }),
     enabled: !!id,
   });
