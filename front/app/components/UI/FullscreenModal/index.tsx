@@ -80,7 +80,6 @@ interface InputProps {
 
 interface Props extends InputProps {
   locale: SupportedLocale;
-  modalPortalElement: HTMLElement;
 }
 
 interface State {
@@ -114,17 +113,10 @@ class FullscreenModal extends PureComponent<Props, State> {
 
   render() {
     const { windowHeight } = this.state;
-    const {
-      children,
-      opened,
-      topBar,
-      bottomBar,
-      className,
-      contentBgColor,
-      modalPortalElement,
-    } = this.props;
+    const { children, opened, topBar, bottomBar, className, contentBgColor } =
+      this.props;
 
-    return createPortal(
+    return (
       <CSSTransition
         classNames="modal"
         in={opened}
@@ -159,8 +151,7 @@ class FullscreenModal extends PureComponent<Props, State> {
             )}
           </StyledFocusOn>
         </Container>
-      </CSSTransition>,
-      modalPortalElement
+      </CSSTransition>
     );
   }
 }
@@ -169,11 +160,10 @@ export default (inputProps: InputProps) => {
   const locale = useLocale();
   const modalPortalElement = document.getElementById('modal-portal');
 
-  return modalPortalElement ? (
-    <FullscreenModal
-      {...inputProps}
-      locale={locale}
-      modalPortalElement={modalPortalElement}
-    />
-  ) : null;
+  return modalPortalElement
+    ? createPortal(
+        <FullscreenModal {...inputProps} locale={locale} />,
+        modalPortalElement
+      )
+    : null;
 };
