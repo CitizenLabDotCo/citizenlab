@@ -5,22 +5,21 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
 import miniProjectsKeys from './keys';
-import { MiniProjects, MiniProjectsKeys, QueryParameters } from './types';
+import { MiniProjects, MiniProjectsKeys, Parameters } from './types';
 
-const fetchProjectsWithActiveParticipatoryPhase = (
-  queryParameters: QueryParameters
-) =>
+const fetchProjectsMini = ({ endpoint, ...queryParameters }: Parameters) =>
   fetcher<MiniProjects>({
-    path: '/projects/with_active_participatory_phase',
+    path: `/projects/${endpoint}`,
     action: 'get',
     queryParams: {
+      ...queryParameters,
       'page[size]': queryParameters['page[size]'] ?? 6,
       'page[number]': queryParameters['page[number]'] ?? 1,
     },
   });
 
-const useProjectsWithActiveParticipatoryPhase = (
-  queryParams: QueryParameters = {},
+const useProjectsMini = (
+  queryParams: Parameters,
   { enabled = true }: { enabled: boolean } = { enabled: true }
 ) => {
   return useInfiniteQuery<
@@ -31,7 +30,7 @@ const useProjectsWithActiveParticipatoryPhase = (
   >({
     queryKey: miniProjectsKeys.list(queryParams),
     queryFn: ({ pageParam }) => {
-      return fetchProjectsWithActiveParticipatoryPhase({
+      return fetchProjectsMini({
         ...queryParams,
         'page[number]': pageParam,
       });
@@ -45,4 +44,4 @@ const useProjectsWithActiveParticipatoryPhase = (
   });
 };
 
-export default useProjectsWithActiveParticipatoryPhase;
+export default useProjectsMini;

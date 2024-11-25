@@ -195,9 +195,11 @@ Rails.application.routes.draw do
 
         collection do
           get 'by_slug/:slug', to: 'projects#by_slug'
+          get 'for_areas', action: 'index_for_areas'
+          get 'for_topics', action: 'index_for_topics'
           get 'finished_or_archived', action: 'index_finished_or_archived'
-          get 'for_followed_item', action: 'index_projects_for_followed_item'
-          get 'with_active_participatory_phase', action: 'index_projects_with_active_participatory_phase'
+          get 'for_followed_item', action: 'index_for_followed_item'
+          get 'with_active_participatory_phase', action: 'index_with_active_participatory_phase'
         end
 
         member do
@@ -218,6 +220,7 @@ Rails.application.routes.draw do
 
       resources :admin_publications, only: %i[index show] do
         patch 'reorder', on: :member
+        get 'select_and_order_by_ids', on: :collection, action: 'index_select_and_order_by_ids'
         get 'status_counts', on: :collection
       end
 

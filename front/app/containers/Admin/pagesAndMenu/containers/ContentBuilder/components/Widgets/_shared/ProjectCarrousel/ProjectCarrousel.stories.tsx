@@ -31,6 +31,8 @@ const createData = (offset: number): MiniProjectData[] => {
         reacting_idea: { enabled: false },
         commenting_idea: { enabled: true },
       } as any,
+      starts_days_from_now: null,
+      ended_days_ago: null,
     },
     relationships: {
       current_phase: {

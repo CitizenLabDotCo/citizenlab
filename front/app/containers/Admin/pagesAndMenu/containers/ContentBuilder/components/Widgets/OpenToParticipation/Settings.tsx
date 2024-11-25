@@ -1,36 +1,20 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
-import { useNode } from '@craftjs/core';
+import { Box, Text } from '@citizenlab/cl2-component-library';
 
-import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
+import { FormattedMessage } from 'utils/cl-intl';
 
-import { useIntl } from 'utils/cl-intl';
+import TitleMultilocInput from '../_shared/TitleMultilocInput';
 
 import messages from './messages';
 
 const Settings = () => {
-  const { formatMessage } = useIntl();
-
-  const {
-    actions: { setProp },
-    titleMultiloc,
-  } = useNode((node) => ({
-    titleMultiloc: node.data.props.titleMultiloc,
-  }));
-
   return (
     <Box my="20px">
-      <InputMultilocWithLocaleSwitcher
-        id="open_to_participation_title"
-        type="text"
-        label={formatMessage(messages.title)}
-        name="open_to_participation_title"
-        valueMultiloc={titleMultiloc}
-        onChange={(valueMultiloc) =>
-          setProp((props) => (props.titleMultiloc = valueMultiloc))
-        }
-      />
+      <Text mb="32px" color="textSecondary">
+        <FormattedMessage {...messages.thisWidgetWillShowcase} formatBold />
+      </Text>
+      <TitleMultilocInput name="open_to_participation_title" />
     </Box>
   );
 };

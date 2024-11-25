@@ -4,8 +4,7 @@ class ProjectsFinderService
     @user = user
     @page_size = (params.dig(:page, :size) || 500).to_i
     @page_number = (params.dig(:page, :number) || 1).to_i
-    @finished = params[:finished]
-    @archived = params[:archived]
+    @filter_by = params[:filter_by]
   end
 
   # Returns an ActiveRecord collection of published projects that are
@@ -66,6 +65,86 @@ class ProjectsFinderService
     { projects: projects, descriptor_pairs: project_descriptor_pairs }
   end
 
+  # Returns an ActiveRecord collection of published projects that are also
+  # followed by user OR relate to an idea, area, topic or folder followed by user,
+  # ordered by the follow created_at (most recent first).
+  # => [Project]
+  def followed_by_user
+    subquery = Follower
+      .where(user_id: @user.id)
+      .where.not(followable_type: 'Initiative')
+      .joins(
+        'LEFT JOIN areas AS followed_areas ON followers.followable_type = \'Area\' ' \
+        'AND followed_areas.id = followers.followable_id'
+      )
+      .joins('LEFT JOIN areas_projects ON areas_projects.area_id = followed_areas.id')
+      .joins(
+        'LEFT JOIN topics AS followed_topics ON followers.followable_type = \'Topic\' ' \
+        'AND followed_topics.id = followers.followable_id'
+      )
+      .joins('LEFT JOIN projects_topics ON projects_topics.topic_id = followed_topics.id')
+      .joins(
+        'LEFT JOIN ideas AS followed_ideas ON followers.followable_type = \'Idea\' ' \
+        'AND followed_ideas.id = followers.followable_id'
+      )
+      .joins('LEFT JOIN project_folders_folders AS followed_folders ON ' \
+             'followers.followable_type = \'ProjectFolders::Folder\' ' \
+             'AND followed_folders.id = followers.followable_id')
+      .joins('LEFT JOIN admin_publications AS parents ON followed_folders.id = parents.publication_id ')
+      .joins('LEFT JOIN admin_publications AS children ON parents.id = children.parent_id ')
+      .joins(
+        'INNER JOIN projects ON ' \
+        '(followers.followable_type = \'Project\' AND followers.followable_id = projects.id) ' \
+        'OR (areas_projects.project_id = projects.id) ' \
+        'OR (projects_topics.project_id = projects.id) ' \
+        'OR (followed_ideas.project_id = projects.id)' \
+        'OR (children.publication_id = projects.id)'
+      )
+      .select('projects.id AS project_id, MAX(followers.created_at) AS latest_follower_created_at')
+      .group('projects.id')
+
+    @projects
+      .joins("INNER JOIN (#{subquery.to_sql}) AS subquery ON projects.id = subquery.project_id")
+      .select('projects.*, subquery.latest_follower_created_at')
+      .order('subquery.latest_follower_created_at DESC')
+  end
+
+  # Returns ActiveRecord collection of projects that are either (finished OR have a last phase that contains a report)
+  # OR are archived, ordered by last phase end_at (nulls first), creation date second and ID third.
+  # => [Project]
+  def finished_or_archived
+    base_scope = @projects
+      .joins('INNER JOIN admin_publications AS admin_publications ON admin_publications.publication_id = projects.id')
+      .joins('INNER JOIN phases ON phases.project_id = projects.id')
+
+    include_finished = %w[finished finished_and_archived].include?(@filter_by)
+    include_archived = %w[archived finished_and_archived].include?(@filter_by)
+
+    if include_finished
+      finished_scope = base_scope.where(admin_publications: { publication_status: 'published' })
+      finished_scope = joins_last_phases_with_reports(finished_scope)
+        .where(
+          '(last_phases.last_phase_end_at < ? OR reports.id IS NOT NULL) AND admin_publications.publication_status = ?',
+          Time.zone.now, 'published'
+        )
+    end
+
+    if include_archived
+      archived_scope = base_scope.where(admin_publications: { publication_status: 'archived' })
+      archived_scope = joins_last_phases_with_reports(archived_scope)
+    end
+
+    if include_finished && include_archived
+      return order_by_created_at_and_id_with_distinct_on(finished_scope.or(archived_scope))
+    end
+
+    return order_by_created_at_and_id_with_distinct_on(finished_scope) if include_finished
+
+    order_by_created_at_and_id_with_distinct_on(archived_scope)
+  end
+
+  private
+
   def projects_with_active_phase(projects)
     projects
       .joins('INNER JOIN phases AS phases ON phases.project_id = projects.id')
@@ -76,99 +155,10 @@ class ProjectsFinderService
       .select('projects.*, phases.end_at AS phase_end_at')
   end
 
-  # Returns an ActiveRecord collection of published projects that are also
-  # followed by user OR relate to an idea, area or topic followed by user,
-  # ordered by the follow created_at (most recent first).
-  # => [Project]
-  def followed_by_user
-    subquery = @projects
-      .joins('INNER JOIN admin_publications AS admin_publications ON admin_publications.publication_id = projects.id')
-      .where(admin_publications: { publication_status: 'published' })
-      .joins(
-        'LEFT JOIN followers AS project_followers ON project_followers.followable_id = projects.id ' \
-        'AND project_followers.followable_type = \'Project\''
-      )
-      .joins('LEFT JOIN ideas ON ideas.project_id = projects.id')
-      .joins(
-        'LEFT JOIN followers AS idea_followers ON idea_followers.followable_id = ideas.id ' \
-        'AND idea_followers.followable_type = \'Idea\''
-      )
-      .joins(
-        'LEFT JOIN areas_projects ON areas_projects.project_id = projects.id'
-      )
-      .joins(
-        'LEFT JOIN followers AS area_followers ON area_followers.followable_id = areas_projects.area_id ' \
-        'AND area_followers.followable_type = \'Area\''
-      )
-      .joins(
-        'LEFT JOIN projects_topics ON projects_topics.project_id = projects.id'
-      )
-      .joins(
-        'LEFT JOIN followers AS topic_followers ON topic_followers.followable_id = projects_topics.topic_id ' \
-        'AND topic_followers.followable_type = \'Topic\''
-      )
-      .where(
-        'project_followers.user_id = :user_id OR idea_followers.user_id = :user_id ' \
-        'OR area_followers.user_id = :user_id OR topic_followers.user_id = :user_id',
-        user_id: @user.id
-      )
-      .select(
-        'projects.id AS project_id, ' \
-        'MAX(GREATEST(' \
-        'project_followers.created_at, ' \
-        'idea_followers.created_at, ' \
-        'area_followers.created_at, ' \
-        'topic_followers.created_at' \
-        ')) AS greatest_created_at'
-      )
-      .group('projects.id')
-
-    # The rather counter-intuitive `.group('projects.id')` at the end of the preceding subquery, followed by
-    # this join with the projects table, is necessary to avoid introducing duplicates AND maintain the desired ordering.
-    # For example, if a user follows an area for a project and the project is also associated with another area,
-    # the project would appear twice in the results without this approach.
-    Project
-      .from("(#{subquery.to_sql}) AS subquery")
-      .joins('INNER JOIN projects ON projects.id = subquery.project_id')
-      .select('projects.*, subquery.greatest_created_at')
-      .order(
-        Arel.sql('subquery.greatest_created_at DESC')
-      )
-  end
-
-  # Returns ActiveRecord collection of projects that are either (finished OR have a last phase that contains a report)
-  # OR are archived, ordered by creation date first and ID second.
-  # => [Project]
-  def finished_or_archived
-    return @projects.none unless @finished || @archived
-
-    base_scope = @projects
-      .joins('INNER JOIN admin_publications AS admin_publications ON admin_publications.publication_id = projects.id')
-
-    if @finished
-      finished_scope = base_scope.where(admin_publications: { publication_status: 'published' })
-      finished_scope = joins_last_phases_with_reports(finished_scope)
-        .where(
-          '(last_phases.last_phase_end_at < ? OR reports.id IS NOT NULL) AND admin_publications.publication_status = ?',
-          Time.zone.now, 'published'
-        )
-    end
-
-    archived_scope = base_scope.where(admin_publications: { publication_status: 'archived' }) if @archived
-    archived_scope = joins_last_phases_with_reports(archived_scope) if @archived && @finished
-
-    return order_by_created_at_and_id_with_distinct_on(finished_scope.or(archived_scope)) if @finished && @archived
-    return order_by_created_at_and_id_with_distinct_on(finished_scope) if @finished
-
-    order_by_created_at_and_id_with_distinct_on(archived_scope)
-  end
-
-  private
-
   def order_by_created_at_and_id_with_distinct_on(projects)
     projects
-      .select('DISTINCT ON (projects.created_at, projects.id) projects.*')
-      .order('projects.created_at ASC, projects.id ASC') # secondary ordering by ID prevents duplicates when paginating
+      .select('DISTINCT ON (last_phase_end_at, projects.created_at, projects.id) projects.*')
+      .order('last_phase_end_at DESC, projects.created_at ASC, projects.id ASC') # secondary ordering by ID prevents duplicates when paginating
   end
 
   def joins_last_phases_with_reports(projects)
