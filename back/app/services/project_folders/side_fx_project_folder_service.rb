@@ -28,6 +28,8 @@ module ProjectFolders
     end
 
     def after_destroy(frozen_folder, user)
+      delete_admin_publication_ids_from_homepage_layout(frozen_folder)
+
       serialized_folder = clean_time_attributes(frozen_folder.attributes)
 
       LogActivityJob.perform_later(
@@ -35,6 +37,21 @@ module ProjectFolders
         user, Time.now.to_i,
         payload: { project_folder: serialized_folder }
       )
+    end
+
+    private
+
+    def delete_admin_publication_ids_from_homepage_layout(folder)
+      homepage_layout = ContentBuilder::Layout.find_by(code: 'homepage')
+      return unless homepage_layout
+
+      homepage_layout.craftjs_json = homepage_layout.craftjs_json.each_value do |node|
+        next unless node['type']['resolvedName'] == 'Selection'
+
+        node['props']['adminPublicationIds'].delete(folder.admin_publication.id)
+      end
+
+      homepage_layout.save!
     end
   end
 end

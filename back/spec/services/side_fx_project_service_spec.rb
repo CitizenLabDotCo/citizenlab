@@ -102,9 +102,9 @@ describe SideFxProjectService do
       end
     end
 
-    it "removes the project's admin_publication ID from homepage selection widget craftJSON" do
+    it "removes the project's admin_publication ID from homepage layout craftJSON" do
       project2 = create(:project)
-      project3 = create(:project)
+      project_folder = create(:project_folder)
 
       layout = create(
         :homepage_layout,
@@ -135,9 +135,9 @@ describe SideFxProjectService do
                 'nl-BE': 'Projects and folders'
               },
               adminPublicationIds: [
-                project3.admin_publication.id,
+                project2.admin_publication.id,
                 project.admin_publication.id,
-                project2.admin_publication.id
+                project_folder.admin_publication.id
               ]
             },
             custom: {},
@@ -203,7 +203,7 @@ describe SideFxProjectService do
       service.after_destroy(frozen_project, user)
 
       expect(layout.reload.craftjs_json['nUOW77iNcW']['props']['adminPublicationIds'])
-        .to match_array [project3.admin_publication.id, project2.admin_publication.id]
+        .to match_array [project_folder.admin_publication.id, project2.admin_publication.id]
       expect(layout.reload.craftjs_json['x08l42oNsD']['props']['adminPublicationIds'])
         .to eq([project2.admin_publication.id])
     end

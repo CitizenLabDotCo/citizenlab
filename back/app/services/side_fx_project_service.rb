@@ -62,7 +62,7 @@ class SideFxProjectService
   def before_destroy(project, user); end
 
   def after_destroy(frozen_project, user)
-    delete_admin_publication_ids_in_homepage_layout(frozen_project)
+    delete_admin_publication_ids_from_homepage_layout(frozen_project)
 
     serialized_project = clean_time_attributes(frozen_project.attributes)
 
@@ -110,7 +110,7 @@ class SideFxProjectService
     # idea assignment and folder engine.
   end
 
-  def delete_admin_publication_ids_in_homepage_layout(project)
+  def delete_admin_publication_ids_from_homepage_layout(project)
     homepage_layout = ContentBuilder::Layout.find_by(code: 'homepage')
     return unless homepage_layout
 
