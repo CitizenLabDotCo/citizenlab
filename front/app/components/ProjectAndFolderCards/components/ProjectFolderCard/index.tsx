@@ -9,6 +9,7 @@ import {
   Icon,
   useBreakpoint,
   Box,
+  Title,
 } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
 import { RouteType } from 'routes';
@@ -21,6 +22,8 @@ import {
 } from 'api/project_folder_images/types';
 import useProjectFolderImage from 'api/project_folder_images/useProjectFolderImage';
 import useProjectFolderById from 'api/project_folders/useProjectFolderById';
+
+import useLocalize from 'hooks/useLocalize';
 
 import AvatarBubbles from 'components/AvatarBubbles';
 import FollowUnfollow from 'components/FollowUnfollow';
@@ -241,10 +244,7 @@ const ContentHeaderLabel = styled.span`
   align-items: center;
 `;
 
-const FolderTitle = styled.h3`
-  line-height: normal;
-  font-weight: 500;
-  font-size: ${fontSizes.xl}px;
+const FolderTitle = styled(Title)`
   color: ${({ theme }) => theme.colors.tenantText};
   margin: 0;
   padding: 0;
@@ -317,6 +317,7 @@ const ProjectFolderCard = memo<Props>(
   ({ folderId, size, layout, className, showFollowButton }) => {
     const isSmallerThanPhone = useBreakpoint('phone');
     const { data: projectFolder } = useProjectFolderById(folderId);
+    const localize = useLocalize();
 
     // We use this hook instead of useProjectFolderImages
     // because that one doesn't work well with our caching system
@@ -368,6 +369,9 @@ const ProjectFolderCard = memo<Props>(
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     const showAvatarBubbles = avatarIds ? avatarIds.length > 0 : false;
     const showFooter = showAvatarBubbles;
+    const folderImageAltText = localize(
+      projectFolderImage?.data.attributes.alt_text_multiloc
+    );
 
     // Images
     const imageVersions = !projectFolderImage
@@ -411,7 +415,7 @@ const ProjectFolderCard = memo<Props>(
 
     const screenReaderContent = (
       <ScreenReaderOnly>
-        <FolderTitle>
+        <FolderTitle variant="h3">
           <FormattedMessage {...messages.a11y_folderTitle} />
           <T value={publication.data.attributes.publication_title_multiloc} />
         </FolderTitle>
@@ -447,7 +451,9 @@ const ProjectFolderCard = memo<Props>(
             <FolderImagePlaceholderIcon name="building" />
           </FolderImagePlaceholder>
 
-          {imageUrl && <FolderImage src={imageUrl} alt="" cover={true} />}
+          {imageUrl && (
+            <FolderImage src={imageUrl} alt={folderImageAltText} cover={true} />
+          )}
         </FolderImageContainer>
 
         <FolderContent className={size}>
@@ -455,6 +461,7 @@ const ProjectFolderCard = memo<Props>(
 
           <ContentBody className={size} aria-hidden>
             <FolderTitle
+              variant="h3"
               onClick={handleProjectTitleOnClick(
                 publication.data.relationships.publication.data.id
               )}

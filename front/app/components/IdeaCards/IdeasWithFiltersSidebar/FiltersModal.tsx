@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, colors } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import { isNumber } from 'lodash-es';
 
 import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
@@ -14,9 +14,9 @@ import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../messages';
 
-import FiltersSideBar, { Props as FiltersSideBarProps } from './FiltersSideBar';
+import InputFilters, { Props as InputFiltersProps } from './InputFilters';
 
-interface Props extends FiltersSideBarProps {
+interface Props extends InputFiltersProps {
   opened: boolean;
   onClose: () => void;
 }
@@ -26,7 +26,7 @@ const FiltersModal = ({
   selectedIdeaFilters,
   onClearFilters,
   onClose,
-  ...filtersSideBarProps
+  ...filtersProps
 }: Props) => {
   const { data: ideasFilterCounts } = useIdeasFilterCounts(selectedIdeaFilters);
   const total = isNilOrError(ideasFilterCounts)
@@ -37,7 +37,6 @@ const FiltersModal = ({
     <FullscreenModal
       opened={opened}
       close={onClose}
-      animateInOut={true}
       topBar={<TopBar onReset={onClearFilters} onClose={onClose} />}
       bottomBar={
         <BottomBar
@@ -56,12 +55,13 @@ const FiltersModal = ({
           onClick={onClose}
         />
       }
+      contentBgColor="background"
     >
-      <Box background={colors.background} padding="15px">
-        <FiltersSideBar
+      <Box p="16px">
+        <InputFilters
           selectedIdeaFilters={selectedIdeaFilters}
           onClearFilters={onClearFilters}
-          {...filtersSideBarProps}
+          {...filtersProps}
         />
       </Box>
     </FullscreenModal>

@@ -266,6 +266,7 @@ nl:
       first_name: 'Voorna(a)m(en)'
       image_url: 'Afbeelding URL'
       input_id: 'ID'
+      manual_votes: 'Offline stemmen'
       input_url: 'URL'
       last_name: 'Achternaam'
       latitude: 'Breedtegraad'

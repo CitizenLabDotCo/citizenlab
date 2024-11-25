@@ -33,7 +33,6 @@ const CustomRadio = styled.div<{ borderColor: string | undefined }>`
   border-radius: 50%;
   border: ${({ borderColor }) =>
     borderColor ? `solid 1px ${borderColor}` : `solid 1px ${colors.grey500}`};
-  border: ;
   transition: all 120ms ease-out;
 
   ${isRtl`

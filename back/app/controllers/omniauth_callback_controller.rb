@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class OmniauthCallbackController < ApplicationController
-  include ActionController::Cookies
   skip_before_action :authenticate_user
   skip_after_action :verify_authorized
 

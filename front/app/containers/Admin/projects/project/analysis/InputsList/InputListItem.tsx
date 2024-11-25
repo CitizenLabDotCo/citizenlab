@@ -36,7 +36,7 @@ const InputListItem = memo(({ input, onSelect, selected }: Props) => {
   });
   const { formatDate, formatMessage } = useIntl();
 
-  const showAuthor = author && author?.data.attributes.first_name;
+  const showAuthor = author && author.data.attributes.first_name;
 
   // TODO: Fix this the next time the file is edited.
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition

@@ -4,7 +4,14 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'Projects' do
-  explanation 'Ideas have to be posted in a city project, or they can be posted in the open idea box.'
+  explanation 'Projects can have phases which can be of different participation methods.'
+
+  shared_examples 'Unauthorized (401)' do
+    example 'Unauthorized (401)', document: false do
+      do_request
+      expect(status).to eq 401
+    end
+  end
 
   let(:json_response) { json_parse(response_body) }
 
@@ -176,7 +183,8 @@ resource 'Projects' do
             voting: { enabled: false, disabled_reason: 'project_inactive' },
             attending_event: { enabled: true, disabled_reason: nil },
             volunteering: { enabled: false, disabled_reason: 'project_inactive' }
-          }
+          },
+          preview_token: an_instance_of(String)
         )
         expect(json_response.dig(:data, :relationships)).to include(
           areas: { data: [] }
@@ -561,7 +569,8 @@ resource 'Projects' do
           :idea,
           project: project,
           custom_field_values: { extra_idea_field.key => 'Answer' },
-          phases: [ideation_phase, single_voting_phase]
+          phases: [ideation_phase, single_voting_phase],
+          manual_votes_amount: 24
         )
       end
       let!(:survey_response) do
@@ -606,6 +615,7 @@ resource 'Projects' do
               'Comments',
               'Likes',
               'Dislikes',
+              'Offline votes',
               'URL',
               'Project',
               'Status',
@@ -632,6 +642,7 @@ resource 'Projects' do
                 0,
                 0,
                 0,
+                24,
                 "http://example.org/ideas/#{ideation_response.slug}",
                 project.title_multiloc['en'],
                 ideation_response.idea_status.title_multiloc['en'],
@@ -684,6 +695,7 @@ resource 'Projects' do
               'Published at',
               'Comments',
               'Votes',
+              'Offline votes',
               'URL',
               'Project',
               'Status',
@@ -709,6 +721,7 @@ resource 'Projects' do
                 an_instance_of(DateTime), # published_at
                 0,
                 0,
+                24,
                 "http://example.org/ideas/#{ideation_response.slug}",
                 project.title_multiloc['en'],
                 ideation_response.idea_status.title_multiloc['en'],
@@ -718,6 +731,38 @@ resource 'Projects' do
             ]
           }
         ])
+      end
+    end
+  end
+
+  post 'web_api/v1/projects/:id/refresh_preview_token' do
+    context 'when admin' do
+      before do
+        @admin = create(:admin)
+        header_token_for(@admin)
+      end
+
+      let(:project) { create(:project) }
+      let(:id) { project.id }
+
+      example 'Refresh the preview token of a project' do
+        expect { do_request }.to change { project.reload.preview_token }
+        assert_status 200
+      end
+    end
+
+    context 'when regular user' do
+      before do
+        @user = create(:user)
+        header_token_for(@user)
+      end
+
+      let(:project) { create(:project) }
+      let(:id) { project.id }
+
+      example '[Unauthorized] Refresh the preview token of a project', document: false do
+        do_request
+        expect(status).to eq 401
       end
     end
   end
@@ -850,18 +895,19 @@ resource 'Projects' do
         ]
 
         expect(header_row1).to match_array(
-          expected_first_columns + [french_column_headers['votes_count']] + expected_last_columns
+          expected_first_columns + [french_column_headers['votes_count'], french_column_headers['manual_votes']] + expected_last_columns
         )
         expect(header_row2).to match_array(
           expected_first_columns +
-          [french_column_headers['votes_count'], french_column_headers['participants']] +
+          [french_column_headers['votes_count'], french_column_headers['participants'], french_column_headers['manual_votes']] +
           expected_last_columns
         )
         expect(header_row3).to match_array(
           expected_first_columns +
           [
             "#{french_column_headers['picks']} / #{french_column_headers['participants']}",
-            french_column_headers['cost']
+            french_column_headers['cost'],
+            french_column_headers['manual_votes']
           ] +
           expected_last_columns
         )
@@ -986,6 +1032,48 @@ resource 'Projects' do
         expect(json_response[:data].size).to eq 0
       end
     end
+
+    get 'web_api/v1/projects/:id' do
+      let(:id) { project.id }
+
+      context 'when the project is in draft' do
+        let_it_be(:project) { create(:project, admin_publication_attributes: { publication_status: 'draft' }) }
+
+        context 'and the project_preview_link feature flag is enabled' do
+          before do
+            settings = AppConfiguration.instance.settings
+            settings['project_preview_link'] = { 'enabled' => true, 'allowed' => true }
+            AppConfiguration.instance.update!(settings: settings)
+          end
+
+          context 'and a valid preview_token is provided in cookies' do
+            before { header('Cookie', "preview_token=#{project.preview_token}") }
+
+            example 'Get a project by id', document: false do
+              do_request
+              assert_status 200
+              expect(json_response.dig(:data, :id)).to eq project.id
+            end
+          end
+
+          context 'and an invalid preview_token is provided in cookies' do
+            before { header('Cookie', 'preview_token=invalid') }
+
+            include_examples 'Unauthorized (401)'
+          end
+
+          context 'and no preview_token is provided in cookies' do
+            include_examples 'Unauthorized (401)'
+          end
+        end
+
+        context 'and the project_preview_link feature flag is disabled and a valid preview_token is provided in cookies' do
+          before { header('Cookie', "preview_token=#{project.preview_token}") }
+
+          include_examples 'Unauthorized (401)'
+        end
+      end
+    end
   end
 
   context 'as a project folder moderator' do
@@ -1067,6 +1155,7 @@ resource 'Projects' do
                 'Comments',
                 'Likes',
                 'Dislikes',
+                'Offline votes',
                 'URL',
                 'Project',
                 'Status',
@@ -1092,6 +1181,7 @@ resource 'Projects' do
                   0,
                   0,
                   0,
+                  nil,
                   "http://example.org/ideas/#{idea.slug}",
                   project.title_multiloc['en'],
                   idea.idea_status.title_multiloc['en'],
@@ -1233,6 +1323,100 @@ resource 'Projects' do
     end
   end
 
+  get 'web_api/v1/projects/for_followed_item' do
+    before do
+      @user = create(:user, roles: [])
+      header_token_for @user
+    end
+
+    with_options scope: :page do
+      parameter :number, 'Page number'
+      parameter :size, 'Number of projects per page'
+    end
+
+    let!(:followed_project) { create(:project) }
+    let!(:_follower) { create(:follower, followable: followed_project, user: @user) }
+
+    let!(:project_with_followed_idea) { create(:project) }
+    let!(:idea) { create(:idea, project: project_with_followed_idea) }
+    let!(:_follower2) { create(:follower, followable: idea, user: @user) }
+
+    let!(:project_for_followed_area) { create(:project) }
+    let!(:area) { create(:area) }
+    let!(:_areas_project) { create(:areas_project, project: project_for_followed_area, area: area) }
+    let!(:_follower3) { create(:follower, followable: area, user: @user) }
+
+    let!(:project_for_followed_topic) { create(:project) }
+    let!(:topic) { create(:topic) }
+    let!(:_projects_topic) { create(:projects_topic, project: project_for_followed_topic, topic: topic) }
+    let!(:_follower4) { create(:follower, followable: topic, user: @user) }
+
+    let!(:_unfollowed_project) { create(:project) }
+
+    example_request 'Includes projects for followed items, and not un-followed projects' do
+      expect(status).to eq 200
+
+      json_response = json_parse(response_body)
+      project_ids = json_response[:data].pluck(:id)
+
+      expect(project_ids).to match_array [
+        followed_project.id,
+        project_with_followed_idea.id,
+        project_for_followed_area.id,
+        project_for_followed_topic.id
+      ]
+    end
+
+    example 'Returns an empty list if the user is not signed in', document: false do
+      header 'Authorization', nil
+
+      do_request
+      expect(status).to eq 200
+
+      json_response = json_parse(response_body)
+      expect(json_response[:data]).to be_empty
+    end
+
+    example 'Includes project images', document: false do
+      project_image = create(:project_image, project: followed_project)
+
+      do_request
+      expect(status).to eq(200)
+      json_response = json_parse(response_body)
+
+      included_image_ids = json_response[:included].select { |d| d[:type] == 'image' }.pluck(:id)
+
+      expect(included_image_ids).to include project_image.id
+    end
+
+    example_request 'Includes current phase', document: false do
+      expect(status).to eq(200)
+      json_response = json_parse(response_body)
+
+      current_phase_ids = json_response[:data].filter_map { |d| d.dig(:relationships, :current_phase, :data, :id) }
+      included_phase_ids = json_response[:included].select { |d| d[:type] == 'phase' }.pluck(:id)
+
+      expect(current_phase_ids).to match included_phase_ids
+    end
+
+    context 'when admin' do
+      before do
+        @user = create(:admin)
+        header_token_for @user
+
+        followed_project.update!(admin_publication_attributes: { publication_status: 'draft' })
+        create(:follower, followable: followed_project, user: @user)
+      end
+
+      example_request 'Does not include draft projects', document: false do
+        expect(status).to eq 200
+
+        json_response = json_parse(response_body)
+        expect(json_response[:data]).to eq []
+      end
+    end
+  end
+
   get 'web_api/v1/projects/with_active_participatory_phase' do
     before do
       @user = create(:user, roles: [])
@@ -1265,51 +1449,7 @@ resource 'Projects' do
       expect(project_ids).not_to include future_project.id
     end
 
-    example_request 'Lists only projects with published publication status' do
-      expect(status).to eq 200
-
-      json_response = json_parse(response_body)
-      project_ids = json_response[:data].pluck(:id)
-      admin_publications = AdminPublication.where(publication_id: project_ids)
-
-      expect(admin_publications.pluck(:publication_status)).to all(be_in(['published']))
-    end
-
-    example "List is ordered by end_at of projects' active phase (ASC NULLS LAST)" do
-      soonest_end_at = active_ideation_project.phases.first.end_at
-
-      active_project2 = create(:project_with_active_ideation_phase)
-      active_project2.phases.first.update!(end_at: soonest_end_at + 1.day)
-      active_project3 = create(:project_with_active_ideation_phase)
-      active_project3.phases.first.update!(end_at: soonest_end_at + 2.days)
-
-      do_request
-      expect(status).to eq 200
-
-      json_response = json_parse(response_body)
-      project_ids = json_response[:data].pluck(:id)
-      projects = project_ids.map { |id| Project.find(id) }
-
-      active_phases_end_ats = projects.map do |p|
-        p.phases.where(
-          'phases.start_at <= ? AND (phases.end_at >= ? OR phases.end_at IS NULL)',
-          Time.zone.now.to_fs(:db), Time.zone.now.to_fs(:db)
-        ).pluck(:end_at)
-      end.flatten
-
-      # https://stackoverflow.com/questions/808318/sorting-a-ruby-array-of-objects-by-an-attribute-that-could-be-nil
-      expect(active_phases_end_ats).to eq(
-        active_phases_end_ats.sort do |a, b|
-          if a && b
-            a <=> b
-          else
-            (a ? -1 : 1)
-          end
-        end
-      )
-    end
-
-    example "Excludes projects where only permitted action is attending_event & no permission is 'fixable'" do
+    example "Excludes projects where only permitted action is attending_event & no permission is 'fixable'", document: false do
       group = create(:group)
       permission = create(:permission, action: 'posting_idea', permission_scope: active_ideation_project.phases.first, permitted_by: 'users')
       create(:groups_permission, permission_id: permission.id, group: group)
@@ -1331,7 +1471,7 @@ resource 'Projects' do
       expect(json_response[:data].pluck(:id)).not_to include active_ideation_project.id
     end
 
-    example "Includes projects where no action permitted (excluding attending_event), but a permission is 'fixable'" do
+    example "Includes projects where no action permitted (excluding attending_event), but a permission is 'fixable'", document: false do
       create(:custom_field, required: true)
 
       user_requirements_service = Permissions::UserRequirementsService.new(check_groups_and_verification: false)
@@ -1370,7 +1510,7 @@ resource 'Projects' do
       expect(current_phase_ids).to match included_phase_ids
     end
 
-    example 'includes next page link in response when appropriate', document: false do
+    example 'Includes next page link in response when appropriate', document: false do
       Project.destroy_all
 
       create_list(:project_with_active_ideation_phase, 5)
@@ -1388,6 +1528,338 @@ resource 'Projects' do
       do_request page: { number: 3, size: 2 }
       json_response = json_parse(response_body)
       expect(json_response[:links][:next]).to be_nil
+    end
+
+    # Test to catch duplicates that can occur when active phase end dates match, and no secondary sorting is applied,
+    # or when project created_at dates also match, and no ternary sorting is applied.
+    # This would cuase duplicates to appear on different pages.
+    example 'Does not duplicate projects on different pages when phase end dates are the same', document: false do
+      Project.destroy_all
+
+      create_list(:project_with_active_ideation_phase, 10)
+
+      created_at = 1.day.ago
+      Project.all.each { |p| p.update!(created_at: created_at) }
+
+      do_request page: { number: 1, size: 4 }
+      json_response = json_parse(response_body)
+      project_ids_page1 = json_response[:data].pluck(:id)
+
+      do_request page: { number: 2, size: 4 }
+      json_response = json_parse(response_body)
+      project_ids_page2 = json_response[:data].pluck(:id)
+
+      expect(project_ids_page1 & project_ids_page2).to be_empty
+    end
+  end
+
+  get 'web_api/v1/projects/finished_or_archived' do
+    before do
+      @user = create(:user, roles: [])
+      header_token_for @user
+    end
+
+    with_options scope: :page do
+      parameter :number, 'Page number'
+      parameter :size, 'Number of projects per page'
+      parameter :filter_by, 'Whether to filter by finished or archived projects, or both'
+    end
+
+    context "when passed filter_by: 'finished'" do
+      let!(:finished_project1) { create(:project_with_two_past_ideation_phases) }
+      let!(:_unfinished_project1) { create(:project_with_active_ideation_phase) }
+      let!(:unfinished_project2) { create(:project) }
+      let!(:phase) { create(:phase, project: unfinished_project2, start_at: 2.days.ago, end_at: 2.days.from_now) }
+      let!(:_report) { create(:report, phase: phase) }
+
+      example 'Lists only projects with all phases finished or with a report in the last phase' do
+        do_request filter_by: 'finished'
+        expect(status).to eq 200
+
+        json_response = json_parse(response_body)
+        project_ids = json_response[:data].pluck(:id)
+
+        expect(project_ids).to match_array [finished_project1.id, unfinished_project2.id]
+      end
+
+      example 'Excludes projects that are not published' do
+        create(:project_with_two_past_ideation_phases, admin_publication_attributes: { publication_status: 'draft' })
+        create(:project_with_two_past_ideation_phases, admin_publication_attributes: { publication_status: 'archived' })
+
+        do_request filter_by: 'finished'
+        expect(status).to eq 200
+
+        json_response = json_parse(response_body)
+        project_ids = json_response[:data].pluck(:id)
+
+        expect(project_ids).to match_array [finished_project1.id, unfinished_project2.id]
+      end
+    end
+
+    context "when passed filter_by: 'archived'" do
+      let!(:archived_project) do
+        create(:project_with_past_information_phase, admin_publication_attributes: { publication_status: 'archived' })
+      end
+
+      let!(:published_project) do
+        create(:project_with_past_information_phase, admin_publication_attributes: { publication_status: 'published' })
+      end
+
+      let!(:draft_project) do
+        create(:project_with_past_information_phase, admin_publication_attributes: { publication_status: 'draft' })
+      end
+
+      example 'Lists only archived projects' do
+        do_request filter_by: 'archived'
+        expect(status).to eq 200
+
+        json_response = json_parse(response_body)
+        project_ids = json_response[:data].pluck(:id)
+
+        expect(project_ids).to eq [archived_project.id]
+      end
+    end
+
+    context "when passed filter_by: 'finished_and_archived'" do
+      let!(:archived_project) do
+        create(:project_with_active_ideation_phase, admin_publication_attributes: { publication_status: 'archived' })
+      end
+
+      let!(:published_project) do
+        create(:project_with_active_ideation_phase, admin_publication_attributes: { publication_status: 'published' })
+      end
+
+      let!(:draft_project) do
+        create(:project_with_active_ideation_phase, admin_publication_attributes: { publication_status: 'draft' })
+      end
+
+      let!(:finished_project1) { create(:project_with_two_past_ideation_phases) }
+      let!(:_unfinished_project1) { create(:project_with_active_ideation_phase) } # we do not expect this one
+      let!(:unfinished_project2) { create(:project) }
+      let!(:phase) { create(:phase, project: unfinished_project2, start_at: 2.days.ago, end_at: 2.days.from_now) }
+      let!(:_report) { create(:report, phase: phase) }
+
+      example 'Lists (published projects with phases finished OR with a report in last phase) OR archived projects' do
+        do_request({ filter_by: 'finished_and_archived' })
+        expect(status).to eq 200
+
+        json_response = json_parse(response_body)
+        project_ids = json_response[:data].pluck(:id)
+
+        expect(project_ids).to match_array [archived_project.id, finished_project1.id, unfinished_project2.id]
+      end
+
+      example 'Includes correct ended_days_ago attribute value' do
+        finished_project1.phases[0].update!(start_at: 342.days.ago, end_at: 339.days.ago)
+        finished_project1.phases[1].update!(start_at: 338.days.ago, end_at: 335.days.ago)
+
+        do_request({ filter_by: 'finished_and_archived' })
+        expect(status).to eq 200
+
+        json_response = json_parse(response_body)
+        project = json_response[:data].find { |d| d[:id] == finished_project1.id }
+        expect(project[:attributes][:ended_days_ago]).to eq 335
+      end
+
+      # Test to catch duplicates that can occur when created_at dates match, and no secondary sorting is applied.
+      # Identical created_at dates are possible when tenant templates are applied.
+      example 'Does not duplicate projects on different pages when created_at dates are the same', document: false do
+        create_list(:project_with_two_past_ideation_phases, 10)
+
+        do_request({ page: { number: 1, size: 4 }, filter_by: 'finished' })
+        json_response = json_parse(response_body)
+        project_ids_page1 = json_response[:data].pluck(:id)
+
+        do_request({ page: { number: 2, size: 4 }, filter_by: 'finished' })
+        json_response = json_parse(response_body)
+        project_ids_page2 = json_response[:data].pluck(:id)
+
+        expect(project_ids_page1 & project_ids_page2).to be_empty
+      end
+    end
+  end
+
+  get 'web_api/v1/projects/for_areas' do
+    before do
+      @user = create(:user, roles: [])
+      header_token_for @user
+    end
+
+    with_options scope: :page do
+      parameter :number, 'Page number'
+      parameter :size, 'Number of projects per page'
+      parameter :areas, 'Array of area IDs', required: false
+    end
+
+    let!(:area1) { create(:area) }
+    let!(:area2) { create(:area) }
+    let!(:project_with_areas) { create(:project) }
+    let!(:_areas_project1) { create(:areas_project, project: project_with_areas, area: area1) }
+    let!(:_areas_project2) { create(:areas_project, project: project_with_areas, area: area2) }
+
+    let!(:_project_without_area) { create(:project) }
+
+    example_request 'Lists projects for a given area' do
+      do_request areas: [area1.id]
+      expect(status).to eq 200
+
+      expect(Project.count).to eq 2
+
+      json_response = json_parse(response_body)
+      project_ids = json_response[:data].pluck(:id)
+
+      expect(project_ids).to match_array [project_with_areas.id]
+    end
+
+    example 'Orders projects by created_at DESC', document: false do
+      project2 = create(:project)
+      project3 = create(:project)
+      project4 = create(:project)
+      create(:areas_project, project: project2, area: area1)
+      create(:areas_project, project: project3, area: area1)
+      create(:areas_project, project: project4, area: area1)
+
+      project_with_areas.update!(created_at: 4.days.ago)
+      project2.update!(created_at: 1.day.ago)
+      project3.update!(created_at: 3.days.ago)
+      project4.update!(created_at: 2.days.ago)
+
+      do_request areas: [area1.id]
+      expect(status).to eq 200
+
+      json_response = json_parse(response_body)
+      project_ids = json_response[:data].pluck(:id)
+
+      expect(project_ids).to eq [project2.id, project4.id, project3.id, project_with_areas.id]
+    end
+
+    example_request 'Does not return duplicate projects when more than one areas_project matches' do
+      do_request areas: [area1.id, area2.id]
+      expect(status).to eq 200
+
+      json_response = json_parse(response_body)
+      project_ids = json_response[:data].pluck(:id)
+
+      expect(project_ids).to match_array [project_with_areas.id]
+    end
+
+    example_request 'Returns an empty list when areas parameter is nil' do
+      do_request
+      expect(status).to eq 200
+
+      json_response = json_parse(response_body)
+
+      expect(json_response[:data]).to eq []
+    end
+
+    context 'when admin' do
+      before do
+        @user = create(:admin)
+        header_token_for @user
+      end
+
+      example_request 'Does not include draft projects' do
+        project_with_areas.update!(admin_publication_attributes: { publication_status: 'draft' })
+
+        do_request areas: [area1.id]
+        expect(status).to eq 200
+
+        json_response = json_parse(response_body)
+
+        expect(json_response[:data]).to eq []
+      end
+    end
+  end
+
+  get 'web_api/v1/projects/for_topics' do
+    before do
+      @user = create(:user, roles: [])
+      header_token_for @user
+    end
+
+    with_options scope: :page do
+      parameter :number, 'Page number'
+      parameter :size, 'Number of projects per page'
+      parameter :topics, 'Array of topic IDs', required: false
+    end
+
+    let!(:topic1) { create(:topic) }
+    let!(:topic2) { create(:topic) }
+    let!(:project_with_topics) { create(:project) }
+    let!(:_projects_topic1) { create(:projects_topic, project: project_with_topics, topic: topic1) }
+    let!(:_projects_topic2) { create(:projects_topic, project: project_with_topics, topic: topic2) }
+
+    let!(:_project_without_topic) { create(:project) }
+
+    example_request 'Lists projects for a given topic' do
+      do_request topics: [topic1.id]
+      expect(status).to eq 200
+
+      expect(Project.count).to eq 2
+
+      json_response = json_parse(response_body)
+      project_ids = json_response[:data].pluck(:id)
+
+      expect(project_ids).to match_array [project_with_topics.id]
+    end
+
+    example 'Orders projects by created_at DESC', document: false do
+      project2 = create(:project)
+      project3 = create(:project)
+      project4 = create(:project)
+      create(:projects_topic, project: project2, topic: topic1)
+      create(:projects_topic, project: project3, topic: topic1)
+      create(:projects_topic, project: project4, topic: topic1)
+
+      project_with_topics.update!(created_at: 4.days.ago)
+      project2.update!(created_at: 1.day.ago)
+      project3.update!(created_at: 3.days.ago)
+      project4.update!(created_at: 2.days.ago)
+
+      do_request topics: [topic1.id]
+      expect(status).to eq 200
+
+      json_response = json_parse(response_body)
+      project_ids = json_response[:data].pluck(:id)
+
+      expect(project_ids).to eq [project2.id, project4.id, project3.id, project_with_topics.id]
+    end
+
+    example_request 'Does not return duplicate projects when more than one projects_topic matches', document: false do
+      do_request topics: [topic1.id, topic2.id]
+      expect(status).to eq 200
+
+      json_response = json_parse(response_body)
+      project_ids = json_response[:data].pluck(:id)
+
+      expect(project_ids).to match_array [project_with_topics.id]
+    end
+
+    example_request 'Returns an empty list when topics parameter is nil', document: false do
+      do_request
+      expect(status).to eq 200
+
+      json_response = json_parse(response_body)
+
+      expect(json_response[:data]).to eq []
+    end
+
+    context 'when admin' do
+      before do
+        @user = create(:admin)
+        header_token_for @user
+      end
+
+      example_request 'Does not include draft projects' do
+        project_with_topics.update!(admin_publication_attributes: { publication_status: 'draft' })
+
+        do_request topics: [topic1.id]
+        expect(status).to eq 200
+
+        json_response = json_parse(response_body)
+
+        expect(json_response[:data]).to eq []
+      end
     end
   end
 end

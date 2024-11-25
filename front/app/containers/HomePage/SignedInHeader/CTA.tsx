@@ -2,7 +2,7 @@ import React from 'react';
 
 import useLocalize from 'hooks/useLocalize';
 
-import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/HomepageBanner';
+import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Widgets/HomepageBanner';
 
 import BannerButton, {
   BannerButtonStyle,

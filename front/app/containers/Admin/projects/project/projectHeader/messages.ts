@@ -9,6 +9,30 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.view',
     defaultMessage: 'View',
   },
+  share: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.share',
+    defaultMessage: 'Share',
+  },
+  shareTitle: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareTitle',
+    defaultMessage: 'Share this project',
+  },
+  shareLink: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareLink',
+    defaultMessage: 'Copy link',
+  },
+  shareLinkCopied: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareLinkCopied',
+    defaultMessage: 'Link copied',
+  },
+  shareWhoHasAccess: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareWhoHasAccess',
+    defaultMessage: 'Who has access',
+  },
+  anyoneWithLink: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.anyoneWithLink',
+    defaultMessage: 'Anyone with the link can interact with the draft project',
+  },
   participants: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participants',
     defaultMessage:
@@ -47,27 +71,27 @@ export default defineMessages({
     defaultMessage: 'Draft',
   },
   draftExplanation: {
-    id: 'app.containers.AdminPage.ProjectEdit.dradftExplanation',
+    id: 'app.containers.AdminPage.ProjectEdit.dradftExplanationText',
     defaultMessage:
-      'Draft projects are hidden to all users except for assigned PMs.',
+      'Draft projects are hidden for all people except admins and assigned project managers.',
   },
   publishedStatus: {
     id: 'app.containers.AdminPage.ProjectEdit.publishedStatus',
     defaultMessage: 'Published',
   },
-
   publishedExplanation: {
-    id: 'app.containers.AdminPage.ProjectEdit.publishedExplanation',
+    id: 'app.containers.AdminPage.ProjectEdit.publishedExplanationText',
     defaultMessage:
-      'Published projects are visible to all users or to a smart group subset if selected.',
+      'Published projects are visible to everyone or a group subset if selected.',
   },
   archivedStatus: {
     id: 'app.containers.AdminPage.ProjectEdit.archivedStatus',
     defaultMessage: 'Archived',
   },
   archivedExplanation: {
-    id: 'app.containers.AdminPage.ProjectEdit.archivedExplanation',
-    defaultMessage: 'Archived projects do not allow further participation.',
+    id: 'app.containers.AdminPage.ProjectEdit.archivedExplanationText',
+    defaultMessage:
+      'Archived projects are still visible, but do not allow further participation',
   },
   participantsInfoTitle: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsInfoTitle',
@@ -97,5 +121,14 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.note',
     defaultMessage:
       'Note: Enabling anonymous or open participation permissions may allow users to participate multiple times, leading to misleading or incomplete user data.',
+  },
+  refreshLink: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.refreshLink',
+    defaultMessage: 'Refresh project preview link',
+  },
+  refreshLinkTooltip: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.refreshLinkTooltip',
+    defaultMessage:
+      'Regenerate project preview link. This will invalidate the previous link.',
   },
 });

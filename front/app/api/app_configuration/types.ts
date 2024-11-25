@@ -83,6 +83,10 @@ export interface IAppConfigurationSettings {
     allowed: boolean;
     enabled: boolean;
   };
+  pages: {
+    allowed: boolean;
+    enabled: boolean;
+  };
   password_login?: {
     allowed: boolean;
     enabled: boolean;
@@ -131,6 +135,10 @@ export interface IAppConfigurationSettings {
     allowed: boolean;
     enabled: boolean;
   };
+  id_austria_login?: {
+    allowed: boolean;
+    enabled: boolean;
+  };
   criipto_login?: {
     allowed: boolean;
     enabled: boolean;
@@ -175,6 +183,7 @@ export interface IAppConfigurationSettings {
   survey_xact_surveys?: AppConfigurationFeature;
   snap_survey_surveys?: AppConfigurationFeature;
   project_folders?: AppConfigurationFeature;
+  project_preview_link?: AppConfigurationFeature;
   bulk_import_ideas?: AppConfigurationFeature;
   granular_permissions?: AppConfigurationFeature;
   machine_translations?: AppConfigurationFeature;

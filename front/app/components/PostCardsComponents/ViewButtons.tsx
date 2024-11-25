@@ -4,7 +4,6 @@ import React, {
   useRef,
   KeyboardEvent,
   useEffect,
-  useState,
 } from 'react';
 
 import {
@@ -17,11 +16,8 @@ import {
 import { darken } from 'polished';
 import styled, { useTheme } from 'styled-components';
 
-import useLocale from 'hooks/useLocale';
-
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
 
 import messages from './messages';
 import tracks from './tracks';
@@ -76,12 +72,6 @@ const ViewButton = styled.button<{ active: boolean }>`
   }
 `;
 
-const ListButton = styled(ViewButton)`
-  margin-right: 4px;
-`;
-
-const MapButton = styled(ViewButton)``;
-
 interface Props {
   className?: string;
   selectedView: 'card' | 'map';
@@ -93,21 +83,16 @@ const ViewButtons = memo<Props>(({ className, selectedView, onClick }) => {
   const isMapViewSelected = selectedView === 'map';
   const listButtonRef = useRef<HTMLButtonElement | null>(null);
   const mapButtonRef = useRef<HTMLButtonElement | null>(null);
-  const [viewChanged, setViewChanged] = useState<boolean | null>(null);
-  const locale = useLocale();
   const theme = useTheme();
 
   useEffect(() => {
-    if (viewChanged) {
-      selectedView === 'map'
-        ? mapButtonRef.current?.focus()
-        : listButtonRef.current?.focus();
-    }
-  }, [selectedView, viewChanged]);
+    selectedView === 'map'
+      ? mapButtonRef.current?.focus()
+      : listButtonRef.current?.focus();
+  }, [selectedView]);
 
   const handleOnClick =
     (selectedView: 'card' | 'map') => (event: FormEvent) => {
-      setViewChanged(true);
       event.preventDefault();
       onClick(selectedView);
       trackEventByName(tracks.toggleDisplay, {
@@ -121,23 +106,22 @@ const ViewButtons = memo<Props>(({ className, selectedView, onClick }) => {
     const arrowRightPressed = e.key === 'ArrowRight';
 
     if (arrowLeftPressed || arrowRightPressed) {
-      setViewChanged(true);
       onClick(selectedView === 'card' ? 'map' : 'card');
     }
   };
 
-  if (!isNilOrError(locale)) {
-    return (
-      <Box
-        display="flex"
-        p="4px"
-        borderRadius={theme.borderRadius}
-        w="fit-content"
-        className={`e2e-list-map-viewbuttons ${className || ''}`}
-        role="tablist"
-        background={colors.white}
-      >
-        <ListButton
+  return (
+    <Box
+      display="flex"
+      p="4px"
+      borderRadius={theme.borderRadius}
+      w="fit-content"
+      className={`e2e-list-map-viewbuttons ${className || ''}`}
+      role="tablist"
+      background={colors.white}
+    >
+      <Box mr="4px">
+        <ViewButton
           role="tab"
           aria-selected={isListViewSelected}
           tabIndex={isListViewSelected ? 0 : -1}
@@ -150,26 +134,24 @@ const ViewButtons = memo<Props>(({ className, selectedView, onClick }) => {
         >
           <StyledIcon name="menu" />
           <FormattedMessage {...messages.list} />
-        </ListButton>
-        <MapButton
-          role="tab"
-          aria-selected={isMapViewSelected}
-          tabIndex={isMapViewSelected ? 0 : -1}
-          id="view-tab-2"
-          aria-controls="view-panel-2"
-          onClick={handleOnClick('map')}
-          ref={(el) => (mapButtonRef.current = el)}
-          onKeyDown={handleTabListOnKeyDown}
-          active={isMapViewSelected}
-        >
-          <StyledIcon name="map" />
-          <FormattedMessage {...messages.map} />
-        </MapButton>
+        </ViewButton>
       </Box>
-    );
-  }
-
-  return null;
+      <ViewButton
+        role="tab"
+        aria-selected={isMapViewSelected}
+        tabIndex={isMapViewSelected ? 0 : -1}
+        id="view-tab-2"
+        aria-controls="view-panel-2"
+        onClick={handleOnClick('map')}
+        ref={(el) => (mapButtonRef.current = el)}
+        onKeyDown={handleTabListOnKeyDown}
+        active={isMapViewSelected}
+      >
+        <StyledIcon name="map" />
+        <FormattedMessage {...messages.map} />
+      </ViewButton>
+    </Box>
+  );
 });
 
 export default ViewButtons;

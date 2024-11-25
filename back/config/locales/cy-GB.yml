@@ -222,7 +222,7 @@ cy:
     gender:
       male: Gwryw
       female: Benyw
-      unspecified: Arall
+      unspecified: Amhenodol
     domicile:
       outside: Rhywle arall
     education:
@@ -266,6 +266,7 @@ cy:
       first_name: 'Enw(au) cyntaf'
       image_url: 'URL delwedd'
       input_id: 'ID'
+      manual_votes: 'Pleidleisiau all-lein'
       input_url: 'URL'
       last_name: 'Enw olaf'
       latitude: 'Lledred'

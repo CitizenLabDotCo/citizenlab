@@ -14,4 +14,8 @@ export default defineMessages({
     id: 'app.components.AvatarBubbles.participants1',
     defaultMessage: 'participants',
   },
+  numberOfUsers: {
+    id: 'app.components.AvatarBubbles.numberOfUsers',
+    defaultMessage: '{numberOfUsers} users',
+  },
 });

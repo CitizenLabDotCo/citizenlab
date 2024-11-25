@@ -155,4 +155,5 @@ class Collapse extends PureComponent<Props> {
   }
 }
 
+/** @deprecated Use CollapsibleContainer from the component library instead.*/
 export default Collapse;

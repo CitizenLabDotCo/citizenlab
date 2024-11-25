@@ -155,4 +155,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.FoldersEdit.headerImageInputLabel',
     defaultMessage: 'Header image',
   },
+  folderImageAltTextTitle: {
+    id: 'app.containers.AdminPage.ProjectEdit.folderImageAltTextTitle',
+    defaultMessage: 'Folder card image alternative text',
+  },
 });

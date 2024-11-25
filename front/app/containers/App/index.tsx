@@ -10,14 +10,12 @@ import {
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import { configureScope } from '@sentry/react';
-import { PreviousPathnameContext } from 'context';
 import GlobalStyle from 'global-styles';
 import 'intersection-observer';
 import { includes, uniq } from 'lodash-es';
 import 'moment-timezone';
 import moment from 'moment';
 import { useLocation } from 'react-router-dom';
-import { RouteType } from 'routes';
 import styled, { ThemeProvider } from 'styled-components';
 import { SupportedLocale } from 'typings';
 
@@ -41,7 +39,6 @@ import Navigate from 'utils/cl-router/Navigate';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 import eventEmitter from 'utils/eventEmitter';
 import {
-  endsWith,
   initiativeShowPageSlug,
   isIdeaShowPage,
   isPage,
@@ -86,9 +83,6 @@ const App = ({ children }: Props) => {
 
   const { mutate: signOutAndDeleteAccount } = useDeleteSelf();
   const [isAppInitialized, setIsAppInitialized] = useState(false);
-  const [previousPathname, setPreviousPathname] = useState<RouteType | null>(
-    null
-  );
   const { data: appConfiguration } = useAppConfiguration();
   const { data: authUser } = useAuthUser();
   const appContainerClassName =
@@ -100,11 +94,11 @@ const App = ({ children }: Props) => {
   const [userSuccessfullyDeleted, setUserSuccessfullyDeleted] = useState(false);
 
   const [locale, setLocale] = useState<SupportedLocale | null>(null);
-  const [signUpInModalOpened, setSignUpInModalOpened] = useState(false);
+  const [disableScroll, setDisableScroll] = useState(false);
 
   const redirectsEnabled = useFeatureFlag({ name: 'redirects' });
 
-  const fullscreenModalEnabled = useFeatureFlag({
+  const franceConnectLoginEnabled = useFeatureFlag({
     name: 'franceconnect_login',
   });
 
@@ -200,24 +194,18 @@ const App = ({ children }: Props) => {
       }
     };
 
-    const newPreviousPathname = location.pathname as RouteType;
-    const pathsToIgnore = ['sign-up', 'sign-in', 'invite'];
-    setPreviousPathname(
-      !endsWith(newPreviousPathname, pathsToIgnore)
-        ? newPreviousPathname
-        : previousPathname
-    );
     if (redirectsEnabled) {
       handleCustomRedirect();
     }
+  }, [redirectsEnabled, appConfiguration, location]);
 
+  useEffect(() => {
     const subscriptions = [
       locale$.subscribe((locale) => {
         const momentLoc = appLocalesMomentPairs[locale] || 'en';
         moment.locale(momentLoc);
         setLocale(locale);
       }),
-
       eventEmitter
         .observeEvent('deleteProfileAndShowSuccessModal')
         .subscribe(() => {
@@ -237,14 +225,7 @@ const App = ({ children }: Props) => {
     return () => {
       subscriptions.forEach((subscription) => subscription.unsubscribe());
     };
-  }, [
-    location.pathname,
-    previousPathname,
-    redirectsEnabled,
-    appConfiguration,
-    location,
-    signOutAndDeleteAccount,
-  ]);
+  }, [signOutAndDeleteAccount]);
 
   useEffect(() => {
     if (authUser) {
@@ -285,7 +266,6 @@ const App = ({ children }: Props) => {
   const showFooter =
     !isAdminPage && !isIdeaFormPage && !isIdeaEditPage && !isNativeSurveyPage;
   const { pathname } = removeLocale(location.pathname);
-  const disableScroll = fullscreenModalEnabled && signUpInModalOpened;
   const isAuthenticationPending = authUser === undefined;
   const canAccessRoute = usePermission({
     item: {
@@ -330,87 +310,90 @@ const App = ({ children }: Props) => {
           <Spinner />
         </Box>
       )}
-      <PreviousPathnameContext.Provider value={previousPathname}>
-        <ThemeProvider theme={{ ...theme, isRtl: !!locale?.startsWith('ar') }}>
-          <GlobalStyle />
-          <Box
-            className={appContainerClassName}
-            display="flex"
-            flexDirection="column"
-            alignItems="stretch"
-            position="relative"
-            background={colors.white}
-            /* When the fullscreen modal is enabled on a platform and
-             * is currently open, we want to disable scrolling on the
-             * app sitting below it (CL-1101).
-             * For instance, with a fullscreen modal, we want to
-             * be able to disable scrolling on the page behind the modal
-             */
-            overflow={disableScroll ? 'hidden' : undefined}
-            minHeight="100vh"
-          >
-            <Meta />
-            <UserSessionRecordingModal />
-            <ErrorBoundary>
-              <Suspense fallback={null}>
-                <UserDeletedModal
-                  modalOpened={userDeletedSuccessfullyModalOpened}
-                  closeUserDeletedModal={closeUserDeletedModal}
-                  userSuccessfullyDeleted={userSuccessfullyDeleted}
-                />
-              </Suspense>
-            </ErrorBoundary>
-            <ErrorBoundary>
-              <Authentication setModalOpen={setSignUpInModalOpened} />
-            </ErrorBoundary>
-            <ErrorBoundary>
-              <div id="modal-portal" />
-            </ErrorBoundary>
-            <ErrorBoundary>
-              <div id="topbar-portal" />
-            </ErrorBoundary>
-            <ErrorBoundary>
-              <Suspense fallback={null}>
-                <ConsentManager />
-              </Suspense>
-            </ErrorBoundary>
-            {showFrontOfficeNavbar() && (
-              <ErrorBoundary>
-                <MainHeader />
-              </ErrorBoundary>
-            )}
-            {!isAuthenticationPending && (
-              <Box
-                display="flex"
-                flexDirection="column"
-                alignItems="stretch"
-                flex="1"
-                overflowY="auto"
-                id="main-content"
-                pt={
-                  showFrontOfficeNavbar()
-                    ? `${stylingConsts.menuHeight}px`
-                    : undefined
+      <ThemeProvider theme={{ ...theme, isRtl: !!locale?.startsWith('ar') }}>
+        <GlobalStyle />
+        <Box
+          className={appContainerClassName}
+          display="flex"
+          flexDirection="column"
+          alignItems="stretch"
+          position="relative"
+          background={colors.white}
+          /* When the fullscreen modal is enabled on a platform and
+           * is currently open, we want to disable scrolling on the
+           * app sitting below it (CL-1101).
+           * For instance, with a fullscreen modal, we want to
+           * be able to disable scrolling on the page behind the modal
+           */
+          overflow={disableScroll ? 'hidden' : undefined}
+          minHeight="100vh"
+        >
+          <Meta />
+          <UserSessionRecordingModal />
+          <ErrorBoundary>
+            <Suspense fallback={null}>
+              <UserDeletedModal
+                modalOpened={userDeletedSuccessfullyModalOpened}
+                closeUserDeletedModal={closeUserDeletedModal}
+                userSuccessfullyDeleted={userSuccessfullyDeleted}
+              />
+            </Suspense>
+          </ErrorBoundary>
+          <ErrorBoundary>
+            <Authentication
+              onToggleModal={(opened) => {
+                if (franceConnectLoginEnabled) {
+                  setDisableScroll(opened);
                 }
-              >
-                {canAccessRoute ? (
-                  <ErrorBoundary>{children}</ErrorBoundary>
-                ) : (
-                  <Navigate to="/" />
-                )}
-              </Box>
-            )}
-            {showFooter && (
-              <Suspense fallback={null}>
-                <PlatformFooter />
-              </Suspense>
-            )}
+              }}
+            />
+          </ErrorBoundary>
+          <ErrorBoundary>
+            <div id="modal-portal" />
+          </ErrorBoundary>
+          <ErrorBoundary>
+            <div id="topbar-portal" />
+          </ErrorBoundary>
+          <ErrorBoundary>
+            <Suspense fallback={null}>
+              <ConsentManager />
+            </Suspense>
+          </ErrorBoundary>
+          {showFrontOfficeNavbar() && (
             <ErrorBoundary>
-              <div id="mobile-nav-portal" />
+              <MainHeader />
             </ErrorBoundary>
-          </Box>
-        </ThemeProvider>
-      </PreviousPathnameContext.Provider>
+          )}
+          {!isAuthenticationPending && (
+            <Box
+              display="flex"
+              flexDirection="column"
+              alignItems="stretch"
+              flex="1"
+              id="main-content"
+              pt={
+                showFrontOfficeNavbar()
+                  ? `${stylingConsts.menuHeight}px`
+                  : undefined
+              }
+            >
+              {canAccessRoute ? (
+                <ErrorBoundary>{children}</ErrorBoundary>
+              ) : (
+                <Navigate to="/" />
+              )}
+            </Box>
+          )}
+          {showFooter && (
+            <Suspense fallback={null}>
+              <PlatformFooter />
+            </Suspense>
+          )}
+          <ErrorBoundary>
+            <div id="mobile-nav-portal" />
+          </ErrorBoundary>
+        </Box>
+      </ThemeProvider>
     </>
   );
 };

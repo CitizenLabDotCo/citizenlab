@@ -7,7 +7,7 @@ de:
     idea_assigned_to_you:
       by_author: 'von %{authorName}'
       cta_reply_to: 'Geben Sie %{authorName} Feedback'
-      event_description_idea: 'Ihnen wurde eine Idee zugewiesen. Geben Sie Feedback, indem Sie ein offizielles Update schreiben oder den Status ändern.'
-      main_header: '%{firstName}, du hast eine neue Zuordnung'
-      subject: 'Du hast einen Auftrag auf der Plattform von %{organizationName}'
-      preheader_idea: 'Ihnen wurde die Idee von %{authorName} zugewiesen'
+      event_description_idea: 'Ihnen wurde ein Beitrag zugewiesen. Geben Sie Feedback, indem Sie ein offizielles Update schreiben oder den Status ändern.'
+      main_header: '%{firstName}, Ihnen wurde ein Beitrag zugewiesen'
+      subject: 'Ihnen wurde ein Beitrag auf der Plattform von %{organizationName} zugewiesen'
+      preheader_idea: 'Ihnen wurde der Beitrag von %{authorName} zugewiesen'

@@ -17,6 +17,7 @@
   "app.components.AssignMultipleVotesControl.addVote": "أضف التصويت",
   "app.components.AssignMultipleVotesControl.maxVotesPerIdeaReached": "لقد وصلت إلى الحد الأقصى من الأصوات وهو {maxVotes} لكل فكرة",
   "app.components.AssignMultipleVotesControl.maxVotesReached": "لقد استخدمت كل أصواتك",
+  "app.components.AssignMultipleVotesControl.numberManualVotes2": "{manualVotes, plural, one {(بما في ذلك 1 غير متصل بالإنترنت)} other {(بما في ذلك # غير متصل بالإنترنت)}}",
   "app.components.AssignMultipleVotesControl.phaseNotActive": "التصويت غير متاح، حيث أن هذه المرحلة غير نشطة.",
   "app.components.AssignMultipleVotesControl.removeVote": "إزالة التصويت",
   "app.components.AssignMultipleVotesControl.select": "يختار",
@@ -38,6 +39,7 @@
   "app.components.AuthProviders.continueWithFakeSSO": "تابع مع تسجيل الدخول الموحّد (SSO) المزيف",
   "app.components.AuthProviders.continueWithGoogle": "تابع باستخدام جوجل",
   "app.components.AuthProviders.continueWithHoplr": "تواصل مع Hoplr",
+  "app.components.AuthProviders.continueWithIdAustria": "متابعة مع ID النمسا",
   "app.components.AuthProviders.continueWithLoginMechanism": "تواصل مع {loginMechanismName}",
   "app.components.AuthProviders.continueWithNemlogIn": "متابعة مع MitID",
   "app.components.AuthProviders.franceConnectMergingFailed": "يوجد بالفعل حساب يحمل عنوان البريد الإلكتروني هذا.{br}{br}لا يمكنك الوصول إلى المنصة باستخدام FranceConnect بسبب عدم تطابق البيانات الشخصية. لتسجيل الدخول باستخدام FranceConnect, سيتعين عليك تغيير اسمك الأول أو اسمك الأخير في هذه المنصة ليطابق بياناتك الرسمية.{br}{br}يمكنك تسجيل الدخول كالمعتاد أدناه.",
@@ -52,6 +54,7 @@
   "app.components.AuthProviders.verificationRequired": "مطلوب التحقق",
   "app.components.Author.a11yPostedBy": "منشور من طرف",
   "app.components.AvatarBubbles.numberOfParticipants1": "{numberOfParticipants, plural, one {1 مشارك} other {{numberOfParticipants} مشاركين}}",
+  "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} المستخدمين",
   "app.components.AvatarBubbles.participant": "مشارك",
   "app.components.AvatarBubbles.participants1": "مشاركون",
   "app.components.CityLogoSection.iframeTitle": "المزيد من المعلومات حول {orgName}",
@@ -181,6 +184,12 @@
   "app.components.HorizontalScroll.scrollLeftLabel": "قم بالتمرير إلى اليسار.",
   "app.components.HorizontalScroll.scrollRightLabel": "قم بالتمرير إلى اليمين.",
   "app.components.IdeaCards.a11y_ideasHaveBeenSorted": "{sortOder} تم تحميل الأفكار.",
+  "app.components.IdeaCards.filters.newest": "جديد",
+  "app.components.IdeaCards.filters.oldest": "قديم",
+  "app.components.IdeaCards.filters.popular": "الأكثر اعجابا",
+  "app.components.IdeaCards.filters.random": "عشوائي",
+  "app.components.IdeaCards.filters.sortBy": "فرز حسب",
+  "app.components.IdeaCards.filters.trending": "الأكثر رواجًا",
   "app.components.IdeaCards.showMore": "اعرض المزيد",
   "app.components.IdeasMap.a11y_hideIdeaCard": "قم بإخفاء بطاقة الأفكار.",
   "app.components.IdeasMap.a11y_mapTitle": "عرض عام للخريطة",
@@ -332,6 +341,8 @@
   "app.components.PostComponents.readMore": "اقرأ المزيد...",
   "app.components.PostComponents.topics": "المواضيع",
   "app.components.ProjectArchivedIndicator.archivedProject": "للأسف، لا يمكنك المشاركة في هذا المشروع بعد الآن لأنه قد تمت أرشفته",
+  "app.components.ProjectArchivedIndicator.previewProject": "مشروع المشروع:",
+  "app.components.ProjectArchivedIndicator.previewProjectExplanation": "مرئية فقط للمشرفين وأولئك الذين لديهم رابط المعاينة.",
   "app.components.ProjectCard.a11y_projectDescription": "وصف المشروع:",
   "app.components.ProjectCard.a11y_projectTitle": "عنوان المشروع:",
   "app.components.ProjectCard.addYourOption": "أضف خيارك",
@@ -343,6 +354,7 @@
   "app.components.ProjectCard.joinDiscussion": "انضم إلى المناقشة",
   "app.components.ProjectCard.learnMore": "حمّل المزيد",
   "app.components.ProjectCard.reaction": "رد فعل",
+  "app.components.ProjectCard.readTheReport": "اقرأ التقرير",
   "app.components.ProjectCard.reviewDocument": "راجع المستند",
   "app.components.ProjectCard.submitAnIssue": "قُم بتقديم مُشكلة",
   "app.components.ProjectCard.submitYourIdea": "قُم بتقديم فكرة",
@@ -472,6 +484,7 @@
   "app.components.UserName.verified": "تم التحقق منه",
   "app.components.VerificationModal.verifyBOSA": "تحقق باستخدام itsme أو eID",
   "app.components.VerificationModal.verifyClaveUnica": "تحقق باستخدام Clave Unica",
+  "app.components.VerificationModal.verifyIdAustria": "التحقق من خلال هوية النمسا",
   "app.components.VerificationModal.verifyNemLogIn": "تحقق مع MitID",
   "app.components.VerificationModal.verifyYourIdentity": "تحقق من هويتك",
   "app.components.VoteControl.budgetingFutureEnabled": "يُمكنك تخصيص ميزانيتك بداية من {enabledFromDate}.",
@@ -930,12 +943,13 @@
   "app.containers.AccessibilityStatement.assesmentText2022": "تم تقييم إمكانية وصول هذا الموقع من قِبل كيان خارجي غير مشترك في عملية التصميم والتطوير. يمكن تحديد توافق {demoPlatformLink} المتقدم ذكرها في {statusPageLink} هذه.",
   "app.containers.AccessibilityStatement.changePreferencesButtonText": "يمكنك تغيير تفضيلاتك",
   "app.containers.AccessibilityStatement.changePreferencesText": "في أي وقت، {changePreferencesButton}.",
-  "app.containers.AccessibilityStatement.compatibilityTitle2022": "التوافق مع التقنية المساعدة",
   "app.containers.AccessibilityStatement.conformanceExceptions": "استثناءات التوافق",
   "app.containers.AccessibilityStatement.conformanceStatus": "حالة التوافق",
   "app.containers.AccessibilityStatement.contentConformanceExceptions": "نسعى جاهدين إلى جعل المحتوى الخاص بنا شاملًا للجميع. مع ذلك، وفي بعض الحالات قد يكون هناك محتوىً لا يمكن الوصول إليه على المنصة كما هو موصح أدناه:",
   "app.containers.AccessibilityStatement.demoPlatformLinkText": "عرض توضيحي لموقع الويب",
   "app.containers.AccessibilityStatement.email": "البريد الإلكتروني:",
+  "app.containers.AccessibilityStatement.embeddedSurveyTools": "أدوات المسح المضمنة",
+  "app.containers.AccessibilityStatement.embeddedSurveyToolsException": "أدوات المسح المضمنة المتاحة للاستخدام على هذه المنصة عبارة عن برامج تابعة لجهات خارجية وقد لا تكون قابلة للوصول.",
   "app.containers.AccessibilityStatement.exception_1": "تُسهل منصات المشاركة الرقمية لدينا نشر المحتويات التي يولدها المُستخدمون بأنفسهم بواسطة أفراد ومؤسسات. من المحتمل أن يتم تحميل ملفات PDF والصور والأنواع الأخرى من الملفات التي تشمل وسائل الإعلام المتعددة إلى المنصة كمُلحقات أو إضافتها إلى خانات نصية بواسطة مُستخدمي المنصة. قد لا تكون هذه الوثائق مُتاحة كلياً.",
   "app.containers.AccessibilityStatement.feedbackProcessIntro": "يُسعدنا سماع رأيك وملاحظاتك حول إمكانية الوصول لهذا الموقع. يُرجى التواصل معنا باستخدام إحدى الطرق التالية:",
   "app.containers.AccessibilityStatement.feedbackProcessTitle": "عملية تقديم الملاحظات",
@@ -953,12 +967,7 @@
   "app.containers.AccessibilityStatement.publicationDate": "تاريخ النشر",
   "app.containers.AccessibilityStatement.publicationDate2024": "تم نشر بيان إمكانية الوصول هذا في 21 أغسطس 2024.",
   "app.containers.AccessibilityStatement.responsiveness": "نسعى للرد على ملاحظاتك خلال 1-2 يوم عمل.",
-  "app.containers.AccessibilityStatement.screenReaderBugWarning": "قد يُعاني قارئ الشاشة من أخطاء برمجية مع اختلاف مجموعة \"المتصفح/ قارئ الشاشة\". يمكن الإبلاغ عن الأخطاء البرمجية من خلال عملية تقديم الملاحظات الموضحة أدناه.",
-  "app.containers.AccessibilityStatement.screenReaderSearchResults": "وظيفة البحث",
-  "app.containers.AccessibilityStatement.screenReaderSearchResultsException": "قد يواجه مستخدمو قارئ الشاشة صعوبات عند استخدام وظيفة البحث. يجوز ألا يتم عرض عدد نتائج البحث بشكل متسق.",
   "app.containers.AccessibilityStatement.statusPageText": "صفحة الحالة",
-  "app.containers.AccessibilityStatement.surveyTools": "أدوات الاستبيان",
-  "app.containers.AccessibilityStatement.surveyToolsException": "أدوات الاستبيان المتوفرة للاستخدام في هذه المنصة هي برامج تابعة لأطراف ثالثة ويجوز تعذر إمكانية الوصول إليها.",
   "app.containers.AccessibilityStatement.technologiesIntro": "تعتمد إمكانية الوصول إلى هذا الموقع على التقنيات التالية للعمل:",
   "app.containers.AccessibilityStatement.technologiesTitle": "التقنيات",
   "app.containers.AccessibilityStatement.title": "بيان إمكانية الوصول",
@@ -1635,6 +1644,7 @@
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotPermitted": "للأسف ، ليس لديك حقوق مراجعة هذا المستند.",
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledNotVerified": "مراجعة هذا المستند يتطلب التحقق من حسابك. {verificationLink}",
   "app.containers.ProjectsShowPage.shared.document_annotation.documentAnnotationDisabledProjectInactive": "لم يعد المستند متاحًا ، نظرًا لأن هذا المشروع لم يعد نشطًا.",
+  "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBar.numberManualVoters2": "{manualVoters, plural, one {(بما في ذلك 1 غير متصل بالإنترنت)} other {(بما في ذلك # غير متصل بالإنترنت)}}",
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBar.numberOfPicks": "{baskets, plural, one {اختيار واحد} other {# اختيارات}}",
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.budgetingTooltip1": "النسبة المئوية للمشاركين الذين اختاروا هذا الخيار.",
   "app.containers.ProjectsShowPage.timeline.VotingResults.ProgressBars.votingTooltip": "النسبة المئوية لإجمالي الأصوات التي حصل عليها هذا الخيار.",
@@ -2122,10 +2132,10 @@
   "app.utils.votingMethodUtils.singleVotingUnlimitedEnded": "أغلق التصويت يوم <b>{endDate}.</b> يمكن للمشاركين التصويت <b>من الخيارات كما يرغبون.</b>",
   "app.utils.votingMethodUtils.singleVotingUnlimitedVotesYouCanVote": "يمكنك التصويت لأكبر عدد تريده من الخيارات.",
   "app.utils.votingMethodUtils.submitYourBudget": "أرسل ميزانيتك",
-  "app.utils.votingMethodUtils.submittedBudgetCountText": "قدم شخص ميزانيته",
-  "app.utils.votingMethodUtils.submittedBudgetsCountText": "قدم الناس ميزانياتهم",
-  "app.utils.votingMethodUtils.submittedVoteCountText": "قدم شخص تصويتهم",
-  "app.utils.votingMethodUtils.submittedVotesCountText": "قدم من الأشخاص أصواتهم",
+  "app.utils.votingMethodUtils.submittedBudgetCountText2": "قام الشخص بتقديم ميزانيته عبر الإنترنت",
+  "app.utils.votingMethodUtils.submittedBudgetsCountText2": "قدم الناس ميزانياتهم عبر الإنترنت",
+  "app.utils.votingMethodUtils.submittedVoteCountText2": "قام الشخص بتقديم تصويته عبر الإنترنت",
+  "app.utils.votingMethodUtils.submittedVotesCountText2": "أرسل الناس أصواتهم عبر الإنترنت",
   "app.utils.votingMethodUtils.vote": "تصويت",
   "app.utils.votingMethodUtils.voteSubmittedWithIcon": "تم إرسال التصويت 🎉",
   "app.utils.votingMethodUtils.votes": "الأصوات",

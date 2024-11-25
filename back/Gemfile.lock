@@ -154,6 +154,14 @@ PATH
       rails (~> 7.0)
 
 PATH
+  remote: engines/commercial/id_id_austria
+  specs:
+    id_id_austria (1.0.0)
+      omniauth_openid_connect (~> 0.7.1)
+      rails (~> 7.0)
+      verification
+
+PATH
   remote: engines/commercial/id_id_card_lookup
   specs:
     id_id_card_lookup (0.1.0)
@@ -1022,7 +1030,8 @@ GEM
     rgeo-activerecord (7.0.1)
       activerecord (>= 5.0)
       rgeo (>= 1.0.0)
-    rgeo-geojson (2.1.1)
+    rgeo-geojson (2.2.0)
+      multi_json (~> 1.15)
       rgeo (>= 1.0.0)
     rinku (2.0.6)
     ros-apartment (2.11.0)
@@ -1296,6 +1305,7 @@ DEPENDENCIES
   id_franceconnect!
   id_gent_rrn!
   id_hoplr!
+  id_id_austria!
   id_id_card_lookup!
   id_keycloak!
   id_nemlog_in!

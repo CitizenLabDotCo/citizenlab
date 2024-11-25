@@ -9,6 +9,7 @@ import {
   defaultCardHoverStyle,
   isRtl,
   Text,
+  Title,
 } from '@citizenlab/cl2-component-library';
 import { isEmpty, round } from 'lodash-es';
 import moment from 'moment';
@@ -244,19 +245,24 @@ const ProgressBarOverlay = styled.div<{ progress: number }>`
   }
 `;
 
-const ProjectLabel = styled.div`
-  // darkened to have higher chances of solid color contrast
+const ProjectLabel = styled.button`
   color: ${({ theme }) => darken(0.05, theme.colors.tenantSecondary)};
   font-size: ${fontSizes.s}px;
   font-weight: 400;
   text-align: center;
   white-space: nowrap;
-  padding-left: 14px;
-  padding-right: 14px;
-  padding-top: 8px;
-  padding-bottom: 8px;
+  padding: 8px 14px;
   border-radius: ${(props) => props.theme.borderRadius};
-  background: ${({ theme }) => rgba(theme.colors.tenantSecondary, 0.1)};
+  border: 1px solid ${({ theme }) => darken(0.05, theme.colors.tenantSecondary)};
+  background: transparent;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: ${({ theme }) => rgba(theme.colors.tenantSecondary, 0.1)};
+    color: ${({ theme }) => theme.colors.tenantSecondary};
+    border-color: ${({ theme }) => theme.colors.tenantSecondary};
+    cursor: pointer;
+  }
 `;
 
 const ContentBody = styled.div`
@@ -272,17 +278,10 @@ const ContentBody = styled.div`
   }
 `;
 
-const ProjectTitle = styled.h3`
-  line-height: normal;
-  font-weight: 500;
-  font-size: ${fontSizes.xl}px;
+const ProjectTitle = styled(Title)`
   color: ${({ theme }) => theme.colors.tenantText};
   margin: 0;
   padding: 0;
-
-  ${isRtl`
-    text-align: right;
-    `}
 
   &:hover {
     text-decoration: underline;
@@ -404,9 +403,10 @@ const ProjectCard = memo<InputProps>(
     if (project) {
       const imageUrl = !projectImage
         ? null
-        : // TODO: Fix this the next time the file is edited.
-          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-          projectImage.data.attributes.versions?.large;
+        : projectImage.data.attributes.versions.large;
+      const projectImageAltText = localize(
+        projectImage?.data.attributes.alt_text_multiloc
+      );
 
       const projectUrl: RouteType = getProjectUrl(project.data.attributes.slug);
       const isFinished = project.data.attributes.timeline_active === 'past';
@@ -515,7 +515,7 @@ const ProjectCard = memo<InputProps>(
 
       const screenReaderContent = (
         <ScreenReaderOnly>
-          <ProjectTitle>
+          <ProjectTitle variant="h3">
             <FormattedMessage {...messages.a11y_projectTitle} />
             <T value={project.data.attributes.title_multiloc} />
           </ProjectTitle>
@@ -551,7 +551,11 @@ const ProjectCard = memo<InputProps>(
 
           <ProjectImageContainer className={size}>
             {imageUrl ? (
-              <ProjectImage src={imageUrl} alt="" cover={true} />
+              <ProjectImage
+                src={imageUrl}
+                alt={projectImageAltText}
+                cover={true}
+              />
             ) : (
               <ImagePlaceholder />
             )}
@@ -562,6 +566,7 @@ const ProjectCard = memo<InputProps>(
 
             <ContentBody className={size} aria-hidden>
               <ProjectTitle
+                variant="h3"
                 className="e2e-project-card-project-title"
                 data-testid="project-card-project-title"
                 onClick={() => {
