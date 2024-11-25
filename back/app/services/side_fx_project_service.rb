@@ -62,7 +62,7 @@ class SideFxProjectService
   def before_destroy(project, user); end
 
   def after_destroy(frozen_project, user)
-    delete_admin_publication_ids_from_homepage_layout(frozen_project)
+    ContentBuilder::LayoutService.new.delete_admin_publication_id_from_homepage_layout(frozen_project)
 
     serialized_project = clean_time_attributes(frozen_project.attributes)
 
@@ -108,19 +108,6 @@ class SideFxProjectService
   def after_folder_changed(project, current_user)
     # Defined in core app to eliminate dependency between
     # idea assignment and folder engine.
-  end
-
-  def delete_admin_publication_ids_from_homepage_layout(project)
-    homepage_layout = ContentBuilder::Layout.find_by(code: 'homepage')
-    return unless homepage_layout
-
-    homepage_layout.craftjs_json = homepage_layout.craftjs_json.each_value do |node|
-      next unless node['type']['resolvedName'] == 'Selection'
-
-      node['props']['adminPublicationIds'].delete(project.admin_publication.id)
-    end
-
-    homepage_layout.save!
   end
 end
 
