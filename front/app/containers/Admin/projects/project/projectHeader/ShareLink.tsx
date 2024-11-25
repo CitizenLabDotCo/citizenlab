@@ -36,10 +36,12 @@ const ShareLink = ({
   const [shareDropdownIsOpen, setShareDropdownIsOpen] = useState(false);
   const [linkIsCopied, setLinkIsCopied] = useState(false);
 
-  const link = `${appConfiguration?.data.attributes.host}/projects/${projectSlug}/preview/${token}`;
+  const link = `/projects/${projectSlug}/preview/${token}`;
 
   const handleCopyLink = () => {
-    navigator.clipboard.writeText(link);
+    navigator.clipboard.writeText(
+      `${appConfiguration?.data.attributes.host}/${link}`
+    );
     setLinkIsCopied(true);
   };
 

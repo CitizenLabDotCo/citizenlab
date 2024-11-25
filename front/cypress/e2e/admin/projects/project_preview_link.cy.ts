@@ -24,7 +24,7 @@ describe('Admin: edit project', () => {
       cy.get('#e2e-link')
         .invoke('text')
         .then((text) => {
-          link = text.replace('localhost', 'localhost:3000');
+          link = text;
         });
 
       cy.logout();
