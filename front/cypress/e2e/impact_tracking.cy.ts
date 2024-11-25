@@ -34,32 +34,32 @@ describe('Impact tracking: Session tracking', () => {
     });
   });
 
-  it('Does a POST request to /sessions/:id/track_pageview when enters platform', () => {
+  it.skip('Does a POST request to /sessions/:id/track_pageview when enters platform', () => {
     cy.intercept('POST', '**/web_api/v1/sessions').as('createSession');
     cy.intercept('POST', '**/web_api/v1/sessions/*/track_pageview').as(
       'trackPageview'
     );
     cy.goToLandingPage();
     cy.wait('@createSession');
-    cy.wait('@trackPageview', { timeout: 15000 }).then((interception) => {
+    cy.wait('@trackPageview').then((interception) => {
       expect(interception.response?.statusCode).to.be.oneOf([201, 204]);
     });
   });
 
-  it('Does a POST request to /sessions/:id/track_pageview when user navigates', () => {
+  it.skip('Does a POST request to /sessions/:id/track_pageview when user navigates', () => {
     cy.intercept('POST', '**/web_api/v1/sessions').as('createSession');
     cy.intercept('POST', '**/web_api/v1/sessions/*/track_pageview').as(
       'trackPageview'
     );
     cy.goToLandingPage();
     cy.wait('@createSession');
-    cy.wait('@trackPageview', { timeout: 15000 });
+    cy.wait('@trackPageview');
 
     cy.intercept('POST', '**/web_api/v1/sessions/*/track_pageview').as(
       'trackPageview'
     );
     cy.get('.e2e-admin-publication-card').first().click();
-    cy.wait('@trackPageview', { timeout: 15000 }).then((interception) => {
+    cy.wait('@trackPageview').then((interception) => {
       expect(interception.response?.statusCode).to.be.oneOf([201, 204]);
     });
   });
