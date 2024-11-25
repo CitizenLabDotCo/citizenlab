@@ -74,7 +74,7 @@ const FiltersMapView = ({
             )
           }
           onClick={onClose}
-        />{' '}
+        />
       </Footer>
     </>
   );

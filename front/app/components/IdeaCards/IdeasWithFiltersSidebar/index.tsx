@@ -27,7 +27,6 @@ import { QueryParameters } from 'containers/IdeasIndexPage';
 import filterModalMessages from 'components/FiltersModal/messages';
 import ViewButtons from 'components/PostCardsComponents/ViewButtons';
 import Button from 'components/UI/Button';
-import SearchInput from 'components/UI/SearchInput';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { trackEventByName } from 'utils/analytics';
@@ -67,10 +66,6 @@ const InitialLoading = styled.div`
   ${media.phone`
     height: 150px;
   `}
-`;
-
-const MobileSearchInput = styled(SearchInput)`
-  margin-bottom: 20px;
 `;
 
 const MobileFilterButton = styled(Button)``;
@@ -324,13 +319,6 @@ const IdeasWithFiltersSidebar = ({
                 onClose={closeModal}
                 handleSortOnChange={handleSortOnChange}
               />
-
-              <MobileSearchInput
-                defaultValue={ideaQueryParameters.search}
-                onChange={handleSearchOnChange}
-                a11y_numberOfSearchResults={list.length}
-              />
-
               <MobileFilterButton
                 buttonStyle="secondary-outlined"
                 onClick={openFiltersModal}
