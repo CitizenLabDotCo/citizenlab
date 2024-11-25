@@ -49,7 +49,7 @@ const FiltersMapView = ({
       <Header>
         <TopBar onReset={onClearFilters} onClose={onClose} />
       </Header>
-      <Box height="100%" overflowY="scroll" bgColor={colors.grey200}>
+      <Box height="100%" overflowY="auto" bgColor={colors.grey100}>
         <Box p="16px">
           <InputFilters
             selectedIdeaFilters={selectedIdeaFilters}
