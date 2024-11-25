@@ -264,7 +264,7 @@
   "app.components.admin.PostManager.timelineTabTooltipText": "Arrastra y suelta las entradas para copiarlas en diferentes fases del proyecto.",
   "app.components.admin.PostManager.title": "Título",
   "app.components.admin.PostManager.topicsTab": "Temas",
-  "app.components.admin.PostManager.topicsTabTooltipText": "Add tags to an input using drag and drop.",
+  "app.components.admin.PostManager.topicsTabTooltipText": "Agrega temas a un aporte usando arrastrar y soltar.",
   "app.components.admin.PostManager.view": "Ver",
   "app.components.admin.PostManager.votes": "Votos",
   "app.components.admin.PostManager.votesByInputExportFileName": "votos_por_entrada",
