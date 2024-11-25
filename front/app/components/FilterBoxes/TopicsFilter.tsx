@@ -119,6 +119,10 @@ const TopicsFilter = memo<Props>(
 
       const topicsWithIdeas = getTopicsWithIdeas(topics, filterCounts);
 
+      if (topicsWithIdeas.length < 1) {
+        return null;
+      }
+
       return (
         <InputFilterCollapsible
           title={

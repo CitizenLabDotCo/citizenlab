@@ -77,6 +77,16 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
 
   const inputTerm = phase.attributes.input_term;
 
+  const sharedProps = {
+    className: participationMethod,
+    ideaQueryParameters,
+    onUpdateQuery: updateSearchParams,
+    projectId,
+    phaseId: phase.id,
+    showViewToggle: true,
+    invisbleTitleMessage: messages.a11y_titleInputsPhase,
+  };
+
   return (
     <Box
       id="project-ideas"
@@ -84,17 +94,11 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
     >
       {isVotingContext ? (
         <IdeaCardsWithoutFiltersSidebar
-          ideaQueryParameters={ideaQueryParameters}
-          onUpdateQuery={updateSearchParams}
-          className={participationMethod}
-          projectId={projectId}
-          showViewToggle={true}
           defaultSortingMethod={ideaQueryParameters.sort}
           defaultView={phase.attributes.presentation_mode}
-          invisibleTitleMessage={messages.a11y_titleInputsPhase}
-          phaseId={phase.id}
           showDropdownFilters={false}
           showSearchbar={false}
+          {...sharedProps}
         />
       ) : (
         <>
@@ -105,32 +109,24 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
             aria-hidden={true}
           />
           <IdeaCardsWithFiltersSidebar
-            ideaQueryParameters={ideaQueryParameters}
-            onUpdateQuery={updateSearchParams}
-            className={participationMethod}
-            showViewToggle={true}
-            invisibleTitleMessage={messages.a11y_titleInputsPhase}
-            phaseId={phase.id}
-            projectId={projectId}
             title={
-              <>
-                <Title variant="h2" mt="0px" mb="20px" color="tenantText">
-                  <FormattedMessage
-                    {...getInputTermMessage(inputTerm, {
-                      idea: messages.ideas,
-                      option: messages.options,
-                      project: messages.projects,
-                      question: messages.questions,
-                      issue: messages.issues,
-                      contribution: messages.contributions,
-                      proposal: messages.proposals,
-                      initiative: messages.initiatives,
-                      petition: messages.petitions,
-                    })}
-                  />
-                </Title>
-              </>
+              <Title variant="h2" mt="0px" mb="20px" color="tenantText">
+                <FormattedMessage
+                  {...getInputTermMessage(inputTerm, {
+                    idea: messages.ideas,
+                    option: messages.options,
+                    project: messages.projects,
+                    question: messages.questions,
+                    issue: messages.issues,
+                    contribution: messages.contributions,
+                    proposal: messages.proposals,
+                    initiative: messages.initiatives,
+                    petition: messages.petitions,
+                  })}
+                />
+              </Title>
             }
+            {...sharedProps}
           />
         </>
       )}

@@ -138,7 +138,7 @@ const ContentRight = styled.div<{
   max-height: calc(100vh - ${({ maxHeightOffset }) => maxHeightOffset}px);
   position: sticky;
   top: ${({ top }) => top}px;
-  overflow-y: scroll;
+  overflow-y: auto;
   padding-left: 8px;
   padding-right: 8px;
 `;
@@ -160,7 +160,7 @@ export interface Props {
   title?: JSX.Element;
 }
 
-const IdeaCards = ({
+const IdeasWithFiltersSidebar = ({
   ideaQueryParameters,
   projectId,
   phaseId,
@@ -431,4 +431,4 @@ const IdeaCards = ({
   );
 };
 
-export default IdeaCards;
+export default IdeasWithFiltersSidebar;

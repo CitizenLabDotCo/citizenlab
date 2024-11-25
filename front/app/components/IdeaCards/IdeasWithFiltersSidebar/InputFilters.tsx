@@ -29,15 +29,15 @@ const FiltersSidebarContainer = styled.div`
 
 const ClearFiltersText = styled.span`
   color: ${colors.textSecondary};
-  font-size: ${fontSizes.base}px;
+  font-size: ${fontSizes.s}px;
   font-weight: 400;
   line-height: auto;
 `;
 
 const ClearFiltersButton = styled.button`
-  height: 32px;
+  height: 28px;
   position: absolute;
-  top: -48px;
+  top: 54px;
   right: 0px;
   display: flex;
   align-items: center;
@@ -118,12 +118,15 @@ const InputFilters = ({
         )}
       </ScreenReaderOnly>
 
-      <DesktopSearchInput
-        defaultValue={defaultValue}
-        onChange={onSearch}
-        debounce={1500}
-        a11y_numberOfSearchResults={numberOfSearchResults}
-      />
+      <Box mt="8px" mb="28px">
+        <DesktopSearchInput
+          defaultValue={defaultValue}
+          onChange={onSearch}
+          debounce={1500}
+          a11y_numberOfSearchResults={numberOfSearchResults}
+        />
+      </Box>
+
       <Box mb="20px">
         <SortingBox handleSortOnChange={handleSortOnChange} phaseId={phaseId} />
       </Box>
