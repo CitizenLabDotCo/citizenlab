@@ -137,7 +137,7 @@ export interface Props {
   title?: JSX.Element;
 }
 
-const IdeaCards = ({
+const IdeasWithFiltersSidebar = ({
   ideaQueryParameters,
   projectId,
   phaseId,
@@ -368,4 +368,4 @@ const IdeaCards = ({
   );
 };
 
-export default IdeaCards;
+export default IdeasWithFiltersSidebar;
