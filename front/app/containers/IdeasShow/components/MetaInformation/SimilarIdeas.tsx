@@ -9,18 +9,15 @@ interface Props {
   className?: string;
 }
 
-const SimilarIdeas = ({ ideaId, className }: Props) => {
+const SimilarIdeas = ({ ideaId }: Props) => {
   const { data: similarIdeas } = useSimilarIdeas(ideaId);
   const localize = useLocalize();
-  console.log(similarIdeas);
   if (similarIdeas) {
     const ideasTitles = similarIdeas.data
       .map((similarIdea) => {
-        // const ideasTitles = ideas?.map((idea) => idea.attributes.title_multiloc['en-GB']).join(', ');
         return localize(similarIdea.attributes.title_multiloc);
       })
       .join(', ');
-    console.log(ideasTitles);
     return <p>{ideasTitles}</p>;
   }
   return null;
