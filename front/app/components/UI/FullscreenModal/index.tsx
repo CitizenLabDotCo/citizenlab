@@ -1,6 +1,13 @@
 import React, { PureComponent } from 'react';
 
-import { Box, Color, colors, media } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Color,
+  colors,
+  media,
+  stylingConsts,
+  useBreakpoint,
+} from '@citizenlab/cl2-component-library';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import CSSTransition from 'react-transition-group/CSSTransition';
@@ -80,6 +87,7 @@ interface InputProps {
 
 interface Props extends InputProps {
   locale: SupportedLocale;
+  isSmallerThanPhone: boolean;
 }
 
 interface State {
@@ -111,10 +119,28 @@ class FullscreenModal extends PureComponent<Props, State> {
     this.subscription?.unsubscribe();
   }
 
+  calculateContentHeight(isSmallerThanPhone: boolean) {
+    const viewportHeight = window.innerHeight;
+    const menuHeight = stylingConsts.menuHeight;
+    const mobileTopBarHeight = stylingConsts.mobileTopBarHeight;
+
+    const dynamicHeight =
+      viewportHeight - (isSmallerThanPhone ? mobileTopBarHeight : menuHeight);
+
+    return `${dynamicHeight}px`;
+  }
+
   render() {
     const { windowHeight } = this.state;
-    const { children, opened, topBar, bottomBar, className, contentBgColor } =
-      this.props;
+    const {
+      children,
+      opened,
+      topBar,
+      bottomBar,
+      className,
+      contentBgColor,
+      isSmallerThanPhone,
+    } = this.props;
 
     return (
       <CSSTransition
@@ -141,6 +167,7 @@ class FullscreenModal extends PureComponent<Props, State> {
               className="fullscreenmodal-scrollcontainer"
               flex="1"
               overflowY="auto"
+              h={this.calculateContentHeight(isSmallerThanPhone)}
             >
               {children}
             </Box>
@@ -159,10 +186,15 @@ class FullscreenModal extends PureComponent<Props, State> {
 export default (inputProps: InputProps) => {
   const locale = useLocale();
   const modalPortalElement = document.getElementById('modal-portal');
+  const isSmallerThanPhone = useBreakpoint('phone');
 
   return modalPortalElement
     ? createPortal(
-        <FullscreenModal {...inputProps} locale={locale} />,
+        <FullscreenModal
+          {...inputProps}
+          locale={locale}
+          isSmallerThanPhone={isSmallerThanPhone}
+        />,
         modalPortalElement
       )
     : null;
