@@ -75,7 +75,7 @@ const AdminPublicationsList = ({
                   iconName="close"
                   onClick={() => onDelete(item.id)}
                   iconColor={colors.textSecondary}
-                  iconColorOnHover="#000"
+                  iconColorOnHover={colors.black}
                   a11y_buttonActionMessage=""
                 />
               </Box>
