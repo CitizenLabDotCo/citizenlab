@@ -514,6 +514,7 @@ GEM
       debug_inspector (>= 0.0.1)
     bootsnap (1.18.3)
       msgpack (~> 1.2)
+    browser (6.1.0)
     builder (3.3.0)
     bullet (7.1.6)
       activesupport (>= 3.0.0)
@@ -1263,6 +1264,7 @@ DEPENDENCIES
   axlsx (= 3.0.0.pre)
   bcrypt (~> 3.1.20)
   bootsnap (~> 1)
+  browser (~> 6.1)
   bulk_import_ideas!
   bullet
   bundler-audit
