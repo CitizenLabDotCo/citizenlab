@@ -27,9 +27,9 @@ resource 'Impact tracking session' do
         created_at: be_present,
         highest_role: nil,
         referrer: referrer,
-        device_type: 'desktop',
+        device_type: 'desktop_or_other',
         browser_name: 'Chrome',
-        os_name: 'Mac'
+        os_name: 'macOS'
       })
     end
 
