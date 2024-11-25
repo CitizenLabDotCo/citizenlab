@@ -172,7 +172,18 @@ class FullscreenModal extends PureComponent<Props, State> {
               {children}
             </Box>
             {bottomBar && (
-              <Box position="fixed" w="100%" bottom="0">
+              <Box
+                position="fixed"
+                w="100%"
+                h={`${stylingConsts.mobileTopBarHeight}px`}
+                bottom="0"
+                left="0"
+                padding="40px"
+                background="white"
+                display="flex"
+                alignItems="center"
+                borderTop={`1px solid ${colors.grey400}`}
+              >
                 {bottomBar}
               </Box>
             )}
