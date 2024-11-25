@@ -2627,7 +2627,7 @@
   "app.containers.admin.project.permissions.permissionsUsersLabel": "Defnyddwyr cofrestredig",
   "app.containers.admin.project.permissions.permissionsUsersLabelDescription": "Gall defnyddwyr sydd wedi creu eu cyfrifon gyda chyfrineiriau gymryd rhan.",
   "app.containers.admin.project.permissions.viewingRightsTitle": "Pwy all weld y prosiect hwn?",
-  "app.modules.commercial.analytics.admin.components.ActiveUsersCard.cardTitleTooltipMessage3": "Mae cyfranogwyr yn ddefnyddwyr neu’n ymwelwyr sydd wedi cymryd rhan mewn prosiect, wedi postio neu ryngweithio â chynnig, wedi mynychu digwyddiadau neu wedi dilyn pethau.",
+  "app.modules.commercial.analytics.admin.components.ActiveUsersCard.cardTitleTooltipMessage3": "Participants are users or visitors that have participated in a project, posted or interacted with a proposal, attended events or followed things.",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participants": "Cyfranogwyr",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRate": "Cyfradd cyfranogiad",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRateTooltip3": "Canran yr ymwelwyr sy'n dod yn gyfranogwyr. Dim ond cyfranogwyr ac ymwelwyr a dderbyniodd gwcis sy'n cael eu cyfrif.",
