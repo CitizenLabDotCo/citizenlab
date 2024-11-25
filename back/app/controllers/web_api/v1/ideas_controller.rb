@@ -116,8 +116,8 @@ class WebApi::V1::IdeasController < ApplicationController
 
   def similarities
     idea = Idea.find params[:id]
-    similarities = EmbeddingsSimilarity.find_by(idea: idea).nearest_neighbors(:embedding, distance: 'cosine').limit(10)
-    ideas = paginate policy_scope(Idea.where.not(id: idea.id)).order_as_specified(id: similarities.map(&:idea_id).take(10)).limit(10)
+    similarities = EmbeddingsSimilarity.find_by(idea: idea).nearest_neighbors(:embedding, distance: 'cosine')
+    ideas = paginate policy_scope(Idea.where.not(id: idea.id)).order_as_specified(id: similarities.map(&:idea_id))
     render json: linked_json(ideas, WebApi::V1::IdeaSerializer, serialization_options_for(ideas))
   end
 
