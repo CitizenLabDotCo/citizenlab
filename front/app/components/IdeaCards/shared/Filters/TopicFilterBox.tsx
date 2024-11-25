@@ -24,9 +24,6 @@ const TopicFilterBox = memo<Props>(
       ideas: ideaFiltersWithoutTopics,
     });
 
-    // Remove topics from selected idea filters so we get counts that aren't impacted by the selected topics.
-    // Otherwise the counts change each time a topic is selected/deselected which isn't expected behaviour.
-
     const { data: ideasFilterCounts } = useIdeasFilterCounts({
       ...ideaFiltersWithoutTopics,
       idea_status: ideaFiltersWithoutTopics.idea_status,
