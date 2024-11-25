@@ -99,7 +99,7 @@ nl:
       "link_terms_conditions": "Gebruiksvoorwaarden"
       "link_unsubscribe": "Uitschrijven"
       "powered_by": "Mogelijk gemaakt door"
-      "recipient_statement": "Deze e-mail is door Go Vocal naar u verzonden namens %{organizationName}, omdat u een geregistreerde gebruiker bent van %{organizationLink}."
+      "recipient_statement": "Deze e-mail is door Go Vocal naar je verzonden namens %{organizationName}, omdat je een geregistreerde gebruiker bent van %{organizationLink}."
       "unsubscribe_statement": "Je kunt je %{unsubscribeLink} als je deze e-mails in de toekomst niet meer wilt ontvangen."
       "unsubscribe_text": "uitschrijven"
     follow:
