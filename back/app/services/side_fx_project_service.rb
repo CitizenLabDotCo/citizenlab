@@ -62,6 +62,16 @@ class SideFxProjectService
   def before_destroy(project, user); end
 
   def after_destroy(frozen_project, user)
+    homepage_layout = ContentBuilder::Layout.find_by(code: 'homepage')
+
+    homepage_layout.craftjs_json = homepage_layout.craftjs_json.each_value do |node|
+      next unless node['type']['resolvedName'] == 'Selection'
+
+      node['props']['adminPublicationIds'].delete(frozen_project.admin_publication.id)
+    end
+
+    homepage_layout.save!
+
     serialized_project = clean_time_attributes(frozen_project.attributes)
 
     LogActivityJob.perform_later(
