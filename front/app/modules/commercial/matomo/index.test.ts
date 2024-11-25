@@ -1,8 +1,9 @@
 import { trackPage } from 'utils/analytics';
 import eventEmitter from 'utils/eventEmitter';
 
-import { trackPageChange } from './actions';
 import { mockRoutes } from '../../../utils/__mocks__/mockRoutes.mock';
+
+import { trackPageChange } from './actions';
 import { setupMatomo } from './setup';
 
 import config from '.';
