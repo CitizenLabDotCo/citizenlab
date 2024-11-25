@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 
-import { Color, colors, media } from '@citizenlab/cl2-component-library';
+import { Box, Color, colors, media } from '@citizenlab/cl2-component-library';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import CSSTransition from 'react-transition-group/CSSTransition';
@@ -155,7 +155,11 @@ class FullscreenModal extends PureComponent<Props, State> {
             <Content className="fullscreenmodal-scrollcontainer">
               {children}
             </Content>
-            {bottomBar}
+            {bottomBar && (
+              <Box position="fixed" w="100%" bottom="0">
+                {bottomBar}
+              </Box>
+            )}
           </StyledFocusOn>
         </Container>
       </CSSTransition>,
