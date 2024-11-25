@@ -40,6 +40,9 @@ const StatusShowComponent = React.lazy(
   () => import('./statuses/containers/edit')
 );
 
+// approval
+const Approval = lazy(() => import('./approval'));
+
 export enum settingsRoutes {
   settings = 'settings',
   settingsDefault = '',
@@ -56,6 +59,7 @@ export enum settingsRoutes {
   proposals = 'proposals',
   statuses = 'statuses',
   statusId = ':statusId',
+  approval = 'approval',
 }
 
 export type settingRouteTypes =
@@ -75,6 +79,7 @@ export type settingRouteTypes =
   | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.proposals}/${settingsRoutes.statuses}`>
   | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.proposals}/${settingsRoutes.statuses}/${settingsRoutes.new}`>
   | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.proposals}/${settingsRoutes.statuses}/${string}`>
+  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.approval}`>
   | registrationRouteTypes;
 
 export default () => ({
@@ -231,6 +236,14 @@ export default () => ({
           ),
         },
       ],
+    },
+    {
+      path: settingsRoutes.approval,
+      element: (
+        <PageLoading>
+          <Approval />
+        </PageLoading>
+      ),
     },
     ...moduleConfiguration.routes['admin.settings'],
   ],
