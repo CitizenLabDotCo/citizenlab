@@ -71,6 +71,11 @@ const SettingsPage = () => {
       : []),
 
     {
+      name: 'approval',
+      label: formatMessage(messages.tabApproval),
+      url: '/admin/settings/approval',
+    },
+    {
       name: 'policies',
       label: formatMessage(messages.tabPolicies),
       url: '/admin/settings/policies',
