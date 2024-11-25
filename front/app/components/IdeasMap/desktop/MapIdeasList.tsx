@@ -1,10 +1,12 @@
-import React, { memo, useCallback } from 'react';
+import React, { memo, useCallback, useState } from 'react';
 
 import {
+  Button,
   Icon,
   Spinner,
   colors,
   fontSizes,
+  useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -14,11 +16,12 @@ import useIdeaMarkers from 'api/idea_markers/useIdeaMarkers';
 import usePhase from 'api/phases/usePhase';
 import { ideaDefaultSortMethodFallback } from 'api/phases/utils';
 
+import FiltersMapView from 'components/IdeaCards/IdeasWithFiltersSidebar/FiltersMapView';
+import { Props as InputFiltersProps } from 'components/IdeaCards/IdeasWithFiltersSidebar/InputFilters';
 import { Sort } from 'components/IdeaCards/shared/Filters/SortFilterDropdown';
 import Centerer from 'components/UI/Centerer';
-import SearchInput from 'components/UI/SearchInput';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import { isNilOrError } from 'utils/helperUtils';
@@ -39,10 +42,6 @@ const Header = styled.div`
   align-items: stretch;
   padding: 20px;
   border-bottom: solid 1px #ccc;
-`;
-
-const StyledSearchInput = styled(SearchInput)`
-  width: 100%;
 `;
 
 const IdeaMapCards = styled.div`
@@ -98,11 +97,26 @@ interface Props {
   phaseId?: string;
   className?: string;
   onSelectIdea: (ideaId: string | null) => void;
+  inputFiltersProps?: InputFiltersProps;
 }
 
 const MapIdeasList = memo<Props>(
-  ({ projectId, phaseId, className, onSelectIdea }) => {
+  ({ projectId, phaseId, className, onSelectIdea, inputFiltersProps }) => {
     const [searchParams] = useSearchParams();
+    const isTabletOrSmaller = useBreakpoint('tablet');
+    const { formatMessage } = useIntl();
+    const [showFilters, setShowFilters] = useState(false);
+
+    const {
+      selectedIdeaFilters,
+      onChangeStatus,
+      onChangeTopics,
+      handleSortOnChange,
+      onClearFilters,
+      filtersActive,
+      ideasFilterCounts,
+      numberOfSearchResults,
+    } = inputFiltersProps ?? {};
 
     const { data: ideaCustomFieldsSchema } = useIdeaJsonFormSchema({
       projectId,
@@ -141,55 +155,84 @@ const MapIdeasList = memo<Props>(
 
     return (
       <Container className={className || ''}>
-        {methodConfig?.showIdeaFilters && (
-          <Header>
-            <StyledSearchInput
-              defaultValue={search ?? undefined}
-              onChange={handleSearchOnChange}
-              a11y_numberOfSearchResults={
-                ideaMarkers && ideaMarkers.data.length > 0
-                  ? ideaMarkers.data.length
-                  : 0
-              }
-            />
-          </Header>
-        )}
-
-        <IdeaMapCards id="e2e-idea-map-cards">
-          {ideaMarkers === undefined && (
-            <Centerer>
-              <Spinner />
-            </Centerer>
-          )}
-          {ideaMarkers &&
-            ideaMarkers.data.length > 0 &&
-            ideaMarkers.data.map((ideaMarker) => (
-              <StyledIdeaMapCard
-                projectId={projectId}
-                idea={ideaMarker}
-                key={ideaMarker.id}
-                phaseId={phaseId}
-                onSelectIdea={onSelectIdea}
+        {methodConfig?.showIdeaFilters &&
+          !showFilters &&
+          !isTabletOrSmaller && (
+            <Header>
+              <Button
+                buttonStyle="secondary-outlined"
+                icon="filter"
+                size="s"
+                text={formatMessage(messages.filters)}
+                onClick={() => {
+                  setShowFilters(true);
+                }}
               />
-            ))}
-
-          {/* TODO: Fix this the next time the file is edited. */}
-          {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-          {(ideaMarkers === null || ideaMarkers?.data.length === 0) && (
-            <EmptyContainer>
-              <IdeaIcon ariaHidden name="idea" />
-              <EmptyMessage>
-                <EmptyMessageLine>
-                  <FormattedMessage
-                    {...(isFiltered
-                      ? messages.noFilteredResults
-                      : messages.noResults)}
-                  />
-                </EmptyMessageLine>
-              </EmptyMessage>
-            </EmptyContainer>
+            </Header>
           )}
-        </IdeaMapCards>
+
+        {showFilters &&
+          onChangeStatus &&
+          onChangeTopics &&
+          handleSortOnChange &&
+          onClearFilters && (
+            <>
+              <FiltersMapView
+                selectedIdeaFilters={selectedIdeaFilters || {}}
+                onClearFilters={onClearFilters}
+                filtersActive={!!filtersActive}
+                ideasFilterCounts={ideasFilterCounts}
+                numberOfSearchResults={
+                  numberOfSearchResults ? numberOfSearchResults : 0
+                }
+                onSearch={handleSearchOnChange}
+                onChangeStatus={onChangeStatus}
+                onChangeTopics={onChangeTopics}
+                handleSortOnChange={handleSortOnChange}
+                opened={showFilters}
+                onClose={() => {
+                  setShowFilters(false);
+                }}
+              />
+            </>
+          )}
+        {!showFilters && (
+          <IdeaMapCards id="e2e-idea-map-cards">
+            {ideaMarkers === undefined && (
+              <Centerer>
+                <Spinner />
+              </Centerer>
+            )}
+            {ideaMarkers &&
+              ideaMarkers.data.length > 0 &&
+              ideaMarkers.data.map((ideaMarker) => (
+                <StyledIdeaMapCard
+                  projectId={projectId}
+                  idea={ideaMarker}
+                  key={ideaMarker.id}
+                  phaseId={phaseId}
+                  onSelectIdea={onSelectIdea}
+                />
+              ))}
+
+            {/* TODO: Fix this the next time the file is edited. */}
+            {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
+            {(ideaMarkers === null || ideaMarkers?.data.length === 0) && (
+              <EmptyContainer>
+                <IdeaIcon ariaHidden name="idea" />
+                <EmptyMessage>
+                  <EmptyMessageLine>
+                    <FormattedMessage
+                      {...(isFiltered
+                        ? messages.noFilteredResults
+                        : messages.noResults)}
+                    />
+                  </EmptyMessageLine>
+                </EmptyMessage>
+              </EmptyContainer>
+            )}
+          </IdeaMapCards>
+        )}
       </Container>
     );
   }

@@ -9,6 +9,8 @@ import { IdeaDefaultSortMethod } from 'api/phases/types';
 
 import IdeasMap from 'components/IdeasMap';
 
+import { Props as InputFiltersProps } from '../../IdeasWithFiltersSidebar/InputFilters';
+
 import IdeasList from './IdeasList';
 
 interface Props {
@@ -28,6 +30,7 @@ interface Props {
   ideaMarkers?: IIdeaMarkers;
   onLoadMore(): void;
   hasFilterSidebar?: boolean;
+  inputFiltersProps?: InputFiltersProps;
 }
 
 const IdeasView = ({
@@ -45,6 +48,7 @@ const IdeasView = ({
   onLoadMore,
   hasMoreThanOneView = true,
   hasFilterSidebar = false,
+  inputFiltersProps,
 }: Props) => {
   const { data: mapConfig, isLoading } = useProjectMapConfig(
     projectId || undefined
@@ -80,6 +84,7 @@ const IdeasView = ({
             phaseId={phaseId}
             mapConfig={mapConfig}
             ideaMarkers={ideaMarkers}
+            inputFiltersProps={inputFiltersProps}
           />
         </Box>
       )}

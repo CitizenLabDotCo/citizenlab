@@ -379,6 +379,17 @@ const IdeaCards = ({
                 projectId={projectId}
                 phaseId={phaseId}
                 ideaMarkers={ideaMarkers}
+                inputFiltersProps={{
+                  filtersActive,
+                  ideasFilterCounts,
+                  numberOfSearchResults: list.length,
+                  selectedIdeaFilters: ideaQueryParameters,
+                  onClearFilters: clearFilters,
+                  onSearch: handleSearchOnChange,
+                  onChangeStatus: handleStatusOnChange,
+                  onChangeTopics: handleTopicsOnChange,
+                  handleSortOnChange,
+                }}
               />
             </ContentLeft>
 

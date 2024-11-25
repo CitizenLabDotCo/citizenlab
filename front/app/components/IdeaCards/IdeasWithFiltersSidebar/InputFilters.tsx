@@ -76,6 +76,7 @@ export interface Props {
   numberOfSearchResults: number;
   selectedIdeaFilters: Partial<IQueryParameters>;
   onClearFilters: () => void;
+  showClearButton?: boolean;
   onSearch: (searchTerm: string) => void;
   onChangeStatus: (ideaStatus: string | null) => void;
   onChangeTopics: (topics: string[] | null) => void;
@@ -92,6 +93,7 @@ const InputFilters = ({
   selectedIdeaFilters,
   phaseId,
   onClearFilters,
+  showClearButton = true,
   onSearch,
   onChangeStatus,
   onChangeTopics,
@@ -99,7 +101,7 @@ const InputFilters = ({
 }: Props) => {
   return (
     <FiltersSidebarContainer className={className}>
-      {filtersActive && (
+      {filtersActive && showClearButton && (
         <ClearFiltersButton onClick={onClearFilters}>
           <ClearFiltersText>
             <FormattedMessage {...messages.resetFilters} />
