@@ -68,13 +68,6 @@ const StyledFocusOn = styled(FocusOn)`
   align-items: stretch;
 `;
 
-const Content = styled.div`
-  flex: 1;
-  overflow-y: scroll;
-  -webkit-overflow-scrolling: touch;
-  transform: translate3d(0, 0, 0);
-`;
-
 interface InputProps {
   className?: string;
   opened: boolean;
@@ -152,9 +145,13 @@ class FullscreenModal extends PureComponent<Props, State> {
         >
           <StyledFocusOn autoFocus>
             {topBar}
-            <Content className="fullscreenmodal-scrollcontainer">
+            <Box
+              className="fullscreenmodal-scrollcontainer"
+              flex="1"
+              overflowY="auto"
+            >
               {children}
-            </Content>
+            </Box>
             {bottomBar && (
               <Box position="fixed" w="100%" bottom="0">
                 {bottomBar}
