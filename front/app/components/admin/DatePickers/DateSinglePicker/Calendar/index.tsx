@@ -36,6 +36,7 @@ const Calendar = ({
   const locale = useLocale();
   const startMonth = new Date(1900, 0);
   const endMonth = getEndMonth({ endMonth: _endMonth, selectedDate });
+  const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
   return (
     <DayPickerStyles>
@@ -48,6 +49,7 @@ const Calendar = ({
         defaultMonth={defaultMonth}
         selected={selectedDate}
         onSelect={onChange}
+        timeZone={userTimezone}
       />
     </DayPickerStyles>
   );
