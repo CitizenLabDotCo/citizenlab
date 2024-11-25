@@ -357,6 +357,7 @@
   "app.components.ProjectCard.joinDiscussion": "Neem deel aan de discussie",
   "app.components.ProjectCard.learnMore": "Lees meer",
   "app.components.ProjectCard.reaction": "Reactie",
+  "app.components.ProjectCard.readTheReport": "Lees het rapport",
   "app.components.ProjectCard.reviewDocument": "Bekijk het document",
   "app.components.ProjectCard.submitAnIssue": "{tenantName, select, gent {Voeg een verhaal toe} other {Voeg een reactie toe}}",
   "app.components.ProjectCard.submitYourIdea": "Voeg je idee toe",
