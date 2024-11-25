@@ -138,7 +138,7 @@ const ContentRight = styled.div<{
   max-height: calc(100vh - ${({ maxHeightOffset }) => maxHeightOffset}px);
   position: sticky;
   top: ${({ top }) => top}px;
-  overflow-y: scroll;
+  overflow-y: auto;
   padding-left: 8px;
   padding-right: 8px;
 `;
