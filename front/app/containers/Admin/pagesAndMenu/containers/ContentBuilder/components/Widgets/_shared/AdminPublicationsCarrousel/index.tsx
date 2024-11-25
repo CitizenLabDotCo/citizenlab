@@ -26,7 +26,7 @@ import {
   skipCarrousel,
 } from '../BaseCarrousel/utils';
 
-import AdminPubCard from './AdminPubCard';
+import AdminPublicationCard from './AdminPublicationCard';
 import { CARD_WIDTH } from './constants';
 
 interface Props {
@@ -36,7 +36,7 @@ interface Props {
   onLoadMore: () => void;
 }
 
-const AdminPubsCarrousel = ({
+const AdminPublicationsCarrousel = ({
   title,
   adminPublications,
   hasMore,
@@ -123,7 +123,7 @@ const AdminPubsCarrousel = ({
         >
           {adminPublications.map((adminPublication) => (
             <CardContainer key={adminPublication.id}>
-              <AdminPubCard
+              <AdminPublicationCard
                 ml={isSmallerThanPhone ? `${CARD_GAP}px` : undefined}
                 mr={isSmallerThanPhone ? undefined : `${CARD_GAP}px`}
                 adminPublication={adminPublication}
@@ -178,4 +178,4 @@ const AdminPubsCarrousel = ({
   );
 };
 
-export default AdminPubsCarrousel;
+export default AdminPublicationsCarrousel;

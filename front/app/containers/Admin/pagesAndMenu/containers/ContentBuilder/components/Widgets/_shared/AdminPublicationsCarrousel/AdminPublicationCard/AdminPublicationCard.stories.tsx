@@ -2,17 +2,17 @@ import { mockFolderChildAdminPublicationsList } from 'api/admin_publications/__m
 
 import { getOrigin } from 'utils/storybook/getOrigin';
 
-import { AdminPubCard } from '.';
+import { AdminPublicationCard } from '.';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
-  title: 'HomepageBuilder/AdminPubCard',
-  component: AdminPubCard,
+  title: 'HomepageBuilder/AdminPublicationCard',
+  component: AdminPublicationCard,
   parameters: {
     chromatic: { disableSnapshot: false },
   },
-} satisfies Meta<typeof AdminPubCard>;
+} satisfies Meta<typeof AdminPublicationCard>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

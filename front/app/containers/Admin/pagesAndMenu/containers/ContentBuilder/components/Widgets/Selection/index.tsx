@@ -6,7 +6,7 @@ import useAdminPublicationsByIds from 'api/admin_publications/useAdminPublicatio
 
 import useLocalize from 'hooks/useLocalize';
 
-import AdminPubsCarrousel from '../_shared/AdminPubsCarrousel';
+import AdminPublicationsCarrousel from '../_shared/AdminPublicationsCarrousel';
 import EmptyState from '../_shared/EmptyState';
 
 import messages from './messages';
@@ -43,7 +43,7 @@ const Selection = ({ titleMultiloc, adminPublicationIds }: Props) => {
   if (!adminPublications) return null;
 
   return (
-    <AdminPubsCarrousel
+    <AdminPublicationsCarrousel
       title={localize(titleMultiloc)}
       adminPublications={adminPublications}
       hasMore={!!hasNextPage}
