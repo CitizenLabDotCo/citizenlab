@@ -55,7 +55,7 @@ class WebApi::V1::ProjectsController < ApplicationController
 
   # For use with 'Finished or archived' homepage widget. Uses ProjectMiniSerializer.
   # Returns projects that are either ( published AND (finished OR have a last phase that contains a report))
-  # OR are archived, ordered by creation date first and ID second.
+  # OR are archived, ordered by last phase end_at (nulls first), creation date second and ID third.
   # => [Project]
   def index_finished_or_archived
     projects = policy_scope(Project)
@@ -71,7 +71,7 @@ class WebApi::V1::ProjectsController < ApplicationController
 
   # For use with 'For you' homepage widget. Uses ProjectMiniSerializer.
   # Returns all published projects that are visible to user
-  # AND (are followed by user OR relate to an idea, area or topic followed by user),
+  # AND (are followed by user OR relate to an idea, area, topic or folder followed by user),
   # ordered by the follow created_at (most recent first).
   def index_for_followed_item
     projects = policy_scope(Project)

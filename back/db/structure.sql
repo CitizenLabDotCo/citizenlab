@@ -23,6 +23,7 @@ ALTER TABLE IF EXISTS ONLY public.cosponsors_initiatives DROP CONSTRAINT IF EXIS
 ALTER TABLE IF EXISTS ONLY public.permissions_custom_fields DROP CONSTRAINT IF EXISTS fk_rails_e211dc8f99;
 ALTER TABLE IF EXISTS ONLY public.baskets_ideas DROP CONSTRAINT IF EXISTS fk_rails_dfb57cbce2;
 ALTER TABLE IF EXISTS ONLY public.official_feedbacks DROP CONSTRAINT IF EXISTS fk_rails_ddd7e21dfa;
+ALTER TABLE IF EXISTS ONLY public.impact_tracking_pageviews DROP CONSTRAINT IF EXISTS fk_rails_dd3b2cc184;
 ALTER TABLE IF EXISTS ONLY public.project_folders_images DROP CONSTRAINT IF EXISTS fk_rails_dcbc962cfe;
 ALTER TABLE IF EXISTS ONLY public.project_folders_files DROP CONSTRAINT IF EXISTS fk_rails_dc7aeb6534;
 ALTER TABLE IF EXISTS ONLY public.analysis_summaries DROP CONSTRAINT IF EXISTS fk_rails_dbd13460f0;
@@ -74,6 +75,7 @@ ALTER TABLE IF EXISTS ONLY public.email_campaigns_campaigns DROP CONSTRAINT IF E
 ALTER TABLE IF EXISTS ONLY public.analysis_additional_custom_fields DROP CONSTRAINT IF EXISTS fk_rails_857115261d;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_849e0c7eb7;
 ALTER TABLE IF EXISTS ONLY public.ideas_phases DROP CONSTRAINT IF EXISTS fk_rails_845d7ca944;
+ALTER TABLE IF EXISTS ONLY public.impact_tracking_pageviews DROP CONSTRAINT IF EXISTS fk_rails_82dc979276;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_828a073a04;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_81c11ef894;
 ALTER TABLE IF EXISTS ONLY public.areas_initiatives DROP CONSTRAINT IF EXISTS fk_rails_81a9922de4;
@@ -449,6 +451,7 @@ ALTER TABLE IF EXISTS ONLY public.initiative_images DROP CONSTRAINT IF EXISTS in
 ALTER TABLE IF EXISTS ONLY public.initiative_files DROP CONSTRAINT IF EXISTS initiative_files_pkey;
 ALTER TABLE IF EXISTS ONLY public.impact_tracking_sessions DROP CONSTRAINT IF EXISTS impact_tracking_sessions_pkey;
 ALTER TABLE IF EXISTS ONLY public.impact_tracking_salts DROP CONSTRAINT IF EXISTS impact_tracking_salts_pkey;
+ALTER TABLE IF EXISTS ONLY public.impact_tracking_pageviews DROP CONSTRAINT IF EXISTS impact_tracking_pageviews_pkey;
 ALTER TABLE IF EXISTS ONLY public.identities DROP CONSTRAINT IF EXISTS identities_pkey;
 ALTER TABLE IF EXISTS ONLY public.ideas_topics DROP CONSTRAINT IF EXISTS ideas_topics_pkey;
 ALTER TABLE IF EXISTS ONLY public.ideas DROP CONSTRAINT IF EXISTS ideas_pkey;
@@ -557,6 +560,7 @@ DROP VIEW IF EXISTS public.initiative_initiative_statuses;
 DROP TABLE IF EXISTS public.initiative_images;
 DROP TABLE IF EXISTS public.initiative_files;
 DROP TABLE IF EXISTS public.impact_tracking_salts;
+DROP TABLE IF EXISTS public.impact_tracking_pageviews;
 DROP TABLE IF EXISTS public.identities;
 DROP TABLE IF EXISTS public.ideas_topics;
 DROP TABLE IF EXISTS public.ideas_phases;
@@ -1192,8 +1196,8 @@ CREATE TABLE public.projects (
     baskets_count integer DEFAULT 0 NOT NULL,
     votes_count integer DEFAULT 0 NOT NULL,
     followers_count integer DEFAULT 0 NOT NULL,
-    header_bg_alt_text_multiloc jsonb DEFAULT '{}'::jsonb,
-    preview_token character varying NOT NULL
+    preview_token character varying NOT NULL,
+    header_bg_alt_text_multiloc jsonb DEFAULT '{}'::jsonb
 );
 
 
@@ -1623,7 +1627,7 @@ CREATE TABLE public.phases (
     expire_days_limit integer,
     reacting_threshold integer,
     prescreening_enabled boolean DEFAULT false NOT NULL,
-    autoshare_results_enabled boolean DEFAULT true,
+    autoshare_results_enabled boolean DEFAULT true NOT NULL,
     manual_votes_count integer DEFAULT 0 NOT NULL,
     manual_voters_amount integer,
     manual_voters_last_updated_by_id uuid,
@@ -1952,7 +1956,11 @@ CREATE TABLE public.impact_tracking_sessions (
     highest_role character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    user_id uuid
+    user_id uuid,
+    referrer character varying,
+    device_type character varying,
+    browser_name character varying,
+    os_name character varying
 );
 
 
@@ -2571,6 +2579,20 @@ CREATE TABLE public.identities (
     user_id uuid,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: impact_tracking_pageviews; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.impact_tracking_pageviews (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    session_id uuid NOT NULL,
+    path character varying NOT NULL,
+    project_id uuid,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
 );
 
 
@@ -3856,6 +3878,14 @@ ALTER TABLE ONLY public.ideas_topics
 
 ALTER TABLE ONLY public.identities
     ADD CONSTRAINT identities_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: impact_tracking_pageviews impact_tracking_pageviews_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.impact_tracking_pageviews
+    ADD CONSTRAINT impact_tracking_pageviews_pkey PRIMARY KEY (id);
 
 
 --
@@ -6600,6 +6630,14 @@ ALTER TABLE ONLY public.notifications
 
 
 --
+-- Name: impact_tracking_pageviews fk_rails_82dc979276; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.impact_tracking_pageviews
+    ADD CONSTRAINT fk_rails_82dc979276 FOREIGN KEY (project_id) REFERENCES public.projects(id);
+
+
+--
 -- Name: ideas_phases fk_rails_845d7ca944; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7005,6 +7043,14 @@ ALTER TABLE ONLY public.project_folders_files
 
 ALTER TABLE ONLY public.project_folders_images
     ADD CONSTRAINT fk_rails_dcbc962cfe FOREIGN KEY (project_folder_id) REFERENCES public.project_folders_folders(id);
+
+
+--
+-- Name: impact_tracking_pageviews fk_rails_dd3b2cc184; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.impact_tracking_pageviews
+    ADD CONSTRAINT fk_rails_dd3b2cc184 FOREIGN KEY (session_id) REFERENCES public.impact_tracking_sessions(id);
 
 
 --
@@ -7593,4 +7639,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20241105053934'),
 ('20241105081014'),
 ('20241115141553'),
-('20241115141717');
+('20241115141717'),
+('20241125094000'),
+('20241125094100');
+
+

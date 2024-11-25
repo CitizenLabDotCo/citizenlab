@@ -1,6 +1,14 @@
 import React, { memo, useCallback, MouseEvent } from 'react';
 
-import { fontSizes, isRtl, Icon } from '@citizenlab/cl2-component-library';
+import {
+  fontSizes,
+  isRtl,
+  Icon,
+  Box,
+  Text,
+  colors,
+  ColorIndicator,
+} from '@citizenlab/cl2-component-library';
 import { capitalize, get } from 'lodash-es';
 import { darken } from 'polished';
 import styled from 'styled-components';
@@ -16,6 +24,7 @@ import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 import InputFilterCollapsible from './InputFilterCollapsible';
 import messages from './messages';
+import { scrollToTopIdeasList } from './utils';
 
 const Count = styled.span`
   color: ${({ theme }) => theme.colors.textSecondary};
@@ -30,36 +39,16 @@ const Count = styled.span`
   `}
 `;
 
-const CloseIcon = styled(Icon)`
-  fill: #fff;
-  margin-left: auto;
-
-  ${isRtl`
-    margin-left: 0;
-    margin-right: auto;
-  `}
-`;
-
 const Status = styled.button`
-  color: ${({ theme }) => theme.colors.tenantText};
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  line-height: normal;
   display: flex;
+  cursor: pointer;
   align-items: center;
   justify-content: space-between;
-  padding-left: 18px;
-  padding-right: 18px;
-  padding-top: 7px;
-  padding-bottom: 7px;
-  margin: 0px;
-  margin-right: 10px;
-  margin-bottom: 6px;
-  cursor: pointer;
-  border-radius: 5px;
-  user-select: none;
-  transition: all 80ms ease-out;
+
   width: 100%;
+  padding: 8px;
+  margin-top: 4px;
+  border-radius: ${({ theme }) => theme.borderRadius};
 
   ${isRtl`
     flex-direction: row-reverse;
@@ -102,9 +91,13 @@ const StatusFilter = memo<Props>(
       (event: MouseEvent<HTMLElement>) => {
         event.preventDefault();
         const statusId = event.currentTarget.dataset.id as string;
+
+        // deselect if already selected, otherwise select the new status
         const nextSelectedStatusId =
           selectedStatusId !== statusId ? statusId : null;
+
         onChange(nextSelectedStatusId);
+        scrollToTopIdeasList();
       },
       [selectedStatusId, onChange]
     );
@@ -123,7 +116,12 @@ const StatusFilter = memo<Props>(
             onClick={handleOnClick}
             className={allFilterSelected ? 'selected' : ''}
           >
-            <FormattedMessage {...messages.all} />
+            <Box display="flex">
+              <ColorIndicator bgColor={colors.grey500} />
+              <Text m="0px" color={allFilterSelected ? 'white' : 'textPrimary'}>
+                <FormattedMessage {...messages.all} />
+              </Text>
+            </Box>
             <Count aria-hidden>{allPostsCount}</Count>
             <ScreenReaderOnly>
               {/* Pronounce number of ideas of All status when focus/hover it */}
@@ -160,14 +158,23 @@ const StatusFilter = memo<Props>(
                   onClick={handleOnClick}
                   className={`e2e-status ${isFilterSelected ? 'selected' : ''}`}
                 >
-                  <T value={status.attributes.title_multiloc}>
-                    {(statusTitle) => <>{capitalize(statusTitle)}</>}
-                  </T>
+                  <Box display="flex">
+                    <ColorIndicator bgColor={status.attributes.color} />
+                    <Text
+                      m="0px"
+                      color={isFilterSelected ? 'white' : 'textPrimary'}
+                    >
+                      <T value={status.attributes.title_multiloc}>
+                        {(statusTitle) => <>{capitalize(statusTitle)}</>}
+                      </T>
+                    </Text>
+                  </Box>
+
                   {!isFilterSelected ? (
                     <Count aria-hidden>{filterPostCount}</Count>
                   ) : (
                     <>
-                      <CloseIcon name="close" />
+                      <Icon fill={colors.white} name="close" />
                       <ScreenReaderOnly>
                         <FormattedMessage {...messages.a11y_removeFilter} />
                       </ScreenReaderOnly>
