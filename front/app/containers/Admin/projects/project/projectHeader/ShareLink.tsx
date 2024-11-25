@@ -36,7 +36,7 @@ const ShareLink = ({
   const [shareDropdownIsOpen, setShareDropdownIsOpen] = useState(false);
   const [linkIsCopied, setLinkIsCopied] = useState(false);
 
-  const link = `/projects/${projectSlug}/preview/${token}`;
+  const link = `projects/${projectSlug}/preview/${token}`;
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(
