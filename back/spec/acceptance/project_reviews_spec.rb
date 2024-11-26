@@ -33,7 +33,7 @@ resource 'Project reviews' do
       do_request
 
       assert_status 201
-      review = ProjectReview.find(response_data.dig(:id))
+      review = ProjectReview.find(response_data[:id])
       expect(review.project_id).to eq(project_id)
       expect(review).not_to be_approved
     end
@@ -44,7 +44,7 @@ resource 'Project reviews' do
       do_request(project_review: { reviewer_id: reviewer.id })
       assert_status 201
 
-      review = ProjectReview.find(response_data.dig(:id))
+      review = ProjectReview.find(response_data[:id])
       expect(review.reviewer_id).to eq(reviewer.id)
     end
 
