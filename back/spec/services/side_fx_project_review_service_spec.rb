@@ -5,7 +5,7 @@ require 'rails_helper'
 describe SideFxProjectReviewService do
   let(:service) { described_class.new }
   # Reloading the user bc the db persists timestamps with a lower precision
-  let(:user) { create(:user).reload }
+  let(:user) { create(:admin).reload }
   let(:review) { create(:project_review) }
 
   describe 'after_create' do
