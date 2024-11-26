@@ -1641,6 +1641,7 @@
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabel": "Selecteer een gebied",
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabelDescription": "Het project wordt getoond bij geselecteerde gebiedsfilters.",
   "app.containers.AdminPage.ProjectEdit.cardDisplay": "In een lijst",
+  "app.containers.AdminPage.ProjectEdit.commens_countSortingMethod": "Meest besproken",
   "app.containers.AdminPage.ProjectEdit.conductVotingOrPrioritizationDescriptionText2": "Kies een stemmethode en laat gebruikers prioriteiten stellen tussen een paar verschillende opties.",
   "app.containers.AdminPage.ProjectEdit.conductVotingOrPrioritizationText": "Stemmen of prioriteiten stellen",
   "app.containers.AdminPage.ProjectEdit.createAProjectFromATemplate": "Maak een project aan met een sjabloon",
