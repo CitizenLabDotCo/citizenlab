@@ -11,7 +11,6 @@ import GraphCard from 'components/admin/GraphCard';
 import { NoDataContainer } from 'components/admin/GraphWrappers';
 
 import { useIntl } from 'utils/cl-intl';
-import { momentToIsoDate } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
 import Chart from './Chart';
