@@ -34,7 +34,7 @@ describe('Impact tracking: Session tracking', () => {
     });
   });
 
-  it.skip('Does a POST request to /sessions/:id/track_pageview when enters platform', () => {
+  it('Does a POST request to /sessions/:id/track_pageview when enters platform', () => {
     cy.intercept('POST', '**/web_api/v1/sessions').as('createSession');
     cy.intercept('POST', '**/web_api/v1/sessions/*/track_pageview').as(
       'trackPageview'
@@ -46,7 +46,7 @@ describe('Impact tracking: Session tracking', () => {
     });
   });
 
-  it.skip('Does a POST request to /sessions/:id/track_pageview when user navigates', () => {
+  it('Does a POST request to /sessions/:id/track_pageview when user navigates', () => {
     cy.intercept('POST', '**/web_api/v1/sessions').as('createSession');
     cy.intercept('POST', '**/web_api/v1/sessions/*/track_pageview').as(
       'trackPageview'
