@@ -65,68 +65,26 @@ describe ContentBuilder::LayoutService do
           isCanvas: false,
           displayName: 'Selection',
           linkedNodes: {}
-        },
-        PROJECTS: {
-          type: {
-            resolvedName: 'Projects'
-          },
-          nodes: [],
-          props: {
-            currentlyWorkingOnText: {
-              en: '',
-              'fr-BE': '',
-              'nl-BE': ''
-            }
-          },
-          custom: {
-            title: {
-              id: 'app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.Projects.projectsTitle',
-              defaultMessage: 'Projects'
-            },
-            noDelete: true,
-            noPointerEvents: true
-          },
-          hidden: false,
-          parent: 'ROOT',
-          isCanvas: false,
-          displayName: 'Projects',
-          linkedNodes: {}
-        },
-        x08l42oNsD: {
-          type: {
-            resolvedName: 'Selection'
-          },
-          nodes: [],
-          props: {
-            titleMultiloc: {
-              en: 'Projects and folders',
-              'fr-BE': 'Projects and folders',
-              'nl-BE': 'Projects and folders'
-            },
-            adminPublicationIds: [
-              project1.admin_publication.id,
-              project_folder.admin_publication.id
-            ]
-          },
-          custom: {},
-          hidden: false,
-          parent: 'ROOT',
-          isCanvas: false,
-          displayName: 'Selection',
-          linkedNodes: {}
         }
       }
     end
 
     let!(:layout) { create(:homepage_layout, craftjs_json: craftjs) }
 
-    it 'deletes an admin_publication id from the homepage layout craftjs_json' do
+    it 'deletes a single admin_publication ID from the homepage layout craftjs_json' do
       service.delete_admin_pub_ids_from_homepage_layout project1.admin_publication.id
 
       expect(layout.reload.craftjs_json['nUOW77iNcW']['props']['adminPublicationIds'])
         .to match_array [project2.admin_publication.id, project_folder.admin_publication.id]
-      expect(layout.reload.craftjs_json['x08l42oNsD']['props']['adminPublicationIds'])
-        .to eq([project_folder.admin_publication.id])
+    end
+
+    it 'deletes multiple admin_publication IDs from the homepage layout craftjs_json' do
+      service.delete_admin_pub_ids_from_homepage_layout(
+        [project1.admin_publication.id, project_folder.admin_publication.id]
+      )
+
+      expect(layout.reload.craftjs_json['nUOW77iNcW']['props']['adminPublicationIds'])
+        .to match_array [project2.admin_publication.id]
     end
   end
 end
