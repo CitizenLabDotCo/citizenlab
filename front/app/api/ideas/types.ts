@@ -222,7 +222,7 @@ export interface IIdea {
   data: IIdeaData;
 }
 
-export interface IQueryParameters {
+export interface IIdeaQueryParameters {
   sort?: Sort;
   'page[number]'?: number;
   'page[size]'?: number;

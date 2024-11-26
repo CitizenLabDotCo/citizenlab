@@ -7,6 +7,7 @@ import {
   colors,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
+import ColorIndicator from 'component-library/components/ColorIndicator';
 import { useDrop } from 'react-dnd';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -16,7 +17,6 @@ import usePhase from 'api/phases/usePhase';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import ColorIndicator from 'component-library/components/ColorIndicator';
 import T from 'components/T';
 
 import { FormattedMessage } from 'utils/cl-intl';

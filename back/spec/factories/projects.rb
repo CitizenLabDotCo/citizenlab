@@ -87,6 +87,12 @@ FactoryBot.define do
       end
     end
 
+    factory :project_with_past_information_phase do
+      after(:create) do |project, _evaluator|
+        project.phases << create(:past_phase, project: project, participation_method: 'information')
+      end
+    end
+
     factory :project_with_past_ideation_and_active_budgeting_phase do
       after(:create) do |project, _evaluator|
         project.phases << create(

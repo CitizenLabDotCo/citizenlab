@@ -1505,7 +1505,7 @@ resource 'Projects' do
       json_response = json_parse(response_body)
 
       current_phase_ids = json_response[:data].filter_map { |d| d.dig(:relationships, :current_phase, :data, :id) }
-      included_phase_ids = json_response[:included].select { |d| d[:type] == 'phase' }.pluck(:id)
+      included_phase_ids = json_response[:included].select { |d| d[:type] == 'phase_mini' }.pluck(:id)
 
       expect(current_phase_ids).to match included_phase_ids
     end
@@ -1562,11 +1562,10 @@ resource 'Projects' do
     with_options scope: :page do
       parameter :number, 'Page number'
       parameter :size, 'Number of projects per page'
-      parameter :finished, 'Include projects with all phases finished or with a report in last phase', required: false
-      parameter :archived, 'Include archived projects', required: false
+      parameter :filter_by, 'Whether to filter by finished or archived projects, or both'
     end
 
-    context "when passed only the 'finished' parameter" do
+    context "when passed filter_by: 'finished'" do
       let!(:finished_project1) { create(:project_with_two_past_ideation_phases) }
       let!(:_unfinished_project1) { create(:project_with_active_ideation_phase) }
       let!(:unfinished_project2) { create(:project) }
@@ -1574,7 +1573,7 @@ resource 'Projects' do
       let!(:_report) { create(:report, phase: phase) }
 
       example 'Lists only projects with all phases finished or with a report in the last phase' do
-        do_request finished: true
+        do_request filter_by: 'finished'
         expect(status).to eq 200
 
         json_response = json_parse(response_body)
@@ -1587,7 +1586,7 @@ resource 'Projects' do
         create(:project_with_two_past_ideation_phases, admin_publication_attributes: { publication_status: 'draft' })
         create(:project_with_two_past_ideation_phases, admin_publication_attributes: { publication_status: 'archived' })
 
-        do_request finished: true
+        do_request filter_by: 'finished'
         expect(status).to eq 200
 
         json_response = json_parse(response_body)
@@ -1597,13 +1596,21 @@ resource 'Projects' do
       end
     end
 
-    context "when passed only the 'archived' parameter" do
-      let!(:archived_project) { create(:project, admin_publication_attributes: { publication_status: 'archived' }) }
-      let!(:published_project) { create(:project, admin_publication_attributes: { publication_status: 'published' }) }
-      let!(:draft_project) { create(:project, admin_publication_attributes: { publication_status: 'draft' }) }
+    context "when passed filter_by: 'archived'" do
+      let!(:archived_project) do
+        create(:project_with_past_information_phase, admin_publication_attributes: { publication_status: 'archived' })
+      end
+
+      let!(:published_project) do
+        create(:project_with_past_information_phase, admin_publication_attributes: { publication_status: 'published' })
+      end
+
+      let!(:draft_project) do
+        create(:project_with_past_information_phase, admin_publication_attributes: { publication_status: 'draft' })
+      end
 
       example 'Lists only archived projects' do
-        do_request archived: true
+        do_request filter_by: 'archived'
         expect(status).to eq 200
 
         json_response = json_parse(response_body)
@@ -1613,10 +1620,18 @@ resource 'Projects' do
       end
     end
 
-    context "when passed both the 'finished' and the 'archived' parameter" do
-      let!(:archived_project) { create(:project, admin_publication_attributes: { publication_status: 'archived' }) }
-      let!(:published_project) { create(:project, admin_publication_attributes: { publication_status: 'published' }) }
-      let!(:draft_project) { create(:project, admin_publication_attributes: { publication_status: 'draft' }) }
+    context "when passed filter_by: 'finished_and_archived'" do
+      let!(:archived_project) do
+        create(:project_with_active_ideation_phase, admin_publication_attributes: { publication_status: 'archived' })
+      end
+
+      let!(:published_project) do
+        create(:project_with_active_ideation_phase, admin_publication_attributes: { publication_status: 'published' })
+      end
+
+      let!(:draft_project) do
+        create(:project_with_active_ideation_phase, admin_publication_attributes: { publication_status: 'draft' })
+      end
 
       let!(:finished_project1) { create(:project_with_two_past_ideation_phases) }
       let!(:_unfinished_project1) { create(:project_with_active_ideation_phase) } # we do not expect this one
@@ -1625,7 +1640,7 @@ resource 'Projects' do
       let!(:_report) { create(:report, phase: phase) }
 
       example 'Lists (published projects with phases finished OR with a report in last phase) OR archived projects' do
-        do_request({ archived: true, finished: true })
+        do_request({ filter_by: 'finished_and_archived' })
         expect(status).to eq 200
 
         json_response = json_parse(response_body)
@@ -1638,7 +1653,7 @@ resource 'Projects' do
         finished_project1.phases[0].update!(start_at: 342.days.ago, end_at: 339.days.ago)
         finished_project1.phases[1].update!(start_at: 338.days.ago, end_at: 335.days.ago)
 
-        do_request({ archived: true, finished: true })
+        do_request({ filter_by: 'finished_and_archived' })
         expect(status).to eq 200
 
         json_response = json_parse(response_body)
@@ -1651,11 +1666,11 @@ resource 'Projects' do
       example 'Does not duplicate projects on different pages when created_at dates are the same', document: false do
         create_list(:project_with_two_past_ideation_phases, 10)
 
-        do_request page: { number: 1, size: 4 }
+        do_request({ page: { number: 1, size: 4 }, filter_by: 'finished' })
         json_response = json_parse(response_body)
         project_ids_page1 = json_response[:data].pluck(:id)
 
-        do_request page: { number: 2, size: 4 }
+        do_request({ page: { number: 2, size: 4 }, filter_by: 'finished' })
         json_response = json_parse(response_body)
         project_ids_page2 = json_response[:data].pluck(:id)
 
@@ -1678,13 +1693,13 @@ resource 'Projects' do
 
     let!(:area1) { create(:area) }
     let!(:area2) { create(:area) }
-    let!(:project_with_areas) { create(:project) }
+    let!(:project_with_areas) { create(:project_with_active_ideation_phase) }
     let!(:_areas_project1) { create(:areas_project, project: project_with_areas, area: area1) }
     let!(:_areas_project2) { create(:areas_project, project: project_with_areas, area: area2) }
 
     let!(:_project_without_area) { create(:project) }
 
-    example_request 'Lists projects for a given area' do
+    example 'Lists projects for a given area' do
       do_request areas: [area1.id]
       expect(status).to eq 200
 

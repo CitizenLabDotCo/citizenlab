@@ -1,4 +1,4 @@
-import React, { Suspense, useRef, useState } from 'react';
+import React, { lazy, Suspense, useState } from 'react';
 
 import { Box, Button, media, isRtl } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
@@ -17,7 +17,7 @@ import LanguageSelector from '../../LanguageSelector';
 import NotificationMenu from '../../NotificationMenu';
 import UserMenu from '../../UserMenu';
 
-import FullMobileNavMenu from './FullMobileNavMenu';
+const FullMobileNavMenu = lazy(() => import('./FullMobileNavMenu'));
 import ShowFullMenuButton from './ShowFullMenuButton';
 
 const RightContainer = styled(Box)`
@@ -84,7 +84,6 @@ const MobileNavbarContent = () => {
   const isEmailSettingsPage = isPage('email-settings', location.pathname);
 
   const [isFullMenuOpened, setIsFullMenuOpened] = useState(false);
-  const containerRef = useRef<HTMLElement>(null);
 
   const signIn = () => {
     triggerAuthenticationFlow({}, 'signin');
@@ -104,7 +103,7 @@ const MobileNavbarContent = () => {
   };
 
   return (
-    <nav ref={containerRef}>
+    <nav>
       <RightContainer>
         {!isEmailSettingsPage && (
           <>
@@ -140,13 +139,10 @@ const MobileNavbarContent = () => {
         )}
       </RightContainer>
       <Suspense fallback={null}>
-        {containerRef.current && (
-          <FullMobileNavMenu
-            isFullMenuOpened={isFullMenuOpened}
-            onClose={onCloseFullMenu}
-            mobileNavbarRef={containerRef.current}
-          />
-        )}
+        <FullMobileNavMenu
+          isFullMenuOpened={isFullMenuOpened}
+          onClose={onCloseFullMenu}
+        />
       </Suspense>
     </nav>
   );

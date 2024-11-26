@@ -17,7 +17,7 @@ import useIdeaCustomFieldsSchema from 'api/idea_json_form_schema/useIdeaJsonForm
 import useIdeaMarkers from 'api/idea_markers/useIdeaMarkers';
 import useInfiniteIdeas from 'api/ideas/useInfiniteIdeas';
 import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
-import { PresentationMode } from 'api/phases/types';
+import { PresentationMode, IdeaSortMethod } from 'api/phases/types';
 
 import useLocale from 'hooks/useLocale';
 
@@ -34,7 +34,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import { isFieldEnabled } from 'utils/projectUtils';
 
 import messages from '../messages';
-import { Sort } from '../shared/Filters/SortFilterDropdown';
 import IdeasView from '../shared/IdeasView';
 import tracks from '../tracks';
 
@@ -121,7 +120,7 @@ const ContentLeft = styled.div`
 `;
 
 export interface QueryParametersUpdate {
-  sort?: Sort;
+  sort?: IdeaSortMethod;
   search?: string;
   idea_status?: string;
   topics?: string[];
@@ -205,7 +204,7 @@ const IdeasWithFiltersSidebar = ({
   );
 
   const handleSortOnChange = useCallback(
-    (sort: Sort) => {
+    (sort: IdeaSortMethod) => {
       trackEventByName(tracks.sortingFilter, {
         sort,
       });
