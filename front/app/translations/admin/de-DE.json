@@ -791,7 +791,7 @@
   "app.containers.Admin.pagesAndMenu.ContentBuilder.CraftComponents.OpenToParticipation.title": "Titel",
   "app.containers.Admin.pagesAndMenu.ContentBuilder.FollowedItems.defaultTitle": "Für Dich",
   "app.containers.Admin.pagesAndMenu.ContentBuilder.FollowedItems.noData2": "Dieses Widget wird den Nutzenden nur dann angezeigt, wenn es für sie relevante Projekte gibt, die auf den von ihnen gewählten Einstellungen basieren. Wenn Sie diese Meldung sehen, bedeutet das, dass Sie (der Admin) im Moment keinem Projekt folgen. Diese Meldung wird auf der eigentlichen Homepage nicht angezeigt.",
-  "app.containers.Admin.pagesAndMenu.ContentBuilder.FollowedItems.title": "Elemente, denen du folgst",
+  "app.containers.Admin.pagesAndMenu.ContentBuilder.FollowedItems.title": "Für Dich (Projekte, denen man folgt)",
   "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.emptyNameErrorText": "Geben Sie einen Namen für alle Sprachen an",
   "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.emptyProjectError": "Das Projekt kann nicht leer sein",
   "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.navbarItemName": "Name",
