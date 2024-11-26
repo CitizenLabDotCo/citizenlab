@@ -6,7 +6,7 @@ import useAdminPublications from 'api/admin_publications/useAdminPublications';
 
 import useLocalize from 'hooks/useLocalize';
 
-import AdminPubsCarrousel from '../_shared/AdminPubsCarrousel';
+import AdminPublicationsCarrousel from '../_shared/AdminPublicationsCarrousel';
 import EmptyState from '../_shared/EmptyState';
 
 import messages from './messages';
@@ -37,7 +37,7 @@ const Published = ({ titleMultiloc }: Props) => {
   }
 
   return (
-    <AdminPubsCarrousel
+    <AdminPublicationsCarrousel
       title={localize(titleMultiloc)}
       adminPublications={adminPublications}
       hasMore={!!hasNextPage}
