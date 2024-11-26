@@ -31,6 +31,8 @@ resource 'Impact tracking session' do
         browser_name: 'Chrome',
         os_name: 'macOS'
       })
+
+      expect(response_data[:id]).to eq ImpactTracking::Session.first.id
     end
 
     example 'Track the start of a session of a resident' do
