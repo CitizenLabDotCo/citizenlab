@@ -119,7 +119,6 @@ const EmailChange = () => {
           )}
         </StyledContentContainer>
         <Modal
-          fullScreen={false}
           width="580px"
           opened={openConfirmationModal}
           close={() => {

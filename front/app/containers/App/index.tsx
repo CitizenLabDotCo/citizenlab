@@ -94,13 +94,8 @@ const App = ({ children }: Props) => {
   const [userSuccessfullyDeleted, setUserSuccessfullyDeleted] = useState(false);
 
   const [locale, setLocale] = useState<SupportedLocale | null>(null);
-  const [disableScroll, setDisableScroll] = useState(false);
 
   const redirectsEnabled = useFeatureFlag({ name: 'redirects' });
-
-  const franceConnectLoginEnabled = useFeatureFlag({
-    name: 'franceconnect_login',
-  });
 
   useEffect(() => {
     if (appConfiguration && !isAppInitialized) {
@@ -319,13 +314,6 @@ const App = ({ children }: Props) => {
           alignItems="stretch"
           position="relative"
           background={colors.white}
-          /* When the fullscreen modal is enabled on a platform and
-           * is currently open, we want to disable scrolling on the
-           * app sitting below it (CL-1101).
-           * For instance, with a fullscreen modal, we want to
-           * be able to disable scrolling on the page behind the modal
-           */
-          overflow={disableScroll ? 'hidden' : undefined}
           minHeight="100vh"
         >
           <Meta />
@@ -340,13 +328,7 @@ const App = ({ children }: Props) => {
             </Suspense>
           </ErrorBoundary>
           <ErrorBoundary>
-            <Authentication
-              onToggleModal={(opened) => {
-                if (franceConnectLoginEnabled) {
-                  setDisableScroll(opened);
-                }
-              }}
-            />
+            <Authentication />
           </ErrorBoundary>
           <ErrorBoundary>
             <div id="modal-portal" />
