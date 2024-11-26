@@ -4,6 +4,7 @@ import { Title } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import { IIdeasFilterCounts } from 'api/ideas_filter_counts/types';
+import { IdeaSortMethod } from 'api/phases/types';
 
 import { QueryParameters } from 'containers/IdeasIndexPage';
 
@@ -11,8 +12,6 @@ import filterModalMessages from 'components/FiltersModal/messages';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
-
-import { Sort } from '../shared/Filters/SortFilterDropdown';
 
 import InputFilters from './InputFilters';
 
@@ -34,7 +33,7 @@ const Container = styled.div<{
   max-height: calc(100vh - ${({ maxHeightOffset }) => maxHeightOffset}px);
   position: sticky;
   top: ${({ top }) => top}px;
-  overflow-y: scroll;
+  overflow-y: auto;
   padding-left: 8px;
   padding-right: 8px;
 `;
@@ -49,7 +48,7 @@ interface Props {
   onSearch: (search: string) => void;
   onChangeStatus: (status: string | null) => void;
   onChangeTopics: (topics: string[] | null) => void;
-  onChangeSort: (sort: Sort) => void;
+  onChangeSort: (sort: IdeaSortMethod) => void;
 }
 
 const ContentRight = ({
