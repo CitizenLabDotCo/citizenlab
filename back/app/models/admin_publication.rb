@@ -69,6 +69,10 @@ class AdminPublication < ApplicationRecord
     where(publication_status: 'published')
   }
 
+  scope :draft, lambda {
+    where(publication_status: 'draft')
+  }
+
   scope :not_draft, lambda {
     where.not(publication_status: 'draft')
   }

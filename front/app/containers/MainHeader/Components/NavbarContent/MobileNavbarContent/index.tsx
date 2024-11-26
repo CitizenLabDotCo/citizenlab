@@ -1,4 +1,4 @@
-import React, { Suspense, useState } from 'react';
+import React, { lazy, Suspense, useState } from 'react';
 
 import { Box, Button, media, isRtl } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
@@ -17,7 +17,7 @@ import LanguageSelector from '../../LanguageSelector';
 import NotificationMenu from '../../NotificationMenu';
 import UserMenu from '../../UserMenu';
 
-import FullMobileNavMenu from './FullMobileNavMenu';
+const FullMobileNavMenu = lazy(() => import('./FullMobileNavMenu'));
 import ShowFullMenuButton from './ShowFullMenuButton';
 
 const RightContainer = styled(Box)`

@@ -11,22 +11,35 @@ resource 'Impact tracking session' do
   end
 
   post 'web_api/v1/sessions' do
+    with_options scope: :session do
+      parameter :referrer, 'The referrer URL of the user'
+    end
+
+    let(:referrer) { 'https://www.google.com' }
+
     example 'Track the start of a session of an unauthenticated user' do
+      header 'User-Agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36'
       do_request
-      expect(response_status).to eq 201
+      expect(response_status).to eq 200
       expect(ImpactTracking::Session.count).to eq 1
       expect(ImpactTracking::Session.first).to have_attributes({
         monthly_user_hash: be_present,
         created_at: be_present,
-        highest_role: nil
+        highest_role: nil,
+        referrer: referrer,
+        device_type: 'desktop_or_other',
+        browser_name: 'Chrome',
+        os_name: 'macOS'
       })
+
+      expect(response_data[:id]).to eq ImpactTracking::Session.first.id
     end
 
     example 'Track the start of a session of a resident' do
       resident = create(:user)
       header_token_for(resident)
       do_request
-      expect(response_status).to eq 201
+      expect(response_status).to eq 200
       expect(ImpactTracking::Session.count).to eq 1
       expect(ImpactTracking::Session.first).to have_attributes({
         highest_role: 'user',
@@ -58,7 +71,7 @@ resource 'Impact tracking session' do
       user = create(:admin)
       header_token_for(user)
       do_request
-      expect(response_status).to eq 201
+      expect(response_status).to eq 200
       expect(ImpactTracking::Session.count).to eq 1
       expect(ImpactTracking::Session.first).to have_attributes({
         highest_role: 'admin',
@@ -70,7 +83,7 @@ resource 'Impact tracking session' do
       user = create(:super_admin)
       header_token_for(user)
       do_request
-      expect(response_status).to eq 201
+      expect(response_status).to eq 200
       expect(ImpactTracking::Session.count).to eq 1
       expect(ImpactTracking::Session.first).to have_attributes({
         highest_role: 'super_admin',
