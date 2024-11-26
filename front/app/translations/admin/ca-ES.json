@@ -1641,6 +1641,7 @@
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabel": "Selecció",
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabelDescription": "El projecte es mostrarà als filtres d'àrea seleccionats.",
   "app.containers.AdminPage.ProjectEdit.cardDisplay": "Targetes",
+  "app.containers.AdminPage.ProjectEdit.commens_countSortingMethod": "El més discutit",
   "app.containers.AdminPage.ProjectEdit.conductVotingOrPrioritizationDescriptionText2": "Seleccioneu un mètode de votació i feu que els usuaris prioritzin entre algunes opcions diferents.",
   "app.containers.AdminPage.ProjectEdit.conductVotingOrPrioritizationText": "Realitzar un exercici de votació o priorització",
   "app.containers.AdminPage.ProjectEdit.createAProjectFromATemplate": "Creeu un projecte a partir d'una plantilla",
