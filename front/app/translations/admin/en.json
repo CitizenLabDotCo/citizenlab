@@ -1641,6 +1641,7 @@
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabel": "Selection",
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabelDescription": "The project will show on selected area filter(s).",
   "app.containers.AdminPage.ProjectEdit.cardDisplay": "Cards",
+  "app.containers.AdminPage.ProjectEdit.commens_countSortingMethod": "Most discussed",
   "app.containers.AdminPage.ProjectEdit.conductVotingOrPrioritizationDescriptionText2": "Select a voting method, and have users prioritize between a few different options.",
   "app.containers.AdminPage.ProjectEdit.conductVotingOrPrioritizationText": "Conduct a voting or prioritization exercise",
   "app.containers.AdminPage.ProjectEdit.createAProjectFromATemplate": "Create a project from a template",

@@ -1641,6 +1641,7 @@
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabel": "Izbor",
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabelDescription": "Projekat će se prikazati u izabranom filteru(-ima) područja.",
   "app.containers.AdminPage.ProjectEdit.cardDisplay": "U listi",
+  "app.containers.AdminPage.ProjectEdit.commens_countSortingMethod": "Most discussed",
   "app.containers.AdminPage.ProjectEdit.conductVotingOrPrioritizationDescriptionText2": "Select a voting method, and have users prioritize between a few different options.",
   "app.containers.AdminPage.ProjectEdit.conductVotingOrPrioritizationText": "Спроведите гласање или вежбу одређивања приоритета",
   "app.containers.AdminPage.ProjectEdit.createAProjectFromATemplate": "Kreirajte projekat na osnovu šablona",
