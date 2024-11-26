@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 
-import { Box, Color, colors, media } from '@citizenlab/cl2-component-library';
+import { Color, colors, media } from '@citizenlab/cl2-component-library';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import CSSTransition from 'react-transition-group/CSSTransition';
@@ -66,6 +66,69 @@ const StyledFocusOn = styled(FocusOn)`
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  overflow-y: auto;
+`;
+
+const Modal = styled.div<{ contentBgColor?: Color }>`
+  position: fixed;
+  inset: 0; /* Shorthand for top, right, bottom, left: 0 */
+  display: flex;
+  flex-direction: column;
+  background: ${({ contentBgColor }) =>
+    contentBgColor ? colors[contentBgColor] : colors.white};
+  z-index: 100;
+  overflow: hidden;
+
+  height: 100vh; /* Fallback for height */
+  @supports (height: 100dvh) {
+    height: 100dvh; /* Dynamic viewport height for better mobile handling */
+  }
+
+  z-index: 10004;
+
+  &.modal-enter {
+    transform: translateY(100vh);
+
+    &.modal-enter-active {
+      transform: translateY(0px);
+      transition: all ${slideInOutTimeout}ms ${slideInOutEasing};
+    }
+  }
+
+  &.modal-exit {
+    transform: translateY(0px);
+
+    &.modal-exit-active {
+      transform: translateY(100vh);
+      transition: all ${slideInOutTimeout}ms ${slideInOutEasing};
+    }
+  }
+`;
+
+const ModalTopBar = styled.div`
+  position: sticky;
+  top: 0;
+  border-bottom: 1px solid #e0e0e0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const ModalContent = styled.div`
+  flex: 1;
+  overflow-y: auto;
+`;
+
+const ModalBottomBar = styled.div`
+  position: sticky;
+  bottom: 0;
+  background: #f8f9fa;
+  padding: 1rem;
+  border-top: 1px solid #e0e0e0;
+  z-index: 10;
+  display: flex;
+  justify-content: flex-end;
 `;
 
 interface InputProps {
@@ -129,39 +192,39 @@ class FullscreenModal extends PureComponent<Props, State> {
         enter={true}
         exit={true}
       >
-        <Container
+        <Modal
           id="e2e-fullscreenmodal-content"
           className={[bottomBar ? 'hasBottomBar' : '', className].join()}
-          windowHeight={windowHeight}
+          // windowHeight={windowHeight}
           contentBgColor={contentBgColor}
         >
           <StyledFocusOn autoFocus>
-            {topBar}
-            <Box
+            <ModalTopBar>{topBar}</ModalTopBar>
+            <ModalContent
               className="fullscreenmodal-scrollcontainer"
-              flex="1"
-              overflowY="auto"
+              // flex="1"
+              // overflowY="auto"
             >
               {children}
-            </Box>
+            </ModalContent>
             {bottomBar && (
-              <Box
-                position="fixed"
-                w="100%"
-                h={`${stylingConsts.mobileTopBarHeight}px`}
-                bottom="0"
-                left="0"
-                padding="40px"
-                background="white"
-                display="flex"
-                alignItems="center"
-                borderTop={`1px solid ${colors.grey400}`}
+              <ModalBottomBar
+              // position="fixed"
+              // w="100%"
+              // h={`${stylingConsts.mobileTopBarHeight}px`}
+              // bottom="0"
+              // left="0"
+              // padding="40px"
+              // background="white"
+              // display="flex"
+              // alignItems="center"
+              // borderTop={`1px solid ${colors.grey400}`}
               >
                 {bottomBar}
-              </Box>
+              </ModalBottomBar>
             )}
           </StyledFocusOn>
-        </Container>
+        </Modal>
       </CSSTransition>
     );
   }

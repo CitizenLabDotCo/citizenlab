@@ -26,13 +26,14 @@ const TopBar = ({ onClose, onReset }: Props) => {
 
   return (
     <Box
-      height={`${theme.mobileTopBarHeight}px`}
+      height={`${theme.mobileMenuHeight}px`}
       bgColor={colors.white}
       borderBottom={`solid 1px ${lighten(0.4, colors.textSecondary)}`}
       display="flex"
       alignItems="center"
       justifyContent="space-between"
       px="16px"
+      w="100%"
     >
       <Title
         as="h2"
