@@ -51,7 +51,11 @@ const OptionLabel = ({
   if (hasNextPage) {
     return (
       <Button
-        onClick={fetchNextPage}
+        onClick={(e) => {
+          e.stopPropagation();
+          e.preventDefault();
+          fetchNextPage();
+        }}
         processing={isLoading}
         icon="refresh"
         buttonStyle="text"

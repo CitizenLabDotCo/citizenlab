@@ -10,12 +10,12 @@ import useAdminPublications from 'api/admin_publications/useAdminPublications';
 import selectStyles from 'components/UI/MultipleSelect/styles';
 
 import OptionLabel from './OptionLabel';
-import { getOptionId, getOptions } from './utils';
+import { LoadMore, getOptionId, getOptions } from './utils';
 
 interface Props {
   /* adminPublicationsIds is undefined if fetching new selections */
   adminPublicationIds?: string[];
-  onChange: (option?: IAdminPublicationData) => void;
+  onChange: (option?: IAdminPublicationData | LoadMore) => void;
 }
 
 const AdminPublicationSearchInput = ({
@@ -59,9 +59,8 @@ const AdminPublicationSearchInput = ({
       <ReactSelect
         inputId="admin-publication-search-input"
         isSearchable
-        blurInputOnSelect
         backspaceRemovesValue={false}
-        menuShouldScrollIntoView={false}
+        menuShouldScrollIntoView={true}
         value={null}
         inputValue={visibleSearchTerm}
         placeholder={''}
