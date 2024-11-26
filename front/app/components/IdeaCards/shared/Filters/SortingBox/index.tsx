@@ -3,7 +3,7 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 
-import { IdeaDefaultSortMethod } from 'api/phases/types';
+import { IdeaSortMethod } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
 
 import InputFilterCollapsible from 'components/FilterBoxes/InputFilterCollapsible';
@@ -15,7 +15,7 @@ import messages from '../messages';
 import SortTypeButton from './SortTypeButton';
 
 type SortingBoxProps = {
-  handleSortOnChange: (sort: IdeaDefaultSortMethod) => void;
+  handleSortOnChange: (sort: IdeaSortMethod) => void;
   phaseId?: string;
 };
 const SortingBox = ({ handleSortOnChange, phaseId }: SortingBoxProps) => {
@@ -34,6 +34,11 @@ const SortingBox = ({ handleSortOnChange, phaseId }: SortingBoxProps) => {
           sortType="popular"
           handleSortOnChange={handleSortOnChange}
           isSelected={currentSortType === 'popular'}
+        />
+        <SortTypeButton
+          sortType="comments_count"
+          handleSortOnChange={handleSortOnChange}
+          isSelected={currentSortType === 'comments_count'}
         />
         <SortTypeButton
           sortType="trending"
