@@ -27,8 +27,8 @@ const Container = styled.div<{
   background: ${({ contentBgColor }) =>
     contentBgColor ? colors[contentBgColor] : colors.white};
   width: ${({ windowWidth }) => windowWidth}px; /* Fallback for width */
-  @supports (width: 100vw) {
-    width: 100vw; /* Dynamic viewport width for better mobile handling */
+  @supports (width: 100dvw) {
+    width: 100dvw; /* Dynamic viewport width for better mobile handling */
   }
   height: ${({ windowHeight }) => windowHeight}px; /* Fallback for height */
   @supports (height: 100dvh) {
