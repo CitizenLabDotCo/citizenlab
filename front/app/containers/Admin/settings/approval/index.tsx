@@ -1,6 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
-import { IOption, Button, Box } from '@citizenlab/cl2-component-library';
+import {
+  IOption,
+  Button,
+  Box,
+  Spinner,
+} from '@citizenlab/cl2-component-library';
 
 import useUpdateUser from 'api/users/useUpdateUser';
 import useUsers from 'api/users/useUsers';
@@ -14,82 +19,78 @@ import {
 import MultipleSelect from 'components/UI/MultipleSelect';
 
 import { useIntl } from 'utils/cl-intl';
+import { getFullName } from 'utils/textUtils';
 
 import messages from './messages';
 
 const Approval = () => {
-  const [addedUsers, setAddedUsers] = React.useState<IOption[]>([]);
-  const [removedUsers, setRemovedUsers] = React.useState<IOption[]>([]);
   const { formatMessage } = useIntl();
-  const { mutate: updateUser } = useUpdateUser();
+
+  const [selectedUsers, setSelectedUsers] = useState<IOption[]>([]);
+  const { mutate: updateUser, isLoading } = useUpdateUser();
   const { data: adminUsers } = useUsers({
     can_admin: true,
   });
-
-  const { data: approvers } = useUsers({
-    can_approve: true,
+  const { data: projectReviewers } = useUsers({
+    project_reviewer: true,
   });
 
-  if (!adminUsers || !approvers) return null;
+  useEffect(() => {
+    if (projectReviewers) {
+      setSelectedUsers(
+        projectReviewers.data.map((user) => ({
+          value: user.id,
+          label: `${user.attributes.first_name} ${user.attributes.last_name}`,
+        }))
+      );
+    }
+  }, [projectReviewers]);
+
+  if (!adminUsers || !projectReviewers) return <Spinner />;
 
   const options = adminUsers.data.map((user) => ({
     value: user.id,
-    label: `${user.attributes.first_name} ${user.attributes.last_name}`,
-  }));
-
-  const selectedOptions = approvers.data.map((user) => ({
-    value: user.id,
-    label: `${user.attributes.first_name} ${user.attributes.last_name}`,
+    label: getFullName(user),
   }));
 
   const handleChange = (value: IOption[]) => {
-    const removedUsers = selectedOptions.filter(
-      (selectedOption) =>
-        !value.find((option) => option.value === selectedOption.value)
-    );
-
-    const addedUsers = value.filter(
-      (option) =>
-        !selectedOptions.find(
-          (selectedOption) => selectedOption.value === option.value
-        )
-    );
-
-    setAddedUsers((users) => [...users, ...addedUsers]);
-    setRemovedUsers((users) => [...users, ...removedUsers]);
+    setSelectedUsers(value);
   };
 
   const handleSave = () => {
-    if (removedUsers.length) {
-      removedUsers.forEach((user) => {
-        updateUser({
-          userId: user.value,
-          roles: [
-            {
-              type: 'admin',
-              approver: false,
-            },
-          ],
-        });
-      });
-    }
+    const currentUsers = selectedUsers.map((user) => user.value);
 
-    if (addedUsers.length) {
-      addedUsers.forEach((user) => {
-        updateUser({
-          userId: user.value,
-          roles: [
-            {
-              type: 'admin',
-              approver: true,
-            },
-          ],
-        });
-      });
-    }
+    const addedUsers = currentUsers.filter(
+      (userId) => !projectReviewers.data.find((user) => user.id === userId)
+    );
 
-    setAddedUsers([]);
-    setRemovedUsers([]);
+    const removedUsers = projectReviewers.data
+      .map((user) => user.id)
+      .filter((userId) => !currentUsers.includes(userId));
+
+    addedUsers.forEach((user) => {
+      updateUser({
+        userId: user.value,
+        roles: [
+          {
+            type: 'admin',
+            project_reviewer: true,
+          },
+        ],
+      });
+    });
+
+    removedUsers.forEach((user) => {
+      updateUser({
+        userId: user,
+        roles: [
+          {
+            type: 'admin',
+            project_reviewer: false,
+          },
+        ],
+      });
+    });
   };
 
   return (
@@ -101,14 +102,18 @@ const Approval = () => {
         </SectionDescription>
         <SectionField>
           <MultipleSelect
-            value={selectedOptions}
+            value={selectedUsers}
             onChange={handleChange}
             options={options}
             label={formatMessage(messages.selectApprovers)}
           />
         </SectionField>
         <Box display="flex" mt="20px">
-          <Button buttonStyle="admin-dark" onClick={handleSave}>
+          <Button
+            buttonStyle="admin-dark"
+            onClick={handleSave}
+            processing={isLoading}
+          >
             {formatMessage(messages.save)}
           </Button>
         </Box>

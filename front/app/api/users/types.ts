@@ -137,5 +137,5 @@ export interface IQueryParameters {
   // the folder
   is_not_folder_moderator?: string;
   // Admin users that can approve project review requests
-  can_approve?: boolean;
+  project_reviewer?: boolean;
 }
