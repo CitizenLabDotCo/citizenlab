@@ -63,6 +63,10 @@ export default defineMessages({
     id: 'app.containers.IdeaCards.oldest',
     defaultMessage: 'Oldest',
   },
+  mostDiscussed: {
+    id: 'app.containers.IdeaCards.mostDiscussed',
+    defaultMessage: 'Most discussed',
+  },
   map: {
     id: 'app.containers.IdeaCards.map',
     defaultMessage: 'Map',
