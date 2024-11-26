@@ -50,6 +50,7 @@ import OpenToParticipation, {
 } from '../Widgets/OpenToParticipation';
 import Projects, { projectsTitle } from '../Widgets/Projects';
 import projectsMessages from '../Widgets/Projects/messages';
+import Published, { publishedTitle } from '../Widgets/Published';
 import Selection, { selectionTitle } from '../Widgets/Selection';
 import Spotlight, {
   spotlightTitle,
@@ -126,6 +127,14 @@ const HomepageBuilderToolbox = ({
             }
             icon="projects"
             label={formatMessage(followedItemsTitle)}
+          />
+        )}
+        {newHomepageWidgetsEnabled && (
+          <DraggableElement
+            id="e2e-draggable-published"
+            component={<Published titleMultiloc={toMultiloc(publishedTitle)} />}
+            icon="check-circle"
+            label={formatMessage(publishedTitle)}
           />
         )}
         {newHomepageWidgetsEnabled && (

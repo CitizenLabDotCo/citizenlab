@@ -13,7 +13,7 @@ import messages from '../messages';
 
 import AdminPublicationSearchInput from './AdminPublicationSearchInput';
 import AdminPublicationsList from './AdminPublicationsList';
-import { getNewIdsOnDrop } from './utils';
+import { LoadMore, getNewIdsOnDrop, isAdminPublication } from './utils';
 
 const Settings = () => {
   const {
@@ -46,9 +46,10 @@ const Settings = () => {
         (adminPublication) => adminPublication.id
       );
 
-  const handleAdd = (adminPublication?: IAdminPublicationData) => {
+  const handleAdd = (adminPublication?: IAdminPublicationData | LoadMore) => {
     if (!adminPublication) return;
     if (!selectedAdminPublicationsIds) return;
+    if (!isAdminPublication(adminPublication)) return;
 
     setProp((props) => {
       props.adminPublicationIds = [
