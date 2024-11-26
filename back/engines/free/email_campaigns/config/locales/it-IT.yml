@@ -272,7 +272,7 @@ it:
       main_header: '%{authorNameFirst} Ti ho citato in un commento interno.'
       preheader: '%{authorNameFull} Ti ho citato in un commento interno.'
     moderator_digest:
-      subject: 'Il tuo rapporto settimanale del project manager di %{time}'
+      subject: 'Il tuo rapporto settimanale del project manager di %{project_title}'
       preheader: 'Messaggi del project manager di %{organizationName}'
       title_your_weekly_report: '%{firstName}, il tuo rapporto settimanale'
       text_introduction: 'Abbiamo curato per te gli input che hanno generato più attività nell''ultima settimana. Scopri cosa sta succedendo con il tuo progetto!'
