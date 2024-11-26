@@ -53,7 +53,7 @@
   "app.components.AuthProviders.verificationRequired": "Verifizierung erforderlich",
   "app.components.Author.a11yPostedBy": "Gepostet von",
   "app.components.AvatarBubbles.numberOfParticipants1": "{numberOfParticipants, plural, one {1 teilnehmer} other {{numberOfParticipants} teilnehmende}}",
-  "app.components.AvatarBubbles.participant": "teilnehmer",
+  "app.components.AvatarBubbles.participant": "Teilnehmende",
   "app.components.AvatarBubbles.participants1": "Teilnehmende",
   "app.components.CityLogoSection.iframeTitle": "Weitere Informationen zu {orgName}",
   "app.components.Comments.cancel": "Abbrechen",
