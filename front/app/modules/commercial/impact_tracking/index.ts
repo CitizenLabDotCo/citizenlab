@@ -35,16 +35,22 @@ const trackSessionStarted = async () => {
     },
   });
 
-  if (response.ok) {
+  try {
     const data = await response.json();
+    console.log('"response.json()" successful!');
+    console.log(data);
     sessionId = data.data.id;
-
-    // Because the first page view depends on the response of the session creation,
-    // we handle it here and ignore the first page view event (see below).
-    await trackPageView(window.location.pathname);
-  } else {
-    console.error('Failed to create session');
+  } catch (e) {
+    console.log('Error when doing "response.json()"');
   }
+
+  console.log('RESPONSE:');
+  console.log(response);
+
+  // Because the first page view depends on the response of the session creation,
+  // we handle it here and ignore the first page view event (see below).
+  if (!sessionId) return;
+  await trackPageView(window.location.pathname);
 };
 
 const upgradeSession = () => {
