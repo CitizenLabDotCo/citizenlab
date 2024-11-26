@@ -1,5 +1,7 @@
 import { Multiloc, IRelationship } from 'typings';
 
+import { IIdeaQueryParameters } from 'api/ideas/types';
+
 import { Keys } from 'utils/cl-react-query/types';
 
 import topicsKeys from './keys';
@@ -60,10 +62,16 @@ export interface ITopics {
 export interface ITopicsQueryParams {
   code?: Code;
   excludeCode?: Code;
-  sort?: 'new' | 'custom' | 'projects_count' | '-projects_count';
+  sort?:
+    | 'new'
+    | 'custom'
+    | 'projects_count'
+    | '-projects_count'
+    | '-ideas_count';
   forHomepageFilter?: boolean;
   forOnboarding?: boolean;
   includeStaticPages?: boolean;
+  ideas?: IIdeaQueryParameters;
 }
 
 export interface ITopicAdd {

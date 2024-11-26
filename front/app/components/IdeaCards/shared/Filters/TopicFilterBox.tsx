@@ -17,11 +17,12 @@ interface Props {
 
 const TopicFilterBox = memo<Props>(
   ({ selectedTopicIds, selectedIdeaFilters, onChange, className }) => {
-    const { data: topics } = useTopics();
-
-    // Remove topics from selected idea filters so we get counts that aren't impacted by the selected topics.
-    // Otherwise the counts change each time a topic is selected/deselected which isn't expected behaviour.
     const ideaFiltersWithoutTopics = omit(selectedIdeaFilters, 'topics');
+
+    const { data: topics } = useTopics({
+      sort: '-ideas_count',
+      ideas: ideaFiltersWithoutTopics,
+    });
 
     const { data: ideasFilterCounts } = useIdeasFilterCounts({
       ...ideaFiltersWithoutTopics,

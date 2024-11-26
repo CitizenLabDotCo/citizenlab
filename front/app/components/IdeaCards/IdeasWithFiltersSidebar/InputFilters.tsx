@@ -8,7 +8,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import { IQueryParameters } from 'api/ideas/types';
+import { IIdeaQueryParameters } from 'api/ideas/types';
 import { IIdeasFilterCounts } from 'api/ideas_filter_counts/types';
 
 import SearchInput from 'components/UI/SearchInput';
@@ -74,7 +74,7 @@ export interface Props {
   filtersActive: boolean;
   ideasFilterCounts: IIdeasFilterCounts | NilOrError;
   numberOfSearchResults: number;
-  selectedIdeaFilters: Partial<IQueryParameters>;
+  selectedIdeaFilters: Partial<IIdeaQueryParameters>;
   onClearFilters: () => void;
   onSearch: (searchTerm: string) => void;
   onChangeStatus: (ideaStatus: string | null) => void;

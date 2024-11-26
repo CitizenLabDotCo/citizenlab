@@ -4,9 +4,9 @@ import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import ideasKeys from './keys';
-import { IMiniIdeas, IQueryParameters, IdeasKeys } from './types';
+import { IMiniIdeas, IIdeaQueryParameters, IdeasKeys } from './types';
 
-const fetchMiniatureIdeas = (queryParameters: IQueryParameters) =>
+const fetchMiniatureIdeas = (queryParameters: IIdeaQueryParameters) =>
   fetcher<IMiniIdeas>({
     path: `/ideas/mini`,
     action: 'get',
@@ -17,7 +17,7 @@ const fetchMiniatureIdeas = (queryParameters: IQueryParameters) =>
   });
 
 const useMiniatureIdeas = (
-  queryParams: IQueryParameters,
+  queryParams: IIdeaQueryParameters,
   { enabled = true }: { enabled: boolean } = { enabled: true }
 ) => {
   return useQuery<IMiniIdeas, CLErrors, IMiniIdeas, IdeasKeys>({
