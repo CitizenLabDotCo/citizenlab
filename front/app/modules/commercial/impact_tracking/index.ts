@@ -35,16 +35,12 @@ const trackSessionStarted = async () => {
     },
   });
 
-  if (response.ok) {
-    const data = await response.json();
-    sessionId = data.data.id;
+  const data = await response.json();
+  sessionId = data.data.id;
 
-    // Because the first page view depends on the response of the session creation,
-    // we handle it here and ignore the first page view event (see below).
-    await trackPageView(window.location.pathname);
-  } else {
-    console.error('Failed to create session');
-  }
+  // Because the first page view depends on the response of the session creation,
+  // we handle it here and ignore the first page view event (see below).
+  await trackPageView(window.location.pathname);
 };
 
 const upgradeSession = () => {
@@ -84,6 +80,7 @@ const configuration: ModuleConfiguration = {
     trackSessionStarted();
 
     pageChanges$.subscribe((e) => {
+      // Ignore first page view event (only start tracking here after session creation)
       if (!sessionId) return;
       trackPageView(e.path);
     });
