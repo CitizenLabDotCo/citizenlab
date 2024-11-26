@@ -22,8 +22,9 @@ export default function useParticipants({
   const { data: analytics } = useParticipantsLive(
     {
       project_id: projectId,
-      start_at: startAtMoment?.toISOString(),
-      end_at: endAtMoment?.toISOString(),
+      // We use local time to avoid timezone issues and use the timezone of the user making changes
+      start_at: startAtMoment?.local().format('YYYY-MM-DD'),
+      end_at: endAtMoment?.local().format('YYYY-MM-DD'),
       resolution,
       ...getComparedPeriod(resolution),
     },
