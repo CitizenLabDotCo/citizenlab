@@ -35,7 +35,11 @@ const getCTAMessage = ({
       return formatMessage(messages.vote);
     }
   } else if (participation_method === 'information') {
-    return formatMessage(messages.learnMore);
+    const hasReport = !!phase.relationships.report?.data;
+
+    return hasReport
+      ? formatMessage(messages.readTheReport)
+      : formatMessage(messages.learnMore);
   } else if (participation_method === 'survey') {
     return formatMessage(messages.takeTheSurvey);
   } else if (participation_method === 'native_survey') {

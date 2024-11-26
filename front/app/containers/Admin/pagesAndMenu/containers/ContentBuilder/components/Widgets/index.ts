@@ -30,6 +30,9 @@ import { MessageDescriptor } from 'utils/cl-intl';
 import Proposals from './_deprecated/Proposals';
 import CallToAction, { callToActionTitle } from './CallToAction';
 import Events, { eventsTitle } from './Events';
+import FinishedOrArchived, {
+  finishedOrArchivedTitle,
+} from './FinishedOrArchived';
 import FollowedItems, { followedItemsTitle } from './FollowedItems';
 import HomepageBanner, { homepageBannerTitle } from './HomepageBanner';
 import OpenToParticipation, {
@@ -53,6 +56,7 @@ export const WIDGETS = {
   CallToAction,
   Events,
   FollowedItems,
+  FinishedOrArchived,
   HomepageBanner,
   OpenToParticipation,
   Projects,
@@ -82,6 +86,7 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   CallToAction: callToActionTitle,
   Events: eventsTitle,
   FollowedItems: followedItemsTitle,
+  FinishedOrArchived: finishedOrArchivedTitle,
   HomepageBanner: homepageBannerTitle,
   OpenToParticipation: openToParticipationTitle,
   Projects: projectsTitle,
@@ -112,6 +117,7 @@ const WIDGETS_WITHOUT_POINTER_EVENTS = new Set<string>([
   'CallToAction',
   'Events',
   'FollowedItems',
+  'FinishedOrArchived',
   'HomepageBanner',
   'OpenToParticipation',
   'Projects',

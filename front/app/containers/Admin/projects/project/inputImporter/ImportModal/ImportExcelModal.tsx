@@ -94,7 +94,6 @@ const ImportExcelModal = ({ open, onClose, onImport }: Props) => {
 
   return (
     <Modal
-      fullScreen={false}
       width="780px"
       opened={open}
       close={onClose}

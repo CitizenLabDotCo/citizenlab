@@ -14,6 +14,20 @@ resource 'Topics' do
       parameter :size, 'Number of topics per page'
     end
     parameter :code, 'Filter by code', required: false
+    parameter :sort, 'Either custom, new, -new, projects_count, -projects_count, ideas_count or -ideas_count. Defaults to custom.'
+    with_options scope: :ideas do
+      parameter :topics, 'Filter by topics (OR)', required: false
+      parameter :projects, 'Filter by projects (OR)', required: false
+      parameter :phase, 'Filter by project phase', required: false
+      parameter :author, 'Filter by author (user id)', required: false
+      parameter :idea_status, 'Filter by status (idea status id)', required: false
+      parameter :search, 'Filter by searching in title and body', required: false
+      parameter :publication_status, 'Return only ideas with the specified publication status; returns all pusblished ideas by default', required: false
+      parameter :bounding_box, 'Given an [x1,y1,x2,y2] array of doubles (x being latitude and y being longitude), the idea markers are filtered to only retain those within the (x1,y1)-(x2,y2) box.', required: false
+      parameter :project_publication_status, "Filter by project publication_status. One of #{AdminPublication::PUBLICATION_STATUSES.join(', ')}", required: false
+      parameter :feedback_needed, 'Filter out ideas that need feedback', required: false
+      parameter :filter_trending, 'Filter out truly trending ideas', required: false
+    end
 
     before do
       @code1, @code2 = Topic::CODES.take(2)
@@ -78,6 +92,27 @@ resource 'Topics' do
       assert_status 200
       expect(response_data.size).to eq 5
       expect(response_data.pluck(:id)).to eq [@topics[2].id, @topics[0].id, @topics[4].id, @topics[3].id, @topics[1].id]
+    end
+
+    describe do
+      before do
+        @author = create(:user)
+        @topics[1].update!(code: 'other')
+        create(:idea, author: @author, topics: @topics[1..2])
+        create(:idea, author: @author, topics: [])
+        create(:idea, author: @author, topics: @topics[1..1])
+        create(:idea, author: create(:user), topics: @topics[1..1])
+        create(:idea, author: @author, topics: @topics[2..3])
+      end
+
+      let(:sort) { '-ideas_count' }
+      let(:author) { @author.id }
+
+      example_request 'List all topics sorted by ideas count' do
+        assert_status 200
+        expect(response_data.size).to eq 3
+        expect(response_data.pluck(:id)).to eq [@topics[2].id, @topics[3].id, @topics[1].id]
+      end
     end
 
     context 'when citizen' do

@@ -14,14 +14,14 @@ RSpec.shared_examples 'publication filtering model' do |model_name|
     before { resident_header_token }
 
     let(:models) { create_list(model_name, 4) }
-    let(:projects) do
+    let(:topic_projects) do
       %w[published archived published].map.with_index do |status, index|
         create(:project, admin_publication_attributes: { publication_status: status }, model_name_plural => [models[index]])
       end
     end
 
     example "List only selected #{model_name_plural} does not include #{model_name_plural} only used by draft projects" do
-      projects[0].update!(admin_publication_attributes: { publication_status: 'draft' })
+      topic_projects[0].update!(admin_publication_attributes: { publication_status: 'draft' })
 
       do_request(for_homepage_filter: true)
       expect(status).to eq(200)
@@ -29,8 +29,8 @@ RSpec.shared_examples 'publication filtering model' do |model_name|
     end
 
     example "List only selected #{model_name_plural} does not include #{model_name_plural} only used by projects in draft folders" do
-      create(:project_folder, projects: projects[0])
-      create(:project_folder, admin_publication_attributes: { publication_status: 'draft' }, projects: projects[1])
+      create(:project_folder, projects: topic_projects[0])
+      create(:project_folder, admin_publication_attributes: { publication_status: 'draft' }, projects: topic_projects[1])
 
       do_request(for_homepage_filter: true)
       expect(status).to eq(200)
@@ -39,10 +39,10 @@ RSpec.shared_examples 'publication filtering model' do |model_name|
 
     example "List only selected #{model_name_plural} does not include #{model_name_plural} only used by projects not visible to user" do
       group = create(:group)
-      create(:groups_project, group_id: group.id, project_id: projects[0].id)
+      create(:groups_project, group_id: group.id, project_id: topic_projects[0].id)
 
-      projects[0].update!(visible_to: 'groups')
-      projects[1].update!(visible_to: 'admins')
+      topic_projects[0].update!(visible_to: 'groups')
+      topic_projects[1].update!(visible_to: 'admins')
 
       do_request(for_homepage_filter: true)
       expect(status).to eq(200)

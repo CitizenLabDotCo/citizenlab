@@ -25,4 +25,8 @@ export default defineMessages({
     id: 'app.components.IdeaCards.filters.oldest',
     defaultMessage: 'Old',
   },
+  mostDiscussed: {
+    id: 'app.components.IdeaCards.filters.mostDiscussed',
+    defaultMessage: 'Most discussed',
+  },
 });

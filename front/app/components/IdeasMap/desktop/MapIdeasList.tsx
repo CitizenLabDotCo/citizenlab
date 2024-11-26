@@ -13,12 +13,12 @@ import styled from 'styled-components';
 
 import useIdeaJsonFormSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
 import useIdeaMarkers from 'api/idea_markers/useIdeaMarkers';
+import { IdeaSortMethod } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
-import { ideaDefaultSortMethodFallback } from 'api/phases/utils';
+import { IdeaSortMethodFallback } from 'api/phases/utils';
 
 import FiltersMapView from 'components/IdeaCards/IdeasWithFiltersSidebar/FiltersMapView';
 import { Props as InputFiltersProps } from 'components/IdeaCards/IdeasWithFiltersSidebar/InputFilters';
-import { Sort } from 'components/IdeaCards/shared/Filters/SortFilterDropdown';
 import Centerer from 'components/UI/Centerer';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -125,9 +125,9 @@ const MapIdeasList = memo<Props>(
     const { data: phase } = usePhase(phaseId);
 
     const sort =
-      (searchParams.get('sort') as Sort | null) ??
+      (searchParams.get('sort') as IdeaSortMethod | null) ??
       phase?.data.attributes.ideas_order ??
-      ideaDefaultSortMethodFallback;
+      IdeaSortMethodFallback;
     const search = searchParams.get('search');
     const topicsParam = searchParams.get('topics');
     const topics: string[] = topicsParam ? JSON.parse(topicsParam) : [];
