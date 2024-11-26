@@ -1,6 +1,9 @@
 import createRoutes from 'routes';
 
+import { API_PATH } from 'containers/App/constants';
+
 import { events$, pageChanges$ } from 'utils/analytics';
+import { getJwt } from 'utils/auth/jwt';
 import fetcher from 'utils/cl-react-query/fetcher';
 import matchPath, { getAllPathsFromRoutes } from 'utils/matchPath';
 import { ModuleConfiguration } from 'utils/moduleUtils';
@@ -12,28 +15,42 @@ const signUpInTracks = {
 
 let sessionId: string;
 let allAppPaths: string[] | undefined;
-let firstPageViewTracked = false;
 
 const trackSessionStarted = async () => {
   // eslint-disable-next-line
   const referrer = document.referrer ?? window.frames?.top?.document.referrer;
 
-  const response: any = await fetcher({
-    path: `/sessions`,
-    action: 'post',
-    body: {
+  const jwt = getJwt();
+
+  const response = await fetch(`${API_PATH}/sessions`, {
+    method: 'POST',
+    body: JSON.stringify({
       session: {
         referrer,
       },
+    }),
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${jwt}`,
     },
   });
 
-  sessionId = response.data.id;
+  try {
+    const data = await response.json();
+    console.log('"response.json()" successful!');
+    console.log(data);
+    sessionId = data.data.id;
+  } catch (e) {
+    console.log('Error when doing "response.json()"');
+  }
+
+  console.log('RESPONSE:');
+  console.log(response);
 
   // Because the first page view depends on the response of the session creation,
   // we handle it here and ignore the first page view event (see below).
+  if (!sessionId) return;
   await trackPageView(window.location.pathname);
-  firstPageViewTracked = true;
 };
 
 const upgradeSession = () => {
@@ -73,7 +90,7 @@ const configuration: ModuleConfiguration = {
     trackSessionStarted();
 
     pageChanges$.subscribe((e) => {
-      if (!firstPageViewTracked) return;
+      if (!sessionId) return;
       trackPageView(e.path);
     });
 
