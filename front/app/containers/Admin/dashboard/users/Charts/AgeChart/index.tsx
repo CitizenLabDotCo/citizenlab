@@ -11,7 +11,6 @@ import messages from 'containers/Admin/dashboard/messages';
 import GraphCard from 'components/admin/GraphCard';
 
 import { useIntl } from 'utils/cl-intl';
-import { momentToIsoDate } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
 import Chart from './Chart';
@@ -35,8 +34,8 @@ const AgeChart = ({
 
   const { data: usersByAge } = useDemographicsLive({
     custom_field_id: customFieldId,
-    start_at: startAt ? momentToIsoDate(moment(startAt)) : null,
-    end_at: endAt ? momentToIsoDate(moment(endAt)) : null,
+    start_at: startAt ? moment(startAt).local().format('YYYY-MM-DD') : null,
+    end_at: endAt ? moment(endAt).local().format('YYYY-MM-DD') : null,
     group_id: currentGroupFilter,
   });
   const ageSerie = convertToGraphFormat(
