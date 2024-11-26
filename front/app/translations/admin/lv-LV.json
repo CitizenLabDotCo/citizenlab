@@ -1641,6 +1641,7 @@
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabel": "Atlase",
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabelDescription": "Projekts būs redzams izvēlētajā(-os) zonas(-u) filtrā(-os).",
   "app.containers.AdminPage.ProjectEdit.cardDisplay": "Kartes",
+  "app.containers.AdminPage.ProjectEdit.commens_countSortingMethod": "Visvairāk apspriesto",
   "app.containers.AdminPage.ProjectEdit.conductVotingOrPrioritizationDescriptionText2": "Izvēlieties balsošanas metodi un ļaujiet lietotājiem noteikt prioritātes starp vairākām dažādām iespējām.",
   "app.containers.AdminPage.ProjectEdit.conductVotingOrPrioritizationText": "Veikt balsošanu vai prioritāšu noteikšanu",
   "app.containers.AdminPage.ProjectEdit.createAProjectFromATemplate": "Izveidot projektu no veidnes",
