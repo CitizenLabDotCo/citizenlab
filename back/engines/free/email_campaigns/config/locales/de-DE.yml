@@ -272,7 +272,7 @@ de:
       main_header: '%{firstName} hat Sie in einem internen Kommentar erwähnt.'
       preheader: '%{authorNameFull} hat Sie in einem internen Kommentar erwähnt.'
     moderator_digest:
-      subject: 'Ihr wöchentlicher Projektmanagementbericht von %{time}'
+      subject: 'Ihr wöchentlicher Projektmanagementbericht von %{project_title}'
       preheader: 'Projektmanagement-Zusammenfassung von %{organizationName}'
       title_your_weekly_report: '%{firstName}, Ihr wöchentlicher Bericht'
       text_introduction: 'Wir haben für Sie die Beiträge zusammengestellt, die in der vergangenen Woche die meiste Aktivität hatten. Finden Sie heraus, was auf Ihrer Plattform passiert ist!'

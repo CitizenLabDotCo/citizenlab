@@ -272,7 +272,7 @@ ar:
       main_header: '%{authorNameFirst} ذكرك في تعليق داخلي.'
       preheader: '%{authorNameFull} ذكرك في تعليق داخلي.'
     moderator_digest:
-      subject: 'تقرير مدير المشروع الأسبوعي الخاص بك لـ%{time}'
+      subject: 'تقرير مدير المشروع الأسبوعي الخاص بك لـ%{project_title}'
       preheader: 'ملخص مدير المشروع لـ %{organizationName}'
       title_your_weekly_report: '%{firstName}، تقريرك الأسبوعي'
       text_introduction: "قمنا بتحضير قائمة تضم جميع الأفكار التي ولّدت أكبر تفاعل ونشاط على مدار الأسبوع الماضي.\nاكتشف ما يحدث في مشروعك!"
