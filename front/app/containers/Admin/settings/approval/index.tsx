@@ -58,7 +58,7 @@ const Approval = () => {
   };
 
   const handleSave = () => {
-    const currentUsers = selectedUsers.map((user) => user.value);
+    const currentUsers: string[] = selectedUsers.map((user) => user.value);
 
     const addedUsers = currentUsers.filter(
       (userId) => !projectReviewers.data.find((user) => user.id === userId)
@@ -68,9 +68,9 @@ const Approval = () => {
       .map((user) => user.id)
       .filter((userId) => !currentUsers.includes(userId));
 
-    addedUsers.forEach((user) => {
+    addedUsers.forEach((userId) => {
       updateUser({
-        userId: user.value,
+        userId,
         roles: [
           {
             type: 'admin',
@@ -80,9 +80,9 @@ const Approval = () => {
       });
     });
 
-    removedUsers.forEach((user) => {
+    removedUsers.forEach((userId) => {
       updateUser({
-        userId: user,
+        userId,
         roles: [
           {
             type: 'admin',
