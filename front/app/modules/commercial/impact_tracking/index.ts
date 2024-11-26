@@ -35,21 +35,11 @@ const trackSessionStarted = async () => {
     },
   });
 
-  try {
-    const data = await response.json();
-    console.log('"response.json()" successful!');
-    console.log(data);
-    sessionId = data.data.id;
-  } catch (e) {
-    console.log('Error when doing "response.json()"');
-  }
-
-  console.log('RESPONSE:');
-  console.log(response);
+  const data = await response.json();
+  sessionId = data.data.id;
 
   // Because the first page view depends on the response of the session creation,
   // we handle it here and ignore the first page view event (see below).
-  if (!sessionId) return;
   await trackPageView(window.location.pathname);
 };
 
@@ -90,6 +80,7 @@ const configuration: ModuleConfiguration = {
     trackSessionStarted();
 
     pageChanges$.subscribe((e) => {
+      // Ignore first page view event (only start tracking here after session creation)
       if (!sessionId) return;
       trackPageView(e.path);
     });
