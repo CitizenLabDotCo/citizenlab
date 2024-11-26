@@ -6,9 +6,9 @@ export default defineMessages({
     defaultMessage: 'Project approval settings',
   },
   approvalSubtitle: {
-    id: 'app.containers.AdminPage.SettingsPage.approvalSubtitle',
+    id: 'app.containers.AdminPage.SettingsPage.approvalDescription',
     defaultMessage:
-      'Project managers need approval to publish a project the first time it goes live. You can customise who gets the notifications.',
+      'Select which admins will receive notifications to approve projects. Folder Managers are by default approvers for all projects within their folders.',
   },
   selectApprovers: {
     id: 'app.containers.AdminPage.SettingsPage.selectApprovers',
