@@ -34,8 +34,7 @@ const AdminPublicationSearchInput = ({
   } = useAdminPublications({
     search,
     publicationStatusFilter: ['published', 'archived'],
-    // pageSize: 6,
-    pageSize: 2,
+    pageSize: 6,
   });
 
   const inputChangeDebounced = useMemo(() => {
