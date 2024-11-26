@@ -1641,6 +1641,7 @@
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabel": "المجموعة المُختارة",
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabelDescription": "سيظهر المشروع في عامل أو عوامل تصفية المناطق المحددة.",
   "app.containers.AdminPage.ProjectEdit.cardDisplay": "في قائمة",
+  "app.containers.AdminPage.ProjectEdit.commens_countSortingMethod": "الأكثر مناقشة",
   "app.containers.AdminPage.ProjectEdit.conductVotingOrPrioritizationDescriptionText2": "حدد طريقة التصويت ، واطلب من المستخدمين تحديد الأولويات بين عدد قليل من الخيارات المختلفة.",
   "app.containers.AdminPage.ProjectEdit.conductVotingOrPrioritizationText": "قم بإجراء تصويت أو تمرين تحديد الأولويات",
   "app.containers.AdminPage.ProjectEdit.createAProjectFromATemplate": "أنشئ مشروعًا من قالب",
