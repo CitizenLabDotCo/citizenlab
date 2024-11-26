@@ -15,7 +15,7 @@ export default defineMessages({
     defaultMessage: 'Select approvers',
   },
   save: {
-    id: 'app.containers.AdminPage.SettingsPage.save',
+    id: 'app.containers.AdminPage.SettingsPage.approvalSave',
     defaultMessage: 'Save',
   },
 });
