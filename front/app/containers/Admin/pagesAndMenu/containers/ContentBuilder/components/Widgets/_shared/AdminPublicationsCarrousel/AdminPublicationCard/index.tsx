@@ -36,7 +36,7 @@ interface InnerProps extends Props {
   userCount?: number;
 }
 
-export const AdminPubCard = ({
+export const AdminPublicationCard = ({
   adminPublication,
   imageUrl,
   avatarIds,
@@ -100,7 +100,7 @@ export const AdminPubCard = ({
   );
 };
 
-const AdminPubCardWrapper = ({ adminPublication, ...props }: Props) => {
+const AdminPublicationCardWrapper = ({ adminPublication, ...props }: Props) => {
   const { id, type } = adminPublication.relationships.publication.data;
 
   const projectId = type === 'project' ? id : undefined;
@@ -141,7 +141,7 @@ const AdminPubCardWrapper = ({ adminPublication, ...props }: Props) => {
       : folder?.data.attributes.participants_count;
 
   return (
-    <AdminPubCard
+    <AdminPublicationCard
       adminPublication={adminPublication}
       imageUrl={imageUrl ?? undefined}
       avatarIds={avatarIds}
@@ -151,4 +151,4 @@ const AdminPubCardWrapper = ({ adminPublication, ...props }: Props) => {
   );
 };
 
-export default AdminPubCardWrapper;
+export default AdminPublicationCardWrapper;
