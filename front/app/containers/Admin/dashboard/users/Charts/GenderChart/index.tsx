@@ -34,8 +34,8 @@ const GenderChart = ({
 
   const { data: usersByGender } = useDemographicsLive({
     custom_field_id: customFieldId,
-    start_at: startAt ? momentToIsoDate(moment(startAt)) : null,
-    end_at: endAt ? momentToIsoDate(moment(endAt)) : null,
+    start_at: startAt ? moment(startAt).local().format('YYYY-MM-DD') : null,
+    end_at: endAt ? moment(endAt).local().format('YYYY-MM-DD') : null,
     group_id: currentGroupFilter,
   });
 
