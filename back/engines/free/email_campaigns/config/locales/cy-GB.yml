@@ -272,7 +272,7 @@ cy:
       main_header: '%{firstName} sôn amdanoch chi mewn sylw mewnol.'
       preheader: '%{authorNameFull} sôn amdanoch chi mewn sylw mewnol.'
     moderator_digest:
-      subject: 'Eich adroddiad rheolwr prosiect wythnosol o %{time}'
+      subject: 'Eich adroddiad rheolwr prosiect wythnosol o %{project_title}'
       preheader: 'Crynhoad rheolwr prosiect o %{organizationName}'
       title_your_weekly_report: '%{firstName}, eich adroddiad wythnosol'
       text_introduction: 'Rydym wedi curadu ar eich cyfer y mewnbwn sydd wedi cynhyrchu''r mwyaf o weithgarwch dros yr wythnos ddiwethaf. Darganfyddwch beth sy''n digwydd gyda''ch prosiect!'

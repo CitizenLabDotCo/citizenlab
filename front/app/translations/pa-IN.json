@@ -659,6 +659,7 @@
   "app.components.formBuilder.deleteButtonLabel": "ਮਿਟਾਓ",
   "app.components.formBuilder.description": "ਵਰਣਨ",
   "app.components.formBuilder.disabledBuiltInFieldTooltip": "ਇਹ ਪਹਿਲਾਂ ਹੀ ਫਾਰਮ ਵਿੱਚ ਸ਼ਾਮਲ ਕੀਤਾ ਗਿਆ ਹੈ। ਪੂਰਵ-ਨਿਰਧਾਰਤ ਸਮੱਗਰੀ ਸਿਰਫ਼ ਇੱਕ ਵਾਰ ਵਰਤੀ ਜਾ ਸਕਦੀ ਹੈ।",
+  "app.components.formBuilder.disabledCustomFieldsTooltip1": "ਕਸਟਮ ਸਮੱਗਰੀ ਸ਼ਾਮਲ ਕਰਨਾ ਤੁਹਾਡੇ ਮੌਜੂਦਾ ਲਾਇਸੰਸ ਦਾ ਹਿੱਸਾ ਨਹੀਂ ਹੈ। ਇਸ ਬਾਰੇ ਹੋਰ ਜਾਣਨ ਲਈ ਆਪਣੇ GovSuccess ਮੈਨੇਜਰ ਨਾਲ ਸੰਪਰਕ ਕਰੋ।",
   "app.components.formBuilder.displayAsDropdown": "ਡ੍ਰੌਪਡਾਉਨ ਦੇ ਰੂਪ ਵਿੱਚ ਪ੍ਰਦਰਸ਼ਿਤ ਕਰੋ",
   "app.components.formBuilder.displayAsDropdownTooltip": "ਡ੍ਰੌਪਡਾਉਨ ਵਿੱਚ ਵਿਕਲਪਾਂ ਨੂੰ ਪ੍ਰਦਰਸ਼ਿਤ ਕਰੋ। ਜੇ ਤੁਹਾਡੇ ਕੋਲ ਬਹੁਤ ਸਾਰੇ ਵਿਕਲਪ ਹਨ, ਤਾਂ ਇਹ ਸਿਫਾਰਸ਼ ਕੀਤੀ ਜਾਂਦੀ ਹੈ।",
   "app.components.formBuilder.done": "ਹੋ ਗਿਆ",

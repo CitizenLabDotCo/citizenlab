@@ -659,6 +659,7 @@
   "app.components.formBuilder.deleteButtonLabel": "Izbriši",
   "app.components.formBuilder.description": "Opis",
   "app.components.formBuilder.disabledBuiltInFieldTooltip": "Ovo je već dodato u obrazac. Podrazumevani sadržaj se može upotrebiti samo jednom.",
+  "app.components.formBuilder.disabledCustomFieldsTooltip1": "Adding custom content is not part of your current license. Reach out to your GovSuccess Manager to learn more about it.",
   "app.components.formBuilder.displayAsDropdown": "Display as dropdown",
   "app.components.formBuilder.displayAsDropdownTooltip": "Display the options in a dropdown. If you have many options, this is recommended.",
   "app.components.formBuilder.done": "Završeno",
