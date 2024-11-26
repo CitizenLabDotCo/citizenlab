@@ -2,7 +2,6 @@
 
 class WebApi::V1::ProjectReviewsController < ApplicationController
   def show
-<<<<<<< HEAD
     if review
       authorize(review)
       render json: serialize(review)
@@ -10,9 +9,6 @@ class WebApi::V1::ProjectReviewsController < ApplicationController
       authorize(project, :update?)
       head(:no_content)
     end
-=======
-    review ? render(json: serialize(review)) : head(:no_content)
->>>>>>> 3484749d2b6 (    [TAN-2985] Add CRUD endpoints for project reviews)
   end
 
   def create
