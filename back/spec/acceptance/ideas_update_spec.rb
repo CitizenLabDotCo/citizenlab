@@ -631,7 +631,7 @@ resource 'Ideas' do
           example 'Set offline votes' do
             expect { do_request }
               .not_to enqueue_job(LogActivityJob).with(
-                input,
+                input.reload,
                 'changed_manual_votes_amount',
                 author,
                 input.updated_at.to_i,
@@ -639,7 +639,6 @@ resource 'Ideas' do
                 project_id: input.project_id
               ).exactly(1).times
 
-            input.reload
             expect(input.manual_votes_amount).not_to eq manual_votes_amount
             expect(input.manual_votes_last_updated_by).to be_nil
             expect(input.manual_votes_last_updated_at).to be_nil
@@ -707,7 +706,7 @@ resource 'Ideas' do
           example 'Set offline votes' do
             expect { do_request }
               .to enqueue_job(LogActivityJob).with(
-                input,
+                input.reload,
                 'changed_manual_votes_amount',
                 admin,
                 input.updated_at.to_i,
