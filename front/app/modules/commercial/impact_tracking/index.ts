@@ -15,7 +15,6 @@ const signUpInTracks = {
 
 let sessionId: string;
 let allAppPaths: string[] | undefined;
-let firstPageViewTracked = false;
 
 const trackSessionStarted = async () => {
   // eslint-disable-next-line
@@ -38,12 +37,11 @@ const trackSessionStarted = async () => {
 
   if (response.ok) {
     const data = await response.json();
-    sessionId = data.id;
+    sessionId = data.data.id;
 
     // Because the first page view depends on the response of the session creation,
     // we handle it here and ignore the first page view event (see below).
     await trackPageView(window.location.pathname);
-    firstPageViewTracked = true;
   } else {
     console.error('Failed to create session');
   }
@@ -86,7 +84,7 @@ const configuration: ModuleConfiguration = {
     trackSessionStarted();
 
     pageChanges$.subscribe((e) => {
-      if (!firstPageViewTracked) return;
+      if (!sessionId) return;
       trackPageView(e.path);
     });
 
