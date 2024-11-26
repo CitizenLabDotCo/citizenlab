@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 
 import {
   media,
@@ -8,7 +8,6 @@ import {
   isRtl,
   Spinner,
   useWindowSize,
-  Title,
   Box,
 } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
@@ -24,12 +23,10 @@ import useLocale from 'hooks/useLocale';
 
 import { QueryParameters } from 'containers/IdeasIndexPage';
 
-import filterModalMessages from 'components/FiltersModal/messages';
 import ViewButtons from 'components/PostCardsComponents/ViewButtons';
 import Button from 'components/UI/Button';
 import SearchInput from 'components/UI/SearchInput';
 
-import { ScreenReaderOnly } from 'utils/a11y';
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
@@ -41,10 +38,10 @@ import { Sort } from '../shared/Filters/SortFilterDropdown';
 import IdeasView from '../shared/IdeasView';
 import tracks from '../tracks';
 
+import ContentRight from './ContentRight';
 import FiltersModal from './FiltersModal';
-import InputFilters from './InputFilters';
 
-const gapWidth = 35;
+export const gapWidth = 35;
 
 const Container = styled.div`
   width: 100%;
@@ -121,26 +118,6 @@ const ContentLeft = styled.div`
   flex-direction: column;
   align-items: stretch;
   position: relative;
-`;
-
-const ContentRight = styled.div<{
-  filterColumnWidth: number;
-  top: number;
-  maxHeightOffset: number;
-}>`
-  flex: 0 0 ${({ filterColumnWidth }) => filterColumnWidth}px;
-  width: ${({ filterColumnWidth }) => filterColumnWidth}px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-self: flex-start;
-  margin-left: ${gapWidth}px;
-  max-height: calc(100vh - ${({ maxHeightOffset }) => maxHeightOffset}px);
-  position: sticky;
-  top: ${({ top }) => top}px;
-  overflow-y: auto;
-  padding-left: 8px;
-  padding-right: 8px;
 `;
 
 export interface QueryParametersUpdate {
@@ -264,19 +241,6 @@ const IdeasWithFiltersSidebar = ({
     setFiltersModalOpened(false);
   }, []);
 
-  const [isCTABarVisible, setIsCTABarVisible] = useState(false);
-
-  useEffect(() => {
-    function checkCTABarVisibility() {
-      if (document.getElementById('project-cta-bar')) {
-        setIsCTABarVisible(true);
-      }
-    }
-
-    window.addEventListener('scrollend', checkCTABarVisibility);
-    return () => window.removeEventListener('scroll', checkCTABarVisibility);
-  }, []);
-
   const filterColumnWidth = windowWidth && windowWidth < 1400 ? 340 : 352;
   const filtersActive = !!(
     ideaQueryParameters.search ||
@@ -289,6 +253,7 @@ const IdeasWithFiltersSidebar = ({
   const smallerThanPhone = !!(
     windowWidth && windowWidth <= viewportWidths.phone
   );
+  const showContentRight = biggerThanLargeTablet && selectedView === 'card';
 
   return (
     <Container id="e2e-ideas-container">
@@ -382,36 +347,19 @@ const IdeasWithFiltersSidebar = ({
               />
             </ContentLeft>
 
-            {biggerThanLargeTablet && selectedView === 'card' && (
+            {showContentRight && (
               <ContentRight
-                id="e2e-ideas-filters"
+                ideaQueryParameters={ideaQueryParameters}
                 filterColumnWidth={filterColumnWidth}
-                top={isCTABarVisible ? 160 : 100}
-                maxHeightOffset={isCTABarVisible ? 180 : 120}
-              >
-                {/*
-                  We have this Filters heading in the filters modal on mobile. 
-                  This title streamlines the experience on desktop (for screen reader users).
-                */}
-                <ScreenReaderOnly>
-                  <Title as="h2">
-                    <FormattedMessage {...filterModalMessages.filters} />
-                  </Title>
-                </ScreenReaderOnly>
-                <InputFilters
-                  defaultValue={ideaQueryParameters.search}
-                  selectedIdeaFilters={ideaQueryParameters}
-                  filtersActive={filtersActive}
-                  ideasFilterCounts={ideasFilterCounts}
-                  numberOfSearchResults={list.length}
-                  onClearFilters={clearFilters}
-                  onSearch={handleSearchOnChange}
-                  onChangeStatus={handleStatusOnChange}
-                  onChangeTopics={handleTopicsOnChange}
-                  handleSortOnChange={handleSortOnChange}
-                  phaseId={ideaQueryParameters.phase}
-                />
-              </ContentRight>
+                filtersActive={filtersActive}
+                ideasFilterCounts={ideasFilterCounts}
+                numberOfSearchResults={list.length}
+                onClearFilters={clearFilters}
+                onSearch={handleSearchOnChange}
+                onChangeStatus={handleStatusOnChange}
+                onChangeTopics={handleTopicsOnChange}
+                onChangeSort={handleSortOnChange}
+              />
             )}
           </Box>
         </>
