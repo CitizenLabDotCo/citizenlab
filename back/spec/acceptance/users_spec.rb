@@ -40,6 +40,7 @@ resource 'Users' do
       parameter :is_not_folder_moderator, 'Users who are not folder moderators of folder (by folder id), ' \
                                           'OR Users who do not have folder moderator role ' \
                                           '(if no folder ID provided)', required: false
+      parameter :project_reviewer, 'Return only admins that are project reviewers', required: false
       example_request '[error] List all users' do
         assert_status 401
       end
@@ -373,6 +374,7 @@ resource 'Users' do
         parameter :can_moderate_project, 'Filter by users (and admins) who can moderate the project (by id)', required: false
         parameter :can_moderate, 'Return only admins and moderators', required: false
         parameter :can_admin, 'Return only admins if value is true, only non-admins if value is false', required: false
+        parameter :project_reviewer, 'Return only admins that are project reviewers', required: false
         parameter :blocked, 'Return only blocked users', required: false
 
         example_request 'List all users' do
@@ -641,6 +643,17 @@ resource 'Users' do
           do_request(can_admin: true)
           json_response = json_parse(response_body)
           expect(json_response[:data].pluck(:id)).to match_array [a.id, @user.id]
+        end
+
+        example 'List all project reviewers' do
+          create(:user)
+          create(:admin)
+          project_reviewer = create(:admin, :project_reviewer)
+
+          do_request(project_reviewer: true)
+
+          assert_status 200
+          expect(response_ids).to match_array [project_reviewer.id]
         end
       end
 
@@ -944,6 +957,20 @@ resource 'Users' do
               json_response = json_parse response_body
               expect(json_response.dig(:data, :id)).to eq id
               expect(json_response.dig(:data, :attributes, :roles)).to include({ type: 'admin' })
+            end
+          end
+
+          context 'on an admin' do
+            let(:user) { create(:admin) }
+            let(:id) { user.id }
+            let(:roles) { [{ type: 'admin', project_reviewer: true }] }
+
+            example_request 'Make the admin a project reviewer' do
+              assert_status 200
+
+              expect(response_data[:id]).to eq(id)
+              expect(response_data.dig(:attributes, :roles)).to match [{ type: 'admin', project_reviewer: true }]
+              expect(user.reload.roles).to match [{ 'type' => 'admin', 'project_reviewer' => true }]
             end
           end
         end

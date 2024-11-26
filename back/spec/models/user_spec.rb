@@ -1426,4 +1426,23 @@ RSpec.describe User do
       expect(described_class.not_super_admins).to match_array(non_super_admins)
     end
   end
+
+  context 'project reviewer scope' do
+    let_it_be(:project_reviewers) { create_list(:admin, 2, :project_reviewer) }
+    let_it_be(:non_project_reviewers) do
+      [
+        create(:user),
+        create(:admin),
+        create(:project_moderator)
+      ]
+    end
+
+    specify do
+      expect(described_class.project_reviewers).to match_array(project_reviewers)
+    end
+
+    specify do
+      expect(described_class.project_reviewers(false)).to match_array(non_project_reviewers)
+    end
+  end
 end
