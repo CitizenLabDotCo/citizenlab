@@ -266,6 +266,12 @@ resource 'Idea Custom Fields' do
         ])
       end
 
+      example 'Generate GeoJSON request logs an activity job when GeoJSON successfully generated' do
+        expect { do_request }.to enqueue_job(LogActivityJob)
+          .with(custom_field_point, 'generated_geojson_for_export', any_args)
+          .exactly(1).times
+      end
+
       context 'when custom field is not a geographic input type' do
         let(:custom_field_id) { custom_field_text.id }
 
