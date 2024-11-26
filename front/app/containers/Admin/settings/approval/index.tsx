@@ -40,7 +40,7 @@ const Approval = () => {
       setSelectedUsers(
         projectReviewers.data.map((user) => ({
           value: user.id,
-          label: `${user.attributes.first_name} ${user.attributes.last_name}`,
+          label: getFullName(user),
         }))
       );
     }
