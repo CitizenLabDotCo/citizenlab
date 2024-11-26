@@ -272,7 +272,7 @@ pt:
       main_header: '%{firstName} mencionou você em um comentário interno.'
       preheader: '%{authorNameFull} mencionou você em um comentário interno.'
     moderator_digest:
-      subject: 'Seu relatório semanal como gerente do projeto de %{time}'
+      subject: 'Seu relatório semanal como gerente do projeto de %{project_title}'
       preheader: 'Resumo de gerente do projeto de %{organizationName}'
       title_your_weekly_report: '%{firstName}, o seu relatório semanal'
       text_introduction: 'Nós editamos para você a listagem de idéias que geraram mais atividade na semana passada. Descubra o que está acontecendo com o seu projeto!'
