@@ -10,8 +10,8 @@ import useInstanceId from 'component-library/hooks/useInstanceId';
 import { debounce } from 'lodash-es';
 import { useInView } from 'react-intersection-observer';
 
+import { IAdminPublicationData } from 'api/admin_publications/types';
 import { CARD_IMAGE_ASPECT_RATIO } from 'api/project_images/useProjectImages';
-import { MiniProjectData } from 'api/projects_mini/types';
 
 import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
 
@@ -26,17 +26,22 @@ import {
   skipCarrousel,
 } from '../BaseCarrousel/utils';
 
+import AdminPublicationCard from './AdminPublicationCard';
 import { CARD_WIDTH } from './constants';
-import LightProjectCard from './LightProjectCard';
 
 interface Props {
   title: string;
-  projects: MiniProjectData[];
+  adminPublications: IAdminPublicationData[];
   hasMore: boolean;
   onLoadMore: () => void;
 }
 
-const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
+const AdminPublicationsCarrousel = ({
+  title,
+  adminPublications,
+  hasMore,
+  onLoadMore,
+}: Props) => {
   const [scrollContainerRef, setScrollContainerRef] = useState<
     HTMLDivElement | undefined
   >(undefined);
@@ -116,12 +121,12 @@ const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
             }
           }}
         >
-          {projects.map((project) => (
-            <CardContainer key={project.id}>
-              <LightProjectCard
+          {adminPublications.map((adminPublication) => (
+            <CardContainer key={adminPublication.id}>
+              <AdminPublicationCard
                 ml={isSmallerThanPhone ? `${CARD_GAP}px` : undefined}
                 mr={isSmallerThanPhone ? undefined : `${CARD_GAP}px`}
-                project={project}
+                adminPublication={adminPublication}
                 onKeyDown={handleKeyDown}
               />
             </CardContainer>
@@ -145,7 +150,7 @@ const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
           <>
             <ScrollButton
               variant="left"
-              top="120px"
+              top="200px"
               onClick={() => {
                 if (!scrollContainerRef) return;
                 scrollContainerRef.scrollLeft -= CARD_WIDTH + CARD_GAP;
@@ -158,7 +163,7 @@ const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
           <>
             <ScrollButton
               variant="right"
-              top="120px"
+              top="200px"
               onClick={() => {
                 if (!scrollContainerRef) return;
                 scrollContainerRef.scrollLeft += CARD_WIDTH + CARD_GAP;
@@ -173,4 +178,4 @@ const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
   );
 };
 
-export default ProjectCarrousel;
+export default AdminPublicationsCarrousel;

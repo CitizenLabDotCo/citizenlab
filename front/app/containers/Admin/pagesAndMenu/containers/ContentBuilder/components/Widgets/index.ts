@@ -39,6 +39,7 @@ import OpenToParticipation, {
   openToParticipationTitle,
 } from './OpenToParticipation';
 import Projects, { projectsTitle } from './Projects';
+import Selection, { selectionTitle } from './Selection';
 import Spotlight, { spotlightTitle } from './Spotlight';
 
 export const WIDGETS = {
@@ -60,6 +61,7 @@ export const WIDGETS = {
   HomepageBanner,
   OpenToParticipation,
   Projects,
+  Selection,
   Spotlight,
 
   // RENAMED (TODO rename in migration)
@@ -90,6 +92,7 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   HomepageBanner: homepageBannerTitle,
   OpenToParticipation: openToParticipationTitle,
   Projects: projectsTitle,
+  Selection: selectionTitle,
   Spotlight: spotlightTitle,
 
   // RENAMED
@@ -121,6 +124,7 @@ const WIDGETS_WITHOUT_POINTER_EVENTS = new Set<string>([
   'HomepageBanner',
   'OpenToParticipation',
   'Projects',
+  'Selection',
   'Spotlight',
 
   // RENAMED
