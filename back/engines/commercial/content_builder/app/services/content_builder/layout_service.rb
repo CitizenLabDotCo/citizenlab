@@ -21,9 +21,7 @@ module ContentBuilder
       homepage_layout.craftjs_json = homepage_layout.craftjs_json.each_value do |node|
         next unless node['type']['resolvedName'] == 'Selection'
 
-        ids.each do |id|
-          node['props']['adminPublicationIds'].delete(id)
-        end
+        ids.each { |id| node['props']['adminPublicationIds'].delete(id) }
       end
 
       homepage_layout.save!
