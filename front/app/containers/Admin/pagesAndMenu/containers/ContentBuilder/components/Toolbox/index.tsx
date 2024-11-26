@@ -50,6 +50,8 @@ import OpenToParticipation, {
 } from '../Widgets/OpenToParticipation';
 import Projects, { projectsTitle } from '../Widgets/Projects';
 import projectsMessages from '../Widgets/Projects/messages';
+import Published, { publishedTitle } from '../Widgets/Published';
+import Selection, { selectionTitle } from '../Widgets/Selection';
 import Spotlight, {
   spotlightTitle,
   buttonTextDefault,
@@ -129,6 +131,14 @@ const HomepageBuilderToolbox = ({
         )}
         {newHomepageWidgetsEnabled && (
           <DraggableElement
+            id="e2e-draggable-published"
+            component={<Published titleMultiloc={toMultiloc(publishedTitle)} />}
+            icon="check-circle"
+            label={formatMessage(publishedTitle)}
+          />
+        )}
+        {newHomepageWidgetsEnabled && (
+          <DraggableElement
             id="e2e-draggable-finished-or-archived"
             component={
               <FinishedOrArchived
@@ -140,6 +150,19 @@ const HomepageBuilderToolbox = ({
             }
             icon="sportsScore"
             label={formatMessage(finishedOrArchivedTitle)}
+          />
+        )}
+        {newHomepageWidgetsEnabled && (
+          <DraggableElement
+            id="e2e-draggable-selection"
+            component={
+              <Selection
+                titleMultiloc={toMultiloc(selectionTitle)}
+                adminPublicationIds={[]}
+              />
+            }
+            icon="folder-outline"
+            label={formatMessage(selectionTitle)}
           />
         )}
         <DraggableElement
