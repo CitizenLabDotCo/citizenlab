@@ -95,7 +95,9 @@ export const AdminPublicationCard = ({
           userCount={userCount}
         />
       </Box>
-      <Text mt="8px">{localize(publication_description_preview_multiloc)}</Text>
+      <Text mt="8px">
+        {truncate(localize(publication_description_preview_multiloc), 280)}
+      </Text>
     </CardContainer>
   );
 };
