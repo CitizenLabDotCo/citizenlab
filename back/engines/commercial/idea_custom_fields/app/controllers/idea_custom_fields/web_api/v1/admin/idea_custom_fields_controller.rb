@@ -58,6 +58,8 @@ module IdeaCustomFields
         geojson_generator.generate_geojson
       end
 
+      SideFxIdeaCustomFieldService.new.after_generate_geojson(@custom_field, current_user) if geojson.present?
+
       send_data geojson, type: 'application/json', filename: geojson_generator.filename
     end
 
