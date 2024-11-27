@@ -1561,6 +1561,7 @@
   "app.containers.AdminPage.ProjectEdit.PollTab.singleOption": "Tek seçenek",
   "app.containers.AdminPage.ProjectEdit.PollTab.titlePollTab": "Oylama ayarları ve sonuçları",
   "app.containers.AdminPage.ProjectEdit.PollTab.wrongMax": "Yanlış maksimum",
+  "app.containers.AdminPage.ProjectEdit.PostManager.importInputs": "İthalat",
   "app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputManager": "Geri bildirim sağlayın, etiket ekleyin veya yayınları bir sonraki proje aşamasına kopyalayın.",
   "app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputProjectProposals": "Teklifleri yönetin, geri bildirim verin ve konuları atayın.",
   "app.containers.AdminPage.ProjectEdit.PostManager.titleInputManager": "Girdi yöneticisi",

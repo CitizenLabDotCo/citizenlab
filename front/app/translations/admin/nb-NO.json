@@ -1561,6 +1561,7 @@
   "app.containers.AdminPage.ProjectEdit.PollTab.singleOption": "Enkelt valg",
   "app.containers.AdminPage.ProjectEdit.PollTab.titlePollTab": "Avstemningsinnstillinger og resultater",
   "app.containers.AdminPage.ProjectEdit.PollTab.wrongMax": "Feil maksimum",
+  "app.containers.AdminPage.ProjectEdit.PostManager.importInputs": "Import",
   "app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputManager": "Gi tilbakemelding, legg til tagger eller kopier innlegg til neste prosjektfase.",
   "app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputProjectProposals": "Administrere forslag, gi tilbakemeldinger og tildele temaer.",
   "app.containers.AdminPage.ProjectEdit.PostManager.titleInputManager": "Inndataansvarlig",
