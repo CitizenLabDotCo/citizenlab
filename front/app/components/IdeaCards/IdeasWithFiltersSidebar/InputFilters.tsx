@@ -63,7 +63,7 @@ const InputFilters = ({
         )}
       </ScreenReaderOnly>
       {!isSmallerThanTablet && (
-        <Box mt="8px" mb="20px">
+        <Box mt="8px" mb={showResetFiltersButton ? '8px' : '20px'}>
           <SearchInput
             defaultValue={defaultValue}
             onChange={onSearch}
