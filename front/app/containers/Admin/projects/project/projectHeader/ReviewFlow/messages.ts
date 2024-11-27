@@ -10,9 +10,9 @@ export default defineMessages({
     defaultMessage: 'Only admins and Folder Managers can publish projects.',
   },
   requestApprovalDescription: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.requestApprovalDescription',
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.requestApprovalDescription1',
     defaultMessage:
-      'Only admins and Folder Managers can publish projects. Click the button to ask for approval.',
+      'Only admins and Folder Managers can approve projects. Click the button to ask for approval.',
   },
   requestApproval: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.requestApproval',
