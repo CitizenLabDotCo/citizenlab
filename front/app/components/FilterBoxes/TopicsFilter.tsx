@@ -6,6 +6,7 @@ import {
   Box,
   isRtl,
   Button,
+  Text,
 } from '@citizenlab/cl2-component-library';
 import { includes, get } from 'lodash-es';
 import { darken } from 'polished';
@@ -20,7 +21,7 @@ import T from 'components/T';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
+import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 import InputFilterCollapsible from './InputFilterCollapsible';
 import messages from './messages';
@@ -69,7 +70,7 @@ const Topic = styled.button<{ selected: boolean | undefined }>`
 `;
 
 interface Props {
-  topics: ITopicData[];
+  topics?: ITopicData[];
   selectedTopicIds: string[] | null | undefined;
   onChange: (arg: string[] | null) => void;
   className?: string;
@@ -107,31 +108,31 @@ const TopicsFilter = memo<Props>(
       [selectedTopicIds]
     );
 
-    if (!isNilOrError(topics) && topics.length > 0) {
-      const selectedTopics = topics.filter((topic) =>
-        includes(selectedTopicIds, topic.id)
-      );
-      const numberOfSelectedTopics = selectedTopics.length;
-      const selectedTopicNames = getSelectedTopicNames(
-        selectedTopics,
-        localize
-      );
+    const selectedTopics = topics?.filter((topic) =>
+      includes(selectedTopicIds, topic.id)
+    );
+    const numberOfSelectedTopics = selectedTopics?.length;
+    const selectedTopicNames =
+      selectedTopics && getSelectedTopicNames(selectedTopics, localize);
 
-      const topicsWithIdeas = getTopicsWithIdeas(topics, filterCounts);
+    const topicsWithIdeas = topics && getTopicsWithIdeas(topics, filterCounts);
 
-      if (topicsWithIdeas.length < 1) {
-        return null;
-      }
-
-      return (
-        <InputFilterCollapsible
-          title={
-            customTopicsTerm
-              ? localize(customTopicsTerm)
-              : formatMessage(messages.topicsTitle)
-          }
-          className={className}
-        >
+    return (
+      <InputFilterCollapsible
+        title={
+          customTopicsTerm
+            ? localize(customTopicsTerm)
+            : formatMessage(messages.topicsTitle)
+        }
+        className={className}
+      >
+        {!topicsWithIdeas || topicsWithIdeas.length < 1 ? (
+          <Box display="flex" justifyContent="center">
+            <Text color="textSecondary">
+              {formatMessage(messages.noValuesFound)}
+            </Text>
+          </Box>
+        ) : (
           <Box>
             <Box className="e2e-topics-filters" aria-live="polite">
               {topicsWithIdeas
@@ -192,18 +193,17 @@ const TopicsFilter = memo<Props>(
               />
             </ScreenReaderOnly>
           </Box>
-          <ScreenReaderOnly aria-live="polite">
-            {/* Pronounces numbers of selected topics + selected topic names */}
-            <FormattedMessage
-              {...messages.a11y_selectedTopicFilters}
-              values={{ numberOfSelectedTopics, selectedTopicNames }}
-            />
-          </ScreenReaderOnly>
-        </InputFilterCollapsible>
-      );
-    }
+        )}
 
-    return null;
+        <ScreenReaderOnly aria-live="polite">
+          {/* Pronounces numbers of selected topics + selected topic names */}
+          <FormattedMessage
+            {...messages.a11y_selectedTopicFilters}
+            values={{ numberOfSelectedTopics, selectedTopicNames }}
+          />
+        </ScreenReaderOnly>
+      </InputFilterCollapsible>
+    );
   }
 );
 
