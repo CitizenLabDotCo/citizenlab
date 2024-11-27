@@ -4,10 +4,11 @@ import { Box, Icon, colors } from '@citizenlab/cl2-component-library';
 
 interface Props {
   variant: 'left' | 'right';
+  top: string;
   onClick: () => void;
 }
 
-const ScrollButton = ({ variant, onClick }: Props) => {
+const ScrollButton = ({ variant, top, onClick }: Props) => {
   return (
     <Box
       as="button"
@@ -15,7 +16,7 @@ const ScrollButton = ({ variant, onClick }: Props) => {
       position="absolute"
       left={variant === 'left' ? '8px' : undefined}
       right={variant === 'right' ? '8px' : undefined}
-      top="120px"
+      top={top}
       borderRadius="30px"
       bgColor="white"
       w="52px"

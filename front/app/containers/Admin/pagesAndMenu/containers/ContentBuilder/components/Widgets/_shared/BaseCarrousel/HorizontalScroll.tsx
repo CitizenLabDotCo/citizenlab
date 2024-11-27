@@ -3,11 +3,8 @@ import React, { ReactNode } from 'react';
 import { Box, isRtl } from '@citizenlab/cl2-component-library';
 import styled, { useTheme } from 'styled-components';
 
-import { CARD_GAP } from './constants';
-
 const StyledContainer = styled(Box)`
   display: flex;
-  // gap: ${CARD_GAP}px;
   flex-direction: row;
   justify-content: flex-start;
   flex-wrap: nowrap;

@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 
-import { Color, colors, media } from '@citizenlab/cl2-component-library';
+import { Color, colors } from '@citizenlab/cl2-component-library';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import CSSTransition from 'react-transition-group/CSSTransition';
@@ -16,19 +16,23 @@ const slideInOutEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
 
 const Container = styled.div<{
   windowHeight: number;
+  windowWidth?: number;
   contentBgColor?: InputProps['contentBgColor'];
 }>`
-  width: 100vw;
-  height: ${({ windowHeight, theme }) =>
-    `calc(${windowHeight}px - ${theme.menuHeight}px)`};
   position: fixed;
-  top: ${({ theme }) => theme.menuHeight}px;
-  left: 0;
   display: flex;
   overflow: hidden;
   background: ${({ contentBgColor }) =>
     contentBgColor ? colors[contentBgColor] : colors.white};
-  z-index: 1003;
+  width: ${({ windowWidth }) => windowWidth}px; /* Fallback for width */
+  @supports (width: 100dvw) {
+    width: 100dvw; /* Dynamic viewport width for better mobile handling */
+  }
+  height: ${({ windowHeight }) => windowHeight}px; /* Fallback for height */
+  @supports (height: 100dvh) {
+    height: 100dvh; /* Dynamic viewport height for better mobile handling */
+  }
+  z-index: 1005; /* 1005 is needed to appear above the top main navigation */
 
   &.modal-enter {
     transform: translateY(100vh);
@@ -47,18 +51,6 @@ const Container = styled.div<{
       transition: all ${slideInOutTimeout}ms ${slideInOutEasing};
     }
   }
-
-  ${(props) => media.tablet`
-    height: 100vh;
-    top: 0;
-    bottom: ${props.theme.mobileMenuHeight}px;
-    z-index: 1005; /* there is no top navbar at this screen size, so okay that it is higher than the z-index of NavBar here */
-
-    &.hasBottomBar {
-      height: ${props.windowHeight}px;
-      bottom: 0;
-    }
-  `}
 `;
 
 const StyledFocusOn = styled(FocusOn)`
@@ -73,6 +65,11 @@ const Content = styled.div`
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
   transform: translate3d(0, 0, 0);
+`;
+
+const ModalBottomBar = styled.div`
+  position: sticky;
+  bottom: 0;
 `;
 
 interface InputProps {
@@ -91,6 +88,7 @@ interface Props extends InputProps {
 
 interface State {
   windowHeight: number;
+  windowWidth: number;
 }
 
 class FullscreenModal extends PureComponent<Props, State> {
@@ -100,6 +98,7 @@ class FullscreenModal extends PureComponent<Props, State> {
     super(props);
     this.state = {
       windowHeight: window.innerHeight,
+      windowWidth: window.innerWidth,
     };
   }
 
@@ -109,7 +108,9 @@ class FullscreenModal extends PureComponent<Props, State> {
       .subscribe((event) => {
         if (event.target) {
           const height = event.target['innerHeight'] as number;
-          this.setState({ windowHeight: height });
+          const width = event.target['innerWidth'] as number;
+
+          this.setState({ windowHeight: height, windowWidth: width });
         }
       });
   }
@@ -147,7 +148,7 @@ class FullscreenModal extends PureComponent<Props, State> {
             <Content className="fullscreenmodal-scrollcontainer">
               {children}
             </Content>
-            {bottomBar}
+            {bottomBar && <ModalBottomBar>{bottomBar}</ModalBottomBar>}
           </StyledFocusOn>
         </Container>
       </CSSTransition>
