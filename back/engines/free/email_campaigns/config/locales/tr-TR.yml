@@ -272,7 +272,7 @@ tr:
       main_header: '%{authorNameFirst} bir iç yorumda sizden bahsetti.'
       preheader: '%{authorNameFull} bir iç yorumda sizden bahsetti.'
     moderator_digest:
-      subject: '%{time} haftalık proje yöneticisi raporunuz'
+      subject: '%{project_title} haftalık proje yöneticisi raporunuz'
       preheader: '%{organizationName} proje yöneticisi özeti'
       title_your_weekly_report: '%{firstName}, haftalık raporunuz'
       text_introduction: 'Geçtiğimiz hafta en fazla etkinlik üreten girdileri derledik. Projenizde neler olduğunu öğrenin.'
