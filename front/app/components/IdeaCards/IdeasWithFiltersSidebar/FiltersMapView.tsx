@@ -2,7 +2,6 @@ import React from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
 import { isNumber } from 'lodash-es';
-import styled from 'styled-components';
 
 import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
 
@@ -15,18 +14,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import messages from '../messages';
 
 import InputFilters, { Props as InputFiltersProps } from './InputFilters';
-
-const Header = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-`;
-
-const Footer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-`;
 
 interface Props extends InputFiltersProps {
   opened: boolean;
@@ -46,9 +33,9 @@ const FiltersMapView = ({
 
   return (
     <>
-      <Header>
+      <Box display="flex" flexDirection="column" alignItems="stretch">
         <TopBar onReset={onClearFilters} onClose={onClose} />
-      </Header>
+      </Box>
       <Box height="100%" overflowY="auto" bgColor={colors.grey100}>
         <Box p="16px">
           <InputFilters
@@ -60,7 +47,7 @@ const FiltersMapView = ({
           />
         </Box>
       </Box>
-      <Footer>
+      <Box display="flex" flexDirection="column" alignItems="stretch">
         <BottomBar
           buttonText={
             total && isNumber(total) ? (
@@ -76,7 +63,7 @@ const FiltersMapView = ({
           }
           onClick={onClose}
         />
-      </Footer>
+      </Box>
     </>
   );
 };
