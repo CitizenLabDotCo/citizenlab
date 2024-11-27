@@ -7,6 +7,7 @@ import {
   colors,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
+import ColorIndicator from 'component-library/components/ColorIndicator';
 import { useDrop } from 'react-dnd';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -21,14 +22,6 @@ import T from 'components/T';
 import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../../messages';
-
-const ColorIndicator = styled.div`
-  width: 1rem;
-  height: 1rem;
-  background-color: ${(props) => props.color};
-  border-radius: ${(props) => props.theme.borderRadius};
-  margin-right: 0.5rem;
-`;
 
 const StatusText = styled.div`
   &:first-letter {
@@ -114,7 +107,7 @@ const FilterSidebarStatusesItem = ({ status, active, onClick }: Props) => {
               justifyContent="flex-start"
               w="100%"
             >
-              <ColorIndicator color={status.attributes.color} />
+              <ColorIndicator bgColor={status.attributes.color} />
               <Box display="flex" alignItems="center" gap="4px">
                 <StatusText>
                   <T value={status.attributes.title_multiloc} />

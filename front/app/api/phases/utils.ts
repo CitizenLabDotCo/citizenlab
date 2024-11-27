@@ -161,4 +161,4 @@ export const INPUT_TERMS = [
   'petition',
 ];
 
-export const ideaDefaultSortMethodFallback = 'trending';
+export const IdeaSortMethodFallback = 'trending';

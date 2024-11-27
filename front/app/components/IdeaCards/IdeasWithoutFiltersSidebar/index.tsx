@@ -14,9 +14,9 @@ import useIdeaCustomFieldsSchema from 'api/idea_json_form_schema/useIdeaJsonForm
 import useIdeaMarkers from 'api/idea_markers/useIdeaMarkers';
 import { IQueryParameters } from 'api/ideas/types';
 import useInfiniteIdeas from 'api/ideas/useInfiniteIdeas';
-import { IdeaDefaultSortMethod } from 'api/phases/types';
+import { IdeaSortMethod } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
-import { ideaDefaultSortMethodFallback } from 'api/phases/utils';
+import { IdeaSortMethodFallback } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
 
 import useLocale from 'hooks/useLocale';
@@ -32,7 +32,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { isFieldEnabled } from 'utils/projectUtils';
 
 import messages from '../messages';
-import SelectSort, { Sort } from '../shared/Filters/SortFilterDropdown';
+import SelectSort from '../shared/Filters/SortFilterDropdown';
 import StatusFilterDropdown from '../shared/Filters/StatusFilterDropdown';
 import TopicFilterDropdown from '../shared/Filters/TopicFilterDropdown';
 import IdeasView from '../shared/IdeasView';
@@ -73,7 +73,7 @@ const StyledSearchInput = styled(SearchInput)`
 
 export interface QueryParametersUpdate {
   search?: string;
-  sort?: Sort;
+  sort?: IdeaSortMethod;
   projects?: string[];
   topics?: string[];
   idea_status?: string;
@@ -87,7 +87,7 @@ export interface Props {
   projectId?: string;
   phaseId?: string;
   showViewToggle?: boolean | undefined;
-  defaultSortingMethod?: IdeaDefaultSortMethod;
+  defaultSortingMethod?: IdeaSortMethod;
   defaultView?: 'card' | 'map';
   className?: string;
   allowProjectsFilter?: boolean;
@@ -164,7 +164,7 @@ const IdeasWithoutFiltersSidebar = ({
     onUpdateQuery({ projects });
   };
 
-  const handleSortOnChange = (sort: Sort) => {
+  const handleSortOnChange = (sort: IdeaSortMethod) => {
     trackEventByName(tracks.sortingFilter, {
       sort,
     });
@@ -238,7 +238,7 @@ const IdeasWithoutFiltersSidebar = ({
                 w={showSearch ? 'auto' : '100%'}
               >
                 <SelectSort
-                  value={defaultSortingMethod ?? ideaDefaultSortMethodFallback}
+                  value={defaultSortingMethod ?? IdeaSortMethodFallback}
                   phase={phase?.data}
                   onChange={handleSortOnChange}
                   alignment={!smallerThanTablet ? 'right' : 'left'}

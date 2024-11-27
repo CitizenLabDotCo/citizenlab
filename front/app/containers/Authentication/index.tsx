@@ -3,15 +3,11 @@ import React from 'react';
 import Modal from './Modal';
 import SuccessActions from './SuccessActions';
 
-export interface Props {
-  onToggleModal: (opened: boolean) => void;
-}
-
-const Authentication = ({ onToggleModal }: Props) => {
+const Authentication = () => {
   return (
     <>
       <SuccessActions />
-      <Modal onToggleModal={onToggleModal} />
+      <Modal />
     </>
   );
 };

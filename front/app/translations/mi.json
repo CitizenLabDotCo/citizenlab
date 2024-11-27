@@ -351,7 +351,6 @@
   "app.containers.AccessibilityStatement.pageDescription": "A statement on the accessibility of this website",
   "app.containers.AccessibilityStatement.postalAddress": "Postal address:",
   "app.containers.AccessibilityStatement.responsiveness": "We aim to respond to feedback within 1-2 business days.",
-  "app.containers.AccessibilityStatement.screenReaderBugWarning": "Screen reader bugs may occur with different browser/screen reader combinations. Bugs can be reported through the feedback process outlined below.",
   "app.containers.AccessibilityStatement.statusPageText": "status page",
   "app.containers.AccessibilityStatement.technologiesIntro": "The accessibility of this site relies on the following technologies to work:",
   "app.containers.AccessibilityStatement.technologiesTitle": "Technologies",

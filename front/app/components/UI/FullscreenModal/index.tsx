@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 
 import { Color, colors, media } from '@citizenlab/cl2-component-library';
-import { compact } from 'lodash-es';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import CSSTransition from 'react-transition-group/CSSTransition';
@@ -11,8 +10,6 @@ import styled from 'styled-components';
 import { SupportedLocale } from 'typings';
 
 import useLocale from 'hooks/useLocale';
-
-// resource
 
 const slideInOutTimeout = 500;
 const slideInOutEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
@@ -84,10 +81,7 @@ interface InputProps {
   close: () => void;
   topBar?: JSX.Element | null;
   bottomBar?: JSX.Element | null;
-  animateInOut?: boolean;
-  mobileNavbarRef?: HTMLElement | null;
   children: JSX.Element | null | undefined;
-  modalPortalElement?: HTMLElement;
   contentBgColor?: Color;
 }
 
@@ -126,34 +120,29 @@ class FullscreenModal extends PureComponent<Props, State> {
 
   render() {
     const { windowHeight } = this.state;
-    const {
-      children,
-      opened,
-      topBar,
-      bottomBar,
-      animateInOut,
-      mobileNavbarRef,
-      className,
-      contentBgColor,
-    } = this.props;
-    const shards = compact([mobileNavbarRef]);
-    const modalPortalElement =
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      this.props.modalPortalElement || document?.getElementById('modal-portal');
-    let modalContent: React.ReactChild | null = null;
+    const { children, opened, topBar, bottomBar, className, contentBgColor } =
+      this.props;
 
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (animateInOut || (!animateInOut && opened)) {
-      modalContent = (
+    return (
+      <CSSTransition
+        classNames="modal"
+        in={opened}
+        timeout={{
+          enter: slideInOutTimeout,
+          exit: slideInOutTimeout,
+        }}
+        mountOnEnter={true}
+        unmountOnExit={true}
+        enter={true}
+        exit={true}
+      >
         <Container
           id="e2e-fullscreenmodal-content"
           className={[bottomBar ? 'hasBottomBar' : '', className].join()}
           windowHeight={windowHeight}
           contentBgColor={contentBgColor}
         >
-          <StyledFocusOn autoFocus={false} shards={shards}>
+          <StyledFocusOn autoFocus>
             {topBar}
             <Content className="fullscreenmodal-scrollcontainer">
               {children}
@@ -161,41 +150,19 @@ class FullscreenModal extends PureComponent<Props, State> {
             {bottomBar}
           </StyledFocusOn>
         </Container>
-      );
-    }
-
-    if (animateInOut) {
-      return createPortal(
-        <CSSTransition
-          classNames="modal"
-          in={opened}
-          timeout={{
-            enter: slideInOutTimeout,
-            exit: slideInOutTimeout,
-          }}
-          mountOnEnter={true}
-          unmountOnExit={true}
-          enter={true}
-          exit={true}
-        >
-          {modalContent}
-        </CSSTransition>,
-        document.getElementById('modal-portal') as HTMLElement
-      );
-    }
-
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (!animateInOut && opened && modalPortalElement) {
-      return createPortal(modalContent, modalPortalElement);
-    }
-
-    return null;
+      </CSSTransition>
+    );
   }
 }
 
 export default (inputProps: InputProps) => {
   const locale = useLocale();
+  const modalPortalElement = document.getElementById('modal-portal');
 
-  return <FullscreenModal {...inputProps} locale={locale} />;
+  return modalPortalElement
+    ? createPortal(
+        <FullscreenModal {...inputProps} locale={locale} />,
+        modalPortalElement
+      )
+    : null;
 };

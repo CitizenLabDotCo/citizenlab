@@ -36,7 +36,7 @@ const TitleButton = styled.button`
 
   &:focus-visible {
     outline: 2px solid black;
-    border-radius: ${({ theme }) => `${theme.borderRadius}px`};
+    border-radius: ${({ theme }) => theme.borderRadius};
   }
 
   ${isRtl`

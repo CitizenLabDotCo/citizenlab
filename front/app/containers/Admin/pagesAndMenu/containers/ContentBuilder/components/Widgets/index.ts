@@ -30,12 +30,17 @@ import { MessageDescriptor } from 'utils/cl-intl';
 import Proposals from './_deprecated/Proposals';
 import CallToAction, { callToActionTitle } from './CallToAction';
 import Events, { eventsTitle } from './Events';
+import FinishedOrArchived, {
+  finishedOrArchivedTitle,
+} from './FinishedOrArchived';
 import FollowedItems, { followedItemsTitle } from './FollowedItems';
 import HomepageBanner, { homepageBannerTitle } from './HomepageBanner';
 import OpenToParticipation, {
   openToParticipationTitle,
 } from './OpenToParticipation';
 import Projects, { projectsTitle } from './Projects';
+import Published, { publishedTitle } from './Published';
+import Selection, { selectionTitle } from './Selection';
 import Spotlight, { spotlightTitle } from './Spotlight';
 
 export const WIDGETS = {
@@ -53,9 +58,12 @@ export const WIDGETS = {
   CallToAction,
   Events,
   FollowedItems,
+  FinishedOrArchived,
   HomepageBanner,
   OpenToParticipation,
   Projects,
+  Published,
+  Selection,
   Spotlight,
 
   // RENAMED (TODO rename in migration)
@@ -82,9 +90,12 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   CallToAction: callToActionTitle,
   Events: eventsTitle,
   FollowedItems: followedItemsTitle,
+  FinishedOrArchived: finishedOrArchivedTitle,
   HomepageBanner: homepageBannerTitle,
   OpenToParticipation: openToParticipationTitle,
   Projects: projectsTitle,
+  Published: publishedTitle,
+  Selection: selectionTitle,
   Spotlight: spotlightTitle,
 
   // RENAMED
@@ -112,9 +123,12 @@ const WIDGETS_WITHOUT_POINTER_EVENTS = new Set<string>([
   'CallToAction',
   'Events',
   'FollowedItems',
+  'FinishedOrArchived',
   'HomepageBanner',
   'OpenToParticipation',
   'Projects',
+  'Published',
+  'Selection',
   'Spotlight',
 
   // RENAMED
