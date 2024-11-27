@@ -38,7 +38,7 @@ module ImpactTracking
       end
 
       def derive_project_id(path, route)
-        return unless path.present? && route.present?
+        return if route.blank?
 
         if route.include? 'projects/:slug'
           return get_project_from_project_slug(path)&.id
