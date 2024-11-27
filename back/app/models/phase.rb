@@ -279,6 +279,12 @@ class Phase < ApplicationRecord
     update!(manual_votes_count: ideas.filter_map(&:manual_votes_amount).sum)
   end
 
+  # If 'disable_disliking' is NOT enabled, then disliking will always be set to enabled on creation and cannot be changed
+  # Otherwise disliking is disabled on creation but can be changed in phase settings
+  def self.disliking_enabled_default
+    !AppConfiguration.instance.feature_activated?('disable_disliking')
+  end
+
   private
 
   def sanitize_description_multiloc
@@ -386,12 +392,6 @@ class Phase < ApplicationRecord
 
   def validate_voting
     Factory.instance.voting_method_for(self).validate_phase
-  end
-
-  # If 'disable_disliking' is NOT enabled, then disliking will always set to enabled on creation and cannot be changed
-  # Otherwise it is disabled on creation but can be changed in phase settings
-  def self.disliking_enabled_default
-    !AppConfiguration.instance.feature_activated?('disable_disliking')
   end
 end
 

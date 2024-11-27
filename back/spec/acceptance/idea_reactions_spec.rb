@@ -10,7 +10,7 @@ resource 'Reactions' do
     @user = create(:admin)
     header_token_for @user
     header 'Content-Type', 'application/json'
-    @project = create(:single_phase_ideation_project)
+    @project = create(:single_phase_ideation_project, phase_attrs: { reacting_dislike_enabled: true })
     @idea = create(:idea, project: @project, phases: @project.phases)
     @reactions = create_list(:reaction, 2, reactable: @idea)
   end

@@ -73,7 +73,7 @@ describe Permissions::ProjectPermissionsService do
 
   describe '"reacting_idea" denied_reason_for...' do
     context 'when in the current phase and reacting is not permitted' do
-      let(:current_phase_attrs) { { with_permissions: true } }
+      let(:current_phase_attrs) { { with_permissions: true, reacting_dislike_enabled: true } }
 
       it "returns 'user_not_verified' if a permitted group requires verification" do
         create(:idea, project: project, phases: [project.phases[2]])
@@ -87,7 +87,7 @@ describe Permissions::ProjectPermissionsService do
 
     context 'for an unauthenticated visitor' do
       let(:user) { nil }
-      let(:project) { create(:single_phase_ideation_project, phase_attrs: { with_permissions: true }) }
+      let(:project) { create(:single_phase_ideation_project, phase_attrs: { with_permissions: true, reacting_dislike_enabled: true }) }
 
       it "returns 'user_not_signed_in' if reacting is not permitted and a permitted group requires verification" do
         create(:idea, project: project, phases: project.phases)
