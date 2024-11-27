@@ -138,6 +138,8 @@ const InputFilters = ({
         onChange={onChangeTopics}
       />
       {!hideStatusFilter && (
+        // BE doesn't currently support filtering map markers by status.
+        // Until this is fixed, we hide the status filter on the map view to reduce confusion.
         <StyledIdeasStatusFilter
           selectedStatusId={selectedIdeaFilters.idea_status}
           selectedIdeaFilters={selectedIdeaFilters}

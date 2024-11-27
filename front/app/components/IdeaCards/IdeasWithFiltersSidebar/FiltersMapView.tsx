@@ -9,7 +9,6 @@ import BottomBar from 'components/FiltersModal/BottomBar';
 import TopBar from 'components/FiltersModal/TopBar';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../messages';
 
@@ -27,9 +26,7 @@ const FiltersMapView = ({
   ...filtersProps
 }: Props) => {
   const { data: ideasFilterCounts } = useIdeasFilterCounts(selectedIdeaFilters);
-  const total = isNilOrError(ideasFilterCounts)
-    ? null
-    : ideasFilterCounts.data.attributes.total;
+  const total = ideasFilterCounts?.data.attributes.total || null;
 
   return (
     <>
