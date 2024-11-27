@@ -4,7 +4,7 @@ require 'rspec_api_documentation/dsl'
 # A somewhat arbitrary choice to put specs related to projects actions that make use of the ProjectMiniSerializer
 # in this file, mainly to reduce the n of tests in the projects_spec.rb file.
 
-resource 'ProjectsMini' do # == Projects, but labeled as Mini, to help differentiate when/if tests fail
+resource 'ProjectsMini' do # == Projects, but labeled as ProjecctsMini, to help differentiate when/if tests fail
   explanation 'Projects can have phases which can be of different participation methods.'
 
   before do
