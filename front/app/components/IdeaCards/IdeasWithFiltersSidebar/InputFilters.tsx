@@ -62,7 +62,7 @@ const InputFilters = ({
         )}
       </ScreenReaderOnly>
       {!isSmallerThanTablet && (
-        <Box mt="8px">
+        <Box mt="8px" mb="20px">
           <SearchInput
             defaultValue={defaultValue}
             onChange={onSearch}
