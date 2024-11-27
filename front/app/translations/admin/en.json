@@ -385,6 +385,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsExclusionTitle": "Participants do not include:",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsInfoTitle": "Participants include:",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.users": "Users interacting with Go Vocal methods",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.pendingApproval": "Waiting for approval",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.projectSettings": "Project settings",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.publish": "Publish",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.publishedActive1": "Published - Active",
