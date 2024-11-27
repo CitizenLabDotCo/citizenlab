@@ -40,7 +40,7 @@ const Spotlight = ({
   return (
     <Box
       px={DEFAULT_PADDING}
-      py={DEFAULT_PADDING}
+      py="56px"
       w="100%"
       display="flex"
       justifyContent="center"
