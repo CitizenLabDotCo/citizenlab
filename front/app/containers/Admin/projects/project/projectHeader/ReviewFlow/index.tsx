@@ -64,9 +64,12 @@ const ReviewFlow = ({ project }: { project: IProjectData }) => {
 
   const approvalPending =
     projectReview && projectReview.data.attributes.approved === false;
+  const approvalGranted =
+    projectReview && projectReview.data.attributes.approved === true;
   const showPublishButton =
     (canPublish || !isProjectReviewEnabled) && !approvalPending;
-  const showReviewRequestButton = isProjectReviewEnabled && !canReview;
+  const showReviewRequestButton =
+    isProjectReviewEnabled && !canReview && !approvalGranted;
   const showProjectApprovalButton = approvalPending && canReview;
 
   return (
