@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import { Button, Tooltip, Box } from '@citizenlab/cl2-component-library';
 
+import useProjectReview from 'api/project_reviews/useProjectReview';
 import { IProjectData } from 'api/projects/types';
 import useUpdateProject from 'api/projects/useUpdateProject';
 
@@ -18,7 +19,10 @@ const ReviewFlow = ({ project }: { project: IProjectData }) => {
     useState(false);
   const { formatMessage } = useIntl();
   const isProjectReviewEnabled = useFeatureFlag({ name: 'project_review' });
-  const { mutate: updateProject, isLoading } = useUpdateProject();
+  const { data: projectReview, isLoading: isProjectReviewLoading } =
+    useProjectReview(project.id);
+  const { mutate: updateProject, isLoading: isUpdatingProjectLoading } =
+    useUpdateProject();
   const canPublish = usePermission({
     item: project,
     action: 'publish',
@@ -53,7 +57,7 @@ const ReviewFlow = ({ project }: { project: IProjectData }) => {
             buttonStyle="admin-dark"
             icon="send"
             onClick={publishProject}
-            processing={isLoading}
+            processing={isUpdatingProjectLoading}
             size="s"
             padding="4px 8px"
             iconSize="20px"
@@ -64,12 +68,12 @@ const ReviewFlow = ({ project }: { project: IProjectData }) => {
         </Tooltip>
       )}
       {/* Review request button */}
-      {isProjectReviewEnabled && (
+      {isProjectReviewEnabled && !projectReview && (
         <Button
           buttonStyle="admin-dark"
           icon="send"
           onClick={() => setIsProjectReviewDropdownOpened(true)}
-          processing={isLoading}
+          processing={isProjectReviewLoading}
           size="s"
           padding="4px 8px"
           iconSize="20px"
