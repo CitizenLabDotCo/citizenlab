@@ -29,8 +29,8 @@ interface Props {
   loadingMore: boolean;
   ideaMarkers?: IIdeaMarkers;
   onLoadMore(): void;
-  hasFilterSidebar?: boolean;
   inputFiltersProps?: InputFiltersProps;
+  hasFilterSidebar?: boolean;
 }
 
 const IdeasView = ({
