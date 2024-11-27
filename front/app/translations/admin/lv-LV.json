@@ -1561,6 +1561,7 @@
   "app.containers.AdminPage.ProjectEdit.PollTab.singleOption": "Viena izvēle",
   "app.containers.AdminPage.ProjectEdit.PollTab.titlePollTab": "Aptauju iestatījumi un rezultāti",
   "app.containers.AdminPage.ProjectEdit.PollTab.wrongMax": "Nepareiza maksimālā vērtība",
+  "app.containers.AdminPage.ProjectEdit.PostManager.importInputs": "Importēt",
   "app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputManager": "Sniegt atsauksmes, pievienot tagus vai iekopēt ierakstus nākamajā projekta posmā.",
   "app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputProjectProposals": "Pārvaldiet priekšlikumus, sniedziet atsauksmes un piešķiriet tēmas.",
   "app.containers.AdminPage.ProjectEdit.PostManager.titleInputManager": "Ievades datu pārvaldnieks",

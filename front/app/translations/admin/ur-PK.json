@@ -1561,6 +1561,7 @@
   "app.containers.AdminPage.ProjectEdit.PollTab.singleOption": "واحد انتخاب",
   "app.containers.AdminPage.ProjectEdit.PollTab.titlePollTab": "پولز کی ترتیبات اور نتائج",
   "app.containers.AdminPage.ProjectEdit.PollTab.wrongMax": "زیادہ سے زیادہ غلط",
+  "app.containers.AdminPage.ProjectEdit.PostManager.importInputs": "درآمد کریں۔",
   "app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputManager": "فیڈ بیک دیں، ٹیگز شامل کریں یا اگلے پروجیکٹ فیز میں پوسٹس کاپی کریں۔",
   "app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputProjectProposals": "تجاویز کا نظم کریں، رائے دیں اور عنوانات تفویض کریں۔",
   "app.containers.AdminPage.ProjectEdit.PostManager.titleInputManager": "ان پٹ مینیجر",

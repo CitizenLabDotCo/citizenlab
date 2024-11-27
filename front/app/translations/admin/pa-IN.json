@@ -1561,6 +1561,7 @@
   "app.containers.AdminPage.ProjectEdit.PollTab.singleOption": "ਸਿੰਗਲ ਚੋਣ",
   "app.containers.AdminPage.ProjectEdit.PollTab.titlePollTab": "ਪੋਲ ਸੈਟਿੰਗਾਂ ਅਤੇ ਨਤੀਜੇ",
   "app.containers.AdminPage.ProjectEdit.PollTab.wrongMax": "ਗਲਤ ਅਧਿਕਤਮ",
+  "app.containers.AdminPage.ProjectEdit.PostManager.importInputs": "ਆਯਾਤ ਕਰੋ",
   "app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputManager": "ਅਗਲੇ ਪ੍ਰੋਜੈਕਟ ਪੜਾਅ ਲਈ ਫੀਡਬੈਕ ਦਿਓ, ਟੈਗ ਜੋੜੋ ਜਾਂ ਪੋਸਟਾਂ ਦੀ ਨਕਲ ਕਰੋ।",
   "app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputProjectProposals": "ਪ੍ਰਸਤਾਵਾਂ ਦਾ ਪ੍ਰਬੰਧਨ ਕਰੋ, ਫੀਡਬੈਕ ਦਿਓ ਅਤੇ ਵਿਸ਼ੇ ਨਿਰਧਾਰਤ ਕਰੋ।",
   "app.containers.AdminPage.ProjectEdit.PostManager.titleInputManager": "ਇਨਪੁਟ ਮੈਨੇਜਰ",

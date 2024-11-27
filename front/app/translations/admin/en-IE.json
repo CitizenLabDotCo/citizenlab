@@ -1561,6 +1561,7 @@
   "app.containers.AdminPage.ProjectEdit.PollTab.singleOption": "Single choice",
   "app.containers.AdminPage.ProjectEdit.PollTab.titlePollTab": "Polls settings and results",
   "app.containers.AdminPage.ProjectEdit.PollTab.wrongMax": "Wrong maximum",
+  "app.containers.AdminPage.ProjectEdit.PostManager.importInputs": "Import",
   "app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputManager": "Give feedback, add tags or copy posts to the next project phase.",
   "app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputProjectProposals": "Manage proposals, give feedback and assign topics.",
   "app.containers.AdminPage.ProjectEdit.PostManager.titleInputManager": "Input manager",

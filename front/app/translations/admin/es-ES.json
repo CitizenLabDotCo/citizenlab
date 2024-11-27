@@ -1561,6 +1561,7 @@
   "app.containers.AdminPage.ProjectEdit.PollTab.singleOption": "Una sola opción",
   "app.containers.AdminPage.ProjectEdit.PollTab.titlePollTab": "Ajustes y resultados de la encuesta",
   "app.containers.AdminPage.ProjectEdit.PollTab.wrongMax": "Máximo incorrecto",
+  "app.containers.AdminPage.ProjectEdit.PostManager.importInputs": "Importar",
   "app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputManager": "Dar retroalimentación, asignar temas o copiar los aportes de la siguiente fase del proyecto.",
   "app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputProjectProposals": "Gestiona las propuestas, haz comentarios y asigna temas.",
   "app.containers.AdminPage.ProjectEdit.PostManager.titleInputManager": "Gestión de aportes",

@@ -1561,6 +1561,7 @@
   "app.containers.AdminPage.ProjectEdit.PollTab.singleOption": "Ett enda val",
   "app.containers.AdminPage.ProjectEdit.PollTab.titlePollTab": "Omröstningar – inställningar och resultat",
   "app.containers.AdminPage.ProjectEdit.PollTab.wrongMax": "Fel max",
+  "app.containers.AdminPage.ProjectEdit.PostManager.importInputs": "Import",
   "app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputManager": "Ge återkoppling, lägg till ämnen eller kopiera inlägg till nästa projektfas.",
   "app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputProjectProposals": "Hantera förslag, ge feedback och tilldela ämnen.",
   "app.containers.AdminPage.ProjectEdit.PostManager.titleInputManager": "Indatahanteraren",

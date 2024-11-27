@@ -14,7 +14,6 @@ import { darken } from 'polished';
 import styled from 'styled-components';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
-import { IIdeasFilterCounts } from 'api/ideas_filter_counts/types';
 
 import T from 'components/T';
 
@@ -24,6 +23,7 @@ import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 import InputFilterCollapsible from './InputFilterCollapsible';
 import messages from './messages';
+import { FilterCounts } from './types';
 import { scrollToTopIdeasList } from './utils';
 
 const Count = styled.span`
@@ -76,7 +76,7 @@ const AllStatus = styled(Status)``;
 
 interface Props {
   statuses: IIdeaStatusData[];
-  filterCounts: IIdeasFilterCounts['data']['attributes'] | null | undefined;
+  filterCounts: FilterCounts;
 
   selectedStatusId: string | null | undefined;
   onChange: (arg: string | null) => void;

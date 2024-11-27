@@ -1561,6 +1561,7 @@
   "app.containers.AdminPage.ProjectEdit.PollTab.singleOption": "Dewis sengl",
   "app.containers.AdminPage.ProjectEdit.PollTab.titlePollTab": "Gosodiadau pleidleisio a chanlyniadau",
   "app.containers.AdminPage.ProjectEdit.PollTab.wrongMax": "Uchafswm anghywir",
+  "app.containers.AdminPage.ProjectEdit.PostManager.importInputs": "Mewnforio",
   "app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputManager": "Rhoi adborth, ychwanegu tagiau neu gopïo postiadau i'r cam prosiect nesaf.",
   "app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputProjectProposals": "Rheoli cynigion, rhoi adborth a phennu pynciau.",
   "app.containers.AdminPage.ProjectEdit.PostManager.titleInputManager": "Rheolwr mewnbwn",

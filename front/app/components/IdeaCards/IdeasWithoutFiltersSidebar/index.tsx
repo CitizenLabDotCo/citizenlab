@@ -12,7 +12,7 @@ import styled from 'styled-components';
 
 import useIdeaCustomFieldsSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
 import useIdeaMarkers from 'api/idea_markers/useIdeaMarkers';
-import { IQueryParameters } from 'api/ideas/types';
+import { IIdeaQueryParameters } from 'api/ideas/types';
 import useInfiniteIdeas from 'api/ideas/useInfiniteIdeas';
 import { IdeaSortMethod } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
@@ -80,7 +80,7 @@ export interface QueryParametersUpdate {
 }
 
 export interface Props {
-  ideaQueryParameters: IQueryParameters;
+  ideaQueryParameters: IIdeaQueryParameters;
   onUpdateQuery: (newParams: QueryParametersUpdate) => void;
 
   // other

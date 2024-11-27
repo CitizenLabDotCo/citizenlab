@@ -1561,6 +1561,7 @@
   "app.containers.AdminPage.ProjectEdit.PollTab.singleOption": "Eén keuze",
   "app.containers.AdminPage.ProjectEdit.PollTab.titlePollTab": "Instellingen en resultaten van de peilingen",
   "app.containers.AdminPage.ProjectEdit.PollTab.wrongMax": "Verkeerd maximum",
+  "app.containers.AdminPage.ProjectEdit.PostManager.importInputs": "Importeren",
   "app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputManager": "Beheer hier de bijdrages van alle projecten. Geef feedback, voeg tags toe, verander de status of verplaats bijdragen van het ene project naar het andere.",
   "app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputProjectProposals": "Beheer voorstellen, geef feedback en wijs onderwerpen toe.",
   "app.containers.AdminPage.ProjectEdit.PostManager.titleInputManager": "Beheer bijdragen",
