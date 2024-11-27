@@ -19,9 +19,16 @@ import messages from './messages';
 type Props = {
   projectId: string;
   phaseContext: string;
+  // This is hack to temporarily disable the IdeaNavigationButtons component until it is fixed.
+  // See https://www.notion.so/govocal/Investigate-the-FE-slowness-of-NHS-ideation-project-1289663b7b26802a99f9e480068a0471
+  showIdeaNavigation?: boolean;
 };
 
-const IdeaNavigationButtons = ({ projectId, phaseContext }: Props) => {
+const IdeaNavigationButtons = ({
+  projectId,
+  phaseContext,
+  showIdeaNavigation = false,
+}: Props) => {
   const { formatMessage } = useIntl();
   const { slug } = useParams() as { slug: string };
   const { data: idea } = useIdeaBySlug(slug);
@@ -70,7 +77,7 @@ const IdeaNavigationButtons = ({ projectId, phaseContext }: Props) => {
     }
   }, [idea?.data.id, ideasList?.data]);
 
-  if (ideaIndex) {
+  if (ideaIndex && showIdeaNavigation) {
     return (
       <Box alignContent="center" display="flex" justifyContent="space-between">
         <IconButton
