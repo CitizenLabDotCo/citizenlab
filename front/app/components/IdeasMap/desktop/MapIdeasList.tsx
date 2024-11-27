@@ -1,13 +1,6 @@
 import React, { memo, useCallback, useState } from 'react';
 
-import {
-  Button,
-  Icon,
-  Spinner,
-  colors,
-  fontSizes,
-  useBreakpoint,
-} from '@citizenlab/cl2-component-library';
+import { Button, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -19,15 +12,15 @@ import { IdeaSortMethodFallback } from 'api/phases/utils';
 
 import FiltersMapView from 'components/IdeaCards/IdeasWithFiltersSidebar/FiltersMapView';
 import { Props as InputFiltersProps } from 'components/IdeaCards/IdeasWithFiltersSidebar/InputFilters';
-import Centerer from 'components/UI/Centerer';
 
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import { isNilOrError } from 'utils/helperUtils';
 
-import IdeaMapCard from '../IdeaMapCard';
 import messages from '../messages';
+
+import IdeaMapCards from './IdeaMapCards';
 
 const Container = styled.div`
   width: 100%;
@@ -42,54 +35,6 @@ const Header = styled.div`
   align-items: stretch;
   padding: 20px;
   border-bottom: solid 1px #ccc;
-`;
-
-const IdeaMapCards = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  padding-top: 20px;
-  overflow-x: hidden;
-  overflow-y: auto;
-`;
-
-const StyledIdeaMapCard = styled(IdeaMapCard)`
-  margin-left: 20px;
-  margin-right: 20px;
-`;
-
-const EmptyContainer = styled.div`
-  width: 100%;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin-top: 100px;
-  margin-bottom: 100px;
-`;
-
-const IdeaIcon = styled(Icon)`
-  flex: 0 0 26px;
-  width: 26px;
-  height: 26px;
-  fill: ${colors.textSecondary};
-`;
-
-const EmptyMessage = styled.div`
-  padding-left: 50px;
-  padding-right: 50px;
-  margin-top: 12px;
-  margin-bottom: 30px;
-`;
-
-const EmptyMessageLine = styled.div`
-  color: ${colors.textSecondary};
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  line-height: normal;
-  text-align: center;
 `;
 
 interface Props {
@@ -161,6 +106,7 @@ const MapIdeasList = memo<Props>(
         {methodConfig?.showIdeaFilters &&
           !showFilters &&
           !isTabletOrSmaller && (
+            // Show the "Filters" button only in the Desktop idea list view
             <Header>
               <Button
                 buttonStyle="secondary-outlined"
@@ -196,40 +142,13 @@ const MapIdeasList = memo<Props>(
           </>
         )}
         {!showFilters && (
-          <IdeaMapCards id="e2e-idea-map-cards">
-            {ideaMarkers === undefined && (
-              <Centerer>
-                <Spinner />
-              </Centerer>
-            )}
-            {ideaMarkers &&
-              ideaMarkers.data.length > 0 &&
-              ideaMarkers.data.map((ideaMarker) => (
-                <StyledIdeaMapCard
-                  projectId={projectId}
-                  idea={ideaMarker}
-                  key={ideaMarker.id}
-                  phaseId={phaseId}
-                  onSelectIdea={onSelectIdea}
-                />
-              ))}
-
-            {!ideaMarkers ||
-              (ideaMarkers.data.length === 0 && (
-                <EmptyContainer>
-                  <IdeaIcon ariaHidden name="idea" />
-                  <EmptyMessage>
-                    <EmptyMessageLine>
-                      <FormattedMessage
-                        {...(isFiltered
-                          ? messages.noFilteredResults
-                          : messages.noResults)}
-                      />
-                    </EmptyMessageLine>
-                  </EmptyMessage>
-                </EmptyContainer>
-              ))}
-          </IdeaMapCards>
+          <IdeaMapCards
+            ideaMarkers={ideaMarkers}
+            projectId={projectId}
+            phaseId={phaseId}
+            isFiltered={isFiltered}
+            onSelectIdea={onSelectIdea}
+          />
         )}
       </Container>
     );

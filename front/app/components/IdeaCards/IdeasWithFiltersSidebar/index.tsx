@@ -26,7 +26,7 @@ import ViewButtons from 'components/PostCardsComponents/ViewButtons';
 import Button from 'components/UI/Button';
 
 import { trackEventByName } from 'utils/analytics';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { isNilOrError } from 'utils/helperUtils';
 import { getInputTermMessage } from 'utils/i18n';
@@ -99,6 +99,7 @@ const IdeasWithFiltersSidebar = ({
   inputTerm,
 }: Props) => {
   const locale = useLocale();
+  const { formatMessage } = useIntl();
   const { windowWidth } = useWindowSize();
   const [searchParams] = useSearchParams();
   const selectedIdeaMarkerId = searchParams.get('idea_map_id');
@@ -212,20 +213,22 @@ const IdeasWithFiltersSidebar = ({
       <Box display="flex" justifyContent="space-between" mb="8px">
         {inputTerm && (
           <Title variant="h4" as="h2" mt="auto" mb="auto" color="tenantText">
-            <FormattedMessage
-              {...getInputTermMessage(inputTerm, {
-                idea: messages.ideas,
-                option: messages.options,
-                project: messages.projects,
-                question: messages.questions,
-                issue: messages.issues,
-                contribution: messages.contributions,
-                proposal: messages.proposals,
-                initiative: messages.initiatives,
-                petition: messages.petitions,
-              })}
-            />
-            {` (${list ? list.length : 0})`}
+            {formatMessage(messages.ideasFilterSidebarTitle, {
+              numberIdeas: list ? list.length : 0,
+              inputTerm: formatMessage(
+                getInputTermMessage(inputTerm, {
+                  idea: messages.ideas,
+                  option: messages.options,
+                  project: messages.projects,
+                  question: messages.questions,
+                  issue: messages.issues,
+                  contribution: messages.contributions,
+                  proposal: messages.proposals,
+                  initiative: messages.initiatives,
+                  petition: messages.petitions,
+                })
+              ),
+            })}
           </Title>
         )}
 

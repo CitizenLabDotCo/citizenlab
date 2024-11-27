@@ -30,10 +30,9 @@ const FiltersMapView = ({
 
   return (
     <>
-      <Box display="flex" flexDirection="column" alignItems="stretch">
-        <TopBar onReset={onClearFilters} onClose={onClose} />
-      </Box>
-      <Box height="100%" overflowY="auto" bgColor={colors.grey100}>
+      <TopBar onReset={onClearFilters} onClose={onClose} />
+
+      <Box height="100%" overflowY="auto" bgColor={colors.background}>
         <Box p="16px">
           <InputFilters
             selectedIdeaFilters={selectedIdeaFilters}
@@ -44,23 +43,22 @@ const FiltersMapView = ({
           />
         </Box>
       </Box>
-      <Box display="flex" flexDirection="column" alignItems="stretch">
-        <BottomBar
-          buttonText={
-            total && isNumber(total) ? (
-              <FormattedMessage
-                {...messages.showXResults}
-                values={{
-                  ideasCount: total,
-                }}
-              />
-            ) : (
-              <FormattedMessage {...messages.showResults} />
-            )
-          }
-          onClick={onClose}
-        />
-      </Box>
+
+      <BottomBar
+        buttonText={
+          total && isNumber(total) ? (
+            <FormattedMessage
+              {...messages.showXResults}
+              values={{
+                ideasCount: total,
+              }}
+            />
+          ) : (
+            <FormattedMessage {...messages.showResults} />
+          )
+        }
+        onClick={onClose}
+      />
     </>
   );
 };
