@@ -250,7 +250,7 @@ describe ProjectsFinderService do
         expect(result).to match_array([finished_project1, unfinished_project2])
       end
 
-      it 'excludes unfinished projects with a last phase that contains a invisible report' do
+      it 'excludes unfinished projects with a last phase that contains an invisible report' do
         unfinished_project2 = create(:project)
         create(:phase, project: unfinished_project2, start_at: 2.days.ago, end_at: 2.days.from_now)
         create(:report, phase: unfinished_project2.phases.last, visible: false)
