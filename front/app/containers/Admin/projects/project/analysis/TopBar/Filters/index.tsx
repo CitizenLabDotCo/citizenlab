@@ -35,6 +35,11 @@ const Filters = ({ onClose }: FilterProps) => {
   const method =
     analysis && getMethodConfig(analysis.data.attributes.participation_method);
 
+  const showEngagementFilters =
+    method?.supportsReactions ||
+    method?.supportsVotes ||
+    method?.supportsComments;
+
   return (
     <Box
       position="absolute"
@@ -72,9 +77,7 @@ const Filters = ({ onClose }: FilterProps) => {
               <EmptyCustomFieldsFilter />
             </>
           )}
-          {(method?.supportsReactions ||
-            method?.supportsVotes ||
-            method?.supportsComments) && (
+          {showEngagementFilters && (
             <>
               <Text color="primary" fontWeight="bold">
                 {formatMessage(messages.engagement)}

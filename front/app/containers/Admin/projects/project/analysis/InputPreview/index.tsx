@@ -63,22 +63,18 @@ const InputListItem = () => {
   const showManageInputButton = methodConfig.showInputManager && phaseId;
 
   const mainCustomFieldId =
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    analysis.data.relationships?.main_custom_field?.data?.id;
+    analysis.data.relationships.main_custom_field?.data.id;
 
   const additionalCustomFieldIds =
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    analysis.data.relationships?.additional_custom_fields?.data.map(
+    analysis.data.relationships.additional_custom_fields?.data.map(
       (field) => field.id
     );
 
   const allCustomFields = analysis.data.relationships.all_custom_fields.data;
-  const customFieldsInAnalysisIds =
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    [mainCustomFieldId, ...(additionalCustomFieldIds || [])] || [];
+  const customFieldsInAnalysisIds = [
+    mainCustomFieldId,
+    ...(additionalCustomFieldIds || []),
+  ];
 
   const handleAddRemoveAdditionalCustomField = (customFieldId: string) => {
     const newAdditionalCustomFieldIds = additionalCustomFieldIds?.includes(
@@ -141,9 +137,7 @@ const InputListItem = () => {
       {showAuthor && (
         <Box mt="20px" display="flex" alignItems="center">
           <Avatar size={40} userId={author.data.id} />
-          {/* TODO: Fix this the next time the file is edited. */}
-          {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-          <Text m="0px">{getFullName(author?.data)}</Text>
+          <Text m="0px">{getFullName(author.data)}</Text>
           <Divider />
         </Box>
       )}
@@ -217,12 +211,8 @@ const InputListItem = () => {
               <LongFieldValue
                 customFieldId={customField.id}
                 input={input.data}
-                // TODO: Fix this the next time the file is edited.
-                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-                projectId={analysis.data.relationships.project?.data?.id}
-                // TODO: Fix this the next time the file is edited.
-                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-                phaseId={analysis.data.relationships.phase?.data?.id}
+                projectId={analysis.data.relationships.project?.data.id}
+                phaseId={analysis.data.relationships.phase?.data.id}
               />
             </Box>
             {mainCustomFieldId && <Divider m="0px" />}

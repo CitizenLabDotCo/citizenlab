@@ -58,18 +58,13 @@ const AdminProjectProposals = () => {
           <FormattedMessage {...messages.subtitleInputProjectProposals} />
         </Text>
       </Box>
-
-      {/* TODO: Fix this the next time the file is edited. */}
-      {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-      {project && (
-        <ProjectProposalsManager
-          key={phaseId}
-          projectId={project.data.id}
-          phaseId={phaseId}
-          visibleFilterMenus={timelineProjectVisibleFilterMenus}
-          defaultFilterMenu={defaultTimelineProjectVisibleFilterMenu}
-        />
-      )}
+      <ProjectProposalsManager
+        key={phaseId}
+        projectId={project.data.id}
+        phaseId={phaseId}
+        visibleFilterMenus={timelineProjectVisibleFilterMenus}
+        defaultFilterMenu={defaultTimelineProjectVisibleFilterMenu}
+      />
     </>
   );
 };

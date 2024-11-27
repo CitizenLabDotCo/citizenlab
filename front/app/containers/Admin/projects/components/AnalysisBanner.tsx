@@ -56,11 +56,9 @@ const AnalysisBanner = ({ projectId, phaseId }: Props) => {
   const handleGoToAnalysis = () => {
     if (analyses?.data.length) {
       clHistory.push(
-        // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         `/admin/projects/${
           projectId || phase?.data.relationships.project.data.id
-        }/analysis/${analyses?.data[0].id}?phase_id=${phaseId}`
+        }/analysis/${analyses.data[0].id}?phase_id=${phaseId}`
       );
     } else {
       createAnalysis(
