@@ -1561,6 +1561,7 @@
   "app.containers.AdminPage.ProjectEdit.PollTab.singleOption": "Une seule réponse",
   "app.containers.AdminPage.ProjectEdit.PollTab.titlePollTab": "Paramètres et résultats des sondages",
   "app.containers.AdminPage.ProjectEdit.PollTab.wrongMax": "Mauvais maximum",
+  "app.containers.AdminPage.ProjectEdit.PostManager.importInputs": "Importer",
   "app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputManager": "Rédigez des commentaires, filtrez par étiquette ou basculez les contributions dans la phase suivante",
   "app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputProjectProposals": "Explorez et gérez les propositions soumises en donnant des retours, en ajoutant des étiquettes ou en modifiant leur statut.",
   "app.containers.AdminPage.ProjectEdit.PostManager.titleInputManager": "Gestion des contributions",
