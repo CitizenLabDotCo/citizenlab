@@ -2,13 +2,12 @@ import React, { useCallback, useState } from 'react';
 
 import {
   media,
-  fontSizes,
   viewportWidths,
   defaultCardStyle,
-  isRtl,
   Spinner,
   useWindowSize,
   Box,
+  Title,
 } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -17,7 +16,7 @@ import useIdeaCustomFieldsSchema from 'api/idea_json_form_schema/useIdeaJsonForm
 import useIdeaMarkers from 'api/idea_markers/useIdeaMarkers';
 import useInfiniteIdeas from 'api/ideas/useInfiniteIdeas';
 import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
-import { PresentationMode, IdeaSortMethod } from 'api/phases/types';
+import { PresentationMode, IdeaSortMethod, InputTerm } from 'api/phases/types';
 
 import useLocale from 'hooks/useLocale';
 
@@ -25,12 +24,12 @@ import { QueryParameters } from 'containers/IdeasIndexPage';
 
 import ViewButtons from 'components/PostCardsComponents/ViewButtons';
 import Button from 'components/UI/Button';
-import SearchInput from 'components/UI/SearchInput';
 
 import { trackEventByName } from 'utils/analytics';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { isNilOrError } from 'utils/helperUtils';
+import { getInputTermMessage } from 'utils/i18n';
 import { isFieldEnabled } from 'utils/projectUtils';
 
 import messages from '../messages';
@@ -65,52 +64,6 @@ const InitialLoading = styled.div`
   `}
 `;
 
-const MobileSearchInput = styled(SearchInput)`
-  margin-bottom: 20px;
-`;
-
-const MobileFilterButton = styled(Button)``;
-
-const AboveContent = styled.div<{
-  filterColumnWidth: number;
-  isMapView: boolean;
-}>`
-  display: flex;
-  flex-direction: row-reverse;
-  align-items: center;
-  justify-content: space-between;
-  margin-right: ${({ filterColumnWidth, isMapView }) =>
-    isMapView ? 0 : filterColumnWidth + gapWidth}px;
-  margin-bottom: 8px;
-
-  ${isRtl`
-    flex-direction: row-reverse;
-  `}
-
-  ${media.tablet`
-    margin-right: 0;
-    margin-top: 20px;
-  `}
-`;
-
-const AboveContentLeft = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const IdeasCount = styled.div`
-  color: ${({ theme }) => theme.colors.tenantText};
-  font-size: ${fontSizes.base}px;
-  line-height: 21px;
-  white-space: nowrap;
-  display: flex;
-  align-items: center;
-
-  span > span {
-    font-weight: 600;
-  }
-`;
-
 const ContentLeft = styled.div`
   flex: 1;
   display: flex;
@@ -133,7 +86,7 @@ export interface Props {
   defaultView?: PresentationMode;
   projectId?: string;
   phaseId?: string;
-  title?: JSX.Element;
+  inputTerm?: InputTerm;
 }
 
 const IdeasWithFiltersSidebar = ({
@@ -143,9 +96,10 @@ const IdeasWithFiltersSidebar = ({
   defaultView,
   onUpdateQuery,
   showViewToggle,
-  title,
+  inputTerm,
 }: Props) => {
   const locale = useLocale();
+  const { formatMessage } = useIntl();
   const { windowWidth } = useWindowSize();
   const [searchParams] = useSearchParams();
   const selectedIdeaMarkerId = searchParams.get('idea_map_id');
@@ -256,8 +210,28 @@ const IdeasWithFiltersSidebar = ({
 
   return (
     <Container id="e2e-ideas-container">
-      <Box display="flex" justifyContent="space-between">
-        {title}
+      <Box display="flex" justifyContent="space-between" mb="8px">
+        {inputTerm && (
+          <Title variant="h4" as="h2" mt="auto" mb="auto" color="tenantText">
+            {formatMessage(messages.ideasFilterSidebarTitle, {
+              numberIdeas: list ? list.length : 0,
+              inputTerm: formatMessage(
+                getInputTermMessage(inputTerm, {
+                  idea: messages.ideas,
+                  option: messages.options,
+                  project: messages.projects,
+                  question: messages.questions,
+                  issue: messages.issues,
+                  contribution: messages.contributions,
+                  proposal: messages.proposals,
+                  initiative: messages.initiatives,
+                  petition: messages.petitions,
+                })
+              ),
+            })}
+          </Title>
+        )}
+
         {showViewButtons && (
           <ViewButtons selectedView={selectedView} onClick={setSelectedView} />
         )}
@@ -288,44 +262,16 @@ const IdeasWithFiltersSidebar = ({
                 onClose={closeModal}
                 handleSortOnChange={handleSortOnChange}
               />
-
-              <MobileSearchInput
-                defaultValue={ideaQueryParameters.search}
-                onChange={handleSearchOnChange}
-                a11y_numberOfSearchResults={list.length}
-              />
-
-              <MobileFilterButton
+              <Button
                 buttonStyle="secondary-outlined"
                 onClick={openFiltersModal}
                 icon="filter"
                 text={<FormattedMessage {...messages.filter} />}
+                mb="12px"
+                mt="4px"
               />
             </>
           )}
-
-          <AboveContent
-            filterColumnWidth={filterColumnWidth}
-            isMapView={selectedView === 'map'}
-          >
-            {/* This is effectively on the right,
-              with the help of flexbox. The HTML order, however,
-              needed to be like this for a11y (tab order).
-             */}
-            <AboveContentLeft>
-              {!isNilOrError(ideasFilterCounts) && (
-                <IdeasCount>
-                  <FormattedMessage
-                    {...messages.xResults}
-                    values={{
-                      ideasCount: ideasFilterCounts.data.attributes.total,
-                    }}
-                  />
-                </IdeasCount>
-              )}
-            </AboveContentLeft>
-          </AboveContent>
-
           <Box display={selectedView === 'map' ? 'block' : 'flex'}>
             <ContentLeft>
               <IdeasView
@@ -339,10 +285,21 @@ const IdeasWithFiltersSidebar = ({
                 hideIdeaStatus={smallerThanPhone}
                 view={selectedView}
                 hasMoreThanOneView={false}
-                hasFilterSidebar={true}
                 projectId={projectId}
+                hasFilterSidebar={true}
                 phaseId={phaseId}
                 ideaMarkers={ideaMarkers}
+                inputFiltersProps={{
+                  filtersActive,
+                  ideasFilterCounts,
+                  numberOfSearchResults: list.length,
+                  selectedIdeaFilters: ideaQueryParameters,
+                  onClearFilters: clearFilters,
+                  onSearch: handleSearchOnChange,
+                  onChangeStatus: handleStatusOnChange,
+                  onChangeTopics: handleTopicsOnChange,
+                  handleSortOnChange,
+                }}
               />
             </ContentLeft>
 

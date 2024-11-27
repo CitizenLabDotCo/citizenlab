@@ -76,11 +76,13 @@ export interface Props {
   numberOfSearchResults: number;
   selectedIdeaFilters: Partial<IIdeaQueryParameters>;
   onClearFilters: () => void;
+  showClearButton?: boolean;
   onSearch: (searchTerm: string) => void;
   onChangeStatus: (ideaStatus: string | null) => void;
   onChangeTopics: (topics: string[] | null) => void;
   handleSortOnChange: (sort: IdeaSortMethod) => void;
   phaseId?: string;
+  hideStatusFilter?: boolean;
 }
 
 const InputFilters = ({
@@ -92,6 +94,8 @@ const InputFilters = ({
   selectedIdeaFilters,
   phaseId,
   onClearFilters,
+  showClearButton = true,
+  hideStatusFilter,
   onSearch,
   onChangeStatus,
   onChangeTopics,
@@ -99,7 +103,7 @@ const InputFilters = ({
 }: Props) => {
   return (
     <FiltersSidebarContainer className={className}>
-      {filtersActive && (
+      {filtersActive && showClearButton && (
         <ClearFiltersButton onClick={onClearFilters}>
           <ClearFiltersText>
             <FormattedMessage {...messages.resetFilters} />
@@ -133,11 +137,15 @@ const InputFilters = ({
         selectedIdeaFilters={selectedIdeaFilters}
         onChange={onChangeTopics}
       />
-      <StyledIdeasStatusFilter
-        selectedStatusId={selectedIdeaFilters.idea_status}
-        selectedIdeaFilters={selectedIdeaFilters}
-        onChange={onChangeStatus}
-      />
+      {!hideStatusFilter && (
+        // BE doesn't currently support filtering map markers by status.
+        // Until this is fixed, we hide the status filter on the map view to reduce confusion.
+        <StyledIdeasStatusFilter
+          selectedStatusId={selectedIdeaFilters.idea_status}
+          selectedIdeaFilters={selectedIdeaFilters}
+          onChange={onChangeStatus}
+        />
+      )}
     </FiltersSidebarContainer>
   );
 };
