@@ -24,10 +24,16 @@ export type FinishedOrArchived = {
   filter_by: 'finished' | 'archived' | 'finished_and_archived';
 } & PageNumbers;
 
+type Areas = {
+  endpoint: 'for_areas';
+  areas: string[];
+} & PageNumbers;
+
 export type Parameters =
   | ActiveParticipatoryPhaseParams
   | FollowedItemParams
-  | FinishedOrArchived;
+  | FinishedOrArchived
+  | Areas;
 
 export type MiniProjectsKeys = Keys<typeof miniProjectsKeys>;
 
