@@ -50,6 +50,7 @@ const InputFilters = ({
   handleSortOnChange,
 }: Props) => {
   const isSmallerThanTablet = useBreakpoint('tablet');
+  // We have a reset filters button in the top bar of the modal on mobile.
   const showResetFiltersButton = !isSmallerThanTablet && filtersActive;
 
   return (
