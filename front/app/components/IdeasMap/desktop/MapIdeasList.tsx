@@ -118,6 +118,9 @@ const MapIdeasList = memo<Props>(
       numberOfSearchResults,
     } = inputFiltersProps ?? {};
 
+    const hasInputFilterProps =
+      onChangeStatus && onChangeTopics && handleSortOnChange && onClearFilters;
+
     const { data: ideaCustomFieldsSchema } = useIdeaJsonFormSchema({
       projectId,
       phaseId,
@@ -171,31 +174,27 @@ const MapIdeasList = memo<Props>(
             </Header>
           )}
 
-        {showFilters &&
-          onChangeStatus &&
-          onChangeTopics &&
-          handleSortOnChange &&
-          onClearFilters && (
-            <>
-              <FiltersMapView
-                selectedIdeaFilters={selectedIdeaFilters || {}}
-                onClearFilters={onClearFilters}
-                filtersActive={!!filtersActive}
-                ideasFilterCounts={ideasFilterCounts}
-                numberOfSearchResults={
-                  numberOfSearchResults ? numberOfSearchResults : 0
-                }
-                onSearch={handleSearchOnChange}
-                onChangeStatus={onChangeStatus}
-                onChangeTopics={onChangeTopics}
-                handleSortOnChange={handleSortOnChange}
-                opened={showFilters}
-                onClose={() => {
-                  setShowFilters(false);
-                }}
-              />
-            </>
-          )}
+        {showFilters && hasInputFilterProps && (
+          <>
+            <FiltersMapView
+              selectedIdeaFilters={selectedIdeaFilters || {}}
+              onClearFilters={onClearFilters}
+              filtersActive={!!filtersActive}
+              ideasFilterCounts={ideasFilterCounts}
+              numberOfSearchResults={
+                numberOfSearchResults ? numberOfSearchResults : 0
+              }
+              onSearch={handleSearchOnChange}
+              onChangeStatus={onChangeStatus}
+              onChangeTopics={onChangeTopics}
+              handleSortOnChange={handleSortOnChange}
+              opened={showFilters}
+              onClose={() => {
+                setShowFilters(false);
+              }}
+            />
+          </>
+        )}
         {!showFilters && (
           <IdeaMapCards id="e2e-idea-map-cards">
             {ideaMarkers === undefined && (
@@ -215,22 +214,21 @@ const MapIdeasList = memo<Props>(
                 />
               ))}
 
-            {/* TODO: Fix this the next time the file is edited. */}
-            {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-            {(ideaMarkers === null || ideaMarkers?.data.length === 0) && (
-              <EmptyContainer>
-                <IdeaIcon ariaHidden name="idea" />
-                <EmptyMessage>
-                  <EmptyMessageLine>
-                    <FormattedMessage
-                      {...(isFiltered
-                        ? messages.noFilteredResults
-                        : messages.noResults)}
-                    />
-                  </EmptyMessageLine>
-                </EmptyMessage>
-              </EmptyContainer>
-            )}
+            {!ideaMarkers ||
+              (ideaMarkers.data.length === 0 && (
+                <EmptyContainer>
+                  <IdeaIcon ariaHidden name="idea" />
+                  <EmptyMessage>
+                    <EmptyMessageLine>
+                      <FormattedMessage
+                        {...(isFiltered
+                          ? messages.noFilteredResults
+                          : messages.noResults)}
+                      />
+                    </EmptyMessageLine>
+                  </EmptyMessage>
+                </EmptyContainer>
+              ))}
           </IdeaMapCards>
         )}
       </Container>
