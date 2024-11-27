@@ -33,6 +33,18 @@ definePermissionRule(
     );
   }
 );
+
+definePermissionRule(
+  'project',
+  'review',
+  (project: IProjectData, user, _tenant) => {
+    return (
+      isAdmin(user) ||
+      isProjectFolderModerator(user, project.attributes.folder_id)
+    );
+  }
+);
+
 export function canModerateProject(
   project: IProjectData,
   user: IUser | undefined

@@ -22,4 +22,8 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.pendingApproval',
     defaultMessage: 'Waiting for approval',
   },
+  approve: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approve',
+    defaultMessage: 'Approve',
+  },
 });

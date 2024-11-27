@@ -1,7 +1,13 @@
 import React, { useState } from 'react';
 
-import { Button, Tooltip, Box } from '@citizenlab/cl2-component-library';
+import {
+  Button,
+  Tooltip,
+  Box,
+  colors,
+} from '@citizenlab/cl2-component-library';
 
+import useApproveProjectReview from 'api/project_reviews/useApproveProject';
 import useProjectReview from 'api/project_reviews/useProjectReview';
 import { IProjectData } from 'api/projects/types';
 import useUpdateProject from 'api/projects/useUpdateProject';
@@ -17,16 +23,30 @@ import ReviewRequest from './ReviewRequest';
 const ReviewFlow = ({ project }: { project: IProjectData }) => {
   const [isProjectReviewDropdownOpened, setIsProjectReviewDropdownOpened] =
     useState(false);
-  const { formatMessage } = useIntl();
   const isProjectReviewEnabled = useFeatureFlag({ name: 'project_review' });
+
+  const { formatMessage } = useIntl();
+
   const { data: projectReview, isLoading: isProjectReviewLoading } =
     useProjectReview(project.id);
+
   const { mutate: updateProject, isLoading: isUpdatingProjectLoading } =
     useUpdateProject();
+
+  const {
+    mutate: approveProjectReview,
+    isLoading: isApprovingProjectReviewLoading,
+  } = useApproveProjectReview();
+
   const canPublish = usePermission({
     item: project,
     action: 'publish',
     context: projectReview?.data.attributes.approved,
+  });
+
+  const canReview = usePermission({
+    item: project,
+    action: 'review',
   });
 
   const publishProject = () => {
@@ -44,16 +64,20 @@ const ReviewFlow = ({ project }: { project: IProjectData }) => {
 
   const approvalPending =
     projectReview && projectReview.data.attributes.approved === false;
+  const showPublishButton =
+    (canPublish || !isProjectReviewEnabled) && !approvalPending;
+  const showReviewRequestButton = isProjectReviewEnabled && !canReview;
+  const showProjectApprovalButton = approvalPending && canReview;
+
   return (
     <Box position="relative">
-      {/* Publish button */}
-      {(canPublish || !isProjectReviewEnabled) && (
+      {showPublishButton && (
         <Tooltip
           content={formatMessage(
             messages.onlyAdminsAndFolderManagersCanPublish
           )}
           placement="bottom"
-          disabled={canPublish && !isProjectReviewEnabled}
+          disabled={canPublish}
         >
           <Button
             buttonStyle="admin-dark"
@@ -69,8 +93,8 @@ const ReviewFlow = ({ project }: { project: IProjectData }) => {
           </Button>
         </Tooltip>
       )}
-      {/* Review request button */}
-      {isProjectReviewEnabled && (
+
+      {showReviewRequestButton && (
         <Button
           buttonStyle="admin-dark"
           icon="send"
@@ -91,6 +115,20 @@ const ReviewFlow = ({ project }: { project: IProjectData }) => {
         onClose={() => setIsProjectReviewDropdownOpened(false)}
         projectId={project.id}
       />
+
+      {showProjectApprovalButton && (
+        <Button
+          bgColor={colors.success}
+          icon="check"
+          onClick={() => approveProjectReview(project.id)}
+          processing={isApprovingProjectReviewLoading}
+          size="s"
+          padding="4px 8px"
+          iconSize="20px"
+        >
+          {formatMessage(messages.approve)}
+        </Button>
+      )}
     </Box>
   );
 };
