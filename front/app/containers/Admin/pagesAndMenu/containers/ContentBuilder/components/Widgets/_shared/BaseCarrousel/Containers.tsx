@@ -5,6 +5,8 @@ import styled from 'styled-components';
 
 import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
 
+import { DEFAULT_Y_PADDING } from '../../constants';
+
 const StyledBox = styled(Box)`
   .scroll-button {
     opacity: 0;
@@ -29,7 +31,7 @@ export const CarrouselContainer = ({ children }: CarrouselContainerProps) => {
   return (
     <Box
       px={isSmallerThanPhone ? undefined : DEFAULT_PADDING}
-      py={DEFAULT_PADDING}
+      py={DEFAULT_Y_PADDING}
       w="100%"
       display="flex"
       justifyContent="center"
