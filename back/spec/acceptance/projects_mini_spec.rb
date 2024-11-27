@@ -4,7 +4,7 @@ require 'rspec_api_documentation/dsl'
 # A somewhat arbitrary choice to put specs related to projects actions that make use of the ProjectMiniSerializer
 # in this file, mainly to reduce the n of tests in the projects_spec.rb file.
 
-resource 'Projects' do
+resource 'ProjectsMini' do # == Projects, but labeled as Mini, to help differentiate when/if tests fail
   explanation 'Projects can have phases which can be of different participation methods.'
 
   before do
@@ -233,7 +233,7 @@ resource 'Projects' do
       let!(:_unfinished_project1) { create(:project_with_active_ideation_phase) }
       let!(:unfinished_project2) { create(:project) }
       let!(:phase) { create(:phase, project: unfinished_project2, start_at: 2.days.ago, end_at: 2.days.from_now) }
-      let!(:_report) { create(:report, phase: phase) }
+      let!(:_report) { create(:report, phase: phase, visible: true) }
 
       example 'Lists only projects with all phases finished or with a report in the last phase' do
         do_request filter_by: 'finished'
@@ -297,7 +297,7 @@ resource 'Projects' do
       let!(:_unfinished_project1) { create(:project_with_active_ideation_phase) } # we do not expect this one
       let!(:unfinished_project2) { create(:project) }
       let!(:phase) { create(:phase, project: unfinished_project2, start_at: 2.days.ago, end_at: 2.days.from_now) }
-      let!(:_report) { create(:report, phase: phase) }
+      let!(:_report) { create(:report, phase: phase, visible: true) }
 
       example 'Lists (published projects with phases finished OR with a report in last phase) OR archived projects' do
         do_request({ filter_by: 'finished_and_archived' })
