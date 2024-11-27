@@ -2014,7 +2014,6 @@
   "app.containers.AdminPage.SettingsPage.anonymousNameScheme_animal2": "Hayvan - örneğin Fil Kedi",
   "app.containers.AdminPage.SettingsPage.anonymousNameScheme_user": "Kullanıcı - örneğin Kullanıcı 123456",
   "app.containers.AdminPage.SettingsPage.approvalSave": "Kaydet",
-  "app.containers.AdminPage.SettingsPage.approvalSubtitle": "Proje yöneticilerinin bir projeyi ilk kez yayınlamak için onay alması gerekir. Bildirimleri kimlerin alacağını özelleştirebilirsiniz.",
   "app.containers.AdminPage.SettingsPage.approvalTitle": "Proje onay ayarları",
   "app.containers.AdminPage.SettingsPage.areaDeletionConfirmation": "Bu alanı silmek istediğinizden emin misiniz?",
   "app.containers.AdminPage.SettingsPage.areaTerm": "Tek alan için kullanılan terim (tekil)",

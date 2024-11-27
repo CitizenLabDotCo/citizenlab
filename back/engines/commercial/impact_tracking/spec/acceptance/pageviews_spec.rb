@@ -66,5 +66,19 @@ resource 'Impact tracking pageview' do
         })
       end
     end
+
+    context 'when missing route' do
+      let(:client_path) { '/en/' }
+      let(:route) { nil }
+
+      example 'Track a pageview when a session already exists' do
+        do_request
+        expect(response_status).to eq 201
+        expect(ImpactTracking::Pageview.count).to eq 1
+        expect(ImpactTracking::Pageview.last).to have_attributes({
+          path: '/en/'
+        })
+      end
+    end
   end
 end

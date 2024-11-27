@@ -2014,7 +2014,6 @@
   "app.containers.AdminPage.SettingsPage.anonymousNameScheme_animal2": "Animal — « éléphant » ou « chat » par exemple",
   "app.containers.AdminPage.SettingsPage.anonymousNameScheme_user": "Utilisateur — « Utilisateur 123456 » par exemple",
   "app.containers.AdminPage.SettingsPage.approvalSave": "Enregistrer",
-  "app.containers.AdminPage.SettingsPage.approvalSubtitle": "Les chefs de projet doivent obtenir l'autorisation de publier un projet la première fois qu'il est mis en ligne. Vous pouvez personnaliser les destinataires des notifications.",
   "app.containers.AdminPage.SettingsPage.approvalTitle": "Paramètres d'approbation des projets",
   "app.containers.AdminPage.SettingsPage.areaDeletionConfirmation": "Êtes-vous sûr(e) de vouloir supprimer ce lieu ?",
   "app.containers.AdminPage.SettingsPage.areaTerm": "Terme pour une zone (singulier)",
