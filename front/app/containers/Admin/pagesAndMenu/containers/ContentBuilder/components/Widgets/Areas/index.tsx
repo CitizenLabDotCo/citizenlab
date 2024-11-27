@@ -7,7 +7,6 @@ import Settings from './Settings';
 
 interface Props {
   titleMultiloc: Multiloc;
-  areas: string[];
 }
 
 const Areas = (_props: Props) => {
