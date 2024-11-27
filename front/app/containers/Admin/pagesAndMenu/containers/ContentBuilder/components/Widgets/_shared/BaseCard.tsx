@@ -36,16 +36,17 @@ const ProjectImageContainer = styled.div`
 
 interface Props {
   imageUrl?: string;
+  alt?: string;
 }
 
-export const CardImage = ({ imageUrl }: Props) => {
+export const CardImage = ({ imageUrl, alt }: Props) => {
   return (
     <Box>
       <ProjectImageContainer className="project-image-container">
         {imageUrl ? (
           <Image
             src={imageUrl}
-            alt=""
+            alt={alt ?? ''}
             position="absolute"
             width="100%"
             height="100%"

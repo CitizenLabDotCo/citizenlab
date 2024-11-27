@@ -24,6 +24,8 @@ class WebApi::V1::UsersController < ApplicationController
     @users = @users.not_project_folder_moderator(params[:is_not_folder_moderator]) if params[:is_not_folder_moderator].present?
     @users = @users.not_citizenlab_member if params[:not_citizenlab_member].present?
 
+    @users = @users.project_reviewers(Utils.to_bool(params[:project_reviewer])) if params.key?(:project_reviewer)
+
     case params[:can_admin]&.downcase
     when 'true' then @users = @users.admin
     when 'false' then @users = @users.not_admin

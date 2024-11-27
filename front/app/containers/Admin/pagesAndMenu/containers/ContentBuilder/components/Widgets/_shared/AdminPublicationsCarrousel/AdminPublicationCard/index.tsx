@@ -34,6 +34,7 @@ interface InnerProps extends Props {
   imageUrl?: string;
   avatarIds: string[];
   userCount?: number;
+  imageAltText?: string;
 }
 
 export const AdminPublicationCard = ({
@@ -41,6 +42,7 @@ export const AdminPublicationCard = ({
   imageUrl,
   avatarIds,
   userCount,
+  imageAltText,
   ml,
   mr,
   onKeyDown,
@@ -67,7 +69,7 @@ export const AdminPublicationCard = ({
       display="block"
       onKeyDown={onKeyDown}
     >
-      <CardImage imageUrl={imageUrl} />
+      <CardImage imageUrl={imageUrl} alt={imageAltText} />
       <Title variant="h4" as="h3" mt="8px" mb="0px">
         {truncate(localize(publication_title_multiloc), 50)}
       </Title>
@@ -103,6 +105,7 @@ export const AdminPublicationCard = ({
 };
 
 const AdminPublicationCardWrapper = ({ adminPublication, ...props }: Props) => {
+  const localize = useLocalize();
   const { id, type } = adminPublication.relationships.publication.data;
 
   const projectId = type === 'project' ? id : undefined;
@@ -142,12 +145,18 @@ const AdminPublicationCardWrapper = ({ adminPublication, ...props }: Props) => {
       ? project?.data.attributes.participants_count
       : folder?.data.attributes.participants_count;
 
+  const imageAltText =
+    type === 'project'
+      ? localize(projectImage?.data.attributes.alt_text_multiloc)
+      : localize(folderImage?.data.attributes.alt_text_multiloc);
+
   return (
     <AdminPublicationCard
       adminPublication={adminPublication}
       imageUrl={imageUrl ?? undefined}
       avatarIds={avatarIds}
       userCount={userCount}
+      imageAltText={imageAltText}
       {...props}
     />
   );
