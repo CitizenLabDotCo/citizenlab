@@ -2,11 +2,10 @@ import React from 'react';
 
 import {
   Box,
-  colors,
+  Button,
   fontSizes,
-  media,
+  useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
 
 import { IIdeaQueryParameters } from 'api/ideas/types';
 import { IIdeasFilterCounts } from 'api/ideas_filter_counts/types';
@@ -23,54 +22,8 @@ import SortingBox from '../shared/Filters/SortingBox';
 import StatusFilterBox from '../shared/Filters/StatusFilterBox';
 import TopicFilterBox from '../shared/Filters/TopicFilterBox';
 
-const FiltersSidebarContainer = styled.div`
-  position: relative;
-`;
-
-const ClearFiltersText = styled.span`
-  color: ${colors.textSecondary};
-  font-size: ${fontSizes.s}px;
-  font-weight: 400;
-  line-height: auto;
-`;
-
-const ClearFiltersButton = styled.button`
-  height: 28px;
-  position: absolute;
-  top: 54px;
-  right: 0px;
-  display: flex;
-  align-items: center;
-  padding: 0;
-  margin: 0;
-  cursor: pointer;
-
-  &:hover {
-    ${ClearFiltersText} {
-      color: #000;
-    }
-  }
-`;
-
-const DesktopSearchInput = styled(SearchInput)`
-  margin-bottom: 20px;
-
-  ${media.tablet`
-    display: none;
-  `}
-`;
-
-const StyledIdeasStatusFilter = styled(StatusFilterBox)`
-  margin-bottom: 0px;
-`;
-
-const StyledIdeasTopicsFilter = styled(TopicFilterBox)`
-  margin-bottom: 20px;
-`;
-
 export interface Props {
   defaultValue?: string;
-  className?: string;
   filtersActive: boolean;
   ideasFilterCounts: IIdeasFilterCounts | NilOrError;
   numberOfSearchResults: number;
@@ -85,7 +38,6 @@ export interface Props {
 
 const InputFilters = ({
   defaultValue,
-  className,
   filtersActive,
   ideasFilterCounts,
   numberOfSearchResults,
@@ -97,16 +49,10 @@ const InputFilters = ({
   onChangeTopics,
   handleSortOnChange,
 }: Props) => {
-  return (
-    <FiltersSidebarContainer className={className}>
-      {filtersActive && (
-        <ClearFiltersButton onClick={onClearFilters}>
-          <ClearFiltersText>
-            <FormattedMessage {...messages.resetFilters} />
-          </ClearFiltersText>
-        </ClearFiltersButton>
-      )}
+  const isSmallerThanTablet = useBreakpoint('tablet');
 
+  return (
+    <>
       <ScreenReaderOnly aria-live="polite">
         {!isNilOrError(ideasFilterCounts) && (
           <FormattedMessage
@@ -115,30 +61,42 @@ const InputFilters = ({
           />
         )}
       </ScreenReaderOnly>
-
-      <Box mt="8px" mb="28px">
-        <DesktopSearchInput
-          defaultValue={defaultValue}
-          onChange={onSearch}
-          debounce={1500}
-          a11y_numberOfSearchResults={numberOfSearchResults}
-        />
-      </Box>
-
+      {!isSmallerThanTablet && (
+        <Box mt="8px">
+          <SearchInput
+            defaultValue={defaultValue}
+            onChange={onSearch}
+            debounce={1500}
+            a11y_numberOfSearchResults={numberOfSearchResults}
+          />
+        </Box>
+      )}
+      {filtersActive && (
+        <Button
+          buttonStyle="text"
+          fontSize={`${fontSizes.s}px`}
+          onClick={onClearFilters}
+          ml="auto"
+        >
+          <FormattedMessage {...messages.resetFilters} />
+        </Button>
+      )}
       <Box mb="20px">
         <SortingBox handleSortOnChange={handleSortOnChange} phaseId={phaseId} />
       </Box>
-      <StyledIdeasTopicsFilter
-        selectedTopicIds={selectedIdeaFilters.topics}
-        selectedIdeaFilters={selectedIdeaFilters}
-        onChange={onChangeTopics}
-      />
-      <StyledIdeasStatusFilter
+      <Box mb="20px">
+        <TopicFilterBox
+          selectedTopicIds={selectedIdeaFilters.topics}
+          selectedIdeaFilters={selectedIdeaFilters}
+          onChange={onChangeTopics}
+        />
+      </Box>
+      <StatusFilterBox
         selectedStatusId={selectedIdeaFilters.idea_status}
         selectedIdeaFilters={selectedIdeaFilters}
         onChange={onChangeStatus}
       />
-    </FiltersSidebarContainer>
+    </>
   );
 };
 
