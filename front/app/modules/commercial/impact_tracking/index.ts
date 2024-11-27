@@ -15,6 +15,7 @@ const signUpInTracks = {
 
 let sessionId: string;
 let allAppPaths: string[] | undefined;
+let previousPathTracked: string;
 
 const trackSessionStarted = async () => {
   // eslint-disable-next-line
@@ -40,7 +41,7 @@ const trackSessionStarted = async () => {
 
   // Because the first page view depends on the response of the session creation,
   // we handle it here and ignore the first page view event (see below).
-  await trackPageView(window.location.pathname);
+  trackPageView(window.location.pathname);
 };
 
 const upgradeSession = () => {
@@ -55,6 +56,12 @@ const trackPageView = async (path: string) => {
   if (allAppPaths === undefined) {
     allAppPaths = getAllPathsFromRoutes(createRoutes()[0]);
   }
+
+  // For some reason, sometimes the page view event is triggered twice
+  // for the same path. This prevents that.
+  if (previousPathTracked === path) return;
+
+  previousPathTracked = path;
 
   const routeMatch = matchPath(path, {
     paths: allAppPaths,
