@@ -10,18 +10,6 @@ const fetchMiniatureIdeas = (queryParameters: IIdeaQueryParameters) =>
   fetcher<IMiniIdeas>({
     path: `/ideas/mini`,
     action: 'get',
-    /*
-     * Caching is disabled here to prevent performance issues
-     * when working with a large list of ideas.
-     *
-     * This fetch is currently used in the IdeaNavigationButtons component,
-     * which is rendered exclusively on the IdeaShow page.
-     *
-     * Future improvement:
-     * Find a more efficient approach to retrieve only the next and
-     * previous ideas, avoiding the need to fetch the entire list.
-     */
-    cacheIndividualItems: false,
     queryParams: {
       ...queryParameters,
       'page[size]': 100000,
