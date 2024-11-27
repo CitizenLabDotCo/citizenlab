@@ -63,6 +63,8 @@ const InputFilters = ({
         )}
       </ScreenReaderOnly>
       {!isSmallerThanTablet && (
+        // mt is here to ensure search input's label still shows when it's lifted up.
+        // Needs to be fixed in the SearchInput component.
         <Box mt="8px" mb={showResetFiltersButton ? '8px' : '20px'}>
           <SearchInput
             defaultValue={defaultValue}
