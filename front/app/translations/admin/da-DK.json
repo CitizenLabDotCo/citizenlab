@@ -1561,6 +1561,7 @@
   "app.containers.AdminPage.ProjectEdit.PollTab.singleOption": "Enkelt valg",
   "app.containers.AdminPage.ProjectEdit.PollTab.titlePollTab": "Indstillinger for afstemninger og resultater",
   "app.containers.AdminPage.ProjectEdit.PollTab.wrongMax": "Forkert maksimum",
+  "app.containers.AdminPage.ProjectEdit.PostManager.importInputs": "Import",
   "app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputManager": "Giv feedback, tilføj markeringer eller kopier indlæg til den næste projektfase.",
   "app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputProjectProposals": "Administrer forslag, giv feedback og tildel emner.",
   "app.containers.AdminPage.ProjectEdit.PostManager.titleInputManager": "Idéoverblik",
