@@ -26,7 +26,7 @@ const ReviewFlow = ({ project }: { project: IProjectData }) => {
   const canPublish = usePermission({
     item: project,
     action: 'publish',
-    context: false,
+    context: projectReview?.data.attributes.approved,
   });
 
   const publishProject = () => {
@@ -42,6 +42,8 @@ const ReviewFlow = ({ project }: { project: IProjectData }) => {
     return null;
   }
 
+  const approvalPending =
+    projectReview && projectReview.data.attributes.approved === false;
   return (
     <Box position="relative">
       {/* Publish button */}
@@ -68,7 +70,7 @@ const ReviewFlow = ({ project }: { project: IProjectData }) => {
         </Tooltip>
       )}
       {/* Review request button */}
-      {isProjectReviewEnabled && !projectReview && (
+      {isProjectReviewEnabled && (
         <Button
           buttonStyle="admin-dark"
           icon="send"
@@ -77,15 +79,17 @@ const ReviewFlow = ({ project }: { project: IProjectData }) => {
           size="s"
           padding="4px 8px"
           iconSize="20px"
-          disabled={!canPublish && !isProjectReviewEnabled}
+          disabled={approvalPending}
         >
-          {formatMessage(messages.requestApproval)}
+          {approvalPending
+            ? formatMessage(messages.pendingApproval)
+            : formatMessage(messages.requestApproval)}
         </Button>
       )}
       <ReviewRequest
         isOpen={isProjectReviewDropdownOpened}
         onClose={() => setIsProjectReviewDropdownOpened(false)}
-        sendRequest={() => new Promise((resolve) => setTimeout(resolve, 1000))}
+        projectId={project.id}
       />
     </Box>
   );

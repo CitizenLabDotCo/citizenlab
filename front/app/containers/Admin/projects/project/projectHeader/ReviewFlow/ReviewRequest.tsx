@@ -2,6 +2,8 @@ import React from 'react';
 
 import { Button, Dropdown, Text } from '@citizenlab/cl2-component-library';
 
+import useRequestProjectReview from 'api/project_reviews/useRequestProjectReview';
+
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
@@ -9,16 +11,21 @@ import messages from './messages';
 const ReviewRequest = ({
   isOpen,
   onClose,
-  sendRequest,
+  projectId,
 }: {
   isOpen: boolean;
   onClose: () => void;
-  sendRequest: () => Promise<void>;
+  projectId: string;
 }) => {
   const { formatMessage } = useIntl();
-  const handleSendRequest = async () => {
-    await sendRequest();
-    onClose();
+  const { mutate: requestProjectRevuiew } = useRequestProjectReview();
+
+  const handleSendRequest = () => {
+    requestProjectRevuiew(projectId, {
+      onSuccess: () => {
+        onClose();
+      },
+    });
   };
 
   return (

@@ -10,7 +10,7 @@ export type ProjectReviewData = {
   id: string;
   type: 'project_review';
   attributes: {
-    status: 'pending' | 'approved';
+    approved: boolean;
     approved_at: string | null;
     created_at: string;
     updated_at: string;

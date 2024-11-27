@@ -18,4 +18,8 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.requestApproval',
     defaultMessage: 'Request approval',
   },
+  pendingApproval: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.pendingApproval',
+    defaultMessage: 'Waiting for approval',
+  },
 });
