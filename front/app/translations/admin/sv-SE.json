@@ -2014,7 +2014,6 @@
   "app.containers.AdminPage.SettingsPage.anonymousNameScheme_animal2": "Djur - t.ex. Elefant Katt",
   "app.containers.AdminPage.SettingsPage.anonymousNameScheme_user": "Användare - t.ex. Användare 123456",
   "app.containers.AdminPage.SettingsPage.approvalSave": "Spara",
-  "app.containers.AdminPage.SettingsPage.approvalSubtitle": "Projektledare behöver godkännande för att publicera ett projekt första gången det går live. Du kan anpassa vem som ska få aviseringarna.",
   "app.containers.AdminPage.SettingsPage.approvalTitle": "Inställningar för projektgodkännande",
   "app.containers.AdminPage.SettingsPage.areaDeletionConfirmation": "Är du säker på att du vill ta bort det här området?",
   "app.containers.AdminPage.SettingsPage.areaTerm": "Term för ett område (singular)",

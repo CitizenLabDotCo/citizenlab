@@ -2014,7 +2014,6 @@
   "app.containers.AdminPage.SettingsPage.anonymousNameScheme_animal2": "Tier - z.B. Elefant Katze",
   "app.containers.AdminPage.SettingsPage.anonymousNameScheme_user": "User - z. B. User 123456",
   "app.containers.AdminPage.SettingsPage.approvalSave": "Speichern",
-  "app.containers.AdminPage.SettingsPage.approvalSubtitle": "Projektmanager benötigen eine Genehmigung, um ein Projekt zu veröffentlichen, wenn es zum ersten Mal live geht. Sie können selbst bestimmen, wer die Benachrichtigungen erhält.",
   "app.containers.AdminPage.SettingsPage.approvalTitle": "Einstellungen für die Projektgenehmigung",
   "app.containers.AdminPage.SettingsPage.areaDeletionConfirmation": "Sind Sie sich sicher, dass Sie dieses Gebiet löschen möchten?",
   "app.containers.AdminPage.SettingsPage.areaTerm": "Begriff für ein Gebiet (Singular)",

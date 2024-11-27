@@ -2014,7 +2014,6 @@
   "app.containers.AdminPage.SettingsPage.anonymousNameScheme_animal2": "Animal - eg Elephant Cat",
   "app.containers.AdminPage.SettingsPage.anonymousNameScheme_user": "User - eg User 123456",
   "app.containers.AdminPage.SettingsPage.approvalSave": "Save",
-  "app.containers.AdminPage.SettingsPage.approvalSubtitle": "Project managers need approval to publish a project the first time it goes live. You can customise who gets the notifications.",
   "app.containers.AdminPage.SettingsPage.approvalTitle": "Project approval settings",
   "app.containers.AdminPage.SettingsPage.areaDeletionConfirmation": "Are you sure you want to delete this area?",
   "app.containers.AdminPage.SettingsPage.areaTerm": "Term for one area (singular)",
