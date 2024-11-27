@@ -2014,7 +2014,6 @@
   "app.containers.AdminPage.SettingsPage.anonymousNameScheme_animal2": "Zwierzę - np. słoń, kot",
   "app.containers.AdminPage.SettingsPage.anonymousNameScheme_user": "Użytkownik - np. Użytkownik 123456",
   "app.containers.AdminPage.SettingsPage.approvalSave": "Oszczędzaj",
-  "app.containers.AdminPage.SettingsPage.approvalSubtitle": "Kierownicy projektów muszą zatwierdzić publikację projektu przy pierwszym uruchomieniu. Możesz dostosować, kto otrzyma powiadomienia.",
   "app.containers.AdminPage.SettingsPage.approvalTitle": "Ustawienia zatwierdzania projektu",
   "app.containers.AdminPage.SettingsPage.areaDeletionConfirmation": "Jesteś pewien, że chcesz usunąć ten obszar?",
   "app.containers.AdminPage.SettingsPage.areaTerm": "Termin dla jednego obszaru (pojedynczy)",
