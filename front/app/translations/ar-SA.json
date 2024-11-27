@@ -986,7 +986,6 @@
   "app.containers.AdminPage.Users.UsersGroup.atLeastOneRuleError": "إدخال قاعدة واحدة على الأقل",
   "app.containers.AdminPage.Users.UsersGroup.rulesError": "بعض الشروط غير مكتملة",
   "app.containers.AdminPage.Users.UsersGroup.saveGroup": "حفظ المجموعة",
-  "app.containers.AdminPage.Users.UsersGroup.smartGroupsAvailability": "المجموعات الذكية متوفرة في الخطط القياسية والمميزة.",
   "app.containers.AdminPage.Users.UsersGroup.titleFieldEmptyError": "إدخال اسم مجموعة",
   "app.containers.AdminPage.Users.UsersGroup.verificationDisabled": "تم تعطيل التحقق في منصتك، قم بإزالة قاعدة التحقق أو اتصل بالدعم.",
   "app.containers.App.appMetaDescription": "مرحباً في منصة {orgName} للمُشاركة عبر الإنترنت. \nاستكشف مشروعات محلية وشارك في نقاشات! ",

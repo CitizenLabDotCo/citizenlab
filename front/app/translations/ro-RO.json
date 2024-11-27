@@ -482,7 +482,6 @@
   "app.containers.AdminPage.Users.UsersGroup.atLeastOneRuleError": "Furnizați cel puțin o regulă",
   "app.containers.AdminPage.Users.UsersGroup.rulesError": "Unele condiții sunt incomplete",
   "app.containers.AdminPage.Users.UsersGroup.saveGroup": "Salvați grupul",
-  "app.containers.AdminPage.Users.UsersGroup.smartGroupsAvailability": "Grupurile inteligente sunt disponibile în planurile Standard și Premium.",
   "app.containers.AdminPage.Users.UsersGroup.titleFieldEmptyError": "Furnizați un nume de grup",
   "app.containers.AdminPage.Users.UsersGroup.verificationDisabled": "Verificarea este dezactivată pentru platforma dvs., eliminați regula de verificare sau apelați serviciul de asistență tehnică.",
   "app.containers.App.appMetaDescription": "Bine ați venit pe platforma online de participare civică a {orgName}.\nExplorează proiectele locale și implică-te în discuție!",

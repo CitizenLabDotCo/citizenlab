@@ -986,7 +986,6 @@
   "app.containers.AdminPage.Users.UsersGroup.atLeastOneRuleError": "کم از کم ایک اصول فراہم کریں۔",
   "app.containers.AdminPage.Users.UsersGroup.rulesError": "کچھ شرائط نامکمل ہیں۔",
   "app.containers.AdminPage.Users.UsersGroup.saveGroup": "گروپ کو محفوظ کریں۔",
-  "app.containers.AdminPage.Users.UsersGroup.smartGroupsAvailability": "اسمارٹ گروپس معیاری اور پریمیم پلانز پر دستیاب ہیں۔",
   "app.containers.AdminPage.Users.UsersGroup.titleFieldEmptyError": "گروپ کا نام بتائیں",
   "app.containers.AdminPage.Users.UsersGroup.verificationDisabled": "آپ کے پلیٹ فارم کے لیے توثیق کو غیر فعال کر دیا گیا ہے، توثیقی اصول کو ہٹا دیں یا سپورٹ سے رابطہ کریں۔",
   "app.containers.App.appMetaDescription": "{orgName}کے آن لائن شرکت کے پلیٹ فارم میں خوش آمدید۔ \nمقامی پروجیکٹس کو دریافت کریں اور بحث میں مشغول ہوں!",

@@ -986,7 +986,6 @@
   "app.containers.AdminPage.Users.UsersGroup.atLeastOneRuleError": "Proporcioneu almenys una regla",
   "app.containers.AdminPage.Users.UsersGroup.rulesError": "Algunes condicions són incompletes",
   "app.containers.AdminPage.Users.UsersGroup.saveGroup": "Guarda el grup",
-  "app.containers.AdminPage.Users.UsersGroup.smartGroupsAvailability": "Els grups intel·ligents estan disponibles als plans Standard i Premium.",
   "app.containers.AdminPage.Users.UsersGroup.titleFieldEmptyError": "Proporcioneu un nom de grup",
   "app.containers.AdminPage.Users.UsersGroup.verificationDisabled": "La verificació està desactivada per a la vostra plataforma, suprimiu la regla de verificació o poseu-vos en contacte amb el servei d'assistència.",
   "app.containers.App.appMetaDescription": "Benvingut a la plataforma de participació en línia de {orgName}. Exploreu projectes locals i participeu en la discussió!",

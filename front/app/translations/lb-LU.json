@@ -945,7 +945,6 @@
   "app.containers.AdminPage.Users.UsersGroup.atLeastOneRuleError": "Gitt mindestens eng Roll an",
   "app.containers.AdminPage.Users.UsersGroup.rulesError": "E puer Konditioune sinn onvollstänneg",
   "app.containers.AdminPage.Users.UsersGroup.saveGroup": "Grupp späicheren",
-  "app.containers.AdminPage.Users.UsersGroup.smartGroupsAvailability": "Smart Gruppe stinn op de Standard- a Premium-Pläng zur Verfügung.",
   "app.containers.AdminPage.Users.UsersGroup.titleFieldEmptyError": "Stellt e Gruppennumm zur Verfügung",
   "app.containers.AdminPage.Users.UsersGroup.verificationDisabled": "D’Verifikatioun ass op Ärer Plattform gespaart, huelt d’Verificatiounsroll ewech oder kontaktéiert de Support",
   "app.containers.App.appMetaDescription": "Wëllkomm op der participativer Plattform vum {Zesumme Vereinfachen}. Kuckt d'Projeten an diskutéiert mat!",

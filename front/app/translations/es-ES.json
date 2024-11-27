@@ -986,7 +986,6 @@
   "app.containers.AdminPage.Users.UsersGroup.atLeastOneRuleError": "Proporcionar al menos una regla",
   "app.containers.AdminPage.Users.UsersGroup.rulesError": "Algunas condiciones están incompletas",
   "app.containers.AdminPage.Users.UsersGroup.saveGroup": "Guardar grupo",
-  "app.containers.AdminPage.Users.UsersGroup.smartGroupsAvailability": "Los grupos inteligentes están disponibles en los planes estándar y premium.",
   "app.containers.AdminPage.Users.UsersGroup.titleFieldEmptyError": "Proporcionar un nombre de grupo",
   "app.containers.AdminPage.Users.UsersGroup.verificationDisabled": "La verificación está deshabilitada en su plataforma. Elimina la opción de verificación o póngase en contacto con el servicio de asistencia técnica.",
   "app.containers.App.appMetaDescription": "Bienvenido a la plataforma de participación en línea de {orgName}. \n¡Explora proyectos locales y participa en la discusión!",

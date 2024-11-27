@@ -986,7 +986,6 @@
   "app.containers.AdminPage.Users.UsersGroup.atLeastOneRuleError": "ਘੱਟੋ-ਘੱਟ ਇੱਕ ਨਿਯਮ ਪ੍ਰਦਾਨ ਕਰੋ",
   "app.containers.AdminPage.Users.UsersGroup.rulesError": "ਕੁਝ ਸ਼ਰਤਾਂ ਅਧੂਰੀਆਂ ਹਨ",
   "app.containers.AdminPage.Users.UsersGroup.saveGroup": "ਸਮੂਹ ਨੂੰ ਸੁਰੱਖਿਅਤ ਕਰੋ",
-  "app.containers.AdminPage.Users.UsersGroup.smartGroupsAvailability": "ਸਮਾਰਟ ਗਰੁੱਪ ਸਟੈਂਡਰਡ ਅਤੇ ਪ੍ਰੀਮੀਅਮ ਪਲਾਨ 'ਤੇ ਉਪਲਬਧ ਹਨ।",
   "app.containers.AdminPage.Users.UsersGroup.titleFieldEmptyError": "ਇੱਕ ਸਮੂਹ ਦਾ ਨਾਮ ਪ੍ਰਦਾਨ ਕਰੋ",
   "app.containers.AdminPage.Users.UsersGroup.verificationDisabled": "ਪੁਸ਼ਟੀਕਰਨ ਤੁਹਾਡੇ ਪਲੇਟਫਾਰਮ ਲਈ ਅਸਮਰੱਥ ਹੈ, ਪੁਸ਼ਟੀਕਰਨ ਨਿਯਮ ਹਟਾਓ ਜਾਂ ਸਹਾਇਤਾ ਨਾਲ ਸੰਪਰਕ ਕਰੋ।",
   "app.containers.App.appMetaDescription": "{orgName}ਦੇ ਔਨਲਾਈਨ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ਵਿੱਚ ਤੁਹਾਡਾ ਸੁਆਗਤ ਹੈ। \nਸਥਾਨਕ ਪ੍ਰੋਜੈਕਟਾਂ ਦੀ ਪੜਚੋਲ ਕਰੋ ਅਤੇ ਚਰਚਾ ਵਿੱਚ ਸ਼ਾਮਲ ਹੋਵੋ!",

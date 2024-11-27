@@ -986,7 +986,6 @@
   "app.containers.AdminPage.Users.UsersGroup.atLeastOneRuleError": "Ange minst en regel",
   "app.containers.AdminPage.Users.UsersGroup.rulesError": "Vissa villkor är ofullständiga",
   "app.containers.AdminPage.Users.UsersGroup.saveGroup": "Spara grupp",
-  "app.containers.AdminPage.Users.UsersGroup.smartGroupsAvailability": "Smarta grupper är tillgängliga för Standard- och Premiumplanerna.",
   "app.containers.AdminPage.Users.UsersGroup.titleFieldEmptyError": "Ange ett gruppnamn",
   "app.containers.AdminPage.Users.UsersGroup.verificationDisabled": "Verifiering har inaktiverats för din plattform – ta bort verifieringsregeln eller kontakta supporten.",
   "app.containers.App.appMetaDescription": "Välkommen till onlineplattformen för deltagande för {orgName}. \nUpptäck lokala projekt och delta i diskussionen!",

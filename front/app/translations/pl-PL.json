@@ -986,7 +986,6 @@
   "app.containers.AdminPage.Users.UsersGroup.atLeastOneRuleError": "Podać co najmniej jedną zasadę",
   "app.containers.AdminPage.Users.UsersGroup.rulesError": "Niektóre warunki są niekompletne",
   "app.containers.AdminPage.Users.UsersGroup.saveGroup": "Zapisz grupę",
-  "app.containers.AdminPage.Users.UsersGroup.smartGroupsAvailability": "Inteligentne grupy są dostępne w planach Standard i Premium.",
   "app.containers.AdminPage.Users.UsersGroup.titleFieldEmptyError": "Podaj nazwę grupy",
   "app.containers.AdminPage.Users.UsersGroup.verificationDisabled": "Weryfikacja jest wyłączona dla Twojej platformy, usuń regułę weryfikacji lub skontaktuj się z obsługą klienta.",
   "app.containers.App.appMetaDescription": "Witamy na internetowej platformie uczestnictwa {orgName}. \nPoznaj lokalne projekty i zaangażuj się w dyskusję!",

@@ -945,7 +945,6 @@
   "app.containers.AdminPage.Users.UsersGroup.atLeastOneRuleError": "Anna vähintään yksi sääntö",
   "app.containers.AdminPage.Users.UsersGroup.rulesError": "Jotkut ehdot ovat puutteellisia",
   "app.containers.AdminPage.Users.UsersGroup.saveGroup": "Tallenna ryhmä",
-  "app.containers.AdminPage.Users.UsersGroup.smartGroupsAvailability": "Älykkäät ryhmät ovat saatavilla Standard- ja Premium-sopimuksissa.",
   "app.containers.AdminPage.Users.UsersGroup.titleFieldEmptyError": "Anna ryhmän nimi",
   "app.containers.AdminPage.Users.UsersGroup.verificationDisabled": "Vahvistus on poistettu käytöstä alustallasi, poista vahvistussääntö tai ota yhteyttä tukeen.",
   "app.containers.App.appMetaDescription": "Tervetuloa {orgName}online-osallistumisalustaan. \nTutustu paikallisiin hankkeisiin ja osallistu keskusteluun!",

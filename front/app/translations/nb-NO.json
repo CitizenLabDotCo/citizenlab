@@ -986,7 +986,6 @@
   "app.containers.AdminPage.Users.UsersGroup.atLeastOneRuleError": "Oppgi minst én regel",
   "app.containers.AdminPage.Users.UsersGroup.rulesError": "Noen betingelser er ufullstendige",
   "app.containers.AdminPage.Users.UsersGroup.saveGroup": "Lagre gruppe",
-  "app.containers.AdminPage.Users.UsersGroup.smartGroupsAvailability": "Smartgrupper er tilgjengelige i Standard- og Premium-abonnementene.",
   "app.containers.AdminPage.Users.UsersGroup.titleFieldEmptyError": "Oppgi et gruppenavn",
   "app.containers.AdminPage.Users.UsersGroup.verificationDisabled": "Verifisering er deaktivert for plattformen din, fjern verifiseringsregelen eller kontakt kundestøtte.",
   "app.containers.App.appMetaDescription": "Velkommen til den nettbaserte medvirkningsplattformen {orgName}. \nUtforsk lokale prosjekter og delta i diskusjonen!",

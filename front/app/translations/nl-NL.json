@@ -986,7 +986,6 @@
   "app.containers.AdminPage.Users.UsersGroup.atLeastOneRuleError": "Voer ten minste één regel in",
   "app.containers.AdminPage.Users.UsersGroup.rulesError": "Sommige voorwaarden zijn onvolledig",
   "app.containers.AdminPage.Users.UsersGroup.saveGroup": "Groep opslaan",
-  "app.containers.AdminPage.Users.UsersGroup.smartGroupsAvailability": "Slimme groepen zijn beschikbaar op de Standard en Premium plannen.",
   "app.containers.AdminPage.Users.UsersGroup.titleFieldEmptyError": "Voer een groepnaam in",
   "app.containers.AdminPage.Users.UsersGroup.verificationDisabled": "Verificatie is niet ingeschakeld op je platform. Verwijder de verificatievoorwaarde of neem contact op met support.",
   "app.containers.App.appMetaDescription": "Welkom bij het online participatieplatform van {orgName}.\nOntdek de projecten en neem deel aan de discussie!",

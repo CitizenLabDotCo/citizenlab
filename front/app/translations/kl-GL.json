@@ -569,7 +569,6 @@
   "app.containers.AdminPage.Users.UsersGroup.atLeastOneRuleError": "Minnerpaamik ataatsimik malittarisassaliorit",
   "app.containers.AdminPage.Users.UsersGroup.rulesError": "Piumasaqaatit ilai naammanngillat",
   "app.containers.AdminPage.Users.UsersGroup.saveGroup": "Save group",
-  "app.containers.AdminPage.Users.UsersGroup.smartGroupsAvailability": "Smart groups are available on the Standard and Premium plans.",
   "app.containers.AdminPage.Users.UsersGroup.titleFieldEmptyError": "Provide a group name",
   "app.containers.AdminPage.Users.UsersGroup.verificationDisabled": "Verification is disabled for your platform, remove the verification rule or contact support.",
   "app.containers.App.appMetaDescription": "{orgName} -ip nittartakkakkut innuttaasunut peqataatitsivianut tikilluarit\nNajukkami suliniutit misissuataakkit oqallinnermullu peqataallutit!",
