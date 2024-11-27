@@ -19,7 +19,6 @@ import useProjectById from 'api/projects/useProjectById';
 
 import IdeasShow from 'containers/IdeasShow';
 import IdeaMeta from 'containers/IdeasShow/components/IdeaMeta';
-import IdeaNavigationButtons from 'containers/IdeasShow/components/IdeaNavigationButtons';
 import ProjectCTABar from 'containers/ProjectsShowPage/ProjectCTABar';
 
 import PageNotFound from 'components/PageNotFound';
@@ -125,7 +124,9 @@ const IdeasShowPage = () => {
           )}
           <>
             <Box mb="8px">
-              {phaseContext && (
+              {/* // Temporarily disable the IdeaNavigationButtons component until the performance related issues with it are fixed. */}
+              {/* See https://www.notion.so/govocal/Investigate-the-FE-slowness-of-NHS-ideation-project-1289663b7b26802a99f9e480068a0471 */}
+              {/* {phaseContext && (
                 <Box
                   width="100%"
                   display="flex"
@@ -139,7 +140,7 @@ const IdeasShowPage = () => {
                     />
                   </Box>
                 </Box>
-              )}
+              )} */}
 
               <main id="e2e-idea-show">
                 <StyledIdeasShow
