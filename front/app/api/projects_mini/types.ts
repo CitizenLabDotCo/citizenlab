@@ -11,11 +11,11 @@ type PageNumbers = {
   'page[size]'?: number;
 };
 
-type ActiveParticipatoryPhaseParams = {
+type ActiveParticipatoryPhase = {
   endpoint: 'with_active_participatory_phase';
 } & PageNumbers;
 
-type FollowedItemParams = {
+type FollowedItem = {
   endpoint: 'for_followed_item';
 } & PageNumbers;
 
@@ -30,8 +30,8 @@ type Areas = {
 } & PageNumbers;
 
 export type Parameters =
-  | ActiveParticipatoryPhaseParams
-  | FollowedItemParams
+  | ActiveParticipatoryPhase
+  | FollowedItem
   | FinishedOrArchived
   | Areas;
 
