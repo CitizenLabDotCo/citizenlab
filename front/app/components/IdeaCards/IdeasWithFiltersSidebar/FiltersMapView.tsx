@@ -55,6 +55,7 @@ const FiltersMapView = ({
             selectedIdeaFilters={selectedIdeaFilters}
             onClearFilters={onClearFilters}
             showClearButton={false}
+            hideStatusFilter={true}
             {...filtersProps}
           />
         </Box>

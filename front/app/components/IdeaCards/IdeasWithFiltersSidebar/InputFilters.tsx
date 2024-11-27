@@ -82,6 +82,7 @@ export interface Props {
   onChangeTopics: (topics: string[] | null) => void;
   handleSortOnChange: (sort: IdeaSortMethod) => void;
   phaseId?: string;
+  hideStatusFilter?: boolean;
 }
 
 const InputFilters = ({
@@ -94,6 +95,7 @@ const InputFilters = ({
   phaseId,
   onClearFilters,
   showClearButton = true,
+  hideStatusFilter,
   onSearch,
   onChangeStatus,
   onChangeTopics,
@@ -135,11 +137,13 @@ const InputFilters = ({
         selectedIdeaFilters={selectedIdeaFilters}
         onChange={onChangeTopics}
       />
-      <StyledIdeasStatusFilter
-        selectedStatusId={selectedIdeaFilters.idea_status}
-        selectedIdeaFilters={selectedIdeaFilters}
-        onChange={onChangeStatus}
-      />
+      {!hideStatusFilter && (
+        <StyledIdeasStatusFilter
+          selectedStatusId={selectedIdeaFilters.idea_status}
+          selectedIdeaFilters={selectedIdeaFilters}
+          onChange={onChangeStatus}
+        />
+      )}
     </FiltersSidebarContainer>
   );
 };
