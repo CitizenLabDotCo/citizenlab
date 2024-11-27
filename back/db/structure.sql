@@ -1196,8 +1196,8 @@ CREATE TABLE public.projects (
     baskets_count integer DEFAULT 0 NOT NULL,
     votes_count integer DEFAULT 0 NOT NULL,
     followers_count integer DEFAULT 0 NOT NULL,
-    preview_token character varying NOT NULL,
-    header_bg_alt_text_multiloc jsonb DEFAULT '{}'::jsonb
+    header_bg_alt_text_multiloc jsonb DEFAULT '{}'::jsonb,
+    preview_token character varying NOT NULL
 );
 
 
@@ -1606,7 +1606,7 @@ CREATE TABLE public.phases (
     presentation_mode character varying DEFAULT 'card'::character varying,
     voting_max_total integer,
     poll_anonymous boolean DEFAULT false NOT NULL,
-    reacting_dislike_enabled boolean DEFAULT true NOT NULL,
+    reacting_dislike_enabled boolean DEFAULT false NOT NULL,
     ideas_count integer DEFAULT 0 NOT NULL,
     ideas_order character varying,
     input_term character varying DEFAULT 'idea'::character varying,
@@ -1627,7 +1627,7 @@ CREATE TABLE public.phases (
     expire_days_limit integer,
     reacting_threshold integer,
     prescreening_enabled boolean DEFAULT false NOT NULL,
-    autoshare_results_enabled boolean DEFAULT true NOT NULL,
+    autoshare_results_enabled boolean DEFAULT true,
     manual_votes_count integer DEFAULT 0 NOT NULL,
     manual_voters_amount integer,
     manual_voters_last_updated_by_id uuid,
@@ -7641,6 +7641,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20241115141553'),
 ('20241115141717'),
 ('20241125094000'),
-('20241125094100');
+('20241125094100'),
+('20241127074734');
 
 
