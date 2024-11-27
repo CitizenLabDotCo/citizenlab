@@ -15,7 +15,7 @@ const BottomBar = memo<Props>(({ buttonText, onClick }) => {
       background={colors.white}
       p="16px"
       flex="1"
-      borderTop={`1px solid ${colors.grey400}`}
+      borderTop={`1px solid ${colors.grey300}`}
     >
       <Button onClick={onClick} fullWidth={true}>
         {buttonText}
