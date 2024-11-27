@@ -1561,6 +1561,7 @@
   "app.containers.AdminPage.ProjectEdit.PollTab.singleOption": "Einfachauswahl",
   "app.containers.AdminPage.ProjectEdit.PollTab.titlePollTab": "Einstellungen und Ergebnisse der Blitz-Umfrage",
   "app.containers.AdminPage.ProjectEdit.PollTab.wrongMax": "Falsches Maximum",
+  "app.containers.AdminPage.ProjectEdit.PostManager.importInputs": "Importieren",
   "app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputManager": "Geben Sie Feedback, weisen Sie Themen zu oder kopieren Sie Beiträge in die nächste Projektphase.",
   "app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputProjectProposals": "Verwalten Sie Vorschläge, geben Sie Feedback und weisen Sie Themen zu.",
   "app.containers.AdminPage.ProjectEdit.PostManager.titleInputManager": "Beitragsmanager",
