@@ -19,7 +19,7 @@ import messages from './messages';
 type Props = {
   projectId: string;
   phaseContext: string;
-  // This is hack to temporarily disable the IdeaNavigationButtons component until it is fixed.
+  // This is a hack to temporarily disable the IdeaNavigationButtons component until the performance related issues with it are fixed.
   // See https://www.notion.so/govocal/Investigate-the-FE-slowness-of-NHS-ideation-project-1289663b7b26802a99f9e480068a0471
   showIdeaNavigation?: boolean;
 };
