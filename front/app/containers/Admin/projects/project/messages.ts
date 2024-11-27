@@ -424,6 +424,10 @@ export default defineMessages({
     defaultMessage:
       'Give feedback, assign topics or copy inputs to the next project phase.',
   },
+  importInputs: {
+    id: 'app.containers.AdminPage.ProjectEdit.PostManager.importInputs',
+    defaultMessage: 'Import',
+  },
   votingShareResultsTurnedOff: {
     id: 'app.containers.AdminPage.ProjectEdit.PostManager.votingShareResultsTurnedOff',
     defaultMessage: 'Result sharing is turned off.',
