@@ -987,7 +987,7 @@
   "app.containers.AdminPage.Users.UsersGroup.atLeastOneRuleError": "Angiv mindst én regel",
   "app.containers.AdminPage.Users.UsersGroup.rulesError": "Nogle betingelser er ufuldstændige",
   "app.containers.AdminPage.Users.UsersGroup.saveGroup": "Gem gruppe",
-  "app.containers.AdminPage.Users.UsersGroup.smartGroupsAvailability1": "Konfiguration af smarte grupper er ikke en del af din nuværende licens. Kontakt din GovSuccess Manager for at få mere at vide om det.",
+  "app.containers.AdminPage.Users.UsersGroup.smartGroupsAvailability1": "Konfiguration af smarte grupper er ikke en del af din nuværende licens. Kontakt Søren Kielgast for at få mere at vide om det.",
   "app.containers.AdminPage.Users.UsersGroup.titleFieldEmptyError": "Angiv et gruppenavn",
   "app.containers.AdminPage.Users.UsersGroup.verificationDisabled": "Bekræftelse er deaktiveret for din platform, fjern verificeringsreglen eller kontakt support.",
   "app.containers.App.appMetaDescription": "Velkommen til borgerinddragelsesplatformen for {orgName}.\nUdforsk lokale projekter og deltag i diskussionen!",
