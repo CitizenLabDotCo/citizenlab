@@ -50,6 +50,7 @@ const InputFilters = ({
   handleSortOnChange,
 }: Props) => {
   const isSmallerThanTablet = useBreakpoint('tablet');
+  const showResetFiltersButton = !isSmallerThanTablet && filtersActive;
 
   return (
     <>
@@ -71,7 +72,7 @@ const InputFilters = ({
           />
         </Box>
       )}
-      {filtersActive && (
+      {showResetFiltersButton && (
         <Button
           buttonStyle="text"
           fontSize={`${fontSizes.s}px`}
