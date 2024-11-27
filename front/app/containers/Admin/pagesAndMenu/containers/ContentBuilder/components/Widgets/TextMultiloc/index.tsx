@@ -13,6 +13,8 @@ import messages from 'components/admin/ContentBuilder/Widgets/TextMultiloc/messa
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import QuillMutilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 
+import { DEFAULT_Y_PADDING } from '../constants';
+
 interface Props {
   text?: Multiloc;
 }
@@ -31,6 +33,7 @@ const TextMultiloc = ({ text }: Props) => {
       maxWidth="1200px"
       margin="0 auto"
       px={craftComponentDefaultPadding}
+      py={DEFAULT_Y_PADDING}
     >
       <QuillEditedContent textColor={theme.colors.tenantText}>
         <div dangerouslySetInnerHTML={{ __html: value }} />
