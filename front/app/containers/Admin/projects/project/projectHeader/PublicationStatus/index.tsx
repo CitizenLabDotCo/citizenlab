@@ -102,6 +102,10 @@ const PublicationStatus = ({ project }: { project: IProject }) => {
     setIsPickerOpen(false);
   };
 
+  if (project.data.attributes.publication_status === 'draft') {
+    return null;
+  }
+
   return (
     <Box position="relative">
       <Button
