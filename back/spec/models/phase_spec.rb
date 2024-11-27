@@ -465,4 +465,19 @@ RSpec.describe Phase do
       expect(phase).to be_valid
     end
   end
+
+  describe '#disliking_enabled' do
+    it 'defaults to false when disable_disliking feature flag is enabled (default)' do
+      # binding.pry
+      phase = build(:phase)
+      expect(phase.reacting_dislike_enabled).to be false
+    end
+
+    it 'defaults to true when disable_disliking feature flag is disabled' do
+      AppConfiguration.instance.settings['disable_disliking'] = { 'allowed' => true, 'enabled' => false }
+      AppConfiguration.instance.save!
+      phase = create(:phase)
+      expect(phase.reacting_dislike_enabled).to be true
+    end
+  end
 end

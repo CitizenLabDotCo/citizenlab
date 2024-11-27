@@ -74,7 +74,7 @@ class Phase < ApplicationRecord
   FALLBACK_INPUT_TERM = 'idea'
   CAMPAIGNS = [:project_phase_started].freeze
 
-  attribute :reacting_dislike_enabled, :boolean, default: disliking_enabled_default
+  attribute :reacting_dislike_enabled, :boolean, default: -> { disliking_enabled_default }
 
   belongs_to :project
 
@@ -390,7 +390,7 @@ class Phase < ApplicationRecord
 
   # If 'disable_disliking' is NOT enabled, then disliking will always set to enabled on creation and cannot be changed
   # Otherwise it is disabled on creation but can be changed in phase settings
-  def disliking_enabled_default
+  def self.disliking_enabled_default
     !AppConfiguration.instance.feature_activated?('disable_disliking')
   end
 end
