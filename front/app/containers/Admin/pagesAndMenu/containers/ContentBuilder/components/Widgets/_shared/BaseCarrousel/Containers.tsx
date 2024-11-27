@@ -29,7 +29,7 @@ export const CarrouselContainer = ({ children }: CarrouselContainerProps) => {
   return (
     <Box
       px={isSmallerThanPhone ? undefined : DEFAULT_PADDING}
-      py={DEFAULT_PADDING}
+      py="24px"
       w="100%"
       display="flex"
       justifyContent="center"
