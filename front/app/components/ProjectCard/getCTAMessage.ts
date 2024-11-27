@@ -22,7 +22,12 @@ const getCTAMessage = ({
   formatMessage,
   localize,
 }: Params) => {
-  const { participation_method, voting_method, input_term } = phase.attributes;
+  const {
+    participation_method,
+    voting_method,
+    input_term,
+    native_survey_button_multiloc,
+  } = phase.attributes;
 
   const canPost = actionDescriptors.posting_idea.enabled;
   const canReact = actionDescriptors.reacting_idea.enabled;
@@ -35,11 +40,15 @@ const getCTAMessage = ({
       return formatMessage(messages.vote);
     }
   } else if (participation_method === 'information') {
-    return formatMessage(messages.learnMore);
+    const hasReport = !!phase.relationships.report?.data;
+
+    return hasReport
+      ? formatMessage(messages.readTheReport)
+      : formatMessage(messages.learnMore);
   } else if (participation_method === 'survey') {
     return formatMessage(messages.takeTheSurvey);
   } else if (participation_method === 'native_survey') {
-    return localize(phase.attributes.native_survey_button_multiloc);
+    return localize(native_survey_button_multiloc);
   } else if (participation_method === 'document_annotation') {
     return formatMessage(messages.reviewDocument);
   } else if (participation_method === 'poll') {

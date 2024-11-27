@@ -4,7 +4,9 @@ import { Box, colors, Icon } from '@citizenlab/cl2-component-library';
 import { hideVisually, darken } from 'polished';
 import styled, { useTheme } from 'styled-components';
 
-import { IdeaDefaultSortMethod } from 'api/phases/types';
+import { IdeaSortMethod } from 'api/phases/types';
+
+import { scrollToTopIdeasList } from 'components/FilterBoxes/utils';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -46,7 +48,7 @@ const Label = styled.label<{ selected: boolean }>`
 `;
 
 type SortTypeButtonProps = {
-  sortType: IdeaDefaultSortMethod;
+  sortType: IdeaSortMethod;
   handleSortOnChange: (sort: string) => void;
   isSelected: boolean;
 };
@@ -61,6 +63,7 @@ const SortTypeButton = ({
 
   const handleOnChange = () => {
     handleSortOnChange(sortType);
+    scrollToTopIdeasList();
   };
 
   return (

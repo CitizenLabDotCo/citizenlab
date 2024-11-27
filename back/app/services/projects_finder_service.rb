@@ -4,8 +4,7 @@ class ProjectsFinderService
     @user = user
     @page_size = (params.dig(:page, :size) || 500).to_i
     @page_number = (params.dig(:page, :number) || 1).to_i
-    @finished = params[:finished]
-    @archived = params[:archived]
+    @filter_by = params[:filter_by]
   end
 
   # Returns an ActiveRecord collection of published projects that are
@@ -67,15 +66,13 @@ class ProjectsFinderService
   end
 
   # Returns an ActiveRecord collection of published projects that are also
-  # followed by user OR relate to an idea, area or topic followed by user,
+  # followed by user OR relate to an idea, area, topic or folder followed by user,
   # ordered by the follow created_at (most recent first).
   # => [Project]
   def followed_by_user
-    exclude_followable_types = ['ProjectFolders::Folder', 'Initiative']
-
     subquery = Follower
       .where(user_id: @user.id)
-      .where.not(followable_type: exclude_followable_types)
+      .where.not(followable_type: 'Initiative')
       .joins(
         'LEFT JOIN areas AS followed_areas ON followers.followable_type = \'Area\' ' \
         'AND followed_areas.id = followers.followable_id'
@@ -90,12 +87,18 @@ class ProjectsFinderService
         'LEFT JOIN ideas AS followed_ideas ON followers.followable_type = \'Idea\' ' \
         'AND followed_ideas.id = followers.followable_id'
       )
+      .joins('LEFT JOIN project_folders_folders AS followed_folders ON ' \
+             'followers.followable_type = \'ProjectFolders::Folder\' ' \
+             'AND followed_folders.id = followers.followable_id')
+      .joins('LEFT JOIN admin_publications AS parents ON followed_folders.id = parents.publication_id ')
+      .joins('LEFT JOIN admin_publications AS children ON parents.id = children.parent_id ')
       .joins(
         'INNER JOIN projects ON ' \
         '(followers.followable_type = \'Project\' AND followers.followable_id = projects.id) ' \
         'OR (areas_projects.project_id = projects.id) ' \
         'OR (projects_topics.project_id = projects.id) ' \
-        'OR (followed_ideas.project_id = projects.id)'
+        'OR (followed_ideas.project_id = projects.id)' \
+        'OR (children.publication_id = projects.id)'
       )
       .select('projects.id AS project_id, MAX(followers.created_at) AS latest_follower_created_at')
       .group('projects.id')
@@ -107,15 +110,17 @@ class ProjectsFinderService
   end
 
   # Returns ActiveRecord collection of projects that are either (finished OR have a last phase that contains a report)
-  # OR are archived, ordered by creation date first and ID second.
+  # OR are archived, ordered by last phase end_at (nulls first), creation date second and ID third.
   # => [Project]
   def finished_or_archived
-    return @projects.none unless @finished || @archived
-
     base_scope = @projects
       .joins('INNER JOIN admin_publications AS admin_publications ON admin_publications.publication_id = projects.id')
+      .joins('INNER JOIN phases ON phases.project_id = projects.id')
 
-    if @finished
+    include_finished = %w[finished finished_and_archived].include?(@filter_by)
+    include_archived = %w[archived finished_and_archived].include?(@filter_by)
+
+    if include_finished
       finished_scope = base_scope.where(admin_publications: { publication_status: 'published' })
       finished_scope = joins_last_phases_with_reports(finished_scope)
         .where(
@@ -124,11 +129,16 @@ class ProjectsFinderService
         )
     end
 
-    archived_scope = base_scope.where(admin_publications: { publication_status: 'archived' }) if @archived
-    archived_scope = joins_last_phases_with_reports(archived_scope) if @archived && @finished
+    if include_archived
+      archived_scope = base_scope.where(admin_publications: { publication_status: 'archived' })
+      archived_scope = joins_last_phases_with_reports(archived_scope)
+    end
 
-    return order_by_created_at_and_id_with_distinct_on(finished_scope.or(archived_scope)) if @finished && @archived
-    return order_by_created_at_and_id_with_distinct_on(finished_scope) if @finished
+    if include_finished && include_archived
+      return order_by_created_at_and_id_with_distinct_on(finished_scope.or(archived_scope))
+    end
+
+    return order_by_created_at_and_id_with_distinct_on(finished_scope) if include_finished
 
     order_by_created_at_and_id_with_distinct_on(archived_scope)
   end
@@ -147,8 +157,8 @@ class ProjectsFinderService
 
   def order_by_created_at_and_id_with_distinct_on(projects)
     projects
-      .select('DISTINCT ON (projects.created_at, projects.id) projects.*')
-      .order('projects.created_at ASC, projects.id ASC') # secondary ordering by ID prevents duplicates when paginating
+      .select('DISTINCT ON (last_phase_end_at, projects.created_at, projects.id) projects.*')
+      .order('last_phase_end_at DESC, projects.created_at ASC, projects.id ASC') # secondary ordering by ID prevents duplicates when paginating
   end
 
   def joins_last_phases_with_reports(projects)

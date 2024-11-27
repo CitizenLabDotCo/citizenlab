@@ -259,6 +259,78 @@ resource 'AdminPublication' do
       end
     end
 
+    get 'web_api/v1/admin_publications/select_and_order_by_ids' do
+      with_options scope: :page do
+        parameter :number, 'Page number'
+        parameter :size, 'Number of projects per page'
+      end
+      parameter :ids, 'Filter and order by IDs', required: false
+
+      let(:draft_ids) { AdminPublication.all.draft.pluck(:id) }
+      let(:non_draft_ids) { AdminPublication.all.not_draft.pluck(:id) }
+
+      example 'List records with specified IDs, in order of IDs' do
+        do_request(ids: [
+          non_draft_ids[3],
+          non_draft_ids[0],
+          'not_an_admin_publication_id',
+          non_draft_ids[1],
+          non_draft_ids[4]
+        ])
+
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+
+        expect(json_response[:data].pluck(:id))
+          .to eq [non_draft_ids[3], non_draft_ids[0], non_draft_ids[1], non_draft_ids[4]]
+      end
+
+      example 'Maintains ordering by IDs in pagination', document: false do
+        do_request(
+          ids: [
+            non_draft_ids[3],
+            non_draft_ids[0],
+            'not_an_admin_publication_id',
+            non_draft_ids[1],
+            non_draft_ids[4],
+            non_draft_ids[2]
+          ],
+          page: { number: 2, size: 3 }
+        )
+
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+
+        expect(json_response[:data].pluck(:id)).to eq [non_draft_ids[4], non_draft_ids[2]]
+      end
+
+      example 'Does not include draft admin_publications', document: false do
+        do_request(ids: [
+          non_draft_ids[3],
+          draft_ids[1],
+          non_draft_ids[0],
+          draft_ids[0],
+          non_draft_ids[1],
+          non_draft_ids[4]
+        ])
+
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+
+        expect(json_response[:data].pluck(:id))
+          .to eq [non_draft_ids[3], non_draft_ids[0], non_draft_ids[1], non_draft_ids[4]]
+      end
+
+      example 'Returns empty data when no records are found', document: false do
+        do_request(ids: ['not_an_admin_publication_id'])
+
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+
+        expect(json_response[:data]).to be_empty
+      end
+    end
+
     patch 'web_api/v1/admin_publications/:id/reorder' do
       with_options scope: :admin_publication do
         parameter :ordering, 'The position, starting from 0, where the folder or project should be at. Publications after will move down.', required: true

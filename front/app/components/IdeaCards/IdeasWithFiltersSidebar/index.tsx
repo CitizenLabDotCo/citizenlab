@@ -14,6 +14,7 @@ import styled from 'styled-components';
 
 import useInfiniteIdeas from 'api/ideas/useInfiniteIdeas';
 import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
+import { IdeaSortMethod } from 'api/phases/types';
 
 import { QueryParameters } from 'containers/IdeasIndexPage';
 
@@ -27,7 +28,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../messages';
-import { Sort } from '../shared/Filters/SortFilterDropdown';
 import IdeasView from '../shared/IdeasView';
 import tracks from '../tracks';
 
@@ -130,7 +130,7 @@ const ContentRight = styled.div<{ filterColumnWidth: number }>`
 `;
 
 export interface QueryParametersUpdate {
-  sort?: Sort;
+  sort?: IdeaSortMethod;
   search?: string;
   idea_status?: string;
   topics?: string[];
@@ -166,7 +166,7 @@ const IdeaCards = ({ ideaQueryParameters, onUpdateQuery }: Props) => {
   );
 
   const handleSortOnChange = useCallback(
-    (sort: Sort) => {
+    (sort: IdeaSortMethod) => {
       trackEventByName(tracks.sortingFilter, {
         sort,
       });

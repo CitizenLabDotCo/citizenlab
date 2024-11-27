@@ -307,6 +307,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.trendingSortingMethod',
     defaultMessage: 'Trending',
   },
+  comments_countSortingMethod: {
+    id: 'app.containers.AdminPage.ProjectEdit.commens_countSortingMethod',
+    defaultMessage: 'Most discussed',
+  },
   randomSortingMethod: {
     id: 'app.containers.AdminPage.ProjectEdit.randomSortingMethod',
     defaultMessage: 'Random',
@@ -419,6 +423,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputManager',
     defaultMessage:
       'Give feedback, assign topics or copy inputs to the next project phase.',
+  },
+  importInputs: {
+    id: 'app.containers.AdminPage.ProjectEdit.PostManager.importInputs',
+    defaultMessage: 'Import',
   },
   votingShareResultsTurnedOff: {
     id: 'app.containers.AdminPage.ProjectEdit.PostManager.votingShareResultsTurnedOff',
