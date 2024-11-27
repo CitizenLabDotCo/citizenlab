@@ -51,7 +51,7 @@ const InputFilters = ({
 }: Props) => {
   const isSmallerThanTablet = useBreakpoint('tablet');
   // We have a reset filters button in the top bar of the modal on mobile.
-  const showResetFiltersButton = !isSmallerThanTablet && filtersActive;
+  const showResetFiltersButton = !isSmallerThanTablet;
 
   return (
     <>
@@ -81,6 +81,7 @@ const InputFilters = ({
           fontSize={`${fontSizes.s}px`}
           onClick={onClearFilters}
           ml="auto"
+          disabled={!filtersActive}
         >
           <FormattedMessage {...messages.resetFilters} />
         </Button>
