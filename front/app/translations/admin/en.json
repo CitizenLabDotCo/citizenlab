@@ -394,7 +394,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.refreshLink": "Refresh project preview link",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.refreshLinkTooltip": "Regenerate project preview link. This will invalidate the previous link.",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.requestApproval": "Request approval",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.requestApprovalDescription": "Only admins and Folder Managers can publish projects. Click the button to ask for approval.",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.requestApprovalDescription1": "Only admins and Folder Managers can approve projects. Click the button to ask for approval.",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.share": "Share",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareLink": "Copy link",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareLinkCopied": "Link copied",
