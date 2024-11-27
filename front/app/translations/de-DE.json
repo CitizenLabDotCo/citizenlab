@@ -987,7 +987,7 @@
   "app.containers.AdminPage.Users.UsersGroup.atLeastOneRuleError": "Mindestens eine Regel eingeben",
   "app.containers.AdminPage.Users.UsersGroup.rulesError": "Einige Bedingungen sind unvollständig",
   "app.containers.AdminPage.Users.UsersGroup.saveGroup": "Gruppe speichern",
-  "app.containers.AdminPage.Users.UsersGroup.smartGroupsAvailability1": "Die Konfiguration von intelligenten Gruppen ist nicht Bestandteil Ihrer aktuellen Lizenz. Wenden Sie sich an Ihren GovSuccess Manager, um mehr darüber zu erfahren.",
+  "app.containers.AdminPage.Users.UsersGroup.smartGroupsAvailability1": "Die Konfiguration von intelligenten Gruppen ist nicht Bestandteil Ihrer aktuellen Lizenz. Wenden Sie sich an Ihre Kundenbetreuerin, um mehr darüber zu erfahren.",
   "app.containers.AdminPage.Users.UsersGroup.titleFieldEmptyError": "Geben Sie einen Gruppennamen an",
   "app.containers.AdminPage.Users.UsersGroup.verificationDisabled": "Die Verifizierung ist für Ihre Plattform deaktiviert, entfernen Sie die Verifizierungsregel oder kontaktieren Sie den Support.",
   "app.containers.App.appMetaDescription": "Willkommen auf der Online-Partizipationsplattform der {orgName}. \nErkunden Sie Projekte und beteiligen Sie sich!",
