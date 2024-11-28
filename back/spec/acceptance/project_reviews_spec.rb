@@ -69,7 +69,7 @@ resource 'Project reviews' do
           id: project_review.id,
           type: 'project_review',
           attributes: {
-            approved: project_review.approved?,
+            state: project_review.state,
             approved_at: project_review.approved_at&.iso8601(3),
             created_at: project_review.created_at.iso8601(3),
             updated_at: project_review.updated_at.iso8601(3)
@@ -125,7 +125,7 @@ resource 'Project reviews' do
           id: project_review.id,
           type: 'project_review',
           attributes: hash_including(
-            approved: true,
+            state: 'approved',
             approved_at: project_review.approved_at&.iso8601(3)
           ),
           relationships: hash_including(
