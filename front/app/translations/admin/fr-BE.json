@@ -2312,7 +2312,6 @@
   "app.containers.AdminPage.projects.all.moderatedProjectsEmpty": "Les projets dont vous êtes le gestionnaire apparaîtront ici.",
   "app.containers.AdminPage.projects.all.noProjects": "Aucun projet n'a été trouvé.",
   "app.containers.AdminPage.projects.all.onlyAdminsCanCreateFolders": "Seuls les administrateurs peuvent créer des dossiers.",
-  "app.containers.AdminPage.projects.all.onlyAdminsCanCreateProjects1": "Seuls les administrateurs et les gestionnaires de dossier peuvent créer des projets.",
   "app.containers.AdminPage.projects.all.projectsAndFolders": "Projets et dossiers",
   "app.containers.AdminPage.projects.all.searchProjects": "Rechercher des projets",
   "app.containers.AdminPage.projects.all.yourProjects": "Vos projets",
