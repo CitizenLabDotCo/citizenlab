@@ -1068,6 +1068,7 @@
   "app.containers.Comments.editComment": "Editar",
   "app.containers.Comments.guidelinesLinkText": "directrius de la nostra comunitat",
   "app.containers.Comments.ideaCommentBodyPlaceholder": "Escriviu el vostre comentari aquí",
+  "app.containers.Comments.internalCommentingNudgeMessage": "Fer comentaris interns no està inclòs a la vostra llicència actual. Poseu-vos en contacte amb el vostre gestor de GovSuccess per obtenir-ne més informació.",
   "app.containers.Comments.internalConversation": "Conversa interna",
   "app.containers.Comments.loadMoreComments": "Carregar més comentaris",
   "app.containers.Comments.loadingComments": "S'estan carregant els comentaris...",
