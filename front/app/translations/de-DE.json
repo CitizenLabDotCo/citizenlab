@@ -1169,7 +1169,7 @@
   "app.containers.IdeaCards.ideaTerm": "Beiträge",
   "app.containers.IdeaCards.ideasFilterSidebarTitle": "{inputTerm} ({numberIdeas})",
   "app.containers.IdeaCards.initiatives": "Initiativen",
-  "app.containers.IdeaCards.issueTerm": "Blickpunkten",
+  "app.containers.IdeaCards.issueTerm": "Probleme",
   "app.containers.IdeaCards.list": "Liste",
   "app.containers.IdeaCards.map": "Karte",
   "app.containers.IdeaCards.mostDiscussed": "Meist diskutiert",
