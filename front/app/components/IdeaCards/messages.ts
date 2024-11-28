@@ -15,6 +15,10 @@ export default defineMessages({
     defaultMessage:
       'No results found. Please try a different filter or search term.',
   },
+  ideasFilterSidebarTitle: {
+    id: 'app.containers.IdeaCards.ideasFilterSidebarTitle',
+    defaultMessage: '{inputTerm} ({numberIdeas})',
+  },
   topics: {
     id: 'app.containers.IdeaCards.topics',
     defaultMessage: 'Topics',
@@ -108,5 +112,42 @@ export default defineMessages({
   a11y_ideasHaveBeenSorted: {
     id: 'app.components.IdeaCards.a11y_ideasHaveBeenSorted',
     defaultMessage: '{sortOder} ideas have loaded.',
+  },
+  // #input_term_copy
+  ideas: {
+    id: 'app.containers.IdeaCards.ideaTerm',
+    defaultMessage: 'Ideas',
+  },
+  projects: {
+    id: 'app.containers.IdeaCards.projectTerm',
+    defaultMessage: 'Projects',
+  },
+  questions: {
+    id: 'app.containers.IdeaCards.questionTerm',
+    defaultMessage: 'Questions',
+  },
+  options: {
+    id: 'app.containers.IdeaCards.optionTerm',
+    defaultMessage: 'Options',
+  },
+  issues: {
+    id: 'app.containers.IdeaCards.issueTerm',
+    defaultMessage: 'Issues',
+  },
+  contributions: {
+    id: 'app.containers.IdeaCards.contributions',
+    defaultMessage: 'Contributions',
+  },
+  proposals: {
+    id: 'app.containers.IdeaCards.proposals',
+    defaultMessage: 'Proposals',
+  },
+  initiatives: {
+    id: 'app.containers.IdeaCards.initiatives',
+    defaultMessage: 'Initiatives',
+  },
+  petitions: {
+    id: 'app.containers.IdeaCards.petitions',
+    defaultMessage: 'Petitions',
   },
 });

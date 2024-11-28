@@ -29,11 +29,13 @@ export interface Props {
   numberOfSearchResults: number;
   selectedIdeaFilters: Partial<IIdeaQueryParameters>;
   onClearFilters: () => void;
+  hideResetButton?: boolean;
   onSearch: (searchTerm: string) => void;
   onChangeStatus: (ideaStatus: string | null) => void;
   onChangeTopics: (topics: string[] | null) => void;
   handleSortOnChange: (sort: IdeaSortMethod) => void;
   phaseId?: string;
+  hideStatusFilter?: boolean;
 }
 
 const InputFilters = ({
@@ -44,6 +46,8 @@ const InputFilters = ({
   selectedIdeaFilters,
   phaseId,
   onClearFilters,
+  hideResetButton = false,
+  hideStatusFilter = false,
   onSearch,
   onChangeStatus,
   onChangeTopics,
@@ -51,7 +55,7 @@ const InputFilters = ({
 }: Props) => {
   const isSmallerThanTablet = useBreakpoint('tablet');
   // We have a reset filters button in the top bar of the modal on mobile.
-  const showResetFiltersButton = !isSmallerThanTablet;
+  const showResetFiltersButton = !isSmallerThanTablet && !hideResetButton;
 
   return (
     <>
@@ -66,7 +70,7 @@ const InputFilters = ({
       {!isSmallerThanTablet && (
         // mt is here to ensure search input's label still shows when it's lifted up.
         // Needs to be fixed in the SearchInput component.
-        <Box mt="8px">
+        <Box mt="8px" mb={}>
           <SearchInput
             defaultValue={defaultValue}
             onChange={onSearch}
@@ -96,11 +100,13 @@ const InputFilters = ({
           onChange={onChangeTopics}
         />
       </Box>
-      <StatusFilterBox
-        selectedStatusId={selectedIdeaFilters.idea_status}
-        selectedIdeaFilters={selectedIdeaFilters}
-        onChange={onChangeStatus}
-      />
+      {!hideStatusFilter && (
+        <StatusFilterBox
+          selectedStatusId={selectedIdeaFilters.idea_status}
+          selectedIdeaFilters={selectedIdeaFilters}
+          onChange={onChangeStatus}
+        />
+      )}
     </>
   );
 };

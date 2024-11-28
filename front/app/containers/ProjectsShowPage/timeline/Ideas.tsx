@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 
-import { Box, Title } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 
 import { IdeaSortMethod, IPhaseData } from 'api/phases/types';
@@ -14,10 +14,8 @@ import {
   IdeaCardsWithoutFiltersSidebar,
 } from 'components/IdeaCards';
 
-import { FormattedMessage } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
-import { getInputTermMessage } from 'utils/i18n';
 
 interface InnerProps {
   projectId: string;
@@ -104,26 +102,7 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
             id="ideas-list-scroll-anchor"
             aria-hidden={true}
           />
-          <IdeaCardsWithFiltersSidebar
-            title={
-              <Title variant="h2" mt="0px" mb="20px" color="tenantText">
-                <FormattedMessage
-                  {...getInputTermMessage(inputTerm, {
-                    idea: messages.ideas,
-                    option: messages.options,
-                    project: messages.projects,
-                    question: messages.questions,
-                    issue: messages.issues,
-                    contribution: messages.contributions,
-                    proposal: messages.proposals,
-                    initiative: messages.initiatives,
-                    petition: messages.petitions,
-                  })}
-                />
-              </Title>
-            }
-            {...sharedProps}
-          />
+          <IdeaCardsWithFiltersSidebar inputTerm={inputTerm} {...sharedProps} />
         </>
       )}
     </Box>
