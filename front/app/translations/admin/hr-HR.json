@@ -2208,7 +2208,6 @@
   "app.containers.AdminPage.projects.all.moderatedProjectsEmpty": "Ovdje će se pojaviti projekti u kojima ste voditelj projekta.",
   "app.containers.AdminPage.projects.all.noProjects": "Nema pronađenih projekata.",
   "app.containers.AdminPage.projects.all.onlyAdminsCanCreateFolders": "Samo administratori mogu kreirati mape projekta.",
-  "app.containers.AdminPage.projects.all.onlyAdminsCanCreateProjects1": "Samo administratori i upravitelji mapa mogu stvarati projekte.",
   "app.containers.AdminPage.projects.all.projectsAndFolders": "Projekti i mape",
   "app.containers.AdminPage.projects.all.searchProjects": "Pretražite projekte",
   "app.containers.AdminPage.projects.all.yourProjects": "Vaši projekti",

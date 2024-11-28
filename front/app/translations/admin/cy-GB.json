@@ -2312,7 +2312,6 @@
   "app.containers.AdminPage.projects.all.moderatedProjectsEmpty": "Bydd prosiectau lle rydych chi'n Rheolwr Prosiect yn ymddangos yma.",
   "app.containers.AdminPage.projects.all.noProjects": "Ni chanfuwyd unrhyw brosiectau.",
   "app.containers.AdminPage.projects.all.onlyAdminsCanCreateFolders": "Dim ond gweinyddwyr all greu ffolderi prosiect.",
-  "app.containers.AdminPage.projects.all.onlyAdminsCanCreateProjects1": "Dim ond gweinyddwyr a rheolwyr ffolderi all greu prosiectau.",
   "app.containers.AdminPage.projects.all.projectsAndFolders": "Prosiectau a ffolderi",
   "app.containers.AdminPage.projects.all.searchProjects": "Chwilio prosiectau",
   "app.containers.AdminPage.projects.all.yourProjects": "Eich prosiectau",

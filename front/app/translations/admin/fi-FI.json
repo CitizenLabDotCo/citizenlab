@@ -2208,7 +2208,6 @@
   "app.containers.AdminPage.projects.all.moderatedProjectsEmpty": "Projektit, joissa olet projektipäällikkö, näkyvät täällä.",
   "app.containers.AdminPage.projects.all.noProjects": "Projekteja ei löytynyt.",
   "app.containers.AdminPage.projects.all.onlyAdminsCanCreateFolders": "Vain järjestelmänvalvojat voivat luoda projektikansioita.",
-  "app.containers.AdminPage.projects.all.onlyAdminsCanCreateProjects1": "Vain järjestelmänvalvojat ja kansioiden ylläpitäjät voivat luoda projekteja.",
   "app.containers.AdminPage.projects.all.projectsAndFolders": "Projektit ja kansiot",
   "app.containers.AdminPage.projects.all.searchProjects": "Etsi projekteja",
   "app.containers.AdminPage.projects.all.yourProjects": "Sinun projektisi",

@@ -2312,7 +2312,6 @@
   "app.containers.AdminPage.projects.all.moderatedProjectsEmpty": "Projecten waar je Projectbeheerder van bent verschijnen hier.",
   "app.containers.AdminPage.projects.all.noProjects": "Geen projecten gevonden.",
   "app.containers.AdminPage.projects.all.onlyAdminsCanCreateFolders": "Alleen platformbeheerders kunnen projectmappen aanmaken.",
-  "app.containers.AdminPage.projects.all.onlyAdminsCanCreateProjects1": "Alleen platform- en mapbeheerders kunnen projecten maken.",
   "app.containers.AdminPage.projects.all.projectsAndFolders": "Projecten en mappen",
   "app.containers.AdminPage.projects.all.searchProjects": "Zoek projecten",
   "app.containers.AdminPage.projects.all.yourProjects": "Jouw projecten",
