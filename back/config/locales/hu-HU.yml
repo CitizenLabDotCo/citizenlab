@@ -213,11 +213,11 @@ hu:
         option:
           title: Mi a lehetőséged?
         proposal:
-          title: What is your proposal?
+          title: Mi a javaslata?
         initiative:
-          title: What is your initiative?
+          title: Mi a kezdeményezésed?
         petition:
-          title: What is your petition?
+          title: Mi a petíciója?
   custom_field_options:
     gender:
       male: Férfi
@@ -304,11 +304,11 @@ hu:
       permission: 'Engedély'
       choose_as_many: 'Válasszon annyit, amennyit csak akar'
       choose_exactly:
-        one: 'Choose exactly %{count} option'
-        other: 'Choose exactly %{count} options'
-      choose_between: 'Choose between %{min} and %{max} options'
-      choose_at_least: 'Choose at least %{count} options'
-      choose_at_most: 'Choose at most %{count} options'
+        one: 'Válassza ki pontosan a %{count} opciót'
+        other: 'Válassza ki pontosan a %{count} opciókat'
+      choose_between: 'Válasszon a %{min} és %{max} lehetőségek közül'
+      choose_at_least: 'Válasszon legalább %{count} lehetőséget'
+      choose_at_most: 'Válasszon legfeljebb %{count} opciót'
       this_answer: 'Ezt a választ csak a moderátorokkal osztjuk meg, a nyilvánossággal nem.'
       page: 'oldal'
       date_published: 'Közzététel dátuma (nn-hh-éééé)'
@@ -345,7 +345,7 @@ hu:
   user:
     anon_first_name: "Felhasználó"
     anon_scheme:
-      animals: 'alligator,crocodile,alpaca,ant,antelope,ape,armadillo,baboon,badger,bat,bear,beaver,bee,beetle,buffalo,butterfly,camel,water buffalo,caribou,cat,cattle,cheetah,chimpanzee,chinchilla,cicada,clam,cockroach,cod,coyote,crab,cricket,crow,raven,deer,dinosaur,dog,dolphin,porpoise,duck,eagle,eel,elephant,elk,ferret,fish,fly,fox,frog,toad,gerbil,giraffe,gnat,gnu,wildebeest,goat,goldfish,goose,gorilla,grasshopper,guinea pig,hamster,hare,hedgehog,herring,hippopotamus,hornet,horse,hound,hyena,impala,jackal,jellyfish,kangaroo,wallaby,koala,leopard,lion,lizard,llama,locust,louse,macaw,mallard,mammoth,manatee,marten,mink,minnow,mole,moose,mosquito,mouse,rat,mule,muskrat,otter,ox,oyster,panda,pig,platypus,porcupine,prairie dog,pug,rabbit,raccoon,reindeer,rhinoceros,salmon,sardine,scorpion,seal,sea lion,serval,shark,sheep,skunk,snail,snake,spider,squirrel,swan,termite,tiger,trout,turtle,tortoise,walrus,wasp,whale,wolf,wombat,woodchuck,worm,yak,yellowjacket,zebra'
+      animals: 'aligátor, krokodil, alpaka, hangya, antilop, majom, tatu, pávián, borz, denevér, medve, hód, méh, bogár, bivaly, pillangó, teve, víz bivaly, karibu, macska, szarvasmarha, gepárd, csimpánz, csincsilla, kabóca, kagyló, csótány, tőkehal, prérifarkas, rák, tücsök, varjú, holló, szarvas, dinoszaurusz, kutya, delfin, porp oise, kacsa, sas, angolna, elefánt, jávorszarvas, görény, hal, légy, róka, béka, varangy, futóegér, zsiráf, szúnyog, gnu, vadbéka, kecske, aranyhal, liba, gorilla, szöcske, guinea disznó, hörcsög, nyúl, sün, hering, víziló, kürt, ló, kopó, hiéna, impala, sakál, medúza, kenguru, falat, koala, leopárd, oroszlán, gyík, láma, sáska ,tetű,ara,tőkés réce,mamut,lamantin,nyest,nyérc,minnow,vakond,jávorszarvas,szúnyog,egér,patkány,öszvér,pézsmapocok,vidra,ökör,osztriga,panda,malac,kacsacsőrű,sertésvirág,préri kutya, mopsz, nyúl, mosómedve, rénszarvas, orrszarvú, lazac, szardínia, skorpió, fóka, tenger oroszlán, szolga, cápa, birka, korcs, csiga, kígyó, pók, mókus, hattyú, termesz, tigris, pisztráng, teknős, teknősbéka, rozmár, darázs, bálna, farkas, wombat, fapofa, féreg, jak, sárgakabát, zebra'
   time:
     am: am
     formats:
