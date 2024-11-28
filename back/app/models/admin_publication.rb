@@ -65,7 +65,7 @@ class AdminPublication < ApplicationRecord
 
   before_validation :set_publication_status, on: :create
   before_validation :set_default_children_allowed, on: :create
-  before_save :set_first_publication_at
+  before_save :set_first_published_at
 
   scope :published, lambda {
     where(publication_status: 'published')
@@ -111,12 +111,12 @@ class AdminPublication < ApplicationRecord
     self.children_allowed = false if publication_type == 'Project'
   end
 
-  def set_first_publication_at
+  def set_first_published_at
+    return unless first_published_at.nil?
     return unless published?
-    return if first_publication_at.present?
 
     self.updated_at = Time.zone.now
     self.created_at ||= updated_at
-    self.first_publication_at = updated_at
+    self.first_published_at = updated_at
   end
 end
