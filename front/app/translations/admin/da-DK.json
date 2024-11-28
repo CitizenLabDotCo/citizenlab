@@ -2013,6 +2013,7 @@
   "app.containers.AdminPage.SettingsPage.addTopicButton": "Tilføj tag",
   "app.containers.AdminPage.SettingsPage.anonymousNameScheme_animal2": "Dyr - f. eks. elefant eller kat",
   "app.containers.AdminPage.SettingsPage.anonymousNameScheme_user": "Bruger - f.eks. bruger 123456",
+  "app.containers.AdminPage.SettingsPage.approvalDescription": "Vælg, hvilke administratorer der skal modtage meddelelser om godkendelse af projekter. Mappeadministratorer godkender som standard alle projekter i deres mapper.",
   "app.containers.AdminPage.SettingsPage.approvalSave": "Gem",
   "app.containers.AdminPage.SettingsPage.approvalTitle": "Indstillinger for projektgodkendelse",
   "app.containers.AdminPage.SettingsPage.areaDeletionConfirmation": "Er du sikker på, at du ønsker at slette dette område?",
