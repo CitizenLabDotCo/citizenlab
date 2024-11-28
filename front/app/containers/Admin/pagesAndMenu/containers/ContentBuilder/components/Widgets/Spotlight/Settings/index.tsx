@@ -4,6 +4,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
 
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
+import QuillMutilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -63,15 +64,16 @@ const Settings = () => {
         />
       </Box>
       <Box mb="20px">
-        <InputMultilocWithLocaleSwitcher
-          id="spotlight-button-text-multiloc"
-          type="text"
-          label={formatMessage(messages.description)}
-          name="spotlight-button-text-multiloc"
+        <QuillMutilocWithLocaleSwitcher
+          maxHeight="240px"
+          noImages
+          noVideos
+          id="spotlight-description-multiloc"
           valueMultiloc={descriptionMultiloc}
-          onChange={(valueMultiloc) =>
-            setProp((props) => (props.descriptionMultiloc = valueMultiloc))
-          }
+          label={formatMessage(messages.description)}
+          onChange={(value) => {
+            setProp((props) => (props.descriptionMultiloc = value));
+          }}
         />
       </Box>
       <Box>

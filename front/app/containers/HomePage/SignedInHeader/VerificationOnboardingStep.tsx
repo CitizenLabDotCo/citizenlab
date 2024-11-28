@@ -1,6 +1,11 @@
 import React from 'react';
 
-import { Icon, colors, Title } from '@citizenlab/cl2-component-library';
+import {
+  Icon,
+  colors,
+  Title,
+  useBreakpoint,
+} from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
@@ -43,6 +48,9 @@ const VerificationOnboardingStep = ({
 }: Props) => {
   const { data: authUser } = useAuthUser();
   const { formatMessage } = useIntl();
+  const isSmallerThanTablet = useBreakpoint('tablet');
+  const isSmallerThanPhone = useBreakpoint('phone');
+  const isTablet = isSmallerThanTablet && !isSmallerThanPhone;
 
   if (!isNilOrError(authUser)) {
     return (
@@ -63,7 +71,12 @@ const VerificationOnboardingStep = ({
                 <ShieldIcon name="shield-check" />
               </AvatarAndShield>
             </Icons>
-            <Title variant="h2" m="0" color="white">
+            <Title
+              variant="h2"
+              m="0"
+              my={isTablet ? '16px' : undefined}
+              color="white"
+            >
               <FormattedMessage {...messages.verifyYourIdentity} />
             </Title>
           </Left>

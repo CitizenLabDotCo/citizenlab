@@ -13,9 +13,9 @@ const signUpInTracks = {
   signUpFlowCompleted: 'Sign up flow completed',
 };
 
-let sessionId: string;
+let sessionId: string | undefined;
 let allAppPaths: string[] | undefined;
-let previousPathTracked: string;
+let previousPathTracked: string | undefined;
 
 const trackSessionStarted = async () => {
   // eslint-disable-next-line
@@ -35,6 +35,12 @@ const trackSessionStarted = async () => {
       Authorization: `Bearer ${jwt}`,
     },
   });
+
+  // If the user is a bot, we will get a 204 (no content) response.
+  // In this case, we can't track the session.
+  if (response.status === 204) {
+    return;
+  }
 
   const data = await response.json();
   sessionId = data.data.id;
@@ -60,6 +66,9 @@ const trackPageView = async (path: string) => {
   // For some reason, sometimes the page view event is triggered twice
   // for the same path. This prevents that.
   if (previousPathTracked === path) return;
+
+  // We also only start tracking page views after the session has been created.
+  if (sessionId === undefined) return;
 
   previousPathTracked = path;
 
@@ -87,8 +96,6 @@ const configuration: ModuleConfiguration = {
     trackSessionStarted();
 
     pageChanges$.subscribe((e) => {
-      // Ignore first page view event (only start tracking here after session creation)
-      if (!sessionId) return;
       trackPageView(e.path);
     });
 

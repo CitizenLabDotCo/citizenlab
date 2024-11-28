@@ -1068,6 +1068,7 @@
   "app.containers.Comments.editComment": "Bearbeiten",
   "app.containers.Comments.guidelinesLinkText": "unseren Richtlinien",
   "app.containers.Comments.ideaCommentBodyPlaceholder": "Schreiben Sie Ihren Kommentar hier",
+  "app.containers.Comments.internalCommentingNudgeMessage": "Die Abgabe interner Kommentare ist nicht in Ihrer aktuellen Lizenz enthalten. Wenden Sie sich an Ihre Kundenbetreuerin, um mehr darüber zu erfahren.",
   "app.containers.Comments.internalConversation": "Interne Diskussion",
   "app.containers.Comments.loadMoreComments": "Weitere Kommentare laden",
   "app.containers.Comments.loadingComments": "Kommentare werden geladen...",
