@@ -2013,6 +2013,7 @@
   "app.containers.AdminPage.SettingsPage.addTopicButton": "Adicionar tópico",
   "app.containers.AdminPage.SettingsPage.anonymousNameScheme_animal2": "Animal - por exemplo, gato elefante",
   "app.containers.AdminPage.SettingsPage.anonymousNameScheme_user": "Usuário - por exemplo, Usuário 123456",
+  "app.containers.AdminPage.SettingsPage.approvalDescription": "Selecione quais administradores receberão notificações para aprovar projetos. Por padrão, os gerentes de pasta são aprovadores de todos os projetos em suas pastas.",
   "app.containers.AdminPage.SettingsPage.approvalSave": "Salvar",
   "app.containers.AdminPage.SettingsPage.approvalTitle": "Configurações de aprovação do projeto",
   "app.containers.AdminPage.SettingsPage.areaDeletionConfirmation": "Tem certeza de que deseja excluir esta área?",
