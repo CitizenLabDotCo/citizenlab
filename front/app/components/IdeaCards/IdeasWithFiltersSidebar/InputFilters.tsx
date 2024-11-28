@@ -73,15 +73,18 @@ const InputFilters = ({
         </Box>
       )}
       {showResetButton && (
-        <Button
-          buttonStyle="text"
-          fontSize={`${fontSizes.s}px`}
-          onClick={onClearFilters}
-          ml="auto"
-          disabled={!filtersActive}
-        >
-          <FormattedMessage {...messages.resetFilters} />
-        </Button>
+        <Box minHeight="40px" display="flex">
+          {filtersActive && (
+            <Button
+              buttonStyle="text"
+              fontSize={`${fontSizes.s}px`}
+              onClick={onClearFilters}
+              ml="auto"
+            >
+              <FormattedMessage {...messages.resetFilters} />
+            </Button>
+          )}
+        </Box>
       )}
       <Box mb="20px">
         <SortingBox handleSortOnChange={handleSortOnChange} phaseId={phaseId} />
