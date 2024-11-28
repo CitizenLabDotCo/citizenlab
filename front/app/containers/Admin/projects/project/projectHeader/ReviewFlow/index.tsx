@@ -58,7 +58,8 @@ const ReviewFlow = ({ project }: { project: IProjectData }) => {
     });
   };
 
-  if (project.attributes.publication_status !== 'draft') {
+  // Only display the component if the project has not been published yet
+  if (project.attributes.first_published_at) {
     return null;
   }
 
@@ -66,8 +67,10 @@ const ReviewFlow = ({ project }: { project: IProjectData }) => {
     projectReview && projectReview.data.attributes.approved === false;
   const approvalGranted =
     projectReview && projectReview.data.attributes.approved === true;
+
   const showPublishButton =
     (canPublish || !isProjectReviewEnabled) && !approvalPending;
+
   const showReviewRequestButton =
     isProjectReviewEnabled && !canReview && !approvalGranted;
   const showProjectApprovalButton = approvalPending && canReview;
