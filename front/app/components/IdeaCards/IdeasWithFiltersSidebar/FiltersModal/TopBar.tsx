@@ -7,7 +7,6 @@ import {
   fontSizes,
   Title,
 } from '@citizenlab/cl2-component-library';
-import { lighten } from 'polished';
 import { useTheme } from 'styled-components';
 
 import CloseIconButton from 'components/UI/CloseIconButton';
@@ -28,7 +27,7 @@ const TopBar = ({ onClose, onReset }: Props) => {
     <Box
       height={`${theme.mobileTopBarHeight}px`}
       bgColor={colors.white}
-      borderBottom={`solid 1px ${lighten(0.4, colors.textSecondary)}`}
+      borderBottom={`1px solid ${colors.grey300}`}
       display="flex"
       alignItems="center"
       justifyContent="space-between"
