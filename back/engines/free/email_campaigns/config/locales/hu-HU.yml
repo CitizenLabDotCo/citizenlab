@@ -52,37 +52,37 @@ hu:
       "assignee_digest": A hozzárendelt ötletek heti áttekintése
       "user_digest": Heti áttekintés
       "voting_basket_submitted": A szavazás megerősítése
-      "native_survey_not_submitted": Survey not submitted
+      "native_survey_not_submitted": A felmérés nem került benyújtásra
       "voting_basket_not_submitted": A szavazatokat nem nyújtották be
       "voting_last_chance": Utolsó lehetőség szavazni
       "voting_phase_started": Új projektszakasz szavazással
       "voting_results": Szavazási eredmények
-      "your_input_in_screening": My input awaits screening
+      "your_input_in_screening": Hozzászólásom átvilágításra vár
     general:
       by_author: 'készítette: %{authorName}'
       author_wrote: '%{authorName} írta:'
       cta_goto_idea: 'Menj ehhez az ötlethez'
-      cta_goto_input: 'Go to this input'
+      cta_goto_input: 'Ugrás erre a bemenetre'
       cta_goto:
-        idea: 'Go to this idea'
-        question: 'Go to this question'
-        contribution: 'Go to this contribution'
-        project: 'Go to this project'
-        issue: 'Go to this issue'
-        option: 'Go to this option'
-        proposal: 'Go to this proposal'
-        initiative: 'Go to this initiative'
-        petition: 'Go to this petition'
+        idea: 'Menj ehhez az ötlethez'
+        question: 'Menj erre a kérdésre'
+        contribution: 'Ugrás erre a hozzájárulásra'
+        project: 'Ugrás ehhez a projekthez'
+        issue: 'Tovább a kérdéshez'
+        option: 'Menjen erre a lehetőségre'
+        proposal: 'Tovább a javaslathoz'
+        initiative: 'Menj ehhez a kezdeményezéshez'
+        petition: 'Tovább a petícióhoz'
       cta_goto_your:
-        idea: 'Go to your idea'
-        question: 'Go to your question'
-        contribution: 'Go to your contribution'
-        project: 'Go to your project'
-        issue: 'Go to your issue'
-        option: 'Go to your option'
-        proposal: 'Go to your proposal'
-        initiative: 'Go to your initiative'
-        petition: 'Go to your petition'
+        idea: 'Menj az ötletedhez'
+        question: 'Menj a kérdésedre'
+        contribution: 'Tovább a hozzájárulásodhoz'
+        project: 'Menj a projektedhez'
+        issue: 'Menjen a problémájához'
+        option: 'Menjen a választott lehetőségre'
+        proposal: 'Menjen az ajánlatához'
+        initiative: 'Menj a kezdeményezésedre'
+        petition: 'Menj a petíciódhoz'
       cta_goto_proposal: 'Tovább a javaslathoz'
       cta_goto_project: 'Ugrás ehhez a projekthez'
     schedules:
@@ -124,12 +124,12 @@ hu:
       text_introduction: 'Összegyűjtöttük Önnek azt a bemenetet, amely a legtöbb tevékenységet generálta az elmúlt héten. Tudja meg, mi történik a platformján!'
       cta_visit_the_platform: 'Látogassa meg platformját'
       new_users: 'Új felhasználók'
-      new_inputs: 'New inputs'
+      new_inputs: 'Új bemenetek'
       new_comments: 'Új megjegyzések'
       title_activity_past_week: 'Az elmúlt hét tevékenysége'
       title_no_activity_past_week: 'Az elmúlt héten nem volt tevékenység'
       title_initiatives_past_week: 'Az elmúlt hét új javaslatai'
-      reached_threshold: 'Reached the threshold'
+      reached_threshold: 'Elérte a küszöböt'
       yesterday_by_author: 'Tegnap %{author}'
       today_by_author: 'Ma %{author}'
       x_days_ago_by_author: '%{x} napja, %{author}'
@@ -177,15 +177,15 @@ hu:
       preheader: 'A %{organizationName}hozzárendelt kivonata'
       title_your_weekly_report: '%{firstName}, az állampolgárok visszajelzésére várunk'
       cta_manage_your_input: 'Kezelje a bevitelt'
-      x_inputs_need_your_feedback: 'inputs need your feedback'
+      x_inputs_need_your_feedback: 'a bemenetekhez visszajelzésre van szükség'
       title_assignment_past_week: 'Az Önhöz rendelt legújabb bemenetek'
       title_no_assignment_past_week: 'A múlt héten nem lettek hozzárendelve új bemenetek'
       yesterday_by_author: 'Tegnap %{author}'
       today_by_author: 'Ma %{author}'
       x_days_ago_by_author: '%{x} napja, %{author}'
-      title_successful_past_week: 'Assigned to you that reached the threshold'
+      title_successful_past_week: 'Önhöz rendelve, amely elérte a küszöböt'
     idea_marked_as_spam:
-      cta_review: 'Review'
+      cta_review: 'Tekintse át'
       report_inappropriate_offensive_content: 'Ezt a tartalmat nem helyénvalónak vagy sértőnek tartom.'
       report_not_an_idea: 'Ez a tartalom nem releváns és nem tartozik ide.'
       subject: 'Spamjelentése van a %{organizationName}platformon'
@@ -282,7 +282,7 @@ hu:
       new_comments: 'Új megjegyzések'
       title_inputs_past_week: 'Új bemenetek az elmúlt héten'
       title_no_inputs_past_week: 'Az elmúlt héten nem érkezett új adat'
-      title_threshold_reached: Threshold reached in the past week
+      title_threshold_reached: Elérte a küszöböt az elmúlt héten
       yesterday_by_author: 'Tegnap %{author}'
       today_by_author: 'Ma %{author}'
       x_days_ago_by_author: '%{x} napja, %{author}'
@@ -300,15 +300,15 @@ hu:
       cta_reply_to: 'Válasz %{commentAuthor}'
       event_description: '%{authorNameFull} reakciót adott a ''%{inputTitle}''-re. Kattintson az alábbi gombra a beszélgetés folytatásához %{authorName}.'
       main_header:
-        idea: '%{authorName} commented on an idea you follow'
-        question: '%{authorName} commented on a question you follow'
-        contribution: '%{authorName} commented on a contribution you follow'
-        project: '%{authorName} commented on a project you follow'
-        issue: '%{authorName} commented on an issue you follow'
-        option: '%{authorName} commented on an option you follow'
-        proposal: '%{authorName} commented on a proposal you follow'
-        initiative: '%{authorName} commented on an initiative you follow'
-        petition: '%{authorName} commented on a petition you follow'
+        idea: '%{authorName} megjegyzést fűzött egy Ön által követett ötlethez'
+        question: '%{authorName} megjegyzést fűzött egy Ön által követett kérdéshez'
+        contribution: '%{authorName} megjegyzést fűzött egy általad követett hozzászóláshoz'
+        project: '%{authorName} megjegyzést fűzött egy általad követett projekthez'
+        issue: '%{authorName} megjegyzést fűzött egy Ön által követett problémához'
+        option: '%{authorName} megjegyzést fűzött egy általad követett lehetőséghez'
+        proposal: '%{authorName} megjegyzést fűzött egy Ön által követett javaslathoz'
+        initiative: '%{authorName} megjegyzést fűzött egy általad követett kezdeményezéshez'
+        petition: '%{authorName} megjegyzést fűzött egy Ön által követett petícióhoz'
       subject: 'Új megjegyzés érkezett a következőhöz: "%{input_title}"'
       preheader: '%{authorName} megjegyzést írt egy ötlethez a következőhöz: %{organizationName}'
     comment_on_initiative_you_follow:
@@ -324,13 +324,13 @@ hu:
       subject: 'Valaki új javaslatot tett közzé a %{organizationName}platformon'
       preheader: '%{authorName} új ajánlatot tett közzé az Ön platformján'
     new_idea_for_admin:
-      main_header_publication: 'A new input has been published on your platform'
-      event_description_publication: '%{authorName} has submitted a new input on your platform. Discover it now, give some feedback or change its status!'
-      cta_publication: 'Give feedback to %{authorName}'
-      main_header_prescreening: 'An input requires your review'
-      event_description_prescreening: '%{authorName} has submitted a new input on your platform.'
-      input_not_visible_prescreening: '<b>The input won''t be visible</b> until you modify its status.'
-      cta_prescreening: 'Review the input'
+      main_header_publication: 'Új bemenetet tettek közzé a platformján'
+      event_description_publication: '%{authorName} új bevitelt küldött az Ön platformjára. Fedezze fel most, adjon visszajelzést, vagy módosítsa az állapotát!'
+      cta_publication: 'Visszajelzés küldése a %{authorName}címre'
+      main_header_prescreening: 'A bemenet ellenőrzését igényli'
+      event_description_prescreening: '%{authorName} új bevitelt küldött az Ön platformjára.'
+      input_not_visible_prescreening: '<b>A bemenet nem lesz látható</b> , amíg nem módosítja az állapotát.'
+      cta_prescreening: 'Tekintse át a bevitelt'
       days_ago: '%{numberOfDays} napja'
       preheader: '%{authorName} új bemenetet tett közzé a platformján'
       today: Ma
@@ -477,13 +477,13 @@ hu:
       intro_text: "Íme egy összefoglaló a %{organizationName}részvételi platformján történtekről."
       cta_go_to_the_platform: "Menj a platformra"
       title_no_activity_past_week: "Nem volt tevékenység az elmúlt héten"
-      successful_proposals_title: "Reached the threshold"
+      successful_proposals_title: "Elérte a küszöböt"
       successful_proposals_text: "Az elmúlt héten ezek elegendő támogatást kaptak ahhoz, hogy továbbléphessenek a következő szakaszba."
       today_by_author: "Ma %{author}"
       yesterday_by_author: "Tegnap %{author}"
       x_days_ago_by_author: "%{x} napja, %{author}"
-      trending_title: "Trending"
-      trending_text: "Interested in what’s been happening on the platform? Here are the three most trending contributions and what people are saying about them."
+      trending_title: "Felkapott"
+      trending_text: "Érdekel, hogy mi történik a platformon? Íme a három legfelkapottabb hozzászólás, és az emberek szavai róluk."
       no_notifications: "Nincsenek értesítések"
       one_notification: "1 értesítés"
       multiple_notifications: "%{notifCount} értesítések"
@@ -502,17 +502,17 @@ hu:
       preheader: 'Íme, mit tehet a %{organizationName}platformon'
     idea_published:
       subject:
-        idea: 'Your idea has been published'
-        question: 'Your question has been published'
-        contribution: 'Your contribution has been published'
-        project: 'Your project has been published'
-        issue: 'Your issue has been published'
-        option: 'Your option has been published'
-        proposal: 'Your proposal has been published'
-        initiative: 'Your initiative has been published'
-        petition: 'Your petition has been published'
+        idea: 'Az ötleted megjelent'
+        question: 'Kérdését közzétettük'
+        contribution: 'Hozzájárulásod megjelent'
+        project: 'A projektjét közzétették'
+        issue: 'Az Ön problémája megjelent'
+        option: 'Az Ön opcióját közzétettük'
+        proposal: 'Az Ön javaslata megjelent'
+        initiative: 'Kezdeményezésed megjelent'
+        petition: 'Petícióját közzétették'
       main_header: 'Ön közzétette: "%{input_title}"'
-      header_message: 'Let''s make sure it gets read.'
+      header_message: 'Gondoskodjunk róla, hogy elolvassák.'
       message_get_votes: 'Érjen el több embert'
       action_published_idea: 'Közzétett'
       action_add_image: '%{addImageLink} a láthatóság növeléséhez'
@@ -526,18 +526,18 @@ hu:
       preheader: '%{firstName}, gratulálunk, hogy hozzászólását közzétette a %{organizationName}platformon. Most gyűjtsön támogatást.'
     your_input_in_screening:
       main_header:
-        idea: 'Your idea is in "%{prescreening_status_title}"'
-        question: 'Your question is in "%{prescreening_status_title}"'
-        contribution: 'Your contribution is in "%{prescreening_status_title}"'
-        project: 'Your project is in "%{prescreening_status_title}"'
-        issue: 'Your issue is in "%{prescreening_status_title}"'
-        option: 'Your option is in "%{prescreening_status_title}"'
-        proposal: 'Your proposal is in "%{prescreening_status_title}"'
-        initiative: 'Your initiative is in "%{prescreening_status_title}"'
-        petition: 'Your petition is in "%{prescreening_status_title}"'
-      message: '"%{input_title}" will become visible to others once it has been reviewed and approved.'
-      subject: '"%{input_title}" is almost published'
-      preheader: 'It''s currently in %{prescreening_status_title}'
+        idea: 'Az Ön ötlete itt található: "%{prescreening_status_title}"'
+        question: 'Kérdése a következőben található: "%{prescreening_status_title}"'
+        contribution: 'Az Ön hozzájárulása a következőben található: "%{prescreening_status_title}"'
+        project: 'Az Ön projektje "%{prescreening_status_title}"'
+        issue: 'A probléma itt található: "%{prescreening_status_title}"'
+        option: 'Az Ön beállítása a következőben található: "%{prescreening_status_title}"'
+        proposal: 'Az Ön ajánlata a következőben található: "%{prescreening_status_title}"'
+        initiative: 'Az Ön kezdeményezése a következőben található: "%{prescreening_status_title}"'
+        petition: 'Az Ön petíciója itt található: "%{prescreening_status_title}"'
+      message: 'A(z) "%{input_title}" a felülvizsgálat és jóváhagyás után mások számára látható lesz.'
+      subject: '"%{input_title}" majdnem megjelent'
+      preheader: 'Jelenleg %{prescreening_status_title}helyen van'
     voting_basket_submitted:
       subject: '%{organizationName}: Sikeresen szavaztál'
       preheader: 'Sikeresen szavaztál a %{organizationName}részvételi platformján'
@@ -546,12 +546,12 @@ hu:
       cta_see_votes_submitted: 'Lásd a leadott szavazatokat'
       cta_message: 'A részvételhez kattintson az alábbi gombra'
     native_survey_not_submitted:
-      subject: '%{organizationName}: Almost there! Submit your answers'
-      preheader: 'You didn''t complete your survey response on the participation platform of %{organizationName}'
-      title_native_survey_not_submitted: 'Almost there! Submit your answers'
-      body_native_survey_not_submitted: 'You started sharing your answers on %{phaseTitle} but didn''t submit them. Submissions will close on %{phaseEndDate}. Click on the button below to continue where you left off.'
-      body_native_survey_not_submitted_no_date: 'You started sharing your answers on %{phaseTitle} but didn''t submit them. Click on the button below to continue where you left off.'
-      cta_complete_your_survey_response: 'Resume your survey response'
+      subject: '%{organizationName}: Majdnem kész! Nyújtsa be válaszait'
+      preheader: 'Nem töltötte ki a felmérésre adott válaszát a %{organizationName}részvételi platformján'
+      title_native_survey_not_submitted: 'Majdnem megvan! Nyújtsa be válaszait'
+      body_native_survey_not_submitted: 'Elkezdted megosztani a válaszaidat a %{phaseTitle} oldalon, de nem küldted be őket. A beküldés a következő napon zárul: %{phaseEndDate}. Kattintson az alábbi gombra, hogy ott folytassa, ahol abbahagyta.'
+      body_native_survey_not_submitted_no_date: 'Elkezdted megosztani a válaszaidat a %{phaseTitle} oldalon, de nem küldted be őket. Kattintson az alábbi gombra, hogy ott folytassa, ahol abbahagyta.'
+      cta_complete_your_survey_response: 'Folytassa a felmérésre adott válaszát'
     voting_basket_not_submitted:
       subject: '%{organizationName}: Ön nem adta le szavazatát'
       preheader: 'Nem adtad le szavazatodat a %{organizationName}részvételi platformján'
@@ -620,7 +620,7 @@ hu:
         user_who_is_mentioned: 'Az említett felhasználó'
         user_who_published_the_proposal: 'Az ajánlatot közzétevő felhasználó'
         user_who_published_the_input: 'Felhasználó, aki közzétette a bemenetet'
-        user_who_submitted_the_input: 'User who submitted the input'
+        user_who_submitted_the_input: 'Felhasználó, aki beküldte a bevitelt'
         user_who_registers: 'Felhasználó, aki regisztrál'
         user_who_was_invited: 'Meghívott felhasználó'
         users_who_engaged_with_the_project: 'Felhasználók, akik részt vettek a projektben'
@@ -630,7 +630,7 @@ hu:
         user_who_voted: 'Felhasználó, aki szavazott'
         user_with_unsubmitted_votes: 'Felhasználó, aki nem adta le szavazatát'
         users_who_engaged_but_not_voted: 'Felhasználók, akik részt vettek a projektben, de nem szavaztak'
-        user_with_unsubmitted_survey: 'User who has started but not submitted their survey'
+        user_with_unsubmitted_survey: 'Felhasználó, aki elindította a felmérést, de nem küldte el'
       content_type:
         comments: 'Megjegyzések'
         content_moderation: 'Tartalom moderálása'
@@ -643,7 +643,7 @@ hu:
         proposals: 'Javaslatok'
         reactions: 'Reakciók'
         voting: 'Szavazás'
-        surveys: 'Surveys'
+        surveys: 'Felmérések'
       trigger:
         comment_is_deleted: 'A megjegyzés törölve'
         comment_is_flagged_as_spam: 'A megjegyzés spamként van megjelölve'
@@ -665,7 +665,7 @@ hu:
         user_is_invited_to_cosponsor_a_proposal: 'A felhasználót felkérik, hogy társszponzoráljon egy javaslatot'
         user_is_mentioned_in_internal_comment: 'A felhasználó meg van említve a belső megjegyzésben'
         new_input_is_published: 'Megjelent az új bemenet'
-        new_input_awaits_screening: 'New input awaits screening'
+        new_input_awaits_screening: 'Új bemenet vár a vetítésre'
         new_proposal_is_posted: 'Új ajánlatot tettek közzé'
         project_phase_changes: 'Változások a projekt fázisában'
         project_published: 'A projekt megjelent'
@@ -693,4 +693,4 @@ hu:
         7_days_after_invite_is_sent: '7 nappal a meghívó elküldése után'
         7_days_before_the_project_changes_phase: '7 nappal a projektváltási szakasz előtt'
         registration_to_event: 'Regisztráció egy eseményre'
-        survey_1_day_after_draft_saved: '1 day after user last saved the survey in draft'
+        survey_1_day_after_draft_saved: '1 nappal azután, hogy a felhasználó utoljára elmentette a felmérést vázlatként'
