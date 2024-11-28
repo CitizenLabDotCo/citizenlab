@@ -7,10 +7,11 @@ import styled from 'styled-components';
 import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
 
 import { Props as InputFiltersProps } from 'components/IdeaCards/IdeasWithFiltersSidebar/InputFilters';
-import messages from 'components/IdeaCards/messages';
 import Button from 'components/UI/Button';
 
 import { FormattedMessage } from 'utils/cl-intl';
+
+import messages from './messages';
 
 const Container = styled.div`
   height: ${(props) => props.theme.mobileTopBarHeight}px;

@@ -2,11 +2,12 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
-import BottomBar from 'components/FiltersModal/BottomBar';
-import TopBar from 'components/FiltersModal/TopBar';
 import FullscreenModal from 'components/UI/FullscreenModal';
 
-import InputFilters, { Props as InputFiltersProps } from './InputFilters';
+import InputFilters, { Props as InputFiltersProps } from '../InputFilters';
+
+import BottomBar from './BottomBar';
+import TopBar from './TopBar';
 
 interface Props extends InputFiltersProps {
   opened: boolean;

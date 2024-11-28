@@ -1068,6 +1068,7 @@
   "app.containers.Comments.editComment": "Rediger",
   "app.containers.Comments.guidelinesLinkText": "retningslinjene våre for fellesskapet",
   "app.containers.Comments.ideaCommentBodyPlaceholder": "Skriv din kommentar her",
+  "app.containers.Comments.internalCommentingNudgeMessage": "Å komme med interne kommentarer er ikke inkludert i din nåværende lisens. Ta kontakt med din GovSuccess Manager for å finne ut mer om dette.",
   "app.containers.Comments.internalConversation": "Intern samtale",
   "app.containers.Comments.loadMoreComments": "Legg inn flere kommentarer",
   "app.containers.Comments.loadingComments": "Laster inn kommentarer...",

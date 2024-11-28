@@ -1068,6 +1068,7 @@
   "app.containers.Comments.editComment": "Edycja",
   "app.containers.Comments.guidelinesLinkText": "nasze przewodniki",
   "app.containers.Comments.ideaCommentBodyPlaceholder": "Napisz swój komentarz tutaj",
+  "app.containers.Comments.internalCommentingNudgeMessage": "Tworzenie wewnętrznych komentarzy nie jest objęte Twoją obecną licencją. Skontaktuj się ze swoim menedżerem GovSuccess, aby dowiedzieć się więcej na ten temat.",
   "app.containers.Comments.internalConversation": "Rozmowa wewnętrzna",
   "app.containers.Comments.loadMoreComments": "Załaduj więcej komentarzy",
   "app.containers.Comments.loadingComments": "Ładowanie komentarzy...",
