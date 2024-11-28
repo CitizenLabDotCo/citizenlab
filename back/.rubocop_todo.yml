@@ -451,6 +451,7 @@ RSpec/SpecFilePathFormat:
 RSpec/SpecFilePathSuffix:
   Exclude:
     - 'spec/tasks/single_use/*.ignore.rb'
+    - 'spec/migrations/*.ignore.rb'
 
 # Offense count: 65
 RSpec/StubbedMock:
