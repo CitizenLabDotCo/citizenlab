@@ -233,7 +233,7 @@ const IdeasWithFiltersSidebar = ({
           </Title>
         ) : (
           <Box ml="auto">
-            <Text>
+            <Text m="0px">
               {formatMessage(messages.numberResults, {
                 postCount: list ? list.length : 0,
               })}
