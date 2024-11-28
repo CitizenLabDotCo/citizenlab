@@ -37,8 +37,8 @@ const FiltersMapView = ({
           <InputFilters
             selectedIdeaFilters={selectedIdeaFilters}
             onClearFilters={onClearFilters}
-            hideResetButton
-            hideStatusFilter
+            showResetButton={false}
+            showStatusFilter={false}
             {...filtersProps}
           />
         </Box>

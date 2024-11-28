@@ -29,9 +29,9 @@ export interface Props {
   onChangeTopics: (topics: string[] | null) => void;
   handleSortOnChange: (sort: IdeaSortMethod) => void;
   phaseId?: string;
-  hideStatusFilter?: boolean;
-  hideResetButton?: boolean;
-  hideSearchField?: boolean;
+  showResetButton?: boolean;
+  showStatusFilter?: boolean;
+  showSearchField?: boolean;
 }
 
 const InputFilters = ({
@@ -42,9 +42,9 @@ const InputFilters = ({
   selectedIdeaFilters,
   phaseId,
   onClearFilters,
-  hideResetButton = false,
-  hideStatusFilter = false,
-  hideSearchField = false,
+  showResetButton = true,
+  showStatusFilter = true,
+  showSearchField = true,
   onSearch,
   onChangeStatus,
   onChangeTopics,
@@ -60,10 +60,10 @@ const InputFilters = ({
           />
         )}
       </ScreenReaderOnly>
-      {!hideSearchField && (
+      {showSearchField && (
         // mt is here to ensure search input's label still shows when it's lifted up.
         // Needs to be fixed in the SearchInput component.
-        <Box mt="8px" mb={hideResetButton ? '20px' : '0'}>
+        <Box mt="8px" mb={showResetButton ? '0' : '20px'}>
           <SearchInput
             defaultValue={defaultValue}
             onChange={onSearch}
@@ -72,7 +72,7 @@ const InputFilters = ({
           />
         </Box>
       )}
-      {!hideResetButton && (
+      {showResetButton && (
         <Button
           buttonStyle="text"
           fontSize={`${fontSizes.s}px`}
@@ -93,7 +93,7 @@ const InputFilters = ({
           onChange={onChangeTopics}
         />
       </Box>
-      {!hideStatusFilter && (
+      {showStatusFilter && (
         <StatusFilterBox
           selectedStatusId={selectedIdeaFilters.idea_status}
           selectedIdeaFilters={selectedIdeaFilters}
