@@ -21,7 +21,7 @@ interface Props extends InputFiltersProps {
   onClose: () => void;
 }
 
-const FiltersModal = ({
+const ButtonWithFiltersModal = ({
   opened,
   selectedIdeaFilters,
   onClearFilters,
@@ -70,4 +70,4 @@ const FiltersModal = ({
   );
 };
 
-export default FiltersModal;
+export default ButtonWithFiltersModal;

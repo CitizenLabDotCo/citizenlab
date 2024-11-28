@@ -11,7 +11,7 @@ import { QueryParameters } from 'containers/IdeasIndexPage';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
 
-import filterModalMessages from './FiltersModal/messages';
+import filterModalMessages from './ButtonWithFiltersModal/messages';
 import InputFilters from './InputFilters';
 
 import { gapWidth } from '.';

@@ -37,7 +37,7 @@ import IdeasView from '../shared/IdeasView';
 import tracks from '../tracks';
 
 import ContentRight from './ContentRight';
-import FiltersModal from './FiltersModal';
+import ButtonWithFiltersModal from './ButtonWithFiltersModal';
 
 export const gapWidth = 35;
 
@@ -247,7 +247,7 @@ const IdeasWithFiltersSidebar = ({
         <>
           {!biggerThanLargeTablet && (
             <>
-              <FiltersModal
+              <ButtonWithFiltersModal
                 opened={filtersModalOpened}
                 selectedIdeaFilters={ideaQueryParameters}
                 filtersActive={filtersActive}
