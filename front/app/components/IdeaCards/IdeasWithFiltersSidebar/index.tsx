@@ -18,7 +18,6 @@ import { IdeaSortMethod } from 'api/phases/types';
 
 import { QueryParameters } from 'containers/IdeasIndexPage';
 
-import filterModalMessages from 'components/FiltersModal/messages';
 import Button from 'components/UI/Button';
 import SearchInput from 'components/UI/SearchInput';
 
@@ -32,6 +31,7 @@ import IdeasView from '../shared/IdeasView';
 import tracks from '../tracks';
 
 import FiltersModal from './FiltersModal';
+import filterModalMessages from './FiltersModal/messages';
 import InputFilters from './InputFilters';
 
 const gapWidth = 35;

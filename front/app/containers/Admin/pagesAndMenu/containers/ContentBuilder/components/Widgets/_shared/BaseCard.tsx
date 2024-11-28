@@ -9,7 +9,7 @@ import ImagePlaceholder from 'components/ProjectCard/ImagePlaceholder';
 
 export const CardContainer = styled(Box)`
   &:hover {
-    h4 {
+    h3 {
       color: ${({ theme }) => theme.colors.tenantPrimary};
       text-decoration: underline;
     }
