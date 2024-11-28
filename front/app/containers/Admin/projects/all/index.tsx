@@ -29,7 +29,6 @@ import SearchInput from 'components/UI/SearchInput';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { isAdmin } from 'utils/permissions/roles';
-import { isProjectFolderModerator } from 'utils/permissions/rules/projectFolderPermissions';
 
 import NonSortableProjectList from './Lists/NonSortableProjectList';
 import SortableProjectList from './Lists/SortableProjectList';
@@ -87,13 +86,6 @@ const AdminProjectsList = memo(({ className }: Props) => {
   const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
 
   const userIsAdmin = isAdmin(authUser);
-
-  const userIsFolderModerator =
-    (authUser &&
-      isProjectFoldersEnabled &&
-      isProjectFolderModerator(authUser)) ??
-    false;
-  const userCanCreateProject = userIsAdmin || userIsFolderModerator;
 
   const { data: moderatedAdminPublications } = useAdminPublications({
     publicationStatusFilter: ['published', 'draft', 'archived'],
@@ -188,24 +180,17 @@ const AdminProjectsList = memo(({ className }: Props) => {
                 </Box>
               </Tooltip>
             )}
-            <Tooltip
-              content={
-                <FormattedMessage {...messages.onlyAdminsCanCreateProjects} />
-              }
-              disabled={userCanCreateProject}
-            >
-              <Box>
-                <Button
-                  data-cy="e2e-new-project-button"
-                  linkTo={'/admin/projects/new'}
-                  icon="plus-circle"
-                  buttonStyle="admin-dark"
-                  disabled={!userCanCreateProject}
-                >
-                  <FormattedMessage {...messages.newProject} />
-                </Button>
-              </Box>
-            </Tooltip>
+
+            <Box>
+              <Button
+                data-cy="e2e-new-project-button"
+                linkTo={'/admin/projects/new'}
+                icon="plus-circle"
+                buttonStyle="admin-dark"
+              >
+                <FormattedMessage {...messages.newProject} />
+              </Button>
+            </Box>
           </Box>
         </Box>
         <Box my="24px" w="fit-content">
