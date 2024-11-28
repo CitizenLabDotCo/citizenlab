@@ -1,0 +1,11 @@
+#Translations for continuous to timeline migration
+hu:
+  phase_title_default:
+    ideation: Gyűjtse be a bemenetet
+    voting: Szavazás
+    poll: Szavazás
+    native_survey: Felmérés
+    survey: Felmérés
+    document_annotation: Dokumentum visszajelzés
+    volunteering: Keressen önkénteseket
+    information: Információ
