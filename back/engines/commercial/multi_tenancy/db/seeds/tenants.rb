@@ -490,6 +490,10 @@ module MultiTenancy
             new_homepage_widgets: {
               enabled: true,
               allowed: true
+            },
+            project_review: {
+              enabled: true,
+              allowed: true
             }
           })
         )

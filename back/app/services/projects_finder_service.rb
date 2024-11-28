@@ -66,15 +66,13 @@ class ProjectsFinderService
   end
 
   # Returns an ActiveRecord collection of published projects that are also
-  # followed by user OR relate to an idea, area or topic followed by user,
+  # followed by user OR relate to an idea, area, topic or folder followed by user,
   # ordered by the follow created_at (most recent first).
   # => [Project]
   def followed_by_user
-    exclude_followable_types = ['ProjectFolders::Folder', 'Initiative']
-
     subquery = Follower
       .where(user_id: @user.id)
-      .where.not(followable_type: exclude_followable_types)
+      .where.not(followable_type: 'Initiative')
       .joins(
         'LEFT JOIN areas AS followed_areas ON followers.followable_type = \'Area\' ' \
         'AND followed_areas.id = followers.followable_id'
@@ -89,12 +87,18 @@ class ProjectsFinderService
         'LEFT JOIN ideas AS followed_ideas ON followers.followable_type = \'Idea\' ' \
         'AND followed_ideas.id = followers.followable_id'
       )
+      .joins('LEFT JOIN project_folders_folders AS followed_folders ON ' \
+             'followers.followable_type = \'ProjectFolders::Folder\' ' \
+             'AND followed_folders.id = followers.followable_id')
+      .joins('LEFT JOIN admin_publications AS parents ON followed_folders.id = parents.publication_id ')
+      .joins('LEFT JOIN admin_publications AS children ON parents.id = children.parent_id ')
       .joins(
         'INNER JOIN projects ON ' \
         '(followers.followable_type = \'Project\' AND followers.followable_id = projects.id) ' \
         'OR (areas_projects.project_id = projects.id) ' \
         'OR (projects_topics.project_id = projects.id) ' \
-        'OR (followed_ideas.project_id = projects.id)'
+        'OR (followed_ideas.project_id = projects.id)' \
+        'OR (children.publication_id = projects.id)'
       )
       .select('projects.id AS project_id, MAX(followers.created_at) AS latest_follower_created_at')
       .group('projects.id')
@@ -120,8 +124,9 @@ class ProjectsFinderService
       finished_scope = base_scope.where(admin_publications: { publication_status: 'published' })
       finished_scope = joins_last_phases_with_reports(finished_scope)
         .where(
-          '(last_phases.last_phase_end_at < ? OR reports.id IS NOT NULL) AND admin_publications.publication_status = ?',
-          Time.zone.now, 'published'
+          '(last_phases.last_phase_end_at < ? OR (reports.id IS NOT NULL AND reports.visible = true))' \
+          "AND admin_publications.publication_status = 'published'",
+          Time.zone.now
         )
     end
 

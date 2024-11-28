@@ -3,23 +3,35 @@
 module ImpactTracking
   module WebApi::V1
     class SessionsController < ::ApplicationController
-      skip_before_action :authenticate_user, only: [:create]
+      skip_before_action :authenticate_user, only: %i[create]
       skip_after_action :verify_authorized, only: %i[create upgrade]
 
       before_action :ignore_crawlers
-      before_action :set_current_session, only: [:upgrade]
+      before_action :set_current_session, only: %i[upgrade]
 
       def create
+        browser = Browser.new(request.user_agent)
+        device_type = get_device_type(browser)
+        browser_name = browser.name
+        os_name = browser.platform.name
+
         session = Session.create(
           monthly_user_hash: generate_hash,
           highest_role: current_user&.highest_role,
-          user_id: current_user&.id
+          user_id: current_user&.id,
+          referrer: session_params[:referrer],
+          device_type: device_type,
+          browser_name: browser_name,
+          os_name: os_name
         )
 
         if session
           side_fx_session_service.after_create(current_user)
 
-          head :created
+          render json: WebApi::V1::SessionSerializer.new(
+            session,
+            params: jsonapi_serializer_params
+          ).serializable_hash, status: :ok
         else
           head :internal_server_error
         end
@@ -47,6 +59,10 @@ module ImpactTracking
         head :no_content if detector.is_crawler?
       end
 
+      def session_params
+        params.require(:session).permit(:referrer)
+      end
+
       def generate_hash
         service = SessionHashService.new
         if current_user
@@ -67,6 +83,13 @@ module ImpactTracking
 
       def side_fx_session_service
         @side_fx_session_service ||= SideFxSessionService.new
+      end
+
+      def get_device_type(browser)
+        return 'mobile' if browser.device.mobile?
+        return 'tablet' if browser.device.tablet?
+
+        'desktop_or_other'
       end
     end
   end

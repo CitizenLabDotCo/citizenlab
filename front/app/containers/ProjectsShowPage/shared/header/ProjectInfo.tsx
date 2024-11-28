@@ -80,27 +80,28 @@ const ProjectInfo = ({ projectId, className }: Props) => {
             <Title color="tenantText">
               <T value={project.data.attributes.title_multiloc} />
             </Title>
+            <Box id={`project-description-${project.data.id}`}>
+              {isSmallerThanTablet && (
+                <ProjectArchivedIndicator projectId={projectId} mb="20px" />
+              )}
 
-            {isSmallerThanTablet && (
-              <ProjectArchivedIndicator projectId={projectId} mb="20px" />
-            )}
-
-            {isSmallerThanTablet && (
-              <ProjectPreviewIndicator projectId={projectId} mb="20px" />
-            )}
-            <Box mb="24px">
-              <ReadMoreWrapper
-                fontSize="m"
-                contentId="description"
-                value={project.data.attributes.description_multiloc}
-              />
-            </Box>
-
-            {projectFiles && projectFiles.data.length > 0 && (
+              {isSmallerThanTablet && (
+                <ProjectPreviewIndicator projectId={projectId} mb="20px" />
+              )}
               <Box mb="24px">
-                <FileAttachments files={projectFiles.data} />
+                <ReadMoreWrapper
+                  fontSize="m"
+                  contentId="description"
+                  value={project.data.attributes.description_multiloc}
+                />
               </Box>
-            )}
+
+              {projectFiles && projectFiles.data.length > 0 && (
+                <Box mb="24px">
+                  <FileAttachments files={projectFiles.data} />
+                </Box>
+              )}
+            </Box>
           </Left>
           <Right>
             <ProjectInfoSideBar projectId={project.data.id} />

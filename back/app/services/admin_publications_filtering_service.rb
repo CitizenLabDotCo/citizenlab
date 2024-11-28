@@ -14,12 +14,6 @@ class AdminPublicationsFilteringService
 
   # NOTE: This service is very fragile and the ORDER of filters matters for the Front-End, do not change it.
 
-  add_filter('with_ids') do |scope, options|
-    next scope if options[:ids].blank?
-
-    scope.where(id: options[:ids])
-  end
-
   add_filter('only_projects') do |scope, options|
     next scope unless ['true', true, '1'].include? options[:only_projects]
 

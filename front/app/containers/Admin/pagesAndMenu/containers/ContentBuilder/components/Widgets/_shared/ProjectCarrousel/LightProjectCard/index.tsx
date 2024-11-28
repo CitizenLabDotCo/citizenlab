@@ -1,60 +1,25 @@
 import React from 'react';
 
-import {
-  Box,
-  Image,
-  Text,
-  stylingConsts,
-  Title,
-} from '@citizenlab/cl2-component-library';
+import { Box, Text, Title } from '@citizenlab/cl2-component-library';
 import { RouteType } from 'routes';
-import styled from 'styled-components';
 
 import usePhase from 'api/phases/usePhase';
 import useProjectImage from 'api/project_images/useProjectImage';
-import { CARD_IMAGE_ASPECT_RATIO } from 'api/project_images/useProjectImages';
 import { getProjectUrl } from 'api/projects/utils';
 import { MiniProjectData } from 'api/projects_mini/types';
 
 import useLocalize from 'hooks/useLocalize';
 
 import getCTAMessage from 'components/ProjectCard/getCTAMessage';
-import ImagePlaceholder from 'components/ProjectCard/ImagePlaceholder';
 
 import { useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { truncate } from 'utils/textUtils';
 
+import { CardContainer, CardImage } from '../../BaseCard';
 import { CARD_WIDTH } from '../constants';
 
 import TimeIndicator from './TimeIndicator';
-
-const CardContainer = styled(Box)`
-  &:hover {
-    h4 {
-      color: ${({ theme }) => theme.colors.tenantPrimary};
-      text-decoration: underline;
-    }
-
-    .project-image-container > * {
-      transform: scale(1.2);
-    }
-  }
-`;
-
-const ProjectImageContainer = styled.div`
-  width: 100%;
-  display: flex;
-  aspect-ratio: ${CARD_IMAGE_ASPECT_RATIO};
-  margin-right: 10px;
-  overflow: hidden;
-  position: relative;
-  border-radius: ${stylingConsts.borderRadius};
-
-  & > * {
-    transition: transform 0.3s;
-  }
-`;
 
 interface Props {
   project: MiniProjectData;
@@ -80,6 +45,7 @@ const LightProjectCard = ({ project, ml, mr, onKeyDown }: Props) => {
   const title = localize(project.attributes.title_multiloc);
   const imageVersions = image?.data.attributes.versions;
   const imageUrl = imageVersions?.large ?? imageVersions?.medium;
+  const imageAltText = localize(image?.data.attributes.alt_text_multiloc);
 
   const projectUrl: RouteType = getProjectUrl(project.attributes.slug);
 
@@ -94,23 +60,7 @@ const LightProjectCard = ({ project, ml, mr, onKeyDown }: Props) => {
       display="block"
       onKeyDown={onKeyDown}
     >
-      <Box>
-        <ProjectImageContainer className="project-image-container">
-          {imageUrl ? (
-            <Image
-              src={imageUrl}
-              alt=""
-              position="absolute"
-              width="100%"
-              height="100%"
-              top="0"
-              left="0"
-            />
-          ) : (
-            <ImagePlaceholder />
-          )}
-        </ProjectImageContainer>
-      </Box>
+      <CardImage imageUrl={imageUrl ?? undefined} alt={imageAltText} />
       <Title variant="h4" as="h3" mt="8px" mb="0px">
         {truncate(title, 50)}
       </Title>

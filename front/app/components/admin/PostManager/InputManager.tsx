@@ -5,7 +5,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { useSearchParams } from 'react-router-dom';
 
 import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
-import { IQueryParameters, Sort } from 'api/ideas/types';
+import { IIdeaQueryParameters, Sort } from 'api/ideas/types';
 import useIdeas from 'api/ideas/useIdeas';
 import { TPhases } from 'api/phases/types';
 import useProjectAllowedInputTopics from 'api/project_allowed_input_topics/useProjectAllowedInputTopics';
@@ -65,7 +65,7 @@ const InputManager = ({
   phaseId,
 }: Props) => {
   const type = projectId ? 'ProjectIdeas' : 'AllIdeas';
-  const [queryParameters, setQueryParameters] = useState<IQueryParameters>({
+  const [queryParameters, setQueryParameters] = useState<IIdeaQueryParameters>({
     'page[size]': 10,
     sort: 'new',
     projects: projectId ? [projectId] : undefined,

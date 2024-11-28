@@ -1,6 +1,10 @@
 import React from 'react';
 
-import { defaultCardStyle, media } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  defaultCardStyle,
+  media,
+} from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
 import styled from 'styled-components';
 
@@ -98,7 +102,7 @@ const PhaseDescription = ({ projectId, selectedPhaseId }: Props) => {
       {/* TODO: Fix this the next time the file is edited. */}
       {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
       {phase && descriptionHasContent && (
-        <>
+        <Box id={`phase-description-${selectedPhaseId}`}>
           <ReadMoreWrapper
             fontSize="base"
             contentId="phase-description"
@@ -110,7 +114,7 @@ const PhaseDescription = ({ projectId, selectedPhaseId }: Props) => {
           {!isNilOrError(phaseFiles) && !isEmpty(phaseFiles) && (
             <StyledFileAttachments files={phaseFiles.data} />
           )}
-        </>
+        </Box>
       )}
       {isActivePhase && (
         // TODO: Fix this the next time the file is edited.

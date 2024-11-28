@@ -171,6 +171,16 @@ describe ProjectsFinderService do
         .to match_array([followed_project, project_for_followed_topic])
     end
 
+    it 'includes projects in a Folder the user follows' do
+      project_in_followed_folder = create(:project)
+      folder = create(:project_folder, projects: [project_in_followed_folder])
+      project_in_followed_folder.admin_publication.update!(parent: folder.admin_publication)
+      create(:follower, followable: folder, user: user)
+
+      expect(service.new(Project.all, user).followed_by_user)
+        .to match_array([followed_project, project_in_followed_folder])
+    end
+
     it 'orders the projects by the creation date of follows (most recent first)' do
       project2 = create(:project)
       project3 = create(:project)
@@ -231,29 +241,38 @@ describe ProjectsFinderService do
         expect(result).to eq [finished_project1]
       end
 
-      it 'includes unfinished projects with a last phase that contains a report' do
+      it 'includes unfinished projects with a last phase that contains a visible report' do
         unfinished_project2 = create(:project)
         create(:phase, project: unfinished_project2, start_at: 2.days.ago, end_at: 2.days.from_now)
-        create(:report, phase: unfinished_project2.phases.last)
+        create(:report, phase: unfinished_project2.phases.last, visible: true)
 
         expect(Project.count).to eq 3
         expect(result).to match_array([finished_project1, unfinished_project2])
       end
 
-      it 'excludes unfinished projects with a phase containing a report that is not the final phase' do
+      it 'excludes unfinished projects with a last phase that contains an invisible report' do
         unfinished_project2 = create(:project)
-        phase1 = create(:phase, project: unfinished_project2, start_at: 3.days.ago, end_at: 2.days.ago)
-        _phase2 = create(:phase, project: unfinished_project2, start_at: 1.day.ago, end_at: 1.day.from_now)
-        create(:report, phase: phase1)
+        create(:phase, project: unfinished_project2, start_at: 2.days.ago, end_at: 2.days.from_now)
+        create(:report, phase: unfinished_project2.phases.last, visible: false)
 
         expect(Project.count).to eq 3
         expect(result).to match_array([finished_project1])
       end
 
-      it 'inludes projects with an endless last phase & report in last phase' do
+      it 'excludes unfinished projects with a phase containing a visible report that is not the final phase' do
+        unfinished_project2 = create(:project)
+        phase1 = create(:phase, project: unfinished_project2, start_at: 3.days.ago, end_at: 2.days.ago)
+        _phase2 = create(:phase, project: unfinished_project2, start_at: 1.day.ago, end_at: 1.day.from_now)
+        create(:report, phase: phase1, visible: true)
+
+        expect(Project.count).to eq 3
+        expect(result).to match_array([finished_project1])
+      end
+
+      it 'inludes projects with an endless last phase & visible report in last phase' do
         endless_project = create(:project)
         create(:phase, project: endless_project, start_at: 2.days.ago, end_at: nil)
-        create(:report, phase: endless_project.phases.last)
+        create(:report, phase: endless_project.phases.last, visible: true)
 
         expect(Project.count).to eq 3
         expect(result).to match_array([endless_project, finished_project1])
@@ -277,7 +296,7 @@ describe ProjectsFinderService do
       it 'lists projects ordered by last phase end_at DESC' do
         endless_project = create(:project)
         create(:phase, project: endless_project, start_at: 2.days.ago, end_at: nil)
-        create(:report, phase: endless_project.phases.last)
+        create(:report, phase: endless_project.phases.last, visible: true)
 
         finished_project2 = create(:project_with_two_past_ideation_phases)
         finished_project2.phases[1].update!(end_at: 5.days.ago)
@@ -346,7 +365,7 @@ describe ProjectsFinderService do
       # Should include `finished_project1` and:
       let!(:unfinished_project1) { create(:project) }
       let!(:phase) { create(:phase, project: unfinished_project1, start_at: 2.days.ago, end_at: 2.days.from_now) }
-      let!(:_report1) { create(:report, phase: phase) }
+      let!(:_report1) { create(:report, phase: phase, visible: true) }
 
       let!(:archived_project) do
         create(:project_with_past_information_phase, admin_publication_attributes: { publication_status: 'archived' })
@@ -371,7 +390,7 @@ describe ProjectsFinderService do
       it 'lists projects ordered by last phase end_at DESC (Nulls first)' do
         endless_project = create(:project)
         create(:phase, project: endless_project, start_at: 2.days.ago, end_at: nil)
-        create(:report, phase: endless_project.phases.last)
+        create(:report, phase: endless_project.phases.last, visible: true)
 
         finished_project1.phases[1].update!(end_at: 3.days.ago)
         archived_project.phases[0].update!(end_at: 5.days.ago)

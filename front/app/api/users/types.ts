@@ -136,4 +136,6 @@ export interface IQueryParameters {
   // Pass folder id to exclude all users who can moderate
   // the folder
   is_not_folder_moderator?: string;
+  // Admin users that can approve project review requests
+  project_reviewer?: boolean;
 }

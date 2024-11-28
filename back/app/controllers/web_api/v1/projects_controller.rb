@@ -62,7 +62,7 @@ class WebApi::V1::ProjectsController < ApplicationController
     projects = ProjectsFinderService.new(projects, current_user, params).finished_or_archived
 
     @projects = paginate projects
-    @projects = @projects.includes(:project_images, :phases)
+    @projects = @projects.includes(:project_images, phases: [:report, { permissions: [:groups] }])
 
     authorize @projects, :index_finished_or_archived?
 
@@ -71,7 +71,7 @@ class WebApi::V1::ProjectsController < ApplicationController
 
   # For use with 'For you' homepage widget. Uses ProjectMiniSerializer.
   # Returns all published projects that are visible to user
-  # AND (are followed by user OR relate to an idea, area or topic followed by user),
+  # AND (are followed by user OR relate to an idea, area, topic or folder followed by user),
   # ordered by the follow created_at (most recent first).
   def index_for_followed_item
     projects = policy_scope(Project)
@@ -79,7 +79,7 @@ class WebApi::V1::ProjectsController < ApplicationController
     projects = ProjectsFinderService.new(projects, current_user).followed_by_user
 
     @projects = paginate projects
-    @projects = @projects.includes(:project_images, :admin_publication, phases: %i[custom_form report permissions])
+    @projects = @projects.includes(:project_images, phases: [:report, { permissions: [:groups] }])
 
     authorize @projects, :index_for_followed_item?
 
@@ -96,7 +96,7 @@ class WebApi::V1::ProjectsController < ApplicationController
     projects = projects_and_descriptors[:projects]
 
     @projects = paginate projects
-    @projects = @projects.includes(:project_images, :phases)
+    @projects = @projects.includes(:project_images, phases: [:report, { permissions: [:groups] }])
 
     authorize @projects, :index_with_active_participatory_phase?
 
@@ -119,7 +119,7 @@ class WebApi::V1::ProjectsController < ApplicationController
       .order(created_at: :desc)
 
     @projects = paginate projects
-    @projects = @projects.includes(:project_images, :phases)
+    @projects = @projects.includes(:project_images, phases: [:report, { permissions: [:groups] }])
 
     authorize @projects, :index_for_areas?
 
@@ -137,7 +137,7 @@ class WebApi::V1::ProjectsController < ApplicationController
       .order(created_at: :desc)
 
     @projects = paginate projects
-    @projects = @projects.includes(:project_images, :phases)
+    @projects = @projects.includes(:project_images, phases: [:report, { permissions: [:groups] }])
 
     authorize @projects, :index_for_topics?
 
