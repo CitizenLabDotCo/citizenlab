@@ -58,10 +58,16 @@ const ReviewFlow = ({ project }: { project: IProjectData }) => {
     });
   };
 
-  // Only display the component if the project has not been published yet
-  if (project.attributes.first_published_at) {
+  // TODO: Replace with the commented line once first_published_at is available
+
+  if (project.attributes.publication_status !== 'draft') {
     return null;
   }
+
+  // Only display the component if the project has not been published yet
+  // if (project.attributes.first_published_at) {
+  //   return null;
+  // }
 
   const approvalPending =
     projectReview && projectReview.data.attributes.approved === false;
