@@ -4,7 +4,13 @@ import { colors } from '@citizenlab/cl2-component-library';
 import { lighten } from 'polished';
 import styled from 'styled-components';
 
+import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
+
+import { Props as InputFiltersProps } from 'components/IdeaCards/IdeasWithFiltersSidebar/InputFilters';
+import messages from 'components/IdeaCards/messages';
 import Button from 'components/UI/Button';
+
+import { FormattedMessage } from 'utils/cl-intl';
 
 const Container = styled.div`
   height: ${(props) => props.theme.mobileTopBarHeight}px;
@@ -17,16 +23,25 @@ const Container = styled.div`
 `;
 
 interface Props {
-  buttonText: string | JSX.Element;
   onClick: (event: FormEvent) => void;
   className?: string;
+  selectedIdeaFilters: InputFiltersProps['selectedIdeaFilters'];
 }
 
-const BottomBar = memo<Props>(({ buttonText, onClick, className }) => {
+const BottomBar = memo<Props>(({ onClick, className, selectedIdeaFilters }) => {
+  const { data: ideasFilterCounts } = useIdeasFilterCounts(selectedIdeaFilters);
+
+  if (!ideasFilterCounts) return null;
+
   return (
     <Container className={className}>
       <Button onClick={onClick} fullWidth={true}>
-        {buttonText}
+        <FormattedMessage
+          {...messages.showXResults}
+          values={{
+            ideasCount: ideasFilterCounts.data.attributes.total,
+          }}
+        />
       </Button>
     </Container>
   );

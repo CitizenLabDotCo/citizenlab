@@ -88,10 +88,6 @@ export default defineMessages({
     id: 'app.containers.IdeaCards.filter',
     defaultMessage: 'Filter',
   },
-  showResults: {
-    id: 'app.containers.IdeaCards.showResults',
-    defaultMessage: 'Show results',
-  },
   showXResults: {
     id: 'app.containers.IdeaCards.showXResults',
     defaultMessage:
