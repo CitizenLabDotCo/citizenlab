@@ -2013,6 +2013,7 @@
   "app.containers.AdminPage.SettingsPage.addTopicButton": "Додај ознаку",
   "app.containers.AdminPage.SettingsPage.anonymousNameScheme_animal2": "Animal - eg Elephant Cat",
   "app.containers.AdminPage.SettingsPage.anonymousNameScheme_user": "User - eg User 123456",
+  "app.containers.AdminPage.SettingsPage.approvalDescription": "Select which admins will receive notifications to approve projects. Folder Managers are by default approvers for all projects within their folders.",
   "app.containers.AdminPage.SettingsPage.approvalSave": "Save",
   "app.containers.AdminPage.SettingsPage.approvalTitle": "Project approval settings",
   "app.containers.AdminPage.SettingsPage.areaDeletionConfirmation": "Да ли сте сигурни да желите да избришете ову област?",

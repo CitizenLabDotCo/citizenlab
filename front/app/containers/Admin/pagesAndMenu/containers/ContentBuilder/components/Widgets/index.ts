@@ -11,9 +11,6 @@ import IframeMultiloc, {
 import ImageMultiloc, {
   imageMultilocTitle,
 } from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
-import TextMultiloc, {
-  textMultilocTitle,
-} from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
 import ThreeColumn, {
   threeColumnTitle,
 } from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
@@ -42,6 +39,7 @@ import Projects, { projectsTitle } from './Projects';
 import Published, { publishedTitle } from './Published';
 import Selection, { selectionTitle } from './Selection';
 import Spotlight, { spotlightTitle } from './Spotlight';
+import TextMultiloc, { textMultilocTitle } from './TextMultiloc';
 
 export const WIDGETS = {
   // Shared widgets
@@ -49,7 +47,6 @@ export const WIDGETS = {
   ButtonMultiloc,
   IframeMultiloc,
   ImageMultiloc,
-  TextMultiloc,
   ThreeColumn,
   TwoColumn,
   WhiteSpace,
@@ -65,6 +62,7 @@ export const WIDGETS = {
   Published,
   Selection,
   Spotlight,
+  TextMultiloc,
 
   // RENAMED (TODO rename in migration)
   Highlight: CallToAction,
@@ -81,7 +79,6 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   ButtonMultiloc: buttonMultilocTitle,
   IframeMultiloc: iframeTitle,
   ImageMultiloc: imageMultilocTitle,
-  TextMultiloc: textMultilocTitle,
   ThreeColumn: threeColumnTitle,
   TwoColumn: twoColumnTitle,
   WhiteSpace: whiteSpaceTitle,
@@ -97,6 +94,7 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   Published: publishedTitle,
   Selection: selectionTitle,
   Spotlight: spotlightTitle,
+  TextMultiloc: textMultilocTitle,
 
   // RENAMED
   Highlight: callToActionTitle,

@@ -2013,6 +2013,7 @@
   "app.containers.AdminPage.SettingsPage.addTopicButton": "Ychwanegu tag",
   "app.containers.AdminPage.SettingsPage.anonymousNameScheme_animal2": "Anifail - ee Cath Eliffant",
   "app.containers.AdminPage.SettingsPage.anonymousNameScheme_user": "Defnyddiwr - ee Defnyddiwr 123456",
+  "app.containers.AdminPage.SettingsPage.approvalDescription": "Dewiswch pa weinyddwyr fydd yn derbyn hysbysiadau i gymeradwyo prosiectau. Mae Rheolwyr Ffolder yn gymeradwywyr rhagosodedig ar gyfer pob prosiect yn eu ffolderi.",
   "app.containers.AdminPage.SettingsPage.approvalSave": "Arbed",
   "app.containers.AdminPage.SettingsPage.approvalTitle": "Gosodiadau cymeradwyo prosiect",
   "app.containers.AdminPage.SettingsPage.areaDeletionConfirmation": "Ydych chi'n siŵr eich bod am ddileu'r ardal hon?",

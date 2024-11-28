@@ -1068,6 +1068,7 @@
   "app.containers.Comments.editComment": "Golygu",
   "app.containers.Comments.guidelinesLinkText": "ein canllawiau cymunedol",
   "app.containers.Comments.ideaCommentBodyPlaceholder": "Ysgrifennwch eich sylw yma",
+  "app.containers.Comments.internalCommentingNudgeMessage": "Nid yw gwneud sylwadau mewnol wedi'i gynnwys yn eich trwydded gyfredol. Cysylltwch â'ch Rheolwr GovSuccess i ddysgu mwy amdano.",
   "app.containers.Comments.internalConversation": "Sgwrs fewnol",
   "app.containers.Comments.loadMoreComments": "Llwytho mwy o sylwadau",
   "app.containers.Comments.loadingComments": "Wrthi'n llwytho sylwadau...",
