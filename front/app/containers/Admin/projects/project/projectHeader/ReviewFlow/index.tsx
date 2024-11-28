@@ -82,7 +82,7 @@ const ReviewFlow = ({ project }: { project: IProjectData }) => {
   const showProjectApprovalButton = approvalPending && canReview;
 
   return (
-    <Box position="relative">
+    <Box>
       {showPublishButton && (
         <Tooltip
           content={formatMessage(
@@ -107,20 +107,22 @@ const ReviewFlow = ({ project }: { project: IProjectData }) => {
       )}
 
       {showReviewRequestButton && (
-        <Button
-          buttonStyle="admin-dark"
-          icon="send"
-          onClick={() => setIsProjectReviewDropdownOpened(true)}
-          processing={isProjectReviewLoading}
-          size="s"
-          padding="4px 8px"
-          iconSize="20px"
-          disabled={approvalPending}
-        >
-          {approvalPending
-            ? formatMessage(messages.pendingApproval)
-            : formatMessage(messages.requestApproval)}
-        </Button>
+        <Box position="relative">
+          <Button
+            buttonStyle="admin-dark"
+            icon="send"
+            onClick={() => setIsProjectReviewDropdownOpened(true)}
+            processing={isProjectReviewLoading}
+            size="s"
+            padding="4px 8px"
+            iconSize="20px"
+            disabled={approvalPending}
+          >
+            {approvalPending
+              ? formatMessage(messages.pendingApproval)
+              : formatMessage(messages.requestApproval)}
+          </Button>
+        </Box>
       )}
       <ReviewRequest
         isOpen={isProjectReviewDropdownOpened}
