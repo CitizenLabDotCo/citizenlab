@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 
 import {
   media,
@@ -23,10 +23,9 @@ import useLocale from 'hooks/useLocale';
 import { QueryParameters } from 'containers/IdeasIndexPage';
 
 import ViewButtons from 'components/PostCardsComponents/ViewButtons';
-import Button from 'components/UI/Button';
 
 import { trackEventByName } from 'utils/analytics';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { isNilOrError } from 'utils/helperUtils';
 import { getInputTermMessage } from 'utils/i18n';
@@ -36,8 +35,8 @@ import messages from '../messages';
 import IdeasView from '../shared/IdeasView';
 import tracks from '../tracks';
 
-import ContentRight from './ContentRight';
 import ButtonWithFiltersModal from './ButtonWithFiltersModal';
+import ContentRight from './ContentRight';
 
 export const gapWidth = 35;
 
@@ -132,8 +131,6 @@ const IdeasWithFiltersSidebar = ({
     updateSearchParams({ view });
   }, []);
 
-  const [filtersModalOpened, setFiltersModalOpened] = useState(false);
-
   const loadIdeaMarkers = locationEnabled && selectedView === 'map';
   const { data: ideaMarkers } = useIdeaMarkers(
     {
@@ -143,10 +140,6 @@ const IdeasWithFiltersSidebar = ({
     },
     loadIdeaMarkers
   );
-
-  const openFiltersModal = useCallback(() => {
-    setFiltersModalOpened(true);
-  }, []);
 
   const handleSearchOnChange = useCallback(
     (search: string) => {
@@ -189,10 +182,6 @@ const IdeasWithFiltersSidebar = ({
       topics: undefined,
     });
   }, [onUpdateQuery]);
-
-  const closeModal = useCallback(() => {
-    setFiltersModalOpened(false);
-  }, []);
 
   const filterColumnWidth = windowWidth && windowWidth < 1400 ? 340 : 352;
   const filtersActive = !!(
@@ -245,33 +234,17 @@ const IdeasWithFiltersSidebar = ({
 
       {list && (
         <>
-          {!biggerThanLargeTablet && (
-            <>
-              <ButtonWithFiltersModal
-                opened={filtersModalOpened}
-                selectedIdeaFilters={ideaQueryParameters}
-                filtersActive={filtersActive}
-                ideasFilterCounts={ideasFilterCounts}
-                // TODO: Fix this the next time the file is edited.
-                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-                numberOfSearchResults={list ? list.length : 0}
-                onClearFilters={clearFilters}
-                onSearch={handleSearchOnChange}
-                onChangeStatus={handleStatusOnChange}
-                onChangeTopics={handleTopicsOnChange}
-                onClose={closeModal}
-                handleSortOnChange={handleSortOnChange}
-              />
-              <Button
-                buttonStyle="secondary-outlined"
-                onClick={openFiltersModal}
-                icon="filter"
-                text={<FormattedMessage {...messages.filter} />}
-                mb="12px"
-                mt="4px"
-              />
-            </>
-          )}
+          <ButtonWithFiltersModal
+            selectedIdeaFilters={ideaQueryParameters}
+            filtersActive={filtersActive}
+            ideasFilterCounts={ideasFilterCounts}
+            numberOfSearchResults={list.length}
+            onClearFilters={clearFilters}
+            onSearch={handleSearchOnChange}
+            onChangeStatus={handleStatusOnChange}
+            onChangeTopics={handleTopicsOnChange}
+            handleSortOnChange={handleSortOnChange}
+          />
           <Box display={selectedView === 'map' ? 'block' : 'flex'}>
             <ContentLeft>
               <IdeasView
