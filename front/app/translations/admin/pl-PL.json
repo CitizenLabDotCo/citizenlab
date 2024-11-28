@@ -2013,6 +2013,7 @@
   "app.containers.AdminPage.SettingsPage.addTopicButton": "Dodaj temat",
   "app.containers.AdminPage.SettingsPage.anonymousNameScheme_animal2": "Zwierzę - np. słoń, kot",
   "app.containers.AdminPage.SettingsPage.anonymousNameScheme_user": "Użytkownik - np. Użytkownik 123456",
+  "app.containers.AdminPage.SettingsPage.approvalDescription": "Wybierz, którzy administratorzy będą otrzymywać powiadomienia o zatwierdzeniu projektów. Menedżerowie folderów domyślnie zatwierdzają wszystkie projekty w swoich folderach.",
   "app.containers.AdminPage.SettingsPage.approvalSave": "Oszczędzaj",
   "app.containers.AdminPage.SettingsPage.approvalTitle": "Ustawienia zatwierdzania projektu",
   "app.containers.AdminPage.SettingsPage.areaDeletionConfirmation": "Jesteś pewien, że chcesz usunąć ten obszar?",
