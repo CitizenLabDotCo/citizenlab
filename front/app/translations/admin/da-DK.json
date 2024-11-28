@@ -2131,7 +2131,6 @@
   "app.containers.AdminPage.SettingsPage.subtitleRegistration": "Angiv, hvilke oplysninger man bliver bedt om at opgive, når man tilmelder sig.",
   "app.containers.AdminPage.SettingsPage.subtitleTerminology": "Terminologi",
   "app.containers.AdminPage.SettingsPage.successfulUpdateSettings": "Indstillinger er opdateret med succes.",
-  "app.containers.AdminPage.SettingsPage.tabApproval": "Godkendelse",
   "app.containers.AdminPage.SettingsPage.tabAreas1": "Områder",
   "app.containers.AdminPage.SettingsPage.tabBranding": "Branding",
   "app.containers.AdminPage.SettingsPage.tabInputStatuses": "Status for input",

@@ -2131,7 +2131,6 @@
   "app.containers.AdminPage.SettingsPage.subtitleRegistration": "Наведите које информације се од људи тражи да пруже приликом регистрације.",
   "app.containers.AdminPage.SettingsPage.subtitleTerminology": "Терминологија",
   "app.containers.AdminPage.SettingsPage.successfulUpdateSettings": "Подешавања су успешно ажурирана.",
-  "app.containers.AdminPage.SettingsPage.tabApproval": "Approval",
   "app.containers.AdminPage.SettingsPage.tabAreas1": "Подручја",
   "app.containers.AdminPage.SettingsPage.tabBranding": "Брендирање",
   "app.containers.AdminPage.SettingsPage.tabInputStatuses": "Статуси уноса",
