@@ -2131,7 +2131,6 @@
   "app.containers.AdminPage.SettingsPage.subtitleRegistration": "Legen Sie fest, welche Informationen Nutzer*innen bei der Registrierung angeben müssen.",
   "app.containers.AdminPage.SettingsPage.subtitleTerminology": "Terminologie",
   "app.containers.AdminPage.SettingsPage.successfulUpdateSettings": "Einstellungen erfolgreich gespeichert",
-  "app.containers.AdminPage.SettingsPage.tabApproval": "Genehmigung",
   "app.containers.AdminPage.SettingsPage.tabAreas1": "Gebiete",
   "app.containers.AdminPage.SettingsPage.tabBranding": "Design",
   "app.containers.AdminPage.SettingsPage.tabInputStatuses": "Beitragsstatus",

@@ -2131,7 +2131,6 @@
   "app.containers.AdminPage.SettingsPage.subtitleRegistration": "Nodwch pa wybodaeth y gofynnir i bobl ei darparu wrth gofrestru.",
   "app.containers.AdminPage.SettingsPage.subtitleTerminology": "Terminoleg",
   "app.containers.AdminPage.SettingsPage.successfulUpdateSettings": "Diweddarwyd y gosodiadau yn llwyddiannus.",
-  "app.containers.AdminPage.SettingsPage.tabApproval": "Cymmeradwyaeth",
   "app.containers.AdminPage.SettingsPage.tabAreas1": "Ardaloedd",
   "app.containers.AdminPage.SettingsPage.tabBranding": "Brandio",
   "app.containers.AdminPage.SettingsPage.tabInputStatuses": "Statws mewnbwn",

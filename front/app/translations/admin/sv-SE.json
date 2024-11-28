@@ -2131,7 +2131,6 @@
   "app.containers.AdminPage.SettingsPage.subtitleRegistration": "Ange vilken information som personer ombeds lämna när de registrerar sig.",
   "app.containers.AdminPage.SettingsPage.subtitleTerminology": "Terminologi",
   "app.containers.AdminPage.SettingsPage.successfulUpdateSettings": "Inställningarna har uppdaterats framgångsrikt.",
-  "app.containers.AdminPage.SettingsPage.tabApproval": "Godkännande",
   "app.containers.AdminPage.SettingsPage.tabAreas1": "Områden",
   "app.containers.AdminPage.SettingsPage.tabBranding": "Varumärkesprofilering",
   "app.containers.AdminPage.SettingsPage.tabInputStatuses": "Status för inmatning",

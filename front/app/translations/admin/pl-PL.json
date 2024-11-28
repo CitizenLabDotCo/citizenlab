@@ -2131,7 +2131,6 @@
   "app.containers.AdminPage.SettingsPage.subtitleRegistration": "Sprecyzuj informacje, o jakie są proszone osoby przy rejestracji.",
   "app.containers.AdminPage.SettingsPage.subtitleTerminology": "Terminologia",
   "app.containers.AdminPage.SettingsPage.successfulUpdateSettings": "Ustawienia zostały pomyślnie zaktualizowane.",
-  "app.containers.AdminPage.SettingsPage.tabApproval": "Zatwierdzenie",
   "app.containers.AdminPage.SettingsPage.tabAreas1": "Obszary",
   "app.containers.AdminPage.SettingsPage.tabBranding": "Branding",
   "app.containers.AdminPage.SettingsPage.tabInputStatuses": "Statusy wejścia",

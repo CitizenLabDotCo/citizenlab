@@ -2131,7 +2131,6 @@
   "app.containers.AdminPage.SettingsPage.subtitleRegistration": "Spesifiser hvilken informasjon folk blir bedt om å oppgi når de registrerer seg.",
   "app.containers.AdminPage.SettingsPage.subtitleTerminology": "Terminologi",
   "app.containers.AdminPage.SettingsPage.successfulUpdateSettings": "Innstillingene er oppdatert.",
-  "app.containers.AdminPage.SettingsPage.tabApproval": "Godkjenning",
   "app.containers.AdminPage.SettingsPage.tabAreas1": "Områder",
   "app.containers.AdminPage.SettingsPage.tabBranding": "Merkevarebygging",
   "app.containers.AdminPage.SettingsPage.tabInputStatuses": "Inngangsstatus",
