@@ -1,187 +1,358 @@
 hu:
+  locales:
+    en: angol
+    ar-MA: arab (Marokkó)
+    ar-SA: arab (Szaúd-Arábia)
+    ca-ES: katalán
+    cy-GB: walesi
+    da-DK: dán
+    de-DE: német
+    el-GR: görög
+    en-CA: angol (Kanada)
+    en-GB: angol (UK)
+    en-IE: angol (Írország)
+    es-CL: spanyol (Chile)
+    es-ES: spanyol (Spanyolország)
+    fi-FI: finn
+    fr-BE: francia (Belgium)
+    fr-FR: francia
+    hr-HR: horvát
+    hu-HU: magyar
+    it-IT: olasz
+    kl-GL: grönlandi
+    lb-LU: luxemburgi
+    lv-LV: lett
+    mi: maori
+    nb-NO: norvég (bokmål)
+    nl-BE: holland (Belgium)
+    nl-NL: holland
+    pl-PL: lengyel
+    pt-BR: portugál (Brazília)
+    ro-RO: román
+    sr-Latn: szerb (latin)
+    sr-SP: szerb (cirill)
+    sv-SE: svéd
+    tr-TR: török
   symbols:
-    outside: somewhere else
+    outside: valahol máshol
   idea_statuses:
-    proposed: proposed
-    proposed_description: This idea has been proposed to the city
-    viewed: viewed
-    viewed_description: This idea has been seen by someone from the city
-    under_consideration: under consideration
-    under_consideration_description: This idea has been taken into consideration by the city
-    accepted: accepted
-    accepted_description: This idea has been accepted and will be implemented by the city
-    implemented: implemented
-    implemented_description: This idea has been implemented by the city
-    rejected: rejected
-    rejected_description: This idea has been rejected
+    prescreening: szűrés
+    prescreening_description: Ezt a bemenetet a projektvezető jelenleg felülvizsgálja, és még nem látható a nyilvánosság számára.
+    proposed: javasolta
+    proposed_description: Ezt az észrevételt benyújtották, és most nyilvános támogatásra várják. Gyűjtsön szavazatokat, hogy segítsen továbblépni a következő szakaszba.
+    viewed: megtekintve
+    viewed_description: Ezt a bemenetet a projektmenedzser látta.
+    under_consideration: mérlegelés alatt
+    under_consideration_description: Ezt a bemenetet a projektmenedzser figyelembe vette.
+    accepted: elfogadott
+    accepted_description: Ezt az inputot a projektmenedzser elfogadta és végrehajtja.
+    implemented: végrehajtva
+    implemented_description: Ezt a bemenetet a projektmenedzser valósította meg.
+    rejected: elutasítva
+    rejected_description: Ezt a bevitelt elutasították.
+    expired: lejárt
+    expired_description: Ez a bemenet már nem aktív, és időkorlát vagy inaktivitás miatt bezárták.
+    threshold_reached: elérte a küszöböt
+    threshold_reached_description: Ez a bemenet elérte a szükséges támogatási küszöböt, és most megfontoljuk a további lépések érdekében.
+    answered: válaszolta
+    answered_description: A projektvezető hivatalos visszajelzést tett közzé erről a bemenetről.
+    ineligible: nem jogosult
+    ineligible_description: Ezt a bemenetet felülvizsgálták, és sajnos elutasították. További részleteket tartalmazó hivatalos frissítés érkezett.
   initiative_statuses:
-    proposed: proposed
-    proposed_description: proposed
-    expired: expired
-    expired_description: expired
-    threshold_reached: threshold reached
-    threshold_reached_description: threshold reached
-    answered: answered
-    answered_description: answered
-    ineligible: ineligible
-    ineligible_description: ineligible
+    review_pending: felülvizsgálat függőben
+    review_pending_description: felülvizsgálat függőben
+    changes_requested: változtatásokat kértek
+    changes_requested_description: változtatásokat kértek
+    proposed: javasolta
+    proposed_description: javasolta
+    expired: lejárt
+    expired_description: lejárt
+    threshold_reached: elérte a küszöböt
+    threshold_reached_description: elérte a küszöböt
+    answered: válaszolta
+    answered_description: válaszolta
+    ineligible: nem jogosult
+    ineligible_description: nem jogosult
   topics:
-    nature: Nature and biodiversity
-    nature_description: Nature and biodiversity
-    waste: Cleanliness and waste
-    waste_description: Cleanliness and waste
-    sustainability: Sustainable development
-    sustainability_description: Sustainable development
-    mobility: Mobility
-    mobility_description: Mobility
-    technology: Energy and technology
-    technology_description: Energy and technology
-    economy: Work, economy and tourism
-    economy_description: Work, economy and tourism
-    housing: Housing
-    housing_description: Housing
-    public_space: Public spaces and buildings
-    public_space_description: Public spaces and buildings
-    safety: Safety
-    safety_description: Safety
-    education: Education and youth
-    education_description: Education and youth
-    culture: Culture, sports and events
-    culture_description: Culture, sports and events
-    health: Health and welfare
-    health_description: Health and welfare
-    inclusion: Social inclusion
-    inclusion_description: Social inclusion
-    community: Community development
-    community_description: Community development
-    services: Public services
-    services_description: Public services
-    other: Other
-    other_description: Other
+    nature: Természet és biodiverzitás
+    nature_description: Természet és biodiverzitás
+    waste: Tisztaság és pazarlás
+    waste_description: Tisztaság és pazarlás
+    sustainability: Fenntartható fejlődés
+    sustainability_description: Fenntartható fejlődés
+    mobility: Mobilitás
+    mobility_description: Mobilitás
+    technology: Energia és technológia
+    technology_description: Energia és technológia
+    economy: Munka, gazdaság és turizmus
+    economy_description: Munka, gazdaság és turizmus
+    housing: Ház
+    housing_description: Ház
+    public_space: Közterületek és épületek
+    public_space_description: Közterületek és épületek
+    safety: Biztonság
+    safety_description: Biztonság
+    education: Oktatás és ifjúság
+    education_description: Oktatás és ifjúság
+    culture: Kultúra, sport és rendezvények
+    culture_description: Kultúra, sport és rendezvények
+    health: Egészség és jólét
+    health_description: Egészség és jólét
+    inclusion: Társadalmi befogadás
+    inclusion_description: Társadalmi befogadás
+    community: Közösségfejlesztés
+    community_description: Közösségfejlesztés
+    services: Közszolgáltatások
+    services_description: Közszolgáltatások
+    other: Más
+    other_description: Más
   static_pages:
-    terms_and_conditions_title: Terms & conditions
+    terms_and_conditions_title: Feltételek
     terms_and_conditions_body: >
-      <p>These terms & conditions outline the rules and guidelines of contributing to the platform and are meant to help ensure a constructive dialogue.</p> <p>Your ideas to further improve the platform are welcome and can be sent to support@govocal.com.</p> <h2>Who can participate?</h2> <p>Anyone is able to view public projects via the platform. If you’d like to contribute content (e.g., submit input or vote), you will need to register and create an account. You can register using your e-mail address; for some platforms, it may also be possible to sign in using an existing Facebook or Google account. If you use either of these services, your name, email address and profile photo will be shared with and added to your platform account.</p> <p>Please note that the creation of your account does not give you ownership. Platform administrators can refuse, suspend or delete accounts for reasons such as not adhering to the terms and conditions outlined on this page.</p> <p>The general conditions for your account are the following: </p> <ul> <li> <strong>You may create one account</strong> <p>An individual may not create and maintain multiple accounts. The account details you provide must be accurate and this account cannot be transferred to someone else without permission from a platform administrator. </p> </li> <li> <strong>Your account cannot be used for commercial promotion</strong> <p>An account may not be used for the sole purpose of advertising, marketing a product or service, etc.</p> </li> <li> <strong>You are responsible for keeping your account information secure and confidential</strong> <p>You are the only person who should use your account and have access to your account’s password and login details. To improve your account security, we advise using a password with a combination of numbers, lowercase letters and uppercase letters. We are not responsible for any loss or damage incurred to your account and cannot be held responsible for its theft (e.g., via phishing). Note that we will never ask you for your log-in details such as your password. </p>  <h2>Your activity on the platform</h2> <p>To ensure safe and productive participation, there are some restrictions on the type of content that may be published on this platform. Any content you post on the platform must be free of:</p> <ul> <li> <strong>Private data</strong> <p>Confidential data and personal information about others, such as telephone numbers and addresses may not be posted without their express authorization and consent.  </p> <li><strong>Spam / malware / phishing / viruses / worms / Trojans</strong> <p>Malicious content or links that are meant violate others’ privacy or to damage or disrupt others’ browsers or computers.</p> </li> <li> <strong>Threats, insults and other inappropriate content </strong> <p>Personal attacks and insults, threatening behavior or language, discriminatory comments, profanity and other offensive language.</p> </li> <li><strong>Advertising and commercial activity</strong> <p>Content posted with the sole purpose of advertising a commercial service or product.</p> </li> <li> <strong>Copyrighted material</strong> <p>Content that infringes upon intellectual property rights (e.g., copyrighted images).</p> </li> <li> <strong>Illegal activities</strong> <p>Content that in any way promotes illegal activities.</li></p> </ul> <p>Submissions and other content that includes any of the above may be edited, deleted or otherwise prevented from being posted, and the account may be temporarily blocked or permanently deleted. New or additional accounts created to avoid temporary or permanent suspension may also be monitored and deleted.</p> <h2>Applicable laws</h2> <p>The use of an account may not infringe upon applicable laws. This includes any violation of privacy legislation, intellectual property rights, the criminal code, etc.</p> <p>We cannot be held liable in any way for content posted on the platform that does not adhere to the above rules and laws. Violations can be reported to support@govocal.com and may result in the relevant messages being deleted and/or the underlying account being suspended or permanently revoked.</p> <p>It is possible that content posted on the platform can contain harmful files or links. By downloading files or accessing hyperlinks via the platform, you assume the risk and responsibility for any damage that may incur.</p> <h2>Property rights</h2> <p>This platform is protected by intellectual property rights related to its content, source code, databases, etc. Any original content that you post on the platform may be visible to the public and falls under the Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0) Public License, which allows your content to be shared or adapted with attribution. You may not otherwise reproduce, distribute, modify or transmit the platform and any of its contents that do not fall under the public domain without permission.</p>
-    privacy_policy_title: Privacy Policy
+      <p>These terms & conditions outline the rules and guidelines of contributing to the platform and are meant to help ensure a constructive dialogue.</p> <p>Your ideas to further improve the platform are welcome and can be sent to support@govocal.com.</p> <h2>Who can participate?</h2> <p>Anyone is able to view public projects via the platform. If you’d like to contribute content (e.g., submit input or react), you will need to register and create an account. You can register using your e-mail address; for some platforms, it may also be possible to sign in using an existing Facebook or Google account. If you use either of these services, your name, email address and profile photo will be shared with and added to your platform account.</p> <p>Please note that the creation of your account does not give you ownership. Platform administrators can refuse, suspend or delete accounts for reasons such as not adhering to the terms and conditions outlined on this page.</p> <p>The general conditions for your account are the following: </p> <ul> <li> <strong>You may create one account</strong> <p>An individual may not create and maintain multiple accounts. The account details you provide must be accurate and this account cannot be transferred to someone else without permission from a platform administrator. </p> </li> <li> <strong>Your account cannot be used for commercial promotion</strong> <p>An account may not be used for the sole purpose of advertising, marketing a product or service, etc.</p> </li> <li> <strong>You are responsible for keeping your account information secure and confidential</strong> <p>You are the only person who should use your account and have access to your account’s password and login details. To improve your account security, we advise using a password with a combination of numbers, lowercase letters and uppercase letters. We are not responsible for any loss or damage incurred to your account and cannot be held responsible for its theft (e.g., via phishing). Note that we will never ask you for your log-in details such as your password. </p>  <h2>Your activity on the platform</h2> <p>To ensure safe and productive participation, there are some restrictions on the type of content that may be published on this platform. Any content you post on the platform must be free of:</p> <ul> <li> <strong>Private data</strong> <p>Confidential data and personal information about others, such as telephone numbers and addresses may not be posted without their express authorization and consent.  </p> <li><strong>Spam / malware / phishing / viruses / worms / Trojans</strong> <p>Malicious content or links that are meant violate others’ privacy or to damage or disrupt others’ browsers or computers.</p> </li> <li> <strong>Threats, insults and other inappropriate content </strong> <p>Personal attacks and insults, threatening behavior or language, discriminatory comments, profanity and other offensive language.</p> </li> <li><strong>Advertising and commercial activity</strong> <p>Content posted with the sole purpose of advertising a commercial service or product.</p> </li> <li> <strong>Copyrighted material</strong> <p>Content that infringes upon intellectual property rights (e.g., copyrighted images).</p> </li> <li> <strong>Illegal activities</strong> <p>Content that in any way promotes illegal activities.</li></p> </ul> <p>Submissions and other content that includes any of the above may be edited, deleted or otherwise prevented from being posted, and the account may be temporarily blocked or permanently deleted. New or additional accounts created to avoid temporary or permanent suspension may also be monitored and deleted.</p> <h2>Applicable laws</h2> <p>The use of an account may not infringe upon applicable laws. This includes any violation of privacy legislation, intellectual property rights, the criminal code, etc.</p> <p>We cannot be held liable in any way for content posted on the platform that does not adhere to the above rules and laws. Violations can be reported to support@govocal.com and may result in the relevant messages being deleted and/or the underlying account being suspended or permanently revoked.</p> <p>It is possible that content posted on the platform can contain harmful files or links. By downloading files or accessing hyperlinks via the platform, you assume the risk and responsibility for any damage that may incur.</p> <h2>Property rights</h2> <p>This platform is protected by intellectual property rights related to its content, source code, databases, etc. Any original content that you post on the platform may be visible to the public and falls under the Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0) Public License, which allows your content to be shared or adapted with attribution. You may not otherwise reproduce, distribute, modify or transmit the platform and any of its contents that do not fall under the public domain without permission.</p>
+    privacy_policy_title: Adatvédelmi szabályzat
     privacy_policy_body: >
       <p>Responsible for the processing of the Data:</p> <p>CitizenLab NV - Pachecolaan 34 - 1000 Brussels - Belgium</p> <p>Contact e-mail address: support@govocal.com</p> <p>Organization: //insert client contacts</p> <h2>1. PRIVACY POLICY</h2> <p>This ‘Privacy Policy’ applies to the ‘Personal Data’ collected by Go Vocal on behalf of the organization through this website.</p> <h2>2. WHAT ARE PERSONAL DATA?</h2> <p>In this Privacy Policy, Personal Data refers to information that makes it possible to identify you. An identifiable person is someone who can be identified, either directly or indirectly, in particular by referring to an identification number or to one or more factors that are linked to physical, physiological, mental, economic, cultural or social identity. A typical example of personal information is your name and email address.</p> <h2>3. WHAT PERSONAL DATA DO WE COLLECT?</h2> <p>We might collect your Personal Data from the following three sources:</p> <h3>3.1 Personal Data that you provide during the registration process on the Platform, some of which are optional.</h3> <p>The personal data that we might collect from you are:</p> <ul> <li>First and last name</li> <li>E-mail address</li> <li>Year of birth</li> <li>Gender</li> <li>Area of residence</li> <li>Preferred language</li> </ul> <p>This list can be extended on request of the organization. If you choose to sign-in via a 3rd party authentication provider as Google Accounts, Facebook or FranceConnect, we will get this data from them. If you choose to verify your identity with a 3rd party identity provider as COW, FranceConnect or CSAM, we will get this information from them.</p> <h3>3.2 Personal data that you provide when taking participative action on our platform.</h3> <p>Every action you take on the platform (voting, posting an idea, writing a comment, answering a poll,…) is registered and stored. This data is also linked to your registration data (3.1), implying that the organization can link your platform profile to this participation data.</p> <h3>3.3 Personal Data that we collect when you visit our platform.</h3> <p>We (and third party processors acting on our behalf) collect information about usage of our platform for assessing the good functioning and security of the platform. To this end, we collect technical information that can identify you, such as your IP address and browser details. By using our services you agree to this data being collected.</p> <p>We also gather usage data to improve our services, you can opt-out of this collection at all time from the consent manager.</p> <h2>4. HOW DO WE USE PERSONAL DATA?</h2> <p>We might use your personal data for the following purposes:</p> <ul> <li>First and foremost, to communicate your input to the organization with relevant context, and to draw aggregated reports of all the data collected on this platform to assist their decision-making.</li> <li>To create and maintain your user profile on this website.</li> <li>To manage the identification and authentication of users.</li> <li>To provide information about your community and/or alert you when activities on the platform may interest you. You can opt-out of user emails from your user profile at any time.</li> <li>To improve our services and monitor their functionalities.</li> </ul> <p>The personal data is only stored and processed for the period required for the purpose of the processing. After that, the data will be deleted or anonymized.</p> <h2>5. WITH WHOM DO WE SHARE YOUR PERSONAL DATA?</h2> <p>We share your personal data with the organization on behalf of which we gather this data. We share your data to the sub-processors working on our behalf. We will never sell or rent your personal data to other service providers, nor will we share your Personal Data with any service providers who are not compliant with the GDPR.</p> <h2>6. WHERE DO WE TRANSFER YOUR PERSONAL DATA TO?</h2> <p>We only transfer your Personal Data to service providers established outside the European Economic Area if they comply to art 44 GDPR.</p> <h2>7. WHAT RIGHTS DO YOU HAVE?</h2> <p>You have the right to view your personal data at any time, as well as the right to be informed of the use that Go Vocal makes of your personal data.</p> <h3>7.1 Right to rectification, erasure and restriction of processing</h3> <p>You are free to decide whether or not to provide your personal data to Go Vocal. In addition, you always have the right to request Go Vocal to correct, supplement or remove your personal data. You acknowledge that a refusal to provide or a request for the erasure of personal data means that certain services can no longer be delivered. You may also request that the processing of your personal data is limited. If you choose to remove your account from the platform, the personal data that was collected about you will be removed from our servers. Some personal information about you might remain in the logging data we keep for security and legal reasons for up to 30 days.</p> <h3>7.2 Right to object</h3> <p>You have the right to object to the processing of your personal data for serious and legitimate reasons. In addition, you always have the right to object to the use of your personal data for direct marketing purposes; in such cases, you do not have to state reasons.</p> <h3>7.3 Right to data portability</h3> <p>You have the right to obtain the personal data you have provided to Go Vocal in a structured, typical and machine-readable form and/or have such transferred to different controllers.</p> <h3>7.4 Right to withdraw consent</h3> <p>Insofar as the processing is based on your prior consent, you have the right to withdraw this approval.</p> <h3>7.5 Exercising your rights</h3> <p>You can exercise your rights by contacting Go Vocal to this end, either by email to support@govocal.com, by post to Pachecolaan 34, 1000 Brussels, Belgium or by using the “Contact us” form on our Website, provided you enclose a copy of the front of your identity card.</p> <h3>7.6 Automated decision-making and profiling</h3> <p>The processing of your personal data does not include profiling and shall also not be subjected by Go Vocal to automated decision-making.</p> <h3>7.7 Right to lodge a complaint</h3> <p>You have the right to lodge a complaint to the Privacy authority of your country, or the Belgian Privacy Authority under which authority Go Vocal falls: Drukpersstraat 35, 1000 Brussels, Belgium, Tel +32 (0)2 274 48 00, Fax +32 (0)2 274 48 35, e-mail: contact@adp-gba.be. This does not affect relief before a civil court.</p> <h2>8. ADDITIONAL INFORMATION ON DATA COLLECTION AND PROCESSING</h2> <h3>Legal procedures</h3> <p>Go Vocal and the Organization we process this data for might use the Personal Data of the User for legal purposes, for the court or legal proceedings preceding phases in the event of unlawful use of this Application or the related services. The User is aware that Go Vocal and the Organization we work with might be obliged to disclose the personal data at the request of competent government institutions for the processing of the Data. The legal basis for this processing is the acceptance of the terms and conditions (contractual basis) and given consent.</p> <h3>Security Measures</h3> <p>Go Vocal has developed security measures which have been adjusted at the technological and organisational level to prevent the destruction, loss, falsification, changing, prohibited access or the erroneous disclosure to third parties of personal data as well as any other prohibited processing of this data. Under no circumstances can Go Vocal be held liable for any direct or indirect loss resulting from the incorrect or unlawful use of your personal data by a third party. You must at all times comply with the security instructions, including by preventing all prohibited access to your login details and password. You are solely responsible for the use made from the website on your computer, IP-address and your identification details, as well as for the confidentiality of such.</p> <h3>Changes to this privacy policy</h3> <p>Go Vocal reserves the right to change this privacy policy at any time by notifying Users on this page. We encourage you to check this page for possible changes. The date of the last change is indicated at the bottom of the page. If a User objects to any change in the policy, the User must not continue to use this Application. Unless otherwise indicated, the valid Privacy Policy applicable at that time applies to all Personal Data that we have collected.</p> <p><em>Most recent update: 17/12/2019</em></p>
-    infopage_title: Information Page
+    infopage_title: Információs oldal
     infopage_body: "<p>This <strong>all-in-one participation platform</strong> is an initiative of your municipality or organisation and can be used for different public consultation processes: collecting ideas, voting, discussing, surveys, polls, participatory budgeting, online mapping, scenario planning, support for advisory boards and committees, ...</p>\n<p>On the home page, you'll see which <strong>processes are active </strong>and in which <strong>phase </strong>they currently are.</p>\n<p><img data-cl2-text-image-text-reference=\"e2c7bc7a-017d-4887-a3cb-b94185617a59\" alt=\"Horizontal separation rule\" data-align=\"center\" style=\"display: block; margin: auto;\"></p>\n<h2>How do I sign in on the platform?</h2>\n<p>Signing in is done easily by giving your first and last name and your e-mail address. You could also use your Google or Facebook account. Only your first and last name will be visible to others.</p>\n<h2>Can I use the platform myself, e.g. to organise a public consultation?</h2>\n<p>Absolutely. Ask the responsible within your municipality or organisation to give you the needed permission rights to become a project moderator. Once granted these permissions, you can set up your own project and timeline and share the information you want (video, documents, images, ...). This will also allow you to invite others to the platform, enabling them to post ideas within your project, vote or comment.</p>\n<h2>Can I participate as an association/organisation/committee? </h2>\n<p>Yes, that's possible. Given that only your first and last name are visible to others on the platform, you can simply use your organisation's name while setting up your profile.</p>\n<h2>Why would I use this platform and not create a website myself?</h2>\n<p>A team of dedicated developers and specialists in online participation (<a href=\"https://www.govocal.com/en\" target=\"_blank\">Go Vocal</a>, commissioned by your municipality or organisation) is improving and updating this platform on a daily basis. Even the smallest bug gets tackled immediately and if you have creative proposals, they can help you pointing out which features of the platform can be used for this or which ones are in the pipeline.</p>\n<p><img data-cl2-text-image-text-reference=\"392d0e47-e5f9-41ab-9ceb-affac617b8b1\" alt=\"Horizontal separation rule\" data-align=\"center\" style=\"display: block; margin: auto;\"></p>\n<p><strong><em>Need more information?</em></strong><em> Do you want to use the platform? Questions or feedback? Contact the responsible within your municipality or organisation. Or contact Go Vocal through support@govocal.com.</em></p><strong>"
-    faq_title: FAQ
-    faq_body: "<h2 class=\"ql-align-justify\">Mire való ez a platform?</h2><p class=\"ql-align-justify\">Ezt a platformot központi csomópontként tervezték az információk megosztására, valamint az inputok és visszajelzések megszerzésére. Az aktuálisan aktív részvételi projektek a honlapon jelennek meg - minden egyes részvételi projektnek más-más módja lehet a részvételre, legyen az egy ötlet hozzáadása, egy javaslat kommentálása, a projektek megszavazása és rangsorolása, vagy egy felmérés elvégzése.</p><h2 class=\"ql-align-justify\">Hogyan vehetek részt?</h2><p class=\"ql-align-justify\">Bármikor böngészhet nyilvános projekteket, de ahhoz, hogy részt vehessen valamelyik akcióban, regisztrálnia kell. Ez segít fenntartani a közösségi érzést, és biztosítja a bejegyzések legitimitását.</p><h2 class=\"ql-align-justify\">Milyen információkat láthatnak rólam az emberek?</h2><p class=\"ql-align-justify\">Az Ön neve, fényképe és életrajza, ha Ön is hozzáadott egyet, látható. Ezeket bármikor megváltoztathatod a Beállításokban.</p><h2 class=\"ql-align-justify\">Miért nem tudok hozzászólást vagy hozzászólást küldeni?</h2><p class=\"ql-align-justify\">A hozzászólás, a hozzászólás és a szavazás csak a projekt bizonyos időszakaiban vagy fázisaiban engedélyezhető. Bizonyos esetekben előfordulhat, hogy egy projekt csak egy bizonyos érdekcsoport hozzászólásai előtt áll nyitva.</p><p class=\"ql-align-justify\">Ha egy projektnél jelenleg engedélyezve van a hozzászólás, akkor egy gombot lát, amely a hozzászólás elküldésére szólítja fel. Alternatívaként más aktív projektek között is böngészhet további bekapcsolódási lehetőségekért.</p><h2 class=\"ql-align-justify\">Hogyan szerkeszthetem vagy törölhetem a bejegyzéseimet?</h2><p class=\"ql-align-justify\">Ha már közzétette a hozzászólását, de módosítani vagy törölni szeretné, ezt a lehetőséget a hozzászólás jobb felső sarkában lévő három kis pontra kattintva találja meg.</p><h2 class=\"ql-align-justify\">Mik a közösségi irányelvek és moderálási irányelvek?</h2><p class=\"ql-align-justify\">Közösségi irányelveink azért vannak, hogy biztosítsák, hogy a platform biztonságos hely legyen mindenki számára. Kérjük, biztosítsa, hogy a hozzászólásai nem tartalmaznak:</p><ul>\n    <li class=\"ql-align-justify\">Személyes támadások, sértegetések, sértő vagy diszkriminatív megjegyzésektől</li>\n    <li class=\"ql-align-justify\">Bántó kifejezések, beleértve a trágár szavakat</li>\n    <li class=\"ql-align-justify\">Marketing vagy reklámanyagok</li>\n    <li class=\"ql-align-justify\">Személyeskedés. más személyekre vonatkozó információk</li>\n    <li class=\"ql-align-justify\">szerzői jogvédelem alatt álló anyagok, például képek</li>\n    </ul><p class=\"ql-align-justify\">Az ezen irányelveknek nem megfelelő hozzászólások vagy kommentek szerkeszthetők vagy törölhetők, vagy szélsőséges esetben megakadályozható a közzététel. Kérjük, további információkért olvassa el a &amp; Feltételek &amp; feltételeket.</p><h2 class=\"ql-align-justify\">Hogyan jelenthetek be egy sértő hozzászólást?</h2><p class=\"ql-align-justify\">A hozzászólás bejelentéséhez kattintson a hozzászólás jobb felső sarkában lévő három kis pontra. Kérjük, adja meg a tartalom bejelentésének okát - ez értesítést küld a hozzászólás felülvizsgálatára.</p><h2 class=\"ql-align-justify\">Miért okoz nehézséget a regisztráció vagy a bejelentkezés?</h2><p class=\"ql-align-justify\">Ha nem tud regisztrálni, annak oka lehet, hogy már regisztrált ugyanazzal az e-mail címmel, vagy korábban már kapott meghívót a platformra. Ha olyan üzenetet lát, hogy az Ön e-mail címét egy folyamatban lévő meghívó foglalja el, kérjük, ellenőrizze az e-mail címét, és kövesse a meghívóban található linket a fiók regisztrálásához. Ha nem találja a meghívót, próbálja megkeresni a kéretlen levelek között, vagy kérjen új meghívót.</p><h2 class=\"ql-align-justify\">Hogyan tudom visszaállítani a jelszavamat?</h2><p class=\"ql-align-justify\">Jelszavának visszaállítását bármikor kérheti a bejelentkezési oldalon. Ha visszaállítja jelszavát, egy linket küldünk az e-mail címére - kövesse az utasításokat a jelszó megváltoztatásához. Biztonsági okokból a link egy órán keresztül érvényes. Ha a link lejárt, egyszerűen kattintson újra a bejelentkezési oldalon az \"Elfelejtett jelszó?\" gombra, hogy új visszaállítási linket generáljon.</p><p class=\"ql-align-justify\">Ha nem kapta meg az e-mailt, ellenőrizze, hogy az nem került-e a kéretlen levelek közé, és hogy a linket ugyanarra az e-mail címre küldte, amellyel regisztrált.</p><h2 class=\"ql-align-justify\">Mit csinál az adataimmal?</h2><p class=\"ql-align-justify\">Az adatgyűjtéssel és -felhasználással kapcsolatos további információkért tekintse meg adatvédelmi szabályzatunkat. Röviden, soha nem fogjuk felhasználni az adatait reklámozásra, marketingre vagy más típusú spamre.</p><h2 class=\"ql-align-justify\">Milyen e-maileket fogok kapni?</h2><p class=\"ql-align-justify\">Kaphat e-maileket a fiókjával és a platformon végzett tevékenységével kapcsolatban, például ha valaki válaszol valamelyik bejegyzésére. A Beállításokban szabályozhatja, hogy milyen e-maileket kapjon. Van egy \"Értesítések\" nevű rész, ahol be- és kikapcsolhatod az e-mail értesítéseket.</p><h2 class=\"ql-align-justify\">Hogyan tudom törölni a fiókomat?</h2><p class=\"ql-align-justify\">A Beállításokban van lehetőség a fiók törlésére. Az általad közzétett bejegyzések továbbra is publikálva maradnak, de a neved eltávolításra kerül a bejegyzésből, és helyébe az \"ismeretlen szerző\" felirat lép. Ha az összes hozzászólását törölni szeretné, kérjük, tegye meg, mielőtt törli a fiókját.</p>"
-    initiatives_title: Proposals
+    faq_title: GYIK
+    faq_body: "<h2 class=\"ql-align-justify\">What is this platform for?</h2><p class=\"ql-align-justify\">This platform is designed as a central hub to share information and get input and feedback. Participation projects that are currently active are shown on the homepage - each participation project may have a different mode of engagement, whether it’s adding an idea, commenting on a proposal, voting on and prioritising projects, or taking a survey. </p><h2 class=\"ql-align-justify\">How do I participate? </h2><p class=\"ql-align-justify\">You can always browse public projects, but you’ll need to sign up in order to take an action. This helps to maintain a community feel and ensure the legitimacy of the input. </p><h2 class=\"ql-align-justify\">What information can people see about me?</h2><p class=\"ql-align-justify\">Your name, photo and bio, if you’ve added one, are visible. You can always change these in your Settings.</p><h2 class=\"ql-align-justify\">Why can’t I post my input or submit a comment?</h2><p class=\"ql-align-justify\">Posting, commenting and voting may be enabled only during certain times or phases of a project. In some instances, a project may only be open to contributions from a certain stakeholder group.</p><p class=\"ql-align-justify\">If posting is currently enabled for a project, you’ll see a button that prompts you to submit a post. Alternatively, you can browse other active projects for additional engagement opportunities.</p><h2 class=\"ql-align-justify\">How do I edit or delete my input?</h2><p class=\"ql-align-justify\">If you’ve posted your input but want to make edits or delete it, you can find this option by clicking on the three small dots on the top right of the post. </p><h2 class=\"ql-align-justify\">What are the community guidelines and moderation policies?</h2><p class=\"ql-align-justify\">Our community guidelines are here to help ensure that the platform is a safe space for everyone to participate. Please ensure your posts are free of:</p><ul>\n  <li class=\"ql-align-justify\">Personal attacks, insults, abusive or discriminatory comments</li>\n  <li class=\"ql-align-justify\">Offensive language including profanity</li>\n  <li class=\"ql-align-justify\">Marketing or advertising material</li>\n  <li class=\"ql-align-justify\">Personal information about other individuals</li>\n  <li class=\"ql-align-justify\">Copyrighted material such as images</li>\n  </ul><p class=\"ql-align-justify\">Any posts or comments that do not adhere to these guidelines may be edited or deleted, or in extreme instances, prevented from being posted. Please review our Terms &amp; Conditions for more information. </p><h2 class=\"ql-align-justify\">How do I report an offensive post?</h2><p class=\"ql-align-justify\">Click on the three small dots on the top right corner of the post to report it. Please indicate the reason you are reporting the content - this will send a notification for the post to be reviewed.</p><h2 class=\"ql-align-justify\">Why am I having difficulty signing up or logging in?</h2><p class=\"ql-align-justify\">If you’re unable to sign up, it may be because you’ve already registered with the same email address or previously received an invitation to join the platform. If you see a message that your email address is taken by a pending invite, please check your email and follow the link in the invitation to register your account. If you can’t find the invite, try looking in your spam box or request a new invitation. </p><h2 class=\"ql-align-justify\">How do I reset my password?</h2><p class=\"ql-align-justify\">You can always request to reset your password from the log in page. If you reset your password, a link will be sent to your email address - follow the instructions to change your password. For security reasons, the link is valid for one hour. If the link has expired, you can simply click on ‘Forgot password?’ in the log in page again to generate a new reset link.</p><p class=\"ql-align-justify\">If you didn’t receive the email, check to make sure that it’s not in your spam and that you’re sending the link to the same email address that you signed up with.</p><h2 class=\"ql-align-justify\">What will you do with my data?</h2><p class=\"ql-align-justify\">Review our privacy policy for more information on data collection and usage. In short, we will never use your data for advertising, marketing or other types of spam.</p><h2 class=\"ql-align-justify\">What emails will I receive?</h2><p class=\"ql-align-justify\">You may receive emails related to your account and your activity on the platform, for instance, when someone responds to one of your posts. You can control which emails you receive in your Settings. There is a section called “Notifications” where you can turn email notifications on and off.</p><h2 class=\"ql-align-justify\">How do I delete my account?</h2><p class=\"ql-align-justify\">In your Settings there is the option to delete your account. Input that you’ve posted will remain published, but your name will be removed from the post and replaced with ‘unknown author.’ If you’d like to delete all of your input, please do so before deleting your account. </p>"
+    initiatives_title: Javaslatok
     initiatives_body: >
       <img style="margin-bottom: 30px" data-cl2-text-image-text-reference="b4e659ab-2830-48fd-b3ce-96e16856262f" height="374.3745928338762" width="819" alt=""> <h2>What's a citizen's proposal?</h2> <p>As a resident of $|orgName| you can place your proposal on the agenda via this platform. These proposals are preferably concrete ideas that are linked to local policy and arise from a need, desire or dream. It can be your own proposal or a collaborative one. Maybe you'd like to change or improve an existing situation or start a new project.</p> <p>The involvement of $|orgName| in the implementation of your proposal must be both necessary and possible. In an ideal scenario, you're also available for further reflection or cooperation, but that is not an obligation. "Reducing the speed limit on the highway to 80 km/h" is therefore not a strong proposal, while "Turning the main street into a pedestrian area" is. So bring on your proposals! If more information is needed, you'll receive an update or reaction.</p><h2>Why post a proposal on this platform?</h2> <p>This is the official participation platform of $|orgName|, which offers the following benefits:</p> <ul> <li>$|orgName| is officially involved as this platform's owner, and actively monitors what happens here. When you post a proposal, the person in charge automatically receives a message. You don't have to contact them to make sure your proposal is taken into account.</li> <li>This platform has been developed specifically for official participatory actions, like citizens' proposals. Every element, from the user experience to the step-by-step approach, is built precisely for this purpose. When using traditional social media, your proposal could disappear into the overload of stimuli, and an ordinary e-mail quickly disappears into a full inbox.</li> <li>Your fellow citizens are also present on this platform. They can support and refine your proposal. The more creative your proposal is and the more support it manages to gather, the more chance it will be implemented!</li> </ul> <h2>How do you get started?</h2> <p>First, check whether your proposal meets the following criteria:</p> <p>$|initiativesEligibilityCriteria|</p> <h2>What can you expect when your proposal reaches $|initiativesVotingThreshold| votes within $|initiativesDaysLimit| days?</h2> <p>$|initiativesThresholdReachedMessage|</p> <h2>What happens to the proposals that do not receive $|initiativesVotingThreshold| votes on time? </h2> <p>That happens, but don't worry. Your proposal will remain on the platform. The status of your proposal will automatically change to 'Expired'. As a result, voting will no longer be possible. If you wish, you can choose to delete your own proposal at any time.</p>
   nav_bar_items:
     home:
-      title: Home
+      title: Otthon
     projects:
-      title: All projects
+      title: Minden projekt
     all_input:
-      title: All input
+      title: Minden bemenet
     proposals:
-      title: Proposals
+      title: Javaslatok
     events:
-      title: Events
+      title: Események
     about:
-      title: About
+      title: Körülbelül
     faq:
-      title: FAQ
+      title: GYIK
   projects:
-    open_idea_project_title: An idea? Bring it to your council!
-    open_idea_project_description_preview: Maybe you have an idea that doesn't fit with one of the existing projects? Than post it here, gather support and get it on the political agenda!
+    open_idea_project_title: Egy ötlet? Vidd be a tanácsodba!
+    open_idea_project_description_preview: Esetleg van olyan ötleted, ami nem illik valamelyik meglévő projekthez? Tegye fel ide, gyűjtse össze a támogatást, és vegye fel a politikai napirendre!
     open_idea_project_description: >
-      <p>Here, you can start your own idea if it doesn't fit within one of the existing projects.</p><p><strong>The objective?</strong> To get your idea on the political agenda.</p><p><strong>How?</strong> By gathering support, namely at least 100 votes in 3 months. You can do that by first making your idea 'attractive'. Write it in a clear and engaging way, add images, give strong arguments based on facts, add attachments with further details or background information, ... After you've done that, start sharing your idea on social media or through email. Invite people to join the discussion on your idea, or simply convince them to support it by voting in favour.</p><p><strong>About what?</strong> Your idea can be about a lot of things, as long as it is related to your city and its policy. It can be a problem you experience, a solution you envision or even a combination of both. It can be wild and on the long term, or very tangible and a quick win.</p><p><strong>And then? </strong>Did you reach 100 votes in 3 months? Congratulations! The city will now take your idea in consideration. If your idea is considered to be feasible and does not harm specific groups or individuals, you will get the chance to present your proposal during the council meeting. During that same meeting, the council members will give you direct feedback on what they will or won't do with your idea and why. If you don't gather 100 votes in 3 months, your proposal won't be considered.</p><p>We're curious to learn about your ideas!</p>
+      <p>Itt elindíthatja saját ötletét, ha az nem fér bele valamelyik meglévő projektbe.</p><p><strong>A cél?</strong> Hogy az ötleted a politikai napirendre kerüljön.</p><p><strong>Hogyan?</strong> Támogatás gyűjtésével, mégpedig legalább 100 szavazat 3 hónap alatt. Ezt úgy teheti meg, hogy először „vonzóvá” teszi az ötletét. Írja le világosan és lebilincselő módon, adjon hozzá képeket, adjon fel tényeken alapuló erős érveket, adjon hozzá mellékleteket további részletekkel vagy háttérinformációkkal... Miután ezt megtette, kezdje el megosztani ötleteit a közösségi médiában vagy e-mailben. Hívja meg az embereket, hogy csatlakozzanak az ötletedről szóló vitához, vagy egyszerűen csak győzd meg őket, hogy támogassák azt a szavazattal.</p><p><strong>Miről?</strong> Az Ön elképzelése sok mindenről szólhat, amennyiben kapcsolódik az Ön városához és annak politikájához. Ez lehet egy tapasztalt probléma, egy elképzelt megoldás vagy akár a kettő kombinációja. Lehet vad és hosszú távon, vagy nagyon kézzelfogható és gyors győzelem.</p><p><strong>És akkor? </strong>Elérted a 100 szavazatot 3 hónap alatt? Gratulálok! A város most figyelembe veszi az Ön elképzelését. Ha az Ön elképzelése megvalósíthatónak bizonyul, és nem sért meg bizonyos csoportokat vagy egyéneket, akkor lehetősége nyílik javaslatát a tanácsülésen bemutatni. Ugyanezen az ülésen a tanács tagjai közvetlen visszajelzést adnak arról, hogy mit fognak és miért nem fognak kezdeni az ötletével. Ha nem gyűjt össze 100 szavazatot 3 hónap alatt, akkor javaslatát nem veszik figyelembe.</p><p>Kíváncsian várjuk az Ön ötleteit!</p>
+  phases:
+    open_idea_phase_title: Aktuális fázis
+    native_survey_title: Felmérés
+    native_survey_button: Vegye ki a felmérést
   events:
-    council_meeting_title: Council Meeting
+    council_meeting_title: Tanácsülés
     council_meeting_description: >
-      <p>During this council meeting, those citizen initiatives that gained 100 votes in less than 3 months, will be presented.</p><p>The council will then share their view on each idea.</p>
+      <p>Ezen a tanácsülésen bemutatásra kerülnek azok az állampolgári kezdeményezések, amelyek kevesebb mint 3 hónap alatt 100 szavazatot szereztek.</p><p>A tanács ezután megosztja véleményét az egyes ötletekről.</p>
   custom_fields:
     users:
       gender:
-        title: Gender
+        title: Nem
       birthyear:
-        title: Year of birth
+        title: Születési év
       domicile:
-        title: Place of residence
+        title: Lakóhely
       education:
-        title: Education
+        title: Oktatás
     ideas:
       title:
-        title: Title
+        title: Cím
         description:
       body:
-        title: Description
+        title: Leírás
         description:
       author_id:
-        title: Author
-        description:
+        title: Szerző
       topic_ids:
-        title: Topics
+        title: Címkék
         description:
+      consponsor_ids:
+        title: Társszponzorok
+        description: Hívja meg társszponzorait az alábbi mezőn keresztül. A meghívott társszponzor(ok) e-mailt kapnak.
       location:
-        title: Location
+        title: Elhelyezkedés
         description:
       proposed_budget:
-        title: Proposed Budget
+        title: Költségvetési javaslat
         description:
       budget:
-        title: Budget
-        description:
+        title: Költségvetés
       images:
-        title: Images
+        title: Képek
         description:
       attachments:
-        title: Other files
+        title: Mellékletek
         description:
+      section1:
+        description:
+      section2:
+        title: Képek és mellékletek
+        description:
+      section3:
+        title: Részletek
+        description:
+      other_input_field:
+        title: Írja be a választ
   custom_forms:
     categories:
       main_content:
         idea:
-          title: What is your idea ?
+          title: Mi a te ötleted?
         question:
-          title: What is your question ?
+          title: Mi a kérdésed?
         contribution:
-          title: What is your contribution ?
+          title: Mi a hozzájárulásod?
         project:
-          title: What is your project ?
+          title: Mi a projektje?
         issue:
-          title: What is your issue ?
+          title: Mi a megjegyzésed?
         option:
-          title: What is your option ?
+          title: Mi a lehetőséged?
+        proposal:
+          title: Mi a javaslata?
+        initiative:
+          title: Mi a kezdeményezésed?
+        petition:
+          title: Mi a petíciója?
   custom_field_options:
     gender:
-      male: Male
-      female: Female
-      unspecified: Other
+      male: Férfi
+      female: Női
+      unspecified: Más
     domicile:
-      outside: Somewhere else
+      outside: Valahol máshol
     education:
-      ISCED2: Lower secondary education
-      ISCED3: Upper secondary education
-      ISCED4: Post-secondary non-tertiary education
-      ISCED5: Short-cycle tertiary education
-      ISCED6: Bachelor or equivalent
-      ISCED7: Master or equivalent
-      ISCED8: Doctoral or equivalent
+      ISCED2: Alsó középfokú oktatás
+      ISCED3: Felső középfokú oktatás
+      ISCED4: Középiskola utáni, nem felsőfokú oktatás
+      ISCED5: Rövid ciklusú felsőoktatás
+      ISCED6: Bachelor vagy azzal egyenértékű
+      ISCED7: Mester vagy azzal egyenértékű
+      ISCED8: Doktori vagy azzal egyenértékű
   initiatives:
     default_threshold_reached_message: >
-      <p>The initiators are invited to present their proposal at the next council meeting. We will provide an official update.</p>
+      <p>Felkérjük a kezdeményezőket, hogy javaslatukat a következő tanácsülésen terjesszék elő. Hivatalos frissítést adunk.</p>
     default_eligibility_criteria: >
       <ul> <li>It must fall within the policy areas and competencies of local policy</li> <li>It serves the public interest rather than your individual interest</li> <li>It does not discriminate based on gender, race, age, or background</li> <li>It does not harm others</li> </ul>
+    default_posting_tips: >
+      <ul><li>Szánjon időt javaslata kidolgozására. Ha szükséges, először írjon be egy piszkozatot, majd másolja be ide.</li><li>Válasszon értelmes címet, amely világosan elmagyarázza, mit tartalmaz az ajánlat.</li><li>Képzelje el ajánlatát egy illeszkedő képpel, hogy kiemelkedjen!</li><li>Adjon hozzá releváns mellékleteket, például videókat, inspiráló példákat, műszaki részleteket vagy terveket.</li><li>Ossza meg ötleteit a közösségi médiában és más csatornákon, hogy támogatást szerezzen másoktól.</li></ul>
   reset_password_mailer:
     send_reset_password:
-      cta_reset_password: 'Reset your password'
-      message_you_reset_your_password: 'You requested a password reset for the participation platform of %{organizationName}. Click the button below to choose a new, safe password. The link expires in 1 hour.'
-      subject: '%{organizationName}: Reset your password'
-      title_reset_your_password: 'Choose a new password'
+      preheader: 'Állítsa vissza jelszavát a %{organizationName}számára'
+      cta_reset_password: 'Állítsa vissza jelszavát'
+      message_you_reset_your_password: 'Jelszó-visszaállítást kért a %{organizationName}részvételi platformjához. Új, biztonságos jelszó kiválasztásához kattintson az alábbi gombra. A link 1 óra múlva lejár.'
+      subject: '%{organizationName}: Állítsa vissza jelszavát'
+      title_reset_your_password: 'Válasszon új jelszót'
+  xlsx_export:
+    anonymous: 'Névtelen'
+    column_headers:
+      assignee_fullname: 'Engedményes'
+      assignee_email: 'A jogosult e-mail címe'
+      attachments: 'Mellékletek'
+      author_email: 'Szerző e-mail'
+      author_fullname: 'Szerző neve'
+      author_id: 'Szerző azonosítója'
+      budget: 'Költségvetés'
+      comments_count: 'Megjegyzések'
+      cost: 'Költség'
+      created_at: 'Beküldve:'
+      description: 'Leírás'
+      dislikes_count: 'Nem szereti'
+      email: 'Email'
+      first_name: 'Keresztnev(ek)'
+      image_url: 'Kép URL-je'
+      input_id: 'ID'
+      manual_votes: 'Offline szavazatok'
+      input_url: 'URL'
+      last_name: 'Vezetéknév'
+      latitude: 'Szélesség'
+      likes_count: 'Tetszik'
+      location: 'Elhelyezkedés'
+      longitude: 'Hosszúság'
+      participants: 'Résztvevők'
+      picks: 'Pick'
+      project: 'Projekt'
+      published_at: 'Megjelent'
+      registration_completed_at: 'A regisztráció befejeződött'
+      status: 'Állapot'
+      submitted_at: 'Beküldve:'
+      tags: 'Címkék'
+      title: 'Cím'
+      user_data: 'Felhasználói adatok'
+      votes_count: 'Szavazatok'
+  form_builder:
+    default_select_field:
+      title: 'A kérdésed'
+      option1: '1. lehetőség'
+      option2: '2. lehetőség'
+    form_end_page:
+      title_text: 'Majdnem kész'
+      description_text_2: "Arra készül, hogy elküldje válaszait. A „Küldés” gombra kattintva engedélyt ad nekünk válaszainak elemzésére.<br/>A beküldés után többé nem léphet vissza és módosíthatja a válaszait."
+    pdf_export:
+      personal_data: 'Személyes adatok'
+      personal_data_explanation_public: "Hozzászólásodat elküldjük %{organizationName}online részvételi platformjára. Ha azt szeretné, hogy az Ön neve jelenjen meg a bemenet szerzőjeként, és e-mailben kapja meg a bemenetével kapcsolatos frissítéseket, kérjük, töltse ki az alábbi mezőket ezen az oldalon, és mi létrehozunk Önnek egy fiókot. Az Ön e-mailje nem lesz nyilvános, és csak %{organizationName}fogja használni. Ha névtelen szeretne maradni, vagy nem járul hozzá ahhoz, hogy személyes adatait ilyen módon használjuk fel, akkor ezeket üresen hagyhatja."
+      personal_data_explanation_private: "Hozzászólásodat elküldjük %{organizationName}online részvételi platformjára. Ha e-mailben szeretne tájékoztatást kapni, kérjük, töltse ki az alábbi mezőket ezen az oldalon, és mi létrehozunk Önnek egy fiókot. Az Ön adatai nem lesznek nyilvánosak, és csak %{organizationName}használja azokat. Ha nem járul hozzá, hogy személyes adatait ilyen módon használjuk fel, üresen hagyhatja azokat."
+      first_name: 'Keresztnev(ek)'
+      last_name: 'Vezetéknév'
+      email_address: 'E-mail cím'
+      by_checking_this_box: "A négyzet bejelölésével hozzájárulok ahhoz, hogy adataimat fiók létrehozásához használják fel %{organizationName}részvételi platformján."
+      optional: 'választható'
+      permission: 'Engedély'
+      choose_as_many: 'Válasszon annyit, amennyit csak akar'
+      choose_exactly:
+        one: 'Válassza ki pontosan a %{count} opciót'
+        other: 'Válassza ki pontosan a %{count} opciókat'
+      choose_between: 'Válasszon a %{min} és %{max} lehetőségek közül'
+      choose_at_least: 'Válasszon legalább %{count} lehetőséget'
+      choose_at_most: 'Válasszon legfeljebb %{count} opciót'
+      this_answer: 'Ezt a választ csak a moderátorokkal osztjuk meg, a nyilvánossággal nem.'
+      page: 'oldal'
+      date_published: 'Közzététel dátuma (nn-hh-éééé)'
+      instructions: 'Utasítás'
+      write_as_clearly: 'Írjon <b>-ként egyértelműen</b> -ként, amennyire csak tudja – ezek az űrlapok beolvashatók'
+      write_in_language: 'Válaszait ugyanazon a nyelven írja le, mint ez az űrlap'
+      linear_scale_print_description: 'Kérjük, csak %{min_label} és %{max_label} közötti számot írjon be'
+  project_copy:
+    title_suffix: 'Másolat'
   confirmations_mailer:
     send_confirmation_code:
-      subject: "Confirm your email address for %{organizationName}'s participation platform"
-      header: "Your Confirmation Code"
-      header_message: "Hi %{firstName}!"
-      thanks_for_signing_up: "Thanks for signing up for %{organizationName}'s participation platform."
-      please_confirm_your_email_address: "To complete your registration, please verify your email address."
-      copy_paste_the_link_below: "Copy and paste the code below into the registration form on the platform."
-      the_link_is_valid_for: "This link is valid for 24 hours. If the link has expired, you may <a href=\"%{link}\">request a new code</a>."
-      did_you_receive_this_email_in_error: "Did you receive this email in error? <a href=\"%{link}\">Let us know</a>."
+      subject: "Erősítse meg e-mail címét %{organizationName}részvételi platformjához"
+      preheader: 'Erősítse meg a %{organizationName}e-mail címét'
+      header: "Az Ön megerősítő kódja"
+      header_message: "Szia %{firstName}!"
+      confirm_email_address: "Erősítse meg e-mail címét"
+      thanks_for_signing_up1: "Köszönjük részvételét. Kérjük, írja be ezt a megerősítő kódot a %{organizationName}részvételi platformjának ablakába:"
+      best_regards: "Üdvözlettel,"
+      ignore_email: "Ha nem kért kódot, nyugodtan figyelmen kívül hagyhatja ezt az e-mailt."
+      expire_code: "Ez a kód ben lejár "
+      24_hours: "24 óra."
+      copy_paste_the_link_below: "Másolja ki és illessze be az alábbi kódot a platform regisztrációs űrlapjába."
+      the_link_is_valid_for: "Ez a link 24 óráig érvényes. Ha a link lejárt, <a href=\"%{link}\">kérhet új kódot</a>."
+      did_you_receive_this_email_in_error: "Tévedésből kapta ezt az e-mailt? <a href=\"%{link}\">Tudassa velünk</a>."
+  user_blocked_mailer:
+    send_user_blocked_email:
+      subject: 'Fiókját ideiglenesen letiltottuk'
+      preheader: 'Fiókja a %{organizationName} részvételi platformon ideiglenesen le van tiltva'
+      title_user_blocked: 'Fiókját ideiglenesen letiltottuk'
+      paragraph_1_without_reason: "Fiókját a %{organizationName} részvételi platformon ideiglenesen letiltottuk a közösségi irányelvek megsértése miatt."
+      paragraph_1_with_reason: "Fiókját a %{organizationName} részvételi platformon ideiglenesen letiltottuk a következő ok miatt:"
+      for_more_information: "További információért tekintse meg a %{termsAndConditionsPage}oldalt"
+      you_can_sign_in_again_from: "Újra bejelentkezhet a %{date}címről"
+  user:
+    anon_first_name: "Felhasználó"
+    anon_scheme:
+      animals: 'aligátor, krokodil, alpaka, hangya, antilop, majom, tatu, pávián, borz, denevér, medve, hód, méh, bogár, bivaly, pillangó, teve, víz bivaly, karibu, macska, szarvasmarha, gepárd, csimpánz, csincsilla, kabóca, kagyló, csótány, tőkehal, prérifarkas, rák, tücsök, varjú, holló, szarvas, dinoszaurusz, kutya, delfin, porp oise, kacsa, sas, angolna, elefánt, jávorszarvas, görény, hal, légy, róka, béka, varangy, futóegér, zsiráf, szúnyog, gnu, vadbéka, kecske, aranyhal, liba, gorilla, szöcske, guinea disznó, hörcsög, nyúl, sün, hering, víziló, kürt, ló, kopó, hiéna, impala, sakál, medúza, kenguru, falat, koala, leopárd, oroszlán, gyík, láma, sáska ,tetű,ara,tőkés réce,mamut,lamantin,nyest,nyérc,minnow,vakond,jávorszarvas,szúnyog,egér,patkány,öszvér,pézsmapocok,vidra,ökör,osztriga,panda,malac,kacsacsőrű,sertésvirág,préri kutya, mopsz, nyúl, mosómedve, rénszarvas, orrszarvú, lazac, szardínia, skorpió, fóka, tenger oroszlán, szolga, cápa, birka, korcs, csiga, kígyó, pók, mókus, hattyú, termesz, tigris, pisztráng, teknős, teknősbéka, rozmár, darázs, bálna, farkas, wombat, fapofa, féreg, jak, sárgakabát, zebra'
+  time:
+    am: am
+    formats:
+      hour_of_day: "%l %p"
+    pm: pm
+  voting_method:
+    default_voting_term_singular: "szavazás"
+    default_voting_term_plural: "szavazatokat"
+  ics_calendar_event:
+    event_details: "Az esemény részletei"
