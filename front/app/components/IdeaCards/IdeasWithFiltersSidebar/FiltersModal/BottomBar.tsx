@@ -4,10 +4,11 @@ import { Box, colors } from '@citizenlab/cl2-component-library';
 
 import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
 
-import { Props as InputFiltersProps } from 'components/IdeaCards/IdeasWithFiltersSidebar/InputFilters';
 import Button from 'components/UI/Button';
 
 import { FormattedMessage } from 'utils/cl-intl';
+
+import { Props as InputFiltersProps } from '../InputFilters';
 
 import messages from './messages';
 
