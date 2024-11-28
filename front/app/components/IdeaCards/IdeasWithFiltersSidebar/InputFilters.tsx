@@ -74,6 +74,7 @@ const InputFilters = ({
       )}
       {showResetButton && (
         <Box minHeight="40px" display="flex">
+          {/* Hold this vertical space in the UI so when the button appears, the UI doesn't shift down */}
           {filtersActive && (
             <Button
               buttonStyle="text"
