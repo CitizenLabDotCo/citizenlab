@@ -39,6 +39,7 @@
 #  depth              :integer          default(0), not null
 #  children_allowed   :boolean          default(TRUE), not null
 #  children_count     :integer          default(0), not null
+#  first_published_at :datetime
 #
 # Indexes
 #

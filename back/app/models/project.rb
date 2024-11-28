@@ -75,6 +75,7 @@ class Project < ApplicationRecord
   has_many :notifications, dependent: :nullify
 
   has_one :nav_bar_item, dependent: :destroy
+  has_one :review, class_name: 'ProjectReview', dependent: :destroy
 
   has_one :admin_publication, as: :publication, dependent: :destroy
   accepts_nested_attributes_for :admin_publication, update_only: true
