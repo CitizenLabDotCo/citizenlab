@@ -31,19 +31,20 @@ const FiltersMapView = ({
   return (
     <>
       <TopBar onReset={onClearFilters} onClose={onClose} />
-
       <Box height="100%" overflowY="auto" bgColor={colors.background}>
         <Box p="16px">
           <InputFilters
             selectedIdeaFilters={selectedIdeaFilters}
             onClearFilters={onClearFilters}
+            // A reset button is available in the filters top bar
             showResetButton={false}
+            // BE doesn't currently support filtering map markers by status.
+            // Until this is fixed, we hide the status filter on the map view to reduce confusion.
             showStatusFilter={false}
             {...filtersProps}
           />
         </Box>
       </Box>
-
       <BottomBar
         buttonText={
           total && isNumber(total) ? (
