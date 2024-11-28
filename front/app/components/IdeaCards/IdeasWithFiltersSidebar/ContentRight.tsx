@@ -8,11 +8,10 @@ import { IdeaSortMethod } from 'api/phases/types';
 
 import { QueryParameters } from 'containers/IdeasIndexPage';
 
-import filterModalMessages from 'components/FiltersModal/messages';
-
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
 
+import filterModalMessages from './FiltersModal/messages';
 import InputFilters from './InputFilters';
 
 import { gapWidth } from '.';

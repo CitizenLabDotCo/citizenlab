@@ -5,16 +5,16 @@ import { isNumber } from 'lodash-es';
 
 import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
 
-import BottomBar from 'components/FiltersModal/BottomBar';
-import TopBar from 'components/FiltersModal/TopBar';
 import FullscreenModal from 'components/UI/FullscreenModal';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
-import messages from '../messages';
+import InputFilters, { Props as InputFiltersProps } from '../InputFilters';
 
-import InputFilters, { Props as InputFiltersProps } from './InputFilters';
+import BottomBar from './BottomBar';
+import messages from './messages';
+import TopBar from './TopBar';
 
 interface Props extends InputFiltersProps {
   opened: boolean;
@@ -61,6 +61,8 @@ const FiltersModal = ({
         <InputFilters
           selectedIdeaFilters={selectedIdeaFilters}
           onClearFilters={onClearFilters}
+          // We have a reset filters button in TopBar
+          showResetButton={false}
           {...filtersProps}
         />
       </Box>

@@ -5,13 +5,11 @@ import { isNumber } from 'lodash-es';
 
 import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
 
-import BottomBar from 'components/FiltersModal/BottomBar';
-import TopBar from 'components/FiltersModal/TopBar';
-
 import { FormattedMessage } from 'utils/cl-intl';
 
-import messages from '../messages';
-
+import BottomBar from './FiltersModal/BottomBar';
+import messages from './FiltersModal/messages';
+import TopBar from './FiltersModal/TopBar';
 import InputFilters, { Props as InputFiltersProps } from './InputFilters';
 
 interface Props extends InputFiltersProps {
@@ -31,19 +29,20 @@ const FiltersMapView = ({
   return (
     <>
       <TopBar onReset={onClearFilters} onClose={onClose} />
-
       <Box height="100%" overflowY="auto" bgColor={colors.background}>
         <Box p="16px">
           <InputFilters
             selectedIdeaFilters={selectedIdeaFilters}
             onClearFilters={onClearFilters}
-            showClearButton={false}
-            hideStatusFilter={true}
+            // A reset button is available in the filters top bar
+            showResetButton={false}
+            // BE doesn't currently support filtering map markers by status.
+            // Until this is fixed, we hide the status filter on the map view to reduce confusion.
+            showStatusFilter={false}
             {...filtersProps}
           />
         </Box>
       </Box>
-
       <BottomBar
         buttonText={
           total && isNumber(total) ? (

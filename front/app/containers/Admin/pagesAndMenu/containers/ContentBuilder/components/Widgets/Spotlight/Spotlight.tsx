@@ -8,10 +8,12 @@ import {
   stylingConsts,
   Title,
 } from '@citizenlab/cl2-component-library';
+import { useTheme } from 'styled-components';
 
 import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
 import AvatarBubbles from 'components/AvatarBubbles';
 import Button from 'components/UI/Button';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 interface Props {
   title: string;
@@ -33,11 +35,12 @@ const Spotlight = ({
   userCount,
 }: Props) => {
   const isSmallerThanPhone = useBreakpoint('phone');
+  const theme = useTheme();
 
   return (
     <Box
       px={DEFAULT_PADDING}
-      py={DEFAULT_PADDING}
+      py="56px"
       w="100%"
       display="flex"
       justifyContent="center"
@@ -56,7 +59,13 @@ const Spotlight = ({
           <Title mt="0px" color="tenantText">
             {title}
           </Title>
-          {description && <Text>{description}</Text>}
+          {description && (
+            <Text>
+              <QuillEditedContent textColor={theme.colors.tenantText}>
+                <div dangerouslySetInnerHTML={{ __html: description }} />
+              </QuillEditedContent>
+            </Text>
+          )}
           {buttonText && buttonText !== '' && (
             <Box w="100%" display="flex" mt="20px">
               <Button
