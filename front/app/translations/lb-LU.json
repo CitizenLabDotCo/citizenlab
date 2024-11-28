@@ -1124,7 +1124,6 @@
   "app.containers.IdeaCards.projectFilterTitle": "Projeten",
   "app.containers.IdeaCards.random": "Zoufälleg",
   "app.containers.IdeaCards.resetFilters": "Filteren zerécksetzen",
-  "app.containers.IdeaCards.showResults": "Resultater uweisen",
   "app.containers.IdeaCards.showXResults": "Weist {ideasCount, plural, one {# Resultat} other {# Resultater}}",
   "app.containers.IdeaCards.sortTitle": "Sortéieren",
   "app.containers.IdeaCards.statusTitle": "Status",

@@ -1173,7 +1173,6 @@
   "app.containers.IdeaCards.projectFilterTitle": "Projekty",
   "app.containers.IdeaCards.random": "Losowo",
   "app.containers.IdeaCards.resetFilters": "Usuń filtry",
-  "app.containers.IdeaCards.showResults": "Pokaż wyniki",
   "app.containers.IdeaCards.showXResults": "Pokaż {ideasCount, plural, one {# wynik} few {# wyniki } many {# wyników} other {# wyniki}}",
   "app.containers.IdeaCards.sortTitle": "Sortowanie",
   "app.containers.IdeaCards.statusTitle": "Status",
