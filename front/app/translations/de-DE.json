@@ -1174,7 +1174,6 @@
   "app.containers.IdeaCards.projectFilterTitle": "{orgName, select, München {Bezirke} other {Projekte}}",
   "app.containers.IdeaCards.random": "Zufällig",
   "app.containers.IdeaCards.resetFilters": "Filter zurücksetzen",
-  "app.containers.IdeaCards.showResults": "Ergebnisse anzeigen\n",
   "app.containers.IdeaCards.showXResults": "Zeige {ideasCount, plural, one {# Ergebnis} other {# Ergebnisse}}",
   "app.containers.IdeaCards.sortTitle": "Sortieren",
   "app.containers.IdeaCards.statusTitle": "Status",

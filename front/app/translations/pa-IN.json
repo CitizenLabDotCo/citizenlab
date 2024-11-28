@@ -1174,7 +1174,6 @@
   "app.containers.IdeaCards.projectFilterTitle": "ਪ੍ਰੋਜੈਕਟਸ",
   "app.containers.IdeaCards.random": "ਬੇਤਰਤੀਬ",
   "app.containers.IdeaCards.resetFilters": "ਫਿਲਟਰ ਰੀਸੈਟ ਕਰੋ",
-  "app.containers.IdeaCards.showResults": "ਨਤੀਜੇ ਦਿਖਾਓ",
   "app.containers.IdeaCards.showXResults": "ਦਿਖਾਓ {ideasCount, plural, one {# ਨਤੀਜਾ} other {# ਨਤੀਜਾ}}",
   "app.containers.IdeaCards.sortTitle": "ਛਾਂਟੀ",
   "app.containers.IdeaCards.statusTitle": "ਸਥਿਤੀ",
