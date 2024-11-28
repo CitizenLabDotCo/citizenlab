@@ -63,7 +63,6 @@ const FiltersModal = ({
           onClearFilters={onClearFilters}
           // We have a reset filters button in TopBar
           showResetButton={false}
-          showSearchField={false}
           {...filtersProps}
         />
       </Box>
