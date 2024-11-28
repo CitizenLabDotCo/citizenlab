@@ -58,16 +58,10 @@ const ReviewFlow = ({ project }: { project: IProjectData }) => {
     });
   };
 
-  // TODO: Replace with the commented line once first_published_at is available
-
-  if (project.attributes.publication_status !== 'draft') {
+  // Only display the component if the project has not been published yet
+  if (project.attributes.first_published_at) {
     return null;
   }
-
-  // Only display the component if the project has not been published yet
-  // if (project.attributes.first_published_at) {
-  //   return null;
-  // }
 
   const approvalPending =
     projectReview && projectReview.data.attributes.approved === false;
@@ -122,13 +116,13 @@ const ReviewFlow = ({ project }: { project: IProjectData }) => {
               ? formatMessage(messages.pendingApproval)
               : formatMessage(messages.requestApproval)}
           </Button>
+          <ReviewRequest
+            isOpen={isProjectReviewDropdownOpened}
+            onClose={() => setIsProjectReviewDropdownOpened(false)}
+            projectId={project.id}
+          />
         </Box>
       )}
-      <ReviewRequest
-        isOpen={isProjectReviewDropdownOpened}
-        onClose={() => setIsProjectReviewDropdownOpened(false)}
-        projectId={project.id}
-      />
 
       {showProjectApprovalButton && (
         <Button
