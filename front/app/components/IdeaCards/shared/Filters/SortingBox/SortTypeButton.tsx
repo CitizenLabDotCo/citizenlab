@@ -67,7 +67,7 @@ const SortTypeButton = ({
   };
 
   return (
-    <Box display="flex" alignItems="center">
+    <Box display="flex" alignItems="center" id={`e2e-item-${sortType}`}>
       <HiddenRadio
         id={sortType}
         name="sortType"
