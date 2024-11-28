@@ -1,11 +1,6 @@
 import React from 'react';
 
-import {
-  Box,
-  Button,
-  fontSizes,
-  useBreakpoint,
-} from '@citizenlab/cl2-component-library';
+import { Box, Button, fontSizes } from '@citizenlab/cl2-component-library';
 
 import { IIdeaQueryParameters } from 'api/ideas/types';
 import { IIdeasFilterCounts } from 'api/ideas_filter_counts/types';
@@ -29,13 +24,14 @@ export interface Props {
   numberOfSearchResults: number;
   selectedIdeaFilters: Partial<IIdeaQueryParameters>;
   onClearFilters: () => void;
-  hideResetButton?: boolean;
   onSearch: (searchTerm: string) => void;
   onChangeStatus: (ideaStatus: string | null) => void;
   onChangeTopics: (topics: string[] | null) => void;
   handleSortOnChange: (sort: IdeaSortMethod) => void;
   phaseId?: string;
   hideStatusFilter?: boolean;
+  hideResetButton?: boolean;
+  hideSearchField?: boolean;
 }
 
 const InputFilters = ({
@@ -48,15 +44,12 @@ const InputFilters = ({
   onClearFilters,
   hideResetButton = false,
   hideStatusFilter = false,
+  hideSearchField = false,
   onSearch,
   onChangeStatus,
   onChangeTopics,
   handleSortOnChange,
 }: Props) => {
-  const isSmallerThanTablet = useBreakpoint('tablet');
-  // We have a reset filters button in the top bar of the modal on mobile.
-  const showResetFiltersButton = !isSmallerThanTablet && !hideResetButton;
-
   return (
     <>
       <ScreenReaderOnly aria-live="polite">
@@ -67,10 +60,10 @@ const InputFilters = ({
           />
         )}
       </ScreenReaderOnly>
-      {!isSmallerThanTablet && (
+      {!hideSearchField && (
         // mt is here to ensure search input's label still shows when it's lifted up.
         // Needs to be fixed in the SearchInput component.
-        <Box mt="8px" mb={showResetFiltersButton ? '0' : '20px'}>
+        <Box mt="8px" mb={hideResetButton ? '20px' : '0'}>
           <SearchInput
             defaultValue={defaultValue}
             onChange={onSearch}
@@ -79,7 +72,7 @@ const InputFilters = ({
           />
         </Box>
       )}
-      {showResetFiltersButton && (
+      {!hideResetButton && (
         <Button
           buttonStyle="text"
           fontSize={`${fontSizes.s}px`}
