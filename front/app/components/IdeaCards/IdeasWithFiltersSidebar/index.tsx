@@ -18,7 +18,6 @@ import { IdeaSortMethod } from 'api/phases/types';
 
 import { QueryParameters } from 'containers/IdeasIndexPage';
 
-import filterModalMessages from 'components/FiltersModal/messages';
 import Button from 'components/UI/Button';
 import SearchInput from 'components/UI/SearchInput';
 
@@ -32,13 +31,14 @@ import IdeasView from '../shared/IdeasView';
 import tracks from '../tracks';
 
 import FiltersModal from './FiltersModal';
+import filterModalMessages from './FiltersModal/messages';
 import InputFilters from './InputFilters';
 
 const gapWidth = 35;
 
 const Container = styled.div`
   width: 100%;
-  max-width: 1445px;
+  max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
   display: flex;
@@ -211,7 +211,6 @@ const IdeaCards = ({ ideaQueryParameters, onUpdateQuery }: Props) => {
   const biggerThanLargeTablet = !!(
     windowWidth && windowWidth >= viewportWidths.tablet
   );
-  const smallerThan1440px = !!(windowWidth && windowWidth <= 1440);
   const smallerThanPhone = !!(
     windowWidth && windowWidth <= viewportWidths.phone
   );
@@ -286,14 +285,12 @@ const IdeaCards = ({ ideaQueryParameters, onUpdateQuery }: Props) => {
                 onLoadMore={fetchNextPage}
                 hasMore={!!hasNextPage}
                 loadingMore={isFetchingNextPage}
-                hideImage={biggerThanLargeTablet && smallerThan1440px}
-                hideImagePlaceholder={smallerThan1440px}
-                hideIdeaStatus={
-                  (biggerThanLargeTablet && smallerThan1440px) ||
-                  smallerThanPhone
-                }
+                hideImagePlaceholder={true}
+                hideImage={false}
+                hideIdeaStatus={smallerThanPhone}
                 view="card"
                 hasMoreThanOneView={false}
+                hasFilterSidebar={true}
               />
             </ContentLeft>
 

@@ -20,21 +20,19 @@ const Container = styled.div<{
   contentBgColor?: InputProps['contentBgColor'];
 }>`
   position: fixed;
-  top: 0;
-  left: 0;
   display: flex;
   overflow: hidden;
   background: ${({ contentBgColor }) =>
     contentBgColor ? colors[contentBgColor] : colors.white};
   width: ${({ windowWidth }) => windowWidth}px; /* Fallback for width */
-  @supports (width: 100vw) {
-    width: 100vw; /* Dynamic viewport width for better mobile handling */
+  @supports (width: 100dvw) {
+    width: 100dvw; /* Dynamic viewport width for better mobile handling */
   }
   height: ${({ windowHeight }) => windowHeight}px; /* Fallback for height */
   @supports (height: 100dvh) {
     height: 100dvh; /* Dynamic viewport height for better mobile handling */
   }
-  z-index: 1005; /* there is no top navbar at this screen size, so okay that it is higher than the z-index of NavBar here */
+  z-index: 1005; /* 1005 is needed to appear above the top main navigation */
 
   &.modal-enter {
     transform: translateY(100vh);
@@ -111,6 +109,7 @@ class FullscreenModal extends PureComponent<Props, State> {
         if (event.target) {
           const height = event.target['innerHeight'] as number;
           const width = event.target['innerWidth'] as number;
+
           this.setState({ windowHeight: height, windowWidth: width });
         }
       });
