@@ -27,8 +27,7 @@ const SortingBox = ({ handleSortOnChange, phaseId }: SortingBoxProps) => {
 
   const [searchParams] = useSearchParams();
   const searchParamsSort = searchParams.get('sort') as IdeaSortMethod | null;
-  const currentSortType =
-    searchParamsSort || phaseDefaultSort || 'trending';
+  const currentSortType = searchParamsSort || phaseDefaultSort || 'trending';
 
   return (
     <InputFilterCollapsible title={formatMessage(messages.sortBy)}>
@@ -65,16 +64,14 @@ const SortingBox = ({ handleSortOnChange, phaseId }: SortingBoxProps) => {
         />
       </Box>
       <ScreenReaderOnly aria-live="polite">
-        {currentSortType && (
-          <FormattedMessage
-            {...messages.sortChangedScreenreaderMessage}
-            values={{
-              currentSortType: formatMessage(
-                getLabelForSortingOption(currentSortType)
-              ),
-            }}
-          />
-        )}
+        <FormattedMessage
+          {...messages.sortChangedScreenreaderMessage}
+          values={{
+            currentSortType: formatMessage(
+              getLabelForSortingOption(currentSortType)
+            ),
+          }}
+        />
       </ScreenReaderOnly>
     </InputFilterCollapsible>
   );
