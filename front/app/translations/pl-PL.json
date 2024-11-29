@@ -194,6 +194,7 @@
   "app.components.IdeaCards.filters.popular": "Najbardziej lubiany",
   "app.components.IdeaCards.filters.random": "Losowo",
   "app.components.IdeaCards.filters.sortBy": "Sortuj według",
+  "app.components.IdeaCards.filters.sortChangedScreenreaderMessage": "Sortowanie zmieniono na: {currentSortType}",
   "app.components.IdeaCards.filters.trending": "Trendy",
   "app.components.IdeaCards.showMore": "Pokaż więcej",
   "app.components.IdeasMap.a11y_hideIdeaCard": "Ukryj kartkę z pomysłem.",
