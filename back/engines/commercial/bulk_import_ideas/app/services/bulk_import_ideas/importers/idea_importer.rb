@@ -113,12 +113,24 @@ module BulkImportIdeas::Importers
       raise invalid_date_error unless idea_row[:published_at].match? DATE_FORMAT_REGEX
 
       begin
-        published_at = Date.parse idea_row[:published_at]
+        published_at = date_with_time idea_row[:published_at]
       rescue StandardError => _e
         raise invalid_date_error
       end
 
       idea_attributes[:published_at] = published_at
+    end
+
+    # Add the current time to the date to ensure consistent sorting by published_at date
+    def date_with_time(date_string)
+      published_date = DateTime.parse date_string
+      current_time = Time.now
+      published_date.change(
+        hour: current_time.hour,
+        min: current_time.min,
+        sec: current_time.sec,
+        usec: current_time.usec
+      )
     end
 
     def add_publication_status(_idea_row, idea_attributes)
