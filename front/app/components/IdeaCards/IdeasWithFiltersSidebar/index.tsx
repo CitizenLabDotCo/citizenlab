@@ -8,6 +8,7 @@ import {
   useWindowSize,
   Box,
   Title,
+  Text,
 } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -271,6 +272,17 @@ const IdeasWithFiltersSidebar = ({
                 mt="4px"
               />
             </>
+          )}
+          {/* 
+            If we have an inputTerm (are on the project page), we don't need this because the number of results is displayed next to the heading (see above). This fallback is used on the /ideas page, where we have no inputTerm. 
+            TO DO: refactor this component so we can add it to the page instead to this general component.
+          */}
+          {!inputTerm && (
+            <Text mb="8px">
+              {formatMessage(messages.numberResults, {
+                postCount: list.length,
+              })}
+            </Text>
           )}
           <Box display={selectedView === 'map' ? 'block' : 'flex'}>
             <ContentLeft>

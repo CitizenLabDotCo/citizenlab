@@ -1174,7 +1174,6 @@
   "app.containers.IdeaCards.projectFilterTitle": "Projekt",
   "app.containers.IdeaCards.random": "Slumpmässig",
   "app.containers.IdeaCards.resetFilters": "Återställ filter",
-  "app.containers.IdeaCards.showResults": "Visa resultat",
   "app.containers.IdeaCards.showXResults": "Visa {ideasCount, plural, one {# resultat} other {# resultat}}",
   "app.containers.IdeaCards.sortTitle": "Sortering",
   "app.containers.IdeaCards.statusTitle": "Status",

@@ -13,10 +13,6 @@ export default defineMessages({
     id: 'app.components.FiltersModal.a11y_closeFilterPanel',
     defaultMessage: 'Close filter panel',
   },
-  showResults: {
-    id: 'app.containers.IdeaCards.showResults',
-    defaultMessage: 'Show results',
-  },
   showXResults: {
     id: 'app.containers.IdeaCards.showXResults',
     defaultMessage:
