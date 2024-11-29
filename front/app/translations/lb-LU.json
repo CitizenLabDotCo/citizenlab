@@ -132,7 +132,7 @@
   "app.components.ErrorBoundary.openFormText": "Hëlleft eis ze verstoen wat geschitt ass ",
   "app.components.ErrorToast.budgetExceededError": "Dir hutt net genuch Budget",
   "app.components.ErrorToast.votesExceededError": "Dir hutt net genuch Stëmmen méi",
-  "app.components.EventAttendanceButton.attend": "Bedeelegt",
+  "app.components.EventAttendanceButton.attend": "Participéiren",
   "app.components.EventAttendanceButton.attending": "Bedeelegt",
   "app.components.EventAttendanceButton.forwardToFriend": "Fuert op e Frënd",
   "app.components.EventAttendanceButton.seeYouThere": "Bis dann dohannen!",
