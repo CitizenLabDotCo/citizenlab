@@ -212,7 +212,7 @@ const IdeasWithFiltersSidebar = ({
   return (
     <Container id="e2e-ideas-container">
       <Box display="flex" justifyContent="space-between" mb="8px">
-        {inputTerm ? (
+        {inputTerm && (
           <Title variant="h4" as="h2" mt="auto" mb="auto" color="tenantText">
             {formatMessage(messages.ideasFilterSidebarTitle, {
               numberIdeas: list ? list.length : 0,
@@ -231,12 +231,6 @@ const IdeasWithFiltersSidebar = ({
               ),
             })}
           </Title>
-        ) : (
-          <Text m="0px">
-            {formatMessage(messages.numberResults, {
-              postCount: list ? list.length : 0,
-            })}
-          </Text>
         )}
 
         {showViewButtons && (
@@ -279,6 +273,11 @@ const IdeasWithFiltersSidebar = ({
               />
             </>
           )}
+          <Text mb="8px">
+            {formatMessage(messages.numberResults, {
+              postCount: list.length,
+            })}
+          </Text>
           <Box display={selectedView === 'map' ? 'block' : 'flex'}>
             <ContentLeft>
               <IdeasView
