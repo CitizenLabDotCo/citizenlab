@@ -1222,7 +1222,7 @@
   "app.containers.Admin.tools.powerBITemplates.dataflowTemplateDescription": "Os ydych chi'n bwriadu defnyddio'ch data Go Vocal o fewn llif data Power BI, bydd y templed hwn yn caniatáu ichi sefydlu llif data newydd sy'n cysylltu â'ch data Go Vocal. Unwaith y byddwch wedi lawrlwytho'r templed hwn rhaid i chi ddod o hyd i'r llinynnau canlynol a'u disodli yn gyntaf ##CLIENT_ID## a ##CLIENT_SECRET## yn y templed gyda'ch manylion API cyhoeddus cyn eu llwytho i PowerBI.",
   "app.containers.Admin.tools.powerBITemplates.dataflowTemplateDownload": "Lawrlwythwch y templed llif data",
   "app.containers.Admin.tools.powerBITemplates.dataflowTemplateTitle": "Templed llif data",
-  "app.containers.Admin.tools.powerBITemplates.intro": "Note: To use either of these Power BI templates, you must first {link}",
+  "app.containers.Admin.tools.powerBITemplates.intro": "Nodyn: I ddefnyddio'r naill neu'r llall o'r templedi Power BI hyn, rhaid i chi yn gyntaf {link}",
   "app.containers.Admin.tools.powerBITemplates.publicApiLinkText": "creu set o gymwysterau ar gyfer ein API cyhoeddus",
   "app.containers.Admin.tools.powerBITemplates.reportTemplateDescription3": "Bydd y templed hwn yn creu adroddiad Power BI yn seiliedig ar eich data Go Vocal. Bydd yn sefydlu'r holl gysylltiadau data i'ch platfform Go Vocal, yn creu'r model data a rhai dangosfyrddau rhagosodedig. Pan fyddwch chi'n agor y templed yn Power BI fe'ch anogir i nodi'ch tystlythyrau API cyhoeddus. Bydd angen i chi hefyd fynd i mewn i'r Base Url ar gyfer eich platfform, sef: {baseUrl}",
   "app.containers.Admin.tools.powerBITemplates.reportTemplateDownload": "Lawrlwythwch y templed adrodd",
