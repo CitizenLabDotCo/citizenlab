@@ -1,14 +1,8 @@
 import React from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
-import { isNumber } from 'lodash-es';
-
-import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
-
-import { FormattedMessage } from 'utils/cl-intl';
 
 import BottomBar from './ButtonWithFiltersModal/FiltersModal/BottomBar';
-import messages from './ButtonWithFiltersModal/FiltersModal/messages';
 import TopBar from './ButtonWithFiltersModal/FiltersModal/TopBar';
 import InputFilters, { Props as InputFiltersProps } from './InputFilters';
 
@@ -23,9 +17,6 @@ const FiltersMapView = ({
   onClose,
   ...filtersProps
 }: Props) => {
-  const { data: ideasFilterCounts } = useIdeasFilterCounts(selectedIdeaFilters);
-  const total = ideasFilterCounts?.data.attributes.total || null;
-
   return (
     <>
       <TopBar onReset={onClearFilters} onClose={onClose} />
@@ -43,21 +34,7 @@ const FiltersMapView = ({
           />
         </Box>
       </Box>
-      <BottomBar
-        buttonText={
-          total && isNumber(total) ? (
-            <FormattedMessage
-              {...messages.showXResults}
-              values={{
-                ideasCount: total,
-              }}
-            />
-          ) : (
-            <FormattedMessage {...messages.showResults} />
-          )
-        }
-        onClick={onClose}
-      />
+      <BottomBar onClick={onClose} selectedIdeaFilters={selectedIdeaFilters} />
     </>
   );
 };
