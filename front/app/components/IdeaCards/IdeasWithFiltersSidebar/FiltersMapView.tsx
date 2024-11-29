@@ -7,9 +7,9 @@ import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import BottomBar from './ButtonWithFiltersModal/BottomBar';
-import messages from './ButtonWithFiltersModal/messages';
-import TopBar from './ButtonWithFiltersModal/TopBar';
+import BottomBar from './ButtonWithFiltersModal/FiltersModal/BottomBar';
+import messages from './ButtonWithFiltersModal/FiltersModal/messages';
+import TopBar from './ButtonWithFiltersModal/FiltersModal/TopBar';
 import InputFilters, { Props as InputFiltersProps } from './InputFilters';
 
 interface Props extends InputFiltersProps {
