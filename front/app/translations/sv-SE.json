@@ -194,6 +194,7 @@
   "app.components.IdeaCards.filters.popular": "Mest omtyckt",
   "app.components.IdeaCards.filters.random": "Slumpmässig",
   "app.components.IdeaCards.filters.sortBy": "Sortera efter",
+  "app.components.IdeaCards.filters.sortChangedScreenreaderMessage": "Sortering ändrad till: {currentSortType}",
   "app.components.IdeaCards.filters.trending": "Trendande",
   "app.components.IdeaCards.showMore": "Visa mer",
   "app.components.IdeasMap.a11y_hideIdeaCard": "Dölj idékort.",
