@@ -727,7 +727,7 @@
   "app.components.formBuilder.open": "مفتوح",
   "app.components.formBuilder.optional": "اختياري",
   "app.components.formBuilder.other": "آخر",
-  "app.components.formBuilder.otherOption": "\"Other\" option",
+  "app.components.formBuilder.otherOption": "\"خيار آخر",
   "app.components.formBuilder.otherOptionTooltip": "اسمح للمشاركين بإدخال استجابة مخصصة إذا كانت الإجابات المقدمة لا تتطابق مع تفضيلاتهم",
   "app.components.formBuilder.page": "الصفحة",
   "app.components.formBuilder.pageRuleLabel": "الصفحة التالية هي:",
