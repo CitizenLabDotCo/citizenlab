@@ -1062,7 +1062,7 @@
   "app.containers.Admin.projects.project.survey.newAnalysis": "Uusi analyysi",
   "app.containers.Admin.projects.project.survey.nextInsight": "Seuraava oivallus",
   "app.containers.Admin.projects.project.survey.openAnalysis": "Avaa AI-analyysi",
-  "app.containers.Admin.projects.project.survey.otherResponses": "Other responses",
+  "app.containers.Admin.projects.project.survey.otherResponses": "Muut vastaukset",
   "app.containers.Admin.projects.project.survey.previousInsight": "Edellinen näkemys",
   "app.containers.Admin.projects.project.survey.responses": "Vastaukset",
   "app.containers.Admin.projects.project.survey.upsell.bullet1": "Tee välittömästi yhteenveto kaikista vastauksistasi.",
