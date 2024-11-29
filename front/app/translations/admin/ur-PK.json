@@ -2101,7 +2101,7 @@
   "app.containers.AdminPage.SettingsPage.userNameDisplayTitle": "صارف نام ڈسپلے (صرف تصدیق شدہ ای میل والے صارفین کے لیے)",
   "app.containers.AdminPage.SideBar.administrator": "ایڈمنسٹریٹر",
   "app.containers.AdminPage.SideBar.communityPlatform": "کمیونٹی پلیٹ فارم",
-  "app.containers.AdminPage.SideBar.customerPortal": "کسٹمر پورٹل",
+  "app.containers.AdminPage.SideBar.customerPortal": "Customer portal",
   "app.containers.AdminPage.SideBar.dashboard": "ڈیش بورڈ",
   "app.containers.AdminPage.SideBar.emails": "ای میلز",
   "app.containers.AdminPage.SideBar.folderManager": "فولڈر مینیجر",
