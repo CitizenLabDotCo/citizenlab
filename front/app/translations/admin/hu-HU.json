@@ -1062,7 +1062,7 @@
   "app.containers.Admin.projects.project.survey.newAnalysis": "New analysis",
   "app.containers.Admin.projects.project.survey.nextInsight": "Next insight",
   "app.containers.Admin.projects.project.survey.openAnalysis": "Open AI analysis",
-  "app.containers.Admin.projects.project.survey.otherResponses": "Egyéb válaszok",
+  "app.containers.Admin.projects.project.survey.otherResponses": "Other responses",
   "app.containers.Admin.projects.project.survey.previousInsight": "Previous insight",
   "app.containers.Admin.projects.project.survey.responses": "Responses",
   "app.containers.Admin.projects.project.survey.upsell.bullet1": "Instantly summarise all your responses.",
