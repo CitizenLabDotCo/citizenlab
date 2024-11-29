@@ -1062,7 +1062,7 @@
   "app.containers.Admin.projects.project.survey.newAnalysis": "Nouvelle analyse",
   "app.containers.Admin.projects.project.survey.nextInsight": "Aperçu suivant",
   "app.containers.Admin.projects.project.survey.openAnalysis": "Analyse ouverte de l'IA",
-  "app.containers.Admin.projects.project.survey.otherResponses": "Autres réponses",
+  "app.containers.Admin.projects.project.survey.otherResponses": "Other responses",
   "app.containers.Admin.projects.project.survey.previousInsight": "Aperçu précédent",
   "app.containers.Admin.projects.project.survey.responses": "Réponses",
   "app.containers.Admin.projects.project.survey.upsell.bullet1": "Résumez automatiquement toutes vos réponses.",
