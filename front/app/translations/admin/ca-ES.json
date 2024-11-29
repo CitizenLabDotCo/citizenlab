@@ -844,7 +844,7 @@
   "app.containers.Admin.projects.all.PDFExportModal.selectIdeationPhase": "Seleccioneu una fase d'ideació.",
   "app.containers.Admin.projects.all.askPersonalData": "Demanar dades personals",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm": "Preguntes que no s'admeten actualment: imatges, etiquetes i càrrega de fitxers.",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey2": "Questions not currently supported: Mapping questions (drop pin, draw route and draw area), and file upload questions.",
+  "app.containers.Admin.projects.all.clickExportToPDFSurvey2": "Preguntes que no s'admeten actualment: preguntes de mapeig (punta, dibuix de ruta i àrea de dibuix) i preguntes de càrrega de fitxers.",
   "app.containers.Admin.projects.all.components.archived": "Archived",
   "app.containers.Admin.projects.all.components.draft": "Draft",
   "app.containers.Admin.projects.all.components.manageButtonLabel": "Edit",
