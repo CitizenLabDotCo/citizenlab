@@ -1863,7 +1863,7 @@
   "app.containers.UsersShowPage.inputs": "Inputs",
   "app.containers.UsersShowPage.invisibleTitlePostsList": "Ikkussat tamarmik uuminnga peqataasumit ilanngunneqartut",
   "app.containers.UsersShowPage.invisibleTitleUserComments": "Atuisumit uuminnga isumasssarsiat siunnersuutigineqarsimasut tamarmik",
-  "app.containers.UsersShowPage.loadMore": "Load more",
+  "app.containers.UsersShowPage.loadMore": "Allanik ilioraagit",
   "app.containers.UsersShowPage.loadMoreComments": "Isumassarsiat amerlanerit aakkit",
   "app.containers.UsersShowPage.loadingComments": "Oqaaseqaatit aaneqarput...",
   "app.containers.UsersShowPage.loadingEvents": "Loading events...",
