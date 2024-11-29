@@ -182,6 +182,8 @@ describe ContentBuilder::LayoutService do
     it 'deletes all Spotlight widgets for a publication from homepage layout' do
       service.clean_homepage_layout_when_publication_deleted project1
 
+      expect(layout.reload.craftjs_json['ROOT']['nodes']).to eq %w[hjDFRYnSaG nUOW77iNcW Dtg42sYnM]
+
       expect(layout.reload.craftjs_json).to have_key 'hjDFRYnSaG'
       expect(layout.reload.craftjs_json).not_to have_key 'lsKEOMxTkR'
       expect(layout.reload.craftjs_json).not_to have_key 'ffJQERoXGy'

@@ -37,8 +37,14 @@ module ContentBuilder
     def remove_spotlight_widgets_for_publication(publication, homepage_layout)
       publication_id = publication.id
 
-      homepage_layout.craftjs_json.delete_if do |_key, node|
-        node['type']['resolvedName'] == 'Spotlight' && node['props']['publicationId'] == publication_id
+      homepage_layout.craftjs_json.each do |key, node|
+        next unless node['type']['resolvedName'] == 'Spotlight'
+
+        # Delete the key-node pair, and the reference to it, if it's a spotlight widget for the publication
+        if node['props']['publicationId'] == publication_id
+          homepage_layout.craftjs_json.delete(key)
+          homepage_layout.craftjs_json['ROOT']['nodes'].delete(key)
+        end
       end
 
       homepage_layout.save!

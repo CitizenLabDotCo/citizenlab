@@ -535,6 +535,11 @@ resource 'Projects' do
           expect(layout.reload.craftjs_json['lsKEOMxTkR']).to be_nil
         end
 
+        example 'References to deleted homepage layout Spotlight widgets are also removed', document: false do
+          do_request
+          expect(layout.reload.craftjs_json['ROOT']['nodes']).to eq %w[nUOW77iNcW]
+        end
+
         example(
           'Deleting removes its admin_publication ID from Selection widget(s) in homepage layout',
           document: false
