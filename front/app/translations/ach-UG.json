@@ -194,6 +194,7 @@
   "app.components.IdeaCards.filters.popular": "crwdns3645561:0crwdne3645561:0",
   "app.components.IdeaCards.filters.random": "crwdns3645563:0crwdne3645563:0",
   "app.components.IdeaCards.filters.sortBy": "crwdns3645565:0crwdne3645565:0",
+  "app.components.IdeaCards.filters.sortChangedScreenreaderMessage": "crwdns3669021:0{currentSortType}crwdne3669021:0",
   "app.components.IdeaCards.filters.trending": "crwdns3645567:0crwdne3645567:0",
   "app.components.IdeaCards.showMore": "crwdns3645569:0crwdne3645569:0",
   "app.components.IdeasMap.a11y_hideIdeaCard": "crwdns3645571:0crwdne3645571:0",
