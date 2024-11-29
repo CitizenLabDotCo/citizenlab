@@ -1173,7 +1173,7 @@
   "app.containers.IdeaCards.projectFilterTitle": "المشاريع",
   "app.containers.IdeaCards.random": "عشوائي",
   "app.containers.IdeaCards.resetFilters": "إعادة تعيين عوامل التصفية ",
-  "app.containers.IdeaCards.showResults": "Show results",
+  "app.containers.IdeaCards.showResults": "عرض النتائج",
   "app.containers.IdeaCards.showXResults": "اعرض {ideasCount, plural, no {# results} واحدة # result} أخرى {# results}}",
   "app.containers.IdeaCards.sortTitle": "فرز",
   "app.containers.IdeaCards.statusTitle": "الحالة",
