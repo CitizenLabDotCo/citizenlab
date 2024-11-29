@@ -201,7 +201,7 @@ const IdeasWithFiltersSidebar = ({
   return (
     <Container id="e2e-ideas-container">
       <Box display="flex" justifyContent="space-between" mb="8px">
-        {inputTerm ? (
+        {inputTerm && (
           <Title variant="h4" as="h2" mt="auto" mb="auto" color="tenantText">
             {formatMessage(messages.ideasFilterSidebarTitle, {
               numberIdeas: list ? list.length : 0,
@@ -220,12 +220,6 @@ const IdeasWithFiltersSidebar = ({
               ),
             })}
           </Title>
-        ) : (
-          <Text m="0px">
-            {formatMessage(messages.numberResults, {
-              postCount: list ? list.length : 0,
-            })}
-          </Text>
         )}
 
         {showViewButtons && (
@@ -252,6 +246,17 @@ const IdeasWithFiltersSidebar = ({
             onChangeTopics={handleTopicsOnChange}
             handleSortOnChange={handleSortOnChange}
           />
+          {/* 
+            If we have an inputTerm (are on the project page), we don't need this because the number of results is displayed next to the heading (see above). This fallback is used on the /ideas page, where we have no inputTerm. 
+            TO DO: refactor this component so we can add it to the page instead to this general component.
+          */}
+          {!inputTerm && (
+            <Text mb="8px">
+              {formatMessage(messages.numberResults, {
+                postCount: list.length,
+              })}
+            </Text>
+          )}
           <Box display={selectedView === 'map' ? 'block' : 'flex'}>
             <ContentLeft>
               <IdeasView
