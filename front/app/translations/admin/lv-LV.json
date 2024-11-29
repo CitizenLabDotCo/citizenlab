@@ -2013,7 +2013,6 @@
   "app.containers.AdminPage.SettingsPage.anonymousNameScheme_animal2": "Dzīvnieks - piemēram, kaķis zilonis",
   "app.containers.AdminPage.SettingsPage.anonymousNameScheme_user": "Lietotājs - piemēram, Lietotājs 123456",
   "app.containers.AdminPage.SettingsPage.approvalSave": "Saglabāt",
-  "app.containers.AdminPage.SettingsPage.approvalSubtitle": "Projektu vadītājiem ir nepieciešams apstiprinājums, lai publicētu projektu, kad tas pirmo reizi tiek palaists. Varat pielāgot, kas saņem paziņojumus.",
   "app.containers.AdminPage.SettingsPage.approvalTitle": "Projekta apstiprināšanas iestatījumi",
   "app.containers.AdminPage.SettingsPage.areaDeletionConfirmation": "Vai esat pārliecināts, ka vēlaties dzēst šo zonu?",
   "app.containers.AdminPage.SettingsPage.areaTerm": "Vienas zonas apzīmējums (vienskaitlī)",

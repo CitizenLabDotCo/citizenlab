@@ -2013,7 +2013,6 @@
   "app.containers.AdminPage.SettingsPage.anonymousNameScheme_animal2": "حيوان - مثل الفيل والقط",
   "app.containers.AdminPage.SettingsPage.anonymousNameScheme_user": "المستخدم - على سبيل المثال المستخدم 123456",
   "app.containers.AdminPage.SettingsPage.approvalSave": "يحفظ",
-  "app.containers.AdminPage.SettingsPage.approvalSubtitle": "يحتاج مديرو المشاريع إلى الحصول على موافقة لنشر مشروع ما في المرة الأولى التي يتم فيها تشغيله. يمكنك تخصيص من يتلقى الإشعارات.",
   "app.containers.AdminPage.SettingsPage.approvalTitle": "إعدادات الموافقة على المشروع",
   "app.containers.AdminPage.SettingsPage.areaDeletionConfirmation": "هل تريد حذف هذه المنطقة بالتأكيد؟",
   "app.containers.AdminPage.SettingsPage.areaTerm": "مصطلح لمنطقة واحدة (مفرد)",

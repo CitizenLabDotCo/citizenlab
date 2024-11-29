@@ -2013,7 +2013,6 @@
   "app.containers.AdminPage.SettingsPage.anonymousNameScheme_animal2": "Animal - ej. Elefante Gato",
   "app.containers.AdminPage.SettingsPage.anonymousNameScheme_user": "Usuario - ej. Usuario 123456",
   "app.containers.AdminPage.SettingsPage.approvalSave": "Guarda",
-  "app.containers.AdminPage.SettingsPage.approvalSubtitle": "Los jefes de proyecto necesitan aprobación para publicar un proyecto la primera vez que se pone en marcha. Puedes personalizar quién recibe las notificaciones.",
   "app.containers.AdminPage.SettingsPage.approvalTitle": "Ajustes de aprobación del proyecto",
   "app.containers.AdminPage.SettingsPage.areaDeletionConfirmation": "¿Está seguro que desea eliminar este campo?",
   "app.containers.AdminPage.SettingsPage.areaTerm": "Término para una localidad/barrio/zona (singular)",

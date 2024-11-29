@@ -2013,7 +2013,6 @@
   "app.containers.AdminPage.SettingsPage.anonymousNameScheme_animal2": "جانور - مثال کے طور پر ہاتھی بلی",
   "app.containers.AdminPage.SettingsPage.anonymousNameScheme_user": "صارف - جیسے صارف 123456",
   "app.containers.AdminPage.SettingsPage.approvalSave": "محفوظ کریں۔",
-  "app.containers.AdminPage.SettingsPage.approvalSubtitle": "پروجیکٹ مینیجرز کو کسی پروجیکٹ کے پہلی بار لائیو ہونے پر اسے شائع کرنے کے لیے منظوری کی ضرورت ہوتی ہے۔ آپ اپنی مرضی کے مطابق کر سکتے ہیں کہ اطلاعات کس کو ملتی ہیں۔",
   "app.containers.AdminPage.SettingsPage.approvalTitle": "پروجیکٹ کی منظوری کی ترتیبات",
   "app.containers.AdminPage.SettingsPage.areaDeletionConfirmation": "کیا آپ واقعی اس علاقے کو حذف کرنا چاہتے ہیں؟",
   "app.containers.AdminPage.SettingsPage.areaTerm": "ایک علاقے کے لیے اصطلاح (واحد)",
