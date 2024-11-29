@@ -296,6 +296,12 @@ pt:
       optional: 'opcional'
       permission: 'Permissão'
       choose_as_many: 'Escolha quantos quiser'
+      choose_exactly:
+        one: 'Escolha exatamente a opção %{count}'
+        other: 'Escolha exatamente %{count} opções'
+      choose_between: 'Escolha entre as opções %{min} e %{max}'
+      choose_at_least: 'Escolha pelo menos %{count} opções'
+      choose_at_most: 'Escolha no máximo %{count} opções'
       this_answer: 'Esta resposta só será partilhada com os moderadores e não com o público.'
       page: 'Página'
       date_published: 'Data de publicação (dd-mm-aaaa)'

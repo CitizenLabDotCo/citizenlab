@@ -296,6 +296,12 @@ lb:
       optional: 'fakultativ'
       permission: 'Erlaabnis'
       choose_as_many: 'Wielt esou vill wéi Dir wëllt'
+      choose_exactly:
+        one: 'Wielt genau %{count} Optioun'
+        other: 'Wielt genau %{count} Optiounen'
+      choose_between: 'Wielt tëscht %{min} an %{max} Optiounen'
+      choose_at_least: 'Wielt op d''mannst %{count} Optiounen'
+      choose_at_most: 'Wielt maximal %{count} Optiounen'
       this_answer: 'Dës Äntwert gëtt nëmme mat Moderatoren gedeelt, an net un de Public.'
       page: 'Säit'
       date_published: 'Verëffentlechungsdatum (dd-mm-jjjj)'
