@@ -194,6 +194,7 @@
   "app.components.IdeaCards.filters.popular": "Hoffi fwyaf",
   "app.components.IdeaCards.filters.random": "Ar hap",
   "app.components.IdeaCards.filters.sortBy": "Trefnu yn ôl",
+  "app.components.IdeaCards.filters.sortChangedScreenreaderMessage": "Newidiwyd y drefn i: {currentSortType}",
   "app.components.IdeaCards.filters.trending": "Tueddu",
   "app.components.IdeaCards.showMore": "Dangos mwy",
   "app.components.IdeasMap.a11y_hideIdeaCard": "Cuddio cerdyn syniad.",
