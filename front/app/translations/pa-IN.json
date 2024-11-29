@@ -194,6 +194,7 @@
   "app.components.IdeaCards.filters.popular": "ਸਭ ਤੋਂ ਵੱਧ ਪਸੰਦ ਕੀਤਾ",
   "app.components.IdeaCards.filters.random": "ਬੇਤਰਤੀਬ",
   "app.components.IdeaCards.filters.sortBy": "ਦੇ ਨਾਲ ਕ੍ਰਮਬੱਧ",
+  "app.components.IdeaCards.filters.sortChangedScreenreaderMessage": "ਛਾਂਟੀ ਨੂੰ ਇਸ ਵਿੱਚ ਬਦਲਿਆ ਗਿਆ: {currentSortType}",
   "app.components.IdeaCards.filters.trending": "ਪ੍ਰਚਲਿਤ",
   "app.components.IdeaCards.showMore": "ਹੋਰ ਦਿਖਾਓ",
   "app.components.IdeasMap.a11y_hideIdeaCard": "ਆਈਡੀਆ ਕਾਰਡ ਲੁਕਾਓ।",
