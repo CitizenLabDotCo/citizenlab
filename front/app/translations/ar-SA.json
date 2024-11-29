@@ -194,6 +194,7 @@
   "app.components.IdeaCards.filters.popular": "الأكثر اعجابا",
   "app.components.IdeaCards.filters.random": "عشوائي",
   "app.components.IdeaCards.filters.sortBy": "فرز حسب",
+  "app.components.IdeaCards.filters.sortChangedScreenreaderMessage": "تم تغيير الترتيب إلى: {currentSortType}",
   "app.components.IdeaCards.filters.trending": "الأكثر رواجًا",
   "app.components.IdeaCards.showMore": "اعرض المزيد",
   "app.components.IdeasMap.a11y_hideIdeaCard": "قم بإخفاء بطاقة الأفكار.",
