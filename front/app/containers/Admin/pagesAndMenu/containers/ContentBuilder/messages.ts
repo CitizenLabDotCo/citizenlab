@@ -13,6 +13,10 @@ export default defineMessages({
     id: 'app.containers.admin.ContentBuilder.homepage.projectsTitle',
     defaultMessage: 'Projects',
   },
+  projectsMapTitle: {
+    id: 'app.containers.admin.ContentBuilder.homepage.projectsMapTitle',
+    defaultMessage: 'Projects map',
+  },
   homepageBannerTitle: {
     id: 'app.containers.admin.ContentBuilder.homepage.homepageBannerTitle',
     defaultMessage: 'Homepage banner',

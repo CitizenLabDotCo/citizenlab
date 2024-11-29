@@ -50,6 +50,7 @@ import OpenToParticipation, {
 } from '../Widgets/OpenToParticipation';
 import Projects, { projectsTitle } from '../Widgets/Projects';
 import projectsMessages from '../Widgets/Projects/messages';
+import ProjectsMap, { projectsMapTitle } from '../Widgets/ProjectsMap';
 import Published, { publishedTitle } from '../Widgets/Published';
 import Selection, { selectionTitle } from '../Widgets/Selection';
 import Spotlight, {
@@ -197,6 +198,12 @@ const HomepageBuilderToolbox = ({
           }
           icon="projects"
           label={formatMessage(projectsTitle)}
+        />
+        <DraggableElement
+          id="e2e-draggable-project-map"
+          component={<ProjectsMap />}
+          icon="map"
+          label={formatMessage(projectsMapTitle)}
         />
       </Section>
       <Section>

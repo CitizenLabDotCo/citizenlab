@@ -75,6 +75,7 @@ export interface IProjectAttributes {
   updated_at: string;
   header_bg: ProjectHeaderBgImageSizes;
   header_bg_alt_text_multiloc: Multiloc;
+  location_geojson?: GeoJSON.Point | null;
   comments_count: number;
   avatars_count: number;
   followers_count: number;
@@ -110,6 +111,7 @@ export type ActionDescriptors = {
 };
 
 export interface IProjectData {
+  location_geojson?: GeoJSON.Point | null;
   id: string;
   type: 'project';
   attributes: IProjectAttributes;

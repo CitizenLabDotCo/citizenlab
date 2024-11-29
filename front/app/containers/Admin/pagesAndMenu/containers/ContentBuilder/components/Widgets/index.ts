@@ -36,6 +36,7 @@ import OpenToParticipation, {
   openToParticipationTitle,
 } from './OpenToParticipation';
 import Projects, { projectsTitle } from './Projects';
+import ProjectsMap, { projectsMapTitle } from './ProjectsMap';
 import Published, { publishedTitle } from './Published';
 import Selection, { selectionTitle } from './Selection';
 import Spotlight, { spotlightTitle } from './Spotlight';
@@ -59,6 +60,7 @@ export const WIDGETS = {
   HomepageBanner,
   OpenToParticipation,
   Projects,
+  ProjectsMap,
   Published,
   Selection,
   Spotlight,
@@ -91,6 +93,7 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   HomepageBanner: homepageBannerTitle,
   OpenToParticipation: openToParticipationTitle,
   Projects: projectsTitle,
+  ProjectsMap: projectsMapTitle,
   Published: publishedTitle,
   Selection: selectionTitle,
   Spotlight: spotlightTitle,
