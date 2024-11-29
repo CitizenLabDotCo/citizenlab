@@ -194,6 +194,7 @@
   "app.components.IdeaCards.filters.popular": "Eniten tykätty",
   "app.components.IdeaCards.filters.random": "Satunnainen",
   "app.components.IdeaCards.filters.sortBy": "Lajitteluperuste",
+  "app.components.IdeaCards.filters.sortChangedScreenreaderMessage": "Lajittelu muuttui: {currentSortType}",
   "app.components.IdeaCards.filters.trending": "Trendaavat",
   "app.components.IdeaCards.showMore": "Näytä lisää",
   "app.components.IdeasMap.a11y_hideIdeaCard": "Piilota ideakortti.",
