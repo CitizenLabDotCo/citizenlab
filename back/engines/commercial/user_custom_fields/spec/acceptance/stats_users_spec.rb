@@ -325,11 +325,11 @@ resource 'Stats - Users' do
             let(:expected_worksheet_name) { 'users_by_select_field' }
             let(:expected_worksheet_values) do
               [
-                %w[option option_id users],
-                ['youth council', @option1.key, 1],
-                ['youth council', @option2.key, 1],
-                ['youth council', @option3.key, 0],
-                ['_blank', '_blank', 1]
+                %w[option users],
+                ['youth council', 1],
+                ['youth council', 1],
+                ['youth council', 0],
+                ['_blank', 1]
               ]
             end
           end
