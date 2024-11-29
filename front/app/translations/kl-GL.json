@@ -194,6 +194,7 @@
   "app.components.IdeaCards.filters.popular": "Most liked",
   "app.components.IdeaCards.filters.random": "Random",
   "app.components.IdeaCards.filters.sortBy": "Sort by",
+  "app.components.IdeaCards.filters.sortChangedScreenreaderMessage": "Sorting changed to: {currentSortType}",
   "app.components.IdeaCards.filters.trending": "Trending",
   "app.components.IdeaCards.showMore": "Allanik takusaqarit",
   "app.components.IdeasMap.a11y_hideIdeaCard": "Idékort toqqoruk.",
