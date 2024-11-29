@@ -844,7 +844,7 @@
   "app.containers.Admin.projects.all.PDFExportModal.selectIdeationPhase": "الرجاء تحديد مرحلة التفكير.",
   "app.containers.Admin.projects.all.askPersonalData": "اسأل البيانات الشخصية",
   "app.containers.Admin.projects.all.clickExportToPDFIdeaForm": "الأسئلة غير المدعومة حاليًا: الصور والعلامات وتحميل الملفات.",
-  "app.containers.Admin.projects.all.clickExportToPDFSurvey2": "Questions not currently supported: Mapping questions (drop pin, draw route and draw area), and file upload questions.",
+  "app.containers.Admin.projects.all.clickExportToPDFSurvey2": "الأسئلة غير المدعومة حاليًا: أسئلة التعيين (دبوس الإسقاط، ورسم المسار، ومنطقة الرسم)، وأسئلة تحميل الملفات.",
   "app.containers.Admin.projects.all.components.archived": "مؤرشف",
   "app.containers.Admin.projects.all.components.draft": "مسوّدة",
   "app.containers.Admin.projects.all.components.manageButtonLabel": "إدارة",
