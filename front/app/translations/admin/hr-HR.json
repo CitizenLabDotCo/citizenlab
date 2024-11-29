@@ -1062,7 +1062,7 @@
   "app.containers.Admin.projects.project.survey.newAnalysis": "Nova analiza",
   "app.containers.Admin.projects.project.survey.nextInsight": "Sljedeći uvid",
   "app.containers.Admin.projects.project.survey.openAnalysis": "Otvorena AI analiza",
-  "app.containers.Admin.projects.project.survey.otherResponses": "Ostali odgovori",
+  "app.containers.Admin.projects.project.survey.otherResponses": "Other responses",
   "app.containers.Admin.projects.project.survey.previousInsight": "Prethodni uvid",
   "app.containers.Admin.projects.project.survey.responses": "Odgovori",
   "app.containers.Admin.projects.project.survey.upsell.bullet1": "Odmah sažmite sve svoje odgovore.",
