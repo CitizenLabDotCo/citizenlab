@@ -412,11 +412,7 @@ const ProjectCard = memo<InputProps>(
       const isFinished = project.data.attributes.timeline_active === 'past';
       const isArchived =
         project.data.attributes.publication_status === 'archived';
-      const hasAvatars =
-        project.data.relationships.avatars &&
-        project.data.relationships.avatars.data &&
-        project.data.relationships.avatars.data.length > 0;
-      const showFooter = hasAvatars;
+      const showAvatarBubbles = project.data.attributes.participants_count > 0;
       const avatarIds =
         project.data.relationships.avatars &&
         project.data.relationships.avatars.data
@@ -596,15 +592,13 @@ const ProjectCard = memo<InputProps>(
               )}
             </ContentBody>
 
-            {hasAvatars && (
+            {showAvatarBubbles && (
               <Box
                 borderTop={`1px solid ${colors.divider}`}
                 pt="16px"
                 mt="30px"
               >
-                <ContentFooter
-                  className={`${size} ${!showFooter ? 'hidden' : ''}`}
-                >
+                <ContentFooter className={size}>
                   <Box h="100%" display="flex" alignItems="center">
                     <AvatarBubbles
                       size={32}
