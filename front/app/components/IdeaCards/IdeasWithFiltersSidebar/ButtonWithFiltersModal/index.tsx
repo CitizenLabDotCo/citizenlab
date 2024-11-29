@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { lazy, useState, Suspense } from 'react';
 
 import { Button, useBreakpoint } from '@citizenlab/cl2-component-library';
 
@@ -6,7 +6,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 import { Props as InputFiltersProps } from '../InputFilters';
 
-import FiltersModal from './FiltersModal';
+const FiltersModal = lazy(() => import('./FiltersModal'));
 import messages from './FiltersModal/messages';
 
 const ButtonWithFiltersModal = ({
@@ -37,13 +37,15 @@ const ButtonWithFiltersModal = ({
         mb="12px"
         mt="4px"
       />
-      <FiltersModal
-        opened={filtersModalOpened}
-        selectedIdeaFilters={selectedIdeaFilters}
-        onClearFilters={onClearFilters}
-        onClose={closeModal}
-        {...filtersProps}
-      />
+      <Suspense fallback={null}>
+        <FiltersModal
+          opened={filtersModalOpened}
+          selectedIdeaFilters={selectedIdeaFilters}
+          onClearFilters={onClearFilters}
+          onClose={closeModal}
+          {...filtersProps}
+        />
+      </Suspense>
     </>
   );
 };
