@@ -26,9 +26,9 @@ const SortingBox = ({ handleSortOnChange, phaseId }: SortingBoxProps) => {
   const phaseDefaultSort = phase?.data.attributes.ideas_order;
 
   const [searchParams] = useSearchParams();
-  const currentSortType = (searchParams.get('sort') ||
-    phaseDefaultSort ||
-    'trending') as IdeaSortMethod | null;
+  const searchParamsSort = searchParams.get('sort') as IdeaSortMethod | null;
+  const currentSortType =
+    searchParamsSort || phaseDefaultSort || 'trending';
 
   return (
     <InputFilterCollapsible title={formatMessage(messages.sortBy)}>
