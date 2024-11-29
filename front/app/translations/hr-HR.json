@@ -194,6 +194,7 @@
   "app.components.IdeaCards.filters.popular": "Najviše se sviđao",
   "app.components.IdeaCards.filters.random": "Slučajno",
   "app.components.IdeaCards.filters.sortBy": "Poredaj po",
+  "app.components.IdeaCards.filters.sortChangedScreenreaderMessage": "Razvrstavanje je promijenjeno u: {currentSortType}",
   "app.components.IdeaCards.filters.trending": "U trendu",
   "app.components.IdeaCards.showMore": "Prikaži više",
   "app.components.IdeasMap.a11y_hideIdeaCard": "Sakrij karticu ideje.",
