@@ -194,6 +194,7 @@
   "app.components.IdeaCards.filters.popular": "En çok beğenilenler",
   "app.components.IdeaCards.filters.random": "Rastgele",
   "app.components.IdeaCards.filters.sortBy": "Göre sırala",
+  "app.components.IdeaCards.filters.sortChangedScreenreaderMessage": "Sıralama şu şekilde değiştirildi: {currentSortType}",
   "app.components.IdeaCards.filters.trending": "Trend",
   "app.components.IdeaCards.showMore": "Daha fazla göster",
   "app.components.IdeasMap.a11y_hideIdeaCard": "Fikir kartını gizleyin.",
