@@ -15,6 +15,10 @@ export default defineMessages({
     defaultMessage:
       'No results found. Please try a different filter or search term.',
   },
+  numberResults: {
+    id: 'app.containers.IdeaCards.numberResults',
+    defaultMessage: 'Results ({postCount})',
+  },
   ideasFilterSidebarTitle: {
     id: 'app.containers.IdeaCards.ideasFilterSidebarTitle',
     defaultMessage: '{inputTerm} ({numberIdeas})',
