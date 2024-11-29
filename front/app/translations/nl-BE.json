@@ -727,7 +727,7 @@
   "app.components.formBuilder.open": "Openen",
   "app.components.formBuilder.optional": "Optioneel",
   "app.components.formBuilder.other": "Overig",
-  "app.components.formBuilder.otherOption": "\"Other\" option",
+  "app.components.formBuilder.otherOption": "\"Andere\" optie",
   "app.components.formBuilder.otherOptionTooltip": "Deelnemers toestaan een aangepast antwoord in te voeren als de verstrekte antwoorden niet overeenkomen met hun voorkeur",
   "app.components.formBuilder.page": "Pagina",
   "app.components.formBuilder.pageRuleLabel": "Volgende pagina is:",
