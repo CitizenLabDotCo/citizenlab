@@ -146,8 +146,6 @@ sr-Cyrl:
         title: Година рођења
       domicile:
         title: Место становања
-      education:
-        title: образовање
     ideas:
       title:
         title: Наслов
@@ -212,14 +210,6 @@ sr-Cyrl:
       unspecified: Остало
     domicile:
       outside: Негде другде
-    education:
-      ISCED2: Ниже средње образовање
-      ISCED3: Више средње образовање
-      ISCED4: Нетерцијарно образовање након средње школе
-      ISCED5: Кратки циклус терцијарног образовања
-      ISCED6: Бацхелор или еквивалент
-      ISCED7: Мастер или еквивалент
-      ISCED8: Докторске или еквивалентне
   initiatives:
     default_threshold_reached_message: >
       <p>Позивају се иницијатори да изнесу свој предлог на следећој седници већа. Обезбедићемо званично ажурирање.</p>
@@ -238,7 +228,7 @@ sr-Cyrl:
     column_headers:
       assignee_fullname: 'Асигнее'
       assignee_email: 'Имејл примаоца'
-      attachments: 'Attachments'
+      attachments: 'Прилози'
       author_email: 'Имејл аутора'
       author_fullname: 'Име аутора'
       author_id: 'ИД аутора'
@@ -246,7 +236,7 @@ sr-Cyrl:
       comments_count: 'Коментари'
       cost: 'Cost'
       created_at: 'Послано на'
-      description: 'Description'
+      description: 'Опис'
       dislikes_count: 'Не свиђа ми се'
       email: 'Email'
       first_name: 'First name(s)'
@@ -256,7 +246,7 @@ sr-Cyrl:
       last_name: 'Last name'
       latitude: 'Географска ширина'
       likes_count: 'Свиђа'
-      location: 'Location'
+      location: 'Локација'
       longitude: 'Географска дужина'
       participants: 'Учесници'
       picks: 'Пицкс'
@@ -265,8 +255,8 @@ sr-Cyrl:
       registration_completed_at: 'Registration completed at'
       status: 'Статус'
       submitted_at: 'Submitted at'
-      tags: 'Tags'
-      title: 'Title'
+      tags: 'Тема'
+      title: 'Наслов'
       votes_count: 'Гласови'
   form_builder:
     default_select_field:

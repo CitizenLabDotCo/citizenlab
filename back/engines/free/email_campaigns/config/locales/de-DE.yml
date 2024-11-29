@@ -77,7 +77,7 @@ de:
       "link_terms_conditions": "Nutzungsbedingungen"
       "link_unsubscribe": "Abbestellen"
       "powered_by": "Ermöglicht durch"
-      "statement": "Diese E-Mail wurde Ihnen von Go Vocal im Namen von %{organizationName} zugesandt, da Sie ein*e registrierte*r Nutzer*in von %{organizationLink} sind. Hier können Sie diese und andere E-Mails %{unsubscribeLink}, wenn Sie in Zukunft keine Benachrichtigungen mehr erhalten möchten."
+      "statement": "Diese E-Mail wurde Ihnen von Go Vocal im Namen von %{organizationName} gesendet, da Sie ein registrierter Nutzer / eine registrierte Nutzerin von %{organizationLink} sind. Sie können %{unsubscribeLink}, wenn Sie diese E-Mails in Zukunft nicht mehr erhalten möchten."
       "unsubscribe_text": "abbestellen"
     follow:
       "unfollow_here": "Sie haben diese Benachrichtigung wegen eines Elementes erhalten, dem Sie folgen. <a href=\"%{unfollow_url}\">Sie können hier aufhören diesem zu folgen.</a>"
@@ -492,7 +492,7 @@ de:
       message_next_steps: ""
     your_proposed_initiatives_digest:
       subject: 'Wöchentliche Übersicht eigener Vorschläge'
-      preheader: 'Was ist in der vergangenen Woche mit Ihren Vorschlägen geschehen?'
+      preheader: 'Was ist in der vergangenen Woche mit deinen Vorschlägen geschehen?'
       title_your_weekly_report: 'Wie haben sich Ihre Vorschläge entwickelt?'
       text_introduction: 'Unten finden Sie die wichtige Zahlen zu Ihrem Vorschlag. Gehen Sie auf die Plattform, um rechtzeitig zu handeln und genügend Unterstützung zu sammeln.'
       cta_see_your_initiative: 'Zu deinen Vorschlägen'
@@ -506,7 +506,7 @@ de:
       title_basket_submitted: 'Sie haben erfolgreich abgestimmt'
       event_description: 'Vielen Dank für Ihre Teilnahme. Ihre Stimmen wurden aufgezeichnet. Besuchen Sie die Plattform von %{organizationName}, um Ihre Stimmen zu sehen und zu verwalten.'
       cta_see_votes_submitted: 'Siehe abgegebene Stimmen'
-      cta_message: 'Klicken Sie auf die Schaltfläche unten, um teilzunehmen'
+      cta_message: 'Klicken Sie auf den Button unten, um teilzunehmen'
     native_survey_not_submitted:
       subject: '%{organizationName}: Fast geschafft! Reichen Sie Ihre Antworten ein'
       preheader: 'Sie haben Ihre Umfrageantwort nicht auf der Teilnahmeplattform von %{organizationName}ausgefüllt.'
