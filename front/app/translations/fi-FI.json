@@ -1123,7 +1123,6 @@
   "app.containers.IdeaCards.projectFilterTitle": "Projektit",
   "app.containers.IdeaCards.random": "Satunnainen",
   "app.containers.IdeaCards.resetFilters": "Nollaa suodattimet",
-  "app.containers.IdeaCards.showResults": "Näytä tulokset",
   "app.containers.IdeaCards.showXResults": "Näytä {ideasCount, plural, one {# tulos} other {# tulosta}}",
   "app.containers.IdeaCards.sortTitle": "Lajittelu",
   "app.containers.IdeaCards.statusTitle": "Tila",

@@ -1123,7 +1123,6 @@
   "app.containers.IdeaCards.projectFilterTitle": "Projekti",
   "app.containers.IdeaCards.random": "Slučajni odabir",
   "app.containers.IdeaCards.resetFilters": "Poništi filtre",
-  "app.containers.IdeaCards.showResults": "Prikaži rezultate",
   "app.containers.IdeaCards.showXResults": "Prikaži {ideasCount, plural, one {# rezultat} other {# rezultata}}",
   "app.containers.IdeaCards.sortTitle": "Razvrstavanje",
   "app.containers.IdeaCards.statusTitle": "Stanje",

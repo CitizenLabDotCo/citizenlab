@@ -1173,7 +1173,6 @@
   "app.containers.IdeaCards.projectFilterTitle": "Έργα",
   "app.containers.IdeaCards.random": "Τυχαία",
   "app.containers.IdeaCards.resetFilters": "Επαναφορά φίλτρων",
-  "app.containers.IdeaCards.showResults": "Εμφάνιση αποτελεσμάτων",
   "app.containers.IdeaCards.showXResults": "Εμφάνιση {ideasCount, plural, one {# αποτέλεσμα} other {# αποτελέσματα}}",
   "app.containers.IdeaCards.sortTitle": "Ταξινόμηση",
   "app.containers.IdeaCards.statusTitle": "Κατάσταση",

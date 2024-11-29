@@ -716,7 +716,6 @@
   "app.containers.IdeaCards.projectFilterTitle": "Suliniutit ",
   "app.containers.IdeaCards.random": "Taamungaannaq",
   "app.containers.IdeaCards.resetFilters": "Immikkoortitikkat aallaqqaataanit aallartittussangorlugu aaqqikkit",
-  "app.containers.IdeaCards.showResults": "Inerneri takutikkit",
   "app.containers.IdeaCards.showXResults": "Takutiguk {ideasCount, plural, 0 {# inerneqanngilaq} one {# inerniliussaq} other {# inernerit}}",
   "app.containers.IdeaCards.sortTitle": "Immikkoortiterineq",
   "app.containers.IdeaCards.statusTitle": "Killiffik",

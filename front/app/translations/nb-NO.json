@@ -1173,7 +1173,6 @@
   "app.containers.IdeaCards.projectFilterTitle": "Prosjekter",
   "app.containers.IdeaCards.random": "Tilfeldig",
   "app.containers.IdeaCards.resetFilters": "Tilbakestill filtre",
-  "app.containers.IdeaCards.showResults": "Vis resultater",
   "app.containers.IdeaCards.showXResults": "Vis {ideasCount, plural, one {# resultat} other {# resultater}}",
   "app.containers.IdeaCards.sortTitle": "Sortering",
   "app.containers.IdeaCards.statusTitle": "Status",
