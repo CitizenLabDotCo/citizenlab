@@ -194,6 +194,7 @@
   "app.components.IdeaCards.filters.popular": "De mest populære",
   "app.components.IdeaCards.filters.random": "Tilfældige",
   "app.components.IdeaCards.filters.sortBy": "Sorter efter",
+  "app.components.IdeaCards.filters.sortChangedScreenreaderMessage": "Sortering ændret til: {currentSortType}",
   "app.components.IdeaCards.filters.trending": "Populære",
   "app.components.IdeaCards.showMore": "Vis mere ",
   "app.components.IdeasMap.a11y_hideIdeaCard": "Skjul idékortet.",
