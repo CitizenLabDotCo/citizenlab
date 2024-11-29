@@ -727,7 +727,7 @@
   "app.components.formBuilder.open": "Ouvrir",
   "app.components.formBuilder.optional": "Facultatif",
   "app.components.formBuilder.other": "Autre",
-  "app.components.formBuilder.otherOption": "\"Other\" option",
+  "app.components.formBuilder.otherOption": "\"Option \"Autre",
   "app.components.formBuilder.otherOptionTooltip": "Permettre aux participants de saisir une réponse personnalisée si les options proposées ne leur conviennent pas",
   "app.components.formBuilder.page": "Page",
   "app.components.formBuilder.pageRuleLabel": "La page suivante est :",
