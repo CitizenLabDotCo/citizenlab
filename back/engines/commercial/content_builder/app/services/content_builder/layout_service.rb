@@ -12,16 +12,16 @@ module ContentBuilder
       elt.is_a?(Hash) && elt['type'].is_a?(Hash) && types.include?(elt.dig('type', 'resolvedName'))
     end
 
-    def delete_admin_pub_ids_from_homepage_layout(id_or_array_of_ids)
+    def remove_admin_publication_id_from_homepage_layout(publication)
       homepage_layout = ContentBuilder::Layout.find_by(code: 'homepage')
       return unless homepage_layout
 
-      ids = id_or_array_of_ids.is_a?(Array) ? id_or_array_of_ids : [id_or_array_of_ids]
+      admin_publication_id = publication.admin_publication.id
 
       homepage_layout.craftjs_json = homepage_layout.craftjs_json.each_value do |node|
         next unless node['type']['resolvedName'] == 'Selection'
 
-        ids.each { |id| node['props']['adminPublicationIds'].delete(id) }
+        node['props']['adminPublicationIds'].delete(admin_publication_id)
       end
 
       homepage_layout.save!

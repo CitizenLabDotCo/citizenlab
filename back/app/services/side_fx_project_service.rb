@@ -62,7 +62,7 @@ class SideFxProjectService
   def before_destroy(project, user); end
 
   def after_destroy(frozen_project, user)
-    ContentBuilder::LayoutService.new.delete_admin_pub_ids_from_homepage_layout(frozen_project.admin_publication.id)
+    ContentBuilder::LayoutService.new.remove_admin_publication_id_from_homepage_layout(frozen_project)
 
     serialized_project = clean_time_attributes(frozen_project.attributes)
 

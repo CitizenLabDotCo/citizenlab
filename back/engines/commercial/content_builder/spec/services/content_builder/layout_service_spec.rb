@@ -72,19 +72,10 @@ describe ContentBuilder::LayoutService do
     let!(:layout) { create(:homepage_layout, craftjs_json: craftjs) }
 
     it 'deletes a single admin_publication ID from the homepage layout craftjs_json' do
-      service.delete_admin_pub_ids_from_homepage_layout project1.admin_publication.id
+      service.remove_admin_publication_id_from_homepage_layout project1
 
       expect(layout.reload.craftjs_json['nUOW77iNcW']['props']['adminPublicationIds'])
         .to match_array [project2.admin_publication.id, project_folder.admin_publication.id]
-    end
-
-    it 'deletes multiple admin_publication IDs from the homepage layout craftjs_json' do
-      service.delete_admin_pub_ids_from_homepage_layout(
-        [project1.admin_publication.id, project_folder.admin_publication.id]
-      )
-
-      expect(layout.reload.craftjs_json['nUOW77iNcW']['props']['adminPublicationIds'])
-        .to match_array [project2.admin_publication.id]
     end
   end
 end
