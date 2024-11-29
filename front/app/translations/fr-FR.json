@@ -194,6 +194,7 @@
   "app.components.IdeaCards.filters.popular": "Les plus likés",
   "app.components.IdeaCards.filters.random": "Aléatoire",
   "app.components.IdeaCards.filters.sortBy": "Trier par",
+  "app.components.IdeaCards.filters.sortChangedScreenreaderMessage": "Le tri a été modifié en : {currentSortType}",
   "app.components.IdeaCards.filters.trending": "Tendance",
   "app.components.IdeaCards.showMore": "Afficher plus d'idées",
   "app.components.IdeasMap.a11y_hideIdeaCard": "Cachez la carte des idées.",
