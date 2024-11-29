@@ -29,8 +29,8 @@ export const getDateFilter = (
   startAtMoment: Moment | null | undefined,
   endAtMoment: Moment | null | undefined
 ): DateFilter | EmptyObject => {
-  const startAt = startAtMoment?.toISOString();
-  const endAt = endAtMoment?.toISOString();
+  const startAt = startAtMoment?.local().format('YYYY-MM-DD');
+  const endAt = endAtMoment?.local().format('YYYY-MM-DD');
 
   if (!startAt && !endAt) return {};
 
