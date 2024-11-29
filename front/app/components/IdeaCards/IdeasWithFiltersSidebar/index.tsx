@@ -273,11 +273,18 @@ const IdeasWithFiltersSidebar = ({
               />
             </>
           )}
-          <Text mb="8px">
-            {formatMessage(messages.numberResults, {
-              postCount: list.length,
-            })}
-          </Text>
+          {/* 
+            If we have an inputTerm (are on the project page), we don't need this. This fallback
+            is used on the /ideas page, where we have no inputTerm. 
+            TO DO: refactor this component so we can add it to the page instead to this general component.
+          */}
+          {!inputTerm && (
+            <Text mb="8px">
+              {formatMessage(messages.numberResults, {
+                postCount: list.length,
+              })}
+            </Text>
+          )}
           <Box display={selectedView === 'map' ? 'block' : 'flex'}>
             <ContentLeft>
               <IdeasView
