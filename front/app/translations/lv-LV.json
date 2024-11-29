@@ -1163,7 +1163,6 @@
   "app.containers.IdeaCards.a11y_totalItems": "Kopējais publikāciju skaits: {ideasCount}",
   "app.containers.IdeaCards.all": "Viss",
   "app.containers.IdeaCards.allStatuses": "Visi statusi",
-  "app.containers.IdeaCards.filter": "Filtrs",
   "app.containers.IdeaCards.list": "Saraksts",
   "app.containers.IdeaCards.map": "Karte",
   "app.containers.IdeaCards.mostDiscussed": "Visvairāk apspriesto",

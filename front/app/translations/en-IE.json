@@ -1163,7 +1163,6 @@
   "app.containers.IdeaCards.a11y_totalItems": "Total posts: {ideasCount}",
   "app.containers.IdeaCards.all": "All",
   "app.containers.IdeaCards.allStatuses": "All statuses",
-  "app.containers.IdeaCards.filter": "Filter",
   "app.containers.IdeaCards.list": "List",
   "app.containers.IdeaCards.map": "Map",
   "app.containers.IdeaCards.mostDiscussed": "Most discussed",
