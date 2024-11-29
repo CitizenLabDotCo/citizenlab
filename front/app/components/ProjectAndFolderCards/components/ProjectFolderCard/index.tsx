@@ -365,10 +365,8 @@ const ProjectFolderCard = memo<Props>(
             (avatar) => avatar.id
           )
         : [];
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    const showAvatarBubbles = avatarIds ? avatarIds.length > 0 : false;
-    const showFooter = showAvatarBubbles;
+    const showAvatarBubbles =
+      projectFolder.data.attributes.participants_count > 0;
     const folderImageAltText = localize(
       projectFolderImage?.data.attributes.alt_text_multiloc
     );
@@ -491,24 +489,20 @@ const ProjectFolderCard = memo<Props>(
               }}
             </T>
           </ContentBody>
-          <Box borderTop={`1px solid ${colors.divider}`} pt="16px" mt="30px">
-            <ContentFooter className={`${size} ${!showFooter ? 'hidden' : ''}`}>
-              <Box h="100%" display="flex" alignItems="center">
-                {showAvatarBubbles && (
+          {showAvatarBubbles && (
+            <Box borderTop={`1px solid ${colors.divider}`} pt="16px" mt="30px">
+              <ContentFooter className={size}>
+                <Box h="100%" display="flex" alignItems="center">
                   <AvatarBubbles
                     size={32}
                     limit={3}
                     avatarIds={avatarIds}
-                    userCount={
-                      // TODO: Fix this the next time the file is edited.
-                      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-                      projectFolder?.data.attributes.participants_count
-                    }
+                    userCount={projectFolder.data.attributes.participants_count}
                   />
-                )}
-              </Box>
-            </ContentFooter>
-          </Box>
+                </Box>
+              </ContentFooter>
+            </Box>
+          )}
           {showFollowButton && (
             <Box display="flex" justifyContent="flex-end" mt="24px">
               <FollowUnfollow
