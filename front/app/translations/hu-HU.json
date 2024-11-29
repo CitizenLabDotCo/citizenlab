@@ -194,6 +194,7 @@
   "app.components.IdeaCards.filters.popular": "Leginkább tetszett",
   "app.components.IdeaCards.filters.random": "Véletlen",
   "app.components.IdeaCards.filters.sortBy": "Rendezés",
+  "app.components.IdeaCards.filters.sortChangedScreenreaderMessage": "A rendezés a következőre módosult: {currentSortType}",
   "app.components.IdeaCards.filters.trending": "Felkapott",
   "app.components.IdeaCards.showMore": "Mutass többet",
   "app.components.IdeasMap.a11y_hideIdeaCard": "Ötletkártya elrejtése.",
