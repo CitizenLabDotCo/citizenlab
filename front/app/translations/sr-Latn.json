@@ -1173,7 +1173,7 @@
   "app.containers.IdeaCards.projectFilterTitle": "Projekti",
   "app.containers.IdeaCards.random": "Nasumično",
   "app.containers.IdeaCards.resetFilters": "Poništi filtere",
-  "app.containers.IdeaCards.showResults": "Show results",
+  "app.containers.IdeaCards.showResults": "Prikaži rezultate",
   "app.containers.IdeaCards.showXResults": "Prikaži {ideasCount, plural, one {# rezultat} other {# rezultata}}",
   "app.containers.IdeaCards.sortTitle": "Sortiranje",
   "app.containers.IdeaCards.statusTitle": "Status",
