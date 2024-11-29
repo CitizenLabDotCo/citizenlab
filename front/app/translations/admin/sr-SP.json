@@ -2422,7 +2422,7 @@
   "app.containers.AdminPage.projects.project.analysis.shapefileUploadDisclaimer2": "* Shapefiles are displayed in GeoJSON format here. As such, styling in the original file may not display correctly.",
   "app.containers.AdminPage.projects.project.analysis.start": "Почетак",
   "app.containers.AdminPage.projects.project.analysis.supportArticle": "Чланак подршке",
-  "app.containers.AdminPage.projects.project.analysis.supportArticleLink": "хттпс://суппорт.цитизенлаб.цо/ен/артицлес/8316692-аи-аналисис",
+  "app.containers.AdminPage.projects.project.analysis.supportArticleLink": "https://support.citizenlab.co/en/articles/8316692-ai-analysis",
   "app.containers.AdminPage.projects.project.analysis.unknown": "Непознат",
   "app.containers.AdminPage.projects.project.analysis.viewAllQuestions": "View all questions",
   "app.containers.AdminPage.projects.project.analysis.viewSelectedQuestions": "View selected questions",
