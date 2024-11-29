@@ -1174,7 +1174,6 @@
   "app.containers.IdeaCards.projectFilterTitle": "Prosiectau",
   "app.containers.IdeaCards.random": "Ar hap",
   "app.containers.IdeaCards.resetFilters": "Ailosod hidlwyr",
-  "app.containers.IdeaCards.showResults": "Dangos canlyniadau",
   "app.containers.IdeaCards.showXResults": "Dangos {ideasCount, plural, one {# canlyniad} other {# canlyniad}}",
   "app.containers.IdeaCards.sortTitle": "Didoli",
   "app.containers.IdeaCards.statusTitle": "Statws",

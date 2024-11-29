@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {
-  IDIdAustriaMethod,
+  IDFakeSSOMethod,
   TVerificationMethodName,
 } from 'api/verification_methods/types';
 import { isLastVerificationMethod } from 'api/verification_methods/util';
@@ -10,7 +10,7 @@ import SSOVerificationButton from 'containers/Authentication/steps/_components/S
 
 import { ModuleConfiguration } from 'utils/moduleUtils';
 
-const verificationMethodName: TVerificationMethodName = 'id_austria';
+const verificationMethodName: TVerificationMethodName = 'fake_sso';
 const configuration: ModuleConfiguration = {
   outlets: {
     'app.components.VerificationModal.buttons': ({
@@ -28,7 +28,7 @@ const configuration: ModuleConfiguration = {
         );
         return (
           <SSOVerificationButton
-            verificationMethod={method as IDIdAustriaMethod}
+            verificationMethod={method as IDFakeSSOMethod}
             last={last}
             {...props}
           />
