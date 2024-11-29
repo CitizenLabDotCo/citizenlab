@@ -1437,7 +1437,7 @@
   "app.containers.InitiativesShow.manageInvitationsLinkText": "Administrere invitasjoner til medsponsorskap",
   "app.containers.InitiativesShow.metaOgTitle": "Støtter dette forslaget: {initiativeTitle}",
   "app.containers.InitiativesShow.metaTitle1": "Forslag: {initiativeTitle} | {orgName}",
-  "app.containers.InitiativesShow.numberOfCosponsorsNotYetMet": "{requiredNumberOfCosponsors, plural, one {Your proposal needs 1 accepted cosponsorship. Until then, it will not be considered. {manageInvitationsLink}.} other {Your proposal needs {requiredNumberOfCosponsors} accepted cosponsorships. Until then, it will not be considered. {manageInvitationsLink}.}}",
+  "app.containers.InitiativesShow.numberOfCosponsorsNotYetMet": "{requiredNumberOfCosponsors, plural, one {Ditt forslag trenger 1 godkjent medsponsorat. Inntil da vil det ikke bli vurdert. {manageInvitationsLink}...} other {Ditt forslag trenger {requiredNumberOfCosponsors} aksepterte medsponsorer. Inntil da vil det ikke bli vurdert. {manageInvitationsLink}...}}",
   "app.containers.InitiativesShow.pending1": "i påvente av",
   "app.containers.InitiativesShow.postedBy": "Forslag lagt ut av {authorName}",
   "app.containers.InitiativesShow.postedByShort": "Skrevet av {authorName}",
