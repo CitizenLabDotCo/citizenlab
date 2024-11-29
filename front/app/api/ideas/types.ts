@@ -84,7 +84,7 @@ export interface IIdeaData {
     proposed_budget: number | null;
     created_at: string;
     updated_at: string;
-    published_at: string;
+    published_at: string | null;
     // For manual_votes_amount, in a PB phase this refers to the # offline baskets with this idea (I.e. # offline picks)
     // In the other voting methods, this refers to the total # offline votes cast for this idea.
     manual_votes_amount: number;

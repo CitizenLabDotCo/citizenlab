@@ -1174,7 +1174,6 @@
   "app.containers.IdeaCards.projectFilterTitle": "Projectes",
   "app.containers.IdeaCards.random": "Aleatori",
   "app.containers.IdeaCards.resetFilters": "Restablir els filtres",
-  "app.containers.IdeaCards.showResults": "Mostrar els resultats",
   "app.containers.IdeaCards.showXResults": "Mostrar {ideasCount, plural, one {# resultat} other {# resultats}}",
   "app.containers.IdeaCards.sortTitle": "Classificació",
   "app.containers.IdeaCards.statusTitle": "Estat",

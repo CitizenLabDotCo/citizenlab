@@ -262,7 +262,7 @@ describe Permissions::BasePermissionsService do
       let(:groups) { create_list(:group, 2) }
       let(:permission) { create(:permission, permitted_by: 'verified', groups: groups) }
 
-      before { SettingsService.new.activate_feature! 'verification', settings: { verification_methods: [{ name: 'fake_sso' }] } }
+      before { SettingsService.new.activate_feature! 'verification', settings: { verification_methods: [{ name: 'fake_sso', enabled_for_verified_actions: true }] } }
 
       context 'when not signed in' do
         let(:user) { nil }

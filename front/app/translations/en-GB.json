@@ -1174,7 +1174,6 @@
   "app.containers.IdeaCards.projectFilterTitle": "Projects",
   "app.containers.IdeaCards.random": "Random",
   "app.containers.IdeaCards.resetFilters": "Reset filters",
-  "app.containers.IdeaCards.showResults": "Show results",
   "app.containers.IdeaCards.showXResults": "Show {ideasCount, plural, one {# result} other {# results}}",
   "app.containers.IdeaCards.sortTitle": "Sorting",
   "app.containers.IdeaCards.statusTitle": "Status",
