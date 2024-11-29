@@ -194,6 +194,7 @@
   "app.components.IdeaCards.filters.popular": "Περισσότερο άρεσε",
   "app.components.IdeaCards.filters.random": "Τυχαία",
   "app.components.IdeaCards.filters.sortBy": "Ταξινόμηση κατά",
+  "app.components.IdeaCards.filters.sortChangedScreenreaderMessage": "Η ταξινόμηση άλλαξε σε: {currentSortType}",
   "app.components.IdeaCards.filters.trending": "Trending",
   "app.components.IdeaCards.showMore": "Εμφάνιση περισσότερων",
   "app.components.IdeasMap.a11y_hideIdeaCard": "Απόκρυψη κάρτας ιδέας.",
