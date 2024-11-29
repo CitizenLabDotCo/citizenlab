@@ -194,6 +194,7 @@
   "app.components.IdeaCards.filters.popular": "Els més agradats",
   "app.components.IdeaCards.filters.random": "Aleatori",
   "app.components.IdeaCards.filters.sortBy": "Ordena per",
+  "app.components.IdeaCards.filters.sortChangedScreenreaderMessage": "L'ordenació ha canviat a: {currentSortType}",
   "app.components.IdeaCards.filters.trending": "Tendència",
   "app.components.IdeaCards.showMore": "Mostrar més",
   "app.components.IdeasMap.a11y_hideIdeaCard": "Amaga la targeta d'idees.",
