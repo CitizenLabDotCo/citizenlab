@@ -1178,6 +1178,7 @@
   "app.containers.IdeaCards.mostDiscussed": "Most discussed",
   "app.containers.IdeaCards.newest": "Most recent",
   "app.containers.IdeaCards.noFilteredResults": "No results found. Please try a different filter or search term.",
+  "app.containers.IdeaCards.numberResults": "Results ({postCount})",
   "app.containers.IdeaCards.oldest": "Oldest",
   "app.containers.IdeaCards.optionTerm": "Options",
   "app.containers.IdeaCards.petitions": "Petitions",
