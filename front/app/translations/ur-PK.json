@@ -194,6 +194,7 @@
   "app.components.IdeaCards.filters.popular": "سب سے زیادہ پسند کیا۔",
   "app.components.IdeaCards.filters.random": "بے ترتیب",
   "app.components.IdeaCards.filters.sortBy": "ترتیب دیں",
+  "app.components.IdeaCards.filters.sortChangedScreenreaderMessage": "ترتیب کو تبدیل کر دیا گیا: {currentSortType}",
   "app.components.IdeaCards.filters.trending": "ٹرینڈنگ",
   "app.components.IdeaCards.showMore": "مزید دکھائیں",
   "app.components.IdeasMap.a11y_hideIdeaCard": "آئیڈیا کارڈ چھپائیں۔",
