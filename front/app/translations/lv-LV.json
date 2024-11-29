@@ -194,6 +194,7 @@
   "app.components.IdeaCards.filters.popular": "Visvairāk patika",
   "app.components.IdeaCards.filters.random": "Nejaušs",
   "app.components.IdeaCards.filters.sortBy": "Atlasīt pēc",
+  "app.components.IdeaCards.filters.sortChangedScreenreaderMessage": "Šķirošana mainīta uz: {currentSortType}",
   "app.components.IdeaCards.filters.trending": "Tendences",
   "app.components.IdeaCards.showMore": "Parādīt vairāk",
   "app.components.IdeasMap.a11y_hideIdeaCard": "Paslēpt ideju karti.",
