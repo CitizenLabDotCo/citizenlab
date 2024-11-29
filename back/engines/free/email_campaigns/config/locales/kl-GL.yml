@@ -266,7 +266,7 @@ kl:
       subject: 'There''s a new comment on an idea you follow'
       preheader: '%{authorName} left a comment on an idea for %{organizationName}'
     comment_on_initiative_you_follow:
-      cta_reply_to: 'Reply to %{commentAuthor}'
+      cta_reply_to: 'Akissut %{commentAuthor}'
       event_description: '%{authorNameFull} placed a reaction on the proposal ''%{initiativeTitle}''. Click the button below to continue the conversation with %{authorName}.'
       main_header: '%{commentAuthor} commented on an proposal you follow'
       subject: 'There''s a new comment on the proposal you follow'
