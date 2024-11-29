@@ -194,6 +194,7 @@
   "app.components.IdeaCards.filters.popular": "Am meeschte gär",
   "app.components.IdeaCards.filters.random": "Zoufälleg",
   "app.components.IdeaCards.filters.sortBy": "Sortéieren no",
+  "app.components.IdeaCards.filters.sortChangedScreenreaderMessage": "Sortéierung geännert op: {currentSortType}",
   "app.components.IdeaCards.filters.trending": "Trending",
   "app.components.IdeaCards.showMore": "Méi weisen",
   "app.components.IdeasMap.a11y_hideIdeaCard": "Iddiskaart verstoppen.",
