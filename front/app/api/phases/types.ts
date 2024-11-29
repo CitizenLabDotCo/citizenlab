@@ -57,7 +57,7 @@ export interface IPhaseAttributes {
   survey_service?: TSurveyService | null;
   survey_embed_url?: string | null;
   poll_anonymous?: boolean;
-  ideas_order?: IdeaDefaultSortMethod;
+  ideas_order?: IdeaSortMethod;
   document_annotation_embed_url?: string | null;
   custom_form_persisted?: boolean;
   voting_method?: VotingMethod | null;
@@ -115,7 +115,7 @@ export interface IUpdatedPhaseProperties {
   survey_service?: TSurveyService | null;
   survey_embed_url?: string | null;
   poll_anonymous?: boolean;
-  ideas_order?: IdeaDefaultSortMethod;
+  ideas_order?: IdeaSortMethod;
   document_annotation_embed_url?: string | null;
   campaigns_settings?: {
     [key in CampaignName]?: boolean;
@@ -160,8 +160,9 @@ export type ParticipationMethod =
 
 export type VotingMethod = 'budgeting' | 'multiple_voting' | 'single_voting';
 
-export type IdeaDefaultSortMethod =
+export type IdeaSortMethod =
   | 'trending'
+  | 'comments_count'
   | 'random'
   | 'popular'
   | 'new'

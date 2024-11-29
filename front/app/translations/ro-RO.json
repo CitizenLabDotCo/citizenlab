@@ -592,7 +592,6 @@
   "app.containers.IdeaCards.projectFilterTitle": "Proiecte",
   "app.containers.IdeaCards.random": "Aleatoriu",
   "app.containers.IdeaCards.resetFilters": "Resetați filtrele",
-  "app.containers.IdeaCards.showResults": "Arată rezultate",
   "app.containers.IdeaCards.showXResults": "Arată {ideasCount, plural, one {# rezultat} other {# rezultate}}",
   "app.containers.IdeaCards.sortTitle": "Ordonare",
   "app.containers.IdeaCards.statusTitle": "Stare",

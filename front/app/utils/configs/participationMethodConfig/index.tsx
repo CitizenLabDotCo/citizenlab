@@ -24,6 +24,10 @@ import messages from '../../messages';
 
 export const defaultSortingOptions = [
   { text: <FormattedMessage {...messages.trending} />, value: 'trending' },
+  {
+    text: <FormattedMessage {...messages.mostDiscussed} />,
+    value: 'comments_count',
+  },
   { text: <FormattedMessage {...messages.random} />, value: 'random' },
   { text: <FormattedMessage {...messages.mostReacted} />, value: 'popular' },
   { text: <FormattedMessage {...messages.newest} />, value: 'new' },
