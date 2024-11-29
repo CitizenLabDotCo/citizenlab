@@ -1,11 +1,4 @@
-import React, {
-  memo,
-  FormEvent,
-  useRef,
-  KeyboardEvent,
-  useEffect,
-  useState,
-} from 'react';
+import React, { memo, FormEvent, useRef, KeyboardEvent } from 'react';
 
 import {
   Icon,
@@ -86,21 +79,17 @@ const ViewButtons = memo<Props>(({ className, selectedView, onClick }) => {
   const listButtonRef = useRef<HTMLButtonElement | null>(null);
   const mapButtonRef = useRef<HTMLButtonElement | null>(null);
 
-  const [viewChanged, setViewChanged] = useState<boolean | null>(null);
-
-  useEffect(() => {
-    if (viewChanged) {
-      selectedView === 'map'
-        ? mapButtonRef.current?.focus()
-        : listButtonRef.current?.focus();
-    }
-  }, [selectedView, viewChanged]);
+  const focusViewButton = (selectedView: 'card' | 'map') => {
+    selectedView === 'map'
+      ? mapButtonRef.current?.focus()
+      : listButtonRef.current?.focus();
+  };
 
   const handleOnClick =
     (selectedView: 'card' | 'map') => (event: FormEvent) => {
       event.preventDefault();
-      setViewChanged(true);
       onClick(selectedView);
+      focusViewButton(selectedView);
       trackEventByName(tracks.toggleDisplay, {
         locationButtonWasClicked: location.pathname,
         selectedDisplayMode: selectedView,
@@ -112,8 +101,8 @@ const ViewButtons = memo<Props>(({ className, selectedView, onClick }) => {
     const arrowRightPressed = e.key === 'ArrowRight';
 
     if (arrowLeftPressed || arrowRightPressed) {
-      setViewChanged(true);
       onClick(selectedView === 'card' ? 'map' : 'card');
+      focusViewButton(selectedView);
     }
   };
 
