@@ -232,13 +232,11 @@ const IdeasWithFiltersSidebar = ({
             })}
           </Title>
         ) : (
-          <Box ml="auto">
-            <Text m="0px">
-              {formatMessage(messages.numberResults, {
-                postCount: list ? list.length : 0,
-              })}
-            </Text>
-          </Box>
+          <Text m="0px">
+            {formatMessage(messages.numberResults, {
+              postCount: list ? list.length : 0,
+            })}
+          </Text>
         )}
 
         {showViewButtons && (
