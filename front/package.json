@@ -216,7 +216,7 @@
     "cypress": "13.14.1",
     "cypress-circleci-reporter": "0.2.0",
     "cypress-file-upload": "5.0.8",
-    "dependency-cruiser": "16.2.4",
+    "dependency-cruiser": "16.6.0",
     "esbuild-loader": "4.2.2",
     "eslint": "8.57.0",
     "eslint-plugin-import": "2.29.1",
