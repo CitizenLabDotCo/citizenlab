@@ -232,7 +232,7 @@
     "html-webpack-plugin": "5.6.0",
     "husky": "4.3.8",
     "jest": "29.4.3",
-    "jest-cli": "29.5.0",
+    "jest-cli": "29.7.0",
     "jest-environment-jsdom": "29.7.0",
     "jest-junit": "15.0.0",
     "moment-locales-webpack-plugin": "1.2.0",
