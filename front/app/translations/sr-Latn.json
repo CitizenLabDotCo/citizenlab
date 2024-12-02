@@ -1169,7 +1169,6 @@
   "app.containers.IdeaCards.all": "Sve",
   "app.containers.IdeaCards.allStatuses": "Svi statusi",
   "app.containers.IdeaCards.contributions": "Contributions",
-  "app.containers.IdeaCards.filter": "Filter",
   "app.containers.IdeaCards.ideaTerm": "Ideas",
   "app.containers.IdeaCards.ideasFilterSidebarTitle": "{inputTerm} ({numberIdeas})",
   "app.containers.IdeaCards.initiatives": "Initiatives",
