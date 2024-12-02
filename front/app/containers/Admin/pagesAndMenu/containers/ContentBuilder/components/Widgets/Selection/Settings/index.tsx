@@ -37,34 +37,19 @@ const Settings = () => {
       ? selectedAdminPublications?.pages.flatMap((page) => page.data) ?? []
       : [];
 
-  // We derive the ids from the BE response.
-  // This basically filters out any admin publication ids corresponding to
-  // admin publications that have been deleted.
-  const selectedAdminPublicationsIds = isFetching
-    ? undefined
-    : selectedAdminPublicationsFlat.map(
-        (adminPublication) => adminPublication.id
-      );
-
   const handleAdd = (adminPublication?: IAdminPublicationData | LoadMore) => {
     if (!adminPublication) return;
-    if (!selectedAdminPublicationsIds) return;
     if (!isAdminPublication(adminPublication)) return;
 
     setProp((props) => {
-      props.adminPublicationIds = [
-        ...selectedAdminPublicationsIds,
-        adminPublication.id,
-      ];
+      props.adminPublicationIds = [...adminPublicationIds, adminPublication.id];
     });
   };
 
   const handleReorder = (draggedItemId: string, targetIndex: number) => {
-    if (!selectedAdminPublicationsIds) return;
-
     setProp((props) => {
       props.adminPublicationIds = getNewIdsOnDrop(
-        selectedAdminPublicationsIds,
+        adminPublicationIds,
         draggedItemId,
         targetIndex
       );
@@ -72,10 +57,10 @@ const Settings = () => {
   };
 
   const handleDelete = (deletedId: string) => {
-    if (!selectedAdminPublicationsIds) return;
+    if (!adminPublicationIds) return;
 
     setProp((props) => {
-      props.adminPublicationIds = selectedAdminPublicationsIds.filter(
+      props.adminPublicationIds = adminPublicationIds.filter(
         (adminPublicationId) => adminPublicationId !== deletedId
       );
     });
@@ -94,7 +79,7 @@ const Settings = () => {
           <FormattedMessage {...messages.selectProjectsOrFolders} />
         </Label>
         <AdminPublicationSearchInput
-          adminPublicationIds={selectedAdminPublicationsIds}
+          adminPublicationIds={adminPublicationIds}
           onChange={handleAdd}
         />
       </Box>

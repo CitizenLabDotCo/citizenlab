@@ -2012,6 +2012,7 @@
   "app.containers.AdminPage.SettingsPage.addTopicButton": "Legg til tagg",
   "app.containers.AdminPage.SettingsPage.anonymousNameScheme_animal2": "Dyr - f.eks. elefant katt",
   "app.containers.AdminPage.SettingsPage.anonymousNameScheme_user": "Bruker - f.eks. bruker 123456",
+  "app.containers.AdminPage.SettingsPage.approvalDescription": "Velg hvilke administratorer som skal motta varsler om å godkjenne prosjekter. Mappeadministratorer er som standard godkjennere for alle prosjekter i mappene sine.",
   "app.containers.AdminPage.SettingsPage.approvalSave": "Spar",
   "app.containers.AdminPage.SettingsPage.approvalTitle": "Innstillinger for prosjektgodkjenning",
   "app.containers.AdminPage.SettingsPage.areaDeletionConfirmation": "Er du sikker på at du vil slette dette området?",

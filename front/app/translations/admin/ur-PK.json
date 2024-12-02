@@ -2012,6 +2012,7 @@
   "app.containers.AdminPage.SettingsPage.addTopicButton": "ٹیگ شامل کریں۔",
   "app.containers.AdminPage.SettingsPage.anonymousNameScheme_animal2": "جانور - مثال کے طور پر ہاتھی بلی",
   "app.containers.AdminPage.SettingsPage.anonymousNameScheme_user": "صارف - جیسے صارف 123456",
+  "app.containers.AdminPage.SettingsPage.approvalDescription": "منتخب کریں کہ کون سے منتظمین کو پروجیکٹس کی منظوری کے لیے اطلاعات موصول ہوں گی۔ فولڈر مینیجر اپنے فولڈرز کے اندر موجود تمام پروجیکٹس کے لیے بطور ڈیفالٹ منظوری دینے والے ہوتے ہیں۔",
   "app.containers.AdminPage.SettingsPage.approvalSave": "محفوظ کریں۔",
   "app.containers.AdminPage.SettingsPage.approvalTitle": "پروجیکٹ کی منظوری کی ترتیبات",
   "app.containers.AdminPage.SettingsPage.areaDeletionConfirmation": "کیا آپ واقعی اس علاقے کو حذف کرنا چاہتے ہیں؟",

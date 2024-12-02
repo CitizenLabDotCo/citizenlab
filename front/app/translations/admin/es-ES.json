@@ -2012,6 +2012,7 @@
   "app.containers.AdminPage.SettingsPage.addTopicButton": "Añadir un tema",
   "app.containers.AdminPage.SettingsPage.anonymousNameScheme_animal2": "Animal - ej. Elefante Gato",
   "app.containers.AdminPage.SettingsPage.anonymousNameScheme_user": "Usuario - ej. Usuario 123456",
+  "app.containers.AdminPage.SettingsPage.approvalDescription": "Selecciona qué administradores recibirán notificaciones para aprobar proyectos. Por defecto, los administradores de carpetas aprueban todos los proyectos de sus carpetas.",
   "app.containers.AdminPage.SettingsPage.approvalSave": "Guarda",
   "app.containers.AdminPage.SettingsPage.approvalTitle": "Ajustes de aprobación del proyecto",
   "app.containers.AdminPage.SettingsPage.areaDeletionConfirmation": "¿Está seguro que desea eliminar este campo?",

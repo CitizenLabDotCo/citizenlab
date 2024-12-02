@@ -2012,6 +2012,7 @@
   "app.containers.AdminPage.SettingsPage.addTopicButton": "Lägg till ämne",
   "app.containers.AdminPage.SettingsPage.anonymousNameScheme_animal2": "Djur - t.ex. Elefant Katt",
   "app.containers.AdminPage.SettingsPage.anonymousNameScheme_user": "Användare - t.ex. Användare 123456",
+  "app.containers.AdminPage.SettingsPage.approvalDescription": "Välj vilka administratörer som ska få meddelanden om att godkänna projekt. Mapphanterare är som standard godkännare för alla projekt inom sina mappar.",
   "app.containers.AdminPage.SettingsPage.approvalSave": "Spara",
   "app.containers.AdminPage.SettingsPage.approvalTitle": "Inställningar för projektgodkännande",
   "app.containers.AdminPage.SettingsPage.areaDeletionConfirmation": "Är du säker på att du vill ta bort det här området?",

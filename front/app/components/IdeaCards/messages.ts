@@ -88,15 +88,6 @@ export default defineMessages({
     id: 'app.containers.IdeaCards.filter',
     defaultMessage: 'Filter',
   },
-  showResults: {
-    id: 'app.containers.IdeaCards.showResults',
-    defaultMessage: 'Show results',
-  },
-  showXResults: {
-    id: 'app.containers.IdeaCards.showXResults',
-    defaultMessage:
-      'Show {ideasCount, plural, no {# results} one {# result} other {# results}}',
-  },
   resetFilters: {
     id: 'app.containers.IdeaCards.resetFilters',
     defaultMessage: 'Reset filters',
