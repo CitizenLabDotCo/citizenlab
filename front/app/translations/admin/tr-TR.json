@@ -2466,6 +2466,7 @@
   "app.containers.AdminPage.projects.project.analysis.invalidShapefile": "Geçersiz bir shapefile yüklendi ve görüntülenemiyor.",
   "app.containers.AdminPage.projects.project.analysis.limit": "Limit",
   "app.containers.AdminPage.projects.project.analysis.mainQuestion": "Ana soru",
+  "app.containers.AdminPage.projects.project.analysis.manageInput": "Girdiyi yönetin",
   "app.containers.AdminPage.projects.project.analysis.noAnswer": "Cevap yok",
   "app.containers.AdminPage.projects.project.analysis.noAnswerProvided2": "Cevap verilmedi.",
   "app.containers.AdminPage.projects.project.analysis.noFileUploaded": "Yüklenen şekil dosyası yok.",
