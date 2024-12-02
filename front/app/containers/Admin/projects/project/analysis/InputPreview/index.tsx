@@ -63,7 +63,7 @@ const InputListItem = () => {
   const showManageInputButton = methodConfig.showInputManager && phaseId;
 
   const mainCustomFieldId =
-    analysis.data.relationships.main_custom_field?.data.id;
+    analysis.data.relationships.main_custom_field?.data?.id;
 
   const additionalCustomFieldIds =
     analysis.data.relationships.additional_custom_fields?.data.map(
@@ -211,8 +211,8 @@ const InputListItem = () => {
               <LongFieldValue
                 customFieldId={customField.id}
                 input={input.data}
-                projectId={analysis.data.relationships.project?.data.id}
-                phaseId={analysis.data.relationships.phase?.data.id}
+                projectId={analysis.data.relationships.project?.data?.id}
+                phaseId={analysis.data.relationships.phase?.data?.id}
               />
             </Box>
             {mainCustomFieldId && <Divider m="0px" />}
