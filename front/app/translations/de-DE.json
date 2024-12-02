@@ -1169,7 +1169,6 @@
   "app.containers.IdeaCards.all": "Alle",
   "app.containers.IdeaCards.allStatuses": "Alle Statusmeldungen",
   "app.containers.IdeaCards.contributions": "Beiträge",
-  "app.containers.IdeaCards.filter": "Filter",
   "app.containers.IdeaCards.ideaTerm": "Beiträge",
   "app.containers.IdeaCards.ideasFilterSidebarTitle": "{inputTerm} ({numberIdeas})",
   "app.containers.IdeaCards.initiatives": "Initiativen",
