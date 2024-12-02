@@ -4,7 +4,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 import FullscreenModal from 'components/UI/FullscreenModal';
 
-import InputFilters, { Props as InputFiltersProps } from '../InputFilters';
+import InputFilters, { Props as InputFiltersProps } from '../../InputFilters';
 
 import BottomBar from './BottomBar';
 import TopBar from './TopBar';

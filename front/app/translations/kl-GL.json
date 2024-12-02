@@ -707,7 +707,6 @@
   "app.containers.IdeaCard.xComments": "{commentsCount, plural, =0 {no oqaaseqaatit} one {1 oqaaseqaatit} other {# oqaaseqaatit}}",
   "app.containers.IdeaCards.a11y_totalItems": "Saqqummiuneqareersut katillugit: {ideasCount}",
   "app.containers.IdeaCards.all": "Tamakkerlutik",
-  "app.containers.IdeaCards.filter": "Immikkoortut",
   "app.containers.IdeaCards.list": "Alluttuiffik",
   "app.containers.IdeaCards.map": "Nunap assinga",
   "app.containers.IdeaCards.newest": "Nutaajunerit",
