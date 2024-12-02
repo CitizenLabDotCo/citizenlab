@@ -2466,7 +2466,7 @@
   "app.containers.AdminPage.projects.project.analysis.invalidShapefile": "Virheellinen shape-tiedosto lähetettiin, eikä sitä voida näyttää.",
   "app.containers.AdminPage.projects.project.analysis.limit": "Raja",
   "app.containers.AdminPage.projects.project.analysis.mainQuestion": "Pääkysymys",
-  "app.containers.AdminPage.projects.project.analysis.manageIdea": "Hallitse ideaa",
+  "app.containers.AdminPage.projects.project.analysis.manageInput": "Hallitse syötettä",
   "app.containers.AdminPage.projects.project.analysis.noAnswer": "Ei vastausta",
   "app.containers.AdminPage.projects.project.analysis.noAnswerProvided2": "Ei vastausta.",
   "app.containers.AdminPage.projects.project.analysis.noFileUploaded": "Shape-tiedostoa ei ladattu.",
