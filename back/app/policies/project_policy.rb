@@ -92,7 +92,11 @@ class ProjectPolicy < ApplicationPolicy
     return false unless active?
     return true if admin?
 
-    record.folder && UserRoleService.new.can_moderate?(record.folder, user)
+    if record.folder
+      UserRoleService.new.can_moderate?(record.folder, user)
+    else
+      record.admin_publication.draft? && (user.project_moderator? || user.project_folder_moderator?)
+    end
   end
 
   def show?

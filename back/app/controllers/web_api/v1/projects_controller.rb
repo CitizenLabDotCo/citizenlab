@@ -163,8 +163,13 @@ class WebApi::V1::ProjectsController < ApplicationController
     @project = Project.new(project_params)
     sidefx.before_create(@project, current_user)
 
-    if save_project(@project)
-      sidefx.after_create(@project, current_user)
+    created = Project.transaction do
+      save_project(@project).tap do |saved|
+        sidefx.after_create(@project, current_user) if saved
+      end
+    end
+
+    if created
       render json: WebApi::V1::ProjectSerializer.new(
         @project,
         params: jsonapi_serializer_params,
@@ -295,11 +300,18 @@ class WebApi::V1::ProjectsController < ApplicationController
 
   def save_project(project)
     project.folder_id = params.dig(:project, :folder_id)
-    authorize(project)
 
     ActiveRecord::Base.transaction do
-      # The project is not saved if "inconsistencies" are found.
-      project.save.tap { |saved| check_publication_inconsistencies! if saved }
+      project.save.tap do |saved|
+        if saved
+          # The project must saved before performing the authorization because it requires
+          # the admin publication to be created.
+          authorize(project)
+          check_publication_inconsistencies!
+        else
+          skip_authorization
+        end
+      end
     end
   end
 
