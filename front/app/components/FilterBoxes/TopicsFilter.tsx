@@ -122,9 +122,7 @@ const TopicsFilter = memo<Props>(
     return (
       <InputFilterCollapsible
         title={
-          customTopicsTerm
-            ? localize(customTopicsTerm)
-            : formatMessage(messages.topicsTitle)
+          localize(customTopicsTerm) || formatMessage(messages.topicsTitle)
         }
         className={className}
       >
