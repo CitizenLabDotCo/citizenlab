@@ -2466,7 +2466,7 @@
   "app.containers.AdminPage.projects.project.analysis.invalidShapefile": "È stato caricato uno shapefile non valido e non può essere visualizzato.",
   "app.containers.AdminPage.projects.project.analysis.limit": "Limite",
   "app.containers.AdminPage.projects.project.analysis.mainQuestion": "Domanda principale",
-  "app.containers.AdminPage.projects.project.analysis.manageIdea": "Gestisci l'idea",
+  "app.containers.AdminPage.projects.project.analysis.manageInput": "Manage input",
   "app.containers.AdminPage.projects.project.analysis.noAnswer": "Nessuna risposta",
   "app.containers.AdminPage.projects.project.analysis.noAnswerProvided2": "Non è stata fornita alcuna risposta.",
   "app.containers.AdminPage.projects.project.analysis.noFileUploaded": "Non è stato caricato alcun shapefile.",
