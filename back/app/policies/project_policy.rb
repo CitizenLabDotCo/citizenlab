@@ -118,7 +118,9 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def destroy?
-    active? && admin?
+    return false unless active?
+
+    admin? || (active_moderator? && record.never_published?)
   end
 
   def copy?

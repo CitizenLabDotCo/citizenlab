@@ -368,10 +368,23 @@ describe ProjectPolicy do
       it { is_expected.to permit(:update)                }
       it { is_expected.to permit(:reorder)               }
       it { is_expected.to permit(:refresh_preview_token) }
-      it { is_expected.not_to permit(:destroy)           }
       it { is_expected.to permit(:index_xlsx)            }
       it { is_expected.to permit(:votes_by_user_xlsx)    }
       it { is_expected.to permit(:votes_by_input_xlsx)   }
+
+      context 'when the project has never been published' do
+        before { expect(project).to(be_never_published) }
+
+        it { is_expected.to permit(:destroy) }
+      end
+
+      context 'when the project has been published' do
+        before do
+          project.admin_publication.update!(first_published_at: Time.current)
+        end
+
+        it { is_expected.not_to permit(:destroy) }
+      end
 
       it 'indexes the project' do
         expect(scope.resolve.size).to eq 1
