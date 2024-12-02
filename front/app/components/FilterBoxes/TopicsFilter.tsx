@@ -20,11 +20,13 @@ import useLocalize from 'hooks/useLocalize';
 import T from 'components/T';
 
 import { ScreenReaderOnly } from 'utils/a11y';
+import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 import InputFilterCollapsible from './InputFilterCollapsible';
 import messages from './messages';
+import tracks from './tracks';
 import { FilterCounts } from './types';
 import {
   getSelectedTopicNames,
@@ -167,6 +169,9 @@ const TopicsFilter = memo<Props>(
             {topicsWithIdeas.length > 5 && (
               <Button
                 onClick={() => {
+                  if (!showFullList) {
+                    trackEventByName(tracks.seeAllTags);
+                  }
                   setShowFullList((curentValue) => !curentValue);
                 }}
                 buttonStyle="text"

@@ -198,13 +198,15 @@ const IdeasWithFiltersSidebar = ({
   );
   const showContentRight = biggerThanLargeTablet && selectedView === 'card';
 
+  const ideasCount = ideasFilterCounts?.data.attributes.total || 0;
+
   return (
     <Container id="e2e-ideas-container">
       <Box display="flex" justifyContent="space-between" mb="8px">
         {inputTerm && (
           <Title variant="h4" as="h2" mt="auto" mb="auto" color="tenantText">
             {formatMessage(messages.ideasFilterSidebarTitle, {
-              numberIdeas: list ? list.length : 0,
+              numberIdeas: ideasCount,
               inputTerm: formatMessage(
                 getInputTermMessage(inputTerm, {
                   idea: messages.ideas,
@@ -253,7 +255,7 @@ const IdeasWithFiltersSidebar = ({
           {!inputTerm && (
             <Text mb="8px">
               {formatMessage(messages.numberResults, {
-                postCount: list.length,
+                postCount: ideasCount,
               })}
             </Text>
           )}
@@ -277,7 +279,7 @@ const IdeasWithFiltersSidebar = ({
                 inputFiltersProps={{
                   filtersActive,
                   ideasFilterCounts,
-                  numberOfSearchResults: list.length,
+                  numberOfSearchResults: ideasCount,
                   selectedIdeaFilters: ideaQueryParameters,
                   onClearFilters: clearFilters,
                   onSearch: handleSearchOnChange,
