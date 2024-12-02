@@ -14,6 +14,7 @@ import useAnalysis from 'api/analyses/useAnalysis';
 import CloseIconButton from 'components/UI/CloseIconButton';
 
 import { useIntl } from 'utils/cl-intl';
+import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 
 import messages from '../messages';
 
@@ -30,6 +31,14 @@ const Filters = ({ onClose }: FilterProps) => {
   const { analysisId } = useParams() as { analysisId: string };
   const { data: analysis } = useAnalysis(analysisId);
   const { formatMessage } = useIntl();
+
+  const method =
+    analysis && getMethodConfig(analysis.data.attributes.participation_method);
+
+  const showEngagementFilters =
+    method?.supportsReactions ||
+    method?.supportsVotes ||
+    method?.supportsComments;
 
   return (
     <Box
@@ -68,35 +77,41 @@ const Filters = ({ onClose }: FilterProps) => {
               <EmptyCustomFieldsFilter />
             </>
           )}
-          {analysis?.data.attributes.participation_method === 'ideation' && (
+          {showEngagementFilters && (
             <>
               <Text color="primary" fontWeight="bold">
                 {formatMessage(messages.engagement)}
               </Text>
-              <EngagementFilter
-                id="votes"
-                label={formatMessage(messages.numberOfVotes)}
-                searchParams={{
-                  from: 'votes_from',
-                  to: 'votes_to',
-                }}
-              />
-              <EngagementFilter
-                id="comments"
-                label={formatMessage(messages.numberOfComments)}
-                searchParams={{
-                  from: 'comments_from',
-                  to: 'comments_to',
-                }}
-              />
-              <EngagementFilter
-                id="reactions"
-                label={formatMessage(messages.numberOfReactions)}
-                searchParams={{
-                  from: 'reactions_from',
-                  to: 'reactions_to',
-                }}
-              />
+              {method.supportsVotes && (
+                <EngagementFilter
+                  id="votes"
+                  label={formatMessage(messages.numberOfVotes)}
+                  searchParams={{
+                    from: 'votes_from',
+                    to: 'votes_to',
+                  }}
+                />
+              )}
+              {method.supportsComments && (
+                <EngagementFilter
+                  id="comments"
+                  label={formatMessage(messages.numberOfComments)}
+                  searchParams={{
+                    from: 'comments_from',
+                    to: 'comments_to',
+                  }}
+                />
+              )}
+              {method.supportsReactions && (
+                <EngagementFilter
+                  id="reactions"
+                  label={formatMessage(messages.numberOfReactions)}
+                  searchParams={{
+                    from: 'reactions_from',
+                    to: 'reactions_to',
+                  }}
+                />
+              )}
             </>
           )}
         </Box>

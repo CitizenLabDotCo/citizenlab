@@ -178,6 +178,9 @@ const IdeaCards = ({ ideaQueryParameters, onUpdateQuery }: Props) => {
 
   const handleStatusOnChange = useCallback(
     (idea_status: string | null) => {
+      trackEventByName(tracks.statusesFilter, {
+        idea_status,
+      });
       onUpdateQuery({ idea_status: idea_status ?? undefined });
     },
     [onUpdateQuery]
@@ -185,6 +188,10 @@ const IdeaCards = ({ ideaQueryParameters, onUpdateQuery }: Props) => {
 
   const handleTopicsOnChange = useCallback(
     (topics: string[] | null) => {
+      trackEventByName(tracks.topicsFilter, {
+        topics,
+      });
+
       onUpdateQuery({ topics: topics ?? undefined });
     },
     [onUpdateQuery]

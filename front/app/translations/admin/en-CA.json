@@ -2466,7 +2466,6 @@
   "app.containers.AdminPage.projects.project.analysis.invalidShapefile": "An invalid shapefile was uploaded and cannot be displayed.",
   "app.containers.AdminPage.projects.project.analysis.limit": "Limit",
   "app.containers.AdminPage.projects.project.analysis.mainQuestion": "Main question",
-  "app.containers.AdminPage.projects.project.analysis.manageIdea": "Manage idea",
   "app.containers.AdminPage.projects.project.analysis.noAnswer": "No answer",
   "app.containers.AdminPage.projects.project.analysis.noAnswerProvided2": "No answer provided.",
   "app.containers.AdminPage.projects.project.analysis.noFileUploaded": "No shapefile uploaded.",
