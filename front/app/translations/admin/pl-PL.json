@@ -2466,6 +2466,7 @@
   "app.containers.AdminPage.projects.project.analysis.invalidShapefile": "Przesłano nieprawidłowy plik shapefile i nie można go wyświetlić.",
   "app.containers.AdminPage.projects.project.analysis.limit": "Limit",
   "app.containers.AdminPage.projects.project.analysis.mainQuestion": "Główne pytanie",
+  "app.containers.AdminPage.projects.project.analysis.manageInput": "Zarządzaj danymi wejściowymi",
   "app.containers.AdminPage.projects.project.analysis.noAnswer": "Brak odpowiedzi",
   "app.containers.AdminPage.projects.project.analysis.noAnswerProvided2": "Nie udzielono odpowiedzi.",
   "app.containers.AdminPage.projects.project.analysis.noFileUploaded": "Nie załadowano pliku shapefile.",
