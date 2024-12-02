@@ -1169,7 +1169,6 @@
   "app.containers.IdeaCards.all": "ਸਾਰੇ",
   "app.containers.IdeaCards.allStatuses": "ਸਾਰੀਆਂ ਸਥਿਤੀਆਂ",
   "app.containers.IdeaCards.contributions": "ਯੋਗਦਾਨ",
-  "app.containers.IdeaCards.filter": "ਫਿਲਟਰ",
   "app.containers.IdeaCards.ideaTerm": "ਵਿਚਾਰ",
   "app.containers.IdeaCards.ideasFilterSidebarTitle": "{inputTerm} ({numberIdeas})",
   "app.containers.IdeaCards.initiatives": "ਪਹਿਲਕਦਮੀਆਂ",
