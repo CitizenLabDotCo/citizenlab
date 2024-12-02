@@ -2318,6 +2318,7 @@
   "app.containers.AdminPage.projects.all.onlyAdminsCanCreateFolders": "Endast administratörer kan skapa projektmappar.",
   "app.containers.AdminPage.projects.all.onlyAdminsCanCreateProjects1": "Endast administratörer och mapphanterare kan skapa projekt.",
   "app.containers.AdminPage.projects.all.projectsAndFolders": "Projekt och mappar",
+  "app.containers.AdminPage.projects.all.publishedTab": "Publicerad",
   "app.containers.AdminPage.projects.all.searchProjects": "Sök projekt",
   "app.containers.AdminPage.projects.all.yourProjects": "Dina projekt",
   "app.containers.AdminPage.projects.project.analysis.AIAnalysis": "AI-analys",
