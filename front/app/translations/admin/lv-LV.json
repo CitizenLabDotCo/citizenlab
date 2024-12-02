@@ -2466,6 +2466,7 @@
   "app.containers.AdminPage.projects.project.analysis.invalidShapefile": "Tika augšupielādēts nederīgs shapefile, un to nevar parādīt.",
   "app.containers.AdminPage.projects.project.analysis.limit": "Ierobežojums",
   "app.containers.AdminPage.projects.project.analysis.mainQuestion": "Galvenais jautājums",
+  "app.containers.AdminPage.projects.project.analysis.manageInput": "Ieejas datu pārvaldība",
   "app.containers.AdminPage.projects.project.analysis.noAnswer": "Nav atbildes",
   "app.containers.AdminPage.projects.project.analysis.noAnswerProvided2": "Atbilde nav sniegta.",
   "app.containers.AdminPage.projects.project.analysis.noFileUploaded": "Nav augšupielādēts shapefile.",
