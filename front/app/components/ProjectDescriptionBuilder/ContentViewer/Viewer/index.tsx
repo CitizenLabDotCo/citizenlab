@@ -55,12 +55,15 @@ const Preview = ({ projectId, projectTitle }: PreviewProps) => {
           <Title color="tenantText" variant="h1">
             {localize(projectTitle)}
           </Title>
-          <Editor isPreview={true}>
-            <ContentBuilderFrame
-              editorData={editorData}
-              onLoadImages={handleLoadImages}
-            />
-          </Editor>
+          <Box id={`project-description-${projectId}`}>
+            <Editor isPreview={true}>
+              <ContentBuilderFrame
+                editorData={editorData}
+                onLoadImages={handleLoadImages}
+              />
+            </Editor>
+          </Box>
+
           {projectFiles && (
             <Box maxWidth="750px" mb="25px">
               <FileAttachments files={projectFiles.data} />

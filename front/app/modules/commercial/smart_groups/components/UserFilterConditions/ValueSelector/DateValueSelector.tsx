@@ -1,6 +1,6 @@
 import React from 'react';
 
-import moment from 'moment';
+import { format, startOfDay } from 'date-fns';
 
 import DateSinglePicker from 'components/admin/DatePickers/DateSinglePicker';
 
@@ -12,7 +12,7 @@ type Props = {
 const DateValueSelector = ({ value, onChange }: Props) => {
   const handleOnChange = (date: Date | null) => {
     if (date) {
-      onChange(moment(date).format('YYYY-MM-DD'));
+      onChange(format(startOfDay(date), 'yyyy-MM-dd'));
     }
   };
 

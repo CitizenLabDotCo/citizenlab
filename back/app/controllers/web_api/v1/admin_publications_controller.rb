@@ -5,7 +5,6 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
   before_action :set_admin_publication, only: %i[reorder show]
 
   def index
-    admin_publication_filterer = AdminPublicationsFilteringService.new
     admin_publications = policy_scope(AdminPublication.includes(:parent))
     admin_publications = admin_publication_filterer.filter(admin_publications, params.merge(current_user: current_user))
 
@@ -24,26 +23,8 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
     included = []
 
     if params[:include_publications] == 'true'
-      @admin_publications = @admin_publications.includes(
-        {
-          publication: [
-            { phases: %i[report custom_form permissions] },
-            :admin_publication,
-            :images,
-            :project_images,
-            :content_builder_layouts
-          ]
-        },
-        :children
-      )
-      included = %i[
-        publication
-        publication.avatars
-        publication.project_images
-        publication.images
-        publication.current_phase
-        publication.phases
-      ]
+      @admin_publications = includes_publications(@admin_publications)
+      included = included_for_publications
     else
       @admin_publications = @admin_publications.includes(:publication, :children)
     end
@@ -55,6 +36,30 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
         visible_children_count_by_parent_id: admin_publication_filterer.visible_children_counts_by_parent_id
       ),
       include: included
+    )
+  end
+
+  # For use with 'Selected items' homepage widget.
+  # Returns non-draft admin_publications for specified IDs, ordered by order of the specified IDs.
+  # => [AdminPublication]
+  def index_select_and_order_by_ids
+    ids = params[:ids]
+
+    admin_publications = policy_scope(AdminPublication.includes(:parent))
+    admin_publications = admin_publications.not_draft.where(id: ids).in_order_of(:id, ids)
+
+    @admin_publications = paginate admin_publications
+    @admin_publications = includes_publications(@admin_publications)
+
+    authorize @admin_publications, :index_select_and_order_by_ids?
+
+    render json: linked_json(
+      @admin_publications,
+      WebApi::V1::AdminPublicationSerializer,
+      params: jsonapi_serializer_params(
+        visible_children_count_by_parent_id: admin_publication_filterer.visible_children_counts_by_parent_id
+      ),
+      include: included_for_publications
     )
   end
 
@@ -94,6 +99,36 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
   def set_admin_publication
     @admin_publication = AdminPublication.find params[:id]
     authorize @admin_publication
+  end
+
+  def admin_publication_filterer
+    @admin_publication_filterer ||= AdminPublicationsFilteringService.new
+  end
+
+  def includes_publications(admin_publications)
+    admin_publications.includes(
+      {
+        publication: [
+          { phases: %i[report custom_form permissions] },
+          :admin_publication,
+          :images,
+          :project_images,
+          :content_builder_layouts
+        ]
+      },
+      :children
+    )
+  end
+
+  def included_for_publications
+    %i[
+      publication
+      publication.avatars
+      publication.project_images
+      publication.images
+      publication.current_phase
+      publication.phases
+    ]
   end
 end
 

@@ -10,6 +10,10 @@ class AdminPublicationPolicy < ApplicationPolicy
     end
   end
 
+  def index_select_and_order_by_ids?
+    true
+  end
+
   def show?
     policy_for(record.publication).show?
   end

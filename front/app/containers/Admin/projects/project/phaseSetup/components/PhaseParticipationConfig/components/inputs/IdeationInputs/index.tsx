@@ -3,7 +3,7 @@ import React from 'react';
 import { Radio, IconTooltip, IOption } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
-import { IdeaDefaultSortMethod, InputTerm } from 'api/phases/types';
+import { IdeaSortMethod, InputTerm } from 'api/phases/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -56,10 +56,8 @@ interface Props {
   ) => void;
   presentation_mode: 'card' | 'map' | null | undefined;
   handleIdeasDisplayChange: (presentation_mode: 'map' | 'card') => void;
-  ideas_order: IdeaDefaultSortMethod | undefined;
-  handleIdeaDefaultSortMethodChange: (
-    ideas_order: IdeaDefaultSortMethod
-  ) => void;
+  ideas_order: IdeaSortMethod | undefined;
+  handleIdeaDefaultSortMethodChange: (ideas_order: IdeaSortMethod) => void;
   prescreening_enabled: boolean | null | undefined;
   togglePrescreeningEnabled: (prescreening_enabled: boolean) => void;
 }
@@ -224,6 +222,7 @@ const IdeationInputs = ({
       <SortingPicker
         options={[
           { key: 'trending', value: 'trending' },
+          { key: 'comments_count', value: 'comments_count' },
           { key: 'random', value: 'random' },
           { key: 'popular', value: 'popular' },
           { key: 'newest', value: 'new' },

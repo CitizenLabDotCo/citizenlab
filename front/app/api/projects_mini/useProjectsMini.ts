@@ -12,6 +12,7 @@ const fetchProjectsMini = ({ endpoint, ...queryParameters }: Parameters) =>
     path: `/projects/${endpoint}`,
     action: 'get',
     queryParams: {
+      ...queryParameters,
       'page[size]': queryParameters['page[size]'] ?? 6,
       'page[number]': queryParameters['page[number]'] ?? 1,
     },

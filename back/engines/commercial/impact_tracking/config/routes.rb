@@ -5,6 +5,7 @@ ImpactTracking::Engine.routes.draw do
     namespace :v1 do
       resources :sessions, only: %i[create] do
         patch :upgrade, on: :member
+        post 'track_pageview' => 'pageviews#create', on: :member
       end
     end
   end

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Helmet } from 'react-helmet';
-import { useLocation } from 'react-router-dom';
+// import { useLocation } from 'react-router-dom';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useHomepageLayout from 'api/home_page_layout/useHomepageLayout';
@@ -27,7 +27,7 @@ const Meta = () => {
   const { data: authUser } = useAuthUser();
   const { formatMessage } = useIntl();
   const localize = useLocalize();
-  const { pathname } = useLocation();
+  // const { pathname } = useLocation();
 
   if (
     !isNilOrError(locale) &&
@@ -71,8 +71,8 @@ const Meta = () => {
     // All other front office pages have their own title and description meta tags.
     // Ideally, we should ensure that all backoffice pages have their own meta tags and remove them from here..
     // This is necessary because on initial load, Helmet is not overriding them in child pages.
-    const showDefaultTitleAndDescTags =
-      pathname.startsWith(`/${locale}/admin/`) || pathname === `/${locale}/`;
+    // const showDefaultTitleAndDescTags =
+    //   pathname.startsWith(`/${locale}/admin/`) || pathname === `/${locale}/`;
 
     return (
       <Helmet>
@@ -82,7 +82,7 @@ const Meta = () => {
         {getCanonicalLink()}
         {getAlternateLinks(tenantLocales)}
 
-        {showDefaultTitleAndDescTags && (
+        {/* {showDefaultTitleAndDescTags && (
           <title>
             {`${
               authUser && authUser.data.attributes.unread_notifications
@@ -102,7 +102,18 @@ const Meta = () => {
         )}
         {showDefaultTitleAndDescTags && (
           <meta property="og:description" content={metaDescription} />
-        )}
+        )} */}
+        <title>
+          {`${
+            authUser && authUser.data.attributes.unread_notifications
+              ? `(${authUser.data.attributes.unread_notifications}) `
+              : ''
+          } ${metaTitle}`}
+        </title>
+        <meta name="title" content={metaTitle} />
+        <meta property="og:title" content={metaTitle} />
+        <meta name="description" content={metaDescription} />
+        <meta property="og:description" content={metaDescription} />
 
         {googleSearchConsoleMetaAttribute && (
           <meta

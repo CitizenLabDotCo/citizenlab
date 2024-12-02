@@ -208,7 +208,7 @@ RSpec.describe ParticipationMethod::Ideation do
   end
 
   its(:additional_export_columns) { is_expected.to eq %w[manual_votes] }
-  its(:allowed_ideas_orders) { is_expected.to eq %w[trending random popular -new new] }
+  its(:allowed_ideas_orders) { is_expected.to eq %w[trending random popular -new new comments_count] }
   its(:proposed_budget_in_form?) { is_expected.to be true }
   its(:return_disabled_actions?) { is_expected.to be false }
   its(:supports_assignment?) { is_expected.to be true }

@@ -2,7 +2,6 @@ import React, { useEffect, useMemo, useState } from 'react';
 
 import {
   Box,
-  Spinner,
   useBreakpoint,
   media,
   colors,
@@ -29,7 +28,7 @@ import EventsViewer from 'containers/EventsPage/EventsViewer';
 
 import ErrorBoundary from 'components/ErrorBoundary';
 import PageNotFound from 'components/PageNotFound';
-import Centerer from 'components/UI/Centerer';
+import FullPageSpinner from 'components/UI/FullPageSpinner';
 import Unauthorized from 'components/Unauthorized';
 
 import { useIntl } from 'utils/cl-intl';
@@ -122,11 +121,7 @@ const ProjectsShowPage = ({ project }: Props) => {
   let content: JSX.Element | null = null;
 
   if (loading) {
-    content = (
-      <Centerer flex="1 0 auto" height="500px">
-        <Spinner />
-      </Centerer>
-    );
+    content = <FullPageSpinner />;
   } else {
     content = (
       <ContentWrapper id="e2e-project-page">
@@ -218,11 +213,7 @@ const ProjectsShowPageWrapper = () => {
   }, [pending, user]);
 
   if (pending) {
-    return (
-      <Centerer height="500px">
-        <Spinner />
-      </Centerer>
-    );
+    return <FullPageSpinner />;
   }
 
   // TODO: Fix this the next time the file is edited.

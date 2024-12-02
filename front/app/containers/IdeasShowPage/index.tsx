@@ -19,7 +19,6 @@ import useProjectById from 'api/projects/useProjectById';
 
 import IdeasShow from 'containers/IdeasShow';
 import IdeaMeta from 'containers/IdeasShow/components/IdeaMeta';
-import IdeaNavigationButtons from 'containers/IdeasShow/components/IdeaNavigationButtons';
 import ProjectCTABar from 'containers/ProjectsShowPage/ProjectCTABar';
 
 import PageNotFound from 'components/PageNotFound';
@@ -125,22 +124,6 @@ const IdeasShowPage = () => {
           )}
           <>
             <Box mb="8px">
-              {phaseContext && (
-                <Box
-                  width="100%"
-                  display="flex"
-                  justifyContent="center"
-                  mt={isSmallerThanTablet ? '68px ' : ''}
-                >
-                  <Box width="80px">
-                    <IdeaNavigationButtons
-                      projectId={project.data.id}
-                      phaseContext={phaseContext}
-                    />
-                  </Box>
-                </Box>
-              )}
-
               <main id="e2e-idea-show">
                 <StyledIdeasShow
                   ideaId={idea.data.id}

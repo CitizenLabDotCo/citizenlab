@@ -163,10 +163,19 @@ const Dropdown: React.FC<Props> = ({
         'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
       );
 
-      return [
+      const allElements = [
         ...(contentElements ? Array.from(contentElements) : []),
         ...(footerElements ? Array.from(footerElements) : []),
       ];
+
+      return allElements.filter(
+        (el) =>
+          el.tabIndex !== -1 && // Exclude elements with tabIndex=-1
+          el.offsetWidth > 0 && // Visible in DOM
+          el.offsetHeight > 0 && // Visible in DOM
+          window.getComputedStyle(el).visibility !== 'hidden' && // Not hidden
+          window.getComputedStyle(el).display !== 'none' // Not display:none
+      );
     };
 
     const handleKeyDown = (event: KeyboardEvent) => {
