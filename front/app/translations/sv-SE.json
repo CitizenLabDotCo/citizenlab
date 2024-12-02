@@ -1169,7 +1169,6 @@
   "app.containers.IdeaCards.all": "Allt",
   "app.containers.IdeaCards.allStatuses": "Alla statusar",
   "app.containers.IdeaCards.contributions": "Bidrag",
-  "app.containers.IdeaCards.filter": "Filter",
   "app.containers.IdeaCards.ideaTerm": "Idéer",
   "app.containers.IdeaCards.ideasFilterSidebarTitle": "{inputTerm} ({numberIdeas})",
   "app.containers.IdeaCards.initiatives": "Initiativ",
