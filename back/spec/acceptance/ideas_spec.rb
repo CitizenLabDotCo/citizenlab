@@ -409,6 +409,20 @@ resource 'Ideas' do
         assert_status 200
         expect(json_parse(response_body)[:data].pluck(:id)).to eq [idea_burger.id, idea_bats.id, idea_moon.id]
       end
+
+      describe do
+        before do
+          10.times do
+            create(:embeddings_similarity, embedding: embeddings['pizza'])
+          end
+        end
+
+        example 'Do not return more than 10 inputs', document: false do
+          do_request
+          assert_status 200
+          expect(json_parse(response_body)[:data].size).to be <= 10
+        end
+      end
     end
 
     delete 'web_api/v1/ideas/:id' do
