@@ -2318,6 +2318,7 @@
   "app.containers.AdminPage.projects.all.onlyAdminsCanCreateFolders": "Sólo los administradores pueden crear carpetas de proyecto.",
   "app.containers.AdminPage.projects.all.onlyAdminsCanCreateProjects1": "Sólo los administradores y los gestores de carpetas pueden crear proyectos.",
   "app.containers.AdminPage.projects.all.projectsAndFolders": "Proyectos y carpetas",
+  "app.containers.AdminPage.projects.all.publishedTab": "Publicado",
   "app.containers.AdminPage.projects.all.searchProjects": "Buscar proyectos",
   "app.containers.AdminPage.projects.all.yourProjects": "Tus proyectos",
   "app.containers.AdminPage.projects.project.analysis.AIAnalysis": "Análisis de IA",
