@@ -2466,7 +2466,7 @@
   "app.containers.AdminPage.projects.project.analysis.invalidShapefile": "Ένα άκυρο shapefile μεταφορτώθηκε και δεν μπορεί να εμφανιστεί.",
   "app.containers.AdminPage.projects.project.analysis.limit": "Όριο",
   "app.containers.AdminPage.projects.project.analysis.mainQuestion": "Κύρια ερώτηση",
-  "app.containers.AdminPage.projects.project.analysis.manageIdea": "Διαχείριση ιδέας",
+  "app.containers.AdminPage.projects.project.analysis.manageInput": "Manage input",
   "app.containers.AdminPage.projects.project.analysis.noAnswer": "Καμία απάντηση",
   "app.containers.AdminPage.projects.project.analysis.noAnswerProvided2": "Δεν δόθηκε απάντηση.",
   "app.containers.AdminPage.projects.project.analysis.noFileUploaded": "Δεν έχει μεταφορτωθεί κανένα shapefile.",
