@@ -1165,7 +1165,6 @@
   "app.containers.IdeaCards.a11y_totalItems": "Total de entradas: {ideasCount}",
   "app.containers.IdeaCards.all": "Tudo",
   "app.containers.IdeaCards.allStatuses": "Todos os status",
-  "app.containers.IdeaCards.filter": "Filtro",
   "app.containers.IdeaCards.list": "Listagem",
   "app.containers.IdeaCards.map": "Mapa",
   "app.containers.IdeaCards.mostDiscussed": "Mais discutido",

@@ -1165,7 +1165,6 @@
   "app.containers.IdeaCards.a11y_totalItems": "Σύνολο δημοσιεύσεων: {ideasCount}",
   "app.containers.IdeaCards.all": "Όλα",
   "app.containers.IdeaCards.allStatuses": "Όλες οι καταστάσεις",
-  "app.containers.IdeaCards.filter": "Φίλτρο",
   "app.containers.IdeaCards.list": "Λίστα",
   "app.containers.IdeaCards.map": "Χάρτης",
   "app.containers.IdeaCards.mostDiscussed": "Τα πιο συζητημένα",

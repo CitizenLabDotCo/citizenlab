@@ -1495,8 +1495,6 @@
   "app.containers.NotificationMenu.votingBasketSubmitted": "Sikeresen szavaztál",
   "app.containers.NotificationMenu.votingLastChance": "Utolsó lehetőség szavazni {phaseTitle}-ra",
   "app.containers.NotificationMenu.votingResults": "{phaseTitle} szavazás eredménye kiderült",
-  "app.containers.NotificationMenu.xAssignedPostToYou": "{name} {postTitle} hozzád rendelve",
-  "app.containers.PasswordRecovery.emailError": "Ez nem tűnik érvényes e-mailnek",
   "app.containers.PasswordRecovery.emailLabel": "Email",
   "app.containers.PasswordRecovery.emailPlaceholder": "Az email címem",
   "app.containers.PasswordRecovery.helmetDescription": "Állítsa vissza a jelszóoldalt",

@@ -1165,7 +1165,6 @@
   "app.containers.IdeaCards.a11y_totalItems": "Totaal aantal items: {ideasCount}",
   "app.containers.IdeaCards.all": "Alle",
   "app.containers.IdeaCards.allStatuses": "Alle statussen",
-  "app.containers.IdeaCards.filter": "Filter",
   "app.containers.IdeaCards.list": "Lijst",
   "app.containers.IdeaCards.map": "Kaart",
   "app.containers.IdeaCards.mostDiscussed": "Meest besproken",

@@ -582,7 +582,6 @@
   "app.containers.IdeaCard.xComments": "{commentsCount, plural, =0 {no comments} one {1 comment} other {# comments}}",
   "app.containers.IdeaCards.a11y_totalItems": "Total postări: {ideasCount}",
   "app.containers.IdeaCards.all": "Toate",
-  "app.containers.IdeaCards.filter": "Filtru",
   "app.containers.IdeaCards.list": "Listă",
   "app.containers.IdeaCards.map": "Hartă",
   "app.containers.IdeaCards.newest": "Cele mai recente",

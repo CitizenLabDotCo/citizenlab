@@ -1165,7 +1165,6 @@
   "app.containers.IdeaCards.a11y_totalItems": "Totalt antal inlägg: {ideasCount}",
   "app.containers.IdeaCards.all": "Allt",
   "app.containers.IdeaCards.allStatuses": "Alla statusar",
-  "app.containers.IdeaCards.filter": "Filter",
   "app.containers.IdeaCards.list": "Lista",
   "app.containers.IdeaCards.map": "Karta",
   "app.containers.IdeaCards.mostDiscussed": "Mest diskuterade",

@@ -1165,7 +1165,6 @@
   "app.containers.IdeaCards.a11y_totalItems": "Cyfanswm postiadau: {ideasCount}",
   "app.containers.IdeaCards.all": "I gyd",
   "app.containers.IdeaCards.allStatuses": "Pob statws",
-  "app.containers.IdeaCards.filter": "Hidlo",
   "app.containers.IdeaCards.list": "Rhestr",
   "app.containers.IdeaCards.map": "Map",
   "app.containers.IdeaCards.mostDiscussed": "Trafodwyd fwyaf",

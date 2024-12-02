@@ -13,6 +13,7 @@ import { IdeaSortMethodFallback } from 'api/phases/utils';
 import FiltersMapView from 'components/IdeaCards/IdeasWithFiltersSidebar/FiltersMapView';
 import { Props as InputFiltersProps } from 'components/IdeaCards/IdeasWithFiltersSidebar/InputFilters';
 
+import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
@@ -21,6 +22,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import messages from '../messages';
 
 import IdeaMapCards from './IdeaMapCards';
+import tracks from './tracks';
 
 const Container = styled.div`
   width: 100%;
@@ -114,6 +116,7 @@ const MapIdeasList = memo<Props>(
                 size="s"
                 text={formatMessage(messages.filters)}
                 onClick={() => {
+                  trackEventByName(tracks.clickMapIdeaFiltersButton);
                   setShowFilters(true);
                 }}
               />

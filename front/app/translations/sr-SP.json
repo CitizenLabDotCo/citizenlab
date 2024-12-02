@@ -1165,7 +1165,6 @@
   "app.containers.IdeaCards.a11y_totalItems": "Укупно постова: {ideasCount}",
   "app.containers.IdeaCards.all": "Све",
   "app.containers.IdeaCards.allStatuses": "Сви статуси",
-  "app.containers.IdeaCards.filter": "Филтер",
   "app.containers.IdeaCards.list": "Листа",
   "app.containers.IdeaCards.map": "Мапа",
   "app.containers.IdeaCards.mostDiscussed": "Most discussed",

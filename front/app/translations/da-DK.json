@@ -1165,7 +1165,6 @@
   "app.containers.IdeaCards.a11y_totalItems": "Idéer i alt: {ideasCount}",
   "app.containers.IdeaCards.all": "Alle",
   "app.containers.IdeaCards.allStatuses": "Alle statusser",
-  "app.containers.IdeaCards.filter": "Filtrer",
   "app.containers.IdeaCards.list": "Liste",
   "app.containers.IdeaCards.map": "Kort",
   "app.containers.IdeaCards.mostDiscussed": "Mest diskuteret",

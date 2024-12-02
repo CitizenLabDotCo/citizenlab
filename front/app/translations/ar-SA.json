@@ -1165,7 +1165,6 @@
   "app.containers.IdeaCards.a11y_totalItems": "جميع العناصر: {ideasCount}",
   "app.containers.IdeaCards.all": "الكل",
   "app.containers.IdeaCards.allStatuses": "جميع الحالات",
-  "app.containers.IdeaCards.filter": "تصفية",
   "app.containers.IdeaCards.list": "القائمة",
   "app.containers.IdeaCards.map": "الخريطة",
   "app.containers.IdeaCards.mostDiscussed": "الأكثر مناقشة",

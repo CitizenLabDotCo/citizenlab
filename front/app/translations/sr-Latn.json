@@ -1165,7 +1165,6 @@
   "app.containers.IdeaCards.a11y_totalItems": "Ukupno unosa: {ideasCount}",
   "app.containers.IdeaCards.all": "Sve",
   "app.containers.IdeaCards.allStatuses": "Svi statusi",
-  "app.containers.IdeaCards.filter": "Filter",
   "app.containers.IdeaCards.list": "Lista",
   "app.containers.IdeaCards.map": "Mapa",
   "app.containers.IdeaCards.mostDiscussed": "Most discussed",

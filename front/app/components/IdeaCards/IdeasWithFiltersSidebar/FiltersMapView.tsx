@@ -2,8 +2,8 @@ import React from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
 
-import BottomBar from './FiltersModal/BottomBar';
-import TopBar from './FiltersModal/TopBar';
+import BottomBar from './ButtonWithFiltersModal/FiltersModal/BottomBar';
+import TopBar from './ButtonWithFiltersModal/FiltersModal/TopBar';
 import InputFilters, { Props as InputFiltersProps } from './InputFilters';
 
 interface Props extends InputFiltersProps {
