@@ -2318,6 +2318,7 @@
   "app.containers.AdminPage.projects.all.onlyAdminsCanCreateFolders": "Nur Administrator*innen können Projektordner erstellen.",
   "app.containers.AdminPage.projects.all.onlyAdminsCanCreateProjects1": "Nur Admins und Ordner-Manager*innen können Projekte erstellen.",
   "app.containers.AdminPage.projects.all.projectsAndFolders": "Projekte und Ordner",
+  "app.containers.AdminPage.projects.all.publishedTab": "Veröffentlicht",
   "app.containers.AdminPage.projects.all.searchProjects": "Projekte suchen",
   "app.containers.AdminPage.projects.all.yourProjects": "Meine Projekte",
   "app.containers.AdminPage.projects.project.analysis.AIAnalysis": "KI-Analyse",
