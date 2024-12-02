@@ -2466,7 +2466,7 @@
   "app.containers.AdminPage.projects.project.analysis.invalidShapefile": "ایک غلط شکل فائل اپ لوڈ کی گئی تھی اور اسے ڈسپلے نہیں کیا جا سکتا۔",
   "app.containers.AdminPage.projects.project.analysis.limit": "حد",
   "app.containers.AdminPage.projects.project.analysis.mainQuestion": "اہم سوال",
-  "app.containers.AdminPage.projects.project.analysis.manageIdea": "خیال کا انتظام کریں۔",
+  "app.containers.AdminPage.projects.project.analysis.manageInput": "ان پٹ کا نظم کریں۔",
   "app.containers.AdminPage.projects.project.analysis.noAnswer": "کوئی جواب نہیں۔",
   "app.containers.AdminPage.projects.project.analysis.noAnswerProvided2": "کوئی جواب نہیں دیا۔",
   "app.containers.AdminPage.projects.project.analysis.noFileUploaded": "کوئی شکل فائل اپ لوڈ نہیں ہوئی۔",
