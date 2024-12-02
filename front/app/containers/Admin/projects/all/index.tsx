@@ -234,7 +234,7 @@ const AdminProjectsList = memo(({ className }: Props) => {
               active={activeTab === 'your-projects'}
             />
             <Tab
-              label={`${formatMessage(messages.active)} (${
+              label={`${formatMessage(messages.publishedTab)} (${
                 flatPublishedAdminPublications?.length || 0
               })`}
               active={activeTab === 'published'}
