@@ -221,6 +221,66 @@ resource 'ProjectFolder' do
         expect(User.project_folder_moderator(id).count).to eq 0
         expect(User.project_moderator(project_with_moderator.id).count).to eq 0
       end
+
+      example "Deleting removes its and its children's admin_publication IDs from homepage layout", document: false do
+        project1 = create(:project, admin_publication_attributes: { parent_id: project_folder.admin_publication.id })
+        project2 = create(:project, admin_publication_attributes: { parent_id: project_folder.admin_publication.id })
+
+        project_folder2 = create(:project_folder)
+        project3 = create(:project, admin_publication_attributes: { parent_id: project_folder2.admin_publication.id })
+
+        layout = create(
+          :homepage_layout,
+          craftjs_json: {
+            ROOT: {
+              type: 'div',
+              nodes: %w[
+                nUOW77iNcW
+              ],
+              props: {
+                id: 'e2e-content-builder-frame'
+              },
+              custom: {},
+              hidden: false,
+              isCanvas: true,
+              displayName: 'div',
+              linkedNodes: {}
+            },
+            nUOW77iNcW: {
+              type: {
+                resolvedName: 'Selection'
+              },
+              nodes: [],
+              props: {
+                titleMultiloc: {
+                  en: 'Projects and folders',
+                  'fr-BE': 'Projects and folders',
+                  'nl-BE': 'Projects and folders'
+                },
+                adminPublicationIds: [
+                  project_folder.admin_publication.id,
+                  project1.admin_publication.id,
+                  project2.admin_publication.id,
+                  project_folder2.admin_publication.id,
+                  project3.admin_publication.id
+                ]
+              },
+              custom: {},
+              hidden: false,
+              parent: 'ROOT',
+              isCanvas: false,
+              displayName: 'Selection',
+              linkedNodes: {}
+            }
+          }
+        )
+
+        do_request
+
+        expect(response_status).to eq 200
+        expect(layout.reload.craftjs_json['nUOW77iNcW']['props']['adminPublicationIds'])
+          .to match_array [project_folder2.admin_publication.id, project3.admin_publication.id]
+      end
     end
   end
 

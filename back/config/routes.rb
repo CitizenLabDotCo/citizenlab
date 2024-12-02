@@ -203,6 +203,8 @@ Rails.application.routes.draw do
           get 'with_active_participatory_phase', action: 'index_with_active_participatory_phase'
         end
 
+        resource :review, controller: 'project_reviews'
+
         member do
           post :copy
           post :refresh_preview_token
@@ -221,6 +223,7 @@ Rails.application.routes.draw do
 
       resources :admin_publications, only: %i[index show] do
         patch 'reorder', on: :member
+        get 'select_and_order_by_ids', on: :collection, action: 'index_select_and_order_by_ids'
         get 'status_counts', on: :collection
       end
 

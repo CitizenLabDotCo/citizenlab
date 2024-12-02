@@ -8,8 +8,9 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import { IQueryParameters } from 'api/ideas/types';
+import { IIdeaQueryParameters } from 'api/ideas/types';
 import { IIdeasFilterCounts } from 'api/ideas_filter_counts/types';
+import { IdeaSortMethod } from 'api/phases/types';
 
 import SearchInput from 'components/UI/SearchInput';
 
@@ -18,7 +19,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 import messages from '../messages';
-import { Sort } from '../shared/Filters/SortFilterDropdown';
 import SortingBox from '../shared/Filters/SortingBox';
 import StatusFilterBox from '../shared/Filters/StatusFilterBox';
 import TopicFilterBox from '../shared/Filters/TopicFilterBox';
@@ -74,12 +74,12 @@ export interface Props {
   filtersActive: boolean;
   ideasFilterCounts: IIdeasFilterCounts | NilOrError;
   numberOfSearchResults: number;
-  selectedIdeaFilters: Partial<IQueryParameters>;
+  selectedIdeaFilters: Partial<IIdeaQueryParameters>;
   onClearFilters: () => void;
   onSearch: (searchTerm: string) => void;
   onChangeStatus: (ideaStatus: string | null) => void;
   onChangeTopics: (topics: string[] | null) => void;
-  handleSortOnChange: (sort: Sort) => void;
+  handleSortOnChange: (sort: IdeaSortMethod) => void;
   phaseId?: string;
 }
 
@@ -127,6 +127,7 @@ const InputFilters = ({
       </Box>
       <StyledIdeasTopicsFilter
         selectedTopicIds={selectedIdeaFilters.topics}
+        selectedIdeaFilters={selectedIdeaFilters}
         onChange={onChangeTopics}
       />
       <StyledIdeasStatusFilter

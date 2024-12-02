@@ -5,14 +5,16 @@ import {
   fontSizes,
   colors,
   isRtl,
+  Box,
 } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { IdeaSortMethod } from 'api/phases/types';
+
 import CityLogoSection from 'components/CityLogoSection';
 import ContentContainer from 'components/ContentContainer';
 import { IdeaCardsWithFiltersSidebar } from 'components/IdeaCards';
-import { Sort } from 'components/IdeaCards/shared/Filters/SortFilterDropdown';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
@@ -81,7 +83,7 @@ export interface QueryParameters {
   phase?: string;
 
   // filters
-  sort: Sort;
+  sort: IdeaSortMethod;
   search?: string;
   idea_status?: string;
   topics?: string[];
@@ -89,7 +91,7 @@ export interface QueryParameters {
 
 export default () => {
   const [searchParams] = useSearchParams();
-  const sortParam = searchParams.get('sort') as Sort | null;
+  const sortParam = searchParams.get('sort') as IdeaSortMethod | null;
   const searchParam = searchParams.get('search');
   const ideaStatusParam = searchParams.get('idea_status');
   const topicsParam = searchParams.get('topics');
@@ -118,6 +120,15 @@ export default () => {
             <PageTitle>
               <FormattedMessage {...messages.inputsPageTitle} />
             </PageTitle>
+            {/* Needed to add an anchor here so that we can scroll up the page correctly
+                when fitlers are changed in the IdeaCardsWithFiltersSidebar component and scrollToTopIdeasList util.
+            */}
+            <Box
+              position="absolute"
+              mt="-100px"
+              id="ideas-list-scroll-anchor"
+              aria-hidden={true}
+            />
             <IdeaCardsWithFiltersSidebar
               invisibleTitleMessage={messages.a11y_IdeasListTitle1}
               ideaQueryParameters={ideasQueryParameters}

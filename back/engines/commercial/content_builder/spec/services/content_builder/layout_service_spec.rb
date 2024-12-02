@@ -20,4 +20,71 @@ describe ContentBuilder::LayoutService do
       ]
     end
   end
+
+  describe 'delete_admin_publication_id_from_homepage_layout' do
+    let(:project1) { create(:project) }
+    let(:project2) { create(:project) }
+    let(:project_folder) { create(:project_folder) }
+
+    let(:craftjs) do
+      {
+        ROOT: {
+          type: 'div',
+          nodes: %w[
+            nUOW77iNcW
+          ],
+          props: {
+            id: 'e2e-content-builder-frame'
+          },
+          custom: {},
+          hidden: false,
+          isCanvas: true,
+          displayName: 'div',
+          linkedNodes: {}
+        },
+        nUOW77iNcW: {
+          type: {
+            resolvedName: 'Selection'
+          },
+          nodes: [],
+          props: {
+            titleMultiloc: {
+              en: 'Projects and folders',
+              'fr-BE': 'Projects and folders',
+              'nl-BE': 'Projects and folders'
+            },
+            adminPublicationIds: [
+              project2.admin_publication.id,
+              project1.admin_publication.id,
+              project_folder.admin_publication.id
+            ]
+          },
+          custom: {},
+          hidden: false,
+          parent: 'ROOT',
+          isCanvas: false,
+          displayName: 'Selection',
+          linkedNodes: {}
+        }
+      }
+    end
+
+    let!(:layout) { create(:homepage_layout, craftjs_json: craftjs) }
+
+    it 'deletes a single admin_publication ID from the homepage layout craftjs_json' do
+      service.delete_admin_pub_ids_from_homepage_layout project1.admin_publication.id
+
+      expect(layout.reload.craftjs_json['nUOW77iNcW']['props']['adminPublicationIds'])
+        .to match_array [project2.admin_publication.id, project_folder.admin_publication.id]
+    end
+
+    it 'deletes multiple admin_publication IDs from the homepage layout craftjs_json' do
+      service.delete_admin_pub_ids_from_homepage_layout(
+        [project1.admin_publication.id, project_folder.admin_publication.id]
+      )
+
+      expect(layout.reload.craftjs_json['nUOW77iNcW']['props']['adminPublicationIds'])
+        .to match_array [project2.admin_publication.id]
+    end
+  end
 end

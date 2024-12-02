@@ -63,6 +63,10 @@ export default defineMessages({
     id: 'app.containers.IdeaCards.oldest',
     defaultMessage: 'Oldest',
   },
+  mostDiscussed: {
+    id: 'app.containers.IdeaCards.mostDiscussed',
+    defaultMessage: 'Most discussed',
+  },
   map: {
     id: 'app.containers.IdeaCards.map',
     defaultMessage: 'Map',
@@ -83,15 +87,6 @@ export default defineMessages({
   filter: {
     id: 'app.containers.IdeaCards.filter',
     defaultMessage: 'Filter',
-  },
-  showResults: {
-    id: 'app.containers.IdeaCards.showResults',
-    defaultMessage: 'Show results',
-  },
-  showXResults: {
-    id: 'app.containers.IdeaCards.showXResults',
-    defaultMessage:
-      'Show {ideasCount, plural, no {# results} one {# result} other {# results}}',
   },
   resetFilters: {
     id: 'app.containers.IdeaCards.resetFilters',

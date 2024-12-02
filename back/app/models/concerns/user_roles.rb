@@ -62,6 +62,11 @@ module UserRoles # rubocop:disable Metrics/ModuleLength
       where.not(id: project_folder_moderator(*project_folder_ids))
     }
 
+    scope :project_reviewers, lambda { |project_reviewer = true|
+      json_roles = [{ type: 'admin', project_reviewer: true }].to_json
+      project_reviewer ? where('roles @> ?', json_roles) : where.not('roles @> ?', json_roles)
+    }
+
     scope :admin_or_moderator, -> { where(id: admin).or(where(id: project_moderator)).or(where(id: project_folder_moderator)) }
 
     scope :order_role, lambda { |direction = :asc|

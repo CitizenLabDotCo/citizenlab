@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 
-import { Color, colors, media } from '@citizenlab/cl2-component-library';
-import { compact } from 'lodash-es';
+import { Color, colors } from '@citizenlab/cl2-component-library';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import CSSTransition from 'react-transition-group/CSSTransition';
@@ -12,26 +11,28 @@ import { SupportedLocale } from 'typings';
 
 import useLocale from 'hooks/useLocale';
 
-// resource
-
 const slideInOutTimeout = 500;
 const slideInOutEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
 
 const Container = styled.div<{
   windowHeight: number;
+  windowWidth?: number;
   contentBgColor?: InputProps['contentBgColor'];
 }>`
-  width: 100vw;
-  height: ${({ windowHeight, theme }) =>
-    `calc(${windowHeight}px - ${theme.menuHeight}px)`};
   position: fixed;
-  top: ${({ theme }) => theme.menuHeight}px;
-  left: 0;
   display: flex;
   overflow: hidden;
   background: ${({ contentBgColor }) =>
     contentBgColor ? colors[contentBgColor] : colors.white};
-  z-index: 1003;
+  width: ${({ windowWidth }) => windowWidth}px; /* Fallback for width */
+  @supports (width: 100dvw) {
+    width: 100dvw; /* Dynamic viewport width for better mobile handling */
+  }
+  height: ${({ windowHeight }) => windowHeight}px; /* Fallback for height */
+  @supports (height: 100dvh) {
+    height: 100dvh; /* Dynamic viewport height for better mobile handling */
+  }
+  z-index: 1005; /* 1005 is needed to appear above the top main navigation */
 
   &.modal-enter {
     transform: translateY(100vh);
@@ -50,18 +51,6 @@ const Container = styled.div<{
       transition: all ${slideInOutTimeout}ms ${slideInOutEasing};
     }
   }
-
-  ${(props) => media.tablet`
-    height: 100vh;
-    top: 0;
-    bottom: ${props.theme.mobileMenuHeight}px;
-    z-index: 1005; /* there is no top navbar at this screen size, so okay that it is higher than the z-index of NavBar here */
-
-    &.hasBottomBar {
-      height: ${props.windowHeight}px;
-      bottom: 0;
-    }
-  `}
 `;
 
 const StyledFocusOn = styled(FocusOn)`
@@ -78,16 +67,18 @@ const Content = styled.div`
   transform: translate3d(0, 0, 0);
 `;
 
+const ModalBottomBar = styled.div`
+  position: sticky;
+  bottom: 0;
+`;
+
 interface InputProps {
   className?: string;
   opened: boolean;
   close: () => void;
   topBar?: JSX.Element | null;
   bottomBar?: JSX.Element | null;
-  animateInOut?: boolean;
-  mobileNavbarRef?: HTMLElement | null;
   children: JSX.Element | null | undefined;
-  modalPortalElement?: HTMLElement;
   contentBgColor?: Color;
 }
 
@@ -97,6 +88,7 @@ interface Props extends InputProps {
 
 interface State {
   windowHeight: number;
+  windowWidth: number;
 }
 
 class FullscreenModal extends PureComponent<Props, State> {
@@ -106,6 +98,7 @@ class FullscreenModal extends PureComponent<Props, State> {
     super(props);
     this.state = {
       windowHeight: window.innerHeight,
+      windowWidth: window.innerWidth,
     };
   }
 
@@ -115,7 +108,9 @@ class FullscreenModal extends PureComponent<Props, State> {
       .subscribe((event) => {
         if (event.target) {
           const height = event.target['innerHeight'] as number;
-          this.setState({ windowHeight: height });
+          const width = event.target['innerWidth'] as number;
+
+          this.setState({ windowHeight: height, windowWidth: width });
         }
       });
   }
@@ -126,76 +121,49 @@ class FullscreenModal extends PureComponent<Props, State> {
 
   render() {
     const { windowHeight } = this.state;
-    const {
-      children,
-      opened,
-      topBar,
-      bottomBar,
-      animateInOut,
-      mobileNavbarRef,
-      className,
-      contentBgColor,
-    } = this.props;
-    const shards = compact([mobileNavbarRef]);
-    const modalPortalElement =
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      this.props.modalPortalElement || document?.getElementById('modal-portal');
-    let modalContent: React.ReactChild | null = null;
+    const { children, opened, topBar, bottomBar, className, contentBgColor } =
+      this.props;
 
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (animateInOut || (!animateInOut && opened)) {
-      modalContent = (
+    return (
+      <CSSTransition
+        classNames="modal"
+        in={opened}
+        timeout={{
+          enter: slideInOutTimeout,
+          exit: slideInOutTimeout,
+        }}
+        mountOnEnter={true}
+        unmountOnExit={true}
+        enter={true}
+        exit={true}
+      >
         <Container
           id="e2e-fullscreenmodal-content"
           className={[bottomBar ? 'hasBottomBar' : '', className].join()}
           windowHeight={windowHeight}
           contentBgColor={contentBgColor}
         >
-          <StyledFocusOn autoFocus={false} shards={shards}>
+          <StyledFocusOn autoFocus>
             {topBar}
             <Content className="fullscreenmodal-scrollcontainer">
               {children}
             </Content>
-            {bottomBar}
+            {bottomBar && <ModalBottomBar>{bottomBar}</ModalBottomBar>}
           </StyledFocusOn>
         </Container>
-      );
-    }
-
-    if (animateInOut) {
-      return createPortal(
-        <CSSTransition
-          classNames="modal"
-          in={opened}
-          timeout={{
-            enter: slideInOutTimeout,
-            exit: slideInOutTimeout,
-          }}
-          mountOnEnter={true}
-          unmountOnExit={true}
-          enter={true}
-          exit={true}
-        >
-          {modalContent}
-        </CSSTransition>,
-        document.getElementById('modal-portal') as HTMLElement
-      );
-    }
-
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (!animateInOut && opened && modalPortalElement) {
-      return createPortal(modalContent, modalPortalElement);
-    }
-
-    return null;
+      </CSSTransition>
+    );
   }
 }
 
 export default (inputProps: InputProps) => {
   const locale = useLocale();
+  const modalPortalElement = document.getElementById('modal-portal');
 
-  return <FullscreenModal {...inputProps} locale={locale} />;
+  return modalPortalElement
+    ? createPortal(
+        <FullscreenModal {...inputProps} locale={locale} />,
+        modalPortalElement
+      )
+    : null;
 };

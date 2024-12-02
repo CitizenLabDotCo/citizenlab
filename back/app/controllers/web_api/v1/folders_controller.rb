@@ -92,15 +92,19 @@ class WebApi::V1::FoldersController < ApplicationController
   def destroy
     frozen_folder = nil
     frozen_projects = nil
+    children_ids = @project_folder.admin_publication.children.pluck(:id)
+
     @project_folder.projects.each do |project|
       SideFxProjectService.new.before_destroy(project, current_user)
     end
+
     ActiveRecord::Base.transaction do
       frozen_projects = @project_folder.projects.each(&:destroy!)
       frozen_folder = @project_folder.destroy
     end
+
     if frozen_folder.destroyed?
-      ProjectFolders::SideFxProjectFolderService.new.after_destroy(frozen_folder, current_user)
+      ProjectFolders::SideFxProjectFolderService.new.after_destroy(frozen_folder, current_user, children_ids)
       frozen_projects.each do |project|
         SideFxProjectService.new.after_destroy(project, current_user)
       end

@@ -212,6 +212,12 @@ lb:
           title: Wat ass Är Ugeleeënheet ?
         option:
           title: Wat ass Är Optioun?
+        proposal:
+          title: Wat ass Är Propositioun?
+        initiative:
+          title: Wat ass Är Initiativ?
+        petition:
+          title: Wat ass Är Petitioun?
   custom_field_options:
     gender:
       male: Männlech
@@ -260,6 +266,7 @@ lb:
       first_name: 'Virnumm (en)'
       image_url: 'Bild URL'
       input_id: 'ID'
+      manual_votes: 'Offline Stëmmen'
       input_url: 'URL'
       last_name: 'Familljennumm'
       latitude: 'Héicht'
@@ -318,9 +325,9 @@ lb:
       header: "Äre Bestätegungscode"
       header_message: "Gudde Moie(n) %{firstName}!"
       confirm_email_address: "Bestätegt Är E-Mail-Adress"
-      thanks_for_signing_up1: "Merci fir Är Participatioun. Gitt w.e.g. dëse Bestätegungscode an der Fënster op der Participatiounsplattform vun %{organizationName}an:"
+      thanks_for_signing_up1: "Merci fir Är Participatioun. Gitt w. e. g. dëse Bestätegungscode an der Fënster op der Participatiounsplattform vun %{organizationName}:"
       best_regards: "Mat beschte Gréiss,"
-      ignore_email: "Wann Dir kee Code ugefrot hutt, kënnt Dir Dës E-Mail ignoréieren."
+      ignore_email: "Wann Dir kee Code ugefrot hutt, kënnt Dir dës E-Mail ignoréieren."
       expire_code: "Dëse Code leeft of an:"
       24_hours: "24 Stonnen."
       copy_paste_the_link_below: "Kopéiert de Code hei ënnendrënner a füügt en an den Aschreiwungsformular op der Plattform an fir Är Aschreiwung ofzeschléissen."
@@ -337,6 +344,8 @@ lb:
       you_can_sign_in_again_from: "Dir kënnt erëm ab %{date}umellen"
   user:
     anon_first_name: "Benotzer"
+    anon_scheme:
+      animals: 'alligator, krokodil, alpaka, ant, antilope, ape, armadillo, bavianen, badger, Fliedermaus, Béier, Beaver, Bee, Käfer, Büffel, Päiperlek, Kamel, Waasser Büffel, Karibou, Kaz, Ranner, Gepard, Schimpans, Chinchilla, Zikad , Muschel, Kakerlak, Bacalhau, Coyote, Krab, Spréngerlek, Kräid, Kueb, Hirsch, Dinosaurier, Hond, Delfin, Porpoise, Ent, Adler, Ael, Elefant, Elch, Frett, Fësch, Fléi, Fuuss, Frog, Mouk, Gerbil ,Giraff, Gnat, Gnu, Wildbeest, Geess, Goldfësch, Gäns, Gorilla, Grasshopper, Meerschwäin, Hamster, Hues, Igel, Hering, Hippopotamus, Hornet, Päerd, Hënn, Hyena, Impala, Jackal, Jellyfish, Känguru, Wallaby, Koala, Leopard, Léiw, Eidechse, Lama, Locust, Maus, Macaw, Mallard, Mammut, Manatee, Marter, Nerz, Mink, Mol, Moos, Moustique, Maus, Rat, Mulle, Muskrat, Otter, Ochs, Auster, Panda, Schwäin, Platypus, Porcupine, Prairie Dog, Mops, Kanéngchen, Raccoon, Reindeer, Nashorn, Lachs, Sardin, Skorpion, Sigel, Seeléiw, Serval, Hai, Schof, Skunk, Schleeken, Schlaang, Spann, Eichhaut, Schwan, Termit, Tiger, Forelle, Schildkröt, Schildkröt, Walrus, Wasp, Wal, Wollef, Wombat, Woodchuck, Wuerm, Jak, Yellowjacket, Zebra'
   time:
     am: am
     formats:

@@ -29,7 +29,8 @@ resource 'Verification methods' do
             explainer_image_url: 'https://some.fake/image.png'
           },
           {
-            name: 'fake_sso'
+            name: 'fake_sso',
+            enabled_for_verified_actions: true
           }
         ]
       }

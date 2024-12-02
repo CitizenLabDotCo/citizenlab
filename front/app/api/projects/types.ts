@@ -16,7 +16,7 @@ import {
 import { Keys } from 'utils/cl-react-query/types';
 
 import {
-  IdeaDefaultSortMethod,
+  IdeaSortMethod,
   InputTerm,
   ParticipationMethod,
   TSurveyService,
@@ -192,7 +192,7 @@ export interface IUpdatedProjectProperties {
   document_annotation_embed_url?: string | null;
   default_assignee_id?: string | null;
   poll_anonymous?: boolean;
-  ideas_order?: IdeaDefaultSortMethod;
+  ideas_order?: IdeaSortMethod;
   input_term?: InputTerm;
   slug?: string;
   topic_ids?: string[];

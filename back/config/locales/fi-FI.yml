@@ -212,6 +212,12 @@ fi:
           title: Mikä on kommenttisi?
         option:
           title: Mikä on vaihtoehtosi?
+        proposal:
+          title: Mikä on ehdotuksesi?
+        initiative:
+          title: Mikä on aloitteesi?
+        petition:
+          title: Mikä on vetoomuksenne?
   custom_field_options:
     gender:
       male: Mies
@@ -260,6 +266,7 @@ fi:
       first_name: 'Etunimet)'
       image_url: 'Kuvan URL-osoite'
       input_id: 'ID'
+      manual_votes: 'Offline-äänet'
       input_url: 'URL-osoite'
       last_name: 'Sukunimi'
       latitude: 'Leveysaste'
@@ -337,6 +344,8 @@ fi:
       you_can_sign_in_again_from: "Voit kirjautua uudelleen sisään osoitteesta %{date}"
   user:
     anon_first_name: "Käyttäjä"
+    anon_scheme:
+      animals: 'alligaattori, krokotiili, alpakka, muurahainen, antilooppi, apina, armadillo, paviaani, mäyrä, lepakko, karhu, majava, mehiläinen, kovakuoriainen, puhveli, perhonen, kameli, vesipuhveli, karibu, kissa, karja, gepardi, simpanssi, chinchilla, sikada ,simpukka, torakka, turska, kojootti, rapu, kriketti, varis, korppi, hirvi, dinosaurus, koira, delfiini, pyöriäinen, ankka, kotka, ankerias, norsu, hirvi, fretti, kala, kärpänen, kettu, sammakko, rupikonna, gerbiili ,kirahvi, sääskä, gnu, metsikala, vuohi, kultakala, hanhi, gorilla, heinäsirkka, marsu, hamsteri, jänis, siili, silli, virtahepo, hornet, hevonen, koira, hyeena, impala, sakaali, meduusa, kenguru, wallaby, koala, leopardi, leijona, lisko, laama, heinäsirkka, täi, ara, sinisorsa, mammutti, manaatti, näätä, minkki, minnow, myyrä, hirvi, hyttynen, hiiri, rotta, muuli, piisami, saukko, härkä, osteri, panda, sika, platypus, porcupine, preeriakoira, mopsi, kani, pesukarhu, poro, sarvikuono, lohi, sardiini, skorpioni, hylke, merileijona, orja, hai, lammas, haisu, etana, käärme, hämähäkki, orava, joutsen, termiitti, tiikeri, taimenen, kilpikonna, kilpikonna, mursu, ampiainen, valas, susi, wombat, metsätukka, mato, jakki, keltatakki, seepra'
   time:
     am: olen
     formats:

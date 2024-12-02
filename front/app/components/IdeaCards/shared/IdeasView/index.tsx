@@ -5,7 +5,7 @@ import { Box, Spinner } from '@citizenlab/cl2-component-library';
 import { IIdeaMarkers } from 'api/idea_markers/types';
 import { IIdeaData } from 'api/ideas/types';
 import useProjectMapConfig from 'api/map_config/useProjectMapConfig';
-import { IdeaDefaultSortMethod } from 'api/phases/types';
+import { IdeaSortMethod } from 'api/phases/types';
 
 import IdeasMap from 'components/IdeasMap';
 
@@ -15,7 +15,7 @@ interface Props {
   view: 'card' | 'map';
   // This prop is used to set the aria-labelledby attribute. Set this to false if only one view is shown all the time. That is when the tabs are hidden.
   hasMoreThanOneView?: boolean;
-  defaultSortingMethod?: IdeaDefaultSortMethod;
+  defaultSortingMethod?: IdeaSortMethod;
   hideImage: boolean;
   hideImagePlaceholder: boolean;
   hideIdeaStatus: boolean;
@@ -27,6 +27,7 @@ interface Props {
   loadingMore: boolean;
   ideaMarkers?: IIdeaMarkers;
   onLoadMore(): void;
+  hasFilterSidebar?: boolean;
 }
 
 const IdeasView = ({
@@ -43,6 +44,7 @@ const IdeasView = ({
   ideaMarkers,
   onLoadMore,
   hasMoreThanOneView = true,
+  hasFilterSidebar = false,
 }: Props) => {
   const { data: mapConfig, isLoading } = useProjectMapConfig(
     projectId || undefined
@@ -68,6 +70,7 @@ const IdeasView = ({
           hideImagePlaceholder={hideImagePlaceholder}
           hideIdeaStatus={hideIdeaStatus}
           phaseId={phaseId}
+          hasFilterSidebar={hasFilterSidebar}
         />
       )}
       {view === 'map' && projectId && (

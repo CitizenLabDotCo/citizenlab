@@ -16,6 +16,7 @@ import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 import { canAccessRoute } from 'utils/permissions/rules/routePermissions';
 
+import HomePageMeta from './HomePageMeta';
 import Viewer from './Viewer';
 
 export const adminRedirectPath: RouteType = '/admin';
@@ -58,10 +59,13 @@ const HomePage = () => {
   if (!homepageLayout) return <Spinner />;
 
   return (
-    <main id="e2e-landing-page">
-      <Viewer />
-      <CityLogoSection />
-    </main>
+    <>
+      <HomePageMeta />
+      <main id="e2e-landing-page">
+        <Viewer />
+        <CityLogoSection />
+      </main>
+    </>
   );
 };
 

@@ -74,7 +74,6 @@ const PDFExportModal = ({ open, formType, onClose, onExport }: Props) => {
 
   return (
     <Modal
-      fullScreen={false}
       width="580px"
       opened={open}
       close={onClose}

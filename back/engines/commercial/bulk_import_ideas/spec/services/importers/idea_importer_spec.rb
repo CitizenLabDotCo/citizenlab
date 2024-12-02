@@ -189,6 +189,20 @@ describe BulkImportIdeas::Importers::IdeaImporter do
       )
     end
 
+    it 'adds a timestamp to published at so that idea sorting is consistent' do
+      allow(Time).to receive(:now).and_return(Time.new(2024, 12, 25, 11, 22, 33))
+      project = create(:project, title_multiloc: { 'en' => 'Project title' })
+      idea_rows = [
+        {
+          title_multiloc: { 'en' => 'My idea title' },
+          project_id: project.id,
+          published_at: '01-11-2024'
+        }
+      ]
+      service.import idea_rows
+      expect(project.ideas.first.published_at.strftime('%F %T')).to eq '2024-11-01 11:22:33'
+    end
+
     it 'does not import a user if there is a problem with saving a named user' do
       project = create(:project, title_multiloc: { 'en' => 'Project title' })
       idea_rows = [
@@ -243,6 +257,25 @@ describe BulkImportIdeas::Importers::IdeaImporter do
         service.import idea_rows
 
         expect(Idea.count).to eq 1
+        expect(User.count).to eq 2
+      end
+    end
+
+    context 'proposals' do
+      it 'can import proposals' do
+        project = create(:single_phase_proposals_project)
+        create(:custom_form, participation_context: project.phases.first)
+
+        idea_rows = [
+          {
+            title_multiloc: { 'en' => 'My proposal' },
+            body_multiloc: { 'en' => 'My proposal body' },
+            project_id: project.id,
+            user_email: 'proposalsimport@govocal.com'
+          }
+        ]
+        expect { service.import idea_rows }.to change(Idea, :count).from(0).to(1)
+
         expect(User.count).to eq 2
       end
     end

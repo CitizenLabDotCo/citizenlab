@@ -174,4 +174,8 @@ export default defineMessages({
     id: 'app.components.ProjectCard.a11y_projectDescription',
     defaultMessage: 'Project description: ',
   },
+  readTheReport: {
+    id: 'app.components.ProjectCard.readTheReport',
+    defaultMessage: 'Read the report',
+  },
 });
