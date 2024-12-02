@@ -163,7 +163,7 @@ class WebApi::V1::ProjectsController < ApplicationController
     @project = Project.new(project_params)
     sidefx.before_create(@project, current_user)
 
-    if save_project
+    if save_project(@project)
       sidefx.after_create(@project, current_user)
       render json: WebApi::V1::ProjectSerializer.new(
         @project,
@@ -206,7 +206,7 @@ class WebApi::V1::ProjectsController < ApplicationController
 
     sidefx.before_update(@project, current_user)
 
-    if save_project
+    if save_project(@project)
       sidefx.after_update(@project, current_user)
       render json: WebApi::V1::ProjectSerializer.new(
         @project,
@@ -293,20 +293,14 @@ class WebApi::V1::ProjectsController < ApplicationController
     @sidefx ||= SideFxProjectService.new
   end
 
-  def save_project
+  def save_project(project)
+    project.folder_id = params.dig(:project, :folder_id)
+    authorize(project)
+
     ActiveRecord::Base.transaction do
-      set_folder
-      authorize @project
-      saved = @project.save
-      check_publication_inconsistencies! if saved
-      saved
+      # The project is not saved if "inconsistencies" are found.
+      project.save.tap { |saved| check_publication_inconsistencies! if saved }
     end
-  end
-
-  def set_folder
-    return unless params.require(:project).key?(:folder_id)
-
-    @project.folder_id = params.dig(:project, :folder_id)
   end
 
   def set_project
