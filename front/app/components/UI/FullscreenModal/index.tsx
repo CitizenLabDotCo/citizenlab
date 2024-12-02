@@ -1,10 +1,10 @@
-import React, { PureComponent } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Color, colors } from '@citizenlab/cl2-component-library';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import CSSTransition from 'react-transition-group/CSSTransition';
-import { Subscription, fromEvent } from 'rxjs';
+import { fromEvent } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import styled from 'styled-components';
 import { SupportedLocale } from 'typings';
@@ -86,75 +86,67 @@ interface Props extends InputProps {
   locale: SupportedLocale;
 }
 
-interface State {
-  windowHeight: number;
-  windowWidth: number;
-}
+const FullscreenModal = ({
+  className,
+  opened,
+  close,
+  topBar,
+  bottomBar,
+  children,
+  contentBgColor,
+}: Props) => {
+  const [windowDimensions, setWindowDimensions] = useState({
+    windowWidth: window.innerWidth,
+    windowHeight: window.innerHeight,
+  });
 
-class FullscreenModal extends PureComponent<Props, State> {
-  subscription: Subscription | null = null;
-
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      windowHeight: window.innerHeight,
-      windowWidth: window.innerWidth,
-    };
-  }
-
-  componentDidMount() {
-    this.subscription = fromEvent(window, 'resize')
+  useEffect(() => {
+    const subscription = fromEvent(window, 'resize')
       .pipe(debounceTime(50), distinctUntilChanged())
       .subscribe((event) => {
         if (event.target) {
           const height = event.target['innerHeight'] as number;
           const width = event.target['innerWidth'] as number;
 
-          this.setState({ windowHeight: height, windowWidth: width });
+          setWindowDimensions({ windowHeight: height, windowWidth: width });
         }
       });
-  }
 
-  componentWillUnmount() {
-    this.subscription?.unsubscribe();
-  }
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
 
-  render() {
-    const { windowHeight } = this.state;
-    const { children, opened, topBar, bottomBar, className, contentBgColor } =
-      this.props;
-
-    return (
-      <CSSTransition
-        classNames="modal"
-        in={opened}
-        timeout={{
-          enter: slideInOutTimeout,
-          exit: slideInOutTimeout,
-        }}
-        mountOnEnter={true}
-        unmountOnExit={true}
-        enter={true}
-        exit={true}
+  return (
+    <CSSTransition
+      classNames="modal"
+      in={opened}
+      timeout={{
+        enter: slideInOutTimeout,
+        exit: slideInOutTimeout,
+      }}
+      mountOnEnter={true}
+      unmountOnExit={true}
+      enter={true}
+      exit={true}
+    >
+      <Container
+        id="e2e-fullscreenmodal-content"
+        className={[bottomBar ? 'hasBottomBar' : '', className].join()}
+        windowHeight={windowDimensions.windowHeight}
+        contentBgColor={contentBgColor}
       >
-        <Container
-          id="e2e-fullscreenmodal-content"
-          className={[bottomBar ? 'hasBottomBar' : '', className].join()}
-          windowHeight={windowHeight}
-          contentBgColor={contentBgColor}
-        >
-          <StyledFocusOn autoFocus>
-            {topBar}
-            <Content className="fullscreenmodal-scrollcontainer">
-              {children}
-            </Content>
-            {bottomBar && <ModalBottomBar>{bottomBar}</ModalBottomBar>}
-          </StyledFocusOn>
-        </Container>
-      </CSSTransition>
-    );
-  }
-}
+        <StyledFocusOn autoFocus>
+          {topBar}
+          <Content className="fullscreenmodal-scrollcontainer">
+            {children}
+          </Content>
+          {bottomBar && <ModalBottomBar>{bottomBar}</ModalBottomBar>}
+        </StyledFocusOn>
+      </Container>
+    </CSSTransition>
+  );
+};
 
 export default (inputProps: InputProps) => {
   const locale = useLocale();
