@@ -28,4 +28,34 @@ namespace :embeddings do
     end
     reporter.report!('populate_ideas_embeddings_report.json', verbose: true)
   end
+
+  desc 'Generate results'
+  task :generate_results, %i[host project_slug] => [:environment] do |_t, args|
+    results = []
+    Apartment::Tenant.switch(args[:host].gsub('.', '_')) do
+      project = Project.find_by!(slug: args[:project_slug])
+      project.ideas.order(likes_count: :desc).each.with_index(1) do |idea, row_idx|
+        puts "Processing idea #{idea.slug}"
+        next if idea.embeddings_similarities.none?
+
+        similarities = EmbeddingsSimilarity.find_by(idea: idea).nearest_neighbors(:embedding, distance: 'cosine').limit(10).take(10)
+        result = { 'Idea ID' => idea.id, 'Idea slug' => idea.slug, 'Idea title' => idea.title_multiloc.values.first, 'Idea body' => Nokogiri::HTML(idea.body_multiloc.values.first).text }
+        similarities.each.with_index(1) do |similarity, index|
+          result["Similar idea #{index} slug"] = similarity.idea.slug
+          result["Similar idea #{index} title"] = similarity.idea.title_multiloc.values.first
+          result["Similar idea #{index} body"] = Nokogiri::HTML(similarity.idea.body_multiloc.values.first).text
+        end
+        results << result
+
+        if row_idx % 10 == 0
+          CSV.open('similar_ideas.csv', 'wb') do |csv|
+            csv << results.first.keys
+            results.each do |d|
+              csv << d.values
+            end
+          end
+        end
+      end
+    end
+  end
 end
