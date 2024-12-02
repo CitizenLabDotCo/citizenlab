@@ -122,6 +122,7 @@ ALTER TABLE IF EXISTS ONLY public.custom_field_option_images DROP CONSTRAINT IF 
 ALTER TABLE IF EXISTS ONLY public.nav_bar_items DROP CONSTRAINT IF EXISTS fk_rails_34143a680f;
 ALTER TABLE IF EXISTS ONLY public.volunteering_volunteers DROP CONSTRAINT IF EXISTS fk_rails_33a154a9ba;
 ALTER TABLE IF EXISTS ONLY public.phase_files DROP CONSTRAINT IF EXISTS fk_rails_33852a9a71;
+ALTER TABLE IF EXISTS ONLY public.embeddings_similarities DROP CONSTRAINT IF EXISTS fk_rails_2e90c705c4;
 ALTER TABLE IF EXISTS ONLY public.cosponsorships DROP CONSTRAINT IF EXISTS fk_rails_2d026b99a2;
 ALTER TABLE IF EXISTS ONLY public.phases DROP CONSTRAINT IF EXISTS fk_rails_2c74f68dd3;
 ALTER TABLE IF EXISTS ONLY public.analysis_analyses DROP CONSTRAINT IF EXISTS fk_rails_2a92a64a56;
@@ -304,6 +305,7 @@ DROP INDEX IF EXISTS public.index_events_attendances_on_attendee_id_and_event_id
 DROP INDEX IF EXISTS public.index_events_attendances_on_attendee_id;
 DROP INDEX IF EXISTS public.index_event_images_on_event_id;
 DROP INDEX IF EXISTS public.index_event_files_on_event_id;
+DROP INDEX IF EXISTS public.index_embeddings_similarities_on_idea_id;
 DROP INDEX IF EXISTS public.index_email_snippets_on_email_and_snippet_and_locale;
 DROP INDEX IF EXISTS public.index_email_campaigns_unsubscription_tokens_on_user_id;
 DROP INDEX IF EXISTS public.index_email_campaigns_unsubscription_tokens_on_token;
@@ -478,6 +480,7 @@ ALTER TABLE IF EXISTS ONLY public.events DROP CONSTRAINT IF EXISTS events_pkey;
 ALTER TABLE IF EXISTS ONLY public.events_attendances DROP CONSTRAINT IF EXISTS events_attendances_pkey;
 ALTER TABLE IF EXISTS ONLY public.event_images DROP CONSTRAINT IF EXISTS event_images_pkey;
 ALTER TABLE IF EXISTS ONLY public.event_files DROP CONSTRAINT IF EXISTS event_files_pkey;
+ALTER TABLE IF EXISTS ONLY public.embeddings_similarities DROP CONSTRAINT IF EXISTS embeddings_similarities_pkey;
 ALTER TABLE IF EXISTS ONLY public.email_snippets DROP CONSTRAINT IF EXISTS email_snippets_pkey;
 ALTER TABLE IF EXISTS ONLY public.email_campaigns_unsubscription_tokens DROP CONSTRAINT IF EXISTS email_campaigns_unsubscription_tokens_pkey;
 ALTER TABLE IF EXISTS ONLY public.email_campaigns_examples DROP CONSTRAINT IF EXISTS email_campaigns_examples_pkey;
@@ -586,6 +589,7 @@ DROP TABLE IF EXISTS public.flag_inappropriate_content_inappropriate_content_fla
 DROP TABLE IF EXISTS public.experiments;
 DROP TABLE IF EXISTS public.event_images;
 DROP TABLE IF EXISTS public.event_files;
+DROP TABLE IF EXISTS public.embeddings_similarities;
 DROP TABLE IF EXISTS public.email_snippets;
 DROP TABLE IF EXISTS public.email_campaigns_unsubscription_tokens;
 DROP TABLE IF EXISTS public.email_campaigns_examples;
@@ -663,6 +667,7 @@ DROP FUNCTION IF EXISTS public.que_job_notify();
 DROP FUNCTION IF EXISTS public.que_determine_job_state(job public.que_jobs);
 DROP TABLE IF EXISTS public.que_jobs;
 DROP FUNCTION IF EXISTS public.que_validate_tags(tags_array jsonb);
+DROP EXTENSION IF EXISTS vector;
 DROP EXTENSION IF EXISTS "uuid-ossp";
 DROP EXTENSION IF EXISTS postgis;
 DROP EXTENSION IF EXISTS pgcrypto;
@@ -729,6 +734,20 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA shared_extensions;
 --
 
 COMMENT ON EXTENSION "uuid-ossp" IS 'generate universally unique identifiers (UUIDs)';
+
+
+--
+-- Name: vector; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS vector WITH SCHEMA shared_extensions;
+
+
+--
+-- Name: EXTENSION vector; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION vector IS 'Open-source vector similarity search for Postgres';
 
 
 --
@@ -1423,7 +1442,7 @@ CREATE VIEW public.analytics_fact_email_deliveries AS
     (ecd.sent_at)::date AS dimension_date_sent_id,
     ecd.campaign_id,
     p.id AS dimension_project_id,
-    ((ecc.type)::text <> ALL ((ARRAY['EmailCampaigns::Campaigns::Manual'::character varying, 'EmailCampaigns::Campaigns::ManualProjectParticipants'::character varying])::text[])) AS automated
+    ((ecc.type)::text <> ALL (ARRAY[('EmailCampaigns::Campaigns::Manual'::character varying)::text, ('EmailCampaigns::Campaigns::ManualProjectParticipants'::character varying)::text])) AS automated
    FROM ((public.email_campaigns_deliveries ecd
      JOIN public.email_campaigns_campaigns ecc ON ((ecc.id = ecd.campaign_id)))
      LEFT JOIN public.projects p ON ((p.id = ecc.context_id)));
@@ -2328,6 +2347,19 @@ CREATE TABLE public.email_snippets (
     body text,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: embeddings_similarities; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.embeddings_similarities (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    embedding shared_extensions.vector(1024) NOT NULL,
+    idea_id uuid NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
 );
 
 
@@ -3752,6 +3784,14 @@ ALTER TABLE ONLY public.email_snippets
 
 
 --
+-- Name: embeddings_similarities embeddings_similarities_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.embeddings_similarities
+    ADD CONSTRAINT embeddings_similarities_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: event_files event_files_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -5048,6 +5088,13 @@ CREATE INDEX index_email_snippets_on_email_and_snippet_and_locale ON public.emai
 
 
 --
+-- Name: index_embeddings_similarities_on_idea_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_embeddings_similarities_on_idea_id ON public.embeddings_similarities USING btree (idea_id);
+
+
+--
 -- Name: index_event_files_on_event_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6335,6 +6382,14 @@ ALTER TABLE ONLY public.phases
 
 ALTER TABLE ONLY public.cosponsorships
     ADD CONSTRAINT fk_rails_2d026b99a2 FOREIGN KEY (idea_id) REFERENCES public.ideas(id);
+
+
+--
+-- Name: embeddings_similarities fk_rails_2e90c705c4; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.embeddings_similarities
+    ADD CONSTRAINT fk_rails_2e90c705c4 FOREIGN KEY (idea_id) REFERENCES public.ideas(id);
 
 
 --
@@ -7717,6 +7772,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20241112110758'),
 ('20241115141553'),
 ('20241115141717'),
+('20241120151945'),
 ('20241125094000'),
 ('20241125094100');
 

@@ -3,7 +3,7 @@
 # Table name: embeddings_similarities
 #
 #  id         :uuid             not null, primary key
-#  embedding  :vector(1024)
+#  embedding  :vector(1024)     not null
 #  idea_id    :uuid             not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
