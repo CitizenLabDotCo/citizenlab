@@ -1114,7 +1114,6 @@
   "app.containers.IdeaCard.xVotesOfY": "{xVotes, plural, =0 {ei ääniä} one {1 ääni} other {# ääntä}} / {votingThreshold}",
   "app.containers.IdeaCards.a11y_totalItems": "Viestejä yhteensä: {ideasCount}",
   "app.containers.IdeaCards.all": "Kaikki",
-  "app.containers.IdeaCards.filter": "Suodattaa",
   "app.containers.IdeaCards.list": "Lista",
   "app.containers.IdeaCards.map": "Kartta",
   "app.containers.IdeaCards.newest": "Viimeisin",
