@@ -146,6 +146,7 @@ const IdeasWithFiltersSidebar = ({
   );
 
   const openFiltersModal = useCallback(() => {
+    trackEventByName(tracks.openFiltersModalMobile);
     setFiltersModalOpened(true);
   }, []);
 
