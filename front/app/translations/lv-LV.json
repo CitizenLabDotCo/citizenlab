@@ -1169,7 +1169,6 @@
   "app.containers.IdeaCards.all": "Viss",
   "app.containers.IdeaCards.allStatuses": "Visi statusi",
   "app.containers.IdeaCards.contributions": "Iemaksas",
-  "app.containers.IdeaCards.filter": "Filtrs",
   "app.containers.IdeaCards.ideaTerm": "Idejas",
   "app.containers.IdeaCards.ideasFilterSidebarTitle": "{inputTerm} ({numberIdeas})",
   "app.containers.IdeaCards.initiatives": "Iniciatīvas",
