@@ -13,6 +13,27 @@ resource 'Projects' do
     end
   end
 
+  shared_context 'PATCH project parameters' do
+    with_options scope: :project do
+      parameter :title_multiloc, 'The title of the project, as a multiloc string', required: true
+      parameter :description_multiloc, 'The description of the project, as a multiloc HTML string', required: true
+      parameter :description_preview_multiloc, 'The description preview of the project, as a multiloc string'
+      parameter :slug, 'The unique slug of the project'
+      parameter :header_bg, 'Base64 encoded header image'
+      parameter :area_ids, 'Array of ids of the associated areas'
+      parameter :topic_ids, 'Array of ids of the associated topics'
+      parameter :visible_to, "Defines who can see the project, either #{Project::VISIBLE_TOS.join(',')}.", required: false
+      parameter :default_assignee_id, 'The user id of the admin or moderator that gets assigned to ideas by default. Set to null to default to unassigned', required: false
+      parameter :folder_id, 'The ID of the project folder (can be set to nil for top-level projects)'
+    end
+
+    with_options scope: %i[project admin_publication_attributes] do
+      parameter :publication_status, "Describes the publication status of the project, either #{AdminPublication::PUBLICATION_STATUSES.join(',')}.", required: false
+    end
+
+    ValidationErrorHelper.new.error_fields(self, Project)
+  end
+
   let(:json_response) { json_parse(response_body) }
 
   before do
@@ -316,28 +337,9 @@ resource 'Projects' do
     end
 
     patch 'web_api/v1/projects/:id' do
-      before do
-        @project = create(:project)
-      end
+      include_context 'PATCH project parameters'
 
-      with_options scope: :project do
-        parameter :title_multiloc, 'The title of the project, as a multiloc string', required: true
-        parameter :description_multiloc, 'The description of the project, as a multiloc HTML string', required: true
-        parameter :description_preview_multiloc, 'The description preview of the project, as a multiloc string'
-        parameter :slug, 'The unique slug of the project'
-        parameter :header_bg, 'Base64 encoded header image'
-        parameter :area_ids, 'Array of ids of the associated areas'
-        parameter :topic_ids, 'Array of ids of the associated topics'
-        parameter :visible_to, "Defines who can see the project, either #{Project::VISIBLE_TOS.join(',')}.", required: false
-        parameter :default_assignee_id, 'The user id of the admin or moderator that gets assigned to ideas by default. Set to null to default to unassigned', required: false
-        parameter :folder_id, 'The ID of the project folder (can be set to nil for top-level projects)'
-      end
-
-      with_options scope: %i[project admin_publication_attributes] do
-        parameter :publication_status, "Describes the publication status of the project, either #{AdminPublication::PUBLICATION_STATUSES.join(',')}.", required: false
-      end
-
-      ValidationErrorHelper.new.error_fields(self, Project)
+      before { @project = create(:project) }
 
       let(:id) { @project.id }
       let(:title_multiloc) { { 'en' => 'Changed title' } }
@@ -1356,6 +1358,65 @@ resource 'Projects' do
 
         assert_status 401
         expect(Project.where(id: id)).to exist
+      end
+    end
+  end
+
+  patch 'web_api/v1/projects/:id' do
+    include_context 'PATCH project parameters'
+
+    context 'when project moderator' do
+      before { header_token_for(moderator) }
+
+      let(:moderator) { create(:project_moderator, projects: [project]) }
+      let(:project) { create(:project, admin_publication_attributes: { publication_status: 'draft' }) }
+      let(:id) { project.id }
+
+      context 'when the project has never been published' do
+        before do # Sanity check
+          raise 'Project should not have been published' if project.ever_published?
+        end
+
+        context 'and has not been approved' do
+          before do
+            create(:project_review, project: project)
+          end
+
+          example 'Cannot update the project status', document: false do
+            # The request should be successful, but the parameter should be ignored.
+            expect do
+              do_request(project: { admin_publication_attributes: { publication_status: 'archived' } })
+            end.not_to change { project.reload.admin_publication.publication_status }
+
+            assert_status 200
+          end
+        end
+
+        context 'and has been approved' do
+          before do
+            create(:project_review, :approved, project: project)
+          end
+
+          example 'Update the project status', document: false do
+            expect do
+              do_request(project: { admin_publication_attributes: { publication_status: 'published' } })
+            end.to change { project.reload.admin_publication.publication_status }.from('draft').to('published')
+
+            assert_status 200
+          end
+        end
+      end
+
+      context 'when the project has been published' do
+        before { project.admin_publication.update!(first_published_at: Time.zone.now) }
+
+        example 'Update the project status', document: false do
+          expect do
+            do_request(project: { admin_publication_attributes: { publication_status: 'published' } })
+          end.to change { project.reload.admin_publication.publication_status }.from('draft').to('published')
+
+          assert_status 200
+        end
       end
     end
   end

@@ -199,7 +199,7 @@ class WebApi::V1::ProjectsController < ApplicationController
     params[:project][:area_ids] ||= [] if params[:project].key?(:area_ids)
     params[:project][:topic_ids] ||= [] if params[:project].key?(:topic_ids)
 
-    project_params = permitted_attributes(Project)
+    project_params = permitted_attributes(@project)
 
     @project.assign_attributes project_params
     remove_image_if_requested!(@project, project_params, :header_bg)
