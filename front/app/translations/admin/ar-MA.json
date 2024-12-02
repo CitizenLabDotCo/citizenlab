@@ -2466,7 +2466,7 @@
   "app.containers.AdminPage.projects.project.analysis.invalidShapefile": "تم تحميل ملف شكل غير صالح ولا يمكن عرضه.",
   "app.containers.AdminPage.projects.project.analysis.limit": "حد",
   "app.containers.AdminPage.projects.project.analysis.mainQuestion": "السؤال الرئيسي",
-  "app.containers.AdminPage.projects.project.analysis.manageIdea": "إدارة الفكرة",
+  "app.containers.AdminPage.projects.project.analysis.manageInput": "إدارة المدخلات",
   "app.containers.AdminPage.projects.project.analysis.noAnswer": "لا اجابة",
   "app.containers.AdminPage.projects.project.analysis.noAnswerProvided2": "لم يتم تقديم إجابة.",
   "app.containers.AdminPage.projects.project.analysis.noFileUploaded": "لم يتم تحميل أي ملف شكل.",
