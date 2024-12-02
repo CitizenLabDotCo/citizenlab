@@ -1169,7 +1169,6 @@
   "app.containers.IdeaCards.all": "crwdns3647503:0crwdne3647503:0",
   "app.containers.IdeaCards.allStatuses": "crwdns3647505:0crwdne3647505:0",
   "app.containers.IdeaCards.contributions": "crwdns3647507:0crwdne3647507:0",
-  "app.containers.IdeaCards.filter": "crwdns3647509:0crwdne3647509:0",
   "app.containers.IdeaCards.ideaTerm": "crwdns3647511:0crwdne3647511:0",
   "app.containers.IdeaCards.ideasFilterSidebarTitle": "crwdns3647513:0{inputTerm}crwdnd3647513:0{numberIdeas}crwdne3647513:0",
   "app.containers.IdeaCards.initiatives": "crwdns3647515:0crwdne3647515:0",
