@@ -2466,7 +2466,7 @@
   "app.containers.AdminPage.projects.project.analysis.invalidShapefile": "Učitana je nevažeća datoteka oblika i ne može se prikazati.",
   "app.containers.AdminPage.projects.project.analysis.limit": "Ograničiti",
   "app.containers.AdminPage.projects.project.analysis.mainQuestion": "Glavno pitanje",
-  "app.containers.AdminPage.projects.project.analysis.manageIdea": "Upravljajte idejom",
+  "app.containers.AdminPage.projects.project.analysis.manageInput": "Upravljanje unosom",
   "app.containers.AdminPage.projects.project.analysis.noAnswer": "Nema odgovora",
   "app.containers.AdminPage.projects.project.analysis.noAnswerProvided2": "Nema odgovora.",
   "app.containers.AdminPage.projects.project.analysis.noFileUploaded": "Nije učitana datoteka oblika.",
