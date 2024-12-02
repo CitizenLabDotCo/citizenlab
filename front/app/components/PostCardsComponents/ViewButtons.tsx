@@ -89,6 +89,9 @@ const ViewButtons = memo<Props>(({ className, selectedView, onClick }) => {
   const [viewChanged, setViewChanged] = useState<boolean | null>(null);
 
   useEffect(() => {
+    // We only want to update this focus if the user clicks/selects the tabs.
+    // Otherwise we end up setting focus when the page loads (which leads an
+    // issue where the user is incorrectly scrolled down to the idea section on page load).
     if (viewChanged) {
       selectedView === 'map'
         ? mapButtonRef.current?.focus()
