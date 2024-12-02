@@ -1331,4 +1331,32 @@ resource 'Projects' do
       end
     end
   end
+
+  delete 'web_api/v1/projects/:id' do
+    context 'when project moderator' do
+      before do
+        header_token_for moderator
+      end
+
+      let(:moderator) { create(:project_moderator, projects: [project]) }
+      let(:project) { create(:project, admin_publication_attributes: { publication_status: 'draft' }) }
+      let(:id) { project.id }
+
+      example 'Delete a project that has never been published', document: false do
+        do_request
+
+        assert_status 200
+        expect { Project.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+
+      example '[Unauthorized] Delete a project that has been published', document: false do
+        project.admin_publication.update!(first_published_at: Time.zone.now)
+
+        do_request
+
+        assert_status 401
+        expect(Project.where(id: id)).to exist
+      end
+    end
+  end
 end
