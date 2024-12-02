@@ -2466,7 +2466,7 @@
   "app.containers.AdminPage.projects.project.analysis.invalidShapefile": "ਇੱਕ ਅਵੈਧ ਸ਼ੇਪਫਾਈਲ ਅੱਪਲੋਡ ਕੀਤੀ ਗਈ ਸੀ ਅਤੇ ਪ੍ਰਦਰਸ਼ਿਤ ਨਹੀਂ ਕੀਤੀ ਜਾ ਸਕਦੀ।",
   "app.containers.AdminPage.projects.project.analysis.limit": "ਸੀਮਾ",
   "app.containers.AdminPage.projects.project.analysis.mainQuestion": "ਮੁੱਖ ਸਵਾਲ",
-  "app.containers.AdminPage.projects.project.analysis.manageIdea": "ਵਿਚਾਰ ਦਾ ਪ੍ਰਬੰਧਨ ਕਰੋ",
+  "app.containers.AdminPage.projects.project.analysis.manageInput": "ਇੰਪੁੱਟ ਦਾ ਪ੍ਰਬੰਧਨ ਕਰੋ",
   "app.containers.AdminPage.projects.project.analysis.noAnswer": "ਕੋਈ ਜਵਾਬ ਨਹੀਂ",
   "app.containers.AdminPage.projects.project.analysis.noAnswerProvided2": "ਕੋਈ ਜਵਾਬ ਨਹੀਂ ਦਿੱਤਾ ਗਿਆ।",
   "app.containers.AdminPage.projects.project.analysis.noFileUploaded": "ਕੋਈ ਸ਼ੇਪਫਾਈਲ ਅੱਪਲੋਡ ਨਹੀਂ ਕੀਤੀ ਗਈ।",
