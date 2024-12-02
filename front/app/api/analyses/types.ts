@@ -21,11 +21,11 @@ export interface IAnalysisData {
     show_insights: boolean;
   };
   relationships: {
-    project?: { data: IRelationship } | null;
-    phase?: { data: IRelationship } | null;
+    project?: { data: IRelationship | null } | null;
+    phase?: { data: IRelationship | null } | null;
     all_custom_fields: { data: IRelationship[] };
     additional_custom_fields?: { data: IRelationship[] };
-    main_custom_field?: { data: IRelationship };
+    main_custom_field?: { data: IRelationship | null };
   };
 }
 
