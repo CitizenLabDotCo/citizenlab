@@ -2318,6 +2318,7 @@
   "app.containers.AdminPage.projects.all.onlyAdminsCanCreateFolders": "Samo administratori mogu kreirati mape projekta.",
   "app.containers.AdminPage.projects.all.onlyAdminsCanCreateProjects1": "Samo administratori i upravitelji mapa mogu stvarati projekte.",
   "app.containers.AdminPage.projects.all.projectsAndFolders": "Projekti i mape",
+  "app.containers.AdminPage.projects.all.publishedTab": "Objavljeno",
   "app.containers.AdminPage.projects.all.searchProjects": "Pretražite projekte",
   "app.containers.AdminPage.projects.all.yourProjects": "Vaši projekti",
   "app.containers.AdminPage.projects.project.analysis.AIAnalysis": "AI analiza",
