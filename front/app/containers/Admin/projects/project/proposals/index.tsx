@@ -13,6 +13,7 @@ import Button from 'components/UI/Button';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
+import AnalysisBanner from '../../components/AnalysisBanner';
 import NewIdeaButton from '../../components/NewIdeaButton';
 import messages from '../messages';
 
@@ -39,6 +40,7 @@ const AdminProjectProposals = () => {
 
   return (
     <>
+      <AnalysisBanner phaseId={phaseId} />
       <Box mb="30px">
         <Box
           display="flex"
@@ -72,18 +74,13 @@ const AdminProjectProposals = () => {
           <FormattedMessage {...messages.subtitleInputProjectProposals} />
         </Text>
       </Box>
-
-      {/* TODO: Fix this the next time the file is edited. */}
-      {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-      {project && (
-        <ProjectProposalsManager
-          key={phaseId}
-          projectId={project.data.id}
-          phaseId={phaseId}
-          visibleFilterMenus={timelineProjectVisibleFilterMenus}
-          defaultFilterMenu={defaultTimelineProjectVisibleFilterMenu}
-        />
-      )}
+      <ProjectProposalsManager
+        key={phaseId}
+        projectId={project.data.id}
+        phaseId={phaseId}
+        visibleFilterMenus={timelineProjectVisibleFilterMenus}
+        defaultFilterMenu={defaultTimelineProjectVisibleFilterMenu}
+      />
     </>
   );
 };

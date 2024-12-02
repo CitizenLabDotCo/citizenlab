@@ -17,10 +17,10 @@ import Warning from 'components/UI/Warning';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
+import AnalysisBanner from '../../components/AnalysisBanner';
 import NewIdeaButton from '../../components/NewIdeaButton';
 import messages from '../messages';
 
-import AnalysisBanner from './AnalysisBanner';
 import ownMessages from './messages';
 
 const defaultTimelineProjectVisibleFilterMenu = 'phases';
@@ -46,7 +46,7 @@ const AdminProjectIdeas = () => {
 
   return (
     <>
-      <AnalysisBanner />
+      <AnalysisBanner projectId={projectId} />
       <Box mb="30px">
         <Box
           display="flex"
