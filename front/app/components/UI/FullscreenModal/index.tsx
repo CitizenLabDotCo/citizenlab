@@ -112,10 +112,20 @@ const FullscreenModal = ({
         }
       });
 
+    const handleKeypress = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        close();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeypress);
+
     return () => {
       subscription.unsubscribe();
+      window.removeEventListener('keydown', handleKeypress);
     };
-  }, []);
+  }, [close]);
 
   return (
     <CSSTransition
