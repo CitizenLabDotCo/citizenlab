@@ -1169,7 +1169,6 @@
   "app.containers.IdeaCards.all": "Alle",
   "app.containers.IdeaCards.allStatuses": "Alle statussen",
   "app.containers.IdeaCards.contributions": "Bijdragen",
-  "app.containers.IdeaCards.filter": "Filter",
   "app.containers.IdeaCards.ideaTerm": "Bijdrages",
   "app.containers.IdeaCards.ideasFilterSidebarTitle": "{inputTerm} ({numberIdeas})",
   "app.containers.IdeaCards.initiatives": "Voorstellen",
