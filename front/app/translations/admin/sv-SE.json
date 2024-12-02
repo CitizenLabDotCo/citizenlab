@@ -2309,7 +2309,6 @@
   "app.containers.AdminPage.phase.methodPicker.volunteeringTitle1": "Rekrytera deltagare eller volontärer",
   "app.containers.AdminPage.phase.methodPicker.votingDescription": "Välj en omröstningsmetod och låt användarna prioritera mellan några olika alternativ.",
   "app.containers.AdminPage.phase.methodPicker.votingTitle1": "Genomföra en omröstning eller prioriteringsövning",
-  "app.containers.AdminPage.projects.all.active": "Aktiv",
   "app.containers.AdminPage.projects.all.all": "Alla",
   "app.containers.AdminPage.projects.all.createProjectFolder": "Ny folder",
   "app.containers.AdminPage.projects.all.existingProjects": "Befintliga projekt",
