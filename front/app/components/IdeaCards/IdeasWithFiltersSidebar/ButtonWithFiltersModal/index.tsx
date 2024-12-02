@@ -2,12 +2,15 @@ import React, { lazy, useState, Suspense } from 'react';
 
 import { Button, useBreakpoint } from '@citizenlab/cl2-component-library';
 
+import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
 
+import tracks from '../../tracks';
 import { Props as InputFiltersProps } from '../InputFilters';
 
-const FiltersModal = lazy(() => import('./FiltersModal'));
 import messages from './FiltersModal/messages';
+
+const FiltersModal = lazy(() => import('./FiltersModal'));
 
 const ButtonWithFiltersModal = ({
   selectedIdeaFilters,
@@ -18,6 +21,7 @@ const ButtonWithFiltersModal = ({
   const [filtersModalOpened, setFiltersModalOpened] = useState(false);
 
   const openModal = () => {
+    trackEventByName(tracks.openFiltersModalMobile);
     setFiltersModalOpened(true);
   };
 

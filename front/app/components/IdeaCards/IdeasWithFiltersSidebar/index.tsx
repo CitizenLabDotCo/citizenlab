@@ -143,9 +143,8 @@ const IdeasWithFiltersSidebar = ({
   );
 
   const handleSearchOnChange = useCallback(
-    (search: string) => {
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    (search: string | null) => {
+      trackEventByName(tracks.searchFilterUsedIdeas);
       onUpdateQuery({ search: search ?? undefined });
     },
     [onUpdateQuery]
@@ -184,6 +183,7 @@ const IdeasWithFiltersSidebar = ({
   );
 
   const clearFilters = useCallback(() => {
+    trackEventByName(tracks.clearFiltersClicked);
     onUpdateQuery({
       search: undefined,
       idea_status: undefined,
