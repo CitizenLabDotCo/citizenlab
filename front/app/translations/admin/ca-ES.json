@@ -2466,7 +2466,7 @@
   "app.containers.AdminPage.projects.project.analysis.invalidShapefile": "S'ha penjat un fitxer de forma no vàlid i no es pot mostrar.",
   "app.containers.AdminPage.projects.project.analysis.limit": "Límit",
   "app.containers.AdminPage.projects.project.analysis.mainQuestion": "Pregunta principal",
-  "app.containers.AdminPage.projects.project.analysis.manageIdea": "Gestionar la idea",
+  "app.containers.AdminPage.projects.project.analysis.manageInput": "Manage input",
   "app.containers.AdminPage.projects.project.analysis.noAnswer": "Sense resposta",
   "app.containers.AdminPage.projects.project.analysis.noAnswerProvided2": "No s'ha donat resposta.",
   "app.containers.AdminPage.projects.project.analysis.noFileUploaded": "No s'ha penjat cap shapefile.",
