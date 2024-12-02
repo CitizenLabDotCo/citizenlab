@@ -81,6 +81,14 @@ RSpec.describe Project do
       project = create(:project_xl)
       expect { project.destroy }.not_to raise_error
     end
+
+    it 'works when related impact_tracking_pageviews exist' do
+      project = create(:project)
+      session = create(:session)
+      create(:pageview, session_id: session.id, project_id: project.id)
+
+      expect { project.destroy }.not_to raise_error
+    end
   end
 
   describe 'allowed_input_topics' do
