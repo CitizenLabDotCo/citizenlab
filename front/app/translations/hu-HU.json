@@ -1165,7 +1165,6 @@
   "app.containers.IdeaCards.a11y_totalItems": "Összes hozzászólás: {ideasCount}",
   "app.containers.IdeaCards.all": "Minden",
   "app.containers.IdeaCards.allStatuses": "Minden állapot",
-  "app.containers.IdeaCards.filter": "Szűrő",
   "app.containers.IdeaCards.list": "Lista",
   "app.containers.IdeaCards.map": "Térkép",
   "app.containers.IdeaCards.mostDiscussed": "A legtöbbet megvitatták",
