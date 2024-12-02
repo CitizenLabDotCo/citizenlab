@@ -75,7 +75,6 @@ const ModalBottomBar = styled.div`
 interface InputProps {
   className?: string;
   opened: boolean;
-  close: () => void;
   topBar?: JSX.Element | null;
   bottomBar?: JSX.Element | null;
   children: JSX.Element | null | undefined;
@@ -89,7 +88,6 @@ interface Props extends InputProps {
 const FullscreenModal = ({
   className,
   opened,
-  close,
   topBar,
   bottomBar,
   children,

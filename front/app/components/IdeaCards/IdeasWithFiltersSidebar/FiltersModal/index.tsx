@@ -24,7 +24,6 @@ const FiltersModal = ({
   return (
     <FullscreenModal
       opened={opened}
-      close={onClose}
       topBar={<TopBar onReset={onClearFilters} onClose={onClose} />}
       bottomBar={
         <BottomBar
