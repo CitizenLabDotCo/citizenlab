@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe ProjectPolicy do
-  subject { described_class.new(user_context, project) }
+  subject(:policy) { described_class.new(user_context, project) }
 
   let(:scope) { ProjectPolicy::Scope.new(user_context, Project) }
   let(:inverse_scope) { ProjectPolicy::InverseScope.new(project, User) }
@@ -376,6 +376,20 @@ describe ProjectPolicy do
         before { expect(project).to(be_never_published) }
 
         it { is_expected.to permit(:destroy) }
+
+        it 'does not permit project status update' do
+          nested_permitted_attrs = policy.permitted_attributes_for_update.find { |attr| attr.is_a?(Hash) }.to_h
+          expect(nested_permitted_attrs[:admin_publication_attributes].to_a).not_to include(:publication_status)
+        end
+
+        context 'and the project is approved' do
+          before { create(:project_review, :approved, project: project) }
+
+          it 'permits project status update' do
+            nested_permitted_attrs = policy.permitted_attributes_for_update.find { |attr| attr.is_a?(Hash) }.to_h
+            expect(nested_permitted_attrs[:admin_publication_attributes]).to include(:publication_status)
+          end
+        end
       end
 
       context 'when the project has been published' do
@@ -384,6 +398,11 @@ describe ProjectPolicy do
         end
 
         it { is_expected.not_to permit(:destroy) }
+
+        it 'permits project status update' do
+          nested_permitted_attrs = policy.permitted_attributes_for_update.find { |attr| attr.is_a?(Hash) }.to_h
+          expect(nested_permitted_attrs[:admin_publication_attributes]).to include(:publication_status)
+        end
       end
 
       it 'indexes the project' do
