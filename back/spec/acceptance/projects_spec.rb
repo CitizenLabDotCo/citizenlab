@@ -34,6 +34,27 @@ resource 'Projects' do
     ValidationErrorHelper.new.error_fields(self, Project)
   end
 
+  shared_context 'POST project parameters' do
+    with_options scope: :project do
+      parameter :title_multiloc, 'The title of the project, as a multiloc string', required: true
+      parameter :description_multiloc, 'The description of the project, as a multiloc HTML string', required: true
+      parameter :description_preview_multiloc, 'The description preview of the project, as a multiloc string'
+      parameter :slug, 'The unique slug of the project. If not given, it will be auto generated'
+      parameter :header_bg, 'Base64 encoded header image'
+      parameter :area_ids, 'Array of ids of the associated areas'
+      parameter :topic_ids, 'Array of ids of the associated topics'
+      parameter :visible_to, "Defines who can see the project, either #{Project::VISIBLE_TOS.join(',')}. Defaults to public.", required: false
+      parameter :folder_id, 'The ID of the project folder (can be set to nil for top-level projects)', required: false
+      parameter :default_assignee_id, 'The user id of the admin or moderator that gets assigned to ideas by default. Defaults to unassigned', required: false
+    end
+
+    with_options scope: %i[project admin_publication_attributes] do
+      parameter :publication_status, "Describes the publication status of the project, either #{AdminPublication::PUBLICATION_STATUSES.join(',')}. Defaults to published.", required: false
+    end
+
+    ValidationErrorHelper.new.error_fields(self, Project)
+  end
+
   let(:json_response) { json_parse(response_body) }
 
   before do
@@ -262,24 +283,7 @@ resource 'Projects' do
     end
 
     post 'web_api/v1/projects' do
-      with_options scope: :project do
-        parameter :title_multiloc, 'The title of the project, as a multiloc string', required: true
-        parameter :description_multiloc, 'The description of the project, as a multiloc HTML string', required: true
-        parameter :description_preview_multiloc, 'The description preview of the project, as a multiloc string'
-        parameter :slug, 'The unique slug of the project. If not given, it will be auto generated'
-        parameter :header_bg, 'Base64 encoded header image'
-        parameter :area_ids, 'Array of ids of the associated areas'
-        parameter :topic_ids, 'Array of ids of the associated topics'
-        parameter :visible_to, "Defines who can see the project, either #{Project::VISIBLE_TOS.join(',')}. Defaults to public.", required: false
-        parameter :folder_id, 'The ID of the project folder (can be set to nil for top-level projects)', required: false
-        parameter :default_assignee_id, 'The user id of the admin or moderator that gets assigned to ideas by default. Defaults to unassigned', required: false
-      end
-
-      with_options scope: %i[project admin_publication_attributes] do
-        parameter :publication_status, "Describes the publication status of the project, either #{AdminPublication::PUBLICATION_STATUSES.join(',')}. Defaults to published.", required: false
-      end
-
-      ValidationErrorHelper.new.error_fields(self, Project)
+      include_context 'POST project parameters'
 
       describe do
         before do
@@ -1207,24 +1211,7 @@ resource 'Projects' do
     end
 
     post 'web_api/v1/projects' do
-      with_options scope: :project do
-        parameter :title_multiloc, 'The title of the project, as a multiloc string', required: true
-        parameter :description_multiloc, 'The description of the project, as a multiloc HTML string', required: true
-        parameter :description_preview_multiloc, 'The description preview of the project, as a multiloc string'
-        parameter :slug, 'The unique slug of the project. If not given, it will be auto generated'
-        parameter :header_bg, 'Base64 encoded header image'
-        parameter :area_ids, 'Array of ids of the associated areas'
-        parameter :topic_ids, 'Array of ids of the associated topics'
-        parameter :visible_to, "Defines who can see the project, either #{Project::VISIBLE_TOS.join(',')}. Defaults to public.", required: false
-        parameter :folder_id, 'The ID of the project folder (can be set to nil for top-level projects)', required: false
-        parameter :default_assignee_id, 'The user id of the admin or moderator that gets assigned to ideas by default. Defaults to unassigned', required: false
-      end
-
-      with_options scope: %i[project admin_publication_attributes] do
-        parameter :publication_status, "Describes the publication status of the project, either #{AdminPublication::PUBLICATION_STATUSES.join(',')}. Defaults to published.", required: false
-      end
-
-      ValidationErrorHelper.new.error_fields(self, Project)
+      include_context 'POST project parameters'
 
       describe do
         let(:project) { build(:project) }
@@ -1417,6 +1404,44 @@ resource 'Projects' do
 
           assert_status 200
         end
+      end
+    end
+  end
+
+  post 'web_api/v1/projects' do
+    include_context 'POST project parameters'
+
+    context 'when project moderator' do
+      before { header_token_for moderator }
+
+      let(:moderator) { create(:project_moderator) }
+      let(:project_attrs) { attributes_for(:project) }
+      let(:title_multiloc) { project_attrs[:title_multiloc] }
+      let(:description_multiloc) { project_attrs[:description_multiloc] }
+
+      # can create a draft project
+      example 'Create a draft project', document: false do
+        expect do
+          do_request(project: { admin_publication_attributes: { publication_status: 'draft' } })
+        end.to change(Project, :count).by(1)
+
+        assert_status 201
+
+        # The user should automatically be added as a project moderator
+        project_id = response_data[:id]
+        expect(moderator.reload).to be_project_moderator(project_id)
+      end
+
+      # cannot create a published project
+      example '[Unauthorized] Create a published project', document: false do
+        do_request(project: { admin_publication_attributes: { publication_status: 'published' } })
+        assert_status 401
+      end
+
+      # cannot create a project in a folder
+      example '[Unauthorized] Create a project in a folder', document: false do
+        do_request(project: { folder_id: create(:project_folder).id })
+        assert_status 401
       end
     end
   end

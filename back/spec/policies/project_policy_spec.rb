@@ -363,8 +363,8 @@ describe ProjectPolicy do
     context 'for a moderator' do
       let(:user) { create(:project_moderator, projects: [project]) }
 
-      it { is_expected.to permit(:show)                  }
-      it { is_expected.not_to permit(:create)            }
+      it { is_expected.to permit(:show) }
+      it { is_expected.to permit(:create) }
       it { is_expected.to permit(:update)                }
       it { is_expected.to permit(:reorder)               }
       it { is_expected.to permit(:refresh_preview_token) }
@@ -418,7 +418,24 @@ describe ProjectPolicy do
       let(:user) { create(:project_moderator) }
 
       it { is_expected.not_to permit(:show)                  }
-      it { is_expected.not_to permit(:create)                }
+      it { is_expected.to permit(:create)                    }
+      it { is_expected.not_to permit(:update)                }
+      it { is_expected.not_to permit(:reorder)               }
+      it { is_expected.not_to permit(:refresh_preview_token) }
+      it { is_expected.not_to permit(:destroy)               }
+      it { is_expected.not_to permit(:index_xlsx)            }
+      it { is_expected.not_to permit(:votes_by_user_xlsx)    }
+      it { is_expected.not_to permit(:votes_by_input_xlsx)   }
+
+      it { expect(scope.resolve).not_to include(project) }
+      it { expect(inverse_scope.resolve).not_to include(user) }
+    end
+
+    context 'for a project folder moderator' do
+      let(:user) { create(:project_folder_moderator) }
+
+      it { is_expected.not_to permit(:show)                  }
+      it { is_expected.to permit(:create)                    }
       it { is_expected.not_to permit(:update)                }
       it { is_expected.not_to permit(:reorder)               }
       it { is_expected.not_to permit(:refresh_preview_token) }
