@@ -1169,7 +1169,6 @@
   "app.containers.IdeaCards.all": "Όλα",
   "app.containers.IdeaCards.allStatuses": "Όλες οι καταστάσεις",
   "app.containers.IdeaCards.contributions": "Συνεισφορές",
-  "app.containers.IdeaCards.filter": "Φίλτρο",
   "app.containers.IdeaCards.ideaTerm": "Ιδέες",
   "app.containers.IdeaCards.ideasFilterSidebarTitle": "{inputTerm} ({numberIdeas})",
   "app.containers.IdeaCards.initiatives": "Πρωτοβουλίες",
