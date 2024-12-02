@@ -2,8 +2,8 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   published: {
-    id: 'app.components.ProjectFolderCards.components.Topbar.published',
-    defaultMessage: 'Active',
+    id: 'app.components.ProjectFolderCards.components.Topbar.published2',
+    defaultMessage: 'Published',
   },
   archived: {
     id: 'app.components.ProjectFolderCards.components.Topbar.archived',
