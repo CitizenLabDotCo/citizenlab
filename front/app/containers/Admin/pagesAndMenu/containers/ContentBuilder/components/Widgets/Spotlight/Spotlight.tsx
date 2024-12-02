@@ -76,7 +76,7 @@ const Spotlight = ({
               </Button>
             </Box>
           )}
-          {avatarIds && avatarIds.length > 0 && userCount && (
+          {userCount && userCount > 0 && (
             <Box
               mt="16px"
               w="100%"
