@@ -181,19 +181,43 @@ class WebApi::V1::ProjectsController < ApplicationController
 
   def copy
     source_project = Project.find(params[:id])
-    folder = source_project.folder
+    dest_folder = source_project.folder if UserRoleService.new.can_moderate?(source_project.folder, current_user)
 
-    @project = folder ? Project.new(folder: folder) : Project.new
+    # The authorization of this action is more complex than usual. It works in two steps:
+    # - Check if the user can copy the source project.
+    # - Check if the user can create the project that results from the copy.
+    # In between these two steps, there is a third authorization check that is an optimization that allows us to
+    # return early in some cases.
+    authorize(source_project)
 
-    authorize @project
+    # Optimization: We perform the authorization on a dummy project that resembles the result of the copy. This
+    # approach allows us to return early in some cases without performing the actual copy, which can be expensive.
+    # The dummy project must be `save`d before the authorization check to ensure the admin publication is created.
+    # A final authorization check is performed afterward on the actual copied project.
+    Project.transaction do
+      source_project.dup.tap do |p|
+        p.assign_attributes(slug: nil, admin_publication_attributes: {
+          publication_status: 'draft',
+          parent_id: dest_folder&.admin_publication&.id
+        })
+
+        p.save!
+        authorize(p, :create?)
+      end
+
+      raise ActiveRecord::Rollback
+    end
 
     start_time = Time.now
-    @project = LocalProjectCopyService.new.copy(source_project)
+    project = Project.transaction do
+      copy = LocalProjectCopyService.new.copy(source_project, dest_folder: dest_folder)
+      authorize(copy, :create?)
+    end
 
-    sidefx.after_copy(source_project, @project, current_user, start_time)
+    sidefx.after_copy(source_project, project, current_user, start_time)
 
     render json: WebApi::V1::ProjectSerializer.new(
-      @project,
+      project,
       params: jsonapi_serializer_params,
       include: [:admin_publication]
     ).serializable_hash, status: :created
