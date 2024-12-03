@@ -165,7 +165,6 @@
   "app.components.FilterBoxes.showTagsWithNumber": "Show all ({numberTags})",
   "app.components.FilterBoxes.statusTitle": "Status",
   "app.components.FilterBoxes.topicsTitle": "Teme",
-  "app.components.FiltersModal.a11y_closeFilterPanel": "Zatvorite panel sa filterima",
   "app.components.FiltersModal.filters": "Filteri",
   "app.components.FiltersModal.resetFilters": "Poništi filtere",
   "app.components.FolderFolderCard.a11y_folderDescription": "Opis foldera:",

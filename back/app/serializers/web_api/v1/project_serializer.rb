@@ -24,6 +24,10 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
     object.admin_publication.publication_status
   end
 
+  attribute :first_published_at do |object|
+    object.admin_publication.first_published_at
+  end
+
   attribute :description_multiloc do |object|
     TextImageService.new.render_data_images_multiloc object.description_multiloc, field: :description_multiloc, imageable: object
   end
