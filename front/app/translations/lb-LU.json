@@ -760,7 +760,7 @@
   "app.components.formBuilder.title": "Titel",
   "app.components.formBuilder.toLabel": "zu",
   "app.components.formBuilder.unsavedChanges": "Dir hutt net gespäichert Ännerungen",
-  "app.components.phaseTimeLeft.xDayLeft": "{timeLeft, plural, =0 {Manner wéi een Dag} one {# Dag} other {# Deeg}} lénks",
+  "app.components.phaseTimeLeft.xDayLeft": "{timeLeft, plural, =0 {Manner wéi een Dag} one {# Dag} other {# Deeg}} iwwereg",
   "app.components.phaseTimeLeft.xWeeksLeft": "{timeLeft}  Wochen iwwereg",
   "app.components.screenReaderCurrency.AED": "Vereenegt Arabesch Emirater Dirham",
   "app.components.screenReaderCurrency.AFN": "Afghanesch Afghani",
