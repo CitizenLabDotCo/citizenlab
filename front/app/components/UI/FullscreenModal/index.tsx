@@ -12,9 +12,6 @@ import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import styled from 'styled-components';
-import { SupportedLocale } from 'typings';
-
-import useLocale from 'hooks/useLocale';
 
 import modalMessages from 'components/UI/Modal/messages';
 
@@ -26,7 +23,7 @@ const slideInOutEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
 const Container = styled.div<{
   windowHeight: number;
   windowWidth: number;
-  contentBgColor?: InputProps['contentBgColor'];
+  contentBgColor?: Props['contentBgColor'];
 }>`
   position: fixed;
   display: flex;
@@ -81,7 +78,7 @@ const ModalBottomBar = styled.div`
   bottom: 0;
 `;
 
-interface InputProps {
+interface Props {
   className?: string;
   opened: boolean;
   close: () => void;
@@ -91,10 +88,6 @@ interface InputProps {
   bottomBar?: JSX.Element | null;
   children: JSX.Element | null | undefined;
   contentBgColor?: Color;
-}
-
-interface Props extends InputProps {
-  locale: SupportedLocale;
 }
 
 const FullscreenModal = ({
@@ -144,6 +137,9 @@ const FullscreenModal = ({
         windowHeight={windowHeight}
         windowWidth={windowWidth}
         contentBgColor={contentBgColor}
+        aria-labelledby={modalTitle ? 'full-screen-modal-title' : undefined}
+        aria-modal="true"
+        role="dialog"
       >
         <StyledFocusOn autoFocus>
           {modalTitle && (
@@ -156,6 +152,7 @@ const FullscreenModal = ({
               position="relative"
             >
               <Title
+                id="full-screen-modal-title"
                 as={titleAs || 'h2'}
                 variant={titleVariant || 'h5'}
                 m="0"
@@ -184,14 +181,10 @@ const FullscreenModal = ({
   );
 };
 
-export default (inputProps: InputProps) => {
-  const locale = useLocale();
+export default (inputProps: Props) => {
   const modalPortalElement = document.getElementById('modal-portal');
 
   return modalPortalElement
-    ? createPortal(
-        <FullscreenModal {...inputProps} locale={locale} />,
-        modalPortalElement
-      )
+    ? createPortal(<FullscreenModal {...inputProps} />, modalPortalElement)
     : null;
 };
