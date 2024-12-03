@@ -165,7 +165,6 @@
   "app.components.FilterBoxes.showTagsWithNumber": "Mostra-ho tot ({numberTags})",
   "app.components.FilterBoxes.statusTitle": "Estat",
   "app.components.FilterBoxes.topicsTitle": "Etiquetes",
-  "app.components.FiltersModal.a11y_closeFilterPanel": "Tancar el panell de filtres",
   "app.components.FiltersModal.filters": "Filtres",
   "app.components.FiltersModal.resetFilters": "Restablir els filtres",
   "app.components.FolderFolderCard.a11y_folderDescription": "Descripció de la carpeta:",
