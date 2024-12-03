@@ -12,9 +12,7 @@ module IdeaAssignment
 
       def after_update(idea, user)
         super
-
         remove_duplicate_survey_responses_on_publish(idea)
-
         return unless idea.assignee_id_previously_changed?
 
         initiating_user = user_for_activity_on_anonymizable_item(idea, @automatic_assignment ? nil : user)
@@ -24,7 +22,6 @@ module IdeaAssignment
 
       def before_publish(idea, user)
         super
-
         return if idea.assignee
 
         idea.assignee = IdeaAssignmentService.new.automatically_assigned_idea_assignee idea
