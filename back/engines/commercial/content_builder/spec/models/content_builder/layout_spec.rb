@@ -227,6 +227,7 @@ RSpec.describe ContentBuilder::Layout do
         'type' => { 'resolvedName' => 'FinishedOrArchived' },
         'nodes' => [],
         'props' => {
+          'filterBy' => 'finished_and_archived',
           'titleMultiloc' => hash_including('en' => '', 'nl-BE' => '', 'fr-BE' => '')
         },
         'custom' => {},

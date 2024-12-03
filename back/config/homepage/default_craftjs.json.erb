@@ -75,7 +75,10 @@
   "FINISHED_OR_ARCHIVED": {
     "type": { "resolvedName": "FinishedOrArchived" },
     "nodes": [],
-    "props": { "titleMultiloc": <%= CL2_SUPPORTED_LOCALES.product(['']).to_h.to_json %> },
+    "props": {
+      "filterBy": "finished_and_archived",
+      "titleMultiloc": <%= CL2_SUPPORTED_LOCALES.product(['']).to_h.to_json %>
+    },
     "custom": {},
     "hidden": false,
     "parent": "ROOT",
