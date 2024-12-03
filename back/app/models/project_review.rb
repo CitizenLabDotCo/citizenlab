@@ -37,6 +37,10 @@ class ProjectReview < ApplicationRecord
     approved_at.present?
   end
 
+  def state
+    approved? ? 'approved' : 'pending'
+  end
+
   # @param [User] reviewer
   def approve!(reviewer)
     approve(reviewer)

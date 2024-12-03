@@ -2464,7 +2464,7 @@
   "app.containers.AdminPage.projects.project.analysis.invalidShapefile": "Le fichier de formes téléchargé est invalide et ne peut pas être affiché.",
   "app.containers.AdminPage.projects.project.analysis.limit": "Limite",
   "app.containers.AdminPage.projects.project.analysis.mainQuestion": "Question principale",
-  "app.containers.AdminPage.projects.project.analysis.manageIdea": "Gérer l'idée",
+  "app.containers.AdminPage.projects.project.analysis.manageInput": "Gérer les entrées",
   "app.containers.AdminPage.projects.project.analysis.noAnswer": "Pas de réponse",
   "app.containers.AdminPage.projects.project.analysis.noAnswerProvided2": "Aucune réponse n'a été fournie.",
   "app.containers.AdminPage.projects.project.analysis.noFileUploaded": "Aucun fichier de formes n'a été téléchargé.",

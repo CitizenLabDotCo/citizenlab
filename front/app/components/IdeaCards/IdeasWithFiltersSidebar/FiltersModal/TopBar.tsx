@@ -1,13 +1,6 @@
-import React, { MouseEvent } from 'react';
+import React from 'react';
 
-import {
-  colors,
-  Box,
-  Button,
-  fontSizes,
-  Title,
-} from '@citizenlab/cl2-component-library';
-import { useTheme } from 'styled-components';
+import { colors, Box, Title } from '@citizenlab/cl2-component-library';
 
 import CloseIconButton from 'components/UI/CloseIconButton';
 
@@ -17,15 +10,11 @@ import messages from './messages';
 
 interface Props {
   onClose: () => void;
-  onReset: (event: MouseEvent) => void;
 }
 
-const TopBar = ({ onClose, onReset }: Props) => {
-  const theme = useTheme();
-
+const TopBar = ({ onClose }: Props) => {
   return (
     <Box
-      height={`${theme.mobileTopBarHeight}px`}
       bgColor={colors.white}
       borderBottom={`1px solid ${colors.grey300}`}
       display="flex"
@@ -44,21 +33,12 @@ const TopBar = ({ onClose, onReset }: Props) => {
       >
         <FormattedMessage {...messages.filters} />
       </Title>
-      <Box display="flex">
-        <Button
-          onClick={onReset}
-          buttonStyle="text"
-          fontSize={`${fontSizes.s}px`}
-        >
-          <FormattedMessage {...messages.resetFilters} />
-        </Button>
-        <CloseIconButton
-          a11y_buttonActionMessage={messages.a11y_closeFilterPanel}
-          onClick={onClose}
-          iconColor={colors.textSecondary}
-          iconColorOnHover={'#000'}
-        />
-      </Box>
+      <CloseIconButton
+        a11y_buttonActionMessage={messages.a11y_closeFilterPanel}
+        onClick={onClose}
+        iconColor={colors.textSecondary}
+        iconColorOnHover={'#000'}
+      />
     </Box>
   );
 };

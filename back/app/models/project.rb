@@ -64,6 +64,7 @@ class Project < ApplicationRecord
   accepts_nested_attributes_for :text_images
   has_many :project_files, -> { order(:ordering) }, dependent: :destroy
   has_many :followers, as: :followable, dependent: :destroy
+  has_many :impact_tracking_pageviews, class_name: 'ImpactTracking::Pageview', dependent: :nullify
 
   after_initialize :init
 

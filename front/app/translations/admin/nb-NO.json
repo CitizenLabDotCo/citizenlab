@@ -2464,7 +2464,7 @@
   "app.containers.AdminPage.projects.project.analysis.invalidShapefile": "En ugyldig shapefil ble lastet opp og kan ikke vises.",
   "app.containers.AdminPage.projects.project.analysis.limit": "Begrensning",
   "app.containers.AdminPage.projects.project.analysis.mainQuestion": "Hovedspørsmål",
-  "app.containers.AdminPage.projects.project.analysis.manageIdea": "Administrer idé",
+  "app.containers.AdminPage.projects.project.analysis.manageInput": "Administrer innspill",
   "app.containers.AdminPage.projects.project.analysis.noAnswer": "Ingen svar",
   "app.containers.AdminPage.projects.project.analysis.noAnswerProvided2": "Det ble ikke gitt noe svar.",
   "app.containers.AdminPage.projects.project.analysis.noFileUploaded": "Ingen shapefile lastet opp.",

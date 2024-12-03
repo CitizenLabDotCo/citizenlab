@@ -49,7 +49,7 @@ module Analysis
     # also are part of the phase.
     def inputs
       if phase_id
-        phase.ideas.native_survey.published
+        phase.ideas.published
       elsif project_id
         project.ideas.transitive.published
       end

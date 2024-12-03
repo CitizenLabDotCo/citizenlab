@@ -2464,7 +2464,7 @@
   "app.containers.AdminPage.projects.project.analysis.invalidShapefile": "En ogiltig shapefil har laddats upp och kan inte visas.",
   "app.containers.AdminPage.projects.project.analysis.limit": "Gräns",
   "app.containers.AdminPage.projects.project.analysis.mainQuestion": "Huvudfråga",
-  "app.containers.AdminPage.projects.project.analysis.manageIdea": "Hantera idé",
+  "app.containers.AdminPage.projects.project.analysis.manageInput": "Hantera inmatning",
   "app.containers.AdminPage.projects.project.analysis.noAnswer": "Inget svar",
   "app.containers.AdminPage.projects.project.analysis.noAnswerProvided2": "Inget svar lämnades.",
   "app.containers.AdminPage.projects.project.analysis.noFileUploaded": "Ingen shapefil uppladdad.",

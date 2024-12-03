@@ -9,10 +9,10 @@ import {
   stylingConsts,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
 
 import useAddAnalysis from 'api/analyses/useAddAnalysis';
 import useAnalyses from 'api/analyses/useAnalyses';
+import usePhase from 'api/phases/usePhase';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -22,17 +22,28 @@ import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
-import messages from './messages';
+import messages from '../project/ideas/messages';
 
-const AnalysisBanner = () => {
-  const { projectId, phaseId } = useParams() as {
-    projectId: string;
-    phaseId: string;
-  };
+type Props =
+  | {
+      projectId: string;
+      phaseId?: never;
+    }
+  | {
+      projectId?: never;
+      phaseId: string;
+    };
 
+/** For ideation, the analysis is scoped on the project level, for the other
+ * methods, it's scoped on the phase level. Pass the right prop, either the one
+ * or the other */
+const AnalysisBanner = ({ projectId, phaseId }: Props) => {
   const { data: analyses, isLoading: isLoadingAnalyses } = useAnalyses({
     projectId,
+    phaseId,
   });
+
+  const { data: phase } = usePhase(phaseId);
 
   const { mutate: createAnalysis, isLoading } = useAddAnalysis();
   const { formatMessage } = useIntl();
@@ -45,20 +56,27 @@ const AnalysisBanner = () => {
   const handleGoToAnalysis = () => {
     if (analyses?.data.length) {
       clHistory.push(
-        // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        `/admin/projects/${projectId}/analysis/${analyses?.data[0].id}?phase_id=${phaseId}`
+        `/admin/projects/${
+          projectId || phase?.data.relationships.project.data.id
+        }/analysis/${analyses.data[0].id}?phase_id=${phaseId}`
       );
     } else {
       createAnalysis(
-        { projectId },
+        { projectId, phaseId },
         {
           onSuccess: (analysis) => {
             clHistory.push(
-              `/admin/projects/${projectId}/analysis/${analysis.data.id}`
+              `/admin/projects/${
+                projectId || phase?.data.relationships.project.data.id
+              }/analysis/${analysis.data.id}`
             );
-            trackEventByName(tracks.analysisForIdeationCreated.name, {
-              extra: { projectId },
+            trackEventByName(tracks.analysisCreated.name, {
+              extra: {
+                projectId,
+                phaseId,
+                participationMethod:
+                  phase?.data.attributes.participation_method || 'ideation',
+              },
             });
           },
         }
