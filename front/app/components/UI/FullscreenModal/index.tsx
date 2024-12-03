@@ -184,7 +184,7 @@ const FullscreenModal = ({
                   a11y_buttonActionMessage={modalMessages.closeWindow}
                   onClick={close}
                   iconColor={colors.textSecondary}
-                  iconColorOnHover={'#000'}
+                  iconColorOnHover={colors.grey800}
                 />
               </Box>
             </Box>
