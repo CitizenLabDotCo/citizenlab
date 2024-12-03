@@ -269,7 +269,7 @@ tr:
       cta_reply_to: 'Yorumu görüntüle %{firstName}'
       event_description: '%{authorNameFull} bir iç yorumda sizden bahsetti.'
       subject: '%{firstName} bir iç yorumda sizden bahsetti.'
-      main_header: '%{authorNameFirst} bir iç yorumda sizden bahsetti.'
+      main_header: '%{firstName} bir iç yorumda sizden bahsetti.'
       preheader: '%{authorNameFull} bir iç yorumda sizden bahsetti.'
     moderator_digest:
       subject: '%{project_title} haftalık proje yöneticisi raporunuz'
