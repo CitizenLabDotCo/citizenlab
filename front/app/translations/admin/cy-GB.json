@@ -381,7 +381,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.embeddedMethods": "Cyfranogwyr mewn dulliau sydd wedi'u gwreiddio (ee arolygon allanol)",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.followers": "Dilynwyr prosiect",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.note": "Nodyn: Gall galluogi caniatâd cyfranogiad dienw neu agored ganiatáu i ddefnyddwyr gymryd rhan sawl gwaith, gan arwain at ddata defnyddwyr camarweiniol neu anghyflawn.",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsExclusionTitle": "Nid yw cyfranogwyr yn cynnwys:",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsInfoTitle": "Mae cyfranogwyr yn cynnwys:",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.users": "Defnyddwyr yn rhyngweithio â dulliau Go Vocal",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.projectSettings": "Gosodiadau prosiect",

@@ -381,7 +381,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.embeddedMethods": "Deltagere i indlejrede metoder (f.eks. eksterne undersøgelser)",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.followers": "Følgere af et projekt",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.note": "Bemærk: Aktivering af anonyme eller åbne deltagelsestilladelser kan gøre det muligt for brugere at deltage flere gange, hvilket fører til misvisende eller ufuldstændige brugerdata.",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsExclusionTitle": "Deltagere omfatter ikke:",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsInfoTitle": "Deltagerne omfatter:",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.users": "Brugere, der interagerer med Go Vocal metoder",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.projectSettings": "Projektindstillinger",
