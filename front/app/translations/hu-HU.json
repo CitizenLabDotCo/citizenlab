@@ -165,7 +165,6 @@
   "app.components.FilterBoxes.showTagsWithNumber": "Az összes megjelenítése ({numberTags})",
   "app.components.FilterBoxes.statusTitle": "Állapot",
   "app.components.FilterBoxes.topicsTitle": "Címkék",
-  "app.components.FiltersModal.a11y_closeFilterPanel": "Zárja be a szűrőpanelt",
   "app.components.FiltersModal.filters": "Szűrők",
   "app.components.FiltersModal.resetFilters": "Szűrők visszaállítása",
   "app.components.FolderFolderCard.a11y_folderDescription": "Mappa leírása:",

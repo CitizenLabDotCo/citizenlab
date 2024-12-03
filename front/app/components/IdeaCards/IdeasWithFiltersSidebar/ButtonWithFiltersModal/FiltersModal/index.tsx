@@ -4,10 +4,12 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 import FullscreenModal from 'components/UI/FullscreenModal';
 
+import { FormattedMessage } from 'utils/cl-intl';
+
 import InputFilters, { Props as InputFiltersProps } from '../../InputFilters';
 
 import BottomBar from './BottomBar';
-import TopBar from './TopBar';
+import messages from './messages';
 
 interface Props extends InputFiltersProps {
   opened: boolean;
@@ -25,11 +27,12 @@ const FiltersModal = ({
     <FullscreenModal
       opened={opened}
       close={onClose}
-      topBar={<TopBar onReset={onClearFilters} onClose={onClose} />}
+      modalTitle={<FormattedMessage {...messages.filters} />}
       bottomBar={
         <BottomBar
           onClick={onClose}
           selectedIdeaFilters={selectedIdeaFilters}
+          onReset={onClearFilters}
         />
       }
       contentBgColor="background"

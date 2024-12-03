@@ -269,7 +269,7 @@ ar:
       cta_reply_to: 'عرض تعليق %{firstName}'
       event_description: '%{authorNameFull} ذكرك في تعليق داخلي.'
       subject: '%{firstName} ذكرك في تعليق داخلي.'
-      main_header: '%{authorNameFirst} ذكرك في تعليق داخلي.'
+      main_header: '%{firstName} ذكرك في تعليق داخلي.'
       preheader: '%{authorNameFull} ذكرك في تعليق داخلي.'
     moderator_digest:
       subject: 'تقرير مدير المشروع الأسبوعي الخاص بك لـ%{project_title}'

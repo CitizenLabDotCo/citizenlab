@@ -165,7 +165,6 @@
   "app.components.FilterBoxes.showTagsWithNumber": "Vis alle ({numberTags})",
   "app.components.FilterBoxes.statusTitle": "Status",
   "app.components.FilterBoxes.topicsTitle": "Emner",
-  "app.components.FiltersModal.a11y_closeFilterPanel": "Luk filterpanel",
   "app.components.FiltersModal.filters": "Filtre",
   "app.components.FiltersModal.resetFilters": "Nulstil filtre",
   "app.components.FolderFolderCard.a11y_folderDescription": "Mappebeskrivelse:",

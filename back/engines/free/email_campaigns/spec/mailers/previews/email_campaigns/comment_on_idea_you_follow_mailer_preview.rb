@@ -5,7 +5,7 @@ module EmailCampaigns
     include EmailCampaigns::MailerPreviewRecipient
 
     def campaign_mail
-      comment = Comment.where(post_type: 'Idea').first || Comment.create(post: Idea.first, author: User.first, body_multiloc: { 'en' => 'I agree' })
+      comment = Comment.where(post_type: 'Idea').first || Comment.create(post: Idea.where(creation_phase: nil).first, author: User.first, body_multiloc: { 'en' => 'I agree' })
       notification = Notifications::CommentOnIdeaYouFollow.create!(
         recipient_id: recipient_user.id,
         initiating_user: comment.author,
@@ -13,7 +13,7 @@ module EmailCampaigns
         comment: comment,
         project_id: comment.post.project_id
       )
-      comment.post.phases.first.update!(input_term: 'question')
+      comment.post.phases.first.update!(input_term: 'question') if comment.post.phases.any?
       activity = Activity.new(item: notification, action: 'created')
 
       campaign = EmailCampaigns::Campaigns::CommentOnIdeaYouFollow.first

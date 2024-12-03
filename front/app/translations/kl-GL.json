@@ -125,7 +125,6 @@
   "app.components.FilterBoxes.areas": "Sumiiffikkaarlugit immikkoortiterineq",
   "app.components.FilterBoxes.statusTitle": "Killiffik",
   "app.components.FilterBoxes.topicsTitle": "Sammisassat imaat:",
-  "app.components.FiltersModal.a11y_closeFilterPanel": "Immikkoortiterivik matujuk",
   "app.components.FiltersModal.filters": "Immikkoortitikkat",
   "app.components.FiltersModal.resetFilters": "Immikkoortitikkat aallaqqaataanit aallartittussangorlugu aaqqikkit",
   "app.components.FolderFolderCard.a11y_folderDescription": "Mappip allaaserinera:",

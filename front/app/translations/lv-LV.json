@@ -165,7 +165,6 @@
   "app.components.FilterBoxes.showTagsWithNumber": "Rādīt visus ({numberTags})",
   "app.components.FilterBoxes.statusTitle": "Statuss",
   "app.components.FilterBoxes.topicsTitle": "Tagi",
-  "app.components.FiltersModal.a11y_closeFilterPanel": "Aizvērt filtra paneli",
   "app.components.FiltersModal.filters": "Filtri",
   "app.components.FiltersModal.resetFilters": "Atiestatīt filtrus",
   "app.components.FolderFolderCard.a11y_folderDescription": "Mapes apraksts:",
