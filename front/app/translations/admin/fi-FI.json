@@ -2131,7 +2131,6 @@
   "app.containers.AdminPage.SettingsPage.subtitleRegistration": "Määritä, mitä tietoja ihmisiä pyydetään antamaan rekisteröitymisen yhteydessä.",
   "app.containers.AdminPage.SettingsPage.subtitleTerminology": "Terminologia",
   "app.containers.AdminPage.SettingsPage.successfulUpdateSettings": "Asetukset päivitetty onnistuneesti.",
-  "app.containers.AdminPage.SettingsPage.tabApproval": "Hyväksyminen",
   "app.containers.AdminPage.SettingsPage.tabAreas1": "Alueet",
   "app.containers.AdminPage.SettingsPage.tabBranding": "Brändäys",
   "app.containers.AdminPage.SettingsPage.tabInputStatuses": "Syöttötilat",
