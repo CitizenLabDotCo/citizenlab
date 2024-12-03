@@ -16,7 +16,6 @@ import ButtonMultiloc from 'components/admin/ContentBuilder/Widgets/ButtonMultil
 import IframeMultiloc from 'components/admin/ContentBuilder/Widgets/IframeMultiloc';
 import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
 import ImageTextCards from 'components/admin/ContentBuilder/Widgets/ImageTextCards';
-import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
 import ThreeColumn, {
   threeColumnTitle,
 } from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
@@ -56,6 +55,7 @@ import Spotlight, {
   spotlightTitle,
   buttonTextDefault,
 } from '../Widgets/Spotlight';
+import TextMultiloc from '../Widgets/TextMultiloc';
 
 type HomepageBuilderToolboxProps = {
   selectedLocale: SupportedLocale;
