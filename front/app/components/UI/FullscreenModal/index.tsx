@@ -13,9 +13,6 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 import { fromEvent } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import styled from 'styled-components';
-import { SupportedLocale } from 'typings';
-
-import useLocale from 'hooks/useLocale';
 
 import modalMessages from 'components/UI/Modal/messages';
 
@@ -27,7 +24,7 @@ const slideInOutEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
 const Container = styled.div<{
   windowHeight: number;
   windowWidth?: number;
-  contentBgColor?: InputProps['contentBgColor'];
+  contentBgColor?: Props['contentBgColor'];
 }>`
   position: fixed;
   display: flex;
@@ -82,7 +79,7 @@ const ModalBottomBar = styled.div`
   bottom: 0;
 `;
 
-interface InputProps {
+interface Props {
   className?: string;
   opened: boolean;
   close: () => void;
@@ -92,10 +89,6 @@ interface InputProps {
   bottomBar?: JSX.Element | null;
   children: JSX.Element | null | undefined;
   contentBgColor?: Color;
-}
-
-interface Props extends InputProps {
-  locale: SupportedLocale;
 }
 
 const FullscreenModal = ({
@@ -199,14 +192,10 @@ const FullscreenModal = ({
   );
 };
 
-export default (inputProps: InputProps) => {
-  const locale = useLocale();
+export default (inputProps: Props) => {
   const modalPortalElement = document.getElementById('modal-portal');
 
   return modalPortalElement
-    ? createPortal(
-        <FullscreenModal {...inputProps} locale={locale} />,
-        modalPortalElement
-      )
+    ? createPortal(<FullscreenModal {...inputProps} />, modalPortalElement)
     : null;
 };
