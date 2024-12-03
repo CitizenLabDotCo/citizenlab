@@ -2471,7 +2471,7 @@
   "app.containers.AdminPage.projects.project.analysis.invalidShapefile": "Buvo įkelta negaliojanti shapefile ir jos negalima rodyti.",
   "app.containers.AdminPage.projects.project.analysis.limit": "Apribojimas",
   "app.containers.AdminPage.projects.project.analysis.mainQuestion": "Pagrindinis klausimas",
-  "app.containers.AdminPage.projects.project.analysis.manageIdea": "Valdyti idėją",
+  "app.containers.AdminPage.projects.project.analysis.manageInput": "Tvarkyti įvesties duomenis",
   "app.containers.AdminPage.projects.project.analysis.noAnswer": "Nėra atsakymo",
   "app.containers.AdminPage.projects.project.analysis.noAnswerProvided2": "Atsakymo nepateikta.",
   "app.containers.AdminPage.projects.project.analysis.noFileUploaded": "Nėra įkeltos shapefile.",
