@@ -269,7 +269,7 @@ da:
       cta_reply_to: 'Se kommentar fra %{firstName}'
       event_description: '%{authorNameFull} nævnte dig i en intern kommentar.'
       subject: '%{firstName} nævnte dig i en intern kommentar.'
-      main_header: '%{authorNameFirst} nævnte dig i en intern kommentar.'
+      main_header: '%{firstName} nævnte dig i en intern kommentar.'
       preheader: '%{authorNameFull} nævnte dig i en intern kommentar.'
     moderator_digest:
       subject: 'Din ugentlige projektlederrapport fra %{project_title}'
