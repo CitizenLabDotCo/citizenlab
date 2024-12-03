@@ -11,7 +11,7 @@ namespace :embeddings do
 
         text = idea.title_multiloc.values.first + "\n" + Nokogiri::HTML(idea.body_multiloc.values.first).text
         embedding = model.embedding(text[...2048]) # 2048 is the character limit in the text
-        embeddings_similarity = EmbeddingsSimilarity.new(idea: idea, embedding: embedding)
+        embeddings_similarity = idea.embeddings_similarities.new(embedding: embedding, context: 'title_body')
         if embeddings_similarity.save
           reporter.add_create(
             'EmbeddingsSimilarity',
