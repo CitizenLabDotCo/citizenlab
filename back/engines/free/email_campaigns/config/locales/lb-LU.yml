@@ -269,7 +269,7 @@ lb:
       cta_reply_to: 'Kuckt de Kommentar vum %{firstName}'
       event_description: '%{authorNameFull} huet Iech an engem internen Kommentar ernimmt.'
       subject: '%{firstName} huet Iech an engem internen Kommentar ernimmt.'
-      main_header: '%{authorNameFirst} huet Iech an engem internen Kommentar ernimmt.'
+      main_header: '%{firstName} huet Iech an engem internen Kommentar ernimmt.'
       preheader: '%{authorNameFull} huet Iech an engem internen Kommentar ernimmt.'
     moderator_digest:
       subject: 'Wéchentlechen Bericht fir Projetsmanageren vum %{time}'
