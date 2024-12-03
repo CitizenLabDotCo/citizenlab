@@ -25,11 +25,12 @@ const FiltersModal = ({
     <FullscreenModal
       opened={opened}
       close={onClose}
-      topBar={<TopBar onReset={onClearFilters} onClose={onClose} />}
+      topBar={<TopBar onClose={onClose} />}
       bottomBar={
         <BottomBar
           onClick={onClose}
           selectedIdeaFilters={selectedIdeaFilters}
+          onReset={onClearFilters}
         />
       }
       contentBgColor="background"
