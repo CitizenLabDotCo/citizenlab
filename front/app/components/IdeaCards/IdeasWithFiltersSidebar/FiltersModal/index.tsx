@@ -28,7 +28,7 @@ const FiltersModal = ({
       opened={opened}
       close={onClose}
       modalTitle={
-        <Title as="h2" variant="h5" fontWeight="bold">
+        <Title as="h2" variant="h5" padding="16px" m="0" fontWeight="bold">
           <FormattedMessage {...messages.filters} />
         </Title>
       }
