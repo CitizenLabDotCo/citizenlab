@@ -9,7 +9,6 @@ import {
   Icon,
   IconButton,
   Tooltip,
-  Spinner,
 } from '@citizenlab/cl2-component-library';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -21,7 +20,9 @@ import Divider from 'components/admin/Divider';
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from './messages';
+import messages from '../messages';
+
+import RegenerateLinkModal from './RegenerateLinkModal';
 
 const ShareLink = ({
   projectId,
@@ -32,6 +33,7 @@ const ShareLink = ({
   projectSlug: string;
   token: string;
 }) => {
+  const [refreshModalIsOpen, setRefreshModalIsOpen] = useState(false);
   const isPreviewLinkEnabled = useFeatureFlag({ name: 'project_preview_link' });
   const { data: appConfiguration } = useAppConfiguration();
   const { mutate: refreshProjectPreviewToken, isLoading } =
@@ -56,6 +58,7 @@ const ShareLink = ({
       {
         onSuccess: () => {
           setLinkIsCopied(false);
+          setRefreshModalIsOpen(false);
         },
       }
     );
@@ -83,7 +86,6 @@ const ShareLink = ({
         right="0px"
         opened={shareDropdownIsOpen}
         onClickOutside={() => {
-          setShareDropdownIsOpen(false);
           setLinkIsCopied(false);
         }}
         content={
@@ -127,28 +129,35 @@ const ShareLink = ({
                     {link}
                   </Box>
                 )}
-                {isLoading ? (
-                  <Spinner size="20px" />
-                ) : (
-                  <Tooltip content={formatMessage(messages.refreshLinkTooltip)}>
-                    <IconButton
-                      id="e2e-refresh-link"
-                      iconWidth="28px"
-                      iconHeight="28px"
-                      iconName="refresh"
-                      onClick={refreshLink}
-                      a11y_buttonActionMessage={formatMessage(
-                        messages.refreshLink
-                      )}
-                      iconColor={colors.teal500}
-                      iconColorOnHover={colors.teal700}
-                      p="0px"
-                      disabled={!isPreviewLinkEnabled}
-                    />
-                  </Tooltip>
-                )}
+
+                <Tooltip
+                  content={formatMessage(messages.refreshLinkTooltip)}
+                  placement="bottom"
+                >
+                  <IconButton
+                    id="e2e-refresh-link"
+                    iconWidth="28px"
+                    iconHeight="28px"
+                    iconName="refresh"
+                    onClick={() => setRefreshModalIsOpen(true)}
+                    a11y_buttonActionMessage={formatMessage(
+                      messages.refreshLink
+                    )}
+                    iconColor={colors.teal500}
+                    iconColorOnHover={colors.teal700}
+                    p="0px"
+                    disabled={!isPreviewLinkEnabled}
+                  />
+                </Tooltip>
               </Box>
             </Box>
+            <RegenerateLinkModal
+              isOpened={refreshModalIsOpen}
+              onRefresh={refreshLink}
+              isRefreshLoading={isLoading}
+              onClose={() => setRefreshModalIsOpen(false)}
+            />
+
             <Divider />
             <Text variant="bodyL" fontSize="m">
               {formatMessage(messages.shareWhoHasAccess)}
