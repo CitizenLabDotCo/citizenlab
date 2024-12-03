@@ -399,10 +399,10 @@ resource 'Ideas' do
 
     get 'web_api/v1/ideas/:id/similarities' do
       let(:embeddings) { JSON.parse(File.read('spec/fixtures/word_embeddings.json')) }
-      let!(:idea_pizza) { create(:embeddings_similarity, embedding: embeddings['pizza']).idea }
-      let!(:idea_burger) { create(:embeddings_similarity, embedding: embeddings['burger']).idea }
-      let!(:idea_moon) { create(:embeddings_similarity, embedding: embeddings['moon']).idea }
-      let!(:idea_bats) { create(:embeddings_similarity, embedding: embeddings['bats']).idea }
+      let!(:idea_pizza) { create(:embeddings_similarity, embedding: embeddings['pizza']).embeddable }
+      let!(:idea_burger) { create(:embeddings_similarity, embedding: embeddings['burger']).embeddable }
+      let!(:idea_moon) { create(:embeddings_similarity, embedding: embeddings['moon']).embeddable }
+      let!(:idea_bats) { create(:embeddings_similarity, embedding: embeddings['bats']).embeddable }
       let(:id) { idea_pizza.id }
 
       example_request 'Get similar ideas' do

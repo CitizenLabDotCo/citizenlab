@@ -16,8 +16,8 @@
 #  index_embeddings_similarities_on_embedding   (embedding) USING hnsw
 #
 class EmbeddingsSimilarity < ApplicationRecord
-  belongs_to :idea
+  belongs_to :embeddable, polymorphic: true
   has_neighbors :embedding
 
-  validates :idea, presence: true # Also require embedding?
+  validates :embeddable, :embedding, presence: true # Also require embedding (test)?
 end
