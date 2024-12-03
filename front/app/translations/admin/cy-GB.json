@@ -2471,7 +2471,7 @@
   "app.containers.AdminPage.projects.project.analysis.invalidShapefile": "Cafodd ffeil siâp annilys ei huwchlwytho ac ni ellir ei dangos.",
   "app.containers.AdminPage.projects.project.analysis.limit": "Terfyn",
   "app.containers.AdminPage.projects.project.analysis.mainQuestion": "Prif gwestiwn",
-  "app.containers.AdminPage.projects.project.analysis.manageIdea": "Rheoli syniad",
+  "app.containers.AdminPage.projects.project.analysis.manageInput": "Rheoli mewnbwn",
   "app.containers.AdminPage.projects.project.analysis.noAnswer": "Dim Ateb",
   "app.containers.AdminPage.projects.project.analysis.noAnswerProvided2": "Ni ddarparwyd ateb.",
   "app.containers.AdminPage.projects.project.analysis.noFileUploaded": "Dim ffeil siâp wedi'i uwchlwytho.",
