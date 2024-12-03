@@ -4,8 +4,6 @@ import { Color, colors } from '@citizenlab/cl2-component-library';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import CSSTransition from 'react-transition-group/CSSTransition';
-import { fromEvent } from 'rxjs';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import styled from 'styled-components';
 import { SupportedLocale } from 'typings';
 
@@ -101,16 +99,12 @@ const FullscreenModal = ({
   });
 
   useEffect(() => {
-    const subscription = fromEvent(window, 'resize')
-      .pipe(debounceTime(50), distinctUntilChanged())
-      .subscribe((event) => {
-        if (event.target) {
-          const height = event.target['innerHeight'] as number;
-          const width = event.target['innerWidth'] as number;
-
-          setWindowDimensions({ windowHeight: height, windowWidth: width });
-        }
+    const handleOnResize = () => {
+      setWindowDimensions({
+        windowWidth: window.innerWidth,
+        windowHeight: window.innerHeight,
       });
+    };
 
     const handleKeypress = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
@@ -120,10 +114,12 @@ const FullscreenModal = ({
     };
 
     window.addEventListener('keydown', handleKeypress);
+    window.addEventListener('resize', handleOnResize);
 
     return () => {
-      subscription.unsubscribe();
+      // subscription.unsubscribe();
       window.removeEventListener('keydown', handleKeypress);
+      window.removeEventListener('resize', handleOnResize);
     };
   }, [close]);
 
