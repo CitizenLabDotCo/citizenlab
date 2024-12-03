@@ -18,7 +18,7 @@ const slideInOutEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
 
 const Container = styled.div<{
   windowHeight: number;
-  windowWidth?: number;
+  windowWidth: number;
   contentBgColor?: InputProps['contentBgColor'];
 }>`
   position: fixed;
@@ -130,7 +130,8 @@ const FullscreenModal = ({
       <Container
         id="e2e-fullscreenmodal-content"
         className={[bottomBar ? 'hasBottomBar' : '', className].join()}
-        windowHeight={windowDimensions.windowHeight}
+        windowHeight={windowHeight}
+        windowWidth={windowWidth}
         contentBgColor={contentBgColor}
       >
         <StyledFocusOn autoFocus>
