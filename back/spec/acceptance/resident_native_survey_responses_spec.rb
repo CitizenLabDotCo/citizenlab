@@ -583,7 +583,7 @@ resource 'Ideas' do
 
         # Tests the context where the survey has been opened in two tabs and the user submits one of them.
         context 'when there are two surveys in draft' do
-          let(:publication_status) { 'published'}
+          let(:publication_status) { 'published' }
 
           example 'Survey submits and removes other drafts by the same user' do
             input.update!(publication_status: 'draft')

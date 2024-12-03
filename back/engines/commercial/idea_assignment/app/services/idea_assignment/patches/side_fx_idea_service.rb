@@ -41,9 +41,10 @@ module IdeaAssignment
         Idea.where(
           creation_phase_id: idea.creation_phase_id,
           author: idea.author,
-          publication_status: 'draft')
-            .where.not(id: idea.id)
-            .destroy_all
+          publication_status: 'draft'
+        )
+          .where.not(id: idea.id)
+          .destroy_all
       end
     end
   end
