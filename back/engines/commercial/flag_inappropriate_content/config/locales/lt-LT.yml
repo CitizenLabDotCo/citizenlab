@@ -1,0 +1,16 @@
+lt:
+  email_campaigns:
+    campaign_type_description:
+      "inappropriate_content_flagged": Pažymėtas netinkamas turinys
+    admin_campaign_type_description:
+      "inappropriate_content_flagged": Netinkamas turinys pažymėtas - administratoriai
+    inappropriate_content_flagged:
+      subject: 'Įrašas buvo pažymėtas, kad būtų peržiūrėtas'
+      header_title: 'Įrašas buvo pažymėtas, kad būtų peržiūrėtas'
+      author_wrote: '%{authorName} rašė:'
+      preheader: 'Įrašas jūsų platformoje buvo pažymėtas, kad būtų peržiūrėtas'
+      automatically_flagged: >
+        Šis pranešimas buvo automatiškai aptiktas kaip galimai turintis netinkamo turinio. Siunčiame jums šį pranešimą, kad galėtumėte peržiūrėti šį įrašą pagal savo moderavimo gaires.
+      how_to_review: >
+        Jei įraše nėra netinkamo turinio, įspėjimą galite pašalinti per savo platformą administratoriaus skydelio skirtuke Veikla.
+      cta_review: 'Peržiūrėkite'

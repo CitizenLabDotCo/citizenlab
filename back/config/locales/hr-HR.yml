@@ -212,6 +212,12 @@ hr:
           title: Šta je vaša tema ?
         option:
           title: Što je vaša opcija?
+        proposal:
+          title: Koji je vaš prijedlog?
+        initiative:
+          title: Koja je vaša inicijativa?
+        petition:
+          title: Koja je vaša molba?
   custom_field_options:
     gender:
       male: Muškarac
@@ -260,6 +266,7 @@ hr:
       first_name: 'Imena)'
       image_url: 'URL slike'
       input_id: 'ID'
+      manual_votes: 'Izvanmrežni glasovi'
       input_url: 'URL'
       last_name: 'Prezime'
       latitude: 'Geografska širina'
@@ -338,6 +345,8 @@ hr:
       you_can_sign_in_again_from: "Možete se ponovno prijaviti od %{date}"
   user:
     anon_first_name: "Korisnik"
+    anon_scheme:
+      animals: 'aligator, krokodil, alpaka, mrav, antilopa, majmun, armadilo, babun, jazavac, šišmiš, medvjed, dabar, pčela, buba, bivol, leptir, deva, vodeni bivol, karibu, mačka, govedo, gepard, čimpanza, činčila, cikada ,školjka,žohar,bakalar,kojot,rak,cvrčak,vrana,gavran,jelen,dinosaur,pas,dupin,pliskavica,patka,orao,jegulja,slon,los,tvor,riba,muha,lisica,žaba,krastača,gerbil ,žirafa,gnat,gnu,gnu,koza,zlatna ribica,guska,gorila,skakavac,zamorac,hrčak,zec,jež,haringa,nilski konj,stršljen,konj,gonič,hijena,impala,šakal,meduza,klokan,wallaby, koala, leopard, lav, gušter, lama, skakavac, uš, ara, divlja patka, mamut, morska krava, kuna, kun, gavjeć, krtica, los, komarac, miš, štakor, mazga, muskrat, vidra, vol, kamenica, panda, svinja, kljunar, dikobraz, prerijski pas, mops, zec, rakun, sob, nosorog, losos, sardina, škorpion, tuljan, morski lav, serval, morski pas, ovca, tvor, puž, zmija, pauk, vjeverica, labud, termit, tigar, pastrva, kornjača, kornjača, morž, osa, kit, vuk, vombat, buka, crv, jak, žuta jakna, zebra'
   time:
     am: am
     formats:

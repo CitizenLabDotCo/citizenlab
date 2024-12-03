@@ -269,7 +269,7 @@ el:
       cta_reply_to: 'Προβολή σχολίου από %{firstName}'
       event_description: '%{authorNameFull} σας ανέφερε σε ένα εσωτερικό σχόλιο.'
       subject: '%{firstName} σας ανέφερε σε ένα εσωτερικό σχόλιο.'
-      main_header: '%{authorNameFirst} σας ανέφερε σε ένα εσωτερικό σχόλιο.'
+      main_header: '%{firstName} σας ανέφερε σε ένα εσωτερικό σχόλιο.'
       preheader: '%{authorNameFull} σας ανέφερε σε ένα εσωτερικό σχόλιο.'
     moderator_digest:
       subject: 'Η εβδομαδιαία έκθεση του διαχειριστή του έργου σας %{project_title}'
