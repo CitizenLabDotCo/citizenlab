@@ -165,7 +165,6 @@
   "app.components.FilterBoxes.showTagsWithNumber": "Näytä kaikki ({numberTags})",
   "app.components.FilterBoxes.statusTitle": "Tila",
   "app.components.FilterBoxes.topicsTitle": "Tunnisteet",
-  "app.components.FiltersModal.a11y_closeFilterPanel": "Sulje suodatinpaneeli",
   "app.components.FiltersModal.filters": "Suodattimet",
   "app.components.FiltersModal.resetFilters": "Nollaa suodattimet",
   "app.components.FolderFolderCard.a11y_folderDescription": "Kansion kuvaus:",
