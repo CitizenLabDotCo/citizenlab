@@ -262,11 +262,9 @@ const FormEdit = ({
         },
         {
           onSuccess: () => {
-            refetch().then(() => {
-              setIsUpdatingForm(true);
-              setSuccessMessageIsVisible(true);
-              resetCopyFrom();
-            });
+            setIsUpdatingForm(true);
+            setSuccessMessageIsVisible(true);
+            resetCopyFrom();
           },
         }
       );
