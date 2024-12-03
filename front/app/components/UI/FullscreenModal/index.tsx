@@ -1,17 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 
 import {
-  Box,
   Color,
   colors,
+  useWindowSize,
+  Box,
   Title,
   TitleProps,
 } from '@citizenlab/cl2-component-library';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import CSSTransition from 'react-transition-group/CSSTransition';
-import { fromEvent } from 'rxjs';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import styled from 'styled-components';
 
 import modalMessages from 'components/UI/Modal/messages';
@@ -23,7 +22,7 @@ const slideInOutEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
 
 const Container = styled.div<{
   windowHeight: number;
-  windowWidth?: number;
+  windowWidth: number;
   contentBgColor?: Props['contentBgColor'];
 }>`
   position: fixed;
@@ -102,23 +101,9 @@ const FullscreenModal = ({
   children,
   contentBgColor,
 }: Props) => {
-  const [windowDimensions, setWindowDimensions] = useState({
-    windowWidth: window.innerWidth,
-    windowHeight: window.innerHeight,
-  });
+  const { windowWidth, windowHeight } = useWindowSize();
 
   useEffect(() => {
-    const subscription = fromEvent(window, 'resize')
-      .pipe(debounceTime(50), distinctUntilChanged())
-      .subscribe((event) => {
-        if (event.target) {
-          const height = event.target['innerHeight'] as number;
-          const width = event.target['innerWidth'] as number;
-
-          setWindowDimensions({ windowHeight: height, windowWidth: width });
-        }
-      });
-
     const handleKeypress = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         event.preventDefault();
@@ -129,7 +114,6 @@ const FullscreenModal = ({
     window.addEventListener('keydown', handleKeypress);
 
     return () => {
-      subscription.unsubscribe();
       window.removeEventListener('keydown', handleKeypress);
     };
   }, [close]);
@@ -150,7 +134,8 @@ const FullscreenModal = ({
       <Container
         id="e2e-fullscreenmodal-content"
         className={[bottomBar ? 'hasBottomBar' : '', className].join()}
-        windowHeight={windowDimensions.windowHeight}
+        windowHeight={windowHeight}
+        windowWidth={windowWidth}
         contentBgColor={contentBgColor}
         aria-labelledby={modalTitle ? 'full-screen-modal-title' : undefined}
         aria-modal="true"
