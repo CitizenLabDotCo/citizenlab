@@ -18,11 +18,13 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import Divider from 'components/admin/Divider';
 
+import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
 
 import RegenerateLinkModal from './RegenerateLinkModal';
+import tracks from './tracks';
 
 const ShareLink = ({
   projectId,
@@ -48,6 +50,7 @@ const ShareLink = ({
       `${appConfiguration?.data.attributes.host}/${link}`
     );
     setLinkIsCopied(true);
+    trackEventByName(tracks.copyProjectPreviewLink);
   };
 
   const { formatMessage } = useIntl();
@@ -59,6 +62,7 @@ const ShareLink = ({
         onSuccess: () => {
           setLinkIsCopied(false);
           setRefreshModalIsOpen(false);
+          trackEventByName(tracks.regenerateProjectPreviewLink);
         },
       }
     );
