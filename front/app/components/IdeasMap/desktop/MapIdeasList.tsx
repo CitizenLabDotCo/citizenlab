@@ -10,7 +10,7 @@ import { IdeaSortMethod } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
 import { IdeaSortMethodFallback } from 'api/phases/utils';
 
-import FiltersMapView from 'components/IdeaCards/IdeasWithFiltersSidebar/FiltersMapView';
+import FiltersMapView from 'components/IdeaCards/IdeasWithFiltersSidebar/MapView/FiltersMapView';
 import { Props as InputFiltersProps } from 'components/IdeaCards/IdeasWithFiltersSidebar/InputFilters';
 
 import { trackEventByName } from 'utils/analytics';

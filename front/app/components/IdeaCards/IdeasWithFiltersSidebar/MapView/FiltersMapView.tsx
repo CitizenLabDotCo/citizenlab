@@ -2,9 +2,10 @@ import React from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
 
-import BottomBar from './ButtonWithFiltersModal/FiltersModal/BottomBar';
-import TopBar from './ButtonWithFiltersModal/FiltersModal/TopBar';
-import InputFilters, { Props as InputFiltersProps } from './InputFilters';
+import BottomBar from '../ButtonWithFiltersModal/FiltersModal/BottomBar';
+import InputFilters, { Props as InputFiltersProps } from '../InputFilters';
+
+import TopBar from './TopBar';
 
 interface Props extends InputFiltersProps {
   opened: boolean;
@@ -19,7 +20,7 @@ const FiltersMapView = ({
 }: Props) => {
   return (
     <>
-      <TopBar onReset={onClearFilters} onClose={onClose} />
+      <TopBar onClose={onClose} />
       <Box height="100%" overflowY="auto" bgColor={colors.background}>
         <Box p="16px">
           <InputFilters
@@ -34,7 +35,11 @@ const FiltersMapView = ({
           />
         </Box>
       </Box>
-      <BottomBar onClick={onClose} selectedIdeaFilters={selectedIdeaFilters} />
+      <BottomBar
+        onClick={onClose}
+        selectedIdeaFilters={selectedIdeaFilters}
+        onReset={onClearFilters}
+      />
     </>
   );
 };

@@ -14,4 +14,8 @@ export default defineMessages({
     defaultMessage:
       'Show {ideasCount, plural, no {# results} one {# result} other {# results}}',
   },
+  a11y_closeFilterPanel: {
+    id: 'app.containers.IdeaCards.a11y_closeFilterPanel',
+    defaultMessage: 'Close filters panel',
+  },
 });

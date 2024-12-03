@@ -5,6 +5,10 @@ export default defineMessages({
     id: 'app.components.IdeaCards.showMore',
     defaultMessage: 'Show more',
   },
+  filters: {
+    id: 'app.components.IdeaCards.filters',
+    defaultMessage: 'Filters',
+  },
   noFilteredResults: {
     id: 'app.containers.IdeaCards.noFilteredResults',
     defaultMessage:
