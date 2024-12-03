@@ -2471,7 +2471,7 @@
   "app.containers.AdminPage.projects.project.analysis.invalidShapefile": "En ugyldig shapefile blev uploadet og kan ikke vises.",
   "app.containers.AdminPage.projects.project.analysis.limit": "Grænse",
   "app.containers.AdminPage.projects.project.analysis.mainQuestion": "Hovedspørgsmål",
-  "app.containers.AdminPage.projects.project.analysis.manageIdea": "Administrer idé",
+  "app.containers.AdminPage.projects.project.analysis.manageInput": "Administrer input",
   "app.containers.AdminPage.projects.project.analysis.noAnswer": "Intet svar",
   "app.containers.AdminPage.projects.project.analysis.noAnswerProvided2": "Der blev ikke givet noget svar.",
   "app.containers.AdminPage.projects.project.analysis.noFileUploaded": "Ingen shapefile uploadet.",
