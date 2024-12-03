@@ -421,6 +421,7 @@ resource 'Ideas' do
           do_request
           assert_status 200
           expect(json_parse(response_body)[:data].size).to be <= 10
+          byebug
         end
       end
     end

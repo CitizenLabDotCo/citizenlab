@@ -19,5 +19,5 @@ class EmbeddingsSimilarity < ApplicationRecord
   belongs_to :embeddable, polymorphic: true
   has_neighbors :embedding
 
-  validates :embeddable, :embedding, presence: true # Also require embedding (test)?
+  validates :embeddable, :embedding, presence: true
 end

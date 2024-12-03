@@ -1,8 +1,8 @@
 class CohereMultilingualEmbeddings
   def initialize(**params)
-    if !params.key? :region # 'eu-central-1'
-      raise 'No AWS region specified for Anthropic Claude model.'
-    end
+    params[:region] = ENV.fetch('AWS_TOXICITY_DETECTION_REGION', nil) if !params.key? :region
+      
+    raise 'No AWS region specified for Cohere Embed Multilingual model.' if params[:region]
 
     @client = Aws::BedrockRuntime::Client.new(params)
   end
