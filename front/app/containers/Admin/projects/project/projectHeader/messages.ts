@@ -131,4 +131,9 @@ export default defineMessages({
     defaultMessage:
       'Regenerate project preview link. This will invalidate the previous link.',
   },
+  shareLinkUpsellTooltip: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareLinkUpsellTooltip',
+    defaultMessage:
+      'Sharing private links is not included on your current plan. Talk to your Government Success Manager or admin to unlock it.',
+  },
 });

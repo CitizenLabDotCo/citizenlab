@@ -15,6 +15,8 @@ import {
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useRefreshProjectPreviewToken from 'api/projects/useRefreshProjectPreviewToken';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import Divider from 'components/admin/Divider';
 
 import { useIntl } from 'utils/cl-intl';
@@ -30,6 +32,7 @@ const ShareLink = ({
   projectSlug: string;
   token: string;
 }) => {
+  const isPreviewLinkEnabled = useFeatureFlag({ name: 'project_preview_link' });
   const { data: appConfiguration } = useAppConfiguration();
   const { mutate: refreshProjectPreviewToken, isLoading } =
     useRefreshProjectPreviewToken();
@@ -61,7 +64,7 @@ const ShareLink = ({
     <Box position="relative">
       <Button
         id="e2e-share-link"
-        buttonStyle="admin-dark"
+        buttonStyle="secondary-outlined"
         icon="share"
         size="s"
         padding="4px 8px"
@@ -90,27 +93,40 @@ const ShareLink = ({
                 {formatMessage(messages.shareTitle)}
               </Text>
               <Box display="flex" alignItems="center">
-                <Button
-                  id="e2e-copy-link"
-                  buttonStyle="text"
-                  padding="8px"
-                  icon={linkIsCopied ? 'check-circle' : 'link'}
-                  iconColor={linkIsCopied ? colors.success : colors.teal500}
-                  iconHoverColor={
-                    linkIsCopied ? colors.success : colors.teal700
+                <Tooltip
+                  content={
+                    isPreviewLinkEnabled
+                      ? ''
+                      : formatMessage(messages.shareLinkUpsellTooltip)
                   }
-                  textColor={colors.teal500}
-                  textHoverColor={colors.teal700}
-                  size="s"
-                  onClick={handleCopyLink}
+                  disabled={isPreviewLinkEnabled}
                 >
-                  {linkIsCopied
-                    ? formatMessage(messages.shareLinkCopied)
-                    : formatMessage(messages.shareLink)}
-                </Button>
-                <Box display="none" id="e2e-link">
-                  {link}
-                </Box>
+                  <Button
+                    id="e2e-copy-link"
+                    buttonStyle="text"
+                    padding="8px"
+                    icon={linkIsCopied ? 'check-circle' : 'link'}
+                    iconColor={linkIsCopied ? colors.success : colors.teal500}
+                    iconHoverColor={
+                      linkIsCopied ? colors.success : colors.teal700
+                    }
+                    textColor={colors.teal500}
+                    textHoverColor={colors.teal700}
+                    size="s"
+                    onClick={handleCopyLink}
+                    disabled={!isPreviewLinkEnabled}
+                  >
+                    {linkIsCopied
+                      ? formatMessage(messages.shareLinkCopied)
+                      : formatMessage(messages.shareLink)}
+                  </Button>
+                </Tooltip>
+
+                {isPreviewLinkEnabled && (
+                  <Box display="none" id="e2e-link">
+                    {link}
+                  </Box>
+                )}
                 {isLoading ? (
                   <Spinner size="20px" />
                 ) : (
@@ -127,6 +143,7 @@ const ShareLink = ({
                       iconColor={colors.teal500}
                       iconColorOnHover={colors.teal700}
                       p="0px"
+                      disabled={!isPreviewLinkEnabled}
                     />
                   </Tooltip>
                 )}
