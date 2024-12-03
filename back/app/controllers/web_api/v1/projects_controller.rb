@@ -159,24 +159,23 @@ class WebApi::V1::ProjectsController < ApplicationController
   end
 
   def create
-    project_params = permitted_attributes(Project)
-    @project = Project.new(project_params)
-    sidefx.before_create(@project, current_user)
+    project = Project.new(permitted_attributes(Project))
+    sidefx.before_create(project, current_user)
 
     created = Project.transaction do
-      save_project(@project).tap do |saved|
-        sidefx.after_create(@project, current_user) if saved
+      save_project(project).tap do |saved|
+        sidefx.after_create(project, current_user) if saved
       end
     end
 
     if created
       render json: WebApi::V1::ProjectSerializer.new(
-        @project,
+        project,
         params: jsonapi_serializer_params,
         include: [:admin_publication]
       ).serializable_hash, status: :created
     else
-      render json: { errors: @project.errors.details }, status: :unprocessable_entity
+      render json: { errors: project.errors.details }, status: :unprocessable_entity
     end
   end
 
