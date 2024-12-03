@@ -1,6 +1,6 @@
 import React, { memo, FormEvent } from 'react';
 
-import { Box, colors } from '@citizenlab/cl2-component-library';
+import { Box, colors, fontSizes } from '@citizenlab/cl2-component-library';
 
 import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
 
@@ -15,9 +15,10 @@ import messages from './messages';
 interface Props {
   onClick: (event: FormEvent) => void;
   selectedIdeaFilters: InputFiltersProps['selectedIdeaFilters'];
+  onReset: (event: React.MouseEvent) => void;
 }
 
-const BottomBar = memo<Props>(({ onClick, selectedIdeaFilters }) => {
+const BottomBar = memo<Props>(({ onClick, selectedIdeaFilters, onReset }) => {
   const { data: ideasFilterCounts } = useIdeasFilterCounts(selectedIdeaFilters);
 
   if (!ideasFilterCounts) return null;
@@ -26,6 +27,7 @@ const BottomBar = memo<Props>(({ onClick, selectedIdeaFilters }) => {
     <Box
       background={colors.white}
       p="16px"
+      pb="0"
       flex="1"
       borderTop={`1px solid ${colors.grey300}`}
     >
@@ -36,6 +38,13 @@ const BottomBar = memo<Props>(({ onClick, selectedIdeaFilters }) => {
             ideasCount: ideasFilterCounts.data.attributes.total,
           }}
         />
+      </Button>
+      <Button
+        onClick={onReset}
+        buttonStyle="text"
+        fontSize={`${fontSizes.s}px`}
+      >
+        <FormattedMessage {...messages.resetFilters} />
       </Button>
     </Box>
   );
