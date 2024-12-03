@@ -4,6 +4,9 @@ import {
   Color,
   colors,
   useWindowSize,
+  Box,
+  Title,
+  TitleProps,
 } from '@citizenlab/cl2-component-library';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
@@ -12,6 +15,10 @@ import styled from 'styled-components';
 import { SupportedLocale } from 'typings';
 
 import useLocale from 'hooks/useLocale';
+
+import modalMessages from 'components/UI/Modal/messages';
+
+import CloseIconButton from '../CloseIconButton';
 
 const slideInOutTimeout = 500;
 const slideInOutEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
@@ -78,7 +85,9 @@ interface InputProps {
   className?: string;
   opened: boolean;
   close: () => void;
-  topBar?: JSX.Element | null;
+  modalTitle?: JSX.Element | null;
+  titleAs?: TitleProps['as'];
+  titleVariant?: TitleProps['variant'];
   bottomBar?: JSX.Element | null;
   children: JSX.Element | null | undefined;
   contentBgColor?: Color;
@@ -92,7 +101,9 @@ const FullscreenModal = ({
   className,
   opened,
   close,
-  topBar,
+  modalTitle,
+  titleAs,
+  titleVariant,
   bottomBar,
   children,
   contentBgColor,
@@ -135,7 +146,34 @@ const FullscreenModal = ({
         contentBgColor={contentBgColor}
       >
         <StyledFocusOn autoFocus>
-          {topBar}
+          {modalTitle && (
+            <Box
+              bgColor={colors.white}
+              borderBottom={`1px solid ${colors.grey300}`}
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              position="relative"
+            >
+              <Title
+                as={titleAs || 'h2'}
+                variant={titleVariant || 'h5'}
+                m="0"
+                p="16px"
+                fontWeight="bold"
+              >
+                {modalTitle}
+              </Title>
+              <Box position="absolute" right="8px">
+                <CloseIconButton
+                  a11y_buttonActionMessage={modalMessages.closeWindow}
+                  onClick={close}
+                  iconColor={colors.textSecondary}
+                  iconColorOnHover={colors.grey800}
+                />
+              </Box>
+            </Box>
+          )}
           <Content className="fullscreenmodal-scrollcontainer">
             {children}
           </Content>

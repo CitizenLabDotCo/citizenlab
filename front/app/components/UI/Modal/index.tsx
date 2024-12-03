@@ -490,7 +490,7 @@ const Modal: React.FC<Props> = ({
                     className="e2e-modal-close-button"
                     onClick={clickCloseButton}
                     iconColor={colors.textSecondary}
-                    iconColorOnHover="#000"
+                    iconColorOnHover={colors.grey800}
                     a11y_buttonActionMessage={messages.closeWindow}
                   />
                 )}

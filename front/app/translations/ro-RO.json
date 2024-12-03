@@ -101,7 +101,6 @@
   "app.components.FilterBoxes.areas": "Filtru după zonă",
   "app.components.FilterBoxes.statusTitle": "Status",
   "app.components.FilterBoxes.topicsTitle": "Subiecte",
-  "app.components.FiltersModal.a11y_closeFilterPanel": "Închide panoul de filtrare",
   "app.components.FiltersModal.filters": "Filtre",
   "app.components.FiltersModal.resetFilters": "Resetați filtrele",
   "app.components.FolderFolderCard.a11y_folderDescription": "Descriere folder:",

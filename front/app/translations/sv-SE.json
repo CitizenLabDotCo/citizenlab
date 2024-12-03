@@ -165,7 +165,6 @@
   "app.components.FilterBoxes.showTagsWithNumber": "Visa alla ({numberTags})",
   "app.components.FilterBoxes.statusTitle": "Status",
   "app.components.FilterBoxes.topicsTitle": "Ämnen",
-  "app.components.FiltersModal.a11y_closeFilterPanel": "Stäng filterpanel",
   "app.components.FiltersModal.filters": "Filter",
   "app.components.FiltersModal.resetFilters": "Återställ filter",
   "app.components.FolderFolderCard.a11y_folderDescription": "Mappbeskrivning:",
