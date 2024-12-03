@@ -78,7 +78,7 @@ describe SideFxPhaseService do
         reacting_enabled: false,
         reacting_like_method: 'limited',
         reacting_like_limited_max: 9,
-        reacting_dislike_enabled: false,
+        reacting_dislike_enabled: true,
         presentation_mode: 'map'
       }.each do |attribute, new_value|
         it "logs a '#{attribute}_changed' action job when the phase attribute has changed" do

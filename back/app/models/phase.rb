@@ -23,7 +23,7 @@
 #  presentation_mode                :string           default("card")
 #  voting_max_total                 :integer
 #  poll_anonymous                   :boolean          default(FALSE), not null
-#  reacting_dislike_enabled         :boolean          default(TRUE), not null
+#  reacting_dislike_enabled         :boolean          default(FALSE), not null
 #  ideas_count                      :integer          default(0), not null
 #  ideas_order                      :string
 #  input_term                       :string           default("idea")
@@ -44,7 +44,7 @@
 #  expire_days_limit                :integer
 #  reacting_threshold               :integer
 #  prescreening_enabled             :boolean          default(FALSE), not null
-#  autoshare_results_enabled        :boolean          default(TRUE), not null
+#  autoshare_results_enabled        :boolean          default(TRUE)
 #  manual_votes_count               :integer          default(0), not null
 #  manual_voters_amount             :integer
 #  manual_voters_last_updated_by_id :uuid
@@ -73,6 +73,8 @@ class Phase < ApplicationRecord
   INPUT_TERMS           = %w[idea question contribution project issue option proposal initiative petition].freeze
   FALLBACK_INPUT_TERM = 'idea'
   CAMPAIGNS = [:project_phase_started].freeze
+
+  attribute :reacting_dislike_enabled, :boolean, default: -> { disliking_enabled_default }
 
   belongs_to :project
 
@@ -275,6 +277,12 @@ class Phase < ApplicationRecord
   def update_manual_votes_count!
     reload
     update!(manual_votes_count: ideas.filter_map(&:manual_votes_amount).sum)
+  end
+
+  # If 'disable_disliking' is NOT enabled, then disliking will always be set to enabled on creation and cannot be changed
+  # Otherwise disliking is disabled on creation but can be changed in phase settings
+  def self.disliking_enabled_default
+    !AppConfiguration.instance.feature_activated?('disable_disliking')
   end
 
   private

@@ -7,7 +7,7 @@ export const defaultParticipationConfig: IUpdatedPhaseProperties = {
   reacting_enabled: true,
   reacting_like_method: undefined,
   reacting_like_limited_max: null,
-  reacting_dislike_enabled: true,
+  reacting_dislike_enabled: false,
   reacting_dislike_method: undefined,
   reacting_dislike_limited_max: null,
   allow_anonymous_participation: false,
@@ -37,7 +37,7 @@ export const ideationDefaultConfig: IUpdatedPhaseProperties = {
   reacting_enabled: true,
   reacting_like_method: 'unlimited',
   reacting_like_limited_max: null,
-  reacting_dislike_enabled: true,
+  reacting_dislike_enabled: false,
   reacting_dislike_method: 'unlimited',
   allow_anonymous_participation: false,
   reacting_dislike_limited_max: null,
@@ -54,7 +54,7 @@ export const nativeSurveyDefaultConfig: IUpdatedPhaseProperties = {
   submission_enabled: true,
   reacting_enabled: true,
   reacting_like_method: 'unlimited',
-  reacting_dislike_enabled: true,
+  reacting_dislike_enabled: false,
   reacting_dislike_method: 'unlimited',
 };
 
