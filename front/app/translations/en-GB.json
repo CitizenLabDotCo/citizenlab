@@ -165,7 +165,6 @@
   "app.components.FilterBoxes.showTagsWithNumber": "Show all ({numberTags})",
   "app.components.FilterBoxes.statusTitle": "Status",
   "app.components.FilterBoxes.topicsTitle": "Tags",
-  "app.components.FiltersModal.a11y_closeFilterPanel": "Close filter panel",
   "app.components.FiltersModal.filters": "Filters",
   "app.components.FiltersModal.resetFilters": "Reset filters",
   "app.components.FolderFolderCard.a11y_folderDescription": "Folder description:",
