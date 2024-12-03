@@ -41,7 +41,7 @@ const ReviewFlow = ({ project }: { project: IProjectData }) => {
   const canPublish = usePermission({
     item: project,
     action: 'publish',
-    context: projectReview?.data.attributes.approved,
+    context: projectReview?.data.attributes.state === 'approved',
   });
 
   const canReview = usePermission({
@@ -64,9 +64,9 @@ const ReviewFlow = ({ project }: { project: IProjectData }) => {
   }
 
   const approvalPending =
-    projectReview && projectReview.data.attributes.approved === false;
+    projectReview && projectReview.data.attributes.state === 'pending';
   const approvalGranted =
-    projectReview && projectReview.data.attributes.approved === true;
+    projectReview && projectReview.data.attributes.state === 'approved';
 
   const showPublishButton =
     (canPublish || !isProjectReviewEnabled) && !approvalPending;
