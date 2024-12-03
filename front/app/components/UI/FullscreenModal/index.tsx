@@ -159,6 +159,9 @@ const FullscreenModal = ({
         className={[bottomBar ? 'hasBottomBar' : '', className].join()}
         windowHeight={windowDimensions.windowHeight}
         contentBgColor={contentBgColor}
+        aria-labelledby={modalTitle ? 'full-screen-modal-title' : undefined}
+        aria-modal="true"
+        role="dialog"
       >
         <StyledFocusOn autoFocus>
           {modalTitle && (
@@ -171,6 +174,7 @@ const FullscreenModal = ({
               position="relative"
             >
               <Title
+                id="full-screen-modal-title"
                 as={titleAs || 'h2'}
                 variant={titleVariant || 'h5'}
                 m="0"
