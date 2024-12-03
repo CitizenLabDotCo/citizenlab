@@ -576,18 +576,18 @@ lb:
       body_3: 'Mir encouragéieren Iech d''Resultater z''iwwerpréiwen a bleiwen ofgeschloss fir weider Updates iwwer déi nächst Schrëtt.'
       cta_see_results: 'Gesinn Resultater an der Plattform'
     event_registration_confirmation:
-      subject: "Dir sidd an! Är Umeldung fir \"%{eventTitle}\" ass bestätegt"
-      preheader: "%{firstName}, Merci fir d'Aschreiwung fir %{eventTitle}"
+      subject: "Dir sidd an! Dir sidd ageschriwwen fir \"%{eventTitle}\""
+      preheader: "%{firstName}, Merci fir Är Aschreiwung fir %{eventTitle}"
       header_message: "%{firstName}, merci fir Aschreiwung fir"
       event_details:
         labels:
           date: 'Datum'
-          location: 'Location'
+          location: 'Plaz'
           online_link: 'Online Link'
           description: 'Beschreiwung'
           project: 'Projet'
       cta_go_to_event: 'Kuckt d''Evenement'
-      cta_add_to_calendar: 'Füügt an Äre Kalenner'
+      cta_add_to_calendar: 'An Äre Kalenner androen'
     voting_phase_started:
       subject: '%{organizationName}: D''Stëmmphase huet fir den %{projectName}ugefaangen'
       preheader: 'D''Stëmmphase huet fir %{projectName} op der Participatiounsplattform vun %{organizationName}ugefaang'
