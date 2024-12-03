@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from 'react';
 
-import { Box, Color, colors } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Color,
+  colors,
+  Title,
+  TitleProps,
+} from '@citizenlab/cl2-component-library';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import CSSTransition from 'react-transition-group/CSSTransition';
@@ -81,6 +87,8 @@ interface InputProps {
   opened: boolean;
   close: () => void;
   modalTitle?: JSX.Element | null;
+  titleAs?: TitleProps['as'];
+  titleVariant?: TitleProps['variant'];
   bottomBar?: JSX.Element | null;
   children: JSX.Element | null | undefined;
   contentBgColor?: Color;
@@ -95,6 +103,8 @@ const FullscreenModal = ({
   opened,
   close,
   modalTitle,
+  titleAs,
+  titleVariant,
   bottomBar,
   children,
   contentBgColor,
@@ -155,13 +165,20 @@ const FullscreenModal = ({
             <Box
               bgColor={colors.white}
               borderBottom={`1px solid ${colors.grey300}`}
-              px="16px"
               display="flex"
               alignItems="center"
               justifyContent="center"
               position="relative"
             >
-              {modalTitle}
+              <Title
+                as={titleAs || 'h2'}
+                variant={titleVariant || 'h5'}
+                m="0"
+                p="16px"
+                fontWeight="bold"
+              >
+                {modalTitle}
+              </Title>
               <Box position="absolute" right="8px">
                 <CloseIconButton
                   a11y_buttonActionMessage={modalMessages.closeWindow}

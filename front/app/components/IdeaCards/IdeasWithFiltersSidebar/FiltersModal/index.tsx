@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Title } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 
 import FullscreenModal from 'components/UI/FullscreenModal';
 
@@ -27,11 +27,7 @@ const FiltersModal = ({
     <FullscreenModal
       opened={opened}
       close={onClose}
-      modalTitle={
-        <Title as="h2" variant="h5" padding="16px" m="0" fontWeight="bold">
-          <FormattedMessage {...messages.filters} />
-        </Title>
-      }
+      modalTitle={<FormattedMessage {...messages.filters} />}
       bottomBar={
         <BottomBar
           onClick={onClose}
