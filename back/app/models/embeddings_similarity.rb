@@ -13,7 +13,7 @@
 # Indexes
 #
 #  index_embeddings_similarities_on_embeddable  (embeddable_type,embeddable_id)
-#  index_embeddings_similarities_on_embedding   (embedding)
+#  index_embeddings_similarities_on_embedding   (embedding) USING hnsw
 #
 class EmbeddingsSimilarity < ApplicationRecord
   belongs_to :idea

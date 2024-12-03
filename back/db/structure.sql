@@ -5100,7 +5100,7 @@ CREATE INDEX index_embeddings_similarities_on_embeddable ON public.embeddings_si
 -- Name: index_embeddings_similarities_on_embedding; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_embeddings_similarities_on_embedding ON public.embeddings_similarities USING btree (embedding);
+CREATE INDEX index_embeddings_similarities_on_embedding ON public.embeddings_similarities USING hnsw (embedding shared_extensions.vector_cosine_ops);
 
 
 --
