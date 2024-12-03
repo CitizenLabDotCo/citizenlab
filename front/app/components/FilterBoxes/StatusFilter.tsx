@@ -3,11 +3,11 @@ import React, { memo, useCallback, MouseEvent } from 'react';
 import {
   fontSizes,
   isRtl,
-  Icon,
   Box,
   Text,
   colors,
   ColorIndicator,
+  IconButton,
 } from '@citizenlab/cl2-component-library';
 import { capitalize, get } from 'lodash-es';
 import { darken } from 'polished';
@@ -18,11 +18,13 @@ import { IIdeaStatusData } from 'api/idea_statuses/types';
 import T from 'components/T';
 
 import { ScreenReaderOnly } from 'utils/a11y';
+import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 import InputFilterCollapsible from './InputFilterCollapsible';
 import messages from './messages';
+import tracks from './tracks';
 import { FilterCounts } from './types';
 import { scrollToTopIdeasList } from './utils';
 
@@ -174,7 +176,18 @@ const StatusFilter = memo<Props>(
                     <Count aria-hidden>{filterPostCount}</Count>
                   ) : (
                     <>
-                      <Icon fill={colors.white} name="close" />
+                      <IconButton
+                        aria-hidden
+                        iconColor={colors.white}
+                        iconName="close"
+                        onClick={(event: MouseEvent<HTMLElement>) => {
+                          trackEventByName(tracks.statusFilterRemovedWithX);
+                          handleOnClick(event);
+                        }}
+                        a11y_buttonActionMessage={''}
+                        iconColorOnHover={colors.white}
+                        p="0px"
+                      />
                       <ScreenReaderOnly>
                         <FormattedMessage {...messages.a11y_removeFilter} />
                       </ScreenReaderOnly>
