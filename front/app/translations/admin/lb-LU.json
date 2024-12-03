@@ -2471,7 +2471,7 @@
   "app.containers.AdminPage.projects.project.analysis.invalidShapefile": "Eng ongëlteg Formdatei gouf eropgelueden a kann net ugewise ginn.",
   "app.containers.AdminPage.projects.project.analysis.limit": "Limitéieren",
   "app.containers.AdminPage.projects.project.analysis.mainQuestion": "Haaptfro",
-  "app.containers.AdminPage.projects.project.analysis.manageIdea": "Managen Iddi",
+  "app.containers.AdminPage.projects.project.analysis.manageInput": "Manage input",
   "app.containers.AdminPage.projects.project.analysis.noAnswer": "Keng Äntwert",
   "app.containers.AdminPage.projects.project.analysis.noAnswerProvided2": "Keng Äntwert gëtt.",
   "app.containers.AdminPage.projects.project.analysis.noFileUploaded": "Kee shapefile eropgelueden.",
