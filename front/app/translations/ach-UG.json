@@ -165,7 +165,6 @@
   "app.components.FilterBoxes.showTagsWithNumber": "crwdns3645115:0{numberTags}crwdne3645115:0",
   "app.components.FilterBoxes.statusTitle": "crwdns213060:0crwdne213060:0",
   "app.components.FilterBoxes.topicsTitle": "crwdns213062:0crwdne213062:0",
-  "app.components.FiltersModal.a11y_closeFilterPanel": "crwdns213064:0crwdne213064:0",
   "app.components.FiltersModal.filters": "crwdns213066:0crwdne213066:0",
   "app.components.FiltersModal.resetFilters": "crwdns213068:0crwdne213068:0",
   "app.components.FolderFolderCard.a11y_folderDescription": "crwdns213070:0crwdne213070:0",
