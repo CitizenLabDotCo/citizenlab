@@ -155,7 +155,7 @@ RSpec.describe ContentBuilder::Layout do
         'nodes' => kind_of(Array),
         'linkedNodes' => {}
       })
-      homepagebanner, projects = layout.craftjs_json['ROOT']['nodes']
+      homepagebanner, followed_items, open_to_participation, finished_or_archived, projects = layout.craftjs_json['ROOT']['nodes']
       expect(layout.craftjs_json[homepagebanner]).to match({
         'type' => { 'resolvedName' => 'HomepageBanner' },
         'isCanvas' => false,
@@ -195,6 +195,45 @@ RSpec.describe ContentBuilder::Layout do
         'parent' => 'ROOT',
         'hidden' => false,
         'nodes' => [],
+        'linkedNodes' => {}
+      })
+      expect(layout.craftjs_json[followed_items]).to match({
+        'type' => { 'resolvedName' => 'FollowedItems' },
+        'nodes' => [],
+        'props' => {
+          'titleMultiloc' => hash_including('en' => '', 'nl-BE' => '', 'fr-BE' => '')
+        },
+        'custom' => {},
+        'hidden' => false,
+        'parent' => 'ROOT',
+        'isCanvas' => false,
+        'displayName' => 'FollowedItems',
+        'linkedNodes' => {}
+      })
+      expect(layout.craftjs_json[open_to_participation]).to match({
+        'type' => { 'resolvedName' => 'OpenToParticipation' },
+        'nodes' => [],
+        'props' => {
+          'titleMultiloc' => hash_including('en' => '', 'nl-BE' => '', 'fr-BE' => '')
+        },
+        'custom' => {},
+        'hidden' => false,
+        'parent' => 'ROOT',
+        'isCanvas' => false,
+        'displayName' => 'OpenToParticipation',
+        'linkedNodes' => {}
+      })
+      expect(layout.craftjs_json[finished_or_archived]).to match({
+        'type' => { 'resolvedName' => 'FinishedOrArchived' },
+        'nodes' => [],
+        'props' => {
+          'titleMultiloc' => hash_including('en' => '', 'nl-BE' => '', 'fr-BE' => '')
+        },
+        'custom' => {},
+        'hidden' => false,
+        'parent' => 'ROOT',
+        'isCanvas' => false,
+        'displayName' => 'FinishedOrArchived',
         'linkedNodes' => {}
       })
       expect(layout.craftjs_json[projects]).to match({
