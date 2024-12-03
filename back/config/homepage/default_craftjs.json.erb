@@ -6,7 +6,7 @@
     "displayName": "div",
     "custom": {},
     "hidden": false,
-    "nodes": ["HOMEPAGEBANNER", "FOLLOWED_ITEMS", "OPEN_TO_PARTICIPATION", "FINISHED_OR_ARCHIVED", "PROJECTS"],
+    "nodes": ["HOMEPAGEBANNER", "FOLLOWED_ITEMS", "OPEN_TO_PARTICIPATION", "FINISHED_OR_ARCHIVED"],
     "linkedNodes": {}
   },
   "HOMEPAGEBANNER": {
@@ -84,24 +84,6 @@
     "parent": "ROOT",
     "isCanvas": false,
     "displayName": "FinishedOrArchived",
-    "linkedNodes": {}
-  },
-  "PROJECTS": {
-    "type": { "resolvedName": "Projects" },
-    "isCanvas": false,
-    "props": { "currentlyWorkingOnText": <%= CL2_SUPPORTED_LOCALES.product(['']).to_h.to_json %> },
-    "displayName": "Projects",
-    "custom": {
-      "title": {
-        "id": "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.Projects.projectsTitle",
-        "defaultMessage": "Projects"
-      },
-      "noPointerEvents": true,
-      "noDelete": true
-    },
-    "parent": "ROOT",
-    "hidden": false,
-    "nodes": [],
     "linkedNodes": {}
   }
 }
