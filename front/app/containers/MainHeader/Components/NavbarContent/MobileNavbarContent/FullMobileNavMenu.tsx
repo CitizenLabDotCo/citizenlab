@@ -113,7 +113,7 @@ const FullMobileNavMenu = ({ onClose, isFullMenuOpened }: Props) => {
   };
 
   return (
-    <StyledFullscreenModal opened={isFullMenuOpened} close={onClose}>
+    <StyledFullscreenModal opened={isFullMenuOpened}>
       <Container>
         <ContentContainer
           // Screen reader will add "navigation", so this will become
