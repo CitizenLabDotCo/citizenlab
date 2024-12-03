@@ -1,6 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 
-import { Color, colors } from '@citizenlab/cl2-component-library';
+import {
+  Color,
+  colors,
+  useWindowSize,
+} from '@citizenlab/cl2-component-library';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import CSSTransition from 'react-transition-group/CSSTransition';
@@ -93,19 +97,9 @@ const FullscreenModal = ({
   children,
   contentBgColor,
 }: Props) => {
-  const [windowDimensions, setWindowDimensions] = useState({
-    windowWidth: window.innerWidth,
-    windowHeight: window.innerHeight,
-  });
+  const { windowWidth, windowHeight } = useWindowSize();
 
   useEffect(() => {
-    const handleOnResize = () => {
-      setWindowDimensions({
-        windowWidth: window.innerWidth,
-        windowHeight: window.innerHeight,
-      });
-    };
-
     const handleKeypress = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         event.preventDefault();
@@ -114,12 +108,9 @@ const FullscreenModal = ({
     };
 
     window.addEventListener('keydown', handleKeypress);
-    window.addEventListener('resize', handleOnResize);
 
     return () => {
-      // subscription.unsubscribe();
       window.removeEventListener('keydown', handleKeypress);
-      window.removeEventListener('resize', handleOnResize);
     };
   }, [close]);
 
