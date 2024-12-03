@@ -13,7 +13,7 @@ const projectReviewData: ProjectReviewData = {
   id: 'id',
   type: 'project_review',
   attributes: {
-    approved: false,
+    state: 'approved',
     approved_at: null,
     created_at: '2021-09-01T00:00:00.000Z',
     updated_at: '2021-09-01T00:00:00.000Z',
