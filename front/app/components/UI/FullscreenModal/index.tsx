@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { Color, colors } from '@citizenlab/cl2-component-library';
+import { Box, Color, colors } from '@citizenlab/cl2-component-library';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import CSSTransition from 'react-transition-group/CSSTransition';
@@ -10,6 +10,10 @@ import styled from 'styled-components';
 import { SupportedLocale } from 'typings';
 
 import useLocale from 'hooks/useLocale';
+
+import modalMessages from 'components/UI/Modal/messages';
+
+import CloseIconButton from '../CloseIconButton';
 
 const slideInOutTimeout = 500;
 const slideInOutEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
@@ -76,7 +80,7 @@ interface InputProps {
   className?: string;
   opened: boolean;
   close: () => void;
-  topBar?: JSX.Element | null;
+  modalTitle?: JSX.Element | null;
   bottomBar?: JSX.Element | null;
   children: JSX.Element | null | undefined;
   contentBgColor?: Color;
@@ -90,7 +94,7 @@ const FullscreenModal = ({
   className,
   opened,
   close,
-  topBar,
+  modalTitle,
   bottomBar,
   children,
   contentBgColor,
@@ -147,7 +151,27 @@ const FullscreenModal = ({
         contentBgColor={contentBgColor}
       >
         <StyledFocusOn autoFocus>
-          {topBar}
+          {modalTitle && (
+            <Box
+              bgColor={colors.white}
+              borderBottom={`1px solid ${colors.grey300}`}
+              px="16px"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              position="relative"
+            >
+              {modalTitle}
+              <Box position="absolute" right="8px">
+                <CloseIconButton
+                  a11y_buttonActionMessage={modalMessages.closeWindow}
+                  onClick={close}
+                  iconColor={colors.textSecondary}
+                  iconColorOnHover={'#000'}
+                />
+              </Box>
+            </Box>
+          )}
           <Content className="fullscreenmodal-scrollcontainer">
             {children}
           </Content>
