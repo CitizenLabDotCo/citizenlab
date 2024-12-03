@@ -378,7 +378,10 @@ describe ProjectPolicy do
       it { is_expected.to permit(:votes_by_input_xlsx)   }
 
       context 'when the project has never been published' do
-        before { expect(project).to(be_never_published) }
+        before do
+          # Sanity check
+          raise 'Project should not have been published' if project.ever_published?
+        end
 
         it { is_expected.to permit(:destroy) }
 
