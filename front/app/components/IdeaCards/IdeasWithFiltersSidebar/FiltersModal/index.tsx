@@ -32,6 +32,7 @@ const FiltersModal = ({
         <BottomBar
           onClick={onClose}
           selectedIdeaFilters={selectedIdeaFilters}
+          onReset={onClearFilters}
         />
       }
       contentBgColor="background"
