@@ -84,11 +84,7 @@ const FormEdit = ({
   const { formSavedSuccessMessage, isFormPhaseSpecific } = builderConfig;
   const { mutateAsync: updateFormCustomFields } = useUpdateCustomField();
   const showWarningNotice = totalSubmissions > 0;
-  const {
-    data: formCustomFields,
-    refetch,
-    isFetching,
-  } = useFormCustomFields({
+  const { data: formCustomFields, isFetching } = useFormCustomFields({
     projectId,
     phaseId: isFormPhaseSpecific ? phaseId : undefined,
   });
