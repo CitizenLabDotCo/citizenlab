@@ -1445,4 +1445,71 @@ resource 'Projects' do
       end
     end
   end
+
+  post 'web_api/v1/projects/:id/copy' do
+    let(:source_project) { create(:project) }
+    let(:id) { source_project.id }
+
+    context 'when project moderator' do
+      before { header_token_for moderator }
+
+      context 'when the user moderates the source project' do
+        let(:moderator) { create(:project_moderator, projects: [source_project]) }
+
+        example 'Copy a project', document: false do
+          do_request
+          assert_status 201
+
+          copy_id = response_data[:id]
+          expect(Project.where(id: copy_id)).to exist
+        end
+
+        example 'Copy a project in a folder', document: false do
+          folder = create(:project_folder)
+          source_project.update!(folder: folder)
+
+          do_request
+          assert_status 201
+
+          copy_id = response_data[:id]
+          expect(Project.find(copy_id).folder_id).to be_nil
+        end
+      end
+
+      context 'when the user does not moderate the source project' do
+        let(:moderator) { create(:project_moderator) }
+
+        example '[Unauthorized] Copy a project', document: false do
+          do_request
+          assert_status 401
+        end
+      end
+    end
+
+    context 'when project folder moderator' do
+      before { header_token_for moderator }
+
+      context 'when the user moderates the folder of the source project' do
+        let(:source_project) { create(:project, folder: create(:project_folder)) }
+        let(:moderator) { create(:project_folder_moderator, project_folders: [source_project.folder]) }
+
+        example 'Copy a project in the folder', document: false do
+          do_request
+          assert_status 201
+
+          copy_id = response_data[:id]
+          expect(Project.find(copy_id).folder_id).to eq(source_project.folder_id)
+        end
+      end
+
+      context 'when the user does not moderate the folder of the source project' do
+        let(:moderator) { create(:project_folder_moderator) }
+
+        example '[Unauthorized] Copy a project in the folder', document: false do
+          do_request
+          assert_status 401
+        end
+      end
+    end
+  end
 end

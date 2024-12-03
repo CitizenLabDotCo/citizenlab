@@ -18,6 +18,7 @@ describe ProjectPolicy do
 
       it { is_expected.to     permit(:show)                  }
       it { is_expected.not_to permit(:create)                }
+      it { is_expected.not_to permit(:copy)                  }
       it { is_expected.not_to permit(:update)                }
       it { is_expected.not_to permit(:reorder)               }
       it { is_expected.not_to permit(:refresh_preview_token) }
@@ -36,6 +37,7 @@ describe ProjectPolicy do
 
       it { is_expected.to     permit(:show)                  }
       it { is_expected.not_to permit(:create)                }
+      it { is_expected.not_to permit(:copy)                  }
       it { is_expected.not_to permit(:update)                }
       it { is_expected.not_to permit(:reorder)               }
       it { is_expected.not_to permit(:refresh_preview_token) }
@@ -58,6 +60,7 @@ describe ProjectPolicy do
 
       it { is_expected.to permit(:show)                  }
       it { is_expected.to permit(:create)                }
+      it { is_expected.to permit(:copy)                  }
       it { is_expected.to permit(:update)                }
       it { is_expected.to permit(:reorder)               }
       it { is_expected.to permit(:refresh_preview_token) }
@@ -80,6 +83,7 @@ describe ProjectPolicy do
 
       it { is_expected.to permit(:show)                  }
       it { is_expected.not_to permit(:create)            }
+      it { is_expected.to permit(:copy)                  }
       it { is_expected.to permit(:update)                }
       it { is_expected.to permit(:reorder)               }
       it { is_expected.to permit(:refresh_preview_token) }
@@ -102,6 +106,7 @@ describe ProjectPolicy do
 
       it { is_expected.to permit(:show)                      }
       it { is_expected.not_to permit(:create)                }
+      it { is_expected.not_to permit(:copy)                  }
       it { is_expected.not_to permit(:update)                }
       it { is_expected.not_to permit(:reorder)               }
       it { is_expected.not_to permit(:refresh_preview_token) }
@@ -457,12 +462,14 @@ describe ProjectPolicy do
       let!(:project) { create(:single_phase_ideation_project, admin_publication_attributes: { parent_id: project_folder.admin_publication.id }) }
 
       it { is_expected.to permit(:create) }
+      it { is_expected.to permit(:copy)   }
     end
 
     context 'for a timeline project not contained within a folder the user moderates' do
       let!(:project) { create(:single_phase_ideation_project) }
 
       it { is_expected.not_to permit(:create) }
+      it { is_expected.not_to permit(:copy)   }
     end
   end
 end

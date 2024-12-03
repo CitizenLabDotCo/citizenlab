@@ -128,7 +128,7 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def copy?
-    create?
+    active_moderator?
   end
 
   def destroy_participation_data?
