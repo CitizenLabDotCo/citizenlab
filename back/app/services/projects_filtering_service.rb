@@ -64,4 +64,18 @@ class ProjectsFilteringService
 
     scope.where(id: moderated_project_ids)
   end
+
+  add_filter('review_state') do |scope, options|
+    next scope unless options[:review_state].present?
+
+    case options[:review_state]
+    when 'approved'
+      scope.joins(:review).where.not(project_reviews: { approved_at: nil })
+    when 'pending'
+      scope.joins(:review).where(project_reviews: { approved_at: nil })
+    else
+      scope
+    end
+    
+  end
 end
