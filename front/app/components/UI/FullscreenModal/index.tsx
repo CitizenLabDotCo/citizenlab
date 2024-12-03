@@ -75,6 +75,7 @@ const ModalBottomBar = styled.div`
 interface InputProps {
   className?: string;
   opened: boolean;
+  close: () => void;
   topBar?: JSX.Element | null;
   bottomBar?: JSX.Element | null;
   children: JSX.Element | null | undefined;
@@ -88,6 +89,7 @@ interface Props extends InputProps {
 const FullscreenModal = ({
   className,
   opened,
+  close,
   topBar,
   bottomBar,
   children,
@@ -110,10 +112,20 @@ const FullscreenModal = ({
         }
       });
 
+    const handleKeypress = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        close();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeypress);
+
     return () => {
       subscription.unsubscribe();
+      window.removeEventListener('keydown', handleKeypress);
     };
-  }, []);
+  }, [close]);
 
   return (
     <CSSTransition
