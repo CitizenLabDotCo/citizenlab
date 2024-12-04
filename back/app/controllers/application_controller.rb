@@ -181,9 +181,10 @@ class ApplicationController < ActionController::API
     "#{url}?#{pageparams.to_param}"
   end
 
-  def paginate(collection)
-    collection.page(params.dig(:page, :number))
-      .per(params.dig(:page, :size))
+  def paginate(collection, number_default: nil, size_default: nil)
+    number = params.dig(:page, :number) || number_default
+    size = params.dig(:page, :size) || size_default
+    collection.page(number).per(size)
   end
 
   def remove_image_if_requested!(resource, resource_params, image_field_name)

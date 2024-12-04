@@ -398,6 +398,11 @@ resource 'Ideas' do
     end
 
     get 'web_api/v1/ideas/:id/similarities' do
+      with_options scope: :page do
+        parameter :number, 'Page number'
+        parameter :size, 'Number of ideas per page'
+      end
+
       let(:embeddings) { JSON.parse(File.read('spec/fixtures/word_embeddings.json')) }
       let!(:idea_pizza) { create(:embeddings_similarity, embedding: embeddings['pizza']).embeddable }
       let!(:idea_burger) { create(:embeddings_similarity, embedding: embeddings['burger']).embeddable }
