@@ -1580,6 +1580,7 @@
   "app.containers.Projects.noPastEvents": "Görüntülenecek geçmiş etkinlik yok",
   "app.containers.Projects.noPhaseSelected": "Aşama seçilmedi",
   "app.containers.Projects.noUpcomingOrOngoingEvents": "Şu an için, planlanmış yaklaşan veya devam eden bir etkinlik yok.",
+  "app.containers.Projects.offlineVotersTooltip": "Bu sayı, herhangi bir çevrimdışı seçmen sayımını yansıtmamaktadır.",
   "app.containers.Projects.options": "Seçenekler",
   "app.containers.Projects.participants": "Katılımcılar",
   "app.containers.Projects.participantsTooltip4": "Bu sayı aynı zamanda anonim anket gönderimlerini de yansıtmaktadır. Anketler herkese açıksa anonim anket gönderimleri mümkündür (bu proje için {accessRightsLink} sekmesine bakın).",
