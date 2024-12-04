@@ -3,8 +3,6 @@
 class WebApi::V1::IdeasController < ApplicationController
   include BlockingProfanity
 
-  DEFAULT_NUM_SIMILAR_IDEAS = 10
-
   before_action :authorize_project_or_ideas, only: %i[index_xlsx]
   skip_before_action :authenticate_user # TODO: temp fix to pass tests
   skip_after_action :verify_authorized, only: %i[index_xlsx index_mini index_idea_markers filter_counts]
@@ -100,21 +98,6 @@ class WebApi::V1::IdeasController < ApplicationController
     result = IdeasCountService.counts(ideas)
     result['total'] = ideas.count
     render json: raw_json(result)
-  end
-
-  def similarities
-    idea = Idea.find params[:id]
-
-    similarities = idea
-      .embeddings_similarities.first
-      .nearest_neighbors(:embedding, distance: 'cosine')
-      .where(embeddable_type: 'Idea').where.not(embeddable_id: idea.id)
-      .where(embedded_attributes: 'title_body')
-    similarities = similarities.limit(DEFAULT_NUM_SIMILAR_IDEAS) if !params.key?(:page)
-
-    ids = similarities.map(&:embeddable_id)
-    similar_ideas = paginate policy_scope(Idea.where(id: ids)).order_as_specified(id: ids), size_default: DEFAULT_NUM_SIMILAR_IDEAS
-    render json: linked_json(similar_ideas, WebApi::V1::IdeaSerializer, serialization_options_for(similar_ideas))
   end
 
   def show
@@ -263,6 +246,14 @@ class WebApi::V1::IdeasController < ApplicationController
     else
       head :internal_server_error
     end
+  end
+
+  def similarities
+    idea = Idea.find params[:id]
+    similar_ideas_options = { scope: policy_scope(Idea) }
+    similar_ideas_options[:limit] = nil if params.key?(:page)
+    similar_ideas = paginate SimilarIdeasService.new(idea).similar_ideas(**similar_ideas_options)
+    render json: linked_json(similar_ideas, WebApi::V1::IdeaSerializer, serialization_options_for(similar_ideas))
   end
 
   private
