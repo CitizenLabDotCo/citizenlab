@@ -1146,7 +1146,7 @@
   "app.containers.IdeaButton.addAProposal": "Legg til et forslag",
   "app.containers.IdeaButton.addAQuestion": "Legg til et spørsmål",
   "app.containers.IdeaButton.addAnInitiative": "Legg til et initiativ",
-  "app.containers.IdeaButton.addAnOption": "Legg til et inspill",
+  "app.containers.IdeaButton.addAnOption": "Legg til et innspill",
   "app.containers.IdeaButton.postingDisabled": "Vi tar for øyeblikket ikke imot nye innsendinger",
   "app.containers.IdeaButton.postingInNonActivePhases": "Nye innleveringer kan bare legges til i aktive faser.",
   "app.containers.IdeaButton.postingInactive": "Vi tar for øyeblikket ikke imot nye bidrag.",
