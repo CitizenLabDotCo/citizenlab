@@ -17,8 +17,6 @@ import { ITopicData } from 'api/topics/types';
 
 import useLocalize from 'hooks/useLocalize';
 
-import T from 'components/T';
-
 import { ScreenReaderOnly } from 'utils/a11y';
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -51,6 +49,7 @@ const Topic = styled.button<{ selected: boolean | undefined }>`
   border-radius: ${(props) => props.theme.borderRadius};
   transition: all 80ms ease-out;
   word-break: break-word;
+  text-align: left;
 
   ${isRtl`
       text-align: right;
@@ -155,7 +154,9 @@ const TopicsFilter = memo<Props>(
                       className={`e2e-topic ${topicSelected ? 'selected' : ''}`}
                       selected={topicSelected}
                     >
-                      <T value={topic.attributes.title_multiloc} />
+                      <Box as="span" mr="8px">
+                        {localize(topic.attributes.title_multiloc)}
+                      </Box>
                       <Box aria-hidden>{postCount}</Box>
                       <ScreenReaderOnly>
                         {`${postCount} ${formatMessage(messages.inputs)}`}
