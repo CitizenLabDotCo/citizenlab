@@ -6,7 +6,7 @@ import CloseIconButton from 'components/UI/CloseIconButton';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import messages from './messages';
+import messages from '../ButtonWithFiltersModal/FiltersModal/messages';
 
 interface Props {
   onClose: () => void;
