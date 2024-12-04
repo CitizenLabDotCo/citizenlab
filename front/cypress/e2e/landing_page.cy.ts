@@ -1,11 +1,7 @@
 import { randomString, randomEmail } from '../support/commands';
-import { homepageMinimalData } from '../fixtures/homepageMinimalData';
 
 describe('Landing page - not signed in', () => {
   beforeEach(() => {
-    cy.apiUpdateHomepageLayout({
-      craftjs_json: homepageMinimalData,
-    });
     cy.goToLandingPage();
   });
 
