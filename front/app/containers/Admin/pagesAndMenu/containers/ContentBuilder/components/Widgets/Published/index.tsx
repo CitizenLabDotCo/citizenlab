@@ -6,6 +6,8 @@ import useAdminPublications from 'api/admin_publications/useAdminPublications';
 
 import useLocalize from 'hooks/useLocalize';
 
+import { useIntl } from 'utils/cl-intl';
+
 import AdminPublicationsCarrousel from '../_shared/AdminPublicationsCarrousel';
 import EmptyState from '../_shared/EmptyState';
 
@@ -18,6 +20,7 @@ interface Props {
 
 const Published = ({ titleMultiloc }: Props) => {
   const localize = useLocalize();
+  const { formatMessage } = useIntl();
 
   const { data, hasNextPage, fetchNextPage } = useAdminPublications({
     pageSize: 6,
@@ -38,7 +41,9 @@ const Published = ({ titleMultiloc }: Props) => {
 
   return (
     <AdminPublicationsCarrousel
-      title={localize(titleMultiloc)}
+      title={localize(titleMultiloc, {
+        fallback: formatMessage(messages.publishedTitle),
+      })}
       adminPublications={adminPublications}
       hasMore={!!hasNextPage}
       onLoadMore={fetchNextPage}
