@@ -396,7 +396,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.share": "Teilen",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareLink": "Link kopieren",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareLinkCopied": "Link kopiert",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareLinkUpsellTooltip": "Die Freigabe privater Links ist in Ihrem aktuellen Plan nicht enthalten. Wenden Sie sich an Ihren Government Success Manager oder Administrator, um diese Funktion freizuschalten.",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareLinkUpsellTooltip": "Die Freigabe privater Links ist in Ihrer aktuellen Lizenz nicht enthalten. Wenden Sie sich an Ihre Kundenbetreuerin oder einen Admin, um diese Funktion freizuschalten.",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareTitle": "Projekt teilen",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareWhoHasAccess": "Wer hat Zugriff",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.view": "Vorschau",
