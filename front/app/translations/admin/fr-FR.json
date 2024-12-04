@@ -1263,7 +1263,7 @@
   "app.containers.AdminPage.DashboardPage.components.ChartCard.representativenessScoreText": "Score de représentativité :",
   "app.containers.AdminPage.DashboardPage.components.ChartCard.representativenessScoreTooltipText3": "Ce score reflète la précision avec laquelle les données des utilisateurs de la plateforme reflètent la population totale. En savoir plus sur {representativenessArticleLink}.",
   "app.containers.AdminPage.DashboardPage.components.ChartCard.required": "Requis",
-  "app.containers.AdminPage.DashboardPage.components.ChartCard.submitBaseDataButton": "Soumettre les données de base",
+  "app.containers.AdminPage.DashboardPage.components.ChartCard.submitBaseDataButton": "Soumettre données",
   "app.containers.AdminPage.DashboardPage.components.ChartCard.tableViewLinkText": "vue du tableau",
   "app.containers.AdminPage.DashboardPage.components.ChartCard.totalPopulation": "Population totale",
   "app.containers.AdminPage.DashboardPage.components.ChartCard.users": "Utilisateurs",
