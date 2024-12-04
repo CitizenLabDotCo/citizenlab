@@ -155,7 +155,7 @@ RSpec.describe ContentBuilder::Layout do
         'nodes' => kind_of(Array),
         'linkedNodes' => {}
       })
-      homepagebanner, projects = layout.craftjs_json['ROOT']['nodes']
+      homepagebanner, followed_items, open_to_participation, finished_or_archived = layout.craftjs_json['ROOT']['nodes']
       expect(layout.craftjs_json[homepagebanner]).to match({
         'type' => { 'resolvedName' => 'HomepageBanner' },
         'isCanvas' => false,
@@ -197,24 +197,44 @@ RSpec.describe ContentBuilder::Layout do
         'nodes' => [],
         'linkedNodes' => {}
       })
-      expect(layout.craftjs_json[projects]).to match({
-        'type' => { 'resolvedName' => 'Projects' },
-        'isCanvas' => false,
-        'props' => {
-          'currentlyWorkingOnText' => hash_including('en' => '', 'nl-BE' => '', 'fr-BE' => '')
-        },
-        'displayName' => 'Projects',
-        'custom' => {
-          'title' => {
-            'id' => 'app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.Projects.projectsTitle',
-            'defaultMessage' => 'Projects'
-          },
-          'noPointerEvents' => true,
-          'noDelete' => true
-        },
-        'parent' => 'ROOT',
-        'hidden' => false,
+      expect(layout.craftjs_json[followed_items]).to match({
+        'type' => { 'resolvedName' => 'FollowedItems' },
         'nodes' => [],
+        'props' => {
+          'titleMultiloc' => hash_including('en' => '', 'nl-BE' => '', 'fr-BE' => '')
+        },
+        'custom' => {},
+        'hidden' => false,
+        'parent' => 'ROOT',
+        'isCanvas' => false,
+        'displayName' => 'FollowedItems',
+        'linkedNodes' => {}
+      })
+      expect(layout.craftjs_json[open_to_participation]).to match({
+        'type' => { 'resolvedName' => 'OpenToParticipation' },
+        'nodes' => [],
+        'props' => {
+          'titleMultiloc' => hash_including('en' => '', 'nl-BE' => '', 'fr-BE' => '')
+        },
+        'custom' => {},
+        'hidden' => false,
+        'parent' => 'ROOT',
+        'isCanvas' => false,
+        'displayName' => 'OpenToParticipation',
+        'linkedNodes' => {}
+      })
+      expect(layout.craftjs_json[finished_or_archived]).to match({
+        'type' => { 'resolvedName' => 'FinishedOrArchived' },
+        'nodes' => [],
+        'props' => {
+          'filterBy' => 'finished_and_archived',
+          'titleMultiloc' => hash_including('en' => '', 'nl-BE' => '', 'fr-BE' => '')
+        },
+        'custom' => {},
+        'hidden' => false,
+        'parent' => 'ROOT',
+        'isCanvas' => false,
+        'displayName' => 'FinishedOrArchived',
         'linkedNodes' => {}
       })
     end
