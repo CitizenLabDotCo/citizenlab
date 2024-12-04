@@ -1848,7 +1848,6 @@
   "app.containers.AdminPage.ProjectEdit.topicLabel": "Tagi",
   "app.containers.AdminPage.ProjectEdit.topicLabelTooltip": "Izvēlieties {topicsCopy} šim projektam. Lietotāji tos var izmantot projektu filtrēšanai.",
   "app.containers.AdminPage.ProjectEdit.totalBudget": "Kopējais budžets",
-  "app.containers.AdminPage.ProjectEdit.totalBudgetExplanation": "Pēc noklusējuma budžets tiek norādīts vietējā valūtā. Jūs varat mainīt platformas valūtu uz “kredītiem” vai “žetoniem”, sazinoties ar mūsu atbalsta centru.",
   "app.containers.AdminPage.ProjectEdit.trendingSortingMethod": "Tendences",
   "app.containers.AdminPage.ProjectEdit.typeform": "Typeform",
   "app.containers.AdminPage.ProjectEdit.unassigned": "Nepiešķirts",

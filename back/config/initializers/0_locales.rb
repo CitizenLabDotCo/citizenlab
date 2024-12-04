@@ -27,6 +27,7 @@ CL2_SUPPORTED_LOCALES = %i[
   it-IT
   kl-GL
   lb-LU
+  lt-LT
   lv-LV
   mi
   nb-NO

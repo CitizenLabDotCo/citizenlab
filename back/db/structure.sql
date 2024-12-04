@@ -976,7 +976,8 @@ CREATE TABLE public.admin_publications (
     updated_at timestamp(6) without time zone NOT NULL,
     depth integer DEFAULT 0 NOT NULL,
     children_allowed boolean DEFAULT true NOT NULL,
-    children_count integer DEFAULT 0 NOT NULL
+    children_count integer DEFAULT 0 NOT NULL,
+    first_published_at timestamp(6) without time zone
 );
 
 
@@ -7718,6 +7719,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20241115141553'),
 ('20241115141717'),
 ('20241125094000'),
-('20241125094100');
+('20241125094100'),
+('20241127093339');
 
 
