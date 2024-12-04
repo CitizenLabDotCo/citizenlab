@@ -70,6 +70,14 @@ const Topic = styled.button<{ selected: boolean | undefined }>`
   }
 `;
 
+const Count = styled.span`
+  // Prevents the count from breaking into multiple lines
+  // when the topic title is too long.
+  // Given the filter boxes keep their width,
+  // flex-shrink: 0 is not needed.
+  white-space: nowrap;
+`;
+
 interface Props {
   topics?: ITopicData[];
   selectedTopicIds: string[] | null | undefined;
@@ -157,7 +165,7 @@ const TopicsFilter = memo<Props>(
                       <Box as="span" mr="8px">
                         {localize(topic.attributes.title_multiloc)}
                       </Box>
-                      <Box aria-hidden>{postCount}</Box>
+                      <Count aria-hidden>{1424}</Count>
                       <ScreenReaderOnly>
                         {`${postCount} ${formatMessage(messages.inputs)}`}
                       </ScreenReaderOnly>
