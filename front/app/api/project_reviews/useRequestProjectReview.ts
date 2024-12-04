@@ -18,8 +18,12 @@ const useRequestProjectReview = () => {
 
   return useMutation<ProjectReview, CLErrors, string>({
     mutationFn: requestProjectReview,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: projectReviewKeys.items() });
+    onSuccess: (_data, projectId) => {
+      queryClient.invalidateQueries({
+        queryKey: projectReviewKeys.item({
+          projectId,
+        }),
+      });
     },
   });
 };
