@@ -24,11 +24,6 @@ const IdeaCardImageWrapper = styled.div<{ $cardInnerHeight: string }>`
     width: 100%;
     margin-bottom: 18px;
   `}
-
-  &.hasFilterSidebar {
-    width: 100%;
-    margin-bottom: 18px;
-  }
 `;
 
 const IdeaCardImage = styled(Image)`
@@ -42,7 +37,6 @@ interface Props {
   image: string | null;
   hideImagePlaceholder: boolean;
   innerHeight: string;
-  hasFilterSidebar: boolean;
 }
 
 const CardImage = ({
@@ -50,7 +44,6 @@ const CardImage = ({
   image,
   hideImagePlaceholder,
   innerHeight,
-  hasFilterSidebar = false,
 }: Props) => {
   const participationMethod = phase?.attributes.participation_method;
   const votingMethod = phase?.attributes.voting_method;
@@ -58,10 +51,7 @@ const CardImage = ({
   return (
     <>
       {image && (
-        <IdeaCardImageWrapper
-          className={`${hasFilterSidebar ? 'hasFilterSidebar' : ''}`}
-          $cardInnerHeight={innerHeight}
-        >
+        <IdeaCardImageWrapper $cardInnerHeight={innerHeight}>
           <IdeaCardImage src={image} cover={true} alt="" />
         </IdeaCardImageWrapper>
       )}

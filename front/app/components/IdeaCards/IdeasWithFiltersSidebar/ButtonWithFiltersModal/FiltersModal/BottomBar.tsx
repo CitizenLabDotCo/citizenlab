@@ -9,8 +9,9 @@ import Button from 'components/UI/Button';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
 
-import { Props as InputFiltersProps } from '../InputFilters';
-import messages from '../messages';
+import { Props as InputFiltersProps } from '../../InputFilters';
+
+import messages from './messages';
 
 interface Props {
   onClick: (event: FormEvent) => void;
