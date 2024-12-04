@@ -108,7 +108,7 @@ class WebApi::V1::IdeasController < ApplicationController
       .embeddings_similarities.first
       .nearest_neighbors(:embedding, distance: 'cosine')
       .where(embeddable_type: 'Idea').where.not(embeddable_id: idea.id)
-      .where(context: 'title_body')
+      .where(embedded_attributes: 'title_body')
       .limit(max_ideas)
 
     ids = similarities.map(&:embeddable_id)
