@@ -18,10 +18,10 @@ const ReviewRequest = ({
   projectId: string;
 }) => {
   const { formatMessage } = useIntl();
-  const { mutate: requestProjectRevuiew } = useRequestProjectReview();
+  const { mutate: requestProjectReview } = useRequestProjectReview();
 
   const handleSendRequest = () => {
-    requestProjectRevuiew(projectId, {
+    requestProjectReview(projectId, {
       onSuccess: () => {
         onClose();
       },
