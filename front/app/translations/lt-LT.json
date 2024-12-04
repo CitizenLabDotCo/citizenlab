@@ -1164,7 +1164,6 @@
   "app.containers.IdeaCards.a11y_totalItems": "Iš viso pranešimų: {ideasCount}",
   "app.containers.IdeaCards.all": "Visi",
   "app.containers.IdeaCards.allStatuses": "Visos būsenos",
-  "app.containers.IdeaCards.filter": "Filtras",
   "app.containers.IdeaCards.list": "Sąrašas",
   "app.containers.IdeaCards.map": "Žemėlapis",
   "app.containers.IdeaCards.mostDiscussed": "Daugiausia diskusijų",
