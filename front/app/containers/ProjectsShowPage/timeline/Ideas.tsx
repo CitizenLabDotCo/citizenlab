@@ -79,6 +79,7 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
     phaseId: phase.id,
     showViewToggle: true,
     invisbleTitleMessage: messages.a11y_titleInputsPhase,
+    defaultView: phase.attributes.presentation_mode,
   };
 
   return (
@@ -89,7 +90,6 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
       {isVotingContext ? (
         <IdeaCardsWithoutFiltersSidebar
           defaultSortingMethod={ideaQueryParameters.sort}
-          defaultView={phase.attributes.presentation_mode}
           showDropdownFilters={false}
           showSearchbar={false}
           {...sharedProps}
