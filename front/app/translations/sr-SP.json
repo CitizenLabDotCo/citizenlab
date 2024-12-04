@@ -167,7 +167,6 @@
   "app.components.FilterBoxes.statusTitle": "Статус",
   "app.components.FilterBoxes.topicsTitle": "Тема",
   "app.components.FiltersModal.filters": "Филтери",
-  "app.components.FiltersModal.resetFilters": "Ресетујте филтере",
   "app.components.FolderFolderCard.a11y_folderDescription": "Опис фасцикле:",
   "app.components.FolderFolderCard.a11y_folderTitle": "Наслов фолдера:",
   "app.components.FolderFolderCard.archived": "Архивирано",

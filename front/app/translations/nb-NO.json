@@ -167,7 +167,6 @@
   "app.components.FilterBoxes.statusTitle": "Status",
   "app.components.FilterBoxes.topicsTitle": "Tagger",
   "app.components.FiltersModal.filters": "Filtre",
-  "app.components.FiltersModal.resetFilters": "Tilbakestill filtre",
   "app.components.FolderFolderCard.a11y_folderDescription": "Mappebeskrivelse:",
   "app.components.FolderFolderCard.a11y_folderTitle": "Mappetittel:",
   "app.components.FolderFolderCard.archived": "Gjennomført",

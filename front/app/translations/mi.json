@@ -89,7 +89,6 @@
   "app.components.FilterBoxes.statusTitle": "Status",
   "app.components.FilterBoxes.topicsTitle": "Tags",
   "app.components.FiltersModal.filters": "Filters",
-  "app.components.FiltersModal.resetFilters": "Reset filters",
   "app.components.FolderFolderCard.a11y_folderDescription": "Folder description:",
   "app.components.FolderFolderCard.a11y_folderTitle": "Folder title:",
   "app.components.FolderFolderCard.archived": "Archived",

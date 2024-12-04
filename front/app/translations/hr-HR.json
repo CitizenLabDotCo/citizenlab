@@ -167,7 +167,6 @@
   "app.components.FilterBoxes.statusTitle": "Status",
   "app.components.FilterBoxes.topicsTitle": "Oznake",
   "app.components.FiltersModal.filters": "Filtri",
-  "app.components.FiltersModal.resetFilters": "Poništi filtre",
   "app.components.FolderFolderCard.a11y_folderDescription": "Opis mape:",
   "app.components.FolderFolderCard.a11y_folderTitle": "Naziv mape:",
   "app.components.FolderFolderCard.archived": "Arhivirano",
