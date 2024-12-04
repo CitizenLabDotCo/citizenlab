@@ -1848,7 +1848,7 @@
   "app.containers.AdminPage.ProjectEdit.topicLabel": "Tags",
   "app.containers.AdminPage.ProjectEdit.topicLabelTooltip": "Wielt {topicsCopy} fir dëse Projet. Benotzer kënnen dëst gebrauchen, fir Projeten dono ze filteren.",
   "app.containers.AdminPage.ProjectEdit.totalBudget": "Total budget",
-  "app.containers.AdminPage.ProjectEdit.totalBudgetExplanation": "By default, your budget is set using your local currency. You can change your platform's currency to 'credits' or 'tokens' by contacting our support center.",
+  "app.containers.AdminPage.ProjectEdit.totalBudgetExplanation": "Par défaut gëtt Äre Budget mat Ärer lokaler Währung festgeluecht. Dir kënnt d'Währung vun Ärer Plattform op \"Kreditter\" oder \"Tokens\" änneren andeems Dir eise Supportcenter kontaktéiert.",
   "app.containers.AdminPage.ProjectEdit.trendingSortingMethod": "Trending",
   "app.containers.AdminPage.ProjectEdit.typeform": "Typeform",
   "app.containers.AdminPage.ProjectEdit.unassigned": "Unassigned",
