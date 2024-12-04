@@ -31,8 +31,8 @@ import IdeasView from '../shared/IdeasView';
 import tracks from '../tracks';
 
 import FiltersModal from './FiltersModal';
-import filterModalMessages from './FiltersModal/messages';
 import InputFilters from './InputFilters';
+import filterModalMessages from './messages';
 
 const gapWidth = 35;
 

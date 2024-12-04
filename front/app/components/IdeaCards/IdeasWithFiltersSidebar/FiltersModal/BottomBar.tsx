@@ -6,11 +6,11 @@ import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
 
 import Button from 'components/UI/Button';
 
+import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
 
 import { Props as InputFiltersProps } from '../InputFilters';
-
-import messages from './messages';
+import messages from '../messages';
 
 interface Props {
   onClick: (event: FormEvent) => void;
@@ -25,6 +25,8 @@ const BottomBar = memo<Props>(
       useIdeasFilterCounts(selectedIdeaFilters);
 
     if (!ideasFilterCounts) return null;
+
+    const buttonDisabled = !filtersActive;
 
     return (
       <Box
@@ -46,9 +48,16 @@ const BottomBar = memo<Props>(
           onClick={onReset}
           buttonStyle="text"
           fontSize={`${fontSizes.s}px`}
-          disabled={!filtersActive}
+          disabled={buttonDisabled}
         >
           <FormattedMessage {...messages.resetFilters} />
+          {buttonDisabled && (
+            <ScreenReaderOnly>
+              <FormattedMessage
+                {...messages.a11y_disabledResetFiltersDescription}
+              />
+            </ScreenReaderOnly>
+          )}
         </Button>
       </Box>
     );
