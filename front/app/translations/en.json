@@ -185,7 +185,6 @@
   "app.components.HookForm.PasswordInput.passwordLabel": "Password",
   "app.components.HorizontalScroll.scrollLeftLabel": "Scroll left.",
   "app.components.HorizontalScroll.scrollRightLabel": "Scroll right.",
-  "app.components.IdeaCards.a11y_disabledResetFiltersDescription": "This button is used to deselect all filters. To enable this button, you must select at least one filter.",
   "app.components.IdeaCards.a11y_ideasHaveBeenSorted": "{sortOder} ideas have loaded.",
   "app.components.IdeaCards.filters": "Filters",
   "app.components.IdeaCards.filters.mostDiscussed": "Most discussed",
