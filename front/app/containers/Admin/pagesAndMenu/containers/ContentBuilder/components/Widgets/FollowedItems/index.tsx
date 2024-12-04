@@ -6,6 +6,8 @@ import useProjectsMini from 'api/projects_mini/useProjectsMini';
 
 import useLocalize from 'hooks/useLocalize';
 
+import { useIntl } from 'utils/cl-intl';
+
 import EmptyState from '../_shared/EmptyState';
 import ProjectCarrousel from '../_shared/ProjectCarrousel';
 
@@ -18,6 +20,7 @@ interface Props {
 
 const FollowedItems = ({ titleMultiloc }: Props) => {
   const localize = useLocalize();
+  const { formatMessage } = useIntl();
   const { data, hasNextPage, fetchNextPage } = useProjectsMini({
     endpoint: 'for_followed_item',
   });
@@ -32,7 +35,9 @@ const FollowedItems = ({ titleMultiloc }: Props) => {
 
   return (
     <ProjectCarrousel
-      title={localize(titleMultiloc)}
+      title={localize(titleMultiloc, {
+        fallback: formatMessage(messages.defaultTitle),
+      })}
       projects={projects}
       hasMore={!!hasNextPage}
       onLoadMore={fetchNextPage}
