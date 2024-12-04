@@ -213,7 +213,7 @@ class SideFxIdeaService
   end
 
   def enqueue_embeddings_job(idea)
-    UpsertEmbeddingJob.perform_later(idea) if SettingsService.new.feature_activated?('similar_inputs')
+    UpsertEmbeddingJob.perform_later(idea) if AppConfiguration.instance.feature_activated?('similar_inputs')
   end
 end
 

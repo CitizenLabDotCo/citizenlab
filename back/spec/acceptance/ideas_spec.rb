@@ -418,7 +418,7 @@ resource 'Ideas' do
       describe do
         before do
           10.times do
-            create(:embeddings_similarity, embedding: embeddings['pizza'])
+            create(:embeddings_similarity)
           end
         end
 
