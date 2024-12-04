@@ -51,6 +51,8 @@ describe('Admin: edit project', () => {
     cy.visit(`admin/projects/${projectId}`);
     cy.get('#e2e-share-link').click();
     cy.get('#e2e-refresh-link').click();
+    cy.get('#e2e-refresh-link-accept').click();
+    cy.wait(1000);
     cy.logout();
 
     cy.visit(link);

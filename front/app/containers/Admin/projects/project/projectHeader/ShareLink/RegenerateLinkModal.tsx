@@ -32,6 +32,7 @@ const RegenerateLinkModal = ({
         <Text>{formatMessage(messages.regenenrateLinkModalDescription)}</Text>
         <Box display="flex" gap="8px" marginTop="20px" flexDirection="column">
           <Button
+            id="e2e-refresh-link-accept"
             buttonStyle="delete"
             icon="delete"
             onClick={onRefresh}
