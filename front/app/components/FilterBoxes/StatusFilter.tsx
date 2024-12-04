@@ -15,10 +15,12 @@ import styled from 'styled-components';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 
+import useLocale from 'hooks/useLocale';
+
 import T from 'components/T';
 
 import { ScreenReaderOnly } from 'utils/a11y';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { FormattedMessage, shouldCapitilize, useIntl } from 'utils/cl-intl';
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 import InputFilterCollapsible from './InputFilterCollapsible';
@@ -85,6 +87,7 @@ interface Props {
 
 const StatusFilter = memo<Props>(
   ({ statuses, filterCounts, selectedStatusId, onChange, className }) => {
+    const locale = useLocale();
     const { formatMessage } = useIntl();
 
     const handleOnClick = useCallback(
@@ -165,7 +168,13 @@ const StatusFilter = memo<Props>(
                       color={isFilterSelected ? 'white' : 'textPrimary'}
                     >
                       <T value={status.attributes.title_multiloc}>
-                        {(statusTitle) => <>{capitalize(statusTitle)}</>}
+                        {(statusTitle) => (
+                          <>
+                            {shouldCapitilize(locale)
+                              ? capitalize(statusTitle)
+                              : statusTitle}
+                          </>
+                        )}
                       </T>
                     </Text>
                   </Box>
