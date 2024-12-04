@@ -21,5 +21,5 @@ class EmbeddingsSimilarity < ApplicationRecord
   has_neighbors :embedding
   
   validates :embeddable, :embedding, presence: true
-  validates :embeddable, uniqueness: { scope: :embedded_attributes }
+  validates :embedded_attributes, uniqueness: { scope: %i[embeddable_type embeddable_id] }
 end
