@@ -66,7 +66,7 @@ class ProjectsFilteringService
   end
 
   add_filter('review_state') do |scope, options|
-    next scope unless options[:review_state].present?
+    next scope unless options[:review_state].blank?
 
     case options[:review_state]
     when 'approved'
