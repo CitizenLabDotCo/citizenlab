@@ -16,38 +16,43 @@ interface Props {
   onClick: (event: FormEvent) => void;
   selectedIdeaFilters: InputFiltersProps['selectedIdeaFilters'];
   onReset: (event: React.MouseEvent) => void;
+  filtersActive: boolean;
 }
 
-const BottomBar = memo<Props>(({ onClick, selectedIdeaFilters, onReset }) => {
-  const { data: ideasFilterCounts } = useIdeasFilterCounts(selectedIdeaFilters);
+const BottomBar = memo<Props>(
+  ({ onClick, selectedIdeaFilters, onReset, filtersActive }) => {
+    const { data: ideasFilterCounts } =
+      useIdeasFilterCounts(selectedIdeaFilters);
 
-  if (!ideasFilterCounts) return null;
+    if (!ideasFilterCounts) return null;
 
-  return (
-    <Box
-      background={colors.white}
-      p="16px"
-      pb="0"
-      flex="1"
-      borderTop={`1px solid ${colors.grey300}`}
-    >
-      <Button onClick={onClick} fullWidth={true}>
-        <FormattedMessage
-          {...messages.showXResults}
-          values={{
-            ideasCount: ideasFilterCounts.data.attributes.total,
-          }}
-        />
-      </Button>
-      <Button
-        onClick={onReset}
-        buttonStyle="text"
-        fontSize={`${fontSizes.s}px`}
+    return (
+      <Box
+        background={colors.white}
+        p="16px"
+        pb="0"
+        flex="1"
+        borderTop={`1px solid ${colors.grey300}`}
       >
-        <FormattedMessage {...messages.resetFilters} />
-      </Button>
-    </Box>
-  );
-});
+        <Button onClick={onClick} fullWidth={true}>
+          <FormattedMessage
+            {...messages.showXResults}
+            values={{
+              ideasCount: ideasFilterCounts.data.attributes.total,
+            }}
+          />
+        </Button>
+        <Button
+          onClick={onReset}
+          buttonStyle="text"
+          fontSize={`${fontSizes.s}px`}
+          disabled={!filtersActive}
+        >
+          <FormattedMessage {...messages.resetFilters} />
+        </Button>
+      </Box>
+    );
+  }
+);
 
 export default BottomBar;
