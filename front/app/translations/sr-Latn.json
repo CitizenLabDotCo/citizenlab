@@ -167,7 +167,6 @@
   "app.components.FilterBoxes.statusTitle": "Status",
   "app.components.FilterBoxes.topicsTitle": "Teme",
   "app.components.FiltersModal.filters": "Filteri",
-  "app.components.FiltersModal.resetFilters": "Poništi filtere",
   "app.components.FolderFolderCard.a11y_folderDescription": "Opis foldera:",
   "app.components.FolderFolderCard.a11y_folderTitle": "Naziv foldera:",
   "app.components.FolderFolderCard.archived": "Arhivirano",
