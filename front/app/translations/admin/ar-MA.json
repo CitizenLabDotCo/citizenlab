@@ -1848,7 +1848,6 @@
   "app.containers.AdminPage.ProjectEdit.topicLabel": "الموضوعات",
   "app.containers.AdminPage.ProjectEdit.topicLabelTooltip": "حدد {topicsCopy} لهذا المشروع. وباستطاعة المستخدمين استخدامها لتصفية مشاريع.",
   "app.containers.AdminPage.ProjectEdit.totalBudget": "الميزانية الإجمالية",
-  "app.containers.AdminPage.ProjectEdit.totalBudgetExplanation": "يتم تعيين ميزانيتك افتراضيًا باستخدام عملتك المحلية. يمكنك تغيير عملة منصتك إلى \"رموز ائتمان\" أو \"رموز مميزة\" من خلال التواصل مع مركز الدعم التابع لنا.",
   "app.containers.AdminPage.ProjectEdit.trendingSortingMethod": "الرائجة",
   "app.containers.AdminPage.ProjectEdit.typeform": "Typeform",
   "app.containers.AdminPage.ProjectEdit.unassigned": "غير مُعيّن",
