@@ -1580,6 +1580,7 @@
   "app.containers.Projects.noPastEvents": "Dim digwyddiadau o'r gorffennol i'w harddangos",
   "app.containers.Projects.noPhaseSelected": "Dim cam wedi'i ddewis",
   "app.containers.Projects.noUpcomingOrOngoingEvents": "Nid oes unrhyw ddigwyddiadau ar y gweill neu barhaus wedi'u hamserlennu ar hyn o bryd.",
+  "app.containers.Projects.offlineVotersTooltip": "Nid yw'r rhif hwn yn adlewyrchu unrhyw gyfrif pleidleiswyr all-lein.",
   "app.containers.Projects.options": "Opsiynau",
   "app.containers.Projects.participants": "Cyfranogwyr",
   "app.containers.Projects.participantsTooltip4": "Mae'r rhif hwn hefyd yn adlewyrchu cyflwyniadau arolwg dienw. Mae cyflwyniadau arolwg dienw yn bosibl os yw arolygon yn agored i bawb (gweler y tab {accessRightsLink} ar gyfer y prosiect hwn).",
