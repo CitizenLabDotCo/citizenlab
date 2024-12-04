@@ -1,4 +1,5 @@
 import moment = require('moment');
+import { homepageMinimalData } from '../fixtures/homepageMinimalData';
 import { randomString } from '../support/commands';
 
 describe('Project and folder cards on front page', () => {
@@ -27,6 +28,10 @@ describe('Project and folder cards on front page', () => {
       publicationStatus: 'archived',
     }).then((project) => {
       archivedProjectId = project.body.data.id;
+    });
+
+    cy.apiUpdateHomepageLayout({
+      craftjs_json: homepageMinimalData,
     });
   });
 
