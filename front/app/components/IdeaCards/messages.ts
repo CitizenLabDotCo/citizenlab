@@ -145,9 +145,4 @@ export default defineMessages({
     id: 'app.containers.IdeaCards.petitions',
     defaultMessage: 'Petitions',
   },
-  a11y_disabledResetFiltersDescription: {
-    id: 'app.components.IdeaCards.a11y_disabledResetFiltersDescription',
-    defaultMessage:
-      'This button is used to deselect all filters. To enable this button, you must select at least one filter.',
-  },
 });
