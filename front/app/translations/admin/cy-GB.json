@@ -1848,7 +1848,6 @@
   "app.containers.AdminPage.ProjectEdit.topicLabel": "Tagiau",
   "app.containers.AdminPage.ProjectEdit.topicLabelTooltip": "Dewiswch {topicsCopy} ar gyfer y prosiect hwn. Gall defnyddwyr ddefnyddio'r rhain i hidlo prosiectau erbyn.",
   "app.containers.AdminPage.ProjectEdit.totalBudget": "Cyfanswm y gyllideb",
-  "app.containers.AdminPage.ProjectEdit.totalBudgetExplanation": "Yn ddiofyn, caiff eich cyllideb ei gosod gan ddefnyddio'ch arian lleol. Gallwch newid arian cyfred eich platfform i 'gredydau' neu 'tocynnau' trwy gysylltu â'n canolfan gymorth.",
   "app.containers.AdminPage.ProjectEdit.trendingSortingMethod": "Tueddu",
   "app.containers.AdminPage.ProjectEdit.typeform": "Teipffurf",
   "app.containers.AdminPage.ProjectEdit.unassigned": "Heb ei aseinio",
