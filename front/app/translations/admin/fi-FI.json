@@ -1848,7 +1848,6 @@
   "app.containers.AdminPage.ProjectEdit.topicLabel": "Tunnisteet",
   "app.containers.AdminPage.ProjectEdit.topicLabelTooltip": "Valitse {topicsCopy} tälle projektille. Käyttäjät voivat käyttää näitä suodattaessaan projekteja.",
   "app.containers.AdminPage.ProjectEdit.totalBudget": "Kokonaisbudjetti",
-  "app.containers.AdminPage.ProjectEdit.totalBudgetExplanation": "Oletusarvoisesti budjettisi on määritetty paikallisessa valuutassasi. Voit vaihtaa alustasi valuutaksi \"krediitit\" tai \"tunnukset\" ottamalla yhteyttä tukikeskukseemme.",
   "app.containers.AdminPage.ProjectEdit.trendingSortingMethod": "Trendaavat",
   "app.containers.AdminPage.ProjectEdit.typeform": "Tyyppimuoto",
   "app.containers.AdminPage.ProjectEdit.unassigned": "Ei määritetty",
