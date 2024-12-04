@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Button, fontSizes } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 
 import { IIdeaQueryParameters } from 'api/ideas/types';
 import { IIdeasFilterCounts } from 'api/ideas_filter_counts/types';
@@ -16,6 +16,8 @@ import messages from '../messages';
 import SortingBox from '../shared/Filters/SortingBox';
 import StatusFilterBox from '../shared/Filters/StatusFilterBox';
 import TopicFilterBox from '../shared/Filters/TopicFilterBox';
+
+import ResetFiltersButton from './ResetFiltersButton';
 
 export interface Props {
   defaultValue?: string;
@@ -73,18 +75,9 @@ const InputFilters = ({
         </Box>
       )}
       {showResetButton && (
-        <Box minHeight="40px" display="flex">
+        <Box minHeight="40px" display="flex" ml="auto">
           {/* Hold this vertical space in the UI so when the button appears, the UI doesn't shift down */}
-          {filtersActive && (
-            <Button
-              buttonStyle="text"
-              fontSize={`${fontSizes.s}px`}
-              onClick={onClearFilters}
-              ml="auto"
-            >
-              <FormattedMessage {...messages.resetFilters} />
-            </Button>
-          )}
+          {filtersActive && <ResetFiltersButton onClick={onClearFilters} />}
         </Box>
       )}
       <Box mb="20px">
