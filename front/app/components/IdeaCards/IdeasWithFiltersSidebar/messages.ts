@@ -14,9 +14,4 @@ export default defineMessages({
     defaultMessage:
       'Show {ideasCount, plural, no {# results} one {# result} other {# results}}',
   },
-  a11y_disabledResetFiltersDescription: {
-    id: 'app.components.IdeaCards.a11y_disabledResetFiltersDescription',
-    defaultMessage:
-      'This button is used to deselect all filters. To enable this button, you must select at least one filter.',
-  },
 });
