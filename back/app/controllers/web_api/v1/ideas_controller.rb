@@ -101,7 +101,7 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def similarities
-    max_ideas = 10
+    max_ideas = 10 # Fallback to default for pagination (10)
     idea = Idea.find params[:id]
 
     similarities = idea
