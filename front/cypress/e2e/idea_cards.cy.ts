@@ -70,8 +70,13 @@ describe('Idea cards without filter sidebar sorting and filtering', () => {
   });
 
   it('lets you filter the ideas by topic', () => {
-    cy.contains('Show all').click();
-    cy.contains('waste').last().click();
+    cy.get('#e2e-show-all-tags-button').scrollIntoView();
+    cy.get('#e2e-show-all-tags-button').click();
+
+    cy.get('#e2e-topics-filters').within(() => {
+      cy.contains('waste').click();
+    });
+
     cy.get('#e2e-ideas-container')
       .find('.e2e-idea-card')
       .should('have.length', 1)
