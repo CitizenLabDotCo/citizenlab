@@ -1164,7 +1164,6 @@
   "app.containers.IdeaCards.a11y_totalItems": "Viestejä yhteensä: {ideasCount}",
   "app.containers.IdeaCards.all": "Kaikki",
   "app.containers.IdeaCards.allStatuses": "Kaikki tilat",
-  "app.containers.IdeaCards.filter": "Suodattaa",
   "app.containers.IdeaCards.list": "Lista",
   "app.containers.IdeaCards.map": "Kartta",
   "app.containers.IdeaCards.mostDiscussed": "Eniten keskusteltu",

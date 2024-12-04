@@ -1164,7 +1164,6 @@
   "app.containers.IdeaCards.a11y_totalItems": "Ukupno objava: {ideasCount}",
   "app.containers.IdeaCards.all": "Sve",
   "app.containers.IdeaCards.allStatuses": "Svi statusi",
-  "app.containers.IdeaCards.filter": "Filtar",
   "app.containers.IdeaCards.list": "Popis",
   "app.containers.IdeaCards.map": "Karta",
   "app.containers.IdeaCards.mostDiscussed": "Najviše raspravljano",

@@ -1164,7 +1164,6 @@
   "app.containers.IdeaCards.a11y_totalItems": "Total de publicacions: {ideasCount}",
   "app.containers.IdeaCards.all": "Tots",
   "app.containers.IdeaCards.allStatuses": "Tots els estats",
-  "app.containers.IdeaCards.filter": "Filtre",
   "app.containers.IdeaCards.list": "Llista",
   "app.containers.IdeaCards.map": "Mapa",
   "app.containers.IdeaCards.mostDiscussed": "El més discutit",

@@ -1164,7 +1164,6 @@
   "app.containers.IdeaCards.a11y_totalItems": "کل پوسٹس: {ideasCount}",
   "app.containers.IdeaCards.all": "تمام",
   "app.containers.IdeaCards.allStatuses": "تمام سٹیٹس",
-  "app.containers.IdeaCards.filter": "فلٹر",
   "app.containers.IdeaCards.list": "فہرست",
   "app.containers.IdeaCards.map": "نقشہ",
   "app.containers.IdeaCards.mostDiscussed": "سب سے زیادہ زیر بحث",

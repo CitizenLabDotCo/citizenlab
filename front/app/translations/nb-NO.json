@@ -1164,7 +1164,6 @@
   "app.containers.IdeaCards.a11y_totalItems": "Totalt antall stillinger: {ideasCount}",
   "app.containers.IdeaCards.all": "Alle",
   "app.containers.IdeaCards.allStatuses": "Alle statuser",
-  "app.containers.IdeaCards.filter": "Filter",
   "app.containers.IdeaCards.list": "Liste",
   "app.containers.IdeaCards.map": "Kart",
   "app.containers.IdeaCards.mostDiscussed": "Mest diskutert",
