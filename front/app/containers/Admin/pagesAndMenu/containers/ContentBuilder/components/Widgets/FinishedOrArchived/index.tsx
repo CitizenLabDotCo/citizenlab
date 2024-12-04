@@ -7,6 +7,8 @@ import useProjectsMini from 'api/projects_mini/useProjectsMini';
 
 import useLocalize from 'hooks/useLocalize';
 
+import { useIntl } from 'utils/cl-intl';
+
 import EmptyState from '../_shared/EmptyState';
 import ProjectCarrousel from '../_shared/ProjectCarrousel';
 
@@ -20,6 +22,7 @@ interface Props {
 
 const FinishedOrArchived = ({ titleMultiloc, filterBy }: Props) => {
   const localize = useLocalize();
+  const { formatMessage } = useIntl();
   const { data, hasNextPage, fetchNextPage } = useProjectsMini({
     endpoint: 'finished_or_archived',
     filter_by: filterBy,
@@ -35,7 +38,9 @@ const FinishedOrArchived = ({ titleMultiloc, filterBy }: Props) => {
 
   return (
     <ProjectCarrousel
-      title={localize(titleMultiloc)}
+      title={localize(titleMultiloc, {
+        fallback: formatMessage(messages.youSaidWeDid),
+      })}
       projects={projects}
       hasMore={!!hasNextPage}
       onLoadMore={fetchNextPage}
