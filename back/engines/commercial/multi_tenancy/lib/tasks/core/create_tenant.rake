@@ -355,6 +355,16 @@ namespace :cl2_back do
       admin = User.find_by(email: 'admin@govocal.com')
       UserService.update_in_tenant_template!(admin) if admin
       Analytics::PopulateDimensionsService.run
+
+      if tenant_template == 'e2etests_template'
+        homepage = ContentBuilder::Layout.find_by(code: 'homepage')
+
+        craftjs_filepath = Rails.root.join('config/homepage/e2etests_craftjs.json.erb')
+        json_craftjs_str = ERB.new(File.read(craftjs_filepath)).result(binding)
+        craftjs_json = ContentBuilder::LayoutImageService.new.swap_data_images(JSON.parse(json_craftjs_str))
+
+        homepage.update!(craftjs_json: craftjs_json)
+      end
     end
 
     MultiTenancy::TenantService.new.finalize_creation(tenant)
