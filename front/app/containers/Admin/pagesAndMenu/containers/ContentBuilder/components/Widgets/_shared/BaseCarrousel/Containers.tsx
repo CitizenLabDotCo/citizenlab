@@ -33,7 +33,6 @@ export const CarrouselContainer = ({ children }: CarrouselContainerProps) => {
       px={isSmallerThanPhone ? undefined : DEFAULT_PADDING}
       py={DEFAULT_Y_PADDING}
       w="100%"
-      maxWidth="100%"
       display="flex"
       overflowX="hidden"
       justifyContent="center"
