@@ -1,6 +1,6 @@
 class CohereMultilingualEmbeddings
   def initialize(**params)
-    params[:region] = ENV.fetch('AWS_TOXICITY_DETECTION_REGION', nil) if !params.key? :region
+    params[:region] = ENV.fetch('AWS_EMBEDDINGS_REGION', nil) if !params.key? :region
       
     raise 'No AWS region specified for Cohere Embed Multilingual model.' if params[:region]
 
