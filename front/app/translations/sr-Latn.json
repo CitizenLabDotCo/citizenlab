@@ -1580,6 +1580,7 @@
   "app.containers.Projects.noPastEvents": "Nema prošlih događaja za prikaz",
   "app.containers.Projects.noPhaseSelected": "Nije izabrana nijedna faza",
   "app.containers.Projects.noUpcomingOrOngoingEvents": "Trenutno nema zakazanih predstojećih i tekućih događaja.",
+  "app.containers.Projects.offlineVotersTooltip": "This number does not reflect any offline voter counts.",
   "app.containers.Projects.options": "Solucije",
   "app.containers.Projects.participants": "Učesnici",
   "app.containers.Projects.participantsTooltip4": "This number also reflects anonymous survey submissions. Anonymous survey submissions are possible if surveys are open to everyone (see the {accessRightsLink} tab for this project).",
