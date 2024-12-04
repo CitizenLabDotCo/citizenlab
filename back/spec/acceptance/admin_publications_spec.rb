@@ -189,8 +189,8 @@ resource 'AdminPublication' do
         expect(publication_ids).to match_array [published_projects[0].id, custom_folder.id]
       end
 
-      example 'List all admin publications with pending project review' do 
-        create(:project_review, project: draft_projects.first) 
+      example 'List all admin publications with pending project review' do
+        create(:project_review, project: draft_projects.first)
 
         do_request(review_state: 'pending', publication_statuses: ['draft'], only_projects: true)
         expect(publication_ids).to match_array [draft_projects.first.id]

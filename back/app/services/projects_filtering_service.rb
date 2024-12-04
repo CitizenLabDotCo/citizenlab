@@ -76,6 +76,5 @@ class ProjectsFilteringService
     else
       scope
     end
-    
   end
 end
