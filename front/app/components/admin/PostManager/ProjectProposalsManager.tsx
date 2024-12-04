@@ -4,7 +4,7 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
-import { IQueryParameters, Sort } from 'api/ideas/types';
+import { IIdeaQueryParameters, Sort } from 'api/ideas/types';
 import useIdeas from 'api/ideas/useIdeas';
 import useTopics from 'api/topics/useTopics';
 
@@ -57,7 +57,7 @@ const ProjectProposalsManager = ({
     participation_method: 'proposals',
   });
   const { data: proposalTopics } = useTopics();
-  const [queryParameters, setQueryParameters] = useState<IQueryParameters>({
+  const [queryParameters, setQueryParameters] = useState<IIdeaQueryParameters>({
     sort: 'new',
     phase: phaseId,
   });
@@ -182,7 +182,11 @@ const ProjectProposalsManager = ({
           project={projectId}
           queryParameters={queryParameters}
         />
-        <StyledExportMenu type={'ProjectProposals'} selection={selection} />
+        <StyledExportMenu
+          type={'ProjectProposals'}
+          selectedProject={projectId}
+          selection={selection}
+        />
       </TopActionBar>
 
       <ThreeColumns>

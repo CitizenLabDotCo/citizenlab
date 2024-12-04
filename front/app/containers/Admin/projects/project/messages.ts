@@ -160,11 +160,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.totalBudget',
     defaultMessage: 'Total budget',
   },
-  totalBudgetExplanation: {
-    id: 'app.containers.AdminPage.ProjectEdit.totalBudgetExplanation',
-    defaultMessage:
-      "By default, your budget is set using your local currency. You can change your platform's currency to 'credits' or 'tokens' by contacting our support center.",
-  },
   minimum: {
     id: 'app.containers.AdminPage.ProjectEdit.minimum',
     defaultMessage: 'Minimum',
@@ -307,6 +302,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.trendingSortingMethod',
     defaultMessage: 'Trending',
   },
+  comments_countSortingMethod: {
+    id: 'app.containers.AdminPage.ProjectEdit.commens_countSortingMethod',
+    defaultMessage: 'Most discussed',
+  },
   randomSortingMethod: {
     id: 'app.containers.AdminPage.ProjectEdit.randomSortingMethod',
     defaultMessage: 'Random',
@@ -419,6 +418,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputManager',
     defaultMessage:
       'Give feedback, assign topics or copy inputs to the next project phase.',
+  },
+  importInputs: {
+    id: 'app.containers.AdminPage.ProjectEdit.PostManager.importInputs',
+    defaultMessage: 'Import',
   },
   votingShareResultsTurnedOff: {
     id: 'app.containers.AdminPage.ProjectEdit.PostManager.votingShareResultsTurnedOff',

@@ -11,9 +11,6 @@ import IframeMultiloc, {
 import ImageMultiloc, {
   imageMultilocTitle,
 } from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
-import TextMultiloc, {
-  textMultilocTitle,
-} from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
 import ThreeColumn, {
   threeColumnTitle,
 } from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
@@ -39,7 +36,10 @@ import OpenToParticipation, {
   openToParticipationTitle,
 } from './OpenToParticipation';
 import Projects, { projectsTitle } from './Projects';
+import Published, { publishedTitle } from './Published';
+import Selection, { selectionTitle } from './Selection';
 import Spotlight, { spotlightTitle } from './Spotlight';
+import TextMultiloc, { textMultilocTitle } from './TextMultiloc';
 
 export const WIDGETS = {
   // Shared widgets
@@ -47,7 +47,6 @@ export const WIDGETS = {
   ButtonMultiloc,
   IframeMultiloc,
   ImageMultiloc,
-  TextMultiloc,
   ThreeColumn,
   TwoColumn,
   WhiteSpace,
@@ -60,7 +59,10 @@ export const WIDGETS = {
   HomepageBanner,
   OpenToParticipation,
   Projects,
+  Published,
+  Selection,
   Spotlight,
+  TextMultiloc,
 
   // RENAMED (TODO rename in migration)
   Highlight: CallToAction,
@@ -77,7 +79,6 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   ButtonMultiloc: buttonMultilocTitle,
   IframeMultiloc: iframeTitle,
   ImageMultiloc: imageMultilocTitle,
-  TextMultiloc: textMultilocTitle,
   ThreeColumn: threeColumnTitle,
   TwoColumn: twoColumnTitle,
   WhiteSpace: whiteSpaceTitle,
@@ -90,7 +91,10 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   HomepageBanner: homepageBannerTitle,
   OpenToParticipation: openToParticipationTitle,
   Projects: projectsTitle,
+  Published: publishedTitle,
+  Selection: selectionTitle,
   Spotlight: spotlightTitle,
+  TextMultiloc: textMultilocTitle,
 
   // RENAMED
   Highlight: callToActionTitle,
@@ -121,6 +125,8 @@ const WIDGETS_WITHOUT_POINTER_EVENTS = new Set<string>([
   'HomepageBanner',
   'OpenToParticipation',
   'Projects',
+  'Published',
+  'Selection',
   'Spotlight',
 
   // RENAMED

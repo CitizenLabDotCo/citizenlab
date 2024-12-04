@@ -7,6 +7,7 @@ RSpec.describe Project do
     subject(:project) { build(:project) }
 
     it { is_expected.to be_valid }
+    it { is_expected.to have_one(:review).class_name('ProjectReview').dependent(:destroy) }
 
     it 'has a preview token' do
       expect(project.preview_token).to be_present
@@ -78,6 +79,14 @@ RSpec.describe Project do
   describe 'destroy' do
     it 'can be realised' do
       project = create(:project_xl)
+      expect { project.destroy }.not_to raise_error
+    end
+
+    it 'works when related impact_tracking_pageviews exist' do
+      project = create(:project)
+      session = create(:session)
+      create(:pageview, session_id: session.id, project_id: project.id)
+
       expect { project.destroy }.not_to raise_error
     end
   end

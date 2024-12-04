@@ -269,10 +269,10 @@ lv:
       cta_reply_to: 'Skatīt komentāru pēc %{firstName}'
       event_description: '%{authorNameFull} jūs pieminēja iekšējā komentārā.'
       subject: '%{firstName} jūs pieminēja iekšējā komentārā.'
-      main_header: '%{authorNameFirst} jūs pieminēja iekšējā komentārā.'
+      main_header: '%{firstName} jūs pieminēja iekšējā komentārā.'
       preheader: '%{authorNameFull} jūs pieminēja iekšējā komentārā.'
     moderator_digest:
-      subject: 'Jūsu nedēļas projekta vadītāja pārskats par %{time}'
+      subject: 'Jūsu nedēļas projekta vadītāja pārskats par %{project_title}'
       preheader: 'Projekta vadītāja pārskats par %{organizationName}'
       title_your_weekly_report: '%{firstName}, jūsu nedēļas pārskats'
       text_introduction: 'Mēs esam atlasījuši tos ievadītos datus, kas pagājušajā nedēļā ir izraisījuši vislielāko aktivitāti. Uzziniet, kas notiek ar jūsu projektu!'

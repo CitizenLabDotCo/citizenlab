@@ -269,10 +269,10 @@ sv:
       cta_reply_to: 'Visa kommentar från %{firstName}'
       event_description: '%{authorNameFull} nämnde dig i en intern kommentar.'
       subject: '%{firstName} nämnde dig i en intern kommentar.'
-      main_header: '%{authorNameFirst} nämnde dig i en intern kommentar.'
+      main_header: '%{firstName} nämnde dig i en intern kommentar.'
       preheader: '%{authorNameFull} nämnde dig i en intern kommentar.'
     moderator_digest:
-      subject: 'Din veckovisa projektledarrapport på %{time}'
+      subject: 'Din veckovisa projektledarrapport på %{project_title}'
       preheader: 'Projektledarsammanfattning för %{organizationName}'
       title_your_weekly_report: '%{firstName}, din veckorapport'
       text_introduction: 'Vi har sammanställt de indata som har skapat mest aktivitet under den senaste veckan. Ta reda på vad som händer med ditt projekt!'

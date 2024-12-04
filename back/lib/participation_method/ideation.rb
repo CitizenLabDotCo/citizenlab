@@ -15,7 +15,7 @@ module ParticipationMethod
     end
 
     def allowed_ideas_orders
-      %w[trending random popular -new new]
+      %w[trending random popular -new new comments_count]
     end
 
     def assign_defaults(input)

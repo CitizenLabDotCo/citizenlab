@@ -269,10 +269,10 @@ sr-Latn:
       cta_reply_to: 'Погледај коментар од %{firstName}'
       event_description: '%{authorNameFull} вас је поменуо у интерном коментару.'
       subject: '%{firstName} вас је поменуо у интерном коментару.'
-      main_header: '%{authorNameFirst} вас је поменуо у интерном коментару.'
+      main_header: '%{firstName} вас је поменуо у интерном коментару.'
       preheader: '%{authorNameFull} вас је поменуо у интерном коментару.'
     moderator_digest:
-      subject: 'Vaš nedeljni izveštaj za menadžere projekta od %{time}'
+      subject: 'Vaš nedeljni izveštaj za menadžere projekta od %{project_title}'
       preheader: 'Sažetak za menadžere projekta %{organizationName}'
       title_your_weekly_report: '%{firstName}, vaš nedeljni izveštaj'
       text_introduction: 'Odabrali smo objave koje su bile najpopularnije tokom prethodne nedelje. Budite u toku sa dešavanjima u vezi vašeg projekta!'

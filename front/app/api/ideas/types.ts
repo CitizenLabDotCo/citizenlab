@@ -56,15 +56,6 @@ type ReactingIdeaActionDescriptor =
       cancelling_enabled: boolean;
     };
 
-export interface IMiniIdeaData {
-  id: string;
-  type: string;
-  attributes: {
-    title_multiloc: Multiloc;
-    slug: string;
-  };
-}
-
 export interface IIdeaData {
   id: string;
   type: string;
@@ -93,7 +84,7 @@ export interface IIdeaData {
     proposed_budget: number | null;
     created_at: string;
     updated_at: string;
-    published_at: string;
+    published_at: string | null;
     // For manual_votes_amount, in a PB phase this refers to the # offline baskets with this idea (I.e. # offline picks)
     // In the other voting methods, this refers to the total # offline votes cast for this idea.
     manual_votes_amount: number;
@@ -214,15 +205,11 @@ export interface IIdeas {
   links: ILinks;
 }
 
-export interface IMiniIdeas {
-  data: IMiniIdeaData[];
-}
-
 export interface IIdea {
   data: IIdeaData;
 }
 
-export interface IQueryParameters {
+export interface IIdeaQueryParameters {
   sort?: Sort;
   'page[number]'?: number;
   'page[size]'?: number;

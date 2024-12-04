@@ -269,10 +269,10 @@ ca:
       cta_reply_to: 'Veure comentari per %{firstName}'
       event_description: '%{authorNameFull} t''ha mencionat en un comentari intern.'
       subject: '%{firstName} t''ha mencionat en un comentari intern.'
-      main_header: '%{authorNameFirst} t''ha mencionat en un comentari intern.'
+      main_header: '%{firstName} t''ha mencionat en un comentari intern.'
       preheader: '%{authorNameFull} t''ha mencionat en un comentari intern.'
     moderator_digest:
-      subject: 'El vostre informe setmanal del gestor de projectes de %{time}'
+      subject: 'El vostre informe setmanal del gestor de projectes de %{project_title}'
       preheader: 'Resum del gestor de projectes de %{organizationName}'
       title_your_weekly_report: '%{firstName}, el teu informe setmanal'
       text_introduction: 'Hem seleccionat per a tu l''entrada que ha generat més activitat durant la setmana passada. Descobreix què està passant amb el teu projecte!'

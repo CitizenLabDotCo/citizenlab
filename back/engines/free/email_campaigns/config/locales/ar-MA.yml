@@ -269,10 +269,10 @@ ar-MA:
       cta_reply_to: 'عرض تعليق %{firstName}'
       event_description: '%{authorNameFull} ذكرك في تعليق داخلي.'
       subject: '%{firstName} ذكرك في تعليق داخلي.'
-      main_header: '%{authorNameFirst} ذكرك في تعليق داخلي.'
+      main_header: '%{firstName} ذكرك في تعليق داخلي.'
       preheader: '%{authorNameFull} ذكرك في تعليق داخلي.'
     moderator_digest:
-      subject: 'تقرير مدير المشروع الأسبوعي الخاص بك لـ%{time}'
+      subject: 'تقرير مدير المشروع الأسبوعي الخاص بك لـ%{project_title}'
       preheader: 'ملخص مدير المشروع لـ %{organizationName}'
       title_your_weekly_report: '%{firstName}، تقريرك الأسبوعي'
       text_introduction: "قمنا بتحضير قائمة تضم جميع الأفكار التي ولّدت أكبر تفاعل ونشاط على مدار الأسبوع الماضي.اكتشف ما يحدث في مشروعك!\n     "

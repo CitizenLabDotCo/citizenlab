@@ -1,4 +1,4 @@
-import React, { KeyboardEvent, useCallback } from 'react';
+import React, { KeyboardEvent } from 'react';
 
 import { Label } from '@citizenlab/cl2-component-library';
 import ReactSelect from 'react-select';
@@ -21,52 +21,46 @@ export type Props = {
   isSearchable?: boolean;
 };
 
-const MultipleSelect: React.FC<Props> = ({
+const MultipleSelect = ({
   id,
   inputId,
   value,
-  placeholder = '',
-  options = [],
-  autoBlur = false,
+  placeholder,
+  options,
+  autoBlur,
   onChange,
   disabled,
   className,
   label,
-  isSearchable = true,
-}) => {
+  isSearchable,
+}: Props) => {
   const theme = useTheme();
-  const handleOnChange = useCallback(
-    (newValue: IOption[]) => {
-      onChange(newValue);
-    },
-    [onChange]
-  );
+  const handleOnChange = (newValue: IOption[]) => {
+    onChange(newValue);
+  };
 
   //  Needed to keep our API compatible with react-select v1
   //  For a native react-select solution, follow this issue:
   //  https://github.com/JedWatson/react-select/issues/2669
-  const findFullOptionValue = useCallback(
-    (val) => {
-      if (typeof val === 'string') {
-        return options && options.find((option) => option.value === val);
-      }
-      return val;
-    },
-    [options]
-  );
+  const findFullOptionValue = (value) => {
+    if (typeof value === 'string') {
+      return options && options.find((option) => option.value === value);
+    }
 
-  const findFullOptionValues = useCallback(() => {
+    return value;
+  };
+
+  const findFullOptionValues = () => {
     if (Array.isArray(value)) {
       return value.map(findFullOptionValue);
     }
+
     return value;
-  }, [value, findFullOptionValue]);
+  };
 
   const preventModalCloseOnEscape = (event: KeyboardEvent) => {
     if (event.code === 'Escape') event.stopPropagation();
   };
-
-  const selectedValue = findFullOptionValues();
 
   return (
     <div>
@@ -81,7 +75,7 @@ const MultipleSelect: React.FC<Props> = ({
         backspaceRemovesValue={false}
         menuShouldScrollIntoView={false}
         isClearable={false}
-        value={selectedValue}
+        value={findFullOptionValues()}
         placeholder={placeholder || ''}
         options={options || []}
         onChange={handleOnChange}
