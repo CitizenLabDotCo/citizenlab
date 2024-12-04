@@ -29,4 +29,8 @@ export default defineMessages({
     id: 'app.components.IdeaCards.filters.mostDiscussed',
     defaultMessage: 'Most discussed',
   },
+  sortChangedScreenreaderMessage: {
+    id: 'app.components.IdeaCards.filters.sortChangedScreenreaderMessage',
+    defaultMessage: 'Sorting changed to: {currentSortType}',
+  },
 });
