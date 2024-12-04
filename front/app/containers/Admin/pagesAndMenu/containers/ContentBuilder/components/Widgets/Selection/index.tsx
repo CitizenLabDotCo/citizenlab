@@ -6,6 +6,8 @@ import useAdminPublicationsByIds from 'api/admin_publications/useAdminPublicatio
 
 import useLocalize from 'hooks/useLocalize';
 
+import { useIntl } from 'utils/cl-intl';
+
 import AdminPublicationsCarrousel from '../_shared/AdminPublicationsCarrousel';
 import EmptyState from '../_shared/EmptyState';
 
@@ -19,6 +21,7 @@ interface Props {
 
 const Selection = ({ titleMultiloc, adminPublicationIds }: Props) => {
   const localize = useLocalize();
+  const { formatMessage } = useIntl();
   const { data, hasNextPage, fetchNextPage } = useAdminPublicationsByIds(
     {
       ids: adminPublicationIds,
@@ -44,7 +47,9 @@ const Selection = ({ titleMultiloc, adminPublicationIds }: Props) => {
 
   return (
     <AdminPublicationsCarrousel
-      title={localize(titleMultiloc)}
+      title={localize(titleMultiloc, {
+        fallback: formatMessage(messages.selectionTitle),
+      })}
       adminPublications={adminPublications}
       hasMore={!!hasNextPage}
       onLoadMore={fetchNextPage}
