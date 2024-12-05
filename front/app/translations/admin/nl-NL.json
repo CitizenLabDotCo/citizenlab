@@ -373,6 +373,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.adminsOnly": "Alleen platformbeheerders",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.anyoneWithLink": "Iedereen met de link kan reageren op het conceptproject",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approve": "Goedkeuren",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approvedBy": "Goedgekeurd door {name}",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.archived": "Gearchiveerd",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.draft": "Concept",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.everyone": "Iedereen",
