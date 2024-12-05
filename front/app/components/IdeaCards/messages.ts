@@ -5,6 +5,10 @@ export default defineMessages({
     id: 'app.components.IdeaCards.showMore',
     defaultMessage: 'Show more',
   },
+  filters: {
+    id: 'app.components.IdeaCards.filters',
+    defaultMessage: 'Filters',
+  },
   noFilteredResults: {
     id: 'app.containers.IdeaCards.noFilteredResults',
     defaultMessage:
@@ -14,6 +18,14 @@ export default defineMessages({
     id: 'app.containers.IdeaCards.tryDifferentFilters',
     defaultMessage:
       'No results found. Please try a different filter or search term.',
+  },
+  numberResults: {
+    id: 'app.containers.IdeaCards.numberResults',
+    defaultMessage: 'Results ({postCount})',
+  },
+  ideasFilterSidebarTitle: {
+    id: 'app.containers.IdeaCards.ideasFilterSidebarTitle',
+    defaultMessage: '{inputTerm} ({numberIdeas})',
   },
   topics: {
     id: 'app.containers.IdeaCards.topics',
@@ -84,10 +96,6 @@ export default defineMessages({
     id: 'app.containers.IdeaCards.all',
     defaultMessage: 'All',
   },
-  filter: {
-    id: 'app.containers.IdeaCards.filter',
-    defaultMessage: 'Filter',
-  },
   resetFilters: {
     id: 'app.containers.IdeaCards.resetFilters',
     defaultMessage: 'Reset filters',
@@ -99,5 +107,42 @@ export default defineMessages({
   a11y_ideasHaveBeenSorted: {
     id: 'app.components.IdeaCards.a11y_ideasHaveBeenSorted',
     defaultMessage: '{sortOder} ideas have loaded.',
+  },
+  // #input_term_copy
+  ideas: {
+    id: 'app.containers.IdeaCards.ideaTerm',
+    defaultMessage: 'Ideas',
+  },
+  projects: {
+    id: 'app.containers.IdeaCards.projectTerm',
+    defaultMessage: 'Projects',
+  },
+  questions: {
+    id: 'app.containers.IdeaCards.questionTerm',
+    defaultMessage: 'Questions',
+  },
+  options: {
+    id: 'app.containers.IdeaCards.optionTerm',
+    defaultMessage: 'Options',
+  },
+  issues: {
+    id: 'app.containers.IdeaCards.issueTerm',
+    defaultMessage: 'Issues',
+  },
+  contributions: {
+    id: 'app.containers.IdeaCards.contributions',
+    defaultMessage: 'Contributions',
+  },
+  proposals: {
+    id: 'app.containers.IdeaCards.proposals',
+    defaultMessage: 'Proposals',
+  },
+  initiatives: {
+    id: 'app.containers.IdeaCards.initiatives',
+    defaultMessage: 'Initiatives',
+  },
+  petitions: {
+    id: 'app.containers.IdeaCards.petitions',
+    defaultMessage: 'Petitions',
   },
 });

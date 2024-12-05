@@ -6,7 +6,7 @@ import FullscreenModal from 'components/UI/FullscreenModal';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import InputFilters, { Props as InputFiltersProps } from '../InputFilters';
+import InputFilters, { Props as InputFiltersProps } from '../../InputFilters';
 
 import BottomBar from './BottomBar';
 import messages from './messages';
@@ -41,6 +41,8 @@ const FiltersModal = ({
         <InputFilters
           selectedIdeaFilters={selectedIdeaFilters}
           onClearFilters={onClearFilters}
+          // We have a reset filters button in TopBar
+          showResetButton={false}
           {...filtersProps}
         />
       </Box>
