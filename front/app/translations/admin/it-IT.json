@@ -373,6 +373,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.adminsOnly": "Solo per gli amministratori",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.anyoneWithLink": "Chiunque abbia il link può interagire con la bozza del progetto.",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approve": "Approvare",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approvedBy": "Approvato da {name}",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.archived": "Archiviato",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.draft": "Bozza",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.everyone": "Tutti",
