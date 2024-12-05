@@ -1848,7 +1848,6 @@
   "app.containers.AdminPage.ProjectEdit.topicLabel": "Tags",
   "app.containers.AdminPage.ProjectEdit.topicLabelTooltip": "Selecteer {topicsCopy} voor dit project. Gebruikers kunnen deze gebruiken om projecten mee te filteren.",
   "app.containers.AdminPage.ProjectEdit.totalBudget": "Totaalbedrag",
-  "app.containers.AdminPage.ProjectEdit.totalBudgetExplanation": "Je budget is in je lokale valuta ingesteld. Je kan de munteenheid van je platform wijzigen in 'credits' of 'tokens' door contact op te nemen met ons support center.",
   "app.containers.AdminPage.ProjectEdit.trendingSortingMethod": "Populair",
   "app.containers.AdminPage.ProjectEdit.typeform": "Typeform",
   "app.containers.AdminPage.ProjectEdit.unassigned": "Niet toegewezen",

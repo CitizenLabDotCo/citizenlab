@@ -29,11 +29,11 @@ module EmailCampaigns
         idea = Idea.create!(
           project: project,
           creation_phase: phase,
-          author: User.first
+          author: recipient_user
         )
       end
       item = Notifications::NativeSurveyNotSubmitted.new(post: idea)
-      user = idea.author
+      user = recipient_user
       activity = Activity.new(item: item, user: user)
       commands = campaign.generate_commands(recipient: user, activity: activity)
       command = commands[0].merge({ recipient: user })
