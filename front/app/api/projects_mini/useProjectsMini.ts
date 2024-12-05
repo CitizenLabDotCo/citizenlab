@@ -36,8 +36,10 @@ const useProjectsMini = (
       });
     },
     getNextPageParam: (lastPage) => {
-      const hasNextPage = lastPage.links.next;
-      const pageNumber = getPageNumberFromUrl(lastPage.links.self);
+      const links = lastPage.links;
+      if (!links) return null;
+      const hasNextPage = links.next;
+      const pageNumber = getPageNumberFromUrl(links.self);
       return hasNextPage && pageNumber ? pageNumber + 1 : null;
     },
     enabled,

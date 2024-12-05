@@ -33,7 +33,7 @@ export type MiniProjectsKeys = Keys<typeof miniProjectsKeys>;
 
 export interface MiniProjects {
   data: MiniProjectData[];
-  links: ILinks;
+  links?: ILinks;
 }
 
 export interface MiniProjectData {
