@@ -17,6 +17,10 @@ export default defineMessages({
     id: 'app.components.FilterBoxes.inputs',
     defaultMessage: 'inputs',
   },
+  noValuesFound: {
+    id: 'app.components.FilterBoxes.noValuesFound',
+    defaultMessage: 'No values available.',
+  },
   topicsTitle: {
     id: 'app.components.FilterBoxes.topicsTitle',
     defaultMessage: 'Topics',

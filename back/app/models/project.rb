@@ -21,8 +21,8 @@
 #  baskets_count                :integer          default(0), not null
 #  votes_count                  :integer          default(0), not null
 #  followers_count              :integer          default(0), not null
-#  header_bg_alt_text_multiloc  :jsonb
 #  preview_token                :string           not null
+#  header_bg_alt_text_multiloc  :jsonb
 #
 # Indexes
 #
@@ -64,6 +64,7 @@ class Project < ApplicationRecord
   accepts_nested_attributes_for :text_images
   has_many :project_files, -> { order(:ordering) }, dependent: :destroy
   has_many :followers, as: :followable, dependent: :destroy
+  has_many :impact_tracking_pageviews, class_name: 'ImpactTracking::Pageview', dependent: :nullify
 
   after_initialize :init
 

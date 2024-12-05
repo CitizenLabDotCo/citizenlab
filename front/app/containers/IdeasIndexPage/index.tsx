@@ -78,8 +78,8 @@ const PageTitle = styled.h1`
 export interface QueryParameters {
   'page[number]': number;
   'page[size]': number;
-  project_publication_status: 'published';
-  publication_status: 'published';
+  project_publication_status?: 'published';
+  publication_status?: 'published';
   phase?: string;
 
   // filters
