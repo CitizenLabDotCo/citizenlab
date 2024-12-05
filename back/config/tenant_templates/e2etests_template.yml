@@ -12,7 +12,7 @@ models:
           displayName: 'div'
           custom: {}
           hidden: false
-          nodes: ['HOMEPAGEBANNER', 'PROJECTS']
+          nodes: ['HOMEPAGEBANNER', 'OPEN_TO_PARTICIPATION', 'FINISHED_OR_ARCHIVED', 'PROJECTS']
           linked_nodes: {}
         HOMEPAGEBANNER:
           type:
@@ -64,6 +64,37 @@ models:
           parent: 'ROOT'
           hidden: false
           nodes: []
+          linkedNodes: {}
+        OPEN_TO_PARTICIPATION:
+          type:
+            resolvedName: 'OpenToParticipation'
+          nodes: []
+          props:
+            titleMultiloc:
+              en: 'Open to participation'
+              nl-BE: 'Open voor deelname'
+              fr-BE: 'Ouvert à la participation'
+          custom: {}
+          hidden: false
+          parent: 'ROOT'
+          isCanvas: false
+          displayName: 'OpenToParticipation'
+          linkedNodes: {}
+        FINISHED_OR_ARCHIVED:
+          type:
+            resolvedName: 'FinishedOrArchived'
+          nodes: []
+          props:
+            filterBy: 'finished_and_archived'
+            titleMultiloc:
+              en: 'You said, we did...'
+              nl-BE: 'Jij zei, wij deden...'
+              fr-BE: "Vous avez dit, nous l'avons fait..."
+          custom: {}
+          hidden: false
+          parent: 'ROOT'
+          isCanvas: false
+          displayName: 'FinishedOrArchived'
           linkedNodes: {}
         PROJECTS:
           type:
