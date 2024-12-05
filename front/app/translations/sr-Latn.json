@@ -191,7 +191,7 @@
   "app.components.IdeaCards.filters.oldest": "Najstarije",
   "app.components.IdeaCards.filters.popular": "Najviše glasova",
   "app.components.IdeaCards.filters.random": "Nasumično",
-  "app.components.IdeaCards.filters.sortBy": "Sort by",
+  "app.components.IdeaCards.filters.sortBy": "Prikaži",
   "app.components.IdeaCards.filters.trending": "Najpopularnije",
   "app.components.IdeaCards.showMore": "Prikaži više",
   "app.components.IdeasMap.a11y_hideIdeaCard": "Sakrij karticu sa idejom.",
