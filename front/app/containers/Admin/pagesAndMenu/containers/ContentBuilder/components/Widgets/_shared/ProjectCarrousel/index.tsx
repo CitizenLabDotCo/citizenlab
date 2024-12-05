@@ -27,10 +27,17 @@ interface Props {
   title: string;
   projects: MiniProjectData[];
   hasMore: boolean;
+  isLoadingMore: boolean;
   onLoadMore: () => void;
 }
 
-const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
+const ProjectCarrousel = ({
+  title,
+  projects,
+  hasMore,
+  isLoadingMore,
+  onLoadMore,
+}: Props) => {
   const [scrollContainerRef, setScrollContainerRef] = useState<
     HTMLDivElement | undefined
   >(undefined);
@@ -115,7 +122,7 @@ const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
           {hasMore && (
             <LoadMoreCard
               width={CARD_WIDTH}
-              isLoading={false}
+              isLoading={isLoadingMore}
               onClick={onLoadMore}
             />
           )}

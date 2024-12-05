@@ -18,9 +18,10 @@ interface Props {
 
 const OpenToParticipation = ({ titleMultiloc }: Props) => {
   const localize = useLocalize();
-  const { data, hasNextPage, fetchNextPage } = useProjectsMini({
-    endpoint: 'with_active_participatory_phase',
-  });
+  const { data, hasNextPage, fetchNextPage, isFetchingNextPage } =
+    useProjectsMini({
+      endpoint: 'with_active_participatory_phase',
+    });
   const projects = data?.pages.map((page) => page.data).flat();
 
   if (!projects) return null;
@@ -35,6 +36,7 @@ const OpenToParticipation = ({ titleMultiloc }: Props) => {
       title={localize(titleMultiloc)}
       projects={projects}
       hasMore={!!hasNextPage}
+      isLoadingMore={isFetchingNextPage}
       onLoadMore={fetchNextPage}
     />
   );

@@ -20,10 +20,11 @@ interface Props {
 
 const FinishedOrArchived = ({ titleMultiloc, filterBy }: Props) => {
   const localize = useLocalize();
-  const { data, hasNextPage, fetchNextPage } = useProjectsMini({
-    endpoint: 'finished_or_archived',
-    filter_by: filterBy,
-  });
+  const { data, hasNextPage, fetchNextPage, isFetchingNextPage } =
+    useProjectsMini({
+      endpoint: 'finished_or_archived',
+      filter_by: filterBy,
+    });
   const projects = data?.pages.map((page) => page.data).flat();
 
   if (!projects) return null;
@@ -38,6 +39,7 @@ const FinishedOrArchived = ({ titleMultiloc, filterBy }: Props) => {
       title={localize(titleMultiloc)}
       projects={projects}
       hasMore={!!hasNextPage}
+      isLoadingMore={isFetchingNextPage}
       onLoadMore={fetchNextPage}
     />
   );
