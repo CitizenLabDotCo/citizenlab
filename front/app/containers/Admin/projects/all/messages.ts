@@ -26,6 +26,14 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.archived',
     defaultMessage: 'Archived',
   },
+  pendingReview: {
+    id: 'app.containers.AdminPage.ProjectEdit.pendingReview',
+    defaultMessage: 'Pending approval',
+  },
+  approvedReview: {
+    id: 'app.containers.AdminPage.ProjectEdit.approved',
+    defaultMessage: 'Approved',
+  },
   createAProjectFromATemplate: {
     id: 'app.containers.AdminPage.ProjectEdit.createAProjectFromATemplate',
     defaultMessage: 'Create a project from a template',
