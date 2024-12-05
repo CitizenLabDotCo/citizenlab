@@ -153,4 +153,8 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.regenerateNo',
     defaultMessage: 'Cancel',
   },
+  approvedBy: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approvedBy',
+    defaultMessage: 'Approved by {name}',
+  },
 });

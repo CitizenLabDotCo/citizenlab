@@ -16,9 +16,9 @@ export type ProjectReviewData = {
     updated_at: string;
   };
   relationships: {
-    project: IRelationship;
-    user: IRelationship;
-    approver: IRelationship;
+    project: { data: IRelationship };
+    requester: { data: IRelationship };
+    reviewer?: { data: IRelationship };
   };
 };
 
