@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
 
 import useSimilarIdeas from 'api/ideas/useSimilarIdeas';
@@ -21,7 +20,7 @@ interface Props {
   className?: string;
 }
 
-const SimilarIdeas = ({ ideaId, className }: Props & WrappedComponentProps) => {
+const SimilarIdeas = ({ ideaId, className }: Props) => {
   const { data: similarIdeas } = useSimilarIdeas(ideaId);
   const { formatMessage } = useIntl();
   const localize = useLocalize();
