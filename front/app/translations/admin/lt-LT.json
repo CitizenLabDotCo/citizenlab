@@ -373,6 +373,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.adminsOnly": "Tik administratoriai",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.anyoneWithLink": "Visi, turintys nuorodą, gali bendrauti su projekto projektu.",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approve": "Patvirtinti",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approvedBy": "Patvirtinta {name}",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.archived": "Archyvuota",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.draft": "Projektas",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.everyone": "Visi",
