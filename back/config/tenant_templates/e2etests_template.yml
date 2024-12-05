@@ -12,7 +12,7 @@ models:
           displayName: 'div'
           custom: {}
           hidden: false
-          nodes: ['HOMEPAGEBANNER', 'OPEN_TO_PARTICIPATION', 'FINISHED_OR_ARCHIVED', 'PROJECTS']
+          nodes: ['HOMEPAGEBANNER', 'FOLLOWED_ITEMS', 'OPEN_TO_PARTICIPATION', 'FINISHED_OR_ARCHIVED', 'PROJECTS']
           linked_nodes: {}
         HOMEPAGEBANNER:
           type:
@@ -64,6 +64,21 @@ models:
           parent: 'ROOT'
           hidden: false
           nodes: []
+          linkedNodes: {}
+        FOLLOWED_ITEMS:
+          type:
+            resolvedName: 'FollowedItems'
+          nodes: []
+          props:
+            titleMultiloc:
+              en: 'For you'
+              nl-BE: 'Voor jou'
+              fr-BE: 'Pour vous'
+          custom: {}
+          hidden: false
+          parent: 'ROOT'
+          isCanvas: false
+          displayName: 'FollowedItems'
           linkedNodes: {}
         OPEN_TO_PARTICIPATION:
           type:
