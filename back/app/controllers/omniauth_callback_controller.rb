@@ -51,7 +51,6 @@ class OmniauthCallbackController < ApplicationController
 
   def auth_callback(verify: false, authver_method: nil)
     auth = request.env['omniauth.auth']
-    request.env['omniauth.params'] = {} # TODO: JS REMOVE THIS LINE
     omniauth_params = request.env['omniauth.params']
     user_attrs = authver_method.profile_to_user_attrs(auth)
 
