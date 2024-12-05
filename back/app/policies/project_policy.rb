@@ -145,7 +145,6 @@ class ProjectPolicy < ApplicationPolicy
         area_ids: [],
         topic_ids: [],
         header_bg_alt_text_multiloc: CL2_SUPPORTED_LOCALES,
-        review_state: %i[approved pending]
       }
     ]
 
