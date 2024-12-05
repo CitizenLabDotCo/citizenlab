@@ -27,11 +27,9 @@ export function userModeratesFolder(
  */
 export function isProjectFolderModerator(
   user?: IUser,
-  folderId?: string
+  folderId?: string | null
 ): boolean {
-  // TODO: Fix this the next time the file is edited.
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  const roles = user?.data.attributes?.roles;
+  const roles = user?.data.attributes.roles;
   if (!roles) return false;
 
   if (folderId) {

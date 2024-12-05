@@ -22,6 +22,7 @@ import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 import PublicationStatus from './PublicationStatus';
+import ReviewFlow from './ReviewFlow';
 import ShareLink from './ShareLink';
 
 const StyledTitle = styled(Title)`
@@ -95,6 +96,7 @@ const ProjectHeader = ({ projectId }: Props) => {
               projectSlug={project.data.attributes.slug}
               token={project.data.attributes.preview_token}
             />
+            <ReviewFlow project={project.data} />
           </Box>
         </Box>
         <Box display="flex" gap="8px">
