@@ -167,7 +167,6 @@
   "app.components.FilterBoxes.statusTitle": "الحالة",
   "app.components.FilterBoxes.topicsTitle": "الموضوعات",
   "app.components.FiltersModal.filters": "عوامل التصفية",
-  "app.components.FiltersModal.resetFilters": "إعادة تعيين عوامل التصفية",
   "app.components.FolderFolderCard.a11y_folderDescription": "وصف المجلد:",
   "app.components.FolderFolderCard.a11y_folderTitle": "عنوان المجلد:",
   "app.components.FolderFolderCard.archived": "مؤرشف",

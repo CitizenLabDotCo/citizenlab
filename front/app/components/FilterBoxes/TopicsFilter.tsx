@@ -17,8 +17,6 @@ import { ITopicData } from 'api/topics/types';
 
 import useLocalize from 'hooks/useLocalize';
 
-import T from 'components/T';
-
 import { ScreenReaderOnly } from 'utils/a11y';
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -51,6 +49,7 @@ const Topic = styled.button<{ selected: boolean | undefined }>`
   border-radius: ${(props) => props.theme.borderRadius};
   transition: all 80ms ease-out;
   word-break: break-word;
+  text-align: left;
 
   ${isRtl`
       text-align: right;
@@ -69,6 +68,14 @@ const Topic = styled.button<{ selected: boolean | undefined }>`
       background: ${({ theme }) => darken(0.15, theme.colors.tenantPrimary)};
     }
   }
+`;
+
+const Count = styled.span`
+  // Prevents the count from breaking into multiple lines
+  // when the topic title is too long.
+  // Given the filter boxes keep their width,
+  // flex-shrink: 0 is not needed.
+  white-space: nowrap;
 `;
 
 interface Props {
@@ -155,8 +162,10 @@ const TopicsFilter = memo<Props>(
                       className={`e2e-topic ${topicSelected ? 'selected' : ''}`}
                       selected={topicSelected}
                     >
-                      <T value={topic.attributes.title_multiloc} />
-                      <Box aria-hidden>{postCount}</Box>
+                      <Box as="span" mr="8px">
+                        {localize(topic.attributes.title_multiloc)}
+                      </Box>
+                      <Count aria-hidden>{postCount}</Count>
                       <ScreenReaderOnly>
                         {`${postCount} ${formatMessage(messages.inputs)}`}
                       </ScreenReaderOnly>

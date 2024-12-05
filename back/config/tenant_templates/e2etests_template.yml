@@ -166,6 +166,7 @@ models:
       color: '#04884C'
       description_multiloc: idea_statuses.implemented_description
       participation_method: ideation
+    -
       title_multiloc: idea_statuses.prescreening
       ordering: 0
       code: prescreening

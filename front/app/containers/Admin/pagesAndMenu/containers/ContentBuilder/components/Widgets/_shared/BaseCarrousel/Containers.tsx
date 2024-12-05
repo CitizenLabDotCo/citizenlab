@@ -34,6 +34,7 @@ export const CarrouselContainer = ({ children }: CarrouselContainerProps) => {
       py={DEFAULT_Y_PADDING}
       w="100%"
       display="flex"
+      overflowX="hidden"
       justifyContent="center"
     >
       <StyledBox w="100%" maxWidth="1200px" position="relative">
