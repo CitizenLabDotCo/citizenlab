@@ -39,6 +39,7 @@ const FiltersMapView = ({
         onClick={onClose}
         selectedIdeaFilters={selectedIdeaFilters}
         onReset={onClearFilters}
+        filtersActive={filtersProps.filtersActive}
       />
     </>
   );

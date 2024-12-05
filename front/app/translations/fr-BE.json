@@ -167,7 +167,6 @@
   "app.components.FilterBoxes.statusTitle": "Statut",
   "app.components.FilterBoxes.topicsTitle": "Étiquettes",
   "app.components.FiltersModal.filters": "Filtres",
-  "app.components.FiltersModal.resetFilters": "Réinitialiser",
   "app.components.FolderFolderCard.a11y_folderDescription": "Description du dossier :",
   "app.components.FolderFolderCard.a11y_folderTitle": "Titre du dossier :",
   "app.components.FolderFolderCard.archived": "Archivé",

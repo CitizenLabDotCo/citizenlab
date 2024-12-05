@@ -37,7 +37,7 @@ const TopBar = ({ onClose }: Props) => {
         a11y_buttonActionMessage={messages.a11y_closeFilterPanel}
         onClick={onClose}
         iconColor={colors.textSecondary}
-        iconColorOnHover={'#000'}
+        iconColorOnHover={colors.grey800}
       />
     </Box>
   );
