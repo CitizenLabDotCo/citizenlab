@@ -1,7 +1,7 @@
 namespace :embeddings do
   desc 'Populate embeddings for the ideas and proposals.'
   task :populate_ideas, %i[host project_slug] => [:environment] do |_t, args|
-    Apartment::Tenant.switch(args[:host].gsub('.', '_')) do
+    Apartment::Tenant.switch(args[:host].tr('.', '_')) do
       project = Project.find_by!(slug: args[:project_slug])
       project.ideas.order(likes_count: :desc).each do |idea|
         puts "Processing idea #{idea.slug}"
@@ -13,7 +13,7 @@ namespace :embeddings do
   desc 'Generate results'
   task :generate_results, %i[host project_slug] => [:environment] do |_t, args|
     results = []
-    Apartment::Tenant.switch(args[:host].gsub('.', '_')) do
+    Apartment::Tenant.switch(args[:host].tr('.', '_')) do
       project = Project.find_by!(slug: args[:project_slug])
       project.ideas.order(likes_count: :desc).each.with_index(1) do |idea, row_idx|
         puts "Processing idea #{idea.slug}"

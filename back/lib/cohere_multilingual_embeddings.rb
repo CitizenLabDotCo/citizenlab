@@ -1,7 +1,7 @@
 class CohereMultilingualEmbeddings
   def initialize(**params)
     params[:region] = ENV.fetch('AWS_EMBEDDINGS_REGION', nil) if !params.key? :region
-      
+
     raise 'No AWS region specified for Cohere Embed Multilingual model.' if !params[:region]
 
     @client = Aws::BedrockRuntime::Client.new(params)
@@ -13,8 +13,8 @@ class CohereMultilingualEmbeddings
     (str.size / 4.0).ceil
   end
 
-  def embedding(text, **params)
-    resp = @client.invoke_model invoke_params(text, **params)
+  def embedding(text)
+    resp = @client.invoke_model invoke_params(text)
     body_completion resp.body.string
   end
 
@@ -30,7 +30,7 @@ class CohereMultilingualEmbeddings
 
   private
 
-  def invoke_params(text, **params)
+  def invoke_params(text)
     json = {
       'texts' => [text],
       'input_type' => input_type,
