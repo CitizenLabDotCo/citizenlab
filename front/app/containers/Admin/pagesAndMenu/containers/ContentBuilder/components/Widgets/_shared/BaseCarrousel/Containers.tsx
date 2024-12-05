@@ -47,3 +47,8 @@ export const CarrouselContainer = ({ children }: CarrouselContainerProps) => {
 export const CardContainer = styled.div`
   scroll-snap-align: start;
 `;
+
+export const CardContainer2 = styled.div`
+  scroll-snap-align: start;
+  margin-right: 100vw;
+`;

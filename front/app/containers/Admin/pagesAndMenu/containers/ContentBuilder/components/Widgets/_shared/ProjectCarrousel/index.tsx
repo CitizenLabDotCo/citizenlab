@@ -16,7 +16,11 @@ import { MiniProjectData } from 'api/projects_mini/types';
 import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
 
 import { CARD_GAP } from '../BaseCarrousel/constants';
-import { CarrouselContainer, CardContainer } from '../BaseCarrousel/Containers';
+import {
+  CarrouselContainer,
+  CardContainer,
+  CardContainer2,
+} from '../BaseCarrousel/Containers';
 import Gradient from '../BaseCarrousel/Gradient';
 import HorizontalScroll from '../BaseCarrousel/HorizontalScroll';
 import ScrollButton from '../BaseCarrousel/ScrollButton';
@@ -128,7 +132,7 @@ const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
             </CardContainer>
           ))}
           {hasMore && (
-            <CardContainer>
+            <CardContainer2>
               <Box
                 ref={ref}
                 w={`${CARD_WIDTH}px`}
@@ -139,7 +143,7 @@ const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
               >
                 <Spinner />
               </Box>
-            </CardContainer>
+            </CardContainer2>
           )}
         </HorizontalScroll>
         {showPreviousButton && !isSmallerThanPhone && (
