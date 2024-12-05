@@ -131,4 +131,26 @@ export default defineMessages({
     defaultMessage:
       'Regenerate project preview link. This will invalidate the previous link.',
   },
+  shareLinkUpsellTooltip: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareLinkUpsellTooltip',
+    defaultMessage:
+      'Sharing private links is not included on your current plan. Talk to your Government Success Manager or admin to unlock it.',
+  },
+  regenenrateLinkModalTitle: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.regenenrateLinkModalTitle',
+    defaultMessage: 'Are you sure? This will disable the current link',
+  },
+  regenenrateLinkModalDescription: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.regenenrateLinkModalDescription',
+    defaultMessage:
+      'Old links will stop working but you can generate a new one at any time.',
+  },
+  regenerateYes: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.regenerateYes',
+    defaultMessage: 'Yes, refresh link',
+  },
+  regenerateNo: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.regenerateNo',
+    defaultMessage: 'Cancel',
+  },
 });
