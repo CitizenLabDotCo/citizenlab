@@ -1724,7 +1724,7 @@
   "app.containers.AdminPage.ProjectEdit.moderatorSearchFieldLabel1": "Wer sind die Projektmanager*innen?",
   "app.containers.AdminPage.ProjectEdit.moreDetails": "Mehr Eigenschaften",
   "app.containers.AdminPage.ProjectEdit.moreInfoModeratorLink": "https://support.citizenlab.co/articles/2672884",
-  "app.containers.AdminPage.ProjectEdit.newContribution": "Einen Beitrag hinzufügen\n",
+  "app.containers.AdminPage.ProjectEdit.newContribution": "Beitrag hinzufügen",
   "app.containers.AdminPage.ProjectEdit.newIdea": "Neuer Beitrag",
   "app.containers.AdminPage.ProjectEdit.newInitiative": "Initiative hinzufügen",
   "app.containers.AdminPage.ProjectEdit.newIssue": "Ein Problem hinzufügen",
