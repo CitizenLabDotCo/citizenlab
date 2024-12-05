@@ -167,7 +167,6 @@
   "app.components.FilterBoxes.statusTitle": "Tila",
   "app.components.FilterBoxes.topicsTitle": "Tunnisteet",
   "app.components.FiltersModal.filters": "Suodattimet",
-  "app.components.FiltersModal.resetFilters": "Nollaa suodattimet",
   "app.components.FolderFolderCard.a11y_folderDescription": "Kansion kuvaus:",
   "app.components.FolderFolderCard.a11y_folderTitle": "Kansion otsikko:",
   "app.components.FolderFolderCard.archived": "Arkistoitu",

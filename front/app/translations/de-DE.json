@@ -167,7 +167,6 @@
   "app.components.FilterBoxes.statusTitle": "Status",
   "app.components.FilterBoxes.topicsTitle": "Themen-Tags",
   "app.components.FiltersModal.filters": "Filter",
-  "app.components.FiltersModal.resetFilters": "Filter zurücksetzen",
   "app.components.FolderFolderCard.a11y_folderDescription": "Beschreibung des Ordners:",
   "app.components.FolderFolderCard.a11y_folderTitle": "Titel des Ordners:",
   "app.components.FolderFolderCard.archived": "Archiviert",

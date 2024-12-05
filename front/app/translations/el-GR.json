@@ -167,7 +167,6 @@
   "app.components.FilterBoxes.statusTitle": "Κατάσταση",
   "app.components.FilterBoxes.topicsTitle": "Ετικέτες",
   "app.components.FiltersModal.filters": "Φίλτρα",
-  "app.components.FiltersModal.resetFilters": "Επαναφορά φίλτρων",
   "app.components.FolderFolderCard.a11y_folderDescription": "Περιγραφή φακέλου:",
   "app.components.FolderFolderCard.a11y_folderTitle": "Τίτλος φακέλου:",
   "app.components.FolderFolderCard.archived": "Αρχειοθετημένος",

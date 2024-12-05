@@ -167,7 +167,6 @@
   "app.components.FilterBoxes.statusTitle": "Status",
   "app.components.FilterBoxes.topicsTitle": "Ämnen",
   "app.components.FiltersModal.filters": "Filter",
-  "app.components.FiltersModal.resetFilters": "Återställ filter",
   "app.components.FolderFolderCard.a11y_folderDescription": "Mappbeskrivning:",
   "app.components.FolderFolderCard.a11y_folderTitle": "Mapptitel:",
   "app.components.FolderFolderCard.archived": "Arkiverad",
