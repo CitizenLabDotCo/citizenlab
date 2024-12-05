@@ -373,6 +373,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.adminsOnly": "Somente administradores",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.anyoneWithLink": "Qualquer pessoa com o link pode interagir com o projeto preliminar",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approve": "Aprovar",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approvedBy": "Aprovado por {name}",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.archived": "Arquivado",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.draft": "Rascunho",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.everyone": "Todos",
