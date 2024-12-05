@@ -1,16 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
-import {
-  Box,
-  Spinner,
-  useBreakpoint,
-  Title,
-} from '@citizenlab/cl2-component-library';
+import { useBreakpoint, Title } from '@citizenlab/cl2-component-library';
 import useInstanceId from 'component-library/hooks/useInstanceId';
 import { debounce } from 'lodash-es';
-import { useInView } from 'react-intersection-observer';
 
-import { CARD_IMAGE_ASPECT_RATIO } from 'api/project_images/useProjectImages';
 import { MiniProjectData } from 'api/projects_mini/types';
 
 import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
@@ -19,6 +12,7 @@ import { CARD_GAP } from '../BaseCarrousel/constants';
 import { CarrouselContainer, CardContainer } from '../BaseCarrousel/Containers';
 import Gradient from '../BaseCarrousel/Gradient';
 import HorizontalScroll from '../BaseCarrousel/HorizontalScroll';
+import LoadMoreCard from '../BaseCarrousel/LoadMoreCard';
 import ScrollButton from '../BaseCarrousel/ScrollButton';
 import SkipButton from '../BaseCarrousel/SkipButton';
 import {
@@ -45,15 +39,6 @@ const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
   const isSmallerThanPhone = useBreakpoint('phone');
   const instanceId = useInstanceId();
   const endId = `end-carrousel-${instanceId}`;
-
-  const { ref } = useInView({
-    onChange: (inView) => {
-      if (inView && hasMore) {
-        onLoadMore();
-      }
-    },
-    threshold: 0.4,
-  });
 
   const handleButtonVisiblity = useCallback(
     (ref: HTMLDivElement, hasMore: boolean) => {
@@ -128,18 +113,11 @@ const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
             </CardContainer>
           ))}
           {hasMore && (
-            <CardContainer>
-              <Box
-                ref={ref}
-                w={`${CARD_WIDTH}px`}
-                h={`${CARD_WIDTH / CARD_IMAGE_ASPECT_RATIO}px`}
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-              >
-                <Spinner />
-              </Box>
-            </CardContainer>
+            <LoadMoreCard
+              width={CARD_WIDTH}
+              isLoading={false}
+              onClick={onLoadMore}
+            />
           )}
         </HorizontalScroll>
         {showPreviousButton && !isSmallerThanPhone && (
