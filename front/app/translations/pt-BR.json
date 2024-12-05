@@ -1580,6 +1580,7 @@
   "app.containers.Projects.noPastEvents": "Nenhum evento passado a exibir",
   "app.containers.Projects.noPhaseSelected": "Nenhuma fase selecionada",
   "app.containers.Projects.noUpcomingOrOngoingEvents": "Nenhum evento futuro está agendado no momento.",
+  "app.containers.Projects.offlineVotersTooltip": "Esse número não reflete nenhuma contagem de eleitores off-line.",
   "app.containers.Projects.options": "Opções",
   "app.containers.Projects.participants": "Participantes",
   "app.containers.Projects.participantsTooltip4": "Esse número também reflete os envios anônimos de pesquisas. Os envios anônimos de pesquisas são possíveis se as pesquisas forem abertas a todos (consulte a guia {accessRightsLink} para este projeto).",

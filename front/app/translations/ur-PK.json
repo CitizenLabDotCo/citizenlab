@@ -1580,6 +1580,7 @@
   "app.containers.Projects.noPastEvents": "ظاہر کرنے کے لیے کوئی ماضی کے واقعات نہیں ہیں۔",
   "app.containers.Projects.noPhaseSelected": "کوئی مرحلہ منتخب نہیں کیا گیا۔",
   "app.containers.Projects.noUpcomingOrOngoingEvents": "کوئی آنے والا یا جاری ایونٹ فی الحال شیڈول نہیں ہے۔",
+  "app.containers.Projects.offlineVotersTooltip": "یہ نمبر کسی بھی آف لائن ووٹر کی گنتی کی عکاسی نہیں کرتا ہے۔",
   "app.containers.Projects.options": "اختیارات",
   "app.containers.Projects.participants": "شرکاء",
   "app.containers.Projects.participantsTooltip4": "یہ نمبر گمنام سروے کی گذارشات کی بھی عکاسی کرتا ہے۔ اگر سروے ہر کسی کے لیے کھلے ہیں تو گمنام سروے کی گذارشات ممکن ہیں (اس پروجیکٹ کے لیے {accessRightsLink} ٹیب دیکھیں)۔",
