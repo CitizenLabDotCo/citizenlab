@@ -373,6 +373,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.adminsOnly": "Vain järjestelmänvalvojat",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.anyoneWithLink": "Kaikki linkin saaneet voivat olla vuorovaikutuksessa projektin luonnoksen kanssa",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approve": "Hyväksyä",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approvedBy": "Hyväksytty {name}",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.archived": "Arkistoitu",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.draft": "Luonnos",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.everyone": "Kaikki",
