@@ -376,7 +376,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.draft": "Udkast",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.everyone": "Alle",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.groups": "Grupper",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.offlineVoters": "Offline-vælgere",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.offlineVoters": "Offline stemmer",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participants": "{participantsCount, plural, one {1 deltager} other {{participantsCount} deltagere}}",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.attendees": "Deltagere i arrangementet",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.embeddedMethods": "Deltagere i indlejrede metoder (f.eks. eksterne undersøgelser)",
