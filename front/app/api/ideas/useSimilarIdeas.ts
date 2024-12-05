@@ -9,7 +9,7 @@ const fetchSimilarIdeas = ({ id }: { id?: string }) =>
   fetcher<IIdeas>({
     path: `/ideas/${id}/similarities`,
     action: 'get',
-    queryParams: { 'page[size]': 10 }, // Only return the 10 most similar ideas
+    // queryParams: { 'page[size]': 10 }, // Only return the 10 most similar ideas
   });
 
 const useSimilarIdeas = (id?: string) => {

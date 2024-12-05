@@ -2,14 +2,18 @@ import React from 'react';
 
 import styled from 'styled-components';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useIdeaJsonFormSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
 import useIdeaById from 'api/ideas/useIdeaById';
+import useAuthUser from 'api/me/useAuthUser';
 import usePhases from 'api/phases/usePhases';
 import { getCurrentPhase } from 'api/phases/utils';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
 import { isNilOrError } from 'utils/helperUtils';
+import { isAdmin } from 'utils/permissions/roles';
 import { isFieldEnabled } from 'utils/projectUtils';
 
 import Attachments from './Attachments';
@@ -53,6 +57,13 @@ const MetaInformation = ({
   const { data: idea } = useIdeaById(ideaId);
 
   const participationContext = getCurrentPhase(phases?.data);
+
+  const { data: appConfig } = useAppConfiguration();
+  const { data: authUser } = useAuthUser();
+  const similarIdeasEnabled =
+    useFeatureFlag({ name: 'similar_inputs' }) &&
+    (!appConfig?.data.attributes.settings.similar_inputs?.admins_only ||
+      isAdmin(authUser));
 
   if (!isNilOrError(locale) && ideaCustomFieldsSchema && idea) {
     const { anonymous } = idea.data.attributes;
@@ -99,7 +110,7 @@ const MetaInformation = ({
         {attachmentsEnabled && (
           <Attachments ideaId={ideaId} compact={compact} />
         )}
-        <SimilarIdeas ideaId={ideaId} />
+        {similarIdeasEnabled && <SimilarIdeas ideaId={ideaId} />}
       </Container>
     );
   }
