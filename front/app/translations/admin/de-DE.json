@@ -373,6 +373,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.adminsOnly": "Nur für Admins",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.anyoneWithLink": "Jeder, der den Link hat, kann mit dem Projektentwurf interagieren",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approve": "Freigeben",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approvedBy": "Genehmigt von {name}",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.archived": "Archiviert",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.draft": "Entwurf",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.everyone": "Jede Person",
