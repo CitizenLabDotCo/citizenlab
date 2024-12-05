@@ -38,7 +38,9 @@ class SimilarIdeasService
 
   def embeddings_text_title_body
     locale = Locale.new(idea.author&.locale || AppConfiguration.instance.settings('core', 'locales').first)
-    text = locale.resolve_multiloc(idea.title_multiloc) + "\n\n" + Nokogiri::HTML(locale.resolve_multiloc(idea.body_multiloc)).text
+    title_text = locale.resolve_multiloc(idea.title_multiloc)
+    body_text = Nokogiri::HTML(locale.resolve_multiloc(idea.body_multiloc)).text
+    text = "#{title_text}\n\n#{body_text}"
     text[...2048] # 2048 is the character limit for the text with Cohere multilingual embeddings
   end
 end
