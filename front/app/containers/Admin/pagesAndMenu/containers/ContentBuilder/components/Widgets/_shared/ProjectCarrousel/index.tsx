@@ -52,6 +52,8 @@ const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
         onLoadMore();
       }
     },
+    threshold: 0.4,
+    root: scrollContainerRef,
   });
 
   const handleButtonVisiblity = useCallback(
