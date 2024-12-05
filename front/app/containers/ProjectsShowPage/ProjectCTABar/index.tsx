@@ -26,33 +26,27 @@ const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
   const { data: project } = useProjectById(projectId);
 
   useEffect(() => {
-    let isMounted = true;
-    window.addEventListener(
-      'scroll',
-      () => {
-        const actionButtonElement = document.getElementById(
-          'participation-detail'
-        );
-        const actionButtonYOffset = actionButtonElement
-          ? actionButtonElement.getBoundingClientRect().top + window.pageYOffset
-          : undefined;
-        if (isMounted) {
-          setIsVisible(
-            !!(
-              actionButtonElement &&
-              actionButtonYOffset &&
-              window.pageYOffset >
-                actionButtonYOffset - (isSmallerThanTablet ? 14 : 30)
-            )
-          );
-        }
-      },
-      { passive: true }
-    );
-    return () => {
-      isMounted = false;
+    const handleScroll = () => {
+      const actionButtonElement = document.getElementById(
+        'participation-detail'
+      );
+      const actionButtonYOffset = actionButtonElement
+        ? actionButtonElement.getBoundingClientRect().top + window.pageYOffset
+        : undefined;
+      setIsVisible(
+        !!(
+          actionButtonElement &&
+          actionButtonYOffset &&
+          window.pageYOffset >
+            actionButtonYOffset - (isSmallerThanTablet ? 14 : 30)
+        )
+      );
     };
-  }, [projectId, isSmallerThanTablet]);
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [isSmallerThanTablet]);
 
   const participationMethod = project
     ? getParticipationMethod(project.data, phases?.data)
