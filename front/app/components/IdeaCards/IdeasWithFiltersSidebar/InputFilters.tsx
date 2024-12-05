@@ -75,9 +75,11 @@ const InputFilters = ({
         </Box>
       )}
       {showResetButton && (
-        <Box minHeight="40px" display="flex" ml="auto">
-          {/* Hold this vertical space in the UI so when the button appears, the UI doesn't shift down */}
-          {filtersActive && <ResetFiltersButton onClick={onClearFilters} />}
+        <Box ml="auto">
+          <ResetFiltersButton
+            onClick={onClearFilters}
+            filtersActive={filtersActive}
+          />
         </Box>
       )}
       <Box mb="20px">
