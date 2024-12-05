@@ -373,6 +373,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.adminsOnly": "Només administradors",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.anyoneWithLink": "Qualsevol persona que tingui l'enllaç pot interactuar amb l'esborrany del projecte",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approve": "Aprovar",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approvedBy": "Aprovat per {name}",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.archived": "Arxivat",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.draft": "Esborrany",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.everyone": "Tothom",
