@@ -373,6 +373,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.adminsOnly": "Administrateurs uniquement",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.anyoneWithLink": "Toute personne avec le lien peut interagir avec le projet comme s'il était publié",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approve": "Approuver",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approvedBy": "Approved by {name}",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.archived": "Archivé",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.draft": "Brouillon",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.everyone": "Tous les utilisateurs",
