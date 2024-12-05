@@ -51,6 +51,7 @@ class OmniauthCallbackController < ApplicationController
 
   def auth_callback(verify: false, authver_method: nil)
     auth = request.env['omniauth.auth']
+    request.env['omniauth.params'] = {} # TODO: JS REMOVE THIS LINE
     omniauth_params = request.env['omniauth.params']
     user_attrs = authver_method.profile_to_user_attrs(auth)
 
@@ -131,6 +132,7 @@ class OmniauthCallbackController < ApplicationController
   def signin_success_redirect
     omniauth_params = filter_omniauth_params
     omniauth_params['sso_flow'] = 'signin' if omniauth_params['sso_flow']
+    omniauth_params['sso_response'] = true
     redirect_to(
       add_uri_params(
         Frontend::UrlService.new.sso_return_url(pathname: sso_redirect_path, locale: Locale.new(@user.locale)),
@@ -141,7 +143,8 @@ class OmniauthCallbackController < ApplicationController
 
   def signup_success_redirect
     omniauth_params = filter_omniauth_params
-    omniauth_params['sso_flow'] = 'signup' if omniauth_params['sso_flow']
+    omniauth_params['sso_flow'] = 'signup' if omniauth_params['sso_flow'] # Probably do not need this if
+    omniauth_params['sso_response'] = true
     redirect_to(
       add_uri_params(
         Frontend::UrlService.new.sso_return_url(pathname: sso_redirect_path, locale: Locale.new(@user.locale)),

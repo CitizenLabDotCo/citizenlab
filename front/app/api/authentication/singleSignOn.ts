@@ -51,14 +51,14 @@ export const handleOnSSOClick = (
   verification: boolean,
   flow: 'signup' | 'signin'
 ) => {
-  // TODO: Fix this the next time the file is edited.
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  if (metaData?.successAction) {
+  if (metaData.successAction) {
     localStorage.setItem(
       'auth_success_action',
       JSON.stringify(metaData.successAction)
     );
   }
+  localStorage.setItem('auth_context', JSON.stringify(metaData.context));
+  localStorage.setItem('auth_path', window.location.pathname as RouteType);
 
   provider === 'id_vienna_saml'
     ? setHrefVienna()

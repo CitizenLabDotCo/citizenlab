@@ -14,6 +14,7 @@ import { invalidateAllActionDescriptors } from 'containers/Authentication/useSte
 
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import { isNilOrError } from 'utils/helperUtils';
+import clHistory from 'utils/cl-router/history';
 
 import {
   triggerAuthenticationFlow$,
@@ -29,6 +30,7 @@ import {
 import useAnySSOEnabled from '../useAnySSOEnabled';
 
 import { getStepConfig } from './stepConfig';
+import { RouteType } from 'routes';
 
 let initialized = false;
 
@@ -288,6 +290,12 @@ export default function useSteps() {
       const contextFromLocalStorage = localStorage.getItem('auth_context');
       localStorage.removeItem('auth_context');
 
+      // Check if there is a path in local storage
+      const pathFromLocalStorage = localStorage.getItem(
+        'auth_path'
+      ) as RouteType;
+      localStorage.removeItem('auth_path');
+
       const context = contextFromLocalStorage
         ? JSON.parse(contextFromLocalStorage)
         : {
@@ -308,8 +316,13 @@ export default function useSteps() {
       updateState({ flow });
       transition(currentStep, 'RESUME_FLOW_AFTER_SSO')(flow);
 
-      // Remove query string from URL as params already been captured
-      window.history.replaceState(null, '', pathname);
+      // Check that the path is the same as the one stored in local storage
+      if (pathFromLocalStorage && pathname !== pathFromLocalStorage) {
+        clHistory.push(pathFromLocalStorage);
+      } else {
+        // Remove query string from URL as params already been captured
+        window.history.replaceState(null, '', pathname);
+      }
     }
   }, [
     pathname,
