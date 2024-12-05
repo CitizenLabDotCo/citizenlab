@@ -8,19 +8,19 @@ class SimilarIdeasService
     @idea = idea
   end
 
-  def similar_ideas(scope: Idea, limit: DEFAULT_NUM_SIMILAR_IDEAS, embedded_attributes: DEFAULT_EMBEDDED_ATTRIBUTES)
+  def similar_ideas(scope: nil, limit: DEFAULT_NUM_SIMILAR_IDEAS, embedded_attributes: DEFAULT_EMBEDDED_ATTRIBUTES)
     embedding = idea.embeddings_similarities.where(embedded_attributes:).first
-    return scope.none if !embedding
+    return (scope || Idea).none if !embedding
 
     similarities = embedding
       .nearest_neighbors(:embedding, distance: 'cosine')
-      .where(embeddable: scope)
       .where.not(embeddable_id: idea.id)
       .where(embedded_attributes:)
+    similarities = similarities.where(embeddable: scope) if scope
     similarities = similarities.limit(limit) if limit
 
     ids = similarities.map(&:embeddable_id)
-    scope.where(id: ids).order_as_specified(id: ids)
+    (scope || Idea).where(id: ids).order_as_specified(id: ids)
   end
 
   def upsert_embedding!(embedded_attributes: DEFAULT_EMBEDDED_ATTRIBUTES)
