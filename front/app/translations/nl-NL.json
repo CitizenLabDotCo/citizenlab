@@ -167,7 +167,6 @@
   "app.components.FilterBoxes.statusTitle": "Status",
   "app.components.FilterBoxes.topicsTitle": "Tags",
   "app.components.FiltersModal.filters": "Filters",
-  "app.components.FiltersModal.resetFilters": "Reset de filters",
   "app.components.FolderFolderCard.a11y_folderDescription": "Mapbeschrijving:",
   "app.components.FolderFolderCard.a11y_folderTitle": "Maptitel:",
   "app.components.FolderFolderCard.archived": "Afgerond",
