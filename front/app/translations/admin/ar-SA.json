@@ -373,6 +373,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.adminsOnly": "المشرفين فقط",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.anyoneWithLink": "يمكن لأي شخص لديه الرابط التفاعل مع مسودة المشروع",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approve": "يعتمد",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approvedBy": "تمت الموافقة عليه من قبل {name}",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.archived": "مؤرشف",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.draft": "مسودة",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.everyone": "الجميع",
