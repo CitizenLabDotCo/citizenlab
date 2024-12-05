@@ -373,6 +373,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.adminsOnly": "Admins only",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.anyoneWithLink": "Anyone with the link can interact with the draft project",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approve": "Jóváhagyni",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approvedBy": "Jóváhagyta: {name}",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.archived": "Archived",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.draft": "Draft",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.everyone": "Everyone",
