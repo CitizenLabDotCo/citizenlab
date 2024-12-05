@@ -144,7 +144,7 @@ class ProjectPolicy < ApplicationPolicy
         voting_term_plural_multiloc: CL2_SUPPORTED_LOCALES,
         area_ids: [],
         topic_ids: [],
-        header_bg_alt_text_multiloc: CL2_SUPPORTED_LOCALES,
+        header_bg_alt_text_multiloc: CL2_SUPPORTED_LOCALES
       }
     ]
 
