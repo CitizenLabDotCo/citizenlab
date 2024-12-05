@@ -373,6 +373,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.adminsOnly": "Samo za administratore",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.anyoneWithLink": "Svatko s vezom može komunicirati s nacrtom projekta",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approve": "Odobriti",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approvedBy": "Odobrio {name}",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.archived": "Arhivirano",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.draft": "Nacrt",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.everyone": "Svatko",
