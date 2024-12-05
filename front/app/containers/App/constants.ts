@@ -210,7 +210,7 @@ export const appLocalesMomentPairs = {
   'it-IT': 'it',
   'kl-GL': 'da',
   'lb-LU': 'lb',
-  'lt-LT': 'Lietuvių',
+  'lt-LT': 'lt',
   'lv-LV': 'lv',
   mi: 'mi',
   'nb-NO': 'nb',
