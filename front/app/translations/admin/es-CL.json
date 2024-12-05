@@ -373,6 +373,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.adminsOnly": "Sólo administradores",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.anyoneWithLink": "Cualquiera que tenga el enlace puede interactuar con el borrador del proyecto",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approve": "Aprobado",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approvedBy": "Aprobado por {name}",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.archived": "Archivado",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.draft": "Borrador",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.everyone": "Todo el mundo",
