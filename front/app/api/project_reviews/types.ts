@@ -18,7 +18,7 @@ export type ProjectReviewData = {
   relationships: {
     project: { data: IRelationship };
     requester: { data: IRelationship };
-    reviewer?: { data: IRelationship };
+    reviewer: { data?: IRelationship } | null;
   };
 };
 

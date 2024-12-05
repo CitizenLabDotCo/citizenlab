@@ -20,16 +20,22 @@ const projectReviewData: ProjectReviewData = {
   },
   relationships: {
     project: {
-      id: 'id',
-      type: 'projects',
+      data: {
+        id: 'id',
+        type: 'project',
+      },
     },
-    user: {
-      id: 'id',
-      type: 'users',
+    requester: {
+      data: {
+        id: 'id',
+        type: 'user',
+      },
     },
-    approver: {
-      id: 'id',
-      type: 'users',
+    reviewer: {
+      data: {
+        id: 'id',
+        type: 'user',
+      },
     },
   },
 };

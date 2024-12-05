@@ -43,7 +43,7 @@ const ProjectHeader = ({ projectId }: Props) => {
   const { data: project } = useProjectById(projectId);
   const { data: projectReview } = useProjectReview(projectId);
   const { data: approver } = useUserById(
-    projectReview?.data.relationships.reviewer?.data.id
+    projectReview?.data.relationships.reviewer?.data?.id
   );
 
   const { formatMessage } = useIntl();
