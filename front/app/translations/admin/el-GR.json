@@ -373,6 +373,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.adminsOnly": "Μόνο διαχειριστές",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.anyoneWithLink": "Οποιοσδήποτε έχει τον σύνδεσμο μπορεί να αλληλεπιδράσει με το σχέδιο έργου",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approve": "Έγκριση",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approvedBy": "Εγκρίθηκε από το {name}",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.archived": "Αρχειοθετημένο",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.draft": "Σχέδιο",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.everyone": "Όλοι",
