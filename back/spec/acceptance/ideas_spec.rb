@@ -416,11 +416,7 @@ resource 'Ideas' do
       end
 
       describe do
-        before do
-          10.times do
-            create(:embeddings_similarity)
-          end
-        end
+        before { create_list(:embeddings_similarity, 10) }
 
         example 'Do not return more than 10 inputs', document: false do
           do_request

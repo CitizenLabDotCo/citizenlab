@@ -103,7 +103,7 @@ describe SideFxIdeaService do
       expect(phase2.reload.manual_votes_count).to eq 3
     end
 
-    it "enqueues an upsert embedding job when the similar_inputs feature is turned on" do
+    it 'enqueues an upsert embedding job when the similar_inputs feature is turned on' do
       SettingsService.new.activate_feature! 'similar_inputs'
       idea = create(:idea, author: user)
       expect { service.after_create(idea, user) }
@@ -317,7 +317,7 @@ describe SideFxIdeaService do
       expect(phase.reload.manual_votes_count).to eq 2
     end
 
-    it "enqueues an upsert embedding job when the similar_inputs feature is turned on and the title changed" do
+    it 'enqueues an upsert embedding job when the similar_inputs feature is turned on and the title changed' do
       SettingsService.new.activate_feature! 'similar_inputs'
       idea = create(:idea, author: user)
       idea.update!(title_multiloc: { en: 'changed' })
@@ -327,7 +327,7 @@ describe SideFxIdeaService do
         .exactly(1).times
     end
 
-    it "enqueues an upsert embedding job when the similar_inputs feature is turned on and the body changed" do
+    it 'enqueues an upsert embedding job when the similar_inputs feature is turned on and the body changed' do
       SettingsService.new.activate_feature! 'similar_inputs'
       idea = create(:idea, author: user)
       idea.update!(body_multiloc: { en: 'changed' })
