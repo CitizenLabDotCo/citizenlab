@@ -373,6 +373,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.adminsOnly": "Kun administratorer",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.anyoneWithLink": "Alle med linket kan interagere med projektudkastet",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approve": "Godkend",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approvedBy": "Godkendt af {name}",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.archived": "Arkiveret",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.draft": "Udkast",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.everyone": "Alle",
