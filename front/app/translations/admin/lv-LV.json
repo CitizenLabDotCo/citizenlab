@@ -373,6 +373,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.adminsOnly": "Tikai administratori",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.anyoneWithLink": "Ikviens, kam ir saite, var mijiedarboties ar projekta projektu.",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approve": "Apstiprināt",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approvedBy": "Apstiprināts ar {name}",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.archived": "Arhivēts",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.draft": "Projekts",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.everyone": "Ikviens",
