@@ -11,15 +11,17 @@ interface Props {
 
 const LoadMoreCard = ({ width, cardRef }: Props) => {
   return (
-    <Box
-      ref={cardRef}
-      w={`${width}px`}
-      h={`${width / CARD_IMAGE_ASPECT_RATIO}px`}
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-    >
-      <Spinner />
+    <Box>
+      <Box
+        ref={cardRef}
+        w={`${width}px`}
+        h={`${width / CARD_IMAGE_ASPECT_RATIO}px`}
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Spinner />
+      </Box>
     </Box>
   );
 };
