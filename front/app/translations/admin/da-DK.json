@@ -2318,6 +2318,7 @@
   "app.containers.AdminPage.projects.all.onlyAdminsCanCreateFolders": "Kun administratorer kan oprette projektmapper.",
   "app.containers.AdminPage.projects.all.onlyAdminsCanCreateProjects1": "Kun administratorer og mappeadministratorer kan oprette projekter.",
   "app.containers.AdminPage.projects.all.projectsAndFolders": "Projekter og mapper",
+  "app.containers.AdminPage.projects.all.publishedTab": "Offentliggjort",
   "app.containers.AdminPage.projects.all.searchProjects": "Søg i projekter",
   "app.containers.AdminPage.projects.all.yourProjects": "Dine projekter",
   "app.containers.AdminPage.projects.project.analysis.AIAnalysis": "AI-analyse",

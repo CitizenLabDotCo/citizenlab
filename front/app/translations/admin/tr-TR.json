@@ -2318,6 +2318,7 @@
   "app.containers.AdminPage.projects.all.onlyAdminsCanCreateFolders": "Yalnızca yöneticiler proje klasörleri oluşturabilir.",
   "app.containers.AdminPage.projects.all.onlyAdminsCanCreateProjects1": "Yalnızca yöneticiler ve klasör yöneticileri proje oluşturabilir.",
   "app.containers.AdminPage.projects.all.projectsAndFolders": "Projeler ve klasörler",
+  "app.containers.AdminPage.projects.all.publishedTab": "Yayınlandı",
   "app.containers.AdminPage.projects.all.searchProjects": "Proje arama",
   "app.containers.AdminPage.projects.all.yourProjects": "Projeleriniz",
   "app.containers.AdminPage.projects.project.analysis.AIAnalysis": "Yapay Zeka Analizi",

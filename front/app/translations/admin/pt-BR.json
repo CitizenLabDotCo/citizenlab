@@ -2318,6 +2318,7 @@
   "app.containers.AdminPage.projects.all.onlyAdminsCanCreateFolders": "Somente os administradores podem criar pastas de projeto.",
   "app.containers.AdminPage.projects.all.onlyAdminsCanCreateProjects1": "Somente administradores e gerentes de pasta podem criar projetos.",
   "app.containers.AdminPage.projects.all.projectsAndFolders": "Projetos e pastas",
+  "app.containers.AdminPage.projects.all.publishedTab": "Publicado",
   "app.containers.AdminPage.projects.all.searchProjects": "Projetos de pesquisa",
   "app.containers.AdminPage.projects.all.yourProjects": "Seus projetos",
   "app.containers.AdminPage.projects.project.analysis.AIAnalysis": "Análise de IA",

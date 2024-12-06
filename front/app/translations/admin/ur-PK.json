@@ -2318,6 +2318,7 @@
   "app.containers.AdminPage.projects.all.onlyAdminsCanCreateFolders": "صرف ایڈمن ہی پروجیکٹ فولڈر بنا سکتے ہیں۔",
   "app.containers.AdminPage.projects.all.onlyAdminsCanCreateProjects1": "صرف منتظمین اور فولڈر مینیجر ہی پروجیکٹ بنا سکتے ہیں۔",
   "app.containers.AdminPage.projects.all.projectsAndFolders": "پروجیکٹس اور فولڈرز",
+  "app.containers.AdminPage.projects.all.publishedTab": "شائع شدہ",
   "app.containers.AdminPage.projects.all.searchProjects": "پروجیکٹس تلاش کریں۔",
   "app.containers.AdminPage.projects.all.yourProjects": "آپ کے پروجیکٹس",
   "app.containers.AdminPage.projects.project.analysis.AIAnalysis": "AI تجزیہ",

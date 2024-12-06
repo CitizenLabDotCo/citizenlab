@@ -269,7 +269,7 @@ sv:
       cta_reply_to: 'Visa kommentar från %{firstName}'
       event_description: '%{authorNameFull} nämnde dig i en intern kommentar.'
       subject: '%{firstName} nämnde dig i en intern kommentar.'
-      main_header: '%{authorNameFirst} nämnde dig i en intern kommentar.'
+      main_header: '%{firstName} nämnde dig i en intern kommentar.'
       preheader: '%{authorNameFull} nämnde dig i en intern kommentar.'
     moderator_digest:
       subject: 'Din veckovisa projektledarrapport på %{project_title}'
