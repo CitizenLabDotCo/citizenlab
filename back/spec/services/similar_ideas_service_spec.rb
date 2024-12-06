@@ -89,6 +89,7 @@ describe SimilarIdeasService do
       }
       create(:idea, title_multiloc:, body_multiloc:)
     end
+
     it 'returns the title and body text without HTML tags' do
       expect(service.embeddings_text).to eq "Pizza\n\nPizza is a yeasted flatbread typically topped with tomato sauce and cheese and baked in an oven."
     end
