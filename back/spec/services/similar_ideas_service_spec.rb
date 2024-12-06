@@ -84,12 +84,12 @@ describe SimilarIdeasService do
     let(:idea) do
       title_multiloc = { 'en' => 'Pizza' }
       body_multiloc = {
-        'en' => 'Pizza is a yeasted flatbread typically topped with tomato sauce and cheese and baked in an oven.',
-        'fr-BE' => 'Pizza est un pain plat levé typiquement recouvert de sauce tomate et de fromage et cuit au four.'
+        'en' => 'Pizza is a <b>yeasted flatbread</b> typically topped with tomato sauce and cheese and baked in an oven.',
+        'fr-BE' => '<b>Pizza</b> est un pain plat levé typiquement recouvert de sauce tomate et de fromage et cuit au four.'
       }
       create(:idea, title_multiloc:, body_multiloc:)
     end
-    it 'returns the title and body text' do
+    it 'returns the title and body text without HTML tags' do
       expect(service.embeddings_text).to eq "Pizza\n\nPizza is a yeasted flatbread typically topped with tomato sauce and cheese and baked in an oven."
     end
 

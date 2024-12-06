@@ -17,7 +17,7 @@ class SimilarIdeasService
     embeddings_pgvector = "[#{embedding.embedding.join(',')}]"
     similarities = EmbeddingsSimilarity
       .where.not(embedding: nil)
-      .order(ActiveRecord::Base::sanitize_sql_for_order(Arel.sql("\"embedding\" <=> '#{embeddings_pgvector}'")))
+      .order(ActiveRecord::Base.sanitize_sql_for_order(Arel.sql("\"embedding\" <=> '#{embeddings_pgvector}'")))
     similarities = similarities.where('"embedding" <=> :embeddings_pgvector < :distance_threshold', embeddings_pgvector:, distance_threshold:) if distance_threshold
 
     similarities = similarities
