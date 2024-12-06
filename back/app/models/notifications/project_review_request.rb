@@ -69,14 +69,31 @@
 #  fk_rails_...  (spam_report_id => spam_reports.id)
 #
 module Notifications
-  class InternalComments::InternalCommentOnYourInternalComment < Notification
-    validates :initiating_user, :internal_comment, :post, presence: true
+  class ProjectReviewRequest < Notification
+    validates :project_review, presence: true
 
-    ACTIVITY_TRIGGERS = { 'InternalComment' => { 'created' => true } }
-    EVENT_NAME = 'Internal comment on your internal comment'
+    ACTIVITY_TRIGGERS = { 'ProjectReview' => { 'created' => true } }
+    EVENT_NAME = 'Project review request'
 
     def self.make_notifications_on(activity)
-      InternalComments::InternalCommentOnYourInternalCommentBuilder.new(activity).build_notifications
+      project_review = activity.item
+
+      reviewers = if project_review.reviewer
+        [project_review.reviewer]
+      else
+        reviewers = User.project_reviewers
+        folder = project_review.project.folder
+        reviewers = reviewers.or(folder.moderators) if folder
+        reviewers.presence || User.admin.not_citizenlab_member
+      end
+
+      reviewers.map do |reviewer|
+        new(
+          recipient: reviewer,
+          initiating_user: project_review.requester,
+          project_review: project_review
+        )
+      end
     end
   end
 end
