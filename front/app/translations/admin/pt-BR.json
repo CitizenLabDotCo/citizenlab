@@ -1849,7 +1849,6 @@
   "app.containers.AdminPage.ProjectEdit.topicLabel": "Tópicos",
   "app.containers.AdminPage.ProjectEdit.topicLabelTooltip": "Selecione {topicsCopy} para este projeto. Os usuários podem utilizá-los para filtrar projetos por.",
   "app.containers.AdminPage.ProjectEdit.totalBudget": "Orçamento total",
-  "app.containers.AdminPage.ProjectEdit.totalBudgetExplanation": "Por padrão, o seu orçamento é definido usando a sua moeda local. Você pode mudar a moeda da sua plataforma para 'créditos' ou 'fichas' entrando em contato com o nosso centro de suporte.",
   "app.containers.AdminPage.ProjectEdit.trendingSortingMethod": "Tendência",
   "app.containers.AdminPage.ProjectEdit.typeform": "Typeform",
   "app.containers.AdminPage.ProjectEdit.unassigned": "Não atribuído",
