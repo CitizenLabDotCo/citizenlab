@@ -381,7 +381,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.embeddedMethods": "ਏਮਬੇਡ ਕੀਤੇ ਤਰੀਕਿਆਂ ਵਿੱਚ ਭਾਗੀਦਾਰ (ਉਦਾਹਰਨ ਲਈ, ਬਾਹਰੀ ਸਰਵੇਖਣ)",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.followers": "ਇੱਕ ਪ੍ਰੋਜੈਕਟ ਦੇ ਪੈਰੋਕਾਰ",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.note": "ਨੋਟ: ਅਗਿਆਤ ਜਾਂ ਖੁੱਲੀ ਭਾਗੀਦਾਰੀ ਅਨੁਮਤੀਆਂ ਨੂੰ ਸਮਰੱਥ ਬਣਾਉਣਾ ਉਪਭੋਗਤਾਵਾਂ ਨੂੰ ਕਈ ਵਾਰ ਹਿੱਸਾ ਲੈਣ ਦੀ ਆਗਿਆ ਦੇ ਸਕਦਾ ਹੈ, ਜਿਸ ਨਾਲ ਉਪਭੋਗਤਾ ਡੇਟਾ ਨੂੰ ਗੁੰਮਰਾਹਕੁੰਨ ਜਾਂ ਅਧੂਰਾ ਬਣਾਇਆ ਜਾ ਸਕਦਾ ਹੈ।",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsExclusionTitle": "ਭਾਗੀਦਾਰਾਂ ਵਿੱਚ ਸ਼ਾਮਲ ਨਹੀਂ ਹਨ:",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsInfoTitle": "ਭਾਗੀਦਾਰਾਂ ਵਿੱਚ ਸ਼ਾਮਲ ਹਨ:",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.users": "ਗੋ ਵੋਕਲ ਵਿਧੀਆਂ ਨਾਲ ਗੱਲਬਾਤ ਕਰਨ ਵਾਲੇ ਉਪਭੋਗਤਾ",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.projectSettings": "ਪ੍ਰੋਜੈਕਟ ਸੈਟਿੰਗਾਂ",

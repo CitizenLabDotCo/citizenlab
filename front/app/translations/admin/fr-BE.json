@@ -381,7 +381,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.embeddedMethods": "Les utilisateurs interagissant avec les méthodes intégrées (par exemple, enquêtes externes)",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.followers": "Les followers d'un projet",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.note": "Remarque : L'activation de la participation anonyme ou sans compte utilisateur peut permettre aux utilisateurs de participer plusieurs fois, ce qui pourrait conduire des résultats trompeurs ou non représentatifs.",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsExclusionTitle": "Les participants n'incluent pas :",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsInfoTitle": "Les participants incluent :",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.users": "Utilisateurs interagissant avec les méthodes natives de Go Vocal",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.projectSettings": "Paramètres du projet",
