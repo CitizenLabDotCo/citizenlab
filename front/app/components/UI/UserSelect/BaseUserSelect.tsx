@@ -3,6 +3,7 @@ import React, { useMemo, FC, useEffect } from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import { debounce } from 'lodash-es';
 import ReactSelect from 'react-select';
+import { useTheme } from 'styled-components';
 
 import { IUserData } from 'api/users/types';
 
@@ -41,6 +42,7 @@ const BaseUserSelect = ({
   onMenuScrollToBottom,
   onChange,
 }: Props) => {
+  const theme = useTheme();
   const handleInputChange = useMemo(() => {
     return debounce((searchTerm: string) => {
       onInputChange(searchTerm);
@@ -82,7 +84,7 @@ const BaseUserSelect = ({
         getOptionValue={getOptionId}
         getOptionLabel={getOptionLabel}
         menuPlacement="auto"
-        styles={selectStyles()}
+        styles={selectStyles(theme)}
         filterOption={() => true}
         components={components}
         onMenuOpen={onMenuOpen}

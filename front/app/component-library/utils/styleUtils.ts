@@ -164,7 +164,6 @@ export const defaultStyles = {
   boxShadow: '0px 2px 4px -1px rgba(0,0,0,0.06)',
   boxShadowHoverSmall: '0px 2px 4px -1px rgba(0,0,0,0.2)',
   boxShadowHoverBig: '0px 4px 12px -1px rgba(0,0,0,0.12)',
-  boxShadowFocused: `0 0 0 3px ${transparentize(0.65, colors.textSecondary)}`,
   boxShadowError: `0 0 0 3px ${transparentize(0.65, colors.red600)}`,
   inputPadding: '12px',
 };
@@ -189,8 +188,7 @@ export const defaultCardHoverStyle = css`
 `;
 
 export const defaultOutline = css`
-  border-color: ${colors.black};
-  box-shadow: ${defaultStyles.boxShadowFocused};
+  border: 2px solid ${(props) => props.theme.colors.tenantPrimary};
 `;
 
 export const defaultInputStyle = css`

@@ -3,6 +3,7 @@ import React, { useMemo, FC, useEffect } from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import { debounce } from 'lodash-es';
 import ReactSelect from 'react-select';
+import { useTheme } from 'styled-components';
 
 import { IIdeaData } from 'api/ideas/types';
 
@@ -37,6 +38,7 @@ const BaseIdeaSelect = ({
   onMenuScrollToBottom,
   onChange,
 }: Props) => {
+  const theme = useTheme();
   const handleInputChange = useMemo(() => {
     return debounce((searchTerm: string) => {
       onInputChange(searchTerm);
@@ -77,7 +79,7 @@ const BaseIdeaSelect = ({
         getOptionValue={getOptionId}
         getOptionLabel={getOptionLabel}
         menuPlacement="auto"
-        styles={selectStyles()}
+        styles={selectStyles(theme)}
         filterOption={() => true}
         components={components}
         onInputChange={handleInputChange}
