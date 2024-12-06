@@ -1849,7 +1849,6 @@
   "app.containers.AdminPage.ProjectEdit.topicLabel": "Tags",
   "app.containers.AdminPage.ProjectEdit.topicLabelTooltip": "Seleccioneu {topicsCopy} per a aquest projecte. Els usuaris poden utilitzar-los per filtrar projectes.",
   "app.containers.AdminPage.ProjectEdit.totalBudget": "Pressupost total",
-  "app.containers.AdminPage.ProjectEdit.totalBudgetExplanation": "De manera predeterminada, el vostre pressupost s'estableix amb la vostra moneda local. Podeu canviar la moneda de la vostra plataforma a \"crèdits\" o \"fitxes\" posant-vos en contacte amb el nostre centre d'assistència.",
   "app.containers.AdminPage.ProjectEdit.trendingSortingMethod": "Trending",
   "app.containers.AdminPage.ProjectEdit.typeform": "Tipus de forma",
   "app.containers.AdminPage.ProjectEdit.unassigned": "Unassigned",
