@@ -19,11 +19,13 @@ namespace :homepage do
 
       # All existing template tenants have the legacy projects widget,
       # but this may be useful if we fail to update all and need to re-run the script
-      next unless craftjs['ROOT']['nodes'].include?('PROJECTS')
+      next unless craftjs.any? { |_key, value| value['type'] && value['type']['resolvedName'] == 'Projects' }
 
       puts "Updating homepage layout for tenant #{tenant.host}...\n\n"
 
-      projects_index = craftjs['ROOT']['nodes'].index('PROJECTS')
+      projects_key = craftjs.keys.find { |key| craftjs[key]['type'] && craftjs[key]['type']['resolvedName'] == 'Projects' }
+
+      projects_index = craftjs['ROOT']['nodes'].index(projects_key)
       craftjs['ROOT']['nodes'].delete_at(projects_index) # Remove the old widget name from the nodes array
 
       # Insert the new widget names in reverse order, at the index of the legacy projects widget
@@ -39,7 +41,7 @@ namespace :homepage do
       craftjs['OPEN_TO_PARTICIPATION'] = utils.open_to(locales)
       craftjs['FINISHED_OR_ARCHIVED'] = utils.finished(locales)
 
-      craftjs.delete('PROJECTS') # Remove the old widget's craftjs
+      craftjs.delete(projects_key) # Remove the old widget's craftjs
 
       if layout.update(craftjs_json: craftjs)
         reporter.add_change(
