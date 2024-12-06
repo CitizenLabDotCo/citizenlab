@@ -180,7 +180,6 @@ const TopicsFilter = memo<Props>(
                 p="0px"
                 mt="12px"
                 fontSize="s"
-                id="e2e-show-all-tags-button"
               >
                 {formatMessage(
                   showFullList
