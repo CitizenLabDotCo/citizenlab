@@ -52,6 +52,7 @@ export const ModalContentContainer = styled.div<{
 const StyledCloseIconButton = styled(CloseIconButton)`
   position: absolute;
   top: 12px;
+  right: 24px;
   z-index: 2000;
   border-radius: 50%;
   border: solid 1px transparent;
@@ -485,6 +486,12 @@ const Modal: React.FC<Props> = ({
           >
             {!niceHeader && (
               <>
+                {header && (
+                  <HeaderContainer>
+                    <HeaderTitle id="modal-header">{header}</HeaderTitle>
+                  </HeaderContainer>
+                )}
+
                 {!hideCloseButton && (
                   <StyledCloseIconButton
                     className="e2e-modal-close-button"
@@ -493,12 +500,6 @@ const Modal: React.FC<Props> = ({
                     iconColorOnHover={colors.grey800}
                     a11y_buttonActionMessage={messages.closeWindow}
                   />
-                )}
-
-                {header && (
-                  <HeaderContainer>
-                    <HeaderTitle id="modal-header">{header}</HeaderTitle>
-                  </HeaderContainer>
                 )}
               </>
             )}
