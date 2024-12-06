@@ -55,7 +55,7 @@ const InputFilters = ({
 }: Props) => {
   const { data: phase } = usePhase(phaseId);
   const participationMethod =
-    phase?.data.attributes.participation_method || 'ideation'; // Ideation used ass fallback here for All Ideas page.
+    phase?.data.attributes.participation_method || 'ideation'; // Ideation used as fallback here for All Ideas page.
   const isProposalsOrIdeation =
     participationMethod === 'ideation' || participationMethod === 'proposals';
 
