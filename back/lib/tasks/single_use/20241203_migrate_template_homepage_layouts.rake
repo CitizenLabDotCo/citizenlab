@@ -8,19 +8,18 @@ namespace :homepage do
     Rails.logger = dev_null
     ActiveRecord::Base.logger = dev_null
 
-    reporter = ScriptReporter.new
+    # reporter = ScriptReporter.new
     Tenant.safe_switch_each do |tenant|
       puts "\nChecking tenant #{tenant.host} \n\n"
       next unless tenant.host.include?('template')
 
       puts "Updating homepage layout for tenant #{tenant.host}...\n\n"
 
-      locales = AppConfiguration.instance.settings('core', 'locales')
       layout = ContentBuilder::Layout.find_by(code: 'homepage')
       craftjs = layout.craftjs_json
 
-      # All existing template tenants have the legacy projects widget, but this may be useful if we fail to update
-      # all and need to re-run the script
+      # All existing template tenants have the legacy projects widget,
+      # but this may be useful if we fail to update all and need to re-run the script
       next unless craftjs['ROOT']['nodes'].include?('PROJECTS')
 
       projects_index = craftjs['ROOT']['nodes'].index('PROJECTS')
@@ -31,6 +30,7 @@ namespace :homepage do
         craftjs['ROOT']['nodes'].insert(projects_index, name)
       end
 
+      locales = AppConfiguration.instance.settings('core', 'locales')
       utils = Utils120324.new
 
       # Insert the craftjs for the new widgets
@@ -39,8 +39,6 @@ namespace :homepage do
       craftjs['FINISHED_OR_ARCHIVED'] = utils.finished(locales)
 
       craftjs.delete('PROJECTS') # Remove the old widget's craftjs
-
-      # puts JSON.pretty_generate(craftjs)
 
       layout.update!(craftjs_json: craftjs)
     end
