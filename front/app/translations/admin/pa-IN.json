@@ -1849,7 +1849,6 @@
   "app.containers.AdminPage.ProjectEdit.topicLabel": "ਟੈਗਸ",
   "app.containers.AdminPage.ProjectEdit.topicLabelTooltip": "ਇਸ ਪ੍ਰੋਜੈਕਟ ਲਈ {topicsCopy} ਚੁਣੋ। ਉਪਭੋਗਤਾ ਇਹਨਾਂ ਦੁਆਰਾ ਪ੍ਰੋਜੈਕਟਾਂ ਨੂੰ ਫਿਲਟਰ ਕਰਨ ਲਈ ਵਰਤ ਸਕਦੇ ਹਨ.",
   "app.containers.AdminPage.ProjectEdit.totalBudget": "ਕੁੱਲ ਬਜਟ",
-  "app.containers.AdminPage.ProjectEdit.totalBudgetExplanation": "ਮੂਲ ਰੂਪ ਵਿੱਚ, ਤੁਹਾਡਾ ਬਜਟ ਤੁਹਾਡੀ ਸਥਾਨਕ ਮੁਦਰਾ ਦੀ ਵਰਤੋਂ ਕਰਕੇ ਸੈੱਟ ਕੀਤਾ ਜਾਂਦਾ ਹੈ। ਤੁਸੀਂ ਸਾਡੇ ਸਹਾਇਤਾ ਕੇਂਦਰ ਨਾਲ ਸੰਪਰਕ ਕਰਕੇ ਆਪਣੇ ਪਲੇਟਫਾਰਮ ਦੀ ਮੁਦਰਾ ਨੂੰ 'ਕ੍ਰੈਡਿਟ' ਜਾਂ 'ਟੋਕਨ' ਵਿੱਚ ਬਦਲ ਸਕਦੇ ਹੋ।",
   "app.containers.AdminPage.ProjectEdit.trendingSortingMethod": "ਪ੍ਰਚਲਿਤ",
   "app.containers.AdminPage.ProjectEdit.typeform": "ਕਿਸਮ",
   "app.containers.AdminPage.ProjectEdit.unassigned": "ਅਸਾਈਨ ਨਹੀਂ ਕੀਤਾ ਗਿਆ",
