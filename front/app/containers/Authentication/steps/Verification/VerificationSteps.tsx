@@ -59,20 +59,14 @@ const VerificationSteps = memo<Props>(
           selectedMethod.attributes.name
         )
       ) {
-        // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        if (authenticationData?.successAction) {
+        localStorage.setItem(
+          'auth_context',
+          JSON.stringify(authenticationData.context)
+        );
+        if (authenticationData.successAction) {
           localStorage.setItem(
             'auth_success_action',
             JSON.stringify(authenticationData.successAction)
-          );
-        }
-        // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        if (authenticationData?.context) {
-          localStorage.setItem(
-            'auth_context',
-            JSON.stringify(authenticationData.context)
           );
         }
       }

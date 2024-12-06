@@ -28,7 +28,6 @@ export type SSOProvider = SSOProviderMap[keyof SSOProviderMap];
 
 // Note: these are url parameters so therefore all typed as strings
 export interface SSOParams {
-  sso_response: 'true';
   sso_flow: 'signup' | 'signin';
   sso_pathname: RouteType;
   sso_verification?: string;
@@ -75,7 +74,6 @@ function setHref(
 
   const pathname = window.location.pathname as RouteType;
   const ssoParams: SSOParams = {
-    sso_response: 'true',
     sso_flow: flow,
     sso_pathname: pathname, // Also used by back-end to set user.locale following successful signup
     sso_verification: verification === true ? 'true' : undefined,

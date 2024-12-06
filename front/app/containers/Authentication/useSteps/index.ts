@@ -2,6 +2,7 @@ import { useState, useRef, useCallback, useMemo, useEffect } from 'react';
 
 import { parse } from 'qs';
 import { useLocation } from 'react-router-dom';
+import { RouteType } from 'routes';
 
 import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/constants';
 import getAuthenticationRequirements from 'api/authentication/authentication_requirements/getAuthenticationRequirements';
@@ -13,8 +14,8 @@ import useAuthUser from 'api/me/useAuthUser';
 import { invalidateAllActionDescriptors } from 'containers/Authentication/useSteps/invalidateAllActionDescriptors';
 
 import { queryClient } from 'utils/cl-react-query/queryClient';
-import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
+import { isNilOrError } from 'utils/helperUtils';
 
 import {
   triggerAuthenticationFlow$,
@@ -30,7 +31,6 @@ import {
 import useAnySSOEnabled from '../useAnySSOEnabled';
 
 import { getStepConfig } from './stepConfig';
-import { RouteType } from 'routes';
 
 let initialized = false;
 
@@ -270,7 +270,7 @@ export default function useSteps() {
     // authentication method through an URL param, and launch the corresponding
     // flow
     if (
-      urlSearchParams.sso_response === 'true' ||
+      urlSearchParams.sso_success === 'true' ||
       urlSearchParams.verification_success === 'true'
     ) {
       const {
