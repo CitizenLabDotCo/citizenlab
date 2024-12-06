@@ -3,15 +3,11 @@ import React from 'react';
 import { Title } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import { IdeaQueryParameters } from 'api/ideas/types';
-import { IIdeasFilterCounts } from 'api/ideas_filter_counts/types';
-import { IdeaSortMethod } from 'api/phases/types';
-
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
 
 import filterModalMessages from './ButtonWithFiltersModal/FiltersModal/messages';
-import InputFilters from './InputFilters';
+import InputFilters, { Props as InputFiltersProps } from './InputFilters';
 
 import { gapWidth } from '.';
 
@@ -35,20 +31,10 @@ const Container = styled.div<{
   padding-right: 8px;
 `;
 
-interface Props {
-  ideaQueryParameters: IdeaQueryParameters;
-  filtersActive: boolean;
-  ideasFilterCounts: IIdeasFilterCounts | undefined;
-  numberOfSearchResults: number;
-  onClearFilters: () => void;
-  onSearch: (search: string) => void;
-  onChangeStatus: (status: string | null) => void;
-  onChangeTopics: (topics: string[] | null) => void;
-  onChangeSort: (sort: IdeaSortMethod) => void;
-}
+interface Props extends InputFiltersProps {}
 
 const ContentRight = ({
-  ideaQueryParameters,
+  selectedIdeaFilters,
   filtersActive,
   ideasFilterCounts,
   numberOfSearchResults,
@@ -56,7 +42,7 @@ const ContentRight = ({
   onSearch,
   onChangeStatus,
   onChangeTopics,
-  onChangeSort,
+  handleSortOnChange: onChangeSort,
 }: Props) => {
   /* 
     Likely not the most reliable way to determine if the bar is present.
@@ -81,8 +67,8 @@ const ContentRight = ({
         </Title>
       </ScreenReaderOnly>
       <InputFilters
-        defaultValue={ideaQueryParameters.search}
-        selectedIdeaFilters={ideaQueryParameters}
+        defaultValue={selectedIdeaFilters.search}
+        selectedIdeaFilters={selectedIdeaFilters}
         filtersActive={filtersActive}
         ideasFilterCounts={ideasFilterCounts}
         numberOfSearchResults={numberOfSearchResults}
@@ -91,7 +77,7 @@ const ContentRight = ({
         onChangeStatus={onChangeStatus}
         onChangeTopics={onChangeTopics}
         handleSortOnChange={onChangeSort}
-        phaseId={ideaQueryParameters.phase}
+        phaseId={selectedIdeaFilters.phase}
       />
     </Container>
   );
