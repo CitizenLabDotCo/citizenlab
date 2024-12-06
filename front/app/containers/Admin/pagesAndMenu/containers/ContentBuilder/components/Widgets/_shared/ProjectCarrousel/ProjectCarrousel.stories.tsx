@@ -47,7 +47,6 @@ const createData = (offset: number): MiniProjectData[] => {
 const ManyProjectsWrapper = ({ title }) => {
   const [data, setData] = useState(createData(1));
   const [hasMore, setHasMore] = useState(true);
-  const [isLoadingMore, setIsLoadingMore] = useState(false);
 
   return (
     <div>
@@ -59,14 +58,14 @@ const ManyProjectsWrapper = ({ title }) => {
           title={title}
           projects={data}
           hasMore={hasMore}
-          isLoadingMore={isLoadingMore}
           onLoadMore={() => {
-            setIsLoadingMore(true);
-            setTimeout(() => {
-              setData([...data, ...createData(data.length + 1)]);
-              setHasMore(false);
-              setIsLoadingMore(false);
-            }, 2000);
+            return new Promise((resolve) => {
+              setTimeout(() => {
+                setData([...data, ...createData(data.length + 1)]);
+                setHasMore(false);
+                resolve(undefined);
+              }, 2000);
+            });
           }}
         />
       </div>
@@ -83,8 +82,7 @@ export const ManyProjects: Story = {
     // The next three props are not used in the component, but are required for the story to work
     projects: [],
     hasMore: true,
-    isLoadingMore: false,
-    onLoadMore: () => {},
+    onLoadMore: () => new Promise(() => {}),
   },
   render: ({ title }) => {
     return <ManyProjectsWrapper title={title} />;
@@ -96,7 +94,6 @@ export const OneProject: Story = {
     title: 'Open to participation',
     projects: [createData(0)[0]],
     hasMore: false,
-    isLoadingMore: false,
-    onLoadMore: () => {},
+    onLoadMore: () => new Promise(() => {}),
   },
 };

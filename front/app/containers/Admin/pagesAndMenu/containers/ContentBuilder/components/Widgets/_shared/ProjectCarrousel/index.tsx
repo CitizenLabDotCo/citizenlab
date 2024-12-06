@@ -28,30 +28,33 @@ interface Props {
   title: string;
   projects: MiniProjectData[];
   hasMore: boolean;
-  isLoadingMore: boolean;
-  onLoadMore: () => void;
+  onLoadMore: () => Promise<any>;
 }
 
-const ProjectCarrousel = ({
-  title,
-  projects,
-  hasMore,
-  isLoadingMore,
-  onLoadMore,
-}: Props) => {
+const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
   const [scrollContainerRef, setScrollContainerRef] = useState<
     HTMLDivElement | undefined
   >(undefined);
   const [showPreviousButton, setShowPreviousButton] = useState(false);
   const [showNextButton, setShowNextButton] = useState(false);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+
   const isSmallerThanPhone = useBreakpoint('phone');
   const instanceId = useInstanceId();
   const endId = `end-carrousel-${instanceId}`;
 
+  const handleLoadMore = async () => {
+    setIsLoadingMore(true);
+    await onLoadMore();
+    setTimeout(() => {
+      setIsLoadingMore(false);
+    }, 2000);
+  };
+
   const { ref } = useInView({
     onChange: (inView) => {
       if (inView && hasMore && !isLoadingMore) {
-        onLoadMore();
+        handleLoadMore();
       }
     },
   });
