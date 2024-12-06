@@ -373,6 +373,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.adminsOnly": "Tylko administratorzy",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.anyoneWithLink": "Każdy, kto posiada łącze, może wejść w interakcję z wersją roboczą projektu",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approve": "Zatwierdź",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approvedBy": "Zatwierdzono przez {name}",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.archived": "Zarchiwizowane",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.draft": "Wersja robocza",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.everyone": "Wszyscy",
