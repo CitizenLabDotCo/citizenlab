@@ -18,6 +18,7 @@ interface Props {
 
 const FollowedItems = ({ titleMultiloc }: Props) => {
   const localize = useLocalize();
+
   const { data, hasNextPage, fetchNextPage } = useProjectsMini({
     endpoint: 'for_followed_item',
   });
