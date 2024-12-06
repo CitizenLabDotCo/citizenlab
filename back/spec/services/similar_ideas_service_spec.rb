@@ -36,6 +36,11 @@ describe SimilarIdeasService do
       expect(result.ids).to eq [idea_burger.id, idea_bats.id]
     end
 
+    it 'applies the distance_threshold' do
+      result = service.similar_ideas(distance_threshold: 0.55)
+      expect(result.ids).to eq [idea_burger.id]
+    end
+
     it 'returns an empty scope if the idea has no embeddings' do
       idea.embeddings_similarities.destroy_all
       result = service.similar_ideas

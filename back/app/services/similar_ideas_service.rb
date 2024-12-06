@@ -8,60 +8,22 @@ class SimilarIdeasService
     @idea = idea
   end
 
-  def similar_ideas(scope: nil, limit: DEFAULT_NUM_SIMILAR_IDEAS, embedded_attributes: DEFAULT_EMBEDDED_ATTRIBUTES)
+  def similar_ideas(scope: nil, limit: DEFAULT_NUM_SIMILAR_IDEAS, embedded_attributes: DEFAULT_EMBEDDED_ATTRIBUTES, distance_threshold: nil)
     embedding = idea.embeddings_similarities.where(embedded_attributes:).first
     return (scope || Idea).none if !embedding
 
+    # embedding.nearest_neighbors(:embedding, distance: 'cosine') does not support
+    # applying a threshold on the neighbor_distance.
+    neighbor_distance = Arel.sql("\"embedding\" <=> '#{embedding.embedding}'")
     similarities = EmbeddingsSimilarity
         .where.not(embedding: nil)
-        .select("\"embeddings_similarities\".\"embedding\" <=> '#{embedding.embedding}' AS neighbor_distance", :embeddable_id)
-        .order('neighbor_distance')
-    # similarities = embedding.nearest_neighbors(:embedding, distance: 'cosine')
-
-
-
-    # value = ::Pgvector.encode(value) unless value.is_a?(String)
-    # quoted_column = quote_identifier(column)
-    # distance = distance.to_s
-
-    # operator =
-    #   case distance
-    #   when "inner_product"
-    #     "<#>"
-    #   when "cosine"
-    #     "<=>"
-    #   when "euclidean"
-    #     "<->"
-    #   when "taxicab"
-    #     "<+>"
-    #   when "hamming"
-    #     "<~>"
-    #   when "jaccard"
-    #     "<%>"
-    #   end
-
-    # raise ArgumentError, "Invalid distance: #{distance}" unless operator
-
-    # order = "#{quoted_column} #{operator} ?"
-
-    # neighbor_distance =
-    #   if distance == "inner_product"
-    #     "(#{order}) * -1"
-    #   else
-    #     order
-    #   end
-
-    # select_append(Sequel.lit("#{neighbor_distance} AS neighbor_distance", value))
-    #   .exclude(column => nil)
-    #   .order(Sequel.lit(order, value))
-
-
-
+        .order(neighbor_distance)
 
     similarities = similarities
       .where.not(embeddable_id: idea.id)
       .where(embedded_attributes:)
     similarities = similarities.where(embeddable: scope) if scope
+    similarities = similarities.where("#{neighbor_distance} < ?", distance_threshold) if distance_threshold
     similarities = similarities.limit(limit) if limit
 
     ids = similarities.map(&:embeddable_id)
