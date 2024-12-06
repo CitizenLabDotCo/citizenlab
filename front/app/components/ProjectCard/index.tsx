@@ -4,11 +4,9 @@ import {
   Box,
   media,
   colors,
-  fontSizes,
-  defaultCardStyle,
-  defaultCardHoverStyle,
-  isRtl,
   Title,
+  fontSizes,
+  isRtl,
 } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
 import { useInView } from 'react-intersection-observer';
@@ -38,46 +36,8 @@ import ScreenReaderContent from './ScreenReaderContent';
 import tracks from './tracks';
 import { TProjectCardSize } from './types';
 
-const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  cursor: pointer;
-  ${defaultCardStyle};
-
-  &.large {
-    width: 100%;
-    flex-direction: row;
-    align-items: stretch;
-    justify-content: space-between;
-
-    ${isRtl`
-        flex-direction: row-reverse;
-    `}
-  }
-
-  &.medium {
-    width: calc(50% - 13px);
-    min-height: 580px;
-    padding-left: 30px;
-    padding-right: 30px;
-    padding-top: 20px;
-    padding-bottom: 30px;
-
-    ${media.phone`
-      width: 100%;
-    `}
-  }
-
-  &.small {
-    min-height: 460px;
-    padding-top: 18px;
-    padding-bottom: 25px;
-  }
-
-  ${media.desktop`
-    ${defaultCardHoverStyle};
-  `}
+const Container = styled(Link)`
+  background: white;
 `;
 
 const ProjectImageContainer = styled.div`
@@ -107,57 +67,6 @@ const ProjectImage = styled(Image)`
   left: 0;
 `;
 
-const ProjectContent = styled.div`
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-
-  &.large {
-    padding-top: 18px;
-    padding-bottom: 35px;
-    padding-left: 68px;
-    padding-right: 32px;
-
-    ${media.tablet`
-      padding-left: 20px;
-      padding-right: 20px;
-    `}
-  }
-
-  &.small {
-    padding-left: 30px;
-    padding-right: 30px;
-
-    ${media.phone`
-      padding-left: 20px;
-      padding-right: 20px;
-    `};
-  }
-
-  ${isRtl`
-    align-items: flex-end;
-
-    &.large {
-        padding-right: 68px;
-        padding-left: 32px;
-    }
-  `}
-`;
-
-const ContentBody = styled.div`
-  width: 100%;
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  padding-top: 20px;
-
-  &.large {
-    max-width: 400px;
-    justify-content: center;
-  }
-`;
-
 const ProjectTitle = styled(Title)`
   color: ${({ theme }) => theme.colors.tenantText};
   margin: 0;
@@ -176,7 +85,7 @@ const ProjectDescription = styled.div`
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
-  margin-top: 15px;
+  margin-top: 16px;
 
   ${isRtl`
    text-align: right;
@@ -307,8 +216,31 @@ const ProjectCard = memo<InputProps>(
       >
         <ScreenReaderContent project={project} />
 
-        <>
-          {size !== 'large' && (
+        {size !== 'large' && (
+          <ContentHeader
+            project={project}
+            phase={phase}
+            size={size}
+            visible={visible}
+            progressBarRef={progressBarRef}
+            onClickCTA={handleCTAOnClick}
+          />
+        )}
+
+        <ProjectImageContainer className={size}>
+          {imageUrl ? (
+            <ProjectImage
+              src={imageUrl}
+              alt={projectImageAltText}
+              cover={true}
+            />
+          ) : (
+            <ImagePlaceholder />
+          )}
+        </ProjectImageContainer>
+
+        <Box className={size}>
+          {size === 'large' && (
             <ContentHeader
               project={project}
               phase={phase}
@@ -319,98 +251,69 @@ const ProjectCard = memo<InputProps>(
             />
           )}
 
-          <ProjectImageContainer className={size}>
-            {imageUrl ? (
-              <ProjectImage
-                src={imageUrl}
-                alt={projectImageAltText}
-                cover={true}
-              />
-            ) : (
-              <ImagePlaceholder />
-            )}
-          </ProjectImageContainer>
+          <Box aria-hidden>
+            <ProjectTitle
+              variant="h3"
+              className="e2e-project-card-project-title"
+              data-testid="project-card-project-title"
+              onClick={() => {
+                handleProjectTitleOnClick(project.data.id);
+              }}
+            >
+              <T value={project.data.attributes.title_multiloc} />
+            </ProjectTitle>
 
-          <ProjectContent className={size}>
-            {size === 'large' && (
-              <ContentHeader
-                project={project}
-                phase={phase}
-                size={size}
-                visible={visible}
-                progressBarRef={progressBarRef}
-                onClickCTA={handleCTAOnClick}
-              />
-            )}
-
-            <ContentBody className={size} aria-hidden>
-              <ProjectTitle
-                variant="h3"
-                className="e2e-project-card-project-title"
-                data-testid="project-card-project-title"
-                onClick={() => {
-                  handleProjectTitleOnClick(project.data.id);
-                }}
-              >
-                <T value={project.data.attributes.title_multiloc} />
-              </ProjectTitle>
-
-              {!hideDescriptionPreview && (
-                <T value={project.data.attributes.description_preview_multiloc}>
-                  {(description) => {
-                    if (!isEmpty(description)) {
-                      return (
-                        <ProjectDescription
-                          className="e2e-project-card-project-description-preview"
-                          data-testid="project-card-project-description-preview"
-                        >
-                          {description}
-                        </ProjectDescription>
-                      );
-                    }
-
-                    return null;
-                  }}
-                </T>
-              )}
-            </ContentBody>
-
-            {showAvatarBubbles && (
-              <Box
-                borderTop={`1px solid ${colors.divider}`}
-                pt="16px"
-                mt="30px"
-              >
-                <ContentFooter className={size}>
-                  <Box h="100%" display="flex" alignItems="center">
-                    <AvatarBubbles
-                      size={32}
-                      limit={3}
-                      avatarIds={avatarIds}
-                      userCount={project.data.attributes.participants_count}
-                    />
-                  </Box>
-                </ContentFooter>
-              </Box>
-            )}
-            {showFollowButton && (
-              <Box display="flex" justifyContent="flex-end" mt="24px">
-                <FollowUnfollow
-                  followableType="projects"
-                  followableId={project.data.id}
-                  followersCount={project.data.attributes.followers_count}
-                  followerId={
-                    // TODO: Fix this the next time the file is edited.
-                    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-                    project.data.relationships.user_follower?.data?.id
+            {!hideDescriptionPreview && (
+              <T value={project.data.attributes.description_preview_multiloc}>
+                {(description) => {
+                  if (!isEmpty(description)) {
+                    return (
+                      <ProjectDescription
+                        className="e2e-project-card-project-description-preview"
+                        data-testid="project-card-project-description-preview"
+                      >
+                        {description}
+                      </ProjectDescription>
+                    );
                   }
-                  w="100%"
-                  toolTipType="projectOrFolder"
-                />
-              </Box>
+
+                  return null;
+                }}
+              </T>
             )}
-          </ProjectContent>
-        </>
+          </Box>
+
+          {showAvatarBubbles && (
+            <Box borderTop={`1px solid ${colors.divider}`} pt="16px" mt="30px">
+              <ContentFooter className={size}>
+                <Box h="100%" display="flex" alignItems="center">
+                  <AvatarBubbles
+                    size={32}
+                    limit={3}
+                    avatarIds={avatarIds}
+                    userCount={project.data.attributes.participants_count}
+                  />
+                </Box>
+              </ContentFooter>
+            </Box>
+          )}
+          {showFollowButton && (
+            <Box display="flex" justifyContent="flex-end" mt="24px">
+              <FollowUnfollow
+                followableType="projects"
+                followableId={project.data.id}
+                followersCount={project.data.attributes.followers_count}
+                followerId={
+                  // TODO: Fix this the next time the file is edited.
+                  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+                  project.data.relationships.user_follower?.data?.id
+                }
+                w="100%"
+                toolTipType="projectOrFolder"
+              />
+            </Box>
+          )}
+        </Box>
       </Container>
     );
   }

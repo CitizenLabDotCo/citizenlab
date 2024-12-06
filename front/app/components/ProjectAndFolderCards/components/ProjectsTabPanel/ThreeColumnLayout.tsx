@@ -18,7 +18,7 @@ const Container = styled.div<{ hide: boolean }>`
 
 const GridContainer = styled.div`
   display: grid;
-  grid-template-columns: auto auto auto;
+  grid-template-columns: repeat(3, 1fr);
   gap: 24px;
   ${media.phone`
     grid-template-columns: auto;  
