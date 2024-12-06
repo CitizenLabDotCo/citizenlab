@@ -76,7 +76,7 @@ executors:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_HOST: localhost
-      - image: "postgis/postgis:16-3.4"
+      - image: "citizenlabdotco/postgis-pgvector:latest"
         environment:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres

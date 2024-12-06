@@ -248,6 +248,14 @@ class WebApi::V1::IdeasController < ApplicationController
     end
   end
 
+  def similarities
+    idea = Idea.find params[:id]
+    similar_ideas_options = { scope: policy_scope(Idea), distance_threshold: 0.4 }
+    similar_ideas_options[:limit] = nil if params.key?(:page)
+    similar_ideas = paginate SimilarIdeasService.new(idea).similar_ideas(**similar_ideas_options)
+    render json: linked_json(similar_ideas, WebApi::V1::IdeaSerializer, serialization_options_for(similar_ideas))
+  end
+
   private
 
   def render_show(input, check_auth: true)
