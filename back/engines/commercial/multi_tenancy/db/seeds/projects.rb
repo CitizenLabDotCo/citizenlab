@@ -51,6 +51,7 @@ module MultiTenancy
           native_survey_title_multiloc: { 'en' => 'Survey' },
           native_survey_button_multiloc: { 'en' => 'Take the survey' }
         )
+        project.project_images.create!(image: Rails.root.join("spec/fixtures/image#{rand(20)}.png").open)
       end
 
       def create_archived_project
@@ -70,6 +71,7 @@ module MultiTenancy
           end_at: Time.zone.today - 11.days,
           campaigns_settings: { project_phase_started: true }
         )
+        project.project_images.create!(image: Rails.root.join("spec/fixtures/image#{rand(20)}.png").open)
       end
 
       def create_random_projects
