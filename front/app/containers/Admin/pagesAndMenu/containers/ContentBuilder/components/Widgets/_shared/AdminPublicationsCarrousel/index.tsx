@@ -27,7 +27,7 @@ import {
 } from '../BaseCarrousel/utils';
 
 import AdminPublicationCard from './AdminPublicationCard';
-import { CARD_WIDTH } from './constants';
+import { BIG_CARD_WIDTH, SMALL_CARD_WIDTH } from './constants';
 
 interface Props {
   title: string;
@@ -50,6 +50,7 @@ const AdminPublicationsCarrousel = ({
   const isSmallerThanPhone = useBreakpoint('phone');
   const instanceId = useInstanceId();
   const endId = `end-carrousel-${instanceId}`;
+  const cardWidth = isSmallerThanPhone ? SMALL_CARD_WIDTH : BIG_CARD_WIDTH;
 
   const { ref } = useInView({
     onChange: (inView) => {
@@ -95,8 +96,8 @@ const AdminPublicationsCarrousel = ({
     if (e.code === 'Tab' && scrollContainerRef) {
       setTimeout(() => {
         e.shiftKey
-          ? (scrollContainerRef.scrollLeft -= CARD_WIDTH + CARD_GAP)
-          : (scrollContainerRef.scrollLeft += CARD_WIDTH + CARD_GAP);
+          ? (scrollContainerRef.scrollLeft -= cardWidth + CARD_GAP)
+          : (scrollContainerRef.scrollLeft += cardWidth + CARD_GAP);
       }, 50);
     }
   };
@@ -135,8 +136,8 @@ const AdminPublicationsCarrousel = ({
             <CardContainer>
               <Box
                 ref={ref}
-                w={`${CARD_WIDTH}px`}
-                h={`${CARD_WIDTH / CARD_IMAGE_ASPECT_RATIO}px`}
+                w={`${cardWidth}px`}
+                h={`${cardWidth / CARD_IMAGE_ASPECT_RATIO}px`}
                 display="flex"
                 justifyContent="center"
                 alignItems="center"
@@ -153,7 +154,7 @@ const AdminPublicationsCarrousel = ({
               top="200px"
               onClick={() => {
                 if (!scrollContainerRef) return;
-                scrollContainerRef.scrollLeft -= CARD_WIDTH + CARD_GAP;
+                scrollContainerRef.scrollLeft -= cardWidth + CARD_GAP;
               }}
             />
             <Gradient variant="left" />
@@ -166,7 +167,7 @@ const AdminPublicationsCarrousel = ({
               top="200px"
               onClick={() => {
                 if (!scrollContainerRef) return;
-                scrollContainerRef.scrollLeft += CARD_WIDTH + CARD_GAP;
+                scrollContainerRef.scrollLeft += cardWidth + CARD_GAP;
               }}
             />
             <Gradient variant="right" />
