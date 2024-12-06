@@ -21,6 +21,7 @@ module ContentBuilder
   class Layout < ApplicationRecord
     belongs_to :content_buildable, polymorphic: true, optional: true
 
+    before_validation :swap_data_images, on: :create
     before_validation :set_craftjs_json, :sanitize_craftjs_json
 
     validates :code, presence: true
@@ -74,15 +75,18 @@ module ContentBuilder
     end
 
     def set_craftjs_json
-      return if code != 'homepage'
+      return if code != 'homepage' || craftjs_json.present?
 
-      if craftjs_json.present?
-        self.craftjs_json = ContentBuilder::LayoutImageService.new.swap_data_images(craftjs_json)
-      else
-        craftjs_filepath = Rails.root.join('config/homepage/default_craftjs.json.erb')
-        json_craftjs_str = ERB.new(File.read(craftjs_filepath)).result(binding)
-        self.craftjs_json = ContentBuilder::LayoutImageService.new.swap_data_images(JSON.parse(json_craftjs_str))
-      end
+      craftjs_filepath = Rails.root.join('config/homepage/default_craftjs.json.erb')
+      json_craftjs_str = ERB.new(File.read(craftjs_filepath)).result(binding)
+      self.craftjs_json = ContentBuilder::LayoutImageService.new.swap_data_images(JSON.parse(json_craftjs_str))
+    end
+
+    # This ensures we process image data in a homepage layout created from the internal templates
+    def swap_data_images
+      return if code != 'homepage' || craftjs_json.blank?
+
+      self.craftjs_json = ContentBuilder::LayoutImageService.new.swap_data_images(craftjs_json)
     end
   end
 end
