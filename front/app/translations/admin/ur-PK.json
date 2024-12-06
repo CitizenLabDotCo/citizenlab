@@ -1849,7 +1849,6 @@
   "app.containers.AdminPage.ProjectEdit.topicLabel": "ٹیگز",
   "app.containers.AdminPage.ProjectEdit.topicLabelTooltip": "اس پروجیکٹ کے لیے {topicsCopy} کو منتخب کریں۔ صارفین ان کا استعمال کرکے پروجیکٹس کو فلٹر کرسکتے ہیں۔",
   "app.containers.AdminPage.ProjectEdit.totalBudget": "کل بجٹ",
-  "app.containers.AdminPage.ProjectEdit.totalBudgetExplanation": "پہلے سے طے شدہ طور پر، آپ کا بجٹ آپ کی مقامی کرنسی کا استعمال کرتے ہوئے سیٹ کیا جاتا ہے۔ آپ ہمارے سپورٹ سینٹر سے رابطہ کر کے اپنے پلیٹ فارم کی کرنسی کو 'کریڈٹس' یا 'ٹوکنز' میں تبدیل کر سکتے ہیں۔",
   "app.containers.AdminPage.ProjectEdit.trendingSortingMethod": "ٹرینڈنگ",
   "app.containers.AdminPage.ProjectEdit.typeform": "ٹائپ فارم",
   "app.containers.AdminPage.ProjectEdit.unassigned": "غیر تفویض کردہ",
