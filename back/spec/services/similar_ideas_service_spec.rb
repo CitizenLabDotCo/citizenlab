@@ -48,40 +48,59 @@ describe SimilarIdeasService do
     end
   end
 
-  # describe 'upsert_embedding!' do
-  #   it 'creates a new embeddings_similarity if it does not exist' do
-  #     expect { service.upsert_embedding! }.to change { EmbeddingsSimilarity.count }.by(1)
-  #   end
+  describe 'upsert_embedding!' do
+    it 'creates a new embeddings_similarity if it does not exist' do
+      idea.embeddings_similarities.destroy_all
+      embedding = embeddings['moon']
+      expect_any_instance_of(CohereMultilingualEmbeddings)
+            .to receive(:embedding).and_return(embedding)
+      idea # Load idea to start from correct EmbeddingsSimilarity.count
+      expect { service.upsert_embedding! }.to change { EmbeddingsSimilarity.count }.by(1)
+      expect(idea.embeddings_similarities.pluck(:embedding)).to eq [embedding]
+    end
 
-  #   it 'updates the embedding if it already exists' do
-  #     service.upsert_embedding!
-  #     expect { service.upsert_embedding! }.not_to change { EmbeddingsSimilarity.count }
-  #   end
+    it 'updates the embedding if it already exists' do
+      embedding = embeddings['bats']
+      expect_any_instance_of(CohereMultilingualEmbeddings)
+            .to receive(:embedding).and_return(embedding)
+      idea # Load idea to start from correct EmbeddingsSimilarity.count
+      expect { service.upsert_embedding! }.not_to change { EmbeddingsSimilarity.count }
+      expect(idea.embeddings_similarities.pluck(:embedding)).to eq [embedding]
+    end
 
-  #   it 'uses the default embedded_attributes' do
-  #     service.upsert_embedding!
-  #     expect(EmbeddingsSimilarity.last.embedded_attributes).to eq 'title_body'
-  #   end
+    it 'creates a new embeddings_similarity if there already exists one with different embedded_attributes' do
+      idea.embeddings_similarities.update_all(embedded_attributes: 'last_paragraph')
+      old_embedding = idea.embeddings_similarities.first.embedding
+      new_embedding = embeddings['burger']
+      expect_any_instance_of(CohereMultilingualEmbeddings)
+            .to receive(:embedding).and_return(new_embedding)
+      idea # Load idea to start from correct EmbeddingsSimilarity.count
+      expect { service.upsert_embedding! }.to change { EmbeddingsSimilarity.count }.by(1)
+      expect(idea.embeddings_similarities.pluck(:embedding)).to match_array [old_embedding, new_embedding]
+    end
+  end
 
-  #   it 'uses the given embedded_attributes' do
-  #     service.upsert_embedding!(embedded_attributes: 'last_paragraph')
-  #     expect(EmbeddingsSimilarity.last.embedded_attributes).to eq 'last_paragraph'
-  #   end
-  # end
+  describe 'embeddings_text' do
+    let(:idea) do
+      title_multiloc = { 'en' => 'Pizza' }
+      body_multiloc = {
+        'en' => 'Pizza is a yeasted flatbread typically topped with tomato sauce and cheese and baked in an oven.',
+        'fr-BE' => 'Pizza est un pain plat levé typiquement recouvert de sauce tomate et de fromage et cuit au four.'
+      }
+      create(:idea, title_multiloc:, body_multiloc:)
+    end
+    it 'returns the title and body text' do
+      expect(service.embeddings_text).to eq "Pizza\n\nPizza is a yeasted flatbread typically topped with tomato sauce and cheese and baked in an oven."
+    end
 
-  # describe 'embeddings_text' do
-  #   it 'returns the title and body text' do
-  #     expect(service.embeddings_text).to eq "Pizza\n\nPizza is a yeasted flatbread typically topped with tomato sauce and cheese and baked in an oven."
-  #   end
+    it 'uses the author locale' do
+      idea.author.update!(locale: 'fr-FR')
+      expect(service.embeddings_text).to eq "Pizza\n\nPizza est un pain plat levé typiquement recouvert de sauce tomate et de fromage et cuit au four."
+    end
 
-  #   it 'uses the author locale' do
-  #     idea.author.update!(locale: 'fr-FR')
-  #     expect(service.embeddings_text).to eq "Pizza\n\nPizza est un pain plat levé typiquement recouvert de sauce tomate et de fromage et cuit au four."
-  #   end
-
-  #   it 'truncates the text to 2048 characters' do
-  #     idea.update!(title_multiloc: { 'en' => 'a' * 1024 }, body_multiloc: { 'en' => 'b' * 1024 })
-  #     expect(service.embeddings_text.size).to eq 2048
-  #   end
-  # end
+    it 'truncates the text to 2048 characters' do
+      idea.update!(title_multiloc: { 'en' => 'title' * 1000 }, body_multiloc: { 'en' => 'body' * 1000 })
+      expect(service.embeddings_text.size).to eq 2048
+    end
+  end
 end
