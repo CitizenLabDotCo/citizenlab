@@ -7,7 +7,6 @@ import { CARD_IMAGE_ASPECT_RATIO } from 'api/project_images/useProjectImages';
 
 const CardContainer = styled.div`
   ${media.phone`
-      scroll-snap-align: start;
       margin-right: 100vw;
   `}
 `;
