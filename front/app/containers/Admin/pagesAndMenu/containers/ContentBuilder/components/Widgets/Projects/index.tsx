@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, colors, media, Text } from '@citizenlab/cl2-component-library';
+import { Box, media, Text } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
@@ -32,7 +32,7 @@ const Projects = ({
   currentlyWorkingOnText?: Multiloc;
 }) => {
   return (
-    <Box bg={colors.background} data-cy="e2e-projects">
+    <Box data-cy="e2e-projects">
       <Box maxWidth="1200px" margin="0 auto">
         <ProjectSection id="e2e-landing-page-project-section">
           <ProjectAndFolderCards
