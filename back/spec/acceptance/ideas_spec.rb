@@ -412,7 +412,7 @@ resource 'Ideas' do
 
       example_request 'Get similar ideas' do
         assert_status 200
-        expect(json_parse(response_body)[:data].pluck(:id)).to eq [idea_burger.id, idea_bats.id, idea_moon.id]
+        expect(json_parse(response_body)[:data].pluck(:id)).to eq [] # When no threshold: [idea_burger.id, idea_bats.id, idea_moon.id]
       end
 
       describe do
