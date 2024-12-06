@@ -63,9 +63,9 @@ const SettingsPage = () => {
     ...(projectReviewEnabled
       ? [
           {
-            name: 'approval',
+            name: 'project-review',
             label: formatMessage(messages.tabApproval),
-            url: '/admin/settings/approval',
+            url: '/admin/settings/review',
           } as ITab,
         ]
       : []),

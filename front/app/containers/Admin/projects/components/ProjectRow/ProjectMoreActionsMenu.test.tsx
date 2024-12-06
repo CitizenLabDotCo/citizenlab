@@ -41,6 +41,7 @@ const mockProject = {
   type: 'project',
   attributes: {
     folder_id: 'folderId',
+    first_published_at: '2019-05-11T17:04:13.090Z',
   },
 };
 
@@ -168,7 +169,7 @@ describe('ProjectMoreActionsMenu', () => {
     });
 
     describe('project that is not inside folder that user moderates', () => {
-      it('Has no button to copy nor delete the project', async () => {
+      it('Has not have button to copy nor delete the project', async () => {
         mockUserData.attributes.roles = [
           {
             type: 'project_folder_moderator',
@@ -185,7 +186,7 @@ describe('ProjectMoreActionsMenu', () => {
 
   describe('When user is a project moderator', () => {
     describe('project that user moderates', () => {
-      it('Has no button to copy nor delete the project', async () => {
+      it('Has button to copy and delete the project', async () => {
         mockUserData.attributes.roles = [
           {
             type: 'project_moderator',
@@ -195,7 +196,7 @@ describe('ProjectMoreActionsMenu', () => {
         render(<ProjectMoreActionsMenu {...defaultProps} />);
         const threeDotsButton = screen.queryByTestId('moreOptionsButton');
 
-        expect(threeDotsButton).not.toBeInTheDocument();
+        expect(threeDotsButton).toBeInTheDocument();
       });
     });
 

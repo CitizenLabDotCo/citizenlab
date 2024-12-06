@@ -7,12 +7,12 @@ describe SideFxProjectService do
   let(:user) { create(:user) }
   let(:project) { create(:project) }
 
-  describe 'before_create' do
+  describe 'after_create' do
     it "sets the default_assignee to the user that creates the project if it's not a super admin" do
       create(:super_admin)
       create(:admin)
       admin2 = create(:admin)
-      expect { service.before_create(project, admin2) }.to change(project, :default_assignee)
+      expect { service.after_create(project, admin2) }.to change(project, :default_assignee)
         .from(nil).to(admin2)
     end
 
@@ -21,7 +21,7 @@ describe SideFxProjectService do
       create(:invite, invitee: create(:admin, registration_completed_at: nil, invite_status: 'pending'))
       admin1 = create(:admin)
       create(:admin)
-      expect { service.before_create(project, super_admin) }.to change(project, :default_assignee)
+      expect { service.after_create(project, super_admin) }.to change(project, :default_assignee)
         .from(nil).to(admin1)
     end
 

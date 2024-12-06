@@ -23,7 +23,7 @@ import { getFullName } from 'utils/textUtils';
 
 import messages from './messages';
 
-const Approval = () => {
+const ProjectReview = () => {
   const { formatMessage } = useIntl();
 
   const [selectedUsers, setSelectedUsers] = useState<IOption[]>([]);
@@ -122,4 +122,4 @@ const Approval = () => {
   );
 };
 
-export default Approval;
+export default ProjectReview;
