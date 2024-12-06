@@ -3,16 +3,11 @@ import React, { useEffect, useState } from 'react';
 import { Title } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import { IIdeasFilterCounts } from 'api/ideas_filter_counts/types';
-import { IdeaSortMethod } from 'api/phases/types';
-
-import { QueryParameters } from 'containers/IdeasIndexPage';
-
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
 
 import filterModalMessages from './ButtonWithFiltersModal/FiltersModal/messages';
-import InputFilters from './InputFilters';
+import InputFilters, { Props as InputFiltersProps } from './InputFilters';
 
 import { gapWidth } from '.';
 
@@ -37,21 +32,12 @@ const Container = styled.div<{
   padding-right: 8px;
 `;
 
-interface Props {
-  ideaQueryParameters: QueryParameters;
+interface Props extends InputFiltersProps {
   filterColumnWidth: number;
-  filtersActive: boolean;
-  ideasFilterCounts: IIdeasFilterCounts | undefined;
-  numberOfSearchResults: number;
-  onClearFilters: () => void;
-  onSearch: (search: string) => void;
-  onChangeStatus: (status: string | null) => void;
-  onChangeTopics: (topics: string[] | null) => void;
-  onChangeSort: (sort: IdeaSortMethod) => void;
 }
 
 const ContentRight = ({
-  ideaQueryParameters,
+  selectedIdeaFilters,
   filterColumnWidth,
   filtersActive,
   ideasFilterCounts,
@@ -60,7 +46,7 @@ const ContentRight = ({
   onSearch,
   onChangeStatus,
   onChangeTopics,
-  onChangeSort,
+  handleSortOnChange: onChangeSort,
 }: Props) => {
   const [isCTABarVisible, setIsCTABarVisible] = useState(false);
 
@@ -96,8 +82,8 @@ const ContentRight = ({
         </Title>
       </ScreenReaderOnly>
       <InputFilters
-        defaultValue={ideaQueryParameters.search}
-        selectedIdeaFilters={ideaQueryParameters}
+        defaultValue={selectedIdeaFilters.search}
+        selectedIdeaFilters={selectedIdeaFilters}
         filtersActive={filtersActive}
         ideasFilterCounts={ideasFilterCounts}
         numberOfSearchResults={numberOfSearchResults}
@@ -106,7 +92,7 @@ const ContentRight = ({
         onChangeStatus={onChangeStatus}
         onChangeTopics={onChangeTopics}
         handleSortOnChange={onChangeSort}
-        phaseId={ideaQueryParameters.phase}
+        phaseId={selectedIdeaFilters.phase}
       />
     </Container>
   );
