@@ -165,7 +165,6 @@
   "app.components.FilterBoxes.showTagsWithNumber": "Rodyti visus ({numberTags})",
   "app.components.FilterBoxes.statusTitle": "Statusas",
   "app.components.FilterBoxes.topicsTitle": "Žymos",
-  "app.components.FiltersModal.a11y_closeFilterPanel": "Uždarykite filtro skydelį",
   "app.components.FiltersModal.filters": "Filtrai",
   "app.components.FiltersModal.resetFilters": "Iš naujo nustatyti filtrus",
   "app.components.FolderFolderCard.a11y_folderDescription": "Aplankų aprašymas:",
