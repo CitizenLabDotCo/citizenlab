@@ -3,24 +3,25 @@ require 'json'
 namespace :homepage do
   desc 'Replaces legacy projects widget with new widgets on template tenants'
   task :migrate_template_homepage_layouts, [] => [:environment] do
-    # Temporary way to kill logging when developing (to more closely match the production environment)
-    dev_null = Logger.new('/dev/null')
-    Rails.logger = dev_null
-    ActiveRecord::Base.logger = dev_null
+    # Reduce logging when developing (to more closely match the production environment)
+    # dev_null = Logger.new('/dev/null')
+    # Rails.logger = dev_null
+    # ActiveRecord::Base.logger = dev_null
 
-    # reporter = ScriptReporter.new
+    reporter = ScriptReporter.new
     Tenant.safe_switch_each do |tenant|
       puts "\nChecking tenant #{tenant.host} \n\n"
       next unless tenant.host.include?('template')
 
-      puts "Updating homepage layout for tenant #{tenant.host}...\n\n"
-
       layout = ContentBuilder::Layout.find_by(code: 'homepage')
+      original_layout = layout.deep_dup
       craftjs = layout.craftjs_json
 
       # All existing template tenants have the legacy projects widget,
       # but this may be useful if we fail to update all and need to re-run the script
       next unless craftjs['ROOT']['nodes'].include?('PROJECTS')
+
+      puts "Updating homepage layout for tenant #{tenant.host}...\n\n"
 
       projects_index = craftjs['ROOT']['nodes'].index('PROJECTS')
       craftjs['ROOT']['nodes'].delete_at(projects_index) # Remove the old widget name from the nodes array
@@ -40,7 +41,20 @@ namespace :homepage do
 
       craftjs.delete('PROJECTS') # Remove the old widget's craftjs
 
-      layout.update!(craftjs_json: craftjs)
+      if layout.update(craftjs_json: craftjs)
+        reporter.add_change(
+          original_layout.attributes,
+          layout.attributes,
+          context: { tenant: tenant.host }
+        )
+      else
+        reporter.add_error(
+          layout.errors.details,
+          context: { tenant: tenant.host }
+        )
+      end
+
+      reporter.report!('migrate_template_homepage_layouts.json', verbose: true)
     end
   end
 end
