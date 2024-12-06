@@ -29,14 +29,12 @@ import { TLayout } from 'components/ProjectAndFolderCards';
 import T from 'components/T';
 import Image from 'components/UI/Image';
 
-import { ScreenReaderOnly } from 'utils/a11y';
 import { trackEventByName } from 'utils/analytics';
-import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 
 import ContentHeader from './ContentHeader';
 import ImagePlaceholder from './ImagePlaceholder';
-import messages from './messages';
+import ScreenReaderContent from './ScreenReaderContent';
 import tracks from './tracks';
 import { TProjectCardSize } from './types';
 
@@ -288,20 +286,6 @@ const ProjectCard = memo<InputProps>(
         ? project.data.relationships.avatars.data.map((avatar) => avatar.id)
         : [];
 
-    const screenReaderContent = (
-      <ScreenReaderOnly>
-        <ProjectTitle variant="h3">
-          <FormattedMessage {...messages.a11y_projectTitle} />
-          <T value={project.data.attributes.title_multiloc} />
-        </ProjectTitle>
-
-        <ProjectDescription>
-          <FormattedMessage {...messages.a11y_projectDescription} />
-          <T value={project.data.attributes.description_preview_multiloc} />
-        </ProjectDescription>
-      </ScreenReaderOnly>
-    );
-
     return (
       <Container
         className={[
@@ -321,7 +305,7 @@ const ProjectCard = memo<InputProps>(
           handleProjectCardOnClick(project.data.id);
         }}
       >
-        {screenReaderContent}
+        <ScreenReaderContent project={project} />
 
         <>
           {size !== 'large' && (
