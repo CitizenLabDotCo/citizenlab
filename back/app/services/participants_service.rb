@@ -207,12 +207,10 @@ class ParticipantsService
     # not use `counter_culture`.
     project.phases.each { |phase| Basket.update_counts(phase) }
 
-    # Filter ideas that belong to a voting phase, and destroy all comments and reactions that they have.
-    ideas = Idea.where(project: project).where(
-      id: IdeasPhase.where(phase: Phase.where(project: project, participation_method: 'voting')).select(:idea_id)
-    )
-
-    # Destroy all remaining ideas that are not in a voting phase
-    Idea.where(project: project).where.not(id: ideas).destroy_all
+    # Destroy only ideas that are not in voting phases.
+    # (Ideas in voting phases are considered part of the project setup.)
+    voting_phases = project.phases.where(participation_method: 'voting')
+    ideas_in_voting_phases = IdeasPhase.where(phase: voting_phases).select(:idea_id)
+    Idea.where.not(id: ideas_in_voting_phases).destroy_all
   end
 end
