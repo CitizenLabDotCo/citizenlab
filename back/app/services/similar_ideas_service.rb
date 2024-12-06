@@ -14,16 +14,16 @@ class SimilarIdeasService
 
     # embedding.nearest_neighbors(:embedding, distance: 'cosine') does not support
     # applying a threshold on the neighbor_distance.
-    neighbor_distance = Arel.sql("\"embedding\" <=> '#{embedding.embedding}'")
+    neighbor_distance = Arel.sql("\"embedding\" <=> '#{embedding.embedding}'") # Couldn't find a safer way to substitute the embedding value
     similarities = EmbeddingsSimilarity
         .where.not(embedding: nil)
         .order(neighbor_distance)
+    similarities = similarities.where("#{neighbor_distance} < ?", distance_threshold) if distance_threshold
 
     similarities = similarities
       .where.not(embeddable_id: idea.id)
       .where(embedded_attributes:)
     similarities = similarities.where(embeddable: scope) if scope
-    similarities = similarities.where("#{neighbor_distance} < ?", distance_threshold) if distance_threshold
     similarities = similarities.limit(limit) if limit
 
     ids = similarities.map(&:embeddable_id)
