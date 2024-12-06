@@ -141,7 +141,11 @@ const TopicsFilter = memo<Props>(
           </Box>
         ) : (
           <Box>
-            <Box className="e2e-topics-filters" aria-live="polite">
+            <Box
+              className="e2e-topics-filters"
+              aria-live="polite"
+              id="e2e-topics-filters"
+            >
               {topicsWithIdeas
                 .slice(0, showFullList ? undefined : 5) // We show only 5 topics by default with a "Show all" button.
                 .map((topic: ITopicData) => {
