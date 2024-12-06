@@ -186,7 +186,7 @@
   "app.components.HorizontalScroll.scrollLeftLabel": "Scroll left.",
   "app.components.HorizontalScroll.scrollRightLabel": "Scroll right.",
   "app.components.IdeaCards.a11y_ideasHaveBeenSorted": "{sortOder} ideas have loaded.",
-  "app.components.IdeaCards.filters": "Filters",
+  "app.components.IdeaCards.filters": "Филтери",
   "app.components.IdeaCards.filters.mostDiscussed": "Највише коментара",
   "app.components.IdeaCards.filters.newest": "Најновије",
   "app.components.IdeaCards.filters.oldest": "Најстарије",
