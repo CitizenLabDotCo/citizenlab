@@ -200,7 +200,7 @@
   "app.components.IdeasMap.a11y_mapTitle": "Преглед мапе",
   "app.components.IdeasMap.clickOnMapToAdd": "Кликните на мапу да додате свој унос",
   "app.components.IdeasMap.clickOnMapToAddAdmin2": "As an admin, you can click on the map to add your input, even if this phase is not active.",
-  "app.components.IdeasMap.filters": "Filters",
+  "app.components.IdeasMap.filters": "Филтери",
   "app.components.IdeasMap.multipleInputsAtLocation": "Multiple inputs at this location",
   "app.components.IdeasMap.noFilteredResults": "Филтери које сте изабрали нису дали резултате",
   "app.components.IdeasMap.noResults": "Нема резултата",
