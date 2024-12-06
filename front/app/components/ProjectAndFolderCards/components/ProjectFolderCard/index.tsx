@@ -40,7 +40,6 @@ import messages from './messages';
 import tracks from './tracks';
 
 const Container = styled(Link)`
-  width: calc(33% - 12px);
   display: flex;
   flex-direction: column;
   margin-bottom: 25px;
@@ -79,12 +78,7 @@ const Container = styled(Link)`
     padding-bottom: 25px;
 
     &.threecolumns {
-      ${media.tablet`
-        width: calc(50% - 13px);
-      `}
-
       ${media.phone`
-        width: 100%;
         min-height: 460px;
       `}
     }

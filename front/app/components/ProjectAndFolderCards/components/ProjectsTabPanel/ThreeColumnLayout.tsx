@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { media } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import { IAdminPublicationData } from 'api/admin_publications/types';
@@ -12,9 +13,16 @@ import { BaseProps } from '../PublicationStatusTabs';
 import { getTabId, getTabPanelId } from '../Topbar/Tabs';
 
 const Container = styled.div<{ hide: boolean }>`
-  display: ${({ hide }) => (hide ? 'none' : 'flex')};
-  flex-wrap: wrap;
-  justify-content: space-between;
+  display: ${({ hide }) => (hide ? 'none' : 'block')};
+`;
+
+const GridContainer = styled.div`
+  display: grid;
+  grid-template-columns: auto auto auto;
+  gap: 24px;
+  ${media.phone`
+    grid-template-columns: auto;  
+  `}
 `;
 
 interface Props extends Omit<BaseProps, 'layout'> {
@@ -40,30 +48,32 @@ const ThreeColumnLayout = ({
       hidden={tab !== currentTab}
       hide={tab !== currentTab}
     >
-      {list.map((item: IAdminPublicationData, index: number) => {
-        const projectOrFolderId = item.relationships.publication.data.id;
-        const projectOrFolderType = item.relationships.publication.data.type;
+      <GridContainer>
+        {list.map((item: IAdminPublicationData, index: number) => {
+          const projectOrFolderId = item.relationships.publication.data.id;
+          const projectOrFolderType = item.relationships.publication.data.type;
 
-        if (projectOrFolderType === 'project') {
+          if (projectOrFolderType === 'project') {
+            return (
+              <ProjectCard
+                key={index}
+                projectId={projectOrFolderId}
+                size="small"
+                layout="threecolumns"
+              />
+            );
+          }
+
           return (
-            <ProjectCard
+            <ProjectFolderCard
               key={index}
-              projectId={projectOrFolderId}
+              folderId={projectOrFolderId}
               size="small"
               layout="threecolumns"
             />
           );
-        }
-
-        return (
-          <ProjectFolderCard
-            key={index}
-            folderId={projectOrFolderId}
-            size="small"
-            layout="threecolumns"
-          />
-        );
-      })}
+        })}
+      </GridContainer>
     </Container>
   );
 };
