@@ -161,7 +161,7 @@
   "app.components.FilterBoxes.all": "Све",
   "app.components.FilterBoxes.areas": "Филтрирајте по области",
   "app.components.FilterBoxes.statusTitle": "Статус",
-  "app.components.FilterBoxes.topicsTitle": "Тема",
+  "app.components.FilterBoxes.topicsTitle": "Teme",
   "app.components.FiltersModal.a11y_closeFilterPanel": "Затворите филтер панел",
   "app.components.FiltersModal.filters": "Филтери",
   "app.components.FiltersModal.resetFilters": "Ресетујте филтере",
