@@ -373,6 +373,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.adminsOnly": "Sadece yöneticiler",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.anyoneWithLink": "Bağlantıya sahip olan herkes taslak proje ile etkileşime geçebilir",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approve": "Onaylamak",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approvedBy": "{name}tarafından onaylanmıştır.",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.archived": "Arşivlendi",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.draft": "Taslak",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.everyone": "Herkes",
