@@ -5,10 +5,6 @@ export default defineMessages({
     id: 'app.components.FiltersModal.filters',
     defaultMessage: 'Filters',
   },
-  resetFilters: {
-    id: 'app.components.FiltersModal.resetFilters',
-    defaultMessage: 'Reset filters',
-  },
   showXResults: {
     id: 'app.containers.IdeaCards.showXResults',
     defaultMessage:

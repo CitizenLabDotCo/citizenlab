@@ -167,7 +167,6 @@
   "app.components.FilterBoxes.statusTitle": "Állapot",
   "app.components.FilterBoxes.topicsTitle": "Címkék",
   "app.components.FiltersModal.filters": "Szűrők",
-  "app.components.FiltersModal.resetFilters": "Szűrők visszaállítása",
   "app.components.FolderFolderCard.a11y_folderDescription": "Mappa leírása:",
   "app.components.FolderFolderCard.a11y_folderTitle": "Mappa címe:",
   "app.components.FolderFolderCard.archived": "Archivált",
