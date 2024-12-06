@@ -7,8 +7,8 @@ import {
   useBreakpoint,
   stylingConsts,
   Title,
+  colors,
 } from '@citizenlab/cl2-component-library';
-import { useTheme } from 'styled-components';
 
 import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
 import AvatarBubbles from 'components/AvatarBubbles';
@@ -35,7 +35,6 @@ const Spotlight = ({
   userCount,
 }: Props) => {
   const isSmallerThanPhone = useBreakpoint('phone');
-  const theme = useTheme();
 
   return (
     <Box
@@ -61,7 +60,7 @@ const Spotlight = ({
           </Title>
           {description && (
             <Text>
-              <QuillEditedContent textColor={theme.colors.tenantText}>
+              <QuillEditedContent textColor={colors.textSecondary}>
                 <div dangerouslySetInnerHTML={{ __html: description }} />
               </QuillEditedContent>
             </Text>
