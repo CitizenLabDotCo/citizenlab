@@ -75,7 +75,7 @@ const Spotlight = ({
               </Button>
             </Box>
           )}
-          {userCount && userCount > 0 && (
+          {typeof userCount === 'number' && userCount > 0 && (
             <Box
               mt="16px"
               w="100%"
