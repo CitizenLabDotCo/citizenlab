@@ -19,14 +19,13 @@ interface Props {
 const Published = ({ titleMultiloc }: Props) => {
   const localize = useLocalize();
 
-  const { data, hasNextPage, fetchNextPage, isFetchingNextPage } =
-    useAdminPublications({
-      pageSize: 6,
-      publicationStatusFilter: ['published'],
-      rootLevelOnly: true,
-      removeNotAllowedParents: true,
-      include_publications: true,
-    });
+  const { data, hasNextPage, fetchNextPage } = useAdminPublications({
+    pageSize: 6,
+    publicationStatusFilter: ['published'],
+    rootLevelOnly: true,
+    removeNotAllowedParents: true,
+    include_publications: true,
+  });
 
   const adminPublications = data?.pages.map((page) => page.data).flat();
 
@@ -42,7 +41,6 @@ const Published = ({ titleMultiloc }: Props) => {
       title={localize(titleMultiloc)}
       adminPublications={adminPublications}
       hasMore={!!hasNextPage}
-      isLoadingMore={isFetchingNextPage}
       onLoadMore={fetchNextPage}
     />
   );

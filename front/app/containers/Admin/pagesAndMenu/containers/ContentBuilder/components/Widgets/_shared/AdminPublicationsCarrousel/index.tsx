@@ -28,15 +28,13 @@ interface Props {
   title: string;
   adminPublications: IAdminPublicationData[];
   hasMore: boolean;
-  isLoadingMore: boolean;
-  onLoadMore: () => void;
+  onLoadMore: () => Promise<any>;
 }
 
 const AdminPublicationsCarrousel = ({
   title,
   adminPublications,
   hasMore,
-  isLoadingMore,
   onLoadMore,
 }: Props) => {
   const [scrollContainerRef, setScrollContainerRef] = useState<
@@ -44,15 +42,25 @@ const AdminPublicationsCarrousel = ({
   >(undefined);
   const [showPreviousButton, setShowPreviousButton] = useState(false);
   const [showNextButton, setShowNextButton] = useState(false);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+
   const isSmallerThanPhone = useBreakpoint('phone');
   const instanceId = useInstanceId();
   const endId = `end-carrousel-${instanceId}`;
   const cardWidth = isSmallerThanPhone ? SMALL_CARD_WIDTH : BIG_CARD_WIDTH;
 
+  const handleLoadMore = async () => {
+    setIsLoadingMore(true);
+    await onLoadMore();
+    setTimeout(() => {
+      setIsLoadingMore(false);
+    }, 2000);
+  };
+
   const { ref } = useInView({
     onChange: (inView) => {
       if (inView && hasMore && !isLoadingMore) {
-        onLoadMore();
+        handleLoadMore();
       }
     },
   });
