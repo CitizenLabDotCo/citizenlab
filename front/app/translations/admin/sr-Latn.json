@@ -1849,7 +1849,6 @@
   "app.containers.AdminPage.ProjectEdit.topicLabel": "Teme",
   "app.containers.AdminPage.ProjectEdit.topicLabelTooltip": "Izaberite {topicsCopy} za ovaj projekat. Korisnici ovo mogu da koriste za filtriranje projekata.",
   "app.containers.AdminPage.ProjectEdit.totalBudget": "Ukupan budžet",
-  "app.containers.AdminPage.ProjectEdit.totalBudgetExplanation": "Budžet je podrazumevano podešen u lokalnoj valuti. Valutu svoje platforme možete promeniti i u „krediti“ ili „žetoni“ tako što ćete kontaktirati naš centar za podršku.",
   "app.containers.AdminPage.ProjectEdit.trendingSortingMethod": "U trendu",
   "app.containers.AdminPage.ProjectEdit.typeform": "Typeform",
   "app.containers.AdminPage.ProjectEdit.unassigned": "Nedodeljeno",
