@@ -103,7 +103,7 @@ models:
             titleMultiloc:
               en: 'You said, we did...'
               nl-BE: 'Jij zei, wij deden...'
-              fr-BE: "Vous avez dit, nous l'avons fait..."
+              fr-BE: "La boucle est bouclée"
           custom: {}
           hidden: false
           parent: 'ROOT'
