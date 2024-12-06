@@ -1,13 +1,12 @@
 import React from 'react';
 
-import { Box, Icon, colors } from '@citizenlab/cl2-component-library';
-import { darken } from 'polished';
-import { WrappedComponentProps } from 'react-intl';
-import { TwitterShareButton } from 'react-share';
+import { Box, colors } from '@citizenlab/cl2-component-library';
+import { lighten } from 'polished';
+import { TwitterShareButton, XIcon } from 'react-share';
 import styled from 'styled-components';
 
 import { trackEventByName } from 'utils/analytics';
-import { injectIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
 import tracks from '../tracks';
@@ -20,7 +19,7 @@ interface Props {
 
 const StyledBox = styled(Box)`
   display: flex;
-  background-color: ${colors.twitter};
+  background-color: ${colors.black};
   border-radius: 3px;
   height: 40px;
   width: 40px;
@@ -29,15 +28,12 @@ const StyledBox = styled(Box)`
   cursor: pointer;
 
   &:hover {
-    background-color: ${darken(0.1, colors.twitter)};
+    background-color: ${lighten(0.3, colors.black)};
   }
 `;
 
-const Twitter = ({
-  url,
-  twitterMessage,
-  intl: { formatMessage },
-}: Props & WrappedComponentProps) => {
+const Twitter = ({ url, twitterMessage }: Props) => {
+  const { formatMessage } = useIntl();
   const trackClick = (medium: Medium) => () => {
     const properties = { network: medium };
     trackEventByName(tracks.shareButtonClicked.name, properties);
@@ -51,10 +47,10 @@ const Twitter = ({
         onClick={trackClick('twitter')}
         aria-label={formatMessage(messages.shareOnTwitter)}
       >
-        <Icon fill="white" name="twitter" width="20px" />
+        <XIcon size={32} round={true} />
       </TwitterShareButton>
     </StyledBox>
   );
 };
 
-export default injectIntl(Twitter);
+export default Twitter;

@@ -13,5 +13,9 @@ FactoryBot.define do
     trait :with_children do
       association :children, factory: :admin_publication
     end
+
+    trait :folder do
+      association :publication, factory: :project_folder
+    end
   end
 end
