@@ -230,6 +230,7 @@ const ProjectCard = memo<InputProps>(
     className,
     showFollowButton,
   }) => {
+    const [visible, setVisible] = useState(false);
     const { ref: progressBarRef } = useInView({
       onChange: (inView) => {
         if (inView) {
@@ -255,8 +256,6 @@ const ProjectCard = memo<InputProps>(
       project?.data?.relationships?.current_phase?.data?.id ?? null;
     const { data: phase } = usePhase(currentPhaseId);
     const localize = useLocalize();
-
-    const [visible, setVisible] = useState(false);
 
     const handleProjectCardOnClick = (projectId: string) => {
       trackEventByName(tracks.clickOnProjectCard, { extra: { projectId } });
