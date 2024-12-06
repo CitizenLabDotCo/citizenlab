@@ -5,6 +5,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 import { IIdeaQueryParameters } from 'api/ideas/types';
 import { IIdeasFilterCounts } from 'api/ideas_filter_counts/types';
 import { IdeaSortMethod } from 'api/phases/types';
+import usePhase from 'api/phases/usePhase';
 
 import SearchInput from 'components/UI/SearchInput';
 
@@ -52,6 +53,12 @@ const InputFilters = ({
   onChangeTopics,
   handleSortOnChange,
 }: Props) => {
+  const { data: phase } = usePhase(phaseId);
+  const participationMethod =
+    phase?.data.attributes.participation_method || 'ideation'; // Ideation used as fallback here for All Ideas page.
+  const isProposalsOrIdeation =
+    participationMethod === 'ideation' || participationMethod === 'proposals';
+
   return (
     <>
       <ScreenReaderOnly aria-live="polite">
@@ -92,8 +99,9 @@ const InputFilters = ({
           onChange={onChangeTopics}
         />
       </Box>
-      {showStatusFilter && (
+      {showStatusFilter && isProposalsOrIdeation && (
         <StatusFilterBox
+          participationMethod={participationMethod}
           selectedStatusId={selectedIdeaFilters.idea_status}
           selectedIdeaFilters={selectedIdeaFilters}
           onChange={onChangeStatus}
