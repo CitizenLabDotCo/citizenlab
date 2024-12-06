@@ -17,6 +17,7 @@ export const Primary: Story = {
     title: 'AdminPublicationsCarrousel',
     adminPublications: mockFolderChildAdminPublicationsList,
     hasMore: false,
+    isLoadingMore: false,
     onLoadMore: () => {},
   },
 };

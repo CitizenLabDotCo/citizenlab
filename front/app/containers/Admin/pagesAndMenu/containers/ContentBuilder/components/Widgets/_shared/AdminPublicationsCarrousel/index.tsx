@@ -28,6 +28,7 @@ interface Props {
   title: string;
   adminPublications: IAdminPublicationData[];
   hasMore: boolean;
+  isLoadingMore: boolean;
   onLoadMore: () => void;
 }
 
@@ -35,6 +36,7 @@ const AdminPublicationsCarrousel = ({
   title,
   adminPublications,
   hasMore,
+  isLoadingMore,
   onLoadMore,
 }: Props) => {
   const [scrollContainerRef, setScrollContainerRef] = useState<
@@ -49,7 +51,7 @@ const AdminPublicationsCarrousel = ({
 
   const { ref } = useInView({
     onChange: (inView) => {
-      if (inView && hasMore) {
+      if (inView && hasMore && !isLoadingMore) {
         onLoadMore();
       }
     },
