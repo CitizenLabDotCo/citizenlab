@@ -17,6 +17,7 @@ import { isNilOrError } from 'utils/helperUtils';
 type ProjectCTABarProps = {
   projectId: string;
 };
+
 const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
   const isSmallerThanTablet = useBreakpoint('tablet');
   const isSmallerThanPhone = useBreakpoint('phone');

@@ -1,6 +1,12 @@
 import React from 'react';
 
-import { Box, Text, Icon, Title } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Text,
+  Icon,
+  Title,
+  useBreakpoint,
+} from '@citizenlab/cl2-component-library';
 
 import { IAdminPublicationData } from 'api/admin_publications/types';
 import useProjectFolderImage from 'api/project_folder_images/useProjectFolderImage';
@@ -17,7 +23,7 @@ import Link from 'utils/cl-router/Link';
 import { truncate } from 'utils/textUtils';
 
 import { CardContainer, CardImage } from '../../BaseCard';
-import { CARD_WIDTH } from '../constants';
+import { BIG_CARD_WIDTH, SMALL_CARD_WIDTH } from '../constants';
 
 import messages from './messages';
 import { getPublicationURL } from './utils';
@@ -49,6 +55,9 @@ export const AdminPublicationCard = ({
 }: InnerProps) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
+  const isSmallerThanPhone = useBreakpoint('phone');
+
+  const cardWidth = isSmallerThanPhone ? SMALL_CARD_WIDTH : BIG_CARD_WIDTH;
 
   const {
     visible_children_count,
@@ -62,7 +71,7 @@ export const AdminPublicationCard = ({
     <CardContainer
       as={Link}
       tabIndex={0}
-      w={`${CARD_WIDTH}px`}
+      w={`${cardWidth}px`}
       ml={ml}
       mr={mr}
       to={getPublicationURL(adminPublication)}
