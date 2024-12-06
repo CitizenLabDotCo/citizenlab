@@ -15,5 +15,9 @@ module MachineTranslations
     def self.feature_description
       'Allows users to see translated content.'
     end
+
+    def self.pricing
+      true
+    end
   end
 end

@@ -13,6 +13,7 @@ module CitizenLab
           'title' => feature_title,
           'description' => feature_description,
           'additionalProperties' => false,
+          'pricing' => pricing,
           'required' => %w[allowed enabled],
           'required-settings' => required_settings.presence,
           'properties' => {
@@ -50,6 +51,10 @@ module CitizenLab
       # @return [Boolean]
       def enabled_by_default
         true
+      end
+
+      def pricing
+        false
       end
 
       # @return [Array<Setting>]
