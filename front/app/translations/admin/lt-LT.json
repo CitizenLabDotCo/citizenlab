@@ -381,7 +381,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.embeddedMethods": "Įterptųjų metodų (pvz., išorinių apklausų) dalyviai",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.followers": "Projekto sekėjai",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.note": "Pastaba: Įjungus anoniminio arba atviro dalyvavimo leidimus, naudotojai gali dalyvauti kelis kartus, todėl naudotojų duomenys gali būti klaidinantys arba neišsamūs.",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsExclusionTitle": "Dalyviai neįtraukiami:",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsInfoTitle": "Dalyvauja:",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.users": "Naudotojai, sąveikaujantys su \"Go Vocal\" metodais",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.projectSettings": "Projekto nustatymai",
