@@ -46,9 +46,7 @@ const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
   const handleLoadMore = async () => {
     setBlockLoadMore(true);
     await onLoadMore();
-    setTimeout(() => {
-      setBlockLoadMore(false);
-    }, 2000);
+    setBlockLoadMore(false);
   };
 
   const { ref } = useInView({
@@ -77,7 +75,6 @@ const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
     if (!scrollContainerRef) return;
 
     const handler = debounce(() => {
-      setBlockLoadMore(false);
       handleButtonVisiblity(scrollContainerRef, hasMore);
     }, 100);
 

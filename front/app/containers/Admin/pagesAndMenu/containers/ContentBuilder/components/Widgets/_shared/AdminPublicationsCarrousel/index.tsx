@@ -52,9 +52,7 @@ const AdminPublicationsCarrousel = ({
   const handleLoadMore = async () => {
     setBlockLoadMore(true);
     await onLoadMore();
-    setTimeout(() => {
-      setBlockLoadMore(false);
-    }, 2000);
+    setBlockLoadMore(false);
   };
 
   const { ref } = useInView({
@@ -83,7 +81,6 @@ const AdminPublicationsCarrousel = ({
     if (!scrollContainerRef) return;
 
     const handler = debounce(() => {
-      setBlockLoadMore(false);
       handleButtonVisiblity(scrollContainerRef, hasMore);
     }, 100);
 
