@@ -11,6 +11,7 @@ interface Props {
   selectedIdeaFilters: IIdeasFilterCountsQueryParameters;
   onChange: (arg: string | null) => void;
   className?: string;
+  participationMethod?: 'ideation' | 'proposals';
 }
 
 const StatusFilterBox = ({
@@ -18,9 +19,10 @@ const StatusFilterBox = ({
   onChange,
   className,
   selectedIdeaFilters,
+  participationMethod,
 }: Props) => {
   const { data: ideaStatuses } = useIdeaStatuses({
-    participation_method: 'ideation',
+    participation_method: participationMethod,
   });
   const { data: ideasFilterCounts } = useIdeasFilterCounts({
     ...selectedIdeaFilters,
