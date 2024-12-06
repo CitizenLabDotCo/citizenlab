@@ -28,8 +28,13 @@ FactoryBot.define do
 
     after(:create) do |folder, evaluator|
       if evaluator.projects
-        AdminPublication.where(publication: evaluator.projects)
+        AdminPublication
+          .where(publication: evaluator.projects)
           .update(parent_id: folder.admin_publication.id)
+
+        # Reloading projects to ensure that the changes are reflected in the
+        # `project.folder` attribute.
+        evaluator.projects.each(&:reload)
       end
     end
   end
