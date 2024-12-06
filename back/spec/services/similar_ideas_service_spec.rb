@@ -53,18 +53,18 @@ describe SimilarIdeasService do
       idea.embeddings_similarities.destroy_all
       embedding = embeddings['moon']
       expect_any_instance_of(CohereMultilingualEmbeddings)
-            .to receive(:embedding).and_return(embedding)
+        .to receive(:embedding).and_return(embedding)
       idea # Load idea to start from correct EmbeddingsSimilarity.count
-      expect { service.upsert_embedding! }.to change { EmbeddingsSimilarity.count }.by(1)
+      expect { service.upsert_embedding! }.to change(EmbeddingsSimilarity, :count).by(1)
       expect(idea.embeddings_similarities.pluck(:embedding)).to eq [embedding]
     end
 
     it 'updates the embedding if it already exists' do
       embedding = embeddings['bats']
       expect_any_instance_of(CohereMultilingualEmbeddings)
-            .to receive(:embedding).and_return(embedding)
+        .to receive(:embedding).and_return(embedding)
       idea # Load idea to start from correct EmbeddingsSimilarity.count
-      expect { service.upsert_embedding! }.not_to change { EmbeddingsSimilarity.count }
+      expect { service.upsert_embedding! }.not_to change(EmbeddingsSimilarity, :count)
       expect(idea.embeddings_similarities.pluck(:embedding)).to eq [embedding]
     end
 
@@ -73,9 +73,9 @@ describe SimilarIdeasService do
       old_embedding = idea.embeddings_similarities.first.embedding
       new_embedding = embeddings['burger']
       expect_any_instance_of(CohereMultilingualEmbeddings)
-            .to receive(:embedding).and_return(new_embedding)
+        .to receive(:embedding).and_return(new_embedding)
       idea # Load idea to start from correct EmbeddingsSimilarity.count
-      expect { service.upsert_embedding! }.to change { EmbeddingsSimilarity.count }.by(1)
+      expect { service.upsert_embedding! }.to change(EmbeddingsSimilarity, :count).by(1)
       expect(idea.embeddings_similarities.pluck(:embedding)).to match_array [old_embedding, new_embedding]
     end
   end
