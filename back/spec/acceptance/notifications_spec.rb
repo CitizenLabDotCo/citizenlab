@@ -38,7 +38,7 @@ resource 'Notifications' do
     end
 
     describe do
-      example 'List all different types of notification', document: false do
+      example 'List all different types of notifications', document: false do
         notification_classes = NotificationService.new.notification_classes
 
         notification_classes.each do |notification_class|
