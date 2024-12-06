@@ -79,7 +79,7 @@ export const AdminPublicationCard = ({
       onKeyDown={onKeyDown}
     >
       <CardImage imageUrl={imageUrl} alt={imageAltText} />
-      <Title variant="h4" as="h3" mt="8px" mb="0px">
+      <Title variant="h4" as="h3" mt="8px" mb="0px" color="tenantText">
         {truncate(localize(publication_title_multiloc), 50)}
       </Title>
       <Box display="flex" flexDirection="row" alignItems="center" mt="8px">

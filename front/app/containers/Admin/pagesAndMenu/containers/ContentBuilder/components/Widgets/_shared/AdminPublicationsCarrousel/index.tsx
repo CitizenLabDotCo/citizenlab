@@ -110,6 +110,7 @@ const AdminPublicationsCarrousel = ({
           as="h2"
           mt="0px"
           ml={isSmallerThanPhone ? DEFAULT_PADDING : undefined}
+          color="tenantText"
         >
           {title}
         </Title>
