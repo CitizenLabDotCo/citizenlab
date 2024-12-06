@@ -10,7 +10,7 @@ import { MiniProjectData } from 'api/projects_mini/types';
 
 import useLocalize from 'hooks/useLocalize';
 
-import getCTAMessage from 'components/ProjectCard/getCTAMessage';
+import getCTAMessage from 'components/ProjectCard/ContentHeader/getCTAMessage';
 
 import { useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';

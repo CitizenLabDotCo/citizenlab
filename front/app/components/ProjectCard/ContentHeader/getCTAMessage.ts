@@ -7,7 +7,7 @@ import { Localize } from 'hooks/useLocalize';
 
 import { getInputTermMessage } from 'utils/i18n';
 
-import messages from './messages';
+import messages from '../messages';
 
 interface Params {
   phase: IPhaseData;

@@ -8,12 +8,9 @@ import {
   defaultCardStyle,
   defaultCardHoverStyle,
   isRtl,
-  Text,
   Title,
 } from '@citizenlab/cl2-component-library';
-import { isEmpty, round } from 'lodash-es';
-import moment from 'moment';
-import { rgba, darken } from 'polished';
+import { isEmpty } from 'lodash-es';
 import { useInView } from 'react-intersection-observer';
 import { RouteType } from 'routes';
 import styled from 'styled-components';
@@ -28,20 +25,20 @@ import useLocalize from 'hooks/useLocalize';
 
 import AvatarBubbles from 'components/AvatarBubbles';
 import FollowUnfollow from 'components/FollowUnfollow';
-import PhaseTimeLeft from 'components/PhaseTimeLeft';
 import { TLayout } from 'components/ProjectAndFolderCards';
 import T from 'components/T';
 import Image from 'components/UI/Image';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { trackEventByName } from 'utils/analytics';
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 
-import getCTAMessage from './getCTAMessage';
+import ContentHeader from './ContentHeader';
 import ImagePlaceholder from './ImagePlaceholder';
 import messages from './messages';
 import tracks from './tracks';
+import { TProjectCardSize } from './types';
 
 const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
   display: flex;
@@ -59,10 +56,6 @@ const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
     ${isRtl`
         flex-direction: row-reverse;
     `}
-
-    ${media.phone`
-      width: 100%;
-    `}
   }
 
   &.medium {
@@ -79,32 +72,13 @@ const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
   }
 
   &.small {
-    min-height: 540px;
+    min-height: 460px;
     padding-top: 18px;
     padding-bottom: 25px;
-
-    &.hideDescriptionPreview {
-      min-height: 490px;
-    }
-
-    &.threecolumns {
-      ${media.phone`
-        min-height: 460px;
-      `}
-    }
-
-    ${media.phone`
-      min-height: 400px;
-    `}
   }
 
   ${media.desktop`
     ${defaultCardHoverStyle};
-  `}
-
-  ${media.phone`
-    width: 100%;
-    min-height: 460px;
   `}
 `;
 
@@ -173,91 +147,6 @@ const ProjectContent = styled.div`
   `}
 `;
 
-const ContentHeaderHeight = 39;
-const ContentHeaderBottomMargin = 13;
-
-const ContentHeader = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  &.noContent {
-    ${media.desktop`
-      height: ${ContentHeaderHeight + ContentHeaderBottomMargin}px;
-    `}
-  }
-
-  &.hasRightContent.noLeftContent {
-    justify-content: flex-end;
-  }
-
-  &.hasContent {
-    margin-bottom: ${ContentHeaderBottomMargin}px;
-
-    &.large {
-      margin-bottom: 0px;
-      padding-bottom: ${ContentHeaderBottomMargin}px;
-      border-bottom: solid 1px #e0e0e0;
-    }
-  }
-
-  &.small {
-    padding-left: 30px;
-    padding-right: 30px;
-
-    ${media.phone`
-      padding-left: 20px;
-      padding-right: 20px;
-    `}
-
-    ${media.phone`
-      padding-left: 10px;
-      padding-right: 10px;
-    `}
-  }
-`;
-
-const ProgressBar = styled.div`
-  width: 100%;
-  max-width: 130px;
-  height: 5px;
-  border-radius: ${(props) => props.theme.borderRadius};
-  background: #d6dade;
-`;
-
-const ProgressBarOverlay = styled.div<{ progress: number }>`
-  width: 0px;
-  height: 100%;
-  border-radius: ${(props) => props.theme.borderRadius};
-  background: ${colors.error};
-  transition: width 1000ms cubic-bezier(0.19, 1, 0.22, 1);
-  will-change: width;
-
-  &.visible {
-    width: ${(props) => props.progress}%;
-  }
-`;
-
-const ProjectLabel = styled.button`
-  color: ${({ theme }) => darken(0.05, theme.colors.tenantSecondary)};
-  font-size: ${fontSizes.s}px;
-  font-weight: 400;
-  text-align: center;
-  white-space: nowrap;
-  padding: 8px 14px;
-  border-radius: ${(props) => props.theme.borderRadius};
-  border: 1px solid ${({ theme }) => darken(0.05, theme.colors.tenantSecondary)};
-  background: transparent;
-  transition: all 0.3s ease;
-
-  &:hover {
-    background: ${({ theme }) => rgba(theme.colors.tenantSecondary, 0.1)};
-    color: ${({ theme }) => theme.colors.tenantSecondary};
-    border-color: ${({ theme }) => theme.colors.tenantSecondary};
-    cursor: pointer;
-  }
-`;
-
 const ContentBody = styled.div`
   width: 100%;
   flex-grow: 1;
@@ -323,18 +212,7 @@ const ContentFooter = styled.div`
   }
 `;
 
-const ContentHeaderLabel = styled.span`
-  height: ${ContentHeaderHeight}px;
-  color: ${colors.textSecondary};
-  font-size: ${fontSizes.s}px;
-  font-weight: 500;
-  text-transform: uppercase;
-  display: flex;
-  align-items: center;
-`;
-
-export type TProjectCardSize = 'small' | 'medium' | 'large';
-export interface InputProps {
+interface InputProps {
   projectId: string;
   size: TProjectCardSize;
   layout?: TLayout;
@@ -377,7 +255,6 @@ const ProjectCard = memo<InputProps>(
       project?.data?.relationships?.current_phase?.data?.id ?? null;
     const { data: phase } = usePhase(currentPhaseId);
     const localize = useLocalize();
-    const { formatMessage } = useIntl();
 
     const [visible, setVisible] = useState(false);
 
@@ -403,7 +280,6 @@ const ProjectCard = memo<InputProps>(
     );
 
     const projectUrl: RouteType = getProjectUrl(project.data.attributes.slug);
-    const isFinished = project.data.attributes.timeline_active === 'past';
     const isArchived =
       project.data.attributes.publication_status === 'archived';
     const showAvatarBubbles = project.data.attributes.participants_count > 0;
@@ -412,96 +288,6 @@ const ProjectCard = memo<InputProps>(
       project.data.relationships.avatars.data
         ? project.data.relationships.avatars.data.map((avatar) => avatar.id)
         : [];
-    const startAt = phase?.data.attributes.start_at;
-    const endAt = phase?.data.attributes.end_at;
-
-    let countdown: JSX.Element | null = null;
-
-    if (isArchived) {
-      countdown = (
-        <ContentHeaderLabel>
-          <FormattedMessage {...messages.archived} />
-        </ContentHeaderLabel>
-      );
-    } else if (isFinished) {
-      countdown = (
-        <ContentHeaderLabel>
-          <FormattedMessage {...messages.finished} />
-        </ContentHeaderLabel>
-      );
-    } else if (endAt) {
-      const totalDays = moment
-        .duration(moment(endAt).diff(moment(startAt)))
-        .asDays();
-      const pastDays = moment
-        .duration(moment(moment()).diff(moment(startAt)))
-        .asDays();
-      const progress =
-        // number between 0 and 100
-        round((pastDays / totalDays) * 100, 1);
-      countdown = (
-        <Box mt="4px" className="e2e-project-card-time-remaining">
-          <Text color="textPrimary" fontSize="s" m="0">
-            <PhaseTimeLeft currentPhaseEndsAt={endAt} />
-          </Text>
-          <ProgressBar ref={progressBarRef} aria-hidden>
-            <ProgressBarOverlay
-              progress={progress}
-              className={visible ? 'visible' : ''}
-            />
-          </ProgressBar>
-        </Box>
-      );
-    }
-
-    const ctaMessage = phase
-      ? getCTAMessage({
-          actionDescriptors: project.data.attributes.action_descriptors,
-          phase: phase.data,
-          formatMessage,
-          localize,
-        })
-      : undefined;
-
-    const contentHeader = (
-      <ContentHeader
-        className={`${size} ${
-          !ctaMessage ? 'noRightContent' : 'hasContent hasRightContent'
-        } ${!countdown ? 'noLeftContent' : 'hasContent hasLeftContent'} ${
-          !ctaMessage && !countdown ? 'noContent' : ''
-        }`}
-      >
-        {countdown !== null && (
-          <Box
-            className={size}
-            minHeight={`${ContentHeaderHeight}px`}
-            display="flex"
-            flexGrow={0}
-            flexShrink={1}
-            flexBasis={140}
-            mr="15px"
-          >
-            {countdown}
-          </Box>
-        )}
-
-        {ctaMessage && !isFinished && !isArchived && (
-          <Box
-            minHeight={`${ContentHeaderHeight}px`}
-            className={`${size} ${countdown ? 'hasProgressBar' : ''}`}
-          >
-            <ProjectLabel
-              onClick={() => {
-                handleCTAOnClick(project.data.id);
-              }}
-              className="e2e-project-card-cta"
-            >
-              {ctaMessage}
-            </ProjectLabel>
-          </Box>
-        )}
-      </ContentHeader>
-    );
 
     const screenReaderContent = (
       <ScreenReaderOnly>
@@ -537,86 +323,111 @@ const ProjectCard = memo<InputProps>(
         }}
       >
         {screenReaderContent}
-        {size !== 'large' && contentHeader}
 
-        <ProjectImageContainer className={size}>
-          {imageUrl ? (
-            <ProjectImage
-              src={imageUrl}
-              alt={projectImageAltText}
-              cover={true}
+        <>
+          {size !== 'large' && (
+            <ContentHeader
+              project={project}
+              phase={phase}
+              size={size}
+              visible={visible}
+              progressBarRef={progressBarRef}
+              onClickCTA={handleCTAOnClick}
             />
-          ) : (
-            <ImagePlaceholder />
           )}
-        </ProjectImageContainer>
 
-        <ProjectContent className={size}>
-          {size === 'large' && contentHeader}
-
-          <ContentBody className={size} aria-hidden>
-            <ProjectTitle
-              variant="h3"
-              className="e2e-project-card-project-title"
-              data-testid="project-card-project-title"
-              onClick={() => {
-                handleProjectTitleOnClick(project.data.id);
-              }}
-            >
-              <T value={project.data.attributes.title_multiloc} />
-            </ProjectTitle>
-
-            {!hideDescriptionPreview && (
-              <T value={project.data.attributes.description_preview_multiloc}>
-                {(description) => {
-                  if (!isEmpty(description)) {
-                    return (
-                      <ProjectDescription
-                        className="e2e-project-card-project-description-preview"
-                        data-testid="project-card-project-description-preview"
-                      >
-                        {description}
-                      </ProjectDescription>
-                    );
-                  }
-
-                  return null;
-                }}
-              </T>
-            )}
-          </ContentBody>
-
-          {showAvatarBubbles && (
-            <Box borderTop={`1px solid ${colors.divider}`} pt="16px" mt="30px">
-              <ContentFooter className={size}>
-                <Box h="100%" display="flex" alignItems="center">
-                  <AvatarBubbles
-                    size={32}
-                    limit={3}
-                    avatarIds={avatarIds}
-                    userCount={project.data.attributes.participants_count}
-                  />
-                </Box>
-              </ContentFooter>
-            </Box>
-          )}
-          {showFollowButton && (
-            <Box display="flex" justifyContent="flex-end" mt="24px">
-              <FollowUnfollow
-                followableType="projects"
-                followableId={project.data.id}
-                followersCount={project.data.attributes.followers_count}
-                followerId={
-                  // TODO: Fix this the next time the file is edited.
-                  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-                  project.data.relationships.user_follower?.data?.id
-                }
-                w="100%"
-                toolTipType="projectOrFolder"
+          <ProjectImageContainer className={size}>
+            {imageUrl ? (
+              <ProjectImage
+                src={imageUrl}
+                alt={projectImageAltText}
+                cover={true}
               />
-            </Box>
-          )}
-        </ProjectContent>
+            ) : (
+              <ImagePlaceholder />
+            )}
+          </ProjectImageContainer>
+
+          <ProjectContent className={size}>
+            {size === 'large' && (
+              <ContentHeader
+                project={project}
+                phase={phase}
+                size={size}
+                visible={visible}
+                progressBarRef={progressBarRef}
+                onClickCTA={handleCTAOnClick}
+              />
+            )}
+
+            <ContentBody className={size} aria-hidden>
+              <ProjectTitle
+                variant="h3"
+                className="e2e-project-card-project-title"
+                data-testid="project-card-project-title"
+                onClick={() => {
+                  handleProjectTitleOnClick(project.data.id);
+                }}
+              >
+                <T value={project.data.attributes.title_multiloc} />
+              </ProjectTitle>
+
+              {!hideDescriptionPreview && (
+                <T value={project.data.attributes.description_preview_multiloc}>
+                  {(description) => {
+                    if (!isEmpty(description)) {
+                      return (
+                        <ProjectDescription
+                          className="e2e-project-card-project-description-preview"
+                          data-testid="project-card-project-description-preview"
+                        >
+                          {description}
+                        </ProjectDescription>
+                      );
+                    }
+
+                    return null;
+                  }}
+                </T>
+              )}
+            </ContentBody>
+
+            {showAvatarBubbles && (
+              <Box
+                borderTop={`1px solid ${colors.divider}`}
+                pt="16px"
+                mt="30px"
+              >
+                <ContentFooter className={size}>
+                  <Box h="100%" display="flex" alignItems="center">
+                    <AvatarBubbles
+                      size={32}
+                      limit={3}
+                      avatarIds={avatarIds}
+                      userCount={project.data.attributes.participants_count}
+                    />
+                  </Box>
+                </ContentFooter>
+              </Box>
+            )}
+            {showFollowButton && (
+              <Box display="flex" justifyContent="flex-end" mt="24px">
+                <FollowUnfollow
+                  followableType="projects"
+                  followableId={project.data.id}
+                  followersCount={project.data.attributes.followers_count}
+                  followerId={
+                    // TODO: Fix this the next time the file is edited.
+                    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+                    project.data.relationships.user_follower?.data?.id
+                  }
+                  w="100%"
+                  toolTipType="projectOrFolder"
+                />
+              </Box>
+            )}
+          </ProjectContent>
+        </>
       </Container>
     );
   }
