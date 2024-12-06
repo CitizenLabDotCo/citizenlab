@@ -18,9 +18,10 @@ interface Props {
 
 const FollowedItems = ({ titleMultiloc }: Props) => {
   const localize = useLocalize();
-  const { data, hasNextPage, fetchNextPage } = useProjectsMini({
-    endpoint: 'for_followed_item',
-  });
+  const { data, hasNextPage, fetchNextPage, isFetchingNextPage } =
+    useProjectsMini({
+      endpoint: 'for_followed_item',
+    });
   const projects = data?.pages.map((page) => page.data).flat();
 
   if (!projects) return null;
@@ -35,6 +36,7 @@ const FollowedItems = ({ titleMultiloc }: Props) => {
       title={localize(titleMultiloc)}
       projects={projects}
       hasMore={!!hasNextPage}
+      isLoadingMore={isFetchingNextPage}
       onLoadMore={fetchNextPage}
     />
   );
