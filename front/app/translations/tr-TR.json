@@ -167,7 +167,6 @@
   "app.components.FilterBoxes.statusTitle": "Durum",
   "app.components.FilterBoxes.topicsTitle": "Etiketler",
   "app.components.FiltersModal.filters": "Filtreler",
-  "app.components.FiltersModal.resetFilters": "Filtreleri sıfırla",
   "app.components.FolderFolderCard.a11y_folderDescription": "Klasör açıklaması:",
   "app.components.FolderFolderCard.a11y_folderTitle": "Klasör başlığı:",
   "app.components.FolderFolderCard.archived": "Arşivlenmiş",
