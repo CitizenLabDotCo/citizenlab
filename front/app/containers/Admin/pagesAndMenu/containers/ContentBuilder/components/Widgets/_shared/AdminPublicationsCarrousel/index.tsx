@@ -1,17 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
-import {
-  Box,
-  Spinner,
-  useBreakpoint,
-  Title,
-} from '@citizenlab/cl2-component-library';
+import { useBreakpoint, Title } from '@citizenlab/cl2-component-library';
 import useInstanceId from 'component-library/hooks/useInstanceId';
 import { debounce } from 'lodash-es';
 import { useInView } from 'react-intersection-observer';
 
 import { IAdminPublicationData } from 'api/admin_publications/types';
-import { CARD_IMAGE_ASPECT_RATIO } from 'api/project_images/useProjectImages';
 
 import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
 
@@ -19,6 +13,7 @@ import { CARD_GAP } from '../BaseCarrousel/constants';
 import { CarrouselContainer, CardContainer } from '../BaseCarrousel/Containers';
 import Gradient from '../BaseCarrousel/Gradient';
 import HorizontalScroll from '../BaseCarrousel/HorizontalScroll';
+import LoadMoreCard from '../BaseCarrousel/LoadMoreCard';
 import ScrollButton from '../BaseCarrousel/ScrollButton';
 import SkipButton from '../BaseCarrousel/SkipButton';
 import {
@@ -132,20 +127,7 @@ const AdminPublicationsCarrousel = ({
               />
             </CardContainer>
           ))}
-          {hasMore && (
-            <CardContainer>
-              <Box
-                ref={ref}
-                w={`${cardWidth}px`}
-                h={`${cardWidth / CARD_IMAGE_ASPECT_RATIO}px`}
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-              >
-                <Spinner />
-              </Box>
-            </CardContainer>
-          )}
+          {hasMore && <LoadMoreCard width={cardWidth} cardRef={ref} />}
         </HorizontalScroll>
         {showPreviousButton && !isSmallerThanPhone && (
           <>
