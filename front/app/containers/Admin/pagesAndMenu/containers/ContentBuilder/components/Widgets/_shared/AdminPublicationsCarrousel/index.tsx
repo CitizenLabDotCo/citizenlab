@@ -42,7 +42,7 @@ const AdminPublicationsCarrousel = ({
   >(undefined);
   const [showPreviousButton, setShowPreviousButton] = useState(false);
   const [showNextButton, setShowNextButton] = useState(false);
-  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [blockLoadMore, setBlockLoadMore] = useState(false);
 
   const isSmallerThanPhone = useBreakpoint('phone');
   const instanceId = useInstanceId();
@@ -50,16 +50,16 @@ const AdminPublicationsCarrousel = ({
   const cardWidth = isSmallerThanPhone ? SMALL_CARD_WIDTH : BIG_CARD_WIDTH;
 
   const handleLoadMore = async () => {
-    setIsLoadingMore(true);
+    setBlockLoadMore(true);
     await onLoadMore();
     setTimeout(() => {
-      setIsLoadingMore(false);
+      setBlockLoadMore(false);
     }, 2000);
   };
 
   const { ref } = useInView({
     onChange: (inView) => {
-      if (inView && hasMore && !isLoadingMore) {
+      if (inView && hasMore && !blockLoadMore) {
         handleLoadMore();
       }
     },
@@ -83,6 +83,7 @@ const AdminPublicationsCarrousel = ({
     if (!scrollContainerRef) return;
 
     const handler = debounce(() => {
+      setBlockLoadMore(false);
       handleButtonVisiblity(scrollContainerRef, hasMore);
     }, 100);
 

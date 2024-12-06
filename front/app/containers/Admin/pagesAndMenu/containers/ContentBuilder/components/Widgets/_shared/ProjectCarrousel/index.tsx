@@ -37,23 +37,23 @@ const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
   >(undefined);
   const [showPreviousButton, setShowPreviousButton] = useState(false);
   const [showNextButton, setShowNextButton] = useState(false);
-  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [blockLoadMore, setBlockLoadMore] = useState(false);
 
   const isSmallerThanPhone = useBreakpoint('phone');
   const instanceId = useInstanceId();
   const endId = `end-carrousel-${instanceId}`;
 
   const handleLoadMore = async () => {
-    setIsLoadingMore(true);
+    setBlockLoadMore(true);
     await onLoadMore();
     setTimeout(() => {
-      setIsLoadingMore(false);
+      setBlockLoadMore(false);
     }, 2000);
   };
 
   const { ref } = useInView({
     onChange: (inView) => {
-      if (inView && hasMore && !isLoadingMore) {
+      if (inView && hasMore && !blockLoadMore) {
         handleLoadMore();
       }
     },
@@ -77,6 +77,7 @@ const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
     if (!scrollContainerRef) return;
 
     const handler = debounce(() => {
+      setBlockLoadMore(false);
       handleButtonVisiblity(scrollContainerRef, hasMore);
     }, 100);
 
