@@ -253,6 +253,10 @@ export default defineMessages({
     defaultMessage:
       '{name} requested approval to publish the project "{projectTitle}"',
   },
+  projectReviewStateChange: {
+    id: 'app.containers.NotificationMenu.projectReviewStateChange',
+    defaultMessage: '{name} approved "{projectTitle}" for publication',
+  },
   postAssignedToYou: {
     id: 'app.containers.NotificationMenu.postAssignedToYou',
     defaultMessage: '{postTitle} was assigned to you',

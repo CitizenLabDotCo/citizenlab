@@ -37,6 +37,7 @@ class NotificationService
     Notifications::ProjectPhaseUpcoming,
     Notifications::ProjectPublished,
     Notifications::ProjectReviewRequest,
+    Notifications::ProjectReviewStateChange,
     Notifications::StatusChangeOnIdeaYouFollow,
     Notifications::StatusChangeOnInitiativeYouFollow,
     Notifications::ThresholdReachedForAdmin,

@@ -221,6 +221,11 @@ FactoryBot.define do
     project_review
   end
 
+  factory :project_review_state_change, parent: :notification, class: 'Notifications::ProjectReviewStateChange' do
+    initiating_user
+    project_review
+  end
+
   factory :status_change_on_idea_you_follow, parent: :notification, class: 'Notifications::StatusChangeOnIdeaYouFollow' do
     association :post, factory: :idea
     project
