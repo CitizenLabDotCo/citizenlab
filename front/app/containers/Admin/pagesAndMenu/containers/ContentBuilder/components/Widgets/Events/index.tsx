@@ -1,11 +1,6 @@
 import React from 'react';
 
-import {
-  Box,
-  colors,
-  useBreakpoint,
-  Text,
-} from '@citizenlab/cl2-component-library';
+import { Box, useBreakpoint, Text } from '@citizenlab/cl2-component-library';
 
 import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
 import EventsWidget from 'components/LandingPages/citizen/EventsWidget';
@@ -17,7 +12,7 @@ import messages from './messages';
 const Events = () => {
   const isSmallerThanTablet = useBreakpoint('tablet');
   return (
-    <Box bg={colors.background} data-cy="e2e-events">
+    <Box data-cy="e2e-events">
       <Box
         maxWidth="1200px"
         margin="0 auto"
