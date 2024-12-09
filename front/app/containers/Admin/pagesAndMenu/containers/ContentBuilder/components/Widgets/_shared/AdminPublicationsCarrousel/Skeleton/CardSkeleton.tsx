@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { colors, Shimmer, Box } from '@citizenlab/cl2-component-library';
+import { Box, useBreakpoint, Shimmer } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
 
 import ImageSkeleton from '../../ImageSkeleton';
-import { CARD_WIDTH } from '../constants';
+import { BIG_CARD_WIDTH, SMALL_CARD_WIDTH } from '../constants';
 
 interface Props {
   ml?: string;
@@ -14,12 +14,16 @@ interface Props {
 const CardSkeleton = ({ ml, mr }: Props) => {
   const theme = useTheme();
 
+  const isSmallerThanPhone = useBreakpoint('phone');
+
+  const cardWidth = isSmallerThanPhone ? SMALL_CARD_WIDTH : BIG_CARD_WIDTH;
+
   return (
-    <Box w={`${CARD_WIDTH}px`} ml={ml} mr={mr}>
+    <Box w={`${cardWidth}px`} ml={ml} mr={mr}>
       <ImageSkeleton />
       <Shimmer
         bgColor={theme.colors.tenantText}
-        width={`${CARD_WIDTH}px`}
+        width={`${cardWidth}px`}
         borderRadius="16px"
         height="20px"
         mt="8px"
@@ -30,20 +34,6 @@ const CardSkeleton = ({ ml, mr }: Props) => {
         borderRadius="16px"
         height="20px"
         mt="8px"
-      />
-      <Shimmer
-        bgColor={theme.colors.tenantText}
-        width="100px"
-        borderRadius="16px"
-        height="16px"
-        mt="12px"
-      />
-      <Shimmer
-        bgColor={colors.grey600}
-        width="120px"
-        borderRadius="16px"
-        height="16px"
-        mt="10px"
       />
     </Box>
   );
