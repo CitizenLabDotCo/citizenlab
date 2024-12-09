@@ -20,7 +20,7 @@ const createData = (offset: number): MiniProjectData[] => {
     type: 'project_mini',
     attributes: {
       title_multiloc: {
-        en: `${offset + index} - Project title`,
+        en: `${offset + index} - Project title, but a bit longer`,
       },
       slug: 'project-slug',
       action_descriptors: {

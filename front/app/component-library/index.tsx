@@ -54,6 +54,7 @@ import Select, {
   SelectIcon,
   SelectWrapper,
 } from './components/Select';
+import Shimmer from './components/Shimmer';
 import Spinner from './components/Spinner';
 import StatusLabel from './components/StatusLabel';
 import Success from './components/Success';
@@ -195,4 +196,5 @@ export {
   Title,
   ListItem,
   Tooltip,
+  Shimmer,
 };

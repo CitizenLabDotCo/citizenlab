@@ -8,6 +8,7 @@ import {
   stylingConsts,
   Title,
   colors,
+  Shimmer,
 } from '@citizenlab/cl2-component-library';
 
 import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
@@ -18,6 +19,7 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 interface Props {
   title: string;
   imgSrc?: string;
+  imageLoading: boolean;
   description?: string;
   buttonText?: string;
   buttonLink?: string;
@@ -28,6 +30,7 @@ interface Props {
 const Spotlight = ({
   title,
   imgSrc,
+  imageLoading,
   description,
   buttonText,
   buttonLink,
@@ -35,6 +38,7 @@ const Spotlight = ({
   userCount,
 }: Props) => {
   const isSmallerThanPhone = useBreakpoint('phone');
+  console.log({ imageLoading });
 
   return (
     <Box
@@ -103,7 +107,19 @@ const Spotlight = ({
               borderRadius={stylingConsts.borderRadius}
               objectFit="cover"
             />
-          ) : null}
+          ) : (
+            <>
+              {imageLoading && (
+                <Shimmer
+                  w="100%"
+                  maxWidth="630px"
+                  height={isSmallerThanPhone ? '188px' : '350px'}
+                  borderRadius={stylingConsts.borderRadius}
+                  bgColor={colors.grey300}
+                />
+              )}
+            </>
+          )}
         </Box>
       </Box>
     </Box>

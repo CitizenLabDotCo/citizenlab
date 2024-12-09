@@ -51,7 +51,6 @@ const Header = styled.div`
 
 const StyledTitle = styled(Title)`
   ${media.phone`
-    text-align: center;
     margin: 0;
   `};
 `;
