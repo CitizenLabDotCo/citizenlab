@@ -129,7 +129,7 @@ const HomepageBanner = ({ homepageSettings, image }: Props) => {
     search.get('variant') === 'signedIn';
 
   return (
-    <div data-cy="e2e-homepage-banner">
+    <Box data-cy="e2e-homepage-banner" mb="40px">
       {showSignedInHeader ? (
         <SignedInHeader
           homepageSettings={{
@@ -156,7 +156,7 @@ const HomepageBanner = ({ homepageSettings, image }: Props) => {
           />
         </Fragment>
       )}
-    </div>
+    </Box>
   );
 };
 
