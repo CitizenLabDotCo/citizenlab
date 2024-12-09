@@ -507,7 +507,6 @@
   "app.containers.AdminPage.DashboardPage.previousWeek": "Previous week",
   "app.containers.AdminPage.DashboardPage.previousYear": "Previous year",
   "app.containers.AdminPage.DashboardPage.projectType": "Project type : {projectType}",
-  "app.containers.AdminPage.DashboardPage.representativeness.betaLabel": "BETA",
   "app.containers.AdminPage.DashboardPage.representativeness.emptyStateDescription": "This base dataset is required to calculate the representativeness of platform users compared to the total population.",
   "app.containers.AdminPage.DashboardPage.representativeness.emptyStateTitle": "Please provide a base dataset.",
   "app.containers.AdminPage.DashboardPage.representativeness.pageDescription3": "See how representative your platform users are compared to the total population - based on data collected during user registration. Learn more about {representativenessArticleLink}.",
