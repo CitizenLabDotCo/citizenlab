@@ -392,9 +392,9 @@ el:
       preheader: '''%{post}'' έχει ένα νέο εσωτερικό σχόλιο'
     official_feedback_on_idea_you_follow:
       header_message: 'Ο/η %{feedback_author_name} ενημέρωσε για την %{input_title}''.'
-      header_title: 'There''s an update on "%{input_title}"'
-      subject: 'Official feedback was posted on "%{input_title}"'
-      preheader: 'There''s an update on an input you follow'
+      header_title: 'Υπάρχει μια ενημέρωση για "%{input_title}"'
+      subject: 'Μία νέα επίσημη ενημέρωση δημοσιεύτηκε στο "%{input_title}"'
+      preheader: 'Υπάρχει μια ενημέρωση σχετικά με μια πρόταση που ψηφίσατε'
     official_feedback_on_initiative_you_follow:
       header_message: '%{officialName} ενημέρωσε σχετικά με την πρόταση "%{initiativeTitle}". Κάντε κλικ στο παρακάτω κουμπί για να μπείτε στη συζήτηση με το %{organizationName}.'
       header_title: 'Υπάρχει μια ενημέρωση σχετικά με μια πρόταση που ακολουθείτε'
@@ -458,7 +458,7 @@ el:
       header_message: 'Η πλατφόρμα συμμετοχής του %{organizationName} μόλις δημοσίευσε το ακόλουθο έργο:'
       preheader: 'Δημοσιεύθηκε ένα νέο έργο'
     status_change_on_idea_you_follow:
-      status_change: 'The new status of this input is ''%{status}'''
+      status_change: 'Η συγκριμένη ιδέα ενημερώθηκε σε ''%{status}'''
       header_message: '%{organizationName} updated the status of the input ''%{input_title}'' on their digital participation platform.'
       header_title: 'An input you follow has a new status'
       subject: 'The status of "%{input_title}" has changed'
