@@ -94,6 +94,7 @@ const ReviewFlow = ({ project }: { project: IProjectData }) => {
             padding="4px 8px"
             iconSize="20px"
             disabled={!canPublish}
+            id="e2e-publish"
           >
             {formatMessage(messages.publish)}
           </Button>
@@ -111,6 +112,11 @@ const ReviewFlow = ({ project }: { project: IProjectData }) => {
             padding="4px 8px"
             iconSize="20px"
             disabled={approvalPending}
+            data-cy={
+              approvalPending
+                ? 'e2e-request-approval-pending'
+                : 'e2e-request-approval'
+            }
           >
             {approvalPending
               ? formatMessage(messages.pendingApproval)
@@ -133,6 +139,7 @@ const ReviewFlow = ({ project }: { project: IProjectData }) => {
           size="s"
           padding="4px 8px"
           iconSize="20px"
+          id="e2e-approve-project"
         >
           {formatMessage(messages.approve)}
         </Button>

@@ -36,7 +36,11 @@ const ReviewRequest = ({
           <Text color="textSecondary">
             {formatMessage(messages.requestApprovalDescription)}
           </Text>
-          <Button buttonStyle="primary" onClick={handleSendRequest}>
+          <Button
+            buttonStyle="primary"
+            onClick={handleSendRequest}
+            id="e2e-request-approval-confirm"
+          >
             {formatMessage(messages.requestApproval)}
           </Button>
         </div>
