@@ -2318,6 +2318,7 @@
   "app.containers.AdminPage.projects.all.onlyAdminsCanCreateFolders": "Dim ond gweinyddwyr all greu ffolderi prosiect.",
   "app.containers.AdminPage.projects.all.onlyAdminsCanCreateProjects1": "Dim ond gweinyddwyr a rheolwyr ffolderi all greu prosiectau.",
   "app.containers.AdminPage.projects.all.projectsAndFolders": "Prosiectau a ffolderi",
+  "app.containers.AdminPage.projects.all.publishedTab": "Cyhoeddwyd",
   "app.containers.AdminPage.projects.all.searchProjects": "Chwilio prosiectau",
   "app.containers.AdminPage.projects.all.yourProjects": "Eich prosiectau",
   "app.containers.AdminPage.projects.project.analysis.AIAnalysis": "Dadansoddiad AI",

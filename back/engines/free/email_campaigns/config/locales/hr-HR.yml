@@ -269,7 +269,7 @@ hr:
       cta_reply_to: 'Pogledaj komentar od %{firstName}'
       event_description: '%{authorNameFull} vas je spomenuo u internom komentaru.'
       subject: '%{firstName} vas je spomenuo u internom komentaru.'
-      main_header: '%{authorNameFirst} vas je spomenuo u internom komentaru.'
+      main_header: '%{firstName} vas je spomenuo u internom komentaru.'
       preheader: '%{authorNameFull} vas je spomenuo u internom komentaru.'
     moderator_digest:
       subject: 'Vaš tjedni izvještaj za voditelje projekta od %{time}'
