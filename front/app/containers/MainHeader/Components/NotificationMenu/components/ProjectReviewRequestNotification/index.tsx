@@ -7,12 +7,10 @@ import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
 import T from 'components/T';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
-import { isNilOrError, stopPropagation } from 'utils/helperUtils';
 
 import messages from '../../messages';
-import { DeletedUser } from '../Notification';
 import NotificationWrapper from '../NotificationWrapper';
+import UserLink from '../UserLink';
 
 type Props = {
   notification: IProjectReviewRequestNotificationData;
@@ -43,19 +41,5 @@ const ProjectReviewRequestNotification = memo<Props>(
     </NotificationWrapper>
   )
 );
-
-const UserLink = ({ userName, userSlug }) => {
-  const deletedUser = isNilOrError(userName) || isNilOrError(userSlug);
-
-  return deletedUser ? (
-    <DeletedUser>
-      <FormattedMessage {...messages.deletedUser} />
-    </DeletedUser>
-  ) : (
-    <Link to={`/profile/${userSlug}`} onClick={stopPropagation}>
-      {userName}
-    </Link>
-  );
-};
 
 export default ProjectReviewRequestNotification;
