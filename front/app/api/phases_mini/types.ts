@@ -1,4 +1,6 @@
-import { InputTerm, ParticipationMethod } from 'api/phases/types';
+import { Multiloc, IRelationship } from 'typings';
+
+import { InputTerm, ParticipationMethod, VotingMethod } from 'api/phases/types';
 
 import { Keys } from 'utils/cl-react-query/types';
 
@@ -16,6 +18,16 @@ export interface PhaseMiniData {
   attributes: {
     end_at: string | null;
     input_term: InputTerm;
+    native_survey_button_multiloc?: Multiloc;
     participation_method: ParticipationMethod;
+    voting_method?: VotingMethod;
+  };
+  relationships: {
+    project: {
+      data: IRelationship;
+    };
+    report?: {
+      data: IRelationship | null;
+    };
   };
 }
