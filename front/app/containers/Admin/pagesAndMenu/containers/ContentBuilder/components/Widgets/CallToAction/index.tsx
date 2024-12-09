@@ -5,7 +5,6 @@ import {
   colors,
   useBreakpoint,
   Text,
-  defaultCardStyle,
   media,
   Title,
   Input,
@@ -31,20 +30,14 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 60px 40px;
   position: relative;
   overflow: hidden;
-  ${defaultCardStyle};
-
-  ${media.tablet`
-    padding: 60px 50px 50px;
-  `}
+  padding: ${DEFAULT_PADDING} 0px;
 
   ${media.phone`
     text-align: center;
     flex-direction: column;
     align-items: flex-start;
-    padding: 60px 30px 40px;
   `}
 `;
 
@@ -62,7 +55,6 @@ const ButtonContainer = styled.div`
   ${media.phone`
     margin-left: 0;
     width: 100%;
-    margin-top: 20px;
   `}
 `;
 
@@ -154,10 +146,12 @@ const CallToAction = ({
             w="100%"
             maxWidth={isSmallerThanTablet ? undefined : '400px'}
           >
-            <Title variant="h2" color="tenantText">
+            <Title variant="h2" color="tenantText" mt="0">
               {lоcalize(title)}
             </Title>
-            <Text color="textSecondary">{lоcalize(description)}</Text>
+            <Text color="textSecondary" m="0">
+              {lоcalize(description)}
+            </Text>
           </Box>
           <ButtonContainer>
             {((enabled && secondaryButtonText) ||
