@@ -23,6 +23,8 @@ import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLoca
 import { useIntl } from 'utils/cl-intl';
 import { removeUrlLocale } from 'utils/removeUrlLocale';
 
+import { DEFAULT_Y_PADDING } from '../constants';
+
 import messages from './messages';
 
 const Container = styled.div`
@@ -136,12 +138,14 @@ const CallToAction = ({
   const isSmallerThanSmallTablet = useBreakpoint('tablet');
 
   return (
-    <Box bg={colors.background} data-cy="e2e-highlight">
+    <Box
+      border={`1px ${colors.grey300} solid`}
+      data-cy="e2e-highlight"
+      my={isSmallerThanTablet ? DEFAULT_PADDING : DEFAULT_Y_PADDING}
+    >
       <Box
         maxWidth="1200px"
         margin="0 auto"
-        pt={isSmallerThanTablet ? DEFAULT_PADDING : '40px'}
-        pb={isSmallerThanTablet ? DEFAULT_PADDING : '40px'}
         px={isSmallerThanTablet ? DEFAULT_PADDING : '0px'}
       >
         <Container>
