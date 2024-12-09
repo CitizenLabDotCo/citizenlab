@@ -1,7 +1,8 @@
 import React from 'react';
 
 import { useBreakpoint, Box } from '@citizenlab/cl2-component-library';
-import { useTheme } from 'styled-components';
+import { lighten } from 'polished';
+import styled, { useTheme } from 'styled-components';
 
 import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
 
@@ -10,22 +11,34 @@ import { CarrouselContainer } from '../../BaseCarrousel/Containers';
 
 import CardSkeleton from './CardSkeleton';
 
+const ShimmerBox = styled(Box)<{ $bgColor: string }>`
+  ${({ $bgColor }) => {
+    return `background: linear-gradient(
+      -45deg, 
+      ${$bgColor} 40%, 
+      ${lighten(0.4)($bgColor)} 50%,
+      ${$bgColor} 60%
+    );`;
+  }}
+  background-size: 300%;
+  background-position-x: 100%;
+  animation: shimmer 2s infinite;
+
+  @keyframes shimmer {
+    to {
+      background-position-x: 0%;
+    }
+  }
+`;
+
 const Skeleton = () => {
   const isSmallerThanPhone = useBreakpoint('phone');
   const theme = useTheme();
 
   return (
     <CarrouselContainer>
-      {/* <Title
-        variant="h2"
-        mt="0px"
-        ml={isSmallerThanPhone ? DEFAULT_PADDING : undefined}
-        color="tenantText"
-      >
-        Test title
-      </Title> */}
-      <Box
-        bgColor={theme.colors.tenantText}
+      <ShimmerBox
+        $bgColor={theme.colors.tenantText}
         width="240px"
         borderRadius="16px"
         height="32px"
