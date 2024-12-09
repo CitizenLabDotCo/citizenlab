@@ -22,7 +22,7 @@ import Link from 'utils/cl-router/Link';
 import { isAdmin } from 'utils/permissions/roles';
 
 import ProjectActionButtons from '../ProjectActionButtons';
-import { hasNativeSurvey } from '../utils';
+import { hasPhaseType } from '../utils';
 
 const StyledProjectActionButtons = styled(ProjectActionButtons)`
   margin-top: 20px;
@@ -54,6 +54,14 @@ const ProjectInfoSideBar = memo<Props>(
           ? project.data.relationships.avatars.data.map((avatar) => avatar.id)
           : [];
 
+      const projectHasSurvey = hasPhaseType(phases?.data, 'native_survey');
+      const projectHasVoting = hasPhaseType(phases?.data, 'voting');
+
+      const showParticipantTooltip =
+        projectParticipantsCount > 0 && // Has participants
+        isAdmin(authUser) && // Show tooltip only to admins
+        (projectHasSurvey || projectHasVoting);
+
       return (
         <Box id="e2e-project-sidebar" className={className || ''} w="100%">
           <StyledProjectActionButtons projectId={projectId} />
@@ -84,31 +92,43 @@ const ProjectInfoSideBar = memo<Props>(
                   />
                 </Box>
               </Tooltip>
-              {projectParticipantsCount > 0 &&
-                isAdmin(authUser) &&
-                hasNativeSurvey(phases?.data) && (
-                  <Box ml="4px">
-                    <IconTooltip
-                      placement="auto"
-                      maxTooltipWidth={200}
-                      iconColor={colors.coolGrey500}
-                      content={
-                        <FormattedMessage
-                          {...messages.participantsTooltip}
-                          values={{
-                            accessRightsLink: (
-                              <Link
-                                to={`/admin/projects/${projectId}/settings/access-rights`}
-                              >
-                                <FormattedMessage {...messages.accessRights} />
-                              </Link>
-                            ),
-                          }}
-                        />
-                      }
-                    />
-                  </Box>
-                )}
+              {showParticipantTooltip && (
+                <Box ml="4px">
+                  <IconTooltip
+                    placement="auto"
+                    maxTooltipWidth={200}
+                    iconColor={colors.coolGrey500}
+                    content={
+                      <>
+                        {projectHasSurvey && (
+                          <FormattedMessage
+                            {...messages.participantsTooltip}
+                            values={{
+                              accessRightsLink: (
+                                <Link
+                                  to={`/admin/projects/${projectId}/settings/access-rights`}
+                                >
+                                  <FormattedMessage
+                                    {...messages.accessRights}
+                                  />
+                                </Link>
+                              ),
+                            }}
+                          />
+                        )}
+                        {projectHasVoting && (
+                          <>
+                            {' '}
+                            <FormattedMessage
+                              {...messages.offlineVotersTooltip}
+                            />
+                          </>
+                        )}
+                      </>
+                    }
+                  />
+                </Box>
+              )}
             </Box>
           )}
         </Box>
