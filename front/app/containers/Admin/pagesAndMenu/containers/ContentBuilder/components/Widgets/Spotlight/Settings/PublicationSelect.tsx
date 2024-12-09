@@ -2,6 +2,7 @@ import React, { KeyboardEvent } from 'react';
 
 import { Box, Label, Spinner } from '@citizenlab/cl2-component-library';
 import ReactSelect from 'react-select';
+import { useTheme } from 'styled-components';
 import { IOption } from 'typings';
 
 import { IAdminPublicationData } from 'api/admin_publications/types';
@@ -28,6 +29,7 @@ const PublicationSelect = ({ publicationId, onSelect }: Props) => {
   });
   const localize = useLocalize();
   const { formatMessage } = useIntl();
+  const theme = useTheme();
 
   const flattenedPublications = flattenPagesData(adminPublications);
 
@@ -71,7 +73,7 @@ const PublicationSelect = ({ publicationId, onSelect }: Props) => {
         value={selectedOption}
         placeholder=""
         options={options}
-        styles={selectStyles()}
+        styles={selectStyles(theme)}
         menuPosition="fixed"
         menuPlacement="auto"
         hideSelectedOptions
