@@ -52,6 +52,7 @@ const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
         onLoadMore();
       }
     },
+    threshold: 0.4,
   });
 
   const handleButtonVisiblity = useCallback(
@@ -104,6 +105,7 @@ const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
           as="h2"
           mt="0px"
           ml={isSmallerThanPhone ? DEFAULT_PADDING : undefined}
+          color="tenantText"
         >
           {title}
         </Title>

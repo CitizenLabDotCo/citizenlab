@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { IconTooltip } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
@@ -48,9 +47,6 @@ const BudgetingInputs = ({
       <SectionField>
         <SubSectionTitle>
           <FormattedMessage {...messages.totalBudget} />
-          <IconTooltip
-            content={<FormattedMessage {...messages.totalBudgetExplanation} />}
-          />
         </SubSectionTitle>
         <BudgetingAmountInput
           onChange={handleMinBudgetingAmountChange}

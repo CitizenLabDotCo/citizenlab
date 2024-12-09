@@ -537,7 +537,6 @@
   "app.containers.AdminPage.ProjectEdit.titleLabel": "Title",
   "app.containers.AdminPage.ProjectEdit.titleLabelTooltip": "Choose a title that is short, engaging and clear. It will be shown in the dropdown overview and on the project cards on the home page.",
   "app.containers.AdminPage.ProjectEdit.totalBudget": "Total budget",
-  "app.containers.AdminPage.ProjectEdit.totalBudgetExplanation": "By default, your budget is set using your local currency. You can change your platform's currency to 'credits' or 'tokens' by contacting our support center.",
   "app.containers.AdminPage.ProjectEdit.trendingSortingMethod": "Trending",
   "app.containers.AdminPage.ProjectEdit.typeform": "Typeform",
   "app.containers.AdminPage.ProjectEdit.unassigned": "Unassigned",
