@@ -19,5 +19,9 @@ module FlagInappropriateContent
     def self.dependencies
       ['moderation']
     end
+
+    def self.pricing
+      true
+    end
   end
 end
