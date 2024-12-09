@@ -14,11 +14,13 @@ import useUpdateProject from 'api/projects/useUpdateProject';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import { usePermission } from 'utils/permissions';
 
 import messages from './messages';
 import ReviewRequest from './ReviewRequest';
+import tracks from './tracks';
 
 const ReviewFlow = ({ project }: { project: IProjectData }) => {
   const [isProjectReviewDropdownOpened, setIsProjectReviewDropdownOpened] =
@@ -124,7 +126,10 @@ const ReviewFlow = ({ project }: { project: IProjectData }) => {
           </Button>
           <ReviewRequest
             isOpen={isProjectReviewDropdownOpened}
-            onClose={() => setIsProjectReviewDropdownOpened(false)}
+            onClose={() => {
+              setIsProjectReviewDropdownOpened(false);
+              trackEventByName(tracks.projectReviewDropdownOpened);
+            }}
             projectId={project.id}
           />
         </Box>
@@ -134,7 +139,10 @@ const ReviewFlow = ({ project }: { project: IProjectData }) => {
         <Button
           bgColor={colors.success}
           icon="check"
-          onClick={() => approveProjectReview(project.id)}
+          onClick={() => {
+            approveProjectReview(project.id);
+            trackEventByName(tracks.projectReviewGranted);
+          }}
           processing={isApprovingProjectReviewLoading}
           size="s"
           padding="4px 8px"
