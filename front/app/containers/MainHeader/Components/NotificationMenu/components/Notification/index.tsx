@@ -1,7 +1,5 @@
 import React from 'react';
 
-import styled from 'styled-components';
-
 import {
   TNotificationData,
   IAdminRightsReceivedNotificationData,
@@ -64,10 +62,6 @@ import VotingBasketNotSubmittedNotification from '../VotingBasketNotSubmittedNot
 import VotingBasketSubmittedNotification from '../VotingBasketSubmittedNotification';
 import VotingLastChanceNotification from '../VotingLastChanceNotification';
 import VotingResultsNotification from '../VotingResultsNotification';
-
-export const DeletedUser = styled.span`
-  font-style: italic;
-`;
 
 type Props = {
   notification: TNotificationData;
