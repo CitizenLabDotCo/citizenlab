@@ -1383,7 +1383,7 @@
   "app.containers.IdeasShow.proposals.VoteControl.moreInfo": "Περισσότερες πληροφορίες",
   "app.containers.IdeasShow.proposals.VoteControl.vote": "Ψηφίστε",
   "app.containers.IdeasShow.proposals.VoteControl.voted": "Ψηφίστηκε",
-  "app.containers.IdeasShow.proposals.VoteControl.votedText": "Θα ειδοποιηθείτε όταν η πρωτοβουλία αυτή προχωρήσει στο επόμενο βήμα. {x, plural, =0 {Υπάρχει {xDays} αριστερά.} one {Υπάρχει {xDays} αριστερά.} other {Υπάρχουν {xDays} αριστερά.}}",
+  "app.containers.IdeasShow.proposals.VoteControl.votedText": "Θα λάβετε ειδοποίηση όταν η πρόταση αυτή περάσει στο επόμενο βήμα. {x, plural, =0 {Απομένει {xDays}.} one {Απομένουν {xDays}.} other {Απομένουν {xDays}.}}",
   "app.containers.IdeasShow.proposals.VoteControl.votedTitle": "Η ψήφος σας υποβλήθηκε!",
   "app.containers.IdeasShow.proposals.VoteControl.votingNotPermitted1": "Δυστυχώς, δεν μπορείτε να ψηφίσετε την πρόταση αυτή. Διαβάστε γιατί στο {link}.",
   "app.containers.IdeasShow.proposals.VoteControl.xDays": "{x, plural, =0 {λιγότερο από μία ημέρα} one {μία ημέρα} other {# ημέρες}}",
