@@ -4,7 +4,7 @@ const baseKey = { type: 'phase_mini' };
 
 const phasesKeys = {
   all: () => [baseKey],
-  item: ({ id }: { id: string | undefined | null }) => [
+  item: ({ id }: { id?: string }) => [
     { ...baseKey, operation: 'item', parameters: { id } },
   ],
 } satisfies QueryKeys;
