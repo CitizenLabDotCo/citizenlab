@@ -5,12 +5,10 @@ import { RouteType } from 'routes';
 import { IInternalCommentNotificationData } from 'api/notifications/types';
 
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
-import { isNilOrError, stopPropagation } from 'utils/helperUtils';
 
 import messages from '../../messages';
-import { DeletedUser } from '../Notification';
 import NotificationWrapper from '../NotificationWrapper';
+import UserLink from '../UserLink';
 
 interface Props {
   notification: IInternalCommentNotificationData;
@@ -36,9 +34,6 @@ const getNotificationMessage = (
 };
 
 const InternalCommentNotification = memo<Props>(({ notification }) => {
-  const deletedUser =
-    isNilOrError(notification.attributes.initiating_user_first_name) ||
-    isNilOrError(notification.attributes.initiating_user_slug);
   const { project_id, post_id, internal_comment_id } = notification.attributes;
   const linkTo: RouteType | null = `/admin/projects/${project_id}/ideas/${post_id}#${internal_comment_id}`;
 
@@ -62,17 +57,11 @@ const InternalCommentNotification = memo<Props>(({ notification }) => {
       <FormattedMessage
         {...getNotificationMessage(notification)}
         values={{
-          name: deletedUser ? (
-            <DeletedUser>
-              <FormattedMessage {...messages.deletedUser} />
-            </DeletedUser>
-          ) : (
-            <Link
-              to={`/profile/${notification.attributes.initiating_user_slug}`}
-              onClick={stopPropagation}
-            >
-              {notification.attributes.initiating_user_first_name}
-            </Link>
+          name: (
+            <UserLink
+              userName={notification.attributes.initiating_user_first_name}
+              userSlug={notification.attributes.initiating_user_slug}
+            />
           ),
         }}
       />

@@ -69,14 +69,29 @@
 #  fk_rails_...  (spam_report_id => spam_reports.id)
 #
 module Notifications
-  class InternalComments::InternalCommentOnYourInternalComment < Notification
-    validates :initiating_user, :internal_comment, :post, presence: true
+  class ProjectReviewStateChange < Notification
+    validates :project_review, presence: true
 
-    ACTIVITY_TRIGGERS = { 'InternalComment' => { 'created' => true } }
-    EVENT_NAME = 'Internal comment on your internal comment'
+    ACTIVITY_TRIGGERS = { 'ProjectReview' => { 'changed' => true } }
+    EVENT_NAME = 'Project review state changed: approved'
 
     def self.make_notifications_on(activity)
-      InternalComments::InternalCommentOnYourInternalCommentBuilder.new(activity).build_notifications
+      project_review = activity.item
+      return [] unless review_approved?(activity) && project_review.requester
+
+      notification = new(
+        recipient: project_review.requester,
+        initiating_user: project_review.reviewer,
+        project_review: project_review
+      )
+
+      [notification]
+    end
+
+    # Check if the change is actually an approval.
+    def self.review_approved?(activity)
+      change = activity.payload.dig('change', 'approved_at')
+      change && change[0].nil? && change[1].present?
     end
   end
 end

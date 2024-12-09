@@ -1,6 +1,8 @@
 import React, { memo } from 'react';
 
-import { IIdeaMarkedAsSpamNotificationData } from 'api/notifications/types';
+import { IProjectReviewRequestNotificationData } from 'api/notifications/types';
+
+import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
 
 import T from 'components/T';
 
@@ -10,22 +12,20 @@ import messages from '../../messages';
 import NotificationWrapper from '../NotificationWrapper';
 import UserLink from '../UserLink';
 
-interface Props {
-  notification: IIdeaMarkedAsSpamNotificationData;
-}
+type Props = {
+  notification: IProjectReviewRequestNotificationData;
+};
 
-const IdeaMarkedAsSpamNotification = memo<Props>((props) => {
-  const { notification } = props;
-
-  return (
+const ProjectReviewRequestNotification = memo<Props>(
+  ({ notification }: Props) => (
     <NotificationWrapper
-      linkTo={`/ideas/${notification.attributes.post_slug}`}
+      linkTo={adminProjectsProjectPath(notification.attributes.project_id)}
+      icon="shield-checkered"
       timing={notification.attributes.created_at}
-      icon="idea"
       isRead={!!notification.attributes.read_at}
     >
       <FormattedMessage
-        {...messages.userMarkedPostAsSpam}
+        {...messages.projectReviewRequest}
         values={{
           name: (
             <UserLink
@@ -33,11 +33,13 @@ const IdeaMarkedAsSpamNotification = memo<Props>((props) => {
               userSlug={notification.attributes.initiating_user_slug}
             />
           ),
-          postTitle: <T value={notification.attributes.post_title_multiloc} />,
+          projectTitle: (
+            <T value={notification.attributes.project_title_multiloc} />
+          ),
         }}
       />
     </NotificationWrapper>
-  );
-});
+  )
+);
 
-export default IdeaMarkedAsSpamNotification;
+export default ProjectReviewRequestNotification;
