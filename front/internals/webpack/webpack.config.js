@@ -150,6 +150,7 @@ const config = {
         configFile: path.join(process.cwd(), 'app/tsconfig.json'),
       },
       logger: { infrastructure: !!argv.json ? 'silent' : 'console' }, // silent when trying to profile the chunks sizes
+      memoryLimit: 3072, // Increased to counter memoryLimit issue
     }),
 
     new CleanWebpackPlugin(),
