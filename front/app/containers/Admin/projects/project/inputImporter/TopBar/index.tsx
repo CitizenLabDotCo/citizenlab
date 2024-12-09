@@ -4,7 +4,6 @@ import {
   Box,
   Title,
   Text,
-  Badge,
   stylingConsts,
   colors,
 } from '@citizenlab/cl2-component-library';
@@ -71,9 +70,6 @@ const TopBar = ({ onClickPDFImport, onClickExcelImport }: Props) => {
             <Text m="0px" color="textSecondary">
               <FormattedMessage {...messages.inputImporter} />
             </Text>
-            <Badge color={colors.textSecondary} className="inverse">
-              BETA
-            </Badge>
           </Box>
 
           <Title variant="h4" m="0px" mt="1px">
