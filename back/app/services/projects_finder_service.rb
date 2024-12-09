@@ -70,6 +70,9 @@ class ProjectsFinderService
   # ordered by the follow created_at (most recent first).
   # => [Project]
   def followed_by_user
+    # return empty collection if user is not signed in
+    return Project.none unless @user
+
     subquery = Follower
       .where(user_id: @user.id)
       .where.not(followable_type: 'Initiative')
