@@ -35,6 +35,8 @@
 class Project < ApplicationRecord
   include PgSearch::Model
 
+  attribute :preview_token, :string, default: -> { generate_preview_token }
+
   VISIBLE_TOS = %w[public groups admins].freeze
 
   slug from: proc { |project| project.title_multiloc.values.find(&:present?) }
@@ -65,8 +67,6 @@ class Project < ApplicationRecord
   has_many :project_files, -> { order(:ordering) }, dependent: :destroy
   has_many :followers, as: :followable, dependent: :destroy
   has_many :impact_tracking_pageviews, class_name: 'ImpactTracking::Pageview', dependent: :nullify
-
-  after_initialize :init
 
   before_validation :sanitize_description_multiloc, if: :description_multiloc
   before_validation :set_admin_publication, unless: proc { Current.loading_tenant_template }
@@ -141,6 +141,10 @@ class Project < ApplicationRecord
       result = defined?(super) ? super : []
       result + search_by_all(term).pluck(:id)
     end
+
+    def generate_preview_token
+      SecureRandom.urlsafe_base64(64)
+    end
   end
 
   def project
@@ -208,20 +212,10 @@ class Project < ApplicationRecord
   end
 
   def refresh_preview_token
-    self.preview_token = generate_preview_token
+    self.preview_token = self.class.generate_preview_token
   end
 
   private
-
-  def init
-    # Checking if the project `has_attribute?` is necessary because if the select clause of the query does not include
-    # the column, it will raise a `MissingAttributeError` error. (source: https://stackoverflow.com/a/5127684)
-    self.preview_token ||= generate_preview_token if has_attribute?(:preview_token)
-  end
-
-  def generate_preview_token
-    SecureRandom.urlsafe_base64(64)
-  end
 
   def admin_publication_must_exist
     # Built-in presence validation does not work.
