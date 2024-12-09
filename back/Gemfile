@@ -139,7 +139,7 @@ gem 'aws-sdk-s3', '~> 1'
 gem 'aws-sdk-bedrockruntime', '~> 1'
 gem 'bootsnap', '~> 1', require: false
 gem 'dalli', '~> 3.2.8'
-gem 'mailgun-ruby', '~>1.2.14'
+gem 'mailgun-ruby', '~>1.2.16'
 gem 'rails_semantic_logger'
 gem 'rinku', '~> 2'
 gem 'jsonapi-serializer'

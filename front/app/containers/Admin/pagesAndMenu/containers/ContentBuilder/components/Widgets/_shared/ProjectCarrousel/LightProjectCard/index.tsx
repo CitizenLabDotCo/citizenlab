@@ -61,7 +61,7 @@ const LightProjectCard = ({ project, ml, mr, onKeyDown }: Props) => {
       onKeyDown={onKeyDown}
     >
       <CardImage imageUrl={imageUrl ?? undefined} alt={imageAltText} />
-      <Title variant="h4" as="h3" mt="8px" mb="0px">
+      <Title variant="h4" as="h3" mt="8px" mb="0px" color="tenantText">
         {truncate(title, 50)}
       </Title>
       <Box mt="8px">
