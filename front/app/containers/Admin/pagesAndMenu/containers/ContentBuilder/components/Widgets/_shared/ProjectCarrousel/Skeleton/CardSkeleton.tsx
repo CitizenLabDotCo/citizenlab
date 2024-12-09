@@ -34,10 +34,16 @@ const CardSkeleton = ({ ml, mr }: Props) => {
       <ImageSkeleton bgColor={colors.grey300} />
       <Shimmer
         bgColor={theme.colors.tenantText}
-        width="180px"
+        width={`${CARD_WIDTH}px`}
         borderRadius="16px"
         height="24px"
         mt="8px"
+      />
+      <Shimmer
+        bgColor={theme.colors.tenantText}
+        width="60px"
+        borderRadius="16px"
+        height="24px"
       />
       <Shimmer
         bgColor={theme.colors.tenantText}
