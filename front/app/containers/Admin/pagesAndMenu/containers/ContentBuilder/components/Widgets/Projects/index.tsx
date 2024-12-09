@@ -12,15 +12,16 @@ import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLoca
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 
+import { DEFAULT_Y_PADDING } from '../constants';
+
 import messages from './messages';
 
 const ProjectSection = styled.div`
   width: 100%;
-  padding-top: 40px;
-  padding-bottom: 40px;
+  padding-top: ${DEFAULT_Y_PADDING};
+  padding-bottom: ${DEFAULT_Y_PADDING};
 
   ${media.tablet`
-    padding-bottom: 40px;
     padding-left: ${DEFAULT_PADDING};
     padding-right: ${DEFAULT_PADDING};
   `}
