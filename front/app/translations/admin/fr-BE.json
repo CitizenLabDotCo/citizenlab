@@ -811,7 +811,7 @@
   "app.containers.Admin.pagesAndMenu.ContentBuilder.Widgets.FinishedOrArchived.noData": "Aucune donnée disponible",
   "app.containers.Admin.pagesAndMenu.ContentBuilder.Widgets.FinishedOrArchived.thisWidgetShows": "Ce widget affiche les <b>projets terminés ou archivés</b>. Les projets « terminés » incluent également ceux qui sont dans leur dernière phase et que cette dernière est un rapport.",
   "app.containers.Admin.pagesAndMenu.ContentBuilder.Widgets.FinishedOrArchived.title": "Projets terminés",
-  "app.containers.Admin.pagesAndMenu.ContentBuilder.Widgets.FinishedOrArchived.youSaidWeDid": "Projets réalisés",
+  "app.containers.Admin.pagesAndMenu.ContentBuilder.Widgets.FinishedOrArchived.youSaidWeDid": "La boucle est bouclée",
   "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.emptyNameErrorText": "Fournissez un nom dans toutes les langues",
   "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.emptyProjectError": "Le projet ne peut pas être vide",
   "app.containers.Admin.pagesAndMenu.containers.AddProjectModal.navbarItemName": "Nom",
