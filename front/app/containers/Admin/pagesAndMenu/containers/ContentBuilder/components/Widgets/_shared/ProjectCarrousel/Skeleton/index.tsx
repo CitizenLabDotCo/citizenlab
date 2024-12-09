@@ -18,7 +18,7 @@ const Skeleton = () => {
     <CarrouselContainer>
       <Shimmer
         bgColor={theme.colors.tenantText}
-        width="240px"
+        width="340px"
         borderRadius="16px"
         height="32px"
         mb="16px"
