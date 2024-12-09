@@ -41,8 +41,7 @@ const getCTAMessage = ({
       return formatMessage(messages.vote);
     }
   } else if (participation_method === 'information') {
-    // const hasReport = !!phase.relationships.report?.data;
-    const hasReport = false as any;
+    const hasReport = !!phase.relationships.report?.data;
 
     return hasReport
       ? formatMessage(messages.readTheReport)
