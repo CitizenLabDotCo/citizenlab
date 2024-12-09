@@ -109,8 +109,7 @@ const AdminPublicationsCarrousel = ({
     <>
       <CarrouselContainer>
         <Title
-          variant="h3"
-          as="h2"
+          variant="h2"
           mt="0px"
           ml={isSmallerThanPhone ? DEFAULT_PADDING : undefined}
           color="tenantText"
