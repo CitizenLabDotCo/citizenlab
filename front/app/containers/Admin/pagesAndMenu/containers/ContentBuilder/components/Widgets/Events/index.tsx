@@ -7,6 +7,8 @@ import EventsWidget from 'components/LandingPages/citizen/EventsWidget';
 
 import { useIntl } from 'utils/cl-intl';
 
+import { DEFAULT_Y_PADDING } from '../constants';
+
 import messages from './messages';
 
 const Events = () => {
@@ -16,8 +18,8 @@ const Events = () => {
       <Box
         maxWidth="1200px"
         margin="0 auto"
-        pt={isSmallerThanTablet ? DEFAULT_PADDING : '40px'}
-        pb={isSmallerThanTablet ? DEFAULT_PADDING : '40px'}
+        pt={isSmallerThanTablet ? DEFAULT_PADDING : DEFAULT_Y_PADDING}
+        pb={isSmallerThanTablet ? DEFAULT_PADDING : DEFAULT_Y_PADDING}
         px={isSmallerThanTablet ? DEFAULT_PADDING : '0px'}
       >
         <EventsWidget />
