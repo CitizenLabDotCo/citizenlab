@@ -9,6 +9,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import EmptyState from '../_shared/EmptyState';
 import ProjectCarrousel from '../_shared/ProjectCarrousel';
+import Skeleton from '../_shared/ProjectCarrousel/Skeleton';
 
 import messages from './messages';
 import Settings from './Settings';
@@ -21,13 +22,17 @@ interface Props {
 const FinishedOrArchived = ({ titleMultiloc, filterBy }: Props) => {
   const localize = useLocalize();
 
-  const { data, hasNextPage, fetchNextPage } = useProjectsMini({
-    endpoint: 'finished_or_archived',
-    filter_by: filterBy,
-  });
+  const { data, hasNextPage, fetchNextPage, isInitialLoading } =
+    useProjectsMini({
+      endpoint: 'finished_or_archived',
+      filter_by: filterBy,
+    });
 
   const projects = data?.pages.map((page) => page.data).flat();
 
+  if (isInitialLoading) {
+    return <Skeleton />;
+  }
   if (!projects) return null;
   if (projects.length === 0) {
     return (
