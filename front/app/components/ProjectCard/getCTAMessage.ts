@@ -1,6 +1,7 @@
 import { FormatMessage } from 'typings';
 
 import { IPhaseData } from 'api/phases/types';
+import { PhaseMiniData } from 'api/phases_mini/types';
 import { ActionDescriptors } from 'api/projects/types';
 
 import { Localize } from 'hooks/useLocalize';
@@ -10,7 +11,7 @@ import { getInputTermMessage } from 'utils/i18n';
 import messages from './messages';
 
 interface Params {
-  phase: IPhaseData;
+  phase: IPhaseData | PhaseMiniData;
   actionDescriptors: ActionDescriptors;
   formatMessage: FormatMessage;
   localize: Localize;

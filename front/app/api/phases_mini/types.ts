@@ -10,12 +10,12 @@ export interface PhaseMini {
   data: PhaseMiniData;
 }
 
-interface PhaseMiniData {
+export interface PhaseMiniData {
   id: string;
   type: 'phase_mini';
   attributes: {
     end_at: string | null;
-    input_term?: InputTerm;
+    input_term: InputTerm;
     participation_method: ParticipationMethod;
   };
 }
