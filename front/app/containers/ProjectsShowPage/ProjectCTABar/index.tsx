@@ -95,7 +95,7 @@ const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
     isSticky &&
     // We need to check that CTABar is defined because, at the time of writing,
     // we rely on on the id of the portal below to determine how far to push down the filters.
-    // CTABar needs to be defined before it makes sense to render the portal.
+    // CTABar needs to be defined before it makes sense to render the portal (and push down the filters).
     // Comment id: ccf2e3f. Search for this id to find related comments.
     CTABar &&
     portalElement
