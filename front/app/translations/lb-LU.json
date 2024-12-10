@@ -1339,6 +1339,7 @@
   "app.containers.IdeasShow.MetaInformation.currentStatus": "Aktuelle Status",
   "app.containers.IdeasShow.MetaInformation.location": "Standuert",
   "app.containers.IdeasShow.MetaInformation.postedBy": "Gepost vun/vum",
+  "app.containers.IdeasShow.MetaInformation.similar": "Ähnlech Input",
   "app.containers.IdeasShow.MetaInformation.topics": "Sujeten",
   "app.containers.IdeasShow.commentCTA": "Kommentéieren",
   "app.containers.IdeasShow.contributionEmailSharingBody": "Ënnerstëtzt de Bäitrag '{postTitle}' ënner {postUrl}!",
