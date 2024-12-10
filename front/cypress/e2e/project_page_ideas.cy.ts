@@ -97,7 +97,6 @@ import { randomString, randomEmail } from '../support/commands';
 
 describe('New timeline project with ideation phase with default map view', () => {
   const projectTitle = randomString();
-  const projectDescriptionPreview = randomString(30);
   let projectId: string;
   let projectSlug: string;
 
@@ -106,8 +105,8 @@ describe('New timeline project with ideation phase with default map view', () =>
 
     cy.apiCreateProject({
       title: projectTitle,
-      descriptionPreview: projectDescriptionPreview,
-      description: randomString(),
+      descriptionPreview: 'Description preview',
+      description: 'Description full',
       publicationStatus: 'published',
     }).then((project) => {
       projectId = project.body.data.id;
