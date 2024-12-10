@@ -26,7 +26,7 @@ class SimilarIdeasService
     similarities = similarities.where(embeddable: scope) if scope
     similarities = similarities.limit(limit) if limit
 
-    ids = similarities.map(&:embeddable_id)
+    ids = similarities.pluck(:embeddable_id)
     (scope || Idea).where(id: ids).order_as_specified(id: ids)
   end
 

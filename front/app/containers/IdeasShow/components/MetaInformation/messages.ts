@@ -21,8 +21,8 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.MetaInformation.attachments',
     defaultMessage: 'Attachments',
   },
-  similarIdeas: {
-    id: 'app.containers.IdeasShow.MetaInformation.similarIdeas',
+  similar: {
+    id: 'app.containers.IdeasShow.MetaInformation.similar',
     defaultMessage: 'Similar inputs',
   },
   byUserOnDate: {

@@ -27,7 +27,7 @@ const SimilarIdeas = ({ ideaId, className }: Props) => {
   if (similarIdeas) {
     return (
       <Item className={className || ''}>
-        <Header>{formatMessage(messages.similarIdeas)}</Header>
+        <Header>{formatMessage(messages.similar)}</Header>
         <Container className={className}>
           {Array.isArray(similarIdeas.data) &&
             similarIdeas.data.map((similarIdea) => (
