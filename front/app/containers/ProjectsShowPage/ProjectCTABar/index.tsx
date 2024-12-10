@@ -8,15 +8,22 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { createPortal } from 'react-dom';
 
+import { ParticipationMethod } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
 import useProjectById from 'api/projects/useProjectById';
 
 import MainHeader from 'containers/MainHeader';
 
-import {
-  getMethodConfig,
-  getParticipationMethod,
-} from 'utils/configs/participationMethodConfig';
+import DocumentAnnotationCTABar from 'components/ParticipationCTABars/DocumentAnnotationCTABar';
+import EmbeddedSurveyCTABar from 'components/ParticipationCTABars/EmbeddedSurveyCTABar';
+import EventsCTABar from 'components/ParticipationCTABars/EventsCTABar';
+import IdeationCTABar from 'components/ParticipationCTABars/IdeationCTABar';
+import NativeSurveyCTABar from 'components/ParticipationCTABars/NativeSurveyCTABar';
+import PollCTABar from 'components/ParticipationCTABars/PollCTABar';
+import VolunteeringCTABar from 'components/ParticipationCTABars/VolunteeringCTABar';
+import VotingCTABar from 'components/ParticipationCTABars/VotingCTABar';
+
+import { getParticipationMethod } from 'utils/configs/participationMethodConfig';
 
 type ProjectCTABarProps = {
   projectId: string;
@@ -57,20 +64,42 @@ const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [isSmallerThanTablet, sticksToBottom]);
 
-  const participationMethod = project
-    ? getParticipationMethod(project.data, phases?.data)
-    : undefined;
-
-  if (!project || !participationMethod) {
+  if (!project || !phases) {
     return null;
   }
 
-  const BarContents = getMethodConfig(participationMethod).renderCTABar({
-    project: project.data,
-    phases: phases?.data,
-  });
+  const CTABars: { [method in ParticipationMethod]: JSX.Element | null } = {
+    ideation: <IdeationCTABar project={project.data} phases={phases.data} />,
+    proposals: <IdeationCTABar project={project.data} phases={phases.data} />,
+    native_survey: (
+      <NativeSurveyCTABar project={project.data} phases={phases.data} />
+    ),
+    information: <EventsCTABar project={project.data} phases={phases.data} />,
+    survey: (
+      <EmbeddedSurveyCTABar project={project.data} phases={phases.data} />
+    ),
+    voting: <VotingCTABar project={project.data} phases={phases.data} />,
+    poll: <PollCTABar project={project.data} phases={phases.data} />,
+    volunteering: (
+      <VolunteeringCTABar project={project.data} phases={phases.data} />
+    ),
+    document_annotation: (
+      <DocumentAnnotationCTABar project={project.data} phases={phases.data} />
+    ),
+  };
 
-  if ((sticksToBottom || sticksToTop) && portalElement) {
+  const participationMethod = getParticipationMethod(project.data, phases.data);
+  const CTABar = participationMethod ? CTABars[participationMethod] : null;
+
+  if (
+    (sticksToBottom || sticksToTop) &&
+    // We need to check that CTABar is defined because, at the time of writing,
+    // we rely on on the id of the portal below to determine how far to push down the filters.
+    // CTABar needs to be defined before it makes sense to render the portal (and push down the filters).
+    // Comment id: ccf2e3f. Search for this id to find related comments.
+    CTABar &&
+    portalElement
+  ) {
     const sharedProps: BoxProps = {
       width: '100vw',
       position: 'fixed',
@@ -83,7 +112,7 @@ const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
     if (sticksToBottom) {
       portalContent = (
         <Box bottom="0px" {...sharedProps}>
-          {BarContents}
+          {CTABar}
         </Box>
       );
     } else if (sticksToTop) {
@@ -92,7 +121,7 @@ const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
           <Box height="78px">
             <MainHeader />
           </Box>
-          {BarContents}
+          {CTABar}
         </Box>
       );
     }
@@ -100,7 +129,7 @@ const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
     return createPortal(portalContent, portalElement);
   }
 
-  return <>{BarContents}</>;
+  return CTABar;
 };
 
 export default ProjectCTABar;
