@@ -182,7 +182,11 @@ const ProjectProposalsManager = ({
           project={projectId}
           queryParameters={queryParameters}
         />
-        <StyledExportMenu type={'ProjectProposals'} selection={selection} />
+        <StyledExportMenu
+          type={'ProjectProposals'}
+          selectedProject={projectId}
+          selection={selection}
+        />
       </TopActionBar>
 
       <ThreeColumns>

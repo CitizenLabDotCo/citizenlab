@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 
-import { Box, Title } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 
 import { IdeaSortMethod, IPhaseData } from 'api/phases/types';
@@ -9,12 +9,14 @@ import { IdeaSortMethodFallback } from 'api/phases/utils';
 
 import messages from 'containers/ProjectsShowPage/messages';
 
-import { IdeaCardsWithoutFiltersSidebar } from 'components/IdeaCards';
+import {
+  IdeaCardsWithFiltersSidebar,
+  IdeaCardsWithoutFiltersSidebar,
+} from 'components/IdeaCards';
+import IdeaListScrollAnchor from 'components/IdeaListScrollAnchor';
 
-import { FormattedMessage } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
-import { getInputTermMessage } from 'utils/i18n';
 
 interface InnerProps {
   projectId: string;
@@ -70,43 +72,35 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
 
   const inputTerm = phase.attributes.input_term;
 
+  const sharedProps = {
+    className: participationMethod,
+    ideaQueryParameters,
+    onUpdateQuery: updateSearchParams,
+    projectId,
+    phaseId: phase.id,
+    showViewToggle: true,
+    invisbleTitleMessage: messages.a11y_titleInputsPhase,
+    defaultView: phase.attributes.presentation_mode,
+  };
+
   return (
     <Box
       id="project-ideas"
       className={`e2e-timeline-project-idea-cards ${className || ''}`}
     >
-      {!isVotingContext && (
-        <Title variant="h2" mt="0px" mb="20px" color="tenantText">
-          <FormattedMessage
-            {...getInputTermMessage(inputTerm, {
-              idea: messages.ideas,
-              option: messages.options,
-              project: messages.projects,
-              question: messages.questions,
-              issue: messages.issues,
-              contribution: messages.contributions,
-              proposal: messages.proposals,
-              initiative: messages.initiatives,
-              petition: messages.petitions,
-            })}
-          />
-        </Title>
+      {isVotingContext ? (
+        <IdeaCardsWithoutFiltersSidebar
+          defaultSortingMethod={ideaQueryParameters.sort}
+          showDropdownFilters={false}
+          showSearchbar={false}
+          {...sharedProps}
+        />
+      ) : (
+        <>
+          <IdeaListScrollAnchor />
+          <IdeaCardsWithFiltersSidebar inputTerm={inputTerm} {...sharedProps} />
+        </>
       )}
-      <IdeaCardsWithoutFiltersSidebar
-        ideaQueryParameters={ideaQueryParameters}
-        onUpdateQuery={updateSearchParams}
-        className={participationMethod}
-        projectId={projectId}
-        showViewToggle={true}
-        // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        defaultSortingMethod={ideaQueryParameters.sort || null}
-        defaultView={phase.attributes.presentation_mode}
-        invisibleTitleMessage={messages.a11y_titleInputsPhase}
-        phaseId={phase.id}
-        showDropdownFilters={isVotingContext ? false : true}
-        showSearchbar={isVotingContext ? false : true}
-      />
     </Box>
   );
 };

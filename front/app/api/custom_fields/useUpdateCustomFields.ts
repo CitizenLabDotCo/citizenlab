@@ -1,8 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
-import customFieldOptionKeys from 'api/custom_field_options/keys';
-
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import customFieldsKeys from './keys';
@@ -44,12 +42,6 @@ const useUpdateCustomField = () => {
           projectId: variables.projectId,
           phaseId: variables.phaseId,
         }),
-      });
-      queryClient.invalidateQueries({
-        queryKey: customFieldsKeys.lists(),
-      });
-      queryClient.invalidateQueries({
-        queryKey: customFieldOptionKeys.items(),
       });
     },
   });

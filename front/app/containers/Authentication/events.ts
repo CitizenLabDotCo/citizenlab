@@ -13,7 +13,7 @@ type Event = {
 
 export function triggerAuthenticationFlow(
   partialAuthenticationData?: Partial<AuthenticationData>,
-  flow: 'signup' | 'signin' = 'signup'
+  flow: 'signup' | 'signin' = 'signin'
 ) {
   const authenticationData: AuthenticationData = {
     context: partialAuthenticationData?.context ?? GLOBAL_CONTEXT,

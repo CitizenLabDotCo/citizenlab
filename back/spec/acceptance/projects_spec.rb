@@ -275,21 +275,30 @@ resource 'Projects' do
         let(:area_ids) { create_list(:area, 2).map(&:id) }
         let(:topic_ids) { create_list(:topic, 2).map(&:id) }
         let(:visible_to) { 'admins' }
-        let(:publication_status) { 'draft' }
+        let(:publication_status) { 'published' }
         let(:default_assignee_id) { create(:admin).id }
 
         example_request 'Create a timeline project' do
           assert_status 201
-          expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
-          expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
-          expect(json_response.dig(:data, :attributes, :description_preview_multiloc).stringify_keys).to match description_preview_multiloc
+
+          new_project = Project.find(response_data[:id])
+
+          expect(response_data[:attributes]).to include(
+            title_multiloc: title_multiloc.symbolize_keys,
+            description_multiloc: description_multiloc.symbolize_keys,
+            description_preview_multiloc: description_preview_multiloc.symbolize_keys,
+            visible_to: visible_to,
+            first_published_at: new_project.admin_publication.first_published_at.iso8601(3),
+            header_bg: be_present
+          )
+
           expect(json_response.dig(:data, :relationships, :areas, :data).pluck(:id)).to match_array area_ids
           expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
-          expect(json_response.dig(:data, :attributes, :visible_to)).to eq 'admins'
-          expect(json_response[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :publication_status)).to eq 'draft'
           expect(json_response.dig(:data, :relationships, :default_assignee, :data, :id)).to eq default_assignee_id
 
-          expect(json_response.dig(:data, :attributes, :header_bg)).to be_present
+          admin_publication_attrs = json_response[:included].find { |its| its[:type] == 'admin_publication' }[:attributes]
+          expect(admin_publication_attrs[:publication_status]).to eq('published')
+
           # New projects are added to the top
           expect(json_response[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :ordering)).to eq 0
         end
@@ -456,6 +465,100 @@ resource 'Projects' do
         expect(moderator.project_moderator?(id)).to be true
         do_request
         expect(moderator.reload.project_moderator?(id)).to be false
+      end
+
+      context 'when the homepage layout references the project or its admin_publication' do
+        let!(:project2) { create(:project) }
+
+        let!(:layout) do
+          create(
+            :homepage_layout,
+            craftjs_json: {
+              ROOT: {
+                type: 'div',
+                nodes: %w[
+                  nUOW77iNcW
+                  lsKEOMxTkR
+                ],
+                props: {
+                  id: 'e2e-content-builder-frame'
+                },
+                custom: {},
+                hidden: false,
+                isCanvas: true,
+                displayName: 'div',
+                linkedNodes: {}
+              },
+              nUOW77iNcW: {
+                type: {
+                  resolvedName: 'Selection'
+                },
+                nodes: [],
+                props: {
+                  titleMultiloc: {
+                    en: 'Projects and folders'
+                  },
+                  adminPublicationIds: [
+                    project.admin_publication.id,
+                    project2.admin_publication.id
+                  ]
+                },
+                custom: {},
+                hidden: false,
+                parent: 'ROOT',
+                isCanvas: false,
+                displayName: 'Selection',
+                linkedNodes: {}
+              },
+              lsKEOMxTkR: {
+                type: {
+                  resolvedName: 'Spotlight'
+                },
+                nodes: [],
+                props: {
+                  publicationId: project.id,
+                  titleMultiloc: {
+                    en: 'Highlighted project'
+                  },
+                  publicationType: 'project',
+                  buttonTextMultiloc: {
+                    en: 'Look at this project!'
+                  },
+                  descriptionMultiloc: {
+                    en: 'some description text'
+                  }
+                },
+                custom: {},
+                hidden: false,
+                parent: 'ROOT',
+                isCanvas: false,
+                displayName: 'Spotlight',
+                linkedNodes: {}
+              }
+            }
+          )
+        end
+
+        example 'Deleting removes any Spotlight widget(s) for the project from the homepage layout', document: false do
+          do_request
+          expect(layout.reload.craftjs_json['lsKEOMxTkR']).to be_nil
+        end
+
+        example 'References to deleted homepage layout Spotlight widgets are also removed', document: false do
+          do_request
+          expect(layout.reload.craftjs_json['ROOT']['nodes']).to eq %w[nUOW77iNcW]
+        end
+
+        example(
+          'Deleting removes its admin_publication ID from Selection widget(s) in homepage layout',
+          document: false
+        ) do
+          do_request
+
+          expect(response_status).to eq 200
+          expect(layout.reload.craftjs_json['nUOW77iNcW']['props']['adminPublicationIds'])
+            .to match_array [project2.admin_publication.id]
+        end
       end
     end
 
