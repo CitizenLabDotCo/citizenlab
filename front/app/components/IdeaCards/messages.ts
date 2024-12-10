@@ -38,9 +38,9 @@ export default defineMessages({
       '{ideasCount, plural, no {{ideasCount} options} one {{ideasCount} option} other {{ideasCount} options}}',
   },
   xProjects: {
-    id: 'app.containers.IdeaCards.xProjects2',
+    id: 'app.containers.IdeaCards.xProjects3',
     defaultMessage:
-      '{{ideasCount} ideasCount, plural, no {{ideasCount} projects} one {{ideasCount} project} other {{ideasCount} projects}}',
+      '{ideasCount, plural, no {{ideasCount} projects} one {{ideasCount} project} other {{ideasCount} projects}}',
   },
   xQuestions: {
     id: 'app.containers.IdeaCards.xQuestion2',
