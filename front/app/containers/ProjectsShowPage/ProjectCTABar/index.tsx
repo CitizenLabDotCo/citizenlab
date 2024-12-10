@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from 'react';
 
-import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  BoxProps,
+  colors,
+  useBreakpoint,
+} from '@citizenlab/cl2-component-library';
 import { createPortal } from 'react-dom';
 
 import usePhases from 'api/phases/usePhases';
@@ -22,7 +27,6 @@ const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
   const isSmallerThanPhone = useBreakpoint('phone');
   const [isVisibleAtTop, setIsVisibleAtTop] = useState(false);
   const isVisibleAtBottom = isSmallerThanPhone;
-  const stickCTABarToScreen = isVisibleAtTop || isVisibleAtBottom;
   const portalElement = document.getElementById('topbar-portal');
   const { data: phases } = usePhases(projectId);
   const { data: project } = useProjectById(projectId);
@@ -64,26 +68,35 @@ const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
   });
 
   // Always stick to bottom of screen if on phone
-  if (portalElement && stickCTABarToScreen) {
-    return createPortal(
-      <Box
-        width="100vw"
-        position="fixed"
-        top={isSmallerThanPhone ? undefined : '0px'}
-        bottom={isSmallerThanPhone ? '0px' : undefined}
-        zIndex="1000"
-        background="#fff"
-        id="project-cta-bar"
-      >
-        {!isSmallerThanPhone && (
+  if (portalElement) {
+    const sharedProps: BoxProps = {
+      width: '100vw',
+      position: 'fixed',
+      zIndex: '1000',
+      background: colors.white,
+      id: 'project-cta-bar',
+    };
+
+    if (isVisibleAtTop) {
+      return createPortal(
+        <Box top="0px" {...sharedProps}>
           <Box height="78px">
             <MainHeader />
           </Box>
-        )}
-        {BarContents}
-      </Box>,
-      portalElement
-    );
+          {BarContents}
+        </Box>,
+        portalElement
+      );
+    }
+
+    if (isVisibleAtBottom) {
+      return createPortal(
+        <Box bottom="0px" {...sharedProps}>
+          {BarContents}
+        </Box>,
+        portalElement
+      );
+    }
   }
 
   return <>{BarContents}</>;
