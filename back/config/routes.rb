@@ -168,11 +168,11 @@ Rails.application.routes.draw do
       end
       resources :event_attendances, only: %i[destroy], controller: 'events/attendances'
 
-      resources :phases, only: %i[show edit update destroy], concerns: :permissionable, defaults: { parent_param: :phase_id } do
+      resources :phases, only: %i[show show_mini edit update destroy], concerns: :permissionable, defaults: { parent_param: :phase_id } do
         resources :files, defaults: { container_type: 'Phase' }, shallow: false
         get 'survey_results', on: :member
         get :as_xlsx, on: :member, action: 'index_xlsx'
-        get :mini, on: :collection, action: 'index_mini'
+        get :mini, on: :member, action: 'show_mini'
         get 'submission_count', on: :member
         delete 'inputs', on: :member, action: 'delete_inputs'
         resources :custom_fields, controller: 'phase_custom_fields', only: %i[] do

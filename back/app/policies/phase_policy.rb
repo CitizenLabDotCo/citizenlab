@@ -35,8 +35,8 @@ class PhasePolicy < ApplicationPolicy
     survey_results?
   end
 
-  def index_mini?
-    true
+  def show_mini?
+    show?
   end
 
   def delete_inputs?
