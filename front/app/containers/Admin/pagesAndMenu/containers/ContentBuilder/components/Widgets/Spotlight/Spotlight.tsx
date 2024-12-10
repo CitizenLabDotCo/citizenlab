@@ -63,7 +63,7 @@ const Spotlight = ({
             {title}
           </Title>
           {description && (
-            <Text>
+            <Text as="span">
               <QuillEditedContent textColor={colors.textSecondary}>
                 <div dangerouslySetInnerHTML={{ __html: description }} />
               </QuillEditedContent>
