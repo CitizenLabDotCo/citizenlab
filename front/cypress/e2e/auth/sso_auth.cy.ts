@@ -22,7 +22,7 @@ describe.skip('SSO authentication', () => {
       // by manually doing the redirect another time.
       // No idea why it works like this, but it does.
       cy.visit(
-        '/en/?sso_response=true&sso_flow=signup&sso_verification_action=visiting&sso_verification_type=global'
+        '/en/?sso_success=true&sso_flow=signup&sso_verification_action=visiting&sso_verification_type=global'
       );
 
       // Make sure that custom fields window is opened
@@ -51,7 +51,7 @@ describe.skip('SSO authentication', () => {
       // See test above
       cy.location('pathname').should('eq', '/en/');
       cy.visit(
-        '/en/?sso_response=true&sso_flow=signup&sso_verification_action=visiting&sso_verification_type=global'
+        '/en/?sso_success=true&sso_flow=signup&sso_verification_action=visiting&sso_verification_type=global'
       );
 
       // Make sure we have to enter email
@@ -147,7 +147,7 @@ describe.skip('SSO authentication', () => {
       // by manually doing the redirect another time.
       // No idea why it works like this, but it does.
       cy.visit(
-        `http://localhost:3000/en/projects/${projectSlug}?sso_response=true&sso_flow=signup&sso_verification_action=posting_idea&sso_verification_id=${phaseId}&sso_verification_type=phase`
+        `http://localhost:3000/en/projects/${projectSlug}?sso_success=true&sso_flow=signup&sso_verification_action=posting_idea&sso_verification_id=${phaseId}&sso_verification_type=phase`
       );
 
       // Make sure we're at success screen
