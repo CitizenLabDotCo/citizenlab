@@ -29,7 +29,6 @@ const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
   const [sticksToTop, setSticksToTop] = useState(false);
   // The CTA bar is always visible on phones
   const sticksToBottom = isSmallerThanPhone;
-  const isSticky = sticksToBottom || sticksToTop;
   const portalElement = document.getElementById('topbar-portal');
   const { data: phases } = usePhases(projectId);
   const { data: project } = useProjectById(projectId);
@@ -71,7 +70,7 @@ const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
     phases: phases?.data,
   });
 
-  if (isSticky && portalElement) {
+  if ((sticksToBottom || sticksToTop) && portalElement) {
     const sharedProps: BoxProps = {
       width: '100vw',
       position: 'fixed',
@@ -79,23 +78,26 @@ const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
       background: colors.white,
       id: 'project-cta-bar',
     };
+    let portalContent: JSX.Element | null = null;
 
-    return createPortal(
-      sticksToBottom ? (
+    if (sticksToBottom) {
+      portalContent = (
         <Box bottom="0px" {...sharedProps}>
           {BarContents}
         </Box>
-      ) : (
-        // if we reach this part, sticksToTop should be true
+      );
+    } else if (sticksToTop) {
+      portalContent = (
         <Box top="0px" {...sharedProps}>
           <Box height="78px">
             <MainHeader />
           </Box>
           {BarContents}
         </Box>
-      ),
-      portalElement
-    );
+      );
+    }
+
+    return createPortal(portalContent, portalElement);
   }
 
   return <>{BarContents}</>;
