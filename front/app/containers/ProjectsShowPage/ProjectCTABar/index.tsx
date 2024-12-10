@@ -32,8 +32,11 @@ type ProjectCTABarProps = {
 const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
   const isSmallerThanTablet = useBreakpoint('tablet');
   const isSmallerThanPhone = useBreakpoint('phone');
-  const [isVisibleAtTop, setIsVisibleAtTop] = useState(false);
-  const isVisibleAtBottom = isSmallerThanPhone;
+  // On devices larger than phones, the sticky CTA bar is only visible when the action button is out of view
+  const [sticksToTop, setSticksToTop] = useState(false);
+  // The CTA bar is always visible on phones
+  const sticksToBottom = isSmallerThanPhone;
+  const isSticky = sticksToBottom || sticksToTop;
   const portalElement = document.getElementById('topbar-portal');
   const { data: phases } = usePhases(projectId);
   const { data: project } = useProjectById(projectId);
@@ -47,7 +50,7 @@ const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
         ? actionButtonElement.getBoundingClientRect().top + window.scrollY
         : undefined;
 
-      setIsVisibleAtTop(
+      setSticksToTop(
         !!(
           actionButtonElement &&
           actionButtonYOffset &&
@@ -91,8 +94,7 @@ const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
 
   const Bar = CTABar[participationMethod];
 
-  // Always stick to bottom of screen if on phone
-  if (Bar && portalElement) {
+  if (isSticky && Bar && portalElement) {
     const sharedProps: BoxProps = {
       width: '100vw',
       position: 'fixed',
@@ -101,26 +103,21 @@ const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
       id: 'project-cta-bar',
     };
 
-    if (isVisibleAtTop) {
-      return createPortal(
+    return createPortal(
+      sticksToBottom ? (
+        <Box bottom="0px" {...sharedProps}>
+          {Bar}
+        </Box>
+      ) : (
         <Box top="0px" {...sharedProps}>
           <Box height="78px">
             <MainHeader />
           </Box>
           {Bar}
-        </Box>,
-        portalElement
-      );
-    }
-
-    if (isVisibleAtBottom) {
-      return createPortal(
-        <Box bottom="0px" {...sharedProps}>
-          {Bar}
-        </Box>,
-        portalElement
-      );
-    }
+        </Box>
+      ),
+      portalElement
+    );
   }
 
   return <>{Bar}</>;
