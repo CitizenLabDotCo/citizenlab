@@ -44,6 +44,7 @@ en:
       "project_phase_upcoming": Upcoming new project phase
       "project_published": Project published
       "project_review_request": Project review request
+      "project_review_state_change": Project approved
       "status_change_on_idea_you_follow": Status change of an input that you follow
       "status_change_on_initiative_you_follow": Status change of a proposal that you follow
       "threshold_reached_for_admin": Proposal reached the voting threshold
@@ -463,6 +464,11 @@ en:
       header: '%{requesterName} has invited you to review the project "%{projectTitle}"'
       header_message: "Currently, the project is in draft mode and isn't visible to users. Once you've reviewed and approved it, the moderator will be able to publish it."
       cta_review_project: "Review the project"
+    project_review_state_change:
+      subject: '"%{projectTitle}" has been approved'
+      header: '%{reviewerName} approved the project "%{projectTitle}"'
+      header_message: "The project is now ready to go live. You can publish it whenever you're ready!"
+      cta_go_to_project: "Go to project settings"
     status_change_on_idea_you_follow:
       status_change: 'The new status of this input is ''%{status}'''
       header_message: '%{organizationName} updated the status of the input ''%{input_title}'' on their digital participation platform.'
@@ -619,6 +625,7 @@ en:
         managers_managing_the_project: 'Managers managing the project'
         new_attendee: 'Newly registered user'
         project_reviewers: 'Project reviewers and folder managers'
+        project_review_requester: 'User who requested the project review'
         user_who_commented: 'User who commented'
         user_who_is_invited_to_cosponsor_a_proposal: 'User who is invited to co-sponsor a proposal'
         user_who_is_mentioned: 'User who is mentioned'
@@ -672,6 +679,7 @@ en:
         internal_comment_is_posted_on_unassigned_initiative: 'Internal comment is posted on unassigned proposal'
         internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Internal comment is posted on unassigned input in unmanaged project'
         project_review_request: 'Moderator requested a project review'
+        project_review_state_change: 'Reviewer approved the project'
         new_input_awaits_screening: 'New input awaits screening'
         new_input_is_published: 'New input is published'
         new_proposal_is_posted: 'New proposal is posted'
