@@ -12,7 +12,6 @@ import {
   getMethodConfig,
   getParticipationMethod,
 } from 'utils/configs/participationMethodConfig';
-import { isNilOrError } from 'utils/helperUtils';
 
 type ProjectCTABarProps = {
   projectId: string;
@@ -21,7 +20,9 @@ type ProjectCTABarProps = {
 const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
   const isSmallerThanTablet = useBreakpoint('tablet');
   const isSmallerThanPhone = useBreakpoint('phone');
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisibleAtTop, setIsVisibleAtTop] = useState(false);
+  const isVisibleAtBottom = isSmallerThanPhone;
+  const stickCTABarToScreen = isVisibleAtTop || isVisibleAtBottom;
   const portalElement = document.getElementById('topbar-portal');
   const { data: phases } = usePhases(projectId);
   const { data: project } = useProjectById(projectId);
@@ -32,14 +33,14 @@ const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
         'participation-detail'
       );
       const actionButtonYOffset = actionButtonElement
-        ? actionButtonElement.getBoundingClientRect().top + window.pageYOffset
+        ? actionButtonElement.getBoundingClientRect().top + window.scrollY
         : undefined;
-      setIsVisible(
+
+      setIsVisibleAtTop(
         !!(
           actionButtonElement &&
           actionButtonYOffset &&
-          window.pageYOffset >
-            actionButtonYOffset - (isSmallerThanTablet ? 14 : 30)
+          window.scrollY > actionButtonYOffset - (isSmallerThanTablet ? 14 : 30)
         )
       );
     };
@@ -53,7 +54,7 @@ const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
     ? getParticipationMethod(project.data, phases?.data)
     : undefined;
 
-  if (isNilOrError(project) || !participationMethod) {
+  if (!project || !participationMethod) {
     return null;
   }
 
@@ -63,7 +64,7 @@ const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
   });
 
   // Always stick to bottom of screen if on phone
-  if (portalElement && (isVisible || isSmallerThanPhone)) {
+  if (portalElement && stickCTABarToScreen) {
     return createPortal(
       <Box
         width="100vw"
