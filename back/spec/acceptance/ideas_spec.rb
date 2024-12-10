@@ -397,6 +397,35 @@ resource 'Ideas' do
       end
     end
 
+    get 'web_api/v1/ideas/:id/similarities' do
+      with_options scope: :page do
+        parameter :number, 'Page number'
+        parameter :size, 'Number of ideas per page'
+      end
+
+      let(:embeddings) { JSON.parse(File.read('spec/fixtures/word_embeddings.json')) }
+      let!(:idea_pizza) { create(:embeddings_similarity, embedding: embeddings['pizza']).embeddable }
+      let!(:idea_burger) { create(:embeddings_similarity, embedding: embeddings['burger']).embeddable }
+      let!(:idea_moon) { create(:embeddings_similarity, embedding: embeddings['moon']).embeddable }
+      let!(:idea_bats) { create(:embeddings_similarity, embedding: embeddings['bats']).embeddable }
+      let(:id) { idea_pizza.id }
+
+      example_request 'Get similar ideas' do
+        assert_status 200
+        expect(json_parse(response_body)[:data].pluck(:id)).to eq [] # When no threshold: [idea_burger.id, idea_bats.id, idea_moon.id]
+      end
+
+      describe do
+        before { create_list(:embeddings_similarity, 10) }
+
+        example 'Do not return more than 10 inputs', document: false do
+          do_request
+          assert_status 200
+          expect(json_parse(response_body)[:data].size).to be <= 10
+        end
+      end
+    end
+
     delete 'web_api/v1/ideas/:id' do
       let(:id) { input.id }
 
