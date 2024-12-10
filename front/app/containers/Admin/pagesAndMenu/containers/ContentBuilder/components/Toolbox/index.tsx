@@ -47,8 +47,10 @@ import {
 import OpenToParticipation, {
   openToParticipationTitle,
 } from '../Widgets/OpenToParticipation';
-import Projects, { projectsTitle } from '../Widgets/Projects';
-import projectsMessages from '../Widgets/Projects/messages';
+import ProjectsAndFoldersLegacy, {
+  projectsAndFoldersLegacyTitle,
+} from '../Widgets/ProjectsAndFoldersLegacy';
+import projectsMessages from '../Widgets/ProjectsAndFoldersLegacy/messages';
 import Published, { publishedTitle } from '../Widgets/Published';
 import Selection, { selectionTitle } from '../Widgets/Selection';
 import Spotlight, {
@@ -189,14 +191,14 @@ const HomepageBuilderToolbox = ({
         <DraggableElement
           id="e2e-draggable-projects"
           component={
-            <Projects
+            <ProjectsAndFoldersLegacy
               currentlyWorkingOnText={toMultiloc(
                 projectsMessages.projectsTitlePlaceholder
               )}
             />
           }
           icon="projects"
-          label={formatMessage(projectsTitle)}
+          label={formatMessage(projectsAndFoldersLegacyTitle)}
         />
       </Section>
       <Section>
