@@ -116,7 +116,7 @@ class AnonymizeUserService
     "#{email.split('@').first}_#{SecureRandom.uuid[...6]}@anonymized.com"
   end
 
-  def random_avatar_assignment(first_name, last_name, gender)
+  def random_avatar_assignment(_first_name, _last_name, gender)
     gender = mismatch_gender(gender) if rand(30) == 0
 
     # Some initials avatars, like do_avatar.png are currently broken.
