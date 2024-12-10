@@ -64,11 +64,7 @@ const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [isSmallerThanTablet]);
 
-  const participationMethod = project
-    ? getParticipationMethod(project.data, phases?.data)
-    : undefined;
-
-  if (!project || !phases || !participationMethod) {
+  if (!project || !phases) {
     return null;
   }
 
@@ -92,7 +88,8 @@ const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
     ),
   };
 
-  const Bar = CTABar[participationMethod];
+  const participationMethod = getParticipationMethod(project.data, phases.data);
+  const Bar = participationMethod ? CTABar[participationMethod] : null;
 
   if (isSticky && Bar && portalElement) {
     const sharedProps: BoxProps = {
