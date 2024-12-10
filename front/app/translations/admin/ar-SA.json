@@ -2714,7 +2714,6 @@
   "app.containers.admin.project.permissions.permissionsSelectionLabel": "مجموعات مستخدمين محددة",
   "app.containers.admin.project.permissions.permissionsSelectionLabelDescription": "يمكن للمستخدمين في مجموعة (مجموعات) مستخدمين محددة المشاركة. يمكنك إدارة مجموعات المستخدمين في علامة التبويب \"المستخدمون\".",
   "app.containers.admin.project.permissions.viewingRightsTitle": "من يمكنه رؤية هذا المشروع؟",
-  "app.modules.commercial.analytics.admin.components.ActiveUsersCard.cardTitleTooltipMessage3": "Participants are users or visitors that have participated in a project, posted or interacted with a proposal, attended events or followed things.",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participants": "مشاركون",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRate": "معدل المشاركة",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRateTooltip3": "النسبة المئوية للزوار الذين يصبحون مشاركين. يتم احتساب المشاركين والزوار الذين قبلوا ملفات تعريف الارتباط فقط.",
