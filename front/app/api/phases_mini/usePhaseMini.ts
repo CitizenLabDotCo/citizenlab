@@ -8,7 +8,7 @@ import { PhasesMiniKeys, PhaseMini } from './types';
 
 const fetchPhaseMini = (id?: string) =>
   fetcher<PhaseMini>({
-    path: `/phases/${id}`,
+    path: `/phases/${id}/mini`,
     action: 'get',
   });
 
