@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from 'react';
 
-import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  BoxProps,
+  colors,
+  useBreakpoint,
+} from '@citizenlab/cl2-component-library';
 import { createPortal } from 'react-dom';
 
 import usePhases from 'api/phases/usePhases';
@@ -12,7 +17,6 @@ import {
   getMethodConfig,
   getParticipationMethod,
 } from 'utils/configs/participationMethodConfig';
-import { isNilOrError } from 'utils/helperUtils';
 
 type ProjectCTABarProps = {
   projectId: string;
@@ -21,7 +25,10 @@ type ProjectCTABarProps = {
 const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
   const isSmallerThanTablet = useBreakpoint('tablet');
   const isSmallerThanPhone = useBreakpoint('phone');
-  const [isVisible, setIsVisible] = useState(false);
+  // On devices larger than phones, the sticky CTA bar is only visible when the action button is out of view
+  const [sticksToTop, setSticksToTop] = useState(false);
+  // The CTA bar is always visible on phones
+  const sticksToBottom = isSmallerThanPhone;
   const portalElement = document.getElementById('topbar-portal');
   const { data: phases } = usePhases(projectId);
   const { data: project } = useProjectById(projectId);
@@ -32,14 +39,15 @@ const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
         'participation-detail'
       );
       const actionButtonYOffset = actionButtonElement
-        ? actionButtonElement.getBoundingClientRect().top + window.pageYOffset
+        ? actionButtonElement.getBoundingClientRect().top + window.scrollY
         : undefined;
-      setIsVisible(
+
+      setSticksToTop(
         !!(
+          !sticksToBottom &&
           actionButtonElement &&
           actionButtonYOffset &&
-          window.pageYOffset >
-            actionButtonYOffset - (isSmallerThanTablet ? 14 : 30)
+          window.scrollY > actionButtonYOffset - (isSmallerThanTablet ? 14 : 30)
         )
       );
     };
@@ -47,13 +55,13 @@ const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
     window.addEventListener('scroll', handleScroll, { passive: true });
 
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [isSmallerThanTablet]);
+  }, [isSmallerThanTablet, sticksToBottom]);
 
   const participationMethod = project
     ? getParticipationMethod(project.data, phases?.data)
     : undefined;
 
-  if (isNilOrError(project) || !participationMethod) {
+  if (!project || !participationMethod) {
     return null;
   }
 
@@ -62,27 +70,34 @@ const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
     phases: phases?.data,
   });
 
-  // Always stick to bottom of screen if on phone
-  if (portalElement && (isVisible || isSmallerThanPhone)) {
-    return createPortal(
-      <Box
-        width="100vw"
-        position="fixed"
-        top={isSmallerThanPhone ? undefined : '0px'}
-        bottom={isSmallerThanPhone ? '0px' : undefined}
-        zIndex="1000"
-        background="#fff"
-        id="project-cta-bar"
-      >
-        {!isSmallerThanPhone && (
+  if ((sticksToBottom || sticksToTop) && portalElement) {
+    const sharedProps: BoxProps = {
+      width: '100vw',
+      position: 'fixed',
+      zIndex: '1000',
+      background: colors.white,
+      id: 'project-cta-bar',
+    };
+    let portalContent: JSX.Element | null = null;
+
+    if (sticksToBottom) {
+      portalContent = (
+        <Box bottom="0px" {...sharedProps}>
+          {BarContents}
+        </Box>
+      );
+    } else if (sticksToTop) {
+      portalContent = (
+        <Box top="0px" {...sharedProps}>
           <Box height="78px">
             <MainHeader />
           </Box>
-        )}
-        {BarContents}
-      </Box>,
-      portalElement
-    );
+          {BarContents}
+        </Box>
+      );
+    }
+
+    return createPortal(portalContent, portalElement);
   }
 
   return <>{BarContents}</>;
