@@ -2714,7 +2714,7 @@
   "app.containers.admin.project.permissions.permissionsSelectionLabel": "ਚੋਣ",
   "app.containers.admin.project.permissions.permissionsSelectionLabelDescription": "ਖਾਸ ਉਪਭੋਗਤਾ ਸਮੂਹਾਂ (ਸਮੂਹਾਂ) ਦੇ ਉਪਭੋਗਤਾ ਹਿੱਸਾ ਲੈ ਸਕਦੇ ਹਨ। ਤੁਸੀਂ \"ਉਪਭੋਗਤਾ\" ਟੈਬ ਵਿੱਚ ਉਪਭੋਗਤਾ ਸਮੂਹਾਂ ਦਾ ਪ੍ਰਬੰਧਨ ਕਰ ਸਕਦੇ ਹੋ।",
   "app.containers.admin.project.permissions.viewingRightsTitle": "ਇਸ ਪ੍ਰੋਜੈਕਟ ਨੂੰ ਕੌਣ ਦੇਖ ਸਕਦਾ ਹੈ?",
-  "app.modules.commercial.analytics.admin.components.ActiveUsersCard.cardTitleTooltipMessage3": "Participants are users or visitors that have participated in a project, posted or interacted with a proposal, attended events or followed things.",
+  "app.modules.commercial.analytics.admin.components.ActiveUsersCard.cardTitleTooltipMessage3": "ਭਾਗੀਦਾਰ ਉਹ ਉਪਭੋਗਤਾ ਜਾਂ ਵਿਜ਼ਟਰ ਹੁੰਦੇ ਹਨ ਜਿਨ੍ਹਾਂ ਨੇ ਇੱਕ ਪ੍ਰੋਜੈਕਟ ਵਿੱਚ ਹਿੱਸਾ ਲਿਆ ਹੈ, ਕਿਸੇ ਪ੍ਰਸਤਾਵ ਨੂੰ ਪੋਸਟ ਕੀਤਾ ਹੈ ਜਾਂ ਇੰਟਰੈਕਟ ਕੀਤਾ ਹੈ, ਸਮਾਗਮਾਂ ਵਿੱਚ ਸ਼ਾਮਲ ਹੋਏ ਹਨ ਜਾਂ ਚੀਜ਼ਾਂ ਦੀ ਪਾਲਣਾ ਕੀਤੀ ਹੈ।",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participants": "ਭਾਗ ਲੈਣ ਵਾਲੇ",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRate": "ਭਾਗੀਦਾਰੀ ਦਰ",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRateTooltip3": "ਭਾਗੀਦਾਰ ਬਣਨ ਵਾਲੇ ਦਰਸ਼ਕਾਂ ਦੀ ਪ੍ਰਤੀਸ਼ਤਤਾ। ਸਿਰਫ਼ ਕੂਕੀਜ਼ ਨੂੰ ਸਵੀਕਾਰ ਕਰਨ ਵਾਲੇ ਭਾਗੀਦਾਰਾਂ ਅਤੇ ਮਹਿਮਾਨਾਂ ਨੂੰ ਗਿਣਿਆ ਜਾਂਦਾ ਹੈ।",
