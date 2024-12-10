@@ -27,9 +27,10 @@ export interface SSOProviderMap {
 export type SSOProvider = SSOProviderMap[keyof SSOProviderMap];
 
 // Note: these are url parameters so therefore all typed as strings
+// All are optional as there may be cases the backend does not always return these
 export interface SSOParams {
-  sso_flow: 'signup' | 'signin';
-  sso_pathname: RouteType;
+  sso_flow?: 'signup' | 'signin';
+  sso_pathname?: RouteType;
   sso_verification?: string;
   sso_verification_action?: string;
   sso_verification_id?: string;
@@ -76,14 +77,10 @@ function setHref(
   const ssoParams: SSOParams = {
     sso_flow: flow,
     sso_pathname: pathname, // Also used by back-end to set user.locale following successful signup
-    sso_verification: verification === true ? 'true' : undefined,
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    sso_verification_action: context?.action,
+    sso_verification: verification ? 'true' : undefined,
+    sso_verification_action: context.action,
     sso_verification_id: isProjectContext(context) ? context.id : undefined,
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    sso_verification_type: context?.type,
+    sso_verification_type: context.type,
   };
   const urlSearchParams = stringify(omitBy(ssoParams, isNil));
   window.location.href = `${AUTH_PATH}/${provider}?${urlSearchParams}`;

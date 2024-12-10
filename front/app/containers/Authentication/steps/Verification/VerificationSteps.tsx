@@ -19,6 +19,7 @@ import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
 import { isNilOrError } from 'utils/helperUtils';
 
 import VerificationMethods from './VerificationMethods';
+import { RouteType } from 'routes';
 
 const Container = styled.div`
   display: flex;
@@ -69,6 +70,10 @@ const VerificationSteps = memo<Props>(
             JSON.stringify(authenticationData.successAction)
           );
         }
+        localStorage.setItem(
+          'auth_path',
+          window.location.pathname as RouteType
+        );
       }
 
       setMethod(selectedMethod);

@@ -310,8 +310,6 @@ export default function useSteps() {
         context: context as AuthenticationContext,
       };
 
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       const flow = sso_flow ?? 'signin';
       updateState({ flow });
       transition(currentStep, 'RESUME_FLOW_AFTER_SSO')(flow);

@@ -7,7 +7,7 @@ class OmniauthCallbackController < ApplicationController
   def create
     if auth_method && verification_method
       # If token is present, the user is already logged in, which means they try to verify not authenticate.
-      if request.env['omniauth.params']['token'].present? && auth_method.verification_prioritized?
+      if omniauth_params['token'].present? && auth_method.verification_prioritized?
         # We need it only for providers that support both auth and ver except FC.
         # For FC, we never verify, only authenticate (even when user clicks "verify"). Not sure why.
         verification_callback(verification_method)
@@ -37,6 +37,10 @@ class OmniauthCallbackController < ApplicationController
 
   private
 
+  def omniauth_params
+    request.env['omniauth.params']
+  end
+
   def find_existing_user(authver_method, auth, user_attrs, verify:)
     user = User.find_by_cimail(user_attrs.fetch(:email)) if user_attrs.key?(:email) # some providers don't return email
     return user if user
@@ -51,7 +55,6 @@ class OmniauthCallbackController < ApplicationController
 
   def auth_callback(verify: false, authver_method: nil)
     auth = request.env['omniauth.auth']
-    omniauth_params = request.env['omniauth.params']
     user_attrs = authver_method.profile_to_user_attrs(auth)
 
     @identity = Identity.find_or_build_with_omniauth(auth, authver_method)
@@ -163,12 +166,12 @@ class OmniauthCallbackController < ApplicationController
   end
 
   def sso_redirect_path
-    request.env['omniauth.params']&.dig('sso_pathname') || '/'
+    omniauth_params&.dig('sso_pathname') || '/'
   end
 
   # Reject any parameters we don't need to be passed to the frontend in the URL
   def filter_omniauth_params
-    request.env['omniauth.params']&.except('token', 'pathname', 'sso_pathname') || {}
+    omniauth_params&.except('token', 'verification_pathname', 'sso_pathname') || {}
   end
 
   def add_uri_params(uri, params = {})
