@@ -17,12 +17,12 @@ class WebApi::V1::PhasesController < ApplicationController
 
   def index_mini
     @phases = policy_scope(Phase)
-      .where(project_id: params[:project_id])
       .order(:start_at)
+      .includes(:permissions, :report, :custom_form, :manual_voters_last_updated_by)
+
     @phases = paginate @phases
 
     authorize @phases, :index_mini?
-
     render json: linked_json(@phases, WebApi::V1::PhaseMiniSerializer, params: jsonapi_serializer_params)
   end
 

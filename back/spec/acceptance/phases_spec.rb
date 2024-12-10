@@ -69,6 +69,20 @@ resource 'Phases' do
     end
   end
 
+  get 'web_api/v1/phases/mini' do
+    with_options scope: :page do
+      parameter :number, 'Page number'
+      parameter :size, 'Number of phases per page'
+    end
+
+    example 'List all phases', document: false do
+      Permissions::PermissionsUpdateService.new.update_all_permissions
+      do_request
+      assert_status 200
+      expect(json_response[:data].size).to eq 2
+    end
+  end
+
   get 'web_api/v1/phases/:id' do
     before { @phase = @project.phases.first }
 

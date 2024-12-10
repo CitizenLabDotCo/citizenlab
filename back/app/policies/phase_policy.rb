@@ -36,7 +36,7 @@ class PhasePolicy < ApplicationPolicy
   end
 
   def index_mini?
-    active_admin?
+    true
   end
 
   def delete_inputs?
