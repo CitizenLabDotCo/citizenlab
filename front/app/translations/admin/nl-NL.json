@@ -2717,7 +2717,7 @@
   "app.containers.admin.project.permissions.permissionsSelectionLabel": "Bepaalde groepen gebruikers",
   "app.containers.admin.project.permissions.permissionsSelectionLabelDescription": "Gebruikers in specifieke gebruikersgroep(en) kunnen deelnemen. Je kunt gebruikersgroepen beheren in het tabblad \"Gebruikers\".",
   "app.containers.admin.project.permissions.viewingRightsTitle": "Wie kan dit project zien?",
-  "app.modules.commercial.analytics.admin.components.ActiveUsersCard.cardTitleTooltipMessage3": "Participants are users or visitors that have participated in a project, posted or interacted with a proposal, attended events or followed things.",
+  "app.modules.commercial.analytics.admin.components.ActiveUsersCard.cardTitleTooltipMessage3": "Deelnemers zijn gebruikers of bezoekers die hebben deelgenomen aan een project, een bericht hebben geplaatst of interactie hebben gehad met een voorstel, evenementen hebben bijgewoond of dingen hebben gevolgd.",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participants": "Deelnemers",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRate": "Deelnameratio",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRateTooltip3": "Percentage bezoekers dat deelnemer wordt. Alleen deelnemers en bezoekers die cookies hebben geaccepteerd worden geteld.",
