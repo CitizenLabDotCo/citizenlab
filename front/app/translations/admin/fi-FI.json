@@ -2714,7 +2714,6 @@
   "app.containers.admin.project.permissions.permissionsSelectionLabel": "Valitut",
   "app.containers.admin.project.permissions.permissionsSelectionLabelDescription": "Tiettyjen käyttäjäryhmien käyttäjät voivat osallistua. Voit hallita käyttäjäryhmiä Käyttäjät-välilehdellä.",
   "app.containers.admin.project.permissions.viewingRightsTitle": "Kuka voi nähdä tämän projektin?",
-  "app.modules.commercial.analytics.admin.components.ActiveUsersCard.cardTitleTooltipMessage3": "Osallistujat ovat käyttäjiä tai vierailijoita, jotka ovat osallistuneet projektiin, lähettäneet ehdotuksen tai olleet vuorovaikutuksessa sen kanssa, osallistuneet tapahtumiin tai seuranneet asioita.",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participants": "Osallistujat",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRate": "Osallistumisprosentti",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRateTooltip3": "Prosenttiosuus vierailijoista, joista tulee osallistujia. Vain evästeet hyväksyneet osallistujat ja vierailijat lasketaan.",
