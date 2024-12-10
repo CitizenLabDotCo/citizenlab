@@ -48,6 +48,7 @@ module EmailCampaigns
       Campaigns::ProjectPhaseStarted,
       Campaigns::ProjectPhaseUpcoming,
       Campaigns::ProjectPublished,
+      Campaigns::ProjectReviewRequest,
       Campaigns::StatusChangeOnIdeaYouFollow,
       Campaigns::StatusChangeOnInitiativeYouFollow,
       Campaigns::ThresholdReachedForAdmin,
