@@ -91,7 +91,15 @@ const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
   const participationMethod = getParticipationMethod(project.data, phases.data);
   const CTABar = participationMethod ? CTABars[participationMethod] : null;
 
-  if (isSticky && CTABar && portalElement) {
+  if (
+    isSticky &&
+    // We need to check that CTABar is defined because, at the time of writing,
+    // we rely on on the id of the portal below to determine how far to push down the filters.
+    // CTABar needs to be defined before it makes sense to render the portal.
+    // Comment id: ccf2e3f. Search for this id to find related comments.
+    CTABar &&
+    portalElement
+  ) {
     const sharedProps: BoxProps = {
       width: '100vw',
       position: 'fixed',

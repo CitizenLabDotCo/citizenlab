@@ -66,6 +66,10 @@ const ContentRight = ({
 
   useEffect(() => {
     function checkCTABarVisibility() {
+      // Ideally we come up with a better solution to determine if the CTA bar is visible.
+      // We have checks in ProjectCTABar that can't be deleted for this code to work,
+      // which is a brittle solution.
+      // Comment id: ccf2e3f. Search for this id to find related comments.
       if (document.getElementById('project-cta-bar')) {
         setIsCTABarVisible(true);
         return;
