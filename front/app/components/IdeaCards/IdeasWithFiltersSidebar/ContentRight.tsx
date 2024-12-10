@@ -7,7 +7,6 @@ import { IIdeasFilterCounts } from 'api/ideas_filter_counts/types';
 import { IdeaSortMethod } from 'api/phases/types';
 
 import { QueryParameters } from 'containers/IdeasIndexPage';
-import { useIsCTABarSticky } from 'containers/ProjectsShowPage';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
@@ -63,28 +62,14 @@ const ContentRight = ({
   onChangeTopics,
   onChangeSort,
 }: Props) => {
-  const isCTABarSticky = useIsCTABarSticky();
-
-  // useEffect(() => {
-  //   function checkCTABarVisibility() {
-  //     if (document.getElementById('project-cta-bar')) {
-  //       setIsCTABarVisible(true);
-  //       return;
-  //     }
-
-  //     setIsCTABarVisible(false);
-  //   }
-
-  //   window.addEventListener('scrollend', checkCTABarVisibility);
-  //   return () => window.removeEventListener('scrollend', checkCTABarVisibility);
-  // }, []);
+  const stickyTop = document.getElementById('project-cta-bar-top');
 
   return (
     <Container
       id="e2e-ideas-filters"
       filterColumnWidth={filterColumnWidth}
-      top={isCTABarSticky ? 160 : 100}
-      maxHeightOffset={isCTABarSticky ? 180 : 120}
+      top={stickyTop ? 160 : 100}
+      maxHeightOffset={stickyTop ? 180 : 120}
       gapWidth={gapWidth}
     >
       {/*

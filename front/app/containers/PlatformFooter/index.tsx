@@ -24,24 +24,11 @@ import { isNilOrError } from 'utils/helperUtils';
 
 import messages from './messages';
 
-const Container = styled.footer`
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  position: relative;
-  ${media.tablet`
-    margin-top: 0px;
-  `}
-`;
-
-const FooterContainer = styled.div`
+const FooterContainer = styled.footer`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-left: 28px;
-  padding-right: 28px;
-  padding-top: 11px;
-  padding-bottom: 11px;
+  padding: 11px 28px;
   background: #fff;
   border-top: solid 1px #ccc;
   overflow: hidden;
@@ -295,69 +282,71 @@ const PlatformFooter = ({ className }: Props) => {
   };
 
   return (
-    <Container id="hook-footer" className={className}>
-      <FooterContainer style={{ paddingBottom }}>
-        <PagesNav aria-label={formatMessage(messages.ariaLabel)}>
-          <PagesNavList>
-            {FOOTER_PAGES.map((slug: TFooterPage, index) => {
-              return (
-                <React.Fragment key={slug}>
-                  <PagesNavListItem>
-                    {slug === 'accessibility-statement' &&
-                    hasCustomizedA11yFooterLink &&
-                    customizedA11yHref ? (
-                      <StyledA
-                        href={customizedA11yHref}
-                        // TODO: Fix this the next time the file is edited.
-                        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-                        target={hasCustomizedA11yFooterLink && '_blank'}
-                        className={index === 0 ? 'first' : ''}
-                      >
-                        <FormattedMessage {...MESSAGES_MAP[slug]} />
-                      </StyledA>
-                    ) : (
-                      <StyledLink
-                        to={`/pages/${slug}`}
-                        className={index === 0 ? 'first' : ''}
-                      >
-                        <FormattedMessage {...MESSAGES_MAP[slug]} />
-                      </StyledLink>
-                    )}
-                  </PagesNavListItem>
-                </React.Fragment>
-              );
-            })}
-            <PagesNavListItem>
-              <StyledButton onClick={openConsentManager}>
-                <FormattedMessage {...messages.cookieSettings} />
-              </StyledButton>
-            </PagesNavListItem>
-            <PagesNavListItem>
-              <StyledLink to="/site-map">
-                <FormattedMessage {...messages.siteMap} />
-              </StyledLink>
-            </PagesNavListItem>
-          </PagesNavList>
-        </PagesNav>
+    <FooterContainer
+      className={className}
+      id="hook-footer"
+      style={{ paddingBottom }}
+    >
+      <PagesNav aria-label={formatMessage(messages.ariaLabel)}>
+        <PagesNavList>
+          {FOOTER_PAGES.map((slug: TFooterPage, index) => {
+            return (
+              <React.Fragment key={slug}>
+                <PagesNavListItem>
+                  {slug === 'accessibility-statement' &&
+                  hasCustomizedA11yFooterLink &&
+                  customizedA11yHref ? (
+                    <StyledA
+                      href={customizedA11yHref}
+                      // TODO: Fix this the next time the file is edited.
+                      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+                      target={hasCustomizedA11yFooterLink && '_blank'}
+                      className={index === 0 ? 'first' : ''}
+                    >
+                      <FormattedMessage {...MESSAGES_MAP[slug]} />
+                    </StyledA>
+                  ) : (
+                    <StyledLink
+                      to={`/pages/${slug}`}
+                      className={index === 0 ? 'first' : ''}
+                    >
+                      <FormattedMessage {...MESSAGES_MAP[slug]} />
+                    </StyledLink>
+                  )}
+                </PagesNavListItem>
+              </React.Fragment>
+            );
+          })}
+          <PagesNavListItem>
+            <StyledButton onClick={openConsentManager}>
+              <FormattedMessage {...messages.cookieSettings} />
+            </StyledButton>
+          </PagesNavListItem>
+          <PagesNavListItem>
+            <StyledLink to="/site-map">
+              <FormattedMessage {...messages.siteMap} />
+            </StyledLink>
+          </PagesNavListItem>
+        </PagesNavList>
+      </PagesNav>
 
-        {!removeVendorBranding && (
-          <Right>
-            <PoweredBy>
-              <PoweredByText>
-                <FormattedMessage {...messages.poweredBy} />
-              </PoweredByText>
-              <GoVocalLink href="https://govocal.com/" target="_blank">
-                <GoVocalLogo
-                  ariaHidden={false}
-                  name={getLocalizedLogoName()}
-                  title="Go Vocal"
-                />
-              </GoVocalLink>
-            </PoweredBy>
-          </Right>
-        )}
-      </FooterContainer>
-    </Container>
+      {!removeVendorBranding && (
+        <Right>
+          <PoweredBy>
+            <PoweredByText>
+              <FormattedMessage {...messages.poweredBy} />
+            </PoweredByText>
+            <GoVocalLink href="https://govocal.com/" target="_blank">
+              <GoVocalLogo
+                ariaHidden={false}
+                name={getLocalizedLogoName()}
+                title="Go Vocal"
+              />
+            </GoVocalLink>
+          </PoweredBy>
+        </Right>
+      )}
+    </FooterContainer>
   );
 };
 

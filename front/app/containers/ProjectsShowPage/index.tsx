@@ -1,10 +1,4 @@
-import React, {
-  useEffect,
-  useMemo,
-  useState,
-  createContext,
-  useContext,
-} from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import {
   Box,
@@ -78,14 +72,8 @@ interface Props {
   project: IProjectData;
 }
 
-const Context = createContext(false);
-export const useIsCTABarSticky = () => useContext(Context);
-
 const ProjectsShowPage = ({ project }: Props) => {
   const projectId = project.id;
-  const [isCTABarSticky, setIsCTABarSticky] = useState(false);
-
-  const isSmallerThanPhone = useBreakpoint('tablet');
   const isSmallerThanTablet = useBreakpoint('tablet');
   const { formatMessage } = useIntl();
   const [mounted, setMounted] = useState(false);
@@ -105,33 +93,6 @@ const ProjectsShowPage = ({ project }: Props) => {
   const loading = useMemo(() => {
     return anyIsUndefined(locale, appConfig, project, phases?.data, events);
   }, [locale, appConfig, project, phases, events]);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const actionButtonElement = document.getElementById(
-        'participation-detail'
-      );
-      const actionButtonYOffset = actionButtonElement
-        ? actionButtonElement.getBoundingClientRect().top + window.scrollY
-        : undefined;
-
-      setIsCTABarSticky(
-        !!(
-          actionButtonElement &&
-          actionButtonYOffset &&
-          window.scrollY > actionButtonYOffset - (isSmallerThanTablet ? 14 : 30)
-        )
-      );
-    };
-
-    if (isSmallerThanPhone) {
-      setIsCTABarSticky(true);
-    } else {
-      window.addEventListener('scroll', handleScroll, { passive: true });
-    }
-
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [isSmallerThanTablet, isSmallerThanPhone]);
 
   // Check that all child components are mounted
   useEffect(() => {
@@ -168,55 +129,51 @@ const ProjectsShowPage = ({ project }: Props) => {
         {loading ? (
           <FullPageSpinner />
         ) : (
-          <Context.Provider value={isCTABarSticky}>
-            <ContentWrapper id="e2e-project-page">
-              <ProjectHeader projectId={projectId} />
-              <ProjectCTABar projectId={projectId} />
+          <ContentWrapper id="e2e-project-page">
+            <ProjectHeader projectId={projectId} />
+            <ProjectCTABar projectId={projectId} />
 
-              <div id="participation-detail">
-                <TimelineContainer projectId={projectId} />
-              </div>
-              {!!events?.data.length && (
-                <Box
-                  id="e2e-events-section-project-page"
-                  display="flex"
-                  flexDirection="column"
-                  gap="48px"
-                  mx="auto"
-                  my="48px"
-                  maxWidth={`${maxPageWidth}px`}
-                  padding={isSmallerThanTablet ? '20px' : '0px'}
-                >
-                  <EventsViewer
-                    showProjectFilter={false}
-                    projectId={projectId}
-                    eventsTime="currentAndFuture"
-                    title={formatMessage(messages.upcomingAndOngoingEvents)}
-                    fallbackMessage={messages.noUpcomingOrOngoingEvents}
-                    projectPublicationStatuses={[
-                      'published',
-                      'draft',
-                      'archived',
-                    ]}
-                  />
-                  <EventsViewer
-                    showProjectFilter={false}
-                    projectId={projectId}
-                    eventsTime="past"
-                    title={formatMessage(messages.pastEvents)}
-                    fallbackMessage={messages.noPastEvents}
-                    projectPublicationStatuses={[
-                      'published',
-                      'draft',
-                      'archived',
-                    ]}
-                    showDateFilter={false}
-                  />
-                </Box>
-              )}
-              <SuccessModal projectId={projectId} />
-            </ContentWrapper>
-          </Context.Provider>
+            <TimelineContainer projectId={projectId} />
+            {!!events?.data.length && (
+              <Box
+                id="e2e-events-section-project-page"
+                display="flex"
+                flexDirection="column"
+                gap="48px"
+                mx="auto"
+                my="48px"
+                maxWidth={`${maxPageWidth}px`}
+                padding={isSmallerThanTablet ? '20px' : '0px'}
+              >
+                <EventsViewer
+                  showProjectFilter={false}
+                  projectId={projectId}
+                  eventsTime="currentAndFuture"
+                  title={formatMessage(messages.upcomingAndOngoingEvents)}
+                  fallbackMessage={messages.noUpcomingOrOngoingEvents}
+                  projectPublicationStatuses={[
+                    'published',
+                    'draft',
+                    'archived',
+                  ]}
+                />
+                <EventsViewer
+                  showProjectFilter={false}
+                  projectId={projectId}
+                  eventsTime="past"
+                  title={formatMessage(messages.pastEvents)}
+                  fallbackMessage={messages.noPastEvents}
+                  projectPublicationStatuses={[
+                    'published',
+                    'draft',
+                    'archived',
+                  ]}
+                  showDateFilter={false}
+                />
+              </Box>
+            )}
+            <SuccessModal projectId={projectId} />
+          </ContentWrapper>
         )}
       </Container>
     </main>
