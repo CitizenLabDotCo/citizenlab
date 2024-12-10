@@ -1339,6 +1339,7 @@
   "app.containers.IdeasShow.MetaInformation.currentStatus": "Statws presennol",
   "app.containers.IdeasShow.MetaInformation.location": "Lleoliad",
   "app.containers.IdeasShow.MetaInformation.postedBy": "Postiwyd gan",
+  "app.containers.IdeasShow.MetaInformation.similar": "Mewnbynnau tebyg",
   "app.containers.IdeasShow.MetaInformation.topics": "Tagiau",
   "app.containers.IdeasShow.commentCTA": "Ychwanegu sylw",
   "app.containers.IdeasShow.contributionEmailSharingBody": "Cefnogwch y cyfraniad hwn '{postTitle}' ar {postUrl}!",
