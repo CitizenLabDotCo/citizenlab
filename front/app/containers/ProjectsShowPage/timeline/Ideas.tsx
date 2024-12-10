@@ -4,7 +4,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 import { MessageDescriptor } from 'react-intl';
 import { useSearchParams } from 'react-router-dom';
 
-import { IdeaSortMethod, IPhaseData } from 'api/phases/types';
+import { IdeaSortMethod, IPhaseData, PresentationMode } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
 import { IdeaSortMethodFallback } from 'api/phases/utils';
 
@@ -26,7 +26,7 @@ type SharedProps = {
   phaseId: string;
   showViewToggle: boolean;
   invisbleTitleMessage: MessageDescriptor;
-  defaultView: 'card' | 'map';
+  defaultView: PresentationMode;
 };
 
 interface InnerProps {
