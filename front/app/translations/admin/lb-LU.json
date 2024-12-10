@@ -2727,7 +2727,7 @@
   "app.containers.admin.project.permissions.permissionsSelectionLabel": "Selection",
   "app.containers.admin.project.permissions.permissionsSelectionLabelDescription": "Benotzer a spezifesche Benotzergrupp(en) kënne matmaachen. Dir kënnt Benotzergruppen am Tab \"Benotzer\" verwalten.",
   "app.containers.admin.project.permissions.viewingRightsTitle": "Who can see this project?",
-  "app.modules.commercial.analytics.admin.components.ActiveUsersCard.cardTitleTooltipMessage3": "Participants are users or visitors that have participated in a project, posted or interacted with a proposal, attended events or followed things.",
+  "app.modules.commercial.analytics.admin.components.ActiveUsersCard.cardTitleTooltipMessage3": "Participanten sinn Benotzer oder Besucher, déi un engem Projet deelgeholl hunn, gepost oder interagéiert mat enger Propositioun, Eventer besicht oder Saachen gefollegt hunn.",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participants": "Participanten",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRate": "Bedeelegungstaux",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRateTooltip3": "Prozentsaz vun de Visiteuren déi Participanten ginn. Nëmmen Participanten a Visiteuren, déi Cookien akzeptéiert hunn, ginn gezielt.",
