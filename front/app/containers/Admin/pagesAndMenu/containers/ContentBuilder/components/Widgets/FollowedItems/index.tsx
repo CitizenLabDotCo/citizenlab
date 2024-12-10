@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Multiloc } from 'typings';
 
+import useAuthUser from 'api/me/useAuthUser';
 import useProjectsMini from 'api/projects_mini/useProjectsMini';
 
 import useLocalize from 'hooks/useLocalize';
@@ -19,6 +20,7 @@ interface Props {
 
 const FollowedItems = ({ titleMultiloc }: Props) => {
   const localize = useLocalize();
+  const { data: authUser } = useAuthUser();
 
   const { data, hasNextPage, fetchNextPage, isInitialLoading } =
     useProjectsMini({
@@ -26,7 +28,7 @@ const FollowedItems = ({ titleMultiloc }: Props) => {
     });
   const projects = data?.pages.map((page) => page.data).flat();
 
-  if (isInitialLoading) {
+  if (isInitialLoading && !!authUser?.data) {
     return <Skeleton />;
   }
 
