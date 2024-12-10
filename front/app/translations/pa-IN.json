@@ -1170,7 +1170,6 @@
   "app.containers.IdeaCards.allStatuses": "ਸਾਰੀਆਂ ਸਥਿਤੀਆਂ",
   "app.containers.IdeaCards.contributions": "ਯੋਗਦਾਨ",
   "app.containers.IdeaCards.ideaTerm": "ਵਿਚਾਰ",
-  "app.containers.IdeaCards.ideasFilterSidebarTitle": "{inputTerm} ({numberIdeas})",
   "app.containers.IdeaCards.initiatives": "ਪਹਿਲਕਦਮੀਆਂ",
   "app.containers.IdeaCards.issueTerm": "ਮੁੱਦੇ",
   "app.containers.IdeaCards.list": "ਸੂਚੀ",

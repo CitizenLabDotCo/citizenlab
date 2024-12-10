@@ -1170,7 +1170,6 @@
   "app.containers.IdeaCards.allStatuses": "Kaikki tilat",
   "app.containers.IdeaCards.contributions": "Avustukset",
   "app.containers.IdeaCards.ideaTerm": "Ideoita",
-  "app.containers.IdeaCards.ideasFilterSidebarTitle": "{inputTerm} ({numberIdeas})",
   "app.containers.IdeaCards.initiatives": "aloitteet",
   "app.containers.IdeaCards.issueTerm": "Ongelmat",
   "app.containers.IdeaCards.list": "Lista",
