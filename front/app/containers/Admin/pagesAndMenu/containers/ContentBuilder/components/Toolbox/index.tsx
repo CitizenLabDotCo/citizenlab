@@ -125,7 +125,7 @@ const HomepageBuilderToolbox = ({
                 titleMultiloc={toMultiloc(followedItemsMessages.defaultTitle)}
               />
             }
-            icon="projects"
+            icon="notification"
             label={formatMessage(followedItemsTitle)}
           />
         )}
