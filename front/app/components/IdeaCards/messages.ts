@@ -24,8 +24,53 @@ export default defineMessages({
     defaultMessage: 'Results ({postCount})',
   },
   ideasFilterSidebarTitle: {
-    id: 'app.containers.IdeaCards.ideasFilterSidebarTitle',
-    defaultMessage: '{inputTerm} ({numberIdeas})',
+    id: 'app.containers.IdeaCards.ideasFilterSidebarTitle2',
+    defaultMessage: '{numberIdeas} {inputTerm}',
+  },
+  xIdeas: {
+    id: 'app.containers.IdeaCards.xIdeas',
+    defaultMessage:
+      '{ideasCount} {ideasCount, plural, no {ideas} one {idea} other {ideas}}',
+  },
+  xOptions: {
+    id: 'app.containers.IdeaCards.xOptions',
+    defaultMessage:
+      '{ideasCount} {ideasCount, plural, no {options} one {option} other {options}}',
+  },
+  xProjects: {
+    id: 'app.containers.IdeaCards.xProjects',
+    defaultMessage:
+      '{ideasCount} {{ideasCount} ideasCount, plural, no {projects} one {project} other {projects}}',
+  },
+  xQuestions: {
+    id: 'app.containers.IdeaCards.xQuestion',
+    defaultMessage:
+      '{ideasCount} {ideasCount, plural, no {questions} one {question} other {questions}}',
+  },
+  xComments: {
+    id: 'app.containers.IdeaCards.xComments2',
+    defaultMessage:
+      '{ideasCount} {ideasCount, plural, no {comments} one {comment} other {comments}}',
+  },
+  xContributions: {
+    id: 'app.containers.IdeaCards.xContributions',
+    defaultMessage:
+      '{ideasCount} {ideasCount, plural, no {contributions} one {contribution} other {contributions}}',
+  },
+  xProposals: {
+    id: 'app.containers.IdeaCards.xProposals',
+    defaultMessage:
+      '{ideasCount} {ideasCount, plural, no {proposals} one {proposal} other {proposals}}',
+  },
+  xInitiatives: {
+    id: 'app.containers.IdeaCards.xInitiatives',
+    defaultMessage:
+      '{ideasCount} {ideasCount, plural, no {initiatives} one {initiative} other {initiatives}}',
+  },
+  xPetitions: {
+    id: 'app.containers.IdeaCards.xPetitions',
+    defaultMessage:
+      '{ideasCount} {ideasCount, plural, no {petitions} one {petition} other {petitions}}',
   },
   topics: {
     id: 'app.containers.IdeaCards.topics',
