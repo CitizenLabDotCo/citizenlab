@@ -28,49 +28,49 @@ export default defineMessages({
     defaultMessage: '{numberIdeas} {inputTerm}',
   },
   xIdeas: {
-    id: 'app.containers.IdeaCards.xIdeas',
+    id: 'app.containers.IdeaCards.xIdeas2',
     defaultMessage:
-      '{ideasCount} {ideasCount, plural, no {ideas} one {idea} other {ideas}}',
+      '{ideasCount, plural, no {{ideasCount} ideas} one {{ideasCount} idea} other {{ideasCount} ideas}}',
   },
   xOptions: {
-    id: 'app.containers.IdeaCards.xOptions',
+    id: 'app.containers.IdeaCards.xOptions2',
     defaultMessage:
-      '{ideasCount} {ideasCount, plural, no {options} one {option} other {options}}',
+      '{ideasCount, plural, no {{ideasCount} options} one {{ideasCount} option} other {{ideasCount} options}}',
   },
   xProjects: {
-    id: 'app.containers.IdeaCards.xProjects',
+    id: 'app.containers.IdeaCards.xProjects2',
     defaultMessage:
-      '{ideasCount} {{ideasCount} ideasCount, plural, no {projects} one {project} other {projects}}',
+      '{{ideasCount} ideasCount, plural, no {{ideasCount} projects} one {{ideasCount} project} other {{ideasCount} projects}}',
   },
   xQuestions: {
-    id: 'app.containers.IdeaCards.xQuestion',
+    id: 'app.containers.IdeaCards.xQuestion2',
     defaultMessage:
-      '{ideasCount} {ideasCount, plural, no {questions} one {question} other {questions}}',
+      '{ideasCount, plural, no {{ideasCount} questions} one {{ideasCount} question} other {{ideasCount} questions}}',
   },
   xComments: {
-    id: 'app.containers.IdeaCards.xComments2',
+    id: 'app.containers.IdeaCards.xComments3',
     defaultMessage:
-      '{ideasCount} {ideasCount, plural, no {comments} one {comment} other {comments}}',
+      '{ideasCount, plural, no {{ideasCount} comments} one {{ideasCount} comment} other {{ideasCount} comments}}',
   },
   xContributions: {
-    id: 'app.containers.IdeaCards.xContributions',
+    id: 'app.containers.IdeaCards.xContributions2',
     defaultMessage:
-      '{ideasCount} {ideasCount, plural, no {contributions} one {contribution} other {contributions}}',
+      '{ideasCount, plural, no {{ideasCount} contributions} one {{ideasCount} contribution} other {{ideasCount} contributions}}',
   },
   xProposals: {
-    id: 'app.containers.IdeaCards.xProposals',
+    id: 'app.containers.IdeaCards.xProposals2',
     defaultMessage:
-      '{ideasCount} {ideasCount, plural, no {proposals} one {proposal} other {proposals}}',
+      '{ideasCount, plural, no {{ideasCount} proposals} one {{ideasCount} proposal} other {{ideasCount} proposals}}',
   },
   xInitiatives: {
-    id: 'app.containers.IdeaCards.xInitiatives',
+    id: 'app.containers.IdeaCards.xInitiatives2',
     defaultMessage:
-      '{ideasCount} {ideasCount, plural, no {initiatives} one {initiative} other {initiatives}}',
+      '{ideasCount, plural, no {{ideasCount} initiatives} one {{ideasCount} initiative} other {{ideasCount} initiatives}}',
   },
   xPetitions: {
-    id: 'app.containers.IdeaCards.xPetitions',
+    id: 'app.containers.IdeaCards.xPetitions2',
     defaultMessage:
-      '{ideasCount} {ideasCount, plural, no {petitions} one {petition} other {petitions}}',
+      '{ideasCount, plural, no {{ideasCount} petitions} one {{ideasCount} petition} other {{ideasCount} petitions}}',
   },
   topics: {
     id: 'app.containers.IdeaCards.topics',
