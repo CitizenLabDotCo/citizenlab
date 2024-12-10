@@ -2318,6 +2318,7 @@
   "app.containers.AdminPage.projects.all.onlyAdminsCanCreateFolders": "Vain järjestelmänvalvojat voivat luoda projektikansioita.",
   "app.containers.AdminPage.projects.all.onlyAdminsCanCreateProjects1": "Vain järjestelmänvalvojat ja kansioiden ylläpitäjät voivat luoda projekteja.",
   "app.containers.AdminPage.projects.all.projectsAndFolders": "Projektit ja kansiot",
+  "app.containers.AdminPage.projects.all.publishedTab": "Julkaistu",
   "app.containers.AdminPage.projects.all.searchProjects": "Etsi projekteja",
   "app.containers.AdminPage.projects.all.yourProjects": "Sinun projektisi",
   "app.containers.AdminPage.projects.project.analysis.AIAnalysis": "AI-analyysi",
