@@ -576,7 +576,7 @@ nl-BE:
       body_3: 'We raden je aan om de resultaten te bekijken en op de hoogte te blijven van de volgende stappen.'
       cta_see_results: 'Bekijk resultaten op het platform'
     event_registration_confirmation:
-      subject: "Je bent binnen! Je inschrijving voor \"%{eventTitle}\" is bevestigd"
+      subject: "Je bent erbij! Je inschrijving voor \"%{eventTitle}\" is bevestigd"
       preheader: "%{firstName}, bedankt voor het registreren voor %{eventTitle}"
       header_message: "%{firstName}, bedankt voor het registreren voor"
       event_details:
