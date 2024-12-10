@@ -112,9 +112,10 @@ class WebApi::V1::ProjectsController < ApplicationController
   # Ordered by created_at, newest first.
   def index_for_areas
     projects = policy_scope(Project)
+    projects = projects.not_draft
     projects = projects
-      .not_draft
-      .with_some_areas(params[:areas])
+      .where(include_all_areas: true)
+      .or(projects.with_some_areas(params[:areas]))
       .order(created_at: :desc)
 
     @projects = paginate projects
