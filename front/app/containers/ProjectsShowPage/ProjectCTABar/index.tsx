@@ -25,8 +25,11 @@ type ProjectCTABarProps = {
 const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
   const isSmallerThanTablet = useBreakpoint('tablet');
   const isSmallerThanPhone = useBreakpoint('phone');
-  const [isVisibleAtTop, setIsVisibleAtTop] = useState(false);
-  const isVisibleAtBottom = isSmallerThanPhone;
+  // On devices larger than phones, the sticky CTA bar is only visible when the action button is out of view
+  const [sticksToTop, setSticksToTop] = useState(false);
+  // The CTA bar is always visible on phones
+  const sticksToBottom = isSmallerThanPhone;
+  const isSticky = sticksToBottom || sticksToTop;
   const portalElement = document.getElementById('topbar-portal');
   const { data: phases } = usePhases(projectId);
   const { data: project } = useProjectById(projectId);
@@ -40,7 +43,7 @@ const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
         ? actionButtonElement.getBoundingClientRect().top + window.scrollY
         : undefined;
 
-      setIsVisibleAtTop(
+      setSticksToTop(
         !!(
           actionButtonElement &&
           actionButtonYOffset &&
