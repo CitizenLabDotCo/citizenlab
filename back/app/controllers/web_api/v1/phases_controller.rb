@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class WebApi::V1::PhasesController < ApplicationController
-  before_action :set_phase, only: %i[show update destroy survey_results submission_count index_xlsx delete_inputs]
+  before_action :set_phase, only: %i[show show_mini update destroy survey_results submission_count index_xlsx delete_inputs]
   around_action :detect_invalid_timeline_changes, only: %i[create update destroy]
   skip_before_action :authenticate_user
 
@@ -17,6 +17,10 @@ class WebApi::V1::PhasesController < ApplicationController
 
   def show
     render json: WebApi::V1::PhaseSerializer.new(@phase, params: jsonapi_serializer_params, include: %i[permissions]).serializable_hash
+  end
+
+  def show_mini
+    render json: WebApi::V1::PhaseMiniSerializer.new(@phase, params: jsonapi_serializer_params).serializable_hash
   end
 
   def create

@@ -27,10 +27,8 @@ module ProjectFolders
       LogActivityJob.perform_later(folder, 'changed', user, folder.updated_at.to_i, payload: payload)
     end
 
-    def after_destroy(frozen_folder, user, children_ids = [])
-      ContentBuilder::LayoutService.new.delete_admin_pub_ids_from_homepage_layout(
-        [frozen_folder.admin_publication.id] + children_ids
-      )
+    def after_destroy(frozen_folder, user)
+      ContentBuilder::LayoutService.new.clean_homepage_layout_when_publication_deleted(frozen_folder)
 
       serialized_folder = clean_time_attributes(frozen_folder.attributes)
 

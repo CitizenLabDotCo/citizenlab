@@ -36,7 +36,6 @@ const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
   const [sticksToTop, setSticksToTop] = useState(false);
   // The CTA bar is always visible on phones
   const sticksToBottom = isSmallerThanPhone;
-  const isSticky = sticksToBottom || sticksToTop;
   const portalElement = document.getElementById('topbar-portal');
   const { data: phases } = usePhases(projectId);
   const { data: project } = useProjectById(projectId);
@@ -52,6 +51,7 @@ const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
 
       setSticksToTop(
         !!(
+          !sticksToBottom &&
           actionButtonElement &&
           actionButtonYOffset &&
           window.scrollY > actionButtonYOffset - (isSmallerThanTablet ? 14 : 30)
@@ -62,7 +62,7 @@ const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
     window.addEventListener('scroll', handleScroll, { passive: true });
 
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [isSmallerThanTablet]);
+  }, [isSmallerThanTablet, sticksToBottom]);
 
   if (!project || !phases) {
     return null;
@@ -92,7 +92,7 @@ const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
   const CTABar = participationMethod ? CTABars[participationMethod] : null;
 
   if (
-    isSticky &&
+    (sticksToBottom || sticksToTop) &&
     // We need to check that CTABar is defined because, at the time of writing,
     // we rely on on the id of the portal below to determine how far to push down the filters.
     // CTABar needs to be defined before it makes sense to render the portal (and push down the filters).
@@ -107,22 +107,26 @@ const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
       background: colors.white,
       id: 'project-cta-bar',
     };
+    let portalContent: JSX.Element | null = null;
 
-    return createPortal(
-      sticksToBottom ? (
+    if (sticksToBottom) {
+      portalContent = (
         <Box bottom="0px" {...sharedProps}>
           {CTABar}
         </Box>
-      ) : (
+      );
+    } else if (sticksToTop) {
+      portalContent = (
         <Box top="0px" {...sharedProps}>
           <Box height="78px">
             <MainHeader />
           </Box>
           {CTABar}
         </Box>
-      ),
-      portalElement
-    );
+      );
+    }
+
+    return createPortal(portalContent, portalElement);
   }
 
   return <>{CTABar}</>;
