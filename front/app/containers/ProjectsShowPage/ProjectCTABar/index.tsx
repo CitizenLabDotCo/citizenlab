@@ -129,7 +129,7 @@ const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
     return createPortal(portalContent, portalElement);
   }
 
-  return <>{CTABar}</>;
+  return CTABar;
 };
 
 export default ProjectCTABar;
