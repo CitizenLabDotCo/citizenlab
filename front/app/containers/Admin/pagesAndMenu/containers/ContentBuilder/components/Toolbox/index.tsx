@@ -84,27 +84,18 @@ const HomepageBuilderToolbox = ({
     <Container>
       <Section>
         <DraggableElement
-          id="e2e-draggable-events"
-          component={<Events />}
-          icon="calendar"
-          label={formatMessage(messages.eventsTitle)}
+          id="e2e-draggable-homepage-banner"
+          component={
+            <HomepageBanner
+              homepageSettings={getHomepageBannerDefaultSettings(
+                theme.colors.tenantPrimary
+              )}
+              image={getHomepageBannerDefaultImage()}
+            />
+          }
+          icon="rectangle"
+          label={formatMessage(homepageBannerTitle)}
         />
-        <DraggableElement
-          id="e2e-draggable-image-text-cards"
-          component={<ImageTextCards />}
-          icon="section-image-text"
-          label={formatMessage(messages.imageTextCards)}
-        />
-        {newHomepageWidgetsEnabled && (
-          <DraggableElement
-            id="e2e-draggable-spotlight"
-            component={
-              <Spotlight buttonTextMultiloc={toMultiloc(buttonTextDefault)} />
-            }
-            icon="flash"
-            label={formatMessage(spotlightTitle)}
-          />
-        )}
         {newHomepageWidgetsEnabled && (
           <DraggableElement
             id="e2e-draggable-open-to-participation"
@@ -131,14 +122,6 @@ const HomepageBuilderToolbox = ({
         )}
         {newHomepageWidgetsEnabled && (
           <DraggableElement
-            id="e2e-draggable-published"
-            component={<Published titleMultiloc={toMultiloc(publishedTitle)} />}
-            icon="check-circle"
-            label={formatMessage(publishedTitle)}
-          />
-        )}
-        {newHomepageWidgetsEnabled && (
-          <DraggableElement
             id="e2e-draggable-finished-or-archived"
             component={
               <FinishedOrArchived
@@ -154,6 +137,16 @@ const HomepageBuilderToolbox = ({
         )}
         {newHomepageWidgetsEnabled && (
           <DraggableElement
+            id="e2e-draggable-spotlight"
+            component={
+              <Spotlight buttonTextMultiloc={toMultiloc(buttonTextDefault)} />
+            }
+            icon="flash"
+            label={formatMessage(spotlightTitle)}
+          />
+        )}
+        {newHomepageWidgetsEnabled && (
+          <DraggableElement
             id="e2e-draggable-selection"
             component={
               <Selection
@@ -165,6 +158,26 @@ const HomepageBuilderToolbox = ({
             label={formatMessage(selectionTitle)}
           />
         )}
+        {newHomepageWidgetsEnabled && (
+          <DraggableElement
+            id="e2e-draggable-published"
+            component={<Published titleMultiloc={toMultiloc(publishedTitle)} />}
+            icon="check-circle"
+            label={formatMessage(publishedTitle)}
+          />
+        )}
+        <DraggableElement
+          id="e2e-draggable-events"
+          component={<Events />}
+          icon="calendar"
+          label={formatMessage(messages.eventsTitle)}
+        />
+        <DraggableElement
+          id="e2e-draggable-image-text-cards"
+          component={<ImageTextCards />}
+          icon="section-image-text"
+          label={formatMessage(messages.imageTextCards)}
+        />
         <DraggableElement
           id="e2e-draggable-call-to-action"
           component={
@@ -172,19 +185,6 @@ const HomepageBuilderToolbox = ({
           }
           icon="button"
           label={formatMessage(callToActionTitle)}
-        />
-        <DraggableElement
-          id="e2e-draggable-homepage-banner"
-          component={
-            <HomepageBanner
-              homepageSettings={getHomepageBannerDefaultSettings(
-                theme.colors.tenantPrimary
-              )}
-              image={getHomepageBannerDefaultImage()}
-            />
-          }
-          icon="rectangle"
-          label={formatMessage(homepageBannerTitle)}
         />
         <DraggableElement
           id="e2e-draggable-projects"
