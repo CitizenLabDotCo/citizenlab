@@ -2714,7 +2714,6 @@
   "app.containers.admin.project.permissions.permissionsSelectionLabel": "Atranka",
   "app.containers.admin.project.permissions.permissionsSelectionLabelDescription": "Dalyvauti gali tam tikros (-ų) naudotojų grupės (-ių) naudotojai. Naudotojų grupes galite tvarkyti skirtuke \"Naudotojai\".",
   "app.containers.admin.project.permissions.viewingRightsTitle": "Kas gali matyti šį projektą?",
-  "app.modules.commercial.analytics.admin.components.ActiveUsersCard.cardTitleTooltipMessage3": "Dalyviai - tai naudotojai arba lankytojai, kurie dalyvavo projekte, paskelbė pasiūlymą arba su juo sąveikavo, dalyvavo renginiuose arba sekė įvykius.",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participants": "Dalyviai",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRate": "Dalyvavimo lygis",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRateTooltip3": "Lankytojų, kurie tampa dalyviais, procentinė dalis. Skaičiuojami tik dalyviai ir lankytojai, kurie priėmė slapukus.",
