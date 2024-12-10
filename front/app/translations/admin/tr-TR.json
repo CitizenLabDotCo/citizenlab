@@ -2727,7 +2727,7 @@
   "app.containers.admin.project.permissions.permissionsSelectionLabel": "Seçim",
   "app.containers.admin.project.permissions.permissionsSelectionLabelDescription": "Belirli kullanıcı grup(lar)ındaki kullanıcılar katılabilir. Kullanıcı gruplarını \"Kullanıcılar\" sekmesinden yönetebilirsiniz.",
   "app.containers.admin.project.permissions.viewingRightsTitle": "Bu projeyi kimler görebilir?",
-  "app.modules.commercial.analytics.admin.components.ActiveUsersCard.cardTitleTooltipMessage3": "Participants are users or visitors that have participated in a project, posted or interacted with a proposal, attended events or followed things.",
+  "app.modules.commercial.analytics.admin.components.ActiveUsersCard.cardTitleTooltipMessage3": "Katılımcılar, bir projeye katılmış, bir teklif göndermiş veya etkileşimde bulunmuş, etkinliklere katılmış veya bir şeyleri takip etmiş kullanıcılar veya ziyaretçilerdir.",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participants": "Katılımcılar",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRate": "Katılım oranı",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRateTooltip3": "Katılımcı olan ziyaretçilerin yüzdesi. Yalnızca katılımcılar ve çerezleri kabul eden ziyaretçiler sayılır.",
