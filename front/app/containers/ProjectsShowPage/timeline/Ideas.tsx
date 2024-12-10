@@ -98,7 +98,7 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
         <>
           <Box
             position="absolute"
-            mt="-100px"
+            mt="-150px"
             id="ideas-list-scroll-anchor"
             aria-hidden={true}
           />
