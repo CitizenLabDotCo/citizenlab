@@ -5,15 +5,6 @@ import { IPhaseData, ParticipationMethod } from 'api/phases/types';
 import { getCurrentPhase, getInputTerm } from 'api/phases/utils';
 import { IProjectData } from 'api/projects/types';
 
-import DocumentAnnotationCTABar from 'components/ParticipationCTABars/DocumentAnnotationCTABar';
-import EmbeddedSurveyCTABar from 'components/ParticipationCTABars/EmbeddedSurveyCTABar';
-import EventsCTABar from 'components/ParticipationCTABars/EventsCTABar';
-import IdeationCTABar from 'components/ParticipationCTABars/IdeationCTABar';
-import NativeSurveyCTABar from 'components/ParticipationCTABars/NativeSurveyCTABar';
-import PollCTABar from 'components/ParticipationCTABars/PollCTABar';
-import { CTABarProps } from 'components/ParticipationCTABars/utils';
-import VolunteeringCTABar from 'components/ParticipationCTABars/VolunteeringCTABar';
-import VotingCTABar from 'components/ParticipationCTABars/VotingCTABar';
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
 
 import clHistory from 'utils/cl-router/history';
@@ -64,13 +55,12 @@ getFormTitle?:  Gets the title of the input form
 getModalContent: Returns modal content to be displayed on project page.
 showInputManager: Returns whether the input manager should be shown in the admin view.
 postType: Returns the type of input that is being posted.
-renderCTABar: Returns whether the CTA bar should be rendered.
 postSortingOptions?: Returns the sorting options for posts.
 showInputCount: Returns the input count to be used on project cards.
 inputsPageSize?: Returns the page size the ideas endpoint should use.
 */
 
-export type ParticipationMethodConfig = {
+type ParticipationMethodConfig = {
   /** When adding a new property, please add a description in the above comment */
   formEditor: 'simpleFormEditor' | 'surveyEditor' | null;
   onFormSubmission: (props: FormSubmissionMethodProps) => void;
@@ -81,7 +71,6 @@ export type ParticipationMethodConfig = {
   showInputManager: boolean;
   inputManagerName?: string;
   postType: 'defaultInput' | 'nativeSurvey';
-  renderCTABar: (props: CTABarProps) => ReactNode | JSX.Element | null;
   postSortingOptions?: PostSortingOptionType[];
   showInputCount: boolean;
   hideAuthorOnIdeas?: boolean; // Hides the author on the idea pages/cards
@@ -153,9 +142,6 @@ const ideationConfig: ParticipationMethodConfig = {
   },
   showInputManager: true,
   inputManagerName: 'ideas',
-  renderCTABar: (props: CTABarProps) => {
-    return <IdeationCTABar project={props.project} phases={props.phases} />;
-  },
   postSortingOptions: defaultSortingOptions,
   hideAuthorOnIdeas: false,
 };
@@ -216,9 +202,6 @@ const proposalsConfig: ParticipationMethodConfig = {
   },
   showInputManager: true,
   inputManagerName: 'proposals',
-  renderCTABar: (props: CTABarProps) => {
-    return <IdeationCTABar project={props.project} phases={props.phases} />;
-  },
   postSortingOptions: defaultSortingOptions,
   hideAuthorOnIdeas: false,
 };
@@ -249,9 +232,6 @@ const nativeSurveyConfig: ParticipationMethodConfig = {
     );
   },
   showInputManager: false,
-  renderCTABar: (props: CTABarProps) => {
-    return <NativeSurveyCTABar project={props.project} phases={props.phases} />;
-  },
   supportsReactions: false,
   supportsVotes: false,
   supportsComments: false,
@@ -269,9 +249,6 @@ const informationConfig: ParticipationMethodConfig = {
   },
   postType: 'defaultInput',
   showInputManager: false,
-  renderCTABar: (props: CTABarProps) => (
-    <EventsCTABar project={props.project} phases={props.phases} />
-  ),
   supportsReactions: false,
   supportsVotes: false,
   supportsComments: false,
@@ -289,11 +266,6 @@ const surveyConfig: ParticipationMethodConfig = {
   },
   postType: 'defaultInput',
   showInputManager: false,
-  renderCTABar: (props: CTABarProps) => {
-    return (
-      <EmbeddedSurveyCTABar project={props.project} phases={props.phases} />
-    );
-  },
   supportsReactions: false,
   supportsVotes: false,
   supportsComments: false,
@@ -311,11 +283,6 @@ const documentAnnotationConfig: ParticipationMethodConfig = {
   },
   postType: 'defaultInput',
   showInputManager: false,
-  renderCTABar: (props: CTABarProps) => {
-    return (
-      <DocumentAnnotationCTABar project={props.project} phases={props.phases} />
-    );
-  },
   supportsReactions: false,
   supportsVotes: false,
   supportsComments: false,
@@ -365,9 +332,6 @@ const votingConfig: ParticipationMethodConfig = {
   },
   showInputManager: true,
   inputManagerName: 'ideas',
-  renderCTABar: (props: CTABarProps) => {
-    return <VotingCTABar project={props.project} phases={props.phases} />;
-  },
   postSortingOptions: defaultSortingOptions.filter(
     (option) => option.value !== 'trending' && option.value !== 'popular'
   ),
@@ -386,9 +350,6 @@ const pollConfig: ParticipationMethodConfig = {
   },
   postType: 'defaultInput',
   showInputManager: false,
-  renderCTABar: (props: CTABarProps) => {
-    return <PollCTABar project={props.project} phases={props.phases} />;
-  },
   supportsReactions: false,
   supportsVotes: false,
   supportsComments: false,
@@ -406,9 +367,6 @@ const volunteeringConfig: ParticipationMethodConfig = {
   },
   postType: 'defaultInput',
   showInputManager: false,
-  renderCTABar: (props: CTABarProps) => {
-    return <VolunteeringCTABar project={props.project} phases={props.phases} />;
-  },
   supportsReactions: false,
   supportsVotes: false,
   supportsComments: false,

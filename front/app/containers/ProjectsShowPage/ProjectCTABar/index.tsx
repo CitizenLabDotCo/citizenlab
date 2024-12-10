@@ -8,15 +8,22 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { createPortal } from 'react-dom';
 
+import { ParticipationMethod } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
 import useProjectById from 'api/projects/useProjectById';
 
 import MainHeader from 'containers/MainHeader';
 
-import {
-  getMethodConfig,
-  getParticipationMethod,
-} from 'utils/configs/participationMethodConfig';
+import DocumentAnnotationCTABar from 'components/ParticipationCTABars/DocumentAnnotationCTABar';
+import EmbeddedSurveyCTABar from 'components/ParticipationCTABars/EmbeddedSurveyCTABar';
+import EventsCTABar from 'components/ParticipationCTABars/EventsCTABar';
+import IdeationCTABar from 'components/ParticipationCTABars/IdeationCTABar';
+import NativeSurveyCTABar from 'components/ParticipationCTABars/NativeSurveyCTABar';
+import PollCTABar from 'components/ParticipationCTABars/PollCTABar';
+import VolunteeringCTABar from 'components/ParticipationCTABars/VolunteeringCTABar';
+import VotingCTABar from 'components/ParticipationCTABars/VotingCTABar';
+
+import { getParticipationMethod } from 'utils/configs/participationMethodConfig';
 
 type ProjectCTABarProps = {
   projectId: string;
@@ -58,17 +65,34 @@ const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
     ? getParticipationMethod(project.data, phases?.data)
     : undefined;
 
-  if (!project || !participationMethod) {
+  if (!project || !phases || !participationMethod) {
     return null;
   }
 
-  const BarContents = getMethodConfig(participationMethod).renderCTABar({
-    project: project.data,
-    phases: phases?.data,
-  });
+  const CTABar: { [method in ParticipationMethod]: JSX.Element | null } = {
+    ideation: <IdeationCTABar project={project.data} phases={phases.data} />,
+    proposals: <IdeationCTABar project={project.data} phases={phases.data} />,
+    native_survey: (
+      <NativeSurveyCTABar project={project.data} phases={phases.data} />
+    ),
+    information: <EventsCTABar project={project.data} phases={phases.data} />,
+    survey: (
+      <EmbeddedSurveyCTABar project={project.data} phases={phases.data} />
+    ),
+    voting: <VotingCTABar project={project.data} phases={phases.data} />,
+    poll: <PollCTABar project={project.data} phases={phases.data} />,
+    volunteering: (
+      <VolunteeringCTABar project={project.data} phases={phases.data} />
+    ),
+    document_annotation: (
+      <DocumentAnnotationCTABar project={project.data} phases={phases.data} />
+    ),
+  };
+
+  const Bar = CTABar[participationMethod];
 
   // Always stick to bottom of screen if on phone
-  if (portalElement) {
+  if (Bar && portalElement) {
     const sharedProps: BoxProps = {
       width: '100vw',
       position: 'fixed',
@@ -83,7 +107,7 @@ const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
           <Box height="78px">
             <MainHeader />
           </Box>
-          {BarContents}
+          {Bar}
         </Box>,
         portalElement
       );
@@ -92,14 +116,14 @@ const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
     if (isVisibleAtBottom) {
       return createPortal(
         <Box bottom="0px" {...sharedProps}>
-          {BarContents}
+          {Bar}
         </Box>,
         portalElement
       );
     }
   }
 
-  return <>{BarContents}</>;
+  return <>{Bar}</>;
 };
 
 export default ProjectCTABar;
