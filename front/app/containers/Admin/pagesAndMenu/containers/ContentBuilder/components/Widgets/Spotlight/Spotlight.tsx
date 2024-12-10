@@ -13,13 +13,14 @@ import {
 
 import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
 import AvatarBubbles from 'components/AvatarBubbles';
+import Skeleton from 'components/AvatarBubbles/Skeleton';
 import Button from 'components/UI/Button';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 interface Props {
   title: string;
   imgSrc?: string;
-  imageLoading: boolean;
+  loading: boolean;
   description?: string;
   buttonText?: string;
   buttonLink?: string;
@@ -30,7 +31,7 @@ interface Props {
 const Spotlight = ({
   title,
   imgSrc,
-  imageLoading,
+  loading,
   description,
   buttonText,
   buttonLink,
@@ -78,16 +79,19 @@ const Spotlight = ({
               </Button>
             </Box>
           )}
-          {typeof userCount === 'number' && userCount > 0 && (
-            <Box
-              mt="16px"
-              w="100%"
-              display="flex"
-              justifyContent={isSmallerThanPhone ? 'center' : 'flex-start'}
-            >
-              <AvatarBubbles avatarIds={avatarIds} userCount={userCount} />
-            </Box>
-          )}
+
+          <Box
+            mt="16px"
+            w="100%"
+            display="flex"
+            justifyContent={isSmallerThanPhone ? 'center' : 'flex-start'}
+          >
+            {loading ? (
+              <Skeleton avatarImagesCount={userCount ?? 4} />
+            ) : (
+              <AvatarBubbles avatarIds={avatarIds} userCount={userCount ?? 4} />
+            )}
+          </Box>
         </Box>
         <Box
           mt={isSmallerThanPhone ? '20px' : '0px'}
@@ -108,7 +112,7 @@ const Spotlight = ({
             />
           ) : (
             <>
-              {imageLoading && (
+              {loading && (
                 <Shimmer
                   w="100%"
                   maxWidth="630px"

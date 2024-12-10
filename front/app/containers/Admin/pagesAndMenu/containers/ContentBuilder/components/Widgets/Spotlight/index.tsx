@@ -59,7 +59,7 @@ const Spotlight = ({
       <SpotlightProjectInner
         title={formatMessage(messages.selectProjectOrFolder)}
         description={formatMessage(messages.pleaseSelectAProjectOrFolder)}
-        imageLoading={false}
+        loading={false}
       />
     );
   }
@@ -69,13 +69,13 @@ const Spotlight = ({
 
   const avatarIds =
     publication?.data.relationships.avatars?.data?.map((avatar) => avatar.id) ??
-    [];
+    undefined;
 
   const link = publication
     ? `/${publicationType}s/${publication.data.attributes.slug}`
     : undefined;
 
-  const getImageLoading = () => {
+  const getLoading = () => {
     if (publicationType === 'project') {
       return !project;
     }
@@ -96,7 +96,7 @@ const Spotlight = ({
       // In this case we don't want that- we just want the empty string.
       buttonLink={link}
       imgSrc={image?.data.attributes.versions.large ?? undefined}
-      imageLoading={getImageLoading()}
+      loading={getLoading()}
       avatarIds={avatarIds}
       userCount={publication?.data.attributes.participants_count}
     />
