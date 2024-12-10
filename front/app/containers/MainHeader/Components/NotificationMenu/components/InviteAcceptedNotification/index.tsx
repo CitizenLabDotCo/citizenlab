@@ -3,12 +3,10 @@ import React, { memo } from 'react';
 import { IInviteAcceptedNotificationData } from 'api/notifications/types';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
-import { isNilOrError, stopPropagation } from 'utils/helperUtils';
 
 import messages from '../../messages';
-import { DeletedUser } from '../Notification';
 import NotificationWrapper from '../NotificationWrapper';
+import UserLink from '../UserLink';
 
 interface Props {
   notification: IInviteAcceptedNotificationData;
@@ -16,9 +14,6 @@ interface Props {
 
 const InviteAcceptedNotification = memo<Props>((props) => {
   const { notification } = props;
-  const deletedUser =
-    isNilOrError(notification.attributes.initiating_user_first_name) ||
-    isNilOrError(notification.attributes.initiating_user_slug);
 
   return (
     <NotificationWrapper
@@ -30,17 +25,11 @@ const InviteAcceptedNotification = memo<Props>((props) => {
       <FormattedMessage
         {...messages.userAcceptedYourInvitation}
         values={{
-          name: deletedUser ? (
-            <DeletedUser>
-              <FormattedMessage {...messages.deletedUser} />
-            </DeletedUser>
-          ) : (
-            <Link
-              to={`/profile/${notification.attributes.initiating_user_slug}`}
-              onClick={stopPropagation}
-            >
-              {notification.attributes.initiating_user_first_name}
-            </Link>
+          name: (
+            <UserLink
+              userName={notification.attributes.initiating_user_first_name}
+              userSlug={notification.attributes.initiating_user_slug}
+            />
           ),
         }}
       />

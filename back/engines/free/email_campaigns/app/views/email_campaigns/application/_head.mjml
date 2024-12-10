@@ -25,7 +25,7 @@
 
   </mj-style>
   <mj-attributes>
-    <mj-all padding="0" font-family="Arial" font-size="15px" line-height="150%" color="black" />
+    <mj-all padding="0" font-family="Arial" font-size="15px" line-height="175%" color="black" />
   </mj-attributes>
 
   <%#  We add underscores to pad the text displayed in the preview so that the body text (including the logo alt text) is not visible %>

@@ -46,12 +46,14 @@ describe SideFxProjectReviewService do
     it "logs a 'deleted' activity job" do
       frozen_review = review.destroy!
 
-      expect { service.after_destroy(frozen_review, user) }
-        .to have_enqueued_job(LogActivityJob)
-        .with(
-          "ProjectReview/#{frozen_review.id}", 'deleted', user, frozen_review.updated_at.to_i,
-          { payload: { project_review: clean_time_attributes(frozen_review.attributes) } }
-        )
+      freeze_time do
+        expect { service.after_destroy(frozen_review, user) }
+          .to have_enqueued_job(LogActivityJob)
+          .with(
+            "ProjectReview/#{frozen_review.id}", 'deleted', user, Time.now.to_i,
+            { payload: { project_review: clean_time_attributes(frozen_review.attributes) } }
+          )
+      end
     end
   end
 end

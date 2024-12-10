@@ -260,6 +260,34 @@ export interface IProjectPublishedNotificationData
   };
 }
 
+export interface IProjectReviewRequestNotificationData
+  extends IBaseNotificationData {
+  attributes: {
+    type: 'project_review_request';
+    read_at: string | null;
+    created_at: string;
+    project_id: string;
+    project_title_multiloc: Multiloc;
+    initiating_user_first_name: string | null;
+    initiating_user_last_name: string | null;
+    initiating_user_slug: string | null;
+  };
+}
+
+export interface IProjectReviewStateChangeNotificationData
+  extends IBaseNotificationData {
+  attributes: {
+    type: 'project_review_state_change';
+    read_at: string | null;
+    created_at: string;
+    project_id: string;
+    project_title_multiloc: Multiloc;
+    initiating_user_first_name: string | null;
+    initiating_user_last_name: string | null;
+    initiating_user_slug: string | null;
+  };
+}
+
 export interface IStatusChangeOnIdeaYouFollowNotificationData
   extends IBaseNotificationData {
   attributes: {
@@ -369,6 +397,8 @@ export interface INotificationDataMap {
   IProjectPhaseStartedNotificationData: IProjectPhaseStartedNotificationData;
   IProjectPhaseUpcomingNotificationData: IProjectPhaseUpcomingNotificationData;
   IProjectPublishedNotificationData: IProjectPublishedNotificationData;
+  IProjectReviewRequestNotificationData: IProjectReviewRequestNotificationData;
+  IProjectReviewStateChangeNotificationData: IProjectReviewStateChangeNotificationData;
   IStatusChangeOnIdeaYouFollowNotificationData: IStatusChangeOnIdeaYouFollowNotificationData;
   IThresholdReachedForAdminNotificationData: IThresholdReachedForAdminNotificationData;
   IProjectFolderModerationRightsReceivedNotificationData: IProjectFolderModerationRightsReceivedNotificationData;

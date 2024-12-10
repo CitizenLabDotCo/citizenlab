@@ -3,14 +3,12 @@ import React, { memo } from 'react';
 import { ICommentOnYourCommentNotificationData } from 'api/notifications/types';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import Link from 'utils/cl-router/Link';
-import { isNilOrError, stopPropagation } from 'utils/helperUtils';
 
 // data
 
 import messages from '../../messages';
-import { DeletedUser } from '../Notification';
 import NotificationWrapper from '../NotificationWrapper';
+import UserLink from '../UserLink';
 
 interface Props {
   notification: ICommentOnYourCommentNotificationData;
@@ -18,10 +16,6 @@ interface Props {
 
 const CommentOnYourCommentNotification = memo<Props>((props) => {
   const { notification } = props;
-
-  const deletedUser =
-    isNilOrError(notification.attributes.initiating_user_first_name) ||
-    isNilOrError(notification.attributes.initiating_user_slug);
 
   return (
     <NotificationWrapper
@@ -33,17 +27,11 @@ const CommentOnYourCommentNotification = memo<Props>((props) => {
       <FormattedMessage
         {...messages.userReactedToYourComment}
         values={{
-          name: deletedUser ? (
-            <DeletedUser>
-              <FormattedMessage {...messages.deletedUser} />
-            </DeletedUser>
-          ) : (
-            <Link
-              to={`/profile/${notification.attributes.initiating_user_slug}`}
-              onClick={stopPropagation}
-            >
-              {notification.attributes.initiating_user_first_name}
-            </Link>
+          name: (
+            <UserLink
+              userName={notification.attributes.initiating_user_first_name}
+              userSlug={notification.attributes.initiating_user_slug}
+            />
           ),
         }}
       />

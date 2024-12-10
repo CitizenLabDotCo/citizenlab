@@ -1,0 +1,11 @@
+<% if project_description.present? %>
+  <%= render partial: 'email_campaigns/projects/about_project', locals: {
+    homepage_description: project_description,
+    message: project_title
+  } %>
+<% end %>
+
+<%= render partial: 'application/cta_button', locals: {
+  href: admin_project_url ,
+  message: format_message('cta_go_to_project')
+} %>
