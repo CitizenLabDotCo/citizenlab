@@ -219,6 +219,7 @@ FactoryBot.define do
   factory :project_review_request, parent: :notification, class: 'Notifications::ProjectReviewRequest' do
     initiating_user
     project_review
+    recipient factory: :admin
   end
 
   factory :project_review_state_change, parent: :notification, class: 'Notifications::ProjectReviewStateChange' do
