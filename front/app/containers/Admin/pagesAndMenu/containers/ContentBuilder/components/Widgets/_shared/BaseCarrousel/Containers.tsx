@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { Box, useBreakpoint, media } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
@@ -34,6 +34,7 @@ export const CarrouselContainer = ({ children }: CarrouselContainerProps) => {
       py={DEFAULT_Y_PADDING}
       w="100%"
       display="flex"
+      overflowX="hidden"
       justifyContent="center"
     >
       <StyledBox w="100%" maxWidth="1200px" position="relative">
@@ -44,5 +45,7 @@ export const CarrouselContainer = ({ children }: CarrouselContainerProps) => {
 };
 
 export const CardContainer = styled.div`
-  scroll-snap-align: start;
+  ${media.phone`
+    scroll-snap-align: start;  
+  `}
 `;
