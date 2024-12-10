@@ -1339,6 +1339,7 @@
   "app.containers.IdeasShow.MetaInformation.currentStatus": "Aktualny status",
   "app.containers.IdeasShow.MetaInformation.location": "Lokalizacja",
   "app.containers.IdeasShow.MetaInformation.postedBy": "Zgłoszony przez",
+  "app.containers.IdeasShow.MetaInformation.similar": "Podobne dane wejściowe",
   "app.containers.IdeasShow.MetaInformation.topics": "Tematy",
   "app.containers.IdeasShow.commentCTA": "Skomentuj",
   "app.containers.IdeasShow.contributionEmailSharingBody": "Poprzyj ten wkład '{postTitle}' w {postUrl}!",
