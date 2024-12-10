@@ -19,7 +19,8 @@ import T from 'components/T';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { capitalize, removeFocusAfterMouseClick } from 'utils/helperUtils';
+import { removeFocusAfterMouseClick } from 'utils/helperUtils';
+import { capitalize } from 'utils/textUtils';
 
 import InputFilterCollapsible from './InputFilterCollapsible';
 import messages from './messages';

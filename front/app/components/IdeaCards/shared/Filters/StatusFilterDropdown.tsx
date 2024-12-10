@@ -7,7 +7,7 @@ import useLocalize from 'hooks/useLocalize';
 import FilterSelector from 'components/FilterSelector';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { capitalize } from 'utils/helperUtils';
+import { capitalize } from 'utils/textUtils';
 
 import messages from '../../messages';
 
