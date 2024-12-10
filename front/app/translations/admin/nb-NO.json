@@ -2714,7 +2714,7 @@
   "app.containers.admin.project.permissions.permissionsSelectionLabel": "Utvalg",
   "app.containers.admin.project.permissions.permissionsSelectionLabelDescription": "Brukere i bestemte brukergrupper kan delta. Du kan administrere brukergrupper i fanen \"Brukere\".",
   "app.containers.admin.project.permissions.viewingRightsTitle": "Hvem kan se dette prosjektet?",
-  "app.modules.commercial.analytics.admin.components.ActiveUsersCard.cardTitleTooltipMessage3": "Participants are users or visitors that have participated in a project, posted or interacted with a proposal, attended events or followed things.",
+  "app.modules.commercial.analytics.admin.components.ActiveUsersCard.cardTitleTooltipMessage3": "Deltakere er brukere eller besøkende som har deltatt i et prosjekt, lagt ut eller interagert med et forslag, deltatt på arrangementer eller fulgt med på ting.",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participants": "Deltakere",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRate": "Deltakelsesprosent",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRateTooltip3": "Prosentandel av besøkende som blir deltakere. Bare deltakere og besøkende som har godtatt informasjonskapsler, telles med.",
