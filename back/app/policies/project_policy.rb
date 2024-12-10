@@ -92,7 +92,11 @@ class ProjectPolicy < ApplicationPolicy
     return false unless active?
     return true if admin?
 
-    record.folder && UserRoleService.new.can_moderate?(record.folder, user)
+    if record.folder
+      UserRoleService.new.can_moderate?(record.folder, user)
+    else
+      record.admin_publication.draft? && (user.project_moderator? || user.project_folder_moderator?)
+    end
   end
 
   def show?
@@ -118,11 +122,13 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def destroy?
-    active? && admin?
+    return false unless active?
+
+    admin? || (active_moderator? && record.never_published?)
   end
 
   def copy?
-    create?
+    active_moderator?
   end
 
   def destroy_participation_data?
@@ -136,7 +142,6 @@ class ProjectPolicy < ApplicationPolicy
       :visible_to,
       :include_all_areas,
       {
-        admin_publication_attributes: [:publication_status],
         title_multiloc: CL2_SUPPORTED_LOCALES,
         description_multiloc: CL2_SUPPORTED_LOCALES,
         description_preview_multiloc: CL2_SUPPORTED_LOCALES,
@@ -155,11 +160,19 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def permitted_attributes_for_create
-    shared_permitted_attributes
+    shared_permitted_attributes.tap do |attrs|
+      nested_attrs = attrs.find { |attr| attr.is_a?(Hash) }
+      nested_attrs.deep_merge!({ admin_publication_attributes: [:publication_status] })
+    end
   end
 
   def permitted_attributes_for_update
-    shared_permitted_attributes
+    shared_permitted_attributes.tap do |attrs|
+      next unless update_status?
+
+      nested_attrs = attrs.find { |attr| attr.is_a?(Hash) }
+      nested_attrs.deep_merge!({ admin_publication_attributes: [:publication_status] })
+    end
   end
 
   def permitted_attributes_for_reorder
@@ -173,6 +186,18 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   private
+
+  def update_status?
+    admin_like? || record.ever_published? || record.review&.approved?
+  end
+
+  def admin_like?
+    admin? || folder_moderator?
+  end
+
+  def folder_moderator?
+    record.folder && UserRoleService.new.can_moderate?(record.folder, user)
+  end
 
   def project_preview?
     return false unless record.admin_publication.publication_status == 'draft'

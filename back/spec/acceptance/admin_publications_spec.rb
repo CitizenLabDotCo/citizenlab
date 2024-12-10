@@ -15,6 +15,7 @@ resource 'AdminPublication' do
     project_statuses.map { |ps| create(:project, admin_publication_attributes: { publication_status: ps }) }
   end
   let(:published_projects) { projects.select { |p| p.admin_publication.publication_status == 'published' } }
+  let(:draft_projects) { projects.select { |p| p.admin_publication.publication_status == 'draft' } }
   let(:publication_ids) { response_data.map { |d| d.dig(:relationships, :publication, :data, :id) } }
   let!(:empty_draft_folder) { create(:project_folder, admin_publication_attributes: { publication_status: 'draft' }) }
 
@@ -44,6 +45,7 @@ resource 'AdminPublication' do
       parameter :filter_can_moderate, 'Filter out the projects the current_user is not allowed to moderate. False by default', required: false
       parameter :filter_is_moderator_of, 'Filter out the publications the current_user is not moderator of. False by default', required: false
       parameter :filter_user_is_moderator_of, 'Filter out the publications the given user is moderator of (user id)', required: false
+      parameter :review_state, 'Filter by project review status (pending, approved)', required: false
 
       example_request 'List all admin publications' do
         expect(status).to eq(200)
@@ -185,6 +187,20 @@ resource 'AdminPublication' do
 
         do_request({ topics: [topic.id], areas: [area.id] })
         expect(publication_ids).to match_array [published_projects[0].id, custom_folder.id]
+      end
+
+      example 'List all admin publications with pending project review' do
+        create(:project_review, project: draft_projects.first)
+
+        do_request(review_state: 'pending', publication_statuses: ['draft'], only_projects: true)
+        expect(publication_ids).to match_array [draft_projects.first.id]
+      end
+
+      example 'List all admin publications with approved project review' do
+        create(:project_review, :approved, project: draft_projects.first)
+
+        do_request(review_state: 'approved', publication_statuses: ['draft'], only_projects: true)
+        expect(publication_ids).to match_array [draft_projects.first.id]
       end
 
       describe "showing empty folders (which don't have any projects)" do
