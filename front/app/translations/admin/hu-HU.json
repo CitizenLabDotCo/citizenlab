@@ -2717,7 +2717,7 @@
   "app.containers.admin.project.permissions.permissionsSelectionLabel": "Selection",
   "app.containers.admin.project.permissions.permissionsSelectionLabelDescription": "Users in specific user group(s) can participate. You can manage user groups in “Users” tab.",
   "app.containers.admin.project.permissions.viewingRightsTitle": "Who can see this project?",
-  "app.modules.commercial.analytics.admin.components.ActiveUsersCard.cardTitleTooltipMessage3": "Participants are users or visitors that have participated in a project, posted or interacted with a proposal, attended events or followed things.",
+  "app.modules.commercial.analytics.admin.components.ActiveUsersCard.cardTitleTooltipMessage3": "A résztvevők olyan felhasználók vagy látogatók, akik részt vettek egy projektben, közzétettek egy javaslatot vagy interakcióba léptek azzal, részt vettek eseményeken vagy követtek dolgokat.",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participants": "Résztvevők",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRate": "Participation rate",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRateTooltip3": "Percentage of visitors that become participants. Only participants and visitors that accepted cookies are counted.",
