@@ -24,13 +24,16 @@ describe AdminPublicationsFilteringService do
       expect(result.ids).not_to include(*tree_mock.other.where(publication_status: %w[draft]).ids)
     end
 
-    it 'does not include a parent if all its children are in draft' do
-      expect(result.ids).not_to include(tree_mock.published_parent_with_draft_children.id)
-    end
-
     it 'does not include the draft children of a published parent' do
       expect(result.ids).not_to include(*tree_mock.published_parent_with_draft_children.children.ids)
     end
+  end
+
+  context 'when a normal user searching from the home page' do
+    let(:options) { { depth: 0, publication_statuses: %w[archived published] } }
+    let(:base_scope) { Pundit.policy_scope(create(:user), AdminPublication.includes(:parent)) }
+
+    include_examples 'when a user searching from the home page'
   end
 
   context 'when an admin searching from the admin dashboard' do
