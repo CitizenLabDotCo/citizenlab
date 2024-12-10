@@ -22,14 +22,7 @@ const TopBar = ({ onClose }: Props) => {
       justifyContent="center"
       position="relative"
     >
-      <Title
-        id="full-screen-modal-title"
-        as={'h2'}
-        variant={'h5'}
-        m="0"
-        p="16px"
-        fontWeight="bold"
-      >
+      <Title as={'h2'} variant={'h5'} m="0" p="16px" fontWeight="bold">
         <FormattedMessage {...messages.filters} />
       </Title>
       <Box position="absolute" right="8px">
