@@ -68,7 +68,7 @@ const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
     return null;
   }
 
-  const CTABar: { [method in ParticipationMethod]: JSX.Element | null } = {
+  const CTABars: { [method in ParticipationMethod]: JSX.Element | null } = {
     ideation: <IdeationCTABar project={project.data} phases={phases.data} />,
     proposals: <IdeationCTABar project={project.data} phases={phases.data} />,
     native_survey: (
@@ -89,9 +89,9 @@ const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
   };
 
   const participationMethod = getParticipationMethod(project.data, phases.data);
-  const Bar = participationMethod ? CTABar[participationMethod] : null;
+  const CTABar = participationMethod ? CTABars[participationMethod] : null;
 
-  if (isSticky && Bar && portalElement) {
+  if (isSticky && CTABar && portalElement) {
     const sharedProps: BoxProps = {
       width: '100vw',
       position: 'fixed',
@@ -103,21 +103,21 @@ const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
     return createPortal(
       sticksToBottom ? (
         <Box bottom="0px" {...sharedProps}>
-          {Bar}
+          {CTABar}
         </Box>
       ) : (
         <Box top="0px" {...sharedProps}>
           <Box height="78px">
             <MainHeader />
           </Box>
-          {Bar}
+          {CTABar}
         </Box>
       ),
       portalElement
     );
   }
 
-  return <>{Bar}</>;
+  return <>{CTABar}</>;
 };
 
 export default ProjectCTABar;
