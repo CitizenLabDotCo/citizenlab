@@ -113,7 +113,7 @@ const HomepageBuilderToolbox = ({
                 titleMultiloc={toMultiloc(openToParticipationTitle)}
               />
             }
-            icon="projects"
+            icon="personRaisedHand"
             label={formatMessage(openToParticipationTitle)}
           />
         )}
