@@ -70,8 +70,7 @@ const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
     phases: phases?.data,
   });
 
-  // Always stick to bottom of screen if on phone
-  if (portalElement) {
+  if (isSticky && portalElement) {
     const sharedProps: BoxProps = {
       width: '100vw',
       position: 'fixed',
@@ -80,26 +79,21 @@ const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
       id: 'project-cta-bar',
     };
 
-    if (isVisibleAtTop) {
-      return createPortal(
+    return createPortal(
+      sticksToBottom ? (
+        <Box bottom="0px" {...sharedProps}>
+          {BarContents}
+        </Box>
+      ) : (
         <Box top="0px" {...sharedProps}>
           <Box height="78px">
             <MainHeader />
           </Box>
           {BarContents}
-        </Box>,
-        portalElement
-      );
-    }
-
-    if (isVisibleAtBottom) {
-      return createPortal(
-        <Box bottom="0px" {...sharedProps}>
-          {BarContents}
-        </Box>,
-        portalElement
-      );
-    }
+        </Box>
+      ),
+      portalElement
+    );
   }
 
   return <>{BarContents}</>;
