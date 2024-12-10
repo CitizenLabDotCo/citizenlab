@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import { Title } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
@@ -7,6 +7,7 @@ import { IIdeasFilterCounts } from 'api/ideas_filter_counts/types';
 import { IdeaSortMethod } from 'api/phases/types';
 
 import { QueryParameters } from 'containers/IdeasIndexPage';
+import { useIsCTABarSticky } from 'containers/ProjectsShowPage';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
@@ -62,28 +63,28 @@ const ContentRight = ({
   onChangeTopics,
   onChangeSort,
 }: Props) => {
-  const [isCTABarVisible, setIsCTABarVisible] = useState(false);
+  const isCTABarSticky = useIsCTABarSticky();
 
-  useEffect(() => {
-    function checkCTABarVisibility() {
-      if (document.getElementById('project-cta-bar')) {
-        setIsCTABarVisible(true);
-        return;
-      }
+  // useEffect(() => {
+  //   function checkCTABarVisibility() {
+  //     if (document.getElementById('project-cta-bar')) {
+  //       setIsCTABarVisible(true);
+  //       return;
+  //     }
 
-      setIsCTABarVisible(false);
-    }
+  //     setIsCTABarVisible(false);
+  //   }
 
-    window.addEventListener('scrollend', checkCTABarVisibility);
-    return () => window.removeEventListener('scrollend', checkCTABarVisibility);
-  }, []);
+  //   window.addEventListener('scrollend', checkCTABarVisibility);
+  //   return () => window.removeEventListener('scrollend', checkCTABarVisibility);
+  // }, []);
 
   return (
     <Container
       id="e2e-ideas-filters"
       filterColumnWidth={filterColumnWidth}
-      top={isCTABarVisible ? 160 : 100}
-      maxHeightOffset={isCTABarVisible ? 180 : 120}
+      top={isCTABarSticky ? 160 : 100}
+      maxHeightOffset={isCTABarSticky ? 180 : 120}
       gapWidth={gapWidth}
     >
       {/*
