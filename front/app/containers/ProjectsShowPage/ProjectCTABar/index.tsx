@@ -58,7 +58,7 @@ const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
     return null;
   }
 
-  const BarContents = getMethodConfig(participationMethod).renderCTABar({
+  const CTABar = getMethodConfig(participationMethod).renderCTABar({
     project: project.data,
     phases: phases?.data,
   });
@@ -80,13 +80,13 @@ const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
             <MainHeader />
           </Box>
         )}
-        {BarContents}
+        {CTABar}
       </Box>,
       portalElement
     );
   }
 
-  return <>{BarContents}</>;
+  return <>{CTABar}</>;
 };
 
 export default ProjectCTABar;
