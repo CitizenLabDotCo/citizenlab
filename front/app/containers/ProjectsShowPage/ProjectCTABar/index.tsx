@@ -45,6 +45,7 @@ const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
 
       setSticksToTop(
         !!(
+          !sticksToBottom &&
           actionButtonElement &&
           actionButtonYOffset &&
           window.scrollY > actionButtonYOffset - (isSmallerThanTablet ? 14 : 30)
@@ -55,7 +56,7 @@ const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
     window.addEventListener('scroll', handleScroll, { passive: true });
 
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [isSmallerThanTablet]);
+  }, [isSmallerThanTablet, sticksToBottom]);
 
   const participationMethod = project
     ? getParticipationMethod(project.data, phases?.data)
@@ -85,6 +86,7 @@ const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
           {BarContents}
         </Box>
       ) : (
+        // if we reach this part, sticksToTop should be true
         <Box top="0px" {...sharedProps}>
           <Box height="78px">
             <MainHeader />
