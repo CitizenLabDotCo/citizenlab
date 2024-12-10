@@ -2712,7 +2712,7 @@
   "app.containers.admin.project.permissions.permissionsSelectionLabel": "Valg",
   "app.containers.admin.project.permissions.permissionsSelectionLabelDescription": "Brugere i bestemte brugergrupper kan deltage. Du kan administrere brugergrupper under fanen \"Brugere\".",
   "app.containers.admin.project.permissions.viewingRightsTitle": "Hvem kan se dette projekt?",
-  "app.modules.commercial.analytics.admin.components.ActiveUsersCard.cardTitleTooltipMessage3": "Participants are users or visitors that have participated in a project, posted or interacted with a proposal, attended events or followed things.",
+  "app.modules.commercial.analytics.admin.components.ActiveUsersCard.cardTitleTooltipMessage3": "Deltagere er brugere eller besøgende, der har deltaget i et projekt, postet eller interageret med et forslag, deltaget i begivenheder eller fulgt ting.",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participants": "Deltagere",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRate": "Deltagelsesprocent",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRateTooltip3": "Procentdel af besøgende, der bliver deltagere. Kun deltagere og besøgende, der har accepteret cookies, tælles med.",
