@@ -1170,7 +1170,6 @@
   "app.containers.IdeaCards.allStatuses": "Tüm durumlar",
   "app.containers.IdeaCards.contributions": "Katkılar",
   "app.containers.IdeaCards.ideaTerm": "Fikirler",
-  "app.containers.IdeaCards.ideasFilterSidebarTitle": "{inputTerm} ({numberIdeas})",
   "app.containers.IdeaCards.initiatives": "Girişimler",
   "app.containers.IdeaCards.issueTerm": "Sorunlar",
   "app.containers.IdeaCards.list": "Liste",

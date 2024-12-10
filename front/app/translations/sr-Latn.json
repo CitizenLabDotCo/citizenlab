@@ -1170,7 +1170,6 @@
   "app.containers.IdeaCards.allStatuses": "Svi statusi",
   "app.containers.IdeaCards.contributions": "Doprinosi",
   "app.containers.IdeaCards.ideaTerm": "Ideje",
-  "app.containers.IdeaCards.ideasFilterSidebarTitle": "{inputTerm} ({numberIdeas})",
   "app.containers.IdeaCards.initiatives": "Инитиативес",
   "app.containers.IdeaCards.issueTerm": "Issues",
   "app.containers.IdeaCards.list": "Lista",

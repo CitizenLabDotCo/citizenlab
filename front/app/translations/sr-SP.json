@@ -1170,7 +1170,6 @@
   "app.containers.IdeaCards.allStatuses": "Сви статуси",
   "app.containers.IdeaCards.contributions": "Прилози",
   "app.containers.IdeaCards.ideaTerm": "Идеје",
-  "app.containers.IdeaCards.ideasFilterSidebarTitle": "{inputTerm} ({numberIdeas})",
   "app.containers.IdeaCards.initiatives": "Иницијативе",
   "app.containers.IdeaCards.issueTerm": "Issues",
   "app.containers.IdeaCards.list": "Листа",

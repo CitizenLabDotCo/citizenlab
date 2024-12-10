@@ -1170,7 +1170,6 @@
   "app.containers.IdeaCards.allStatuses": "Tots els estats",
   "app.containers.IdeaCards.contributions": "Aportacions",
   "app.containers.IdeaCards.ideaTerm": "Idees",
-  "app.containers.IdeaCards.ideasFilterSidebarTitle": "{inputTerm} ({numberIdeas})",
   "app.containers.IdeaCards.initiatives": "Iniciatives",
   "app.containers.IdeaCards.issueTerm": "Problemes",
   "app.containers.IdeaCards.list": "Llista",
