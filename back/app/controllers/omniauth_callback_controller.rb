@@ -130,7 +130,6 @@ class OmniauthCallbackController < ApplicationController
     end
   end
 
-  # NOTE: sso_flow params corrected as sometimes an sso user may start from signin but actually signup and vice versa
   def signin_success_redirect
     omniauth_params = filter_omniauth_params
     omniauth_params['sso_flow'] = 'signin'
