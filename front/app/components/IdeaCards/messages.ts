@@ -23,10 +23,6 @@ export default defineMessages({
     id: 'app.containers.IdeaCards.numberResults',
     defaultMessage: 'Results ({postCount})',
   },
-  ideasFilterSidebarTitle: {
-    id: 'app.containers.IdeaCards.ideasFilterSidebarTitle2',
-    defaultMessage: '{numberIdeas} {inputTerm}',
-  },
   xIdeas: {
     id: 'app.containers.IdeaCards.xIdeas2',
     defaultMessage:
