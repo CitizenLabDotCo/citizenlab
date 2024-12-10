@@ -2727,7 +2727,7 @@
   "app.containers.admin.project.permissions.permissionsSelectionLabel": "Selection",
   "app.containers.admin.project.permissions.permissionsSelectionLabelDescription": "Els usuaris de grups d'usuaris específics poden participar. Podeu gestionar grups d'usuaris a la pestanya \"Usuaris\".",
   "app.containers.admin.project.permissions.viewingRightsTitle": "Qui pot veure aquest projecte?",
-  "app.modules.commercial.analytics.admin.components.ActiveUsersCard.cardTitleTooltipMessage3": "Participants are users or visitors that have participated in a project, posted or interacted with a proposal, attended events or followed things.",
+  "app.modules.commercial.analytics.admin.components.ActiveUsersCard.cardTitleTooltipMessage3": "Els participants són usuaris o visitants que han participat en un projecte, han publicat o interactuat amb una proposta, han assistit a esdeveniments o han seguit coses.",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participants": "Participants",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRate": "Taxa de participació",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRateTooltip3": "Percentatge de visitants que esdevenen participants. Només es compten els participants i visitants que han acceptat les galetes.",
