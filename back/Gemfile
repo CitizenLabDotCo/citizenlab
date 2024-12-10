@@ -139,7 +139,7 @@ gem 'aws-sdk-s3', '~> 1'
 gem 'aws-sdk-bedrockruntime', '~> 1'
 gem 'bootsnap', '~> 1', require: false
 gem 'dalli', '~> 3.2.8'
-gem 'mailgun-ruby', '~>1.2.14'
+gem 'mailgun-ruby', '~>1.2.16'
 gem 'rails_semantic_logger'
 gem 'rinku', '~> 2'
 gem 'jsonapi-serializer'
@@ -153,6 +153,7 @@ gem 'mjml-rails', '~> 4.11'
 gem 'cloudfront-rails', '~> 0.4'
 gem 'google-cloud-document_ai', '~> 1.4'
 gem 'combine_pdf', '~> 1.0.26'
+gem 'neighbor', '~> 0.5.0'
 gem 'browser', '~> 6.1'
 
 # Temporarily add nkf and mutex_m to the Gemfile to clear the following warnings:

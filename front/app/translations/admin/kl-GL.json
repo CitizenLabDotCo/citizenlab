@@ -560,7 +560,6 @@
   "app.containers.AdminPage.DashboardPage.previousWeek": "Sapaatip akunnera kingulleq",
   "app.containers.AdminPage.DashboardPage.previousYear": "Ukioq kingulleq",
   "app.containers.AdminPage.DashboardPage.projectType": "Project type : {projectType}",
-  "app.containers.AdminPage.DashboardPage.representativeness.betaLabel": "BETA",
   "app.containers.AdminPage.DashboardPage.representativeness.emptyStateDescription": "Uku tunngaviusumik paasissutissat quppernermi atuisut innuttaasut sinnerinut sanilliullugit assigiissuseqassuseq naatsorsussagaani pisariaqarput.",
   "app.containers.AdminPage.DashboardPage.representativeness.emptyStateTitle": "Please provide a base dataset.",
   "app.containers.AdminPage.DashboardPage.representativeness.pageDescription3": "Atuisutit innuttaasut sinnerinut sanilliullugit qanoq assigiissuseqartiginersut takuuk - atuisunik nalunaarsuinermi paasissutissat katersorneqartut tunngavigalugit. {representativenessArticleLink} pillugu paasissutissat amerlanerusut pissarsiarikkit.",

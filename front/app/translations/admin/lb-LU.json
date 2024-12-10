@@ -560,7 +560,6 @@
   "app.containers.AdminPage.DashboardPage.previousWeek": "Previous week",
   "app.containers.AdminPage.DashboardPage.previousYear": "Previous year",
   "app.containers.AdminPage.DashboardPage.projectType": "Project type : {projectType}",
-  "app.containers.AdminPage.DashboardPage.representativeness.betaLabel": "BETA",
   "app.containers.AdminPage.DashboardPage.representativeness.emptyStateDescription": "Dëse Gronddatesaz ass erfuerderlech, fir d’Representativitéit vun de Platformbenotzeren am Verglach mat der Gesamtbevëlkerung ze kalkuléieren.",
   "app.containers.AdminPage.DashboardPage.representativeness.emptyStateTitle": "Please provide a base dataset.",
   "app.containers.AdminPage.DashboardPage.representativeness.pageDescription3": "Maacht Iech e Bild dovun, wéi representativ Är Plattformbenotzeren am Verglach mat der Gesamtbevëlkerung sinn – baséiert op den Donnéeën, déi wärend der Benotzerumellung gesammelt goufen. Gitt méi iwwer {representativenessArticleLink} gewuer.",

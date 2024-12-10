@@ -18,6 +18,7 @@ describe('Idea reacting permissions', () => {
 
       // sign up modal check
       cy.get('#e2e-authentication-modal').should('exist');
+      cy.get('#e2e-goto-signup').click();
       cy.get('#firstName').type(firstName);
       cy.get('#lastName').type(lastName);
       cy.get('#email').type(email);
@@ -141,6 +142,7 @@ describe('Idea reacting permissions', () => {
 
       // Sign up flow
       cy.get('#e2e-authentication-modal');
+      cy.get('#e2e-goto-signup').click();
       cy.get('#firstName').type(firstName);
       cy.get('#lastName').type(lastName);
       cy.get('#email').type(email);

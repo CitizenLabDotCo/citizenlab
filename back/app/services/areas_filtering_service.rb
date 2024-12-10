@@ -8,7 +8,12 @@ class AreasFilteringService
     next scope unless ['true', true, '1'].include? params[:for_homepage_filter]
 
     projects_for_filter = ProjectsFilteringService.for_homepage_filter(current_user)
-    Area.where(id: AreasProject.where(project: projects_for_filter).select(:area_id))
+
+    if projects_for_filter.any?(&:include_all_areas)
+      Area.all
+    else
+      Area.where(id: AreasProject.where(project: projects_for_filter).select(:area_id))
+    end
   end
 
   add_filter('for_onboarding') do |scope, options|
