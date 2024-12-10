@@ -38,7 +38,6 @@ const Spotlight = ({
   userCount,
 }: Props) => {
   const isSmallerThanPhone = useBreakpoint('phone');
-  console.log({ imageLoading });
 
   return (
     <Box
