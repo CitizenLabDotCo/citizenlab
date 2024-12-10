@@ -2718,7 +2718,7 @@
   "app.containers.admin.project.permissions.permissionsSelectionLabel": "Certains groupes d'utilisateurs",
   "app.containers.admin.project.permissions.permissionsSelectionLabelDescription": "Les membres de certains groupes d’utilisateurs peuvent participer. Vous pouvez gérer les groupes d’utilisateurs dans l’onglet « Utilisateurs ».",
   "app.containers.admin.project.permissions.viewingRightsTitle": "Qui peut voir ce projet ?",
-  "app.modules.commercial.analytics.admin.components.ActiveUsersCard.cardTitleTooltipMessage3": "Participants are users or visitors that have participated in a project, posted or interacted with a proposal, attended events or followed things.",
+  "app.modules.commercial.analytics.admin.components.ActiveUsersCard.cardTitleTooltipMessage3": "Les participants sont des utilisateurs ou des visiteurs qui ont participé à un projet, posté ou interagi avec une proposition, assisté à des événements ou commencé à suivre des éléments.",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participants": "Participants",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRate": "Taux de participation",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRateTooltip3": "Pourcentage de visiteurs qui participent. Seuls les participants et les visiteurs ayant accepté les cookies sont comptabilisés.",
