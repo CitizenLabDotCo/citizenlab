@@ -23,7 +23,7 @@ const Auth0Button = ({ onClick, verificationMethod, last }: Props) => {
   const handleOnClick = () => {
     onClick(verificationMethod);
     const jwt = getJwt();
-    window.location.href = `${AUTH_PATH}/auth0?token=${jwt}&pathname=${removeUrlLocale(
+    window.location.href = `${AUTH_PATH}/auth0?token=${jwt}&verification_pathname=${removeUrlLocale(
       window.location.pathname
     )}`;
   };

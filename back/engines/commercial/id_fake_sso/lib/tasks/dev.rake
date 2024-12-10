@@ -11,7 +11,7 @@ namespace :dev do
 
       # Enable fake SSO
       settings['fake_sso']['enabled'] = true
-      settings['verification']['verification_methods'] =  [{"name"=>"fake_sso", "method_name_multiloc"=>{}, "enabled_for_verified_actions"=>true}]
+      settings['verification']['verification_methods'] = [{ 'name' => 'fake_sso', 'method_name_multiloc' => {}, 'enabled_for_verified_actions' => true }]
 
       # Disable all other SSO methods
       # TODO

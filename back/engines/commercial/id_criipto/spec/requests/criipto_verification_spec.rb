@@ -141,7 +141,7 @@ context 'criipto verification' do
   end
 
   it 'successfully verifies a user' do
-    get "/auth/criipto?token=#{@token}&random-passthrough-param=somevalue&pathname=/yipie"
+    get "/auth/criipto?token=#{@token}&random-passthrough-param=somevalue&verification_pathname=/yipie"
     follow_redirect!
 
     expect_user_to_be_verified(@user)
@@ -243,7 +243,7 @@ context 'criipto verification' do
       password_digest: nil
     })
 
-    expect(response).to redirect_to('/en/?param=some-param')
+    expect(response).to redirect_to('/en/?param=some-param&sso_flow=signup&sso_success=true')
   end
 
   it 'does not send email to empty address (when just registered)' do
@@ -270,7 +270,7 @@ context 'criipto verification' do
       before { new_user.update!(email: Faker::Internet.email) }
 
       it 'does not verify another user and does not delete previously verified new user' do
-        get "/auth/criipto?token=#{@token}&pathname=/some-page"
+        get "/auth/criipto?token=#{@token}&verification_pathname=/some-page"
         follow_redirect!
 
         expect(response).to redirect_to('/some-page?verification_error=true&error_code=taken')
@@ -286,7 +286,7 @@ context 'criipto verification' do
 
     context 'when verified registration is not completed by new user' do
       it 'successfully verifies another user and deletes previously verified blank new user' do
-        get "/auth/criipto?token=#{@token}&pathname=/some-page"
+        get "/auth/criipto?token=#{@token}&verification_pathname=/some-page"
         follow_redirect!
 
         expect(response).to redirect_to('/en/some-page?verification_success=true')
@@ -401,7 +401,7 @@ context 'criipto verification' do
     end
 
     it 'successfully verifies a user like auth0' do
-      get "/auth/criipto?token=#{@token}&random-passthrough-param=somevalue&pathname=/yipie"
+      get "/auth/criipto?token=#{@token}&random-passthrough-param=somevalue&verification_pathname=/yipie"
       follow_redirect!
 
       expect(response).to redirect_to('/en/yipie?random-passthrough-param=somevalue&verification_success=true')
