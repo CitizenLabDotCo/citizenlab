@@ -10,6 +10,7 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 ALTER TABLE IF EXISTS ONLY public.ideas_topics DROP CONSTRAINT IF EXISTS fk_rails_ff1788eb50;
+ALTER TABLE IF EXISTS ONLY public.project_reviews DROP CONSTRAINT IF EXISTS fk_rails_fdbeb12ddd;
 ALTER TABLE IF EXISTS ONLY public.ideas_topics DROP CONSTRAINT IF EXISTS fk_rails_fd874ecf4b;
 ALTER TABLE IF EXISTS ONLY public.events_attendances DROP CONSTRAINT IF EXISTS fk_rails_fba307ba3b;
 ALTER TABLE IF EXISTS ONLY public.comments DROP CONSTRAINT IF EXISTS fk_rails_f44b1e3c8a;
@@ -22,6 +23,7 @@ ALTER TABLE IF EXISTS ONLY public.nav_bar_items DROP CONSTRAINT IF EXISTS fk_rai
 ALTER TABLE IF EXISTS ONLY public.cosponsors_initiatives DROP CONSTRAINT IF EXISTS fk_rails_e48253715f;
 ALTER TABLE IF EXISTS ONLY public.permissions_custom_fields DROP CONSTRAINT IF EXISTS fk_rails_e211dc8f99;
 ALTER TABLE IF EXISTS ONLY public.baskets_ideas DROP CONSTRAINT IF EXISTS fk_rails_dfb57cbce2;
+ALTER TABLE IF EXISTS ONLY public.project_reviews DROP CONSTRAINT IF EXISTS fk_rails_de7c38cbc4;
 ALTER TABLE IF EXISTS ONLY public.official_feedbacks DROP CONSTRAINT IF EXISTS fk_rails_ddd7e21dfa;
 ALTER TABLE IF EXISTS ONLY public.impact_tracking_pageviews DROP CONSTRAINT IF EXISTS fk_rails_dd3b2cc184;
 ALTER TABLE IF EXISTS ONLY public.project_folders_images DROP CONSTRAINT IF EXISTS fk_rails_dcbc962cfe;
@@ -50,6 +52,7 @@ ALTER TABLE IF EXISTS ONLY public.custom_field_options DROP CONSTRAINT IF EXISTS
 ALTER TABLE IF EXISTS ONLY public.baskets DROP CONSTRAINT IF EXISTS fk_rails_b3d04c10d5;
 ALTER TABLE IF EXISTS ONLY public.phases DROP CONSTRAINT IF EXISTS fk_rails_b0efe660f5;
 ALTER TABLE IF EXISTS ONLY public.analysis_tags DROP CONSTRAINT IF EXISTS fk_rails_afc2d02258;
+ALTER TABLE IF EXISTS ONLY public.project_reviews DROP CONSTRAINT IF EXISTS fk_rails_ac7bc0a42f;
 ALTER TABLE IF EXISTS ONLY public.maps_layers DROP CONSTRAINT IF EXISTS fk_rails_abbf8658b2;
 ALTER TABLE IF EXISTS ONLY public.memberships DROP CONSTRAINT IF EXISTS fk_rails_aaf389f138;
 ALTER TABLE IF EXISTS ONLY public.analytics_fact_visits DROP CONSTRAINT IF EXISTS fk_rails_a9aa810ecf;
@@ -183,6 +186,9 @@ DROP INDEX IF EXISTS public.index_projects_topics_on_project_id;
 DROP INDEX IF EXISTS public.index_projects_on_slug;
 DROP INDEX IF EXISTS public.index_projects_allowed_input_topics_on_topic_id_and_project_id;
 DROP INDEX IF EXISTS public.index_projects_allowed_input_topics_on_project_id;
+DROP INDEX IF EXISTS public.index_project_reviews_on_reviewer_id;
+DROP INDEX IF EXISTS public.index_project_reviews_on_requester_id;
+DROP INDEX IF EXISTS public.index_project_reviews_on_project_id;
 DROP INDEX IF EXISTS public.index_project_images_on_project_id;
 DROP INDEX IF EXISTS public.index_project_folders_images_on_project_folder_id;
 DROP INDEX IF EXISTS public.index_project_folders_folders_on_slug;
@@ -298,6 +304,9 @@ DROP INDEX IF EXISTS public.index_events_attendances_on_attendee_id_and_event_id
 DROP INDEX IF EXISTS public.index_events_attendances_on_attendee_id;
 DROP INDEX IF EXISTS public.index_event_images_on_event_id;
 DROP INDEX IF EXISTS public.index_event_files_on_event_id;
+DROP INDEX IF EXISTS public.index_embeddings_similarities_on_embedding;
+DROP INDEX IF EXISTS public.index_embeddings_similarities_on_embedded_attributes;
+DROP INDEX IF EXISTS public.index_embeddings_similarities_on_embeddable;
 DROP INDEX IF EXISTS public.index_email_snippets_on_email_and_snippet_and_locale;
 DROP INDEX IF EXISTS public.index_email_campaigns_unsubscription_tokens_on_user_id;
 DROP INDEX IF EXISTS public.index_email_campaigns_unsubscription_tokens_on_token;
@@ -417,6 +426,7 @@ ALTER TABLE IF EXISTS ONLY public.public_api_api_clients DROP CONSTRAINT IF EXIS
 ALTER TABLE IF EXISTS ONLY public.projects_topics DROP CONSTRAINT IF EXISTS projects_topics_pkey;
 ALTER TABLE IF EXISTS ONLY public.projects DROP CONSTRAINT IF EXISTS projects_pkey;
 ALTER TABLE IF EXISTS ONLY public.projects_allowed_input_topics DROP CONSTRAINT IF EXISTS projects_allowed_input_topics_pkey;
+ALTER TABLE IF EXISTS ONLY public.project_reviews DROP CONSTRAINT IF EXISTS project_reviews_pkey;
 ALTER TABLE IF EXISTS ONLY public.project_images DROP CONSTRAINT IF EXISTS project_images_pkey;
 ALTER TABLE IF EXISTS ONLY public.project_folders_folders DROP CONSTRAINT IF EXISTS project_folders_pkey;
 ALTER TABLE IF EXISTS ONLY public.project_folders_images DROP CONSTRAINT IF EXISTS project_folder_images_pkey;
@@ -471,6 +481,7 @@ ALTER TABLE IF EXISTS ONLY public.events DROP CONSTRAINT IF EXISTS events_pkey;
 ALTER TABLE IF EXISTS ONLY public.events_attendances DROP CONSTRAINT IF EXISTS events_attendances_pkey;
 ALTER TABLE IF EXISTS ONLY public.event_images DROP CONSTRAINT IF EXISTS event_images_pkey;
 ALTER TABLE IF EXISTS ONLY public.event_files DROP CONSTRAINT IF EXISTS event_files_pkey;
+ALTER TABLE IF EXISTS ONLY public.embeddings_similarities DROP CONSTRAINT IF EXISTS embeddings_similarities_pkey;
 ALTER TABLE IF EXISTS ONLY public.email_snippets DROP CONSTRAINT IF EXISTS email_snippets_pkey;
 ALTER TABLE IF EXISTS ONLY public.email_campaigns_unsubscription_tokens DROP CONSTRAINT IF EXISTS email_campaigns_unsubscription_tokens_pkey;
 ALTER TABLE IF EXISTS ONLY public.email_campaigns_examples DROP CONSTRAINT IF EXISTS email_campaigns_examples_pkey;
@@ -534,6 +545,7 @@ DROP SEQUENCE IF EXISTS public.que_jobs_id_seq;
 DROP TABLE IF EXISTS public.public_api_api_clients;
 DROP TABLE IF EXISTS public.projects_topics;
 DROP TABLE IF EXISTS public.projects_allowed_input_topics;
+DROP TABLE IF EXISTS public.project_reviews;
 DROP TABLE IF EXISTS public.project_images;
 DROP TABLE IF EXISTS public.project_folders_images;
 DROP TABLE IF EXISTS public.project_folders_folders;
@@ -578,6 +590,7 @@ DROP TABLE IF EXISTS public.flag_inappropriate_content_inappropriate_content_fla
 DROP TABLE IF EXISTS public.experiments;
 DROP TABLE IF EXISTS public.event_images;
 DROP TABLE IF EXISTS public.event_files;
+DROP TABLE IF EXISTS public.embeddings_similarities;
 DROP TABLE IF EXISTS public.email_snippets;
 DROP TABLE IF EXISTS public.email_campaigns_unsubscription_tokens;
 DROP TABLE IF EXISTS public.email_campaigns_examples;
@@ -655,6 +668,7 @@ DROP FUNCTION IF EXISTS public.que_job_notify();
 DROP FUNCTION IF EXISTS public.que_determine_job_state(job public.que_jobs);
 DROP TABLE IF EXISTS public.que_jobs;
 DROP FUNCTION IF EXISTS public.que_validate_tags(tags_array jsonb);
+DROP EXTENSION IF EXISTS vector;
 DROP EXTENSION IF EXISTS "uuid-ossp";
 DROP EXTENSION IF EXISTS postgis;
 DROP EXTENSION IF EXISTS pgcrypto;
@@ -721,6 +735,20 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA shared_extensions;
 --
 
 COMMENT ON EXTENSION "uuid-ossp" IS 'generate universally unique identifiers (UUIDs)';
+
+
+--
+-- Name: vector; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS vector WITH SCHEMA shared_extensions;
+
+
+--
+-- Name: EXTENSION vector; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION vector IS 'Open-source vector similarity search for Postgres';
 
 
 --
@@ -968,7 +996,8 @@ CREATE TABLE public.admin_publications (
     updated_at timestamp(6) without time zone NOT NULL,
     depth integer DEFAULT 0 NOT NULL,
     children_allowed boolean DEFAULT true NOT NULL,
-    children_count integer DEFAULT 0 NOT NULL
+    children_count integer DEFAULT 0 NOT NULL,
+    first_published_at timestamp(6) without time zone
 );
 
 
@@ -2324,6 +2353,21 @@ CREATE TABLE public.email_snippets (
 
 
 --
+-- Name: embeddings_similarities; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.embeddings_similarities (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    embedding shared_extensions.vector(1024) NOT NULL,
+    embeddable_type character varying NOT NULL,
+    embeddable_id uuid NOT NULL,
+    embedded_attributes character varying,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: event_files; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -3041,6 +3085,21 @@ CREATE TABLE public.project_images (
 
 
 --
+-- Name: project_reviews; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.project_reviews (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    project_id uuid NOT NULL,
+    requester_id uuid,
+    reviewer_id uuid,
+    approved_at timestamp(6) without time zone,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: projects_allowed_input_topics; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -3729,6 +3788,14 @@ ALTER TABLE ONLY public.email_snippets
 
 
 --
+-- Name: embeddings_similarities embeddings_similarities_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.embeddings_similarities
+    ADD CONSTRAINT embeddings_similarities_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: event_files event_files_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4158,6 +4225,14 @@ ALTER TABLE ONLY public.project_folders_folders
 
 ALTER TABLE ONLY public.project_images
     ADD CONSTRAINT project_images_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: project_reviews project_reviews_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.project_reviews
+    ADD CONSTRAINT project_reviews_pkey PRIMARY KEY (id);
 
 
 --
@@ -5017,6 +5092,27 @@ CREATE INDEX index_email_snippets_on_email_and_snippet_and_locale ON public.emai
 
 
 --
+-- Name: index_embeddings_similarities_on_embeddable; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_embeddings_similarities_on_embeddable ON public.embeddings_similarities USING btree (embeddable_type, embeddable_id);
+
+
+--
+-- Name: index_embeddings_similarities_on_embedded_attributes; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_embeddings_similarities_on_embedded_attributes ON public.embeddings_similarities USING btree (embedded_attributes);
+
+
+--
+-- Name: index_embeddings_similarities_on_embedding; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_embeddings_similarities_on_embedding ON public.embeddings_similarities USING hnsw (embedding shared_extensions.vector_cosine_ops);
+
+
+--
 -- Name: index_event_files_on_event_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -5819,6 +5915,27 @@ CREATE INDEX index_project_folders_images_on_project_folder_id ON public.project
 --
 
 CREATE INDEX index_project_images_on_project_id ON public.project_images USING btree (project_id);
+
+
+--
+-- Name: index_project_reviews_on_project_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_project_reviews_on_project_id ON public.project_reviews USING btree (project_id);
+
+
+--
+-- Name: index_project_reviews_on_requester_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_project_reviews_on_requester_id ON public.project_reviews USING btree (requester_id);
+
+
+--
+-- Name: index_project_reviews_on_reviewer_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_project_reviews_on_reviewer_id ON public.project_reviews USING btree (reviewer_id);
 
 
 --
@@ -6838,6 +6955,14 @@ ALTER TABLE ONLY public.maps_layers
 
 
 --
+-- Name: project_reviews fk_rails_ac7bc0a42f; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.project_reviews
+    ADD CONSTRAINT fk_rails_ac7bc0a42f FOREIGN KEY (project_id) REFERENCES public.projects(id);
+
+
+--
 -- Name: analysis_tags fk_rails_afc2d02258; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7062,6 +7187,14 @@ ALTER TABLE ONLY public.official_feedbacks
 
 
 --
+-- Name: project_reviews fk_rails_de7c38cbc4; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.project_reviews
+    ADD CONSTRAINT fk_rails_de7c38cbc4 FOREIGN KEY (reviewer_id) REFERENCES public.users(id);
+
+
+--
 -- Name: baskets_ideas fk_rails_dfb57cbce2; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7155,6 +7288,14 @@ ALTER TABLE ONLY public.events_attendances
 
 ALTER TABLE ONLY public.ideas_topics
     ADD CONSTRAINT fk_rails_fd874ecf4b FOREIGN KEY (idea_id) REFERENCES public.ideas(id);
+
+
+--
+-- Name: project_reviews fk_rails_fdbeb12ddd; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.project_reviews
+    ADD CONSTRAINT fk_rails_fdbeb12ddd FOREIGN KEY (requester_id) REFERENCES public.users(id);
 
 
 --
@@ -7638,9 +7779,13 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20241105053818'),
 ('20241105053934'),
 ('20241105081014'),
+('20241112110758'),
 ('20241115141553'),
 ('20241115141717'),
 ('20241125094000'),
-('20241125094100');
+('20241125094100'),
+('20241127093339'),
+('20241203151945'),
+('20241204133717');
 
 

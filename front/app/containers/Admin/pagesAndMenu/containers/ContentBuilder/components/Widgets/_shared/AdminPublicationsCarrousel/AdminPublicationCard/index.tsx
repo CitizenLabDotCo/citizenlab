@@ -1,6 +1,12 @@
 import React from 'react';
 
-import { Box, Text, Icon, Title } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Text,
+  Icon,
+  Title,
+  useBreakpoint,
+} from '@citizenlab/cl2-component-library';
 
 import { IAdminPublicationData } from 'api/admin_publications/types';
 import useProjectFolderImage from 'api/project_folder_images/useProjectFolderImage';
@@ -17,7 +23,7 @@ import Link from 'utils/cl-router/Link';
 import { truncate } from 'utils/textUtils';
 
 import { CardContainer, CardImage } from '../../BaseCard';
-import { CARD_WIDTH } from '../constants';
+import { BIG_CARD_WIDTH, SMALL_CARD_WIDTH } from '../constants';
 
 import messages from './messages';
 import { getPublicationURL } from './utils';
@@ -34,6 +40,7 @@ interface InnerProps extends Props {
   imageUrl?: string;
   avatarIds: string[];
   userCount?: number;
+  imageAltText?: string;
 }
 
 export const AdminPublicationCard = ({
@@ -41,12 +48,16 @@ export const AdminPublicationCard = ({
   imageUrl,
   avatarIds,
   userCount,
+  imageAltText,
   ml,
   mr,
   onKeyDown,
 }: InnerProps) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
+  const isSmallerThanPhone = useBreakpoint('phone');
+
+  const cardWidth = isSmallerThanPhone ? SMALL_CARD_WIDTH : BIG_CARD_WIDTH;
 
   const {
     visible_children_count,
@@ -60,15 +71,15 @@ export const AdminPublicationCard = ({
     <CardContainer
       as={Link}
       tabIndex={0}
-      w={`${CARD_WIDTH}px`}
+      w={`${cardWidth}px`}
       ml={ml}
       mr={mr}
       to={getPublicationURL(adminPublication)}
       display="block"
       onKeyDown={onKeyDown}
     >
-      <CardImage imageUrl={imageUrl} />
-      <Title variant="h4" as="h3" mt="8px" mb="0px">
+      <CardImage imageUrl={imageUrl} alt={imageAltText} />
+      <Title variant="h4" as="h3" mt="8px" mb="0px" color="tenantText">
         {truncate(localize(publication_title_multiloc), 50)}
       </Title>
       <Box display="flex" flexDirection="row" alignItems="center" mt="8px">
@@ -95,7 +106,7 @@ export const AdminPublicationCard = ({
           userCount={userCount}
         />
       </Box>
-      <Text mt="8px">
+      <Text mt="8px" mb="0">
         {truncate(localize(publication_description_preview_multiloc), 280)}
       </Text>
     </CardContainer>
@@ -103,6 +114,7 @@ export const AdminPublicationCard = ({
 };
 
 const AdminPublicationCardWrapper = ({ adminPublication, ...props }: Props) => {
+  const localize = useLocalize();
   const { id, type } = adminPublication.relationships.publication.data;
 
   const projectId = type === 'project' ? id : undefined;
@@ -142,12 +154,18 @@ const AdminPublicationCardWrapper = ({ adminPublication, ...props }: Props) => {
       ? project?.data.attributes.participants_count
       : folder?.data.attributes.participants_count;
 
+  const imageAltText =
+    type === 'project'
+      ? localize(projectImage?.data.attributes.alt_text_multiloc)
+      : localize(folderImage?.data.attributes.alt_text_multiloc);
+
   return (
     <AdminPublicationCard
       adminPublication={adminPublication}
       imageUrl={imageUrl ?? undefined}
       avatarIds={avatarIds}
       userCount={userCount}
+      imageAltText={imageAltText}
       {...props}
     />
   );

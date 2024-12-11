@@ -92,7 +92,6 @@ class WebApi::V1::FoldersController < ApplicationController
   def destroy
     frozen_folder = nil
     frozen_projects = nil
-    children_ids = @project_folder.admin_publication.children.pluck(:id)
 
     @project_folder.projects.each do |project|
       SideFxProjectService.new.before_destroy(project, current_user)
@@ -104,7 +103,7 @@ class WebApi::V1::FoldersController < ApplicationController
     end
 
     if frozen_folder.destroyed?
-      ProjectFolders::SideFxProjectFolderService.new.after_destroy(frozen_folder, current_user, children_ids)
+      ProjectFolders::SideFxProjectFolderService.new.after_destroy(frozen_folder, current_user)
       frozen_projects.each do |project|
         SideFxProjectService.new.after_destroy(project, current_user)
       end

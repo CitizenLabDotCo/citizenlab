@@ -70,6 +70,9 @@ class ProjectsFinderService
   # ordered by the follow created_at (most recent first).
   # => [Project]
   def followed_by_user
+    # return empty collection if user is not signed in
+    return Project.none unless @user
+
     subquery = Follower
       .where(user_id: @user.id)
       .where.not(followable_type: 'Initiative')
@@ -124,8 +127,9 @@ class ProjectsFinderService
       finished_scope = base_scope.where(admin_publications: { publication_status: 'published' })
       finished_scope = joins_last_phases_with_reports(finished_scope)
         .where(
-          '(last_phases.last_phase_end_at < ? OR reports.id IS NOT NULL) AND admin_publications.publication_status = ?',
-          Time.zone.now, 'published'
+          '(last_phases.last_phase_end_at < ? OR (reports.id IS NOT NULL AND reports.visible = true))' \
+          "AND admin_publications.publication_status = 'published'",
+          Time.zone.now
         )
     end
 

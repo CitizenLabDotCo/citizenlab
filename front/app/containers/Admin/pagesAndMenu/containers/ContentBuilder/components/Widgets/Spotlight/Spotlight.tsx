@@ -7,11 +7,13 @@ import {
   useBreakpoint,
   stylingConsts,
   Title,
+  colors,
 } from '@citizenlab/cl2-component-library';
 
 import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
 import AvatarBubbles from 'components/AvatarBubbles';
 import Button from 'components/UI/Button';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 interface Props {
   title: string;
@@ -37,7 +39,7 @@ const Spotlight = ({
   return (
     <Box
       px={DEFAULT_PADDING}
-      py={DEFAULT_PADDING}
+      py="56px"
       w="100%"
       display="flex"
       justifyContent="center"
@@ -56,7 +58,13 @@ const Spotlight = ({
           <Title mt="0px" color="tenantText">
             {title}
           </Title>
-          {description && <Text>{description}</Text>}
+          {description && (
+            <Text>
+              <QuillEditedContent textColor={colors.textSecondary}>
+                <div dangerouslySetInnerHTML={{ __html: description }} />
+              </QuillEditedContent>
+            </Text>
+          )}
           {buttonText && buttonText !== '' && (
             <Box w="100%" display="flex" mt="20px">
               <Button
@@ -67,7 +75,7 @@ const Spotlight = ({
               </Button>
             </Box>
           )}
-          {avatarIds && avatarIds.length > 0 && userCount && (
+          {typeof userCount === 'number' && userCount > 0 && (
             <Box
               mt="16px"
               w="100%"

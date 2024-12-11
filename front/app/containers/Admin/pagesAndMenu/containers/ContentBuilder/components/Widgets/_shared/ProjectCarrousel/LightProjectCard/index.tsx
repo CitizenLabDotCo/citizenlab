@@ -45,6 +45,7 @@ const LightProjectCard = ({ project, ml, mr, onKeyDown }: Props) => {
   const title = localize(project.attributes.title_multiloc);
   const imageVersions = image?.data.attributes.versions;
   const imageUrl = imageVersions?.large ?? imageVersions?.medium;
+  const imageAltText = localize(image?.data.attributes.alt_text_multiloc);
 
   const projectUrl: RouteType = getProjectUrl(project.attributes.slug);
 
@@ -59,8 +60,8 @@ const LightProjectCard = ({ project, ml, mr, onKeyDown }: Props) => {
       display="block"
       onKeyDown={onKeyDown}
     >
-      <CardImage imageUrl={imageUrl ?? undefined} />
-      <Title variant="h4" as="h3" mt="8px" mb="0px">
+      <CardImage imageUrl={imageUrl ?? undefined} alt={imageAltText} />
+      <Title variant="h4" as="h3" mt="8px" mb="0px" color="tenantText">
         {truncate(title, 50)}
       </Title>
       <Box mt="8px">

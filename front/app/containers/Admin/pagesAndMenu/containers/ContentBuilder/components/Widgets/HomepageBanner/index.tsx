@@ -9,6 +9,7 @@ import {
   Label,
   Input,
   Text,
+  useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
 import { useLocation, useSearchParams } from 'react-router-dom';
@@ -40,6 +41,8 @@ import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import eventEmitter from 'utils/eventEmitter';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { isValidUrl } from 'utils/validate';
+
+import { DEFAULT_Y_PADDING } from '../constants';
 
 import LayoutSettingField from './LayoutSettingField';
 import messages from './messages';
@@ -122,6 +125,7 @@ const HomepageBanner = ({ homepageSettings, image }: Props) => {
   const { data: authUser } = useAuthUser();
   const [search] = useSearchParams();
   const locale = useLocale();
+  const isSmallerThanPhone = useBreakpoint('phone');
 
   const isHomepage = pathname === `/${locale}` || pathname === `/${locale}/`;
   const showSignedInHeader =
@@ -129,7 +133,10 @@ const HomepageBanner = ({ homepageSettings, image }: Props) => {
     search.get('variant') === 'signedIn';
 
   return (
-    <div data-cy="e2e-homepage-banner">
+    <Box
+      data-cy="e2e-homepage-banner"
+      mb={isSmallerThanPhone ? DEFAULT_Y_PADDING : '40px'}
+    >
       {showSignedInHeader ? (
         <SignedInHeader
           homepageSettings={{
@@ -156,7 +163,7 @@ const HomepageBanner = ({ homepageSettings, image }: Props) => {
           />
         </Fragment>
       )}
-    </div>
+    </Box>
   );
 };
 
@@ -372,29 +379,6 @@ const HomepageBannerSettings = () => {
           );
         }}
       />
-      <div data-cy="e2e-banner-avatar-toggle">
-        <Toggle
-          disabled={!customHomepageBannerAllowed}
-          label={
-            <Box>
-              <Text m={'0px'} color="primary">
-                {formatMessage(messages.showAvatars)}
-              </Text>
-              <Text m={'0px'} color="textSecondary" fontSize="s">
-                {formatMessage(messages.showAvatarsDescription)}
-              </Text>
-            </Box>
-          }
-          checked={homepageSettings.banner_avatars_enabled}
-          onChange={() => {
-            setProp(
-              (props: Props) =>
-                (props.homepageSettings.banner_avatars_enabled =
-                  !homepageSettings.banner_avatars_enabled)
-            );
-          }}
-        />
-      </div>
 
       {customHomepageBannerAllowed && (
         <>
@@ -512,6 +496,29 @@ const HomepageBannerSettings = () => {
                   (props: Props) =>
                     (props.homepageSettings.banner_signed_out_subheader_multiloc =
                       value)
+                );
+              }}
+            />
+          </div>
+          <div data-cy="e2e-banner-avatar-toggle">
+            <Toggle
+              disabled={!customHomepageBannerAllowed}
+              label={
+                <Box>
+                  <Text m={'0px'} color="primary">
+                    {formatMessage(messages.showAvatars)}
+                  </Text>
+                  <Text m={'0px'} color="textSecondary" fontSize="s">
+                    {formatMessage(messages.showAvatarsDescription)}
+                  </Text>
+                </Box>
+              }
+              checked={homepageSettings.banner_avatars_enabled}
+              onChange={() => {
+                setProp(
+                  (props: Props) =>
+                    (props.homepageSettings.banner_avatars_enabled =
+                      !homepageSettings.banner_avatars_enabled)
                 );
               }}
             />

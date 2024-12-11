@@ -1407,6 +1407,36 @@
           "allowed": { "type": "boolean", "default": false },
           "enabled": { "type": "boolean", "default": false }
         }
+      },
+
+      "project_review": {
+        "type": "object",
+        "title": "Project review",
+        "description": "Enables the ability to review projects before they are published.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "similar_inputs": {
+        "type": "object",
+        "title": "Experimental feature: Similar inputs",
+        "description":	"Show similar inputs (ideas) when viewing the page of an input, using AI (Cohere multilingual word embeddings). Inputs posted while the feature was disabled will not be included.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "required-settings": ["admins_only"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false},
+          "admins_only": {
+            "title": "Only admins can see similar inputs",
+            "type": "boolean",
+            "default": true
+          }
+        }
       }
     },
   "dependencies": {

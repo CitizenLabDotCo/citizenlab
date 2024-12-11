@@ -143,9 +143,10 @@ const IdeaCard = ({
 
   return (
     <Container
-      className="e2e-card e2e-idea-card"
+      className={`e2e-card e2e-idea-card`}
       id={idea.data.id}
       onClick={handleClick}
+      height="100%"
     >
       <CardImage
         phase={phaseData}
@@ -159,6 +160,9 @@ const IdeaCard = ({
         flexDirection="column"
         justifyContent="space-between"
         w="100%"
+        // Height of 100% needed to extent the card to the bottom of the row when there
+        // is a card with an image and a card without an image in the same row.
+        h="100%"
         overflowX="hidden"
       >
         <Box
@@ -182,7 +186,8 @@ const IdeaCard = ({
             {!hideBody && <Body idea={idea} />}
           </Link>
         </Box>
-        <Box>
+        {/* marginTop used to push the interactions/footer to bottom of the card */}
+        <Box marginTop="auto">
           <Interactions idea={idea} phase={phaseData || null} />
           <Footer
             idea={idea.data}

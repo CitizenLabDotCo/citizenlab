@@ -14,13 +14,13 @@ module EmailCampaigns
     end
 
     def update?
-      user&.active? &&
-        user.id == record.user_id &&
-        DeliveryService.new.consentable_campaign_types_for(user).include?(record.campaign_type)
+      user&.active? && update_by_campaign_id?
     end
 
     def update_by_campaign_id?
-      update?
+      # NOTE: User does not need to be active for this endpoint so they can always click unsubscribe from emails
+      user.id == record.user_id &&
+        DeliveryService.new.consentable_campaign_types_for(user).include?(record.campaign_type)
     end
   end
 end
