@@ -34,6 +34,7 @@ const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
     return null;
   }
 
+  // WARNING: BarContents types are wrong. Can also be null.
   const BarContents = getMethodConfig(participationMethod).renderCTABar({
     project: project.data,
     phases: phases?.data,
@@ -60,9 +61,6 @@ const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
   } else {
     return (
       <Box
-        // This is is needed to determine how much to push down the input filters
-        // (top in ContentRight)
-        id="project-cta-bar-top"
         position="sticky"
         top={`${stylingConsts.menuHeight}px`}
         {...sharedProps}
