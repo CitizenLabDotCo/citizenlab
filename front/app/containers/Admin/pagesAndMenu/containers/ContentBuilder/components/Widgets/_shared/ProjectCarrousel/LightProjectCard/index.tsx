@@ -59,6 +59,7 @@ const LightProjectCard = ({ project, ml, mr, onKeyDown }: Props) => {
       to={projectUrl}
       display="block"
       onKeyDown={onKeyDown}
+      className="e2e-light-project-card"
     >
       <CardImage imageUrl={imageUrl ?? undefined} alt={imageAltText} />
       <Title variant="h4" as="h3" mt="8px" mb="0px" color="tenantText">
