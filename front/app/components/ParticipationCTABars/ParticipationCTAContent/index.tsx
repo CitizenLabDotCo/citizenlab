@@ -58,13 +58,14 @@ const ParticipationCTAContent = ({
       /* 
         This is is needed to determine how much to push down the input filters
         (in ContentRight).
-        
-        We should look into moving this component to ProjectCTABar (where we split between top and bottom bar)
-        instead of here. Then only define the CTAButton part in the config.
-        
+
         Putting this id in ProjectCTABar does not work at the moment, because
         the rendered bar (BarContents) can sometimes be null. In that case,
         we are telling ContentRight that the top bar is visible, while it is not.
+        
+        We can look into moving this component to ProjectCTABar (where we split between top and bottom bar)
+        instead of here. Then only define the CTAButton part in the config, then we can probably
+        move the id in ProjectCTABar.
       */
       id="project-cta-bar-top"
     >
