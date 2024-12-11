@@ -33,7 +33,6 @@ const HomePage = () => {
     pageSize: 6,
     publicationStatusFilter: ['published'],
     rootLevelOnly: true,
-    removeNotAllowedParents: true,
     topicIds: null,
     areaIds: null,
     search: null,
