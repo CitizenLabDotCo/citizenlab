@@ -60,7 +60,14 @@ const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
     );
   } else {
     return (
-      <Box position="sticky" top="0px" {...sharedProps}>
+      <Box
+        // This is is needed to determine how much to push down the input filters
+        // (top in ContentRight)
+        id="project-cta-bar-top"
+        position="sticky"
+        top="0px"
+        {...sharedProps}
+      >
         <Box height="78px">
           <MainHeader />
         </Box>
