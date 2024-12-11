@@ -59,6 +59,9 @@ const ParticipationCTAContent = ({
       // (in ContentRight)
       // We should probably move this component to ProjectCTABar (where we split between top and bottom bar)
       // instead of here. Then only define the CTAButton part in the config.
+      // Putting this id in ProjectCTABar does not work at the moment, because
+      // the rendered bar (BarContents) can sometimes be null. In that case,
+      // we are telling ContentRight that the top bar is visible, while it is not.
       id="project-cta-bar-top"
     >
       <Box display="flex" width="100%" maxWidth={`${maxPageWidth}px`}>
