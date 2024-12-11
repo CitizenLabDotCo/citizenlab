@@ -79,7 +79,7 @@ const ProjectHeader = ({ projectId }: Props) => {
           <StyledTitle color="primary" variant="h4" my="0px">
             {localize(project.data.attributes.title_multiloc)}
           </StyledTitle>
-          <Box display="flex" gap="12px">
+          <Box display="flex" gap="8px">
             <Button
               linkTo={`/projects/${project.data.attributes.slug}`}
               buttonStyle="secondary-outlined"
@@ -89,20 +89,20 @@ const ProjectHeader = ({ projectId }: Props) => {
               id="e2e-view-project"
             />
             <PublicationStatus project={project} />
-            <Button
-              linkTo={`/admin/projects/${project.data.id}/settings`}
-              buttonStyle="secondary-outlined"
-              icon="settings"
-              size="s"
-              padding="4px 8px"
-            >
-              {formatMessage(messages.projectSettings)}
-            </Button>
             <ShareLink
               projectId={project.data.id}
               projectSlug={project.data.attributes.slug}
               token={project.data.attributes.preview_token}
             />
+            <Button
+              linkTo={`/admin/projects/${project.data.id}/settings`}
+              buttonStyle="secondary-outlined"
+              size="s"
+              padding="4px 8px"
+            >
+              {formatMessage(messages.settings)}
+            </Button>
+
             <ReviewFlow project={project.data} />
           </Box>
         </Box>
