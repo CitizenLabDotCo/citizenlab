@@ -1,10 +1,16 @@
 import React from 'react';
 
 import { lighten } from 'polished';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 import { colors } from '../../utils/styleUtils';
 import Box, { BoxProps } from '../Box';
+
+const shimmerAnimation = keyframes`
+  to {
+    background-position-x: 0%;
+  }
+`;
 
 const ShimmerBox = styled(Box)<{ $bgColor: string }>`
   ${({ $bgColor }) => {
@@ -17,13 +23,7 @@ const ShimmerBox = styled(Box)<{ $bgColor: string }>`
   }}
   background-size: 300%;
   background-position-x: 100%;
-  animation: shimmer 2s infinite;
-
-  @keyframes shimmer {
-    to {
-      background-position-x: 0%;
-    }
-  }
+  animation: ${shimmerAnimation} 2s infinite;
 `;
 
 const Shimmer = ({ bgColor = colors.black, ...props }: BoxProps) => {
