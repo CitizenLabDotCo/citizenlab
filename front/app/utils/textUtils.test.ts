@@ -1,4 +1,4 @@
-import { withoutSpacing } from './textUtils';
+import { capitalize, withoutSpacing } from './textUtils';
 
 describe('withoutSpacing', () => {
   it('removes spaces from simple string', () => {
@@ -15,5 +15,17 @@ describe('withoutSpacing', () => {
       <li>${'with spaces 2'}</li>
     </ul>
   `).toEqual(expectedResult);
+  });
+});
+
+describe('capitalize', () => {
+  it('capitalizes strings correctly', () => {
+    expect(capitalize(`hello world`)).toEqual('Hello world');
+    expect(capitalize(`hello World`)).toEqual('Hello World');
+    expect(capitalize(`HELLO WORLD`)).toEqual('HELLO WORLD');
+    expect(capitalize('123')).toEqual('123');
+    expect(capitalize('!@#')).toEqual('!@#');
+    expect(capitalize('')).toEqual('');
+    expect(capitalize('a')).toEqual('A');
   });
 });

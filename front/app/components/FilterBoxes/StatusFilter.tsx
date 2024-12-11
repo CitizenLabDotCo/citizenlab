@@ -9,7 +9,7 @@ import {
   colors,
   ColorIndicator,
 } from '@citizenlab/cl2-component-library';
-import { capitalize, get } from 'lodash-es';
+import { get } from 'lodash-es';
 import { darken } from 'polished';
 import styled from 'styled-components';
 
@@ -20,6 +20,7 @@ import T from 'components/T';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
+import { capitalize } from 'utils/textUtils';
 
 import InputFilterCollapsible from './InputFilterCollapsible';
 import messages from './messages';
