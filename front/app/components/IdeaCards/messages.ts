@@ -23,9 +23,50 @@ export default defineMessages({
     id: 'app.containers.IdeaCards.numberResults',
     defaultMessage: 'Results ({postCount})',
   },
-  ideasFilterSidebarTitle: {
-    id: 'app.containers.IdeaCards.ideasFilterSidebarTitle',
-    defaultMessage: '{inputTerm} ({numberIdeas})',
+  xIdeas: {
+    id: 'app.containers.IdeaCards.xIdeas2',
+    defaultMessage:
+      '{ideasCount, plural, no {{ideasCount} ideas} one {{ideasCount} idea} other {{ideasCount} ideas}}',
+  },
+  xOptions: {
+    id: 'app.containers.IdeaCards.xOptions2',
+    defaultMessage:
+      '{ideasCount, plural, no {{ideasCount} options} one {{ideasCount} option} other {{ideasCount} options}}',
+  },
+  xProjects: {
+    id: 'app.containers.IdeaCards.xProjects3',
+    defaultMessage:
+      '{ideasCount, plural, no {{ideasCount} projects} one {{ideasCount} project} other {{ideasCount} projects}}',
+  },
+  xQuestions: {
+    id: 'app.containers.IdeaCards.xQuestion2',
+    defaultMessage:
+      '{ideasCount, plural, no {{ideasCount} questions} one {{ideasCount} question} other {{ideasCount} questions}}',
+  },
+  xComments: {
+    id: 'app.containers.IdeaCards.xComments3',
+    defaultMessage:
+      '{ideasCount, plural, no {{ideasCount} comments} one {{ideasCount} comment} other {{ideasCount} comments}}',
+  },
+  xContributions: {
+    id: 'app.containers.IdeaCards.xContributions2',
+    defaultMessage:
+      '{ideasCount, plural, no {{ideasCount} contributions} one {{ideasCount} contribution} other {{ideasCount} contributions}}',
+  },
+  xProposals: {
+    id: 'app.containers.IdeaCards.xProposals2',
+    defaultMessage:
+      '{ideasCount, plural, no {{ideasCount} proposals} one {{ideasCount} proposal} other {{ideasCount} proposals}}',
+  },
+  xInitiatives: {
+    id: 'app.containers.IdeaCards.xInitiatives2',
+    defaultMessage:
+      '{ideasCount, plural, no {{ideasCount} initiatives} one {{ideasCount} initiative} other {{ideasCount} initiatives}}',
+  },
+  xPetitions: {
+    id: 'app.containers.IdeaCards.xPetitions2',
+    defaultMessage:
+      '{ideasCount, plural, no {{ideasCount} petitions} one {{ideasCount} petition} other {{ideasCount} petitions}}',
   },
   topics: {
     id: 'app.containers.IdeaCards.topics',

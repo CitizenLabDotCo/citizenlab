@@ -1170,7 +1170,6 @@
   "app.containers.IdeaCards.allStatuses": "Alle statussen",
   "app.containers.IdeaCards.contributions": "Bijdragen",
   "app.containers.IdeaCards.ideaTerm": "Ideeën",
-  "app.containers.IdeaCards.ideasFilterSidebarTitle": "{inputTerm} ({numberIdeas})",
   "app.containers.IdeaCards.initiatives": "Initiatieven",
   "app.containers.IdeaCards.issueTerm": "Stellingen",
   "app.containers.IdeaCards.list": "Lijst",

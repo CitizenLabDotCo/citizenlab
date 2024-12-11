@@ -1170,7 +1170,6 @@
   "app.containers.IdeaCards.allStatuses": "جميع الحالات",
   "app.containers.IdeaCards.contributions": "المساهمات",
   "app.containers.IdeaCards.ideaTerm": "الأفكار",
-  "app.containers.IdeaCards.ideasFilterSidebarTitle": "{inputTerm} ({numberIdeas})",
   "app.containers.IdeaCards.initiatives": "المبادرات",
   "app.containers.IdeaCards.issueTerm": "مشاكل",
   "app.containers.IdeaCards.list": "القائمة",

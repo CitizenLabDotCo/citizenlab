@@ -1170,7 +1170,6 @@
   "app.containers.IdeaCards.allStatuses": "Minden állapot",
   "app.containers.IdeaCards.contributions": "Hozzájárulások",
   "app.containers.IdeaCards.ideaTerm": "Ötletek",
-  "app.containers.IdeaCards.ideasFilterSidebarTitle": "{inputTerm} ({numberIdeas})",
   "app.containers.IdeaCards.initiatives": "Kezdeményezések",
   "app.containers.IdeaCards.issueTerm": "Kérdések",
   "app.containers.IdeaCards.list": "Lista",
