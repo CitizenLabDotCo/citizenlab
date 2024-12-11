@@ -64,6 +64,7 @@ module IdeaCustomFields
     def update_all
       authorize CustomField.new(resource: @custom_form), :update_all?, policy_class: IdeaCustomFieldPolicy
       @participation_method = @custom_form.participation_context.pmethod
+
       page_temp_ids_to_ids_mapping = {}
       option_temp_ids_to_ids_mapping = {}
       errors = {}
@@ -329,7 +330,7 @@ module IdeaCustomFields
     def set_custom_form
       container_id = params[secure_constantize(:container_id)]
       @container = secure_constantize(:container_class).find container_id
-      @custom_form = CustomForm.find_or_initialize_by(participation_context: @container)
+      @custom_form = CustomForm.find_or_initialize_by participation_context: @container
     end
 
     def set_custom_field
