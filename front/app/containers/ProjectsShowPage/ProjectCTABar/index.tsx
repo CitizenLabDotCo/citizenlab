@@ -21,8 +21,8 @@ type ProjectCTABarProps = {
 };
 
 const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
-  const isSmallerThanPhone = useBreakpoint('phone');
-  const sticksToBottom = isSmallerThanPhone;
+  const isSmallerThanTablet = useBreakpoint('tablet');
+  const sticksToBottom = isSmallerThanTablet;
   const { data: phases } = usePhases(projectId);
   const { data: project } = useProjectById(projectId);
 
