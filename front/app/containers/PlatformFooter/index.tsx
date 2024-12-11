@@ -224,7 +224,7 @@ const PlatformFooter = ({ className }: Props) => {
     eventEmitter.emit('openConsentManager');
   };
 
-  const participationBar = document.getElementById('project-cta-bar');
+  const participationBar = document.getElementById('project-cta-bar-bottom');
 
   useEffect(() => {
     setPaddingBottom(

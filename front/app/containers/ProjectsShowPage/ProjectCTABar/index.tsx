@@ -49,22 +49,18 @@ const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
   if (sticksToBottom) {
     return (
       <Box
+        // This id is needed to add padding to PlatformFooter
+        id="project-cta-bar-bottom"
         position="fixed"
         bottom="0px"
         {...sharedProps}
-        id="project-cta-bar-bottom"
       >
         {BarContents}
       </Box>
     );
   } else {
     return (
-      <Box
-        position="sticky"
-        top="0px"
-        {...sharedProps}
-        id="project-cta-bar-top"
-      >
+      <Box position="sticky" top="0px" {...sharedProps}>
         <Box height="78px">
           <MainHeader />
         </Box>
