@@ -33,7 +33,7 @@ const Areas = ({ titleMultiloc }: Props) => {
   const title = localize(titleMultiloc);
 
   if (!hasFollowPreferences) {
-    return <AreaSelection title={title} />;
+    return <AreaSelection title={title} areas={areas} />;
   }
 
   // Render the carrousel
