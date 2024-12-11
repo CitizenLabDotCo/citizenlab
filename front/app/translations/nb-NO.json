@@ -1347,6 +1347,7 @@
   "app.containers.IdeasShow.MetaInformation.currentStatus": "Nåværende status",
   "app.containers.IdeasShow.MetaInformation.location": "Beliggenhet",
   "app.containers.IdeasShow.MetaInformation.postedBy": "Skrevet av",
+  "app.containers.IdeasShow.MetaInformation.similar": "Lignende innganger",
   "app.containers.IdeasShow.MetaInformation.topics": "Tagger",
   "app.containers.IdeasShow.commentCTA": "Legg til en kommentar",
   "app.containers.IdeasShow.contributionEmailSharingBody": "Støtt dette bidraget '{postTitle}' på {postUrl}!",
