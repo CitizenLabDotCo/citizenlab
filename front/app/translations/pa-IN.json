@@ -1347,6 +1347,7 @@
   "app.containers.IdeasShow.MetaInformation.currentStatus": "ਮੌਜੂਦਾ ਸਥਿਤੀ",
   "app.containers.IdeasShow.MetaInformation.location": "ਟਿਕਾਣਾ",
   "app.containers.IdeasShow.MetaInformation.postedBy": "ਵੱਲੋਂ ਪੋਸਟ ਕੀਤਾ ਗਿਆ",
+  "app.containers.IdeasShow.MetaInformation.similar": "ਸਮਾਨ ਇਨਪੁੱਟ",
   "app.containers.IdeasShow.MetaInformation.topics": "ਟੈਗਸ",
   "app.containers.IdeasShow.commentCTA": "ਇੱਕ ਟਿੱਪਣੀ ਸ਼ਾਮਲ ਕਰੋ",
   "app.containers.IdeasShow.contributionEmailSharingBody": "{postUrl}'ਤੇ ਇਸ ਯੋਗਦਾਨ '{postTitle}' ਦਾ ਸਮਰਥਨ ਕਰੋ!",
