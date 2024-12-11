@@ -16,6 +16,10 @@ module ContentBuilder
       def self.feature_description
         'Activate the rich editor that allows customization of project descriptions.'
       end
+
+      def self.pricing
+        true
+      end
     end
   end
 end

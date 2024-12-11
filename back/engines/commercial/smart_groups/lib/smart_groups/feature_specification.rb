@@ -15,5 +15,9 @@ module SmartGroups
     def self.feature_description
       'Users can automatically be assigned to a group based on certain criteria.'
     end
+
+    def self.pricing
+      true
+    end
   end
 end

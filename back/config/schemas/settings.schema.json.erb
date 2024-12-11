@@ -22,6 +22,7 @@
           "authentication_token_lifetime_in_days"
         ],
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled", "lifecycle_stage"],
         "properties": {
           "allowed": { "type": "boolean", "default": true},
@@ -253,6 +254,7 @@
         "title": "User blocking",
         "description": "Admin can block or unblock users.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "required-settings": ["duration"],
         "properties": {
@@ -297,6 +299,7 @@
         "title": "Internal commenting",
         "description": "Admins and managers can comment internally on ideas and proposals.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false },
@@ -316,23 +319,12 @@
         }
       },
 
-      "jsonforms_custom_fields": {
-        "type": "object",
-        "title": "Rework of user custom fields (experimental)",
-        "description":  "Replaces react-json-forms with jsonforms for user custom fields form. Don't turn this on unless you know what you're doing.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false}
-        }
-      },
-
       "advanced_custom_pages": {
         "type": "object",
         "title": "Advanced Custom Pages",
         "description":	"Advanced Custom Pages features.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false },
@@ -346,6 +338,7 @@
         "description": "Allow project folders.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
+        "pricing": true,
         "properties": {
           "allowed": { "type": "boolean", "default": true },
           "enabled": { "type": "boolean", "default": true }
@@ -438,6 +431,7 @@
         "title": "Azure AD Login",
         "description":  "Allow users to register and sign in with Entra ID (fka Azure Active Directory).",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false},
@@ -479,6 +473,7 @@
         "title": "Azure AD B2C Login",
         "description":  "Allow users to register and sign in with Azure AD B2C.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false},
@@ -516,28 +511,6 @@
             "title": "Login Mechanism Name",
             "type": "string",
             "description": "The Login Mechanism Name is used for user-facing copy. For instance, \"Sign up with {login_mechanism_name}.\"."
-          }
-        }
-      },
-
-      "integration_onze_stad_app": {
-        "type": "object",
-        "description":  "Allow posting ideas to Onze StadApp as news.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "required-settings": ["app_id", "api_key"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false},
-          "app_id": {
-            "title": "App ID",
-            "type": "string",
-            "private": true
-          },
-          "api_key": {
-            "title": "API Key",
-            "type": "string",
-            "private": true
           }
         }
       },
@@ -595,6 +568,7 @@
         "title": "Esri Integration",
         "description":  "Esri integration for maps. Enables the use of Esri layers and Esri web maps with our maps. An add-on that can be purchased, and is not restricted to specific pricing plan(s).",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false},
@@ -811,6 +785,7 @@
         "title": "Screening (proposals)",
         "description": "When active, screening can be activated for proposals phases, which requires admins/moderators to explicitly approve each input before it becomes visible to the public.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": true },
@@ -823,6 +798,7 @@
         "title": "Screening (ideation)",
         "description": "When active, screening can be activated for ideation phases, which requires admins/moderators to explicitly approve each input before it becomes visible to the public.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false },
@@ -835,6 +811,7 @@
         "title": "Surveys",
         "description":  "Allow external surveys to be embedded.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": true},
@@ -847,6 +824,7 @@
         "title": "Typeform Surveys",
         "description":  "Allow Typeform surveys to be embedded.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": true},
@@ -866,6 +844,7 @@
         "title": "Google Forms Surveys",
         "description":  "Allow Google Form surveys to be embedded.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": true},
@@ -878,6 +857,7 @@
         "title": "Enalyzer Forms Surveys",
         "description":  "Allow Enalyzer surveys to be embedded.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false},
@@ -890,6 +870,7 @@
         "title": "Survey Xact Forms Surveys",
         "description":  "Allow Survey Xact surveys to be embedded.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false},
@@ -902,6 +883,7 @@
         "title": "Surveymonkey Surveys",
         "description":  "Allow the embedding of Surveymonkey surveys. Deprecated, since not supported on mobile.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false},
@@ -914,6 +896,7 @@
         "title": "Snap Survey Surveys",
         "description":  "Allow the embedding of Snap Survey surveys.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false},
@@ -926,6 +909,7 @@
         "title": "Qualtrics Surveys",
         "description":  "Allow Qualtrics surveys to be embedded.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false},
@@ -938,6 +922,7 @@
         "title": "Microsoft Forms Surveys",
         "description":  "Allow Microsoft Forms surveys to be embedded.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false},
@@ -950,6 +935,7 @@
         "title": "SmartSurvey Surveys",
         "description":  "Allow SmartSurvey surveys to be embedded.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false},
@@ -962,6 +948,7 @@
         "title": "Konveio Document Annotation",
         "description":  "Allow Konveio document annotation to be embedded.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false },
@@ -986,6 +973,7 @@
         "title": "Block Profanity",
         "description": "Prevent input with profanity in it from being posted (can be turned on/off from the platform)",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": true},
@@ -1030,6 +1018,7 @@
         "title": "Granular Permissions",
         "description": "Admin can specify permissions for specific projects and project phases (e.g., who can post, react, etc.).",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": true},
@@ -1054,6 +1043,7 @@
         "title": "Custom Pages",
         "description":	"Allow custom pages to be made and added to the platform's navigation.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": true},
@@ -1162,6 +1152,7 @@
         "title": "Mapping features used in in-platform surveys",
         "description":  "Alpha version - do not enable for active platform(s) unless agreed with Product. Mapping questions (pin, route & area), Esri Shapefile upload, and map page.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false },
@@ -1174,6 +1165,7 @@
         "title": "Input form builder custom fields",
         "description": "Enables the ability to create custom fields within the ideation form builder.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": true },
@@ -1198,6 +1190,7 @@
         "title": "Permission custom fields on project actions",
         "description": "Enables the option for admins to add custom questions to project action permissions.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false },
@@ -1222,6 +1215,7 @@
         "title": "Custom Input Statuses",
         "description": "Allows admin to define custom input statuses.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": true },
@@ -1234,6 +1228,7 @@
         "title": "Public API tokens",
         "description": "Enables the ability to create API tokens for the public API.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": true },
@@ -1246,6 +1241,7 @@
         "title": "Power BI",
         "description": "Allows downloading of pre-configured templates for PowerBI.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false },
@@ -1258,6 +1254,7 @@
         "title": "Form Sync (fka import printed forms)",
         "description": "Enables the importing of PDF files from handwritten ideas and surveys on printed forms.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false },
@@ -1270,6 +1267,7 @@
         "title": "Input importer",
         "description": "Enables the importing of Excel (XLSX) files with ideas and surveys.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": true },
@@ -1294,6 +1292,7 @@
         "title": "AI-powered analysis for surveys and ideation",
         "description": "Enables the use of AI-powered analysis for surveys and ideation.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": true },
@@ -1306,6 +1305,7 @@
         "title": "AI-powered analysis for surveys and ideation (large summaries)",
         "description": "Enables the use of AI-powered analysis for surveys and ideation for a large number of inputs.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false },
@@ -1318,6 +1318,7 @@
         "title": "AI-powered questions and answers feature for surveys and ideation",
         "description": "Enables the use of AI-powered questions and answers feature for surveys and ideation.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false },
@@ -1330,6 +1331,7 @@
         "title": "AI-powered advanced autotagging for surveys and ideation",
         "description": "Enables the use of AI-powered advanced autotagging feature for surveys and ideation.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false },
@@ -1342,6 +1344,7 @@
         "title": "Multi-language platform",
         "description": "Enables the ability to add multiple languages on the platform.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false },
@@ -1354,6 +1357,7 @@
         "title": "Customisable homepage banner",
         "description": "Enables customization of various settings for the homepage banner, including layout options, overlay colors, and more, beyond just the banner text.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false },
@@ -1390,6 +1394,7 @@
         "title": "Management Feed",
         "description": "Experimental feature: A minimal list of selected actions performed by admins or managers in the last 30 days. Not all actions are included.",
         "additionalProperties": false,
+        "pricing": true,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false },
@@ -1452,16 +1457,11 @@
     "microsoft_forms_surveys": ["surveys"],
     "smart_survey_surveys": ["surveys"],
 
-    "id_auth0": ["verification"],
-    "id_bogus": ["verification"],
-    "id_bosa_fas": ["verification"],
-    "id_clave_unica": ["verification"],
-    "id_cow": ["verification"],
-    "id_franceconnect": ["verification"],
-    "id_gent_rrn": ["verification"],
-    "id_oostende_rrn": ["verification"],
-    "id_id_card_lookup": ["verification"],
-    "id_keycloak": ["verification"],
+    "clave_unica_login": ["verification"],
+    "criipto_login": ["verification"],
+    "id_austria_login": ["verification"],
+    "keycloak_login": ["verification"],
+    "nemlog_in_login": ["verification"],
 
     "power_bi": ["public_api_tokens"],
     "large_summaries": ["analysis"],
