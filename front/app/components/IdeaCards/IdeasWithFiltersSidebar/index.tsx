@@ -201,7 +201,7 @@ const IdeasWithFiltersSidebar = ({
   );
 
   const showContentRight = biggerThanLargeTablet && selectedView === 'card';
-  console.log(showContentRight);
+
   const ideasCount = ideasFilterCounts?.data.attributes.total || 0;
 
   return (
