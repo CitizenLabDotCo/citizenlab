@@ -11,10 +11,18 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import Container from 'components/admin/ContentBuilder/Toolbox/Container';
 import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
 import Section from 'components/admin/ContentBuilder/Toolbox/Section';
-import AccordionMultiloc from 'components/admin/ContentBuilder/Widgets/AccordionMultiloc';
-import ButtonMultiloc from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
-import IframeMultiloc from 'components/admin/ContentBuilder/Widgets/IframeMultiloc';
-import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
+import AccordionMultiloc, {
+  accordionMultilocTitle,
+} from 'components/admin/ContentBuilder/Widgets/AccordionMultiloc';
+import ButtonMultiloc, {
+  buttonMultilocTitle,
+} from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
+import IframeMultiloc, {
+  iframeTitle,
+} from 'components/admin/ContentBuilder/Widgets/IframeMultiloc';
+import ImageMultiloc, {
+  imageMultilocTitle,
+} from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
 import ImageTextCards from 'components/admin/ContentBuilder/Widgets/ImageTextCards';
 import ThreeColumn, {
   threeColumnTitle,
@@ -22,7 +30,9 @@ import ThreeColumn, {
 import TwoColumn, {
   twoColumnTitle,
 } from 'components/admin/ContentBuilder/Widgets/TwoColumn';
-import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
+import WhiteSpace, {
+  whiteSpaceTitle,
+} from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 
 import {
   useIntl,
@@ -57,7 +67,7 @@ import Spotlight, {
   spotlightTitle,
   buttonTextDefault,
 } from '../Widgets/Spotlight';
-import TextMultiloc from '../Widgets/TextMultiloc';
+import TextMultiloc, { textMultilocTitle } from '../Widgets/TextMultiloc';
 
 type HomepageBuilderToolboxProps = {
   selectedLocale: SupportedLocale;
@@ -206,13 +216,13 @@ const HomepageBuilderToolbox = ({
           id="e2e-draggable-text-multiloc"
           component={<TextMultiloc text={{}} />}
           icon="text"
-          label={formatMessage(TextMultiloc.craft.custom.title)}
+          label={formatMessage(textMultilocTitle)}
         />
         <DraggableElement
           id="e2e-draggable-white-space"
           component={<WhiteSpace size="small" />}
           icon="layout-white-space"
-          label={formatMessage(WhiteSpace.craft.custom.title)}
+          label={formatMessage(whiteSpaceTitle)}
         />
         <DraggableElement
           id="e2e-draggable-button"
@@ -225,13 +235,13 @@ const HomepageBuilderToolbox = ({
             />
           }
           icon="button"
-          label={formatMessage(ButtonMultiloc.craft.custom.title)}
+          label={formatMessage(buttonMultilocTitle)}
         />
         <DraggableElement
           id="e2e-draggable-image"
           component={<ImageMultiloc alt={{}} />}
           icon="image"
-          label={formatMessage(ImageMultiloc.craft.custom.title)}
+          label={formatMessage(imageMultilocTitle)}
         />
         <DraggableElement
           id="e2e-draggable-iframe"
@@ -244,13 +254,13 @@ const HomepageBuilderToolbox = ({
             />
           }
           icon="code"
-          label={formatMessage(IframeMultiloc.craft.custom.title)}
+          label={formatMessage(iframeTitle)}
         />
         <DraggableElement
           id="e2e-draggable-accordion"
           component={<AccordionMultiloc title={{}} text={{}} />}
           icon="accordion"
-          label={formatMessage(AccordionMultiloc.craft.custom.title)}
+          label={formatMessage(accordionMultilocTitle)}
         />
         <DraggableElement
           id="e2e-draggable-two-column"
