@@ -73,7 +73,6 @@ const CustomPageProjectsAndEvents = ({
     areaIds,
     publicationStatusFilter: getPublicationStatuses(currentTab),
     rootLevelOnly: false,
-    removeNotAllowedParents: true,
     onlyProjects: true,
   });
 
@@ -138,7 +137,6 @@ const CustomPageProjectsAndEventsWrapper = ({ page }: Props) => {
       areaIds,
       publicationStatusFilter: PUBLICATION_STATUSES,
       rootLevelOnly: false,
-      removeNotAllowedParents: true,
       onlyProjects: true,
     }
   );

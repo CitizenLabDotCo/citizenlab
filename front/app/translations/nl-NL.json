@@ -1339,7 +1339,7 @@
   "app.containers.IdeasShow.MetaInformation.currentStatus": "Huidige status",
   "app.containers.IdeasShow.MetaInformation.location": "Locatie",
   "app.containers.IdeasShow.MetaInformation.postedBy": "Geplaatst door",
-  "app.containers.IdeasShow.MetaInformation.similar": "Vergelijkbare inputs",
+  "app.containers.IdeasShow.MetaInformation.similar": "Vergelijkbare bijdragen",
   "app.containers.IdeasShow.MetaInformation.topics": "Tags",
   "app.containers.IdeasShow.commentCTA": "Voeg een reactie toe",
   "app.containers.IdeasShow.contributionEmailSharingBody": "Deze bijdrage '{postTitle}' op {postUrl} steunen!",
