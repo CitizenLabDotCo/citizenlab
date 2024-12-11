@@ -42,7 +42,7 @@ const PrescreeningToggle = ({
                     color="primary"
                     mb="0px"
                     fontSize="m"
-                    fontWeight="medium"
+                    fontWeight="semi-bold"
                   >
                     <FormattedMessage {...messages.prescreeningText} />
                   </Text>

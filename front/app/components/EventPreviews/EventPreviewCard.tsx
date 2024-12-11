@@ -88,7 +88,7 @@ const EventPreviewCard = ({ event }: EventPreviewCardProps) => {
         ml="12px"
         fontSize={isMobile ? 's' : 'm'}
         maxWidth="260px"
-        fontWeight="medium"
+        fontWeight="semi-bold"
         my="auto"
         color="tenantText"
       >

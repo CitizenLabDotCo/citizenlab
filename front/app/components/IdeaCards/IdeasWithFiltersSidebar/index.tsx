@@ -226,7 +226,7 @@ const IdeasWithFiltersSidebar = ({
             as="h2"
             my="auto"
             color="tenantText"
-            fontWeight="medium"
+            fontWeight="semi-bold"
           >
             {formatMessage(getInputCountMessage(inputTerm), {
               ideasCount,

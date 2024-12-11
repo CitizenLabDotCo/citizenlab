@@ -262,7 +262,7 @@ export const getFontWeightCSS = (fontWeight: FontWeight) => {
   switch (fontWeight) {
     case 'bold': // Value of 700
       return 'bold';
-    case 'medium':
+    case 'semi-bold':
       return 600;
     case 'normal':
       return 'normal'; // Value of 400
