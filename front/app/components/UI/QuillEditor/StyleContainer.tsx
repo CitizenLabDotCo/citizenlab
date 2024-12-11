@@ -4,7 +4,6 @@ import {
   colors,
   isRtl,
   quillEditedContent,
-  defaultStyles,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
@@ -173,8 +172,7 @@ const Container = styled.div<{
   }
 
   &.focus div.ql-container > div.ql-editor {
-    border-color: ${colors.black};
-    box-shadow: inset ${defaultStyles.boxShadowFocused};
+    border: 2px solid ${(props) => props.theme.colors.tenantPrimary};
   }
 `;
 

@@ -14,6 +14,7 @@ import {
   IdeaCardsWithFiltersSidebar,
   IdeaCardsWithoutFiltersSidebar,
 } from 'components/IdeaCards';
+import IdeaListScrollAnchor from 'components/IdeaListScrollAnchor';
 
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
@@ -108,12 +109,7 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
         />
       ) : (
         <>
-          <Box
-            position="absolute"
-            mt="-100px"
-            id="ideas-list-scroll-anchor"
-            aria-hidden={true}
-          />
+          <IdeaListScrollAnchor />
           <IdeaCardsWithFiltersSidebar inputTerm={inputTerm} {...sharedProps} />
         </>
       )}
