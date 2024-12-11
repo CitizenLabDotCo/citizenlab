@@ -138,7 +138,7 @@ const IdeasWithFiltersSidebar = ({
     loadIdeaMarkers
   );
 
-  const setSelectedView = useCallback((view: 'card' | 'map') => {
+  const setSelectedView = useCallback((view: PresentationMode) => {
     updateSearchParams({ view });
   }, []);
 
