@@ -27,7 +27,6 @@ const prefetchData = () => {
   const statusCountParams = {
     publicationStatusFilter: PUBLICATION_STATUSES,
     rootLevelOnly: true,
-    removeNotAllowedParents: true,
   } as const;
 
   // console.log(window.location.pathname);

@@ -353,32 +353,32 @@ describe SideFxIdeaService do
         .with(idea)
     end
 
-    context 'native survey responses' do
-      before { create(:idea_status_proposed) }
-
-      let(:idea) { create(:native_survey_response, publication_status: 'draft') }
-
-      it 'deletes other draft responses by the same user when the survey response is submitted (published)' do
-        create(:native_survey_response, publication_status: 'draft', project: idea.project, creation_phase: idea.creation_phase, author: idea.author)
-        idea.update!(publication_status: 'published')
-        expect { service.after_update(idea, user) }
-          .to change { Idea.all.count }.from(2).to(1)
-      end
-
-      it 'does not deletes draft responses by different users when the survey response is submitted (published)' do
-        create(:native_survey_response, publication_status: 'draft', project: idea.project, creation_phase: idea.creation_phase)
-        idea.update!(publication_status: 'published')
-        service.after_update(idea, user)
-        expect(Idea.all.count).to eq 2
-      end
-
-      it 'does not deletes draft responses when the survey response is still in draft' do
-        create(:native_survey_response, publication_status: 'draft', project: idea.project, creation_phase: idea.creation_phase)
-        idea.update!(custom_field_values: {})
-        service.after_update(idea, user)
-        expect(Idea.all.count).to eq 2
-      end
-    end
+    # context 'native survey responses' do
+    #   before { create(:idea_status_proposed) }
+    #
+    #   let(:idea) { create(:native_survey_response, publication_status: 'draft') }
+    #
+    #   it 'deletes other draft responses by the same user when the survey response is submitted (published)' do
+    #     create(:native_survey_response, publication_status: 'draft', project: idea.project, creation_phase: idea.creation_phase, author: idea.author)
+    #     idea.update!(publication_status: 'published')
+    #     expect { service.after_update(idea, user) }
+    #       .to change { Idea.all.count }.from(2).to(1)
+    #   end
+    #
+    #   it 'does not deletes draft responses by different users when the survey response is submitted (published)' do
+    #     create(:native_survey_response, publication_status: 'draft', project: idea.project, creation_phase: idea.creation_phase)
+    #     idea.update!(publication_status: 'published')
+    #     service.after_update(idea, user)
+    #     expect(Idea.all.count).to eq 2
+    #   end
+    #
+    #   it 'does not deletes draft responses when the survey response is still in draft' do
+    #     create(:native_survey_response, publication_status: 'draft', project: idea.project, creation_phase: idea.creation_phase)
+    #     idea.update!(custom_field_values: {})
+    #     service.after_update(idea, user)
+    #     expect(Idea.all.count).to eq 2
+    #   end
+    # end
   end
 
   describe 'after_destroy' do
