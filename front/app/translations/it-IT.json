@@ -1347,6 +1347,7 @@
   "app.containers.IdeasShow.MetaInformation.currentStatus": "Stato attuale",
   "app.containers.IdeasShow.MetaInformation.location": "Posizione",
   "app.containers.IdeasShow.MetaInformation.postedBy": "Inviato da",
+  "app.containers.IdeasShow.MetaInformation.similar": "Ingressi simili",
   "app.containers.IdeasShow.MetaInformation.topics": "Argomenti",
   "app.containers.IdeasShow.commentCTA": "Aggiungere un commento",
   "app.containers.IdeasShow.contributionEmailSharingBody": "Sostenete questo contributo '{postTitle}' a {postUrl}!",
