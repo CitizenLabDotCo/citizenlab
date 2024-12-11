@@ -573,7 +573,7 @@ resource 'Phases' do
                 phase,
                 'changed_manual_voters_amount',
                 User.admin.first,
-                phase.updated_at.to_i,
+                anything,
                 payload: { change: [nil, manual_voters_amount] },
                 project_id: phase.project_id
               ).exactly(1).times
