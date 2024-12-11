@@ -9,6 +9,7 @@ import {
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { IdeaQueryParameters } from 'api/ideas/types';
 import { IdeaSortMethod } from 'api/phases/types';
 
 import CityLogoSection from 'components/CityLogoSection';
@@ -75,20 +76,6 @@ const PageTitle = styled.h1`
  `}
 `;
 
-export interface QueryParameters {
-  'page[number]': number;
-  'page[size]': number;
-  project_publication_status?: 'published';
-  publication_status?: 'published';
-  phase?: string;
-
-  // filters
-  sort: IdeaSortMethod;
-  search?: string;
-  idea_status?: string;
-  topics?: string[];
-}
-
 export default () => {
   const [searchParams] = useSearchParams();
   const sortParam = searchParams.get('sort') as IdeaSortMethod | null;
@@ -96,7 +83,7 @@ export default () => {
   const ideaStatusParam = searchParams.get('idea_status');
   const topicsParam = searchParams.get('topics');
 
-  const ideasQueryParameters = useMemo<QueryParameters>(
+  const ideasQueryParameters = useMemo<IdeaQueryParameters>(
     () => ({
       'page[number]': 1,
       'page[size]': 12,
