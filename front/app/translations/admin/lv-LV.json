@@ -380,7 +380,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.embeddedMethods": "Iegulto metožu (piemēram, ārējo aptauju) dalībnieki.",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.followers": "Projekta sekotāji",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.note": "Piezīme: Ieslēdzot anonīmas vai atklātas dalības atļaujas, lietotāji var piedalīties vairākas reizes, tādējādi iegūstot maldinošus vai nepilnīgus lietotāju datus.",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsExclusionTitle": "Dalībnieku vidū nav:",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsInfoTitle": "Piedalās:",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.users": "Lietotāju mijiedarbība ar Go Vocal metodēm",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.projectSettings": "Projekta iestatījumi",

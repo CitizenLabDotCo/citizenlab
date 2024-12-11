@@ -380,7 +380,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.embeddedMethods": "المشاركون في الأساليب المضمنة (على سبيل المثال، الاستطلاعات الخارجية)",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.followers": "متابعين للمشروع",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.note": "ملاحظة: قد يؤدي تمكين أذونات المشاركة المجهولة أو المفتوحة إلى السماح للمستخدمين بالمشاركة عدة مرات، مما يؤدي إلى بيانات مستخدم مضللة أو غير كاملة.",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsExclusionTitle": "لا يشمل المشاركون:",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsInfoTitle": "يشمل المشاركون:",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.users": "المستخدمون يتفاعلون مع أساليب Go Vocal",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.projectSettings": "إعدادات المشروع",

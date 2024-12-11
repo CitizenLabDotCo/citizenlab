@@ -380,7 +380,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.embeddedMethods": "Sudionici u ugrađenim metodama (npr. vanjske ankete)",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.followers": "Sljedbenici projekta",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.note": "Napomena: Omogućavanje dozvola za anonimno ili otvoreno sudjelovanje može omogućiti korisnicima višestruko sudjelovanje, što dovodi do pogrešnih ili nepotpunih korisničkih podataka.",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsExclusionTitle": "Sudionici ne uključuju:",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsInfoTitle": "Sudionici uključuju:",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.users": "Korisnici u interakciji s Go Vocal metodama",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.projectSettings": "Postavke projekta",

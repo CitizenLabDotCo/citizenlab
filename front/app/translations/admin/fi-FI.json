@@ -380,7 +380,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.embeddedMethods": "Osallistujat sulautettuihin menetelmiin (esim. ulkoisiin tutkimuksiin)",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.followers": "Projektin seuraajia",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.note": "Huomautus: Anonyymien tai avointen osallistumisoikeuksien salliminen voi antaa käyttäjille mahdollisuuden osallistua useita kertoja, mikä johtaa harhaanjohtaviin tai epätäydellisiin käyttäjätietoihin.",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsExclusionTitle": "Osallistujat eivät sisällä:",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsInfoTitle": "Osallistujia ovat:",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.users": "Käyttäjät, jotka ovat vuorovaikutuksessa Go Vocal -menetelmien kanssa",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.projectSettings": "Projektin asetukset",

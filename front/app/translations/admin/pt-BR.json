@@ -380,7 +380,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.embeddedMethods": "Participantes de métodos incorporados (por exemplo, pesquisas externas)",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.followers": "Seguidores de um projeto",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.note": "Observação: a ativação de permissões de participação anônima ou aberta pode permitir que os usuários participem várias vezes, levando a dados de usuário enganosos ou incompletos.",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsExclusionTitle": "Os participantes não incluem:",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsInfoTitle": "Os participantes incluem:",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.users": "Usuários interagindo com os métodos da Go Vocal",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.projectSettings": "Configurações do projeto",

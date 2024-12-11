@@ -380,7 +380,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.embeddedMethods": "Deelnemers aan ingesloten methoden (bijv. externe onderzoeken)",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.followers": "Volgers van een project",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.note": "Opmerking: Als je anonieme of open deelnamemogelijkheden inschakelt, kunnen gebruikers meerdere keren deelnemen, wat kan leiden tot misleidende of onvolledige gebruikersgegevens.",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsExclusionTitle": "Deelnemers zijn niet:",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsInfoTitle": "Deelnemers zijn onder andere:",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.users": "Gebruikers in interactie met Go Vocal-methoden",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.projectSettings": "Projectinstellingen",
