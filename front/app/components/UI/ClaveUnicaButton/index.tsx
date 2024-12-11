@@ -29,7 +29,7 @@ const ClaveUnicaButtonWrapper = ({
     // setHref of front/app/api/authentication/singleSignOn.ts
     // TODO: remove.
     const jwt = getJwt();
-    window.location.href = `${AUTH_PATH}/clave_unica?token=${jwt}&pathname=${removeUrlLocale(
+    window.location.href = `${AUTH_PATH}/clave_unica?token=${jwt}&verification_pathname=${removeUrlLocale(
       window.location.pathname
     )}`;
   };

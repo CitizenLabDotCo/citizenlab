@@ -85,7 +85,7 @@ describe 'clave_unica verification' do
   end
 
   it 'successfully verifies a user' do
-    get "/auth/clave_unica?token=#{@token}&random-passthrough-param=somevalue&pathname=/yipie"
+    get "/auth/clave_unica?token=#{@token}&random-passthrough-param=somevalue&verification_pathname=/yipie"
     follow_redirect!
 
     expect(response).to redirect_to('/en/yipie?random-passthrough-param=somevalue&verification_success=true')
@@ -96,7 +96,7 @@ describe 'clave_unica verification' do
   it "successfully verifies a user that hasn't completed her registration" do
     @user.update!(registration_completed_at: nil)
 
-    get "/auth/clave_unica?token=#{@token}&pathname=/yipie"
+    get "/auth/clave_unica?token=#{@token}&verification_pathname=/yipie"
     follow_redirect!
 
     expect(response).to redirect_to('/en/yipie?verification_success=true')
@@ -118,7 +118,7 @@ describe 'clave_unica verification' do
       hashed_uid: Verification::VerificationService.new.send(:hashed_uid, '44444444', 'clave_unica')
     )
 
-    get "/auth/clave_unica?token=#{@token}&pathname=/some-page"
+    get "/auth/clave_unica?token=#{@token}&verification_pathname=/some-page"
     follow_redirect!
 
     expect(response).to redirect_to('/some-page?verification_error=true&error_code=taken')
@@ -145,7 +145,7 @@ describe 'clave_unica verification' do
       password_digest: nil
     })
 
-    expect(response).to redirect_to('/en/?param=some-param')
+    expect(response).to redirect_to('/en/?param=some-param&sso_flow=signup&sso_success=true')
   end
 
   it 'does not send email to empty address (when just registered)' do
@@ -172,7 +172,7 @@ describe 'clave_unica verification' do
       before { new_user.update!(email: Faker::Internet.email) }
 
       it 'does not verify another user and does not delete previously verified new user' do
-        get "/auth/clave_unica?token=#{@token}&pathname=/some-page"
+        get "/auth/clave_unica?token=#{@token}&verification_pathname=/some-page"
         follow_redirect!
 
         expect(response).to redirect_to('/some-page?verification_error=true&error_code=taken')
@@ -188,7 +188,7 @@ describe 'clave_unica verification' do
 
     context 'when verified registration is not completed by new user' do
       it 'successfully verifies another user and deletes previously verified blank new user' do
-        get "/auth/clave_unica?token=#{@token}&pathname=/some-page"
+        get "/auth/clave_unica?token=#{@token}&verification_pathname=/some-page"
         follow_redirect!
 
         expect(response).to redirect_to('/en/some-page?verification_success=true')

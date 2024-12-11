@@ -15,17 +15,16 @@ module Verification
 
       def verification_callback(verification_method)
         auth = request.env['omniauth.auth']
-        omniauth_params = request.env['omniauth.params'].except('token')
 
         begin
-          @user = AuthToken::AuthToken.new(token: request.env['omniauth.params']['token']).entity_for(::User)
+          @user = AuthToken::AuthToken.new(token: omniauth_params['token']).entity_for(::User)
           if @user&.invite_not_pending?
             begin
               handle_verification(auth, @user)
               update_user!(auth, @user, verification_method)
               url = add_uri_params(
-                Frontend::UrlService.new.verification_return_url(locale: Locale.new(@user.locale), pathname: omniauth_params['pathname']),
-                omniauth_params.merge(verification_success: true).except('pathname')
+                Frontend::UrlService.new.verification_return_url(locale: Locale.new(@user.locale), pathname: omniauth_params['verification_pathname']),
+                filter_omniauth_params.merge(verification_success: true)
               )
               redirect_to url
             rescue VerificationService::VerificationTakenError
@@ -56,10 +55,9 @@ module Verification
       end
 
       def verification_failure_redirect(error)
-        omniauth_params = filter_omniauth_params
         url = add_uri_params(
-          Frontend::UrlService.new.verification_return_url(pathname: request.env['omniauth.params']['pathname']),
-          omniauth_params.merge(verification_error: true, error_code: error)
+          Frontend::UrlService.new.verification_return_url(pathname: omniauth_params['verification_pathname']),
+          filter_omniauth_params.merge(verification_error: true, error_code: error)
         )
         redirect_to url
       end
