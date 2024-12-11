@@ -1347,6 +1347,7 @@
   "app.containers.IdeasShow.MetaInformation.currentStatus": "Maannakkut killiffik",
   "app.containers.IdeasShow.MetaInformation.location": "Sumi",
   "app.containers.IdeasShow.MetaInformation.postedBy": "Nassiunneqarpoq",
+  "app.containers.IdeasShow.MetaInformation.similar": "Similar inputs",
   "app.containers.IdeasShow.MetaInformation.topics": "Sammisassat imaat",
   "app.containers.IdeasShow.commentCTA": "Oqaaseqaatit nassiutiguk",
   "app.containers.IdeasShow.contributionEmailSharingBody": "Ilanngussaq una '{postTitle}' {postUrl}-imi taperseruk!",
