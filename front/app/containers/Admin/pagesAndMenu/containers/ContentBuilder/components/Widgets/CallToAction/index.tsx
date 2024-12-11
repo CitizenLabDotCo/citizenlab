@@ -131,7 +131,6 @@ const CallToAction = ({
 
   return (
     <Box
-      border={`1px ${colors.grey300} solid`}
       data-cy="e2e-highlight"
       my={isSmallerThanTablet ? DEFAULT_PADDING : DEFAULT_Y_PADDING}
     >

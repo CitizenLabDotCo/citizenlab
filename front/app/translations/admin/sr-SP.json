@@ -2714,7 +2714,7 @@
   "app.containers.admin.project.permissions.permissionsSelectionLabel": "Избор",
   "app.containers.admin.project.permissions.permissionsSelectionLabelDescription": "Корисници у одређеним групама корисника могу учествовати. Групама корисника можете управљати на картици „Корисници“.",
   "app.containers.admin.project.permissions.viewingRightsTitle": "Ко може да види овај пројекат?",
-  "app.modules.commercial.analytics.admin.components.ActiveUsersCard.cardTitleTooltipMessage3": "Participants are users or visitors that have participated in a project, posted or interacted with a proposal, attended events or followed things.",
+  "app.modules.commercial.analytics.admin.components.ActiveUsersCard.cardTitleTooltipMessage4": "Participants are users or visitors that have participated in a project, posted or interacted with a proposal or attended events.",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participants": "Participants",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRate": "Стопа учешћа",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRateTooltip3": "Percentage of visitors that become participants. Only participants and visitors that accepted cookies are counted.",

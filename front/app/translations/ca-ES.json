@@ -1338,6 +1338,7 @@
   "app.containers.IdeasShow.MetaInformation.currentStatus": "Estat actual",
   "app.containers.IdeasShow.MetaInformation.location": "Ubicació",
   "app.containers.IdeasShow.MetaInformation.postedBy": "Publicat per",
+  "app.containers.IdeasShow.MetaInformation.similar": "Entrades similars",
   "app.containers.IdeasShow.MetaInformation.topics": "Etiquetes",
   "app.containers.IdeasShow.commentCTA": "Afegir un comentari",
   "app.containers.IdeasShow.contributionEmailSharingBody": "Doneu suport a aquesta contribució \"{postTitle}\" a {postUrl}!",

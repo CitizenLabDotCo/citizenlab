@@ -103,8 +103,14 @@ const IdeasWithFiltersSidebar = ({
   const { windowWidth } = useWindowSize();
   const [searchParams] = useSearchParams();
   const selectedIdeaMarkerId = searchParams.get('idea_map_id');
-  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useInfiniteIdeas(ideaQueryParameters);
+  const {
+    data,
+    isLoading,
+    isFetching,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteIdeas(ideaQueryParameters);
 
   const list = data?.pages.map((page) => page.data).flat();
   const { data: ideasFilterCounts } = useIdeasFilterCounts(ideaQueryParameters);
@@ -266,6 +272,11 @@ const IdeasWithFiltersSidebar = ({
           )}
           <Box display={selectedView === 'map' ? 'block' : 'flex'}>
             <ContentLeft>
+              {isFetching && (
+                <Box mb="12px">
+                  <Spinner />
+                </Box>
+              )}
               <IdeasView
                 list={list}
                 querying={isLoading}

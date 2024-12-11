@@ -1338,6 +1338,7 @@
   "app.containers.IdeasShow.MetaInformation.currentStatus": "Aktueller Status",
   "app.containers.IdeasShow.MetaInformation.location": "Ort",
   "app.containers.IdeasShow.MetaInformation.postedBy": "Gepostet von",
+  "app.containers.IdeasShow.MetaInformation.similar": "Ähnliche Beiträge",
   "app.containers.IdeasShow.MetaInformation.topics": "Themen",
   "app.containers.IdeasShow.commentCTA": "Kommentieren",
   "app.containers.IdeasShow.contributionEmailSharingBody": "Unterstützen Sie den Beitrag „{postTitle}“ unter {postUrl}!",

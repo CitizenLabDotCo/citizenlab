@@ -1338,6 +1338,7 @@
   "app.containers.IdeasShow.MetaInformation.currentStatus": "Status atual",
   "app.containers.IdeasShow.MetaInformation.location": "Localização",
   "app.containers.IdeasShow.MetaInformation.postedBy": "Postado por",
+  "app.containers.IdeasShow.MetaInformation.similar": "Entradas semelhantes",
   "app.containers.IdeasShow.MetaInformation.topics": "Tópicos",
   "app.containers.IdeasShow.commentCTA": "Adicionar um comentário",
   "app.containers.IdeasShow.contributionEmailSharingBody": "Apoie esta contribuição '{postTitle}' em {postUrl}!",

@@ -1338,6 +1338,7 @@
   "app.containers.IdeasShow.MetaInformation.currentStatus": "موجودہ حیثیت",
   "app.containers.IdeasShow.MetaInformation.location": "مقام",
   "app.containers.IdeasShow.MetaInformation.postedBy": "کی طرف سے پوسٹ کیا گیا",
+  "app.containers.IdeasShow.MetaInformation.similar": "ملتے جلتے ان پٹ",
   "app.containers.IdeasShow.MetaInformation.topics": "ٹیگز",
   "app.containers.IdeasShow.commentCTA": "ایک تبصرہ شامل کریں۔",
   "app.containers.IdeasShow.contributionEmailSharingBody": "اس شراکت کی حمایت کریں '{postTitle}' پر {postUrl}!",
