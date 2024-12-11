@@ -7,7 +7,7 @@ import { TCustomPageCode } from 'api/custom_pages/types';
 import useCustomPages from 'api/custom_pages/useCustomPages';
 import useAuthUser from 'api/me/useAuthUser';
 import useNavbarItems from 'api/navbar/useNavbarItems';
-import { DEFAULT_PAGE_SLUGS } from 'api/navbar/util';
+import { getNavbarItemSlug } from 'api/navbar/util';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -246,11 +246,7 @@ const SiteMap = () => {
                         )
                         .map((navBarItem) => (
                           <li key={navBarItem.id}>
-                            <Link
-                              to={
-                                DEFAULT_PAGE_SLUGS[navBarItem.attributes.code]
-                              }
-                            >
+                            <Link to={getNavbarItemSlug(navBarItem)}>
                               {localize(navBarItem.attributes.title_multiloc)}
                             </Link>
                           </li>
