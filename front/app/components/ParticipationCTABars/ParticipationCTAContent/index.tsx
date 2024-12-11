@@ -24,7 +24,7 @@ const ParticipationCTAContent = ({
 }: Props) => {
   const theme = useTheme();
   const isSmallerThanPhone = useBreakpoint('phone');
-  // This is the same condition as we have in ProjectCTABar.
+  // This is the same condition we have in ProjectCTABar.
   const sticksToBottom = isSmallerThanPhone;
 
   return sticksToBottom ? (
