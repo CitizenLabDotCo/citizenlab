@@ -39,36 +39,28 @@ const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
     project: project.data,
     phases: phases?.data,
   });
-
   const sharedProps: BoxProps = {
     width: '100vw',
     zIndex: '1000',
     background: colors.white,
   };
-
-  if (sticksToBottom) {
-    return (
-      <Box
+  const otherProps: BoxProps = sticksToBottom
+    ? {
         // This id is needed to add padding to PlatformFooter
-        id="project-cta-bar-bottom"
-        position="fixed"
-        bottom="0px"
-        {...sharedProps}
-      >
-        {BarContents}
-      </Box>
-    );
-  } else {
-    return (
-      <Box
-        position="sticky"
-        top={`${stylingConsts.menuHeight}px`}
-        {...sharedProps}
-      >
-        {BarContents}
-      </Box>
-    );
-  }
+        id: 'project-cta-bar-bottom',
+        position: 'fixed',
+        bottom: '0px',
+      }
+    : {
+        position: 'sticky',
+        top: `${stylingConsts.menuHeight}px`,
+      };
+
+  return (
+    <Box {...sharedProps} {...otherProps}>
+      {BarContents}
+    </Box>
+  );
 };
 
 export default ProjectCTABar;
