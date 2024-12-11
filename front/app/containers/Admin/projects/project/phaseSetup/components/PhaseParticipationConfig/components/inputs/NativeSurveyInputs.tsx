@@ -59,12 +59,7 @@ const NativeSurveyInputs = ({
         toggleLabel={
           <Box ml="8px">
             <Box display="flex">
-              <Text
-                color="primary"
-                mb="0px"
-                fontSize="m"
-                style={{ fontWeight: 600 }}
-              >
+              <Text color="primary" mb="0px" fontSize="m" fontWeight={600}>
                 <FormattedMessage {...messages.userAnonymityLabelMain} />
               </Text>
               <Box ml="4px" mt="16px">
