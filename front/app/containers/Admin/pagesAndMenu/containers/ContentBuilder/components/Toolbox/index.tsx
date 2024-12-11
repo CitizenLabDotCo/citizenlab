@@ -40,6 +40,8 @@ import {
 } from 'utils/cl-intl';
 
 import messages from '../../messages';
+import Areas, { areasTitle } from '../Widgets/Areas';
+import areasMessages from '../Widgets/Areas/messages';
 import CallToAction, { callToActionTitle } from '../Widgets/CallToAction';
 import Events from '../Widgets/Events';
 import FinishedOrArchived, {
@@ -137,7 +139,16 @@ const HomepageBuilderToolbox = ({
           icon="sportsScore"
           label={formatMessage(finishedOrArchivedTitle)}
         />
-
+        <DraggableElement
+          id="e2e-draggable-areas"
+          component={
+            <Areas
+              titleMultiloc={toMultiloc(areasMessages.inYourNeighborhood)}
+            />
+          }
+          icon="home"
+          label={formatMessage(areasTitle)}
+        />
         <DraggableElement
           id="e2e-draggable-spotlight"
           component={
@@ -146,7 +157,6 @@ const HomepageBuilderToolbox = ({
           icon="flash"
           label={formatMessage(spotlightTitle)}
         />
-
         <DraggableElement
           id="e2e-draggable-selection"
           component={
@@ -158,7 +168,6 @@ const HomepageBuilderToolbox = ({
           icon="folder-outline"
           label={formatMessage(selectionTitle)}
         />
-
         <DraggableElement
           id="e2e-draggable-published"
           component={<Published titleMultiloc={toMultiloc(publishedTitle)} />}
