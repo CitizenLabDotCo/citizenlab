@@ -2714,7 +2714,7 @@
   "app.containers.admin.project.permissions.permissionsSelectionLabel": "Urval",
   "app.containers.admin.project.permissions.permissionsSelectionLabelDescription": "Användare i specifika användargrupper kan delta. Du kan hantera användargrupper på fliken \"Användare\".",
   "app.containers.admin.project.permissions.viewingRightsTitle": "Vilka kan se det här projektet?",
-  "app.modules.commercial.analytics.admin.components.ActiveUsersCard.cardTitleTooltipMessage3": "Deltagare är användare eller besökare som har deltagit i ett projekt, publicerat eller interagerat med ett förslag, deltagit i evenemang eller följt saker.",
+  "app.modules.commercial.analytics.admin.components.ActiveUsersCard.cardTitleTooltipMessage4": "Deltagare är användare eller besökare som har deltagit i ett projekt, publicerat eller interagerat med ett förslag eller deltagit i evenemang.",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participants": "Deltagare",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRate": "Deltagandefrekvens",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRateTooltip3": "Andel av besökarna som blir deltagare. Endast deltagare och besökare som accepterat cookies räknas.",
