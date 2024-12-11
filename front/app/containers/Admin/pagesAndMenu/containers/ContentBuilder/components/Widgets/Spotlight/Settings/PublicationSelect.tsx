@@ -65,6 +65,7 @@ const PublicationSelect = ({ publicationId, onSelect }: Props) => {
         {formatMessage(messages.selectProjectOrFolder)}
       </Label>
       <ReactSelect
+        id="e2e-publication-select"
         inputId="project-select"
         isSearchable={true}
         backspaceRemovesValue={false}

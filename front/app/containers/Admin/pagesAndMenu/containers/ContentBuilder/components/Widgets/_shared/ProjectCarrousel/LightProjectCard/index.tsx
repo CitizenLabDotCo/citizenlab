@@ -3,7 +3,7 @@ import React from 'react';
 import { Box, Text, Title } from '@citizenlab/cl2-component-library';
 import { RouteType } from 'routes';
 
-import usePhase from 'api/phases/usePhase';
+import usePhaseMini from 'api/phases_mini/usePhaseMini';
 import useProjectImage from 'api/project_images/useProjectImage';
 import { getProjectUrl } from 'api/projects/utils';
 import { MiniProjectData } from 'api/projects_mini/types';
@@ -40,7 +40,7 @@ const LightProjectCard = ({ project, ml, mr, onKeyDown }: Props) => {
   });
 
   const phaseId = project.relationships.current_phase?.data?.id;
-  const { data: phase } = usePhase(phaseId);
+  const { data: phase } = usePhaseMini(phaseId);
 
   const title = localize(project.attributes.title_multiloc);
   const imageVersions = image?.data.attributes.versions;
@@ -59,6 +59,7 @@ const LightProjectCard = ({ project, ml, mr, onKeyDown }: Props) => {
       to={projectUrl}
       display="block"
       onKeyDown={onKeyDown}
+      className="e2e-light-project-card"
     >
       <CardImage imageUrl={imageUrl ?? undefined} alt={imageAltText} />
       <Title variant="h4" as="h3" mt="8px" mb="0px" color="tenantText">

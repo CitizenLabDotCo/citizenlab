@@ -255,7 +255,6 @@ export interface IAppConfigurationSettings {
   prescreening?: AppConfigurationFeature;
   prescreening_ideation?: AppConfigurationFeature;
   input_cosponsorship?: AppConfigurationFeature;
-  new_homepage_widgets?: AppConfigurationFeature;
   project_review?: AppConfigurationFeature;
   similar_inputs?: AppConfigurationFeature & {
     admins_only: boolean;

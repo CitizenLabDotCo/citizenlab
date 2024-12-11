@@ -8,16 +8,21 @@ import {
   stylingConsts,
   Title,
   colors,
+  Shimmer,
 } from '@citizenlab/cl2-component-library';
 
 import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
 import AvatarBubbles from 'components/AvatarBubbles';
+import Skeleton from 'components/AvatarBubbles/Skeleton';
 import Button from 'components/UI/Button';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
+
+import { DEFAULT_Y_PADDING } from '../constants';
 
 interface Props {
   title: string;
   imgSrc?: string;
+  loading: boolean;
   description?: string;
   buttonText?: string;
   buttonLink?: string;
@@ -28,6 +33,7 @@ interface Props {
 const Spotlight = ({
   title,
   imgSrc,
+  loading,
   description,
   buttonText,
   buttonLink,
@@ -39,10 +45,12 @@ const Spotlight = ({
   return (
     <Box
       px={DEFAULT_PADDING}
-      py="56px"
+      pt={isSmallerThanPhone ? DEFAULT_Y_PADDING : '56px'}
+      pb="56px"
       w="100%"
       display="flex"
       justifyContent="center"
+      className="e2e-spotlight-widget"
     >
       <Box
         w="100%"
@@ -59,7 +67,7 @@ const Spotlight = ({
             {title}
           </Title>
           {description && (
-            <Text>
+            <Text as="span">
               <QuillEditedContent textColor={colors.textSecondary}>
                 <div dangerouslySetInnerHTML={{ __html: description }} />
               </QuillEditedContent>
@@ -75,16 +83,19 @@ const Spotlight = ({
               </Button>
             </Box>
           )}
-          {typeof userCount === 'number' && userCount > 0 && (
-            <Box
-              mt="16px"
-              w="100%"
-              display="flex"
-              justifyContent={isSmallerThanPhone ? 'center' : 'flex-start'}
-            >
-              <AvatarBubbles avatarIds={avatarIds} userCount={userCount} />
-            </Box>
-          )}
+
+          <Box
+            mt="16px"
+            w="100%"
+            display="flex"
+            justifyContent={isSmallerThanPhone ? 'center' : 'flex-start'}
+          >
+            {loading ? (
+              <Skeleton avatarImagesCount={userCount ?? 4} />
+            ) : (
+              <AvatarBubbles avatarIds={avatarIds} userCount={userCount ?? 4} />
+            )}
+          </Box>
         </Box>
         <Box
           mt={isSmallerThanPhone ? '20px' : '0px'}
@@ -103,7 +114,19 @@ const Spotlight = ({
               borderRadius={stylingConsts.borderRadius}
               objectFit="cover"
             />
-          ) : null}
+          ) : (
+            <>
+              {loading && (
+                <Shimmer
+                  w="100%"
+                  maxWidth="630px"
+                  height={isSmallerThanPhone ? '188px' : '350px'}
+                  borderRadius={stylingConsts.borderRadius}
+                  bgColor={colors.grey300}
+                />
+              )}
+            </>
+          )}
         </Box>
       </Box>
     </Box>
