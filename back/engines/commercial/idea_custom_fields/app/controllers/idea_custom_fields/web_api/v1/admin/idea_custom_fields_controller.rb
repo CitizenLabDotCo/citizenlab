@@ -74,7 +74,7 @@ module IdeaCustomFields
       render json: ::WebApi::V1::CustomFieldSerializer.new(
         IdeaCustomFieldsService.new(@custom_form).all_fields,
         params: serializer_params(@custom_form),
-        include: %i[options options.image]
+        include: include_in_index_response
       ).serializable_hash
     rescue UpdateAllFailedError => e
       render json: { errors: e.errors }, status: :unprocessable_entity
