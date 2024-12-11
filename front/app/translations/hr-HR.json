@@ -1347,6 +1347,7 @@
   "app.containers.IdeasShow.MetaInformation.currentStatus": "Trenutačni status",
   "app.containers.IdeasShow.MetaInformation.location": "Lokacija",
   "app.containers.IdeasShow.MetaInformation.postedBy": "Autor objave:",
+  "app.containers.IdeasShow.MetaInformation.similar": "Slični ulazi",
   "app.containers.IdeasShow.MetaInformation.topics": "Oznake",
   "app.containers.IdeasShow.commentCTA": "Dodaj komentar",
   "app.containers.IdeasShow.contributionEmailSharingBody": "Podrži ovaj doprinos '{postTitle}' na {postUrl}!",
