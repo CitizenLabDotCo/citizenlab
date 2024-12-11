@@ -24,7 +24,7 @@ import Box, {
 
 type Variant = 'bodyL' | 'bodyM' | 'bodyS' | 'bodyXs';
 type FontSize = keyof typeof fontSizes;
-type FontWeight = 'bold' | 'normal';
+type FontWeight = 'bold' | 'normal' | 600;
 type FontStyle = 'italic' | 'normal';
 type TextDecoration = string;
 type TextOverflow = 'ellipsis' | 'clip';

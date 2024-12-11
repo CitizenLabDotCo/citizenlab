@@ -23,7 +23,7 @@ import Box, {
 
 export type Variant = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 export type FontSize = keyof typeof fontSizes;
-export type FontWeight = 'bold' | 'normal';
+export type FontWeight = 'bold' | 'normal' | 600;
 type FontStyle = 'italic' | 'normal';
 export type TextAlign =
   | 'left'

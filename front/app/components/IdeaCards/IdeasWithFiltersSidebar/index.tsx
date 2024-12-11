@@ -222,8 +222,7 @@ const IdeasWithFiltersSidebar = ({
       >
         {inputTerm && (
           <Title
-            fontSize="m"
-            variant="h4"
+            variant="h5"
             as="h2"
             my="auto"
             color="tenantText"
