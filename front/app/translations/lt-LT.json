@@ -1347,6 +1347,7 @@
   "app.containers.IdeasShow.MetaInformation.currentStatus": "Dabartinė būklė",
   "app.containers.IdeasShow.MetaInformation.location": "Vieta",
   "app.containers.IdeasShow.MetaInformation.postedBy": "Paskelbė",
+  "app.containers.IdeasShow.MetaInformation.similar": "Panašūs įvesties duomenys",
   "app.containers.IdeasShow.MetaInformation.topics": "Žymos",
   "app.containers.IdeasShow.commentCTA": "Pridėti komentarą",
   "app.containers.IdeasShow.contributionEmailSharingBody": "Palaikykite šį įnašą '{postTitle}' adresu {postUrl}!",
