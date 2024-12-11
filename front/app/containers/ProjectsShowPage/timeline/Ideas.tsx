@@ -1,6 +1,6 @@
 import React, { lazy, Suspense, useMemo } from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Spinner } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 
 import { IdeaSortMethod, IPhaseData } from 'api/phases/types';
@@ -98,7 +98,7 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
       ) : (
         <>
           <IdeaListScrollAnchor />
-          <Suspense fallback={null}>
+          <Suspense fallback={<Spinner />}>
             <IdeasWithFiltersSidebar inputTerm={inputTerm} {...sharedProps} />
           </Suspense>
         </>

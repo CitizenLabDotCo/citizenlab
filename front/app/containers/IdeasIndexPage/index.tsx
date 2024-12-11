@@ -5,6 +5,7 @@ import {
   fontSizes,
   colors,
   isRtl,
+  Spinner,
 } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -113,7 +114,7 @@ export default () => {
                 when fitlers are changed in the IdeaCardsWithFiltersSidebar component and scrollToTopIdeasList util.
             */}
             <IdeaListScrollAnchor />
-            <Suspense fallback={null}>
+            <Suspense fallback={<Spinner />}>
               <IdeasWithFiltersSidebar
                 ideaQueryParameters={ideasQueryParameters}
                 onUpdateQuery={updateSearchParams}
