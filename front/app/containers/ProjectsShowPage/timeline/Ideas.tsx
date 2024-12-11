@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { lazy, useMemo } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
@@ -9,10 +9,11 @@ import { IdeaSortMethodFallback } from 'api/phases/utils';
 
 import messages from 'containers/ProjectsShowPage/messages';
 
-import {
-  IdeaCardsWithFiltersSidebar,
-  IdeaCardsWithoutFiltersSidebar,
-} from 'components/IdeaCards';
+const IdeasWithFiltersSidebar = lazy(
+  () => import('components/IdeaCards/IdeasWithFiltersSidebar')
+);
+
+import { IdeaCardsWithoutFiltersSidebar } from 'components/IdeaCards';
 import { Props as WithFiltersProps } from 'components/IdeaCards/IdeasWithFiltersSidebar';
 import IdeaListScrollAnchor from 'components/IdeaListScrollAnchor';
 
@@ -97,7 +98,7 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
       ) : (
         <>
           <IdeaListScrollAnchor />
-          <IdeaCardsWithFiltersSidebar inputTerm={inputTerm} {...sharedProps} />
+          <IdeasWithFiltersSidebar inputTerm={inputTerm} {...sharedProps} />
         </>
       )}
     </Box>

@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { lazy, useMemo } from 'react';
 
 import {
   media,
@@ -14,7 +14,9 @@ import { IdeaSortMethod } from 'api/phases/types';
 
 import CityLogoSection from 'components/CityLogoSection';
 import ContentContainer from 'components/ContentContainer';
-import { IdeaCardsWithFiltersSidebar } from 'components/IdeaCards';
+const IdeasWithFiltersSidebar = lazy(
+  () => import('components/IdeaCards/IdeasWithFiltersSidebar')
+);
 import IdeaListScrollAnchor from 'components/IdeaListScrollAnchor';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -111,8 +113,7 @@ export default () => {
                 when fitlers are changed in the IdeaCardsWithFiltersSidebar component and scrollToTopIdeasList util.
             */}
             <IdeaListScrollAnchor />
-            <IdeaCardsWithFiltersSidebar
-              invisibleTitleMessage={messages.a11y_IdeasListTitle1}
+            <IdeasWithFiltersSidebar
               ideaQueryParameters={ideasQueryParameters}
               onUpdateQuery={updateSearchParams}
             />
