@@ -27,7 +27,7 @@ const ShimmerBox = styled(Box)<{ $bgColor: string }>`
 `;
 
 const Shimmer = ({ bgColor = colors.black, ...props }: BoxProps) => {
-  return <ShimmerBox $bgColor={bgColor} {...props} />;
+  return <ShimmerBox $bgColor={bgColor} {...props} aria-hidden={true} />;
 };
 
 export default Shimmer;
