@@ -30,9 +30,10 @@ const Published = ({ titleMultiloc }: Props) => {
     });
 
   const adminPublications = data?.pages.map((page) => page.data).flat();
+  const title = localize(titleMultiloc);
 
   if (isInitialLoading) {
-    return <Skeleton />;
+    return <Skeleton title={title} />;
   }
 
   if (!adminPublications) return null;
@@ -44,7 +45,7 @@ const Published = ({ titleMultiloc }: Props) => {
 
   return (
     <AdminPublicationsCarrousel
-      title={localize(titleMultiloc)}
+      title={title}
       adminPublications={adminPublications}
       hasMore={!!hasNextPage}
       onLoadMore={fetchNextPage}
