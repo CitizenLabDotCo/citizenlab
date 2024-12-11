@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import { Title } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
@@ -62,28 +62,14 @@ const ContentRight = ({
   onChangeTopics,
   onChangeSort,
 }: Props) => {
-  const [isCTABarVisible, setIsCTABarVisible] = useState(false);
-
-  useEffect(() => {
-    function checkCTABarVisibility() {
-      if (document.getElementById('project-cta-bar')) {
-        setIsCTABarVisible(true);
-        return;
-      }
-
-      setIsCTABarVisible(false);
-    }
-
-    window.addEventListener('scrollend', checkCTABarVisibility);
-    return () => window.removeEventListener('scrollend', checkCTABarVisibility);
-  }, []);
+  const stickyTop = document.getElementById('project-cta-bar-top');
 
   return (
     <Container
       id="e2e-ideas-filters"
       filterColumnWidth={filterColumnWidth}
-      top={isCTABarVisible ? 160 : 100}
-      maxHeightOffset={isCTABarVisible ? 180 : 120}
+      top={stickyTop ? 160 : 100}
+      maxHeightOffset={stickyTop ? 180 : 120}
       gapWidth={gapWidth}
     >
       {/*
