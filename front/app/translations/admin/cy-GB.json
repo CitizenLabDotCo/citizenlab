@@ -383,7 +383,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsExclusionTitle": "Nid yw cyfranogwyr yn cynnwys:",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsInfoTitle": "Mae cyfranogwyr yn cynnwys:",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.users": "Defnyddwyr yn rhyngweithio â dulliau Go Vocal",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.projectSettings": "Gosodiadau prosiect",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.publishedActive1": "Cyhoeddwyd - Active",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.publishedFinished1": "Cyhoeddwyd - Gorffen",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.refreshLink": "Adnewyddu dolen rhagolwg prosiect",

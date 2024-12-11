@@ -383,7 +383,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsExclusionTitle": "شرکاء میں شامل نہیں ہیں:",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsInfoTitle": "شرکاء میں شامل ہیں:",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.users": "گو ووکل طریقوں کے ساتھ تعامل کرنے والے صارفین",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.projectSettings": "پروجیکٹ کی ترتیبات",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.publishedActive1": "شائع شدہ - فعال",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.publishedFinished1": "شائع - ختم",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.refreshLink": "پروجیکٹ کا پیش نظارہ لنک ریفریش کریں۔",

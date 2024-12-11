@@ -383,7 +383,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsExclusionTitle": "Dalībnieku vidū nav:",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsInfoTitle": "Piedalās:",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.users": "Lietotāju mijiedarbība ar Go Vocal metodēm",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.projectSettings": "Projekta iestatījumi",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.publishedActive1": "Publicēts - Aktīvs",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.publishedFinished1": "Publicēts - Pabeigts",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.refreshLink": "Atsvaidzināt projekta priekšskatījuma saiti",

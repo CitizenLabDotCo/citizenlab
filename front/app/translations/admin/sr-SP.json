@@ -383,7 +383,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsExclusionTitle": "Participants do not include:",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsInfoTitle": "Participants include:",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.users": "Users interacting with Go Vocal methods",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.projectSettings": "Подешавања пројекта",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.publishedActive1": "Објављено - активно",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.publishedFinished1": "Објављено - Завршено",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.refreshLink": "Refresh project preview link",
