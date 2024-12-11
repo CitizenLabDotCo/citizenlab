@@ -42,15 +42,17 @@ const Selection = ({ titleMultiloc, adminPublicationIds }: Props) => {
     );
   }
 
+  const title = localize(titleMultiloc);
+
   if (isInitialLoading) {
-    return <Skeleton />;
+    return <Skeleton title={title} />;
   }
 
   if (!adminPublications) return null;
 
   return (
     <AdminPublicationsCarrousel
-      title={localize(titleMultiloc)}
+      title={title}
       adminPublications={adminPublications}
       hasMore={!!hasNextPage}
       onLoadMore={fetchNextPage}

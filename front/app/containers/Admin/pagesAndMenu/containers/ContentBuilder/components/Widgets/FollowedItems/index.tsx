@@ -27,9 +27,10 @@ const FollowedItems = ({ titleMultiloc }: Props) => {
       endpoint: 'for_followed_item',
     });
   const projects = data?.pages.map((page) => page.data).flat();
+  const title = localize(titleMultiloc);
 
   if (isInitialLoading && !!authUser?.data) {
-    return <Skeleton />;
+    return <Skeleton title={title} />;
   }
 
   if (!projects) return null;
@@ -41,7 +42,7 @@ const FollowedItems = ({ titleMultiloc }: Props) => {
 
   return (
     <ProjectCarrousel
-      title={localize(titleMultiloc)}
+      title={title}
       projects={projects}
       hasMore={!!hasNextPage}
       onLoadMore={fetchNextPage}
