@@ -4,13 +4,12 @@ import {
   Box,
   BoxProps,
   colors,
+  stylingConsts,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 
 import usePhases from 'api/phases/usePhases';
 import useProjectById from 'api/projects/useProjectById';
-
-import MainHeader from 'containers/MainHeader';
 
 import {
   getMethodConfig,
@@ -65,12 +64,9 @@ const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
         // (top in ContentRight)
         id="project-cta-bar-top"
         position="sticky"
-        top="0px"
+        top={`${stylingConsts.menuHeight}px`}
         {...sharedProps}
       >
-        <Box height="78px">
-          <MainHeader />
-        </Box>
         {BarContents}
       </Box>
     );
