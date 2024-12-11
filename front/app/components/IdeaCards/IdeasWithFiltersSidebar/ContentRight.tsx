@@ -16,13 +16,12 @@ import InputFilters from './InputFilters';
 import { gapWidth } from '.';
 
 const Container = styled.div<{
-  filterColumnWidth: number;
   top: number;
   maxHeightOffset: number;
   gapWidth: number;
 }>`
-  flex: 0 0 ${({ filterColumnWidth }) => filterColumnWidth}px;
-  width: ${({ filterColumnWidth }) => filterColumnWidth}px;
+  flex: 0 0 352px;
+  width: 352px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -38,7 +37,6 @@ const Container = styled.div<{
 
 interface Props {
   ideaQueryParameters: IdeaQueryParameters;
-  filterColumnWidth: number;
   filtersActive: boolean;
   ideasFilterCounts: IIdeasFilterCounts | undefined;
   numberOfSearchResults: number;
@@ -51,7 +49,6 @@ interface Props {
 
 const ContentRight = ({
   ideaQueryParameters,
-  filterColumnWidth,
   filtersActive,
   ideasFilterCounts,
   numberOfSearchResults,
@@ -80,7 +77,6 @@ const ContentRight = ({
   return (
     <Container
       id="e2e-ideas-filters"
-      filterColumnWidth={filterColumnWidth}
       top={isCTABarVisible ? 160 : 100}
       maxHeightOffset={isCTABarVisible ? 180 : 120}
       gapWidth={gapWidth}

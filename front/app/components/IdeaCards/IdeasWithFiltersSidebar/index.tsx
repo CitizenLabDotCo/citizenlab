@@ -4,7 +4,6 @@ import {
   media,
   defaultCardStyle,
   Spinner,
-  useWindowSize,
   Box,
   Title,
   Text,
@@ -99,7 +98,6 @@ const IdeasWithFiltersSidebar = ({
 }: Props) => {
   const locale = useLocale();
   const { formatMessage } = useIntl();
-  const { windowWidth } = useWindowSize();
   const [searchParams] = useSearchParams();
   const smallerThanPhone = useBreakpoint('phone');
   const biggerThanLargeTablet = !useBreakpoint('tablet');
@@ -115,8 +113,9 @@ const IdeasWithFiltersSidebar = ({
     useInfiniteIdeas(ideaQueryParameters);
   const list = data?.pages.map((page) => page.data).flat();
   const { data: ideasFilterCounts } = useIdeasFilterCounts(ideaQueryParameters);
+  const ideasCount = ideasFilterCounts?.data.attributes.total || 0;
 
-  // Determine if location field enabled for view buttons and idea markers
+  // Determine if location field enabled (for view button visibility and fetching idea markers)
   const { data: ideaCustomFieldsSchemas } = useIdeaCustomFieldsSchema({
     phaseId: ideaQueryParameters.phase,
     projectId,
@@ -130,11 +129,6 @@ const IdeasWithFiltersSidebar = ({
     : false;
   const showViewButtons = !!(locationEnabled && showViewToggle);
   const loadIdeaMarkers = locationEnabled && selectedView === 'map';
-
-  const setSelectedView = useCallback((view: 'card' | 'map') => {
-    updateSearchParams({ view });
-  }, []);
-
   const { data: ideaMarkers } = useIdeaMarkers(
     {
       projectIds: projectId ? [projectId] : null,
@@ -143,6 +137,10 @@ const IdeasWithFiltersSidebar = ({
     },
     loadIdeaMarkers
   );
+
+  const setSelectedView = useCallback((view: 'card' | 'map') => {
+    updateSearchParams({ view });
+  }, []);
 
   const handleSearchOnChange = useCallback(
     (search: string | null) => {
@@ -193,16 +191,14 @@ const IdeasWithFiltersSidebar = ({
     });
   }, [onUpdateQuery]);
 
-  const filterColumnWidth = windowWidth && windowWidth < 1400 ? 340 : 352;
   const filtersActive = !!(
     ideaQueryParameters.search ||
     ideaQueryParameters.idea_status ||
     ideaQueryParameters.topics
   );
 
-  const showContentRight = biggerThanLargeTablet && selectedView === 'card';
-
-  const ideasCount = ideasFilterCounts?.data.attributes.total || 0;
+  const showInputFilterSidebar =
+    biggerThanLargeTablet && selectedView === 'card';
 
   return (
     <Container id="e2e-ideas-container">
@@ -294,10 +290,9 @@ const IdeasWithFiltersSidebar = ({
               />
             </ContentLeft>
 
-            {showContentRight && (
+            {showInputFilterSidebar && (
               <ContentRight
                 ideaQueryParameters={ideaQueryParameters}
-                filterColumnWidth={filterColumnWidth}
                 filtersActive={filtersActive}
                 ideasFilterCounts={ideasFilterCounts}
                 numberOfSearchResults={list.length}
