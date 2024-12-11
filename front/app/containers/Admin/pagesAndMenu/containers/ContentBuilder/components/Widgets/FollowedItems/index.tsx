@@ -37,6 +37,7 @@ const FollowedItems = ({ titleMultiloc }: Props) => {
       title={title}
       projects={projects}
       hasMore={!!hasNextPage}
+      className="e2e-followed-items"
       onLoadMore={fetchNextPage}
     />
   );
