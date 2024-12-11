@@ -5,6 +5,7 @@ describe('Idea cards without filter sidebar sorting and filtering', () => {
   const ideaContent = randomString();
   let projectId: string;
   let ideaId: string;
+  let ideaSlug: string;
 
   before(() => {
     cy.getProjectBySlug('an-idea-bring-it-to-your-council')
@@ -18,6 +19,7 @@ describe('Idea cards without filter sidebar sorting and filtering', () => {
       })
       .then((idea) => {
         ideaId = idea.body.data.id;
+        ideaSlug = idea.body.data.attributes.slug;
       });
   });
 
@@ -40,8 +42,7 @@ describe('Idea cards without filter sidebar sorting and filtering', () => {
 
   it('lets you sort the ideas', () => {
     // sort by newest first
-    cy.get('#e2e-ideas-sort-dropdown').click();
-    cy.get('#e2e-ideas-sort-dropdown').find('#e2e-item-new').click();
+    cy.get('#e2e-item-new').click();
 
     // find and check first idea card
     cy.get('#e2e-ideas-list');
@@ -50,8 +51,7 @@ describe('Idea cards without filter sidebar sorting and filtering', () => {
     });
 
     // sort by most reacted
-    cy.get('#e2e-ideas-sort-dropdown').click();
-    cy.get('#e2e-ideas-sort-dropdown').find('#e2e-item-popular').click();
+    cy.get('#e2e-item-popular').click();
 
     // find and check first idea card
     cy.get('#e2e-ideas-list');
@@ -62,19 +62,41 @@ describe('Idea cards without filter sidebar sorting and filtering', () => {
     });
 
     // sort by oldest first
-    cy.get('#e2e-ideas-sort-dropdown').click();
-    cy.get('#e2e-ideas-sort-dropdown').find('#e2e-item--new').click();
+    cy.get('#e2e-item--new').click();
 
     // find and check first idea card
     cy.get('#e2e-ideas-list');
     cy.get('.e2e-idea-card').should((cards) => {
       expect(cards.first()).to.contain('Very Old Idea');
     });
+
+    // Test sorting by comments count
+    cy.setAdminLoginCookie();
+    cy.visit(`/ideas/${ideaSlug}`);
+
+    // Add comments
+    cy.get('#submit-comment').click().type('Comment 1');
+    cy.get('#e2e-submit-comment-btn').click();
+    cy.get('#submit-comment').click().type('Comment 2');
+    cy.get('#e2e-submit-comment-btn').click();
+    cy.get('#submit-comment').click().type('Comment 3');
+    cy.get('#e2e-submit-comment-btn').click();
+
+    // Go back to the project page
+    cy.visit('/projects/an-idea-bring-it-to-your-council');
+
+    // sort by comments count and confirm idea order
+    cy.get('#e2e-item-comments_count').click();
+    cy.get('.e2e-idea-card').should((cards) => {
+      expect(cards.first()).to.contain(ideaTitle);
+    });
   });
 
   it('lets you filter the ideas by topic', () => {
-    cy.get('#e2e-idea-filter-selector').click();
-    cy.get('.e2e-sort-items').contains('waste').click();
+    cy.get('#e2e-topics-filters').within(() => {
+      cy.contains('waste').click();
+    });
+
     cy.get('#e2e-ideas-container')
       .find('.e2e-idea-card')
       .should('have.length', 1)

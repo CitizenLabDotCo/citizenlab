@@ -69,6 +69,29 @@ resource 'Phases' do
     end
   end
 
+  get 'web_api/v1/phases/:id/mini' do
+    before { @phase = @project.phases.first }
+
+    let(:id) { @phase.id }
+
+    example 'Get a phase by id' do
+      @phase.update!(report: build(:report))
+      do_request
+      assert_status 200
+
+      expect(json_response.dig(:data, :id)).to eq @phase.id
+      expect(json_response.dig(:data, :type)).to eq 'phase_mini'
+
+      expect(json_response.dig(:data, :relationships, :project)).to match({
+        data: { id: @phase.project_id, type: 'project' }
+      })
+
+      expect(json_response.dig(:data, :relationships, :report)).to match({
+        data: { id: @phase.report.id, type: 'report' }
+      })
+    end
+  end
+
   get 'web_api/v1/phases/:id' do
     before { @phase = @project.phases.first }
 

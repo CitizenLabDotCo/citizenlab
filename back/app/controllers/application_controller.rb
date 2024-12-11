@@ -182,7 +182,8 @@ class ApplicationController < ActionController::API
   end
 
   def paginate(collection)
-    collection.page(params.dig(:page, :number))
+    collection
+      .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
   end
 

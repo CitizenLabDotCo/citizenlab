@@ -95,6 +95,44 @@ import { randomString, randomEmail } from '../support/commands';
 //   });
 // });
 
+describe('New timeline project with ideation phase with default map view', () => {
+  const projectTitle = randomString();
+  let projectId: string;
+  let projectSlug: string;
+
+  before(() => {
+    cy.setAdminLoginCookie();
+
+    cy.apiCreateProject({
+      title: projectTitle,
+      descriptionPreview: 'Description preview',
+      description: 'Description full',
+      publicationStatus: 'published',
+    }).then((project) => {
+      projectId = project.body.data.id;
+      projectSlug = project.body.data.attributes.slug;
+      return cy.apiCreatePhase({
+        projectId,
+        title: 'phaseTitle',
+        startAt: '2018-03-01',
+        endAt: '2025-01-01',
+        participationMethod: 'ideation',
+        presentation_mode: 'map',
+        canComment: true,
+        canPost: true,
+        canReact: true,
+      });
+    });
+  });
+
+  it('shows the ideas map if the project presentation mode set to map', () => {
+    // Visit ideation project where default view is map
+    cy.visit(`/projects/${projectSlug}`);
+    // Confirm that the map is shown
+    cy.get('#e2e-ideas-map').should('exist');
+  });
+});
+
 describe('New timeline project with active ideation phase', () => {
   const firstName = randomString();
   const lastName = randomString();

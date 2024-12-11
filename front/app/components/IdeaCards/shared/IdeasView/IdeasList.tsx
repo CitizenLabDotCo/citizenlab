@@ -63,7 +63,7 @@ interface Props {
   hideImagePlaceholder?: boolean;
   hideIdeaStatus?: boolean;
   phaseId?: string;
-  hasFilterSidebar: boolean;
+  hasFilterSidebar?: boolean;
 }
 
 const IdeasList = ({
@@ -110,7 +110,11 @@ const IdeasList = ({
                     key={idea.id}
                     flex-grow="0"
                     margin="10px"
-                    width={smallerThanPhone ? '100%' : 'calc(50% - 20px)'}
+                    width={
+                      smallerThanPhone || hasFilterSidebar
+                        ? '100%'
+                        : 'calc(50% - 20px)'
+                    }
                   >
                     <IdeaCard
                       ideaId={idea.id}
@@ -118,7 +122,6 @@ const IdeasList = ({
                       hideImage={hideImage}
                       hideImagePlaceholder={hideImagePlaceholder}
                       hideIdeaStatus={hideIdeaStatus}
-                      hasFilterSidebar={hasFilterSidebar}
                     />
                   </Box>
                 );

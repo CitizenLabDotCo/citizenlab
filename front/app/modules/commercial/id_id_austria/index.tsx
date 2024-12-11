@@ -6,7 +6,7 @@ import {
 } from 'api/verification_methods/types';
 import { isLastVerificationMethod } from 'api/verification_methods/util';
 
-import IdAustriaButton from 'containers/Authentication/steps/_components/IdAustriaButton';
+import SSOVerificationButton from 'containers/Authentication/steps/_components/SSOVerificationButton';
 
 import { ModuleConfiguration } from 'utils/moduleUtils';
 
@@ -27,8 +27,8 @@ const configuration: ModuleConfiguration = {
           verificationMethods
         );
         return (
-          <IdAustriaButton
-            method={method as IDIdAustriaMethod}
+          <SSOVerificationButton
+            verificationMethod={method as IDIdAustriaMethod}
             last={last}
             {...props}
           />

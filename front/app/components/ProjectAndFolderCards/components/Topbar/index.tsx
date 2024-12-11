@@ -201,9 +201,8 @@ const Header = ({
           data-testid="currently-working-on-text"
           color="tenantText"
           m="0"
-          mb={isSmallerThanPhone ? (hasPublications ? '36px' : '20px') : '28px'}
+          mb={isSmallerThanPhone ? (hasPublications ? '36px' : '20px') : '20px'}
           ml={isSmallerThanPhone ? '4px' : '0'}
-          textAlign={isSmallerThanPhone ? 'left' : 'center'}
         >
           {currentlyWorkingOn}
         </Title>
