@@ -2,13 +2,13 @@ import React, { useCallback } from 'react';
 
 import {
   media,
-  viewportWidths,
   defaultCardStyle,
   Spinner,
   useWindowSize,
   Box,
   Title,
   Text,
+  useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -101,22 +101,26 @@ const IdeasWithFiltersSidebar = ({
   const { formatMessage } = useIntl();
   const { windowWidth } = useWindowSize();
   const [searchParams] = useSearchParams();
+  const smallerThanPhone = useBreakpoint('phone');
+  const biggerThanLargeTablet = !useBreakpoint('tablet');
+
+  // Get data from searchParams
   const selectedIdeaMarkerId = searchParams.get('idea_map_id');
-  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useInfiniteIdeas(ideaQueryParameters);
-
-  const list = data?.pages.map((page) => page.data).flat();
-  const { data: ideasFilterCounts } = useIdeasFilterCounts(ideaQueryParameters);
-
   const selectedView =
     (searchParams.get('view') as 'card' | 'map' | null) ??
     (selectedIdeaMarkerId ? 'map' : defaultView ?? 'card');
 
+  // Fetch ideas list & filter counts
+  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useInfiniteIdeas(ideaQueryParameters);
+  const list = data?.pages.map((page) => page.data).flat();
+  const { data: ideasFilterCounts } = useIdeasFilterCounts(ideaQueryParameters);
+
+  // Determine if location field enabled for view buttons and idea markers
   const { data: ideaCustomFieldsSchemas } = useIdeaCustomFieldsSchema({
     phaseId: ideaQueryParameters.phase,
     projectId,
   });
-
   const locationEnabled = !isNilOrError(ideaCustomFieldsSchemas)
     ? isFieldEnabled(
         'location_description',
@@ -124,14 +128,13 @@ const IdeasWithFiltersSidebar = ({
         locale
       )
     : false;
-
   const showViewButtons = !!(locationEnabled && showViewToggle);
+  const loadIdeaMarkers = locationEnabled && selectedView === 'map';
 
   const setSelectedView = useCallback((view: 'card' | 'map') => {
     updateSearchParams({ view });
   }, []);
 
-  const loadIdeaMarkers = locationEnabled && selectedView === 'map';
   const { data: ideaMarkers } = useIdeaMarkers(
     {
       projectIds: projectId ? [projectId] : null,
@@ -196,14 +199,9 @@ const IdeasWithFiltersSidebar = ({
     ideaQueryParameters.idea_status ||
     ideaQueryParameters.topics
   );
-  const biggerThanLargeTablet = !!(
-    windowWidth && windowWidth >= viewportWidths.tablet
-  );
-  const smallerThanPhone = !!(
-    windowWidth && windowWidth <= viewportWidths.phone
-  );
-  const showContentRight = biggerThanLargeTablet && selectedView === 'card';
 
+  const showContentRight = biggerThanLargeTablet && selectedView === 'card';
+  console.log(showContentRight);
   const ideasCount = ideasFilterCounts?.data.attributes.total || 0;
 
   return (
