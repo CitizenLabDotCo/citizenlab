@@ -46,7 +46,7 @@ const MANAGEMENT_FEED_TAB: TabRoute = {
 };
 
 export const getAdminTabs = (
-  { moderationEnabled, managementFeedEnabled },
+  { moderationEnabled, managementFeedAllowedAndDisabled },
   formatMessage: FormatMessage
 ) => {
   const tabs = [...BASE_ADMIN_TABS];
@@ -55,7 +55,7 @@ export const getAdminTabs = (
     tabs.push(MODERATION_TAB);
   }
 
-  if (managementFeedEnabled) {
+  if (!managementFeedAllowedAndDisabled) {
     tabs.push(MANAGEMENT_FEED_TAB);
   }
 
