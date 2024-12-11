@@ -38,7 +38,12 @@ const PrescreeningToggle = ({
             label={
               <Box ml="8px" id="e2e-participation-options-toggle">
                 <Box display="flex">
-                  <Text color="primary" mb="0px" fontSize="m" fontWeight={600}>
+                  <Text
+                    color="primary"
+                    mb="0px"
+                    fontSize="m"
+                    fontWeight="medium"
+                  >
                     <FormattedMessage {...messages.prescreeningText} />
                   </Text>
                 </Box>
