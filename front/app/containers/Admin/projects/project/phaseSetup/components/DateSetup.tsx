@@ -58,8 +58,8 @@ const DateSetup = ({
     const otherPhases = phases.data.filter((phase) => phase.id !== phaseId);
     const disabledRanges = otherPhases.map(
       ({ attributes: { start_at, end_at } }) => ({
-        from: new Date(start_at),
-        to: end_at ? new Date(end_at) : undefined,
+        from: startOfDay(parseISO(start_at)),
+        to: end_at ? startOfDay(parseISO(end_at)) : undefined,
       })
     );
 
