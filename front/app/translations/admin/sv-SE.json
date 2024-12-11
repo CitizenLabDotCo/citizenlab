@@ -383,7 +383,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsExclusionTitle": "Deltagare ingår inte:",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsInfoTitle": "Bland deltagarna finns:",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.users": "Användare som interagerar med Go Vocal-metoder",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.projectSettings": "Inställningar för projektet",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.publishedActive1": "Publicerad - Aktiv",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.publishedFinished1": "Publicerad - Avslutad",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.refreshLink": "Uppdatera länken för förhandsgranskning av projekt",
