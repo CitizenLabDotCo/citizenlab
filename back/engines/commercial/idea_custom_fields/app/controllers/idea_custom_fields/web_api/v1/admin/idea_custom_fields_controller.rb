@@ -64,7 +64,6 @@ module IdeaCustomFields
     def update_all
       authorize CustomField.new(resource: @custom_form), :update_all?, policy_class: IdeaCustomFieldPolicy
       @participation_method = @custom_form.participation_context.pmethod
-
       page_temp_ids_to_ids_mapping = {}
       option_temp_ids_to_ids_mapping = {}
       errors = {}
@@ -180,7 +179,7 @@ module IdeaCustomFields
       end
     end
 
-    # Overriden from CustomMaps::Patches::IdeaCustomFields::WebApi::V1::Admin::IdeaCustomFieldsController
+    # Overridden from CustomMaps::Patches::IdeaCustomFields::WebApi::V1::Admin::IdeaCustomFieldsController
     def relate_map_config_to_field(_field, _field_params, _errors, _index); end
 
     def delete_field!(field)
@@ -199,6 +198,7 @@ module IdeaCustomFields
         deleted_options = options.reject { |option| given_ids.include? option.id }
         deleted_options.each { |option| delete_option! option }
         options_params.each_with_index do |option_params, option_index|
+          option_params[:ordering] = option_index # Do this instead of ordering gem .move_to_bottom method for performance reasons
           if option_params[:id] && options_by_id[option_params[:id]]
             option = options_by_id[option_params[:id]]
             next unless update_option! option, option_params, errors, field_index, option_index
@@ -207,7 +207,6 @@ module IdeaCustomFields
             next unless option
           end
           update_option_image!(option, option_params[:image_id])
-          option.move_to_bottom
         end
       end
     end
@@ -330,7 +329,7 @@ module IdeaCustomFields
     def set_custom_form
       container_id = params[secure_constantize(:container_id)]
       @container = secure_constantize(:container_class).find container_id
-      @custom_form = CustomForm.find_or_initialize_by participation_context: @container
+      @custom_form = CustomForm.find_or_initialize_by(participation_context: @container)
     end
 
     def set_custom_field
