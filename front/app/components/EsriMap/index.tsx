@@ -98,6 +98,7 @@ const EsriMap = ({
 
     if (webMapId) {
       map = new WebMap({ portalItem: { id: webMapId } });
+      // Project map to Web Mercator if it's not already in that spatial reference
     } else {
       map = new Map();
       map.basemap = new Basemap({
@@ -184,7 +185,7 @@ const EsriMap = ({
       });
     }
 
-    // Otherwise add the layers into the WebMap
+    // Otherwise add the layers INTO the WebMap
     if (isWebMap) {
       map.when(() => {
         // If the Web Map has any reference layers, re-order them so the layer hierarchy is correct
@@ -193,12 +194,8 @@ const EsriMap = ({
         }
 
         // Remove any internal layers that were passed in as props to the Web Map
-        // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        map.layers?.forEach((layer) => {
-          // TODO: Fix this the next time the file is edited.
-          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-          if (layer.id?.includes('_internal')) {
+        map.layers.forEach((layer) => {
+          if (layer.id.includes('_internal')) {
             map.remove(layer);
           }
         });
@@ -212,9 +209,7 @@ const EsriMap = ({
         });
 
         // If the WebMap has reference layers, save them in state
-        // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        setReferenceLayers(map.basemap?.referenceLayers || null);
+        setReferenceLayers(map.basemap.referenceLayers);
       });
     }
   }, [layers, map, mapView, referenceLayers]);

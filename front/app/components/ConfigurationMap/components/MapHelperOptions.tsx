@@ -45,20 +45,15 @@ const MapHelperOptions = ({ mapConfig, mapView }: Props) => {
   };
 
   const setAsDefaultMapView = () => {
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (mapView?.center.longitude && mapView?.center.latitude) {
+    if (mapView?.center.longitude && mapView.center.latitude) {
       updateMapConfig({
-        // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        mapConfigId: mapConfig?.data.id,
+        mapConfigId: mapConfig.data.id,
         center_geojson: {
           type: 'Point',
           coordinates: [mapView.center.longitude, mapView.center.latitude],
         },
-        // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        zoom_level: mapView?.zoom.toString(),
+
+        zoom_level: mapView.zoom.toString(),
       });
     }
   };

@@ -46,9 +46,7 @@ export const configureMapView = (
 
   // Add map legend if set
   if (initialData?.showLegend) {
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    addMapLegend(mapView, isMobileOrSmaller, initialData?.showLegendExpanded);
+    addMapLegend(mapView, isMobileOrSmaller, initialData.showLegendExpanded);
   }
 
   // Show layer visibility controls if set
@@ -57,12 +55,8 @@ export const configureMapView = (
   }
 
   // Add any ui elements that were passed in
-  // TODO: Fix this the next time the file is edited.
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  if (initialData?.uiElements && mapView) {
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    initialData?.uiElements.forEach((uiElement) => {
+  if (initialData?.uiElements) {
+    initialData.uiElements.forEach((uiElement) => {
       mapView.ui.add(uiElement.element, uiElement.position);
     });
   }
@@ -77,20 +71,12 @@ export const setMapCenter = (
 ) => {
   mapView.center = initialData?.center
     ? new Point({
-        // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        latitude: initialData?.center.coordinates[1],
-        // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        longitude: initialData?.center.coordinates[0],
+        latitude: initialData.center.coordinates[1],
+        longitude: initialData.center.coordinates[0],
       })
     : new Point({
-        // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        latitude: Number(globalMapSettings.map_center?.lat) || 0,
-        // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        longitude: Number(globalMapSettings.map_center?.long) || 0,
+        latitude: Number(globalMapSettings.map_center.lat) || 0,
+        longitude: Number(globalMapSettings.map_center.long) || 0,
       });
 };
 
