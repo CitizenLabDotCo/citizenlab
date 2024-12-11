@@ -86,7 +86,7 @@ const StyledText = styled(Box)<BoxProps & TextProps>`
     theme,
   }: TextProps & { theme: MainThemeProps }) => css`
     color: ${color ? theme.colors[color] : colors.textPrimary};
-    font-weight: ${getFontWeightCSS(fontWeight)};
+    font-weight: ${getFontWeightCSS(fontWeight || 'normal')};
     font-style: ${fontStyle ? fontStyle : 'normal'};
     text-decoration: ${textDecoration ? textDecoration : 'none'};
     text-overflow: ${textOverflow ? textOverflow : 'clip'};
