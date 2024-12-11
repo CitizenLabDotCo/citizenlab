@@ -91,7 +91,7 @@ const IdeasWithFiltersSidebar = ({
   ideaQueryParameters,
   projectId,
   phaseId,
-  defaultView,
+  defaultView = 'card',
   onUpdateQuery,
   showViewToggle,
   inputTerm,
@@ -106,7 +106,7 @@ const IdeasWithFiltersSidebar = ({
   const selectedIdeaMarkerId = searchParams.get('idea_map_id');
   const selectedView =
     (searchParams.get('view') as PresentationMode | null) ??
-    (selectedIdeaMarkerId ? 'map' : defaultView ?? 'card');
+    (selectedIdeaMarkerId ? 'map' : defaultView);
 
   // Fetch ideas list & filter counts
   const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
