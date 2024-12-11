@@ -2,8 +2,8 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   selectionTitle: {
-    id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.selectionTitle2',
-    defaultMessage: 'Projects and folders',
+    id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.selectionTitle3',
+    defaultMessage: 'Selected projects and folders',
   },
   inThisWidget: {
     id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.inThisWidget',

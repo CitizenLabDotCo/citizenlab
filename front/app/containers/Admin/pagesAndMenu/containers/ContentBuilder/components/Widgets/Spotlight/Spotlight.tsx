@@ -17,6 +17,8 @@ import Skeleton from 'components/AvatarBubbles/Skeleton';
 import Button from 'components/UI/Button';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
+import { DEFAULT_Y_PADDING } from '../constants';
+
 interface Props {
   title: string;
   imgSrc?: string;
@@ -43,7 +45,8 @@ const Spotlight = ({
   return (
     <Box
       px={DEFAULT_PADDING}
-      py="56px"
+      pt={isSmallerThanPhone ? DEFAULT_Y_PADDING : '56px'}
+      pb="56px"
       w="100%"
       display="flex"
       justifyContent="center"
