@@ -1347,6 +1347,7 @@
   "app.containers.IdeasShow.MetaInformation.currentStatus": "crwdns3741879:0crwdne3741879:0",
   "app.containers.IdeasShow.MetaInformation.location": "crwdns3741881:0crwdne3741881:0",
   "app.containers.IdeasShow.MetaInformation.postedBy": "crwdns3741883:0crwdne3741883:0",
+  "app.containers.IdeasShow.MetaInformation.similar": "crwdns3763157:0crwdne3763157:0",
   "app.containers.IdeasShow.MetaInformation.topics": "crwdns3741885:0crwdne3741885:0",
   "app.containers.IdeasShow.commentCTA": "crwdns3741887:0crwdne3741887:0",
   "app.containers.IdeasShow.contributionEmailSharingBody": "crwdns3741889:0{postTitle}crwdnd3741889:0{postUrl}crwdne3741889:0",
