@@ -22,8 +22,18 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.pendingApproval',
     defaultMessage: 'Waiting for approval',
   },
+  pendingApprovalTooltip: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.pendingApprovalTooltip',
+    defaultMessage:
+      'Admins and Folder Managers have been notified to approve your project.',
+  },
   approve: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approve',
     defaultMessage: 'Approve',
+  },
+  approveTooltip: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approveTooltip',
+    defaultMessage:
+      'Approving allows the Project Manager to publish the project.',
   },
 });

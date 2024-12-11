@@ -1,11 +1,6 @@
 import React, { useState } from 'react';
 
-import {
-  Button,
-  Tooltip,
-  Box,
-  colors,
-} from '@citizenlab/cl2-component-library';
+import { Button, Tooltip, Box } from '@citizenlab/cl2-component-library';
 
 import useApproveProjectReview from 'api/project_reviews/useApproveProject';
 import useProjectReview from 'api/project_reviews/useProjectReview';
@@ -102,20 +97,26 @@ const ReviewFlow = ({ project }: { project: IProjectData }) => {
 
       {showReviewRequestButton && (
         <Box position="relative">
-          <Button
-            buttonStyle="admin-dark"
-            icon="send"
-            onClick={() => setIsProjectReviewDropdownOpened(true)}
-            processing={isProjectReviewLoading}
-            size="s"
-            padding="4px 8px"
-            iconSize="20px"
-            disabled={approvalPending}
+          <Tooltip
+            content={formatMessage(messages.pendingApprovalTooltip)}
+            placement="bottom"
+            disabled={!approvalPending}
           >
-            {approvalPending
-              ? formatMessage(messages.pendingApproval)
-              : formatMessage(messages.requestApproval)}
-          </Button>
+            <Button
+              buttonStyle="admin-dark"
+              icon="send"
+              onClick={() => setIsProjectReviewDropdownOpened(true)}
+              processing={isProjectReviewLoading}
+              size="s"
+              padding="4px 8px"
+              iconSize="20px"
+              disabled={approvalPending}
+            >
+              {approvalPending
+                ? formatMessage(messages.pendingApproval)
+                : formatMessage(messages.requestApproval)}
+            </Button>
+          </Tooltip>
           <ReviewRequest
             isOpen={isProjectReviewDropdownOpened}
             onClose={() => setIsProjectReviewDropdownOpened(false)}
@@ -125,17 +126,22 @@ const ReviewFlow = ({ project }: { project: IProjectData }) => {
       )}
 
       {showProjectApprovalButton && (
-        <Button
-          bgColor={colors.success}
-          icon="check"
-          onClick={() => approveProjectReview(project.id)}
-          processing={isApprovingProjectReviewLoading}
-          size="s"
-          padding="4px 8px"
-          iconSize="20px"
+        <Tooltip
+          content={formatMessage(messages.approveTooltip)}
+          placement="bottom"
         >
-          {formatMessage(messages.approve)}
-        </Button>
+          <Button
+            buttonStyle="admin-dark"
+            icon="unlock"
+            onClick={() => approveProjectReview(project.id)}
+            processing={isApprovingProjectReviewLoading}
+            size="s"
+            padding="4px 8px"
+            iconSize="20px"
+          >
+            {formatMessage(messages.approve)}
+          </Button>
+        </Tooltip>
       )}
     </Box>
   );
