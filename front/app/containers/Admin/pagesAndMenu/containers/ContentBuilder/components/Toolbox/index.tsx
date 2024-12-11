@@ -6,7 +6,6 @@ import { SupportedLocale } from 'typings';
 import useAppConfigurationLocales, {
   createMultiloc,
 } from 'hooks/useAppConfigurationLocales';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import Container from 'components/admin/ContentBuilder/Toolbox/Container';
 import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
@@ -80,9 +79,6 @@ const HomepageBuilderToolbox = ({
   const { formatMessage } = useIntl();
   const formatMessageWithLocale = useFormatMessageWithLocale();
   const appConfigurationLocales = useAppConfigurationLocales();
-  const newHomepageWidgetsEnabled = useFeatureFlag({
-    name: 'new_homepage_widgets',
-  });
 
   if (!appConfigurationLocales) return null;
 
@@ -108,76 +104,67 @@ const HomepageBuilderToolbox = ({
           icon="rectangle"
           label={formatMessage(homepageBannerTitle)}
         />
-        {newHomepageWidgetsEnabled && (
-          <DraggableElement
-            id="e2e-draggable-open-to-participation"
-            component={
-              <OpenToParticipation
-                titleMultiloc={toMultiloc(openToParticipationTitle)}
-              />
-            }
-            icon="personRaisedHand"
-            label={formatMessage(openToParticipationTitle)}
-          />
-        )}
-        {newHomepageWidgetsEnabled && (
-          <DraggableElement
-            id="e2e-draggable-followed-items"
-            component={
-              <FollowedItems
-                titleMultiloc={toMultiloc(followedItemsMessages.defaultTitle)}
-              />
-            }
-            icon="notification"
-            label={formatMessage(followedItemsTitle)}
-          />
-        )}
-        {newHomepageWidgetsEnabled && (
-          <DraggableElement
-            id="e2e-draggable-finished-or-archived"
-            component={
-              <FinishedOrArchived
-                titleMultiloc={toMultiloc(
-                  finishedOrArchivedMessages.youSaidWeDid
-                )}
-                filterBy="finished"
-              />
-            }
-            icon="sportsScore"
-            label={formatMessage(finishedOrArchivedTitle)}
-          />
-        )}
-        {newHomepageWidgetsEnabled && (
-          <DraggableElement
-            id="e2e-draggable-spotlight"
-            component={
-              <Spotlight buttonTextMultiloc={toMultiloc(buttonTextDefault)} />
-            }
-            icon="flash"
-            label={formatMessage(spotlightTitle)}
-          />
-        )}
-        {newHomepageWidgetsEnabled && (
-          <DraggableElement
-            id="e2e-draggable-selection"
-            component={
-              <Selection
-                titleMultiloc={toMultiloc(selectionTitle)}
-                adminPublicationIds={[]}
-              />
-            }
-            icon="folder-outline"
-            label={formatMessage(selectionTitle)}
-          />
-        )}
-        {newHomepageWidgetsEnabled && (
-          <DraggableElement
-            id="e2e-draggable-published"
-            component={<Published titleMultiloc={toMultiloc(publishedTitle)} />}
-            icon="check-circle"
-            label={formatMessage(publishedTitle)}
-          />
-        )}
+        <DraggableElement
+          id="e2e-draggable-open-to-participation"
+          component={
+            <OpenToParticipation
+              titleMultiloc={toMultiloc(openToParticipationTitle)}
+            />
+          }
+          icon="personRaisedHand"
+          label={formatMessage(openToParticipationTitle)}
+        />
+        <DraggableElement
+          id="e2e-draggable-followed-items"
+          component={
+            <FollowedItems
+              titleMultiloc={toMultiloc(followedItemsMessages.defaultTitle)}
+            />
+          }
+          icon="notification"
+          label={formatMessage(followedItemsTitle)}
+        />
+        <DraggableElement
+          id="e2e-draggable-finished-or-archived"
+          component={
+            <FinishedOrArchived
+              titleMultiloc={toMultiloc(
+                finishedOrArchivedMessages.youSaidWeDid
+              )}
+              filterBy="finished"
+            />
+          }
+          icon="sportsScore"
+          label={formatMessage(finishedOrArchivedTitle)}
+        />
+
+        <DraggableElement
+          id="e2e-draggable-spotlight"
+          component={
+            <Spotlight buttonTextMultiloc={toMultiloc(buttonTextDefault)} />
+          }
+          icon="flash"
+          label={formatMessage(spotlightTitle)}
+        />
+
+        <DraggableElement
+          id="e2e-draggable-selection"
+          component={
+            <Selection
+              titleMultiloc={toMultiloc(selectionTitle)}
+              adminPublicationIds={[]}
+            />
+          }
+          icon="folder-outline"
+          label={formatMessage(selectionTitle)}
+        />
+
+        <DraggableElement
+          id="e2e-draggable-published"
+          component={<Published titleMultiloc={toMultiloc(publishedTitle)} />}
+          icon="check-circle"
+          label={formatMessage(publishedTitle)}
+        />
         <DraggableElement
           id="e2e-draggable-events"
           component={<Events />}
