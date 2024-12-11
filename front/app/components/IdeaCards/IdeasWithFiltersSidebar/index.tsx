@@ -15,13 +15,12 @@ import styled from 'styled-components';
 
 import useIdeaCustomFieldsSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
 import useIdeaMarkers from 'api/idea_markers/useIdeaMarkers';
+import { IdeaQueryParameters } from 'api/ideas/types';
 import useInfiniteIdeas from 'api/ideas/useInfiniteIdeas';
 import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
 import { PresentationMode, IdeaSortMethod, InputTerm } from 'api/phases/types';
 
 import useLocale from 'hooks/useLocale';
-
-import { QueryParameters } from 'containers/IdeasIndexPage';
 
 import ViewButtons from 'components/PostCardsComponents/ViewButtons';
 
@@ -80,7 +79,7 @@ export interface QueryParametersUpdate {
 }
 
 export interface Props {
-  ideaQueryParameters: QueryParameters;
+  ideaQueryParameters: IdeaQueryParameters;
   onUpdateQuery: (newParams: QueryParametersUpdate) => void;
   showViewToggle?: boolean;
   defaultView?: PresentationMode;

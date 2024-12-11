@@ -3,10 +3,9 @@ import React, { useEffect, useState } from 'react';
 import { Title } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import { IdeaQueryParameters } from 'api/ideas/types';
 import { IIdeasFilterCounts } from 'api/ideas_filter_counts/types';
 import { IdeaSortMethod } from 'api/phases/types';
-
-import { QueryParameters } from 'containers/IdeasIndexPage';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
@@ -38,7 +37,7 @@ const Container = styled.div<{
 `;
 
 interface Props {
-  ideaQueryParameters: QueryParameters;
+  ideaQueryParameters: IdeaQueryParameters;
   filterColumnWidth: number;
   filtersActive: boolean;
   ideasFilterCounts: IIdeasFilterCounts | undefined;
