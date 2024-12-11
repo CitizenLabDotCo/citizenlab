@@ -2146,7 +2146,7 @@
   "app.containers.AdminPage.SettingsPage.tabBranding": "Identité visuelle",
   "app.containers.AdminPage.SettingsPage.tabInputStatuses": "Statuts des contributions",
   "app.containers.AdminPage.SettingsPage.tabPolicies": "Politiques",
-  "app.containers.AdminPage.SettingsPage.tabProjectApproval": "Approbation du projet",
+  "app.containers.AdminPage.SettingsPage.tabProjectApproval": "Revues de projet",
   "app.containers.AdminPage.SettingsPage.tabProposalStatuses": "Statuts des propositions",
   "app.containers.AdminPage.SettingsPage.tabRegistration": "Inscription",
   "app.containers.AdminPage.SettingsPage.tabSettings": "Général",
