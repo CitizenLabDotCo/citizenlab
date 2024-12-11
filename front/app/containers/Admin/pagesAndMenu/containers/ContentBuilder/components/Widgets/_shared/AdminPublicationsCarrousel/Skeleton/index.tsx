@@ -1,7 +1,6 @@
 import React from 'react';
 
-import { useBreakpoint, Shimmer, Box } from '@citizenlab/cl2-component-library';
-import { useTheme } from 'styled-components';
+import { useBreakpoint, Title, Box } from '@citizenlab/cl2-component-library';
 
 import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
 
@@ -10,20 +9,23 @@ import { CarrouselContainer } from '../../BaseCarrousel/Containers';
 
 import CardSkeleton from './CardSkeleton';
 
-const Skeleton = () => {
+interface Props {
+  title: string;
+}
+
+const Skeleton = ({ title }: Props) => {
   const isSmallerThanPhone = useBreakpoint('phone');
-  const theme = useTheme();
 
   return (
     <CarrouselContainer>
-      <Shimmer
-        bgColor={theme.colors.tenantText}
-        width="340px"
-        borderRadius="16px"
-        height="32px"
-        mb="16px"
+      <Title
+        variant="h2"
+        mt="0px"
         ml={isSmallerThanPhone ? DEFAULT_PADDING : undefined}
-      />
+        color="tenantText"
+      >
+        {title}
+      </Title>
 
       <Box display="flex" flexDirection="row">
         <CardSkeleton

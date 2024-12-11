@@ -29,9 +29,10 @@ const FinishedOrArchived = ({ titleMultiloc, filterBy }: Props) => {
     });
 
   const projects = data?.pages.map((page) => page.data).flat();
+  const title = localize(titleMultiloc);
 
   if (isInitialLoading) {
-    return <Skeleton />;
+    return <Skeleton title={title} />;
   }
   if (!projects) return null;
   if (projects.length === 0) {
@@ -42,7 +43,7 @@ const FinishedOrArchived = ({ titleMultiloc, filterBy }: Props) => {
 
   return (
     <ProjectCarrousel
-      title={localize(titleMultiloc)}
+      title={title}
       projects={projects}
       hasMore={!!hasNextPage}
       onLoadMore={fetchNextPage}
