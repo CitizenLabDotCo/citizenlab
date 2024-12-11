@@ -105,7 +105,7 @@ const IdeasWithFiltersSidebar = ({
   // Get data from searchParams
   const selectedIdeaMarkerId = searchParams.get('idea_map_id');
   const selectedView =
-    (searchParams.get('view') as 'card' | 'map' | null) ??
+    (searchParams.get('view') as PresentationMode | null) ??
     (selectedIdeaMarkerId ? 'map' : defaultView ?? 'card');
 
   // Fetch ideas list & filter counts
