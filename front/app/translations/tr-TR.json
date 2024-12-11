@@ -1347,6 +1347,7 @@
   "app.containers.IdeasShow.MetaInformation.currentStatus": "Şu andaki durum",
   "app.containers.IdeasShow.MetaInformation.location": "Konum",
   "app.containers.IdeasShow.MetaInformation.postedBy": "Yayınlayan",
+  "app.containers.IdeasShow.MetaInformation.similar": "Benzer girdiler",
   "app.containers.IdeasShow.MetaInformation.topics": "Etiketler",
   "app.containers.IdeasShow.commentCTA": "Bir yorum ekleyin",
   "app.containers.IdeasShow.contributionEmailSharingBody": "{postUrl} üzerinden '{postTitle}' adlı bu katkıya destek olun!",
