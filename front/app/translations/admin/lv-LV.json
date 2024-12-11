@@ -2714,7 +2714,7 @@
   "app.containers.admin.project.permissions.permissionsSelectionLabel": "Atlase",
   "app.containers.admin.project.permissions.permissionsSelectionLabelDescription": "Piedalīties var lietotāji, kas pieder konkrētai(-ām) lietotāju grupai(-ām). Lietotāju grupas var pārvaldīt cilnē \"Lietotāji\".",
   "app.containers.admin.project.permissions.viewingRightsTitle": "Kas var apskatīt šo projektu?",
-  "app.modules.commercial.analytics.admin.components.ActiveUsersCard.cardTitleTooltipMessage3": "Participants are users or visitors that have participated in a project, posted or interacted with a proposal, attended events or followed things.",
+  "app.modules.commercial.analytics.admin.components.ActiveUsersCard.cardTitleTooltipMessage4": "Dalībnieki ir lietotāji vai apmeklētāji, kas ir piedalījušies projektā, publicējuši priekšlikumu vai sazinājušies ar to, vai apmeklējuši pasākumus.",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participants": "Dalībnieki",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRate": "Līdzdalības līmenis",
   "app.modules.commercial.analytics.admin.components.ActiveUsersCard.participationRateTooltip3": "Apmeklētāju, kas kļūst par dalībniekiem, īpatsvars. Tiek uzskaitīti tikai tie dalībnieki un apmeklētāji, kas piekrituši sīkfailiem.",

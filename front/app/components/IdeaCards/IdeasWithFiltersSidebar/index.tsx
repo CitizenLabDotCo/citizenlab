@@ -109,8 +109,15 @@ const IdeasWithFiltersSidebar = ({
     (selectedIdeaMarkerId ? 'map' : defaultView);
 
   // Fetch ideas list & filter counts
-  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useInfiniteIdeas(ideaQueryParameters);
+  const {
+    data,
+    isLoading,
+    isFetching,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteIdeas(ideaQueryParameters);
+
   const list = data?.pages.map((page) => page.data).flat();
   const { data: ideasFilterCounts } = useIdeasFilterCounts(ideaQueryParameters);
   const ideasCount = ideasFilterCounts?.data.attributes.total || 0;
@@ -261,6 +268,11 @@ const IdeasWithFiltersSidebar = ({
           )}
           <Box display={selectedView === 'map' ? 'block' : 'flex'}>
             <ContentLeft>
+              {isFetching && (
+                <Box mb="12px">
+                  <Spinner />
+                </Box>
+              )}
               <IdeasView
                 list={list}
                 querying={isLoading}

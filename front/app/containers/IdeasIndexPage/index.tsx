@@ -5,7 +5,6 @@ import {
   fontSizes,
   colors,
   isRtl,
-  Box,
 } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -16,6 +15,7 @@ import { IdeaSortMethod } from 'api/phases/types';
 import CityLogoSection from 'components/CityLogoSection';
 import ContentContainer from 'components/ContentContainer';
 import { IdeaCardsWithFiltersSidebar } from 'components/IdeaCards';
+import IdeaListScrollAnchor from 'components/IdeaListScrollAnchor';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
@@ -110,12 +110,7 @@ export default () => {
             {/* Needed to add an anchor here so that we can scroll up the page correctly
                 when fitlers are changed in the IdeaCardsWithFiltersSidebar component and scrollToTopIdeasList util.
             */}
-            <Box
-              position="absolute"
-              mt="-100px"
-              id="ideas-list-scroll-anchor"
-              aria-hidden={true}
-            />
+            <IdeaListScrollAnchor />
             <IdeaCardsWithFiltersSidebar
               invisibleTitleMessage={messages.a11y_IdeasListTitle1}
               ideaQueryParameters={ideasQueryParameters}

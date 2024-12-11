@@ -1339,6 +1339,7 @@
   "app.containers.IdeasShow.MetaInformation.currentStatus": "Current status",
   "app.containers.IdeasShow.MetaInformation.location": "Location",
   "app.containers.IdeasShow.MetaInformation.postedBy": "Posted by",
+  "app.containers.IdeasShow.MetaInformation.similar": "Similar inputs",
   "app.containers.IdeasShow.MetaInformation.topics": "Tags",
   "app.containers.IdeasShow.commentCTA": "Add a comment",
   "app.containers.IdeasShow.contributionEmailSharingBody": "Support this contribution '{postTitle}' at {postUrl}!",
