@@ -1,4 +1,4 @@
-import React, { lazy, useMemo } from 'react';
+import React, { lazy, Suspense, useMemo } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
@@ -98,7 +98,9 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
       ) : (
         <>
           <IdeaListScrollAnchor />
-          <IdeasWithFiltersSidebar inputTerm={inputTerm} {...sharedProps} />
+          <Suspense fallback={null}>
+            <IdeasWithFiltersSidebar inputTerm={inputTerm} {...sharedProps} />
+          </Suspense>
         </>
       )}
     </Box>

@@ -1,4 +1,4 @@
-import React, { lazy, useMemo } from 'react';
+import React, { lazy, Suspense, useMemo } from 'react';
 
 import {
   media,
@@ -113,10 +113,12 @@ export default () => {
                 when fitlers are changed in the IdeaCardsWithFiltersSidebar component and scrollToTopIdeasList util.
             */}
             <IdeaListScrollAnchor />
-            <IdeasWithFiltersSidebar
-              ideaQueryParameters={ideasQueryParameters}
-              onUpdateQuery={updateSearchParams}
-            />
+            <Suspense fallback={null}>
+              <IdeasWithFiltersSidebar
+                ideaQueryParameters={ideasQueryParameters}
+                onUpdateQuery={updateSearchParams}
+              />
+            </Suspense>
           </StyledContentContainer>
           <CityLogoSection />
         </Container>
