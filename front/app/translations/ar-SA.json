@@ -1347,6 +1347,7 @@
   "app.containers.IdeasShow.MetaInformation.currentStatus": "الحالة الحالية",
   "app.containers.IdeasShow.MetaInformation.location": "الموقع",
   "app.containers.IdeasShow.MetaInformation.postedBy": "تم النشر بواسطة",
+  "app.containers.IdeasShow.MetaInformation.similar": "مدخلات مماثلة",
   "app.containers.IdeasShow.MetaInformation.topics": "الموضوعات",
   "app.containers.IdeasShow.commentCTA": "أضِف تعليقًا",
   "app.containers.IdeasShow.contributionEmailSharingBody": "ادعم هذه المُساهمة '{postTitle}' على {postUrl}!",
