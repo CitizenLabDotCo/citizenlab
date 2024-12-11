@@ -9,17 +9,19 @@ import {
   Text,
 } from '@citizenlab/cl2-component-library';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IAreas } from 'api/areas/types';
+import useAddFollower from 'api/follow_unfollow/useAddFollower';
 
 import useLocalize from 'hooks/useLocalize';
 
 import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
+import projectAndFolderCardsMessages from 'components/ProjectAndFolderCards/components/Topbar/messages';
 
 import { useIntl } from 'utils/cl-intl';
 
-import { CarrouselContainer } from '../_shared/BaseCarrousel/Containers';
-
-import messages from './messages';
+import { CarrouselContainer } from '../../_shared/BaseCarrousel/Containers';
+import messages from '../messages';
 
 interface Props {
   title: string;
@@ -30,6 +32,16 @@ const AreaSelection = ({ title, areas }: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const isSmallerThanPhone = useBreakpoint('phone');
+  const { data: appConfiguration } = useAppConfiguration();
+
+  const { mutate: addFollower, isLoading } = useAddFollower();
+
+  if (!appConfiguration) return null;
+
+  const { area_term } = appConfiguration.data.attributes.settings.core;
+  const fallback = formatMessage(projectAndFolderCardsMessages.areaTitle);
+
+  const areaTerm = localize(area_term, { fallback }).toLowerCase();
 
   return (
     <CarrouselContainer>
@@ -41,9 +53,7 @@ const AreaSelection = ({ title, areas }: Props) => {
       >
         {title}
       </Title>
-      <Text>
-        {formatMessage(messages.selectYourX, { areaTerm: 'TODO' })} {/* TODO */}
-      </Text>
+      <Text>{formatMessage(messages.selectYourX, { areaTerm })}</Text>
       <Box display="flex" flexDirection="row" gap="12px">
         {areas.data.map((area) => (
           <Button
@@ -52,6 +62,14 @@ const AreaSelection = ({ title, areas }: Props) => {
             borderColor={colors.textPrimary}
             textColor={colors.textPrimary}
             p="4px 12px"
+            processing={isLoading}
+            disabled={isLoading}
+            onClick={() => {
+              addFollower({
+                followableType: 'areas',
+                followableId: area.id,
+              });
+            }}
           >
             {localize(area.attributes.title_multiloc)}
           </Button>

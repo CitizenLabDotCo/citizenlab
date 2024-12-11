@@ -37,7 +37,7 @@ const Areas = ({ titleMultiloc }: Props) => {
   }
 
   // Render the carrousel
-  return <></>;
+  return <>Carrousel!!</>;
 };
 
 Areas.craft = {
