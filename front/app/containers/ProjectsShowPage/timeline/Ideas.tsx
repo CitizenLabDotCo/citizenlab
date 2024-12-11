@@ -1,9 +1,10 @@
 import React, { useMemo } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
+import { MessageDescriptor } from 'react-intl';
 import { useSearchParams } from 'react-router-dom';
 
-import { IdeaSortMethod, IPhaseData } from 'api/phases/types';
+import { IdeaSortMethod, IPhaseData, PresentationMode } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
 import { IdeaSortMethodFallback } from 'api/phases/utils';
 
@@ -17,6 +18,17 @@ import IdeaListScrollAnchor from 'components/IdeaListScrollAnchor';
 
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
+
+type SharedProps = {
+  className: string;
+  ideaQueryParameters: QueryParameters;
+  onUpdateQuery: (queryParameters: QueryParameters) => void;
+  projectId: string;
+  phaseId: string;
+  showViewToggle: boolean;
+  invisbleTitleMessage: MessageDescriptor;
+  defaultView: PresentationMode;
+};
 
 interface InnerProps {
   projectId: string;
@@ -72,7 +84,7 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
 
   const inputTerm = phase.attributes.input_term;
 
-  const sharedProps = {
+  const sharedProps: SharedProps = {
     className: participationMethod,
     ideaQueryParameters,
     onUpdateQuery: updateSearchParams,
