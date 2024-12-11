@@ -1,18 +1,7 @@
 # frozen_string_literal: true
 
 module EmailCampaigns
-  class ProjectReviewRequestMailerPreview < ActionMailer::Preview
-    def self.call(...)
-      message = nil
-
-      ActiveRecord::Base.transaction do
-        message = super(...)
-        raise ActiveRecord::Rollback
-      end
-
-      message
-    end
-
+  class ProjectReviewRequestMailerPreview < PreviewMailer
     def campaign_mail
       campaign.mailer_class
         .with(campaign: campaign, command: command)
