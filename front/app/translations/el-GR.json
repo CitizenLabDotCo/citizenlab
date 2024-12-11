@@ -1347,6 +1347,7 @@
   "app.containers.IdeasShow.MetaInformation.currentStatus": "Τρέχουσα κατάσταση",
   "app.containers.IdeasShow.MetaInformation.location": "Τοποθεσία",
   "app.containers.IdeasShow.MetaInformation.postedBy": "Δημοσιεύτηκε από",
+  "app.containers.IdeasShow.MetaInformation.similar": "Παρόμοιες εισροές",
   "app.containers.IdeasShow.MetaInformation.topics": "Ετικέτες",
   "app.containers.IdeasShow.commentCTA": "Προσθέστε ένα σχόλιο",
   "app.containers.IdeasShow.contributionEmailSharingBody": "Υποστηρίξτε αυτή τη συνεισφορά '{postTitle}' στο {postUrl}!",
