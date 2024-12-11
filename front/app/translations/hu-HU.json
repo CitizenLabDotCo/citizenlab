@@ -1347,6 +1347,7 @@
   "app.containers.IdeasShow.MetaInformation.currentStatus": "Jelenlegi állapot",
   "app.containers.IdeasShow.MetaInformation.location": "Elhelyezkedés",
   "app.containers.IdeasShow.MetaInformation.postedBy": "Írta:",
+  "app.containers.IdeasShow.MetaInformation.similar": "Hasonló bemenetek",
   "app.containers.IdeasShow.MetaInformation.topics": "Címkék",
   "app.containers.IdeasShow.commentCTA": "Megjegyzés hozzáadása",
   "app.containers.IdeasShow.contributionEmailSharingBody": "Támogassa ezt a hozzájárulást '{postTitle}' a {postUrl}címen!",
