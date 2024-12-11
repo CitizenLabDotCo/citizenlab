@@ -25,7 +25,6 @@ const Published = ({ titleMultiloc }: Props) => {
       pageSize: 6,
       publicationStatusFilter: ['published'],
       rootLevelOnly: true,
-      removeNotAllowedParents: true,
       include_publications: true,
     });
 
