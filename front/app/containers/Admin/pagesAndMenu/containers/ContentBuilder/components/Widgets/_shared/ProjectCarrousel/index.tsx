@@ -28,10 +28,17 @@ interface Props {
   title: string;
   projects: MiniProjectData[];
   hasMore: boolean;
+  className?: string;
   onLoadMore: () => Promise<any>;
 }
 
-const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
+const ProjectCarrousel = ({
+  title,
+  projects,
+  hasMore,
+  className,
+  onLoadMore,
+}: Props) => {
   const [scrollContainerRef, setScrollContainerRef] = useState<
     HTMLDivElement | undefined
   >(undefined);
@@ -101,7 +108,7 @@ const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
 
   return (
     <>
-      <CarrouselContainer>
+      <CarrouselContainer className={className}>
         <Title
           variant="h2"
           mt="0px"

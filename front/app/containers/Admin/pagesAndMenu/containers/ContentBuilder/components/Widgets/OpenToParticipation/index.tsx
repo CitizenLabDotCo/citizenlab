@@ -42,6 +42,7 @@ const OpenToParticipation = ({ titleMultiloc }: Props) => {
       title={title}
       projects={projects}
       hasMore={!!hasNextPage}
+      className="e2e-open-to-participation"
       onLoadMore={fetchNextPage}
     />
   );
