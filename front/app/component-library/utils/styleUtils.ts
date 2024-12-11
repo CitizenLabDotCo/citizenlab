@@ -258,14 +258,14 @@ export const stylingConsts = {
   border: `1px solid ${colors.divider}`,
 };
 
-export const getFontWeightCSS = (fontWeight: FontWeight | undefined) => {
+export const getFontWeightCSS = (fontWeight: FontWeight) => {
   switch (fontWeight) {
-    case 'bold':
+    case 'bold': // Value of 700
       return 'bold';
     case 'medium':
       return 600;
-    default:
-      return 'normal';
+    case 'normal':
+      return 'normal'; // Value of 400
   }
 };
 
