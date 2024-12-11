@@ -1347,6 +1347,7 @@
   "app.containers.IdeasShow.MetaInformation.currentStatus": "Aktuell status",
   "app.containers.IdeasShow.MetaInformation.location": "Plats",
   "app.containers.IdeasShow.MetaInformation.postedBy": "Publicerades av",
+  "app.containers.IdeasShow.MetaInformation.similar": "Liknande ingångar",
   "app.containers.IdeasShow.MetaInformation.topics": "Ämnen",
   "app.containers.IdeasShow.commentCTA": "Lägg till en kommentar",
   "app.containers.IdeasShow.contributionEmailSharingBody": "Stöd det här bidraget {postTitle} på {postUrl}!",
