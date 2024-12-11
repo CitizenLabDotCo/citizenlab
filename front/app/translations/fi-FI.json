@@ -1347,6 +1347,7 @@
   "app.containers.IdeasShow.MetaInformation.currentStatus": "Nykyinen tila",
   "app.containers.IdeasShow.MetaInformation.location": "Sijainti",
   "app.containers.IdeasShow.MetaInformation.postedBy": "lähettänyt",
+  "app.containers.IdeasShow.MetaInformation.similar": "Samanlaiset tulot",
   "app.containers.IdeasShow.MetaInformation.topics": "Tunnisteet",
   "app.containers.IdeasShow.commentCTA": "Lisää kommentti",
   "app.containers.IdeasShow.contributionEmailSharingBody": "Tue tätä panosta '{postTitle}' osoitteessa {postUrl}!",
