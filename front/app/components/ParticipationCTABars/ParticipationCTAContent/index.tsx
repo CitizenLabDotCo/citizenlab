@@ -24,7 +24,7 @@ const ParticipationCTAContent = ({
 }: Props) => {
   const theme = useTheme();
   const isSmallerThanPhone = useBreakpoint('phone');
-  // If the screen is smaller than a phone, the bar sticks to the bottom. See ProjectCTABar.
+  // This is the same condition as we have in ProjectCTABar.
   const sticksToBottom = isSmallerThanPhone;
 
   return sticksToBottom ? (
