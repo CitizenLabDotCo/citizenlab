@@ -211,6 +211,6 @@ class ParticipantsService
     # (Ideas in voting phases are considered part of the project setup.)
     voting_phases = project.phases.where(participation_method: 'voting')
     ideas_in_voting_phases = IdeasPhase.where(phase: voting_phases).select(:idea_id)
-    Idea.where.not(id: ideas_in_voting_phases).destroy_all
+    Idea.where(project: project).where.not(id: ideas_in_voting_phases).destroy_all
   end
 end
