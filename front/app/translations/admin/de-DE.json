@@ -380,7 +380,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.embeddedMethods": "Teilnehmende eingebetteter Methoden (z.B. externe Umfragen)",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.followers": "Projektfollower*innen",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.note": "Hinweis: Wenn Sie anonyme oder offene Teilnahmerechte aktivieren, können Nutzende mehrfach teilnehmen, was zu irreführenden oder unvollständigen Nutzerdaten führen kann.",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsExclusionTitle": "Nicht als Teilnehmende gelten:",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsInfoTitle": "Zu den Teilnehmenden gehören:",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.users": "Nutzende, die mit Go Vocal-Methoden interagieren",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.projectSettings": "Projekt-Einstellungen",

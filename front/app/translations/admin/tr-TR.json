@@ -380,7 +380,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.embeddedMethods": "Yerleşik yöntemlere katılanlar (örn. harici anketler)",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.followers": "Bir projenin takipçileri",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.note": "Not: Anonim veya açık katılım izinlerinin etkinleştirilmesi, kullanıcıların birden fazla kez katılmasına izin vererek yanıltıcı veya eksik kullanıcı verilerine yol açabilir.",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsExclusionTitle": "Katılımcılar dahil değildir:",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsInfoTitle": "Katılımcılar arasında",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.users": "Go Vocal yöntemleriyle etkileşime giren kullanıcılar",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.projectSettings": "Proje ayarları",

@@ -38,6 +38,10 @@ export default defineMessages({
     defaultMessage:
       '{participantsCount, plural, one {1 participant} other {{participantsCount} participants}}',
   },
+  offlineVoters: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.offlineVoters',
+    defaultMessage: 'Offline voters',
+  },
   everyone: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.everyone',
     defaultMessage: 'Everyone',
@@ -106,8 +110,8 @@ export default defineMessages({
     defaultMessage: 'Event attendees',
   },
   participantsExclusionTitle: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsExclusionTitle',
-    defaultMessage: 'Participants do not include:',
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsExclusionTitle2',
+    defaultMessage: 'Participants <b>do not include</b>:',
   },
   followers: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.followers',
