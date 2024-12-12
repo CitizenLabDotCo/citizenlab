@@ -2126,7 +2126,7 @@
   "app.containers.AdminPage.SettingsPage.subtitleAreas": "Määritä maantieteelliset alueet, joita haluat käyttää alustassasi, kuten kaupunginosat, kaupunginosat tai piirit. Voit liittää nämä maantieteelliset alueet projekteihin (suodatettavissa aloitussivulla) tai pyytää osallistujia valitsemaan asuinalueensa rekisteröintikenttään luodaksesi älykkäitä ryhmiä ja määrittääksesi käyttöoikeudet.",
   "app.containers.AdminPage.SettingsPage.subtitleBasic": "Valitse, miten ihmiset näkevät organisaatiosi nimen, valitse alustasi kielet ja linkki verkkosivustollesi.",
   "app.containers.AdminPage.SettingsPage.subtitleMaxCharError": "Annettu tekstitys ylittää suurimman sallitun merkkirajoituksen (90 merkkiä)",
-  "app.containers.AdminPage.SettingsPage.subtitleRegistration": "Määritä, mitä tietoja ihmisiä pyydetään antamaan rekisteröitymisen yhteydessä.",
+  "app.containers.AdminPage.SettingsPage.subtitleRegistration": "Specify what information people are asked to provide when signing up.",
   "app.containers.AdminPage.SettingsPage.subtitleTerminology": "Terminologia",
   "app.containers.AdminPage.SettingsPage.successfulUpdateSettings": "Asetukset päivitetty onnistuneesti.",
   "app.containers.AdminPage.SettingsPage.tabApproval": "Hyväksyminen",
