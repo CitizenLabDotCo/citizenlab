@@ -362,7 +362,7 @@ resource 'ProjectsMini' do # == Projects, but labeled as ProjectsMini, to help d
       expect(project_ids).to match_array [project_with_areas.id, project_for_all_areas.id]
     end
 
-    example_request 'Returns projects for followed areas & for all areas when areas param is nil', document: false do
+    example_request 'Returns projects for followed areas & for all areas when areas param is blank', document: false do
       create(:follower, followable: area1, user: @user)
 
       do_request
