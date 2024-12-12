@@ -24,8 +24,10 @@ const ParticipationCTAContent = ({
 }: Props) => {
   const theme = useTheme();
   const isSmallerThanPhone = useBreakpoint('phone');
+  // This is the same condition we have in ProjectCTABar.
+  const sticksToBottom = isSmallerThanPhone;
 
-  return isSmallerThanPhone ? (
+  return sticksToBottom ? (
     <Box
       display="flex"
       flexDirection="column"
@@ -54,6 +56,19 @@ const ParticipationCTAContent = ({
       bgColor={theme.colors.tenantPrimary}
       height="64px"
       p="20px"
+      /* 
+        This is is needed to determine how much to push down the input filters
+        (in ContentRight).
+
+        Putting this id in ProjectCTABar does not work at the moment, because
+        the rendered bar (BarContents) can sometimes be null. In that case,
+        we are telling ContentRight that the top bar is visible, while it is not.
+        
+        We can look into moving this component to ProjectCTABar (where we split between top and bottom bar)
+        instead of here. Then only define the CTAButton part in the config, then we can probably
+        move the id in ProjectCTABar.
+      */
+      id="project-cta-bar-top"
     >
       <Box display="flex" width="100%" maxWidth={`${maxPageWidth}px`}>
         <TimeIndicator

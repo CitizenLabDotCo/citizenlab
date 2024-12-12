@@ -74,7 +74,6 @@ interface Props {
 
 const ProjectsShowPage = ({ project }: Props) => {
   const projectId = project.id;
-
   const isSmallerThanTablet = useBreakpoint('tablet');
   const { formatMessage } = useIntl();
   const [mounted, setMounted] = useState(false);
@@ -134,9 +133,7 @@ const ProjectsShowPage = ({ project }: Props) => {
             <ProjectHeader projectId={projectId} />
             <ProjectCTABar projectId={projectId} />
 
-            <div id="participation-detail">
-              <TimelineContainer projectId={projectId} />
-            </div>
+            <TimelineContainer projectId={projectId} />
             {!!events?.data.length && (
               <Box
                 id="e2e-events-section-project-page"
