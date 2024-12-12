@@ -269,7 +269,7 @@ sr-Latn:
       cta_reply_to: 'Погледај коментар од %{firstName}'
       event_description: '%{authorNameFull} вас је поменуо у интерном коментару.'
       subject: '%{firstName} вас је поменуо у интерном коментару.'
-      main_header: '%{authorNameFirst} вас је поменуо у интерном коментару.'
+      main_header: '%{firstName} вас је поменуо у интерном коментару.'
       preheader: '%{authorNameFull} вас је поменуо у интерном коментару.'
     moderator_digest:
       subject: 'Vaš nedeljni izveštaj za menadžere projekta od %{project_title}'

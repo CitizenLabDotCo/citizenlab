@@ -269,7 +269,7 @@ pl:
       cta_reply_to: 'Wyświetl komentarz przez %{firstName}'
       event_description: '%{authorNameFull} wspomniałem o tobie w wewnętrznym komentarzu.'
       subject: '%{firstName} wspomniałem o tobie w wewnętrznym komentarzu.'
-      main_header: '%{authorNameFirst} wspomniałem o tobie w wewnętrznym komentarzu.'
+      main_header: '%{firstName} wspomniałem o tobie w wewnętrznym komentarzu.'
       preheader: '%{authorNameFull} wspomniałem o tobie w wewnętrznym komentarzu.'
     moderator_digest:
       subject: 'Twój tygodniowy raport moderatora projektu z %{project_title}'
