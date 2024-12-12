@@ -27,7 +27,6 @@ import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { isNilOrError } from 'utils/helperUtils';
-import { getInputTermMessage } from 'utils/i18n';
 import { isFieldEnabled } from 'utils/projectUtils';
 
 import messages from '../messages';
@@ -36,6 +35,7 @@ import tracks from '../tracks';
 
 import ButtonWithFiltersModal from './ButtonWithFiltersModal';
 import ContentRight from './ContentRight';
+import { getInputCountMessage } from './utils';
 
 export const gapWidth = 35;
 
@@ -209,24 +209,21 @@ const IdeasWithFiltersSidebar = ({
 
   return (
     <Container id="e2e-ideas-container">
-      <Box display="flex" justifyContent="space-between" mb="8px">
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        mb={showViewButtons ? '8px' : '16px'}
+      >
         {inputTerm && (
-          <Title variant="h4" as="h2" mt="auto" mb="auto" color="tenantText">
-            {formatMessage(messages.ideasFilterSidebarTitle, {
-              numberIdeas: ideasCount,
-              inputTerm: formatMessage(
-                getInputTermMessage(inputTerm, {
-                  idea: messages.ideas,
-                  option: messages.options,
-                  project: messages.projects,
-                  question: messages.questions,
-                  issue: messages.issues,
-                  contribution: messages.contributions,
-                  proposal: messages.proposals,
-                  initiative: messages.initiatives,
-                  petition: messages.petitions,
-                })
-              ),
+          <Title
+            variant="h5"
+            as="h2"
+            my="auto"
+            color="tenantText"
+            fontWeight="semi-bold"
+          >
+            {formatMessage(getInputCountMessage(inputTerm), {
+              ideasCount,
             })}
           </Title>
         )}
