@@ -24,10 +24,9 @@ import messages from './messages';
 interface Props {
   title: string;
   areas: IAreas;
-  selectedAreaId?: string;
 }
 
-const EmptyState = ({ title, areas, selectedAreaId }: Props) => {
+const EmptyState = ({ title, areas }: Props) => {
   const isSmallerThanPhone = useBreakpoint('phone');
   const { formatMessage } = useIntl();
   const localize = useLocalize();
@@ -46,14 +45,14 @@ const EmptyState = ({ title, areas, selectedAreaId }: Props) => {
   const areasTerm = localize(areas_term, { fallback }).toLowerCase();
 
   const getMessage = () => {
-    if (selectedAreaId) {
-      const area = areas.data.find((area) => area.id === selectedAreaId);
-      if (!area) return null;
+    // if (selectedAreaId) {
+    //   const area = areas.data.find((area) => area.id === selectedAreaId);
+    //   if (!area) return null;
 
-      return formatMessage(messages.thereAreCurrentlyNoProjectsSingular, {
-        areaName: localize(area.attributes.title_multiloc),
-      });
-    }
+    //   return formatMessage(messages.thereAreCurrentlyNoProjectsSingular, {
+    //     areaName: localize(area.attributes.title_multiloc),
+    //   });
+    // }
 
     if (followedAreas.length === 1) {
       return formatMessage(messages.thereAreCurrentlyNoProjectsSingular, {
