@@ -8,6 +8,7 @@ import useProjectsMini from 'api/projects_mini/useProjectsMini';
 import useLocalize from 'hooks/useLocalize';
 
 import EmptyState from '../_shared/EmptyState';
+import ProjectCarrousel from '../_shared/ProjectCarrousel';
 
 import AreaSelection from './AreaSelection';
 import messages from './messages';
@@ -58,8 +59,15 @@ const Areas = ({ titleMultiloc }: Props) => {
     );
   }
 
-  // Render the carrousel
-  return <>Carrousel!!</>;
+  return (
+    <ProjectCarrousel
+      title={title}
+      projects={projects}
+      hasMore={!!hasNextPage}
+      className="e2e-areas-widget"
+      onLoadMore={fetchNextPage}
+    />
+  );
 };
 
 Areas.craft = {
