@@ -25,6 +25,7 @@ const Areas = ({ titleMultiloc }: Props) => {
   const followEnabled = useFeatureFlag({ name: 'follow' });
   const { data: areas } = useAreas({
     sort: 'projects_count',
+    pageSize: 100,
   });
 
   const followedAreas =
