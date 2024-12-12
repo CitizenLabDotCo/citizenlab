@@ -2307,7 +2307,6 @@
   "app.containers.AdminPage.phase.methodPicker.volunteeringTitle1": "Įdarbinti dalyvius arba savanorius",
   "app.containers.AdminPage.phase.methodPicker.votingDescription": "Pasirinkite balsavimo būdą ir paprašykite naudotojų nustatyti prioritetus tarp kelių skirtingų parinkčių.",
   "app.containers.AdminPage.phase.methodPicker.votingTitle1": "Atlikti balsavimą arba nustatyti prioritetus",
-  "app.containers.AdminPage.projects.all.active": "Aktyvus",
   "app.containers.AdminPage.projects.all.all": "Visi",
   "app.containers.AdminPage.projects.all.createProjectFolder": "Naujas aplankas",
   "app.containers.AdminPage.projects.all.existingProjects": "Esami projektai",
