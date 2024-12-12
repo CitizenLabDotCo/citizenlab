@@ -1489,6 +1489,8 @@
   "app.containers.NotificationMenu.projectPhaseStarted": "crwdns3695789:0{projectTitle}crwdne3695789:0",
   "app.containers.NotificationMenu.projectPhaseUpcoming": "crwdns3695791:0{projectTitle}crwdnd3695791:0{phaseStartAt}crwdne3695791:0",
   "app.containers.NotificationMenu.projectPublished": "crwdns3695793:0crwdne3695793:0",
+  "app.containers.NotificationMenu.projectReviewRequest": "crwdns3763211:0{name}crwdnd3763211:0{projectTitle}crwdne3763211:0",
+  "app.containers.NotificationMenu.projectReviewStateChange": "crwdns3763213:0{name}crwdnd3763213:0{projectTitle}crwdne3763213:0",
   "app.containers.NotificationMenu.statusChangedOnIdeaYouFollow": "crwdns3695795:0{ideaTitle}crwdnd3695795:0{status}crwdne3695795:0",
   "app.containers.NotificationMenu.thresholdReachedForAdmin": "crwdns3695797:0{post}crwdne3695797:0",
   "app.containers.NotificationMenu.userAcceptedYourInvitation": "crwdns3695799:0{name}crwdne3695799:0",
