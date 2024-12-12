@@ -11,7 +11,7 @@ namespace :homepage do
     reporter = ScriptReporter.new
     Tenant.safe_switch_each do |tenant|
       puts "\nChecking tenant #{tenant.host} \n\n"
-      next unless tenant.host.include?('template')
+      next unless tenant.host.include?('.template')
 
       layout = ContentBuilder::Layout.find_by(code: 'homepage')
       original_layout = layout.deep_dup
