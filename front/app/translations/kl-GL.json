@@ -1489,6 +1489,8 @@
   "app.containers.NotificationMenu.projectPhaseStarted": "{projectTitle} nikeriarfimmut nutaamut ingerlaqqippoq",
   "app.containers.NotificationMenu.projectPhaseUpcoming": "{projectTitle} nikeriarfik nutaaq aallartissavaa uani {phaseStartAt}",
   "app.containers.NotificationMenu.projectPublished": "A new project was published",
+  "app.containers.NotificationMenu.projectReviewRequest": "{name} requested approval to publish the project \"{projectTitle}\"",
+  "app.containers.NotificationMenu.projectReviewStateChange": "{name} approved \"{projectTitle}\" for publication",
   "app.containers.NotificationMenu.statusChangedOnIdeaYouFollow": "{ideaTitle} status has changed to {status}",
   "app.containers.NotificationMenu.thresholdReachedForAdmin": "{post} taasisinnaasut amerlassuserisinaasaat anguneqarsimavoq",
   "app.containers.NotificationMenu.userAcceptedYourInvitation": "{name} qaaqqusinerit akuerisimavaa",
