@@ -2128,7 +2128,7 @@
   "app.containers.AdminPage.SettingsPage.subtitleAreas": "Nosakiet ģeogrāfiskās zonas, kuras vēlaties izmantot savai platformai, piemēram, apkaimes, rajonus vai novadus. Varat šīs ģeogrāfiskās zonas sasaistīt ar projektiem (var filtrēt mērķlapā) vai lūgt dalībniekus izvēlēties savu dzīvesvietas zonu reģistrācijas laukā, lai izveidotu viedās grupas un noteiktu piekļuves tiesības.",
   "app.containers.AdminPage.SettingsPage.subtitleBasic": "Izvēlieties, kā cilvēki redzēs jūsu organizācijas nosaukumu, izvēlieties platformas valodas un saiti uz jūsu tīmekļa vietni.",
   "app.containers.AdminPage.SettingsPage.subtitleMaxCharError": "Norādītais apakšvirsraksts pārsniedz maksimālo atļauto rakstzīmju skaitu (90 zīmes).",
-  "app.containers.AdminPage.SettingsPage.subtitleRegistration": "Norādīt, kāda informācija ir jāsniedz, piesakoties.",
+  "app.containers.AdminPage.SettingsPage.subtitleRegistration": "Specify what information people are asked to provide when signing up.",
   "app.containers.AdminPage.SettingsPage.subtitleTerminology": "Terminoloģija",
   "app.containers.AdminPage.SettingsPage.successfulUpdateSettings": "Iestatījumi veiksmīgi atjaunināti.",
   "app.containers.AdminPage.SettingsPage.tabApproval": "Apstiprinājums",
