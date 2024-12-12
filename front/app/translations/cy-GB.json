@@ -398,6 +398,7 @@
   "app.components.ProjectFolderCards.components.Topbar.areaTitle": "Ardal",
   "app.components.ProjectFolderCards.components.Topbar.draft": "Drafft",
   "app.components.ProjectFolderCards.components.Topbar.filterBy": "Hidlo erbyn",
+  "app.components.ProjectFolderCards.components.Topbar.published2": "Cyhoeddwyd",
   "app.components.ProjectFolderCards.components.Topbar.topicTitle": "Tag",
   "app.components.ProjectFolderCards.noProjectYet": "Nid oes unrhyw brosiectau ar agor ar hyn o bryd",
   "app.components.ProjectFolderCards.noProjectsAvailable": "Dim prosiectau ar gael",

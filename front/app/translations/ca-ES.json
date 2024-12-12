@@ -398,6 +398,7 @@
   "app.components.ProjectFolderCards.components.Topbar.areaTitle": "Àrea",
   "app.components.ProjectFolderCards.components.Topbar.draft": "Esborrany",
   "app.components.ProjectFolderCards.components.Topbar.filterBy": "Filtrar per",
+  "app.components.ProjectFolderCards.components.Topbar.published2": "Publicat",
   "app.components.ProjectFolderCards.components.Topbar.topicTitle": "Etiqueta",
   "app.components.ProjectFolderCards.noProjectYet": "Actualment no hi ha projectes oberts",
   "app.components.ProjectFolderCards.noProjectsAvailable": "No hi ha projectes disponibles",

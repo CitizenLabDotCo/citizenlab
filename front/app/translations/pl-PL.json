@@ -398,6 +398,7 @@
   "app.components.ProjectFolderCards.components.Topbar.areaTitle": "Obszar",
   "app.components.ProjectFolderCards.components.Topbar.draft": "Szkic",
   "app.components.ProjectFolderCards.components.Topbar.filterBy": "Filtruj według",
+  "app.components.ProjectFolderCards.components.Topbar.published2": "Opublikowano",
   "app.components.ProjectFolderCards.components.Topbar.topicTitle": "Tag",
   "app.components.ProjectFolderCards.noProjectYet": "Nie ma jeszcze żadnego projektu",
   "app.components.ProjectFolderCards.noProjectsAvailable": "Brak dostępnych projektów",

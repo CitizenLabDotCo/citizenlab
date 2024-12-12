@@ -398,6 +398,7 @@
   "app.components.ProjectFolderCards.components.Topbar.areaTitle": "Område",
   "app.components.ProjectFolderCards.components.Topbar.draft": "Utkast",
   "app.components.ProjectFolderCards.components.Topbar.filterBy": "Filtrer etter",
+  "app.components.ProjectFolderCards.components.Topbar.published2": "Publisert",
   "app.components.ProjectFolderCards.components.Topbar.topicTitle": "Tag",
   "app.components.ProjectFolderCards.noProjectYet": "Det er for øyeblikket ingen åpne prosjekter",
   "app.components.ProjectFolderCards.noProjectsAvailable": "Ingen tilgjengelige prosjekter",

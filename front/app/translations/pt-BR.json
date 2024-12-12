@@ -398,6 +398,7 @@
   "app.components.ProjectFolderCards.components.Topbar.areaTitle": "Área",
   "app.components.ProjectFolderCards.components.Topbar.draft": "Rascunho",
   "app.components.ProjectFolderCards.components.Topbar.filterBy": "Filtrar por",
+  "app.components.ProjectFolderCards.components.Topbar.published2": "Publicado",
   "app.components.ProjectFolderCards.components.Topbar.topicTitle": "Tópicos",
   "app.components.ProjectFolderCards.noProjectYet": "Não há nenhum projeto",
   "app.components.ProjectFolderCards.noProjectsAvailable": "Não há projetos disponíveis",

@@ -398,6 +398,7 @@
   "app.components.ProjectFolderCards.components.Topbar.areaTitle": "Joma",
   "app.components.ProjectFolderCards.components.Topbar.draft": "Melnraksts",
   "app.components.ProjectFolderCards.components.Topbar.filterBy": "Filtrēt pēc",
+  "app.components.ProjectFolderCards.components.Topbar.published2": "Publicēts",
   "app.components.ProjectFolderCards.components.Topbar.topicTitle": "Tags",
   "app.components.ProjectFolderCards.noProjectYet": "Pašlaik nav atvērtu projektu",
   "app.components.ProjectFolderCards.noProjectsAvailable": "Projekti nav pieejami",
