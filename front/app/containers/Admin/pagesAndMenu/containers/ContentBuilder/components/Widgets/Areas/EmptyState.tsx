@@ -1,6 +1,11 @@
 import React from 'react';
 
-import { Title, Text, useBreakpoint } from '@citizenlab/cl2-component-library';
+import {
+  Title,
+  Text,
+  useBreakpoint,
+  Box,
+} from '@citizenlab/cl2-component-library';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { coreSettings } from 'api/app_configuration/utils';
@@ -14,15 +19,17 @@ import { useIntl } from 'utils/cl-intl';
 
 import { CarrouselContainer } from '../_shared/BaseCarrousel/Containers';
 
+import DropdownSelect from './DropdownSelect';
 import messages from './messages';
 
 interface Props {
   title: string;
   areas: IAreas;
   selectedAreaId?: string;
+  onSelectArea: (areaId: string) => void;
 }
 
-const EmptyState = ({ title, areas, selectedAreaId }: Props) => {
+const EmptyState = ({ title, areas, selectedAreaId, onSelectArea }: Props) => {
   const isSmallerThanPhone = useBreakpoint('phone');
   const { formatMessage } = useIntl();
   const localize = useLocalize();
@@ -63,13 +70,27 @@ const EmptyState = ({ title, areas, selectedAreaId }: Props) => {
 
   return (
     <CarrouselContainer>
-      <Title
-        variant="h2"
-        mt="0px"
-        ml={isSmallerThanPhone ? DEFAULT_PADDING : undefined}
+      <Box
+        display="flex"
+        flexDirection="row"
+        justifyContent="space-between"
+        mb="16px"
       >
-        {title}
-      </Title>
+        <Title
+          variant="h2"
+          my="0px"
+          ml={isSmallerThanPhone ? DEFAULT_PADDING : undefined}
+        >
+          {title}
+        </Title>
+        <Box display="flex" alignItems="center">
+          <DropdownSelect
+            selectedAreaId={selectedAreaId}
+            areas={areas}
+            onSelectArea={onSelectArea}
+          />
+        </Box>
+      </Box>
       <Text color="textSecondary">{getMessage()}</Text>
     </CarrouselContainer>
   );

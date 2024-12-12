@@ -119,8 +119,7 @@ const ProjectCarrousel = ({
         >
           <Title
             variant="h2"
-            mt="0px"
-            mb="0px"
+            my="0px"
             ml={isSmallerThanPhone ? DEFAULT_PADDING : undefined}
             color="tenantText"
           >
