@@ -2126,7 +2126,7 @@
   "app.containers.AdminPage.SettingsPage.subtitleAreas": "Define the geographic areas that you would like to use for your platform, such as neighborhoods, boroughs or districts. You can associate these geographic areas with projects (filterable on the landing page) or ask participants to select their area of residence as a registration field to create Smart Groups and define access rights.",
   "app.containers.AdminPage.SettingsPage.subtitleBasic": "Choose how people will see your organization name, select the languages of your platform and link to your website.",
   "app.containers.AdminPage.SettingsPage.subtitleMaxCharError": "The provided subtitle exceeds the maximum allowed character limit (90 chars)",
-  "app.containers.AdminPage.SettingsPage.subtitleRegistration": "Specify what information people are asked to provide when signing up.",
+  "app.containers.AdminPage.SettingsPage.subtitleRegistration": "Specify what information people are asked to provide by default before performing any action on the platform. You can change this default in your project phase access rights settings.\nFor a question to be used in our reporting tool the question has to be a single choice question. ",
   "app.containers.AdminPage.SettingsPage.subtitleTerminology": "Terminology",
   "app.containers.AdminPage.SettingsPage.successfulUpdateSettings": "Settings updated successfully.",
   "app.containers.AdminPage.SettingsPage.tabApproval": "Approval",
