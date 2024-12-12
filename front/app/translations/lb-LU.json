@@ -1594,6 +1594,7 @@
   "app.containers.Projects.noPastEvents": "Keng vergaangen Evenementer fir unzeweisen",
   "app.containers.Projects.noPhaseSelected": "Keng Phas ausgewielt",
   "app.containers.Projects.noUpcomingOrOngoingEvents": "Aktuell si keng bevirstoend oder lafend Evenementer geplangt.",
+  "app.containers.Projects.offlineVotersTooltip": "Dës Zuel reflektéiert keng offline Wielerzuelen.",
   "app.containers.Projects.options": "Optiounen",
   "app.containers.Projects.participants": "Participanten",
   "app.containers.Projects.participantsTooltip4": "Dës Zuel reflektéiert och anonym Ëmfro Soumissioun. Anonym Ëmfroe sinn méiglech wann Ëmfroe fir jiddereen op sinn (kuckt den Tab {accessRightsLink} fir dëse Projet).",

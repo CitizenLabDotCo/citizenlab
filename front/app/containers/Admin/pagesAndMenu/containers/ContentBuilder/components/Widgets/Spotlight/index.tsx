@@ -59,6 +59,7 @@ const Spotlight = ({
       <SpotlightProjectInner
         title={formatMessage(messages.selectProjectOrFolder)}
         description={formatMessage(messages.pleaseSelectAProjectOrFolder)}
+        loading={false}
       />
     );
   }
@@ -66,13 +67,25 @@ const Spotlight = ({
   const publication = publicationType === 'project' ? project : folder;
   const image = publicationType === 'project' ? projectImage : folderImage;
 
-  if (!publication) return null;
-
   const avatarIds =
-    publication.data.relationships.avatars?.data?.map((avatar) => avatar.id) ??
-    [];
+    publication?.data.relationships.avatars?.data?.map((avatar) => avatar.id) ??
+    undefined;
 
-  const link = `/${publicationType}s/${publication.data.attributes.slug}`;
+  const link = publication
+    ? `/${publicationType}s/${publication.data.attributes.slug}`
+    : undefined;
+
+  const getLoading = () => {
+    if (publicationType === 'project') {
+      return !project;
+    }
+
+    if (publicationType === 'folder') {
+      return !folder;
+    }
+
+    return false;
+  };
 
   return (
     <SpotlightProjectInner
@@ -83,8 +96,9 @@ const Spotlight = ({
       // In this case we don't want that- we just want the empty string.
       buttonLink={link}
       imgSrc={image?.data.attributes.versions.large ?? undefined}
+      loading={getLoading()}
       avatarIds={avatarIds}
-      userCount={publication.data.attributes.participants_count}
+      userCount={publication?.data.attributes.participants_count}
     />
   );
 };

@@ -27,7 +27,7 @@ const ProjectSection = styled.div`
   `}
 `;
 
-const Projects = ({
+const ProjectsAndFoldersLegacy = ({
   currentlyWorkingOnText,
 }: {
   currentlyWorkingOnText?: Multiloc;
@@ -90,12 +90,12 @@ const ProjectsSettings = () => {
   );
 };
 
-Projects.craft = {
+ProjectsAndFoldersLegacy.craft = {
   related: {
     settings: ProjectsSettings,
   },
 };
 
-export const projectsTitle = messages.projectsTitle;
+export const projectsAndFoldersLegacyTitle = messages.projectsTitle;
 
-export default Projects;
+export default ProjectsAndFoldersLegacy;

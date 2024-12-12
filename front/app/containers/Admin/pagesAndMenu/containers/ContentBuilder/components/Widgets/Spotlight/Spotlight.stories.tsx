@@ -30,6 +30,7 @@ export const Standard: Story = {
   args: {
     title: 'People at the Heart of Everything We Do',
     imgSrc: `${getOrigin()}/images/city.png`,
+    loading: false,
     description:
       'Join local projects, sharing your ideas, or contributing to discussions, your voice is key to building a better Newham.',
     buttonText: 'Join other residents',
