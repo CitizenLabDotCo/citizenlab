@@ -2128,7 +2128,7 @@
   "app.containers.AdminPage.SettingsPage.subtitleAreas": "Καθορίστε τις γεωγραφικές περιοχές που θα θέλατε να χρησιμοποιήσετε για την πλατφόρμα σας, όπως γειτονιές, δήμους ή περιφέρειες. Μπορείτε να συσχετίσετε αυτές τις γεωγραφικές περιοχές με έργα (με δυνατότητα φιλτραρίσματος στη σελίδα προορισμού) ή να ζητήσετε από τους συμμετέχοντες να επιλέξουν την περιοχή διαμονής τους ως πεδίο εγγραφής για τη δημιουργία έξυπνων ομάδων και τον καθορισμό δικαιωμάτων πρόσβασης.",
   "app.containers.AdminPage.SettingsPage.subtitleBasic": "Επιλέξτε πώς οι άνθρωποι θα βλέπουν το όνομα του οργανισμού σας, επιλέξτε τις γλώσσες της πλατφόρμας σας και συνδέστε τον ιστότοπό σας.",
   "app.containers.AdminPage.SettingsPage.subtitleMaxCharError": "Ο παρεχόμενος υπότιτλος υπερβαίνει το μέγιστο επιτρεπόμενο όριο χαρακτήρων (90 χαρακτήρες)",
-  "app.containers.AdminPage.SettingsPage.subtitleRegistration": "Καθορίστε ποιες πληροφορίες θα κληθούν να παρέχουν οι χρήστες κατά την εγγραφή τους.",
+  "app.containers.AdminPage.SettingsPage.subtitleRegistration": "Specify what information people are asked to provide when signing up.",
   "app.containers.AdminPage.SettingsPage.subtitleTerminology": "Ορολογία",
   "app.containers.AdminPage.SettingsPage.successfulUpdateSettings": "Settings updated successfully.",
   "app.containers.AdminPage.SettingsPage.tabApproval": "Approval",
