@@ -10,6 +10,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { coreSettings } from 'api/app_configuration/utils';
 import { IAreas } from 'api/areas/types';
 import useAddFollower from 'api/follow_unfollow/useAddFollower';
 
@@ -38,7 +39,7 @@ const AreaSelection = ({ title, areas }: Props) => {
 
   if (!appConfiguration) return null;
 
-  const { area_term } = appConfiguration.data.attributes.settings.core;
+  const { area_term } = coreSettings(appConfiguration.data);
   const fallback = formatMessage(projectAndFolderCardsMessages.areaTitle);
 
   const areaTerm = localize(area_term, { fallback }).toLowerCase();

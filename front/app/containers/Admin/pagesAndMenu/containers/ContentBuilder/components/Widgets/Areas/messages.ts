@@ -9,9 +9,18 @@ export default defineMessages({
     id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.selectYourX',
     defaultMessage: 'Select your {areaTerm}',
   },
-  noData: {
-    id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.noData',
+  thereAreCurrentlyNoProjectsSingular: {
+    id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.thereAreCurrentlyNoProjects',
     defaultMessage:
-      'This widget will only be shown to the user if there are projects associated with areas that they follow. If you see this message, it means that the areas that you (the admin) are following have no associated projects. This message will not be visible on the real homepage.',
+      'There are currently no projects in {areaName} that you have permission to view',
+  },
+  thereAreCurrentlyNoProjectsPlural: {
+    id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.thereAreCurrentlyNoProjectsInYourAreas',
+    defaultMessage:
+      'There are currently no projects in the {areasTerm} that you follow that you have permission to view',
+  },
+  areas: {
+    id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.areas',
+    defaultMessage: 'Areas',
   },
 });

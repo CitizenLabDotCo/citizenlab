@@ -8,11 +8,11 @@ import useProjectsMini from 'api/projects_mini/useProjectsMini';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
-import EmptyState from '../_shared/EmptyState';
 import ProjectCarrousel from '../_shared/ProjectCarrousel';
 import Skeleton from '../_shared/ProjectCarrousel/Skeleton';
 
 import AreaSelection from './AreaSelection';
+import EmptyState from './EmptyState';
 import messages from './messages';
 import Settings from './Settings';
 
@@ -63,9 +63,7 @@ const Areas = ({ titleMultiloc }: Props) => {
   }
 
   if (projects.length === 0) {
-    return (
-      <EmptyState titleMultiloc={titleMultiloc} explanation={messages.noData} />
-    );
+    return <EmptyState title={title} areas={areas} />;
   }
 
   return (
