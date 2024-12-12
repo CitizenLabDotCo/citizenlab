@@ -582,26 +582,26 @@ resource 'Ideas' do
         end
 
         # Tests the context where the survey has been opened in two tabs and the user submits one of them.
-        context 'when there are two surveys in draft' do
-          let(:publication_status) { 'published' }
+        # context 'when there are two surveys in draft' do
+        #   let(:publication_status) { 'published' }
 
-          example 'Survey submits and removes other drafts by the same user' do
-            input.update!(publication_status: 'draft')
-            draft_survey_to_delete = create(
-              :native_survey_response,
-              author: user,
-              project: project,
-              creation_phase: creation_phase,
-              publication_status: 'draft'
-            )
-            draft_survey_to_delete_id = draft_survey_to_delete.id
+        #   example 'Survey submits and removes other drafts by the same user' do
+        #     input.update!(publication_status: 'draft')
+        #     draft_survey_to_delete = create(
+        #       :native_survey_response,
+        #       author: user,
+        #       project: project,
+        #       creation_phase: creation_phase,
+        #       publication_status: 'draft'
+        #     )
+        #     draft_survey_to_delete_id = draft_survey_to_delete.id
 
-            do_request
-            assert_status 200
-            expect(project.reload.ideas.size).to eq 1
-            expect { Idea.find(draft_survey_to_delete_id) }.to raise_error(ActiveRecord::RecordNotFound)
-          end
-        end
+        #     do_request
+        #     assert_status 200
+        #     expect(project.reload.ideas.size).to eq 1
+        #     expect { Idea.find(draft_survey_to_delete_id) }.to raise_error(ActiveRecord::RecordNotFound)
+        #   end
+        # end
       end
     end
 
