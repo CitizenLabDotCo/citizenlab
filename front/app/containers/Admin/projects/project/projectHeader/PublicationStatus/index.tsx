@@ -103,7 +103,6 @@ const PublicationStatus = ({ project }: { project: IProject }) => {
     setIsPickerOpen(false);
   };
 
-  // Only display the component if the project has been published at least once
   if (!project.data.attributes.first_published_at) {
     return (
       <Box
