@@ -35,7 +35,9 @@ import HomepageBanner, { homepageBannerTitle } from './HomepageBanner';
 import OpenToParticipation, {
   openToParticipationTitle,
 } from './OpenToParticipation';
-import Projects, { projectsTitle } from './Projects';
+import ProjectsAndFoldersLegacy, {
+  projectsAndFoldersLegacyTitle,
+} from './ProjectsAndFoldersLegacy';
 import Published, { publishedTitle } from './Published';
 import Selection, { selectionTitle } from './Selection';
 import Spotlight, { spotlightTitle } from './Spotlight';
@@ -58,7 +60,7 @@ export const WIDGETS = {
   FinishedOrArchived,
   HomepageBanner,
   OpenToParticipation,
-  Projects,
+  ProjectsAndFoldersLegacy,
   Published,
   Selection,
   Spotlight,
@@ -66,6 +68,7 @@ export const WIDGETS = {
 
   // RENAMED (TODO rename in migration)
   Highlight: CallToAction,
+  Projects: ProjectsAndFoldersLegacy,
 
   // DEPRECATED (TODO remove in migration)
   Proposals,
@@ -90,7 +93,7 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   FinishedOrArchived: finishedOrArchivedTitle,
   HomepageBanner: homepageBannerTitle,
   OpenToParticipation: openToParticipationTitle,
-  Projects: projectsTitle,
+  ProjectsAndFoldersLegacy: projectsAndFoldersLegacyTitle,
   Published: publishedTitle,
   Selection: selectionTitle,
   Spotlight: spotlightTitle,
@@ -98,6 +101,7 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
 
   // RENAMED
   Highlight: callToActionTitle,
+  Projects: projectsAndFoldersLegacyTitle,
 
   // DEPRECATED
   Proposals: callToActionTitle,
@@ -124,12 +128,13 @@ const WIDGETS_WITHOUT_POINTER_EVENTS = new Set<string>([
   'FinishedOrArchived',
   'HomepageBanner',
   'OpenToParticipation',
-  'Projects',
+  'ProjectsAndFoldersLegacy',
   'Published',
   'Selection',
   'Spotlight',
 
   // RENAMED
+  'Projects',
   'Highlight',
 ] satisfies WidgetName[]);
 
