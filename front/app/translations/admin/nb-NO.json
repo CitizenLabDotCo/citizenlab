@@ -383,7 +383,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsExclusionTitle": "Deltakerne er ikke inkludert:",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsInfoTitle": "Deltakerne inkluderer:",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.users": "Brukere som samhandler med Go Vocal-metoder",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.projectSettings": "Prosjektinnstillinger",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.publishedActive1": "Publisert - Aktiv",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.publishedFinished1": "Publisert - Ferdig",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.refreshLink": "Oppdater lenken til forhåndsvisning av prosjektet",

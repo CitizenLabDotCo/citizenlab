@@ -1,9 +1,9 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  projectSettings: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.projectSettings',
-    defaultMessage: 'Project settings',
+  settings: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.settings',
+    defaultMessage: 'Settings',
   },
   view: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.view',

@@ -383,7 +383,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsExclusionTitle": "Sudionici ne uključuju:",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsInfoTitle": "Sudionici uključuju:",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.users": "Korisnici u interakciji s Go Vocal metodama",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.projectSettings": "Postavke projekta",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.publishedActive1": "Objavljeno - Aktivno",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.publishedFinished1": "Objavljeno - Završeno",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.refreshLink": "Osvježi vezu za pregled projekta",

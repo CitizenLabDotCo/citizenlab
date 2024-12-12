@@ -383,7 +383,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsExclusionTitle": "لا يشمل المشاركون:",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsInfoTitle": "يشمل المشاركون:",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.users": "المستخدمون يتفاعلون مع أساليب Go Vocal",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.projectSettings": "إعدادات المشروع",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.publishedActive1": "تم النشر - نشط",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.publishedFinished1": "منشور – انتهى",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.refreshLink": "تحديث رابط معاينة المشروع",

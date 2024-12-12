@@ -72,7 +72,6 @@ const ShareLink = ({
       <Button
         id="e2e-share-link"
         buttonStyle="secondary-outlined"
-        icon="share"
         size="s"
         padding="4px 8px"
         onClick={() => {

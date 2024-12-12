@@ -383,7 +383,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsExclusionTitle": "Uczestnicy nie obejmują:",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsInfoTitle": "Wśród uczestników są:",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.users": "Użytkownicy korzystający z metod Go Vocal",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.projectSettings": "Ustawienia projektu",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.publishedActive1": "Opublikowany - Aktywny",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.publishedFinished1": "Opublikowano - Zakończono",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.refreshLink": "Odśwież łącze podglądu projektu",

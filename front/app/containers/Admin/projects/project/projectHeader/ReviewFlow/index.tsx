@@ -1,11 +1,6 @@
 import React, { useState } from 'react';
 
-import {
-  Button,
-  Tooltip,
-  Box,
-  colors,
-} from '@citizenlab/cl2-component-library';
+import { Button, Tooltip, Box } from '@citizenlab/cl2-component-library';
 
 import useApproveProjectReview from 'api/project_reviews/useApproveProject';
 import useProjectReview from 'api/project_reviews/useProjectReview';
@@ -105,25 +100,31 @@ const ReviewFlow = ({ project }: { project: IProjectData }) => {
 
       {showReviewRequestButton && (
         <Box position="relative">
-          <Button
-            buttonStyle="admin-dark"
-            icon="send"
-            onClick={() => setIsProjectReviewDropdownOpened(true)}
-            processing={isProjectReviewLoading}
-            size="s"
-            padding="4px 8px"
-            iconSize="20px"
-            disabled={approvalPending}
-            data-cy={
-              approvalPending
-                ? 'e2e-request-approval-pending'
-                : 'e2e-request-approval'
-            }
+          <Tooltip
+            content={formatMessage(messages.pendingApprovalTooltip)}
+            placement="bottom"
+            disabled={!approvalPending}
           >
-            {approvalPending
-              ? formatMessage(messages.pendingApproval)
-              : formatMessage(messages.requestApproval)}
-          </Button>
+            <Button
+              buttonStyle="admin-dark"
+              icon="send"
+              onClick={() => setIsProjectReviewDropdownOpened(true)}
+              processing={isProjectReviewLoading}
+              size="s"
+              padding="4px 8px"
+              iconSize="20px"
+              disabled={approvalPending}
+              data-cy={
+                approvalPending
+                  ? 'e2e-request-approval-pending'
+                  : 'e2e-request-approval'
+              }
+            >
+              {approvalPending
+                ? formatMessage(messages.pendingApproval)
+                : formatMessage(messages.requestApproval)}
+            </Button>
+          </Tooltip>
           <ReviewRequest
             isOpen={isProjectReviewDropdownOpened}
             onClose={() => {
@@ -136,21 +137,23 @@ const ReviewFlow = ({ project }: { project: IProjectData }) => {
       )}
 
       {showProjectApprovalButton && (
-        <Button
-          bgColor={colors.success}
-          icon="check"
-          onClick={() => {
-            approveProjectReview(project.id);
-            trackEventByName(tracks.projectReviewGranted);
-          }}
-          processing={isApprovingProjectReviewLoading}
-          size="s"
-          padding="4px 8px"
-          iconSize="20px"
-          id="e2e-approve-project"
+        <Tooltip
+          content={formatMessage(messages.approveTooltip)}
+          placement="bottom"
         >
-          {formatMessage(messages.approve)}
-        </Button>
+          <Button
+            buttonStyle="admin-dark"
+            icon="unlock"
+            onClick={() => approveProjectReview(project.id)}
+            processing={isApprovingProjectReviewLoading}
+            size="s"
+            padding="4px 8px"
+            iconSize="20px"
+            id="e2e-approve-project"
+          >
+            {formatMessage(messages.approve)}
+          </Button>
+        </Tooltip>
       )}
     </Box>
   );

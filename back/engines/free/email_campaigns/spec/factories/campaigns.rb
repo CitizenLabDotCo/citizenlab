@@ -178,6 +178,14 @@ FactoryBot.define do
     enabled { true }
   end
 
+  factory :project_review_request_campaign, class: EmailCampaigns::Campaigns::ProjectReviewRequest do
+    enabled { true }
+  end
+
+  factory :project_review_state_change_campaign, class: EmailCampaigns::Campaigns::ProjectReviewRequest do
+    enabled { true }
+  end
+
   factory :status_change_on_idea_you_follow_campaign, class: EmailCampaigns::Campaigns::StatusChangeOnIdeaYouFollow do
     enabled { true }
   end
