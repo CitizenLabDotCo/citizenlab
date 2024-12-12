@@ -1603,6 +1603,7 @@
   "app.containers.Projects.noPastEvents": "No eventos anteriores que mostrar",
   "app.containers.Projects.noPhaseSelected": "Ninguna fase seleccionada",
   "app.containers.Projects.noUpcomingOrOngoingEvents": "Actualmente no hay eventos próximos o en curso.",
+  "app.containers.Projects.offlineVotersTooltip": "Esta cifra no refleja ningún recuento de votantes offline.",
   "app.containers.Projects.options": "Opciones",
   "app.containers.Projects.participants": "Participantes",
   "app.containers.Projects.participantsTooltip4": "Esta cifra también refleja los envíos anónimos de encuestas. Los envíos anónimos de encuestas son posibles si las encuestas están abiertas a todo el mundo (consulta la pestaña {accessRightsLink} de este proyecto).",
