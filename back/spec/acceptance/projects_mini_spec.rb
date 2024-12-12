@@ -345,7 +345,7 @@ resource 'ProjectsMini' do # == Projects, but labeled as ProjectsMini, to help d
     let!(:area1) { create(:area) }
     let!(:area2) { create(:area) }
     let!(:project_with_areas) { create(:project_with_active_ideation_phase) }
-    let!(:_areas_project1) { create(:areas_project, project: project_with_areas, area: area1) }
+    let!(:areas_project1) { create(:areas_project, project: project_with_areas, area: area1) }
     let!(:_areas_project2) { create(:areas_project, project: project_with_areas, area: area2) }
 
     let!(:project_for_all_areas) { create(:project_with_active_ideation_phase, include_all_areas: true) }
@@ -388,12 +388,13 @@ resource 'ProjectsMini' do # == Projects, but labeled as ProjectsMini, to help d
       expect(project_ids).to match_array [project_with_areas.id, project_for_all_areas.id]
     end
 
-    example_request 'Returns empty list when areas param is nil and no projects are for all areas', document: false do
-      project_for_all_areas.destroy!
+    example_request 'Returns projects for followed areas & for all areas when areas param is nil', document: false do
+      create(:follower, followable: area1, user: @user)
 
       do_request
       expect(status).to eq 200
-      expect(json_response[:data]).to eq []
+
+      expect(json_response[:data].pluck(:id)).to match_array [project_for_all_areas.id, project_with_areas.id]
     end
 
     context 'when admin' do

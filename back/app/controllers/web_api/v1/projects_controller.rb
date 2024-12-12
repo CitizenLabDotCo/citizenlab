@@ -113,10 +113,27 @@ class WebApi::V1::ProjectsController < ApplicationController
   def index_for_areas
     projects = policy_scope(Project)
     projects = projects.not_draft
-    projects = projects
-      .where(include_all_areas: true)
-      .or(projects.with_some_areas(params[:areas]))
-      .order(created_at: :desc)
+
+    projects = if params[:areas].present?
+      projects.where(include_all_areas: true).or(projects.with_some_areas(params[:areas]))
+    else
+      subquery = Follower
+        .where(user_id: current_user&.id)
+        .where.not(followable_type: 'Initiative')
+        .joins(
+          'LEFT JOIN areas AS followed_areas ON followers.followable_type = \'Area\' ' \
+          'AND followed_areas.id = followers.followable_id'
+        )
+        .joins('LEFT JOIN areas_projects ON areas_projects.area_id = followed_areas.id')
+        .joins(
+          'INNER JOIN projects ON areas_projects.project_id = projects.id'
+        )
+        .select('projects.id AS project_id')
+
+      projects.where(include_all_areas: true).or(projects.where(id: subquery))
+    end
+
+    projects = projects.order(created_at: :desc)
 
     @projects = paginate projects
     @projects = @projects.includes(:project_images, phases: [:report, { permissions: [:groups] }])
