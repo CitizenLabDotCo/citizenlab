@@ -4,9 +4,11 @@ import { Button, Dropdown, Text } from '@citizenlab/cl2-component-library';
 
 import useRequestProjectReview from 'api/project_reviews/useRequestProjectReview';
 
+import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
+import tracks from './tracks';
 
 const ReviewRequest = ({
   isOpen,
@@ -24,6 +26,7 @@ const ReviewRequest = ({
     requestProjectReview(projectId, {
       onSuccess: () => {
         onClose();
+        trackEventByName(tracks.projectReviewRequested);
       },
     });
   };
@@ -36,7 +39,11 @@ const ReviewRequest = ({
           <Text color="textSecondary">
             {formatMessage(messages.requestApprovalDescription)}
           </Text>
-          <Button buttonStyle="primary" onClick={handleSendRequest}>
+          <Button
+            buttonStyle="primary"
+            onClick={handleSendRequest}
+            id="e2e-request-approval-confirm"
+          >
             {formatMessage(messages.requestApproval)}
           </Button>
         </div>

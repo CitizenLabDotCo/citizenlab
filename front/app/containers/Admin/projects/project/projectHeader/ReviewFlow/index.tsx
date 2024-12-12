@@ -9,11 +9,13 @@ import useUpdateProject from 'api/projects/useUpdateProject';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import { usePermission } from 'utils/permissions';
 
 import messages from './messages';
 import ReviewRequest from './ReviewRequest';
+import tracks from './tracks';
 
 const ReviewFlow = ({ project }: { project: IProjectData }) => {
   const [isProjectReviewDropdownOpened, setIsProjectReviewDropdownOpened] =
@@ -89,6 +91,7 @@ const ReviewFlow = ({ project }: { project: IProjectData }) => {
             padding="4px 8px"
             iconSize="20px"
             disabled={!canPublish}
+            id="e2e-publish"
           >
             {formatMessage(messages.publish)}
           </Button>
@@ -111,6 +114,11 @@ const ReviewFlow = ({ project }: { project: IProjectData }) => {
               padding="4px 8px"
               iconSize="20px"
               disabled={approvalPending}
+              data-cy={
+                approvalPending
+                  ? 'e2e-request-approval-pending'
+                  : 'e2e-request-approval'
+              }
             >
               {approvalPending
                 ? formatMessage(messages.pendingApproval)
@@ -119,7 +127,10 @@ const ReviewFlow = ({ project }: { project: IProjectData }) => {
           </Tooltip>
           <ReviewRequest
             isOpen={isProjectReviewDropdownOpened}
-            onClose={() => setIsProjectReviewDropdownOpened(false)}
+            onClose={() => {
+              setIsProjectReviewDropdownOpened(false);
+              trackEventByName(tracks.projectReviewDropdownOpened);
+            }}
             projectId={project.id}
           />
         </Box>
@@ -138,6 +149,7 @@ const ReviewFlow = ({ project }: { project: IProjectData }) => {
             size="s"
             padding="4px 8px"
             iconSize="20px"
+            id="e2e-approve-project"
           >
             {formatMessage(messages.approve)}
           </Button>
