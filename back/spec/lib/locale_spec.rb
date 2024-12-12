@@ -99,4 +99,11 @@ RSpec.describe Locale do
       end
     end
   end
+
+  describe 'i18n fallback config' do
+    it 'falls back to sr-Cyrl when sr-SP is not available' do
+      translation = I18n.with_locale('sr-SP') { I18n.t('symbols.outside', raise: true) }
+      expect(translation).to eq "Someting Cyrillic you wouldn't understand"
+    end
+  end
 end
