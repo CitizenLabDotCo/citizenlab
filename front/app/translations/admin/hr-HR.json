@@ -2128,7 +2128,7 @@
   "app.containers.AdminPage.SettingsPage.subtitleAreas": "Definirajte geografska područja koja biste željeli da koristite u okviru platforme kao što su četvrti, mjesne zajednice, općine ili okruzi. Ova geografska područja možete povezati s projektima (kako bi se mogli filtrirati na početnoj stranici) ili zatražiti od sudionika da izaberu svoje prebivalište kao polje za registraciju u svrhe kreiranja pametnih grupa i definiranja prava pristupa.",
   "app.containers.AdminPage.SettingsPage.subtitleBasic": "Odaberite kako će korisnici vidjeti naziv vaše organizacije, odaberite jezike vaše platforme i postavite vezu do svojeg web-mjesta.",
   "app.containers.AdminPage.SettingsPage.subtitleMaxCharError": "Željeni podnaslov prelazi dozvoljeno maksimalno ograničenje (90 znakova)",
-  "app.containers.AdminPage.SettingsPage.subtitleRegistration": "Odredite koje informacije se zahtijevaju od korisnika prilikom registracije.",
+  "app.containers.AdminPage.SettingsPage.subtitleRegistration": "Specify what information people are asked to provide when signing up.",
   "app.containers.AdminPage.SettingsPage.subtitleTerminology": "Terminologija",
   "app.containers.AdminPage.SettingsPage.successfulUpdateSettings": "Postavke su uspješno ažurirane.",
   "app.containers.AdminPage.SettingsPage.tabApproval": "Odobrenje",
