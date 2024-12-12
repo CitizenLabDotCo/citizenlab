@@ -26,7 +26,7 @@ export type FinishedOrArchived = {
 
 type Areas = {
   endpoint: 'for_areas';
-  areas: string[];
+  areas?: string[];
 } & PageNumbers;
 
 export type Parameters =

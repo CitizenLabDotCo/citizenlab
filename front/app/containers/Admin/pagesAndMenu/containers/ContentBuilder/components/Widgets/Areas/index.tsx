@@ -28,22 +28,9 @@ const Areas = ({ titleMultiloc }: Props) => {
     pageSize: 100,
   });
 
-  const followedAreaIds =
-    areas?.data
-      .filter((area) => !!area.relationships.user_follower.data?.id)
-      .map((area) => area.id) ?? [];
-
-  const hasFollowPreferences = followedAreaIds.length > 0;
-
-  const { data, hasNextPage, fetchNextPage } = useProjectsMini(
-    {
-      endpoint: 'for_areas',
-      areas: followedAreaIds,
-    },
-    {
-      enabled: hasFollowPreferences,
-    }
-  );
+  const { data, hasNextPage, fetchNextPage } = useProjectsMini({
+    endpoint: 'for_areas',
+  });
 
   const projects = data?.pages.map((page) => page.data).flat();
 
@@ -51,19 +38,30 @@ const Areas = ({ titleMultiloc }: Props) => {
 
   if (!followEnabled) return null;
 
-  if (!areas) {
-    return <Skeleton title={title} />;
-  }
-
-  if (!hasFollowPreferences) {
-    return <AreaSelection title={title} areas={areas} />;
-  }
-
+  // If no projects yet, show loading skeleton
   if (!projects) {
     return <Skeleton title={title} />;
   }
 
+  // If projects loaded, but no projects:
   if (projects.length === 0) {
+    // Wait for areas to load
+    if (!areas) return <Skeleton title={title} />;
+
+    const followedAreaIds = areas.data
+      .filter((area) => !!area.relationships.user_follower.data?.id)
+      .map((area) => area.id);
+
+    const hasFollowPreferences = followedAreaIds.length > 0;
+
+    // If the user has no follow preferences yet,
+    // we render an interface to select areas to follow
+    if (!hasFollowPreferences) {
+      return <AreaSelection title={title} areas={areas} />;
+    }
+
+    // If, even after indicating follow preferences,
+    // there are no projects, we show the empty state.
     return <EmptyState title={title} areas={areas} />;
   }
 
