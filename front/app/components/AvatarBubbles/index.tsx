@@ -11,38 +11,10 @@ import useRandomAvatars from 'api/avatars/useRandomAvatars';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { useIntl } from 'utils/cl-intl';
 
+import { OuterContainer, BubbleContainer } from './Containers';
 import messages from './messages';
 import placeholderImage from './user.png';
-
-const getFontSize = (size: number, digits: number) => {
-  if (size >= 34) {
-    if (digits <= 2) {
-      return 14;
-    }
-
-    if (digits === 3) {
-      return 12;
-    }
-
-    if (digits >= 4) {
-      return 11;
-    }
-  } else {
-    if (digits <= 2) {
-      return 12;
-    }
-
-    if (digits === 3) {
-      return 11;
-    }
-
-    if (digits >= 4) {
-      return 10;
-    }
-  }
-
-  return 14;
-};
+import { getFontSize } from './utils';
 
 const AvatarImageBubble = styled.img<{
   overlap: number;
@@ -106,10 +78,10 @@ export const AvatarBubbles = ({
 
   const avatars = avatarIds ? avatarsWithIds : randomAvatars?.data;
 
-  if (avatars && isNumber(currentUserCount) && currentUserCount > 0) {
-    const bubbleSize = size + 4;
-    const imageSize = bubbleSize > 160 ? 'large' : 'medium';
+  const bubbleSize = size + 4;
+  const imageSize = bubbleSize > 160 ? 'large' : 'medium';
 
+  if (avatars && isNumber(currentUserCount) && currentUserCount > 0) {
     const avatarsWithImage = avatars.filter(
       (avatar) => avatar.attributes.avatar[imageSize]
     ) as IAvatarData[];
@@ -129,7 +101,6 @@ export const AvatarBubbles = ({
 
     const avatarImagesCount = avatarsToShow.length;
     const remainingUsers = currentUserCount - avatarImagesCount;
-    const containerHeight = bubbleSize + 2;
 
     let letterAbbreviation = '';
     let truncatedUserCount = remainingUsers;
@@ -151,27 +122,11 @@ export const AvatarBubbles = ({
 
     if (avatarIds || context || avatarImagesCount > 0) {
       return (
-        <Box
-          className={className}
-          height={`${containerHeight}px`}
-          data-testid="avatarBubblesContainer"
-          display="flex"
-          alignItems="center"
-          justifyContent="flex-start"
-          flexShrink={0}
-          style={{ lineHeight: `${containerHeight}px` }}
-        >
-          <Box
-            display="flex"
-            style={{
-              position: 'relative',
-              width: `${
-                bubbleSize + (avatarImagesCount - 1) * (bubbleSize - overlap)
-              }px`,
-              minWidth: `${bubbleSize}px`,
-              height: `${containerHeight}px`,
-            }}
-            alignItems="center"
+        <OuterContainer bubbleSize={bubbleSize} className={className}>
+          <BubbleContainer
+            bubbleSize={bubbleSize}
+            overlap={overlap}
+            avatarImagesCount={avatarImagesCount}
           >
             {avatarsToShow.map((avatar, index) => (
               <AvatarImageBubble
@@ -184,7 +139,7 @@ export const AvatarBubbles = ({
                 data-testid="avatarImageBubble"
               />
             ))}
-          </Box>
+          </BubbleContainer>
           {remainingUsers > 0 &&
             (showParticipantText ? (
               <Box
@@ -255,7 +210,7 @@ export const AvatarBubbles = ({
               numberOfParticipants: currentUserCount,
             })}
           </ScreenReaderOnly>
-        </Box>
+        </OuterContainer>
       );
     }
   } else if (avatars !== undefined) {
