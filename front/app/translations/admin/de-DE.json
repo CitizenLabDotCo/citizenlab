@@ -2126,7 +2126,7 @@
   "app.containers.AdminPage.SettingsPage.subtitleAreas": "Definieren Sie die geografischen Gebiete, die Sie für Ihre Plattform verwenden möchten, z. B. Nachbarschaften, Stadtteile oder Bezirke. Sie können diese geografischen Gebiete mit Projekten verknüpfen (filterbar auf der Startseite) oder die Teilnehmenden bei der Registrierung bitten, ihren Wohnort auszuwählen, um intelligente Gruppen zu erstellen und Zugriffsrechte zu definieren.",
   "app.containers.AdminPage.SettingsPage.subtitleBasic": "Wählen Sie aus, wie Menschen den Namen Ihrer Organisation sehen sollen, wählen Sie die Sprachen Ihrer Plattform und den Link zu Ihrer Webseite.",
   "app.containers.AdminPage.SettingsPage.subtitleMaxCharError": "Der zur Verfügung gestellte Untertitel überschreitet die zulässige maximale Zeichenlänge von 90 Zeichen",
-  "app.containers.AdminPage.SettingsPage.subtitleRegistration": "Specify what information people are asked to provide when signing up.",
+  "app.containers.AdminPage.SettingsPage.subtitleRegistration": "Geben Sie an, welche Informationen bei der Anmeldung abgefragt werden.",
   "app.containers.AdminPage.SettingsPage.subtitleTerminology": "Terminologie",
   "app.containers.AdminPage.SettingsPage.successfulUpdateSettings": "Einstellungen erfolgreich gespeichert",
   "app.containers.AdminPage.SettingsPage.tabApproval": "Genehmigung",
