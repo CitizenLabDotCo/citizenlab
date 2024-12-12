@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import { Title } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import { IdeaQueryParameters } from 'api/ideas/types';
 import { IIdeasFilterCounts } from 'api/ideas_filter_counts/types';
 import { IdeaSortMethod } from 'api/phases/types';
-
-import { QueryParameters } from 'containers/IdeasIndexPage';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
@@ -17,13 +16,12 @@ import InputFilters from './InputFilters';
 import { gapWidth } from '.';
 
 const Container = styled.div<{
-  filterColumnWidth: number;
   top: number;
   maxHeightOffset: number;
   gapWidth: number;
 }>`
-  flex: 0 0 ${({ filterColumnWidth }) => filterColumnWidth}px;
-  width: ${({ filterColumnWidth }) => filterColumnWidth}px;
+  flex: 0 0 352px;
+  width: 352px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -38,8 +36,7 @@ const Container = styled.div<{
 `;
 
 interface Props {
-  ideaQueryParameters: QueryParameters;
-  filterColumnWidth: number;
+  ideaQueryParameters: IdeaQueryParameters;
   filtersActive: boolean;
   ideasFilterCounts: IIdeasFilterCounts | undefined;
   numberOfSearchResults: number;
@@ -52,7 +49,6 @@ interface Props {
 
 const ContentRight = ({
   ideaQueryParameters,
-  filterColumnWidth,
   filtersActive,
   ideasFilterCounts,
   numberOfSearchResults,
@@ -62,28 +58,17 @@ const ContentRight = ({
   onChangeTopics,
   onChangeSort,
 }: Props) => {
-  const [isCTABarVisible, setIsCTABarVisible] = useState(false);
-
-  useEffect(() => {
-    function checkCTABarVisibility() {
-      if (document.getElementById('project-cta-bar')) {
-        setIsCTABarVisible(true);
-        return;
-      }
-
-      setIsCTABarVisible(false);
-    }
-
-    window.addEventListener('scrollend', checkCTABarVisibility);
-    return () => window.removeEventListener('scrollend', checkCTABarVisibility);
-  }, []);
+  /* 
+    Likely not the most reliable way to determine if the bar is present.
+    Context would probably be better, but this is a quick fix.
+  */
+  const projectCTABarTop = document.getElementById('project-cta-bar-top');
 
   return (
     <Container
       id="e2e-ideas-filters"
-      filterColumnWidth={filterColumnWidth}
-      top={isCTABarVisible ? 160 : 100}
-      maxHeightOffset={isCTABarVisible ? 180 : 120}
+      top={projectCTABarTop ? 160 : 100}
+      maxHeightOffset={projectCTABarTop ? 180 : 120}
       gapWidth={gapWidth}
     >
       {/*
