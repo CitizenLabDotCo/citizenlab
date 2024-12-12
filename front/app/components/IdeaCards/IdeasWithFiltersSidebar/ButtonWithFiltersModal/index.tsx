@@ -6,7 +6,7 @@ import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
 
 import tracks from '../../tracks';
-import { Props as InputFiltersProps } from '../InputFilters';
+import { InputFiltersProps } from '../InputFilters';
 
 import messages from './FiltersModal/messages';
 
