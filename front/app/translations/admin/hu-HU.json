@@ -2307,7 +2307,7 @@
   "app.containers.AdminPage.phase.methodPicker.volunteeringTitle1": "Recruit participants or volunteers",
   "app.containers.AdminPage.phase.methodPicker.votingDescription": "Select a voting method, and have users prioritise between a few different options.",
   "app.containers.AdminPage.phase.methodPicker.votingTitle1": "Conduct a voting or prioritization exercise",
-  "app.containers.AdminPage.projects.all.active": "Active",
+  "app.containers.AdminPage.projects.all.active": "Aktív",
   "app.containers.AdminPage.projects.all.all": "All",
   "app.containers.AdminPage.projects.all.createProjectFolder": "New folder",
   "app.containers.AdminPage.projects.all.existingProjects": "Existing projects",
