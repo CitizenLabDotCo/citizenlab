@@ -2125,7 +2125,7 @@
   "app.containers.AdminPage.SettingsPage.subtitleAreas": "Defina as subdivisões geográficas de seu território.",
   "app.containers.AdminPage.SettingsPage.subtitleBasic": "Escolha como as pessoas verão seu nome, selecione os idiomas de sua plataforma e crie um link para seu site.",
   "app.containers.AdminPage.SettingsPage.subtitleMaxCharError": "A legenda fornecida excede o limite máximo de 90 caracteres permitido",
-  "app.containers.AdminPage.SettingsPage.subtitleRegistration": "Especifique quais informações as pessoas são solicitadas a fornecer quando se inscrevem.",
+  "app.containers.AdminPage.SettingsPage.subtitleRegistration": "Specify what information people are asked to provide when signing up.",
   "app.containers.AdminPage.SettingsPage.subtitleTerminology": "Terminologia",
   "app.containers.AdminPage.SettingsPage.successfulUpdateSettings": "Configurações atualizadas com sucesso.",
   "app.containers.AdminPage.SettingsPage.tabApproval": "Aprovação",
