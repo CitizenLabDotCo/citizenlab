@@ -2128,7 +2128,7 @@
   "app.containers.AdminPage.SettingsPage.subtitleAreas": "Nunami immikkoortunik qupperninni atorusutannik nassuiaagit, soorlu illoqarfiup immikkoortui nunalluunniit immikkoortui. Nunami immikkoortut taakku suliniutinut atassusersinnaavatit (quppernermi iserfissamiittartumi filtererneqarsinnaapput) imaluunniit peqataasut smart gruppiliorniarunik kiisalu iserfigisinnaasanut pisinnaatitaaffiit nassuiarniarunikkit immikkoortoq najugaqarfigisartik feltitut nalunaarfissatut atussagaat qinnuigalugit.",
   "app.containers.AdminPage.SettingsPage.subtitleBasic": "Inuit ingerlatseqatigiiffivit aqqa qanoq takusassaneraat aalajangeruk, qupperninni oqaatsit toqqakkit nittartakkannullu linkiliorlutit.",
   "app.containers.AdminPage.SettingsPage.subtitleMaxCharError": "Oqaasertaliussaq naqinnernik atorneqarsinnaasunik qaangiivoq (naqinnerit 90-it)",
-  "app.containers.AdminPage.SettingsPage.subtitleRegistration": "Inuit nalunaaraangamik paasissutissanik sunik tunniussinissaannik qinnuigineqartassanersut allagit.",
+  "app.containers.AdminPage.SettingsPage.subtitleRegistration": "Specify what information people are asked to provide when signing up.",
   "app.containers.AdminPage.SettingsPage.subtitleTerminology": "Taaguusersuutit",
   "app.containers.AdminPage.SettingsPage.successfulUpdateSettings": "Settings updated successfully.",
   "app.containers.AdminPage.SettingsPage.tabApproval": "Approval",
