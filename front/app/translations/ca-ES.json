@@ -1603,6 +1603,7 @@
   "app.containers.Projects.noPastEvents": "No hi ha esdeveniments passats per mostrar",
   "app.containers.Projects.noPhaseSelected": "No s'ha seleccionat cap fase",
   "app.containers.Projects.noUpcomingOrOngoingEvents": "Actualment no hi ha esdeveniments propers o en curs programats.",
+  "app.containers.Projects.offlineVotersTooltip": "Aquest número no reflecteix cap recompte de votants fora de línia.",
   "app.containers.Projects.options": "Opcions",
   "app.containers.Projects.participants": "Participants",
   "app.containers.Projects.participantsTooltip4": "Aquest nombre també reflecteix enviaments anònims d'enquestes. Les enquestes anònimes són possibles si les enquestes estan obertes a tothom (vegeu la pestanya {accessRightsLink} d'aquest projecte).",
