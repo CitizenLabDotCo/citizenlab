@@ -1603,6 +1603,7 @@
   "app.containers.Projects.noPastEvents": "crwdns3742389:0crwdne3742389:0",
   "app.containers.Projects.noPhaseSelected": "crwdns3742391:0crwdne3742391:0",
   "app.containers.Projects.noUpcomingOrOngoingEvents": "crwdns3742393:0crwdne3742393:0",
+  "app.containers.Projects.offlineVotersTooltip": "crwdns3763173:0crwdne3763173:0",
   "app.containers.Projects.options": "crwdns3742395:0crwdne3742395:0",
   "app.containers.Projects.participants": "crwdns3742397:0crwdne3742397:0",
   "app.containers.Projects.participantsTooltip4": "crwdns3742399:0{accessRightsLink}crwdne3742399:0",
