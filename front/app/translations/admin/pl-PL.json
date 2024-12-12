@@ -2141,7 +2141,7 @@
   "app.containers.AdminPage.SettingsPage.subtitleAreas": "Określ podziały geograficzne swojego terytorium.",
   "app.containers.AdminPage.SettingsPage.subtitleBasic": "Wybierz, jak wyświetlana będzie Twoja nazwa, wybierz języki Twojej platformy i link do Twojej strony.",
   "app.containers.AdminPage.SettingsPage.subtitleMaxCharError": "Podany podtytuł przekracza maksymalny limit znaków wynoszący 90",
-  "app.containers.AdminPage.SettingsPage.subtitleRegistration": "Sprecyzuj informacje, o jakie są proszone osoby przy rejestracji.",
+  "app.containers.AdminPage.SettingsPage.subtitleRegistration": "Specify what information people are asked to provide when signing up.",
   "app.containers.AdminPage.SettingsPage.subtitleTerminology": "Terminologia",
   "app.containers.AdminPage.SettingsPage.successfulUpdateSettings": "Ustawienia zostały pomyślnie zaktualizowane.",
   "app.containers.AdminPage.SettingsPage.tabAreas1": "Obszary",
