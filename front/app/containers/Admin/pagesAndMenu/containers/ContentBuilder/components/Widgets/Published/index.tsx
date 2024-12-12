@@ -47,6 +47,7 @@ const Published = ({ titleMultiloc }: Props) => {
       title={title}
       adminPublications={adminPublications}
       hasMore={!!hasNextPage}
+      className="e2e-published-projects-and-folders"
       onLoadMore={fetchNextPage}
     />
   );
