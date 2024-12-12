@@ -383,7 +383,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsExclusionTitle": "Deelnemers zijn niet:",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsInfoTitle": "Deelnemers zijn onder andere:",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.users": "Gebruikers in interactie met Go Vocal-methoden",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.projectSettings": "Projectinstellingen",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.publishedActive1": "Gepubliceerd - Actief",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.publishedFinished1": "Gepubliceerd - Afgerond",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.refreshLink": "Vernieuw voorbeeldlink project",

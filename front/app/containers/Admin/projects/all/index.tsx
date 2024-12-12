@@ -56,7 +56,6 @@ export type ActiveTab =
   | 'draft'
   | 'archived'
   | 'pending'
-  | 'approved'
   | 'all';
 
 const getActiveTab = (pathname: string): ActiveTab => {
@@ -70,8 +69,6 @@ const getActiveTab = (pathname: string): ActiveTab => {
     return 'archived';
   } else if (pathname.includes('/admin/projects/pending')) {
     return 'pending';
-  } else if (pathname.includes('/admin/projects/approved')) {
-    return 'approved';
   } else {
     return 'your-projects';
   }
@@ -130,14 +127,6 @@ const AdminProjectsList = memo(({ className }: Props) => {
     search,
   });
 
-  const { data: approvedReviewAdminPublications } = useAdminPublications({
-    publicationStatusFilter: ['draft'],
-    review_state: 'approved',
-    onlyProjects: true,
-    rootLevelOnly: false,
-    search,
-  });
-
   const { data: allAdminPublications } = useAdminPublications({
     publicationStatusFilter: ['published', 'draft', 'archived'],
     // Admin publications in the "All" tab are shown in a flat list when there is a search query
@@ -170,10 +159,6 @@ const AdminProjectsList = memo(({ className }: Props) => {
 
   const flatPendingReviewAdminPublications = flattenPagesData(
     pendingReviewAdminPublications
-  );
-
-  const flatApprovedReviewAdminPublications = flattenPagesData(
-    approvedReviewAdminPublications
   );
 
   return (
@@ -273,24 +258,14 @@ const AdminProjectsList = memo(({ className }: Props) => {
               url="/admin/projects/archived"
             />
             {isProjectReviewEnabled && isAdmin(authUser) && (
-              <>
-                <Tab
-                  label={`
+              <Tab
+                label={`
                   ${formatMessage(messages.pendingReview)} (${
-                    flatPendingReviewAdminPublications?.length || 0
-                  })`}
-                  active={activeTab === 'pending'}
-                  url="/admin/projects/pending"
-                />
-                <Tab
-                  label={`
-                  ${formatMessage(messages.approvedReview)} (${
-                    flatApprovedReviewAdminPublications?.length || 0
-                  })`}
-                  active={activeTab === 'approved'}
-                  url="/admin/projects/approved"
-                />
-              </>
+                  flatPendingReviewAdminPublications?.length || 0
+                })`}
+                active={activeTab === 'pending'}
+                url="/admin/projects/pending"
+              />
             )}
 
             <Tab
@@ -322,8 +297,6 @@ const AdminProjectsList = memo(({ className }: Props) => {
                     ? flatArchivedAdminPublications
                     : activeTab === 'pending'
                     ? flatPendingReviewAdminPublications
-                    : activeTab === 'approved'
-                    ? flatApprovedReviewAdminPublications
                     : flatAllAdminPublications
                 }
               />

@@ -383,7 +383,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsExclusionTitle": "Osallistujat eivät sisällä:",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsInfoTitle": "Osallistujia ovat:",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.users": "Käyttäjät, jotka ovat vuorovaikutuksessa Go Vocal -menetelmien kanssa",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.projectSettings": "Projektin asetukset",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.publishedActive1": "Julkaistu - aktiivinen",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.publishedFinished1": "Julkaistu - Valmis",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.refreshLink": "Päivitä projektin esikatselulinkki",

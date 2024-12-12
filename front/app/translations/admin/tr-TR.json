@@ -383,7 +383,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsExclusionTitle": "Katılımcılar dahil değildir:",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsInfoTitle": "Katılımcılar arasında",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.users": "Go Vocal yöntemleriyle etkileşime giren kullanıcılar",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.projectSettings": "Proje ayarları",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.publishedActive1": "Yayınlandı - Aktif",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.publishedFinished1": "Yayınlandı - Bitti",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.refreshLink": "Proje önizleme bağlantısını yenileyin",
