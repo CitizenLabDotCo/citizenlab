@@ -33,17 +33,7 @@ const Container = styled.div<{
 
 interface Props extends InputFiltersProps {}
 
-const ContentRight = ({
-  selectedIdeaFilters,
-  filtersActive,
-  ideasFilterCounts,
-  numberOfSearchResults,
-  onClearFilters,
-  onSearch,
-  onChangeStatus,
-  onChangeTopics,
-  handleSortOnChange: onChangeSort,
-}: Props) => {
+const ContentRight = (props: Props) => {
   /* 
     Likely not the most reliable way to determine if the bar is present.
     Context would probably be better, but this is a quick fix.
@@ -67,17 +57,9 @@ const ContentRight = ({
         </Title>
       </ScreenReaderOnly>
       <InputFilters
-        defaultValue={selectedIdeaFilters.search}
-        selectedIdeaFilters={selectedIdeaFilters}
-        filtersActive={filtersActive}
-        ideasFilterCounts={ideasFilterCounts}
-        numberOfSearchResults={numberOfSearchResults}
-        onClearFilters={onClearFilters}
-        onSearch={onSearch}
-        onChangeStatus={onChangeStatus}
-        onChangeTopics={onChangeTopics}
-        handleSortOnChange={onChangeSort}
-        phaseId={selectedIdeaFilters.phase}
+        defaultValue={props.selectedIdeaFilters.search}
+        phaseId={props.selectedIdeaFilters.phase}
+        {...props}
       />
     </Container>
   );
