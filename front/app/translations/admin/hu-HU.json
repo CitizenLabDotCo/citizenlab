@@ -381,7 +381,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.embeddedMethods": "Participants in embedded methods (e.g., external surveys)",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.followers": "Followers of a project",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.note": "Note: Enabling anonymous or open participation permissions may allow users to participate multiple times, leading to misleading or incomplete user data.",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsExclusionTitle": "Participants do not include:",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsExclusionTitle": "A résztvevők nem tartalmazzák:",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.participantsInfoTitle": "Participants include:",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.users": "Users interacting with Go Vocal methods",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.projectSettings": "Project settings",
