@@ -41,7 +41,6 @@ import {
 
 import messages from '../../messages';
 import Areas, { areasTitle } from '../Widgets/Areas';
-import areasMessages from '../Widgets/Areas/messages';
 import CallToAction, { callToActionTitle } from '../Widgets/CallToAction';
 import Events from '../Widgets/Events';
 import FinishedOrArchived, {
@@ -141,11 +140,7 @@ const HomepageBuilderToolbox = ({
         />
         <DraggableElement
           id="e2e-draggable-areas"
-          component={
-            <Areas
-              titleMultiloc={toMultiloc(areasMessages.inYourNeighborhood)}
-            />
-          }
+          component={<Areas titleMultiloc={toMultiloc(areasTitle)} />}
           icon="home"
           label={formatMessage(areasTitle)}
         />

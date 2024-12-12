@@ -5,10 +5,6 @@ export default defineMessages({
     id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.areasTitle2',
     defaultMessage: 'In your area',
   },
-  inYourNeighborhood: {
-    id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.inYourNeighborhood',
-    defaultMessage: 'In your neighborhood',
-  },
   selectYourX: {
     id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.selectYourX',
     defaultMessage: 'Select your {areaTerm}',
