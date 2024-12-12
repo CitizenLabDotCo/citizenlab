@@ -1,5 +1,6 @@
 import { ILinks, IRelationship, Multiloc } from 'typings';
 
+import { IdeaSortMethod } from 'api/phases/types';
 import { PublicationStatus as ProjectPublicationStatus } from 'api/projects/types';
 
 import {
@@ -55,6 +56,20 @@ type ReactingIdeaActionDescriptor =
       disabled_reason: IdeaReactingDisabledReason;
       cancelling_enabled: boolean;
     };
+
+export interface IdeaQueryParameters {
+  'page[number]': number;
+  'page[size]': number;
+  project_publication_status?: 'published';
+  publication_status?: 'published';
+  phase?: string;
+
+  // filters
+  sort: IdeaSortMethod;
+  search?: string;
+  idea_status?: string;
+  topics?: string[];
+}
 
 export interface IIdeaData {
   id: string;

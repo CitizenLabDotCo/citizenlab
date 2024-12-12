@@ -237,7 +237,11 @@ const PlatformFooter = ({ className }: Props) => {
     eventEmitter.emit('openConsentManager');
   };
 
-  const participationBar = document.getElementById('project-cta-bar');
+  /* 
+    Likely not the most reliable way to determine if the bar is present.
+    Context would probably be better, but this is a quick fix.
+  */
+  const participationBar = document.getElementById('project-cta-bar-bottom');
 
   useEffect(() => {
     setPaddingBottom(

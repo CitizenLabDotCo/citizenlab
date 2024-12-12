@@ -2,26 +2,24 @@ import React, { useCallback } from 'react';
 
 import {
   media,
-  viewportWidths,
   defaultCardStyle,
   Spinner,
-  useWindowSize,
   Box,
   Title,
   Text,
+  useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useIdeaCustomFieldsSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
 import useIdeaMarkers from 'api/idea_markers/useIdeaMarkers';
+import { IdeaQueryParameters } from 'api/ideas/types';
 import useInfiniteIdeas from 'api/ideas/useInfiniteIdeas';
 import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
 import { PresentationMode, IdeaSortMethod, InputTerm } from 'api/phases/types';
 
 import useLocale from 'hooks/useLocale';
-
-import { QueryParameters } from 'containers/IdeasIndexPage';
 
 import ViewButtons from 'components/PostCardsComponents/ViewButtons';
 
@@ -80,7 +78,7 @@ export interface QueryParametersUpdate {
 }
 
 export interface Props {
-  ideaQueryParameters: QueryParameters;
+  ideaQueryParameters: IdeaQueryParameters;
   onUpdateQuery: (newParams: QueryParametersUpdate) => void;
   showViewToggle?: boolean;
   defaultView?: PresentationMode;
@@ -93,16 +91,24 @@ const IdeasWithFiltersSidebar = ({
   ideaQueryParameters,
   projectId,
   phaseId,
-  defaultView,
+  defaultView = 'card',
   onUpdateQuery,
   showViewToggle,
   inputTerm,
 }: Props) => {
   const locale = useLocale();
   const { formatMessage } = useIntl();
-  const { windowWidth } = useWindowSize();
   const [searchParams] = useSearchParams();
+  const smallerThanPhone = useBreakpoint('phone');
+  const biggerThanLargeTablet = !useBreakpoint('tablet');
+
+  // Get data from searchParams
   const selectedIdeaMarkerId = searchParams.get('idea_map_id');
+  const selectedView =
+    (searchParams.get('view') as PresentationMode | null) ??
+    (selectedIdeaMarkerId ? 'map' : defaultView);
+
+  // Fetch ideas list & filter counts
   const {
     data,
     isLoading,
@@ -114,16 +120,13 @@ const IdeasWithFiltersSidebar = ({
 
   const list = data?.pages.map((page) => page.data).flat();
   const { data: ideasFilterCounts } = useIdeasFilterCounts(ideaQueryParameters);
+  const ideasCount = ideasFilterCounts?.data.attributes.total || 0;
 
-  const selectedView =
-    (searchParams.get('view') as 'card' | 'map' | null) ??
-    (selectedIdeaMarkerId ? 'map' : defaultView ?? 'card');
-
+  // Determine if location field enabled (for view button visibility and fetching idea markers)
   const { data: ideaCustomFieldsSchemas } = useIdeaCustomFieldsSchema({
     phaseId: ideaQueryParameters.phase,
     projectId,
   });
-
   const locationEnabled = !isNilOrError(ideaCustomFieldsSchemas)
     ? isFieldEnabled(
         'location_description',
@@ -131,13 +134,7 @@ const IdeasWithFiltersSidebar = ({
         locale
       )
     : false;
-
   const showViewButtons = !!(locationEnabled && showViewToggle);
-
-  const setSelectedView = useCallback((view: 'card' | 'map') => {
-    updateSearchParams({ view });
-  }, []);
-
   const loadIdeaMarkers = locationEnabled && selectedView === 'map';
   const { data: ideaMarkers } = useIdeaMarkers(
     {
@@ -147,6 +144,10 @@ const IdeasWithFiltersSidebar = ({
     },
     loadIdeaMarkers
   );
+
+  const setSelectedView = useCallback((view: PresentationMode) => {
+    updateSearchParams({ view });
+  }, []);
 
   const handleSearchOnChange = useCallback(
     (search: string | null) => {
@@ -197,21 +198,14 @@ const IdeasWithFiltersSidebar = ({
     });
   }, [onUpdateQuery]);
 
-  const filterColumnWidth = windowWidth && windowWidth < 1400 ? 340 : 352;
   const filtersActive = !!(
     ideaQueryParameters.search ||
     ideaQueryParameters.idea_status ||
     ideaQueryParameters.topics
   );
-  const biggerThanLargeTablet = !!(
-    windowWidth && windowWidth >= viewportWidths.tablet
-  );
-  const smallerThanPhone = !!(
-    windowWidth && windowWidth <= viewportWidths.phone
-  );
-  const showContentRight = biggerThanLargeTablet && selectedView === 'card';
 
-  const ideasCount = ideasFilterCounts?.data.attributes.total || 0;
+  const showInputFilterSidebar =
+    biggerThanLargeTablet && selectedView === 'card';
 
   return (
     <Container id="e2e-ideas-container">
@@ -308,10 +302,9 @@ const IdeasWithFiltersSidebar = ({
               />
             </ContentLeft>
 
-            {showContentRight && (
+            {showInputFilterSidebar && (
               <ContentRight
                 ideaQueryParameters={ideaQueryParameters}
-                filterColumnWidth={filterColumnWidth}
                 filtersActive={filtersActive}
                 ideasFilterCounts={ideasFilterCounts}
                 numberOfSearchResults={list.length}
