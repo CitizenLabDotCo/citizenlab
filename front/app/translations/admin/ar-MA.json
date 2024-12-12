@@ -519,7 +519,6 @@
   "app.containers.AdminPage.DashboardPage.previousWeek": "الأسبوع الماضي",
   "app.containers.AdminPage.DashboardPage.previousYear": "السنة الماضية",
   "app.containers.AdminPage.DashboardPage.projectType": "نوع المشروع: {projectType}",
-  "app.containers.AdminPage.DashboardPage.representativeness.betaLabel": "بيتا",
   "app.containers.AdminPage.DashboardPage.representativeness.emptyStateDescription": "مجموعة البيانات الأساسية هذه مطلوبة لحساب الطابع التمثيلي لمستخدمي المنصة مقارنة بإجمالي المجتمع الإحصائي.",
   "app.containers.AdminPage.DashboardPage.representativeness.emptyStateTitle": "يرجى توفير مجموعة بيانات أساسية.",
   "app.containers.AdminPage.DashboardPage.representativeness.pageDescription3": "اعرف الطابع التمثيلي لمستخدمي منصتك مقارنة بإجمالي بيانات المجتمع الإحصائي باستخدام البيانات المجمَّعة أثناء تسجيل المستخدمين. اعرف المزيد عن {representativenessArticleLink}.",

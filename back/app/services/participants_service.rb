@@ -198,17 +198,19 @@ class ParticipantsService
       .where(phases: { project_id: project.id })
       .destroy_all
 
-    # Destroy baskets, comments and reactions data
-    Basket.where(phase: Phase.where(project: project)).destroy_all
+    # Destroy comments, reactions and baskets data
     Comment.where(post: project.ideas).destroy_all
     Reaction.where(reactable: project.ideas).destroy_all
+    Basket.where(phase: project.phases).destroy_all
 
-    # Filter ideas that belong to a voting phase, and destroy all comments and reactions that they have.
-    ideas = Idea.where(project: project).where(
-      id: IdeasPhase.where(phase: Phase.where(project: project, participation_method: 'voting')).select(:idea_id)
-    )
+    # We must update_counts explicitly because the current implementation of Basket does
+    # not use `counter_culture`.
+    project.phases.each { |phase| Basket.update_counts(phase) }
 
-    # Destroy all remaining ideas that are not in a voting phase
-    Idea.where(project: project).where.not(id: ideas).destroy_all
+    # Destroy only ideas that are not in voting phases.
+    # (Ideas in voting phases are considered part of the project setup.)
+    voting_phases = project.phases.where(participation_method: 'voting')
+    ideas_in_voting_phases = IdeasPhase.where(phase: voting_phases).select(:idea_id)
+    Idea.where(project: project).where.not(id: ideas_in_voting_phases).destroy_all
   end
 end

@@ -9,6 +9,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import EmptyState from '../_shared/EmptyState';
 import ProjectCarrousel from '../_shared/ProjectCarrousel';
+import Skeleton from '../_shared/ProjectCarrousel/Skeleton';
 
 import messages from './messages';
 import Settings from './Settings';
@@ -20,12 +21,19 @@ interface Props {
 
 const FinishedOrArchived = ({ titleMultiloc, filterBy }: Props) => {
   const localize = useLocalize();
-  const { data, hasNextPage, fetchNextPage } = useProjectsMini({
-    endpoint: 'finished_or_archived',
-    filter_by: filterBy,
-  });
-  const projects = data?.pages.map((page) => page.data).flat();
 
+  const { data, hasNextPage, fetchNextPage, isInitialLoading } =
+    useProjectsMini({
+      endpoint: 'finished_or_archived',
+      filter_by: filterBy,
+    });
+
+  const projects = data?.pages.map((page) => page.data).flat();
+  const title = localize(titleMultiloc);
+
+  if (isInitialLoading) {
+    return <Skeleton title={title} />;
+  }
   if (!projects) return null;
   if (projects.length === 0) {
     return (
@@ -35,9 +43,10 @@ const FinishedOrArchived = ({ titleMultiloc, filterBy }: Props) => {
 
   return (
     <ProjectCarrousel
-      title={localize(titleMultiloc)}
+      title={title}
       projects={projects}
       hasMore={!!hasNextPage}
+      className="e2e-finished-or-archived"
       onLoadMore={fetchNextPage}
     />
   );

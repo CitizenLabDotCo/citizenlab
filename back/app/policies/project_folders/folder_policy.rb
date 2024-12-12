@@ -19,10 +19,8 @@ module ProjectFolders
     def show?
       return true if user && UserRoleService.new.can_moderate?(record, user)
       return false if record.admin_publication.publication_status == 'draft'
-      return true if record.projects.empty?
 
-      # We check if the user has access to at least one of the projects in the folder
-      scope_for(record.projects).exists?
+      true
     end
 
     def by_slug?

@@ -12,7 +12,6 @@ const Portals = () => (
       id="modal-portal"
       style={{ position: 'absolute', top: 0, left: 0, width: '100%' }}
     />
-    <div id="topbar-portal" />
     <div id="mobile-nav-portal" />
   </>
 );

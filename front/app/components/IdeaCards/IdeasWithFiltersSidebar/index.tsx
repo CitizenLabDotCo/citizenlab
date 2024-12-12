@@ -2,26 +2,24 @@ import React, { useCallback } from 'react';
 
 import {
   media,
-  viewportWidths,
   defaultCardStyle,
   Spinner,
-  useWindowSize,
   Box,
   Title,
   Text,
+  useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useIdeaCustomFieldsSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
 import useIdeaMarkers from 'api/idea_markers/useIdeaMarkers';
+import { IdeaQueryParameters } from 'api/ideas/types';
 import useInfiniteIdeas from 'api/ideas/useInfiniteIdeas';
 import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
 import { PresentationMode, IdeaSortMethod, InputTerm } from 'api/phases/types';
 
 import useLocale from 'hooks/useLocale';
-
-import { QueryParameters } from 'containers/IdeasIndexPage';
 
 import ViewButtons from 'components/PostCardsComponents/ViewButtons';
 
@@ -29,7 +27,6 @@ import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { isNilOrError } from 'utils/helperUtils';
-import { getInputTermMessage } from 'utils/i18n';
 import { isFieldEnabled } from 'utils/projectUtils';
 
 import messages from '../messages';
@@ -39,6 +36,7 @@ import tracks from '../tracks';
 import ButtonWithFiltersModal from './ButtonWithFiltersModal';
 import ContentRight from './ContentRight';
 import { Props as InputFiltersProps } from './InputFilters';
+import { getInputCountMessage } from './utils';
 
 export const gapWidth = 35;
 
@@ -81,7 +79,7 @@ export interface QueryParametersUpdate {
 }
 
 export interface Props {
-  ideaQueryParameters: QueryParameters;
+  ideaQueryParameters: IdeaQueryParameters;
   onUpdateQuery: (newParams: QueryParametersUpdate) => void;
   showViewToggle?: boolean;
   defaultView?: PresentationMode;
@@ -94,31 +92,42 @@ const IdeasWithFiltersSidebar = ({
   ideaQueryParameters,
   projectId,
   phaseId,
-  defaultView,
+  defaultView = 'card',
   onUpdateQuery,
   showViewToggle,
   inputTerm,
 }: Props) => {
   const locale = useLocale();
   const { formatMessage } = useIntl();
-  const { windowWidth } = useWindowSize();
   const [searchParams] = useSearchParams();
+  const smallerThanPhone = useBreakpoint('phone');
+  const biggerThanLargeTablet = !useBreakpoint('tablet');
+
+  // Get data from searchParams
   const selectedIdeaMarkerId = searchParams.get('idea_map_id');
-  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useInfiniteIdeas(ideaQueryParameters);
+  const selectedView =
+    (searchParams.get('view') as PresentationMode | null) ??
+    (selectedIdeaMarkerId ? 'map' : defaultView);
+
+  // Fetch ideas list & filter counts
+  const {
+    data,
+    isLoading,
+    isFetching,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteIdeas(ideaQueryParameters);
 
   const list = data?.pages.map((page) => page.data).flat();
   const { data: ideasFilterCounts } = useIdeasFilterCounts(ideaQueryParameters);
+  const ideasCount = ideasFilterCounts?.data.attributes.total || 0;
 
-  const selectedView =
-    (searchParams.get('view') as 'card' | 'map' | null) ??
-    (selectedIdeaMarkerId ? 'map' : defaultView ?? 'card');
-
+  // Determine if location field enabled (for view button visibility and fetching idea markers)
   const { data: ideaCustomFieldsSchemas } = useIdeaCustomFieldsSchema({
     phaseId: ideaQueryParameters.phase,
     projectId,
   });
-
   const locationEnabled = !isNilOrError(ideaCustomFieldsSchemas)
     ? isFieldEnabled(
         'location_description',
@@ -126,13 +135,7 @@ const IdeasWithFiltersSidebar = ({
         locale
       )
     : false;
-
   const showViewButtons = !!(locationEnabled && showViewToggle);
-
-  const setSelectedView = useCallback((view: 'card' | 'map') => {
-    updateSearchParams({ view });
-  }, []);
-
   const loadIdeaMarkers = locationEnabled && selectedView === 'map';
   const { data: ideaMarkers } = useIdeaMarkers(
     {
@@ -142,6 +145,10 @@ const IdeasWithFiltersSidebar = ({
     },
     loadIdeaMarkers
   );
+
+  const setSelectedView = useCallback((view: PresentationMode) => {
+    updateSearchParams({ view });
+  }, []);
 
   const handleSearchOnChange = useCallback(
     (search: string | null) => {
@@ -192,21 +199,14 @@ const IdeasWithFiltersSidebar = ({
     });
   }, [onUpdateQuery]);
 
-  const filterColumnWidth = windowWidth && windowWidth < 1400 ? 340 : 352;
   const filtersActive = !!(
     ideaQueryParameters.search ||
     ideaQueryParameters.idea_status ||
     ideaQueryParameters.topics
   );
-  const biggerThanLargeTablet = !!(
-    windowWidth && windowWidth >= viewportWidths.tablet
-  );
-  const smallerThanPhone = !!(
-    windowWidth && windowWidth <= viewportWidths.phone
-  );
-  const showContentRight = biggerThanLargeTablet && selectedView === 'card';
 
-  const ideasCount = ideasFilterCounts?.data.attributes.total || 0;
+  const showInputFilterSidebar =
+    biggerThanLargeTablet && selectedView === 'card';
 
   const inputFiltersProps: InputFiltersProps = {
     filtersActive,
@@ -223,24 +223,21 @@ const IdeasWithFiltersSidebar = ({
 
   return (
     <Container id="e2e-ideas-container">
-      <Box display="flex" justifyContent="space-between" mb="8px">
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        mb={showViewButtons ? '8px' : '16px'}
+      >
         {inputTerm && (
-          <Title variant="h4" as="h2" mt="auto" mb="auto" color="tenantText">
-            {formatMessage(messages.ideasFilterSidebarTitle, {
-              numberIdeas: ideasCount,
-              inputTerm: formatMessage(
-                getInputTermMessage(inputTerm, {
-                  idea: messages.ideas,
-                  option: messages.options,
-                  project: messages.projects,
-                  question: messages.questions,
-                  issue: messages.issues,
-                  contribution: messages.contributions,
-                  proposal: messages.proposals,
-                  initiative: messages.initiatives,
-                  petition: messages.petitions,
-                })
-              ),
+          <Title
+            variant="h5"
+            as="h2"
+            my="auto"
+            color="tenantText"
+            fontWeight="semi-bold"
+          >
+            {formatMessage(getInputCountMessage(inputTerm), {
+              ideasCount,
             })}
           </Title>
         )}
@@ -272,6 +269,11 @@ const IdeasWithFiltersSidebar = ({
           )}
           <Box display={selectedView === 'map' ? 'block' : 'flex'}>
             <ContentLeft>
+              {isFetching && (
+                <Box mb="12px">
+                  <Spinner />
+                </Box>
+              )}
               <IdeasView
                 list={list}
                 querying={isLoading}
@@ -291,12 +293,8 @@ const IdeasWithFiltersSidebar = ({
               />
             </ContentLeft>
 
-            {showContentRight && (
-              <ContentRight
-                filterColumnWidth={filterColumnWidth}
-                phaseId={phaseId}
-                {...inputFiltersProps}
-              />
+            {showInputFilterSidebar && (
+              <ContentRight phaseId={phaseId} {...inputFiltersProps} />
             )}
           </Box>
         </>

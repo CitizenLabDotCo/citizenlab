@@ -206,7 +206,7 @@ Metrics/CyclomaticComplexity:
 # Offense count: 391
 # Configuration parameters: CountComments, CountAsOne, AllowedMethods, AllowedPatterns.
 Metrics/MethodLength:
-  Max: 60
+  Max: 61
 
 # Offense count: 7
 # Configuration parameters: CountKeywordArgs, MaxOptionalParameters.

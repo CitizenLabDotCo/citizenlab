@@ -3,6 +3,7 @@ import React, { useState, useMemo } from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import { debounce } from 'lodash-es';
 import ReactSelect from 'react-select';
+import { useTheme } from 'styled-components';
 
 import { IAdminPublicationData } from 'api/admin_publications/types';
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
@@ -24,6 +25,7 @@ const AdminPublicationSearchInput = ({
 }: Props) => {
   const [visibleSearchTerm, setVisibleSearchTerm] = useState('');
   const [search, setSearch] = useState('');
+  const theme = useTheme();
 
   const {
     data: adminPublications,
@@ -78,7 +80,7 @@ const AdminPublicationSearchInput = ({
           ) as any
         }
         menuPlacement="auto"
-        styles={selectStyles()}
+        styles={selectStyles(theme)}
         filterOption={() => true}
         onInputChange={handleInputChange}
         onMenuScrollToBottom={() => {

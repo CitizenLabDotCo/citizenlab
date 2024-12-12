@@ -1,16 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
-import {
-  Box,
-  Spinner,
-  useBreakpoint,
-  Title,
-} from '@citizenlab/cl2-component-library';
+import { useBreakpoint, Title } from '@citizenlab/cl2-component-library';
 import useInstanceId from 'component-library/hooks/useInstanceId';
 import { debounce } from 'lodash-es';
 import { useInView } from 'react-intersection-observer';
 
-import { CARD_IMAGE_ASPECT_RATIO } from 'api/project_images/useProjectImages';
 import { MiniProjectData } from 'api/projects_mini/types';
 
 import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
@@ -19,6 +13,7 @@ import { CARD_GAP } from '../BaseCarrousel/constants';
 import { CarrouselContainer, CardContainer } from '../BaseCarrousel/Containers';
 import Gradient from '../BaseCarrousel/Gradient';
 import HorizontalScroll from '../BaseCarrousel/HorizontalScroll';
+import LoadMoreCard from '../BaseCarrousel/LoadMoreCard';
 import ScrollButton from '../BaseCarrousel/ScrollButton';
 import SkipButton from '../BaseCarrousel/SkipButton';
 import {
@@ -33,26 +28,40 @@ interface Props {
   title: string;
   projects: MiniProjectData[];
   hasMore: boolean;
-  onLoadMore: () => void;
+  className?: string;
+  onLoadMore: () => Promise<any>;
 }
 
-const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
+const ProjectCarrousel = ({
+  title,
+  projects,
+  hasMore,
+  className,
+  onLoadMore,
+}: Props) => {
   const [scrollContainerRef, setScrollContainerRef] = useState<
     HTMLDivElement | undefined
   >(undefined);
   const [showPreviousButton, setShowPreviousButton] = useState(false);
   const [showNextButton, setShowNextButton] = useState(false);
+  const [blockLoadMore, setBlockLoadMore] = useState(false);
+
   const isSmallerThanPhone = useBreakpoint('phone');
   const instanceId = useInstanceId();
   const endId = `end-carrousel-${instanceId}`;
 
+  const handleLoadMore = async () => {
+    setBlockLoadMore(true);
+    await onLoadMore();
+    setBlockLoadMore(false);
+  };
+
   const { ref } = useInView({
     onChange: (inView) => {
-      if (inView && hasMore) {
-        onLoadMore();
+      if (inView && hasMore && !blockLoadMore) {
+        handleLoadMore();
       }
     },
-    threshold: 0.4,
   });
 
   const handleButtonVisiblity = useCallback(
@@ -99,12 +108,12 @@ const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
 
   return (
     <>
-      <CarrouselContainer>
+      <CarrouselContainer className={className}>
         <Title
-          variant="h3"
-          as="h2"
+          variant="h2"
           mt="0px"
           ml={isSmallerThanPhone ? DEFAULT_PADDING : undefined}
+          color="tenantText"
         >
           {title}
         </Title>
@@ -127,20 +136,7 @@ const ProjectCarrousel = ({ title, projects, hasMore, onLoadMore }: Props) => {
               />
             </CardContainer>
           ))}
-          {hasMore && (
-            <CardContainer>
-              <Box
-                ref={ref}
-                w={`${CARD_WIDTH}px`}
-                h={`${CARD_WIDTH / CARD_IMAGE_ASPECT_RATIO}px`}
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-              >
-                <Spinner />
-              </Box>
-            </CardContainer>
-          )}
+          {hasMore && <LoadMoreCard width={CARD_WIDTH} cardRef={ref} />}
         </HorizontalScroll>
         {showPreviousButton && !isSmallerThanPhone && (
           <>

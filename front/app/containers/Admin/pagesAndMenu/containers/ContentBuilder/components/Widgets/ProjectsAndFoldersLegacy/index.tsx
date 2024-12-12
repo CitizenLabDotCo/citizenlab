@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, colors, media, Text } from '@citizenlab/cl2-component-library';
+import { Box, media, Text } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
@@ -12,27 +12,28 @@ import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLoca
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 
+import { DEFAULT_Y_PADDING } from '../constants';
+
 import messages from './messages';
 
 const ProjectSection = styled.div`
   width: 100%;
-  padding-top: 40px;
-  padding-bottom: 40px;
+  padding-top: ${DEFAULT_Y_PADDING};
+  padding-bottom: ${DEFAULT_Y_PADDING};
 
   ${media.tablet`
-    padding-bottom: 40px;
     padding-left: ${DEFAULT_PADDING};
     padding-right: ${DEFAULT_PADDING};
   `}
 `;
 
-const Projects = ({
+const ProjectsAndFoldersLegacy = ({
   currentlyWorkingOnText,
 }: {
   currentlyWorkingOnText?: Multiloc;
 }) => {
   return (
-    <Box bg={colors.background} data-cy="e2e-projects">
+    <Box data-cy="e2e-projects">
       <Box maxWidth="1200px" margin="0 auto">
         <ProjectSection id="e2e-landing-page-project-section">
           <ProjectAndFolderCards
@@ -89,12 +90,12 @@ const ProjectsSettings = () => {
   );
 };
 
-Projects.craft = {
+ProjectsAndFoldersLegacy.craft = {
   related: {
     settings: ProjectsSettings,
   },
 };
 
-export const projectsTitle = messages.projectsTitle;
+export const projectsAndFoldersLegacyTitle = messages.projectsTitle;
 
-export default Projects;
+export default ProjectsAndFoldersLegacy;

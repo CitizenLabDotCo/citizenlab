@@ -466,6 +466,100 @@ resource 'Projects' do
         do_request
         expect(moderator.reload.project_moderator?(id)).to be false
       end
+
+      context 'when the homepage layout references the project or its admin_publication' do
+        let!(:project2) { create(:project) }
+
+        let!(:layout) do
+          create(
+            :homepage_layout,
+            craftjs_json: {
+              ROOT: {
+                type: 'div',
+                nodes: %w[
+                  nUOW77iNcW
+                  lsKEOMxTkR
+                ],
+                props: {
+                  id: 'e2e-content-builder-frame'
+                },
+                custom: {},
+                hidden: false,
+                isCanvas: true,
+                displayName: 'div',
+                linkedNodes: {}
+              },
+              nUOW77iNcW: {
+                type: {
+                  resolvedName: 'Selection'
+                },
+                nodes: [],
+                props: {
+                  titleMultiloc: {
+                    en: 'Projects and folders'
+                  },
+                  adminPublicationIds: [
+                    project.admin_publication.id,
+                    project2.admin_publication.id
+                  ]
+                },
+                custom: {},
+                hidden: false,
+                parent: 'ROOT',
+                isCanvas: false,
+                displayName: 'Selection',
+                linkedNodes: {}
+              },
+              lsKEOMxTkR: {
+                type: {
+                  resolvedName: 'Spotlight'
+                },
+                nodes: [],
+                props: {
+                  publicationId: project.id,
+                  titleMultiloc: {
+                    en: 'Highlighted project'
+                  },
+                  publicationType: 'project',
+                  buttonTextMultiloc: {
+                    en: 'Look at this project!'
+                  },
+                  descriptionMultiloc: {
+                    en: 'some description text'
+                  }
+                },
+                custom: {},
+                hidden: false,
+                parent: 'ROOT',
+                isCanvas: false,
+                displayName: 'Spotlight',
+                linkedNodes: {}
+              }
+            }
+          )
+        end
+
+        example 'Deleting removes any Spotlight widget(s) for the project from the homepage layout', document: false do
+          do_request
+          expect(layout.reload.craftjs_json['lsKEOMxTkR']).to be_nil
+        end
+
+        example 'References to deleted homepage layout Spotlight widgets are also removed', document: false do
+          do_request
+          expect(layout.reload.craftjs_json['ROOT']['nodes']).to eq %w[nUOW77iNcW]
+        end
+
+        example(
+          'Deleting removes its admin_publication ID from Selection widget(s) in homepage layout',
+          document: false
+        ) do
+          do_request
+
+          expect(response_status).to eq 200
+          expect(layout.reload.craftjs_json['nUOW77iNcW']['props']['adminPublicationIds'])
+            .to match_array [project2.admin_publication.id]
+        end
+      end
     end
 
     delete 'web_api/v1/projects/:id/participation_data' do

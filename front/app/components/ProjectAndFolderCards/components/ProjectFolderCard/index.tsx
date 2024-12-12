@@ -102,6 +102,10 @@ const Container = styled(Link)`
     width: 100%;
     min-height: 460px;
   `}
+
+  &.dynamic {
+    border: 1px ${colors.grey300} solid;
+  }
 `;
 
 const FolderImageContainer = styled.div`

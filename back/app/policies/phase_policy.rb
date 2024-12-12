@@ -35,6 +35,10 @@ class PhasePolicy < ApplicationPolicy
     survey_results?
   end
 
+  def show_mini?
+    show?
+  end
+
   def delete_inputs?
     active_moderator?
   end

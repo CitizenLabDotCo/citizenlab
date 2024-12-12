@@ -7,6 +7,7 @@ import useAdminPublicationsByIds from 'api/admin_publications/useAdminPublicatio
 import useLocalize from 'hooks/useLocalize';
 
 import AdminPublicationsCarrousel from '../_shared/AdminPublicationsCarrousel';
+import Skeleton from '../_shared/AdminPublicationsCarrousel/Skeleton';
 import EmptyState from '../_shared/EmptyState';
 
 import messages from './messages';
@@ -19,15 +20,16 @@ interface Props {
 
 const Selection = ({ titleMultiloc, adminPublicationIds }: Props) => {
   const localize = useLocalize();
-  const { data, hasNextPage, fetchNextPage } = useAdminPublicationsByIds(
-    {
-      ids: adminPublicationIds,
-      pageSize: 6,
-    },
-    {
-      enabled: adminPublicationIds.length > 0,
-    }
-  );
+  const { data, hasNextPage, fetchNextPage, isInitialLoading } =
+    useAdminPublicationsByIds(
+      {
+        ids: adminPublicationIds,
+        pageSize: 6,
+      },
+      {
+        enabled: adminPublicationIds.length > 0,
+      }
+    );
 
   const adminPublications = data?.pages.map((page) => page.data).flat();
 
@@ -40,11 +42,17 @@ const Selection = ({ titleMultiloc, adminPublicationIds }: Props) => {
     );
   }
 
+  const title = localize(titleMultiloc);
+
+  if (isInitialLoading) {
+    return <Skeleton title={title} />;
+  }
+
   if (!adminPublications) return null;
 
   return (
     <AdminPublicationsCarrousel
-      title={localize(titleMultiloc)}
+      title={title}
       adminPublications={adminPublications}
       hasMore={!!hasNextPage}
       onLoadMore={fetchNextPage}
