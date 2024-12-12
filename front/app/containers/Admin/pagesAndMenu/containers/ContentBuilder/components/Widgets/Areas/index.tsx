@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Multiloc } from 'typings';
 
@@ -28,18 +28,19 @@ const Areas = ({ titleMultiloc }: Props) => {
     sort: 'projects_count',
     pageSize: 100,
   });
+  const [selectedAreaId, setSelectedAreaId] = useState<string>();
 
-  const followedAreas =
+  const followedAreaIds =
     areas?.data
       .filter((area) => !!area.relationships.user_follower.data?.id)
       .map((area) => area.id) ?? [];
 
-  const hasFollowPreferences = followedAreas.length > 0;
+  const hasFollowPreferences = followedAreaIds.length > 0;
 
   const { data, hasNextPage, fetchNextPage } = useProjectsMini(
     {
       endpoint: 'for_areas',
-      areas: followedAreas,
+      areas: selectedAreaId ? [selectedAreaId] : followedAreaIds,
     },
     {
       enabled: hasFollowPreferences,
@@ -74,7 +75,13 @@ const Areas = ({ titleMultiloc }: Props) => {
       projects={projects}
       hasMore={!!hasNextPage}
       className="e2e-areas-widget"
-      dropDownSelect={<DropdownSelect />}
+      dropDownSelect={
+        <DropdownSelect
+          selectedAreaId={selectedAreaId}
+          areas={areas}
+          onSelectArea={setSelectedAreaId}
+        />
+      }
       onLoadMore={fetchNextPage}
     />
   );
