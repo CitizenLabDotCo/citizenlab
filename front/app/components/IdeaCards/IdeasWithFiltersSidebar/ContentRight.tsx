@@ -7,7 +7,7 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
 
 import filterModalMessages from './ButtonWithFiltersModal/FiltersModal/messages';
-import InputFilters, { Props as InputFiltersProps } from './InputFilters';
+import InputFilters, { InputFiltersProps } from './InputFilters';
 
 import { gapWidth } from '.';
 
