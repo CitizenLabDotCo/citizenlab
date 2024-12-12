@@ -1,11 +1,10 @@
-import React, { lazy, Suspense, useMemo } from 'react';
+import React, { useMemo } from 'react';
 
 import {
   media,
   fontSizes,
   colors,
   isRtl,
-  Spinner,
 } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -15,9 +14,7 @@ import { IdeaSortMethod } from 'api/phases/types';
 
 import CityLogoSection from 'components/CityLogoSection';
 import ContentContainer from 'components/ContentContainer';
-const IdeasWithFiltersSidebar = lazy(
-  () => import('components/IdeaCards/IdeasWithFiltersSidebar')
-);
+import IdeasWithFiltersSidebar from 'components/IdeaCards/IdeasWithFiltersSidebar';
 import IdeaListScrollAnchor from 'components/IdeaListScrollAnchor';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -114,12 +111,10 @@ export default () => {
                 when fitlers are changed in the IdeaCardsWithFiltersSidebar component and scrollToTopIdeasList util.
             */}
             <IdeaListScrollAnchor />
-            <Suspense fallback={<Spinner />}>
-              <IdeasWithFiltersSidebar
-                ideaQueryParameters={ideasQueryParameters}
-                onUpdateQuery={updateSearchParams}
-              />
-            </Suspense>
+            <IdeasWithFiltersSidebar
+              ideaQueryParameters={ideasQueryParameters}
+              onUpdateQuery={updateSearchParams}
+            />
           </StyledContentContainer>
           <CityLogoSection />
         </Container>
