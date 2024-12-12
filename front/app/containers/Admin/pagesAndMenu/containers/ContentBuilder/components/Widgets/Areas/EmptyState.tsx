@@ -19,9 +19,10 @@ import messages from './messages';
 interface Props {
   title: string;
   areas: IAreas;
+  selectedAreaId?: string;
 }
 
-const EmptyState = ({ title, areas }: Props) => {
+const EmptyState = ({ title, areas, selectedAreaId }: Props) => {
   const isSmallerThanPhone = useBreakpoint('phone');
   const { formatMessage } = useIntl();
   const localize = useLocalize();
@@ -39,6 +40,27 @@ const EmptyState = ({ title, areas }: Props) => {
 
   const areasTerm = localize(areas_term, { fallback }).toLowerCase();
 
+  const getMessage = () => {
+    if (selectedAreaId) {
+      const area = areas.data.find((area) => area.id === selectedAreaId);
+      if (!area) return null;
+
+      return formatMessage(messages.thereAreCurrentlyNoProjectsSingular, {
+        areaName: localize(area.attributes.title_multiloc),
+      });
+    }
+
+    if (followedAreas.length === 1) {
+      return formatMessage(messages.thereAreCurrentlyNoProjectsSingular, {
+        areaName: localize(followedAreas[0].attributes.title_multiloc),
+      });
+    }
+
+    return formatMessage(messages.thereAreCurrentlyNoProjectsPlural, {
+      areasTerm,
+    });
+  };
+
   return (
     <CarrouselContainer>
       <Title
@@ -48,21 +70,7 @@ const EmptyState = ({ title, areas }: Props) => {
       >
         {title}
       </Title>
-      <Text color="textSecondary">
-        {followedAreas.length === 1 ? (
-          <>
-            {formatMessage(messages.thereAreCurrentlyNoProjectsSingular, {
-              areaName: localize(followedAreas[0].attributes.title_multiloc),
-            })}
-          </>
-        ) : (
-          <>
-            {formatMessage(messages.thereAreCurrentlyNoProjectsSingular, {
-              areasTerm,
-            })}
-          </>
-        )}
-      </Text>
+      <Text color="textSecondary">{getMessage()}</Text>
     </CarrouselContainer>
   );
 };

@@ -66,7 +66,9 @@ const Areas = ({ titleMultiloc }: Props) => {
   }
 
   if (projects.length === 0) {
-    return <EmptyState title={title} areas={areas} />;
+    return (
+      <EmptyState title={title} areas={areas} selectedAreaId={selectedAreaId} />
+    );
   }
 
   return (
