@@ -1595,6 +1595,7 @@
   "app.containers.Projects.noPastEvents": "Ei näytettäviä menneitä tapahtumia",
   "app.containers.Projects.noPhaseSelected": "Vaihetta ei ole valittu",
   "app.containers.Projects.noUpcomingOrOngoingEvents": "Mitään tulevia tai meneillään olevia tapahtumia ei ole tällä hetkellä suunniteltu.",
+  "app.containers.Projects.offlineVotersTooltip": "Tämä luku ei heijasta offline-äänestysten määrää.",
   "app.containers.Projects.options": "Vaihtoehdot",
   "app.containers.Projects.participants": "Osallistujat",
   "app.containers.Projects.participantsTooltip4": "Tämä luku heijastaa myös anonyymejä kyselyjä. Anonyymit kyselyn lähettäminen on mahdollista, jos kyselyt ovat avoimia kaikille (katso tämän projektin välilehti {accessRightsLink} ).",
