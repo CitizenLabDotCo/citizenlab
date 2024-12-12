@@ -46,6 +46,7 @@ const FinishedOrArchived = ({ titleMultiloc, filterBy }: Props) => {
       title={title}
       projects={projects}
       hasMore={!!hasNextPage}
+      className="e2e-finished-or-archived"
       onLoadMore={fetchNextPage}
     />
   );
