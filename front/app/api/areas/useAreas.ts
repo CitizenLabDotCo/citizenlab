@@ -31,10 +31,11 @@ const fetchAreas = (filters: IAreasQueryParams) => {
   });
 };
 
-const useAreas = (queryParams: IAreasQueryParams) => {
+const useAreas = (queryParams: IAreasQueryParams, { enabled = true } = {}) => {
   return useQuery<IAreas, CLErrors, IAreas, AreasKeys>({
     queryKey: areasKeys.list(queryParams),
     queryFn: () => fetchAreas(queryParams),
+    enabled,
   });
 };
 
