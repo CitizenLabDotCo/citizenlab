@@ -1339,7 +1339,7 @@
   "app.containers.IdeasShow.MetaInformation.currentStatus": "Estado actual",
   "app.containers.IdeasShow.MetaInformation.location": "Ubicación",
   "app.containers.IdeasShow.MetaInformation.postedBy": "Publicado por",
-  "app.containers.IdeasShow.MetaInformation.similar": "Entradas similares",
+  "app.containers.IdeasShow.MetaInformation.similar": "Aportes similares",
   "app.containers.IdeasShow.MetaInformation.topics": "Temas",
   "app.containers.IdeasShow.commentCTA": "Añadir una respuesta",
   "app.containers.IdeasShow.contributionEmailSharingBody": "Apoya esta contribución '{postTitle}' en {postUrl}!",
