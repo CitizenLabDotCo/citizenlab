@@ -2126,7 +2126,7 @@
   "app.containers.AdminPage.SettingsPage.subtitleAreas": "حدد التقسيمات الفرعية الجغرافية لمنطقتك.",
   "app.containers.AdminPage.SettingsPage.subtitleBasic": "اختر كيفية رؤية الناس لاسمك، وحدّد لغات منصتك واربطها بموقعك الإلكتروني.",
   "app.containers.AdminPage.SettingsPage.subtitleMaxCharError": "يتجاوز النص الحد الأقصى المسموح به لعدد الأحرف وهو 90 حرفًا",
-  "app.containers.AdminPage.SettingsPage.subtitleRegistration": "حدد المعلومات المطلوب من الزائرين تقديمها لتسجيل الاشتراك.",
+  "app.containers.AdminPage.SettingsPage.subtitleRegistration": "Specify what information people are asked to provide by default before performing any action on the platform. You can change this default in your project phase access rights settings.\nFor a question to be used in our reporting tool the question has to be a single choice question. ",
   "app.containers.AdminPage.SettingsPage.subtitleTerminology": "المصطلح",
   "app.containers.AdminPage.SettingsPage.successfulUpdateSettings": "تم تحديث الإعدادات بنجاح.",
   "app.containers.AdminPage.SettingsPage.tabApproval": "موافقة",
