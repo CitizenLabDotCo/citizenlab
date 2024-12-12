@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import {
   Box,
@@ -150,23 +150,8 @@ const FormEdit = ({
     }
   }, [formCustomFields, isUpdatingForm, isFetching, reset]);
 
-  const closeSettings = (triggerAutosave?: boolean) => {
-    setSelectedField(undefined);
-
-    // If autosave is enabled & no submission have come in yet, save
-    if (triggerAutosave && autosaveEnabled && totalSubmissions === 0) {
-      onFormSubmit(getValues());
-    }
-  };
-
   // Remove copy_from param on save to avoid overwriting a saved survey when reloading
   const [searchParams, setSearchParams] = useSearchParams();
-  const resetCopyFrom = () => {
-    if (searchParams.has('copy_from')) {
-      searchParams.delete('copy_from');
-      setSearchParams(searchParams);
-    }
-  };
 
   const onAddField = (field: IFlatCreateCustomField, index: number) => {
     const newField = {
@@ -183,109 +168,138 @@ const FormEdit = ({
   const hasErrors = !!Object.keys(errors).length;
   const editedAndCorrect = !isSubmitting && isDirty && !hasErrors;
 
-  const onFormSubmit = async ({ customFields }: FormValues) => {
-    setSuccessMessageIsVisible(false);
-    try {
-      setIsSubmitting(true);
-      const finalResponseArray = customFields.map((field) => ({
-        ...(!field.isLocalOnly && { id: field.id }),
-        input_type: field.input_type,
-        ...(field.input_type === 'page' && {
-          temp_id: field.temp_id,
-        }),
-        ...(['linear_scale', 'select', 'page'].includes(field.input_type)
-          ? {
-              logic: field.logic,
-            }
-          : {
-              logic: [],
-            }),
-        required: field.required,
-        enabled: field.enabled,
-        // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        title_multiloc: field.title_multiloc || {},
-        key: field.key,
-        code: field.code,
-        ...(field.page_layout || field.input_type === 'page'
-          ? { page_layout: field.page_layout || 'default' }
-          : {}),
-        ...(field.map_config_id && {
-          map_config_id: field.map_config_id,
-        }),
-        // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        description_multiloc: field.description_multiloc || {},
-        ...(['select', 'multiselect', 'multiselect_image'].includes(
-          field.input_type
-        ) && {
-          // TODO: This will get messy with more field types, abstract this in some way
-          options: field.options || {},
-          maximum_select_count: field.select_count_enabled
-            ? field.maximum_select_count
-            : null,
-          minimum_select_count: field.select_count_enabled
-            ? field.minimum_select_count || '0'
-            : null,
-          select_count_enabled: field.select_count_enabled,
-          random_option_ordering: field.random_option_ordering,
-          dropdown_layout: field.dropdown_layout,
-        }),
-        ...(field.input_type === 'linear_scale' && {
-          linear_scale_label_1_multiloc:
-            field.linear_scale_label_1_multiloc || {},
-          linear_scale_label_2_multiloc:
-            field.linear_scale_label_2_multiloc || {},
-          linear_scale_label_3_multiloc:
-            field.linear_scale_label_3_multiloc || {},
-          linear_scale_label_4_multiloc:
-            field.linear_scale_label_4_multiloc || {},
-          linear_scale_label_5_multiloc:
-            field.linear_scale_label_5_multiloc || {},
-          linear_scale_label_6_multiloc:
-            field.linear_scale_label_6_multiloc || {},
-          linear_scale_label_7_multiloc:
-            field.linear_scale_label_7_multiloc || {},
-          maximum: field.maximum?.toString() || '5',
-        }),
-      }));
-
-      await updateFormCustomFields(
-        {
-          projectId,
-          customFields: finalResponseArray,
-          phaseId: isFormPhaseSpecific ? phaseId : undefined,
-        },
-        {
-          onSuccess: () => {
-            setIsUpdatingForm(true);
-            setSuccessMessageIsVisible(true);
-            resetCopyFrom();
-          },
+  const onFormSubmit = useCallback(
+    async ({ customFields }: FormValues) => {
+      const resetCopyFrom = () => {
+        if (searchParams.has('copy_from')) {
+          searchParams.delete('copy_from');
+          setSearchParams(searchParams);
         }
-      );
-    } catch (error) {
-      handleHookFormSubmissionError(error, setError, 'customFields');
-      setIsSubmitting(false);
-    }
-  };
+      };
 
-  const reorderFields = (
-    result: DragAndDropResult,
-    nestedGroupData: NestedGroupingStructure[]
-  ) => {
-    const reorderedFields = getReorderedFields(result, nestedGroupData);
-    if (reorderedFields) {
-      replace(reorderedFields);
-    }
+      setSuccessMessageIsVisible(false);
+      try {
+        setIsSubmitting(true);
+        const finalResponseArray = customFields.map((field) => ({
+          ...(!field.isLocalOnly && { id: field.id }),
+          input_type: field.input_type,
+          ...(field.input_type === 'page' && {
+            temp_id: field.temp_id,
+          }),
+          ...(['linear_scale', 'select', 'page'].includes(field.input_type)
+            ? {
+                logic: field.logic,
+              }
+            : {
+                logic: [],
+              }),
+          required: field.required,
+          enabled: field.enabled,
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+          title_multiloc: field.title_multiloc || {},
+          key: field.key,
+          code: field.code,
+          ...(field.page_layout || field.input_type === 'page'
+            ? { page_layout: field.page_layout || 'default' }
+            : {}),
+          ...(field.map_config_id && {
+            map_config_id: field.map_config_id,
+          }),
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+          description_multiloc: field.description_multiloc || {},
+          ...(['select', 'multiselect', 'multiselect_image'].includes(
+            field.input_type
+          ) && {
+            // TODO: This will get messy with more field types, abstract this in some way
+            options: field.options || {},
+            maximum_select_count: field.select_count_enabled
+              ? field.maximum_select_count
+              : null,
+            minimum_select_count: field.select_count_enabled
+              ? field.minimum_select_count || '0'
+              : null,
+            select_count_enabled: field.select_count_enabled,
+            random_option_ordering: field.random_option_ordering,
+            dropdown_layout: field.dropdown_layout,
+          }),
+          ...(field.input_type === 'linear_scale' && {
+            linear_scale_label_1_multiloc:
+              field.linear_scale_label_1_multiloc || {},
+            linear_scale_label_2_multiloc:
+              field.linear_scale_label_2_multiloc || {},
+            linear_scale_label_3_multiloc:
+              field.linear_scale_label_3_multiloc || {},
+            linear_scale_label_4_multiloc:
+              field.linear_scale_label_4_multiloc || {},
+            linear_scale_label_5_multiloc:
+              field.linear_scale_label_5_multiloc || {},
+            linear_scale_label_6_multiloc:
+              field.linear_scale_label_6_multiloc || {},
+            linear_scale_label_7_multiloc:
+              field.linear_scale_label_7_multiloc || {},
+            maximum: field.maximum?.toString() || '5',
+          }),
+        }));
 
-    if (!isNilOrError(selectedField) && reorderedFields) {
-      const newSelectedFieldIndex = reorderedFields.findIndex(
-        (field) => field.id === selectedField.id
-      );
-      setSelectedField({ ...selectedField, index: newSelectedFieldIndex });
-    }
-  };
+        await updateFormCustomFields(
+          {
+            projectId,
+            customFields: finalResponseArray,
+            phaseId: isFormPhaseSpecific ? phaseId : undefined,
+          },
+          {
+            onSuccess: () => {
+              setIsUpdatingForm(true);
+              setSuccessMessageIsVisible(true);
+              resetCopyFrom();
+            },
+          }
+        );
+      } catch (error) {
+        handleHookFormSubmissionError(error, setError, 'customFields');
+        setIsSubmitting(false);
+      }
+    },
+    [
+      isFormPhaseSpecific,
+      phaseId,
+      projectId,
+      searchParams,
+      setError,
+      setSearchParams,
+      updateFormCustomFields,
+    ]
+  );
+
+  const closeSettings = useCallback(
+    (triggerAutosave?: boolean) => {
+      setSelectedField(undefined);
+
+      if (triggerAutosave && autosaveEnabled && totalSubmissions === 0) {
+        onFormSubmit(getValues());
+      }
+    },
+    [autosaveEnabled, getValues, onFormSubmit, totalSubmissions]
+  );
+
+  const reorderFields = useCallback(
+    (result: DragAndDropResult, nestedGroupData: NestedGroupingStructure[]) => {
+      const reorderedFields = getReorderedFields(result, nestedGroupData);
+      if (reorderedFields) {
+        replace(reorderedFields);
+      }
+
+      if (!isNilOrError(selectedField) && reorderedFields) {
+        const newSelectedFieldIndex = reorderedFields.findIndex(
+          (field) => field.id === selectedField.id
+        );
+        setSelectedField({ ...selectedField, index: newSelectedFieldIndex });
+      }
+    },
+    [replace, selectedField]
+  );
 
   const closeSuccessMessage = () => setSuccessMessageIsVisible(false);
   const showSuccessMessage =
