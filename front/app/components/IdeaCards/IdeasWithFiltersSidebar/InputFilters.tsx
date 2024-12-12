@@ -20,7 +20,7 @@ import TopicFilterBox from '../shared/Filters/TopicFilterBox';
 
 import ResetFiltersButton from './ResetFiltersButton';
 
-export interface Props {
+export interface InputFiltersProps {
   defaultValue?: string;
   filtersActive: boolean;
   ideasFilterCounts: IIdeasFilterCounts | NilOrError;
@@ -52,7 +52,7 @@ const InputFilters = ({
   onChangeStatus,
   onChangeTopics,
   handleSortOnChange,
-}: Props) => {
+}: InputFiltersProps) => {
   const { data: phase } = usePhase(phaseId);
   const participationMethod =
     phase?.data.attributes.participation_method || 'ideation'; // Ideation used as fallback here for All Ideas page.
