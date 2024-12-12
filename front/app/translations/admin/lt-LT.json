@@ -2126,7 +2126,7 @@
   "app.containers.AdminPage.SettingsPage.subtitleAreas": "Apibrėžkite geografines sritis, kurias norite naudoti savo platformai, pavyzdžiui, rajonus, apylinkes ar apygardas. Šias geografines sritis galite susieti su projektais (filtruojama pradiniame puslapyje) arba paprašyti dalyvių pasirinkti savo gyvenamąją vietovę kaip registracijos lauką, kad būtų galima sukurti išmaniąsias grupes ir nustatyti prieigos teises.",
   "app.containers.AdminPage.SettingsPage.subtitleBasic": "Pasirinkite, kaip žmonės matys jūsų organizacijos pavadinimą, pasirinkite platformos kalbas ir nuorodą į savo svetainę.",
   "app.containers.AdminPage.SettingsPage.subtitleMaxCharError": "Pateikta antraštė viršija didžiausią leistiną simbolių limitą (90 simbolių).",
-  "app.containers.AdminPage.SettingsPage.subtitleRegistration": "Nurodykite, kokią informaciją žmonės turi pateikti registruodamiesi.",
+  "app.containers.AdminPage.SettingsPage.subtitleRegistration": "Specify what information people are asked to provide when signing up.",
   "app.containers.AdminPage.SettingsPage.subtitleTerminology": "Terminologija",
   "app.containers.AdminPage.SettingsPage.successfulUpdateSettings": "Nustatymai sėkmingai atnaujinti.",
   "app.containers.AdminPage.SettingsPage.tabApproval": "Patvirtinimas",
