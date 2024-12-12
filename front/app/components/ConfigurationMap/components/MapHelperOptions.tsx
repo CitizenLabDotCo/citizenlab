@@ -17,6 +17,7 @@ import messages from 'containers/Admin/CustomMapConfigPage/messages';
 import { goToMapLocation } from 'components/EsriMap/utils';
 
 import { useIntl } from 'utils/cl-intl';
+import { projectPointToWebMercator } from 'utils/mapUtils/map';
 
 type Props = {
   mapView: MapView | null;
@@ -45,12 +46,17 @@ const MapHelperOptions = ({ mapConfig, mapView }: Props) => {
   };
 
   const setAsDefaultMapView = () => {
-    if (mapView?.center.longitude && mapView.center.latitude) {
+    if (!mapView) return;
+
+    // Project the point to Web Mercator, in case the map is using a different projection
+    const projectedPoint = projectPointToWebMercator(mapView.center);
+
+    if (projectedPoint.longitude && projectedPoint.latitude) {
       updateMapConfig({
         mapConfigId: mapConfig.data.id,
         center_geojson: {
           type: 'Point',
-          coordinates: [mapView.center.longitude, mapView.center.latitude],
+          coordinates: [projectedPoint.longitude, projectedPoint.latitude],
         },
 
         zoom_level: mapView.zoom.toString(),

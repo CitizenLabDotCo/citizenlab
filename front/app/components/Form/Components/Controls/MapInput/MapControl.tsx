@@ -99,15 +99,11 @@ const MapControl = ({ ...props }: ControlProps) => {
 
   const getInstructionMessage = () => {
     if (isTabletOrSmaller) {
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      return uischema?.options?.input_type === 'point'
+      return uischema.options?.input_type === 'point'
         ? formatMessage(messages.tapOnMapToAddOrType)
         : formatMessage(messages.tapOnMapMultipleToAdd);
     } else {
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      return uischema?.options?.input_type === 'point'
+      return uischema.options?.input_type === 'point'
         ? formatMessage(messages.clickOnMapToAddOrType)
         : formatMessage(messages.clickOnMapMultipleToAdd);
     }
@@ -139,18 +135,14 @@ const MapControl = ({ ...props }: ControlProps) => {
           handleSinglePointChange={handleSinglePointChange}
           handleMultiPointChange={handleMultiPointChange}
           didBlur={didBlur}
-          // TODO: Fix this the next time the file is edited.
-          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-          inputType={uischema?.options?.input_type}
+          inputType={uischema.options?.input_type}
           {...props}
         />
       ) : (
         <DesktopTabletView
           mapConfig={mapConfig}
           mapLayers={mapLayers}
-          // TODO: Fix this the next time the file is edited.
-          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-          inputType={uischema?.options?.input_type}
+          inputType={uischema.options?.input_type}
           onMapInit={onMapInit}
           mapView={mapView}
           handleSinglePointChange={handleSinglePointChange}
