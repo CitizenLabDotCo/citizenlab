@@ -145,7 +145,10 @@ const ProjectHeader = ({ projectId }: Props) => {
                   </li>
                 </ul>
 
-                <FormattedMessage {...messages.participantsExclusionTitle} />
+                <FormattedMessage
+                  {...messages.participantsExclusionTitle}
+                  values={{ b: (chunks) => <b>{chunks}</b> }}
+                />
                 <ul
                   style={{
                     margin: '0',
@@ -158,6 +161,9 @@ const ProjectHeader = ({ projectId }: Props) => {
                   </li>
                   <li>
                     <FormattedMessage {...messages.embeddedMethods} />
+                  </li>
+                  <li>
+                    <FormattedMessage {...messages.offlineVoters} />
                   </li>
                 </ul>
 
