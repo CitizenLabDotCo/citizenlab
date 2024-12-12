@@ -53,7 +53,7 @@ type Props = {
   closeSettings: (triggerAutosave?: boolean) => void;
 };
 
-export const FormField = ({
+const FormField = ({
   field,
   onEditField,
   selectedFieldId,
@@ -403,3 +403,5 @@ export const FormField = ({
     </>
   );
 };
+
+export default FormField;
