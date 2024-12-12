@@ -15,11 +15,11 @@ namespace :fix_existing_tenants do
 
     Apartment::Tenant.switch(schema) do
       Rails.logger.info "STARTED: Finding delete markers for #{schema}"
-      bucket = ENV.fetch('AWS_S3_BUCKET', nil)
+      bucket = ENV.fetch('AWS_S3_BUCKET')
       s3_client = Aws::S3::Client.new
 
       Rails.logger.info 'CHECKING: IdeaImage'
-      IdeaImage.all.each do |idea_image|
+      IdeaImage.find_each do |idea_image|
         remove_s3_delete_marker(s3_client, bucket, idea_image.image.path)
         idea_image.image.versions.map { |_k, v| v.path }.each do |prefix|
           remove_s3_delete_marker(s3_client, bucket, prefix)
@@ -27,12 +27,12 @@ namespace :fix_existing_tenants do
       end
 
       Rails.logger.info 'CHECKING: IdeaFile'
-      IdeaFile.all.each do |idea_file|
+      IdeaFile.find_each do |idea_file|
         remove_s3_delete_marker(s3_client, bucket, idea_file.file.path)
       end
 
       Rails.logger.info 'CHECKING: TextImage'
-      TextImage.where(imageable_type: 'Idea').each do |text_image|
+      TextImage.where(imageable_type: 'Idea').find_each do |text_image|
         remove_s3_delete_marker(s3_client, bucket, text_image.image.path)
       end
     end
