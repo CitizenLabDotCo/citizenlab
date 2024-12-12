@@ -1595,6 +1595,7 @@
   "app.containers.Projects.noPastEvents": "Нема прошлих догађаја за приказ",
   "app.containers.Projects.noPhaseSelected": "Ниједна фаза није изабрана",
   "app.containers.Projects.noUpcomingOrOngoingEvents": "Тренутно нису заказани предстојећи или текући догађаји.",
+  "app.containers.Projects.offlineVotersTooltip": "This number does not reflect any offline voter counts.",
   "app.containers.Projects.options": "Опције",
   "app.containers.Projects.participants": "Учесници",
   "app.containers.Projects.participantsTooltip4": "Овај број такође одражава анонимно подношење анкете. Анонимно подношење анкета је могуће ако су анкете отворене за све (погледајте картицу {accessRightsLink} за овај пројекат).",
