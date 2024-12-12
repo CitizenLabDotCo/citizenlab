@@ -153,17 +153,20 @@ const FormEdit = ({
   // Remove copy_from param on save to avoid overwriting a saved survey when reloading
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const onAddField = (field: IFlatCreateCustomField, index: number) => {
-    const newField = {
-      ...field,
-      index,
-    };
+  const onAddField = useCallback(
+    (field: IFlatCreateCustomField, index: number) => {
+      const newField = {
+        ...field,
+        index,
+      };
 
-    if (isNewCustomFieldObject(newField)) {
-      append(newField);
-      setSelectedField(newField);
-    }
-  };
+      if (isNewCustomFieldObject(newField)) {
+        append(newField);
+        setSelectedField(newField);
+      }
+    },
+    [append]
+  );
 
   const hasErrors = !!Object.keys(errors).length;
   const editedAndCorrect = !isSubmitting && isDirty && !hasErrors;
@@ -333,6 +336,8 @@ const FormEdit = ({
     return null;
   };
 
+  const newFieldIndex = formCustomFields?.length || 0;
+
   return (
     <Box
       display="flex"
@@ -362,6 +367,7 @@ const FormEdit = ({
                   onAddField={onAddField}
                   builderConfig={builderConfig}
                   move={move}
+                  newFieldIndex={newFieldIndex}
                 />
               </Box>
               <Box
