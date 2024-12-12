@@ -98,7 +98,6 @@ const EsriMap = ({
 
     if (webMapId) {
       map = new WebMap({ portalItem: { id: webMapId } });
-      // Project map to Web Mercator if it's not already in that spatial reference
     } else {
       map = new Map();
       map.basemap = new Basemap({
@@ -185,7 +184,7 @@ const EsriMap = ({
       });
     }
 
-    // Otherwise add the layers INTO the WebMap
+    // Otherwise add the layers into the WebMap
     if (isWebMap) {
       map.when(() => {
         // If the Web Map has any reference layers, re-order them so the layer hierarchy is correct
