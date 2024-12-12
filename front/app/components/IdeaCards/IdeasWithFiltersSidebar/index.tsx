@@ -293,9 +293,7 @@ const IdeasWithFiltersSidebar = ({
               />
             </ContentLeft>
 
-            {showInputFilterSidebar && (
-              <ContentRight phaseId={phaseId} {...inputFiltersProps} />
-            )}
+            {showInputFilterSidebar && <ContentRight {...inputFiltersProps} />}
           </Box>
         </>
       )}
