@@ -12,6 +12,7 @@ import ProjectCarrousel from '../_shared/ProjectCarrousel';
 import Skeleton from '../_shared/ProjectCarrousel/Skeleton';
 
 import AreaSelection from './AreaSelection';
+import DropdownSelect from './DropdownSelect';
 import EmptyState from './EmptyState';
 import messages from './messages';
 import Settings from './Settings';
@@ -73,6 +74,7 @@ const Areas = ({ titleMultiloc }: Props) => {
       projects={projects}
       hasMore={!!hasNextPage}
       className="e2e-areas-widget"
+      dropDownSelect={<DropdownSelect />}
       onLoadMore={fetchNextPage}
     />
   );
