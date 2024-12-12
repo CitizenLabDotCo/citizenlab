@@ -3,7 +3,7 @@ import React from 'react';
 import { Box, colors } from '@citizenlab/cl2-component-library';
 
 import BottomBar from '../ButtonWithFiltersModal/FiltersModal/BottomBar';
-import InputFilters, { Props as InputFiltersProps } from '../InputFilters';
+import InputFilters, { InputFiltersProps } from '../InputFilters';
 
 import TopBar from './TopBar';
 
