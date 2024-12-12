@@ -62,14 +62,18 @@ const ContentRight = ({
   onChangeTopics,
   onChangeSort,
 }: Props) => {
-  const stickyTop = document.getElementById('project-cta-bar-top');
+  /* 
+    Likely not the most reliable way to determine if the bar is present.
+    Context would probably be better, but this is a quick fix.
+  */
+  const projectCTABarTop = document.getElementById('project-cta-bar-top');
 
   return (
     <Container
       id="e2e-ideas-filters"
       filterColumnWidth={filterColumnWidth}
-      top={stickyTop ? 160 : 100}
-      maxHeightOffset={stickyTop ? 180 : 120}
+      top={projectCTABarTop ? 160 : 100}
+      maxHeightOffset={projectCTABarTop ? 180 : 120}
       gapWidth={gapWidth}
     >
       {/*
