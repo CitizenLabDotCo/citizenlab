@@ -2141,7 +2141,7 @@
   "app.containers.AdminPage.SettingsPage.subtitleAreas": "Definiu les àrees geogràfiques que voleu utilitzar per a la vostra plataforma, com ara barris, districtes o districtes. Podeu associar aquestes àrees geogràfiques amb projectes (filtrables a la pàgina de destinació) o demanar als participants que seleccionen la seva àrea de residència com a camp de registre per crear Grups intel·ligents i definir els drets d'accés.",
   "app.containers.AdminPage.SettingsPage.subtitleBasic": "Trieu com veuran les persones el nom de la vostra organització, seleccioneu els idiomes de la vostra plataforma i enllaceu al vostre lloc web.",
   "app.containers.AdminPage.SettingsPage.subtitleMaxCharError": "El subtítol proporcionat supera el límit màxim de caràcters permès (90 caràcters)",
-  "app.containers.AdminPage.SettingsPage.subtitleRegistration": "Especifiqueu quina informació es demana que proporcionin les persones en registrar-se.",
+  "app.containers.AdminPage.SettingsPage.subtitleRegistration": "Specify what information people are asked to provide when signing up.",
   "app.containers.AdminPage.SettingsPage.subtitleTerminology": "Terminologia",
   "app.containers.AdminPage.SettingsPage.successfulUpdateSettings": "Settings updated successfully.",
   "app.containers.AdminPage.SettingsPage.tabAreas1": "Àrees",
