@@ -70,6 +70,8 @@ const AreaSelection = ({ title, areas }: Props) => {
               p="4px 12px"
               processing={isLoading}
               disabled={isLoading}
+              bgHoverColor={colors.grey200}
+              textHoverColor={colors.black}
               onClick={() => {
                 addFollower({
                   followableType: 'areas',
