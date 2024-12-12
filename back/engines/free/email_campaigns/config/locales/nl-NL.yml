@@ -460,9 +460,9 @@ nl:
       header_message: 'Het participatieplatform van %{organizationName} heeft zojuist het volgende project gepubliceerd:'
       preheader: 'Er is een nieuw project gepubliceerd'
     project_review_request:
-      subject: 'Herzieningsverzoek: Een project wacht op goedkeuring.'
-      header: '%{requesterName} heeft je uitgenodigd om het project "%{projectTitle}" te bekijken.'
-      header_message: "Momenteel staat het project in conceptmodus en is het niet zichtbaar voor gebruikers. Zodra je het hebt bekeken en goedgekeurd, kan de moderator het publiceren."
+      subject: 'Beoordelingsverzoek: Een project wacht op goedkeuring.'
+      header: '%{requesterName} heeft je uitgenodigd om het project "%{projectTitle}" te beoordelen'
+      header_message: "Momenteel staat het project in conceptmodus en is het niet zichtbaar voor gebruikers. Zodra je het hebt beoordeeld en goedgekeurd, kan de moderator het publiceren."
       cta_review_project: "Het project beoordelen"
     project_review_state_change:
       subject: '"%{projectTitle}" is goedgekeurd'
