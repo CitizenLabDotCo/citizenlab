@@ -2126,7 +2126,7 @@
   "app.containers.AdminPage.SettingsPage.subtitleAreas": "Definir las áreas geográficas: los barrios, regiones,... Las áreas pueden ser vinculadas a proyectos y pueden utilizarse para crear grupos inteligentes y definir permisos de acceso del proyecto.",
   "app.containers.AdminPage.SettingsPage.subtitleBasic": "Agregue el nombre de su organización o ciudad, una dirección url de su sitio de Internet y los idiomas en que esta plataforma debe ponerse a disposición.",
   "app.containers.AdminPage.SettingsPage.subtitleMaxCharError": "El subtítulo excede el límite de máximo de 90 caracteres",
-  "app.containers.AdminPage.SettingsPage.subtitleRegistration": "Especifique la información que se pide a la gente cuando se inscriba.",
+  "app.containers.AdminPage.SettingsPage.subtitleRegistration": "Especifique qué información se les pide a las personas que proporcionen de manera predeterminada antes de realizar cualquier acción en la plataforma. Puede cambiar esta opción predeterminada en la configuración de derechos de acceso de la fase del proyecto.\nPara que una pregunta se utilice en nuestra herramienta de informes, la pregunta debe ser de opción única. ",
   "app.containers.AdminPage.SettingsPage.subtitleTerminology": "Terminología",
   "app.containers.AdminPage.SettingsPage.successfulUpdateSettings": "La configuración se ha actualizado correctamente.",
   "app.containers.AdminPage.SettingsPage.tabApproval": "Aprobación",
