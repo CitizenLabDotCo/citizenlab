@@ -2128,7 +2128,7 @@
   "app.containers.AdminPage.SettingsPage.subtitleAreas": "Definer de geografiske områdene du ønsker å bruke for plattformen din, for eksempel nabolag, bydeler eller distrikter. Du kan knytte disse geografiske områdene til prosjekter (kan filtreres på landingssiden) eller be deltakerne om å velge bostedsområde som et registreringsfelt for å opprette smartgrupper og definere tilgangsrettigheter.",
   "app.containers.AdminPage.SettingsPage.subtitleBasic": "Velg hvordan folk skal se navnet på organisasjonen din, velg språk på plattformen og lenke til nettstedet ditt.",
   "app.containers.AdminPage.SettingsPage.subtitleMaxCharError": "Den oppgitte undertittelen overskrider den maksimalt tillatte tegngrensen (90 tegn)",
-  "app.containers.AdminPage.SettingsPage.subtitleRegistration": "Spesifiser hvilken informasjon folk blir bedt om å oppgi når de registrerer seg.",
+  "app.containers.AdminPage.SettingsPage.subtitleRegistration": "Specify what information people are asked to provide when signing up.",
   "app.containers.AdminPage.SettingsPage.subtitleTerminology": "Terminologi",
   "app.containers.AdminPage.SettingsPage.successfulUpdateSettings": "Innstillingene er oppdatert.",
   "app.containers.AdminPage.SettingsPage.tabApproval": "Godkjenning",
