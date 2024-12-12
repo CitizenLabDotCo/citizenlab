@@ -1603,6 +1603,7 @@
   "app.containers.Projects.noPastEvents": "Keine vergangenen Veranstaltungen zum Anzeigen",
   "app.containers.Projects.noPhaseSelected": "Keine Phase ausgewählt",
   "app.containers.Projects.noUpcomingOrOngoingEvents": "Zurzeit sind keine Veranstaltungen geplant.",
+  "app.containers.Projects.offlineVotersTooltip": "Diese Zahl spiegelt keine analogen Wähler*innen wider.",
   "app.containers.Projects.options": "Optionen",
   "app.containers.Projects.participants": "Teilnehmende",
   "app.containers.Projects.participantsTooltip4": "Diese Zahl spiegelt auch anonyme Umfragen wider. Anonyme Umfragen sind möglich, wenn die Umfragen für alle zugänglich sind (siehe {accessRightsLink} für dieses Projekt).",
