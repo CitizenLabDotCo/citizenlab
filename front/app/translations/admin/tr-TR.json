@@ -2141,7 +2141,7 @@
   "app.containers.AdminPage.SettingsPage.subtitleAreas": "Platformunuz için kullanmak istediğiniz mahalleler, semtler veya ilçeler gibi coğrafi alanları tanımlayın. Bu coğrafi alanları projelerle ilişkilendirebilir (açılış sayfasında filtrelenebilir) veya katılımcılardan Akıllı Gruplar oluşturmak ve erişim haklarını tanımlamak için bir kayıt alanı olarak ikamet ettikleri bölgeyi seçmelerini isteyebilirsiniz.",
   "app.containers.AdminPage.SettingsPage.subtitleBasic": "Kuruluşunuzun adının insanlara nasıl görüntüleneceğini belirleyin, platformunuzun dillerini seçin ve web sitenize bağlantı sağlayın.",
   "app.containers.AdminPage.SettingsPage.subtitleMaxCharError": "Sağlanan alt yazı izin verilen maksimum karakter sınırını (90) aşıyor",
-  "app.containers.AdminPage.SettingsPage.subtitleRegistration": "İnsanların kaydolurken hangi bilgileri sağlamalarının istendiğini belirtin.",
+  "app.containers.AdminPage.SettingsPage.subtitleRegistration": "Specify what information people are asked to provide when signing up.",
   "app.containers.AdminPage.SettingsPage.subtitleTerminology": "Terminoloji",
   "app.containers.AdminPage.SettingsPage.successfulUpdateSettings": "Ayarlar başarıyla güncellendi.",
   "app.containers.AdminPage.SettingsPage.tabAreas1": "Alanlar",
