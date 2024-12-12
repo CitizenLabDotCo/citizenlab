@@ -101,11 +101,11 @@ const IdeasMap = memo<Props>(
     const { data: phase } = usePhase(phaseId);
     const { data: authUser } = useAuthUser();
 
-    // Data from search params
+    // Get selected idea data from search params
     const [searchParams] = useSearchParams();
     const selectedIdea = searchParams.get('idea_map_id');
 
-    // Create div elements to use for inserting React components into Esri map popup
+    // Create two div elements to use for inserting custom React components into Esri map popups
     // Docs: https://developers.arcgis.com/javascript/latest/custom-ui/#introduction
     const startIdeaButtonNode = useMemo(() => {
       return document.createElement('div');
@@ -128,13 +128,14 @@ const IdeasMap = memo<Props>(
       }
     }, []);
 
-    const [ideasSharingLocation, setIdeasSharingLocation] = useState<
-      string[] | null
-    >(null);
-
     const selectedIdeaData = ideaMarkers?.data.find(
       (idea) => idea.id === selectedIdea
     );
+
+    // State for storing ideas that are at the exact same location
+    const [ideasSharingLocation, setIdeasSharingLocation] = useState<
+      string[] | null
+    >(null);
 
     // Map icons for ideas
     const ideaIcon = useMemo(() => {
@@ -144,17 +145,17 @@ const IdeasMap = memo<Props>(
       return getIdeaSymbol('selected', theme);
     }, [theme]);
 
-    // Existing handling for dynamic container width
+    // Container width state (old code prior to Esri integration).
+    // TODO: Clean this up.
     const { windowWidth } = useWindowSize();
-
-    // Container width state (old code). TODO: Clean this up.
     const containerRef = useRef<HTMLDivElement | null>(null);
     const [containerWidth, setContainerWidth] = useState(initialContainerWidth);
     const [innerContainerLeftMargin, setInnerContainerLeftMargin] = useState(
       initialInnerContainerLeftMargin
     );
 
-    // Update container width when window width changes (old code). TODO: Clean this up.
+    // Update container width when window width changes (old code prior to Esri integration).
+    // TODO: Clean this up.
     useLayoutEffect(() => {
       const newContainerWidth = containerRef.current
         ?.getBoundingClientRect()
@@ -171,7 +172,7 @@ const IdeasMap = memo<Props>(
       );
     }, [windowWidth, containerWidth]);
 
-    // Create Esri layers from mapConfig layers
+    // Create Esri layers from any mapConfig layers
     const mapLayers = useMemo(() => {
       return parseLayers(mapConfig, localize);
     }, [mapConfig, localize]);
@@ -181,7 +182,7 @@ const IdeasMap = memo<Props>(
       return generateIdeaMapGraphics(ideaMarkers);
     }, [ideaMarkers]);
 
-    // Create an Esri feature layer from the idea pin graphics so we can add a cluster display
+    // Create an Esri feature layer from the idea pin graphics (so we can add a cluster display)
     const ideasLayer = useMemo(() => {
       if (graphics) {
         return generateIdeaFeatureLayer({
