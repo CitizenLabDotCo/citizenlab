@@ -67,6 +67,7 @@ fallback_locales =
     pt
     ro
     sr
+    sr-Cyrl
     sv
     tr
   ].freeze
