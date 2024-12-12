@@ -2,7 +2,7 @@
 
 # This task should be used if partial data has been restored to a schema from a backup DB
 # to renable the S3 file assets that were flagged as deleted when the data was deleted.
-# Currently only restores assets associated with Ideas (IdeaImage, IdeaFile, TextFile).
+# Currently only restores assets associated with Ideas (IdeaImage, IdeaFile, TextImage).
 
 namespace :fix_existing_tenants do
   desc 'If ideas have been manually restored from backup - restore any deleted images.'
