@@ -624,7 +624,7 @@ da:
         managers: 'Projektledere'
         managers_managing_the_project: 'Projektledere, der styrer projektet'
         new_attendee: 'Nyligt registreret bruger'
-        project_reviewers: 'Projektgranskere og mappeadministratorer'
+        project_reviewers: 'Projektgodkendere og mappeadministratorer'
         project_review_requester: 'Bruger, der anmodede om projektgennemgang'
         user_who_commented: 'Bruger der kommenterede'
         user_who_is_invited_to_cosponsor_a_proposal: 'Bruger der er inviteret til at være medstiller på et forslag'
