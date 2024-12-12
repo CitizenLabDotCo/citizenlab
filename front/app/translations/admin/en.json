@@ -2839,7 +2839,6 @@
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.surveyPhase": "Survey phase",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.surveyQuestion": "Survey question",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.areasTitle2": "In your area",
-  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.inYourNeighborhood": "In your neighborhood",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.noData": "This widget will only be shown to the user if there are projects associated with areas that they follow. If you see this message, it means that the areas that you (the admin) are following have no associated projects. This message will not be visible on the real homepage.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Areas.selectYourX": "Select your {areaTerm}",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.noData": "No published projects or folders available",
