@@ -2307,7 +2307,6 @@
   "app.containers.AdminPage.phase.methodPicker.volunteeringTitle1": "Recriwtio cyfranogwyr neu wirfoddolwyr",
   "app.containers.AdminPage.phase.methodPicker.votingDescription": "Dewiswch ddull pleidleisio, a gofynnwch i ddefnyddwyr flaenoriaethu rhwng ychydig o opsiynau gwahanol.",
   "app.containers.AdminPage.phase.methodPicker.votingTitle1": "Cynnal ymarfer pleidleisio neu flaenoriaethu",
-  "app.containers.AdminPage.projects.all.active": "Actif",
   "app.containers.AdminPage.projects.all.all": "I gyd",
   "app.containers.AdminPage.projects.all.createProjectFolder": "Ffolder newydd",
   "app.containers.AdminPage.projects.all.existingProjects": "Prosiectau presennol",

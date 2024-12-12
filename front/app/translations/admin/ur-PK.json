@@ -2307,7 +2307,6 @@
   "app.containers.AdminPage.phase.methodPicker.volunteeringTitle1": "شرکاء یا رضاکاروں کو بھرتی کریں۔",
   "app.containers.AdminPage.phase.methodPicker.votingDescription": "ووٹنگ کا طریقہ منتخب کریں، اور صارفین کو چند مختلف اختیارات کے درمیان ترجیح دیں۔",
   "app.containers.AdminPage.phase.methodPicker.votingTitle1": "ووٹنگ یا ترجیحی مشق کا انعقاد کریں۔",
-  "app.containers.AdminPage.projects.all.active": "فعال",
   "app.containers.AdminPage.projects.all.all": "تمام",
   "app.containers.AdminPage.projects.all.createProjectFolder": "نیا فولڈر",
   "app.containers.AdminPage.projects.all.existingProjects": "موجودہ منصوبے",

@@ -217,7 +217,6 @@
   "app.components.ProjectFolderCards.components.Topbar.areaTitle": "Area",
   "app.components.ProjectFolderCards.components.Topbar.draft": "Draft",
   "app.components.ProjectFolderCards.components.Topbar.filterBy": "Filter by",
-  "app.components.ProjectFolderCards.components.Topbar.published": "Active",
   "app.components.ProjectFolderCards.components.Topbar.topicTitle": "Tag",
   "app.components.ProjectFolderCards.noProjectYet": "There are currently no open projects",
   "app.components.ProjectFolderCards.noProjectsAvailable": "No projects available",

@@ -2307,7 +2307,6 @@
   "app.containers.AdminPage.phase.methodPicker.volunteeringTitle1": "Rekrutuj uczestników lub wolontariuszy",
   "app.containers.AdminPage.phase.methodPicker.votingDescription": "Wybierz metodę głosowania i poproś użytkowników o ustalenie priorytetów między kilkoma różnymi opcjami.",
   "app.containers.AdminPage.phase.methodPicker.votingTitle1": "Przeprowadź głosowanie lub ustal priorytety",
-  "app.containers.AdminPage.projects.all.active": "Aktywny",
   "app.containers.AdminPage.projects.all.all": "Wszystkie",
   "app.containers.AdminPage.projects.all.createProjectFolder": "Nowy folder",
   "app.containers.AdminPage.projects.all.existingProjects": "Istniejące projekty",
