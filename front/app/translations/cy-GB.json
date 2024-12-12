@@ -1170,7 +1170,6 @@
   "app.containers.IdeaCards.allStatuses": "Pob statws",
   "app.containers.IdeaCards.contributions": "Cyfraniadau",
   "app.containers.IdeaCards.ideaTerm": "Syniadau",
-  "app.containers.IdeaCards.ideasFilterSidebarTitle": "{inputTerm} ({numberIdeas})",
   "app.containers.IdeaCards.initiatives": "Mentrau",
   "app.containers.IdeaCards.issueTerm": "Materion",
   "app.containers.IdeaCards.list": "Rhestr",

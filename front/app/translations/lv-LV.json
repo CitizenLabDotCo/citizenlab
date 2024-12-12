@@ -1170,7 +1170,6 @@
   "app.containers.IdeaCards.allStatuses": "Visi statusi",
   "app.containers.IdeaCards.contributions": "Iemaksas",
   "app.containers.IdeaCards.ideaTerm": "Idejas",
-  "app.containers.IdeaCards.ideasFilterSidebarTitle": "{inputTerm} ({numberIdeas})",
   "app.containers.IdeaCards.initiatives": "Iniciatīvas",
   "app.containers.IdeaCards.issueTerm": "Jautājumi",
   "app.containers.IdeaCards.list": "Saraksts",

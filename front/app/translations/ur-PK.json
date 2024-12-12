@@ -1170,7 +1170,6 @@
   "app.containers.IdeaCards.allStatuses": "تمام سٹیٹس",
   "app.containers.IdeaCards.contributions": "شراکتیں",
   "app.containers.IdeaCards.ideaTerm": "خیالات",
-  "app.containers.IdeaCards.ideasFilterSidebarTitle": "{inputTerm} ({numberIdeas})",
   "app.containers.IdeaCards.initiatives": "اقدامات",
   "app.containers.IdeaCards.issueTerm": "مسائل",
   "app.containers.IdeaCards.list": "فہرست",

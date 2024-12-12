@@ -1170,7 +1170,6 @@
   "app.containers.IdeaCards.allStatuses": "Alla statusar",
   "app.containers.IdeaCards.contributions": "Bidrag",
   "app.containers.IdeaCards.ideaTerm": "Idéer",
-  "app.containers.IdeaCards.ideasFilterSidebarTitle": "{inputTerm} ({numberIdeas})",
   "app.containers.IdeaCards.initiatives": "Initiativ",
   "app.containers.IdeaCards.issueTerm": "Frågor",
   "app.containers.IdeaCards.list": "Lista",

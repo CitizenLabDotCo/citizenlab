@@ -1170,7 +1170,6 @@
   "app.containers.IdeaCards.allStatuses": "Visos būsenos",
   "app.containers.IdeaCards.contributions": "Įnašai",
   "app.containers.IdeaCards.ideaTerm": "Idėjos",
-  "app.containers.IdeaCards.ideasFilterSidebarTitle": "{inputTerm} ({numberIdeas})",
   "app.containers.IdeaCards.initiatives": "Iniciatyvos",
   "app.containers.IdeaCards.issueTerm": "Klausimai",
   "app.containers.IdeaCards.list": "Sąrašas",

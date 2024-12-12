@@ -1170,7 +1170,6 @@
   "app.containers.IdeaCards.allStatuses": "Tous les statuts",
   "app.containers.IdeaCards.contributions": "Contributions",
   "app.containers.IdeaCards.ideaTerm": "Idées",
-  "app.containers.IdeaCards.ideasFilterSidebarTitle": "{inputTerm} ({numberIdeas})",
   "app.containers.IdeaCards.initiatives": "Initiatives",
   "app.containers.IdeaCards.issueTerm": "Problèmes",
   "app.containers.IdeaCards.list": "Liste",
