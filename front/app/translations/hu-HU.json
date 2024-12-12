@@ -398,7 +398,7 @@
   "app.components.ProjectFolderCards.components.Topbar.areaTitle": "Terület",
   "app.components.ProjectFolderCards.components.Topbar.draft": "Piszkozat",
   "app.components.ProjectFolderCards.components.Topbar.filterBy": "Szűrés szerint",
-  "app.components.ProjectFolderCards.components.Topbar.published": "Aktív",
+  "app.components.ProjectFolderCards.components.Topbar.published2": "Közzétett",
   "app.components.ProjectFolderCards.components.Topbar.topicTitle": "Címke",
   "app.components.ProjectFolderCards.noProjectYet": "Jelenleg nincsenek nyitott projektek",
   "app.components.ProjectFolderCards.noProjectsAvailable": "Nincs elérhető projekt",
