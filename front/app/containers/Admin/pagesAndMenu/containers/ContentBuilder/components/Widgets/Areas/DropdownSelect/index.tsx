@@ -7,12 +7,17 @@ import {
   Dropdown,
   colors,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import { IAreas } from 'api/areas/types';
 
 import useLocalize from 'hooks/useLocalize';
 
 import AreasList from './AreasList';
+
+const Container = styled.div`
+  z-index: 1000000004 !important;
+`;
 
 interface Props {
   selectedAreaId?: string;
@@ -33,7 +38,7 @@ const DropdownSelect = ({ selectedAreaId, areas, onSelectArea }: Props) => {
     : undefined;
 
   return (
-    <Box position="relative">
+    <Container>
       <Button
         buttonStyle="text"
         textColor={colors.textSecondary}
@@ -56,7 +61,7 @@ const DropdownSelect = ({ selectedAreaId, areas, onSelectArea }: Props) => {
         mobileWidth="160px"
         onClickOutside={toggleDropdown}
       />
-    </Box>
+    </Container>
   );
 };
 
