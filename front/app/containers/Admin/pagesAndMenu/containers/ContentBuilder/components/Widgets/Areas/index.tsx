@@ -9,6 +9,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import EmptyState from '../_shared/EmptyState';
 import ProjectCarrousel from '../_shared/ProjectCarrousel';
+import Skeleton from '../_shared/ProjectCarrousel/Skeleton';
 
 import AreaSelection from './AreaSelection';
 import messages from './messages';
@@ -45,13 +46,17 @@ const Areas = ({ titleMultiloc }: Props) => {
 
   const title = localize(titleMultiloc);
 
-  if (!areas) return null; // LOADING
+  if (!areas) {
+    return <Skeleton title={title} />;
+  }
 
   if (!hasFollowPreferences) {
     return <AreaSelection title={title} areas={areas} />;
   }
 
-  if (!projects) return null; // LOADING
+  if (!projects) {
+    return <Skeleton title={title} />;
+  }
 
   if (projects.length === 0) {
     return (
