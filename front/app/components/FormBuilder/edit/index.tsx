@@ -353,6 +353,7 @@ const FormEdit = ({
               viewFormLink={viewFormLink}
               autosaveEnabled={autosaveEnabled}
               setAutosaveEnabled={setAutosaveEnabled}
+              isDirty={isDirty}
               showAutosaveToggle={totalSubmissions === 0} // Only allow autosave if no survey submissions
             />
             <Box mt={`${stylingConsts.menuHeight}px`} display="flex">
