@@ -143,6 +143,8 @@ class SideFxIdeaService
   end
 
   def after_publish(idea, user)
+    remove_duplicate_survey_responses_on_publish(idea)
+
     log_activity_jobs_after_published(idea, user)
   end
 
@@ -214,6 +216,23 @@ class SideFxIdeaService
 
   def enqueue_embeddings_job(idea)
     UpsertEmbeddingJob.perform_later(idea) if AppConfiguration.instance.feature_activated?('similar_inputs')
+  end
+
+  # If a survey is opened in multiple tabs then different draft responses can be created for the same user.
+  # We need to remove any duplicates when the survey is submitted.
+  def remove_duplicate_survey_responses_on_publish(idea)
+    return unless idea.creation_phase&.native_survey? && idea.just_published?
+
+    other_draft_ideas = Idea.where(
+      creation_phase_id: idea.creation_phase_id,
+      author: idea.author,
+      publication_status: 'draft'
+    ).where.not(
+      id: idea.id
+    )
+    return unless other_draft_ideas.any?
+
+    other_draft_ideas.destroy_all
   end
 end
 
