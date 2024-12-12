@@ -103,7 +103,7 @@ export interface ICustomFieldResponse {
       data: IRelationship[];
     };
     map_config?: {
-      data: IRelationship;
+      data?: IRelationship;
     };
   };
 }
