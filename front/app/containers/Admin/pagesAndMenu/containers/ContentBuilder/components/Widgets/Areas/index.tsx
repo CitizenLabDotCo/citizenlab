@@ -5,6 +5,7 @@ import { Multiloc } from 'typings';
 import useAreas from 'api/areas/useAreas';
 import useProjectsMini from 'api/projects_mini/useProjectsMini';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
 import EmptyState from '../_shared/EmptyState';
@@ -21,6 +22,7 @@ interface Props {
 
 const Areas = ({ titleMultiloc }: Props) => {
   const localize = useLocalize();
+  const followEnabled = useFeatureFlag({ name: 'follow' });
   const { data: areas } = useAreas({
     sort: 'projects_count',
   });
@@ -45,6 +47,8 @@ const Areas = ({ titleMultiloc }: Props) => {
   const projects = data?.pages.map((page) => page.data).flat();
 
   const title = localize(titleMultiloc);
+
+  if (!followEnabled) return null;
 
   if (!areas) {
     return <Skeleton title={title} />;
