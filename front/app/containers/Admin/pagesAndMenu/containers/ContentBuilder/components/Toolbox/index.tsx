@@ -6,6 +6,7 @@ import { SupportedLocale } from 'typings';
 import useAppConfigurationLocales, {
   createMultiloc,
 } from 'hooks/useAppConfigurationLocales';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import Container from 'components/admin/ContentBuilder/Toolbox/Container';
 import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
@@ -80,6 +81,7 @@ const HomepageBuilderToolbox = ({
   const { formatMessage } = useIntl();
   const formatMessageWithLocale = useFormatMessageWithLocale();
   const appConfigurationLocales = useAppConfigurationLocales();
+  const followEnabled = useFeatureFlag({ name: 'follow' });
 
   if (!appConfigurationLocales) return null;
 
@@ -138,12 +140,14 @@ const HomepageBuilderToolbox = ({
           icon="sportsScore"
           label={formatMessage(finishedOrArchivedTitle)}
         />
-        <DraggableElement
-          id="e2e-draggable-areas"
-          component={<Areas titleMultiloc={toMultiloc(areasTitle)} />}
-          icon="home"
-          label={formatMessage(areasTitle)}
-        />
+        {followEnabled && (
+          <DraggableElement
+            id="e2e-draggable-areas"
+            component={<Areas titleMultiloc={toMultiloc(areasTitle)} />}
+            icon="home"
+            label={formatMessage(areasTitle)}
+          />
+        )}
         <DraggableElement
           id="e2e-draggable-spotlight"
           component={
