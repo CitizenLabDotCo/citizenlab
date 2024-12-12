@@ -113,6 +113,11 @@ class ProjectsFinderService
       .order('subquery.latest_follower_created_at DESC')
   end
 
+  # Returns an ActiveRecord collection of published projects, visible to user, that are also
+  # If :areas param: Returns all non-draft projects that are visible to user, for the selected areas.
+  # Else: Returns all non-draft projects that are visible to user, for the areas the user follows or for all-areas.
+  # Ordered by created_at, newest first.
+  # # => [Project]
   def projects_for_areas
     @projects = @projects.not_draft
 
