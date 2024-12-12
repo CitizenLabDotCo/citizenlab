@@ -43,8 +43,8 @@ de:
       "project_phase_started": Neue Projektphase
       "project_phase_upcoming": Bevorstehende neue Projektphase
       "project_published": Projekt veröffentlicht
-      "project_review_request": Antrag auf Projektüberprüfung
-      "project_review_state_change": Projekt genehmigt
+      "project_review_request": Antrag auf Projektfreigabe
+      "project_review_state_change": Projekt freigegeben
       "status_change_on_idea_you_follow": Statusänderung einer Idee, der Sie folgen
       "status_change_on_initiative_you_follow": Statusänderung eines Vorschlags, dem Sie folgen
       "threshold_reached_for_admin": Vorschlag hat die Abstimmungsschwelle erreicht
@@ -460,15 +460,15 @@ de:
       header_message: 'Die Beteiligungsplattform von %{organizationName} hat gerade das folgende Projekt veröffentlicht:'
       preheader: 'Ein neues Projekt wurde veröffentlicht'
     project_review_request:
-      subject: 'Antrag auf Überprüfung: Ein Projekt wartet auf seine Genehmigung.'
-      header: '%{requesterName} hat Sie eingeladen, das Projekt "%{projectTitle}" zu überprüfen.'
-      header_message: "Derzeit befindet sich das Projekt im Entwurfsmodus und ist für die Benutzer nicht sichtbar. Sobald Sie es geprüft und genehmigt haben, kann der Moderator es veröffentlichen."
-      cta_review_project: "Überprüfen Sie das Projekt"
+      subject: 'Antrag auf Freigabe: Ein Projekt wartet auf Freigabe.'
+      header: '%{requesterName} hat Sie eingeladen, das Projekt "%{projectTitle}" freizugeben'
+      header_message: "Derzeit befindet sich das Projekt im Entwurfsmodus und ist für Nutzer*innen nicht sichtbar. Sobald Sie es geprüft und freigegeben haben, kann der/die Projektmanager*in es veröffentlichen."
+      cta_review_project: "Projekt überprüfen"
     project_review_state_change:
-      subject: '"%{projectTitle}" wurde genehmigt'
-      header: '%{reviewerName} das Projekt "%{projectTitle}" genehmigt.'
+      subject: '"%{projectTitle}" wurde freigegeben'
+      header: '%{reviewerName} hat das Projekt "%{projectTitle}" freigegeben'
       header_message: "Das Projekt ist jetzt bereit, live zu gehen. Sie können es veröffentlichen, wann immer Sie bereit sind!"
-      cta_go_to_project: "Gehen Sie zu den Projekteinstellungen"
+      cta_go_to_project: "Zu den Projekteinstellungen"
     status_change_on_idea_you_follow:
       status_change: 'Der neue Status dieses Beitrags ist ''%{status}'''
       header_message: '%{organizationName} hat den Status des Beitrags ''%{input_title}'' auf Ihrer digitalen Beteiligungsplattform aktualisiert.'
@@ -624,8 +624,8 @@ de:
         managers: 'Manager*innen'
         managers_managing_the_project: 'Manager*innen, die das Projekt verwalten'
         new_attendee: 'Neu registrierte*r Benutzer*in'
-        project_reviewers: 'Projektüberprüfer und Ordnerverwalter'
-        project_review_requester: 'Benutzer, der die Projektprüfung beantragt hat'
+        project_reviewers: 'Projektüberprüfer*innen und Ordnermanager*innen'
+        project_review_requester: 'Projektmanager*in, der oder die die Freigabe beantragt hat'
         user_who_commented: 'Nutzer*in kommentiert'
         user_who_is_invited_to_cosponsor_a_proposal: 'Nutzer*in wird zur Unterstützung eines Vorschlags eingeladen'
         user_who_is_mentioned: 'Erwähnte Admins & Manager*innen'
@@ -678,8 +678,8 @@ de:
         internal_comment_is_posted_on_initiative_user_has_commented_internally_on: 'Interner Kommentar wird auf Vorschlag veröffentlicht, den der Nutzer / die Nutzerin intern kommentiert hat'
         internal_comment_is_posted_on_unassigned_initiative: 'Interner Kommentar wird zu nicht zugeordnetem Vorschlag veröffentlicht'
         internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Interner Kommentar wird zu nicht zugewiesenem Beitrag in nicht verwaltetem Projekt veröffentlicht'
-        project_review_request: 'Moderator hat eine Projektprüfung beantragt'
-        project_review_state_change: 'Prüfer genehmigt das Projekt'
+        project_review_request: 'Projektmanager*in hat eine Projektfreigabe beantragt'
+        project_review_state_change: 'Prüfer*in genehmigt das Projekt'
         new_input_awaits_screening: 'Neuer Beitrag wartet auf Überprüfung'
         new_input_is_published: 'Neuer Beitrag wird veröffentlicht'
         new_proposal_is_posted: 'Neuer Vorschlag wird veröffentlicht'
