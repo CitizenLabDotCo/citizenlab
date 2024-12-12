@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { Multiloc } from 'typings';
 
@@ -12,7 +12,6 @@ import ProjectCarrousel from '../_shared/ProjectCarrousel';
 import Skeleton from '../_shared/ProjectCarrousel/Skeleton';
 
 import AreaSelection from './AreaSelection';
-import DropdownSelect from './DropdownSelect';
 import EmptyState from './EmptyState';
 import messages from './messages';
 import Settings from './Settings';
@@ -28,7 +27,6 @@ const Areas = ({ titleMultiloc }: Props) => {
     sort: 'projects_count',
     pageSize: 100,
   });
-  const [selectedAreaId, setSelectedAreaId] = useState<string>();
 
   const followedAreaIds =
     areas?.data
@@ -40,7 +38,7 @@ const Areas = ({ titleMultiloc }: Props) => {
   const { data, hasNextPage, fetchNextPage } = useProjectsMini(
     {
       endpoint: 'for_areas',
-      areas: selectedAreaId ? [selectedAreaId] : followedAreaIds,
+      areas: followedAreaIds,
     },
     {
       enabled: hasFollowPreferences,
@@ -66,14 +64,7 @@ const Areas = ({ titleMultiloc }: Props) => {
   }
 
   if (projects.length === 0) {
-    return (
-      <EmptyState
-        title={title}
-        areas={areas}
-        selectedAreaId={selectedAreaId}
-        onSelectArea={setSelectedAreaId}
-      />
-    );
+    return <EmptyState title={title} areas={areas} />;
   }
 
   return (
@@ -82,13 +73,6 @@ const Areas = ({ titleMultiloc }: Props) => {
       projects={projects}
       hasMore={!!hasNextPage}
       className="e2e-areas-widget"
-      dropDownSelect={
-        <DropdownSelect
-          selectedAreaId={selectedAreaId}
-          areas={areas}
-          onSelectArea={setSelectedAreaId}
-        />
-      }
       onLoadMore={fetchNextPage}
     />
   );

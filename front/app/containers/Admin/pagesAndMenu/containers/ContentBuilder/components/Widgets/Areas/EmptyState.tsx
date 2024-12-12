@@ -19,17 +19,15 @@ import { useIntl } from 'utils/cl-intl';
 
 import { CarrouselContainer } from '../_shared/BaseCarrousel/Containers';
 
-import DropdownSelect from './DropdownSelect';
 import messages from './messages';
 
 interface Props {
   title: string;
   areas: IAreas;
   selectedAreaId?: string;
-  onSelectArea: (areaId: string) => void;
 }
 
-const EmptyState = ({ title, areas, selectedAreaId, onSelectArea }: Props) => {
+const EmptyState = ({ title, areas, selectedAreaId }: Props) => {
   const isSmallerThanPhone = useBreakpoint('phone');
   const { formatMessage } = useIntl();
   const localize = useLocalize();
@@ -83,13 +81,13 @@ const EmptyState = ({ title, areas, selectedAreaId, onSelectArea }: Props) => {
         >
           {title}
         </Title>
-        <Box display="flex" alignItems="center">
+        {/* <Box display="flex" alignItems="center">
           <DropdownSelect
             selectedAreaId={selectedAreaId}
             areas={areas}
             onSelectArea={onSelectArea}
           />
-        </Box>
+        </Box> */}
       </Box>
       <Text color="textSecondary">{getMessage()}</Text>
     </CarrouselContainer>
