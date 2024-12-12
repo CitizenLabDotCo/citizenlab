@@ -55,25 +55,31 @@ const AreaSelection = ({ title, areas }: Props) => {
         {title}
       </Title>
       <Text>{formatMessage(messages.selectYourX, { areaTerm })}</Text>
-      <Box display="flex" flexDirection="row" gap="12px">
-        {areas.data.map((area) => (
-          <Button
-            buttonStyle="text"
+      <Box>
+        {areas.data.map((area, i) => (
+          <Box
+            display="inline-block"
+            mr={i === areas.data.length - 1 ? '0px' : '8px'}
+            mb="8px"
             key={area.id}
-            borderColor={colors.textPrimary}
-            textColor={colors.textPrimary}
-            p="4px 12px"
-            processing={isLoading}
-            disabled={isLoading}
-            onClick={() => {
-              addFollower({
-                followableType: 'areas',
-                followableId: area.id,
-              });
-            }}
           >
-            {localize(area.attributes.title_multiloc)}
-          </Button>
+            <Button
+              buttonStyle="text"
+              borderColor={colors.textPrimary}
+              textColor={colors.textPrimary}
+              p="4px 12px"
+              processing={isLoading}
+              disabled={isLoading}
+              onClick={() => {
+                addFollower({
+                  followableType: 'areas',
+                  followableId: area.id,
+                });
+              }}
+            >
+              {localize(area.attributes.title_multiloc)}
+            </Button>
+          </Box>
         ))}
       </Box>
     </CarrouselContainer>

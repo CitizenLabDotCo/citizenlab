@@ -42,13 +42,13 @@ const EmptyState = ({ title, areas }: Props) => {
   return (
     <CarrouselContainer>
       <Title
-        variant="h3"
+        variant="h2"
         mt="0px"
         ml={isSmallerThanPhone ? DEFAULT_PADDING : undefined}
       >
         {title}
       </Title>
-      <Text>
+      <Text color="textSecondary">
         {followedAreas.length === 1 ? (
           <>
             {formatMessage(messages.thereAreCurrentlyNoProjectsSingular, {
