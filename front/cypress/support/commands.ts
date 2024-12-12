@@ -440,9 +440,8 @@ function apiCreateModeratorForProject({
   password: string;
   projectId: string;
 }) {
-  cy.apiSignup(firstName, lastName, email, password).then((response) => {
+  return cy.apiSignup(firstName, lastName, email, password).then((response) => {
     const userId = response.body.data.id;
-    console.log('userId', userId);
     return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
       const adminJwt = response.body.jwt;
 

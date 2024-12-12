@@ -6,6 +6,7 @@ const projectTitle = randomString();
 const projectDescription = randomString(30);
 const projectDescriptionPreview = randomString(30);
 let projectId: string;
+let userId: string;
 
 describe('Admin project approval flow', () => {
   before(() => {
@@ -22,6 +23,8 @@ describe('Admin project approval flow', () => {
         email,
         password,
         projectId,
+      }).then((moderator) => {
+        userId = moderator.body.data.id;
       });
     });
   });
