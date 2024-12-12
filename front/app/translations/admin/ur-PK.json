@@ -2126,7 +2126,7 @@
   "app.containers.AdminPage.SettingsPage.subtitleAreas": "ان جغرافیائی علاقوں کی وضاحت کریں جنہیں آپ اپنے پلیٹ فارم کے لیے استعمال کرنا چاہیں گے، جیسے محلے، بورو یا اضلاع۔ آپ ان جغرافیائی علاقوں کو پروجیکٹس کے ساتھ منسلک کر سکتے ہیں (لینڈنگ پیج پر فلٹر کیا جا سکتا ہے) یا شرکاء سے اپنے رہائشی علاقے کو رجسٹریشن فیلڈ کے طور پر منتخب کرنے کے لیے کہہ سکتے ہیں تاکہ اسمارٹ گروپس بنائیں اور رسائی کے حقوق کی وضاحت کریں۔",
   "app.containers.AdminPage.SettingsPage.subtitleBasic": "منتخب کریں کہ لوگ آپ کی تنظیم کا نام کیسے دیکھیں گے، اپنے پلیٹ فارم کی زبانیں منتخب کریں اور اپنی ویب سائٹ سے لنک کریں۔",
   "app.containers.AdminPage.SettingsPage.subtitleMaxCharError": "فراہم کردہ ذیلی عنوان زیادہ سے زیادہ اجازت شدہ حروف کی حد سے زیادہ ہے (90 حروف)",
-  "app.containers.AdminPage.SettingsPage.subtitleRegistration": "واضح کریں کہ سائن اپ کرتے وقت لوگوں سے کیا معلومات فراہم کرنے کو کہا جاتا ہے۔",
+  "app.containers.AdminPage.SettingsPage.subtitleRegistration": "Specify what information people are asked to provide when signing up.",
   "app.containers.AdminPage.SettingsPage.subtitleTerminology": "اصطلاحات",
   "app.containers.AdminPage.SettingsPage.successfulUpdateSettings": "ترتیبات کامیابی کے ساتھ اپ ڈیٹ ہو گئیں۔",
   "app.containers.AdminPage.SettingsPage.tabApproval": "منظوری",
