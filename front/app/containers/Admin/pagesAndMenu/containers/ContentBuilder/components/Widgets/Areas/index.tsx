@@ -23,16 +23,22 @@ interface Props {
 const Areas = ({ titleMultiloc }: Props) => {
   const localize = useLocalize();
   const followEnabled = useFeatureFlag({ name: 'follow' });
-  const { data: areas } = useAreas({
-    sort: 'projects_count',
-    pageSize: 100,
-  });
-
   const { data, hasNextPage, fetchNextPage } = useProjectsMini({
     endpoint: 'for_areas',
   });
 
   const projects = data?.pages.map((page) => page.data).flat();
+
+  const { data: areas } = useAreas(
+    {
+      sort: 'projects_count',
+      pageSize: 100,
+    },
+    {
+      // Only fetch areas in this particular situation (see below)
+      enabled: projects && projects.length === 0,
+    }
+  );
 
   const title = localize(titleMultiloc);
 
