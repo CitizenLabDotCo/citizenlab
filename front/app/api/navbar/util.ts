@@ -13,7 +13,7 @@ export const DEFAULT_PAGE_SLUGS: Record<TDefaultNavbarItemCode, RouteType> = {
 export function getNavbarItemSlug({
   attributes: { code, slug },
   relationships,
-}: INavbarItem): RouteType {
+}: INavbarItem): RouteType | null {
   const hasCorrespondingPage = !!relationships.static_page.data?.id;
   const hasCorrespondingProject = !!relationships.project.data?.id;
 
@@ -33,8 +33,8 @@ export function getNavbarItemSlug({
   }
 
   // This is impossible, but I can't seem to make typescript understand
-  // that. So just returning the homepage here
-  return '/';
+  // that. So just returning the null here
+  return null;
 }
 
 export const MAX_TITLE_LENGTH = 25;

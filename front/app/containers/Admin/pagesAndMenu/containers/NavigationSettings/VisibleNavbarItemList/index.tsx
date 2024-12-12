@@ -59,7 +59,7 @@ const VisibleNavbarItemList = ({
   };
 
   const getViewButtonLink = (navbarItem: Item) => {
-    return getNavbarItemSlug(navbarItem as INavbarItem);
+    return getNavbarItemSlug(navbarItem as INavbarItem) || '/';
   };
 
   const handleClickRemove = (navbarItemId: string) => () => {

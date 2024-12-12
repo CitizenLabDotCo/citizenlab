@@ -38,7 +38,7 @@ describe('<DesktopNavbar />', () => {
 
   it('renders correct number of navbar items', () => {
     render(<DesktopNavbar />);
-    expect(screen.getAllByTestId('desktop-navbar-item')).toHaveLength(6);
+    expect(screen.getAllByTestId('desktop-navbar-item')).toHaveLength(5);
     expect(
       screen.getAllByTestId('admin-publications-navbar-item')
     ).toHaveLength(1);
