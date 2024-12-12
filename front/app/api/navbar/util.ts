@@ -33,7 +33,7 @@ export function getNavbarItemSlug({
   }
 
   // This is impossible, but I can't seem to make typescript understand
-  // that. So just returning the null here
+  // that. So just returning null here
   return null;
 }
 
