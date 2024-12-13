@@ -99,6 +99,7 @@ class WebApi::V1::AreasController < ApplicationController
       .select(
         "areas.id, areas.title_multiloc, COUNT(DISTINCT filtered_projects.id) + #{all_areas_project_count} AS count"
       )
+      .order('count DESC')
       .map { |record| { id: record.id, title_multiloc: record.title_multiloc, count: record.count } }
 
     render json: raw_json({ counts: counts })
