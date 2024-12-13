@@ -3,8 +3,8 @@ import React from 'react';
 import {
   Title,
   Text,
-  useBreakpoint,
   Box,
+  useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -53,21 +53,12 @@ const EmptyState = ({ title, followedAreas }: Props) => {
 
   return (
     <CarrouselContainer>
-      <Box
-        display="flex"
-        flexDirection="row"
-        justifyContent="space-between"
-        mb="16px"
-      >
-        <Title
-          variant="h2"
-          my="0px"
-          ml={isSmallerThanPhone ? DEFAULT_PADDING : undefined}
-        >
+      <Box ml={isSmallerThanPhone ? DEFAULT_PADDING : undefined}>
+        <Title variant="h2" mt="0px" color="tenantText">
           {title}
         </Title>
+        <Text color="textSecondary">{getMessage()}</Text>
       </Box>
-      <Text color="textSecondary">{getMessage()}</Text>
     </CarrouselContainer>
   );
 };

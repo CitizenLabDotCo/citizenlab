@@ -56,35 +56,37 @@ const AreaSelection = ({ title }: Props) => {
       >
         {title}
       </Title>
-      <Text>{formatMessage(messages.selectYourX, { areaTerm })}</Text>
-      <Box>
-        {counts.map((area, i) => (
-          <Box
-            display="inline-block"
-            mr={i === counts.length - 1 ? '0px' : '8px'}
-            mb="8px"
-            key={area.id}
-          >
-            <Button
-              buttonStyle="text"
-              borderColor={colors.textPrimary}
-              textColor={colors.textPrimary}
-              p="4px 12px"
-              processing={isLoading}
-              disabled={isLoading}
-              bgHoverColor={colors.grey200}
-              textHoverColor={colors.black}
-              onClick={() => {
-                addFollower({
-                  followableType: 'areas',
-                  followableId: area.id,
-                });
-              }}
+      <Box ml={isSmallerThanPhone ? DEFAULT_PADDING : undefined}>
+        <Text>{formatMessage(messages.selectYourX, { areaTerm })}</Text>
+        <Box>
+          {counts.map((area, i) => (
+            <Box
+              display="inline-block"
+              mr={i === counts.length - 1 ? '0px' : '8px'}
+              mb="8px"
+              key={area.id}
             >
-              {`${localize(area.title_multiloc)} (${area.count})`}
-            </Button>
-          </Box>
-        ))}
+              <Button
+                buttonStyle="text"
+                borderColor={colors.textPrimary}
+                textColor={colors.textPrimary}
+                p="4px 12px"
+                processing={isLoading}
+                disabled={isLoading}
+                bgHoverColor={colors.grey200}
+                textHoverColor={colors.black}
+                onClick={() => {
+                  addFollower({
+                    followableType: 'areas',
+                    followableId: area.id,
+                  });
+                }}
+              >
+                {`${localize(area.title_multiloc)} (${area.count})`}
+              </Button>
+            </Box>
+          ))}
+        </Box>
       </Box>
     </CarrouselContainer>
   );
