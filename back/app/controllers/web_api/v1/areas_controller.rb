@@ -97,15 +97,15 @@ class WebApi::V1::AreasController < ApplicationController
       .joins("LEFT JOIN (#{projects.select(:id).to_sql}) filtered_projects ON filtered_projects.id = areas_projects.project_id")
       .group('areas.id', 'areas.title_multiloc')
       .select(
-        "areas.id, areas.title_multiloc, COUNT(DISTINCT filtered_projects.id) + #{all_areas_project_count} AS count"
+        'areas.id',
+        'areas.title_multiloc',
+        "COUNT(DISTINCT filtered_projects.id) + #{all_areas_project_count} AS count"
       )
       .order('count DESC')
 
     counts = paginate counts
 
-    counts = counts.map { |record| { id: record.id, title_multiloc: record.title_multiloc, count: record.count } }
-
-    render json: raw_json({ counts: counts })
+    render json: { data: { type: 'counts_of_projects_by_area', counts: counts }, links: page_links(counts) }
   end
 
   private
