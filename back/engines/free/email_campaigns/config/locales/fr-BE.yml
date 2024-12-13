@@ -465,7 +465,7 @@ fr-BE:
       header_message: "Actuellement, le projet est en mode brouillon et n'est pas visible par les utilisateurs. Une fois que vous l'aurez examiné et approuvé, le modérateur pourra le publier."
       cta_review_project: "Examiner le projet"
     project_review_state_change:
-      subject: '"%{projectTitle}" a été approuvée'
+      subject: '"%{projectTitle}" a été approuvé'
       header: '%{reviewerName} a approuvé le projet "%{projectTitle}"'
       header_message: "Le projet est maintenant prêt à être mis en ligne. Vous pouvez le publier dès que vous le souhaitez !"
       cta_go_to_project: "Accédez aux paramètres du projet"
