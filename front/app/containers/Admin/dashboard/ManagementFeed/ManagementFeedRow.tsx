@@ -34,16 +34,19 @@ const ManagementFeedRow = ({ item }: { item: ManagementFeedData }) => {
   const { data: project } = useProjectById(item.attributes.project_id);
 
   const getActionTranslation = () => {
-    switch (item.attributes.action) {
-      case 'created':
-        return formatMessage(messages.created);
-      case 'changed':
-        return formatMessage(messages.changed);
-      case 'deleted':
-        return formatMessage(messages.deleted);
-      default:
-        return item.attributes.action;
-    }
+    const action = item.attributes.action;
+
+    const actionMessages = {
+      created: messages.created,
+      changed: messages.changed,
+      deleted: messages.deleted,
+
+      // Only possible for projects
+      project_review_requested: messages.projectReviewRequested,
+      project_review_approved: messages.projectReviewApproved,
+    };
+
+    return formatMessage(actionMessages[action]) || action;
   };
 
   const getItemTranslation = () => {
@@ -56,9 +59,6 @@ const ManagementFeedRow = ({ item }: { item: ManagementFeedData }) => {
         return formatMessage(messages.folder);
       case 'idea':
         return formatMessage(messages.idea);
-
-      default:
-        return item.attributes.item_type;
     }
   };
 

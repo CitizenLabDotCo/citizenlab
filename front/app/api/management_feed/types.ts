@@ -15,25 +15,41 @@ export type IQueryParameters = {
   sort?: Sort;
 };
 type Sort = '-acted_at' | 'acted_at';
-export interface ManagementFeedData {
+
+type ItemType = 'project' | 'phase' | 'folder' | 'idea';
+
+type CommonAction = 'created' | 'changed' | 'deleted';
+type ProjectSpecificAction =
+  | 'project_review_requested'
+  | 'project_review_approved';
+
+type Relationships = {
+  user: { data: IRelationship | null };
+  item: { data: IRelationship | null };
+};
+
+type BaseAttributes<TItemType, TAction> = {
+  action: TAction;
+  acted_at: string;
+  item_id: string;
+  project_id: string;
+  item_type: TItemType;
+  item_slug: string | null;
+  item_title_multiloc: Multiloc;
+  change: Record<string, any[]> | null;
+  item_exists: boolean;
+};
+
+export type Attributes =
+  | BaseAttributes<ItemType, CommonAction>
+  | BaseAttributes<'project', ProjectSpecificAction>;
+
+export type ManagementFeedData = {
   id: string;
   type: 'activity';
-  attributes: {
-    action: 'created' | 'changed' | 'deleted';
-    acted_at: string;
-    item_id: string;
-    project_id: string;
-    item_type: 'idea' | 'phase' | 'project' | 'folder';
-    item_slug: string | null;
-    item_title_multiloc: Multiloc;
-    change: Record<string, any[]> | null;
-    item_exists: boolean;
-  };
-  relationships: {
-    user: { data: IRelationship | null };
-    item: { data: IRelationship | null };
-  };
-}
+  attributes: Attributes;
+  relationships: Relationships;
+};
 
 export interface ManagementFeed {
   data: ManagementFeedData[];
