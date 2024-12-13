@@ -15,15 +15,15 @@ import messages from './messages';
 
 interface Props {
   onClick: (event: FormEvent) => void;
-  selectedIdeaFilters: InputFiltersProps['selectedIdeaFilters'];
+  ideaQueryParameters: InputFiltersProps['ideaQueryParameters'];
   filtersActive: boolean;
   onReset: () => void;
 }
 
 const BottomBar = memo<Props>(
-  ({ onClick, selectedIdeaFilters, onReset, filtersActive }) => {
+  ({ onClick, ideaQueryParameters, onReset, filtersActive }) => {
     const { data: ideasFilterCounts } =
-      useIdeasFilterCounts(selectedIdeaFilters);
+      useIdeasFilterCounts(ideaQueryParameters);
 
     if (!ideasFilterCounts) return null;
 

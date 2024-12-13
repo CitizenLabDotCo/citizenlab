@@ -338,7 +338,6 @@
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.buttonSuccess": "Success",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.byAreaFilter": "Per zona",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.byTagsFilter": "Per etiqueta/es",
-  "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.contactGovSuccessToAccess": "Displaying projects by tag or area is part of the premium license. Reach out to your GovSuccess Manager to learn more about it.",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.contentEditorTitle": "Content",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.editCustomPagePageTitle": "Editar la pàgina personalitzada",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.linkedProjectsLabel": "Projectes vinculats",
