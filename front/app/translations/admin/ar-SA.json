@@ -2821,6 +2821,7 @@
   "app.modules.navbar.admin.containers.pageSubtitle": "باستطاعة شريط التنقل عرض ما يصل إلى خمس صفحات إضافة إلى الصفحة الرئيسية وصفحات المشاريع. يمكنك إعادة تسمية عناصر قائمة وإعادة ترتيب صفحات جديدة تتضمن المحتوى التابع لك وإضافتها.",
   "containers.Admin.reporting.components.ReportBuilder.Toolbox.ai": "منظمة العفو الدولية",
   "containers.Admin.reporting.components.ReportBuilder.Toolbox.widgets": "الحاجيات",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.dragAiContentInfo": "استخدم الرمز ☰ أدناه لسحب محتوى الذكاء الاصطناعي إلى تقريرك.",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.noAIInsights": "لا توجد رؤى متاحة للذكاء الاصطناعي. يمكنك إنشائها في مشروعك.",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.openProject": "اذهب إلى المشروع",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.question": "سؤال",
