@@ -6,14 +6,14 @@ import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
 
 import tracks from '../../tracks';
-import { Props as InputFiltersProps } from '../InputFilters';
+import { InputFiltersProps } from '../InputFilters';
 
 import messages from './FiltersModal/messages';
 
 const FiltersModal = lazy(() => import('./FiltersModal'));
 
 const ButtonWithFiltersModal = ({
-  selectedIdeaFilters,
+  ideaQueryParameters,
   onClearFilters,
   ...filtersProps
 }: InputFiltersProps) => {
@@ -44,7 +44,7 @@ const ButtonWithFiltersModal = ({
       <Suspense fallback={null}>
         <FiltersModal
           opened={filtersModalOpened}
-          selectedIdeaFilters={selectedIdeaFilters}
+          ideaQueryParameters={ideaQueryParameters}
           onClearFilters={onClearFilters}
           onClose={closeModal}
           {...filtersProps}

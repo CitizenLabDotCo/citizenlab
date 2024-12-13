@@ -23,6 +23,7 @@ const FollowedItems = ({ titleMultiloc }: Props) => {
     endpoint: 'for_followed_item',
   });
   const projects = data?.pages.map((page) => page.data).flat();
+  const title = localize(titleMultiloc);
 
   if (!projects) return null;
   if (projects.length === 0) {
@@ -33,9 +34,10 @@ const FollowedItems = ({ titleMultiloc }: Props) => {
 
   return (
     <ProjectCarrousel
-      title={localize(titleMultiloc)}
+      title={title}
       projects={projects}
       hasMore={!!hasNextPage}
+      className="e2e-followed-items"
       onLoadMore={fetchNextPage}
     />
   );

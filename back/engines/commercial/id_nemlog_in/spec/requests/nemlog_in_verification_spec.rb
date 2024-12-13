@@ -71,7 +71,7 @@ describe IdNemlogIn::NemlogInOmniauth do
   end
 
   it 'successfully verifies a user' do
-    get "/auth/nemlog_in?token=#{token}&random-passthrough-param=somevalue&pathname=/yipie"
+    get "/auth/nemlog_in?token=#{token}&random-passthrough-param=somevalue&verification_pathname=/yipie"
     follow_redirect!
 
     expect(response).to redirect_to('/en/yipie?random-passthrough-param=somevalue&verification_success=true')
@@ -93,7 +93,7 @@ describe IdNemlogIn::NemlogInOmniauth do
   it "successfully verifies a user that hasn't completed her registration" do
     user.update!(registration_completed_at: nil)
 
-    get "/auth/nemlog_in?token=#{token}&pathname=/yipie"
+    get "/auth/nemlog_in?token=#{token}&verification_pathname=/yipie"
     follow_redirect!
 
     expect(response).to redirect_to('/en/yipie?verification_success=true')
@@ -115,7 +115,7 @@ describe IdNemlogIn::NemlogInOmniauth do
       hashed_uid: Verification::VerificationService.new.send(:hashed_uid, saml_auth_response[:uid], 'nemlog_in')
     )
 
-    get "/auth/nemlog_in?token=#{token}&pathname=/some-page"
+    get "/auth/nemlog_in?token=#{token}&verification_pathname=/some-page"
     follow_redirect!
 
     expect(response).to redirect_to('/some-page?verification_error=true&error_code=taken')
@@ -130,7 +130,7 @@ describe IdNemlogIn::NemlogInOmniauth do
     it 'does not verify a user under specified age limit' do
       saml_auth_response.extra.raw_info['https://data.gov.dk/model/core/eid/age'] = ['14']
 
-      get "/auth/nemlog_in?token=#{token}&pathname=/en/some-page"
+      get "/auth/nemlog_in?token=#{token}&verification_pathname=/en/some-page"
       follow_redirect!
 
       expect(response).to redirect_to('/en/some-page?verification_error=true&error_code=not_entitled_under_minimum_age')
@@ -142,7 +142,7 @@ describe IdNemlogIn::NemlogInOmniauth do
     it 'verifies a user over specified age limit' do
       saml_auth_response.extra.raw_info['https://data.gov.dk/model/core/eid/age'] = ['15']
 
-      get "/auth/nemlog_in?token=#{token}&random-passthrough-param=somevalue&pathname=/some-page"
+      get "/auth/nemlog_in?token=#{token}&random-passthrough-param=somevalue&verification_pathname=/some-page"
       follow_redirect!
 
       expect(response).to redirect_to('/en/some-page?random-passthrough-param=somevalue&verification_success=true')
@@ -162,7 +162,7 @@ describe IdNemlogIn::NemlogInOmniauth do
       end
 
       it 'stores the birthyear in the custom field' do
-        get "/auth/nemlog_in?token=#{token}&pathname=/some-page"
+        get "/auth/nemlog_in?token=#{token}&verification_pathname=/some-page"
         follow_redirect!
 
         expect(user.reload.custom_field_values['birthyear']).to eq(1944)
@@ -178,7 +178,7 @@ describe IdNemlogIn::NemlogInOmniauth do
       end
 
       it 'stores the birthyear in the custom field' do
-        get "/auth/nemlog_in?token=#{token}&pathname=/some-page"
+        get "/auth/nemlog_in?token=#{token}&verification_pathname=/some-page"
         follow_redirect!
 
         expect(user.reload.custom_field_values['birthyear']).to be_nil
@@ -193,7 +193,7 @@ describe IdNemlogIn::NemlogInOmniauth do
       get '/auth/nemlog_in?sso_pathname=/en/whatever-page&other_param=123'
       follow_redirect!
 
-      expect(response).to redirect_to('/en/whatever-page?other_param=123')
+      expect(response).to redirect_to('/en/whatever-page?other_param=123&sso_flow=signup&sso_success=true')
       expect(cookies[:cl2_jwt]).to be_present
       jwt_payload = JWT.decode(cookies[:cl2_jwt], nil, false).first
       expect(User.first.id).to eq jwt_payload['sub']
@@ -232,7 +232,7 @@ describe IdNemlogIn::NemlogInOmniauth do
       get '/auth/nemlog_in?sso_pathname=/en/another-page&test_param=test'
       follow_redirect!
 
-      expect(response).to redirect_to('/en/another-page?test_param=test')
+      expect(response).to redirect_to('/en/another-page?test_param=test&sso_flow=signin&sso_success=true')
       expect(cookies[:cl2_jwt]).to be_present
       jwt_payload = JWT.decode(cookies[:cl2_jwt], nil, false).first
       expect(User.first.id).to eq jwt_payload['sub']

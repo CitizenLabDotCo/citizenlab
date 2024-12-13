@@ -298,6 +298,10 @@ export default defineMessages({
     defaultMessage:
       'This number also reflects anonymous survey submissions. Anonymous survey submissions are possible if surveys are open to everyone (see the {accessRightsLink} tab for this project).',
   },
+  offlineVotersTooltip: {
+    id: 'app.containers.Projects.offlineVotersTooltip',
+    defaultMessage: 'This number does not reflect any offline voter counts.',
+  },
   accessRights: {
     id: 'app.containers.Projects.accessRights',
     defaultMessage: 'Access rights',

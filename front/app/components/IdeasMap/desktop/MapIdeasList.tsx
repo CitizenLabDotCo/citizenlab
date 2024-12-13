@@ -10,7 +10,7 @@ import { IdeaSortMethod } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
 import { IdeaSortMethodFallback } from 'api/phases/utils';
 
-import { Props as InputFiltersProps } from 'components/IdeaCards/IdeasWithFiltersSidebar/InputFilters';
+import { InputFiltersProps } from 'components/IdeaCards/IdeasWithFiltersSidebar/InputFilters';
 import FiltersMapView from 'components/IdeaCards/IdeasWithFiltersSidebar/MapView/FiltersMapView';
 
 import { trackEventByName } from 'utils/analytics';
@@ -55,7 +55,7 @@ const MapIdeasList = memo<Props>(
     const [showFilters, setShowFilters] = useState(false);
 
     const {
-      selectedIdeaFilters,
+      ideaQueryParameters,
       onChangeStatus,
       onChangeTopics,
       handleSortOnChange,
@@ -126,7 +126,7 @@ const MapIdeasList = memo<Props>(
         {showFilters && hasInputFilterProps && (
           <>
             <FiltersMapView
-              selectedIdeaFilters={selectedIdeaFilters || {}}
+              ideaQueryParameters={ideaQueryParameters || {}}
               onClearFilters={onClearFilters}
               filtersActive={!!filtersActive}
               ideasFilterCounts={ideasFilterCounts}

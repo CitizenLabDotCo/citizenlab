@@ -116,17 +116,14 @@ class AnonymizeUserService
     "#{email.split('@').first}_#{SecureRandom.uuid[...6]}@anonymized.com"
   end
 
-  def random_avatar_assignment(_first_name, _last_name, gender)
+  def random_avatar_assignment(first_name, last_name, gender)
     gender = mismatch_gender(gender) if rand(30) == 0
 
-    # Some initials avatars, like do_avatar.png are currently broken.
-    # We are no longer using the initials avatars as a temporary fix.
-    # if rand(5) == 0
-    #   { 'remote_avatar_url' => random_face_avatar_url(gender) }
-    # else
-    #   { 'remote_avatar_url' => "#{@initials_avatars_url}#{(first_name[0] + last_name[0]).downcase}_avatar.png" }
-    # end
-    { 'remote_avatar_url' => random_face_avatar_url(gender) }
+    if rand(5) == 0
+      { 'remote_avatar_url' => random_face_avatar_url(gender) }
+    else
+      { 'remote_avatar_url' => "#{@initials_avatars_url}#{(first_name[0] + last_name[0]).downcase}_avatar.png" }
+    end
   rescue StandardError => e
     ErrorReporter.report e
     {}
