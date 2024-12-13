@@ -2821,6 +2821,7 @@
   "app.modules.navbar.admin.containers.pageSubtitle": "Na vašoj navigacijskoj traci može biti prikazano do pet stranica, pored Početne i projektnih stranica. Možete preimenovati stavke izbornika, preurediti i dodati nove stranice s vlastitim sadržajem.",
   "containers.Admin.reporting.components.ReportBuilder.Toolbox.ai": "AI",
   "containers.Admin.reporting.components.ReportBuilder.Toolbox.widgets": "Widgeti",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.dragAiContentInfo": "Upotrijebite ikonu ☰ u nastavku da povučete AI sadržaj u svoje izvješće.",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.noAIInsights": "Nema dostupnih AI uvida. Možete ih izraditi u svom projektu.",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.openProject": "Idi na projekt",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.question": "Pitanje",
