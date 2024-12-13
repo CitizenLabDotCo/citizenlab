@@ -44,6 +44,8 @@ const AreaSelection = ({ title }: Props) => {
 
   const areaTerm = localize(area_term, { fallback }).toLowerCase();
 
+  const { counts } = projectCountsByArea.data.attributes;
+
   return (
     <CarrouselContainer>
       <Title
@@ -56,12 +58,10 @@ const AreaSelection = ({ title }: Props) => {
       </Title>
       <Text>{formatMessage(messages.selectYourX, { areaTerm })}</Text>
       <Box>
-        {projectCountsByArea.data.counts.map((area, i) => (
+        {counts.map((area, i) => (
           <Box
             display="inline-block"
-            mr={
-              i === projectCountsByArea.data.counts.length - 1 ? '0px' : '8px'
-            }
+            mr={i === counts.length - 1 ? '0px' : '8px'}
             mb="8px"
             key={area.id}
           >

@@ -60,10 +60,12 @@ export interface IAreaUpdate {
 export interface ProjectCountsByArea {
   data: {
     type: 'counts_by_area';
-    counts: {
-      id: string;
-      title_multiloc: Multiloc;
-      count: number;
-    }[];
+    attributes: {
+      counts: {
+        id: string;
+        title_multiloc: Multiloc;
+        count: number;
+      }[];
+    };
   };
 }

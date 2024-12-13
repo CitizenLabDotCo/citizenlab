@@ -8,7 +8,7 @@ import { ProjectCountsByArea, AreasKeys } from './types';
 
 const fetchProjectCountsByArea = () => {
   return fetcher<ProjectCountsByArea>({
-    path: `/projects/count_by_area`,
+    path: `/projects/counts_by_area`,
     action: 'get',
   });
 };
