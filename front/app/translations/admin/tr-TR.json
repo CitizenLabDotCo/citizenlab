@@ -2821,6 +2821,7 @@
   "app.modules.navbar.admin.containers.pageSubtitle": "Gezinti çubuğunuz, Ana Sayfa ve projeler sayfalarına ek olarak beş adede kadar sayfa görüntüleyebilir. Menü öğelerini yeniden adlandırabilir, sıralarını değiştirebilir ve kendi içeriğinizin bulunduğu yeni sayfalar ekleyebilirsiniz.",
   "containers.Admin.reporting.components.ReportBuilder.Toolbox.ai": "YAPAY ZEKA",
   "containers.Admin.reporting.components.ReportBuilder.Toolbox.widgets": "Widget'lar",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.dragAiContentInfo": "AI içeriğini raporunuza sürüklemek için aşağıdaki ☰ simgesini kullanın.",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.noAIInsights": "Kullanılabilir yapay zeka içgörüsü yoktur. Bunları projenizde oluşturabilirsiniz.",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.openProject": "Projeye git",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.question": "Soru",
