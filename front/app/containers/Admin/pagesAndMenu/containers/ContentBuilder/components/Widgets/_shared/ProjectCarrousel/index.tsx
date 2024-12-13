@@ -114,8 +114,9 @@ const ProjectCarrousel = ({
     const move = (e) => {
       e.preventDefault();
 
-      if (!mouseDown || startX === undefined || scrollLeft === undefined)
+      if (!mouseDown || startX === undefined || scrollLeft === undefined) {
         return;
+      }
 
       const x = e.pageX - scrollContainerRef.offsetLeft;
       const scroll = x - startX;
