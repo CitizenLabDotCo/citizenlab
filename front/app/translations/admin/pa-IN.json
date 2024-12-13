@@ -2821,6 +2821,7 @@
   "app.modules.navbar.admin.containers.pageSubtitle": "ਤੁਹਾਡੀ ਨੈਵੀਗੇਸ਼ਨ ਪੱਟੀ ਹੋਮ ਅਤੇ ਪ੍ਰੋਜੈਕਟ ਪੰਨਿਆਂ ਤੋਂ ਇਲਾਵਾ ਪੰਜ ਪੰਨਿਆਂ ਤੱਕ ਪ੍ਰਦਰਸ਼ਿਤ ਕਰ ਸਕਦੀ ਹੈ। ਤੁਸੀਂ ਮੀਨੂ ਆਈਟਮਾਂ ਦਾ ਨਾਮ ਬਦਲ ਸਕਦੇ ਹੋ, ਮੁੜ-ਆਰਡਰ ਕਰ ਸਕਦੇ ਹੋ ਅਤੇ ਆਪਣੀ ਖੁਦ ਦੀ ਸਮੱਗਰੀ ਨਾਲ ਨਵੇਂ ਪੰਨਿਆਂ ਨੂੰ ਜੋੜ ਸਕਦੇ ਹੋ।",
   "containers.Admin.reporting.components.ReportBuilder.Toolbox.ai": "ਏ.ਆਈ",
   "containers.Admin.reporting.components.ReportBuilder.Toolbox.widgets": "ਵਿਜੇਟਸ",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.dragAiContentInfo": "AI ਸਮੱਗਰੀ ਨੂੰ ਆਪਣੀ ਰਿਪੋਰਟ ਵਿੱਚ ਖਿੱਚਣ ਲਈ ਹੇਠਾਂ ☰ ਆਈਕਨ ਦੀ ਵਰਤੋਂ ਕਰੋ।",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.noAIInsights": "ਇੱਥੇ ਕੋਈ AI ਇਨਸਾਈਟਸ ਉਪਲਬਧ ਨਹੀਂ ਹਨ। ਤੁਸੀਂ ਉਹਨਾਂ ਨੂੰ ਆਪਣੇ ਪ੍ਰੋਜੈਕਟ ਵਿੱਚ ਬਣਾ ਸਕਦੇ ਹੋ।",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.openProject": "ਪ੍ਰੋਜੈਕਟ 'ਤੇ ਜਾਓ",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.question": "ਸਵਾਲ",
