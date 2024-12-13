@@ -35,6 +35,7 @@ import tracks from '../tracks';
 
 import ButtonWithFiltersModal from './ButtonWithFiltersModal';
 import ContentRight from './ContentRight';
+import { InputFiltersProps } from './InputFilters';
 import { getInputCountMessage } from './utils';
 
 export const gapWidth = 35;
@@ -207,6 +208,19 @@ const IdeasWithFiltersSidebar = ({
   const showInputFilterSidebar =
     biggerThanLargeTablet && selectedView === 'card';
 
+  const inputFiltersProps: InputFiltersProps = {
+    filtersActive,
+    ideasFilterCounts,
+    numberOfSearchResults: ideasCount,
+    selectedIdeaFilters: ideaQueryParameters,
+    onClearFilters: clearFilters,
+    onSearch: handleSearchOnChange,
+    onChangeStatus: handleStatusOnChange,
+    onChangeTopics: handleTopicsOnChange,
+    handleSortOnChange,
+    phaseId,
+  };
+
   return (
     <Container id="e2e-ideas-container">
       <Box
@@ -241,17 +255,7 @@ const IdeasWithFiltersSidebar = ({
 
       {list && (
         <>
-          <ButtonWithFiltersModal
-            selectedIdeaFilters={ideaQueryParameters}
-            filtersActive={filtersActive}
-            ideasFilterCounts={ideasFilterCounts}
-            numberOfSearchResults={list.length}
-            onClearFilters={clearFilters}
-            onSearch={handleSearchOnChange}
-            onChangeStatus={handleStatusOnChange}
-            onChangeTopics={handleTopicsOnChange}
-            handleSortOnChange={handleSortOnChange}
-          />
+          <ButtonWithFiltersModal {...inputFiltersProps} />
           {/* 
             If we have an inputTerm (are on the project page), we don't need this because the number of results is displayed next to the heading (see above). This fallback is used on the /ideas page, where we have no inputTerm. 
             TO DO: refactor this component so we can add it to the page instead to this general component.
@@ -285,33 +289,11 @@ const IdeasWithFiltersSidebar = ({
                 hasFilterSidebar={true}
                 phaseId={phaseId}
                 ideaMarkers={ideaMarkers}
-                inputFiltersProps={{
-                  filtersActive,
-                  ideasFilterCounts,
-                  numberOfSearchResults: ideasCount,
-                  selectedIdeaFilters: ideaQueryParameters,
-                  onClearFilters: clearFilters,
-                  onSearch: handleSearchOnChange,
-                  onChangeStatus: handleStatusOnChange,
-                  onChangeTopics: handleTopicsOnChange,
-                  handleSortOnChange,
-                }}
+                inputFiltersProps={inputFiltersProps}
               />
             </ContentLeft>
 
-            {showInputFilterSidebar && (
-              <ContentRight
-                ideaQueryParameters={ideaQueryParameters}
-                filtersActive={filtersActive}
-                ideasFilterCounts={ideasFilterCounts}
-                numberOfSearchResults={list.length}
-                onClearFilters={clearFilters}
-                onSearch={handleSearchOnChange}
-                onChangeStatus={handleStatusOnChange}
-                onChangeTopics={handleTopicsOnChange}
-                onChangeSort={handleSortOnChange}
-              />
-            )}
+            {showInputFilterSidebar && <ContentRight {...inputFiltersProps} />}
           </Box>
         </>
       )}

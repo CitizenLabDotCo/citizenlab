@@ -7,7 +7,7 @@ class OmniauthCallbackController < ApplicationController
   def create
     if auth_method && verification_method
       # If token is present, the user is already logged in, which means they try to verify not authenticate.
-      if request.env['omniauth.params']['token'].present? && auth_method.verification_prioritized?
+      if omniauth_params['token'].present? && auth_method.verification_prioritized?
         # We need it only for providers that support both auth and ver except FC.
         # For FC, we never verify, only authenticate (even when user clicks "verify"). Not sure why.
         verification_callback(verification_method)
@@ -37,6 +37,10 @@ class OmniauthCallbackController < ApplicationController
 
   private
 
+  def omniauth_params
+    request.env['omniauth.params']
+  end
+
   def find_existing_user(authver_method, auth, user_attrs, verify:)
     user = User.find_by_cimail(user_attrs.fetch(:email)) if user_attrs.key?(:email) # some providers don't return email
     return user if user
@@ -51,7 +55,6 @@ class OmniauthCallbackController < ApplicationController
 
   def auth_callback(verify: false, authver_method: nil)
     auth = request.env['omniauth.auth']
-    omniauth_params = request.env['omniauth.params']
     user_attrs = authver_method.profile_to_user_attrs(auth)
 
     @identity = Identity.find_or_build_with_omniauth(auth, authver_method)
@@ -127,10 +130,10 @@ class OmniauthCallbackController < ApplicationController
     end
   end
 
-  # NOTE: sso_flow params corrected as sometimes an sso user may start from signin but actually signup and vice versa
   def signin_success_redirect
     omniauth_params = filter_omniauth_params
-    omniauth_params['sso_flow'] = 'signin' if omniauth_params['sso_flow']
+    omniauth_params['sso_flow'] = 'signin'
+    omniauth_params['sso_success'] = true
     redirect_to(
       add_uri_params(
         Frontend::UrlService.new.sso_return_url(pathname: sso_redirect_path, locale: Locale.new(@user.locale)),
@@ -141,7 +144,8 @@ class OmniauthCallbackController < ApplicationController
 
   def signup_success_redirect
     omniauth_params = filter_omniauth_params
-    omniauth_params['sso_flow'] = 'signup' if omniauth_params['sso_flow']
+    omniauth_params['sso_flow'] = 'signup'
+    omniauth_params['sso_success'] = true
     redirect_to(
       add_uri_params(
         Frontend::UrlService.new.sso_return_url(pathname: sso_redirect_path, locale: Locale.new(@user.locale)),
@@ -161,12 +165,12 @@ class OmniauthCallbackController < ApplicationController
   end
 
   def sso_redirect_path
-    request.env['omniauth.params']&.dig('sso_pathname') || '/'
+    omniauth_params&.dig('sso_pathname') || '/'
   end
 
   # Reject any parameters we don't need to be passed to the frontend in the URL
   def filter_omniauth_params
-    request.env['omniauth.params']&.except('token', 'pathname', 'sso_pathname') || {}
+    omniauth_params&.except('token', 'verification_pathname', 'sso_pathname') || {}
   end
 
   def add_uri_params(uri, params = {})
