@@ -56,3 +56,14 @@ export interface IAreaUpdate {
   ordering?: number;
   include_in_onboarding?: boolean;
 }
+
+export interface ProjectCountsByArea {
+  data: {
+    type: 'counts_by_area';
+    counts: {
+      id: string;
+      title_multiloc: Multiloc;
+      count: number;
+    }[];
+  };
+}
