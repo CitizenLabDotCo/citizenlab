@@ -3,6 +3,7 @@ import React from 'react';
 import { Multiloc } from 'typings';
 
 import useAreas from 'api/areas/useAreas';
+import useAuthUser from 'api/me/useAuthUser';
 import useProjectsMini from 'api/projects_mini/useProjectsMini';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -26,6 +27,7 @@ const Areas = ({ titleMultiloc }: Props) => {
   const { data, hasNextPage, fetchNextPage } = useProjectsMini({
     endpoint: 'for_areas',
   });
+  const { data: authUser } = useAuthUser();
 
   const projects = data?.pages.map((page) => page.data).flat();
 
@@ -42,7 +44,7 @@ const Areas = ({ titleMultiloc }: Props) => {
 
   const title = localize(titleMultiloc);
 
-  if (!followEnabled) return null;
+  if (!followEnabled || !authUser) return null;
 
   // If no projects yet, show loading skeleton
   if (!projects) {
@@ -55,7 +57,7 @@ const Areas = ({ titleMultiloc }: Props) => {
     if (!areas) return <Skeleton title={title} />;
 
     const followedAreaIds = areas.data
-      .filter((area) => !!area.relationships.user_follower.data?.id)
+      .filter((area) => !!area.relationships.user_follower?.data?.id)
       .map((area) => area.id);
 
     const hasFollowPreferences = followedAreaIds.length > 0;

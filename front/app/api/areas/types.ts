@@ -27,10 +27,10 @@ export interface IAreaData {
     include_in_onboarding: boolean;
   };
   relationships: {
-    static_pages: {
+    static_pages?: {
       data: IRelationship[];
     };
-    user_follower: {
+    user_follower?: {
       data: IRelationship | null;
     };
   };

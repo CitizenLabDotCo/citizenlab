@@ -27,7 +27,6 @@ import Button from 'components/UI/Button';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
-import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../messages';
 
@@ -133,13 +132,14 @@ const AreaListRow = ({
 }: AreaListRowProps) => {
   const localize = useLocalize();
 
-  const staticPageIds = item.relationships.static_pages.data.map(
+  const staticPageIds = item.relationships.static_pages?.data.map(
     (page) => page.id
   );
   const { data: pages } = useCustomPages();
 
-  const staticPages =
-    pages?.data.filter((page) => staticPageIds.includes(page.id)) || [];
+  const staticPages = staticPageIds
+    ? pages?.data.filter((page) => staticPageIds.includes(page.id)) || []
+    : [];
 
   return (
     <SortableRow
@@ -152,7 +152,7 @@ const AreaListRow = ({
       <TextCell className="expand">
         <T value={item.attributes.title_multiloc} />
       </TextCell>
-      {staticPageIds.length > 0 && !isNilOrError(staticPages) && (
+      {staticPageIds && staticPageIds.length > 0 && (
         <Box>
           <IconTooltip
             iconColor={colors.error}

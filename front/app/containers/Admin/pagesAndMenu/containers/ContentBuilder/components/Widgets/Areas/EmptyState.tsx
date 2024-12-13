@@ -33,7 +33,7 @@ const EmptyState = ({ title, areas }: Props) => {
   const { data: appConfiguration } = useAppConfiguration();
 
   const followedAreas = areas.data.filter(
-    (area) => !!area.relationships.user_follower.data?.id
+    (area) => !!area.relationships.user_follower?.data?.id
   );
 
   if (followedAreas.length === 0) return null;
