@@ -15,7 +15,7 @@ import LanguageSelector from '../../LanguageSelector';
 import NotificationMenu from '../../NotificationMenu';
 import UserMenu from '../../UserMenu';
 
-import ButtonWithFullMobileNavMenu from './MobileNavWithLaunchButton';
+import ButtonWithFullMobileNavMenu from './ButtonWithFullMobileNavMenu';
 
 const RightContainer = styled(Box)`
   display: flex;
