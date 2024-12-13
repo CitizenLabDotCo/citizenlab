@@ -6,7 +6,7 @@ import tracks from '../../../../tracks';
 import ShowFullMenuButton from '../ShowFullMenuButton';
 const FullMobileNavMenu = lazy(() => import('../FullMobileNavMenu'));
 
-const MobileNavWithLaunchButton = () => {
+const ButtonWithFullMobileNavMenu = () => {
   const [isFullMenuOpened, setIsFullMenuOpened] = useState(false);
 
   const toggleFullMenu = () => {
@@ -31,4 +31,4 @@ const MobileNavWithLaunchButton = () => {
   );
 };
 
-export default MobileNavWithLaunchButton;
+export default ButtonWithFullMobileNavMenu;

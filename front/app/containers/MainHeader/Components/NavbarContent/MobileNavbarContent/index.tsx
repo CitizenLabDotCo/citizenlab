@@ -15,7 +15,7 @@ import LanguageSelector from '../../LanguageSelector';
 import NotificationMenu from '../../NotificationMenu';
 import UserMenu from '../../UserMenu';
 
-import MobileNavWithLaunchButton from './MobileNavWithLaunchButton';
+import ButtonWithFullMobileNavMenu from './MobileNavWithLaunchButton';
 
 const RightContainer = styled(Box)`
   display: flex;
@@ -111,7 +111,7 @@ const MobileNavbarContent = () => {
               </>
             )}
             <NavItem>
-              <MobileNavWithLaunchButton />
+              <ButtonWithFullMobileNavMenu />
             </NavItem>
           </>
         )}
