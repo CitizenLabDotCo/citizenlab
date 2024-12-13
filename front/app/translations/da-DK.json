@@ -488,7 +488,7 @@
   "app.components.UserName.authorWithNoNameTooltip": "Dit navn er blevet autogenereret, fordi du ikke har indtastet dit navn. Opdater venligst din profil, hvis du ønsker at ændre det.",
   "app.components.UserName.deletedUser": "ukendt forfatter",
   "app.components.UserName.verified": "Verificeret",
-  "app.components.VerificationModal.verifyAuth0": "Bekræft med NemID",
+  "app.components.VerificationModal.verifyAuth0": "Bekræft med MitID",
   "app.components.VerificationModal.verifyBOSA": "Verificer med itsme eller eID",
   "app.components.VerificationModal.verifyBosaFas": "Verificer med itsme eller eID",
   "app.components.VerificationModal.verifyClaveUnica": "Verificer med Clave Unica",
