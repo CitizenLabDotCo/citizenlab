@@ -50,6 +50,7 @@ const Spotlight = ({
       w="100%"
       display="flex"
       justifyContent="center"
+      className="e2e-spotlight-widget"
     >
       <Box
         w="100%"

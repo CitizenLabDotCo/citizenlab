@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { FontWeight } from 'component-library/utils/typings';
 import styled, { css } from 'styled-components';
 
 import {
@@ -8,6 +9,7 @@ import {
   fontSizes,
   isRtl,
   Color,
+  getFontWeightCSS,
 } from '../../utils/styleUtils';
 import Box, {
   BoxMarginProps,
@@ -24,7 +26,6 @@ import Box, {
 
 type Variant = 'bodyL' | 'bodyM' | 'bodyS' | 'bodyXs';
 type FontSize = keyof typeof fontSizes;
-type FontWeight = 'bold' | 'normal';
 type FontStyle = 'italic' | 'normal';
 type TextDecoration = string;
 type TextOverflow = 'ellipsis' | 'clip';
@@ -85,7 +86,7 @@ const StyledText = styled(Box)<BoxProps & TextProps>`
     theme,
   }: TextProps & { theme: MainThemeProps }) => css`
     color: ${color ? theme.colors[color] : colors.textPrimary};
-    font-weight: ${fontWeight ? fontWeight : 'normal'};
+    font-weight: ${getFontWeightCSS(fontWeight || 'normal')};
     font-style: ${fontStyle ? fontStyle : 'normal'};
     text-decoration: ${textDecoration ? textDecoration : 'none'};
     text-overflow: ${textOverflow ? textOverflow : 'clip'};

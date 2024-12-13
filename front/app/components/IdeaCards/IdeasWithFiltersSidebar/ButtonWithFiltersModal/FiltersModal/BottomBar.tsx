@@ -8,7 +8,7 @@ import Button from 'components/UI/Button';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import { Props as InputFiltersProps } from '../../InputFilters';
+import { InputFiltersProps } from '../../InputFilters';
 import ResetFiltersButton from '../../ResetFiltersButton';
 
 import messages from './messages';
