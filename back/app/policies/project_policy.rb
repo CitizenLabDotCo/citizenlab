@@ -88,10 +88,6 @@ class ProjectPolicy < ApplicationPolicy
     index_xlsx?
   end
 
-  def counts_by_area?
-    true
-  end
-
   def create?
     return false unless active?
     return true if admin?

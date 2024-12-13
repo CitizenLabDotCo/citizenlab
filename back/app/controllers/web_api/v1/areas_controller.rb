@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 class WebApi::V1::AreasController < ApplicationController
-  before_action :set_area, except: %i[index create]
+  before_action :set_area, except: %i[index create counts_of_projects_by_area]
   before_action :set_side_effects_service, only: %i[create update destroy]
-  skip_before_action :authenticate_user, only: %i[index show]
+  skip_before_action :authenticate_user, only: %i[index show counts_of_projects_by_area]
 
   def index
     areas_filterer = AreasFilteringService.new
@@ -84,6 +84,24 @@ class WebApi::V1::AreasController < ApplicationController
     else
       render json: { errors: @area.errors.details }, status: :unprocessable_entity
     end
+  end
+
+  def counts_of_projects_by_area
+    authorize :area, :counts_of_projects_by_area?
+
+    projects = policy_scope(Project).not_draft
+    all_areas_project_count = projects.where(include_all_areas: true).count
+
+    counts = Area
+      .left_joins(:areas_projects)
+      .joins("LEFT JOIN (#{projects.select(:id).to_sql}) filtered_projects ON filtered_projects.id = areas_projects.project_id")
+      .group('areas.id', 'areas.title_multiloc')
+      .select(
+        "areas.id, areas.title_multiloc, COUNT(DISTINCT filtered_projects.id) + #{all_areas_project_count} AS count"
+      )
+      .map { |record| { id: record.id, title_multiloc: record.title_multiloc, count: record.count } }
+
+    render json: raw_json({ counts: counts })
   end
 
   private

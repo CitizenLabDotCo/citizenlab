@@ -23,6 +23,10 @@ class AreaPolicy < ApplicationPolicy
     update?
   end
 
+  def counts_of_projects_by_area?
+    true
+  end
+
   def reorder?
     update?
   end

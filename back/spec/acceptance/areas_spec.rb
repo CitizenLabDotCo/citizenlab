@@ -178,4 +178,56 @@ resource 'Areas' do
       it_behaves_like 'publication filtering model', 'area'
     end
   end
+
+  get 'web_api/v1/areas/counts_of_projects_by_area' do
+    before do
+      user = create(:user)
+      header_token_for(user)
+    end
+
+    let!(:area1) { create(:area, title_multiloc: { en: 'area 1' }) }
+    let!(:area2) { create(:area, title_multiloc: { en: 'area 2' }) }
+    let!(:area3) { create(:area, title_multiloc: { en: 'area 3' }) }
+
+    let!(:project_for_area1) { create(:project) }
+    let!(:project_for_areas1and2) { create(:project, areas: [area1, area2]) }
+
+    let!(:visible_project_for_all_areas) { create(:project, include_all_areas: true) }
+    let!(:_invisible_project_for_all_areas) { create(:project, include_all_areas: true, visible_to: 'admins') }
+
+    example_request 'it returns the expected counts, with the respective area IDs and title_multilocs' do
+      assert_status 200
+
+      json_response = json_parse(response_body)
+
+      expect(json_response[:data]).to include(
+        :type => 'counts_of_projects_by_area',
+        :attributes => {
+          :counts => match_array([
+            { :id => area1.id, :title_multiloc => { :en => 'area 1' }, :count => 2 },
+            { :id => area2.id, :title_multiloc => { :en => 'area 2' }, :count => 2 },
+            { :id => area3.id, :title_multiloc => { :en => 'area 3' }, :count => 1 }
+          ])
+        }
+      )
+    end
+
+    example 'returns zero counts for areas with no projects', document: false do
+      visible_project_for_all_areas.destroy!
+
+      do_request
+      json_response = json_parse(response_body)
+      expect(json_response[:data][:attributes][:counts].pluck(:count)).to match_array([1, 1, 0])
+    end
+
+    example 'works even when there are no visible projects', document: false do
+      project_for_area1.destroy!
+      project_for_areas1and2.destroy!
+      visible_project_for_all_areas.destroy!
+
+      do_request
+      json_response = json_parse(response_body)
+      expect(json_response[:data][:attributes][:counts].pluck(:count)).to match_array([0, 0, 0])
+    end
+  end
 end
