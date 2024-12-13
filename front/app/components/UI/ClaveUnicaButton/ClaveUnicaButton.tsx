@@ -56,7 +56,7 @@ const ClaveUnicaButtonLabel = styled.span`
 
 const HelperText = styled.div`
   display: inline;
-  margin-left: 10px;
+  margin-right: 15px;
   color: ${(props) => props.theme.colors.tenantText};
 `;
 
@@ -69,6 +69,7 @@ interface Props {
 const ClaveUnicaButton = ({ disabled, message, onClick }: Props) => {
   return (
     <div>
+      {message && <HelperText>{message}</HelperText>}
       <ButtonWrapper
         onClick={disabled ? undefined : onClick}
         id="e2e-clave_unica-button"
@@ -79,7 +80,6 @@ const ClaveUnicaButton = ({ disabled, message, onClick }: Props) => {
         according to the guideline https://drive.google.com/file/d/1-aBGu5XEjHD1LYcqOZP_mUg4ekFLDv6v/view */}
         <ClaveUnicaButtonLabel>Iniciar sesión</ClaveUnicaButtonLabel>
       </ButtonWrapper>
-      {message && <HelperText>{message}</HelperText>}
     </div>
   );
 };
