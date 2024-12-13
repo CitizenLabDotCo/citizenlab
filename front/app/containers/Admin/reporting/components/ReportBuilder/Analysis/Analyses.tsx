@@ -71,7 +71,7 @@ const Analyses = ({
   return (
     <div>
       {phaseId && hasRelevantAnalyses && (
-        <Box mb="12px">
+        <Box mb="16px">
           <Warning>
             <Text p="0px" m="0px" fontSize="s" color="teal700">
               {formatMessage(messages.dragAiContentInfo)}
