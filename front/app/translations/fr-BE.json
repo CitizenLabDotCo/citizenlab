@@ -994,7 +994,7 @@
   "app.containers.AdminPage.Users.UsersGroup.atLeastOneRuleError": "Fournir au moins une règle",
   "app.containers.AdminPage.Users.UsersGroup.rulesError": "Certaines conditions sont incomplètes",
   "app.containers.AdminPage.Users.UsersGroup.saveGroup": "Enregistrer le groupe",
-  "app.containers.AdminPage.Users.UsersGroup.smartGroupsAvailability1": "La configuration des groupes intelligents ne fait pas partie de votre licence actuelle. Contactez votre GovSuccess Manager pour en savoir plus.",
+  "app.containers.AdminPage.Users.UsersGroup.smartGroupsAvailability1": "Les groupes automatiques ne sont pas inclus dans votre licence actuelle. Contactez votre Spécialiste en participation pour en savoir plus.",
   "app.containers.AdminPage.Users.UsersGroup.titleFieldEmptyError": "Fournir un nom de groupe",
   "app.containers.AdminPage.Users.UsersGroup.verificationDisabled": "La vérification est désactivée pour votre plate-forme, supprimez la règle de vérification ou contactez le support technique.",
   "app.containers.App.appMetaDescription": "Bienvenue sur la plateforme de participation en ligne de {orgName}. \nExplorez les projets locaux et participez à la discussion !",
