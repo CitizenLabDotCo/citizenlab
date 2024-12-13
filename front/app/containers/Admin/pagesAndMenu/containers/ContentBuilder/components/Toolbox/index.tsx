@@ -141,7 +141,10 @@ const HomepageBuilderToolbox = ({
         <DraggableElement
           id="e2e-draggable-spotlight"
           component={
-            <Spotlight buttonTextMultiloc={toMultiloc(buttonTextDefault)} />
+            <Spotlight
+              buttonTextMultiloc={toMultiloc(buttonTextDefault)}
+              hideAvatars={false}
+            />
           }
           icon="flash"
           label={formatMessage(spotlightTitle)}
