@@ -108,15 +108,12 @@ class WebApi::V1::ProjectsController < ApplicationController
   end
 
   # For use with 'Areas or topics' homepage widget. Uses ProjectMiniSerializer.
-  # Returns all non-draft projects that are visible to user, for the selected areas.
+  # If :areas param: Returns all non-draft projects that are visible to user, for the selected areas.
+  # Else: Returns all non-draft projects that are visible to user, for the areas user follows or for all-areas.
   # Ordered by created_at, newest first.
   def index_for_areas
     projects = policy_scope(Project)
-    projects = projects.not_draft
-    projects = projects
-      .where(include_all_areas: true)
-      .or(projects.with_some_areas(params[:areas]))
-      .order(created_at: :desc)
+    projects = ProjectsFinderService.new(projects, current_user, params).projects_for_areas
 
     @projects = paginate projects
     @projects = @projects.includes(:project_images, phases: [:report, { permissions: [:groups] }])
