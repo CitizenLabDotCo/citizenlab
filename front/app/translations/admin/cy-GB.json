@@ -2821,6 +2821,7 @@
   "app.modules.navbar.admin.containers.pageSubtitle": "Gall eich bar llywio arddangos hyd at bum tudalen yn ogystal â'r tudalennau Cartref a phrosiectau. Gallwch ailenwi eitemau dewislen, ail-archebu ac ychwanegu tudalennau newydd gyda'ch cynnwys eich hun.",
   "containers.Admin.reporting.components.ReportBuilder.Toolbox.ai": "AI",
   "containers.Admin.reporting.components.ReportBuilder.Toolbox.widgets": "Teclynnau",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.dragAiContentInfo": "Defnyddiwch yr eicon ☰ isod i lusgo cynnwys AI i'ch adroddiad.",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.noAIInsights": "Nid oes unrhyw fewnwelediadau AI ar gael. Gallwch eu creu yn eich prosiect.",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.openProject": "Ewch i'r prosiect",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.question": "Cwestiwn",
