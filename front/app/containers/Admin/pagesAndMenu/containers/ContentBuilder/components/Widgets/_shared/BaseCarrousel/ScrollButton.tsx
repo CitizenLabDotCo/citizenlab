@@ -6,9 +6,17 @@ interface Props {
   variant: 'left' | 'right';
   top: string;
   onClick: () => void;
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
 }
 
-const ScrollButton = ({ variant, top, onClick }: Props) => {
+const ScrollButton = ({
+  variant,
+  top,
+  onClick,
+  onMouseEnter,
+  onMouseLeave,
+}: Props) => {
   return (
     <Box
       as="button"
@@ -29,6 +37,8 @@ const ScrollButton = ({ variant, top, onClick }: Props) => {
         onClick();
       }}
       aria-hidden="true"
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
     >
       <Icon name={`arrow-${variant}`} fill={colors.grey700} />
     </Box>

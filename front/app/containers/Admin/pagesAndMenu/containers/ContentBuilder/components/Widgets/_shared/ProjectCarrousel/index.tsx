@@ -44,6 +44,19 @@ const ProjectCarrousel = ({
   >(undefined);
   const [showPreviousButton, setShowPreviousButton] = useState(false);
   const [showNextButton, setShowNextButton] = useState(false);
+
+  const [mouseOverPreviousButton, setMouseOverPreviousButton] = useState(false);
+  const [
+    previousButtonShouldDisappearAfterMouseMove,
+    setPreviousButtonShouldDisappearAfterMouseMove,
+  ] = useState(false);
+
+  const [mouseOverNextButton, setMouseOverNextButton] = useState(false);
+  const [
+    nextButtonShouldDisappearAfterMouseMove,
+    setNextButtonShouldDisappearAfterMouseMove,
+  ] = useState(false);
+
   const [blockLoadMore, setBlockLoadMore] = useState(false);
 
   const isSmallerThanPhone = useBreakpoint('phone');
@@ -72,10 +85,19 @@ const ProjectCarrousel = ({
         hasMore
       );
 
-      setShowNextButton(showNextButton);
-      setShowPreviousButton(showPreviousButton);
+      if (!mouseOverPreviousButton) {
+        setShowPreviousButton(showPreviousButton);
+      } else {
+        setPreviousButtonShouldDisappearAfterMouseMove(true);
+      }
+
+      if (!mouseOverNextButton) {
+        setShowNextButton(showNextButton);
+      } else {
+        setNextButtonShouldDisappearAfterMouseMove(true);
+      }
     },
-    [isSmallerThanPhone]
+    [isSmallerThanPhone, mouseOverPreviousButton, mouseOverNextButton]
   );
 
   // Set button visiblity on scroll
@@ -148,6 +170,14 @@ const ProjectCarrousel = ({
                 if (!scrollContainerRef) return;
                 scrollContainerRef.scrollLeft -= CARD_WIDTH + CARD_GAP;
               }}
+              onMouseEnter={() => setMouseOverPreviousButton(true)}
+              onMouseLeave={() => {
+                setMouseOverPreviousButton(false);
+                if (previousButtonShouldDisappearAfterMouseMove) {
+                  setShowPreviousButton(false);
+                  setPreviousButtonShouldDisappearAfterMouseMove(false);
+                }
+              }}
             />
             <Gradient variant="left" />
           </>
@@ -160,6 +190,14 @@ const ProjectCarrousel = ({
               onClick={() => {
                 if (!scrollContainerRef) return;
                 scrollContainerRef.scrollLeft += CARD_WIDTH + CARD_GAP;
+              }}
+              onMouseEnter={() => setMouseOverNextButton(true)}
+              onMouseLeave={() => {
+                setMouseOverNextButton(false);
+                if (nextButtonShouldDisappearAfterMouseMove) {
+                  setShowNextButton(false);
+                  setNextButtonShouldDisappearAfterMouseMove(false);
+                }
               }}
             />
             <Gradient variant="right" />
