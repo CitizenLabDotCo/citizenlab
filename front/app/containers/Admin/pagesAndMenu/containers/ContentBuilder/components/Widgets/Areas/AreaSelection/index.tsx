@@ -11,7 +11,7 @@ import {
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { coreSettings } from 'api/app_configuration/utils';
-import { IAreas } from 'api/areas/types';
+import useProjectCountsByArea from 'api/areas/useProjectCountsByArea';
 import useAddFollower from 'api/follow_unfollow/useAddFollower';
 
 import useLocalize from 'hooks/useLocalize';
@@ -26,18 +26,18 @@ import messages from '../messages';
 
 interface Props {
   title: string;
-  areas: IAreas;
 }
 
-const AreaSelection = ({ title, areas }: Props) => {
+const AreaSelection = ({ title }: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const isSmallerThanPhone = useBreakpoint('phone');
   const { data: appConfiguration } = useAppConfiguration();
+  const { data: projectCountsByArea } = useProjectCountsByArea();
 
   const { mutate: addFollower, isLoading } = useAddFollower();
 
-  if (!appConfiguration) return null;
+  if (!appConfiguration || !projectCountsByArea) return null;
 
   const { area_term } = coreSettings(appConfiguration.data);
   const fallback = formatMessage(projectAndFolderCardsMessages.areaTitle);
@@ -56,10 +56,12 @@ const AreaSelection = ({ title, areas }: Props) => {
       </Title>
       <Text>{formatMessage(messages.selectYourX, { areaTerm })}</Text>
       <Box>
-        {areas.data.map((area, i) => (
+        {projectCountsByArea.data.counts.map((area, i) => (
           <Box
             display="inline-block"
-            mr={i === areas.data.length - 1 ? '0px' : '8px'}
+            mr={
+              i === projectCountsByArea.data.counts.length - 1 ? '0px' : '8px'
+            }
             mb="8px"
             key={area.id}
           >
@@ -79,7 +81,7 @@ const AreaSelection = ({ title, areas }: Props) => {
                 });
               }}
             >
-              {localize(area.attributes.title_multiloc)}
+              {`${localize(area.title_multiloc)} (${area.count})`}
             </Button>
           </Box>
         ))}

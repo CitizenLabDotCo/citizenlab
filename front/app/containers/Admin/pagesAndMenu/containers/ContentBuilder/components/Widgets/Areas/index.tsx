@@ -56,21 +56,21 @@ const Areas = ({ titleMultiloc }: Props) => {
     // Wait for areas to load
     if (!areas) return <Skeleton title={title} />;
 
-    const followedAreaIds = areas.data
-      .filter((area) => !!area.relationships.user_follower?.data?.id)
-      .map((area) => area.id);
+    const followedAreas = areas.data.filter(
+      (area) => !!area.relationships.user_follower?.data?.id
+    );
 
-    const hasFollowPreferences = followedAreaIds.length > 0;
+    const hasFollowPreferences = followedAreas.length > 0;
 
     // If the user has no follow preferences yet,
     // we render an interface to select areas to follow
     if (!hasFollowPreferences) {
-      return <AreaSelection title={title} areas={areas} />;
+      return <AreaSelection title={title} />;
     }
 
     // If, even after indicating follow preferences,
     // there are no projects, we show the empty state.
-    return <EmptyState title={title} areas={areas} />;
+    return <EmptyState title={title} followedAreas={followedAreas} />;
   }
 
   return (
