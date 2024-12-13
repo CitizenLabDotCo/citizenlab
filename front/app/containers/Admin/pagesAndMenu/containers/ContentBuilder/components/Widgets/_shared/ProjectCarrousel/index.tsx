@@ -78,6 +78,7 @@ const ProjectCarrousel = ({
     [isSmallerThanPhone]
   );
 
+  // Set button visiblity on scroll
   useEffect(() => {
     if (!scrollContainerRef) return;
 
@@ -91,6 +92,41 @@ const ProjectCarrousel = ({
       scrollContainerRef.removeEventListener('scroll', handler);
     };
   }, [scrollContainerRef, hasMore, handleButtonVisiblity]);
+
+  // Set up drag scroll
+  useEffect(() => {
+    if (!scrollContainerRef) return;
+
+    let mouseDown = false;
+    let startX: number | undefined;
+    let scrollLeft: number | undefined;
+
+    const startDragging = (e) => {
+      mouseDown = true;
+      startX = e.pageX - scrollContainerRef.offsetLeft;
+      scrollLeft = scrollContainerRef.scrollLeft;
+    };
+
+    const stopDragging = (_) => {
+      mouseDown = false;
+    };
+
+    const move = (e) => {
+      e.preventDefault();
+
+      if (!mouseDown || startX === undefined || scrollLeft === undefined)
+        return;
+
+      const x = e.pageX - scrollContainerRef.offsetLeft;
+      const scroll = x - startX;
+      scrollContainerRef.scrollLeft = scrollLeft - scroll;
+    };
+
+    scrollContainerRef.addEventListener('mousemove', move, false);
+    scrollContainerRef.addEventListener('mousedown', startDragging, false);
+    scrollContainerRef.addEventListener('mouseup', stopDragging, false);
+    scrollContainerRef.addEventListener('mouseleave', stopDragging, false);
+  }, [scrollContainerRef]);
 
   const handleKeyDown = (e: React.KeyboardEvent<any>) => {
     if (e.code === 'Escape') {
