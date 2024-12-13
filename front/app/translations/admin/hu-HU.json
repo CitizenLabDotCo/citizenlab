@@ -579,7 +579,7 @@
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.buttonSuccess": "Success",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.byAreaFilter": "By area",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.byTagsFilter": "By tag(s)",
-  "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.contactGovSuccessToAccess": "Displaying projects by tag or area is part of the premium license. Reach out to your GovSuccess Manager to learn more about it.",
+  "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.contactGovSuccessToAccess": "A projektek címke vagy terület szerinti megjelenítése a prémium licenc része. Forduljon GovSuccess menedzseréhez, ha többet szeretne megtudni erről.",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.contentEditorTitle": "Content",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.editCustomPagePageTitle": "Edit custom page",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.linkedProjectsLabel": "Linked projects",
