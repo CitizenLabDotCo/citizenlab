@@ -2842,7 +2842,6 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.noData": "Não há projetos ou pastas publicados disponíveis",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.publishedTitle": "Projetos e pastas publicados",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.thisWidgetWillShow": "Esse widget exibirá os projetos e as pastas que estão publicados no momento, respeitando a ordem definida na página de projetos. Esse comportamento é o mesmo que o da guia \"ativo\" do widget de projetos \"legado\".",
-  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.inThisWidget": "Nesse widget, você pode selecionar os projetos e as pastas que desejar.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.noData": "Nenhum projeto ou pasta selecionado",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.selectProjectsOrFolders": "Selecionar projetos ou pastas",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.selectionTitle3": "Projetos e pastas selecionados",

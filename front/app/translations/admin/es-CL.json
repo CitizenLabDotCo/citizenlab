@@ -2842,7 +2842,6 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.noData": "No hay proyectos publicados ni carpetas disponibles",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.publishedTitle": "Proyectos y carpetas publicados",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.thisWidgetWillShow": "Este widget mostrará los proyectos y carpetas que estén publicados en ese momento, respetando el orden definido en la página de proyectos. Este comportamiento es el mismo que el de la pestaña \"activo\" del widget de proyectos \"heredado\".",
-  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.inThisWidget": "En este widget, puedes seleccionar los proyectos y carpetas que quieras.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.noData": "No hay proyectos ni carpetas seleccionados",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.selectProjectsOrFolders": "Selecciona proyectos o carpetas",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.selectionTitle3": "Proyectos y carpetas seleccionados",

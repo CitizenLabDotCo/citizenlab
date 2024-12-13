@@ -2842,7 +2842,6 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.noData": "Dim prosiectau neu ffolderi cyhoeddedig ar gael",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.publishedTitle": "Prosiectau a ffolderi cyhoeddedig",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.thisWidgetWillShow": "Bydd y teclyn hwn yn achos y prosiectau a'r ffolderi sy'n cael eu cyhoeddi ar hyn o bryd, gan barchu'r drefn a ddiffinnir ar y dudalen prosiectau. Mae'r ymddygiad hwn yr un peth â thab \"gweithredol\" y teclyn prosiectau \"etifeddiaeth\".",
-  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.inThisWidget": "Yn y teclyn hwn, gallwch ddewis pa bynnag brosiectau a ffolderi rydych chi eu heisiau.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.noData": "Dim prosiectau neu ffolderi wedi'u dewis",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.selectProjectsOrFolders": "Dewiswch brosiectau neu ffolderi",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.selectionTitle3": "Prosiectau a ffolderi dethol",

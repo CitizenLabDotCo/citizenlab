@@ -2842,7 +2842,6 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.noData": "Yayınlanmış proje veya klasör mevcut değil",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.publishedTitle": "Yayınlanmış projeler ve klasörler",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.thisWidgetWillShow": "Bu widget, projeler sayfasında tanımlanan sıralamaya uyarak o anda yayınlanmış olan projeleri ve klasörleri gösterir. Bu davranış, \"eski\" projeler widget'ının \"aktif\" sekmesiyle aynıdır.",
-  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.inThisWidget": "Bu widget'ta istediğiniz proje ve klasörleri seçebilirsiniz.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.noData": "Seçili proje veya klasör yok",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.selectProjectsOrFolders": "Projeleri veya klasörleri seçme",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.selectionTitle3": "Seçilen projeler ve klasörler",

@@ -2842,7 +2842,6 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.noData": "Keine veröffentlichten Projekte oder Ordner verfügbar",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.publishedTitle": "Veröffentlichte Projekte und Ordner",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.thisWidgetWillShow": "Dieses Widget zeigt die Projekte und Ordner an, die derzeit veröffentlicht sind, wobei die auf der Projektseite festgelegte Reihenfolge beibehalten wird. Dieses Verhalten entspricht dem der Registerkarte \"Aktiv\" des Widgets \"Legacy\" Projekte.",
-  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.inThisWidget": "In diesem Widget können Sie alle Projekte und Ordner auswählen, die Sie möchten.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.noData": "Keine Projekte oder Ordner ausgewählt",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.selectProjectsOrFolders": "Projekte oder Ordner auswählen",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.selectionTitle3": "Ausgewählte Projekte und Ordner",

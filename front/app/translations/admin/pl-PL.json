@@ -2842,7 +2842,6 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.noData": "Brak opublikowanych projektów lub folderów",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.publishedTitle": "Opublikowane projekty i foldery",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.thisWidgetWillShow": "Ten widżet wyświetli projekty i foldery, które są aktualnie opublikowane, zgodnie z kolejnością zdefiniowaną na stronie projektów. To zachowanie jest takie samo jak w przypadku zakładki \"aktywne\" widżetu \"starsze\" projekty.",
-  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.inThisWidget": "W tym widżecie możesz wybrać dowolne projekty i foldery.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.noData": "Nie wybrano żadnych projektów ani folderów",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.selectProjectsOrFolders": "Wybierz projekty lub foldery",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.selectionTitle3": "Wybrane projekty i foldery",

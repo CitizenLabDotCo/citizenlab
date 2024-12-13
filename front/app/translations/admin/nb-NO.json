@@ -2842,7 +2842,6 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.noData": "Ingen publiserte prosjekter eller mapper tilgjengelig",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.publishedTitle": "Publiserte prosjekter og mapper",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.thisWidgetWillShow": "Denne widgeten viser prosjektene og mappene som for øyeblikket er publisert, i henhold til rekkefølgen som er definert på prosjektsiden. Denne oppførselen er den samme som \"aktiv\"-fanen i widgeten \"eldre\" prosjekter.",
-  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.inThisWidget": "I denne widgeten kan du velge hvilke prosjekter og mapper du vil ha.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.noData": "Ingen prosjekter eller mapper valgt",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.selectProjectsOrFolders": "Velg prosjekter eller mapper",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.selectionTitle3": "Utvalgte prosjekter og mapper",

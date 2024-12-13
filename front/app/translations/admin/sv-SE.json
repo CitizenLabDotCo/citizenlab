@@ -2842,7 +2842,6 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.noData": "Inga publicerade projekt eller mappar tillgängliga",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.publishedTitle": "Publicerade projekt och mappar",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.thisWidgetWillShow": "Denna widget kommer att visa de projekt och mappar som för närvarande är publicerade, med hänsyn till den ordning som anges på projektsidan. Detta beteende är detsamma som fliken \"aktiv\" i widgeten \"äldre\" projekt.",
-  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.inThisWidget": "I den här widgeten kan du välja vilka projekt och mappar du vill ha.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.noData": "Inga projekt eller mappar valda",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.selectProjectsOrFolders": "Välj projekt eller mappar",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.selectionTitle3": "Valda projekt och mappar",

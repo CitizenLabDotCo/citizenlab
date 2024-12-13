@@ -2842,7 +2842,6 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.noData": "کوئی شائع شدہ پروجیکٹ یا فولڈر دستیاب نہیں ہیں۔",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.publishedTitle": "شائع شدہ پروجیکٹس اور فولڈرز",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.thisWidgetWillShow": "یہ ویجیٹ ان پروجیکٹس اور فولڈرز کو کیس کرے گا جو فی الحال شائع ہورہے ہیں، پروجیکٹس کے صفحہ پر بیان کردہ ترتیب کا احترام کرتے ہوئے۔ یہ رویہ \"وراثت\" پروجیکٹس ویجیٹ کے \"فعال\" ٹیب جیسا ہے۔",
-  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.inThisWidget": "اس ویجیٹ میں، آپ جو بھی پروجیکٹ اور فولڈر چاہیں منتخب کر سکتے ہیں۔",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.noData": "کوئی پروجیکٹ یا فولڈر منتخب نہیں کیا گیا۔",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.selectProjectsOrFolders": "پروجیکٹس یا فولڈرز کو منتخب کریں۔",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.selectionTitle3": "منتخب کردہ پراجیکٹس اور فولڈرز",

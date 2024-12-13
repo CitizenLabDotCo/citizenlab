@@ -2842,7 +2842,6 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.noData": "ਕੋਈ ਪ੍ਰਕਾਸ਼ਿਤ ਪ੍ਰੋਜੈਕਟ ਜਾਂ ਫੋਲਡਰ ਉਪਲਬਧ ਨਹੀਂ ਹਨ",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.publishedTitle": "ਪ੍ਰਕਾਸ਼ਿਤ ਪ੍ਰੋਜੈਕਟ ਅਤੇ ਫੋਲਡਰ",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.thisWidgetWillShow": "ਇਹ ਵਿਜੇਟ ਉਹਨਾਂ ਪ੍ਰੋਜੈਕਟਾਂ ਅਤੇ ਫੋਲਡਰਾਂ ਦਾ ਕੇਸ ਕਰੇਗਾ ਜੋ ਇਸ ਸਮੇਂ ਪ੍ਰਕਾਸ਼ਿਤ ਕੀਤੇ ਗਏ ਹਨ, ਪ੍ਰੋਜੈਕਟ ਪੰਨੇ 'ਤੇ ਪਰਿਭਾਸ਼ਿਤ ਕ੍ਰਮ ਦਾ ਸਨਮਾਨ ਕਰਦੇ ਹੋਏ। ਇਹ ਵਿਵਹਾਰ \"ਪੁਰਾਤਨ\" ਪ੍ਰੋਜੈਕਟ ਵਿਜੇਟ ਦੀ \"ਕਿਰਿਆਸ਼ੀਲ\" ਟੈਬ ਵਰਗਾ ਹੈ।",
-  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.inThisWidget": "ਇਸ ਵਿਜੇਟ ਵਿੱਚ, ਤੁਸੀਂ ਜੋ ਵੀ ਪ੍ਰੋਜੈਕਟ ਅਤੇ ਫੋਲਡਰ ਚਾਹੁੰਦੇ ਹੋ, ਚੁਣ ਸਕਦੇ ਹੋ।",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.noData": "ਕੋਈ ਪ੍ਰੋਜੈਕਟ ਜਾਂ ਫੋਲਡਰ ਨਹੀਂ ਚੁਣੇ ਗਏ",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.selectProjectsOrFolders": "ਪ੍ਰੋਜੈਕਟ ਜਾਂ ਫੋਲਡਰ ਚੁਣੋ",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.selectionTitle3": "ਚੁਣੇ ਗਏ ਪ੍ਰੋਜੈਕਟ ਅਤੇ ਫੋਲਡਰ",
