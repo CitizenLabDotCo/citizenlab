@@ -110,8 +110,7 @@ class WebApi::V1::AreasController < ApplicationController
       areas,
       WebApi::V1::AreaSerializer,
       params: jsonapi_serializer_params(
-        current_user: current_user,
-        counts_of_projects_by_area: areas.map { |area| { id: area.id, count: area.visible_projects_count } }
+        counts_of_visible_projects_by_area: areas.map { |area| { id: area.id, count: area.visible_projects_count } }
       )
     )
   end
