@@ -246,6 +246,24 @@ class WebApi::V1::ProjectsController < ApplicationController
     end
   end
 
+  def counts_by_area
+    authorize :project, :counts_by_area?
+
+    projects = policy_scope(Project).not_draft
+    all_areas_project_count = projects.where(include_all_areas: true).count
+
+    counts = Area
+      .left_joins(:areas_projects)
+      .joins("LEFT JOIN (#{projects.select(:id).to_sql}) filtered_projects ON filtered_projects.id = areas_projects.project_id")
+      .group('areas.id', 'areas.title_multiloc')
+      .select(
+        "areas.id, areas.title_multiloc, COUNT(DISTINCT filtered_projects.id) + #{all_areas_project_count} AS count"
+      )
+      .map { |record| { id: record.id, title_multiloc: record.title_multiloc, count: record.count } }
+
+    render json: raw_json({ counts: counts })
+  end
+
   def votes_by_user_xlsx
     if @project.phases.where(participation_method: 'voting').present?
       I18n.with_locale(current_user&.locale) do
