@@ -2821,6 +2821,7 @@
   "app.modules.navbar.admin.containers.pageSubtitle": "Ваша навигациона трака може да прикаже до пет страница поред почетне странице и страница са пројектима. Можете преименовати ставке менија, преуредити и додати нове странице са сопственим садржајем.",
   "containers.Admin.reporting.components.ReportBuilder.Toolbox.ai": "AI",
   "containers.Admin.reporting.components.ReportBuilder.Toolbox.widgets": "Widgets",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.dragAiContentInfo": "Use the ☰ icon below to drag AI content into your report.",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.noAIInsights": "There are no available AI insights. You can create them in your project.",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.openProject": "Go to project",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.question": "Question",
