@@ -13,7 +13,7 @@ import messages from './FiltersModal/messages';
 const FiltersModal = lazy(() => import('./FiltersModal'));
 
 const ButtonWithFiltersModal = ({
-  selectedIdeaFilters,
+  ideaQueryParameters,
   onClearFilters,
   ...filtersProps
 }: InputFiltersProps) => {
@@ -44,7 +44,7 @@ const ButtonWithFiltersModal = ({
       <Suspense fallback={null}>
         <FiltersModal
           opened={filtersModalOpened}
-          selectedIdeaFilters={selectedIdeaFilters}
+          ideaQueryParameters={ideaQueryParameters}
           onClearFilters={onClearFilters}
           onClose={closeModal}
           {...filtersProps}

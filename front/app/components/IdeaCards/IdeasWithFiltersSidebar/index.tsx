@@ -212,7 +212,7 @@ const IdeasWithFiltersSidebar = ({
     filtersActive,
     ideasFilterCounts,
     numberOfSearchResults: ideasCount,
-    selectedIdeaFilters: ideaQueryParameters,
+    ideaQueryParameters,
     onClearFilters: clearFilters,
     onSearch: handleSearchOnChange,
     onChangeStatus: handleStatusOnChange,
