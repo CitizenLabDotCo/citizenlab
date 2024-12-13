@@ -6,8 +6,8 @@ interface Props {
   variant: 'left' | 'right';
   top: string;
   onClick: () => void;
-  onMouseEnter?: () => void;
-  onMouseLeave?: () => void;
+  onMouseEnter: () => void;
+  onMouseLeave: () => void;
 }
 
 const ScrollButton = ({
