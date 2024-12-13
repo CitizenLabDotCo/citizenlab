@@ -20,12 +20,12 @@ import TopicFilterBox from '../shared/Filters/TopicFilterBox';
 
 import ResetFiltersButton from './ResetFiltersButton';
 
-export interface Props {
+export interface InputFiltersProps {
   defaultValue?: string;
   filtersActive: boolean;
   ideasFilterCounts: IIdeasFilterCounts | NilOrError;
   numberOfSearchResults: number;
-  selectedIdeaFilters: Partial<IIdeaQueryParameters>;
+  ideaQueryParameters: Partial<IIdeaQueryParameters>;
   onClearFilters: () => void;
   onSearch: (searchTerm: string) => void;
   onChangeStatus: (ideaStatus: string | null) => void;
@@ -42,7 +42,7 @@ const InputFilters = ({
   filtersActive,
   ideasFilterCounts,
   numberOfSearchResults,
-  selectedIdeaFilters,
+  ideaQueryParameters,
   phaseId,
   onClearFilters,
   showResetButton = true,
@@ -52,7 +52,7 @@ const InputFilters = ({
   onChangeStatus,
   onChangeTopics,
   handleSortOnChange,
-}: Props) => {
+}: InputFiltersProps) => {
   const { data: phase } = usePhase(phaseId);
   const participationMethod =
     phase?.data.attributes.participation_method || 'ideation'; // Ideation used as fallback here for All Ideas page.
@@ -86,16 +86,16 @@ const InputFilters = ({
       </Box>
       <Box mb="20px">
         <TopicFilterBox
-          selectedTopicIds={selectedIdeaFilters.topics}
-          selectedIdeaFilters={selectedIdeaFilters}
+          selectedTopicIds={ideaQueryParameters.topics}
+          ideaQueryParameters={ideaQueryParameters}
           onChange={onChangeTopics}
         />
       </Box>
       {showStatusFilter && isProposalsOrIdeation && (
         <StatusFilterBox
           participationMethod={participationMethod}
-          selectedStatusId={selectedIdeaFilters.idea_status}
-          selectedIdeaFilters={selectedIdeaFilters}
+          selectedStatusId={ideaQueryParameters.idea_status}
+          ideaQueryParameters={ideaQueryParameters}
           onChange={onChangeStatus}
         />
       )}

@@ -9,6 +9,8 @@ import {
 import { FormData } from 'components/Form/typings';
 import { Option } from 'components/UI/LocationInput';
 
+import { projectPointToWebMercator } from 'utils/mapUtils/map';
+
 import { reverseGeocodeAndSave } from './utils';
 
 // handleMapClickPoint
@@ -20,10 +22,11 @@ export const handleMapClickPoint = (
 ) => {
   // Center the clicked location on the map
   goToMapLocation(esriPointToGeoJson(event.mapPoint), mapView).then(() => {
+    // Project the point to Web Mercator, in case the map is using a different projection
+    const projectedPoint = projectPointToWebMercator(event.mapPoint);
+
     // Update the form data
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    handlePointChange?.(esriPointToGeoJson(event.mapPoint));
+    handlePointChange(esriPointToGeoJson(projectedPoint));
   });
 };
 

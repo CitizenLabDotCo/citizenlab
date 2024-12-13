@@ -9,7 +9,7 @@ import { IdeaSortMethod } from 'api/phases/types';
 
 import IdeasMap from 'components/IdeasMap';
 
-import { Props as InputFiltersProps } from '../../IdeasWithFiltersSidebar/InputFilters';
+import { InputFiltersProps } from '../../IdeasWithFiltersSidebar/InputFilters';
 
 import IdeasList from './IdeasList';
 

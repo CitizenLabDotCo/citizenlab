@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useState } from 'react';
+import React from 'react';
 
 import { Box, Button, media, isRtl } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
@@ -7,18 +7,15 @@ import useAuthUser from 'api/me/useAuthUser';
 
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
-import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import { isNilOrError, isPage } from 'utils/helperUtils';
 
 import messages from '../../../messages';
-import tracks from '../../../tracks';
 import LanguageSelector from '../../LanguageSelector';
 import NotificationMenu from '../../NotificationMenu';
 import UserMenu from '../../UserMenu';
 
-const FullMobileNavMenu = lazy(() => import('./FullMobileNavMenu'));
-import ShowFullMenuButton from './ShowFullMenuButton';
+import ButtonWithFullMobileNavMenu from './ButtonWithFullMobileNavMenu';
 
 const RightContainer = styled(Box)`
   display: flex;
@@ -83,23 +80,8 @@ const MobileNavbarContent = () => {
 
   const isEmailSettingsPage = isPage('email-settings', location.pathname);
 
-  const [isFullMenuOpened, setIsFullMenuOpened] = useState(false);
-
   const signIn = () => {
     triggerAuthenticationFlow({}, 'signin');
-  };
-
-  const onShowMore = (isFullMenuOpened: boolean) => {
-    setIsFullMenuOpened((prevIsFullMenuOpened) => !prevIsFullMenuOpened);
-    trackEventByName(
-      isFullMenuOpened
-        ? tracks.moreButtonClickedFullMenuOpened
-        : tracks.moreButtonClickedFullMenuClosed
-    );
-  };
-
-  const onCloseFullMenu = () => {
-    setIsFullMenuOpened(false);
   };
 
   return (
@@ -129,21 +111,11 @@ const MobileNavbarContent = () => {
               </>
             )}
             <NavItem>
-              <ShowFullMenuButton
-                onClick={() => {
-                  onShowMore(isFullMenuOpened);
-                }}
-              />
+              <ButtonWithFullMobileNavMenu />
             </NavItem>
           </>
         )}
       </RightContainer>
-      <Suspense fallback={null}>
-        <FullMobileNavMenu
-          isFullMenuOpened={isFullMenuOpened}
-          onClose={onCloseFullMenu}
-        />
-      </Suspense>
     </nav>
   );
 };
