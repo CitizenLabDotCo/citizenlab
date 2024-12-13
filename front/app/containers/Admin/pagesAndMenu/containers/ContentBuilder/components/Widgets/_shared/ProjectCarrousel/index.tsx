@@ -42,15 +42,16 @@ const ProjectCarrousel = ({
   const [scrollContainerRef, setScrollContainerRef] = useState<
     HTMLDivElement | undefined
   >(undefined);
+  // State related to 'previous' button
   const [showPreviousButton, setShowPreviousButton] = useState(false);
-  const [showNextButton, setShowNextButton] = useState(false);
-
   const [mouseOverPreviousButton, setMouseOverPreviousButton] = useState(false);
   const [
     previousButtonShouldDisappearAfterMouseMove,
     setPreviousButtonShouldDisappearAfterMouseMove,
   ] = useState(false);
 
+  // State related to 'next' button
+  const [showNextButton, setShowNextButton] = useState(false);
   const [mouseOverNextButton, setMouseOverNextButton] = useState(false);
   const [
     nextButtonShouldDisappearAfterMouseMove,
