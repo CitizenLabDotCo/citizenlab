@@ -60,7 +60,6 @@ const MapIdeasList = memo<Props>(
       onChangeTopics,
       handleSortOnChange,
       onClearFilters,
-      filtersActive,
       ideasFilterCounts,
       numberOfSearchResults,
     } = inputFiltersProps ?? {};
@@ -128,7 +127,6 @@ const MapIdeasList = memo<Props>(
             <FiltersMapView
               selectedIdeaFilters={selectedIdeaFilters || {}}
               onClearFilters={onClearFilters}
-              filtersActive={!!filtersActive}
               ideasFilterCounts={ideasFilterCounts}
               numberOfSearchResults={
                 numberOfSearchResults ? numberOfSearchResults : 0

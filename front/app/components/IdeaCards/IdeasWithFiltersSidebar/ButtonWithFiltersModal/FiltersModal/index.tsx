@@ -33,7 +33,6 @@ const FiltersModal = ({
           onClick={onClose}
           selectedIdeaFilters={selectedIdeaFilters}
           onReset={onClearFilters}
-          filtersActive={filtersProps.filtersActive}
         />
       }
       contentBgColor="background"
