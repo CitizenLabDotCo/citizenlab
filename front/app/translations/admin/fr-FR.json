@@ -2841,7 +2841,7 @@
   "containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.surveyQuestion": "Question d'enquête",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.noData": "Aucun projet ou dossier publié disponible",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.publishedTitle": "Projets et dossiers publiés",
-  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.thisWidgetWillShow": "Ce widget affiche les projets et les dossiers qui sont actuellement publiés, en respectant l'ordre défini sur la page des projets. Ce comportement est le même que celui de l'onglet \"actif\" de l'ancien widget \"projets\".",
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.thisWidgetWillShow": "Ce widget affichera les projets et dossiers publiés, selon l'ordre défini sur la page des projets. Ce comportement est similaire à celui de l'onglet \"Actif\" de l'ancienne version du widget de projets.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.inThisWidget": "Dans ce widget, vous pouvez sélectionner les projets et les dossiers de votre choix.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.noData": "Aucun projet ou dossier sélectionné",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.selectProjectsOrFolders": "Sélectionnez des projets ou des dossiers",
