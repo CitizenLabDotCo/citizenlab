@@ -35,7 +35,7 @@ import tracks from '../tracks';
 
 import ButtonWithFiltersModal from './ButtonWithFiltersModal';
 import ContentRight from './ContentRight';
-import { Props as InputFiltersProps } from './InputFilters';
+import { InputFiltersProps } from './InputFilters';
 import { getInputCountMessage } from './utils';
 
 export const gapWidth = 35;
