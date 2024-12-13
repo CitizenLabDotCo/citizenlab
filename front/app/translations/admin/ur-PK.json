@@ -2821,6 +2821,7 @@
   "app.modules.navbar.admin.containers.pageSubtitle": "آپ کا نیویگیشن بار ہوم اور پروجیکٹ کے صفحات کے علاوہ پانچ صفحات تک ڈسپلے کر سکتا ہے۔ آپ مینو آئٹمز کا نام تبدیل کر سکتے ہیں، دوبارہ ترتیب دے سکتے ہیں اور اپنے مواد کے ساتھ نئے صفحات شامل کر سکتے ہیں۔",
   "containers.Admin.reporting.components.ReportBuilder.Toolbox.ai": "اے آئی",
   "containers.Admin.reporting.components.ReportBuilder.Toolbox.widgets": "وجیٹس",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.dragAiContentInfo": "AI مواد کو اپنی رپورٹ میں گھسیٹنے کے لیے نیچے ☰ آئیکن استعمال کریں۔",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.noAIInsights": "کوئی AI بصیرت دستیاب نہیں ہے۔ آپ انہیں اپنے پروجیکٹ میں بنا سکتے ہیں۔",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.openProject": "پروجیکٹ پر جائیں۔",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.question": "سوال",
