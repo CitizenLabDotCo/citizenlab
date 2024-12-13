@@ -2821,6 +2821,7 @@
   "app.modules.navbar.admin.containers.pageSubtitle": "Your navigation bar can display up to five pages in addition to the Home and projects pages. You can rename menu items, re-order and add new pages  with your own content.",
   "containers.Admin.reporting.components.ReportBuilder.Toolbox.ai": "AI",
   "containers.Admin.reporting.components.ReportBuilder.Toolbox.widgets": "Widgets",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.dragAiContentInfo": "Use the ☰ icon below to drag AI content into your report.",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.noAIInsights": "There are no available AI insights. You can create them in your project.",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.openProject": "Go to project",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.question": "Question",
