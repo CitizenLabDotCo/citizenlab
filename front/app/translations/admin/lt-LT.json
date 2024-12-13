@@ -2821,6 +2821,7 @@
   "app.modules.navbar.admin.containers.pageSubtitle": "Navigacijos juostoje, be puslapių \"Pradžia\" ir \"Projektai\", gali būti rodomi ne daugiau kaip penki puslapiai. Galite pervadinti meniu elementus, keisti jų eiliškumą ir pridėti naujų puslapių su savo turiniu.",
   "containers.Admin.reporting.components.ReportBuilder.Toolbox.ai": "AI",
   "containers.Admin.reporting.components.ReportBuilder.Toolbox.widgets": "Valdikliai",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.dragAiContentInfo": "Naudokite toliau esančią piktogramą ☰ ir vilkite AI turinį į ataskaitą.",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.noAIInsights": "Nėra jokių galimų dirbtinio intelekto įžvalgų. Galite jas sukurti savo projekte.",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.openProject": "Eiti į projektą",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.question": "Klausimas",
