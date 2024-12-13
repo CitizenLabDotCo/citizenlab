@@ -182,7 +182,7 @@ const AreaListRow = ({
         onClick={handleDeleteClick(item.id)}
         buttonStyle="text"
         icon="delete"
-        disabled={staticPageIds.length > 0}
+        disabled={staticPageIds && staticPageIds.length > 0}
       >
         <FormattedMessage {...messages.deleteButtonLabel} />
       </Button>
