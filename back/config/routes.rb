@@ -141,7 +141,7 @@ Rails.application.routes.draw do
       resources :areas do
         resources :followers, only: [:create], defaults: { followable: 'Area' }
         collection do
-          get 'counts_of_projects_by_area', to: 'areas#counts_of_projects_by_area'
+          get 'with_visible_projects_counts', to: 'areas#with_visible_projects_counts'
         end
       end
 

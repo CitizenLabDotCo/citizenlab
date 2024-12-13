@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 class WebApi::V1::AreasController < ApplicationController
-  before_action :set_area, except: %i[index create counts_of_projects_by_area]
+  before_action :set_area, except: %i[index create with_visible_projects_counts]
   before_action :set_side_effects_service, only: %i[create update destroy]
-  skip_before_action :authenticate_user, only: %i[index show counts_of_projects_by_area]
+  skip_before_action :authenticate_user, only: %i[index show with_visible_projects_counts]
 
   def index
     areas_filterer = AreasFilteringService.new
@@ -86,26 +86,32 @@ class WebApi::V1::AreasController < ApplicationController
     end
   end
 
-  def counts_of_projects_by_area
-    authorize :area, :counts_of_projects_by_area?
+  def with_visible_projects_counts
+    authorize :area, :with_visible_projects_counts?
 
     projects = policy_scope(Project).not_draft
     all_areas_project_count = projects.where(include_all_areas: true).count
 
-    counts = Area
+    areas = Area
       .left_joins(:areas_projects)
       .joins("LEFT JOIN (#{projects.select(:id).to_sql}) filtered_projects ON filtered_projects.id = areas_projects.project_id")
       .group('areas.id', 'areas.title_multiloc')
       .select(
-        'areas.id',
-        'areas.title_multiloc',
-        "COUNT(DISTINCT filtered_projects.id) + #{all_areas_project_count} AS count"
+        'areas.*',
+        "COUNT(DISTINCT filtered_projects.id) + #{all_areas_project_count} AS visible_projects_count"
       )
-      .order('count DESC')
+      .order('visible_projects_count DESC')
 
-    counts = paginate counts
+    areas = paginate areas
 
-    render json: { data: { type: 'counts_of_projects_by_area', counts: counts }, links: page_links(counts) }
+    render json: linked_json(
+      areas,
+      WebApi::V1::AreaSerializer,
+      params: jsonapi_serializer_params(
+        current_user: current_user,
+        counts_of_projects_by_area: areas.map { |area| { id: area.id, count: area.visible_projects_count } }
+      )
+    )
   end
 
   private

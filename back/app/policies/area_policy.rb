@@ -23,7 +23,7 @@ class AreaPolicy < ApplicationPolicy
     update?
   end
 
-  def counts_of_projects_by_area?
+  def with_visible_projects_counts?
     true
   end
 
