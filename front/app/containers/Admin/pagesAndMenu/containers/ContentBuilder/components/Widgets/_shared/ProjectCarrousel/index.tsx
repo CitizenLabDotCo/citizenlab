@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
-import { useBreakpoint, Title, Box } from '@citizenlab/cl2-component-library';
+import { useBreakpoint, Title } from '@citizenlab/cl2-component-library';
 import useInstanceId from 'component-library/hooks/useInstanceId';
 import { debounce } from 'lodash-es';
 import { useInView } from 'react-intersection-observer';
@@ -29,7 +29,6 @@ interface Props {
   projects: MiniProjectData[];
   hasMore: boolean;
   className?: string;
-  dropDownSelect?: React.ReactNode;
   onLoadMore: () => Promise<any>;
 }
 
@@ -38,7 +37,6 @@ const ProjectCarrousel = ({
   projects,
   hasMore,
   className,
-  dropDownSelect,
   onLoadMore,
 }: Props) => {
   const [scrollContainerRef, setScrollContainerRef] = useState<
@@ -111,24 +109,14 @@ const ProjectCarrousel = ({
   return (
     <>
       <CarrouselContainer className={className}>
-        <Box
-          display="flex"
-          flexDirection="row"
-          justifyContent="space-between"
-          mb="16px"
+        <Title
+          variant="h2"
+          mt="0px"
+          ml={isSmallerThanPhone ? DEFAULT_PADDING : undefined}
+          color="tenantText"
         >
-          <Title
-            variant="h2"
-            my="0px"
-            ml={isSmallerThanPhone ? DEFAULT_PADDING : undefined}
-            color="tenantText"
-          >
-            {title}
-          </Title>
-          <Box display="flex" alignItems="center">
-            {dropDownSelect}
-          </Box>
-        </Box>
+          {title}
+        </Title>
         <SkipButton onSkip={() => skipCarrousel(endId)} />
         <HorizontalScroll
           setRef={(ref) => {
