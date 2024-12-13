@@ -578,7 +578,7 @@
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.buttonSuccess": "Success",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.byAreaFilter": "Με βάση την περιοχή",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.byTagsFilter": "Με βάση τις ετικέτες",
-  "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.contactGovSuccessToAccess": "Displaying projects by tag or area is part of the premium license. Reach out to your GovSuccess Manager to learn more about it.",
+  "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.contactGovSuccessToAccess": "Η εμφάνιση έργων ανά ετικέτα ή περιοχή αποτελεί μέρος της άδειας premium. Επικοινωνήστε με τον διαχειριστή σας στο GovSuccess για να μάθετε περισσότερα σχετικά με αυτό.",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.contentEditorTitle": "Content",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.editCustomPagePageTitle": "Επεξεργασία προσαρμοσμένης σελίδας",
   "app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.linkedProjectsLabel": "Συνδεδεμένα έργα",
