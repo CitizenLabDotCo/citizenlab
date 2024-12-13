@@ -2821,7 +2821,7 @@
   "app.modules.navbar.admin.containers.pageSubtitle": "In Ihrer Navigationsleiste können bis zu fünf Seiten zusätzlich zur Startseite und den Projektseiten angezeigt werden. Sie können Menü-Elemente umbenennen, neu anordnen und neue Seiten mit eigenem Inhalt hinzufügen.",
   "containers.Admin.reporting.components.ReportBuilder.Toolbox.ai": "KI",
   "containers.Admin.reporting.components.ReportBuilder.Toolbox.widgets": "Widget",
-  "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.dragAiContentInfo": "Verwenden Sie das Symbol ☰ unten, um AI-Inhalte in Ihren Bericht zu ziehen.",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.dragAiContentInfo": "Verwenden Sie das ☰ Symbol unten, um KI-Inhalte in Ihren Bericht zu ziehen.",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.noAIInsights": "Es sind keine KI-Einblicke verfügbar. Sie können sie in Ihrem Projekt erstellen.",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.openProject": "Zum Projekt",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.question": "Frage",
