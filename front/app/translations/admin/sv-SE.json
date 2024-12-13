@@ -2821,6 +2821,7 @@
   "app.modules.navbar.admin.containers.pageSubtitle": "Ditt navigeringsfält kan visa upp till fem sidor utöver start- och projektsidorna. Du kan byta namn på menyobjekt, ändra ordning på och lägga till nya sidor med ditt eget innehåll.",
   "containers.Admin.reporting.components.ReportBuilder.Toolbox.ai": "AI",
   "containers.Admin.reporting.components.ReportBuilder.Toolbox.widgets": "Widgets",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.dragAiContentInfo": "Använd ☰-ikonen nedan för att dra AI-innehåll till din rapport.",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.noAIInsights": "Det finns inga tillgängliga AI-insikter. Du kan skapa dem i ditt projekt.",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.openProject": "Gå till projekt",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.question": "Fråga",
