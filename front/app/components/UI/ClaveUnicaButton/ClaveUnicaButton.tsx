@@ -56,7 +56,7 @@ const ClaveUnicaButtonLabel = styled.span`
 
 const HelperText = styled.div`
   display: inline;
-  margin-right: 15px;
+  margin-right: 16px;
   color: ${(props) => props.theme.colors.tenantText};
 `;
 
