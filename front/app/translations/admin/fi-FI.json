@@ -2821,6 +2821,7 @@
   "app.modules.navbar.admin.containers.pageSubtitle": "Navigointipalkkisi voi näyttää jopa viisi sivua aloitussivun ja projektisivujen lisäksi. Voit nimetä valikkokohtia uudelleen, järjestää uudelleen ja lisätä uusia sivuja omalla sisällölläsi.",
   "containers.Admin.reporting.components.ReportBuilder.Toolbox.ai": "AI",
   "containers.Admin.reporting.components.ReportBuilder.Toolbox.widgets": "Widgetit",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.dragAiContentInfo": "Käytä alla olevaa ☰-kuvaketta vetääksesi tekoälysisältöä raporttiin.",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.noAIInsights": "AI-näkemyksiä ei ole saatavilla. Voit luoda niitä projektissasi.",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.openProject": "Siirry projektiin",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.question": "Kysymys",
