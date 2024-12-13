@@ -57,8 +57,8 @@ const ContentRight = (props: Props) => {
         </Title>
       </ScreenReaderOnly>
       <InputFilters
-        defaultValue={props.selectedIdeaFilters.search}
-        phaseId={props.selectedIdeaFilters.phase}
+        defaultValue={props.ideaQueryParameters.search}
+        phaseId={props.ideaQueryParameters.phase}
         {...props}
       />
     </Container>

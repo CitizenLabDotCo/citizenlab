@@ -15,12 +15,12 @@ import messages from './messages';
 
 interface Props {
   onClick: (event: FormEvent) => void;
-  selectedIdeaFilters: InputFiltersProps['selectedIdeaFilters'];
+  ideaQueryParameters: InputFiltersProps['ideaQueryParameters'];
   onReset: () => void;
 }
 
-const BottomBar = ({ onClick, selectedIdeaFilters, onReset }: Props) => {
-  const { data: ideasFilterCounts } = useIdeasFilterCounts(selectedIdeaFilters);
+const BottomBar = ({ onClick, ideaQueryParameters, onReset }: Props) => {
+  const { data: ideasFilterCounts } = useIdeasFilterCounts(ideaQueryParameters);
 
   if (!ideasFilterCounts) return null;
 
@@ -42,7 +42,7 @@ const BottomBar = ({ onClick, selectedIdeaFilters, onReset }: Props) => {
       </Button>
       <ResetFiltersButton
         onClick={onReset}
-        ideaQueryParameters={selectedIdeaFilters}
+        ideaQueryParameters={ideaQueryParameters}
       />
     </Box>
   );

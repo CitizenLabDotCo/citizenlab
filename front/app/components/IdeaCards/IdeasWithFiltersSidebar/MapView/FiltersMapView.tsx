@@ -13,7 +13,7 @@ interface Props extends InputFiltersProps {
 }
 
 const FiltersMapView = ({
-  selectedIdeaFilters,
+  ideaQueryParameters,
   onClearFilters,
   onClose,
   ...filtersProps
@@ -24,7 +24,7 @@ const FiltersMapView = ({
       <Box height="100%" overflowY="auto" bgColor={colors.background}>
         <Box p="16px">
           <InputFilters
-            selectedIdeaFilters={selectedIdeaFilters}
+            ideaQueryParameters={ideaQueryParameters}
             onClearFilters={onClearFilters}
             // A reset button is available in the filters top bar
             showResetButton={false}
@@ -37,7 +37,7 @@ const FiltersMapView = ({
       </Box>
       <BottomBar
         onClick={onClose}
-        selectedIdeaFilters={selectedIdeaFilters}
+        ideaQueryParameters={ideaQueryParameters}
         onReset={onClearFilters}
       />
     </>

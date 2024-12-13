@@ -24,7 +24,7 @@ export interface InputFiltersProps {
   defaultValue?: string;
   ideasFilterCounts: IIdeasFilterCounts | NilOrError;
   numberOfSearchResults: number;
-  selectedIdeaFilters: IIdeaQueryParameters;
+  ideaQueryParameters: IIdeaQueryParameters;
   onClearFilters: () => void;
   onSearch: (searchTerm: string) => void;
   onChangeStatus: (ideaStatus: string | null) => void;
@@ -40,7 +40,7 @@ const InputFilters = ({
   defaultValue,
   ideasFilterCounts,
   numberOfSearchResults,
-  selectedIdeaFilters,
+  ideaQueryParameters,
   phaseId,
   onClearFilters,
   showResetButton = true,
@@ -84,16 +84,16 @@ const InputFilters = ({
       </Box>
       <Box mb="20px">
         <TopicFilterBox
-          selectedTopicIds={selectedIdeaFilters.topics}
-          selectedIdeaFilters={selectedIdeaFilters}
+          selectedTopicIds={ideaQueryParameters.topics}
+          ideaQueryParameters={ideaQueryParameters}
           onChange={onChangeTopics}
         />
       </Box>
       {showStatusFilter && isProposalsOrIdeation && (
         <StatusFilterBox
           participationMethod={participationMethod}
-          selectedStatusId={selectedIdeaFilters.idea_status}
-          selectedIdeaFilters={selectedIdeaFilters}
+          selectedStatusId={ideaQueryParameters.idea_status}
+          ideaQueryParameters={ideaQueryParameters}
           onChange={onChangeStatus}
         />
       )}
@@ -101,7 +101,7 @@ const InputFilters = ({
         <Box mt="8px">
           <ResetFiltersButton
             onClick={onClearFilters}
-            ideaQueryParameters={selectedIdeaFilters}
+            ideaQueryParameters={ideaQueryParameters}
           />
         </Box>
       )}

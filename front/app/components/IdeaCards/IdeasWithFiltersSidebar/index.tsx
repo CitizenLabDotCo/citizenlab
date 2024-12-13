@@ -205,7 +205,7 @@ const IdeasWithFiltersSidebar = ({
   const inputFiltersProps: InputFiltersProps = {
     ideasFilterCounts,
     numberOfSearchResults: ideasCount,
-    selectedIdeaFilters: ideaQueryParameters,
+    ideaQueryParameters,
     onClearFilters: clearFilters,
     onSearch: handleSearchOnChange,
     onChangeStatus: handleStatusOnChange,
