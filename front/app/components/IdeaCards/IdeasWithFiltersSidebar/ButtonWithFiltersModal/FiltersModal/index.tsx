@@ -7,7 +7,7 @@ import FullscreenModal from 'components/UI/FullscreenModal';
 import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../../../messages';
-import InputFilters, { Props as InputFiltersProps } from '../../InputFilters';
+import InputFilters, { InputFiltersProps } from '../../InputFilters';
 
 import BottomBar from './BottomBar';
 

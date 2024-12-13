@@ -52,12 +52,7 @@ const EsriKeyInput = () => {
           <Box w="100%">
             <GoBackButton onClick={clHistory.goBack} />
           </Box>
-          <Title
-            color="primary"
-            variant="h1"
-            mb="0"
-            style={{ fontWeight: 600 }}
-          >
+          <Title color="primary" variant="h1" mb="0" fontWeight="semi-bold">
             {formatMessage(messages.esriMaps)}
           </Title>
           <Text color="coolGrey600">

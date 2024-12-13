@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Button, fontSizes } from '@citizenlab/cl2-component-library';
+import { Button } from '@citizenlab/cl2-component-library';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -13,12 +13,7 @@ interface Props {
 
 const ResetFiltersButton = ({ onClick, filtersActive }: Props) => {
   return (
-    <Button
-      onClick={onClick}
-      buttonStyle="text"
-      fontSize={`${fontSizes.s}px`}
-      disabled={!filtersActive}
-    >
+    <Button onClick={onClick} buttonStyle="text" disabled={!filtersActive}>
       <FormattedMessage {...ideaCardsMessages.resetFilters} />
     </Button>
   );
