@@ -15,9 +15,13 @@ interface Props {
 
 const ResetFiltersButton = ({ onClick, ideaQueryParameters }: Props) => {
   const filtersActive = !!(
-    ideaQueryParameters.search ||
-    ideaQueryParameters.idea_status ||
-    ideaQueryParameters.topics
+    // Kind of a bug: search is not reset when clicking the button.
+    // So either fix search reset or remove it from the condition.
+    (
+      ideaQueryParameters.search ||
+      ideaQueryParameters.idea_status ||
+      ideaQueryParameters.topics
+    )
   );
 
   return (
