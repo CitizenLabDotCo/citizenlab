@@ -86,7 +86,7 @@ class WebApi::V1::AreasController < ApplicationController
     end
   end
 
-  # Index-like action, that returns all areas with a `visible_projects_count` attribute.
+  # Index-like action, that returns all areas, along with an additional `visible_projects_count` attribute.
   # The `visible_projects_count` attribute is calculated by considering the number of associated projects
   # and projects with `include_all_areas: true`, in the subset of projects that are visible to the user.
   # It orders the areas by the number of visible projects.
@@ -96,9 +96,9 @@ class WebApi::V1::AreasController < ApplicationController
     projects = policy_scope(Project).not_draft
     all_areas_project_count = projects.where(include_all_areas: true).count
 
-    areas = Area
+    areas = policy_scope(Area)
       .left_joins(:areas_projects)
-      .joins("LEFT JOIN (#{projects.select(:id).to_sql}) filtered_projects " \
+      .joins("LEFT JOIN (#{projects.select(:id).to_sql}) AS filtered_projects " \
              'ON filtered_projects.id = areas_projects.project_id')
       .group('areas.id')
       .select('areas.*', "COUNT(DISTINCT filtered_projects.id) + #{all_areas_project_count} AS visible_projects_count")
