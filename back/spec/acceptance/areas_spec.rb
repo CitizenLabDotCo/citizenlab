@@ -219,5 +219,16 @@ resource 'Areas' do
       json_response = json_parse(response_body)
       expect(json_response[:data].map { |d| d[:attributes][:visible_projects_count] }).to eq [0, 0, 0]
     end
+
+    example 'orders by ordering when visible_projects_count values are equal', document: false do
+      project_for_area1.destroy!
+      project_for_areas1and2.destroy!
+      visible_project_for_all_areas.destroy!
+
+      do_request
+      json_response = json_parse(response_body)
+      expect(json_response[:data].map { |d| d[:attributes][:ordering] })
+        .to eq json_response[:data].map { |d| d[:attributes][:ordering] }.sort
+    end
   end
 end

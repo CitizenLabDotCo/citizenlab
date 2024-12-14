@@ -89,7 +89,7 @@ class WebApi::V1::AreasController < ApplicationController
   # Index-like action, that returns all areas, along with an additional `visible_projects_count` attribute.
   # The `visible_projects_count` attribute is calculated by considering the number of associated projects
   # and projects with `include_all_areas: true`, in the subset of projects that are visible to the user.
-  # It orders the areas by the number of visible projects.
+  # It orders the areas firstly by the number of visible projects, secondly by their `ordering` value.
   def with_visible_projects_counts
     authorize :area, :with_visible_projects_counts?
 
@@ -102,7 +102,7 @@ class WebApi::V1::AreasController < ApplicationController
              'ON filtered_projects.id = areas_projects.project_id')
       .group('areas.id')
       .select('areas.*', "COUNT(DISTINCT filtered_projects.id) + #{all_areas_project_count} AS visible_projects_count")
-      .order('visible_projects_count DESC')
+      .order('visible_projects_count DESC, areas.ordering ASC')
 
     areas = paginate areas
 
