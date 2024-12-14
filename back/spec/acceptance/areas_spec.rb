@@ -202,15 +202,7 @@ resource 'Areas' do
       expect(json_response[:data].map { |d| d[:attributes][:visible_projects_count] }).to eq [3, 2, 1]
     end
 
-    example 'returns zero counts for areas with no projects', document: false do
-      visible_project_for_all_areas.destroy!
-
-      do_request
-      json_response = json_parse(response_body)
-      expect(json_response[:data].map { |d| d[:attributes][:visible_projects_count] }).to eq [2, 1, 0]
-    end
-
-    example 'works even when there are no visible projects', document: false do
+    example 'returns zero counts for areas with no projects, even when no visible projects', document: false do
       project_for_area1.destroy!
       project_for_areas1and2.destroy!
       visible_project_for_all_areas.destroy!
