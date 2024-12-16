@@ -37,17 +37,17 @@ sr-Cyrl:
     outside: негде другде
   idea_statuses:
     proposed: предложено
-    proposed_description: Ова идеја је предложена граду
+    proposed_description: This idea has been proposed to the city
     viewed: гледано
-    viewed_description: Ову идеју је видео неко из града
+    viewed_description: This idea has been seen by someone from the city
     under_consideration: у разматрању
-    under_consideration_description: Ову идеју је град узео у обзир
+    under_consideration_description: This idea has been taken into consideration by the city
     accepted: прихваћено
-    accepted_description: Ова идеја је прихваћена и биће спроведена од стране града
+    accepted_description: This idea has been accepted and will be implemented by the city
     implemented: имплементиран
-    implemented_description: Ову идеју је спровео град
+    implemented_description: This idea has been implemented by the city
     rejected: одбијен
-    rejected_description: Ова идеја је одбијена
+    rejected_description: This idea has been rejected
     expired: expired
     expired_description: expired
     threshold_reached: threshold reached
@@ -208,11 +208,11 @@ sr-Cyrl:
         option:
           title: Која је твоја опција?
       details:
-        title: Детаљи
+        title: Details
       attachements:
-        title: Слике и прилози
+        title: Images and attachments
       extra:
-        title: Додатне Информације
+        title: Additional information
   custom_field_options:
     gender:
       male: Мушки
@@ -246,7 +246,7 @@ sr-Cyrl:
     column_headers:
       assignee_fullname: 'Асигнее'
       assignee_email: 'Имејл примаоца'
-      attachments: 'Attachments'
+      attachments: 'Прилози'
       author_email: 'Имејл аутора'
       author_fullname: 'Име аутора'
       author_id: 'ИД аутора'
@@ -254,7 +254,7 @@ sr-Cyrl:
       comments_count: 'Коментари'
       cost: 'Cost'
       created_at: 'Послано на'
-      description: 'Description'
+      description: 'Опис'
       dislikes_count: 'Не свиђа ми се'
       email: 'Email'
       first_name: 'First name(s)'
@@ -264,7 +264,7 @@ sr-Cyrl:
       last_name: 'Last name'
       latitude: 'Географска ширина'
       likes_count: 'Свиђа'
-      location: 'Location'
+      location: 'Локација'
       longitude: 'Географска дужина'
       participants: 'Учесници'
       picks: 'Пицкс'
@@ -273,8 +273,8 @@ sr-Cyrl:
       registration_completed_at: 'Registration completed at'
       status: 'Статус'
       submitted_at: 'Submitted at'
-      tags: 'Tags'
-      title: 'Title'
+      tags: 'Тема'
+      title: 'Наслов'
       user_data: 'User data'
       votes_count: 'Гласови'
   form_builder:
@@ -296,6 +296,13 @@ sr-Cyrl:
       optional: 'опционо'
       permission: 'Дозвола'
       choose_as_many: 'Изаберите колико желите'
+      choose_exactly:
+        one: 'Choose exactly %{count} option'
+        few: 'Choose exactly %{count} options'
+        other: 'Choose exactly %{count} options'
+      choose_between: 'Choose between %{min} and %{max} options'
+      choose_at_least: 'Choose at least %{count} options'
+      choose_at_most: 'Choose at most %{count} options'
       this_answer: 'Овај одговор ће бити подељен само модераторима, а не јавности.'
       page: 'Страна'
       date_published: 'Датум објављивања (дд-мм-гггг)'

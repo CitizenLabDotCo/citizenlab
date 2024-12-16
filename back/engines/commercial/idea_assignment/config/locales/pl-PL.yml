@@ -1,13 +1,13 @@
 pl:
   email_campaigns:
     campaign_type_description:
-      "idea_assigned_to_you": Przydzielenie mi pomysłu
+      "idea_assigned_to_you": Przydziel mi pomysł
     admin_campaign_type_description:
-      "idea_assigned_to_you": Przydzielenie pomysłu - administratorzy i menadżerowie projektu
+      "idea_assigned_to_you": Przypisanie pomysłu - administratorzy i kierownicy projektów
     idea_assigned_to_you:
       by_author: 'wg %{authorName}'
       cta_reply_to: 'Przekaż informację zwrotną do %{authorName}'
-      event_description_idea: 'Przydzielono ci pomysł. Przekaż informację zwrotną, pisząc oficjalną aktualizację lub zmieniając jej status.'
-      main_header: '%{firstName}, masz nowe zadanie'
-      subject: 'Zostałeś przypisany na platformie %{organizationName}'
-      preheader_idea: 'Został do ciebie przypisany pomysł %{authorName}'
+      event_description_idea: 'Pomysł został przypisany do Ciebie. Przekaż opinię, pisząc oficjalną aktualizację lub zmieniając jego status.'
+      main_header: '%{firstName}masz nowe zadanie'
+      subject: 'Masz zadanie na platformie %{organizationName}'
+      preheader_idea: 'Idea %{authorName} została przypisana do Ciebie'

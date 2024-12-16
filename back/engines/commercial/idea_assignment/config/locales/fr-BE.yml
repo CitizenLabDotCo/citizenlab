@@ -9,5 +9,5 @@ fr-BE:
       cta_reply_to: 'Faites vos retours à %{authorName}'
       event_description_idea: 'Une idée vous a été attribuée. Envoyer une mise à jour en écrivant un commentaire officiel ou en changeant son statut.'
       main_header: '%{firstName}, vous avez une nouvelle attribution'
-      subject: 'Vous avez une attribution sur la plate-forme de %{organizationName}'
+      subject: 'Vous avez une nouvelle attribution sur la plateforme de %{organizationName}'
       preheader_idea: 'L’idée de %{authorName} vous a été attribuée'

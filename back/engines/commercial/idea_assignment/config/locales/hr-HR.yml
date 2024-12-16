@@ -1,13 +1,13 @@
 hr:
   email_campaigns:
     campaign_type_description:
-      "idea_assigned_to_you": Dodijeljena mi je ideja
+      "idea_assigned_to_you": Dodjela ideje meni
     admin_campaign_type_description:
-      "idea_assigned_to_you": Dodjela ideje – administratori i voditelji projekata
+      "idea_assigned_to_you": Dodjela ideje - admini i voditelji projekata
     idea_assigned_to_you:
       by_author: 'od %{authorName}'
       cta_reply_to: 'Pošaljite povratne informacije za %{authorName}'
-      event_description_idea: 'Dodijeljenа vam je ideja. Pružite povratne informacije pisanjem službenog ažuriranja ili promjenom njenog statusa.'
-      main_header: '%{firstName}, imate novi zadatak'
-      subject: 'Imate zadatak na %{organizationName} platformi '
-      preheader_idea: 'Dodijeljena vam je ideja od %{authorName}'
+      event_description_idea: 'Dodijeljena vam je ideja. Dajte povratne informacije pisanjem službenog ažuriranja ili promjenom statusa.'
+      main_header: '%{firstName}, imaš novi zadatak'
+      subject: 'Imate zadatak na platformi %{organizationName}'
+      preheader_idea: 'Ideja %{authorName} vam je dodijeljena'

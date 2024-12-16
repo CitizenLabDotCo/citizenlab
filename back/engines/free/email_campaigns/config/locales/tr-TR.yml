@@ -11,9 +11,9 @@ tr:
       "comment_on_initiative_you_follow": Takip ettiğiniz bir teklif hakkında yorum
       "cosponsor_of_your_initiative": Bir kullanıcı teklifime ortak sponsor olma davetimi kabul ediyor
       "event_registration_confirmation": Etkinlik kayıt onayı
-      "first_idea_published": İlk fikrimin yayımlanması
+      "first_idea_published": İlk fikrimin yayınlanması
       "idea_marked_as_spam": Fikrin spam olarak bildirilmesi
-      "idea_published": Fikrimin yayımlanması
+      "idea_published": Fikrimin yayınlanması
       "initiative_assigned_to_you": Bana öneri atanması
       "initiative_marked_as_spam": Önerinin spam olarak bildirilmesi
       "initiative_published": Önerimin yayımlanması
@@ -56,7 +56,7 @@ tr:
       "voting_last_chance": Oy vermek için son şans
       "voting_phase_started": Oylama ile yeni proje aşaması
       "voting_results": Oylama sonuçları
-      "your_proposed_initiatives_digest": Önerilerinize haftalık genel bakış
+      "your_proposed_initiatives_digest": Tekliflerinize haftalık genel bakış
     general:
       by_author: 'tarafından %{authorName}'
       author_wrote: '%{authorName} yazdı:'
@@ -105,7 +105,7 @@ tr:
       title_activity_past_week: 'Geçen haftanın etkinliği'
       title_no_activity_past_week: 'Geçen hafta etkinlik yoktu'
       title_initiatives_past_week: 'Geçen haftanın yeni önerileri'
-      title_successful_initiatives_past_week: 'Geçen hafta eşiğe ulaşan öneriler'
+      title_successful_initiatives_past_week: 'Geçtiğimiz hafta içinde eşiğe ulaşan teklifler'
       yesterday_by_author: '%{author} tarafından dün'
       today_by_author: '%{author} tarafından bugün'
       x_days_ago_by_author: '%{author} tarafından %{x} gün önce'
@@ -143,24 +143,24 @@ tr:
       subject: '%{cosponsorName} teklifinize eş sponsorluk yapma davetinizi kabul etti'
       preheader_initiative: '%{cosponsorName} teklifinize eş sponsorluk yapma davetinizi kabul etti'
     assignee_digest:
-      subject: 'Geri bildiriminizi gerektiren fikir sayısı: %{numberIdeas}'
+      subject: 'Geri bildiriminizi gerektiren fikirler: %{numberIdeas}'
       preheader: '%{organizationName} için atanan özeti'
       title_your_weekly_report: '%{firstName}, vatandaş girdisi geri bildiriminizi bekliyor'
       cta_manage_your_input: 'Girdilerinizi yönetin'
-      assigned_ideas: 'Fikirler için geri bildiriminiz gerekiyor'
-      title_assignment_past_week: 'Size atanan en son fikirler'
-      title_no_assignment_past_week: 'Geçen hafta size yeni fikir atanmadı'
+      assigned_ideas: 'Fikirlerin geri bildiriminize ihtiyacı var'
+      title_assignment_past_week: 'Size atanan son fikirler'
+      title_no_assignment_past_week: 'Geçen hafta size verilen yeni bir fikir yok'
       yesterday_by_author: '%{author} tarafından dün'
       today_by_author: '%{author} tarafından bugün'
       x_days_ago_by_author: '%{author} tarafından %{x} gün önce'
       idea_section: Fikirler
-      initiative_section: Öneriler
-      title_initiatives_past_week: 'Size atanan yeni öneriler'
-      title_successful_initiatives_past_week: 'Size atanan ve eşiğe ulaşan öneriler'
+      initiative_section: Teklifler
+      title_initiatives_past_week: 'Size atanan yeni teklifler'
+      title_successful_initiatives_past_week: 'Size atanan ve eşiğe ulaşan teklifler'
     idea_marked_as_spam:
-      cta_review_idea: 'Fikri inceleyin'
+      cta_review_idea: 'Fikri gözden geçirin'
       report_inappropriate_offensive_content: 'Bu içeriği uygunsuz veya küçük düşürücü buluyorum.'
-      report_not_an_idea: 'Bu içerik bir fikir değil, burada bulunmaması gerekir.'
+      report_not_an_idea: 'Bu içerik bir fikir değildir ve buraya ait değildir.'
       subject: '%{organizationName} platformunda bir spam bildiriminiz var'
       preheader: 'Bu spam bildirimi ile ilgili işlem yapın'
       reported_this_because: '%{reporterFirstName} bunu bildirdi:'
@@ -233,10 +233,10 @@ tr:
       cta_reply_to: 'Yorumu görüntüle %{firstName}'
       event_description: '%{authorNameFull} bir iç yorumda sizden bahsetti.'
       subject: '%{firstName} bir iç yorumda sizden bahsetti.'
-      main_header: '%{authorNameFirst} bir iç yorumda sizden bahsetti.'
+      main_header: '%{firstName} bir iç yorumda sizden bahsetti.'
       preheader: '%{authorNameFull} bir iç yorumda sizden bahsetti.'
     moderator_digest:
-      subject: '%{time} haftalık proje yöneticisi raporunuz'
+      subject: 'Haftalık proje yöneticisi raporunuz %{time}'
       preheader: '%{organizationName} proje yöneticisi özeti'
       title_your_weekly_report: '%{firstName}, haftalık raporunuz'
       text_introduction: 'Geçtiğimiz hafta en fazla etkinlik üreten girdileri derledik. Projenizde neler olduğunu öğrenin.'
@@ -279,12 +279,12 @@ tr:
       preheader: '%{authorName} platformunuza yeni bir öneri yayımladı'
     new_idea_for_admin:
       commented: '%{authorFirstName} yorum yaptı:'
-      cta_reply_to: '%{authorName} için geri bildirim sağlayın'
+      cta_reply_to: '%{authorName}adresine geri bildirimde bulunun'
       days_ago: '%{numberOfDays} gün önce'
-      event_description: '%{authorName} platformunuzda yeni bir fikir yayımladı. Şimdi inceleyin, görüşlerinizi bildirin veya durumunu değiştirin!'
-      main_header: '%{firstName}, platformunuzda yeni bir fikir yayımlandı'
-      subject: '%{organizationName} platformunda yeni bir yayın oluşturuldu'
-      preheader: '%{authorName} platformunuza yeni bir fikir yayımladı'
+      event_description: '%{authorName} platformunuzda yeni bir fikir yayınladı. Şimdi keşfedin, geri bildirimde bulunun veya durumunu değiştirin!'
+      main_header: '%{firstName}platformunuzda yeni bir fikir yayınlandı'
+      subject: '%{organizationName}platformunda yeni bir gönderi yayınlandı'
+      preheader: '%{authorName} platformunuzda yeni bir fikir yayınladı'
       today: Bugün
       yesterday: Dün
     comment_on_your_comment:
@@ -422,51 +422,51 @@ tr:
       subject: 'Takip ettiğiniz bir teklifin durumu değişti'
       preheader: 'Takip ettiğiniz bir teklifin yeni bir durumu var'
     user_digest:
-      subject: "%{organizationName} katılım platformundaki etkinlik durumunuz"
+      subject: "%{organizationName}katılım platformundaki etkinliğiniz"
       commented: "%{authorFirstName} yorum yaptı:"
       preheader: "%{organizationName} haftalık genel bakışı"
       title_your_weekly_report: "Geçen hafta neler olduğunu öğrenin"
       intro_text: "%{organizationName} katılım platformunda geçen hafta neler olduğunun bir özeti."
       cta_go_to_the_platform: "Platforma gidin"
       title_no_activity_past_week: "Geçen hafta etkinlik yoktu"
-      title_proposals: "Başlatılan öneriler"
-      proposals_started_text: "Öneriler, başka insanların (sizin gibi!) ilgisi ve desteği sayesinde hız kazanan fikirlerdir. Aşağıda geçtiğimiz hafta ileri sürülen önerilerin bir listesi verilmiştir. Göz atmak istediğiniz ve desteğinizi ya da görüşlerinizi sunmak istediğiniz öneriye tıklayın!"
-      title_successful_proposals: "Eşiğe ulaşan öneriler"
-      successful_proposals_text: "Bu öneriler, bir sonraki aşamaya geçmek için yeterli desteği aldı! Bundan sonra ne olacağı ile ilgili daha fazla bilgi için öneriye tıklayın."
+      title_proposals: "Teklifler başladı"
+      proposals_started_text: "Teklifler, ilerlemek için başkalarından (sizin gibi insanlardan!) ilgi ve destek görmesi gereken fikirlerdir. Aşağıda son bir hafta içinde ortaya atılan tekliflerin bir listesi bulunmaktadır. Bir göz atmak ve desteğinizi ve geri bildiriminizi sunmak için herhangi birine tıklayın!"
+      title_successful_proposals: "Eşiğe ulaşan teklifler"
+      successful_proposals_text: "Bu teklifler bir sonraki aşamaya geçmek için yeterli desteği aldı! Bundan sonra ne olacağı hakkında daha fazla bilgi edinmek için teklifin üzerine tıklayın."
       today_by_author: "%{author} tarafından bugün"
       yesterday_by_author: "%{author} tarafından dün"
       x_days_ago_by_author: "%{author} tarafından %{x} gün önce"
-      trending_ideas: "Popüler fikirler"
-      trending_ideas_text: "Platformda neler olup bittiğini öğrenmek ister misiniz? İşte en popüler üç fikir ve insanların bu fikirler hakkında neler söylediği."
+      trending_ideas: "Trend fikirler"
+      trending_ideas_text: "Platformda neler olup bittiğini merak ediyor musunuz? İşte en trend üç fikir ve insanların onlar hakkında söyledikleri."
       no_notifications: "Bildirim yok"
       one_notification: "1 bildirim"
       multiple_notifications: "%{notifCount} bildirim"
-      no_unread_notifications: "Okunmamış bildiriminiz yok. Girdilerinizle katkı yapmak ve yeni bildirimler oluşturmak için platformu ziyaret edin."
+      no_unread_notifications: "Okunmamış bildiriminiz yok. Katkıda bulunmak ve yeni bildirimler oluşturmak için platformu ziyaret edin!"
       unread_notifications: "Okunmamış bildirileriniz var. Neler olup bittiğini öğrenmek için platformu ziyaret edin."
     threshold_reached_for_admin:
       cta_process_initiative: 'Bu girişimi sonraki adımlara taşıyın'
-      event_description: 'Bir girişim, platformunuzdaki oylama eşiğine ulaştı. Onu sonraki adımlara taşımak için aşağıdaki düğmeye tıklayın.'
-      main_header: 'Bir girişim oylama eşiğine ulaştı.'
-      subject: 'Bir girişim, platformunuzdaki oylama eşiğine ulaştı'
+      event_description: 'Platformunuzda bir teklif oylama eşiğine ulaştı. Sonraki adımlara geçmek için aşağıdaki butona tıklayın!'
+      main_header: 'Bir teklif oylama eşiğine ulaştı!'
+      subject: 'Platformunuzda bir teklif oylama eşiğine ulaştı'
       preheader: 'Sonraki adımları mutlaka gerçekleştirin'
     first_idea_published:
-      action_add_image: 'Görünürlüğünüzü artırmak için %{addImageLink}'
-      action_comment: 'Mevcut fikirler için %{textComment}'
-      action_published_idea: 'Yayımlanan fikir'
-      action_send_email: 'İlgili kişilerinize bir %{sendEmailLink} gönderin'
-      action_share_fb: '%{fbLink} arkadaşlarınıza haber verin'
-      action_share_link: '%{link} kopyalayarak her tür kanaldan paylaşın'
-      action_share_twitter: '%{twitterLink} takipçilerinize haber verin'
-      add_image: 'Görsel ekleyin'
+      action_add_image: '%{addImageLink} görünürlüğü artırmak için'
+      action_comment: '%{textComment} mevcut fikirler üzerine'
+      action_published_idea: 'Yayınlanmış fikir'
+      action_send_email: 'Kişilerinize bir %{sendEmailLink}gönderin'
+      action_share_fb: 'Arkadaşlarınıza %{fbLink}adresinden haber verin'
+      action_share_link: '%{link}adresini kopyalayarak herhangi bir kanal üzerinden paylaşın'
+      action_share_twitter: 'Takipçilerinizi %{twitterLink}adresinden bilgilendirin'
+      add_image: 'Bir resim ekleyin'
       cta_view_idea: 'Fikrinize gidin'
-      event_description: '%{firstName}, %{organizationName} katılım platformundaki ilk fikriniz için tebrik ederiz. İnsanlar fikrinizle etkileşim kurduğunda bilgilendirilirsiniz. Şimdi neler yapabileceğinizi aşağıdan öğrenin.'
-      link: Bağlantı
-      main_header: '%{firstName}, ilk fikrinizi yayınladınız!'
-      message_get_votes: 'Fikrinizi daha fazla kişiye ulaştırın:'
-      preheader: '%{firstName}, %{organizationName} platformunda ilk fikrinizi yayınladığınız için tebrik ederiz. Şimdi fikriniz için destek toplayın'
-      see_you: 'Platformda görüşmek üzere!'
+      event_description: '%{firstName} %{organizationName}katılım platformundaki ilk fikriniz için sizi tebrik ederiz. İnsanlar fikrinizle etkileşime geçtiğinde bilgilendirileceksiniz. Aşağıda atabileceğiniz sonraki adımları öğrenin.'
+      link: link
+      main_header: '%{firstName}ilk fikrini göndermişsin!'
+      message_get_votes: 'Fikrinizle daha fazla insana ulaşın:'
+      preheader: '%{firstName}ilk fikrinizi %{organizationName}platformunda yayınladığınız için tebrikler. Şimdi fikriniz için destek toplayın'
+      see_you: 'Yakında platformda görüşmek üzere!'
       send_email: e-posta
-      subject: '%{organizationName} platformundaki ilk fikriniz'
+      subject: '%{organizationName}platformundaki ilk fikriniz'
     welcome:
       cta_join_platform: 'Platformu keşfedin'
       subject: '%{organizationName} platformuna hoş geldiniz'
@@ -475,32 +475,32 @@ tr:
       preheader: '%{organizationName} platformunda şunları yapabilirsiniz'
     idea_published:
       action_add_image: 'Görünürlüğünüzü artırmak için %{addImageLink}'
-      action_published_idea: 'Yayımlanan fikir'
+      action_published_idea: 'Yayınlanmış fikir'
       action_send_email: 'İlgili kişilerinize bir %{sendEmailLink} gönderin'
       action_share_fb: '%{fbLink} arkadaşlarınıza haber verin'
       action_share_link: '%{link} kopyalayarak her tür kanaldan paylaşın'
       action_share_twitter: '%{twitterLink} takipçilerinize haber verin'
       add_image: 'Görsel ekleyin'
       cta_view_idea: 'Fikrinize gidin'
-      event_description: '%{firstName}, fikriniz %{organizationName} katılım platformunda başarıyla yayımlandı. İnsanlar fikrinizle etkileşim kurduğunda bilgilendirilirsiniz. Şimdi neler yapabileceğinizi aşağıdan öğrenin.'
+      event_description: '%{firstName}, fikriniz %{organizationName}katılım platformunda başarıyla yayınlanmıştır. İnsanlar fikrinizle etkileşime geçtiğinde bilgilendirileceksiniz. Aşağıda atabileceğiniz sonraki adımları öğrenin.'
       link: Bağlantı
-      main_header: 'Bir fikir yayınladınız! Şimdi okunmasını sağlayalım.'
-      message_get_votes: 'Fikrinizi daha fazla kişiye ulaştırın:'
-      preheader: '%{firstName}, %{organizationName} platformunda fikrinizi yayınladığınız için tebrik ederiz. Şimdi destek toplayın.'
-      see_you: 'Platformda görüşmek üzere!'
+      main_header: 'Bir fikir gönderdin! Okunduğundan emin olalım.'
+      message_get_votes: 'Fikrinizle daha fazla insana ulaşın:'
+      preheader: '%{firstName}Fikrinizi %{organizationName}platformunda yayınladığınız için tebrikler. Şimdi destek toplayın.'
+      see_you: 'Yakında platformda görüşmek üzere!'
       send_email: e-posta
-      subject: '%{organizationName} platformundaki fikriniz'
+      subject: 'Fikriniz %{organizationName}platformunda'
       message_next_steps: ""
     your_proposed_initiatives_digest:
-      subject: 'Önerilerinizle ilgili haftalık bildirim'
-      preheader: 'Geçtiğimiz hafta önerilerinizle ilgili ne oldu?'
-      title_your_weekly_report: 'Önerileriniz ne durumdaydı?'
-      text_introduction: 'Aşağıda verilen performansla ilgili değerlere bakın, platforma gidin ve yeterli desteği zamanında toplamak için yapmanız gerekenleri yapın.'
-      cta_see_your_initiative: 'Önerilerinize gidin'
+      subject: 'Tekliflerinizin haftalık olarak güncellenmesi'
+      preheader: 'Geçtiğimiz hafta tekliflerinizle ilgili ne oldu?'
+      title_your_weekly_report: 'Teklifleriniz nasıl gidiyor?'
+      text_introduction: 'Aşağıdaki anahtar numaraları bulun ve harekete geçmek ve zamanında yeterli desteği toplamak için platforma gidin.'
+      cta_see_your_initiative: 'Tekliflerinize gidin'
       total_votes: 'Toplam oy sayısı'
-      new_votes: 'Yeni oy sayısı'
-      remaining_votes: 'Kalan oy sayısı'
-      remaining_days: 'Kalan gün sayısı'
+      new_votes: 'Yeni oylar'
+      remaining_votes: 'Kalan oylar'
+      remaining_days: 'Kalan günler'
     voting_basket_submitted:
       subject: '%{organizationName}: Başarılı bir şekilde oy kullandınız'
       preheader: '%{organizationName}katılım platformunda başarıyla oy kullandınız'

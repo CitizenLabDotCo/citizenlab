@@ -105,7 +105,7 @@ fr-BE:
       title_activity_past_week: 'Activité de la semaine passée'
       title_no_activity_past_week: 'Il n''y a eu aucune activité la semaine passée'
       title_initiatives_past_week: 'Les nouvelles propositions de la semaine dernière'
-      title_successful_initiatives_past_week: 'Initiatives qui ont atteint le nombre de voix requis au cours de la semaine dernière'
+      title_successful_initiatives_past_week: 'Propositions qui ont atteint le nombre de voix requis au cours de la semaine dernière'
       yesterday_by_author: 'Hier par %{author}'
       today_by_author: 'Aujourd''hui par %{author}'
       x_days_ago_by_author: 'Il y a %{x} jours par %{author}'
@@ -154,9 +154,9 @@ fr-BE:
       today_by_author: 'Aujourd''hui par %{author}'
       x_days_ago_by_author: 'Il y a %{x} jours par %{author}'
       idea_section: Idées
-      initiative_section: Initiatives
-      title_initiatives_past_week: 'Nouvelles initiatives qui vous sont confiées'
-      title_successful_initiatives_past_week: 'Les initiatives qui vous sont confiées et qui ont atteint le nombre de voix requis'
+      initiative_section: Propositions
+      title_initiatives_past_week: 'Nouvelles propositions qui vous sont confiées'
+      title_successful_initiatives_past_week: 'Les propositions qui vous sont confiées et qui ont atteint le nombre de voix requis'
     idea_marked_as_spam:
       cta_review_idea: 'Examiner cette idée'
       report_inappropriate_offensive_content: 'Je trouve ce contenu inapproprié ou offensant.'
@@ -233,10 +233,10 @@ fr-BE:
       cta_reply_to: 'Voir le commentaire de %{firstName}'
       event_description: '%{authorNameFull} vous a mentionné dans un commentaire interne.'
       subject: '%{firstName} vous a mentionné dans un commentaire interne.'
-      main_header: '%{authorNameFirst} vous a mentionné dans un commentaire interne.'
+      main_header: '%{firstName} vous a mentionné dans un commentaire interne.'
       preheader: '%{authorNameFull} vous a mentionné dans un commentaire interne.'
     moderator_digest:
-      subject: 'Votre rapport modérateur hebdomadaire du %{time}'
+      subject: 'Votre rapport hebdomadaire de gestionnaire de projets du %{time}'
       preheader: 'Résumé du rapport modérateur de %{organizationName}'
       title_your_weekly_report: '%{firstName}, votre rapport hebdomadaire'
       text_introduction: 'Voici une sélection des idées qui ont généré le plus d''activité la semaine dernière. Découvrez ce qui se passe sur votre plateforme!'
@@ -279,11 +279,11 @@ fr-BE:
       preheader: '%{authorName} a publié une nouvelle initiative sur votre plateforme'
     new_idea_for_admin:
       commented: '%{authorFirstName} a commenté :'
-      cta_reply_to: 'Faites vos retours à %{authorName}'
+      cta_reply_to: 'Faites votre retour à %{authorName}'
       days_ago: 'Il y a %{numberOfDays} jours'
-      event_description: '%{authorName} a publié une nouvelle idée sur votre plate-forme. Découvrez-la, faites un retour ou modifiez son état !'
+      event_description: '%{authorName} a publié une nouvelle idée sur votre plateforme. Découvrez-la, faites un retour ou modifiez son statut !'
       main_header: '%{firstName}, une nouvelle idée a été postée sur votre plate-forme'
-      subject: 'Quelqu''un a publié une nouvelle idée sur la plateforme de %{organizationName}'
+      subject: 'Une nouvelle idée a été publiée sur la plateforme de %{organizationName}'
       preheader: '%{authorName} a publié une nouvelle idée sur votre plateforme'
       today: Aujourd'hui
       yesterday: Hier
@@ -445,9 +445,9 @@ fr-BE:
       unread_notifications: "Vous avez de nouvelles notifications ! Visitez la plate-forme pour découvrir ce qu'il s'y passe."
     threshold_reached_for_admin:
       cta_process_initiative: 'Passez cette initiative à l''étape suivante'
-      event_description: 'Une initiative a atteint le seuil de vote sur votre plateforme. Cliquez sur le bouton ci-dessous pour passer aux étapes suivantes !'
-      main_header: 'Une initiative a atteint le nombre de voix requis!'
-      subject: 'Une initiative a atteint le nombre de voix requis sur votre plateforme'
+      event_description: 'Une proposition a atteint le seuil de vote sur votre plateforme. Cliquez sur le bouton ci-dessous pour passer aux étapes suivantes !'
+      main_header: 'Une proposition a atteint le nombre de voix requis!'
+      subject: 'Une proposition a atteint le nombre de voix requis sur votre plateforme'
       preheader: 'Assurez-vous de passer aux étapes suivantes'
     first_idea_published:
       action_add_image: '%{addImageLink} pour donner plus de visibilité à votre idée'
@@ -456,13 +456,13 @@ fr-BE:
       action_send_email: 'Envoyez un %{sendEmailLink} à vos contacts'
       action_share_fb: 'Informez vos amis sur %{fbLink}'
       action_share_link: 'Partagez-la via n''importe quel canal en copiant le %{link}'
-      action_share_twitter: 'Informez vos suiveurs sur %{twitterLink}'
+      action_share_twitter: 'Informez vos followers sur %{twitterLink}'
       add_image: 'Ajoutez une image'
-      cta_view_idea: 'Aller à votre idée'
+      cta_view_idea: 'Accédez à votre idée'
       event_description: '%{firstName}, félicitations pour votre première idée sur la plate-forme de participation de %{organizationName}. Vous serez averti lorsque les gens interagissent avec votre idée. Découvrez ci-dessous les prochaines étapes que vous pouvez suivre.'
       link: lien
       main_header: '%{firstName}, vous avez posté votre première idée !'
-      message_get_votes: 'Atteignez plus de gens avec votre idée :'
+      message_get_votes: 'Partagez-la autour de vous :'
       preheader: 'Félicitations %{firstName}, vous avez posté votre première idée sur la plateforme de %{organizationName}. A présent, obtenez du soutien pour votre idée'
       see_you: 'A bientôt sur la plateforme !'
       send_email: courriel
@@ -481,22 +481,22 @@ fr-BE:
       action_share_link: 'Partagez-la via n''importe quel canal en copiant le %{link}'
       action_share_twitter: 'Informez vos suiveurs sur %{twitterLink}'
       add_image: 'Ajoutez une image'
-      cta_view_idea: 'Aller à votre idée'
+      cta_view_idea: 'Accédez à votre idée'
       event_description: '%{firstName}, votre idée a été publiée avec succès sur la plateforme de participation de %{organizationName}. Vous serez averti lorsque les gens interagissent avec votre idée. Découvrez ci-dessous les prochaines étapes que vous pouvez suivre.'
       link: lien
-      main_header: 'Vous avez posté une idée ! Faisons en sorte qu''elle soit lue.'
-      message_get_votes: 'Atteignez plus de gens avec votre idée :'
+      main_header: 'Votre idée a bien été postée. Partagez-la à votre entourage !'
+      message_get_votes: 'Partagez-la autour de vous :'
       preheader: '%{firstName}, félicitations pour avoir posté votre idée sur la plateforme de %{organizationName}. A présent, obtenez du soutien pour votre idée.'
       see_you: 'A bientôt sur la plateforme !'
       send_email: courriel
       subject: 'Votre idée sur la plateforme de %{organizationName}'
       message_next_steps: ""
     your_proposed_initiatives_digest:
-      subject: 'Mise à jour hebdomadaire de votre initiative'
-      preheader: 'Qu''est-il arrivé à votre initiative la semaine dernière ?'
-      title_your_weekly_report: 'Comment s''est déroulée votre initiative ?'
-      text_introduction: 'Trouvez les chiffres clés ci-dessous et rendez-vous sur la page de votre initiative pour passer à l''action et obtenir suffisamment de soutien à temps.'
-      cta_see_your_initiative: 'Aller à votre initiative'
+      subject: 'Mise à jour hebdomadaire de votre proposition'
+      preheader: 'Qu''est-il arrivé à votre proposition la semaine dernière ?'
+      title_your_weekly_report: 'Comment s''est déroulée votre proposition ?'
+      text_introduction: 'Trouvez les chiffres clés ci-dessous et rendez-vous sur la page de votre proposition pour passer à l''action et obtenir suffisamment de soutien à temps.'
+      cta_see_your_initiative: 'Accédez à vos propositions'
       total_votes: 'Total des votes'
       new_votes: 'Nouveaux votes'
       remaining_votes: 'Votes restants'

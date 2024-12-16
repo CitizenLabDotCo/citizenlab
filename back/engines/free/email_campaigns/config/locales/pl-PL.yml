@@ -56,7 +56,7 @@ pl:
       "voting_last_chance": Ostatnia szansa na oddanie głosu
       "voting_phase_started": Nowa faza projektu z głosowaniem
       "voting_results": Wyniki głosowania
-      "your_proposed_initiatives_digest": Tygodniowy przegląd Twoich propozycji
+      "your_proposed_initiatives_digest": Cotygodniowy przegląd Twoich propozycji
     general:
       by_author: 'przez %{authorName}'
       author_wrote: '%{authorName} napisał:'
@@ -105,7 +105,7 @@ pl:
       title_activity_past_week: 'Aktywność w ciągu ostatniego tygodnia'
       title_no_activity_past_week: 'Nie było żadnej aktywności w ostatnim tygodniu'
       title_initiatives_past_week: 'Nowe propozycje z ostatniego tygodnia'
-      title_successful_initiatives_past_week: 'Propozycje, które osiągnęły próg poparcia w ciągu ostatniego tygodnia'
+      title_successful_initiatives_past_week: 'Propozycje, które osiągnęły próg w minionym tygodniu'
       yesterday_by_author: 'Wczoraj wg %{author}'
       today_by_author: 'Dzisiaj wg %{author}'
       x_days_ago_by_author: '%{x} dni temu wg %{author}'
@@ -147,20 +147,20 @@ pl:
       preheader: 'Skrót dla pełnomocnika %{organizationName}'
       title_your_weekly_report: '%{firstName}, głos mieszkańca czeka na Twoją opinię'
       cta_manage_your_input: 'Zarządzaj swoimi treściami'
-      assigned_ideas: 'Pomysły wymagające Twojej opinii'
-      title_assignment_past_week: 'Najnowsze pomysły przydzielone do Ciebie'
-      title_no_assignment_past_week: 'Brak nowych pomysłów przypisanych do Ciebie w zeszłym tygodniu'
+      assigned_ideas: 'Pomysły potrzebują Twojej opinii'
+      title_assignment_past_week: 'Najnowsze pomysły przypisane do Ciebie'
+      title_no_assignment_past_week: 'W zeszłym tygodniu nie przydzielono Ci żadnych nowych pomysłów'
       yesterday_by_author: 'Wczoraj przez %{author}'
       today_by_author: 'Dzisiaj wg %{author}'
       x_days_ago_by_author: '%{x} dni temu wg %{author}'
       idea_section: Pomysły
       initiative_section: Propozycje
       title_initiatives_past_week: 'Nowe propozycje przypisane do Ciebie'
-      title_successful_initiatives_past_week: 'Propozycje przypisane do Ciebie, które osiągnęły próg poparcia'
+      title_successful_initiatives_past_week: 'Przydzielone Ci propozycje, które osiągnęły próg'
     idea_marked_as_spam:
-      cta_review_idea: 'Przejrzyj pomysł'
+      cta_review_idea: 'Pomysł na recenzję'
       report_inappropriate_offensive_content: 'Uważam tę treść za nieodpowiednią lub obraźliwą.'
-      report_not_an_idea: 'Ta treść nie jest pomysłem i to nie jest jej miejsce.'
+      report_not_an_idea: 'Ta zawartość nie jest pomysłem i nie należy do tego miejsca.'
       subject: 'Masz raport dot. spamu na platformie %{organizationName}'
       preheader: 'Podejmij działanie w związku ze zgłoszeniem spamu'
       reported_this_because: '%{reporterFirstName} zgłosił to, ponieważ:'
@@ -233,10 +233,10 @@ pl:
       cta_reply_to: 'Wyświetl komentarz przez %{firstName}'
       event_description: '%{authorNameFull} wspomniałem o tobie w wewnętrznym komentarzu.'
       subject: '%{firstName} wspomniałem o tobie w wewnętrznym komentarzu.'
-      main_header: '%{authorNameFirst} wspomniałem o tobie w wewnętrznym komentarzu.'
+      main_header: '%{firstName} wspomniałem o tobie w wewnętrznym komentarzu.'
       preheader: '%{authorNameFull} wspomniałem o tobie w wewnętrznym komentarzu.'
     moderator_digest:
-      subject: 'Twój tygodniowy raport moderatora projektu z %{time}'
+      subject: 'Twój cotygodniowy raport kierownika projektu %{time}'
       preheader: 'Skrót dla moderatora projektu %{organizationName}'
       title_your_weekly_report: '%{firstName}, twój tygodniowy raport'
       text_introduction: 'Stworzyliśmy dla Ciebie listę pomysłów, które wygenerowały największą aktywność w ciągu ostatniego tygodnia. Dowiedz się, co dzieje się w ramach Twojego projektu!'
@@ -279,12 +279,12 @@ pl:
       preheader: '%{authorName} opublikował nową propozycję na Twojej platformie'
     new_idea_for_admin:
       commented: '%{authorFirstName} skomentował:'
-      cta_reply_to: 'Przekaż informację zwrotną do %{authorName}'
+      cta_reply_to: 'Prześlij opinię na adres %{authorName}'
       days_ago: '%{numberOfDays} dni temu'
-      event_description: '%{authorName} opublikował nowy pomysł na Twojej platformie. Przejdź do niego teraz, przekaż kilka uwag lub zmień jego status!'
-      main_header: '%{firstName}, zamieszczono nowy pomysł na Twojej platformie'
-      subject: 'Ktoś opublikował nowy pomysł na platformie %{organizationName}'
-      preheader: '%{authorName} opublikował nowy pomysł na Twojej platformie'
+      event_description: '%{authorName} opublikował nowy pomysł na Twojej platformie. Odkryj go teraz, przekaż opinię lub zmień jego status!'
+      main_header: '%{firstName}nowy pomysł został opublikowany na twojej platformie'
+      subject: 'Nowy post został opublikowany na platformie %{organizationName}.'
+      preheader: '%{authorName} opublikowałeś nowy pomysł na swojej platformie'
       today: Dzisiaj
       yesterday: Wczoraj
     comment_on_your_comment:
@@ -422,22 +422,22 @@ pl:
       subject: 'Status propozycji, którą obserwujesz, uległ zmianie'
       preheader: 'Propozycja, którą obserwujesz, ma nowy status'
     user_digest:
-      subject: "Tygodniowa aktualizacja platformy uczestnictwa %{organizationName}"
+      subject: "Twoja aktywność na platformie uczestnictwa %{organizationName}"
       commented: "%{authorFirstName} skomentował:"
       preheader: "Tygodniowy przegląd %{organizationName}"
       title_your_weekly_report: "Dowiedz się, co wydarzyło się w zeszłym tygodniu"
       intro_text: "Oto podsumowanie tego, co wydarzyło się na platformie uczestnictwa %{organizationName}."
       cta_go_to_the_platform: "Przejdź na platformę"
       title_no_activity_past_week: "Brak aktywności w ciągu ostatniego tygodnia"
-      title_proposals: "Proposals started"
-      proposals_started_text: "Proposals are ideas that need to gain traction and support from others (people like you!) in order to move forward. Below is a list of proposals that have been put forward in the last week. Click on any of them to take a look and offer your support and feedback!"
-      title_successful_proposals: "Proposals that reached the threshold"
-      successful_proposals_text: "These proposals have gotten enough support to move to the next stage! Click on the proposal to learn more about what happens next."
+      title_proposals: "Propozycje rozpoczęte"
+      proposals_started_text: "Propozycje to pomysły, które muszą zyskać popularność i wsparcie innych (ludzi takich jak Ty!), aby posunąć się naprzód. Poniżej znajduje się lista propozycji, które zostały zgłoszone w ciągu ostatniego tygodnia. Kliknij na którąkolwiek z nich, aby rzucić okiem i zaoferować swoje wsparcie i opinie!"
+      title_successful_proposals: "Propozycje, które osiągnęły próg"
+      successful_proposals_text: "Te propozycje uzyskały wystarczające poparcie, aby przejść do następnego etapu! Kliknij propozycję, aby dowiedzieć się więcej o dalszych krokach."
       today_by_author: "Dzisiaj wg %{author}"
       yesterday_by_author: "Wczoraj przez %{author}"
       x_days_ago_by_author: "%{x} dni temu wg %{author}"
-      trending_ideas: "Modne pomysły"
-      trending_ideas_text: "Interesuje Cię, co się dzieje na platformie? Oto trzy najmodniejsze pomysły i to, co ludzie o nich mówią."
+      trending_ideas: "Popularne pomysły"
+      trending_ideas_text: "Interesuje Cię, co dzieje się na platformie? Oto trzy najpopularniejsze pomysły i to, co ludzie o nich mówią."
       no_notifications: "Brak powiadomień"
       one_notification: "1 powiadomienie"
       multiple_notifications: "Powiadomienia: %{notifCount}"
@@ -445,25 +445,25 @@ pl:
       unread_notifications: "Masz nieprzeczytane powiadomienia. Odwiedź platformę, aby dowiedzieć się, co się dzieje!"
     threshold_reached_for_admin:
       cta_process_initiative: 'Skieruj tę inicjatywę do dalszych kroków'
-      event_description: 'Pewna inicjatywa na platformie osiągnęła wymagany próg poparcia. Kliknij przycisk poniżej, aby przejść do kolejnych kroków!'
-      main_header: 'Inicjatywa osiągnęła próg poparcia!'
-      subject: 'Inicjatywa na Twojej platformie osiągnęła wymagany próg poparcia'
+      event_description: 'Propozycja osiągnęła próg głosowania na Twojej platformie. Kliknij poniższy przycisk, aby przejść do kolejnych kroków!'
+      main_header: 'Propozycja osiągnęła próg głosowania!'
+      subject: 'Propozycja osiągnęła próg głosowania na Twojej platformie'
       preheader: 'Upewnij się, że wykonasz następne kroki'
     first_idea_published:
       action_add_image: '%{addImageLink} aby zwiększyć widoczność'
-      action_comment: '%{textComment} do istniejących pomysłów'
+      action_comment: '%{textComment} na istniejących pomysłach'
       action_published_idea: 'Opublikowany pomysł'
-      action_send_email: 'Wyślij do swoich kontaktów %{sendEmailLink}'
-      action_share_fb: 'Daj znać znajomym na %{fbLink}'
-      action_share_link: 'Udostępnij w dowolny sposób, kopiując %{link}'
-      action_share_twitter: 'Poinformuj swoich zwolenników na %{twitterLink}'
-      add_image: 'Dodaj obrazek'
+      action_send_email: 'Wyślij swoim kontaktom wiadomość %{sendEmailLink}'
+      action_share_fb: 'Powiadom swoich znajomych na %{fbLink}'
+      action_share_link: 'Udostępnij go za pośrednictwem dowolnego kanału, kopiując stronę %{link}'
+      action_share_twitter: 'Poinformuj swoich obserwujących na %{twitterLink}'
+      add_image: 'Dodaj obraz'
       cta_view_idea: 'Przejdź do swojego pomysłu'
-      event_description: '%{firstName}, gratulacje z okazji pierwszego pomysłu na platformę uczestnictwa %{organizationName}. Zostaniesz powiadomiony, gdy ludzie będą wchodzić w interakcję z Twoim pomysłem. Dowiedz się poniżej, jakie kolejne kroki możesz podjąć.'
+      event_description: '%{firstName}Gratulujemy Twojego pierwszego pomysłu na platformie uczestnictwa %{organizationName}. Otrzymasz powiadomienie, gdy ludzie wejdą w interakcję z Twoim pomysłem. Poniżej dowiesz się, jakie kolejne kroki możesz podjąć.'
       link: link
-      main_header: '%{firstName}, zamieściłeś swój pierwszy pomysł!'
-      message_get_votes: 'Zapoznaj więcej ludzi ze swoim pomysłem:'
-      preheader: '%{firstName}, gratuluję umieszczenia pierwszego pomysłu na platformie %{organizationName}. Teraz zbierz poparcie dla swojego pomysłu'
+      main_header: '%{firstName}opublikowałeś swój pierwszy pomysł!'
+      message_get_votes: 'Dotrzyj ze swoim pomysłem do większej liczby osób:'
+      preheader: '%{firstName}Gratulujemy opublikowania Twojego pierwszego pomysłu na platformie %{organizationName}. Teraz zbierz wsparcie dla swojego pomysłu'
       see_you: 'Do zobaczenia wkrótce na platformie!'
       send_email: e-mail
       subject: 'Twój pierwszy pomysł na platformie %{organizationName}'
@@ -481,26 +481,26 @@ pl:
       action_share_link: 'Udostępnij w dowolny sposób, kopiując %{link}'
       action_share_twitter: 'Poinformuj swoich zwolenników na %{twitterLink}'
       add_image: 'Dodaj obrazek'
-      cta_view_idea: 'Idź do swojego pomysłu'
-      event_description: '%{firstName}, Twój pomysł został pomyślnie opublikowany na platformie uczestnictwa %{organizationName}. Zostaniesz powiadomiony, gdy ludzie zaczną wchodzić w interakcję z Twoim pomysłem. Dowiedz się poniżej, jakie kolejne kroki możesz podjąć.'
+      cta_view_idea: 'Przejdź do swojego pomysłu'
+      event_description: '%{firstName}Twój pomysł został pomyślnie opublikowany na platformie uczestnictwa %{organizationName}. Otrzymasz powiadomienie, gdy ludzie wejdą w interakcję z Twoim pomysłem. Poniżej dowiesz się, jakie kolejne kroki możesz podjąć.'
       link: link
-      main_header: 'Zamieściłeś pomysł! Upewnijmy się, że na pewno zostanie zauważony.'
-      message_get_votes: 'Zapoznaj więcej ludzi ze swoim pomysłem:'
-      preheader: '%{firstName}, gratuluję umieszczenia pomysłu na platformie %{organizationName}. Teraz zbierz poparcie.'
+      main_header: 'Opublikowałeś pomysł! Upewnij się, że zostanie przeczytany.'
+      message_get_votes: 'Dotrzyj ze swoim pomysłem do większej liczby osób:'
+      preheader: '%{firstName}Gratulujemy opublikowania Twojego pomysłu na platformie %{organizationName}. Teraz zbierz wsparcie.'
       see_you: 'Do zobaczenia wkrótce na platformie!'
       send_email: e-mail
       subject: 'Twój pomysł na platformie %{organizationName}'
       message_next_steps: ""
     your_proposed_initiatives_digest:
-      subject: 'Cotygodniowa aktualizacja Twojej propozycji'
-      preheader: 'Co działo się z twoją propozycją w minionym tygodniu?'
-      title_your_weekly_report: 'Jak dzieje się z Twoją propozycją?'
-      text_introduction: 'Zapoznaj się kluczowymi liczbami poniżej i przejdź do strony swojej propozycji, aby podjąć działania i zebrać wystarczające poparcie w odpowiednim czasie.'
-      cta_see_your_initiative: 'Przejdź do swojej propozycji'
-      total_votes: 'Głosy ogółem'
+      subject: 'Cotygodniowa aktualizacja Twoich propozycji'
+      preheader: 'Co wydarzyło się z twoimi propozycjami w ciągu ostatniego tygodnia?'
+      title_your_weekly_report: 'Jak radzą sobie twoje propozycje?'
+      text_introduction: 'Znajdź kluczowe liczby poniżej i przejdź do platformy, aby podjąć działania i zebrać wystarczające wsparcie na czas.'
+      cta_see_your_initiative: 'Przejdź do swoich propozycji'
+      total_votes: 'Łączna liczba głosów'
       new_votes: 'Nowe głosy'
-      remaining_votes: 'Pozostało głosów'
-      remaining_days: 'Pozostało dni'
+      remaining_votes: 'Pozostałe głosy'
+      remaining_days: 'Pozostałe dni'
     voting_basket_submitted:
       subject: '%{organizationName}Pomyślnie zagłosowałeś'
       preheader: 'Pomyślnie zagłosowałeś na platformie uczestnictwa %{organizationName}'

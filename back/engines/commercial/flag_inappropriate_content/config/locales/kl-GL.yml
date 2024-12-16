@@ -5,13 +5,13 @@ kl:
     admin_campaign_type_description:
       "inappropriate_content_flagged": Imai naleqqutinngitsut nalunaaqutsigaapput – administratorer
     inappropriate_content_flagged:
-      subject: 'Nittartakkanni ilanngussaq misissugassatut nalunaaqutserneqarsimavoq'
-      header_title: 'Nittartakkanni ilanngussaq misissugassatut nalunaaqutserneqarsimavoq'
-      comment_author: '%{authorName} oqaaseqaateqarpoq:'
-      idea_author: '%{authorName} ilanngussassamik nassiussineq:'
-      initiative_author: '%{authorName} siunnersuut nassiunneqarsimasoq:'
+      subject: 'A post on your platform has been flagged for review'
+      header_title: 'A post on your platform has been flagged for review'
+      comment_author: '%{authorName} commented:'
+      idea_author: '%{authorName} submitted a post:'
+      initiative_author: '%{authorName} submitted a proposal:'
       automatically_flagged: >
         Una ilanngussaq naleqqutinngitsunik imaqarsinnaasutut pasitsaanneqarpoq. Matuminnga nalunaarfigivatsigit, nammineq najoqqutassiatit naapertorlugit misissorsinnaaniassagakku.
       how_to_review: >
         Ilanngutassiaq naleqqutinngitsunik imaqanngippat nittartakkanni nalunaarut administratoritut iserfissami Suliaq aqqutigalugu peersinnaavat.
-      cta_review_post: 'Ilanngussaq nalilersoruk'
+      cta_review_post: 'Review post'
