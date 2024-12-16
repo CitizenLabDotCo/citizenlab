@@ -6,7 +6,7 @@ hu:
       "inappropriate_content_flagged": Nem megfelelő tartalom megjelölve – rendszergazdák
     inappropriate_content_flagged:
       subject: 'Az Ön platformján lévő bejegyzést megjelöltük felülvizsgálatra'
-      header_title: 'A platformodon lévő bejegyzést megjelöltük ellenőrzésre'
+      header_title: 'Az Ön platformján lévő bejegyzést megjelöltük felülvizsgálatra'
       comment_author: '%{authorName} hozzászólt:'
       idea_author: '%{authorName} beküldött egy bejegyzést:'
       initiative_author: '%{authorName} benyújtott egy javaslatot:'
