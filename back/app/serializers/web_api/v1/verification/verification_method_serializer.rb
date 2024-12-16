@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-module Verification
-  class WebApi::V1::VerificationMethodSerializer < ::WebApi::V1::BaseSerializer
+module WebApi::V1::Verification
+  class VerificationMethodSerializer < ::WebApi::V1::BaseSerializer
     attributes :name
 
-    VerificationService.new.all_methods.each do |method|
+    ::Verification::VerificationService.new.all_methods.each do |method|
       next unless method.respond_to?(:exposed_config_parameters)
 
       method.exposed_config_parameters.each do |config_param|
@@ -16,7 +16,7 @@ module Verification
 
     # Method metadata
     attribute :method_metadata do |record|
-      VerificationService.new.method_metadata(record)
+      ::Verification::VerificationService.new.method_metadata(record)
     end
   end
 end

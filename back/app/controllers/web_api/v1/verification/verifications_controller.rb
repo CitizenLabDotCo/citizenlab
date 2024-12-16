@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-module Verification
-  module WebApi
-    module V1
+module WebApi
+  module V1
+    module Verification
       class VerificationsController < VerificationController
         skip_before_action :authenticate_user
         # Not all code paths (exceptions) perform an `authorize` call, so we're

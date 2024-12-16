@@ -120,6 +120,9 @@ Rails.application.routes.draw do
         get 'comments_count', on: :member
         get 'blocked_count', on: :collection
         get 'check/:email', on: :collection, to: 'users#check', constraints: { email: /.*/ }
+        scope module: "verification" do
+          get 'me/locked_attributes', on: :collection, to: 'locked_attributes#index'
+        end
 
         resources :comments, only: [:index], controller: 'user_comments'
       end
@@ -316,6 +319,18 @@ Rails.application.routes.draw do
       resources :avatars, only: %i[index show]
 
       resources :ideas_phases, only: %i[show]
+
+      resources :verification_methods, module: 'verification', only: [:index] do
+        get :first_enabled, on: :collection
+        get :first_enabled_for_verified_actions, on: :collection
+      end
+      # TODO: JS - Can we move this? No tests for this??
+      Verification::VerificationService.new
+                                       .all_methods
+                                       .select { |vm| vm.verification_method_type == :manual_sync }
+                                       .each do |vm|
+        post "verification_methods/#{vm.name}/verification" => 'verifications#create', :defaults => { method_name: vm.name }
+      end
     end
   end
 
