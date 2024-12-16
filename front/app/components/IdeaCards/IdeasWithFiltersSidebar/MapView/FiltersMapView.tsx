@@ -33,11 +33,7 @@ const FiltersMapView = ({
           />
         </Box>
       </Box>
-      <BottomBar
-        onClick={onClose}
-        ideaQueryParameters={ideaQueryParameters}
-        filtersActive={filtersProps.filtersActive}
-      />
+      <BottomBar onClick={onClose} ideaQueryParameters={ideaQueryParameters} />
     </>
   );
 };

@@ -31,7 +31,6 @@ const FiltersModal = ({
         <BottomBar
           onClick={onClose}
           ideaQueryParameters={ideaQueryParameters}
-          filtersActive={filtersProps.filtersActive}
         />
       }
       contentBgColor="background"
