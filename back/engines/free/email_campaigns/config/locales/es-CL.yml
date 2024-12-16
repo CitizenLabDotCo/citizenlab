@@ -395,7 +395,7 @@ es-CL:
       header_message: '%{feedback_author_name} dejó una actualización oficial sobre %{input_title}''.'
       header_title: 'Hay una actualización en "%{input_title}"'
       subject: 'Se publicaron comentarios oficiales en "%{input_title}"'
-      preheader: 'Hay una actualización de una idea que sigues'
+      preheader: 'Hay una actualización en un aporte que sigues'
     official_feedback_on_initiative_you_follow:
       header_message: '%{officialName} dio una actualización sobre la propuesta ''%{initiativeTitle}''. Haz clic en el botón de abajo para entrar en la conversación con %{organizationName}.'
       header_title: 'Hay una actualización de una propuesta que sigues'
@@ -461,9 +461,9 @@ es-CL:
     status_change_on_idea_you_follow:
       status_change: 'El nuevo estado de este aporte es ''%{status}'''
       header_message: '%{organizationName} actualizó el estado del aporte ''%{input_title}'' en su plataforma digital de participación.'
-      header_title: 'Una idea que sigues tiene un nuevo estado'
+      header_title: 'Un aporte que sigues tiene un nuevo estado'
       subject: 'El estatus de "%{input_title}" ha cambiando'
-      preheader: 'Una idea que sigues tiene un nuevo estatus'
+      preheader: 'Un aporte que sigues tiene un nuevo estado'
     status_change_on_initiative_you_follow:
       status_change: 'El nuevo estado de esta propuesta es ''%{initiativeStatus}'''
       header_message: 'El estado de la propuesta ''%{initiativeTitle}'' ha sido actualizado en la plataforma de participación digital de %{organizationName}.'
@@ -540,11 +540,11 @@ es-CL:
       subject: '"%{input_title}" está casi publicado'
       preheader: 'Actualmente está en %{prescreening_status_title}'
     your_proposed_initiatives_digest:
-      subject: 'Actualización semanal de tu iniciativa'
-      preheader: '¿Qué pasó con tu iniciativa la semana pasada?'
-      title_your_weekly_report: '¿Cómo ha ido tu iniciativa?'
-      text_introduction: 'Encuentre los números clave a continuación y vaya a la página de su iniciativa para tomar medidas y obtener suficiente apoyo a tiempo.'
-      cta_see_your_initiative: 'Ir a tu iniciativa'
+      subject: 'Actualización semanal de tu propuesta'
+      preheader: '¿Qué pasó con tu propuesta la semana pasada?'
+      title_your_weekly_report: '¿Cómo ha ido tu propuesta?'
+      text_introduction: 'Encuentre los números clave a continuación y vaya a la página de su propuesta para tomar medidas y obtener suficiente apoyo a tiempo.'
+      cta_see_your_initiative: 'Ir a tu propuesta'
       total_votes: 'Total de votos'
       new_votes: 'Nuevos votos'
       remaining_votes: 'Votos restantes'
