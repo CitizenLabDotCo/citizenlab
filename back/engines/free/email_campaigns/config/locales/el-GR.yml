@@ -270,10 +270,10 @@ el:
       cta_reply_to: 'Προβολή σχολίου από %{firstName}'
       event_description: '%{authorNameFull} σας ανέφερε σε ένα εσωτερικό σχόλιο.'
       subject: '%{firstName} σας ανέφερε σε ένα εσωτερικό σχόλιο.'
-      main_header: '%{authorNameFirst} σας ανέφερε σε ένα εσωτερικό σχόλιο.'
+      main_header: '%{firstName} σας ανέφερε σε ένα εσωτερικό σχόλιο.'
       preheader: '%{authorNameFull} σας ανέφερε σε ένα εσωτερικό σχόλιο.'
     moderator_digest:
-      subject: 'Εβδομαδιαία έκθεση διαχειριστή του "%{project_title}"'
+      subject: 'Η εβδομαδιαία έκθεση του διαχειριστή του έργου σας %{project_title}'
       preheader: 'Ανακεφαλαίωση του διαχειριστή έργου στο %{organizationName}'
       title_your_weekly_report: '%{firstName}, η εβδομαδιαία έκθεσή σας'
       text_introduction: 'Επιμεληθήκαμε για εσάς τις πληροφορίες που προκάλεσαν τη μεγαλύτερη δραστηριότητα την τελευταία εβδομάδα. Μάθετε τι συμβαίνει με το έργο σας!'
@@ -299,7 +299,7 @@ el:
       yesterday: Χθες
     comment_on_idea_you_follow:
       cta_reply_to: 'Απάντηση στο %{commentAuthor}'
-      event_description: '%{authorNameFull} τοποθέτησε μια αντίδραση στο ''%{inputTitle}''. Κάντε κλικ στο παρακάτω κουμπί για να συνεχίσετε τη συζήτηση με το %{authorName}.'
+      event_description: '%{authorNameFull} αντέδρασε στην ιδέα σας ''%{inputTitle}''. Κάντε κλικ στο παρακάτω κουμπί για να συνεχίσετε τη συζήτηση με το %{authorName}.'
       main_header:
         idea: '%{authorName} σχολίασε μια ιδέα που ακολουθείτε'
         question: '%{authorName} σχολίασε μια ερώτηση που ακολουθείτε'
@@ -392,10 +392,10 @@ el:
       main_header: '''%{post}'' έχει ένα νέο εσωτερικό σχόλιο'
       preheader: '''%{post}'' έχει ένα νέο εσωτερικό σχόλιο'
     official_feedback_on_idea_you_follow:
-      header_message: '%{feedback_author_name} ενημέρωσε για το ''%{input_title}''.'
-      header_title: 'Υπάρχει μια ενημέρωση για το "%{input_title}"'
-      subject: 'Τα επίσημα σχόλια δημοσιεύτηκαν στο "%{input_title}"'
-      preheader: 'Υπάρχει μια ενημέρωση σχετικά με μια ιδέα που ακολουθείτε'
+      header_message: 'Ο/η %{feedback_author_name} ενημέρωσε για την %{input_title}''.'
+      header_title: 'Υπάρχει μια ενημέρωση για "%{input_title}"'
+      subject: 'Μία νέα επίσημη ενημέρωση δημοσιεύτηκε στο "%{input_title}"'
+      preheader: 'Υπάρχει μια ενημέρωση σχετικά με μια πρόταση που ψηφίσατε'
     official_feedback_on_initiative_you_follow:
       header_message: '%{officialName} ενημέρωσε σχετικά με την πρόταση "%{initiativeTitle}". Κάντε κλικ στο παρακάτω κουμπί για να μπείτε στη συζήτηση με το %{organizationName}.'
       header_title: 'Υπάρχει μια ενημέρωση σχετικά με μια πρόταση που ακολουθείτε'
@@ -459,11 +459,11 @@ el:
       header_message: 'Η πλατφόρμα συμμετοχής του %{organizationName} μόλις δημοσίευσε το ακόλουθο έργο:'
       preheader: 'Δημοσιεύθηκε ένα νέο έργο'
     status_change_on_idea_you_follow:
-      status_change: 'Η νέα κατάσταση αυτής της εισόδου είναι ''%{status}'''
-      header_message: '%{organizationName} ενημέρωσε την κατάσταση της εισόδου "%{input_title}" στην ψηφιακή πλατφόρμα συμμετοχής τους.'
-      header_title: 'Μια ιδέα που ακολουθείτε έχει μια νέα κατάσταση'
-      subject: 'Η κατάσταση του "%{input_title}" έχει αλλάξει'
-      preheader: 'Μια ιδέα που ακολουθείτε έχει μια νέα κατάσταση'
+      status_change: 'Η συγκριμένη ιδέα ενημερώθηκε σε ''%{status}'''
+      header_message: '%{organizationName} updated the status of the input ''%{input_title}'' on their digital participation platform.'
+      header_title: 'An input you follow has a new status'
+      subject: 'The status of "%{input_title}" has changed'
+      preheader: 'An input you follow has a new status'
     status_change_on_initiative_you_follow:
       status_change: 'Η νέα κατάσταση της πρότασης αυτής είναι "%{initiativeStatus}".'
       header_message: 'Η κατάσταση της πρότασης "%{initiativeTitle}" ενημερώθηκε στην ψηφιακή πλατφόρμα συμμετοχής της %{organizationName}.'
@@ -493,7 +493,7 @@ el:
     threshold_reached_for_admin:
       cta_process_initiative: 'Προχωρήστε αυτή την πρωτοβουλία στα επόμενα βήματα'
       main_header: 'Μια πρωτοβουλία έφτασε στο όριο της ψηφοφορίας!'
-      subject: '"%{input_title}" έφθασε το κατώφλι ψηφοφορίας'
+      subject: 'Μια πρωτοβουλία έφτασε το κατώφλι ψηφοφορίας στην πλατφόρμα σας'
       preheader: 'Φροντίστε να κάνετε τα επόμενα βήματα'
     welcome:
       cta_join_platform: 'Ανακαλύψτε την πλατφόρμα'
@@ -512,7 +512,7 @@ el:
         proposal: 'Η πρότασή σας έχει δημοσιευθεί'
         initiative: 'Η πρωτοβουλία σας έχει δημοσιευθεί'
         petition: 'Το αίτημά σας έχει δημοσιευτεί'
-      main_header: 'Δημοσιεύσατε το "%{input_title}"'
+      main_header: 'Δημοσιεύσατε μια ιδέα! Ας φροντίσουμε να διαβαστεί.'
       header_message: 'Ας βεβαιωθούμε ότι θα διαβαστεί.'
       message_get_votes: 'Προσεγγίστε περισσότερους ανθρώπους με την ιδέα σας:'
       action_published_idea: 'Δημοσιευμένη ιδέα'
@@ -541,7 +541,7 @@ el:
       preheader: 'Αυτή τη στιγμή βρίσκεται στο %{prescreening_status_title}'
     your_proposed_initiatives_digest:
       subject: 'Εβδομαδιαία ενημέρωση των προτάσεών σας'
-      preheader: 'Τι συνέβη με τις προτάσεις σας την περασμένη εβδομάδα;'
+      preheader: 'Τι συνέβη με τις προτάσεις σας την προηγούμενη εβδομάδα;'
       title_your_weekly_report: 'Πώς πήγαν οι προτάσεις σας;'
       text_introduction: 'Βρείτε τους αριθμούς-κλειδιά παρακάτω και μεταβείτε στην πλατφόρμα για να αναλάβετε δράση και να συγκεντρώσετε εγκαίρως αρκετή υποστήριξη.'
       cta_see_your_initiative: 'Πηγαίνετε στις προτάσεις σας'
