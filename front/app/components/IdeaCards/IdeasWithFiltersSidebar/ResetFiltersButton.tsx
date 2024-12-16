@@ -4,6 +4,7 @@ import { Button } from '@citizenlab/cl2-component-library';
 
 import { IIdeaQueryParameters } from 'api/ideas/types';
 
+import { scrollToTopIdeasList } from 'components/FilterBoxes/utils';
 import tracks from 'components/IdeaCards/tracks';
 
 import { trackEventByName } from 'utils/analytics';
@@ -30,6 +31,7 @@ const ResetFiltersButton = ({ ideaQueryParameters }: Props) => {
       idea_status: undefined,
       topics: undefined,
     });
+    scrollToTopIdeasList();
   };
 
   return (
