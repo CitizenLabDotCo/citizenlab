@@ -1,0 +1,320 @@
+lt:
+  locales:
+    en: Anglų kalba
+    ar-MA: arabų kalba (Marokas)
+    ar-SA: arabų kalba (Saudo Arabija)
+    ca-ES: Katalonų kalba
+    cy-GB: Velso
+    da-DK: Danų
+    de-DE: Vokiečių kalba
+    el-GR: Graikų kalba
+    en-CA: Anglų kalba (Kanada)
+    en-GB: Anglų kalba (Jungtinė Karalystė)
+    en-IE: Anglų kalba (Airija)
+    es-CL: Ispanų (Čilė)
+    es-ES: Ispanų kalba (Ispanija)
+    fi-FI: Suomijos
+    fr-BE: prancūzų (Belgija)
+    fr-FR: Prancūzų kalba
+    hr-HR: Kroatijos
+    hu-HU: Vengrų
+    it-IT: Italų kalba
+    kl-GL: Grenlandijos
+    lb-LU: Liuksemburgo
+    lv-LV: Latvijos
+    mi: Maoriai
+    nb-NO: Norvegų kalba (Bokmål)
+    nl-BE: olandų (Belgija)
+    nl-NL: Olandų kalba
+    pl-PL: Lenkų kalba
+    pt-BR: portugalų kalba (Brazilija)
+    ro-RO: Rumunijos
+    sr-Latn: Serbų (lotynų)
+    sr-SP: Serbų kalba (kirilica)
+    sv-SE: Švedų kalba
+    tr-TR: Turkijos
+  symbols:
+    outside: kažkur kitur
+  idea_statuses:
+    proposed: siūloma
+    proposed_description: Ši idėja buvo pasiūlyta miestui
+    viewed: žiūrėta
+    viewed_description: Šią idėją matė kažkas iš miesto
+    under_consideration: svarstoma
+    under_consideration_description: Į šią idėją miestas atsižvelgė
+    accepted: priimta
+    accepted_description: Šiai idėjai buvo pritarta ir ji bus įgyvendinta mieste.
+    implemented: įdiegta
+    implemented_description: Šią idėją įgyvendino miestas
+    rejected: atmestas
+    rejected_description: Ši idėja buvo atmesta
+  initiative_statuses:
+    review_pending: laukiama peržiūros
+    review_pending_description: laukiama peržiūros
+    changes_requested: prašomi pakeitimai
+    changes_requested_description: prašomi pakeitimai
+    proposed: siūloma
+    proposed_description: siūloma
+    expired: pasibaigė
+    expired_description: pasibaigė
+    threshold_reached: pasiekta riba
+    threshold_reached_description: pasiekta riba
+    answered: atsakė
+    answered_description: atsakė
+    ineligible: netinkamas
+    ineligible_description: netinkamas
+  topics:
+    nature: Gamta ir biologinė įvairovė
+    nature_description: Gamta ir biologinė įvairovė
+    waste: Švara ir atliekos
+    waste_description: Švara ir atliekos
+    sustainability: Tvarus vystymasis
+    sustainability_description: Tvarus vystymasis
+    mobility: Mobilumas
+    mobility_description: Mobilumas
+    technology: Energija ir technologijos
+    technology_description: Energija ir technologijos
+    economy: Darbas, ekonomika ir turizmas
+    economy_description: Darbas, ekonomika ir turizmas
+    housing: Būstas
+    housing_description: Būstas
+    public_space: Viešosios erdvės ir pastatai
+    public_space_description: Viešosios erdvės ir pastatai
+    safety: Sauga
+    safety_description: Sauga
+    education: Švietimas ir jaunimas
+    education_description: Švietimas ir jaunimas
+    culture: Kultūra, sportas ir renginiai
+    culture_description: Kultūra, sportas ir renginiai
+    health: Sveikata ir gerovė
+    health_description: Sveikata ir gerovė
+    inclusion: Socialinė įtrauktis
+    inclusion_description: Socialinė įtrauktis
+    community: Bendruomenės vystymasis
+    community_description: Bendruomenės vystymasis
+    services: Viešosios paslaugos
+    services_description: Viešosios paslaugos
+    other: Kita
+    other_description: Kita
+  static_pages:
+    terms_and_conditions_title: Terminai ir sąlygos
+    terms_and_conditions_body: >
+      <p>Šiose taisyklėse ir sąlygose išdėstytos prisidėjimo prie platformos taisyklės ir gairės, kuriomis siekiama padėti užtikrinti konstruktyvų dialogą.</p> <p>Jūsų idėjos, kaip toliau tobulinti platformą, yra laukiamos ir gali būti siunčiamos adresu support@govocal.com.</p> <h2>Kas gali dalyvauti?</h2> <p>Per platformą viešus projektus gali peržiūrėti bet kas. Jei norite prisidėti prie turinio kūrimo (pvz., pateikti indėlį ar reaguoti), turite užsiregistruoti ir susikurti paskyrą. Užsiregistruoti galite naudodami savo el. pašto adresą; kai kuriose platformose taip pat gali būti įmanoma prisijungti naudojant turimą "Facebook" arba "Google" paskyrą. Jei naudojatės bet kuria iš šių paslaugų, jūsų vardas, el. pašto adresas ir profilio nuotrauka bus bendrinami su jūsų platformos paskyra ir pridedami prie jos.</p> <p>Atkreipkite dėmesį, kad paskyros sukūrimas nesuteikia jums nuosavybės teisių. Platformos administratoriai gali atmesti, sustabdyti arba ištrinti paskyras dėl tokių priežasčių, kaip šiame puslapyje nurodytų sąlygų nesilaikymas.</p> <p>Bendrosios jūsų paskyros sąlygos yra šios: </p> <ul> <li> <strong>Galite susikurti vieną paskyrą</strong> <p>Asmuo negali susikurti ir turėti kelių paskyrų. Jūsų pateikti paskyros duomenys turi būti tikslūs, o šios paskyros negalima perduoti kitam asmeniui be platformos administratoriaus leidimo. </p> </li> <li> <strong>Jūsų paskyra negali būti naudojama komercinei reklamai</strong> <p>Paskyra negali būti naudojama vien tik reklamos, produkto ar paslaugos rinkodaros ir pan. tikslais.</p> </li> <li> <strong>Esate atsakingi už tai, kad jūsų paskyros informacija būtų saugi ir konfidenciali</strong> <p>Jūs esate vienintelis asmuo, kuris turėtų naudotis jūsų paskyra ir turėti prieigą prie jūsų paskyros slaptažodžio ir prisijungimo duomenų. Kad padidintumėte savo paskyros saugumą, patariame naudoti slaptažodį, sudarytą iš skaičių, mažųjų ir didžiųjų raidžių derinio. Mes neatsakome už jūsų paskyros praradimą ar žalą ir negalime būti atsakingi už jos vagystę (pvz., per "phishing"). Atkreipkite dėmesį, kad niekada neprašysime jūsų pateikti prisijungimo duomenų, pvz. </p>  <h2>Jūsų veikla platformoje</h2> <p>Siekiant užtikrinti saugų ir produktyvų dalyvavimą, yra tam tikrų apribojimų dėl turinio, kurį galima skelbti šioje platformoje, tipo. Bet koks turinys, kurį publikuojate platformoje, turi būti be:</p> <ul> <li> <strong>privatūs duomenys</strong> <p>Konfidencialių duomenų ir asmeninės informacijos apie kitus asmenis, pavyzdžiui, telefono numerių ir adresų, negalima skelbti be jų aiškaus leidimo ir sutikimo.  </p> <li><strong>Šlamštas / kenkėjiška programinė įranga / sukčiavimas / virusai / kirminai / Trojos arkliai</strong> <p>Kenkėjiško turinio ar nuorodų, kuriomis siekiama pažeisti kitų asmenų privatumą arba sugadinti ar sutrikdyti kitų asmenų naršykles ar kompiuterius.</p> </li> <li> <strong>Grasinimai, įžeidinėjimai ir kitas netinkamas turinys </strong> <p>Asmeniniai išpuoliai ir įžeidinėjimai, grasinantis elgesys ar kalba, diskriminuojantys komentarai, keiksmažodžiai ir kita įžeidžianti kalba.</p> </li> <li><strong>Reklama ir komercinė veikla</strong> <p>Turinys, skelbiamas tik siekiant reklamuoti komercinę paslaugą ar produktą.</p> </li> <li> <strong>Autorių teisių saugoma medžiaga</strong> <p>Turinys, kuriuo pažeidžiamos intelektinės nuosavybės teisės (pvz., autorių teisėmis saugomi paveikslėliai).</p> </li> <li> <strong>Neteisėta veikla</strong> <p>Turinys, kuriame bet kokiu būdu skatinama neteisėta veikla.</li></p> </ul> <p>Pateikta informacija ir kitas turinys, kuriame yra bet kuris iš pirmiau nurodytų dalykų, gali būti redaguojamas, ištrinamas arba kitaip užkertamas kelias jo skelbimui, o paskyra gali būti laikinai užblokuota arba visam laikui ištrinta. Naujos ar papildomos paskyros, sukurtos siekiant išvengti laikino ar nuolatinio sustabdymo, taip pat gali būti stebimos ir ištrinamos.</p> <h2>Taikomi įstatymai</h2> <p>Paskyros naudojimas negali pažeisti taikomų įstatymų. Tai apima bet kokius privatumo teisės aktų, intelektinės nuosavybės teisių, baudžiamojo kodekso ir kt. pažeidimus.</p> <p>Mes jokiu būdu negalime būti laikomi atsakingais už platformoje paskelbtą turinį, kuris neatitinka pirmiau minėtų taisyklių ir įstatymų. Apie pažeidimus galima pranešti adresu support@govocal.com. Dėl to atitinkamos žinutės gali būti ištrintos ir (arba) pagrindinė paskyra sustabdyta arba visam laikui panaikinta.</p> <p>Gali būti, kad platformoje paskelbtame turinyje gali būti kenksmingų failų ar nuorodų. Atsisiųsdami failus ar prisijungdami prie hipersaitų per platformą, prisiimate riziką ir atsakomybę už bet kokią galimą žalą.</p> <h2>Nuosavybės teisės</h2> <p>Šią platformą saugo intelektinės nuosavybės teisės, susijusios su jos turiniu, išeities kodu, duomenų bazėmis ir kt. Bet koks originalus turinys, kurį paskelbsite platformoje, gali būti matomas viešai ir jam taikoma "Creative Commons Attribution-ShareAlike 4.0 International" (CC BY-SA 4.0) viešoji licencija, kuri leidžia dalytis jūsų turiniu arba jį pritaikyti nurodant autorystę. Be leidimo negalite kitaip atgaminti, platinti, keisti ar perduoti platformos ir bet kokio jos turinio, kuris nepatenka į viešąją sritį.</p>
+    privacy_policy_title: Privatumo politika
+    privacy_policy_body: >
+      <p>Atsakingas už duomenų tvarkymą:</p> <p>CitizenLab NV - Pachecolaan 34 - 1000 Briuselis - Belgija</p> <p>Kontaktinis el. pašto adresas: support@govocal.com</p> <p>Organizacija: //įterpti kliento kontaktus</p> <h2>1. PRIVALUMO POLITIKA</h2> <p>Ši "Privatumo politika" taikoma "Asmens duomenims", kuriuos "Go Vocal" organizacijos vardu renka šioje svetainėje.</p> <h2>2. KAS YRA ASMENS DUOMENYS?</h2> <p>Šioje privatumo politikoje "Asmens duomenys" reiškia informaciją, kuri leidžia jus identifikuoti. Asmuo, kurio tapatybę galima nustatyti, yra asmuo, kurio tapatybę galima nustatyti tiesiogiai arba netiesiogiai, visų pirma nurodant identifikavimo numerį arba vieną ar daugiau veiksnių, susijusių su fizine, fiziologine, psichine, ekonomine, kultūrine ar socialine tapatybe. Tipiškas asmeninės informacijos pavyzdys yra jūsų vardas, pavardė ir el. pašto adresas.</p> <h2>3. KOKIUS ASMENS DUOMENIS RENKAME?</h2> <p>Jūsų asmens duomenis galime rinkti iš toliau nurodytų trijų šaltinių:</p> <h3>3.1. Asmens duomenis, kuriuos pateikiate registracijos Platformoje metu, kai kurie iš jų yra neprivalomi.</h3> <p>Asmens duomenys, kuriuos galime iš jūsų rinkti, yra šie:</p> <ul> <li>Vardas ir pavardė</li> <li>El. pašto adresas</li> <li>Gimimo metai</li> <li>Lytis</li> <li>Gyvenamoji vieta</li> <li>Pageidaujama kalba</li> </ul> <p>Organizacijos prašymu šis sąrašas gali būti papildytas. Jei nuspręsite prisijungti per trečiosios šalies autentifikavimo paslaugų teikėją, pavyzdžiui, "Google" paskyras, "Facebook" arba "FranceConnect", šiuos duomenis gausime iš jų. Jei pasirinksite patvirtinti savo tapatybę per trečiosios šalies tapatybės nustatymo paslaugų teikėją, pavyzdžiui, COW, "FranceConnect" arba CSAM, šiuos duomenis gausime iš jų.</p> <h3>3.2. Asmens duomenys, kuriuos pateikiate atlikdami dalyvavimo veiksmus mūsų platformoje.</h3> <p>Kiekvienas veiksmas, kurį atliekate platformoje (balsavimas, idėjos paskelbimas, komentaro parašymas, atsakymas į apklausą,…), yra registruojamas ir saugomas. Šie duomenys taip pat susiejami su jūsų registracijos duomenimis (3.1), o tai reiškia, kad organizacija gali susieti jūsų platformos profilį su šiais dalyvavimo duomenimis.</p> <h3>3.3. Asmens duomenys, kuriuos renkame, kai lankotės mūsų platformoje.</h3> <p>Mes (ir mūsų vardu veikiantys trečiųjų šalių duomenų tvarkytojai) renkame informaciją apie naudojimąsi mūsų platforma, kad galėtume įvertinti gerą platformos veikimą ir saugumą. Šiuo tikslu renkame techninę informaciją, pagal kurią galima jus identifikuoti, pavyzdžiui, jūsų IP adresą ir naršyklės duomenis. Naudodamiesi mūsų paslaugomis sutinkate, kad šie duomenys būtų renkami.</p> <p>Naudojimo duomenis taip pat renkame siekdami tobulinti savo paslaugas, bet kada galite atsisakyti šio duomenų rinkimo sutikimų tvarkyklėje.</p> <h2>4. KAIP NAUDOJAME ASMENS DUOMENIS?</h2> <p>Jūsų asmens duomenis galime naudoti toliau nurodytais tikslais:</p> <ul> <li>Pirmiausia tam, kad organizacijai perduotume jūsų indėlį su atitinkamu kontekstu ir sudarytume apibendrintas visų šioje platformoje surinktų duomenų ataskaitas, padedančias priimti sprendimus.</li> <li>Kad sukurtume ir palaikytume jūsų naudotojo profilį šioje svetainėje.</li> <li>Naudotojų identifikavimui ir autentiškumo nustatymui valdyti.</li> <li>Teikti informaciją apie jūsų bendruomenę ir (arba) įspėti jus apie platformoje vykdomą veiklą, kuri gali jus sudominti. Savo naudotojo profilyje bet kada galite atsisakyti naudotojo el. laiškų.</li> <li>Tobulinti mūsų paslaugas ir stebėti jų funkcionalumą.</li> </ul> <p>Asmens duomenys saugomi ir tvarkomi tik tiek laiko, kiek reikia duomenų tvarkymo tikslui pasiekti. Po to duomenys bus ištrinti arba nuasmeninti.</p> <h2>5. SU KUO DALIJAMĖS JŪSŲ ASMENS DUOMENIMIS?</h2> <p>Jūsų asmens duomenimis dalijamės su organizacija, kurios vardu šiuos duomenis renkame. Jūsų duomenimis dalijamės su mūsų vardu dirbančiais pagalbiniais duomenų tvarkytojais. Niekada neparduosime ar neišnuomosime jūsų asmens duomenų kitiems paslaugų teikėjams, taip pat nesidalysime jūsų asmens duomenimis su jokiais paslaugų teikėjais, kurie nesilaiko BDAR reikalavimų.</p> <h2>6. KUR PERDUODAME JŪSŲ ASMENS DUOMENIS?</h2> <p>Jūsų Asmens duomenis paslaugų teikėjams, įsisteigusiems už Europos ekonominės erdvės ribų, perduodame tik tuo atveju, jei jie atitinka BDAR 44 straipsnį.</p> <h2>7. KOKIAS TEISES TURITE?</h2> <p>Turite teisę bet kuriuo metu peržiūrėti savo asmens duomenis, taip pat teisę būti informuoti apie tai, kaip "Go Vocal" naudoja jūsų asmens duomenis.</p> <h3>7.1. Teisė ištaisyti, ištrinti ir apriboti duomenų tvarkymą</h3> <p>Jūs galite laisvai nuspręsti, ar teikti savo asmens duomenis "Go Vocal", ar ne. Be to, visada turite teisę prašyti "Go Vocal" ištaisyti, papildyti arba pašalinti jūsų asmens duomenis. Jūs pripažįstate, kad atsisakymas pateikti asmens duomenis arba prašymas juos ištrinti reiškia, kad tam tikros paslaugos nebegali būti teikiamos. Taip pat galite prašyti apriboti jūsų asmens duomenų tvarkymą. Jei nuspręsite pašalinti savo paskyrą iš platformos, asmens duomenys, kurie buvo surinkti apie jus, bus pašalinti iš mūsų serverių. Tam tikra asmeninė informacija apie jus gali likti prisijungimo duomenyse, kuriuos saugome saugumo ir teisiniais sumetimais iki 30 dienų.</p> <h3>7.2 Teisė prieštarauti</h3> <p>Dėl rimtų ir teisėtų priežasčių turite teisę nesutikti, kad jūsų asmens duomenys būtų tvarkomi. Be to, visada turite teisę nesutikti, kad jūsų asmens duomenys būtų naudojami tiesioginės rinkodaros tikslais; tokiais atvejais priežasčių nurodyti nereikia.</p> <h3>7.3. Teisė į duomenų perkeliamumą</h3> <p>Turite teisę gauti asmens duomenis, kuriuos pateikėte "Go Vocal", susisteminta, tipine ir kompiuterio skaitoma forma ir (arba) juos perduoti kitiems duomenų valdytojams.</p> <h3>7.4. Teisė atšaukti sutikimą</h3> <p>Jei duomenų tvarkymas grindžiamas jūsų išankstiniu sutikimu, turite teisę šį sutikimą atšaukti.</p> <h3>7.5 Jūsų teisių įgyvendinimas</h3> <p>Savo teisėmis galite pasinaudoti kreipdamiesi į "Go Vocal" šiuo tikslu el. paštu support@govocal.com, paštu adresu Pachecolaan 34, 1000 Briuselis, Belgija arba naudodamiesi mūsų interneto svetainėje esančia forma "Susisiekite su mumis", jei pridedate savo asmens tapatybės kortelės priekinės dalies kopiją.</p> <h3>7.6 Automatinis sprendimų priėmimas ir profiliavimas</h3> <p>Jūsų asmens duomenų tvarkymas neapima profiliavimo, be to, "Go Vocal" netaiko automatizuoto sprendimų priėmimo.</p> <h3>7.7. Teisė pateikti skundą</h3> <p>Turite teisę pateikti skundą savo šalies privatumo apsaugos institucijai arba Belgijos privatumo apsaugos institucijai, kuriai priklauso "Go Vocal": Drukpersstraat 35, 1000 Briuselis, Belgija, tel. +32 (0)2 274 48 00, faksas +32 (0)2 274 48 35, el. paštas: contact@adp-gba.be. Tai neturi įtakos civilinio teismo teikiamai pagalbai.</p> <h2>8. PAPILDOMA INFORMACIJA APIE DUOMENŲ RINKIMĄ IR TVARKYMĄ</h2> <h3>Teisinės procedūros</h3> <p>Go Vocal ir Organizacija, kuriai tvarkome šiuos duomenis, gali naudoti Naudotojo asmens duomenis teisiniais tikslais, teismo ar teisinių procedūrų, vykstančių prieš tai vykusiuose etapuose, atveju, kai šia Programėle ar susijusiomis paslaugomis naudojamasi neteisėtai. Naudotojas žino, kad "Go Vocal" ir Organizacija, su kuria dirbame, gali būti įpareigotos atskleisti asmens duomenis kompetentingų valstybinių institucijų prašymu dėl duomenų tvarkymo. Šio duomenų tvarkymo teisinis pagrindas yra sąlygų priėmimas (sutartinis pagrindas) ir duotas sutikimas.</p> <h3>Saugumo priemonės</h3> <p>Go Vocal" sukūrė saugumo priemones, kurios pritaikytos technologiniu ir organizaciniu lygmeniu, kad būtų užkirstas kelias asmens duomenų sunaikinimui, praradimui, klastojimui, pakeitimui, draudžiamai prieigai ar klaidingam atskleidimui tretiesiems asmenims, taip pat bet kokiam kitam draudžiamam šių duomenų tvarkymui. Jokiomis aplinkybėmis "Go Vocal" negali būti laikoma atsakinga už bet kokius tiesioginius ar netiesioginius nuostolius, atsiradusius dėl to, kad trečioji šalis neteisingai ar neteisėtai naudoja jūsų asmens duomenis. Privalote visada laikytis saugumo instrukcijų, įskaitant tai, kad užkertate kelią bet kokiai neleistinai prieigai prie savo prisijungimo duomenų ir slaptažodžio. Tik jūs atsakote už naudojimąsi interneto svetaine savo kompiuteryje, IP adresą ir savo identifikavimo duomenis, taip pat už jų konfidencialumą.</p> <h3>Šios privatumo politikos pakeitimai</h3> <p>Go Vocal pasilieka teisę bet kuriuo metu keisti šią privatumo politiką, apie tai pranešdama naudotojams šiame puslapyje. Raginame jus tikrinti šį puslapį dėl galimų pakeitimų. Paskutinio pakeitimo data nurodyta puslapio apačioje. Jei Naudotojas nesutinka su bet kokiu politikos pakeitimu, jis neturi toliau naudotis šia Programėle. Jei nenurodyta kitaip, visiems mūsų surinktiems Asmens duomenims taikoma tuo metu galiojanti privatumo politika.</p> <p><em>Naujausias atnaujinimas: 2019 12 17</em></p>
+    infopage_title: Informacinis puslapis
+    infopage_body: "<p>Ši <strong>\"viskas viename\" dalyvavimo platforma</strong> yra jūsų savivaldybės ar organizacijos iniciatyva ir gali būti naudojama įvairiems viešųjų konsultacijų procesams: idėjų rinkimui, balsavimui, diskusijoms, apklausoms, apklausoms, dalyvaujamojo biudžeto sudarymui, internetiniam žemėlapių sudarymui, scenarijų planavimui, patariamųjų tarybų ir komitetų palaikymui, ...</p>\n<p>Pagrindiniame puslapyje matysite, kurie <strong>procesai yra aktyvūs </strong>ir kuriame <strong>etape </strong>jie šiuo metu yra.</p>\n<p><img data-cl2-text-image-text-reference=\"e2c7bc7a-017d-4887-a3cb-b94185617a59\" alt=\"Horizontal separation rule\" data-align=\"center\" style=\"display: block; margin: auto;\"></p>\n<h2>Kaip prisijungti prie platformos?</h2>\n<p>Prisijungti galima paprastai, nurodžius savo vardą, pavardę ir el. pašto adresą. Taip pat galite naudoti savo \"Google\" arba \"Facebook\" paskyrą. Kitiems bus matomas tik jūsų vardas ir pavardė.</p>\n<h2>Ar galiu pats naudotis platforma, pavyzdžiui, organizuoti viešąsias konsultacijas?</h2>\n<p>Žinoma. Paprašykite, kad jūsų savivaldybės ar organizacijos atsakingas asmuo suteiktų jums reikiamas teises, kad galėtumėte tapti projekto moderatoriumi. Gavę šias teises, galite sukurti savo projektą ir laiko juostą bei dalytis norima informacija (vaizdo įrašais, dokumentais, nuotraukomis...). Taip pat galėsite pakviesti kitus asmenis į platformą, kad jie galėtų skelbti jūsų projekto idėjas, balsuoti ar komentuoti.</p>\n<h2>Ar galiu dalyvauti kaip asociacija / organizacija / komitetas? </h2>\n<p>Taip, tai įmanoma. Atsižvelgiant į tai, kad platformoje kitiems matomi tik jūsų vardas ir pavardė, kurdami savo profilį galite tiesiog naudoti savo organizacijos pavadinimą.</p>\n<h2>Kodėl turėčiau naudotis šia platforma, o ne pats susikurti svetainę?</h2>\n<p>Jūsų savivaldybės ar organizacijos užsakymu šią platformą kasdien tobulina ir atnaujina atsidavusių kūrėjų ir dalyvavimo internete specialistų komanda<a href=\"https://www.govocal.com/en\" target=\"_blank\">(\"Go Vocal\"</a>). Net menkiausia klaida nedelsiant pašalinama, o jei turite kūrybinių pasiūlymų, jie gali jums padėti nurodydami, kokias platformos funkcijas galima tam panaudoti arba kokios funkcijos yra rengiamos.</p>\n<p><img data-cl2-text-image-text-reference=\"392d0e47-e5f9-41ab-9ceb-affac617b8b1\" alt=\"Horizontal separation rule\" data-align=\"center\" style=\"display: block; margin: auto;\"></p>\n<p><strong><em>Reikia daugiau informacijos?</em></strong><em> Norite naudotis platforma? Turite klausimų ar atsiliepimų? Kreipkitės į savo savivaldybės ar organizacijos atsakingus asmenis. Arba susisiekite su \"Go Vocal\" per support@govocal.com.</em></p><strong>"
+    faq_title: DUK
+    faq_body: "<h2 class=\"ql-align-justify\">Kam skirta ši platforma?</h2><p class=\"ql-align-justify\">Ši platforma sukurta kaip centrinis centras, kuriame dalijamasi informacija, gaunama informacija ir grįžtamasis ryšys. Šiuo metu aktyvūs dalyvavimo projektai rodomi pagrindiniame puslapyje - kiekvienas dalyvavimo projektas gali turėti skirtingą dalyvavimo būdą: pridėti idėją, komentuoti pasiūlymą, balsuoti dėl projektų ir nustatyti jų prioritetus arba dalyvauti apklausoje. </p><h2 class=\"ql-align-justify\">Kaip dalyvauti? </h2><p class=\"ql-align-justify\">Visada galite naršyti viešuosius projektus, tačiau norėdami imtis veiksmų, turėsite užsiregistruoti. Tai padeda išlaikyti bendruomeniškumo jausmą ir užtikrinti indėlio teisėtumą. </p><h2 class=\"ql-align-justify\">Kokią informaciją apie mane gali matyti žmonės?</h2><p class=\"ql-align-justify\">Matomas jūsų vardas, nuotrauka ir biografija, jei ją pridėjote. Visada galite juos pakeisti savo nustatymuose.</p><h2 class=\"ql-align-justify\">Kodėl negaliu paskelbti savo indėlio arba pateikti komentaro?</h2><p class=\"ql-align-justify\">Įnašų skelbimas, komentarų teikimas ir balsavimas gali būti įjungti tik tam tikru metu arba tam tikruose projekto etapuose. Kai kuriais atvejais projekte gali būti galima teikti tik tam tikros suinteresuotųjų šalių grupės įnašus.</p><p class=\"ql-align-justify\">Jei šiuo metu projekto skelbimas yra įjungtas, pamatysite mygtuką, kuris paragins jus pateikti pranešimą. Arba galite peržiūrėti kitus aktyvius projektus ir rasti papildomų dalyvavimo galimybių.</p><h2 class=\"ql-align-justify\">Kaip redaguoti arba ištrinti savo indėlį?</h2><p class=\"ql-align-justify\">Jei paskelbėte savo indėlį, bet norite jį pakoreguoti arba ištrinti, šią parinktį rasite spustelėję tris mažus taškelius viršutiniame dešiniajame pranešimo kampe. </p><h2 class=\"ql-align-justify\">Kokios yra bendruomenės gairės ir moderavimo politika?</h2><p class=\"ql-align-justify\">Mūsų bendruomenės gairės skirtos užtikrinti, kad platforma būtų saugi erdvė, kurioje gali dalyvauti visi. Užtikrinkite, kad jūsų pranešimuose nebūtų:</p><ul>\n  <li class=\"ql-align-justify\">asmeninių išpuolių, įžeidinėjimų, įžeidžiančių ar diskriminuojančių komentarų</li>\n  <li class=\"ql-align-justify\">įžeidžiančios kalbos, įskaitant keiksmažodžius</li>\n  <li class=\"ql-align-justify\">rinkodaros ar reklaminės medžiagos</li>\n  <li class=\"ql-align-justify\">asmeninės informacijos apie kitus asmenis</li>\n  <li class=\"ql-align-justify\">autorių teisių saugomos medžiagos, pavyzdžiui, paveikslėlių</li>\n  </ul><p class=\"ql-align-justify\">Bet kokie šių gairių neatitinkantys pranešimai ar komentarai gali būti redaguojami arba ištrinami, o kraštutiniais atvejais - neleidžiama jų skelbti. Daugiau informacijos rasite mūsų sąlygose &amp; . </p><h2 class=\"ql-align-justify\">Kaip pranešti apie įžeidžiančią žinutę?</h2><p class=\"ql-align-justify\">Spustelėkite tris mažus taškelius viršutiniame dešiniajame dešiniajame pranešimo kampe ir praneškite apie jį. Nurodykite priežastį, dėl kurios pranešate apie turinį - taip bus išsiųstas pranešimas, kad pranešimas būtų peržiūrėtas.</p><h2 class=\"ql-align-justify\">Kodėl man sunku užsiregistruoti arba prisijungti?</h2><p class=\"ql-align-justify\">Jei negalite užsiregistruoti, taip gali būti todėl, kad jau esate užsiregistravę tuo pačiu el. pašto adresu arba anksčiau gavote kvietimą prisijungti prie platformos. Jei matote pranešimą, kad jūsų el. pašto adresas užimtas laukiančiu kvietimu, patikrinkite savo el. pašto adresą ir sekite kvietime esančią nuorodą, kad užregistruotumėte savo paskyrą. Jei kvietimo nerandate, pabandykite ieškoti savo nepageidaujamų laiškų dėžutėje arba paprašykite naujo kvietimo. </p><h2 class=\"ql-align-justify\">Kaip iš naujo nustatyti slaptažodį?</h2><p class=\"ql-align-justify\">Visada galite paprašyti iš naujo nustatyti slaptažodį prisijungimo puslapyje. Jei iš naujo nustatysite slaptažodį, į jūsų el. pašto adresą bus išsiųsta nuoroda - vadovaukitės instrukcijomis ir pakeiskite slaptažodį. Saugumo sumetimais nuoroda galioja vieną valandą. Jei nuorodos galiojimas baigėsi, galite tiesiog dar kartą spustelėti \"Pamiršote slaptažodį?\" prisijungimo puslapyje, kad būtų sugeneruota nauja slaptažodžio keitimo nuoroda.</p><p class=\"ql-align-justify\">Jei negavote el. laiško, patikrinkite, ar jis nepateko į nepageidaujamų laiškų dėžutę ir ar nuoroda siunčiama tuo pačiu el. pašto adresu, kuriuo užsiregistravote.</p><h2 class=\"ql-align-justify\">Ką darysite su mano duomenimis?</h2><p class=\"ql-align-justify\">Peržiūrėkite mūsų privatumo politiką, kad gautumėte daugiau informacijos apie duomenų rinkimą ir naudojimą. Trumpai tariant, niekada nenaudosime jūsų duomenų reklamai, rinkodarai ar kitokio tipo šlamštui.</p><h2 class=\"ql-align-justify\">Kokius el. laiškus gausiu?</h2><p class=\"ql-align-justify\">Galite gauti el. laiškus, susijusius su jūsų paskyra ir jūsų veikla platformoje, pavyzdžiui, kai kas nors atsako į vieną iš jūsų pranešimų. Nustatymuose galite kontroliuoti, kokius el. laiškus gausite. Yra skyrius \"Pranešimai\", kuriame galite įjungti ir išjungti el. pašto pranešimus.</p><h2 class=\"ql-align-justify\">Kaip ištrinti savo paskyrą?</h2><p class=\"ql-align-justify\">Nustatymuose yra galimybė ištrinti savo paskyrą. Įrašai, kuriuos paskelbėte, liks paskelbti, tačiau jūsų vardas bus pašalintas iš įrašo ir pakeistas įrašu \"nežinomas autorius\". Jei norite ištrinti visą savo įvestį, padarykite tai prieš ištrindami paskyrą. </p>"
+    initiatives_title: Pasiūlymai
+    initiatives_body: >
+      <img style="margin-bottom: 30px" data-cl2-text-image-text-reference="b4e659ab-2830-48fd-b3ce-96e16856262f" height="374.3745928338762" width="819" alt=""> <h2>Kas yra piliečio pasiūlymas?</h2> <p>Kaip $|orgName| gyventojas galite pateikti savo pasiūlymą dėl darbotvarkės per šią platformą. Pageidautina, kad šie pasiūlymai būtų konkrečios idėjos, susijusios su vietos politika ir kylančios iš poreikio, noro ar svajonės. Tai gali būti jūsų pačių arba bendras pasiūlymas. Galbūt norėtumėte pakeisti ar pagerinti esamą padėtį arba pradėti naują projektą.</p> <p>$|orgName| dalyvavimas įgyvendinant jūsų pasiūlymą turi būti būtinas ir galimas. Idealiu atveju jūs taip pat galite toliau svarstyti ar bendradarbiauti, tačiau tai nėra privaloma. Todėl "Sumažinti greitį greitkelyje iki 80 km/val." nėra stiprus pasiūlymas, o "Pagrindinę gatvę paversti pėsčiųjų zona" - yra. Taigi pateikite savo pasiūlymus! Jei prireiks daugiau informacijos, gausite atnaujintą informaciją arba reakciją.</p><h2>Kodėl verta skelbti pasiūlymą šioje platformoje?</h2> <p>Tai oficiali $|orgName| dalyvavimo platforma, kuri teikia šiuos privalumus:</p> <ul> <li>$|orgName| oficialiai dalyvauja kaip šios platformos savininkas ir aktyviai stebi, kas čia vyksta. Paskelbus pasiūlymą, atsakingas asmuo automatiškai gauna pranešimą. Jums nereikia su juo susisiekti, kad įsitikintumėte, jog į jūsų pasiūlymą atsižvelgta.</li> <li>Ši platforma sukurta specialiai oficialiems dalyvavimo veiksmams, pavyzdžiui, piliečių pasiūlymams. Kiekvienas elementas, pradedant naudotojo patirtimi ir baigiant etapais, sukurtas būtent šiam tikslui. Naudojantis tradicine socialine žiniasklaida, jūsų pasiūlymas gali dingti paskatų pertekliuje, o paprastas el. laiškas greitai išnyksta pilnoje pašto dėžutėje.</li> <li>Šioje platformoje dalyvauja ir jūsų bendrapiliečiai. Jie gali palaikyti ir patobulinti jūsų pasiūlymą. Kuo kūrybiškesnis jūsų pasiūlymas ir kuo daugiau palaikymo jam pavyks surinkti, tuo didesnė tikimybė, kad jis bus įgyvendintas!</li> </ul> <h2>Kaip pradėti?</h2> <p>Pirmiausia patikrinkite, ar jūsų pasiūlymas atitinka šiuos kriterijus:</p> <p>Iniciatyvų tinkamumo kriterijai|.</p> <h2>Ko galite tikėtis, kai jūsų pasiūlymas per $|initiativesVotingThreshold| dienas surinks $|initiativesDaysLimit| balsų?</h2> <p>$|initiativesThresholdReachedMessage|</p> <h2>Kas atsitinka su pasiūlymais, kurie laiku nesulaukia $|initiativesVotingThreshold| balsų? </h2> <p>Taip nutinka, bet nesijaudinkite. Jūsų pasiūlymas liks platformoje. Jūsų pasiūlymo būsena bus automatiškai pakeista į "Expired". Dėl to balsuoti nebebus galima. Jei norite, bet kada galite nuspręsti ištrinti savo pasiūlymą.</p>
+  nav_bar_items:
+    home:
+      title: Pagrindinis
+    projects:
+      title: Visi projektai
+    all_input:
+      title: Visi įvesties duomenys
+    proposals:
+      title: Pasiūlymai
+    events:
+      title: Renginiai
+    about:
+      title: Apie
+    faq:
+      title: DUK
+  projects:
+    open_idea_project_title: Idėja? Pateikite ją savo tarybai!
+    open_idea_project_description_preview: Galbūt turite idėją, kuri netinka vienam iš esamų projektų? Tada paskelbkite ją čia, surinkite palaikymą ir įtraukite ją į politinę darbotvarkę!
+    open_idea_project_description: >
+      <p>Čia galite pradėti savo idėją, jei ji netinka vienam iš esamų projektų.</p><p><strong>Tikslas?</strong> Įtraukti savo idėją į politinę darbotvarkę.</p><p><strong>Kaip?</strong> Surinkdami paramą, t. y. bent 100 balsų per 3 mėnesius. Tai galite padaryti pirmiausia padarydami savo idėją "patrauklią". Parašykite ją aiškiai ir patraukliai, pridėkite paveikslėlių, pateikite svarių argumentų, pagrįstų faktais, pridėkite priedų su išsamesne informacija ar pagrindine informacija, ... Tai padarę, pradėkite dalytis savo idėja socialiniuose tinkluose arba el. paštu. Kvieskite žmones prisijungti prie diskusijos apie jūsų idėją arba tiesiog įtikinkite juos palaikyti idėją balsuodami už ją.</p><p><strong>Apie ką?</strong> Jūsų idėja gali būti apie daug ką, jei tik ji susijusi su jūsų miestu ir jo politika. Tai gali būti problema, su kuria susiduriate, sprendimas, kurį įsivaizduojate, arba net abiejų šių dalykų derinys. Ji gali būti drąsi ir ilgalaikė arba labai apčiuopiama ir greitai pasiekiama.</p><p><strong>O tada? </strong>Ar pasiekėte 100 balsų per 3 mėnesius? Sveikiname! Dabar miestas atsižvelgs į jūsų idėją. Jei jūsų idėja bus pripažinta įgyvendinama ir nekenks konkrečioms grupėms ar asmenims, gausite galimybę pristatyti savo pasiūlymą per tarybos posėdį. Tame pačiame posėdyje tarybos nariai jums tiesiogiai pasakys, ką ir kodėl jie darys arba nedarys su jūsų idėja. Jei per 3 mėnesius nesurinksite 100 balsų, jūsų pasiūlymas nebus svarstomas.</p><p>Mums smalsu sužinoti apie jūsų idėjas!</p>
+  phases:
+    open_idea_phase_title: Dabartinis etapas
+    native_survey_title: Apklausa
+    native_survey_button: Atlikite apklausą
+  events:
+    council_meeting_title: Tarybos posėdis
+    council_meeting_description: >
+      <p>Šiame tarybos posėdyje bus pristatytos piliečių iniciatyvos, kurios per mažiau nei 3 mėnesius surinko 100 balsų.</p><p>Tada taryba pasidalys savo nuomone apie kiekvieną idėją.</p>
+  custom_fields:
+    users:
+      gender:
+        title: Lytis
+      birthyear:
+        title: Gimimo metai
+      domicile:
+        title: Gyvenamoji vieta
+    ideas:
+      title:
+        title: Pavadinimas
+        description:
+      body:
+        title: Aprašymas
+        description:
+      author_id:
+        title: Autorius
+      topic_ids:
+        title: Žymos
+        description:
+      location:
+        title: Vieta
+        description:
+      proposed_budget:
+        title: Siūlomas biudžetas
+        description:
+      budget:
+        title: Biudžetas
+      images:
+        title: Vaizdai
+        description:
+      attachments:
+        title: Priedai
+        description:
+      section1:
+        description:
+      section2:
+        title: Vaizdai ir priedai
+        description:
+      section3:
+        title: Išsami informacija
+        description:
+      other_text_field:
+        title: Jei pasirinkote "{other_option}", apie ką galvojate?
+  custom_forms:
+    categories:
+      main_content:
+        idea:
+          title: Kokia jūsų idėja?
+        question:
+          title: Koks jūsų klausimas?
+        contribution:
+          title: Koks jūsų indėlis?
+        project:
+          title: Koks yra jūsų projektas?
+        issue:
+          title: Koks jūsų komentaras?
+        option:
+          title: Kokia yra jūsų galimybė?
+      details:
+        title: Išsami informacija
+      attachements:
+        title: Vaizdai ir priedai
+      extra:
+        title: Papildoma informacija
+  custom_field_options:
+    gender:
+      male: Vyras
+      female: Moteris
+      unspecified: Kita
+    domicile:
+      outside: Kažkur kitur
+  initiatives:
+    default_threshold_reached_message: >
+      <p>Iniciatoriai kviečiami pateikti savo pasiūlymą kitame tarybos posėdyje. Pateiksime oficialią naujausią informaciją.</p>
+    default_eligibility_criteria: >
+      <ul> <li>Ji turi atitikti vietos politikos sritis ir kompetenciją.</li> <li>jis tarnauja viešajam, o ne jūsų asmeniniam interesui</li> <li>Jis nediskriminuoja dėl lyties, rasės, amžiaus ar kilmės</li> <li>jis nekenkia kitiems</li> </ul>
+    default_posting_tips: >
+      <ul><li>Skirkite laiko išsamiai išdėstyti savo pasiūlymą. Jei reikia, pirmiausia parašykite juodraštį, o tada jį nukopijuokite ir įklijuokite čia.</li><li>Pasirinkite prasmingą pavadinimą, kuris aiškiai paaiškintų, ką jūsų pasiūlymas apima.</li><li>Savo pasiūlymą vizualizuokite tinkamu paveikslėliu, kad jis išsiskirtų!</li><li>Pridėkite svarbių priedų, pavyzdžiui, vaizdo įrašų, įkvepiančių pavyzdžių, techninių detalių ar planų.</li><li>Pasidalykite savo idėja socialinėje žiniasklaidoje ir kituose kanaluose, kad sulauktumėte kitų palaikymo.</li></ul>
+  reset_password_mailer:
+    send_reset_password:
+      cta_reset_password: 'Iš naujo nustatyti slaptažodį'
+      message_you_reset_your_password: 'Paprašėte iš naujo nustatyti %{organizationName}dalyvavimo platformos slaptažodį. Spustelėkite toliau esantį mygtuką ir pasirinkite naują, saugų slaptažodį. Nuoroda nustos galioti po 1 valandos.'
+      subject: '%{organizationName}: Iš naujo nustatyti slaptažodį'
+      title_reset_your_password: 'Pasirinkite naują slaptažodį'
+  xlsx_export:
+    anonymous: 'Anoniminis'
+    column_headers:
+      assignee_fullname: 'Perleidėjas'
+      assignee_email: 'Perėmėjo el. paštas'
+      attachments: 'Priedai'
+      author_email: 'Autoriaus el. paštas'
+      author_fullname: 'Autoriaus vardas ir pavardė'
+      author_id: 'Autoriaus ID'
+      budget: 'Biudžetas'
+      comments_count: 'Komentarai'
+      cost: 'Išlaidos'
+      created_at: 'Pateikta adresu'
+      description: 'Aprašymas'
+      dislikes_count: 'Nemėgsta'
+      email: 'El. paštas'
+      first_name: 'Vardas (-ai)'
+      image_url: 'Paveikslėlio URL'
+      input_id: 'ID'
+      input_url: 'URL'
+      last_name: 'Pavardė'
+      latitude: 'Platuma'
+      likes_count: 'Patinka'
+      location: 'Vieta'
+      longitude: 'Ilguma'
+      participants: 'Dalyviai'
+      picks: 'Parinkimai'
+      project: 'Projektas'
+      published_at: 'Paskelbta adresu'
+      registration_completed_at: 'Registracija baigta adresu'
+      status: 'Statusas'
+      submitted_at: 'Pateikta adresu'
+      tags: 'Žymos'
+      title: 'Pavadinimas'
+      votes_count: 'Balsai'
+  form_builder:
+    default_select_field:
+      title: 'Jūsų klausimas'
+      option1: '1 variantas'
+      option2: '2 variantas'
+    form_end_page:
+      title: 'Ačiū už dalyvavimą'
+      description: "Atsakymus pateikite toliau pasirinkę \"Pateikti\"."
+    pdf_export:
+      personal_data: 'Asmens duomenys'
+      personal_data_explanation_public: "Jūsų nuomonę pateiksime internetinėje dalyvavimo platformoje %{organizationName}. Jei norite, kad jūsų vardas ir pavardė būtų rodomi kaip šio indėlio autorius ir gautumėte su jūsų indėliu susijusius atnaujinimus el. paštu, užpildykite šiuos laukelius šiame puslapyje ir mes sukursime jums paskyrą. Jūsų el. paštas nebus viešas ir bus naudojamas tik %{organizationName}. Jei norite išlikti anonimiškas arba nesutinkate, kad taip naudotume jūsų asmens duomenis, galite palikti juos tuščius."
+      personal_data_explanation_private: "Jūsų nuomonę pateiksime internetinėje dalyvavimo platformoje %{organizationName}. Jei norite gauti su jūsų indėliu susijusius atnaujinimus el. paštu, užpildykite šiame puslapyje esančius laukus ir mes sukursime jums paskyrą. Jūsų duomenys nebus vieši ir juos naudos tik %{organizationName}. Jei nesutinkate, kad taip naudotume jūsų asmens duomenis, galite palikti juos tuščius."
+      first_name: 'Vardas (-ai)'
+      last_name: 'Pavardė'
+      email_address: 'El. pašto adresas'
+      by_checking_this_box: "Pažymėdamas šį langelį sutinku, kad mano duomenys būtų naudojami kuriant paskyrą %{organizationName}dalyvavimo platformoje."
+      optional: 'pasirinktinai'
+      permission: 'Leidimas'
+      choose_as_many: 'Pasirinkite tiek, kiek norite'
+      this_answer: 'Šiuo atsakymu bus dalijamasi tik su moderatoriais, o ne su visuomene.'
+      page: 'Puslapis'
+      date_published: 'Paskelbimo data (dd-mm-rrrr)'
+      instructions: 'Instrukcijos'
+      write_as_clearly: 'Rašykite kuo <b>aiškiau</b> - šios formos gali būti nuskaitytos.'
+      write_in_language: 'Atsakymus rašykite ta pačia kalba, kaip ir šioje formoje'
+      linear_scale_print_description: 'Parašykite tik skaičių nuo %{min_label} iki %{max_label}'
+  project_copy:
+    title_suffix: 'Kopijuoti'
+  confirmations_mailer:
+    send_confirmation_code:
+      subject: "Patvirtinkite savo el. pašto adresą %{organizationName}dalyvavimo platformoje"
+      header: "Jūsų patvirtinimo kodas"
+      header_message: "Sveiki %{firstName}!"
+      confirm_email_address: "Patvirtinkite savo el. pašto adresą"
+      thanks_for_signing_up1: "Dėkojame už dalyvavimą. Įveskite šį patvirtinimo kodą į %{organizationName}dalyvavimo platformos langą:"
+      best_regards: "Geriausi linkėjimai,"
+      ignore_email: "Jei kodo neprašėte, galite drąsiai ignoruoti šį el. laišką."
+      expire_code: "Šis kodas nustos galioti "
+      24_hours: "24 valandos."
+      copy_paste_the_link_below: "Nukopijuokite ir įklijuokite toliau pateiktą kodą į platformoje esančią registracijos formą."
+      the_link_is_valid_for: "Ši nuoroda galioja 24 valandas. Jei nuorodos galiojimas baigėsi, galite <a href=\"%{link}\">paprašyti naujo kodo</a>."
+      did_you_receive_this_email_in_error: "Ar gavote šį el. laišką per klaidą? Praneškite <a href=\"%{link}\">mums apie tai</a>."
+  user_blocked_mailer:
+    send_user_blocked_email:
+      subject: 'Jūsų paskyra laikinai išjungta'
+      title_user_blocked: 'Jūsų paskyra laikinai išjungta'
+      paragraph_1_without_reason: "Jūsų paskyra %{organizationName} dalyvavimo platformoje buvo laikinai išjungta dėl bendruomenės gairių pažeidimo."
+      paragraph_1_with_reason: "Jūsų paskyra %{organizationName} dalyvavimo platformoje buvo laikinai išjungta dėl šios priežasties:"
+      for_more_information: "Daugiau informacijos apie tai rasite svetainėje %{termsAndConditionsPage}."
+      you_can_sign_in_again_from: "Vėl galite prisijungti iš %{date}"
+  user:
+    anon_first_name: "Vartotojas"
+  time:
+    am: esu
+    formats:
+      hour_of_day: "%l %p"
+    pm: pm
+  voting_method:
+    default_voting_term_singular: "balsavimas"
+    default_voting_term_plural: "balsai"
