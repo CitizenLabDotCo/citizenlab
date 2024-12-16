@@ -35,7 +35,7 @@ sr-Latn:
       "new_comment_for_admin": Novi komentar u projektu kojim upravljam
       "new_idea_for_admin": Nova ideja u projektu kojim upravljam
       "new_initiative_for_admin": Novi predlog
-      "official_feedback_on_idea_you_follow": Update on an idea that you follow
+      "official_feedback_on_idea_you_follow": Update on an input that you follow
       "official_feedback_on_initiative_you_follow": Update on a proposal that you follow
       "password_reset": Resetovanje lozinke
       "project_moderation_rights_received": Dodela prava za moderaciju projekta
@@ -43,7 +43,7 @@ sr-Latn:
       "project_phase_started": Nova faza projekta
       "project_phase_upcoming": Buduće faze projekta
       "project_published": Project published
-      "status_change_on_idea_you_follow": Status change of an idea that you follow
+      "status_change_on_idea_you_follow": Status change of an input that you follow
       "status_change_on_initiative_you_follow": Status change of a proposal that you follow
       "threshold_reached_for_admin": Predlog je dostigao neophodan broj glasova
       "welcome": Nakon registracije
@@ -58,7 +58,7 @@ sr-Latn:
       "voting_phase_started": New project phase with voting
       "voting_results": Voting results
       "your_input_in_screening": My input awaits screening
-      "your_proposed_initiatives_digest": Nedeljni pregled vaših predloga
+      "your_proposed_initiatives_digest": Weekly overview of your proposals
     general:
       by_author: 'od %{authorName}'
       author_wrote: '%{authorName} piše:'
@@ -270,7 +270,7 @@ sr-Latn:
       cta_reply_to: 'Погледај коментар од %{firstName}'
       event_description: '%{authorNameFull} вас је поменуо у интерном коментару.'
       subject: '%{firstName} вас је поменуо у интерном коментару.'
-      main_header: '%{authorNameFirst} вас је поменуо у интерном коментару.'
+      main_header: '%{firstName} вас је поменуо у интерном коментару.'
       preheader: '%{authorNameFull} вас је поменуо у интерном коментару.'
     moderator_digest:
       subject: 'Vaš nedeljni izveštaj za menadžere projekta od %{project_title}'
@@ -395,7 +395,7 @@ sr-Latn:
       header_message: '%{feedback_author_name} gave an update on ''%{input_title}''.'
       header_title: 'There''s an update on "%{input_title}"'
       subject: 'Official feedback was posted on "%{input_title}"'
-      preheader: 'There''s an update on an idea you follow'
+      preheader: 'There''s an update on an input you follow'
     official_feedback_on_initiative_you_follow:
       header_message: '%{officialName} gave an update on the proposal ''%{initiativeTitle}''. Click the button below to enter the conversation with %{organizationName}.'
       header_title: 'There''s an update on a proposal you follow'
@@ -461,9 +461,9 @@ sr-Latn:
     status_change_on_idea_you_follow:
       status_change: 'The new status of this input is ''%{status}'''
       header_message: '%{organizationName} updated the status of the input ''%{input_title}'' on their digital participation platform.'
-      header_title: 'An idea you follow has a new status'
+      header_title: 'An input you follow has a new status'
       subject: 'The status of "%{input_title}" has changed'
-      preheader: 'An idea you follow has a new status'
+      preheader: 'An input you follow has a new status'
     status_change_on_initiative_you_follow:
       status_change: 'The new status of this proposal is ''%{initiativeStatus}'''
       header_message: 'The status of the proposal ''%{initiativeTitle}'' has been updated on the digital participation platform of %{organizationName}.'
@@ -540,15 +540,15 @@ sr-Latn:
       subject: '"%{input_title}" is almost published'
       preheader: 'It''s currently in %{prescreening_status_title}'
     your_proposed_initiatives_digest:
-      subject: 'Nedeljno obaveštenje o vašim predlozima'
-      preheader: 'Šta se dogodilo sa vašim predlozima u proteklih nedelju dana?'
-      title_your_weekly_report: 'Kako stoje vaši predlozi?'
-      text_introduction: 'Pronađite ključne brojeve u nastavku i posetite platformu kako biste na vreme prikupili dovoljnu podršku.'
-      cta_see_your_initiative: 'Idite na svoje predloge'
-      total_votes: 'Ukupni glasovi'
-      new_votes: 'Novi glasovi'
-      remaining_votes: 'Preostali glasovi'
-      remaining_days: 'Preostalih dana'
+      subject: 'Weekly update of your proposals'
+      preheader: 'What happened with your proposals in the past week?'
+      title_your_weekly_report: 'How have your proposals been doing?'
+      text_introduction: 'Find the key numbers below and go to the platform to take action and gather enough support in time.'
+      cta_see_your_initiative: 'Go to your proposals'
+      total_votes: 'Total votes'
+      new_votes: 'New votes'
+      remaining_votes: 'Votes remaining'
+      remaining_days: 'Days remaining'
     voting_basket_submitted:
       subject: '%{organizationName}: You voted successfully'
       preheader: 'You voted successfully on the participation platform of %{organizationName}'
