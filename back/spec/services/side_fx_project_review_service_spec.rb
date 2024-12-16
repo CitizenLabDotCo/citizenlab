@@ -14,6 +14,15 @@ describe SideFxProjectReviewService do
         .to have_enqueued_job(LogActivityJob)
         .with(review, 'created', user, review.created_at.to_i, { project_id: review.project_id })
     end
+
+    it "logs a 'project_review_requested' activity job" do
+      expect { service.after_create(review, user) }
+        .to have_enqueued_job(LogActivityJob)
+        .with(review.project, 'project_review_requested', user, review.created_at.to_i, {
+          project_review_id: review.id,
+          project: clean_time_attributes(review.project.attributes)
+        })
+    end
   end
 
   describe 'after_update' do
@@ -36,6 +45,18 @@ describe SideFxProjectReviewService do
               updated_at: [anything, review.approved_at]
             )
           }
+        })
+    end
+
+    it "logs a 'project_review_approved' activity job if the review was approved" do
+      review.approve!(user)
+
+      expect { service.after_update(review, user) }
+        .to have_enqueued_job(LogActivityJob)
+        .with(review.project, 'project_review_approved', user, review.updated_at.to_i, {
+          project_review_id: review.id,
+          # The serialized project is required for the management feed.
+          project: clean_time_attributes(review.project.attributes)
         })
     end
   end
