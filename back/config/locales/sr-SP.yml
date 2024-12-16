@@ -37,17 +37,17 @@ sr-Cyrl:
     outside: негде другде
   idea_statuses:
     proposed: предложено
-    proposed_description: Ова идеја је предложена граду
+    proposed_description: This idea has been proposed to the city
     viewed: гледано
-    viewed_description: Ову идеју је видео неко из града
+    viewed_description: This idea has been seen by someone from the city
     under_consideration: у разматрању
-    under_consideration_description: Ову идеју је град узео у обзир
+    under_consideration_description: This idea has been taken into consideration by the city
     accepted: прихваћено
-    accepted_description: Ова идеја је прихваћена и биће спроведена од стране града
+    accepted_description: This idea has been accepted and will be implemented by the city
     implemented: имплементиран
-    implemented_description: Ову идеју је спровео град
+    implemented_description: This idea has been implemented by the city
     rejected: одбијен
-    rejected_description: Ова идеја је одбијена
+    rejected_description: This idea has been rejected
   initiative_statuses:
     review_pending: преглед на чекању
     review_pending_description: преглед на чекању
@@ -198,11 +198,11 @@ sr-Cyrl:
         option:
           title: Која је твоја опција?
       details:
-        title: Детаљи
+        title: Details
       attachements:
-        title: Слике и прилози
+        title: Images and attachments
       extra:
-        title: Додатне Информације
+        title: Additional information
   custom_field_options:
     gender:
       male: Мушки
