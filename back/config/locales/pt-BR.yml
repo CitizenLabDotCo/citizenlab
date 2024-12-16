@@ -37,17 +37,17 @@ pt:
     outside: em outro lugar
   idea_statuses:
     proposed: Proposta
-    proposed_description: Esta idea foi proposta por alguem da organização
+    proposed_description: Essa ideia foi proposta à cidade
     viewed: Revisado
-    viewed_description: Esta idea foi vista por alguém da organização
+    viewed_description: Essa ideia foi vista por alguém da cidade
     under_consideration: em questão
-    under_consideration_description: Esta Ideia foi levada em consideração pela organização
+    under_consideration_description: Essa ideia foi levada em consideração pela cidade
     accepted: Aceitada
-    accepted_description: Esta ideia foi aceite e será implementada pela organização.
+    accepted_description: Essa ideia foi aceita e será implementada pela cidade
     implemented: Implementada
-    implemented_description: Esta ideia foi implementada pela organização.
+    implemented_description: Essa ideia foi implementada pela cidade
     rejected: Rejeitada
-    rejected_description: Esta Idea foi rejeitada
+    rejected_description: Essa ideia foi rejeitada
   initiative_statuses:
     review_pending: revisão pendente
     review_pending_description: revisão pendente
@@ -200,7 +200,7 @@ pt:
       details:
         title: Detalhes
       attachements:
-        title: Imagens e Anexos
+        title: Imagens e anexos
       extra:
         title: Informações adicionais
   custom_field_options:
