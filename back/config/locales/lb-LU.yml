@@ -37,17 +37,17 @@ lb:
     outside: anzwousch anescht
   idea_statuses:
     proposed: virgeschloen
-    proposed_description: Dës Iddi gouf virgeschloen
+    proposed_description: Dës Iddi gouf der Stad proposéiert
     viewed: gesinn
-    viewed_description: Dës Iddi gouf gesinn
+    viewed_description: Dës Iddi gouf vun engem aus der Stad gesinn
     under_consideration: Gëtt a betruecht gezunn
-    under_consideration_description: Dës Iddi gouf a betruecht gezunn
+    under_consideration_description: Dës Iddi gouf vun der Stad berücksichtegt
     accepted: akzeptéiert
-    accepted_description: Dës Iddi gouf akzeptéiert a wäert ëmgesat ginn
+    accepted_description: Dës Iddi gouf ugeholl a wäert vun der Stad ëmgesat ginn
     implemented: ëmgesat
-    implemented_description: Dës Iddi gouf ëmgesat
+    implemented_description: Dës Iddi gouf vun der Stad ëmgesat
     rejected: Ofgeleent
-    rejected_description: Dës Iddi gouf ofgeleent
+    rejected_description: Dës Iddi gouf refuséiert
   initiative_statuses:
     review_pending: Iwwerpréiwung waarden
     review_pending_description: Iwwerpréiwung waarden
@@ -200,7 +200,7 @@ lb:
       details:
         title: Detailer
       attachements:
-        title: Biller an Annexen
+        title: Biller an Uschlëss
       extra:
         title: Zousätzlech Informatiounen
   custom_field_options:
@@ -292,9 +292,9 @@ lb:
       header: "Äre Bestätegungscode"
       header_message: "Gudde Moie(n) %{firstName}!"
       confirm_email_address: "Bestätegt Är E-Mail-Adress"
-      thanks_for_signing_up1: "Merci fir Är Participatioun. Gitt w.e.g. dëse Bestätegungscode an der Fënster op der Participatiounsplattform vun %{organizationName}an:"
+      thanks_for_signing_up1: "Merci fir Är Participatioun. Gitt w. e. g. dëse Bestätegungscode an der Fënster op der Participatiounsplattform vun %{organizationName}:"
       best_regards: "Mat beschte Gréiss,"
-      ignore_email: "Wann Dir kee Code ugefrot hutt, kënnt Dir Dës E-Mail ignoréieren."
+      ignore_email: "Wann Dir kee Code ugefrot hutt, kënnt Dir dës E-Mail ignoréieren."
       expire_code: "Dëse Code leeft of an:"
       24_hours: "24 Stonnen."
       copy_paste_the_link_below: "Kopéiert de Code hei ënnendrënner a füügt en an den Aschreiwungsformular op der Plattform an fir Är Aschreiwung ofzeschléissen."
