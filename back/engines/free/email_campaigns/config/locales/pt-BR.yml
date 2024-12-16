@@ -58,7 +58,7 @@ pt:
       "voting_phase_started": Nova fase do projeto com votação
       "voting_results": Resultados da votação
       "your_input_in_screening": Minha contribuição aguarda a triagem
-      "your_proposed_initiatives_digest": Resumo semanal das suas propostas
+      "your_proposed_initiatives_digest": Visão geral semanal de suas propostas
     general:
       by_author: 'por %{authorName}'
       author_wrote: '%{authorName} escreveu:'
@@ -273,7 +273,7 @@ pt:
       main_header: '%{firstName} mencionou você em um comentário interno.'
       preheader: '%{authorNameFull} mencionou você em um comentário interno.'
     moderator_digest:
-      subject: 'Relatório semanal do gerente de "%{project_title}"'
+      subject: 'Seu relatório semanal como gerente do projeto de %{project_title}'
       preheader: 'Resumo de gerente do projeto de %{organizationName}'
       title_your_weekly_report: '%{firstName}, o seu relatório semanal'
       text_introduction: 'Nós editamos para você a listagem de idéias que geraram mais atividade na semana passada. Descubra o que está acontecendo com o seu projeto!'
@@ -299,7 +299,7 @@ pt:
       yesterday: Ontem
     comment_on_idea_you_follow:
       cta_reply_to: 'Responder a %{commentAuthor}'
-      event_description: '%{authorNameFull} colocou uma reação em ''%{inputTitle}''. Clique no botão abaixo para continuar a conversa com %{authorName}.'
+      event_description: '%{authorNameFull} placed a reaction on ''%{inputTitle}''. Click the button below to continue the conversation with %{authorName}.'
       main_header:
         idea: '%{authorName} comentou sobre uma ideia que você segue'
         question: '%{authorName} comentou sobre uma pergunta que você segue'
@@ -310,7 +310,7 @@ pt:
         proposal: '%{authorName} comentou sobre uma proposta que você segue'
         initiative: '%{authorName} comentou sobre uma iniciativa que você segue'
         petition: '%{authorName} comentou em uma petição que você segue'
-      subject: 'Há um novo comentário em "%{input_title}"'
+      subject: 'There''s a new comment on "%{input_title}"'
       preheader: '%{authorName} deixou um comentário sobre uma ideia para %{organizationName}'
     comment_on_initiative_you_follow:
       cta_reply_to: 'Responder a %{commentAuthor}'
@@ -392,10 +392,10 @@ pt:
       main_header: '''%{post}'' tem um novo comentário interno'
       preheader: '''%{post}'' tem um novo comentário interno'
     official_feedback_on_idea_you_follow:
-      header_message: '%{feedback_author_name} apresentou uma atualização sobre o ''%{input_title}''.'
-      header_title: 'Há uma atualização em "%{input_title}"'
-      subject: 'O feedback oficial foi publicado em "%{input_title}"'
-      preheader: 'Há uma atualização sobre uma ideia que você segue'
+      header_message: '%{feedback_author_name} gave an update on ''%{input_title}''.'
+      header_title: 'There''s an update on "%{input_title}"'
+      subject: 'Official feedback was posted on "%{input_title}"'
+      preheader: 'There''s an update on an input you follow'
     official_feedback_on_initiative_you_follow:
       header_message: '%{officialName} deu uma atualização sobre a proposta ''%{initiativeTitle}''. Clique no botão abaixo para entrar na conversa com %{organizationName}.'
       header_title: 'Há uma atualização sobre uma proposta que você segue'
@@ -459,11 +459,11 @@ pt:
       header_message: 'A plataforma de participação %{organizationName} acaba de publicar o seguinte projeto:'
       preheader: 'Um novo projeto foi publicado'
     status_change_on_idea_you_follow:
-      status_change: 'O novo status dessa entrada é ''%{status}'''
-      header_message: '%{organizationName} atualizou o status da entrada ''%{input_title}'' em sua plataforma de participação digital.'
-      header_title: 'Uma ideia que você segue tem um novo status'
-      subject: 'O status de "%{input_title}" foi alterado'
-      preheader: 'Uma ideia que você segue tem um novo status'
+      status_change: 'The new status of this input is ''%{status}'''
+      header_message: '%{organizationName} updated the status of the input ''%{input_title}'' on their digital participation platform.'
+      header_title: 'An input you follow has a new status'
+      subject: 'The status of "%{input_title}" has changed'
+      preheader: 'An input you follow has a new status'
     status_change_on_initiative_you_follow:
       status_change: 'O novo status desta proposta é ''%{initiativeStatus}'''
       header_message: 'O status da proposta ''%{initiativeTitle}'' foi atualizado na plataforma digital de participação de %{organizationName}.'
@@ -493,7 +493,7 @@ pt:
     threshold_reached_for_admin:
       cta_process_initiative: 'Leve esta iniciativa para os próximos passos'
       main_header: 'Uma iniciativa estourou o limite de votação!'
-      subject: '"%{input_title}" atingiu o limite de votação'
+      subject: 'Uma iniciativa estourou o limite de votação na sua plataforma!'
       preheader: 'Garantir de dar próximos passos'
     welcome:
       cta_join_platform: 'Explorar a plataforma'
@@ -512,7 +512,7 @@ pt:
         proposal: 'Sua proposta foi publicada'
         initiative: 'Sua iniciativa foi publicada'
         petition: 'Sua petição foi publicada'
-      main_header: 'Você postou "%{input_title}"'
+      main_header: 'Você postou uma idéia! Vamos garantir que ela seja lida.'
       header_message: 'Vamos garantir que você o leia.'
       message_get_votes: 'Alcance mais pessoas com a sua idéia:'
       action_published_idea: 'Idea postada'
@@ -540,13 +540,13 @@ pt:
       subject: '"%{input_title}" está quase publicado'
       preheader: 'No momento, você está em %{prescreening_status_title}'
     your_proposed_initiatives_digest:
-      subject: 'Atualização semanal da sua proposta'
-      preheader: 'O que aconteceu à sua proposta da semana passada?'
-      title_your_weekly_report: 'Como tem sido a sua proposta?'
-      text_introduction: 'Encontre os números-chave abaixo e vá para a página da sua proposta para agir e reunir apoio suficiente a tempo.'
-      cta_see_your_initiative: 'Ir para a sua proposta'
-      total_votes: 'Total dos votos'
-      new_votes: 'Novos Votos'
+      subject: 'Atualização semanal de suas propostas'
+      preheader: 'O que aconteceu com suas propostas na semana passada?'
+      title_your_weekly_report: 'Como as propostas de vocês estão se saindo?'
+      text_introduction: 'Encontre os principais números abaixo e vá até a plataforma para agir e reunir apoio suficiente a tempo.'
+      cta_see_your_initiative: 'Vá para suas propostas'
+      total_votes: 'Total de votos'
+      new_votes: 'Novos votos'
       remaining_votes: 'Votos restantes'
       remaining_days: 'Dias restantes'
     voting_basket_submitted:
