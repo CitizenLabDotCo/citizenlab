@@ -152,7 +152,7 @@ fi:
       yesterday_by_author: 'Eilen %{author}'
       today_by_author: 'Tänään %{author}'
       x_days_ago_by_author: '%{x} päivää sitten, kirjoittaja %{author}'
-      idea_section: Ideat
+      idea_section: Ideoita
       initiative_section: ehdotuksia
       title_initiatives_past_week: 'Sinulle on määrätty uusia ehdotuksia'
       title_successful_initiatives_past_week: 'Sinulle osoitetut ehdotukset, jotka saavuttivat kynnyksen'
