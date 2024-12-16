@@ -191,7 +191,7 @@ nl:
         title: Details
         description:
       other_text_field:
-        title: Als je '{other_option}' hebt geselecteerd, typ dan je antwoord.
+        title: Als je '{other_option}' hebt geselecteerd, wat wil je dan meegeven?
   custom_forms:
     categories:
       main_content:
