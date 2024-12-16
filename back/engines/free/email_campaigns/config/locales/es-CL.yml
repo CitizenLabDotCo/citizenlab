@@ -77,7 +77,7 @@ es-CL:
       "link_terms_conditions": "Términos & Condiciones"
       "link_unsubscribe": "Cancelar la suscripción"
       "powered_by": "Impulsado por"
-      "statement": "Este email le fue enviado por Go Vocal en nombre de %{organizationName}, porque eres usuario registrado de %{organizationLink}. Puedes %{unsubscribeLink} si no deseas recibir estos emails en el futuro."
+      "statement": "Este email le fue enviado por CitizenLab en nombre de %{organizationName}, porque eres usuario registrado de %{organizationLink}. Puedes %{unsubscribeLink} si no deseas recibir estos emails en el futuro."
       "unsubscribe_text": "cancelar la suscripción"
     follow:
       "unfollow_here": "Has recibido esta notificación debido a un artículo que sigues. <a href=\"%{unfollow_url}\">Puedes dejar de seguirla aquí.</a>"
@@ -104,7 +104,7 @@ es-CL:
       title_activity_past_week: 'Actividad de la semana pasada'
       title_no_activity_past_week: 'No hubo actividad en la última semana'
       title_initiatives_past_week: 'Nuevas iniciativas de la semana pasada'
-      title_successful_initiatives_past_week: 'Iniciativas que alcanzaron el número requerido de votos en la última semana'
+      title_successful_initiatives_past_week: 'Propuestas que alcanzaron el número requerido de votos en la última semana'
       yesterday_by_author: 'Ayer por %{author}'
       today_by_author: 'Hoy por %{author}'
       x_days_ago_by_author: '%{x} días atrás por %{author}'
@@ -153,9 +153,9 @@ es-CL:
       today_by_author: 'Hoy por %{author}'
       x_days_ago_by_author: '%{x} hace días por %{author}'
       idea_section: Ideas
-      initiative_section: Iniciativas
-      title_initiatives_past_week: 'Nuevas iniciativas asignadas a tu'
-      title_successful_initiatives_past_week: 'Se le asignaron iniciativas que alcanzaron el umbral'
+      initiative_section: Propuestas
+      title_initiatives_past_week: 'Nuevas propuestas asignadas a tu'
+      title_successful_initiatives_past_week: 'Se le asignaron propuestas que alcanzaron el umbral'
     idea_marked_as_spam:
       cta_review_idea: 'Revisa la idea'
       report_inappropriate_offensive_content: 'Encuentro este contenido inapropiado u ofensivo.'
@@ -235,7 +235,7 @@ es-CL:
       main_header: '%{firstName} te mencionó en un comentario interno.'
       preheader: '%{authorNameFull} te mencionó en un comentario interno.'
     moderator_digest:
-      subject: 'Tu reporte semanal como moderador de %{time}'
+      subject: 'Tu reporte semanal como administrador de proyecto de %{time}'
       preheader: 'Resumen del moderador del proyecto de %{organizationName}'
       title_your_weekly_report: '%{firstName}, tu reporte semanal'
       text_introduction: 'Hemos editado para ti la lista de ideas que han generado más actividad durante la última semana. Descubre lo que está sucediendo en tu proyecto!'
@@ -342,8 +342,8 @@ es-CL:
       main_header: '''%{post}'' tiene un nuevo comentario interno'
       preheader: '''%{post}'' tiene un nuevo comentario interno'
     official_feedback_on_idea_you_follow:
-      header_message: '%{officialName} dio una actualización sobre la idea ''%{ideaTitle}''. Haz clic en el botón de abajo para entrar en la conversación con %{officialName}.'
-      header_title: 'Hay una actualización en una idea que sigues'
+      header_message: '%{officialName} ha commentado en la idea ''%{ideaTitle}''. Haga clic en el botón de abajo para continuar la conversación con %{officialName}.'
+      header_title: 'Hay una actualización de una idea que sigues'
       subject: 'Una idea que sigues ha recibido una actualización oficial en la plataforma de %{organizationName}'
       preheader: 'Hay una actualización de una idea que sigues'
     official_feedback_on_initiative_you_follow:
@@ -411,8 +411,8 @@ es-CL:
     status_change_on_idea_you_follow:
       status_change: 'El nuevo estado de esta idea es ''%{ideaStatus}'''
       header_message: '%{organizationName} actualizó el estado de la idea ''%{ideaTitle}'' en su plataforma de participación digital.'
-      header_title: 'Una idea que sigues tiene un nuevo estado'
-      subject: 'El estado de una idea que sigues ha sido cambiado'
+      header_title: 'Una idea que sigues tiene un nuevo estatus'
+      subject: 'Se ha modificado el estado de una idea que sigues'
       preheader: 'Una idea que sigues tiene un nuevo estatus'
     status_change_on_initiative_you_follow:
       status_change: 'El nuevo estado de esta propuesta es ''%{initiativeStatus}'''
@@ -436,7 +436,7 @@ es-CL:
       yesterday_by_author: "Ayer por %{author}"
       x_days_ago_by_author: "%{x} días atrás por %{author}"
       trending_ideas: "Ideas populares"
-      trending_ideas_text: "¿Estas interesado en lo que ha estado sucediendo en la plataforma? Echa un vistazo a las tres ideas más modernas, mira lo que la gente está diciendo de ellas y únete a la conversación."
+      trending_ideas_text: "¿Interesado en lo que ha estado sucediendo en la plataforma? Echa un vistazo a las tres ideas más modernas, mira lo que la gente está diciendo de ellas y únete a la conversación."
       no_notifications: "No hay notificaciones"
       one_notification: "1 notificación"
       multiple_notifications: "%{notifCount} notificaciones"
@@ -444,9 +444,9 @@ es-CL:
       unread_notifications: "¡Tienes nuevas notificaciones! Visita la plataforma para descubrir lo que está pasando."
     threshold_reached_for_admin:
       cta_process_initiative: 'Lleve esta iniciativa a los siguientes pasos'
-      event_description: 'Una iniciativa ha alcanzado el número requerido de votos en su plataforma. Haga clic en el botón de abajo para llevarlo a los siguientes pasos!'
-      main_header: 'Una iniciativa alcanzó el número requerido de votos!'
-      subject: 'Una iniciativa alcanzó el número requerido de votos'
+      event_description: 'Una propuesta ha alcanzado el número requerido de votos en su plataforma. Haga clic en el botón de abajo para llevarlo a los siguientes pasos!'
+      main_header: 'Una propuesta alcanzó el número requerido de votos!'
+      subject: 'Una propuesta alcanzó el número requerido de votos'
       preheader: 'Asegúrese de seguir los siguientes pasos'
     first_idea_published:
       action_add_image: '%{addImageLink} para aumentar visibilidad'
@@ -455,7 +455,7 @@ es-CL:
       action_send_email: 'Envía a sus contactos un %{sendEmailLink}'
       action_share_fb: 'Compártelo con tus amigos en %{fbLink}'
       action_share_link: 'Compártelo con tus contactos por correo electrónico %{link}'
-      action_share_twitter: 'Compártelo con tus seguidores en %{twitterLink}'
+      action_share_twitter: 'Informa a tus seguidores sobre %{twitterLink}'
       add_image: 'Añade una imagen'
       cta_view_idea: 'Ir a tu idea'
       event_description: '%{firstName}, felicidades por su primera idea en la plataforma de participación de %{organizationName}. Se le notificará cuando las personas interactúen con su idea. Descubra los siguientes pasos que puede seguir a continuación.'
@@ -491,11 +491,11 @@ es-CL:
       subject: 'Tu idea fue publicada en la plataforma de %{organizationName}'
       message_next_steps: ""
     your_proposed_initiatives_digest:
-      subject: 'Actualización semanal de tu iniciativa'
-      preheader: '¿Qué pasó con tu iniciativa la semana pasada?'
-      title_your_weekly_report: '¿Cómo ha ido tu iniciativa?'
-      text_introduction: 'Encuentre los números clave a continuación y vaya a la página de su iniciativa para tomar medidas y obtener suficiente apoyo a tiempo.'
-      cta_see_your_initiative: 'Ir a tu iniciativa'
+      subject: 'Actualización semanal de tu propuesta'
+      preheader: '¿Qué pasó con tu propuesta la semana pasada?'
+      title_your_weekly_report: '¿Cómo ha ido tu propuesta?'
+      text_introduction: 'Encuentre los números clave a continuación y vaya a la página de su propuesta para tomar medidas y obtener suficiente apoyo a tiempo.'
+      cta_see_your_initiative: 'Ir a tu propuesta'
       total_votes: 'Total de votos'
       new_votes: 'Nuevos votos'
       remaining_votes: 'Votos restantes'
