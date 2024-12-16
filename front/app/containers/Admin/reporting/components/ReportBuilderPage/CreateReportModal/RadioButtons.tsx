@@ -7,7 +7,7 @@ import useAuthUser from 'api/me/useAuthUser';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { MessageDescriptor, FormattedMessage } from 'utils/cl-intl';
-import { isSuperAdmin } from 'utils/permissions/roles';
+import { isSuperAdmin, isAdmin } from 'utils/permissions/roles';
 
 import messages from '../messages';
 
@@ -33,7 +33,7 @@ const RadioButtons = ({ value, onChange }: Props) => {
   });
 
   const templateTypes =
-    isSuperAdmin(user) || platformTemplatesEnabled
+    isSuperAdmin(user) || (platformTemplatesEnabled && isAdmin(user))
       ? TEMPLATE_TYPES
       : TEMPLATE_TYPES.filter((type) => type !== 'platform');
 
