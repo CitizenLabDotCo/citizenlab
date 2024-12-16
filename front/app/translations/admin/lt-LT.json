@@ -2842,7 +2842,6 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.noData": "Nėra paskelbtų projektų ar aplankų",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.publishedTitle": "Paskelbti projektai ir aplankai",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.thisWidgetWillShow": "Šiame valdiklyje bus rodomi šiuo metu paskelbti projektai ir aplankai, atsižvelgiant į projektų puslapyje nustatytą eiliškumą. Ši elgsena yra tokia pati, kaip ir \"senųjų\" projektų valdiklio skirtuko \"active\" (aktyvus).",
-  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.inThisWidget": "Šiame valdiklyje galite pasirinkti norimus projektus ir aplankus.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.noData": "Nėra pasirinktų projektų ar aplankų",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.selectProjectsOrFolders": "Pasirinkite projektus arba aplankus",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.selectionTitle3": "Pasirinkti projektai ir aplankai",

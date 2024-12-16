@@ -2842,7 +2842,6 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.noData": "Geen gepubliceerde projecten of mappen beschikbaar",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.publishedTitle": "Gepubliceerde projecten en mappen",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.thisWidgetWillShow": "Deze widget toont de projecten en mappen die op dat moment gepubliceerd zijn, met inachtneming van de volgorde die is gedefinieerd op de projectenpagina. Dit gedrag is hetzelfde als het \"actief\" tabblad van de \"oude\" projecten widget.",
-  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.inThisWidget": "In deze widget kun je de projecten en mappen selecteren die je wilt.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.noData": "Geen projecten of mappen geselecteerd",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.selectProjectsOrFolders": "Selecteer projecten of mappen",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.selectionTitle3": "Geselecteerde projecten en mappen",

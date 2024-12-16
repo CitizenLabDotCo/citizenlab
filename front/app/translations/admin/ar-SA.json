@@ -2842,7 +2842,6 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.noData": "لا توجد مشاريع أو مجلدات منشورة متاحة",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.publishedTitle": "المشاريع والمجلدات المنشورة",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.thisWidgetWillShow": "ستقوم هذه الأداة بتصنيف المشاريع والمجلدات المنشورة حاليًا، مع مراعاة الترتيب المحدد في صفحة المشاريع. هذا السلوك هو نفس سلوك علامة التبويب \"النشطة\" في أداة المشاريع \"القديمة\".",
-  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.inThisWidget": "في هذه الأداة، يمكنك تحديد المشاريع والمجلدات التي تريدها.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.noData": "لم يتم تحديد أي مشاريع أو مجلدات",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.selectProjectsOrFolders": "حدد المشاريع أو المجلدات",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.selectionTitle3": "المشاريع والمجلدات المختارة",

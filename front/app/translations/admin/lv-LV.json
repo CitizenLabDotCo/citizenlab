@@ -2842,7 +2842,6 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.noData": "Nav pieejami publicēti projekti vai mapes",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.publishedTitle": "Publicētie projekti un mapes",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.thisWidgetWillShow": "Šis logrīks attēlo pašlaik publicētos projektus un mapes, ievērojot projektu lapā noteikto secību. Šī uzvedība ir tāda pati kā \"veco\" projektu logrīka cilnē \"aktīvais\".",
-  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.inThisWidget": "Šajā logrīkā varat atlasīt vēlamos projektus un mapes.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.noData": "Nav atlasīti projekti vai mapes",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.selectProjectsOrFolders": "Atlasiet projektus vai mapes",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.selectionTitle3": "Atlasītie projekti un mapes",

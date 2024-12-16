@@ -141,7 +141,10 @@ const HomepageBuilderToolbox = ({
         <DraggableElement
           id="e2e-draggable-spotlight"
           component={
-            <Spotlight buttonTextMultiloc={toMultiloc(buttonTextDefault)} />
+            <Spotlight
+              buttonTextMultiloc={toMultiloc(buttonTextDefault)}
+              hideAvatars={false}
+            />
           }
           icon="flash"
           label={formatMessage(spotlightTitle)}
@@ -170,12 +173,6 @@ const HomepageBuilderToolbox = ({
           component={<Events />}
           icon="calendar"
           label={formatMessage(messages.eventsTitle)}
-        />
-        <DraggableElement
-          id="e2e-draggable-image-text-cards"
-          component={<ImageTextCards />}
-          icon="section-image-text"
-          label={formatMessage(messages.imageTextCards)}
         />
         <DraggableElement
           id="e2e-draggable-call-to-action"
@@ -256,10 +253,16 @@ const HomepageBuilderToolbox = ({
           label={formatMessage(twoColumnTitle)}
         />
         <DraggableElement
-          id="e2e-draggable-two-column"
+          id="e2e-draggable-three-column"
           component={<ThreeColumn />}
           icon="layout-3column"
           label={formatMessage(threeColumnTitle)}
+        />
+        <DraggableElement
+          id="e2e-draggable-image-text-cards"
+          component={<ImageTextCards />}
+          icon="section-image-text"
+          label={formatMessage(messages.imageTextCards)}
         />
       </Section>
     </Container>

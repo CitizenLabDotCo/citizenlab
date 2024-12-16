@@ -2842,7 +2842,6 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.noData": "Nema dostupnih objavljenih projekata ili mapa",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.publishedTitle": "Objavljeni projekti i mape",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.thisWidgetWillShow": "Ovaj widget će prikazati projekte i mape koji su trenutno objavljeni, poštujući redoslijed definiran na stranici projekata. Ovo ponašanje je isto kao i \"aktivna\" kartica widgeta \"naslijeđenih\" projekata.",
-  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.inThisWidget": "U ovom widgetu možete odabrati koje god projekte i mape želite.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.noData": "Nema odabranih projekata ni mapa",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.selectProjectsOrFolders": "Odaberite projekte ili mape",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.selectionTitle3": "Odabrani projekti i mape",

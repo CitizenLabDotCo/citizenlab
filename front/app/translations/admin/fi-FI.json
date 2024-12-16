@@ -2842,7 +2842,6 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.noData": "Julkaistuja projekteja tai kansioita ei ole saatavilla",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.publishedTitle": "Julkaistut projektit ja kansiot",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Published.thisWidgetWillShow": "Tämä widget käsittelee parhaillaan julkaistuja projekteja ja kansioita noudattaen projektisivulla määritettyä järjestystä. Tämä toimintatapa on sama kuin \"vanhojen\" projektien widgetin \"aktiivinen\"-välilehti.",
-  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.inThisWidget": "Tässä widgetissä voit valita haluamasi projektit ja kansiot.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.noData": "Projekteja tai kansioita ei ole valittu",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.selectProjectsOrFolders": "Valitse projektit tai kansiot",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.selectionTitle3": "Valitut projektit ja kansiot",

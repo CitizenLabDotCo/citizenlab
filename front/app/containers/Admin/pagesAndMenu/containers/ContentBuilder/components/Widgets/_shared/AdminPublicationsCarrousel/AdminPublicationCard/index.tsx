@@ -70,6 +70,7 @@ export const AdminPublicationCard = ({
   return (
     <CardContainer
       as={Link}
+      scrollToTop
       tabIndex={0}
       w={`${cardWidth}px`}
       ml={ml}
