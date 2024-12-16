@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { StrictMode, useEffect } from 'react';
 
 import 'assets/css/reset.min.css';
 import 'assets/fonts/fonts.css';
@@ -71,9 +71,11 @@ const Root = () => {
       <OutletsProvider>
         <LanguageProvider>
           <HistoryRouter history={history as any}>
-            <App>
-              <Routes />
-            </App>
+            <StrictMode>
+              <App>
+                <Routes />
+              </App>
+            </StrictMode>
           </HistoryRouter>
         </LanguageProvider>
       </OutletsProvider>
