@@ -35,7 +35,7 @@ en-GB:
       "new_comment_for_admin": New comment in a project I moderate
       "new_idea_for_admin": New idea in a project I moderate
       "new_initiative_for_admin": New proposal
-      "official_feedback_on_idea_you_follow": Update on an idea that you follow
+      "official_feedback_on_idea_you_follow": Update on an input that you follow
       "official_feedback_on_initiative_you_follow": Update on a proposal that you follow
       "password_reset": Password reset
       "project_moderation_rights_received": Project moderation rights received
@@ -43,7 +43,7 @@ en-GB:
       "project_phase_started": New project phase
       "project_phase_upcoming": Upcoming new project phase
       "project_published": Project published
-      "status_change_on_idea_you_follow": Status change of an idea that you follow
+      "status_change_on_idea_you_follow": Status change of an input that you follow
       "status_change_on_initiative_you_follow": Status change of a proposal that you follow
       "threshold_reached_for_admin": Proposal reached the voting threshold
       "welcome": After registration
@@ -352,50 +352,50 @@ en-GB:
     internal_comment_on_idea_assigned_to_you:
       cta_reply_to: 'View comment by %{firstName}'
       event_description: '%{authorNameFull} commented internally on an input assigned to you.'
-      subject: '''%{post}'' has a new internal comment'
-      main_header: '''%{post}'' has a new internal comment'
-      preheader: '''%{post}'' has a new internal comment'
+      subject: 'New internal comment on ''%{post}'''
+      main_header: 'New internal comment on ''%{post}'''
+      preheader: 'New internal comment on ''%{post}'''
     internal_comment_on_idea_you_commented_internally_on:
       cta_reply_to: 'View comment by %{firstName}'
       event_description: '%{authorNameFull} commented internally on an input you commented internally on.'
-      subject: '''%{post}'' has a new internal comment'
-      main_header: '''%{post}'' has a new internal comment'
-      preheader: '''%{post}'' has a new internal comment'
+      subject: 'New internal comment on ''%{post}'''
+      main_header: 'New internal comment on ''%{post}'''
+      preheader: 'New internal comment on ''%{post}'''
     internal_comment_on_idea_you_moderate:
       cta_reply_to: 'View comment by %{firstName}'
       event_description: '%{authorNameFull} commented internally on an input in a project or folder you manage.'
-      subject: '''%{post}'' has a new internal comment'
-      main_header: '''%{post}'' has a new internal comment'
-      preheader: '''%{post}'' has a new internal comment'
+      subject: 'New internal comment on ''%{post}'''
+      main_header: 'New internal comment on ''%{post}'''
+      preheader: 'New internal comment on ''%{post}'''
     internal_comment_on_initiative_assigned_to_you:
       cta_reply_to: 'View comment by %{firstName}'
       event_description: '%{authorNameFull} commented internally on a proposal assigned to you.'
-      subject: '''%{post}'' has a new internal comment'
-      main_header: '''%{post}'' has a new internal comment'
-      preheader: '''%{post}'' has a new internal comment'
+      subject: 'New internal comment on ''%{post}'''
+      main_header: 'New internal comment on ''%{post}'''
+      preheader: 'New internal comment on ''%{post}'''
     internal_comment_on_initiative_you_commented_internally_on:
       cta_reply_to: 'View comment by %{firstName}'
       event_description: '%{authorNameFull} commented internally on a proposal you commented internally on.'
-      subject: '''%{post}'' has a new internal comment'
-      main_header: '''%{post}'' has a new internal comment'
-      preheader: '''%{post}'' has a new internal comment'
+      subject: 'New internal comment on ''%{post}'''
+      main_header: 'New internal comment on ''%{post}'''
+      preheader: 'New internal comment on ''%{post}'''
     internal_comment_on_unassigned_initiative:
       cta_reply_to: 'View comment by %{firstName}'
       event_description: '%{authorNameFull} commented internally on an unassigned proposal.'
-      subject: '''%{post}'' has a new internal comment'
-      main_header: '''%{post}'' has a new internal comment'
-      preheader: '''%{post}'' has a new internal comment'
+      subject: 'New internal comment on ''%{post}'''
+      main_header: 'New internal comment on ''%{post}'''
+      preheader: 'New internal comment on ''%{post}'''
     internal_comment_on_unassigned_unmoderated_idea:
       cta_reply_to: 'View comment by %{firstName}'
       event_description: '%{authorNameFull} commented internally on an unassigned input in an unmanaged project.'
-      subject: '''%{post}'' has a new internal comment'
-      main_header: '''%{post}'' has a new internal comment'
-      preheader: '''%{post}'' has a new internal comment'
+      subject: 'New internal comment on ''%{post}'''
+      main_header: 'New internal comment on ''%{post}'''
+      preheader: 'New internal comment on ''%{post}'''
     official_feedback_on_idea_you_follow:
       header_message: '%{feedback_author_name} gave an update on ''%{input_title}''.'
       header_title: 'There''s an update on "%{input_title}"'
       subject: 'Official feedback was posted on "%{input_title}"'
-      preheader: 'There''s an update on an idea you follow'
+      preheader: 'There''s an update on an input you follow'
     official_feedback_on_initiative_you_follow:
       header_message: '%{officialName} gave an update on the proposal ''%{initiativeTitle}''. Click the button below to enter the conversation with %{organizationName}.'
       header_title: 'There''s an update on a proposal you follow'
@@ -461,9 +461,9 @@ en-GB:
     status_change_on_idea_you_follow:
       status_change: 'The new status of this input is ''%{status}'''
       header_message: '%{organizationName} updated the status of the input ''%{input_title}'' on their digital participation platform.'
-      header_title: 'An idea you follow has a new status'
+      header_title: 'An input you follow has a new status'
       subject: 'The status of "%{input_title}" has changed'
-      preheader: 'An idea you follow has a new status'
+      preheader: 'An input you follow has a new status'
     status_change_on_initiative_you_follow:
       status_change: 'The new status of this proposal is ''%{initiativeStatus}'''
       header_message: 'The status of the proposal ''%{initiativeTitle}'' has been updated on the digital participation platform of %{organizationName}.'
@@ -540,11 +540,11 @@ en-GB:
       subject: '"%{input_title}" is almost published'
       preheader: 'It''s currently in %{prescreening_status_title}'
     your_proposed_initiatives_digest:
-      subject: 'Weekly update of your proposal'
-      preheader: 'What happened to your proposal in the past week?'
-      title_your_weekly_report: 'How has your proposal been doing?'
-      text_introduction: 'Find the key numbers below and go to your proposal''s page to take action and gather enough support in time.'
-      cta_see_your_initiative: 'Go to your petition'
+      subject: 'Weekly update of your proposals'
+      preheader: 'What happened with your proposals in the past week?'
+      title_your_weekly_report: 'How have your proposals been doing?'
+      text_introduction: 'Find the key numbers below and go to the platform to take action and gather enough support in time.'
+      cta_see_your_initiative: 'Go to your proposals'
       total_votes: 'Total votes'
       new_votes: 'New votes'
       remaining_votes: 'Votes remaining'
