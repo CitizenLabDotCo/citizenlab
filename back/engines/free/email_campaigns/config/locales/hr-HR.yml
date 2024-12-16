@@ -270,10 +270,10 @@ hr:
       cta_reply_to: 'Pogledaj komentar od %{firstName}'
       event_description: '%{authorNameFull} vas je spomenuo u internom komentaru.'
       subject: '%{firstName} vas je spomenuo u internom komentaru.'
-      main_header: '%{authorNameFirst} vas je spomenuo u internom komentaru.'
+      main_header: '%{firstName} vas je spomenuo u internom komentaru.'
       preheader: '%{authorNameFull} vas je spomenuo u internom komentaru.'
     moderator_digest:
-      subject: 'Tjedni izvještaj upravitelja "%{project_title}"'
+      subject: 'Vaš tjedni izvještaj za voditelje projekta od %{time}'
       preheader: 'Sažetak za voditelje projekta %{organizationName}'
       title_your_weekly_report: '%{firstName}, vaš tjedni izvještaj'
       text_introduction: 'Odabrali smo unose koji su bili najpopularniji tijekom prethodnog tjedna. Budite u tijeku s događajima u vezi vašeg projekta!'
@@ -395,7 +395,7 @@ hr:
       header_message: '%{feedback_author_name} je dao ažuriranje na ''%{input_title}''.'
       header_title: 'Postoji ažuriranje na "%{input_title}"'
       subject: 'Službene povratne informacije objavljene su na "%{input_title}"'
-      preheader: 'Postoji ažuriranje ideje koju slijedite'
+      preheader: 'Postoji ažuriranje unosa koji slijedite'
     official_feedback_on_initiative_you_follow:
       header_message: '%{officialName} je izvijestio o prijedlogu ''%{initiativeTitle}''. Pritisnite donji gumb za ulazak u razgovor s %{organizationName}.'
       header_title: 'Postoji ažuriranje prijedloga koji pratite'
@@ -461,9 +461,9 @@ hr:
     status_change_on_idea_you_follow:
       status_change: 'Novi status ovog unosa je ''%{status}'''
       header_message: '%{organizationName} je ažurirao status unosa ''%{input_title}'' na svojoj platformi za digitalno sudjelovanje.'
-      header_title: 'Ideja koju slijedite ima novi status'
+      header_title: 'Unos koji slijedite ima novi status'
       subject: 'Status "%{input_title}" je promijenjen'
-      preheader: 'Ideja koju slijedite ima novi status'
+      preheader: 'Unos koji slijedite ima novi status'
     status_change_on_initiative_you_follow:
       status_change: 'Novi status ovog prijedloga je ''%{initiativeStatus}'''
       header_message: 'Status prijedloga ''%{initiativeTitle}'' ažuriran je na platformi za digitalno sudjelovanje od %{organizationName}.'
@@ -493,7 +493,7 @@ hr:
     threshold_reached_for_admin:
       cta_process_initiative: 'Pomognite ovoj inicijativi da prijeđe u narednu fazu'
       main_header: 'Inicijativa je dosegla prag glasovanja!'
-      subject: '"%{input_title}" dosegnuo je prag glasanja'
+      subject: 'Inicijativa je dosegla prag glasovanja na vašoj platformi'
       preheader: 'Obvezno poduzmite sljedeće korake'
     welcome:
       cta_join_platform: 'Otkrijte platformu'
@@ -512,7 +512,7 @@ hr:
         proposal: 'Vaš prijedlog je objavljen'
         initiative: 'Vaša inicijativa je objavljena'
         petition: 'Vaša peticija je objavljena'
-      main_header: 'Objavili ste "%{input_title}"'
+      main_header: 'Objavili ste ideju! Pobrinimo da bude pročitana.'
       header_message: 'Pobrinimo se da se pročita.'
       message_get_votes: 'Dosegnite više ljudi putem svoje ideje:'
       action_published_idea: 'Objavljena ideja'
@@ -540,14 +540,14 @@ hr:
       subject: '"%{input_title}" je skoro objavljen'
       preheader: 'Trenutno je u %{prescreening_status_title}'
     your_proposed_initiatives_digest:
-      subject: 'Tjedno ažuriranje o vašim prijedlozima'
-      preheader: 'Što se dogodilo s vašim prijedlozima u proteklom tjednu?'
-      title_your_weekly_report: 'Kako stoje vaši prijedlozi?'
-      text_introduction: 'Pronađite ključne brojke u nastavku i posjetite platformu kako biste na vrijeme prikupili dovoljnu podršku.'
-      cta_see_your_initiative: 'Idite na svoje prijedloge'
+      subject: 'Tjedno ažuriranje vaših prijedloga'
+      preheader: 'Što se dogodilo s vašim prijedlozima prošlog tjedna?'
+      title_your_weekly_report: 'Kako su prošli vaši prijedlozi?'
+      text_introduction: 'Pronađite ključne brojeve u nastavku i idite na platformu kako biste poduzeli akciju i prikupili dovoljno podrške na vrijeme.'
+      cta_see_your_initiative: 'Idi na svoje prijedloge'
       total_votes: 'Ukupno glasova'
       new_votes: 'Novi glasovi'
-      remaining_votes: 'Preostalo glasovi'
+      remaining_votes: 'Preostalo glasova'
       remaining_days: 'Preostalo dana'
     voting_basket_submitted:
       subject: '%{organizationName}: Uspješno ste glasali'
