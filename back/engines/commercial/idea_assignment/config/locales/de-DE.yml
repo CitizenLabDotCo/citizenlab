@@ -1,13 +1,13 @@
 de:
   email_campaigns:
     campaign_type_description:
-      "idea_assigned_to_you": Zuweisung eines Beitrags an mich
+      "idea_assigned_to_you": Zuweisung eines Beitrags
     admin_campaign_type_description:
-      "idea_assigned_to_you": Zuweisung eines Beitrags - Admins und Projektmanager*innen
+      "idea_assigned_to_you": Zuweisung einer Idee - Admins und Projektmanager*innen
     idea_assigned_to_you:
       by_author: 'von %{authorName}'
       cta_reply_to: 'Geben Sie %{authorName} Feedback'
       event_description_idea: 'Ihnen wurde ein Beitrag zugewiesen. Geben Sie Feedback, indem Sie ein offizielles Update schreiben oder den Status ändern.'
       main_header: '%{firstName}, Ihnen wurde ein Beitrag zugewiesen'
-      subject: 'Auf der Plattform von %{organizationName} wurde Ihnen ein Beitrag zugewiesen'
+      subject: 'Ihnen wurde ein Beitrag auf der Plattform von %{organizationName} zugewiesen'
       preheader_idea: 'Ihnen wurde der Beitrag von %{authorName} zugewiesen'
