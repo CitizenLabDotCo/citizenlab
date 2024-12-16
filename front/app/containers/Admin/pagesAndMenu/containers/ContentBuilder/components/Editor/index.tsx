@@ -4,9 +4,9 @@ import { Box } from '@citizenlab/cl2-component-library';
 import { SerializedNodes } from '@craftjs/core';
 
 import Container from 'components/admin/ContentBuilder/Widgets/Container';
-import ImageTextCards from 'components/admin/ContentBuilder/Widgets/ImageTextCards';
 
 import { WIDGETS } from '../Widgets';
+import ImageTextCards from '../Widgets/ImageTextCards';
 
 import BaseEditor from './Editor';
 

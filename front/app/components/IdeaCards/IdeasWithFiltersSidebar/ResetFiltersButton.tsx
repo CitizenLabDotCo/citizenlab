@@ -4,16 +4,19 @@ import { Button } from '@citizenlab/cl2-component-library';
 
 import { IIdeaQueryParameters } from 'api/ideas/types';
 
+import tracks from 'components/IdeaCards/tracks';
+
+import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 import ideaCardsMessages from '../messages';
 
 interface Props {
-  onClick: () => void;
   ideaQueryParameters: IIdeaQueryParameters;
 }
 
-const ResetFiltersButton = ({ onClick, ideaQueryParameters }: Props) => {
+const ResetFiltersButton = ({ ideaQueryParameters }: Props) => {
   const filtersActive = !!(
     // Kind of a bug: search is not reset when clicking the button.
     // So either fix search reset or remove it from the condition.
@@ -24,8 +27,21 @@ const ResetFiltersButton = ({ onClick, ideaQueryParameters }: Props) => {
     )
   );
 
+  const handleOnClick = () => {
+    trackEventByName(tracks.clearFiltersClicked);
+    updateSearchParams({
+      search: undefined,
+      idea_status: undefined,
+      topics: undefined,
+    });
+  };
+
   return (
-    <Button onClick={onClick} buttonStyle="text" disabled={!filtersActive}>
+    <Button
+      onClick={handleOnClick}
+      buttonStyle="text"
+      disabled={!filtersActive}
+    >
       <FormattedMessage {...ideaCardsMessages.resetFilters} />
     </Button>
   );

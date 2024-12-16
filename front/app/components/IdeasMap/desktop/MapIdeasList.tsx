@@ -59,13 +59,12 @@ const MapIdeasList = memo<Props>(
       onChangeStatus,
       onChangeTopics,
       handleSortOnChange,
-      onClearFilters,
       ideasFilterCounts,
       numberOfSearchResults,
     } = inputFiltersProps ?? {};
 
     const hasInputFilterProps =
-      onChangeStatus && onChangeTopics && handleSortOnChange && onClearFilters;
+      onChangeStatus && onChangeTopics && handleSortOnChange;
 
     const { data: ideaCustomFieldsSchema } = useIdeaJsonFormSchema({
       projectId,
@@ -126,7 +125,6 @@ const MapIdeasList = memo<Props>(
           <>
             <FiltersMapView
               ideaQueryParameters={ideaQueryParameters || {}}
-              onClearFilters={onClearFilters}
               ideasFilterCounts={ideasFilterCounts}
               numberOfSearchResults={
                 numberOfSearchResults ? numberOfSearchResults : 0

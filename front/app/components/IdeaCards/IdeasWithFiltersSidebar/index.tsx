@@ -190,15 +190,6 @@ const IdeasWithFiltersSidebar = ({
     [onUpdateQuery]
   );
 
-  const clearFilters = useCallback(() => {
-    trackEventByName(tracks.clearFiltersClicked);
-    onUpdateQuery({
-      search: undefined,
-      idea_status: undefined,
-      topics: undefined,
-    });
-  }, [onUpdateQuery]);
-
   const showInputFilterSidebar =
     biggerThanLargeTablet && selectedView === 'card';
 
@@ -206,7 +197,6 @@ const IdeasWithFiltersSidebar = ({
     ideasFilterCounts,
     numberOfSearchResults: ideasCount,
     ideaQueryParameters,
-    onClearFilters: clearFilters,
     onSearch: handleSearchOnChange,
     onChangeStatus: handleStatusOnChange,
     onChangeTopics: handleTopicsOnChange,

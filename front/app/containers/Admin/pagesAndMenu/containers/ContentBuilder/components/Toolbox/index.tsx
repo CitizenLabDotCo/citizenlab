@@ -22,7 +22,6 @@ import IframeMultiloc, {
 import ImageMultiloc, {
   imageMultilocTitle,
 } from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
-import ImageTextCards from 'components/admin/ContentBuilder/Widgets/ImageTextCards';
 import ThreeColumn, {
   threeColumnTitle,
 } from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
@@ -53,6 +52,7 @@ import {
   getHomepageBannerDefaultImage,
   getHomepageBannerDefaultSettings,
 } from '../Widgets/HomepageBanner/utils';
+import ImageTextCards from '../Widgets/ImageTextCards';
 import OpenToParticipation, {
   openToParticipationTitle,
 } from '../Widgets/OpenToParticipation';
