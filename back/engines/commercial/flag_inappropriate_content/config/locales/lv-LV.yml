@@ -8,10 +8,10 @@ lv:
       subject: 'Ieraksts jūsu platformā ir atzīmēts pārskatīšanai'
       header_title: 'Ieraksts jūsu platformā ir atzīmēts pārskatīšanai'
       comment_author: '%{authorName} komentēja:'
-      idea_author: '%{authorName} iesniedza ziņu:'
+      idea_author: '%{authorName} iesniegts amatu:'
       initiative_author: '%{authorName} iesniedza priekšlikumu:'
       automatically_flagged: >
         Šī ziņa tika automātiski konstatēta kā iespējami neatbilstoša satura ziņa. Mēs nosūtām jums šo paziņojumu, lai jūs varētu pārskatīt šo ziņu saskaņā ar savām moderēšanas vadlīnijām.
       how_to_review: >
         Ja ieraksts nesatur nepiemērotu saturu, varat dzēst brīdinājumu, izmantojot savu platformu administratora paneļa cilnē Darbība.
-      cta_review_post: 'Pārskatīt ziņu'
+      cta_review_post: 'Pārskata amats'
