@@ -13,7 +13,7 @@ de:
       "cosponsor_of_your_idea": Nutzer*in nimmt meine Einladung an, meinen Vorschlag zu unterstützen
       "event_registration_confirmation": Anmeldebestätigung für die Veranstaltung
       "idea_marked_as_spam": Beitrag wird als Spam gekennzeichnet
-      "idea_published": Veröffentlichung meines Beitrags
+      "idea_published": Veröffentlichung des Beitrags
       "initiative_assigned_to_you": Zuweisung eines Vorschlags an mich
       "initiative_marked_as_spam": Vorschlag wird als Spam markiert
       "initiative_published": Veröffentlichung eines Vorschlags
@@ -33,9 +33,9 @@ de:
       "mention_in_official_feedback": Erwähnung in einem offiziellen Update
       "mention_in_internal_comment": Erwähnung in einem internen Kommentar
       "new_comment_for_admin": Neuer Kommentar zu einem Projekt, das ich moderiere
-      "new_idea_for_admin": Neuer Beitrag in einem Projekt, das ich moderiere
+      "new_idea_for_admin": Neuer Beitrag zu einem Projekt, das moderiert wird
       "new_initiative_for_admin": Neuer Vorschlag
-      "official_feedback_on_idea_you_follow": Update zu einem Beitrag, dem du folgst
+      "official_feedback_on_idea_you_follow": Offizielles Update zu einer Idee, der Sie folgen
       "official_feedback_on_initiative_you_follow": Offizielles Update zu einem Vorschlag, dem Sie folgen
       "password_reset": Zurücksetzen des Passworts
       "project_moderation_rights_received": Projektmanagementrechte erhalten
@@ -43,7 +43,7 @@ de:
       "project_phase_started": Neue Projektphase
       "project_phase_upcoming": Bevorstehende neue Projektphase
       "project_published": Projekt veröffentlicht
-      "status_change_on_idea_you_follow": Statusänderung zu einem Beitrag, dem du folgst
+      "status_change_on_idea_you_follow": Statusänderung einer Idee, der Sie folgen
       "status_change_on_initiative_you_follow": Statusänderung eines Vorschlags, dem Sie folgen
       "threshold_reached_for_admin": Vorschlag hat die Abstimmungsschwelle erreicht
       "welcome": Nach der Registrierung
@@ -174,13 +174,13 @@ de:
       subject: '%{cosponsorName} hat Ihre Einladung angenommen, Ihren Vorschlag mit zu unterstützen'
       preheader_initiative: '%{cosponsorName} hat Ihre Einladung angenommen, Ihren Vorschlag mit zu unterstützen'
     assignee_digest:
-      subject: 'Beiträge, die Ihr Feedback erfordern: %{numberIdeas}'
+      subject: 'Ideen, die Ihr Feedback erfordern: %{numberIdeas}'
       preheader: 'Übersicht der Beauftragten von %{organizationName}'
       title_your_weekly_report: '%{firstName}, Ideen warten auf Ihr Feedback'
       cta_manage_your_input: 'Beiträge verwalten'
       x_inputs_need_your_feedback: 'Beiträge, die Feedback benötigen'
-      title_assignment_past_week: 'Neueste dir zugewiesene Beiträge'
-      title_no_assignment_past_week: 'Ihnen wurden letzte Woche keine neuen Beiträge zugewiesen'
+      title_assignment_past_week: 'Letzte Ihnen zugewiesene Ideen'
+      title_no_assignment_past_week: 'Ihnen wurden letzte Woche keine neuen Ideen zugewiesen'
       yesterday_by_author: 'Gestern von %{author}'
       today_by_author: 'Heute von %{author}'
       x_days_ago_by_author: 'Vor %{x} Tagen von %{author}'
@@ -188,7 +188,7 @@ de:
     idea_marked_as_spam:
       cta_review: 'Überprüfung'
       report_inappropriate_offensive_content: 'Ich finde diesen Inhalt unangemessen oder anstößig.'
-      report_not_an_idea: 'Dieser Inhalt ist nicht relevant und gehört nicht hierher.'
+      report_not_an_idea: 'Dieser Inhalt ist keine Idee und gehört nicht hierhin.'
       subject: 'Sie haben eine Spam-Meldung auf der Plattform von %{organizationName}'
       preheader: 'Handeln Sie auf Basis dieses Spam-Berichts'
       reported_this_because: '%{reporterFirstName} meldete dies, weil:'
@@ -273,7 +273,7 @@ de:
       main_header: '%{firstName} hat Sie in einem internen Kommentar erwähnt.'
       preheader: '%{authorNameFull} hat Sie in einem internen Kommentar erwähnt.'
     moderator_digest:
-      subject: 'Wöchentlicher Managementbericht von "%{project_title}"'
+      subject: 'Ihr wöchentlicher Projektmanagementbericht von %{project_title}'
       preheader: 'Projektmanagement-Zusammenfassung von %{organizationName}'
       title_your_weekly_report: '%{firstName}, Ihr wöchentlicher Bericht'
       text_introduction: 'Wir haben für Sie die Beiträge zusammengestellt, die in der vergangenen Woche die meiste Aktivität hatten. Finden Sie heraus, was auf Ihrer Plattform passiert ist!'
@@ -333,7 +333,7 @@ de:
       input_not_visible_prescreening: '<b>Der Beitrag wird erst sichtbar</b>, wenn Sie den Status ändern.'
       cta_prescreening: 'Beitrag prüfen'
       days_ago: 'vor %{numberOfDays} Tagen'
-      preheader: '%{authorName} hat einen neuen Beitrag auf Ihrer Plattform veröffentlicht'
+      preheader: '%{authorName} hat eine neue Idee auf Ihrer Plattform veröffentlicht'
       today: Heute
       yesterday: Gestern
     comment_on_your_comment:
@@ -352,49 +352,49 @@ de:
     internal_comment_on_idea_assigned_to_you:
       cta_reply_to: 'Kommentar anzeigen von %{firstName}'
       event_description: '%{authorNameFull} hat einen Ihnen zugewiesenen Beitrag intern kommentiert.'
-      subject: 'Neuer interner Kommentar zu ''%{post}'''
-      main_header: 'Neuer interner Kommentar zu ''%{post}'''
-      preheader: 'Neuer interner Kommentar zu ''%{post}'''
+      subject: '''%{post}'' hat einen neuen internen Kommentar'
+      main_header: '''%{post}'' hat einen neuen internen Kommentar'
+      preheader: '''%{post}'' hat einen neuen internen Kommentar'
     internal_comment_on_idea_you_commented_internally_on:
       cta_reply_to: 'Kommentar anzeigen von %{firstName}'
       event_description: '%{authorNameFull} hat intern einen Beitrag kommentiert, den Sie intern kommentiert haben.'
-      subject: 'Neuer interner Kommentar zu ''%{post}'''
-      main_header: 'Neuer interner Kommentar zu ''%{post}'''
-      preheader: 'Neuer interner Kommentar zu ''%{post}'''
+      subject: '''%{post}'' hat einen neuen internen Kommentar'
+      main_header: '''%{post}'' hat einen neuen internen Kommentar'
+      preheader: '''%{post}'' hat einen neuen internen Kommentar'
     internal_comment_on_idea_you_moderate:
       cta_reply_to: 'Kommentar anzeigen von %{firstName}'
       event_description: '%{authorNameFull} hat intern einen Beitrag in einem von Ihnen verwalteten Projekt oder Ordner kommentiert.'
-      subject: 'Neuer interner Kommentar zu ''%{post}'''
-      main_header: 'Neuer interner Kommentar zu ''%{post}'''
-      preheader: 'Neuer interner Kommentar zu ''%{post}'''
+      subject: '''%{post}'' hat einen neuen internen Kommentar'
+      main_header: '''%{post}'' hat einen neuen internen Kommentar'
+      preheader: '''%{post}'' hat einen neuen internen Kommentar'
     internal_comment_on_initiative_assigned_to_you:
       cta_reply_to: 'Kommentar anzeigen von %{firstName}'
       event_description: '%{authorNameFull} hat einen Ihnen zugewiesenen Vorschlag intern kommentiert.'
-      subject: 'Neuer interner Kommentar zu ''%{post}'''
-      main_header: 'Neuer interner Kommentar zu ''%{post}'''
-      preheader: 'Neuer interner Kommentar zu ''%{post}'''
+      subject: '''%{post}'' hat einen neuen internen Kommentar'
+      main_header: '''%{post}'' hat einen neuen internen Kommentar'
+      preheader: '''%{post}'' hat einen neuen internen Kommentar'
     internal_comment_on_initiative_you_commented_internally_on:
       cta_reply_to: 'Kommentar anzeigen von %{firstName}'
       event_description: '%{authorNameFull} hat intern einen Vorschlag kommentiert, den Sie intern kommentiert haben.'
-      subject: 'Neuer interner Kommentar zu ''%{post}'''
-      main_header: 'Neuer interner Kommentar zu ''%{post}'''
-      preheader: 'Neuer interner Kommentar zu ''%{post}'''
+      subject: '''%{post}'' hat einen neuen internen Kommentar'
+      main_header: '''%{post}'' hat einen neuen internen Kommentar'
+      preheader: '''%{post}'' hat einen neuen internen Kommentar'
     internal_comment_on_unassigned_initiative:
       cta_reply_to: 'Kommentar anzeigen von %{firstName}'
       event_description: '%{authorNameFull} hat einen nicht zugewiesenen Vorschlag intern kommentiert.'
-      subject: 'Neuer interner Kommentar zu ''%{post}'''
-      main_header: 'Neuer interner Kommentar zu ''%{post}'''
-      preheader: 'Neuer interner Kommentar zu ''%{post}'''
+      subject: '''%{post}'' hat einen neuen internen Kommentar'
+      main_header: '''%{post}'' hat einen neuen internen Kommentar'
+      preheader: '''%{post}'' hat einen neuen internen Kommentar'
     internal_comment_on_unassigned_unmoderated_idea:
       cta_reply_to: 'Kommentar anzeigen von %{firstName}'
       event_description: '%{authorNameFull} hat einen nicht zugewiesenen Beitrag in einem nicht verwalteten Projekt intern kommentiert.'
-      subject: 'Neuer interner Kommentar zu ''%{post}'''
-      main_header: 'Neuer interner Kommentar zu ''%{post}'''
-      preheader: 'Neuer interner Kommentar zu ''%{post}'''
+      subject: '''%{post}'' hat einen neuen internen Kommentar erhalten'
+      main_header: '''%{post}'' hat einen neuen internen Kommentar erhalten'
+      preheader: '''%{post}'' hat einen neuen internen Kommentar erhalten'
     official_feedback_on_idea_you_follow:
       header_message: '%{feedback_author_name} hat ein offizielles Update zu %{input_title} gegeben''.'
       header_title: 'Es gibt ein Update zu "%{input_title}"'
-      subject: 'Offizielles Feedback wurde zu "%{input_title}" veröffentlicht'
+      subject: 'Ein offizielles Update wurde zu "%{input_title}" veröffentlicht'
       preheader: 'Es gibt ein Update für einen Beitrag, dem Sie folgen'
     official_feedback_on_initiative_you_follow:
       header_message: '%{officialName} hat ein offizielles Update zum Vorschlag ''%{initiativeTitle}'' gegeben. Klicke auf den Button unten, um auf %{organizationName} zu reagieren.'
@@ -462,7 +462,7 @@ de:
       status_change: 'Der neue Status dieses Beitrags ist ''%{status}'''
       header_message: '%{organizationName} hat den Status des Beitrags ''%{input_title}'' auf Ihrer digitalen Beteiligungsplattform aktualisiert.'
       header_title: 'Ein Beitrag, dem Sie folgen, hat einen neuen Status'
-      subject: 'Der Status von "%{input_title}" hat sich geändert.'
+      subject: 'Der Status von "%{input_title}" hat sich geändert'
       preheader: 'Ein Beitrag, dem Sie folgen, hat einen neuen Status'
     status_change_on_initiative_you_follow:
       status_change: 'Der neue Status des Vorschlags ist ''%{initiativeStatus}'''
@@ -471,7 +471,7 @@ de:
       subject: 'Der Status eines Vorschlags, dem Sie folgen, hat sich geändert'
       preheader: 'Ein Vorschlag, dem Sie folgen, hat einen neuen Status'
     user_digest:
-      subject: "Diese Woche auf der Beteiligungsplattform von %{organizationName}"
+      subject: "Ihre Aktivität auf der Beteiligungsplattform %{organizationName}"
       commented: "%{authorFirstName} kommentierte:"
       preheader: "Wöchentliche Übersicht über %{organizationName}"
       title_your_weekly_report: "Entdecken Sie, was letzte Woche passiert ist"
@@ -479,7 +479,7 @@ de:
       cta_go_to_the_platform: "Zur Plattform"
       title_no_activity_past_week: "Keine Aktivität in der letzten Woche"
       successful_proposals_title: "Schwelle erreicht"
-      successful_proposals_text: "In der vergangenen Woche haben sie genügend Unterstützung erhalten, um in die nächste Phase überzugehen."
+      successful_proposals_text: "Diese Vorschläge haben genug Unterstützung erhalten, um in die nächste Phase zu gehen! Klicke auf den Vorschlag, um mehr darüber zu erfahren, was als nächstes passiert."
       today_by_author: "Heute von %{author}"
       yesterday_by_author: "Gestern von %{author}"
       x_days_ago_by_author: "Vor %{x} Tagen von %{author}"
@@ -488,12 +488,12 @@ de:
       no_notifications: "Keine Benachrichtigungen"
       one_notification: "1 Benachrichtigung"
       multiple_notifications: "%{notifCount} Benachrichtigungen"
-      no_unread_notifications: "Sie haben keine ungelesenen Benachrichtigungen."
+      no_unread_notifications: "Sie haben keine ungelesenen Benachrichtigungen. Besuchen Sie die Plattform, um etwas zu posten und neue Benachrichtigungen zu generieren!"
       unread_notifications: "Sie haben ungelesene Benachrichtigungen. Besuchen Sie die Plattform, um zu erfahren, was los ist."
     threshold_reached_for_admin:
       cta_process_initiative: 'Nächste Schritte für diesen Vorschlag'
       main_header: 'Ein Vorschlag hat die Abstimmungsschwelle erreicht!'
-      subject: '"%{input_title} hat die gewünschte Anzahl an Stimmen erreicht'
+      subject: 'Eine Initiative hat die Abstimmungsschwelle auf Ihrer Plattform erreicht'
       preheader: 'Stelle sicher, dass du die nächsten Schritte ausführst'
     welcome:
       cta_join_platform: 'Plattform entdecken'
@@ -512,10 +512,10 @@ de:
         proposal: 'Dein Vorschlag wurde veröffentlicht'
         initiative: 'Ihre Initiative wurde veröffentlicht'
         petition: 'Ihre Petition wurde veröffentlicht'
-      main_header: 'Sie haben "%{input_title}" gepostet.'
+      main_header: 'Du hast eine Idee gepostet! Lass uns sicherstellen, dass sie gelesen wird.'
       header_message: 'Sorgen wir dafür, dass er gelesen wird.'
-      message_get_votes: 'Erreichen Sie mehr Menschen'
-      action_published_idea: 'Veröffentlicht'
+      message_get_votes: 'Erreiche mit deiner Idee mehr Menschen:'
+      action_published_idea: 'Veröffentlichte Idee'
       action_add_image: '%{addImageLink} um die Sichtbarkeit zu erhöhen'
       add_image: 'Füge ein Bild hinzu'
       action_share_fb: 'Informiere deine Freunde auf %{fbLink}'
