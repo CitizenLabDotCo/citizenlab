@@ -323,14 +323,14 @@ Rails.application.routes.draw do
       resources :verification_methods, module: 'verification', only: [:index] do
         get :first_enabled, on: :collection
         get :first_enabled_for_verified_actions, on: :collection
+        Verification::VerificationService.new
+                                         .all_methods
+                                         .select { |vm| vm.verification_method_type == :manual_sync }
+                                         .each do |vm|
+          post "#{vm.name}/verification", to:'verifications#create', on: :collection, :defaults => { method_name: vm.name }
+        end
       end
-      # TODO: JS - Can we move this? No tests for this??
-      Verification::VerificationService.new
-                                       .all_methods
-                                       .select { |vm| vm.verification_method_type == :manual_sync }
-                                       .each do |vm|
-        post "verification_methods/#{vm.name}/verification" => 'verifications#create', :defaults => { method_name: vm.name }
-      end
+
     end
   end
 

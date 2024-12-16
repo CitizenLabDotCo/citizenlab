@@ -19,14 +19,14 @@ module WebApi
           )
           authorize verification
           head :created
-        rescue VerificationService::NoMatchError => _e
+        rescue ::Verification::VerificationService::NoMatchError => _e
           render json: { errors: { base: [{ error: 'no_match' }] } }, status: :unprocessable_entity
-        rescue VerificationService::NotEntitledError => e
+        rescue ::Verification::VerificationService::NotEntitledError => e
           render json: { errors: { base: [{ error: 'not_entitled', why: e.why }.compact] } },
             status: :unprocessable_entity
-        rescue VerificationService::ParameterInvalidError => e
+        rescue ::Verification::VerificationService::ParameterInvalidError => e
           render json: { errors: { e.message => [{ error: 'invalid' }] } }, status: :unprocessable_entity
-        rescue VerificationService::VerificationTakenError => _e
+        rescue ::Verification::VerificationService::VerificationTakenError => _e
           render json: { errors: { base: [{ error: 'taken' }] } }, status: :unprocessable_entity
         end
 
@@ -39,7 +39,7 @@ module WebApi
         end
 
         def set_verification_method
-          @ver_ser = VerificationService.new
+          @ver_ser = ::Verification::VerificationService.new
           @verification_method = @ver_ser.method_by_name(params[:method_name])
 
           raise "Unknown verification method #{params[:method_name]}" unless @verification_method
