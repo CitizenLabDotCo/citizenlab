@@ -100,7 +100,7 @@ const DesktopView = ({
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       mapView?.ui?.add(resetButtonRef?.current || '', 'top-right');
       return;
-    } else if (inputType === 'point') {
+    } else {
       // TODO: Fix this the next time the file is edited.
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       mapView?.ui?.add(resetButtonRef?.current || '', 'top-right');
