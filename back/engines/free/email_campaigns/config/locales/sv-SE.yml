@@ -58,7 +58,7 @@ sv:
       "voting_phase_started": Ny projektfas med omröstning
       "voting_results": Resultat av omröstningen
       "your_input_in_screening": Min input väntar på screening
-      "your_proposed_initiatives_digest": Veckoöversikt över dina förslag
+      "your_proposed_initiatives_digest": Veckovis översikt över dina förslag
     general:
       by_author: 'av %{authorName}'
       author_wrote: '%{authorName} skrev:'
@@ -270,10 +270,10 @@ sv:
       cta_reply_to: 'Visa kommentar från %{firstName}'
       event_description: '%{authorNameFull} nämnde dig i en intern kommentar.'
       subject: '%{firstName} nämnde dig i en intern kommentar.'
-      main_header: '%{authorNameFirst} nämnde dig i en intern kommentar.'
+      main_header: '%{firstName} nämnde dig i en intern kommentar.'
       preheader: '%{authorNameFull} nämnde dig i en intern kommentar.'
     moderator_digest:
-      subject: 'Veckovis rapport från chefen på "%{project_title}"'
+      subject: 'Din veckovisa projektledarrapport på %{project_title}'
       preheader: 'Projektledarsammanfattning för %{organizationName}'
       title_your_weekly_report: '%{firstName}, din veckorapport'
       text_introduction: 'Vi har sammanställt de indata som har skapat mest aktivitet under den senaste veckan. Ta reda på vad som händer med ditt projekt!'
@@ -299,7 +299,7 @@ sv:
       yesterday: I går
     comment_on_idea_you_follow:
       cta_reply_to: 'Svara på %{commentAuthor}'
-      event_description: '%{authorNameFull} placerade en reaktion på ''%{inputTitle}''. Klicka på knappen nedan för att fortsätta konversationen med %{authorName}.'
+      event_description: '%{authorNameFull} placed a reaction on ''%{inputTitle}''. Click the button below to continue the conversation with %{authorName}.'
       main_header:
         idea: '%{authorName} kommenterat en idé som du följer'
         question: '%{authorName} kommenterat en fråga som du följer'
@@ -310,7 +310,7 @@ sv:
         proposal: '%{authorName} kommenterat ett förslag som du följer'
         initiative: '%{authorName} kommenterat ett initiativ som du följer'
         petition: '%{authorName} kommenterat en petition som du följer'
-      subject: 'Det finns en ny kommentar på "%{input_title}"'
+      subject: 'There''s a new comment on "%{input_title}"'
       preheader: '%{authorName} lämnade en kommentar till en idé för %{organizationName}'
     comment_on_initiative_you_follow:
       cta_reply_to: 'Svara på %{commentAuthor}'
@@ -392,10 +392,10 @@ sv:
       main_header: '''%{post}'' har en ny intern kommentar'
       preheader: '''%{post}'' har en ny intern kommentar'
     official_feedback_on_idea_you_follow:
-      header_message: '%{feedback_author_name} gav en uppdatering om "%{input_title}".'
-      header_title: 'Det finns en uppdatering på "%{input_title}"'
-      subject: 'Officiell feedback publicerades på "%{input_title}"'
-      preheader: 'Det finns en uppdatering av en idé som du följer'
+      header_message: '%{feedback_author_name} gave an update on ''%{input_title}''.'
+      header_title: 'There''s an update on "%{input_title}"'
+      subject: 'Official feedback was posted on "%{input_title}"'
+      preheader: 'There''s an update on an input you follow'
     official_feedback_on_initiative_you_follow:
       header_message: '%{officialName} gav en uppdatering om förslaget ''%{initiativeTitle}''. Klicka på knappen nedan för att fortsätta samtalet med %{organizationName}.'
       header_title: 'Det finns en uppdatering om ett förslag som du följer'
@@ -459,11 +459,11 @@ sv:
       header_message: 'Deltagarplattformen %{organizationName} har just publicerat följande projekt:'
       preheader: 'Ett nytt projekt publicerades'
     status_change_on_idea_you_follow:
-      status_change: 'Den nya statusen för denna inmatning är ''%{status}'''
-      header_message: '%{organizationName} uppdaterade statusen för inmatningen ''%{input_title}'' på sin plattform för digitalt deltagande.'
-      header_title: 'En idé som du följer har fått en ny status'
-      subject: 'Statusen för "%{input_title}" har ändrats'
-      preheader: 'En idé som du följer har fått en ny status'
+      status_change: 'The new status of this input is ''%{status}'''
+      header_message: '%{organizationName} updated the status of the input ''%{input_title}'' on their digital participation platform.'
+      header_title: 'An input you follow has a new status'
+      subject: 'The status of "%{input_title}" has changed'
+      preheader: 'An input you follow has a new status'
     status_change_on_initiative_you_follow:
       status_change: 'Den nya statusen för detta förslag är ''%{initiativeStatus}'''
       header_message: 'Status för förslaget ''%{initiativeTitle}'' har uppdaterats på den digitala deltagandeplattformen för %{organizationName}.'
@@ -493,7 +493,7 @@ sv:
     threshold_reached_for_admin:
       cta_process_initiative: 'Ta det här initiativet till nästa steg'
       main_header: 'Ett initiativ nådde rösttröskeln!'
-      subject: '"%{input_title}" uppnått tröskelvärdet för röstning'
+      subject: 'Ett initiativ nådde rösttröskeln på din plattform'
       preheader: 'Se till att ta nästa steg'
     welcome:
       cta_join_platform: 'Upptäck plattformen'
@@ -512,7 +512,7 @@ sv:
         proposal: 'Ditt förslag har publicerats'
         initiative: 'Ditt initiativ har publicerats'
         petition: 'Din petition har publicerats'
-      main_header: 'Du skrev "%{input_title}"'
+      main_header: 'Du har publicerat en idé! Nu ser vi till att andra läser den.'
       header_message: 'Låt oss se till att den blir läst.'
       message_get_votes: 'Nå fler personer med din idé:'
       action_published_idea: 'Publicerad idé'
@@ -540,15 +540,15 @@ sv:
       subject: '"%{input_title}" är nästan publicerad'
       preheader: 'Den finns för närvarande på %{prescreening_status_title}'
     your_proposed_initiatives_digest:
-      subject: 'Veckovis uppdatering av dina förslag'
-      preheader: 'Vad hände med dina förslag den senaste veckan?'
+      subject: 'Uppdatering av dina förslag varje vecka'
+      preheader: 'Vad hände med dina förslag under den senaste veckan?'
       title_your_weekly_report: 'Hur har det gått med dina förslag?'
-      text_introduction: 'Hitta nyckelsiffrorna nedan och gå till plattformen för att vidta åtgärder och samla tillräckligt med stöd i tid.'
+      text_introduction: 'Hitta nyckeltalen nedan och gå till plattformen för att vidta åtgärder och samla tillräckligt med stöd i tid.'
       cta_see_your_initiative: 'Gå till dina förslag'
       total_votes: 'Totalt antal röster'
       new_votes: 'Nya röster'
-      remaining_votes: 'Röster kvar'
-      remaining_days: 'Dagar kvar'
+      remaining_votes: 'Återstående röster'
+      remaining_days: 'Återstående dagar'
     voting_basket_submitted:
       subject: '%{organizationName}: Du röstade framgångsrikt'
       preheader: 'Du röstade framgångsrikt på deltagandeplattformen för %{organizationName}'
