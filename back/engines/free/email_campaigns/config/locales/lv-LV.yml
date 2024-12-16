@@ -11,9 +11,9 @@ lv:
       "comment_on_initiative_you_follow": Komentārs par priekšlikumu, kuram jūs sekojat.
       "cosponsor_of_your_initiative": Lietotājs pieņem manu uzaicinājumu atbalstīt manu priekšlikumu.
       "event_registration_confirmation": Pasākuma reģistrācijas apstiprinājums
-      "first_idea_published": Publication of my first idea
+      "first_idea_published": Manas pirmās idejas publicēšana
       "idea_marked_as_spam": Ziņot par ideju kā surogātpastu
-      "idea_published": Publication of my idea
+      "idea_published": Manas idejas publicēšana
       "initiative_assigned_to_you": Priekšlikuma piešķiršana man
       "initiative_marked_as_spam": Ziņot par priekšlikumu kā surogātpastu
       "initiative_published": Mana priekšlikuma publicēšana
@@ -32,9 +32,9 @@ lv:
       "mention_in_official_feedback": Minēt atjauninājumā
       "mention_in_internal_comment": Pieminēšana iekšējā komentārā
       "new_comment_for_admin": Jauns komentārs projektā, kuru es moderēju
-      "new_idea_for_admin": New idea in a project I moderate
+      "new_idea_for_admin": Jauna ideja projektā, kuru es moderēju
       "new_initiative_for_admin": Jauns priekšlikums
-      "official_feedback_on_idea_you_follow": Update on an idea that you follow
+      "official_feedback_on_idea_you_follow": Atjaunināt ideju, kurai sekojat
       "official_feedback_on_initiative_you_follow": Atjauninājums par priekšlikumu, kuram jūs sekojat
       "password_reset": Paroles atiestatīšana
       "project_moderation_rights_received": Saņemtās projekta moderēšanas tiesības
@@ -42,7 +42,7 @@ lv:
       "project_phase_started": Jauns projekta posms
       "project_phase_upcoming": Gaidāmais jaunais projekta posms
       "project_published": Publicēts projekts
-      "status_change_on_idea_you_follow": Status change of an idea that you follow
+      "status_change_on_idea_you_follow": Idejas statusa maiņa, kurai jūs sekojat
       "status_change_on_initiative_you_follow": Izmaiņas statusā priekšlikumam, kuram jūs sekojat
       "threshold_reached_for_admin": Priekšlikums sasniedzis balsošanas slieksni
       "welcome": Pēc reģistrācijas
@@ -56,7 +56,7 @@ lv:
       "voting_last_chance": Pēdējā iespēja balsot
       "voting_phase_started": Jauns projekta posms ar balsošanu
       "voting_results": Balsošanas rezultāti
-      "your_proposed_initiatives_digest": Weekly overview of your proposals
+      "your_proposed_initiatives_digest": Nedēļas pārskats par jūsu priekšlikumiem
     general:
       by_author: 'līdz %{authorName}'
       author_wrote: '%{authorName} rakstīja:'
@@ -77,7 +77,7 @@ lv:
       "link_terms_conditions": "Noteikumi un nosacījumi"
       "link_unsubscribe": "Atteikties"
       "powered_by": "Darbību nodrošina"
-      "statement": "This e-mail was sent to you by Go Vocal on behalf of %{organizationName}, because you are a registered user of %{organizationLink}. You can %{unsubscribeLink} if you do not want to receive these e-mails in the future."
+      "statement": "Šo e-pasta vēstuli jums nosūtīja Go Vocal %{organizationName}vārdā, jo esat reģistrēts %{organizationLink}lietotājs. Ja nevēlaties turpmāk saņemt šos e-pastus, varat rakstīt uz %{unsubscribeLink} ."
       "unsubscribe_text": "atteikties"
     follow:
       "unfollow_here": "Jūs esat saņēmis šo paziņojumu, jo jums ir sekots līdzi. <a href=\"%{unfollow_url}\">Jūs varat to atcelt šeit.</a>"
@@ -99,12 +99,12 @@ lv:
       text_introduction: 'Mēs esam atlasījuši tos ievadītos datus, kas pagājušajā nedēļā ir izraisījuši vislielāko aktivitāti. Uzziniet, kas notiek jūsu platformā!'
       cta_visit_the_platform: 'Apmeklējiet savu platformu'
       new_users: 'Jauni lietotāji'
-      new_ideas: 'New ideas'
+      new_ideas: 'Jaunas idejas'
       new_comments: 'Jauni komentāri'
       title_activity_past_week: 'Pagājušās nedēļas aktivitātes'
       title_no_activity_past_week: 'Pagājušajā nedēļā nebija nekādas darbības'
       title_initiatives_past_week: 'Pagājušās nedēļas jaunie priekšlikumi'
-      title_successful_initiatives_past_week: 'Proposals that reached the threshold in the past week'
+      title_successful_initiatives_past_week: 'Priekšlikumi, kas pagājušajā nedēļā sasniedza šo slieksni'
       yesterday_by_author: 'Vakar %{author}'
       today_by_author: 'Šodien %{author}'
       x_days_ago_by_author: 'pirms %{x} dienām %{author}'
@@ -142,24 +142,24 @@ lv:
       subject: '%{cosponsorName} ir pieņēmusi jūsu uzaicinājumu līdzfinansēt jūsu priekšlikumu.'
       preheader_initiative: '%{cosponsorName} ir pieņēmusi jūsu uzaicinājumu līdzfinansēt jūsu priekšlikumu.'
     assignee_digest:
-      subject: 'Ideas requiring your feedback: %{numberIdeas}'
+      subject: 'Idejas, kurām nepieciešama jūsu atgriezeniskā saite: %{numberIdeas}'
       preheader: 'Izpildītāja pārskats par %{organizationName}'
       title_your_weekly_report: '%{firstName}, pilsoņa ievadītie dati gaida jūsu atsauksmes'
       cta_manage_your_input: 'Pārvaldiet savus ievadītos datus'
-      assigned_ideas: 'Ideas need your feedback'
-      title_assignment_past_week: 'Latest ideas assigned to you'
-      title_no_assignment_past_week: 'No new ideas assigned to you last week'
+      assigned_ideas: 'Idejām nepieciešama jūsu atgriezeniskā saite'
+      title_assignment_past_week: 'Jaunākās jums piešķirtās idejas'
+      title_no_assignment_past_week: 'Pagājušajā nedēļā jums netika piešķirtas jaunas idejas'
       yesterday_by_author: 'Vakar %{author}'
       today_by_author: 'Šodien %{author}'
       x_days_ago_by_author: 'pirms %{x} dienām %{author}'
-      idea_section: Ideas
-      initiative_section: Proposals
-      title_initiatives_past_week: 'New proposals assigned to you'
-      title_successful_initiatives_past_week: 'Proposals assigned to you that reached the threshold'
+      idea_section: Idejas
+      initiative_section: Priekšlikumi
+      title_initiatives_past_week: 'Jums piešķirti jauni priekšlikumi'
+      title_successful_initiatives_past_week: 'Jums piešķirtie priekšlikumi, kas sasniedza robežvērtību'
     idea_marked_as_spam:
-      cta_review_idea: 'Review idea'
+      cta_review_idea: 'Pārskata ideja'
       report_inappropriate_offensive_content: 'Es uzskatu, ka šis saturs ir nepiemērots vai aizskarošs.'
-      report_not_an_idea: 'This content is not an idea and does not belong here.'
+      report_not_an_idea: 'Šis saturs nav ideja, un tas šeit neietilpst.'
       subject: 'Jums ir ziņojums par surogātpastu %{organizationName} platformā'
       preheader: 'Rīkojieties sakarā ar šo ziņojumu par surogātpastu'
       reported_this_because: '%{reporterFirstName} ziņoja par šo, jo:'
@@ -235,7 +235,7 @@ lv:
       main_header: '%{firstName} jūs pieminēja iekšējā komentārā.'
       preheader: '%{authorNameFull} jūs pieminēja iekšējā komentārā.'
     moderator_digest:
-      subject: 'Your weekly project manager report of %{time}'
+      subject: 'Jūsu iknedēļas projekta vadītāja ziņojums par %{time}'
       preheader: 'Projekta vadītāja pārskats par %{organizationName}'
       title_your_weekly_report: '%{firstName}, jūsu nedēļas pārskats'
       text_introduction: 'Mēs esam atlasījuši tos ievadītos datus, kas pagājušajā nedēļā ir izraisījuši vislielāko aktivitāti. Uzziniet, kas notiek ar jūsu projektu!'
@@ -260,9 +260,9 @@ lv:
       yesterday: Vakar
     comment_on_idea_you_follow:
       cta_reply_to: 'Atbildēt %{commentAuthor}'
-      event_description: '%{authorNameFull} placed a reaction on the idea ''%{ideaTitle}''. Click the button below to continue the conversation with %{authorName}.'
-      main_header: '%{authorName} commented on an idea you follow'
-      subject: 'There''s a new comment on an idea you follow'
+      event_description: '%{authorNameFull} ievieto reakciju uz ideju ''%{ideaTitle}''. Noklikšķiniet uz pogas zemāk, lai turpinātu sarunu ar %{authorName}.'
+      main_header: '%{authorName} komentēja ideju, kurai tu seko'
+      subject: 'Ir jauns komentārs par ideju, kurai tu seko'
       preheader: '%{authorName} atstāja komentāru par ideju par %{organizationName}'
     comment_on_initiative_you_follow:
       cta_reply_to: 'Atbildēt %{commentAuthor}'
@@ -277,13 +277,13 @@ lv:
       subject: 'Kāds ir publicējis jaunu priekšlikumu %{organizationName} platformā.'
       preheader: '%{authorName} publicēja jaunu priekšlikumu jūsu platformā'
     new_idea_for_admin:
-      commented: '%{authorFirstName} commented:'
-      cta_reply_to: 'Give feedback to %{authorName}'
+      commented: '%{authorFirstName} komentēja:'
+      cta_reply_to: 'Sniedziet atgriezenisko saiti uz %{authorName}'
       days_ago: 'pirms %{numberOfDays} dienām'
-      event_description: '%{authorName} has published a new idea on your platform. Discover it now, give some feedback or change its status!'
-      main_header: '%{firstName}, a new idea has been published on your platform'
-      subject: 'A new post has been published on %{organizationName}''s platform'
-      preheader: '%{authorName} published a new idea on your platform'
+      event_description: '%{authorName} ir publicējis jaunu ideju jūsu platformā. Atklājiet to tagad, sniedziet atsauksmes vai mainiet tās statusu!'
+      main_header: '%{firstName}, jūsu platformā ir publicēta jauna ideja.'
+      subject: 'Platformā %{organizationName}ir publicēts jauns ziņojums.'
+      preheader: '%{authorName} publicējāt jaunu ideju savā platformā.'
       today: Šodien
       yesterday: Vakar
     comment_on_your_comment:
@@ -302,50 +302,50 @@ lv:
     internal_comment_on_idea_assigned_to_you:
       cta_reply_to: 'Skatīt komentāru pēc %{firstName}'
       event_description: '%{authorNameFull} iekšēji komentēja jums piešķirto ievadi.'
-      subject: '''%{post}'' has a new internal comment'
-      main_header: '''%{post}'' has a new internal comment'
-      preheader: '''%{post}'' has a new internal comment'
+      subject: '''%{post}'' ir jauns iekšējais komentārs'
+      main_header: '''%{post}'' ir jauns iekšējais komentārs'
+      preheader: '''%{post}'' ir jauns iekšējais komentārs'
     internal_comment_on_idea_you_commented_internally_on:
       cta_reply_to: 'Skatīt komentāru pēc %{firstName}'
       event_description: '%{authorNameFull} iekšēji komentēja ievades datus, kurus jūs komentējāt iekšēji.'
-      subject: '''%{post}'' has a new internal comment'
-      main_header: '''%{post}'' has a new internal comment'
-      preheader: '''%{post}'' has a new internal comment'
+      subject: '''%{post}'' ir jauns iekšējais komentārs'
+      main_header: '''%{post}'' ir jauns iekšējais komentārs'
+      preheader: '''%{post}'' ir jauns iekšējais komentārs'
     internal_comment_on_idea_you_moderate:
       cta_reply_to: 'Skatīt komentāru pēc %{firstName}'
       event_description: '%{authorNameFull} iekšēji komentēt ievades ievades failu jūsu pārvaldītajā projektā vai mapē.'
-      subject: '''%{post}'' has a new internal comment'
-      main_header: '''%{post}'' has a new internal comment'
-      preheader: '''%{post}'' has a new internal comment'
+      subject: '''%{post}'' ir jauns iekšējais komentārs'
+      main_header: '''%{post}'' ir jauns iekšējais komentārs'
+      preheader: '''%{post}'' ir jauns iekšējais komentārs'
     internal_comment_on_initiative_assigned_to_you:
       cta_reply_to: 'Skatīt komentāru pēc %{firstName}'
       event_description: '%{authorNameFull} iekšēji komentēja jums piešķirto priekšlikumu.'
-      subject: '''%{post}'' has a new internal comment'
-      main_header: '''%{post}'' has a new internal comment'
-      preheader: '''%{post}'' has a new internal comment'
+      subject: '''%{post}'' ir jauns iekšējais komentārs'
+      main_header: '''%{post}'' ir jauns iekšējais komentārs'
+      preheader: '''%{post}'' ir jauns iekšējais komentārs'
     internal_comment_on_initiative_you_commented_internally_on:
       cta_reply_to: 'Skatīt komentāru pēc %{firstName}'
       event_description: '%{authorNameFull} iekšēji komentēja priekšlikumu, kuru jūs komentējāt iekšēji.'
-      subject: '''%{post}'' has a new internal comment'
-      main_header: '''%{post}'' has a new internal comment'
-      preheader: '''%{post}'' has a new internal comment'
+      subject: '''%{post}'' ir jauns iekšējais komentārs'
+      main_header: '''%{post}'' ir jauns iekšējais komentārs'
+      preheader: '''%{post}'' ir jauns iekšējais komentārs'
     internal_comment_on_unassigned_initiative:
       cta_reply_to: 'Skatīt komentāru pēc %{firstName}'
       event_description: '%{authorNameFull} iekšēji komentēja nepiešķirtu priekšlikumu.'
-      subject: '''%{post}'' has a new internal comment'
-      main_header: '''%{post}'' has a new internal comment'
-      preheader: '''%{post}'' has a new internal comment'
+      subject: '''%{post}'' ir jauns iekšējais komentārs'
+      main_header: '''%{post}'' ir jauns iekšējais komentārs'
+      preheader: '''%{post}'' ir jauns iekšējais komentārs'
     internal_comment_on_unassigned_unmoderated_idea:
       cta_reply_to: 'Skatīt komentāru pēc %{firstName}'
       event_description: '%{authorNameFull} iekšēji komentēja nepiešķirtu ievadi neapsaimniekotā projektā.'
-      subject: '''%{post}'' has a new internal comment'
-      main_header: '''%{post}'' has a new internal comment'
-      preheader: '''%{post}'' has a new internal comment'
+      subject: '''%{post}'' ir jauns iekšējais komentārs'
+      main_header: '''%{post}'' ir jauns iekšējais komentārs'
+      preheader: '''%{post}'' ir jauns iekšējais komentārs'
     official_feedback_on_idea_you_follow:
-      header_message: '%{officialName} gave an update on the idea ''%{ideaTitle}''. Click the button below to enter the conversation with %{officialName}.'
-      header_title: 'There''s an update on an idea you follow'
-      subject: 'An idea you follow has received an official update on the platform of %{organizationName}'
-      preheader: 'There''s an update on an idea you follow'
+      header_message: '%{officialName} sniedza atjauninātu informāciju par ideju "%{ideaTitle}". Noklikšķiniet uz pogas zemāk, lai iesaistītos sarunā ar %{officialName}.'
+      header_title: 'Ir atjauninājums par ideju, kurai jūs sekojat.'
+      subject: 'Ideja, kurai sekojat, ir oficiāli atjaunināta platformā %{organizationName}.'
+      preheader: 'Ir atjauninājums par ideju, kurai jūs sekojat.'
     official_feedback_on_initiative_you_follow:
       header_message: '%{officialName} sniedza atjauninātu informāciju par priekšlikumu "%{initiativeTitle}". Noklikšķiniet uz pogas zemāk, lai iesaistītos sarunā ar %{organizationName}.'
       header_title: 'Ir atjaunināta informācija par priekšlikumu, kuram jūs sekojat.'
@@ -409,11 +409,11 @@ lv:
       header_message: 'Dalības platformā %{organizationName} tikko publicēts šāds projekts:'
       preheader: 'Publicēts jauns projekts'
     status_change_on_idea_you_follow:
-      status_change: 'The new status of this idea is ''%{ideaStatus}'''
-      header_message: '%{organizationName} updated the status of the idea ''%{ideaTitle}'' on their digital participation platform.'
-      header_title: 'An idea you follow has a new status'
-      subject: 'The status of an idea you follow has been changed'
-      preheader: 'An idea you follow has a new status'
+      status_change: 'Šīs idejas jaunais statuss ir "%{ideaStatus}".'
+      header_message: '%{organizationName} atjaunināja idejas statusu savā digitālās līdzdalības platformā "%{ideaTitle}".'
+      header_title: 'Jūsu sekotajai idejai ir jauns statuss'
+      subject: 'Ir mainīts jūsu sekotās idejas statuss'
+      preheader: 'Jūsu sekotajai idejai ir jauns statuss'
     status_change_on_initiative_you_follow:
       status_change: 'Šā priekšlikuma jaunais statuss ir "%{initiativeStatus}".'
       header_message: 'Priekšlikuma "%{initiativeTitle}" statuss ir atjaunināts %{organizationName}digitālajā līdzdalības platformā.'
@@ -421,51 +421,51 @@ lv:
       subject: 'Ir mainījies priekšlikuma, kuram sekojat, statuss'
       preheader: 'Priekšlikumam, kuram sekojat, ir jauns statuss'
     user_digest:
-      subject: "Your activity on the participation platform of %{organizationName}"
+      subject: "Jūsu aktivitātes %{organizationName}dalības platformā"
       commented: "%{authorFirstName} komentēja:"
       preheader: "Nedēļas pārskats par %{organizationName}"
       title_your_weekly_report: "Uzziniet, kas notika pagājušajā nedēļā"
       intro_text: "Šeit ir kopsavilkums par to, kas notika %{organizationName} līdzdalības platformā."
       cta_go_to_the_platform: "Dodieties uz platformu"
       title_no_activity_past_week: "Pagājušajā nedēļā nav veiktas nekādas darbības"
-      title_proposals: "Proposals started"
-      proposals_started_text: "Proposals are ideas that need to gain traction and support from others (people like you!) in order to move forward. Below is a list of proposals that have been put forward in the last week. Click on any of them to take a look and offer your support and feedback!"
-      title_successful_proposals: "Proposals that reached the threshold"
-      successful_proposals_text: "These proposals have gotten enough support to move to the next stage! Click on the proposal to learn more about what happens next."
+      title_proposals: "Sākts priekšlikumu iesniegšana"
+      proposals_started_text: "Priekšlikumi ir idejas, kurām, lai virzītos uz priekšu, ir jāgūst citu (tādu cilvēku kā jūs!) atbalsts. Zemāk ir saraksts ar priekšlikumiem, kas iesniegti pēdējā nedēļā. Noklikšķiniet uz jebkura no tiem, lai iepazītos un piedāvātu savu atbalstu un atsauksmes!"
+      title_successful_proposals: "Priekšlikumi, kas sasniedza robežvērtību"
+      successful_proposals_text: "Šie priekšlikumi ir guvuši pietiekamu atbalstu, lai pārietu uz nākamo posmu! Noklikšķiniet uz priekšlikuma, lai uzzinātu vairāk par turpmāko rīcību."
       today_by_author: "Šodien %{author}"
       yesterday_by_author: "Vakar %{author}"
       x_days_ago_by_author: "pirms %{x} dienām %{author}"
-      trending_ideas: "Trending ideas"
-      trending_ideas_text: "Interested in what’s been happening on the platform? Here are the three most trending ideas and what people are saying about them."
+      trending_ideas: "Tendences idejas"
+      trending_ideas_text: "Interesē, kas notiek platformā? Lūk, trīs tendencīgākās idejas un to, ko cilvēki par tām saka."
       no_notifications: "Nav paziņojumu"
       one_notification: "1 paziņojums"
       multiple_notifications: "%{notifCount} paziņojumi"
-      no_unread_notifications: "You don't have any unread notifications. Visit the platform to contribute your input and generate new notifications!"
+      no_unread_notifications: "Jums nav neviena nelasīta paziņojuma. Apmeklējiet platformu, lai sniegtu savu ieguldījumu un ģenerētu jaunus paziņojumus!"
       unread_notifications: "Jums ir nelasīti paziņojumi. Apmeklējiet platformu, lai uzzinātu, kas notiek!"
     threshold_reached_for_admin:
       cta_process_initiative: 'Īstenojiet šo iniciatīvu nākamajos posmos'
-      event_description: 'An proposal reached the voting threshold on your platform. Click the button below to take it to the next steps!'
-      main_header: 'An proposal reached the voting threshold!'
-      subject: 'An proposal reached the voting threshold on your platform'
+      event_description: 'Jūsu platformā priekšlikums ir sasniedzis balsošanas slieksni. Noklikšķiniet uz zemāk redzamās pogas, lai pārietu uz nākamajiem soļiem!'
+      main_header: 'Priekšlikums sasniedza balsošanas slieksni!'
+      subject: 'Jūsu platformā priekšlikums ir sasniedzis balsošanas slieksni'
       preheader: 'Pārliecinieties, ka veicat nākamos soļus'
     first_idea_published:
-      action_add_image: '%{addImageLink} to increase visibility'
-      action_comment: '%{textComment} on existing ideas'
-      action_published_idea: 'Published idea'
-      action_send_email: 'Send your contacts an %{sendEmailLink}'
-      action_share_fb: 'Let your friends know on %{fbLink}'
-      action_share_link: 'Share it via any channel by copying the %{link}'
-      action_share_twitter: 'Inform your followers on %{twitterLink}'
-      add_image: 'Add an image'
-      cta_view_idea: 'Go to your idea'
-      event_description: '%{firstName}, congratulations with your first idea on the participation platform of %{organizationName}. You will be notified when people interact with your idea. Find out what next steps you can take below.'
-      link: link
-      main_header: '%{firstName}, you posted your first idea!'
-      message_get_votes: 'Reach more people with your idea:'
-      preheader: '%{firstName}, congratulations on posting your first idea on the platform of %{organizationName}. Now gather support for your idea'
-      see_you: 'See you soon at the platform!'
-      send_email: email
-      subject: 'Your first idea on the platform of %{organizationName}'
+      action_add_image: '%{addImageLink} palielināt redzamību'
+      action_comment: '%{textComment} par esošajām idejām'
+      action_published_idea: 'Publicētā ideja'
+      action_send_email: 'Nosūtiet saviem kontaktiem %{sendEmailLink}'
+      action_share_fb: 'Ļaujiet saviem draugiem par to uzzināt vietnē %{fbLink}'
+      action_share_link: 'Kopīgojiet to jebkurā kanālā, kopējot %{link}.'
+      action_share_twitter: 'Informējiet savus sekotājus vietnē %{twitterLink}'
+      add_image: 'Pievienot attēlu'
+      cta_view_idea: 'Pārejiet uz savu ideju'
+      event_description: '%{firstName}, apsveicam ar pirmo ideju par dalības platformu %{organizationName}. Jums tiks paziņots, kad ar jūsu ideju sazināsies cilvēki. Turpmāk uzziniet, kādus turpmākos soļus varat veikt.'
+      link: saite
+      main_header: '%{firstName}, jūs publicējāt savu pirmo ideju!'
+      message_get_votes: 'Sasniedziet vairāk cilvēku ar savu ideju:'
+      preheader: '%{firstName}, apsveicam ar pirmās idejas publicēšanu platformā %{organizationName}. Tagad savāciet atbalstu savai idejai'
+      see_you: 'Uz tikšanos platformā!'
+      send_email: e-pastu
+      subject: 'Tava pirmā ideja par platformu %{organizationName}'
     welcome:
       cta_join_platform: 'Atklājiet platformu'
       subject: 'Laipni lūgti %{organizationName} platformā'
@@ -474,32 +474,32 @@ lv:
       preheader: 'Lūk, ko jūs varat darīt %{organizationName} platformā.'
     idea_published:
       action_add_image: '%{addImageLink}, lai palielinātu redzamību'
-      action_published_idea: 'Published idea'
+      action_published_idea: 'Publicētā ideja'
       action_send_email: 'Nosūtiet saviem kontaktiem %{sendEmailLink}'
       action_share_fb: 'Paziņojiet saviem draugiem par %{fbLink}'
       action_share_link: 'Kopīgojiet to jebkurā kanālā, kopējot %{link}'
       action_share_twitter: 'Informējiet savus sekotājus par %{twitterLink}'
       add_image: 'Pievienot attēlu'
-      cta_view_idea: 'Go to your idea'
-      event_description: '%{firstName}, your idea has successfully been published on the participation platform of %{organizationName}. You will be notified when people interact with your idea. Find out what next steps you can take below.'
+      cta_view_idea: 'Pārejiet uz savu ideju'
+      event_description: '%{firstName}, jūsu ideja ir veiksmīgi publicēta %{organizationName}dalības platformā. Jums tiks paziņots, kad ar jūsu ideju sazināsies cilvēki. Turpmāk uzziniet, kādus turpmākos soļus varat veikt.'
       link: saite
-      main_header: 'You posted an idea! Let''s make sure it gets read.'
-      message_get_votes: 'Reach more people with your idea:'
-      preheader: '%{firstName}, congratulations on posting your idea on the platform of %{organizationName}. Now gather support.'
-      see_you: 'See you soon at the platform!'
+      main_header: 'Jūs publicējāt ideju! Pārliecināsimies, ka tā tiek izlasīta.'
+      message_get_votes: 'Sasniedziet vairāk cilvēku ar savu ideju:'
+      preheader: '%{firstName}, apsveicam ar idejas publicēšanu %{organizationName}platformā. Tagad iegūstiet atbalstu.'
+      see_you: 'Uz tikšanos platformā!'
       send_email: e-pasts
-      subject: 'Your idea on the platform of %{organizationName}'
+      subject: 'Jūsu ideja par platformu %{organizationName}'
       message_next_steps: ""
     your_proposed_initiatives_digest:
-      subject: 'Weekly update of your proposals'
-      preheader: 'What happened with your proposals in the past week?'
-      title_your_weekly_report: 'How have your proposals been doing?'
-      text_introduction: 'Find the key numbers below and go to the platform to take action and gather enough support in time.'
-      cta_see_your_initiative: 'Go to your proposals'
-      total_votes: 'Total votes'
-      new_votes: 'New votes'
-      remaining_votes: 'Votes remaining'
-      remaining_days: 'Days remaining'
+      subject: 'Iknedēļas atjauninājumi par jūsu priekšlikumiem'
+      preheader: 'Kas notika ar jūsu priekšlikumiem pagājušajā nedēļā?'
+      title_your_weekly_report: 'Kā jums ir veicies ar priekšlikumiem?'
+      text_introduction: 'Atrodiet zemāk norādītos galvenos skaitļus un dodieties uz platformu, lai laikus sāktu rīkoties un apkopotu pietiekamu atbalstu.'
+      cta_see_your_initiative: 'Dodieties uz saviem priekšlikumiem'
+      total_votes: 'Kopējais balsu skaits'
+      new_votes: 'Jaunas balsis'
+      remaining_votes: 'Atlikušās balsis'
+      remaining_days: 'Atlikušās dienas'
     voting_basket_submitted:
       subject: '%{organizationName}: Jūs veiksmīgi nobalsojāt'
       preheader: 'Jūs veiksmīgi balsojāt %{organizationName}līdzdalības platformā.'
