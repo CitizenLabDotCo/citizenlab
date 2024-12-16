@@ -5,8 +5,8 @@ es:
     admin_campaign_type_description:
       "inappropriate_content_flagged": Marcado contenido inapropiado - administradores/as
     inappropriate_content_flagged:
-      subject: 'Se ha marcado un aporte para revisión'
-      header_title: 'Se ha marcado un aporte para revisión'
+      subject: 'Una publicación ha sido marcada para tu revisión en la plataforma'
+      header_title: 'Una publicación ha sido marcada para tu revisión en la plataforma'
       author_wrote: '%{authorName} escribió:'
       preheader: 'Una publicación ha sido marcada para tu revisión en la plataforma'
       automatically_flagged: >
