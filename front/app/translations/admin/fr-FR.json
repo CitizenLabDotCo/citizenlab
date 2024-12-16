@@ -2128,7 +2128,6 @@
   "app.containers.AdminPage.SettingsPage.subtitleRegistration": "Specify what information people are asked to provide when signing up.",
   "app.containers.AdminPage.SettingsPage.subtitleTerminology": "Terminologie",
   "app.containers.AdminPage.SettingsPage.successfulUpdateSettings": "Les paramètres ont été mis à jour avec succès.",
-  "app.containers.AdminPage.SettingsPage.tabApproval": "Révisions des projets",
   "app.containers.AdminPage.SettingsPage.tabAreas1": "Zones géographiques",
   "app.containers.AdminPage.SettingsPage.tabBranding": "Identité visuelle",
   "app.containers.AdminPage.SettingsPage.tabInputStatuses": "Statuts des contributions",
