@@ -10,7 +10,10 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { RouteType } from 'routes';
 
-import { ManagementFeedData } from 'api/management_feed/types';
+import {
+  ManagementFeedAction,
+  ManagementFeedData,
+} from 'api/management_feed/types';
 import useProjectById from 'api/projects/useProjectById';
 import useUserById from 'api/users/useUserById';
 
@@ -19,7 +22,7 @@ import useLocalize from 'hooks/useLocalize';
 import Avatar from 'components/Avatar';
 import Modal from 'components/UI/Modal';
 
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { getFullName } from 'utils/textUtils';
 
@@ -36,7 +39,7 @@ const ManagementFeedRow = ({ item }: { item: ManagementFeedData }) => {
   const getActionTranslation = () => {
     const action = item.attributes.action;
 
-    const actionMessages = {
+    const actionMessages: Record<ManagementFeedAction, MessageDescriptor> = {
       created: messages.created,
       changed: messages.changed,
       deleted: messages.deleted,

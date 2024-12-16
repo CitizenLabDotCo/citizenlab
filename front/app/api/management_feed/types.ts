@@ -40,9 +40,11 @@ type BaseAttributes<TItemType, TAction> = {
   item_exists: boolean;
 };
 
-export type Attributes =
+type Attributes =
   | BaseAttributes<ItemType, CommonAction>
   | BaseAttributes<'project', ProjectSpecificAction>;
+
+export type ManagementFeedAction = CommonAction | ProjectSpecificAction;
 
 export type ManagementFeedData = {
   id: string;
