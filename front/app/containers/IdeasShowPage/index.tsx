@@ -55,9 +55,6 @@ const StyledIdeasShow = styled(IdeasShow)<{ hasNextPreviousControl?: boolean }>`
   `}
 
   ${media.phone`
-    ${({ theme }) => `
-      margin-top: ${theme.menuHeight}px;
-    `}
     padding-top: ${(props) => (props.hasNextPreviousControl ? '0px' : '25px')};
     padding-left: 15px;
     padding-right: 15px;
@@ -132,7 +129,9 @@ const IdeasShowPage = () => {
                   ideaId={idea.data.id}
                   projectId={idea.data.relationships.project.data.id}
                   compact={isSmallerThanTablet}
-                  hasNextPreviousControl={phaseContext !== null}
+                  // TODO: Since next/previous controls were temporarily removed, we set this to false
+                  // for the time being until they are re-introduced.
+                  hasNextPreviousControl={false}
                 />
               </main>
             </Box>
