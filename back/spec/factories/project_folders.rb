@@ -34,7 +34,10 @@ FactoryBot.define do
 
         # Reloading projects to ensure that the changes are reflected in the
         # `project.folder` attribute.
-        evaluator.projects.each(&:reload)
+        Array
+          .wrap(evaluator.projects)
+          .select(&:persisted?)
+          .each(&:reload)
       end
     end
   end

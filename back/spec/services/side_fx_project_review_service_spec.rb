@@ -3,6 +3,8 @@
 require 'rails_helper'
 
 describe SideFxProjectReviewService do
+  include SideFxHelper
+
   let(:service) { described_class.new }
   # Reloading the user bc the db persists timestamps with a lower precision
   let(:user) { create(:admin).reload }
@@ -19,15 +21,16 @@ describe SideFxProjectReviewService do
       expect { service.after_create(review, user) }
         .to have_enqueued_job(LogActivityJob)
         .with(review.project, 'project_review_requested', user, review.created_at.to_i, {
-          project_review_id: review.id,
-          project: clean_time_attributes(review.project.attributes)
+          payload: {
+            project_review_id: review.id,
+            project: clean_time_attributes(review.project.attributes)
+          },
+          project_id: review.project_id
         })
     end
   end
 
   describe 'after_update' do
-    include SideFxHelper
-
     it "logs a 'changed' activity job" do
       # A review can be approved by someone other than the assigned reviewer.
       original_reviewer = review.reviewer
@@ -54,9 +57,12 @@ describe SideFxProjectReviewService do
       expect { service.after_update(review, user) }
         .to have_enqueued_job(LogActivityJob)
         .with(review.project, 'project_review_approved', user, review.updated_at.to_i, {
-          project_review_id: review.id,
-          # The serialized project is required for the management feed.
-          project: clean_time_attributes(review.project.attributes)
+          payload: {
+            project_review_id: review.id,
+            # The serialized project is required for the management feed.
+            project: clean_time_attributes(review.project.attributes)
+          },
+          project_id: review.project_id
         })
     end
   end
