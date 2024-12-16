@@ -37,17 +37,17 @@ hr:
     outside: negdje drugdje
   idea_statuses:
     proposed: predloženo
-    proposed_description: Ova je ideja predložena gradskoj administraciji
+    proposed_description: Ova ideja je predložena gradu
     viewed: pregledano
-    viewed_description: Ovu je ideja pogledao netko iz gradske administracije
+    viewed_description: Ovu ideju je vidio netko iz grada
     under_consideration: razmatra se
-    under_consideration_description: Ova se ideja razmatra od strane grada
+    under_consideration_description: Grad je ovu ideju uzeo u obzir
     accepted: prihvaćeno
-    accepted_description: Ova je ideja prihvaćena i bit će provedena
+    accepted_description: Ova ideja je prihvaćena i grad će je realizirati
     implemented: provedeno
-    implemented_description: Ova je ideja provedena
+    implemented_description: Tu ideju grad je proveo u djelo
     rejected: odbijeno
-    rejected_description: Ova je ideja odbijena
+    rejected_description: Ova ideja je odbijena
     expired: istekao
     expired_description: istekao
     threshold_reached: dosegnut prag
@@ -208,7 +208,7 @@ hr:
         option:
           title: Što je vaša opcija?
       details:
-        title: Pojedinosti
+        title: pojedinosti
       attachements:
         title: Slike i prilozi
       extra:
@@ -284,7 +284,7 @@ hr:
       option2: '2. opcija'
     form_end_page:
       title: 'Hvala na sudjelovanju'
-      description: "Pošaljite svoje odgovore odabirom opcije 'Pošalji' ispod."
+      description: "Pošaljite svoje odgovore odabirom 'Pošalji' ispod."
     pdf_export:
       personal_data: 'Osobni podaci'
       personal_data_explanation_public: "Poslat ćemo vaš doprinos online platformi za sudjelovanje %{organizationName}. Ako želite da se vaše ime prikaže kao autor ovog unosa i da putem e-pošte primate ažuriranja relevantna za vaš unos, ispunite sljedeća polja na ovoj stranici i mi ćemo za vas kreirati račun. Vaša e-pošta neće biti javna i koristit će je samo %{organizationName}. Ukoliko želite ostati anonimni ili ne pristajete na korištenje Vaših osobnih podataka na ovaj način, možete ih ostaviti prazne."
