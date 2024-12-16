@@ -5,11 +5,11 @@ pl:
     admin_campaign_type_description:
       "inappropriate_content_flagged": Nieodpowiednie treści zostały oznaczone - administratorzy
     inappropriate_content_flagged:
-      subject: 'Post na Twojej platformie został oznaczony do przeglądu'
-      header_title: 'Post na Twojej platformie został oznaczony do przeglądu'
-      comment_author: '%{authorName} skomentował(a):'
-      idea_author: '%{authorName} dodał(a) nowy post:'
-      initiative_author: '%{authorName} dodał(a) nowa propozycję:'
+      subject: 'Post na Twojej platformie został oznaczony do sprawdzenia'
+      header_title: 'Post na Twojej platformie został oznaczony do sprawdzenia'
+      comment_author: '%{authorName} skomentował:'
+      idea_author: '%{authorName} przesłał post:'
+      initiative_author: '%{authorName} złożył wniosek:'
       automatically_flagged: >
         Ten post został automatycznie wykryty jako potencjalnie zawierający nieodpowiednie treści. Wysyłamy Ci to powiadomienie, abyś mógł sprawdzić post zgodnie z własnymi wytycznymi dotyczącymi moderacji.
       how_to_review: >
