@@ -43,7 +43,7 @@ fr-BE:
       "project_phase_started": Nouvelle phase de projet
       "project_phase_upcoming": Nouvelle phase de projet à venir
       "project_published": Projet publié
-      "project_review_request": Demande d'examen de projet
+      "project_review_request": Demande de révision d'un projet
       "project_review_state_change": Projet approuvé
       "status_change_on_idea_you_follow": Changement de statut d'une idée que vous suivez
       "status_change_on_initiative_you_follow": Changement de statut d'une proposition que vous suivez
@@ -461,14 +461,14 @@ fr-BE:
       preheader: 'Un nouveau projet a été publié'
     project_review_request:
       subject: 'Demande de révision : Un projet est en attente d''approbation.'
-      header: '%{requesterName} vous a invité à examiner le projet "%{projectTitle}".'
-      header_message: "Actuellement, le projet est en mode brouillon et n'est pas visible par les utilisateurs. Une fois que vous l'aurez examiné et approuvé, le modérateur pourra le publier."
-      cta_review_project: "Examiner le projet"
+      header: '%{requesterName} vous a invité à vérifier le projet "%{projectTitle}"'
+      header_message: "Actuellement, le projet est en mode brouillon et n'est pas visible par les utilisateurs. Une fois que vous l'aurez vérifié et approuvé, le modérateur pourra le publier."
+      cta_review_project: "Vérifier le projet"
     project_review_state_change:
       subject: '"%{projectTitle}" a été approuvé'
       header: '%{reviewerName} a approuvé le projet "%{projectTitle}"'
-      header_message: "Le projet est maintenant prêt à être mis en ligne. Vous pouvez le publier dès que vous le souhaitez !"
-      cta_go_to_project: "Accédez aux paramètres du projet"
+      header_message: "Le projet est maintenant prêt à être mis en ligne. Vous pouvez le publier dès que vous êtes prêt !"
+      cta_go_to_project: "Accéder au projet"
     status_change_on_idea_you_follow:
       status_change: 'The new status of this input is ''%{status}'''
       header_message: '%{organizationName} updated the status of the input ''%{input_title}'' on their digital participation platform.'
@@ -624,8 +624,8 @@ fr-BE:
         managers: 'Gestionnaires'
         managers_managing_the_project: 'Responsables de la gestion du projet'
         new_attendee: 'L''utilisateur qui s''est inscrit'
-        project_reviewers: 'Réviseurs de projets et gestionnaires de dossiers'
-        project_review_requester: 'Utilisateur qui a demandé l''examen du projet'
+        project_reviewers: 'Les réviseurs de projet et les gestionnaires de dossiers'
+        project_review_requester: 'L''utilisateur qui a demandé l''approbation pour publier le projet'
         user_who_commented: 'Utilisateur qui a commenté'
         user_who_is_invited_to_cosponsor_a_proposal: 'L''utilisateur invité à soutenir la proposition'
         user_who_is_mentioned: 'Utilisateur mentionné'
@@ -678,8 +678,8 @@ fr-BE:
         internal_comment_is_posted_on_initiative_user_has_commented_internally_on: 'Un commentaire interne est publié sur la proposition que l''utilisateur a commentée en interne'
         internal_comment_is_posted_on_unassigned_initiative: 'Un commentaire interne est publié sur une proposition non attribuée'
         internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Un commentaire interne est publié sur une entrée non attribuée dans un projet non géré'
-        project_review_request: 'Le modérateur a demandé un examen du projet'
-        project_review_state_change: 'Le réviseur a approuvé le projet'
+        project_review_request: 'Demande d''approbation pour publier un projet'
+        project_review_state_change: 'Le projet a été approuvé'
         new_input_awaits_screening: 'Nouvelle contribution en attente de validation'
         new_input_is_published: 'Une nouvelle contribution a été postée'
         new_proposal_is_posted: 'Publication d''une nouvelle proposition'
