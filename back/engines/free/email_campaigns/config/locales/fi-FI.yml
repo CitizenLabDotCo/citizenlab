@@ -273,7 +273,7 @@ fi:
       main_header: '%{firstName} mainitsi sinut sisäisessä kommentissa.'
       preheader: '%{authorNameFull} mainitsi sinut sisäisessä kommentissa.'
     moderator_digest:
-      subject: 'Viikoittainen esimiehen raportti aiheesta "%{project_title}"'
+      subject: 'Viikoittainen projektipäällikköraporttisi %{time}'
       preheader: 'Projektipäällikkö tiivistelmä %{organizationName}'
       title_your_weekly_report: '%{firstName}, viikkoraporttisi'
       text_introduction: 'Olemme koonneet sinulle panoksen, joka on aiheuttanut eniten aktiivisuutta kuluneen viikon aikana. Ota selvää, mitä projektillesi tapahtuu!'
@@ -395,7 +395,7 @@ fi:
       header_message: '%{feedback_author_name} antoi päivityksen aiheesta ''%{input_title}''.'
       header_title: '"%{input_title}" on päivitetty'
       subject: 'Virallinen palaute on lähetetty "%{input_title}"'
-      preheader: 'Seuraamasi idea on päivitetty'
+      preheader: 'Seuraamasi syötteessä on päivitys'
     official_feedback_on_initiative_you_follow:
       header_message: '%{officialName} antoi päivityksen ehdotuksesta ''%{initiativeTitle}''. Napsauta alla olevaa painiketta päästäksesi keskusteluun %{organizationName}kanssa.'
       header_title: 'Seuraamasi ehdotus on päivitetty'
@@ -461,9 +461,9 @@ fi:
     status_change_on_idea_you_follow:
       status_change: 'Tämän syötteen uusi tila on%{status}'
       header_message: '%{organizationName} päivitti syötteen ''%{input_title}'' tilan digitaalisella osallistumisalustallaan.'
-      header_title: 'Seuraamasi idealla on uusi tila'
+      header_title: 'Seuraamallasi syötteellä on uusi tila'
       subject: 'Kohteen "%{input_title}" tila on muuttunut'
-      preheader: 'Seuraamasi idealla on uusi tila'
+      preheader: 'Seuraamallasi syötteellä on uusi tila'
     status_change_on_initiative_you_follow:
       status_change: 'Tämän ehdotuksen uusi tila on%{initiativeStatus}'
       header_message: 'Ehdotuksen ''%{initiativeTitle}'' tila on päivitetty %{organizationName}digitaaliseen osallistumisalustaan.'
@@ -493,7 +493,7 @@ fi:
     threshold_reached_for_admin:
       cta_process_initiative: 'Siirrä tämä ehdotus seuraaviin vaiheisiin'
       main_header: 'Ehdotus saavutti äänestyskynnyksen!'
-      subject: '"%{input_title}" saavutti äänestyskynnyksen'
+      subject: 'Ehdotus saavutti äänestyskynnyksen alustallasi'
       preheader: 'Muista ottaa seuraavat vaiheet'
     welcome:
       cta_join_platform: 'Tutustu alustaan'
@@ -512,7 +512,7 @@ fi:
         proposal: 'Ehdotuksesi on julkaistu'
         initiative: 'Aloituksesi on julkaistu'
         petition: 'Vetoomuksesi on julkaistu'
-      main_header: 'Lähetit "%{input_title}"'
+      main_header: 'Lähetit idean! Varmistetaan, että se luetaan.'
       header_message: 'Varmistetaan, että se luetaan.'
       message_get_votes: 'Tavoita enemmän ihmisiä ideallasi:'
       action_published_idea: 'Julkaistu idea'
