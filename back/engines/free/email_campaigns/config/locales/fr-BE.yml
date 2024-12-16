@@ -270,7 +270,7 @@ fr-BE:
       cta_reply_to: 'Voir le commentaire de %{firstName}'
       event_description: '%{authorNameFull} vous a mentionné dans un commentaire interne.'
       subject: '%{firstName} vous a mentionné dans un commentaire interne.'
-      main_header: '%{authorNameFirst} vous a mentionné dans un commentaire interne.'
+      main_header: '%{firstName} vous a mentionné dans un commentaire interne.'
       preheader: '%{authorNameFull} vous a mentionné dans un commentaire interne.'
     moderator_digest:
       subject: 'Votre rapport hebdomadaire de gestionnaire de projet pour "%{project_title}"'
@@ -299,7 +299,7 @@ fr-BE:
       yesterday: Hier
     comment_on_idea_you_follow:
       cta_reply_to: 'Répondre à %{commentAuthor}'
-      event_description: '%{authorNameFull} a réagi à « %{inputTitle} ». Cliquez sur le bouton ci-dessous pour continuer la conversation avec %{authorName}.'
+      event_description: '%{authorNameFull} placed a reaction on ''%{inputTitle}''. Click the button below to continue the conversation with %{authorName}.'
       main_header:
         idea: '%{authorName} a commenté une idée que vous suivez'
         question: '%{authorName} a commenté une question que vous suivez'
@@ -310,7 +310,7 @@ fr-BE:
         proposal: '%{authorName} a commenté une proposition que vous suivez'
         initiative: '%{authorName} a commenté une initiative que vous suivez'
         petition: '%{authorName} a commenté une pétition que vous suivez'
-      subject: 'Il y a un nouveau commentaire sur « %{input_title} »'
+      subject: 'There''s a new comment on "%{input_title}"'
       preheader: '%{authorName} a publié un commentaire sur une idée pour %{organizationName}'
     comment_on_initiative_you_follow:
       cta_reply_to: 'Répondre à %{commentAuthor}'
@@ -392,10 +392,10 @@ fr-BE:
       main_header: '%{post}" a un nouveau commentaire interne'
       preheader: '%{post}" a un nouveau commentaire interne'
     official_feedback_on_idea_you_follow:
-      header_message: '%{feedback_author_name} a publié une mise à jour sur « %{input_title} ».'
-      header_title: 'Il y a une mise à jour sur « %{input_title} »'
-      subject: 'Un retour officiel a été publié sur « %{input_title} »'
-      preheader: 'Il y a une mise à jour sur une idée que vous suivez'
+      header_message: '%{feedback_author_name} gave an update on ''%{input_title}''.'
+      header_title: 'There''s an update on "%{input_title}"'
+      subject: 'Official feedback was posted on "%{input_title}"'
+      preheader: 'There''s an update on an input you follow'
     official_feedback_on_initiative_you_follow:
       header_message: '"%{officialName} a publié un message officiel concernant la proposition « %{initiativeTitle} ». Cliquez sur le bouton ci-dessous pour continuer la conversation avec %{organizationName}.'
       header_title: 'Il y a une mise à jour sur une proposition que vous suivez'
@@ -459,11 +459,11 @@ fr-BE:
       header_message: 'La plateforme de participation de %{organizationName} vient de publier le projet suivant :'
       preheader: 'Un nouveau projet a été publié'
     status_change_on_idea_you_follow:
-      status_change: 'Le nouveau statut de cette contribution est « %{status} »'
-      header_message: '%{organizationName} a changé le statut de la contribution « %{input_title} » sur leur plateforme de participation.'
-      header_title: 'Une idée que vous suivez a un nouveau statut'
-      subject: 'Le statut de « %{input_title} » a changé'
-      preheader: 'Une idée que vous suivez a un nouveau statut'
+      status_change: 'The new status of this input is ''%{status}'''
+      header_message: '%{organizationName} updated the status of the input ''%{input_title}'' on their digital participation platform.'
+      header_title: 'An input you follow has a new status'
+      subject: 'The status of "%{input_title}" has changed'
+      preheader: 'An input you follow has a new status'
     status_change_on_initiative_you_follow:
       status_change: 'Le nouveau statut de cette proposition est « %{initiativeStatus} »'
       header_message: 'Le statut de la proposition « %{initiativeTitle} » a été changé sur la plateforme de participation de %{organizationName}.'
@@ -540,11 +540,11 @@ fr-BE:
       subject: '« %{input_title} » est presque publié'
       preheader: 'Le statut de votre contribution est actuellement « %{prescreening_status_title} »'
     your_proposed_initiatives_digest:
-      subject: 'Mise à jour hebdomadaire de votre initiative'
-      preheader: 'Qu''est-il arrivé à votre initiative la semaine dernière ?'
-      title_your_weekly_report: 'Comment s''est déroulée votre initiative ?'
-      text_introduction: 'Trouvez les chiffres clés ci-dessous et rendez-vous sur la page de votre initiative pour passer à l''action et obtenir suffisamment de soutien à temps.'
-      cta_see_your_initiative: 'Aller à votre initiative'
+      subject: 'Mise à jour hebdomadaire de votre proposition'
+      preheader: 'Qu''est-il arrivé à votre proposition la semaine dernière ?'
+      title_your_weekly_report: 'Comment s''est déroulée votre proposition ?'
+      text_introduction: 'Trouvez les chiffres clés ci-dessous et rendez-vous sur la page de votre proposition pour passer à l''action et obtenir suffisamment de soutien à temps.'
+      cta_see_your_initiative: 'Accédez à vos propositions'
       total_votes: 'Total des votes'
       new_votes: 'Nouveaux votes'
       remaining_votes: 'Votes restants'
