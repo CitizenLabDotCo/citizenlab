@@ -4,6 +4,8 @@ import { Radio, Text } from '@citizenlab/cl2-component-library';
 
 import useAuthUser from 'api/me/useAuthUser';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import { MessageDescriptor, FormattedMessage } from 'utils/cl-intl';
 import { isSuperAdmin } from 'utils/permissions/roles';
 
@@ -26,10 +28,14 @@ interface Props {
 
 const RadioButtons = ({ value, onChange }: Props) => {
   const { data: user } = useAuthUser();
+  const platformTemplatesEnabled = useFeatureFlag({
+    name: 'platform_templates',
+  });
 
-  const templateTypes = isSuperAdmin(user)
-    ? TEMPLATE_TYPES
-    : TEMPLATE_TYPES.filter((type) => type !== 'platform');
+  const templateTypes =
+    isSuperAdmin(user) || platformTemplatesEnabled
+      ? TEMPLATE_TYPES
+      : TEMPLATE_TYPES.filter((type) => type !== 'platform');
 
   return (
     <>
