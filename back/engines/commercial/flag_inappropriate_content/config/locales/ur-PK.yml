@@ -5,8 +5,8 @@ ur:
     admin_campaign_type_description:
       "inappropriate_content_flagged": نامناسب مواد پر جھنڈا لگایا گیا - منتظمین
     inappropriate_content_flagged:
-      subject: 'ایک پوسٹ کو نظرثانی کے لیے جھنڈا لگا دیا گیا ہے۔'
-      header_title: 'ایک پوسٹ کو نظرثانی کے لیے جھنڈا لگا دیا گیا ہے۔'
+      subject: 'آپ کے پلیٹ فارم پر ایک پوسٹ کو نظرثانی کے لیے جھنڈا لگا دیا گیا ہے۔'
+      header_title: 'آپ کے پلیٹ فارم پر ایک پوسٹ کو نظرثانی کے لیے جھنڈا لگا دیا گیا ہے۔'
       author_wrote: '%{authorName} نے لکھا:'
       preheader: 'آپ کے پلیٹ فارم پر ایک پوسٹ کو نظرثانی کے لیے جھنڈا لگا دیا گیا ہے۔'
       automatically_flagged: >
