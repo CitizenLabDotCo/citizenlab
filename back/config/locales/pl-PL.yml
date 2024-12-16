@@ -37,17 +37,17 @@ pl:
     outside: gdzieś indziej
   idea_statuses:
     proposed: zaproponowana
-    proposed_description: Ten pomysł został zaproponowany miastu
+    proposed_description: Pomysł ten został zaproponowany miastu
     viewed: obejrzany
-    viewed_description: Ten pomysł został obejrzany przez kogoś z miasta
+    viewed_description: Pomysł ten widział ktoś z miasta
     under_consideration: rozpatrywany
-    under_consideration_description: Ten pomysł został wzięty pod uwagę przez miasto
+    under_consideration_description: Pomysł ten został wzięty pod uwagę przez miasto
     accepted: przyjęty
-    accepted_description: Ten pomysł został zaakceptowany i będzie realizowany przez miasto
+    accepted_description: Pomysł ten został zaakceptowany i zostanie wdrożony przez miasto
     implemented: wdrożony
-    implemented_description: Ten pomysł ten został zrealizowany przez miasto
+    implemented_description: Pomysł ten został wdrożony przez miasto
     rejected: odrzucony
-    rejected_description: Ten pomysł został odrzucony
+    rejected_description: Pomysł ten został odrzucony
     expired: wygasł
     expired_description: wygasł
     threshold_reached: osiągnięty próg
@@ -210,7 +210,7 @@ pl:
       details:
         title: Szczegóły
       attachements:
-        title: Zdjęcia i załączniki
+        title: Obrazy i załączniki
       extra:
         title: Dodatkowe informacje
   custom_field_options:
