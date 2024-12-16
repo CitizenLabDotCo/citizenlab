@@ -299,7 +299,7 @@ nl-BE:
       yesterday: Gisteren
     comment_on_idea_you_follow:
       cta_reply_to: 'Reageer op %{commentAuthor}'
-      event_description: '%{authorNameFull} heeft een reactie geplaatst op ''%{inputTitle}''. Klik op de onderstaande knop om het gesprek voort te zetten met %{authorName}.'
+      event_description: '%{authorNameFull} placed a reaction on ''%{inputTitle}''. Click the button below to continue the conversation with %{authorName}.'
       main_header:
         idea: '%{authorName} heeft gereageerd op een idee dat je volgt'
         question: '%{authorName} heeft gereageerd op een vraag die je volgt'
@@ -310,7 +310,7 @@ nl-BE:
         proposal: '%{authorName} heeft gereageerd op een voorstel dat je volgt'
         initiative: '%{authorName} heeft gereageerd op een initiatief dat je volgt'
         petition: '%{authorName} heeft gereageerd op een petitie die je volgt'
-      subject: 'Er is een nieuwe reactie op "%{input_title}"'
+      subject: 'There''s a new comment on "%{input_title}"'
       preheader: '%{authorName} heeft een reactie achtergelaten op een idee voor %{organizationName}'
     comment_on_initiative_you_follow:
       cta_reply_to: 'Reageer op %{commentAuthor}'
@@ -392,10 +392,10 @@ nl-BE:
       main_header: '''%{post}'' heeft een nieuwe interne reactie'
       preheader: '''%{post}'' heeft een nieuwe interne reactie'
     official_feedback_on_idea_you_follow:
-      header_message: '%{feedback_author_name} schreef een update bij %{input_title}''.'
-      header_title: 'Er is een update op "%{input_title}"'
-      subject: 'Er is officiële feedback geplaatst op "%{input_title}".'
-      preheader: 'Er is een update over een idee dat je volgt'
+      header_message: '%{feedback_author_name} gave an update on ''%{input_title}''.'
+      header_title: 'There''s an update on "%{input_title}"'
+      subject: 'Official feedback was posted on "%{input_title}"'
+      preheader: 'There''s an update on an input you follow'
     official_feedback_on_initiative_you_follow:
       header_message: '%{officialName} gaf een update over het voorstel ''%{initiativeTitle}''. Klik op de onderstaande knop om het gesprek voort te zetten met %{organizationName}.'
       header_title: 'Er is een update over een voorstel dat je volgt'
@@ -459,11 +459,11 @@ nl-BE:
       header_message: 'Het participatieplatform van %{organizationName} heeft zojuist het volgende project gepubliceerd:'
       preheader: 'Er is een nieuw project gepubliceerd'
     status_change_on_idea_you_follow:
-      status_change: 'De nieuwe status van deze invoer is ''%{status}'''
-      header_message: '%{organizationName} heeft de status van de input ''%{input_title}'' op hun digitale participatieplatform bijgewerkt.'
-      header_title: 'Een idee dat je volgt, heeft een nieuwe status'
-      subject: 'De status van "%{input_title}" is veranderd'
-      preheader: 'Een idee dat je volgt, heeft een nieuwe status'
+      status_change: 'The new status of this input is ''%{status}'''
+      header_message: '%{organizationName} updated the status of the input ''%{input_title}'' on their digital participation platform.'
+      header_title: 'An input you follow has a new status'
+      subject: 'The status of "%{input_title}" has changed'
+      preheader: 'An input you follow has a new status'
     status_change_on_initiative_you_follow:
       status_change: 'De nieuwe status van dit voorstel is ''%{initiativeStatus}'''
       header_message: 'De status van het voorstel ''%{initiativeTitle}'' is bijgewerkt op het digitale participatieplatform van %{organizationName}.'
