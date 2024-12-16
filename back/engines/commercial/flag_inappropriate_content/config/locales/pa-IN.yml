@@ -5,8 +5,8 @@ pa:
     admin_campaign_type_description:
       "inappropriate_content_flagged": ਅਣਉਚਿਤ ਸਮਗਰੀ ਫਲੈਗ ਕੀਤੀ ਗਈ - ਪ੍ਰਸ਼ਾਸਕ
     inappropriate_content_flagged:
-      subject: 'ਇੱਕ ਪੋਸਟ ਨੂੰ ਸਮੀਖਿਆ ਲਈ ਫਲੈਗ ਕੀਤਾ ਗਿਆ ਹੈ'
-      header_title: 'ਇੱਕ ਪੋਸਟ ਨੂੰ ਸਮੀਖਿਆ ਲਈ ਫਲੈਗ ਕੀਤਾ ਗਿਆ ਹੈ'
+      subject: 'ਤੁਹਾਡੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਇੱਕ ਪੋਸਟ ਨੂੰ ਸਮੀਖਿਆ ਲਈ ਫਲੈਗ ਕੀਤਾ ਗਿਆ ਹੈ'
+      header_title: 'ਤੁਹਾਡੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਇੱਕ ਪੋਸਟ ਨੂੰ ਸਮੀਖਿਆ ਲਈ ਫਲੈਗ ਕੀਤਾ ਗਿਆ ਹੈ'
       author_wrote: '%{authorName} ਨੇ ਲਿਖਿਆ:'
       preheader: 'ਤੁਹਾਡੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਇੱਕ ਪੋਸਟ ਨੂੰ ਸਮੀਖਿਆ ਲਈ ਫਲੈਗ ਕੀਤਾ ਗਿਆ ਹੈ'
       automatically_flagged: >
