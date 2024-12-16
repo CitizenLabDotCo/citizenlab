@@ -13,6 +13,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import modules from 'modules';
 // eslint-disable-next-line react/no-deprecated
 import { render } from 'react-dom';
+import { HelmetProvider } from 'react-helmet-async';
 import {
   createRoutesFromChildren,
   matchRoutes,
@@ -69,15 +70,17 @@ const Root = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <OutletsProvider>
-        <LanguageProvider>
-          <HistoryRouter history={history as any}>
-            <StrictMode>
-              <App>
-                <Routes />
-              </App>
-            </StrictMode>
-          </HistoryRouter>
-        </LanguageProvider>
+        <HelmetProvider>
+          <LanguageProvider>
+            <HistoryRouter history={history as any}>
+              <StrictMode>
+                <App>
+                  <Routes />
+                </App>
+              </StrictMode>
+            </HistoryRouter>
+          </LanguageProvider>
+        </HelmetProvider>
       </OutletsProvider>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
