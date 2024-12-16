@@ -41,11 +41,11 @@ it:
     viewed: visto
     viewed_description: Questa idea è stata vista da qualcuno della città
     under_consideration: in considerazione
-    under_consideration_description: Questa idea è stata presa in considerazione dalla città
+    under_consideration_description: Questa idea è stata presa in considerazione dalla città.
     accepted: accettato
-    accepted_description: Questa idea è stata accettata e sarà attuata dalla città
+    accepted_description: Quest'idea è stata accettata e sarà attuata dalla città.
     implemented: implementato
-    implemented_description: Questa idea è stata proposta alla città
+    implemented_description: Questa idea è stata implementata dalla città
     rejected: rifiutato
     rejected_description: Questa idea è stata respinta
   initiative_statuses:
