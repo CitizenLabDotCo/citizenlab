@@ -37,17 +37,17 @@ sv:
     outside: någon annanstans
   idea_statuses:
     proposed: föreslagen
-    proposed_description: Den här idén har föreslagits till staden
+    proposed_description: Denna idé har föreslagits till staden
     viewed: har setts
-    viewed_description: Den här idén har setts av någon från staden
+    viewed_description: Denna idé har setts av någon från staden
     under_consideration: under övervägande
-    under_consideration_description: Den här idén övervägs av staden
+    under_consideration_description: Denna idé har tagits i beaktande av staden
     accepted: accepterad
-    accepted_description: Den här idén har accepterats och kommer att genomföras av staden
+    accepted_description: Denna idé har accepterats och kommer att genomföras av staden
     implemented: genomfördes
-    implemented_description: Den här idén har genomförts av staden
+    implemented_description: Denna idé har förverkligats av staden
     rejected: avvisad
-    rejected_description: Den här idén har avvisats
+    rejected_description: Denna idé har avvisats
   initiative_statuses:
     review_pending: pågående granskning
     review_pending_description: pågående granskning
@@ -264,8 +264,8 @@ sv:
       option1: 'Alternativ 1'
       option2: 'Alternativ 2'
     form_end_page:
-      title: 'Tack för ditt deltagande'
-      description: "Skicka in dina svar genom att klicka på \"Skicka\" nedan."
+      title: 'Tack för att du deltog'
+      description: "Vänligen skicka in dina svar genom att välja \"Skicka\" nedan."
     pdf_export:
       personal_data: 'Personuppgifter'
       personal_data_explanation_public: "Vi kommer att skicka dina synpunkter till %{organizationName}:s onlineplattform för deltagande. Om du vill att ditt namn ska visas som författare till detta inlägg och få uppdateringar som är relevanta för ditt inlägg via e-post, vänligen fyll i följande fält på denna sida så skapar vi ett konto åt dig. Ditt e-postmeddelande kommer inte att vara offentligt och kommer endast att användas av %{organizationName}. Om du vill vara anonym eller inte samtycker till att vi använder dina personuppgifter på detta sätt kan du lämna dem tomma."
