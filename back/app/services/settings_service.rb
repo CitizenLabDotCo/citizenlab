@@ -68,6 +68,7 @@ class SettingsService
   end
 
   def format_for_front_end(settings, schema)
+    settings = disable_verification_if_no_methods_enabled(settings)
     remove_private_settings(settings, schema)
   end
 
@@ -119,6 +120,18 @@ class SettingsService
   def default_setting(schema, feature, setting)
     schema.dig('properties', feature, 'properties', setting, 'default')
   end
-end
 
-SettingsService.prepend(Verification::Patches::SettingsService)
+  # Ensures the FE does not show verification if:
+  # a) There are no verification methods
+  # b) All verification methods are flagged as 'hide_from_profile'
+  def disable_verification_if_no_methods_enabled(settings)
+    return settings if !settings['verification'] || settings['verification']['enabled'] == false
+
+    enabled = settings['verification']['verification_methods'].present?
+    enabled = false if settings['verification']['verification_methods']&.pluck('hide_from_profile')&.all?(true)
+
+    settings['verification']['enabled'] = enabled
+    settings
+  end
+
+end
