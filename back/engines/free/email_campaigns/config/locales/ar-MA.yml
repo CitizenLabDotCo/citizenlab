@@ -58,7 +58,7 @@ ar-MA:
       "voting_phase_started": مرحلة المشروع الجديد مع التصويت
       "voting_results": نتائج التصويت
       "your_input_in_screening": مدخلاتي تنتظر الفحص
-      "your_proposed_initiatives_digest": نظرة عامة أسبوعية على مُقترحاتك
+      "your_proposed_initiatives_digest": نظرة عامة أسبوعية على مقترحاتك
     general:
       by_author: 'بواسطة %{authorName}'
       author_wrote: '%{authorName} كتب:'
@@ -270,7 +270,7 @@ ar-MA:
       cta_reply_to: 'عرض تعليق %{firstName}'
       event_description: '%{authorNameFull} ذكرك في تعليق داخلي.'
       subject: '%{firstName} ذكرك في تعليق داخلي.'
-      main_header: '%{authorNameFirst} ذكرك في تعليق داخلي.'
+      main_header: '%{firstName} ذكرك في تعليق داخلي.'
       preheader: '%{authorNameFull} ذكرك في تعليق داخلي.'
     moderator_digest:
       subject: 'تقرير مدير المشروع الأسبوعي الخاص بك لـ%{project_title}'
@@ -299,7 +299,7 @@ ar-MA:
       yesterday: الأمس
     comment_on_idea_you_follow:
       cta_reply_to: 'الرد على %{commentAuthor}'
-      event_description: '%{authorNameFull} قام بوضع رد فعل على ''%{inputTitle}''. انقر على الزر أدناه لمواصلة المحادثة مع %{authorName}.'
+      event_description: '%{authorNameFull} placed a reaction on ''%{inputTitle}''. Click the button below to continue the conversation with %{authorName}.'
       main_header:
         idea: '%{authorName} علق على فكرة تتابعها'
         question: '%{authorName} علق على سؤال تتابعه'
@@ -310,7 +310,7 @@ ar-MA:
         proposal: '%{authorName} علق على الاقتراح الذي تتابعه'
         initiative: '%{authorName} علق على مبادرة تتابعها'
         petition: '%{authorName} علق على العريضة التي تتابعها'
-      subject: 'هناك تعليق جديد على "%{input_title}"'
+      subject: 'There''s a new comment on "%{input_title}"'
       preheader: '%{authorName} ترك تعليقًا على فكرة لـ %{organizationName}'
     comment_on_initiative_you_follow:
       cta_reply_to: 'الرد على %{commentAuthor}'
@@ -392,10 +392,10 @@ ar-MA:
       main_header: '"%{post}" لديه تعليق داخلي جديد'
       preheader: '"%{post}" لديه تعليق داخلي جديد'
     official_feedback_on_idea_you_follow:
-      header_message: 'قدم %{feedback_author_name} تحديثًا حول ''%{input_title}''.'
-      header_title: 'هناك تحديث على "%{input_title}"'
-      subject: 'تم نشر التعليقات الرسمية على "%{input_title}"'
-      preheader: 'هناك تحديث لفكرة تتابعها'
+      header_message: '%{feedback_author_name} gave an update on ''%{input_title}''.'
+      header_title: 'There''s an update on "%{input_title}"'
+      subject: 'Official feedback was posted on "%{input_title}"'
+      preheader: 'There''s an update on an input you follow'
     official_feedback_on_initiative_you_follow:
       header_message: '%{officialName} قدم تحديثًا بشأن الاقتراح ''%{initiativeTitle}''. انقر فوق الزر أدناه للدخول إلى المحادثة مع %{organizationName}.'
       header_title: 'هناك تحديث بشأن الاقتراح الذي تتابعه'
@@ -459,11 +459,11 @@ ar-MA:
       header_message: 'منصة مشاركة %{organizationName} نشرت للتو المشروع التالي:'
       preheader: 'تم نشر مشروع جديد'
     status_change_on_idea_you_follow:
-      status_change: 'الحالة الجديدة لهذا الإدخال هي ''%{status}'''
-      header_message: 'قام %{organizationName} بتحديث حالة الإدخال ''%{input_title}'' على منصة المشاركة الرقمية الخاصة بهم.'
-      header_title: 'الفكرة التي تتابعها لها وضع جديد'
-      subject: 'تم تغيير حالة "%{input_title}"'
-      preheader: 'الفكرة التي تتابعها لها وضع جديد'
+      status_change: 'The new status of this input is ''%{status}'''
+      header_message: '%{organizationName} updated the status of the input ''%{input_title}'' on their digital participation platform.'
+      header_title: 'An input you follow has a new status'
+      subject: 'The status of "%{input_title}" has changed'
+      preheader: 'An input you follow has a new status'
     status_change_on_initiative_you_follow:
       status_change: 'الحالة الجديدة لهذا الاقتراح هي ''%{initiativeStatus}'''
       header_message: 'تم تحديث حالة الاقتراح ''%{initiativeTitle}'' على منصة المشاركة الرقمية لـ %{organizationName}.'
@@ -540,13 +540,13 @@ ar-MA:
       subject: '"%{input_title}" تم نشره تقريبًا'
       preheader: 'إنه حاليا في %{prescreening_status_title}'
     your_proposed_initiatives_digest:
-      subject: 'تحديث أسبوعي على مُقترحك'
-      preheader: 'ما الذي حدث لمُقترحك في الأسبوع الماضي؟'
-      title_your_weekly_report: 'كيف كان أداء مُقترحك؟'
-      text_introduction: 'اطلع على الإحصائيات الرئيسية أدناه، وانتقل إلى صفحة المُقترح الخاص بك لاتخاذ الإجراءات المناسبة والحصول على الدعم الكافي في الوقت المناسب.'
-      cta_see_your_initiative: 'اذهب إلى مُقترحك'
-      total_votes: 'إجمالي الأصوات'
-      new_votes: 'الأصوات الجديدة'
+      subject: 'تحديث اسبوعي لمقترحاتك'
+      preheader: 'ماذا حدث مع مقترحاتك في الأسبوع الماضي؟'
+      title_your_weekly_report: 'كيف كانت حال مقترحاتك؟'
+      text_introduction: 'ابحث عن الأرقام الرئيسية أدناه وانتقل إلى المنصة لاتخاذ الإجراء وجمع الدعم الكافي في الوقت المناسب.'
+      cta_see_your_initiative: 'انتقل إلى مقترحاتك'
+      total_votes: 'مجموع الأصوات'
+      new_votes: 'اصوات جديدة'
       remaining_votes: 'الأصوات المتبقية'
       remaining_days: 'الأيام المتبقية'
     voting_basket_submitted:
