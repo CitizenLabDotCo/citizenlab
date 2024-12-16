@@ -7,6 +7,7 @@ import {
   Title,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
+import { useTheme } from 'styled-components';
 
 import { IAdminPublicationData } from 'api/admin_publications/types';
 import useProjectFolderImage from 'api/project_folder_images/useProjectFolderImage';
@@ -56,6 +57,7 @@ export const AdminPublicationCard = ({
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const isSmallerThanPhone = useBreakpoint('phone');
+  const theme = useTheme();
 
   const cardWidth = isSmallerThanPhone ? SMALL_CARD_WIDTH : BIG_CARD_WIDTH;
 
@@ -92,6 +94,7 @@ export const AdminPublicationCard = ({
               ml="-2px"
               mr="4px"
               mt="0px"
+              fill={theme.colors.tenantPrimary}
             />
             <Text m="0px" mr="12px">
               {formatMessage(messages.xProjects, {
@@ -105,6 +108,9 @@ export const AdminPublicationCard = ({
           size={16}
           limit={3}
           userCount={userCount}
+          participantsTextFontSize="m"
+          showParticipantText={!isSmallerThanPhone}
+          userCountBubbleFontSize={10}
         />
       </Box>
       <Text mt="8px" mb="0">

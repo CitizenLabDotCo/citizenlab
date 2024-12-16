@@ -35,7 +35,7 @@ const Spotlight = ({
 }: Props) => {
   // If publicationType === 'project'
   const projectId = publicationType === 'project' ? publicationId : undefined;
-  const { data: project } = useProjectById(projectId);
+  const { data: project, isError } = useProjectById(projectId);
   const projectImageId =
     project?.data.relationships.project_images?.data[0]?.id;
   const { data: projectImage } = useProjectImage({
@@ -55,6 +55,8 @@ const Spotlight = ({
   const locale = useLocale();
   const localize = useLocalize();
   const { formatMessage } = useIntl();
+
+  if (isError) return null;
 
   if (!publicationId) {
     return (
