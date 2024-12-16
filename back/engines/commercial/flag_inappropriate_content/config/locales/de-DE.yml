@@ -5,8 +5,8 @@ de:
     admin_campaign_type_description:
       "inappropriate_content_flagged": Kennzeichnung unangemessener Inhalte - Admins
     inappropriate_content_flagged:
-      subject: 'Ein Beitrag wurde zur Überprüfung markiert'
-      header_title: 'Ein Beitrag wurde zur Überprüfung markiert'
+      subject: 'Ein Beitrag auf Ihrer Plattform wurde als eventueller Spam markiert'
+      header_title: 'Ein Beitrag auf Ihrer Plattform wurde als Spam markiert'
       author_wrote: '%{authorName} schrieb:'
       preheader: 'Ein Beitrag auf Ihrer Plattform wurde als Spam markiert'
       automatically_flagged: >
