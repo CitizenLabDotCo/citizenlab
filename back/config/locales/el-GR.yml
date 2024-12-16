@@ -49,13 +49,13 @@ el:
     rejected: απορρίφθηκε
     rejected_description: Η ιδέα αυτή έχει απορριφθεί
     expired: λήξει
-    expired_description: λήξει
+    expired_description: expired
     threshold_reached: Επίτευξη ορίου
     threshold_reached_description: Επίτευξη ορίου
     answered: απάντησε το
-    answered_description: απάντησε το
+    answered_description: answered
     ineligible: μη επιλέξιμες
-    ineligible_description: μη επιλέξιμες
+    ineligible_description: ineligible
   initiative_statuses:
     review_pending: εκκρεμεί αναθεώρηση
     review_pending_description: εκκρεμεί αναθεώρηση
@@ -210,7 +210,7 @@ el:
       details:
         title: Λεπτομέρειες
       attachements:
-        title: Εικόνες και συνημμένα αρχεία
+        title: Εικόνες και συνημμένα
       extra:
         title: Πρόσθετες πληροφορίες
   custom_field_options:
