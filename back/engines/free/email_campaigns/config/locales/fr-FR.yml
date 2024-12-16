@@ -232,7 +232,7 @@ fr:
       cta_reply_to: 'Voir le commentaire de %{firstName}'
       event_description: '%{authorNameFull} vous a mentionné dans un commentaire interne.'
       subject: '%{firstName} vous a mentionné dans un commentaire interne.'
-      main_header: '%{authorNameFirst} vous a mentionné dans un commentaire interne.'
+      main_header: '%{firstName} vous a mentionné dans un commentaire interne.'
       preheader: '%{authorNameFull} vous a mentionné dans un commentaire interne.'
     moderator_digest:
       subject: 'Votre rapport hebdomadaire de gestionnaire de projets du %{time}'
