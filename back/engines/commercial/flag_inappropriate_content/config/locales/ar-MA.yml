@@ -5,11 +5,11 @@ ar-MA:
     admin_campaign_type_description:
       "inappropriate_content_flagged": تم وضع علامة على محتوى غير لائق - المسؤولون
     inappropriate_content_flagged:
-      subject: 'تم وضع علامة على منشور في منصتك تمهيدًا لمراجعته'
-      header_title: 'تم وضع علامة على منشور في منصتك تمهيدًا لمراجعته'
-      comment_author: 'علّق %{authorName}:'
-      idea_author: 'أرسل/أرسلت %{authorName} منشورًا:'
-      initiative_author: 'أرسل/أرسلت %{authorName} مقترحًا:'
+      subject: 'تم وضع علامة على منشور على منصتك للمراجعة'
+      header_title: 'تم وضع علامة على منشور على منصتك للمراجعة'
+      comment_author: '%{authorName} علق:'
+      idea_author: '%{authorName} أرسل منشورًا:'
+      initiative_author: '%{authorName} قدم اقتراحًا:'
       automatically_flagged: >
         تم اكتشاف هذه المشاركة تلقائيًا على أنها من المحتمل أن تحتوي على محتوى غير لائق. نرسل إليك هذا الإشعار حتى تتمكن من مراجعة المنشور وفقًا لإرشادات الإشراف الخاصة بك.
       how_to_review: >
