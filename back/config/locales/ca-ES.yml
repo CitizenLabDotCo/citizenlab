@@ -212,7 +212,7 @@ ca:
       attachements:
         title: Imatges i fitxers adjunts
       extra:
-        title: Informació adicional
+        title: Informació addicional
   custom_field_options:
     gender:
       male: Mascle
