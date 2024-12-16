@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Button, Icon } from 'semantic-ui-react';
+import { Button, fontSizes } from '@citizenlab/cl2-component-library';
 
 import useDeleteIdea from 'api/ideas/useDeleteIdea';
 
@@ -45,8 +45,14 @@ const ActionBarMulti = ({ selection, resetSelection }: Props) => {
 
   return (
     <>
-      <Button negative={true} basic={true} onClick={openWarningModal}>
-        <Icon name="delete" />
+      <Button
+        buttonStyle="delete"
+        onClick={openWarningModal}
+        icon="delete"
+        size="s"
+        p="4px 8px"
+        fontSize={`${fontSizes.s}px`}
+      >
         <FormattedMessage
           {...deleteMessage}
           values={{ count: selection.size }}

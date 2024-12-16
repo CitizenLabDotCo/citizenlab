@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Icon, Button } from 'semantic-ui-react';
+import { Button, fontSizes } from '@citizenlab/cl2-component-library';
 
 import useDeleteIdea from 'api/ideas/useDeleteIdea';
 
@@ -42,12 +42,25 @@ const ActionBarSingle = ({
 
   return (
     <>
-      <Button onClick={handleClickEdit}>
-        <Icon name="edit" />
+      <Button
+        buttonStyle="secondary-outlined"
+        onClick={handleClickEdit}
+        icon="edit"
+        mr="8px"
+        size="s"
+        p="4px 8px"
+        fontSize={`${fontSizes.s}px`}
+      >
         <FormattedMessage {...messages.edit} />
       </Button>
-      <Button negative={true} basic={true} onClick={openWarningModal}>
-        <Icon name="delete" />
+      <Button
+        buttonStyle="delete"
+        onClick={openWarningModal}
+        icon="delete"
+        size="s"
+        p="4px 8px"
+        fontSize={`${fontSizes.s}px`}
+      >
         <FormattedMessage {...messages.delete} />
       </Button>
 
