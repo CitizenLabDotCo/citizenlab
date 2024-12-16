@@ -4,6 +4,7 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 context 'id_austria verification' do
+  let(:user_bpk) { 'OI:GyevPYIgD8Kobm75nD3sTRJlDNc=' } # The bPK is the unique identified for a user in ID Austria
   let(:auth_hash) do
     {
       'provider' => 'id_austria',
@@ -48,7 +49,7 @@ context 'id_austria verification' do
               'acr' => 'http://eidas.europa.eu/LoA/high',
               'urn:pvpgvat:oidc.eid_identity_status_level' => 'http://eid.gv.at/eID/status/testidentity',
               'auth_time' => 1_730_493_456,
-              'urn:pvpgvat:oidc.bpk' => 'OI:GyevPYIgD8Kobm75nD3sTRJlDNc=',
+              'urn:pvpgvat:oidc.bpk' => user_bpk,
               'exp' => 1_730_497_067,
               'iat' => 1_730_493_467,
               'family_name' => 'Ottakringer' } }
@@ -88,7 +89,7 @@ context 'id_austria verification' do
       method_name: 'id_austria',
       user_id: user.id,
       active: true,
-      hashed_uid: Verification::VerificationService.new.send(:hashed_uid, auth_hash['uid'], 'id_austria')
+      hashed_uid: Verification::VerificationService.new.send(:hashed_uid, user_bpk, 'id_austria')
     })
   end
 
@@ -97,7 +98,7 @@ context 'id_austria verification' do
     expect(user.identities.first).to have_attributes({
       provider: 'id_austria',
       user_id: user.id,
-      uid: auth_hash['uid']
+      uid: user_bpk
     })
     expect(user.identities.first.auth_hash['credentials']).not_to be_present
     expect(user.identities.first.auth_hash.keys).to eq %w[uid info extra provider]
@@ -128,7 +129,7 @@ context 'id_austria verification' do
     expect_user_to_be_verified_and_identified(@user)
   end
 
-  it 'successfully verifies another user with another ID Austria account' do
+  it 'successfully verifies another user with another ID Austria account (different bPK)' do
     get "/auth/id_austria?token=#{@token}"
     follow_redirect!
     expect(@user.reload).to have_attributes({
@@ -137,7 +138,7 @@ context 'id_austria verification' do
 
     user2 = create(:user)
     token2 = AuthToken::AuthToken.new(payload: user2.to_token_payload).token
-    auth_hash['uid'] = '12345'
+    auth_hash['extra']['raw_info']['urn:pvpgvat:oidc.bpk'] = '12345'
     OmniAuth.config.mock_auth[:id_austria] = OmniAuth::AuthHash.new(auth_hash)
 
     get "/auth/id_austria?token=#{token2}"
@@ -145,12 +146,11 @@ context 'id_austria verification' do
     expect(user2.reload).to have_attributes(verified: true)
   end
 
-  it 'fails when uid has already been used' do
-    uid = auth_hash['uid']
+  it 'fails when bpk has already been used' do
     create(
       :verification,
       method_name: 'id_austria',
-      hashed_uid: Verification::VerificationService.new.send(:hashed_uid, uid, 'id_austria')
+      hashed_uid: Verification::VerificationService.new.send(:hashed_uid, user_bpk, 'id_austria')
     )
 
     get "/auth/id_austria?token=#{@token}"

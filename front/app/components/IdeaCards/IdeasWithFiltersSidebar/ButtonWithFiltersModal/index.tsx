@@ -13,8 +13,7 @@ import messages from './FiltersModal/messages';
 const FiltersModal = lazy(() => import('./FiltersModal'));
 
 const ButtonWithFiltersModal = ({
-  selectedIdeaFilters,
-  onClearFilters,
+  ideaQueryParameters,
   ...filtersProps
 }: InputFiltersProps) => {
   const isSmallerThanTablet = useBreakpoint('tablet');
@@ -44,8 +43,7 @@ const ButtonWithFiltersModal = ({
       <Suspense fallback={null}>
         <FiltersModal
           opened={filtersModalOpened}
-          selectedIdeaFilters={selectedIdeaFilters}
-          onClearFilters={onClearFilters}
+          ideaQueryParameters={ideaQueryParameters}
           onClose={closeModal}
           {...filtersProps}
         />

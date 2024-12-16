@@ -4,6 +4,10 @@ module IdIdAustria
   class IdAustriaOmniauth < OmniauthMethods::Base
     include IdAustriaVerification
 
+    def profile_to_uid(auth)
+      auth['extra']['raw_info']['urn:pvpgvat:oidc.bpk']
+    end
+
     def profile_to_user_attrs(auth)
       {
         first_name: auth.info.first_name,

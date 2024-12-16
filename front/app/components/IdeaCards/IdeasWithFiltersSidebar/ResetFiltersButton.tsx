@@ -2,18 +2,44 @@ import React from 'react';
 
 import { Button } from '@citizenlab/cl2-component-library';
 
+import { IIdeaQueryParameters } from 'api/ideas/types';
+
+import { scrollToTopIdeasList } from 'components/FilterBoxes/utils';
+import tracks from 'components/IdeaCards/tracks';
+
+import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 import ideaCardsMessages from '../messages';
 
 interface Props {
-  onClick: () => void;
-  filtersActive: boolean;
+  ideaQueryParameters: IIdeaQueryParameters;
 }
 
-const ResetFiltersButton = ({ onClick, filtersActive }: Props) => {
+const ResetFiltersButton = ({ ideaQueryParameters }: Props) => {
+  const filtersActive = !!(
+    ideaQueryParameters.search ||
+    ideaQueryParameters.idea_status ||
+    ideaQueryParameters.topics
+  );
+
+  const handleOnClick = () => {
+    trackEventByName(tracks.clearFiltersClicked);
+    updateSearchParams({
+      search: undefined,
+      idea_status: undefined,
+      topics: undefined,
+    });
+    scrollToTopIdeasList();
+  };
+
   return (
-    <Button onClick={onClick} buttonStyle="text" disabled={!filtersActive}>
+    <Button
+      onClick={handleOnClick}
+      buttonStyle="text"
+      disabled={!filtersActive}
+    >
       <FormattedMessage {...ideaCardsMessages.resetFilters} />
     </Button>
   );
