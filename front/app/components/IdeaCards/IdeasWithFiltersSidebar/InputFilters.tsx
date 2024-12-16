@@ -26,7 +26,7 @@ export interface InputFiltersProps {
   ideasFilterCounts: IIdeasFilterCounts | NilOrError;
   numberOfSearchResults: number;
   ideaQueryParameters: Partial<IIdeaQueryParameters>;
-  onSearch: (searchTerm: string) => void;
+  onSearch: (searchTerm: string | null) => void;
   onChangeStatus: (ideaStatus: string | null) => void;
   onChangeTopics: (topics: string[] | null) => void;
   handleSortOnChange: (sort: IdeaSortMethod) => void;
@@ -56,6 +56,8 @@ const InputFilters = ({
     phase?.data.attributes.participation_method || 'ideation'; // Ideation used as fallback here for All Ideas page.
   const isProposalsOrIdeation =
     participationMethod === 'ideation' || participationMethod === 'proposals';
+
+  console.log('defaultValue', defaultValue);
 
   return (
     <>
