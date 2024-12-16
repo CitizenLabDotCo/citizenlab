@@ -37,17 +37,17 @@ sr-Latn:
     outside: negde drugde
   idea_statuses:
     proposed: predloženo
-    proposed_description: Ova ideja je predložena administraciji
+    proposed_description: This idea has been proposed to the city
     viewed: pregledano
-    viewed_description: Ova ideja je pogledana
+    viewed_description: This idea has been seen by someone from the city
     under_consideration: razmatra se
-    under_consideration_description: Ova ideja se razmatra
+    under_consideration_description: This idea has been taken into consideration by the city
     accepted: prihvaćeno
-    accepted_description: Ova ideja je prihvaćena i biće realizovana
+    accepted_description: This idea has been accepted and will be implemented by the city
     implemented: realizovano
-    implemented_description: Ova ideja je realizovana
+    implemented_description: This idea has been implemented by the city
     rejected: odbijeno
-    rejected_description: Ova ideja je odbijena
+    rejected_description: This idea has been rejected
   initiative_statuses:
     review_pending: review pending
     review_pending_description: review pending
@@ -148,7 +148,7 @@ sr-Latn:
         title: Mesto prebivališta
     ideas:
       title:
-        title: Naslov
+        title: Наслов
         description:
       body:
         title: Opis
@@ -198,11 +198,11 @@ sr-Latn:
         option:
           title: Šta je vaša opcija ?
       details:
-        title: Detalji
+        title: Details
       attachements:
-        title: Slike i prilozi
+        title: Images and attachments
       extra:
-        title: Dodatne informacije
+        title: Additional information
   custom_field_options:
     gender:
       male: Muškarac
