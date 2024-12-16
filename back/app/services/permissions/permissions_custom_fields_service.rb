@@ -12,7 +12,12 @@ module Permissions
       else
         permission.permissions_custom_fields.to_a
       end
-      add_related_group_fields(permission, fields)
+
+      fields = add_related_group_fields(permission, fields)
+
+      fields = add_verification_fields(permission, fields) if return_hidden && permission.verification_enabled?
+
+      fields
     end
 
     # To create fields for the custom permitted_by - we copy the defaults from the previous value of permitted_by
@@ -105,7 +110,19 @@ module Permissions
     def user_confirmation_enabled?
       @user_confirmation_enabled ||= AppConfiguration.instance.feature_activated?('user_confirmation')
     end
+
+    # Add any fields that are locked to verification method
+    def add_verification_fields(permission, fields)
+      method = Verification::VerificationService.new.first_method_enabled
+      return fields unless method.respond_to?(:locked_custom_fields) && method.locked_custom_fields.present?
+
+      # Get the IDs of the custom fields that are locked to the verification method
+      custom_field_required_array = CustomField.where(code: method.locked_custom_fields).map do |field|
+        { id: field.id, required: true }
+      end
+
+      add_and_lock_related_fields(permission, fields, custom_field_required_array, 'verification')
+    end
+
   end
 end
-
-Permissions::PermissionsCustomFieldsService.prepend(Verification::Patches::Permissions::PermissionsCustomFieldsService)

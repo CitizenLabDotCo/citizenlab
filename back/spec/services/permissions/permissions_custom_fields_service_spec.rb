@@ -6,8 +6,8 @@ describe Permissions::PermissionsCustomFieldsService do
   let(:service) { described_class.new }
 
   before do
-    create(:custom_field_gender, enabled: true, required: false)
-    create(:custom_field_birthyear, enabled: true, required: true)
+    @domicile_field = create(:custom_field_domicile, enabled: true, required: true)
+    @gender_field = create(:custom_field_gender, enabled: true, required: false)
     SettingsService.new.activate_feature! 'user_confirmation'
     SettingsService.new.activate_feature! 'verification', settings: { verification_methods: [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
   end
@@ -19,7 +19,7 @@ describe Permissions::PermissionsCustomFieldsService do
         fields = service.fields_for_permission(permission)
         expect(fields.count).to eq 2
         expect(fields.map(&:persisted?)).to match_array [false, false]
-        expect(fields.pluck(:required)).to match_array([false, true])
+        expect(fields.pluck(:required)).to match_array([true, false])
       end
 
       it 'returns non-persisted default fields when permitted_by "verified"' do
@@ -43,7 +43,7 @@ describe Permissions::PermissionsCustomFieldsService do
       context 'fields related to groups' do
         it 'automatically adds any fields requiring a value in a smart group as required after existing fields' do
           permission = create(:permission, permitted_by: 'users', global_custom_fields: true)
-          custom_field = create(:custom_field_domicile, enabled: false)
+          custom_field = create(:custom_field_birthyear, enabled: false)
           group = create(:smart_group, rules: [
             { ruleType: 'custom_field_select', customFieldId: custom_field.id, predicate: 'is_one_of', value: ['a7212e05-2ff0-4c7f-89d3-dbfc7c049aa5'] }
           ])
@@ -72,7 +72,7 @@ describe Permissions::PermissionsCustomFieldsService do
 
         it 'adds any fields used by a smart group where value should be empty as optional after existing fields' do
           permission = create(:permission, permitted_by: 'users', global_custom_fields: true)
-          custom_field = create(:custom_field_domicile, enabled: false)
+          custom_field = create(:custom_field_birthyear, enabled: false)
           group = create(:smart_group, rules: [
             { ruleType: 'custom_field_select', customFieldId: custom_field.id, predicate: 'is_empty' }
           ])
@@ -123,7 +123,7 @@ describe Permissions::PermissionsCustomFieldsService do
       end
 
       it 'returns persisted fields for all permitted_by values (except "everyone")' do
-        domicile_field = create(:permissions_custom_field, permission: permission, custom_field: create(:custom_field_domicile))
+        domicile_field = create(:permissions_custom_field, permission: permission, custom_field: create(:custom_field_birthyear))
         %w[everyone_confirmed_email users verified].each do |permitted_by|
           permission.update!(permitted_by: permitted_by, global_custom_fields: false)
           fields = service.fields_for_permission(permission)
@@ -142,7 +142,7 @@ describe Permissions::PermissionsCustomFieldsService do
         it 'automatically adds any fields used in a group to the end' do
           permission = create(:permission, permitted_by: 'users')
           permission.update!(global_custom_fields: false)
-          create(:permissions_custom_field, permission: permission, custom_field: create(:custom_field_domicile))
+          create(:permissions_custom_field, permission: permission, custom_field: create(:custom_field_birthyear))
           group_custom_field = create(:custom_field, enabled: false)
           group = create(:smart_group, rules: [
             { ruleType: 'custom_field_select', customFieldId: group_custom_field.id, predicate: 'is_empty' }
@@ -164,22 +164,97 @@ describe Permissions::PermissionsCustomFieldsService do
           permission = create(:permission, permitted_by: 'users')
           service.persist_default_fields(permission)
           fields = service.fields_for_permission(permission)
-          birth_year_field = fields.last
-          birth_year_field.update!(required: false)
-          expect(birth_year_field.custom_field.code).to eq 'birthyear'
-          expect(birth_year_field.required).to be false
+          gender_field = fields.last
+          gender_field.update!(required: false)
+          expect(gender_field.custom_field.code).to eq 'gender'
+          expect(gender_field.required).to be false
 
           group = create(:smart_group, rules: [
-            { ruleType: 'custom_field_select', customFieldId: birth_year_field.custom_field_id, predicate: 'is_one_of', value: ['b167e8b7-efd6-4948-a182-69749fbbd6f3'] }
+            { ruleType: 'custom_field_select', customFieldId: gender_field.custom_field_id, predicate: 'is_one_of', value: ['b167e8b7-efd6-4948-a182-69749fbbd6f3'] }
           ])
           permission.groups << group
           fields = service.fields_for_permission(permission)
-          expect(fields.last.id).to eq birth_year_field.id
-          expect(fields.last.custom_field.code).to eq 'birthyear'
+          expect(fields.last.id).to eq gender_field.id
+          expect(fields.last.custom_field.code).to eq 'gender'
           expect(fields.last.required).to be true
         end
       end
     end
+
+    context 'verification' do
+      before do
+        @gender_field.update!(enabled: false, required: false)
+        @domicile_field.update!(enabled: true, required: false)
+      end
+
+      context 'when permission is not permitted_by "verified" and there are no groups' do
+        let(:permission) { create(:permission, permitted_by: 'users') }
+
+        it 'returns default fields without those linked to verification' do
+          fields = service.fields_for_permission(permission, return_hidden: true)
+          expect(fields.pluck(:ordering)).to eq [0]
+          expect(fields.pluck(:required)).to eq [false]
+          expect(fields.filter_map { |f| f.custom_field&.code }).to eq %w[domicile]
+        end
+      end
+
+      context 'when permission is permitted_by "verified"' do
+        let(:permission) { create(:permission, permitted_by: 'verified') }
+
+        it 'adds additional fields linked to verification method' do
+          permission = create(:permission, permitted_by: 'verified')
+          fields = service.fields_for_permission(permission, return_hidden: true)
+          expect(fields.pluck(:ordering)).to eq [0, 1]
+          expect(fields.pluck(:lock)).to eq ['verification', nil]
+          expect(fields.pluck(:required)).to eq [true, false]
+          expect(fields.filter_map { |f| f.custom_field&.code }).to eq %w[gender domicile]
+        end
+
+        it 'sets the field to required and reorders if the permissions_custom_field is already there but not required' do
+          @gender_field.update!(enabled: true)
+
+          # check initial state
+          permission = create(:permission, permitted_by: 'users')
+          fields = service.fields_for_permission(permission, return_hidden: true)
+          expect(fields.pluck(:ordering)).to eq [0, 1]
+          expect(fields.pluck(:lock)).to eq [nil, nil]
+          expect(fields.pluck(:required)).to eq [false, false]
+          expect(fields.filter_map { |f| f.custom_field&.code }).to eq %w[domicile gender]
+
+          # check has changed after updating to verified permitted_by
+          permission.update!(permitted_by: 'verified')
+          fields = service.fields_for_permission(permission, return_hidden: true)
+          expect(fields.pluck(:ordering)).to eq [0, 1]
+          expect(fields.pluck(:lock)).to eq ['verification', nil]
+          expect(fields.pluck(:required)).to eq [true, false]
+          expect(fields.filter_map { |f| f.custom_field&.code }).to eq %w[gender domicile]
+        end
+
+        it 'sets the value of lock to "verification" and reorders for fields already added and locked by groups' do
+          permission = create(:permission, permitted_by: 'users')
+          group = create(:smart_group, rules: [
+            { ruleType: 'custom_field_select', customFieldId: @gender_field.id, predicate: 'is_one_of', value: ['a7212e05-2ff0-4c7f-89d3-dbfc7c049aa5'] }
+          ])
+          permission.groups << group
+
+          # check initial state
+          fields = service.fields_for_permission(permission, return_hidden: true)
+          expect(fields.pluck(:ordering)).to eq [0, 1]
+          expect(fields.pluck(:lock)).to eq [nil, 'group']
+          expect(fields.pluck(:required)).to eq [false, true]
+          expect(fields.filter_map { |f| f.custom_field&.code }).to eq %w[domicile gender]
+
+          # check has changed after updating to verified permitted_by
+          permission.update!(permitted_by: 'verified')
+          fields = service.fields_for_permission(permission, return_hidden: true)
+          expect(fields.pluck(:ordering)).to eq [0, 1]
+          expect(fields.pluck(:lock)).to eq ['verification', nil]
+          expect(fields.pluck(:required)).to eq [true, false]
+          expect(fields.filter_map { |f| f.custom_field&.code }).to eq %w[gender domicile]
+        end
+      end
+    end
+
   end
 
   describe '#persist_default_fields' do
@@ -191,7 +266,7 @@ describe Permissions::PermissionsCustomFieldsService do
         fields = permission.permissions_custom_fields
         expect(fields.count).to eq 2
         expect(fields.pluck(:ordering)).to eq [0, 1]
-        expect(fields.pluck(:required)).to eq [false, true]
+        expect(fields.pluck(:required)).to eq [true, false]
       end
     end
 
