@@ -58,7 +58,7 @@ lb:
       "voting_phase_started": Nei Projetsphase mat Ofstëmmung
       "voting_results": Wahlresultater
       "your_input_in_screening": Meng Input waart op Screening
-      "your_proposed_initiatives_digest": Wéchentlech Iwwersiicht vun Äre Virschléi
+      "your_proposed_initiatives_digest": Wochemaart Iwwersiicht vun Äre Virschléi
     general:
       by_author: 'vum %{authorName}'
       author_wrote: '%{authorName} geschriwwen:'
@@ -270,10 +270,10 @@ lb:
       cta_reply_to: 'Kuckt de Kommentar vum %{firstName}'
       event_description: '%{authorNameFull} huet Iech an engem internen Kommentar ernimmt.'
       subject: '%{firstName} huet Iech an engem internen Kommentar ernimmt.'
-      main_header: '%{authorNameFirst} huet Iech an engem internen Kommentar ernimmt.'
+      main_header: '%{firstName} huet Iech an engem internen Kommentar ernimmt.'
       preheader: '%{authorNameFull} huet Iech an engem internen Kommentar ernimmt.'
     moderator_digest:
-      subject: 'Wöchentlech Managerbericht vun "%{project_title}"'
+      subject: 'Wéchentlechen Bericht fir Projetsmanageren vum %{time}'
       preheader: 'Zesummefaassung fir Projetsmanagere vun %{organizationName}'
       title_your_weekly_report: '%{firstName}, Äre wéchentleche Rapport'
       text_introduction: 'Hei eng Auswiel vun de Beiträg mat der meeschter Aktivitéit aus der leschter Woch. Fannt eraus wat op Ärer Plattform geschitt!'
@@ -395,7 +395,7 @@ lb:
       header_message: '%{feedback_author_name} huet en Update iwwer ''%{input_title}'' ginn.'
       header_title: 'Et gëtt en Update iwwer "%{input_title}"'
       subject: 'Offiziell Feedback gouf op "%{input_title}" gepost'
-      preheader: 'Et gëtt en Update iwwer eng Iddi déi Dir verfollegt'
+      preheader: 'Et gëtt en Update op engem Input deen Dir verfollegt'
     official_feedback_on_initiative_you_follow:
       header_message: '%{officialName} huet en Update iwwer d''Propositioun ''%{initiativeTitle}'' ginn. Klickt op de Knäppchen hei ënnen fir an d''Gespréich mat %{organizationName}anzegoen.'
       header_title: 'Et gëtt en Update iwwer eng Propositioun déi Dir verfollegt'
@@ -461,9 +461,9 @@ lb:
     status_change_on_idea_you_follow:
       status_change: 'Den neie Status vun dësem Input ass ''%{status}'''
       header_message: '%{organizationName} huet de Status vum Input ''%{input_title}'' op hirer digitaler Participatiounsplattform aktualiséiert.'
-      header_title: 'Eng Iddi déi Dir verfollegt huet en neie Status'
+      header_title: 'En Input deen Dir verfollegt huet en neie Status'
       subject: 'De Status vun "%{input_title}" ass geännert'
-      preheader: 'Eng Iddi déi Dir verfollegt huet en neie Status'
+      preheader: 'En Input deen Dir verfollegt huet en neie Status'
     status_change_on_initiative_you_follow:
       status_change: 'Den neie Status vun dëser Propositioun ass ''%{initiativeStatus}'''
       header_message: 'De Status vun der Propositioun ''%{initiativeTitle}'' gouf op der digitaler Participatiounsplattform vum %{organizationName}aktualiséiert.'
@@ -493,7 +493,7 @@ lb:
     threshold_reached_for_admin:
       cta_process_initiative: 'Bréngt dës Initiativ an déi nächst Etapp'
       main_header: 'E Virschlag huet d''Schwell vun den Ofstëmmungen erreecht!'
-      subject: '"%{input_title}" huet d''Wahlschwell erreecht'
+      subject: 'E Virschlag op Ärer Plattform huet d''Schwell vun den Ofstëmmungen erreecht'
       preheader: 'Stellt sécher, datt Dir déi nächst Schrëtter maacht'
     welcome:
       cta_join_platform: 'Entdeckt d’Plattform'
@@ -512,7 +512,7 @@ lb:
         proposal: 'Är Propositioun gouf publizéiert'
         initiative: 'Är Initiativ gouf publizéiert'
         petition: 'Är Petitioun gouf publizéiert'
-      main_header: 'Dir hutt "%{input_title}" gepost'
+      main_header: 'Dir hutt eng Iddi gepost! Stellt sécher, datt se gelies gëtt.'
       header_message: 'Loosst eis sécher stellen datt et gelies gëtt.'
       message_get_votes: 'Erreecht méi Leit mat Ärer Iddi:'
       action_published_idea: 'Verëffentlecht Iddi'
@@ -540,15 +540,15 @@ lb:
       subject: '"%{input_title}" ass bal publizéiert'
       preheader: 'Et ass de Moment an %{prescreening_status_title}'
     your_proposed_initiatives_digest:
-      subject: 'Wéchentlechen Update zu Äre Virschléi'
-      preheader: 'Wat ass mat Ärem Virschlag an der leschter Woch geschitt?'
-      title_your_weekly_report: 'Wéi huet sech Äre Virschlag entwéckelt?'
-      text_introduction: 'Fannt di wichtegst Zuelen hei drënner, gitt op d''Plattform op d''Säit vun Ärem Virschlag a gitt aktiv fir mat Zäite genuch Ënnerstëtzung ze kréien.'
-      cta_see_your_initiative: 'Bei Äre Virschlag goen'
-      total_votes: 'Total vun de Stëmmen'
-      new_votes: 'Nei Ofstëmmungen'
-      remaining_votes: 'Verbleiwend Stëmmen'
-      remaining_days: 'Deeg iwwereg'
+      subject: 'Wöchentlech Update vun Äre Virschléi'
+      preheader: 'Wat ass mat Äre Virschléi an der leschter Woch geschitt?'
+      title_your_weekly_report: 'Wéi hunn Är Propositioune gemaach?'
+      text_introduction: 'Fannt d''Schlësselzuelen hei ënnen a gitt op d''Plattform fir ze handelen a genuch Ënnerstëtzung an der Zäit ze sammelen.'
+      cta_see_your_initiative: 'Gitt op Är Propositiounen'
+      total_votes: 'Ganzen Stëmmen'
+      new_votes: 'Nei Stëmmen'
+      remaining_votes: 'Stëmmen bleiwen'
+      remaining_days: 'Deeg bleiwen'
     voting_basket_submitted:
       subject: '%{organizationName}: Dir hutt erfollegräich gestëmmt'
       preheader: 'Dir hutt erfollegräich op der Participatiounsplattform vun %{organizationName}gestëmmt'
@@ -587,18 +587,18 @@ lb:
       body_3: 'Mir encouragéieren Iech d''Resultater z''iwwerpréiwen a bleiwen ofgeschloss fir weider Updates iwwer déi nächst Schrëtt.'
       cta_see_results: 'Gesinn Resultater an der Plattform'
     event_registration_confirmation:
-      subject: "Dir sidd an! Är Umeldung fir \"%{eventTitle}\" ass bestätegt"
-      preheader: "%{firstName}, Merci fir d'Aschreiwung fir %{eventTitle}"
+      subject: "Dir sidd an! Dir sidd ageschriwwen fir \"%{eventTitle}\""
+      preheader: "%{firstName}, Merci fir Är Aschreiwung fir %{eventTitle}"
       header_message: "%{firstName}, merci fir Aschreiwung fir"
       event_details:
         labels:
           date: 'Datum'
-          location: 'Location'
+          location: 'Plaz'
           online_link: 'Online Link'
           description: 'Beschreiwung'
           project: 'Projet'
       cta_go_to_event: 'Kuckt d''Evenement'
-      cta_add_to_calendar: 'Füügt an Äre Kalenner'
+      cta_add_to_calendar: 'An Äre Kalenner androen'
     voting_phase_started:
       subject: '%{organizationName}: D''Stëmmphase huet fir den %{projectName}ugefaangen'
       preheader: 'D''Stëmmphase huet fir %{projectName} op der Participatiounsplattform vun %{organizationName}ugefaang'
