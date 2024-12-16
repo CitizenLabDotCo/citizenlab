@@ -37,17 +37,17 @@ ar-MA:
     outside: في مكان آخر
   idea_statuses:
     proposed: تم اقتراحها
-    proposed_description: تم اقتراح هذه الفكرة على المدينة
+    proposed_description: وقد تم اقتراح هذه الفكرة على المدينة
     viewed: تمت مشاهدتها
-    viewed_description: تمت مشاهدة هذه الفكرة من قِبل شخص من المدينة
+    viewed_description: لقد رأى أحد سكان المدينة هذه الفكرة
     under_consideration: قيد البحث
-    under_consideration_description: تم أخذ هذه الفكرة بعين الاعتبار من قِبل المدينة
+    under_consideration_description: وقد أخذت المدينة هذه الفكرة بعين الاعتبار
     accepted: تم قبولها
-    accepted_description: تم قبول هذه الفكرة وسيتم تنفيذها من قِبل المدينة
+    accepted_description: لقد تم قبول هذه الفكرة وسيتم تنفيذها من قبل المدينة
     implemented: تم تنفيذها
-    implemented_description: تم تنفيذ هذه الفكرة من قِبل المدينة
+    implemented_description: تم تنفيذ هذه الفكرة من قبل المدينة
     rejected: تم رفضها
-    rejected_description: تم رفض هذه الفكرة
+    rejected_description: لقد تم رفض هذه الفكرة
   initiative_statuses:
     review_pending: المراجعة معلقة
     review_pending_description: المراجعة معلقة
@@ -198,7 +198,7 @@ ar-MA:
         option:
           title: ما خيارك؟
       details:
-        title: التفاصيل
+        title: تفاصيل
       attachements:
         title: الصور والمرفقات
       extra:
@@ -264,8 +264,8 @@ ar-MA:
       option1: 'الخيار 1'
       option2: 'الخيار 2'
     form_end_page:
-      title: 'شكرا للمشاركة'
-      description: "يرجى إرسال إجاباتك عن طريق تحديد \"إرسال\" أدناه."
+      title: 'شكرا على المشاركة'
+      description: "يرجى إرسال إجاباتك عن طريق اختيار \"إرسال\" أدناه."
     pdf_export:
       personal_data: 'بيانات شخصية'
       personal_data_explanation_public: "سوف نقوم بإرسال مدخلاتك إلى منصة المشاركة عبر الإنترنت الخاصة بـ %{organizationName}. إذا كنت تريد أن يتم عرض اسمك كمؤلف لهذا الإدخال وتلقي التحديثات ذات الصلة بإدخالك عبر البريد الإلكتروني، فيرجى ملء الحقول التالية في هذه الصفحة وسنقوم بإنشاء حساب لك. لن يكون بريدك الإلكتروني عامًا ولن يستخدمه إلا %{organizationName}. إذا كنت تريد أن تظل مجهول الهوية، أو لا توافق على استخدام بياناتك الشخصية بهذه الطريقة، فيمكنك تركها فارغة."
