@@ -106,7 +106,8 @@ class UserPolicy < ApplicationPolicy
     # avatar is allowed even if the feature "user_avatars" is not activated to allow
     # users to remove their avatar.
     shared = [:email, :first_name, :last_name, :password, :avatar, :locale, { onboarding: [:topics_and_areas], custom_field_values: allowed_custom_field_keys, bio_multiloc: CL2_SUPPORTED_LOCALES }]
-    admin? ? shared + [roles: %i[type project_id project_folder_id project_reviewer]] : shared
+    attributes = admin? ? shared + [roles: %i[type project_id project_folder_id project_reviewer]] : shared
+    attributes - verification_service.locked_attributes(record) # locked attributes cannot be updated
   end
 
   private
@@ -116,9 +117,16 @@ class UserPolicy < ApplicationPolicy
   end
 
   def allowed_custom_fields
-    CustomField.registration.not_hidden
+    CustomField.registration.not_hidden.where.not(key: locked_custom_fields)
+  end
+
+  def locked_custom_fields
+    verification_service.locked_custom_fields(record)
+  end
+
+  def verification_service
+    @verification_service ||= VerificationService.new
   end
 end
 
-UserPolicy.prepend(Verification::Patches::UserPolicy)
 UserPolicy.prepend(BulkImportIdeas::Patches::UserPolicy)
