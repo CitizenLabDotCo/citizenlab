@@ -273,7 +273,7 @@ cy:
       main_header: '%{firstName} sôn amdanoch chi mewn sylw mewnol.'
       preheader: '%{authorNameFull} sôn amdanoch chi mewn sylw mewnol.'
     moderator_digest:
-      subject: 'Adroddiad rheolwr wythnosol o "%{project_title}"'
+      subject: 'Eich adroddiad rheolwr prosiect wythnosol o %{project_title}'
       preheader: 'Crynhoad rheolwr prosiect o %{organizationName}'
       title_your_weekly_report: '%{firstName}, eich adroddiad wythnosol'
       text_introduction: 'Rydym wedi curadu ar eich cyfer y mewnbwn sydd wedi cynhyrchu''r mwyaf o weithgarwch dros yr wythnos ddiwethaf. Darganfyddwch beth sy''n digwydd gyda''ch prosiect!'
@@ -395,7 +395,7 @@ cy:
       header_message: 'Rhoddodd %{feedback_author_name} ddiweddariad ar ''%{input_title}''.'
       header_title: 'Mae diweddariad ar "%{input_title}"'
       subject: 'Postiwyd adborth swyddogol ar "%{input_title}"'
-      preheader: 'Mae yna ddiweddariad ar syniad rydych chi''n ei ddilyn'
+      preheader: 'Mae diweddariad ar fewnbwn rydych chi''n ei ddilyn'
     official_feedback_on_initiative_you_follow:
       header_message: 'Rhoddodd %{officialName} ddiweddariad ar y cynnig ''%{initiativeTitle}''. Cliciwch y botwm isod i fynd i mewn i''r sgwrs gyda %{organizationName}.'
       header_title: 'Mae diweddariad ar gynnig rydych chi''n ei ddilyn'
@@ -461,9 +461,9 @@ cy:
     status_change_on_idea_you_follow:
       status_change: 'Statws newydd y mewnbwn hwn yw ''%{status}'''
       header_message: 'Diweddarodd %{organizationName} statws y mewnbwn ''%{input_title}'' ar eu platfform cyfranogiad digidol.'
-      header_title: 'Mae gan syniad rydych chi''n ei ddilyn statws newydd'
+      header_title: 'Mae gan fewnbwn rydych chi''n ei ddilyn statws newydd'
       subject: 'Mae statws "%{input_title}" wedi newid'
-      preheader: 'Mae gan syniad rydych chi''n ei ddilyn statws newydd'
+      preheader: 'Mae gan fewnbwn rydych chi''n ei ddilyn statws newydd'
     status_change_on_initiative_you_follow:
       status_change: 'Statws newydd y cynnig hwn yw ''%{initiativeStatus}'''
       header_message: 'Mae statws y cynnig ''%{initiativeTitle}'' wedi''i ddiweddaru ar lwyfan cyfranogiad digidol %{organizationName}.'
@@ -493,7 +493,7 @@ cy:
     threshold_reached_for_admin:
       cta_process_initiative: 'Ewch â''r cynnig hwn i''r camau nesaf'
       main_header: 'Cynnig wedi cyrraedd y trothwy pleidleisio!'
-      subject: '"%{input_title}" wedi cyrraedd y trothwy pleidleisio'
+      subject: 'Cyrhaeddodd cynnig y trothwy pleidleisio ar eich platfform'
       preheader: 'Gwnewch yn siŵr eich bod chi''n cymryd y camau nesaf'
     welcome:
       cta_join_platform: 'Darganfyddwch y platfform'
