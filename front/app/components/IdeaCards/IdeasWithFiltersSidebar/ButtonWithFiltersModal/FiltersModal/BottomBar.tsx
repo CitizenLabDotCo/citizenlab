@@ -17,11 +17,10 @@ interface Props {
   onClick: (event: FormEvent) => void;
   ideaQueryParameters: InputFiltersProps['ideaQueryParameters'];
   filtersActive: boolean;
-  onReset: () => void;
 }
 
 const BottomBar = memo<Props>(
-  ({ onClick, ideaQueryParameters, onReset, filtersActive }) => {
+  ({ onClick, ideaQueryParameters, filtersActive }) => {
     const { data: ideasFilterCounts } =
       useIdeasFilterCounts(ideaQueryParameters);
 
@@ -43,7 +42,7 @@ const BottomBar = memo<Props>(
             }}
           />
         </Button>
-        <ResetFiltersButton onClick={onReset} filtersActive={filtersActive} />
+        <ResetFiltersButton filtersActive={filtersActive} />
       </Box>
     );
   }
