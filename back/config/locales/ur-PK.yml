@@ -191,7 +191,7 @@ ur:
         title: تفصیلات
         description:
       other_text_field:
-        title: اگر آپ نے '{other_option}' کا انتخاب کیا، تو آپ کیا سوچ رہے ہیں؟
+        title: اگر آپ نے '{other_option}' کا انتخاب کیا تو آپ کیا سوچ رہے ہیں؟
   custom_forms:
     categories:
       main_content:
