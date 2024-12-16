@@ -212,7 +212,7 @@ cy:
       attachements:
         title: Delweddau ac atodiadau
       extra:
-        title: Gwybodaeth Ychwanegol
+        title: Gwybodaeth ychwanegol
   custom_field_options:
     gender:
       male: Gwryw
