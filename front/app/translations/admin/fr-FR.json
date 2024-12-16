@@ -2011,7 +2011,7 @@
   "app.containers.AdminPage.SettingsPage.addTopicButton": "Ajouter une étiquette",
   "app.containers.AdminPage.SettingsPage.anonymousNameScheme_animal2": "Animal — « éléphant » ou « chat » par exemple",
   "app.containers.AdminPage.SettingsPage.anonymousNameScheme_user": "Utilisateur — « Utilisateur 123456 » par exemple",
-  "app.containers.AdminPage.SettingsPage.approvalDescription": "Sélectionnez les administrateurs qui recevront des notifications pour approuver les projets. Les gestionnaires de dossiers sont par défaut les approbateurs de tous les projets de leurs dossiers.",
+  "app.containers.AdminPage.SettingsPage.approvalDescription": "Sélectionnez les administrateurs qui recevront les notifications pour vérifier et approuver les projets. Pour les projets dans un dossier, les notifications seront également envoyées aux gestionnaires du dossier.",
   "app.containers.AdminPage.SettingsPage.approvalSave": "Enregistrer",
   "app.containers.AdminPage.SettingsPage.approvalTitle": "Paramètres d'approbation des projets",
   "app.containers.AdminPage.SettingsPage.areaDeletionConfirmation": "Êtes-vous sûr(e) de vouloir supprimer ce lieu ?",
