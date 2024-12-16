@@ -37,25 +37,25 @@ kl:
     outside: allami
   idea_statuses:
     proposed: siunnersuutigineqareerpoq
-    proposed_description: Isumassarsiaq una illoqarfimmut siunnersuutaareerpoq
+    proposed_description: This idea has been proposed to the city
     viewed: takuneqareerpoq
-    viewed_description: Isumassarsiaq una inummit illoqarfimmeersumit takuneqareerpoq
+    viewed_description: This idea has been seen by someone from the city
     under_consideration: isumaliutersuutigineqarpoq
-    under_consideration_description: Isumassarsiaq una illoqarfimmit eqqarsaatigineqareerpoq
+    under_consideration_description: This idea has been taken into consideration by the city
     accepted: akuerineqareerpoq
-    accepted_description: Isumassarsiaq una akuerineqareerpoq aammalu illoqarfimmit atuutilersinneqassaaq
+    accepted_description: This idea has been accepted and will be implemented by the city
     implemented: atuutilersinneqareerpoq
-    implemented_description: Isumassarsiaq una illoqarfimmit atuutilersinneqareerpoq
+    implemented_description: This idea has been implemented by the city
     rejected: itigartinneqarpoq
-    rejected_description: Isumassarsiaq una itigartinneqarpoq
+    rejected_description: This idea has been rejected
     expired: expired
     expired_description: expired
     threshold_reached: threshold reached
-    threshold_reached_description: killinga anguneqareerpoq
+    threshold_reached_description: threshold reached
     answered: answered
-    answered_description: akineqareerpoq
+    answered_description: answered
     ineligible: ineligible
-    ineligible_description: naleqqutinngilaq
+    ineligible_description: ineligible
   initiative_statuses:
     review_pending: review pending
     review_pending_description: review pending
@@ -210,9 +210,9 @@ kl:
       details:
         title: Details
       attachements:
-        title: Assit fiilillu kakkiussat
+        title: Images and attachments
       extra:
-        title: Paasissutissat annertunerusut
+        title: Additional information
   custom_field_options:
     gender:
       male: Angut
