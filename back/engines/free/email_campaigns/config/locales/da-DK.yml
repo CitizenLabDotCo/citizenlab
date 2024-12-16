@@ -232,7 +232,7 @@ da:
       cta_reply_to: 'Se kommentar fra %{firstName}'
       event_description: '%{authorNameFull} nævnte dig i en intern kommentar.'
       subject: '%{firstName} nævnte dig i en intern kommentar.'
-      main_header: '%{authorNameFirst} nævnte dig i en intern kommentar.'
+      main_header: '%{firstName} nævnte dig i en intern kommentar.'
       preheader: '%{authorNameFull} nævnte dig i en intern kommentar.'
     moderator_digest:
       subject: 'Din ugentlige projektlederrapport fra %{time}'
@@ -266,7 +266,7 @@ da:
       preheader: '%{authorName} efterlod en kommentar til en idé til %{organizationName}'
     comment_on_initiative_you_follow:
       cta_reply_to: 'Svar til %{commentAuthor}'
-      event_description: '%{authorNameFull} gav en reaktion på dit forslag "%{initiativeTitle}". Klik på nedenstående knap, for at fortsætte med %{authorName}.'
+      event_description: '%{authorNameFull} gav en reaktion på dit forslag "%{initiativeTitle}". Klik på knappen nedenfor for at fortsætte samtalen med %{authorName}.'
       main_header: '%{commentAuthor} kommenterede på et initiativ, du følger'
       subject: 'Der er en ny kommentar til det forslag, du følger'
       preheader: '%{authorName} efterlod en kommentar til et forslag til %{organizationName}'
@@ -288,7 +288,7 @@ da:
       yesterday: I går
     comment_on_your_comment:
       cta_reply_to: 'Svar til %{firstName}'
-      event_description: '%{authorNameFull} skrev et svar til din kommentar på "%{post}" på deltagelsesplatformen. Klik på nedenstående knap, for at fortsætte samtalen med %{authorName}.'
+      event_description: '%{authorNameFull} skrev et svar til din kommentar på "%{post}" på borgerinddragelsesplatformen. Klik på nedenstående knap, for at fortsætte samtalen med %{authorName}.'
       subject: 'Du har modtaget et svar på din kommentar på platformen for %{organizationName}'
       main_header: '%{authorName} reagerede på din kommentar'
       preheader: '%{authorName} svarede på din kommentar på %{organizationName}s platform'
@@ -347,7 +347,7 @@ da:
       subject: 'En idé, du følger, har fået en officiel opdatering på platformen %{organizationName}'
       preheader: 'Der er en opdatering på en idé, du følger'
     official_feedback_on_initiative_you_follow:
-      header_message: '%{officialName} har en opdatering til forslaget ''%{initiativeTitle}''. Klik på knappen nedenfor for at gå ind i samtalen med %{organizationName}.'
+      header_message: '%{officialName} har en opdatering til forslaget ''%{initiativeTitle}''. Klik på knappen nedenfor for at læse hele opdateringen med %{organizationName}.'
       header_title: 'Der er en opdatering på et forslag, du følger'
       subject: 'Et forslag, du følger, har modtaget en officiel opdatering på platformen %{organizationName}'
       preheader: 'Der er en opdatering på et forslag, du følger'
@@ -406,7 +406,7 @@ da:
     project_published:
       subject: 'Et nyt projekt blev offentliggjort på platformen %{organizationName}'
       header_title: 'Et nyt projekt blev offentliggjort'
-      header_message: 'Borgerinddragelsesplatformen %{organizationName} har netop offentliggjort følgende projekt:'
+      header_message: 'Borgerinddragelsesplatformen for %{organizationName} har netop offentliggjort følgende projekt:'
       preheader: 'Et nyt projekt blev offentliggjort'
     status_change_on_idea_you_follow:
       status_change: 'Den nye status for denne idé er ''%{ideaStatus}'''
