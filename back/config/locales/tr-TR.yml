@@ -37,15 +37,15 @@ tr:
     outside: başka bir yerde
   idea_statuses:
     proposed: önerilen
-    proposed_description: Bu fikir kent yönetimine önerildi
+    proposed_description: Bu fikir şehre önerildi
     viewed: görüntülendi
-    viewed_description: Bu fikir kent yönetiminden biri tarafından görülmüştür
+    viewed_description: Bu fikir şehirden biri tarafından görülmüştür
     under_consideration: değerlendiriliyor
-    under_consideration_description: Bu fikir kent yönetimi tarafından dikkate alınmıştır
+    under_consideration_description: Bu fikir şehir tarafından dikkate alınmıştır
     accepted: kabul edildi
-    accepted_description: Bu fikir kabul edildi ve kent yönetimi tarafından uygulanacak
+    accepted_description: Bu fikir kabul edildi ve belediye tarafından uygulanacak
     implemented: uygulandı
-    implemented_description: Bu fikir kent yönetimi tarafından uygulandı
+    implemented_description: Bu fikir şehir tarafından uygulanmıştır
     rejected: reddedildi
     rejected_description: Bu fikir reddedildi
     expired: süresi doldu
@@ -208,11 +208,11 @@ tr:
         option:
           title: Seçeneğiniz nedir ?
       details:
-        title: Ayrıntılar
+        title: Detaylar
       attachements:
-        title: Görseller ve Ekler
+        title: Resimler ve ekler
       extra:
-        title: Diğer bilgiler
+        title: Ek bilgi
   custom_field_options:
     gender:
       male: Erkek
