@@ -125,7 +125,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def verification_service
-    @verification_service ||= VerificationService.new
+    @verification_service ||= Verification::VerificationService.new
   end
 end
 
