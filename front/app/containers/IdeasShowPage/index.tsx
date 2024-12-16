@@ -9,7 +9,7 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 import { useParams, useSearchParams } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 
 import { VotingContext } from 'api/baskets_ideas/useVoting';
 import useIdeaBySlug from 'api/ideas/useIdeaBySlug';
@@ -39,7 +39,7 @@ const StyledIdeaShowPageTopBar = styled(IdeaShowPageTopBar)`
 `;
 
 // note: StyledIdeasShow styles defined here should match that in PostPageFullscreenModal!
-const StyledIdeasShow = styled(IdeasShow)<{ hasNextPreviousControl?: boolean }>`
+const StyledIdeasShow = styled(IdeasShow)`
   min-height: calc(
     100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
   );
@@ -48,20 +48,18 @@ const StyledIdeasShow = styled(IdeasShow)<{ hasNextPreviousControl?: boolean }>`
   padding-right: 60px;
 
   ${({ theme }) => media.tablet`
-    margin-top: ${(props) =>
-      props.hasNextPreviousControl ? '0' : theme.menuHeight}px;
     min-height: calc(100vh - ${theme.mobileTopBarHeight}px);
     padding-top: 35px;
   `}
 
   ${media.phone`
-    padding-top: ${(props) => (props.hasNextPreviousControl ? '0px' : '25px')};
     padding-left: 15px;
     padding-right: 15px;
   `}
 `;
 
 const IdeasShowPage = () => {
+  const theme = useTheme();
   const { slug } = useParams() as { slug: string };
   const { data: idea, status, error } = useIdeaBySlug(slug);
   const isSmallerThanTablet = useBreakpoint('tablet');
@@ -98,7 +96,17 @@ const IdeasShowPage = () => {
     ).length > 0;
   const showCTABar =
     isIdeaInCurrentPhase && phase?.attributes.participation_method === 'voting';
-  const showCTABarAtTopOfPage = !isSmallerThanTablet && showCTABar;
+
+  const getPaddingTopIdeaContainer = () => {
+    const showDesktopCTABarAtTopOfPage = !isSmallerThanTablet && showCTABar;
+
+    if (isSmallerThanTablet) {
+      return `${theme.mobileTopBarHeight}px`;
+    } else if (showDesktopCTABarAtTopOfPage) {
+      return `${stylingConsts.menuHeight}px`;
+    }
+    return undefined;
+  };
 
   return (
     <>
@@ -107,12 +115,7 @@ const IdeasShowPage = () => {
         projectId={project.data.id}
         phaseId={phaseContext || phase?.id}
       >
-        <Box
-          background={colors.white}
-          pt={
-            showCTABarAtTopOfPage ? `${stylingConsts.menuHeight}px` : undefined
-          }
-        >
+        <Box background={colors.white} pt={getPaddingTopIdeaContainer()}>
           {isSmallerThanTablet ? (
             <StyledIdeaShowPageTopBar
               projectId={idea.data.relationships.project.data.id}
@@ -129,9 +132,6 @@ const IdeasShowPage = () => {
                   ideaId={idea.data.id}
                   projectId={idea.data.relationships.project.data.id}
                   compact={isSmallerThanTablet}
-                  // TODO: Since next/previous controls were temporarily removed, we set this to false
-                  // for the time being until they are re-introduced.
-                  hasNextPreviousControl={false}
                 />
               </main>
             </Box>
