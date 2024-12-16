@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Box, colors, Text } from '@citizenlab/cl2-component-library';
+import { FontSizesType } from 'component-library/utils/styleUtils';
 import { isNumber } from 'lodash-es';
 import styled from 'styled-components';
 
@@ -47,6 +48,7 @@ interface Props {
   className?: string;
   userCount?: number;
   showParticipantText?: boolean;
+  participantsTextFontSize?: FontSizesType;
 }
 
 export const AvatarBubbles = ({
@@ -57,6 +59,7 @@ export const AvatarBubbles = ({
   className,
   userCount,
   showParticipantText = true,
+  participantsTextFontSize = 's',
   limit = 4,
 }: Props) => {
   const { formatMessage } = useIntl();
@@ -149,7 +152,7 @@ export const AvatarBubbles = ({
                 alignItems="center"
               >
                 <Text
-                  fontSize="s"
+                  fontSize={participantsTextFontSize}
                   textAlign="left"
                   my="0px"
                   aria-hidden="true"

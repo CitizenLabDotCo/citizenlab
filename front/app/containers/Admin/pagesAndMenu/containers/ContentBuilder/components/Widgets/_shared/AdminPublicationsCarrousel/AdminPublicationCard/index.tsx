@@ -108,6 +108,7 @@ export const AdminPublicationCard = ({
           size={16}
           limit={3}
           userCount={userCount}
+          participantsTextFontSize="m"
         />
       </Box>
       <Text mt="8px" mb="0">
