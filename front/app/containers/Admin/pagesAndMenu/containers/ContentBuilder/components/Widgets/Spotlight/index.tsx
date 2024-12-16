@@ -22,6 +22,7 @@ interface Props {
   titleMultiloc?: Multiloc;
   descriptionMultiloc?: Multiloc;
   buttonTextMultiloc: Multiloc;
+  hideAvatars?: boolean;
 }
 
 const Spotlight = ({
@@ -30,6 +31,7 @@ const Spotlight = ({
   titleMultiloc,
   descriptionMultiloc,
   buttonTextMultiloc,
+  hideAvatars,
 }: Props) => {
   // If publicationType === 'project'
   const projectId = publicationType === 'project' ? publicationId : undefined;
@@ -60,6 +62,7 @@ const Spotlight = ({
         title={formatMessage(messages.selectProjectOrFolder)}
         description={formatMessage(messages.pleaseSelectAProjectOrFolder)}
         loading={false}
+        hideAvatars={hideAvatars}
       />
     );
   }
@@ -98,6 +101,7 @@ const Spotlight = ({
       imgSrc={image?.data.attributes.versions.large ?? undefined}
       loading={getLoading()}
       avatarIds={avatarIds}
+      hideAvatars={hideAvatars}
       userCount={publication?.data.attributes.participants_count}
     />
   );

@@ -52,6 +52,7 @@ const LightProjectCard = ({ project, ml, mr, onKeyDown }: Props) => {
   return (
     <CardContainer
       as={Link}
+      scrollToTop
       tabIndex={0}
       w={`${CARD_WIDTH}px`}
       ml={ml}
