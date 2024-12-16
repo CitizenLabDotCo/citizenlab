@@ -5,8 +5,8 @@ fr:
     admin_campaign_type_description:
       "inappropriate_content_flagged": Contenu inapproprié signalé - administrateurs
     inappropriate_content_flagged:
-      subject: 'Une publication a été signalée'
-      header_title: 'Une publication a été signalée'
+      subject: 'Une publication a été signalée et doit être vérifiée'
+      header_title: 'Une publication a été signalée et doit être vérifiée'
       author_wrote: '%{authorName} a écrit :'
       preheader: 'Une publication sur votre plateforme a été signalée et doit être vérifiée'
       automatically_flagged: >
