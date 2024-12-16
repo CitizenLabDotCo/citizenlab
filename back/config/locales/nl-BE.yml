@@ -39,11 +39,11 @@ nl-BE:
     proposed: voorgesteld
     proposed_description: Dit idee is voorgesteld
     viewed: gezien
-    viewed_description: Dit idee werd gezien door een beheerder
+    viewed_description: Dit idee is gezien door iemand van de gemeente
     under_consideration: in overweging
     under_consideration_description: Dit idee is in overweging genomen
     accepted: aangenomen
-    accepted_description: Dit idee is aanvaard en zal worden uitgevoerd
+    accepted_description: Dit idee is aangenomen en zal worden uitgevoerd
     implemented: uitgevoerd
     implemented_description: Dit idee is uitgevoerd
     rejected: afgewezen
@@ -181,7 +181,7 @@ nl-BE:
         title: Details
         description:
       other_text_field:
-        title: Als je '{other_option}' hebt geselecteerd, typ dan je antwoord.
+        title: Als je '{other_option}' hebt geselecteerd, wat wil je dan meegeven?
   custom_forms:
     categories:
       main_content:
