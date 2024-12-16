@@ -5,8 +5,8 @@ nl:
     admin_campaign_type_description:
       "inappropriate_content_flagged": Ongepaste inhoud gemarkeerd - platformbeheerders
     inappropriate_content_flagged:
-      subject: 'Een bericht is gemarkeerd voor beoordeling'
-      header_title: 'Een bericht is gemarkeerd voor beoordeling'
+      subject: 'Een post op je platform werd gemarkeerd om na te kijken'
+      header_title: 'Een bericht op je platform is gemarkeerd om na te kijken'
       author_wrote: '%{authorName} schreef:'
       preheader: 'Een bericht op je platform is gemarkeerd om na te kijken'
       automatically_flagged: >
