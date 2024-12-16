@@ -270,10 +270,10 @@ lv:
       cta_reply_to: 'Skatīt komentāru pēc %{firstName}'
       event_description: '%{authorNameFull} jūs pieminēja iekšējā komentārā.'
       subject: '%{firstName} jūs pieminēja iekšējā komentārā.'
-      main_header: '%{authorNameFirst} jūs pieminēja iekšējā komentārā.'
+      main_header: '%{firstName} jūs pieminēja iekšējā komentārā.'
       preheader: '%{authorNameFull} jūs pieminēja iekšējā komentārā.'
     moderator_digest:
-      subject: 'Nedēļas pārziņa par "%{project_title}"'
+      subject: 'Jūsu nedēļas projekta vadītāja pārskats par %{project_title}'
       preheader: 'Projekta vadītāja pārskats par %{organizationName}'
       title_your_weekly_report: '%{firstName}, jūsu nedēļas pārskats'
       text_introduction: 'Mēs esam atlasījuši tos ievadītos datus, kas pagājušajā nedēļā ir izraisījuši vislielāko aktivitāti. Uzziniet, kas notiek ar jūsu projektu!'
@@ -299,7 +299,7 @@ lv:
       yesterday: Vakar
     comment_on_idea_you_follow:
       cta_reply_to: 'Atbildēt %{commentAuthor}'
-      event_description: '%{authorNameFull} ievieto reakciju uz ''%{inputTitle}''. Noklikšķiniet uz pogas zemāk, lai turpinātu sarunu ar %{authorName}.'
+      event_description: '%{authorNameFull} placed a reaction on ''%{inputTitle}''. Click the button below to continue the conversation with %{authorName}.'
       main_header:
         idea: '%{authorName} komentēja ideju, kurai tu seko'
         question: '%{authorName} komentēja jautājumu, kas jums seko'
@@ -310,7 +310,7 @@ lv:
         proposal: '%{authorName} komentēja priekšlikumu, kam tu seko'
         initiative: '%{authorName} komentēja kādu iniciatīvu, kurai jūs sekojat.'
         petition: '%{authorName} komentēja lūgumrakstu, kam tu seko'
-      subject: 'Ir jauns komentārs par "%{input_title}"'
+      subject: 'There''s a new comment on "%{input_title}"'
       preheader: '%{authorName} atstāja komentāru par ideju par %{organizationName}'
     comment_on_initiative_you_follow:
       cta_reply_to: 'Atbildēt %{commentAuthor}'
@@ -392,10 +392,10 @@ lv:
       main_header: '''%{post}'' ir jauns iekšējais komentārs'
       preheader: '''%{post}'' ir jauns iekšējais komentārs'
     official_feedback_on_idea_you_follow:
-      header_message: '%{feedback_author_name} sniedza atjauninātu informāciju par "%{input_title}".'
-      header_title: 'Ir atjauninājums par "%{input_title}"'
-      subject: 'Oficiālās atsauksmes tika publicētas "%{input_title}"'
-      preheader: 'Ir atjauninājums par ideju, kurai jūs sekojat.'
+      header_message: '%{feedback_author_name} gave an update on ''%{input_title}''.'
+      header_title: 'There''s an update on "%{input_title}"'
+      subject: 'Official feedback was posted on "%{input_title}"'
+      preheader: 'There''s an update on an input you follow'
     official_feedback_on_initiative_you_follow:
       header_message: '%{officialName} sniedza atjauninātu informāciju par priekšlikumu "%{initiativeTitle}". Noklikšķiniet uz pogas zemāk, lai iesaistītos sarunā ar %{organizationName}.'
       header_title: 'Ir atjaunināta informācija par priekšlikumu, kuram jūs sekojat.'
@@ -459,11 +459,11 @@ lv:
       header_message: 'Dalības platformā %{organizationName} tikko publicēts šāds projekts:'
       preheader: 'Publicēts jauns projekts'
     status_change_on_idea_you_follow:
-      status_change: 'Šīs ievades jaunais statuss ir ''%{status}'''
-      header_message: '%{organizationName} savā digitālās līdzdalības platformā atjaunināja ievades statusu "%{input_title}".'
-      header_title: 'Jūsu sekotajai idejai ir jauns statuss'
-      subject: '"%{input_title}" statuss ir mainījies'
-      preheader: 'Jūsu sekotajai idejai ir jauns statuss'
+      status_change: 'The new status of this input is ''%{status}'''
+      header_message: '%{organizationName} updated the status of the input ''%{input_title}'' on their digital participation platform.'
+      header_title: 'An input you follow has a new status'
+      subject: 'The status of "%{input_title}" has changed'
+      preheader: 'An input you follow has a new status'
     status_change_on_initiative_you_follow:
       status_change: 'Šā priekšlikuma jaunais statuss ir "%{initiativeStatus}".'
       header_message: 'Priekšlikuma "%{initiativeTitle}" statuss ir atjaunināts %{organizationName}digitālajā līdzdalības platformā.'
@@ -493,7 +493,7 @@ lv:
     threshold_reached_for_admin:
       cta_process_initiative: 'Īstenojiet šo iniciatīvu nākamajos posmos'
       main_header: 'Iniciatīva sasniedza balsošanas slieksni!'
-      subject: '"%{input_title}" sasniedza balsošanas slieksni'
+      subject: 'Iniciatīva ir sasniegusi balsošanas slieksni jūsu platformā'
       preheader: 'Pārliecinieties, ka veicat nākamos soļus'
     welcome:
       cta_join_platform: 'Atklājiet platformu'
@@ -512,7 +512,7 @@ lv:
         proposal: 'Jūsu priekšlikums ir publicēts'
         initiative: 'Jūsu iniciatīva ir publicēta'
         petition: 'Jūsu lūgumraksts ir publicēts'
-      main_header: 'Jūs ievietojāt "%{input_title}"'
+      main_header: 'Jūs publicējāt ideju! Pārliecināsimies, ka tā tiek izlasīta.'
       header_message: 'Pārliecināsimies, ka tas tiek izlasīts.'
       message_get_votes: 'Sasniedziet vairāk cilvēku ar savu ideju:'
       action_published_idea: 'Publicētā ideja'
@@ -540,10 +540,10 @@ lv:
       subject: '"%{input_title}" ir gandrīz publicēts'
       preheader: 'Pašlaik tas ir %{prescreening_status_title}'
     your_proposed_initiatives_digest:
-      subject: 'Nedēļas jaunumi par jūsu priekšlikumiem'
+      subject: 'Iknedēļas atjauninājumi par jūsu priekšlikumiem'
       preheader: 'Kas notika ar jūsu priekšlikumiem pagājušajā nedēļā?'
       title_your_weekly_report: 'Kā jums ir veicies ar priekšlikumiem?'
-      text_introduction: 'Atrodiet zemāk norādītos galvenos skaitļus un dodieties uz platformu, lai laikus sāktu rīkoties un savlaicīgi savāktu pietiekamu atbalstu.'
+      text_introduction: 'Atrodiet zemāk norādītos galvenos skaitļus un dodieties uz platformu, lai laikus sāktu rīkoties un apkopotu pietiekamu atbalstu.'
       cta_see_your_initiative: 'Dodieties uz saviem priekšlikumiem'
       total_votes: 'Kopējais balsu skaits'
       new_votes: 'Jaunas balsis'
