@@ -58,7 +58,7 @@ kl:
       "voting_phase_started": New project phase with voting
       "voting_results": Voting results
       "your_input_in_screening": My input awaits screening
-      "your_proposed_initiatives_digest": Sapaatip akunnikkaartumik innuttaasutut siunnersuusiannut takussutissaq
+      "your_proposed_initiatives_digest": Weekly overview of your proposals
     general:
       by_author: 'by %{authorName}'
       author_wrote: '%{authorName} wrote:'
@@ -540,15 +540,15 @@ kl:
       subject: '"%{input_title}" is almost published'
       preheader: 'It''s currently in %{prescreening_status_title}'
     your_proposed_initiatives_digest:
-      subject: 'Sapaatip akunnikkaartumik innuttaasunut siunnersuummik paasissutissat kingulliit ilanngullugit takussutissiinerit'
-      preheader: 'Sapaatip akunnerani kingullermi innuttaasunut siunnersuutinnut sumik pisoqarpa?'
-      title_your_weekly_report: 'Innuttaasunut siunnersuutit qanoq ingerlava?'
-      text_introduction: 'Ataatani kisitsisit nanikkit, innuttaasunullu siunnersuummut qupperninnukarlutit, tapersersortinik naammattunik iliuuseqarnikkut katersiniarlutit.'
-      cta_see_your_initiative: 'Innuttaasunut siunnersuutinnukarit'
-      total_votes: 'Taasinerit amerlassusai'
-      new_votes: 'Taasinerit nutaat'
-      remaining_votes: 'Taasinerit sinneruttut'
-      remaining_days: 'Ullut sinneruttut'
+      subject: 'Weekly update of your proposals'
+      preheader: 'What happened with your proposals in the past week?'
+      title_your_weekly_report: 'How have your proposals been doing?'
+      text_introduction: 'Find the key numbers below and go to the platform to take action and gather enough support in time.'
+      cta_see_your_initiative: 'Go to your proposals'
+      total_votes: 'Total votes'
+      new_votes: 'New votes'
+      remaining_votes: 'Votes remaining'
+      remaining_days: 'Days remaining'
     voting_basket_submitted:
       subject: '%{organizationName}: You voted successfully'
       preheader: 'You voted successfully on the participation platform of %{organizationName}'
