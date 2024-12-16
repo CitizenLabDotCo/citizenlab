@@ -16,7 +16,7 @@
   "app.Admin.ManagementFeed.phase": "Phase",
   "app.Admin.ManagementFeed.project": "Projekt",
   "app.Admin.ManagementFeed.projectReviewApproved": "Projekt freigegeben",
-  "app.Admin.ManagementFeed.projectReviewRequested": "Projektprüfung beantragt",
+  "app.Admin.ManagementFeed.projectReviewRequested": "Projektfreigabe beantragt",
   "app.Admin.ManagementFeed.title": "Management-Feed",
   "app.Admin.ManagementFeed.user": "Nutzer*in",
   "app.Admin.ManagementFeed.userPlaceholder": "Wählen Sie eine*n Nutzer*in",
