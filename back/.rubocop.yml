@@ -17,7 +17,6 @@ AllCops:
     - "**/bin/**/*"
     - "engines/ee/**/*"
     - "vendor/**/*"
-    - "**/settings.schema.json.erb"
 
 Layout/HashAlignment:
   EnforcedColonStyle: [key, table]
