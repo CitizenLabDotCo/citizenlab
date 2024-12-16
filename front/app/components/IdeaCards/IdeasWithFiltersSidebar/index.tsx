@@ -190,15 +190,6 @@ const IdeasWithFiltersSidebar = ({
     [onUpdateQuery]
   );
 
-  const clearFilters = useCallback(() => {
-    trackEventByName(tracks.clearFiltersClicked);
-    onUpdateQuery({
-      search: undefined,
-      idea_status: undefined,
-      topics: undefined,
-    });
-  }, [onUpdateQuery]);
-
   const filtersActive = !!(
     ideaQueryParameters.search ||
     ideaQueryParameters.idea_status ||
@@ -213,7 +204,6 @@ const IdeasWithFiltersSidebar = ({
     ideasFilterCounts,
     numberOfSearchResults: ideasCount,
     ideaQueryParameters,
-    onClearFilters: clearFilters,
     onSearch: handleSearchOnChange,
     onChangeStatus: handleStatusOnChange,
     onChangeTopics: handleTopicsOnChange,
