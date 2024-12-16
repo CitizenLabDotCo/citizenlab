@@ -11,9 +11,9 @@ sr-Cyrl:
       "comment_on_initiative_you_follow": Коментар на предлог који следите
       "cosponsor_of_your_initiative": Корисник прихвата мој позив да буде ко-спонзор мог предлога
       "event_registration_confirmation": Потврда регистрације догађаја
-      "first_idea_published": Објављивање моје прве идеје
+      "first_idea_published": Publication of my first idea
       "idea_marked_as_spam": Извештај о нежељеној пошти идеја
-      "idea_published": Објављивање моје идеје
+      "idea_published": Publication of my idea
       "initiative_assigned_to_you": Додељивање предлога мени
       "initiative_marked_as_spam": Извештај о нежељеној пошти предлога
       "initiative_published": Објављивање мог предлога
@@ -32,9 +32,9 @@ sr-Cyrl:
       "mention_in_official_feedback": Поменути у ажурирању
       "mention_in_internal_comment": Поменути у интерном коментару
       "new_comment_for_admin": Нови коментар у пројекту којим управљам
-      "new_idea_for_admin": Нова идеја у пројекту којим управљам
+      "new_idea_for_admin": New idea in a project I moderate
       "new_initiative_for_admin": Нови предлог
-      "official_feedback_on_idea_you_follow": Ажурирајте идеју коју пратите
+      "official_feedback_on_idea_you_follow": Update on an idea that you follow
       "official_feedback_on_initiative_you_follow": Ажурирајте предлог који пратите
       "password_reset": Ресетовање лозинке
       "project_moderation_rights_received": Примљена права модерирања пројекта
@@ -42,7 +42,7 @@ sr-Cyrl:
       "project_phase_started": Нова фаза пројекта
       "project_phase_upcoming": Предстојећа нова фаза пројекта
       "project_published": Пројекат објављен
-      "status_change_on_idea_you_follow": Промена статуса идеје коју пратите
+      "status_change_on_idea_you_follow": Status change of an idea that you follow
       "status_change_on_initiative_you_follow": Промена статуса предлога који пратите
       "threshold_reached_for_admin": Предлог је достигао цензус за гласање
       "welcome": Након регистрације
@@ -56,7 +56,7 @@ sr-Cyrl:
       "voting_last_chance": Последња прилика за гласање
       "voting_phase_started": Нова фаза пројекта са гласањем
       "voting_results": Резултати гласања
-      "your_proposed_initiatives_digest": Недељни преглед ваших предлога
+      "your_proposed_initiatives_digest": Weekly overview of your proposals
     general:
       by_author: 'од %{authorName}'
       author_wrote: '%{authorName} је написао:'
@@ -77,7 +77,7 @@ sr-Cyrl:
       "link_terms_conditions": "Услови коришћења"
       "link_unsubscribe": "Одјавите се"
       "powered_by": "Покреће га"
-      "statement": "Овај е-маил вам је послао Go Vocal у име %{organizationName}, јер сте регистровани корисник %{organizationLink}. Можете %{unsubscribeLink} ако не желите да примате ове е-поруке у будућности."
+      "statement": "This e-mail was sent to you by Go Vocal on behalf of %{organizationName}, because you are a registered user of %{organizationLink}. You can %{unsubscribeLink} if you do not want to receive these e-mails in the future."
       "unsubscribe_text": "одјавите се"
     follow:
       "unfollow_here": "Примили сте ово обавештење због ставке коју пратите. <a href=\"%{unfollow_url}\">Можете га опозвати овде.</a>"
@@ -99,12 +99,12 @@ sr-Cyrl:
       text_introduction: 'За вас смо припремили унос који је генерисао највише активности током протекле недеље. Сазнајте шта се дешава на вашој платформи!'
       cta_visit_the_platform: 'Посетите своју платформу'
       new_users: 'Нови Корисници'
-      new_ideas: 'Нове идеје'
+      new_ideas: 'New ideas'
       new_comments: 'Нови коментари'
       title_activity_past_week: 'Активност протекле недеље'
       title_no_activity_past_week: 'У протеклој седмици није било активности'
       title_initiatives_past_week: 'Нови предлози протекле недеље'
-      title_successful_initiatives_past_week: 'Предлози који су достигли праг у протеклој недељи'
+      title_successful_initiatives_past_week: 'Proposals that reached the threshold in the past week'
       yesterday_by_author: 'Јуче до %{author}'
       today_by_author: 'Данас до %{author}'
       x_days_ago_by_author: 'Пре %{x} дана до %{author}'
@@ -142,24 +142,24 @@ sr-Cyrl:
       subject: '%{cosponsorName} је прихватио ваш позив да буде ко-спонзор вашег предлога'
       preheader_initiative: '%{cosponsorName} је прихватио ваш позив да буде ко-спонзор вашег предлога'
     assignee_digest:
-      subject: 'Идеје које захтевају ваше повратне информације: %{numberIdeas}'
+      subject: 'Ideas requiring your feedback: %{numberIdeas}'
       preheader: 'Сажетак примаоца од %{organizationName}'
       title_your_weekly_report: '%{firstName}, унос грађана чека ваше повратне информације'
       cta_manage_your_input: 'Управљајте својим уносом'
-      assigned_ideas: 'Идејама је потребна ваша повратна информација'
-      title_assignment_past_week: 'Најновије идеје које су вам додељене'
-      title_no_assignment_past_week: 'Прошле недеље вам нису додељене нове идеје'
+      assigned_ideas: 'Ideas need your feedback'
+      title_assignment_past_week: 'Latest ideas assigned to you'
+      title_no_assignment_past_week: 'No new ideas assigned to you last week'
       yesterday_by_author: 'Јуче до %{author}'
       today_by_author: 'Данас до %{author}'
       x_days_ago_by_author: 'Пре %{x} дана до %{author}'
-      idea_section: Идеје
-      initiative_section: Предлози
-      title_initiatives_past_week: 'Додељени су вам нови предлози'
-      title_successful_initiatives_past_week: 'Предлози који су вам додељени и који су достигли праг'
+      idea_section: Ideas
+      initiative_section: Proposals
+      title_initiatives_past_week: 'New proposals assigned to you'
+      title_successful_initiatives_past_week: 'Proposals assigned to you that reached the threshold'
     idea_marked_as_spam:
-      cta_review_idea: 'Прегледајте идеју'
+      cta_review_idea: 'Review idea'
       report_inappropriate_offensive_content: 'Сматрам да је овај садржај неприкладан или увредљив.'
-      report_not_an_idea: 'Овај садржај није идеја и не припада овде.'
+      report_not_an_idea: 'This content is not an idea and does not belong here.'
       subject: 'Имате пријаву нежељене поште на платформи %{organizationName}'
       preheader: 'Поступите према овој пријави нежељене поште'
       reported_this_because: '%{reporterFirstName} пријавио је ово јер:'
@@ -235,7 +235,7 @@ sr-Cyrl:
       main_header: '%{firstName} вас је поменуо у интерном коментару.'
       preheader: '%{authorNameFull} вас је поменуо у интерном коментару.'
     moderator_digest:
-      subject: 'Ваш недељни извештај менаџера пројекта од %{time}'
+      subject: 'Your weekly project manager report of %{time}'
       preheader: 'Сажетак менаџера пројекта од %{organizationName}'
       title_your_weekly_report: '%{firstName}, ваш недељни извештај'
       text_introduction: 'За вас смо припремили унос који је генерисао највише активности током протекле недеље. Сазнајте шта се дешава са вашим пројектом!'
@@ -260,9 +260,9 @@ sr-Cyrl:
       yesterday: Јучер
     comment_on_idea_you_follow:
       cta_reply_to: 'Одговори на %{commentAuthor}'
-      event_description: '%{authorNameFull} је реаговао на идеју ''%{ideaTitle}''. Кликните на дугме испод да бисте наставили разговор са %{authorName}.'
-      main_header: '%{authorName} је коментарисало идеју коју пратите'
-      subject: 'Постоји нови коментар на идеју коју пратите'
+      event_description: '%{authorNameFull} placed a reaction on the idea ''%{ideaTitle}''. Click the button below to continue the conversation with %{authorName}.'
+      main_header: '%{authorName} commented on an idea you follow'
+      subject: 'There''s a new comment on an idea you follow'
       preheader: '%{authorName} је оставио коментар на идеју за %{organizationName}'
     comment_on_initiative_you_follow:
       cta_reply_to: 'Одговори на %{commentAuthor}'
@@ -277,13 +277,13 @@ sr-Cyrl:
       subject: 'Неко је објавио нови предлог на платформи %{organizationName}'
       preheader: '%{authorName} је објавио нови предлог на вашој платформи'
     new_idea_for_admin:
-      commented: '%{authorFirstName} је коментарисало:'
-      cta_reply_to: 'Дајте повратну информацију %{authorName}'
+      commented: '%{authorFirstName} commented:'
+      cta_reply_to: 'Give feedback to %{authorName}'
       days_ago: 'пре %{numberOfDays} дана'
-      event_description: '%{authorName} је објавио нову идеју на вашој платформи. Откријте га сада, дајте повратне информације или промените његов статус!'
-      main_header: '%{firstName}, нова идеја је објављена на вашој платформи'
-      subject: 'Нова објава је објављена на платформи %{organizationName}'
-      preheader: '%{authorName} је објавио нову идеју на вашој платформи'
+      event_description: '%{authorName} has published a new idea on your platform. Discover it now, give some feedback or change its status!'
+      main_header: '%{firstName}, a new idea has been published on your platform'
+      subject: 'A new post has been published on %{organizationName}''s platform'
+      preheader: '%{authorName} published a new idea on your platform'
       today: Данас
       yesterday: Јучер
     comment_on_your_comment:
@@ -302,50 +302,50 @@ sr-Cyrl:
     internal_comment_on_idea_assigned_to_you:
       cta_reply_to: 'Погледај коментар од %{firstName}'
       event_description: '%{authorNameFull} је интерно коментарисао унос који вам је додељен.'
-      subject: '''%{post}'' има нови интерни коментар'
-      main_header: '''%{post}'' има нови интерни коментар'
-      preheader: '''%{post}'' има нови интерни коментар'
+      subject: '''%{post}'' has a new internal comment'
+      main_header: '''%{post}'' has a new internal comment'
+      preheader: '''%{post}'' has a new internal comment'
     internal_comment_on_idea_you_commented_internally_on:
       cta_reply_to: 'Погледај коментар од %{firstName}'
       event_description: '%{authorNameFull} је интерно коментарисало унос који сте ви интерно коментарисали.'
-      subject: '''%{post}'' има нови интерни коментар'
-      main_header: '''%{post}'' има нови интерни коментар'
-      preheader: '''%{post}'' има нови интерни коментар'
+      subject: '''%{post}'' has a new internal comment'
+      main_header: '''%{post}'' has a new internal comment'
+      preheader: '''%{post}'' has a new internal comment'
     internal_comment_on_idea_you_moderate:
       cta_reply_to: 'Погледај коментар од %{firstName}'
       event_description: '%{authorNameFull} је интерно коментарисао унос у пројекту или фасцикли којом управљате.'
-      subject: '''%{post}'' има нови интерни коментар'
-      main_header: '''%{post}'' има нови интерни коментар'
-      preheader: '''%{post}'' има нови интерни коментар'
+      subject: '''%{post}'' has a new internal comment'
+      main_header: '''%{post}'' has a new internal comment'
+      preheader: '''%{post}'' has a new internal comment'
     internal_comment_on_initiative_assigned_to_you:
       cta_reply_to: 'Погледај коментар од %{firstName}'
       event_description: '%{authorNameFull} је интерно коментарисао предлог који вам је додељен.'
-      subject: '''%{post}'' има нови интерни коментар'
-      main_header: '''%{post}'' има нови интерни коментар'
-      preheader: '''%{post}'' има нови интерни коментар'
+      subject: '''%{post}'' has a new internal comment'
+      main_header: '''%{post}'' has a new internal comment'
+      preheader: '''%{post}'' has a new internal comment'
     internal_comment_on_initiative_you_commented_internally_on:
       cta_reply_to: 'Погледај коментар од %{firstName}'
       event_description: '%{authorNameFull} је интерно коментарисало предлог који сте интерно коментарисали.'
-      subject: '''%{post}'' има нови интерни коментар'
-      main_header: '''%{post}'' има нови интерни коментар'
-      preheader: '''%{post}'' има нови интерни коментар'
+      subject: '''%{post}'' has a new internal comment'
+      main_header: '''%{post}'' has a new internal comment'
+      preheader: '''%{post}'' has a new internal comment'
     internal_comment_on_unassigned_initiative:
       cta_reply_to: 'Погледај коментар од %{firstName}'
       event_description: '%{authorNameFull} је интерно коментарисало недодељени предлог.'
-      subject: '''%{post}'' има нови интерни коментар'
-      main_header: '''%{post}'' има нови интерни коментар'
-      preheader: '''%{post}'' има нови интерни коментар'
+      subject: '''%{post}'' has a new internal comment'
+      main_header: '''%{post}'' has a new internal comment'
+      preheader: '''%{post}'' has a new internal comment'
     internal_comment_on_unassigned_unmoderated_idea:
       cta_reply_to: 'Погледај коментар од %{firstName}'
       event_description: '%{authorNameFull} је интерно коментарисао недодељени унос у пројекту којим се не управља.'
-      subject: '''%{post}'' има нови интерни коментар'
-      main_header: '''%{post}'' има нови интерни коментар'
-      preheader: '''%{post}'' има нови интерни коментар'
+      subject: '''%{post}'' has a new internal comment'
+      main_header: '''%{post}'' has a new internal comment'
+      preheader: '''%{post}'' has a new internal comment'
     official_feedback_on_idea_you_follow:
-      header_message: '%{officialName} је дао ажурирање идеје ''%{ideaTitle}''. Кликните на дугме испод да бисте ушли у разговор са %{officialName}.'
-      header_title: 'Постоји ажурирање о идеји коју пратите'
-      subject: 'Идеја коју пратите је добила званично ажурирање на платформи %{organizationName}'
-      preheader: 'Постоји ажурирање о идеји коју пратите'
+      header_message: '%{officialName} gave an update on the idea ''%{ideaTitle}''. Click the button below to enter the conversation with %{officialName}.'
+      header_title: 'There''s an update on an idea you follow'
+      subject: 'An idea you follow has received an official update on the platform of %{organizationName}'
+      preheader: 'There''s an update on an idea you follow'
     official_feedback_on_initiative_you_follow:
       header_message: '%{officialName} је дао ажурирање на предлог ''%{initiativeTitle}''. Кликните на дугме испод да бисте ушли у разговор са %{organizationName}.'
       header_title: 'Постоји ажурирање о предлогу који пратите'
@@ -409,11 +409,11 @@ sr-Cyrl:
       header_message: 'Платформа за учешће %{organizationName} управо је објавила следећи пројекат:'
       preheader: 'Објављен је нови пројекат'
     status_change_on_idea_you_follow:
-      status_change: 'Нови статус ове идеје је ''%{ideaStatus}'''
-      header_message: '%{organizationName} је ажурирао статус идеје ''%{ideaTitle}'' на својој платформи за дигитално учешће.'
-      header_title: 'Идеја коју пратите има нови статус'
-      subject: 'Статус идеје коју пратите је промењен'
-      preheader: 'Идеја коју пратите има нови статус'
+      status_change: 'The new status of this idea is ''%{ideaStatus}'''
+      header_message: '%{organizationName} updated the status of the idea ''%{ideaTitle}'' on their digital participation platform.'
+      header_title: 'An idea you follow has a new status'
+      subject: 'The status of an idea you follow has been changed'
+      preheader: 'An idea you follow has a new status'
     status_change_on_initiative_you_follow:
       status_change: 'Нови статус овог предлога је ''%{initiativeStatus}'''
       header_message: 'Статус предлога ''%{initiativeTitle}'' је ажуриран на дигиталној платформи за учешће %{organizationName}.'
@@ -421,51 +421,51 @@ sr-Cyrl:
       subject: 'Статус предлога који пратите се променио'
       preheader: 'Предлог који пратите има нови статус'
     user_digest:
-      subject: "Ваша активност на платформи за учешће од %{organizationName}"
+      subject: "Your activity on the participation platform of %{organizationName}"
       commented: "%{authorFirstName} је коментарисало:"
       preheader: "Недељни преглед %{organizationName}"
       title_your_weekly_report: "Откријте шта се догодило прошле недеље"
       intro_text: "Ево резимеа онога што се догодило на платформи за учешће %{organizationName}."
       cta_go_to_the_platform: "Иди на платформу"
       title_no_activity_past_week: "Нема активности у протеклој недељи"
-      title_proposals: "Почели су предлози"
-      proposals_started_text: "Предлози су идеје које треба да стекну привлачност и подршку од других (људи попут вас!) да би кренули напред. Испод је листа предлога који су изнети у протеклој недељи. Кликните на било коју од њих да погледате и понудите своју подршку и повратне информације!"
-      title_successful_proposals: "Предлози који су достигли праг"
-      successful_proposals_text: "Ови предлози су добили довољно подршке да пређу у следећу фазу! Кликните на предлог да сазнате више о томе шта се даље дешава."
+      title_proposals: "Proposals started"
+      proposals_started_text: "Proposals are ideas that need to gain traction and support from others (people like you!) in order to move forward. Below is a list of proposals that have been put forward in the last week. Click on any of them to take a look and offer your support and feedback!"
+      title_successful_proposals: "Proposals that reached the threshold"
+      successful_proposals_text: "These proposals have gotten enough support to move to the next stage! Click on the proposal to learn more about what happens next."
       today_by_author: "Данас до %{author}"
       yesterday_by_author: "Јуче до %{author}"
       x_days_ago_by_author: "Пре %{x} дана до %{author}"
-      trending_ideas: "У тренду"
-      trending_ideas_text: "Занима вас шта се дешава на платформи? Ево три идеје које су у тренду и шта људи говоре о њима."
+      trending_ideas: "Trending ideas"
+      trending_ideas_text: "Interested in what’s been happening on the platform? Here are the three most trending ideas and what people are saying about them."
       no_notifications: "Нема обавештења"
       one_notification: "1 обавештење"
       multiple_notifications: "%{notifCount} обавештења"
-      no_unread_notifications: "Немате ниједно непрочитано обавештење. Посетите платформу да дате свој допринос и генеришете нова обавештења!"
+      no_unread_notifications: "You don't have any unread notifications. Visit the platform to contribute your input and generate new notifications!"
       unread_notifications: "Имате непрочитана обавештења. Посетите платформу да бисте открили шта се дешава!"
     threshold_reached_for_admin:
       cta_process_initiative: 'Пренесите ову иницијативу на следеће кораке'
-      event_description: 'Иницијатива је достигла праг за гласање на вашој платформи. Кликните на дугме испод да бисте прешли на следеће кораке!'
-      main_header: 'Иницијатива је стигла до гласачког цензуса!'
-      subject: 'Иницијатива је достигла праг за гласање на вашој платформи'
+      event_description: 'An proposal reached the voting threshold on your platform. Click the button below to take it to the next steps!'
+      main_header: 'An proposal reached the voting threshold!'
+      subject: 'An proposal reached the voting threshold on your platform'
       preheader: 'Обавезно предузмите следеће кораке'
     first_idea_published:
-      action_add_image: '%{addImageLink} за повећање видљивости'
-      action_comment: '%{textComment} на постојеће идеје'
-      action_published_idea: 'Објављена идеја'
-      action_send_email: 'Пошаљите својим контактима %{sendEmailLink}'
-      action_share_fb: 'Обавестите своје пријатеље на %{fbLink}'
-      action_share_link: 'Поделите га преко било ког канала копирањем %{link}'
-      action_share_twitter: 'Обавестите своје пратиоце на %{twitterLink}'
-      add_image: 'Додајте слику'
-      cta_view_idea: 'Иди на своју идеју'
-      event_description: '%{firstName}, честитам на вашој првој идеји на платформи за учешће %{organizationName}. Бићете обавештени када људи ступе у интеракцију са вашом идејом. У наставку сазнајте које следеће кораке можете предузети.'
-      link: линк
-      main_header: '%{firstName}, објавили сте своју прву идеју!'
-      message_get_votes: 'Досегните више људи својом идејом:'
-      preheader: '%{firstName}, честитамо на објављивању ваше прве идеје на платформи %{organizationName}. Сада прикупите подршку за своју идеју'
-      see_you: 'Видимо се ускоро на платформи!'
-      send_email: емаил
-      subject: 'Ваша прва идеја на платформи %{organizationName}'
+      action_add_image: '%{addImageLink} to increase visibility'
+      action_comment: '%{textComment} on existing ideas'
+      action_published_idea: 'Published idea'
+      action_send_email: 'Send your contacts an %{sendEmailLink}'
+      action_share_fb: 'Let your friends know on %{fbLink}'
+      action_share_link: 'Share it via any channel by copying the %{link}'
+      action_share_twitter: 'Inform your followers on %{twitterLink}'
+      add_image: 'Add an image'
+      cta_view_idea: 'Go to your idea'
+      event_description: '%{firstName}, congratulations with your first idea on the participation platform of %{organizationName}. You will be notified when people interact with your idea. Find out what next steps you can take below.'
+      link: link
+      main_header: '%{firstName}, you posted your first idea!'
+      message_get_votes: 'Reach more people with your idea:'
+      preheader: '%{firstName}, congratulations on posting your first idea on the platform of %{organizationName}. Now gather support for your idea'
+      see_you: 'See you soon at the platform!'
+      send_email: email
+      subject: 'Your first idea on the platform of %{organizationName}'
     welcome:
       cta_join_platform: 'Откријте платформу'
       subject: 'Добродошли на платформу %{organizationName}'
@@ -474,32 +474,32 @@ sr-Cyrl:
       preheader: 'Ево шта можете да урадите на платформи %{organizationName}'
     idea_published:
       action_add_image: '%{addImageLink} за повећање видљивости'
-      action_published_idea: 'Објављена идеја'
+      action_published_idea: 'Published idea'
       action_send_email: 'Пошаљите својим контактима %{sendEmailLink}'
       action_share_fb: 'Обавестите своје пријатеље на %{fbLink}'
       action_share_link: 'Поделите га преко било ког канала копирањем %{link}'
       action_share_twitter: 'Обавестите своје пратиоце на %{twitterLink}'
       add_image: 'Додајте слику'
-      cta_view_idea: 'Иди на своју идеју'
-      event_description: '%{firstName}, ваша идеја је успешно објављена на платформи за учешће %{organizationName}. Бићете обавештени када људи ступе у интеракцију са вашом идејом. У наставку сазнајте које следеће кораке можете предузети.'
+      cta_view_idea: 'Go to your idea'
+      event_description: '%{firstName}, your idea has successfully been published on the participation platform of %{organizationName}. You will be notified when people interact with your idea. Find out what next steps you can take below.'
       link: линк
-      main_header: 'Поставили сте идеју! Хајде да се побринемо да буде прочитано.'
-      message_get_votes: 'Досегните више људи својом идејом:'
-      preheader: '%{firstName}, честитам на објављивању ваше идеје на платформи %{organizationName}. Сада скупите подршку.'
-      see_you: 'Видимо се ускоро на платформи!'
+      main_header: 'You posted an idea! Let''s make sure it gets read.'
+      message_get_votes: 'Reach more people with your idea:'
+      preheader: '%{firstName}, congratulations on posting your idea on the platform of %{organizationName}. Now gather support.'
+      see_you: 'See you soon at the platform!'
       send_email: емаил
-      subject: 'Ваша идеја на платформи %{organizationName}'
+      subject: 'Your idea on the platform of %{organizationName}'
       message_next_steps: ""
     your_proposed_initiatives_digest:
-      subject: 'Седмично ажурирање ваших предлога'
-      preheader: 'Шта се десило са вашим предлозима прошле недеље?'
-      title_your_weekly_report: 'Како су прошли ваши предлози?'
-      text_introduction: 'Пронађите кључне бројеве испод и идите на платформу да предузмете акцију и прикупите довољно подршке на време.'
-      cta_see_your_initiative: 'Идите на своје предлоге'
-      total_votes: 'Укупно гласова'
-      new_votes: 'Нови гласови'
-      remaining_votes: 'Преостало гласова'
-      remaining_days: 'Преостали дана'
+      subject: 'Weekly update of your proposals'
+      preheader: 'What happened with your proposals in the past week?'
+      title_your_weekly_report: 'How have your proposals been doing?'
+      text_introduction: 'Find the key numbers below and go to the platform to take action and gather enough support in time.'
+      cta_see_your_initiative: 'Go to your proposals'
+      total_votes: 'Total votes'
+      new_votes: 'New votes'
+      remaining_votes: 'Votes remaining'
+      remaining_days: 'Days remaining'
     voting_basket_submitted:
       subject: '%{organizationName}: Успешно сте гласали'
       preheader: 'Успешно сте гласали на платформи за учешће %{organizationName}'
