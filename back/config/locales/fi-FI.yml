@@ -202,7 +202,7 @@ fi:
       attachements:
         title: Kuvat ja liitteet
       extra:
-        title: Lisäinformaatio
+        title: Lisätietoja
   custom_field_options:
     gender:
       male: Mies
