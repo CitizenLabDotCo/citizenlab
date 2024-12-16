@@ -55,7 +55,7 @@ const StyledIdeasShow = styled(IdeasShow)<{ hasNextPreviousControl?: boolean }>`
   `}
 
   ${media.phone`
-    ${({ theme }) => media.tablet`
+    ${({ theme }) => `
       margin-top: ${theme.menuHeight}px;
     `}
     padding-top: ${(props) => (props.hasNextPreviousControl ? '0px' : '25px')};
