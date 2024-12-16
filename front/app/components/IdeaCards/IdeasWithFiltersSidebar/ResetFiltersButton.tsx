@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Button } from '@citizenlab/cl2-component-library';
 
+import { scrollToTopIdeasList } from 'components/FilterBoxes/utils';
 import tracks from 'components/IdeaCards/tracks';
 
 import { trackEventByName } from 'utils/analytics';
@@ -22,6 +23,7 @@ const ResetFiltersButton = ({ filtersActive }: Props) => {
       idea_status: undefined,
       topics: undefined,
     });
+    scrollToTopIdeasList();
   };
 
   return (
