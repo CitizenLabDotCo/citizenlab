@@ -5,8 +5,8 @@ da:
     admin_campaign_type_description:
       "inappropriate_content_flagged": Uhensigtsmæssigt indhold markeret - admins
     inappropriate_content_flagged:
-      subject: 'Et indlæg er blevet markeret til gennemgang'
-      header_title: 'Et indlæg er blevet markeret til gennemgang'
+      subject: 'Et indlæg på din platform er blevet markeret til gennemsyn'
+      header_title: 'Et indlæg på din platform er blevet markeret til gennemsyn'
       author_wrote: '%{authorName} skrev:'
       preheader: 'Et indlæg på din platform er blevet markeret til gennemsyn'
       automatically_flagged: >
