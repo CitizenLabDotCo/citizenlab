@@ -2821,7 +2821,7 @@
   "app.modules.navbar.admin.containers.pageSubtitle": "Je navigatiebalk kan maximaal vijf pagina's weergeven naast de startpagina en de projectenpagina's. Je kunt menu-items hernoemen, opnieuw ordenen en nieuwe pagina's toevoegen met uw eigen inhoud.",
   "containers.Admin.reporting.components.ReportBuilder.Toolbox.ai": "AI",
   "containers.Admin.reporting.components.ReportBuilder.Toolbox.widgets": "Widgets",
-  "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.dragAiContentInfo": "Gebruik het ☰ pictogram hieronder om AI-inhoud naar je rapport te slepen.",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.dragAiContentInfo": "Gebruik het ☰ icoon hieronder om AI-inhoud in je rapport te slepen.",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.noAIInsights": "Er zijn geen AI-inzichten beschikbaar. Je kunt ze creëren in je project.",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.openProject": "Ga naar project",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.question": "Vraag",
