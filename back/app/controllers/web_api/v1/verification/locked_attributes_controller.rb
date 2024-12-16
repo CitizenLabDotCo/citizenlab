@@ -11,7 +11,7 @@ module WebApi
 
           @locked_attributes = ver_service.locked_attributes(current_user)
             .map do |name|
-            ::Verification::LockedAttribute.new(name)
+              ::Verification::LockedAttribute.new(name)
             end
 
           @locked_attributes = Kaminari.paginate_array(@locked_attributes)
