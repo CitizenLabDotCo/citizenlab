@@ -101,6 +101,7 @@ describe('Native survey permissions', () => {
       const email = randomEmail();
       const password = randomString();
 
+      cy.get('#e2e-goto-signup').click();
       cy.get('#firstName').type(firstName);
       cy.get('#lastName').type(lastName);
       cy.get('#email').type(email);
@@ -156,6 +157,7 @@ describe('Native survey permissions', () => {
       const email = randomEmail();
       const password = randomString();
 
+      cy.get('#e2e-goto-signup').click();
       cy.get('#firstName').type(firstName);
       cy.get('#lastName').type(lastName);
       cy.get('#email').type(email);

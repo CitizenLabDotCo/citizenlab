@@ -102,6 +102,22 @@ describe SideFxIdeaService do
       expect(phase1.reload.manual_votes_count).to eq 5
       expect(phase2.reload.manual_votes_count).to eq 3
     end
+
+    it 'enqueues an upsert embedding job when the similar_inputs feature is turned on' do
+      SettingsService.new.activate_feature! 'similar_inputs'
+      idea = create(:idea, author: user)
+      expect { service.after_create(idea, user) }
+        .to enqueue_job(UpsertEmbeddingJob)
+        .with(idea)
+        .exactly(1).times
+    end
+
+    it "doesn't enqueue an upsert embedding job when the similar_inputs feature is turned off" do
+      idea = create(:idea, author: user)
+      expect { service.after_create(idea, user) }
+        .not_to enqueue_job(UpsertEmbeddingJob)
+        .with(idea)
+    end
   end
 
   describe 'after_update' do
@@ -300,6 +316,69 @@ describe SideFxIdeaService do
 
       expect(phase.reload.manual_votes_count).to eq 2
     end
+
+    it 'enqueues an upsert embedding job when the similar_inputs feature is turned on and the title changed' do
+      SettingsService.new.activate_feature! 'similar_inputs'
+      idea = create(:idea, author: user)
+      idea.update!(title_multiloc: { en: 'changed' })
+      expect { service.after_update(idea, user) }
+        .to enqueue_job(UpsertEmbeddingJob)
+        .with(idea)
+        .exactly(1).times
+    end
+
+    it 'enqueues an upsert embedding job when the similar_inputs feature is turned on and the body changed' do
+      SettingsService.new.activate_feature! 'similar_inputs'
+      idea = create(:idea, author: user)
+      idea.update!(body_multiloc: { en: 'changed' })
+      expect { service.after_update(idea, user) }
+        .to enqueue_job(UpsertEmbeddingJob)
+        .with(idea)
+        .exactly(1).times
+    end
+
+    it "doesn't enqueue an upsert embedding job when the similar_inputs feature is turned on but title and body didn't change" do
+      SettingsService.new.activate_feature! 'similar_inputs'
+      idea = create(:idea, author: user)
+      expect { service.after_update(idea, user) }
+        .not_to enqueue_job(UpsertEmbeddingJob)
+        .with(idea)
+    end
+
+    it "doesn't enqueue an upsert embedding job when the similar_inputs feature is turned off" do
+      idea = create(:idea, author: user)
+      idea.update!(title_multiloc: { en: 'changed' })
+      expect { service.after_update(idea, user) }
+        .not_to enqueue_job(UpsertEmbeddingJob)
+        .with(idea)
+    end
+
+    # context 'native survey responses' do
+    #   before { create(:idea_status_proposed) }
+    #
+    #   let(:idea) { create(:native_survey_response, publication_status: 'draft') }
+    #
+    #   it 'deletes other draft responses by the same user when the survey response is submitted (published)' do
+    #     create(:native_survey_response, publication_status: 'draft', project: idea.project, creation_phase: idea.creation_phase, author: idea.author)
+    #     idea.update!(publication_status: 'published')
+    #     expect { service.after_update(idea, user) }
+    #       .to change { Idea.all.count }.from(2).to(1)
+    #   end
+    #
+    #   it 'does not deletes draft responses by different users when the survey response is submitted (published)' do
+    #     create(:native_survey_response, publication_status: 'draft', project: idea.project, creation_phase: idea.creation_phase)
+    #     idea.update!(publication_status: 'published')
+    #     service.after_update(idea, user)
+    #     expect(Idea.all.count).to eq 2
+    #   end
+    #
+    #   it 'does not deletes draft responses when the survey response is still in draft' do
+    #     create(:native_survey_response, publication_status: 'draft', project: idea.project, creation_phase: idea.creation_phase)
+    #     idea.update!(custom_field_values: {})
+    #     service.after_update(idea, user)
+    #     expect(Idea.all.count).to eq 2
+    #   end
+    # end
   end
 
   describe 'after_destroy' do

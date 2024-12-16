@@ -12,6 +12,7 @@ module IdeaAssignment
 
       def after_update(idea, user)
         super
+        # remove_duplicate_survey_responses_on_publish(idea)
         return unless idea.assignee_id_previously_changed?
 
         initiating_user = user_for_activity_on_anonymizable_item(idea, @automatic_assignment ? nil : user)
@@ -25,6 +26,22 @@ module IdeaAssignment
 
         idea.assignee = IdeaAssignmentService.new.automatically_assigned_idea_assignee idea
         @automatic_assignment = true if idea.assignee
+      end
+
+      private
+
+      # If a survey is opened in multiple tabs then different draft responses can be created for the same user.
+      # We need to remove any duplicates when the survey is submitted.
+      def remove_duplicate_survey_responses_on_publish(idea)
+        return unless idea.creation_phase&.native_survey? && idea.publication_status_previously_changed?(from: 'draft', to: 'published')
+
+        Idea.where(
+          creation_phase_id: idea.creation_phase_id,
+          author: idea.author,
+          publication_status: 'draft'
+        ).where.not(
+          id: idea.id
+        ).destroy_all
       end
     end
   end

@@ -40,7 +40,6 @@ resource 'AdminPublication' do
       parameter :search, 'Search text of title, description, preview, and slug', required: false
       parameter :publication_statuses, 'Return only publications with the specified publication statuses (i.e. given an array of publication statuses); always includes folders; returns all publications by default (OR)', required: false
       parameter :folder, 'Filter by folder (project folder id)', required: false
-      parameter :remove_not_allowed_parents, 'Filter out folders which contain only projects that are not visible to the user', required: false
       parameter :only_projects, 'Include projects only (no folders)', required: false
       parameter :filter_can_moderate, 'Filter out the projects the current_user is not allowed to moderate. False by default', required: false
       parameter :filter_is_moderator_of, 'Filter out the publications the current_user is not moderator of. False by default', required: false
@@ -423,34 +422,37 @@ resource 'AdminPublication' do
       parameter :topics, 'Filter by topics (AND)', required: false
       parameter :areas, 'Filter by areas (AND)', required: false
       parameter :publication_statuses, 'Return only publications with the specified publication statuses (i.e. given an array of publication statuses); always includes folders; returns all publications by default', required: false
-      parameter :remove_not_allowed_parents, 'Filter out folders with no visible children for the current user', required: false
       parameter :folder, 'Filter by folder (project folder id)', required: false
       parameter :include_publications, 'Include the related publications and associated items', required: false
 
       example 'Listed admin publications have correct visible children count', document: false do
-        do_request(folder: nil, remove_not_allowed_parents: true)
+        do_request(folder: nil)
         expect(status).to eq(200)
         json_response = json_parse(response_body)
         # Only 3 of initial 6 projects are not in folder
-        expect(json_response[:data].size).to eq 3
-        # Only 1 folder expected - Draft folder created at top of file is not visible to resident,
-        # nor should a folder with only a draft project in it
-        expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('folder')).to eq 1
+        expect(json_response[:data].size).to eq 4
+        # Only 2 folders expected - Draft folder created at top of file is not visible to resident,
+        expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('folder')).to eq 2
         # 3 projects are inside folder, 3 top-level projects remain, of which 1 is not visible (draft)
         expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('project')).to eq 2
-        # Only the two non-draft projects are visible to resident
-        expect(json_response[:data].find { |d| d.dig(:relationships, :publication, :data, :type) == 'folder' }.dig(:attributes, :visible_children_count)).to eq 2
+
+        folders_data = (json_response[:data].select { |d| d.dig(:relationships, :publication, :data, :type) == 'folder' })
+        # Only the two non-draft projects (in a folder) are visible to resident
+        expect(folders_data.map { |d| d.dig(:attributes, :visible_children_count) }).to match_array [0, 2]
       end
 
-      example 'Visible children count should take account with applied filters', document: false do
+      example 'Visible children count should take account of applied filters', document: false do
         projects.first.admin_publication.update! publication_status: 'archived'
-        do_request(folder: nil, publication_statuses: ['published'], remove_not_allowed_parents: true)
+        do_request(folder: nil, publication_statuses: ['published'])
         expect(status).to eq(200)
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 2
-        expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('folder')).to eq 1
+        expect(json_response[:data].size).to eq 3
+        expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('folder')).to eq 2
         expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('project')).to eq 1
-        expect(json_response[:data].find { |d| d.dig(:relationships, :publication, :data, :type) == 'folder' }.dig(:attributes, :visible_children_count)).to eq 1
+
+        folders_data = (json_response[:data].select { |d| d.dig(:relationships, :publication, :data, :type) == 'folder' })
+        # Only the one non-draft project (in a folder) is visible to resident
+        expect(folders_data.map { |d| d.dig(:attributes, :visible_children_count) }).to match_array [0, 1]
       end
 
       context 'search param' do
@@ -640,7 +642,6 @@ resource 'AdminPublication' do
       parameter :search, 'Search text of title, description, preview, and slug', required: false
       parameter :publication_statuses, 'Return only publications with the specified publication statuses (i.e. given an array of publication statuses); always includes folders; returns all publications by default (OR)', required: false
       parameter :folder, 'Filter by folder (project folder id)', required: false
-      parameter :remove_not_allowed_parents, 'Filter out folders which contain only projects that are not visible to the user', required: false
       parameter :only_projects, 'Include projects only (no folders)', required: false
       parameter :filter_can_moderate, 'Filter out the projects the user is allowed to moderate. False by default', required: false
       parameter :filter_is_moderator_of, 'Filter out the publications the user is not moderator of. False by default', required: false
@@ -690,7 +691,6 @@ resource 'AdminPublication' do
       parameter :search, 'Search text of title, description, preview, and slug', required: false
       parameter :publication_statuses, 'Return only publications with the specified publication statuses (i.e. given an array of publication statuses); always includes folders; returns all publications by default (OR)', required: false
       parameter :folder, 'Filter by folder (project folder id)', required: false
-      parameter :remove_not_allowed_parents, 'Filter out folders which contain only projects that are not visible to the user', required: false
       parameter :only_projects, 'Include projects only (no folders)', required: false
       parameter :filter_can_moderate, 'Filter out the projects the user is allowed to moderate. False by default', required: false
       parameter :filter_is_moderator_of, 'Filter out the publications the user is not moderator of. False by default', required: false
@@ -822,7 +822,6 @@ resource 'AdminPublication' do
         end
         parameter :depth, 'Filter by depth', required: false
         parameter :publication_statuses, 'Return only publications with the specified publication statuses (i.e. given an array of publication statuses); always includes folders; returns all publications by default (OR)', required: false
-        parameter :remove_not_allowed_parents, 'Filter out folders which contain only projects that are not visible to the user', required: false
         parameter :include_publications, 'Include the related publications and associated items', required: false
 
         example_request 'Index action does not invoke unnecessary queries' do
@@ -844,11 +843,10 @@ resource 'AdminPublication' do
             do_request(
               page: { size: 6, number: 1 },
               depth: 0,
-              remove_not_allowed_parents: 'true',
               publication_statuses: %w[published archived],
               include_publications: 'true'
             )
-          end.not_to exceed_query_limit(123)
+          end.not_to exceed_query_limit(122)
 
           assert_status 200
         end

@@ -105,6 +105,7 @@ class Idea < ApplicationRecord
   has_many :idea_images, -> { order(:ordering) }, dependent: :destroy, inverse_of: :idea
   has_many :idea_files, -> { order(:ordering) }, dependent: :destroy, inverse_of: :idea
   has_one :idea_trending_info
+  has_many :embeddings_similarities, as: :embeddable, dependent: :destroy
 
   accepts_nested_attributes_for :text_images, :idea_images, :idea_files
 

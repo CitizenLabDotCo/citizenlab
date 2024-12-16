@@ -1090,6 +1090,7 @@ function apiCreatePhase({
   votingMinTotal,
   nativeSurveyButtonMultiloc,
   nativeSurveyTitleMultiloc,
+  presentation_mode,
 }: {
   projectId: string;
   title: string;
@@ -1102,6 +1103,7 @@ function apiCreatePhase({
   description?: string;
   surveyUrl?: string;
   surveyService?: 'typeform' | 'survey_monkey' | 'google_forms';
+  presentation_mode?: 'card' | 'map';
   votingMaxTotal?: number;
   allow_anonymous_participation?: boolean;
   votingMethod?: VotingMethod;
@@ -1133,6 +1135,7 @@ function apiCreatePhase({
           submission_enabled: canPost,
           reacting_enabled: canReact,
           commenting_enabled: canComment,
+          presentation_mode,
           description_multiloc: { en: description },
           survey_embed_url: surveyUrl,
           survey_service: surveyService,

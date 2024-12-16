@@ -1,6 +1,6 @@
-import React, { useMemo } from 'react';
+import React, { lazy, Suspense, useMemo } from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Spinner } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 
 import { IdeaSortMethod, IPhaseData } from 'api/phases/types';
@@ -9,14 +9,16 @@ import { IdeaSortMethodFallback } from 'api/phases/utils';
 
 import messages from 'containers/ProjectsShowPage/messages';
 
-import {
-  IdeaCardsWithFiltersSidebar,
-  IdeaCardsWithoutFiltersSidebar,
-} from 'components/IdeaCards';
+const IdeasWithFiltersSidebar = lazy(
+  () => import('components/IdeaCards/IdeasWithFiltersSidebar')
+);
+
+import { IdeaCardsWithoutFiltersSidebar } from 'components/IdeaCards';
+import { Props as WithFiltersProps } from 'components/IdeaCards/IdeasWithFiltersSidebar';
+import IdeaListScrollAnchor from 'components/IdeaListScrollAnchor';
 
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
-
 interface InnerProps {
   projectId: string;
   phase: IPhaseData;
@@ -71,14 +73,12 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
 
   const inputTerm = phase.attributes.input_term;
 
-  const sharedProps = {
-    className: participationMethod,
+  const sharedProps: WithFiltersProps = {
     ideaQueryParameters,
     onUpdateQuery: updateSearchParams,
     projectId,
     phaseId: phase.id,
     showViewToggle: true,
-    invisbleTitleMessage: messages.a11y_titleInputsPhase,
     defaultView: phase.attributes.presentation_mode,
   };
 
@@ -90,19 +90,17 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
       {isVotingContext ? (
         <IdeaCardsWithoutFiltersSidebar
           defaultSortingMethod={ideaQueryParameters.sort}
+          invisibleTitleMessage={messages.a11y_titleInputsPhase}
           showDropdownFilters={false}
           showSearchbar={false}
           {...sharedProps}
         />
       ) : (
         <>
-          <Box
-            position="absolute"
-            mt="-100px"
-            id="ideas-list-scroll-anchor"
-            aria-hidden={true}
-          />
-          <IdeaCardsWithFiltersSidebar inputTerm={inputTerm} {...sharedProps} />
+          <IdeaListScrollAnchor />
+          <Suspense fallback={<Spinner />}>
+            <IdeasWithFiltersSidebar inputTerm={inputTerm} {...sharedProps} />
+          </Suspense>
         </>
       )}
     </Box>

@@ -27,6 +27,7 @@ class SideFxIdeaService
 
     after_submission idea, user if idea.submitted_or_published?
     after_publish idea, user if idea.published?
+    enqueue_embeddings_job(idea)
 
     log_activities_if_cosponsors_added(idea, user)
   end
@@ -98,6 +99,8 @@ class SideFxIdeaService
         payload: { change: idea.body_multiloc_previous_change }
       )
     end
+
+    enqueue_embeddings_job(idea) if idea.title_multiloc_previously_changed? || idea.body_multiloc_previously_changed?
 
     if idea.manual_votes_amount_previously_changed?
       LogActivityJob.perform_later(
@@ -207,6 +210,10 @@ class SideFxIdeaService
         )
       end
     end
+  end
+
+  def enqueue_embeddings_job(idea)
+    UpsertEmbeddingJob.perform_later(idea) if AppConfiguration.instance.feature_activated?('similar_inputs')
   end
 end
 

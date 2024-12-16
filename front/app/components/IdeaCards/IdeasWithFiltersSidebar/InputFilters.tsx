@@ -20,13 +20,11 @@ import TopicFilterBox from '../shared/Filters/TopicFilterBox';
 
 import ResetFiltersButton from './ResetFiltersButton';
 
-export interface Props {
+export interface InputFiltersProps {
   defaultValue?: string;
-  filtersActive: boolean;
   ideasFilterCounts: IIdeasFilterCounts | NilOrError;
   numberOfSearchResults: number;
-  selectedIdeaFilters: Partial<IIdeaQueryParameters>;
-  onClearFilters: () => void;
+  ideaQueryParameters: IIdeaQueryParameters;
   onSearch: (searchTerm: string) => void;
   onChangeStatus: (ideaStatus: string | null) => void;
   onChangeTopics: (topics: string[] | null) => void;
@@ -39,12 +37,10 @@ export interface Props {
 
 const InputFilters = ({
   defaultValue,
-  filtersActive,
   ideasFilterCounts,
   numberOfSearchResults,
-  selectedIdeaFilters,
+  ideaQueryParameters,
   phaseId,
-  onClearFilters,
   showResetButton = true,
   showStatusFilter = true,
   showSearchField = true,
@@ -52,7 +48,7 @@ const InputFilters = ({
   onChangeStatus,
   onChangeTopics,
   handleSortOnChange,
-}: Props) => {
+}: InputFiltersProps) => {
   const { data: phase } = usePhase(phaseId);
   const participationMethod =
     phase?.data.attributes.participation_method || 'ideation'; // Ideation used as fallback here for All Ideas page.
@@ -72,7 +68,7 @@ const InputFilters = ({
       {showSearchField && (
         // mt is here to ensure search input's label still shows when it's lifted up.
         // Needs to be fixed in the SearchInput component.
-        <Box mt="8px" mb={showResetButton ? '0' : '20px'}>
+        <Box mt="8px" mb="20px">
           <SearchInput
             defaultValue={defaultValue}
             onChange={onSearch}
@@ -81,31 +77,28 @@ const InputFilters = ({
           />
         </Box>
       )}
-      {showResetButton && (
-        <Box ml="auto">
-          <ResetFiltersButton
-            onClick={onClearFilters}
-            filtersActive={filtersActive}
-          />
-        </Box>
-      )}
       <Box mb="20px">
         <SortingBox handleSortOnChange={handleSortOnChange} phaseId={phaseId} />
       </Box>
       <Box mb="20px">
         <TopicFilterBox
-          selectedTopicIds={selectedIdeaFilters.topics}
-          selectedIdeaFilters={selectedIdeaFilters}
+          selectedTopicIds={ideaQueryParameters.topics}
+          ideaQueryParameters={ideaQueryParameters}
           onChange={onChangeTopics}
         />
       </Box>
       {showStatusFilter && isProposalsOrIdeation && (
         <StatusFilterBox
           participationMethod={participationMethod}
-          selectedStatusId={selectedIdeaFilters.idea_status}
-          selectedIdeaFilters={selectedIdeaFilters}
+          selectedStatusId={ideaQueryParameters.idea_status}
+          ideaQueryParameters={ideaQueryParameters}
           onChange={onChangeStatus}
         />
+      )}
+      {showResetButton && (
+        <Box mt="8px">
+          <ResetFiltersButton ideaQueryParameters={ideaQueryParameters} />
+        </Box>
       )}
     </>
   );

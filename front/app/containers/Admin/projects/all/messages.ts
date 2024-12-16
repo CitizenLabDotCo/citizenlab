@@ -62,9 +62,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.projects.all.yourProjects',
     defaultMessage: 'Your projects',
   },
-  active: {
-    id: 'app.containers.AdminPage.projects.all.active',
-    defaultMessage: 'Active',
+  publishedTab: {
+    id: 'app.containers.AdminPage.projects.all.publishedTab',
+    defaultMessage: 'Published',
   },
   searchProjects: {
     id: 'app.containers.AdminPage.projects.all.searchProjects',

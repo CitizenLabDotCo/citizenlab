@@ -6,15 +6,14 @@ import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
 
 import tracks from '../../tracks';
-import { Props as InputFiltersProps } from '../InputFilters';
+import { InputFiltersProps } from '../InputFilters';
 
 import messages from './FiltersModal/messages';
 
 const FiltersModal = lazy(() => import('./FiltersModal'));
 
 const ButtonWithFiltersModal = ({
-  selectedIdeaFilters,
-  onClearFilters,
+  ideaQueryParameters,
   ...filtersProps
 }: InputFiltersProps) => {
   const isSmallerThanTablet = useBreakpoint('tablet');
@@ -44,8 +43,7 @@ const ButtonWithFiltersModal = ({
       <Suspense fallback={null}>
         <FiltersModal
           opened={filtersModalOpened}
-          selectedIdeaFilters={selectedIdeaFilters}
-          onClearFilters={onClearFilters}
+          ideaQueryParameters={ideaQueryParameters}
           onClose={closeModal}
           {...filtersProps}
         />

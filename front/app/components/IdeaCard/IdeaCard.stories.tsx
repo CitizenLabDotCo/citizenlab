@@ -28,6 +28,7 @@ const IdeaCards = (props: Props) => {
       w="100%"
       h="100%"
       maxWidth="1166px"
+      maxHeight="240px"
       display="flex"
       flexDirection={smallerThanPhone ? 'column' : 'row'}
     >

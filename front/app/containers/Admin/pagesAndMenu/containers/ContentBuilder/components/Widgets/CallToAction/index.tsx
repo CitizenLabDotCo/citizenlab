@@ -5,7 +5,6 @@ import {
   colors,
   useBreakpoint,
   Text,
-  defaultCardStyle,
   media,
   Title,
   Input,
@@ -23,26 +22,22 @@ import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLoca
 import { useIntl } from 'utils/cl-intl';
 import { removeUrlLocale } from 'utils/removeUrlLocale';
 
+import { DEFAULT_Y_PADDING } from '../constants';
+
 import messages from './messages';
 
 const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 60px 40px;
   position: relative;
   overflow: hidden;
-  ${defaultCardStyle};
-
-  ${media.tablet`
-    padding: 60px 50px 50px;
-  `}
+  padding: ${DEFAULT_PADDING} 0px;
 
   ${media.phone`
     text-align: center;
     flex-direction: column;
     align-items: flex-start;
-    padding: 60px 30px 40px;
   `}
 `;
 
@@ -60,7 +55,6 @@ const ButtonContainer = styled.div`
   ${media.phone`
     margin-left: 0;
     width: 100%;
-    margin-top: 20px;
   `}
 `;
 
@@ -136,12 +130,13 @@ const CallToAction = ({
   const isSmallerThanSmallTablet = useBreakpoint('tablet');
 
   return (
-    <Box bg={colors.background} data-cy="e2e-highlight">
+    <Box
+      data-cy="e2e-highlight"
+      my={isSmallerThanTablet ? DEFAULT_PADDING : DEFAULT_Y_PADDING}
+    >
       <Box
         maxWidth="1200px"
         margin="0 auto"
-        pt={isSmallerThanTablet ? DEFAULT_PADDING : '40px'}
-        pb={isSmallerThanTablet ? DEFAULT_PADDING : '40px'}
         px={isSmallerThanTablet ? DEFAULT_PADDING : '0px'}
       >
         <Container>
@@ -150,10 +145,12 @@ const CallToAction = ({
             w="100%"
             maxWidth={isSmallerThanTablet ? undefined : '400px'}
           >
-            <Title variant="h2" color="tenantText">
+            <Title variant="h2" color="tenantText" mt="0">
               {lоcalize(title)}
             </Title>
-            <Text color="textSecondary">{lоcalize(description)}</Text>
+            <Text color="textSecondary" m="0">
+              {lоcalize(description)}
+            </Text>
           </Box>
           <ButtonContainer>
             {((enabled && secondaryButtonText) ||

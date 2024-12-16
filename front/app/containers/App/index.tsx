@@ -334,9 +334,6 @@ const App = ({ children }: Props) => {
             <div id="modal-portal" />
           </ErrorBoundary>
           <ErrorBoundary>
-            <div id="topbar-portal" />
-          </ErrorBoundary>
-          <ErrorBoundary>
             <Suspense fallback={null}>
               <ConsentManager />
             </Suspense>

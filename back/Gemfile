@@ -8,7 +8,7 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-gem 'rails', '~> 7.0'
+gem 'rails', '~> 7.0.8.7'
 gem 'pg', '~> 1.5.6'
 gem 'puma', '~> 6.4.3'
 gem 'bcrypt', '~> 3.1.20' # Use ActiveModel has_secure_password
@@ -153,6 +153,7 @@ gem 'mjml-rails', '~> 4.11'
 gem 'cloudfront-rails', '~> 0.4'
 gem 'google-cloud-document_ai', '~> 1.4'
 gem 'combine_pdf', '~> 1.0.26'
+gem 'neighbor', '~> 0.5.0'
 gem 'browser', '~> 6.1'
 
 # Temporarily add nkf and mutex_m to the Gemfile to clear the following warnings:

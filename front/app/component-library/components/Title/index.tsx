@@ -1,11 +1,13 @@
 import React from 'react';
 
+import { FontWeight } from 'component-library/utils/typings';
 import styled, { css } from 'styled-components';
 
 import {
   Color,
   colors,
   fontSizes,
+  getFontWeightCSS,
   isRtl,
   MainThemeProps,
 } from '../../utils/styleUtils';
@@ -23,7 +25,6 @@ import Box, {
 
 export type Variant = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 export type FontSize = keyof typeof fontSizes;
-export type FontWeight = 'bold' | 'normal';
 type FontStyle = 'italic' | 'normal';
 export type TextAlign =
   | 'left'
@@ -55,11 +56,18 @@ export type TitleProps = {
 const StyledTitle = styled(Box)`
   ${isRtl`direction: rtl;`}
 
-  ${({ variant, color, fontSize, fontStyle, textAlign }: TitleProps) => css`
+  ${({
+    variant,
+    color,
+    fontSize,
+    fontStyle,
+    textAlign,
+    fontWeight,
+  }: TitleProps) => css`
     color: ${({ theme }: { theme: MainThemeProps }) =>
       color ? theme.colors[color] : colors.textPrimary};
     font-style: ${fontStyle ? fontStyle : 'normal'};
-    font-weight: bold;
+    font-weight: ${getFontWeightCSS(fontWeight || 'bold')};
     line-height: 1.3;
     word-break: break-word;
 

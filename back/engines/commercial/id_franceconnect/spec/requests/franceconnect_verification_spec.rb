@@ -72,7 +72,7 @@ describe 'franceconnect verification' do
     get '/auth/franceconnect?random-passthrough-param=somevalue'
     follow_redirect!
 
-    expect(response).to redirect_to('/fr-FR/?random-passthrough-param=somevalue')
+    expect(response).to redirect_to('/fr-FR/?random-passthrough-param=somevalue&sso_flow=signup&sso_success=true')
 
     user = User.find_by(email: 'wossewodda-3728@yopmail.com')
 

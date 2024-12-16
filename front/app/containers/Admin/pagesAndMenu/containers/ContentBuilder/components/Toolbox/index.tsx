@@ -6,23 +6,31 @@ import { SupportedLocale } from 'typings';
 import useAppConfigurationLocales, {
   createMultiloc,
 } from 'hooks/useAppConfigurationLocales';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import Container from 'components/admin/ContentBuilder/Toolbox/Container';
 import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
 import Section from 'components/admin/ContentBuilder/Toolbox/Section';
-import AccordionMultiloc from 'components/admin/ContentBuilder/Widgets/AccordionMultiloc';
-import ButtonMultiloc from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
-import IframeMultiloc from 'components/admin/ContentBuilder/Widgets/IframeMultiloc';
-import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
-import ImageTextCards from 'components/admin/ContentBuilder/Widgets/ImageTextCards';
+import AccordionMultiloc, {
+  accordionMultilocTitle,
+} from 'components/admin/ContentBuilder/Widgets/AccordionMultiloc';
+import ButtonMultiloc, {
+  buttonMultilocTitle,
+} from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
+import IframeMultiloc, {
+  iframeTitle,
+} from 'components/admin/ContentBuilder/Widgets/IframeMultiloc';
+import ImageMultiloc, {
+  imageMultilocTitle,
+} from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
 import ThreeColumn, {
   threeColumnTitle,
 } from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
 import TwoColumn, {
   twoColumnTitle,
 } from 'components/admin/ContentBuilder/Widgets/TwoColumn';
-import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
+import WhiteSpace, {
+  whiteSpaceTitle,
+} from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 
 import {
   useIntl,
@@ -44,18 +52,21 @@ import {
   getHomepageBannerDefaultImage,
   getHomepageBannerDefaultSettings,
 } from '../Widgets/HomepageBanner/utils';
+import ImageTextCards from '../Widgets/ImageTextCards';
 import OpenToParticipation, {
   openToParticipationTitle,
 } from '../Widgets/OpenToParticipation';
-import Projects, { projectsTitle } from '../Widgets/Projects';
-import projectsMessages from '../Widgets/Projects/messages';
+import ProjectsAndFoldersLegacy, {
+  projectsAndFoldersLegacyTitle,
+} from '../Widgets/ProjectsAndFoldersLegacy';
+import projectsMessages from '../Widgets/ProjectsAndFoldersLegacy/messages';
 import Published, { publishedTitle } from '../Widgets/Published';
 import Selection, { selectionTitle } from '../Widgets/Selection';
 import Spotlight, {
   spotlightTitle,
   buttonTextDefault,
 } from '../Widgets/Spotlight';
-import TextMultiloc from '../Widgets/TextMultiloc';
+import TextMultiloc, { textMultilocTitle } from '../Widgets/TextMultiloc';
 
 type HomepageBuilderToolboxProps = {
   selectedLocale: SupportedLocale;
@@ -68,9 +79,6 @@ const HomepageBuilderToolbox = ({
   const { formatMessage } = useIntl();
   const formatMessageWithLocale = useFormatMessageWithLocale();
   const appConfigurationLocales = useAppConfigurationLocales();
-  const newHomepageWidgetsEnabled = useFeatureFlag({
-    name: 'new_homepage_widgets',
-  });
 
   if (!appConfigurationLocales) return null;
 
@@ -83,96 +91,6 @@ const HomepageBuilderToolbox = ({
   return (
     <Container>
       <Section>
-        <DraggableElement
-          id="e2e-draggable-events"
-          component={<Events />}
-          icon="calendar"
-          label={formatMessage(messages.eventsTitle)}
-        />
-        <DraggableElement
-          id="e2e-draggable-image-text-cards"
-          component={<ImageTextCards />}
-          icon="section-image-text"
-          label={formatMessage(messages.imageTextCards)}
-        />
-        {newHomepageWidgetsEnabled && (
-          <DraggableElement
-            id="e2e-draggable-spotlight"
-            component={
-              <Spotlight buttonTextMultiloc={toMultiloc(buttonTextDefault)} />
-            }
-            icon="flash"
-            label={formatMessage(spotlightTitle)}
-          />
-        )}
-        {newHomepageWidgetsEnabled && (
-          <DraggableElement
-            id="e2e-draggable-open-to-participation"
-            component={
-              <OpenToParticipation
-                titleMultiloc={toMultiloc(openToParticipationTitle)}
-              />
-            }
-            icon="projects"
-            label={formatMessage(openToParticipationTitle)}
-          />
-        )}
-        {newHomepageWidgetsEnabled && (
-          <DraggableElement
-            id="e2e-draggable-followed-items"
-            component={
-              <FollowedItems
-                titleMultiloc={toMultiloc(followedItemsMessages.defaultTitle)}
-              />
-            }
-            icon="projects"
-            label={formatMessage(followedItemsTitle)}
-          />
-        )}
-        {newHomepageWidgetsEnabled && (
-          <DraggableElement
-            id="e2e-draggable-published"
-            component={<Published titleMultiloc={toMultiloc(publishedTitle)} />}
-            icon="check-circle"
-            label={formatMessage(publishedTitle)}
-          />
-        )}
-        {newHomepageWidgetsEnabled && (
-          <DraggableElement
-            id="e2e-draggable-finished-or-archived"
-            component={
-              <FinishedOrArchived
-                titleMultiloc={toMultiloc(
-                  finishedOrArchivedMessages.youSaidWeDid
-                )}
-                filterBy="finished"
-              />
-            }
-            icon="sportsScore"
-            label={formatMessage(finishedOrArchivedTitle)}
-          />
-        )}
-        {newHomepageWidgetsEnabled && (
-          <DraggableElement
-            id="e2e-draggable-selection"
-            component={
-              <Selection
-                titleMultiloc={toMultiloc(selectionTitle)}
-                adminPublicationIds={[]}
-              />
-            }
-            icon="folder-outline"
-            label={formatMessage(selectionTitle)}
-          />
-        )}
-        <DraggableElement
-          id="e2e-draggable-call-to-action"
-          component={
-            <CallToAction primaryButtonText={{}} secondaryButtonText={{}} />
-          }
-          icon="button"
-          label={formatMessage(callToActionTitle)}
-        />
         <DraggableElement
           id="e2e-draggable-homepage-banner"
           component={
@@ -187,16 +105,97 @@ const HomepageBuilderToolbox = ({
           label={formatMessage(homepageBannerTitle)}
         />
         <DraggableElement
+          id="e2e-draggable-open-to-participation"
+          component={
+            <OpenToParticipation
+              titleMultiloc={toMultiloc(openToParticipationTitle)}
+            />
+          }
+          icon="personRaisedHand"
+          label={formatMessage(openToParticipationTitle)}
+        />
+        <DraggableElement
+          id="e2e-draggable-followed-items"
+          component={
+            <FollowedItems
+              titleMultiloc={toMultiloc(followedItemsMessages.defaultTitle)}
+            />
+          }
+          icon="notification"
+          label={formatMessage(followedItemsTitle)}
+        />
+        <DraggableElement
+          id="e2e-draggable-finished-or-archived"
+          component={
+            <FinishedOrArchived
+              titleMultiloc={toMultiloc(
+                finishedOrArchivedMessages.youSaidWeDid
+              )}
+              filterBy="finished"
+            />
+          }
+          icon="sportsScore"
+          label={formatMessage(finishedOrArchivedTitle)}
+        />
+
+        <DraggableElement
+          id="e2e-draggable-spotlight"
+          component={
+            <Spotlight buttonTextMultiloc={toMultiloc(buttonTextDefault)} />
+          }
+          icon="flash"
+          label={formatMessage(spotlightTitle)}
+        />
+
+        <DraggableElement
+          id="e2e-draggable-selection"
+          component={
+            <Selection
+              titleMultiloc={toMultiloc(selectionTitle)}
+              adminPublicationIds={[]}
+            />
+          }
+          icon="folder-outline"
+          label={formatMessage(selectionTitle)}
+        />
+
+        <DraggableElement
+          id="e2e-draggable-published"
+          component={<Published titleMultiloc={toMultiloc(publishedTitle)} />}
+          icon="check-circle"
+          label={formatMessage(publishedTitle)}
+        />
+        <DraggableElement
+          id="e2e-draggable-events"
+          component={<Events />}
+          icon="calendar"
+          label={formatMessage(messages.eventsTitle)}
+        />
+        <DraggableElement
+          id="e2e-draggable-image-text-cards"
+          component={<ImageTextCards />}
+          icon="section-image-text"
+          label={formatMessage(messages.imageTextCards)}
+        />
+        <DraggableElement
+          id="e2e-draggable-call-to-action"
+          component={
+            <CallToAction primaryButtonText={{}} secondaryButtonText={{}} />
+          }
+          icon="button"
+          label={formatMessage(callToActionTitle)}
+        />
+        <DraggableElement
           id="e2e-draggable-projects"
           component={
-            <Projects
+            <ProjectsAndFoldersLegacy
               currentlyWorkingOnText={toMultiloc(
                 projectsMessages.projectsTitlePlaceholder
               )}
             />
           }
           icon="projects"
-          label={formatMessage(projectsTitle)}
+          label={formatMessage(projectsAndFoldersLegacyTitle)}
         />
       </Section>
       <Section>
@@ -204,13 +203,13 @@ const HomepageBuilderToolbox = ({
           id="e2e-draggable-text-multiloc"
           component={<TextMultiloc text={{}} />}
           icon="text"
-          label={formatMessage(TextMultiloc.craft.custom.title)}
+          label={formatMessage(textMultilocTitle)}
         />
         <DraggableElement
           id="e2e-draggable-white-space"
           component={<WhiteSpace size="small" />}
           icon="layout-white-space"
-          label={formatMessage(WhiteSpace.craft.custom.title)}
+          label={formatMessage(whiteSpaceTitle)}
         />
         <DraggableElement
           id="e2e-draggable-button"
@@ -223,13 +222,13 @@ const HomepageBuilderToolbox = ({
             />
           }
           icon="button"
-          label={formatMessage(ButtonMultiloc.craft.custom.title)}
+          label={formatMessage(buttonMultilocTitle)}
         />
         <DraggableElement
           id="e2e-draggable-image"
           component={<ImageMultiloc alt={{}} />}
           icon="image"
-          label={formatMessage(ImageMultiloc.craft.custom.title)}
+          label={formatMessage(imageMultilocTitle)}
         />
         <DraggableElement
           id="e2e-draggable-iframe"
@@ -242,13 +241,13 @@ const HomepageBuilderToolbox = ({
             />
           }
           icon="code"
-          label={formatMessage(IframeMultiloc.craft.custom.title)}
+          label={formatMessage(iframeTitle)}
         />
         <DraggableElement
           id="e2e-draggable-accordion"
           component={<AccordionMultiloc title={{}} text={{}} />}
           icon="accordion"
-          label={formatMessage(AccordionMultiloc.craft.custom.title)}
+          label={formatMessage(accordionMultilocTitle)}
         />
         <DraggableElement
           id="e2e-draggable-two-column"

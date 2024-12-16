@@ -10,7 +10,7 @@ import { IdeaSortMethod } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
 import { IdeaSortMethodFallback } from 'api/phases/utils';
 
-import { Props as InputFiltersProps } from 'components/IdeaCards/IdeasWithFiltersSidebar/InputFilters';
+import { InputFiltersProps } from 'components/IdeaCards/IdeasWithFiltersSidebar/InputFilters';
 import FiltersMapView from 'components/IdeaCards/IdeasWithFiltersSidebar/MapView/FiltersMapView';
 
 import { trackEventByName } from 'utils/analytics';
@@ -55,18 +55,16 @@ const MapIdeasList = memo<Props>(
     const [showFilters, setShowFilters] = useState(false);
 
     const {
-      selectedIdeaFilters,
+      ideaQueryParameters,
       onChangeStatus,
       onChangeTopics,
       handleSortOnChange,
-      onClearFilters,
-      filtersActive,
       ideasFilterCounts,
       numberOfSearchResults,
     } = inputFiltersProps ?? {};
 
     const hasInputFilterProps =
-      onChangeStatus && onChangeTopics && handleSortOnChange && onClearFilters;
+      onChangeStatus && onChangeTopics && handleSortOnChange;
 
     const { data: ideaCustomFieldsSchema } = useIdeaJsonFormSchema({
       projectId,
@@ -126,9 +124,7 @@ const MapIdeasList = memo<Props>(
         {showFilters && hasInputFilterProps && (
           <>
             <FiltersMapView
-              selectedIdeaFilters={selectedIdeaFilters || {}}
-              onClearFilters={onClearFilters}
-              filtersActive={!!filtersActive}
+              ideaQueryParameters={ideaQueryParameters || {}}
               ideasFilterCounts={ideasFilterCounts}
               numberOfSearchResults={
                 numberOfSearchResults ? numberOfSearchResults : 0

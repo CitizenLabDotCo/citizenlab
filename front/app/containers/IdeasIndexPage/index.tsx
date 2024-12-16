@@ -5,16 +5,17 @@ import {
   fontSizes,
   colors,
   isRtl,
-  Box,
 } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { IdeaQueryParameters } from 'api/ideas/types';
 import { IdeaSortMethod } from 'api/phases/types';
 
 import CityLogoSection from 'components/CityLogoSection';
 import ContentContainer from 'components/ContentContainer';
-import { IdeaCardsWithFiltersSidebar } from 'components/IdeaCards';
+import IdeasWithFiltersSidebar from 'components/IdeaCards/IdeasWithFiltersSidebar';
+import IdeaListScrollAnchor from 'components/IdeaListScrollAnchor';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
@@ -75,20 +76,6 @@ const PageTitle = styled.h1`
  `}
 `;
 
-export interface QueryParameters {
-  'page[number]': number;
-  'page[size]': number;
-  project_publication_status?: 'published';
-  publication_status?: 'published';
-  phase?: string;
-
-  // filters
-  sort: IdeaSortMethod;
-  search?: string;
-  idea_status?: string;
-  topics?: string[];
-}
-
 export default () => {
   const [searchParams] = useSearchParams();
   const sortParam = searchParams.get('sort') as IdeaSortMethod | null;
@@ -96,7 +83,7 @@ export default () => {
   const ideaStatusParam = searchParams.get('idea_status');
   const topicsParam = searchParams.get('topics');
 
-  const ideasQueryParameters = useMemo<QueryParameters>(
+  const ideasQueryParameters = useMemo<IdeaQueryParameters>(
     () => ({
       'page[number]': 1,
       'page[size]': 12,
@@ -123,14 +110,8 @@ export default () => {
             {/* Needed to add an anchor here so that we can scroll up the page correctly
                 when fitlers are changed in the IdeaCardsWithFiltersSidebar component and scrollToTopIdeasList util.
             */}
-            <Box
-              position="absolute"
-              mt="-100px"
-              id="ideas-list-scroll-anchor"
-              aria-hidden={true}
-            />
-            <IdeaCardsWithFiltersSidebar
-              invisibleTitleMessage={messages.a11y_IdeasListTitle1}
+            <IdeaListScrollAnchor />
+            <IdeasWithFiltersSidebar
               ideaQueryParameters={ideasQueryParameters}
               onUpdateQuery={updateSearchParams}
             />

@@ -83,7 +83,9 @@ const SSOVerificationButton = ({
       const jwt = getJwt();
       window.location.href = `${AUTH_PATH}/${
         verificationMethod?.attributes.name
-      }?token=${jwt}&pathname=${removeUrlLocale(window.location.pathname)}`;
+      }?token=${jwt}&verification_pathname=${removeUrlLocale(
+        window.location.pathname
+      )}`;
     }
   };
 

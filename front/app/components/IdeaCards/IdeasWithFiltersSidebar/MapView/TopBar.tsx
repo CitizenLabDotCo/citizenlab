@@ -19,26 +19,20 @@ const TopBar = ({ onClose }: Props) => {
       borderBottom={`1px solid ${colors.grey300}`}
       display="flex"
       alignItems="center"
-      justifyContent="space-between"
-      px="16px"
+      justifyContent="center"
+      position="relative"
     >
-      <Title
-        as="h2"
-        variant="h5"
-        fontWeight="bold"
-        // CloseIconButton has margin or padding on the right,
-        // which makes the px from Box above look assymetical
-        // This ml visually corrects this.
-        ml="8px"
-      >
+      <Title as={'h2'} variant={'h5'} m="0" p="16px" fontWeight="bold">
         <FormattedMessage {...messages.filters} />
       </Title>
-      <CloseIconButton
-        a11y_buttonActionMessage={messages.a11y_closeFilterPanel}
-        onClick={onClose}
-        iconColor={colors.textSecondary}
-        iconColorOnHover={colors.grey800}
-      />
+      <Box position="absolute" right="8px">
+        <CloseIconButton
+          a11y_buttonActionMessage={messages.a11y_closeFilterPanel}
+          onClick={onClose}
+          iconColor={colors.textSecondary}
+          iconColorOnHover={colors.grey800}
+        />
+      </Box>
     </Box>
   );
 };
