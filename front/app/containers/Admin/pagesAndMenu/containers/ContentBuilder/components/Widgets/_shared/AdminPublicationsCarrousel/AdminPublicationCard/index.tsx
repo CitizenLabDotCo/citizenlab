@@ -109,6 +109,8 @@ export const AdminPublicationCard = ({
           limit={3}
           userCount={userCount}
           participantsTextFontSize="m"
+          showParticipantText={!isSmallerThanPhone}
+          userCountBubbleFontSize={10}
         />
       </Box>
       <Text mt="8px" mb="0">
