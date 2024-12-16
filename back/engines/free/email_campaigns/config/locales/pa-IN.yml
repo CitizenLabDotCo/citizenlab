@@ -34,7 +34,7 @@ pa:
       "new_comment_for_admin": ਇੱਕ ਪ੍ਰੋਜੈਕਟ ਵਿੱਚ ਨਵੀਂ ਟਿੱਪਣੀ ਜੋ ਮੈਂ ਸੰਚਾਲਿਤ ਕਰਦੀ ਹਾਂ
       "new_idea_for_admin": ਇੱਕ ਪ੍ਰੋਜੈਕਟ ਵਿੱਚ ਨਵਾਂ ਵਿਚਾਰ ਜੋ ਮੈਂ ਸੰਚਾਲਿਤ ਕਰਦਾ ਹਾਂ
       "new_initiative_for_admin": ਨਵਾਂ ਪ੍ਰਸਤਾਵ
-      "official_feedback_on_idea_you_follow": ਉਸ ਵਿਚਾਰ 'ਤੇ ਅੱਪਡੇਟ ਕਰੋ ਜਿਸਦੀ ਤੁਸੀਂ ਪਾਲਣਾ ਕਰਦੇ ਹੋ
+      "official_feedback_on_idea_you_follow": ਉਸ ਵਿਚਾਰ 'ਤੇ ਅੱਪਡੇਟ ਕਰੋ ਜਿਸਦਾ ਤੁਸੀਂ ਅਨੁਸਰਣ ਕਰਦੇ ਹੋ
       "official_feedback_on_initiative_you_follow": ਉਸ ਪ੍ਰਸਤਾਵ 'ਤੇ ਅੱਪਡੇਟ ਕਰੋ ਜਿਸਦੀ ਤੁਸੀਂ ਪਾਲਣਾ ਕਰਦੇ ਹੋ
       "password_reset": ਪਾਸਵਰਡ ਰੀਸੈੱਟ
       "project_moderation_rights_received": ਪ੍ਰੋਜੈਕਟ ਸੰਚਾਲਨ ਅਧਿਕਾਰ ਪ੍ਰਾਪਤ ਹੋਏ
@@ -344,7 +344,7 @@ pa:
     official_feedback_on_idea_you_follow:
       header_message: '%{officialName} ਨੇ ''%{ideaTitle}'' ਵਿਚਾਰ ''ਤੇ ਇੱਕ ਅੱਪਡੇਟ ਦਿੱਤਾ। %{officialName}ਨਾਲ ਗੱਲਬਾਤ ਵਿੱਚ ਦਾਖਲ ਹੋਣ ਲਈ ਹੇਠਾਂ ਦਿੱਤੇ ਬਟਨ ''ਤੇ ਕਲਿੱਕ ਕਰੋ।'
       header_title: 'ਤੁਹਾਡੇ ਦੁਆਰਾ ਅਨੁਸਰਣ ਕੀਤੇ ਗਏ ਵਿਚਾਰ ''ਤੇ ਇੱਕ ਅਪਡੇਟ ਹੈ'
-      subject: 'ਤੁਹਾਡੇ ਦੁਆਰਾ ਅਨੁਸਰਣ ਕੀਤੇ ਗਏ ਇੱਕ ਵਿਚਾਰ ਨੂੰ %{organizationName}ਦੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਇੱਕ ਅਧਿਕਾਰਤ ਅਪਡੇਟ ਪ੍ਰਾਪਤ ਹੋਇਆ ਹੈ'
+      subject: 'ਤੁਹਾਡੇ ਦੁਆਰਾ ਅਨੁਸਰਣ ਕੀਤੇ ਗਏ ਵਿਚਾਰ ਨੂੰ %{organizationName}ਦੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਇੱਕ ਅਧਿਕਾਰਤ ਅਪਡੇਟ ਪ੍ਰਾਪਤ ਹੋਇਆ ਹੈ'
       preheader: 'ਤੁਹਾਡੇ ਦੁਆਰਾ ਅਨੁਸਰਣ ਕੀਤੇ ਗਏ ਵਿਚਾਰ ''ਤੇ ਇੱਕ ਅਪਡੇਟ ਹੈ'
     official_feedback_on_initiative_you_follow:
       header_message: '%{officialName} ਨੇ ਪ੍ਰਸਤਾਵ ''%{initiativeTitle}'' ''ਤੇ ਇੱਕ ਅੱਪਡੇਟ ਦਿੱਤਾ। %{organizationName}ਨਾਲ ਗੱਲਬਾਤ ਵਿੱਚ ਦਾਖਲ ਹੋਣ ਲਈ ਹੇਠਾਂ ਦਿੱਤੇ ਬਟਨ ''ਤੇ ਕਲਿੱਕ ਕਰੋ।'
@@ -483,7 +483,7 @@ pa:
       cta_view_idea: 'ਆਪਣੇ ਵਿਚਾਰ ''ਤੇ ਜਾਓ'
       event_description: '%{firstName}, ਤੁਹਾਡੇ ਵਿਚਾਰ ਨੂੰ %{organizationName}ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ''ਤੇ ਸਫਲਤਾਪੂਰਵਕ ਪ੍ਰਕਾਸ਼ਿਤ ਕੀਤਾ ਗਿਆ ਹੈ। ਜਦੋਂ ਲੋਕ ਤੁਹਾਡੇ ਵਿਚਾਰ ਨਾਲ ਗੱਲਬਾਤ ਕਰਦੇ ਹਨ ਤਾਂ ਤੁਹਾਨੂੰ ਸੂਚਿਤ ਕੀਤਾ ਜਾਵੇਗਾ। ਹੇਠਾਂ ਪਤਾ ਕਰੋ ਕਿ ਤੁਸੀਂ ਅਗਲੇ ਕਿਹੜੇ ਕਦਮ ਚੁੱਕ ਸਕਦੇ ਹੋ।'
       link: ਲਿੰਕ
-      main_header: 'ਤੁਸੀਂ ਇੱਕ ਵਿਚਾਰ ਪੋਸਟ ਕੀਤਾ ਹੈ! ਆਓ ਇਹ ਯਕੀਨੀ ਕਰੀਏ ਕਿ ਇਹ ਪੜ੍ਹਿਆ ਜਾਂਦਾ ਹੈ.'
+      main_header: 'ਤੁਸੀਂ ਇੱਕ ਵਿਚਾਰ ਪੋਸਟ ਕੀਤਾ ਹੈ! ਆਓ ਇਹ ਯਕੀਨੀ ਕਰੀਏ ਕਿ ਇਹ ਪੜ੍ਹਿਆ ਜਾਵੇ।'
       message_get_votes: 'ਆਪਣੇ ਵਿਚਾਰ ਨਾਲ ਹੋਰ ਲੋਕਾਂ ਤੱਕ ਪਹੁੰਚੋ:'
       preheader: '%{firstName}, %{organizationName}ਦੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਆਪਣੇ ਵਿਚਾਰ ਪੋਸਟ ਕਰਨ ਲਈ ਵਧਾਈਆਂ। ਹੁਣ ਸਮਰਥਨ ਇਕੱਠਾ ਕਰੋ.'
       see_you: 'ਪਲੇਟਫਾਰਮ ''ਤੇ ਜਲਦੀ ਮਿਲਦੇ ਹਾਂ!'
