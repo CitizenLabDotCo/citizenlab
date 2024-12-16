@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { Box } from '@citizenlab/cl2-component-library';
 import { Multiloc } from 'typings';
 
 import useProjectFolderImage from 'api/project_folder_images/useProjectFolderImage';
@@ -36,7 +37,6 @@ const Spotlight = ({
   // If publicationType === 'project'
   const projectId = publicationType === 'project' ? publicationId : undefined;
   const { data: project, isError: isErrorProject } = useProjectById(projectId);
-  console.log({ project, isErrorProject });
   const projectImageId =
     project?.data.relationships.project_images?.data[0]?.id;
   const { data: projectImage } = useProjectImage({
@@ -58,7 +58,9 @@ const Spotlight = ({
   const localize = useLocalize();
   const { formatMessage } = useIntl();
 
-  if (isErrorProject || isErrorFolder) return null;
+  if (isErrorProject || isErrorFolder) {
+    return <Box />;
+  }
 
   if (!publicationId) {
     return (
