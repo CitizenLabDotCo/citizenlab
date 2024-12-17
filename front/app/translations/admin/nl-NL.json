@@ -2466,7 +2466,7 @@
   "app.containers.AdminPage.projects.project.analysis.invalidShapefile": "De shapefile die werd geüpload is ongeldig en kan niet worden weergegeven.",
   "app.containers.AdminPage.projects.project.analysis.limit": "Limiet",
   "app.containers.AdminPage.projects.project.analysis.mainQuestion": "Hoofdvraag",
-  "app.containers.AdminPage.projects.project.analysis.manageInput": "Invoer beheren",
+  "app.containers.AdminPage.projects.project.analysis.manageInput": "Bijdragen beheren",
   "app.containers.AdminPage.projects.project.analysis.noAnswer": "Geen antwoord",
   "app.containers.AdminPage.projects.project.analysis.noAnswerProvided2": "Geen antwoord gegeven.",
   "app.containers.AdminPage.projects.project.analysis.noFileUploaded": "Geen shapefile geüpload.",
