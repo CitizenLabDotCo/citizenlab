@@ -11,10 +11,6 @@ module MachineTranslations
             translatable_class: Idea,
             translatable_id: :idea_id
           },
-          'Initiative' => {
-            translatable_class: Initiative,
-            translatable_id: :initiative_id
-          },
           'Comment' => {
             translatable_class: Comment,
             translatable_id: :comment_id
