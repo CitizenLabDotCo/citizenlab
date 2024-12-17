@@ -103,6 +103,7 @@ const IdeasShowPage = () => {
     if (isSmallerThanTablet) {
       return `${theme.mobileTopBarHeight}px`;
     } else if (showDesktopCTABarAtTopOfPage) {
+      // This is the height of the CTA bar that might stick to the top of the page on desktop
       return `${stylingConsts.menuHeight}px`;
     }
     return undefined;
