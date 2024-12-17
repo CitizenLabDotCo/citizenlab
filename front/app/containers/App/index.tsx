@@ -115,7 +115,12 @@ const App = ({ children }: Props) => {
           .map((locale) => appLocalesMomentPairs[locale])
       ).forEach((locale) => {
         const localePath = `/node_modules/moment/locale/${locale}.js`;
-        localeImports[localePath]();
+        const loadLocale = localeImports[localePath];
+
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        if (loadLocale) {
+          loadLocale();
+        }
       });
 
       // Weglot initialization
