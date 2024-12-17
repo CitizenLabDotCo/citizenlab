@@ -1497,6 +1497,8 @@
   "app.containers.NotificationMenu.projectPhaseStarted": "{projectTitle} ایک نئے مرحلے میں داخل ہوا۔",
   "app.containers.NotificationMenu.projectPhaseUpcoming": "{projectTitle} {phaseStartAt}پر ایک نئے مرحلے میں داخل ہوگا۔",
   "app.containers.NotificationMenu.projectPublished": "ایک نیا پروجیکٹ شائع ہوا۔",
+  "app.containers.NotificationMenu.projectReviewRequest": "{name} نے پروجیکٹ \"{projectTitle}\" کو شائع کرنے کی منظوری کی درخواست کی",
+  "app.containers.NotificationMenu.projectReviewStateChange": "{name} نے اشاعت کے لیے \"{projectTitle}\" کو منظوری دے دی۔",
   "app.containers.NotificationMenu.statusChangedOnIdeaYouFollow": "{ideaTitle} اسٹیٹس {status}میں تبدیل ہو گیا ہے۔",
   "app.containers.NotificationMenu.thresholdReachedForAdmin": "{post} ووٹنگ کی حد تک پہنچ گیا۔",
   "app.containers.NotificationMenu.userAcceptedYourInvitation": "{name} نے آپ کی دعوت قبول کر لی",
