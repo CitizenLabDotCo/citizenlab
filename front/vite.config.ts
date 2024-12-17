@@ -1,13 +1,13 @@
 import path from 'path';
 
 import react from '@vitejs/plugin-react';
+import moment from 'moment';
 import { defineConfig, loadEnv } from 'vite';
+import checker from 'vite-plugin-checker';
+import commonjs from 'vite-plugin-commonjs';
 import EnvironmentPlugin from 'vite-plugin-env-compatible';
 import { createHtmlPlugin } from 'vite-plugin-html';
 import tsconfigPaths from 'vite-plugin-tsconfig-paths';
-import commonjs from 'vite-plugin-commonjs';
-import moment from 'moment';
-import checker from 'vite-plugin-checker';
 
 // Define Vite configuration
 export default defineConfig(({ mode }) => {
