@@ -1821,7 +1821,7 @@
   "app.containers.UsersShowPage.noEventsForUser": "Још нисте присуствовали ниједном догађају.",
   "app.containers.UsersShowPage.postsWithCount": "Пријаве ({ideasCount})",
   "app.containers.UsersShowPage.projectFolders": "Фасцикле пројекта",
-  "app.containers.UsersShowPage.projects": "Пројекти",
+  "app.containers.UsersShowPage.projects": "Пројеката",
   "app.containers.UsersShowPage.proposals": "Предлози",
   "app.containers.UsersShowPage.seePost": "Погледајте подношење",
   "app.containers.UsersShowPage.topics": "Теме",
