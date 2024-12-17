@@ -223,4 +223,8 @@ export default defineMessages({
     id: 'app.containers.Admin.Invitations.a11y_removeInvite',
     defaultMessage: 'Remove invitation',
   },
+  deleteInviteConfirmation: {
+    id: 'app.containers.Admin.Invitations.deleteInviteConfirmation',
+    defaultMessage: 'Are you sure you want to delete this invitation?',
+  },
 });

@@ -29,8 +29,10 @@ const TableRow = (inputProps: InputProps) => {
   const { data: user } = useUserById(userId);
 
   const handleOnDeleteInvite = () => {
-    const inviteId = inputProps.invite.id;
-    deleteInvite(inviteId);
+    if (window.confirm(formatMessage(messages.deleteInviteConfirmation))) {
+      const inviteId = invite.id;
+      deleteInvite(inviteId);
+    }
   };
 
   if (!user) return null;
