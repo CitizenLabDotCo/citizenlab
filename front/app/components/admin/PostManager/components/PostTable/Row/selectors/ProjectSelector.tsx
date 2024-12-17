@@ -14,10 +14,10 @@ const StyledLabel = styled(Label)`
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  color: teal;
-  border: 1px solid teal;
-  border-radius: 4px;
-  font-size: 12px;
+  color: ${({ theme }) => theme.colors.teal};
+  border: 1px solid ${({ theme }) => theme.colors.teal};
+  border-radius: ${({ theme }) => theme.borderRadius};
+  font-size: ${({ theme }) => theme.fontSizes.xs}px};
   padding: 2px 4px;
   font-weight: 600;
 `;
