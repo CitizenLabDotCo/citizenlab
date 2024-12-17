@@ -1,14 +1,19 @@
 import React from 'react';
 
-import { Tr, Td, Badge, colors } from '@citizenlab/cl2-component-library';
+import {
+  Tr,
+  Td,
+  Badge,
+  colors,
+  IconButton,
+} from '@citizenlab/cl2-component-library';
 import { FormattedDate } from 'react-intl';
-import { Button as SemanticButton, Popup } from 'semantic-ui-react';
 
 import { IInviteData } from 'api/invites/types';
 import useDeleteInvite from 'api/invites/useDeleteInvite';
 import useUserById from 'api/users/useUserById';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { getFullName } from 'utils/textUtils';
 
 import messages from '../messages';
@@ -18,6 +23,7 @@ interface InputProps {
 }
 
 const TableRow = (inputProps: InputProps) => {
+  const { formatMessage } = useIntl();
   const { mutate: deleteInvite } = useDeleteInvite();
   const userId = inputProps.invite.relationships.invitee.data.id;
   const { data: user } = useUserById(userId);
@@ -53,18 +59,14 @@ const TableRow = (inputProps: InputProps) => {
           </Badge>
         )}
       </Td>
-      <Td style={{ textAlign: 'center' }}>
-        <Popup
-          trigger={<SemanticButton icon="trash" />}
-          content={
-            <SemanticButton
-              color="red"
-              content={<FormattedMessage {...messages.confirmDelete} />}
-              onClick={handleOnDeleteInvite}
-            />
-          }
-          on="click"
-          position="bottom right"
+      <Td display="flex" justifyContent="center">
+        <IconButton
+          buttonType="button"
+          iconName="delete"
+          a11y_buttonActionMessage={formatMessage(messages.a11y_removeInvite)}
+          onClick={handleOnDeleteInvite}
+          iconColor={colors.textSecondary}
+          iconColorOnHover={colors.error}
         />
       </Td>
     </Tr>

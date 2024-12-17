@@ -174,10 +174,6 @@ export default defineMessages({
     id: 'app.containers.Admin.Invitations.inviteStatusAccepted',
     defaultMessage: 'Accepted',
   },
-  confirmDelete: {
-    id: 'app.containers.Admin.Invitations.confirmDelete',
-    defaultMessage: "Yes, I'm sure",
-  },
   currentlyNoInvitesThatMatchSearch: {
     id: 'app.containers.Admin.Invitations.currentlyNoInvitesThatMatchSearch',
     defaultMessage: 'There are no invites that match your search',
@@ -222,5 +218,9 @@ export default defineMessages({
   required: {
     id: 'UI.FormComponents.required',
     defaultMessage: 'required',
+  },
+  a11y_removeInvite: {
+    id: 'app.containers.Admin.Invitations.a11y_removeInvite',
+    defaultMessage: 'Remove invitation',
   },
 });
