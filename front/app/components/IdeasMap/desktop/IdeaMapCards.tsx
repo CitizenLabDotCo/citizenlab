@@ -1,7 +1,11 @@
 import React from 'react';
 
-import { colors, fontSizes, Spinner } from '@citizenlab/cl2-component-library';
-import { Icon } from 'semantic-ui-react';
+import {
+  colors,
+  fontSizes,
+  Spinner,
+  Icon,
+} from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import { IIdeaMarkers } from 'api/idea_markers/types';

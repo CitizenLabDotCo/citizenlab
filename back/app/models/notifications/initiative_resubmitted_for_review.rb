@@ -29,6 +29,7 @@
 #  basket_id                     :uuid
 #  cosponsors_initiative_id      :uuid
 #  cosponsorship_id              :uuid
+#  project_review_id             :uuid
 #
 # Indexes
 #
@@ -45,6 +46,7 @@
 #  index_notifications_on_post_id_and_post_type                (post_id,post_type)
 #  index_notifications_on_post_status_id                       (post_status_id)
 #  index_notifications_on_post_status_id_and_post_status_type  (post_status_id,post_status_type)
+#  index_notifications_on_project_review_id                    (project_review_id)
 #  index_notifications_on_recipient_id                         (recipient_id)
 #  index_notifications_on_recipient_id_and_read_at             (recipient_id,read_at)
 #  index_notifications_on_spam_report_id                       (spam_report_id)
@@ -62,6 +64,7 @@
 #  fk_rails_...  (official_feedback_id => official_feedbacks.id)
 #  fk_rails_...  (phase_id => phases.id)
 #  fk_rails_...  (project_id => projects.id)
+#  fk_rails_...  (project_review_id => project_reviews.id)
 #  fk_rails_...  (recipient_id => users.id)
 #  fk_rails_...  (spam_report_id => spam_reports.id)
 #

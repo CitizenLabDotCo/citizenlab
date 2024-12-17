@@ -1497,6 +1497,8 @@
   "app.containers.NotificationMenu.projectPhaseStarted": "دخل {projectTitle} مرحلة جديدة",
   "app.containers.NotificationMenu.projectPhaseUpcoming": "سيدخل {projectTitle} مرحلة جديدة في {phaseStartAt}",
   "app.containers.NotificationMenu.projectPublished": "تم نشر مشروع جديد",
+  "app.containers.NotificationMenu.projectReviewRequest": "{name} طلب الموافقة على نشر المشروع \"{projectTitle}\"",
+  "app.containers.NotificationMenu.projectReviewStateChange": "{name} تمت الموافقة على \"{projectTitle}\" للنشر",
   "app.containers.NotificationMenu.statusChangedOnIdeaYouFollow": "لقد تغيرت الحالة {ideaTitle} إلى {status}",
   "app.containers.NotificationMenu.thresholdReachedForAdmin": "بلغ {post} حد التصويت المطلوب",
   "app.containers.NotificationMenu.userAcceptedYourInvitation": "قبِل {name} دعوتك",

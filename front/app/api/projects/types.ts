@@ -73,6 +73,7 @@ export interface IProjectAttributes {
   preview_token: string;
   created_at: string;
   updated_at: string;
+  first_published_at: string | null;
   header_bg: ProjectHeaderBgImageSizes;
   header_bg_alt_text_multiloc: Multiloc;
   comments_count: number;

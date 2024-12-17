@@ -1497,6 +1497,8 @@
   "app.containers.NotificationMenu.projectPhaseStarted": "{projectTitle} siirtyi uuteen vaiheeseen",
   "app.containers.NotificationMenu.projectPhaseUpcoming": "{projectTitle} siirtyy uuteen vaiheeseen {phaseStartAt}",
   "app.containers.NotificationMenu.projectPublished": "Uusi projekti julkaistiin",
+  "app.containers.NotificationMenu.projectReviewRequest": "{name} pyysi lupaa julkaista projektin \"{projectTitle}\"",
+  "app.containers.NotificationMenu.projectReviewStateChange": "{name} hyväksyi \"{projectTitle}\" julkaistavaksi",
   "app.containers.NotificationMenu.statusChangedOnIdeaYouFollow": "{ideaTitle} tila on muuttunut arvoon {status}",
   "app.containers.NotificationMenu.thresholdReachedForAdmin": "{post} saavutti äänestyskynnyksen",
   "app.containers.NotificationMenu.userAcceptedYourInvitation": "{name} hyväksyi kutsusi",

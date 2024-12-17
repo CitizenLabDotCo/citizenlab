@@ -41,7 +41,7 @@ const StatusShowComponent = React.lazy(
 );
 
 // approval
-const Approval = lazy(() => import('./approval'));
+const ProjectReview = lazy(() => import('./projectReview'));
 
 export enum settingsRoutes {
   settings = 'settings',
@@ -59,7 +59,7 @@ export enum settingsRoutes {
   proposals = 'proposals',
   statuses = 'statuses',
   statusId = ':statusId',
-  approval = 'approval',
+  projectReview = 'review',
 }
 
 export type settingRouteTypes =
@@ -79,7 +79,7 @@ export type settingRouteTypes =
   | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.proposals}/${settingsRoutes.statuses}`>
   | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.proposals}/${settingsRoutes.statuses}/${settingsRoutes.new}`>
   | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.proposals}/${settingsRoutes.statuses}/${string}`>
-  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.approval}`>
+  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.projectReview}`>
   | registrationRouteTypes;
 
 export default () => ({
@@ -238,10 +238,10 @@ export default () => ({
       ],
     },
     {
-      path: settingsRoutes.approval,
+      path: settingsRoutes.projectReview,
       element: (
         <PageLoading>
-          <Approval />
+          <ProjectReview />
         </PageLoading>
       ),
     },

@@ -1497,6 +1497,8 @@
   "app.containers.NotificationMenu.projectPhaseStarted": "{projectTitle} је ушло у нову фазу",
   "app.containers.NotificationMenu.projectPhaseUpcoming": "{projectTitle} ће ући у нову фазу {phaseStartAt}",
   "app.containers.NotificationMenu.projectPublished": "Објављен је нови пројекат",
+  "app.containers.NotificationMenu.projectReviewRequest": "{name} requested approval to publish the project \"{projectTitle}\"",
+  "app.containers.NotificationMenu.projectReviewStateChange": "{name} approved \"{projectTitle}\" for publication",
   "app.containers.NotificationMenu.statusChangedOnIdeaYouFollow": "{ideaTitle} статус је промењен у {status}",
   "app.containers.NotificationMenu.thresholdReachedForAdmin": "{post} је достигло цензус за гласање",
   "app.containers.NotificationMenu.userAcceptedYourInvitation": "{name} је прихватио ваш позив",

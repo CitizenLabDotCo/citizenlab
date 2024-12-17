@@ -1425,6 +1425,18 @@
             "default": true
           }
         }
+      },
+
+      "platform_templates": {
+        "type": "object",
+        "title": "Platform templates",
+        "description": "Allow non-superadmins to create reports using platform templates.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
       }
     },
   "dependencies": {
