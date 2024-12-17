@@ -2131,7 +2131,7 @@
   "app.containers.AdminPage.SettingsPage.subtitleRegistration": "Specify what information people are asked to provide when signing up.",
   "app.containers.AdminPage.SettingsPage.subtitleTerminology": "Terminology",
   "app.containers.AdminPage.SettingsPage.successfulUpdateSettings": "Settings updated successfully.",
-  "app.containers.AdminPage.SettingsPage.tabApproval": "Approval",
+  "app.containers.AdminPage.SettingsPage.tabApproval": "Genehmegung",
   "app.containers.AdminPage.SettingsPage.tabAreas1": "Beräicher",
   "app.containers.AdminPage.SettingsPage.tabBranding": "Branding",
   "app.containers.AdminPage.SettingsPage.tabInputStatuses": "Input Status",
