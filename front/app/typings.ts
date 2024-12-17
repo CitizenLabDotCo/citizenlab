@@ -25,6 +25,7 @@ declare global {
     googleMaps?: boolean;
     intercomSettings: any;
     satismeter?: any;
+    Cypress?: any;
   }
 }
 

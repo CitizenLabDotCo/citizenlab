@@ -67,25 +67,15 @@ const Root = () => {
     prefetchData();
   }, []);
 
-  const localEnv = process.env.API_HOST?.includes('localhost');
-
   return (
     <QueryClientProvider client={queryClient}>
       <OutletsProvider>
         <HelmetProvider>
           <LanguageProvider>
             <HistoryRouter history={history as any}>
-              {localEnv ? (
-                <StrictMode>
-                  <App>
-                    <Routes />
-                  </App>
-                </StrictMode>
-              ) : (
-                <App>
-                  <Routes />
-                </App>
-              )}
+              <App>
+                <Routes />
+              </App>
             </HistoryRouter>
           </LanguageProvider>
         </HelmetProvider>
@@ -99,7 +89,14 @@ const mountApplication = () => {
   try {
     modules.beforeMountApplication();
   } finally {
-    render(<Root />, document.getElementById('app'));
+    window.Cypress
+      ? render(<Root />, document.getElementById('app'))
+      : render(
+          <StrictMode>
+            <Root />
+          </StrictMode>,
+          document.getElementById('app')
+        );
   }
 };
 
