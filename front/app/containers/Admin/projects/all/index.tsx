@@ -29,7 +29,6 @@ import SearchInput from 'components/UI/SearchInput';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { isAdmin } from 'utils/permissions/roles';
-import { isProjectFolderModerator } from 'utils/permissions/rules/projectFolderPermissions';
 
 import NonSortableProjectList from './Lists/NonSortableProjectList';
 import SortableProjectList from './Lists/SortableProjectList';
@@ -56,6 +55,7 @@ export type ActiveTab =
   | 'published'
   | 'draft'
   | 'archived'
+  | 'pending'
   | 'all';
 
 const getActiveTab = (pathname: string): ActiveTab => {
@@ -67,6 +67,8 @@ const getActiveTab = (pathname: string): ActiveTab => {
     return 'draft';
   } else if (pathname.includes('/admin/projects/archived')) {
     return 'archived';
+  } else if (pathname.includes('/admin/projects/pending')) {
+    return 'pending';
   } else {
     return 'your-projects';
   }
@@ -85,15 +87,9 @@ const AdminProjectsList = memo(({ className }: Props) => {
   const [search, setSearch] = useState<string>('');
   const { data: authUser } = useAuthUser();
   const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
+  const isProjectReviewEnabled = useFeatureFlag({ name: 'project_review' });
 
   const userIsAdmin = isAdmin(authUser);
-
-  const userIsFolderModerator =
-    (authUser &&
-      isProjectFoldersEnabled &&
-      isProjectFolderModerator(authUser)) ??
-    false;
-  const userCanCreateProject = userIsAdmin || userIsFolderModerator;
 
   const { data: moderatedAdminPublications } = useAdminPublications({
     publicationStatusFilter: ['published', 'draft', 'archived'],
@@ -118,6 +114,14 @@ const AdminProjectsList = memo(({ className }: Props) => {
 
   const { data: archivedAdminPublications } = useAdminPublications({
     publicationStatusFilter: ['archived'],
+    onlyProjects: true,
+    rootLevelOnly: false,
+    search,
+  });
+
+  const { data: pendingReviewAdminPublications } = useAdminPublications({
+    publicationStatusFilter: ['draft'],
+    review_state: 'pending',
     onlyProjects: true,
     rootLevelOnly: false,
     search,
@@ -151,6 +155,10 @@ const AdminProjectsList = memo(({ className }: Props) => {
 
   const flatModeratedAdminPublications = flattenPagesData(
     moderatedAdminPublications
+  );
+
+  const flatPendingReviewAdminPublications = flattenPagesData(
+    pendingReviewAdminPublications
   );
 
   return (
@@ -188,24 +196,17 @@ const AdminProjectsList = memo(({ className }: Props) => {
                 </Box>
               </Tooltip>
             )}
-            <Tooltip
-              content={
-                <FormattedMessage {...messages.onlyAdminsCanCreateProjects} />
-              }
-              disabled={userCanCreateProject}
-            >
-              <Box>
-                <Button
-                  data-cy="e2e-new-project-button"
-                  linkTo={'/admin/projects/new'}
-                  icon="plus-circle"
-                  buttonStyle="admin-dark"
-                  disabled={!userCanCreateProject}
-                >
-                  <FormattedMessage {...messages.newProject} />
-                </Button>
-              </Box>
-            </Tooltip>
+
+            <Box>
+              <Button
+                data-cy="e2e-new-project-button"
+                linkTo={'/admin/projects/new'}
+                icon="plus-circle"
+                buttonStyle="admin-dark"
+              >
+                <FormattedMessage {...messages.newProject} />
+              </Button>
+            </Box>
           </Box>
         </Box>
         <Box my="24px" w="fit-content">
@@ -256,6 +257,17 @@ const AdminProjectsList = memo(({ className }: Props) => {
               active={activeTab === 'archived'}
               url="/admin/projects/archived"
             />
+            {isProjectReviewEnabled && isAdmin(authUser) && (
+              <Tab
+                label={`
+                  ${formatMessage(messages.pendingReview)} (${
+                  flatPendingReviewAdminPublications?.length || 0
+                })`}
+                active={activeTab === 'pending'}
+                url="/admin/projects/pending"
+              />
+            )}
+
             <Tab
               label={formatMessage(messages.all)}
               active={activeTab === 'all'}
@@ -283,6 +295,8 @@ const AdminProjectsList = memo(({ className }: Props) => {
                     ? flatDraftAdminPublications
                     : activeTab === 'archived'
                     ? flatArchivedAdminPublications
+                    : activeTab === 'pending'
+                    ? flatPendingReviewAdminPublications
                     : flatAllAdminPublications
                 }
               />
