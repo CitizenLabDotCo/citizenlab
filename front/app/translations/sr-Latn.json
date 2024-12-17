@@ -1829,7 +1829,7 @@
   "app.containers.UsersShowPage.noEventsForUser": "You have not attended any events yet.",
   "app.containers.UsersShowPage.postsWithCount": "Objave ({ideasCount})",
   "app.containers.UsersShowPage.projectFolders": "Project folders",
-  "app.containers.UsersShowPage.projects": "Projects",
+  "app.containers.UsersShowPage.projects": "Projekata",
   "app.containers.UsersShowPage.proposals": "Proposals",
   "app.containers.UsersShowPage.seePost": "Pogledajte post",
   "app.containers.UsersShowPage.topics": "Topics",
