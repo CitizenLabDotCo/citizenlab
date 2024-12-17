@@ -115,10 +115,7 @@ const App = ({ children }: Props) => {
           .map((locale) => appLocalesMomentPairs[locale])
       ).forEach((locale) => {
         const localePath = `/node_modules/moment/locale/${locale}.js`;
-
-        if (localeImports[localePath]) {
-          localeImports[localePath]();
-        }
+        localeImports[localePath]();
       });
 
       // Weglot initialization
