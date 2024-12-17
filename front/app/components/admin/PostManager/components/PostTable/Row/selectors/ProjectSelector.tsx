@@ -1,23 +1,25 @@
 import React from 'react';
 
-import { Label } from 'semantic-ui-react';
+import { Label } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import useProjectById from 'api/projects/useProjectById';
 
 import T from 'components/T';
 
-const LabelText = styled.span`
-  font-weight: 600;
-`;
-
 const StyledLabel = styled(Label)`
+  display: inline;
   white-space: nowrap;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 175px;
+  color: teal;
+  border: 1px solid teal;
+  border-radius: 4px;
+  font-size: 12px;
+  padding: 2px 4px;
+  font-weight: 600;
 `;
 
 interface Props {
@@ -30,10 +32,8 @@ const ProjectSelector = ({ projectId }: Props) => {
   if (!project) return null;
 
   return (
-    <StyledLabel key={project.data.id} color="teal" basic={true}>
-      <LabelText>
-        <T value={project.data.attributes.title_multiloc} />
-      </LabelText>
+    <StyledLabel>
+      <T value={project.data.attributes.title_multiloc} />
     </StyledLabel>
   );
 };
