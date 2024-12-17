@@ -1,26 +1,15 @@
 import React from 'react';
 
-import { Label } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
+import {
+  Box,
+  colors,
+  stylingConsts,
+  Text,
+} from '@citizenlab/cl2-component-library';
 
 import useProjectById from 'api/projects/useProjectById';
 
 import T from 'components/T';
-
-const StyledLabel = styled(Label)`
-  display: inline;
-  white-space: nowrap;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  color: ${({ theme }) => theme.colors.teal};
-  border: 1px solid ${({ theme }) => theme.colors.teal};
-  border-radius: ${({ theme }) => theme.borderRadius};
-  font-size: ${({ theme }) => theme.fontSizes.xs}px};
-  padding: 2px 4px;
-  font-weight: 600;
-`;
 
 interface Props {
   projectId: string;
@@ -32,9 +21,16 @@ const ProjectSelector = ({ projectId }: Props) => {
   if (!project) return null;
 
   return (
-    <StyledLabel>
-      <T value={project.data.attributes.title_multiloc} />
-    </StyledLabel>
+    <Box
+      display="inline-block"
+      border={`1px solid ${colors.teal}`}
+      borderRadius={stylingConsts.borderRadius}
+      p="2px 4px"
+    >
+      <Text as="span" m="0" fontWeight="semi-bold" fontSize="xs" color="teal">
+        <T value={project.data.attributes.title_multiloc} />
+      </Text>
+    </Box>
   );
 };
 
