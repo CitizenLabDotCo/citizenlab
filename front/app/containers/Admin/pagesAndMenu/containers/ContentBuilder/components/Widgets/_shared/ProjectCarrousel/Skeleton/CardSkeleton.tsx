@@ -17,10 +17,9 @@ const CardSkeleton = ({ ml, mr }: Props) => {
       <Shimmer
         width={`${CARD_WIDTH}px`}
         borderRadius="16px"
-        height="20px"
+        height="19px"
         mt="8px"
       />
-      <Shimmer width="140px" borderRadius="16px" height="20px" mt="8px" />
       <Shimmer width="100px" borderRadius="16px" height="16px" mt="12px" />
       <Shimmer width="120px" borderRadius="16px" height="16px" mt="10px" />
     </Box>
