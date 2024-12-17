@@ -190,17 +190,10 @@ const IdeasWithFiltersSidebar = ({
     [onUpdateQuery]
   );
 
-  const filtersActive = !!(
-    ideaQueryParameters.search ||
-    ideaQueryParameters.idea_status ||
-    ideaQueryParameters.topics
-  );
-
   const showInputFilterSidebar =
     biggerThanLargeTablet && selectedView === 'card';
 
   const inputFiltersProps: InputFiltersProps = {
-    filtersActive,
     ideasFilterCounts,
     numberOfSearchResults: ideasCount,
     ideaQueryParameters,

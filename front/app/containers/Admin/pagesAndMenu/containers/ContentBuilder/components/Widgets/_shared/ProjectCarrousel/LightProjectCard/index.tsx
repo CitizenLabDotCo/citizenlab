@@ -52,6 +52,7 @@ const LightProjectCard = ({ project, ml, mr, onKeyDown }: Props) => {
   return (
     <CardContainer
       as={Link}
+      scrollToTop
       tabIndex={0}
       w={`${CARD_WIDTH}px`}
       ml={ml}
@@ -62,7 +63,7 @@ const LightProjectCard = ({ project, ml, mr, onKeyDown }: Props) => {
       className="e2e-light-project-card"
     >
       <CardImage imageUrl={imageUrl ?? undefined} alt={imageAltText} />
-      <Title variant="h4" as="h3" mt="8px" mb="0px" color="tenantText">
+      <Title variant="h3" fontSize="m" mt="8px" mb="0px" color="tenantText">
         {truncate(title, 50)}
       </Title>
       <Box mt="8px">

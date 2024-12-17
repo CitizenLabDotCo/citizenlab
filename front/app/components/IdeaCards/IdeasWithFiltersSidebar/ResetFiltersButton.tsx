@@ -2,6 +2,9 @@ import React from 'react';
 
 import { Button } from '@citizenlab/cl2-component-library';
 
+import { IIdeaQueryParameters } from 'api/ideas/types';
+
+import { scrollToTopIdeasList } from 'components/FilterBoxes/utils';
 import tracks from 'components/IdeaCards/tracks';
 
 import { trackEventByName } from 'utils/analytics';
@@ -11,10 +14,16 @@ import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import ideaCardsMessages from '../messages';
 
 interface Props {
-  filtersActive: boolean;
+  ideaQueryParameters: IIdeaQueryParameters;
 }
 
-const ResetFiltersButton = ({ filtersActive }: Props) => {
+const ResetFiltersButton = ({ ideaQueryParameters }: Props) => {
+  const filtersActive = !!(
+    ideaQueryParameters.search ||
+    ideaQueryParameters.idea_status ||
+    ideaQueryParameters.topics
+  );
+
   const handleOnClick = () => {
     trackEventByName(tracks.clearFiltersClicked);
     updateSearchParams({
@@ -22,6 +31,7 @@ const ResetFiltersButton = ({ filtersActive }: Props) => {
       idea_status: undefined,
       topics: undefined,
     });
+    scrollToTopIdeasList();
   };
 
   return (

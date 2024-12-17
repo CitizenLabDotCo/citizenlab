@@ -27,6 +27,7 @@ interface Props {
   buttonText?: string;
   buttonLink?: string;
   avatarIds?: string[];
+  hideAvatars?: boolean;
   userCount?: number;
 }
 
@@ -38,6 +39,7 @@ const Spotlight = ({
   buttonText,
   buttonLink,
   avatarIds,
+  hideAvatars,
   userCount,
 }: Props) => {
   const isSmallerThanPhone = useBreakpoint('phone');
@@ -84,18 +86,23 @@ const Spotlight = ({
             </Box>
           )}
 
-          <Box
-            mt="16px"
-            w="100%"
-            display="flex"
-            justifyContent={isSmallerThanPhone ? 'center' : 'flex-start'}
-          >
-            {loading ? (
-              <Skeleton avatarImagesCount={userCount ?? 4} />
-            ) : (
-              <AvatarBubbles avatarIds={avatarIds} userCount={userCount ?? 4} />
-            )}
-          </Box>
+          {!hideAvatars && (
+            <Box
+              mt="16px"
+              w="100%"
+              display="flex"
+              justifyContent={isSmallerThanPhone ? 'center' : 'flex-start'}
+            >
+              {loading ? (
+                <Skeleton avatarImagesCount={userCount ?? 4} />
+              ) : (
+                <AvatarBubbles
+                  avatarIds={avatarIds}
+                  userCount={userCount ?? 4}
+                />
+              )}
+            </Box>
+          )}
         </Box>
         <Box
           mt={isSmallerThanPhone ? '20px' : '0px'}
