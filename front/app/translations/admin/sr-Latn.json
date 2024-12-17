@@ -1116,7 +1116,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.planned": "Planned",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.projects": "Projects",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.publicationStatus": "Publication status",
-  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.published": "Published",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.published": "Objavljeno",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.missingData": "The data for this widget is missing. Reconfigure or delete it to be able to save the report.",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noAppropriatePhases": "No appropriate phases found in this project",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.noPhaseSelected": "No phase selected. Please select a phase first.",
