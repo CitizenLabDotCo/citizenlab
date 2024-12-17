@@ -453,7 +453,6 @@
   "app.containers.Admin.Invitations.adminLabel1": "Geef genodigden beheerdersrechten",
   "app.containers.Admin.Invitations.adminLabelTooltip": "Indien geactiveerd krijgen mensen die je uitnodiging accepteren ook toegang tot alle admin instellingen van het platform.",
   "app.containers.Admin.Invitations.configureInvitations": "3. Stel de uitnodigingen op",
-  "app.containers.Admin.Invitations.confirmDelete": "Ja, ik weet het zeker",
   "app.containers.Admin.Invitations.currentlyNoInvitesThatMatchSearch": "Er komen geen gebruikers overeen met je zoekopdracht",
   "app.containers.Admin.Invitations.deleteInvite": "Annuleer",
   "app.containers.Admin.Invitations.deleteInviteTooltip": "Het annuleren van een uitnodiging laat toe deze persoon een nieuwe uitnodiging te sturen.",

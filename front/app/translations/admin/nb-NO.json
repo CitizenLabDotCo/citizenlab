@@ -453,7 +453,6 @@
   "app.containers.Admin.Invitations.adminLabel1": "Gi inviterte personer administratorrettigheter",
   "app.containers.Admin.Invitations.adminLabelTooltip": "Når du velger dette alternativet, vil personene du inviterer ha tilgang til alle plattforminnstillingene dine.",
   "app.containers.Admin.Invitations.configureInvitations": "3. Konfigurer invitasjonene",
-  "app.containers.Admin.Invitations.confirmDelete": "Ja, det er jeg sikker på",
   "app.containers.Admin.Invitations.currentlyNoInvitesThatMatchSearch": "Det er ingen invitasjoner som samsvarer med søket ditt",
   "app.containers.Admin.Invitations.deleteInvite": "Slett",
   "app.containers.Admin.Invitations.deleteInviteTooltip": "Hvis du avbryter en invitasjon, kan du sende en ny invitasjon til denne personen.",

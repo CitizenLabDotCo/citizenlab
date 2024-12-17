@@ -453,7 +453,6 @@
   "app.containers.Admin.Invitations.adminLabel1": "مدعو کرنے والوں کو ایڈمن کے حقوق دیں۔",
   "app.containers.Admin.Invitations.adminLabelTooltip": "جب آپ اس اختیار کو منتخب کرتے ہیں، تو جن لوگوں کو آپ مدعو کر رہے ہیں انہیں آپ کے پلیٹ فارم کی تمام ترتیبات تک رسائی حاصل ہوگی۔",
   "app.containers.Admin.Invitations.configureInvitations": "3. دعوت ناموں کو ترتیب دیں۔",
-  "app.containers.Admin.Invitations.confirmDelete": "ہاں، مجھے یقین ہے۔",
   "app.containers.Admin.Invitations.currentlyNoInvitesThatMatchSearch": "آپ کی تلاش سے مماثل کوئی دعوت نامے نہیں ہیں۔",
   "app.containers.Admin.Invitations.deleteInvite": "حذف کریں۔",
   "app.containers.Admin.Invitations.deleteInviteTooltip": "دعوت نامہ منسوخ کرنے سے آپ اس شخص کو دوبارہ دعوت نامہ بھیج سکیں گے۔",

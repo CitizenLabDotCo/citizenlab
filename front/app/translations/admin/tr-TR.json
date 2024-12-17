@@ -453,7 +453,6 @@
   "app.containers.Admin.Invitations.adminLabel1": "Davetlilere yönetici hakları verin",
   "app.containers.Admin.Invitations.adminLabelTooltip": "Bu seçeneği belirlediğinizde, davet edeceğiniz kişiler tüm platform ayarlarınıza erişebilecektir.",
   "app.containers.Admin.Invitations.configureInvitations": "3. Davetiyeleri yapılandırın",
-  "app.containers.Admin.Invitations.confirmDelete": "Evet, eminim",
   "app.containers.Admin.Invitations.currentlyNoInvitesThatMatchSearch": "Aramanızla eşleşen davetiye yok",
   "app.containers.Admin.Invitations.deleteInvite": "Sil",
   "app.containers.Admin.Invitations.deleteInviteTooltip": "Bir davetiyeyi iptal ettiğinizde o kişiye yeniden davetiye gönderebilirsiniz.",

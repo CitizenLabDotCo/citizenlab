@@ -453,7 +453,6 @@
   "app.containers.Admin.Invitations.adminLabel1": "Piešķirt ielūguma saņēmējiem administratora tiesības",
   "app.containers.Admin.Invitations.adminLabelTooltip": "Izvēloties šo iespēju, uzaicinātajām personām būs pieejami visi platformas iestatījumi.",
   "app.containers.Admin.Invitations.configureInvitations": "3. Konfigurējiet uzaicinājumus",
-  "app.containers.Admin.Invitations.confirmDelete": "Jā, esmu pārliecināts",
   "app.containers.Admin.Invitations.currentlyNoInvitesThatMatchSearch": "Nav neviena uzaicinājuma, kas atbilstu jūsu meklējumam",
   "app.containers.Admin.Invitations.deleteInvite": "Dzēst",
   "app.containers.Admin.Invitations.deleteInviteTooltip": "Atceļot uzaicinājumu, varēsiet to atkārtoti nosūtīt šai personai.",

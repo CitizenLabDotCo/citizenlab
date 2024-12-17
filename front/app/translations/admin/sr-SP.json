@@ -453,7 +453,6 @@
   "app.containers.Admin.Invitations.adminLabel1": "Дајте позванима администраторска права",
   "app.containers.Admin.Invitations.adminLabelTooltip": "Када изаберете ову опцију, људи које позивате имаће приступ свим подешавањима ваше платформе.",
   "app.containers.Admin.Invitations.configureInvitations": "3. Конфигуришите позивнице",
-  "app.containers.Admin.Invitations.confirmDelete": "Да сигуран сам",
   "app.containers.Admin.Invitations.currentlyNoInvitesThatMatchSearch": "Нема позивница које одговарају вашој претрази",
   "app.containers.Admin.Invitations.deleteInvite": "Избриши",
   "app.containers.Admin.Invitations.deleteInviteTooltip": "Отказивање позивнице ће вам омогућити да поново пошаљете позив овој особи.",

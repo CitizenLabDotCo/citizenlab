@@ -453,7 +453,6 @@
   "app.containers.Admin.Invitations.adminLabel1": "Nadaj zaproszonym osobom prawa administratora",
   "app.containers.Admin.Invitations.adminLabelTooltip": "Po wybraniu tej opcji zaproszone osoby będą miały dostęp do wszystkich ustawień Twojej platformy.",
   "app.containers.Admin.Invitations.configureInvitations": "3. Skonfiguruj zaproszenia",
-  "app.containers.Admin.Invitations.confirmDelete": "Tak, potwierdzam",
   "app.containers.Admin.Invitations.currentlyNoInvitesThatMatchSearch": "Nie ma żadnych zaproszeń spełniających Twoje kryteria przeszukiwania",
   "app.containers.Admin.Invitations.deleteInvite": "Anuluj",
   "app.containers.Admin.Invitations.deleteInviteTooltip": "Anulowanie zaproszenia pozwoli Ci na ponowne wysłanie zaproszenia do tej osoby.",

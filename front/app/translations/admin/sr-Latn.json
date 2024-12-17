@@ -453,7 +453,6 @@
   "app.containers.Admin.Invitations.adminLabel1": "Dodeli zvanicama administratorska prava",
   "app.containers.Admin.Invitations.adminLabelTooltip": "Kada odaberete ovu opciju, osobe koje ste pozvali će imati pristup svim podešavanjima vaše platforme.",
   "app.containers.Admin.Invitations.configureInvitations": "3. Podesite pozivnice",
-  "app.containers.Admin.Invitations.confirmDelete": "Da, želim ovo",
   "app.containers.Admin.Invitations.currentlyNoInvitesThatMatchSearch": "Nisu pronađene pozivnice koje odgovaraju kriterijumima vaše pretrage",
   "app.containers.Admin.Invitations.deleteInvite": "Prekid",
   "app.containers.Admin.Invitations.deleteInviteTooltip": "Prekid procesa pozivanja će vam omogućiti da ovoj osobi ponovo pošaljete pozivnicu.",

@@ -453,7 +453,6 @@
   "app.containers.Admin.Invitations.adminLabel1": "Rhowch hawliau gweinyddol i wahoddedigion",
   "app.containers.Admin.Invitations.adminLabelTooltip": "Pan fyddwch chi'n dewis yr opsiwn hwn, bydd gan y bobl rydych chi'n eu gwahodd fynediad i'ch holl osodiadau platfform.",
   "app.containers.Admin.Invitations.configureInvitations": "3. Ffurfweddwch y gwahoddiadau",
-  "app.containers.Admin.Invitations.confirmDelete": "Ydw, dwi'n siwr",
   "app.containers.Admin.Invitations.currentlyNoInvitesThatMatchSearch": "Nid oes unrhyw wahoddiadau sy'n cyfateb i'ch chwiliad",
   "app.containers.Admin.Invitations.deleteInvite": "Dileu",
   "app.containers.Admin.Invitations.deleteInviteTooltip": "Bydd canslo gwahoddiad yn caniatáu i chi ailanfon gwahoddiad i'r person hwn.",
