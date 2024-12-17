@@ -5,7 +5,7 @@
     "mapRoot": "./",
     "target": "esnext",
     "module": "esnext",
-    "jsx": "react-jsx",
+    "jsx": "react",
     "moduleResolution": "node",
     "noUnusedLocals": true,
     "noUnusedParameters": true,
@@ -18,7 +18,7 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "incremental": true,
-    "types": ["vite/client", "jest"],
+    "types": ["vite/client", "jest", "@testing-library/jest-dom"],
     "plugins": [
       {
         "name": "typescript-styled-plugin"
@@ -34,7 +34,10 @@
     "**/*",
     "../playwright.config.ts",
     "../vite.config.ts",
-    "../vite-env.d.ts"
+    "../vite-env.d.ts",
+    "../jest.config.js",
+    "../internals/jest/setup.js",
+    "globals.d.ts"
   ],
   "exclude": ["node_modules"]
 }
