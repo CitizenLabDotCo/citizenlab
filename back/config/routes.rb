@@ -73,22 +73,6 @@ Rails.application.routes.draw do
         get :similarities, on: :member
       end
 
-      resources :initiatives,
-        concerns: %i[reactable spam_reportable post followable],
-        defaults: { reactable: 'Initiative', spam_reportable: 'Initiative', post: 'Initiative', followable: 'Initiative' } do
-        resources :images, defaults: { container_type: 'Initiative' }
-        resources :files, defaults: { container_type: 'Initiative' }
-
-        resources :initiative_status_changes, shallow: true, except: %i[update destroy]
-
-        get :as_xlsx, on: :collection, action: 'index_xlsx'
-        get 'by_slug/:slug', on: :collection, to: 'initiatives#by_slug'
-        get :as_markers, on: :collection, action: 'index_initiative_markers'
-        get :filter_counts, on: :collection
-        get :allowed_transitions, on: :member
-        patch :accept_cosponsorship_invite, on: :member
-      end
-
       resources :background_jobs, only: %i[index]
 
       resources :idea_statuses do
