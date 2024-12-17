@@ -22,10 +22,10 @@ interface InputProps {
   invite: IInviteData;
 }
 
-const TableRow = (inputProps: InputProps) => {
+const TableRow = ({ invite }: InputProps) => {
   const { formatMessage } = useIntl();
   const { mutate: deleteInvite } = useDeleteInvite();
-  const userId = inputProps.invite.relationships.invitee.data.id;
+  const userId = invite.relationships.invitee.data.id;
   const { data: user } = useUserById(userId);
 
   const handleOnDeleteInvite = () => {
@@ -39,16 +39,13 @@ const TableRow = (inputProps: InputProps) => {
 
   return (
     // To test invitation flow, we need the token, hence this className
-    <Tr
-      key={inputProps.invite.id}
-      className={inputProps.invite.attributes.token}
-    >
+    <Tr key={invite.id} className={invite.attributes.token}>
       <Td>{user.data.attributes.email}</Td>
       <Td>
         <span>{getFullName(user.data)}</span>
       </Td>
       <Td>
-        <FormattedDate value={inputProps.invite.attributes.created_at} />
+        <FormattedDate value={invite.attributes.created_at} />
       </Td>
       <Td style={{ textAlign: 'center' }}>
         {user.data.attributes.invite_status === 'pending' ? (
