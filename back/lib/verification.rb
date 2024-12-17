@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'verification/engine'
-
 module Verification
   # This array `all_methods` is populated in `to_prepare` callbacks in Engines,
   # and it's used to define the `VerificationMethodSerializer` attributes.

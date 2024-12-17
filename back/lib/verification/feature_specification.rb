@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'citizen_lab/mixins/feature_specification'
+require 'verification/verification_service'
 
 module Verification
   module FeatureSpecification
@@ -24,7 +25,7 @@ module Verification
       type: 'array',
       default: [],
       items: {
-        anyOf: VerificationService.new.all_methods.map do |method|
+        anyOf: ::Verification::VerificationService.new.all_methods.map do |method|
           {
             type: 'object',
             title: method.name,

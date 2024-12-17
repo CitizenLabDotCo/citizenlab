@@ -19,6 +19,8 @@
 #
 module Verification
   class Verification < ApplicationRecord
+    self.table_name = 'verification_verifications' # model used to be part of the Verification engine
+
     belongs_to :user
 
     validates :method_name, :hashed_uid, presence: true
