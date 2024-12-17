@@ -1,4 +1,4 @@
-const path = require('path');
+import '@testing-library/jest-dom';
 
 module.exports = {
   verbose: true,
