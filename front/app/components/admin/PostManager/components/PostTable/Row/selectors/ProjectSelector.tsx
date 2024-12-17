@@ -22,6 +22,7 @@ const ProjectSelector = ({ projectId }: Props) => {
 
   return (
     <Box
+      // inline-block is needed to make the top/bottom padding work
       display="inline-block"
       border={`1px solid ${colors.teal}`}
       borderRadius={stylingConsts.borderRadius}
