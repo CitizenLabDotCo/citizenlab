@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe ProjectPolicy do
-  subject { described_class.new(user_context, project) }
+  subject(:policy) { described_class.new(user_context, project) }
 
   let(:scope) { ProjectPolicy::Scope.new(user_context, Project) }
   let(:inverse_scope) { ProjectPolicy::InverseScope.new(project, User) }
@@ -18,6 +18,7 @@ describe ProjectPolicy do
 
       it { is_expected.to     permit(:show)                  }
       it { is_expected.not_to permit(:create)                }
+      it { is_expected.not_to permit(:copy)                  }
       it { is_expected.not_to permit(:update)                }
       it { is_expected.not_to permit(:reorder)               }
       it { is_expected.not_to permit(:refresh_preview_token) }
@@ -36,6 +37,7 @@ describe ProjectPolicy do
 
       it { is_expected.to     permit(:show)                  }
       it { is_expected.not_to permit(:create)                }
+      it { is_expected.not_to permit(:copy)                  }
       it { is_expected.not_to permit(:update)                }
       it { is_expected.not_to permit(:reorder)               }
       it { is_expected.not_to permit(:refresh_preview_token) }
@@ -58,6 +60,7 @@ describe ProjectPolicy do
 
       it { is_expected.to permit(:show)                  }
       it { is_expected.to permit(:create)                }
+      it { is_expected.to permit(:copy)                  }
       it { is_expected.to permit(:update)                }
       it { is_expected.to permit(:reorder)               }
       it { is_expected.to permit(:refresh_preview_token) }
@@ -80,6 +83,7 @@ describe ProjectPolicy do
 
       it { is_expected.to permit(:show)                  }
       it { is_expected.not_to permit(:create)            }
+      it { is_expected.to permit(:copy)                  }
       it { is_expected.to permit(:update)                }
       it { is_expected.to permit(:reorder)               }
       it { is_expected.to permit(:refresh_preview_token) }
@@ -102,6 +106,7 @@ describe ProjectPolicy do
 
       it { is_expected.to permit(:show)                      }
       it { is_expected.not_to permit(:create)                }
+      it { is_expected.not_to permit(:copy)                  }
       it { is_expected.not_to permit(:update)                }
       it { is_expected.not_to permit(:reorder)               }
       it { is_expected.not_to permit(:refresh_preview_token) }
@@ -363,15 +368,50 @@ describe ProjectPolicy do
     context 'for a moderator' do
       let(:user) { create(:project_moderator, projects: [project]) }
 
-      it { is_expected.to permit(:show)                  }
-      it { is_expected.not_to permit(:create)            }
+      it { is_expected.to permit(:show) }
+      it { is_expected.to permit(:create) }
       it { is_expected.to permit(:update)                }
       it { is_expected.to permit(:reorder)               }
       it { is_expected.to permit(:refresh_preview_token) }
-      it { is_expected.not_to permit(:destroy)           }
       it { is_expected.to permit(:index_xlsx)            }
       it { is_expected.to permit(:votes_by_user_xlsx)    }
       it { is_expected.to permit(:votes_by_input_xlsx)   }
+
+      context 'when the project has never been published' do
+        before do
+          # Sanity check
+          raise 'Project should not have been published' if project.ever_published?
+        end
+
+        it { is_expected.to permit(:destroy) }
+
+        it 'does not permit project status update' do
+          nested_permitted_attrs = policy.permitted_attributes_for_update.find { |attr| attr.is_a?(Hash) }.to_h
+          expect(nested_permitted_attrs[:admin_publication_attributes].to_a).not_to include(:publication_status)
+        end
+
+        context 'and the project is approved' do
+          before { create(:project_review, :approved, project: project) }
+
+          it 'permits project status update' do
+            nested_permitted_attrs = policy.permitted_attributes_for_update.find { |attr| attr.is_a?(Hash) }.to_h
+            expect(nested_permitted_attrs[:admin_publication_attributes]).to include(:publication_status)
+          end
+        end
+      end
+
+      context 'when the project has been published' do
+        before do
+          project.admin_publication.update!(first_published_at: Time.current)
+        end
+
+        it { is_expected.not_to permit(:destroy) }
+
+        it 'permits project status update' do
+          nested_permitted_attrs = policy.permitted_attributes_for_update.find { |attr| attr.is_a?(Hash) }.to_h
+          expect(nested_permitted_attrs[:admin_publication_attributes]).to include(:publication_status)
+        end
+      end
 
       it 'indexes the project' do
         expect(scope.resolve.size).to eq 1
@@ -386,7 +426,24 @@ describe ProjectPolicy do
       let(:user) { create(:project_moderator) }
 
       it { is_expected.not_to permit(:show)                  }
-      it { is_expected.not_to permit(:create)                }
+      it { is_expected.to permit(:create)                    }
+      it { is_expected.not_to permit(:update)                }
+      it { is_expected.not_to permit(:reorder)               }
+      it { is_expected.not_to permit(:refresh_preview_token) }
+      it { is_expected.not_to permit(:destroy)               }
+      it { is_expected.not_to permit(:index_xlsx)            }
+      it { is_expected.not_to permit(:votes_by_user_xlsx)    }
+      it { is_expected.not_to permit(:votes_by_input_xlsx)   }
+
+      it { expect(scope.resolve).not_to include(project) }
+      it { expect(inverse_scope.resolve).not_to include(user) }
+    end
+
+    context 'for a project folder moderator' do
+      let(:user) { create(:project_folder_moderator) }
+
+      it { is_expected.not_to permit(:show)                  }
+      it { is_expected.to permit(:create)                    }
       it { is_expected.not_to permit(:update)                }
       it { is_expected.not_to permit(:reorder)               }
       it { is_expected.not_to permit(:refresh_preview_token) }
@@ -408,12 +465,14 @@ describe ProjectPolicy do
       let!(:project) { create(:single_phase_ideation_project, admin_publication_attributes: { parent_id: project_folder.admin_publication.id }) }
 
       it { is_expected.to permit(:create) }
+      it { is_expected.to permit(:copy)   }
     end
 
     context 'for a timeline project not contained within a folder the user moderates' do
       let!(:project) { create(:single_phase_ideation_project) }
 
       it { is_expected.not_to permit(:create) }
+      it { is_expected.not_to permit(:copy)   }
     end
   end
 end

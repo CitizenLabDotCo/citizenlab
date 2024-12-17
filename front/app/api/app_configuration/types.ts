@@ -259,6 +259,7 @@ export interface IAppConfigurationSettings {
   similar_inputs?: AppConfigurationFeature & {
     admins_only: boolean;
   };
+  platform_templates?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;
