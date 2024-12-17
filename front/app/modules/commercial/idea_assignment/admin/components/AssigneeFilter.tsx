@@ -1,7 +1,6 @@
-import React, { SyntheticEvent } from 'react';
+import React from 'react';
 
-// import { Select } from '@citizenlab/cl2-component-library';
-import { Dropdown } from 'semantic-ui-react';
+import { IOption, Select } from '@citizenlab/cl2-component-library';
 
 import useAuthUser from 'api/me/useAuthUser';
 import { IUsers } from 'api/users/types';
@@ -26,9 +25,7 @@ interface Props {
   className?: string;
 }
 
-type TAssigneeOption = {
-  value: string;
-  text: string;
+type TAssigneeOption = IOption & {
   id?: string;
   className?: string;
 };
@@ -65,27 +62,27 @@ const AssigneeFilter = ({
     const assigneeOptions: TAssigneeOption[] = [
       {
         value: 'all',
-        text: formatMessage(messages.anyAssignment),
+        label: formatMessage(messages.anyAssignment),
         id: 'e2e-assignee-filter-all-posts',
       },
       {
         value: authUser.data.id,
-        text: formatMessage(postManagerMessages.assignedToMe),
+        label: formatMessage(postManagerMessages.assignedToMe),
         id: 'e2e-assignee-filter-assigned-to-user',
       },
       {
         value: 'unassigned',
-        text: formatMessage(postManagerMessages.noOne),
+        label: formatMessage(postManagerMessages.noOne),
         id: 'e2e-assignee-filter-unassigned',
       },
     ];
 
-    const dynamicOptions = !isNilOrError(prospectAssignees)
+    const dynamicOptions: TAssigneeOption[] = !isNilOrError(prospectAssignees)
       ? prospectAssignees.data
           .filter((assignee) => assignee.id !== authUser.data.id)
           .map((assignee) => ({
             value: assignee.id,
-            text: formatMessage(postManagerMessages.assignedTo, {
+            label: formatMessage(postManagerMessages.assignedTo, {
               assigneeName: getFullName(assignee),
             }),
             className: 'e2e-assignee-filter-other-user',
@@ -95,10 +92,7 @@ const AssigneeFilter = ({
     return [...assigneeOptions, ...dynamicOptions];
   };
 
-  const onAssigneeChange = (
-    _event: SyntheticEvent,
-    assigneeOption: TAssigneeOption
-  ) => {
+  const onChange = (assigneeOption: TAssigneeOption) => {
     const realFiterParam =
       assigneeOption.value === 'all' ? undefined : assigneeOption.value;
 
@@ -111,15 +105,16 @@ const AssigneeFilter = ({
   };
 
   return (
-    <Dropdown
+    <Select
       className={`${className} intercom-admin-asignee-filter`}
       id="e2e-select-assignee-filter"
       data-testid="assignee-filter-dropdown"
+      label={undefined}
       options={getAssigneeOptions(prospectAssignees)}
-      onChange={onAssigneeChange}
+      onChange={onChange}
       value={assignee || 'all'}
-      search
-      selection
+      placeholder={formatMessage(messages.anyAssignment)}
+      size="small"
     />
   );
 };
