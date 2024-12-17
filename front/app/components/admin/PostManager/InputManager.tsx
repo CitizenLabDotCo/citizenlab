@@ -357,7 +357,7 @@ const InputManager = ({
             openPreview={openPreview}
           />
         </MiddleColumn>
-        <InfoSidebar postIds={[...selection]} openPreview={openPreview} />
+        <InfoSidebar selection={selection} openPreview={openPreview} />
       </ThreeColumns>
       <Suspense fallback={null}>
         <LazyPostPreview
