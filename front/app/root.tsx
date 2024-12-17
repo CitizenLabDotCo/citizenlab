@@ -67,17 +67,25 @@ const Root = () => {
     prefetchData();
   }, []);
 
+  const localEnv = process.env.API_HOST?.includes('localhost');
+
   return (
     <QueryClientProvider client={queryClient}>
       <OutletsProvider>
         <HelmetProvider>
           <LanguageProvider>
             <HistoryRouter history={history as any}>
-              <StrictMode>
+              {localEnv ? (
+                <StrictMode>
+                  <App>
+                    <Routes />
+                  </App>
+                </StrictMode>
+              ) : (
                 <App>
                   <Routes />
                 </App>
-              </StrictMode>
+              )}
             </HistoryRouter>
           </LanguageProvider>
         </HelmetProvider>
