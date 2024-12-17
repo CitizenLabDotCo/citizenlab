@@ -9,6 +9,7 @@ import modalMessages from 'components/WarningModal/messages';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
+import DeleteButton from './DeleteButton';
 import messages from './messages';
 
 interface Props {
@@ -53,16 +54,9 @@ const ActionBarSingle = ({
       >
         <FormattedMessage {...messages.edit} />
       </Button>
-      <Button
-        buttonStyle="delete"
-        onClick={openWarningModal}
-        icon="delete"
-        size="s"
-        p="4px 8px"
-        fontSize={`${fontSizes.s}px`}
-      >
+      <DeleteButton onClick={openWarningModal}>
         <FormattedMessage {...messages.delete} />
-      </Button>
+      </DeleteButton>
 
       <WarningModal
         open={warningModalOpen}

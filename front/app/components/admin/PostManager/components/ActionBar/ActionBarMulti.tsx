@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 
-import { Button, fontSizes } from '@citizenlab/cl2-component-library';
-
 import useDeleteIdea from 'api/ideas/useDeleteIdea';
 
 import WarningModal from 'components/WarningModal';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
+import DeleteButton from './DeleteButton';
 import messages from './messages';
 
 interface Props {
@@ -45,19 +44,12 @@ const ActionBarMulti = ({ selection, resetSelection }: Props) => {
 
   return (
     <>
-      <Button
-        buttonStyle="delete"
-        onClick={openWarningModal}
-        icon="delete"
-        size="s"
-        p="4px 8px"
-        fontSize={`${fontSizes.s}px`}
-      >
+      <DeleteButton onClick={openWarningModal}>
         <FormattedMessage
           {...deleteMessage}
           values={{ count: selection.size }}
         />
-      </Button>
+      </DeleteButton>
       <WarningModal
         open={warningModalOpen}
         isLoading={isLoadingDeleteIdea}
