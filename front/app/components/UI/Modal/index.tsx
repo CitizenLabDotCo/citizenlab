@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 
 import {
   Box,
@@ -359,6 +359,7 @@ const Modal: React.FC<Props> = ({
   hideCloseButton,
   returnFocusRef,
 }) => {
+  const nodeRef = useRef(null);
   const [modalHasBeenOpened, setModalHasBeenOpened] = useState(false);
   const [windowDimensions, setWindowDimensions] = useState({
     windowWidth: window.innerWidth,
@@ -462,6 +463,7 @@ const Modal: React.FC<Props> = ({
 
   return width ? (
     <CSSTransition
+      nodeRef={nodeRef}
       classNames="modal"
       in={opened}
       timeout={
