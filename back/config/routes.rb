@@ -100,7 +100,6 @@ Rails.application.routes.draw do
         get 'by_slug/:slug', on: :collection, to: 'users#by_slug'
         get 'by_invite/:token', on: :collection, to: 'users#by_invite'
         get 'ideas_count', on: :member
-        get 'initiatives_count', on: :member
         get 'comments_count', on: :member
         get 'blocked_count', on: :collection
         get 'check/:email', on: :collection, to: 'users#check', constraints: { email: /.*/ }
@@ -262,8 +261,6 @@ Rails.application.routes.draw do
           get 'ideas_by_topic_as_xlsx'
           get 'ideas_by_project_as_xlsx'
         end
-
-        get 'initiatives_count', controller: 'stats_initiatives'
 
         with_options controller: 'stats_comments' do
           get 'comments_count'
