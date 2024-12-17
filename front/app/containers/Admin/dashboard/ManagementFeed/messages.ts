@@ -33,6 +33,14 @@ export default defineMessages({
     id: 'app.Admin.ManagementFeed.created',
     defaultMessage: 'Created',
   },
+  projectReviewRequested: {
+    id: 'app.Admin.ManagementFeed.projectReviewRequested',
+    defaultMessage: 'Project review requested',
+  },
+  projectReviewApproved: {
+    id: 'app.Admin.ManagementFeed.projectReviewApproved',
+    defaultMessage: 'Project approved',
+  },
   project: {
     id: 'app.Admin.ManagementFeed.project',
     defaultMessage: 'Project',
