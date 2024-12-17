@@ -60,7 +60,7 @@ const OptionForm = ({ question, collapse }: Props) => {
           {...messages.optionsFormHeader}
           values={{
             questionTitle: (
-              <Text display="inline" fontWeight="normal">
+              <Text display="inline" fontWeight="normal" as="span">
                 <T value={question.attributes.title_multiloc} />
               </Text>
             ),
