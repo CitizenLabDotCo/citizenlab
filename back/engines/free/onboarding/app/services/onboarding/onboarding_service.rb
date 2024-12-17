@@ -18,7 +18,7 @@ module Onboarding
     def _current_campaign(user, dismissals)
       if needs_verification?(user) && dismissals.exclude?('verification')
         :verification
-        elsif profile_incomplete?(user) && dismissals.exclude?('complete_profile')
+      elsif profile_incomplete?(user) && dismissals.exclude?('complete_profile')
         :complete_profile
       elsif custom_onboarding_message? && dismissals.exclude?('custom_cta')
         :custom_cta
