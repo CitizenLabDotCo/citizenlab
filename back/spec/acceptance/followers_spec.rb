@@ -50,7 +50,6 @@ resource 'Followers' do
     end
   end
 
-  # TODO: cleanup-after-proposals-migration
   get 'web_api/v1/followers/:id' do
     let(:id) { create(:follower, user: user).id }
 
@@ -76,11 +75,6 @@ resource 'Followers' do
       type: 'idea',
       resource: 'ideas',
       factory: 'idea'
-    },
-    {
-      type: 'initiative',
-      resource: 'initiatives',
-      factory: 'initiative'
     },
     {
       type: 'topic',
