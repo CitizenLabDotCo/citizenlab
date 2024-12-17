@@ -1497,6 +1497,8 @@
   "app.containers.NotificationMenu.projectPhaseStarted": "{projectTitle} prasidėjo naujas etapas.",
   "app.containers.NotificationMenu.projectPhaseUpcoming": "{projectTitle} pradės naują etapą svetainėje {phaseStartAt}.",
   "app.containers.NotificationMenu.projectPublished": "Paskelbtas naujas projektas",
+  "app.containers.NotificationMenu.projectReviewRequest": "{name} paprašė leidimo skelbti projektą \"{projectTitle}\".",
+  "app.containers.NotificationMenu.projectReviewStateChange": "{name} patvirtinta \"{projectTitle}\" skelbti",
   "app.containers.NotificationMenu.statusChangedOnIdeaYouFollow": "{ideaTitle} būsena pakeista į {status}",
   "app.containers.NotificationMenu.thresholdReachedForAdmin": "{post} pasiekė balsavimo ribą",
   "app.containers.NotificationMenu.userAcceptedYourInvitation": "{name} priėmė jūsų kvietimą",
