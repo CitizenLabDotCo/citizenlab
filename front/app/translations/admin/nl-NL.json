@@ -407,7 +407,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.share": "Delen",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareLink": "Kopieer de link",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareLinkCopied": "Link gekopieerd",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareLinkUpsellTooltip": "Het delen van privékoppelingen is niet inbegrepen in je huidige plan. Praat met je Government Success Manager of admin om dit vrij te geven.",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareLinkUpsellTooltip": "Het delen van privélinks is niet inbegrepen in je huidige plan. Praat met je Government Success Manager of admin om dit vrij te geven.",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareTitle": "Deel dit project",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.shareWhoHasAccess": "Wie heeft toegang",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.view": "Bekijk",
