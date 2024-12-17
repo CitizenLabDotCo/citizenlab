@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   Icon,
@@ -8,13 +8,12 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { size, isEmpty, uniqBy, forEach } from 'lodash-es';
 import Dropzone, { Accept } from 'react-dropzone';
-import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
 import { UploadFile } from 'typings';
 
 import Error from 'components/UI/Error';
 
-import { injectIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 import { getBase64FromFile } from 'utils/fileUtils';
 import { reportError } from 'utils/loggingUtils';
 
@@ -188,65 +187,59 @@ export interface Props {
   previewOverlayElement?: JSX.Element | null;
 }
 
-interface State {
-  urlObjects: {
+const ImagesDropzone = ({
+  onRemove,
+  label,
+  objectFit,
+  acceptedFileTypes,
+  removeIconAriaTitle,
+  onAdd,
+  id,
+  images,
+  maxImageFileSize = 10000000,
+  maxNumberOfImages = 1,
+  maxImagePreviewWidth,
+  imagePreviewRatio,
+  borderRadius,
+  className,
+  previewOverlayElement,
+  errorMessage,
+}: Props) => {
+  const { formatMessage } = useIntl();
+
+  console.log({ errorMessage });
+
+  const [urlObjects, setUrlObjects] = useState<{
     [key: string]: string;
-  };
-  errorMessage: string | null;
-}
+  }>({});
+  const [errorMessageVariable, setErrorMessageVariable] = useState<
+    string | null
+  >(errorMessage || null);
 
-class ImagesDropzone extends PureComponent<
-  Props & WrappedComponentProps,
-  State
-> {
-  static defaultProps = {
-    maxNumberOfImages: 1,
-    maxImageFileSize: 10000000,
-    addImageOverlay: false,
-  };
+  useEffect(() => {
+    handleSetUrlObjects();
+    removeExcessImages();
+  }, []);
 
-  constructor(props: Props & WrappedComponentProps) {
-    super(props);
-    this.state = {
-      urlObjects: {},
-      errorMessage: null,
-    };
-  }
+  useEffect(() => {
+    // if (prevProps.images !== this.props.images)
+    handleSetUrlObjects();
 
-  componentDidMount() {
-    this.setUrlObjects();
-    this.removeExcessImages();
+    // if (!prevProps.images || prevProps.images.length === 0) {
+    removeExcessImages();
 
-    if (this.props.errorMessage) {
-      this.setState({ errorMessage: this.props.errorMessage });
-    }
-  }
+    // if (prevProps.errorMessage !== this.props.errorMessage) {
+    // const errorMessage =
+    //   errorMessage &&
+    //   errorMessage !== errorMessage
+    //     ? errorMessage
+    //     : this.state.errorMessage;
+    setErrorMessageVariable(errorMessage || null);
+  }, [images]);
 
-  componentDidUpdate(prevProps: Props) {
-    if (prevProps.images !== this.props.images) {
-      this.setUrlObjects();
-    }
+  const removeExcessImages = () => {
+    maxNumberOfImages = maxNumberOfImages;
 
-    if (!prevProps.images || prevProps.images.length === 0) {
-      this.removeExcessImages();
-    }
-
-    if (prevProps.errorMessage !== this.props.errorMessage) {
-      const errorMessage =
-        this.props.errorMessage &&
-        this.props.errorMessage !== this.state.errorMessage
-          ? this.props.errorMessage
-          : this.state.errorMessage;
-      this.setState({ errorMessage });
-    }
-  }
-
-  removeExcessImages = () => {
-    const {
-      maxNumberOfImages = ImagesDropzone.defaultProps.maxNumberOfImages,
-      images,
-      onRemove,
-    } = this.props;
     // Logic to automatically trigger removal of the images that exceed the maxNumberOfImages treshold
     // E.g. the maxNumberOfImages has been reduced from 5 to 1, but the server still returns 5 images and so this.props.images
     // array will have a length of 5 instead of the new max. allowed length of 1. In this case onRemove() will be triggered
@@ -258,44 +251,40 @@ class ImagesDropzone extends PureComponent<
     }
   };
 
-  UNSAFE_componentWillMount() {
-    forEach(this.state.urlObjects, (urlObject) =>
-      window.URL.revokeObjectURL(urlObject)
-    );
-  }
+  useEffect(() => {
+    forEach(urlObjects, (urlObject) => window.URL.revokeObjectURL(urlObject));
+  }, []);
 
-  setUrlObjects = () => {
-    const images = this.props.images || [];
-    const { urlObjects } = this.state;
+  const handleSetUrlObjects = () => {
     const newUrlObjects = {};
 
-    images
-      .filter((image) => !urlObjects[image.base64])
-      .forEach((image) => {
-        newUrlObjects[image.base64] = window.URL.createObjectURL(image);
-      });
+    images &&
+      images
+        .filter((image) => !urlObjects[image.base64])
+        .forEach((image) => {
+          newUrlObjects[image.base64] = window.URL.createObjectURL(image);
+        });
 
     forEach(urlObjects, (urlObject, key) => {
-      if (!images.some((image) => image.base64 === key)) {
+      if (!images?.some((image) => image.base64 === key)) {
         window.URL.revokeObjectURL(urlObject);
       } else {
         newUrlObjects[key] = urlObject;
       }
     });
 
-    this.setState({ urlObjects: newUrlObjects });
+    setUrlObjects(newUrlObjects);
   };
 
-  onDrop = async (images: UploadFile[]) => {
-    const { formatMessage } = this.props.intl;
-    const maxItemsCount = this.props.maxNumberOfImages;
-    const oldItemsCount = size(this.props.images);
+  const onDrop = async (images: UploadFile[]) => {
+    const maxItemsCount = maxNumberOfImages;
+    const oldItemsCount = size(images);
     const newItemsCount = size(images);
     const remainingItemsCount = maxItemsCount
       ? maxItemsCount - oldItemsCount
       : null;
 
-    this.setState({ errorMessage: null });
+    setErrorMessageVariable(null);
 
     if (
       maxItemsCount &&
@@ -306,8 +295,8 @@ class ImagesDropzone extends PureComponent<
         maxItemsCount === 1
           ? formatMessage(messages.onlyOneImage)
           : formatMessage(messages.onlyXImages, { maxItemsCount });
-      this.setState({ errorMessage });
-      setTimeout(() => this.setState({ errorMessage: null }), 6000);
+      setErrorMessageVariable(errorMessage);
+      setTimeout(() => setErrorMessageVariable(null));
       // TODO: Fix this the next time the file is edited.
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     } else if (images && images.length > 0) {
@@ -321,159 +310,144 @@ class ImagesDropzone extends PureComponent<
         }
       }
 
-      this.props.onAdd(
-        uniqBy([...(this.props.images || []), ...images], 'base64')
-      );
+      onAdd(uniqBy([...(images || []), ...images], 'base64'));
     }
   };
 
-  onDropRejected = (images: UploadFile[]) => {
-    const { formatMessage } = this.props.intl;
-    const maxImageSizeInMb = this.getMaxImageSizeInMb();
+  const onDropRejected = (images: UploadFile[]) => {
+    const maxImageSizeInMb = getMaxImageSizeInMb();
 
     if (images.some((image) => image.size / 1000000 > maxImageSizeInMb)) {
       const maxSizeExceededErrorMessage =
-        images.length === 1 || this.props.maxNumberOfImages === 1
+        images.length === 1 || maxNumberOfImages === 1
           ? messages.errorImageMaxSizeExceeded
           : messages.errorImagesMaxSizeExceeded;
       const errorMessage = formatMessage(maxSizeExceededErrorMessage, {
         maxFileSize: maxImageSizeInMb,
       });
-      this.setState({ errorMessage });
-      setTimeout(() => this.setState({ errorMessage: null }), 6000);
+      setErrorMessageVariable(errorMessage);
+      setTimeout(() => setErrorMessageVariable(null));
     }
   };
 
-  removeImage = (removedImage: UploadFile) => (event: React.FormEvent) => {
-    event.preventDefault();
-    event.stopPropagation();
-    this.props.onRemove(removedImage);
-  };
+  const removeImage =
+    (removedImage: UploadFile) => (event: React.FormEvent) => {
+      event.preventDefault();
+      event.stopPropagation();
+      onRemove(removedImage);
+    };
 
-  getMaxImageSizeInMb = () => {
-    const { maxImageFileSize = ImagesDropzone.defaultProps.maxImageFileSize } =
-      this.props;
-
+  const getMaxImageSizeInMb = () => {
     return maxImageFileSize / 1000000;
   };
 
-  render() {
-    const {
-      id,
-      images,
-      maxImageFileSize = ImagesDropzone.defaultProps.maxImageFileSize,
-      maxNumberOfImages = ImagesDropzone.defaultProps.maxNumberOfImages,
-      maxImagePreviewWidth,
-      imagePreviewRatio,
-      borderRadius,
-      className,
-      previewOverlayElement,
-    } = this.props;
-    const { formatMessage } = this.props.intl;
-    const { errorMessage } = this.state;
-    const remainingImages =
-      maxNumberOfImages && maxNumberOfImages !== 1
-        ? `(${maxNumberOfImages - size(images)} ${formatMessage(
-            messages.remaining
-          )})`
-        : null;
-    const maxImageSizeInMb = this.getMaxImageSizeInMb();
-    const label =
-      this.props.label ||
-      (maxNumberOfImages && maxNumberOfImages === 1
-        ? formatMessage(messages.uploadImageLabel, { maxImageSizeInMb })
-        : formatMessage(messages.uploadMultipleImagesLabel));
-    const objectFit = this.props.objectFit || 'cover';
+  const remainingImages =
+    maxNumberOfImages && maxNumberOfImages !== 1
+      ? `(${maxNumberOfImages - size(images)} ${formatMessage(
+          messages.remaining
+        )})`
+      : null;
+  const maxImageSizeInMb = getMaxImageSizeInMb();
 
-    return (
-      <Container className={className || ''} data-testid="images-dropzone">
-        <ContentWrapper>
-          {(maxNumberOfImages > 1 ||
-            (maxNumberOfImages === 1 && isEmpty(images))) && (
+  console.log({ urlObjects, images });
+
+  return (
+    <Container className={className || ''} data-testid="images-dropzone">
+      <ContentWrapper>
+        {(maxNumberOfImages > 1 ||
+          (maxNumberOfImages === 1 && isEmpty(images))) && (
+          <Box
+            maxWidth={maxImagePreviewWidth}
+            ratio={imagePreviewRatio}
+            className={
+              images && maxNumberOfImages > 1 && images.length > 0
+                ? 'hasRightMargin'
+                : ''
+            }
+          >
+            <Dropzone
+              accept={acceptedFileTypes}
+              maxSize={maxImageFileSize}
+              disabled={!!(images && maxNumberOfImages === images.length)}
+              onDrop={onDrop as any}
+              onDropRejected={onDropRejected as any}
+            >
+              {({ getRootProps, getInputProps }) => {
+                return (
+                  <DropzoneContent
+                    {...getRootProps()}
+                    borderRadius={borderRadius}
+                    className={
+                      images && maxNumberOfImages === images.length
+                        ? 'disabled'
+                        : ''
+                    }
+                  >
+                    <DropzoneInput
+                      {...getInputProps()}
+                      id={id}
+                      data-testid="dropzone-input"
+                    />
+                    <DropzoneContentInner>
+                      <DropzoneLabelIcon name="upload-image" ariaHidden />
+                      <DropzoneLabel>
+                        {label ||
+                          (maxNumberOfImages && maxNumberOfImages === 1
+                            ? formatMessage(messages.uploadImageLabel, {
+                                maxImageSizeInMb,
+                              })
+                            : formatMessage(
+                                messages.uploadMultipleImagesLabel
+                              ))}
+                      </DropzoneLabel>
+                      {remainingImages && (
+                        <DropzoneImagesRemaining>
+                          {remainingImages}
+                        </DropzoneImagesRemaining>
+                      )}
+                    </DropzoneContentInner>
+                  </DropzoneContent>
+                );
+              }}
+            </Dropzone>
+          </Box>
+        )}
+
+        {images &&
+          images.length > 0 &&
+          images.slice(0, maxNumberOfImages).map((image, index) => (
             <Box
+              key={index}
               maxWidth={maxImagePreviewWidth}
               ratio={imagePreviewRatio}
               className={
-                images && maxNumberOfImages > 1 && images.length > 0
+                // TODO: Fix this the next time the file is edited.
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+                images && maxNumberOfImages > 1 && index !== images.length - 1
                   ? 'hasRightMargin'
                   : ''
               }
             >
-              <Dropzone
-                accept={this.props.acceptedFileTypes}
-                maxSize={maxImageFileSize}
-                disabled={!!(images && maxNumberOfImages === images.length)}
-                onDrop={this.onDrop as any}
-                onDropRejected={this.onDropRejected as any}
+              <Image
+                borderRadius={borderRadius}
+                src={urlObjects[image.base64]}
+                objectFit={objectFit || 'cover'}
               >
-                {({ getRootProps, getInputProps }) => {
-                  return (
-                    <DropzoneContent
-                      {...getRootProps()}
-                      borderRadius={borderRadius}
-                      className={
-                        images && maxNumberOfImages === images.length
-                          ? 'disabled'
-                          : ''
-                      }
-                    >
-                      <DropzoneInput
-                        {...getInputProps()}
-                        id={id}
-                        data-testid="dropzone-input"
-                      />
-                      <DropzoneContentInner>
-                        <DropzoneLabelIcon name="upload-image" ariaHidden />
-                        <DropzoneLabel>{label}</DropzoneLabel>
-                        {remainingImages && (
-                          <DropzoneImagesRemaining>
-                            {remainingImages}
-                          </DropzoneImagesRemaining>
-                        )}
-                      </DropzoneContentInner>
-                    </DropzoneContent>
-                  );
-                }}
-              </Dropzone>
+                <RemoveImageButton
+                  onClick={removeImage(image)}
+                  removeIconAriaTitle={removeIconAriaTitle}
+                />
+              </Image>
+              {previewOverlayElement}
             </Box>
-          )}
+          ))}
+      </ContentWrapper>
 
-          {images &&
-            images.length > 0 &&
-            images.slice(0, maxNumberOfImages).map((image, index) => (
-              <Box
-                key={index}
-                maxWidth={maxImagePreviewWidth}
-                ratio={imagePreviewRatio}
-                className={
-                  // TODO: Fix this the next time the file is edited.
-                  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-                  images && maxNumberOfImages > 1 && index !== images.length - 1
-                    ? 'hasRightMargin'
-                    : ''
-                }
-              >
-                <Image
-                  borderRadius={borderRadius}
-                  src={this.state.urlObjects[image.base64]}
-                  objectFit={objectFit}
-                >
-                  <RemoveImageButton
-                    onClick={this.removeImage(image)}
-                    removeIconAriaTitle={this.props.removeIconAriaTitle}
-                  />
-                </Image>
-                {previewOverlayElement}
-              </Box>
-            ))}
-        </ContentWrapper>
+      <ErrorWrapper>
+        <Error text={errorMessageVariable} />
+      </ErrorWrapper>
+    </Container>
+  );
+};
 
-        <ErrorWrapper>
-          <Error text={errorMessage} />
-        </ErrorWrapper>
-      </Container>
-    );
-  }
-}
-
-export default injectIntl(ImagesDropzone);
+export default ImagesDropzone;
