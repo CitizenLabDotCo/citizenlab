@@ -63,6 +63,6 @@ function isFeatureActive(
 ) {
   return (
     appConfig.attributes.settings[featureName]?.allowed &&
-    appConfig.attributes.settings[featureName]?.enabled
+    appConfig.attributes.settings[featureName].enabled
   );
 }
