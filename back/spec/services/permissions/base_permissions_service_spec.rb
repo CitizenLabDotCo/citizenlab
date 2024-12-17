@@ -291,6 +291,7 @@ describe Permissions::BasePermissionsService do
 
         context 'when unverified resident and no verification group' do
           let(:groups) { [create(:group)] }
+
           before { user.update!(verified: false) }
 
           it { expect(service.send(:user_denied_reason, group_permission)).to eq 'user_not_in_group' }
@@ -321,6 +322,7 @@ describe Permissions::BasePermissionsService do
 
     context 'when permitted by "verified"' do
       let(:permitted_by) { 'verified' }
+
       context 'without groups' do
         # let(:verified_permission) { create(:permission, permitted_by: 'verified') }
 

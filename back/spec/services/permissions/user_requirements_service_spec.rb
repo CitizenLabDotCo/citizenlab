@@ -618,9 +618,10 @@ describe Permissions::UserRequirementsService do
       end
 
       context 'a user is verified' do
-        before { user.update!(verified: true) }
-
-        before { create(:verification, user: user, method_name: 'fake_sso') }
+        before do
+          user.update!(verified: true)
+          create(:verification, user: user, method_name: 'fake_sso')
+        end
 
         context 'when verification_expiry is nil' do
           it 'verification is satisfied' do

@@ -254,7 +254,6 @@ describe Permissions::PermissionsCustomFieldsService do
         end
       end
     end
-
   end
 
   describe '#persist_default_fields' do

@@ -123,6 +123,5 @@ module Permissions
 
       add_and_lock_related_fields(permission, fields, custom_field_required_array, 'verification')
     end
-
   end
 end
