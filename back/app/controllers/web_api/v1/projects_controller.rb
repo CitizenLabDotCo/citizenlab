@@ -319,12 +319,13 @@ class WebApi::V1::ProjectsController < ApplicationController
   end
 
   def save_project(project)
-    project.folder_id = params.dig(:project, :folder_id)
-
+    # Preserve folder_id unless explicitly provided in params
+    project.folder_id = params.dig(:project, :folder_id) if params.dig(:project, :folder_id).present?
+  
     ActiveRecord::Base.transaction do
       project.save.tap do |saved|
         if saved
-          # The project must saved before performing the authorization because it requires
+          # The project must be saved before performing the authorization because it requires
           # the admin publication to be created.
           authorize(project)
           check_publication_inconsistencies!
