@@ -16,7 +16,6 @@ class NotificationService
     Notifications::InternalComments::InternalCommentOnYourInternalComment,
     Notifications::InternalComments::MentionInInternalComment,
     Notifications::InvitationToCosponsorIdea,
-    Notifications::InvitationToCosponsorInitiative,
     Notifications::InviteAccepted,
     Notifications::MentionInComment,
     Notifications::MentionInOfficialFeedback,

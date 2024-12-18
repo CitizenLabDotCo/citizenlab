@@ -90,10 +90,6 @@ FactoryBot.define do
     enabled { true }
   end
 
-  factory :invitation_to_cosponsor_initiative_campaign, class: EmailCampaigns::Campaigns::InvitationToCosponsorInitiative do
-    enabled { true }
-  end
-
   factory :mention_in_internal_comment_campaign, class: EmailCampaigns::Campaigns::MentionInInternalComment do
     enabled { true }
   end

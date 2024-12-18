@@ -20,7 +20,6 @@ module EmailCampaigns
       Campaigns::InternalCommentOnUnassignedUnmoderatedIdea,
       Campaigns::InternalCommentOnYourInternalComment,
       Campaigns::InvitationToCosponsorIdea,
-      Campaigns::InvitationToCosponsorInitiative,
       Campaigns::InviteReceived,
       Campaigns::InviteReminder,
       Campaigns::Manual,

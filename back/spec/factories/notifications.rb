@@ -89,12 +89,6 @@ FactoryBot.define do
     invite
   end
 
-  factory :invitation_to_cosponsor_initiative, parent: :notification, class: 'Notifications::InvitationToCosponsorInitiative' do
-    association :post, factory: :initiative
-    cosponsors_initiative
-    initiating_user
-  end
-
   factory :invitation_to_cosponsor_idea, parent: :notification, class: 'Notifications::InvitationToCosponsorIdea' do
     association :post, factory: :idea
     cosponsorship
