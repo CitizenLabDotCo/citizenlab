@@ -39,6 +39,15 @@ class SideFxProjectService
     )
   end
 
+  def after_destroy_participation_data(project, user)
+    LogActivityJob.perform_later(
+      project,
+      'participation_data_destroyed',
+      user,
+      Time.now.to_i
+    )
+  end
+
   def before_update(project, _user)
     @publication_status_was = project.admin_publication.publication_status_was
     @folder_id_was = project.admin_publication.parent_id_was

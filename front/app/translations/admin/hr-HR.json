@@ -12,6 +12,7 @@
   "app.Admin.ManagementFeed.in": "u projektu {project}",
   "app.Admin.ManagementFeed.item": "Artikal",
   "app.Admin.ManagementFeed.key": "Ključ",
+  "app.Admin.ManagementFeed.managementFeedNudge": "Pristup feedu za upravljanje nije uključen u vašu trenutnu licencu. Obratite se svom GovSuccess Manageru da saznate više o tome.",
   "app.Admin.ManagementFeed.noActivityFound": "Nema aktivnosti",
   "app.Admin.ManagementFeed.phase": "Faza",
   "app.Admin.ManagementFeed.project": "Projekt",

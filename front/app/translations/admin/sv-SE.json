@@ -12,6 +12,7 @@
   "app.Admin.ManagementFeed.in": "i projekt {project}",
   "app.Admin.ManagementFeed.item": "Föremål",
   "app.Admin.ManagementFeed.key": "Nyckel",
+  "app.Admin.ManagementFeed.managementFeedNudge": "Åtkomst till hanteringsflödet ingår inte i din nuvarande licens. Kontakta din GovSuccess Manager för att lära dig mer om det.",
   "app.Admin.ManagementFeed.noActivityFound": "Ingen aktivitet hittades",
   "app.Admin.ManagementFeed.phase": "Fas",
   "app.Admin.ManagementFeed.project": "Projekt",

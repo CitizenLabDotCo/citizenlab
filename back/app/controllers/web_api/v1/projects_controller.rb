@@ -304,6 +304,7 @@ class WebApi::V1::ProjectsController < ApplicationController
 
   def destroy_participation_data
     ParticipantsService.new.destroy_participation_data(@project)
+    sidefx.after_destroy_participation_data(@project, current_user)
 
     render json: WebApi::V1::ProjectSerializer.new(
       @project,
@@ -319,12 +320,15 @@ class WebApi::V1::ProjectsController < ApplicationController
   end
 
   def save_project(project)
-    project.folder_id = params.dig(:project, :folder_id)
+    # Update folder_id only if it is provided in the request (even if it's nil)
+    if params[:project].key?(:folder_id)
+      project.folder_id = params.dig(:project, :folder_id)
+    end
 
     ActiveRecord::Base.transaction do
       project.save.tap do |saved|
         if saved
-          # The project must saved before performing the authorization because it requires
+          # The project must be saved before performing the authorization because it requires
           # the admin publication to be created.
           authorize(project)
           check_publication_inconsistencies!

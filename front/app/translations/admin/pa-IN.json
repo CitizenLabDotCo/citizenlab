@@ -12,6 +12,7 @@
   "app.Admin.ManagementFeed.in": "ਪ੍ਰੋਜੈਕਟ {project}ਵਿੱਚ",
   "app.Admin.ManagementFeed.item": "ਆਈਟਮ",
   "app.Admin.ManagementFeed.key": "ਕੁੰਜੀ",
+  "app.Admin.ManagementFeed.managementFeedNudge": "ਪ੍ਰਬੰਧਨ ਫੀਡ ਤੱਕ ਪਹੁੰਚ ਕਰਨਾ ਤੁਹਾਡੇ ਮੌਜੂਦਾ ਲਾਇਸੈਂਸ ਵਿੱਚ ਸ਼ਾਮਲ ਨਹੀਂ ਹੈ। ਇਸ ਬਾਰੇ ਹੋਰ ਜਾਣਨ ਲਈ ਆਪਣੇ GovSuccess ਮੈਨੇਜਰ ਨਾਲ ਸੰਪਰਕ ਕਰੋ।",
   "app.Admin.ManagementFeed.noActivityFound": "ਕੋਈ ਗਤੀਵਿਧੀ ਨਹੀਂ ਮਿਲੀ",
   "app.Admin.ManagementFeed.phase": "ਪੜਾਅ",
   "app.Admin.ManagementFeed.project": "ਪ੍ਰੋਜੈਕਟ",

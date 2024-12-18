@@ -12,6 +12,7 @@
   "app.Admin.ManagementFeed.in": "en el proyecto {project}",
   "app.Admin.ManagementFeed.item": "Artículo",
   "app.Admin.ManagementFeed.key": "Clave",
+  "app.Admin.ManagementFeed.managementFeedNudge": "El acceso al feed de gestión no está incluido en tu licencia actual. Ponte en contacto con tu gestor de GovSuccess para obtener más información.",
   "app.Admin.ManagementFeed.noActivityFound": "No se ha encontrado actividad",
   "app.Admin.ManagementFeed.phase": "Fase",
   "app.Admin.ManagementFeed.project": "proyectos",

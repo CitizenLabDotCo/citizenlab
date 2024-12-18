@@ -12,6 +12,7 @@
   "app.Admin.ManagementFeed.in": "في المشروع {project}",
   "app.Admin.ManagementFeed.item": "غرض",
   "app.Admin.ManagementFeed.key": "مفتاح",
+  "app.Admin.ManagementFeed.managementFeedNudge": "لا يتضمن ترخيصك الحالي إمكانية الوصول إلى موجز الإدارة. تواصل مع مدير GovSuccess الخاص بك لمعرفة المزيد حول هذا الأمر.",
   "app.Admin.ManagementFeed.noActivityFound": "لم يتم العثور على أي نشاط",
   "app.Admin.ManagementFeed.phase": "مرحلة",
   "app.Admin.ManagementFeed.project": "مشروع",

@@ -150,6 +150,7 @@ const Dropdown: React.FC<Props> = ({
   className,
 }) => {
   const dropdownContentRef = useRef<HTMLDivElement | null>(null);
+  const nodeRef = useRef(null);
   const footerRef = useRef<HTMLDivElement | null>(null);
   const triggerElement = useRef<HTMLElement | null>(null);
 
@@ -248,6 +249,9 @@ const Dropdown: React.FC<Props> = ({
     <CSSTransition
       in={opened}
       timeout={timeout}
+      // nodeRef used to fix React strict mode warning.
+      // See: https://github.com/reactjs/react-transition-group/issues/668#issuecomment-695162879
+      nodeRef={nodeRef}
       mountOnEnter
       unmountOnExit
       exit={false}
