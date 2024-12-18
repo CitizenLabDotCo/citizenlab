@@ -2840,6 +2840,7 @@
   "app.modules.navbar.admin.containers.pageSubtitle": "Su barra de navegación puede mostrar hasta cinco páginas además de las páginas de Inicio y de proyectos. Puede cambiar el nombre de los elementos del menú, reordenarlos y añadir páginas nuevas con su propio contenido.",
   "containers.Admin.reporting.components.ReportBuilder.Toolbox.ai": "AI",
   "containers.Admin.reporting.components.ReportBuilder.Toolbox.widgets": "Widget",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.dragAiContentInfo": "Utiliza el icono ☰ de abajo para arrastrar el contenido de la IA a tu informe.",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.noAIInsights": "No hay perspectivas de IA disponibles. Puedes crearlas en tu proyecto.",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.openProject": "Ir al proyecto",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.question": "Pregunta",
