@@ -15,6 +15,10 @@ module IdBosaFas
       }
     }
 
+    def auth?
+      false # Although using omni_auth, this is not yet enabled as an SSO method
+    end
+
     def profile_to_user_attrs(auth)
       {}.tap do |info|
         info[:first_name] = auth.dig('extra', 'raw_info', 'givenName') if auth.dig('extra', 'raw_info', 'givenName')
