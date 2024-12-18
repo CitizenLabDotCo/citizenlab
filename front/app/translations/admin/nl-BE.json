@@ -795,7 +795,7 @@
   "app.containers.Admin.pagesAndMenu.ContentBuilder.Widgets.FinishedOrArchived.archived": "Gearchiveerd",
   "app.containers.Admin.pagesAndMenu.ContentBuilder.Widgets.FinishedOrArchived.filterBy": "Filter op",
   "app.containers.Admin.pagesAndMenu.ContentBuilder.Widgets.FinishedOrArchived.finished": "Afgelopen",
-  "app.containers.Admin.pagesAndMenu.ContentBuilder.Widgets.FinishedOrArchived.finishedAndArchived": "Afgewerkt en gearchiveerd",
+  "app.containers.Admin.pagesAndMenu.ContentBuilder.Widgets.FinishedOrArchived.finishedAndArchived": "Afgelopen en gearchiveerd",
   "app.containers.Admin.pagesAndMenu.ContentBuilder.Widgets.FinishedOrArchived.noData": "Geen gegevens beschikbaar",
   "app.containers.Admin.pagesAndMenu.ContentBuilder.Widgets.FinishedOrArchived.thisWidgetShows": "Deze widget toont <b>projecten die zijn afgelopen en/of gearchiveerd.</b> \"Afgelopen\" omvat ook projecten die zich in de laatste fase bevinden en waarbij de laatste fase een rapport is.",
   "app.containers.Admin.pagesAndMenu.ContentBuilder.Widgets.FinishedOrArchived.title": "Afgelopen projecten",
