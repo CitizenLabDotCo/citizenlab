@@ -28,39 +28,6 @@ resource 'ActionDescriptors' do
         Permission.find_by(permission_scope: nil, action: 'commenting_initiative')
           .update!(permitted_by: 'users', groups: create_list(:group, 2))
       end
-
-      # TODO: cleanup-after-proposals-migration
-      example_request 'Get the global action descriptors for initiatives' do
-        expect(json_response).to eq(
-          {
-            data: {
-              type: 'initiatives',
-              attributes: {
-                posting_initiative: {
-                  enabled: true,
-                  disabled_reason: nil
-                },
-                commenting_initiative: {
-                  enabled: false,
-                  disabled_reason: 'user_not_in_group'
-                },
-                reacting_initiative: {
-                  enabled: true,
-                  disabled_reason: nil
-                },
-                cancelling_initiative_reactions: {
-                  enabled: true,
-                  disabled_reason: nil
-                },
-                comment_reacting_initiative: {
-                  enabled: false,
-                  disabled_reason: 'user_not_in_group'
-                }
-              }
-            }
-          }
-        )
-      end
     end
   end
 end

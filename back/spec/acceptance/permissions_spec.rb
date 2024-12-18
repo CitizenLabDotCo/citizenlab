@@ -123,9 +123,8 @@ resource 'Permissions' do
       end
     end
 
-    # TODO: posting_initiative
     get 'web_api/v1/permissions/:action' do
-      let(:action) { 'posting_initiative' }
+      let(:action) { 'attending_event' }
 
       example_request 'Get one global permission by action' do
         assert_status 200
@@ -198,7 +197,6 @@ resource 'Permissions' do
       end
     end
 
-    # TODO: posting_initiative
     patch 'web_api/v1/permissions/:action' do
       with_options scope: :permission do
         parameter :permitted_by, "Defines who is granted permission, either #{Permission::PERMITTED_BIES.join(',')}.", required: false
@@ -207,7 +205,7 @@ resource 'Permissions' do
       end
       ValidationErrorHelper.new.error_fields(self, Permission)
 
-      let(:action) { 'reacting_initiative' }
+      let(:action) { 'attending_event' }
       let(:permitted_by) { 'users' }
       let(:group_ids) { create_list(:group, 3).map(&:id) }
 
