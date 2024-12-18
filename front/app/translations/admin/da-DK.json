@@ -12,6 +12,7 @@
   "app.Admin.ManagementFeed.in": "i projekt {project}",
   "app.Admin.ManagementFeed.item": "Vare",
   "app.Admin.ManagementFeed.key": "Nøgle",
+  "app.Admin.ManagementFeed.managementFeedNudge": "Adgang til ledelsesfeed er ikke inkluderet i din nuværende licens. Kontakt Søren Kielgast for at få mere at vide om det.",
   "app.Admin.ManagementFeed.noActivityFound": "Ingen aktivitet fundet",
   "app.Admin.ManagementFeed.phase": "Fase",
   "app.Admin.ManagementFeed.project": "Projekt",
