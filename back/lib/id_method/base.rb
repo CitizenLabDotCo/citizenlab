@@ -2,11 +2,11 @@
 
 module IdMethod
   class Base
-    def sso_method?
+    def sso?
       false
     end
 
-    def verification_method?
+    def verification?
       false
     end
   end

@@ -2,7 +2,7 @@
 
 module IdMethod
   module OmniAuthMethod
-    def sso_method?
+    def sso?
       true
     end
 

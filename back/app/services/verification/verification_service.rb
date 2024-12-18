@@ -7,8 +7,8 @@ module Verification
     end
 
     def all_methods
-      ::IdMethod.all_methods.filter_map do |method|
-        method if method.verification_method?
+      IdMethod.all_methods.filter_map do |method|
+        method if method.verification?
       end
     end
 

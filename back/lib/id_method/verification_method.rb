@@ -2,7 +2,7 @@
 
 module IdMethod
   module VerificationMethod
-    def verification_method?
+    def verification?
       true
     end
     # It allows to migrate from one provider to another. See how it's overridden.
