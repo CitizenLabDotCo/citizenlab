@@ -2,7 +2,7 @@
 
 module IdMethod
   class Base
-    def sso?
+    def auth?
       false
     end
 

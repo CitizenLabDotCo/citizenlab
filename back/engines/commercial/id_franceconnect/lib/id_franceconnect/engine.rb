@@ -6,10 +6,7 @@ module IdFranceconnect
 
     config.to_prepare do
       AppConfiguration::Settings.add_feature(IdFranceconnect::FeatureSpecification)
-
-      fc = FranceconnectOmniauth.new
-      AuthenticationService.add_method('franceconnect', fc)
-      IdMethod.add_method(fc)
+      IdMethod.add_method('franceconnect', FranceconnectOmniauth.new)
     end
   end
 end

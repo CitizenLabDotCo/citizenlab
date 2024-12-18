@@ -6,10 +6,7 @@ module IdIdAustria
 
     config.to_prepare do
       AppConfiguration::Settings.add_feature(IdIdAustria::FeatureSpecification)
-
-      id_austria = IdAustriaOmniauth.new
-      IdMethod.add_method(id_austria)
-      AuthenticationService.add_method('id_austria', id_austria)
+      IdMethod.add_method('id_austria', IdAustriaOmniauth.new)
     end
   end
 end

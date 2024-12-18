@@ -6,7 +6,7 @@ module IdHoplr
 
     config.to_prepare do
       AppConfiguration::Settings.add_feature(IdHoplr::FeatureSpecification)
-      AuthenticationService.add_method('hoplr', HoplrOmniauth.new)
+      IdMethod.add_method('hoplr', HoplrOmniauth.new)
     end
   end
 end

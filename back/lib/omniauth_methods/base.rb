@@ -2,6 +2,10 @@
 
 module OmniauthMethods
   class Base
+    def verification?
+      false
+    end
+
     # @param [AppConfiguration] configuration
     def omniauth_setup(_configuration, _env)
       raise 'Subclass must implement this method'

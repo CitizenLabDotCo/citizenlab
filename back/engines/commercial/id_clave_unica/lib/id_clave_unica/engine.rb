@@ -6,10 +6,7 @@ module IdClaveUnica
 
     config.to_prepare do
       AppConfiguration::Settings.add_feature(IdClaveUnica::FeatureSpecification)
-
-      cu = ClaveUnicaOmniauth.new
-      AuthenticationService.add_method('clave_unica', cu)
-      IdMethod.add_method(cu)
+      IdMethod.add_method('clave_unica', ClaveUnicaOmniauth.new)
     end
   end
 end

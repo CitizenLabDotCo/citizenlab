@@ -7,9 +7,7 @@ module IdAuth0
     isolate_namespace IdAuth0
 
     config.to_prepare do
-      IdMethod.add_method(
-        Auth0Omniauth.new
-      )
+      IdMethod.add_method('auth0', Auth0Omniauth.new)
     end
   end
 end

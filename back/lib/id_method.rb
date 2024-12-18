@@ -9,12 +9,12 @@ module IdMethod
   # So, all_methods is defined here (in not-autoreloaded code), to keep it from
   # resetting to empty when the code is autoreloaded.
   #
-  mattr_accessor(:all_methods) { [] }
+  mattr_accessor(:all_methods) { {} }
 
   class << self
-    def add_method(method)
-      all_methods.reject! { |m| m.id == method.id }
-      all_methods << method
+    def add_method(name, method)
+      # TODO: JS - all_methods.reject! { |m| m.id == method.id }
+      all_methods[name.to_s] = method
     end
   end
 end

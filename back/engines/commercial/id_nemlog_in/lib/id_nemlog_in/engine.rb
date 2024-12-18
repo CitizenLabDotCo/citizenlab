@@ -6,12 +6,8 @@ module IdNemlogIn
 
     config.to_prepare do
       AppConfiguration::Settings.add_feature(IdNemlogIn::FeatureSpecification)
-
-      nemlog_in_omniauth = NemlogInOmniauth.new
-      AuthenticationService.add_method('nemlog_in', nemlog_in_omniauth)
-      IdMethod.add_method(nemlog_in_omniauth)
-
       AppConfiguration::Settings.add_feature(IdNemlogIn::KkiLocationApiFeatureSpecification)
+      IdMethod.add_method('nemlogin', NemlogInOmniauth.new)
     end
   end
 end
