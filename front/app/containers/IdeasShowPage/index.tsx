@@ -4,7 +4,6 @@ import {
   Box,
   useBreakpoint,
   Spinner,
-  stylingConsts,
   media,
   colors,
 } from '@citizenlab/cl2-component-library';
@@ -112,7 +111,10 @@ const IdeasShowPage = () => {
               phase={phase}
             />
           ) : (
-            <DesktopTopBar project={project.data} />
+            // 64px is the height of the CTA bar (see ParticipationCTAContent)
+            <Box mt={showCTABar ? '64px' : undefined}>
+              <DesktopTopBar project={project.data} />
+            </Box>
           )}
           <Box
             mt={
