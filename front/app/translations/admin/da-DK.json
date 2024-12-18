@@ -2840,6 +2840,7 @@
   "app.modules.navbar.admin.containers.pageSubtitle": "Din navigationslinje kan vise op til fem sider ud over siderne Startside og Projekter. Du kan omdøbe menupunkter, omarrangere og tilføje nye sider med dit eget indhold.",
   "containers.Admin.reporting.components.ReportBuilder.Toolbox.ai": "AI",
   "containers.Admin.reporting.components.ReportBuilder.Toolbox.widgets": "Widgets",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.dragAiContentInfo": "Brug ☰-ikonet nedenfor til at trække AI-indhold ind i din rapport.",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.noAIInsights": "Der er ingen tilgængelige AI-indsigter. Du kan oprette dem i dit projekt.",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.openProject": "Gå til projektet",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.question": "Spørgsmål",
