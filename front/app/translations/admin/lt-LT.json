@@ -469,7 +469,6 @@
   "app.containers.Admin.Invitations.adminLabel1": "Suteikite pakviestiesiems administratoriaus teises",
   "app.containers.Admin.Invitations.adminLabelTooltip": "Pasirinkus šią parinktį, kviečiamiems žmonėms bus suteikta prieiga prie visų jūsų platformos nustatymų.",
   "app.containers.Admin.Invitations.configureInvitations": "3. Kvietimų konfigūravimas",
-  "app.containers.Admin.Invitations.confirmDelete": "Taip, esu įsitikinęs.",
   "app.containers.Admin.Invitations.currentlyNoInvitesThatMatchSearch": "Kvietimų, atitinkančių jūsų paiešką, nėra",
   "app.containers.Admin.Invitations.deleteInvite": "Ištrinti",
   "app.containers.Admin.Invitations.deleteInviteTooltip": "Atšaukę kvietimą galėsite iš naujo išsiųsti kvietimą šiam asmeniui.",

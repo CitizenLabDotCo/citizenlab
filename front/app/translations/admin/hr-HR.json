@@ -469,7 +469,6 @@
   "app.containers.Admin.Invitations.adminLabel1": "Pozvanima dajte administratorska prava",
   "app.containers.Admin.Invitations.adminLabelTooltip": "Kada odaberete ovu opciju, osobe koje ste pozvali će imati pristup svim postavkama platforme.",
   "app.containers.Admin.Invitations.configureInvitations": "3. Konfigurirajte pozivnice",
-  "app.containers.Admin.Invitations.confirmDelete": "Da, siguran sam",
   "app.containers.Admin.Invitations.currentlyNoInvitesThatMatchSearch": "Nisu pronađene pozivnice koje odgovaraju kriterijima vaše pretrage",
   "app.containers.Admin.Invitations.deleteInvite": "Izbriši",
   "app.containers.Admin.Invitations.deleteInviteTooltip": "Prekid procesa pozivanja omogućit će vam da ovoj osobi ponovo pošaljete pozivnicu.",

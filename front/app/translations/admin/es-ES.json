@@ -469,7 +469,6 @@
   "app.containers.Admin.Invitations.adminLabel1": "Dar derechos de administrador a los invitados",
   "app.containers.Admin.Invitations.adminLabelTooltip": "Cuando se activa, las personas que reciben y aceptan su invitación también tendrán acceso a todas las configuraciones de administrador de la plataforma.",
   "app.containers.Admin.Invitations.configureInvitations": "3. Configurar las invitaciones",
-  "app.containers.Admin.Invitations.confirmDelete": "Si, estoy seguro(a)",
   "app.containers.Admin.Invitations.currentlyNoInvitesThatMatchSearch": "No hay invitaciones que calcen con tu búsqueda",
   "app.containers.Admin.Invitations.deleteInvite": "Cancelar",
   "app.containers.Admin.Invitations.deleteInviteTooltip": "Al cancelar una invitación a una persona, podrá enviarla nuevamente más adelante.",

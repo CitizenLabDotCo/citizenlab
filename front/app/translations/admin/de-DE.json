@@ -469,7 +469,6 @@
   "app.containers.Admin.Invitations.adminLabel1": "Admin-Zugang gewähren",
   "app.containers.Admin.Invitations.adminLabelTooltip": "Wenn Sie diese Option auswählen, haben die Personen, die Sie einladen, Zugriff auf alle Ihre Plattformeinstellungen.",
   "app.containers.Admin.Invitations.configureInvitations": "3. Konfigurieren Sie die Einladungen",
-  "app.containers.Admin.Invitations.confirmDelete": "Ja, ich bin mir sicher.",
   "app.containers.Admin.Invitations.currentlyNoInvitesThatMatchSearch": "Es gibt keine Einladungen, die Ihren Suchkriterien entsprechen.",
   "app.containers.Admin.Invitations.deleteInvite": "Löschen",
   "app.containers.Admin.Invitations.deleteInviteTooltip": "Wenn Sie eine Einladung stornieren, können Sie erneut eine Einladung an diese Personen senden.",

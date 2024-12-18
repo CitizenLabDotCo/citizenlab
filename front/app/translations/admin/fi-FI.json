@@ -469,7 +469,6 @@
   "app.containers.Admin.Invitations.adminLabel1": "Anna kutsutuille järjestelmänvalvojan oikeudet",
   "app.containers.Admin.Invitations.adminLabelTooltip": "Kun valitset tämän vaihtoehdon, kutsumasi ihmiset pääsevät käyttämään kaikkia alustaasetuksiasi.",
   "app.containers.Admin.Invitations.configureInvitations": "3. Määritä kutsut",
-  "app.containers.Admin.Invitations.confirmDelete": "Kyllä, olen varma",
   "app.containers.Admin.Invitations.currentlyNoInvitesThatMatchSearch": "Hakuasi vastaavia kutsuja ei ole",
   "app.containers.Admin.Invitations.deleteInvite": "Poistaa",
   "app.containers.Admin.Invitations.deleteInviteTooltip": "Peruuttamalla kutsun voit lähettää kutsun uudelleen tälle henkilölle.",

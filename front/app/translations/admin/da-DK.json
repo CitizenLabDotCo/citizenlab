@@ -469,7 +469,6 @@
   "app.containers.Admin.Invitations.adminLabel1": "Giv inviterede administratorrettigheder",
   "app.containers.Admin.Invitations.adminLabelTooltip": "Når du udvalgtr denne indstilling, får de deltagere, du inviterer, adgang til alle dine platformsindstillinger.",
   "app.containers.Admin.Invitations.configureInvitations": "3. Konfigurer invitationerne",
-  "app.containers.Admin.Invitations.confirmDelete": "Ja, jeg er sikker",
   "app.containers.Admin.Invitations.currentlyNoInvitesThatMatchSearch": "Der er ingen invitationer, der matcher din søgning",
   "app.containers.Admin.Invitations.deleteInvite": "Slet",
   "app.containers.Admin.Invitations.deleteInviteTooltip": "Hvis du annullerer en invitation, kan du sende en invitation til denne person igen.",

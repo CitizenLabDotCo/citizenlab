@@ -138,7 +138,6 @@
   "app.containers.Admin.Invitations.addToGroupLabel": "أضِف هؤلاء الأشخاص إلى مجموعات مستخدمين يدوية محددة",
   "app.containers.Admin.Invitations.adminLabelTooltip": "عند تحديد هذا الخيار، سيتمكن الأشخاص الذين تدعوهم من الوصول إلى جميع إعدادات منصتك.",
   "app.containers.Admin.Invitations.configureInvitations": "3. تهيئة الدعوات",
-  "app.containers.Admin.Invitations.confirmDelete": "نعم، أنا متأكد",
   "app.containers.Admin.Invitations.currentlyNoInvitesThatMatchSearch": "لا توجد دعوات تطابق بحثك",
   "app.containers.Admin.Invitations.deleteInvite": "إلغاء",
   "app.containers.Admin.Invitations.deleteInviteTooltip": "سيسمح لك إلغاء الدعوة بإعادة إرسال دعوة إلى هذا الشخص.",

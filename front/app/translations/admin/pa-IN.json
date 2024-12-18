@@ -469,7 +469,6 @@
   "app.containers.Admin.Invitations.adminLabel1": "ਸੱਦਾ ਦੇਣ ਵਾਲਿਆਂ ਨੂੰ ਪ੍ਰਬੰਧਕ ਅਧਿਕਾਰ ਦਿਓ",
   "app.containers.Admin.Invitations.adminLabelTooltip": "ਜਦੋਂ ਤੁਸੀਂ ਇਸ ਵਿਕਲਪ ਨੂੰ ਚੁਣਦੇ ਹੋ, ਤਾਂ ਜਿਨ੍ਹਾਂ ਲੋਕਾਂ ਨੂੰ ਤੁਸੀਂ ਸੱਦਾ ਦੇ ਰਹੇ ਹੋ, ਤੁਹਾਡੀਆਂ ਸਾਰੀਆਂ ਪਲੇਟਫਾਰਮ ਸੈਟਿੰਗਾਂ ਤੱਕ ਪਹੁੰਚ ਹੋਵੇਗੀ।",
   "app.containers.Admin.Invitations.configureInvitations": "3. ਸੱਦਿਆਂ ਨੂੰ ਕੌਂਫਿਗਰ ਕਰੋ",
-  "app.containers.Admin.Invitations.confirmDelete": "ਹਾਂ, ਮੈਨੂੰ ਯਕੀਨ ਹੈ",
   "app.containers.Admin.Invitations.currentlyNoInvitesThatMatchSearch": "ਤੁਹਾਡੀ ਖੋਜ ਨਾਲ ਮੇਲ ਖਾਂਦਾ ਕੋਈ ਸੱਦਾ ਨਹੀਂ ਹੈ",
   "app.containers.Admin.Invitations.deleteInvite": "ਮਿਟਾਓ",
   "app.containers.Admin.Invitations.deleteInviteTooltip": "ਇੱਕ ਸੱਦਾ ਰੱਦ ਕਰਨ ਨਾਲ ਤੁਸੀਂ ਇਸ ਵਿਅਕਤੀ ਨੂੰ ਇੱਕ ਸੱਦਾ ਦੁਬਾਰਾ ਭੇਜ ਸਕੋਗੇ।",
