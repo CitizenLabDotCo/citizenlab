@@ -15,7 +15,6 @@ module EmailCampaigns
       Campaigns::EventRegistrationConfirmation,
       Campaigns::IdeaMarkedAsSpam,
       Campaigns::IdeaPublished,
-      Campaigns::InitiativeAssignedToYou,
       Campaigns::InitiativeMarkedAsSpam,
       Campaigns::InitiativePublished,
       Campaigns::InitiativeResubmittedForReview,

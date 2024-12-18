@@ -114,11 +114,6 @@ FactoryBot.define do
     initiating_user
   end
 
-  factory :initiative_assigned_to_you, parent: :notification, class: 'Notifications::InitiativeAssignedToYou' do
-    initiating_user
-    association :post, factory: :initiative
-  end
-
   factory :initiative_marked_as_spam, parent: :notification, class: 'Notifications::InitiativeMarkedAsSpam' do
     association :post, factory: :initiative
     spam_report
