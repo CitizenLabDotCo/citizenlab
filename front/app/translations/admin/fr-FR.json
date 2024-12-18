@@ -12,6 +12,7 @@
   "app.Admin.ManagementFeed.in": "dans le projet {project}",
   "app.Admin.ManagementFeed.item": "Objet",
   "app.Admin.ManagementFeed.key": "Propriété",
+  "app.Admin.ManagementFeed.managementFeedNudge": "L'accès au journal d'audit n'est pas inclus dans votre licence actuelle. Contactez votre Spécialiste en participation pour en savoir plus.",
   "app.Admin.ManagementFeed.noActivityFound": "Aucune activité trouvée",
   "app.Admin.ManagementFeed.phase": "Phase",
   "app.Admin.ManagementFeed.project": "Projet",

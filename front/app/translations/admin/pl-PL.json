@@ -12,6 +12,7 @@
   "app.Admin.ManagementFeed.in": "w projekcie {project}",
   "app.Admin.ManagementFeed.item": "Pozycja",
   "app.Admin.ManagementFeed.key": "Klucz",
+  "app.Admin.ManagementFeed.managementFeedNudge": "Dostęp do kanału zarządzania nie jest objęty Twoją obecną licencją. Skontaktuj się ze swoim menedżerem GovSuccess, aby dowiedzieć się więcej na ten temat.",
   "app.Admin.ManagementFeed.noActivityFound": "Nie znaleziono aktywności",
   "app.Admin.ManagementFeed.phase": "Faza",
   "app.Admin.ManagementFeed.project": "Projekt",

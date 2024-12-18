@@ -12,6 +12,7 @@
   "app.Admin.ManagementFeed.in": "{project}projesinde",
   "app.Admin.ManagementFeed.item": "Öğe",
   "app.Admin.ManagementFeed.key": "Anahtar",
+  "app.Admin.ManagementFeed.managementFeedNudge": "Yönetim akışına erişim mevcut lisansınıza dahil değildir. Bu konuda daha fazla bilgi edinmek için GovSuccess Yöneticinize ulaşın.",
   "app.Admin.ManagementFeed.noActivityFound": "Etkinlik bulunamadı",
   "app.Admin.ManagementFeed.phase": "Aşama",
   "app.Admin.ManagementFeed.project": "Proje",

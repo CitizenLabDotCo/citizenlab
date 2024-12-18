@@ -12,6 +12,7 @@
   "app.Admin.ManagementFeed.in": "projekte {project}",
   "app.Admin.ManagementFeed.item": "Prekė",
   "app.Admin.ManagementFeed.key": "Pagrindinis",
+  "app.Admin.ManagementFeed.managementFeedNudge": "Prieiga prie valdymo kanalo nėra įtraukta į dabartinę licenciją. Susisiekite su savo \"GovSuccess\" vadybininku ir sužinokite apie tai daugiau.",
   "app.Admin.ManagementFeed.noActivityFound": "Veiklos nerasta",
   "app.Admin.ManagementFeed.phase": "Fazė",
   "app.Admin.ManagementFeed.project": "Projektas",
