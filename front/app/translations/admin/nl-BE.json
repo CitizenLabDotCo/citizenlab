@@ -12,6 +12,7 @@
   "app.Admin.ManagementFeed.in": "in project {project}",
   "app.Admin.ManagementFeed.item": "Item",
   "app.Admin.ManagementFeed.key": "Sleutel",
+  "app.Admin.ManagementFeed.managementFeedNudge": "Toegang tot de managementfeed is niet inbegrepen in je huidige licentie. Neem contact op met je GovSuccess Manager voor meer informatie.",
   "app.Admin.ManagementFeed.noActivityFound": "Geen activiteit gevonden",
   "app.Admin.ManagementFeed.phase": "Fase",
   "app.Admin.ManagementFeed.project": "Project",

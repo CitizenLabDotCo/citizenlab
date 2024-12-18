@@ -12,6 +12,7 @@
   "app.Admin.ManagementFeed.in": "پروجیکٹ {project}میں",
   "app.Admin.ManagementFeed.item": "آئٹم",
   "app.Admin.ManagementFeed.key": "چابی",
+  "app.Admin.ManagementFeed.managementFeedNudge": "مینجمنٹ فیڈ تک رسائی آپ کے موجودہ لائسنس میں شامل نہیں ہے۔ اس کے بارے میں مزید جاننے کے لیے اپنے GovSuccess مینیجر سے رابطہ کریں۔",
   "app.Admin.ManagementFeed.noActivityFound": "کوئی سرگرمی نہیں ملی",
   "app.Admin.ManagementFeed.phase": "مرحلہ",
   "app.Admin.ManagementFeed.project": "پروجیکٹ",

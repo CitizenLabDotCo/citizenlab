@@ -12,6 +12,7 @@
   "app.Admin.ManagementFeed.in": "projektissa {project}",
   "app.Admin.ManagementFeed.item": "Tuote",
   "app.Admin.ManagementFeed.key": "Avain",
+  "app.Admin.ManagementFeed.managementFeedNudge": "Hallintosyötteen käyttö ei sisälly nykyiseen lisenssiisi. Ota yhteyttä GovSuccess Manageriin saadaksesi lisätietoja siitä.",
   "app.Admin.ManagementFeed.noActivityFound": "Toimintaa ei löytynyt",
   "app.Admin.ManagementFeed.phase": "Vaihe",
   "app.Admin.ManagementFeed.project": "Projekti",

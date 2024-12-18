@@ -94,4 +94,9 @@ export default defineMessages({
     id: 'app.Admin.ManagementFeed.noActivityFound',
     defaultMessage: 'No activity found',
   },
+  managementFeedNudge: {
+    id: 'app.Admin.ManagementFeed.managementFeedNudge',
+    defaultMessage:
+      'Accessing the management feed is not included in your current license. Reach out to your GovSuccess Manager to learn more about it.',
+  },
 });
