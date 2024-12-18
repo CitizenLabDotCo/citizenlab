@@ -12,6 +12,7 @@
   "app.Admin.ManagementFeed.in": "yn y prosiect {project}",
   "app.Admin.ManagementFeed.item": "Eitem",
   "app.Admin.ManagementFeed.key": "Allwedd",
+  "app.Admin.ManagementFeed.managementFeedNudge": "Nid yw cyrchu'r porthwr rheoli wedi'i gynnwys yn eich trwydded gyfredol. Cysylltwch â'ch Rheolwr GovSuccess i ddysgu mwy amdano.",
   "app.Admin.ManagementFeed.noActivityFound": "Ni chanfuwyd unrhyw weithgaredd",
   "app.Admin.ManagementFeed.phase": "Cyfnod",
   "app.Admin.ManagementFeed.project": "Prosiect",
