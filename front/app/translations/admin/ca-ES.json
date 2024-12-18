@@ -216,7 +216,6 @@
   "app.containers.Admin.Invitations.adminLabel1": "Doneu drets d'administrador als convidats",
   "app.containers.Admin.Invitations.adminLabelTooltip": "Quan seleccioneu aquesta opció, les persones que convideu tindran accés a tota la configuració de la vostra plataforma.",
   "app.containers.Admin.Invitations.configureInvitations": "3. Configurar les invitacions",
-  "app.containers.Admin.Invitations.confirmDelete": "Sí, n'estic segur",
   "app.containers.Admin.Invitations.currentlyNoInvitesThatMatchSearch": "No hi ha invitacions que coincideixin amb la vostra cerca",
   "app.containers.Admin.Invitations.deleteInvite": "Delete",
   "app.containers.Admin.Invitations.deleteInviteTooltip": "Cancel·lar una invitació us permetrà tornar a enviar una invitació a aquesta persona.",
