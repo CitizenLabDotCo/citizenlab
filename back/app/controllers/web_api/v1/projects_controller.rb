@@ -156,37 +156,65 @@ class WebApi::V1::ProjectsController < ApplicationController
   end
 
   def create
-    project_params = permitted_attributes(Project)
-    @project = Project.new(project_params)
-    sidefx.before_create(@project, current_user)
+    project = Project.new(permitted_attributes(Project))
+    sidefx.before_create(project, current_user)
 
-    if save_project
-      sidefx.after_create(@project, current_user)
+    created = Project.transaction do
+      save_project(project).tap do |saved|
+        sidefx.after_create(project, current_user) if saved
+      end
+    end
+
+    if created
       render json: WebApi::V1::ProjectSerializer.new(
-        @project,
+        project,
         params: jsonapi_serializer_params,
         include: [:admin_publication]
       ).serializable_hash, status: :created
     else
-      render json: { errors: @project.errors.details }, status: :unprocessable_entity
+      render json: { errors: project.errors.details }, status: :unprocessable_entity
     end
   end
 
   def copy
     source_project = Project.find(params[:id])
-    folder = source_project.folder
+    dest_folder = source_project.folder if UserRoleService.new.can_moderate?(source_project.folder, current_user)
 
-    @project = folder ? Project.new(folder: folder) : Project.new
+    # The authorization of this action is more complex than usual. It works in two steps:
+    # - Check if the user can copy the source project.
+    # - Check if the user can create the project that results from the copy.
+    # In between these two steps, there is a third authorization check that is an optimization that allows us to
+    # return early in some cases.
+    authorize(source_project)
 
-    authorize @project
+    # Optimization: We perform the authorization on a dummy project that resembles the result of the copy. This
+    # approach allows us to return early in some cases without performing the actual copy, which can be expensive.
+    # The dummy project must be `save`d before the authorization check to ensure the admin publication is created.
+    # A final authorization check is performed afterward on the actual copied project.
+    Project.transaction do
+      source_project.dup.tap do |p|
+        p.assign_attributes(slug: nil, admin_publication_attributes: {
+          publication_status: 'draft',
+          parent_id: dest_folder&.admin_publication&.id
+        })
+
+        p.save!
+        authorize(p, :create?)
+      end
+
+      raise ActiveRecord::Rollback
+    end
 
     start_time = Time.now
-    @project = LocalProjectCopyService.new.copy(source_project)
+    project = Project.transaction do
+      copy = LocalProjectCopyService.new.copy(source_project, dest_folder: dest_folder)
+      authorize(copy, :create?)
+    end
 
-    sidefx.after_copy(source_project, @project, current_user, start_time)
+    sidefx.after_copy(source_project, project, current_user, start_time)
 
     render json: WebApi::V1::ProjectSerializer.new(
-      @project,
+      project,
       params: jsonapi_serializer_params,
       include: [:admin_publication]
     ).serializable_hash, status: :created
@@ -196,14 +224,14 @@ class WebApi::V1::ProjectsController < ApplicationController
     params[:project][:area_ids] ||= [] if params[:project].key?(:area_ids)
     params[:project][:topic_ids] ||= [] if params[:project].key?(:topic_ids)
 
-    project_params = permitted_attributes(Project)
+    project_params = permitted_attributes(@project)
 
     @project.assign_attributes project_params
     remove_image_if_requested!(@project, project_params, :header_bg)
 
     sidefx.before_update(@project, current_user)
 
-    if save_project
+    if save_project(@project)
       sidefx.after_update(@project, current_user)
       render json: WebApi::V1::ProjectSerializer.new(
         @project,
@@ -290,20 +318,21 @@ class WebApi::V1::ProjectsController < ApplicationController
     @sidefx ||= SideFxProjectService.new
   end
 
-  def save_project
+  def save_project(project)
+    project.folder_id = params.dig(:project, :folder_id)
+
     ActiveRecord::Base.transaction do
-      set_folder
-      authorize @project
-      saved = @project.save
-      check_publication_inconsistencies! if saved
-      saved
+      project.save.tap do |saved|
+        if saved
+          # The project must saved before performing the authorization because it requires
+          # the admin publication to be created.
+          authorize(project)
+          check_publication_inconsistencies!
+        else
+          skip_authorization
+        end
+      end
     end
-  end
-
-  def set_folder
-    return unless params.require(:project).key?(:folder_id)
-
-    @project.folder_id = params.dig(:project, :folder_id)
   end
 
   def set_project

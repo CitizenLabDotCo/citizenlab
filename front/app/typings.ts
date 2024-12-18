@@ -2,7 +2,6 @@ import { MouseEvent, FC } from 'react';
 
 import { WrappedComponentProps } from 'react-intl';
 import { RouteType } from 'routes';
-import { TableCellProps } from 'semantic-ui-react';
 
 import { TAppConfigurationSetting } from 'api/app_configuration/types';
 
@@ -48,7 +47,6 @@ export type CellConfiguration<ComponentProps> = {
   onChange?: (event: unknown) => void;
   onClick?: (event: MouseEvent) => void;
   featureFlag?: TAppConfigurationSetting;
-  cellProps?: TableCellProps;
   width?: number;
   Component: FC<ComponentProps>;
 };
