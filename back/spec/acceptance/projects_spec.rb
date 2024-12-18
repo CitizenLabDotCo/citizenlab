@@ -71,6 +71,8 @@ resource 'Projects' do
         .map { |ps| create(:project, admin_publication_attributes: { publication_status: ps }) }
     end
 
+    let(:user) { @user }
+
     get 'web_api/v1/projects' do
       with_options scope: :page do
         parameter :number, 'Page number'
@@ -607,7 +609,14 @@ resource 'Projects' do
 
       let!(:poll_response) { create(:poll_response, phase: poll_phase) }
 
-      example_request 'Reset participation data of a project' do
+      example 'Reset participation data of a project' do
+        side_fx = SideFxProjectService.new
+        allow(SideFxProjectService).to receive(:new).and_return(side_fx)
+        expect(side_fx)
+          .to receive(:after_destroy_participation_data).and_call_original
+
+        do_request
+
         expect(response_status).to eq 200
         expect(project.ideas).to be_empty
         expect(cause.volunteers).to be_empty
