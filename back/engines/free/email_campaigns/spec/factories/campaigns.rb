@@ -150,10 +150,6 @@ FactoryBot.define do
     enabled { true }
   end
 
-  factory :official_feedback_on_initiative_you_follow_campaign, class: EmailCampaigns::Campaigns::OfficialFeedbackOnInitiativeYouFollow do
-    enabled { true }
-  end
-
   factory :project_folder_moderation_rights_received_campaign, class: EmailCampaigns::Campaigns::ProjectFolderModerationRightsReceived do
     enabled { true }
   end
