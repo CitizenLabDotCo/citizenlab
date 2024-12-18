@@ -2,7 +2,7 @@
 
 module IdOostendeRrn
   class OostendeRrnVerification
-    include Verification::VerificationMethod
+    include IdMethod::VerificationMethod
 
     def verification_method_type
       :manual_sync

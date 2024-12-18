@@ -5,7 +5,7 @@ module IdOostendeRrn
     isolate_namespace IdOostendeRrn
 
     config.to_prepare do
-      Verification.add_method(
+      IdMethod.add_method(
         OostendeRrnVerification.new
       )
     end

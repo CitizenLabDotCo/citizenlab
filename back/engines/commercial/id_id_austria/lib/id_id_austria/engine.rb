@@ -8,7 +8,7 @@ module IdIdAustria
       AppConfiguration::Settings.add_feature(IdIdAustria::FeatureSpecification)
 
       id_austria = IdAustriaOmniauth.new
-      Verification.add_method(id_austria)
+      IdMethod.add_method(id_austria)
       AuthenticationService.add_method('id_austria', id_austria)
     end
   end

@@ -8,7 +8,7 @@ module IdKeycloak
       AppConfiguration::Settings.add_feature(IdKeycloak::FeatureSpecification)
 
       keycloak = KeycloakOmniauth.new
-      Verification.add_method(keycloak)
+      IdMethod.add_method(keycloak)
       AuthenticationService.add_method('keycloak', keycloak)
     end
   end

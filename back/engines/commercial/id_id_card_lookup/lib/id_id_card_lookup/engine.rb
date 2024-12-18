@@ -16,7 +16,7 @@ module IdIdCardLookup
     config.factory_bot.definition_file_paths += [factories_path] if defined?(FactoryBotRails)
 
     config.to_prepare do
-      Verification.add_method(
+      IdMethod.add_method(
         IdCardLookupVerification.new
       )
     end

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Verification
+module IdMethod
   # This array `all_methods` is populated in `to_prepare` callbacks in Engines,
   # and it's used to define the `VerificationMethodSerializer` attributes.
   # When the code is autoreloaded, VerificationMethodSerializer is loaded BEFORE
@@ -12,9 +12,9 @@ module Verification
   mattr_accessor(:all_methods) { [] }
 
   class << self
-    def add_method(verification_method)
-      all_methods.reject! { |m| m.id == verification_method.id }
-      all_methods << verification_method
+    def add_method(method)
+      all_methods.reject! { |m| m.id == method.id }
+      all_methods << method
     end
   end
 end

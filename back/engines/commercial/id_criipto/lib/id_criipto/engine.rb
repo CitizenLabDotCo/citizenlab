@@ -8,7 +8,7 @@ module IdCriipto
       AppConfiguration::Settings.add_feature(IdCriipto::FeatureSpecification)
 
       criipto = CriiptoOmniauth.new
-      Verification.add_method(criipto)
+      IdMethod.add_method(criipto)
       AuthenticationService.add_method('criipto', criipto)
     end
   end

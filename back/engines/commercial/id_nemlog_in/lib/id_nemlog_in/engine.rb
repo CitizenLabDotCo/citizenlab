@@ -9,7 +9,7 @@ module IdNemlogIn
 
       nemlog_in_omniauth = NemlogInOmniauth.new
       AuthenticationService.add_method('nemlog_in', nemlog_in_omniauth)
-      Verification.add_method(nemlog_in_omniauth)
+      IdMethod.add_method(nemlog_in_omniauth)
 
       AppConfiguration::Settings.add_feature(IdNemlogIn::KkiLocationApiFeatureSpecification)
     end

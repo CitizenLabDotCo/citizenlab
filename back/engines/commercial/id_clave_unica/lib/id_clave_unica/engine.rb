@@ -9,7 +9,7 @@ module IdClaveUnica
 
       cu = ClaveUnicaOmniauth.new
       AuthenticationService.add_method('clave_unica', cu)
-      Verification.add_method(cu)
+      IdMethod.add_method(cu)
     end
   end
 end

@@ -2,7 +2,7 @@
 
 module IdGentRrn
   class GentRrnVerification
-    include Verification::VerificationMethod
+    include IdMethod::VerificationMethod
 
     def verification_method_type
       :manual_sync

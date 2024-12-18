@@ -9,7 +9,7 @@ module IdFakeSso
 
       fake_sso_method = FakeSsoOmniauth.new
       AuthenticationService.add_method('fake_sso', fake_sso_method)
-      Verification.add_method(fake_sso_method)
+      IdMethod.add_method(fake_sso_method)
     end
   end
 end

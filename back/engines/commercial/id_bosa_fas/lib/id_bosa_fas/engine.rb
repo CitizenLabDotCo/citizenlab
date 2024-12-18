@@ -5,7 +5,7 @@ module IdBosaFas
     isolate_namespace IdBosaFas
 
     config.to_prepare do
-      Verification.add_method(
+      IdMethod.add_method(
         BosaFasOmniauth.new
       )
     end

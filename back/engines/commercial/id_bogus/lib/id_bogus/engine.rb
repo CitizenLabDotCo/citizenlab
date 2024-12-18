@@ -5,7 +5,7 @@ module IdBogus
     isolate_namespace IdBogus
 
     config.to_prepare do
-      Verification.add_method(
+      IdMethod.add_method(
         BogusVerification.new
       )
     end

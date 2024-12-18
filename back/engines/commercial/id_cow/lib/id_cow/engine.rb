@@ -5,7 +5,7 @@ module IdCow
     isolate_namespace IdCow
 
     config.to_prepare do
-      Verification.add_method(
+      IdMethod.add_method(
         CowVerification.new
       )
     end

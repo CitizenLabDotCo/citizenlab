@@ -5,7 +5,7 @@ module IdGentRrn
     isolate_namespace IdGentRrn
 
     config.to_prepare do
-      Verification.add_method(
+      IdMethod.add_method(
         GentRrnVerification.new
       )
     end
