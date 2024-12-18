@@ -34,7 +34,7 @@ describe SideFxCommentService do
       expectation.to enqueue_job(LogActivityJob).with(comment, 'mentioned', user, created_at, payload: { mentioned_user: u2.id }, project_id: project_id)
     end
 
-    it 'creates a follower' do
+    it 'creates the expected follower records' do
       project = create(:project)
       folder = create(:project_folder, projects: [project])
       idea = create(:idea, project: project)
@@ -47,24 +47,24 @@ describe SideFxCommentService do
       expect(user.follows.pluck(:followable_id)).to contain_exactly idea.id, project.id, folder.id
     end
 
-    # TODO: Part of initiatives cleanup
-    # I have commented this out, for now, as it fails if I change initiative to idea
-    # This seems to be because the related `after_create` method in fact creates a folllower for the related project,
-    # and intitiatives never had a related project.
-    # Furthermore, it appears that the `after_create` method will go on to also create another follower for the
-    # project's folder, it there is one.
-    # Thus, this test was not as general (to Post) as it might have seemed + I think we need to check that the cascading
-    # follower creations (idea -> project -> folder as followable) is intended & necessary.
-    #
-    # it 'does not create a follower if the user already follows the post' do
-    #   initiative = create(:initiative)
-    #   comment = create(:comment, post: initiative)
-    #   create(:follower, followable: initiative, user: user)
+    it 'does not create new follower records for followable items user already follows' do
+      project = create(:project)
+      folder = create(:project_folder, projects: [project])
+      idea = create(:idea, project: project)
+      comment = create(:comment, post: idea)
 
-    #   expect do
-    #     service.after_create comment, user
-    #   end.not_to change(Follower, :count)
-    # end
+      create(:follower, followable: idea, user: user)
+      create(:follower, followable: project, user: user)
+      create(:follower, followable: folder, user: user)
+      n_idea_followers = idea.followers.count
+      n_project_followers = project.followers.count
+      n_folder_followers = folder.followers.count
+
+      service.after_create comment, user
+      expect(idea.reload.followers.count).to eq n_idea_followers
+      expect(project.reload.followers.count).to eq n_project_followers
+      expect(folder.reload.followers.count).to eq n_folder_followers
+    end
   end
 
   describe 'after_update' do
