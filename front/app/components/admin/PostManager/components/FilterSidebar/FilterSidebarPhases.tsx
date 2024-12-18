@@ -1,14 +1,16 @@
 import React from 'react';
 
-import { Divider, Menu } from 'semantic-ui-react';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 
 import { IPhaseData } from 'api/phases/types';
+
+import useLocalize from 'hooks/useLocalize';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../../messages';
 
-import FilterSidebarPhasesItem from './FilterSidebarPhasesItem';
+import FilterRadioButton from './FilterRadioButton';
 
 type Props = {
   phases: IPhaseData[];
@@ -21,6 +23,8 @@ const FilterSidebarPhases = ({
   selectedPhase,
   onChangePhaseFilter,
 }: Props) => {
+  const localize = useLocalize();
+
   const handleItemClick = (phaseId: string) => () => {
     onChangePhaseFilter(phaseId);
   };
@@ -34,26 +38,49 @@ const FilterSidebarPhases = ({
   };
 
   return (
-    <Menu
-      secondary={true}
-      vertical={true}
-      fluid={true}
-      className="intercom-admin-input-manager-phases"
-    >
-      <Menu.Item onClick={clearFilter} active={!selectedPhase}>
-        <FormattedMessage {...messages.allPhases} />
-      </Menu.Item>
-      <Divider />
-      {phases.map((phase, index) => (
-        <FilterSidebarPhasesItem
+    <Box display="flex" flexDirection="column">
+      <FilterRadioButton
+        isSelected={!selectedPhase}
+        onChange={clearFilter}
+        labelContent={<FormattedMessage {...messages.allPhases} />}
+      />
+      <Box
+        width="100%"
+        as="hr"
+        border={`1px solid ${colors.background}`}
+        mb="8px"
+      />
+      {phases.map((phase, phaseIndex) => (
+        <FilterRadioButton
           key={phase.id}
-          phase={phase}
-          phaseNumber={index + 1}
-          active={isActive(phase.id)}
-          onClick={handleItemClick(phase.id)}
+          isSelected={isActive(phase.id)}
+          onChange={handleItemClick(phase.id)}
+          phaseId={phase.id}
+          labelContent={
+            <Box
+              display="flex"
+              width="100%"
+              justifyContent="space-between"
+              alignItems="center"
+            >
+              {localize(phase.attributes.title_multiloc)}
+              <Box
+                width="24px"
+                height="24px"
+                border={`1px solid ${colors.teal}`}
+                borderRadius="50%"
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                background={colors.white}
+              >
+                {phaseIndex + 1}
+              </Box>
+            </Box>
+          }
         />
       ))}
-    </Menu>
+    </Box>
   );
 };
 
