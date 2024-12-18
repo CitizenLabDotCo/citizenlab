@@ -2592,7 +2592,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeEmbedVisitLinkMessage": "Visitez notre page d'assistance",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeHeightPlaceholder": "300",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeInvalidWhitelistUrlErrorMessage": "Désolé, ce contenu n'a pas pu être intégré. {visitLinkMessage} pour en savoir plus.",
-  "app.containers.admin.ContentBuilder.IframeMultiloc.iframeSupportLink": "https://support.citizenlab.co/fr/articles/7025826-personnaliser-la-description-de-vos-projets-avec-l-editeur-de-contenu#h_cf8a993642",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.iframeSupportLink": "https://support.citizenlab.co/en/articles/6354058-embedding-elements-in-the-content-builder-to-enrich-project-descriptions",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeUrlErrorMessage": "Saisissez une URL valide, par exemple https://example.com",
   "app.containers.admin.ContentBuilder.IframeMultiloc.url": "URL",
   "app.containers.admin.ContentBuilder.accordionMultiloc": "Section accordéon",
