@@ -219,6 +219,7 @@ const ProjectProposalsManager = ({
               onChangeStatusFilter={onChangeStatus}
               statuses={ideaStatuses?.data ?? []}
               selectedStatus={queryParameters.idea_status}
+              selectedPhase={queryParameters.phase}
             />
           </Sticky>
         </LeftColumn>
