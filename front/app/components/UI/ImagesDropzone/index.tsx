@@ -207,8 +207,6 @@ const ImagesDropzone = ({
 }: Props) => {
   const { formatMessage } = useIntl();
 
-  console.log({ errorMessage });
-
   const [urlObjects, setUrlObjects] = useState<{
     [key: string]: string;
   }>({});
@@ -219,27 +217,11 @@ const ImagesDropzone = ({
   useEffect(() => {
     handleSetUrlObjects();
     removeExcessImages();
-  }, []);
-
-  useEffect(() => {
-    // if (prevProps.images !== this.props.images)
-    handleSetUrlObjects();
-
-    // if (!prevProps.images || prevProps.images.length === 0) {
-    removeExcessImages();
-
-    // if (prevProps.errorMessage !== this.props.errorMessage) {
-    // const errorMessage =
-    //   errorMessage &&
-    //   errorMessage !== errorMessage
-    //     ? errorMessage
-    //     : this.state.errorMessage;
     setErrorMessageVariable(errorMessage || null);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [images]);
 
   const removeExcessImages = () => {
-    maxNumberOfImages = maxNumberOfImages;
-
     // Logic to automatically trigger removal of the images that exceed the maxNumberOfImages treshold
     // E.g. the maxNumberOfImages has been reduced from 5 to 1, but the server still returns 5 images and so this.props.images
     // array will have a length of 5 instead of the new max. allowed length of 1. In this case onRemove() will be triggered
@@ -253,6 +235,7 @@ const ImagesDropzone = ({
 
   useEffect(() => {
     forEach(urlObjects, (urlObject) => window.URL.revokeObjectURL(urlObject));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSetUrlObjects = () => {
@@ -297,9 +280,7 @@ const ImagesDropzone = ({
           : formatMessage(messages.onlyXImages, { maxItemsCount });
       setErrorMessageVariable(errorMessage);
       setTimeout(() => setErrorMessageVariable(null));
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    } else if (images && images.length > 0) {
+    } else if (images.length > 0) {
       for (let i = 0; i < images.length; i += 1) {
         if (!images[i].base64) {
           try {
@@ -310,7 +291,7 @@ const ImagesDropzone = ({
         }
       }
 
-      onAdd(uniqBy([...(images || []), ...images], 'base64'));
+      onAdd(uniqBy([...images, ...images], 'base64'));
     }
   };
 
@@ -348,8 +329,6 @@ const ImagesDropzone = ({
         )})`
       : null;
   const maxImageSizeInMb = getMaxImageSizeInMb();
-
-  console.log({ urlObjects, images });
 
   return (
     <Container className={className || ''} data-testid="images-dropzone">
@@ -421,9 +400,7 @@ const ImagesDropzone = ({
               maxWidth={maxImagePreviewWidth}
               ratio={imagePreviewRatio}
               className={
-                // TODO: Fix this the next time the file is edited.
-                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-                images && maxNumberOfImages > 1 && index !== images.length - 1
+                maxNumberOfImages > 1 && index !== images.length - 1
                   ? 'hasRightMargin'
                   : ''
               }
