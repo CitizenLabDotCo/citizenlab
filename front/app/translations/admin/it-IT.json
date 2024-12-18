@@ -212,7 +212,7 @@
   "app.components.admin.PostManager.geojsonRemoveEsriTooltip2": "Puoi caricare i dati della mappa solo come livelli GeoJSON o importandoli da ArcGIS Online. Rimuovi tutti i dati ArcGIS se desideri caricare un livello GeoJSON.",
   "app.components.admin.PostManager.goToDefaultMapView": "Vai al centro mappe predefinito",
   "app.components.admin.PostManager.hiddenFieldsLink": "campi nascosti",
-  "app.components.admin.PostManager.hiddenFieldsSupportArticleUrl": "https://support.citizenlab.co/en/articles/1641202",
+  "app.components.admin.PostManager.hiddenFieldsSupportArticleUrl": "https://support.citizenlab.co/articles/1641202",
   "app.components.admin.PostManager.hiddenFieldsTip": "Suggerimento: Se stai usando Typeform, aggiungi {hiddenFieldsLink} per tenere traccia di chi ha risposto alla tua indagine.",
   "app.components.admin.PostManager.import2": "Importazione",
   "app.components.admin.PostManager.importError": "Il file selezionato non può essere importato perché non è un file GeoJSON valido",
