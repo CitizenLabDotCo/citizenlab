@@ -204,7 +204,7 @@ class WebApi::V1::UsersController < ApplicationController
     count = 0
     published_comments = @user.comments.published
     # TODO: cleanup-after-proposals-migration
-    # This test won't make sense once Comment.post_type is removed
+    # Simplify when Comment.post_type is removed
     if !params[:post_type] || params[:post_type] == 'Idea'
       count += policy_scope(
         published_comments.where(post_type: 'Idea'),
