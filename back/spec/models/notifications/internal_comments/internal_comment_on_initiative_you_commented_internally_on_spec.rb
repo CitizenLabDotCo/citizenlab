@@ -84,13 +84,5 @@ RSpec.describe Notifications::InternalComments::InternalCommentOnInitiativeYouCo
       # should lead to a MentionInInternalComment notification to the recipient.
       it_behaves_like 'no notification created'
     end
-
-    context 'when the internal comment is on an initiative the recipient is assigned to' do
-      let(:initiative) { create(:initiative, assignee: commenter) }
-
-      # Don't create this notification if the Activity (internal comment created)
-      # should lead to a InternalCommentOnInitiativeAssignedToYou notification to the recipient.
-      it_behaves_like 'no notification created'
-    end
   end
 end

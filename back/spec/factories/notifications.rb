@@ -61,14 +61,6 @@ FactoryBot.define do
     association :post, factory: :idea
   end
 
-  factory :internal_comment_on_initiative_assigned_to_you,
-    parent: :notification,
-    class: 'Notifications::InternalComments::InternalCommentOnInitiativeAssignedToYou' do
-    initiating_user
-    internal_comment
-    association :post, factory: :initiative
-  end
-
   factory :internal_comment_on_initiative_you_commented_internally_on,
     parent: :notification,
     class: 'Notifications::InternalComments::InternalCommentOnInitiativeYouCommentedInternallyOn' do
