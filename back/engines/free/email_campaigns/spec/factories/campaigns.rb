@@ -106,10 +106,6 @@ FactoryBot.define do
     enabled { true }
   end
 
-  factory :new_initiative_for_admin_campaign, class: EmailCampaigns::Campaigns::NewInitiativeForAdmin do
-    enabled { true }
-  end
-
   factory :official_feedback_on_idea_you_follow_campaign, class: EmailCampaigns::Campaigns::OfficialFeedbackOnIdeaYouFollow do
     enabled { true }
   end

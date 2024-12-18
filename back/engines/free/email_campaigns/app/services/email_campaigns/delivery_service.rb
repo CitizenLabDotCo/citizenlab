@@ -30,7 +30,6 @@ module EmailCampaigns
       Campaigns::NativeSurveyNotSubmitted,
       Campaigns::NewCommentForAdmin,
       Campaigns::NewIdeaForAdmin,
-      Campaigns::NewInitiativeForAdmin,
       Campaigns::OfficialFeedbackOnIdeaYouFollow,
       Campaigns::ProjectFolderModerationRightsReceived,
       Campaigns::ProjectModerationRightsReceived,
