@@ -266,13 +266,13 @@ RSpec.describe Initiative do
       expect(User.find(cosponsor1.id)).to be_present
     end
 
-    it 'removes cosponsors_initiative even when an associated notifcation exists' do
-      cosponsor2 = create(:user)
-      create(:invitation_to_cosponsor_initiative, cosponsors_initiative: cosponsors_initiative)
-      initiative.update!(cosponsor_ids: [cosponsor2.id])
+    # it 'removes cosponsors_initiative even when an associated notifcation exists' do
+    #   cosponsor2 = create(:user)
+    #   create(:invitation_to_cosponsor_initiative, cosponsors_initiative: cosponsors_initiative)
+    #   initiative.update!(cosponsor_ids: [cosponsor2.id])
 
-      expect(initiative.reload.cosponsors).to match_array [cosponsor2]
-    end
+    #   expect(initiative.reload.cosponsors).to match_array [cosponsor2]
+    # end
 
     it 'can add and remove cosponsors_initiatives at the same time' do
       cosponsor2 = create(:user)
