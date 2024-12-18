@@ -1,7 +1,7 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 
 import { Title, useBreakpoint } from '@citizenlab/cl2-component-library';
-import useInstanceId from 'component-library/hooks/useInstanceId';
+import { debounce } from 'lodash-es';
 
 import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
 
@@ -17,23 +17,26 @@ import { getUpdatedButtonVisibility, skipCarrousel } from './utils';
 interface Props {
   className?: string;
   title: string;
+  scrollContainerRef?: HTMLDivElement;
+  setScrollContainerRef: (instance: HTMLDivElement) => void;
   cardWidth: number;
   scrollButtonTop: number;
   hasMore: boolean;
+  endId: string;
   children: React.ReactNode;
 }
 
 const ScrollableCarrousel = ({
   className,
   title,
+  scrollContainerRef,
+  setScrollContainerRef,
   cardWidth,
   scrollButtonTop,
   hasMore,
+  endId,
   children,
 }: Props) => {
-  const [scrollContainerRef, setScrollContainerRef] = useState<
-    HTMLDivElement | undefined
-  >(undefined);
   // State related to 'previous' button
   const [showPreviousButton, setShowPreviousButton] = useState(false);
   const [mouseOverPreviousButton, setMouseOverPreviousButton] = useState(false);
@@ -51,9 +54,6 @@ const ScrollableCarrousel = ({
   ] = useState(false);
 
   const isSmallerThanPhone = useBreakpoint('phone');
-
-  const instanceId = useInstanceId();
-  const endId = `end-carrousel-${instanceId}`;
 
   const handleButtonVisiblity = useCallback(
     (ref: HTMLDivElement, hasMore: boolean) => {
@@ -77,6 +77,21 @@ const ScrollableCarrousel = ({
     },
     [isSmallerThanPhone, mouseOverPreviousButton, mouseOverNextButton]
   );
+
+  // Set button visiblity on scroll
+  useEffect(() => {
+    if (!scrollContainerRef) return;
+
+    const handler = debounce(() => {
+      handleButtonVisiblity(scrollContainerRef, hasMore);
+    }, 100);
+
+    scrollContainerRef.addEventListener('scroll', handler);
+
+    return () => {
+      scrollContainerRef.removeEventListener('scroll', handler);
+    };
+  }, [scrollContainerRef, hasMore, handleButtonVisiblity]);
 
   return (
     <>
