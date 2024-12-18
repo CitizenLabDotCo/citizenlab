@@ -1497,6 +1497,8 @@
   "app.containers.NotificationMenu.projectPhaseStarted": "{projectTitle} uzsākts jauns posms",
   "app.containers.NotificationMenu.projectPhaseUpcoming": "{projectTitle} sāks jaunu posmu {phaseStartAt}.",
   "app.containers.NotificationMenu.projectPublished": "Publicēts jauns projekts",
+  "app.containers.NotificationMenu.projectReviewRequest": "{name} pieprasīja apstiprinājumu publicēt projektu \"{projectTitle}\".",
+  "app.containers.NotificationMenu.projectReviewStateChange": "{name} apstiprināts \"{projectTitle}\" publicēšanai",
   "app.containers.NotificationMenu.statusChangedOnIdeaYouFollow": "{ideaTitle} statuss ir mainīts uz {status}",
   "app.containers.NotificationMenu.thresholdReachedForAdmin": "{post} sasniedza balsošanas slieksni",
   "app.containers.NotificationMenu.userAcceptedYourInvitation": "{name} pieņēma jūsu uzaicinājumu",
