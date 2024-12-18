@@ -2,6 +2,11 @@
 
 module OmniauthMethods
   class Base
+    # TODO: JS - Temp until we remove this file
+    def auth?
+      true
+    end
+
     def verification?
       false
     end

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module IdGentRrn
-  class GentRrnVerification
+  class GentRrnVerification < IdMethod::Base
     include IdMethod::VerificationMethod
 
     def verification_method_type

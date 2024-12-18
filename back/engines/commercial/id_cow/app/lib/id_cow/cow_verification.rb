@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module IdCow
-  class CowVerification
+  class CowVerification < IdMethod::Base
     include IdMethod::VerificationMethod
 
     SHARED_SAVON_CONFIG = {

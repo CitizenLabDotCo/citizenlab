@@ -9,7 +9,7 @@ class AuthenticationService
   }
 
   def all_methods
-    DEFAULT_METHODS + IdMethod.all_methods.select(&:auth?)
+    DEFAULT_METHODS.merge(IdMethod.all_methods.filter_map { |k,v| [k,v] if v.auth? }.to_h)
   end
 
   def method_by_provider(provider)
