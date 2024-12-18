@@ -2840,6 +2840,7 @@
   "app.modules.navbar.admin.containers.pageSubtitle": "Navigācijas joslā papildus sākuma un projektu lapām var tikt parādītas līdz pat piecām lapām. Jūs varat pārdēvēt izvēlnes elementus, mainīt to secību un pievienot jaunas lapas ar savu saturu.",
   "containers.Admin.reporting.components.ReportBuilder.Toolbox.ai": "AI",
   "containers.Admin.reporting.components.ReportBuilder.Toolbox.widgets": "Logrīki",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.dragAiContentInfo": "Izmantojiet zemāk redzamo ☰ ikonu, lai ievilktu AI saturu savā ziņojumā.",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.noAIInsights": "Nav pieejami AI ieskati. Tās varat izveidot savā projektā.",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.openProject": "Iet uz projektu",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.question": "Jautājums",

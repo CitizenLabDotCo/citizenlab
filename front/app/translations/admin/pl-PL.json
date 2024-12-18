@@ -2840,6 +2840,7 @@
   "app.modules.navbar.admin.containers.pageSubtitle": "Twój pasek nawigacyjny może wyświetlać do pięciu stron oprócz strony głównej i stron projektów. Możesz zmieniać nazwy pozycji menu, zmieniać kolejność i dodawać nowe strony z własną zawartością.",
   "containers.Admin.reporting.components.ReportBuilder.Toolbox.ai": "AI",
   "containers.Admin.reporting.components.ReportBuilder.Toolbox.widgets": "Widżety",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.dragAiContentInfo": "Użyj ikony ☰ poniżej, aby przeciągnąć zawartość AI do raportu.",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.noAIInsights": "Nie ma dostępnych spostrzeżeń AI. Możesz je utworzyć w swoim projekcie.",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.openProject": "Przejdź do projektu",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.question": "Pytanie",
