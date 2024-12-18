@@ -2840,6 +2840,7 @@
   "app.modules.navbar.admin.containers.pageSubtitle": "crwdns212792:0crwdne212792:0",
   "containers.Admin.reporting.components.ReportBuilder.Toolbox.ai": "crwdns1963228:0crwdne1963228:0",
   "containers.Admin.reporting.components.ReportBuilder.Toolbox.widgets": "crwdns1963230:0crwdne1963230:0",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.dragAiContentInfo": "crwdns3848675:0crwdne3848675:0",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.noAIInsights": "crwdns1963232:0crwdne1963232:0",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.openProject": "crwdns1963234:0crwdne1963234:0",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.question": "crwdns1963236:0crwdne1963236:0",
