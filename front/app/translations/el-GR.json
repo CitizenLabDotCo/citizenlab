@@ -1497,6 +1497,8 @@
   "app.containers.NotificationMenu.projectPhaseStarted": "Το έργο {projectTitle} εισήλθε σε νέα φάση",
   "app.containers.NotificationMenu.projectPhaseUpcoming": "Το έργο {projectTitle} θα εισέλθει σε νέα φάση στις {phaseStartAt}",
   "app.containers.NotificationMenu.projectPublished": "Δημοσιεύθηκε ένα νέο έργο",
+  "app.containers.NotificationMenu.projectReviewRequest": "{name} ζήτησε έγκριση για τη δημοσίευση του έργου \"{projectTitle}\"",
+  "app.containers.NotificationMenu.projectReviewStateChange": "{name} εγκεκριμένο \"{projectTitle}\" για δημοσίευση",
   "app.containers.NotificationMenu.statusChangedOnIdeaYouFollow": "{ideaTitle} Η κατάσταση έχει αλλάξει σε {status}",
   "app.containers.NotificationMenu.thresholdReachedForAdmin": "Η δημοσίευση {post} έφθασε το όριο ψηφοφορίας",
   "app.containers.NotificationMenu.userAcceptedYourInvitation": "Ο/η {name} αποδέχτηκε την πρόσκλησή σας",

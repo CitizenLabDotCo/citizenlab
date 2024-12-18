@@ -1497,6 +1497,8 @@
   "app.containers.NotificationMenu.projectPhaseStarted": "{projectTitle} è entrato in una nuova fase",
   "app.containers.NotificationMenu.projectPhaseUpcoming": "{projectTitle} entrerà in una nuova fase su {phaseStartAt}",
   "app.containers.NotificationMenu.projectPublished": "È stato pubblicato un nuovo progetto",
+  "app.containers.NotificationMenu.projectReviewRequest": "{name} ha richiesto l'approvazione per la pubblicazione del progetto \"{projectTitle}\".",
+  "app.containers.NotificationMenu.projectReviewStateChange": "{name} approvato \"{projectTitle}\" per la pubblicazione",
   "app.containers.NotificationMenu.statusChangedOnIdeaYouFollow": "{ideaTitle} lo stato è cambiato in {status}",
   "app.containers.NotificationMenu.thresholdReachedForAdmin": "{post} ha raggiunto la soglia di voto",
   "app.containers.NotificationMenu.userAcceptedYourInvitation": "{name} ha accettato il tuo invito",

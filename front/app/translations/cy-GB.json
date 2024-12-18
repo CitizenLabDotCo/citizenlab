@@ -1497,6 +1497,8 @@
   "app.containers.NotificationMenu.projectPhaseStarted": "Aeth {projectTitle} i mewn i gyfnod newydd",
   "app.containers.NotificationMenu.projectPhaseUpcoming": "Bydd {projectTitle} yn cychwyn ar gyfnod newydd ar {phaseStartAt}",
   "app.containers.NotificationMenu.projectPublished": "Cyhoeddwyd prosiect newydd",
+  "app.containers.NotificationMenu.projectReviewRequest": "{name} requested approval to publish the project \"{projectTitle}\"",
+  "app.containers.NotificationMenu.projectReviewStateChange": "{name} cymeradwyo \"{projectTitle}\" i'w gyhoeddi",
   "app.containers.NotificationMenu.statusChangedOnIdeaYouFollow": "{ideaTitle} statws wedi newid i {status}",
   "app.containers.NotificationMenu.thresholdReachedForAdmin": "{post} wedi cyrraedd y trothwy pleidleisio",
   "app.containers.NotificationMenu.userAcceptedYourInvitation": "Derbyniodd {name} eich gwahoddiad",
