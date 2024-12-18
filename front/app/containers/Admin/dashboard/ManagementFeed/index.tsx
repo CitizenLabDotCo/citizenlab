@@ -18,6 +18,8 @@ import {
 import { IQueryParameters } from 'api/management_feed/types';
 import useManagementFeed from 'api/management_feed/useManagementFeed';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import ProjectSelector from 'components/admin/ProjectSelector';
 import Pagination from 'components/Pagination';
 import UserSelect from 'components/UI/UserSelect';
@@ -41,6 +43,10 @@ const ManagementFeed = () => {
     projectIds: selectedProjectIds.length ? selectedProjectIds : undefined,
     sort,
   });
+  const isManagementFeedAllowed = useFeatureFlag({
+    name: 'management_feed',
+    onlyCheckAllowed: true,
+  });
 
   if (!managementFeed) {
     return <Spinner />;
@@ -48,6 +54,13 @@ const ManagementFeed = () => {
 
   const currentPage = getPageNumberFromUrl(managementFeed.links.self);
   const lastPage = getPageNumberFromUrl(managementFeed.links.last);
+  if (!isManagementFeedAllowed) {
+    return (
+      <Box my="20px">
+        <Warning>{formatMessage(messages.managementFeedNudge)}</Warning>
+      </Box>
+    );
+  }
   return (
     <>
       <Title color="primary">{formatMessage(messages.title)}</Title>
