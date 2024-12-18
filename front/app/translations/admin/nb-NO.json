@@ -2840,6 +2840,7 @@
   "app.modules.navbar.admin.containers.pageSubtitle": "Navigasjonslinjen kan vise opptil fem sider i tillegg til start- og prosjektsidene. Du kan gi nytt navn til menyelementene, endre rekkefølgen og legge til nye sider med ditt eget innhold.",
   "containers.Admin.reporting.components.ReportBuilder.Toolbox.ai": "AI",
   "containers.Admin.reporting.components.ReportBuilder.Toolbox.widgets": "Widgets",
+  "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.dragAiContentInfo": "Bruk ☰-ikonet nedenfor for å dra AI-innhold inn i rapporten.",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.noAIInsights": "Det finnes ingen tilgjengelige AI-innsikter. Du kan opprette dem i prosjektet ditt.",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.openProject": "Gå til prosjektet",
   "containers.Admin.reporting.components.ReportBuilder.Widgets.Analysis.question": "Spørsmål",
