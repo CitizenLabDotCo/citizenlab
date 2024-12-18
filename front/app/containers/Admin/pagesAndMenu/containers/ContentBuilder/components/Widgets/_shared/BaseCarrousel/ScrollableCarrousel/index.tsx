@@ -1,43 +1,35 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 
-import { useBreakpoint, Title } from '@citizenlab/cl2-component-library';
+import { Title, useBreakpoint } from '@citizenlab/cl2-component-library';
 import useInstanceId from 'component-library/hooks/useInstanceId';
-import { debounce } from 'lodash-es';
-import { useInView } from 'react-intersection-observer';
-
-import { IAdminPublicationData } from 'api/admin_publications/types';
 
 import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
 
-import { CARD_GAP } from '../BaseCarrousel/constants';
-import { CarrouselContainer, CardContainer } from '../BaseCarrousel/Containers';
-import LoadMoreCard from '../BaseCarrousel/LoadMoreCard';
-import Gradient from '../BaseCarrousel/ScrollableCarrousel/Gradient';
-import HorizontalScroll from '../BaseCarrousel/ScrollableCarrousel/HorizontalScroll';
-import ScrollButton from '../BaseCarrousel/ScrollableCarrousel/ScrollButton';
-import SkipButton from '../BaseCarrousel/ScrollableCarrousel/SkipButton';
-import {
-  getUpdatedButtonVisibility,
-  skipCarrousel,
-} from '../BaseCarrousel/ScrollableCarrousel/utils';
+import { CARD_GAP } from '../constants';
+import { CarrouselContainer } from '../Containers';
 
-import AdminPublicationCard from './AdminPublicationCard';
-import { BIG_CARD_WIDTH, SMALL_CARD_WIDTH } from './constants';
+import Gradient from './Gradient';
+import HorizontalScroll from './HorizontalScroll';
+import ScrollButton from './ScrollButton';
+import SkipButton from './SkipButton';
+import { getUpdatedButtonVisibility, skipCarrousel } from './utils';
 
 interface Props {
-  title: string;
-  adminPublications: IAdminPublicationData[];
-  hasMore: boolean;
   className?: string;
-  onLoadMore: () => Promise<any>;
+  title: string;
+  cardWidth: number;
+  scrollButtonTop: number;
+  hasMore: boolean;
+  children: React.ReactNode;
 }
 
-const AdminPublicationsCarrousel = ({
-  title,
-  adminPublications,
-  hasMore,
+const ScrollableCarrousel = ({
   className,
-  onLoadMore,
+  title,
+  cardWidth,
+  scrollButtonTop,
+  hasMore,
+  children,
 }: Props) => {
   const [scrollContainerRef, setScrollContainerRef] = useState<
     HTMLDivElement | undefined
@@ -58,26 +50,10 @@ const AdminPublicationsCarrousel = ({
     setNextButtonShouldDisappearAfterMouseMove,
   ] = useState(false);
 
-  const [blockLoadMore, setBlockLoadMore] = useState(false);
-
   const isSmallerThanPhone = useBreakpoint('phone');
+
   const instanceId = useInstanceId();
   const endId = `end-carrousel-${instanceId}`;
-  const cardWidth = isSmallerThanPhone ? SMALL_CARD_WIDTH : BIG_CARD_WIDTH;
-
-  const handleLoadMore = async () => {
-    setBlockLoadMore(true);
-    await onLoadMore();
-    setBlockLoadMore(false);
-  };
-
-  const { ref } = useInView({
-    onChange: (inView) => {
-      if (inView && hasMore && !blockLoadMore) {
-        handleLoadMore();
-      }
-    },
-  });
 
   const handleButtonVisiblity = useCallback(
     (ref: HTMLDivElement, hasMore: boolean) => {
@@ -102,34 +78,6 @@ const AdminPublicationsCarrousel = ({
     [isSmallerThanPhone, mouseOverPreviousButton, mouseOverNextButton]
   );
 
-  useEffect(() => {
-    if (!scrollContainerRef) return;
-
-    const handler = debounce(() => {
-      handleButtonVisiblity(scrollContainerRef, hasMore);
-    }, 100);
-
-    scrollContainerRef.addEventListener('scroll', handler);
-
-    return () => {
-      scrollContainerRef.removeEventListener('scroll', handler);
-    };
-  }, [scrollContainerRef, hasMore, handleButtonVisiblity]);
-
-  const handleKeyDown = (e: React.KeyboardEvent<any>) => {
-    if (e.code === 'Escape') {
-      skipCarrousel(endId);
-    }
-
-    if (e.code === 'Tab' && scrollContainerRef) {
-      setTimeout(() => {
-        e.shiftKey
-          ? (scrollContainerRef.scrollLeft -= cardWidth + CARD_GAP)
-          : (scrollContainerRef.scrollLeft += cardWidth + CARD_GAP);
-      }, 50);
-    }
-  };
-
   return (
     <>
       <CarrouselContainer className={className}>
@@ -150,23 +98,13 @@ const AdminPublicationsCarrousel = ({
             }
           }}
         >
-          {adminPublications.map((adminPublication) => (
-            <CardContainer key={adminPublication.id}>
-              <AdminPublicationCard
-                ml={isSmallerThanPhone ? `${CARD_GAP}px` : undefined}
-                mr={isSmallerThanPhone ? undefined : `${CARD_GAP}px`}
-                adminPublication={adminPublication}
-                onKeyDown={handleKeyDown}
-              />
-            </CardContainer>
-          ))}
-          {hasMore && <LoadMoreCard width={cardWidth} cardRef={ref} />}
+          {children}
         </HorizontalScroll>
         {showPreviousButton && !isSmallerThanPhone && (
           <>
             <ScrollButton
               variant="left"
-              top="200px"
+              top={`${scrollButtonTop}px`}
               onClick={() => {
                 if (!scrollContainerRef) return;
                 scrollContainerRef.scrollLeft -= cardWidth + CARD_GAP;
@@ -187,7 +125,7 @@ const AdminPublicationsCarrousel = ({
           <>
             <ScrollButton
               variant="right"
-              top="200px"
+              top={`${scrollButtonTop}px`}
               onClick={() => {
                 if (!scrollContainerRef) return;
                 scrollContainerRef.scrollLeft += cardWidth + CARD_GAP;
@@ -210,4 +148,4 @@ const AdminPublicationsCarrousel = ({
   );
 };
 
-export default AdminPublicationsCarrousel;
+export default ScrollableCarrousel;

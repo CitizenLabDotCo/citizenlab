@@ -11,15 +11,15 @@ import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
 
 import { CARD_GAP } from '../BaseCarrousel/constants';
 import { CarrouselContainer, CardContainer } from '../BaseCarrousel/Containers';
-import Gradient from '../BaseCarrousel/Gradient';
-import HorizontalScroll from '../BaseCarrousel/HorizontalScroll';
 import LoadMoreCard from '../BaseCarrousel/LoadMoreCard';
-import ScrollButton from '../BaseCarrousel/ScrollButton';
-import SkipButton from '../BaseCarrousel/SkipButton';
+import Gradient from '../BaseCarrousel/ScrollableCarrousel/Gradient';
+import HorizontalScroll from '../BaseCarrousel/ScrollableCarrousel/HorizontalScroll';
+import ScrollButton from '../BaseCarrousel/ScrollableCarrousel/ScrollButton';
+import SkipButton from '../BaseCarrousel/ScrollableCarrousel/SkipButton';
 import {
   getUpdatedButtonVisibility,
   skipCarrousel,
-} from '../BaseCarrousel/utils';
+} from '../BaseCarrousel/ScrollableCarrousel/utils';
 
 import { CARD_WIDTH } from './constants';
 import LightProjectCard from './LightProjectCard';
