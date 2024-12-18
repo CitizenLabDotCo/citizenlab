@@ -154,7 +154,6 @@
   "app.containers.Admin.Invitations.adminLabel1": "Give invitees admin rights",
   "app.containers.Admin.Invitations.adminLabelTooltip": "Una toqqagassaq toqqarukku, inuit peqataaqqusatit, quppernerni inissiissutinut tamanut isersinnaalissapput.",
   "app.containers.Admin.Invitations.configureInvitations": "3. Peqataaqqusissutit naleqqussakkit",
-  "app.containers.Admin.Invitations.confirmDelete": "Aappi, taamaaliussaanga",
   "app.containers.Admin.Invitations.currentlyNoInvitesThatMatchSearch": "Peqataaqqusissutinik ujakkannut assingusunik soqanngilaq",
   "app.containers.Admin.Invitations.deleteInvite": "Atorunnaarsiguk",
   "app.containers.Admin.Invitations.deleteInviteTooltip": "Peqataaqqusinermik unitsitsinikkut inummut tassunga peqataaqqusissummik nutaamik nassiusseqqissinnaassaatit.",
