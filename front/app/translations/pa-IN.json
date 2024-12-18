@@ -1497,6 +1497,8 @@
   "app.containers.NotificationMenu.projectPhaseStarted": "{projectTitle} ਇੱਕ ਨਵੇਂ ਪੜਾਅ ਵਿੱਚ ਦਾਖਲ ਹੋਇਆ",
   "app.containers.NotificationMenu.projectPhaseUpcoming": "{projectTitle} {phaseStartAt}'ਤੇ ਇੱਕ ਨਵੇਂ ਪੜਾਅ ਵਿੱਚ ਦਾਖਲ ਹੋਵੇਗਾ",
   "app.containers.NotificationMenu.projectPublished": "ਇੱਕ ਨਵਾਂ ਪ੍ਰੋਜੈਕਟ ਪ੍ਰਕਾਸ਼ਿਤ ਕੀਤਾ ਗਿਆ ਸੀ",
+  "app.containers.NotificationMenu.projectReviewRequest": "{name} ਨੇ ਪ੍ਰੋਜੈਕਟ \"{projectTitle}\" ਨੂੰ ਪ੍ਰਕਾਸ਼ਿਤ ਕਰਨ ਲਈ ਮਨਜ਼ੂਰੀ ਦੀ ਬੇਨਤੀ ਕੀਤੀ।",
+  "app.containers.NotificationMenu.projectReviewStateChange": "{name} ਪ੍ਰਕਾਸ਼ਨ ਲਈ \"{projectTitle}\" ਨੂੰ ਮਨਜ਼ੂਰੀ ਦਿੱਤੀ ਗਈ",
   "app.containers.NotificationMenu.statusChangedOnIdeaYouFollow": "{ideaTitle} ਸਥਿਤੀ {status}ਵਿੱਚ ਬਦਲ ਗਈ ਹੈ",
   "app.containers.NotificationMenu.thresholdReachedForAdmin": "{post} ਵੋਟਿੰਗ ਥ੍ਰੈਸ਼ਹੋਲਡ 'ਤੇ ਪਹੁੰਚ ਗਿਆ",
   "app.containers.NotificationMenu.userAcceptedYourInvitation": "{name} ਨੇ ਤੁਹਾਡਾ ਸੱਦਾ ਸਵੀਕਾਰ ਕਰ ਲਿਆ",

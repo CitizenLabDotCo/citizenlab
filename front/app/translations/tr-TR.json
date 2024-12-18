@@ -1497,6 +1497,8 @@
   "app.containers.NotificationMenu.projectPhaseStarted": "{projectTitle} yeni bir aşamaya girdi",
   "app.containers.NotificationMenu.projectPhaseUpcoming": "{projectTitle} {phaseStartAt} tarihinde yeni bir aşamaya girecek",
   "app.containers.NotificationMenu.projectPublished": "Yeni bir proje yayınlandı",
+  "app.containers.NotificationMenu.projectReviewRequest": "{name} \"{projectTitle}\" projesini yayınlamak için onay istedi.",
+  "app.containers.NotificationMenu.projectReviewStateChange": "{name} yayınlanmak üzere onaylandı \"{projectTitle}\"",
   "app.containers.NotificationMenu.statusChangedOnIdeaYouFollow": "{ideaTitle} durumu {status}olarak değişti",
   "app.containers.NotificationMenu.thresholdReachedForAdmin": "{post} oylama eşiğine ulaştı",
   "app.containers.NotificationMenu.userAcceptedYourInvitation": "{name} davetinizi kabul etti",

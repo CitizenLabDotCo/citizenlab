@@ -101,8 +101,10 @@ const IdeasShowPage = () => {
     const showDesktopCTABarAtTopOfPage = !isSmallerThanTablet && showCTABar;
 
     if (isSmallerThanTablet) {
+      // This is the height of IdeaShowPageTopBar we show on tablet or smaller
       return `${theme.mobileTopBarHeight}px`;
     } else if (showDesktopCTABarAtTopOfPage) {
+      // This is the height of the CTA bar that might stick to the top of the page on desktop
       return `${stylingConsts.menuHeight}px`;
     }
     return undefined;

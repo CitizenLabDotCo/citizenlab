@@ -1497,6 +1497,8 @@
   "app.containers.NotificationMenu.projectPhaseStarted": "{projectTitle} trådte ind i en ny fase",
   "app.containers.NotificationMenu.projectPhaseUpcoming": "{projectTitle} påbegynder en ny fase på {phaseStartAt}",
   "app.containers.NotificationMenu.projectPublished": "Et nyt projekt blev offentliggjort",
+  "app.containers.NotificationMenu.projectReviewRequest": "{name} anmodede om godkendelse til at offentliggøre projektet \"{projectTitle}\"",
+  "app.containers.NotificationMenu.projectReviewStateChange": "{name} har godkendt \"{projectTitle}\" til offentliggørelse",
   "app.containers.NotificationMenu.statusChangedOnIdeaYouFollow": "{ideaTitle} status er ændret til {status}",
   "app.containers.NotificationMenu.thresholdReachedForAdmin": "{post} nåede afstemningstærsklen\n",
   "app.containers.NotificationMenu.userAcceptedYourInvitation": "{name} accepterede din invitation",
