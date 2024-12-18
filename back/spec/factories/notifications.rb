@@ -173,7 +173,7 @@ FactoryBot.define do
   end
 
   factory :threshold_reached_for_admin, parent: :notification, class: 'Notifications::ThresholdReachedForAdmin' do
-    association :post, factory: :initiative
+    association :post, factory: :idea
     association :post_status, factory: :proposals_status
   end
 
