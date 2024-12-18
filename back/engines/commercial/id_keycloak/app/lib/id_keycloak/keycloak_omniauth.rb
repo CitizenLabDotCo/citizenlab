@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 module IdKeycloak
-  class KeycloakOmniauth < OmniauthMethods::Base
+  class KeycloakOmniauth < IdMethod::Base
+    include IdMethod::OmniAuthMethod
     include KeycloakVerification
 
     def profile_to_user_attrs(auth)

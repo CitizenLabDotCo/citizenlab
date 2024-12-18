@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 module OmniauthMethods
-  class Google < OmniauthMethods::Base
+  class Google < IdMethod::Base
+    include IdMethod::OmniAuthMethod
+
     GOOGLE_PLACEHOLDER_AVATAR_URL = 'https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/s640-c/photo.jpg'
 
     # @param [AppConfiguration] configuration

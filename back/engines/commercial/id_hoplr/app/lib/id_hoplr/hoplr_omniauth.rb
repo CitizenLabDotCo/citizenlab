@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 module IdHoplr
-  class HoplrOmniauth < OmniauthMethods::Base
+  class HoplrOmniauth < IdMethod::Base
+    include IdMethod::OmniAuthMethod
+
     def profile_to_user_attrs(auth)
       settings = AppConfiguration.instance.settings
 

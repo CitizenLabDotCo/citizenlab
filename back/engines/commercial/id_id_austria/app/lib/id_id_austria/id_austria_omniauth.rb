@@ -2,7 +2,7 @@
 
 module IdIdAustria
   class IdAustriaOmniauth < IdMethod::Base
-    include IdMethod::OmniAuthMethod # TODO: JS - Maybe OmniAuth::Base and then OmniAuth::OpenIDConnect
+    include IdMethod::OmniAuthMethod
     include IdAustriaVerification
 
     def profile_to_uid(auth)
