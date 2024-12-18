@@ -310,7 +310,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.expireDateLimitRequired": "Number of days is required",
   "app.components.app.containers.AdminPage.ProjectEdit.expireDaysLimit": "Number of days to reach minimum number of votes",
   "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltip": "Méi Informatiounen doriwwer, wéi Dir e Link fir Google Forms abanne kënnt, fannt Dir ënner {googleFormsTooltipLink}.",
-  "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLink": "https://support.citizenlab.co/en/articles/5050525-wei-dir-aer-google-forms-emfro-an-eng-projetsphas-abannt",
+  "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLink": "https://support.citizenlab.co/articles/5050525",
   "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLinkText": "Dëse Begleedartikel",
   "app.components.app.containers.AdminPage.ProjectEdit.ideaTerm": "Iddi",
   "app.components.app.containers.AdminPage.ProjectEdit.initiativeTerm": "Initiativ",
