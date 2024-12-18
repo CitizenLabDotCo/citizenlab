@@ -31,12 +31,6 @@ FactoryBot.define do
     association :post, factory: :idea
   end
 
-  factory :cosponsor_of_your_initiative, parent: :notification, class: 'Notifications::CosponsorOfYourInitiative' do
-    association :post, factory: :initiative
-    cosponsors_initiative
-    initiating_user
-  end
-
   factory :cosponsor_of_your_idea, parent: :notification, class: 'Notifications::CosponsorOfYourIdea' do
     association :post, factory: :idea
     cosponsorship
@@ -136,12 +130,6 @@ FactoryBot.define do
     comment
     association :post, factory: :idea
     project
-  end
-
-  factory :comment_on_initiative_you_follow, parent: :notification, class: 'Notifications::CommentOnInitiativeYouFollow' do
-    initiating_user
-    comment
-    association :post, factory: :initiative
   end
 
   factory :mention_in_comment, parent: :notification, class: 'Notifications::MentionInComment' do

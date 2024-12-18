@@ -8,7 +8,6 @@ class NotificationService
     Notifications::CommentOnIdeaYouFollow,
     Notifications::CommentOnYourComment,
     Notifications::CosponsorOfYourIdea,
-    Notifications::CosponsorOfYourInitiative,
     Notifications::IdeaMarkedAsSpam,
     Notifications::InternalComments::InternalCommentOnIdeaAssignedToYou,
     Notifications::InternalComments::InternalCommentOnIdeaYouCommentedInternallyOn,

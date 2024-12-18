@@ -42,10 +42,6 @@ FactoryBot.define do
     enabled { true }
   end
 
-  factory :cosponsor_of_your_initiative_campaign, class: EmailCampaigns::Campaigns::CosponsorOfYourInitiative do
-    enabled { true }
-  end
-
   factory :cosponsor_of_your_idea_campaign, class: EmailCampaigns::Campaigns::CosponsorOfYourIdea do
     enabled { true }
   end
