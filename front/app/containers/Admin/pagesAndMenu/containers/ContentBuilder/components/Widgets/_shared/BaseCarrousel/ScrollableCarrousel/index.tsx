@@ -39,6 +39,7 @@ const ScrollableCarrousel = ({
 }: Props) => {
   // State related to 'previous' button
   const [showPreviousButton, setShowPreviousButton] = useState(false);
+  const [showPreviousGradient, setShowPreviousGradient] = useState(false);
   const [mouseOverPreviousButton, setMouseOverPreviousButton] = useState(false);
   const [
     previousButtonShouldDisappearAfterMouseMove,
@@ -47,6 +48,7 @@ const ScrollableCarrousel = ({
 
   // State related to 'next' button
   const [showNextButton, setShowNextButton] = useState(false);
+  const [showNextGradient, setShowNextGradient] = useState(false);
   const [mouseOverNextButton, setMouseOverNextButton] = useState(false);
   const [
     nextButtonShouldDisappearAfterMouseMove,
@@ -74,6 +76,9 @@ const ScrollableCarrousel = ({
       } else {
         setNextButtonShouldDisappearAfterMouseMove(true);
       }
+
+      setShowPreviousGradient(showPreviousButton);
+      setShowNextGradient(showNextButton);
     },
     [isSmallerThanPhone, mouseOverPreviousButton, mouseOverNextButton]
   );
@@ -115,46 +120,50 @@ const ScrollableCarrousel = ({
         >
           {children}
         </HorizontalScroll>
-        {showPreviousButton && !isSmallerThanPhone && (
+        {!isSmallerThanPhone && (
           <>
-            <ScrollButton
-              variant="left"
-              top={`${scrollButtonTop}px`}
-              onClick={() => {
-                if (!scrollContainerRef) return;
-                scrollContainerRef.scrollLeft -= cardWidth + CARD_GAP;
-              }}
-              onMouseEnter={() => setMouseOverPreviousButton(true)}
-              onMouseLeave={() => {
-                setMouseOverPreviousButton(false);
-                if (previousButtonShouldDisappearAfterMouseMove) {
-                  setShowPreviousButton(false);
-                  setPreviousButtonShouldDisappearAfterMouseMove(false);
-                }
-              }}
-            />
-            <Gradient variant="left" />
+            {showPreviousButton && (
+              <ScrollButton
+                variant="left"
+                top={`${scrollButtonTop}px`}
+                onClick={() => {
+                  if (!scrollContainerRef) return;
+                  scrollContainerRef.scrollLeft -= cardWidth + CARD_GAP;
+                }}
+                onMouseEnter={() => setMouseOverPreviousButton(true)}
+                onMouseLeave={() => {
+                  setMouseOverPreviousButton(false);
+                  if (previousButtonShouldDisappearAfterMouseMove) {
+                    setShowPreviousButton(false);
+                    setPreviousButtonShouldDisappearAfterMouseMove(false);
+                  }
+                }}
+              />
+            )}
+            {showPreviousGradient && <Gradient variant="left" />}
           </>
         )}
-        {showNextButton && !isSmallerThanPhone && (
+        {!isSmallerThanPhone && (
           <>
-            <ScrollButton
-              variant="right"
-              top={`${scrollButtonTop}px`}
-              onClick={() => {
-                if (!scrollContainerRef) return;
-                scrollContainerRef.scrollLeft += cardWidth + CARD_GAP;
-              }}
-              onMouseEnter={() => setMouseOverNextButton(true)}
-              onMouseLeave={() => {
-                setMouseOverNextButton(false);
-                if (nextButtonShouldDisappearAfterMouseMove) {
-                  setShowNextButton(false);
-                  setNextButtonShouldDisappearAfterMouseMove(false);
-                }
-              }}
-            />
-            <Gradient variant="right" />
+            {showNextButton && (
+              <ScrollButton
+                variant="right"
+                top={`${scrollButtonTop}px`}
+                onClick={() => {
+                  if (!scrollContainerRef) return;
+                  scrollContainerRef.scrollLeft += cardWidth + CARD_GAP;
+                }}
+                onMouseEnter={() => setMouseOverNextButton(true)}
+                onMouseLeave={() => {
+                  setMouseOverNextButton(false);
+                  if (nextButtonShouldDisappearAfterMouseMove) {
+                    setShowNextButton(false);
+                    setNextButtonShouldDisappearAfterMouseMove(false);
+                  }
+                }}
+              />
+            )}
+            {showNextGradient && <Gradient variant="right" />}
           </>
         )}
       </CarrouselContainer>
