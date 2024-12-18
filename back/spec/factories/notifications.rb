@@ -114,12 +114,6 @@ FactoryBot.define do
     initiating_user
   end
 
-  factory :initiative_marked_as_spam, parent: :notification, class: 'Notifications::InitiativeMarkedAsSpam' do
-    association :post, factory: :initiative
-    spam_report
-    initiating_user
-  end
-
   factory :invite_accepted, parent: :notification, class: 'Notifications::InviteAccepted' do
     initiating_user
     invite

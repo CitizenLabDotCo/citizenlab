@@ -70,10 +70,6 @@ FactoryBot.define do
     enabled { true }
   end
 
-  factory :initiative_marked_as_spam_campaign, class: EmailCampaigns::Campaigns::InitiativeMarkedAsSpam do
-    enabled { true }
-  end
-
   factory :initiative_published_campaign, class: EmailCampaigns::Campaigns::InitiativePublished do
     enabled { true }
   end
