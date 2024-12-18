@@ -321,7 +321,7 @@ class WebApi::V1::ProjectsController < ApplicationController
   def save_project(project)
     # Preserve folder_id unless explicitly provided in params
     project.folder_id = params.dig(:project, :folder_id) if params.dig(:project, :folder_id).present?
-  
+
     ActiveRecord::Base.transaction do
       project.save.tap do |saved|
         if saved
