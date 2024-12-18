@@ -1,14 +1,9 @@
 # frozen_string_literal: true
 
-module OmniauthMethods
-  class Base
-    # TODO: JS - Temp until we remove this file
+module IdMethod
+  module OmniAuthMethod
     def auth?
       true
-    end
-
-    def verification?
-      false
     end
 
     # @param [AppConfiguration] configuration
