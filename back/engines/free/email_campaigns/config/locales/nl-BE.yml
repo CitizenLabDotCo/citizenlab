@@ -466,7 +466,7 @@ nl-BE:
       cta_review_project: "Het project beoordelen"
     project_review_state_change:
       subject: '"%{projectTitle}" is goedgekeurd'
-      header: '%{reviewerName} het project "%{projectTitle}" goedgekeurd'
+      header: '%{reviewerName} heeft het project "%{projectTitle}" goedgekeurd'
       header_message: "Het project is nu klaar om live te gaan. Je kunt het publiceren wanneer je er klaar voor bent!"
       cta_go_to_project: "Ga naar projectinstellingen"
     status_change_on_idea_you_follow:
