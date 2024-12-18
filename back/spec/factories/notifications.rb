@@ -236,14 +236,6 @@ FactoryBot.define do
     end
   end
 
-  factory :status_change_on_initiative_you_follow, parent: :notification, class: 'Notifications::StatusChangeOnInitiativeYouFollow' do
-    association :post, factory: :initiative
-    association :post_status, factory: :initiative_status
-    before(:create) do |notification|
-      notification.post.initiative_status_changes.create!(initiative_status: notification.post_status)
-    end
-  end
-
   factory :threshold_reached_for_admin, parent: :notification, class: 'Notifications::ThresholdReachedForAdmin' do
     association :post, factory: :initiative
     association :post_status, factory: :proposals_status

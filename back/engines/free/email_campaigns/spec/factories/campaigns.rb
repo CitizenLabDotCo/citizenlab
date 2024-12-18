@@ -190,10 +190,6 @@ FactoryBot.define do
     enabled { true }
   end
 
-  factory :status_change_on_initiative_you_follow_campaign, class: EmailCampaigns::Campaigns::StatusChangeOnInitiativeYouFollow do
-    enabled { true }
-  end
-
   factory :threshold_reached_for_admin_campaign, class: EmailCampaigns::Campaigns::ThresholdReachedForAdmin do
     enabled { true }
   end
