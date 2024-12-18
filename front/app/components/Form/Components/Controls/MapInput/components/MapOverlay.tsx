@@ -62,7 +62,7 @@ const MapOverlay = ({
           alignItems="center"
         >
           <img src={TapHere} alt="Tap to access the map" />
-          <Text m="0px" pt="8px" color="white" style={{ fontWeight: 600 }}>
+          <Text m="0px" pt="8px" color="white" fontWeight="semi-bold">
             {getOverlayText()}
           </Text>
         </Box>

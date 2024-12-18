@@ -2,13 +2,13 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   selectionTitle: {
-    id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.selectionTitle2',
-    defaultMessage: 'Projects and folders',
+    id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.selectionTitle3',
+    defaultMessage: 'Selected projects and folders',
   },
-  inThisWidget: {
-    id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.inThisWidget',
+  withThisWidget: {
+    id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.withThisWidget',
     defaultMessage:
-      'In this widget, you can select whichever projects and folders you want.',
+      'With this widget, you can select and determine the order in which you want projects or folders to show to users.',
   },
   selectProjectsOrFolders: {
     id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.selectProjectsOrFolders',

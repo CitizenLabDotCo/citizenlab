@@ -3,7 +3,7 @@ import React from 'react';
 import { Box, colors } from '@citizenlab/cl2-component-library';
 
 import BottomBar from '../ButtonWithFiltersModal/FiltersModal/BottomBar';
-import InputFilters, { Props as InputFiltersProps } from '../InputFilters';
+import InputFilters, { InputFiltersProps } from '../InputFilters';
 
 import TopBar from './TopBar';
 
@@ -13,8 +13,7 @@ interface Props extends InputFiltersProps {
 }
 
 const FiltersMapView = ({
-  selectedIdeaFilters,
-  onClearFilters,
+  ideaQueryParameters,
   onClose,
   ...filtersProps
 }: Props) => {
@@ -24,8 +23,7 @@ const FiltersMapView = ({
       <Box height="100%" overflowY="auto" bgColor={colors.background}>
         <Box p="16px">
           <InputFilters
-            selectedIdeaFilters={selectedIdeaFilters}
-            onClearFilters={onClearFilters}
+            ideaQueryParameters={ideaQueryParameters}
             // A reset button is available in the filters top bar
             showResetButton={false}
             // BE doesn't currently support filtering map markers by status.
@@ -35,12 +33,7 @@ const FiltersMapView = ({
           />
         </Box>
       </Box>
-      <BottomBar
-        onClick={onClose}
-        selectedIdeaFilters={selectedIdeaFilters}
-        onReset={onClearFilters}
-        filtersActive={filtersProps.filtersActive}
-      />
+      <BottomBar onClick={onClose} ideaQueryParameters={ideaQueryParameters} />
     </>
   );
 };

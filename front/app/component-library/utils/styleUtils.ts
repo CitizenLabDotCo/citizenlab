@@ -4,7 +4,7 @@ import { darken, transparentize } from 'polished';
 import { css } from 'styled-components';
 
 import { isNilOrError } from './helperUtils';
-import { InputSize } from './typings';
+import { FontWeight, InputSize } from './typings';
 
 export const isRtl = (style: any, ...args: any[]) => css`
   ${(props) => (props.theme.isRtl ? css(style, ...args) : '')}
@@ -256,6 +256,17 @@ export const stylingConsts = {
   textWidth: 720,
   borderRadius: '3px',
   border: `1px solid ${colors.divider}`,
+};
+
+export const getFontWeightCSS = (fontWeight: FontWeight) => {
+  switch (fontWeight) {
+    case 'bold': // Value of 700
+      return 'bold';
+    case 'semi-bold':
+      return 600;
+    case 'normal':
+      return 'normal'; // Value of 400
+  }
 };
 
 type StylingConstsType = {

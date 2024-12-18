@@ -26,6 +26,14 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.archived',
     defaultMessage: 'Archived',
   },
+  pendingReview: {
+    id: 'app.containers.AdminPage.ProjectEdit.pendingReview',
+    defaultMessage: 'Pending approval',
+  },
+  approvedReview: {
+    id: 'app.containers.AdminPage.ProjectEdit.approved',
+    defaultMessage: 'Approved',
+  },
   createAProjectFromATemplate: {
     id: 'app.containers.AdminPage.ProjectEdit.createAProjectFromATemplate',
     defaultMessage: 'Create a project from a template',
@@ -46,10 +54,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.projects.all.onlyAdminsCanCreateFolders',
     defaultMessage: 'Only admins can create project folders.',
   },
-  onlyAdminsCanCreateProjects: {
-    id: 'app.containers.AdminPage.projects.all.onlyAdminsCanCreateProjects1',
-    defaultMessage: 'Only admins and folder managers can create projects.',
-  },
   all: {
     id: 'app.containers.AdminPage.projects.all.all',
     defaultMessage: 'All',
@@ -58,9 +62,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.projects.all.yourProjects',
     defaultMessage: 'Your projects',
   },
-  active: {
-    id: 'app.containers.AdminPage.projects.all.active',
-    defaultMessage: 'Active',
+  publishedTab: {
+    id: 'app.containers.AdminPage.projects.all.publishedTab',
+    defaultMessage: 'Published',
   },
   searchProjects: {
     id: 'app.containers.AdminPage.projects.all.searchProjects',

@@ -7,7 +7,7 @@ import FullscreenModal from 'components/UI/FullscreenModal';
 import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../../../messages';
-import InputFilters, { Props as InputFiltersProps } from '../../InputFilters';
+import InputFilters, { InputFiltersProps } from '../../InputFilters';
 
 import BottomBar from './BottomBar';
 
@@ -18,8 +18,7 @@ interface Props extends InputFiltersProps {
 
 const FiltersModal = ({
   opened,
-  selectedIdeaFilters,
-  onClearFilters,
+  ideaQueryParameters,
   onClose,
   ...filtersProps
 }: Props) => {
@@ -31,17 +30,14 @@ const FiltersModal = ({
       bottomBar={
         <BottomBar
           onClick={onClose}
-          selectedIdeaFilters={selectedIdeaFilters}
-          onReset={onClearFilters}
-          filtersActive={filtersProps.filtersActive}
+          ideaQueryParameters={ideaQueryParameters}
         />
       }
       contentBgColor="background"
     >
       <Box p="16px">
         <InputFilters
-          selectedIdeaFilters={selectedIdeaFilters}
-          onClearFilters={onClearFilters}
+          ideaQueryParameters={ideaQueryParameters}
           // We have a reset filters button in TopBar
           showResetButton={false}
           {...filtersProps}

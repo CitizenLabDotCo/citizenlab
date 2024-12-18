@@ -15,6 +15,7 @@ resource 'AdminPublication' do
     project_statuses.map { |ps| create(:project, admin_publication_attributes: { publication_status: ps }) }
   end
   let(:published_projects) { projects.select { |p| p.admin_publication.publication_status == 'published' } }
+  let(:draft_projects) { projects.select { |p| p.admin_publication.publication_status == 'draft' } }
   let(:publication_ids) { response_data.map { |d| d.dig(:relationships, :publication, :data, :id) } }
   let!(:empty_draft_folder) { create(:project_folder, admin_publication_attributes: { publication_status: 'draft' }) }
 
@@ -44,6 +45,7 @@ resource 'AdminPublication' do
       parameter :filter_can_moderate, 'Filter out the projects the current_user is not allowed to moderate. False by default', required: false
       parameter :filter_is_moderator_of, 'Filter out the publications the current_user is not moderator of. False by default', required: false
       parameter :filter_user_is_moderator_of, 'Filter out the publications the given user is moderator of (user id)', required: false
+      parameter :review_state, 'Filter by project review status (pending, approved)', required: false
 
       example_request 'List all admin publications' do
         expect(status).to eq(200)
@@ -185,6 +187,20 @@ resource 'AdminPublication' do
 
         do_request({ topics: [topic.id], areas: [area.id] })
         expect(publication_ids).to match_array [published_projects[0].id, custom_folder.id]
+      end
+
+      example 'List all admin publications with pending project review' do
+        create(:project_review, project: draft_projects.first)
+
+        do_request(review_state: 'pending', publication_statuses: ['draft'], only_projects: true)
+        expect(publication_ids).to match_array [draft_projects.first.id]
+      end
+
+      example 'List all admin publications with approved project review' do
+        create(:project_review, :approved, project: draft_projects.first)
+
+        do_request(review_state: 'approved', publication_statuses: ['draft'], only_projects: true)
+        expect(publication_ids).to match_array [draft_projects.first.id]
       end
 
       describe "showing empty folders (which don't have any projects)" do
@@ -406,8 +422,8 @@ resource 'AdminPublication' do
       end
       parameter :topics, 'Filter by topics (AND)', required: false
       parameter :areas, 'Filter by areas (AND)', required: false
-      parameter :publication_statuses, 'Return only publications with the specified publication statuses (i.e. given an array of publication statuses); always includes folders; returns all publications by default', required: false
       parameter :remove_not_allowed_parents, 'Filter out folders with no visible children for the current user', required: false
+      parameter :publication_statuses, 'Return only publications with the specified publication statuses (i.e. given an array of publication statuses); always includes folders; returns all publications by default', required: false
       parameter :folder, 'Filter by folder (project folder id)', required: false
       parameter :include_publications, 'Include the related publications and associated items', required: false
 
@@ -426,7 +442,7 @@ resource 'AdminPublication' do
         expect(json_response[:data].find { |d| d.dig(:relationships, :publication, :data, :type) == 'folder' }.dig(:attributes, :visible_children_count)).to eq 2
       end
 
-      example 'Visible children count should take account with applied filters', document: false do
+      example 'Visible children count should take account of applied filters', document: false do
         projects.first.admin_publication.update! publication_status: 'archived'
         do_request(folder: nil, publication_statuses: ['published'], remove_not_allowed_parents: true)
         expect(status).to eq(200)
@@ -828,7 +844,6 @@ resource 'AdminPublication' do
             do_request(
               page: { size: 6, number: 1 },
               depth: 0,
-              remove_not_allowed_parents: 'true',
               publication_statuses: %w[published archived],
               include_publications: 'true'
             )

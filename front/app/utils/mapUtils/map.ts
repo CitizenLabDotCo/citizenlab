@@ -1,3 +1,4 @@
+import * as projection from '@arcgis/core/geometry/projection.js';
 import { isNumber } from 'lodash-es';
 import { SupportedLocale } from 'typings';
 
@@ -13,6 +14,12 @@ import {
 } from 'utils/map';
 
 export type LatLngTuple = [number, number, number?];
+
+export const projectPointToWebMercator = (geometry: __esri.Geometry) => {
+  return projection.project([geometry], {
+    wkid: 3857, // Web Mercator
+  })[0];
+};
 
 export const getCenter = (
   centerLatLng: LatLngTuple | null | undefined,

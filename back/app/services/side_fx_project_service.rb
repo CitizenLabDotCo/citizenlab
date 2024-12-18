@@ -6,6 +6,10 @@ class SideFxProjectService
   def before_create(project, user); end
 
   def after_create(project, user)
+    if user && !UserRoleService.new.can_moderate_project?(project, user)
+      user.add_role('project_moderator', project_id: project.id).save!
+    end
+
     project.set_default_topics!
     project.update!(description_multiloc: TextImageService.new.swap_data_images_multiloc(project.description_multiloc, field: :description_multiloc, imageable: project))
     serialized_project = clean_time_attributes(project.attributes)

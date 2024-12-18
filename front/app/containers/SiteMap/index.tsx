@@ -242,7 +242,9 @@ const SiteMap = () => {
                       navBarItems.data
                         .filter(
                           (navBarItem) =>
-                            navBarItem.relationships.static_page.data === null
+                            navBarItem.relationships.static_page.data ===
+                              null &&
+                            navBarItem.relationships.project.data === null
                         )
                         .map((navBarItem) => (
                           <li key={navBarItem.id}>

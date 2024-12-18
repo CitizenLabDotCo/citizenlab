@@ -1,29 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import { Title } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
-
-import { IIdeasFilterCounts } from 'api/ideas_filter_counts/types';
-import { IdeaSortMethod } from 'api/phases/types';
-
-import { QueryParameters } from 'containers/IdeasIndexPage';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
 
 import filterModalMessages from './ButtonWithFiltersModal/FiltersModal/messages';
-import InputFilters from './InputFilters';
+import InputFilters, { InputFiltersProps } from './InputFilters';
 
 import { gapWidth } from '.';
 
 const Container = styled.div<{
-  filterColumnWidth: number;
   top: number;
   maxHeightOffset: number;
   gapWidth: number;
 }>`
-  flex: 0 0 ${({ filterColumnWidth }) => filterColumnWidth}px;
-  width: ${({ filterColumnWidth }) => filterColumnWidth}px;
+  flex: 0 0 352px;
+  width: 352px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -37,53 +31,20 @@ const Container = styled.div<{
   padding-right: 8px;
 `;
 
-interface Props {
-  ideaQueryParameters: QueryParameters;
-  filterColumnWidth: number;
-  filtersActive: boolean;
-  ideasFilterCounts: IIdeasFilterCounts | undefined;
-  numberOfSearchResults: number;
-  onClearFilters: () => void;
-  onSearch: (search: string) => void;
-  onChangeStatus: (status: string | null) => void;
-  onChangeTopics: (topics: string[] | null) => void;
-  onChangeSort: (sort: IdeaSortMethod) => void;
-}
+interface Props extends InputFiltersProps {}
 
-const ContentRight = ({
-  ideaQueryParameters,
-  filterColumnWidth,
-  filtersActive,
-  ideasFilterCounts,
-  numberOfSearchResults,
-  onClearFilters,
-  onSearch,
-  onChangeStatus,
-  onChangeTopics,
-  onChangeSort,
-}: Props) => {
-  const [isCTABarVisible, setIsCTABarVisible] = useState(false);
-
-  useEffect(() => {
-    function checkCTABarVisibility() {
-      if (document.getElementById('project-cta-bar')) {
-        setIsCTABarVisible(true);
-        return;
-      }
-
-      setIsCTABarVisible(false);
-    }
-
-    window.addEventListener('scrollend', checkCTABarVisibility);
-    return () => window.removeEventListener('scrollend', checkCTABarVisibility);
-  }, []);
+const ContentRight = (props: Props) => {
+  /* 
+    Likely not the most reliable way to determine if the bar is present.
+    Context would probably be better, but this is a quick fix.
+  */
+  const projectCTABarTop = document.getElementById('project-cta-bar-top');
 
   return (
     <Container
       id="e2e-ideas-filters"
-      filterColumnWidth={filterColumnWidth}
-      top={isCTABarVisible ? 160 : 100}
-      maxHeightOffset={isCTABarVisible ? 180 : 120}
+      top={projectCTABarTop ? 160 : 100}
+      maxHeightOffset={projectCTABarTop ? 180 : 120}
       gapWidth={gapWidth}
     >
       {/*
@@ -96,17 +57,9 @@ const ContentRight = ({
         </Title>
       </ScreenReaderOnly>
       <InputFilters
-        defaultValue={ideaQueryParameters.search}
-        selectedIdeaFilters={ideaQueryParameters}
-        filtersActive={filtersActive}
-        ideasFilterCounts={ideasFilterCounts}
-        numberOfSearchResults={numberOfSearchResults}
-        onClearFilters={onClearFilters}
-        onSearch={onSearch}
-        onChangeStatus={onChangeStatus}
-        onChangeTopics={onChangeTopics}
-        handleSortOnChange={onChangeSort}
-        phaseId={ideaQueryParameters.phase}
+        defaultValue={props.ideaQueryParameters.search}
+        phaseId={props.ideaQueryParameters.phase}
+        {...props}
       />
     </Container>
   );

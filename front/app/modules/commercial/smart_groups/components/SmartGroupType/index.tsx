@@ -63,17 +63,6 @@ const LockIcon = styled(Icon)`
   margin-bottom: 30px;
 `;
 
-const LearnMoreLink = styled.a`
-  color: white;
-  text-decoration: underline;
-
-  &:hover {
-    color: inherit;
-    cursor: pointer;
-    text-decoration: underline;
-  }
-`;
-
 export interface SmartGroupTypeProps {
   formattedLink: string;
   onClick: (type: MembershipType) => () => any;
@@ -84,6 +73,10 @@ const SmartGroupType: FC<SmartGroupTypeProps> = ({
   onClick,
 }) => {
   const isSmartGroupsEnabled = useFeatureFlag({ name: 'smart_groups' });
+  const isSmartGroupsAllowed = useFeatureFlag({
+    name: 'smart_groups',
+    onlyCheckAllowed: true,
+  });
 
   return (
     <GroupType className="rules">
@@ -109,15 +102,12 @@ const SmartGroupType: FC<SmartGroupTypeProps> = ({
       >
         <FormattedMessage {...adminUsersMessages.step1CreateButtonSmart} />
       </Step2Button>
-      {!isSmartGroupsEnabled && (
+      {!isSmartGroupsAllowed && (
         <BlackedOut>
           <LockIcon name="lock" fill="white" />
           <Copy>
             <FormattedMessage {...messages.smartGroupsAvailability} />
           </Copy>
-          <LearnMoreLink href="https://www.citizenlab.co/plans" target="_blank">
-            <FormattedMessage {...messages.learnMorePlans} />
-          </LearnMoreLink>
         </BlackedOut>
       )}
     </GroupType>

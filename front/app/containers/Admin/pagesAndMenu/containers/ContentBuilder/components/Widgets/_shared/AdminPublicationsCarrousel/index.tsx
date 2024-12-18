@@ -28,6 +28,7 @@ interface Props {
   title: string;
   adminPublications: IAdminPublicationData[];
   hasMore: boolean;
+  className?: string;
   onLoadMore: () => Promise<any>;
 }
 
@@ -35,13 +36,28 @@ const AdminPublicationsCarrousel = ({
   title,
   adminPublications,
   hasMore,
+  className,
   onLoadMore,
 }: Props) => {
   const [scrollContainerRef, setScrollContainerRef] = useState<
     HTMLDivElement | undefined
   >(undefined);
+  // State related to 'previous' button
   const [showPreviousButton, setShowPreviousButton] = useState(false);
+  const [mouseOverPreviousButton, setMouseOverPreviousButton] = useState(false);
+  const [
+    previousButtonShouldDisappearAfterMouseMove,
+    setPreviousButtonShouldDisappearAfterMouseMove,
+  ] = useState(false);
+
+  // State related to 'next' button
   const [showNextButton, setShowNextButton] = useState(false);
+  const [mouseOverNextButton, setMouseOverNextButton] = useState(false);
+  const [
+    nextButtonShouldDisappearAfterMouseMove,
+    setNextButtonShouldDisappearAfterMouseMove,
+  ] = useState(false);
+
   const [blockLoadMore, setBlockLoadMore] = useState(false);
 
   const isSmallerThanPhone = useBreakpoint('phone');
@@ -71,10 +87,19 @@ const AdminPublicationsCarrousel = ({
         hasMore
       );
 
-      setShowNextButton(showNextButton);
-      setShowPreviousButton(showPreviousButton);
+      if (!mouseOverPreviousButton) {
+        setShowPreviousButton(showPreviousButton);
+      } else {
+        setPreviousButtonShouldDisappearAfterMouseMove(true);
+      }
+
+      if (!mouseOverNextButton) {
+        setShowNextButton(showNextButton);
+      } else {
+        setNextButtonShouldDisappearAfterMouseMove(true);
+      }
     },
-    [isSmallerThanPhone]
+    [isSmallerThanPhone, mouseOverPreviousButton, mouseOverNextButton]
   );
 
   useEffect(() => {
@@ -107,7 +132,7 @@ const AdminPublicationsCarrousel = ({
 
   return (
     <>
-      <CarrouselContainer>
+      <CarrouselContainer className={className}>
         <Title
           variant="h2"
           mt="0px"
@@ -146,6 +171,14 @@ const AdminPublicationsCarrousel = ({
                 if (!scrollContainerRef) return;
                 scrollContainerRef.scrollLeft -= cardWidth + CARD_GAP;
               }}
+              onMouseEnter={() => setMouseOverPreviousButton(true)}
+              onMouseLeave={() => {
+                setMouseOverPreviousButton(false);
+                if (previousButtonShouldDisappearAfterMouseMove) {
+                  setShowPreviousButton(false);
+                  setPreviousButtonShouldDisappearAfterMouseMove(false);
+                }
+              }}
             />
             <Gradient variant="left" />
           </>
@@ -158,6 +191,14 @@ const AdminPublicationsCarrousel = ({
               onClick={() => {
                 if (!scrollContainerRef) return;
                 scrollContainerRef.scrollLeft += cardWidth + CARD_GAP;
+              }}
+              onMouseEnter={() => setMouseOverNextButton(true)}
+              onMouseLeave={() => {
+                setMouseOverNextButton(false);
+                if (nextButtonShouldDisappearAfterMouseMove) {
+                  setShowNextButton(false);
+                  setNextButtonShouldDisappearAfterMouseMove(false);
+                }
               }}
             />
             <Gradient variant="right" />

@@ -15,6 +15,7 @@ export const verificationTypesLeavingPlatform = [
   'franceconnect',
   'nemlog_in',
   'keycloak',
+  'fake_sso',
 ];
 
 export type TVerificationMethodName =
