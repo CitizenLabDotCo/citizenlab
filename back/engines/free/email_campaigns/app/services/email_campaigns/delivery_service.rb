@@ -9,7 +9,6 @@ module EmailCampaigns
       Campaigns::CommentDeletedByAdmin,
       Campaigns::CommentMarkedAsSpam,
       Campaigns::CommentOnIdeaYouFollow,
-      Campaigns::CommentOnInitiativeYouFollow,
       Campaigns::CommentOnYourComment,
       Campaigns::CosponsorOfYourInitiative,
       Campaigns::CosponsorOfYourIdea,
