@@ -58,26 +58,32 @@ export function handlePreviewCLick(
 }
 
 interface Props {
-  postIds: string[];
+  selection: Set<string>;
   openPreview: (id: string) => void;
 }
 
-export default ({ postIds, openPreview }: Props) => (
-  <CSSTransition
-    in={postIds.length !== 0}
-    mountOnEnter={true}
-    unmountOnExit={true}
-    timeout={200}
-    classNames="slide"
-  >
-    <RightColumn>
-      <Sticky>
-        {postIds.length > 1 ? (
-          <InfoSidebarMulti postIds={postIds} openPreview={openPreview} />
-        ) : (
-          <InfoSidebarSingle postId={postIds[0]} openPreview={openPreview} />
-        )}
-      </Sticky>
-    </RightColumn>
-  </CSSTransition>
-);
+const InfoSidebar = ({ selection, openPreview }: Props) => {
+  const postIds = [...selection];
+
+  return (
+    <CSSTransition
+      in={postIds.length !== 0}
+      mountOnEnter={true}
+      unmountOnExit={true}
+      timeout={200}
+      classNames="slide"
+    >
+      <RightColumn>
+        <Sticky>
+          {postIds.length > 1 ? (
+            <InfoSidebarMulti postIds={postIds} openPreview={openPreview} />
+          ) : (
+            <InfoSidebarSingle postId={postIds[0]} openPreview={openPreview} />
+          )}
+        </Sticky>
+      </RightColumn>
+    </CSSTransition>
+  );
+};
+
+export default InfoSidebar;

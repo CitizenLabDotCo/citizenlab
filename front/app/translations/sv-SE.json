@@ -1497,6 +1497,8 @@
   "app.containers.NotificationMenu.projectPhaseStarted": "{projectTitle} gick in i en ny fas",
   "app.containers.NotificationMenu.projectPhaseUpcoming": "{projectTitle} går in i en ny fas {phaseStartAt}",
   "app.containers.NotificationMenu.projectPublished": "Ett nytt projekt publicerades",
+  "app.containers.NotificationMenu.projectReviewRequest": "{name} begärde godkännande för att publicera projektet \"{projectTitle}\"",
+  "app.containers.NotificationMenu.projectReviewStateChange": "{name} godkänt \"{projectTitle}\" för publicering",
   "app.containers.NotificationMenu.statusChangedOnIdeaYouFollow": "{ideaTitle} status har ändrats till {status}",
   "app.containers.NotificationMenu.thresholdReachedForAdmin": "{post} nådde rösttröskeln",
   "app.containers.NotificationMenu.userAcceptedYourInvitation": "{name} tackade ja till din inbjudan",

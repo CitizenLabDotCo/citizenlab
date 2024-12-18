@@ -1497,6 +1497,8 @@
   "app.containers.NotificationMenu.projectPhaseStarted": "{projectTitle} új szakaszba lépett",
   "app.containers.NotificationMenu.projectPhaseUpcoming": "A {projectTitle} új fázisba lép a {phaseStartAt}-n",
   "app.containers.NotificationMenu.projectPublished": "Egy új projektet tettek közzé",
+  "app.containers.NotificationMenu.projectReviewRequest": "{name} jóváhagyást kért a \"{projectTitle}\" projekt közzétételéhez",
+  "app.containers.NotificationMenu.projectReviewStateChange": "{name} jóváhagyta a \"{projectTitle}\" közzétételét",
   "app.containers.NotificationMenu.statusChangedOnIdeaYouFollow": "A {ideaTitle} állapota {status}értékre változott",
   "app.containers.NotificationMenu.thresholdReachedForAdmin": "{post} elérte a szavazati küszöböt",
   "app.containers.NotificationMenu.userAcceptedYourInvitation": "{name} elfogadta a meghívást",

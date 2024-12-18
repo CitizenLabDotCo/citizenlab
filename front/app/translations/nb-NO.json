@@ -1497,6 +1497,8 @@
   "app.containers.NotificationMenu.projectPhaseStarted": "{projectTitle} gikk inn i en ny fase",
   "app.containers.NotificationMenu.projectPhaseUpcoming": "{projectTitle} vil gå inn i en ny fase på {phaseStartAt}",
   "app.containers.NotificationMenu.projectPublished": "Et nytt prosjekt ble publisert",
+  "app.containers.NotificationMenu.projectReviewRequest": "{name} bedt om godkjenning til å publisere prosjektet \"{projectTitle}\"",
+  "app.containers.NotificationMenu.projectReviewStateChange": "{name} godkjent \"{projectTitle}\" for publisering",
   "app.containers.NotificationMenu.statusChangedOnIdeaYouFollow": "{ideaTitle} Status har endret seg til {status}",
   "app.containers.NotificationMenu.thresholdReachedForAdmin": "{post} nådd stemmerettsgrensen",
   "app.containers.NotificationMenu.userAcceptedYourInvitation": "{name} takket ja til invitasjonen din",
