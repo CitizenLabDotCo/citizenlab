@@ -23,7 +23,6 @@ import { getPageNumberFromUrl, getSortDirection } from 'utils/paginationUtils';
 import ActionBar from './components/ActionBar';
 import FilterSidebar from './components/FilterSidebar';
 import IdeasCount from './components/IdeasCount';
-import InfoSidebar from './components/InfoSidebar';
 import PostTable from './components/PostTable';
 import IdeaFeedbackToggle from './components/TopLevelFilters/IdeaFeedbackToggle';
 
@@ -357,7 +356,6 @@ const InputManager = ({
             openPreview={openPreview}
           />
         </MiddleColumn>
-        <InfoSidebar selection={selection} openPreview={openPreview} />
       </ThreeColumns>
       <Suspense fallback={null}>
         <LazyPostPreview
