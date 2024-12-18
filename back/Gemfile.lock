@@ -1040,7 +1040,7 @@ GEM
       multi_json (~> 1.15)
       rgeo (>= 1.0.0)
     rinku (2.0.6)
-    ros-apartment (3.0.4)
+    ros-apartment (3.1.0)
       activerecord (>= 6.1.0, < 7.2)
       parallel (< 2.0)
       public_suffix (>= 2.0.5, < 6.0)
@@ -1377,7 +1377,7 @@ DEPENDENCIES
   rest-client
   rgeo-geojson
   rinku (~> 2)
-  ros-apartment (~> 3.0.0)
+  ros-apartment (~> 3.1.0)
   rspec-html-matchers (~> 0.10)
   rspec-its
   rspec-parameterized
