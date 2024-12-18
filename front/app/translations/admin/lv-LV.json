@@ -12,6 +12,7 @@
   "app.Admin.ManagementFeed.in": "projektā {project}",
   "app.Admin.ManagementFeed.item": "Prece",
   "app.Admin.ManagementFeed.key": "Galvenais",
+  "app.Admin.ManagementFeed.managementFeedNudge": "Piekļuve pārvaldības kanālam nav iekļauta jūsu pašreizējā licencē. Sazinieties ar savu GovSuccess menedžeri, lai uzzinātu vairāk par to.",
   "app.Admin.ManagementFeed.noActivityFound": "Nav atrasta nekāda darbība",
   "app.Admin.ManagementFeed.phase": "Fāze",
   "app.Admin.ManagementFeed.project": "Projekts",
