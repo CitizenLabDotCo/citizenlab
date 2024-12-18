@@ -119,7 +119,7 @@ const IdeasShowPage = () => {
           <Box
             mt={
               // If we show IdeaShowPageTopBar on mobile, we need to push down main
-              isSmallerThanTablet ? `${theme.mobileTopBarHeight}px` : undefined // In this part of the conditional, we're on desktop.
+              isSmallerThanTablet ? `${theme.mobileTopBarHeight}px` : undefined
             }
             mb="8px"
           >
