@@ -13,7 +13,6 @@ module IdMethod
 
   class << self
     def add_method(name, method)
-      # TODO: JS - all_methods.reject! { |m| m.id == method.id }
       all_methods[name.to_s] = method
     end
   end

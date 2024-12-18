@@ -8,6 +8,7 @@ module IdIdAustria
       :omniauth
     end
 
+    # TODO: JS - Not clear why we have an ID in the method - surely if the name is unique it should be fine?
     def id
       '91068f8a-c4a5-4fc8-ab3e-ca2eb74f9c3c'
     end
