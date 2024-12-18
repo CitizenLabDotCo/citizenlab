@@ -6,7 +6,7 @@ import {
   isRtl,
   media,
 } from '@citizenlab/cl2-component-library';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
