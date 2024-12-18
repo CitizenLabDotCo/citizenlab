@@ -15,7 +15,6 @@ module EmailCampaigns
       Campaigns::EventRegistrationConfirmation,
       Campaigns::IdeaMarkedAsSpam,
       Campaigns::IdeaPublished,
-      Campaigns::InitiativeResubmittedForReview,
       Campaigns::InternalCommentOnIdeaAssignedToYou,
       Campaigns::InternalCommentOnIdeaYouCommentedInternallyOn,
       Campaigns::InternalCommentOnIdeaYouModerate,

@@ -131,11 +131,6 @@ FactoryBot.define do
     initiating_user
   end
 
-  factory :initiative_resubmitted_for_review, parent: :notification, class: 'Notifications::InitiativeResubmittedForReview' do
-    association :post, factory: :initiative
-    association :post_status, factory: :initiative_status, code: 'review_pending'
-  end
-
   factory :comment_on_idea_you_follow, parent: :notification, class: 'Notifications::CommentOnIdeaYouFollow' do
     initiating_user
     comment
