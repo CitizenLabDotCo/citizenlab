@@ -185,12 +185,6 @@ FactoryBot.define do
     project
   end
 
-  factory :official_feedback_on_initiative_you_follow, parent: :notification, class: 'Notifications::OfficialFeedbackOnInitiativeYouFollow' do
-    initiating_user
-    official_feedback
-    association :post, factory: :initiative
-  end
-
   factory :project_folder_moderation_rights_received, parent: :notification, class: 'Notifications::ProjectFolderModerationRightsReceived' do
     initiating_user
     project_folder
