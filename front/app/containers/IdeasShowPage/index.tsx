@@ -97,19 +97,6 @@ const IdeasShowPage = () => {
   const showCTABar =
     isIdeaInCurrentPhase && phase?.attributes.participation_method === 'voting';
 
-  const getPaddingTopIdeaContainer = () => {
-    const showDesktopCTABarAtTopOfPage = !isSmallerThanTablet && showCTABar;
-
-    if (isSmallerThanTablet) {
-      // This is the height of IdeaShowPageTopBar we show on tablet or smaller
-      return `${theme.mobileTopBarHeight}px`;
-    } else if (showDesktopCTABarAtTopOfPage) {
-      // This is the height of the CTA bar that might stick to the top of the page on desktop
-      return `${stylingConsts.menuHeight}px`;
-    }
-    return undefined;
-  };
-
   return (
     <>
       <IdeaMeta ideaId={idea.data.id} />
@@ -117,7 +104,7 @@ const IdeasShowPage = () => {
         projectId={project.data.id}
         phaseId={phaseContext || phase?.id}
       >
-        <Box background={colors.white} pt={getPaddingTopIdeaContainer()}>
+        <Box background={colors.white}>
           {isSmallerThanTablet ? (
             <StyledIdeaShowPageTopBar
               projectId={idea.data.relationships.project.data.id}
@@ -127,17 +114,21 @@ const IdeasShowPage = () => {
           ) : (
             <DesktopTopBar project={project.data} />
           )}
-          <>
-            <Box mb="8px">
-              <main id="e2e-idea-show">
-                <StyledIdeasShow
-                  ideaId={idea.data.id}
-                  projectId={idea.data.relationships.project.data.id}
-                  compact={isSmallerThanTablet}
-                />
-              </main>
-            </Box>
-          </>
+          <Box
+            mt={
+              // If we show IdeaShowPageTopBar on mobile, we need to push down main
+              isSmallerThanTablet ? `${theme.mobileTopBarHeight}px` : undefined // In this part of the conditional, we're on desktop.
+            }
+            mb="8px"
+          >
+            <main id="e2e-idea-show">
+              <StyledIdeasShow
+                ideaId={idea.data.id}
+                projectId={idea.data.relationships.project.data.id}
+                compact={isSmallerThanTablet}
+              />
+            </main>
+          </Box>
         </Box>
         {showCTABar && (
           <Box
