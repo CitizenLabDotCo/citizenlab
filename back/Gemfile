@@ -194,7 +194,7 @@ free_engines.each do |engine_name|
   gem engine_name, path: path if File.directory?(path)
 end
 
-gem 'ros-apartment', require: 'apartment'
+gem 'ros-apartment', '~> 3.0.0', require: 'apartment'
 
 commercial_engines = [
   'multi_tenancy',
