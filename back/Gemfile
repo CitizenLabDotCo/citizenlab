@@ -75,7 +75,7 @@ group :test do
 end
 
 gem 'pundit', '~> 2.3.2'
-gem 'active_model_serializers', '~> 0.10.12'
+gem 'active_model_serializers', '~> 0.10.15'
 
 gem 'jwt', '~> 2.8.1'
 gem 'que', '~> 2.3.0'
