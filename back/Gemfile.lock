@@ -146,6 +146,13 @@ PATH
       rails (~> 7.0)
 
 PATH
+  remote: engines/commercial/id_google
+  specs:
+    id_google (1.0.0)
+      omniauth_openid_connect (~> 0.7.1)
+      rails (~> 7.0)
+
+PATH
   remote: engines/commercial/id_hoplr
   specs:
     id_hoplr (0.1.0)
@@ -1297,6 +1304,7 @@ DEPENDENCIES
   id_fake_sso!
   id_franceconnect!
   id_gent_rrn!
+  id_google!
   id_hoplr!
   id_id_austria!
   id_id_card_lookup!

@@ -391,27 +391,6 @@
         }
       },
 
-      "google_login": {
-        "type": "object",
-        "title": "Google Login",
-        "description":  "Allow users to register and sign in through their Google account.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false},
-          "client_id": {
-            "title": "Client ID",
-            "type": "string"
-          },
-          "client_secret": {
-            "title": "Client Secret",
-            "type": "string",
-            "private": true
-          }
-        }
-      },
-
       "azure_ad_login": {
         "type": "object",
         "title": "Azure AD Login",
