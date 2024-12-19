@@ -3,14 +3,17 @@ import React from 'react';
 import { Box, Text } from '@citizenlab/cl2-component-library';
 
 import { SSOProvider } from 'api/authentication/singleSignOn';
+import { TVerificationMethodName } from 'api/verification_methods/types';
 import useVerificationMethodVerifiedActions from 'api/verification_methods/useVerificationMethodVerifiedActions';
 
 import SSOVerificationButton from 'containers/Authentication/steps/_components/SSOVerificationButton';
 
 import ClaveUnicaButton from 'components/UI/ClaveUnicaButton/ClaveUnicaButton';
 import claveUnicaButtonMessages from 'components/UI/ClaveUnicaButton/messages';
+import FranceConnectButton from 'components/UI/FranceConnectButton';
+import franceConnectButtonMessages from 'components/UI/FranceConnectButton/messages';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import TextButton from '../_components/TextButton';
 
@@ -23,14 +26,15 @@ interface Props {
 
 const SSOVerification = ({ onClickSSO, onClickLogin }: Props) => {
   const { data: verificationMethod } = useVerificationMethodVerifiedActions();
+  const { formatMessage } = useIntl();
 
   if (!verificationMethod) return null;
 
   const methodName = verificationMethod.data.attributes.name;
 
-  return (
-    <Box>
-      {methodName === 'clave_unica' ? (
+  const methodButton = (methodName: TVerificationMethodName) => {
+    if (methodName === 'clave_unica') {
+      return (
         <ClaveUnicaButton
           disabled={false}
           message={
@@ -40,7 +44,20 @@ const SSOVerification = ({ onClickSSO, onClickLogin }: Props) => {
             onClickSSO('clave_unica');
           }}
         />
-      ) : (
+      );
+    } else if (methodName === 'franceconnect') {
+      return (
+        <FranceConnectButton
+          onClick={() => {
+            onClickSSO('franceconnect');
+          }}
+          logoAlt={formatMessage(
+            franceConnectButtonMessages.franceConnectVerificationButtonAltText
+          )}
+        />
+      );
+    } else {
+      return (
         <SSOVerificationButton
           verificationMethodName={methodName}
           last={false}
@@ -50,7 +67,13 @@ const SSOVerification = ({ onClickSSO, onClickLogin }: Props) => {
             onClickSSO(methodName as SSOProvider);
           }}
         />
-      )}
+      );
+    }
+  };
+
+  return (
+    <Box>
+      {methodButton(methodName)}
       <Text mt="20px" mb="0">
         <FormattedMessage
           {...messages.alreadyHaveAnAccount}
