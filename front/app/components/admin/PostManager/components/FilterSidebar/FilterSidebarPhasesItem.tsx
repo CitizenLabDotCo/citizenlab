@@ -1,25 +1,28 @@
 import React from 'react';
 
 import { useDrop } from 'react-dnd';
-import { Menu, Label } from 'semantic-ui-react';
 
 import { IPhaseData } from 'api/phases/types';
 import { canContainIdeas } from 'api/phases/utils';
 
-import T from 'components/T';
+import FilterRadioButton from './FilterRadioButton';
 
 interface Props {
   phase: IPhaseData;
-  active: boolean;
-  onClick: () => void;
-  phaseNumber: number;
+  name: string;
+  onChange: () => void;
+  isSelected: boolean;
+  labelContent: React.ReactNode;
+  id: string;
 }
 
 const FilterSidebarPhasesItem = ({
   phase,
-  active,
-  onClick,
-  phaseNumber,
+  name,
+  onChange,
+  isSelected,
+  labelContent,
+  id,
 }: Props) => {
   const [{ canDrop, isOver }, drop] = useDrop({
     accept: 'IDEA',
@@ -36,20 +39,15 @@ const FilterSidebarPhasesItem = ({
     }),
   });
 
-  const disabled = !canContainIdeas(phase);
-
   return (
     <div ref={drop}>
-      <Menu.Item
-        active={active || (isOver && canDrop)}
-        onClick={onClick}
-        disabled={disabled}
-      >
-        <Label circular={true} basic={true} color={disabled ? 'grey' : 'teal'}>
-          {phaseNumber}
-        </Label>
-        <T value={phase.attributes.title_multiloc} />
-      </Menu.Item>
+      <FilterRadioButton
+        name={name}
+        onChange={onChange}
+        isSelected={isSelected || (isOver && canDrop)}
+        labelContent={labelContent}
+        id={id}
+      />
     </div>
   );
 };
