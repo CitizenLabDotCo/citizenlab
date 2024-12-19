@@ -88,9 +88,11 @@ class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
     view_private_attributes? object, params
   }
 
+  attribute :verified, if: proc { |object, params|
+    view_private_attributes? object, params
+  }
+
   def self.view_private_attributes?(object, params = {})
     Pundit.policy!(user_context(params), object).view_private_attributes?
   end
 end
-
-WebApi::V1::UserSerializer.include(Verification::Patches::WebApi::V1::UserSerializer)
