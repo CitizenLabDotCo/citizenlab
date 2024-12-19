@@ -11,7 +11,7 @@ import T from 'components/T';
 interface Props {
   phase: IPhaseData;
   active: boolean;
-  onClick: any;
+  onClick: () => void;
   phaseNumber: number;
 }
 
