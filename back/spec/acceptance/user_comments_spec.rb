@@ -21,7 +21,7 @@ resource 'Comments' do
     describe do
       before do
         @i1 = create(:idea, published_at: Time.zone.now)
-        @i2 = create(:initiative, published_at: 1.day.ago)
+        @i2 = create(:idea, published_at: 1.day.ago)
         @i3 = create(:idea, published_at: 3.days.ago)
         @user = create(:user)
         @c1 = create(:comment, post: @i2, author: @user, created_at: 1.hour.ago)
@@ -35,7 +35,6 @@ resource 'Comments' do
       let(:user_id) { @user.id }
       let(:size) { 2 }
 
-      # TODO: posting_initiative
       example_request 'List the comments of a user' do
         expect(status).to eq(200)
         json_response = json_parse(response_body)

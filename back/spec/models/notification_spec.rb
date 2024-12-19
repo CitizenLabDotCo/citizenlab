@@ -132,14 +132,6 @@ RSpec.describe Notification do
     expect(described_class.count).to eq(count - 1)
   end
 
-  it 'deleting an initiative status also deletes notifications requiring that initiative status' do
-    initiative_status = create(:initiative_status)
-    create(:status_change_on_initiative_you_follow, post_status: initiative_status)
-    count = described_class.count
-    initiative_status.destroy!
-    expect(described_class.count).to eq(count - 1)
-  end
-
   it 'deleting an invite also deletes notifications requiring that invite' do
     invite = create(:invite)
     create(:invite_accepted, invite: invite)
