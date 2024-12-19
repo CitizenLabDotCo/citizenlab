@@ -26,7 +26,6 @@ interface Props {
 }
 
 type TAssigneeOption = IOption & {
-  id?: string;
   className?: string;
 };
 
@@ -63,17 +62,14 @@ const AssigneeFilter = ({
       {
         value: 'all',
         label: formatMessage(messages.anyAssignment),
-        id: 'e2e-assignee-filter-all-posts',
       },
       {
         value: authUser.data.id,
         label: formatMessage(postManagerMessages.assignedToMe),
-        id: 'e2e-assignee-filter-assigned-to-user',
       },
       {
         value: 'unassigned',
         label: formatMessage(postManagerMessages.noOne),
-        id: 'e2e-assignee-filter-unassigned',
       },
     ];
 
