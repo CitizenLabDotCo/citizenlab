@@ -26,7 +26,6 @@ PublicApi::Engine.routes.draw do
       route_mapper.resources :events
       route_mapper.resources :event_attendances
       route_mapper.resources :ideas
-      route_mapper.resources :initiatives
       route_mapper.resources :phases
       route_mapper.resources :project_folders
       route_mapper.resources :reactions, only: %i[index]
