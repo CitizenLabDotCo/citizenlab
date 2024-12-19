@@ -4,6 +4,8 @@ import moment from 'moment';
 import { IntlProvider } from 'react-intl';
 import { SupportedLocale } from 'typings';
 
+import { i18nImports } from 'components/admin/ContentBuilder/LanguageProvider/i18nLoader';
+
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 type Props = {
@@ -25,13 +27,6 @@ const ContentBuilderLanguageProvider = ({
   useEffect(() => {
     if (!isNilOrError(contentBuilderLocale)) {
       const localePath = `/i18n/${contentBuilderLocale}.ts`;
-      const i18nImports: Record<
-        string,
-        (() => Promise<{ default: object }>) | undefined
-      > = import.meta.glob('/i18n/*.ts') as Record<
-        string,
-        (() => Promise<{ default: object }>) | undefined
-      >;
 
       const loadLocale = i18nImports[localePath];
 
