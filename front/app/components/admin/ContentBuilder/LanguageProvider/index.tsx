@@ -18,17 +18,34 @@ const ContentBuilderLanguageProvider = ({
   platformLocale,
   children,
 }: Props) => {
-  const [messages, setMessages] = useState();
+  const [messages, setMessages] = useState<Record<string, string> | undefined>(
+    undefined
+  );
 
   useEffect(() => {
     if (!isNilOrError(contentBuilderLocale)) {
-      import(
-        /* @vite-ignore */
-        `i18n/${contentBuilderLocale}`
-      ).then((translationMessages) => {
-        setMessages(translationMessages.default);
-      });
-      moment.locale(contentBuilderLocale);
+      const localePath = `/i18n/${contentBuilderLocale}.ts`;
+      const i18nImports: Record<
+        string,
+        (() => Promise<{ default: object }>) | undefined
+      > = import.meta.glob('/i18n/*.ts') as Record<
+        string,
+        (() => Promise<{ default: object }>) | undefined
+      >;
+
+      const loadLocale = i18nImports[localePath];
+
+      if (loadLocale) {
+        loadLocale()
+          .then((translationMessages) => {
+            setMessages(translationMessages.default as Record<string, string>);
+          })
+          .catch((error) => {
+            console.error(`Failed to load locale file: ${localePath}`, error);
+          });
+
+        moment.locale(contentBuilderLocale);
+      }
     }
 
     return () => {
