@@ -87,7 +87,7 @@ const AssigneeSelect = ({ projectId, assigneeId, onAssigneeChange }: Props) => {
       options={getAssigneeOptions(prospectAssignees, authUser)}
       onChange={handleOnAssigneeChange}
       value={assigneeId || 'unassigned'}
-      className="fluid e2e-post-manager-post-row-assignee-select lp-copy-sel"
+      className="fluid e2e-post-manager-post-row-assignee-select"
     />
   );
 };
