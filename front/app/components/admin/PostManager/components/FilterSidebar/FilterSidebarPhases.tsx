@@ -11,6 +11,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 
 import FilterRadioButton from './FilterRadioButton';
+import FilterSidebarPhasesItem from './FilterSidebarPhasesItem';
 
 type Props = {
   phases: IPhaseData[];
@@ -56,6 +57,7 @@ const FilterSidebarPhases = ({
   return (
     <Box display="flex" flexDirection="column">
       <FilterRadioButton
+        id="all-phases"
         isSelected={!selectedPhase}
         onChange={clearFilter}
         labelContent={
@@ -72,7 +74,8 @@ const FilterSidebarPhases = ({
         mb="8px"
       />
       {phases.map((phase, phaseIndex) => (
-        <FilterRadioButton
+        <FilterSidebarPhasesItem
+          id={phase.id}
           key={phase.id}
           isSelected={isActive(phase.id)}
           onChange={handleItemClick(phase.id)}
