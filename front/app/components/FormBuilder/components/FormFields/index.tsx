@@ -21,7 +21,7 @@ import { DragAndDropResult, NestedGroupingStructure } from '../../edit/utils';
 import { DragAndDrop, Drag, Drop } from '../DragAndDrop';
 import { getFieldNumbers } from '../utils';
 
-import { FormField } from './FormField';
+import FormField from './FormField';
 
 export const pageDNDType = 'droppable-page';
 export const questionDNDType = 'droppable-question';

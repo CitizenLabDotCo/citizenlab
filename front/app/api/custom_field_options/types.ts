@@ -16,7 +16,7 @@ export interface IFormCustomFieldOptionData {
   type: string;
   attributes: OptionAttributes;
   relationships: {
-    image: {
+    image?: {
       data: {
         id: string;
         type: string;
