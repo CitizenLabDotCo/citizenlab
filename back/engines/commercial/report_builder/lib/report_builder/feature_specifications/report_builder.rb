@@ -13,6 +13,10 @@ module ReportBuilder
         'Report Builder'
       end
 
+      def self.pricing
+        true
+      end
+
       def self.feature_description
         <<~DESC.squish
           Create customizable reports.

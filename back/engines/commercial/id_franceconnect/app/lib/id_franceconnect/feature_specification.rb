@@ -26,6 +26,10 @@ module IdFranceconnect
       false
     end
 
+    def self.pricing
+      true
+    end
+
     add_setting 'environment', required: true, schema: {
       type: 'string',
       title: 'Environment',
