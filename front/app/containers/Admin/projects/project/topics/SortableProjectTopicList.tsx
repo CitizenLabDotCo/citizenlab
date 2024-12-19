@@ -10,7 +10,8 @@ import useReorderProjectAllowedInputTopics from 'api/project_allowed_input_topic
 import { getTopicIds } from 'api/project_allowed_input_topics/util/getProjectTopicsIds';
 import useTopics from 'api/topics/useTopics';
 
-import { SortableList, SortableRow } from 'components/admin/ResourceList';
+import SortableList from 'components/admin/ResourceList/SortableList';
+import SortableRow from 'components/admin/ResourceList/SortableRow';
 import { StyledLink } from 'components/admin/Section';
 import T from 'components/T';
 import Button from 'components/UI/Button';
