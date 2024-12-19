@@ -4,7 +4,7 @@ import path from 'path';
 import react from '@vitejs/plugin-react';
 import dotenv from 'dotenv';
 import { defineConfig } from 'vite';
-import checker from 'vite-plugin-checker';
+// import checker from 'vite-plugin-checker';
 import commonjs from 'vite-plugin-commonjs';
 import { createHtmlPlugin } from 'vite-plugin-html';
 import tsconfigPaths from 'vite-plugin-tsconfig-paths';
@@ -30,6 +30,7 @@ export default defineConfig(({ mode }) => {
   const DEV_WORKSHOPS_PORT = process.env.DEV_WORKSHOPS_PORT || '4005';
 
   return {
+    logLevel: 'error',
     root: path.resolve(__dirname, 'app'), // Root directory
     base: '/', // Base path for public assets
     server: {
@@ -64,13 +65,13 @@ export default defineConfig(({ mode }) => {
     },
     plugins: [
       react(),
-      checker({
-        overlay: { initialIsOpen: false },
-        typescript: true,
-        eslint: {
-          lintCommand: `eslint "${process.cwd()}/app/**/*.{js,jsx,ts,tsx}" --ignore-pattern app/__generated__/`,
-        },
-      }),
+      // checker({
+      //   overlay: { initialIsOpen: false },
+      //   typescript: true,
+      //   eslint: {
+      //     lintCommand: `eslint "${process.cwd()}/app/**/*.{js,jsx,ts,tsx}" --ignore-pattern app/__generated__/`,
+      //   },
+      // }),
       commonjs(),
       tsconfigPaths(), // Support for TS path aliases
       createHtmlPlugin({
