@@ -90,6 +90,7 @@ const ShareLink = ({
         opened={shareDropdownIsOpen}
         onClickOutside={() => {
           setLinkIsCopied(false);
+          setShareDropdownIsOpen(false);
         }}
         content={
           <Box p="8px">
