@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from './messages';
+import messages from '../messages';
 
 const StyledButton = styled.button`
   position: absolute;

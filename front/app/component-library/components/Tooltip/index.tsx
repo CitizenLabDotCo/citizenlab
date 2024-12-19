@@ -45,7 +45,7 @@ const TippyComponent = ({
   children,
   theme,
   width,
-  key,
+  componentKey,
   isFocused,
   setIsFocused,
   setKey,
@@ -55,7 +55,7 @@ const TippyComponent = ({
   children: React.ReactNode;
   theme: string;
   width: string | undefined;
-  key: number;
+  componentKey: number;
   isFocused: boolean | undefined;
   setIsFocused: React.Dispatch<React.SetStateAction<boolean | undefined>>;
   setKey: React.Dispatch<React.SetStateAction<number>>;
@@ -63,7 +63,7 @@ const TippyComponent = ({
 } & TooltipProps) => {
   return (
     <Tippy
-      key={key}
+      key={componentKey}
       plugins={[
         {
           name: 'hideOnEsc',
@@ -137,7 +137,7 @@ const Tooltip = ({
   if (useWrapper) {
     return (
       <TippyComponent
-        key={key}
+        componentKey={key}
         theme={theme}
         width={width}
         isFocused={isFocused}
@@ -154,7 +154,7 @@ const Tooltip = ({
       // This option is used for more accessible tooltips when useWrapper is false
       <Box as="span" id={tooltipId.current} w={width || 'fit-content'}>
         <TippyComponent
-          key={key}
+          componentKey={key}
           theme={theme}
           width={width}
           isFocused={isFocused}

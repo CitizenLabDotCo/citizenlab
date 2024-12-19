@@ -1,25 +1,16 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState } from 'react';
 
-import { useBreakpoint, Title } from '@citizenlab/cl2-component-library';
+import { useBreakpoint } from '@citizenlab/cl2-component-library';
 import useInstanceId from 'component-library/hooks/useInstanceId';
-import { debounce } from 'lodash-es';
 import { useInView } from 'react-intersection-observer';
 
 import { MiniProjectData } from 'api/projects_mini/types';
 
-import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
-
 import { CARD_GAP } from '../BaseCarrousel/constants';
-import { CarrouselContainer, CardContainer } from '../BaseCarrousel/Containers';
-import Gradient from '../BaseCarrousel/Gradient';
-import HorizontalScroll from '../BaseCarrousel/HorizontalScroll';
+import { CardContainer } from '../BaseCarrousel/Containers';
 import LoadMoreCard from '../BaseCarrousel/LoadMoreCard';
-import ScrollButton from '../BaseCarrousel/ScrollButton';
-import SkipButton from '../BaseCarrousel/SkipButton';
-import {
-  getUpdatedButtonVisibility,
-  skipCarrousel,
-} from '../BaseCarrousel/utils';
+import ScrollableCarrousel from '../BaseCarrousel/ScrollableCarrousel';
+import { skipCarrousel } from '../BaseCarrousel/ScrollableCarrousel/utils';
 
 import { CARD_WIDTH } from './constants';
 import LightProjectCard from './LightProjectCard';
@@ -42,24 +33,7 @@ const ProjectCarrousel = ({
   const [scrollContainerRef, setScrollContainerRef] = useState<
     HTMLDivElement | undefined
   >(undefined);
-  // State related to 'previous' button
-  const [showPreviousButton, setShowPreviousButton] = useState(false);
-  const [mouseOverPreviousButton, setMouseOverPreviousButton] = useState(false);
-  const [
-    previousButtonShouldDisappearAfterMouseMove,
-    setPreviousButtonShouldDisappearAfterMouseMove,
-  ] = useState(false);
-
-  // State related to 'next' button
-  const [showNextButton, setShowNextButton] = useState(false);
-  const [mouseOverNextButton, setMouseOverNextButton] = useState(false);
-  const [
-    nextButtonShouldDisappearAfterMouseMove,
-    setNextButtonShouldDisappearAfterMouseMove,
-  ] = useState(false);
-
   const [blockLoadMore, setBlockLoadMore] = useState(false);
-
   const isSmallerThanPhone = useBreakpoint('phone');
   const instanceId = useInstanceId();
   const endId = `end-carrousel-${instanceId}`;
@@ -78,44 +52,6 @@ const ProjectCarrousel = ({
     },
   });
 
-  const handleButtonVisiblity = useCallback(
-    (ref: HTMLDivElement, hasMore: boolean) => {
-      if (isSmallerThanPhone) return;
-      const { showNextButton, showPreviousButton } = getUpdatedButtonVisibility(
-        ref,
-        hasMore
-      );
-
-      if (!mouseOverPreviousButton) {
-        setShowPreviousButton(showPreviousButton);
-      } else {
-        setPreviousButtonShouldDisappearAfterMouseMove(true);
-      }
-
-      if (!mouseOverNextButton) {
-        setShowNextButton(showNextButton);
-      } else {
-        setNextButtonShouldDisappearAfterMouseMove(true);
-      }
-    },
-    [isSmallerThanPhone, mouseOverPreviousButton, mouseOverNextButton]
-  );
-
-  // Set button visiblity on scroll
-  useEffect(() => {
-    if (!scrollContainerRef) return;
-
-    const handler = debounce(() => {
-      handleButtonVisiblity(scrollContainerRef, hasMore);
-    }, 100);
-
-    scrollContainerRef.addEventListener('scroll', handler);
-
-    return () => {
-      scrollContainerRef.removeEventListener('scroll', handler);
-    };
-  }, [scrollContainerRef, hasMore, handleButtonVisiblity]);
-
   const handleKeyDown = (e: React.KeyboardEvent<any>) => {
     if (e.code === 'Escape') {
       skipCarrousel(endId);
@@ -131,82 +67,28 @@ const ProjectCarrousel = ({
   };
 
   return (
-    <>
-      <CarrouselContainer className={className}>
-        <Title
-          variant="h2"
-          mt="0px"
-          ml={isSmallerThanPhone ? DEFAULT_PADDING : undefined}
-          color="tenantText"
-        >
-          {title}
-        </Title>
-        <SkipButton onSkip={() => skipCarrousel(endId)} />
-        <HorizontalScroll
-          setRef={(ref) => {
-            if (ref) {
-              setScrollContainerRef(ref);
-              handleButtonVisiblity(ref, hasMore);
-            }
-          }}
-        >
-          {projects.map((project) => (
-            <CardContainer key={project.id}>
-              <LightProjectCard
-                ml={isSmallerThanPhone ? `${CARD_GAP}px` : undefined}
-                mr={isSmallerThanPhone ? undefined : `${CARD_GAP}px`}
-                project={project}
-                onKeyDown={handleKeyDown}
-              />
-            </CardContainer>
-          ))}
-          {hasMore && <LoadMoreCard width={CARD_WIDTH} cardRef={ref} />}
-        </HorizontalScroll>
-        {showPreviousButton && !isSmallerThanPhone && (
-          <>
-            <ScrollButton
-              variant="left"
-              top="120px"
-              onClick={() => {
-                if (!scrollContainerRef) return;
-                scrollContainerRef.scrollLeft -= CARD_WIDTH + CARD_GAP;
-              }}
-              onMouseEnter={() => setMouseOverPreviousButton(true)}
-              onMouseLeave={() => {
-                setMouseOverPreviousButton(false);
-                if (previousButtonShouldDisappearAfterMouseMove) {
-                  setShowPreviousButton(false);
-                  setPreviousButtonShouldDisappearAfterMouseMove(false);
-                }
-              }}
-            />
-            <Gradient variant="left" />
-          </>
-        )}
-        {showNextButton && !isSmallerThanPhone && (
-          <>
-            <ScrollButton
-              variant="right"
-              top="120px"
-              onClick={() => {
-                if (!scrollContainerRef) return;
-                scrollContainerRef.scrollLeft += CARD_WIDTH + CARD_GAP;
-              }}
-              onMouseEnter={() => setMouseOverNextButton(true)}
-              onMouseLeave={() => {
-                setMouseOverNextButton(false);
-                if (nextButtonShouldDisappearAfterMouseMove) {
-                  setShowNextButton(false);
-                  setNextButtonShouldDisappearAfterMouseMove(false);
-                }
-              }}
-            />
-            <Gradient variant="right" />
-          </>
-        )}
-      </CarrouselContainer>
-      <i id={endId} />
-    </>
+    <ScrollableCarrousel
+      className={className}
+      title={title}
+      scrollContainerRef={scrollContainerRef}
+      setScrollContainerRef={setScrollContainerRef}
+      cardWidth={CARD_WIDTH}
+      scrollButtonTop={120}
+      hasMore={hasMore}
+      endId={endId}
+    >
+      {projects.map((project) => (
+        <CardContainer key={project.id}>
+          <LightProjectCard
+            ml={isSmallerThanPhone ? `${CARD_GAP}px` : undefined}
+            mr={isSmallerThanPhone ? undefined : `${CARD_GAP}px`}
+            project={project}
+            onKeyDown={handleKeyDown}
+          />
+        </CardContainer>
+      ))}
+      {hasMore && <LoadMoreCard width={CARD_WIDTH} cardRef={ref} />}
+    </ScrollableCarrousel>
   );
 };
 

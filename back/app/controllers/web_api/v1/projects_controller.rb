@@ -304,6 +304,7 @@ class WebApi::V1::ProjectsController < ApplicationController
 
   def destroy_participation_data
     ParticipantsService.new.destroy_participation_data(@project)
+    sidefx.after_destroy_participation_data(@project, current_user)
 
     render json: WebApi::V1::ProjectSerializer.new(
       @project,
