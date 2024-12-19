@@ -25,12 +25,3 @@ OmniAuth.config.full_host = lambda { |_env|
 OpenIDConnect.http_config do |config|
   config.response :jwt
 end
-
-# Register OmniAuth strategies
-AZURE_AD_B2C_SETUP_PROC = lambda do |env|
-  OmniauthMethods::AzureActiveDirectoryB2c.new.omniauth_setup(AppConfiguration.instance, env)
-end
-
-Rails.application.config.middleware.use OmniAuth::Builder do
-  provider :openid_connect, setup: AZURE_AD_B2C_SETUP_PROC, name: 'azureactivedirectory_b2c'
-end

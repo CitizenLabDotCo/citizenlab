@@ -1,12 +1,8 @@
 # frozen_string_literal: true
 
 class AuthenticationService
-  DEFAULT_METHODS = {
-    'azureactivedirectory_b2c' => OmniauthMethods::AzureActiveDirectoryB2c.new
-  }
-
   def all_methods
-    DEFAULT_METHODS.merge(IdMethod.all_methods.filter_map { |k, v| [k, v] if v.auth? }.to_h)
+    IdMethod.all_methods.filter_map { |k, v| [k, v] if v.auth? }.to_h
   end
 
   def method_by_provider(provider)
