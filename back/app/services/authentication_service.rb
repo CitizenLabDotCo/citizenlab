@@ -2,7 +2,6 @@
 
 class AuthenticationService
   DEFAULT_METHODS = {
-    'azureactivedirectory' => OmniauthMethods::AzureActiveDirectory.new,
     'azureactivedirectory_b2c' => OmniauthMethods::AzureActiveDirectoryB2c.new
   }
 
