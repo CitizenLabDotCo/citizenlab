@@ -6,8 +6,8 @@ module EmailCampaigns
 
     def campaign_mail
       campaign.mailer_class
-        .with(campaign: campaign, command: command)
-        .campaign_mail
+              .with(campaign: campaign, command: command)
+              .campaign_mail
     end
 
     private
@@ -17,10 +17,9 @@ module EmailCampaigns
     end
 
     def command
-      recipient = activity.item.attendee
       campaign
-        .generate_commands(recipient: recipient, activity: activity).first
-        .merge(recipient: recipient)
+        .generate_commands(recipient: recipient_user, activity: activity).first
+        .merge(recipient: recipient_user)
     end
 
     def activity
@@ -35,9 +34,8 @@ module EmailCampaigns
 
     def transient_activity
       event = Event.order(created_at: :asc).first
-      attendee = User.order(created_at: :asc).first
-      event_attendance = Events::Attendance.new(event: event, attendee: attendee)
-      Activity.new(item: event_attendance, action: 'created', user: attendee)
+      event_attendance = Events::Attendance.new(event: event, attendee: recipient_user)
+      Activity.new(item: event_attendance, action: 'created', user: recipient_user)
     end
   end
 end
