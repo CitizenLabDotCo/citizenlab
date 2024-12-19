@@ -1,7 +1,11 @@
 # frozen_string_literal: true
 
-module OmniauthMethods
-  class Base
+module IdMethod
+  module OmniAuthMethod
+    def auth?
+      true
+    end
+
     # @param [AppConfiguration] configuration
     def omniauth_setup(_configuration, _env)
       raise 'Subclass must implement this method'

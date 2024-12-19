@@ -2,7 +2,8 @@
 
 module IdViennaSaml
   # Provides a SAML Omniauth configuration for Vienna's StandardPortal, a citizen SSO method.
-  class CitizenSamlOmniauth < OmniauthMethods::Base
+  class CitizenSamlOmniauth < IdMethod::Base
+    include IdMethod::OmniAuthMethod
     # The Issuer is hardcoded on Vienna's side and needs to match exactly.
     ENVIRONMENTS = {
       test: {
