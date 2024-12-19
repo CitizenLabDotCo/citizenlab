@@ -63,7 +63,7 @@ const HeaderContent = ({
   const signUpIn = (event: React.FormEvent) => {
     event.preventDefault();
     trackEventByName(tracks.clickCreateAccountCTA, {
-      extra: { location: 'signed-out header' },
+      location: 'signed-out header',
     });
     triggerAuthenticationFlow();
   };

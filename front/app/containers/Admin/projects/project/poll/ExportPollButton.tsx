@@ -36,7 +36,10 @@ class ExportPollButton extends React.PureComponent<
   }
 
   trackExportPoll = () => {
-    trackEventByName(tracks.clickExportPoll.name, { ...this.props });
+    trackEventByName(tracks.clickExportPoll.name, {
+      phaseId: this.props.phaseId,
+      phaseName: this.props.phaseName,
+    });
   };
 
   handleExportPollResults = async () => {
