@@ -25,7 +25,7 @@ Rails.application.config.action_view.apply_stylesheet_media_default = false
 #
 # See upgrading guide for more information on how to build a rotator.
 # https://guides.rubyonrails.org/v7.0/upgrading_ruby_on_rails.html
-# Rails.application.config.active_support.key_generator_hash_digest_class = OpenSSL::Digest::SHA256
+Rails.application.config.active_support.key_generator_hash_digest_class = OpenSSL::Digest::SHA256
 
 # Change the digest class for ActiveSupport::Digest.
 # Changing this default means that for example Etags change and
@@ -67,14 +67,14 @@ Rails.application.config.action_controller.raise_on_open_redirects = true
 # Enable parameter wrapping for JSON.
 # Previously this was set in an initializer. It's fine to keep using that initializer if you've customized it.
 # To disable parameter wrapping entirely, set this config to `false`.
-# Rails.application.config.action_controller.wrap_parameters_by_default = true
+Rails.application.config.action_controller.wrap_parameters_by_default = true
 
 # Specifies whether generated namespaced UUIDs follow the RFC 4122 standard for namespace IDs provided as a
 # `String` to `Digest::UUID.uuid_v3` or `Digest::UUID.uuid_v5` method calls.
 #
 # See https://guides.rubyonrails.org/configuring.html#config-active-support-use-rfc4122-namespaced-uuids for
 # more information.
-# Rails.application.config.active_support.use_rfc4122_namespaced_uuids = true
+Rails.application.config.active_support.use_rfc4122_namespaced_uuids = true
 
 # Change the default headers to disable browsers' flawed legacy XSS protection.
 Rails.application.config.action_dispatch.default_headers = {
@@ -86,45 +86,11 @@ Rails.application.config.action_dispatch.default_headers = {
   'Referrer-Policy' => 'strict-origin-when-cross-origin'
 }
 
-# ** Please read carefully, this must be configured in config/application.rb **
-# Change the format of the cache entry.
-# Changing this default means that all new cache entries added to the cache
-# will have a different format that is not supported by Rails 6.1 applications.
-# Only change this value after your application is fully deployed to Rails 7.0
-# and you have no plans to rollback.
-# When you're ready to change format, add this to `config/application.rb` (NOT this file):
-#  config.active_support.cache_format_version = 7.0
-
 # Cookie serializer: 2 options
 #
 # If you're upgrading and haven't set `cookies_serializer` previously, your cookie serializer
 # is `:marshal`. The default for new apps is `:json`.
-#
-# Rails.application.config.action_dispatch.cookies_serializer = :json
-#
-#
-# To migrate an existing application to the `:json` serializer, use the `:hybrid` option.
-#
-# Rails transparently deserializes existing (Marshal-serialized) cookies on read and
-# re-writes them in the JSON format.
-#
-# It is fine to use `:hybrid` long term; you should do that until you're confident *all* your cookies
-# have been converted to JSON. To keep using `:hybrid` long term, move this config to its own
-# initializer or to `config/application.rb`.
-#
-# Rails.application.config.action_dispatch.cookies_serializer = :hybrid
-#
-#
-# If your cookies can't yet be serialized to JSON, keep using `:marshal` for backward-compatibility.
-#
-# If you have configured the serializer elsewhere, you can remove this section of the file.
-#
-# See https://guides.rubyonrails.org/action_controller_overview.html#cookies for more information.
+Rails.application.config.action_dispatch.cookies_serializer = :json
 
 # Change the return value of `ActionDispatch::Request#content_type` to the Content-Type header without modification.
 Rails.application.config.action_dispatch.return_only_request_media_type_on_content_type = false
-
-# ** Please read carefully, this must be configured in config/application.rb (NOT this file) **
-# Disables the deprecated #to_s override in some Ruby core classes
-# See https://guides.rubyonrails.org/configuring.html#config-active-support-disable-to-s-conversion for more information.
-# config.active_support.disable_to_s_conversion = true
