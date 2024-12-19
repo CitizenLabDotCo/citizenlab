@@ -44,6 +44,6 @@ class Identity < ApplicationRecord
   end
 
   def email_always_present?
-    AuthenticationService.all_methods.fetch(provider).email_always_present?
+    AuthenticationService.new.method_by_provider(provider).email_always_present?
   end
 end

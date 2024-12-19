@@ -731,8 +731,8 @@ Style/OpenStructUse:
     - 'app/mailers/application_mailer.rb'
     - 'engines/free/onboarding/app/controllers/onboarding/web_api/v1/campaigns_controller.rb'
     - 'engines/free/surveys/spec/services/typeform_api_parser_spec.rb'
-    - 'spec/lib/omniauth_methods/azure_active_directory_spec.rb'
-    - 'spec/lib/omniauth_methods/google_spec.rb'
+    - 'engines/commercial/id_azure_active_directory/spec/id_azure_active_directory/azure_active_directory_spec.rb'
+    - 'engines/commercial/id_google/spec/id_google/google_omniauth_spec.rb'
     - 'spec/services/track_intercom_service_spec.rb'
 
 # Offense count: 2

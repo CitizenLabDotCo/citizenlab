@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 module IdNemlogIn
-  class NemlogInOmniauth < OmniauthMethods::Base
+  class NemlogInOmniauth < IdMethod::Base
+    include IdMethod::OmniAuthMethod
     include NemlogInVerification
 
     ENVIRONMENTS = {
