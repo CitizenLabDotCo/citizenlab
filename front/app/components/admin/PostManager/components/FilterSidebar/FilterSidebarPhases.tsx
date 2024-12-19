@@ -18,6 +18,20 @@ type Props = {
   onChangePhaseFilter: (phase: string | null) => void;
 };
 
+const LabelContentWrapper = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <Box
+      display="flex"
+      width="100%"
+      justifyContent="space-between"
+      alignItems="center"
+      height="24px"
+    >
+      {children}
+    </Box>
+  );
+};
+
 const FilterSidebarPhases = ({
   phases,
   selectedPhase,
@@ -43,15 +57,9 @@ const FilterSidebarPhases = ({
         isSelected={!selectedPhase}
         onChange={clearFilter}
         labelContent={
-          <Box
-            display="flex"
-            width="100%"
-            justifyContent="space-between"
-            alignItems="center"
-            height="24px"
-          >
+          <LabelContentWrapper>
             <FormattedMessage {...messages.allPhases} />
-          </Box>
+          </LabelContentWrapper>
         }
       />
       <Box
@@ -67,13 +75,7 @@ const FilterSidebarPhases = ({
           onChange={handleItemClick(phase.id)}
           phaseId={phase.id}
           labelContent={
-            <Box
-              display="flex"
-              width="100%"
-              justifyContent="space-between"
-              alignItems="center"
-              height="24px"
-            >
+            <LabelContentWrapper>
               {localize(phase.attributes.title_multiloc)}
               <Box
                 width="24px"
@@ -87,7 +89,7 @@ const FilterSidebarPhases = ({
               >
                 {phaseIndex + 1}
               </Box>
-            </Box>
+            </LabelContentWrapper>
           }
         />
       ))}
