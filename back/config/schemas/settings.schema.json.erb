@@ -391,27 +391,6 @@
         }
       },
 
-      "facebook_login": {
-        "type": "object",
-        "title": "Facebook Login",
-        "description":	"Allow users to register and sign in through their Facebook account.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false},
-          "app_id": {
-            "title": "App ID",
-            "type": "string"
-          },
-          "app_secret": {
-            "title": "App Secret",
-            "type": "string",
-            "private": true
-          }
-        }
-      },
-
       "google_login": {
         "type": "object",
         "title": "Google Login",

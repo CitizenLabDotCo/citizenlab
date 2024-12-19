@@ -119,6 +119,13 @@ PATH
       rails (~> 7.0)
 
 PATH
+  remote: engines/commercial/id_facebook
+  specs:
+    id_facebook (1.0.0)
+      omniauth_openid_connect (~> 0.7.1)
+      rails (~> 7.0)
+
+PATH
   remote: engines/commercial/id_fake_sso
   specs:
     id_fake_sso (0.1.0)
@@ -1286,6 +1293,7 @@ DEPENDENCIES
   id_clave_unica!
   id_cow!
   id_criipto!
+  id_facebook!
   id_fake_sso!
   id_franceconnect!
   id_gent_rrn!

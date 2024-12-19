@@ -223,6 +223,7 @@ commercial_engines = [
   'user_custom_fields',
 
   # ID verification & SSO engines.
+  'id_facebook',
   'id_auth0',
   'id_bogus',
   'id_bosa_fas',

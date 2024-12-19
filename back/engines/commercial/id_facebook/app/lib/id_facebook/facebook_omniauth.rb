@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-module OmniauthMethods
-  class Facebook < IdMethod::Base
+module IdFacebook
+  class FacebookOmniauth < IdMethod::Base
     include IdMethod::OmniAuthMethod
     # @param [AppConfiguration] configuration
     def omniauth_setup(configuration, env)
