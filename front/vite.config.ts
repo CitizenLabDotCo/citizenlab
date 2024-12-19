@@ -1,5 +1,6 @@
 import path from 'path';
 
+import { sentryVitePlugin } from '@sentry/vite-plugin';
 import react from '@vitejs/plugin-react';
 import moment from 'moment';
 import { defineConfig, loadEnv } from 'vite';
@@ -63,8 +64,6 @@ export default defineConfig(({ mode }) => {
         overlay: { initialIsOpen: false },
         typescript: true,
         eslint: {
-          //   lintCommand: 'eslint "./src/**/*.{js,jsx,ts,tsx}" --ignore-pattern /src/__generated__/'
-          //   lintCommand: 'eslint --ext .js,.jsx,.ts,.tsx ./'
           lintCommand: `eslint "${process.cwd()}/app/**/*.{js,jsx,ts,tsx}" --ignore-pattern app/__generated__/`,
         },
       }),
@@ -77,6 +76,18 @@ export default defineConfig(({ mode }) => {
         inject: {
           data: {
             GOOGLE_MAPS_API_KEY: env.GOOGLE_MAPS_API_KEY,
+          },
+        },
+      }),
+      sentryVitePlugin({
+        url: 'https://sentry.hq.citizenlab.co/',
+        authToken: env.SENTRY_AUTH_TOKEN,
+        org: 'citizenlab',
+        project: 'cl2-front',
+        release: {
+          name: env.CIRCLE_BUILD_NUM,
+          deploy: {
+            env: mode,
           },
         },
       }),
@@ -94,9 +105,6 @@ export default defineConfig(({ mode }) => {
     },
     resolve: {
       alias: {
-        // Treat 'app' as root for absolute imports
-        // '': path.resolve(__dirname, 'app'),
-        // Aliases for key folders
         assets: path.resolve(__dirname, 'app/assets'),
         components: path.resolve(__dirname, 'app/components'),
         containers: path.resolve(__dirname, 'app/containers'),
@@ -110,12 +118,8 @@ export default defineConfig(({ mode }) => {
         typings: path.resolve(__dirname, 'app/typings'),
         'global-styles': path.resolve(__dirname, 'app/global-styles'),
         'component-library': path.resolve(__dirname, 'app/component-library'),
-
         moment: 'moment',
-
-        // Webpack node_modules aliases
         polished: path.resolve(__dirname, 'node_modules/polished'),
-        // moment: path.resolve(__dirname, 'node_modules/moment'),
         react: path.resolve(__dirname, 'node_modules/react'),
         'styled-components': path.resolve(
           __dirname,
