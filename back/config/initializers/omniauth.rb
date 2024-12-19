@@ -27,15 +27,6 @@ OpenIDConnect.http_config do |config|
 end
 
 # Register OmniAuth strategies
-
-FACEBOOK_SETUP_PROC = lambda do |env|
-  OmniauthMethods::Facebook.new.omniauth_setup(AppConfiguration.instance, env)
-end
-
-GOOGLE_SETUP_PROC = lambda do |env|
-  OmniauthMethods::Google.new.omniauth_setup(AppConfiguration.instance, env)
-end
-
 OmniAuth.config.add_camelization 'azure_activedirectory', 'AzureActiveDirectory'
 AZURE_AD_SETUP_PROC = lambda do |env|
   OmniauthMethods::AzureActiveDirectory.new.omniauth_setup(AppConfiguration.instance, env)
@@ -46,8 +37,6 @@ AZURE_AD_B2C_SETUP_PROC = lambda do |env|
 end
 
 Rails.application.config.middleware.use OmniAuth::Builder do
-  provider :facebook, setup: FACEBOOK_SETUP_PROC
-  provider :google_oauth2, setup: GOOGLE_SETUP_PROC, name: 'google'
   provider :azure_activedirectory, setup: AZURE_AD_SETUP_PROC
   provider :openid_connect, setup: AZURE_AD_B2C_SETUP_PROC, name: 'azureactivedirectory_b2c'
 end
