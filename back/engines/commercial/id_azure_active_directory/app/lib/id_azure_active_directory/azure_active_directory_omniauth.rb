@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-module OmniauthMethods
-  class AzureActiveDirectory < IdMethod::Base
+module IdAzureActiveDirectory
+  class AzureActiveDirectoryOmniauth < IdMethod::Base
     include IdMethod::OmniAuthMethod
     # @param [AppConfiguration] configuration
     def omniauth_setup(configuration, env)

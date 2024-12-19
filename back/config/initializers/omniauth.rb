@@ -27,16 +27,10 @@ OpenIDConnect.http_config do |config|
 end
 
 # Register OmniAuth strategies
-OmniAuth.config.add_camelization 'azure_activedirectory', 'AzureActiveDirectory'
-AZURE_AD_SETUP_PROC = lambda do |env|
-  OmniauthMethods::AzureActiveDirectory.new.omniauth_setup(AppConfiguration.instance, env)
-end
-
 AZURE_AD_B2C_SETUP_PROC = lambda do |env|
   OmniauthMethods::AzureActiveDirectoryB2c.new.omniauth_setup(AppConfiguration.instance, env)
 end
 
 Rails.application.config.middleware.use OmniAuth::Builder do
-  provider :azure_activedirectory, setup: AZURE_AD_SETUP_PROC
   provider :openid_connect, setup: AZURE_AD_B2C_SETUP_PROC, name: 'azureactivedirectory_b2c'
 end
