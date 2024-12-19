@@ -15,6 +15,8 @@ import messages from '../../messages';
 const StyledSelect = styled(Select)`
   width: 160px;
 
+  // Semantic UI Select component was replaced here, but wanted to
+  // maintain similar styles to what we had before so it looked visually consistent.
   select {
     padding-right: 36px;
     padding-top: 4px;
