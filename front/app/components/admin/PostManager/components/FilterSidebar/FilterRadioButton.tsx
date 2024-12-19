@@ -39,6 +39,7 @@ interface Props {
   isSelected: boolean;
   phase?: IPhaseData;
   labelContent: React.ReactNode;
+  name: string;
 }
 
 const FilterRadioButton = ({
@@ -46,6 +47,7 @@ const FilterRadioButton = ({
   isSelected,
   phase,
   labelContent,
+  name,
 }: Props) => {
   const radioId = phase?.id || 'all-phases';
 
@@ -76,7 +78,7 @@ const FilterRadioButton = ({
     >
       <HiddenRadio
         id={radioId}
-        name="selectedPhase"
+        name={name}
         value={radioId}
         checked={isSelected}
         onChange={onChange}

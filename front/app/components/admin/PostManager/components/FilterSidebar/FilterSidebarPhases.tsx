@@ -91,6 +91,7 @@ const FilterSidebarPhases = ({
               </Box>
             </LabelContentWrapper>
           }
+          name="phase"
         />
       ))}
     </Box>
