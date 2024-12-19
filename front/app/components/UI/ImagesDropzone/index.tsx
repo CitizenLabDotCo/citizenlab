@@ -214,6 +214,10 @@ class ImagesDropzone extends PureComponent<
   }
 
   componentDidMount() {
+    forEach(this.state.urlObjects, (urlObject) =>
+      window.URL.revokeObjectURL(urlObject)
+    );
+
     this.setUrlObjects();
     this.removeExcessImages();
 
@@ -257,12 +261,6 @@ class ImagesDropzone extends PureComponent<
       }
     }
   };
-
-  UNSAFE_componentWillMount() {
-    forEach(this.state.urlObjects, (urlObject) =>
-      window.URL.revokeObjectURL(urlObject)
-    );
-  }
 
   setUrlObjects = () => {
     const images = this.props.images || [];
