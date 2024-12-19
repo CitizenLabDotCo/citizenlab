@@ -155,7 +155,6 @@ export default defineConfig(({ mode }) => {
         POSTHOG_API_KEY: JSON.stringify(process.env.POSTHOG_API_KEY),
         GOOGLE_MAPS_API_KEY: JSON.stringify(process.env.GOOGLE_MAPS_API_KEY),
       },
-      moment,
     },
   };
 });
