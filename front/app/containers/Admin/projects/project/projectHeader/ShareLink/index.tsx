@@ -47,7 +47,7 @@ const ShareLink = ({
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(
-      `${appConfiguration?.data.attributes.host}/${link}`
+      `https://${appConfiguration?.data.attributes.host}/${link}`
     );
     setLinkIsCopied(true);
     trackEventByName(tracks.copyProjectPreviewLink);
