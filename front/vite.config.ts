@@ -80,18 +80,18 @@ export default defineConfig(({ mode }) => {
           },
         },
       }),
-      sentryVitePlugin({
-        url: 'https://sentry.hq.citizenlab.co/',
-        authToken: process.env.SENTRY_AUTH_TOKEN,
-        org: 'citizenlab',
-        project: 'cl2-front',
-        release: {
-          name: process.env.CIRCLE_BUILD_NUM,
-          deploy: {
-            env: mode,
-          },
-        },
-      }),
+      // sentryVitePlugin({
+      //   url: 'https://sentry.hq.citizenlab.co/',
+      //   authToken: process.env.SENTRY_AUTH_TOKEN,
+      //   org: 'citizenlab',
+      //   project: 'cl2-front',
+      //   release: {
+      //     name: process.env.CIRCLE_BUILD_NUM,
+      //     deploy: {
+      //       env: mode,
+      //     },
+      //   },
+      // }),
     ],
     build: {
       outDir: '../build',
