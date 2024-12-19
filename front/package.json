@@ -36,7 +36,7 @@
     "majestic": "majestic --port 4231",
     "find-unused-messages": "node internals/scripts/find-unused-messages.js",
     "prettier": "prettier --write .",
-    "detect-deadcode": "ts-prune -p app/tsconfig.json -i '(node_modules|utils/testUtils/rtl.tsx|utils/useDebugState.ts|utils/permissions|i18n|/*/*/__mocks__)' | (! grep -v 'used in module')",
+    "detect-deadcode": "ts-prune -p app/tsconfig.json -i '(node_modules|utils/testUtils/rtl.tsx|utils/useDebugState.ts|utils/permissions|i18n|/*/*/__mocks__|vite.config.ts)' | (! grep -v 'used in module')",
     "dependency-cruiser": "depcruise app --validate",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build -c .storybook-build",
