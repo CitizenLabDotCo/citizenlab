@@ -77,6 +77,7 @@ const FilterSidebarPhases = ({
               {localize(phase.attributes.title_multiloc)}
               <Box
                 width="24px"
+                height="24px"
                 border={`1px solid ${colors.teal}`}
                 borderRadius="50%"
                 display="flex"
