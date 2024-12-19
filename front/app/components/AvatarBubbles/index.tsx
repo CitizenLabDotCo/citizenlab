@@ -78,7 +78,7 @@ export const AvatarBubbles = ({
   const avatarsWithIds = avatarsWithIdsQueries
     .filter((query) => query.data !== undefined)
     .map((query) => {
-      return query.data.data;
+      return query.data?.data;
     }) as IAvatarData[];
 
   const avatars = avatarIds ? avatarsWithIds : randomAvatars?.data;

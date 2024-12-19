@@ -13,7 +13,7 @@
   "scripts": {
     "extract-intl": "tsc --skipLibCheck app/containers/App/constants && babel-node --presets @babel/env -- ./internals/scripts/extract-intl.js",
     "prebuild": "npm run build:clean",
-    "build": "NODE_OPTIONS='--max-old-space-size=4096' vite build --mode production --log-level=error",
+    "build": "NODE_OPTIONS='--max-old-space-size=4096' vite build --mode production --log-level=debug --debug",
     "build:test": "NODE_OPTIONS='--max-old-space-size=4096' vite build --mode test",
     "build:clean": "rimraf ./build",
     "build:staging": "NODE_OPTIONS='--max-old-space-size=4096' vite build --mode staging",
@@ -268,7 +268,7 @@
     "ts-loader": "9.4.4",
     "ts-prune": "0.10.1",
     "tslib": "2.6.2",
-    "typescript": "^5.7.2",
+    "typescript": "5.3.3",
     "typescript-styled-plugin": "0.18.3",
     "vite": "^5.4.11",
     "vite-plugin-checker": "^0.8.0",
