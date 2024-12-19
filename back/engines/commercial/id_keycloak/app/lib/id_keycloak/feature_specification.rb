@@ -25,5 +25,9 @@ module IdKeycloak
     def self.enabled_by_default
       false
     end
+
+    def self.pricing
+      true
+    end
   end
 end
