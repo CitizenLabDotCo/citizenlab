@@ -174,7 +174,7 @@ const IdeasWithoutFiltersSidebar = ({
 
   const handleTopicsOnChange = (topics: string[]) => {
     trackEventByName(tracks.topicsFilter, {
-      topics,
+      topics: topics.toString(),
     });
 
     topics.length === 0

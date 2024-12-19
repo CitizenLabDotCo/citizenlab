@@ -63,7 +63,7 @@ const InputListItem = memo(({ input, onSelect, selected }: Props) => {
         onClick={() => {
           onSelect(input.id);
           trackEventByName(tracks.inputPreviewedFromList.name, {
-            extra: { inputId: input.id },
+            inputId: input.id,
           });
         }}
         bg={selected ? colors.background : colors.white}

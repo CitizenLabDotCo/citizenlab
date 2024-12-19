@@ -40,7 +40,7 @@ const SummarizeButton = ({
       {
         onSuccess: () => {
           trackEventByName(tracks.summaryCreated.name, {
-            extra: { analysisId },
+            analysisId,
           });
         },
       }

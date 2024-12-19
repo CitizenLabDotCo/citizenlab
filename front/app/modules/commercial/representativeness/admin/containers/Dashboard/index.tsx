@@ -27,7 +27,7 @@ const RepresentativenessDashboard = () => {
 
   const onProjectFilter = ({ value }) => {
     trackEventByName(tracks.filteredOnProject.name, {
-      extra: { projectId: value },
+      projectId: value,
     });
 
     setCurrentProjectFilter(value);
