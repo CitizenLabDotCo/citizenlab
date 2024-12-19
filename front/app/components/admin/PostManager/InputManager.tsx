@@ -44,7 +44,7 @@ const LazyPostPreview = lazy(
 interface Props {
   // When the PostManager is used in /admin/projects, we pass down the current project id as a prop
   projectId?: string | null;
-  phaseId?: string | null;
+  phaseId?: string;
   visibleFilterMenus: TFilterMenu[]; // cannot be empty.
   defaultFilterMenu: TFilterMenu;
   phases?: TPhases;
