@@ -149,11 +149,9 @@ const ChildCommentForm = ({
 
   const onFocus = () => {
     trackEventByName(tracks.focusChildCommentEditor, {
-      extra: {
-        postId: ideaId,
-        postType: 'idea',
-        parentId,
-      },
+      postId: ideaId,
+      postType: 'idea',
+      parentId,
     });
 
     setFocused(true);
@@ -181,12 +179,10 @@ const ChildCommentForm = ({
       setCanSubmit(false);
 
       trackEventByName(tracks.clickChildCommentPublish, {
-        extra: {
-          postId: ideaId,
-          postType: 'idea',
-          parentId,
-          content: inputValue,
-        },
+        postId: ideaId,
+        postType: 'idea',
+        parentId,
+        content: inputValue,
       });
 
       if (projectId) {

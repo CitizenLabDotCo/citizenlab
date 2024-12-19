@@ -109,10 +109,8 @@ const Toolbar = ({
       | { type: 'list'; option: 'bullet' | 'ordered' }) =>
     (_event: React.MouseEvent<HTMLElement>) => {
       trackEventByName(tracks.advancedEditing.name, {
-        extra: {
-          type,
-          option,
-        },
+        type,
+        option,
       });
     };
 
@@ -135,10 +133,8 @@ const Toolbar = ({
       }
 
       trackEventByName(tracks.advancedEditing.name, {
-        extra: {
-          option,
-          type: 'heading',
-        },
+        option,
+        type: 'heading',
       });
     }
   };
@@ -147,9 +143,7 @@ const Toolbar = ({
     (type: 'bold' | 'italic' | 'custom-link' | 'link') =>
     (_event: React.MouseEvent<HTMLElement>) => {
       trackEventByName(tracks.basicEditing.name, {
-        extra: {
-          type,
-        },
+        type,
       });
     };
 

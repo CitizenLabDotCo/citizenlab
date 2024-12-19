@@ -393,15 +393,15 @@ const ProjectCard = memo<InputProps>(
     const [visible, setVisible] = useState(false);
 
     const handleProjectCardOnClick = (projectId: string) => {
-      trackEventByName(tracks.clickOnProjectCard, { extra: { projectId } });
+      trackEventByName(tracks.clickOnProjectCard, { projectId });
     };
 
     const handleCTAOnClick = (projectId: string) => {
-      trackEventByName(tracks.clickOnProjectCardCTA, { extra: { projectId } });
+      trackEventByName(tracks.clickOnProjectCardCTA, { projectId });
     };
 
     const handleProjectTitleOnClick = (projectId: string) => {
-      trackEventByName(tracks.clickOnProjectTitle, { extra: { projectId } });
+      trackEventByName(tracks.clickOnProjectTitle, { projectId });
     };
 
     if (project) {

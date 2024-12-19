@@ -71,12 +71,10 @@ const AnalysisBanner = ({ projectId, phaseId }: Props) => {
               }/analysis/${analysis.data.id}`
             );
             trackEventByName(tracks.analysisCreated.name, {
-              extra: {
-                projectId,
-                phaseId,
-                participationMethod:
-                  phase?.data.attributes.participation_method || 'ideation',
-              },
+              projectId,
+              phaseId,
+              participationMethod:
+                phase?.data.attributes.participation_method || 'ideation',
             });
           },
         }

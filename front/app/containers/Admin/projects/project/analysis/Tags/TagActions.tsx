@@ -65,7 +65,7 @@ const TagActions = ({ tag }: { tag: ITagData }) => {
         {
           onSuccess: () => {
             trackEventByName(tracks.tagDeleted.name, {
-              extra: { analysisId },
+              analysisId,
             });
             closeDropdown();
           },
@@ -93,7 +93,7 @@ const TagActions = ({ tag }: { tag: ITagData }) => {
       {
         onSuccess: () => {
           trackEventByName(tracks.bulkTagAssignmentPerformed.name, {
-            extra: { analysisId },
+            analysisId,
           });
           closeDropdown();
         },

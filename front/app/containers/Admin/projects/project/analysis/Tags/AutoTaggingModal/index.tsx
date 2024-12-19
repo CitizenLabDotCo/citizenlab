@@ -55,7 +55,8 @@ const AutotaggingModal = ({ onCloseModal }: { onCloseModal: () => void }) => {
       {
         onSuccess: () => {
           trackEventByName(tracks.autoTaggingPerformed.name, {
-            extra: { analysisId, autoTaggingMethod },
+            analysisId,
+            autoTaggingMethod,
           });
           onCloseModal();
         },

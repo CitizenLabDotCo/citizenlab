@@ -50,9 +50,7 @@ const UsersGroup = () => {
     if (group) {
       const groupType = group.data.attributes.membership_type;
       trackEventByName(tracks.editGroup.name, {
-        extra: {
-          groupType,
-        },
+        groupType,
       });
 
       setGroupEditionModal(groupType);

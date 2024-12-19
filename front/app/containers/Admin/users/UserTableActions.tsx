@@ -229,10 +229,8 @@ const UserTableActions = ({
       };
 
       trackEventByName(tracks.addUsersToGroup.name, {
-        extra: {
-          usersIds,
-          selectedGroupIds,
-        },
+        usersIds: usersIds.toString(),
+        selectedGroupIds: selectedGroupIds.toString(),
       });
 
       if (isArray(usersIds)) {
@@ -252,9 +250,7 @@ const UserTableActions = ({
         return true;
       } catch (error) {
         trackEventByName(tracks.addedRedundantUserToGroup.name, {
-          extra: {
-            errorResponse: error,
-          },
+          errorResponse: error.toString(),
         });
 
         // if error because users already part of group(s)

@@ -116,9 +116,7 @@ const AuthorFilters = () => {
                 ),
               });
               trackEventByName(tracks.authorFilterUsed.name, {
-                extra: {
-                  type: 'gender',
-                },
+                type: 'gender',
               });
             }}
             p="4px 8px"
@@ -161,9 +159,7 @@ const AuthorFilters = () => {
                 ),
               });
               trackEventByName(tracks.authorFilterUsed.name, {
-                extra: {
-                  type: 'domicile',
-                },
+                type: 'domicile',
               });
             }}
             p="4px 8px"
@@ -186,9 +182,7 @@ const AuthorFilters = () => {
                     [birthyearUrlQueryParamFromKey]: option.value,
                   });
                   trackEventByName(tracks.authorFilterUsed.name, {
-                    extra: {
-                      type: 'birthyear',
-                    },
+                    type: 'birthyear',
                   });
                 }}
                 value={searchParams.get(birthyearUrlQueryParamFromKey)}
@@ -204,9 +198,7 @@ const AuthorFilters = () => {
                     [birthyearUrlQueryParamToKey]: option.value,
                   });
                   trackEventByName(tracks.authorFilterUsed.name, {
-                    extra: {
-                      type: 'birthyear',
-                    },
+                    type: 'birthyear',
                   });
                 }}
                 value={searchParams.get(birthyearUrlQueryParamToKey)}
