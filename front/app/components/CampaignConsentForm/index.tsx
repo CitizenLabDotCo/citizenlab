@@ -147,14 +147,12 @@ const CampaignConsentForm = ({
       );
 
     trackEventByName(trackEventName, {
-      extra: {
-        consentChanges: Object.fromEntries(
-          Object.values(consentChanges).map((consent: IConsentChanges) => [
-            consent.campaignConsentId,
-            consent.consented,
-          ])
-        ),
-      },
+      consentChanges: Object.fromEntries(
+        Object.values(consentChanges).map((consent: IConsentChanges) => [
+          consent.campaignConsentId,
+          consent.consented,
+        ])
+      ),
     });
 
     setShowFeedback(false);
