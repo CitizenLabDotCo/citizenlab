@@ -42,7 +42,17 @@ const FilterSidebarPhases = ({
       <FilterRadioButton
         isSelected={!selectedPhase}
         onChange={clearFilter}
-        labelContent={<FormattedMessage {...messages.allPhases} />}
+        labelContent={
+          <Box
+            display="flex"
+            width="100%"
+            justifyContent="space-between"
+            alignItems="center"
+            height="24px"
+          >
+            <FormattedMessage {...messages.allPhases} />
+          </Box>
+        }
       />
       <Box
         width="100%"
@@ -62,11 +72,11 @@ const FilterSidebarPhases = ({
               width="100%"
               justifyContent="space-between"
               alignItems="center"
+              height="24px"
             >
               {localize(phase.attributes.title_multiloc)}
               <Box
                 width="24px"
-                height="24px"
                 border={`1px solid ${colors.teal}`}
                 borderRadius="50%"
                 display="flex"
