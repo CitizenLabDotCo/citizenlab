@@ -31,9 +31,10 @@ resource 'Confirmations' do
         RequestConfirmationCodeJob.perform_now user
       end
 
-      example 'returns an ok status passing the right code' do
+      example 'returns an ok status and sets a new JWT cookie when passing the right code' do
         do_request(confirmation: { code: user.email_confirmation_code })
         assert_status 200
+        expect(response_headers['Set-Cookie']).to start_with('cl2_jwt=')
       end
 
       example 'returns an unprocessable entity status passing no code' do
