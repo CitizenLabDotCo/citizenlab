@@ -56,11 +56,6 @@ Rails.application.config.active_record.automatic_scope_inversing = true
 # Raise when running tests if fixtures contained foreign key violations
 Rails.application.config.active_record.verify_foreign_keys_for_fixtures = true
 
-# Disable partial inserts.
-# This default means that all columns will be referenced in INSERT queries
-# regardless of whether they have a default or not.
-# Rails.application.config.active_record.partial_inserts = false
-
 # Protect from open redirect attacks in `redirect_back_or_to` and `redirect_to`.
 Rails.application.config.action_controller.raise_on_open_redirects = true
 
