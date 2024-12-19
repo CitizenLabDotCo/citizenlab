@@ -73,7 +73,7 @@ const FilterSidebarPhases = ({
           key={phase.id}
           isSelected={isActive(phase.id)}
           onChange={handleItemClick(phase.id)}
-          phaseId={phase.id}
+          phase={phase}
           labelContent={
             <LabelContentWrapper>
               {localize(phase.attributes.title_multiloc)}
