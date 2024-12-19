@@ -51,6 +51,8 @@ const FilterSidebarPhases = ({
     return selectedPhase === id;
   };
 
+  const name = 'phase';
+
   return (
     <Box display="flex" flexDirection="column">
       <FilterRadioButton
@@ -61,6 +63,7 @@ const FilterSidebarPhases = ({
             <FormattedMessage {...messages.allPhases} />
           </LabelContentWrapper>
         }
+        name={name}
       />
       <Box
         width="100%"
@@ -91,7 +94,7 @@ const FilterSidebarPhases = ({
               </Box>
             </LabelContentWrapper>
           }
-          name="phase"
+          name={name}
         />
       ))}
     </Box>
