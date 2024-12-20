@@ -8,7 +8,6 @@ import {
   colors,
   Dropdown,
 } from '@citizenlab/cl2-component-library';
-import { rgba } from 'polished';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import signOut from 'api/authentication/sign_in_out/signOut';
@@ -17,16 +16,14 @@ import { IUserData } from 'api/users/types';
 
 import useLocale from 'hooks/useLocale';
 
-import { shortenedAppLocalePairs } from 'containers/App/constants';
-
 import Avatar from 'components/Avatar';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-import { updateLocale } from 'utils/locale';
 import { getFullName } from 'utils/textUtils';
 
 import LanguageSelectorPopup from './LanguageSelectorPopup';
+import LocaleSelectorPopup from './LocaleSelectorPopup';
 import messages from './messages';
 import { ItemMenu, StyledBox } from './styles';
 
@@ -182,43 +179,12 @@ export const UserMenu = () => {
         }
       />
 
-      <Box>
-        <Dropdown
-          opened={isLocaleSelectorOpen}
-          onClickOutside={() => {
-            setIsLocaleSelectorOpen(false);
-          }}
-          right={isSmallerThanPhone ? '-260px !important' : '-518px'}
-          top="-100px"
-          content={
-            <Box maxHeight="200px" overflowY="auto">
-              {tenantLocales.map((tenantLocale, index) => {
-                const isLastLocale = index === tenantLocales.length - 1;
-
-                return (
-                  <ItemMenu
-                    bgColor={`${
-                      tenantLocale === locale ? rgba(colors.teal400, 0.07) : ''
-                    }`}
-                    mb={isLastLocale ? '0px' : '4px'}
-                    key={tenantLocale}
-                    buttonStyle="text"
-                    onClick={() =>
-                      appConfig && updateLocale(tenantLocale, appConfig)
-                    }
-                  >
-                    <Box display="flex" justifyContent="space-between" w="100%">
-                      <Text my="0px" color="coolGrey600">
-                        {shortenedAppLocalePairs[tenantLocale]}
-                      </Text>
-                    </Box>
-                  </ItemMenu>
-                );
-              })}
-            </Box>
-          }
-        />
-      </Box>
+      <LocaleSelectorPopup
+        isLocaleSelectorOpen={isLocaleSelectorOpen}
+        setIsLocaleSelectorOpen={setIsLocaleSelectorOpen}
+        tenantLocales={tenantLocales}
+        locale={locale}
+      />
     </StyledBox>
   );
 };
