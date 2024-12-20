@@ -44,7 +44,7 @@ const FilterSidebarProjects = ({
     <Box display="flex" flexDirection="column">
       {!(projects && projects.length === 1) && (
         <>
-          {/* FilterRadioButton is also used inside FilterSidebarTopicsItem */}
+          {/* FilterRadioButton is also used inside FilterSidebarProjectsItem */}
           <FilterRadioButton
             id="all-projects"
             labelContent={<FormattedMessage {...messages.allProjects} />}
