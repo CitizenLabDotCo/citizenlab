@@ -99,11 +99,12 @@ export default defineConfig(({ mode }) => {
       sourcemap: !isDev && !isTestBuild,
       minify: isProd,
       rollupOptions: {
+        input: {
+          main: path.resolve(__dirname, 'app/root.tsx'), // Point to your main entry file
+        },
         output: {
-          entryFileNames: isDev ? '[name].js' : '[name].[hash].min.js', // Use [hash] instead of [contenthash]
-          chunkFileNames: isDev
-            ? '[name].chunk.js'
-            : '[name].[hash].chunk.min.js', // Use [hash] here too
+          entryFileNames: '[name].[hash].min.js', // Generate the main.*.min.js file
+          chunkFileNames: '[name].[hash].chunk.js',
           assetFileNames: '[name].[ext]',
         },
       },
