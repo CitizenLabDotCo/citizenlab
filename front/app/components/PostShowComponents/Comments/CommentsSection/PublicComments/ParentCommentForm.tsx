@@ -124,10 +124,8 @@ const ParentCommentForm = ({
   const onFocus = () => {
     setCommentCancelledMessage('');
     trackEventByName(tracks.focusParentCommentEditor, {
-      extra: {
-        postId: ideaId,
-        postType: 'idea',
-      },
+      postId: ideaId,
+      postType: 'idea',
     });
 
     setFocused(true);
@@ -159,11 +157,9 @@ const ParentCommentForm = ({
       };
 
       trackEventByName(tracks.clickParentCommentPublish, {
-        extra: {
-          postId: ideaId,
-          postType: 'idea',
-          content: inputValue,
-        },
+        postId: ideaId,
+        postType: 'idea',
+        content: inputValue,
       });
 
       if (projectId) {
