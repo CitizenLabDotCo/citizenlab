@@ -178,7 +178,6 @@ export const UserMenu = () => {
         isLocaleSelectorOpen={isLocaleSelectorOpen}
         setIsLocaleSelectorOpen={setIsLocaleSelectorOpen}
         tenantLocales={tenantLocales}
-        locale={locale}
       />
     </StyledBox>
   );

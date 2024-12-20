@@ -12,6 +12,8 @@ import { SupportedLocale } from 'typings';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
+import useLocale from 'hooks/useLocale';
+
 import { shortenedAppLocalePairs } from 'containers/App/constants';
 
 import { updateLocale } from 'utils/locale';
@@ -22,15 +24,14 @@ type Props = {
   isLocaleSelectorOpen: boolean;
   setIsLocaleSelectorOpen: (open: boolean) => void;
   tenantLocales: SupportedLocale[];
-  locale: string;
 };
 
 const LocaleSelectorPopup = ({
   isLocaleSelectorOpen,
   setIsLocaleSelectorOpen,
-  locale,
   tenantLocales,
 }: Props) => {
+  const locale = useLocale();
   const { data: appConfig } = useAppConfiguration();
   const isSmallerThanPhone = useBreakpoint('tablet');
 
