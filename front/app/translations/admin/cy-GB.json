@@ -173,6 +173,7 @@
   "app.components.admin.PostManager.comments": "Sylwadau",
   "app.components.admin.PostManager.components.ActionBar.deleteInputsExplanation": "Mae hyn yn golygu y byddwch yn colli'r holl ddata sy'n gysylltiedig â'r mewnbynnau hyn, megis sylwadau, ymatebion a phleidleisiau. Ni ellir dadwneud y weithred hon.",
   "app.components.admin.PostManager.components.ActionBar.deleteInputsTitle": "Ydych chi'n siŵr eich bod am ddileu'r mewnbynnau hyn?",
+  "app.components.admin.PostManager.components.PostTable.Row.removeTopic": "Dileu pwnc",
   "app.components.admin.PostManager.components.PostTable.Row.theIdeaYouAreMoving": "Rydych chi’n ceisio tynnu’r syniad hwn o gyfnod lle mae wedi cael pleidleisiau. Os gwnewch hyn, bydd y pleidleisiau hyn yn cael eu colli. Ydych chi'n siŵr eich bod am ddileu'r syniad hwn o'r cam hwn?",
   "app.components.admin.PostManager.components.PostTable.Row.theVotesAssociated": "Bydd y pleidleisiau sy'n gysylltiedig â'r syniad hwn yn cael eu colli",
   "app.components.admin.PostManager.components.goToInputManager": "Ewch i'r rheolwr mewnbwn",
