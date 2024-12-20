@@ -202,6 +202,7 @@ const FilterSidebar = ({
               display="flex"
               justifyContent="space-between"
               alignItems="center"
+              alignItems="center"
               w="100%"
               as="button"
               key={item.key}
