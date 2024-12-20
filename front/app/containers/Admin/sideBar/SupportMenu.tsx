@@ -22,7 +22,7 @@ import { ItemMenu, StyledBox } from './styles';
 export const SupportMenu = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { formatMessage } = useIntl();
-  const isSmallerThanPhone = useBreakpoint('tablet');
+  const isSmallerThanTablet = useBreakpoint('tablet');
   const { data: authUser } = useAuthUser();
   const { data: tenant } = useAppConfiguration();
 
@@ -32,7 +32,7 @@ export const SupportMenu = () => {
   return (
     <StyledBox
       as="button"
-      width={isSmallerThanPhone ? '56px' : '100%'}
+      width={isSmallerThanTablet ? '56px' : '100%'}
       display="flex"
       justifyContent="flex-start"
       p="0px"
@@ -43,8 +43,8 @@ export const SupportMenu = () => {
         display="flex"
         alignItems="center"
         w="100%"
-        p={isSmallerThanPhone ? '10px 0' : '10px 8px 10px 16px'}
-        justifyContent={isSmallerThanPhone ? 'center' : undefined}
+        p={isSmallerThanTablet ? '10px 0' : '10px 8px 10px 16px'}
+        justifyContent={isSmallerThanTablet ? 'center' : undefined}
       >
         <Box
           display="flex"
@@ -54,7 +54,7 @@ export const SupportMenu = () => {
         >
           <Icon name="help" fill={colors.green400} width="24px" />
         </Box>
-        {!isSmallerThanPhone && (
+        {!isSmallerThanTablet && (
           <Text
             color="white"
             ml="15px"
@@ -67,7 +67,7 @@ export const SupportMenu = () => {
           </Text>
         )}
         <Box>
-          {!isSmallerThanPhone && (
+          {!isSmallerThanTablet && (
             <Icon name="chevron-right" fill={colors.white} />
           )}
         </Box>
@@ -75,7 +75,8 @@ export const SupportMenu = () => {
       <Dropdown
         opened={isDropdownOpen}
         onClickOutside={() => setIsDropdownOpen(false)}
-        left={isSmallerThanPhone ? '60px' : '200px'}
+        left={isSmallerThanTablet ? '60px' : '200px'}
+        mobileLeft="60px"
         top="-40px"
         content={
           <Box>
