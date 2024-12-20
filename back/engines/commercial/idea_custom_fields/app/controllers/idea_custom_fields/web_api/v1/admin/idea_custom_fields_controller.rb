@@ -97,8 +97,8 @@ module IdeaCustomFields
     # To try and avoid forms being overwritten with stale data, we check if the form has been updated since the form editor last loaded it
     def raise_error_if_stale_form_data
       return unless update_all_params[:form_last_updated_at].present? &&
-        @custom_form.persisted? &&
-        @custom_form.updated_at.to_i > update_all_params[:form_last_updated_at].to_i
+                    @custom_form.persisted? &&
+                    @custom_form.updated_at.to_i > update_all_params[:form_last_updated_at].to_i
 
       raise UpdateAllFailedError, { form: [{ error: 'stale_data' }] }
     end
@@ -117,7 +117,6 @@ module IdeaCustomFields
         delete_fields = fields.reject { |field| given_field_ids.include? field.id }
         delete_fields.each { |field| delete_field! field }
         given_fields.each_with_index do |field_params, index|
-
           options_params = field_params.delete :options
           if field_params[:id] && fields_by_id.key?(field_params[:id])
             field = fields_by_id[field_params[:id]]

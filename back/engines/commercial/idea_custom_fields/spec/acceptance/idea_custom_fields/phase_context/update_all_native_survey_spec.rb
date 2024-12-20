@@ -321,7 +321,7 @@ resource 'Idea Custom Fields' do
       example '[error] form_last_updated_at provided is before the date the form was last updated (ie this has been updated by another user/tab)' do
         custom_form.save!
         request = {
-          form_last_updated_at: 123456,
+          form_last_updated_at: 123_456,
           custom_fields: [
             {
               input_type: 'page',
@@ -333,7 +333,7 @@ resource 'Idea Custom Fields' do
 
         assert_status 422
         json_response = json_parse response_body
-        expect(json_response).to eq({:errors => {:form=>[{:error=>"stale_data"}]}})
+        expect(json_response).to eq({ :errors => { :form => [{ :error => 'stale_data' }] } })
       end
 
       example 'Update linear_scale field' do
