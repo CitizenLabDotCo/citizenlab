@@ -173,6 +173,7 @@
   "app.components.admin.PostManager.comments": "Yorumlar",
   "app.components.admin.PostManager.components.ActionBar.deleteInputsExplanation": "Bu, yorumlar, tepkiler ve oylar gibi bu girdilerle ilişkili tüm verileri kaybedeceğiniz anlamına gelir. Bu işlem geri alınamaz.",
   "app.components.admin.PostManager.components.ActionBar.deleteInputsTitle": "Bu girdileri silmek istediğinizden emin misiniz?",
+  "app.components.admin.PostManager.components.PostTable.Row.removeTopic": "Konuyu kaldır",
   "app.components.admin.PostManager.components.PostTable.Row.theIdeaYouAreMoving": "Bu fikri, oy aldığı bir aşamadan çıkarmaya çalışıyorsunuz. Bunu yaparsanız, bu oylar kaybolacaktır. Bu fikri bu aşamadan kaldırmak istediğinizden emin misiniz?",
   "app.components.admin.PostManager.components.PostTable.Row.theVotesAssociated": "Bu fikirle ilişkili oylar kaybedilecektir",
   "app.components.admin.PostManager.components.goToInputManager": "Giriş yöneticisine git",
