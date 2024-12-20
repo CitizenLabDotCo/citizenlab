@@ -30,7 +30,7 @@ require 'rails_helper'
 # the state of the request. Especially large strings are stored in fixtures.
 describe OmniAuth::Strategies::AzureActiveDirectory do
   let(:app) { ->(_) { [200, {}, ['Hello world.']] } }
-  let(:x5c) { Rails.root.join('spec/fixtures/azure_active_directory/x5c.txt').read }
+  let(:x5c) { Rails.root.join('engines/commercial/id_azure_active_directory/spec/fixtures/x5c.txt').read }
 
   # These values were used to create the "successful" id_token JWT.
   let(:client_id) { 'the client id' }
@@ -93,7 +93,7 @@ describe OmniAuth::Strategies::AzureActiveDirectory do
       #     'alg' => 'RS256',
       #     'kid' => 'abc123' }
       #
-      let(:id_token) { Rails.root.join('spec/fixtures/azure_active_directory/id_token.txt').read }
+      let(:id_token) { Rails.root.join('engines/commercial/id_azure_active_directory/spec/fixtures/id_token.txt').read }
 
       # If it passes this test, then the id was successfully validated.
       it { is_expected.not_to raise_error }
@@ -133,7 +133,7 @@ describe OmniAuth::Strategies::AzureActiveDirectory do
       # payload:
       #   { 'iss' => 'https://sts.imposter.net/bunch-of-random-chars', ... }
       #
-      let(:id_token) { Rails.root.join('spec/fixtures/azure_active_directory/id_token_bad_issuer.txt').read }
+      let(:id_token) { Rails.root.join('engines/commercial/id_azure_active_directory/spec/fixtures/id_token_bad_issuer.txt').read }
 
       it { is_expected.to raise_error JWT::VerificationError }
     end
@@ -142,7 +142,7 @@ describe OmniAuth::Strategies::AzureActiveDirectory do
       # payload:
       #   { 'aud' => 'not the client id', ... }
       #
-      let(:id_token) { Rails.root.join('spec/fixtures/azure_active_directory/id_token_bad_audience.txt').read }
+      let(:id_token) { Rails.root.join('engines/commercial/id_azure_active_directory/spec/fixtures/id_token_bad_audience.txt').read }
 
       it { is_expected.to raise_error JWT::VerificationError }
     end
@@ -151,32 +151,32 @@ describe OmniAuth::Strategies::AzureActiveDirectory do
       # payload:
       #   { 'nonce' => 'not my nonce', ... }
       #
-      let(:id_token) { Rails.root.join('spec/fixtures/azure_active_directory/id_token_bad_nonce.txt').read }
+      let(:id_token) { Rails.root.join('engines/commercial/id_azure_active_directory/spec/fixtures/id_token_bad_nonce.txt').read }
 
       it { is_expected.to raise_error JWT::DecodeError }
     end
 
     context 'with the wrong x5c' do
-      let(:x5c) { Rails.root.join('spec/fixtures/azure_active_directory/x5c_different.txt').read }
-      let(:id_token) { Rails.root.join('spec/fixtures/azure_active_directory/id_token.txt').read }
+      let(:x5c) { Rails.root.join('engines/commercial/id_azure_active_directory/spec/fixtures/x5c_different.txt').read }
+      let(:id_token) { Rails.root.join('engines/commercial/id_azure_active_directory/spec/fixtures/id_token.txt').read }
 
       it { is_expected.to raise_error JWT::VerificationError }
     end
 
     context 'with a non-matching c_hash' do
-      let(:id_token) { Rails.root.join('spec/fixtures/azure_active_directory/id_token_bad_chash.txt').read }
+      let(:id_token) { Rails.root.join('engines/commercial/id_azure_active_directory/spec/fixtures/id_token_bad_chash.txt').read }
 
       it { is_expected.to raise_error JWT::VerificationError }
     end
 
     context 'with a non-matching kid' do
-      let(:id_token) { Rails.root.join('spec/fixtures/azure_active_directory/id_token_bad_kid.txt').read }
+      let(:id_token) { Rails.root.join('engines/commercial/id_azure_active_directory/spec/fixtures/id_token_bad_kid.txt').read }
 
       it { is_expected.to raise_error JWT::VerificationError }
     end
 
     context 'with no alg header' do
-      let(:id_token) { Rails.root.join('spec/fixtures/azure_active_directory/id_token_no_alg.txt').read }
+      let(:id_token) { Rails.root.join('engines/commercial/id_azure_active_directory/spec/fixtures/id_token_no_alg.txt').read }
 
       it 'should correctly parse using default RS256' do
         expect(callback_phase).not_to raise_error
