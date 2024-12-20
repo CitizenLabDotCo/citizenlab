@@ -1,6 +1,11 @@
 import React from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  colors,
+  fontSizes,
+  Text,
+} from '@citizenlab/cl2-component-library';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 import useAuthUser from 'api/me/useAuthUser';
@@ -13,7 +18,6 @@ import { isAdmin } from 'utils/permissions/roles';
 
 import { ManagerType } from '../../..';
 import messages from '../../../messages';
-import FilterRadioButton from '../FilterRadioButton';
 
 import FilterSidebarStatusesItem from './FilterSidebarStatusesItem';
 
@@ -51,13 +55,15 @@ const FilterSidebarStatuses = ({
 
   return (
     <Box display="flex" flexDirection="column">
-      <FilterRadioButton
-        id="all-statuses"
-        onChange={clearFilter}
-        isSelected={!selectedStatus}
-        name="status"
-        labelContent={<FormattedMessage {...messages.allStatuses} />}
-      />
+      <Button
+        onClick={clearFilter}
+        buttonStyle="text"
+        justify="left"
+        bgHoverColor={colors.background}
+        fontSize={`${fontSizes.s}px`}
+      >
+        <FormattedMessage {...messages.allStatuses} />
+      </Button>
       <Divider />
       {/* Input statuses can be edited and only admins can do this */}
       {isAdmin(authUser) && (
