@@ -1,15 +1,16 @@
 import React from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
-import { Menu, Divider } from 'semantic-ui-react';
 
 import { IProjectData } from 'api/projects/types';
 
+import Divider from 'components/admin/Divider';
 import Button from 'components/UI/Button';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../../../messages';
+import FilterRadioButton from '../FilterRadioButton';
 
 import FilterSidebarProjectsItem from './FilterSidebarProjectsItem';
 
@@ -37,13 +38,20 @@ const FilterSidebarProjects = ({
     return selectedProject === id;
   };
 
+  const name = 'projects';
+
   return (
-    <Menu secondary={true} vertical={true} fluid={true}>
+    <Box display="flex" flexDirection="column">
       {!(projects && projects.length === 1) && (
         <>
-          <Menu.Item onClick={clearFilter} active={!selectedProject}>
-            <FormattedMessage {...messages.allProjects} />
-          </Menu.Item>
+          {/* FilterRadioButton is also used inside FilterSidebarTopicsItem */}
+          <FilterRadioButton
+            id="all-projects"
+            labelContent={<FormattedMessage {...messages.allProjects} />}
+            name={name}
+            onChange={clearFilter}
+            isSelected={!selectedProject}
+          />
           <Divider />
         </>
       )}
@@ -68,9 +76,10 @@ const FilterSidebarProjects = ({
             project={project}
             active={isActive(project.id)}
             onClick={handleItemClick(project.id)}
+            name={name}
           />
         ))}
-    </Menu>
+    </Box>
   );
 };
 
