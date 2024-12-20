@@ -154,7 +154,7 @@ const CampaignConsentForm = ({
     );
 
     trackEventByName(trackEventName, {
-      consentChanges: consentChangesObject.toString(),
+      consentChanges: JSON.stringify(consentChangesObject),
     });
 
     setShowFeedback(false);

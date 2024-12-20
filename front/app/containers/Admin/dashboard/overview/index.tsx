@@ -76,7 +76,8 @@ const OverviewDashboard = () => {
   const handleOnProjectFilter = useCallback(
     (filter: { value: string; label: string }) => {
       trackEventByName(tracks.filteredOnProject.name, {
-        project: filter.toString(),
+        filterValue: filter.value,
+        filterLabel: filter.label,
       });
 
       setCurrentProjectFilter(filter.value);
