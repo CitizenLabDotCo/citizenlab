@@ -67,6 +67,14 @@ const SSOVerificationButton = ({
       label: messages.verifyKeycloak,
       icon: 'idporten',
     },
+    auth0: {
+      label: messages.verifyAuth0,
+      icon: 'shield-check',
+    },
+    bosa_fas: {
+      label: messages.verifyBosaFas,
+      icon: 'shield-check',
+    },
   };
 
   const buttonConfig = verificationButtonConfigs[methodName];
