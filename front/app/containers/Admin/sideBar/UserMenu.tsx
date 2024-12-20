@@ -8,6 +8,7 @@ import {
   colors,
   Dropdown,
 } from '@citizenlab/cl2-component-library';
+import { rgba } from 'polished';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import signOut from 'api/authentication/sign_in_out/signOut';
@@ -16,10 +17,13 @@ import { IUserData } from 'api/users/types';
 
 import useLocale from 'hooks/useLocale';
 
+import { shortenedAppLocalePairs } from 'containers/App/constants';
+
 import Avatar from 'components/Avatar';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
+import { updateLocale } from 'utils/locale';
 import { getFullName } from 'utils/textUtils';
 
 import LanguageSelectorPopup from './LanguageSelectorPopup';
@@ -38,6 +42,7 @@ export const UserMenu = () => {
   const { data: authUser } = useAuthUser();
   const [isUserMenuPopupOpen, setIsUserMenuPopupOpen] = useState(false);
   const [isLanguagePopupOpen, setIsLanguagePopupOpen] = useState(false);
+  const [isLocaleSelectorOpen, setIsLocaleSelectorOpen] = useState(false);
 
   const handleUserMenuPopupClose = () => {
     // We only close the user menu popup if no other popup is open
@@ -148,8 +153,8 @@ export const UserMenu = () => {
               >
                 <Box display="flex" justifyContent="space-between" w="100%">
                   <LanguageSelectorPopup
-                    setIsOpen={setIsLanguagePopupOpen}
-                    isOpen={isLanguagePopupOpen}
+                    setIsLocaleSelectorOpen={setIsLocaleSelectorOpen}
+                    isLocaleSelectorOpen={isLocaleSelectorOpen}
                   />
                 </Box>
               </ItemMenu>
@@ -176,6 +181,44 @@ export const UserMenu = () => {
           </Box>
         }
       />
+
+      <Box>
+        <Dropdown
+          opened={isLocaleSelectorOpen}
+          onClickOutside={() => {
+            setIsLocaleSelectorOpen(false);
+          }}
+          right={isSmallerThanPhone ? '-260px !important' : '-518px'}
+          top="-100px"
+          content={
+            <Box maxHeight="200px" overflowY="auto">
+              {tenantLocales.map((tenantLocale, index) => {
+                const isLastLocale = index === tenantLocales.length - 1;
+
+                return (
+                  <ItemMenu
+                    bgColor={`${
+                      tenantLocale === locale ? rgba(colors.teal400, 0.07) : ''
+                    }`}
+                    mb={isLastLocale ? '0px' : '4px'}
+                    key={tenantLocale}
+                    buttonStyle="text"
+                    onClick={() =>
+                      appConfig && updateLocale(tenantLocale, appConfig)
+                    }
+                  >
+                    <Box display="flex" justifyContent="space-between" w="100%">
+                      <Text my="0px" color="coolGrey600">
+                        {shortenedAppLocalePairs[tenantLocale]}
+                      </Text>
+                    </Box>
+                  </ItemMenu>
+                );
+              })}
+            </Box>
+          }
+        />
+      </Box>
     </StyledBox>
   );
 };
