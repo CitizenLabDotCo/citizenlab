@@ -268,17 +268,14 @@ describe('Input manager', () => {
       checkSelectedAssigneeFilter(optionLabelText1);
       // Pick first idea in idea table and assign it to our user
       cy.wait(500);
-      cy.get('.e2e-idea-manager-idea-row')
+      cy.get('#post-row-select-assignee')
         .first()
-        .find('.e2e-post-manager-post-row-assignee-select')
-        .scrollIntoView({ offset: { top: 100, left: 0 } })
-        .click()
-        .contains(`${newAdminFirstName} ${newAdminLastName}`)
-        .click({ force: true });
+        .select(`Assigned to ${newAdminFirstName} ${newAdminLastName}`);
       // Select this user in the assignee filter
       const optionLabelText2 = `Assigned to ${newAdminFirstName} ${newAdminLastName}`;
       selectAssigneeFilter(optionLabelText2);
       checkSelectedAssigneeFilter(optionLabelText2);
+
       // Check if idea is there
       cy.get('.e2e-idea-manager-idea-row').should('have.length', 1);
     });
