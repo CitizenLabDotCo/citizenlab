@@ -173,6 +173,7 @@
   "app.components.admin.PostManager.comments": "Komentari",
   "app.components.admin.PostManager.components.ActionBar.deleteInputsExplanation": "To znači da ćete izgubiti sve podatke povezane s tim unosima, poput komentara, reakcija i glasova. Ova se radnja ne može poništiti.",
   "app.components.admin.PostManager.components.ActionBar.deleteInputsTitle": "Jeste li sigurni da želite izbrisati ove unose?",
+  "app.components.admin.PostManager.components.PostTable.Row.removeTopic": "Ukloni temu",
   "app.components.admin.PostManager.components.PostTable.Row.theIdeaYouAreMoving": "Pokušavate ukloniti ovu ideju iz faze u kojoj je dobila glasove. Ako to učinite, ovi će glasovi biti izgubljeni. Jeste li sigurni da želite ukloniti ovu ideju iz ove faze?",
   "app.components.admin.PostManager.components.PostTable.Row.theVotesAssociated": "Glasovi povezani s ovom idejom bit će izgubljeni",
   "app.components.admin.PostManager.components.goToInputManager": "Idite na upravitelj unosa",
