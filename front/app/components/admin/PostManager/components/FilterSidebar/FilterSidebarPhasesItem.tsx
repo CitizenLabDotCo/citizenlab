@@ -1,19 +1,23 @@
 import React from 'react';
 
+import { Box, colors } from '@citizenlab/cl2-component-library';
 import { useDrop } from 'react-dnd';
 
 import { IPhaseData } from 'api/phases/types';
 import { canContainIdeas } from 'api/phases/utils';
 
+import useLocalize from 'hooks/useLocalize';
+
 import FilterRadioButton from './FilterRadioButton';
+import LabelContentWrapper from './FilterRadioButton/LabelContentWrapper';
 
 interface Props {
   phase: IPhaseData;
   name: string;
   onChange: () => void;
   isSelected: boolean;
-  labelContent: React.ReactNode;
   id: string;
+  phaseNumber: number;
 }
 
 const FilterSidebarPhasesItem = ({
@@ -21,9 +25,9 @@ const FilterSidebarPhasesItem = ({
   name,
   onChange,
   isSelected,
-  labelContent,
   id,
 }: Props) => {
+  const localize = useLocalize();
   const [{ canDrop, isOver }, drop] = useDrop({
     accept: 'IDEA',
     drop: () => ({
@@ -45,7 +49,23 @@ const FilterSidebarPhasesItem = ({
         name={name}
         onChange={onChange}
         isSelected={isSelected || (isOver && canDrop)}
-        labelContent={labelContent}
+        labelContent={
+          <LabelContentWrapper>
+            {localize(phase.attributes.title_multiloc)}
+            <Box
+              width="24px"
+              height="24px"
+              border={`1px solid ${colors.teal}`}
+              borderRadius="50%"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              background={colors.white}
+            >
+              {phaseNumber}
+            </Box>
+          </LabelContentWrapper>
+        }
         id={id}
       />
     </div>

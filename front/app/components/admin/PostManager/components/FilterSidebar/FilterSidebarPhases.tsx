@@ -4,15 +4,13 @@ import { Box, colors } from '@citizenlab/cl2-component-library';
 
 import { IPhaseData } from 'api/phases/types';
 
-import useLocalize from 'hooks/useLocalize';
-
 import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../../messages';
 
 import FilterRadioButton from './FilterRadioButton';
-import FilterSidebarPhasesItem from './FilterSidebarPhasesItem';
 import LabelContentWrapper from './FilterRadioButton/LabelContentWrapper';
+import FilterSidebarPhasesItem from './FilterSidebarPhasesItem';
 
 type Props = {
   phases: IPhaseData[];
@@ -25,8 +23,6 @@ const FilterSidebarPhases = ({
   selectedPhase,
   onChangePhaseFilter,
 }: Props) => {
-  const localize = useLocalize();
-
   const handleItemClick = (phaseId: string) => () => {
     onChangePhaseFilter(phaseId);
   };
@@ -43,6 +39,7 @@ const FilterSidebarPhases = ({
 
   return (
     <Box display="flex" flexDirection="column">
+      {/* FilterRadioButton is also used inside FilterSidebarPhasesItem */}
       <FilterRadioButton
         id="all-phases"
         isSelected={!selectedPhase}
@@ -67,23 +64,7 @@ const FilterSidebarPhases = ({
           isSelected={isActive(phase.id)}
           onChange={handleItemClick(phase.id)}
           phase={phase}
-          labelContent={
-            <LabelContentWrapper>
-              {localize(phase.attributes.title_multiloc)}
-              <Box
-                width="24px"
-                height="24px"
-                border={`1px solid ${colors.teal}`}
-                borderRadius="50%"
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-                background={colors.white}
-              >
-                {phaseIndex + 1}
-              </Box>
-            </LabelContentWrapper>
-          }
+          phaseNumber={phaseIndex + 1}
           name={name}
         />
       ))}
