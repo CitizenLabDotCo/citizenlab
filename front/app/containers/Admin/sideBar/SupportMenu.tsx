@@ -78,7 +78,7 @@ export const SupportMenu = () => {
         left={isSmallerThanPhone ? '60px' : '200px'}
         top="-40px"
         content={
-          <Box width="224px">
+          <Box>
             <ItemMenu
               linkTo={formatMessage(messages.linkToSupport) as RouteType}
               buttonStyle="text"

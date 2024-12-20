@@ -14,8 +14,6 @@ import signOut from 'api/authentication/sign_in_out/signOut';
 import useAuthUser from 'api/me/useAuthUser';
 import { IUserData } from 'api/users/types';
 
-import useLocale from 'hooks/useLocale';
-
 import Avatar from 'components/Avatar';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
@@ -31,7 +29,6 @@ export const UserMenu = () => {
   const { formatMessage } = useIntl();
   const { data: appConfig } = useAppConfiguration();
   const isSmallerThanPhone = useBreakpoint('tablet');
-  const locale = useLocale();
   const tenantLocales = !isNilOrError(appConfig)
     ? appConfig.data.attributes.settings.core.locales
     : [];
@@ -140,10 +137,8 @@ export const UserMenu = () => {
         left={isSmallerThanPhone ? '60px' : '200px'}
         top="-40px"
         content={
-          <Box width="224px">
-            {/* TODO: Fix this the next time the file is edited. */}
-            {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-            {tenantLocales.length > 1 && locale && (
+          <Box>
+            {tenantLocales.length > 1 && (
               <ItemMenu
                 buttonStyle="text"
                 onClick={() => setIsLanguagePopupOpen(!isLanguagePopupOpen)}
