@@ -1,8 +1,10 @@
 import React from 'react';
 
-import { Box, colors } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 
 import { IPhaseData } from 'api/phases/types';
+
+import Divider from 'components/admin/Divider';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -51,12 +53,7 @@ const FilterSidebarPhases = ({
         }
         name={name}
       />
-      <Box
-        width="100%"
-        as="hr"
-        border={`1px solid ${colors.background}`}
-        mb="8px"
-      />
+      <Divider />
       {phases.map((phase, phaseIndex) => (
         <FilterSidebarPhasesItem
           id={phase.id}
