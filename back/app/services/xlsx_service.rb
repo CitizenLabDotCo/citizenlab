@@ -344,4 +344,3 @@ end
 
 XlsxService.prepend(IdeaCustomFields::Patches::XlsxService)
 XlsxService.prepend(BulkImportIdeas::Patches::XlsxService)
-XlsxService.prepend(Verification::Patches::XlsxService)

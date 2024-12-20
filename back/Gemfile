@@ -222,9 +222,7 @@ commercial_engines = [
   'smart_groups',
   'user_custom_fields',
 
-  # ID verification engines.
-  # Engines that registers verification methods must be installed before the
-  # verification engine.
+  # ID verification & SSO engines.
   'id_auth0',
   'id_bogus',
   'id_bosa_fas',
@@ -239,12 +237,8 @@ commercial_engines = [
   'id_id_austria',
   'id_nemlog_in',
   'id_oostende_rrn',
-  # Some engines actually register an authentication method rather
-  # than a verification method, so the constraint does not apply. However, we still
-  # group them with the other "id_" engines.
   'id_hoplr',
-  'id_vienna_saml',
-  'verification'
+  'id_vienna_saml'
 ]
 
 commercial_engines.each do |engine_name|
