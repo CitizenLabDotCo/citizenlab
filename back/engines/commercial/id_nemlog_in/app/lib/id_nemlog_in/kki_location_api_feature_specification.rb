@@ -26,6 +26,10 @@ module IdNemlogIn
       false
     end
 
+    def self.pricing
+      true
+    end
+
     add_setting 'uri', required: true, schema: {
       title: 'API URI',
       type: 'string',
