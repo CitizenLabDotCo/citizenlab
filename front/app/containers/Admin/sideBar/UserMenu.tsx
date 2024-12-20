@@ -134,6 +134,7 @@ export const UserMenu = () => {
         onClickOutside={handleUserMenuPopupClose}
         left={isSmallerThanTablet ? '60px' : '200px'}
         mobileLeft="60px"
+        top="-40px"
         content={
           <Box>
             {tenantLocales.length > 1 && (
