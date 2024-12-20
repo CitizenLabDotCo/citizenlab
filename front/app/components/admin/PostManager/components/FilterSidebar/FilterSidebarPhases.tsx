@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Menu, Divider } from 'semantic-ui-react';
+import { Divider, Menu } from 'semantic-ui-react';
 
 import { IPhaseData } from 'api/phases/types';
 
@@ -11,48 +11,50 @@ import messages from '../../messages';
 import FilterSidebarPhasesItem from './FilterSidebarPhasesItem';
 
 type Props = {
-  phases?: IPhaseData[];
-  selectedPhase?: string | null;
-  onChangePhaseFilter?: (phase: string | null) => void;
+  phases: IPhaseData[];
+  selectedPhase: string | undefined;
+  onChangePhaseFilter: (phase: string | null) => void;
 };
 
-export default class FilterSidebarPhases extends React.PureComponent<Props> {
-  handleItemClick = (phaseId: string) => () => {
-    this.props.onChangePhaseFilter?.(phaseId);
+const FilterSidebarPhases = ({
+  phases,
+  selectedPhase,
+  onChangePhaseFilter,
+}: Props) => {
+  const handleItemClick = (phaseId: string) => () => {
+    onChangePhaseFilter(phaseId);
   };
 
-  clearFilter = () => {
-    this.props.onChangePhaseFilter?.(null);
+  const clearFilter = () => {
+    onChangePhaseFilter(null);
   };
 
-  isActive = (id: string) => {
-    return this.props.selectedPhase === id;
+  const isActive = (id: string) => {
+    return selectedPhase === id;
   };
 
-  render() {
-    const { phases, selectedPhase } = this.props;
-    return (
-      <Menu
-        secondary={true}
-        vertical={true}
-        fluid={true}
-        className="intercom-admin-input-manager-phases"
-      >
-        <Menu.Item onClick={this.clearFilter} active={!selectedPhase}>
-          <FormattedMessage {...messages.allPhases} />
-        </Menu.Item>
-        <Divider />
-        {phases &&
-          phases.map((phase, index) => (
-            <FilterSidebarPhasesItem
-              key={phase.id}
-              phase={phase}
-              phaseNumber={index + 1}
-              active={!!this.isActive(phase.id)}
-              onClick={this.handleItemClick(phase.id)}
-            />
-          ))}
-      </Menu>
-    );
-  }
-}
+  return (
+    <Menu
+      secondary={true}
+      vertical={true}
+      fluid={true}
+      className="intercom-admin-input-manager-phases"
+    >
+      <Menu.Item onClick={clearFilter} active={!selectedPhase}>
+        <FormattedMessage {...messages.allPhases} />
+      </Menu.Item>
+      <Divider />
+      {phases.map((phase, index) => (
+        <FilterSidebarPhasesItem
+          key={phase.id}
+          phase={phase}
+          phaseNumber={index + 1}
+          active={isActive(phase.id)}
+          onClick={handleItemClick(phase.id)}
+        />
+      ))}
+    </Menu>
+  );
+};
+
+export default FilterSidebarPhases;
