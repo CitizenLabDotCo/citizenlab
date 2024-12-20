@@ -1,11 +1,6 @@
 import React from 'react';
 
-import {
-  IconTooltip,
-  Box,
-  colors,
-  Tooltip,
-} from '@citizenlab/cl2-component-library';
+import { IconTooltip, Box, Tooltip } from '@citizenlab/cl2-component-library';
 import ColorIndicator from 'component-library/components/ColorIndicator';
 import { useDrop } from 'react-dnd';
 import { useParams } from 'react-router-dom';
