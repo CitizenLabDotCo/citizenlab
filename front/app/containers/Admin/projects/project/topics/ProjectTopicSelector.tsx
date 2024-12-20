@@ -87,7 +87,7 @@ const ProjectTopicSelector = memo(
 
       try {
         await Promise.all(promises);
-        trackEventByName(tracks.projectTagsEdited, projectId);
+        trackEventByName(tracks.projectTagsEdited, { projectId });
         setProcessing(false);
         setSelectedTopicOptions([]);
       } catch {

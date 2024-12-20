@@ -182,7 +182,7 @@ const IdeasWithFiltersSidebar = ({
   const handleTopicsOnChange = useCallback(
     (topics: string[] | null) => {
       trackEventByName(tracks.topicsFilter, {
-        topics,
+        topics: topics?.toString(),
       });
 
       onUpdateQuery({ topics: topics ?? undefined });

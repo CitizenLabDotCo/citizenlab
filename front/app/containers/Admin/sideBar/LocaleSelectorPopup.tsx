@@ -36,43 +36,41 @@ const LocaleSelectorPopup = ({
   const isSmallerThanPhone = useBreakpoint('tablet');
 
   return (
-    <Box>
-      <Dropdown
-        opened={isLocaleSelectorOpen}
-        onClickOutside={() => {
-          setIsLocaleSelectorOpen(false);
-        }}
-        right={isSmallerThanPhone ? '-260px !important' : '-518px'}
-        top="-100px"
-        content={
-          <Box maxHeight="200px" overflowY="auto">
-            {tenantLocales.map((tenantLocale, index) => {
-              const isLastLocale = index === tenantLocales.length - 1;
+    <Dropdown
+      opened={isLocaleSelectorOpen}
+      onClickOutside={() => {
+        setIsLocaleSelectorOpen(false);
+      }}
+      right={isSmallerThanPhone ? '-260px !important' : '-518px'}
+      top="-100px"
+      content={
+        <Box maxHeight="200px">
+          {tenantLocales.map((tenantLocale, index) => {
+            const isLastLocale = index === tenantLocales.length - 1;
 
-              return (
-                <ItemMenu
-                  bgColor={`${
-                    tenantLocale === locale ? rgba(colors.teal400, 0.07) : ''
-                  }`}
-                  mb={isLastLocale ? '0px' : '4px'}
-                  key={tenantLocale}
-                  buttonStyle="text"
-                  onClick={() =>
-                    appConfig && updateLocale(tenantLocale, appConfig)
-                  }
-                >
-                  <Box display="flex" justifyContent="space-between" w="100%">
-                    <Text my="0px" color="coolGrey600">
-                      {shortenedAppLocalePairs[tenantLocale]}
-                    </Text>
-                  </Box>
-                </ItemMenu>
-              );
-            })}
-          </Box>
-        }
-      />
-    </Box>
+            return (
+              <ItemMenu
+                bgColor={`${
+                  tenantLocale === locale ? rgba(colors.teal400, 0.07) : ''
+                }`}
+                mb={isLastLocale ? '0px' : '4px'}
+                key={tenantLocale}
+                buttonStyle="text"
+                onClick={() =>
+                  appConfig && updateLocale(tenantLocale, appConfig)
+                }
+              >
+                <Box display="flex" justifyContent="space-between" w="100%">
+                  <Text my="0px" color="coolGrey600">
+                    {shortenedAppLocalePairs[tenantLocale]}
+                  </Text>
+                </Box>
+              </ItemMenu>
+            );
+          })}
+        </Box>
+      }
+    />
   );
 };
 

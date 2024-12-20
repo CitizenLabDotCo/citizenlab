@@ -121,10 +121,8 @@ const InternalParentCommentForm = ({ ideaId, className }: Props) => {
 
   const onFocus = () => {
     trackEventByName(tracks.focusParentCommentEditor, {
-      extra: {
-        postId: ideaId,
-        postType: 'idea',
-      },
+      postId: ideaId,
+      postType: 'idea',
     });
 
     setFocused(true);
@@ -149,11 +147,9 @@ const InternalParentCommentForm = ({ ideaId, className }: Props) => {
       );
 
       trackEventByName(tracks.clickParentCommentPublish, {
-        extra: {
-          postId: ideaId,
-          postType: 'idea',
-          content: inputValue,
-        },
+        postId: ideaId,
+        postType: 'idea',
+        content: inputValue,
       });
 
       if (projectId && ideaId) {

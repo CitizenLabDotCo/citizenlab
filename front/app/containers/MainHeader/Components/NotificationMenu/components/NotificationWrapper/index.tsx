@@ -111,7 +111,7 @@ const NotificationWrapper = ({
 }: Props) => {
   const locale = useLocale();
   const track = () => {
-    trackEventByName(tracks.clickNotification.name, { extra: { linkTo } });
+    trackEventByName(tracks.clickNotification.name, { linkTo });
   };
 
   if (!isNilOrError(locale)) {
