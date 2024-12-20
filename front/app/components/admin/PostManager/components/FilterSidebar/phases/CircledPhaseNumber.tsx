@@ -1,17 +1,18 @@
 import React from 'react';
 
-import { Box, colors, Text } from '@citizenlab/cl2-component-library';
+import { Box, Color, colors, Text } from '@citizenlab/cl2-component-library';
 
 interface Props {
   phaseNumber: number;
+  borderColor?: Color;
 }
 
-const CircledPhaseNumber = ({ phaseNumber }: Props) => {
+const CircledPhaseNumber = ({ phaseNumber, borderColor }: Props) => {
   return (
     <Box
       width="24px"
       height="24px"
-      border={`1px solid ${colors.teal}`}
+      border={`1px solid ${borderColor ? colors[borderColor] : colors.teal}`}
       borderRadius="50%"
       display="flex"
       alignItems="center"

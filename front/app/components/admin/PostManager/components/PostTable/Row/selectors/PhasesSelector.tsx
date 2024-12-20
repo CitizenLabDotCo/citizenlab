@@ -1,11 +1,12 @@
 import React, { MouseEvent } from 'react';
 
+import { Box, Button, Tooltip } from '@citizenlab/cl2-component-library';
 import { xor } from 'lodash-es';
-import { Label, Popup } from 'semantic-ui-react';
 
 import { IPhaseData } from 'api/phases/types';
 import { canContainIdeas } from 'api/phases/utils';
 
+import CircledPhaseNumber from 'components/admin/PostManager/components/FilterSidebar/phases/CircledPhaseNumber';
 import T from 'components/T';
 
 type Props = {
@@ -34,28 +35,26 @@ class PhasesSelector extends React.PureComponent<Props> {
   render() {
     const { phases } = this.props;
     return (
-      <div>
+      <Box display="flex">
         {phases.map((phase, index) => (
-          <Popup
-            basic
-            key={phase.id}
-            trigger={
-              <Label
-                as={this.isEnabled(phase) ? 'a' : undefined}
-                color={this.isActive(phase.id) ? 'teal' : undefined}
-                active={this.isActive(phase.id)}
+          <Box key={phase.id} mr="4px">
+            <Tooltip content={<T value={phase.attributes.title_multiloc} />}>
+              <Button
+                buttonStyle="text"
+                type="button"
+                p="0"
                 onClick={this.handlePhaseClick(phase)}
-                circular
-                basic
+                disabled={!this.isEnabled(phase)}
               >
-                {index + 1}
-              </Label>
-            }
-            content={<T value={phase.attributes.title_multiloc} />}
-            position="top center"
-          />
+                <CircledPhaseNumber
+                  phaseNumber={index + 1}
+                  borderColor={this.isActive(phase.id) ? 'teal' : 'grey400'}
+                />
+              </Button>
+            </Tooltip>
+          </Box>
         ))}
-      </div>
+      </Box>
     );
   }
 }
