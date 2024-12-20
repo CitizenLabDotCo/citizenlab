@@ -21,7 +21,7 @@ const StatusButton = ({
       buttonStyle="text"
       bgColor={active ? colors.grey200 : 'transparent'}
       justify="left"
-      bgHoverColor={colors.background}
+      bgHoverColor={colors.grey200}
       disabled={disabled}
       fontSize={`${fontSizes.s}px`}
     >
