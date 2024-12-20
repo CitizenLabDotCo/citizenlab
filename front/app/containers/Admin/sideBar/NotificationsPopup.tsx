@@ -24,7 +24,7 @@ import { StyledBox } from './styles';
 
 export const NotificationsPopup = () => {
   const { formatMessage } = useIntl();
-  const isSmallerThanPhone = useBreakpoint('tablet');
+  const isSmallerThanTablet = useBreakpoint('tablet');
   const { data: authUser } = useAuthUser();
   const { mutate: markAllAsRead } = useMarkAllAsRead();
   const iconDivRef = useRef<HTMLDivElement | null>(null);
@@ -52,7 +52,7 @@ export const NotificationsPopup = () => {
   return (
     <StyledBox
       as="button"
-      width={isSmallerThanPhone ? '56px' : '100%'}
+      width={isSmallerThanTablet ? '56px' : '100%'}
       display="flex"
       justifyContent="flex-start"
       onClick={handleOpenNotifications}
@@ -63,8 +63,8 @@ export const NotificationsPopup = () => {
         display="flex"
         alignItems="center"
         w="100%"
-        p={isSmallerThanPhone ? '10px 0' : '10px 16px'}
-        justifyContent={isSmallerThanPhone ? 'center' : undefined}
+        p={isSmallerThanTablet ? '10px 0' : '10px 16px'}
+        justifyContent={isSmallerThanTablet ? 'center' : undefined}
       >
         <Box
           display="flex"
@@ -78,7 +78,7 @@ export const NotificationsPopup = () => {
             width="24px"
           />
         </Box>
-        {!isSmallerThanPhone && (
+        {!isSmallerThanTablet && (
           <>
             <Text
               color="white"
@@ -92,7 +92,7 @@ export const NotificationsPopup = () => {
             </Text>
           </>
         )}
-        <Box w="auto" h={isSmallerThanPhone ? '0' : '18px'} ref={iconDivRef}>
+        <Box w="auto" h={isSmallerThanTablet ? '0' : '18px'} ref={iconDivRef}>
           {unreadNotificationsCount > 0 && (
             <Box
               background={colors.red500}
@@ -111,21 +111,10 @@ export const NotificationsPopup = () => {
       </Box>
       <Dropdown
         opened={isNotificationsPopupOpen}
-        content={
-          <Box
-            minHeight="200px"
-            height="250px"
-            minWidth="200px"
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            zIndex="10000"
-          >
-            <Notifications />
-          </Box>
-        }
+        content={<Notifications />}
         onClickOutside={handleCloseNotifications}
-        left={isSmallerThanPhone ? '60px' : '200px'}
+        left={isSmallerThanTablet ? '60px' : '200px'}
+        mobileLeft="60px"
         top="-160px"
       />
     </StyledBox>

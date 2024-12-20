@@ -27,7 +27,7 @@ import { ItemMenu, StyledBox } from './styles';
 export const UserMenu = () => {
   const { formatMessage } = useIntl();
   const { data: appConfig } = useAppConfiguration();
-  const isSmallerThanPhone = useBreakpoint('tablet');
+  const isSmallerThanTablet = useBreakpoint('tablet');
   const tenantLocales = !isNilOrError(appConfig)
     ? appConfig.data.attributes.settings.core.locales
     : [];
@@ -62,7 +62,7 @@ export const UserMenu = () => {
   return (
     <StyledBox
       as="button"
-      width={isSmallerThanPhone ? '56px' : '100%'}
+      width={isSmallerThanTablet ? '56px' : '100%'}
       display="flex"
       justifyContent="flex-start"
       onClick={() => setIsUserMenuPopupOpen(true)}
@@ -73,20 +73,20 @@ export const UserMenu = () => {
         display="flex"
         alignItems="center"
         w="100%"
-        p={isSmallerThanPhone ? '10px 0' : '10px 8px 10px 16px'}
-        justifyContent={isSmallerThanPhone ? 'center' : undefined}
+        p={isSmallerThanTablet ? '10px 0' : '10px 8px 10px 16px'}
+        justifyContent={isSmallerThanTablet ? 'center' : undefined}
       >
         {/*
               Margins are needed to align with other icons/items in sidebar.
               Changes in Avatar component are needed so size prop behaves correctly.
             */}
         <Box
-          ml={isSmallerThanPhone ? '0' : '-2px'}
-          mr={isSmallerThanPhone ? '0' : '6px'}
+          ml={isSmallerThanTablet ? '0' : '-2px'}
+          mr={isSmallerThanTablet ? '0' : '6px'}
         >
           <Avatar userId={authUser.data.id} size={20} />
         </Box>
-        {!isSmallerThanPhone && (
+        {!isSmallerThanTablet && (
           <Box
             display="flex"
             flex="1"
@@ -124,7 +124,7 @@ export const UserMenu = () => {
           </Box>
         )}
         <Box ref={iconDivRef}>
-          {!isSmallerThanPhone && (
+          {!isSmallerThanTablet && (
             <Icon name="chevron-right" fill={colors.white} />
           )}
         </Box>
@@ -132,7 +132,8 @@ export const UserMenu = () => {
       <Dropdown
         opened={isUserMenuPopupOpen}
         onClickOutside={handleUserMenuPopupClose}
-        left={isSmallerThanPhone ? '60px' : '200px'}
+        left={isSmallerThanTablet ? '60px' : '200px'}
+        mobileLeft="60px"
         top="-40px"
         content={
           <Box>
