@@ -7,9 +7,9 @@ import { IPhaseData } from 'api/phases/types';
 import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../../../messages';
-
 import FilterRadioButton from '../FilterRadioButton';
 import LabelContentWrapper from '../FilterRadioButton/LabelContentWrapper';
+
 import FilterSidebarPhasesItem from './FilterSidebarPhasesItem';
 
 type Props = {
