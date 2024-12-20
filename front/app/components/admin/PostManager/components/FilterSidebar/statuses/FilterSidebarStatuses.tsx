@@ -1,11 +1,11 @@
 import React from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
-import { Menu, Divider } from 'semantic-ui-react';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 import useAuthUser from 'api/me/useAuthUser';
 
+import Divider from 'components/admin/Divider';
 import Button from 'components/UI/Button';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -15,6 +15,7 @@ import { ManagerType } from '../../..';
 import messages from '../../../messages';
 
 import FilterSidebarStatusesItem from './FilterSidebarStatusesItem';
+import StatusButton from './StatusButton';
 
 interface Props {
   type: ManagerType;
@@ -49,10 +50,10 @@ const FilterSidebarStatuses = ({
       : '/admin/settings/proposals/statuses';
 
   return (
-    <Menu secondary={true} vertical={true} fluid={true}>
-      <Menu.Item onClick={clearFilter} active={!selectedStatus}>
+    <Box display="flex" flexDirection="column">
+      <StatusButton onClick={clearFilter} active={!selectedStatus}>
         <FormattedMessage {...messages.allStatuses} />
-      </Menu.Item>
+      </StatusButton>
       <Divider />
       {/* Input statuses can be edited and only admins can do this */}
       {isAdmin(authUser) && (
@@ -79,7 +80,7 @@ const FilterSidebarStatuses = ({
           onClick={() => handleItemClick(status.id)}
         />
       ))}
-    </Menu>
+    </Box>
   );
 };
 
