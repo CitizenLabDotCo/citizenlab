@@ -57,6 +57,7 @@ const FilterSidebarStatuses = ({
     <Box display="flex" flexDirection="column">
       <Button
         onClick={clearFilter}
+        bgColor={!selectedStatus ? colors.grey200 : 'transparent'}
         buttonStyle="text"
         justify="left"
         bgHoverColor={colors.background}
