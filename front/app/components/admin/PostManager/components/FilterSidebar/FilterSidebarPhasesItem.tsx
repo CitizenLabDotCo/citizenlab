@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, colors } from '@citizenlab/cl2-component-library';
+import { Box, colors, Text } from '@citizenlab/cl2-component-library';
 import { useDrop } from 'react-dnd';
 
 import { IPhaseData } from 'api/phases/types';
@@ -63,7 +63,15 @@ const FilterSidebarPhasesItem = ({
               justifyContent="center"
               background={colors.white}
             >
-              {phaseNumber}
+              <Text
+                m="0"
+                as="span"
+                fontWeight="bold"
+                fontSize="xs"
+                color="teal"
+              >
+                {phaseNumber}
+              </Text>
             </Box>
           </LabelContentWrapper>
         }
