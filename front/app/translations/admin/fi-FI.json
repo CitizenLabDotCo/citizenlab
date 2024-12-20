@@ -173,6 +173,7 @@
   "app.components.admin.PostManager.comments": "Kommentit",
   "app.components.admin.PostManager.components.ActionBar.deleteInputsExplanation": "Tämä tarkoittaa, että menetät kaikki näihin syötteisiin liittyvät tiedot, kuten kommentit, reaktiot ja äänet. Tätä toimintoa ei voi kumota.",
   "app.components.admin.PostManager.components.ActionBar.deleteInputsTitle": "Haluatko varmasti poistaa nämä syötteet?",
+  "app.components.admin.PostManager.components.PostTable.Row.removeTopic": "Poista aihe",
   "app.components.admin.PostManager.components.PostTable.Row.theIdeaYouAreMoving": "Yrität poistaa tämän idean vaiheesta, jossa se on saanut ääniä. Jos teet tämän, nämä äänet menetetään. Haluatko varmasti poistaa tämän idean tästä vaiheesta?",
   "app.components.admin.PostManager.components.PostTable.Row.theVotesAssociated": "Tähän ideaan liittyvät äänet menetetään",
   "app.components.admin.PostManager.components.goToInputManager": "Siirry syötteiden hallintaan",

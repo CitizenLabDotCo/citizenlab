@@ -173,6 +173,7 @@
   "app.components.admin.PostManager.comments": "Kommentarer",
   "app.components.admin.PostManager.components.ActionBar.deleteInputsExplanation": "Det betyder, at du mister alle data, der er forbundet med disse input, såsom kommentarer, reaktioner og stemmer. Denne handling kan ikke fortrydes.",
   "app.components.admin.PostManager.components.ActionBar.deleteInputsTitle": "Er du sikker på, at du vil slette disse inputs?",
+  "app.components.admin.PostManager.components.PostTable.Row.removeTopic": "Fjern emne",
   "app.components.admin.PostManager.components.PostTable.Row.theIdeaYouAreMoving": "Du forsøger at fjerne denne idé fra en fase, hvor den har fået stemmer. Hvis du gør dette, vil disse stemmer gå tabt. Er du sikker på, at du vil fjerne denne idé fra denne fase?",
   "app.components.admin.PostManager.components.PostTable.Row.theVotesAssociated": "De stemmer, der er forbundet med denne idé, vil gå tabt",
   "app.components.admin.PostManager.components.goToInputManager": "Gå til input manager",

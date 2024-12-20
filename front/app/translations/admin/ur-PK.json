@@ -173,6 +173,7 @@
   "app.components.admin.PostManager.comments": "تبصرے",
   "app.components.admin.PostManager.components.ActionBar.deleteInputsExplanation": "اس کا مطلب ہے کہ آپ ان پٹ سے وابستہ تمام ڈیٹا سے محروم ہو جائیں گے، جیسے تبصرے، ردعمل اور ووٹ۔ اس کارروائی کو کالعدم نہیں کیا جا سکتا۔",
   "app.components.admin.PostManager.components.ActionBar.deleteInputsTitle": "کیا آپ واقعی ان ان پٹس کو حذف کرنا چاہتے ہیں؟",
+  "app.components.admin.PostManager.components.PostTable.Row.removeTopic": "موضوع کو ہٹا دیں۔",
   "app.components.admin.PostManager.components.PostTable.Row.theIdeaYouAreMoving": "آپ اس خیال کو ایک ایسے مرحلے سے ہٹانے کی کوشش کر رہے ہیں جہاں اسے ووٹ ملے ہیں۔ اگر آپ ایسا کریں گے تو یہ ووٹ ضائع ہو جائیں گے۔ کیا آپ واقعی اس خیال کو اس مرحلے سے ہٹانا چاہتے ہیں؟",
   "app.components.admin.PostManager.components.PostTable.Row.theVotesAssociated": "اس خیال سے جڑے ووٹ ضائع ہو جائیں گے۔",
   "app.components.admin.PostManager.components.goToInputManager": "ان پٹ مینیجر پر جائیں۔",

@@ -173,6 +173,7 @@
   "app.components.admin.PostManager.comments": "التعليقات",
   "app.components.admin.PostManager.components.ActionBar.deleteInputsExplanation": "وهذا يعني أنك ستفقد جميع البيانات المرتبطة بهذه المدخلات، مثل التعليقات وردود الفعل والتصويتات. لا يمكن التراجع عن هذا الإجراء.",
   "app.components.admin.PostManager.components.ActionBar.deleteInputsTitle": "هل أنت متأكد أنك تريد حذف هذه المدخلات؟",
+  "app.components.admin.PostManager.components.PostTable.Row.removeTopic": "إزالة الموضوع",
   "app.components.admin.PostManager.components.PostTable.Row.theIdeaYouAreMoving": "أنت تحاول إخراج هذه الفكرة من مرحلة حصلت فيها على الأصوات. إذا قمت بذلك، سيتم فقدان هذه الأصوات. هل أنت متأكد أنك تريد إزالة هذه الفكرة من هذه المرحلة؟",
   "app.components.admin.PostManager.components.PostTable.Row.theVotesAssociated": "سيتم فقدان الأصوات المرتبطة بهذه الفكرة",
   "app.components.admin.PostManager.components.goToInputManager": "انتقل إلى مدير الإدخال",
