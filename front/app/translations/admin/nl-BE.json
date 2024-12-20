@@ -2439,7 +2439,7 @@
   "app.containers.AdminPage.projects.project.analysis.TopBar.author": "Auteur",
   "app.containers.AdminPage.projects.project.analysis.TopBar.below": "Onder",
   "app.containers.AdminPage.projects.project.analysis.TopBar.birthyear": "Geboortejaar",
-  "app.containers.AdminPage.projects.project.analysis.TopBar.domicile": "Woonplaats",
+  "app.containers.AdminPage.projects.project.analysis.TopBar.domicile": "Waar woon je?",
   "app.containers.AdminPage.projects.project.analysis.TopBar.engagement": "Betrokkenheid",
   "app.containers.AdminPage.projects.project.analysis.TopBar.filters": "Filters",
   "app.containers.AdminPage.projects.project.analysis.TopBar.from": "Van",
