@@ -95,16 +95,17 @@ export default defineConfig(({ mode }) => {
       // }),
     ],
     build: {
-      outDir: '../build',
+      outDir: 'build',
       sourcemap: !isDev && !isTestBuild,
       minify: isProd,
       rollupOptions: {
+        input: path.resolve(__dirname, 'app/root'), // equivalent to `entry`
         output: {
-          entryFileNames: isDev ? '[name].js' : '[name].min.js',
+          entryFileNames: isDev ? '[name].js' : '[name].[contenthash].min.js',
           chunkFileNames: isDev
             ? '[name].chunk.js'
-            : '[name].[hash].chunk.min.js',
-          assetFileNames: '[name].[ext]',
+            : '[name].[contenthash].chunk.min.js',
+          assetFileNames: '[name].[ext]', // Ensure assets are named predictably
         },
       },
     },
