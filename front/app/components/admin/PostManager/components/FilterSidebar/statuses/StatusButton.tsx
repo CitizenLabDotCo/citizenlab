@@ -6,20 +6,20 @@ interface Props {
   children: React.ReactNode;
   onClick: () => void;
   disabled?: boolean;
-  bgColor?: string;
+  active: boolean;
 }
 
 const StatusButton = ({
   children,
   onClick,
   disabled = false,
-  bgColor,
+  active,
 }: Props) => {
   return (
     <Button
       onClick={onClick}
       buttonStyle="text"
-      bgColor={bgColor || 'transparent'}
+      bgColor={active ? colors.grey200 : 'transparent'}
       justify="left"
       bgHoverColor={colors.background}
       disabled={disabled}

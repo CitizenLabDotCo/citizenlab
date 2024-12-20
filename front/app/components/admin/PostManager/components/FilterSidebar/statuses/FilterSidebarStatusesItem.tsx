@@ -94,9 +94,7 @@ const FilterSidebarStatusesItem = ({ status, active, onClick }: Props) => {
         <Box>
           <StatusButton
             onClick={onClick}
-            bgColor={
-              active || (isOver && canDrop) ? colors.background : 'transparent'
-            }
+            active={active || (isOver && canDrop)}
             disabled={prescreeningButtonIsDisabled}
           >
             <Box
