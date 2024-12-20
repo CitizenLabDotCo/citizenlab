@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
-import { Menu } from 'semantic-ui-react';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 import useAuthUser from 'api/me/useAuthUser';
@@ -51,7 +50,7 @@ const FilterSidebarStatuses = ({
       : '/admin/settings/proposals/statuses';
 
   return (
-    <Menu secondary={true} vertical={true} fluid={true}>
+    <Box display="flex" flexDirection="column">
       <FilterRadioButton
         id="all-statuses"
         onChange={clearFilter}
@@ -85,7 +84,7 @@ const FilterSidebarStatuses = ({
           onClick={() => handleItemClick(status.id)}
         />
       ))}
-    </Menu>
+    </Box>
   );
 };
 
