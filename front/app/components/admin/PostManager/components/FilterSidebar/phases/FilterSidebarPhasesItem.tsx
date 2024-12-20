@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { Box, colors, Text } from '@citizenlab/cl2-component-library';
 import { useDrop } from 'react-dnd';
 
 import { IPhaseData } from 'api/phases/types';
@@ -8,8 +7,10 @@ import { canContainIdeas } from 'api/phases/utils';
 
 import useLocalize from 'hooks/useLocalize';
 
-import FilterRadioButton from './FilterRadioButton';
-import LabelContentWrapper from './FilterRadioButton/LabelContentWrapper';
+import FilterRadioButton from '../FilterRadioButton';
+import LabelContentWrapper from '../FilterRadioButton/LabelContentWrapper';
+
+import CircledPhaseNumber from './CircledPhaseNumber';
 
 interface Props {
   phase: IPhaseData;
@@ -53,26 +54,7 @@ const FilterSidebarPhasesItem = ({
         labelContent={
           <LabelContentWrapper>
             {localize(phase.attributes.title_multiloc)}
-            <Box
-              width="24px"
-              height="24px"
-              border={`1px solid ${colors.teal}`}
-              borderRadius="50%"
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-              background={colors.white}
-            >
-              <Text
-                m="0"
-                as="span"
-                fontWeight="bold"
-                fontSize="xs"
-                color="teal"
-              >
-                {phaseNumber}
-              </Text>
-            </Box>
+            <CircledPhaseNumber phaseNumber={phaseNumber} />
           </LabelContentWrapper>
         }
         id={id}

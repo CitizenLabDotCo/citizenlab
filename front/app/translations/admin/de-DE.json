@@ -2866,7 +2866,7 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.noData": "Keine Projekte oder Ordner ausgewählt",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.selectProjectsOrFolders": "Projekte oder Ordner auswählen",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.selectionTitle3": "Ausgewählte Projekte und Ordner",
-  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.withThisWidget": "Mit diesem Widget können Sie die Reihenfolge auswählen und festlegen, in der die Projekte oder Ordner den Benutzern angezeigt werden sollen.",
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.withThisWidget": "Mit diesem Widget können Sie die Reihenfolge auswählen und festlegen, in der die Projekte oder Ordner den Nutzer*innen angezeigt werden sollen.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.AdminPubsCarrousel.AdminPubCard.projects": "{numberOfProjects} Projekte",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "unserer Wissensdatenbank",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL": "https://support.citizenlab.co/de/articles/1346397-welche-dimensionen-und-grossen-sind-fur-bilder-auf-der-plattform-empfohlen",

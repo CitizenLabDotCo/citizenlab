@@ -146,15 +146,15 @@ const CampaignConsentForm = ({
         })
       );
 
+    const consentChangesObject: Record<string, any> = Object.fromEntries(
+      Object.values(consentChanges).map((consent: IConsentChanges) => [
+        consent.campaignConsentId,
+        consent.consented,
+      ])
+    );
+
     trackEventByName(trackEventName, {
-      extra: {
-        consentChanges: Object.fromEntries(
-          Object.values(consentChanges).map((consent: IConsentChanges) => [
-            consent.campaignConsentId,
-            consent.consented,
-          ])
-        ),
-      },
+      consentChanges: JSON.stringify(consentChangesObject),
     });
 
     setShowFeedback(false);
