@@ -12,25 +12,12 @@ import messages from '../../messages';
 
 import FilterRadioButton from './FilterRadioButton';
 import FilterSidebarPhasesItem from './FilterSidebarPhasesItem';
+import LabelContentWrapper from './FilterRadioButton/LabelContentWrapper';
 
 type Props = {
   phases: IPhaseData[];
   selectedPhase: string | undefined;
   onChangePhaseFilter: (phase: string | null) => void;
-};
-
-const LabelContentWrapper = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <Box
-      display="flex"
-      width="100%"
-      justifyContent="space-between"
-      alignItems="center"
-      height="24px"
-    >
-      {children}
-    </Box>
-  );
 };
 
 const FilterSidebarPhases = ({
