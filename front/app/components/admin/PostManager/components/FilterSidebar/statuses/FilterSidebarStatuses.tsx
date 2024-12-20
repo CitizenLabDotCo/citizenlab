@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, colors, Text } from '@citizenlab/cl2-component-library';
+import { Box, Text } from '@citizenlab/cl2-component-library';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 import useAuthUser from 'api/me/useAuthUser';
@@ -48,14 +48,10 @@ const FilterSidebarStatuses = ({
     type === 'AllIdeas' || type === 'ProjectIdeas'
       ? '/admin/settings/ideation/statuses'
       : '/admin/settings/proposals/statuses';
-  const allStatusesActive = !selectedStatus;
 
   return (
     <Box display="flex" flexDirection="column">
-      <StatusButton
-        onClick={clearFilter}
-        bgColor={allStatusesActive ? colors.grey200 : 'transparent'}
-      >
+      <StatusButton onClick={clearFilter} active={!selectedStatus}>
         <FormattedMessage {...messages.allStatuses} />
       </StatusButton>
       <Divider />
