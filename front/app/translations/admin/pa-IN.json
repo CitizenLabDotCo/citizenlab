@@ -173,6 +173,7 @@
   "app.components.admin.PostManager.comments": "ਟਿੱਪਣੀਆਂ",
   "app.components.admin.PostManager.components.ActionBar.deleteInputsExplanation": "ਇਸਦਾ ਮਤਲਬ ਹੈ ਕਿ ਤੁਸੀਂ ਇਹਨਾਂ ਇਨਪੁੱਟਾਂ ਨਾਲ ਸੰਬੰਧਿਤ ਸਾਰਾ ਡਾਟਾ ਗੁਆ ਦੇਵੋਗੇ, ਜਿਵੇਂ ਕਿ ਟਿੱਪਣੀਆਂ, ਪ੍ਰਤੀਕਰਮਾਂ ਅਤੇ ਵੋਟਾਂ। ਇਸ ਕਾਰਵਾਈ ਨੂੰ ਅਣਕੀਤਾ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ।",
   "app.components.admin.PostManager.components.ActionBar.deleteInputsTitle": "ਕੀ ਤੁਸੀਂ ਯਕੀਨੀ ਤੌਰ 'ਤੇ ਇਹਨਾਂ ਇਨਪੁਟਸ ਨੂੰ ਮਿਟਾਉਣਾ ਚਾਹੁੰਦੇ ਹੋ?",
+  "app.components.admin.PostManager.components.PostTable.Row.removeTopic": "ਵਿਸ਼ਾ ਹਟਾਓ",
   "app.components.admin.PostManager.components.PostTable.Row.theIdeaYouAreMoving": "ਤੁਸੀਂ ਇਸ ਵਿਚਾਰ ਨੂੰ ਉਸ ਪੜਾਅ ਤੋਂ ਹਟਾਉਣ ਦੀ ਕੋਸ਼ਿਸ਼ ਕਰ ਰਹੇ ਹੋ ਜਿੱਥੇ ਇਸ ਨੂੰ ਵੋਟਾਂ ਮਿਲੀਆਂ ਹਨ। ਜੇਕਰ ਤੁਸੀਂ ਅਜਿਹਾ ਕਰਦੇ ਹੋ ਤਾਂ ਇਹ ਵੋਟਾਂ ਖਤਮ ਹੋ ਜਾਣਗੀਆਂ। ਕੀ ਤੁਸੀਂ ਯਕੀਨੀ ਤੌਰ 'ਤੇ ਇਸ ਵਿਚਾਰ ਨੂੰ ਇਸ ਪੜਾਅ ਤੋਂ ਹਟਾਉਣਾ ਚਾਹੁੰਦੇ ਹੋ?",
   "app.components.admin.PostManager.components.PostTable.Row.theVotesAssociated": "ਇਸ ਵਿਚਾਰ ਨਾਲ ਜੁੜੀਆਂ ਵੋਟਾਂ ਖਤਮ ਹੋ ਜਾਣਗੀਆਂ",
   "app.components.admin.PostManager.components.goToInputManager": "ਇਨਪੁਟ ਮੈਨੇਜਰ 'ਤੇ ਜਾਓ",
