@@ -1,26 +1,34 @@
 import React from 'react';
 
+import { Box, colors, Text } from '@citizenlab/cl2-component-library';
 import { useDrop } from 'react-dnd';
-import { Menu, Label } from 'semantic-ui-react';
 
 import { IPhaseData } from 'api/phases/types';
 import { canContainIdeas } from 'api/phases/utils';
 
-import T from 'components/T';
+import useLocalize from 'hooks/useLocalize';
+
+import FilterRadioButton from './FilterRadioButton';
+import LabelContentWrapper from './FilterRadioButton/LabelContentWrapper';
 
 interface Props {
   phase: IPhaseData;
-  active: boolean;
-  onClick: () => void;
+  name: string;
+  onChange: () => void;
+  isSelected: boolean;
+  id: string;
   phaseNumber: number;
 }
 
 const FilterSidebarPhasesItem = ({
   phase,
-  active,
-  onClick,
+  name,
+  onChange,
+  isSelected,
+  id,
   phaseNumber,
 }: Props) => {
+  const localize = useLocalize();
   const [{ canDrop, isOver }, drop] = useDrop({
     accept: 'IDEA',
     drop: () => ({
@@ -36,20 +44,39 @@ const FilterSidebarPhasesItem = ({
     }),
   });
 
-  const disabled = !canContainIdeas(phase);
-
   return (
     <div ref={drop}>
-      <Menu.Item
-        active={active || (isOver && canDrop)}
-        onClick={onClick}
-        disabled={disabled}
-      >
-        <Label circular={true} basic={true} color={disabled ? 'grey' : 'teal'}>
-          {phaseNumber}
-        </Label>
-        <T value={phase.attributes.title_multiloc} />
-      </Menu.Item>
+      <FilterRadioButton
+        name={name}
+        onChange={onChange}
+        isSelected={isSelected || (isOver && canDrop)}
+        labelContent={
+          <LabelContentWrapper>
+            {localize(phase.attributes.title_multiloc)}
+            <Box
+              width="24px"
+              height="24px"
+              border={`1px solid ${colors.teal}`}
+              borderRadius="50%"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              background={colors.white}
+            >
+              <Text
+                m="0"
+                as="span"
+                fontWeight="bold"
+                fontSize="xs"
+                color="teal"
+              >
+                {phaseNumber}
+              </Text>
+            </Box>
+          </LabelContentWrapper>
+        }
+        id={id}
+      />
     </div>
   );
 };
