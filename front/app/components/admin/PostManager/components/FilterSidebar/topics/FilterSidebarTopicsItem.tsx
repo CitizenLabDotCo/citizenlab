@@ -1,19 +1,21 @@
 import React from 'react';
 
 import { useDrop } from 'react-dnd';
-import { Menu } from 'semantic-ui-react';
 
 import { ITopicData } from 'api/topics/types';
 
 import T from 'components/T';
 
+import FilterRadioButton from '../FilterRadioButton';
+
 interface Props {
   topic: ITopicData;
   active: boolean;
   onClick: any;
+  name: string;
 }
 
-const FilterSidebarTopicsItem = ({ topic, active, onClick }: Props) => {
+const FilterSidebarTopicsItem = ({ topic, active, onClick, name }: Props) => {
   const [{ canDrop, isOver }, drop] = useDrop({
     accept: 'IDEA',
     drop: () => ({
@@ -28,9 +30,13 @@ const FilterSidebarTopicsItem = ({ topic, active, onClick }: Props) => {
 
   return (
     <div ref={drop}>
-      <Menu.Item active={active || (isOver && canDrop)} onClick={onClick}>
-        <T value={topic.attributes.title_multiloc} />
-      </Menu.Item>
+      <FilterRadioButton
+        id={topic.id}
+        name={name}
+        labelContent={<T value={topic.attributes.title_multiloc} />}
+        isSelected={active || (isOver && canDrop)}
+        onChange={onClick}
+      />
     </div>
   );
 };

@@ -3,15 +3,16 @@ import React, { MouseEvent } from 'react';
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import { xor } from 'lodash-es';
 import { RouteType } from 'routes';
-import { Menu, Divider } from 'semantic-ui-react';
 
 import { ITopicData } from 'api/topics/types';
 
+import Divider from 'components/admin/Divider';
 import Button from 'components/UI/Button';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../../../messages';
+import FilterRadioButton from '../FilterRadioButton';
 
 import FilterSidebarTopicsItem from './FilterSidebarTopicsItem';
 
@@ -45,19 +46,22 @@ const FilterSidebarTopics = ({
     return selectedTopics ? selectedTopics.indexOf(id) >= 0 : false;
   };
 
+  const name = 'topics';
+
   return (
-    <Menu
+    <Box
       id="e2e-idea-manager-topic-filters"
-      secondary={true}
-      vertical={true}
-      fluid={true}
+      display="flex"
+      flexDirection="column"
     >
-      <Menu.Item
-        onClick={clearFilter}
-        active={!selectedTopics || selectedTopics.length === 0}
-      >
-        <FormattedMessage {...messages.allTopics} />
-      </Menu.Item>
+      {/* FilterRadioButton is also used inside FilterSidebarTopicsItem */}
+      <FilterRadioButton
+        id="all-topics"
+        name={name}
+        onChange={clearFilter}
+        isSelected={!selectedTopics || selectedTopics.length === 0}
+        labelContent={<FormattedMessage {...messages.allTopics} />}
+      />
       <Divider />
       {typeof linkToTagManager === 'string' && (
         <Box display="inline-flex">
@@ -82,9 +86,10 @@ const FilterSidebarTopics = ({
           topic={topic}
           active={isActive(topic.id)}
           onClick={handleItemClick(topic.id)}
+          name={name}
         />
       ))}
-    </Menu>
+    </Box>
   );
 };
 
