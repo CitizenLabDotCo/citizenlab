@@ -21,9 +21,9 @@ import { isAdmin } from 'utils/permissions/roles';
 import messages from '../../messages';
 
 import FilterSidebarPhases from './phases/FilterSidebarPhases';
-import ProjectsMenu from './FilterSidebarProjects';
-import StatusesMenu from './FilterSidebarStatuses';
-import TopicsMenu from './FilterSidebarTopics';
+import ProjectsMenu from './projects/FilterSidebarProjects';
+import StatusesMenu from './statuses/FilterSidebarStatuses';
+import TopicsMenu from './topics/FilterSidebarTopics';
 
 const InfoIcon = styled(Icon)`
   fill: ${colors.teal700};
