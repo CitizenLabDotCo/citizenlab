@@ -4,6 +4,8 @@ import moment from 'moment';
 import { IntlProvider } from 'react-intl';
 import { SupportedLocale } from 'typings';
 
+import { i18nImports } from 'components/admin/ContentBuilder/LanguageProvider/i18nLoader';
+
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 type Props = {
@@ -18,17 +20,27 @@ const ContentBuilderLanguageProvider = ({
   platformLocale,
   children,
 }: Props) => {
-  const [messages, setMessages] = useState();
+  const [messages, setMessages] = useState<Record<string, string> | undefined>(
+    undefined
+  );
 
   useEffect(() => {
     if (!isNilOrError(contentBuilderLocale)) {
-      import(
-        /* @vite-ignore */
-        `i18n/${contentBuilderLocale}`
-      ).then((translationMessages) => {
-        setMessages(translationMessages.default);
-      });
-      moment.locale(contentBuilderLocale);
+      const localePath = `/i18n/${contentBuilderLocale}.ts`;
+
+      const loadLocale = i18nImports[localePath];
+
+      if (loadLocale) {
+        loadLocale()
+          .then((translationMessages) => {
+            setMessages(translationMessages.default as Record<string, string>);
+          })
+          .catch((error) => {
+            console.error(`Failed to load locale file: ${localePath}`, error);
+          });
+
+        moment.locale(contentBuilderLocale);
+      }
     }
 
     return () => {
