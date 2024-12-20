@@ -37,7 +37,7 @@ class PhasesSelector extends React.PureComponent<Props> {
     return (
       <Box display="flex">
         {phases.map((phase, index) => (
-          <Box key={phase.id} mr="4px">
+          <Box key={phase.id}>
             <Tooltip content={<T value={phase.attributes.title_multiloc} />}>
               <Button
                 buttonStyle="text"
