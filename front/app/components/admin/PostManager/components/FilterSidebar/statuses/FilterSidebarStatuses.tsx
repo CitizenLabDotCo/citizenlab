@@ -1,11 +1,6 @@
 import React from 'react';
 
-import {
-  Box,
-  colors,
-  fontSizes,
-  Text,
-} from '@citizenlab/cl2-component-library';
+import { Box, colors, Text } from '@citizenlab/cl2-component-library';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 import useAuthUser from 'api/me/useAuthUser';
@@ -20,6 +15,7 @@ import { ManagerType } from '../../..';
 import messages from '../../../messages';
 
 import FilterSidebarStatusesItem from './FilterSidebarStatusesItem';
+import StatusButton from './StatusButton';
 
 interface Props {
   type: ManagerType;
@@ -55,16 +51,12 @@ const FilterSidebarStatuses = ({
 
   return (
     <Box display="flex" flexDirection="column">
-      <Button
+      <StatusButton
         onClick={clearFilter}
         bgColor={!selectedStatus ? colors.grey200 : 'transparent'}
-        buttonStyle="text"
-        justify="left"
-        bgHoverColor={colors.background}
-        fontSize={`${fontSizes.s}px`}
       >
         <FormattedMessage {...messages.allStatuses} />
-      </Button>
+      </StatusButton>
       <Divider />
       {/* Input statuses can be edited and only admins can do this */}
       {isAdmin(authUser) && (

@@ -3,10 +3,8 @@ import React from 'react';
 import {
   IconTooltip,
   Box,
-  Button,
   colors,
   Tooltip,
-  fontSizes,
 } from '@citizenlab/cl2-component-library';
 import ColorIndicator from 'component-library/components/ColorIndicator';
 import { useDrop } from 'react-dnd';
@@ -23,6 +21,8 @@ import T from 'components/T';
 import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../../../messages';
+
+import StatusButton from './StatusButton';
 
 const StatusText = styled.div`
   &:first-letter {
@@ -92,16 +92,12 @@ const FilterSidebarStatusesItem = ({ status, active, onClick }: Props) => {
         disabled={prescreeningTooltipIsDisabled}
       >
         <Box>
-          <Button
+          <StatusButton
             onClick={onClick}
-            buttonStyle="text"
             bgColor={
               active || (isOver && canDrop) ? colors.background : 'transparent'
             }
-            justify="left"
-            bgHoverColor={colors.background}
             disabled={prescreeningButtonIsDisabled}
-            fontSize={`${fontSizes.s}px`}
           >
             <Box
               display="flex"
@@ -127,7 +123,7 @@ const FilterSidebarStatusesItem = ({ status, active, onClick }: Props) => {
                 )}
               </Box>
             </Box>
-          </Button>
+          </StatusButton>
         </Box>
       </Tooltip>
     </div>
