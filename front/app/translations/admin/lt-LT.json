@@ -173,6 +173,7 @@
   "app.components.admin.PostManager.comments": "Komentarai",
   "app.components.admin.PostManager.components.ActionBar.deleteInputsExplanation": "Tai reiškia, kad prarasite visus su šiais įvesties duomenimis susijusius duomenis, pvz., komentarus, reakcijas ir balsus. Šio veiksmo negalima atšaukti.",
   "app.components.admin.PostManager.components.ActionBar.deleteInputsTitle": "Ar tikrai norite ištrinti šiuos įvesties duomenis?",
+  "app.components.admin.PostManager.components.PostTable.Row.removeTopic": "Pašalinti temą",
   "app.components.admin.PostManager.components.PostTable.Row.theIdeaYouAreMoving": "Bandote pašalinti šią idėją iš etapo, kuriame ji gavo balsų. Jei tai padarysite, šie balsai bus prarasti. Ar tikrai norite pašalinti šią idėją iš šio etapo?",
   "app.components.admin.PostManager.components.PostTable.Row.theVotesAssociated": "Su šia idėja susiję balsai bus prarasti",
   "app.components.admin.PostManager.components.goToInputManager": "Eikite į įvesties tvarkytuvę",
