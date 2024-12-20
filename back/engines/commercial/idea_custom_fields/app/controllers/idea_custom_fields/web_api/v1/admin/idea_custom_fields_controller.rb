@@ -63,7 +63,7 @@ module IdeaCustomFields
 
     def update_all
       authorize CustomField.new(resource: @custom_form), :update_all?, policy_class: IdeaCustomFieldPolicy
-      @participation_method = @custom_form.participation_context.pmethod
+      raise_error_if_stale_form_data
 
       page_temp_ids_to_ids_mapping = {}
       option_temp_ids_to_ids_mapping = {}
@@ -71,6 +71,7 @@ module IdeaCustomFields
       update_fields! page_temp_ids_to_ids_mapping, option_temp_ids_to_ids_mapping, errors
       @custom_form.reload if @custom_form.persisted?
       update_logic! page_temp_ids_to_ids_mapping, option_temp_ids_to_ids_mapping, errors
+      update_form!
       render json: ::WebApi::V1::CustomFieldSerializer.new(
         IdeaCustomFieldsService.new(@custom_form).all_fields,
         params: serializer_params(@custom_form),
@@ -93,6 +94,15 @@ module IdeaCustomFields
       raise "Custom field with input_type: '#{@custom_field.input_type}' is not a geographic type"
     end
 
+    # To try and avoid forms being overwritten with stale data, we check if the form has been updated since the form editor last loaded it
+    def raise_error_if_stale_form_data
+      return unless update_all_params[:form_last_updated_at].present? &&
+        @custom_form.persisted? &&
+        @custom_form.updated_at.to_i > update_all_params[:form_last_updated_at].to_i
+
+      raise UpdateAllFailedError, { form: [{ error: 'stale_data' }] }
+    end
+
     def update_fields!(page_temp_ids_to_ids_mapping, option_temp_ids_to_ids_mapping, errors)
       idea_custom_fields_service = IdeaCustomFieldsService.new(@custom_form)
       fields = idea_custom_fields_service.all_fields
@@ -107,6 +117,7 @@ module IdeaCustomFields
         delete_fields = fields.reject { |field| given_field_ids.include? field.id }
         delete_fields.each { |field| delete_field! field }
         given_fields.each_with_index do |field_params, index|
+
           options_params = field_params.delete :options
           if field_params[:id] && fields_by_id.key?(field_params[:id])
             field = fields_by_id[field_params[:id]]
@@ -121,20 +132,22 @@ module IdeaCustomFields
           end
           relate_map_config_to_field(field, field_params, errors, index)
           field.set_list_position(index)
+          count_fields(field)
         end
         raise UpdateAllFailedError, errors if errors.present?
       end
     end
 
     def create_field!(field_params, errors, page_temp_ids_to_ids_mapping, index)
-      if field_params['code'].nil? && @participation_method.allowed_extra_field_input_types.exclude?(field_params['input_type'])
+      participation_method = @custom_form.participation_context.pmethod
+      if field_params['code'].nil? && participation_method.allowed_extra_field_input_types.exclude?(field_params['input_type'])
         errors[index.to_s] = { input_type: [{ error: 'inclusion', value: field_params['input_type'] }] }
         return false
       end
 
       create_params = field_params.except('temp_id').to_h
       if create_params.key?('code') && !create_params['code'].nil?
-        default_field = @participation_method.default_fields(@custom_form).find do |field|
+        default_field = participation_method.default_fields(@custom_form).find do |field|
           field.code == create_params['code']
         end
         create_params['key'] = default_field.key
@@ -263,7 +276,6 @@ module IdeaCustomFields
     end
 
     def delete_option!(option)
-      SideFxCustomFieldOptionService.new.before_destroy option, current_user
       option.destroy!
       SideFxCustomFieldOptionService.new.after_destroy option, current_user
       option
@@ -281,6 +293,37 @@ module IdeaCustomFields
       raise UpdateAllFailedError, errors if errors.present?
     end
 
+    # Update the timestamp of the form and log the activity
+    def update_form!
+      return unless @custom_form.persisted?
+
+      @custom_form.touch
+      update_payload = {
+        save_type: update_all_params[:form_save_type],
+        pages: @page_count,
+        sections: @section_count,
+        fields: @field_count,
+        params_size: params.to_s.size,
+        form_opened_at: update_all_params[:form_opened_at],
+        form_updated_at: @custom_form.updated_at.to_i
+      }
+      SideFxCustomFormService.new.after_update @custom_form, current_user, update_payload
+    end
+
+    def count_fields(field)
+      @page_count ||= 0
+      @section_count ||= 0
+      @field_count ||= 0
+      case field.input_type
+      when 'section'
+        @section_count += 1
+      when 'page'
+        @page_count += 1
+      else
+        @field_count += 1
+      end
+    end
+
     def add_options_errors(options_errors, errors, field_index, option_index)
       errors[field_index.to_s] ||= {}
       errors[field_index.to_s][:options] ||= {}
@@ -288,7 +331,7 @@ module IdeaCustomFields
     end
 
     def update_all_params
-      params.permit(custom_fields: [
+      params.permit(:form_last_updated_at, :form_opened_at, :form_save_type, custom_fields: [
         :id,
         :temp_id,
         :code,

@@ -318,6 +318,24 @@ resource 'Idea Custom Fields' do
         expect(json_response).to eq({ errors: { '1': { input_type: [{ error: 'inclusion', value: 'topic_ids' }] } } })
       end
 
+      example '[error] form_last_updated_at provided is before the date the form was last updated (ie this has been updated by another user/tab)' do
+        custom_form.save!
+        request = {
+          form_last_updated_at: 123456,
+          custom_fields: [
+            {
+              input_type: 'page',
+              page_layout: 'default'
+            }
+          ]
+        }
+        do_request request
+
+        assert_status 422
+        json_response = json_parse response_body
+        expect(json_response).to eq({:errors => {:form=>[{:error=>"stale_data"}]}})
+      end
+
       example 'Update linear_scale field' do
         field_to_update = create(:custom_field_linear_scale, resource: custom_form)
         create(:custom_field, resource: custom_form) # field to destroy
@@ -3165,6 +3183,7 @@ resource 'Idea Custom Fields' do
         field1 = create(:custom_field, resource: custom_form, title_multiloc: { 'en' => 'Field 1' })
         field2 = create(:custom_field, resource: custom_form, title_multiloc: { 'en' => 'Field 2' })
         request = {
+          form_save_type: 'manual',
           custom_fields: [
             {
               id: page.id,
@@ -3182,7 +3201,20 @@ resource 'Idea Custom Fields' do
           ]
         }
 
-        expect { do_request(request) }.to enqueue_job(LogActivityJob).exactly(1).times
+        # 1 for the field
+        expect { do_request(request) }.to enqueue_job(LogActivityJob).with(field2, 'changed', any_args).exactly(1).times
+
+        # 1 for the form
+        request[:custom_fields][2][:title_multiloc] = { 'en' => 'Field 2 changed once more' }
+        expect { do_request(request) }
+          .to enqueue_job(LogActivityJob).with(
+            custom_form,
+            'changed',
+            User.first,
+            custom_form.reload.updated_at.to_i,
+            payload: { save_type: 'manual', pages: 1, sections: 0, fields: 2, params_size: 877, form_opened_at: nil, form_updated_at: custom_form.reload.updated_at.to_i },
+            project_id: custom_form.project_id
+          ).exactly(1).times
       end
 
       context "Update custom field's map config relation" do
