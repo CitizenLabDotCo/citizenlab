@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe Analytics::PopulateDimensionsService do
-  describe 'run with no ideas or initiatives' do
+  describe 'run with no ideas' do
     before_all do
       described_class.run
     end
@@ -21,7 +21,7 @@ describe Analytics::PopulateDimensionsService do
     end
 
     it 'has 20 dimension types' do
-      expect(Analytics::DimensionType.count).to eq(20)
+      expect(Analytics::DimensionType.count).to eq(16)
     end
 
     it 'has 5 referrer types' do

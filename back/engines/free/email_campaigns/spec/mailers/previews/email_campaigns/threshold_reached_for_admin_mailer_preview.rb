@@ -6,7 +6,7 @@ module EmailCampaigns
 
     def campaign_mail
       campaign = EmailCampaigns::Campaigns::ThresholdReachedForAdmin.first
-      post = Initiative.first
+      post = Idea.first
 
       # TODO: generate commands with campaign#generate_commands method
       command = {
@@ -19,15 +19,12 @@ module EmailCampaigns
           post_url: 'demo.stg.govocal.com',
           post_likes_count: 3,
           post_comments_count: 4,
-          post_images: post.initiative_images.map do |image|
+          post_images: post.idea_images.map do |image|
             {
               ordering: image.ordering,
               versions: image.image.versions.to_h { |k, v| [k.to_s, v.url] }
             }
           end,
-          initiative_header_bg: {
-            versions: post.header_bg.versions.to_h { |k, v| [k.to_s, v.url] }
-          },
           assignee_first_name: 'Lady',
           assignee_last_name: 'Gaga'
         }

@@ -91,26 +91,6 @@ resource 'Avatars' do
       end
     end
 
-    # TODO: cleanup-after-proposals-migration
-    describe do
-      let(:initiative) { create(:initiative) }
-      let(:context_type) { 'initiative' }
-      let(:context_id) { initiative.id }
-      let(:author_id) { initiative.author.id }
-      let!(:commenter_ids) { Array.new(2) { create(:comment, post: initiative).author.id } }
-      let(:limit) { 2 }
-
-      example_request 'List random user avatars on an initiative (author and commenters)' do
-        assert_status 200
-        json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 2
-        expect(json_response[:data].map { |d| d.dig(:attributes, :avatar).keys }).to all(eq %i[small medium large])
-        expect(json_response[:data].flat_map { |d| d.dig(:attributes, :avatar).values }).to all(be_present)
-        expect(json_response[:data].pluck(:id)).to all(satisfy { |id| (commenter_ids + [author_id]).include?(id) })
-        expect(json_response.dig(:meta, :total)).to eq 3
-      end
-    end
-
     context 'as an admin' do
       before { admin_header_token }
 
