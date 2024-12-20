@@ -120,7 +120,7 @@ const FilterSidebar = ({
         {selectionSign}&nbsp;
         {active ? (
           <IconTooltip
-            content={<Box w="300px">{formatMessage(tooltipMessage)}</Box>}
+            content={formatMessage(tooltipMessage)}
             icon="info-solid"
             theme="light"
           />
@@ -200,8 +200,8 @@ const FilterSidebar = ({
           return (
             <Box
               display="flex"
-              flexDirection="row"
               justifyContent="space-between"
+              alignItems="center"
               w="100%"
               as="button"
               key={item.key}
