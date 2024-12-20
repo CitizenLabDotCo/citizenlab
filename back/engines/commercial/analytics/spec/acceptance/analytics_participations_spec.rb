@@ -30,7 +30,7 @@ resource 'Analytics - FactParticipations' do
 
       male = create(:user, gender: 'male')
       female = create(:user, gender: 'female')
-      unspecified = create(:user, gender: 'unspecified')
+      _unspecified = create(:user, gender: 'unspecified')
 
       # Create participations (3 by citizens, 1 by admin)
       idea = create(:idea, created_at: dates[0], author: male)
