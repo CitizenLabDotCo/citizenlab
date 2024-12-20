@@ -8,12 +8,11 @@ interface Props {
 
 const Gradient = ({ variant }: Props) => (
   <Box
-    top="0"
+    top="32px"
     left={variant === 'left' ? '0' : undefined}
     right={variant === 'right' ? '0' : undefined}
     w="30px"
-    h="100%"
-    bgColor="red"
+    h="calc(100% - 32px)"
     position="absolute"
     zIndex="2"
     background={`linear-gradient(to ${
