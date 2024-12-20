@@ -35,12 +35,11 @@ export const UserMenu = () => {
   const iconDivRef = useRef<HTMLDivElement | null>(null);
   const { data: authUser } = useAuthUser();
   const [isUserMenuPopupOpen, setIsUserMenuPopupOpen] = useState(false);
-  const [isLanguagePopupOpen, setIsLanguagePopupOpen] = useState(false);
   const [isLocaleSelectorOpen, setIsLocaleSelectorOpen] = useState(false);
 
   const handleUserMenuPopupClose = () => {
     // We only close the user menu popup if no other popup is open
-    if (!isLanguagePopupOpen) {
+    if (!isLocaleSelectorOpen) {
       setIsUserMenuPopupOpen(false);
     }
   };
@@ -142,7 +141,7 @@ export const UserMenu = () => {
             {tenantLocales.length > 1 && (
               <ItemMenu
                 buttonStyle="text"
-                onClick={() => setIsLanguagePopupOpen(!isLanguagePopupOpen)}
+                onClick={() => setIsLocaleSelectorOpen(!isLocaleSelectorOpen)}
               >
                 <Box display="flex" justifyContent="space-between" w="100%">
                   <LanguageSelectorPopup
