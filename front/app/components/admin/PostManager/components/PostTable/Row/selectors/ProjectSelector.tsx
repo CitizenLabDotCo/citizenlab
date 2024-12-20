@@ -26,7 +26,7 @@ const ProjectSelector = ({ projectId }: Props) => {
       display="inline-block"
       border={`1px solid ${colors.teal}`}
       borderRadius={stylingConsts.borderRadius}
-      p="2px 4px"
+      p="2px 8px"
     >
       <Text as="span" m="0" fontWeight="semi-bold" fontSize="xs" color="teal">
         <T value={project.data.attributes.title_multiloc} />
