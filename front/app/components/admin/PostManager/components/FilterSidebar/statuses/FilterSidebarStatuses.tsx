@@ -12,8 +12,8 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import { isAdmin } from 'utils/permissions/roles';
 
-import { ManagerType } from '../..';
-import messages from '../../messages';
+import { ManagerType } from '../../..';
+import messages from '../../../messages';
 
 import FilterSidebarStatusesItem from './FilterSidebarStatusesItem';
 
