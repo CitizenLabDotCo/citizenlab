@@ -43,7 +43,7 @@ module IdAzureActiveDirectory
       title: 'Logo',
       description: 'The full URL to the logo image that is shown on the authentication button. Logo should be approx. 25px in height.',
       type: 'string',
-      pattern: "^https:\/\/.+"
+      pattern: '^https://.+'
     }
 
     add_setting 'login_mechanism_name', schema: {
@@ -56,8 +56,8 @@ module IdAzureActiveDirectory
       title: 'Visibility',
       description: 'Should this login mechanism be shown with other options to everyone, be hidden but available at /sign-in/admin or linked from the login modal via an "admin options" link?',
       type: 'string',
-      "enum": %w[show link hide],
-      "default": "show"
+      enum: %w[show link hide],
+      default: 'show'
     }
   end
 end
