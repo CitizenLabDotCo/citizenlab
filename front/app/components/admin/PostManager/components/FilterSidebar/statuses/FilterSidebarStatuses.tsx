@@ -48,12 +48,13 @@ const FilterSidebarStatuses = ({
     type === 'AllIdeas' || type === 'ProjectIdeas'
       ? '/admin/settings/ideation/statuses'
       : '/admin/settings/proposals/statuses';
+  const allStatusesActive = !selectedStatus;
 
   return (
     <Box display="flex" flexDirection="column">
       <StatusButton
         onClick={clearFilter}
-        bgColor={!selectedStatus ? colors.grey200 : 'transparent'}
+        bgColor={allStatusesActive ? colors.grey200 : 'transparent'}
       >
         <FormattedMessage {...messages.allStatuses} />
       </StatusButton>
