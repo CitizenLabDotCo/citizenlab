@@ -78,18 +78,19 @@ RSpec.configure do |config|
   config.include StubEnvHelper
   config.include XlsxHelper
 
-  # If we do not include the following module, the controller tests do not reset the
-  # `CurrentAttributes` before and after each test.
-  # Per: https://bytemeta.vip/repo/rspec/rspec-rails/issues/2503, rspec-rails should in
-  # theory load the helpers automatically, but for some reason this does not seem to
-  # work.
-  # > If you add type: :model the problem should similarly go away, we don't include
-  # > rails helpers except when running a rails test, so currently you'd need to pick
-  # > one of the rails types.
-  #
-  # As a quick fix, we import the module explicitly. A tech-debt ticket has been logged
-  # here: https://citizenlab.atlassian.net/browse/CL-1860
-  config.include ActiveSupport::CurrentAttributes::TestHelper, type: :controller
+  # rspec-rails do not take the `executor_around_test_case` option into account. There is
+  # an open issue for this: https://github.com/rspec/rspec-rails/pull/2753.
+  # Here, we replicate the behavior used by Rails for `ActiveSupport::TestCase`.
+  # See: https://github.com/rails/rails/blob/8278626a2c0e0ee4dc762891a91e70708380b4d6/activesupport/lib/active_support/railtie.rb#L52-L63
+  if Rails.application.config.active_support.executor_around_test_case
+    config.include ExecutorTestHelper
+  else
+    require 'active_support/current_attributes/test_helper'
+    config.include ActiveSupport::CurrentAttributes::TestHelper
+
+    require 'active_support/execution_context/test_helper'
+    config.include ActiveSupport::ExecutionContext::TestHelper
+  end
 end
 
 ActiveJob::Base.queue_adapter = :test
