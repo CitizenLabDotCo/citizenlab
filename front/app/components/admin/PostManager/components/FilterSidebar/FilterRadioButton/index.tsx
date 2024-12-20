@@ -17,13 +17,12 @@ const Label = styled.label<{ selected: boolean }>`
   width: 100%;
   font-size: ${({ theme }) => theme.fontSizes.s}px;
   color: ${({ theme: { colors } }) => colors.blue500};
+  background: ${({ theme: { colors }, selected }) =>
+    selected ? colors.background : colors.white};
 
   &:hover {
     background: ${({ theme: { colors } }) => colors.grey200};
   }
-
-  background: ${({ theme: { colors }, selected }) =>
-    selected ? colors.background : colors.white};
 
   ${HiddenRadio}.focus-visible + & {
     outline: 2px solid black;
