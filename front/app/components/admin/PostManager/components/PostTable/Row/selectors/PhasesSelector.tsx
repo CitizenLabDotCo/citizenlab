@@ -48,7 +48,7 @@ class PhasesSelector extends React.PureComponent<Props> {
               >
                 <CircledPhaseNumber
                   phaseNumber={index + 1}
-                  borderColor={this.isActive(phase.id) ? 'teal' : 'grey400'}
+                  color={this.isActive(phase.id) ? 'teal' : 'grey600'}
                 />
               </Button>
             </Tooltip>

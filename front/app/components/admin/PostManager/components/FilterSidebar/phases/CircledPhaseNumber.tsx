@@ -4,22 +4,28 @@ import { Box, Color, colors, Text } from '@citizenlab/cl2-component-library';
 
 interface Props {
   phaseNumber: number;
-  borderColor?: Color;
+  color?: Color;
 }
 
-const CircledPhaseNumber = ({ phaseNumber, borderColor }: Props) => {
+const CircledPhaseNumber = ({ phaseNumber, color }: Props) => {
   return (
     <Box
       width="24px"
       height="24px"
-      border={`1px solid ${borderColor ? colors[borderColor] : colors.teal}`}
+      border={`1px solid ${color ? colors[color] : colors.teal}`}
       borderRadius="50%"
       display="flex"
       alignItems="center"
       justifyContent="center"
       background={colors.white}
     >
-      <Text m="0" as="span" fontWeight="bold" fontSize="xs" color="teal">
+      <Text
+        m="0"
+        as="span"
+        fontWeight="bold"
+        fontSize="xs"
+        color={color || 'teal'}
+      >
         {phaseNumber}
       </Text>
     </Box>
