@@ -21,9 +21,9 @@ import { isAdmin } from 'utils/permissions/roles';
 import messages from '../../messages';
 
 import FilterSidebarPhases from './phases/FilterSidebarPhases';
-import ProjectsMenu from './projects/FilterSidebarProjects';
-import StatusesMenu from './statuses/FilterSidebarStatuses';
-import TopicsMenu from './topics/FilterSidebarTopics';
+import FilterSidebarProjects from './projects/FilterSidebarProjects';
+import FilterSidebarStatuses from './statuses/FilterSidebarStatuses';
+import FilterSidebarTopics from './topics/FilterSidebarTopics';
 
 const InfoIcon = styled(Icon)`
   fill: ${colors.teal700};
@@ -155,7 +155,7 @@ const FilterSidebar = ({
       name: tabName('topicsTab', selectedTopics, 'topics'),
       key: 'topics',
       content: (
-        <TopicsMenu
+        <FilterSidebarTopics
           selectableTopics={topics}
           selectedTopics={selectedTopics}
           onChangeTopicsFilter={onChangeTopicsFilter}
@@ -167,7 +167,7 @@ const FilterSidebar = ({
       name: tabName('projectsTab', selectedProject, 'projects'),
       key: 'projects',
       content: (
-        <ProjectsMenu
+        <FilterSidebarProjects
           projects={projects}
           selectedProject={selectedProject}
           onChangeProjectFilter={onChangeProjectFilter}
@@ -178,7 +178,7 @@ const FilterSidebar = ({
       name: tabName('statusesTab', selectedStatus, 'statuses'),
       key: 'statuses',
       content: (
-        <StatusesMenu
+        <FilterSidebarStatuses
           type={type}
           statuses={statuses}
           selectedStatus={selectedStatus}
