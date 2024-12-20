@@ -213,7 +213,7 @@ const FilterSidebar = ({
               onClick={() => {
                 handleItemClick(item.key);
               }}
-              style={{ cursor: 'pointer' }}
+              cursor="pointer"
             >
               {item.name}
             </Box>
