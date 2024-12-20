@@ -20,7 +20,7 @@ import { isAdmin } from 'utils/permissions/roles';
 
 import messages from '../../messages';
 
-import PhasesMenu from './FilterSidebarPhases';
+import FilterSidebarPhases from './FilterSidebarPhases';
 import ProjectsMenu from './FilterSidebarProjects';
 import StatusesMenu from './FilterSidebarStatuses';
 import TopicsMenu from './FilterSidebarTopics';
@@ -42,7 +42,7 @@ interface Props {
   statuses: IIdeaStatusData[];
   topics: ITopicData[];
   selectedTopics?: string[] | null;
-  selectedPhase?: string | null;
+  selectedPhase: string | undefined;
   selectedProject?: string | null;
   selectedStatus?: string | null;
   onChangePhaseFilter?: (arg: string | null) => void;
@@ -142,13 +142,14 @@ const FilterSidebar = ({
     phases: () => ({
       name: tabName('timelineTab', selectedPhase, 'phases'),
       key: 'phases',
-      content: (
-        <PhasesMenu
-          phases={phases}
-          selectedPhase={selectedPhase}
-          onChangePhaseFilter={onChangePhaseFilter}
-        />
-      ),
+      content:
+        phases && onChangePhaseFilter ? (
+          <FilterSidebarPhases
+            phases={phases}
+            selectedPhase={selectedPhase}
+            onChangePhaseFilter={onChangePhaseFilter}
+          />
+        ) : null,
     }),
     topics: () => ({
       name: tabName('topicsTab', selectedTopics, 'topics'),
