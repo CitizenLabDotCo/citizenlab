@@ -21,6 +21,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { getFullName } from 'utils/textUtils';
 
 import LanguageSelectorPopup from './LanguageSelectorPopup';
+import LocaleSelectorPopup from './LocaleSelectorPopup';
 import messages from './messages';
 import { ItemMenu, StyledBox } from './styles';
 
@@ -35,6 +36,7 @@ export const UserMenu = () => {
   const { data: authUser } = useAuthUser();
   const [isUserMenuPopupOpen, setIsUserMenuPopupOpen] = useState(false);
   const [isLanguagePopupOpen, setIsLanguagePopupOpen] = useState(false);
+  const [isLocaleSelectorOpen, setIsLocaleSelectorOpen] = useState(false);
 
   const handleUserMenuPopupClose = () => {
     // We only close the user menu popup if no other popup is open
@@ -144,8 +146,8 @@ export const UserMenu = () => {
               >
                 <Box display="flex" justifyContent="space-between" w="100%">
                   <LanguageSelectorPopup
-                    setIsOpen={setIsLanguagePopupOpen}
-                    isOpen={isLanguagePopupOpen}
+                    setIsLocaleSelectorOpen={setIsLocaleSelectorOpen}
+                    isLocaleSelectorOpen={isLocaleSelectorOpen}
                   />
                 </Box>
               </ItemMenu>
@@ -171,6 +173,12 @@ export const UserMenu = () => {
             </ItemMenu>
           </Box>
         }
+      />
+
+      <LocaleSelectorPopup
+        isLocaleSelectorOpen={isLocaleSelectorOpen}
+        setIsLocaleSelectorOpen={setIsLocaleSelectorOpen}
+        tenantLocales={tenantLocales}
       />
     </StyledBox>
   );
