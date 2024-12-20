@@ -13,11 +13,11 @@
   "scripts": {
     "extract-intl": "tsc --skipLibCheck app/containers/App/constants && babel-node --presets @babel/env -- ./internals/scripts/extract-intl.js",
     "prebuild": "npm run build:clean",
-    "build": "NODE_OPTIONS='--max-old-space-size=4096' vite build --mode production",
+    "build": "NODE_OPTIONS='--max-old-space-size=4096' vite build --mode production --logLevel info",
     "build:test": "NODE_OPTIONS='--max-old-space-size=4096' vite build --mode test",
     "build:clean": "rimraf ./build",
     "build:staging": "NODE_OPTIONS='--max-old-space-size=4096' vite build --mode staging",
-    "preview": "vite preview",
+    "preview": "NODE_OPTIONS='--max-old-space-size=4096' BUG=* vite preview --logLevel info",
     "start": "vite --mode development",
     "start:production": "npm run build && npm run start:prod",
     "start:prod": "cross-env NODE_ENV=production node server/production",

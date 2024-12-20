@@ -40,7 +40,7 @@ services:
     image: citizenlabdotco/front-e2e:${CIRCLE_SHA1}
     environment:
       API_HOST: e2e.front
-      API_PORT: 4000
+      API_PORT: 3000
     env_file:
       - "../env_files/front-safe.env"
       - "../env_files/front-secret.env"
