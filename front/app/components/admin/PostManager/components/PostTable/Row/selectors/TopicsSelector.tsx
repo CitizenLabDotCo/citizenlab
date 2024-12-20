@@ -36,9 +36,9 @@ const TopicsSelector = memo<Props>(({ selectedTopics, onUpdateTopics }) => {
     [selectedTopics, onUpdateTopics]
   );
 
-  if (topics) {
+  if (filteredTopics) {
     return (
-      <>
+      <Box display="flex" gap="8px">
         {filteredTopics?.map((topic) => {
           return (
             <Box
@@ -73,7 +73,7 @@ const TopicsSelector = memo<Props>(({ selectedTopics, onUpdateTopics }) => {
             </Box>
           );
         })}
-      </>
+      </Box>
     );
   }
 
