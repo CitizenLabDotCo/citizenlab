@@ -26,6 +26,7 @@ const FilterSidebarPhasesItem = ({
   onChange,
   isSelected,
   id,
+  phaseNumber,
 }: Props) => {
   const localize = useLocalize();
   const [{ canDrop, isOver }, drop] = useDrop({
