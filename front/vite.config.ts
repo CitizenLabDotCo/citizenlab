@@ -100,11 +100,15 @@ export default defineConfig(({ mode }) => {
       minify: isProd,
       rollupOptions: {
         output: {
-          entryFileNames: isDev ? '[name].js' : '[name].[hash].js',
-          chunkFileNames: isDev ? '[name].chunk.js' : '[name].[hash].chunk.js',
+          entryFileNames: isDev ? '[name].js' : '[name].min.js',
+          chunkFileNames: isDev
+            ? '[name].chunk.js'
+            : '[name].[hash].chunk.min.js',
+          assetFileNames: '[name].[ext]',
         },
       },
     },
+
     resolve: {
       alias: {
         assets: path.resolve(__dirname, 'app/assets'),
