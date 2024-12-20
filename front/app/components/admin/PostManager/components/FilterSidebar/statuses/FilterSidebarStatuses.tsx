@@ -14,6 +14,7 @@ import { isAdmin } from 'utils/permissions/roles';
 
 import { ManagerType } from '../../..';
 import messages from '../../../messages';
+import FilterRadioButton from '../FilterRadioButton';
 
 import FilterSidebarStatusesItem from './FilterSidebarStatusesItem';
 
@@ -51,9 +52,13 @@ const FilterSidebarStatuses = ({
 
   return (
     <Menu secondary={true} vertical={true} fluid={true}>
-      <Menu.Item onClick={clearFilter} active={!selectedStatus}>
-        <FormattedMessage {...messages.allStatuses} />
-      </Menu.Item>
+      <FilterRadioButton
+        id="all-statuses"
+        onChange={clearFilter}
+        isSelected={!selectedStatus}
+        name="status"
+        labelContent={<FormattedMessage {...messages.allStatuses} />}
+      />
       <Divider />
       {/* Input statuses can be edited and only admins can do this */}
       {isAdmin(authUser) && (
