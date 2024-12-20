@@ -1,6 +1,6 @@
 import path from 'path';
 
-import { sentryVitePlugin } from '@sentry/vite-plugin';
+// import { sentryVitePlugin } from '@sentry/vite-plugin';
 import react from '@vitejs/plugin-react';
 import dotenv from 'dotenv';
 import { defineConfig } from 'vite';
@@ -30,7 +30,6 @@ export default defineConfig(({ mode }) => {
   const DEV_WORKSHOPS_PORT = process.env.DEV_WORKSHOPS_PORT || '4005';
 
   return {
-    logLevel: 'error',
     root: path.resolve(__dirname, 'app'), // Root directory
     base: '/', // Base path for public assets
     server: {
@@ -81,27 +80,25 @@ export default defineConfig(({ mode }) => {
           },
         },
       }),
-      sentryVitePlugin({
-        url: 'https://sentry.hq.citizenlab.co/',
-        authToken: process.env.SENTRY_AUTH_TOKEN,
-        org: 'citizenlab',
-        project: 'cl2-front',
-        release: {
-          name: process.env.CIRCLE_BUILD_NUM,
-          deploy: {
-            env: mode,
-          },
-        },
-      }),
+      // sentryVitePlugin({
+      //   url: 'https://sentry.hq.citizenlab.co/',
+      //   authToken: process.env.SENTRY_AUTH_TOKEN,
+      //   org: 'citizenlab',
+      //   project: 'cl2-front',
+      //   release: {
+      //     name: process.env.CIRCLE_BUILD_NUM,
+      //     deploy: {
+      //       env: mode,
+      //     },
+      //   },
+      // }),
     ],
     build: {
       outDir: '../build',
       sourcemap: !isDev && !isTestBuild,
       minify: isProd,
       rollupOptions: {
-        input: {
-          main: path.resolve(__dirname, 'app/root.tsx'), // Point to your main entry file
-        },
+        input: path.resolve(__dirname, 'app/index.html'),
         output: {
           entryFileNames: '[name].[hash].min.js', // Generate the main.*.min.js file
           chunkFileNames: '[name].[hash].chunk.js',
