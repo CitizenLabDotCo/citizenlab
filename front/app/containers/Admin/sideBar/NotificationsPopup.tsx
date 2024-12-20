@@ -6,8 +6,8 @@ import {
   Text,
   colors,
   useBreakpoint,
+  Dropdown,
 } from '@citizenlab/cl2-component-library';
-import { Popup } from 'semantic-ui-react';
 
 import useAuthUser from 'api/me/useAuthUser';
 import useMarkAllAsRead from 'api/notifications/useMarkAllAsRead';
@@ -45,100 +45,92 @@ export const NotificationsPopup = () => {
   };
 
   const handleOpenNotifications = () => {
+    setIsNotificationsPopupOpen(true);
     trackEventByName(tracks.clickOpenNotifications.name);
   };
 
   return (
-    <Popup
-      trigger={
-        <StyledBox
-          as="button"
-          width={isSmallerThanPhone ? '56px' : '100%'}
+    <>
+      <StyledBox
+        as="button"
+        width={isSmallerThanPhone ? '56px' : '100%'}
+        display="flex"
+        justifyContent="flex-start"
+        onClick={handleOpenNotifications}
+        p="0px"
+        position="relative"
+      >
+        <Box
           display="flex"
-          justifyContent="flex-start"
-          onClick={() => setIsNotificationsPopupOpen(true)}
-          p="0px"
+          alignItems="center"
+          w="100%"
+          p={isSmallerThanPhone ? '10px 0' : '10px 16px'}
+          justifyContent={isSmallerThanPhone ? 'center' : undefined}
         >
           <Box
             display="flex"
+            flex="0 0 auto"
             alignItems="center"
-            w="100%"
-            p={isSmallerThanPhone ? '10px 0' : '10px 16px'}
-            justifyContent={isSmallerThanPhone ? 'center' : undefined}
+            justifyContent="center"
           >
+            <Icon
+              name="notification-outline"
+              fill={colors.blue400}
+              width="24px"
+            />
+          </Box>
+          {!isSmallerThanPhone && (
+            <>
+              <Text
+                color="white"
+                ml="15px"
+                fontSize="base"
+                textAlign="left"
+                my="0px"
+                w="100%"
+              >
+                {formatMessage({ ...messages.notifications })}
+              </Text>
+            </>
+          )}
+          <Box w="auto" h={isSmallerThanPhone ? '0' : '18px'} ref={iconDivRef}>
+            {unreadNotificationsCount > 0 && (
+              <Box
+                background={colors.red500}
+                p="0px 4px"
+                display="flex"
+                flexDirection="column"
+                alignItems="flex-start"
+                borderRadius="2px"
+              >
+                <Text color="white" my="0px" fontSize="xs">
+                  {unreadNotificationsCount}
+                </Text>
+              </Box>
+            )}
+          </Box>
+        </Box>
+        <Dropdown
+          opened={isNotificationsPopupOpen}
+          content={
             <Box
+              minHeight="200px"
+              height="250px"
+              minWidth="200px"
               display="flex"
-              flex="0 0 auto"
               alignItems="center"
               justifyContent="center"
+              zIndex="10000"
             >
-              <Icon
-                name="notification-outline"
-                fill={colors.blue400}
-                width="24px"
-              />
+              <Notifications />
             </Box>
-            {!isSmallerThanPhone && (
-              <>
-                <Text
-                  color="white"
-                  ml="15px"
-                  fontSize="base"
-                  textAlign="left"
-                  my="0px"
-                  w="100%"
-                >
-                  {formatMessage({ ...messages.notifications })}
-                </Text>
-              </>
-            )}
-            <Box
-              w="auto"
-              h={isSmallerThanPhone ? '0' : '18px'}
-              ref={iconDivRef}
-            >
-              {unreadNotificationsCount > 0 && (
-                <Box
-                  background={colors.red500}
-                  p="0px 4px"
-                  display="flex"
-                  flexDirection="column"
-                  alignItems="flex-start"
-                  borderRadius="2px"
-                >
-                  <Text color="white" my="0px" fontSize="xs">
-                    {unreadNotificationsCount}
-                  </Text>
-                </Box>
-              )}
-            </Box>
-          </Box>
-        </StyledBox>
-      }
-      on="click"
-      open={isNotificationsPopupOpen}
-      onClose={handleCloseNotifications}
-      onOpen={handleOpenNotifications}
-      position="right center"
-      offset={[-40, 0]}
-      context={iconDivRef}
-      positionFixed
-      basic
-      wide
-    >
-      <Box
-        minHeight="200px"
-        height="250px"
-        minWidth="200px"
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-        overflowY="auto"
-        zIndex="10000"
-      >
-        <Notifications />
-      </Box>
-    </Popup>
+          }
+          onClickOutside={handleCloseNotifications}
+          left={isSmallerThanPhone ? '60px' : '200px'}
+          top="-160px"
+        />
+      </StyledBox>
+    </>
   );
 };
 
