@@ -167,6 +167,33 @@ export type BoxZIndexProps = {
   zIndex?: string;
 };
 
+type BoxCursorProps = {
+  // Full list: https://www.w3schools.com/cssref/pr_class_cursor.php
+  cursor?:
+    | 'alias'
+    | 'all-scroll'
+    | 'auto'
+    | 'cell'
+    | 'col-resize'
+    | 'context-menu'
+    | 'copy'
+    | 'crosshair'
+    | 'default'
+    | 'ew-resize'
+    | 'grab'
+    | 'grabbing'
+    | 'help'
+    | 'move'
+    | 'none'
+    | 'not-allowed'
+    | 'pointer'
+    | 'progress'
+    | 'text'
+    | 'wait'
+    | 'zoom-in'
+    | 'zoom-out';
+};
+
 export type BoxProps = BoxColorProps &
   BoxShadowProps &
   BoxBackgroundProps &
@@ -181,6 +208,7 @@ export type BoxProps = BoxColorProps &
   BoxBorderProps &
   BoxVisibilityProps &
   BoxZIndexProps &
+  BoxCursorProps &
   React.HTMLAttributes<HTMLDivElement>;
 
 const Box = styled.div<BoxProps>`
@@ -332,6 +360,11 @@ const Box = styled.div<BoxProps>`
   // z-index
   ${(props) => css`
     ${props.zIndex ? `z-index: ${props.zIndex}` : ''};
+  `}
+
+  // cursor
+  ${(props) => css`
+    ${props.cursor ? `cursor: ${props.cursor}` : ''};
   `}
 `;
 

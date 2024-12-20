@@ -40,7 +40,7 @@ const FilterSidebarPhases = ({
   const name = 'phase';
 
   return (
-    <Box display="flex" flexDirection="column">
+    <Box display="flex" flexDirection="column" w="100%">
       {/* FilterRadioButton is also used inside FilterSidebarPhasesItem */}
       <FilterRadioButton
         id="all-phases"
