@@ -65,7 +65,7 @@ const HeaderContent = ({
     trackEventByName(tracks.clickCreateAccountCTA, {
       extra: { location: 'signed-out header' },
     });
-    triggerAuthenticationFlow();
+    triggerAuthenticationFlow({}, 'signup');
   };
   const buttonStyle = getButtonStyle(fontColors);
 
