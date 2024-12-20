@@ -1,10 +1,15 @@
 import React from 'react';
 
-import { Icon, colors } from '@citizenlab/cl2-component-library';
+import {
+  Icon,
+  colors,
+  IconTooltip,
+  Box,
+} from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
 import { useParams } from 'react-router-dom';
 import { RouteType } from 'routes';
-import { Segment, Menu, Popup } from 'semantic-ui-react';
+import { Segment, Menu } from 'semantic-ui-react';
 import styled from 'styled-components';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
@@ -125,13 +130,10 @@ const FilterSidebar = ({
         {title}
         {selectionSign}&nbsp;
         {active ? (
-          <Popup
-            content={formatMessage(tooltipMessage)}
-            trigger={
-              <button>
-                <InfoIcon name="info-solid" />
-              </button>
-            }
+          <IconTooltip
+            content={<Box w="300px">{formatMessage(tooltipMessage)}</Box>}
+            icon="info-solid"
+            theme="light"
           />
         ) : null}
       </>
