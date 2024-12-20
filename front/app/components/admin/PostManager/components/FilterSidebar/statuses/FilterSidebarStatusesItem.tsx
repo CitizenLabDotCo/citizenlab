@@ -6,6 +6,7 @@ import {
   Button,
   colors,
   Tooltip,
+  fontSizes,
 } from '@citizenlab/cl2-component-library';
 import ColorIndicator from 'component-library/components/ColorIndicator';
 import { useDrop } from 'react-dnd';
@@ -100,6 +101,7 @@ const FilterSidebarStatusesItem = ({ status, active, onClick }: Props) => {
             justify="left"
             bgHoverColor={colors.background}
             disabled={prescreeningButtonIsDisabled}
+            fontSize={`${fontSizes.s}px`}
           >
             <Box
               display="flex"
