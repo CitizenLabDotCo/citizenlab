@@ -1,6 +1,6 @@
 import path from 'path';
 
-// import { sentryVitePlugin } from '@sentry/vite-plugin';
+import { sentryVitePlugin } from '@sentry/vite-plugin';
 import react from '@vitejs/plugin-react';
 import dotenv from 'dotenv';
 import { defineConfig } from 'vite';
@@ -81,18 +81,18 @@ export default defineConfig(({ mode }) => {
           },
         },
       }),
-      // sentryVitePlugin({
-      //   url: 'https://sentry.hq.citizenlab.co/',
-      //   authToken: process.env.SENTRY_AUTH_TOKEN,
-      //   org: 'citizenlab',
-      //   project: 'cl2-front',
-      //   release: {
-      //     name: process.env.CIRCLE_BUILD_NUM,
-      //     deploy: {
-      //       env: mode,
-      //     },
-      //   },
-      // }),
+      sentryVitePlugin({
+        url: 'https://sentry.hq.citizenlab.co/',
+        authToken: process.env.SENTRY_AUTH_TOKEN,
+        org: 'citizenlab',
+        project: 'cl2-front',
+        release: {
+          name: process.env.CIRCLE_BUILD_NUM,
+          deploy: {
+            env: mode,
+          },
+        },
+      }),
     ],
     build: {
       outDir: '../build',
