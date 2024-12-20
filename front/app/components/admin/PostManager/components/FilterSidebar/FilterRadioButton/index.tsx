@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
 import { hideVisually } from 'polished';
 import styled from 'styled-components';
 
@@ -45,7 +44,7 @@ const FilterRadioButton = ({
   name,
 }: Props) => {
   return (
-    <Box display="flex" alignItems="center">
+    <>
       <HiddenRadio
         id={id}
         name={name}
@@ -55,7 +54,7 @@ const FilterRadioButton = ({
       <Label htmlFor={id} onClick={onChange} selected={isSelected}>
         {labelContent}
       </Label>
-    </Box>
+    </>
   );
 };
 
