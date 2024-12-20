@@ -20,7 +20,7 @@ import { isAdmin } from 'utils/permissions/roles';
 
 import messages from '../../messages';
 
-import FilterSidebarPhases from './FilterSidebarPhases';
+import FilterSidebarPhases from './phases/FilterSidebarPhases';
 import ProjectsMenu from './FilterSidebarProjects';
 import StatusesMenu from './FilterSidebarStatuses';
 import TopicsMenu from './FilterSidebarTopics';

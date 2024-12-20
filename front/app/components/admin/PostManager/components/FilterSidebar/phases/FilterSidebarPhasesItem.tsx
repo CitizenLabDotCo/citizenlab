@@ -8,8 +8,8 @@ import { canContainIdeas } from 'api/phases/utils';
 
 import useLocalize from 'hooks/useLocalize';
 
-import FilterRadioButton from './FilterRadioButton';
-import LabelContentWrapper from './FilterRadioButton/LabelContentWrapper';
+import FilterRadioButton from '../FilterRadioButton';
+import LabelContentWrapper from '../FilterRadioButton/LabelContentWrapper';
 
 interface Props {
   phase: IPhaseData;
