@@ -225,6 +225,7 @@ commercial_engines = [
   # ID verification & SSO engines.
   'id_auth0',
   'id_azure_active_directory',
+  'id_azure_active_directory_b2c',
   'id_bogus',
   'id_bosa_fas',
   'id_clave_unica',

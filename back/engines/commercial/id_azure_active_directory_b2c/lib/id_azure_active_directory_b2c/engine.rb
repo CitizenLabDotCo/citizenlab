@@ -6,7 +6,7 @@ module IdAzureActiveDirectoryB2c
 
     config.to_prepare do
       AppConfiguration::Settings.add_feature(IdAzureActiveDirectoryB2c::FeatureSpecification)
-      IdMethod.add_method('azure_active_directory_b2c', AzureActiveDirectoryB2cOmniauth.new) # TODO: JS - can we change this to 'id_azure_active_directory_b2c'?
+      IdMethod.add_method('azureactivedirectory_b2c', AzureActiveDirectoryB2cOmniauth.new)
     end
   end
 end
