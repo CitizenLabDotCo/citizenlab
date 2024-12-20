@@ -22,7 +22,6 @@ resource 'Analytics - FactParticipations' do
       # Type dimensions
       [
         { name: 'idea', parent: 'post' },
-        { name: 'initiative', parent: 'post' },
         { name: 'comment', parent: 'idea' },
         { name: 'reaction', parent: 'idea' }
       ].each do |type|
@@ -37,7 +36,6 @@ resource 'Analytics - FactParticipations' do
       idea = create(:idea, created_at: dates[0], author: male)
       create(:comment, created_at: dates[2], post: idea, author: female)
       create(:reaction, created_at: dates[3], user: create(:admin, gender: 'female'), reactable: idea)
-      create(:initiative, created_at: dates[1], author: unspecified)
     end
 
     example 'group participations by month' do
@@ -52,7 +50,7 @@ resource 'Analytics - FactParticipations' do
       })
       assert_status 200
       expect(response_data[:attributes]).to match_array([
-        { 'dimension_date_created.month': '2022-09', count: 2 },
+        { 'dimension_date_created.month': '2022-09', count: 1 },
         { 'dimension_date_created.month': '2022-10', count: 2 }
       ])
     end
