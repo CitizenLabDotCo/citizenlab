@@ -971,7 +971,6 @@
   "app.containers.AdminPage.ProjectEdit.defaultSorting": "Sorting",
   "app.containers.AdminPage.ProjectEdit.departments": "Departments",
   "app.containers.AdminPage.ProjectEdit.descriptionTab": "Description",
-  "app.containers.AdminPage.ProjectEdit.disableDislikingTooltip": "Questo disabiliterà l'antipatia, ma il gradimento sarà ancora abilitato. Puoi disattivare completamente la reazione nella sezione Azioni di questa scheda.",
   "app.containers.AdminPage.ProjectEdit.disabled": "Disabled",
   "app.containers.AdminPage.ProjectEdit.dislikingMethodTitle": "Numero di non mi piace per partecipante",
   "app.containers.AdminPage.ProjectEdit.dislikingPosts": "Abilita l'antipatia",

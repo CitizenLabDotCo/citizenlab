@@ -1676,7 +1676,6 @@
   "app.containers.AdminPage.ProjectEdit.defaultSorting": "ਛਾਂਟੀ",
   "app.containers.AdminPage.ProjectEdit.departments": "ਵਿਭਾਗਾਂ",
   "app.containers.AdminPage.ProjectEdit.descriptionTab": "ਵਰਣਨ",
-  "app.containers.AdminPage.ProjectEdit.disableDislikingTooltip": "ਇਹ ਨਾਪਸੰਦ ਨੂੰ ਅਸਮਰੱਥ ਬਣਾ ਦੇਵੇਗਾ, ਪਰ ਫਿਰ ਵੀ ਪਸੰਦ ਨੂੰ ਸਮਰੱਥ ਬਣਾਇਆ ਜਾਵੇਗਾ। ਤੁਸੀਂ ਇਸ ਟੈਬ ਦੇ ਐਕਸ਼ਨ ਸੈਕਸ਼ਨ ਵਿੱਚ ਪ੍ਰਤੀਕਿਰਿਆ ਨੂੰ ਪੂਰੀ ਤਰ੍ਹਾਂ ਅਯੋਗ ਕਰ ਸਕਦੇ ਹੋ।",
   "app.containers.AdminPage.ProjectEdit.disabled": "ਅਯੋਗ",
   "app.containers.AdminPage.ProjectEdit.dislikingMethodTitle": "ਪ੍ਰਤੀ ਭਾਗੀਦਾਰ ਨਾਪਸੰਦਾਂ ਦੀ ਸੰਖਿਆ",
   "app.containers.AdminPage.ProjectEdit.dislikingPosts": "ਨਾਪਸੰਦ ਕਰਨਾ ਚਾਲੂ ਕਰੋ",

@@ -1676,7 +1676,6 @@
   "app.containers.AdminPage.ProjectEdit.defaultSorting": "Sıralama",
   "app.containers.AdminPage.ProjectEdit.departments": "Bölümler",
   "app.containers.AdminPage.ProjectEdit.descriptionTab": "Açıklama",
-  "app.containers.AdminPage.ProjectEdit.disableDislikingTooltip": "Bu, beğenmemeyi devre dışı bırakacak, ancak beğenme hala etkin olacaktır. Bu sekmenin Eylemler bölümünden tepki vermeyi tamamen devre dışı bırakabilirsiniz.",
   "app.containers.AdminPage.ProjectEdit.disabled": "Devre dışı",
   "app.containers.AdminPage.ProjectEdit.dislikingMethodTitle": "Katılımcı başına beğenmeme sayısı",
   "app.containers.AdminPage.ProjectEdit.dislikingPosts": "Beğenmemeyi etkinleştir",

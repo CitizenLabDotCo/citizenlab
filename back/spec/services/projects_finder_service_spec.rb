@@ -59,7 +59,7 @@ describe ProjectsFinderService do
           enabled: true,
           disabled_reason: nil,
           up: { enabled: true, disabled_reason: nil },
-          down: { enabled: true, disabled_reason: nil }
+          down: { enabled: false, disabled_reason: 'reacting_dislike_disabled' }
         },
         comment_reacting_idea: { enabled: true, disabled_reason: nil },
         annotating_document: { enabled: false, disabled_reason: 'not_document_annotation' },
