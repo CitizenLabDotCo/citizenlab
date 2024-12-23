@@ -310,7 +310,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.expireDateLimitRequired": "عدد الأيام مطلوب",
   "app.components.app.containers.AdminPage.ProjectEdit.expireDaysLimit": "عدد الأيام للوصول إلى الحد الأدنى لعدد الأصوات",
   "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltip": "يمكنك العثور في {googleFormsTooltipLink} على مزيد من المعلومات حول كيفية تضمين رابط بشأن نماذج Google.",
-  "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLink": "https://support.citizenlab.co/articles/5050525",
+  "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLink": "https://support.govocal.com/en/articles/7025887-creating-an-external-survey-project#h_163e33df30",
   "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLinkText": "مقالة الدعم هذه",
   "app.components.app.containers.AdminPage.ProjectEdit.ideaTerm": "الفكرة",
   "app.components.app.containers.AdminPage.ProjectEdit.initiativeTerm": "مبادرة",
