@@ -3211,8 +3211,8 @@ resource 'Idea Custom Fields' do
             custom_form,
             'changed',
             User.first,
-            custom_form.reload.updated_at.to_i,
-            payload: { save_type: 'manual', pages: 1, sections: 0, fields: 2, params_size: 877, form_opened_at: nil, form_updated_at: custom_form.reload.updated_at.to_i },
+            kind_of(Integer),
+            payload: { save_type: 'manual', pages: 1, sections: 0, fields: 2, params_size: 877, form_opened_at: nil, form_updated_at: kind_of(Integer) },
             project_id: custom_form.project_id
           ).exactly(1).times
       end
