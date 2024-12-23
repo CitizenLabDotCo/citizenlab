@@ -1677,7 +1677,7 @@
   "app.containers.AdminPage.ProjectEdit.defaultSorting": "Sortowanie",
   "app.containers.AdminPage.ProjectEdit.departments": "Departamenty",
   "app.containers.AdminPage.ProjectEdit.descriptionTab": "Opis",
-  "app.containers.AdminPage.ProjectEdit.disableDislikingTooltip": "Spowoduje to wyłączenie nielubienia, ale lubienie będzie nadal włączone. Możesz całkowicie wyłączyć reagowanie w sekcji Działania na tej karcie.",
+  "app.containers.AdminPage.ProjectEdit.disableDislikingTooltip2": "W ten sposób włączysz lub wyłączysz nielubienie, ale lubienie będzie nadal włączone. Zalecamy pozostawienie tej opcji wyłączonej, chyba że przeprowadzasz analizę opcji.",
   "app.containers.AdminPage.ProjectEdit.disabled": "Wyłączone",
   "app.containers.AdminPage.ProjectEdit.dislikingMethodTitle": "Liczba polubień na uczestnika",
   "app.containers.AdminPage.ProjectEdit.dislikingPosts": "Włącz nielubienie",
