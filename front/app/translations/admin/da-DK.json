@@ -2589,7 +2589,6 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleTooltip": "Det er nyttigt at give disse oplysninger til brugere, der er afhængige af en skærmlæser eller anden hjælpeteknologi.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabel": "Tilføj din URL",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabelTooltip": "Den fulde URL-adresse for det websted, du ønsker at indlejre.",
-  "app.containers.admin.ContentBuilder.IframeMultiloc.iframeDescription": "Vis indhold fra et eksternt websted på din side i en HTML iFrame.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeEmbedVisitLinkMessage": "Besøg vores supportside",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeHeightPlaceholder": "300",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeInvalidWhitelistUrlErrorMessage": "Beklager, dette indhold kunne ikke indlejres. {visitLinkMessage} for at få mere at vide.",
