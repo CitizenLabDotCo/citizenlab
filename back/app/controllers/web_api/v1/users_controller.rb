@@ -203,16 +203,12 @@ class WebApi::V1::UsersController < ApplicationController
   def comments_count
     count = 0
     published_comments = @user.comments.published
+    # TODO: cleanup-after-proposals-migration
+    # Simplify when Comment.post_type is removed
     if !params[:post_type] || params[:post_type] == 'Idea'
       count += policy_scope(
         published_comments.where(post_type: 'Idea'),
         policy_scope_class: IdeaCommentPolicy::Scope
-      ).count
-    end
-    if !params[:post_type] || params[:post_type] == 'Initiative'
-      count += policy_scope(
-        published_comments.where(post_type: 'Initiative'),
-        policy_scope_class: InitiativeCommentPolicy::Scope
       ).count
     end
     render json: raw_json({ count: count }), status: :ok

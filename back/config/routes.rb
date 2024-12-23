@@ -74,22 +74,6 @@ Rails.application.routes.draw do
         get :similarities, on: :member
       end
 
-      resources :initiatives,
-        concerns: %i[reactable post followable],
-        defaults: { reactable: 'Initiative', post: 'Initiative', followable: 'Initiative' } do
-        resources :images, defaults: { container_type: 'Initiative' }
-        resources :files, defaults: { container_type: 'Initiative' }
-
-        resources :initiative_status_changes, shallow: true, except: %i[update destroy]
-
-        get :as_xlsx, on: :collection, action: 'index_xlsx'
-        get 'by_slug/:slug', on: :collection, to: 'initiatives#by_slug'
-        get :as_markers, on: :collection, action: 'index_initiative_markers'
-        get :filter_counts, on: :collection
-        get :allowed_transitions, on: :member
-        patch :accept_cosponsorship_invite, on: :member
-      end
-
       resources :background_jobs, only: %i[index]
 
       resources :idea_statuses do
@@ -117,7 +101,6 @@ Rails.application.routes.draw do
         get 'by_slug/:slug', on: :collection, to: 'users#by_slug'
         get 'by_invite/:token', on: :collection, to: 'users#by_invite'
         get 'ideas_count', on: :member
-        get 'initiatives_count', on: :member
         get 'comments_count', on: :member
         get 'blocked_count', on: :collection
         get 'check/:email', on: :collection, to: 'users#check', constraints: { email: /.*/ }
@@ -279,8 +262,6 @@ Rails.application.routes.draw do
           get 'ideas_by_topic_as_xlsx'
           get 'ideas_by_project_as_xlsx'
         end
-
-        get 'initiatives_count', controller: 'stats_initiatives'
 
         with_options controller: 'stats_comments' do
           get 'comments_count'

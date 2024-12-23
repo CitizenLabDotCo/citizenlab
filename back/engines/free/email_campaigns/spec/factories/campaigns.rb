@@ -42,14 +42,6 @@ FactoryBot.define do
     enabled { true }
   end
 
-  factory :comment_on_initiative_you_follow_campaign, class: EmailCampaigns::Campaigns::CommentOnInitiativeYouFollow do
-    enabled { true }
-  end
-
-  factory :cosponsor_of_your_initiative_campaign, class: EmailCampaigns::Campaigns::CosponsorOfYourInitiative do
-    enabled { true }
-  end
-
   factory :cosponsor_of_your_idea_campaign, class: EmailCampaigns::Campaigns::CosponsorOfYourIdea do
     enabled { true }
   end
@@ -74,22 +66,6 @@ FactoryBot.define do
     enabled { true }
   end
 
-  factory :initiative_assigned_to_you_campaign, class: EmailCampaigns::Campaigns::InitiativeAssignedToYou do
-    enabled { true }
-  end
-
-  factory :initiative_marked_as_spam_campaign, class: EmailCampaigns::Campaigns::InitiativeMarkedAsSpam do
-    enabled { true }
-  end
-
-  factory :initiative_published_campaign, class: EmailCampaigns::Campaigns::InitiativePublished do
-    enabled { true }
-  end
-
-  factory :initiative_resubmitted_for_review_campaign, class: EmailCampaigns::Campaigns::InitiativeResubmittedForReview do
-    enabled { true }
-  end
-
   factory :internal_comment_on_idea_assigned_to_you_campaign, class: EmailCampaigns::Campaigns::InternalCommentOnIdeaAssignedToYou do
     enabled { true }
   end
@@ -102,18 +78,6 @@ FactoryBot.define do
     enabled { true }
   end
 
-  factory :internal_comment_on_initiative_assigned_to_you_campaign, class: EmailCampaigns::Campaigns::InternalCommentOnInitiativeAssignedToYou do
-    enabled { true }
-  end
-
-  factory :internal_comment_on_initiative_you_commented_internally_on_campaign, class: EmailCampaigns::Campaigns::InternalCommentOnInitiativeYouCommentedInternallyOn do
-    enabled { true }
-  end
-
-  factory :internal_comment_on_unassigned_initiative_campaign, class: EmailCampaigns::Campaigns::InternalCommentOnUnassignedInitiative do
-    enabled { true }
-  end
-
   factory :internal_comment_on_unassigned_unmoderated_idea_campaign, class: EmailCampaigns::Campaigns::InternalCommentOnUnassignedUnmoderatedIdea do
     enabled { true }
   end
@@ -123,10 +87,6 @@ FactoryBot.define do
   end
 
   factory :invitation_to_cosponsor_idea_campaign, class: EmailCampaigns::Campaigns::InvitationToCosponsorIdea do
-    enabled { true }
-  end
-
-  factory :invitation_to_cosponsor_initiative_campaign, class: EmailCampaigns::Campaigns::InvitationToCosponsorInitiative do
     enabled { true }
   end
 
@@ -143,10 +103,6 @@ FactoryBot.define do
   end
 
   factory :new_idea_for_admin_campaign, class: EmailCampaigns::Campaigns::NewIdeaForAdmin do
-    enabled { true }
-  end
-
-  factory :new_initiative_for_admin_campaign, class: EmailCampaigns::Campaigns::NewInitiativeForAdmin do
     enabled { true }
   end
 
@@ -183,10 +139,6 @@ FactoryBot.define do
   end
 
   factory :status_change_on_idea_you_follow_campaign, class: EmailCampaigns::Campaigns::StatusChangeOnIdeaYouFollow do
-    enabled { true }
-  end
-
-  factory :status_change_on_initiative_you_follow_campaign, class: EmailCampaigns::Campaigns::StatusChangeOnInitiativeYouFollow do
     enabled { true }
   end
 

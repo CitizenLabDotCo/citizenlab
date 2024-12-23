@@ -31,12 +31,6 @@ FactoryBot.define do
     association :post, factory: :idea
   end
 
-  factory :cosponsor_of_your_initiative, parent: :notification, class: 'Notifications::CosponsorOfYourInitiative' do
-    association :post, factory: :initiative
-    cosponsors_initiative
-    initiating_user
-  end
-
   factory :cosponsor_of_your_idea, parent: :notification, class: 'Notifications::CosponsorOfYourIdea' do
     association :post, factory: :idea
     cosponsorship
@@ -67,30 +61,6 @@ FactoryBot.define do
     association :post, factory: :idea
   end
 
-  factory :internal_comment_on_initiative_assigned_to_you,
-    parent: :notification,
-    class: 'Notifications::InternalComments::InternalCommentOnInitiativeAssignedToYou' do
-    initiating_user
-    internal_comment
-    association :post, factory: :initiative
-  end
-
-  factory :internal_comment_on_initiative_you_commented_internally_on,
-    parent: :notification,
-    class: 'Notifications::InternalComments::InternalCommentOnInitiativeYouCommentedInternallyOn' do
-    initiating_user
-    internal_comment
-    association :post, factory: :initiative
-  end
-
-  factory :internal_comment_on_unassigned_initiative,
-    parent: :notification,
-    class: 'Notifications::InternalComments::InternalCommentOnUnassignedInitiative' do
-    initiating_user
-    internal_comment
-    association :post, factory: :initiative
-  end
-
   factory :internal_comment_on_unassigned_unmoderated_idea,
     parent: :notification,
     class: 'Notifications::InternalComments::InternalCommentOnUnassignedUnmoderatedIdea' do
@@ -114,26 +84,9 @@ FactoryBot.define do
     initiating_user
   end
 
-  factory :initiative_assigned_to_you, parent: :notification, class: 'Notifications::InitiativeAssignedToYou' do
-    initiating_user
-    association :post, factory: :initiative
-  end
-
-  factory :initiative_marked_as_spam, parent: :notification, class: 'Notifications::InitiativeMarkedAsSpam' do
-    association :post, factory: :initiative
-    spam_report
-    initiating_user
-  end
-
   factory :invite_accepted, parent: :notification, class: 'Notifications::InviteAccepted' do
     initiating_user
     invite
-  end
-
-  factory :invitation_to_cosponsor_initiative, parent: :notification, class: 'Notifications::InvitationToCosponsorInitiative' do
-    association :post, factory: :initiative
-    cosponsors_initiative
-    initiating_user
   end
 
   factory :invitation_to_cosponsor_idea, parent: :notification, class: 'Notifications::InvitationToCosponsorIdea' do
@@ -142,22 +95,11 @@ FactoryBot.define do
     initiating_user
   end
 
-  factory :initiative_resubmitted_for_review, parent: :notification, class: 'Notifications::InitiativeResubmittedForReview' do
-    association :post, factory: :initiative
-    association :post_status, factory: :initiative_status, code: 'review_pending'
-  end
-
   factory :comment_on_idea_you_follow, parent: :notification, class: 'Notifications::CommentOnIdeaYouFollow' do
     initiating_user
     comment
     association :post, factory: :idea
     project
-  end
-
-  factory :comment_on_initiative_you_follow, parent: :notification, class: 'Notifications::CommentOnInitiativeYouFollow' do
-    initiating_user
-    comment
-    association :post, factory: :initiative
   end
 
   factory :mention_in_comment, parent: :notification, class: 'Notifications::MentionInComment' do
@@ -230,16 +172,8 @@ FactoryBot.define do
     end
   end
 
-  factory :status_change_on_initiative_you_follow, parent: :notification, class: 'Notifications::StatusChangeOnInitiativeYouFollow' do
-    association :post, factory: :initiative
-    association :post_status, factory: :initiative_status
-    before(:create) do |notification|
-      notification.post.initiative_status_changes.create!(initiative_status: notification.post_status)
-    end
-  end
-
   factory :threshold_reached_for_admin, parent: :notification, class: 'Notifications::ThresholdReachedForAdmin' do
-    association :post, factory: :initiative
+    association :post, factory: :idea
     association :post_status, factory: :proposals_status
   end
 

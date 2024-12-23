@@ -34,7 +34,7 @@ describe SideFxCommentService do
       expectation.to enqueue_job(LogActivityJob).with(comment, 'mentioned', user, created_at, payload: { mentioned_user: u2.id }, project_id: project_id)
     end
 
-    it 'creates a follower' do
+    it 'creates the expected follower records' do
       project = create(:project)
       folder = create(:project_folder, projects: [project])
       idea = create(:idea, project: project)
@@ -47,14 +47,23 @@ describe SideFxCommentService do
       expect(user.follows.pluck(:followable_id)).to contain_exactly idea.id, project.id, folder.id
     end
 
-    it 'does not create a follower if the user already follows the post' do
-      initiative = create(:initiative)
-      comment = create(:comment, post: initiative)
-      create(:follower, followable: initiative, user: user)
+    it 'does not create new follower records for followable items user already follows' do
+      project = create(:project)
+      folder = create(:project_folder, projects: [project])
+      idea = create(:idea, project: project)
+      comment = create(:comment, post: idea)
 
-      expect do
-        service.after_create comment, user
-      end.not_to change(Follower, :count)
+      create(:follower, followable: idea, user: user)
+      create(:follower, followable: project, user: user)
+      create(:follower, followable: folder, user: user)
+      n_idea_followers = idea.followers.count
+      n_project_followers = project.followers.count
+      n_folder_followers = folder.followers.count
+
+      service.after_create comment, user
+      expect(idea.reload.followers.count).to eq n_idea_followers
+      expect(project.reload.followers.count).to eq n_project_followers
+      expect(folder.reload.followers.count).to eq n_folder_followers
     end
   end
 

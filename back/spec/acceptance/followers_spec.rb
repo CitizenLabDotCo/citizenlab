@@ -25,15 +25,14 @@ resource 'Followers' do
       let!(:other_follow) { create(:follower, user: create(:user)) }
       let!(:folder_follows) { create_list(:project_folder, 2).map { |project| create(:follower, user: user, followable: project) } }
       let!(:idea_follows) { [create(:follower, user: user, followable: create(:idea))] }
-      let!(:initiative_follows) { [create(:follower, user: user, followable: create(:initiative))] }
       let!(:topic_follows) { [create(:follower, user: user, followable: create(:topic))] }
       let!(:area_follows) { [create(:follower, user: user, followable: create(:area))] }
 
       example_request 'List all followers' do
         assert_status 200
         json_response = json_parse response_body
-        expect(json_response[:data].size).to eq 8
-        expect(json_response[:data].pluck(:id)).to match_array (project_follows + folder_follows + idea_follows + initiative_follows + topic_follows + area_follows).map(&:id)
+        expect(json_response[:data].size).to eq 7
+        expect(json_response[:data].pluck(:id)).to match_array (project_follows + folder_follows + idea_follows + topic_follows + area_follows).map(&:id)
       end
 
       describe do
@@ -50,7 +49,6 @@ resource 'Followers' do
     end
   end
 
-  # TODO: cleanup-after-proposals-migration
   get 'web_api/v1/followers/:id' do
     let(:id) { create(:follower, user: user).id }
 
@@ -76,11 +74,6 @@ resource 'Followers' do
       type: 'idea',
       resource: 'ideas',
       factory: 'idea'
-    },
-    {
-      type: 'initiative',
-      resource: 'initiatives',
-      factory: 'initiative'
     },
     {
       type: 'topic',

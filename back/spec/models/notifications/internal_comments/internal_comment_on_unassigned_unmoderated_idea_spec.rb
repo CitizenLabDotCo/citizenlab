@@ -87,7 +87,7 @@ RSpec.describe Notifications::InternalComments::InternalCommentOnUnassignedUnmod
       let!(:_other_internal_comment) { create(:internal_comment, post: idea, author: admin) }
 
       # Don't create this notification if the Activity (internal comment created)
-      # should lead to a InternalCommentOnInitiativeYouCommentedInternallyOn notification to the recipient.
+      # should lead to a InternalCommentOnIdeaYouCommentedInternallyOn notification to the recipient.
       it_behaves_like 'no notification created'
     end
   end

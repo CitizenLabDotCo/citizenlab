@@ -34,16 +34,6 @@ RSpec.describe Analytics::FactParticipation do
       end
     end
 
-    # TODO: cleanup-after-proposals-migration
-    context 'when an initiative is created' do
-      let!(:initiative) { create(:initiative) }
-
-      it 'is also available as a participation fact' do
-        participation = described_class.find(initiative.id)
-        expect(participation.dimension_type.name).to eq('initiative')
-      end
-    end
-
     context 'when a comment is added' do
       let!(:comment) { create(:comment) }
 
