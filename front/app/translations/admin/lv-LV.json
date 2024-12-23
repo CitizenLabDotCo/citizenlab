@@ -2589,6 +2589,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleTooltip": "Šo informāciju ir lietderīgi sniegt lietotājiem, kuri izmanto ekrāna lasītāju vai citu palīgtehnoloģiju.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabel": "Tīmekļa vietnes adrese",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabelTooltip": "Pilns vietnes, kuru vēlaties iegult, URL.",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.iframeDescription2": "Rādiet saturu no ārējās vietnes savā lapā HTML iFrame formātā. Ņemiet vērā, ka ne katru lapu var ievietot. Ja jums rodas problēmas ar lapas iestrādāšanu, sazinieties ar vietnes īpašnieku, vai tās serveris ir pareizi konfigurēts iestrādāšanai.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeEmbedVisitLinkMessage": "Apmeklējiet mūsu atbalsta lapu",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeHeightPlaceholder": "300",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeInvalidWhitelistUrlErrorMessage": "Atvainojiet, šo saturu nevarēja ievietot. {visitLinkMessage} , lai uzzinātu vairāk.",
