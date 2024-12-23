@@ -1677,7 +1677,7 @@
   "app.containers.AdminPage.ProjectEdit.defaultSorting": "Lajittelu",
   "app.containers.AdminPage.ProjectEdit.departments": "Osastot",
   "app.containers.AdminPage.ProjectEdit.descriptionTab": "Kuvaus",
-  "app.containers.AdminPage.ProjectEdit.disableDislikingTooltip": "Tämä poistaa inhoamisen käytöstä, mutta tykkääminen on edelleen käytössä. Voit poistaa reagoinnin kokonaan käytöstä tämän välilehden Toiminnot-osiossa.",
+  "app.containers.AdminPage.ProjectEdit.disableDislikingTooltip2": "Tämä ottaa inhoamisen käyttöön tai poistaa sen käytöstä, mutta tykkääminen on silti käytössä. Suosittelemme jättämään tämän pois päältä, ellet suorita optioanalyysiä.",
   "app.containers.AdminPage.ProjectEdit.disabled": "Liikuntarajoitteinen",
   "app.containers.AdminPage.ProjectEdit.dislikingMethodTitle": "Ei-tykkäysten määrä osallistujaa kohti",
   "app.containers.AdminPage.ProjectEdit.dislikingPosts": "Ota inhoaminen käyttöön",
