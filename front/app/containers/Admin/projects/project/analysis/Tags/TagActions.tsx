@@ -92,7 +92,7 @@ const TagActions = ({ tag }: { tag: ITagData }) => {
       },
       {
         onSuccess: () => {
-          trackEventByName(tracks.bulkTagAssignmentPerformed.name, {
+          trackEventByName(tracks.bulkTagAssignmentPerformed, {
             analysisId,
           });
           closeDropdown();
