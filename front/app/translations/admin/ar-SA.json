@@ -1677,7 +1677,7 @@
   "app.containers.AdminPage.ProjectEdit.defaultSorting": "فرز",
   "app.containers.AdminPage.ProjectEdit.departments": "الأقسام",
   "app.containers.AdminPage.ProjectEdit.descriptionTab": "الوصف",
-  "app.containers.AdminPage.ProjectEdit.disableDislikingTooltip": "سيؤدي هذا إلى تعطيل عدم الإعجاب ، ولكن سيستمر تمكين الإعجاب. يمكنك تعطيل التفاعل تمامًا في قسم الإجراءات بعلامة التبويب هذه.",
+  "app.containers.AdminPage.ProjectEdit.disableDislikingTooltip2": "سيؤدي هذا إلى تمكين أو تعطيل عدم الإعجاب، ولكن الإعجاب سيظل ممكّنًا. نوصي بترك هذا معطلاً ما لم تكن تقوم بتحليل الخيارات.",
   "app.containers.AdminPage.ProjectEdit.disabled": "تم التعطيل",
   "app.containers.AdminPage.ProjectEdit.dislikingMethodTitle": "عدد غير المعجبين لكل مشارك",
   "app.containers.AdminPage.ProjectEdit.dislikingPosts": "تفعيل عدم الإعجاب",
