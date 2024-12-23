@@ -227,7 +227,6 @@ const FilterSidebar = ({
         display="flex"
         flexDirection="column"
         alignItems="center"
-        w="100%"
       >
         {selectedItem.content}
       </Box>

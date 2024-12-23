@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
 import { useDrop } from 'react-dnd';
 
 import { IPhaseData } from 'api/phases/types';
@@ -47,7 +46,7 @@ const FilterSidebarPhasesItem = ({
   });
 
   return (
-    <Box ref={drop} w="100%">
+    <div ref={drop}>
       <FilterRadioButton
         name={name}
         onChange={onChange}
@@ -60,7 +59,7 @@ const FilterSidebarPhasesItem = ({
         }
         id={id}
       />
-    </Box>
+    </div>
   );
 };
 

@@ -53,7 +53,6 @@ const FilterSidebarTopics = ({
       id="e2e-idea-manager-topic-filters"
       display="flex"
       flexDirection="column"
-      w="100%"
     >
       {/* FilterRadioButton is also used inside FilterSidebarTopicsItem */}
       <FilterRadioButton
