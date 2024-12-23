@@ -1676,7 +1676,6 @@
   "app.containers.AdminPage.ProjectEdit.defaultSorting": "Razvrstavanje",
   "app.containers.AdminPage.ProjectEdit.departments": "Odjeli",
   "app.containers.AdminPage.ProjectEdit.descriptionTab": "Opis",
-  "app.containers.AdminPage.ProjectEdit.disableDislikingTooltip": "Ovo će onemogućiti nesviđanje, ali će ocjenjivanje i dalje biti omogućeno. Možete potpuno onemogućiti reagiranje u odjeljku Radnje ove kartice.",
   "app.containers.AdminPage.ProjectEdit.disabled": "Onemogućeno",
   "app.containers.AdminPage.ProjectEdit.dislikingMethodTitle": "Broj nesviđanja po sudioniku",
   "app.containers.AdminPage.ProjectEdit.dislikingPosts": "Omogući nesviđanje",

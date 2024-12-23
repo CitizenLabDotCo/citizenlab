@@ -1676,7 +1676,6 @@
   "app.containers.AdminPage.ProjectEdit.defaultSorting": "Rūšiavimas",
   "app.containers.AdminPage.ProjectEdit.departments": "Departamentai",
   "app.containers.AdminPage.ProjectEdit.descriptionTab": "Aprašymas",
-  "app.containers.AdminPage.ProjectEdit.disableDislikingTooltip": "Taip bus išjungtas nemėgimas, bet mėgimas vis tiek bus įjungtas. Reagavimą galite visiškai išjungti šio skirtuko skirsnyje Veiksmai.",
   "app.containers.AdminPage.ProjectEdit.disabled": "Neįgalieji",
   "app.containers.AdminPage.ProjectEdit.dislikingMethodTitle": "Vieno dalyvio nemėgstamų puslapių skaičius",
   "app.containers.AdminPage.ProjectEdit.dislikingPosts": "Įgalinti nemėgti",

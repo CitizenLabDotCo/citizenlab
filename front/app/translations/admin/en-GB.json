@@ -1676,7 +1676,6 @@
   "app.containers.AdminPage.ProjectEdit.defaultSorting": "Sorting",
   "app.containers.AdminPage.ProjectEdit.departments": "Departments",
   "app.containers.AdminPage.ProjectEdit.descriptionTab": "Description",
-  "app.containers.AdminPage.ProjectEdit.disableDislikingTooltip": "This will disable disliking, but liking will still be enabled. You can disable reacting completely in the Actions section of this tab.",
   "app.containers.AdminPage.ProjectEdit.disabled": "Disabled",
   "app.containers.AdminPage.ProjectEdit.dislikingMethodTitle": "Number of dislikes per participant",
   "app.containers.AdminPage.ProjectEdit.dislikingPosts": "Enable disliking",

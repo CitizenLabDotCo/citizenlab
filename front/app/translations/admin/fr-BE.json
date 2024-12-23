@@ -1676,7 +1676,6 @@
   "app.containers.AdminPage.ProjectEdit.defaultSorting": "Trier",
   "app.containers.AdminPage.ProjectEdit.departments": "Départements",
   "app.containers.AdminPage.ProjectEdit.descriptionTab": "Description",
-  "app.containers.AdminPage.ProjectEdit.disableDislikingTooltip": "Cela désactivera le fait de ne pas aimer, mais le fait d'aimer sera toujours activé. Vous pouvez désactiver complètement les réactions dans la section Actions de cet onglet.",
   "app.containers.AdminPage.ProjectEdit.disabled": "Désactivée",
   "app.containers.AdminPage.ProjectEdit.dislikingMethodTitle": "Nombre de \"je n'aime pas\" par participant",
   "app.containers.AdminPage.ProjectEdit.dislikingPosts": "Permettre les \"je n'aime pas\"",

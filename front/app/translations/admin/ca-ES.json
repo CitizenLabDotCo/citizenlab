@@ -971,7 +971,6 @@
   "app.containers.AdminPage.ProjectEdit.defaultSorting": "Sorting",
   "app.containers.AdminPage.ProjectEdit.departments": "Departaments",
   "app.containers.AdminPage.ProjectEdit.descriptionTab": "Description",
-  "app.containers.AdminPage.ProjectEdit.disableDislikingTooltip": "Això desactivarà el no m'agrada, però encara estarà activat. Podeu desactivar la reacció completament a la secció Accions d'aquesta pestanya.",
   "app.containers.AdminPage.ProjectEdit.disabled": "Disabled",
   "app.containers.AdminPage.ProjectEdit.dislikingMethodTitle": "Nombre de no m'agrada per participant",
   "app.containers.AdminPage.ProjectEdit.dislikingPosts": "Activa el no m'agrada",
