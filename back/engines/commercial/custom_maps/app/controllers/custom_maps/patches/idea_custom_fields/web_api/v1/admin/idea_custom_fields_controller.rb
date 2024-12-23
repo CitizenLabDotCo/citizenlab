@@ -8,7 +8,7 @@ module CustomMaps
           module Admin
             module IdeaCustomFieldsController
               def include_in_index_response
-                %i[options options.image map_config]
+                super + %i[map_config]
               end
 
               def relate_map_config_to_field(field, field_params, errors, index)

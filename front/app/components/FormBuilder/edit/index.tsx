@@ -150,12 +150,22 @@ const FormEdit = ({
     }
   }, [formCustomFields, isUpdatingForm, isFetching, reset]);
 
+  // const formOpenedAt = new Date(); // Used to log when the form was opened vs when it was saved
+  let autosave: boolean = false; // Use to log autosave vs manual save
   const closeSettings = (triggerAutosave?: boolean) => {
     setSelectedField(undefined);
 
-    // If autosave is enabled & no submission have come in yet, save
-    if (triggerAutosave && autosaveEnabled && totalSubmissions === 0) {
-      onFormSubmit(getValues());
+    // If autosave is enabled, no submission have come in yet and there are changes, save
+    if (
+      triggerAutosave &&
+      autosaveEnabled &&
+      totalSubmissions === 0 &&
+      isDirty
+    ) {
+      autosave = true;
+      onFormSubmit(getValues()).then(() => {
+        autosave = false;
+      });
     }
   };
 
@@ -255,6 +265,11 @@ const FormEdit = ({
           projectId,
           customFields: finalResponseArray,
           phaseId: isFormPhaseSpecific ? phaseId : undefined,
+          customForm: {
+            saveType: autosave ? 'auto' : 'manual',
+            // openedAt: null, // TODO: JS - Placeholders until we get the actual values from the CustomForm object
+            // lastUpdatedAt: null,
+          },
         },
         {
           onSuccess: () => {

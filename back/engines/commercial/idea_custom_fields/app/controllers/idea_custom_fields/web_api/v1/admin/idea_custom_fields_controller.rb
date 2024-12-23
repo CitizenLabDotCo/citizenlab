@@ -46,7 +46,7 @@ module IdeaCustomFields
       render json: ::WebApi::V1::CustomFieldSerializer.new(
         @custom_field,
         params: jsonapi_serializer_params,
-        include: %i[options options.image]
+        include: include_in_index_response
       ).serializable_hash
     end
 
@@ -83,9 +83,9 @@ module IdeaCustomFields
 
     private
 
-    # Overriden from CustomMaps::Patches::IdeaCustomFields::WebApi::V1::Admin::IdeaCustomFieldsController
+    # Extended by CustomMaps::Patches::IdeaCustomFields::WebApi::V1::Admin::IdeaCustomFieldsController
     def include_in_index_response
-      %i[options options.image]
+      %i[options options.image resource]
     end
 
     def raise_error_if_not_geographic_field

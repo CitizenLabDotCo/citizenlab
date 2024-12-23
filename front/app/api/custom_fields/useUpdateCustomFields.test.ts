@@ -27,6 +27,7 @@ describe('useUpdateCustomFields', () => {
         projectId: 'dummyId',
         phaseId: 'dummyId',
         customFields: [],
+        customForm: { saveType: 'manual', openedAt: '2021-01-01' },
       });
     });
 
@@ -51,6 +52,7 @@ describe('useUpdateCustomFields', () => {
       result.current.mutate({
         projectId: 'dummyId',
         customFields: [],
+        customForm: { saveType: 'manual', openedAt: '2021-01-01' },
       });
     });
 
@@ -72,6 +74,7 @@ describe('useUpdateCustomFields', () => {
       result.current.mutate({
         projectId: 'dummyId',
         customFields: [],
+        customForm: { saveType: 'manual', openedAt: '2021-01-01' },
       });
     });
     await waitFor(() => expect(result.current.isError).toBe(true));
