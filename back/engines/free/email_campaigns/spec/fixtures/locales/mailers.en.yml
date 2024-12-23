@@ -355,22 +355,10 @@ en:
       main_header: '''%{post}'' has a new internal comment'
       preheader: '''%{post}'' has a new internal comment'
     official_feedback_on_idea_you_follow:
-<<<<<<< HEAD
-      header_message: '%{officialName} gave an update on the idea ''%{ideaTitle}''. Click the button below to enter the conversation with %{officialName}.'
-      header_title: 'There''s an update on an idea you follow'
-      subject: 'An idea you follow has received an official update on the platform of %{organizationName}'
-      preheader: 'There''s an update on an idea you follow'
-=======
       header_message: '%{feedback_author_name} gave an update on the input ''%{input_title}''. Click the button below to enter the conversation with %{feedback_author_name}.'
       header_title: 'There''s an update on an input you follow'
       subject: 'An input you follow has received an official update on the platform of %{organizationName}'
       preheader: 'There''s an update on an input you follow'
-    official_feedback_on_initiative_you_follow:
-      header_message: '%{officialName} gave an update on the proposal ''%{initiativeTitle}''. Click the button below to enter the conversation with %{organizationName}.'
-      header_title: 'There''s an update on a proposal you follow'
-      subject: 'A proposal you follow has received an official update on the platform of %{organizationName}'
-      preheader: 'There''s an update on a proposal you follow'
->>>>>>> master
     mention_in_official_feedback:
       cta_reply_to: 'Reply to %{organizationName}'
       event_description: '%{organizationName} mentioned you in their feedback on the idea ''%{post}‘. Click the link below to enter the conversation with %{organizationName}'
