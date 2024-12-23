@@ -50,6 +50,8 @@ export class HorizontalBarChart extends React.PureComponent<
       endAt,
       className,
       graphTitleString,
+      currentGroupFilter,
+      currentGroupFilterLabel,
       serie,
       intl: { formatMessage },
       graphUnit,
@@ -72,6 +74,8 @@ export class HorizontalBarChart extends React.PureComponent<
               <ReportExportMenu
                 svgNode={this.currentChart}
                 xlsx={xlsxEndpoint ? { endpoint: xlsxEndpoint } : undefined}
+                currentGroupFilter={currentGroupFilter}
+                currentGroupFilterLabel={currentGroupFilterLabel}
                 name={graphTitleString}
                 startAt={startAt}
                 endAt={endAt}

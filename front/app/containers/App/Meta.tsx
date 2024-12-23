@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import { useLocation } from 'react-router-dom';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -36,6 +36,8 @@ const Meta = () => {
   ) {
     const tenantLocales = tenant.data.attributes.settings.core.locales;
 
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     const headerBg = homepageLayout.data.attributes.craftjs_json
       ? Object.values(homepageLayout.data.attributes.craftjs_json).find(
           (node) => node.displayName === 'HomepageBanner'
@@ -65,12 +67,13 @@ const Meta = () => {
     const lifecycleStage = tenant.data.attributes.settings.core.lifecycle_stage;
     const blockIndexing = !['active', 'churned'].includes(lifecycleStage);
 
-    // Show default tags only on the homepage and backoffice.
+    // Show default tags only in the backoffice.
     // All other front office pages have their own title and description meta tags.
     // Ideally, we should ensure that all backoffice pages have their own meta tags and remove them from here..
     // This is necessary because on initial load, Helmet is not overriding them in child pages.
-    const showDefaultTitleAndDescTags =
-      pathname.startsWith(`/${locale}/admin/`) || pathname === `/${locale}/`;
+    const showDefaultTitleAndDescTags = pathname.startsWith(
+      `/${locale}/admin/`
+    );
 
     return (
       <Helmet>

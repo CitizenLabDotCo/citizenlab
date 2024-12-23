@@ -151,6 +151,8 @@ export const sharedSteps = (
           return;
         }
 
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (flow === 'signup') {
           anySSOEnabled
             ? setCurrentStep('sign-up:auth-providers')
@@ -167,6 +169,11 @@ export const sharedSteps = (
         if (error_code === 'not_entitled_under_minimum_age') {
           setCurrentStep('missing-data:verification');
           setError('not_entitled_under_minimum_age');
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        } else if (error_code === 'taken') {
+          setCurrentStep('missing-data:verification');
+          setError('verification_taken');
         } else {
           setCurrentStep('sign-up:auth-providers');
           setError('unknown');
@@ -177,6 +184,8 @@ export const sharedSteps = (
         if (error_code === 'franceconnect_merging_failed') {
           setCurrentStep('sign-up:auth-providers');
           setError('franceconnect_merging_failed');
+        } else if (error_code === 'not_entitled_under_minimum_age') {
+          setCurrentStep('access-denied');
         } else {
           setCurrentStep('sign-up:auth-providers');
           setError('unknown');
@@ -196,6 +205,10 @@ export const sharedSteps = (
           triggerSuccessAction(successAction);
         }
       },
+    },
+
+    'access-denied': {
+      CLOSE: () => setCurrentStep('closed'),
     },
   };
 };

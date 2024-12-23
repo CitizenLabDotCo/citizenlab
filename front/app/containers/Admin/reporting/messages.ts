@@ -24,7 +24,7 @@ export default defineMessages({
   contactToAccess: {
     id: 'app.containers.Admin.reporting.contactToAccess',
     defaultMessage:
-      'Creating a custom report is part of the premium license. Reach out to your GovSuccess Manager to learn more about it.',
+      'Creating a custom report is not part of your current license. Reach out to your GovSuccess Manager to learn more about it.',
   },
   tabReports: {
     id: 'app.containers.Admin.Insights.tabReports',

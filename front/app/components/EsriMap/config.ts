@@ -46,7 +46,7 @@ export const configureMapView = (
 
   // Add map legend if set
   if (initialData?.showLegend) {
-    addMapLegend(mapView, isMobileOrSmaller, initialData?.showLegendExpanded);
+    addMapLegend(mapView, isMobileOrSmaller, initialData.showLegendExpanded);
   }
 
   // Show layer visibility controls if set
@@ -55,8 +55,8 @@ export const configureMapView = (
   }
 
   // Add any ui elements that were passed in
-  if (initialData?.uiElements && mapView) {
-    initialData?.uiElements.forEach((uiElement) => {
+  if (initialData?.uiElements) {
+    initialData.uiElements.forEach((uiElement) => {
       mapView.ui.add(uiElement.element, uiElement.position);
     });
   }
@@ -71,12 +71,12 @@ export const setMapCenter = (
 ) => {
   mapView.center = initialData?.center
     ? new Point({
-        latitude: initialData?.center.coordinates[1],
-        longitude: initialData?.center.coordinates[0],
+        latitude: initialData.center.coordinates[1],
+        longitude: initialData.center.coordinates[0],
       })
     : new Point({
-        latitude: Number(globalMapSettings.map_center?.lat) || 0,
-        longitude: Number(globalMapSettings.map_center?.long) || 0,
+        latitude: Number(globalMapSettings.map_center.lat) || 0,
+        longitude: Number(globalMapSettings.map_center.long) || 0,
       });
 };
 

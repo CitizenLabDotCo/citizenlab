@@ -28,11 +28,14 @@
 #  internal_comment_id           :uuid
 #  basket_id                     :uuid
 #  cosponsors_initiative_id      :uuid
+#  cosponsorship_id              :uuid
+#  project_review_id             :uuid
 #
 # Indexes
 #
 #  index_notifications_on_basket_id                            (basket_id)
 #  index_notifications_on_cosponsors_initiative_id             (cosponsors_initiative_id)
+#  index_notifications_on_cosponsorship_id                     (cosponsorship_id)
 #  index_notifications_on_created_at                           (created_at)
 #  index_notifications_on_inappropriate_content_flag_id        (inappropriate_content_flag_id)
 #  index_notifications_on_initiating_user_id                   (initiating_user_id)
@@ -43,6 +46,7 @@
 #  index_notifications_on_post_id_and_post_type                (post_id,post_type)
 #  index_notifications_on_post_status_id                       (post_status_id)
 #  index_notifications_on_post_status_id_and_post_status_type  (post_status_id,post_status_type)
+#  index_notifications_on_project_review_id                    (project_review_id)
 #  index_notifications_on_recipient_id                         (recipient_id)
 #  index_notifications_on_recipient_id_and_read_at             (recipient_id,read_at)
 #  index_notifications_on_spam_report_id                       (spam_report_id)
@@ -52,6 +56,7 @@
 #  fk_rails_...  (basket_id => baskets.id)
 #  fk_rails_...  (comment_id => comments.id)
 #  fk_rails_...  (cosponsors_initiative_id => cosponsors_initiatives.id)
+#  fk_rails_...  (cosponsorship_id => cosponsorships.id)
 #  fk_rails_...  (inappropriate_content_flag_id => flag_inappropriate_content_inappropriate_content_flags.id)
 #  fk_rails_...  (initiating_user_id => users.id)
 #  fk_rails_...  (internal_comment_id => internal_comments.id)
@@ -59,6 +64,7 @@
 #  fk_rails_...  (official_feedback_id => official_feedbacks.id)
 #  fk_rails_...  (phase_id => phases.id)
 #  fk_rails_...  (project_id => projects.id)
+#  fk_rails_...  (project_review_id => project_reviews.id)
 #  fk_rails_...  (recipient_id => users.id)
 #  fk_rails_...  (spam_report_id => spam_reports.id)
 #
@@ -70,11 +76,9 @@ module Notifications
     ACTIVITY_TRIGGERS = { 'SpamReport' => { 'created' => true } }.freeze
 
     def self.recipient_ids(initiating_user_id = nil, project_id = nil)
-      admin_ids = User.admin.ids
-      moderator_ids = project_id ? User.project_moderator(project_id).ids : []
-      (admin_ids + moderator_ids).uniq.tap do |recipient_ids|
-        recipient_ids.delete initiating_user_id if initiating_user_id
-      end
+      UserRoleService.new.moderators_for(Project.find(project_id))
+        .ids
+        .reject { |id| id == initiating_user_id }
     end
 
     def self.make_notifications_on(_activity)

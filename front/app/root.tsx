@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { StrictMode, useEffect } from 'react';
 
 import 'assets/css/reset.min.css';
 import 'assets/fonts/fonts.css';
@@ -11,7 +11,9 @@ import { BrowserTracing } from '@sentry/tracing';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import modules from 'modules';
+// eslint-disable-next-line react/no-deprecated
 import { render } from 'react-dom';
+import { HelmetProvider } from 'react-helmet-async';
 import {
   createRoutesFromChildren,
   matchRoutes,
@@ -28,6 +30,7 @@ import OutletsProvider from 'containers/OutletsProvider';
 import history from 'utils/browserHistory';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 
+import prefetchData from './prefetchData';
 import createRoutes from './routes';
 
 Sentry.init({
@@ -60,16 +63,22 @@ function Routes() {
 }
 
 const Root = () => {
+  useEffect(() => {
+    prefetchData();
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <OutletsProvider>
-        <LanguageProvider>
-          <HistoryRouter history={history as any}>
-            <App>
-              <Routes />
-            </App>
-          </HistoryRouter>
-        </LanguageProvider>
+        <HelmetProvider>
+          <LanguageProvider>
+            <HistoryRouter history={history as any}>
+              <App>
+                <Routes />
+              </App>
+            </HistoryRouter>
+          </LanguageProvider>
+        </HelmetProvider>
       </OutletsProvider>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
@@ -80,7 +89,16 @@ const mountApplication = () => {
   try {
     modules.beforeMountApplication();
   } finally {
-    render(<Root />, document.getElementById('app'));
+    // We don't want to use StrictMode during E2E tests, since it causes test failures due to
+    // some issues with the re-rendering & re-running of effects in the JSONForms and react-select libraries.
+    window.Cypress
+      ? render(<Root />, document.getElementById('app'))
+      : render(
+          <StrictMode>
+            <Root />
+          </StrictMode>,
+          document.getElementById('app')
+        );
   }
 };
 

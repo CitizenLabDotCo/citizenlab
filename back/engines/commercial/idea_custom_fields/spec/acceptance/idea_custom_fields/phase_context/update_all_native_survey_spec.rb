@@ -3160,6 +3160,31 @@ resource 'Idea Custom Fields' do
         assert_status 200
       end
 
+      example 'Updating fields only logs activities when they have changed' do
+        page = create(:custom_field_page, resource: custom_form)
+        field1 = create(:custom_field, resource: custom_form, title_multiloc: { 'en' => 'Field 1' })
+        field2 = create(:custom_field, resource: custom_form, title_multiloc: { 'en' => 'Field 2' })
+        request = {
+          custom_fields: [
+            {
+              id: page.id,
+              input_type: 'page',
+              page_layout: 'default'
+            },
+            {
+              id: field1.id,
+              title_multiloc: { 'en' => 'Field 1' }
+            },
+            {
+              id: field2.id,
+              title_multiloc: { 'en' => 'Field 2 changed' }
+            }
+          ]
+        }
+
+        expect { do_request(request) }.to enqueue_job(LogActivityJob).exactly(1).times
+      end
+
       context "Update custom field's map config relation" do
         let!(:map_config1) { create(:map_config, mappable: nil) }
         let!(:map_config2) { create(:map_config, mappable: nil) }

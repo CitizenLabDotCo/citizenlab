@@ -30,8 +30,20 @@ module VotingMethod
       # Default is to do nothing.
     end
 
-    def export_columns
-      []
+    def votes_for_idea(idea)
+      idea.ideas_phases.find { |ideas_phase| ideas_phase.phase_id == phase&.id }&.votes_count || 0
+    end
+
+    def additional_export_columns
+      %w[manual_votes]
+    end
+
+    def supports_serializing?(attribute)
+      %i[
+        voting_method voting_max_total voting_min_total voting_max_votes_per_idea baskets_count
+        voting_term_singular_multiloc voting_term_plural_multiloc votes_count total_votes_amount
+        autoshare_results_enabled
+      ].include?(attribute)
     end
 
     private

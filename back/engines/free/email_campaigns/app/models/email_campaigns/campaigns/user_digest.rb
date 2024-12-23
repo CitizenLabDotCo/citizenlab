@@ -73,44 +73,41 @@ module EmailCampaigns
 
     def generate_commands(recipient:, time: nil)
       time ||= Time.now
-      name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient)
 
       @users_to_projects ||= users_to_projects
       discover_projects = discover_projects @users_to_projects[recipient.id]
 
       @notifications_counts ||= notifications_counts
-      @top_ideas ||= top_ideas
-      @new_initiatives ||= new_initiatives(name_service, time: time)
-      @successful_initiatives ||= successful_initiatives(name_service, time: time)
-      @initiative_ids ||= (@new_initiatives + @successful_initiatives).pluck(:id).compact
+      @top_ideas ||= top_ideas(time)
+      @successful_proposals ||= successful_proposals(time)
 
       [{
         event_payload: {
           notifications_count: @notifications_counts[recipient.id],
           top_ideas: @top_ideas.map do |idea|
-            top_idea_payload idea, recipient
+            idea_payload(idea, recipient)
           end,
           discover_projects: discover_projects.map do |project|
             discover_projects_payload project, recipient
           end,
-          new_initiatives: @new_initiatives,
-          successful_initiatives: @successful_initiatives
+          successful_proposals: @successful_proposals.map do |idea|
+            proposal_payload(idea, recipient)
+          end
         },
         tracked_content: {
-          idea_ids: @top_ideas.map(&:id),
-          initiative_ids: @initiative_ids,
+          idea_ids: (@top_ideas.map(&:id) + @successful_proposals.map(&:id)).uniq,
           project_ids: discover_projects.map(&:id)
         }
       }]
     end
 
     # @return [Boolean]
-    def content_worth_sending?(_)
+    def content_worth_sending?(time:, activity: nil)
       # Check positive? as fetching a non-integer env var would result in zero and this hook would return true,
       # whilst top_ideas would be limited to zero ideas, possibly resulting in no content being sent.
       @content_worth_sending ||=
-        (recent_ideas.size >= N_TOP_IDEAS && N_TOP_IDEAS.positive?) ||
-        recent_initiatives.any?
+        (recent_ideas(time).size >= N_TOP_IDEAS && N_TOP_IDEAS.positive?) ||
+        successful_proposals(time).any?
     end
 
     private
@@ -125,17 +122,17 @@ module EmailCampaigns
       end
     end
 
-    def top_ideas
-      recent_ideas.limit N_TOP_IDEAS
+    def top_ideas(time)
+      recent_ideas(time).limit N_TOP_IDEAS
     end
 
-    def recent_ideas
+    def recent_ideas(time)
       ti_service = TrendingIdeaService.new
 
       ideas = IdeaPolicy::Scope.new(nil, Idea).resolve
         .published
         .includes(:comments)
-        .activity_after(1.week.ago)
+        .activity_after(time - 1.week)
 
       input_ideas = IdeasFinder.new({}, scope: ideas).find_records
       ti_service.sort_trending input_ideas
@@ -159,7 +156,7 @@ module EmailCampaigns
       projects.sort_by(&:created_at).reverse.take(N_DISCOVER_PROJECTS)
     end
 
-    def top_idea_payload(idea, recipient)
+    def idea_payload(idea, recipient)
       name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient)
       {
         title_multiloc: idea.title_multiloc,
@@ -185,6 +182,20 @@ module EmailCampaigns
       }
     end
 
+    def proposal_payload(proposal, recipient)
+      name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient)
+      {
+        id: proposal.id,
+        title_multiloc: proposal.title_multiloc,
+        url: Frontend::UrlService.new.model_to_url(proposal, locale: Locale.new(recipient.locale)),
+        published_at: proposal.published_at&.iso8601,
+        author_name: name_service.display_name!(proposal.author),
+        likes_count: proposal.likes_count,
+        dislikes_count: nil, # needed in object as template is shared with ideas
+        comments_count: proposal.comments_count
+      }
+    end
+
     def top_comment_payload(comment, name_service)
       {
         body_multiloc: comment.body_multiloc,
@@ -204,70 +215,12 @@ module EmailCampaigns
       }
     end
 
-    def recent_initiatives
-      InitiativePolicy::Scope.new(nil, Initiative).resolve
+    def successful_proposals(time)
+      @successful_proposals ||= IdeaPolicy::Scope.new(nil, Idea).resolve
         .published
-        .activity_after(1.week.ago)
-    end
-
-    def new_initiatives(name_service, time:)
-      InitiativePolicy::Scope.new(nil, Initiative).resolve
-        .published
-        .proposed_after(1.week.ago)
-        .includes(:initiative_images)
-        .map do |initiative|
-        {
-          id: initiative.id,
-          title_multiloc: initiative.title_multiloc,
-          url: Frontend::UrlService.new.model_to_url(initiative),
-          published_at: initiative.published_at.iso8601,
-          author_name: name_service.display_name!(initiative.author),
-          likes_count: initiative.likes_count,
-          comments_count: initiative.comments_count,
-          images: initiative.initiative_images.map do |image|
-            {
-              ordering: image.ordering,
-              versions: image.image.versions.to_h { |k, v| [k.to_s, v.url] }
-            }
-          end,
-          header_bg: {
-            versions: initiative.header_bg.versions.to_h { |k, v| [k.to_s, v.url] }
-          }
-        }
-      end
-    end
-
-    def successful_initiatives(name_service, time:)
-      InitiativePolicy::Scope.new(nil, Initiative).resolve
-        .published
-        .left_outer_joins(:initiative_status_changes, :initiative_images)
-        .where(
-          'initiative_status_changes.initiative_status_id = ? AND initiative_status_changes.created_at > ?',
-          InitiativeStatus.where(code: 'threshold_reached').ids.first,
-          (time - 1.week)
-        )
-        .feedback_needed
-        .map do |initiative|
-        {
-          id: initiative.id,
-          title_multiloc: initiative.title_multiloc,
-          url: Frontend::UrlService.new.model_to_url(initiative),
-          published_at: initiative.published_at.iso8601,
-          author_name: name_service.display_name!(initiative.author),
-          likes_count: initiative.likes_count,
-          comments_count: initiative.comments_count,
-          threshold_reached_at: initiative.threshold_reached_at.iso8601,
-          images: initiative.initiative_images.map do |image|
-            {
-              ordering: image.ordering,
-              versions: image.image.versions.to_h { |k, v| [k.to_s, v.url] }
-            }
-          end,
-          header_bg: {
-            versions: initiative.header_bg.versions.to_h { |k, v| [k.to_s, v.url] }
-          }
-        }
-      end
+        .with_status_code('threshold_reached')
+        .with_status_transitioned_after(time - 1.week)
+        .includes(:idea_images)
     end
 
     def days_ago

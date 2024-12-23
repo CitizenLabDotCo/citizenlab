@@ -170,6 +170,9 @@ lb:
       topic_ids:
         title: Sujeten
         description:
+      consponsor_ids:
+        title: Co-Sponsoren
+        description: Invitéiert Co-Sponsoren duerch d'Feld hei drënner. Den invitéierte Co-Sponsor (en) kritt eng E-Mail.
       location:
         title: Standuert
         description:
@@ -192,8 +195,8 @@ lb:
       section3:
         title: Detailer
         description:
-      other_text_field:
-        title: Wann Dir '{other_option}' gewielt hutt, un wat denkt Dir?
+      other_input_field:
+        title: Typ Är Äntwert
   custom_forms:
     categories:
       main_content:
@@ -209,6 +212,12 @@ lb:
           title: Wat ass Är Ugeleeënheet ?
         option:
           title: Wat ass Är Optioun?
+        proposal:
+          title: Wat ass Är Propositioun?
+        initiative:
+          title: Wat ass Är Initiativ?
+        petition:
+          title: Wat ass Är Petitioun?
   custom_field_options:
     gender:
       male: Männlech
@@ -233,6 +242,7 @@ lb:
       <ul><li>Huelt Iech Zäit fir Är Virschléi auszeschaffen. Falls néideg, verfaasst en Entworf an engem separaten Dokument a kopéiert en dann an d'Plattform.</li><li>Wielt en aussokräftegen Titel, dee kloer erkläert, em wat et an Ärem Virschlag geet.</li><li>Setzt e passend Bild bei Äre Virschlag dobäi fir en ervirzehiewen. </li><li>Füügt relevant Annexe bäi, wéi Videoen, inspiréierend Beispiller, technesch Detailer oder Pläng.</li><li>Deelt Äre Virschlag op den soziale Medien an op aner Kanäl, fir Ënnerstëtzung vun anere Leit ze kréien.</li></ul>
   reset_password_mailer:
     send_reset_password:
+      preheader: 'Reset Äert Passwuert fir %{organizationName}'
       cta_reset_password: 'Äert Passwuert zerécksetzen'
       message_you_reset_your_password: 'Dir hutt d’Zerécksetzung vun engem Passwuert op der Bedeelegungsplattform vun %{organizationName} ugefuerdert. Klickt op de Knappsenden hei ënnendrënner, fir en neit, séchert Passwuert ze wielen. De Link leeft an 1 Stonn of.'
       subject: '%{organizationName}: Äert Passwuert zerécksetzen'
@@ -256,6 +266,7 @@ lb:
       first_name: 'Virnumm (en)'
       image_url: 'Bild URL'
       input_id: 'ID'
+      manual_votes: 'Offline Stëmmen'
       input_url: 'URL'
       last_name: 'Familljennumm'
       latitude: 'Héicht'
@@ -280,7 +291,7 @@ lb:
       option2: 'Méiglechkeet 2'
     form_end_page:
       title_text: 'Bal fäerdeg'
-      description_text_2: "Dir sidd amgaang Är Äntwerten ofzeginn. Andeems Dir op 'Submit' klickt, gitt Dir eis Erlaabnis fir Är Äntwerten ze analyséieren.<br/>Nodeems Dir Iech ofginn hutt, kënnt Dir net méi zréckgoen an eng vun Ären Äntwerten änneren."
+      description_text_2: "Dir kënnt elo Är Äntwerten ofginn. Andeems Dir op 'Schécken' klickt, gitt Dir eis d‘Erlabnis ﬁr Är Äntwerten ze analyséieren.<br/>Nodeems Dir de Formulaire ofgeschéckt hutt, kënnt Dir net méi zréckgoen an eng vun Ären Äntwerten änneren."
     pdf_export:
       personal_data: 'Perséinlech Daten'
       personal_data_explanation_public: "Mir wäerten Ären Input op %{organizationName}'s Online Participatiounsplattform ofginn. Wann Dir wëllt datt Ären Numm als Auteur vun dësem Input ugewise gëtt an Updates per E-Mail relevant fir Ären Input kritt, fëllt w.e.g. déi folgend Felder op dëser Säit aus a mir erstellen e Kont fir Iech. Är E-Mail wäert net ëffentlech sinn a gëtt nëmme vu %{organizationName}benotzt. Wann Dir anonym wëllt bleiwen, oder net averstane sidd datt mir Är perséinlech Donnéeën op dës Manéier benotzen, kënnt Dir se eidel loossen."
@@ -310,12 +321,13 @@ lb:
   confirmations_mailer:
     send_confirmation_code:
       subject: "Iwwerpréiwt Är E-Mail-Adress fir d'participativ Plattform %{organizationName}"
+      preheader: 'Confirméiert Är E-Mailadress fir %{organizationName}'
       header: "Äre Bestätegungscode"
       header_message: "Gudde Moie(n) %{firstName}!"
       confirm_email_address: "Bestätegt Är E-Mail-Adress"
-      thanks_for_signing_up1: "Merci fir Är Participatioun. Gitt w.e.g. dëse Bestätegungscode an der Fënster op der Participatiounsplattform vun %{organizationName}an:"
+      thanks_for_signing_up1: "Merci fir Är Participatioun. Gitt w. e. g. dëse Bestätegungscode an der Fënster op der Participatiounsplattform vun %{organizationName}:"
       best_regards: "Mat beschte Gréiss,"
-      ignore_email: "Wann Dir kee Code ugefrot hutt, kënnt Dir Dës E-Mail ignoréieren."
+      ignore_email: "Wann Dir kee Code ugefrot hutt, kënnt Dir dës E-Mail ignoréieren."
       expire_code: "Dëse Code leeft of an:"
       24_hours: "24 Stonnen."
       copy_paste_the_link_below: "Kopéiert de Code hei ënnendrënner a füügt en an den Aschreiwungsformular op der Plattform an fir Är Aschreiwung ofzeschléissen."
@@ -324,6 +336,7 @@ lb:
   user_blocked_mailer:
     send_user_blocked_email:
       subject: 'Äre Kont gouf temporär deaktivéiert'
+      preheader: 'Äre Kont op der Participatiounsplattform vun %{organizationName} gouf temporär deaktivéiert'
       title_user_blocked: 'Äre Kont gouf temporär deaktivéiert'
       paragraph_1_without_reason: "Äre Kont op der Participatiounsplattform vun %{organizationName} gouf temporär deaktivéiert wéinst enger Verletzung vun de Gemeinschaftsrichtlinnen."
       paragraph_1_with_reason: "Äre Kont op der Participatiounsplattform vun %{organizationName} gouf aus de folgende Grond temporär deaktivéiert:"
@@ -331,6 +344,8 @@ lb:
       you_can_sign_in_again_from: "Dir kënnt erëm ab %{date}umellen"
   user:
     anon_first_name: "Benotzer"
+    anon_scheme:
+      animals: 'alligator, krokodil, alpaka, ant, antilope, ape, armadillo, bavianen, badger, Fliedermaus, Béier, Beaver, Bee, Käfer, Büffel, Päiperlek, Kamel, Waasser Büffel, Karibou, Kaz, Ranner, Gepard, Schimpans, Chinchilla, Zikad , Muschel, Kakerlak, Bacalhau, Coyote, Krab, Spréngerlek, Kräid, Kueb, Hirsch, Dinosaurier, Hond, Delfin, Porpoise, Ent, Adler, Ael, Elefant, Elch, Frett, Fësch, Fléi, Fuuss, Frog, Mouk, Gerbil ,Giraff, Gnat, Gnu, Wildbeest, Geess, Goldfësch, Gäns, Gorilla, Grasshopper, Meerschwäin, Hamster, Hues, Igel, Hering, Hippopotamus, Hornet, Päerd, Hënn, Hyena, Impala, Jackal, Jellyfish, Känguru, Wallaby, Koala, Leopard, Léiw, Eidechse, Lama, Locust, Maus, Macaw, Mallard, Mammut, Manatee, Marter, Nerz, Mink, Mol, Moos, Moustique, Maus, Rat, Mulle, Muskrat, Otter, Ochs, Auster, Panda, Schwäin, Platypus, Porcupine, Prairie Dog, Mops, Kanéngchen, Raccoon, Reindeer, Nashorn, Lachs, Sardin, Skorpion, Sigel, Seeléiw, Serval, Hai, Schof, Skunk, Schleeken, Schlaang, Spann, Eichhaut, Schwan, Termit, Tiger, Forelle, Schildkröt, Schildkröt, Walrus, Wasp, Wal, Wollef, Wombat, Woodchuck, Wuerm, Jak, Yellowjacket, Zebra'
   time:
     am: am
     formats:
@@ -339,3 +354,5 @@ lb:
   voting_method:
     default_voting_term_singular: "stëmmen"
     default_voting_term_plural: "Stëmmen"
+  ics_calendar_event:
+    event_details: "Event Detailer"

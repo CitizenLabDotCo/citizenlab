@@ -36,6 +36,7 @@ const Footer = ({ idea, hideIdeaStatus, participationMethod }: Props) => {
     return (
       <IdeaFooter
         idea={idea}
+        participationMethod={participationMethod}
         hideIdeaStatus={hideIdeaStatus}
         showCommentCount={showCommentCount}
       />

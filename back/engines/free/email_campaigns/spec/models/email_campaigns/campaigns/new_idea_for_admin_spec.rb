@@ -47,6 +47,23 @@ RSpec.describe EmailCampaigns::Campaigns::NewIdeaForAdmin do
       idea_published = create(:activity, item: idea, action: 'published')
       expect(campaign.apply_recipient_filters(activity: idea_published).count).to eq 0
     end
+
+    it 'keeps moderators if the author is anonymous' do
+      idea = create(:idea, anonymous: true)
+      moderator = create(:project_moderator, projects: [idea.project])
+
+      idea_published = create(:activity, item: idea, action: 'published')
+      expect(campaign.apply_recipient_filters(activity: idea_published)).to eq([moderator])
+    end
+
+    it 'filters out everyone for a native survey response' do
+      create(:idea_status_proposed)
+      input = create(:native_survey_response)
+      create(:admin)
+
+      input_published = create(:activity, item: input, action: 'published')
+      expect(campaign.apply_recipient_filters(activity: input_published).count).to eq 0
+    end
   end
 
   describe '#generate_commands' do

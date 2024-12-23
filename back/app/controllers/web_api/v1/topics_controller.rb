@@ -7,6 +7,15 @@ class WebApi::V1::TopicsController < ApplicationController
   def index
     topics = policy_scope(Topic)
     topics = TopicsFilteringService.new.filter(topics, params: params, current_user: current_user)
+    filter_ideas = Idea
+    if params.key? :ideas
+      filter_ideas = IdeasFinder.new(
+        params.delete(:ideas),
+        scope: policy_scope(Idea),
+        current_user: current_user
+      ).find_records
+      topics = Topic.where(id: topics.includes(:ideas_topics).where(ideas_topics: { idea_id: filter_ideas }))
+    end
 
     topics =
       case params[:sort]
@@ -20,6 +29,10 @@ class WebApi::V1::TopicsController < ApplicationController
         topics.order_projects_count
       when '-projects_count'
         topics.order_projects_count(:asc)
+      when 'ideas_count'
+        topics.order_ideas_count(filter_ideas)
+      when '-ideas_count'
+        topics.order_ideas_count(filter_ideas, direction: :desc)
       else
         raise 'Unsupported sort method'
       end
@@ -112,3 +125,5 @@ class WebApi::V1::TopicsController < ApplicationController
     authorize @topic
   end
 end
+
+WebApi::V1::TopicsController.include(AggressiveCaching::Patches::WebApi::V1::TopicsController)

@@ -14,20 +14,20 @@ export default defineMessages({
     defaultMessage: 'Final results',
   },
   submittedBudgetsCountText: {
-    id: 'app.utils.votingMethodUtils.submittedBudgetsCountText',
-    defaultMessage: 'people submitted their budgets',
+    id: 'app.utils.votingMethodUtils.submittedBudgetsCountText2',
+    defaultMessage: 'people submitted their budgets online',
   },
   submittedBudgetCountText: {
-    id: 'app.utils.votingMethodUtils.submittedBudgetCountText',
-    defaultMessage: 'person submitted their budget',
+    id: 'app.utils.votingMethodUtils.submittedBudgetCountText2',
+    defaultMessage: 'person submitted their budget online',
   },
   submittedVotesCountText: {
-    id: 'app.utils.votingMethodUtils.submittedVotesCountText',
-    defaultMessage: 'people submitted their votes',
+    id: 'app.utils.votingMethodUtils.submittedVotesCountText2',
+    defaultMessage: 'people submitted their votes online',
   },
   submittedVoteCountText: {
-    id: 'app.utils.votingMethodUtils.submittedVoteCountText',
-    defaultMessage: 'person submitted their vote',
+    id: 'app.utils.votingMethodUtils.submittedVoteCountText2',
+    defaultMessage: 'person submitted their vote online',
   },
   votingPreSubmissionWarning: {
     id: 'app.utils.votingMethodUtils.votingPreSubmissionWarning',

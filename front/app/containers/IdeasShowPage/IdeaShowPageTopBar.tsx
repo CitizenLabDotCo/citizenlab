@@ -101,6 +101,8 @@ const IdeaShowPageTopBar = ({
       project &&
       isFixableByAuthentication(disabled_reason)
     ) {
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       const phaseId = project.data.relationships?.current_phase?.data?.id;
       if (phaseId) {
         triggerAuthenticationFlow({

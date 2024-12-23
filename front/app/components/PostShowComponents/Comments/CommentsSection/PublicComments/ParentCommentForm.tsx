@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 
-import { Box, colors, defaultStyles } from '@citizenlab/cl2-component-library';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 import { isString, trim } from 'lodash-es';
 import { hideVisually } from 'polished';
 import { useLocation } from 'react-router-dom';
@@ -8,7 +8,6 @@ import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAddCommentToIdea from 'api/comments/useAddCommentToIdea';
-import useAddCommentToInitiative from 'api/comments/useAddCommentToInitiative';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useAuthUser from 'api/me/useAuthUser';
 import useProjectById from 'api/projects/useProjectById';
@@ -25,7 +24,6 @@ import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import clickOutside from 'utils/containers/clickOutside';
 import { isNilOrError, isPage } from 'utils/helperUtils';
-import { canModerateInitiative } from 'utils/permissions/rules/initiativePermissions';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import Actions from '../../CommentForm/Actions';
@@ -66,8 +64,7 @@ const Form = styled.form`
   }
 
   &.focused {
-    border-color: ${colors.black};
-    box-shadow: ${defaultStyles.boxShadowFocused};
+    border: solid 2px ${(props) => props.theme.colors.tenantPrimary};
   }
 `;
 
@@ -77,8 +74,6 @@ const HiddenLabel = styled.span`
 
 interface Props {
   ideaId: string | undefined;
-  initiativeId: string | undefined;
-  postType: 'idea' | 'initiative';
   postingComment: (arg: boolean) => void;
   className?: string;
   allowAnonymousParticipation?: boolean;
@@ -86,8 +81,6 @@ interface Props {
 
 const ParentCommentForm = ({
   ideaId,
-  initiativeId,
-  postType,
   className,
   allowAnonymousParticipation,
 }: Props) => {
@@ -99,10 +92,7 @@ const ParentCommentForm = ({
   const isAdminPage = isPage('admin', pathname);
   const { mutate: addCommentToIdea, isLoading: addCommentToIdeaIsLoading } =
     useAddCommentToIdea();
-  const {
-    mutate: addCommentToInitiative,
-    isLoading: addCommentToInitiativeIsLoading,
-  } = useAddCommentToInitiative();
+
   const textareaElement = useRef<HTMLTextAreaElement | null>(null);
   const [inputValue, setInputValue] = useState('');
   const [focused, setFocused] = useState(false);
@@ -116,8 +106,7 @@ const ParentCommentForm = ({
   const projectId = idea ? idea.data.relationships.project.data.id : null;
   const { data: project } = useProjectById(projectId);
 
-  const processing =
-    addCommentToIdeaIsLoading || addCommentToInitiativeIsLoading;
+  const processing = addCommentToIdeaIsLoading;
 
   const hasEmptyError = inputValue.trim().length < 1;
 
@@ -135,10 +124,8 @@ const ParentCommentForm = ({
   const onFocus = () => {
     setCommentCancelledMessage('');
     trackEventByName(tracks.focusParentCommentEditor, {
-      extra: {
-        postId: ideaId || initiativeId,
-        postType,
-      },
+      postId: ideaId,
+      postType: 'idea',
     });
 
     setFocused(true);
@@ -170,14 +157,12 @@ const ParentCommentForm = ({
       };
 
       trackEventByName(tracks.clickParentCommentPublish, {
-        extra: {
-          postId: ideaId || initiativeId,
-          postType,
-          content: inputValue,
-        },
+        postId: ideaId,
+        postType: 'idea',
+        content: inputValue,
       });
 
-      if (postType === 'idea' && projectId) {
+      if (projectId) {
         addCommentToIdea(
           {
             ideaId,
@@ -208,60 +193,9 @@ const ParentCommentForm = ({
                 trackEventByName(tracks.parentCommentProfanityError.name, {
                   locale,
                   ideaId,
-                  postType,
+                  postType: 'idea',
                   projectId,
                   profaneMessage: commentBodyMultiloc[locale],
-                  location: 'InitiativesNewFormWrapper (citizen side)',
-                  userId: authUser.data.id,
-                  host: appConfiguration
-                    ? appConfiguration.data.attributes.host
-                    : null,
-                });
-
-                setProfanityApiError(true);
-              }
-
-              throw error;
-            },
-          }
-        );
-      }
-
-      if (postType === 'initiative') {
-        addCommentToInitiative(
-          {
-            initiativeId,
-            author_id: authUser.data.id,
-            body_multiloc: commentBodyMultiloc,
-            anonymous: postAnonymously,
-          },
-          {
-            onSuccess: (comment) => {
-              const parentComment = document.getElementById(comment.data.id);
-              if (parentComment) {
-                setTimeout(() => {
-                  parentComment.scrollIntoView({ behavior: 'smooth' });
-                }, 100);
-              }
-              commentAdded();
-              close();
-            },
-            onError: (error) => {
-              const apiErrors = error.errors;
-              const profanityApiError = apiErrors.base.find(
-                (apiError) => apiError.error === 'includes_banned_words'
-              );
-
-              setHasApiError(true);
-
-              if (profanityApiError) {
-                trackEventByName(tracks.parentCommentProfanityError.name, {
-                  locale,
-                  initiativeId,
-                  postType,
-                  projectId,
-                  profaneMessage: commentBodyMultiloc[locale],
-                  location: 'InitiativesNewFormWrapper (citizen side)',
                   userId: authUser.data.id,
                   host: appConfiguration
                     ? appConfiguration.data.attributes.host
@@ -285,12 +219,11 @@ const ParentCommentForm = ({
 
   const placeholderMessage: MessageDescriptor = isAdminPage
     ? messages.visibleToUsersPlaceholder
-    : messages[`${postType}CommentBodyPlaceholder`];
+    : messages.ideaCommentBodyPlaceholder;
   const placeholder = formatMessage(placeholderMessage);
-  const userCanModerate = {
-    idea: project ? canModerateProject(project.data, authUser) : false,
-    initiative: canModerateInitiative(authUser),
-  }[postType];
+  const userCanModerate = project
+    ? canModerateProject(project.data, authUser)
+    : false;
 
   return (
     <Box display="flex" className={className || ''} my="12px">
@@ -320,8 +253,7 @@ const ParentCommentForm = ({
             className="e2e-parent-comment-form"
             placeholder={placeholder}
             rows={focused || processing ? 4 : 1}
-            postId={ideaId || initiativeId}
-            postType={postType}
+            postId={ideaId}
             value={inputValue}
             error={
               hasApiError ? (

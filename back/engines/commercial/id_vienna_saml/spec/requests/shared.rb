@@ -82,7 +82,7 @@ RSpec.shared_examples 'authenticates when the user does not exist yet' do |provi
 
     it 'sets the JWT auth token and redirects to complete signup path' do
       expect(cookies[:cl2_jwt]).to be_present
-      expect(response).to redirect_to('/en/complete-signup?')
+      expect(response).to redirect_to('/en/?sso_flow=signup&sso_success=true')
     end
   end
 end

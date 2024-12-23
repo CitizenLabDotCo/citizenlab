@@ -57,6 +57,8 @@ const ParticipationReportPreview = ({
               title={{ [locale]: formatMessage(messages.participantsTimeline) }}
             />
             <WhiteSpace />
+            {/* TODO: Fix this the next time the file is edited. */}
+            {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
             {userFields?.data.map((field) => {
               return (
                 <Element is="div" canvas key={field.id}>
@@ -73,7 +75,6 @@ const ParticipationReportPreview = ({
                 </Element>
               );
             })}
-
             {hasIdeationPhase && (
               <Element is="div" canvas>
                 <ParticipationWidget

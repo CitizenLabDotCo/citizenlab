@@ -1,0 +1,358 @@
+ur:
+  locales:
+    en: انگریزی
+    ar-MA: عربی (مراکش)
+    ar-SA: عربی (سعودی عرب)
+    ca-ES: کاتالان
+    cy-GB: ویلش
+    da-DK: ڈینش
+    de-DE: جرمن
+    el-GR: یونانی
+    en-CA: انگریزی (کینیڈا)
+    en-GB: انگریزی (برطانیہ)
+    en-IE: انگریزی (آئرلینڈ)
+    es-CL: ہسپانوی (چلی)
+    es-ES: ہسپانوی (اسپین)
+    fi-FI: فنش
+    fr-BE: فرانسیسی (بیلجیم)
+    fr-FR: فرانسیسی
+    hr-HR: کروشین
+    hu-HU: ہنگری
+    it-IT: اطالوی
+    kl-GL: گرین لینڈ
+    lb-LU: لکسمبرگش
+    lv-LV: لیٹوین
+    mi: ماوری
+    nb-NO: نارویجن (Bokmål)
+    nl-BE: ڈچ (بیلجیم)
+    nl-NL: ڈچ
+    pl-PL: پولش
+    pt-BR: پرتگالی (برازیل)
+    ro-RO: رومانیہ
+    sr-Latn: سربیائی (لاطینی)
+    sr-SP: سربیائی (سیریلک)
+    sv-SE: سویڈش
+    tr-TR: ترکی
+  symbols:
+    outside: کہیں اور
+  idea_statuses:
+    prescreening: اسکریننگ
+    prescreening_description: یہ ان پٹ فی الحال پروجیکٹ مینیجر کے زیر جائزہ ہے اور ابھی تک عوام کے لیے نظر نہیں آ رہا ہے۔
+    proposed: تجویز کردہ
+    proposed_description: یہ ان پٹ جمع کر دیا گیا ہے اور اب عوامی حمایت کے لیے کھلا ہے۔ اسے اگلے مرحلے تک لے جانے میں مدد کے لیے ووٹ جمع کریں۔
+    viewed: دیکھا
+    viewed_description: اس ان پٹ کو پروجیکٹ مینیجر نے دیکھا ہے۔
+    under_consideration: زیر غور
+    under_consideration_description: اس ان پٹ کو پراجیکٹ مینیجر نے دھیان میں رکھا ہے۔
+    accepted: قبول کر لیا
+    accepted_description: اس ان پٹ کو قبول کر لیا گیا ہے اور پراجیکٹ مینیجر کے ذریعے لاگو کیا جائے گا۔
+    implemented: لاگو کیا
+    implemented_description: اس ان پٹ کو پروجیکٹ مینیجر نے لاگو کیا ہے۔
+    rejected: مسترد کر دیا
+    rejected_description: اس ان پٹ کو مسترد کر دیا گیا ہے۔
+    expired: میعاد ختم
+    expired_description: یہ ان پٹ اب فعال نہیں ہے اور وقت کی کمی یا غیرفعالیت کی وجہ سے بند کر دیا گیا ہے۔
+    threshold_reached: حد تک پہنچ گئی
+    threshold_reached_description: یہ ان پٹ مطلوبہ سپورٹ کی حد کو پورا کر چکا ہے اور اب مزید کارروائی کے لیے اس پر غور کیا جائے گا۔
+    answered: جواب دیا
+    answered_description: پروجیکٹ مینیجر نے اس ان پٹ پر ایک باضابطہ رائے شائع کی ہے۔
+    ineligible: نااہل
+    ineligible_description: اس ان پٹ کا جائزہ لیا گیا ہے اور بدقسمتی سے اسے مسترد کر دیا گیا ہے۔ مزید تفصیلات کے ساتھ ایک آفیشل اپ ڈیٹ فراہم کیا گیا ہے۔
+  initiative_statuses:
+    review_pending: جائزہ زیر التواء
+    review_pending_description: جائزہ زیر التواء
+    changes_requested: تبدیلیوں کی درخواست کی
+    changes_requested_description: تبدیلیوں کی درخواست کی
+    proposed: تجویز کردہ
+    proposed_description: تجویز کردہ
+    expired: میعاد ختم
+    expired_description: میعاد ختم
+    threshold_reached: حد تک پہنچ گئی
+    threshold_reached_description: حد تک پہنچ گئی
+    answered: جواب دیا
+    answered_description: جواب دیا
+    ineligible: نااہل
+    ineligible_description: نااہل
+  topics:
+    nature: فطرت اور حیاتیاتی تنوع
+    nature_description: فطرت اور حیاتیاتی تنوع
+    waste: صفائی اور فضلہ
+    waste_description: صفائی اور فضلہ
+    sustainability: پائیدار ترقی
+    sustainability_description: پائیدار ترقی
+    mobility: نقل و حرکت
+    mobility_description: نقل و حرکت
+    technology: توانائی اور ٹیکنالوجی
+    technology_description: توانائی اور ٹیکنالوجی
+    economy: کام، معیشت اور سیاحت
+    economy_description: کام، معیشت اور سیاحت
+    housing: ہاؤسنگ
+    housing_description: ہاؤسنگ
+    public_space: عوامی مقامات اور عمارتیں۔
+    public_space_description: عوامی مقامات اور عمارتیں۔
+    safety: حفاظت
+    safety_description: حفاظت
+    education: تعلیم اور نوجوان
+    education_description: تعلیم اور نوجوان
+    culture: ثقافت، کھیل اور واقعات
+    culture_description: ثقافت، کھیل اور واقعات
+    health: صحت اور بہبود
+    health_description: صحت اور بہبود
+    inclusion: سماجی شمولیت
+    inclusion_description: سماجی شمولیت
+    community: کمیونٹی کی ترقی
+    community_description: کمیونٹی کی ترقی
+    services: عوامی خدمات
+    services_description: عوامی خدمات
+    other: دیگر
+    other_description: دیگر
+  static_pages:
+    terms_and_conditions_title: شرائط و ضوابط
+    terms_and_conditions_body: >
+      <p>These terms & conditions outline the rules and guidelines of contributing to the platform and are meant to help ensure a constructive dialogue.</p> <p>Your ideas to further improve the platform are welcome and can be sent to support@govocal.com.</p> <h2>Who can participate?</h2> <p>Anyone is able to view public projects via the platform. If you’d like to contribute content (e.g., submit input or react), you will need to register and create an account. You can register using your e-mail address; for some platforms, it may also be possible to sign in using an existing Facebook or Google account. If you use either of these services, your name, email address and profile photo will be shared with and added to your platform account.</p> <p>Please note that the creation of your account does not give you ownership. Platform administrators can refuse, suspend or delete accounts for reasons such as not adhering to the terms and conditions outlined on this page.</p> <p>The general conditions for your account are the following: </p> <ul> <li> <strong>You may create one account</strong> <p>An individual may not create and maintain multiple accounts. The account details you provide must be accurate and this account cannot be transferred to someone else without permission from a platform administrator. </p> </li> <li> <strong>Your account cannot be used for commercial promotion</strong> <p>An account may not be used for the sole purpose of advertising, marketing a product or service, etc.</p> </li> <li> <strong>You are responsible for keeping your account information secure and confidential</strong> <p>You are the only person who should use your account and have access to your account’s password and login details. To improve your account security, we advise using a password with a combination of numbers, lowercase letters and uppercase letters. We are not responsible for any loss or damage incurred to your account and cannot be held responsible for its theft (e.g., via phishing). Note that we will never ask you for your log-in details such as your password. </p>  <h2>Your activity on the platform</h2> <p>To ensure safe and productive participation, there are some restrictions on the type of content that may be published on this platform. Any content you post on the platform must be free of:</p> <ul> <li> <strong>Private data</strong> <p>Confidential data and personal information about others, such as telephone numbers and addresses may not be posted without their express authorization and consent.  </p> <li><strong>Spam / malware / phishing / viruses / worms / Trojans</strong> <p>Malicious content or links that are meant violate others’ privacy or to damage or disrupt others’ browsers or computers.</p> </li> <li> <strong>Threats, insults and other inappropriate content </strong> <p>Personal attacks and insults, threatening behavior or language, discriminatory comments, profanity and other offensive language.</p> </li> <li><strong>Advertising and commercial activity</strong> <p>Content posted with the sole purpose of advertising a commercial service or product.</p> </li> <li> <strong>Copyrighted material</strong> <p>Content that infringes upon intellectual property rights (e.g., copyrighted images).</p> </li> <li> <strong>Illegal activities</strong> <p>Content that in any way promotes illegal activities.</li></p> </ul> <p>Submissions and other content that includes any of the above may be edited, deleted or otherwise prevented from being posted, and the account may be temporarily blocked or permanently deleted. New or additional accounts created to avoid temporary or permanent suspension may also be monitored and deleted.</p> <h2>Applicable laws</h2> <p>The use of an account may not infringe upon applicable laws. This includes any violation of privacy legislation, intellectual property rights, the criminal code, etc.</p> <p>We cannot be held liable in any way for content posted on the platform that does not adhere to the above rules and laws. Violations can be reported to support@govocal.com and may result in the relevant messages being deleted and/or the underlying account being suspended or permanently revoked.</p> <p>It is possible that content posted on the platform can contain harmful files or links. By downloading files or accessing hyperlinks via the platform, you assume the risk and responsibility for any damage that may incur.</p> <h2>Property rights</h2> <p>This platform is protected by intellectual property rights related to its content, source code, databases, etc. Any original content that you post on the platform may be visible to the public and falls under the Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0) Public License, which allows your content to be shared or adapted with attribution. You may not otherwise reproduce, distribute, modify or transmit the platform and any of its contents that do not fall under the public domain without permission.</p>
+    privacy_policy_title: رازداری کی پالیسی
+    privacy_policy_body: >
+      <p>Responsible for the processing of the Data:</p> <p>CitizenLab NV - Pachecolaan 34 - 1000 Brussels - Belgium</p> <p>Contact e-mail address: support@govocal.com</p> <p>Organization: //insert client contacts</p> <h2>1. PRIVACY POLICY</h2> <p>This ‘Privacy Policy’ applies to the ‘Personal Data’ collected by Go Vocal on behalf of the organization through this website.</p> <h2>2. WHAT ARE PERSONAL DATA?</h2> <p>In this Privacy Policy, Personal Data refers to information that makes it possible to identify you. An identifiable person is someone who can be identified, either directly or indirectly, in particular by referring to an identification number or to one or more factors that are linked to physical, physiological, mental, economic, cultural or social identity. A typical example of personal information is your name and email address.</p> <h2>3. WHAT PERSONAL DATA DO WE COLLECT?</h2> <p>We might collect your Personal Data from the following three sources:</p> <h3>3.1 Personal Data that you provide during the registration process on the Platform, some of which are optional.</h3> <p>The personal data that we might collect from you are:</p> <ul> <li>First and last name</li> <li>E-mail address</li> <li>Year of birth</li> <li>Gender</li> <li>Area of residence</li> <li>Preferred language</li> </ul> <p>This list can be extended on request of the organization. If you choose to sign-in via a 3rd party authentication provider as Google Accounts, Facebook or FranceConnect, we will get this data from them. If you choose to verify your identity with a 3rd party identity provider as COW, FranceConnect or CSAM, we will get this information from them.</p> <h3>3.2 Personal data that you provide when taking participative action on our platform.</h3> <p>Every action you take on the platform (voting, posting an idea, writing a comment, answering a poll,…) is registered and stored. This data is also linked to your registration data (3.1), implying that the organization can link your platform profile to this participation data.</p> <h3>3.3 Personal Data that we collect when you visit our platform.</h3> <p>We (and third party processors acting on our behalf) collect information about usage of our platform for assessing the good functioning and security of the platform. To this end, we collect technical information that can identify you, such as your IP address and browser details. By using our services you agree to this data being collected.</p> <p>We also gather usage data to improve our services, you can opt-out of this collection at all time from the consent manager.</p> <h2>4. HOW DO WE USE PERSONAL DATA?</h2> <p>We might use your personal data for the following purposes:</p> <ul> <li>First and foremost, to communicate your input to the organization with relevant context, and to draw aggregated reports of all the data collected on this platform to assist their decision-making.</li> <li>To create and maintain your user profile on this website.</li> <li>To manage the identification and authentication of users.</li> <li>To provide information about your community and/or alert you when activities on the platform may interest you. You can opt-out of user emails from your user profile at any time.</li> <li>To improve our services and monitor their functionalities.</li> </ul> <p>The personal data is only stored and processed for the period required for the purpose of the processing. After that, the data will be deleted or anonymized.</p> <h2>5. WITH WHOM DO WE SHARE YOUR PERSONAL DATA?</h2> <p>We share your personal data with the organization on behalf of which we gather this data. We share your data to the sub-processors working on our behalf. We will never sell or rent your personal data to other service providers, nor will we share your Personal Data with any service providers who are not compliant with the GDPR.</p> <h2>6. WHERE DO WE TRANSFER YOUR PERSONAL DATA TO?</h2> <p>We only transfer your Personal Data to service providers established outside the European Economic Area if they comply to art 44 GDPR.</p> <h2>7. WHAT RIGHTS DO YOU HAVE?</h2> <p>You have the right to view your personal data at any time, as well as the right to be informed of the use that Go Vocal makes of your personal data.</p> <h3>7.1 Right to rectification, erasure and restriction of processing</h3> <p>You are free to decide whether or not to provide your personal data to Go Vocal. In addition, you always have the right to request Go Vocal to correct, supplement or remove your personal data. You acknowledge that a refusal to provide or a request for the erasure of personal data means that certain services can no longer be delivered. You may also request that the processing of your personal data is limited. If you choose to remove your account from the platform, the personal data that was collected about you will be removed from our servers. Some personal information about you might remain in the logging data we keep for security and legal reasons for up to 30 days.</p> <h3>7.2 Right to object</h3> <p>You have the right to object to the processing of your personal data for serious and legitimate reasons. In addition, you always have the right to object to the use of your personal data for direct marketing purposes; in such cases, you do not have to state reasons.</p> <h3>7.3 Right to data portability</h3> <p>You have the right to obtain the personal data you have provided to Go Vocal in a structured, typical and machine-readable form and/or have such transferred to different controllers.</p> <h3>7.4 Right to withdraw consent</h3> <p>Insofar as the processing is based on your prior consent, you have the right to withdraw this approval.</p> <h3>7.5 Exercising your rights</h3> <p>You can exercise your rights by contacting Go Vocal to this end, either by email to support@govocal.com, by post to Pachecolaan 34, 1000 Brussels, Belgium or by using the “Contact us” form on our Website, provided you enclose a copy of the front of your identity card.</p> <h3>7.6 Automated decision-making and profiling</h3> <p>The processing of your personal data does not include profiling and shall also not be subjected by Go Vocal to automated decision-making.</p> <h3>7.7 Right to lodge a complaint</h3> <p>You have the right to lodge a complaint to the Privacy authority of your country, or the Belgian Privacy Authority under which authority Go Vocal falls: Drukpersstraat 35, 1000 Brussels, Belgium, Tel +32 (0)2 274 48 00, Fax +32 (0)2 274 48 35, e-mail: contact@adp-gba.be. This does not affect relief before a civil court.</p> <h2>8. ADDITIONAL INFORMATION ON DATA COLLECTION AND PROCESSING</h2> <h3>Legal procedures</h3> <p>Go Vocal and the Organization we process this data for might use the Personal Data of the User for legal purposes, for the court or legal proceedings preceding phases in the event of unlawful use of this Application or the related services. The User is aware that Go Vocal and the Organization we work with might be obliged to disclose the personal data at the request of competent government institutions for the processing of the Data. The legal basis for this processing is the acceptance of the terms and conditions (contractual basis) and given consent.</p> <h3>Security Measures</h3> <p>Go Vocal has developed security measures which have been adjusted at the technological and organisational level to prevent the destruction, loss, falsification, changing, prohibited access or the erroneous disclosure to third parties of personal data as well as any other prohibited processing of this data. Under no circumstances can Go Vocal be held liable for any direct or indirect loss resulting from the incorrect or unlawful use of your personal data by a third party. You must at all times comply with the security instructions, including by preventing all prohibited access to your login details and password. You are solely responsible for the use made from the website on your computer, IP-address and your identification details, as well as for the confidentiality of such.</p> <h3>Changes to this privacy policy</h3> <p>Go Vocal reserves the right to change this privacy policy at any time by notifying Users on this page. We encourage you to check this page for possible changes. The date of the last change is indicated at the bottom of the page. If a User objects to any change in the policy, the User must not continue to use this Application. Unless otherwise indicated, the valid Privacy Policy applicable at that time applies to all Personal Data that we have collected.</p> <p><em>Most recent update: 17/12/2019</em></p>
+    infopage_title: معلوماتی صفحہ
+    infopage_body: "<p>This <strong>all-in-one participation platform</strong> is an initiative of your municipality or organisation and can be used for different public consultation processes: collecting ideas, voting, discussing, surveys, polls, participatory budgeting, online mapping, scenario planning, support for advisory boards and committees, ...</p>\n<p>On the home page, you'll see which <strong>processes are active </strong>and in which <strong>phase </strong>they currently are.</p>\n<p><img data-cl2-text-image-text-reference=\"e2c7bc7a-017d-4887-a3cb-b94185617a59\" alt=\"Horizontal separation rule\" data-align=\"center\" style=\"display: block; margin: auto;\"></p>\n<h2>How do I sign in on the platform?</h2>\n<p>Signing in is done easily by giving your first and last name and your e-mail address. You could also use your Google or Facebook account. Only your first and last name will be visible to others.</p>\n<h2>Can I use the platform myself, e.g. to organise a public consultation?</h2>\n<p>Absolutely. Ask the responsible within your municipality or organisation to give you the needed permission rights to become a project moderator. Once granted these permissions, you can set up your own project and timeline and share the information you want (video, documents, images, ...). This will also allow you to invite others to the platform, enabling them to post ideas within your project, vote or comment.</p>\n<h2>Can I participate as an association/organisation/committee? </h2>\n<p>Yes, that's possible. Given that only your first and last name are visible to others on the platform, you can simply use your organisation's name while setting up your profile.</p>\n<h2>Why would I use this platform and not create a website myself?</h2>\n<p>A team of dedicated developers and specialists in online participation (<a href=\"https://www.govocal.com/en\" target=\"_blank\">Go Vocal</a>, commissioned by your municipality or organisation) is improving and updating this platform on a daily basis. Even the smallest bug gets tackled immediately and if you have creative proposals, they can help you pointing out which features of the platform can be used for this or which ones are in the pipeline.</p>\n<p><img data-cl2-text-image-text-reference=\"392d0e47-e5f9-41ab-9ceb-affac617b8b1\" alt=\"Horizontal separation rule\" data-align=\"center\" style=\"display: block; margin: auto;\"></p>\n<p><strong><em>Need more information?</em></strong><em> Do you want to use the platform? Questions or feedback? Contact the responsible within your municipality or organisation. Or contact Go Vocal through support@govocal.com.</em></p><strong>"
+    faq_title: اکثر پوچھے گئے سوالات
+    faq_body: "<h2 class=\"ql-align-justify\">What is this platform for?</h2><p class=\"ql-align-justify\">This platform is designed as a central hub to share information and get input and feedback. Participation projects that are currently active are shown on the homepage - each participation project may have a different mode of engagement, whether it’s adding an idea, commenting on a proposal, voting on and prioritising projects, or taking a survey. </p><h2 class=\"ql-align-justify\">How do I participate? </h2><p class=\"ql-align-justify\">You can always browse public projects, but you’ll need to sign up in order to take an action. This helps to maintain a community feel and ensure the legitimacy of the input. </p><h2 class=\"ql-align-justify\">What information can people see about me?</h2><p class=\"ql-align-justify\">Your name, photo and bio, if you’ve added one, are visible. You can always change these in your Settings.</p><h2 class=\"ql-align-justify\">Why can’t I post my input or submit a comment?</h2><p class=\"ql-align-justify\">Posting, commenting and voting may be enabled only during certain times or phases of a project. In some instances, a project may only be open to contributions from a certain stakeholder group.</p><p class=\"ql-align-justify\">If posting is currently enabled for a project, you’ll see a button that prompts you to submit a post. Alternatively, you can browse other active projects for additional engagement opportunities.</p><h2 class=\"ql-align-justify\">How do I edit or delete my input?</h2><p class=\"ql-align-justify\">If you’ve posted your input but want to make edits or delete it, you can find this option by clicking on the three small dots on the top right of the post. </p><h2 class=\"ql-align-justify\">What are the community guidelines and moderation policies?</h2><p class=\"ql-align-justify\">Our community guidelines are here to help ensure that the platform is a safe space for everyone to participate. Please ensure your posts are free of:</p><ul>\n  <li class=\"ql-align-justify\">Personal attacks, insults, abusive or discriminatory comments</li>\n  <li class=\"ql-align-justify\">Offensive language including profanity</li>\n  <li class=\"ql-align-justify\">Marketing or advertising material</li>\n  <li class=\"ql-align-justify\">Personal information about other individuals</li>\n  <li class=\"ql-align-justify\">Copyrighted material such as images</li>\n  </ul><p class=\"ql-align-justify\">Any posts or comments that do not adhere to these guidelines may be edited or deleted, or in extreme instances, prevented from being posted. Please review our Terms &amp; Conditions for more information. </p><h2 class=\"ql-align-justify\">How do I report an offensive post?</h2><p class=\"ql-align-justify\">Click on the three small dots on the top right corner of the post to report it. Please indicate the reason you are reporting the content - this will send a notification for the post to be reviewed.</p><h2 class=\"ql-align-justify\">Why am I having difficulty signing up or logging in?</h2><p class=\"ql-align-justify\">If you’re unable to sign up, it may be because you’ve already registered with the same email address or previously received an invitation to join the platform. If you see a message that your email address is taken by a pending invite, please check your email and follow the link in the invitation to register your account. If you can’t find the invite, try looking in your spam box or request a new invitation. </p><h2 class=\"ql-align-justify\">How do I reset my password?</h2><p class=\"ql-align-justify\">You can always request to reset your password from the log in page. If you reset your password, a link will be sent to your email address - follow the instructions to change your password. For security reasons, the link is valid for one hour. If the link has expired, you can simply click on ‘Forgot password?’ in the log in page again to generate a new reset link.</p><p class=\"ql-align-justify\">If you didn’t receive the email, check to make sure that it’s not in your spam and that you’re sending the link to the same email address that you signed up with.</p><h2 class=\"ql-align-justify\">What will you do with my data?</h2><p class=\"ql-align-justify\">Review our privacy policy for more information on data collection and usage. In short, we will never use your data for advertising, marketing or other types of spam.</p><h2 class=\"ql-align-justify\">What emails will I receive?</h2><p class=\"ql-align-justify\">You may receive emails related to your account and your activity on the platform, for instance, when someone responds to one of your posts. You can control which emails you receive in your Settings. There is a section called “Notifications” where you can turn email notifications on and off.</p><h2 class=\"ql-align-justify\">How do I delete my account?</h2><p class=\"ql-align-justify\">In your Settings there is the option to delete your account. Input that you’ve posted will remain published, but your name will be removed from the post and replaced with ‘unknown author.’ If you’d like to delete all of your input, please do so before deleting your account. </p>"
+    initiatives_title: تجاویز
+    initiatives_body: >
+      <img style="margin-bottom: 30px" data-cl2-text-image-text-reference="b4e659ab-2830-48fd-b3ce-96e16856262f" height="374.3745928338762" width="819" alt=""> <h2>What's a citizen's proposal?</h2> <p>As a resident of $|orgName| you can place your proposal on the agenda via this platform. These proposals are preferably concrete ideas that are linked to local policy and arise from a need, desire or dream. It can be your own proposal or a collaborative one. Maybe you'd like to change or improve an existing situation or start a new project.</p> <p>The involvement of $|orgName| in the implementation of your proposal must be both necessary and possible. In an ideal scenario, you're also available for further reflection or cooperation, but that is not an obligation. "Reducing the speed limit on the highway to 80 km/h" is therefore not a strong proposal, while "Turning the main street into a pedestrian area" is. So bring on your proposals! If more information is needed, you'll receive an update or reaction.</p><h2>Why post a proposal on this platform?</h2> <p>This is the official participation platform of $|orgName|, which offers the following benefits:</p> <ul> <li>$|orgName| is officially involved as this platform's owner, and actively monitors what happens here. When you post a proposal, the person in charge automatically receives a message. You don't have to contact them to make sure your proposal is taken into account.</li> <li>This platform has been developed specifically for official participatory actions, like citizens' proposals. Every element, from the user experience to the step-by-step approach, is built precisely for this purpose. When using traditional social media, your proposal could disappear into the overload of stimuli, and an ordinary e-mail quickly disappears into a full inbox.</li> <li>Your fellow citizens are also present on this platform. They can support and refine your proposal. The more creative your proposal is and the more support it manages to gather, the more chance it will be implemented!</li> </ul> <h2>How do you get started?</h2> <p>First, check whether your proposal meets the following criteria:</p> <p>$|initiativesEligibilityCriteria|</p> <h2>What can you expect when your proposal reaches $|initiativesVotingThreshold| votes within $|initiativesDaysLimit| days?</h2> <p>$|initiativesThresholdReachedMessage|</p> <h2>What happens to the proposals that do not receive $|initiativesVotingThreshold| votes on time? </h2> <p>That happens, but don't worry. Your proposal will remain on the platform. The status of your proposal will automatically change to 'Expired'. As a result, voting will no longer be possible. If you wish, you can choose to delete your own proposal at any time.</p>
+  nav_bar_items:
+    home:
+      title: گھر
+    projects:
+      title: تمام منصوبے
+    all_input:
+      title: تمام ان پٹ
+    proposals:
+      title: تجاویز
+    events:
+      title: واقعات
+    about:
+      title: کے بارے میں
+    faq:
+      title: اکثر پوچھے گئے سوالات
+  projects:
+    open_idea_project_title: ایک خیال؟ اسے اپنی کونسل میں لائیں!
+    open_idea_project_description_preview: ہوسکتا ہے کہ آپ کے پاس کوئی ایسا خیال ہو جو موجودہ منصوبوں میں سے کسی ایک کے ساتھ فٹ نہیں بیٹھتا؟ اسے یہاں پوسٹ کرنے کے بجائے، حمایت اکٹھا کریں اور اسے سیاسی ایجنڈے پر حاصل کریں!
+    open_idea_project_description: >
+      <p>یہاں، آپ اپنا آئیڈیا شروع کر سکتے ہیں اگر یہ موجودہ پروجیکٹس میں سے کسی ایک میں فٹ نہیں ہوتا ہے۔</p><p><strong>مقصد؟</strong> سیاسی ایجنڈے پر اپنا خیال حاصل کرنے کے لیے۔</p><p><strong>کیسے؟</strong> حمایت اکٹھا کر کے، یعنی 3 ماہ میں کم از کم 100 ووٹ۔ آپ پہلے اپنے آئیڈیا کو 'پرکشش' بنا کر ایسا کر سکتے ہیں۔ اسے واضح اور دل چسپ انداز میں لکھیں، تصاویر شامل کریں، حقائق پر مبنی مضبوط دلائل دیں، مزید تفصیلات یا پس منظر کی معلومات کے ساتھ منسلکات شامل کریں، ... ایسا کرنے کے بعد، سوشل میڈیا یا ای میل کے ذریعے اپنے خیال کا اشتراک شروع کریں۔ لوگوں کو اپنے خیال پر بحث میں شامل ہونے کے لیے مدعو کریں، یا صرف حق میں ووٹ دے کر انہیں اس کی حمایت کرنے پر راضی کریں۔</p><p><strong>کس بارے میں؟</strong> آپ کا خیال بہت سی چیزوں کے بارے میں ہو سکتا ہے، جب تک کہ یہ آپ کے شہر اور اس کی پالیسی سے متعلق ہو۔ یہ ایک مسئلہ ہوسکتا ہے جس کا آپ تجربہ کرتے ہیں، ایک حل جو آپ تصور کرتے ہیں یا دونوں کا مجموعہ بھی ہوسکتا ہے۔ یہ جنگلی اور طویل مدتی، یا بہت ٹھوس اور فوری جیت ہو سکتا ہے۔</p><p><strong>اور پھر؟ </strong>کیا آپ 3 ماہ میں 100 ووٹوں تک پہنچ گئے؟ مبارک ہو! شہر اب آپ کے خیال کو مدنظر رکھے گا۔ اگر آپ کا خیال قابل عمل سمجھا جاتا ہے اور مخصوص گروہوں یا افراد کو نقصان نہیں پہنچاتا ہے، تو آپ کو کونسل کے اجلاس کے دوران اپنی تجویز پیش کرنے کا موقع ملے گا۔ اسی میٹنگ کے دوران، کونسل کے اراکین آپ کو براہ راست رائے دیں گے کہ وہ آپ کے خیال کے ساتھ کیا کریں گے یا نہیں کریں گے اور کیوں۔ اگر آپ 3 ماہ میں 100 ووٹ جمع نہیں کرتے ہیں، تو آپ کی تجویز پر غور نہیں کیا جائے گا۔</p><p>ہم آپ کے خیالات کے بارے میں جاننے کے لیے بے چین ہیں!</p>
+  phases:
+    open_idea_phase_title: موجودہ مرحلہ
+    native_survey_title: سروے
+    native_survey_button: سروے میں حصہ لیں۔
+  events:
+    council_meeting_title: کونسل کا اجلاس
+    council_meeting_description: >
+      <p>اس کونسل کے اجلاس کے دوران، وہ شہری اقدامات پیش کیے جائیں گے جنہوں نے 3 ماہ سے بھی کم عرصے میں 100 ووٹ حاصل کیے تھے۔</p><p>اس کے بعد کونسل ہر آئیڈیا پر اپنا نظریہ بتائے گی۔</p>
+  custom_fields:
+    users:
+      gender:
+        title: جنس
+      birthyear:
+        title: پیدائش کا سال
+      domicile:
+        title: رہائش کی جگہ
+      education:
+        title: تعلیم
+    ideas:
+      title:
+        title: عنوان
+        description:
+      body:
+        title: تفصیل
+        description:
+      author_id:
+        title: مصنف
+      topic_ids:
+        title: ٹیگز
+        description:
+      consponsor_ids:
+        title: شریک سپانسرز
+        description: ذیل میں فیلڈ کے ذریعے شریک سپانسرز کو مدعو کریں۔ مدعو شریک کفیل (زبانیں) ایک ای میل موصول کریں گے۔
+      location:
+        title: مقام
+        description:
+      proposed_budget:
+        title: مجوزہ بجٹ
+        description:
+      budget:
+        title: بجٹ
+      images:
+        title: امیجز
+        description:
+      attachments:
+        title: منسلکات
+        description:
+      section1:
+        description:
+      section2:
+        title: تصاویر اور منسلکات
+        description:
+      section3:
+        title: تفصیلات
+        description:
+      other_input_field:
+        title: اپنا جواب ٹائپ کریں۔
+  custom_forms:
+    categories:
+      main_content:
+        idea:
+          title: آپ کا کیا خیال ہے؟
+        question:
+          title: آپ کا سوال کیا ہے؟
+        contribution:
+          title: آپ کی شراکت کیا ہے؟
+        project:
+          title: آپ کا پروجیکٹ کیا ہے؟
+        issue:
+          title: آپ کا کیا تبصرہ ہے؟
+        option:
+          title: آپ کا آپشن کیا ہے؟
+        proposal:
+          title: آپ کی تجویز کیا ہے؟
+        initiative:
+          title: آپ کی پہل کیا ہے؟
+        petition:
+          title: آپ کی درخواست کیا ہے؟
+  custom_field_options:
+    gender:
+      male: مرد
+      female: خاتون
+      unspecified: دیگر
+    domicile:
+      outside: کہیں اور
+    education:
+      ISCED2: لوئر سیکنڈری تعلیم
+      ISCED3: اعلیٰ ثانوی تعلیم
+      ISCED4: بعد از ثانوی غیر ترتیری تعلیم
+      ISCED5: مختصر دور کی ترتیری تعلیم
+      ISCED6: بیچلر یا اس کے مساوی
+      ISCED7: ماسٹر یا اس کے برابر
+      ISCED8: ڈاکٹریٹ یا اس کے مساوی
+  initiatives:
+    default_threshold_reached_message: >
+      <p>شروع کرنے والوں کو کونسل کے اگلے اجلاس میں اپنی تجویز پیش کرنے کے لیے مدعو کیا جاتا ہے۔ ہم ایک سرکاری اپ ڈیٹ فراہم کریں گے۔</p>
+    default_eligibility_criteria: >
+      <ul> <li>It must fall within the policy areas and competencies of local policy</li> <li>It serves the public interest rather than your individual interest</li> <li>It does not discriminate based on gender, race, age, or background</li> <li>It does not harm others</li> </ul>
+    default_posting_tips: >
+      <ul><li>اپنی تجویز کی وضاحت کے لیے وقت نکالیں۔ اگر ضروری ہو تو، پہلے ایک مسودہ ٹائپ کریں اور پھر اسے یہاں کاپی پیسٹ کریں۔</li><li>ایک بامعنی عنوان کا انتخاب کریں جو واضح طور پر بتائے کہ آپ کی تجویز میں کیا شامل ہے۔</li><li>اپنی تجویز کو نمایاں کرنے میں مدد کے لیے موزوں تصویر کے ساتھ تصور کریں!</li><li>متعلقہ منسلکات شامل کریں، جیسے ویڈیوز، متاثر کن مثالیں، تکنیکی تفصیلات یا منصوبے۔</li><li>دوسروں سے تعاون حاصل کرنے کے لیے اپنے خیال کو سوشل میڈیا اور دوسرے چینلز پر شیئر کریں۔</li></ul>
+  reset_password_mailer:
+    send_reset_password:
+      preheader: '%{organizationName}کے لیے اپنا پاس ورڈ دوبارہ ترتیب دیں۔'
+      cta_reset_password: 'اپنا پاس ورڈ دوبارہ ترتیب دیں۔'
+      message_you_reset_your_password: 'آپ نے %{organizationName}کے شرکت کے پلیٹ فارم کے لیے پاس ورڈ دوبارہ ترتیب دینے کی درخواست کی۔ نیا، محفوظ پاس ورڈ منتخب کرنے کے لیے نیچے والے بٹن پر کلک کریں۔ لنک کی میعاد 1 گھنٹے میں ختم ہو جائے گی۔'
+      subject: '%{organizationName}: اپنا پاس ورڈ دوبارہ ترتیب دیں۔'
+      title_reset_your_password: 'ایک نیا پاس ورڈ منتخب کریں۔'
+  xlsx_export:
+    anonymous: 'گمنام'
+    column_headers:
+      assignee_fullname: 'تفویض کرنے والا'
+      assignee_email: 'تفویض کردہ ای میل'
+      attachments: 'منسلکات'
+      author_email: 'مصنف کا ای میل'
+      author_fullname: 'مصنف کا نام'
+      author_id: 'مصنف کی شناخت'
+      budget: 'بجٹ'
+      comments_count: 'تبصرے'
+      cost: 'لاگت'
+      created_at: 'پر جمع کرایا'
+      description: 'تفصیل'
+      dislikes_count: 'ناپسندیدگی'
+      email: 'ای میل'
+      first_name: 'پہلا نام'
+      image_url: 'تصویری URL'
+      input_id: 'ID'
+      manual_votes: 'آف لائن ووٹ'
+      input_url: 'URL'
+      last_name: 'آخری نام'
+      latitude: 'عرض بلد'
+      likes_count: 'پسند کرتا ہے۔'
+      location: 'مقام'
+      longitude: 'طول البلد'
+      participants: 'شرکاء'
+      picks: 'چنتا ہے۔'
+      project: 'پروجیکٹ'
+      published_at: 'پر شائع ہوا۔'
+      registration_completed_at: 'رجسٹریشن پر مکمل ہوا۔'
+      status: 'حیثیت'
+      submitted_at: 'پر جمع کرایا'
+      tags: 'ٹیگز'
+      title: 'عنوان'
+      user_data: 'صارف کا ڈیٹا'
+      votes_count: 'ووٹ'
+  form_builder:
+    default_select_field:
+      title: 'آپ کا سوال'
+      option1: 'آپشن 1'
+      option2: 'آپشن 2'
+    form_end_page:
+      title_text: 'تقریباً ہو چکا ہے۔'
+      description_text_2: "آپ اپنے جوابات جمع کرنے والے ہیں۔ 'جمع کروائیں' پر کلک کرکے آپ ہمیں اپنے جوابات کا تجزیہ کرنے کی اجازت دیتے ہیں۔<br/>آپ کے جمع کرانے کے بعد، آپ واپس جا کر اپنے کسی بھی جواب کو تبدیل نہیں کر سکیں گے۔"
+    pdf_export:
+      personal_data: 'ذاتی ڈیٹا'
+      personal_data_explanation_public: "ہم آپ کا ان پٹ %{organizationName}کے آن لائن شرکت کے پلیٹ فارم پر جمع کرائیں گے۔ اگر آپ چاہتے ہیں کہ آپ کا نام اس ان پٹ کے مصنف کے طور پر ظاہر ہو اور ای میل کے ذریعے آپ کے ان پٹ سے متعلقہ اپ ڈیٹس حاصل کریں، تو براہ کرم اس صفحہ پر درج ذیل فیلڈز کو پُر کریں اور ہم آپ کے لیے ایک اکاؤنٹ بنائیں گے۔ آپ کا ای میل عوامی نہیں ہوگا اور صرف %{organizationName}کے ذریعے استعمال کیا جائے گا۔ اگر آپ گمنام رہنا چاہتے ہیں، یا آپ کے ذاتی ڈیٹا کو اس طرح استعمال کرنے کے لیے ہم سے اتفاق نہیں کرتے، تو آپ انہیں خالی چھوڑ سکتے ہیں۔"
+      personal_data_explanation_private: "ہم آپ کا ان پٹ %{organizationName}کے آن لائن شرکت کے پلیٹ فارم پر جمع کرائیں گے۔ اگر آپ ای میل کے ذریعے اپنے ان پٹ سے متعلقہ اپ ڈیٹس حاصل کرنا چاہتے ہیں، تو براہ کرم اس صفحہ پر درج ذیل فیلڈز کو پُر کریں اور ہم آپ کے لیے ایک اکاؤنٹ بنائیں گے۔ آپ کا ڈیٹا عوامی نہیں ہوگا اور صرف %{organizationName}کے ذریعے استعمال کیا جائے گا۔ اگر آپ اس طرح سے اپنا ذاتی ڈیٹا استعمال کرنے پر راضی نہیں ہیں تو آپ انہیں خالی چھوڑ سکتے ہیں۔"
+      first_name: 'پہلا نام'
+      last_name: 'آخری نام'
+      email_address: 'ای میل ایڈریس'
+      by_checking_this_box: "اس باکس کو نشان زد کر کے میں %{organizationName}کے شرکت کے پلیٹ فارم پر اکاؤنٹ بنانے کے لیے اپنے ڈیٹا کے استعمال کی منظوری دیتا ہوں۔"
+      optional: 'اختیاری'
+      permission: 'اجازت'
+      choose_as_many: 'جتنے چاہیں منتخب کریں۔'
+      choose_exactly:
+        one: 'بالکل %{count} اختیار کا انتخاب کریں۔'
+        other: 'بالکل %{count} اختیارات کا انتخاب کریں۔'
+      choose_between: '%{min} اور %{max} اختیارات کے درمیان انتخاب کریں۔'
+      choose_at_least: 'کم از کم %{count} اختیارات کا انتخاب کریں۔'
+      choose_at_most: 'زیادہ سے زیادہ %{count} اختیارات کا انتخاب کریں۔'
+      this_answer: 'یہ جواب صرف ماڈریٹرز کے ساتھ شیئر کیا جائے گا، عوام کے ساتھ نہیں۔'
+      page: 'صفحہ'
+      date_published: 'تاریخ اشاعت (dd-mm-yyyy)'
+      instructions: 'ہدایات'
+      write_as_clearly: '<b>واضح طور پر لکھیں</b> جیسا آپ کر سکتے ہیں— ان فارمز کو سکین کیا جا سکتا ہے'
+      write_in_language: 'اپنے جوابات اسی زبان میں لکھیں جس زبان میں یہ فارم ہے۔'
+      linear_scale_print_description: 'براہ کرم صرف %{min_label} اور %{max_label} کے درمیان نمبر لکھیں۔'
+  project_copy:
+    title_suffix: 'کاپی'
+  confirmations_mailer:
+    send_confirmation_code:
+      subject: "%{organizationName}کے شرکت کے پلیٹ فارم کے لیے اپنے ای میل ایڈریس کی تصدیق کریں۔"
+      preheader: '%{organizationName}کے لیے اپنے ای میل ایڈریس کی تصدیق کریں۔'
+      header: "آپ کا تصدیقی کوڈ"
+      header_message: "ہائے %{firstName}!"
+      confirm_email_address: "اپنے ای میل ایڈریس کی تصدیق کریں۔"
+      thanks_for_signing_up1: "آپ کی شرکت کا شکریہ۔ براہ کرم یہ تصدیقی کوڈ %{organizationName}کے شرکت کے پلیٹ فارم پر موجود ونڈو میں درج کریں:"
+      best_regards: "نیک تمنائیں،"
+      ignore_email: "اگر آپ نے کوڈ کی درخواست نہیں کی ہے، تو آپ محفوظ طریقے سے اس ای میل کو نظر انداز کر سکتے ہیں۔"
+      expire_code: "اس کوڈ کی میعاد ختم ہو جائے گی۔ "
+      24_hours: "24 گھنٹے"
+      copy_paste_the_link_below: "پلیٹ فارم پر رجسٹریشن فارم میں نیچے دیے گئے کوڈ کو کاپی اور پیسٹ کریں۔"
+      the_link_is_valid_for: "یہ لنک 24 گھنٹے کے لیے کارآمد ہے۔ اگر لنک کی میعاد ختم ہو گئی ہے، تو آپ <a href=\"%{link}\">ایک نئے کوڈ کی درخواست کر سکتے ہیں</a>۔"
+      did_you_receive_this_email_in_error: "کیا آپ کو یہ ای میل غلطی سے موصول ہوئی ہے؟ <a href=\"%{link}\">ہمیں بتائیں</a>۔"
+  user_blocked_mailer:
+    send_user_blocked_email:
+      subject: 'آپ کا اکاؤنٹ عارضی طور پر غیر فعال کر دیا گیا ہے۔'
+      preheader: '%{organizationName} کے شرکت کے پلیٹ فارم پر آپ کا اکاؤنٹ عارضی طور پر غیر فعال کر دیا گیا ہے'
+      title_user_blocked: 'آپ کا اکاؤنٹ عارضی طور پر غیر فعال کر دیا گیا ہے۔'
+      paragraph_1_without_reason: "%{organizationName} کے شرکت کے پلیٹ فارم پر آپ کا اکاؤنٹ کمیونٹی کے رہنما خطوط کی خلاف ورزی کی وجہ سے عارضی طور پر غیر فعال کر دیا گیا ہے۔"
+      paragraph_1_with_reason: "%{organizationName} کے شرکت کے پلیٹ فارم پر آپ کا اکاؤنٹ درج ذیل وجہ سے عارضی طور پر غیر فعال کر دیا گیا ہے:"
+      for_more_information: "اس بارے میں مزید معلومات کے لیے، آپ %{termsAndConditionsPage}سے رجوع کر سکتے ہیں۔"
+      you_can_sign_in_again_from: "آپ %{date}سے دوبارہ سائن ان کر سکتے ہیں۔"
+  user:
+    anon_first_name: "صارف"
+    anon_scheme:
+      animals: 'مگرمچھ، مگرمچھ، الپاکا، چیونٹی، ہرن، بندر، آرماڈیلو، بابون، بیجر، چمگادڑ، ریچھ، بیور، مکھی، چقندر، بھینس، تتلی، اونٹ، پانی کی بھینس، کیریبو، بلی، مویشی، چیتا، چمپینزی، چنچیلا، چیتا ،کلام، کاکروچ، میثاق جمہوریت، کویوٹ، کیکڑا، کرکٹ، کوا، کوا، ہرن، ڈایناسور، کتا، ڈالفن، پورپوز، بطخ، عقاب، اییل، ہاتھی، ایلک، فیریٹ، مچھلی، مکھی، لومڑی، مینڈک، میںڑک، جربیل ,جراف،گنیٹ،گنو،وائلڈبیسٹ،بکری،سنہری مچھلی،ہنس،گوریلا،ٹڈڈی،گائنی پگ،ہیمسٹر،خرگو،ہیج ہاگ،ہیرنگ،ہپپو پوٹیمس، ہارنیٹ،گھوڑا،ہاؤنڈ،ہائینا،امپالا،گیدڑ،جیلی فش،کنگارو،والبی کوآلا، چیتے، شیر، چھپکلی، لاما، ٹڈی، لوئس، مکاؤ، مالارڈ، میمتھ، ماناتی، مارٹن، منک، من، تل، موز، مچھر، چوہا، چوہا، خچر، مسکرات، اوٹر، بیل، سیپ، پانڈا سور، پلاٹائپس، پورکیپائن، پریری ڈاگ، پگ، خرگوش، ایک قسم کا جانور، قطبی ہرن، گینڈا، سالمن، سارڈائن، بچھو، مہر، سمندری شیر، سرول، شارک، بھیڑ، سکنک، گھونگا، سانپ، مکڑی، گلہری، ہنس، دیمک شیر، ٹراؤٹ، کچھوا، کچھوا، والرس، تتییا، وہیل، بھیڑیا، وومبیٹ، ووڈچک، کیڑا، یاک، پیلی جیکٹ، زیبرا'
+  time:
+    am: ہوں
+    formats:
+      hour_of_day: "%l %p"
+    pm: شام
+  voting_method:
+    default_voting_term_singular: "ووٹ"
+    default_voting_term_plural: "ووٹ"
+  ics_calendar_event:
+    event_details: "واقعہ کی تفصیلات"

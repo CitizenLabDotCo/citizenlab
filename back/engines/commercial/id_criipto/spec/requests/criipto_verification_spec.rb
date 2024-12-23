@@ -8,74 +8,78 @@ context 'criipto verification' do
     {
       'provider' => 'criipto',
       'uid' => '{29d14ea0-6e16-4732-86ac-5de87a941784}',
-      'info' =>
-        { 'name' => 'Bulenga Poulsen',
-          'email' => nil,
-          'email_verified' => nil,
-          'nickname' => nil,
-          'first_name' => nil,
-          'last_name' => nil,
-          'gender' => nil,
-          'image' => nil,
-          'phone' => nil,
-          'urls' => { 'website' => nil } },
-      'credentials' =>
-        { 'id_token' =>
-          # rubocop:disable Layout/LineLength
-          'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IjhCREY3OUEzRkY5OTdFQTg1QjYyRjk1OUQzRDdCMzdFRDAyMjhFOTAifQ.eyJpc3MiOiJodHRwczovL2tvYmVuaGF2bi10ZXN0LmNyaWlwdG8uaWQiLCJhdWQiOiJ1cm46bXk6YXBwbGljYXRpb246aWRlbnRpZmllcjo0MDc3OTMiLCJub25jZSI6ImJmNTgxMWRmMGNiZjM5Mjc1NGNhMjUyYTI5YzBjYzM2IiwiaWRlbnRpdHlzY2hlbWUiOiJka21pdGlkIiwiYXV0aGVudGljYXRpb250eXBlIjoidXJuOmdybjphdXRobjpkazptaXRpZDpzdWJzdGFudGlhbCIsImF1dGhlbnRpY2F0aW9ubWV0aG9kIjoiYXBwOjE2OTI2MjE4ODg5NTY6U1VCU1RBTlRJQUw6U1VCU1RBTlRJQUw6SElHSDpISUdIIiwiYXV0aGVudGljYXRpb25pbnN0YW50IjoiMjAyMy0wOC0yMVQxMjo0NTowMS43MzNaIiwibmFtZWlkZW50aWZpZXIiOiIyOWQxNGVhMDZlMTY0NzMyODZhYzVkZTg3YTk0MTc4NCIsInN1YiI6InsyOWQxNGVhMC02ZTE2LTQ3MzItODZhYy01ZGU4N2E5NDE3ODR9Iiwic2Vzc2lvbmluZGV4IjoiNTMxNjkwY2UtOTc5Mi00OTQ5LThhMTEtZjNmNWE0YzUwNGI1IiwibG9BIjoiU1VCU1RBTlRJQUwiLCJpYWwiOiJTVUJTVEFOVElBTCIsImFhbCI6IlNVQlNUQU5USUFMIiwiZmFsIjoiSElHSCIsInV1aWQiOiI0MTBhNzdlYy00Zjg1LTQ2ZTQtYWFlZi1iZGJiZDFhOTUxZjIiLCJjcHJOdW1iZXJJZGVudGlmaWVyIjoiMzExMjc3Mjg0NiIsImJpcnRoZGF0ZSI6IjE5NzctMTItMzEiLCJkYXRlb2ZiaXJ0aCI6IjE5NzctMTItMzEiLCJhZ2UiOiI0NSIsIm5hbWUiOiJCdWxlbmdhIFBvdWxzZW4iLCJyZWZUZXh0SGVhZGVyIjoiTG9nIG9uIGF0IENyaWlwdG8iLCJyZWZUZXh0Qm9keSI6ImxvY2FsIGRldmVsb3BtZW50IHRlc3QgKEtvZW4pIiwiY291bnRyeSI6IkRLIiwiaWF0IjoxNjkyNjIxOTAyLCJuYmYiOjE2OTI2MjE5MDIsImV4cCI6MTY5MjYzOTg4OH0.1dMJe80vvEFt4EFIF2kd_Tdy5UPEEw3qGjjVuNYHhw1Oonxpjtpjm1t-Q8YiMUZ_zwsjtnZF8hoJ8PlNV_Q5f4PS0rRk7XOeYbCvwHqAUVyFdlQudXsKi7FatqsDBfBcxqNkR4Wi1kWCpGQGtPc3X2yjtBkZP7xvvOAzdOlWjL9VuI7s2LXk-TH_7SorEqKnEAIOFVD6wYLGJ0vbU-EAG3b1lAmGsPQPRNqbgrIic1ll4DEurKs76X_-Jcq4dZiRx-X2gMJ4lefU4aaBKkIyUiYdNSRtgZSN_V6J68ZzcU2UO-_PlQX8vgE7z0vRdM1wmJQIdXpQDL4PRmjpvKl_tg',
-          # rubocop:enable Layout/LineLength
-          'token' => 'bb7cb707-f405-43af-9f7e-b151846fd92b',
-          'refresh_token' => nil,
-          'expires_in' => '120',
-          'scope' => nil },
-      'extra' =>
-        { 'raw_info' =>
-          { 'nonce' => 'bf5811df0cbf392754ca252a29c0cc36',
-            'identityscheme' => 'dkmitid',
-            'authenticationtype' => 'urn:grn:authn:dk:mitid:substantial',
-            'authenticationmethod' =>
-            'app:1692621888956:SUBSTANTIAL:SUBSTANTIAL:HIGH:HIGH',
-            'authenticationinstant' => '2023-08-21T12:45:01.733Z',
-            'nameidentifier' => '29d14ea06e16473286ac5de87a941784',
-            'sub' => '{29d14ea0-6e16-4732-86ac-5de87a941784}',
-            'sessionindex' => '531690ce-9792-4949-8a11-f3f5a4c504b5',
-            'loA' => 'SUBSTANTIAL',
-            'ial' => 'SUBSTANTIAL',
-            'aal' => 'SUBSTANTIAL',
-            'fal' => 'HIGH',
-            'uuid' => '410a77ec-4f85-46e4-aaef-bdbbd1a951f2',
-            'cprNumberIdentifier' => '3112772846',
-            'birthdate' => '1977-12-31',
-            'dateofbirth' => '1977-12-31',
-            'age' => '45',
-            'name' => 'Bulenga Poulsen',
-            'refTextHeader' => 'Log on at Criipto',
-            'refTextBody' => 'local development test (Koen)',
-            'country' => 'DK',
-            'iss' => 'https://kobenhavn-test.criipto.id',
-            'aud' => 'urn:my:application:identifier:407793',
-            'iat' => 1_692_621_902,
-            'nbf' => 1_692_621_902,
-            'exp' => 1_692_639_888,
-            address: {
-              formatted: "Paiman Petersen\nGrusgraven 1,3 tv\n3400 Hillerød\n(Lokalitet ukendt)\nDanmark",
-              common_name: 'Paiman Petersen',
-              street_address: 'Grusgraven 1,3 tv',
-              postal_code: '3400',
-              city: 'Hillerød',
-              locality: '(Lokalitet ukendt)',
-              region: nil,
-              country: 'Danmark'
-            },
-            address_details: {
-              road: 'Grusgraven',
-              road_code: '1732',
-              municipality: 'Lyngby-Taarbæk',
-              municipality_code: '0173',
-              house_number: '001',
-              floor: '03',
-              apartment_code: ' tv'
-            } } }
+      'info' => {
+        'name' => 'Bulenga Poulsen',
+        'email' => nil,
+        'email_verified' => nil,
+        'nickname' => nil,
+        'first_name' => nil,
+        'last_name' => nil,
+        'gender' => nil,
+        'image' => nil,
+        'phone' => nil,
+        'urls' => { 'website' => nil }
+      },
+      'credentials' => {
+        'id_token' =>
+        # rubocop:disable Layout/LineLength
+        'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IjhCREY3OUEzRkY5OTdFQTg1QjYyRjk1OUQzRDdCMzdFRDAyMjhFOTAifQ.eyJpc3MiOiJodHRwczovL2tvYmVuaGF2bi10ZXN0LmNyaWlwdG8uaWQiLCJhdWQiOiJ1cm46bXk6YXBwbGljYXRpb246aWRlbnRpZmllcjo0MDc3OTMiLCJub25jZSI6ImJmNTgxMWRmMGNiZjM5Mjc1NGNhMjUyYTI5YzBjYzM2IiwiaWRlbnRpdHlzY2hlbWUiOiJka21pdGlkIiwiYXV0aGVudGljYXRpb250eXBlIjoidXJuOmdybjphdXRobjpkazptaXRpZDpzdWJzdGFudGlhbCIsImF1dGhlbnRpY2F0aW9ubWV0aG9kIjoiYXBwOjE2OTI2MjE4ODg5NTY6U1VCU1RBTlRJQUw6U1VCU1RBTlRJQUw6SElHSDpISUdIIiwiYXV0aGVudGljYXRpb25pbnN0YW50IjoiMjAyMy0wOC0yMVQxMjo0NTowMS43MzNaIiwibmFtZWlkZW50aWZpZXIiOiIyOWQxNGVhMDZlMTY0NzMyODZhYzVkZTg3YTk0MTc4NCIsInN1YiI6InsyOWQxNGVhMC02ZTE2LTQ3MzItODZhYy01ZGU4N2E5NDE3ODR9Iiwic2Vzc2lvbmluZGV4IjoiNTMxNjkwY2UtOTc5Mi00OTQ5LThhMTEtZjNmNWE0YzUwNGI1IiwibG9BIjoiU1VCU1RBTlRJQUwiLCJpYWwiOiJTVUJTVEFOVElBTCIsImFhbCI6IlNVQlNUQU5USUFMIiwiZmFsIjoiSElHSCIsInV1aWQiOiI0MTBhNzdlYy00Zjg1LTQ2ZTQtYWFlZi1iZGJiZDFhOTUxZjIiLCJjcHJOdW1iZXJJZGVudGlmaWVyIjoiMzExMjc3Mjg0NiIsImJpcnRoZGF0ZSI6IjE5NzctMTItMzEiLCJkYXRlb2ZiaXJ0aCI6IjE5NzctMTItMzEiLCJhZ2UiOiI0NSIsIm5hbWUiOiJCdWxlbmdhIFBvdWxzZW4iLCJyZWZUZXh0SGVhZGVyIjoiTG9nIG9uIGF0IENyaWlwdG8iLCJyZWZUZXh0Qm9keSI6ImxvY2FsIGRldmVsb3BtZW50IHRlc3QgKEtvZW4pIiwiY291bnRyeSI6IkRLIiwiaWF0IjoxNjkyNjIxOTAyLCJuYmYiOjE2OTI2MjE5MDIsImV4cCI6MTY5MjYzOTg4OH0.1dMJe80vvEFt4EFIF2kd_Tdy5UPEEw3qGjjVuNYHhw1Oonxpjtpjm1t-Q8YiMUZ_zwsjtnZF8hoJ8PlNV_Q5f4PS0rRk7XOeYbCvwHqAUVyFdlQudXsKi7FatqsDBfBcxqNkR4Wi1kWCpGQGtPc3X2yjtBkZP7xvvOAzdOlWjL9VuI7s2LXk-TH_7SorEqKnEAIOFVD6wYLGJ0vbU-EAG3b1lAmGsPQPRNqbgrIic1ll4DEurKs76X_-Jcq4dZiRx-X2gMJ4lefU4aaBKkIyUiYdNSRtgZSN_V6J68ZzcU2UO-_PlQX8vgE7z0vRdM1wmJQIdXpQDL4PRmjpvKl_tg',
+        # rubocop:enable Layout/LineLength
+        'token' => 'bb7cb707-f405-43af-9f7e-b151846fd92b',
+        'refresh_token' => nil,
+        'expires_in' => '120',
+        'scope' => nil
+      },
+      'extra' => {
+        'raw_info' => {
+          'nonce' => 'bf5811df0cbf392754ca252a29c0cc36',
+          'identityscheme' => 'dkmitid',
+          'authenticationtype' => 'urn:grn:authn:dk:mitid:substantial',
+          'authenticationmethod' =>
+          'app:1692621888956:SUBSTANTIAL:SUBSTANTIAL:HIGH:HIGH',
+          'authenticationinstant' => '2023-08-21T12:45:01.733Z',
+          'nameidentifier' => '29d14ea06e16473286ac5de87a941784',
+          'sub' => '{29d14ea0-6e16-4732-86ac-5de87a941784}',
+          'sessionindex' => '531690ce-9792-4949-8a11-f3f5a4c504b5',
+          'loA' => 'SUBSTANTIAL',
+          'ial' => 'SUBSTANTIAL',
+          'aal' => 'SUBSTANTIAL',
+          'fal' => 'HIGH',
+          'uuid' => '410a77ec-4f85-46e4-aaef-bdbbd1a951f2',
+          'cprNumberIdentifier' => '3112772846',
+          'birthdate' => '1977-12-31',
+          'dateofbirth' => '1977-12-31',
+          'age' => '45',
+          'name' => 'Bulenga Poulsen',
+          'refTextHeader' => 'Log on at Criipto',
+          'refTextBody' => 'local development test (Koen)',
+          'country' => 'DK',
+          'iss' => 'https://kobenhavn-test.criipto.id',
+          'aud' => 'urn:my:application:identifier:407793',
+          'iat' => 1_692_621_902,
+          'nbf' => 1_692_621_902,
+          'exp' => 1_692_639_888,
+          'address' => {
+            'formatted' => "Paiman Petersen\nGrusgraven 1,3 tv\n3400 Hillerød\n(Lokalitet ukendt)\nDanmark",
+            'common_name' => 'Paiman Petersen',
+            'street_address' => 'Grusgraven 1,3 tv',
+            'postal_code' => '3400',
+            'city' => 'Hillerød',
+            'locality' => '(Lokalitet ukendt)',
+            'region' => nil,
+            'country' => 'Danmark'
+          },
+          'address_details' => {
+            'road' => 'Grusgraven',
+            'road_code' => '1732',
+            'municipality' => 'Lyngby-Taarbæk',
+            'municipality_code' => '0173',
+            'house_number' => '001',
+            'floor' => '03',
+            'apartment_code' => ' tv'
+          }
+        }
+      }
     }
   end
 
@@ -107,7 +111,7 @@ context 'criipto verification' do
     host! 'example.org'
   end
 
-  def expect_to_create_verified_user(user)
+  def expect_user_to_be_verified(user)
     expect(user.reload).to have_attributes({
       verified: true,
       first_name: 'Bulenga',
@@ -126,8 +130,8 @@ context 'criipto verification' do
     })
   end
 
-  def expect_to_create_verified_and_identified_user(user)
-    expect_to_create_verified_user(user)
+  def expect_user_to_be_verified_and_identified(user)
+    expect_user_to_be_verified(user)
     expect(user.identities.first).to have_attributes({
       provider: 'criipto',
       user_id: user.id,
@@ -137,10 +141,10 @@ context 'criipto verification' do
   end
 
   it 'successfully verifies a user' do
-    get "/auth/criipto?token=#{@token}&random-passthrough-param=somevalue&pathname=/yipie"
+    get "/auth/criipto?token=#{@token}&random-passthrough-param=somevalue&verification_pathname=/yipie"
     follow_redirect!
 
-    expect_to_create_verified_user(@user)
+    expect_user_to_be_verified(@user)
 
     expect(response).to redirect_to('/en/yipie?random-passthrough-param=somevalue&verification_success=true')
   end
@@ -151,14 +155,45 @@ context 'criipto verification' do
 
     expect(User.count).to eq(1)
     expect(@user.identities.count).to eq(0)
-    expect_to_create_verified_user(@user)
+    expect_user_to_be_verified(@user)
 
     get '/auth/criipto'
     follow_redirect!
 
     expect(User.count).to eq(1)
     expect(@user.identities.count).to eq(1)
-    expect_to_create_verified_and_identified_user(@user)
+    expect_user_to_be_verified_and_identified(@user)
+  end
+
+  context 'updating custom fields when existing user' do
+    before do
+      auth_hash['extra']['raw_info']['birthdate'] = '1978-01-01'
+      auth_hash['extra']['raw_info']['address_details']['municipality_code'] = '0666'
+      OmniAuth.config.mock_auth[:criipto] = OmniAuth::AuthHash.new(auth_hash)
+      @user.update!(verified: true, custom_field_values: { 'birthdate' => '1902-12-25', 'birthyear' => 1902, 'municipality_code' => '0123' })
+    end
+
+    it 'updates custom fields when reverifying' do
+      get "/auth/criipto?token=#{@token}"
+      follow_redirect!
+
+      expect(User.count).to eq(1)
+      expect(@user.reload.identities.count).to eq(0)
+      expect(@user.reload.verified).to be true
+      expect(@user.reload.custom_field_values).to eq({ 'birthdate' => '1978-01-01', 'birthyear' => 1978, 'municipality_code' => '0666' })
+    end
+
+    it 'updates custom fields when authenticating as an existing user' do
+      create(:identity, provider: 'criipto', uid: '410a77ec-4f85-46e4-aaef-bdbbd1a951f2', user: @user)
+
+      get '/auth/criipto'
+      follow_redirect!
+
+      expect(User.count).to eq(1)
+      expect(@user.reload.verified).to be true
+      expect(@user.reload.identities.count).to eq(1)
+      expect(@user.reload.custom_field_values).to eq({ 'birthdate' => '1978-01-01', 'birthyear' => 1978, 'municipality_code' => '0666' })
+    end
   end
 
   it 'successfully verifies another user with another MitID account' do
@@ -194,13 +229,13 @@ context 'criipto verification' do
 
   it 'creates user when the authentication token is not passed' do
     expect(User.count).to eq(1)
-    get '/auth/criipto?param=/some-param'
+    get '/auth/criipto?param=some-param'
     follow_redirect!
 
     expect(User.count).to eq(2)
 
     user = User.order(created_at: :asc).last
-    expect_to_create_verified_and_identified_user(user)
+    expect_user_to_be_verified_and_identified(user)
 
     expect(user).not_to eq(@user)
     expect(user).to have_attributes({
@@ -208,7 +243,7 @@ context 'criipto verification' do
       password_digest: nil
     })
 
-    expect(response).to redirect_to('/en/complete-signup?param=%2Fsome-param')
+    expect(response).to redirect_to('/en/?param=some-param&sso_flow=signup&sso_success=true')
   end
 
   it 'does not send email to empty address (when just registered)' do
@@ -227,7 +262,7 @@ context 'criipto verification' do
     let!(:new_user) do
       User.order(created_at: :asc).last.tap do |user|
         expect(user).to have_attributes({ email: nil })
-        expect_to_create_verified_and_identified_user(user)
+        expect_user_to_be_verified_and_identified(user)
       end
     end
 
@@ -235,10 +270,10 @@ context 'criipto verification' do
       before { new_user.update!(email: Faker::Internet.email) }
 
       it 'does not verify another user and does not delete previously verified new user' do
-        get "/auth/criipto?token=#{@token}&pathname=/some-page"
+        get "/auth/criipto?token=#{@token}&verification_pathname=/some-page"
         follow_redirect!
 
-        expect(response).to redirect_to('/some-page?verification_error=true&error=taken')
+        expect(response).to redirect_to('/some-page?verification_error=true&error_code=taken')
         expect(@user.reload).to have_attributes({
           verified: false,
           first_name: 'Bulenga',
@@ -251,11 +286,11 @@ context 'criipto verification' do
 
     context 'when verified registration is not completed by new user' do
       it 'successfully verifies another user and deletes previously verified blank new user' do
-        get "/auth/criipto?token=#{@token}&pathname=/some-page"
+        get "/auth/criipto?token=#{@token}&verification_pathname=/some-page"
         follow_redirect!
 
         expect(response).to redirect_to('/en/some-page?verification_success=true')
-        expect_to_create_verified_user(@user.reload)
+        expect_user_to_be_verified(@user.reload)
         expect { new_user.reload }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
@@ -288,7 +323,7 @@ context 'criipto verification' do
         follow_redirect!
 
         user = User.order(created_at: :asc).last
-        expect_to_create_verified_and_identified_user(user)
+        expect_user_to_be_verified_and_identified(user)
         expect(user.email).to be_nil
         expect(user.active?).to be(true)
         expect(ActionMailer::Base.deliveries.count).to eq(0)
@@ -318,7 +353,7 @@ context 'criipto verification' do
         follow_redirect!
 
         user = User.order(created_at: :asc).last
-        expect_to_create_verified_and_identified_user(user)
+        expect_user_to_be_verified_and_identified(user)
         expect(user.email).to be_nil
         expect(user.confirmation_required?).to be(false)
         expect(user.active?).to be(true)
@@ -344,7 +379,7 @@ context 'criipto verification' do
         follow_redirect!
 
         user = User.order(created_at: :asc).last
-        expect_to_create_verified_and_identified_user(user)
+        expect_user_to_be_verified_and_identified(user)
 
         token = AuthToken::AuthToken.new(payload: user.to_token_payload).token
         headers = { 'Authorization' => "Bearer #{token}" }
@@ -366,7 +401,7 @@ context 'criipto verification' do
     end
 
     it 'successfully verifies a user like auth0' do
-      get "/auth/criipto?token=#{@token}&random-passthrough-param=somevalue&pathname=/yipie"
+      get "/auth/criipto?token=#{@token}&random-passthrough-param=somevalue&verification_pathname=/yipie"
       follow_redirect!
 
       expect(response).to redirect_to('/en/yipie?random-passthrough-param=somevalue&verification_success=true')

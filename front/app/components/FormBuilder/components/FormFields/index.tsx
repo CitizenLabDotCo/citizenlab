@@ -34,7 +34,7 @@ interface FormFieldsProps {
   ) => void;
   selectedFieldId?: string;
   builderConfig: FormBuilderConfig;
-  closeSettings: () => void;
+  closeSettings: (triggerAutosave?: boolean) => void;
 }
 
 const FormFields = ({
@@ -70,6 +70,8 @@ const FormFields = ({
       });
     } else {
       const lastGroupElement = nestedGroupData[nestedGroupData.length - 1];
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       lastGroupElement?.questions.push({
         ...field,
       });

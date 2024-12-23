@@ -60,8 +60,8 @@ en:
       section3:
         title: Details
         description:
-      other_text_field:
-        title: If you picked '{other_option}', what are you thinking of?
+      other_input_field:
+        title: Type your answer
   custom_forms:
     categories:
       main_content:
@@ -77,8 +77,16 @@ en:
           title: What is your issue?
         option:
           title: What is your option?
+        proposal:
+          title: What is your proposal?
+        initiative:
+          title: What is your initiative?
+        petition:
+          title: What is your petition?
   user:
     anon_first_name: "User"
+    anon_scheme:
+      animals: 'Aardvark,Cat,Platypus,Giraffe,Zebra'
   xlsx_export:
     anonymous: 'Anonymous'
     column_headers:
@@ -97,6 +105,7 @@ en:
       email: 'Email'
       first_name: 'First name(s)'
       image_url: 'Image URL'
+      manual_votes: 'Offline votes'
       input_id: 'ID'
       input_url: 'URL'
       last_name: 'Last name'

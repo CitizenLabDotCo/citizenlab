@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import { Text } from '@citizenlab/cl2-component-library';
 import AsyncSelect from 'react-select/async';
+import { useTheme } from 'styled-components';
 
 import useLocale from 'hooks/useLocale';
 
@@ -35,6 +36,7 @@ const LocationInput = (
   const { formatMessage } = useIntl();
   const locale = useLocale();
   const [defaultOptions, setDefaultOptions] = useState<Option[]>([]);
+  const theme = useTheme();
 
   useEffect(() => {
     const fetchDefaultOptions = async () => {
@@ -97,7 +99,7 @@ const LocationInput = (
       id="e2e-location-input"
       defaultOptions={defaultOptions}
       loadOptions={promiseOptions}
-      styles={selectStyles()}
+      styles={selectStyles(theme)}
       noOptionsMessage={() => formatMessage(messages.noOptions)}
       blurInputOnSelect
       menuShouldScrollIntoView={false}

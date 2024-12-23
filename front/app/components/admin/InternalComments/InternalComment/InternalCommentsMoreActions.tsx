@@ -55,7 +55,6 @@ export interface Props {
   onCommentEdit: () => void;
   className?: string;
   ideaId: string | undefined;
-  initiativeId: string | undefined;
 }
 
 const InternalCommentsMoreActions = ({
@@ -63,15 +62,15 @@ const InternalCommentsMoreActions = ({
   comment,
   className,
   ideaId,
-  initiativeId,
 }: Props) => {
   const moreActionsButtonRef = useRef<HTMLButtonElement>(null);
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const parentCommentId = comment.relationships?.parent?.data?.id;
   const { data: authUser } = useAuthUser();
   const { mutate: markForDeletion, isLoading } =
     useMarkInternalCommentForDeletion({
       ideaId,
-      initiativeId,
       parentCommentId,
     });
   const [modalVisible_delete, setModalVisible_delete] = useState(false);

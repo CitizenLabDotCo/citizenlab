@@ -1,37 +1,5 @@
 import { SchemaResponse } from '../types';
 
-export const initiativeResponse: SchemaResponse = {
-  data: {
-    type: 'schema',
-    attributes: {
-      json_schema_multiloc: {
-        en: {
-          type: 'object',
-          additionalProperties: false,
-          properties: {
-            field_1: {
-              type: 'string',
-            },
-            field_2: {
-              type: 'string',
-            },
-          },
-          required: ['field_1'],
-        },
-      },
-      ui_schema_multiloc: {
-        en: {
-          type: 'VerticalLayout',
-          options: {
-            formId: 'user-form',
-          },
-          elements: [],
-        },
-      },
-    },
-  },
-};
-
 export const projectResponse: SchemaResponse = {
   data: {
     type: 'schema',

@@ -15,4 +15,8 @@ export default defineMessages({
     defaultMessage:
       'FranceConnect is the solution proposed by the French state to secure and simplify the sign up to more than 700 online services.',
   },
+  franceConnectVerificationButtonAltText: {
+    id: 'app.modules.id_franceconnect.verificationButtonAltText',
+    defaultMessage: 'Verify with FranceConnect',
+  },
 });

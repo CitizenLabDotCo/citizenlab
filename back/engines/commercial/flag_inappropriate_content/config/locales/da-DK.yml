@@ -7,11 +7,10 @@ da:
     inappropriate_content_flagged:
       subject: 'Et indlæg på din platform er blevet markeret til gennemsyn'
       header_title: 'Et indlæg på din platform er blevet markeret til gennemsyn'
-      comment_author: '%{authorName} kommenterede:'
-      idea_author: '%{authorName} har indsendt et indlæg:'
-      initiative_author: '%{authorName} har indsendt et forslag:'
+      author_wrote: '%{authorName} skrev:'
+      preheader: 'Et indlæg på din platform er blevet markeret til gennemsyn'
       automatically_flagged: >
         Dette indlæg blev automatisk registreret som potentielt indeholdende upassende indhold. Vi sender dig denne meddelelse, så du kan gennemgå indlægget i overensstemmelse med jeres egne retningslinjer for moderering.
       how_to_review: >
         Hvis opslaget ikke indeholder upassende indhold, kan du fjerne advarslen via din platform under fanen Aktivitet i administratorpanelet.
-      cta_review_post: 'Gennemgå indlæg'
+      cta_review: 'Gennemgang'

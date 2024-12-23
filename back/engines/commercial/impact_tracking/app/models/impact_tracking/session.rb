@@ -10,6 +10,10 @@
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  user_id           :uuid
+#  referrer          :string
+#  device_type       :string
+#  browser_name      :string
+#  os_name           :string
 #
 # Indexes
 #

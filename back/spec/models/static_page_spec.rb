@@ -14,14 +14,14 @@ RSpec.describe StaticPage do
       subject { described_class.new(code: 'faq') }
 
       it { is_expected.to validate_uniqueness_of(:code) }
-      it { is_expected.to validate_inclusion_of(:code).in_array(%w[about terms-and-conditions privacy-policy faq proposals custom]) }
+      it { is_expected.to validate_inclusion_of(:code).in_array(%w[about terms-and-conditions privacy-policy faq custom]) }
     end
 
     context 'when code is \'custom\'' do
       subject { described_class.new(code: 'custom') }
 
       it { is_expected.not_to validate_uniqueness_of(:code) }
-      it { is_expected.to validate_inclusion_of(:code).in_array(%w[about terms-and-conditions privacy-policy faq proposals custom]) }
+      it { is_expected.to validate_inclusion_of(:code).in_array(%w[about terms-and-conditions privacy-policy faq custom]) }
     end
 
     context 'when banner_cta_button_type is set to \'customized_button\'' do

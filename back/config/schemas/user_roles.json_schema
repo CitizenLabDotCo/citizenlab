@@ -12,6 +12,9 @@
           "type": {
             "type": "string",
             "enum": ["admin"]
+          },
+          "project_reviewer": {
+            "type": "boolean"
           }
         }
       },

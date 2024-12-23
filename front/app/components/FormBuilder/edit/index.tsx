@@ -80,14 +80,11 @@ const FormEdit = ({
   const [successMessageIsVisible, setSuccessMessageIsVisible] = useState(false);
   const [accessRightsMessageIsVisible, setAccessRightsMessageIsVisible] =
     useState(true);
+  const [autosaveEnabled, setAutosaveEnabled] = useState(true);
   const { formSavedSuccessMessage, isFormPhaseSpecific } = builderConfig;
   const { mutateAsync: updateFormCustomFields } = useUpdateCustomField();
   const showWarningNotice = totalSubmissions > 0;
-  const {
-    data: formCustomFields,
-    refetch,
-    isFetching,
-  } = useFormCustomFields({
+  const { data: formCustomFields, isFetching } = useFormCustomFields({
     projectId,
     phaseId: isFormPhaseSpecific ? phaseId : undefined,
   });
@@ -131,6 +128,7 @@ const FormEdit = ({
     handleSubmit,
     control,
     formState: { errors, isDirty },
+    getValues,
     reset,
   } = methods;
 
@@ -152,8 +150,13 @@ const FormEdit = ({
     }
   }, [formCustomFields, isUpdatingForm, isFetching, reset]);
 
-  const closeSettings = () => {
+  const closeSettings = (triggerAutosave?: boolean) => {
     setSelectedField(undefined);
+
+    // If autosave is enabled & no submission have come in yet, save
+    if (triggerAutosave && autosaveEnabled && totalSubmissions === 0) {
+      onFormSubmit(getValues());
+    }
   };
 
   // Remove copy_from param on save to avoid overwriting a saved survey when reloading
@@ -190,11 +193,17 @@ const FormEdit = ({
         ...(field.input_type === 'page' && {
           temp_id: field.temp_id,
         }),
-        ...(['linear_scale', 'select', 'page'].includes(field.input_type) && {
-          logic: field.logic,
-        }),
+        ...(['linear_scale', 'select', 'page'].includes(field.input_type)
+          ? {
+              logic: field.logic,
+            }
+          : {
+              logic: [],
+            }),
         required: field.required,
         enabled: field.enabled,
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         title_multiloc: field.title_multiloc || {},
         key: field.key,
         code: field.code,
@@ -204,6 +213,8 @@ const FormEdit = ({
         ...(field.map_config_id && {
           map_config_id: field.map_config_id,
         }),
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         description_multiloc: field.description_multiloc || {},
         ...(['select', 'multiselect', 'multiselect_image'].includes(
           field.input_type
@@ -238,6 +249,7 @@ const FormEdit = ({
           maximum: field.maximum?.toString() || '5',
         }),
       }));
+
       await updateFormCustomFields(
         {
           projectId,
@@ -246,11 +258,9 @@ const FormEdit = ({
         },
         {
           onSuccess: () => {
-            refetch().then(() => {
-              setIsUpdatingForm(true);
-              setSuccessMessageIsVisible(true);
-              resetCopyFrom();
-            });
+            setIsUpdatingForm(true);
+            setSuccessMessageIsVisible(true);
+            resetCopyFrom();
           },
         }
       );
@@ -327,6 +337,9 @@ const FormEdit = ({
               isSubmitting={isSubmitting}
               builderConfig={builderConfig}
               viewFormLink={viewFormLink}
+              autosaveEnabled={autosaveEnabled}
+              setAutosaveEnabled={setAutosaveEnabled}
+              showAutosaveToggle={totalSubmissions === 0} // Only allow autosave if no survey submissions
             />
             <Box mt={`${stylingConsts.menuHeight}px`} display="flex">
               <Box width="210px">
@@ -393,6 +406,7 @@ const FormEdit = ({
                       field={selectedField}
                       closeSettings={closeSettings}
                       builderConfig={builderConfig}
+                      formHasSubmissions={totalSubmissions > 0}
                     />
                   </Box>
                 )}

@@ -15,9 +15,6 @@ import { usePermission } from 'utils/permissions';
 
 import createDashboardRoutes, { dashboardRouteTypes } from './dashboard/routes';
 import ideasRoutes, { ideaRouteTypes } from './ideas/routes';
-import createAdminInitiativesRoutes, {
-  initiativeRouteTypes,
-} from './initiatives/routes';
 import invitationsRoutes, { invitationRouteTypes } from './invitations/routes';
 import createAdminMessagingRoutes, {
   messagingRouteTypes,
@@ -38,12 +35,17 @@ import createAdminUsersRoutes, { userRouteTypes } from './users/routes';
 
 const AdminContainer = lazy(() => import('containers/Admin'));
 const AdminFavicon = lazy(() => import('containers/Admin/favicon'));
+const ProjectDescriptionBuilderComponent = React.lazy(
+  () => import('containers/ProjectDescriptionBuilder')
+);
+const FullscreenPreview = React.lazy(
+  () => import('containers/ProjectDescriptionBuilder/FullscreenPreview')
+);
 
 export type AdminRoute<T extends string = string> = `/admin/${T}`;
 
 export type AdminRouteTypes =
   | '/admin'
-  | initiativeRouteTypes
   | ideaRouteTypes
   | userRouteTypes
   | invitationRouteTypes
@@ -119,6 +121,12 @@ const IndexElement = () => {
   );
 };
 
+export enum descriptionBuilderRoutes {
+  projectdescriptionBuilder = 'project-description-builder',
+  description = `project-description-builder/projects/:projectId/description`,
+  preview = `project-description-builder/projects/:projectId/preview`,
+}
+
 const createAdminRoutes = () => {
   return {
     path: 'admin',
@@ -131,7 +139,6 @@ const createAdminRoutes = () => {
         element: <Navigate to="dashboard/overview" />,
       },
       createDashboardRoutes(),
-      createAdminInitiativesRoutes(),
       createAdminUsersRoutes(),
       createAdminProjectsRoutes(),
       settingsRoutes(),
@@ -152,6 +159,14 @@ const createAdminRoutes = () => {
             <AdminFavicon />
           </PageLoading>
         ),
+      },
+      {
+        path: descriptionBuilderRoutes.description,
+        element: <ProjectDescriptionBuilderComponent />,
+      },
+      {
+        path: descriptionBuilderRoutes.preview,
+        element: <FullscreenPreview />,
       },
       ...moduleConfiguration.routes.admin,
     ],

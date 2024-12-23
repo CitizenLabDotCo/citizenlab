@@ -23,7 +23,8 @@ namespace :cl2_back do
           maximum_admins_number: 2,
           maximum_moderators_number: 2,
           additional_admins_number: 2,
-          additional_moderators_number: 1
+          additional_moderators_number: 1,
+          allow_sharing: true
         },
         maps: {
           enabled: true,
@@ -225,10 +226,17 @@ namespace :cl2_back do
               client_secret: 'fake_client_secret',
               domain: 'fake_domain',
               method_name_multiloc: { en: 'Verify with Auth0' }
+            },
+            {
+              name: 'fake_sso'
             }
           ]
         },
         project_folders: {
+          enabled: true,
+          allowed: true
+        },
+        project_preview_link: {
           enabled: true,
           allowed: true
         },
@@ -260,13 +268,9 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
-        input_form_mapping_question: {
+        form_mapping: {
           enabled: true,
           allowed: true
-        },
-        form_mapping: {
-          enabled: false,
-          allowed: false
         },
         posthog_integration: {
           enabled: false,
@@ -320,6 +324,14 @@ namespace :cl2_back do
         customisable_homepage_banner: {
           enabled: true,
           allowed: true
+        },
+        project_review: {
+          enabled: true,
+          allowed: true
+        },
+        platform_templates: {
+          enabled: false,
+          allowed: false
         }
       }
     )

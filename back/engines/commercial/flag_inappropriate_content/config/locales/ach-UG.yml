@@ -7,11 +7,10 @@ ach:
     inappropriate_content_flagged:
       subject: 'crwdns208026:0crwdne208026:0'
       header_title: 'crwdns208028:0crwdne208028:0'
-      comment_author: 'crwdns208030:0%{authorName}crwdne208030:0'
-      idea_author: 'crwdns208032:0%{authorName}crwdne208032:0'
-      initiative_author: 'crwdns208034:0%{authorName}crwdne208034:0'
+      author_wrote: 'crwdns3337055:0%{authorName}crwdne3337055:0'
+      preheader: 'crwdns3166243:0crwdne3166243:0'
       automatically_flagged: >
         crwdns1368374:0crwdne1368374:0
       how_to_review: >
         crwdns1368376:0crwdne1368376:0
-      cta_review_post: 'crwdns208038:0crwdne208038:0'
+      cta_review: 'crwdns3337057:0crwdne3337057:0'

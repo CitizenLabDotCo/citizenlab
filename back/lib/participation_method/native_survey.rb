@@ -13,7 +13,7 @@ module ParticipationMethod
 
     def assign_defaults(input)
       input.publication_status ||= 'published'
-      input.idea_status ||= IdeaStatus.find_by!(code: 'proposed')
+      input.idea_status ||= IdeaStatus.find_by!(code: 'proposed', participation_method: 'ideation')
     end
 
     # NOTE: This is only ever used by the analyses controller - otherwise the front-end always persists the form
@@ -89,6 +89,11 @@ module ParticipationMethod
 
     def supports_exports?
       true
+    end
+
+    def supports_private_attributes_in_export?
+      setting = AppConfiguration.instance.settings.dig('core', 'private_attributes_in_export')
+      setting.nil? ? true : setting
     end
 
     def supports_multiple_posts?

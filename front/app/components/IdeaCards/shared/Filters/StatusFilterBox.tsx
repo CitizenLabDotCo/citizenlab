@@ -8,22 +8,24 @@ import StatusFilter from 'components/FilterBoxes/StatusFilter';
 
 interface Props {
   selectedStatusId: string | null | undefined;
-  selectedIdeaFilters: IIdeasFilterCountsQueryParameters;
+  ideaQueryParameters: IIdeasFilterCountsQueryParameters;
   onChange: (arg: string | null) => void;
   className?: string;
+  participationMethod?: 'ideation' | 'proposals';
 }
 
 const StatusFilterBox = ({
   selectedStatusId,
   onChange,
   className,
-  selectedIdeaFilters,
+  ideaQueryParameters,
+  participationMethod,
 }: Props) => {
   const { data: ideaStatuses } = useIdeaStatuses({
-    participation_method: 'ideation',
+    participation_method: participationMethod,
   });
   const { data: ideasFilterCounts } = useIdeasFilterCounts({
-    ...selectedIdeaFilters,
+    ...ideaQueryParameters,
     idea_status: undefined,
   });
 
@@ -35,8 +37,9 @@ const StatusFilterBox = ({
     return (
       <div className={className}>
         <StatusFilter
-          type="idea"
           statuses={ideaStatuses.data}
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           filterCounts={ideasFilterCounts?.data.attributes}
           selectedStatusId={selectedStatusId}
           onChange={handleOnChange}

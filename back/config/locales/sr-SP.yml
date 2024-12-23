@@ -1,6 +1,6 @@
 sr-Cyrl:
   locales:
-    en: English
+    en: енглески
     ar-MA: Arabic (Morocco)
     ar-SA: Arabic (Saudi Arabia)
     ca-ES: Catalan
@@ -170,6 +170,9 @@ sr-Cyrl:
       topic_ids:
         title: Тема
         description:
+      consponsor_ids:
+        title: Co-sponsors
+        description: Invite co-sponsors through the field below. The invited co-sponsor(s) will receive an email.
       location:
         title: Локација
         description:
@@ -192,8 +195,8 @@ sr-Cyrl:
       section3:
         title: Детаљи
         description:
-      other_text_field:
-        title: If you picked '{other_option}', what are you thinking of?
+      other_input_field:
+        title: Type your answer
   custom_forms:
     categories:
       main_content:
@@ -209,6 +212,12 @@ sr-Cyrl:
           title: Који је твој коментар?
         option:
           title: Која је твоја опција?
+        proposal:
+          title: What is your proposal?
+        initiative:
+          title: What is your initiative?
+        petition:
+          title: What is your petition?
   custom_field_options:
     gender:
       male: Мушки
@@ -233,6 +242,7 @@ sr-Cyrl:
       <ul><li>Одвојите време да разрадите свој предлог. Ако је потребно, прво откуцајте нацрт, а затим га копирајте и залепите овде.</li><li>Изаберите смислен наслов који јасно објашњава шта ваш предлог подразумева.</li><li>Визуелизирајте свој предлог одговарајућом сликом како бисте помогли да се истакне!</li><li>Додајте релевантне прилоге, као што су видео снимци, инспиративни примери, технички детаљи или планови.</li><li>Поделите своју идеју на друштвеним медијима и другим каналима како бисте прикупили подршку других.</li></ul>
   reset_password_mailer:
     send_reset_password:
+      preheader: 'Reset your password for %{organizationName}'
       cta_reset_password: 'Ресетујте вашу лозинку'
       message_you_reset_your_password: 'Захтевали сте ресетовање лозинке за платформу за учешће %{organizationName}. Кликните на дугме испод да бисте изабрали нову, безбедну лозинку. Веза истиче за 1 сат.'
       subject: '%{organizationName}: Ресетујте лозинку'
@@ -242,7 +252,7 @@ sr-Cyrl:
     column_headers:
       assignee_fullname: 'Асигнее'
       assignee_email: 'Имејл примаоца'
-      attachments: 'Attachments'
+      attachments: 'Прилози'
       author_email: 'Имејл аутора'
       author_fullname: 'Име аутора'
       author_id: 'ИД аутора'
@@ -250,17 +260,18 @@ sr-Cyrl:
       comments_count: 'Коментари'
       cost: 'Cost'
       created_at: 'Послано на'
-      description: 'Description'
+      description: 'Опис'
       dislikes_count: 'Не свиђа ми се'
       email: 'Email'
       first_name: 'First name(s)'
       image_url: 'УРЛ слике'
       input_id: 'ИД'
+      manual_votes: 'Offline votes'
       input_url: 'УРЛ'
       last_name: 'Last name'
       latitude: 'Географска ширина'
       likes_count: 'Свиђа'
-      location: 'Location'
+      location: 'Локација'
       longitude: 'Географска дужина'
       participants: 'Учесници'
       picks: 'Пицкс'
@@ -269,8 +280,8 @@ sr-Cyrl:
       registration_completed_at: 'Registration completed at'
       status: 'Статус'
       submitted_at: 'Submitted at'
-      tags: 'Tags'
-      title: 'Title'
+      tags: 'Тема'
+      title: 'Наслов'
       user_data: 'User data'
       votes_count: 'Гласови'
   form_builder:
@@ -311,6 +322,7 @@ sr-Cyrl:
   confirmations_mailer:
     send_confirmation_code:
       subject: "Потврдите своју адресу е-поште за платформу за учешће %{organizationName}"
+      preheader: 'Confirm your email address for %{organizationName}'
       header: "Ваш код за потврду"
       header_message: "Здраво %{firstName}!"
       confirm_email_address: "Потврдите вашу емаил адресу"
@@ -325,6 +337,7 @@ sr-Cyrl:
   user_blocked_mailer:
     send_user_blocked_email:
       subject: 'Ваш налог је привремено онемогућен'
+      preheader: 'Your account on the participation platform of %{organizationName} has been temporarily disabled'
       title_user_blocked: 'Ваш налог је привремено онемогућен'
       paragraph_1_without_reason: "Ваш налог на платформи за учешће %{organizationName} је привремено онемогућен због кршења смерница заједнице."
       paragraph_1_with_reason: "Ваш налог на платформи за учешће %{organizationName} је привремено онемогућен из следећег разлога:"
@@ -332,6 +345,8 @@ sr-Cyrl:
       you_can_sign_in_again_from: "Можете се поново пријавити од %{date}"
   user:
     anon_first_name: "Корисник"
+    anon_scheme:
+      animals: 'alligator,crocodile,alpaca,ant,antelope,ape,armadillo,baboon,badger,bat,bear,beaver,bee,beetle,buffalo,butterfly,camel,water buffalo,caribou,cat,cattle,cheetah,chimpanzee,chinchilla,cicada,clam,cockroach,cod,coyote,crab,cricket,crow,raven,deer,dinosaur,dog,dolphin,porpoise,duck,eagle,eel,elephant,elk,ferret,fish,fly,fox,frog,toad,gerbil,giraffe,gnat,gnu,wildebeest,goat,goldfish,goose,gorilla,grasshopper,guinea pig,hamster,hare,hedgehog,herring,hippopotamus,hornet,horse,hound,hyena,impala,jackal,jellyfish,kangaroo,wallaby,koala,leopard,lion,lizard,llama,locust,louse,macaw,mallard,mammoth,manatee,marten,mink,minnow,mole,moose,mosquito,mouse,rat,mule,muskrat,otter,ox,oyster,panda,pig,platypus,porcupine,prairie dog,pug,rabbit,raccoon,reindeer,rhinoceros,salmon,sardine,scorpion,seal,sea lion,serval,shark,sheep,skunk,snail,snake,spider,squirrel,swan,termite,tiger,trout,turtle,tortoise,walrus,wasp,whale,wolf,wombat,woodchuck,worm,yak,yellowjacket,zebra'
   time:
     am: сам
     formats:
@@ -340,3 +355,5 @@ sr-Cyrl:
   voting_method:
     default_voting_term_singular: "воте"
     default_voting_term_plural: "гласови"
+  ics_calendar_event:
+    event_details: "Event details"

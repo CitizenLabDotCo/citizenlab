@@ -8,7 +8,7 @@ describe Permissions::BasePermissionsService do
   describe 'user_denied_reason' do
     before do
       # To allow permitted_by 'verified' we need to enable at least one verification method
-      SettingsService.new.activate_feature! 'verification', settings: { verification_methods: [{ name: 'fake_sso' }] }
+      SettingsService.new.activate_feature! 'verification', settings: { verification_methods: [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
     end
 
     context 'verification via groups' do

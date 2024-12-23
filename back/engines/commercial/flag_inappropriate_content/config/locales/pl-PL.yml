@@ -7,11 +7,10 @@ pl:
     inappropriate_content_flagged:
       subject: 'Post na Twojej platformie został oznaczony do przeglądu'
       header_title: 'Post na Twojej platformie został oznaczony do przeglądu'
-      comment_author: '%{authorName} skomentował(a):'
-      idea_author: '%{authorName} dodał(a) nowy post:'
-      initiative_author: '%{authorName} dodał(a) nowa propozycję:'
+      author_wrote: '%{authorName} napisał:'
+      preheader: 'Post na Twojej platformie został oznaczony do sprawdzenia'
       automatically_flagged: >
         Ten post został automatycznie wykryty jako potencjalnie zawierający nieodpowiednie treści. Wysyłamy Ci to powiadomienie, abyś mógł sprawdzić post zgodnie z własnymi wytycznymi dotyczącymi moderacji.
       how_to_review: >
         Jeśli post nie zawiera nieodpowiednich treści, możesz usunąć ostrzeżenie za pośrednictwem swojej platformy w zakładce Aktywność w panelu administracyjnym.
-      cta_review_post: 'Przejrzyj post'
+      cta_review: 'Recenzja'

@@ -25,6 +25,8 @@ const DashboardTabs = ({ children, tabs }: Props) => {
           {tabs.map((tab) => {
             const active = isTopBarNavActive(
               '/admin/dashboard',
+              // TODO: Fix this the next time the file is edited.
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
               location?.pathname,
               tab.url
             );

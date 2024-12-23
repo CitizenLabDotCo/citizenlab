@@ -1,16 +1,8 @@
 # frozen_string_literal: true
-
 class OfficialFeedbackPolicy < ApplicationPolicy
-  class Scope
-    attr_reader :user, :scope
-
-    def initialize(user, scope)
-      @user  = user
-      @scope = scope
-    end
-
+  class Scope < ApplicationPolicy::Scope
     def resolve
-      scope.where(idea: Pundit.policy_scope(user, Idea))
+      scope.where(idea: scope_for(Idea))
     end
   end
 
@@ -19,7 +11,7 @@ class OfficialFeedbackPolicy < ApplicationPolicy
   end
 
   def show?
-    IdeaPolicy.new(user, record.idea).show?
+    policy_for(record.idea).show?
   end
 
   def update?

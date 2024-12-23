@@ -90,6 +90,7 @@ describe Permissions::ProjectPermissionsService do
       end
 
       it 'returns `posting_limited_max_reached`' do
+        create(:idea_status_proposed)
         create(:native_survey_response, project: project, author: user, anonymous: true, phases: project.phases, creation_phase: project.phases.first)
 
         expect(service.denied_reason_for_action('posting_idea')).to eq 'posting_limited_max_reached'
@@ -215,7 +216,7 @@ describe Permissions::ProjectPermissionsService do
 
   describe '"reacting_idea" denied_reason_for_action' do
     context 'when reacting is enabled in the current phase' do
-      let(:current_phase_attrs) { { reacting_enabled: true } }
+      let(:current_phase_attrs) { { reacting_enabled: true, reacting_dislike_enabled: true } }
 
       it 'returns nil' do
         expect(service.denied_reason_for_action('reacting_idea', reaction_mode: 'up')).to be_nil
@@ -275,7 +276,7 @@ describe Permissions::ProjectPermissionsService do
     end
 
     context 'when the like limit was reached' do
-      let(:current_phase_attrs) { { reacting_enabled: true, reacting_like_method: 'limited', reacting_like_limited_max: 1 } }
+      let(:current_phase_attrs) { { reacting_enabled: true, reacting_dislike_enabled: true, reacting_like_method: 'limited', reacting_like_limited_max: 1 } }
 
       it 'returns `reacting_like_limited_max_reached`' do
         create(:reaction, mode: 'up', user: user, reactable: create(:idea, project: project, phases: project.phases))
@@ -286,9 +287,9 @@ describe Permissions::ProjectPermissionsService do
     end
 
     describe 'with phase permissions' do
-      let(:reasons) { Permissions::ProjectPermissionsService::REACTING_DENIED_REASONS }
+      let(:reasons) { described_class::REACTING_DENIED_REASONS }
 
-      let(:project) { create(:project_with_current_phase, current_phase_attrs: { with_permissions: true }) }
+      let(:project) { create(:project_with_current_phase, current_phase_attrs: { with_permissions: true, reacting_dislike_enabled: true }) }
       let(:idea) { create(:idea, project: project, phases: [project.phases[2]]) }
       let(:permission) do
         TimelineService.new.current_phase_not_archived(project).permissions
@@ -881,6 +882,55 @@ describe Permissions::ProjectPermissionsService do
           described_class.new(project, user, user_requirements_service: user_requirements_service).action_descriptors
         end
       end.not_to exceed_query_limit(6) # Down from an original 490
+    end
+  end
+
+  describe 'participation_possible?' do
+    let(:user_requirements_service) { Permissions::UserRequirementsService.new(check_groups_and_verification: false) }
+    let(:service) { described_class.new(project, user, user_requirements_service: user_requirements_service) }
+    let(:action_descriptors) { service.action_descriptors }
+    let(:participation_possible) { service.participation_possible?(action_descriptors) }
+
+    context 'when only permitted action is attending_event' do
+      let(:current_phase_attrs) { { participation_method: 'information' } }
+
+      it 'returns false' do
+        expect(action_descriptors.key?(:attending_event)).to be true
+        expect(action_descriptors.except(:attending_event).all? { |_k, v| v[:enabled] == false }).to be true
+        expect(participation_possible).to be false
+      end
+    end
+
+    context 'when only one action is permitted (excluding attending_event)' do
+      let(:current_phase_attrs) { { with_permissions: true } }
+
+      it 'returns true' do
+        permission = TimelineService.new.current_phase_not_archived(project).permissions.find_by(action: 'commenting_idea')
+        permission.update!(permitted_by: 'admins_moderators')
+        permission = TimelineService.new.current_phase_not_archived(project).permissions.find_by(action: 'reacting_idea')
+        permission.update!(permitted_by: 'admins_moderators')
+
+        expect(action_descriptors.except(:attending_event).count { |_k, v| v[:enabled] == true }).to eq 1
+        expect(participation_possible).to be true
+      end
+    end
+
+    context 'when more than one action is permitted (excluding attending_event)' do
+      it 'returns true' do
+        expect(action_descriptors.except(:attending_event).count { |_k, v| v[:enabled] == true }).to eq 4
+        expect(participation_possible).to be true
+      end
+    end
+
+    context "when no action is permitted, but one or more permission is 'fixable'" do
+      let(:user) { nil }
+      let(:current_phase_attrs) { { with_permissions: true } }
+
+      it 'returns true' do
+        expect(action_descriptors.except(:attending_event).all? { |_k, v| v[:enabled] == false }).to be true
+        expect(action_descriptors.except(:attending_event).count { |_k, v| v[:disabled_reason] == 'user_not_signed_in' }).to eq 4
+        expect(participation_possible).to be true
+      end
     end
   end
 end

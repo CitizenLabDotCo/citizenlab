@@ -7,11 +7,10 @@ cy:
     inappropriate_content_flagged:
       subject: 'Mae postiad ar eich platfform wedi''i fflagio i''w adolygu'
       header_title: 'Mae postiad ar eich platfform wedi''i fflagio i''w adolygu'
-      comment_author: '%{authorName} sylw:'
-      idea_author: '%{authorName} cyflwyno post:'
-      initiative_author: '%{authorName} cyflwynodd gynnig:'
+      author_wrote: 'Ysgrifennodd %{authorName} :'
+      preheader: 'Mae postiad ar eich platfform wedi''i fflagio i''w adolygu'
       automatically_flagged: >
         Canfuwyd yn awtomatig bod y postiad hwn yn cynnwys cynnwys amhriodol. Rydym yn anfon yr hysbysiad hwn atoch fel y gallwch adolygu'r post yn unol â'ch canllawiau safoni eich hun.
       how_to_review: >
         Os nad yw'r post yn cynnwys cynnwys amhriodol, gallwch gael gwared ar y rhybudd trwy'ch platfform yn y tab Gweithgaredd yn y panel gweinyddol.
-      cta_review_post: 'Post adolygu'
+      cta_review: 'Adolygu'

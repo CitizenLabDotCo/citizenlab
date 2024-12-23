@@ -1,28 +1,24 @@
 import React, { useState } from 'react';
 
-import { Icon, Button } from 'semantic-ui-react';
+import { Button, fontSizes } from '@citizenlab/cl2-component-library';
 
 import useDeleteIdea from 'api/ideas/useDeleteIdea';
-import useDeleteInitiative from 'api/initiatives/useDeleteInitiative';
 
 import WarningModal from 'components/WarningModal';
 import modalMessages from 'components/WarningModal/messages';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
-import { ManagerType } from '../..';
-
+import DeleteButton from './DeleteButton';
 import messages from './messages';
 
 interface Props {
-  type: ManagerType;
   postId: string;
   resetSelection: () => void;
   handleClickEdit: () => void;
 }
 
 const ActionBarSingle = ({
-  type,
   handleClickEdit,
   postId,
   resetSelection,
@@ -32,57 +28,41 @@ const ActionBarSingle = ({
   const { formatMessage } = useIntl();
   const { mutate: deleteIdea, isLoading: isLoadingDeleteIdea } =
     useDeleteIdea();
-  const { mutate: deleteInitiative, isLoading: isLoadingDeleteInitiative } =
-    useDeleteInitiative();
 
   const openWarningModal = () => setWarningModalOpen(true);
   const closeWarningModal = () => setWarningModalOpen(false);
 
   const handleDelete = () => {
-    if (type === 'Initiatives') {
-      deleteInitiative(
-        { initiativeId: postId },
-        {
-          onSuccess: () => {
-            resetSelection();
-            closeWarningModal();
-          },
-        }
-      );
-    } else {
-      deleteIdea(postId, {
-        onSuccess: () => {
-          resetSelection();
-          closeWarningModal();
-        },
-      });
-    }
+    deleteIdea(postId, {
+      onSuccess: () => {
+        resetSelection();
+        closeWarningModal();
+      },
+    });
   };
 
   return (
     <>
-      <Button onClick={handleClickEdit}>
-        <Icon name="edit" />
+      <Button
+        buttonStyle="secondary-outlined"
+        onClick={handleClickEdit}
+        icon="edit"
+        mr="8px"
+        size="s"
+        p="4px 8px"
+        fontSize={`${fontSizes.s}px`}
+      >
         <FormattedMessage {...messages.edit} />
       </Button>
-      <Button negative={true} basic={true} onClick={openWarningModal}>
-        <Icon name="delete" />
+      <DeleteButton onClick={openWarningModal}>
         <FormattedMessage {...messages.delete} />
-      </Button>
+      </DeleteButton>
 
       <WarningModal
         open={warningModalOpen}
-        isLoading={isLoadingDeleteIdea || isLoadingDeleteInitiative}
-        title={
-          type === 'Initiatives'
-            ? formatMessage(modalMessages.deleteInitiativeTitle)
-            : formatMessage(modalMessages.deleteInputTitle)
-        }
-        explanation={
-          type === 'Initiatives'
-            ? formatMessage(modalMessages.deleteInitiativeExplanation)
-            : formatMessage(modalMessages.deleteInputExplanation)
-        }
+        isLoading={isLoadingDeleteIdea}
+        title={formatMessage(modalMessages.deleteInputTitle)}
+        explanation={formatMessage(modalMessages.deleteInputExplanation)}
         onClose={closeWarningModal}
         onConfirm={handleDelete}
       />

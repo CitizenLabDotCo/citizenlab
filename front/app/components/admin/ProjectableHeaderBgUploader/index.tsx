@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
-import { UploadFile } from 'typings';
+import { Box, IconTooltip } from '@citizenlab/cl2-component-library';
+import { Multiloc, UploadFile } from 'typings';
 
 import {
   PROJECTABLE_HEADER_BG_ASPECT_RATIO,
@@ -9,17 +9,30 @@ import {
   PROJECTABLE_HEADER_BG_ASPECT_RATIO_WIDTH,
 } from 'api/projects/constants';
 
+import projectMessages from 'containers/Admin/projects/project/general/messages';
+
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
+import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
+import { FormattedMessage } from 'utils/cl-intl';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
+
+import { SectionField, SubSectionTitle } from '../Section';
 
 interface Props {
   imageUrl: string | null | undefined;
+  headerImageAltText: Multiloc | null | undefined;
   onImageChange: (newImageBase64: string | null) => void;
+  onHeaderImageAltTextChange: (newHeaderImageAltText: Multiloc) => void;
 }
 
-const ProjectableHeaderBgUploader = ({ imageUrl, onImageChange }: Props) => {
+const ProjectableHeaderBgUploader = ({
+  imageUrl,
+  onImageChange,
+  headerImageAltText,
+  onHeaderImageAltTextChange,
+}: Props) => {
   const [headerBg, setHeaderBg] = useState<UploadFile | null>(null);
   useEffect(() => {
     (async () => {
@@ -66,6 +79,26 @@ const ProjectableHeaderBgUploader = ({ imageUrl, onImageChange }: Props) => {
           onAdd={handleImageAdd}
           onRemove={handleImageRemove}
         />
+      )}
+      {headerBg && (
+        <SectionField>
+          <SubSectionTitle>
+            <FormattedMessage {...projectMessages.headerImageAltText} />
+            <IconTooltip
+              content={
+                <FormattedMessage
+                  {...projectMessages.projectImageAltTextTooltip}
+                />
+              }
+            />
+          </SubSectionTitle>
+          <InputMultilocWithLocaleSwitcher
+            type="text"
+            valueMultiloc={headerImageAltText}
+            label={<FormattedMessage {...projectMessages.altText} />}
+            onChange={onHeaderImageAltTextChange}
+          />
+        </SectionField>
       )}
     </>
   );

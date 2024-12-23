@@ -1,5 +1,4 @@
 import { IFollowingAction } from 'api/authentication/authentication_requirements/types';
-import { IInitiativeAction } from 'api/initiative_action_descriptors/types';
 import { IPhasePermissionAction } from 'api/phase_permissions/types';
 
 import errorMessages from 'components/UI/Error/messages';
@@ -16,6 +15,7 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   // shared
   closed: null,
   success: null,
+  'access-denied': messages.youCantParticipate,
 
   // sign in flow
   'sign-in:auth-providers': messages.logIn,
@@ -54,11 +54,7 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
 
 export const getHeaderMessage = (
   step: Step,
-  action:
-    | 'visiting'
-    | IInitiativeAction
-    | IPhasePermissionAction
-    | IFollowingAction
+  action: 'visiting' | IPhasePermissionAction | IFollowingAction
 ) => {
   if (
     action === 'following' &&
@@ -86,6 +82,7 @@ export const ERROR_CODE_MESSAGES: Record<ErrorCode, MessageDescriptor> = {
   not_entitled_under_minimum_age:
     messages.nemlogInUnderMinimumAgeVerificationFailed,
   resending_code_failed: errorMessages.resending_code_failed,
+  verification_taken: errorMessages.verification_taken,
 };
 
 type HelperTextKey = 'signup_helper_text' | 'custom_fields_signup_helper_text';

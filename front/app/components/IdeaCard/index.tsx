@@ -3,12 +3,13 @@ import React, { useEffect } from 'react';
 import {
   useBreakpoint,
   Box,
-  Title,
   defaultCardStyle,
   defaultCardHoverStyle,
   media,
+  Title,
 } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
+import { RouteType } from 'routes';
 import styled from 'styled-components';
 
 import useIdeaImage from 'api/idea_images/useIdeaImage';
@@ -129,16 +130,23 @@ const IdeaCard = ({
     e.stopPropagation();
     e.preventDefault();
     updateSearchParams({ scroll_to_card: idea.data.id });
-    clHistory.push(`/ideas/${slug}?go_back=true`, { scrollToTop: true });
+    let ideaUrl = `/ideas/${slug}?go_back=true`;
+    if (phaseId) {
+      ideaUrl += `&phase_context=${phaseId}`;
+    }
+    clHistory.push(ideaUrl as RouteType, {
+      scrollToTop: true,
+    });
   };
 
   const innerHeight = showFollowButton ? '192px' : '162px';
 
   return (
     <Container
-      className="e2e-card e2e-idea-card"
+      className={`e2e-card e2e-idea-card`}
       id={idea.data.id}
       onClick={handleClick}
+      height="100%"
     >
       <CardImage
         phase={phaseData}
@@ -152,6 +160,9 @@ const IdeaCard = ({
         flexDirection="column"
         justifyContent="space-between"
         w="100%"
+        // Height of 100% needed to extent the card to the bottom of the row when there
+        // is a card with an image and a card without an image in the same row.
+        h="100%"
         overflowX="hidden"
       >
         <Box
@@ -175,7 +186,8 @@ const IdeaCard = ({
             {!hideBody && <Body idea={idea} />}
           </Link>
         </Box>
-        <Box>
+        {/* marginTop used to push the interactions/footer to bottom of the card */}
+        <Box marginTop="auto">
           <Interactions idea={idea} phase={phaseData || null} />
           <Footer
             idea={idea.data}
@@ -188,6 +200,8 @@ const IdeaCard = ({
                 followableType="ideas"
                 followableId={idea.data.id}
                 followersCount={idea.data.attributes.followers_count}
+                // TODO: Fix this the next time the file is edited.
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 followerId={idea.data.relationships.user_follower?.data?.id}
                 w="auto"
                 toolTipType="input"

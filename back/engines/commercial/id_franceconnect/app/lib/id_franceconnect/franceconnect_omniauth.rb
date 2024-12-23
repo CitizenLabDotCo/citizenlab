@@ -7,7 +7,7 @@ module IdFranceconnect
     include FranceconnectVerification
 
     # The flow of the sso_verification param in case of FranceConnect:
-    # 1. FE sends request to BE /auth/franceconnect?token=...&pathname=...&sso_verification=true
+    # 1. FE sends request to BE /auth/franceconnect?token=...&verification_pathname=...&sso_verification=true
     #    (see front/app/modules/commercial/id_franceconnect/components/VerificationFranceConnectButton.tsx:32)
     # 2. The request is processed by a Rack middleware (configured in id_franceconnect/config/initializers/omniauth.rb),
     #    that calls IdFranceconnect::FranceconnectOmniauth#omniauth_setup and redirects browser to FranceConnect.

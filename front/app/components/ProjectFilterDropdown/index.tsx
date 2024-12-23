@@ -46,6 +46,8 @@ const ProjectFilterDropdown = ({
     : null;
 
   const [selectedValues, setSelectedValues] = useState<string[]>(
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     projectIdsFromUrl || []
   );
   const localize = useLocalize();
@@ -63,6 +65,8 @@ const ProjectFilterDropdown = ({
       };
     });
 
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (options && options.length > 0) {
       return (
         <FilterSelector

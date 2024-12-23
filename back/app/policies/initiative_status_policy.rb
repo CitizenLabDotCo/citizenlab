@@ -1,14 +1,7 @@
 # frozen_string_literal: true
 
 class InitiativeStatusPolicy < ApplicationPolicy
-  class Scope
-    attr_reader :user, :scope
-
-    def initialize(user, scope)
-      @user  = user
-      @scope = scope
-    end
-
+  class Scope < ApplicationPolicy::Scope
     def resolve
       filter_out_review_statuses
     end
@@ -40,7 +33,7 @@ class InitiativeStatusPolicy < ApplicationPolicy
     end
 
     def initiatives
-      InitiativePolicy::Scope.new(user, Initiative).resolve
+      scope_for(Initiative)
     end
   end
 

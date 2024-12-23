@@ -236,6 +236,7 @@ describe MultiTenancy::Templates::TenantSerializer do
         create(factory, :for_custom_form, resource: custom_form)
       end
       unsupported_field = create(:custom_field, :for_custom_form, input_type: 'file_upload', resource: custom_form)
+      create(:idea_status_proposed)
       response = create(:native_survey_response, project: project)
       custom_field_values = {
         supported_fields[0].key => 7,
@@ -298,6 +299,28 @@ describe MultiTenancy::Templates::TenantSerializer do
         expect(BasketsIdea.count).to eq 2
         expect(BasketsIdea.all.pluck(:votes)).to match_array([1, 2])
       end
+    end
+
+    it 'adds a unique ID to SSO users with no email address' do
+      create(:user, email: nil, identities: [create(:identity, provider: 'fake_sso')])
+      template = tenant_serializer.run(deserializer_format: true)
+
+      # Main user
+      expect(template['models']['user'].first['email']).not_to be_nil
+      expect(template['models']['user'].first['unique_code']).to be_nil
+
+      # SSO user added above
+      expect(template['models']['user'].last['email']).to be_nil
+      expect(template['models']['user'].last['unique_code']).not_to be_nil
+    end
+
+    it 'changes "verified" permissions to "user" permissions' do
+      SettingsService.new.activate_feature! 'verification', settings: { verification_methods: [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
+      create(:permission, :by_admins_moderators)
+      create(:permission, :by_verified)
+      template = tenant_serializer.run(deserializer_format: true)
+      expect(template['models']['permission'].first['permitted_by']).to eq 'admins_moderators' # Not changed
+      expect(template['models']['permission'].last['permitted_by']).to eq 'users' # Changed
     end
   end
 end

@@ -193,8 +193,8 @@ const EsriMap = ({
         }
 
         // Remove any internal layers that were passed in as props to the Web Map
-        map.layers?.forEach((layer) => {
-          if (layer.id?.includes('_internal')) {
+        map.layers.forEach((layer) => {
+          if (layer.id.includes('_internal')) {
             map.remove(layer);
           }
         });
@@ -208,7 +208,7 @@ const EsriMap = ({
         });
 
         // If the WebMap has reference layers, save them in state
-        setReferenceLayers(map.basemap?.referenceLayers || null);
+        setReferenceLayers(map.basemap.referenceLayers);
       });
     }
   }, [layers, map, mapView, referenceLayers]);

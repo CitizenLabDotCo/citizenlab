@@ -2,14 +2,7 @@
 
 module ProjectFolders
   class FolderPolicy < ApplicationPolicy
-    class Scope
-      attr_reader :user, :scope
-
-      def initialize(user, scope)
-        @user = user
-        @scope = scope
-      end
-
+    class Scope < ApplicationPolicy::Scope
       def resolve
         if user&.admin? || user&.project_folder_moderator? || user&.project_moderator?
           scope.all
@@ -29,7 +22,7 @@ module ProjectFolders
       return true if record.projects.empty?
 
       # We check if the user has access to at least one of the projects in the folder
-      ProjectPolicy::Scope.new(user, record.projects).resolve.exists?
+      scope_for(record.projects).exists?
     end
 
     def by_slug?

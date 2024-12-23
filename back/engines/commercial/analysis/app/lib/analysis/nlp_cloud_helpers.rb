@@ -27,18 +27,21 @@ module Analysis
       'it-IT' => 'ita_Latn',
       'kl-GL' => nil,   # Kalaallisut (Greenland) is not present
       'lb-LU' => 'ltz_Latn',
+      'lt-LT' => 'lit_Latn',
       'lv-LV' => 'lav_Latn',
       'mi' => nil,      # Maori is not present
       'nb-NO' => 'nob_Latn',
       'nl-BE' => 'nld_Latn',
       'nl-NL' => 'nld_Latn',
+      'pa-IN' => nil,   # Punjabi (Gurmukhi) is not present
       'pl-PL' => 'pol_Latn',
       'pt-BR' => 'por_Latn',
       'ro-RO' => 'ron_Latn',
       'sr-Latn' => nil, # Serbian (Latin script) is not present
       'sr-SP' => 'srp_Cyrl',
       'sv-SE' => 'swe_Latn',
-      'tr-TR' => 'tur_Latn'
+      'tr-TR' => 'tur_Latn',
+      'ur-PK' => 'urd_Arab'
     }.with_indifferent_access.freeze
 
     def retry_rate_limit(retry_count = 10, interval = 5)

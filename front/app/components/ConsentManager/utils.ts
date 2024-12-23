@@ -95,6 +95,8 @@ export const getConsentRequired = (
     !cookieConsent ||
     !!activeDestinations.find(
       (destination) =>
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         !Object.keys(cookieConsent?.savedChoices).includes(destination.key)
     );
 

@@ -1,39 +1,35 @@
 import { RouteType } from 'routes';
 
-import { TPageSlugById } from 'api/custom_pages/useCustomPageSlugById';
-import { TProjectSlugById } from 'api/projects/useProjectSlugById';
-
-import { TDefaultNavbarItemCode, TNavbarItemCode } from './types';
+import { TDefaultNavbarItemCode, INavbarItem } from './types';
 
 export const DEFAULT_PAGE_SLUGS: Record<TDefaultNavbarItemCode, RouteType> = {
   home: '/',
   projects: '/projects',
   all_input: '/ideas',
-  proposals: '/initiatives',
   events: '/events',
 };
 
 // utility function to get slug associated with navbar item
-export function getNavbarItemSlug(
-  navbarItemCode: TNavbarItemCode,
-  pageBySlugId?: TPageSlugById,
-  pageId?: string,
-  projectBySlugId?: TProjectSlugById,
-  projectId?: string
-): RouteType | null {
+export function getNavbarItemSlug({
+  attributes: { code, slug },
+  relationships,
+}: INavbarItem): RouteType | null {
+  const hasCorrespondingPage = !!relationships.static_page.data?.id;
+  const hasCorrespondingProject = !!relationships.project.data?.id;
+
   // Default navbar item
-  if (navbarItemCode !== 'custom' && !pageId) {
-    return DEFAULT_PAGE_SLUGS[navbarItemCode];
+  if (code !== 'custom' && !hasCorrespondingPage) {
+    return DEFAULT_PAGE_SLUGS[code];
   }
 
   // Page navbar item
-  if (navbarItemCode === 'custom' && pageBySlugId && pageId) {
-    return pageBySlugId[pageId];
+  if (code === 'custom' && hasCorrespondingPage && slug) {
+    return `/pages/${slug}`;
   }
 
   // Project navbar item
-  if (navbarItemCode === 'custom' && projectBySlugId && projectId) {
-    return projectBySlugId[projectId];
+  if (code === 'custom' && hasCorrespondingProject && slug) {
+    return `/projects/${slug}`;
   }
 
   // This is impossible, but I can't seem to make typescript understand

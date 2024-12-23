@@ -95,7 +95,7 @@ context 'hoplr authentication' do
     get '/auth/hoplr?random-passthrough-param=somevalue'
     follow_redirect!
 
-    expect(response).to redirect_to('/en/complete-signup?random-passthrough-param=somevalue')
+    expect(response).to redirect_to('/en/?random-passthrough-param=somevalue&sso_flow=signup&sso_success=true')
 
     user = User.last
     expect_user_to_have_attributes(user)

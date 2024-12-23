@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Spinner, Tooltip } from '@citizenlab/cl2-component-library';
+import { Spinner, Box, Tooltip } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
@@ -69,7 +69,7 @@ const IdeaStatuses = ({ variant }: { variant: 'ideation' | 'proposals' }) => {
   };
 
   const isRequired = (ideaStatus: IIdeaStatusData) => {
-    return ideaStatus.attributes.locked === false;
+    return ideaStatus.attributes.locked === true;
   };
 
   const isDeletable = (ideaStatus: IIdeaStatusData) => {
@@ -85,6 +85,8 @@ const IdeaStatuses = ({ variant }: { variant: 'ideation' | 'proposals' }) => {
   }
 
   if (ideaStatuses) {
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     const defaultStatuses = ideaStatuses?.data.filter(
       (ideaStatus) => ideaStatus.attributes.locked === true
     );
@@ -110,14 +112,16 @@ const IdeaStatuses = ({ variant }: { variant: 'ideation' | 'proposals' }) => {
             content={<FormattedMessage {...messages.pricingPlanUpgrade} />}
             trigger="mouseenter"
           >
-            <Button
-              buttonStyle="admin-dark"
-              icon="plus-circle"
-              linkTo={`/admin/settings/${variant}/statuses/new`}
-              disabled={!customIdeaStatusesAllowed}
-            >
-              <FormattedMessage {...messages.addIdeaStatus} />
-            </Button>
+            <Box>
+              <Button
+                buttonStyle="admin-dark"
+                icon="plus-circle"
+                linkTo={`/admin/settings/${variant}/statuses/new`}
+                disabled={!customIdeaStatusesAllowed}
+              >
+                <FormattedMessage {...messages.addIdeaStatus} />
+              </Button>
+            </Box>
           </Tooltip>
         </ButtonWrapper>
 

@@ -21,6 +21,14 @@ export default defineMessages({
     id: 'app.components.AuthProviders.continueWithHoplr',
     defaultMessage: 'Continue with Hoplr',
   },
+  continueWithNemlogIn: {
+    id: 'app.components.AuthProviders.continueWithNemlogIn',
+    defaultMessage: 'Continue with MitID',
+  },
+  continueWithIdAustria: {
+    id: 'app.components.AuthProviders.continueWithIdAustria',
+    defaultMessage: 'Continue with ID Austria',
+  },
   continueWithAzure: {
     id: 'app.components.AuthProviders.continueWithAzure',
     defaultMessage: 'Continue with {azureProviderName}',
@@ -66,7 +74,6 @@ export default defineMessages({
     defaultMessage:
       'You can change your profile information after sign-in. If you already have an account with the same email address on mitgestalten.wien.gv.at, it will be linked with your current account.',
   },
-
   viennaConsentEmail: {
     id: 'app.containers.SignUp.viennaConsentEmail',
     defaultMessage: 'Email address',
@@ -120,5 +127,9 @@ export default defineMessages({
     id: 'app.containers.SignUp.emailConsent',
     defaultMessage:
       'By signing up, you agree to receive emails from this platform. You can select which emails you wish to receive from your user settings.',
+  },
+  adminOptions: {
+    id: 'app.containers.SignUp.adminOptions2',
+    defaultMessage: 'For admins and project managers',
   },
 });

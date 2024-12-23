@@ -170,6 +170,9 @@ lv:
       topic_ids:
         title: Tagi
         description:
+      consponsor_ids:
+        title: Līdzfinansētāji
+        description: Uzaiciniet līdzfinansētājus, izmantojot tālāk norādīto lauku. Uzaicinātais(-ie) līdzsponsors(-i) saņems e-pastu.
       location:
         title: Atrašanās vieta
         description:
@@ -192,8 +195,8 @@ lv:
       section3:
         title: Sīkāka informācija
         description:
-      other_text_field:
-        title: Ja esat izvēlējies "{other_option}", par ko jūs domājat?
+      other_input_field:
+        title: Ierakstiet savu atbildi
   custom_forms:
     categories:
       main_content:
@@ -209,6 +212,12 @@ lv:
           title: Kāda ir jūsu problēma?
         option:
           title: Kāda ir jūsu izvēle?
+        proposal:
+          title: Kāds ir jūsu priekšlikums?
+        initiative:
+          title: Kāda ir jūsu iniciatīva?
+        petition:
+          title: Kāda ir jūsu petīcija?
   custom_field_options:
     gender:
       male: Vīrietis
@@ -233,6 +242,7 @@ lv:
       <ul><li>Atvēliet laiku, lai detalizēti izklāstītu savu priekšlikumu. Ja nepieciešams, vispirms uzrakstiet melnrakstu un pēc tam kopējiet un ielīmējiet to šeit.</li><li>Izvēlieties jēgpilnu nosaukumu, kas skaidri paskaidro, ko ietver jūsu priekšlikums.</li><li>Vizualizējiet savu priekšlikumu ar atbilstošu attēlu, kas palīdzēs tam izcelties!</li><li>Pievienojiet attiecīgus pielikumus, piemēram, videoklipus, iedvesmojošus piemērus, tehnisko informāciju vai plānus.</li><li>Koplietojiet savu ideju sociālajos medijos un citos kanālos, lai iegūtu atbalstu no citiem.</li></ul>
   reset_password_mailer:
     send_reset_password:
+      preheader: 'Atiestatīt paroli %{organizationName}'
       cta_reset_password: 'Atiestatīt jūsu paroli'
       message_you_reset_your_password: 'Jūs pieprasījāt %{organizationName} līdzdalības platformas paroles atiestatīšanu. Noklikšķiniet uz zemāk redzamās pogas, lai izvēlētos jaunu, drošu paroli. Saites derīguma termiņš beidzas pēc 1 stundas.'
       subject: '%{organizationName}: Atiestatīt jūsu paroli'
@@ -256,6 +266,7 @@ lv:
       first_name: 'Vārds(-i)'
       image_url: 'Attēla URL'
       input_id: 'ID'
+      manual_votes: 'Bezsaistes balsojumi'
       input_url: 'URL'
       last_name: 'Uzvārds'
       latitude: 'Ģeogrāfiskais platums'
@@ -311,6 +322,7 @@ lv:
   confirmations_mailer:
     send_confirmation_code:
       subject: "Apstipriniet savu e-pasta adresi %{organizationName} līdzdalības platformai"
+      preheader: 'Apstipriniet savu e-pasta adresi %{organizationName}'
       header: "Jūsu apstiprinājuma kods"
       header_message: "Sveiki %{firstName}!"
       confirm_email_address: "Apstipriniet savu e-pasta adresi"
@@ -325,6 +337,7 @@ lv:
   user_blocked_mailer:
     send_user_blocked_email:
       subject: 'Jūsu konts ir uz laiku atspējots'
+      preheader: 'Jūsu konts %{organizationName} dalības platformā ir uz laiku atspējots.'
       title_user_blocked: 'Jūsu konts ir uz laiku atspējots'
       paragraph_1_without_reason: "Jūsu konts līdzdalības platformā %{organizationName} ir uz laiku atspējots par kopienas vadlīniju pārkāpumu."
       paragraph_1_with_reason: "Jūsu konts %{organizationName} dalības platformā ir uz laiku atspējots šāda iemesla dēļ:"
@@ -332,6 +345,8 @@ lv:
       you_can_sign_in_again_from: "Varat atkal pierakstīties no %{date}"
   user:
     anon_first_name: "Lietotājs"
+    anon_scheme:
+      animals: 'aligators, krokodils, alpaka, skudra, antilope, pērtiķis, bruņurupucis, babuīns, kazlēns, sikspārnis, lācis, bebrs, bišu, vabole, bifeļu, tauriņš, kamielis, ūdens bifeļu, karibu, kaķis, liellopi, gepards, šimpanzis, šinšilla, cigada, gliemezis, tarakāns, menca, kojots, krabju, cīrulis, vārna, vārna,briedis, dinozaurs, suns, delfīns, cūkdelfīns, pīle, ērglis, zuilis, zilonis, aļnis, sesks, zivs, muša, lapsa, vardze, krupis, žurka, žurka, žurka, žubīte, žirafe, žurka, žubīte, zilonis, kaza, zelta zivtiņa, zoss, gorilla, mārrutks, jūrascūciņa, kāmis, zaķis, ezis, siļķe, haizivs, hipopotams, sirse, zirgs, kurts,hiena,impala,šakālis,medūza,ķengurs,kengurs,valabijs,koala,leopards,lauva,ķirzaka,lama,lauķis,lauvene,lauze,makabs,makabs,krunka,mamuts,lamantīns,klijāns,kurmītis,ūdele,sienāzis,sienāzis,mošķis,pele,žurka,muļķis,mošķeris,ūdrs,vērsis,ūdele,panda,cūka,platipusa,dzeguze,prēriju suns,mopsis,trusis,jenots,ziemeļbriedis,ziemeļbriedis,degunradis,laši,sardīne,skorpions,ronis,jūras lauva,servals,haizivs,aita,skunks,gliemezis,čūska,zirneklis,vāvere,gulbis,termīts,tīģeris,forele,bruņurupucis,bruņurupucis,bruņurupucis,bruņurupucis,valzis,vaļu,vilks,vombats,mežacūka,tārps,jaks,dzeltenkaja,zebra'
   time:
     am: am
     formats:
@@ -340,3 +355,5 @@ lv:
   voting_method:
     default_voting_term_singular: "balsot"
     default_voting_term_plural: "balsis"
+  ics_calendar_event:
+    event_details: "Detalizēta informācija par pasākumu"

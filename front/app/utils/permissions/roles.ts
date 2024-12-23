@@ -12,6 +12,7 @@ export interface IProjectFolderModeratorRole {
 
 interface IAdminRole {
   type: 'admin';
+  project_reviewer?: boolean;
 }
 
 interface IRoleRegisty {

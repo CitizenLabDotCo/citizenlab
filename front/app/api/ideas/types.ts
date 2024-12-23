@@ -1,13 +1,14 @@
 import { ILinks, IRelationship, Multiloc } from 'typings';
 
+import { IdeaSortMethod } from 'api/phases/types';
 import { PublicationStatus as ProjectPublicationStatus } from 'api/projects/types';
 
 import {
   ActionDescriptorFutureEnabled,
   IdeaCommentingDisabledReason,
+  IdeaEditingDisabledReason,
   IdeaReactingDisabledReason,
   IdeaVotingDisabledReason,
-  ReactingIdeaActionDescriptor,
 } from 'utils/actionDescriptors/types';
 import { Keys } from 'utils/cl-react-query/types';
 
@@ -37,10 +38,38 @@ export type Sort =
   | '-status'
   | 'votes_count'
   | '-votes_count'
+  | 'total_votes'
+  | '-total_votes'
+  | 'total_baskets'
+  | '-total_baskets'
+  | 'manual_votes_amount'
+  | '-manual_votes_amount'
   | 'comments_count'
   | '-comments_count'
   | 'budget'
   | '-budget';
+
+type ReactingIdeaActionDescriptor =
+  | { enabled: true; disabled_reason: null; cancelling_enabled: boolean }
+  | {
+      enabled: false;
+      disabled_reason: IdeaReactingDisabledReason;
+      cancelling_enabled: boolean;
+    };
+
+export interface IdeaQueryParameters {
+  'page[number]': number;
+  'page[size]': number;
+  project_publication_status?: 'published';
+  publication_status?: 'published';
+  phase?: string;
+
+  // filters
+  sort: IdeaSortMethod;
+  search?: string;
+  idea_status?: string;
+  topics?: string[];
+}
 
 export interface IIdeaData {
   id: string;
@@ -70,7 +99,13 @@ export interface IIdeaData {
     proposed_budget: number | null;
     created_at: string;
     updated_at: string;
-    published_at: string;
+    published_at: string | null;
+    // For manual_votes_amount, in a PB phase this refers to the # offline baskets with this idea (I.e. # offline picks)
+    // In the other voting methods, this refers to the total # offline votes cast for this idea.
+    manual_votes_amount: number;
+    // For total_votes, in a PB phase this refers to the total # baskets with this idea (I.e. Total # picks)
+    // In the other voting methods, this refers to the total # votes cast on this idea.
+    total_votes: number;
     action_descriptors: {
       reacting_idea: ReactingIdeaActionDescriptor & {
         up: ActionDescriptorFutureEnabled<IdeaReactingDisabledReason>;
@@ -87,6 +122,7 @@ export interface IIdeaData {
       // but not an action (so e.g. it can't be used in the authentication_requirements API).
       comment_reacting_idea: ActionDescriptorFutureEnabled<IdeaCommentingDisabledReason>;
       voting?: ActionDescriptorFutureEnabled<IdeaVotingDisabledReason>;
+      editing_idea: ActionDescriptorFutureEnabled<IdeaEditingDisabledReason>;
     };
     anonymous: boolean;
     author_hash: string;
@@ -131,6 +167,12 @@ export interface IIdeaData {
     idea_import?: {
       data: IRelationship | null;
     };
+    cosponsors?: {
+      data: IRelationship | null;
+    };
+    manual_votes_last_updated_by?: {
+      data: IRelationship | null;
+    };
   };
 }
 
@@ -170,6 +212,7 @@ export interface IIdeaUpdate {
   proposed_budget?: number | null;
   anonymous?: boolean;
   idea_images_attributes?: { image: string }[];
+  manual_votes_amount?: number | null;
 }
 
 export interface IIdeas {
@@ -181,7 +224,7 @@ export interface IIdea {
   data: IIdeaData;
 }
 
-export interface IQueryParameters {
+export interface IIdeaQueryParameters {
   sort?: Sort;
   'page[number]'?: number;
   'page[size]'?: number;

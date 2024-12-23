@@ -29,6 +29,7 @@ export type TCustomFieldCode =
   | 'title_multiloc'
   | 'body_multiloc'
   | 'topic_ids'
+  | 'cosponsor_ids'
   | 'location_description'
   | 'proposed_budget'
   | 'idea_images_attributes'

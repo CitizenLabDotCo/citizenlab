@@ -24,6 +24,10 @@ import messages from '../../messages';
 
 export const defaultSortingOptions = [
   { text: <FormattedMessage {...messages.trending} />, value: 'trending' },
+  {
+    text: <FormattedMessage {...messages.mostDiscussed} />,
+    value: 'comments_count',
+  },
   { text: <FormattedMessage {...messages.random} />, value: 'random' },
   { text: <FormattedMessage {...messages.mostReacted} />, value: 'popular' },
   { text: <FormattedMessage {...messages.newest} />, value: 'new' },
@@ -83,6 +87,14 @@ export type ParticipationMethodConfig = {
   hideAuthorOnIdeas?: boolean; // Hides the author on the idea pages/cards
   showIdeaFilters?: boolean; // Shows filters on the idea list
   inputsPageSize?: number;
+  /** Does this method support the reactions (likes, maybe dislikes) mechanism? */
+  supportsReactions: boolean;
+  /** Does this method support the voting mechanism? */
+  supportsVotes: boolean;
+  /** Does this method support commenting? */
+  supportsComments: boolean;
+  /** Does this method support having the topic field in its form? */
+  supportsTopicsCustomField: boolean;
 };
 
 const ideationConfig: ParticipationMethodConfig = {
@@ -90,9 +102,15 @@ const ideationConfig: ParticipationMethodConfig = {
   showIdeaFilters: true,
   formEditor: 'simpleFormEditor',
   inputsPageSize: 24,
+  supportsReactions: true,
+  supportsVotes: true,
+  supportsComments: true,
+  supportsTopicsCustomField: true,
   onFormSubmission: (props: FormSubmissionMethodProps) => {
     if (props.ideaId && props.idea) {
       const urlParameters = `?new_idea_id=${props.ideaId}`;
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (props.idea) {
         clHistory.push({
           pathname: `/ideas/${props.idea.data.attributes.slug}`,
@@ -108,7 +126,6 @@ const ideationConfig: ParticipationMethodConfig = {
     if (props.ideaIdForSocialSharing && props.title && props.subtitle) {
       return (
         <SharingModalContent
-          postType="idea"
           postId={props.ideaIdForSocialSharing}
           title={props.title}
           subtitle={props.subtitle}
@@ -127,6 +144,9 @@ const ideationConfig: ParticipationMethodConfig = {
           question: messages.questionFormTitle,
           issue: messages.issueFormTitle1,
           contribution: messages.contributionFormTitle,
+          proposal: messages.proposalFormTitle,
+          petition: messages.petitionFormTitle,
+          initiative: messages.initiativeFormTitle,
         }[getInputTerm(props.phases, props.phaseFromUrl)]}
       />
     );
@@ -145,12 +165,18 @@ const proposalsConfig: ParticipationMethodConfig = {
   showIdeaFilters: true,
   formEditor: 'simpleFormEditor',
   inputsPageSize: 24,
+  supportsReactions: true,
+  supportsVotes: false,
+  supportsComments: true,
+  supportsTopicsCustomField: true,
   onFormSubmission: (props: FormSubmissionMethodProps) => {
     if (props.ideaId && props.idea) {
       const urlParameters = `?new_idea_id=${props.ideaId}`;
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (props.idea) {
         clHistory.push({
-          pathname: `/projects/${props.project?.attributes.slug}/ideas/${props.idea.data.attributes.slug}`,
+          pathname: `/ideas/${props.idea.data.attributes.slug}`,
           search: urlParameters.concat(
             props.phaseId ? `&phase_id=${props.phaseId}` : ''
           ),
@@ -163,7 +189,6 @@ const proposalsConfig: ParticipationMethodConfig = {
     if (props.ideaIdForSocialSharing && props.title && props.subtitle) {
       return (
         <SharingModalContent
-          postType="idea"
           postId={props.ideaIdForSocialSharing}
           title={props.title}
           subtitle={props.subtitle}
@@ -182,6 +207,9 @@ const proposalsConfig: ParticipationMethodConfig = {
           question: messages.questionFormTitle,
           issue: messages.issueFormTitle1,
           contribution: messages.contributionFormTitle,
+          proposal: messages.proposalFormTitle,
+          petition: messages.petitionFormTitle,
+          initiative: messages.initiativeFormTitle,
         }[getInputTerm(props.phases, props.phaseFromUrl)]}
       />
     );
@@ -201,6 +229,8 @@ const nativeSurveyConfig: ParticipationMethodConfig = {
   onFormSubmission: (props: FormSubmissionMethodProps) => {
     if (props.project) {
       clHistory.push({
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         pathname: `/projects/${props.project?.attributes.slug}`,
         search: `?show_modal=true`.concat(
           props.phaseId ? `&phase_id=${props.phaseId}` : ''
@@ -222,6 +252,10 @@ const nativeSurveyConfig: ParticipationMethodConfig = {
   renderCTABar: (props: CTABarProps) => {
     return <NativeSurveyCTABar project={props.project} phases={props.phases} />;
   },
+  supportsReactions: false,
+  supportsVotes: false,
+  supportsComments: false,
+  supportsTopicsCustomField: false,
 };
 
 const informationConfig: ParticipationMethodConfig = {
@@ -238,6 +272,10 @@ const informationConfig: ParticipationMethodConfig = {
   renderCTABar: (props: CTABarProps) => (
     <EventsCTABar project={props.project} phases={props.phases} />
   ),
+  supportsReactions: false,
+  supportsVotes: false,
+  supportsComments: false,
+  supportsTopicsCustomField: false,
 };
 
 const surveyConfig: ParticipationMethodConfig = {
@@ -256,6 +294,10 @@ const surveyConfig: ParticipationMethodConfig = {
       <EmbeddedSurveyCTABar project={props.project} phases={props.phases} />
     );
   },
+  supportsReactions: false,
+  supportsVotes: false,
+  supportsComments: false,
+  supportsTopicsCustomField: false,
 };
 
 const documentAnnotationConfig: ParticipationMethodConfig = {
@@ -274,6 +316,10 @@ const documentAnnotationConfig: ParticipationMethodConfig = {
       <DocumentAnnotationCTABar project={props.project} phases={props.phases} />
     );
   },
+  supportsReactions: false,
+  supportsVotes: false,
+  supportsComments: false,
+  supportsTopicsCustomField: false,
 };
 
 const votingConfig: ParticipationMethodConfig = {
@@ -281,6 +327,9 @@ const votingConfig: ParticipationMethodConfig = {
   formEditor: 'simpleFormEditor',
   showIdeaFilters: false,
   inputsPageSize: 100,
+  supportsReactions: false,
+  supportsVotes: true,
+  supportsComments: true,
   getModalContent: () => {
     return null;
   },
@@ -288,6 +337,8 @@ const votingConfig: ParticipationMethodConfig = {
   onFormSubmission: (props: FormSubmissionMethodProps) => {
     if (props.ideaId && props.idea) {
       const urlParameters = `?new_idea_id=${props.ideaId}`;
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (props.idea) {
         clHistory.push({
           pathname: `/ideas/${props.idea.data.attributes.slug}`,
@@ -321,6 +372,7 @@ const votingConfig: ParticipationMethodConfig = {
     (option) => option.value !== 'trending' && option.value !== 'popular'
   ),
   hideAuthorOnIdeas: true,
+  supportsTopicsCustomField: true,
 };
 
 const pollConfig: ParticipationMethodConfig = {
@@ -337,6 +389,10 @@ const pollConfig: ParticipationMethodConfig = {
   renderCTABar: (props: CTABarProps) => {
     return <PollCTABar project={props.project} phases={props.phases} />;
   },
+  supportsReactions: false,
+  supportsVotes: false,
+  supportsComments: false,
+  supportsTopicsCustomField: false,
 };
 
 const volunteeringConfig: ParticipationMethodConfig = {
@@ -353,6 +409,10 @@ const volunteeringConfig: ParticipationMethodConfig = {
   renderCTABar: (props: CTABarProps) => {
     return <VolunteeringCTABar project={props.project} phases={props.phases} />;
   },
+  supportsReactions: false,
+  supportsVotes: false,
+  supportsComments: false,
+  supportsTopicsCustomField: false,
 };
 
 const methodToConfig: {

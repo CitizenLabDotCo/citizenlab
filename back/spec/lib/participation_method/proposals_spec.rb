@@ -22,32 +22,32 @@ RSpec.describe ParticipationMethod::Proposals do
       let!(:custom_status) { create(:proposals_status) }
 
       context 'when the creation phase has reviewing enabled' do
-        let(:creation_phase) { create(:proposals_phase, prescreening_enabled: true) }
+        let(:phase) { create(:proposals_phase, prescreening_enabled: true) }
 
         it 'assignes the default "prescreening" status if not set' do
-          proposal = build(:proposal, idea_status: nil, creation_phase: creation_phase, project: creation_phase.project)
+          proposal = build(:proposal, idea_status: nil, creation_phase: phase, project: phase.project)
           participation_method.assign_defaults proposal
           expect(proposal.idea_status).to eq prescreening_status
         end
 
         it 'does not change the status if it is already set' do
-          proposal = build(:proposal, idea_status: custom_status, creation_phase: creation_phase, project: creation_phase.project)
+          proposal = build(:proposal, idea_status: custom_status, creation_phase: phase, project: phase.project)
           participation_method.assign_defaults proposal
           expect(proposal.idea_status).to eq custom_status
         end
       end
 
       context 'when the creation phase does not have reviewing enabled' do
-        let(:creation_phase) { create(:proposals_phase, prescreening_enabled: false) }
+        let(:phase) { create(:proposals_phase, prescreening_enabled: false) }
 
         it 'assigns the default "proposed" status if not set' do
-          proposal = build(:proposal, idea_status: nil, creation_phase: creation_phase, project: creation_phase.project)
+          proposal = build(:proposal, idea_status: nil, creation_phase: phase, project: phase.project)
           participation_method.assign_defaults proposal
           expect(proposal.idea_status).to eq proposed_status
         end
 
         it 'does not change the status if it is already set' do
-          proposal = build(:proposal, idea_status: custom_status, creation_phase: creation_phase, project: creation_phase.project)
+          proposal = build(:proposal, idea_status: custom_status, creation_phase: phase, project: phase.project)
           participation_method.assign_defaults proposal
           expect(proposal.idea_status).to eq custom_status
         end
@@ -163,6 +163,7 @@ RSpec.describe ParticipationMethod::Proposals do
         ideation_section3
         topic_ids
         location_description
+        cosponsor_ids
       ]
     end
   end
@@ -213,8 +214,8 @@ RSpec.describe ParticipationMethod::Proposals do
     end
   end
 
-  its(:additional_export_columns) { is_expected.to eq [] }
-  its(:allowed_ideas_orders) { is_expected.to eq %w[trending random popular -new new] }
+  its(:additional_export_columns) { is_expected.to eq %w[manual_votes] }
+  its(:allowed_ideas_orders) { is_expected.to eq %w[trending random popular -new new comments_count] }
   its(:proposed_budget_in_form?) { is_expected.to be false }
   its(:return_disabled_actions?) { is_expected.to be false }
   its(:supports_assignment?) { is_expected.to be true }
@@ -234,4 +235,5 @@ RSpec.describe ParticipationMethod::Proposals do
   its(:supports_toxicity_detection?) { is_expected.to be true }
   its(:use_reactions_as_votes?) { is_expected.to be true }
   its(:transitive?) { is_expected.to be false }
+  its(:supports_private_attributes_in_export?) { is_expected.to be true }
 end

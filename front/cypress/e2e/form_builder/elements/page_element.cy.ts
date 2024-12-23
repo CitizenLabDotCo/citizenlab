@@ -54,9 +54,6 @@ describe('Form builder page element', () => {
     cy.get('[data-cy="e2e-field-group-description-multiloc"]')
       .click()
       .type('Page description');
-    cy.get('[data-cy="e2e-form-builder-close-settings"]')
-      .find('button')
-      .click({ force: true });
 
     // Add number field to the next page
     cy.get('[data-cy="e2e-number-field"]').click();

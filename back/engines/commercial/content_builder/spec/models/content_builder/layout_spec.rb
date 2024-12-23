@@ -155,7 +155,7 @@ RSpec.describe ContentBuilder::Layout do
         'nodes' => kind_of(Array),
         'linkedNodes' => {}
       })
-      homepagebanner, projects, proposals = layout.craftjs_json['ROOT']['nodes']
+      homepagebanner, projects = layout.craftjs_json['ROOT']['nodes']
       expect(layout.craftjs_json[homepagebanner]).to match({
         'type' => { 'resolvedName' => 'HomepageBanner' },
         'isCanvas' => false,
@@ -211,23 +211,6 @@ RSpec.describe ContentBuilder::Layout do
           },
           'noPointerEvents' => true,
           'noDelete' => true
-        },
-        'parent' => 'ROOT',
-        'hidden' => false,
-        'nodes' => [],
-        'linkedNodes' => {}
-      })
-      expect(layout.craftjs_json[proposals]).to match({
-        'type' => { 'resolvedName' => 'Proposals' },
-        'isCanvas' => false,
-        'props' => {},
-        'displayName' => 'Proposals',
-        'custom' => {
-          'title' => {
-            'id' => 'app.containers.admin.ContentBuilder.homepage.proposalsTitle',
-            'defaultMessage' => 'Proposals'
-          },
-          'noPointerEvents' => true
         },
         'parent' => 'ROOT',
         'hidden' => false,

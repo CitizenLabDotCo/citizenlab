@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { map, orderBy } from 'lodash-es';
+import moment from 'moment';
 import { IOption } from 'typings';
 
 import { ICommentsByProject } from 'api/comments_by_project/types';
@@ -41,21 +42,27 @@ const SelectableResourceByProjectChart = ({
   currentProjectFilter,
   ...otherProps
 }: Props) => {
+  const startAt = otherProps.startAt
+    ? moment(otherProps.startAt).local().format('YYYY-MM-DD')
+    : null;
+  const endAt = otherProps.endAt
+    ? moment(otherProps.endAt).local().format('YYYY-MM-DD')
+    : null;
   const { data: ideasByProject } = useIdeasByProject({
-    start_at: otherProps.startAt,
-    end_at: otherProps.endAt,
+    start_at: startAt,
+    end_at: endAt,
     enabled: currentResourceByProject === 'ideas',
   });
 
   const { data: commentsByProject } = useCommentsByProject({
-    start_at: otherProps.startAt,
-    end_at: otherProps.endAt,
+    start_at: startAt,
+    end_at: endAt,
     enabled: currentResourceByProject === 'comments',
   });
 
   const { data: reactionsByProject } = useReactionsByProject({
-    start_at: otherProps.startAt,
-    end_at: otherProps.endAt,
+    start_at: startAt,
+    end_at: endAt,
     enabled: currentResourceByProject === 'reactions',
   });
 

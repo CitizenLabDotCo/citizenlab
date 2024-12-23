@@ -2,14 +2,7 @@
 
 module ReportBuilder
   class ReportPolicy < ::ApplicationPolicy
-    class Scope
-      attr_reader :user, :scope
-
-      def initialize(user, scope)
-        @user  = user
-        @scope = scope
-      end
-
+    class Scope < ApplicationPolicy::Scope
       def resolve
         raise Pundit::NotAuthorizedError unless user&.active?
 
@@ -30,7 +23,7 @@ module ReportBuilder
         true
       elsif user.project_or_folder_moderator?
         if record.phase?
-          PhasePolicy.new(user, record.phase).active_moderator?
+          policy_for(record.phase).active_moderator?
         else
           record.owner == user
         end
@@ -44,7 +37,7 @@ module ReportBuilder
         true
       elsif user.present? && user.project_or_folder_moderator?
         if record.phase?
-          if PhasePolicy.new(user, record.phase).show?
+          if policy_for(record.phase).show?
             record.public? || access_to_data?
           else
             false
@@ -64,7 +57,7 @@ module ReportBuilder
         true
       elsif user.project_or_folder_moderator?
         if record.phase?
-          PhasePolicy.new(user, record.phase).update? && access_to_data?
+          policy_for(record.phase).update? && access_to_data?
         else
           record.owner == user && access_to_data?
         end
@@ -83,7 +76,7 @@ module ReportBuilder
     end
 
     def phase_public_and_accessible?
-      record.public? && PhasePolicy.new(user, record.phase).show?
+      record.public? && policy_for(record.phase).show?
     end
   end
 end

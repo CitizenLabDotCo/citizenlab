@@ -1,14 +1,7 @@
 # frozen_string_literal: true
 
 class IdeaReactionPolicy < ApplicationPolicy
-  class Scope
-    attr_reader :user, :scope
-
-    def initialize(user, scope)
-      @user  = user
-      @scope = scope
-    end
-
+  class Scope < ApplicationPolicy::Scope
     def resolve
       if user&.admin?
         scope.all
@@ -42,7 +35,7 @@ class IdeaReactionPolicy < ApplicationPolicy
   def destroy?
     return false unless could_modify?
 
-    reason = permissions_service.denied_reason_for_reaction_mode record.mode
+    reason = permissions_service.denied_reason_for_reaction_mode(record.mode, delete_action: true)
     reason ? raise_not_authorized(reason) : true
   end
 

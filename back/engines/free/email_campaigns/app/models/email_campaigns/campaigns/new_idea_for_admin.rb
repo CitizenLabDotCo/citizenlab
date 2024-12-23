@@ -41,28 +41,26 @@ module EmailCampaigns
     recipient_filter :filter_recipient
 
     def self.consentable_roles
-      %w[admin project_moderator]
+      %w[admin project_moderator project_folder_moderator]
     end
 
     def mailer_class
       NewIdeaForAdminMailer
     end
 
+    # The submitted action is created when the idea is first submitted,
+    # regardless of whether it's published right away or in screening
     def activity_triggers
-      { 'Idea' => { 'published' => true } }
+      { 'Idea' => { 'submitted' => true } }
     end
 
     def filter_recipient(users_scope, activity:, time: nil)
-      idea = activity.item
-      initiator = idea.author
+      input = activity.item
+      initiator = input.author
+      return users_scope.none if !input.participation_method_on_creation.supports_public_visibility?
+      return users_scope.none if initiator && UserRoleService.new.moderates_something?(initiator)
 
-      recipient_ids = if initiator&.admin? || initiator&.project_moderator?(idea.project_id)
-        []
-      else
-        User.admin.or(User.project_moderator(idea.project_id)).ids
-      end
-
-      users_scope.where(id: recipient_ids)
+      UserRoleService.new.moderators_for(input, users_scope)
     end
 
     def self.recipient_role_multiloc_key
@@ -87,10 +85,12 @@ module EmailCampaigns
 
       [{
         event_payload: {
-          post_published_at: idea.published_at.iso8601,
+          post_submitted_at: idea.submitted_at&.iso8601,
+          post_published_at: idea.published_at&.iso8601,
           post_title_multiloc: idea.title_multiloc,
           post_author_name: idea.author_name,
-          post_url: Frontend::UrlService.new.model_to_url(idea, locale: Locale.new(recipient.locale))
+          post_url: Frontend::UrlService.new.model_to_url(idea, locale: Locale.new(recipient.locale)),
+          post_publication_status: idea.publication_status
         }
       }]
     end

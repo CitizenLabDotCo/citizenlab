@@ -151,6 +151,11 @@ const LanguageSelector = ({
     const tenantLocales = appConfig.data.attributes.settings.core.locales;
     const isRtl = !!locale.startsWith('ar');
 
+    // Check if the number of locales is only one and hide if there is only one since there are no langauges to select
+    if (tenantLocales.length === 1) {
+      return null;
+    }
+
     const selectedLocale = getSelectedLocale(locale);
 
     return (

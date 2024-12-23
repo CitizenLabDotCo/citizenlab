@@ -3,8 +3,10 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { IIdeaData } from 'api/ideas/types';
+import { ParticipationMethod } from 'api/phases/types';
 
 import ReactionControl from 'components/ReactionControl';
+import { showIdeaReactions } from 'components/ReactionControl/utils';
 import StatusBadge from 'components/StatusBadge';
 
 import CommentCount from './CommentCount';
@@ -36,6 +38,7 @@ const StyledReactionControl = styled(ReactionControl)`
 
 interface Props {
   idea: IIdeaData;
+  participationMethod: ParticipationMethod;
   hideIdeaStatus?: boolean;
   className?: string;
   showCommentCount: boolean;
@@ -43,16 +46,20 @@ interface Props {
 
 const IdeaFooter = ({
   idea,
+  participationMethod,
   hideIdeaStatus,
   className,
   showCommentCount,
 }: Props) => {
   const ideaStatusId = idea.relationships.idea_status.data?.id;
+  const showReactionControl = showIdeaReactions(idea, participationMethod);
 
   return (
     <Container className={className || ''}>
       <Left>
-        <StyledReactionControl styleType="border" ideaId={idea.id} size="1" />
+        {showReactionControl && (
+          <StyledReactionControl styleType="border" ideaId={idea.id} size="1" />
+        )}
 
         {showCommentCount && (
           <CommentCount commentCount={idea.attributes.comments_count} />

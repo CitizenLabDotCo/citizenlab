@@ -191,7 +191,8 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
 
     const onCreateProject = useCallback(async () => {
       const invalidTitle =
-        isEmpty(titleMultiloc) ||
+        isEmpty(titleMultiloc) || // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         (titleMultiloc &&
           Object.getOwnPropertyNames(titleMultiloc).every((key) =>
             isEmpty(titleMultiloc[`${key}`])
@@ -223,6 +224,8 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
         );
       }
 
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (!invalidTitle && !invalidDate && titleMultiloc && startDate) {
         setResponseError(null);
         setTitleError(null);

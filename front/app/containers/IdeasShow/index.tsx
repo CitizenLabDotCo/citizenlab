@@ -26,6 +26,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { usePermission } from 'utils/permissions';
 
 import Container from './components/Container';
+import Cosponsorship from './components/Cosponsorship';
 import IdeaTitle from './components/IdeaTitle';
 import MetaInformation from './components/MetaInformation';
 import ProposalInfo from './components/ProposalInfo';
@@ -86,6 +87,8 @@ export const IdeasShow = ({
 
   const authorId = idea.data.relationships.author?.data?.id || null;
   const statusId = idea.data.relationships.idea_status.data?.id;
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const ideaImageLarge = ideaImages?.data[0]?.attributes?.versions?.large;
   const participationContext = getCurrentPhase(phases?.data);
   const wasImported = !!idea.data.relationships.idea_import?.data;
@@ -134,14 +137,7 @@ export const IdeasShow = ({
             onClick={setTranslateButtonIsClicked}
           />
           <ProposedBudget ideaId={ideaId} projectId={project.data.id} />
-          <Box mb={compact ? '12px' : '40px'}>
-            <Body
-              postType="idea"
-              postId={ideaId}
-              body={localize(idea.data.attributes?.body_multiloc)}
-              translateButtonClicked={translateButtonIsClicked}
-            />
-          </Box>
+
           {compact && statusId && (
             <Box my="24px">
               {participationContext?.attributes.participation_method ===
@@ -149,8 +145,24 @@ export const IdeasShow = ({
                 <>
                   <Divider />
                   <ProposalInfo idea={idea} compact={compact} />
+                  <Divider />
                 </>
               )}
+            </Box>
+          )}
+          <Box mb={compact ? '12px' : '40px'}>
+            <Body
+              postId={ideaId}
+              // TODO: Fix this the next time the file is edited.
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+              body={localize(idea.data.attributes?.body_multiloc)}
+              translateButtonClicked={translateButtonIsClicked}
+            />
+          </Box>
+          {compact && <Cosponsorship ideaId={ideaId} />}
+
+          {compact && statusId && (
+            <Box my="24px">
               <MetaInformation
                 ideaId={ideaId}
                 projectId={project.data.id}
@@ -163,7 +175,6 @@ export const IdeasShow = ({
           <Box my={compact ? '24px' : '80px'}>
             <OfficialFeedback
               postId={ideaId}
-              postType="idea"
               permissionToPost={postOfficialFeedbackPermission}
             />
           </Box>
@@ -174,7 +185,6 @@ export const IdeasShow = ({
                   participationContext?.attributes.allow_anonymous_participation
                 }
                 postId={ideaId}
-                postType="idea"
               />
             </Suspense>
           </Box>
@@ -184,6 +194,8 @@ export const IdeasShow = ({
                 followableType="ideas"
                 followableId={ideaId}
                 followersCount={idea.data.attributes.followers_count}
+                // TODO: Fix this the next time the file is edited.
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 followerId={idea.data.relationships.user_follower?.data?.id}
                 width="100%"
                 toolTipType="input"

@@ -10,7 +10,7 @@ import {
 import EmptyProjectsImage from 'assets/img/landingpage/no_projects_image.svg';
 import styled from 'styled-components';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
+import useReportBuilderEnabled from 'api/reports/useReportBuilderEnabled';
 
 import Button from 'components/UI/Button';
 
@@ -32,8 +32,7 @@ interface Props {
 }
 
 const EmptyState = ({ onOpenModal }: Props) => {
-  const isReportBuilderAllowed = useFeatureFlag({
-    name: 'report_builder',
+  const isReportBuilderAllowed = useReportBuilderEnabled({
     onlyCheckAllowed: true,
   });
 

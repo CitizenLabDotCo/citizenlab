@@ -31,7 +31,7 @@ const NewIdeaButton = ({ linkTo, inputTerm }: Props) => {
       linkTo={linkTo}
       onClick={() => {
         trackEventByName(tracks.clickNewIdea.name, {
-          extra: { pathnameFrom: pathname },
+          pathnameFrom: pathname,
         });
       }}
       text={formatMessage(
@@ -42,6 +42,9 @@ const NewIdeaButton = ({ linkTo, inputTerm }: Props) => {
           question: messages.newQuestion,
           issue: messages.newIssue,
           contribution: messages.newContribution,
+          proposal: messages.newProposal,
+          initiative: messages.newInitiative,
+          petition: messages.newPetition,
         })
       )}
     />

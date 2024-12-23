@@ -71,7 +71,7 @@ describe IdNemlogIn::NemlogInOmniauth do
   end
 
   it 'successfully verifies a user' do
-    get "/auth/nemlog_in?token=#{token}&random-passthrough-param=somevalue&pathname=/yipie"
+    get "/auth/nemlog_in?token=#{token}&random-passthrough-param=somevalue&verification_pathname=/yipie"
     follow_redirect!
 
     expect(response).to redirect_to('/en/yipie?random-passthrough-param=somevalue&verification_success=true')
@@ -82,19 +82,18 @@ describe IdNemlogIn::NemlogInOmniauth do
       last_name: 'Raindeari'
     })
     expect(user.custom_field_values).to have_key('municipality_code')
-    uid = 'https://data.gov.dk/model/core/eid/professional/uuid/82dc2343-7f37-465d-a523-7f3e24feca46'
     expect(user.verifications.first).to have_attributes({
       method_name: 'nemlog_in',
       user_id: user.id,
       active: true,
-      hashed_uid: Verification::VerificationService.new.send(:hashed_uid, uid, 'nemlog_in')
+      hashed_uid: Verification::VerificationService.new.send(:hashed_uid, saml_auth_response[:uid], 'nemlog_in')
     })
   end
 
   it "successfully verifies a user that hasn't completed her registration" do
     user.update!(registration_completed_at: nil)
 
-    get "/auth/nemlog_in?token=#{token}&pathname=/yipie"
+    get "/auth/nemlog_in?token=#{token}&verification_pathname=/yipie"
     follow_redirect!
 
     expect(response).to redirect_to('/en/yipie?verification_success=true')
@@ -110,17 +109,16 @@ describe IdNemlogIn::NemlogInOmniauth do
   end
 
   it 'fails when the cprUuid has already been used' do
-    uid = 'https://data.gov.dk/model/core/eid/professional/uuid/82dc2343-7f37-465d-a523-7f3e24feca46'
     create(
       :verification,
       method_name: 'nemlog_in',
-      hashed_uid: Verification::VerificationService.new.send(:hashed_uid, uid, 'nemlog_in')
+      hashed_uid: Verification::VerificationService.new.send(:hashed_uid, saml_auth_response[:uid], 'nemlog_in')
     )
 
-    get "/auth/nemlog_in?token=#{token}&pathname=/some-page"
+    get "/auth/nemlog_in?token=#{token}&verification_pathname=/some-page"
     follow_redirect!
 
-    expect(response).to redirect_to('/some-page?verification_error=true&error=taken')
+    expect(response).to redirect_to('/some-page?verification_error=true&error_code=taken')
     expect(user.reload).to have_attributes({
       verified: false,
       first_name: 'Rudolphi',
@@ -128,21 +126,14 @@ describe IdNemlogIn::NemlogInOmniauth do
     })
   end
 
-  it 'fails when the authentication token is not passed' do
-    get '/auth/nemlog_in?pathname=/whatever-page'
-    follow_redirect!
-
-    expect(response).to redirect_to('/whatever-page?verification_error=true&error=no_token_passed')
-  end
-
   context "when validating user's age" do
     it 'does not verify a user under specified age limit' do
       saml_auth_response.extra.raw_info['https://data.gov.dk/model/core/eid/age'] = ['14']
 
-      get "/auth/nemlog_in?token=#{token}&pathname=/some-page"
+      get "/auth/nemlog_in?token=#{token}&verification_pathname=/en/some-page"
       follow_redirect!
 
-      expect(response).to redirect_to('/some-page?verification_error=true&error=not_entitled_under_minimum_age')
+      expect(response).to redirect_to('/en/some-page?verification_error=true&error_code=not_entitled_under_minimum_age')
       expect(user.reload).to have_attributes({
         verified: false
       })
@@ -151,7 +142,7 @@ describe IdNemlogIn::NemlogInOmniauth do
     it 'verifies a user over specified age limit' do
       saml_auth_response.extra.raw_info['https://data.gov.dk/model/core/eid/age'] = ['15']
 
-      get "/auth/nemlog_in?token=#{token}&random-passthrough-param=somevalue&pathname=/some-page"
+      get "/auth/nemlog_in?token=#{token}&random-passthrough-param=somevalue&verification_pathname=/some-page"
       follow_redirect!
 
       expect(response).to redirect_to('/en/some-page?random-passthrough-param=somevalue&verification_success=true')
@@ -171,7 +162,7 @@ describe IdNemlogIn::NemlogInOmniauth do
       end
 
       it 'stores the birthyear in the custom field' do
-        get "/auth/nemlog_in?token=#{token}&pathname=/some-page"
+        get "/auth/nemlog_in?token=#{token}&verification_pathname=/some-page"
         follow_redirect!
 
         expect(user.reload.custom_field_values['birthyear']).to eq(1944)
@@ -187,11 +178,68 @@ describe IdNemlogIn::NemlogInOmniauth do
       end
 
       it 'stores the birthyear in the custom field' do
-        get "/auth/nemlog_in?token=#{token}&pathname=/some-page"
+        get "/auth/nemlog_in?token=#{token}&verification_pathname=/some-page"
         follow_redirect!
 
         expect(user.reload.custom_field_values['birthyear']).to be_nil
       end
+    end
+  end
+
+  context 'verifying and creating a new user' do
+    let(:user) { nil }
+
+    it 'creates a user with a unique ID and no email, then logs them in' do
+      get '/auth/nemlog_in?sso_pathname=/en/whatever-page&other_param=123'
+      follow_redirect!
+
+      expect(response).to redirect_to('/en/whatever-page?other_param=123&sso_flow=signup&sso_success=true')
+      expect(cookies[:cl2_jwt]).to be_present
+      jwt_payload = JWT.decode(cookies[:cl2_jwt], nil, false).first
+      expect(User.first.id).to eq jwt_payload['sub']
+      expect(User.first.email).to be_nil
+      expect(User.first.email_confirmed_at).to be_nil
+      expect(User.first.first_name).to eq('Terje')
+      expect(User.first.last_name).to eq('Hermansen')
+      expect(User.first.verified).to be(true)
+      expect(User.first.unique_code).to eq('9208-2002-2-024271267078')
+    end
+
+    it 'does not create a user or log them in if the user is under the minimum age' do
+      saml_auth_response.extra.raw_info['https://data.gov.dk/model/core/eid/age'] = ['14']
+
+      get '/auth/nemlog_in?sso_pathname=/en/whatever-page'
+      follow_redirect!
+
+      expect(response).to redirect_to('/en/whatever-page?error_code=not_entitled_under_minimum_age&authentication_error=true')
+      expect(cookies[:cl2_jwt]).to be_nil
+      expect(User.count).to eq 0
+    end
+  end
+
+  context 'verifying and logging in a user' do
+    let!(:user) { create(:user, first_name: 'Bob', last_name: 'Jelly', email: nil, unique_code: '9208-2002-2-024271267078') }
+
+    it 'logs in a user without an email but does not update user with details from verification' do
+      create(
+        :verification,
+        user: user,
+        method_name: 'nemlog_in',
+        hashed_uid: Verification::VerificationService.new.send(:hashed_uid, saml_auth_response[:uid], 'nemlog_in')
+      )
+      expect(User.first.first_name).to eq('Bob') # Check the user is created correctly
+
+      get '/auth/nemlog_in?sso_pathname=/en/another-page&test_param=test'
+      follow_redirect!
+
+      expect(response).to redirect_to('/en/another-page?test_param=test&sso_flow=signin&sso_success=true')
+      expect(cookies[:cl2_jwt]).to be_present
+      jwt_payload = JWT.decode(cookies[:cl2_jwt], nil, false).first
+      expect(User.first.id).to eq jwt_payload['sub']
+      expect(User.first.first_name).to eq('Bob')
+      expect(User.first.last_name).to eq('Jelly')
+      expect(User.first.verified).to be(true)
+      expect(User.first.unique_code).to eq('9208-2002-2-024271267078')
     end
   end
 end

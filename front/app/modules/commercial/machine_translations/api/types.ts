@@ -35,21 +35,15 @@ type IMachineTranslationAttributes = {
 export interface IMachineTranslationParams {
   ideaId?: string;
   commentId?: string;
-  initiativeId?: string;
   machine_translation: IMachineTranslationAttributes;
 }
 
 export interface IMachineTranslationByCommentIdParams
-  extends Omit<IMachineTranslationParams, 'ideaId' | 'initiativeId'> {
+  extends Omit<IMachineTranslationParams, 'ideaId'> {
   commentId: string;
 }
 
 export interface IMachineTranslationByIdeaIdParams
-  extends Omit<IMachineTranslationParams, 'commentId' | 'initiativeId'> {
+  extends Omit<IMachineTranslationParams, 'commentId'> {
   ideaId: string;
-}
-
-export interface IMachineTranslationByInitiativeIdParams
-  extends Omit<IMachineTranslationParams, 'commentId' | 'ideaId'> {
-  initiativeId: string;
 }

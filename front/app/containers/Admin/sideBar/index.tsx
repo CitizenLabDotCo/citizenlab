@@ -14,7 +14,6 @@ import styled from 'styled-components';
 import { InsertConfigurationOptions } from 'typings';
 
 import useIdeasCount from 'api/idea_count/useIdeasCount';
-import useInitiativesCount from 'api/initiative_counts/useInitiativesCount';
 import useAuthUser from 'api/me/useAuthUser';
 import { IUser } from 'api/users/types';
 
@@ -90,18 +89,14 @@ const Sidebar = ({ authUser }: Props) => {
   const { data: ideasCount } = useIdeasCount(
     {
       feedback_needed: true,
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       assignee: authUser?.data.id,
       transitive: true,
     },
     isAdmin(authUser)
   );
-  const { data: initiativesCount } = useInitiativesCount(
-    {
-      feedback_needed: true,
-      assignee: authUser?.data.id,
-    },
-    isAdmin(authUser)
-  );
+
   const [navItems, setNavItems] = useState<NavItem[]>(defaultNavItems);
   const isPagesAndMenuPage = isPage('pages_menu', pathname);
   const isSmallerThanPhone = useBreakpoint('tablet');
@@ -116,22 +111,13 @@ const Sidebar = ({ authUser }: Props) => {
             ideasCount.data.attributes.count
           ) {
             return { ...navItem, count: ideasCount.data.attributes.count };
-          } else if (
-            navItem.name === 'initiatives' &&
-            initiativesCount &&
-            initiativesCount.data.attributes.count
-          ) {
-            return {
-              ...navItem,
-              count: initiativesCount.data.attributes.count,
-            };
           }
           return navItem;
         }
       );
       return updatedNavItems;
     });
-  }, [ideasCount, initiativesCount]);
+  }, [ideasCount]);
 
   const handleData = (
     insertNavItemOptions: InsertConfigurationOptions<NavItem>
@@ -139,6 +125,8 @@ const Sidebar = ({ authUser }: Props) => {
     setNavItems(insertConfiguration(insertNavItemOptions)(navItems));
   };
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!(navItems && navItems.length > 1)) {
     return null;
   }

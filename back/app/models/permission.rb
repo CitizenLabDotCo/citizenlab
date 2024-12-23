@@ -4,15 +4,16 @@
 #
 # Table name: permissions
 #
-#  id                    :uuid             not null, primary key
-#  action                :string           not null
-#  permitted_by          :string           not null
-#  permission_scope_id   :uuid
-#  permission_scope_type :string
-#  created_at            :datetime         not null
-#  updated_at            :datetime         not null
-#  global_custom_fields  :boolean          default(FALSE), not null
-#  verification_expiry   :integer
+#  id                                 :uuid             not null, primary key
+#  action                             :string           not null
+#  permitted_by                       :string           not null
+#  permission_scope_id                :uuid
+#  permission_scope_type              :string
+#  created_at                         :datetime         not null
+#  updated_at                         :datetime         not null
+#  global_custom_fields               :boolean          default(FALSE), not null
+#  verification_expiry                :integer
+#  access_denied_explanation_multiloc :jsonb            not null
 #
 # Indexes
 #

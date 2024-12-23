@@ -7,6 +7,7 @@ import { render, RenderOptions } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import GlobalStyle from 'global-styles';
 import messages from 'i18n/en';
+import { HelmetProvider } from 'react-helmet-async';
 import { IntlProvider } from 'react-intl';
 import { unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
@@ -22,26 +23,28 @@ Element.prototype.scrollIntoView = jest.fn();
 
 const AllTheProviders = ({ children }: { children: ReactNode }) => {
   return (
-    <HistoryRouter history={history as any}>
-      <QueryClientProvider client={queryClient}>
-        <ThemeProvider theme={getTheme(null)}>
-          <GlobalStyle />
-          <IntlProvider
-            locale="en"
-            messages={messages}
-            onError={(err) => {
-              if (err.code === 'MISSING_TRANSLATION') {
-                console.warn('Missing translation', err.message);
-                return;
-              }
-              throw err;
-            }}
-          >
-            <div id="modal-portal">{children}</div>
-          </IntlProvider>
-        </ThemeProvider>
-      </QueryClientProvider>
-    </HistoryRouter>
+    <HelmetProvider>
+      <HistoryRouter history={history as any}>
+        <QueryClientProvider client={queryClient}>
+          <ThemeProvider theme={getTheme(null)}>
+            <GlobalStyle />
+            <IntlProvider
+              locale="en"
+              messages={messages}
+              onError={(err) => {
+                if (err.code === 'MISSING_TRANSLATION') {
+                  console.warn('Missing translation', err.message);
+                  return;
+                }
+                throw err;
+              }}
+            >
+              <div id="modal-portal">{children}</div>
+            </IntlProvider>
+          </ThemeProvider>
+        </QueryClientProvider>
+      </HistoryRouter>
+    </HelmetProvider>
   );
 };
 

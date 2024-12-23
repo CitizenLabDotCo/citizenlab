@@ -8,8 +8,6 @@ import { IIdeaData } from 'api/ideas/types';
 import useAuthUser from 'api/me/useAuthUser';
 import useUserById from 'api/users/useUserById';
 
-import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
-
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 
@@ -46,7 +44,6 @@ const ReplyButton = styled.button`
 `;
 
 interface Props {
-  postType: 'idea' | 'initiative';
   commentId: string;
   commentType: 'parent' | 'child' | undefined;
   authorId: string | null;
@@ -56,7 +53,6 @@ interface Props {
 }
 
 const CommentReplyButton = ({
-  postType,
   commentType,
   authorId,
   idea,
@@ -67,9 +63,6 @@ const CommentReplyButton = ({
   const commentId = comment.id;
   const parentCommentId = comment.relationships.parent.data?.id ?? null;
   const { data: author } = useUserById(authorId);
-  const commentingPermissionInitiative = useInitiativesPermissions(
-    'commenting_initiative'
-  );
 
   const authorFirstName = author?.data.attributes.first_name;
   const authorLastName = author?.data.attributes.last_name;
@@ -129,23 +122,6 @@ const CommentReplyButton = ({
         });
       }
     }
-
-    if (postType === 'initiative') {
-      const authenticationRequirements =
-        commentingPermissionInitiative?.authenticationRequirements;
-
-      if (authenticationRequirements) {
-        triggerAuthenticationFlow({
-          context: {
-            type: 'initiative',
-            action: 'commenting_initiative',
-          },
-          successAction,
-        });
-      } else if (commentingPermissionInitiative?.enabled === true) {
-        reply();
-      }
-    }
   };
 
   const ideaCommentingDisabledReason =
@@ -153,10 +129,8 @@ const CommentReplyButton = ({
 
   const isCommentDeleted = comment.attributes.publication_status === 'deleted';
   const disabled =
-    postType === 'initiative'
-      ? !commentingPermissionInitiative?.enabled
-      : ideaCommentingDisabledReason &&
-        !isFixableByAuthentication(ideaCommentingDisabledReason);
+    ideaCommentingDisabledReason &&
+    !isFixableByAuthentication(ideaCommentingDisabledReason);
 
   if (!isCommentDeleted && !disabled) {
     return (

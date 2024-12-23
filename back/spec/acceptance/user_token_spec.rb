@@ -10,32 +10,6 @@ resource 'User Token' do
 
   post 'web_api/v1/user_token' do
     with_options scope: :auth do
-      parameter :email, 'Email'
-      parameter :password, 'Password'
-    end
-
-    before do
-      @user = create(:user, password: 'supersecret')
-    end
-
-    let(:email) { @user.email }
-    let(:password) { 'supersecret' }
-
-    example_request 'Authenticate a registered user' do
-      assert_status 201
-      json_response = json_parse(response_body)
-      expect(json_response[:jwt]).to be_present
-    end
-
-    example '[error] Authenticate an invited user' do
-      @user.update! invite_status: 'pending'
-      do_request
-      assert_status 404
-    end
-  end
-
-  post 'web_api/v1/user_token' do
-    with_options scope: :auth do
       parameter :email, required: true
       parameter :password, required: true
       parameter :remember_me, required: false
@@ -46,13 +20,14 @@ resource 'User Token' do
       let(:password) { '12345678' }
       let(:remember_me) { false }
 
+      let!(:user) { create(:user, email: email, password: password) }
+
       before do
-        create(:user, email: email, password: password)
         allow(Time).to receive(:now).and_return(Time.now)
       end
 
       example_request 'Create JWT token with 1 day expiration' do
-        expect(status).to eq(201)
+        assert_status 201
 
         jwt = JWT.decode(json_response_body[:jwt], nil, false).first
         expect(jwt['exp']).to eq((Time.now + 1.day).to_i)
@@ -84,6 +59,31 @@ resource 'User Token' do
             expect(jwt['exp']).to eq((Time.now + token_lifetime.days).to_i)
           end
         end
+
+        context 'when password login is turned off' do
+          before { SettingsService.new.deactivate_feature! 'password_login' }
+
+          example '[error] does not allow a regular user to log in with a password', document: false do
+            do_request
+            assert_status 404
+          end
+
+          example '[error] does not allow a regular admin in with a password', document: false do
+            user.update!(roles: [{ type: 'admin' }])
+            do_request
+            assert_status 404
+          end
+
+          context 'super admin' do
+            let(:email) { 'hello@citizenlab.co' }
+
+            example 'allows a super admin to log in with a password', document: false do
+              user.update!(email: email, roles: [{ type: 'admin' }])
+              do_request
+              assert_status 201
+            end
+          end
+        end
       end
     end
 
@@ -95,8 +95,8 @@ resource 'User Token' do
         create(:invited_user, email: email, password: password)
       end
 
-      example_request 'no JWT token is returned' do
-        expect(status).to eq(404)
+      example_request '[error] no JWT token is returned' do
+        assert_status 404
       end
     end
 
@@ -116,7 +116,7 @@ resource 'User Token' do
           end
 
           example_request 'create a JWT token with 1 day expiration' do
-            expect(status).to eq(201)
+            assert_status 201
 
             jwt = JWT.decode(json_response_body[:jwt], nil, false).first
             expect(jwt['exp']).to eq((Time.now + 1.day).to_i)
@@ -130,7 +130,7 @@ resource 'User Token' do
           end
 
           example_request 'no JWT token is returned' do
-            expect(status).to eq(404)
+            assert_status 404
           end
         end
       end

@@ -4,46 +4,50 @@
 #
 # Table name: ideas
 #
-#  id                       :uuid             not null, primary key
-#  title_multiloc           :jsonb
-#  body_multiloc            :jsonb
-#  publication_status       :string
-#  published_at             :datetime
-#  project_id               :uuid
-#  author_id                :uuid
-#  created_at               :datetime         not null
-#  updated_at               :datetime         not null
-#  likes_count              :integer          default(0), not null
-#  dislikes_count           :integer          default(0), not null
-#  location_point           :geography        point, 4326
-#  location_description     :string
-#  comments_count           :integer          default(0), not null
-#  idea_status_id           :uuid
-#  slug                     :string
-#  budget                   :integer
-#  baskets_count            :integer          default(0), not null
-#  official_feedbacks_count :integer          default(0), not null
-#  assignee_id              :uuid
-#  assigned_at              :datetime
-#  proposed_budget          :integer
-#  custom_field_values      :jsonb            not null
-#  creation_phase_id        :uuid
-#  author_hash              :string
-#  anonymous                :boolean          default(FALSE), not null
-#  internal_comments_count  :integer          default(0), not null
-#  votes_count              :integer          default(0), not null
-#  followers_count          :integer          default(0), not null
-#  submitted_at             :datetime
+#  id                              :uuid             not null, primary key
+#  title_multiloc                  :jsonb
+#  body_multiloc                   :jsonb
+#  publication_status              :string
+#  published_at                    :datetime
+#  project_id                      :uuid
+#  author_id                       :uuid
+#  created_at                      :datetime         not null
+#  updated_at                      :datetime         not null
+#  likes_count                     :integer          default(0), not null
+#  dislikes_count                  :integer          default(0), not null
+#  location_point                  :geography        point, 4326
+#  location_description            :string
+#  comments_count                  :integer          default(0), not null
+#  idea_status_id                  :uuid
+#  slug                            :string
+#  budget                          :integer
+#  baskets_count                   :integer          default(0), not null
+#  official_feedbacks_count        :integer          default(0), not null
+#  assignee_id                     :uuid
+#  assigned_at                     :datetime
+#  proposed_budget                 :integer
+#  custom_field_values             :jsonb            not null
+#  creation_phase_id               :uuid
+#  author_hash                     :string
+#  anonymous                       :boolean          default(FALSE), not null
+#  internal_comments_count         :integer          default(0), not null
+#  votes_count                     :integer          default(0), not null
+#  followers_count                 :integer          default(0), not null
+#  submitted_at                    :datetime
+#  manual_votes_amount             :integer
+#  manual_votes_last_updated_by_id :uuid
+#  manual_votes_last_updated_at    :datetime
 #
 # Indexes
 #
-#  index_ideas_on_author_hash     (author_hash)
-#  index_ideas_on_author_id       (author_id)
-#  index_ideas_on_idea_status_id  (idea_status_id)
-#  index_ideas_on_location_point  (location_point) USING gist
-#  index_ideas_on_project_id      (project_id)
-#  index_ideas_on_slug            (slug) UNIQUE
-#  index_ideas_search             (((to_tsvector('simple'::regconfig, COALESCE((title_multiloc)::text, ''::text)) || to_tsvector('simple'::regconfig, COALESCE((body_multiloc)::text, ''::text))))) USING gin
+#  index_ideas_on_author_hash                      (author_hash)
+#  index_ideas_on_author_id                        (author_id)
+#  index_ideas_on_idea_status_id                   (idea_status_id)
+#  index_ideas_on_location_point                   (location_point) USING gist
+#  index_ideas_on_manual_votes_last_updated_by_id  (manual_votes_last_updated_by_id)
+#  index_ideas_on_project_id                       (project_id)
+#  index_ideas_on_slug                             (slug) UNIQUE
+#  index_ideas_search                              (((to_tsvector('simple'::regconfig, COALESCE((title_multiloc)::text, ''::text)) || to_tsvector('simple'::regconfig, COALESCE((body_multiloc)::text, ''::text))))) USING gin
 #
 # Foreign Keys
 #
@@ -51,6 +55,7 @@
 #  fk_rails_...  (author_id => users.id)
 #  fk_rails_...  (creation_phase_id => phases.id)
 #  fk_rails_...  (idea_status_id => idea_statuses.id)
+#  fk_rails_...  (manual_votes_last_updated_by_id => users.id)
 #  fk_rails_...  (project_id => projects.id)
 #
 class Idea < ApplicationRecord
@@ -83,6 +88,7 @@ class Idea < ApplicationRecord
   )
 
   belongs_to :assignee, class_name: 'User', optional: true
+  belongs_to :manual_votes_last_updated_by, class_name: 'User', optional: true
 
   has_many :ideas_topics, dependent: :destroy
   has_many :topics, -> { order(:ordering) }, through: :ideas_topics
@@ -94,9 +100,13 @@ class Idea < ApplicationRecord
   has_many :followers, as: :followable, dependent: :destroy
   has_many :official_feedbacks, dependent: :destroy
 
+  has_many :cosponsorships, dependent: :destroy
+  has_many :cosponsors, through: :cosponsorships, source: :user
+
   has_many :idea_images, -> { order(:ordering) }, dependent: :destroy, inverse_of: :idea
   has_many :idea_files, -> { order(:ordering) }, dependent: :destroy, inverse_of: :idea
   has_one :idea_trending_info
+  has_many :embeddings_similarities, as: :embeddable, dependent: :destroy
 
   accepts_nested_attributes_for :text_images, :idea_images, :idea_files
 
@@ -115,6 +125,7 @@ class Idea < ApplicationRecord
 
   validate :validate_creation_phase
   validate :not_published_in_non_public_status
+  validates :manual_votes_amount, numericality: { only_integer: true, greater_than_or_equal_to: 0, allow_nil: true }
 
   # validates :custom_field_values, json: {
   #   schema: :schema_for_validation,
@@ -170,9 +181,7 @@ class Idea < ApplicationRecord
   }
 
   scope :publicly_visible, lambda {
-    visible_methods = %w[ideation proposals] # TODO: delegate to participation methods
-    where(creation_phase: nil)
-      .or(where(creation_phase: Phase.where(participation_method: visible_methods)))
+    where_pmethod(&:supports_public_visibility?)
   }
   scope :transitive, -> { where creation_phase: nil }
 
@@ -181,12 +190,50 @@ class Idea < ApplicationRecord
     native_survey.where(publication_status: 'draft')
   }
 
+  # Filters out all the ideas for which the ParticipationMethod responds truety
+  # to the given block. The block receives the ParticipationMethod object as an
+  # argument
+  def self.where_pmethod(&)
+    all_pmethods = ParticipationMethod::Base.all_methods.map { |m| m.new(nil) }
+    truety_pmethods = all_pmethods.select(&)
+    truety_method_strs = truety_pmethods.map { |pmethod| pmethod.class.method_str }
+    result = where(creation_phase: Phase.where(participation_method: truety_method_strs))
+    if truety_pmethods.find(&:transitive?)
+      result.or(where(creation_phase: nil))
+    else
+      result
+    end
+  end
+
+  scope :with_status_code, lambda { |code|
+    joins(:idea_status).where(idea_statuses: { code: code })
+  }
+
+  # Is the performance of this code okay? We currently have no other data source for status changes
+  scope :with_status_transitioned_after, lambda { |time|
+    idea_ids = Activity.where(item_type: 'Idea', action: 'changed_status', created_at: time..).pluck(:item_id)
+    where(id: idea_ids)
+  }
+
+  def just_submitted?
+    # It would be better to foresee separate endpoints for submission,
+    # rather than relying on Rails dirty to detect publication.
+    from, to = publication_status_previous_change
+    SUBMISSION_STATUSES.exclude?(from) && SUBMISSION_STATUSES.include?(to)
+  end
+
   def just_published?
-    publication_status_previous_change == %w[draft published] || publication_status_previous_change == [nil, 'published']
+    # It would be better to foresee separate endpoints for publication,
+    # rather than relying on Rails dirty to detect publication.
+    from, to = publication_status_previous_change
+    from != 'published' && to == 'published'
   end
 
   def will_be_published?
-    publication_status_change == %w[draft published] || publication_status_change == [nil, 'published']
+    # It would be better to foresee separate endpoints for publication,
+    # rather than relying on Rails dirty to detect publication.
+    from, to = publication_status_change
+    from != 'published' && to == 'published'
   end
 
   def consultation_context
@@ -209,6 +256,22 @@ class Idea < ApplicationRecord
     consultation_context.pmethod
   end
 
+  def assign_defaults
+    participation_method_on_creation.assign_defaults self
+  end
+
+  def total_votes(phase)
+    Factory.instance.voting_method_for(phase).votes_for_idea(self) + (manual_votes_amount || 0)
+  end
+
+  def set_manual_votes(amount, user)
+    return if amount == manual_votes_amount
+
+    self.manual_votes_amount = amount
+    self.manual_votes_last_updated_by = user if user
+    self.manual_votes_last_updated_at = Time.now
+  end
+
   private
 
   def schema_for_validation
@@ -219,10 +282,6 @@ class Idea < ApplicationRecord
 
   def supports_built_in_fields?
     !draft? && participation_method_on_creation.supports_built_in_fields?
-  end
-
-  def assign_defaults
-    participation_method_on_creation.assign_defaults self
   end
 
   def sanitize_body_multiloc
@@ -272,7 +331,7 @@ class Idea < ApplicationRecord
 
   def not_published_in_non_public_status
     return if !published?
-    return if idea_status.public_post?
+    return if !idea_status || idea_status.public_post?
 
     errors.add(
       :publication_status,
@@ -301,7 +360,7 @@ class Idea < ApplicationRecord
   end
 
   def transitive_input_term
-    current_phase_input_term || last_past_phase_input_term || first_future_phase_input_term || Phase::DEFAULT_INPUT_TERM
+    current_phase_input_term || last_past_phase_input_term || first_future_phase_input_term || Phase::FALLBACK_INPUT_TERM
   end
 
   def current_phase_input_term

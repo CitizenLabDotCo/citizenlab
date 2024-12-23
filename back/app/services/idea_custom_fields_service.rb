@@ -10,7 +10,10 @@ class IdeaCustomFieldsService
     if @custom_form.custom_field_ids.empty?
       @participation_method.default_fields @custom_form
     else
-      @custom_form.custom_fields.includes(%i[options])
+      @custom_form.custom_fields.includes(
+        :map_config,
+        options: [:image]
+      )
     end
   end
 
@@ -37,13 +40,13 @@ class IdeaCustomFieldsService
 
   # Used in the printable PDF export
   def printable_fields
-    ignore_field_types = %w[section page date files image_files point file_upload shapefile_upload topic_ids]
+    ignore_field_types = %w[section page date files image_files point file_upload shapefile_upload topic_ids cosponsor_ids]
     fields = enabled_fields.reject { |field| ignore_field_types.include? field.input_type }
     insert_other_option_text_fields(fields)
   end
 
   def importable_fields
-    ignore_field_types = %w[page section date files image_files file_upload shapefile_upload point line polygon]
+    ignore_field_types = %w[page section date files image_files file_upload shapefile_upload point line polygon cosponsor_ids]
     enabled_fields_with_other_options.reject { |field| ignore_field_types.include? field.input_type }
   end
 

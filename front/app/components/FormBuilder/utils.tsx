@@ -31,7 +31,7 @@ export const builtInFieldKeys = [
   'location_description',
   'idea_images_attributes',
   'idea_files_attributes',
-  'topic_ids',
+  'cosponsor_ids',
 ];
 
 export type BuiltInKeyType = (typeof builtInFieldKeys)[number];
@@ -92,6 +92,7 @@ export const formEndOption = 'survey_end';
 // Function to return additional settings based on input type
 export function getAdditionalSettings(
   field: IFlatCustomFieldWithIndex,
+  inputType: ICustomFieldInputType,
   locales: SupportedLocale[],
   platformLocale: SupportedLocale
 ) {
@@ -99,7 +100,7 @@ export function getAdditionalSettings(
     return null;
   }
 
-  switch (field.input_type) {
+  switch (inputType) {
     case 'multiselect_image':
     case 'multiselect':
       return (
@@ -201,6 +202,9 @@ const getBuiltInFieldStringKey = (
       break;
     case 'topic_ids':
       translatedStringKey = messages.tags;
+      break;
+    case 'cosponsor_ids':
+      translatedStringKey = messages.cosponsors;
       break;
     case 'proposed_budget':
       translatedStringKey = messages.proposedBudget;

@@ -7,11 +7,10 @@ sr-Cyrl:
     inappropriate_content_flagged:
       subject: 'Објава на вашој платформи је означена за преглед'
       header_title: 'Објава на вашој платформи је означена за преглед'
-      comment_author: '%{authorName} је коментарисало:'
-      idea_author: '%{authorName} је послао објаву:'
-      initiative_author: '%{authorName} поднео предлог:'
+      author_wrote: '%{authorName} wrote:'
+      preheader: 'A post on your platform has been flagged for review'
       automatically_flagged: >
         Овај пост је аутоматски откривен као потенцијално неприкладан садржај. Шаљемо вам ово обавештење да бисте могли да прегледате објаву у складу са својим смерницама за модерирање.
       how_to_review: >
         Ако објава не садржи неприкладан садржај, можете уклонити упозорење преко своје платформе на картици Активности на административној табли.
-      cta_review_post: 'Прегледајте пост'
+      cta_review: 'Review'

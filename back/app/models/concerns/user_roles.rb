@@ -62,6 +62,11 @@ module UserRoles # rubocop:disable Metrics/ModuleLength
       where.not(id: project_folder_moderator(*project_folder_ids))
     }
 
+    scope :project_reviewers, lambda { |project_reviewer = true|
+      json_roles = [{ type: 'admin', project_reviewer: true }].to_json
+      project_reviewer ? where('roles @> ?', json_roles) : where.not('roles @> ?', json_roles)
+    }
+
     scope :admin_or_moderator, -> { where(id: admin).or(where(id: project_moderator)).or(where(id: project_folder_moderator)) }
 
     scope :order_role, lambda { |direction = :asc|
@@ -116,18 +121,32 @@ module UserRoles # rubocop:disable Metrics/ModuleLength
     roles.any? { |r| r['type'] == 'admin' }
   end
 
-  # Returns roles excluding the `project_moderator` roles that are redundant with
-  # `project_folder_moderator` roles (i.e. the user is a project moderator for a
-  # project that is in a folder that they moderate).
-  def compacted_roles
-    redundant_project_ids = AdminPublication
-      .joins(:parent)
-      .where(parent: { publication_id: moderated_project_folder_ids })
-      .pluck(:publication_id)
+  # Reduce the roles to add to the JWT cookie to stop it getting too large
+  # Roles from cookie are ONLY used by workshops and cl2-admin-templates
+  # - workshops only cares if it finds type: admin or type: project_moderator.
+  #   It does not use project_id or use type: project_moderator
+  # - cl2-admin-templates only cares if it finds type: admin or type: project_folder_moderator.
+  #   It needs the project_folder_id but does not use type: project_moderator
+  def compress_roles
+    admin = false
+    project_moderator = false
+    compressed_roles = []
 
-    roles.reject do |role|
-      role['type'] == 'project_moderator' && role['project_id'].in?(redundant_project_ids)
+    roles.each do |role|
+      case role['type']
+      when 'admin'
+        admin = true
+      when 'project_moderator'
+        project_moderator = true
+      when 'project_folder_moderator'
+        compressed_roles << role
+      end
     end
+
+    compressed_roles << { 'type' => 'admin' } if admin
+    compressed_roles << { 'type' => 'project_moderator' } if project_moderator
+
+    compressed_roles
   end
 
   def project_folder_moderator?(project_folder_id = nil)

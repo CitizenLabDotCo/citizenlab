@@ -139,17 +139,19 @@ const NavbarItemRow = ({
             content={<FormattedMessage {...messages.navBarMaxItems} />}
             disabled={!addButtonDisabled}
           >
-            <Button
-              // no icon on add and remove buttons, so specify height to match the others
-              height="44px"
-              buttonStyle="secondary-outlined"
-              onClick={handleOnClickAddButton}
-              disabled={addButtonDisabled}
-              ml="10px"
-              className="intercom-admin-pages-menu-add-to-navbar-button"
-            >
-              <FormattedMessage {...messages.addButton} />
-            </Button>
+            <Box>
+              <Button
+                // no icon on add and remove buttons, so specify height to match the others
+                height="44px"
+                buttonStyle="secondary-outlined"
+                onClick={handleOnClickAddButton}
+                disabled={addButtonDisabled}
+                ml="10px"
+                className="intercom-admin-pages-menu-add-to-navbar-button"
+              >
+                <FormattedMessage {...messages.addButton} />
+              </Button>
+            </Box>
           </Tooltip>
         )}
 

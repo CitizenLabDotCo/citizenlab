@@ -149,7 +149,7 @@ const Tags = () => {
     }
     queryClient.invalidateQueries(inputsKeys.lists());
     trackEventByName(tracks.tagFilterUsed.name, {
-      extra: { tagId: id },
+      tagId: id,
     });
   };
 
@@ -279,6 +279,8 @@ const Tags = () => {
             </Box>
           </TagContainer>
         ))}
+        {/* TODO: Fix this the next time the file is edited. */}
+        {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
         {!isLoadingTags && emptyState && (
           <Box>
             <Text p="6px" color="grey600" textAlign="center">

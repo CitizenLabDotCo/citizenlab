@@ -206,7 +206,7 @@ Metrics/CyclomaticComplexity:
 # Offense count: 391
 # Configuration parameters: CountComments, CountAsOne, AllowedMethods, AllowedPatterns.
 Metrics/MethodLength:
-  Max: 60
+  Max: 61
 
 # Offense count: 7
 # Configuration parameters: CountKeywordArgs, MaxOptionalParameters.
@@ -451,6 +451,7 @@ RSpec/SpecFilePathFormat:
 RSpec/SpecFilePathSuffix:
   Exclude:
     - 'spec/tasks/single_use/*.ignore.rb'
+    - 'spec/migrations/*.ignore.rb'
 
 # Offense count: 65
 RSpec/StubbedMock:

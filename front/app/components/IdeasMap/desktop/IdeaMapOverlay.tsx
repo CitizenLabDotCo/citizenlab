@@ -13,6 +13,8 @@ import useProjectById from 'api/projects/useProjectById';
 import IdeasShow from 'containers/IdeasShow';
 import IdeaShowPageTopBar from 'containers/IdeasShowPage/IdeaShowPageTopBar';
 
+import { InputFiltersProps } from 'components/IdeaCards/IdeasWithFiltersSidebar/InputFilters';
+
 import MapIdeasList from './MapIdeasList';
 
 const timeout = 200;
@@ -94,10 +96,18 @@ interface Props {
   className?: string;
   onSelectIdea: (ideaId: string | null) => void;
   selectedIdea?: string | null;
+  inputFiltersProps?: InputFiltersProps;
 }
 
 const IdeaMapOverlay = memo<Props>(
-  ({ projectId, phaseId, className, selectedIdea, onSelectIdea }) => {
+  ({
+    projectId,
+    phaseId,
+    className,
+    selectedIdea,
+    onSelectIdea,
+    inputFiltersProps,
+  }) => {
     const { data: project } = useProjectById(projectId);
     const { windowWidth } = useWindowSize();
     const timeoutRef = useRef<number>();
@@ -153,6 +163,7 @@ const IdeaMapOverlay = memo<Props>(
               projectId={projectId}
               phaseId={phaseId}
               onSelectIdea={handleSelectIdea}
+              inputFiltersProps={inputFiltersProps}
             />
           )}
           {!isMobileOrSmaller && (

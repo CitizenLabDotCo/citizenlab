@@ -30,16 +30,11 @@ describe('Idea card component', () => {
       })
       .then((idea) => {
         ideaId = idea.body.data.id;
-        return cy.apiAddComment(ideaId, 'idea', commentContent);
+        return cy.apiAddComment(ideaId, commentContent);
       })
       .then((parentComment) => {
         parentCommentId = parentComment.body.data.id;
-        return cy.apiAddComment(
-          ideaId,
-          'idea',
-          commentContent,
-          parentCommentId
-        );
+        return cy.apiAddComment(ideaId, commentContent, parentCommentId);
       })
       .then((childComment) => {
         childCommentId = childComment.body.data.id;
@@ -57,8 +52,7 @@ describe('Idea card component', () => {
     cy.get('#e2e-ideas-list');
 
     // sort ideas by newest first
-    cy.get('#e2e-ideas-sort-dropdown').click();
-    cy.get('#e2e-ideas-sort-dropdown').find('#e2e-item-new').click();
+    cy.get('#e2e-item-new').click();
 
     cy.wait(2000);
     cy.get('#e2e-ideas-list');

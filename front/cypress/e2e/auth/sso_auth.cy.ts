@@ -22,7 +22,7 @@ describe.skip('SSO authentication', () => {
       // by manually doing the redirect another time.
       // No idea why it works like this, but it does.
       cy.visit(
-        '/en/complete-signup?sso_response=true&sso_flow=signup&sso_pathname=%2Fen%2F&sso_verification_action=visiting&sso_verification_type=global'
+        '/en/?sso_success=true&sso_flow=signup&sso_verification_action=visiting&sso_verification_type=global'
       );
 
       // Make sure that custom fields window is opened
@@ -51,7 +51,7 @@ describe.skip('SSO authentication', () => {
       // See test above
       cy.location('pathname').should('eq', '/en/');
       cy.visit(
-        '/en/complete-signup?sso_response=true&sso_flow=signup&sso_pathname=%2Fen%2F&sso_verification_action=visiting&sso_verification_type=global'
+        '/en/?sso_success=true&sso_flow=signup&sso_verification_action=visiting&sso_verification_type=global'
       );
 
       // Make sure we have to enter email
@@ -126,8 +126,8 @@ describe.skip('SSO authentication', () => {
     it("Doesn't show custom fields step if all fields are returned by SSO", () => {
       cy.visit(`/en/projects/${projectSlug}`);
 
-      cy.get('.e2e-idea-button').find('button').should('exist');
-      cy.get('.e2e-idea-button').find('button').click({ force: true });
+      cy.get('.e2e-idea-button').first().find('button').should('exist');
+      cy.get('.e2e-idea-button').first().find('button').click({ force: true });
 
       cy.get('#e2e-login-with-fake-sso').click();
       cy.get('#e2e-terms-and-conditions-container .e2e-checkbox').click();
@@ -147,7 +147,7 @@ describe.skip('SSO authentication', () => {
       // by manually doing the redirect another time.
       // No idea why it works like this, but it does.
       cy.visit(
-        `http://localhost:3000/en/complete-signup?sso_response=true&sso_flow=signup&sso_pathname=%2Fen%2Fprojects%2F${projectSlug}&sso_verification_action=posting_idea&sso_verification_id=${phaseId}&sso_verification_type=phase`
+        `http://localhost:3000/en/projects/${projectSlug}?sso_success=true&sso_flow=signup&sso_verification_action=posting_idea&sso_verification_id=${phaseId}&sso_verification_type=phase`
       );
 
       // Make sure we're at success screen

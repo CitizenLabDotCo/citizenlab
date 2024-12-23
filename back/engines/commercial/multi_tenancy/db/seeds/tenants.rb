@@ -33,6 +33,7 @@ module MultiTenancy
               additional_admins_number: 1,
               additional_moderators_number: 1,
               population: 27_500,
+              allow_sharing: true,
               google_search_console_meta_attribute: 'fake_meta_attribute'
             },
             password_login: {
@@ -59,7 +60,8 @@ module MultiTenancy
               tenant: ENV.fetch('DEFAULT_AZURE_AD_LOGIN_TENANT_ID'),
               client_id: ENV.fetch('DEFAULT_AZURE_AD_LOGIN_CLIENT_ID'),
               logo_url: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/microsoft-azure-logo.png',
-              login_mechanism_name: 'Azure Active Directory'
+              login_mechanism_name: 'Azure Active Directory',
+              visibility: 'show'
             },
             azure_ad_b2c_login: {
               allowed: true,
@@ -70,6 +72,10 @@ module MultiTenancy
               client_id: ENV.fetch('DEFAULT_AZURE_AD_B2C_LOGIN_CLIENT_ID'),
               logo_url: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/microsoft-azure-logo.png',
               login_mechanism_name: 'Azure AD B2C'
+            },
+            id_austria_login: {
+              allowed: true,
+              enabled: true
             },
             criipto_login: {
               allowed: true,
@@ -345,10 +351,21 @@ module MultiTenancy
                   client_secret: ENV.fetch('DEFAULT_CRIIPTO_CLIENT_SECRET', 'fake secret'),
                   identity_source: 'DK MitID',
                   ui_method_name: 'MitID (Criipto)'
+                },
+                {
+                  name: 'id_austria',
+                  client_id: ENV.fetch('DEFAULT_ID_AUSTRIA_CLIENT_ID', 'fake id'),
+                  client_secret: ENV.fetch('DEFAULT_ID_AUSTRIA_CLIENT_SECRET', 'fake secret'),
+                  ui_method_name: 'ID Austria',
+                  enabled_for_verified_actions: true
                 }
               ]
             },
             project_folders: {
+              enabled: true,
+              allowed: true
+            },
+            project_preview_link: {
               enabled: true,
               allowed: true
             },
@@ -361,10 +378,6 @@ module MultiTenancy
               allowed: false
             },
             disable_disliking: {
-              enabled: true,
-              allowed: true
-            },
-            input_form_mapping_question: {
               enabled: true,
               allowed: true
             },
@@ -457,6 +470,10 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
+            input_cosponsorship: {
+              enabled: true,
+              allowed: true
+            },
             management_feed: {
               enabled: true,
               allowed: true
@@ -469,6 +486,14 @@ module MultiTenancy
               enabled: true,
               allowed: true,
               issuer: '' # Change this value to 'https://fake-sso.onrender.com' to test with the deployed version of the Fake SSO
+            },
+            project_review: {
+              enabled: true,
+              allowed: true
+            },
+            platform_templates: {
+              enabled: false,
+              allowed: false
             }
           })
         )

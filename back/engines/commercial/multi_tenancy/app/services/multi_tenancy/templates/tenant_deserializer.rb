@@ -104,11 +104,13 @@ module MultiTenancy
             rescue StandardError => e
               json_info = {
                 error_message: e.message,
-                error_backtrace: e.backtrace,
                 model_class: model_class.name,
-                attributes: attributes
+                attributes: attributes,
+                error_backtrace: e.backtrace
               }.to_json
-              raise "Failed to create instance during template application: #{json_info}"
+              message = "Failed to create instance during template application: #{json_info}"
+              ErrorReporter.report_msg(message)
+              raise message
             end
 
             obj_to_id_and_class[attributes] = [model.id, model_class]

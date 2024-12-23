@@ -98,6 +98,8 @@ const ideaPostingDisabledReason = (
         disabledReason: backendReason,
         authenticationRequirements: null,
       };
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     case 'user_not_permitted' || 'user_blocked':
       return {
         disabledReason: backendReason,
@@ -149,10 +151,11 @@ export const getIdeaPostingRules = ({
 
     // timeline
     if (phase) {
-      // not an enabled ideation or native survey phase
+      // not an enabled ideation or native survey or proposals phase
       if (
         !(
           (phase.attributes.participation_method === 'ideation' ||
+            phase.attributes.participation_method === 'proposals' ||
             phase.attributes.participation_method === 'native_survey') &&
           phase.attributes.submission_enabled &&
           disabled_reason !== 'posting_not_supported'

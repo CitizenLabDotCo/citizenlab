@@ -27,7 +27,7 @@
 #
 class NavBarItem < ApplicationRecord
   # The codes must be listed in the correct default ordering
-  CODES = %w[home projects proposals events all_input custom].freeze
+  CODES = %w[home projects events all_input custom].freeze
 
   acts_as_list column: :ordering, top_of_list: 0, add_new_at: :bottom
 
@@ -67,6 +67,12 @@ class NavBarItem < ApplicationRecord
 
   def title_multiloc_with_fallback
     fallback_title_multiloc.merge(title_multiloc || {})
+  end
+
+  def item_slug
+    return project.slug if project?
+
+    static_page.slug if page?
   end
 
   private

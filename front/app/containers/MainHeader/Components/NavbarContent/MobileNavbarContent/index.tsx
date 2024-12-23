@@ -1,27 +1,21 @@
-import React, { Suspense, useRef, useState } from 'react';
+import React from 'react';
 
 import { Box, Button, media, isRtl } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';
-
-import useLocale from 'hooks/useLocale';
 
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
-import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import { isNilOrError, isPage } from 'utils/helperUtils';
 
 import messages from '../../../messages';
-import tracks from '../../../tracks';
 import LanguageSelector from '../../LanguageSelector';
 import NotificationMenu from '../../NotificationMenu';
 import UserMenu from '../../UserMenu';
 
-import FullMobileNavMenu from './FullMobileNavMenu';
-import ShowFullMenuButton from './ShowFullMenuButton';
+import ButtonWithFullMobileNavMenu from './ButtonWithFullMobileNavMenu';
 
 const RightContainer = styled(Box)`
   display: flex;
@@ -81,46 +75,23 @@ const NavItem = styled(Box)`
 `;
 
 const MobileNavbarContent = () => {
-  const { data: appConfiguration } = useAppConfiguration();
   const { data: authUser } = useAuthUser();
-  const locale = useLocale();
   const { formatMessage } = useIntl();
 
   const isEmailSettingsPage = isPage('email-settings', location.pathname);
-  const tenantLocales = !isNilOrError(appConfiguration)
-    ? appConfiguration.data.attributes.settings.core.locales
-    : [];
-
-  const [isFullMenuOpened, setIsFullMenuOpened] = useState(false);
-  const containerRef = useRef<HTMLElement>(null);
 
   const signIn = () => {
     triggerAuthenticationFlow({}, 'signin');
   };
 
-  const onShowMore = (isFullMenuOpened: boolean) => {
-    setIsFullMenuOpened((prevIsFullMenuOpened) => !prevIsFullMenuOpened);
-    trackEventByName(
-      isFullMenuOpened
-        ? tracks.moreButtonClickedFullMenuOpened
-        : tracks.moreButtonClickedFullMenuClosed
-    );
-  };
-
-  const onCloseFullMenu = () => {
-    setIsFullMenuOpened(false);
-  };
-
   return (
-    <nav ref={containerRef}>
+    <nav>
       <RightContainer>
         {!isEmailSettingsPage && (
           <>
-            {tenantLocales.length > 1 && locale && (
-              <NavItem className="noLeftMargin">
-                <LanguageSelector />
-              </NavItem>
-            )}
+            <NavItem className="noLeftMargin">
+              <LanguageSelector />
+            </NavItem>
             {isNilOrError(authUser) ? (
               <NavItem className="login">
                 <Button
@@ -140,24 +111,11 @@ const MobileNavbarContent = () => {
               </>
             )}
             <NavItem>
-              <ShowFullMenuButton
-                onClick={() => {
-                  onShowMore(isFullMenuOpened);
-                }}
-              />
+              <ButtonWithFullMobileNavMenu />
             </NavItem>
           </>
         )}
       </RightContainer>
-      <Suspense fallback={null}>
-        {containerRef.current && (
-          <FullMobileNavMenu
-            isFullMenuOpened={isFullMenuOpened}
-            onClose={onCloseFullMenu}
-            mobileNavbarRef={containerRef.current}
-          />
-        )}
-      </Suspense>
     </nav>
   );
 };

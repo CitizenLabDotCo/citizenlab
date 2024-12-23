@@ -122,7 +122,7 @@ it:
       <img style="margin-bottom: 30px" data-cl2-text-image-text-reference="b4e659ab-2830-48fd-b3ce-96e16856262f" height="374.3745928338762" width="819" alt=""> <h2>Cos'è una proposta del cittadino?</h2> <p>Come residente di $|orgName| puoi inserire la tua proposta in agenda attraverso questa piattaforma. Queste proposte sono preferibilmente idee concrete che sono legate alla politica locale e nascono da un bisogno, un desiderio o un sogno. Può essere una tua proposta o una proposta collaborativa. Forse vorresti cambiare o migliorare una situazione esistente o iniziare un nuovo progetto.</p> <p>Il coinvolgimento di $|orgName| nella realizzazione della vostra proposta deve essere sia necessario che possibile. In uno scenario ideale, siete anche disponibili per ulteriori riflessioni o collaborazioni, ma questo non è un obbligo. "Ridurre il limite di velocità sull'autostrada a 80 km/h" non è quindi una proposta forte, mentre "Trasformare la strada principale in una zona pedonale" lo è. Quindi portate le vostre proposte! Se sono necessarie ulteriori informazioni, riceverete un aggiornamento o una reazione.</p><h2>Perché pubblicare una proposta su questa piattaforma?</h2> <p>Questa è la piattaforma di partecipazione ufficiale di $|orgName|, che offre i seguenti vantaggi:</p> <ul> <li>$|orgName| è ufficialmente coinvolto come proprietario di questa piattaforma, e controlla attivamente ciò che accade qui. Quando pubblichi una proposta, la persona responsabile riceve automaticamente un messaggio. Non devi contattarli per assicurarti che la tua proposta sia presa in considerazione.</li> <li>Questa piattaforma è stata sviluppata specificamente per azioni partecipative ufficiali, come le proposte dei cittadini. Ogni elemento, dall'esperienza utente all'approccio graduale, è costruito proprio per questo scopo. Quando si usano i social media tradizionali, la vostra proposta potrebbe scomparire nel sovraccarico di stimoli, mentre una normale e-mail scompare rapidamente in una casella di posta piena.</li> <li>Anche i vostri concittadini sono presenti su questa piattaforma. Possono sostenere e perfezionare la tua proposta. Più la tua proposta è creativa e più supporto riesce a raccogliere, più possibilità ha di essere implementata!</li> </ul> <h2>Come si comincia?</h2> <p>Per prima cosa, controlla se la tua proposta soddisfa i seguenti criteri:</p> <p>$|initiativesEligibilityCriteria|</p> <h2>Cosa potete aspettarvi quando la vostra proposta raggiunge $|initiativesVotingThreshold| voti entro $|initiativesDaysLimit| giorni?</h2> <p>$|initiativesThresholdReachedMessage|</p> <h2>Cosa succede alle proposte che non ricevono $|initiativesVotingThreshold| voti in tempo? </h2> <p>Questo succede, ma non preoccupatevi. La tua proposta rimarrà sulla piattaforma. Lo stato della tua proposta cambierà automaticamente in "Scaduto". Di conseguenza, il voto non sarà più possibile. Se lo desideri, puoi scegliere di cancellare la tua proposta in qualsiasi momento.</p>
   nav_bar_items:
     home:
-      title: Casa
+      title: Home
     projects:
       title: Tutti i progetti
     all_input:
@@ -170,6 +170,9 @@ it:
       topic_ids:
         title: Argomenti
         description:
+      consponsor_ids:
+        title: Co-sponsor
+        description: Invita i co-sponsor nel campo sottostante. I co-sponsor invitati riceveranno un'e-mail.
       location:
         title: Posizione
         description:
@@ -192,8 +195,8 @@ it:
       section3:
         title: Dettagli
         description:
-      other_text_field:
-        title: Se hai scelto '{other_option}', a cosa stai pensando?
+      other_input_field:
+        title: Scrivi la tua risposta
   custom_forms:
     categories:
       main_content:
@@ -209,6 +212,12 @@ it:
           title: Qual è il suo commento?
         option:
           title: Qual è la sua opzione?
+        proposal:
+          title: Qual è la tua proposta?
+        initiative:
+          title: Qual è la tua iniziativa?
+        petition:
+          title: Qual è la tua petizione?
   custom_field_options:
     gender:
       male: Maschio
@@ -233,6 +242,7 @@ it:
       <ul><li>Prenditi il tempo per elaborare la tua proposta. Se necessario, scrivi prima una bozza e poi fai un copia-incolla qui.</li><li>Scegli un titolo significativo che spieghi chiaramente cosa comporta la tua proposta.</li><li>Visualizzate la vostra proposta con un'immagine adatta per farla risaltare!</li><li>Aggiungi allegati rilevanti, come video, esempi ispiratori, dettagli tecnici o piani.</li><li>Condividi la tua idea sui social media e altri canali per raccogliere il sostegno degli altri.</li></ul>
   reset_password_mailer:
     send_reset_password:
+      preheader: 'Reimposta la tua password per %{organizationName}'
       cta_reset_password: 'Ripristina la tua password'
       message_you_reset_your_password: 'Hai richiesto un reset della password per la piattaforma di partecipazione di %{organizationName}. Clicca il pulsante qui sotto per scegliere una nuova password sicura. Il link scade tra 1 ora.'
       subject: '%{organizationName}: Resetta la tua password'
@@ -256,6 +266,7 @@ it:
       first_name: 'Nome/i'
       image_url: 'URL immagine'
       input_id: 'ID'
+      manual_votes: 'Voti offline'
       input_url: 'URL'
       last_name: 'Cognome'
       latitude: 'Latitudine'
@@ -310,6 +321,7 @@ it:
   confirmations_mailer:
     send_confirmation_code:
       subject: "Conferma il tuo indirizzo email per la piattaforma di partecipazione di %{organizationName}"
+      preheader: 'Conferma il tuo indirizzo e-mail per %{organizationName}'
       header: "Il tuo codice di conferma"
       header_message: "Ciao %{firstName}!"
       confirm_email_address: "Confermare l'indirizzo e-mail"
@@ -324,6 +336,7 @@ it:
   user_blocked_mailer:
     send_user_blocked_email:
       subject: 'Il suo account è stato temporaneamente disabilitato'
+      preheader: 'Il tuo account sulla piattaforma di partecipazione di %{organizationName} è stato temporaneamente disabilitato.'
       title_user_blocked: 'Il suo account è stato temporaneamente disabilitato'
       paragraph_1_without_reason: "Il tuo account sulla piattaforma di partecipazione %{organizationName} è stato temporaneamente disabilitato per una violazione delle linee guida della comunità."
       paragraph_1_with_reason: "Il vostro account sulla piattaforma di partecipazione di %{organizationName} è stato temporaneamente disabilitato per il seguente motivo:"
@@ -331,6 +344,8 @@ it:
       you_can_sign_in_again_from: "È possibile accedere nuovamente a %{date}"
   user:
     anon_first_name: "Utente"
+    anon_scheme:
+      animals: 'alligatore, coccodrillo, alpaca, formica, antilope, scimmia, armadillo, babbuino, tasso, pipistrello, orso, castoro, ape, scarabeo, bufalo, farfalla, cammello, bufalo d''acqua, caribù, gatto, bovino, ghepardo, scimpanzé, cincillà, cicala, vongola, scarafaggio, merluzzo, coyote, granchio, grillo, corvo,cervo, dinosauro, cane, delfino, focena, anatra, aquila, anguilla, elefante, alce, furetto, pesce, mosca, volpe, rana, rospo, gerbillo, giraffa, moscerino, gnu, gnu, capra, pesce rosso, oca, gorilla, cavalletta, porcellino d''India, criceto, lepre, riccio, aringa, ippopotamo, calabrone, cavallo, segugio,iena, impala, sciacallo, medusa, canguro, wallaby, koala, leopardo, leone, lucertola, lama, locusta, pidocchio, ara, germano reale, mammut, lamantino, martora, visone, minnow, talpa, alce, zanzara, topo, ratto, mulo, topo muschiato, lontra, bue, ostrica, panda, maiale, ornitorinco, istrice, cane della prateria,carlino, coniglio, procione, renna, rinoceronte, salmone, sardina, scorpione, foca, leone marino, serval, squalo, pecora, puzzola, lumaca, serpente, ragno, scoiattolo, cigno, termite, tigre, trota, tartaruga, testuggine, tricheco, vespa, balena, lupo, vombato, marmotta, verme, yak, giuggiola, zebra'
   time:
     am: sono
     formats:
@@ -339,3 +354,5 @@ it:
   voting_method:
     default_voting_term_singular: "voto"
     default_voting_term_plural: "voti"
+  ics_calendar_event:
+    event_details: "Dettagli dell'evento"

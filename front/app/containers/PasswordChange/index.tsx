@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import { useForm, FormProvider } from 'react-hook-form';
 import { string, object } from 'yup';
 
@@ -44,6 +44,8 @@ const ChangePassword = () => {
   const { formatMessage } = useIntl();
   const [success, setSuccess] = useState(false);
   const userHasPreviousPassword =
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     !isNilOrError(authUser) && !authUser.data.attributes?.no_password;
   const pageTitle = userHasPreviousPassword
     ? messages.titleChangePassword

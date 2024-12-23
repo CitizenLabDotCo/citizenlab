@@ -6,12 +6,14 @@ module PublicApi
       scope,
       folder_id: nil,
       publication_status: nil,
-      topic_ids: nil
+      topic_ids: nil,
+      area_ids: nil
     )
       @scope = scope
       @folder_id = folder_id
       @publication_status = publication_status
       @topic_ids = topic_ids
+      @area_ids = area_ids
     end
 
     def execute
@@ -19,6 +21,7 @@ module PublicApi
         .then { |scope| filter_by_folder_id(scope) }
         .then { |scope| filter_by_publication_status(scope) }
         .then { |scope| filter_by_topic_ids(scope) }
+        .then { |scope| filter_by_area_ids(scope) }
     end
 
     private
@@ -51,6 +54,15 @@ module PublicApi
         .where(topics: { id: @topic_ids })
         .group('projects.id')
         .having('COUNT(topics.id) = ?', @topic_ids.size)
+    end
+
+    def filter_by_area_ids(scope)
+      return scope unless @area_ids
+
+      scope.left_joins(:areas_projects)
+        .where('projects.include_all_areas = ? OR areas_projects.area_id IN (?)', true, @area_ids)
+        .group('projects.id')
+        .having('projects.include_all_areas = ? OR COUNT(DISTINCT areas_projects.area_id) = ?', true, @area_ids.size)
     end
   end
 end

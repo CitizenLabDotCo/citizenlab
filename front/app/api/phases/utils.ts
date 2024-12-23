@@ -156,6 +156,9 @@ export const INPUT_TERMS = [
   'question',
   'issue',
   'contribution',
+  'proposal',
+  'initiative',
+  'petition',
 ];
 
-export const ideaDefaultSortMethodFallback = 'trending';
+export const IdeaSortMethodFallback = 'trending';

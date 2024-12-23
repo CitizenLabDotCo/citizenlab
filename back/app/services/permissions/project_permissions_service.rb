@@ -4,6 +4,12 @@ module Permissions
       project_not_visible: 'project_not_visible'
     }.freeze
 
+    # Reasons that can be 'fixed' by the user. Somewhat subjective, and sometimes misleading,
+    # since 'fixing' a reason may subsequently reveal another 'unfixable' reason.
+    # Attempting to predict if a user could theoretically fix a 'stack' of denied reasons for an action
+    # is complex, could be slow, and in some cases impossible.
+    FIXABLE_DENIED_REASONS = %w[user_not_signed_in user_not_active user_not_verified user_missing_requirements].freeze
+
     def initialize(project, user, user_requirements_service: nil)
       @timeline_service = TimelineService.new
       phase = @timeline_service.current_phase_not_archived project
@@ -12,7 +18,7 @@ module Permissions
       @project ||= project
     end
 
-    def denied_reason_for_action(action, reaction_mode: nil)
+    def denied_reason_for_action(action, reaction_mode: nil, delete_action: false)
       project_visible_disabled_reason || project_archived_disabled_reason || super
     end
 
@@ -91,11 +97,6 @@ module Permissions
       }
     end
 
-    private
-
-    attr_reader :project
-
-    # Project methods
     def project_visible_disabled_reason
       user_can_moderate = user && UserRoleService.new.can_moderate?(project, user)
       return if user_can_moderate
@@ -105,6 +106,21 @@ module Permissions
         PROJECT_DENIED_REASONS[:project_not_visible]
       end
     end
+
+    def participation_possible?(action_descriptors)
+      # `attending_event` is not included, as we do not check if any ongoing/future events exist for the project,
+      # nor if user is already attending such an event, in the interests of performance and simplicity.
+      descriptors = action_descriptors.except(:attending_event, :annotating_document)
+
+      return true if descriptors.values.any? { |d| d[:enabled] }
+      return true if descriptors.values.any? { |d| FIXABLE_DENIED_REASONS.include?(d[:disabled_reason]) }
+
+      false
+    end
+
+    private
+
+    attr_reader :project
 
     def project_archived_disabled_reason
       return unless project.admin_publication.archived?

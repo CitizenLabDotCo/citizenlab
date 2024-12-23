@@ -26,6 +26,7 @@ RSpec.describe ReportBuilder::Queries::SurveyQuestionResult do
     end
 
     before_all do
+      create(:idea_status_proposed)
       create(
         :native_survey_response,
         project: project,

@@ -47,16 +47,20 @@ const PageControlButtons = ({
       px={isSmallerThanPhone ? '16px' : '24px'}
       py={'16px'}
     >
-      <LanguageSelector
-        dropdownClassName={'open-upwards'}
-        useDefaultTop={false}
-        mobileRight="auto"
-        mobileLeft="auto"
-        right="auto"
-        afterSelection={() => {
-          window.location.reload();
-        }}
-      />
+      <Box>
+        {' '}
+        {/* We wrap it in a Box here to maintain the spacing and keep the next buttons right-aligned when the language selector is empty, preventing the need to move the locale check logic here. */}
+        <LanguageSelector
+          dropdownClassName={'open-upwards'}
+          useDefaultTop={false}
+          mobileRight="auto"
+          mobileLeft="auto"
+          right="auto"
+          afterSelection={() => {
+            window.location.reload();
+          }}
+        />
+      </Box>
       <Box display="flex" justifyContent="center" alignItems="center">
         {hasPreviousPage && (
           <Button

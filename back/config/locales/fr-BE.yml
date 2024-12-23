@@ -170,6 +170,9 @@ fr-BE:
       topic_ids:
         title: Étiquettes
         description:
+      consponsor_ids:
+        title: Coparrainants
+        description: Invitez des soutiens via le champ ci-dessous. Les personnes invitées recevront un e-mail.
       location:
         title: Adresse
         description:
@@ -192,8 +195,8 @@ fr-BE:
       section3:
         title: Détails
         description:
-      other_text_field:
-        title: Puisque vous avez choisi « {other_option} », à quoi pensez-vous ?
+      other_input_field:
+        title: Saisissez votre réponse
   custom_forms:
     categories:
       main_content:
@@ -209,6 +212,12 @@ fr-BE:
           title: Quel est votre problème ?
         option:
           title: Quelle est votre option ?
+        proposal:
+          title: Quelle est votre proposition ?
+        initiative:
+          title: Quelle est votre initiative ?
+        petition:
+          title: Quelle est votre pétition ?
   custom_field_options:
     gender:
       male: Masculin
@@ -233,6 +242,7 @@ fr-BE:
       <ul><li>Prenez le temps d’élaborer votre proposition en détails. Si nécessaire, écrivez un brouillon quelque part et copiez-collez sur la plateforme une fois que vous êtes prêt.</li><li>Choisissez un titre évocateur qui explique clairement ce que votre proposition comporte.</li><li>Assurez-vous d’illustrer votre proposition avec une image de bonnes dimensions de sorte à la faire ressortir plus distinctement.</li><li>Ajouter des pièces jointes telles que des vidéos, des exemples inspirants, des détails techniques ou des plans.</li><li>Partagez votre idée sur les réseaux sociaux et via d’autres canaux afin de récolter des votes.</li></ul>
   reset_password_mailer:
     send_reset_password:
+      preheader: 'Réinitialisez votre mot de passe pour %{organizationName}'
       cta_reset_password: 'Réinitialisez votre mot de passe'
       message_you_reset_your_password: 'Vous avez demandé une réinitialisation du mot de passe pour la plateforme de participation de %{organizationName}. Cliquez sur le bouton ci-dessous pour choisir un nouveau mot de passe sécurisé. Le lien expire dans 1 heure.'
       subject: '%{organizationName}: réinitialisez votre mot de passe'
@@ -256,6 +266,7 @@ fr-BE:
       first_name: 'Prénom(s)'
       image_url: 'URL de l''image'
       input_id: 'ID'
+      manual_votes: 'Votes hors ligne'
       input_url: 'URL'
       last_name: 'Nom'
       latitude: 'Latitude'
@@ -310,6 +321,7 @@ fr-BE:
   confirmations_mailer:
     send_confirmation_code:
       subject: "Confirmez votre adresse électronique pour la plateforme de participation de %{organizationName}"
+      preheader: 'Confirmez votre adresse e-mail pour %{organizationName}'
       header: "Votre code de confirmation"
       header_message: "Bonjour %{firstName} !"
       confirm_email_address: "Confirmez votre adresse e-mail"
@@ -324,6 +336,7 @@ fr-BE:
   user_blocked_mailer:
     send_user_blocked_email:
       subject: 'Votre compte a été temporairement désactivé'
+      preheader: 'Votre compte sur la plateforme de participation de %{organizationName} a été temporairement désactivé'
       title_user_blocked: 'Votre compte a été temporairement désactivé'
       paragraph_1_without_reason: "Votre compte sur la plateforme de participation de %{organizationName} a été temporairement désactivé en raison d'une violation des règles de la communauté."
       paragraph_1_with_reason: "Votre compte sur la plateforme de participation de %{organizationName} a été temporairement désactivé pour la raison suivante :"
@@ -331,6 +344,8 @@ fr-BE:
       you_can_sign_in_again_from: "Vous pouvez vous reconnecter à partir de %{date}"
   user:
     anon_first_name: "Utilisateur"
+    anon_scheme:
+      animals: 'alligator,crocodile,alpaga,fourmi,antilope,singe,tatou,babouin,blaireau,chauve-souris,ours,castor,abeille,scarabée,buffle,papillon,chameau,buffle d''eau,caribou,chat,boeuf,guépard,chimpanzé,chinchilla,cigale,palourde,cafard,morue,coyote,crabe,criquet,corneille,corbeau,cerf,dinosaure,chien,dauphin,marsouin,canard,aigle,anguille,éléphant,élan,furet,poisson,mouche,renard,grenouille,crapaud,gerbille,girafe,moucheron,gnou,gnou,chèvre,poisson rouge,oie,gorille,sauterelle,cochon d''Inde,hamster,lièvre,hérisson,hareng,hippopotame,frelon,cheval,chien,hyène,impala,chacal,méduse,kangourou,wallaby,koala,léopard,lion,lézard,lama,criquet,pou,ara,canard colvert,mammouth,lamantin,martre,vison,vairon,taupe,orignal,moustique,souris,rat,mule,rat musqué,loutre,boeuf,huître,panda,cochon,ornithorynque,porc-épic,chien de prairie,carlin,lapin,raton laveur,renne,rhinocéros,saumon,sardine,scorpion,phoque,otarie,serval,requin,mouton,mouffette,escargot,serpent,araignée,écureuil,cygne,termite,tigre,truite,tortue,tortue,morse,guêpe,baleine,loup,wombat,marmotte,ver,yak,guêpe,zèbre'
   time:
     am: du matin
     formats:
@@ -339,3 +354,5 @@ fr-BE:
   voting_method:
     default_voting_term_singular: "vote"
     default_voting_term_plural: "votes"
+  ics_calendar_event:
+    event_details: "Détails de l'événement"

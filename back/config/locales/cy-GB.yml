@@ -151,7 +151,7 @@ cy:
   custom_fields:
     users:
       gender:
-        title: Rhyw
+        title: Rhywedd
       birthyear:
         title: Blwyddyn geni
       domicile:
@@ -170,6 +170,9 @@ cy:
       topic_ids:
         title: Tagiau
         description:
+      consponsor_ids:
+        title: Cyd-noddwyr
+        description: Gwahoddwch gyd-noddwyr drwy'r maes isod. Bydd y cyd-noddwyr gwadd yn derbyn e-bost.
       location:
         title: Lleoliad
         description:
@@ -192,8 +195,8 @@ cy:
       section3:
         title: Manylion
         description:
-      other_text_field:
-        title: Os dewisoch chi '{other_option}', beth ydych chi'n ei feddwl?
+      other_input_field:
+        title: Teipiwch eich ateb
   custom_forms:
     categories:
       main_content:
@@ -209,11 +212,17 @@ cy:
           title: Beth yw eich sylw?
         option:
           title: Beth yw eich opsiwn?
+        proposal:
+          title: Beth yw eich cynnig?
+        initiative:
+          title: Beth yw eich menter?
+        petition:
+          title: Beth yw eich deiseb?
   custom_field_options:
     gender:
       male: Gwryw
       female: Benyw
-      unspecified: Arall
+      unspecified: Amhenodol
     domicile:
       outside: Rhywle arall
     education:
@@ -233,6 +242,7 @@ cy:
       <ul><li>Cymerwch amser i ymhelaethu ar eich cynnig. Os oes angen, teipiwch ddrafft yn gyntaf ac yna copïwch-pasiwch ef yma.</li><li>Dewiswch deitl ystyrlon sy'n esbonio'n glir beth mae eich cynnig yn ei olygu.</li><li>Delweddwch eich cynnig gyda delwedd addas i'w helpu i sefyll allan!</li><li>Ychwanegu atodiadau perthnasol, megis fideos, enghreifftiau ysbrydoledig, manylion technegol neu gynlluniau.</li><li>Rhannwch eich syniad ar gyfryngau cymdeithasol a sianeli eraill i gasglu cefnogaeth gan eraill.</li></ul>
   reset_password_mailer:
     send_reset_password:
+      preheader: 'Ailosodwch eich cyfrinair ar gyfer %{organizationName}'
       cta_reset_password: 'Ailosod eich cyfrinair'
       message_you_reset_your_password: 'Gwnaethoch gais am ailosodiad cyfrinair ar gyfer y llwyfan cyfranogiad o %{organizationName}. Cliciwch y botwm isod i ddewis cyfrinair newydd, diogel. Daw''r ddolen i ben mewn 1 awr.'
       subject: '%{organizationName}: Ailosodwch eich cyfrinair'
@@ -256,6 +266,7 @@ cy:
       first_name: 'Enw(au) cyntaf'
       image_url: 'URL delwedd'
       input_id: 'ID'
+      manual_votes: 'Pleidleisiau all-lein'
       input_url: 'URL'
       last_name: 'Enw olaf'
       latitude: 'Lledred'
@@ -314,6 +325,7 @@ cy:
   confirmations_mailer:
     send_confirmation_code:
       subject: "Cadarnhewch eich cyfeiriad e-bost ar gyfer llwyfan cyfranogiad %{organizationName}"
+      preheader: 'Cadarnhewch eich cyfeiriad e-bost ar gyfer %{organizationName}'
       header: "Eich Cod Cadarnhau"
       header_message: "Helo %{firstName}!"
       confirm_email_address: "Cadarnhewch eich cyfeiriad e-bost"
@@ -328,6 +340,7 @@ cy:
   user_blocked_mailer:
     send_user_blocked_email:
       subject: 'Mae''ch cyfrif wedi''i analluogi dros dro'
+      preheader: 'Mae eich cyfrif ar y llwyfan cyfranogiad o %{organizationName} wedi''i analluogi dros dro'
       title_user_blocked: 'Mae''ch cyfrif wedi''i analluogi dros dro'
       paragraph_1_without_reason: "Mae eich cyfrif ar y platfform cyfranogiad o %{organizationName} wedi'i analluogi dros dro am dorri'r canllawiau cymunedol."
       paragraph_1_with_reason: "Mae eich cyfrif ar y platfform cyfranogiad o %{organizationName} wedi'i analluogi dros dro am y rheswm canlynol:"
@@ -335,6 +348,8 @@ cy:
       you_can_sign_in_again_from: "Gallwch fewngofnodi eto o %{date}"
   user:
     anon_first_name: "Defnyddiwr"
+    anon_scheme:
+      animals: 'aligator, crocodeil, alpaca, morgrug, antelop, epa, armadillo, babi, mochyn daear, ystlum, arth, afanc, gwenyn, chwilen, byfflo, pili pala, camel, byfflo dŵr, caribou, cath, gwartheg, cheetah, tsimpansî, chinchilla, cicada , cregyn bylchog, penfras, coyote, cranc, criced, brân, cigfran, ceirw, deinosor, ci, dolffin, llamhidydd, hwyaden, eryr, llysywen, eliffant, elc, ffuret, pysgodyn, pryf, llwynog, llyffant, llyffant, gerbil ,jiráff, gwybed, gnu, helbyest, gafr, pysgod aur, gŵydd, gorila, ceiliog rhedyn, mochyn cwta, bochdew, ysgyfarnog, penwaig, hipopotamws, cornet, ceffyl, cwn, hyena, impala, jacal, slefrod môr, cangarŵ, walabi, coala, llewpard, llew, madfall, lama, locust, lleuen, macaw, mallard, mamoth, manatee, marten, mincod, minwan, man geni, elc, mosgito, llygoden, llygod mawr, mul, mwscrat, dyfrgi, ych, wystrys, panda, mochyn, platypus, porcupine, ci paith, pug, cwningen, raccoon, ceirw, rhinoseros, eog, sardin, sgorpion, morlo, llew môr, serfal, siarc, defaid, sgync, malwen, neidr, pry copyn, gwiwer, alarch, termite, teigr, brithyll, crwban, crwban, walrws, cacwn, morfil, blaidd, wombat, hwyaden goch, mwydyn, iacod, siaced felen, sebra'
   time:
     am: yn
     formats:
@@ -343,3 +358,5 @@ cy:
   voting_method:
     default_voting_term_singular: "pleidlais"
     default_voting_term_plural: "pleidleisiau"
+  ics_calendar_event:
+    event_details: "Manylion y digwyddiad"

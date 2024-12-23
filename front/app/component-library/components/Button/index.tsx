@@ -192,12 +192,16 @@ function getButtonStyle(
     darken(0.12, backgroundColor);
   const backgroundActiveColor =
     backgroundHoverColor !== 'transparent'
-      ? backgroundHoverColor?.startsWith('rgba')
+      ? // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        backgroundHoverColor?.startsWith('rgba')
         ? opacify(0.12, backgroundHoverColor)
         : darken(0.12, backgroundHoverColor)
       : 'inherit';
   const backgroundDisabledColor =
     props.bgDisabledColor ||
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     get(defaultStyleValues, `${props.buttonStyle}.bgDisabledColor`) ||
     backgroundColor;
   const textColor =
@@ -217,6 +221,8 @@ function getButtonStyle(
     darken(0.2, iconColor);
   const textDisabledColor =
     props.textDisabledColor ||
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     get(defaultStyleValues, `${props.buttonStyle}.textDisabledColor`) ||
     textColor;
   const borderColor =
@@ -229,6 +235,8 @@ function getButtonStyle(
     darken(0.2, borderColor);
   const borderDisabledColor =
     props.borderDisabledColor ||
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     get(defaultStyleValues, `${props.buttonStyle}.borderDisabledColor`) ||
     borderColor;
   const boxShadow =
@@ -241,14 +249,20 @@ function getButtonStyle(
     'none';
   const borderRadius =
     props.borderRadius ||
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     get(defaultStyleValues, `${props.buttonStyle}.borderRadius`) ||
     props.theme.borderRadius;
   const textDecoration =
     props.textDecoration ||
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     get(defaultStyleValues, `${props.buttonStyle}.textDecoration`) ||
     'none';
   const textDecorationHover =
     props.textDecorationHover ||
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     get(defaultStyleValues, `${props.buttonStyle}.textDecorationHover`) ||
     'none';
   const padding =
@@ -371,7 +385,6 @@ function getButtonStyle(
       border-color: ${borderDisabledColor};
       opacity: ${opacityDisabled};
       cursor: not-allowed;
-      pointer-events: none;
 
       ${ButtonText} {
         color: ${textDisabledColor};
@@ -597,6 +610,8 @@ const Button = (props: Props) => {
   const iconPos = props.iconPos || 'left';
   const spinnerSize = getSpinnerSize(size);
   const hasText = !isNil(text) || !isNil(children);
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const buttonType = type && !as ? type : undefined;
   const containerClassNames = [
     className,

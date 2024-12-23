@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class ProjectCopyService < TemplateService
+class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
   def import(template, folder: nil, local_copy: false)
     same_template = MultiTenancy::Templates::Utils.translate_and_fix_locales(template)
 
@@ -33,6 +33,7 @@ class ProjectCopyService < TemplateService
     @include_ideas = include_ideas
     @local_copy = local_copy
     @project = project
+    @project_map_configs = project_map_configs
     @template = { 'models' => {} }
     new_slug = SlugService.new.generate_slug(nil, new_slug) if new_slug
 
@@ -308,7 +309,9 @@ class ProjectCopyService < TemplateService
         'input_term' => phase.input_term,
         'baskets_count' => @local_copy || !@include_ideas ? 0 : phase.baskets_count,
         'votes_count' => @local_copy || !@include_ideas ? 0 : phase.votes_count,
-        'prescreening_enabled' => phase.prescreening_enabled
+        'prescreening_enabled' => phase.prescreening_enabled,
+        'expire_days_limit' => phase.expire_days_limit,
+        'reacting_threshold' => phase.reacting_threshold
       }
       if yml_phase['participation_method'] == 'voting'
         yml_phase['voting_method'] = phase.voting_method
@@ -317,6 +320,7 @@ class ProjectCopyService < TemplateService
         yml_phase['voting_max_votes_per_idea'] = phase.voting_max_votes_per_idea
         yml_phase['voting_term_singular_multiloc'] = phase.voting_term_singular_multiloc
         yml_phase['voting_term_plural_multiloc'] = phase.voting_term_plural_multiloc
+        yml_phase['autoshare_results_enabled'] = phase.autoshare_results_enabled
       end
       if yml_phase['participation_method'] == 'survey'
         yml_phase['survey_embed_url'] = phase.survey_embed_url
@@ -397,12 +401,7 @@ class ProjectCopyService < TemplateService
   end
 
   def yml_maps_map_configs(shift_timestamps: 0)
-    custom_forms = CustomForm.where(participation_context: [@project, *@project.phases])
-    custom_fields = CustomField.where(resource: custom_forms)
-    map_configs = CustomMaps::MapConfig.where(mappable: @project)
-      .or(CustomMaps::MapConfig.where(mappable: custom_fields))
-
-    map_configs.map do |map_config|
+    @project_map_configs.map do |map_config|
       yml_map_config = {
         'mappable_ref' => lookup_ref(map_config.mappable_id, %i[project custom_field]),
         'center_geojson' => map_config.center_geojson,
@@ -419,7 +418,9 @@ class ProjectCopyService < TemplateService
   end
 
   def yml_maps_layers(shift_timestamps: 0)
-    (@project.map_config&.layers || []).map do |layer|
+    layers = @project_map_configs.map(&:layers).flatten
+
+    layers.map do |layer|
       yml_layer = {
         'map_config_ref' => lookup_ref(layer.map_config_id, :maps_map_config),
         'type' => layer.type,
@@ -428,6 +429,7 @@ class ProjectCopyService < TemplateService
         'geojson' => layer.geojson,
         'default_enabled' => layer.default_enabled,
         'marker_svg_url' => layer.marker_svg_url,
+        'ordering' => layer.ordering,
         'created_at' => shift_timestamp(layer.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(layer.updated_at, shift_timestamps)&.iso8601
       }
@@ -564,7 +566,7 @@ class ProjectCopyService < TemplateService
       yml_permission = {
         'action' => p.action,
         'permitted_by' => p.permitted_by,
-        'permission_scope_ref' => lookup_ref(p.permission_scope_id, %i[project phase]),
+        'permission_scope_ref' => lookup_ref(p.permission_scope_id, :phase),
         'global_custom_fields' => p.global_custom_fields,
         'created_at' => shift_timestamp(p.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(p.updated_at, shift_timestamps)&.iso8601
@@ -763,5 +765,14 @@ class ProjectCopyService < TemplateService
       props['dataCode'] = new_image_code
     end
     craftjs_json
+  end
+
+  def project_map_configs
+    CustomMaps::MapConfig.where(mappable: @project)
+      .or(
+        CustomMaps::MapConfig.where(
+          mappable: CustomField.where(resource: CustomForm.where(participation_context: [@project, *@project.phases]))
+        )
+      )
   end
 end

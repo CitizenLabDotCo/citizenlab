@@ -15,21 +15,15 @@ import styled from 'styled-components';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
 import { Sort as IdeasSort, IIdeaData } from 'api/ideas/types';
-import { IInitiativeStatusData } from 'api/initiative_statuses/types';
-import {
-  IInitiativeData,
-  Sort as InitiativesSort,
-} from 'api/initiatives/types';
 import { IPhaseData } from 'api/phases/types';
 
-import Pagination from 'components/admin/Pagination';
+import Pagination from 'components/Pagination';
 
 import { SortDirection } from 'utils/paginationUtils';
 
 import { ManagerType, TFilterMenu } from '../..';
 
 import IdeaHeaderRow from './header/IdeaHeaderRow';
-import InitiativesHeaderRow from './header/InitiativesHeaderRow';
 import NoPost from './NoPost';
 import Row from './Row';
 
@@ -79,15 +73,15 @@ const Container = styled.div`
 
 interface Props {
   type: ManagerType;
-  sortAttribute?: IdeasSort | InitiativesSort;
+  sortAttribute?: IdeasSort;
   sortDirection?: SortDirection;
-  posts: IIdeaData[] | IInitiativeData[];
+  posts: IIdeaData[];
   phases?: IPhaseData[];
-  statuses?: IIdeaStatusData[] | IInitiativeStatusData[];
+  statuses?: IIdeaStatusData[];
   selectedPhaseId?: string | null;
   selectedProjectId?: string | null;
-  onChangeSort?: (sort: IdeasSort | InitiativesSort) => void;
-  /** A set of ids of ideas/initiatives that are currently selected */
+  onChangeSort?: (sort: IdeasSort) => void;
+  /** A set of ids of ideas that are currently selected */
   selection: Set<string>;
   onChangeSelection: React.Dispatch<React.SetStateAction<Set<string>>>;
   currentPageNumber?: number;
@@ -117,18 +111,16 @@ const PostTable = ({
   currentPageNumber,
   lastPageNumber,
 }: Props) => {
-  const handleSortClick =
-    (newSortAttribute: IdeasSort | InitiativesSort) => () => {
-      if (isFunction(onChangeSort)) {
-        let newSortSign = '-';
-        if (newSortAttribute === sortAttribute) {
-          newSortSign = sortDirection === 'ascending' ? '-' : '';
-        }
-        onChangeSort(
-          `${newSortSign}${newSortAttribute}` as IdeasSort | InitiativesSort
-        );
-      }
-    };
+  const handleSortClick = (newSortAttribute: IdeasSort) => () => {
+    if (isFunction(onChangeSort)) {
+      const currentSortAttribute = sortAttribute?.replace(/^-/, '');
+      const isSameAttribute = currentSortAttribute === newSortAttribute;
+      const newSortSign =
+        isSameAttribute && sortDirection === 'descending' ? '-' : '';
+
+      onChangeSort(`${newSortSign}${newSortAttribute}` as IdeasSort);
+    }
+  };
 
   const toggleSelect = (postId: string) => () => {
     onChangeSelection((currentSelection) => {
@@ -143,6 +135,8 @@ const PostTable = ({
   };
 
   const toggleSelectAll = () => {
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (!posts) return;
 
     onChangeSelection((currentSelection) => {
@@ -162,9 +156,7 @@ const PostTable = ({
   const allSelected = (selection: Set<string>) => {
     return (
       !isEmpty(posts) &&
-      every(posts, (post: IIdeaData | IInitiativeData) =>
-        selection.has(post.id)
-      )
+      every(posts, (post: IIdeaData) => selection.has(post.id))
     );
   };
 
@@ -178,51 +170,37 @@ const PostTable = ({
           bodyRows: true,
         }}
       >
-        {type === 'Initiatives' ? (
-          <InitiativesHeaderRow
-            sortAttribute={sortAttribute as InitiativesSort}
-            sortDirection={sortDirection}
-            allSelected={allSelected(selection)}
-            toggleSelectAll={toggleSelectAll}
-            handleSortClick={handleSortClick}
-          />
-        ) : type === 'AllIdeas' ||
-          type === 'ProjectIdeas' ||
-          type === 'ProjectProposals' ? (
-          <IdeaHeaderRow
-            type={type}
-            selectedProjectId={selectedProjectId}
-            selectedPhaseId={selectedPhaseId}
-            sortAttribute={sortAttribute}
-            sortDirection={sortDirection}
-            allSelected={allSelected(selection)}
-            toggleSelectAll={toggleSelectAll}
-            handleSortClick={handleSortClick}
-          />
-        ) : null}
+        <IdeaHeaderRow
+          type={type}
+          selectedProjectId={selectedProjectId}
+          selectedPhaseId={selectedPhaseId}
+          sortAttribute={sortAttribute}
+          sortDirection={sortDirection}
+          allSelected={allSelected(selection)}
+          toggleSelectAll={toggleSelectAll}
+          handleSortClick={handleSortClick}
+        />
+
         <Tbody>
           {!isEmpty(posts) ? (
             <TransitionGroup component={null}>
-              {
-                // Cleanest workaround typescript I found
-                (posts as (IIdeaData | IInitiativeData)[]).map((post) => (
-                  <CSSTransition classNames="fade" timeout={500} key={post.id}>
-                    <Row
-                      key={post.id}
-                      type={type}
-                      post={post}
-                      selection={selection}
-                      activeFilterMenu={activeFilterMenu}
-                      phases={phases}
-                      statuses={statuses}
-                      selectedProjectId={selectedProjectId}
-                      selectedPhaseId={selectedPhaseId}
-                      onToggleSelect={toggleSelect(post.id)}
-                      openPreview={openPreview}
-                    />
-                  </CSSTransition>
-                ))
-              }
+              {posts.map((post) => (
+                <CSSTransition classNames="fade" timeout={500} key={post.id}>
+                  <Row
+                    key={post.id}
+                    type={type}
+                    post={post}
+                    selection={selection}
+                    activeFilterMenu={activeFilterMenu}
+                    phases={phases}
+                    statuses={statuses}
+                    selectedProjectId={selectedProjectId}
+                    selectedPhaseId={selectedPhaseId}
+                    onToggleSelect={toggleSelect(post.id)}
+                    openPreview={openPreview}
+                  />
+                </CSSTransition>
+              ))}
             </TransitionGroup>
           ) : null}
         </Tbody>
@@ -243,7 +221,7 @@ const PostTable = ({
       {isEmpty(posts) && (
         <TransitionGroup component={null}>
           <CSSTransition classNames="fade" timeout={500}>
-            <NoPost handleSeeAll={handleSeeAll} type={type} />
+            <NoPost handleSeeAll={handleSeeAll} />
           </CSSTransition>
         </TransitionGroup>
       )}

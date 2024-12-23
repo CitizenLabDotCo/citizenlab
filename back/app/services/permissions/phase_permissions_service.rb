@@ -52,16 +52,18 @@ module Permissions
       @phase ||= phase
     end
 
-    def denied_reason_for_action(action, reaction_mode: nil)
+    def denied_reason_for_action(action, reaction_mode: nil, delete_action: false)
       return PHASE_DENIED_REASONS[:project_inactive] unless phase || IGNORED_PHASE_ACTIONS.include?(action)
 
       phase_denied_reason = case action
       when 'posting_idea'
         posting_idea_denied_reason_for_action
+      when 'editing_idea'
+        editing_idea_denied_reason_for_action
       when 'commenting_idea'
         commenting_idea_denied_reason_for_action
       when 'reacting_idea'
-        reacting_denied_reason_for_action(reaction_mode: reaction_mode)
+        reacting_denied_reason_for_action(reaction_mode: reaction_mode, delete_action: delete_action)
       when 'voting'
         voting_denied_reason_for_action
       when 'annotating_document'
@@ -73,11 +75,9 @@ module Permissions
       when 'volunteering'
         volunteering_denied_reason_for_phase
       else
-        raise "Unsupported action: #{action}" unless SUPPORTED_ACTIONS.include?(action)
+        raise "Unsupported action: #{action}" if !supported_action? action
       end
       return phase_denied_reason if phase_denied_reason
-
-      return unless supported_action? action
 
       super(action, scope: phase)
     end
@@ -97,6 +97,12 @@ module Permissions
       end
     end
 
+    def editing_idea_denied_reason_for_action
+      if !participation_method.supports_submission?
+        POSTING_DENIED_REASONS[:posting_not_supported] # TODO: Rename to sumbission_not_supported
+      end
+    end
+
     def commenting_idea_denied_reason_for_action
       if !participation_method.supports_commenting?
         COMMENTING_DENIED_REASONS[:commenting_not_supported]
@@ -105,16 +111,17 @@ module Permissions
       end
     end
 
-    def reacting_denied_reason_for_action(reaction_mode: nil)
+    # NOTE: some reasons should not be returned if trying to delete a reaction (delete_action: true)
+    def reacting_denied_reason_for_action(reaction_mode: nil, delete_action: false)
       if !participation_method.supports_reacting?
         REACTING_DENIED_REASONS[:reacting_not_supported]
       elsif !phase.reacting_enabled
         REACTING_DENIED_REASONS[:reacting_disabled]
       elsif reaction_mode == 'down' && !phase.reacting_dislike_enabled
         REACTING_DENIED_REASONS[:reacting_dislike_disabled]
-      elsif reaction_mode == 'up' && user && liking_limit_reached?
+      elsif reaction_mode == 'up' && user && liking_limit_reached? && !delete_action
         REACTING_DENIED_REASONS[:reacting_like_limited_max_reached]
-      elsif reaction_mode == 'down' && user && disliking_limit_reached?
+      elsif reaction_mode == 'down' && user && disliking_limit_reached? && !delete_action
         REACTING_DENIED_REASONS[:reacting_dislike_limited_max_reached]
       end
     end

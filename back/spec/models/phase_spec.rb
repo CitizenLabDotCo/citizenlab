@@ -133,6 +133,14 @@ RSpec.describe Phase do
     end
   end
 
+  describe 'input_term' do
+    it 'default is set by the participation method defaults' do
+      phase = build(:phase, input_term: nil)
+      expect_any_instance_of(ParticipationMethod::Ideation).to receive(:assign_defaults_for_phase).and_call_original
+      expect { phase.validate }.to change { phase.input_term }.from(nil).to('idea')
+    end
+  end
+
   describe 'campaigns_settings validation' do
     it 'fails when null' do
       phase = build(:phase, campaigns_settings: nil)
@@ -455,6 +463,21 @@ RSpec.describe Phase do
       phase = create(:phase, start_at: Time.zone.today, end_at: nil)
       phase.start_at += 1.day
       expect(phase).to be_valid
+    end
+  end
+
+  describe '#disliking_enabled' do
+    it 'defaults to false when disable_disliking feature flag is enabled (default)' do
+      # binding.pry
+      phase = build(:phase)
+      expect(phase.reacting_dislike_enabled).to be false
+    end
+
+    it 'defaults to true when disable_disliking feature flag is disabled' do
+      AppConfiguration.instance.settings['disable_disliking'] = { 'allowed' => true, 'enabled' => false }
+      AppConfiguration.instance.save!
+      phase = create(:phase)
+      expect(phase.reacting_dislike_enabled).to be true
     end
   end
 end

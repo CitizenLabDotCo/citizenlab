@@ -12,7 +12,6 @@ import styled from 'styled-components';
 
 import { ICommentData } from 'api/comments/types';
 import useIdeaById from 'api/ideas/useIdeaById';
-import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useProjectById from 'api/projects/useProjectById';
 import useUserById from 'api/users/useUserById';
 
@@ -24,7 +23,6 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
-import { canModerateInitiative } from 'utils/permissions/rules/initiativePermissions';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import messages from './messages';
@@ -119,57 +117,40 @@ const CommentContainer = styled.div`
 
 interface Props {
   postId: string;
-  postType: 'idea' | 'initiative';
   comments: ICommentData[];
   userId: string;
 }
 
 const nothingHappens = () => {};
 
-const PostCommentGroup = ({ postType, comments, userId, postId }: Props) => {
-  const initiativeId = postType === 'initiative' ? postId : undefined;
-  const ideaId = postType === 'idea' ? postId : undefined;
-  const { data: initiative } = useInitiativeById(initiativeId);
-  const { data: idea } = useIdeaById(ideaId);
+const PostCommentGroup = ({ comments, userId, postId }: Props) => {
+  const { data: idea } = useIdeaById(postId);
   const { data: project } = useProjectById(
     idea?.data.relationships.project.data.id
   );
   const { data: user } = useUserById(userId);
-  const post = initiative || idea;
 
-  if (isNilOrError(post) || isNilOrError(user)) {
+  if (!idea || isNilOrError(user)) {
     return null;
   }
 
-  const { slug, title_multiloc } = post.data.attributes;
-  const userCanModerate = {
-    idea: project ? canModerateProject(project.data, user) : false,
-    initiative: canModerateInitiative(user),
-  }[postType];
+  const { slug, title_multiloc } = idea.data.attributes;
+  const userCanModerate = project
+    ? canModerateProject(project.data, user)
+    : false;
 
   return (
     <Container>
       <ScreenReaderOnly>
-        {postType === 'idea' ? (
-          <FormattedMessage {...messages.a11y_postCommentPostedIn} />
-        ) : (
-          <FormattedMessage {...messages.a11y_initiativePostedIn} />
-        )}
+        <FormattedMessage {...messages.a11y_postCommentPostedIn} />
       </ScreenReaderOnly>
-      <PostLink to={`/${postType}s/${slug}?go_back=true`}>
+      <PostLink to={`/ideas/${slug}?go_back=true`}>
         <PostLinkLeft>
-          <StyledIcon
-            ariaHidden
-            name={postType === 'idea' ? 'idea' : 'initiatives'}
-          />
+          <StyledIcon ariaHidden name={'idea'} />
           <T value={title_multiloc} className="text" />
         </PostLinkLeft>
         <PostLinkRight>
-          {postType === 'idea' ? (
-            <FormattedMessage {...messages.seePost} />
-          ) : (
-            <FormattedMessage {...messages.seeInitiative} />
-          )}
+          <FormattedMessage {...messages.seePost} />
         </PostLinkRight>
       </PostLink>
 
@@ -190,8 +171,7 @@ const PostCommentGroup = ({ postType, comments, userId, postId }: Props) => {
                 editing={false}
                 onCommentSaved={nothingHappens}
                 onCancelEditing={nothingHappens}
-                ideaId={ideaId}
-                initiativeId={initiativeId}
+                ideaId={idea.data.id}
               />
               <ReactionsContainer>
                 <ReactionIcon ariaHidden name="vote-up" />

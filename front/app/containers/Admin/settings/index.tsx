@@ -21,9 +21,7 @@ import messages from './messages';
 const SettingsPage = () => {
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
-  const proposalsParitipationMethdEnabled = useFeatureFlag({
-    name: 'proposals_participation_method',
-  });
+  const projectReviewEnabled = useFeatureFlag({ name: 'project_review' });
 
   const tabs: ITab[] = [
     {
@@ -56,15 +54,22 @@ const SettingsPage = () => {
       label: formatMessage(messages.tabInputStatuses),
       url: '/admin/settings/ideation/statuses',
     },
-    ...(proposalsParitipationMethdEnabled
-      ? ([
+    {
+      name: 'proposal-statuses',
+      label: formatMessage(messages.tabProposalStatuses),
+      url: '/admin/settings/proposals/statuses',
+    },
+
+    ...(projectReviewEnabled
+      ? [
           {
-            name: 'proposal-statuses',
-            label: formatMessage(messages.tabProposalStatuses),
-            url: '/admin/settings/proposals/statuses',
-          },
-        ] as ITab[])
+            name: 'project-review',
+            label: formatMessage(messages.tabApproval),
+            url: '/admin/settings/review',
+          } as ITab,
+        ]
       : []),
+
     {
       name: 'policies',
       label: formatMessage(messages.tabPolicies),

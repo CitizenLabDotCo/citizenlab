@@ -25,6 +25,9 @@ module MultiTenancy
           reacting_enabled
           baskets_count
           votes_count
+          prescreening_enabled
+          expire_days_limit
+          reacting_threshold
         ]
 
         attribute(:start_at) { |phase| serialize_timestamp(phase.start_at) }
@@ -36,6 +39,7 @@ module MultiTenancy
         attribute(:voting_max_votes_per_idea, if: :voting?)
         attribute(:voting_term_singular_multiloc, if: :voting?)
         attribute(:voting_term_plural_multiloc, if: :voting?)
+        attribute(:autoshare_results_enabled, if: :voting?)
         attribute(:survey_embed_url, if: :survey?)
         attribute(:survey_service, if: :survey?)
         attribute(:document_annotation_embed_url, if: :document_annotation?)

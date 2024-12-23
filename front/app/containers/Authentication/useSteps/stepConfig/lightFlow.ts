@@ -129,7 +129,7 @@ export const lightFlow = (
         }
 
         if (doesNotMeetGroupCriteria(requirements)) {
-          setCurrentStep('closed');
+          setCurrentStep('access-denied');
           return;
         }
 
@@ -162,13 +162,15 @@ export const lightFlow = (
         }
 
         invalidateQueryCache();
-        setCurrentStep('closed');
 
         trackEventByName(tracks.signUpFlowCompleted);
 
         if (doesNotMeetGroupCriteria(requirements)) {
+          setCurrentStep('access-denied');
           return;
         }
+
+        setCurrentStep('closed');
 
         const { successAction } = getAuthenticationData();
         if (successAction) {

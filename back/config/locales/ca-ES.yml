@@ -170,6 +170,9 @@ ca:
       topic_ids:
         title: Etiquetes
         description:
+      consponsor_ids:
+        title: Copatrocinadors
+        description: Convida als copatrocinadors a través del camp següent. Els copatrocinadors convidats rebran un correu electrònic.
       location:
         title: Ubicació
         description:
@@ -192,8 +195,8 @@ ca:
       section3:
         title: Detalls
         description:
-      other_text_field:
-        title: Si has triat "{other_option}", en què estàs pensant?
+      other_input_field:
+        title: Escriu la teva resposta
   custom_forms:
     categories:
       main_content:
@@ -209,6 +212,12 @@ ca:
           title: Quin és el vostre comentari?
         option:
           title: Quina és la vostra opció ?
+        proposal:
+          title: Quina és la teva proposta?
+        initiative:
+          title: Quina és la teva iniciativa?
+        petition:
+          title: Quina és la teva petició?
   custom_field_options:
     gender:
       male: Mascle
@@ -233,6 +242,7 @@ ca:
       <ul><li>Preneu-vos el temps per elaborar la vostra proposta. Si cal, escriviu primer un esborrany i després copieu-lo i enganxeu-lo aquí.</li><li>Trieu un títol significatiu que expliqui clarament què implica la vostra proposta.</li><li>Visualitzeu la vostra proposta amb una imatge adequada per ajudar-la a destacar!</li><li>Afegiu fitxers adjunts rellevants, com ara vídeos, exemples inspiradors, detalls tècnics o plans.</li><li>Compartiu la vostra idea a les xarxes socials i altres canals per obtenir el suport dels altres.</li></ul>
   reset_password_mailer:
     send_reset_password:
+      preheader: 'Restableix la teva contrasenya per a %{organizationName}'
       cta_reset_password: 'Restablir la contrasenya'
       message_you_reset_your_password: 'Heu sol·licitat un restabliment de la contrasenya per a la plataforma de participació de %{organizationName}. Feu clic al botó següent per triar una contrasenya nova i segura. L''enllaç caduca en 1 hora.'
       subject: '%{organizationName}: Restableix la teva contrasenya'
@@ -256,6 +266,7 @@ ca:
       first_name: 'Primers noms)'
       image_url: 'URL de la imatge'
       input_id: 'ID'
+      manual_votes: 'Vots fora de línia'
       input_url: 'URL'
       last_name: 'Cognom'
       latitude: 'Latitud'
@@ -310,6 +321,7 @@ ca:
   confirmations_mailer:
     send_confirmation_code:
       subject: "Confirmeu la vostra adreça de correu electrònic per a la plataforma de participació de %{organizationName}"
+      preheader: 'Confirmeu la vostra adreça de correu electrònic per a %{organizationName}'
       header: "El teu codi de confirmació"
       header_message: "hola %{firstName}!"
       confirm_email_address: "Confirma la teva adreça electrònica"
@@ -324,6 +336,7 @@ ca:
   user_blocked_mailer:
     send_user_blocked_email:
       subject: 'El teu compte s''ha desactivat temporalment'
+      preheader: 'El vostre compte a la plataforma de participació de %{organizationName} s''ha desactivat temporalment'
       title_user_blocked: 'El teu compte s''ha desactivat temporalment'
       paragraph_1_without_reason: "El vostre compte a la plataforma de participació de %{organizationName} s'ha desactivat temporalment per una infracció de les directrius de la comunitat."
       paragraph_1_with_reason: "El vostre compte a la plataforma de participació de %{organizationName} s'ha desactivat temporalment pel motiu següent:"
@@ -331,6 +344,8 @@ ca:
       you_can_sign_in_again_from: "Podeu tornar a iniciar la sessió des %{date}"
   user:
     anon_first_name: "Usuari"
+    anon_scheme:
+      animals: 'caiman, cocodril, alpaca, formiga, antílop, mico, armadillo, mandril, teixó, ratpenat, ós, castor, abella, escarabat, búfal, papallona, camell, búfal d''aigua, caribú, gat, bestiar, guepard, ximpanzé, xinxilla, cigarra cloïssa, panerola, bacallà, coiot, cranc, grill, corb, corb, cérvol, dinosaure, gos, dofí, marsopa, ànec, àguila, anguila, elefant, alç, fura, peix, mosca, guineu, granota, gripau, gerbil ,girafa, mosquit, gnu, gnu, cabra, peix daurat, oca, goril·la, llagosta, conillet d''índies, hàmster, llebre, eriçó, arengada, hipopòtam, vespa, cavall, gos, hiena, impala, xacal, medusa, cangur, wallaby, coala, lleopard, lleó, sargantana, cria, llagosta, poll, guacamaya, collverd, mamut, manatí, marta, visó, pedrega, talp, alc, mosquit, ratolí, rata, mula, rata almizclera, llúdriga, bou, ostra, panda, porc, ornitorinc, porc espín, gos de les praderies, carlin, conill, mapache, ren, rinoceront, salmó, sardina, escorpí, foca, lleó marí, serval, tauró, ovella, mofeta, cargol, serp, aranya, esquirol, cigne, tèrmits, tigre, truita, tortuga, tortuga, morsa, vespa, balena, llop, wombat, marmota, cuc, iac, jaqueta groga, zebra'
   time:
     am: soc
     formats:
@@ -339,3 +354,5 @@ ca:
   voting_method:
     default_voting_term_singular: "votar"
     default_voting_term_plural: "vots"
+  ics_calendar_event:
+    event_details: "Detalls de l'esdeveniment"

@@ -5,6 +5,8 @@ class SideFxIdeaService
 
   def initialize
     @automatic_assignment = false
+    @old_phase_ids = []
+    @old_cosponsor_ids = []
   end
 
   def before_create(idea, user)
@@ -13,6 +15,7 @@ class SideFxIdeaService
 
   def after_create(idea, user)
     idea.update!(body_multiloc: TextImageService.new.swap_data_images_multiloc(idea.body_multiloc, field: :body_multiloc, imageable: idea))
+    idea.phases.each(&:update_manual_votes_count!) if idea.manual_votes_amount.present?
 
     LogActivityJob.perform_later(
       idea,
@@ -22,19 +25,35 @@ class SideFxIdeaService
       payload: { idea: serialize_idea(idea) }
     )
 
+    after_submission idea, user if idea.submitted_or_published?
     after_publish idea, user if idea.published?
+    enqueue_embeddings_job(idea)
+
+    log_activities_if_cosponsors_added(idea, user)
   end
 
   def before_update(idea, user)
+    @old_cosponsor_ids = idea.cosponsor_ids
+    @old_phase_ids = idea.phase_ids
     idea.body_multiloc = TextImageService.new.swap_data_images_multiloc(idea.body_multiloc, field: :body_multiloc, imageable: idea)
     idea.publication_status = 'published' if idea.submitted_or_published? && idea.idea_status&.public_post?
     before_publish idea, user if idea.will_be_published?
   end
 
   def after_update(idea, user)
-    remove_user_from_past_activities_with_item(idea, user) if idea.anonymous_previously_changed?(to: true)
+    # We need to check if the idea was just submitted or just published before
+    # we do anything else because updates to the idea can change this state.
+    just_submitted = idea.just_submitted?
+    just_published = idea.just_published?
+    enabled_anonymous = idea.anonymous_previously_changed?(to: true)
+    changed_manual_votes_amount = idea.manual_votes_amount_previously_changed?
+    changed_phases = idea.phase_ids.sort != @old_phase_ids.sort
 
-    if idea.just_published?
+    remove_user_from_past_activities_with_item(idea, user) if enabled_anonymous
+    Phase.where(id: [idea.phase_ids + @old_phase_ids].uniq).each(&:update_manual_votes_count!) if changed_manual_votes_amount || changed_phases
+
+    after_submission idea, user if just_submitted
+    if just_published
       after_publish idea, user
     elsif idea.published?
       change = idea.saved_changes
@@ -80,11 +99,29 @@ class SideFxIdeaService
         payload: { change: idea.body_multiloc_previous_change }
       )
     end
+
+    enqueue_embeddings_job(idea) if idea.title_multiloc_previously_changed? || idea.body_multiloc_previously_changed?
+
+    if idea.manual_votes_amount_previously_changed?
+      LogActivityJob.perform_later(
+        idea,
+        'changed_manual_votes_amount',
+        user_for_activity_on_anonymizable_item(idea, user),
+        idea.updated_at.to_i,
+        payload: { change: idea.manual_votes_amount_previous_change }
+      )
+    end
+
+    log_activities_if_cosponsors_added(idea, user)
   end
 
   def after_destroy(frozen_idea, user)
-    serialized_idea = serialize_idea(frozen_idea)
+    frozen_idea.phases.each(&:update_manual_votes_count!) if frozen_idea.manual_votes_amount.present?
 
+    # Refresh the count of project participants by clearing the cache
+    ParticipantsService.new.clear_project_participants_count_cache(frozen_idea.project) if frozen_idea.project
+
+    serialized_idea = serialize_idea(frozen_idea)
     LogActivityJob.perform_later(
       encode_frozen_resource(frozen_idea),
       'deleted',
@@ -99,9 +136,13 @@ class SideFxIdeaService
 
   def before_publish(idea, _user); end
 
-  def after_publish(idea, user)
+  def after_submission(idea, user)
     add_autoreaction(idea)
     create_followers(idea, user) unless idea.anonymous?
+    LogActivityJob.set(wait: 20.seconds).perform_later(idea, 'submitted', user_for_activity_on_anonymizable_item(idea, user), idea.submitted_at.to_i)
+  end
+
+  def after_publish(idea, user)
     log_activity_jobs_after_published(idea, user)
   end
 
@@ -109,7 +150,7 @@ class SideFxIdeaService
     return unless idea.author
     return if Permissions::IdeaPermissionsService.new(idea, idea.author).denied_reason_for_action 'reacting_idea', reaction_mode: 'up'
 
-    idea.reactions.create!(mode: 'up', user: idea.author)
+    idea.reactions.create!(mode: 'up', user: idea.author) if !idea.reactions.exists?(mode: 'up', user: idea.author)
     idea.reload
   end
 
@@ -154,6 +195,25 @@ class SideFxIdeaService
     end
 
     change
+  end
+
+  def log_activities_if_cosponsors_added(idea, user)
+    added_ids = idea.cosponsors.map(&:id) - @old_cosponsor_ids
+    if added_ids.present?
+      new_cosponsorships = idea.cosponsorships.where(user_id: added_ids)
+      new_cosponsorships.each do |cosponsorship|
+        LogActivityJob.perform_later(
+          cosponsorship,
+          'created',
+          user, # We don't want anonymized authors when cosponsors feature in use
+          cosponsorship.created_at.to_i
+        )
+      end
+    end
+  end
+
+  def enqueue_embeddings_job(idea)
+    UpsertEmbeddingJob.perform_later(idea) if AppConfiguration.instance.feature_activated?('similar_inputs')
   end
 end
 

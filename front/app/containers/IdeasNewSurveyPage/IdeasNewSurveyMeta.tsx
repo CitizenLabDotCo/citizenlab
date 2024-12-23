@@ -1,8 +1,6 @@
 import React from 'react';
 
-import { Helmet } from 'react-helmet';
-
-import useAuthUser from 'api/me/useAuthUser';
+import { Helmet } from 'react-helmet-async';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
@@ -10,39 +8,27 @@ import { useIntl } from 'utils/cl-intl';
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
 
-import ideationMessages from '../IdeasNewPage/messages';
-
 import messages from './messages';
 
-const IdeasNewSurveyMeta = () => {
+interface Props {
+  surveyTitle: string;
+}
+
+const IdeasNewSurveyMeta = ({ surveyTitle }: Props) => {
   const { formatMessage } = useIntl();
-  const { data: authUser } = useAuthUser();
   const locales = useAppConfigurationLocales();
   const { location } = window;
-
-  const ideasIndexTitle = formatMessage(messages.surveyNewMetaTitle1);
-  const ideasIndexDescription = formatMessage(
-    ideationMessages.ideaNewMetaDescription
-  );
+  const title = formatMessage(messages.surveyNewMetaTitle, {
+    surveyTitle,
+  });
 
   return (
     <Helmet>
-      <title>
-        {`
-            ${
-              authUser && authUser.data.attributes.unread_notifications
-                ? `(${authUser.data.attributes.unread_notifications}) `
-                : ''
-            }
-            ${ideasIndexTitle}
-          `}
-      </title>
+      <title>{title}</title>
       {getAlternateLinks(locales)}
       {getCanonicalLink()}
-      <meta name="title" content={ideasIndexTitle} />
-      <meta name="description" content={ideasIndexDescription} />
-      <meta property="og:title" content={ideasIndexTitle} />
-      <meta property="og:description" content={ideasIndexDescription} />
+      <meta name="title" content={title} />
+      <meta property="og:title" content={title} />
       <meta property="og:url" content={location.href} />
     </Helmet>
   );

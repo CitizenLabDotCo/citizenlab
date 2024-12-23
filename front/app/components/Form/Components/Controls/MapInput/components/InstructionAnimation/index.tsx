@@ -44,17 +44,27 @@ const InstructionAnimation = ({
       case 'point':
         return !data?.coordinates;
       case 'line':
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         return !data || data?.coordinates?.length < 2;
       case 'polygon':
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         return !data || data?.coordinates?.[0]?.length < 4;
     }
   };
 
   const onClick = () => {
     // For accessibility reasons, the animation must stop once it's clicked.
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (lottieRef?.current?.animationItem?.isPaused) {
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       lottieRef?.current?.play();
     } else {
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       lottieRef?.current?.pause();
     }
   };

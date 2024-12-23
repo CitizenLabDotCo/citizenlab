@@ -170,6 +170,9 @@ es:
       topic_ids:
         title: Temas
         description:
+      consponsor_ids:
+        title: Copatrocinadores
+        description: Invita a copatrocinadores a través del campo de abajo. Los copatrocinadores invitados recibirán un correo electrónico.
       location:
         title: Ubicación
         description:
@@ -192,8 +195,8 @@ es:
       section3:
         title: Detalles
         description:
-      other_text_field:
-        title: Ya que has elegido "{other_option}", ¿en qué estás pensando?
+      other_input_field:
+        title: Escribe tu respuesta
   custom_forms:
     categories:
       main_content:
@@ -209,6 +212,12 @@ es:
           title: '¿Cuál es su respuesta?'
         option:
           title: '¿Cuál es su opción?'
+        proposal:
+          title: '¿Cuál es tu propuesta?'
+        initiative:
+          title: '¿Cuál es tu iniciativa?'
+        petition:
+          title: '¿Cuál es tu petición?'
   custom_field_options:
     gender:
       male: Masculino
@@ -233,6 +242,7 @@ es:
       <ul><li>Tómate el tiempo necesario para elaborar tu propuesta. Si es necesario, escribe primero un borrador y luego cópiela y pégala aquí.</li><li>Elige un título explicativo que ilustre claramente lo que implica tu propuesta.</li><li>Asegúrate de visibilizar tu propuesta con una imagen adecuada, para que destaque más.</li><li>Añade anexos relevantes, como vídeos, ejemplos inspiradores, detalles técnicos o planos.</li><li>Comparte tu idea en las redes sociales y otros canales para conseguir votos.</li></ul>
   reset_password_mailer:
     send_reset_password:
+      preheader: 'Restablece tu contraseña en %{organizationName}'
       cta_reset_password: 'Restablece tu contraseña'
       message_you_reset_your_password: 'Solicitó un restablecimiento de contraseña para la plataforma de participación de %{organizationName}. Haga clic en el botón de abajo para elegir una nueva contraseña segura. El enlace caduca en 1 hora.'
       subject: '%{organizationName}: Restablecer tu contraseña'
@@ -256,6 +266,7 @@ es:
       first_name: 'Nombre(s)'
       image_url: 'URL de la imagen'
       input_id: 'ID'
+      manual_votes: 'Votos offline'
       input_url: 'URL'
       last_name: 'Apellido'
       latitude: 'Latitud'
@@ -310,6 +321,7 @@ es:
   confirmations_mailer:
     send_confirmation_code:
       subject: "Confirma tu correo electrónico para participar en la plataforma de %{organizationName}"
+      preheader: 'Confirma tu dirección de correo electrónico para %{organizationName}'
       header: "Tu código de confirmación"
       header_message: "¡Hola %{firstName}!"
       confirm_email_address: "Confirmar su dirección de correo electrónico"
@@ -324,6 +336,7 @@ es:
   user_blocked_mailer:
     send_user_blocked_email:
       subject: 'Su cuenta ha sido desactivada temporalmente'
+      preheader: 'Tu cuenta en la plataforma de participación de %{organizationName} ha sido desactivada temporalmente'
       title_user_blocked: 'Su cuenta ha sido desactivada temporalmente'
       paragraph_1_without_reason: "Su cuenta en la plataforma de participación de %{organizationName} ha sido desactivada temporalmente por violación de las directrices comunitarias."
       paragraph_1_with_reason: "Su cuenta en la plataforma de participación de %{organizationName} ha sido desactivada temporalmente por el siguiente motivo:"
@@ -331,6 +344,8 @@ es:
       you_can_sign_in_again_from: "Puedes acceder de nuevo desde %{date}"
   user:
     anon_first_name: "Usuario"
+    anon_scheme:
+      animals: 'caimán,cocodrilo,alpaca,hormiga,antílope,simio,armadillo,babuino,tejón,murciélago,oso,castor,abeja,escarabajo,búfalo,mariposa,camello,búfalo de agua,caribú,gato,ganado,guepardo,chimpancé,chinchilla,cigarra,almeja,cucaracha,bacalao,coyote,cangrejo,grillo,cuervo,cuervo,ciervo,dinosaurio,perro,delfín,marsopa,pato,águila,anguila,elefante,alce,hurón,pez,mosca,zorro,rana,sapo,jerbo,jirafa,mosquito,ñu,ñu,cabra,pez de colores,ganso,gorila,saltamontes,cobaya,hámster,liebre,erizo,arenque,hipopótamo,avispón,caballo,sabueso,hiena,impala,chacal,medusa,canguro,wallaby,koala,leopardo,león,lagarto,llama,langosta,piojo,guacamayo,ánade real,mamut,manatí,marta,visón,pececillo,topo,alce,mosquito,ratón,rata,mula,rata almizclera,nutria,buey,ostra,panda,cerdo,ornitorrinco,puercoespín,perrito de las praderas,carlino, conejo, mapache, reno, rinoceronte, salmón, sardina, escorpión, foca, león marino, serval, tiburón, oveja, mofeta, caracol, serpiente, araña, ardilla, cisne, termita, tigre, trucha, tortuga, morsa, avispa, ballena, lobo, wombat, marmota, gusano, yak, chaqueta amarilla y cebra.'
   time:
     am: soy
     formats:
@@ -339,3 +354,5 @@ es:
   voting_method:
     default_voting_term_singular: "votar"
     default_voting_term_plural: "votos"
+  ics_calendar_event:
+    event_details: "Detalles del evento"

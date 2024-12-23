@@ -5,7 +5,7 @@ module EmailCampaigns
     protected
 
     def subject
-      format_message('subject', values: { numberIdeas: event.need_feedback_assigned_ideas_count })
+      format_message('subject', values: { numberIdeas: event.need_feedback_assigned_inputs_count })
     end
 
     private

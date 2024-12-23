@@ -10,7 +10,7 @@ resource 'Reactions' do
     @user = create(:admin)
     header_token_for @user
     header 'Content-Type', 'application/json'
-    @project = create(:single_phase_ideation_project)
+    @project = create(:single_phase_ideation_project, phase_attrs: { reacting_dislike_enabled: true })
     @idea = create(:idea, project: @project, phases: @project.phases)
     @reactions = create_list(:reaction, 2, reactable: @idea)
   end
@@ -80,7 +80,7 @@ resource 'Reactions' do
     describe do
       let!(:status_threshold_reached) { create(:proposals_status, code: 'threshold_reached') }
       let(:phase) { create(:proposals_phase, reacting_threshold: 2) }
-      let(:proposal) { create(:proposal, idea_status: create(:proposals_status, code: 'proposed'), creation_phase: phase, project: phase.project, phases: [phase]) }
+      let(:proposal) { create(:proposal, idea_status: create(:proposals_status, code: 'proposed'), creation_phase: phase, project: phase.project) }
       let(:idea_id) { proposal.id }
 
       example 'Reaching the voting threshold immediately triggers status change', document: false do

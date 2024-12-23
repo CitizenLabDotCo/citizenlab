@@ -2,33 +2,26 @@
 
 module ProjectFolders
   class ImagePolicy < ApplicationPolicy
-    class Scope
-      attr_reader :user, :scope
-
-      def initialize(user, scope)
-        @user = user
-        @scope = scope
-      end
-
+    class Scope < ApplicationPolicy::Scope
       def resolve
-        scope.where(project_folder: Pundit.policy_scope(user, Folder))
+        scope.where(project_folder: scope_for(Folder))
       end
     end
 
     def create?
-      FolderPolicy.new(user, record.project_folder).update?
+      policy_for(record.project_folder).update?
     end
 
     def show?
-      FolderPolicy.new(user, record.project_folder).show?
+      policy_for(record.project_folder).show?
     end
 
     def update?
-      FolderPolicy.new(user, record.project_folder).update?
+      policy_for(record.project_folder).update?
     end
 
     def destroy?
-      FolderPolicy.new(user, record.project_folder).update?
+      policy_for(record.project_folder).update?
     end
   end
 end

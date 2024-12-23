@@ -1,4 +1,4 @@
-import { IRelationship } from 'typings';
+import { IRelationship, Multiloc } from 'typings';
 
 import {
   IPhasePermissionAction,
@@ -12,16 +12,13 @@ import permissionsKeys from './keys';
 
 export type PermissionsKeys = Keys<typeof permissionsKeys>;
 
-export type IGlobalPermissionAction =
-  | 'reacting_initiative'
-  | 'commenting_initiative'
-  | 'posting_initiative'
-  | 'following';
+export type IGlobalPermissionAction = 'following';
 
 export interface IGlobalPermissionData {
   id: string;
   type: 'permission';
   attributes: {
+    access_denied_explanation_multiloc: Multiloc;
     action: IGlobalPermissionAction;
     permitted_by: PermittedBy;
     created_at: string;
@@ -59,9 +56,5 @@ export interface PermissionUpdateParams {
   permitted_by: PermittedBy;
   global_custom_fields: boolean;
   verification_expiry: number | null;
+  access_denied_explanation_multiloc: Multiloc;
 }
-
-export type ResetPermissionParams = {
-  permissionId: string;
-  action: IGlobalPermissionAction;
-};

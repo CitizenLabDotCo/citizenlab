@@ -49,6 +49,7 @@ export default defineMessages({
     id: 'app.components.IdeasShow.bodyTitle',
     defaultMessage: 'Description',
   },
+  // #input_term_copy
   ideaTwitterMessage: {
     id: 'app.containers.IdeasShow.ideaTwitterMessage',
     defaultMessage: 'Support this idea: {postTitle}',
@@ -73,6 +74,19 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.contributionTwitterMessage',
     defaultMessage: 'Support this contribution: {postTitle}',
   },
+  proposalTwitterMessage: {
+    id: 'app.containers.IdeasShow.proposalTwitterMessage',
+    defaultMessage: 'Support this proposal: {postTitle}',
+  },
+  initiativeTwitterMessage: {
+    id: 'app.containers.IdeasShow.initiativeTwitterMessage',
+    defaultMessage: 'Support this initiative: {postTitle}',
+  },
+  petitionTwitterMessage: {
+    id: 'app.containers.IdeasShow.petitionTwitterMessage',
+    defaultMessage: 'Support this petition: {postTitle}',
+  },
+  // #input_term_copy
   ideaWhatsAppMessage: {
     id: 'app.containers.IdeasShow.ideaWhatsAppMessage',
     defaultMessage: 'Support this idea: {postTitle}',
@@ -97,6 +111,19 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.ideasWhatsAppMessage',
     defaultMessage: 'Support this issue: {postTitle}',
   },
+  proposalWhatsAppMessage: {
+    id: 'app.containers.IdeasShow.proposalWhatsAppMessage',
+    defaultMessage: 'Support this proposal: {postTitle}',
+  },
+  initiativeWhatsAppMessage: {
+    id: 'app.containers.IdeasShow.initiativeWhatsAppMessage',
+    defaultMessage: 'Support this initiative: {postTitle}',
+  },
+  petitionWhatsAppMessage: {
+    id: 'app.containers.IdeasShow.petitionWhatsAppMessage',
+    defaultMessage: 'Support this petition: {postTitle}',
+  },
+  // #input_term_copy
   ideaEmailSharingSubject: {
     id: 'app.containers.IdeasShow.ideaEmailSharingSubject',
     defaultMessage: 'Support this idea: {ideaTitle}',
@@ -145,6 +172,30 @@ export default defineMessages({
   projectEmailSharingBody: {
     id: 'app.containers.IdeasShow.projectEmailSharingBody',
     defaultMessage: "Support this project '{ideaTitle}' at {ideaUrl}!",
+  },
+  proposalEmailSharingSubject: {
+    id: 'app.containers.IdeasShow.proposalEmailSharingSubject',
+    defaultMessage: 'Support this proposal: {ideaTitle}',
+  },
+  proposalEmailSharingBody: {
+    id: 'app.containers.IdeasShow.proposalEmailSharingBody',
+    defaultMessage: "Support this proposal '{ideaTitle}' at {ideaUrl}!",
+  },
+  initiativeEmailSharingSubject: {
+    id: 'app.containers.IdeasShow.initiativeEmailSharingSubject',
+    defaultMessage: 'Support this initiative: {ideaTitle}',
+  },
+  initiativeEmailSharingBody: {
+    id: 'app.containers.IdeasShow.initiativeEmailSharingBody',
+    defaultMessage: "Support this initiative '{ideaTitle}' at {ideaUrl}!",
+  },
+  petitionEmailSharingSubject: {
+    id: 'app.containers.IdeasShow.petitionEmailSharingSubject',
+    defaultMessage: 'Support this petition: {ideaTitle}',
+  },
+  petitionEmailSharingBody: {
+    id: 'app.containers.IdeasShow.petitionEmailSharingBody',
+    defaultMessage: "Support this petition '{ideaTitle}' at {ideaUrl}!",
   },
   share: {
     id: 'app.containers.IdeasShow.share',

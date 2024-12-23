@@ -6,7 +6,7 @@ import {
   isRtl,
   media,
 } from '@citizenlab/cl2-component-library';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -14,7 +14,6 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useCustomPageBySlug from 'api/custom_pages/useCustomPageBySlug';
 import usePageFiles from 'api/page_files/usePageFiles';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
 import ContentContainer from 'components/ContentContainer';
@@ -81,7 +80,6 @@ const CustomPageShow = () => {
   const { data: appConfiguration } = useAppConfiguration();
   const localize = useLocalize();
   const { data: page, isError } = useCustomPageBySlug(slug);
-  const proposalsEnabled = useFeatureFlag({ name: 'initiatives' });
   const { data: remotePageFiles } = usePageFiles(
     page ? page.data.id : undefined
   );
@@ -93,17 +91,15 @@ const CustomPageShow = () => {
 
   if (
     // if URL is mistyped, page is also an error
-    isError ||
-    // If page loaded but it's /pages/initiatives but
-    // the initiatives feature is not enabled also show
-    // not found
-    (!isError && page.data.attributes.code === 'proposals' && !proposalsEnabled)
+    isError
   ) {
     return <PageNotFound />;
   }
 
   const pageAttributes = page.data.attributes;
   const localizedOrgName = localize(
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     appConfiguration?.data.attributes.settings.core.organization_name
   );
   return (

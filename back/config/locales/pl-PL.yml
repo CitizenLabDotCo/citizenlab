@@ -170,6 +170,9 @@ pl:
       topic_ids:
         title: Tematy
         description:
+      consponsor_ids:
+        title: Współsponsorzy
+        description: Zaproś współsponsorów za pomocą poniższego pola. Zaproszeni współsponsorzy otrzymają wiadomość e-mail.
       location:
         title: Lokalizacja
         description:
@@ -192,8 +195,8 @@ pl:
       section3:
         title: Szczegóły
         description:
-      other_text_field:
-        title: Jeśli wybrałeś '{other_option}', o czym myślisz?
+      other_input_field:
+        title: Wpisz swoją odpowiedź
   custom_forms:
     categories:
       main_content:
@@ -209,6 +212,12 @@ pl:
           title: Jaka jest Twoja sprawa ?
         option:
           title: Jaka jest Twója opcja?
+        proposal:
+          title: Jaka jest twoja propozycja?
+        initiative:
+          title: Jaka jest twoja inicjatywa?
+        petition:
+          title: Jaka jest twoja petycja?
   custom_field_options:
     gender:
       male: Mężczyzna
@@ -233,6 +242,7 @@ pl:
       <ul><li>Proszę poświęć trochę czasu na dopracowanie swojej propozycji. Jeśli to konieczne, napisz najpierw projekt, a następnie wklej go tutaj.</li><li>Wybierz tytuł, który jasno i klarownie pokaże, co pociąga za sobą Twoja propozycja.</li><li>Zilustruj swoją propozycję odpowiednim obrazem, tak aby bardziej się wyróżniała.</li><li>Dodaj odpowiednie załączniki, takie jak filmy wideo, inspirujące przykłady, szczegóły techniczne lub plany.</li><li>Podziel się swoim pomysłem w mediach społecznościowych i innych kanałach, aby zebrać wsparcie od innych.</li></ul>
   reset_password_mailer:
     send_reset_password:
+      preheader: 'Zresetuj hasło dla %{organizationName}'
       cta_reset_password: 'Zresetuj swoje hasło'
       message_you_reset_your_password: 'Poprosiłeś o zresetowanie hasła do platformy uczestnictwa %{organizationName}. Kliknij przycisk poniżej, aby wybrać nowe, bezpieczne hasło. Link wygasa za 1 godzinę.'
       subject: '%{organizationName}: Zresetuj swoje hasło'
@@ -256,6 +266,7 @@ pl:
       first_name: 'Imię (imiona)'
       image_url: 'Adres URL obrazu'
       input_id: 'ID'
+      manual_votes: 'Głosowania offline'
       input_url: 'URL'
       last_name: 'Nazwisko'
       latitude: 'Szerokość geograficzna'
@@ -312,6 +323,7 @@ pl:
   confirmations_mailer:
     send_confirmation_code:
       subject: "Potwierdź swój adres e-mail na %{organizationName}"
+      preheader: 'Potwierdź swój adres e-mail dla %{organizationName}'
       header: "Twój kod potwierdzający"
       header_message: "Cześć %{firstName}!"
       confirm_email_address: "Potwierdź swój adres e-mail"
@@ -326,6 +338,7 @@ pl:
   user_blocked_mailer:
     send_user_blocked_email:
       subject: 'Twoje konto zostało tymczasowo wyłączone'
+      preheader: 'Twoje konto na platformie uczestnictwa %{organizationName} zostało tymczasowo wyłączone'
       title_user_blocked: 'Twoje konto zostało tymczasowo wyłączone'
       paragraph_1_without_reason: "Twoje konto na platformie uczestnictwa %{organizationName} zostało tymczasowo wyłączone z powodu naruszenia wytycznych społecznościowych."
       paragraph_1_with_reason: "Twoje konto na platformie uczestnictwa %{organizationName} zostało tymczasowo wyłączone z następującego powodu:"
@@ -333,6 +346,8 @@ pl:
       you_can_sign_in_again_from: "Możesz zalogować się ponownie z %{date}."
   user:
     anon_first_name: "Użytkownik"
+    anon_scheme:
+      animals: 'aligator, krokodyl, alpaka, mrówka, antylopa, małpa, pancernik, pawian, borsuk, nietoperz, niedźwiedź, bóbr, pszczoła, żuk, bawół, motyl, wielbłąd, bawół wodny, karibu, kot, bydło, gepard, szympans, szynszyla, cykada, małż, karaluch, dorsz, kojot, krab, świerszcz, wrona, kruk,jeleń, dinozaur, pies, delfin, morświn, kaczka, orzeł, węgorz, słoń, łoś, fretka, ryba, mucha, lis, żaba, ropucha, myszoskoczek, żyrafa, gnat, gnu, gnu, koza, złota rybka, gęś, goryl, konik polny, świnka morska, chomik, zając, jeż, śledź, hipopotam, szerszeń, koń, pies,hiena, impala, szakal, meduza, kangur, walabia, koala, lampart, lew, jaszczurka, lama, szarańcza, wesz, ara, krzyżówka, mamut, manat, kuna, norka, nornica, kret, łoś, komar, mysz, szczur, muł, piżmak, wydra, wół, ostryga, panda, świnia, dziobak, jeżozwierz, piesek preriowy,mops, królik, szop pracz, renifer, nosorożec, łosoś, sardynka, skorpion, foka, lew morski, serwal, rekin, owca, skunks, ślimak, wąż, pająk, wiewiórka, łabędź, termit, tygrys, pstrąg, żółw, mors, osa, wieloryb, wilk, wombat, słonka, robak, jaka, żółta kurtka, zebra'
   time:
     am: am
     formats:
@@ -341,3 +356,5 @@ pl:
   voting_method:
     default_voting_term_singular: "głosowanie"
     default_voting_term_plural: "głosy"
+  ics_calendar_event:
+    event_details: "Szczegóły wydarzenia"

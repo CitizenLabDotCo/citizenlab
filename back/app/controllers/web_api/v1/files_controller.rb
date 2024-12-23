@@ -58,12 +58,12 @@ class WebApi::V1::FilesController < ApplicationController
   }
 
   before_action :set_container, only: %i[index create]
-  before_action :set_file, only: %i[show destroy]
+  before_action :set_file, only: %i[show destroy update]
   skip_after_action :verify_policy_scoped
 
   def index
     @files = @container.send(secure_constantize(:file_relationship)).order(:ordering)
-    @files = secure_constantize(:policy_scope_class).new(current_user, @files).resolve
+    @files = secure_constantize(:policy_scope_class).new(pundit_user, @files).resolve
     render json: WebApi::V1::FileSerializer.new(@files, params: jsonapi_serializer_params).serializable_hash
   end
 
@@ -72,13 +72,21 @@ class WebApi::V1::FilesController < ApplicationController
   end
 
   def create
-    @file = @container.send(secure_constantize(:file_relationship)).new file_params
+    @file = @container.send(secure_constantize(:file_relationship)).new create_file_params
     authorize @file
     if @file.save
       render json: WebApi::V1::FileSerializer.new(
         @file,
         params: jsonapi_serializer_params
       ).serializable_hash, status: :created
+    else
+      render json: { errors: transform_carrierwave_error_details(@file.errors, :file) }, status: :unprocessable_entity
+    end
+  end
+
+  def update
+    if @file.update(update_file_params)
+      render json: WebApi::V1::FileSerializer.new(@file, params: jsonapi_serializer_params).serializable_hash, status: :ok
     else
       render json: { errors: transform_carrierwave_error_details(@file.errors, :file) }, status: :unprocessable_entity
     end
@@ -95,7 +103,7 @@ class WebApi::V1::FilesController < ApplicationController
 
   private
 
-  def file_params
+  def create_file_params
     params_of_file = params.require(:file).permit(
       :file,
       :ordering,
@@ -110,6 +118,10 @@ class WebApi::V1::FilesController < ApplicationController
     end
     returned_file_params[:ordering] ||= params_of_file[:ordering]
     returned_file_params
+  end
+
+  def update_file_params
+    params.require(:file).permit(:ordering)
   end
 
   def set_file

@@ -2,7 +2,6 @@ import { MouseEvent, FC } from 'react';
 
 import { WrappedComponentProps } from 'react-intl';
 import { RouteType } from 'routes';
-import { TableCellProps } from 'semantic-ui-react';
 
 import { TAppConfigurationSetting } from 'api/app_configuration/types';
 
@@ -26,6 +25,7 @@ declare global {
     googleMaps?: boolean;
     intercomSettings: any;
     satismeter?: any;
+    Cypress?: any;
   }
 }
 
@@ -33,23 +33,6 @@ export interface IRelationship {
   id: string;
   type: string;
 }
-
-export type ILocationInfo =
-  | {
-      location_description: string | undefined;
-      location_point_geojson: {
-        type: 'Point';
-        coordinates: number[];
-      };
-    }
-  | {
-      location_description: undefined;
-      error: 'not_found';
-      location_point_geojson: {
-        type: 'Point';
-        coordinates: number[];
-      };
-    };
 
 export interface ITab {
   name: string;
@@ -65,7 +48,6 @@ export type CellConfiguration<ComponentProps> = {
   onChange?: (event: unknown) => void;
   onClick?: (event: MouseEvent) => void;
   featureFlag?: TAppConfigurationSetting;
-  cellProps?: TableCellProps;
   width?: number;
   Component: FC<ComponentProps>;
 };
@@ -92,6 +74,7 @@ export interface UploadFile extends File {
   remote: boolean;
   extension?: string;
   error?: string[];
+  ordering?: number;
 }
 
 export interface IOption {
@@ -121,10 +104,6 @@ export type GraphqlMultiloc = {
   content: string;
   locale: SupportedLocale;
 }[];
-
-export type MultilocFormValues = {
-  [field: string]: Multiloc | null | undefined;
-};
 
 export interface CLError {
   error: string;

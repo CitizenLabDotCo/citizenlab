@@ -207,7 +207,7 @@ describe Permissions::IdeaPermissionsService do
     let(:input) { create(:idea, project: project, phases: project.phases) }
 
     context 'when reacting is enabled' do
-      let(:current_phase_attrs) { { reacting_enabled: true } }
+      let(:current_phase_attrs) { { reacting_enabled: true, reacting_dislike_enabled: true } }
 
       it 'returns nil' do
         expect(service.denied_reason_for_reaction_mode('up')).to be_nil
@@ -243,7 +243,7 @@ describe Permissions::IdeaPermissionsService do
     end
 
     context "when it's not in the current phase" do
-      let(:project) { create(:project_with_current_phase, phases_config: { sequence: 'xxcxx' }, current_phase_attrs: { reacting_enabled: true }) }
+      let(:project) { create(:project_with_current_phase, phases_config: { sequence: 'xxcxx' }, current_phase_attrs: { reacting_enabled: true, reacting_dislike_enabled: true }) }
       let(:idea_phases) { project.phases.order(:start_at).take(2) + [project.phases.order(:start_at).last] }
       let(:input) { create(:idea, project: project, phases: idea_phases) }
 
@@ -272,12 +272,17 @@ describe Permissions::IdeaPermissionsService do
     end
 
     context 'when likes are limited' do
-      let(:project) { create(:single_phase_ideation_project, phase_attrs: { reacting_enabled: true, reacting_like_method: 'limited', reacting_like_limited_max: 1 }) }
+      let(:project) { create(:single_phase_ideation_project, phase_attrs: { reacting_enabled: true, reacting_like_method: 'limited', reacting_like_limited_max: 1, reacting_dislike_enabled: true }) }
 
       it 'returns `reacting_like_limited_max_reached` when the like limit was reached' do
         create(:reaction, mode: 'up', user: user, reactable: input)
         expect(service.denied_reason_for_reaction_mode('up')).to eq 'reacting_like_limited_max_reached'
         expect(service.denied_reason_for_reaction_mode('down')).to be_nil
+      end
+
+      it 'does not return `reacting_like_limited_max_reached` when deleting a reaction' do
+        create(:reaction, mode: 'up', user: user, reactable: input)
+        expect(service.denied_reason_for_reaction_mode('up', delete_action: true)).to be_nil
       end
 
       it 'returns nil if the like limit was not reached' do
@@ -316,7 +321,7 @@ describe Permissions::IdeaPermissionsService do
     context 'with phase permissions' do
       let(:reasons) { Permissions::PhasePermissionsService::REACTING_DENIED_REASONS }
 
-      let(:current_phase_attrs) { { with_permissions: true } }
+      let(:current_phase_attrs) { { with_permissions: true, reacting_dislike_enabled: true } }
       let(:input) { create(:idea, project: project, phases: [project.phases[2]]) }
       let(:permission) do
         TimelineService.new.current_phase_not_archived(project).permissions

@@ -10,6 +10,7 @@ export type TooltipProps = Omit<
   'interactive' | 'plugins' | 'role'
 > & {
   width?: string;
+  useWrapper?: boolean;
 };
 
 const useActiveElement = () => {
@@ -24,53 +25,45 @@ const useActiveElement = () => {
   };
 
   useEffect(() => {
-    document.addEventListener('focusin', handleFocusIn);
-    return () => {
-      document.removeEventListener('focusin', handleFocusIn);
-    };
-  }, []);
-
-  useEffect(() => {
     document.addEventListener('click', handleOutsideClick);
     return () => {
       document.removeEventListener('click', handleOutsideClick);
     };
   });
 
+  useEffect(() => {
+    document.addEventListener('focusin', handleFocusIn);
+    return () => {
+      document.removeEventListener('focusin', handleFocusIn);
+    };
+  }, []);
+
   return active;
 };
 
-const Tooltip = ({
+const TippyComponent = ({
   children,
-  theme = 'light',
+  theme,
   width,
+  componentKey,
+  isFocused,
+  setIsFocused,
+  setKey,
+  tooltipId,
   ...rest
-}: TooltipProps) => {
-  const tooltipId = useRef(
-    `tooltip-${Math.random().toString(36).substring(7)}`
-  );
-  const [isFocused, setIsFocused] = useState<boolean | undefined>(undefined);
-  const [key, setKey] = useState<number>(0);
-  const activeElement = useActiveElement();
-
-  // Check if the active element is inside the tooltip
-  useEffect(() => {
-    const tooltip = document.getElementById(tooltipId.current);
-    const tooltipContent = document.querySelector('.tippy-content');
-    if (tooltip && tooltip.contains(activeElement)) {
-      setIsFocused(true);
-    } else if (
-      isFocused &&
-      tooltipContent &&
-      !tooltipContent.contains(activeElement)
-    ) {
-      setIsFocused(false);
-    }
-  }, [activeElement, isFocused]);
-
+}: {
+  children: React.ReactNode;
+  theme: string;
+  width: string | undefined;
+  componentKey: number;
+  isFocused: boolean | undefined;
+  setIsFocused: React.Dispatch<React.SetStateAction<boolean | undefined>>;
+  setKey: React.Dispatch<React.SetStateAction<number>>;
+  tooltipId: React.MutableRefObject<string>;
+} & TooltipProps) => {
   return (
     <Tippy
-      key={key}
+      key={componentKey}
       plugins={[
         {
           name: 'hideOnEsc',
@@ -109,6 +102,72 @@ const Tooltip = ({
       </Box>
     </Tippy>
   );
+};
+
+const Tooltip = ({
+  children,
+  theme = 'light',
+  width,
+  // This prop is used to determine if the native Tippy component should be wrapped in a Box component
+  useWrapper = true,
+  ...rest
+}: TooltipProps) => {
+  const tooltipId = useRef(
+    `tooltip-${Math.random().toString(36).substring(7)}`
+  );
+  const [isFocused, setIsFocused] = useState<boolean | undefined>(undefined);
+  const [key, setKey] = useState<number>(0);
+  const activeElement = useActiveElement();
+
+  // Check if the active element is inside the tooltip
+  useEffect(() => {
+    const tooltip = document.getElementById(tooltipId.current);
+    const tooltipContent = document.querySelector('.tippy-content');
+    if (tooltip && tooltip.contains(activeElement)) {
+      setIsFocused(true);
+    } else if (
+      isFocused &&
+      tooltipContent &&
+      !tooltipContent.contains(activeElement)
+    ) {
+      setIsFocused(false);
+    }
+  }, [activeElement, isFocused]);
+
+  if (useWrapper) {
+    return (
+      <TippyComponent
+        componentKey={key}
+        theme={theme}
+        width={width}
+        isFocused={isFocused}
+        setIsFocused={setIsFocused}
+        setKey={setKey}
+        tooltipId={tooltipId}
+        {...rest}
+      >
+        {children}
+      </TippyComponent>
+    );
+  } else {
+    return (
+      // This option is used for more accessible tooltips when useWrapper is false
+      <Box as="span" id={tooltipId.current} w={width || 'fit-content'}>
+        <TippyComponent
+          componentKey={key}
+          theme={theme}
+          width={width}
+          isFocused={isFocused}
+          setIsFocused={setIsFocused}
+          setKey={setKey}
+          tooltipId={tooltipId}
+          {...rest}
+        >
+          {children}
+        </TippyComponent>
+      </Box>
+    );
+  }
 };
 
 export default Tooltip;

@@ -21,6 +21,10 @@ export const getFeatureLayerInitialTitleMultiloc = (
 // getLayerType
 // Description: Returns the layer type of a MapConfig. All layers in a Map Config will have the same type.
 export const getLayerType = (mapConfig: IMapConfig) => {
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const layers = mapConfig?.data?.attributes?.layers;
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   return layers?.[0]?.type;
 };

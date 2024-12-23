@@ -130,6 +130,7 @@ describe ParticipantsService do
     end
 
     it 'returns total project participant count including anonymous posts & everyone surveys' do
+      create(:idea_status_proposed)
       project = create(:project)
       pp1, pp2, pp3, pp4, pp5 = create_list(:user, 5)
 
@@ -154,8 +155,9 @@ describe ParticipantsService do
       expect(service.project_participants_count_uncached(project)).to eq 7
 
       # 'everyone' surveys +2
-      create(:native_survey_response, project: project, author: nil, title_multiloc: { 'en' => 'title' }, body_multiloc: { 'en' => 'body' })
-      create(:native_survey_response, project: project, author: nil, title_multiloc: { 'en' => 'title' }, body_multiloc: { 'en' => 'body' })
+      phase = create(:native_survey_phase, project: project)
+      create(:native_survey_response, project: project, creation_phase: phase, author: nil, title_multiloc: { 'en' => 'title' }, body_multiloc: { 'en' => 'body' })
+      create(:native_survey_response, project: project, creation_phase: phase, author: nil, title_multiloc: { 'en' => 'title' }, body_multiloc: { 'en' => 'body' })
       expect(service.project_participants_count_uncached(project)).to eq 9
     end
   end
@@ -310,13 +312,14 @@ describe ParticipantsService do
       expect(service.projects_participants([project]).map(&:id)).to match_array [attendee1.id, attendee2.id]
     end
 
-    it 'returns followers' do
+    it 'does not return followers' do
       project = create(:project)
-      follower1 = create(:follower, followable: project).user
-      idea = create(:idea, project: project, author: follower1)
-      follower2 = create(:follower, followable: idea).user
+      create(:follower, followable: project).user
+      author = create(:user)
+      idea = create(:idea, project: project, author: author)
+      create(:follower, followable: idea).user
 
-      expect(service.projects_participants([project]).map(&:id)).to match_array [follower1.id, follower2.id]
+      expect(service.projects_participants([project]).map(&:id)).to match_array [author.id]
     end
   end
 
@@ -349,6 +352,78 @@ describe ParticipantsService do
       create(:comment, post: i1, author: pp3)
 
       expect(service.idea_statuses_participants([s1, s2]).map(&:id)).to match_array participants.map(&:id)
+    end
+  end
+
+  describe 'destroy_participation_data' do
+    let_it_be(:project, reload: true) { create(:project) }
+
+    context "when the project doesn't have any voting phases" do
+      it 'deletes all project ideas' do
+        create_list(:idea, 2, project: project)
+        expect { service.destroy_participation_data(project) }.to change(Idea, :count).by(-2)
+      end
+    end
+
+    context 'when the project has a voting phase' do
+      before_all do
+        phase = create(:single_voting_phase, project: project)
+        idea = create(:idea, project: project, phases: [phase])
+        create_list(:basket, 2, ideas: [idea], phase: phase)
+        Basket.update_counts(phase)
+        create(:comment, post: idea)
+      end
+
+      it 'does not delete ideas associated with the voting phase' do
+        expect { service.destroy_participation_data(project) }.not_to change(Idea, :count)
+      end
+
+      it 'deletes votes on ideas associated with the voting phase' do
+        expect { service.destroy_participation_data(project) }
+          .to change(Basket, :count).by(-2)
+          # Regression test: Additional check for basket counts since they are not managed
+          # by `counter_culture`, unlike the other counts.
+          .and change { project.reload.baskets_count }.by(-2)
+      end
+
+      it 'deletes comments on ideas associated with the voting phase' do
+        expect { service.destroy_participation_data(project) }
+          .to change(Comment, :count).by(-1)
+      end
+    end
+
+    it 'deletes volunteering data' do
+      phase = create(:volunteering_phase, project: project)
+      cause = create(:cause, phase: phase)
+      create_list(:volunteer, 2, cause: cause)
+      expect { service.destroy_participation_data(project) }
+        .to change(Volunteering::Volunteer, :count).by(-2)
+    end
+
+    it 'deletes event registrations' do
+      event = create(:event, project: project)
+      create_list(:event_attendance, 2, event: event)
+      expect { service.destroy_participation_data(project) }
+        .to change(Events::Attendance, :count).by(-2)
+    end
+
+    it 'deletes poll responses' do
+      phase = create(:poll_phase, project: project)
+      create_list(:poll_response, 2, phase: phase)
+      expect { service.destroy_participation_data(project) }
+        .to change(Polls::Response, :count).by(-2)
+    end
+
+    # Regression test
+    it 'does not delete ideas from other projects' do
+      idea = create(:idea)
+      voting_phase = create(:single_voting_phase)
+      idea_in_voting_phase = create(:idea, phases: [voting_phase], project: voting_phase.project)
+
+      service.destroy_participation_data(project)
+
+      expect(Idea.where(id: idea.id)).to exist
+      expect(Idea.where(id: idea_in_voting_phase.id)).to exist
     end
   end
 end

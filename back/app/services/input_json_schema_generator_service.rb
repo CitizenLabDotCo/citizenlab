@@ -54,4 +54,15 @@ class InputJsonSchemaGeneratorService < JsonSchemaGeneratorService
       end
     }
   end
+
+  def visit_cosponsor_ids(field)
+    {
+      type: 'array',
+      uniqueItems: true,
+      minItems: field.enabled? && field.required? ? 1 : 0,
+      items: {
+        type: 'string'
+      }
+    }
+  end
 end

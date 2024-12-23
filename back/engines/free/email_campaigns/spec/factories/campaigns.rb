@@ -50,11 +50,19 @@ FactoryBot.define do
     enabled { true }
   end
 
+  factory :cosponsor_of_your_idea_campaign, class: EmailCampaigns::Campaigns::CosponsorOfYourIdea do
+    enabled { true }
+  end
+
   factory :idea_marked_as_spam_campaign, class: EmailCampaigns::Campaigns::IdeaMarkedAsSpam do
     enabled { true }
   end
 
   factory :idea_published_campaign, class: EmailCampaigns::Campaigns::IdeaPublished do
+    enabled { true }
+  end
+
+  factory :your_input_in_screening_campaign, class: EmailCampaigns::Campaigns::YourInputInScreening do
     enabled { true }
   end
 
@@ -114,6 +122,10 @@ FactoryBot.define do
     enabled { true }
   end
 
+  factory :invitation_to_cosponsor_idea_campaign, class: EmailCampaigns::Campaigns::InvitationToCosponsorIdea do
+    enabled { true }
+  end
+
   factory :invitation_to_cosponsor_initiative_campaign, class: EmailCampaigns::Campaigns::InvitationToCosponsorInitiative do
     enabled { true }
   end
@@ -162,6 +174,14 @@ FactoryBot.define do
     enabled { true }
   end
 
+  factory :project_review_request_campaign, class: EmailCampaigns::Campaigns::ProjectReviewRequest do
+    enabled { true }
+  end
+
+  factory :project_review_state_change_campaign, class: EmailCampaigns::Campaigns::ProjectReviewRequest do
+    enabled { true }
+  end
+
   factory :status_change_on_idea_you_follow_campaign, class: EmailCampaigns::Campaigns::StatusChangeOnIdeaYouFollow do
     enabled { true }
   end
@@ -194,11 +214,6 @@ FactoryBot.define do
   end
 
   factory :user_digest_campaign, class: EmailCampaigns::Campaigns::UserDigest do
-    enabled { true }
-    schedule { weekly_schedule }
-  end
-
-  factory :your_proposed_initiatives_digest_campaign, class: EmailCampaigns::Campaigns::YourProposedInitiativesDigest do
     enabled { true }
     schedule { weekly_schedule }
   end

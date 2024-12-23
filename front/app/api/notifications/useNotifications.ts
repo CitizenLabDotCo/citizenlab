@@ -30,6 +30,8 @@ const useInfiniteNotifications = (queryParams: IQueryParameters) => {
     queryFn: ({ pageParam }) =>
       fetchInfiniteNotifications({ ...queryParams, pageNumber: pageParam }),
     getNextPageParam: (lastPage) => {
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       const hasNextPage = lastPage.links?.next;
       const pageNumber = getPageNumberFromUrl(lastPage.links.self);
       return hasNextPage && pageNumber ? pageNumber + 1 : null;

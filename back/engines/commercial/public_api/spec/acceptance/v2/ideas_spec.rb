@@ -13,6 +13,8 @@ resource 'Posts' do
 
   include_context 'common_auth'
 
+  before_all { create(:idea_status_proposed) }
+
   # 3 Ideas
   let!(:ideas) do
     create_list(:idea, 3, created_at: '2020-01-01').tap do |ideas|

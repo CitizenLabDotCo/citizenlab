@@ -22,11 +22,25 @@ RSpec.describe User do
     it { is_expected.to have_many(:reactions).dependent(:nullify) }
     it { is_expected.to have_many(:event_attendances).class_name('Events::Attendance').dependent(:destroy) }
     it { is_expected.to have_many(:attended_events).through(:event_attendances).source(:event) }
+    it { is_expected.to have_many(:requested_project_reviews).class_name('ProjectReview').with_foreign_key('requester_id').dependent(:nullify) }
+    it { is_expected.to have_many(:assigned_project_reviews).class_name('ProjectReview').with_foreign_key('reviewer_id').dependent(:nullify) }
 
     it 'nullifies idea import association' do
       idea_import = create(:idea_import, import_user: user)
       expect { user.destroy }.not_to raise_error
       expect(idea_import.reload.import_user).to be_nil
+    end
+
+    it 'nullifies manual_votes_last_updated_by association' do
+      idea = create(:idea, manual_votes_last_updated_by: user)
+      expect { user.destroy }.not_to raise_error
+      expect(idea.reload.manual_votes_last_updated_by).to be_nil
+    end
+
+    it 'nullifies manual_voters_last_updated_by association' do
+      phase = create(:phase, manual_voters_last_updated_by: user)
+      expect { user.destroy }.not_to raise_error
+      expect(phase.reload.manual_voters_last_updated_by).to be_nil
     end
   end
 
@@ -1206,8 +1220,13 @@ RSpec.describe User do
   end
 
   describe '#no_name?' do
-    it 'returns true if first_name and last_name are not set' do
-      user = described_class.new(email: 'test@citizenlab.co')
+    it 'returns true if first_name and last_name are null' do
+      user = described_class.new(email: 'test@citizenlab.co', first_name: nil, last_name: nil)
+      expect(user.no_name?).to be true
+    end
+
+    it 'returns true if first_name and last_name are blank strings' do
+      user = described_class.new(email: 'test@citizenlab.co', first_name: '', last_name: '')
       expect(user.no_name?).to be true
     end
 
@@ -1227,80 +1246,92 @@ RSpec.describe User do
     end
   end
 
-  describe '#compacted_roles' do
-    let_it_be(:user) { create(:user) }
+  describe '#full_name' do
+    it 'returns a consistent anonymous name if first_name and last_name are not set' do
+      settings = AppConfiguration.instance.settings
+      settings['core']['anonymous_name_scheme'] = 'animal'
+      AppConfiguration.instance.update!(settings: settings)
+      user = described_class.new(email: 'test@citizenlab.co')
+      expect(user.full_name).to eq 'Aardvark Cat'
+      expect(user.no_name?).to be true
+    end
+  end
 
-    let_it_be(:projects_in_folder) { create_list(:project, 2) }
-    let_it_be(:folder) { create(:project_folder, projects: projects_in_folder) }
-
-    # Top-level project (not in a folder)
-    let_it_be(:another_project) { create(:project) }
-
-    let_it_be(:project_in_another_folder) { create(:project) }
-    let_it_be(:another_folder) { create(:project_folder, projects: [project_in_another_folder]) }
-
-    def create_roles(projects, folders, admin: false)
-      projects = Array.wrap(projects)
-      folders = Array.wrap(folders)
-
-      [].tap do |roles|
-        roles << { 'type' => 'admin' } if admin
-        projects.each { |project| roles << { 'type' => 'project_moderator', 'project_id' => project.id } }
-        folders.each { |folder| roles << { 'type' => 'project_folder_moderator', 'project_folder_id' => folder.id } }
-      end
+  describe '#compress_roles' do
+    it 'compresses project roles to only return IDs for project folders' do
+      roles = [
+        { type: 'project_moderator', project_id: '3498ad3e-930a-43cf-be7c-9d2c9677801f' },
+        { type: 'project_moderator', project_id: 'adba8dba-5678-45b6-a5ca-66d968dafd1' },
+        { type: 'project_folder_moderator', project_folder_id: '188041cc-97da-4580-8edc-aa6cb8fd6958' }
+      ]
+      user = create(:user, roles: roles)
+      expect(user.compress_roles).to match_array [
+        { 'type' => 'project_moderator' },
+        { 'type' => 'project_folder_moderator', 'project_folder_id' => '188041cc-97da-4580-8edc-aa6cb8fd6958' }
+      ]
     end
 
-    context 'when the roles are not redundant' do
-      where(:admin?, :projects, :folders) do
-        [
-          [true, nil, nil],
-          [true, ref(:another_project), nil],
-          [true, nil, ref(:folder)],
-          [false, ref(:another_project), ref(:folder)],
-          [false, ref(:projects_in_folder), nil],
-          [false, nil, [ref(:folder), ref(:another_folder)]],
-          [false, ref(:project_in_another_folder), ref(:folder)]
-        ]
-      end
-
-      with_them do
-        it 'does not modify the roles' do
-          user.roles = create_roles(projects, folders, admin: admin?)
-          expect(user.compacted_roles).to match(user.roles)
-        end
-      end
+    it 'a single admin role remains the same' do
+      user = create(:user, roles: [{ 'type' => 'admin' }])
+      expect(user.compress_roles).to match_array [{ 'type' => 'admin' }]
     end
 
-    context 'when the roles are redundant' do
-      it 'removes redundant roles (1)' do
-        user.roles = create_roles(projects_in_folder, folder)
-        expected_roles = create_roles(nil, folder)
-        expect(user.compacted_roles).to match(expected_roles)
-      end
-
-      it 'removes redundant roles (2)' do
-        projects = projects_in_folder + [another_project]
-        user.roles = create_roles(projects, folder)
-        # only keep projects that are not in the folder
-        expected_roles = create_roles(another_project, folder)
-        expect(user.compacted_roles).to match(expected_roles)
-      end
-
-      it 'removes redundant roles (3)' do
-        folders = [folder, another_folder]
-        user.roles = create_roles(projects_in_folder, folders)
-        # only keep folder roles
-        expected_roles = create_roles(nil, folders)
-        expect(user.compacted_roles).to match(expected_roles)
-      end
-
-      it 'removes redundant roles (4)' do
-        projects = projects_in_folder + [project_in_another_folder, another_project]
-        folders = [folder, another_folder]
-        user.roles = create_roles(projects, folders)
-        expected_roles = create_roles(another_project, folders)
-        expect(user.compacted_roles).to match(expected_roles)
-      end
+    it 'reduces a large set of roles to less than 20% of the original string size' do
+      roles = [
+        { type: 'project_moderator', project_id: '3498ad3e-930a-43cf-be7c-9d2c9677801f' },
+        { type: 'project_moderator', project_id: 'adba8dba-5678-45b6-a5ca-66d968dafd1' },
+        { type: 'project_moderator', project_id: '0eadacd0-e62f-471e-a4cc-d9cd9fc0a0d2' },
+        { type: 'project_moderator', project_id: '4a330fb2-8df8-4e81-84c2-e12903304c3c' },
+        { type: 'project_folder_moderator', project_folder_id: '188041cc-97da-4580-8edc-aa6cb8fd6958' },
+        { type: 'project_moderator', project_id: 'ae134f80-7318-47d0-a64b-cf64e98e46ec' },
+        { type: 'project_moderator', project_id: 'c05e80c3-066a-43d1-a0bb-c49e7cf9264e' },
+        { type: 'project_moderator', project_id: '9affe4dd-dcb1-4649-a682-cf13579bfd4f' },
+        { type: 'project_moderator', project_id: '84d9bba4-f1fd-46d2-bbbb-7b1baa31de1b' },
+        { type: 'project_moderator', project_id: '3a0cadea-784e-4e24-885a-2b682d57a836' },
+        { type: 'project_folder_moderator', project_folder_id: '87411444-2ea1-4001-ba4c-e382f27bab57' },
+        { type: 'project_moderator', project_id: 'bdfb5e00-3501-4141-a949-e055aec065cd' },
+        { type: 'project_moderator', project_id: 'd7937f3a-5dd8-4b48-a34c-153e13a0eede' },
+        { type: 'project_moderator', project_id: 'e03d1f89-7ab9-48bc-8a95-9f147f8b9c22' },
+        { type: 'project_moderator', project_id: 'a9aef65b-726b-40f7-bc2c-56e2ea5d95df' },
+        { type: 'project_moderator', project_id: '311db9ab-d878-48b5-b23d-98980a358272' },
+        { type: 'project_moderator', project_id: 'dbf6104a-6619-4901-801e-38843aacf853' },
+        { type: 'project_moderator', project_id: '3e79f762-8bae-479e-bc60-057e00cb4357' },
+        { type: 'project_moderator', project_id: 'aa8a29f6-36e2-4b25-98bb-1f069675d3dd' },
+        { type: 'project_moderator', project_id: '5ea23ead-7209-40f6-95b3-1e6eeae4292f' },
+        { type: 'project_folder_moderator', project_folder_id: '718cb17c-0a66-490d-8c5c-9c67a92f8ed6' },
+        { type: 'project_moderator', project_id: '1d3134ea-476d-4471-8fe8-3957da40983e' },
+        { type: 'project_moderator', project_id: '67170147-3c4e-434d-a13a-15bd8bd25107' },
+        { type: 'project_moderator', project_id: 'bbbc9bde-a82f-4495-af8d-2997dbce6c5a' },
+        { type: 'project_moderator', project_id: '2774c15b-20c8-4aa0-bb1d-9b5c2b95d54c' },
+        { type: 'project_moderator', project_id: 'faaab0db-2e8d-4705-9fda-1869c4e83a96' },
+        { type: 'project_folder_moderator', project_folder_id: 'b2ca5e59-5c98-49f2-8889-e73390247201' },
+        { type: 'project_moderator', project_id: '7ed94b9c-a980-4207-b65a-c8a50673621f' },
+        { type: 'project_moderator', project_id: 'cea1ee57-eebe-465d-97d7-3db85d4b23f4' },
+        { type: 'project_moderator', project_id: 'a4283319-a604-49b6-86c0-278c585a90f4' },
+        { type: 'project_moderator', project_id: '695334d7-0d3d-4277-9b7d-b913c3b7e6a8' },
+        { type: 'project_moderator', project_id: '07cdc4e6-ed33-4eec-8d9b-b9a8ee8aac16' },
+        { type: 'project_folder_moderator', project_folder_id: '62c3c7e2-bfd6-48fe-800b-e0b66af7ccab' },
+        { type: 'project_moderator', project_id: '9d1b959b-c665-478b-a489-ac40cce2ebfa' },
+        { type: 'project_moderator', project_id: 'd9a1e73e-75ee-4753-9ad6-7983c6087fb2' },
+        { type: 'project_moderator', project_id: 'b9e09956-ca18-4bf5-8b90-bcc9e6973aa9' },
+        { type: 'project_moderator', project_id: '8100f10f-854b-43c8-aca4-9cffe39251f7' },
+        { type: 'project_moderator', project_id: 'a77aaadb-fe07-4e71-b5ca-4e77c8d3b82c' },
+        { type: 'project_folder_moderator', project_folder_id: 'b71098de-ff30-44b3-94a9-8d9b19f6c417' },
+        { type: 'project_moderator', project_id: 'd566673b-154a-482b-a314-9024ff141589' },
+        { type: 'project_moderator', project_id: 'adba8dba-0424-45b6-a5ca-44ad968dafd1' },
+        { type: 'project_moderator', project_id: '93f091d9-14e7-4608-95ed-f20e93a96670' },
+        { type: 'project_moderator', project_id: '983b77b6-440b-4d22-a29a-dc73ffe63357' },
+        { type: 'project_moderator', project_id: '7ec69c50-c16d-4e86-bc21-aff18ea38d72' },
+        { type: 'project_folder_moderator', project_folder_id: '4e889745-b1ed-4be1-a106-bb8451241f28' },
+        { type: 'project_moderator', project_id: 'a0eebd8c-edbe-48d6-9fc9-58fad82dc663' },
+        { type: 'project_moderator', project_id: 'da35b552-baff-4274-a333-e0ec24385e4e' },
+        { type: 'project_moderator', project_id: '1874c3e1-035d-463f-8b2e-22cb26f8ef09' },
+        { type: 'project_moderator', project_id: 'e2aefb22-0a70-473e-b16c-99e4006ad632' },
+        { type: 'project_moderator', project_id: '7e18584c-5113-4640-b6e3-87796cf88fef' },
+        { type: 'project_folder_moderator', project_folder_id: 'fd9b066c-9779-480a-ad24-7f177920d305' }
+      ]
+      user = create(:user, roles: roles)
+      expect(user.compress_roles.to_s.length.to_f / user.roles.to_s.length).to be < 0.20
     end
   end
 
@@ -1393,6 +1424,25 @@ RSpec.describe User do
 
     it '.non_super_admins returns non super admins' do
       expect(described_class.not_super_admins).to match_array(non_super_admins)
+    end
+  end
+
+  context 'project reviewer scope' do
+    let_it_be(:project_reviewers) { create_list(:admin, 2, :project_reviewer) }
+    let_it_be(:non_project_reviewers) do
+      [
+        create(:user),
+        create(:admin),
+        create(:project_moderator)
+      ]
+    end
+
+    specify do
+      expect(described_class.project_reviewers).to match_array(project_reviewers)
+    end
+
+    specify do
+      expect(described_class.project_reviewers(false)).to match_array(non_project_reviewers)
     end
   end
 end

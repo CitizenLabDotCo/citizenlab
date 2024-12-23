@@ -6,6 +6,7 @@ import {
   LocaleSwitcher,
   colors,
   fontSizes,
+  Title,
 } from '@citizenlab/cl2-component-library';
 import { forOwn, isEmpty } from 'lodash-es';
 import styled from 'styled-components';
@@ -14,9 +15,6 @@ import { Multiloc, SupportedLocale } from 'typings';
 import { IOfficialFeedbackData as IIdeaOfficialFeedbackData } from 'api/idea_official_feedback/types';
 import useAddIdeaOfficialFeedback from 'api/idea_official_feedback/useAddIdeaOfficialFeedback';
 import useUpdateIdeaOfficialFeedback from 'api/idea_official_feedback/useUpdateIdeaOfficialFeedback';
-import { IOfficialFeedbackData as IInitiativeOfficialFeedbackData } from 'api/initiative_official_feedback/types';
-import useAddInitiativeOfficialFeedback from 'api/initiative_official_feedback/useAddInitiativeOfficialFeedback';
-import useUpdateInitiativeOfficialFeedback from 'api/initiative_official_feedback/useUpdateInitiativeOfficialFeedback';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocale from 'hooks/useLocale';
@@ -40,15 +38,6 @@ const FormLabel = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-bottom: 15px;
-`;
-
-const AddOfficialUpdateTitle = styled.h2`
-  color: ${({ theme }) => theme.colors.tenantText};
-  font-size: ${fontSizes.m}px;
-  line-height: normal;
-  font-weight: 600;
-  padding: 0;
-  margin: 0;
 `;
 
 const StyledLocaleSwitcher = styled(LocaleSwitcher)`
@@ -93,9 +82,8 @@ export interface OfficialFeedbackFormValues {
 
 interface Props {
   postId?: string;
-  postType: 'idea' | 'initiative';
   formType: 'new' | 'edit';
-  feedback?: IIdeaOfficialFeedbackData | IInitiativeOfficialFeedbackData;
+  feedback?: IIdeaOfficialFeedbackData;
   className?: string;
   onClose?: () => void;
 }
@@ -104,7 +92,6 @@ const OfficialFeedbackForm = ({
   formType,
   feedback,
   postId,
-  postType,
   onClose,
   className,
 }: Props) => {
@@ -112,12 +99,8 @@ const OfficialFeedbackForm = ({
   const locale = useLocale();
   const tenantLocales = useAppConfigurationLocales();
   const { mutate: addOfficialFeedbackToIdea } = useAddIdeaOfficialFeedback();
-  const { mutate: addOfficialFeedbackToInitiative } =
-    useAddInitiativeOfficialFeedback();
   const { mutate: updateIdeaOfficialFeedback } =
     useUpdateIdeaOfficialFeedback();
-  const { mutate: updateInitiativeOfficialFeedback } =
-    useUpdateInitiativeOfficialFeedback();
 
   const [selectedLocale, setSelectedLocale] = useState<SupportedLocale | null>(
     null
@@ -272,7 +255,7 @@ const OfficialFeedbackForm = ({
         setSuccess(false);
       };
 
-      if (formType === 'new' && postId && postType === 'idea') {
+      if (formType === 'new' && postId) {
         addOfficialFeedbackToIdea(
           { ideaId: postId, ...feedbackValues },
           {
@@ -287,50 +270,9 @@ const OfficialFeedbackForm = ({
         });
       }
 
-      if (formType === 'new' && postId && postType === 'initiative') {
-        addOfficialFeedbackToInitiative(
-          { initiativeId: postId, ...feedbackValues },
-          {
-            onSuccess,
-            onError,
-          }
-        );
-        trackEventByName(tracks.officialFeedbackGiven, {
-          location: isPage('admin', location.pathname)
-            ? 'Admin/initiative manager'
-            : 'Citizen/initiative page',
-        });
-      }
-
-      if (
-        formType === 'edit' &&
-        !isNilOrError(feedback) &&
-        onClose &&
-        postType === 'idea'
-      ) {
+      if (formType === 'edit' && !isNilOrError(feedback) && onClose) {
         updateIdeaOfficialFeedback(
           { id: feedback.id, requestBody: feedbackValues },
-          {
-            onSuccess: () => {
-              onSuccess();
-              onClose();
-            },
-            onError,
-          }
-        );
-      }
-
-      if (
-        formType === 'edit' &&
-        !isNilOrError(feedback) &&
-        onClose &&
-        postType === 'initiative'
-      ) {
-        updateInitiativeOfficialFeedback(
-          {
-            id: feedback.id,
-            requestBody: feedbackValues,
-          },
           {
             onSuccess: () => {
               onSuccess();
@@ -365,9 +307,9 @@ const OfficialFeedbackForm = ({
             >
               <Box my="auto">
                 {formType === 'new' && (
-                  <AddOfficialUpdateTitle>
+                  <Title variant="h2" fontSize="m" color="tenantText" m="0">
                     <FormattedMessage {...messages.addOfficalUpdate} />
-                  </AddOfficialUpdateTitle>
+                  </Title>
                 )}
               </Box>
               <Box my="auto">
@@ -385,6 +327,8 @@ const OfficialFeedbackForm = ({
             name="official-feedback-form-mentions-textarea"
             locale={selectedLocale}
             ariaLabel={formatMessage(messages.officialUpdateBody)}
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             value={formValues.bodyMultiloc?.[selectedLocale] || ''}
             onChange={handleBodyOnChange}
             placeholder={formatMessage(messages.textAreaPlaceholder)}
@@ -397,6 +341,8 @@ const OfficialFeedbackForm = ({
           <StyledInput
             type="text"
             locale={selectedLocale}
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             value={formValues.authorMultiloc?.[selectedLocale] || ''}
             onChange={handleAuthorOnChange}
             placeholder={formatMessage(messages.officialNamePlaceholder)}

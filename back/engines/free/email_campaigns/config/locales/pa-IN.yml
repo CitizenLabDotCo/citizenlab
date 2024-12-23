@@ -1,0 +1,712 @@
+pa:
+  email_campaigns:
+    campaign_type_description:
+      "manual": ਅਧਿਕਾਰਤ ਸੰਦੇਸ਼
+      "manual_project_participants": ਪ੍ਰੋਜੈਕਟ ਭਾਗੀਦਾਰਾਂ ਨੂੰ ਅਧਿਕਾਰਤ ਸੰਦੇਸ਼
+      "admin_rights_received": ਐਡਮਿਨ ਅਧਿਕਾਰ ਪ੍ਰਾਪਤ ਹੋਏ
+      "comment_deleted_by_admin": ਮੇਰੀ ਟਿੱਪਣੀ ਨੂੰ ਹਟਾਉਣਾ
+      "comment_marked_as_spam": ਟਿੱਪਣੀ ਸਪੈਮ ਰਿਪੋਰਟ
+      "comment_on_your_comment": ਮੇਰੀ ਟਿੱਪਣੀ 'ਤੇ ਇੱਕ ਜਵਾਬ
+      "comment_on_idea_you_follow": ਇੱਕ ਵਿਚਾਰ 'ਤੇ ਇੱਕ ਟਿੱਪਣੀ ਜਿਸਦਾ ਤੁਸੀਂ ਅਨੁਸਰਣ ਕਰਦੇ ਹੋ
+      "comment_on_initiative_you_follow": ਇੱਕ ਪ੍ਰਸਤਾਵ 'ਤੇ ਇੱਕ ਟਿੱਪਣੀ ਜਿਸਦਾ ਤੁਸੀਂ ਪਾਲਣ ਕਰਦੇ ਹੋ
+      "cosponsor_of_your_initiative": ਇੱਕ ਉਪਭੋਗਤਾ ਮੇਰੇ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰਨ ਲਈ ਮੇਰੇ ਸੱਦੇ ਨੂੰ ਸਵੀਕਾਰ ਕਰਦਾ ਹੈ
+      "cosponsor_of_your_idea": ਇੱਕ ਉਪਭੋਗਤਾ ਮੇਰੇ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰਨ ਲਈ ਮੇਰੇ ਸੱਦੇ ਨੂੰ ਸਵੀਕਾਰ ਕਰਦਾ ਹੈ
+      "event_registration_confirmation": ਘਟਨਾ ਰਜਿਸਟ੍ਰੇਸ਼ਨ ਪੁਸ਼ਟੀ
+      "idea_marked_as_spam": ਆਈਡੀਆ ਸਪੈਮ ਰਿਪੋਰਟ
+      "idea_published": ਮੇਰੇ ਵਿਚਾਰ ਦਾ ਪ੍ਰਕਾਸ਼ਨ
+      "initiative_assigned_to_you": ਮੈਨੂੰ ਇੱਕ ਪ੍ਰਸਤਾਵ ਦੀ ਨਿਯੁਕਤੀ
+      "initiative_marked_as_spam": ਪ੍ਰਸਤਾਵ ਸਪੈਮ ਰਿਪੋਰਟ
+      "initiative_published": ਮੇਰੇ ਪ੍ਰਸਤਾਵ ਦਾ ਪ੍ਰਕਾਸ਼ਨ
+      "invitation_to_cosponsor_initiative": ਇੱਕ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰਨ ਲਈ ਸੱਦਾ
+      "invitation_to_cosponsor_idea": ਇੱਕ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰਨ ਲਈ ਸੱਦਾ
+      "initiative_resubmitted_for_review": ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਮੀਖਿਆ ਲਈ ਮੁੜ-ਸਪੁਰਦ ਕੀਤਾ ਗਿਆ
+      "invite_received": ਸੱਦਾ
+      "invite_reminder": ਸੱਦਾ ਰੀਮਾਈਂਡਰ
+      "internal_comment_on_idea_assigned_to_you": ਮੈਨੂੰ ਸੌਂਪੇ ਗਏ ਇਨਪੁਟ 'ਤੇ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ
+      "internal_comment_on_idea_you_commented_internally_on": ਇਨਪੁਟ 'ਤੇ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ਮੈਂ ਅੰਦਰੂਨੀ ਤੌਰ 'ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ ਹੈ
+      "internal_comment_on_idea_you_moderate": ਪ੍ਰੋਜੈਕਟ ਜਾਂ ਫੋਲਡਰ ਵਿੱਚ ਇਨਪੁਟ 'ਤੇ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ਜੋ ਮੈਂ ਪ੍ਰਬੰਧਿਤ ਕਰਦਾ ਹਾਂ
+      "internal_comment_on_initiative_assigned_to_you": ਮੈਨੂੰ ਸੌਂਪੇ ਗਏ ਪ੍ਰਸਤਾਵ 'ਤੇ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ
+      "internal_comment_on_initiative_you_commented_internally_on": ਪ੍ਰਸਤਾਵ 'ਤੇ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ਮੈਂ ਅੰਦਰੂਨੀ ਤੌਰ 'ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ ਹੈ
+      "internal_comment_on_unassigned_initiative": ਅਸਾਈਨ ਕੀਤੇ ਪ੍ਰਸਤਾਵ 'ਤੇ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ
+      "internal_comment_on_unassigned_unmoderated_idea": ਗੈਰ-ਪ੍ਰਬੰਧਿਤ ਪ੍ਰੋਜੈਕਟ ਵਿੱਚ ਅਸਾਈਨ ਕੀਤੇ ਇਨਪੁਟ 'ਤੇ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ
+      "internal_comment_on_your_internal_comment": ਮੇਰੀ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ 'ਤੇ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ
+      "mention_in_official_feedback": ਇੱਕ ਅਪਡੇਟ ਵਿੱਚ ਜ਼ਿਕਰ ਕਰੋ
+      "mention_in_internal_comment": ਇੱਕ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ਵਿੱਚ ਜ਼ਿਕਰ ਕਰੋ
+      "new_comment_for_admin": ਇੱਕ ਪ੍ਰੋਜੈਕਟ ਵਿੱਚ ਨਵੀਂ ਟਿੱਪਣੀ ਜੋ ਮੈਂ ਸੰਚਾਲਿਤ ਕਰਦੀ ਹਾਂ
+      "new_idea_for_admin": ਇੱਕ ਪ੍ਰੋਜੈਕਟ ਵਿੱਚ ਨਵਾਂ ਵਿਚਾਰ ਜੋ ਮੈਂ ਸੰਚਾਲਿਤ ਕਰਦਾ ਹਾਂ
+      "new_initiative_for_admin": ਨਵਾਂ ਪ੍ਰਸਤਾਵ
+      "official_feedback_on_idea_you_follow": ਉਸ ਵਿਚਾਰ 'ਤੇ ਅੱਪਡੇਟ ਕਰੋ ਜਿਸਦੀ ਤੁਸੀਂ ਪਾਲਣਾ ਕਰਦੇ ਹੋ
+      "official_feedback_on_initiative_you_follow": ਉਸ ਪ੍ਰਸਤਾਵ 'ਤੇ ਅੱਪਡੇਟ ਕਰੋ ਜਿਸਦੀ ਤੁਸੀਂ ਪਾਲਣਾ ਕਰਦੇ ਹੋ
+      "password_reset": ਪਾਸਵਰਡ ਰੀਸੈੱਟ
+      "project_moderation_rights_received": ਪ੍ਰੋਜੈਕਟ ਸੰਚਾਲਨ ਅਧਿਕਾਰ ਪ੍ਰਾਪਤ ਹੋਏ
+      "project_folder_moderation_rights_received": ਫੋਲਡਰ ਪ੍ਰਬੰਧਕ ਅਧਿਕਾਰ ਪ੍ਰਾਪਤ ਹੋਏ
+      "project_phase_started": ਨਵਾਂ ਪ੍ਰੋਜੈਕਟ ਪੜਾਅ
+      "project_phase_upcoming": ਆਗਾਮੀ ਨਵਾਂ ਪ੍ਰੋਜੈਕਟ ਪੜਾਅ
+      "project_published": ਪ੍ਰੋਜੈਕਟ ਪ੍ਰਕਾਸ਼ਿਤ ਕੀਤਾ ਗਿਆ ਹੈ
+      "project_review_request": ਪ੍ਰੋਜੈਕਟ ਸਮੀਖਿਆ ਬੇਨਤੀ
+      "project_review_state_change": ਪ੍ਰੋਜੈਕਟ ਨੂੰ ਮਨਜ਼ੂਰੀ ਦਿੱਤੀ ਗਈ
+      "status_change_on_idea_you_follow": ਕਿਸੇ ਵਿਚਾਰ ਦੀ ਸਥਿਤੀ ਤਬਦੀਲੀ ਜਿਸਦਾ ਤੁਸੀਂ ਅਨੁਸਰਣ ਕਰਦੇ ਹੋ
+      "status_change_on_initiative_you_follow": ਇੱਕ ਪ੍ਰਸਤਾਵ ਦੀ ਸਥਿਤੀ ਤਬਦੀਲੀ ਜਿਸਦਾ ਤੁਸੀਂ ਅਨੁਸਰਣ ਕਰਦੇ ਹੋ
+      "threshold_reached_for_admin": ਪ੍ਰਸਤਾਵ ਵੋਟਿੰਗ ਸੀਮਾ ਤੱਕ ਪਹੁੰਚ ਗਿਆ
+      "welcome": ਰਜਿਸਟਰੇਸ਼ਨ ਦੇ ਬਾਅਦ
+      "admin_digest": ਪ੍ਰਸ਼ਾਸਕਾਂ ਲਈ ਹਫਤਾਵਾਰੀ ਸੰਖੇਪ ਜਾਣਕਾਰੀ
+      "moderator_digest": ਪ੍ਰੋਜੈਕਟ ਮੈਨੇਜਰਾਂ ਲਈ ਹਫਤਾਵਾਰੀ ਸੰਖੇਪ ਜਾਣਕਾਰੀ
+      "assignee_digest": ਨਿਰਧਾਰਤ ਵਿਚਾਰਾਂ ਦੀ ਹਫਤਾਵਾਰੀ ਸੰਖੇਪ ਜਾਣਕਾਰੀ
+      "user_digest": ਹਫਤਾਵਾਰੀ ਸੰਖੇਪ ਜਾਣਕਾਰੀ
+      "voting_basket_submitted": ਵੋਟਿੰਗ ਦੀ ਪੁਸ਼ਟੀ
+      "native_survey_not_submitted": ਸਰਵੇਖਣ ਜਮ੍ਹਾਂ ਨਹੀਂ ਹੋਇਆ
+      "voting_basket_not_submitted": ਵੋਟਾਂ ਜਮ੍ਹਾਂ ਨਹੀਂ ਹੋਈਆਂ
+      "voting_last_chance": ਵੋਟ ਪਾਉਣ ਦਾ ਆਖਰੀ ਮੌਕਾ
+      "voting_phase_started": ਵੋਟਿੰਗ ਦੇ ਨਾਲ ਨਵਾਂ ਪ੍ਰੋਜੈਕਟ ਪੜਾਅ
+      "voting_results": ਵੋਟਿੰਗ ਨਤੀਜੇ
+      "your_input_in_screening": ਮੇਰਾ ਇੰਪੁੱਟ ਸਕ੍ਰੀਨਿੰਗ ਦੀ ਉਡੀਕ ਕਰ ਰਿਹਾ ਹੈ
+    general:
+      by_author: '%{authorName}ਦੁਆਰਾ'
+      author_wrote: '%{authorName} ਨੇ ਲਿਖਿਆ:'
+      cta_goto_idea: 'ਇਸ ਵਿਚਾਰ ''ਤੇ ਜਾਓ'
+      cta_goto_input: 'ਇਸ ਇੰਪੁੱਟ ''ਤੇ ਜਾਓ'
+      cta_goto:
+        idea: 'ਇਸ ਵਿਚਾਰ ''ਤੇ ਜਾਓ'
+        question: 'ਇਸ ਸਵਾਲ ''ਤੇ ਜਾਓ'
+        contribution: 'ਇਸ ਯੋਗਦਾਨ ''ਤੇ ਜਾਓ'
+        project: 'ਇਸ ਪ੍ਰੋਜੈਕਟ ''ਤੇ ਜਾਓ'
+        issue: 'ਇਸ ਮੁੱਦੇ ''ਤੇ ਜਾਓ'
+        option: 'ਇਸ ਵਿਕਲਪ ''ਤੇ ਜਾਓ'
+        proposal: 'ਇਸ ਪ੍ਰਸਤਾਵ ''ਤੇ ਜਾਓ'
+        initiative: 'ਇਸ ਪਹਿਲਕਦਮੀ ''ਤੇ ਜਾਓ'
+        petition: 'ਇਸ ਪਟੀਸ਼ਨ ''ਤੇ ਜਾਓ'
+      cta_goto_your:
+        idea: 'ਆਪਣੇ ਵਿਚਾਰ ''ਤੇ ਜਾਓ'
+        question: 'ਆਪਣੇ ਸਵਾਲ ''ਤੇ ਜਾਓ'
+        contribution: 'ਆਪਣੇ ਯੋਗਦਾਨ ''ਤੇ ਜਾਓ'
+        project: 'ਆਪਣੇ ਪ੍ਰੋਜੈਕਟ ''ਤੇ ਜਾਓ'
+        issue: 'ਆਪਣੇ ਮੁੱਦੇ ''ਤੇ ਜਾਓ'
+        option: 'ਆਪਣੇ ਵਿਕਲਪ ''ਤੇ ਜਾਓ'
+        proposal: 'ਆਪਣੇ ਪ੍ਰਸਤਾਵ ''ਤੇ ਜਾਓ'
+        initiative: 'ਆਪਣੀ ਪਹਿਲਕਦਮੀ ''ਤੇ ਜਾਓ'
+        petition: 'ਆਪਣੀ ਪਟੀਸ਼ਨ ''ਤੇ ਜਾਓ'
+      cta_goto_proposal: 'ਇਸ ਪ੍ਰਸਤਾਵ ''ਤੇ ਜਾਓ'
+      cta_goto_project: 'ਇਸ ਪ੍ਰੋਜੈਕਟ ''ਤੇ ਜਾਓ'
+    schedules:
+      weekly:
+        "0": "ਹਫਤਾਵਾਰੀ, ਐਤਵਾਰ ਨੂੰ %{hourOfDay}'ਤੇ"
+        "1": "ਹਫਤਾਵਾਰੀ, ਸੋਮਵਾਰ ਨੂੰ %{hourOfDay}'ਤੇ"
+        "2": "ਹਫਤਾਵਾਰੀ, ਮੰਗਲਵਾਰ ਨੂੰ %{hourOfDay}'ਤੇ"
+        "3": "ਹਫਤਾਵਾਰੀ, ਬੁੱਧਵਾਰ ਨੂੰ %{hourOfDay}'ਤੇ"
+        "4": "ਹਫਤਾਵਾਰੀ, ਵੀਰਵਾਰ ਨੂੰ %{hourOfDay}'ਤੇ"
+        "5": "ਹਫਤਾਵਾਰੀ, ਸ਼ੁੱਕਰਵਾਰ ਨੂੰ %{hourOfDay}'ਤੇ"
+        "6": "ਹਫਤਾਵਾਰੀ, ਸ਼ਨੀਵਾਰ ਨੂੰ %{hourOfDay}'ਤੇ"
+    footer:
+      "link_privacy_policy": "ਪਰਾਈਵੇਟ ਨੀਤੀ"
+      "link_terms_conditions": "ਨਿਯਮ ਅਤੇ ਸ਼ਰਤਾਂ"
+      "link_unsubscribe": "ਗਾਹਕੀ ਰੱਦ ਕਰੋ"
+      "powered_by": "ਦੁਆਰਾ ਸੰਚਾਲਿਤ"
+      "recipient_statement": "ਇਹ ਈ-ਮੇਲ ਤੁਹਾਨੂੰ ਗੋ ਵੋਕਲ ਦੁਆਰਾ %{organizationName}ਦੀ ਤਰਫੋਂ ਭੇਜੀ ਗਈ ਸੀ, ਕਿਉਂਕਿ ਤੁਸੀਂ %{organizationLink}ਦੇ ਇੱਕ ਰਜਿਸਟਰਡ ਉਪਭੋਗਤਾ ਹੋ।"
+      "unsubscribe_statement": "ਜੇਕਰ ਤੁਸੀਂ ਭਵਿੱਖ ਵਿੱਚ ਇਹ ਈ-ਮੇਲ ਪ੍ਰਾਪਤ ਨਹੀਂ ਕਰਨਾ ਚਾਹੁੰਦੇ ਤਾਂ ਤੁਸੀਂ %{unsubscribeLink} ਕਰ ਸਕਦੇ ਹੋ।"
+      "unsubscribe_text": "ਗਾਹਕੀ ਰੱਦ ਕਰੋ"
+    follow:
+      "unfollow_here": "ਤੁਹਾਨੂੰ ਇਹ ਸੂਚਨਾ ਉਸ ਆਈਟਮ ਦੇ ਕਾਰਨ ਪ੍ਰਾਪਤ ਹੋਈ ਹੈ ਜਿਸਦਾ ਤੁਸੀਂ ਅਨੁਸਰਣ ਕਰਦੇ ਹੋ। <a href=\"%{unfollow_url}\">ਤੁਸੀਂ ਇਸਨੂੰ ਇੱਥੇ ਅਨਫਾਲੋ ਕਰ ਸਕਦੇ ਹੋ।</a>"
+    manual:
+      preheader: 'ਤੁਹਾਡੇ ਕੋਲ %{organizationName}ਤੋਂ ਮੇਲ ਹੈ'
+    comment_deleted_by_admin:
+      reason: 'ਤੁਹਾਡੀ ਟਿੱਪਣੀ ਨੂੰ ਮਿਟਾਉਣ ਦਾ ਕਾਰਨ:'
+      cta_view: 'ਇਸ ਵਿਚਾਰ ਨੂੰ ਵੇਖੋ'
+      event_description: '%{organizationName} ਨੇ ਇੱਕ ਵਿਚਾਰ ''ਤੇ ਤੁਹਾਡੇ ਦੁਆਰਾ ਲਿਖੀ ਗਈ ਟਿੱਪਣੀ ਨੂੰ ਮਿਟਾ ਦਿੱਤਾ।'
+      main_header: '%{organizationName} ਨੇ ਤੁਹਾਡੀ ਟਿੱਪਣੀ ਮਿਟਾ ਦਿੱਤੀ'
+      other_reason: '%{otherReason}'
+      inappropriate_reason: 'ਤੁਹਾਡੀ ਟਿੱਪਣੀ ਨੂੰ ਅਣਉਚਿਤ ਮੰਨਿਆ ਗਿਆ ਸੀ'
+      irrelevant_reason: 'ਤੁਹਾਡੀ ਟਿੱਪਣੀ ਨੂੰ ਉਸ ਸੰਦਰਭ ਲਈ ਅਪ੍ਰਸੰਗਿਕ ਮੰਨਿਆ ਗਿਆ ਸੀ'
+      no_reason: 'ਕੋਈ ਕਾਰਨ ਨਹੀਂ ਦੱਸਿਆ ਗਿਆ'
+      subject: 'ਤੁਹਾਡੀ ਟਿੱਪਣੀ %{organizationName}ਦੇ ਪਲੇਟਫਾਰਮ ਤੋਂ ਮਿਟਾ ਦਿੱਤੀ ਗਈ ਹੈ'
+      preheader: 'ਤੁਹਾਡੀ ਟਿੱਪਣੀ ਮਿਟਾ ਦਿੱਤੀ ਗਈ ਹੈ'
+    admin_digest:
+      subject: '%{time}ਦੀ ਤੁਹਾਡੀ ਹਫ਼ਤਾਵਾਰੀ ਪ੍ਰਬੰਧਕ ਰਿਪੋਰਟ'
+      preheader: '%{organizationName}ਦਾ ਐਡਮਿਨ ਡਾਇਜੈਸਟ'
+      title_your_weekly_report: '%{firstName}, ਤੁਹਾਡੀ ਹਫ਼ਤਾਵਾਰੀ ਰਿਪੋਰਟ'
+      text_introduction: 'ਅਸੀਂ ਤੁਹਾਡੇ ਲਈ ਉਹ ਇਨਪੁਟ ਤਿਆਰ ਕੀਤਾ ਹੈ ਜਿਸ ਨੇ ਪਿਛਲੇ ਹਫ਼ਤੇ ਸਭ ਤੋਂ ਵੱਧ ਗਤੀਵਿਧੀ ਜਨਰੇਟ ਕੀਤੀ ਹੈ। ਪਤਾ ਕਰੋ ਕਿ ਤੁਹਾਡੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਕੀ ਹੋ ਰਿਹਾ ਹੈ!'
+      cta_visit_the_platform: 'ਆਪਣੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਜਾਓ'
+      new_users: 'ਨਵੇਂ ਉਪਭੋਗਤਾ'
+      new_inputs: 'ਨਵੇਂ ਇਨਪੁਟਸ'
+      new_comments: 'ਨਵੀਆਂ ਟਿੱਪਣੀਆਂ'
+      title_activity_past_week: 'ਪਿਛਲੇ ਹਫ਼ਤੇ ਦੀ ਗਤੀਵਿਧੀ'
+      title_no_activity_past_week: 'ਪਿਛਲੇ ਹਫ਼ਤੇ ਕੋਈ ਸਰਗਰਮੀ ਨਹੀਂ ਸੀ'
+      title_initiatives_past_week: 'ਪਿਛਲੇ ਹਫ਼ਤੇ ਦੇ ਨਵੇਂ ਪ੍ਰਸਤਾਵ'
+      reached_threshold: 'ਦੀ ਹੱਦ ''ਤੇ ਪਹੁੰਚ ਗਿਆ'
+      yesterday_by_author: 'ਕੱਲ੍ਹ %{author}ਦੁਆਰਾ'
+      today_by_author: 'ਅੱਜ %{author}ਦੁਆਰਾ'
+      x_days_ago_by_author: '%{x} ਦਿਨ ਪਹਿਲਾਂ %{author}ਦੁਆਰਾ'
+    admin_rights_received:
+      cta_manage_platform: 'ਆਪਣੇ ਪਲੇਟਫਾਰਮ ਦਾ ਪ੍ਰਬੰਧਨ ਕਰੋ'
+      message_you_became_administrator: 'ਤੁਹਾਨੂੰ %{organizationName}ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ਲਈ ਪ੍ਰਬੰਧਕ ਅਧਿਕਾਰ ਦਿੱਤੇ ਗਏ ਹਨ।'
+      preheader: 'ਤੁਹਾਨੂੰ %{organizationName}ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ਲਈ ਪ੍ਰਬੰਧਕ ਅਧਿਕਾਰ ਦਿੱਤੇ ਗਏ ਸਨ'
+      subject: 'ਤੁਸੀਂ %{organizationName}ਦੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਪ੍ਰਸ਼ਾਸਕ ਬਣ ਗਏ ਹੋ'
+      text_create_participatory_process: 'ਇੱਕ ਪ੍ਰਸ਼ਾਸਕ ਦੇ ਰੂਪ ਵਿੱਚ, ਤੁਸੀਂ ਨਵੇਂ ਭਾਗੀਦਾਰੀ ਪ੍ਰੋਜੈਕਟ ਬਣਾ ਅਤੇ ਸੰਰਚਿਤ ਕਰ ਸਕਦੇ ਹੋ। ਤੁਸੀਂ ਟਾਈਮਲਾਈਨ ਦੀ ਵਰਤੋਂ ਕਰਕੇ ਨਵੇਂ ਪੜਾਅ ਜੋੜ ਸਕਦੇ ਹੋ। ਵਿਚਾਰ ਪੋਸਟਿੰਗ, ਟਿੱਪਣੀ, ਅਤੇ ਵੋਟਿੰਗ ਦੇ ਸਬੰਧ ਵਿੱਚ ਇਹਨਾਂ ਪੜਾਵਾਂ ਵਿੱਚੋਂ ਹਰ ਇੱਕ ਦਾ ਆਪਣਾ ਵਿਹਾਰ ਹੋ ਸਕਦਾ ਹੈ।'
+      text_moderate_analyse_input: 'ਇੱਕ ਵਾਰ ਪ੍ਰੋਜੈਕਟ ਸ਼ੁਰੂ ਹੋਣ ਤੋਂ ਬਾਅਦ, ਪਹਿਲੇ ਵਿਚਾਰ ਆਉਣਗੇ। ਤੁਹਾਨੂੰ ਸਾਰੀਆਂ ਮੁੱਖ ਗਤੀਵਿਧੀਆਂ ਦੇ ਨਾਲ ਹਫਤਾਵਾਰੀ ਰਿਪੋਰਟਾਂ ਪ੍ਰਾਪਤ ਹੋਣਗੀਆਂ ਤਾਂ ਜੋ ਤੁਸੀਂ ਚੀਜ਼ਾਂ ਦੇ ਸਿਖਰ ''ਤੇ ਰਹੋ। ਵਿਚਾਰਾਂ ਦੀ ਸੰਖੇਪ ਜਾਣਕਾਰੀ ਤੁਹਾਨੂੰ ਇਨਪੁਟ ਨੂੰ ਸੰਚਾਲਿਤ ਕਰਨ ਅਤੇ ਇਸਦੀ ਪ੍ਰਕਿਰਿਆ ਕਰਨ ਵਿੱਚ ਸਹਿਯੋਗ ਕਰਨ ਵਿੱਚ ਮਦਦ ਕਰੇਗੀ।'
+      text_platform_setup: 'ਇੱਕ ਪ੍ਰਸ਼ਾਸਕ ਵਜੋਂ ਤੁਸੀਂ ਆਪਣਾ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ਸੈਟ ਅਪ ਕਰ ਸਕਦੇ ਹੋ। ਇੱਕ ਲੋਗੋ, ਚਿੱਤਰ ਅਤੇ ਰੰਗ ਚੁਣੋ, ਆਪਣੇ ਹੋਮ ਪੇਜ ''ਤੇ ਇੱਕ ਨਿੱਜੀ ਸੁਨੇਹਾ ਲਿਖੋ, ਸੱਦੇ ਭੇਜੋ, ਪਰਿਭਾਸ਼ਿਤ ਕਰੋ ਕਿ ਤੁਸੀਂ ਆਪਣੇ ਉਪਭੋਗਤਾਵਾਂ ਬਾਰੇ ਕੀ ਜਾਣਨਾ ਚਾਹੁੰਦੇ ਹੋ, ...'
+      title_create_participatory_process: 'ਭਾਗੀਦਾਰੀ ਪ੍ਰਕਿਰਿਆ ਨੂੰ ਡਿਜ਼ਾਈਨ ਕਰੋ'
+      title_moderate_analyse_input: 'ਇੰਪੁੱਟ ਦਾ ਸੰਚਾਲਨ ਅਤੇ ਵਿਸ਼ਲੇਸ਼ਣ ਕਰੋ'
+      title_platform_setup: 'ਆਪਣਾ ਪਲੇਟਫਾਰਮ ਸੈੱਟ ਕਰੋ'
+      title_what_can_you_do_administrator: 'ਤੁਸੀਂ ਇੱਕ ਪ੍ਰਸ਼ਾਸਕ ਵਜੋਂ ਕੀ ਕਰ ਸਕਦੇ ਹੋ?'
+      title_you_became_administrator: 'ਤੁਸੀਂ ਪ੍ਰਸ਼ਾਸਕ ਬਣ ਗਏ'
+    comment_marked_as_spam:
+      by_author: '%{authorName}ਦੁਆਰਾ'
+      commented: '%{authorName} ਨੇ ਟਿੱਪਣੀ ਕੀਤੀ:'
+      cta_review_comment: 'ਟਿੱਪਣੀ ਦੀ ਸਮੀਖਿਆ ਕਰੋ'
+      days_ago: '%{numberOfDays} ਦਿਨ ਪਹਿਲਾਂ'
+      event_description: '<strong>''%{post}''</strong> ''ਤੇ ਪੋਸਟ ਕੀਤੀ ਗਈ ਹੇਠ ਦਿੱਤੀ ਟਿੱਪਣੀ ਦੀ ਰਿਪੋਰਟ ਕੀਤੀ ਗਈ ਸੀ:'
+      inappropriate_content: 'ਟਿੱਪਣੀ ਅਣਉਚਿਤ ਜਾਂ ਅਪਮਾਨਜਨਕ ਹੈ।'
+      preheader: 'ਸਪੈਮ ਵਜੋਂ ਰਿਪੋਰਟ ਕੀਤੀ ਗਈ ਇਸ ਟਿੱਪਣੀ ''ਤੇ ਕਾਰਵਾਈ ਕਰੋ'
+      reported_this_because: '%{reporterFirstName} ਨੇ ਇਸਦੀ ਰਿਪੋਰਟ ਕੀਤੀ ਕਿਉਂਕਿ:'
+      subject: '%{organizationName}: %{firstName} %{lastName} ਨੇ ਇਸ ਟਿੱਪਣੀ ਨੂੰ ਸਪੈਮ ਵਜੋਂ ਰਿਪੋਰਟ ਕੀਤਾ'
+      title_comment_spam_report: '%{firstName} %{lastName} ਨੇ ਇਸ ਟਿੱਪਣੀ ਨੂੰ ਸਪੈਮ ਵਜੋਂ ਰਿਪੋਰਟ ਕੀਤਾ'
+      today: ਅੱਜ
+      wrong_content: 'ਟਿੱਪਣੀ ਢੁਕਵੀਂ ਨਹੀਂ ਹੈ।'
+      yesterday: ਕੱਲ੍ਹ
+    cosponsor_of_your_idea:
+      cta_reply_to: 'ਆਪਣਾ ਪ੍ਰਸਤਾਵ ਦੇਖੋ'
+      event_description: 'ਵਧਾਈਆਂ! %{cosponsorName} ਨੇ ਤੁਹਾਡੇ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰਨ ਲਈ ਤੁਹਾਡੇ ਸੱਦੇ ਨੂੰ ਸਵੀਕਾਰ ਕਰ ਲਿਆ ਹੈ।'
+      main_header: '%{cosponsorName} ਨੇ ਤੁਹਾਡੇ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰਨ ਲਈ ਤੁਹਾਡੇ ਸੱਦੇ ਨੂੰ ਸਵੀਕਾਰ ਕਰ ਲਿਆ ਹੈ'
+      subject: '%{cosponsorName} ਨੇ ਤੁਹਾਡੇ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰਨ ਲਈ ਤੁਹਾਡੇ ਸੱਦੇ ਨੂੰ ਸਵੀਕਾਰ ਕਰ ਲਿਆ ਹੈ'
+      preheader: '%{cosponsorName} ਨੇ ਤੁਹਾਡੇ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰਨ ਲਈ ਤੁਹਾਡੇ ਸੱਦੇ ਨੂੰ ਸਵੀਕਾਰ ਕਰ ਲਿਆ ਹੈ'
+    cosponsor_of_your_initiative:
+      cta_reply_to: 'ਆਪਣਾ ਪ੍ਰਸਤਾਵ ਦੇਖੋ'
+      event_description_initiative: 'ਵਧਾਈਆਂ! %{cosponsorName} ਨੇ ਤੁਹਾਡੇ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰਨ ਲਈ ਤੁਹਾਡੇ ਸੱਦੇ ਨੂੰ ਸਵੀਕਾਰ ਕਰ ਲਿਆ ਹੈ।'
+      main_header: '%{cosponsorName} ਨੇ ਤੁਹਾਡੇ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰਨ ਲਈ ਤੁਹਾਡੇ ਸੱਦੇ ਨੂੰ ਸਵੀਕਾਰ ਕਰ ਲਿਆ ਹੈ'
+      subject: '%{cosponsorName} ਨੇ ਤੁਹਾਡੇ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰਨ ਲਈ ਤੁਹਾਡੇ ਸੱਦੇ ਨੂੰ ਸਵੀਕਾਰ ਕਰ ਲਿਆ ਹੈ'
+      preheader_initiative: '%{cosponsorName} ਨੇ ਤੁਹਾਡੇ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰਨ ਲਈ ਤੁਹਾਡੇ ਸੱਦੇ ਨੂੰ ਸਵੀਕਾਰ ਕਰ ਲਿਆ ਹੈ'
+    assignee_digest:
+      subject: 'ਤੁਹਾਡੇ ਫੀਡਬੈਕ ਦੀ ਲੋੜ ਵਾਲੇ ਵਿਚਾਰ: %{numberIdeas}'
+      preheader: '%{organizationName}ਦਾ ਸਪੁਰਦਗੀ ਡਾਇਜੈਸਟ'
+      title_your_weekly_report: '%{firstName}, ਨਾਗਰਿਕ ਇੰਪੁੱਟ ਤੁਹਾਡੇ ਫੀਡਬੈਕ ਦੀ ਉਡੀਕ ਕਰ ਰਿਹਾ ਹੈ'
+      cta_manage_your_input: 'ਆਪਣੇ ਇੰਪੁੱਟ ਦਾ ਪ੍ਰਬੰਧਨ ਕਰੋ'
+      x_inputs_need_your_feedback: 'ਇਨਪੁਟਸ ਨੂੰ ਤੁਹਾਡੇ ਫੀਡਬੈਕ ਦੀ ਲੋੜ ਹੈ'
+      title_assignment_past_week: 'ਤੁਹਾਨੂੰ ਸੌਂਪੇ ਗਏ ਨਵੀਨਤਮ ਵਿਚਾਰ'
+      title_no_assignment_past_week: 'ਪਿਛਲੇ ਹਫ਼ਤੇ ਤੁਹਾਨੂੰ ਕੋਈ ਨਵਾਂ ਵਿਚਾਰ ਨਹੀਂ ਸੌਂਪਿਆ ਗਿਆ'
+      yesterday_by_author: 'ਕੱਲ੍ਹ %{author}ਦੁਆਰਾ'
+      today_by_author: 'ਅੱਜ %{author}ਦੁਆਰਾ'
+      x_days_ago_by_author: '%{x} ਦਿਨ ਪਹਿਲਾਂ %{author}ਦੁਆਰਾ'
+      title_successful_past_week: 'ਤੁਹਾਨੂੰ ਸੌਂਪਿਆ ਗਿਆ ਹੈ ਜੋ ਥ੍ਰੈਸ਼ਹੋਲਡ ''ਤੇ ਪਹੁੰਚ ਗਿਆ ਹੈ'
+    idea_marked_as_spam:
+      cta_review: 'ਸਮੀਖਿਆ'
+      report_inappropriate_offensive_content: 'ਮੈਨੂੰ ਇਹ ਸਮੱਗਰੀ ਅਣਉਚਿਤ ਜਾਂ ਅਪਮਾਨਜਨਕ ਲੱਗਦੀ ਹੈ।'
+      report_not_an_idea: 'ਇਹ ਸਮਗਰੀ ਕੋਈ ਵਿਚਾਰ ਨਹੀਂ ਹੈ ਅਤੇ ਇਹ ਇੱਥੇ ਨਹੀਂ ਹੈ।'
+      subject: 'ਤੁਹਾਡੇ ਕੋਲ %{organizationName}ਦੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਇੱਕ ਸਪੈਮ ਰਿਪੋਰਟ ਹੈ'
+      preheader: 'ਇਸ ਸਪੈਮ ਰਿਪੋਰਟ ''ਤੇ ਕਾਰਵਾਈ ਕਰੋ'
+      reported_this_because: '%{reporterFirstName} ਨੇ ਇਸਦੀ ਰਿਪੋਰਟ ਕੀਤੀ ਕਿਉਂਕਿ:'
+      title_spam_report: '%{firstName} %{lastName} ਨੇ ਸਪੈਮ ਦੀ ਰਿਪੋਰਟ ਕੀਤੀ'
+    initiative_marked_as_spam:
+      cta_review_initiative: 'ਪ੍ਰਸਤਾਵ ਦੀ ਸਮੀਖਿਆ ਕਰੋ'
+      report_inappropriate_offensive_content: 'ਮੈਨੂੰ ਇਹ ਸਮੱਗਰੀ ਅਣਉਚਿਤ ਜਾਂ ਅਪਮਾਨਜਨਕ ਲੱਗਦੀ ਹੈ।'
+      report_not_an_initiative: 'ਇਹ ਸਮੱਗਰੀ ਇੱਕ ਪ੍ਰਸਤਾਵ ਨਹੀਂ ਹੈ ਅਤੇ ਇੱਥੇ ਸੰਬੰਧਿਤ ਨਹੀਂ ਹੈ।'
+      subject: 'ਤੁਹਾਡੇ ਕੋਲ %{organizationName}ਦੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਇੱਕ ਸਪੈਮ ਰਿਪੋਰਟ ਹੈ'
+      preheader: 'ਇਸ ਸਪੈਮ ਰਿਪੋਰਟ ''ਤੇ ਕਾਰਵਾਈ ਕਰੋ'
+      reported_this_because: '%{reporterFirstName} ਨੇ ਇਸਦੀ ਰਿਪੋਰਟ ਕੀਤੀ ਕਿਉਂਕਿ:'
+      title_spam_report: '%{firstName} %{lastName} ਨੇ ਸਪੈਮ ਦੀ ਰਿਪੋਰਟ ਕੀਤੀ'
+    initiative_assigned_to_you:
+      cta_reply_to: '%{authorName}ਨੂੰ ਫੀਡਬੈਕ ਦਿਓ'
+      event_description_initiative: 'ਤੁਹਾਨੂੰ ਇੱਕ ਪ੍ਰਸਤਾਵ ਸੌਂਪਿਆ ਗਿਆ ਹੈ। ਇੱਕ ਅਧਿਕਾਰਤ ਅੱਪਡੇਟ ਲਿਖ ਕੇ ਜਾਂ ਇਸਦੀ ਸਥਿਤੀ ਬਦਲ ਕੇ ਫੀਡਬੈਕ ਦਿਓ।'
+      main_header: '%{firstName}, ਤੁਹਾਡੇ ਕੋਲ ਇੱਕ ਨਵੀਂ ਅਸਾਈਨਮੈਂਟ ਹੈ'
+      subject: 'ਤੁਹਾਡੇ ਕੋਲ %{organizationName}ਦੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਇੱਕ ਅਸਾਈਨਮੈਂਟ ਹੈ'
+      preheader_initiative: '%{authorName} ਦਾ ਪ੍ਰਸਤਾਵ ਤੁਹਾਨੂੰ ਸੌਂਪਿਆ ਗਿਆ ਹੈ'
+    invitation_to_cosponsor_idea:
+      cta_reply_to: 'ਇਸ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰੋ'
+      event_description: '%{authorName} ਨੇ ਇੱਕ ਨਵਾਂ ਪ੍ਰਸਤਾਵ ਬਣਾਇਆ ਹੈ ਅਤੇ ਤੁਸੀਂ ਇਸਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ।'
+      event_description_cosponsoring: 'ਕਿਸੇ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰਨ ਦਾ ਮਤਲਬ ਹੈ ਕਿ <strong>ਤੁਹਾਡਾ ਨਾਮ ਪ੍ਰਸਤਾਵ ਦੇ ਹੋਰ ਸਹਿ-ਪ੍ਰਾਯੋਜਕਾਂ ਦੇ ਨਾਵਾਂ ਦੇ ਨਾਲ</strong> ਪ੍ਰਦਰਸ਼ਿਤ ਕੀਤਾ ਜਾਵੇਗਾ।'
+      event_description_before_action: 'ਪ੍ਰਸਤਾਵ ਨੂੰ ਦੇਖਣ ਅਤੇ ਸੱਦਾ ਸਵੀਕਾਰ ਕਰਨ ਲਈ, ਤੁਹਾਨੂੰ ਆਪਣੇ ਖਾਤੇ ਵਿੱਚ ਲੌਗਇਨ ਕਰਨਾ ਪਵੇਗਾ।'
+      event_description_action: 'ਪ੍ਰਸਤਾਵ ਨੂੰ ਪੜ੍ਹਨ ਲਈ ਹੇਠਾਂ ਕਲਿੱਕ ਕਰੋ।'
+      main_header: 'ਤੁਹਾਨੂੰ ਇੱਕ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰਨ ਲਈ ਸੱਦਾ ਦਿੱਤਾ ਗਿਆ ਹੈ'
+      subject: 'ਤੁਹਾਨੂੰ ਇੱਕ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰਨ ਲਈ ਸੱਦਾ ਦਿੱਤਾ ਗਿਆ ਹੈ'
+      preheader: 'ਤੁਹਾਨੂੰ %{authorName}ਦੇ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰਨ ਲਈ ਸੱਦਾ ਦਿੱਤਾ ਗਿਆ ਹੈ'
+    invitation_to_cosponsor_initiative:
+      cta_reply_to: 'ਇਸ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰੋ'
+      event_description_initiative: '%{authorName} ਨੇ ਇੱਕ ਨਵਾਂ ਪ੍ਰਸਤਾਵ ਬਣਾਇਆ ਹੈ ਅਤੇ ਤੁਸੀਂ ਇਸਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ।'
+      event_description_cosponsoring: 'ਕਿਸੇ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰਨ ਦਾ ਮਤਲਬ ਹੈ ਕਿ <strong>ਤੁਹਾਡਾ ਨਾਮ ਪ੍ਰਸਤਾਵ ਦੇ ਹੋਰ ਸਹਿ-ਪ੍ਰਾਯੋਜਕਾਂ ਦੇ ਨਾਵਾਂ ਦੇ ਨਾਲ</strong> ਪ੍ਰਦਰਸ਼ਿਤ ਕੀਤਾ ਜਾਵੇਗਾ।'
+      event_description_before_action: 'ਪ੍ਰਸਤਾਵ ਨੂੰ ਦੇਖਣ ਅਤੇ ਸੱਦਾ ਸਵੀਕਾਰ ਕਰਨ ਲਈ, ਤੁਹਾਨੂੰ ਆਪਣੇ ਖਾਤੇ ਵਿੱਚ ਲੌਗਇਨ ਕਰਨਾ ਪਵੇਗਾ।'
+      event_description_action: 'ਪ੍ਰਸਤਾਵ ਨੂੰ ਪੜ੍ਹਨ ਲਈ ਹੇਠਾਂ ਕਲਿੱਕ ਕਰੋ।'
+      main_header: 'ਤੁਹਾਨੂੰ ਇੱਕ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰਨ ਲਈ ਸੱਦਾ ਦਿੱਤਾ ਗਿਆ ਹੈ'
+      subject: 'ਤੁਹਾਨੂੰ ਇੱਕ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰਨ ਲਈ ਸੱਦਾ ਦਿੱਤਾ ਗਿਆ ਹੈ'
+      preheader_initiative: 'ਤੁਹਾਨੂੰ %{authorName}ਦੇ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰਨ ਲਈ ਸੱਦਾ ਦਿੱਤਾ ਗਿਆ ਹੈ'
+    initiative_resubmitted_for_review:
+      by_author: '%{authorName}ਦੁਆਰਾ'
+      cta_reply_to: '%{authorName}ਨੂੰ ਫੀਡਬੈਕ ਦਿਓ'
+      event_description_initiative: 'ਸਮੀਖਿਆ ਲਈ ਇੱਕ ਪ੍ਰਸਤਾਵ ਮੁੜ-ਸਬਮਿਟ ਕੀਤਾ ਗਿਆ ਹੈ। ਇੱਕ ਅਧਿਕਾਰਤ ਅੱਪਡੇਟ ਲਿਖ ਕੇ ਜਾਂ ਇਸਦੀ ਸਥਿਤੀ ਬਦਲ ਕੇ ਫੀਡਬੈਕ ਦਿਓ।'
+      main_header: '%{firstName}, ਤੁਹਾਡੇ ਕੋਲ ਸਮੀਖਿਆ ਕਰਨ ਦਾ ਪ੍ਰਸਤਾਵ ਹੈ'
+      subject: 'ਤੁਹਾਡੇ ਕੋਲ %{organizationName}ਦੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਸਮੀਖਿਆ ਕਰਨ ਦਾ ਪ੍ਰਸਤਾਵ ਹੈ'
+      preheader_initiative: '%{authorName} ਦੇ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਮੀਖਿਆ ਲਈ ਮੁੜ-ਸਬਮਿਟ ਕੀਤਾ ਗਿਆ ਹੈ'
+    invite_reminder:
+      cta_accept_invitation: 'ਤੁਹਾਡਾ ਸੱਦਾ ਸਵੀਕਾਰ ਕਰੋ'
+      invitation_header: 'ਤੁਹਾਡਾ ਸੱਦਾ ਵਿਚਾਰ-ਅਧੀਨ ਹੈ'
+      preheader: '%{organizationName} ਨੇ ਕੁਝ ਦਿਨ ਪਹਿਲਾਂ ਤੁਹਾਨੂੰ ਉਹਨਾਂ ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ਵਿੱਚ ਸ਼ਾਮਲ ਹੋਣ ਲਈ ਇੱਕ ਸੱਦਾ ਭੇਜਿਆ ਸੀ।'
+      invitation_expiry_message: 'ਇਸ ਸੱਦੇ ਦੀ ਮਿਆਦ ਲਗਭਗ %{expiryDaysRemaining} ਦਿਨਾਂ ਵਿੱਚ ਸਮਾਪਤ ਹੋ ਜਾਵੇਗੀ।'
+      subject: '%{organizationName}ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ਲਈ ਬਕਾਇਆ ਸੱਦਾ'
+    invite_received:
+      added_a_message: '%{organizationName} ਨੇ ਹੇਠਾਂ ਦਿੱਤਾ ਸੁਨੇਹਾ ਲਿਖਿਆ:'
+      cta_accept_invitation: 'ਤੁਹਾਡਾ ਸੱਦਾ ਸਵੀਕਾਰ ਕਰੋ'
+      invitation_header: 'ਤੁਹਾਨੂੰ ਸੱਦਾ ਦਿੱਤਾ ਗਿਆ ਹੈ!'
+      invitation_header_message: '%{organizationName} ਨੇ ਤੁਹਾਨੂੰ ਉਹਨਾਂ ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ਲਈ ਸੱਦਾ ਦਿੱਤਾ।'
+      invitation_expiry_message: 'ਇਸ ਸੱਦੇ ਦੀ ਮਿਆਦ %{expiryDays} ਦਿਨਾਂ ਵਿੱਚ ਸਮਾਪਤ ਹੋ ਜਾਵੇਗੀ।'
+      preheader: '%{organizationName} ਨੇ ਤੁਹਾਨੂੰ ਉਹਨਾਂ ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ਵਿੱਚ ਸ਼ਾਮਲ ਹੋਣ ਲਈ ਇੱਕ ਸੱਦਾ ਭੇਜਿਆ ਹੈ।'
+      subject: 'ਤੁਹਾਨੂੰ %{organizationName}ਦੇ ਪਲੇਟਫਾਰਮ ਵਿੱਚ ਸ਼ਾਮਲ ਹੋਣ ਲਈ ਸੱਦਾ ਦਿੱਤਾ ਜਾਂਦਾ ਹੈ'
+    initiative_published:
+      action_add_image: '%{addImageLink} ਦਿੱਖ ਵਧਾਉਣ ਲਈ'
+      action_published_initiative: 'ਪ੍ਰਕਾਸ਼ਿਤ ਪ੍ਰਸਤਾਵ'
+      action_send_email: 'ਆਪਣੇ ਸੰਪਰਕਾਂ ਨੂੰ ਇੱਕ %{sendEmailLink}ਭੇਜੋ'
+      action_share_fb: 'ਆਪਣੇ ਦੋਸਤਾਂ ਨੂੰ %{fbLink}''ਤੇ ਦੱਸੋ'
+      action_share_link: '%{link}ਦੀ ਨਕਲ ਕਰਕੇ ਇਸਨੂੰ ਕਿਸੇ ਵੀ ਚੈਨਲ ਰਾਹੀਂ ਸਾਂਝਾ ਕਰੋ'
+      action_share_twitter: 'ਆਪਣੇ ਪੈਰੋਕਾਰਾਂ ਨੂੰ %{twitterLink}''ਤੇ ਸੂਚਿਤ ਕਰੋ'
+      link: ਲਿੰਕ
+      main_header: 'ਤੁਸੀਂ ਇੱਕ ਪ੍ਰਸਤਾਵ ਪੋਸਟ ਕੀਤਾ ਹੈ! ਆਓ ਇਸਦੇ ਲਈ ਸਮਰਥਨ ਇਕੱਠਾ ਕਰੀਏ।'
+      message_next_steps: '%{userFirstName}, ਤੁਹਾਡੇ ਪ੍ਰਸਤਾਵ ਨੂੰ %{organizationName}ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ''ਤੇ ਸਫਲਤਾਪੂਰਵਕ ਪ੍ਰਕਾਸ਼ਿਤ ਕੀਤਾ ਗਿਆ ਹੈ। ਜਦੋਂ ਲੋਕ ਤੁਹਾਡੇ ਪ੍ਰਸਤਾਵ ਨਾਲ ਗੱਲਬਾਤ ਕਰਦੇ ਹਨ ਤਾਂ ਤੁਹਾਨੂੰ ਸੂਚਿਤ ਕੀਤਾ ਜਾਵੇਗਾ। ਹੇਠਾਂ ਪਤਾ ਕਰੋ ਕਿ ਤੁਸੀਂ ਅਗਲੇ ਕਿਹੜੇ ਕਦਮ ਚੁੱਕ ਸਕਦੇ ਹੋ।'
+      message_get_votes: 'ਵੋਟਿੰਗ ਥ੍ਰੈਸ਼ਹੋਲਡ ਤੱਕ ਪਹੁੰਚੋ:'
+      preheader: '%{organizationName}ਲਈ ਆਪਣਾ ਪ੍ਰਸਤਾਵ %{initiativeTitle} ਸਾਂਝਾ ਕਰਨ ਲਈ ਤੁਹਾਡਾ ਧੰਨਵਾਦ। ਅਗਲਾ ਕਦਮ ਤੁਹਾਡੇ ਪ੍ਰਸਤਾਵ ਨੂੰ ਤੁਹਾਡੇ ਨੈਟਵਰਕ ਵਿੱਚ ਸਾਂਝਾ ਕਰਕੇ ਸਮਰਥਨ ਪ੍ਰਾਪਤ ਕਰਨਾ ਹੈ।'
+      send_email: ਈਮੇਲ
+      subject: 'ਤੁਹਾਡਾ ਪ੍ਰਸਤਾਵ %{organizationName}ਦੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਪ੍ਰਕਾਸ਼ਿਤ ਕੀਤਾ ਗਿਆ ਸੀ'
+    mention_in_comment:
+      cta_reply_to: '%{commentAuthor}ਨੂੰ ਜਵਾਬ ਦਿਓ'
+      event_description: '%{commentAuthorFull} ਨੇ ''%{post}'' ਵਿਚਾਰ ''ਤੇ ਆਪਣੀ ਟਿੱਪਣੀ ਵਿੱਚ ਤੁਹਾਡਾ ਜ਼ਿਕਰ ਕੀਤਾ ਹੈ। %{commentAuthor}ਨਾਲ ਗੱਲਬਾਤ ਵਿੱਚ ਦਾਖਲ ਹੋਣ ਲਈ ਹੇਠਾਂ ਦਿੱਤੇ ਲਿੰਕ ''ਤੇ ਕਲਿੱਕ ਕਰੋ'
+      main_header: 'ਲੋਕ ਤੁਹਾਡੇ ਬਾਰੇ ਗੱਲ ਕਰ ਰਹੇ ਹਨ'
+      subject: '%{organizationName}ਦੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਕਿਸੇ ਨੇ ਤੁਹਾਡਾ ਜ਼ਿਕਰ ਕੀਤਾ'
+      preheader: '%{commentAuthor} ਨੇ ਇੱਕ ਟਿੱਪਣੀ ਵਿੱਚ ਤੁਹਾਡਾ ਜ਼ਿਕਰ ਕੀਤਾ'
+    mention_in_internal_comment:
+      cta_reply_to: '%{firstName}ਦੁਆਰਾ ਟਿੱਪਣੀ ਦੇਖੋ'
+      event_description: '%{authorNameFull} ਨੇ ਇੱਕ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ਵਿੱਚ ਤੁਹਾਡਾ ਜ਼ਿਕਰ ਕੀਤਾ।'
+      subject: '%{firstName} ਨੇ ਇੱਕ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ਵਿੱਚ ਤੁਹਾਡਾ ਜ਼ਿਕਰ ਕੀਤਾ।'
+      main_header: '%{firstName} ਨੇ ਇੱਕ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ਵਿੱਚ ਤੁਹਾਡਾ ਜ਼ਿਕਰ ਕੀਤਾ।'
+      preheader: '%{authorNameFull} ਨੇ ਇੱਕ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ਵਿੱਚ ਤੁਹਾਡਾ ਜ਼ਿਕਰ ਕੀਤਾ।'
+    moderator_digest:
+      subject: '%{time}ਦੀ ਤੁਹਾਡੀ ਹਫ਼ਤਾਵਾਰੀ ਪ੍ਰੋਜੈਕਟ ਮੈਨੇਜਰ ਰਿਪੋਰਟ'
+      preheader: '%{organizationName}ਦਾ ਪ੍ਰੋਜੈਕਟ ਮੈਨੇਜਰ ਡਾਇਜੈਸਟ'
+      title_your_weekly_report: '%{firstName}, ਤੁਹਾਡੀ ਹਫ਼ਤਾਵਾਰੀ ਰਿਪੋਰਟ'
+      text_introduction: 'ਅਸੀਂ ਤੁਹਾਡੇ ਲਈ ਉਹ ਇਨਪੁਟ ਤਿਆਰ ਕੀਤਾ ਹੈ ਜਿਸ ਨੇ ਪਿਛਲੇ ਹਫ਼ਤੇ ਸਭ ਤੋਂ ਵੱਧ ਗਤੀਵਿਧੀ ਜਨਰੇਟ ਕੀਤੀ ਹੈ। ਪਤਾ ਕਰੋ ਕਿ ਤੁਹਾਡੇ ਪ੍ਰੋਜੈਕਟ ਨਾਲ ਕੀ ਹੋ ਰਿਹਾ ਹੈ!'
+      cta_manage: 'ਆਪਣੇ ਪ੍ਰੋਜੈਕਟ ਦਾ ਪ੍ਰਬੰਧਨ ਕਰੋ'
+      new_users: 'ਨਵੇਂ ਉਪਭੋਗਤਾ'
+      new_ideas: 'ਨਵੇਂ ਵਿਚਾਰ'
+      new_comments: 'ਨਵੀਆਂ ਟਿੱਪਣੀਆਂ'
+      title_inputs_past_week: 'ਪਿਛਲੇ ਹਫ਼ਤੇ ਵਿੱਚ ਨਵੇਂ ਇਨਪੁੱਟ'
+      title_no_inputs_past_week: 'ਪਿਛਲੇ ਹਫ਼ਤੇ ਕੋਈ ਨਵਾਂ ਇਨਪੁੱਟ ਨਹੀਂ'
+      title_threshold_reached: ਪਿਛਲੇ ਹਫ਼ਤੇ ਦੀ ਸੀਮਾ 'ਤੇ ਪਹੁੰਚ ਗਈ
+      yesterday_by_author: 'ਕੱਲ੍ਹ %{author}ਦੁਆਰਾ'
+      today_by_author: 'ਅੱਜ %{author}ਦੁਆਰਾ'
+      x_days_ago_by_author: '%{x} ਦਿਨ ਪਹਿਲਾਂ %{author}ਦੁਆਰਾ'
+    new_comment_for_admin:
+      commented: '%{authorFirstName} ਨੇ ਟਿੱਪਣੀ ਕੀਤੀ:'
+      cta_reply_to: '%{commentAuthor}ਦੀ ਟਿੱਪਣੀ ਦੇਖੋ'
+      days_ago: '%{numberOfDays} ਦਿਨ ਪਹਿਲਾਂ'
+      event_description: '%{authorName} ਨੇ ਤੁਹਾਡੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਇੱਕ ਨਵੀਂ ਟਿੱਪਣੀ ਸ਼ਾਮਲ ਕੀਤੀ।'
+      main_header: '%{firstName}, ਤੁਹਾਡੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਇੱਕ ਨਵੀਂ ਟਿੱਪਣੀ ਪੋਸਟ ਕੀਤੀ ਗਈ ਹੈ'
+      subject: '%{organizationName}ਦੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਇੱਕ ਨਵੀਂ ਟਿੱਪਣੀ ਪੋਸਟ ਕੀਤੀ ਗਈ ਹੈ'
+      preheader: '%{authorName} ਨੇ ਇੱਕ ਟਿੱਪਣੀ ਛੱਡੀ'
+      today: ਅੱਜ
+      yesterday: ਕੱਲ੍ਹ
+    comment_on_idea_you_follow:
+      cta_reply_to: '%{commentAuthor}ਨੂੰ ਜਵਾਬ ਦਿਓ'
+      event_description: '%{authorNameFull} placed a reaction on ''%{inputTitle}''. Click the button below to continue the conversation with %{authorName}.'
+      main_header:
+        idea: '%{authorName} ਨੇ ਤੁਹਾਡੇ ਦੁਆਰਾ ਅਨੁਸਰਣ ਕੀਤੇ ਵਿਚਾਰ ''ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ'
+        question: '%{authorName} ਨੇ ਤੁਹਾਡੇ ਦੁਆਰਾ ਅਨੁਸਰਣ ਕੀਤੇ ਸਵਾਲ ''ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ'
+        contribution: '%{authorName} ਨੇ ਤੁਹਾਡੇ ਦੁਆਰਾ ਅਨੁਸਰਣ ਕੀਤੇ ਯੋਗਦਾਨ ''ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ'
+        project: '%{authorName} ਨੇ ਤੁਹਾਡੇ ਦੁਆਰਾ ਅਨੁਸਰਣ ਕੀਤੇ ਪ੍ਰੋਜੈਕਟ ''ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ'
+        issue: '%{authorName} ਨੇ ਤੁਹਾਡੇ ਦੁਆਰਾ ਅਨੁਸਰਣ ਕੀਤੇ ਗਏ ਮੁੱਦੇ ''ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ'
+        option: '%{authorName} ਨੇ ਤੁਹਾਡੇ ਦੁਆਰਾ ਅਨੁਸਰਣ ਕੀਤੇ ਵਿਕਲਪ ''ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ'
+        proposal: '%{authorName} ਨੇ ਤੁਹਾਡੇ ਦੁਆਰਾ ਅਨੁਸਰਣ ਕੀਤੇ ਪ੍ਰਸਤਾਵ ''ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ'
+        initiative: '%{authorName} ਨੇ ਤੁਹਾਡੇ ਦੁਆਰਾ ਅਨੁਸਰਣ ਕੀਤੀ ਪਹਿਲਕਦਮੀ ''ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ'
+        petition: '%{authorName} ਨੇ ਤੁਹਾਡੇ ਦੁਆਰਾ ਅਨੁਸਰਣ ਕੀਤੀ ਪਟੀਸ਼ਨ ''ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ'
+      subject: 'There''s a new comment on "%{input_title}"'
+      preheader: '%{authorName} ਨੇ %{organizationName}ਲਈ ਇੱਕ ਵਿਚਾਰ ''ਤੇ ਇੱਕ ਟਿੱਪਣੀ ਛੱਡੀ'
+    comment_on_initiative_you_follow:
+      cta_reply_to: '%{commentAuthor}ਨੂੰ ਜਵਾਬ ਦਿਓ'
+      event_description: '%{authorNameFull} ਨੇ ਪ੍ਰਸਤਾਵ ''%{initiativeTitle}'' ''ਤੇ ਪ੍ਰਤੀਕਿਰਿਆ ਦਿੱਤੀ। %{authorName}ਨਾਲ ਗੱਲਬਾਤ ਜਾਰੀ ਰੱਖਣ ਲਈ ਹੇਠਾਂ ਦਿੱਤੇ ਬਟਨ ''ਤੇ ਕਲਿੱਕ ਕਰੋ।'
+      main_header: '%{commentAuthor} ਨੇ ਤੁਹਾਡੇ ਦੁਆਰਾ ਅਨੁਸਰਣ ਕੀਤੇ ਪ੍ਰਸਤਾਵ ''ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ'
+      subject: 'ਤੁਹਾਡੇ ਦੁਆਰਾ ਅਨੁਸਰਣ ਕੀਤੇ ਪ੍ਰਸਤਾਵ ''ਤੇ ਇੱਕ ਨਵੀਂ ਟਿੱਪਣੀ ਹੈ'
+      preheader: '%{authorName} ਨੇ %{organizationName}ਲਈ ਇੱਕ ਪ੍ਰਸਤਾਵ ''ਤੇ ਇੱਕ ਟਿੱਪਣੀ ਛੱਡੀ'
+    new_initiative_for_admin:
+      cta_reply_to: '%{authorName}ਨੂੰ ਫੀਡਬੈਕ ਦਿਓ'
+      event_description: '%{authorName} ਨੇ ਤੁਹਾਡੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਇੱਕ ਨਵਾਂ ਪ੍ਰਸਤਾਵ ਪ੍ਰਕਾਸ਼ਿਤ ਕੀਤਾ ਹੈ। ਇਸ ਨੂੰ ਹੁਣੇ ਖੋਜੋ, ਕੁਝ ਫੀਡਬੈਕ ਦਿਓ ਜਾਂ ਇਸਦੀ ਸਥਿਤੀ ਬਦਲੋ!'
+      main_header: '%{firstName}, ਤੁਹਾਡੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਇੱਕ ਨਵਾਂ ਪ੍ਰਸਤਾਵ ਪ੍ਰਕਾਸ਼ਿਤ ਕੀਤਾ ਗਿਆ ਹੈ'
+      subject: 'ਕਿਸੇ ਨੇ %{organizationName}ਦੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਇੱਕ ਨਵਾਂ ਪ੍ਰਸਤਾਵ ਪ੍ਰਕਾਸ਼ਿਤ ਕੀਤਾ'
+      preheader: '%{authorName} ਨੇ ਤੁਹਾਡੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਇੱਕ ਨਵਾਂ ਪ੍ਰਸਤਾਵ ਪ੍ਰਕਾਸ਼ਿਤ ਕੀਤਾ ਹੈ'
+    new_idea_for_admin:
+      main_header_publication: 'ਤੁਹਾਡੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਇੱਕ ਨਵਾਂ ਇਨਪੁਟ ਪ੍ਰਕਾਸ਼ਿਤ ਕੀਤਾ ਗਿਆ ਹੈ'
+      event_description_publication: '%{authorName} ਨੇ ਤੁਹਾਡੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਇੱਕ ਨਵਾਂ ਇਨਪੁਟ ਸਪੁਰਦ ਕੀਤਾ ਹੈ। ਇਸ ਨੂੰ ਹੁਣੇ ਖੋਜੋ, ਕੁਝ ਫੀਡਬੈਕ ਦਿਓ ਜਾਂ ਇਸਦੀ ਸਥਿਤੀ ਬਦਲੋ!'
+      cta_publication: '%{authorName}ਨੂੰ ਫੀਡਬੈਕ ਦਿਓ'
+      main_header_prescreening: 'ਇੱਕ ਇਨਪੁਟ ਲਈ ਤੁਹਾਡੀ ਸਮੀਖਿਆ ਦੀ ਲੋੜ ਹੈ'
+      event_description_prescreening: '%{authorName} ਨੇ ਤੁਹਾਡੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਇੱਕ ਨਵਾਂ ਇਨਪੁਟ ਸਪੁਰਦ ਕੀਤਾ ਹੈ।'
+      input_not_visible_prescreening: '<b>ਇਨਪੁਟ</b> ਉਦੋਂ ਤੱਕ ਦਿਖਾਈ ਨਹੀਂ ਦੇਵੇਗਾ ਜਦੋਂ ਤੱਕ ਤੁਸੀਂ ਇਸਦੀ ਸਥਿਤੀ ਨੂੰ ਨਹੀਂ ਬਦਲਦੇ।'
+      cta_prescreening: 'ਇਨਪੁਟ ਦੀ ਸਮੀਖਿਆ ਕਰੋ'
+      days_ago: '%{numberOfDays} ਦਿਨ ਪਹਿਲਾਂ'
+      preheader: '%{authorName} ਨੇ ਤੁਹਾਡੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਇੱਕ ਨਵਾਂ ਵਿਚਾਰ ਪ੍ਰਕਾਸ਼ਿਤ ਕੀਤਾ'
+      today: ਅੱਜ
+      yesterday: ਕੱਲ੍ਹ
+    comment_on_your_comment:
+      cta_reply_to: '%{firstName}ਨੂੰ ਜਵਾਬ ਦਿਓ'
+      event_description: '%{authorNameFull} ਨੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ''ਤੇ ''%{post}'' ''ਤੇ ਤੁਹਾਡੀ ਟਿੱਪਣੀ ਦਾ ਜਵਾਬ ਲਿਖਿਆ। %{authorName}ਨਾਲ ਗੱਲਬਾਤ ਜਾਰੀ ਰੱਖਣ ਲਈ ਹੇਠਾਂ ਦਿੱਤੇ ਬਟਨ ''ਤੇ ਕਲਿੱਕ ਕਰੋ।'
+      subject: 'ਤੁਹਾਨੂੰ %{organizationName}ਦੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਤੁਹਾਡੀ ਟਿੱਪਣੀ ਦਾ ਜਵਾਬ ਮਿਲਿਆ ਹੈ'
+      main_header: '%{authorName} ਨੇ ਤੁਹਾਡੀ ਟਿੱਪਣੀ ਦਾ ਜਵਾਬ ਦਿੱਤਾ'
+      preheader: '%{authorName} ਨੇ %{organizationName}ਦੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਤੁਹਾਡੀ ਟਿੱਪਣੀ ਦਾ ਜਵਾਬ ਦਿੱਤਾ'
+      replied: '%{authorFirstName} ਨੇ ਜਵਾਬ ਦਿੱਤਾ:'
+    internal_comment_on_your_internal_comment:
+      cta_reply_to: '%{firstName}ਦੁਆਰਾ ਟਿੱਪਣੀ ਦੇਖੋ'
+      event_description: '%{authorNameFull} ਨੇ ਤੁਹਾਡੀ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ''ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ।'
+      subject: 'ਤੁਹਾਨੂੰ ''%{post}'' ''ਤੇ ਤੁਹਾਡੀ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ''ਤੇ ਇੱਕ ਟਿੱਪਣੀ ਪ੍ਰਾਪਤ ਹੋਈ ਹੈ।'
+      main_header: 'ਤੁਹਾਨੂੰ ''%{post}'' ''ਤੇ ਤੁਹਾਡੀ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ''ਤੇ ਇੱਕ ਟਿੱਪਣੀ ਪ੍ਰਾਪਤ ਹੋਈ ਹੈ।'
+      preheader: '%{authorName} ਨੇ ''%{post}'' ''ਤੇ ਤੁਹਾਡੀ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ਦਾ ਜਵਾਬ ਦਿੱਤਾ'
+    internal_comment_on_idea_assigned_to_you:
+      cta_reply_to: '%{firstName}ਦੁਆਰਾ ਟਿੱਪਣੀ ਦੇਖੋ'
+      event_description: '%{authorNameFull} ਨੇ ਤੁਹਾਨੂੰ ਸੌਂਪੇ ਗਏ ਇੱਕ ਇਨਪੁਟ ''ਤੇ ਅੰਦਰੂਨੀ ਤੌਰ ''ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ।'
+      subject: '''%{post}'' ਦੀ ਇੱਕ ਨਵੀਂ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ਹੈ'
+      main_header: '''%{post}'' ਦੀ ਇੱਕ ਨਵੀਂ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ਹੈ'
+      preheader: '''%{post}'' ਦੀ ਇੱਕ ਨਵੀਂ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ਹੈ'
+    internal_comment_on_idea_you_commented_internally_on:
+      cta_reply_to: '%{firstName}ਦੁਆਰਾ ਟਿੱਪਣੀ ਦੇਖੋ'
+      event_description: '%{authorNameFull} ਉਸ ਇਨਪੁਟ ''ਤੇ ਅੰਦਰੂਨੀ ਤੌਰ ''ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ ਜਿਸ ''ਤੇ ਤੁਸੀਂ ਅੰਦਰੂਨੀ ਤੌਰ ''ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ ਹੈ।'
+      subject: '''%{post}'' ਦੀ ਇੱਕ ਨਵੀਂ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ਹੈ'
+      main_header: '''%{post}'' ਦੀ ਇੱਕ ਨਵੀਂ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ਹੈ'
+      preheader: '''%{post}'' ਦੀ ਇੱਕ ਨਵੀਂ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ਹੈ'
+    internal_comment_on_idea_you_moderate:
+      cta_reply_to: '%{firstName}ਦੁਆਰਾ ਟਿੱਪਣੀ ਦੇਖੋ'
+      event_description: '%{authorNameFull} ਨੇ ਤੁਹਾਡੇ ਦੁਆਰਾ ਪ੍ਰਬੰਧਿਤ ਕੀਤੇ ਪ੍ਰੋਜੈਕਟ ਜਾਂ ਫੋਲਡਰ ਵਿੱਚ ਇੱਕ ਇਨਪੁਟ ''ਤੇ ਅੰਦਰੂਨੀ ਤੌਰ ''ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ।'
+      subject: '''%{post}'' ਦੀ ਇੱਕ ਨਵੀਂ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ਹੈ'
+      main_header: '''%{post}'' ਦੀ ਇੱਕ ਨਵੀਂ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ਹੈ'
+      preheader: '''%{post}'' ਦੀ ਇੱਕ ਨਵੀਂ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ਹੈ'
+    internal_comment_on_initiative_assigned_to_you:
+      cta_reply_to: '%{firstName}ਦੁਆਰਾ ਟਿੱਪਣੀ ਦੇਖੋ'
+      event_description: '%{authorNameFull} ਨੇ ਤੁਹਾਨੂੰ ਸੌਂਪੇ ਗਏ ਪ੍ਰਸਤਾਵ ''ਤੇ ਅੰਦਰੂਨੀ ਤੌਰ ''ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ।'
+      subject: '''%{post}'' ਦੀ ਇੱਕ ਨਵੀਂ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ਹੈ'
+      main_header: '''%{post}'' ਦੀ ਇੱਕ ਨਵੀਂ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ਹੈ'
+      preheader: '''%{post}'' ਦੀ ਇੱਕ ਨਵੀਂ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ਹੈ'
+    internal_comment_on_initiative_you_commented_internally_on:
+      cta_reply_to: '%{firstName}ਦੁਆਰਾ ਟਿੱਪਣੀ ਦੇਖੋ'
+      event_description: '%{authorNameFull} ਨੇ ਉਸ ਪ੍ਰਸਤਾਵ ''ਤੇ ਅੰਦਰੂਨੀ ਤੌਰ ''ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ ਜਿਸ ''ਤੇ ਤੁਸੀਂ ਅੰਦਰੂਨੀ ਤੌਰ ''ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ ਸੀ।'
+      subject: '''%{post}'' ਦੀ ਇੱਕ ਨਵੀਂ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ਹੈ'
+      main_header: '''%{post}'' ਦੀ ਇੱਕ ਨਵੀਂ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ਹੈ'
+      preheader: '''%{post}'' ਦੀ ਇੱਕ ਨਵੀਂ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ਹੈ'
+    internal_comment_on_unassigned_initiative:
+      cta_reply_to: '%{firstName}ਦੁਆਰਾ ਟਿੱਪਣੀ ਦੇਖੋ'
+      event_description: '%{authorNameFull} ਨੇ ਅਸਾਈਨ ਕੀਤੇ ਪ੍ਰਸਤਾਵ ''ਤੇ ਅੰਦਰੂਨੀ ਤੌਰ ''ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ।'
+      subject: '''%{post}'' ਦੀ ਇੱਕ ਨਵੀਂ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ਹੈ'
+      main_header: '''%{post}'' ਦੀ ਇੱਕ ਨਵੀਂ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ਹੈ'
+      preheader: '''%{post}'' ਦੀ ਇੱਕ ਨਵੀਂ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ਹੈ'
+    internal_comment_on_unassigned_unmoderated_idea:
+      cta_reply_to: '%{firstName}ਦੁਆਰਾ ਟਿੱਪਣੀ ਦੇਖੋ'
+      event_description: '%{authorNameFull} ਨੇ ਇੱਕ ਅਪ੍ਰਬੰਧਿਤ ਪ੍ਰੋਜੈਕਟ ਵਿੱਚ ਇੱਕ ਅਸਾਈਨ ਕੀਤੇ ਇਨਪੁਟ ''ਤੇ ਅੰਦਰੂਨੀ ਤੌਰ ''ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ।'
+      subject: '''%{post}'' ਦੀ ਇੱਕ ਨਵੀਂ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ਹੈ'
+      main_header: '''%{post}'' ਦੀ ਇੱਕ ਨਵੀਂ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ਹੈ'
+      preheader: '''%{post}'' ਦੀ ਇੱਕ ਨਵੀਂ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ਹੈ'
+    official_feedback_on_idea_you_follow:
+      header_message: '%{feedback_author_name} gave an update on ''%{input_title}''.'
+      header_title: 'There''s an update on "%{input_title}"'
+      subject: 'Official feedback was posted on "%{input_title}"'
+      preheader: 'There''s an update on an input you follow'
+    official_feedback_on_initiative_you_follow:
+      header_message: '%{officialName} ਨੇ ਪ੍ਰਸਤਾਵ ''%{initiativeTitle}'' ''ਤੇ ਇੱਕ ਅੱਪਡੇਟ ਦਿੱਤਾ। %{organizationName}ਨਾਲ ਗੱਲਬਾਤ ਵਿੱਚ ਦਾਖਲ ਹੋਣ ਲਈ ਹੇਠਾਂ ਦਿੱਤੇ ਬਟਨ ''ਤੇ ਕਲਿੱਕ ਕਰੋ।'
+      header_title: 'ਤੁਹਾਡੇ ਦੁਆਰਾ ਅਨੁਸਰਣ ਕੀਤੇ ਪ੍ਰਸਤਾਵ ''ਤੇ ਇੱਕ ਅੱਪਡੇਟ ਹੈ'
+      subject: 'ਤੁਹਾਡੇ ਦੁਆਰਾ ਅਨੁਸਰਣ ਕੀਤੇ ਪ੍ਰਸਤਾਵ ਨੂੰ %{organizationName}ਦੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਇੱਕ ਅਧਿਕਾਰਤ ਅਪਡੇਟ ਪ੍ਰਾਪਤ ਹੋਇਆ ਹੈ'
+      preheader: 'ਤੁਹਾਡੇ ਦੁਆਰਾ ਅਨੁਸਰਣ ਕੀਤੇ ਪ੍ਰਸਤਾਵ ''ਤੇ ਇੱਕ ਅੱਪਡੇਟ ਹੈ'
+    mention_in_official_feedback:
+      cta_reply_to: '%{organizationName}ਨੂੰ ਜਵਾਬ ਦਿਓ'
+      event_description: '%{organizationName} ਨੇ ''%{post}'' ਵਿਚਾਰ ''ਤੇ ਆਪਣੇ ਫੀਡਬੈਕ ਵਿੱਚ ਤੁਹਾਡਾ ਜ਼ਿਕਰ ਕੀਤਾ। %{organizationName}ਨਾਲ ਗੱਲਬਾਤ ਵਿੱਚ ਦਾਖਲ ਹੋਣ ਲਈ ਹੇਠਾਂ ਦਿੱਤੇ ਲਿੰਕ ''ਤੇ ਕਲਿੱਕ ਕਰੋ'
+      main_header: 'ਤੁਹਾਡਾ ਜ਼ਿਕਰ ਕੀਤਾ ਗਿਆ ਹੈ'
+      subject: '%{organizationName} ਨੇ ਆਪਣੇ ਫੀਡਬੈਕ ਵਿੱਚ ਤੁਹਾਡਾ ਜ਼ਿਕਰ ਕੀਤਾ'
+      preheader: '%{commentAuthor} ਨੇ ਫੀਡਬੈਕ ਵਿੱਚ ਤੁਹਾਡਾ ਜ਼ਿਕਰ ਕੀਤਾ'
+    project_moderation_rights_received:
+      cta_manage_project: 'ਇਸ ਪ੍ਰੋਜੈਕਟ ਦਾ ਪ੍ਰਬੰਧਨ ਕਰੋ'
+      message_you_became_moderator: '%{organizationName} ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ਦੇ ਇੱਕ ਪ੍ਰਸ਼ਾਸਕ ਨੇ ਤੁਹਾਨੂੰ ਹੇਠਾਂ ਦਿੱਤੇ ਪ੍ਰੋਜੈਕਟ ਦਾ ਪ੍ਰੋਜੈਕਟ ਮੈਨੇਜਰ ਬਣਾਇਆ ਹੈ:'
+      no_ideas: 'ਅਜੇ ਕੋਈ ਵਿਚਾਰ ਨਹੀਂ'
+      preheader: '%{organizationName} ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ਦੇ ਇੱਕ ਪ੍ਰਸ਼ਾਸਕ ਨੇ ਤੁਹਾਨੂੰ ਹੇਠਾਂ ਦਿੱਤੇ ਪ੍ਰੋਜੈਕਟ ਦਾ ਇੱਕ ਪ੍ਰੋਜੈਕਟ ਮੈਨੇਜਰ ਬਣਾਇਆ ਹੈ'
+      subject: 'ਤੁਸੀਂ %{organizationName}ਦੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਇੱਕ ਪ੍ਰੋਜੈਕਟ ਮੈਨੇਜਰ ਬਣ ਗਏ ਹੋ'
+      text_design_participatory_process: 'ਇੱਕ ਪ੍ਰੋਜੈਕਟ ਮੈਨੇਜਰ ਦੇ ਰੂਪ ਵਿੱਚ, ਤੁਸੀਂ ਕੌਂਫਿਗਰ ਕਰ ਸਕਦੇ ਹੋ ਕਿ ਉਪਭੋਗਤਾ ਤੁਹਾਡੇ ਪ੍ਰੋਜੈਕਟ ਵਿੱਚ ਕਿਵੇਂ ਅੰਤਰਕਿਰਿਆ ਕਰਦੇ ਹਨ। ਤੁਸੀਂ ਟਾਈਮਲਾਈਨ ਦੀ ਵਰਤੋਂ ਕਰਕੇ ਨਵੇਂ ਪੜਾਅ ਜੋੜ ਸਕਦੇ ਹੋ। ਵਿਚਾਰ ਪੋਸਟਿੰਗ, ਟਿੱਪਣੀ, ਅਤੇ ਵੋਟਿੰਗ ਦੇ ਸਬੰਧ ਵਿੱਚ ਇਹਨਾਂ ਪੜਾਵਾਂ ਵਿੱਚੋਂ ਹਰ ਇੱਕ ਦਾ ਆਪਣਾ ਵਿਹਾਰ ਹੋ ਸਕਦਾ ਹੈ।'
+      text_moderate_analyse_input: 'ਇੱਕ ਵਾਰ ਪ੍ਰੋਜੈਕਟ ਲਾਂਚ ਹੋਣ ਤੋਂ ਬਾਅਦ, ਪਹਿਲੇ ਵਿਚਾਰ ਆਉਣਗੇ। ਤੁਹਾਨੂੰ ਸਾਰੀਆਂ ਮੁੱਖ ਗਤੀਵਿਧੀਆਂ ਦੇ ਨਾਲ ਹਫਤਾਵਾਰੀ ਰਿਪੋਰਟਾਂ ਪ੍ਰਾਪਤ ਹੋਣਗੀਆਂ ਤਾਂ ਜੋ ਤੁਸੀਂ ਚੀਜ਼ਾਂ ਦੇ ਸਿਖਰ ''ਤੇ ਰਹੋ। ਤੁਹਾਡੇ ਪ੍ਰੋਜੈਕਟ ਮੈਨੇਜਰ ਦ੍ਰਿਸ਼ ਵਿੱਚ ਵਿਚਾਰਾਂ ਦੀ ਸੰਖੇਪ ਜਾਣਕਾਰੀ ਤੁਹਾਨੂੰ ਇਹ ਸਮਝਣ ਵਿੱਚ ਮਦਦ ਕਰੇਗੀ ਕਿ ਕਿਹੜੇ ਵਿਚਾਰਾਂ ਨੂੰ ਸਭ ਤੋਂ ਵੱਧ ਪਸੰਦ ਅਤੇ ਨਾਪਸੰਦ ਮਿਲੇ ਹਨ।'
+      text_share_project_information: 'ਤੁਹਾਡੇ ਦੁਆਰਾ ਪ੍ਰਾਪਤ ਕੀਤੇ ਗਏ ਵਿਚਾਰਾਂ ਦੀ ਗੁਣਵੱਤਾ ਨੂੰ ਵਧਾਉਣ ਲਈ, ਲੋੜੀਂਦੀ ਜਾਣਕਾਰੀ ਸਾਂਝੀ ਕਰਨ ਦੀ ਕੁੰਜੀ ਹੈ: ਇੱਕ ਪ੍ਰੋਜੈਕਟ ਵੇਰਵਾ ਸ਼ਾਮਲ ਕਰੋ, ਚਿੱਤਰਾਂ (ਸਕੈਚ ਅਤੇ ਯੋਜਨਾਵਾਂ ਸਮੇਤ) ਨੱਥੀ ਕਰੋ, ਅਤੇ ਚੱਲ ਰਹੀਆਂ ਸਾਰੀਆਂ ਸੰਬੰਧਿਤ ਘਟਨਾਵਾਂ ਨੂੰ ਸੰਚਾਰ ਕਰੋ। ਯਾਦ ਰੱਖੋ: ਚੰਗੀ ਜਾਣਕਾਰੀ ਚੰਗੀ ਭਾਗੀਦਾਰੀ ਤੋਂ ਪਹਿਲਾਂ ਹੁੰਦੀ ਹੈ!'
+      title_design_participatory_process: 'ਭਾਗੀਦਾਰੀ ਪ੍ਰਕਿਰਿਆ ਨੂੰ ਡਿਜ਼ਾਈਨ ਕਰੋ'
+      title_moderate_analyse_input: 'ਇੰਪੁੱਟ ਦਾ ਸੰਚਾਲਨ ਅਤੇ ਵਿਸ਼ਲੇਸ਼ਣ ਕਰੋ'
+      title_share_project_information: 'ਪ੍ਰੋਜੈਕਟ ਦੀ ਜਾਣਕਾਰੀ ਪ੍ਰਦਾਨ ਕਰੋ'
+      title_what_can_you_do_moderator: 'ਤੁਸੀਂ ਇੱਕ ਪ੍ਰੋਜੈਕਟ ਮੈਨੇਜਰ ਵਜੋਂ ਕੀ ਕਰ ਸਕਦੇ ਹੋ?'
+      title_you_became_moderator: 'ਤੁਸੀਂ ਇੱਕ ਪ੍ਰੋਜੈਕਟ ਮੈਨੇਜਰ ਬਣ ਗਏ'
+      x_ideas: '%{numberOfIdeas} ਵਿਚਾਰ'
+    project_folder_moderation_rights_received:
+      cta_view_folder_button: 'ਇਸ ਫੋਲਡਰ ਨੂੰ ਵੇਖੋ'
+      message_added_as_folderadmin: 'ਤੁਹਾਨੂੰ ਹੇਠਾਂ ਦਿੱਤੇ ਫੋਲਡਰ ਲਈ %{organizationName}ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ''ਤੇ ਫੋਲਡਰ ਮੈਨੇਜਰ ਅਧਿਕਾਰ ਦਿੱਤੇ ਗਏ ਹਨ:'
+      no_projects: 'ਅਜੇ ਕੋਈ ਪ੍ਰੋਜੈਕਟ ਨਹੀਂ'
+      preheader: '%{organizationName} ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ਦੇ ਪ੍ਰਸ਼ਾਸਕ ਨੇ ਹੁਣੇ ਤੁਹਾਨੂੰ ਹੇਠਾਂ ਦਿੱਤੇ ਫੋਲਡਰ ਦਾ ਪ੍ਰਬੰਧਕ ਬਣਾਇਆ ਹੈ'
+      subject: 'ਤੁਸੀਂ %{organizationName}ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ''ਤੇ ਇੱਕ ਪ੍ਰੋਜੈਕਟ ਫੋਲਡਰ ਮੈਨੇਜਰ ਬਣ ਗਏ ਹੋ'
+      text_manage_folder: 'ਇੱਕ ਫੋਲਡਰ ਕਈ ਭਾਗੀਦਾਰੀ ਪ੍ਰੋਜੈਕਟਾਂ ਨੂੰ ਇਕੱਠੇ ਸੰਗਠਿਤ ਕਰਨ ਦਾ ਤਰੀਕਾ ਹੈ। ਇੱਕ ਫੋਲਡਰ ਮੈਨੇਜਰ ਦੇ ਰੂਪ ਵਿੱਚ, ਤੁਸੀਂ ਫੋਲਡਰ ਅਤੇ ਫੋਲਡਰ ਦੇ ਵਰਣਨ ਨੂੰ ਸੰਪਾਦਿਤ ਕਰ ਸਕਦੇ ਹੋ ਅਤੇ ਨਵੇਂ ਪ੍ਰੋਜੈਕਟ ਬਣਾ ਸਕਦੇ ਹੋ (ਪ੍ਰੋਜੈਕਟਾਂ ਨੂੰ ਮਿਟਾਉਣ ਲਈ, ਆਪਣੇ ਪਲੇਟਫਾਰਮ ਪ੍ਰਸ਼ਾਸਕ ਨਾਲ ਸੰਪਰਕ ਕਰੋ)। ਤੁਹਾਡੇ ਕੋਲ ਫੋਲਡਰ ਦੇ ਅੰਦਰ ਸਾਰੇ ਪ੍ਰੋਜੈਕਟਾਂ ''ਤੇ ਪ੍ਰੋਜੈਕਟ ਪ੍ਰਬੰਧਨ ਅਧਿਕਾਰ ਵੀ ਹੋਣਗੇ, ਜਿਸ ਨਾਲ ਤੁਸੀਂ ਪ੍ਰੋਜੈਕਟਾਂ ਨੂੰ ਸੰਪਾਦਿਤ ਕਰ ਸਕਦੇ ਹੋ, ਇਨਪੁਟਸ ਦਾ ਪ੍ਰਬੰਧਨ ਕਰ ਸਕਦੇ ਹੋ ਅਤੇ ਭਾਗੀਦਾਰਾਂ ਨੂੰ ਈਮੇਲ ਕਰ ਸਕਦੇ ਹੋ।'
+      text_moderate_analyse_input: 'ਇੱਕ ਵਾਰ ਪ੍ਰੋਜੈਕਟ ਲਾਂਚ ਹੋਣ ਤੋਂ ਬਾਅਦ, ਪਹਿਲੇ ਇਨਪੁਟਸ ਆਉਣੇ ਸ਼ੁਰੂ ਹੋ ਜਾਣਗੇ। ਤੁਹਾਨੂੰ ਮੁੱਖ ਗਤੀਵਿਧੀਆਂ ਦੇ ਨਾਲ ਹਫਤਾਵਾਰੀ ਰਿਪੋਰਟਾਂ ਪ੍ਰਾਪਤ ਹੋਣਗੀਆਂ ਤਾਂ ਜੋ ਤੁਸੀਂ ਇਸ ਬਾਰੇ ਸਿਖਰ ''ਤੇ ਰਹਿ ਸਕੋ ਕਿ ਕੀ ਹੋ ਰਿਹਾ ਹੈ। ਤੁਹਾਡੇ ''ਪਲੇਟਫਾਰਮ ਦਾ ਪ੍ਰਬੰਧਨ ਕਰੋ'' ਪੈਨਲ ਵਿੱਚ ਇਨਪੁਟ ਮੈਨੇਜਰ ਤੁਹਾਨੂੰ ਸਥਿਤੀਆਂ ਨਿਰਧਾਰਤ ਕਰਨ ਅਤੇ ਪੋਸਟਾਂ ਅਤੇ ਟਿੱਪਣੀਆਂ ਦਾ ਜਵਾਬ ਦੇਣ ਸਮੇਤ, ਇਨਪੁਟ ਨੂੰ ਦੇਖਣ ਅਤੇ ਪ੍ਰਬੰਧਿਤ ਕਰਨ ਦੀ ਇਜਾਜ਼ਤ ਦਿੰਦਾ ਹੈ।'
+      text_design_participatory_process: 'ਤੁਸੀਂ ਆਪਣੇ ਫੋਲਡਰ ਦੇ ਅੰਦਰ ਵੱਖ-ਵੱਖ ਭਾਗੀਦਾਰੀ ਪ੍ਰੋਜੈਕਟਾਂ ਦਾ ਪ੍ਰਬੰਧਨ ਕਰ ਸਕਦੇ ਹੋ - ਭਾਗੀਦਾਰੀ ਵਿਧੀ ਨੂੰ ਕੌਂਫਿਗਰ ਕਰੋ, ਇੱਕ ਪ੍ਰੋਜੈਕਟ ਵੇਰਵਾ ਜੋੜੋ, ਚਿੱਤਰ ਨੱਥੀ ਕਰੋ, ਅਤੇ ਸੰਬੰਧਿਤ ਸਮਾਗਮਾਂ ਨੂੰ ਸੰਚਾਰ ਕਰੋ। ਤੁਸੀਂ ਇਹ ਵੀ ਪ੍ਰਬੰਧਿਤ ਕਰ ਸਕਦੇ ਹੋ ਕਿ ਭਾਗੀਦਾਰ ਤੁਹਾਡੇ ਪ੍ਰੋਜੈਕਟਾਂ ਨਾਲ ਕਿਵੇਂ ਗੱਲਬਾਤ ਕਰਦੇ ਹਨ, ਜਿਸ ਵਿੱਚ ਪਹੁੰਚ ਅਧਿਕਾਰਾਂ ਨੂੰ ਸੈੱਟ ਕਰਨਾ ਅਤੇ ਪੋਸਟਿੰਗ, ਵੋਟਿੰਗ ਅਤੇ ਟਿੱਪਣੀ ਸੈਟਿੰਗਾਂ ਨੂੰ ਕੌਂਫਿਗਰ ਕਰਨਾ ਸ਼ਾਮਲ ਹੈ।'
+      title_design_participatory_process: 'ਭਾਗੀਦਾਰੀ ਪ੍ਰਕਿਰਿਆ ਨੂੰ ਡਿਜ਼ਾਈਨ ਕਰੋ'
+      title_moderate_analyse_input: 'ਇੰਪੁੱਟ ਦਾ ਸੰਚਾਲਨ ਅਤੇ ਵਿਸ਼ਲੇਸ਼ਣ ਕਰੋ'
+      title_manage_folder: 'ਫੋਲਡਰ ਸੈਟਿੰਗਾਂ ਦਾ ਪ੍ਰਬੰਧਨ ਕਰੋ ਅਤੇ ਨਵੇਂ ਪ੍ਰੋਜੈਕਟ ਬਣਾਓ।'
+      title_what_can_you_do_folderadmin: 'ਤੁਸੀਂ ਇੱਕ ਫੋਲਡਰ ਮੈਨੇਜਰ ਵਜੋਂ ਕੀ ਕਰ ਸਕਦੇ ਹੋ?'
+      title_added_as_folderadmin: 'ਤੁਹਾਨੂੰ ਫੋਲਡਰ ਮੈਨੇਜਰ ਵਜੋਂ ਸ਼ਾਮਲ ਕੀਤਾ ਗਿਆ ਹੈ'
+      x_projects: '%{numberOfProjects} ਪ੍ਰੋਜੈਕਟ'
+    project_phase_started:
+      cta_view_phase: 'ਇਸ ਨਵੇਂ ਪੜਾਅ ਦੀ ਖੋਜ ਕਰੋ'
+      event_description: 'ਇਹ ਪ੍ਰੋਜੈਕਟ %{organizationName}ਦੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਇੱਕ ਨਵੇਂ ਪੜਾਅ ਵਿੱਚ ਦਾਖਲ ਹੋਇਆ ਹੈ। ਹੋਰ ਜਾਣਨ ਲਈ ਹੇਠਾਂ ਦਿੱਤੇ ਲਿੰਕ ''ਤੇ ਕਲਿੱਕ ਕਰੋ!'
+      main_header: 'ਪ੍ਰੋਜੈਕਟ ''%{projectName}'' ਲਈ ਇੱਕ ਨਵਾਂ ਪੜਾਅ ਸ਼ੁਰੂ ਹੋਇਆ'
+      subtitle: '''%{projectName}'' ਬਾਰੇ'
+      new_phase: 'ਇਹ ਪ੍ਰੋਜੈਕਟ ''%{phaseTitle}'' ਪੜਾਅ ਵਿੱਚ ਦਾਖਲ ਹੋਇਆ ਹੈ'
+      subject: '%{projectName} ਇੱਕ ਨਵੇਂ ਪੜਾਅ ਵਿੱਚ ਦਾਖਲ ਹੋਇਆ'
+      preheader: '%{projectName}ਲਈ ਇੱਕ ਨਵਾਂ ਪੜਾਅ ਸ਼ੁਰੂ ਕੀਤਾ ਗਿਆ ਹੈ'
+    project_phase_upcoming:
+      cta_view_phase: 'ਇਸ ਨਵੇਂ ਪੜਾਅ ਨੂੰ ਸੈੱਟ ਕਰੋ'
+      event_description: 'ਪ੍ਰੋਜੈਕਟ ''%{projectName}'' ਜਲਦੀ ਹੀ ਇੱਕ ਨਵੇਂ ਪੜਾਅ ਵਿੱਚ ਦਾਖਲ ਹੋਵੇਗਾ। ਯਕੀਨੀ ਬਣਾਓ ਕਿ ਇਸ ਪੜਾਅ ਲਈ ਸਭ ਕੁਝ ਸਥਾਪਤ ਕੀਤਾ ਗਿਆ ਹੈ: ਕੀ ਇੱਥੇ ਇੱਕ ਢੁਕਵਾਂ ਵੇਰਵਾ ਹੈ? ਕੀ ਚੁਣੇ ਹੋਏ ਵਿਚਾਰ ਇਸ ਪੜਾਅ ਵਿੱਚ ਤਬਦੀਲ ਕੀਤੇ ਗਏ ਹਨ? ਕੀ ਤੁਸੀਂ ਇੱਕ ਕਸਟਮ ਈਮੇਲ ਮੁਹਿੰਮ ਰਾਹੀਂ ਆਪਣੇ ਨਾਗਰਿਕਾਂ ਨੂੰ ਇਸ ਪੜਾਅ ਦੀਆਂ ਵਿਸ਼ੇਸ਼ਤਾਵਾਂ ਬਾਰੇ ਸੂਚਿਤ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ?'
+      main_header: '%{firstName}, ਇੱਕ ਪ੍ਰੋਜੈਕਟ ਜਲਦੀ ਹੀ ਇੱਕ ਨਵੇਂ ਪੜਾਅ ਵਿੱਚ ਦਾਖਲ ਹੋਵੇਗਾ'
+      subtitle: '''%{projectName}'' ਬਾਰੇ'
+      new_phase: 'ਪ੍ਰੋਜੈਕਟ ''%{phaseTitle}'' ਪੜਾਅ ਵਿੱਚ ਦਾਖਲ ਹੋਵੇਗਾ'
+      subject: '%{projectName}ਦੇ ਨਵੇਂ ਪੜਾਅ ਲਈ ਸਭ ਕੁਝ ਸੈੱਟਅੱਪ ਕਰੋ'
+      preheader: '%{projectName}ਲਈ ਇੱਕ ਨਵਾਂ ਪੜਾਅ ਜਲਦੀ ਹੀ ਸ਼ੁਰੂ ਹੋਵੇਗਾ'
+    project_published:
+      subject: '%{organizationName}ਦੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਇੱਕ ਨਵਾਂ ਪ੍ਰੋਜੈਕਟ ਪ੍ਰਕਾਸ਼ਿਤ ਕੀਤਾ ਗਿਆ ਸੀ'
+      header_title: 'ਇੱਕ ਨਵਾਂ ਪ੍ਰੋਜੈਕਟ ਪ੍ਰਕਾਸ਼ਿਤ ਕੀਤਾ ਗਿਆ ਸੀ'
+      header_message: '%{organizationName} ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ਨੇ ਹੁਣੇ ਹੇਠਾਂ ਦਿੱਤੇ ਪ੍ਰੋਜੈਕਟ ਨੂੰ ਪ੍ਰਕਾਸ਼ਿਤ ਕੀਤਾ ਹੈ:'
+      preheader: 'ਇੱਕ ਨਵਾਂ ਪ੍ਰੋਜੈਕਟ ਪ੍ਰਕਾਸ਼ਿਤ ਕੀਤਾ ਗਿਆ ਸੀ'
+    project_review_request:
+      subject: 'ਸਮੀਖਿਆ ਦੀ ਬੇਨਤੀ: ਇੱਕ ਪ੍ਰੋਜੈਕਟ ਮਨਜ਼ੂਰੀ ਦੀ ਉਡੀਕ ਕਰ ਰਿਹਾ ਹੈ।'
+      header: '%{requesterName} ਨੇ ਤੁਹਾਨੂੰ ਪ੍ਰੋਜੈਕਟ ਦੀ ਸਮੀਖਿਆ ਕਰਨ ਲਈ ਸੱਦਾ ਦਿੱਤਾ ਹੈ "%{projectTitle}"'
+      header_message: "ਵਰਤਮਾਨ ਵਿੱਚ, ਪ੍ਰੋਜੈਕਟ ਡਰਾਫਟ ਮੋਡ ਵਿੱਚ ਹੈ ਅਤੇ ਉਪਭੋਗਤਾਵਾਂ ਨੂੰ ਦਿਖਾਈ ਨਹੀਂ ਦੇ ਰਿਹਾ ਹੈ। ਇੱਕ ਵਾਰ ਜਦੋਂ ਤੁਸੀਂ ਇਸਦੀ ਸਮੀਖਿਆ ਕਰ ਲੈਂਦੇ ਹੋ ਅਤੇ ਇਸਨੂੰ ਮਨਜ਼ੂਰ ਕਰ ਲੈਂਦੇ ਹੋ, ਤਾਂ ਸੰਚਾਲਕ ਇਸਨੂੰ ਪ੍ਰਕਾਸ਼ਿਤ ਕਰਨ ਦੇ ਯੋਗ ਹੋ ਜਾਵੇਗਾ।"
+      cta_review_project: "ਪ੍ਰੋਜੈਕਟ ਦੀ ਸਮੀਖਿਆ ਕਰੋ"
+    project_review_state_change:
+      subject: '"%{projectTitle}" ਨੂੰ ਮਨਜ਼ੂਰੀ ਦਿੱਤੀ ਗਈ ਹੈ'
+      header: '%{reviewerName} ਨੇ ਪ੍ਰੋਜੈਕਟ ਨੂੰ ਮਨਜ਼ੂਰੀ ਦਿੱਤੀ "%{projectTitle}"'
+      header_message: "ਪ੍ਰੋਜੈਕਟ ਹੁਣ ਲਾਈਵ ਹੋਣ ਲਈ ਤਿਆਰ ਹੈ। ਜਦੋਂ ਵੀ ਤੁਸੀਂ ਤਿਆਰ ਹੋ ਤਾਂ ਤੁਸੀਂ ਇਸਨੂੰ ਪ੍ਰਕਾਸ਼ਿਤ ਕਰ ਸਕਦੇ ਹੋ!"
+      cta_go_to_project: "ਪ੍ਰੋਜੈਕਟ ਸੈਟਿੰਗਾਂ 'ਤੇ ਜਾਓ"
+    status_change_on_idea_you_follow:
+      status_change: 'The new status of this input is ''%{status}'''
+      header_message: '%{organizationName} updated the status of the input ''%{input_title}'' on their digital participation platform.'
+      header_title: 'An input you follow has a new status'
+      subject: 'The status of "%{input_title}" has changed'
+      preheader: 'An input you follow has a new status'
+    status_change_on_initiative_you_follow:
+      status_change: 'ਇਸ ਪ੍ਰਸਤਾਵ ਦੀ ਨਵੀਂ ਸਥਿਤੀ ''%{initiativeStatus}'' ਹੈ।'
+      header_message: 'ਪ੍ਰਸਤਾਵ ''%{initiativeTitle}'' ਦੀ ਸਥਿਤੀ ਨੂੰ %{organizationName}ਦੇ ਡਿਜੀਟਲ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ''ਤੇ ਅੱਪਡੇਟ ਕੀਤਾ ਗਿਆ ਹੈ।'
+      header_title: 'ਤੁਹਾਡੇ ਦੁਆਰਾ ਅਨੁਸਰਣ ਕੀਤੇ ਪ੍ਰਸਤਾਵ ਦੀ ਨਵੀਂ ਸਥਿਤੀ ਹੈ'
+      subject: 'ਤੁਹਾਡੇ ਦੁਆਰਾ ਅਨੁਸਰਣ ਕੀਤੇ ਪ੍ਰਸਤਾਵ ਦੀ ਸਥਿਤੀ ਬਦਲ ਗਈ ਹੈ'
+      preheader: 'ਤੁਹਾਡੇ ਦੁਆਰਾ ਅਨੁਸਰਣ ਕੀਤੇ ਪ੍ਰਸਤਾਵ ਦੀ ਨਵੀਂ ਸਥਿਤੀ ਹੈ'
+    user_digest:
+      subject: "%{organizationName}ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ 'ਤੇ ਤੁਹਾਡੀ ਗਤੀਵਿਧੀ"
+      commented: "%{authorFirstName} ਨੇ ਟਿੱਪਣੀ ਕੀਤੀ:"
+      preheader: "%{organizationName}ਦੀ ਹਫ਼ਤਾਵਾਰ ਸੰਖੇਪ ਜਾਣਕਾਰੀ"
+      title_your_weekly_report: "ਪਤਾ ਕਰੋ ਕਿ ਪਿਛਲੇ ਹਫ਼ਤੇ ਕੀ ਹੋਇਆ ਸੀ"
+      intro_text: "ਇੱਥੇ %{organizationName}ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ 'ਤੇ ਕੀ ਹੋਇਆ ਇਸ ਦਾ ਸੰਖੇਪ ਹੈ।"
+      cta_go_to_the_platform: "ਪਲੇਟਫਾਰਮ 'ਤੇ ਜਾਓ"
+      title_no_activity_past_week: "ਪਿਛਲੇ ਹਫ਼ਤੇ ਕੋਈ ਸਰਗਰਮੀ ਨਹੀਂ"
+      successful_proposals_title: "ਦੀ ਹੱਦ 'ਤੇ ਪਹੁੰਚ ਗਿਆ"
+      successful_proposals_text: "ਇਹਨਾਂ ਪ੍ਰਸਤਾਵਾਂ ਨੂੰ ਅਗਲੇ ਪੜਾਅ 'ਤੇ ਜਾਣ ਲਈ ਕਾਫ਼ੀ ਸਮਰਥਨ ਪ੍ਰਾਪਤ ਹੋਇਆ ਹੈ! ਅੱਗੇ ਕੀ ਹੁੰਦਾ ਹੈ ਇਸ ਬਾਰੇ ਹੋਰ ਜਾਣਨ ਲਈ ਪ੍ਰਸਤਾਵ 'ਤੇ ਕਲਿੱਕ ਕਰੋ।"
+      today_by_author: "ਅੱਜ %{author}ਦੁਆਰਾ"
+      yesterday_by_author: "ਕੱਲ੍ਹ %{author}ਦੁਆਰਾ"
+      x_days_ago_by_author: "%{x} ਦਿਨ ਪਹਿਲਾਂ %{author}ਦੁਆਰਾ"
+      trending_title: "ਪ੍ਰਚਲਿਤ"
+      trending_text: "ਪਲੇਟਫਾਰਮ 'ਤੇ ਕੀ ਹੋ ਰਿਹਾ ਹੈ ਇਸ ਵਿੱਚ ਦਿਲਚਸਪੀ ਹੈ? ਇੱਥੇ ਤਿੰਨ ਸਭ ਤੋਂ ਵੱਧ ਪ੍ਰਚਲਿਤ ਯੋਗਦਾਨ ਹਨ ਅਤੇ ਲੋਕ ਉਹਨਾਂ ਬਾਰੇ ਕੀ ਕਹਿ ਰਹੇ ਹਨ।"
+      no_notifications: "ਕੋਈ ਸੂਚਨਾਵਾਂ ਨਹੀਂ"
+      one_notification: "1 ਸੂਚਨਾ"
+      multiple_notifications: "%{notifCount} ਸੂਚਨਾਵਾਂ"
+      no_unread_notifications: "ਤੁਹਾਡੇ ਕੋਲ ਕੋਈ ਨਾ-ਪੜ੍ਹੀਆਂ ਸੂਚਨਾਵਾਂ ਨਹੀਂ ਹਨ। ਆਪਣੇ ਇਨਪੁਟ ਦਾ ਯੋਗਦਾਨ ਪਾਉਣ ਅਤੇ ਨਵੀਆਂ ਸੂਚਨਾਵਾਂ ਤਿਆਰ ਕਰਨ ਲਈ ਪਲੇਟਫਾਰਮ 'ਤੇ ਜਾਓ!"
+      unread_notifications: "ਤੁਹਾਡੇ ਕੋਲ ਨਾ-ਪੜ੍ਹੀਆਂ ਸੂਚਨਾਵਾਂ ਹਨ। ਇਹ ਪਤਾ ਲਗਾਉਣ ਲਈ ਪਲੇਟਫਾਰਮ 'ਤੇ ਜਾਓ ਕਿ ਕੀ ਹੋ ਰਿਹਾ ਹੈ!"
+    threshold_reached_for_admin:
+      cta_process_initiative: 'ਇਸ ਪ੍ਰਸਤਾਵ ਨੂੰ ਅਗਲੇ ਕਦਮਾਂ ''ਤੇ ਲੈ ਜਾਓ'
+      main_header: 'ਇੱਕ ਪ੍ਰਸਤਾਵ ਵੋਟਿੰਗ ਥ੍ਰੈਸ਼ਹੋਲਡ ਤੱਕ ਪਹੁੰਚ ਗਿਆ!'
+      subject: 'ਇੱਕ ਪ੍ਰਸਤਾਵ ਤੁਹਾਡੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਵੋਟਿੰਗ ਥ੍ਰੈਸ਼ਹੋਲਡ ਤੱਕ ਪਹੁੰਚ ਗਿਆ ਹੈ'
+      preheader: 'ਅਗਲੇ ਕਦਮ ਚੁੱਕਣਾ ਯਕੀਨੀ ਬਣਾਓ'
+    welcome:
+      cta_join_platform: 'ਪਲੇਟਫਾਰਮ ਦੀ ਖੋਜ ਕਰੋ'
+      subject: '%{organizationName}ਦੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਤੁਹਾਡਾ ਸੁਆਗਤ ਹੈ'
+      main_header: ਜੀ ਆਇਆਂ ਨੂੰ!
+      message_welcome: 'ਵਧਾਈਆਂ, ਤੁਸੀਂ %{organizationName}ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ''ਤੇ ਸਫਲਤਾਪੂਰਵਕ ਸਾਈਨ ਅੱਪ ਕਰ ਲਿਆ ਹੈ। ਤੁਸੀਂ ਹੁਣ ਪਲੇਟਫਾਰਮ ਦੀ ਖੋਜ ਕਰ ਸਕਦੇ ਹੋ ਅਤੇ ਆਪਣੀ ਆਵਾਜ਼ ਸੁਣਾ ਸਕਦੇ ਹੋ। ਤੁਸੀਂ ਦੂਜਿਆਂ ਨੂੰ ਇਹ ਦੱਸਣ ਲਈ ਇੱਕ ਪ੍ਰੋਫਾਈਲ ਤਸਵੀਰ ਅਤੇ ਇੱਕ ਛੋਟਾ ਵੇਰਵਾ ਵੀ ਸ਼ਾਮਲ ਕਰ ਸਕਦੇ ਹੋ ਕਿ ਤੁਸੀਂ ਕੌਣ ਹੋ।'
+      preheader: 'ਇਹ ਹੈ ਕਿ ਤੁਸੀਂ %{organizationName}ਦੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਕੀ ਕਰ ਸਕਦੇ ਹੋ'
+    idea_published:
+      subject:
+        idea: 'ਤੁਹਾਡਾ ਵਿਚਾਰ ਪ੍ਰਕਾਸ਼ਿਤ ਕੀਤਾ ਗਿਆ ਹੈ'
+        question: 'ਤੁਹਾਡਾ ਸਵਾਲ ਪ੍ਰਕਾਸ਼ਿਤ ਕੀਤਾ ਗਿਆ ਹੈ'
+        contribution: 'ਤੁਹਾਡਾ ਯੋਗਦਾਨ ਪ੍ਰਕਾਸ਼ਿਤ ਕੀਤਾ ਗਿਆ ਹੈ'
+        project: 'ਤੁਹਾਡਾ ਪ੍ਰੋਜੈਕਟ ਪ੍ਰਕਾਸ਼ਿਤ ਕੀਤਾ ਗਿਆ ਹੈ'
+        issue: 'ਤੁਹਾਡਾ ਅੰਕ ਪ੍ਰਕਾਸ਼ਿਤ ਕੀਤਾ ਗਿਆ ਹੈ'
+        option: 'ਤੁਹਾਡਾ ਵਿਕਲਪ ਪ੍ਰਕਾਸ਼ਿਤ ਕੀਤਾ ਗਿਆ ਹੈ'
+        proposal: 'ਤੁਹਾਡਾ ਪ੍ਰਸਤਾਵ ਪ੍ਰਕਾਸ਼ਿਤ ਕੀਤਾ ਗਿਆ ਹੈ'
+        initiative: 'ਤੁਹਾਡੀ ਪਹਿਲ ਪ੍ਰਕਾਸ਼ਿਤ ਹੋ ਚੁੱਕੀ ਹੈ'
+        petition: 'ਤੁਹਾਡੀ ਪਟੀਸ਼ਨ ਪ੍ਰਕਾਸ਼ਿਤ ਹੋ ਚੁੱਕੀ ਹੈ'
+      main_header: 'ਤੁਸੀਂ ਇੱਕ ਵਿਚਾਰ ਪੋਸਟ ਕੀਤਾ ਹੈ! ਆਓ ਇਹ ਯਕੀਨੀ ਕਰੀਏ ਕਿ ਇਹ ਪੜ੍ਹਿਆ ਜਾਂਦਾ ਹੈ.'
+      header_message: 'ਆਓ ਇਹ ਯਕੀਨੀ ਕਰੀਏ ਕਿ ਇਹ ਪੜ੍ਹਿਆ ਜਾਂਦਾ ਹੈ.'
+      message_get_votes: 'ਆਪਣੇ ਵਿਚਾਰ ਨਾਲ ਹੋਰ ਲੋਕਾਂ ਤੱਕ ਪਹੁੰਚੋ:'
+      action_published_idea: 'ਪ੍ਰਕਾਸ਼ਿਤ ਵਿਚਾਰ'
+      action_add_image: '%{addImageLink} ਦਿੱਖ ਵਧਾਉਣ ਲਈ'
+      add_image: 'ਇੱਕ ਚਿੱਤਰ ਸ਼ਾਮਲ ਕਰੋ'
+      action_share_fb: 'ਆਪਣੇ ਦੋਸਤਾਂ ਨੂੰ %{fbLink}''ਤੇ ਦੱਸੋ'
+      action_share_twitter: 'ਆਪਣੇ ਪੈਰੋਕਾਰਾਂ ਨੂੰ %{twitterLink}''ਤੇ ਸੂਚਿਤ ਕਰੋ'
+      action_send_email: 'ਆਪਣੇ ਸੰਪਰਕਾਂ ਨੂੰ ਇੱਕ %{sendEmailLink}ਭੇਜੋ'
+      send_email: ਈਮੇਲ
+      action_share_link: '%{link}ਦੀ ਨਕਲ ਕਰਕੇ ਇਸਨੂੰ ਕਿਸੇ ਵੀ ਚੈਨਲ ਰਾਹੀਂ ਸਾਂਝਾ ਕਰੋ'
+      link: ਲਿੰਕ
+      preheader: '%{firstName}, %{organizationName}ਦੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਆਪਣੇ ਵਿਚਾਰ ਪੋਸਟ ਕਰਨ ਲਈ ਵਧਾਈਆਂ। ਹੁਣ ਸਮਰਥਨ ਇਕੱਠਾ ਕਰੋ.'
+    your_input_in_screening:
+      main_header:
+        idea: 'ਤੁਹਾਡਾ ਵਿਚਾਰ "%{prescreening_status_title}" ਵਿੱਚ ਹੈ'
+        question: 'ਤੁਹਾਡਾ ਸਵਾਲ "%{prescreening_status_title}" ਵਿੱਚ ਹੈ'
+        contribution: 'ਤੁਹਾਡਾ ਯੋਗਦਾਨ "%{prescreening_status_title}" ਵਿੱਚ ਹੈ'
+        project: 'ਤੁਹਾਡਾ ਪ੍ਰੋਜੈਕਟ "%{prescreening_status_title}" ਵਿੱਚ ਹੈ'
+        issue: 'ਤੁਹਾਡੀ ਸਮੱਸਿਆ "%{prescreening_status_title}" ਵਿੱਚ ਹੈ।'
+        option: 'ਤੁਹਾਡਾ ਵਿਕਲਪ "%{prescreening_status_title}" ਵਿੱਚ ਹੈ।'
+        proposal: 'ਤੁਹਾਡਾ ਪ੍ਰਸਤਾਵ "%{prescreening_status_title}" ਵਿੱਚ ਹੈ'
+        initiative: 'ਤੁਹਾਡੀ ਪਹਿਲਕਦਮੀ "%{prescreening_status_title}" ਵਿੱਚ ਹੈ'
+        petition: 'ਤੁਹਾਡੀ ਪਟੀਸ਼ਨ "%{prescreening_status_title}" ਵਿੱਚ ਹੈ'
+      message: '"%{input_title}" ਇੱਕ ਵਾਰ ਇਸਦੀ ਸਮੀਖਿਆ ਅਤੇ ਮਨਜ਼ੂਰੀ ਤੋਂ ਬਾਅਦ ਦੂਜਿਆਂ ਨੂੰ ਦਿਖਾਈ ਦੇਵੇਗਾ।'
+      subject: '"%{input_title}" ਲਗਭਗ ਪ੍ਰਕਾਸ਼ਿਤ ਹੋ ਚੁੱਕਾ ਹੈ'
+      preheader: 'ਇਹ ਵਰਤਮਾਨ ਵਿੱਚ %{prescreening_status_title}ਵਿੱਚ ਹੈ'
+    voting_basket_submitted:
+      subject: '%{organizationName}: ਤੁਸੀਂ ਸਫਲਤਾਪੂਰਵਕ ਵੋਟ ਦਿੱਤੀ'
+      preheader: 'ਤੁਸੀਂ %{organizationName}ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ''ਤੇ ਸਫਲਤਾਪੂਰਵਕ ਵੋਟ ਦਿੱਤੀ'
+      title_basket_submitted: 'ਤੁਸੀਂ ਸਫਲਤਾਪੂਰਵਕ ਵੋਟ ਕੀਤੀ'
+      event_description: 'ਭਾਗ ਲੈਣ ਲਈ ਧੰਨਵਾਦ। ਤੁਹਾਡੀਆਂ ਵੋਟਾਂ ਰਿਕਾਰਡ ਹੋ ਚੁੱਕੀਆਂ ਹਨ। ਆਪਣੀਆਂ ਵੋਟਾਂ ਦੇਖਣ ਅਤੇ ਪ੍ਰਬੰਧਿਤ ਕਰਨ ਲਈ %{organizationName} ਦੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਜਾਓ।'
+      cta_see_votes_submitted: 'ਸਪੁਰਦ ਕੀਤੀਆਂ ਵੋਟਾਂ ਦੇਖੋ'
+      cta_message: 'ਭਾਗ ਲੈਣ ਲਈ ਹੇਠਾਂ ਦਿੱਤੇ ਬਟਨ ''ਤੇ ਕਲਿੱਕ ਕਰੋ'
+    native_survey_not_submitted:
+      subject: '%{organizationName}: ਲਗਭਗ ਉੱਥੇ! ਆਪਣੇ ਜਵਾਬ ਦਰਜ ਕਰੋ'
+      preheader: 'ਤੁਸੀਂ %{organizationName}ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ''ਤੇ ਆਪਣਾ ਸਰਵੇਖਣ ਜਵਾਬ ਪੂਰਾ ਨਹੀਂ ਕੀਤਾ'
+      title_native_survey_not_submitted: 'ਲਗਭਗ ਉੱਥੇ! ਆਪਣੇ ਜਵਾਬ ਦਰਜ ਕਰੋ'
+      body_native_survey_not_submitted: 'ਤੁਸੀਂ %{phaseTitle} ''ਤੇ ਆਪਣੇ ਜਵਾਬ ਸਾਂਝੇ ਕਰਨੇ ਸ਼ੁਰੂ ਕਰ ਦਿੱਤੇ ਪਰ ਉਹਨਾਂ ਨੂੰ ਜਮ੍ਹਾ ਨਹੀਂ ਕੀਤਾ। ਸਬਮਿਸ਼ਨ %{phaseEndDate}ਨੂੰ ਬੰਦ ਹੋ ਜਾਣਗੇ। ਜਿੱਥੇ ਤੁਸੀਂ ਛੱਡਿਆ ਸੀ ਉੱਥੇ ਜਾਰੀ ਰੱਖਣ ਲਈ ਹੇਠਾਂ ਦਿੱਤੇ ਬਟਨ ''ਤੇ ਕਲਿੱਕ ਕਰੋ।'
+      body_native_survey_not_submitted_no_date: 'ਤੁਸੀਂ %{phaseTitle} ''ਤੇ ਆਪਣੇ ਜਵਾਬ ਸਾਂਝੇ ਕਰਨੇ ਸ਼ੁਰੂ ਕਰ ਦਿੱਤੇ ਪਰ ਉਹਨਾਂ ਨੂੰ ਜਮ੍ਹਾ ਨਹੀਂ ਕੀਤਾ। ਜਿੱਥੇ ਤੁਸੀਂ ਛੱਡਿਆ ਸੀ ਉੱਥੇ ਜਾਰੀ ਰੱਖਣ ਲਈ ਹੇਠਾਂ ਦਿੱਤੇ ਬਟਨ ''ਤੇ ਕਲਿੱਕ ਕਰੋ।'
+      cta_complete_your_survey_response: 'ਆਪਣੇ ਸਰਵੇਖਣ ਦੇ ਜਵਾਬ ਨੂੰ ਮੁੜ ਸ਼ੁਰੂ ਕਰੋ'
+    voting_basket_not_submitted:
+      subject: '%{organizationName}: ਤੁਸੀਂ ਆਪਣੀਆਂ ਵੋਟਾਂ ਜਮ੍ਹਾਂ ਨਹੀਂ ਕਰਵਾਈਆਂ'
+      preheader: 'ਤੁਸੀਂ %{organizationName}ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ''ਤੇ ਆਪਣੀਆਂ ਵੋਟਾਂ ਜਮ੍ਹਾ ਨਹੀਂ ਕੀਤੀਆਂ'
+      title_basket_not_submitted: 'ਤੁਸੀਂ ਆਪਣੀਆਂ ਵੋਟਾਂ ਸਪੁਰਦ ਨਹੀਂ ਕੀਤੀਆਂ'
+      event_description: 'ਤੁਸੀਂ %{contextTitle} ਲਈ ਕੁਝ ਵਿਕਲਪ ਚੁਣੇ ਪਰ ਤੁਸੀਂ ਆਪਣੀ ਚੋਣ ਦਰਜ ਨਹੀਂ ਕੀਤੀ।'
+      cta_view_options_and_vote: 'ਵਿਕਲਪ ਦੇਖੋ ਅਤੇ ਵੋਟ ਕਰੋ'
+      cta_message: 'ਆਪਣੇ ਚੁਣੇ ਹੋਏ ਵਿਕਲਪਾਂ ਨੂੰ ਸਪੁਰਦ ਕਰਨ ਲਈ ਹੇਠਾਂ ਦਿੱਤੇ ਬਟਨ ''ਤੇ ਕਲਿੱਕ ਕਰੋ'
+    voting_last_chance:
+      subject: '%{organizationName}: %{phaseTitle}ਲਈ ਵੋਟ ਪਾਉਣ ਦਾ ਆਖਰੀ ਮੌਕਾ'
+      preheader: '%{organizationName}ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ''ਤੇ %{phaseTitle} ਲਈ ਵੋਟ ਪਾਉਣ ਦਾ ਆਖਰੀ ਮੌਕਾ'
+      title_last_chance: '%{phaseTitle}ਲਈ ਵੋਟ ਪਾਉਣ ਦਾ ਆਖਰੀ ਮੌਕਾ'
+      body_1: '%{projectTitle} ਪ੍ਰੋਜੈਕਟ ਲਈ ਵੋਟਿੰਗ ਪੜਾਅ ਕੱਲ੍ਹ ਅੱਧੀ ਰਾਤ ਨੂੰ ਸਮਾਪਤ ਹੋ ਰਿਹਾ ਹੈ।'
+      body_2: 'ਸਮਾਂ ਖਤਮ ਹੋ ਰਿਹਾ ਹੈ, ਅਤੇ ਅਸੀਂ ਦੇਖਿਆ ਹੈ ਕਿ ਤੁਸੀਂ ਅਜੇ ਤੱਕ ਆਪਣੀ ਵੋਟ ਨਹੀਂ ਪਾਈ ਹੈ! ਭਾਗ ਲੈਣ ਲਈ ਹੇਠਾਂ ਦਿੱਤੇ ਬਟਨ ''ਤੇ ਕਲਿੱਕ ਕਰਕੇ ਹੁਣੇ ਕਾਰਵਾਈ ਕਰੋ।'
+      body_3: 'ਅਜਿਹਾ ਕਰਨ ਨਾਲ, ਤੁਸੀਂ ਵਿਕਲਪਾਂ ਦੀ ਇੱਕ ਸੀਮਾ ਤੱਕ ਪਹੁੰਚ ਪ੍ਰਾਪਤ ਕਰੋਗੇ ਅਤੇ ਤੁਹਾਡੇ ਕੋਲ ਆਪਣਾ ਇਨਪੁਟ ਪ੍ਰਦਾਨ ਕਰਨ ਦਾ ਮੌਕਾ ਹੋਵੇਗਾ, ਜੋ ਕਿ ਇਸ ਪ੍ਰੋਜੈਕਟ ਦੇ ਭਵਿੱਖ ਦਾ ਫੈਸਲਾ ਕਰਨ ਵਿੱਚ ਮਹੱਤਵਪੂਰਨ ਹੈ।'
+      cta_vote: 'ਵੋਟ ਕਰੋ'
+    voting_results:
+      subject: '%{organizationName}: %{phaseTitle} ਵੋਟਾਂ ਦੇ ਨਤੀਜੇ ਸਾਹਮਣੇ ਆਏ!'
+      preheader: '%{phaseTitle} ਵੋਟ ਨਤੀਜੇ %{organizationName}ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ''ਤੇ ਪ੍ਰਗਟ ਕੀਤੇ ਗਏ'
+      title_results: '%{phaseTitle} ਵੋਟਾਂ ਦੇ ਨਤੀਜੇ ਸਾਹਮਣੇ ਆਏ!'
+      body_1: 'ਨਤੀਜੇ ਵਿੱਚ ਹਨ!'
+      body_2: '%{organizationName} ਪਲੇਟਫਾਰਮ ਵਿੱਚ %{phaseTitle} ਵੋਟ ਦੇ ਨਤੀਜੇ ਪ੍ਰਕਾਸ਼ਿਤ ਕੀਤੇ ਗਏ ਹਨ!'
+      body_3: 'ਅਸੀਂ ਤੁਹਾਨੂੰ ਨਤੀਜਿਆਂ ਦੀ ਸਮੀਖਿਆ ਕਰਨ ਅਤੇ ਅਗਲੇ ਕਦਮਾਂ ''ਤੇ ਹੋਰ ਅੱਪਡੇਟ ਲਈ ਜੁੜੇ ਰਹਿਣ ਲਈ ਉਤਸ਼ਾਹਿਤ ਕਰਦੇ ਹਾਂ।'
+      cta_see_results: 'ਪਲੇਟਫਾਰਮ ਵਿੱਚ ਨਤੀਜੇ ਵੇਖੋ'
+    event_registration_confirmation:
+      subject: "ਤੁਸੀਂ ਅੰਦਰ ਹੋ! \"%{eventTitle}\" ਲਈ ਤੁਹਾਡੀ ਰਜਿਸਟ੍ਰੇਸ਼ਨ ਦੀ ਪੁਸ਼ਟੀ ਹੋ ਗਈ ਹੈ"
+      preheader: "%{firstName}, %{eventTitle}ਲਈ ਰਜਿਸਟਰ ਕਰਨ ਲਈ ਧੰਨਵਾਦ"
+      header_message: "%{firstName}, ਲਈ ਰਜਿਸਟਰ ਕਰਨ ਲਈ ਧੰਨਵਾਦ"
+      event_details:
+        labels:
+          date: 'ਮਿਤੀ'
+          location: 'ਟਿਕਾਣਾ'
+          online_link: 'ਔਨਲਾਈਨ ਲਿੰਕ'
+          description: 'ਵਰਣਨ'
+          project: 'ਪ੍ਰੋਜੈਕਟ'
+      cta_go_to_event: 'ਘਟਨਾ ਵੇਖੋ'
+      cta_add_to_calendar: 'ਆਪਣੇ ਕੈਲੰਡਰ ਵਿੱਚ ਸ਼ਾਮਲ ਕਰੋ'
+    voting_phase_started:
+      subject: '%{organizationName}: %{projectName}ਲਈ ਵੋਟਿੰਗ ਪੜਾਅ ਸ਼ੁਰੂ'
+      preheader: '%{organizationName}ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ''ਤੇ %{projectName} ਲਈ ਵੋਟਿੰਗ ਪੜਾਅ ਸ਼ੁਰੂ ਹੋਇਆ'
+      event_description: 'ਪ੍ਰੋਜੈਕਟ "%{projectName}" ਤੁਹਾਨੂੰ %{numIdeas} ਵਿਕਲਪਾਂ ਵਿਚਕਾਰ ਵੋਟ ਪਾਉਣ ਲਈ ਕਹਿ ਰਿਹਾ ਹੈ:'
+      cta_message: 'ਭਾਗ ਲੈਣ ਲਈ ਹੇਠਾਂ ਦਿੱਤੇ ਬਟਨ ''ਤੇ ਕਲਿੱਕ ਕਰੋ'
+      cta_vote: 'ਵੋਟ ਪਾਉਣ ਲਈ ਪਲੇਟਫਾਰਮ ''ਤੇ ਜਾਓ'
+    admin_labels:
+      recipient_role:
+        admins: 'ਪ੍ਰਬੰਧਕਾਂ ਨੂੰ'
+        admins_and_managers: 'ਪ੍ਰਬੰਧਕਾਂ ਅਤੇ ਪ੍ਰਬੰਧਕਾਂ ਨੂੰ'
+        managers: 'ਪ੍ਰਬੰਧਕਾਂ ਨੂੰ'
+        project_participants: 'ਪ੍ਰੋਜੈਕਟ ਭਾਗੀਦਾਰਾਂ ਨੂੰ'
+        registered_users: 'ਰਜਿਸਟਰਡ ਉਪਭੋਗਤਾਵਾਂ ਨੂੰ'
+      recipient_segment:
+        admins: 'ਪ੍ਰਸ਼ਾਸਕ'
+        admins_and_managers: 'ਪ੍ਰਸ਼ਾਸਕ ਅਤੇ ਪ੍ਰਬੰਧਕ'
+        admins_and_managers_assigned_to_the_input: 'ਪ੍ਰਸ਼ਾਸਕਾਂ ਅਤੇ ਪ੍ਰਬੰਧਕਾਂ ਨੂੰ ਇਨਪੁਟ ਲਈ ਸੌਂਪਿਆ ਗਿਆ ਹੈ'
+        admins_and_managers_managing_the_project: 'ਪ੍ਰੋਜੈਕਟ ਦਾ ਪ੍ਰਬੰਧਨ ਕਰਨ ਵਾਲੇ ਪ੍ਰਬੰਧਕ ਅਤੇ ਪ੍ਰਬੰਧਕ'
+        admins_assigned_to_a_proposal: 'ਪ੍ਰਸ਼ਾਸਕਾਂ ਨੂੰ ਇੱਕ ਪ੍ਰਸਤਾਵ ਲਈ ਨਿਯੁਕਤ ਕੀਤਾ ਗਿਆ ਹੈ'
+        all_users: 'ਸਾਰੇ ਉਪਭੋਗਤਾ'
+        all_users_who_uploaded_proposals: 'ਸਾਰੇ ਉਪਭੋਗਤਾ ਜਿਨ੍ਹਾਂ ਨੇ ਪ੍ਰਸਤਾਵ ਅਪਲੋਡ ਕੀਤੇ ਹਨ'
+        managers: 'ਪ੍ਰਬੰਧਕ'
+        managers_managing_the_project: 'ਪ੍ਰੋਜੈਕਟ ਦਾ ਪ੍ਰਬੰਧਨ ਕਰਦੇ ਹੋਏ ਪ੍ਰਬੰਧਕ'
+        new_attendee: 'ਨਵਾਂ ਰਜਿਸਟਰਡ ਉਪਭੋਗਤਾ'
+        project_reviewers: 'ਪ੍ਰੋਜੈਕਟ ਸਮੀਖਿਅਕ ਅਤੇ ਫੋਲਡਰ ਮੈਨੇਜਰ'
+        project_review_requester: 'ਉਪਭੋਗਤਾ ਜਿਸਨੇ ਪ੍ਰੋਜੈਕਟ ਸਮੀਖਿਆ ਦੀ ਬੇਨਤੀ ਕੀਤੀ ਹੈ'
+        user_who_commented: 'ਟਿੱਪਣੀ ਕਰਨ ਵਾਲੇ ਉਪਭੋਗਤਾ'
+        user_who_is_invited_to_cosponsor_a_proposal: 'ਉਪਭੋਗਤਾ ਜਿਸਨੂੰ ਇੱਕ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰਨ ਲਈ ਸੱਦਾ ਦਿੱਤਾ ਗਿਆ ਹੈ'
+        user_who_is_mentioned: 'ਉਪਭੋਗਤਾ ਜਿਸਦਾ ਜ਼ਿਕਰ ਕੀਤਾ ਗਿਆ ਹੈ'
+        user_who_is_receiving_admin_rights: 'ਉਹ ਉਪਭੋਗਤਾ ਜੋ ਪ੍ਰਬੰਧਕ ਅਧਿਕਾਰ ਪ੍ਰਾਪਤ ਕਰ ਰਿਹਾ ਹੈ'
+        user_who_is_receiving_folder_moderator_rights: 'ਉਪਭੋਗਤਾ ਜੋ ਫੋਲਡਰ ਸੰਚਾਲਕ ਅਧਿਕਾਰ ਪ੍ਰਾਪਤ ਕਰ ਰਿਹਾ ਹੈ'
+        user_who_is_receiving_project_moderator_rights: 'ਉਹ ਉਪਭੋਗਤਾ ਜੋ ਪ੍ਰੋਜੈਕਟ ਸੰਚਾਲਕ ਅਧਿਕਾਰ ਪ੍ਰਾਪਤ ਕਰ ਰਿਹਾ ਹੈ'
+        user_who_published_the_input: 'ਉਪਭੋਗਤਾ ਜਿਸਨੇ ਇਨਪੁਟ ਪ੍ਰਕਾਸ਼ਿਤ ਕੀਤਾ'
+        user_who_published_the_proposal: 'ਪ੍ਰਸਤਾਵ ਪ੍ਰਕਾਸ਼ਿਤ ਕਰਨ ਵਾਲਾ ਉਪਭੋਗਤਾ'
+        user_who_registers: 'ਰਜਿਸਟਰ ਕਰਨ ਵਾਲੇ ਉਪਭੋਗਤਾ'
+        user_who_submitted_the_input: 'ਉਪਭੋਗਤਾ ਜਿਸਨੇ ਇਨਪੁਟ ਸਪੁਰਦ ਕੀਤਾ ਹੈ'
+        user_who_voted: 'ਵੋਟ ਕਰਨ ਵਾਲੇ ਉਪਭੋਗਤਾ'
+        user_who_was_invited: 'ਉਪਭੋਗਤਾ ਜਿਸਨੂੰ ਸੱਦਾ ਦਿੱਤਾ ਗਿਆ ਸੀ'
+        user_with_unsubmitted_survey: 'ਉਪਭੋਗਤਾ ਜਿਸ ਨੇ ਸ਼ੁਰੂ ਕੀਤਾ ਹੈ ਪਰ ਆਪਣਾ ਸਰਵੇਖਣ ਜਮ੍ਹਾ ਨਹੀਂ ਕੀਤਾ ਹੈ'
+        user_with_unsubmitted_votes: 'ਉਹ ਉਪਭੋਗਤਾ ਜਿਨ੍ਹਾਂ ਨੇ ਆਪਣੀਆਂ ਵੋਟਾਂ ਜਮ੍ਹਾਂ ਨਹੀਂ ਕਰਵਾਈਆਂ ਹਨ'
+        users_who_engaged_but_not_voted: 'ਉਹ ਉਪਭੋਗਤਾ ਜੋ ਪ੍ਰੋਜੈਕਟ ਨਾਲ ਜੁੜੇ ਹੋਏ ਹਨ ਪਰ ਵੋਟ ਨਹੀਂ ਪਾਈ ਹੈ'
+        users_who_engaged_with_the_project: 'ਪ੍ਰੋਜੈਕਟ ਨਾਲ ਜੁੜੇ ਉਪਭੋਗਤਾ'
+        users_who_follow_the_input: 'ਉਪਭੋਗਤਾ ਜੋ ਇਨਪੁਟ ਦੀ ਪਾਲਣਾ ਕਰਦੇ ਹਨ'
+        users_who_follow_the_project: 'ਪ੍ਰੋਜੈਕਟ ਦੀ ਪਾਲਣਾ ਕਰਨ ਵਾਲੇ ਉਪਭੋਗਤਾ'
+        users_who_follow_the_proposal: 'ਪ੍ਰਸਤਾਵ ਦੀ ਪਾਲਣਾ ਕਰਨ ਵਾਲੇ ਉਪਭੋਗਤਾ'
+      content_type:
+        comments: 'ਟਿੱਪਣੀਆਂ'
+        content_moderation: 'ਸਮੱਗਰੀ ਸੰਚਾਲਨ'
+        events: 'ਸਮਾਗਮ'
+        general: 'ਜਨਰਲ'
+        inputs: 'ਇਨਪੁਟਸ'
+        internal_comments: 'ਅੰਦਰੂਨੀ ਟਿੱਪਣੀਆਂ'
+        permissions: 'ਇਜਾਜ਼ਤਾਂ'
+        projects: 'ਪ੍ਰੋਜੈਕਟਸ'
+        proposals: 'ਪ੍ਰਸਤਾਵ'
+        reactions: 'ਪ੍ਰਤੀਕਰਮ'
+        voting: 'ਵੋਟਿੰਗ'
+        surveys: 'ਸਰਵੇਖਣ'
+      trigger:
+        7_days_after_invite_is_sent: 'ਸੱਦਾ ਭੇਜਣ ਤੋਂ 7 ਦਿਨ ਬਾਅਦ'
+        7_days_before_the_project_changes_phase: 'ਪ੍ਰੋਜੈਕਟ ਬਦਲਣ ਦੇ ਪੜਾਅ ਤੋਂ 7 ਦਿਨ ਪਹਿਲਾਂ'
+        comment_is_deleted: 'ਟਿੱਪਣੀ ਮਿਟਾ ਦਿੱਤੀ ਗਈ ਹੈ'
+        comment_is_flagged_as_spam: 'ਟਿੱਪਣੀ ਨੂੰ ਸਪੈਮ ਵਜੋਂ ਫਲੈਗ ਕੀਤਾ ਗਿਆ ਹੈ'
+        content_gets_flagged_as_innapropiate: 'ਸਮੱਗਰੀ ਨੂੰ ਅਣਉਚਿਤ ਵਜੋਂ ਫਲੈਗ ਕੀਤਾ ਜਾਂਦਾ ਹੈ'
+        initiative_resubmitted_for_review: 'ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਮੀਖਿਆ ਲਈ ਮੁੜ-ਸਪੁਰਦ ਕੀਤਾ ਗਿਆ'
+        input_is_assigned: 'ਇਨਪੁਟ ਨਿਰਧਾਰਤ ਕੀਤਾ ਗਿਆ ਹੈ'
+        input_is_flagged_as_spam: 'ਇਨਪੁਟ ਨੂੰ ਸਪੈਮ ਵਜੋਂ ਫਲੈਗ ਕੀਤਾ ਗਿਆ ਹੈ'
+        input_is_published: 'ਇਨਪੁਟ ਪ੍ਰਕਾਸ਼ਿਤ ਕੀਤਾ ਗਿਆ ਹੈ'
+        input_is_updated: 'ਇਨਪੁਟ ਅਧਿਕਾਰਤ ਫੀਡਬੈਕ ਪ੍ਰਾਪਤ ਕਰਦਾ ਹੈ'
+        input_status_changes: 'ਇਨਪੁਟ ਸਥਿਤੀ ਬਦਲਦੀ ਹੈ'
+        internal_comment_is_posted_on_idea_assigned_to_user: 'ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ਉਪਭੋਗਤਾ ਨੂੰ ਸੌਂਪੇ ਗਏ ਇਨਪੁਟ ''ਤੇ ਪੋਸਟ ਕੀਤੀ ਜਾਂਦੀ ਹੈ'
+        internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: 'ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ਪ੍ਰੋਜੈਕਟ ਜਾਂ ਫੋਲਡਰ ਉਪਭੋਗਤਾ ਪ੍ਰਬੰਧਨ ਵਿੱਚ ਇਨਪੁਟ ''ਤੇ ਪੋਸਟ ਕੀਤੀ ਜਾਂਦੀ ਹੈ'
+        internal_comment_is_posted_on_idea_user_has_commented_internally_on: 'ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ਨੂੰ ਇਨਪੁਟ ਉਪਭੋਗਤਾ ਦੁਆਰਾ ਅੰਦਰੂਨੀ ਤੌਰ ''ਤੇ ਟਿੱਪਣੀ ਕਰਨ ''ਤੇ ਪੋਸਟ ਕੀਤਾ ਜਾਂਦਾ ਹੈ'
+        internal_comment_is_posted_on_idea_user_moderates: 'ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ਇਨਪੁਟ ਉਪਭੋਗਤਾ ਸੰਚਾਲਕਾਂ ''ਤੇ ਪੋਸਟ ਕੀਤੀ ਜਾਂਦੀ ਹੈ'
+        internal_comment_is_posted_on_initiative_assigned_to_user: 'ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ਉਪਭੋਗਤਾ ਨੂੰ ਸੌਂਪੇ ਗਏ ਪ੍ਰਸਤਾਵ ''ਤੇ ਪੋਸਟ ਕੀਤੀ ਜਾਂਦੀ ਹੈ'
+        internal_comment_is_posted_on_initiative_user_has_commented_internally_on: 'ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ਪ੍ਰਸਤਾਵ ''ਤੇ ਪੋਸਟ ਕੀਤੀ ਜਾਂਦੀ ਹੈ ਉਪਭੋਗਤਾ ਨੇ ਅੰਦਰੂਨੀ ਤੌਰ ''ਤੇ ਟਿੱਪਣੀ ਕੀਤੀ'
+        internal_comment_is_posted_on_unassigned_initiative: 'ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ਅਸਾਈਨ ਕੀਤੇ ਪ੍ਰਸਤਾਵ ''ਤੇ ਪੋਸਟ ਕੀਤੀ ਗਈ ਹੈ'
+        internal_comment_is_posted_on_unassigned_unmoderated_idea: 'ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ਅਣ-ਪ੍ਰਬੰਧਿਤ ਪ੍ਰੋਜੈਕਟ ਵਿੱਚ ਅਸਾਈਨ ਕੀਤੇ ਇਨਪੁਟ ''ਤੇ ਪੋਸਟ ਕੀਤੀ ਜਾਂਦੀ ਹੈ'
+        project_review_request: 'ਸੰਚਾਲਕ ਨੇ ਇੱਕ ਪ੍ਰੋਜੈਕਟ ਸਮੀਖਿਆ ਦੀ ਬੇਨਤੀ ਕੀਤੀ'
+        project_review_state_change: 'ਸਮੀਖਿਅਕ ਨੇ ਪ੍ਰੋਜੈਕਟ ਨੂੰ ਮਨਜ਼ੂਰੀ ਦਿੱਤੀ'
+        new_input_awaits_screening: 'ਨਵਾਂ ਇਨਪੁਟ ਸਕ੍ਰੀਨਿੰਗ ਦੀ ਉਡੀਕ ਕਰ ਰਿਹਾ ਹੈ'
+        new_input_is_published: 'ਨਵਾਂ ਇਨਪੁਟ ਪ੍ਰਕਾਸ਼ਿਤ ਕੀਤਾ ਗਿਆ ਹੈ'
+        new_proposal_is_posted: 'ਨਵਾਂ ਪ੍ਰਸਤਾਵ ਪੋਸਟ ਕੀਤਾ ਗਿਆ ਹੈ'
+        project_phase_changes: 'ਪ੍ਰੋਜੈਕਟ ਪੜਾਅ ਬਦਲਦਾ ਹੈ'
+        project_published: 'ਪ੍ਰੋਜੈਕਟ ਪ੍ਰਕਾਸ਼ਿਤ ਕੀਤਾ ਗਿਆ ਹੈ'
+        proposal_gets_reported_as_spam: 'ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਪੈਮ ਵਜੋਂ ਰਿਪੋਰਟ ਕੀਤਾ ਜਾਂਦਾ ਹੈ'
+        proposal_is_assigned_to_admin: 'ਪ੍ਰਸਤਾਵ ਐਡਮਿਨ ਨੂੰ ਸੌਂਪਿਆ ਗਿਆ ਹੈ'
+        proposal_is_published: 'ਪ੍ਰਸਤਾਵ ਪ੍ਰਕਾਸ਼ਿਤ ਕੀਤਾ ਗਿਆ ਹੈ'
+        proposal_is_updated: 'ਪ੍ਰਸਤਾਵ ਨੂੰ ਅਧਿਕਾਰਤ ਫੀਡਬੈਕ ਪ੍ਰਾਪਤ ਹੁੰਦਾ ਹੈ'
+        proposal_is_upvoted_above_threshold: 'ਤਜਵੀਜ਼ ਨੂੰ ਥ੍ਰੈਸ਼ਹੋਲਡ ਤੋਂ ਉੱਪਰ ਵੋਟ ਦਿੱਤਾ ਗਿਆ ਹੈ'
+        proposal_status_changes: 'ਪ੍ਰਸਤਾਵ ਦੀ ਸਥਿਤੀ ਬਦਲਦੀ ਹੈ'
+        registration_to_event: 'ਇੱਕ ਘਟਨਾ ਲਈ ਰਜਿਸਟ੍ਰੇਸ਼ਨ'
+        survey_1_day_after_draft_saved: 'ਉਪਭੋਗਤਾ ਦੁਆਰਾ ਆਖਰੀ ਵਾਰ ਡਰਾਫਟ ਵਿੱਚ ਸਰਵੇਖਣ ਨੂੰ ਸੁਰੱਖਿਅਤ ਕਰਨ ਤੋਂ 1 ਦਿਨ ਬਾਅਦ'
+        user_accepts_invitation_to_cosponsor_a_proposal: 'ਉਪਭੋਗਤਾ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਸਪਾਂਸਰ ਕਰਨ ਲਈ ਸੱਦਾ ਸਵੀਕਾਰ ਕਰਦਾ ਹੈ'
+        user_comments: 'ਉਪਭੋਗਤਾ ਟਿੱਪਣੀਆਂ'
+        user_comments_on_input: 'ਇੰਪੁੱਟ ''ਤੇ ਉਪਭੋਗਤਾ ਦੀਆਂ ਟਿੱਪਣੀਆਂ'
+        user_comments_on_proposal: 'ਪ੍ਰਸਤਾਵ ''ਤੇ ਉਪਭੋਗਤਾ ਦੀਆਂ ਟਿੱਪਣੀਆਂ'
+        user_is_given_admin_rights: 'ਉਪਭੋਗਤਾ ਨੂੰ ਐਡਮਿਨ ਅਧਿਕਾਰ ਦਿੱਤੇ ਗਏ ਹਨ'
+        user_is_given_folder_moderator_rights: 'ਉਪਭੋਗਤਾ ਨੂੰ ਫੋਲਡਰ ਸੰਚਾਲਕ ਅਧਿਕਾਰ ਦਿੱਤੇ ਗਏ ਹਨ'
+        user_is_given_project_moderator_rights: 'ਉਪਭੋਗਤਾ ਨੂੰ ਪ੍ਰੋਜੈਕਟ ਸੰਚਾਲਕ ਅਧਿਕਾਰ ਦਿੱਤੇ ਗਏ ਹਨ'
+        user_is_invited_to_cosponsor_a_proposal: 'ਉਪਭੋਗਤਾ ਨੂੰ ਇੱਕ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰਨ ਲਈ ਸੱਦਾ ਦਿੱਤਾ ਜਾਂਦਾ ਹੈ'
+        user_is_mentioned: 'ਉਪਭੋਗਤਾ ਦਾ ਜ਼ਿਕਰ ਕੀਤਾ ਗਿਆ ਹੈ'
+        user_is_mentioned_in_internal_comment: 'ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ਵਿੱਚ ਉਪਭੋਗਤਾ ਦਾ ਜ਼ਿਕਰ ਕੀਤਾ ਗਿਆ ਹੈ'
+        user_registers_for_the_first_time: 'ਉਪਭੋਗਤਾ ਪਹਿਲੀ ਵਾਰ ਰਜਿਸਟਰ ਕਰਦਾ ਹੈ'
+        user_replies_to_comment: 'ਟਿੱਪਣੀ ਲਈ ਉਪਭੋਗਤਾ ਜਵਾਬ'
+        user_replies_to_internal_comment: 'ਉਪਭੋਗਤਾ ਅੰਦਰੂਨੀ ਟਿੱਪਣੀ ਦਾ ਜਵਾਬ ਦਿੰਦਾ ਹੈ'
+        voting_1_day_after_last_votes: 'ਉਪਭੋਗਤਾ ਦੁਆਰਾ ਆਖਰੀ ਵਾਰ ਵੋਟ ਕੀਤੇ ਜਾਣ ਤੋਂ 1 ਦਿਨ ਬਾਅਦ'
+        voting_2_days_before_phase_closes: '2 ਦਿਨ ਪਹਿਲਾਂ ਵੋਟਿੰਗ ਪੜਾਅ ਬੰਦ'
+        voting_basket_submitted: 'ਵੋਟਾਂ ਜਮ੍ਹਾਂ ਕਰਵਾਈਆਂ ਜਾਂਦੀਆਂ ਹਨ'
+        voting_phase_ended: 'ਵੋਟਿੰਗ ਪੜਾਅ ਸਮਾਪਤ ਹੋ ਗਿਆ ਹੈ'

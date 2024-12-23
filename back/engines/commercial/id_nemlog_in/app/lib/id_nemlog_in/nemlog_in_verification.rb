@@ -79,8 +79,8 @@ module IdNemlogIn
       true
     end
 
-    def enabled_for_verified_actions?
-      config[:enabled_for_verified_actions]
+    def check_entitled_on_sso?
+      true
     end
 
     def ui_method_name

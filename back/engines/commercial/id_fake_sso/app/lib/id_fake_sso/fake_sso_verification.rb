@@ -17,7 +17,17 @@ module IdFakeSso
     end
 
     def config_parameters
-      []
+      %i[enabled_for_verified_actions]
+    end
+
+    def config_parameters_schema
+      {
+        enabled_for_verified_actions: {
+          private: true,
+          type: 'boolean',
+          description: 'Whether this verification method should be enabled for verified actions.'
+        }
+      }
     end
 
     def locked_attributes
@@ -34,10 +44,6 @@ module IdFakeSso
 
     def other_custom_fields
       []
-    end
-
-    def enabled_for_verified_actions?
-      true
     end
 
     def ui_method_name

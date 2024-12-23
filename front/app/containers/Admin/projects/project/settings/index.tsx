@@ -42,6 +42,11 @@ const Settings = () => {
       name: 'permissions',
       url: `/admin/projects/${projectId}/settings/access-rights`,
     },
+    {
+      label: formatMessage(messages.data),
+      name: 'data',
+      url: `/admin/projects/${projectId}/settings/data`,
+    },
   ];
 
   const goBack = () => {

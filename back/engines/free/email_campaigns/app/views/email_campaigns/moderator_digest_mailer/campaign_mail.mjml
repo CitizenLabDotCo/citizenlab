@@ -4,7 +4,7 @@
   <mj-column>
     <mj-text>
       <h2 style="padding: 20px 0">
-        <%= event.project_name %>
+        <%= event.project_title %>
       </h2>
     </mj-text>
   </mj-column>
@@ -80,13 +80,13 @@
 <mj-section padding="25px">
   <mj-column>
     <mj-text>
-      <h2 style="padding: 20px 0">
+      <h3 style="padding: 20px 0">
         <% if event.top_ideas.blank? %>
           <%= format_message('title_no_inputs_past_week') %>
         <% else %>
           <%= format_message('title_inputs_past_week') %>
         <% end %>
-      </h2>
+      </h3>
     </mj-text>
 
     <mj-table cellpadding="15">
@@ -96,6 +96,24 @@
     </mj-table>
   </mj-column>
 </mj-section>
+
+<mj-raw><% if event.successful_proposals.any? %></mj-raw>
+  <mj-section padding="25px">
+    <mj-column>
+      <mj-text>
+        <h3 style="padding: 20px 0">
+          <%= format_message('title_threshold_reached') %>
+        </h3>
+      </mj-text>
+
+      <mj-table cellpadding="15">
+        <% event.successful_proposals.each do |serialized_idea| %>
+          <%= render 'email_campaigns/ideas/idea-minimal', serialized_idea: %>
+        <% end %>
+      </mj-table>
+    </mj-column>
+  </mj-section>
+<mj-raw><% end %></mj-raw>
 
 <%=
   render partial: 'application/cta_button',

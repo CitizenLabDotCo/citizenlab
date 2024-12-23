@@ -10,14 +10,15 @@ ar-MA:
       "comment_on_idea_you_follow": تعليق على فكرة تتابعها
       "comment_on_initiative_you_follow": تعليق على الاقتراح الذي تتبعه
       "cosponsor_of_your_initiative": يقبل أحد المستخدمين دعوتي للمشاركة في رعاية اقتراحي
+      "cosponsor_of_your_idea": يقبل المستخدم دعوتي للمشاركة في رعاية اقتراحي
       "event_registration_confirmation": تأكيد تسجيل الحدث
-      "first_idea_published": نشر فكرتي الأولى
       "idea_marked_as_spam": الإبلاغ عن الفكرة كـإزعاج
       "idea_published": نشر فكرتي
       "initiative_assigned_to_you": تعيين مُقترح إلي
       "initiative_marked_as_spam": الإبلاغ عن المُقترح كـإزعاج
       "initiative_published": نشر مُقترحي
       "invitation_to_cosponsor_initiative": دعوة للمشاركة في رعاية اقتراح
+      "invitation_to_cosponsor_idea": دعوة للمشاركة في رعاية مقترح
       "initiative_resubmitted_for_review": تمت إعادة تقديم الاقتراح للمراجعة
       "invite_received": دعوة
       "invite_reminder": تذكير بالدعوة
@@ -42,6 +43,8 @@ ar-MA:
       "project_phase_started": مرحلة مشروع جديدة
       "project_phase_upcoming": مرحلة مشروع جديدة قادمة
       "project_published": تم نشر المشروع
+      "project_review_request": طلب مراجعة المشروع
+      "project_review_state_change": تمت الموافقة على المشروع
       "status_change_on_idea_you_follow": تغيير حالة الفكرة التي تتابعها
       "status_change_on_initiative_you_follow": تغيير حالة الاقتراح الذي تتابعه
       "threshold_reached_for_admin": بلغ المُقترح حد التصويت المطلوب
@@ -56,22 +59,43 @@ ar-MA:
       "voting_last_chance": آخر فرصة للتصويت
       "voting_phase_started": مرحلة المشروع الجديد مع التصويت
       "voting_results": نتائج التصويت
-      "your_proposed_initiatives_digest": نظرة عامة أسبوعية على مُقترحاتك
+      "your_input_in_screening": مدخلاتي تنتظر الفحص
     general:
       by_author: 'بواسطة %{authorName}'
       author_wrote: '%{authorName} كتب:'
       cta_goto_idea: 'اذهب إلى هذه الفكرة'
+      cta_goto_input: 'انتقل إلى هذا الإدخال'
+      cta_goto:
+        idea: 'انتقل إلى هذه الفكرة'
+        question: 'انتقل إلى هذا السؤال'
+        contribution: 'انتقل إلى هذه المساهمة'
+        project: 'انتقل إلى هذا المشروع'
+        issue: 'انتقل إلى هذه المشكلة'
+        option: 'انتقل إلى هذا الخيار'
+        proposal: 'انتقل إلى هذا الاقتراح'
+        initiative: 'انتقل إلى هذه المبادرة'
+        petition: 'انتقل إلى هذه العريضة'
+      cta_goto_your:
+        idea: 'اذهب إلى فكرتك'
+        question: 'انتقل إلى سؤالك'
+        contribution: 'انتقل إلى مساهمتك'
+        project: 'انتقل إلى مشروعك'
+        issue: 'انتقل إلى مشكلتك'
+        option: 'انتقل إلى خيارك'
+        proposal: 'انتقل إلى اقتراحك'
+        initiative: 'اذهب إلى مبادرتك'
+        petition: 'انتقل إلى عريضتك'
       cta_goto_proposal: 'اذهب إلى هذا الاقتراح'
       cta_goto_project: 'اذهب إلى هذا المشروع'
     schedules:
       weekly:
         "0": "أسبوعيًا ، أيام الأحد الساعة %{hourOfDay}"
-        "1": "أسبوعيًا يوم الاثنين %{atHour}"
-        "2": "أسبوعيًا كل يوم ثلاثاء %{atHour}"
-        "3": "أسبوعيًا في أيام الأربعاء %{atHour}"
-        "4": "أسبوعيًا يوم الخميس %{atHour}"
-        "5": "أسبوعيًا أيام الجمعة %{atHour}"
-        "6": "أسبوعيًا أيام السبت %{atHour}"
+        "1": "أسبوعيًا يوم الاثنين %{hourOfDay}"
+        "2": "أسبوعيًا كل يوم ثلاثاء %{hourOfDay}"
+        "3": "أسبوعيًا في أيام الأربعاء %{hourOfDay}"
+        "4": "أسبوعيًا يوم الخميس %{hourOfDay}"
+        "5": "أسبوعيًا أيام الجمعة %{hourOfDay}"
+        "6": "أسبوعيًا أيام السبت %{hourOfDay}"
     footer:
       "link_privacy_policy": "سياسة الخصوصية"
       "link_terms_conditions": "الشروط والأحكام"
@@ -82,6 +106,8 @@ ar-MA:
       "unsubscribe_text": "إلغاء الاشتراك"
     follow:
       "unfollow_here": "لقد تلقيت هذا الإشعار بسبب عنصر تتابعه. <a href=\"%{unfollow_url}\">يمكنك إلغاء متابعته هنا.</a>"
+    manual:
+      preheader: 'لديك بريد من %{organizationName}'
     comment_deleted_by_admin:
       reason: 'سبب حذف تعليقك:'
       cta_view: 'اعرض هذه الفكرة'
@@ -100,12 +126,12 @@ ar-MA:
       text_introduction: "قمنا بتحضير قائمة تضم جميع الأفكار التي ولّدت أكبر تفاعل ونشاط على مدار الأسبوع الماضي.اكتشف ما يحدث على منصتك!\n     "
       cta_visit_the_platform: 'زُر منصتك'
       new_users: 'المستخدمون الجُدد'
-      new_ideas: 'الأفكار الجديدة'
+      new_inputs: 'مدخلات جديدة'
       new_comments: 'التعليقات الجديدة'
       title_activity_past_week: 'النشاط على مدار الأسبوع الماضي'
       title_no_activity_past_week: 'لم يكن هناك نشاط في الأسبوع الماضي'
       title_initiatives_past_week: 'المُقترحات الجديدة في الأسبوع الماضي'
-      title_successful_initiatives_past_week: 'المُقترحات التي وصلت إلى الحد المطلوب الأسبوع الماضي'
+      reached_threshold: 'وصلت إلى الحد الأقصى'
       yesterday_by_author: 'الأمس بواسطة %{author}'
       today_by_author: 'اليوم بواسطة %{author}'
       x_days_ago_by_author: 'قبل %{x} يوم بواسطة %{author}'
@@ -136,6 +162,12 @@ ar-MA:
       today: اليوم
       wrong_content: 'التعليق غير ذي صلة.'
       yesterday: الأمس
+    cosponsor_of_your_idea:
+      cta_reply_to: 'عرض اقتراحك'
+      event_description: 'تهانينا! لقد قبل %{cosponsorName} دعوتك للمشاركة في رعاية اقتراحك.'
+      main_header: 'لقد قبلت %{cosponsorName} دعوتك للمشاركة في رعاية اقتراحك'
+      subject: 'لقد قبلت %{cosponsorName} دعوتك للمشاركة في رعاية اقتراحك'
+      preheader: 'لقد قبلت %{cosponsorName} دعوتك للمشاركة في رعاية اقتراحك'
     cosponsor_of_your_initiative:
       cta_reply_to: 'عرض الاقتراح الخاص بك'
       event_description_initiative: 'تهانينا! لقد قبل %{cosponsorName} دعوتك للمشاركة في رعاية اقتراحك.'
@@ -147,18 +179,15 @@ ar-MA:
       preheader: 'ملخص التعيين لـ %{organizationName}'
       title_your_weekly_report: '%{firstName}، مُدخلات المواطنين بانتظار ملاحظاتك'
       cta_manage_your_input: 'إدارة مُدخلاتك'
-      assigned_ideas: 'أفكار بحاجة إلى ملاحظاتك'
+      x_inputs_need_your_feedback: 'المدخلات تحتاج إلى ملاحظاتك'
       title_assignment_past_week: 'آخر الأفكار المعيّنة إليك'
       title_no_assignment_past_week: 'لم يتم تعيين أي أفكار جديدة إليك في الأسبوع الماضي'
       yesterday_by_author: 'الأمس بواسطة %{author}'
       today_by_author: 'اليوم بواسطة %{author}'
       x_days_ago_by_author: 'قبل %{x} يوم بواسطة %{author}'
-      idea_section: الأفكار
-      initiative_section: المُقترحات
-      title_initiatives_past_week: 'المُقترحات الجديدة المُعيّنة إليك'
-      title_successful_initiatives_past_week: 'المُقترحات المعيّنة إليك والتي وصلت إلى الحد المطلوب'
+      title_successful_past_week: 'مُخصص لك الذي وصل إلى الحد الأدنى'
     idea_marked_as_spam:
-      cta_review_idea: 'مراجعة الفكرة'
+      cta_review: 'مراجعة'
       report_inappropriate_offensive_content: 'أجد هذا المحتوى مسيئًا أو غير لائق.'
       report_not_an_idea: 'هذا المحتوى ليس فكرة ولا ينتمي إلى هنا.'
       subject: 'لديك تقرير إزعاج على المنصة الخاصة بـ %{organizationName}'
@@ -179,6 +208,15 @@ ar-MA:
       main_header: '%{firstName}، لديك مهمة جديدة'
       subject: 'لديك مهمة على المنصة الخاصة بـ %{organizationName}'
       preheader_initiative: 'تم تعيين مُقترح %{authorName} إليك'
+    invitation_to_cosponsor_idea:
+      cta_reply_to: 'شارك في رعاية هذا الاقتراح'
+      event_description: 'لقد أنشأ %{authorName} اقتراحًا جديدًا ويريد منك أن تشارك في رعايته.'
+      event_description_cosponsoring: 'إن المشاركة في رعاية الاقتراح تعني أن <strong>اسمك سيتم عرض</strong> مع أسماء الرعاة المشاركين الآخرين للاقتراح.'
+      event_description_before_action: 'لرؤية العرض وقبول الدعوة، يجب عليك تسجيل الدخول إلى حسابك.'
+      event_description_action: 'انقر أدناه لقراءة الاقتراح.'
+      main_header: 'لقد تمت دعوتك للمشاركة في رعاية اقتراح'
+      subject: 'لقد تمت دعوتك للمشاركة في رعاية اقتراح'
+      preheader: 'لقد تمت دعوتك للمشاركة في رعاية اقتراح %{authorName}'
     invitation_to_cosponsor_initiative:
       cta_reply_to: 'شارك في رعاية هذا الاقتراح'
       event_description_initiative: '%{authorName} قام بإنشاء اقتراح جديد ويود منك أن تشارك في رعايته.'
@@ -233,10 +271,10 @@ ar-MA:
       cta_reply_to: 'عرض تعليق %{firstName}'
       event_description: '%{authorNameFull} ذكرك في تعليق داخلي.'
       subject: '%{firstName} ذكرك في تعليق داخلي.'
-      main_header: '%{authorNameFirst} ذكرك في تعليق داخلي.'
+      main_header: '%{firstName} ذكرك في تعليق داخلي.'
       preheader: '%{authorNameFull} ذكرك في تعليق داخلي.'
     moderator_digest:
-      subject: 'تقرير مدير المشروع الأسبوعي الخاص بك لـ%{time}'
+      subject: 'تقرير مدير المشروع الأسبوعي الخاص بك لـ%{project_title}'
       preheader: 'ملخص مدير المشروع لـ %{organizationName}'
       title_your_weekly_report: '%{firstName}، تقريرك الأسبوعي'
       text_introduction: "قمنا بتحضير قائمة تضم جميع الأفكار التي ولّدت أكبر تفاعل ونشاط على مدار الأسبوع الماضي.اكتشف ما يحدث في مشروعك!\n     "
@@ -246,6 +284,7 @@ ar-MA:
       new_comments: 'التعليقات الجديدة'
       title_inputs_past_week: 'مدخلات جديدة في الأسبوع الماضي'
       title_no_inputs_past_week: 'لا مدخلات جديدة في الأسبوع الماضي'
+      title_threshold_reached: تم الوصول إلى الحد الأقصى في الأسبوع الماضي
       yesterday_by_author: 'الأمس بواسطة %{author}'
       today_by_author: 'اليوم بواسطة %{author}'
       x_days_ago_by_author: 'قبل %{x} يوم بواسطة %{author}'
@@ -261,9 +300,18 @@ ar-MA:
       yesterday: الأمس
     comment_on_idea_you_follow:
       cta_reply_to: 'الرد على %{commentAuthor}'
-      event_description: '%{authorNameFull} وضع رد فعل على الفكرة ''%{ideaTitle}''. انقر فوق الزر أدناه لمواصلة المحادثة مع %{authorName}.'
-      main_header: '%{authorName} علق على فكرة تتابعها'
-      subject: 'هناك تعليق جديد على فكرة تتابعها'
+      event_description: '%{authorNameFull} placed a reaction on ''%{inputTitle}''. Click the button below to continue the conversation with %{authorName}.'
+      main_header:
+        idea: '%{authorName} علق على فكرة تتابعها'
+        question: '%{authorName} علق على سؤال تتابعه'
+        contribution: '%{authorName} علق على مساهمة تتابعها'
+        project: '%{authorName} علق على أحد المشاريع التي تتابعها'
+        issue: '%{authorName} علق على قضية تتابعها'
+        option: '%{authorName} علق على الخيار الذي تتبعه'
+        proposal: '%{authorName} علق على الاقتراح الذي تتابعه'
+        initiative: '%{authorName} علق على مبادرة تتابعها'
+        petition: '%{authorName} علق على العريضة التي تتابعها'
+      subject: 'There''s a new comment on "%{input_title}"'
       preheader: '%{authorName} ترك تعليقًا على فكرة لـ %{organizationName}'
     comment_on_initiative_you_follow:
       cta_reply_to: 'الرد على %{commentAuthor}'
@@ -278,12 +326,14 @@ ar-MA:
       subject: 'قام شخص بنشر مُقترح جديد على منصة %{organizationName}'
       preheader: 'قام %{authorName} بنشر مُقترح جديد على منصتك'
     new_idea_for_admin:
-      commented: 'علّق %{authorFirstName}:'
-      cta_reply_to: 'قدّم ملاحظاتك لـ %{authorName}'
+      main_header_publication: 'تم نشر مدخلات جديدة على منصتك'
+      event_description_publication: 'لقد أرسل %{authorName} مدخلاً جديدًا إلى منصتك. اكتشفه الآن، أو قدم بعض الملاحظات أو غيّر حالته!'
+      cta_publication: 'أرسل تعليقك إلى %{authorName}'
+      main_header_prescreening: 'يتطلب الإدخال مراجعتك'
+      event_description_prescreening: 'لقد أرسل %{authorName} مدخلات جديدة على منصتك.'
+      input_not_visible_prescreening: '<b>لن يكون الإدخال مرئيًا</b> حتى تقوم بتعديل حالته.'
+      cta_prescreening: 'مراجعة المدخلات'
       days_ago: 'قبل %{numberOfDays} يوم'
-      event_description: 'قام %{authorName} بنشر فكرة جديدة على منصتك. تعرف عليها الآن، وقدّم ملاحطاتك أو غيّر حالتها!'
-      main_header: '%{firstName}، تم نشر فكرة جديدة على منصتك'
-      subject: 'قام شخص بنشر فكرة جديدة على منصة %{organizationName}'
       preheader: 'قام %{authorName} بنشر فكرة جديدة على منصتك'
       today: اليوم
       yesterday: الأمس
@@ -343,10 +393,10 @@ ar-MA:
       main_header: '"%{post}" لديه تعليق داخلي جديد'
       preheader: '"%{post}" لديه تعليق داخلي جديد'
     official_feedback_on_idea_you_follow:
-      header_message: '%{officialName} قدم تحديثًا للفكرة ''%{ideaTitle}''. انقر فوق الزر أدناه للدخول إلى المحادثة مع %{officialName}.'
-      header_title: 'هناك تحديث لفكرة تتابعها'
-      subject: 'فكرة تتابعها حصلت على تحديث رسمي على منصة %{organizationName}'
-      preheader: 'هناك تحديث لفكرة تتابعها'
+      header_message: '%{feedback_author_name} gave an update on ''%{input_title}''.'
+      header_title: 'There''s an update on "%{input_title}"'
+      subject: 'Official feedback was posted on "%{input_title}"'
+      preheader: 'There''s an update on an input you follow'
     official_feedback_on_initiative_you_follow:
       header_message: '%{officialName} قدم تحديثًا بشأن الاقتراح ''%{initiativeTitle}''. انقر فوق الزر أدناه للدخول إلى المحادثة مع %{organizationName}.'
       header_title: 'هناك تحديث بشأن الاقتراح الذي تتابعه'
@@ -409,12 +459,22 @@ ar-MA:
       header_title: 'تم نشر مشروع جديد'
       header_message: 'منصة مشاركة %{organizationName} نشرت للتو المشروع التالي:'
       preheader: 'تم نشر مشروع جديد'
+    project_review_request:
+      subject: 'طلب المراجعة: هناك مشروع ينتظر الموافقة.'
+      header: 'لقد دعاك %{requesterName} لمراجعة المشروع "%{projectTitle}"'
+      header_message: "حاليًا، المشروع في وضع المسودة ولا يمكن للمستخدمين رؤيته. بمجرد مراجعته والموافقة عليه، سيتمكن المشرف من نشره."
+      cta_review_project: "مراجعة المشروع"
+    project_review_state_change:
+      subject: 'تمت الموافقة على "%{projectTitle}"'
+      header: '%{reviewerName} وافق على المشروع "%{projectTitle}"'
+      header_message: "المشروع جاهز الآن للانطلاق. يمكنك نشره في أي وقت تريد!"
+      cta_go_to_project: "انتقل إلى إعدادات المشروع"
     status_change_on_idea_you_follow:
-      status_change: 'الحالة الجديدة لهذه الفكرة هي ''%{ideaStatus}'''
-      header_message: 'قام %{organizationName} بتحديث حالة الفكرة ''%{ideaTitle}'' على منصة المشاركة الرقمية الخاصة بهم.'
-      header_title: 'الفكرة التي تتابعها لها وضع جديد'
-      subject: 'تم تغيير حالة الفكرة التي تتابعها'
-      preheader: 'الفكرة التي تتابعها لها وضع جديد'
+      status_change: 'The new status of this input is ''%{status}'''
+      header_message: '%{organizationName} updated the status of the input ''%{input_title}'' on their digital participation platform.'
+      header_title: 'An input you follow has a new status'
+      subject: 'The status of "%{input_title}" has changed'
+      preheader: 'An input you follow has a new status'
     status_change_on_initiative_you_follow:
       status_change: 'الحالة الجديدة لهذا الاقتراح هي ''%{initiativeStatus}'''
       header_message: 'تم تحديث حالة الاقتراح ''%{initiativeTitle}'' على منصة المشاركة الرقمية لـ %{organizationName}.'
@@ -429,15 +489,13 @@ ar-MA:
       intro_text: "ها هو ملخص لما حدث على منصة المشاركة لـ %{organizationName}."
       cta_go_to_the_platform: "اذهب إلى المنصة"
       title_no_activity_past_week: "لا يوجد نشاط في الأسبوع الماضي"
-      title_proposals: "بدأت المقترحات"
-      proposals_started_text: "المقترحات هي عبارة عن أفكار تحتاج إلى اكتساب قوة الدفع والدعم من الآخرين (أشخاص مثلك!) من أجل المضي قدماً. وفيما يلي قائمة من المقترحات التي تم طرحها الأسبوع الماضي. انقر فوق أي منها لإلقاء نظرة وقدِّم دعمك وملاحظاتك!"
-      title_successful_proposals: "المقترحات التي بلغت العتبة"
+      successful_proposals_title: "وصلت إلى الحد الأقصى"
       successful_proposals_text: "لقد حصلت هذه المقترحات على دعمٍ كافٍ للانتقال إلى المرحلة التالية! انقر فوق المقترح لمعرفة المزيد حول ماذا سيحدث بعد ذلك."
       today_by_author: "اليوم بواسطة %{author}"
       yesterday_by_author: "الأمس بواسطة %{author}"
       x_days_ago_by_author: "قبل %{x} يوم بواسطة %{author}"
-      trending_ideas: "أفكار شائعة"
-      trending_ideas_text: "هل أنت مهتم بما يحدث على المنصة؟ إليك ثلاث أكثر الأفكار شيوعاً وما يقوله الناس عنها."
+      trending_title: "الأكثر رواجًا"
+      trending_text: "هل أنت مهتم بما يحدث على المنصة؟ إليك المساهمات الثلاث الأكثر رواجًا وما يقوله الناس عنها."
       no_notifications: "لا توجد إشعارات"
       one_notification: "إشعار واحد"
       multiple_notifications: "%{notifCount} إشعارات"
@@ -445,28 +503,9 @@ ar-MA:
       unread_notifications: "لديك إشعارات غير مقروءة. ندعوك لزيارة المنصة لاكتشاف ما يحدث."
     threshold_reached_for_admin:
       cta_process_initiative: 'خذ هذه المبادرة إلى الخطوات التالية'
-      event_description: 'وصلت إحدى المبادرات إلى حد التصويت المطلوب على منصتك. انقر الزر أدناه للانتقال إلى الخطوات التالية!'
       main_header: 'بلغت المبادرة حد التصويت المطلوب!'
       subject: 'بلغت المبادرة حد التصويت المطلوب على منصتك'
       preheader: 'تأكد من اتخاذ الخطوات التالية'
-    first_idea_published:
-      action_add_image: '%{addImageLink} لزيادة إمكانية الرؤية'
-      action_comment: '%{textComment} على أفكار موجودة'
-      action_published_idea: 'فكرة منشورة'
-      action_send_email: 'أرسل %{sendEmailLink} لجهات الاتصال لديك'
-      action_share_fb: 'دع أصدقائك يعرفون على %{fbLink}'
-      action_share_link: 'شارك عبر أي قناة عن طريق نسخ الرابط %{link}'
-      action_share_twitter: 'أبلغ متابعيك على %{twitterLink}'
-      add_image: 'أضِف صورة'
-      cta_view_idea: 'اذهب إلى فكرتك'
-      event_description: '%{firstName}، تهانينا على أول فكرة لك على منصة المشاركة الخاصة بـ %{organizationName}. سيتم إخطارك عند تفاعل الناس مع فكرتك. تعرف على الخطوات التالية التي يمكنك اتخاذها أدناه.'
-      link: رابط
-      main_header: '%{firstName}، لقد نشرت فكرتك الأولى!'
-      message_get_votes: 'بلغ فكرتك إلى المزيد من الأشخاص:'
-      preheader: '%{firstName}، تهانينا على نشر أولى أفكارك على المنصة الخاصة بـ %{organizationName}. الآن قم بحشد الدعم لفكرتك'
-      see_you: 'نراك قريبًا على المنصة!'
-      send_email: البريد الإلكتروني
-      subject: 'فكرتك الأولى على المنصة الخاصة بـ %{organizationName}'
     welcome:
       cta_join_platform: 'استكشف المنصة'
       subject: 'مرحبًا بك في المنصة الخاصة بـ %{organizationName}'
@@ -474,33 +513,43 @@ ar-MA:
       message_welcome: 'تهانينا لك، لقد قمت بالتسجيل في منصة المشاركة الخاصة بـ %{organizationName} بنجاح. يمكنك الآن استكشاف المنصة وجعل صوتك مسموعًا. يمكنك أيضًا إضافة صورة لملف التعريف ووصف قصير لتعريف الآخرين بك.'
       preheader: 'إليك ما يمكنك القيام به على المنصة الخاصة بـ %{organizationName}'
     idea_published:
-      action_add_image: '%{addImageLink} لزيادة إمكانية الرؤية'
-      action_published_idea: 'فكرة منشورة'
-      action_send_email: 'أرسل %{sendEmailLink} لجهات الاتصال لديك'
-      action_share_fb: 'دع أصدقائك يعرفون على %{fbLink}'
-      action_share_link: 'شارك عبر أي قناة عن طريق نسخ الرابط %{link}'
-      action_share_twitter: 'أبلغ متابعيك على %{twitterLink}'
-      add_image: 'أضِف صورة'
-      cta_view_idea: 'اذهب إلى فكرتك'
-      event_description: '%{firstName}، تم نشر فكرتك على منصة مشاركة %{organizationName} بنجاح. سيتم إخطارك عند تفاعل الناس مع فكرتك. تعرف على الخطوات التالية التي يمكنك اتخاذها أدناه.'
-      link: رابط
+      subject:
+        idea: 'لقد تم نشر فكرتك'
+        question: 'لقد تم نشر سؤالك'
+        contribution: 'لقد تم نشر مساهمتك'
+        project: 'لقد تم نشر مشروعك'
+        issue: 'لقد تم نشر مشكلتك'
+        option: 'لقد تم نشر خيارك'
+        proposal: 'لقد تم نشر اقتراحك'
+        initiative: 'لقد تم نشر مبادرتك'
+        petition: 'لقد تم نشر عريضتك'
       main_header: 'لقد نشرت فكرة! دعنا نحرص على قراءة الآخرين لها.'
+      header_message: 'دعونا نتأكد من قراءته.'
       message_get_votes: 'بلغ فكرتك إلى المزيد من الأشخاص:'
-      preheader: '%{firstName}، تهانينا على نشر فكرتك على المنصة الخاصة بـ %{organizationName}. الآن قم بحشد الدعم.'
-      see_you: 'نراك قريبًا على المنصة!'
+      action_published_idea: 'فكرة منشورة'
+      action_add_image: '%{addImageLink} لزيادة إمكانية الرؤية'
+      add_image: 'أضِف صورة'
+      action_share_fb: 'دع أصدقائك يعرفون على %{fbLink}'
+      action_share_twitter: 'أبلغ متابعيك على %{twitterLink}'
+      action_send_email: 'أرسل %{sendEmailLink} لجهات الاتصال لديك'
       send_email: البريد الإلكتروني
-      subject: 'فكرتك على المنصة الخاصة بـ %{organizationName}'
-      message_next_steps: ""
-    your_proposed_initiatives_digest:
-      subject: 'تحديث أسبوعي على مُقترحك'
-      preheader: 'ما الذي حدث لمُقترحك في الأسبوع الماضي؟'
-      title_your_weekly_report: 'كيف كان أداء مُقترحك؟'
-      text_introduction: 'اطلع على الإحصائيات الرئيسية أدناه، وانتقل إلى صفحة المُقترح الخاص بك لاتخاذ الإجراءات المناسبة والحصول على الدعم الكافي في الوقت المناسب.'
-      cta_see_your_initiative: 'اذهب إلى مُقترحك'
-      total_votes: 'إجمالي الأصوات'
-      new_votes: 'الأصوات الجديدة'
-      remaining_votes: 'الأصوات المتبقية'
-      remaining_days: 'الأيام المتبقية'
+      action_share_link: 'شارك عبر أي قناة عن طريق نسخ الرابط %{link}'
+      link: رابط
+      preheader: '%{firstName}، تهانينا على نشر فكرتك على المنصة الخاصة بـ %{organizationName}. الآن قم بحشد الدعم.'
+    your_input_in_screening:
+      main_header:
+        idea: 'فكرتك موجودة في "%{prescreening_status_title}"'
+        question: 'سؤالك موجود في "%{prescreening_status_title}"'
+        contribution: 'مساهمتك موجودة في "%{prescreening_status_title}"'
+        project: 'مشروعك موجود في "%{prescreening_status_title}"'
+        issue: 'مشكلتك موجودة في "%{prescreening_status_title}"'
+        option: 'خيارك موجود في "%{prescreening_status_title}"'
+        proposal: 'اقتراحك موجود في "%{prescreening_status_title}"'
+        initiative: 'مبادرتك موجودة في "%{prescreening_status_title}"'
+        petition: 'عريضتك موجودة في "%{prescreening_status_title}"'
+      message: '"%{input_title}" سوف تصبح مرئية للآخرين بمجرد مراجعتها والموافقة عليها.'
+      subject: '"%{input_title}" تم نشره تقريبًا'
+      preheader: 'إنه حاليا في %{prescreening_status_title}'
     voting_basket_submitted:
       subject: '%{organizationName}: لقد قمت بالتصويت بنجاح'
       preheader: 'لقد قمت بالتصويت بنجاح على منصة المشاركة %{organizationName}'
@@ -540,6 +589,7 @@ ar-MA:
       cta_see_results: 'رؤية النتائج في النظام الأساسي'
     event_registration_confirmation:
       subject: "اهلا بك! تم تأكيد تسجيلك لـ \"%{eventTitle}\"."
+      preheader: "%{firstName}، شكرًا لك على التسجيل في %{eventTitle}"
       header_message: "%{firstName}شكرا على التسجيل"
       event_details:
         labels:
@@ -566,32 +616,35 @@ ar-MA:
       recipient_segment:
         admins: 'المشرفون'
         admins_and_managers: 'المسؤولون والمديرون'
+        admins_and_managers_assigned_to_the_input: 'المسؤولون والمديرون المعينون للإدخال'
         admins_and_managers_managing_the_project: 'المسؤولون والمديرون الذين يديرون المشروع'
-        managers_managing_the_project: 'المدراء الذين يديرون المشروع'
+        admins_assigned_to_a_proposal: 'المسؤولون المعينون لاقتراح'
         all_users: 'جميع المستخدمين'
         all_users_who_uploaded_proposals: 'جميع المستخدمين الذين قاموا بتحميل المقترحات'
         managers: 'المديرين'
-        admins_assigned_to_a_proposal: 'المسؤولون المعينون لاقتراح'
-        admins_and_managers_assigned_to_the_input: 'المسؤولون والمديرون المعينون للإدخال'
+        managers_managing_the_project: 'المدراء الذين يديرون المشروع'
         new_attendee: 'مستخدم مسجل حديثا'
+        project_reviewers: 'مراجعو المشاريع ومديرو المجلدات'
+        project_review_requester: 'المستخدم الذي طلب مراجعة المشروع'
+        user_who_commented: 'المستخدم الذي علق'
         user_who_is_invited_to_cosponsor_a_proposal: 'المستخدم الذي تمت دعوته للمشاركة في رعاية اقتراح'
+        user_who_is_mentioned: 'المستخدم الذي تم ذكره'
         user_who_is_receiving_admin_rights: 'المستخدم الذي يتلقى حقوق المسؤول'
         user_who_is_receiving_folder_moderator_rights: 'المستخدم الذي يتلقى حقوق وسيط المجلد'
         user_who_is_receiving_project_moderator_rights: 'المستخدم الذي يتلقى حقوق مشرف المشروع'
-        user_who_commented: 'المستخدم الذي علق'
-        user_who_is_mentioned: 'المستخدم الذي تم ذكره'
-        user_who_published_the_proposal: 'المستخدم الذي نشر الاقتراح'
         user_who_published_the_input: 'المستخدم الذي نشر المدخلات'
+        user_who_published_the_proposal: 'المستخدم الذي نشر الاقتراح'
         user_who_registers: 'المستخدم الذي يقوم بالتسجيل'
-        user_who_was_invited: 'المستخدم الذي تمت دعوته'
-        users_who_engaged_with_the_project: 'المستخدمون الذين شاركوا في المشروع'
-        users_who_follow_the_proposal: 'المستخدمون الذين يتابعون الاقتراح'
-        users_who_follow_the_input: 'المستخدمون الذين يتابعون الإدخال'
-        users_who_follow_the_project: 'المستخدمون الذين يتابعون المشروع'
+        user_who_submitted_the_input: 'المستخدم الذي قدم المدخلات'
         user_who_voted: 'المستخدم الذي صوت'
+        user_who_was_invited: 'المستخدم الذي تمت دعوته'
+        user_with_unsubmitted_survey: 'المستخدم الذي بدأ الاستطلاع ولكنه لم يرسله'
         user_with_unsubmitted_votes: 'المستخدم الذي لم يقدم أصواتهم'
         users_who_engaged_but_not_voted: 'المستخدمون الذين شاركوا في المشروع لكنهم لم يصوتوا'
-        user_with_unsubmitted_survey: 'المستخدم الذي بدأ الاستطلاع ولكنه لم يرسله'
+        users_who_engaged_with_the_project: 'المستخدمون الذين شاركوا في المشروع'
+        users_who_follow_the_input: 'المستخدمون الذين يتابعون الإدخال'
+        users_who_follow_the_project: 'المستخدمون الذين يتابعون المشروع'
+        users_who_follow_the_proposal: 'المستخدمون الذين يتابعون الاقتراح'
       content_type:
         comments: 'تعليقات'
         content_moderation: 'تعديل المحتوى'
@@ -606,51 +659,54 @@ ar-MA:
         voting: 'التصويت'
         surveys: 'الدراسات الاستقصائية'
       trigger:
+        7_days_after_invite_is_sent: '7 أيام بعد إرسال الدعوة'
+        7_days_before_the_project_changes_phase: '7 أيام قبل مرحلة تغييرات المشروع'
         comment_is_deleted: 'تم حذف التعليق'
         comment_is_flagged_as_spam: 'تم وضع علامة على التعليق على أنه بريد عشوائي'
         content_gets_flagged_as_innapropiate: 'يتم وضع علامة على المحتوى على أنه غير مناسب'
+        initiative_resubmitted_for_review: 'تمت إعادة تقديم الاقتراح للمراجعة'
         input_is_assigned: 'تم تعيين المدخلات'
         input_is_flagged_as_spam: 'تم وضع علامة على الإدخال على أنه بريد عشوائي'
+        input_is_published: 'تم نشر الإدخال'
         input_is_updated: 'تم تحديث الإدخال'
         input_status_changes: 'تغييرات حالة الإدخال'
-        initiative_resubmitted_for_review: 'تمت إعادة تقديم الاقتراح للمراجعة'
         internal_comment_is_posted_on_idea_assigned_to_user: 'يتم نشر التعليق الداخلي على الإدخال المخصص للمستخدم'
-        internal_comment_is_posted_on_initiative_assigned_to_user: 'يتم نشر التعليق الداخلي على الاقتراح المخصص للمستخدم'
         internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: 'يتم نشر التعليق الداخلي على الإدخال في مشروع أو مجلد يديره المستخدم'
         internal_comment_is_posted_on_idea_user_has_commented_internally_on: 'يتم نشر التعليق الداخلي على الإدخال الذي قام المستخدم بالتعليق عليه داخليًا على'
         internal_comment_is_posted_on_idea_user_moderates: 'يتم نشر التعليق الداخلي على مدخلات المستخدم المعتدل'
+        internal_comment_is_posted_on_initiative_assigned_to_user: 'يتم نشر التعليق الداخلي على الاقتراح المخصص للمستخدم'
         internal_comment_is_posted_on_initiative_user_has_commented_internally_on: 'يتم نشر التعليق الداخلي على الاقتراح الذي علق عليه المستخدم داخليًا على'
         internal_comment_is_posted_on_unassigned_initiative: 'تم نشر التعليق الداخلي على اقتراح غير محدد'
         internal_comment_is_posted_on_unassigned_unmoderated_idea: 'يتم نشر التعليق الداخلي على المدخلات غير المعينة في مشروع غير مُدار'
-        user_accepts_invitation_to_cosponsor_a_proposal: 'يقبل المستخدم الدعوة للمشاركة في رعاية الاقتراح'
-        user_is_invited_to_cosponsor_a_proposal: 'المستخدم مدعو للمشاركة في رعاية اقتراح'
-        user_is_mentioned_in_internal_comment: 'تم ذكر المستخدم في التعليق الداخلي'
+        project_review_request: 'طلب المنسق مراجعة المشروع'
+        project_review_state_change: 'وافق المراجع على المشروع'
+        new_input_awaits_screening: 'مدخلات جديدة تنتظر الفحص'
         new_input_is_published: 'تم نشر مدخلات جديدة'
         new_proposal_is_posted: 'تم نشر اقتراح جديد'
         project_phase_changes: 'تغييرات مرحلة المشروع'
         project_published: 'تم نشر المشروع'
         proposal_gets_reported_as_spam: 'تم الإبلاغ عن الاقتراح باعتباره بريدًا عشوائيًا'
         proposal_is_assigned_to_admin: 'يتم تعيين الاقتراح إلى المسؤول'
+        proposal_is_published: 'تم نشر الاقتراح'
         proposal_is_updated: 'تم تحديث الاقتراح'
         proposal_is_upvoted_above_threshold: 'تم التصويت لصالح الاقتراح فوق الحد الأدنى'
         proposal_status_changes: 'تغييرات حالة الاقتراح'
+        registration_to_event: 'التسجيل في هذا الحدث'
+        survey_1_day_after_draft_saved: 'يوم واحد بعد آخر حفظ للمستخدم للاستطلاع في المسودة'
+        user_accepts_invitation_to_cosponsor_a_proposal: 'يقبل المستخدم الدعوة للمشاركة في رعاية الاقتراح'
         user_comments: 'تعليقات المستخدم'
         user_comments_on_input: 'تعليقات المستخدم على المدخلات'
         user_comments_on_proposal: 'تعليقات المستخدم على الاقتراح'
         user_is_given_admin_rights: 'يتم منح المستخدم حقوق المسؤول'
         user_is_given_folder_moderator_rights: 'يتم منح المستخدم حقوق وسيط المجلد'
         user_is_given_project_moderator_rights: 'يتم منح المستخدم حقوق مشرف المشروع'
+        user_is_invited_to_cosponsor_a_proposal: 'المستخدم مدعو للمشاركة في رعاية اقتراح'
         user_is_mentioned: 'المستخدم مذكور'
-        input_is_published: 'تم نشر الإدخال'
-        proposal_is_published: 'تم نشر الاقتراح'
+        user_is_mentioned_in_internal_comment: 'تم ذكر المستخدم في التعليق الداخلي'
         user_registers_for_the_first_time: 'يسجل المستخدم لأول مرة'
         user_replies_to_comment: 'يرد المستخدم على التعليق'
         user_replies_to_internal_comment: 'ردود المستخدم على التعليق الداخلي'
-        voting_2_days_before_phase_closes: 'قبل يومين من انتهاء مرحلة التصويت'
         voting_1_day_after_last_votes: 'يوم واحد بعد آخر تصويت للمستخدم'
-        voting_phase_ended: 'انتهت مرحلة التصويت'
+        voting_2_days_before_phase_closes: 'قبل يومين من انتهاء مرحلة التصويت'
         voting_basket_submitted: 'يتم إرسال الأصوات'
-        7_days_after_invite_is_sent: '7 أيام بعد إرسال الدعوة'
-        7_days_before_the_project_changes_phase: '7 أيام قبل مرحلة تغييرات المشروع'
-        registration_to_event: 'التسجيل في هذا الحدث'
-        survey_1_day_after_draft_saved: 'يوم واحد بعد آخر حفظ للمستخدم للاستطلاع في المسودة'
+        voting_phase_ended: 'انتهت مرحلة التصويت'

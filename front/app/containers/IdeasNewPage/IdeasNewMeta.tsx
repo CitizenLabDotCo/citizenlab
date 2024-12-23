@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 
 import useAuthUser from 'api/me/useAuthUser';
@@ -35,6 +35,9 @@ const IdeasNewMeta = () => {
       question: messages.questionMetaTitle1,
       issue: messages.issueMetaTitle1,
       contribution: messages.contributionMetaTitle1,
+      proposal: messages.proposalMetaTitle1,
+      initiative: messages.initiativeMetaTitle1,
+      petition: messages.petitionMetaTitle1,
     })
   );
   const ideasIndexDescription = formatMessage(messages.ideaNewMetaDescription);

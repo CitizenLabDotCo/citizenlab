@@ -25,4 +25,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.Project.settings.events',
     defaultMessage: 'Events',
   },
+  data: {
+    id: 'app.containers.AdminPage.Project.settings.data',
+    defaultMessage: 'Data',
+  },
 });

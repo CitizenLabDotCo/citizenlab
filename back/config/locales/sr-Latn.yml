@@ -160,7 +160,7 @@ sr-Latn:
         title: Obrazovanje
     ideas:
       title:
-        title: Naslov
+        title: Наслов
         description:
       body:
         title: Opis
@@ -170,6 +170,9 @@ sr-Latn:
       topic_ids:
         title: Tema
         description:
+      consponsor_ids:
+        title: Co-sponsors
+        description: Invite co-sponsors through the field below. The invited co-sponsor(s) will receive an email.
       location:
         title: Lokacija
         description:
@@ -192,8 +195,8 @@ sr-Latn:
       section3:
         title: Detalji
         description:
-      other_text_field:
-        title: If you picked '{other_option}', what are you thinking of?
+      other_input_field:
+        title: Type your answer
   custom_forms:
     categories:
       main_content:
@@ -209,6 +212,12 @@ sr-Latn:
           title: Šta je vaša tema ?
         option:
           title: Šta je vaša opcija ?
+        proposal:
+          title: What is your proposal?
+        initiative:
+          title: What is your initiative?
+        petition:
+          title: What is your petition?
   custom_field_options:
     gender:
       male: Muškarac
@@ -233,6 +242,7 @@ sr-Latn:
       Pokušajte da se posvetite obrazloženju vašeg predloga. Ukoliko je potrebno, prethodno pripremite tekst pa ga kopirajte ovde.</li><li>Odaberite naziv koji jasno opisuje na šta se vaša ideja odnosi.</li><li>Vizualizujte svoj predlog odgovarajućom slikom koja će mu pomoći da se istakne!</li><li>Dodajte priloge poput video zapisa, ilustrativnih primera, tehničkih detalja ili planova.</li><li>Podelite vašu ideju na društvenim mrežama kako biste prikupili podršku od drugih.</li></ul>
   reset_password_mailer:
     send_reset_password:
+      preheader: 'Reset your password for %{organizationName}'
       cta_reset_password: 'Resetujte vašu lozinku'
       message_you_reset_your_password: 'Zatražili ste resetovanje lozinke za %{organizationName} participativnu platformu. Kliknite na dugme u nastavku da biste izabrali novu, sigurnu lozinku. Link ističe za 1 sat.'
       subject: '%{organizationName}: Resetujte lozinku'
@@ -256,6 +266,7 @@ sr-Latn:
       first_name: 'First name(s)'
       image_url: 'Image URL'
       input_id: 'ID'
+      manual_votes: 'Offline votes'
       input_url: 'URL'
       last_name: 'Last name'
       latitude: 'Geografska širina'
@@ -311,6 +322,7 @@ sr-Latn:
   confirmations_mailer:
     send_confirmation_code:
       subject: "Potvrdite svoju adresu e -pošte za %{organizationName} platformu"
+      preheader: 'Confirm your email address for %{organizationName}'
       header: "Vaš konfirmacioni kod"
       header_message: "Zdravo %{firstName}!"
       confirm_email_address: "Potvrdi svoju adresu e-pošte"
@@ -325,6 +337,7 @@ sr-Latn:
   user_blocked_mailer:
     send_user_blocked_email:
       subject: 'Ваш налог је привремено онемогућен'
+      preheader: 'Your account on the participation platform of %{organizationName} has been temporarily disabled'
       title_user_blocked: 'Ваш налог је привремено онемогућен'
       paragraph_1_without_reason: "Ваш налог на платформи за учешће %{organizationName} је привремено онемогућен због кршења смерница заједнице."
       paragraph_1_with_reason: "Ваш налог на платформи за учешће %{organizationName} је привремено онемогућен из следећег разлога:"
@@ -332,6 +345,8 @@ sr-Latn:
       you_can_sign_in_again_from: "Можете се поново пријавити од %{date}"
   user:
     anon_first_name: "Корисник"
+    anon_scheme:
+      animals: 'alligator,crocodile,alpaca,ant,antelope,ape,armadillo,baboon,badger,bat,bear,beaver,bee,beetle,buffalo,butterfly,camel,water buffalo,caribou,cat,cattle,cheetah,chimpanzee,chinchilla,cicada,clam,cockroach,cod,coyote,crab,cricket,crow,raven,deer,dinosaur,dog,dolphin,porpoise,duck,eagle,eel,elephant,elk,ferret,fish,fly,fox,frog,toad,gerbil,giraffe,gnat,gnu,wildebeest,goat,goldfish,goose,gorilla,grasshopper,guinea pig,hamster,hare,hedgehog,herring,hippopotamus,hornet,horse,hound,hyena,impala,jackal,jellyfish,kangaroo,wallaby,koala,leopard,lion,lizard,llama,locust,louse,macaw,mallard,mammoth,manatee,marten,mink,minnow,mole,moose,mosquito,mouse,rat,mule,muskrat,otter,ox,oyster,panda,pig,platypus,porcupine,prairie dog,pug,rabbit,raccoon,reindeer,rhinoceros,salmon,sardine,scorpion,seal,sea lion,serval,shark,sheep,skunk,snail,snake,spider,squirrel,swan,termite,tiger,trout,turtle,tortoise,walrus,wasp,whale,wolf,wombat,woodchuck,worm,yak,yellowjacket,zebra'
   time:
     am: сам
     formats:
@@ -340,3 +355,5 @@ sr-Latn:
   voting_method:
     default_voting_term_singular: "vote"
     default_voting_term_plural: "votes"
+  ics_calendar_event:
+    event_details: "Event details"

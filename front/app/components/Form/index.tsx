@@ -13,6 +13,7 @@ import { CLErrors } from 'typings';
 
 import useLocale from 'hooks/useLocale';
 
+import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 
 import ButtonBar from './Components/ButtonBar';
@@ -20,6 +21,7 @@ import Fields from './Components/Fields';
 import FormWrapper from './Components/FormWrapper';
 import messages from './messages';
 import { parseRequiredMultilocsData } from './parseRequiredMultilocs';
+import tracks from './tracks';
 import { ApiErrorGetter, AjvErrorGetter, FormData } from './typings';
 import { sanitizeFormData, isValidData, customAjv } from './utils';
 
@@ -56,6 +58,8 @@ interface Props {
   config?: 'default' | 'input' | 'survey';
   layout?: 'inline' | 'fullpage';
   footer?: React.ReactNode;
+  // Optional loading state from parent. If set, the loading state will be controlled by the parent.
+  loading?: boolean;
 }
 
 const Form = memo(
@@ -71,6 +75,7 @@ const Form = memo(
     layout,
     footer,
     onSubmit,
+    loading: externalLoading,
   }: Props) => {
     const { formatMessage } = useIntl();
     const locale = useLocale();
@@ -79,7 +84,10 @@ const Form = memo(
       return parseRequiredMultilocsData(schema, locale, initialFormData);
     });
     const [apiErrors, setApiErrors] = useState<CLErrors | undefined>();
-    const [loading, setLoading] = useState(false);
+    const [internalLoading, internalSetLoading] = useState(false);
+    const loading =
+      externalLoading !== undefined ? externalLoading : internalLoading;
+
     const [scrollToError, setScrollToError] = useState(false);
     const [showAllErrors, setShowAllErrors] = useState(false);
 
@@ -112,14 +120,23 @@ const Form = memo(
       setShowAllErrors(showErrors);
 
       if (isValidData(schema, uiSchema, submissionData, customAjv, isSurvey)) {
-        setLoading(true);
+        if (externalLoading === undefined) {
+          internalSetLoading(true);
+        }
         try {
           await onSubmit(submissionData);
+          if (isSurvey) {
+            trackEventByName(tracks.surveyFormSubmitted);
+          } else {
+            trackEventByName(tracks.ideaFormSubmitted);
+          }
         } catch (e) {
           setScrollToError(true);
           setApiErrors(e.errors);
         }
-        setLoading(false);
+        if (externalLoading === undefined) {
+          internalSetLoading(false);
+        }
       }
       setScrollToError(true);
     };
@@ -171,6 +188,8 @@ const Form = memo(
               <ButtonBar
                 onSubmit={handleSubmit}
                 apiErrors={Boolean(
+                  // TODO: Fix this the next time the file is edited.
+                  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                   apiErrors?.values?.length && apiErrors?.values?.length > 0
                 )}
                 processing={loading}

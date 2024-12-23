@@ -42,6 +42,8 @@ export const PageRuleInput = ({
   const logic = watch(name) as LogicType;
   const fields: IFlatCustomField[] = watch('customFields');
   const [selectedPage, setSelectedPage] = useState<string | null | undefined>(
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     logic && logic?.next_page_id ? logic.next_page_id : undefined
   );
   const [showRuleInput, setShowRuleInput] = useState<boolean>(
@@ -49,7 +51,9 @@ export const PageRuleInput = ({
   );
   const [isRuleInvalid, setIsRuleInvalid] = useState(
     selectedPage
-      ? !isPageRuleValid(fields, fieldId, logic?.next_page_id)
+      ? // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        !isPageRuleValid(fields, fieldId, logic?.next_page_id)
       : false
   );
   const onSelectionChange = (page: IOption) => {

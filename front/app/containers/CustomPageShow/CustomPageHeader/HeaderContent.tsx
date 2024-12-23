@@ -49,6 +49,7 @@ const HeaderContent = ({
       </HeaderTitle>
 
       <HeaderSubtitle
+        variant="h2"
         hasHeader={hasHeaderBannerImage}
         className="e2e-signed-out-header-subtitle"
         displayHeaderAvatars={false}

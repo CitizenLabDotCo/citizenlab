@@ -76,7 +76,7 @@ const Demographics = ({
       title={
         <Box display="flex" alignItems="center" px="24px" py="12px">
           <Icon height="16px" width="16px" name="users" mr="8px" />
-          <Title variant="h5" fontWeight="normal" m="0">
+          <Title variant="h5" m="0">
             <FormattedMessage {...messages.demographicsTitle} />
           </Title>
         </Box>

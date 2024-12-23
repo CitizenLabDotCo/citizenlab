@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-import { Box, colors, defaultStyles } from '@citizenlab/cl2-component-library';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 import { hideVisually } from 'polished';
 import { Subscription } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
@@ -8,7 +8,6 @@ import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAddCommentToIdea from 'api/comments/useAddCommentToIdea';
-import useAddCommentToInitiative from 'api/comments/useAddCommentToInitiative';
 import useAuthUser from 'api/me/useAuthUser';
 import useProjectById from 'api/projects/useProjectById';
 
@@ -24,7 +23,6 @@ import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clickOutside from 'utils/containers/clickOutside';
 import { isNilOrError } from 'utils/helperUtils';
-import { canModerateInitiative } from 'utils/permissions/rules/initiativePermissions';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import { commentReplyButtonClicked$, commentAdded } from '../../../events';
@@ -55,8 +53,7 @@ const Form = styled.form`
   }
 
   &.focused {
-    border-color: ${colors.black};
-    box-shadow: ${defaultStyles.boxShadowFocused};
+    border: solid 2px ${(props) => props.theme.colors.tenantPrimary};
   }
 `;
 
@@ -66,8 +63,6 @@ const HiddenLabel = styled.span`
 
 interface Props {
   ideaId: string | undefined;
-  initiativeId: string | undefined;
-  postType: 'idea' | 'initiative';
   projectId?: string | null;
   parentId: string;
   className?: string;
@@ -77,8 +72,6 @@ interface Props {
 const ChildCommentForm = ({
   parentId,
   ideaId,
-  initiativeId,
-  postType,
   projectId,
   className,
   allowAnonymousParticipation,
@@ -93,10 +86,7 @@ const ChildCommentForm = ({
     mutate: addCommentToIdeaComment,
     isLoading: isAddCommentToIdeaLoading,
   } = useAddCommentToIdea();
-  const {
-    mutate: addCommentToInitiativeComment,
-    isLoading: isAddCommentToInitiativeLoading,
-  } = useAddCommentToInitiative();
+
   const [inputValue, setInputValue] = useState('');
   const [focused, setFocused] = useState(false);
   const [canSubmit, setCanSubmit] = useState(false);
@@ -107,8 +97,7 @@ const ChildCommentForm = ({
   const [showAnonymousConfirmationModal, setShowAnonymousConfirmationModal] =
     useState(false);
   const textareaElement = useRef<HTMLTextAreaElement | null>(null);
-  const processing =
-    isAddCommentToIdeaLoading || isAddCommentToInitiativeLoading;
+  const processing = isAddCommentToIdeaLoading;
   useEffect(() => {
     const subscriptions: Subscription[] = [
       commentReplyButtonClicked$
@@ -140,6 +129,8 @@ const ChildCommentForm = ({
   }
 
   const setCaretAtEnd = (element: HTMLTextAreaElement) => {
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (element.setSelectionRange && element.textContent) {
       element.setSelectionRange(
         element.textContent.length,
@@ -158,11 +149,9 @@ const ChildCommentForm = ({
 
   const onFocus = () => {
     trackEventByName(tracks.focusChildCommentEditor, {
-      extra: {
-        postId: ideaId || initiativeId,
-        postType,
-        parentId,
-      },
+      postId: ideaId,
+      postType: 'idea',
+      parentId,
     });
 
     setFocused(true);
@@ -190,15 +179,13 @@ const ChildCommentForm = ({
       setCanSubmit(false);
 
       trackEventByName(tracks.clickChildCommentPublish, {
-        extra: {
-          postId: ideaId || initiativeId,
-          postType,
-          parentId,
-          content: inputValue,
-        },
+        postId: ideaId,
+        postType: 'idea',
+        parentId,
+        content: inputValue,
       });
 
-      if (postType === 'idea' && projectId) {
+      if (projectId) {
         addCommentToIdeaComment(
           {
             ideaId,
@@ -225,54 +212,10 @@ const ChildCommentForm = ({
                 trackEventByName(tracks.childCommentProfanityError.name, {
                   locale,
                   ideaId,
-                  postType,
+                  postType: 'idea',
                   projectId,
                   profaneMessage: commentBodyMultiloc[locale],
                   location: 'Idea Child Comment Form (citizen side)',
-                  userId: authUser.data.id,
-                  host: appConfiguration
-                    ? appConfiguration.data.attributes.host
-                    : null,
-                });
-
-                setProfanityApiError(true);
-              }
-            },
-          }
-        );
-      }
-
-      if (postType === 'initiative') {
-        addCommentToInitiativeComment(
-          {
-            initiativeId,
-            author_id: authUser.data.id,
-            parent_id: parentId,
-            body_multiloc: commentBodyMultiloc,
-            anonymous: postAnonymously,
-          },
-          {
-            onSuccess: () => {
-              commentAdded();
-              setInputValue('');
-              setFocused(false);
-            },
-            onError: (error) => {
-              const apiErrors = error.errors;
-              const profanityApiError = apiErrors.base.find(
-                (apiError) => apiError.error === 'includes_banned_words'
-              );
-
-              setHasApiError(true);
-
-              if (profanityApiError) {
-                trackEventByName(tracks.childCommentProfanityError.name, {
-                  locale,
-                  initiativeId,
-                  postType,
-                  projectId,
-                  profaneMessage: commentBodyMultiloc[locale],
-                  location: 'Initiative Child Comment Form (citizen side)',
                   userId: authUser.data.id,
                   host: appConfiguration
                     ? appConfiguration.data.attributes.host
@@ -291,6 +234,8 @@ const ChildCommentForm = ({
   const setRef = (element: HTMLTextAreaElement) => {
     textareaElement.current = element;
 
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (textareaElement.current) {
       textareaElement.current.scrollIntoView({
         behavior: 'smooth',
@@ -310,10 +255,9 @@ const ChildCommentForm = ({
     }
   };
 
-  const userCanModerate = {
-    idea: project ? canModerateProject(project.data, authUser) : false,
-    initiative: canModerateInitiative(authUser),
-  }[postType];
+  const userCanModerate = project
+    ? canModerateProject(project.data, authUser)
+    : false;
 
   if (focused) {
     return (
@@ -322,8 +266,12 @@ const ChildCommentForm = ({
         className={`${className || ''} e2e-childcomment-form`}
       >
         <StyledAvatar
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           userId={authUser?.data.id}
           size={30}
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           isLinkToProfile={!!authUser?.data.id}
           showModeratorStyles={userCanModerate}
         />
@@ -331,6 +279,8 @@ const ChildCommentForm = ({
           onClickOutside={onCancel}
           closeOnClickOutsideEnabled={false}
         >
+          {/* TODO: Fix this the next time the file is edited. */}
+          {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
           <Form className={focused ? 'focused' : ''}>
             <label>
               <HiddenLabel>
@@ -341,8 +291,7 @@ const ChildCommentForm = ({
               className={`childcommentform-${parentId}`}
               placeholder={formatMessage(messages.childCommentBodyPlaceholder)}
               rows={3}
-              postId={ideaId || initiativeId}
-              postType={postType}
+              postId={ideaId}
               value={inputValue}
               error={
                 hasApiError ? (

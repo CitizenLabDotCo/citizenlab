@@ -116,8 +116,13 @@ export default defineMessages({
     defaultMessage: 'View custom page',
   },
   contactGovSuccessToAccess: {
-    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.contactGovSuccessToAccess',
+    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.contactGovSuccessToAccess1',
     defaultMessage:
-      'Displaying projects by tag or area is part of the premium license. Reach out to your GovSuccess Manager to learn more about it.',
+      'Displaying projects by tag or area is not part of your current license. Reach out to your GovSuccess Manager to learn more about it.',
+  },
+  contactGovSuccessToAccessPages: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage..contactGovSuccessToAccessPages',
+    defaultMessage:
+      'Creating custom pages is not included in your current license. Reach out to your GovSuccess Manager to learn more about it.',
   },
 });

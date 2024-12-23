@@ -54,10 +54,16 @@ const FormResultsQuestion = ({
   const hasTextResponses = textResponses && textResponses.length > 0;
   const hasNumberResponses = numberResponses && numberResponses.length > 0;
   const isPointAndHasAnswers =
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     inputType === 'point' && pointResponses && pointResponses?.length > 0;
   const isLineAndHasAnswers =
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     inputType === 'line' && lineResponses && lineResponses?.length > 0;
   const isPolygonAndHasAnswers =
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     inputType === 'polygon' && polygonResponses && polygonResponses?.length > 0;
 
   return (
@@ -72,6 +78,8 @@ const FormResultsQuestion = ({
           totalSubmissions={totalSubmissions}
           totalResponses={questionResponseCount}
         />
+        {/* TODO: Fix this the next time the file is edited. */}
+        {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
         {isMultipleChoiceAndHasAnswers && (
           <SurveyBars questionResult={result} colorScheme={COLOR_SCHEME} />
         )}
@@ -107,6 +115,8 @@ const FormResultsQuestion = ({
           />
         )}
         {files && files.length > 0 && (
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           <Box display="flex" gap="24px" mt={answers ? '20px' : '0'} w="50%">
             <Box flex="1">
               <Files files={files} />

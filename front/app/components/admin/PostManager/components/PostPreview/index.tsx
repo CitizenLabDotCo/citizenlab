@@ -8,7 +8,6 @@ import SideModal from 'components/UI/SideModal';
 import { ManagerType, PreviewMode } from '../..';
 
 import IdeaPostPreview from './Idea/IdeaPostPreview';
-import InitiativePostPreview from './Initiative/InitiativePostPreview';
 
 export const Container = styled.div`
   min-height: 100%;
@@ -51,14 +50,15 @@ export interface Props {
   postId: string | null;
   onSwitchPreviewMode: () => void;
   mode: PreviewMode;
+  selectedPhaseId?: string;
 }
 
 const PostPreview = ({
-  type,
   onClose,
   postId,
   onSwitchPreviewMode,
   mode,
+  selectedPhaseId,
 }: Props) => {
   const [opened, setOpened] = useState(false);
 
@@ -73,41 +73,15 @@ const PostPreview = ({
     onClose();
   };
 
-  const previewComponent = () => {
-    const postType =
-      type === 'AllIdeas' ||
-      type === 'ProjectIdeas' ||
-      type === 'ProjectProposals'
-        ? 'idea'
-        : 'initiative';
-
-    if (postId) {
-      return {
-        idea: (
-          <IdeaPostPreview
-            onClose={handleOnClose}
-            ideaId={postId}
-            onSwitchPreviewMode={onSwitchPreviewMode}
-            mode={mode}
-          />
-        ),
-        initiative: (
-          <InitiativePostPreview
-            onClose={handleOnClose}
-            initiativeId={postId}
-            onSwitchPreviewMode={onSwitchPreviewMode}
-            mode={mode}
-          />
-        ),
-      }[postType];
-    }
-
-    return null;
-  };
-
   return (
     <SideModal opened={opened} close={handleOnClose}>
-      {previewComponent()}
+      <IdeaPostPreview
+        onClose={handleOnClose}
+        ideaId={postId}
+        onSwitchPreviewMode={onSwitchPreviewMode}
+        mode={mode}
+        selectedPhaseId={selectedPhaseId}
+      />
     </SideModal>
   );
 };

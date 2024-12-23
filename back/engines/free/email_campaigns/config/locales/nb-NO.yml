@@ -1,558 +1,608 @@
-"nb-NO":
+nb:
   email_campaigns:
     campaign_type_description:
-      "manual": Offisielle beskjed
-      "manual_project_participants": Offisielle meldinger til prosjektdeltakere
-      "admin_rights_received": Administratorrettigheter mottatt
-      "comment_deleted_by_admin": Sletting  av min kommentar
-      "comment_marked_as_spam": Kommenter spamrapport
+      "manual": Offisielle meldinger
+      "manual_project_participants": Offisielle meldinger til prosjektdeltakerne
+      "admin_rights_received": Administrasjonsrettigheter mottatt
+      "comment_deleted_by_admin": Sletting av min kommentar
+      "comment_marked_as_spam": Rapportere spam-kommentarer
       "comment_on_your_comment": Et svar på min kommentar
       "comment_on_idea_you_follow": En kommentar til en idé som du følger
       "comment_on_initiative_you_follow": En kommentar til et forslag som du følger
-      "cosponsor_of_your_initiative": En bruker godtar invitasjonen min til å være medsponsor for forslaget mitt
-      "event_registration_confirmation": Bekreftelse på registrering av arrangementet
-      "first_idea_published": Publisering av min  første idé
-      "idea_marked_as_spam": Rapportere idé-spam
-      "idea_published": Publisering av min idé
-      "initiative_assigned_to_you": Et forslag tildelt meg
-      "initiative_marked_as_spam": Forslag til spam-rapport
-      "initiative_published": Publisering av mitt forslag
+      "cosponsor_of_your_initiative": En bruker aksepterer min invitasjon til å være medsponsor for forslaget mitt
+      "cosponsor_of_your_idea": En bruker aksepterer min invitasjon til å være medsponsor for forslaget mitt
+      "event_registration_confirmation": Bekreftelse på påmelding til arrangementet
+      "idea_marked_as_spam": Idé spam-rapport
+      "idea_published": Offentliggjøring av mine innspill
+      "initiative_assigned_to_you": Tildeling av et forslag til meg
+      "initiative_marked_as_spam": Forslag spam-rapport
+      "initiative_published": Offentliggjøring av forslaget mitt
       "invitation_to_cosponsor_initiative": Invitasjon til å være medsponsor for et forslag
-      "initiative_resubmitted_for_review": Forslaget sendes til ny vurdering
+      "invitation_to_cosponsor_idea": Invitasjon til å være medsponsor for et forslag
+      "initiative_resubmitted_for_review": Forslaget sendes inn på nytt for gjennomgang
       "invite_received": Invitasjon
-      "invite_reminder": 'Påminnelse: invitasjon'
-      "internal_comment_on_idea_assigned_to_you": Intern kommentar på innspill tildelt meg
-      "internal_comment_on_idea_you_commented_internally_on": Intern kommentar til innspill jeg kommenterte internt
-      "internal_comment_on_idea_you_moderate": Intern kommentar på innspill i prosjekt eller mappe jeg administrerer
-      "internal_comment_on_initiative_assigned_to_you": Intern kommentar til forslaget tildelt meg
-      "internal_comment_on_initiative_you_commented_internally_on": Intern kommentar til forslag jeg kommenterte internt
-      "internal_comment_on_unassigned_initiative": Intern kommentar til ikke-tildelt forslag
-      "internal_comment_on_unassigned_unmoderated_idea": Intern kommentar på ikke-tildelte innspill i uadministrert prosjekt
+      "invite_reminder": Påminnelse om invitasjon
+      "internal_comment_on_idea_assigned_to_you": Intern kommentar til innspill som er tildelt meg
+      "internal_comment_on_idea_you_commented_internally_on": Intern kommentar til innspill jeg kommenterte internt på
+      "internal_comment_on_idea_you_moderate": Intern kommentar til innspill i prosjektet eller mappen jeg administrerer
+      "internal_comment_on_initiative_assigned_to_you": Intern kommentar til forslag som er tildelt meg
+      "internal_comment_on_initiative_you_commented_internally_on": Intern kommentar til forslag Jeg kommenterte internt på
+      "internal_comment_on_unassigned_initiative": Intern kommentar til forslag som ikke er tildelt
+      "internal_comment_on_unassigned_unmoderated_idea": Intern kommentar om ikke-tildelt input i ikke-administrert prosjekt
       "internal_comment_on_your_internal_comment": Intern kommentar til min interne kommentar
-      "mention_in_official_feedback": Nevne i en oppdatering
+      "mention_in_official_feedback": Nevn i en oppdatering
       "mention_in_internal_comment": Nevn i en intern kommentar
-      "new_comment_for_admin": Ny kommentar i et prosjekt jeg moderer
-      "new_idea_for_admin": Ny idé i et prosjekt jeg modererer
+      "new_comment_for_admin": Ny kommentar i et prosjekt jeg modererer
+      "new_idea_for_admin": Nye innspill i et prosjekt jeg leder
       "new_initiative_for_admin": Nytt forslag
-      "official_feedback_on_idea_you_follow": Oppdater på en idé som du følger
-      "official_feedback_on_initiative_you_follow": Oppdater på et forslag du følger
-      "password_reset": Nullstill passord
-      "project_moderation_rights_received": Rettigheter til å moderere prosjekter mottatt
-      "project_folder_moderation_rights_received": Mappeadministrator-rettigheter mottatt
+      "official_feedback_on_idea_you_follow": Oppdatering på et innspill som du følger
+      "official_feedback_on_initiative_you_follow": Oppdatering om et forslag som du følger
+      "password_reset": Tilbakestilling av passord
+      "project_moderation_rights_received": Mottatte rettigheter til prosjektmoderering
+      "project_folder_moderation_rights_received": Mappeadministratorrettigheter mottatt
       "project_phase_started": Ny prosjektfase
       "project_phase_upcoming": Kommende ny prosjektfase
       "project_published": Prosjekt publisert
-      "status_change_on_idea_you_follow": Statusendring av en idé som du følger
-      "status_change_on_initiative_you_follow": Statusendring av et forslag som du følger
-      "threshold_reached_for_admin": Forslaget har nådd stemmegrensen
+      "project_review_request": Forespørsel om prosjektgjennomgang
+      "project_review_state_change": Prosjektet er godkjent
+      "status_change_on_idea_you_follow": Statusendring for en inngang som du følger
+      "status_change_on_initiative_you_follow": Statusendring for et forslag som du følger
+      "threshold_reached_for_admin": Forslaget nådde terskelen for avstemning
       "welcome": Etter registrering
       "admin_digest": Ukentlig oversikt for administratorer
       "moderator_digest": Ukentlig oversikt for prosjektledere
       "assignee_digest": Ukentlig oversikt over tildelte ideer
       "user_digest": Ukentlig oversikt
-      "voting_basket_submitted": Bekreftelse på stemmegivning
-      "native_survey_not_submitted": Undersøkelse ikke sendt inn
-      "voting_basket_not_submitted": Stemmer ikke levert
+      "voting_basket_submitted": Bekreftelse av stemmegivning
+      "native_survey_not_submitted": Undersøkelsen er ikke sendt inn
+      "voting_basket_not_submitted": Ikke avgitte stemmer
       "voting_last_chance": Siste sjanse til å stemme
-      "voting_phase_started": Ny prosjektfase med avstemming
-      "voting_results": Stemmeresultater
-      "your_proposed_initiatives_digest": Ukentlig oversikt over dine forslag
+      "voting_phase_started": Ny prosjektfase med avstemning
+      "voting_results": Resultater av avstemningen
+      "your_input_in_screening": Mine innspill venter på screening
     general:
-      by_author: 'med %{authorName}'
+      by_author: 'av %{authorName}'
       author_wrote: '%{authorName} skrev:'
       cta_goto_idea: 'Gå til denne ideen'
+      cta_goto_input: 'Gå til denne inngangen'
+      cta_goto:
+        idea: 'Gå til denne ideen'
+        question: 'Gå til dette spørsmålet'
+        contribution: 'Gå til dette bidraget'
+        project: 'Gå til dette prosjektet'
+        issue: 'Gå til denne utgaven'
+        option: 'Gå til dette alternativet'
+        proposal: 'Gå til dette forslaget'
+        initiative: 'Gå til dette initiativet'
+        petition: 'Gå til denne underskriftskampanjen'
+      cta_goto_your:
+        idea: 'Gå til ideen din'
+        question: 'Gå til spørsmålet ditt'
+        contribution: 'Gå til ditt bidrag'
+        project: 'Gå til prosjektet ditt'
+        issue: 'Gå til problemet ditt'
+        option: 'Gå til ditt valg'
+        proposal: 'Gå til forslaget ditt'
+        initiative: 'Gå til initiativet ditt'
+        petition: 'Gå til underskriftskampanjen din'
       cta_goto_proposal: 'Gå til dette forslaget'
       cta_goto_project: 'Gå til dette prosjektet'
     schedules:
       weekly:
-        "0": "Ukentlig, på søndager kl %{hourOfDay}"
-        "1": "Ukentlig, på mandager %{hourOfDay}"
-        "2": "Ukentlig, på tirsdager %{hourOfDay}"
-        "3": "Ukentlig, på onsdager %{hourOfDay}"
-        "4": "Ukentlig, på torsdager %{hourOfDay}"
-        "5": "Ukentlig, på fredager %{hourOfDay}"
-        "6": "Ukentlig, på lørdager %{hourOfDay}"
+        "0": "Ukentlig, på søndager på %{hourOfDay}"
+        "1": "Ukentlig, på mandager på %{hourOfDay}"
+        "2": "Ukentlig, på tirsdager på %{hourOfDay}"
+        "3": "Ukentlig, på onsdager på %{hourOfDay}"
+        "4": "Ukentlig, på torsdager på %{hourOfDay}"
+        "5": "Ukentlig, på fredager på %{hourOfDay}"
+        "6": "Ukentlig, på lørdager på %{hourOfDay}"
     footer:
       "link_privacy_policy": "Personvernerklæring"
       "link_terms_conditions": "Vilkår og betingelser"
-      "link_unsubscribe": "Meld av"
-      "powered_by": "Levert av"
+      "link_unsubscribe": "Avslutt abonnementet"
+      "powered_by": "Drevet av"
       "recipient_statement": "Denne e-posten ble sendt til deg av Go Vocal på vegne av %{organizationName}, fordi du er en registrert bruker av %{organizationLink}."
-      "unsubscribe_statement": "Du kan %{unsubscribeLink} hvis du ikke ønsker å motta disse e-postene i fremtiden."
-      "unsubscribe_text": "meld av"
+      "unsubscribe_statement": "Du kan gå til %{unsubscribeLink} hvis du ikke ønsker å motta disse e-postene i fremtiden."
+      "unsubscribe_text": "avslutte abonnementet"
     follow:
-      "unfollow_here": "Du har mottatt dette varselet på grunn av et element du følger. <a href=\"%{unfollow_url}\">Du kan slutte å følge den her.</a>"
+      "unfollow_here": "Du har mottatt dette varselet på grunn av et element du følger. <a href=\"%{unfollow_url}\">Du kan slutte å følge det her.</a>"
+    manual:
+      preheader: 'Du har e-post fra %{organizationName}'
     comment_deleted_by_admin:
-      reason: 'Grunnen til at din kommentar ble slettet:'
-      cta_view: 'Sjekk ut denne ideen'
-      event_description: '%{organizationName} slettet kommentaren du skrev  under en idé'
-      main_header: '%{organizationName} slettet din kommentar'
+      reason: 'Grunnen til at kommentaren din ble slettet:'
+      cta_view: 'Se denne ideen'
+      event_description: '%{organizationName} slettet kommentaren du skrev om en idé.'
+      main_header: '%{organizationName} slettet kommentaren din'
       other_reason: '%{otherReason}'
-      inappropriate_reason: 'Din kommentar ble vurdert som upassende'
-      irrelevant_reason: 'Din kommentar ble vurdert som irrelevant'
-      no_reason: 'Grunnen ble ikke spesifisert'
-      subject: 'Din kommentar har blitt slettet på plattformen til %{organizationName}'
-      preheader: 'Din kommentar ble slettet'
+      inappropriate_reason: 'Kommentaren din ble ansett som upassende'
+      irrelevant_reason: 'Kommentaren din ble ansett som irrelevant i denne sammenhengen'
+      no_reason: 'Ingen grunn ble oppgitt'
+      subject: 'Kommentaren din er slettet fra plattformen til %{organizationName}'
+      preheader: 'Kommentaren din har blitt slettet'
     admin_digest:
-      subject: 'Din ukentlige admin-rapport for %{time}'
-      preheader: 'Admin-sammendrag for %{organizationName}'
+      subject: 'Din ukentlige administrasjonsrapport på %{time}'
+      preheader: 'Administrativt sammendrag av %{organizationName}'
       title_your_weekly_report: '%{firstName}, din ukentlige rapport'
-      text_introduction: 'Vi har satt sammen en liste over ideene som har skapt mest aktivitet den siste uken. Finn ut hva som skjer på plattformen din!'
-      cta_visit_the_platform: 'Besøk plattformen '
+      text_introduction: 'Vi har samlet de innspillene som har generert mest aktivitet den siste uken. Finn ut hva som skjer på din plattform!'
+      cta_visit_the_platform: 'Besøk plattformen din'
       new_users: 'Nye brukere'
-      new_ideas: 'Nye ideer'
+      new_inputs: 'Nye innganger'
       new_comments: 'Nye kommentarer'
       title_activity_past_week: 'Aktivitet den siste uken'
-      title_no_activity_past_week: 'Det var ingen aktivitet den siste uken'
-      title_initiatives_past_week: 'New initiatives of the past week'
-      title_successful_initiatives_past_week: 'Initiatives that reached the threshold in the past week'
+      title_no_activity_past_week: 'Det var ingen aktivitet i løpet av den siste uken'
+      title_initiatives_past_week: 'Nye forslag den siste uken'
+      reached_threshold: 'Nådde terskelen'
       yesterday_by_author: 'I går av %{author}'
       today_by_author: 'I dag av %{author}'
       x_days_ago_by_author: '%{x} dager siden av %{author}'
     admin_rights_received:
       cta_manage_platform: 'Administrer plattformen din'
-      message_you_became_administrator: 'Du har fått administratorrettigheter til %{organizationName} sin plattform for innbyggerinvolvering'
-      preheader: 'Du fikk administratorrettigheter til %{organizationName} sin plattform for innbyggerinvolvering'
+      message_you_became_administrator: 'Du har fått administratorrettigheter for deltakerplattformen på %{organizationName}.'
+      preheader: 'Du har fått administratorrettigheter for deltakerplattformen på %{organizationName}'
       subject: 'Du ble administrator på plattformen til %{organizationName}'
-      text_create_participatory_process: 'Som administrator kan du opprette nye deltakelsesprosjekter. Du kan legge til nye faser ved hjelp av tidslinjen. For hver av fasene kan du bestemme hvordan  brukerne skal legge til ideer, kommentarer og stemme.  '
-      text_moderate_analyse_input: 'Når prosjekter er lansert kommer de første ideene. Du vil motta ukentlige rapporter med alle viktige aktiviteter slik at du holder deg oppdatert. Ideenes oversikt vil hjelpe deg med å moderere innspillene og samarbeide om å behandle de.'
-      text_platform_setup: 'Som administrator kan du sette opp din plattform. Velg logo, bilder og farger, skriv en personlig melding på siden, send ut invitasjoner, definer hva du vil vite om brukerne dine, ...'
+      text_create_participatory_process: 'Som administrator kan du opprette og konfigurere nye deltakelsesprosjekter. Du kan legge til nye faser ved hjelp av tidslinjen. Hver av disse fasene kan ha sin egen oppførsel når det gjelder publisering av ideer, kommentarer og avstemninger.'
+      text_moderate_analyse_input: 'Når prosjektene er lansert, vil de første ideene komme inn. Du vil motta ukentlige rapporter med alle viktige aktiviteter, slik at du kan holde deg oppdatert. Idéoversikten hjelper deg med å moderere innspillene og samarbeide om å behandle dem.'
+      text_platform_setup: 'Som administrator kan du sette opp din egen deltakelsesplattform. Velg logo, bilder og farger, skriv en personlig melding på hjemmesiden din, send ut invitasjoner, definer hva du vil vite om brukerne dine, ...'
       title_create_participatory_process: 'Utform deltakelsesprosessen'
-      title_moderate_analyse_input: 'Moderer og analyser innspillene'
+      title_moderate_analyse_input: 'Moderere og analysere innspillene'
       title_platform_setup: 'Sett opp plattformen din'
       title_what_can_you_do_administrator: 'Hva kan du gjøre som administrator?'
       title_you_became_administrator: 'Du ble administrator'
     comment_marked_as_spam:
       by_author: 'av %{authorName}'
       commented: '%{authorName} kommenterte:'
-      cta_review_comment: 'Gjennomgå kommentar'
+      cta_review_comment: 'Kommentar til anmeldelsen'
       days_ago: '%{numberOfDays} dager siden'
-      event_description: 'Følgende kommentar publisert på <strong>''%{post}''</strong> ble rapportert:'
+      event_description: 'Følgende kommentar lagt ut på <strong>''%{post}''</strong> ble rapportert:'
       inappropriate_content: 'Kommentaren er upassende eller støtende.'
-      preheader: 'Gjør noe med denne kommentaren, som er rapportert som spam'
+      preheader: 'Handle på denne kommentaren rapportert som spam'
       reported_this_because: '%{reporterFirstName} rapporterte dette fordi:'
       subject: '%{organizationName}: %{firstName} %{lastName} rapporterte denne kommentaren som spam'
       title_comment_spam_report: '%{firstName} %{lastName} rapporterte denne kommentaren som spam'
       today: I dag
       wrong_content: 'Kommentaren er ikke relevant.'
       yesterday: I går
+    cosponsor_of_your_idea:
+      cta_reply_to: 'Se forslaget ditt'
+      event_description: 'Gratulerer! %{cosponsorName} har takket ja til invitasjonen om å være medsponsor for forslaget ditt.'
+      main_header: '%{cosponsorName} har akseptert din invitasjon til å være medsponsor for forslaget ditt'
+      subject: '%{cosponsorName} har akseptert din invitasjon til å være medsponsor for forslaget ditt'
+      preheader: '%{cosponsorName} har akseptert din invitasjon til å være medsponsor for forslaget ditt'
     cosponsor_of_your_initiative:
       cta_reply_to: 'Se forslaget ditt'
-      event_description_initiative: 'Gratulerer! %{cosponsorName} har godtatt invitasjonen din til å være medsponsor for forslaget ditt.'
-      main_header: '%{cosponsorName} har godtatt invitasjonen din til å være medsponsor for forslaget ditt'
-      subject: '%{cosponsorName} har godtatt invitasjonen din til å være medsponsor for forslaget ditt'
-      preheader_initiative: '%{cosponsorName} har godtatt invitasjonen din til å være medsponsor for forslaget ditt'
+      event_description_initiative: 'Gratulerer! %{cosponsorName} har takket ja til invitasjonen om å være medsponsor for forslaget ditt.'
+      main_header: '%{cosponsorName} har akseptert din invitasjon til å være medsponsor for forslaget ditt'
+      subject: '%{cosponsorName} har akseptert din invitasjon til å være medsponsor for forslaget ditt'
+      preheader_initiative: '%{cosponsorName} har akseptert din invitasjon til å være medsponsor for forslaget ditt'
     assignee_digest:
-      subject: 'Ideer som du må gi en tilbakemelding på: %{numberIdeas}'
-      preheader: 'Assignee digest of %{organizationName}'
-      title_your_weekly_report: '%{firstName}, venter på en tilbakemelding'
-      cta_manage_your_input: 'Manage your input'
-      assigned_ideas: 'Ideer som du må gi en tilbakemelding på'
-      title_assignment_past_week: 'De siste ideene som ble tidelt deg'
-      title_no_assignment_past_week: 'Du fikk ingen nye ideer tildelt forrige uke'
+      subject: 'Innganger som krever din tilbakemelding: %{numberIdeas}'
+      preheader: 'Mottakerens sammendrag av %{organizationName}'
+      title_your_weekly_report: '%{firstName}, innbyggernes innspill venter på din tilbakemelding'
+      cta_manage_your_input: 'Administrer innspillene dine'
+      x_inputs_need_your_feedback: 'innspill trenger din tilbakemelding'
+      title_assignment_past_week: 'Siste innganger du har fått tildelt'
+      title_no_assignment_past_week: 'Ingen nye innganger tildelt deg i forrige uke'
       yesterday_by_author: 'I går av %{author}'
       today_by_author: 'I dag av %{author}'
       x_days_ago_by_author: '%{x} dager siden av %{author}'
-      idea_section: Idéer
-      initiative_section: Initiatives
-      title_initiatives_past_week: 'New initiatives assigned to you'
-      title_successful_initiatives_past_week: 'Initiatives assigned to you that reached the threshold'
+      title_successful_past_week: 'Tildelt deg som nådde terskelverdien'
     idea_marked_as_spam:
-      cta_review_idea: 'Gjennomgå idé'
-      report_inappropriate_offensive_content: 'Jeg synes dette innholdet er upassende eller støtende.'
-      report_not_an_idea: 'Dette innholdet er ikke en idé og hører ikke hjemme her.'
-      subject: 'Du har fått en spam rapport på %{organizationName}''s plattform'
-      preheader: 'Håndter spamrapporten'
+      cta_review: 'Anmeldelse'
+      report_inappropriate_offensive_content: 'Jeg finner dette innholdet upassende eller støtende.'
+      report_not_an_idea: 'Dette innholdet er ikke relevant og hører ikke hjemme her.'
+      subject: 'Du har en spam-rapport på plattformen til %{organizationName}'
+      preheader: 'Gjør noe med denne spam-rapporten'
       reported_this_because: '%{reporterFirstName} rapporterte dette fordi:'
-      title_spam_report: '%{firstName} %{lastName} rapporterte spa'
+      title_spam_report: '%{firstName} %{lastName} rapportert spam'
     initiative_marked_as_spam:
-      cta_review_initiative: 'Gå gjennom forslag'
-      report_inappropriate_offensive_content: 'Jeg synes dette innholdet er upassende eller støtende.'
-      report_not_an_initiative: 'Dette innholdet er ikke en forslag og hører ikke hjemme her.'
-      subject: 'Du har fått en spam rapport på %{organizationName}''s platform'
-      preheader: 'Håndter spamrapporten'
+      cta_review_initiative: 'Forslag til gjennomgang'
+      report_inappropriate_offensive_content: 'Jeg finner dette innholdet upassende eller støtende.'
+      report_not_an_initiative: 'Dette innholdet er ikke et forslag og hører ikke hjemme her.'
+      subject: 'Du har en spam-rapport på plattformen til %{organizationName}'
+      preheader: 'Gjør noe med denne spam-rapporten'
       reported_this_because: '%{reporterFirstName} rapporterte dette fordi:'
-      title_spam_report: '%{firstName} %{lastName} rapporterte spa'
+      title_spam_report: '%{firstName} %{lastName} rapportert spam'
     initiative_assigned_to_you:
-      cta_reply_to: 'Gi en tilbakemelding til %{authorName}'
-      event_description_initiative: 'An initiative has been assigned to you. Give feedback by writing an official update or by changing its status.'
-      main_header: '%{firstName}, du har en ny oppgave'
-      subject: 'Du har en ny oppgave på plattformen til %{organizationName}'
-      preheader_initiative: 'The initiative of %{authorName} has been assigned to you'
-    invitation_to_cosponsor_initiative:
-      cta_reply_to: 'Medsponsor for dette forslaget'
-      event_description_initiative: '%{authorName} har opprettet et nytt forslag og vil gjerne at du er medsponsor for det.'
-      event_description_cosponsoring: 'Å være medsponsor av et forslag betyr at <strong>navnet ditt vil vises</strong> med navnene til andre medsponsorer av forslaget.'
-      event_description_before_action: 'For å se forslaget og godta invitasjonen må du være logget inn på kontoen din.'
-      event_description_action: 'Klikk nedenfor for å lese forslaget.'
-      main_header: 'Du har blitt invitert til å være med å sponse et forslag'
-      subject: 'Du har blitt invitert til å være med å sponse et forslag'
-      preheader_initiative: 'Du har blitt invitert til å være medsponsor for forslaget til %{authorName}'
-    initiative_resubmitted_for_review:
-      by_author: 'med %{authorName}'
       cta_reply_to: 'Gi tilbakemelding til %{authorName}'
-      event_description_initiative: 'Et forslag er sendt inn for ny vurdering. Gi tilbakemelding ved å skrive en offisiell oppdatering eller ved å endre statusen.'
-      main_header: '%{firstName}, har du et forslag til vurdering'
-      subject: 'Du har et forslag til vurdering på plattformen til %{organizationName}'
-      preheader_initiative: 'Forslaget av %{authorName} er sendt inn på nytt til vurdering'
+      event_description_initiative: 'Du har fått tildelt et forslag. Gi tilbakemelding ved å skrive en offisiell oppdatering eller ved å endre status.'
+      main_header: '%{firstName}har du et nytt oppdrag'
+      subject: 'Du har et oppdrag på plattformen til %{organizationName}'
+      preheader_initiative: 'Du har fått tildelt forslaget til %{authorName}'
+    invitation_to_cosponsor_idea:
+      cta_reply_to: 'Vær med på å støtte dette forslaget'
+      event_description: '%{authorName} har laget et nytt forslag og vil gjerne at du støtter det.'
+      event_description_cosponsoring: 'Hvis du er medsponsor for et forslag, betyr det at <strong>navnet ditt vil vises</strong> sammen med navnene til de andre medsponsorene av forslaget.'
+      event_description_before_action: 'Du må være logget inn på kontoen din for å kunne se forslaget og godta invitasjonen.'
+      event_description_action: 'Klikk nedenfor for å lese forslaget.'
+      main_header: 'Du er invitert til å være medsponsor for et forslag'
+      subject: 'Du er invitert til å være medsponsor for et forslag'
+      preheader: 'Du er invitert til å støtte forslaget fra %{authorName}'
+    invitation_to_cosponsor_initiative:
+      cta_reply_to: 'Vær med på å støtte dette forslaget'
+      event_description_initiative: '%{authorName} har laget et nytt forslag og vil gjerne at du støtter det.'
+      event_description_cosponsoring: 'Hvis du er medsponsor for et forslag, betyr det at <strong>navnet ditt vil vises</strong> sammen med navnene til de andre medsponsorene av forslaget.'
+      event_description_before_action: 'Du må være logget inn på kontoen din for å kunne se forslaget og godta invitasjonen.'
+      event_description_action: 'Klikk nedenfor for å lese forslaget.'
+      main_header: 'Du er invitert til å være medsponsor for et forslag'
+      subject: 'Du er invitert til å være medsponsor for et forslag'
+      preheader_initiative: 'Du er invitert til å støtte forslaget fra %{authorName}'
+    initiative_resubmitted_for_review:
+      by_author: 'av %{authorName}'
+      cta_reply_to: 'Gi tilbakemelding til %{authorName}'
+      event_description_initiative: 'Et forslag har blitt sendt inn på nytt for vurdering. Gi tilbakemelding ved å skrive en offisiell oppdatering eller ved å endre status.'
+      main_header: '%{firstName}, har du et forslag å vurdere'
+      subject: 'Du har et forslag som skal gjennomgås på plattformen %{organizationName}'
+      preheader_initiative: 'Forslaget fra %{authorName} er sendt inn på nytt for gjennomgang'
     invite_reminder:
-      cta_accept_invitation: 'Godta invitasjonen'
-      invitation_header: 'Din inivtasjon venter'
-      preheader: '%{organizationName} sendte deg en inivitasjon til å delta på deres plattform for innbyggerinnvolvering.'
+      cta_accept_invitation: 'Godta invitasjonen din'
+      invitation_header: 'Invitasjonen din venter'
+      preheader: '%{organizationName} sendte deg en invitasjon til å bli med på plattformen deres for noen dager siden.'
       invitation_expiry_message: 'Denne invitasjonen utløper om ca. %{expiryDaysRemaining} dager.'
-      subject: 'Ventende invitasjon for å delta på plattformen til %{organizationName}'
+      subject: 'Inviteres til å delta på plattformen %{organizationName}'
     invite_received:
-      added_a_message: '%{organizationName} skrev følgende melding'
-      cta_accept_invitation: 'Godta invitasjonen'
+      added_a_message: '%{organizationName} skrev følgende melding:'
+      cta_accept_invitation: 'Godta invitasjonen din'
       invitation_header: 'Du er invitert!'
-      invitation_header_message: '%{organizationName} inviterte deg til å bli med på deres plattform for innbyggerinvolvering'
+      invitation_header_message: '%{organizationName} inviterte deg til deres plattform for deltakelse.'
       invitation_expiry_message: 'Denne invitasjonen utløper om %{expiryDays} dager.'
-      preheader: '%{organizationName} sendte deg en invitasjon til å bli med på deres plattform for innbyggerinvolvering.'
-      subject: 'Du er invitert til å bli med på plattformen til %{organizationName}'
+      preheader: '%{organizationName} har sendt deg en invitasjon til å bli med på plattformen deres.'
+      subject: 'Du er invitert til å bli med på plattformen %{organizationName}'
     initiative_published:
       action_add_image: '%{addImageLink} for å øke synligheten'
-      action_published_initiative: 'Published initiative'
-      action_send_email: 'Send dine kontakter en %{sendEmailLink}'
-      action_share_fb: 'Del med dine venner på %{fbLink}'
-      action_share_link: 'Kopier lenken og del i den kanalen du måtte ønske %{link}'
-      action_share_twitter: 'Del med dine følgere på %{twitterLink}'
+      action_published_initiative: 'Publisert forslag'
+      action_send_email: 'Send kontaktene dine en %{sendEmailLink}'
+      action_share_fb: 'Gi beskjed til vennene dine på %{fbLink}'
+      action_share_link: 'Del den via hvilken som helst kanal ved å kopiere %{link}'
+      action_share_twitter: 'Informer følgerne dine på %{twitterLink}'
       link: lenke
-      main_header: 'You posted an initiative! Let''s gather support for it.'
-      message_next_steps: '%{userFirstName}, your initiative has successfully been published on the participation platform of %{organizationName}. You will be notified when people interact with your initiative. Find out what next steps you can take below.'
-      message_get_votes: 'Nå terskelen for antall stemmer:'
-      preheader: 'Thank you for sharing your initiative %{initiativeTitle} for %{organizationName}. The next step is to get support for your initiative by sharing it across your network.'
+      main_header: 'Du har lagt ut et forslag! La oss samle støtte for det.'
+      message_next_steps: '%{userFirstName}Forslaget ditt har blitt publisert på deltakelsesplattformen på %{organizationName}. Du vil bli varslet når folk interagerer med forslaget ditt. Nedenfor finner du informasjon om hva du kan gjøre videre.'
+      message_get_votes: 'Nå terskelen for å stemme:'
+      preheader: 'Takk for at du har delt forslaget ditt %{initiativeTitle} for %{organizationName}. Neste trinn er å få støtte for forslaget ditt ved å dele det i nettverket ditt.'
       send_email: e-post
-      subject: 'Your initiative was published on the platform of %{organizationName}'
+      subject: 'Forslaget ditt ble publisert på plattformen til %{organizationName}'
     mention_in_comment:
-      cta_reply_to: 'Svar %{commentAuthor}'
-      event_description: '%{commentAuthorFull} har nevnt deg i sin kommentar til ideen ''%{post}''. Klikk på lenken nedenfor for å bli med i samtalen med %{commentAuthor}'
+      cta_reply_to: 'Svar til %{commentAuthor}'
+      event_description: '%{commentAuthorFull} har nevnt deg i sin kommentar til ideen ''%{post}''. Klikk på lenken nedenfor for å delta i samtalen med %{commentAuthor}'
       main_header: 'Folk snakker om deg'
       subject: 'Noen nevnte deg på plattformen til %{organizationName}'
       preheader: '%{commentAuthor} nevnte deg i en kommentar'
     mention_in_internal_comment:
-      cta_reply_to: 'Se kommentar av %{firstName}'
+      cta_reply_to: 'Se kommentar fra %{firstName}'
       event_description: '%{authorNameFull} nevnte deg i en intern kommentar.'
       subject: '%{firstName} nevnte deg i en intern kommentar.'
-      main_header: '%{authorNameFirst} nevnte deg i en intern kommentar.'
+      main_header: '%{firstName} nevnte deg i en intern kommentar.'
       preheader: '%{authorNameFull} nevnte deg i en intern kommentar.'
     moderator_digest:
-      subject: 'Din ukentlig prosjektrapport fra %{time}'
-      preheader: 'Prosjektleder-sammendrag av %{organizationName}'
+      subject: 'Ukentlig lederrapport fra "%{project_title}"'
+      preheader: 'Prosjektlederens sammendrag av %{organizationName}'
       title_your_weekly_report: '%{firstName}, din ukentlige rapport'
-      text_introduction: 'Vi har samlet en oversikt over ideene som har hatt mest aktivitet den siste uken. Finn ut hva som skjer i prosjektet!'
+      text_introduction: 'Vi har samlet de innspillene som har generert mest aktivitet den siste uken. Finn ut hva som skjer med prosjektet ditt!'
       cta_manage: 'Administrer prosjektet ditt'
       new_users: 'Nye brukere'
       new_ideas: 'Nye ideer'
       new_comments: 'Nye kommentarer'
-      title_inputs_past_week: 'Nye innspill den siste uken'
+      title_inputs_past_week: 'Nye innspill i løpet av den siste uken'
       title_no_inputs_past_week: 'Ingen nye innspill den siste uken'
+      title_threshold_reached: Terskel nådd i løpet av den siste uken
       yesterday_by_author: 'I går av %{author}'
       today_by_author: 'I dag av %{author}'
       x_days_ago_by_author: '%{x} dager siden av %{author}'
     new_comment_for_admin:
       commented: '%{authorFirstName} kommenterte:'
-      cta_reply_to: 'Sjekk kommentaren til %{commentAuthor}'
+      cta_reply_to: 'Se %{commentAuthor}''s kommentar'
       days_ago: '%{numberOfDays} dager siden'
-      event_description: '%{authorName} skrev en kommentar på plattformen din.Delta i diskusjonen og fortsett samtalen!'
-      main_header: '%{firstName}, en ny kommentar er lagt ut på plattformen din'
-      subject: 'Det er en ny kommentar %{organizationName}''s plattform'
+      event_description: '%{authorName} la til en ny kommentar på plattformen din.'
+      main_header: '%{firstName}, en ny kommentar har blitt lagt ut på plattformen din'
+      subject: 'En ny kommentar har blitt lagt ut på %{organizationName}''s plattform'
       preheader: '%{authorName} la igjen en kommentar'
       today: I dag
       yesterday: I går
     comment_on_idea_you_follow:
       cta_reply_to: 'Svar til %{commentAuthor}'
-      event_description: '%{authorNameFull} la en reaksjon på ideen ''%{ideaTitle}''. Klikk på knappen nedenfor for å fortsette samtalen med %{authorName}.'
-      main_header: '%{authorName} kommenterte en idé du følger'
-      subject: 'Det er en ny kommentar til en idé du følger'
+      event_description: '%{authorNameFull} lagt inn en reaksjon på ''%{inputTitle}''. Klikk på knappen nedenfor for å fortsette samtalen med %{authorName}.'
+      main_header:
+        idea: '%{authorName} kommenterte en idé du følger'
+        question: '%{authorName} kommenterte et spørsmål du følger'
+        contribution: '%{authorName} kommenterte et bidrag du følger'
+        project: '%{authorName} kommentert et prosjekt du følger'
+        issue: '%{authorName} kommenterte en sak du følger'
+        option: '%{authorName} kommenterte et alternativ du følger'
+        proposal: '%{authorName} kommenterte et forslag du følger'
+        initiative: '%{authorName} kommenterte et initiativ du følger'
+        petition: '%{authorName} kommenterte en underskriftskampanje du følger'
+      subject: 'Det er en ny kommentar på "%{input_title}"'
       preheader: '%{authorName} la igjen en kommentar til en idé for %{organizationName}'
     comment_on_initiative_you_follow:
       cta_reply_to: 'Svar til %{commentAuthor}'
-      event_description: '%{authorNameFull} la en reaksjon på initiativet ''%{initiativeTitle}''. Klikk på knappen nedenfor for å fortsette samtalen med %{authorName}.'
-      main_header: '%{commentAuthor} kommentert et initiativ du følger'
+      event_description: '%{authorNameFull} lagt inn en reaksjon på forslaget ''%{initiativeTitle}''. Klikk på knappen nedenfor for å fortsette samtalen med %{authorName}.'
+      main_header: '%{commentAuthor} kommenterte et forslag du følger'
       subject: 'Det er en ny kommentar til forslaget du følger'
-      preheader: '%{authorName} la igjen en kommentar til et initiativ for %{organizationName}'
+      preheader: '%{authorName} la igjen en kommentar til et forslag til %{organizationName}'
     new_initiative_for_admin:
-      cta_reply_to: 'Gi en tilbakemelding til %{authorName}'
-      event_description: '%{authorName} has published a new initiative on your platform. Discover it now, give some feedback or change its status!'
-      main_header: '%{firstName}, a new initiative has been published on your platform'
-      subject: 'Someone published a new initiative on the platform of %{organizationName}'
-      preheader: '%{authorName} published a new initiative on your platform'
+      cta_reply_to: 'Gi tilbakemelding til %{authorName}'
+      event_description: '%{authorName} har publisert et nytt forslag på plattformen din. Oppdag det nå, gi tilbakemelding eller endre status!'
+      main_header: '%{firstName}har et nytt forslag blitt publisert på plattformen din'
+      subject: 'Noen har publisert et nytt forslag på plattformen %{organizationName}'
+      preheader: '%{authorName} publisert et nytt forslag på plattformen din'
     new_idea_for_admin:
-      commented: '%{authorFirstName} kommenterte:'
-      cta_reply_to: 'Gi en tilbakemelding til %{authorName}'
+      main_header_publication: 'Et nytt innspill har blitt publisert på plattformen din'
+      event_description_publication: '%{authorName} har sendt inn et nytt innspill på plattformen din. Oppdag det nå, gi tilbakemelding eller endre status!'
+      cta_publication: 'Gi tilbakemelding til %{authorName}'
+      main_header_prescreening: 'Et innspill krever din vurdering'
+      event_description_prescreening: '%{authorName} har sendt inn et nytt innspill på plattformen din.'
+      input_not_visible_prescreening: '<b>Inndataene vil ikke være synlige</b> før du endrer statusen.'
+      cta_prescreening: 'Gå gjennom inndataene'
       days_ago: '%{numberOfDays} dager siden'
-      event_description: '%{authorName} har publisert en ny idé på plattformen din. Oppdag den nå, gi en tilbakemelding eller endre status!'
-      main_header: '%{firstName}, en ny idé har blitt publisert på din plattform'
-      subject: 'Noen publiserte en ny idé på plattformen til %{organizationName}'
-      preheader: '%{authorName} publiserte en ny idé på plattformen din'
+      preheader: '%{authorName} publisert en ny inngang på plattformen din'
       today: I dag
       yesterday: I går
     comment_on_your_comment:
-      cta_reply_to: 'Svar %{firstName}'
-      event_description: '%{authorNameFull} skrev et svar på kommentaren din til ''%{post}'' på plattformen Klikk på knappen nedenfor for å fortsette samtalen med %{authorName}.'
-      subject: 'Du har fått et svar på kommentaren din på plattformen til %{organizationName}'
-      main_header: '%{authorName} svarte på din kommentar'
-      preheader: '%{authorName} svarte på kommentaren din på plattformen til %{organizationName}'
+      cta_reply_to: 'Svar til %{firstName}'
+      event_description: '%{authorNameFull} skrev et svar til kommentaren din på ''%{post}'' på deltakelsesplattformen. Klikk på knappen nedenfor for å fortsette samtalen med %{authorName}.'
+      subject: 'Du har fått svar på kommentaren din på plattformen til %{organizationName}'
+      main_header: '%{authorName} svarte på kommentaren din'
+      preheader: '%{authorName} svarte på din kommentar på %{organizationName}''s plattform'
       replied: '%{authorFirstName} svarte:'
     internal_comment_on_your_internal_comment:
-      cta_reply_to: 'Se kommentar av %{firstName}'
-      event_description: '%{authorNameFull} kommenterte din interne kommentar.'
+      cta_reply_to: 'Se kommentar fra %{firstName}'
+      event_description: '%{authorNameFull} kommenterte den interne kommentaren din.'
       subject: 'Du har mottatt en kommentar til din interne kommentar på ''%{post}'''
       main_header: 'Du har mottatt en kommentar til din interne kommentar på ''%{post}'''
-      preheader: '%{authorName} svarte på din interne kommentar til ''%{post}'''
+      preheader: '%{authorName} svarte på din interne kommentar på ''%{post}'''
     internal_comment_on_idea_assigned_to_you:
-      cta_reply_to: 'Se kommentar av %{firstName}'
-      event_description: '%{authorNameFull} kommenterte internt på et innspill som er tildelt deg.'
-      subject: '''%{post}'' har en ny intern kommentar'
-      main_header: '''%{post}'' har en ny intern kommentar'
-      preheader: '''%{post}'' har en ny intern kommentar'
+      cta_reply_to: 'Se kommentar fra %{firstName}'
+      event_description: '%{authorNameFull} kommentert internt på en inngang du har fått tildelt.'
+      subject: 'Ny intern kommentar på ''%{post}'''
+      main_header: 'Ny intern kommentar på ''%{post}'''
+      preheader: 'Ny intern kommentar på ''%{post}'''
     internal_comment_on_idea_you_commented_internally_on:
-      cta_reply_to: 'Se kommentar av %{firstName}'
-      event_description: '%{authorNameFull} kommenterte internt på et innspill du kommenterte internt.'
-      subject: '''%{post}'' har en ny intern kommentar'
-      main_header: '''%{post}'' har en ny intern kommentar'
-      preheader: '''%{post}'' har en ny intern kommentar'
+      cta_reply_to: 'Se kommentar fra %{firstName}'
+      event_description: '%{authorNameFull} har kommentert internt på en inngang du har kommentert internt på.'
+      subject: 'Ny intern kommentar på ''%{post}'''
+      main_header: 'Ny intern kommentar på ''%{post}'''
+      preheader: 'Ny intern kommentar på ''%{post}'''
     internal_comment_on_idea_you_moderate:
-      cta_reply_to: 'Se kommentar av %{firstName}'
-      event_description: '%{authorNameFull} kommenterte internt på et innspill i et prosjekt eller en mappe du administrerer.'
-      subject: '''%{post}'' har en ny intern kommentar'
-      main_header: '''%{post}'' har en ny intern kommentar'
-      preheader: '''%{post}'' har en ny intern kommentar'
+      cta_reply_to: 'Se kommentar fra %{firstName}'
+      event_description: '%{authorNameFull} kommenterte internt på en inngang i et prosjekt eller en mappe du administrerer.'
+      subject: 'Ny intern kommentar på ''%{post}'''
+      main_header: 'Ny intern kommentar på ''%{post}'''
+      preheader: 'Ny intern kommentar på ''%{post}'''
     internal_comment_on_initiative_assigned_to_you:
-      cta_reply_to: 'Se kommentar av %{firstName}'
-      event_description: '%{authorNameFull} kommenterte internt et forslag tildelt deg.'
-      subject: '''%{post}'' har en ny intern kommentar'
-      main_header: '''%{post}'' har en ny intern kommentar'
-      preheader: '''%{post}'' har en ny intern kommentar'
+      cta_reply_to: 'Se kommentar fra %{firstName}'
+      event_description: '%{authorNameFull} kommentert internt på et forslag du har fått tildelt.'
+      subject: 'Ny intern kommentar på ''%{post}'''
+      main_header: 'Ny intern kommentar på ''%{post}'''
+      preheader: 'Ny intern kommentar på ''%{post}'''
     internal_comment_on_initiative_you_commented_internally_on:
-      cta_reply_to: 'Se kommentar av %{firstName}'
-      event_description: '%{authorNameFull} kommenterte internt et forslag du kommenterte internt.'
-      subject: '''%{post}'' har en ny intern kommentar'
-      main_header: '''%{post}'' har en ny intern kommentar'
-      preheader: '''%{post}'' har en ny intern kommentar'
+      cta_reply_to: 'Se kommentar fra %{firstName}'
+      event_description: '%{authorNameFull} kommenterte internt på et forslag du kommenterte internt på.'
+      subject: 'Ny intern kommentar på ''%{post}'''
+      main_header: 'Ny intern kommentar på ''%{post}'''
+      preheader: 'Ny intern kommentar på ''%{post}'''
     internal_comment_on_unassigned_initiative:
-      cta_reply_to: 'Se kommentar av %{firstName}'
-      event_description: '%{authorNameFull} kommenterte internt et ikke-tildelt forslag.'
-      subject: '''%{post}'' har en ny intern kommentar'
-      main_header: '''%{post}'' har en ny intern kommentar'
-      preheader: '''%{post}'' har en ny intern kommentar'
+      cta_reply_to: 'Se kommentar fra %{firstName}'
+      event_description: '%{authorNameFull} kommenterte internt på et forslag som ikke var tildelt.'
+      subject: 'Ny intern kommentar på ''%{post}'''
+      main_header: 'Ny intern kommentar på ''%{post}'''
+      preheader: 'Ny intern kommentar på ''%{post}'''
     internal_comment_on_unassigned_unmoderated_idea:
-      cta_reply_to: 'Se kommentar av %{firstName}'
-      event_description: '%{authorNameFull} kommenterte internt et ikke-tildelt innspill i et ikke-administrert prosjekt.'
-      subject: '''%{post}'' har en ny intern kommentar'
-      main_header: '''%{post}'' har en ny intern kommentar'
-      preheader: '''%{post}'' har en ny intern kommentar'
+      cta_reply_to: 'Se kommentar fra %{firstName}'
+      event_description: '%{authorNameFull} kommenterte internt på en ikke-tildelt inngang i et ikke-administrert prosjekt.'
+      subject: 'Ny intern kommentar på ''%{post}'''
+      main_header: 'Ny intern kommentar på ''%{post}'''
+      preheader: 'Ny intern kommentar på ''%{post}'''
     official_feedback_on_idea_you_follow:
-      header_message: '%{officialName} ga en oppdatering på ideen ''%{ideaTitle}''. Klikk på knappen nedenfor for å gå inn i samtalen med %{officialName}.'
-      header_title: 'Det er en oppdatering på en idé du følger'
-      subject: 'En idé du følger har mottatt en offisiell oppdatering på plattformen til %{organizationName}'
-      preheader: 'Det er en oppdatering på en idé du følger'
+      header_message: '%{feedback_author_name} ga en oppdatering på ''%{input_title}''.'
+      header_title: 'Det er en oppdatering på "%{input_title}"'
+      subject: 'Offisiell tilbakemelding ble lagt ut på "%{input_title}"'
+      preheader: 'Det er en oppdatering på et innspill du følger'
     official_feedback_on_initiative_you_follow:
-      header_message: '%{officialName} ga en oppdatering om forslaget ''%{initiativeTitle}''. Klikk på knappen nedenfor for å gå inn i samtalen med %{organizationName}.'
+      header_message: '%{officialName} ga en oppdatering om forslaget ''%{initiativeTitle}''. Klikk på knappen nedenfor for å delta i samtalen med %{organizationName}.'
       header_title: 'Det er en oppdatering på et forslag du følger'
-      subject: 'Et forslag du følger har mottatt en offisiell oppdatering på plattformen til %{organizationName}'
+      subject: 'Et forslag du følger har fått en offisiell oppdatering på plattformen %{organizationName}'
       preheader: 'Det er en oppdatering på et forslag du følger'
     mention_in_official_feedback:
-      cta_reply_to: 'Svar %{organizationName}'
-      event_description: '%{organizationName} nevnte deg i deres tilbakemelding på ideen ''%{post}‘. Klikk på lenken nedenfor for å bli med i samtalen med %{organizationName}'
+      cta_reply_to: 'Svar til %{organizationName}'
+      event_description: '%{organizationName} nevnte deg i sin tilbakemelding på ideen ''%{post}''. Klikk på lenken nedenfor for å delta i samtalen med %{organizationName}'
       main_header: 'Du har blitt nevnt'
-      subject: '%{organizationName} nevnte deg i deres svar'
-      preheader: '%{commentAuthor} nevnte deg i deres svar'
+      subject: '%{organizationName} nevnte deg i tilbakemeldingen sin'
+      preheader: '%{commentAuthor} nevnte deg i tilbakemeldingen'
     project_moderation_rights_received:
       cta_manage_project: 'Administrer dette prosjektet'
-      message_you_became_moderator: 'En administrator på deltakelsesplattformen til %{organizationName} gjorde deg nettopp til moderator for det følgende prosjektet:'
+      message_you_became_moderator: 'En administrator av deltakelsesplattformen på %{organizationName} har nettopp gjort deg til prosjektleder for følgende prosjekt:'
       no_ideas: 'Ingen ideer ennå'
-      preheader: 'En administrator på deltakelsesplattformen til %{organizationName} gjorde deg nettopp til moderator for det følgende prosjektet'
-      subject: 'Du har blitt moderator på plattformen til %{organizationName}'
-      text_design_participatory_process: 'Som prosjektmoderator kan du konfigurere hvordan brukere samhandler på prosjektet ditt. Du kan legge til nye faser ved bruk av tidslinjen. Hver av disse fasene kan ha sin egen atferd når det gjelder å legge ut ideer, kommentere og stemme.'
-      text_moderate_analyse_input: 'Så snart prosjektet er lansert, vil de første ideene komme inn. Du vil motta ukentlige rapporter med alle nøkkelaktivitetene, slik at du holder deg à jour. Idéoversikten i prosjektmoderatorvisningen vil hjelpe deg med å forstå hvilke ideer som fikk flest opp-stemmer og ned-stemmer.'
-      text_share_project_information: 'For å øke kvaliteten på ideene du får, er det avgjørende at du deler nok informasjon: Legg til en prosjektbeskrivelse, legg ved bilder (inkl. skisser og planer) og kommuniser alle relaterte arrangementer som pågår. Husk: God informasjon fører til god deltakelse!'
+      preheader: 'En administrator av deltakelsesplattformen på %{organizationName} har nettopp gjort deg til prosjektleder for følgende prosjekt'
+      subject: 'Du ble prosjektleder på plattformen %{organizationName}'
+      text_design_participatory_process: 'Som prosjektleder kan du konfigurere hvordan brukerne samhandler i prosjektet. Du kan legge til nye faser ved hjelp av tidslinjen. Hver av disse fasene kan ha sin egen oppførsel når det gjelder publisering av ideer, kommentering og stemmegivning.'
+      text_moderate_analyse_input: 'Når prosjektet er lansert, vil de første ideene komme inn. Du vil motta ukentlige rapporter med alle viktige aktiviteter, slik at du kan holde deg oppdatert. Ideoversikten i prosjektledervisningen hjelper deg med å forstå hvilke ideer som har fått flest likes og dislikes.'
+      text_share_project_information: 'For å øke kvaliteten på ideene du får inn, er det viktig å dele tilstrekkelig informasjon: legg til en prosjektbeskrivelse, legg ved bilder (inkl. skisser og planer), og informer om alle relaterte arrangementer som pågår. Husk: God informasjon går forut for god deltakelse!'
       title_design_participatory_process: 'Utform deltakelsesprosessen'
-      title_moderate_analyse_input: 'Moderer og analyser innspillene'
+      title_moderate_analyse_input: 'Moderere og analysere innspillene'
       title_share_project_information: 'Oppgi prosjektinformasjon'
-      title_what_can_you_do_moderator: 'Hva kan du gjøre som prosjektmoderator?'
-      title_you_became_moderator: 'Du har blitt moderator'
+      title_what_can_you_do_moderator: 'Hva kan du gjøre som prosjektleder?'
+      title_you_became_moderator: 'Du ble prosjektleder'
       x_ideas: '%{numberOfIdeas} ideer'
     project_folder_moderation_rights_received:
       cta_view_folder_button: 'Vis denne mappen'
-      message_added_as_folderadmin: 'Du er tildelt mappeadministrator-rettigheter for følgende mappe på %{organizationName}s deltagelsesplattform:'
-      no_projects: 'Ingen prosjekter enda'
-      preheader: 'En administrator for deltagelsesplattformen til %{organizationName} utnevnte deg nettopp til administrator for følgende mappe'
-      subject: 'Du ble en prosjektmappe-administrator på deltagelsesplattformen til %{organizationName}'
-      text_manage_folder: 'En mappe er en måte å organisere flere deltagelsesprosjekter sammen på. Som mappeadministrator kan du redigere mappen og mappebeskrivelsen og opprette nye prosjekter (for å slette prosjekter, kontakt plattformadministratoren din). Du får også prosjektledelsesrettigheter for alle prosjekter i mappen slik at du kan redigere prosjektene, administrere innspillene og sende e-post til deltagerne.'
-      text_moderate_analyse_input: 'Når prosjektene er lanserte, begynner de første innspillene å komme inn. Du får ukentlige rapporter over nøkkelaktivitetene slik at du kan være på høyden med hva som skjer. Innspillsadministratoren i ''Administrer plattform''-panelet ditt lar deg se og administrere innspillene, inkludert å tilordne statuser og besvare innlegg og kommentarer.'
-      text_design_participatory_process: 'Du kan administrere de forskjellige deltagelsesprosjektene i mappen din – konfigurere deltagelsesmetoden, legge til en prosjektbeskrivelse, legge til bilder og opplyse om tilknyttede arrangementer. Du kan også administrere hvordan deltagere samhandler med prosjektene dine, inkludert å sette tilgangsrettigheter og konfigurasjon av innleggs-, voterings- og kommenteringsinnstillingene.'
+      message_added_as_folderadmin: 'Du har fått mappeadministratorrettigheter på %{organizationName}for følgende mappe:'
+      no_projects: 'Ingen prosjekter ennå'
+      preheader: 'En administrator av deltakerplattformen på %{organizationName} har nettopp gjort deg til administrator for følgende mappe'
+      subject: 'Du ble prosjektmappeansvarlig på medvirkningsplattformen %{organizationName}'
+      text_manage_folder: 'En mappe er en måte å organisere flere deltakelsesprosjekter sammen på. Som mappeansvarlig kan du redigere mappen og mappebeskrivelsen og opprette nye prosjekter (for å slette prosjekter må du kontakte plattformadministratoren). Du har også prosjektadministrasjonsrettigheter for alle prosjektene i mappen, slik at du kan redigere prosjektene, administrere innspillene og sende e-post til deltakerne.'
+      text_moderate_analyse_input: 'Når prosjektene er lansert, vil de første innspillene begynne å komme inn. Du vil motta ukentlige rapporter med de viktigste aktivitetene, slik at du kan holde deg oppdatert på hva som skjer. Med Input Manager i "Administrer plattform"-panelet kan du se og administrere innspillene, blant annet ved å tildele statuser og svare på innlegg og kommentarer.'
+      text_design_participatory_process: 'Du kan administrere de ulike deltakelsesprosjektene i mappen din - konfigurere deltakelsesmetoden, legge til en prosjektbeskrivelse, legge ved bilder og kommunisere relaterte arrangementer. Du kan også administrere hvordan deltakerne samhandler med prosjektene dine, blant annet ved å angi tilgangsrettigheter og konfigurere innstillinger for publisering, stemmegivning og kommentering.'
       title_design_participatory_process: 'Utform deltakelsesprosessen'
-      title_moderate_analyse_input: 'Moderer og analyser innspillene'
+      title_moderate_analyse_input: 'Moderere og analysere innspillene'
       title_manage_folder: 'Administrer mappeinnstillingene og opprett nye prosjekter.'
-      title_what_can_you_do_folderadmin: 'Hva kan du gjøre som mappeadministrator?'
-      title_added_as_folderadmin: 'Du er lagt til som mappeadministrator'
+      title_what_can_you_do_folderadmin: 'Hva kan du gjøre som mappeansvarlig?'
+      title_added_as_folderadmin: 'Du har blitt lagt til som mappeadministrator'
       x_projects: '%{numberOfProjects} prosjekter'
     project_phase_started:
-      cta_view_phase: 'Oppdag den nye fasen'
-      event_description: 'Prosjektet har gått over i en ny fase på plattformen til %{organizationName}. Klikk på linken nedenfor for å lære mer!'
-      main_header: 'En ny fase har startet for prosjektet %{projectName}'''
-      subtitle: 'Om «%{projectName}»'
-      new_phase: 'Prosjektet har gått over i en ny fase ''%{phaseTitle}'''
-      subject: '%{projectName} har gått over i en ny fase'
-      preheader: 'En ny fase har startet  for %{projectName}'
+      cta_view_phase: 'Oppdag denne nye fasen'
+      event_description: 'Dette prosjektet gikk inn i en ny fase på plattformen %{organizationName}. Klikk på lenken nedenfor for å lære mer!'
+      main_header: 'En ny fase startet for prosjektet ''%{projectName}'''
+      subtitle: 'Om ''%{projectName}'''
+      new_phase: 'Dette prosjektet gikk inn i fasen ''%{phaseTitle}'''
+      subject: '%{projectName} gikk inn i en ny fase'
+      preheader: 'En ny fase har startet for %{projectName}'
     project_phase_upcoming:
-      cta_view_phase: 'Sett opp den nye fasen'
-      event_description: ' ''%{projectName}'' går snart over i en ny fase. Sørg for at alt er klart: Har du en god nok beskrivelse? Er de valgte ideene flyttet til fasen? Vil du informere innbyggerne om utviklingen via e-post? ?'
-      main_header: '%{firstName}, et prosjekt vil snart gå over i en ny fase'
-      subtitle: 'Om «%{projectName}»'
-      new_phase: 'Prosjektet vil gå over i en ny fase ''%{phaseTitle}'''
-      subject: 'Sett opp alt for den nye fasen %{projectName}'
-      preheader: '%{projectName} går snart over i en ny fase'
+      cta_view_phase: 'Sett opp denne nye fasen'
+      event_description: 'Prosjektet%{projectName}går snart over i en ny fase. Sørg for at alt er klart for denne fasen: Finnes det en tilstrekkelig beskrivelse? Er utvalgte ideer overført til denne fasen? Ønsker du å informere innbyggerne om detaljene i denne fasen gjennom en tilpasset e-postkampanje?'
+      main_header: '%{firstName}, et prosjekt går snart inn i en ny fase'
+      subtitle: 'Om ''%{projectName}'''
+      new_phase: 'Prosjektet vil gå inn i fasen ''%{phaseTitle}'''
+      subject: 'Gjør alt klart for den nye fasen av %{projectName}'
+      preheader: 'Snart starter en ny fase for %{projectName}'
     project_published:
-      subject: 'Et nytt prosjekt ble publisert på plattformen til %{organizationName}'
+      subject: 'Et nytt prosjekt ble publisert på plattformen %{organizationName}'
       header_title: 'Et nytt prosjekt ble publisert'
-      header_message: 'Deltakelsesplattformen til %{organizationName} publiserte nettopp følgende prosjekt:'
+      header_message: 'Deltakelsesplattformen %{organizationName} har nettopp publisert følgende prosjekt:'
       preheader: 'Et nytt prosjekt ble publisert'
+    project_review_request:
+      subject: 'Forespørsel om gjennomgang: Et prosjekt venter på godkjenning.'
+      header: '%{requesterName} har invitert deg til å vurdere prosjektet "%{projectTitle}"'
+      header_message: "For øyeblikket er prosjektet i utkastmodus og er ikke synlig for brukerne. Når du har gjennomgått og godkjent det, vil moderatoren kunne publisere det."
+      cta_review_project: "Gjennomgå prosjektet"
+    project_review_state_change:
+      subject: '"%{projectTitle}" har blitt godkjent'
+      header: '%{reviewerName} godkjente prosjektet "%{projectTitle}"'
+      header_message: "Prosjektet er nå klart til å gå live. Du kan publisere det når du er klar!"
+      cta_go_to_project: "Gå til prosjektinnstillinger"
     status_change_on_idea_you_follow:
-      status_change: 'Den nye statusen til denne ideen er ''%{ideaStatus}'''
-      header_message: '%{organizationName} oppdaterte statusen til ideen ''%{ideaTitle}'' på deres digitale deltakelsesplattform.'
-      header_title: 'En idé du følger har en ny status'
-      subject: 'Statusen til en idé du følger er endret'
-      preheader: 'En idé du følger har en ny status'
+      status_change: 'Den nye statusen for denne inngangen er ''%{status}'''
+      header_message: '%{organizationName} oppdaterte statusen for innspillet "%{input_title}" på sin digitale medvirkningsplattform.'
+      header_title: 'En inngang du følger har fått ny status'
+      subject: 'Statusen til "%{input_title}" har endret seg'
+      preheader: 'En inngang du følger har fått ny status'
     status_change_on_initiative_you_follow:
-      status_change: 'Den nye statusen til dette forslaget er ''%{initiativeStatus}'''
-      header_message: 'Status for forslaget ''%{initiativeTitle}'' er oppdatert på den digitale deltakelsesplattformen til %{organizationName}.'
-      header_title: 'Et forslag du følger har en ny status'
-      subject: 'Statusen til et forslag du følger har endret seg'
-      preheader: 'Et forslag du følger har en ny status'
+      status_change: 'Den nye statusen for dette forslaget er ''%{initiativeStatus}'''
+      header_message: 'Status for forslaget "%{initiativeTitle}" er oppdatert på den digitale medvirkningsplattformen på %{organizationName}.'
+      header_title: 'Et forslag du følger har fått ny status'
+      subject: 'Statusen til et forslag du følger, har endret seg'
+      preheader: 'Et forslag du følger har fått ny status'
     user_digest:
-      subject: "Ukens oppdatering av %{organizationName}'s plattform"
+      subject: "Denne uken på medvirkningsplattformen %{organizationName}"
       commented: "%{authorFirstName} kommenterte:"
-      preheader: "Ukesoversikt over %{organizationName}"
+      preheader: "Ukentlig oversikt over %{organizationName}"
       title_your_weekly_report: "Oppdag hva som skjedde forrige uke"
-      intro_text: "Her er et sammendrag av hva som skjedde på deltagelsesplattformen til %{organizationName}."
+      intro_text: "Her er en oppsummering av hva som skjedde på deltakelsesplattformen på %{organizationName}."
       cta_go_to_the_platform: "Gå til plattformen"
-      title_no_activity_past_week: "Ingen aktivitet den siste uken"
-      title_proposals: "Forslag startet"
-      proposals_started_text: "Forslag er ideer som trenger å blomstre og få støtte fra andre (personer som deg) for å komme videre. Nedenfor er en liste over forslag som er fremmet den siste uken. Klikk på en av dem for å ta en titt og tilby din støtte og tilbakemelding!"
-      title_successful_proposals: "Oppdag forslag"
-      successful_proposals_text: "Disse forslagene har fått nok støtte til å flytte til neste nivå! Klikk på forslaget for å lære mer om hva som skjer videre."
+      title_no_activity_past_week: "Ingen aktivitet i løpet av den siste uken"
+      successful_proposals_title: "Nådde terskelen"
+      successful_proposals_text: "I løpet av den siste uken har disse fått nok støtte til å gå videre til neste trinn."
       today_by_author: "I dag av %{author}"
       yesterday_by_author: "I går av %{author}"
       x_days_ago_by_author: "%{x} dager siden av %{author}"
-      trending_ideas: "Trending ideer"
-      trending_ideas_text: "Interessert i hva som har skjedd på plattformen? Her er de tre mest trendskapende ideene og hva folk sier om dem."
-      no_notifications: "No notifications"
-      one_notification: "1 notification"
+      trending_title: "Trender"
+      trending_text: "Er du interessert i hva som har skjedd på plattformen? Her er de tre mest populære bidragene og hva folk sier om dem."
+      no_notifications: "Ingen varsler"
+      one_notification: "1 melding"
       multiple_notifications: "%{notifCount} varsler"
-      no_unread_notifications: "Du har ingen uleste varsler. Besøk plattformen for å bidra med innspillene dine og fremkall nye varsler!"
-      unread_notifications: "Du har uleste varsler. Besøk plattformen for å se hva som skjer!"
+      no_unread_notifications: "Du har ingen uleste varsler."
+      unread_notifications: "Du har uleste varsler. Besøk plattformen for å finne ut hva som skjer!"
     threshold_reached_for_admin:
-      cta_process_initiative: 'Ta dette forslaget til neste steg'
-      event_description: 'Et forslag på din plattform har nådd terskelen for antall stemmer. Klikk på knappen nedenfor og gå videre til neste steg!'
-      main_header: 'Et forslag har nådd terskelen for antall stemmer!'
-      subject: 'Et forslag på din plattform har nådd terskelen for antall stemmer. '
-      preheader: 'Husk å gå videre til neste steg.'
-    first_idea_published:
-      action_add_image: '%{addImageLink} for å øke synligheten'
-      action_comment: '%{textComment} eksisterende ideer'
-      action_published_idea: 'Publisert idé'
-      action_send_email: 'Send dine kontakter en %{sendEmailLink}'
-      action_share_fb: 'Del med dine venner %{fbLink}'
-      action_share_link: 'Kopier lenken og del i den kanalen du måtte ønske %{link}'
-      action_share_twitter: 'Del med dine følgere på %{twitterLink}'
-      add_image: 'Legg til et bilde'
-      cta_view_idea: 'Gå til din idé'
-      event_description: '%{firstName} gratulerer med din første idé på plattformen til %{organizationName}. Du vil bli varslet når folk samhandler med ideen din. Finn ut hva som er neste steg nedenfor'
-      link: lenke
-      main_header: '%{firstName} du la ut din første idé'
-      message_get_votes: 'Nå ut til flere med ideen din:'
-      preheader: 'Gratulerer, %{firstName}, du la ut din første idé på plattformen til %{organizationName}. Nå må du skaffe støtte for ideen din'
-      see_you: 'Vi ses snart på plattformen!'
-      send_email: e-post
-      subject: 'Din første idé på plattformen til %{organizationName}'
+      cta_process_initiative: 'Ta dette forslaget videre til neste trinn'
+      main_header: 'Et forslag nådde terskelen for avstemning!'
+      subject: '"%{input_title}" nådde terskelen for stemmegivning'
+      preheader: 'Sørg for å ta de neste trinnene'
     welcome:
       cta_join_platform: 'Oppdag plattformen'
-      subject: 'Velkommen til %{organizationName} sin medvirkning plattform'
+      subject: 'Velkommen til plattformen %{organizationName}'
       main_header: Velkommen!
-      message_welcome: 'Gratulerer, du har registrert deg på %{organizationName} sin plattform for  innbyggerinvolvering. Du kan nå utforske plattformen og bli hørt. Legg til et profilbilde og en kort beskrivelse for å fortelle andre hvem du er.'
-      preheader: 'Slik kan du bruke plattformen til %{organizationName}'
+      message_welcome: 'Gratulerer, du har registrert deg på medvirkningsplattformen %{organizationName}. Du kan nå oppdage plattformen og gjøre din stemme hørt. Du kan også legge til et profilbilde og en kort beskrivelse for å fortelle andre hvem du er.'
+      preheader: 'Her er hva du kan gjøre på plattformen %{organizationName}'
     idea_published:
+      subject:
+        idea: 'Ideen din har blitt publisert'
+        question: 'Spørsmålet ditt har blitt publisert'
+        contribution: 'Ditt bidrag har blitt publisert'
+        project: 'Prosjektet ditt har blitt publisert'
+        issue: 'Utgaven din har blitt publisert'
+        option: 'Alternativet ditt har blitt publisert'
+        proposal: 'Forslaget ditt har blitt publisert'
+        initiative: 'Initiativet ditt har blitt publisert'
+        petition: 'Din underskriftskampanje har blitt publisert'
+      main_header: 'Du postet "%{input_title}"'
+      header_message: 'La oss sørge for at den blir lest.'
+      message_get_votes: 'Nå ut til flere mennesker'
+      action_published_idea: 'Publisert'
       action_add_image: '%{addImageLink} for å øke synligheten'
-      action_published_idea: 'Publisert idé'
-      action_send_email: 'Send dine kontakter en %{sendEmailLink}'
-      action_share_fb: 'Del med dine venner %{fbLink}'
-      action_share_link: 'Kopier lenken og del i den kanalen du måtte ønske %{link}'
-      action_share_twitter: 'Del med dine følgere på %{twitterLink}'
       add_image: 'Legg til et bilde'
-      cta_view_idea: 'Gå til din idé'
-      event_description: '%{firstName},ideen din har blitt publisert på plattformen til %{organizationName}. Du vil bli varslet når folk samhandler med ideen din. Finn ut hva som er neste steg nedenfor'
-      link: lenke
-      main_header: 'Du la ut en ide! La oss sørge for at den blir lest.'
-      message_get_votes: 'Nå ut til flere med ideen din:'
-      preheader: 'Gratulerer %{firstName}, du har delt ideen din ut på plattformen til %{organizationName}. Nå samle støtte.'
-      see_you: 'Vi ses snart på plattformen!'
+      action_share_fb: 'Gi beskjed til vennene dine på %{fbLink}'
+      action_share_twitter: 'Informer følgerne dine på %{twitterLink}'
+      action_send_email: 'Send kontaktene dine en %{sendEmailLink}'
       send_email: e-post
-      subject: 'Din idé på plattformen til %{organizationName}'
-      message_next_steps: ""
-    your_proposed_initiatives_digest:
-      subject: 'Weekly update of your initiative'
-      preheader: 'What happened to your initiative in the past week?'
-      title_your_weekly_report: 'How has your initiative been doing?'
-      text_introduction: 'Find the key numbers below and go to your initiative''s page to take action and gather enough support in time.'
-      cta_see_your_initiative: 'Go to your initiative'
-      total_votes: 'Antall stemmer'
-      new_votes: 'Nye stemmer'
-      remaining_votes: 'Antall stemmer som mangler'
-      remaining_days: 'Dager igjen'
+      action_share_link: 'Del den via hvilken som helst kanal ved å kopiere %{link}'
+      link: lenke
+      preheader: '%{firstName}, gratulerer med å ha lagt ut ditt innspill på plattformen til %{organizationName}. Nå kan du samle støtte.'
+    your_input_in_screening:
+      main_header:
+        idea: 'Ideen din er i "%{prescreening_status_title}"'
+        question: 'Spørsmålet ditt er i "%{prescreening_status_title}"'
+        contribution: 'Ditt bidrag ligger i "%{prescreening_status_title}"'
+        project: 'Prosjektet ditt ligger i "%{prescreening_status_title}"'
+        issue: 'Problemet ditt er i "%{prescreening_status_title}"'
+        option: 'Ditt valg er i "%{prescreening_status_title}"'
+        proposal: 'Forslaget ditt ligger i "%{prescreening_status_title}"'
+        initiative: 'Initiativet ditt ligger i "%{prescreening_status_title}"'
+        petition: 'Din begjæring er i "%{prescreening_status_title}"'
+      message: '"%{input_title}" blir synlig for andre når den er gjennomgått og godkjent.'
+      subject: '"%{input_title}" er nesten publisert'
+      preheader: 'Den ligger for tiden på %{prescreening_status_title}'
     voting_basket_submitted:
-      subject: '%{organizationName}: Du stemte'
-      preheader: 'Du stemte på deltakelsesplattformen til %{organizationName}'
-      title_basket_submitted: 'Du stemte'
-      event_description: 'Takk for at du deltar. Stemmene dine er registrert. Besøk plattformen til %{organizationName} for å se og administrere stemmene dine.'
+      subject: '%{organizationName}: Du stemte vellykket'
+      preheader: 'Du har stemt på deltakelsesplattformen på %{organizationName}'
+      title_basket_submitted: 'Du stemte vellykket'
+      event_description: 'Takk for at du deltok. Stemmene dine har blitt registrert. Besøk plattformen %{organizationName} for å se og administrere stemmene dine.'
       cta_see_votes_submitted: 'Se innsendte stemmer'
       cta_message: 'Klikk på knappen nedenfor for å delta'
     native_survey_not_submitted:
-      subject: '%{organizationName}: Nesten der! Send inn svarene dine'
-      preheader: 'Du fullførte ikke undersøkelsessvaret på deltakelsesplattformen til %{organizationName}'
-      title_native_survey_not_submitted: 'Nesten der! Send inn svarene dine'
-      body_native_survey_not_submitted: 'Du begynte å dele svarene dine på %{phaseTitle} , men sendte dem ikke inn. Innleveringer avsluttes %{phaseEndDate}. Klikk på knappen nedenfor for å fortsette der du slapp.'
+      subject: '%{organizationName}: Nesten i mål! Send inn svarene dine'
+      preheader: 'Du fullførte ikke undersøkelsen på deltakelsesplattformen på %{organizationName}'
+      title_native_survey_not_submitted: 'Nesten i mål! Send inn svarene dine'
+      body_native_survey_not_submitted: 'Du begynte å dele svarene dine på %{phaseTitle} , men sendte dem ikke inn. Innleveringene stenger på %{phaseEndDate}. Klikk på knappen nedenfor for å fortsette der du slapp.'
       body_native_survey_not_submitted_no_date: 'Du begynte å dele svarene dine på %{phaseTitle} , men sendte dem ikke inn. Klikk på knappen nedenfor for å fortsette der du slapp.'
-      cta_complete_your_survey_response: 'Fortsett svaret på undersøkelsen'
+      cta_complete_your_survey_response: 'Fortsett å svare på undersøkelsen'
     voting_basket_not_submitted:
-      subject: '%{organizationName}: Du sendte ikke inn stemmene dine'
-      preheader: 'Du sendte ikke inn stemmene dine på deltakelsesplattformen til %{organizationName}'
-      title_basket_not_submitted: 'Du sendte ikke inn stemmene dine'
-      event_description: 'Du valgte noen få alternativer for %{contextTitle} , men du sendte ikke inn valget ditt.'
+      subject: '%{organizationName}: Du har ikke sendt inn dine stemmer'
+      preheader: 'Du har ikke avgitt stemme på deltakelsesplattformen på %{organizationName}'
+      title_basket_not_submitted: 'Du har ikke sendt inn dine stemmer'
+      event_description: 'Du valgte noen alternativer for %{contextTitle} , men du sendte ikke inn valget ditt.'
       cta_view_options_and_vote: 'Se alternativer og stem'
       cta_message: 'Klikk på knappen nedenfor for å sende inn de valgte alternativene'
     voting_last_chance:
       subject: '%{organizationName}: Siste sjanse til å stemme på %{phaseTitle}'
-      preheader: 'Siste sjanse til å stemme på %{phaseTitle} på deltakelsesplattformen til %{organizationName}'
+      preheader: 'Siste sjanse til å stemme på %{phaseTitle} på medvirkningsplattformen til %{organizationName}'
       title_last_chance: 'Siste sjanse til å stemme på %{phaseTitle}'
-      body_1: 'Avstemningsfasen for %{projectTitle} prosjektet nærmer seg slutten i morgen, ved midnatt.'
-      body_2: 'Tiden renner ut, og vi la merke til at du ikke har avgitt din stemme ennå! Handle nå ved å klikke på knappen nedenfor for å delta.'
-      body_3: 'Ved å gjøre det vil du få tilgang til en rekke alternativer og ha sjansen til å gi dine innspill, noe som er avgjørende for å bestemme fremtiden til dette prosjektet.'
+      body_1: 'Avstemningsfasen for %{projectTitle} -prosjektet avsluttes i morgen ved midnatt.'
+      body_2: 'Tiden renner ut, og vi har lagt merke til at du ikke har avgitt din stemme ennå! Gjør det nå ved å klikke på knappen nedenfor for å delta.'
+      body_3: 'På den måten får du tilgang til en rekke alternativer og muligheten til å komme med innspill, noe som er avgjørende for prosjektets fremtid.'
       cta_vote: 'Stemme'
     voting_results:
-      subject: '%{organizationName}: %{phaseTitle} stemmeresultater avslørt!'
-      preheader: '%{phaseTitle} stemmeresultater avslørt på deltakelsesplattformen til %{organizationName}'
-      title_results: '%{phaseTitle} stemmeresultater avslørt!'
-      body_1: 'Resultatene er inne!'
-      body_2: 'Resultatene av %{phaseTitle} stemmen i %{organizationName} -plattformen er publisert!'
-      body_3: 'Vi oppfordrer deg til å gå gjennom resultatene og følge med for ytterligere oppdateringer om de neste trinnene.'
+      subject: '%{organizationName}: %{phaseTitle} avstemningsresultater avslørt!'
+      preheader: '%{phaseTitle} avstemningsresultatene avslørt på deltakelsesplattformen til %{organizationName}'
+      title_results: '%{phaseTitle} avstemningsresultatene avslørt!'
+      body_1: 'Resultatene er klare!'
+      body_2: 'Resultatet av avstemningen på %{phaseTitle} i plattformen %{organizationName} er publisert!'
+      body_3: 'Vi oppfordrer deg til å lese resultatene og holde deg oppdatert om hva som skjer videre.'
       cta_see_results: 'Se resultater i plattformen'
     event_registration_confirmation:
-      subject: "Du er med! Din registrering for \"%{eventTitle}\" er bekreftet"
+      subject: "Du er inne! Din registrering for \"%{eventTitle}\" er bekreftet."
+      preheader: "%{firstName}, takk for at du registrerte deg for %{eventTitle}"
       header_message: "%{firstName}, takk for at du registrerte deg for"
       event_details:
         labels:
           date: 'Dato'
-          location: 'plassering'
-          online_link: 'Online lenke'
+          location: 'Beliggenhet'
+          online_link: 'Online link'
           description: 'Beskrivelse'
           project: 'Prosjekt'
       cta_go_to_event: 'Se arrangementet'
       cta_add_to_calendar: 'Legg til i kalenderen din'
     voting_phase_started:
-      subject: '%{organizationName}: Stemmefasen startet for %{projectName}'
-      preheader: 'Stemmefasen startet for %{projectName} på deltakelsesplattformen til %{organizationName}'
+      subject: '%{organizationName}: Avstemningsfasen startet for %{projectName}'
+      preheader: 'Avstemningsfasen startet for %{projectName} på deltakelsesplattformen til %{organizationName}'
       event_description: 'Prosjektet "%{projectName}" ber deg om å stemme mellom %{numIdeas} alternativer:'
       cta_message: 'Klikk på knappen nedenfor for å delta'
       cta_vote: 'Gå til plattformen for å stemme'
@@ -561,42 +611,45 @@
         admins: 'Til administratorer'
         admins_and_managers: 'Til administratorer og ledere'
         managers: 'Til ledere'
-        project_participants: 'Til prosjektdeltakere'
+        project_participants: 'Til prosjektdeltakerne'
         registered_users: 'Til registrerte brukere'
       recipient_segment:
         admins: 'Administratorer'
         admins_and_managers: 'Administratorer og ledere'
+        admins_and_managers_assigned_to_the_input: 'Administratorer og ledere som er tilordnet inndataene'
         admins_and_managers_managing_the_project: 'Administratorer og ledere som administrerer prosjektet'
-        managers_managing_the_project: 'Ledere som leder prosjektet'
+        admins_assigned_to_a_proposal: 'Administratorer som er tilordnet et forslag'
         all_users: 'Alle brukere'
-        all_users_who_uploaded_proposals: 'Alle brukere som lastet opp forslag'
+        all_users_who_uploaded_proposals: 'Alle brukere som har lastet opp forslag'
         managers: 'Ledere'
-        admins_assigned_to_a_proposal: 'Administratorer tildelt et forslag'
-        admins_and_managers_assigned_to_the_input: 'Administratorer og ledere tilordnet input'
+        managers_managing_the_project: 'Ledere som styrer prosjektet'
         new_attendee: 'Nyregistrert bruker'
-        user_who_is_invited_to_cosponsor_a_proposal: 'Bruker som er invitert til å sponse et forslag'
-        user_who_is_receiving_admin_rights: 'Bruker som mottar administratorrettigheter'
-        user_who_is_receiving_folder_moderator_rights: 'Bruker som mottar mappemoderatorrettigheter'
-        user_who_is_receiving_project_moderator_rights: 'Bruker som mottar prosjektmoderatorrettigheter'
+        project_reviewers: 'Prosjektgranskere og mappeansvarlige'
+        project_review_requester: 'Bruker som har bedt om prosjektgjennomgang'
         user_who_commented: 'Bruker som kommenterte'
+        user_who_is_invited_to_cosponsor_a_proposal: 'Bruker som er invitert til å være medsponsor for et forslag'
         user_who_is_mentioned: 'Bruker som er nevnt'
-        user_who_published_the_proposal: 'Bruker som publiserte forslaget'
+        user_who_is_receiving_admin_rights: 'Bruker som får administratorrettigheter'
+        user_who_is_receiving_folder_moderator_rights: 'Bruker som får rettigheter som mappemoderator'
+        user_who_is_receiving_project_moderator_rights: 'Bruker som får rettigheter som prosjektmoderator'
         user_who_published_the_input: 'Bruker som publiserte innspillet'
+        user_who_published_the_proposal: 'Bruker som publiserte forslaget'
         user_who_registers: 'Bruker som registrerer seg'
+        user_who_submitted_the_input: 'Bruker som sendte inn innspillet'
+        user_who_voted: 'Bruker som stemte'
         user_who_was_invited: 'Bruker som ble invitert'
+        user_with_unsubmitted_survey: 'Bruker som har startet, men ikke sendt inn undersøkelsen'
+        user_with_unsubmitted_votes: 'Bruker som ikke har avgitt stemme'
+        users_who_engaged_but_not_voted: 'Brukere som har engasjert seg i prosjektet, men som ikke har stemt'
         users_who_engaged_with_the_project: 'Brukere som engasjerte seg i prosjektet'
-        users_who_follow_the_proposal: 'Brukere som følger forslaget'
-        users_who_follow_the_input: 'Brukere som følger innspillet'
+        users_who_follow_the_input: 'Brukere som følger innspillene'
         users_who_follow_the_project: 'Brukere som følger prosjektet'
-        user_who_voted: 'Bruker som har stemt'
-        user_with_unsubmitted_votes: 'Bruker som ikke har sendt inn sine stemmer'
-        users_who_engaged_but_not_voted: 'Brukere som har engasjert seg i prosjektet, men ikke har stemt'
-        user_with_unsubmitted_survey: 'Bruker som har startet, men ikke levert undersøkelsen'
+        users_who_follow_the_proposal: 'Brukere som følger forslaget'
       content_type:
         comments: 'Kommentarer'
         content_moderation: 'Moderering av innhold'
-        events: 'arrangementer'
-        general: 'Generell'
+        events: 'Arrangementer'
+        general: 'Generelt'
         inputs: 'Innganger'
         internal_comments: 'Interne kommentarer'
         permissions: 'Tillatelser'
@@ -604,53 +657,56 @@
         proposals: 'Forslag'
         reactions: 'Reaksjoner'
         voting: 'Stemmegivning'
-        surveys: 'Undersøkelser'
+        surveys: 'Spørreundersøkelser'
       trigger:
-        comment_is_deleted: 'Kommentaren er slettet'
-        comment_is_flagged_as_spam: 'Kommentar er merket som spam'
-        content_gets_flagged_as_innapropiate: 'Innhold blir flagget som upassende'
-        input_is_assigned: 'Inngang er tildelt'
-        input_is_flagged_as_spam: 'Inndata er flagget som spam'
-        input_is_updated: 'Inndata er oppdatert'
-        input_status_changes: 'Inndatastatus endres'
-        initiative_resubmitted_for_review: 'Forslaget sendes til ny vurdering'
-        internal_comment_is_posted_on_idea_assigned_to_user: 'Intern kommentar legges ut på input tildelt bruker'
-        internal_comment_is_posted_on_initiative_assigned_to_user: 'Intern kommentar er lagt ut på forslag tildelt bruker'
-        internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: 'Intern kommentar legges ut på innspill i prosjekt eller mappe bruker administrerer'
-        internal_comment_is_posted_on_idea_user_has_commented_internally_on: 'Intern kommentar er lagt inn på input bruker kommentert internt på'
-        internal_comment_is_posted_on_idea_user_moderates: 'Intern kommentar legges ut på input brukermoderater'
-        internal_comment_is_posted_on_initiative_user_has_commented_internally_on: 'Intern kommentar er lagt ut på forslag bruker kommentert internt'
-        internal_comment_is_posted_on_unassigned_initiative: 'Intern kommentar er lagt ut på ikke-tildelt forslag'
-        internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Intern kommentar er lagt ut på ikke-tildelte input i uadministrert prosjekt'
-        user_accepts_invitation_to_cosponsor_a_proposal: 'Brukeren godtar invitasjonen til å være medsponsor for et forslag'
-        user_is_invited_to_cosponsor_a_proposal: 'Brukeren inviteres til å være medsponsor for et forslag'
-        user_is_mentioned_in_internal_comment: 'Bruker er nevnt i intern kommentar'
-        new_input_is_published: 'Nye innspill er publisert'
-        new_proposal_is_posted: 'Nytt forslag er lagt ut'
-        project_phase_changes: 'Prosjektfaseendringer'
-        project_published: 'Prosjekt publisert'
-        proposal_gets_reported_as_spam: 'Forslaget blir rapportert som spam'
-        proposal_is_assigned_to_admin: 'Forslaget tildeles admin'
-        proposal_is_updated: 'Forslaget er oppdatert'
-        proposal_is_upvoted_above_threshold: 'Forslaget blir stemt over terskel'
-        proposal_status_changes: 'Statusendringer for forslag'
-        user_comments: 'Brukerkommentarer'
-        user_comments_on_input: 'Brukerkommentarer på innspill'
-        user_comments_on_proposal: 'Brukerkommentarer til forslaget'
-        user_is_given_admin_rights: 'Bruker gis administratorrettigheter'
-        user_is_given_folder_moderator_rights: 'Brukeren gis mappemoderatorrettigheter'
-        user_is_given_project_moderator_rights: 'Bruker gis prosjektmoderatorrettigheter'
-        user_is_mentioned: 'Bruker er nevnt'
-        input_is_published: 'Innspill er publisert'
-        proposal_is_published: 'Forslaget er publisert'
-        user_registers_for_the_first_time: 'Bruker registrerer seg for første gang'
-        user_replies_to_comment: 'Brukeren svarer på kommentaren'
-        user_replies_to_internal_comment: 'Brukersvar på intern kommentar'
-        voting_2_days_before_phase_closes: '2 dager før avstemningsfasen avsluttes'
-        voting_1_day_after_last_votes: '1 dag etter at brukeren sist stemte'
-        voting_phase_ended: 'Avstemningsfasen er avsluttet'
-        voting_basket_submitted: 'Stemmer sendes inn'
         7_days_after_invite_is_sent: '7 dager etter at invitasjonen er sendt'
         7_days_before_the_project_changes_phase: '7 dager før prosjektet endrer fase'
+        comment_is_deleted: 'Kommentar er slettet'
+        comment_is_flagged_as_spam: 'Kommentaren er flagget som søppelpost'
+        content_gets_flagged_as_innapropiate: 'Innholdet blir flagget som upassende'
+        initiative_resubmitted_for_review: 'Forslaget sendes inn på nytt for gjennomgang'
+        input_is_assigned: 'Inndata er tildelt'
+        input_is_flagged_as_spam: 'Inndata flagges som søppelpost'
+        input_is_published: 'Innspill publiseres'
+        input_is_updated: 'Innspill får offisiell tilbakemelding'
+        input_status_changes: 'Endringer i inngangsstatus'
+        internal_comment_is_posted_on_idea_assigned_to_user: 'Intern kommentar legges ut på inndata som er tilordnet brukeren'
+        internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: 'Intern kommentar legges inn på input i prosjektet eller mappen brukeren administrerer'
+        internal_comment_is_posted_on_idea_user_has_commented_internally_on: 'Intern kommentar legges ut på input brukeren har kommentert internt på'
+        internal_comment_is_posted_on_idea_user_moderates: 'Intern kommentar er lagt ut på innspill bruker modererer'
+        internal_comment_is_posted_on_initiative_assigned_to_user: 'Intern kommentar legges ut på forslaget som er tilordnet brukeren'
+        internal_comment_is_posted_on_initiative_user_has_commented_internally_on: 'Intern kommentar legges ut på forslag som brukeren har kommentert internt på'
+        internal_comment_is_posted_on_unassigned_initiative: 'Intern kommentar legges ut på ikke-tildelt forslag'
+        internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Intern kommentar er lagt ut på ikke-tildelt input i ikke-administrert prosjekt'
+        project_review_request: 'Moderator ba om en prosjektgjennomgang'
+        project_review_state_change: 'Kritikeren godkjente prosjektet'
+        new_input_awaits_screening: 'Nye innspill venter på screening'
+        new_input_is_published: 'Nye innspill publiseres'
+        new_proposal_is_posted: 'Nytt forslag er lagt ut'
+        project_phase_changes: 'Endringer i prosjektfasen'
+        project_published: 'Prosjekt publisert'
+        proposal_gets_reported_as_spam: 'Forslaget blir rapportert som søppelpost'
+        proposal_is_assigned_to_admin: 'Forslaget er tildelt administrator'
+        proposal_is_published: 'Forslaget er publisert'
+        proposal_is_updated: 'Forslaget får offisiell tilbakemelding'
+        proposal_is_upvoted_above_threshold: 'Forslaget er stemt opp over terskelverdien'
+        proposal_status_changes: 'Endringer i forslagets status'
         registration_to_event: 'Påmelding til et arrangement'
         survey_1_day_after_draft_saved: '1 dag etter at brukeren sist lagret undersøkelsen i utkast'
+        user_accepts_invitation_to_cosponsor_a_proposal: 'Bruker aksepterer invitasjon til å være medsponsor for et forslag'
+        user_comments: 'Brukerkommentarer'
+        user_comments_on_input: 'Brukerkommentarer om innspill'
+        user_comments_on_proposal: 'Brukerkommentarer til forslaget'
+        user_is_given_admin_rights: 'Brukeren får administratorrettigheter'
+        user_is_given_folder_moderator_rights: 'Brukeren får rettigheter som mappemoderator'
+        user_is_given_project_moderator_rights: 'Brukeren får rettigheter som prosjektmoderator'
+        user_is_invited_to_cosponsor_a_proposal: 'Brukeren inviteres til å være medsponsor for et forslag'
+        user_is_mentioned: 'Bruker er nevnt'
+        user_is_mentioned_in_internal_comment: 'Bruker er nevnt i intern kommentar'
+        user_registers_for_the_first_time: 'Brukeren registrerer seg for første gang'
+        user_replies_to_comment: 'Bruker svarer på kommentar'
+        user_replies_to_internal_comment: 'Bruker svarer på intern kommentar'
+        voting_1_day_after_last_votes: '1 dag etter at brukeren sist stemte'
+        voting_2_days_before_phase_closes: '2 dager før avstemningsfasen avsluttes'
+        voting_basket_submitted: 'Stemmene sendes inn'
+        voting_phase_ended: 'Avstemningsfasen avsluttet'

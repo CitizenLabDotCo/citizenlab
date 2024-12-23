@@ -13,19 +13,30 @@ export default defineMessages({
     id: 'app.components.FilterBoxes.areas',
     defaultMessage: 'Areas',
   },
+  inputs: {
+    id: 'app.components.FilterBoxes.inputs',
+    defaultMessage: 'inputs',
+  },
+  noValuesFound: {
+    id: 'app.components.FilterBoxes.noValuesFound',
+    defaultMessage: 'No values available.',
+  },
   topicsTitle: {
     id: 'app.components.FilterBoxes.topicsTitle',
     defaultMessage: 'Topics',
+  },
+  showLess: {
+    id: 'app.components.FilterBoxes.showLess',
+    defaultMessage: 'Show less',
+  },
+  showTagsWithNumber: {
+    id: 'app.components.FilterBoxes.showTagsWithNumber',
+    defaultMessage: 'Show all ({numberTags})',
   },
   a11y_numberOfInputs: {
     id: 'app.components.FilterBoxes.a11y_numberOfInputs',
     defaultMessage:
       '{inputsCount, plural, no {# inputs} one {# input} other {# inputs}}',
-  },
-  a11y_numberOfInitiatives: {
-    id: 'app.components.FilterBoxes.a11y_numberOfInitiatives',
-    defaultMessage:
-      '{initiativeCount, plural, no {# initiatives} one {# initiative} other {# initiatives}}',
   },
   a11y_removeFilter: {
     id: 'app.components.FilterBoxes.a11y_removeFilter',

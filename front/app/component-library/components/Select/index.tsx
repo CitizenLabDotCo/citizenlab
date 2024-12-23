@@ -135,6 +135,8 @@ class Select extends PureComponent<Props> {
   };
 
   handleOnBlur = (event: FocusEvent<HTMLSelectElement>) => {
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     this.props?.onBlur?.(event);
   };
 

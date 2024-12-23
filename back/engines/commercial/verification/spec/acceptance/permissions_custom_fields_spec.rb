@@ -7,7 +7,7 @@ resource 'PermissionsCustomField' do
   before do
     header 'Content-Type', 'application/json'
     admin_header_token
-    SettingsService.new.activate_feature! 'verification', settings: { verification_methods: [{ name: 'fake_sso' }] }
+    SettingsService.new.activate_feature! 'verification', settings: { verification_methods: [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
   end
 
   get 'web_api/v1/ideas/:idea_id/permissions/:action/permissions_custom_fields' do

@@ -3,7 +3,6 @@ import { CLErrors } from 'typings';
 
 import commentsKeys from 'api/comments/keys';
 import ideasKeys from 'api/ideas/keys';
-import initiativesKeys from 'api/initiatives/keys';
 import userCommentsCount from 'api/user_comments_count/keys';
 
 import fetcher from 'utils/cl-react-query/fetcher';
@@ -29,11 +28,9 @@ const markCommentForDeletion = async ({
 
 const useMarkCommentForDeletion = ({
   ideaId,
-  initiativeId,
   parentCommentId,
 }: {
   ideaId?: string;
-  initiativeId?: string;
   parentCommentId?: string;
 }) => {
   const queryClient = useQueryClient();
@@ -43,7 +40,6 @@ const useMarkCommentForDeletion = ({
       queryClient.invalidateQueries({
         queryKey: commentKeys.list({
           ideaId,
-          initiativeId,
         }),
       });
 
@@ -57,13 +53,6 @@ const useMarkCommentForDeletion = ({
       if (parentCommentId) {
         queryClient.invalidateQueries({
           queryKey: commentsKeys.list({ commentId: parentCommentId }),
-        });
-      }
-
-      if (initiativeId) {
-        // We invalidate the initiative because the number of comments is on the initiative
-        queryClient.invalidateQueries({
-          queryKey: initiativesKeys.item({ id: initiativeId }),
         });
       }
 

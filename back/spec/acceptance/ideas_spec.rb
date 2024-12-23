@@ -253,6 +253,7 @@ resource 'Ideas' do
       let!(:baskets) { create_list(:basket, 2, ideas: [idea], phase: project.phases.first) }
       let!(:topic) { create(:topic, ideas: [idea], projects: [idea.project]) }
       let!(:user_reaction) { create(:reaction, user: @user, reactable: idea) }
+      let!(:cosponsorship) { create(:cosponsorship, idea: idea, user: @user) }
       let(:id) { idea.id }
 
       example_request 'Get one idea by id' do
@@ -265,6 +266,11 @@ resource 'Ideas' do
           slug: idea.slug,
           budget: idea.budget,
           action_descriptors: {
+            editing_idea: {
+              enabled: false,
+              disabled_reason: 'not_author',
+              future_enabled_at: nil
+            },
             commenting_idea: {
               enabled: true,
               disabled_reason: nil,
@@ -303,7 +309,8 @@ resource 'Ideas' do
           },
           author: { data: { id: idea.author_id, type: 'user' } },
           idea_status: { data: { id: idea.idea_status_id, type: 'idea_status' } },
-          user_reaction: { data: { id: user_reaction.id, type: 'reaction' } }
+          user_reaction: { data: { id: user_reaction.id, type: 'reaction' } },
+          cosponsors: { data: [{ id: cosponsorship.user_id, type: 'user' }] }
         )
       end
     end
@@ -390,6 +397,35 @@ resource 'Ideas' do
       end
     end
 
+    get 'web_api/v1/ideas/:id/similarities' do
+      with_options scope: :page do
+        parameter :number, 'Page number'
+        parameter :size, 'Number of ideas per page'
+      end
+
+      let(:embeddings) { JSON.parse(File.read('spec/fixtures/word_embeddings.json')) }
+      let!(:idea_pizza) { create(:embeddings_similarity, embedding: embeddings['pizza']).embeddable }
+      let!(:idea_burger) { create(:embeddings_similarity, embedding: embeddings['burger']).embeddable }
+      let!(:idea_moon) { create(:embeddings_similarity, embedding: embeddings['moon']).embeddable }
+      let!(:idea_bats) { create(:embeddings_similarity, embedding: embeddings['bats']).embeddable }
+      let(:id) { idea_pizza.id }
+
+      example_request 'Get similar ideas' do
+        assert_status 200
+        expect(json_parse(response_body)[:data].pluck(:id)).to eq [] # When no threshold: [idea_burger.id, idea_bats.id, idea_moon.id]
+      end
+
+      describe do
+        before { create_list(:embeddings_similarity, 10) }
+
+        example 'Do not return more than 10 inputs', document: false do
+          do_request
+          assert_status 200
+          expect(json_parse(response_body)[:data].size).to be <= 10
+        end
+      end
+    end
+
     delete 'web_api/v1/ideas/:id' do
       let(:id) { input.id }
 
@@ -400,7 +436,7 @@ resource 'Ideas' do
 
         before do
           allow_any_instance_of(IdeaPolicy).to receive(:destroy?).and_return(true)
-          input.ideas_phases.create!(phase: phase)
+          input.update!(phases: [phase])
         end
 
         example 'the count starts at 1' do

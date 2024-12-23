@@ -9,7 +9,6 @@ interface Props {
   sortAttributeName: IdeasSort;
   sortDirection?: 'ascending' | 'descending' | null;
   infoTooltip?: React.ReactChild;
-  width: string;
   onChange: () => void;
   children: React.ReactNode;
 }
@@ -18,7 +17,6 @@ const SortableHeaderCell = ({
   sortAttribute,
   sortDirection,
   sortAttributeName,
-  width,
   infoTooltip,
   onChange,
   children,
@@ -26,9 +24,10 @@ const SortableHeaderCell = ({
   return (
     <Th
       clickable
-      width={width}
       sortDirection={
-        sortAttribute === sortAttributeName && sortDirection
+        sortAttribute &&
+        sortDirection &&
+        sortAttributeName === sortAttribute.replace(/^-/, '')
           ? sortDirection
           : undefined
       }
@@ -37,6 +36,7 @@ const SortableHeaderCell = ({
       }
       infoTooltip={infoTooltip}
       onClick={onChange}
+      style={{ whiteSpace: 'nowrap' }}
     >
       {children}
     </Th>

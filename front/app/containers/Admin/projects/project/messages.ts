@@ -160,11 +160,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.totalBudget',
     defaultMessage: 'Total budget',
   },
-  totalBudgetExplanation: {
-    id: 'app.containers.AdminPage.ProjectEdit.totalBudgetExplanation',
-    defaultMessage:
-      "By default, your budget is set using your local currency. You can change your platform's currency to 'credits' or 'tokens' by contacting our support center.",
-  },
   minimum: {
     id: 'app.containers.AdminPage.ProjectEdit.minimum',
     defaultMessage: 'Minimum',
@@ -216,9 +211,9 @@ export default defineMessages({
     defaultMessage: 'Enable disliking',
   },
   disableDislikingTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.disableDislikingTooltip',
+    id: 'app.containers.AdminPage.ProjectEdit.disableDislikingTooltip2',
     defaultMessage:
-      'This will disable disliking, but liking will still be enabled. You can disable reacting completely in the Actions section of this tab.',
+      'This will enable or disable disliking, but liking will still be enabled. We recommend leaving this disabled unless you are carrying out an option analysis.',
   },
   dislikingDisabled: {
     id: 'app.containers.AdminPage.ProjectEdit.downvotingDisabled',
@@ -307,6 +302,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.trendingSortingMethod',
     defaultMessage: 'Trending',
   },
+  comments_countSortingMethod: {
+    id: 'app.containers.AdminPage.ProjectEdit.commens_countSortingMethod',
+    defaultMessage: 'Most discussed',
+  },
   randomSortingMethod: {
     id: 'app.containers.AdminPage.ProjectEdit.randomSortingMethod',
     defaultMessage: 'Random',
@@ -390,10 +389,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.surveyEmbedUrl',
     defaultMessage: 'Survey Embed URL',
   },
-  konveioDocumentAnnotationEmbedUrl: {
-    id: 'app.containers.AdminPage.ProjectEdit.konveioDocumentAnnotationEmbedUrl',
-    defaultMessage: 'Embed Konveio URL',
-  },
   titleSurveyResults: {
     id: 'app.containers.AdminPage.ProjectEdit.SurveyResults.titleSurveyResults',
     defaultMessage: 'Consult the survey answers',
@@ -424,6 +419,24 @@ export default defineMessages({
     defaultMessage:
       'Give feedback, assign topics or copy inputs to the next project phase.',
   },
+  importInputs: {
+    id: 'app.containers.AdminPage.ProjectEdit.PostManager.importInputs',
+    defaultMessage: 'Import',
+  },
+  votingShareResultsTurnedOff: {
+    id: 'app.containers.AdminPage.ProjectEdit.PostManager.votingShareResultsTurnedOff',
+    defaultMessage: 'Result sharing is turned off.',
+  },
+  votingShareResultsTurnedOff2: {
+    id: 'app.containers.AdminPage.ProjectEdit.PostManager.votingShareResultsTurnedOff2',
+    defaultMessage:
+      "Voting results won't be shared at the end of the phase unless you modify it in the phase setup.",
+  },
+  votingShareResultsTurnedOn: {
+    id: 'app.containers.AdminPage.ProjectEdit.PostManager.votingShareResultsTurnedOn2',
+    defaultMessage:
+      'These results will be automatically shared once the phase ends. Modify the end date of this phase to change when the results are shared.',
+  },
   subtitleInputProjectProposals: {
     id: 'app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputProjectProposals',
     defaultMessage: 'Manage proposals, give feedback and assign topics.',
@@ -441,6 +454,7 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.hiddenFieldsSupportArticleUrl',
     defaultMessage: 'https://support.citizenlab.co/en/articles/1641202',
   },
+  // #input_term_copy
   ideaTerm: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.ideaTerm',
     defaultMessage: 'Idea',
@@ -464,6 +478,18 @@ export default defineMessages({
   contributionTerm: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.contributionTerm',
     defaultMessage: 'Contribution',
+  },
+  proposalTerm: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.proposalTerm',
+    defaultMessage: 'Proposal',
+  },
+  initiativeTerm: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.initiativeTerm',
+    defaultMessage: 'Initiative',
+  },
+  petitionTerm: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.petitionTerm',
+    defaultMessage: 'Petition',
   },
   inputTermSelectLabel: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel',
@@ -518,20 +544,6 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.contactGovSuccessToAccess',
     defaultMessage:
       'Collecting feedback on a document is a custom feature, and is not included in your current license. Reach out to your GovSuccess Manager to learn more about it.',
-  },
-  konveioSupport: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.konveioSupport',
-    defaultMessage:
-      'Provide the link to your Konveio document here. Read our {supportArticleLink} for more information on setting up Konveio.',
-  },
-  konveioSupportPageURL: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.konveioSupportPageURL',
-    defaultMessage:
-      'https://support.citizenlab.co/en/articles/7946532-embedding-konveio-pdf-documents-for-collecting-feedback',
-  },
-  konveioSupportArticle: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.konveioSupportArticle',
-    defaultMessage: 'support article',
   },
   optionsToVoteOnDescription: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.optionsToVoteOnDescription2',
@@ -604,5 +616,13 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.screeningTooltip',
     defaultMessage:
       'Screening is not included in your current plan. Talk to your Government Success Manager or admin to unlock it.',
+  },
+  missingStartDateError: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.missingStartDateError',
+    defaultMessage: 'Missing start date',
+  },
+  missingEndDateError: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.missingEndDateError',
+    defaultMessage: 'Missing end date',
   },
 });

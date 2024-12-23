@@ -20,8 +20,8 @@ describe Analytics::PopulateDimensionsService do
       expect(Analytics::DimensionDate.count).to be >= 180
     end
 
-    it 'has 18 dimension types' do
-      expect(Analytics::DimensionType.count).to eq(18)
+    it 'has 20 dimension types' do
+      expect(Analytics::DimensionType.count).to eq(20)
     end
 
     it 'has 5 referrer types' do
@@ -48,11 +48,10 @@ describe Analytics::PopulateDimensionsService do
       expect { described_class.run }.to change(Analytics::DimensionDate, :count).by(1)
     end
 
-    # TODO: move-old-proposals-test
-    it 'creates new dates in the future and past - moving forward & adding an earlier initiative', :aggregate_failures do
+    it 'creates new dates in the future and past - moving forward & adding an earlier input', :aggregate_failures do
       travel 5.days
-      initiative_date = Analytics::DimensionDate.order(:date).first.date - 5.days
-      create(:initiative, created_at: initiative_date)
+      input_date = Analytics::DimensionDate.order(:date).first.date - 5.days
+      create(:idea, created_at: input_date)
       expect { described_class.run }.to change(Analytics::DimensionDate, :count).by(10)
     end
   end

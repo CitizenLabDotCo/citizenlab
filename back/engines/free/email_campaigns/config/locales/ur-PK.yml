@@ -1,0 +1,712 @@
+ur:
+  email_campaigns:
+    campaign_type_description:
+      "manual": سرکاری پیغامات
+      "manual_project_participants": پروجیکٹ کے شرکاء کے لیے سرکاری پیغامات
+      "admin_rights_received": ایڈمن کے حقوق مل گئے۔
+      "comment_deleted_by_admin": میرا تبصرہ حذف کرنا
+      "comment_marked_as_spam": سپیم رپورٹ پر تبصرہ کریں۔
+      "comment_on_your_comment": میرے تبصرے کا جواب
+      "comment_on_idea_you_follow": کسی خیال پر تبصرہ جس کی آپ پیروی کرتے ہیں۔
+      "comment_on_initiative_you_follow": کسی تجویز پر تبصرہ جس کی آپ پیروی کرتے ہیں۔
+      "cosponsor_of_your_initiative": ایک صارف میری تجویز کو شریک سپانسر کرنے کے لیے میری دعوت قبول کرتا ہے۔
+      "cosponsor_of_your_idea": ایک صارف میری تجویز کو شریک سپانسر کرنے کے لیے میری دعوت قبول کرتا ہے۔
+      "event_registration_confirmation": ایونٹ رجسٹریشن کی تصدیق
+      "idea_marked_as_spam": آئیڈیا سپیم رپورٹ
+      "idea_published": میرے خیال کی اشاعت
+      "initiative_assigned_to_you": مجھے ایک تجویز کی تفویض
+      "initiative_marked_as_spam": تجویز سپیم رپورٹ
+      "initiative_published": میری تجویز کی اشاعت
+      "invitation_to_cosponsor_initiative": ایک تجویز کو شریک سپانسر کرنے کی دعوت
+      "invitation_to_cosponsor_idea": ایک تجویز کو شریک سپانسر کرنے کی دعوت
+      "initiative_resubmitted_for_review": تجویز دوبارہ جائزہ کے لیے جمع کرائی گئی۔
+      "invite_received": دعوت نامہ
+      "invite_reminder": دعوت کی یاد دہانی
+      "internal_comment_on_idea_assigned_to_you": مجھے تفویض کردہ ان پٹ پر اندرونی تبصرہ
+      "internal_comment_on_idea_you_commented_internally_on": ان پٹ پر اندرونی تبصرہ جس پر میں نے اندرونی طور پر تبصرہ کیا۔
+      "internal_comment_on_idea_you_moderate": میرے زیر انتظام پروجیکٹ یا فولڈر میں ان پٹ پر اندرونی تبصرہ
+      "internal_comment_on_initiative_assigned_to_you": مجھے تفویض کردہ تجویز پر اندرونی تبصرہ
+      "internal_comment_on_initiative_you_commented_internally_on": تجویز پر اندرونی تبصرہ میں نے اندرونی طور پر تبصرہ کیا۔
+      "internal_comment_on_unassigned_initiative": غیر تفویض کردہ تجویز پر اندرونی تبصرہ
+      "internal_comment_on_unassigned_unmoderated_idea": غیر منظم پروجیکٹ میں غیر تفویض کردہ ان پٹ پر اندرونی تبصرہ
+      "internal_comment_on_your_internal_comment": میرے اندرونی تبصرے پر اندرونی تبصرہ
+      "mention_in_official_feedback": اپ ڈیٹ میں ذکر کریں۔
+      "mention_in_internal_comment": اندرونی تبصرے میں ذکر کریں۔
+      "new_comment_for_admin": ایک پروجیکٹ میں نیا تبصرہ جس میں میں معتدل ہوں۔
+      "new_idea_for_admin": ایک پروجیکٹ میں نیا آئیڈیا جس میں میں معتدل ہوں۔
+      "new_initiative_for_admin": نئی تجویز
+      "official_feedback_on_idea_you_follow": ایک خیال پر اپ ڈیٹ کریں جس کی آپ پیروی کرتے ہیں۔
+      "official_feedback_on_initiative_you_follow": اس تجویز پر اپ ڈیٹ کریں جس کی آپ پیروی کریں۔
+      "password_reset": پاس ورڈ ری سیٹ
+      "project_moderation_rights_received": پروجیکٹ کے اعتدال کے حقوق موصول ہوئے۔
+      "project_folder_moderation_rights_received": فولڈر مینیجر کے حقوق موصول ہوئے۔
+      "project_phase_started": پراجیکٹ کا نیا مرحلہ
+      "project_phase_upcoming": آنے والا نیا پروجیکٹ مرحلہ
+      "project_published": پروجیکٹ شائع ہوا۔
+      "project_review_request": پروجیکٹ کا جائزہ لینے کی درخواست
+      "project_review_state_change": پروجیکٹ کی منظوری دی گئی۔
+      "status_change_on_idea_you_follow": کسی خیال کی حیثیت کی تبدیلی جس کی آپ پیروی کرتے ہیں۔
+      "status_change_on_initiative_you_follow": کسی تجویز کی حیثیت کی تبدیلی جس کی آپ پیروی کرتے ہیں۔
+      "threshold_reached_for_admin": تجویز ووٹنگ کی حد تک پہنچ گئی۔
+      "welcome": رجسٹریشن کے بعد
+      "admin_digest": منتظمین کے لیے ہفتہ وار جائزہ
+      "moderator_digest": پروجیکٹ مینیجرز کے لیے ہفتہ وار جائزہ
+      "assignee_digest": تفویض کردہ خیالات کا ہفتہ وار جائزہ
+      "user_digest": ہفتہ وار جائزہ
+      "voting_basket_submitted": ووٹنگ کی تصدیق
+      "native_survey_not_submitted": سروے جمع نہیں ہوا۔
+      "voting_basket_not_submitted": ووٹ جمع نہیں ہوئے۔
+      "voting_last_chance": ووٹ ڈالنے کا آخری موقع
+      "voting_phase_started": ووٹنگ کے ساتھ نیا پروجیکٹ مرحلہ
+      "voting_results": ووٹنگ کے نتائج
+      "your_input_in_screening": میرا ان پٹ اسکریننگ کا منتظر ہے۔
+    general:
+      by_author: 'بذریعہ %{authorName}'
+      author_wrote: '%{authorName} نے لکھا:'
+      cta_goto_idea: 'اس خیال پر جائیں۔'
+      cta_goto_input: 'اس ان پٹ پر جائیں۔'
+      cta_goto:
+        idea: 'اس خیال پر جائیں۔'
+        question: 'اس سوال پر جائیں۔'
+        contribution: 'اس شراکت پر جائیں۔'
+        project: 'اس پروجیکٹ پر جائیں۔'
+        issue: 'اس مسئلے پر جائیں۔'
+        option: 'اس آپشن پر جائیں۔'
+        proposal: 'اس تجویز پر جائیں۔'
+        initiative: 'اس اقدام پر جائیں۔'
+        petition: 'اس عرضی پر جائیں۔'
+      cta_goto_your:
+        idea: 'اپنے خیال پر جائیں۔'
+        question: 'اپنے سوال پر جائیں۔'
+        contribution: 'اپنی شراکت پر جائیں۔'
+        project: 'اپنے پروجیکٹ پر جائیں۔'
+        issue: 'اپنے مسئلے پر جائیں۔'
+        option: 'اپنے آپشن پر جائیں۔'
+        proposal: 'اپنی تجویز پر جائیں۔'
+        initiative: 'اپنی پہل پر جائیں۔'
+        petition: 'اپنی درخواست پر جائیں۔'
+      cta_goto_proposal: 'اس تجویز پر جائیں۔'
+      cta_goto_project: 'اس پروجیکٹ پر جائیں۔'
+    schedules:
+      weekly:
+        "0": "ہفتہ وار، اتوار کو %{hourOfDay}پر"
+        "1": "ہفتہ وار، پیر کو %{hourOfDay}پر"
+        "2": "ہفتہ وار، منگل کو %{hourOfDay}پر"
+        "3": "ہفتہ وار، بدھ کو %{hourOfDay}پر"
+        "4": "ہفتہ وار، جمعرات کو %{hourOfDay}پر"
+        "5": "ہفتہ وار، جمعہ کو %{hourOfDay}پر"
+        "6": "ہفتہ وار، ہفتہ کو %{hourOfDay}پر"
+    footer:
+      "link_privacy_policy": "رازداری کی پالیسی"
+      "link_terms_conditions": "شرائط و ضوابط"
+      "link_unsubscribe": "ان سبسکرائب کریں۔"
+      "powered_by": "کی طرف سے طاقت"
+      "recipient_statement": "یہ ای میل آپ کو Go Vocal کی جانب سے %{organizationName}کی جانب سے بھیجا گیا ہے، کیونکہ آپ %{organizationLink}کے رجسٹرڈ صارف ہیں۔"
+      "unsubscribe_statement": "اگر آپ مستقبل میں یہ ای میلز وصول نہیں کرنا چاہتے ہیں تو آپ %{unsubscribeLink} کر سکتے ہیں۔"
+      "unsubscribe_text": "رکنیت ختم کریں"
+    follow:
+      "unfollow_here": "آپ کو یہ اطلاع اس آئٹم کی وجہ سے موصول ہوئی ہے جس کی آپ پیروی کرتے ہیں۔ <a href=\"%{unfollow_url}\">آپ یہاں اس کی پیروی ختم کر سکتے ہیں۔</a>"
+    manual:
+      preheader: 'آپ کے پاس %{organizationName}سے میل ہے۔'
+    comment_deleted_by_admin:
+      reason: 'آپ کا تبصرہ حذف کرنے کی وجہ:'
+      cta_view: 'اس خیال کو دیکھیں'
+      event_description: '%{organizationName} نے وہ تبصرہ حذف کر دیا جو آپ نے ایک خیال پر لکھا تھا۔'
+      main_header: '%{organizationName} نے آپ کا تبصرہ حذف کر دیا۔'
+      other_reason: '%{otherReason}'
+      inappropriate_reason: 'آپ کا تبصرہ نامناسب سمجھا گیا۔'
+      irrelevant_reason: 'آپ کا تبصرہ اس سیاق و سباق کے لیے غیر متعلقہ سمجھا گیا۔'
+      no_reason: 'کوئی وجہ نہیں بتائی گئی۔'
+      subject: 'آپ کا تبصرہ %{organizationName}کے پلیٹ فارم سے حذف کر دیا گیا ہے۔'
+      preheader: 'آپ کا تبصرہ حذف کر دیا گیا ہے۔'
+    admin_digest:
+      subject: '%{time}کی آپ کی ہفتہ وار ایڈمن رپورٹ'
+      preheader: '%{organizationName}کا ایڈمن ڈائجسٹ'
+      title_your_weekly_report: '%{firstName}، آپ کی ہفتہ وار رپورٹ'
+      text_introduction: 'ہم نے آپ کے لیے وہ ان پٹ تیار کیا ہے جس نے پچھلے ہفتے کے دوران سب سے زیادہ سرگرمی پیدا کی ہے۔ معلوم کریں کہ آپ کے پلیٹ فارم پر کیا ہو رہا ہے!'
+      cta_visit_the_platform: 'اپنے پلیٹ فارم پر جائیں۔'
+      new_users: 'نئے صارفین'
+      new_inputs: 'نئے ان پٹ'
+      new_comments: 'نئے تبصرے'
+      title_activity_past_week: 'پچھلے ہفتے کی سرگرمی'
+      title_no_activity_past_week: 'پچھلے ہفتے کوئی سرگرمی نہیں تھی۔'
+      title_initiatives_past_week: 'پچھلے ہفتے کی نئی تجاویز'
+      reached_threshold: 'دہلیز پر پہنچ گیا۔'
+      yesterday_by_author: 'کل بذریعہ %{author}'
+      today_by_author: 'آج بذریعہ %{author}'
+      x_days_ago_by_author: '%{x} دن پہلے بذریعہ %{author}'
+    admin_rights_received:
+      cta_manage_platform: 'اپنے پلیٹ فارم کا نظم کریں۔'
+      message_you_became_administrator: 'آپ کو %{organizationName}کے شرکت کے پلیٹ فارم کے منتظم کے حقوق دیے گئے ہیں۔'
+      preheader: 'آپ کو %{organizationName}کے شرکت کے پلیٹ فارم کے منتظم کے حقوق دیئے گئے تھے۔'
+      subject: 'آپ %{organizationName}کے پلیٹ فارم پر ایڈمنسٹریٹر بن گئے۔'
+      text_create_participatory_process: 'ایڈمنسٹریٹر کے طور پر، آپ شرکت کے نئے پروجیکٹس بنا اور ترتیب دے سکتے ہیں۔ آپ ٹائم لائن کا استعمال کرتے ہوئے نئے مراحل شامل کر سکتے ہیں۔ ان مراحل میں سے ہر ایک کا خیال پوسٹ کرنے، تبصرہ کرنے اور ووٹنگ کے حوالے سے اپنا طرز عمل ہو سکتا ہے۔'
+      text_moderate_analyse_input: 'پروجیکٹ شروع ہونے کے بعد، پہلے آئیڈیاز سامنے آئیں گے۔ آپ کو تمام اہم سرگرمیوں کے ساتھ ہفتہ وار رپورٹس موصول ہوں گی تاکہ آپ سب سے اوپر رہیں۔ آئیڈیاز کا جائزہ آپ کو ان پٹ کو اعتدال میں لانے اور اس پر کارروائی کرنے میں تعاون کرنے میں مدد کرے گا۔'
+      text_platform_setup: 'بطور منتظم آپ اپنا شرکت کا پلیٹ فارم ترتیب دے سکتے ہیں۔ لوگو، تصاویر اور رنگوں کا انتخاب کریں، اپنے ہوم پیج پر ذاتی پیغام لکھیں، دعوت نامے بھیجیں، اس بات کی وضاحت کریں کہ آپ اپنے صارفین کے بارے میں کیا جاننا چاہتے ہیں،...'
+      title_create_participatory_process: 'شراکتی عمل کو ڈیزائن کریں۔'
+      title_moderate_analyse_input: 'ان پٹ کو معتدل اور تجزیہ کریں۔'
+      title_platform_setup: 'اپنا پلیٹ فارم ترتیب دیں۔'
+      title_what_can_you_do_administrator: 'آپ بطور منتظم کیا کر سکتے ہیں؟'
+      title_you_became_administrator: 'آپ ایڈمنسٹریٹر بن گئے۔'
+    comment_marked_as_spam:
+      by_author: 'بذریعہ %{authorName}'
+      commented: '%{authorName} تبصرہ کیا:'
+      cta_review_comment: 'تبصرہ کا جائزہ لیں۔'
+      days_ago: '%{numberOfDays} دن پہلے'
+      event_description: '<strong>''%{post}''</strong> پر پوسٹ کردہ درج ذیل تبصرے کی اطلاع ملی:'
+      inappropriate_content: 'تبصرہ نامناسب یا ناگوار ہے۔'
+      preheader: 'سپیم کے طور پر رپورٹ ہونے والے اس تبصرے پر عمل کریں۔'
+      reported_this_because: '%{reporterFirstName} نے اس کی اطلاع دی کیونکہ:'
+      subject: '%{organizationName}: %{firstName} %{lastName} نے اس تبصرے کی بطور سپام اطلاع دی'
+      title_comment_spam_report: '%{firstName} %{lastName} نے اس تبصرے کی بطور سپام اطلاع دی۔'
+      today: آج
+      wrong_content: 'تبصرہ متعلقہ نہیں ہے۔'
+      yesterday: کل
+    cosponsor_of_your_idea:
+      cta_reply_to: 'اپنی تجویز دیکھیں'
+      event_description: 'مبارک ہو! %{cosponsorName} نے آپ کی تجویز کو شریک سپانسر کرنے کے لیے آپ کی دعوت قبول کر لی ہے۔'
+      main_header: '%{cosponsorName} نے آپ کی تجویز کو شریک سپانسر کرنے کے لیے آپ کی دعوت قبول کر لی ہے۔'
+      subject: '%{cosponsorName} نے آپ کی تجویز کو شریک سپانسر کرنے کے لیے آپ کی دعوت قبول کر لی ہے۔'
+      preheader: '%{cosponsorName} نے آپ کی تجویز کو شریک سپانسر کرنے کے لیے آپ کی دعوت قبول کر لی ہے۔'
+    cosponsor_of_your_initiative:
+      cta_reply_to: 'اپنی تجویز دیکھیں'
+      event_description_initiative: 'مبارک ہو! %{cosponsorName} نے آپ کی تجویز کو شریک سپانسر کرنے کے لیے آپ کی دعوت قبول کر لی ہے۔'
+      main_header: '%{cosponsorName} نے آپ کی تجویز کو شریک سپانسر کرنے کے لیے آپ کی دعوت قبول کر لی ہے۔'
+      subject: '%{cosponsorName} نے آپ کی تجویز کو شریک سپانسر کرنے کے لیے آپ کی دعوت قبول کر لی ہے۔'
+      preheader_initiative: '%{cosponsorName} نے آپ کی تجویز کو شریک سپانسر کرنے کے لیے آپ کی دعوت قبول کر لی ہے۔'
+    assignee_digest:
+      subject: 'خیالات جن کے لیے آپ کے تاثرات درکار ہیں: %{numberIdeas}'
+      preheader: '%{organizationName}کا تفویض کردہ ڈائجسٹ'
+      title_your_weekly_report: '%{firstName}، شہری ان پٹ آپ کے تاثرات کا منتظر ہے۔'
+      cta_manage_your_input: 'اپنے ان پٹ کا نظم کریں۔'
+      x_inputs_need_your_feedback: 'ان پٹ کو آپ کے تاثرات کی ضرورت ہے۔'
+      title_assignment_past_week: 'آپ کو تفویض کردہ تازہ ترین آئیڈیاز'
+      title_no_assignment_past_week: 'پچھلے ہفتے آپ کو کوئی نیا آئیڈیا تفویض نہیں کیا گیا۔'
+      yesterday_by_author: 'کل بذریعہ %{author}'
+      today_by_author: 'آج بذریعہ %{author}'
+      x_days_ago_by_author: '%{x} دن پہلے بذریعہ %{author}'
+      title_successful_past_week: 'آپ کو تفویض کیا گیا جو دہلیز تک پہنچ گیا۔'
+    idea_marked_as_spam:
+      cta_review: 'جائزہ لیں'
+      report_inappropriate_offensive_content: 'مجھے یہ مواد نامناسب یا ناگوار لگتا ہے۔'
+      report_not_an_idea: 'یہ مواد کوئی آئیڈیا نہیں ہے اور اس کا یہاں سے تعلق نہیں ہے۔'
+      subject: 'آپ کے پاس %{organizationName}کے پلیٹ فارم پر ایک سپیم رپورٹ ہے۔'
+      preheader: 'اس سپیم رپورٹ پر کارروائی کریں۔'
+      reported_this_because: '%{reporterFirstName} نے اس کی اطلاع دی کیونکہ:'
+      title_spam_report: '%{firstName} %{lastName} نے فضول کی اطلاع دی۔'
+    initiative_marked_as_spam:
+      cta_review_initiative: 'تجویز کا جائزہ لیں۔'
+      report_inappropriate_offensive_content: 'مجھے یہ مواد نامناسب یا ناگوار لگتا ہے۔'
+      report_not_an_initiative: 'یہ مواد کوئی تجویز نہیں ہے اور اس کا یہاں سے تعلق نہیں ہے۔'
+      subject: 'آپ کے پاس %{organizationName}کے پلیٹ فارم پر ایک سپیم رپورٹ ہے۔'
+      preheader: 'اس سپیم رپورٹ پر کارروائی کریں۔'
+      reported_this_because: '%{reporterFirstName} نے اس کی اطلاع دی کیونکہ:'
+      title_spam_report: '%{firstName} %{lastName} نے فضول کی اطلاع دی۔'
+    initiative_assigned_to_you:
+      cta_reply_to: '%{authorName}کو رائے دیں۔'
+      event_description_initiative: 'آپ کو ایک تجویز تفویض کی گئی ہے۔ آفیشل اپڈیٹ لکھ کر یا اس کا اسٹیٹس بدل کر رائے دیں۔'
+      main_header: '%{firstName}، آپ کے پاس ایک نئی اسائنمنٹ ہے۔'
+      subject: 'آپ کے پاس %{organizationName}کے پلیٹ فارم پر ایک اسائنمنٹ ہے۔'
+      preheader_initiative: '%{authorName} کی تجویز آپ کو تفویض کی گئی ہے۔'
+    invitation_to_cosponsor_idea:
+      cta_reply_to: 'اس تجویز کو شریک سپانسر کریں۔'
+      event_description: '%{authorName} نے ایک نئی تجویز تیار کی ہے اور آپ چاہیں گے کہ آپ اسے شریک اسپانسر کریں۔'
+      event_description_cosponsoring: 'کسی تجویز کو شریک کفالت کرنے کا مطلب یہ ہے کہ <strong>آپ کا نام تجویز کے دیگر شریک کفیلوں کے ناموں کے ساتھ</strong> دکھایا جائے گا۔'
+      event_description_before_action: 'تجویز دیکھنے اور دعوت نامہ قبول کرنے کے لیے، آپ کو اپنے اکاؤنٹ میں لاگ ان ہونا چاہیے۔'
+      event_description_action: 'تجویز پڑھنے کے لیے نیچے کلک کریں۔'
+      main_header: 'آپ کو ایک تجویز کو شریک سپانسر کرنے کے لیے مدعو کیا گیا ہے۔'
+      subject: 'آپ کو ایک تجویز کو شریک سپانسر کرنے کے لیے مدعو کیا گیا ہے۔'
+      preheader: 'آپ کو %{authorName}کی تجویز کو شریک سپانسر کرنے کے لیے مدعو کیا گیا ہے۔'
+    invitation_to_cosponsor_initiative:
+      cta_reply_to: 'اس تجویز کو شریک سپانسر کریں۔'
+      event_description_initiative: '%{authorName} نے ایک نئی تجویز تیار کی ہے اور آپ چاہیں گے کہ آپ اسے شریک اسپانسر کریں۔'
+      event_description_cosponsoring: 'کسی تجویز کو شریک کفالت کرنے کا مطلب یہ ہے کہ <strong>آپ کا نام تجویز کے دیگر شریک کفیلوں کے ناموں کے ساتھ</strong> دکھایا جائے گا۔'
+      event_description_before_action: 'تجویز دیکھنے اور دعوت نامہ قبول کرنے کے لیے، آپ کو اپنے اکاؤنٹ میں لاگ ان ہونا چاہیے۔'
+      event_description_action: 'تجویز پڑھنے کے لیے نیچے کلک کریں۔'
+      main_header: 'آپ کو ایک تجویز کو شریک سپانسر کرنے کے لیے مدعو کیا گیا ہے۔'
+      subject: 'آپ کو ایک تجویز کو شریک سپانسر کرنے کے لیے مدعو کیا گیا ہے۔'
+      preheader_initiative: 'آپ کو %{authorName}کی تجویز کو شریک سپانسر کرنے کے لیے مدعو کیا گیا ہے۔'
+    initiative_resubmitted_for_review:
+      by_author: 'بذریعہ %{authorName}'
+      cta_reply_to: '%{authorName}کو رائے دیں۔'
+      event_description_initiative: 'ایک تجویز نظرثانی کے لیے دوبارہ جمع کرائی گئی ہے۔ آفیشل اپڈیٹ لکھ کر یا اس کا اسٹیٹس بدل کر رائے دیں۔'
+      main_header: '%{firstName}، آپ کے پاس جائزہ لینے کی تجویز ہے۔'
+      subject: 'آپ کے پاس %{organizationName}کے پلیٹ فارم پر جائزہ لینے کی تجویز ہے۔'
+      preheader_initiative: '%{authorName} کی تجویز کو نظرثانی کے لیے دوبارہ جمع کر دیا گیا ہے۔'
+    invite_reminder:
+      cta_accept_invitation: 'آپ کی دعوت قبول کریں۔'
+      invitation_header: 'آپ کا دعوت نامہ زیر التواء ہے۔'
+      preheader: '%{organizationName} نے کچھ دن پہلے آپ کو ان کے شرکت کے پلیٹ فارم میں شامل ہونے کا دعوت نامہ بھیجا تھا۔'
+      invitation_expiry_message: 'اس دعوت کی میعاد تقریباً %{expiryDaysRemaining} دنوں میں ختم ہو جاتی ہے۔'
+      subject: '%{organizationName}کے شرکت کے پلیٹ فارم کے لیے زیر التواء دعوت'
+    invite_received:
+      added_a_message: '%{organizationName} نے درج ذیل پیغام لکھا:'
+      cta_accept_invitation: 'آپ کی دعوت قبول کریں۔'
+      invitation_header: 'آپ مدعو ہیں!'
+      invitation_header_message: '%{organizationName} نے آپ کو اپنے شرکت کے پلیٹ فارم پر مدعو کیا۔'
+      invitation_expiry_message: 'اس دعوت کی میعاد %{expiryDays} دنوں میں ختم ہو جائے گی۔'
+      preheader: '%{organizationName} نے آپ کو ان کے شرکت کے پلیٹ فارم میں شامل ہونے کا دعوت نامہ بھیجا ہے۔'
+      subject: 'آپ کو %{organizationName}کے پلیٹ فارم میں شامل ہونے کی دعوت دی جاتی ہے۔'
+    initiative_published:
+      action_add_image: '%{addImageLink} مرئیت کو بڑھانے کے لیے'
+      action_published_initiative: 'شائع شدہ تجویز'
+      action_send_email: 'اپنے رابطوں کو %{sendEmailLink}بھیجیں۔'
+      action_share_fb: 'اپنے دوستوں کو %{fbLink}پر بتائیں'
+      action_share_link: '%{link}کاپی کر کے کسی بھی چینل کے ذریعے اس کا اشتراک کریں۔'
+      action_share_twitter: 'اپنے پیروکاروں کو %{twitterLink}پر مطلع کریں۔'
+      link: لنک
+      main_header: 'آپ نے ایک تجویز پوسٹ کی! آئیے اس کے لیے حمایت جمع کریں۔'
+      message_next_steps: '%{userFirstName}، آپ کی تجویز %{organizationName}کے شرکت کے پلیٹ فارم پر کامیابی کے ساتھ شائع ہو چکی ہے۔ جب لوگ آپ کی تجویز کے ساتھ تعامل کرتے ہیں تو آپ کو مطلع کیا جائے گا۔ ذیل میں معلوم کریں کہ آپ اگلے کون سے اقدامات کر سکتے ہیں۔'
+      message_get_votes: 'ووٹنگ کی حد تک پہنچیں:'
+      preheader: '%{organizationName}کے لیے اپنی تجویز %{initiativeTitle} شیئر کرنے کا شکریہ۔ اگلا مرحلہ یہ ہے کہ آپ کی تجویز کو اپنے نیٹ ورک پر شیئر کرکے اس کے لیے تعاون حاصل کریں۔'
+      send_email: ای میل
+      subject: 'آپ کی تجویز %{organizationName}کے پلیٹ فارم پر شائع ہوئی تھی۔'
+    mention_in_comment:
+      cta_reply_to: '%{commentAuthor}کو جواب دیں۔'
+      event_description: '%{commentAuthorFull} نے ''%{post}'' خیال پر اپنے تبصرے میں آپ کا ذکر کیا ہے۔ %{commentAuthor}کے ساتھ گفتگو میں داخل ہونے کے لیے نیچے دیے گئے لنک پر کلک کریں۔'
+      main_header: 'لوگ آپ کے بارے میں بات کر رہے ہیں۔'
+      subject: '%{organizationName}کے پلیٹ فارم پر کسی نے آپ کا تذکرہ کیا۔'
+      preheader: '%{commentAuthor} نے ایک تبصرہ میں آپ کا ذکر کیا۔'
+    mention_in_internal_comment:
+      cta_reply_to: '%{firstName}کے ذریعے تبصرہ دیکھیں'
+      event_description: '%{authorNameFull} نے اندرونی تبصرے میں آپ کا تذکرہ کیا۔'
+      subject: '%{firstName} نے اندرونی تبصرے میں آپ کا تذکرہ کیا۔'
+      main_header: '%{firstName} نے اندرونی تبصرے میں آپ کا تذکرہ کیا۔'
+      preheader: '%{authorNameFull} نے اندرونی تبصرے میں آپ کا تذکرہ کیا۔'
+    moderator_digest:
+      subject: '%{time}کی آپ کی ہفتہ وار پروجیکٹ مینیجر رپورٹ'
+      preheader: '%{organizationName}کا پروجیکٹ مینیجر ڈائجسٹ'
+      title_your_weekly_report: '%{firstName}، آپ کی ہفتہ وار رپورٹ'
+      text_introduction: 'ہم نے آپ کے لیے وہ ان پٹ تیار کیا ہے جس نے پچھلے ہفتے کے دوران سب سے زیادہ سرگرمی پیدا کی ہے۔ معلوم کریں کہ آپ کے پروجیکٹ کے ساتھ کیا ہو رہا ہے!'
+      cta_manage: 'اپنے پروجیکٹ کا نظم کریں۔'
+      new_users: 'نئے صارفین'
+      new_ideas: 'نئے خیالات'
+      new_comments: 'نئے تبصرے'
+      title_inputs_past_week: 'پچھلے ہفتے کے نئے ان پٹ'
+      title_no_inputs_past_week: 'پچھلے ہفتے میں کوئی نیا ان پٹ نہیں ہے۔'
+      title_threshold_reached: پچھلے ہفتے کی حد تک پہنچ گئی۔
+      yesterday_by_author: 'کل بذریعہ %{author}'
+      today_by_author: 'آج بذریعہ %{author}'
+      x_days_ago_by_author: '%{x} دن پہلے بذریعہ %{author}'
+    new_comment_for_admin:
+      commented: '%{authorFirstName} نے تبصرہ کیا:'
+      cta_reply_to: '%{commentAuthor}کا تبصرہ دیکھیں'
+      days_ago: '%{numberOfDays} دن پہلے'
+      event_description: '%{authorName} نے آپ کے پلیٹ فارم پر ایک نیا تبصرہ شامل کیا۔'
+      main_header: '%{firstName}، آپ کے پلیٹ فارم پر ایک نیا تبصرہ پوسٹ کیا گیا ہے۔'
+      subject: '%{organizationName}کے پلیٹ فارم پر ایک نیا تبصرہ پوسٹ کیا گیا ہے۔'
+      preheader: '%{authorName} نے ایک تبصرہ چھوڑا۔'
+      today: آج
+      yesterday: کل
+    comment_on_idea_you_follow:
+      cta_reply_to: '%{commentAuthor}کو جواب دیں۔'
+      event_description: '%{authorNameFull} placed a reaction on ''%{inputTitle}''. Click the button below to continue the conversation with %{authorName}.'
+      main_header:
+        idea: '%{authorName} نے ایک خیال پر تبصرہ کیا جس کی آپ پیروی کرتے ہیں۔'
+        question: '%{authorName} نے اس سوال پر تبصرہ کیا جس کی آپ پیروی کرتے ہیں۔'
+        contribution: '%{authorName} نے اس شراکت پر تبصرہ کیا جس کی آپ پیروی کرتے ہیں۔'
+        project: '%{authorName} نے اس پروجیکٹ پر تبصرہ کیا جس کی آپ پیروی کرتے ہیں۔'
+        issue: '%{authorName} نے اس مسئلے پر تبصرہ کیا جس کی آپ پیروی کرتے ہیں۔'
+        option: '%{authorName} نے ایک آپشن پر تبصرہ کیا جس کی آپ پیروی کرتے ہیں۔'
+        proposal: '%{authorName} نے اس تجویز پر تبصرہ کیا جس کی آپ پیروی کرتے ہیں۔'
+        initiative: '%{authorName} نے اس اقدام پر تبصرہ کیا جس کی آپ پیروی کرتے ہیں۔'
+        petition: '%{authorName} نے آپ کی پیروی کی درخواست پر تبصرہ کیا۔'
+      subject: 'There''s a new comment on "%{input_title}"'
+      preheader: '%{authorName} نے %{organizationName}کے لیے ایک خیال پر تبصرہ چھوڑا۔'
+    comment_on_initiative_you_follow:
+      cta_reply_to: '%{commentAuthor}کو جواب دیں۔'
+      event_description: '%{authorNameFull} نے تجویز ''%{initiativeTitle}'' پر رد عمل ظاہر کیا۔ %{authorName}کے ساتھ بات چیت جاری رکھنے کے لیے نیچے دیئے گئے بٹن پر کلک کریں۔'
+      main_header: '%{commentAuthor} نے ایک تجویز پر تبصرہ کیا جس کی آپ پیروی کرتے ہیں۔'
+      subject: 'آپ جس تجویز کی پیروی کرتے ہیں اس پر ایک نیا تبصرہ ہے۔'
+      preheader: '%{authorName} نے %{organizationName}کی تجویز پر ایک تبصرہ چھوڑا۔'
+    new_initiative_for_admin:
+      cta_reply_to: '%{authorName}کو رائے دیں۔'
+      event_description: '%{authorName} نے آپ کے پلیٹ فارم پر ایک نئی تجویز شائع کی ہے۔ اسے ابھی دریافت کریں، کچھ رائے دیں یا اس کی حیثیت تبدیل کریں!'
+      main_header: '%{firstName}، آپ کے پلیٹ فارم پر ایک نئی تجویز شائع کی گئی ہے۔'
+      subject: 'کسی نے %{organizationName}کے پلیٹ فارم پر ایک نئی تجویز شائع کی۔'
+      preheader: '%{authorName} نے آپ کے پلیٹ فارم پر ایک نئی تجویز شائع کی۔'
+    new_idea_for_admin:
+      main_header_publication: 'آپ کے پلیٹ فارم پر ایک نیا ان پٹ شائع کیا گیا ہے۔'
+      event_description_publication: '%{authorName} نے آپ کے پلیٹ فارم پر ایک نیا ان پٹ جمع کرایا ہے۔ اسے ابھی دریافت کریں، کچھ رائے دیں یا اس کی حیثیت تبدیل کریں!'
+      cta_publication: '%{authorName}کو رائے دیں۔'
+      main_header_prescreening: 'ایک ان پٹ کے لیے آپ کا جائزہ درکار ہے۔'
+      event_description_prescreening: '%{authorName} نے آپ کے پلیٹ فارم پر ایک نیا ان پٹ جمع کرایا ہے۔'
+      input_not_visible_prescreening: '<b>ان پٹ اس وقت تک نظر نہیں آئے گا</b> جب تک آپ اس کی حیثیت میں ترمیم نہیں کرتے ہیں۔'
+      cta_prescreening: 'ان پٹ کا جائزہ لیں۔'
+      days_ago: '%{numberOfDays} دن پہلے'
+      preheader: '%{authorName} نے آپ کے پلیٹ فارم پر ایک نیا خیال شائع کیا۔'
+      today: آج
+      yesterday: کل
+    comment_on_your_comment:
+      cta_reply_to: '%{firstName}کو جواب دیں۔'
+      event_description: '%{authorNameFull} نے شرکت کے پلیٹ فارم پر ''%{post}'' پر آپ کے تبصرے کا جواب لکھا۔ %{authorName}کے ساتھ بات چیت جاری رکھنے کے لیے نیچے دیئے گئے بٹن پر کلک کریں۔'
+      subject: 'آپ کو %{organizationName}کے پلیٹ فارم پر آپ کے تبصرے کا جواب موصول ہوا ہے۔'
+      main_header: '%{authorName} نے آپ کے تبصرے کا جواب دیا۔'
+      preheader: '%{authorName} نے %{organizationName}کے پلیٹ فارم پر آپ کے تبصرے کا جواب دیا'
+      replied: '%{authorFirstName} نے جواب دیا:'
+    internal_comment_on_your_internal_comment:
+      cta_reply_to: '%{firstName}کے ذریعے تبصرہ دیکھیں'
+      event_description: '%{authorNameFull} نے آپ کے اندرونی تبصرے پر تبصرہ کیا۔'
+      subject: 'آپ کو ''%{post}'' پر اپنے اندرونی تبصرے پر تبصرہ موصول ہوا ہے۔'
+      main_header: 'آپ کو ''%{post}'' پر اپنے اندرونی تبصرے پر تبصرہ موصول ہوا ہے۔'
+      preheader: '%{authorName} نے ''%{post}'' پر آپ کے اندرونی تبصرے کا جواب دیا'
+    internal_comment_on_idea_assigned_to_you:
+      cta_reply_to: '%{firstName}کے ذریعے تبصرہ دیکھیں'
+      event_description: '%{authorNameFull} نے آپ کو تفویض کردہ ان پٹ پر اندرونی طور پر تبصرہ کیا۔'
+      subject: '''%{post}'' میں ایک نیا داخلی تبصرہ ہے۔'
+      main_header: '''%{post}'' میں ایک نیا داخلی تبصرہ ہے۔'
+      preheader: '''%{post}'' میں ایک نیا داخلی تبصرہ ہے۔'
+    internal_comment_on_idea_you_commented_internally_on:
+      cta_reply_to: '%{firstName}کے ذریعے تبصرہ دیکھیں'
+      event_description: '%{authorNameFull} نے اندرونی طور پر ایک ان پٹ پر تبصرہ کیا جس پر آپ نے اندرونی طور پر تبصرہ کیا۔'
+      subject: '''%{post}'' میں ایک نیا داخلی تبصرہ ہے۔'
+      main_header: '''%{post}'' میں ایک نیا داخلی تبصرہ ہے۔'
+      preheader: '''%{post}'' میں ایک نیا داخلی تبصرہ ہے۔'
+    internal_comment_on_idea_you_moderate:
+      cta_reply_to: '%{firstName}کے ذریعے تبصرہ دیکھیں'
+      event_description: '%{authorNameFull} نے آپ کے زیر انتظام کسی پروجیکٹ یا فولڈر میں ان پٹ پر اندرونی طور پر تبصرہ کیا۔'
+      subject: '''%{post}'' میں ایک نیا داخلی تبصرہ ہے۔'
+      main_header: '''%{post}'' میں ایک نیا داخلی تبصرہ ہے۔'
+      preheader: '''%{post}'' میں ایک نیا داخلی تبصرہ ہے۔'
+    internal_comment_on_initiative_assigned_to_you:
+      cta_reply_to: '%{firstName}کے ذریعے تبصرہ دیکھیں'
+      event_description: '%{authorNameFull} نے آپ کو تفویض کردہ تجویز پر اندرونی طور پر تبصرہ کیا۔'
+      subject: '''%{post}'' میں ایک نیا داخلی تبصرہ ہے۔'
+      main_header: '''%{post}'' میں ایک نیا داخلی تبصرہ ہے۔'
+      preheader: '''%{post}'' میں ایک نیا داخلی تبصرہ ہے۔'
+    internal_comment_on_initiative_you_commented_internally_on:
+      cta_reply_to: '%{firstName}کے ذریعے تبصرہ دیکھیں'
+      event_description: '%{authorNameFull} نے اندرونی طور پر اس تجویز پر تبصرہ کیا جس پر آپ نے اندرونی طور پر تبصرہ کیا۔'
+      subject: '''%{post}'' میں ایک نیا داخلی تبصرہ ہے۔'
+      main_header: '''%{post}'' میں ایک نیا داخلی تبصرہ ہے۔'
+      preheader: '''%{post}'' میں ایک نیا داخلی تبصرہ ہے۔'
+    internal_comment_on_unassigned_initiative:
+      cta_reply_to: '%{firstName}کے ذریعے تبصرہ دیکھیں'
+      event_description: '%{authorNameFull} نے غیر تفویض کردہ تجویز پر اندرونی طور پر تبصرہ کیا۔'
+      subject: '''%{post}'' میں ایک نیا داخلی تبصرہ ہے۔'
+      main_header: '''%{post}'' میں ایک نیا داخلی تبصرہ ہے۔'
+      preheader: '''%{post}'' میں ایک نیا داخلی تبصرہ ہے۔'
+    internal_comment_on_unassigned_unmoderated_idea:
+      cta_reply_to: '%{firstName}کے ذریعے تبصرہ دیکھیں'
+      event_description: '%{authorNameFull} نے غیر منظم پروجیکٹ میں غیر تفویض کردہ ان پٹ پر اندرونی طور پر تبصرہ کیا۔'
+      subject: '''%{post}'' میں ایک نیا داخلی تبصرہ ہے۔'
+      main_header: '''%{post}'' میں ایک نیا داخلی تبصرہ ہے۔'
+      preheader: '''%{post}'' میں ایک نیا داخلی تبصرہ ہے۔'
+    official_feedback_on_idea_you_follow:
+      header_message: '%{feedback_author_name} gave an update on ''%{input_title}''.'
+      header_title: 'There''s an update on "%{input_title}"'
+      subject: 'Official feedback was posted on "%{input_title}"'
+      preheader: 'There''s an update on an input you follow'
+    official_feedback_on_initiative_you_follow:
+      header_message: '%{officialName} نے تجویز ''%{initiativeTitle}'' پر ایک تازہ کاری دی۔ %{organizationName}کے ساتھ گفتگو میں داخل ہونے کے لیے نیچے کے بٹن پر کلک کریں۔'
+      header_title: 'آپ کی پیروی کردہ تجویز پر ایک اپ ڈیٹ ہے۔'
+      subject: 'آپ جس تجویز کی پیروی کرتے ہیں اسے %{organizationName}کے پلیٹ فارم پر ایک آفیشل اپ ڈیٹ موصول ہوا ہے۔'
+      preheader: 'آپ کی پیروی کردہ تجویز پر ایک اپ ڈیٹ ہے۔'
+    mention_in_official_feedback:
+      cta_reply_to: '%{organizationName}کو جواب دیں۔'
+      event_description: '%{organizationName} نے ''%{post}'' خیال پر اپنے تاثرات میں آپ کا ذکر کیا۔ %{organizationName}کے ساتھ گفتگو میں داخل ہونے کے لیے نیچے دیے گئے لنک پر کلک کریں۔'
+      main_header: 'آپ کا ذکر ہو چکا ہے۔'
+      subject: '%{organizationName} نے اپنے تاثرات میں آپ کا ذکر کیا۔'
+      preheader: '%{commentAuthor} نے تاثرات میں آپ کا ذکر کیا۔'
+    project_moderation_rights_received:
+      cta_manage_project: 'اس پروجیکٹ کا انتظام کریں۔'
+      message_you_became_moderator: '%{organizationName} کے شرکت کے پلیٹ فارم کے منتظم نے ابھی آپ کو درج ذیل پروجیکٹ کا پروجیکٹ مینیجر بنایا ہے:'
+      no_ideas: 'ابھی تک کوئی خیال نہیں ہے۔'
+      preheader: '%{organizationName} کے شرکت کے پلیٹ فارم کے منتظم نے ابھی آپ کو درج ذیل پروجیکٹ کا پروجیکٹ مینیجر بنایا ہے'
+      subject: 'آپ %{organizationName}کے پلیٹ فارم پر پروجیکٹ مینیجر بن گئے۔'
+      text_design_participatory_process: 'ایک پروجیکٹ مینیجر کے طور پر، آپ کنفیگر کر سکتے ہیں کہ صارف آپ کے پروجیکٹ کے اندر کس طرح تعامل کرتے ہیں۔ آپ ٹائم لائن کا استعمال کرتے ہوئے نئے مراحل شامل کر سکتے ہیں۔ ان مراحل میں سے ہر ایک کا خیال پوسٹ کرنے، تبصرہ کرنے اور ووٹنگ کے حوالے سے اپنا طرز عمل ہو سکتا ہے۔'
+      text_moderate_analyse_input: 'پروجیکٹ شروع ہونے کے بعد، پہلے آئیڈیاز سامنے آئیں گے۔ آپ کو تمام اہم سرگرمیوں کے ساتھ ہفتہ وار رپورٹس موصول ہوں گی تاکہ آپ سب سے اوپر رہیں۔ آپ کے پروجیکٹ مینیجر ویو میں آئیڈیاز کا جائزہ آپ کو یہ سمجھنے میں مدد کرے گا کہ کن آئیڈیاز کو سب سے زیادہ پسند اور ناپسندیدگی ملی ہے۔'
+      text_share_project_information: 'آپ جو خیالات حاصل کر رہے ہیں ان کے معیار کو بڑھانے کے لیے، کافی معلومات کا اشتراک کرنا کلیدی حیثیت رکھتا ہے: پروجیکٹ کی تفصیل شامل کریں، تصاویر منسلک کریں (بشمول خاکے اور منصوبے)، اور جاری تمام متعلقہ واقعات سے رابطہ کریں۔ یاد رکھیں: اچھی معلومات اچھی شرکت سے پہلے ہوتی ہے!'
+      title_design_participatory_process: 'شراکتی عمل کو ڈیزائن کریں۔'
+      title_moderate_analyse_input: 'ان پٹ کو معتدل اور تجزیہ کریں۔'
+      title_share_project_information: 'پروجیکٹ کی معلومات فراہم کریں۔'
+      title_what_can_you_do_moderator: 'پروجیکٹ مینیجر کے طور پر آپ کیا کر سکتے ہیں؟'
+      title_you_became_moderator: 'آپ پروجیکٹ مینیجر بن گئے۔'
+      x_ideas: '%{numberOfIdeas} خیالات'
+    project_folder_moderation_rights_received:
+      cta_view_folder_button: 'اس فولڈر کو دیکھیں'
+      message_added_as_folderadmin: 'آپ کو درج ذیل فولڈر کے لیے %{organizationName}کے شرکت کے پلیٹ فارم پر فولڈر مینیجر کے حقوق دیے گئے ہیں:'
+      no_projects: 'ابھی تک کوئی پروجیکٹ نہیں ہے۔'
+      preheader: '%{organizationName} کے شرکت پلیٹ فارم کے منتظم نے ابھی آپ کو درج ذیل فولڈر کا مینیجر بنایا ہے'
+      subject: 'آپ %{organizationName}کے شرکت کے پلیٹ فارم پر پروجیکٹ فولڈر مینیجر بن گئے۔'
+      text_manage_folder: 'ایک فولڈر ایک ساتھ کئی شراکتی منصوبوں کو منظم کرنے کا طریقہ ہے۔ فولڈر مینیجر کے طور پر، آپ فولڈر اور فولڈر کی تفصیل میں ترمیم کر سکتے ہیں اور نئے پروجیکٹ بنا سکتے ہیں (پروجیکٹس کو حذف کرنے کے لیے، اپنے پلیٹ فارم ایڈمنسٹریٹر سے رابطہ کریں)۔ آپ کے پاس فولڈر کے اندر موجود تمام پروجیکٹس پر پروجیکٹ مینجمنٹ کے حقوق بھی ہوں گے، جس سے آپ پروجیکٹس میں ترمیم کرسکتے ہیں، ان پٹس کا نظم کرسکتے ہیں اور شرکاء کو ای میل کرسکتے ہیں۔'
+      text_moderate_analyse_input: 'پروجیکٹ شروع ہونے کے بعد، پہلے ان پٹ آنا شروع ہو جائیں گے۔ آپ کو اہم سرگرمیوں کے ساتھ ہفتہ وار رپورٹس موصول ہوں گی تاکہ آپ جو کچھ ہو رہا ہے اس سے باخبر رہ سکیں۔ آپ کے ''منیج پلیٹ فارم'' پینل میں ان پٹ مینیجر آپ کو ان پٹ کو دیکھنے اور اس کا نظم کرنے کی اجازت دیتا ہے، بشمول اسٹیٹس تفویض کرنا اور پوسٹس اور تبصروں کا جواب دینا۔'
+      text_design_participatory_process: 'آپ اپنے فولڈر میں شرکت کے مختلف منصوبوں کا نظم کر سکتے ہیں - شرکت کے طریقہ کار کو ترتیب دیں، پروجیکٹ کی تفصیل شامل کریں، تصاویر منسلک کریں، اور متعلقہ واقعات سے بات چیت کریں۔ آپ یہ بھی انتظام کر سکتے ہیں کہ شرکاء آپ کے پروجیکٹس کے ساتھ کس طرح تعامل کرتے ہیں، بشمول رسائی کے حقوق کو ترتیب دینا اور پوسٹنگ، ووٹنگ اور تبصرہ کرنے کی ترتیبات کو ترتیب دینا۔'
+      title_design_participatory_process: 'شراکتی عمل کو ڈیزائن کریں۔'
+      title_moderate_analyse_input: 'ان پٹ کو معتدل اور تجزیہ کریں۔'
+      title_manage_folder: 'فولڈر کی ترتیبات کا نظم کریں اور نئے پروجیکٹس بنائیں۔'
+      title_what_can_you_do_folderadmin: 'آپ فولڈر مینیجر کے طور پر کیا کر سکتے ہیں؟'
+      title_added_as_folderadmin: 'آپ کو فولڈر مینیجر کے طور پر شامل کیا گیا ہے۔'
+      x_projects: '%{numberOfProjects} پروجیکٹس'
+    project_phase_started:
+      cta_view_phase: 'اس نئے مرحلے کو دریافت کریں۔'
+      event_description: 'یہ پروجیکٹ %{organizationName}کے پلیٹ فارم پر ایک نئے مرحلے میں داخل ہوا ہے۔ مزید جاننے کے لیے نیچے دیے گئے لنک پر کلک کریں!'
+      main_header: 'پروجیکٹ ''%{projectName}'' کے لیے ایک نیا مرحلہ شروع ہوا'
+      subtitle: '''%{projectName}'' کے بارے میں'
+      new_phase: 'یہ پروجیکٹ ''%{phaseTitle}'' مرحلے میں داخل ہو گیا ہے۔'
+      subject: '%{projectName} ایک نئے مرحلے میں داخل ہوا۔'
+      preheader: '%{projectName}کے لیے ایک نیا مرحلہ شروع ہو گیا ہے۔'
+    project_phase_upcoming:
+      cta_view_phase: 'اس نئے مرحلے کو ترتیب دیں۔'
+      event_description: 'پروجیکٹ ''%{projectName}'' جلد ہی ایک نئے مرحلے میں داخل ہو گا۔ یقینی بنائیں کہ اس مرحلے کے لیے سب کچھ ترتیب دیا گیا ہے: کیا کوئی مناسب تفصیل ہے؟ کیا منتخب خیالات کو اس مرحلے میں منتقل کیا گیا ہے؟ کیا آپ اپنی مرضی کے مطابق ای میل مہم کے ذریعے اپنے شہریوں کو اس مرحلے کی تفصیلات سے آگاہ کرنا چاہتے ہیں؟'
+      main_header: '%{firstName}، ایک پروجیکٹ جلد ہی ایک نئے مرحلے میں داخل ہوگا۔'
+      subtitle: '''%{projectName}'' کے بارے میں'
+      new_phase: 'پروجیکٹ ''%{phaseTitle}'' مرحلے میں داخل ہو جائے گا۔'
+      subject: '%{projectName}کے نئے مرحلے کے لیے سب کچھ ترتیب دیں۔'
+      preheader: '%{projectName}کے لیے جلد ہی ایک نیا مرحلہ شروع ہو گا۔'
+    project_published:
+      subject: '%{organizationName}کے پلیٹ فارم پر ایک نیا پروجیکٹ شائع کیا گیا تھا۔'
+      header_title: 'ایک نیا پروجیکٹ شائع ہوا۔'
+      header_message: '%{organizationName} کے شرکت کے پلیٹ فارم نے ابھی درج ذیل پروجیکٹ کو شائع کیا ہے:'
+      preheader: 'ایک نیا پروجیکٹ شائع ہوا۔'
+    project_review_request:
+      subject: 'جائزہ لینے کی درخواست: ایک پروجیکٹ منظوری کا انتظار کر رہا ہے۔'
+      header: '%{requesterName} نے آپ کو پروجیکٹ کا جائزہ لینے کے لیے مدعو کیا ہے "%{projectTitle}"'
+      header_message: "فی الحال، پروجیکٹ ڈرافٹ موڈ میں ہے اور صارفین کو دکھائی نہیں دے رہا ہے۔ ایک بار جب آپ اس کا جائزہ لے لیں اور اسے منظور کر لیں تو ماڈریٹر اسے شائع کر سکے گا۔"
+      cta_review_project: "پروجیکٹ کا جائزہ لیں۔"
+    project_review_state_change:
+      subject: '"%{projectTitle}" کو منظور کر لیا گیا ہے۔'
+      header: '%{reviewerName} نے پروجیکٹ کی منظوری دی "%{projectTitle}"'
+      header_message: "پروجیکٹ اب لائیو جانے کے لیے تیار ہے۔ جب بھی آپ تیار ہوں آپ اسے شائع کر سکتے ہیں!"
+      cta_go_to_project: "پروجیکٹ کی ترتیبات پر جائیں۔"
+    status_change_on_idea_you_follow:
+      status_change: 'The new status of this input is ''%{status}'''
+      header_message: '%{organizationName} updated the status of the input ''%{input_title}'' on their digital participation platform.'
+      header_title: 'An input you follow has a new status'
+      subject: 'The status of "%{input_title}" has changed'
+      preheader: 'An input you follow has a new status'
+    status_change_on_initiative_you_follow:
+      status_change: 'اس تجویز کی نئی حیثیت ہے ''%{initiativeStatus}'''
+      header_message: 'تجویز ''%{initiativeTitle}'' کی حیثیت کو %{organizationName}کے ڈیجیٹل شرکت کے پلیٹ فارم پر اپ ڈیٹ کر دیا گیا ہے۔'
+      header_title: 'جس تجویز کی آپ پیروی کرتے ہیں اس کی نئی حیثیت ہوتی ہے۔'
+      subject: 'آپ جس تجویز کی پیروی کرتے ہیں اس کی حیثیت بدل گئی ہے۔'
+      preheader: 'جس تجویز کی آپ پیروی کرتے ہیں اس کی نئی حیثیت ہوتی ہے۔'
+    user_digest:
+      subject: "%{organizationName}کے شرکت کے پلیٹ فارم پر آپ کی سرگرمی"
+      commented: "%{authorFirstName} تبصرہ کیا:"
+      preheader: "%{organizationName}کا ہفتہ وار جائزہ"
+      title_your_weekly_report: "دریافت کریں کہ پچھلے ہفتے کیا ہوا تھا۔"
+      intro_text: "%{organizationName}کے شرکت کے پلیٹ فارم پر کیا ہوا اس کا خلاصہ یہ ہے۔"
+      cta_go_to_the_platform: "پلیٹ فارم پر جائیں۔"
+      title_no_activity_past_week: "پچھلے ہفتے میں کوئی سرگرمی نہیں ہوئی۔"
+      successful_proposals_title: "دہلیز پر پہنچ گیا۔"
+      successful_proposals_text: "ان تجاویز کو اگلے مرحلے میں جانے کے لیے کافی حمایت حاصل ہو گئی ہے! آگے کیا ہوتا ہے اس کے بارے میں مزید جاننے کے لیے تجویز پر کلک کریں۔"
+      today_by_author: "آج بذریعہ %{author}"
+      yesterday_by_author: "کل بذریعہ %{author}"
+      x_days_ago_by_author: "%{x} دن پہلے بذریعہ %{author}"
+      trending_title: "ٹرینڈنگ"
+      trending_text: "پلیٹ فارم پر کیا ہو رہا ہے اس میں دلچسپی ہے؟ یہاں تین سب سے زیادہ رجحان ساز شراکتیں ہیں اور لوگ ان کے بارے میں کیا کہہ رہے ہیں۔"
+      no_notifications: "کوئی اطلاع نہیں۔"
+      one_notification: "1 اطلاع"
+      multiple_notifications: "%{notifCount} اطلاعات"
+      no_unread_notifications: "آپ کے پاس کوئی غیر پڑھی ہوئی اطلاعات نہیں ہیں۔ اپنا ان پٹ دینے اور نئی اطلاعات پیدا کرنے کے لیے پلیٹ فارم پر جائیں!"
+      unread_notifications: "آپ کے پاس بغیر پڑھی ہوئی اطلاعات ہیں۔ یہ جاننے کے لیے پلیٹ فارم پر جائیں کہ کیا ہو رہا ہے!"
+    threshold_reached_for_admin:
+      cta_process_initiative: 'اس تجویز کو اگلے مراحل تک لے جائیں۔'
+      main_header: 'ایک تجویز ووٹنگ کی حد تک پہنچ گئی!'
+      subject: 'آپ کے پلیٹ فارم پر ایک تجویز ووٹنگ کی حد تک پہنچ گئی۔'
+      preheader: 'اگلے اقدامات کو یقینی بنائیں'
+    welcome:
+      cta_join_platform: 'پلیٹ فارم دریافت کریں۔'
+      subject: '%{organizationName}کے پلیٹ فارم میں خوش آمدید'
+      main_header: خوش آمدید!
+      message_welcome: 'مبارک ہو، آپ نے %{organizationName}کے شرکت کے پلیٹ فارم پر کامیابی سے سائن اپ کر لیا ہے۔ اب آپ پلیٹ فارم دریافت کر سکتے ہیں اور اپنی آواز سن سکتے ہیں۔ آپ دوسروں کو بتانے کے لیے ایک پروفائل تصویر اور ایک مختصر تفصیل بھی شامل کر سکتے ہیں کہ آپ کون ہیں۔'
+      preheader: 'یہ ہے آپ %{organizationName}کے پلیٹ فارم پر کیا کر سکتے ہیں۔'
+    idea_published:
+      subject:
+        idea: 'آپ کا خیال شائع ہو چکا ہے۔'
+        question: 'آپ کا سوال شائع ہو چکا ہے۔'
+        contribution: 'آپ کا تعاون شائع ہو چکا ہے۔'
+        project: 'آپ کا پروجیکٹ شائع ہو چکا ہے۔'
+        issue: 'آپ کا شمارہ شائع ہو چکا ہے۔'
+        option: 'آپ کا اختیار شائع ہو چکا ہے۔'
+        proposal: 'آپ کی تجویز شائع ہو چکی ہے۔'
+        initiative: 'آپ کا پہل شائع ہو چکا ہے۔'
+        petition: 'آپ کی درخواست شائع ہو چکی ہے۔'
+      main_header: 'آپ نے ایک خیال پوسٹ کیا! آئیے یقینی بنائیں کہ یہ پڑھا جاتا ہے۔'
+      header_message: 'آئیے یقینی بنائیں کہ یہ پڑھا جاتا ہے۔'
+      message_get_votes: 'اپنے خیال کے ساتھ مزید لوگوں تک پہنچیں:'
+      action_published_idea: 'شائع شدہ خیال'
+      action_add_image: '%{addImageLink} مرئیت کو بڑھانے کے لیے'
+      add_image: 'ایک تصویر شامل کریں۔'
+      action_share_fb: 'اپنے دوستوں کو %{fbLink}پر بتائیں'
+      action_share_twitter: 'اپنے پیروکاروں کو %{twitterLink}پر مطلع کریں۔'
+      action_send_email: 'اپنے رابطوں کو %{sendEmailLink}بھیجیں۔'
+      send_email: ای میل
+      action_share_link: '%{link}کاپی کر کے کسی بھی چینل کے ذریعے اس کا اشتراک کریں۔'
+      link: لنک
+      preheader: '%{firstName}، %{organizationName}کے پلیٹ فارم پر اپنا خیال پوسٹ کرنے پر مبارکباد۔ اب حمایت جمع کریں۔'
+    your_input_in_screening:
+      main_header:
+        idea: 'آپ کا خیال "%{prescreening_status_title}" میں ہے'
+        question: 'آپ کا سوال "%{prescreening_status_title}" میں ہے'
+        contribution: 'آپ کا تعاون "%{prescreening_status_title}" میں ہے'
+        project: 'آپ کا پروجیکٹ "%{prescreening_status_title}" میں ہے'
+        issue: 'آپ کا مسئلہ "%{prescreening_status_title}" میں ہے'
+        option: 'آپ کا اختیار "%{prescreening_status_title}" میں ہے'
+        proposal: 'آپ کی تجویز "%{prescreening_status_title}" میں ہے'
+        initiative: 'آپ کی پہل "%{prescreening_status_title}" میں ہے'
+        petition: 'آپ کی درخواست "%{prescreening_status_title}" میں ہے'
+      message: '"%{input_title}" ایک بار نظرثانی اور منظوری کے بعد دوسروں کے لیے مرئی ہو جائے گا۔'
+      subject: '"%{input_title}" تقریباً شائع ہو چکا ہے۔'
+      preheader: 'یہ فی الحال %{prescreening_status_title}میں ہے۔'
+    voting_basket_submitted:
+      subject: '%{organizationName}: آپ نے کامیابی سے ووٹ دیا۔'
+      preheader: 'آپ نے %{organizationName}کے شرکت کے پلیٹ فارم پر کامیابی سے ووٹ دیا۔'
+      title_basket_submitted: 'آپ نے کامیابی سے ووٹ دیا۔'
+      event_description: 'شرکت کرنے کا شکریہ۔ آپ کے ووٹ ریکارڈ کیے گئے ہیں۔ اپنے ووٹوں کو دیکھنے اور ان کا نظم کرنے کے لیے %{organizationName} کے پلیٹ فارم پر جائیں۔'
+      cta_see_votes_submitted: 'جمع کرائے گئے ووٹ دیکھیں'
+      cta_message: 'حصہ لینے کے لیے نیچے دیئے گئے بٹن پر کلک کریں۔'
+    native_survey_not_submitted:
+      subject: '%{organizationName}: قریب قریب! اپنے جوابات جمع کروائیں۔'
+      preheader: 'آپ نے اپنا سروے کا جواب %{organizationName}کے شرکت کے پلیٹ فارم پر مکمل نہیں کیا۔'
+      title_native_survey_not_submitted: 'تقریباً وہاں! اپنے جوابات جمع کروائیں۔'
+      body_native_survey_not_submitted: 'آپ نے %{phaseTitle} پر اپنے جوابات کا اشتراک کرنا شروع کیا لیکن انہیں جمع نہیں کرایا۔ گذارشات %{phaseEndDate}کو بند ہو جائیں گی۔ جہاں آپ نے چھوڑا تھا وہاں جاری رکھنے کے لیے نیچے والے بٹن پر کلک کریں۔'
+      body_native_survey_not_submitted_no_date: 'آپ نے %{phaseTitle} پر اپنے جوابات کا اشتراک کرنا شروع کیا لیکن انہیں جمع نہیں کرایا۔ جہاں آپ نے چھوڑا تھا وہاں جاری رکھنے کے لیے نیچے والے بٹن پر کلک کریں۔'
+      cta_complete_your_survey_response: 'اپنے سروے کے جواب کو دوبارہ شروع کریں۔'
+    voting_basket_not_submitted:
+      subject: '%{organizationName}: آپ نے اپنا ووٹ جمع نہیں کرایا'
+      preheader: 'آپ نے اپنا ووٹ %{organizationName}کے شرکت کے پلیٹ فارم پر جمع نہیں کرایا'
+      title_basket_not_submitted: 'آپ نے اپنا ووٹ جمع نہیں کرایا'
+      event_description: 'آپ نے %{contextTitle} کے لیے چند اختیارات منتخب کیے لیکن آپ نے اپنا انتخاب جمع نہیں کرایا۔'
+      cta_view_options_and_vote: 'اختیارات دیکھیں اور ووٹ دیں۔'
+      cta_message: 'اپنے منتخب کردہ اختیارات جمع کرانے کے لیے نیچے دیئے گئے بٹن پر کلک کریں۔'
+    voting_last_chance:
+      subject: '%{organizationName}: %{phaseTitle}کو ووٹ دینے کا آخری موقع'
+      preheader: '%{organizationName}کے شرکت کے پلیٹ فارم پر %{phaseTitle} کو ووٹ دینے کا آخری موقع'
+      title_last_chance: '%{phaseTitle}کو ووٹ دینے کا آخری موقع'
+      body_1: '%{projectTitle} پروجیکٹ کے لیے ووٹنگ کا مرحلہ کل آدھی رات کو ختم ہو رہا ہے۔'
+      body_2: 'وقت ختم ہو رہا ہے، اور ہم نے محسوس کیا کہ آپ نے ابھی تک اپنا ووٹ نہیں ڈالا ہے! حصہ لینے کے لیے نیچے دیئے گئے بٹن پر کلک کرکے ابھی عمل کریں۔'
+      body_3: 'ایسا کرنے سے، آپ کو اختیارات کی ایک حد تک رسائی حاصل ہو جائے گی اور آپ کو اپنا ان پٹ فراہم کرنے کا موقع ملے گا، جو اس پروجیکٹ کے مستقبل کا فیصلہ کرنے میں اہم ہے۔'
+      cta_vote: 'ووٹ'
+    voting_results:
+      subject: '%{organizationName}: %{phaseTitle} ووٹ کے نتائج سامنے آ گئے!'
+      preheader: '%{phaseTitle} ووٹ کے نتائج %{organizationName}کے شرکت کے پلیٹ فارم پر ظاہر ہوئے'
+      title_results: '%{phaseTitle} ووٹ کے نتائج سامنے آ گئے!'
+      body_1: 'نتائج میں ہیں!'
+      body_2: '%{organizationName} پلیٹ فارم میں %{phaseTitle} ووٹ کے نتائج شائع ہو چکے ہیں!'
+      body_3: 'ہم آپ کی حوصلہ افزائی کرتے ہیں کہ آپ نتائج کا جائزہ لیں اور اگلے مراحل کے بارے میں مزید اپ ڈیٹس کے لیے دیکھتے رہیں۔'
+      cta_see_results: 'پلیٹ فارم میں نتائج دیکھیں'
+    event_registration_confirmation:
+      subject: "آپ اندر ہیں! \"%{eventTitle}\" کے لیے آپ کی رجسٹریشن کی تصدیق ہو گئی ہے۔"
+      preheader: "%{firstName}، %{eventTitle}کے لیے رجسٹر کرنے کا شکریہ"
+      header_message: "%{firstName}، رجسٹر کرنے کا شکریہ"
+      event_details:
+        labels:
+          date: 'تاریخ'
+          location: 'مقام'
+          online_link: 'آن لائن لنک'
+          description: 'تفصیل'
+          project: 'پروجیکٹ'
+      cta_go_to_event: 'واقعہ دیکھیں'
+      cta_add_to_calendar: 'اپنے کیلنڈر میں شامل کریں۔'
+    voting_phase_started:
+      subject: '%{organizationName}: %{projectName}کے لیے ووٹنگ کا مرحلہ شروع ہو گیا'
+      preheader: '%{organizationName}کے شرکت کے پلیٹ فارم پر %{projectName} کے لیے ووٹنگ کا مرحلہ شروع ہوا'
+      event_description: 'پروجیکٹ "%{projectName}" آپ کو %{numIdeas} اختیارات کے درمیان ووٹ دینے کے لیے کہہ رہا ہے:'
+      cta_message: 'حصہ لینے کے لیے نیچے دیئے گئے بٹن پر کلک کریں۔'
+      cta_vote: 'ووٹ دینے کے لیے پلیٹ فارم پر جائیں۔'
+    admin_labels:
+      recipient_role:
+        admins: 'ایڈمنز کو'
+        admins_and_managers: 'منتظمین اور مینیجرز کو'
+        managers: 'مینیجرز کو'
+        project_participants: 'پروجیکٹ کے شرکاء کے لیے'
+        registered_users: 'رجسٹرڈ صارفین کے لیے'
+      recipient_segment:
+        admins: 'ایڈمنز'
+        admins_and_managers: 'ایڈمنز اور مینیجرز'
+        admins_and_managers_assigned_to_the_input: 'ان پٹ کو تفویض کردہ ایڈمنز اور مینیجرز'
+        admins_and_managers_managing_the_project: 'ایڈمنز اور مینیجرز پروجیکٹ کا انتظام کر رہے ہیں۔'
+        admins_assigned_to_a_proposal: 'ایڈمنز کو ایک تجویز پر تفویض کیا گیا ہے۔'
+        all_users: 'تمام صارفین'
+        all_users_who_uploaded_proposals: 'تمام صارفین جنہوں نے تجاویز اپ لوڈ کیں۔'
+        managers: 'مینیجرز'
+        managers_managing_the_project: 'پروجیکٹ کا انتظام کرنے والے مینیجرز'
+        new_attendee: 'نیا رجسٹرڈ صارف'
+        project_reviewers: 'پروجیکٹ کا جائزہ لینے والے اور فولڈر مینیجر'
+        project_review_requester: 'وہ صارف جس نے پروجیکٹ کے جائزے کی درخواست کی۔'
+        user_who_commented: 'صارف جس نے تبصرہ کیا۔'
+        user_who_is_invited_to_cosponsor_a_proposal: 'وہ صارف جسے کسی تجویز کو شریک سپانسر کرنے کے لیے مدعو کیا گیا ہے۔'
+        user_who_is_mentioned: 'صارف جس کا ذکر کیا گیا ہے۔'
+        user_who_is_receiving_admin_rights: 'وہ صارف جو منتظم کے حقوق حاصل کر رہا ہے۔'
+        user_who_is_receiving_folder_moderator_rights: 'وہ صارف جو فولڈر ماڈریٹر کے حقوق حاصل کر رہا ہے۔'
+        user_who_is_receiving_project_moderator_rights: 'صارف جو پروجیکٹ ماڈریٹر کے حقوق حاصل کر رہا ہے۔'
+        user_who_published_the_input: 'صارف جس نے ان پٹ شائع کیا۔'
+        user_who_published_the_proposal: 'تجویز شائع کرنے والا صارف'
+        user_who_registers: 'رجسٹر کرنے والا صارف'
+        user_who_submitted_the_input: 'صارف جس نے ان پٹ جمع کرایا'
+        user_who_voted: 'ووٹ دینے والا صارف'
+        user_who_was_invited: 'صارف جسے مدعو کیا گیا تھا۔'
+        user_with_unsubmitted_survey: 'وہ صارف جس نے اپنا سروے شروع کیا ہے لیکن جمع نہیں کیا ہے۔'
+        user_with_unsubmitted_votes: 'وہ صارف جس نے اپنا ووٹ جمع نہیں کرایا'
+        users_who_engaged_but_not_voted: 'وہ صارفین جو پروجیکٹ کے ساتھ مشغول ہیں لیکن ووٹ نہیں دیا ہے۔'
+        users_who_engaged_with_the_project: 'وہ صارفین جو پروجیکٹ کے ساتھ منسلک ہیں۔'
+        users_who_follow_the_input: 'ان پٹ کی پیروی کرنے والے صارفین'
+        users_who_follow_the_project: 'وہ صارفین جو پروجیکٹ کی پیروی کرتے ہیں۔'
+        users_who_follow_the_proposal: 'وہ صارفین جو تجویز کی پیروی کرتے ہیں۔'
+      content_type:
+        comments: 'تبصرے'
+        content_moderation: 'مواد کی اعتدال پسندی۔'
+        events: 'واقعات'
+        general: 'جنرل'
+        inputs: 'ان پٹ'
+        internal_comments: 'اندرونی تبصرے'
+        permissions: 'اجازتیں'
+        projects: 'پروجیکٹس'
+        proposals: 'تجاویز'
+        reactions: 'رد عمل'
+        voting: 'ووٹنگ'
+        surveys: 'سروے'
+      trigger:
+        7_days_after_invite_is_sent: 'دعوت نامہ بھیجنے کے 7 دن بعد'
+        7_days_before_the_project_changes_phase: 'منصوبے کے مرحلے میں تبدیلی سے 7 دن پہلے'
+        comment_is_deleted: 'تبصرہ حذف کر دیا گیا ہے۔'
+        comment_is_flagged_as_spam: 'تبصرہ سپیم کے طور پر جھنڈا لگایا گیا ہے۔'
+        content_gets_flagged_as_innapropiate: 'مواد کو غیر مناسب کے طور پر نشان زد کیا جاتا ہے۔'
+        initiative_resubmitted_for_review: 'تجویز دوبارہ جائزہ کے لیے جمع کرائی گئی۔'
+        input_is_assigned: 'ان پٹ تفویض کیا گیا ہے۔'
+        input_is_flagged_as_spam: 'ان پٹ کو سپیم کے طور پر جھنڈا لگایا گیا ہے۔'
+        input_is_published: 'ان پٹ شائع ہو گیا ہے۔'
+        input_is_updated: 'ان پٹ کو آفیشل فیڈ بیک ملتا ہے۔'
+        input_status_changes: 'ان پٹ کی حیثیت بدل جاتی ہے۔'
+        internal_comment_is_posted_on_idea_assigned_to_user: 'داخلی تبصرہ صارف کو تفویض کردہ ان پٹ پر پوسٹ کیا جاتا ہے۔'
+        internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: 'اندرونی تبصرہ پروجیکٹ یا فولڈر صارف کے انتظام میں ان پٹ پر پوسٹ کیا جاتا ہے۔'
+        internal_comment_is_posted_on_idea_user_has_commented_internally_on: 'اندرونی تبصرہ ان پٹ پر پوسٹ کیا جاتا ہے صارف نے اندرونی طور پر تبصرہ کیا ہے۔'
+        internal_comment_is_posted_on_idea_user_moderates: 'اندرونی تبصرہ ان پٹ یوزر ماڈریٹس پر پوسٹ کیا جاتا ہے۔'
+        internal_comment_is_posted_on_initiative_assigned_to_user: 'داخلی تبصرہ صارف کو تفویض کردہ تجویز پر پوسٹ کیا جاتا ہے۔'
+        internal_comment_is_posted_on_initiative_user_has_commented_internally_on: 'داخلی تبصرہ تجویز پر پوسٹ کیا جاتا ہے صارف نے اندرونی طور پر تبصرہ کیا ہے۔'
+        internal_comment_is_posted_on_unassigned_initiative: 'داخلی تبصرہ غیر تفویض کردہ تجویز پر پوسٹ کیا جاتا ہے۔'
+        internal_comment_is_posted_on_unassigned_unmoderated_idea: 'اندرونی تبصرہ غیر منظم پروجیکٹ میں غیر تفویض کردہ ان پٹ پر پوسٹ کیا جاتا ہے۔'
+        project_review_request: 'ماڈریٹر نے پروجیکٹ کے جائزے کی درخواست کی۔'
+        project_review_state_change: 'جائزہ لینے والے نے منصوبے کی منظوری دے دی۔'
+        new_input_awaits_screening: 'نیا ان پٹ اسکریننگ کا منتظر ہے۔'
+        new_input_is_published: 'نیا ان پٹ شائع ہوا ہے۔'
+        new_proposal_is_posted: 'نئی تجویز پوسٹ کی گئی ہے۔'
+        project_phase_changes: 'پروجیکٹ کے مرحلے میں تبدیلیاں'
+        project_published: 'پروجیکٹ شائع ہوا۔'
+        proposal_gets_reported_as_spam: 'تجویز کو اسپام کے طور پر رپورٹ کیا جاتا ہے۔'
+        proposal_is_assigned_to_admin: 'تجویز ایڈمن کو سونپی گئی ہے۔'
+        proposal_is_published: 'تجویز شائع کی گئی ہے۔'
+        proposal_is_updated: 'تجویز کو سرکاری رائے ملتی ہے۔'
+        proposal_is_upvoted_above_threshold: 'تجویز کو حد سے اوپر ووٹ دیا گیا ہے۔'
+        proposal_status_changes: 'تجویز کی حیثیت میں تبدیلی'
+        registration_to_event: 'کسی تقریب کی رجسٹریشن'
+        survey_1_day_after_draft_saved: 'صارف کے آخری بار سروے کو ڈرافٹ میں محفوظ کرنے کے 1 دن بعد'
+        user_accepts_invitation_to_cosponsor_a_proposal: 'صارف کسی تجویز کو شریک کفیل کرنے کی دعوت قبول کرتا ہے۔'
+        user_comments: 'صارف کے تبصرے۔'
+        user_comments_on_input: 'ان پٹ پر صارف کے تبصرے۔'
+        user_comments_on_proposal: 'تجویز پر صارف کے تبصرے۔'
+        user_is_given_admin_rights: 'صارف کو منتظم کے حقوق دیے جاتے ہیں۔'
+        user_is_given_folder_moderator_rights: 'صارف کو فولڈر ماڈریٹر کے حقوق دیئے گئے ہیں۔'
+        user_is_given_project_moderator_rights: 'صارف کو پروجیکٹ ماڈریٹر کے حقوق دیئے گئے ہیں۔'
+        user_is_invited_to_cosponsor_a_proposal: 'صارف کو ایک تجویز کو شریک سپانسر کرنے کے لیے مدعو کیا جاتا ہے۔'
+        user_is_mentioned: 'صارف کا ذکر ہے۔'
+        user_is_mentioned_in_internal_comment: 'صارف کا تذکرہ اندرونی تبصرے میں کیا گیا ہے۔'
+        user_registers_for_the_first_time: 'صارف پہلی بار رجسٹر کرتا ہے۔'
+        user_replies_to_comment: 'صارف کا تبصرہ کرنے کا جواب'
+        user_replies_to_internal_comment: 'صارف کے اندرونی تبصرے کے جوابات'
+        voting_1_day_after_last_votes: 'صارف کے آخری ووٹ دینے کے 1 دن بعد'
+        voting_2_days_before_phase_closes: 'ووٹنگ کا مرحلہ بند ہونے سے 2 دن پہلے'
+        voting_basket_submitted: 'ووٹ جمع کرائے جاتے ہیں۔'
+        voting_phase_ended: 'ووٹنگ کا مرحلہ ختم'

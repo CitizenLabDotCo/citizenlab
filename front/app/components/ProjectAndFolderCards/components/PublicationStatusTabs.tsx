@@ -42,6 +42,7 @@ const PublicationStatusTabs = ({
           list={list}
           layout={layout}
           hasMore={hasMore}
+          hasMoreThanOneTab={!!availableTabs.length}
         />
       ))}
     </>

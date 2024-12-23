@@ -119,6 +119,8 @@ const AttachmentsControl = ({
             )
           )
         ).filter((f) => f);
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         newRemoteFiles && setFiles(newRemoteFiles as UploadFile[]);
       })();
     }

@@ -8,9 +8,9 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-gem 'rails', '~> 7.0'
+gem 'rails', '~> 7.0.8.7'
 gem 'pg', '~> 1.5.6'
-gem 'puma', '~> 6.4.2'
+gem 'puma', '~> 6.4.3'
 gem 'bcrypt', '~> 3.1.20' # Use ActiveModel has_secure_password
 gem 'csv', '~> 3.3.0'
 
@@ -79,7 +79,6 @@ gem 'active_model_serializers', '~> 0.10.12'
 
 gem 'jwt', '~> 2.8.1'
 gem 'que', '~> 2.3.0'
-gem 'que-web', '~> 0.10.0'
 
 gem 'activerecord-import', '~> 1.7'
 gem 'json-schema', '~> 4.3'
@@ -113,8 +112,8 @@ gem 'stackprof', '~> 0.2.26'
 gem 'scientist', '~> 1.6.4'
 
 gem 'okcomputer'
-gem 'omniauth', '~> 1.9.1'
-gem 'omniauth-saml', '~> 1.10.3'
+gem 'omniauth', '~> 2.1'
+gem 'omniauth-saml', '~> 2.2.0'
 gem 'omniauth-rails_csrf_protection'
 gem 'omniauth-facebook'
 gem 'omniauth-google-oauth2'
@@ -140,7 +139,7 @@ gem 'aws-sdk-s3', '~> 1'
 gem 'aws-sdk-bedrockruntime', '~> 1'
 gem 'bootsnap', '~> 1', require: false
 gem 'dalli', '~> 3.2.8'
-gem 'mailgun-ruby', '~>1.2.14'
+gem 'mailgun-ruby', '~>1.2.16'
 gem 'rails_semantic_logger'
 gem 'rinku', '~> 2'
 gem 'jsonapi-serializer'
@@ -154,6 +153,8 @@ gem 'mjml-rails', '~> 4.11'
 gem 'cloudfront-rails', '~> 0.4'
 gem 'google-cloud-document_ai', '~> 1.4'
 gem 'combine_pdf', '~> 1.0.26'
+gem 'neighbor', '~> 0.5.0'
+gem 'browser', '~> 6.1'
 
 # Temporarily add nkf and mutex_m to the Gemfile to clear the following warnings:
 #   .../.rbenv/versions/3.3.1/lib/ruby/gems/3.3.0/gems/bootsnap-1.18.3/lib/bootsnap/load_path_cache/core_ext/kernel_require.rb:30:
@@ -199,6 +200,7 @@ commercial_engines = [
   'multi_tenancy',
 
   'admin_api',
+  'aggressive_caching',
   'analysis',
   'analytics',
   'bulk_import_ideas',
@@ -233,6 +235,8 @@ commercial_engines = [
   'id_franceconnect',
   'id_gent_rrn',
   'id_id_card_lookup',
+  'id_keycloak',
+  'id_id_austria',
   'id_nemlog_in',
   'id_oostende_rrn',
   # Some engines actually register an authentication method rather

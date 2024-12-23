@@ -8,16 +8,20 @@ export type VerificationMethodsKeys = Keys<typeof verificationMethodsKeys>;
 
 export const verificationTypesLeavingPlatform = [
   'auth0',
+  'id_austria',
   'criipto',
   'bosa_fas',
   'clave_unica',
   'franceconnect',
   'nemlog_in',
+  'keycloak',
+  'fake_sso',
 ];
 
 export type TVerificationMethodName =
   | 'auth0'
   | 'bogus'
+  | 'fake_sso'
   | 'bosa_fas'
   | 'clave_unica'
   | 'cow'
@@ -25,8 +29,10 @@ export type TVerificationMethodName =
   | 'franceconnect'
   | 'gent_rrn'
   | 'id_card_lookup'
+  | 'keycloak'
   | 'nemlog_in'
-  | 'oostende_rrn';
+  | 'oostende_rrn'
+  | 'id_austria';
 
 export interface IVerificationMethods {
   data: TVerificationMethod[];
@@ -54,7 +60,7 @@ type TGenericMethod = {
   };
 };
 
-type FakeSSOMethod = {
+export type IDFakeSSOMethod = {
   id: string;
   type: 'verification_method';
   attributes: {
@@ -87,6 +93,16 @@ export type IDCriiptoMethod = {
   };
 };
 
+export type IDKeycloakMethod = {
+  id: string;
+  type: 'verification_method';
+  attributes: {
+    name: 'keycloak';
+    method_metadata?: MethodMetadata;
+    ui_method_name: string;
+  };
+};
+
 export type IDAuth0Method = {
   id: string;
   type: 'verification_method';
@@ -97,9 +113,23 @@ export type IDAuth0Method = {
   };
 };
 
+export type IDIdAustriaMethod = {
+  id: string;
+  type: 'verification_method';
+  attributes: {
+    name: 'id_austria';
+    ui_method_name: string;
+    method_metadata?: MethodMetadata;
+  };
+};
+
 export type TVerificationMethod =
   | TGenericMethod
-  | FakeSSOMethod
+  | IDFakeSSOMethod
   | IDLookupMethod
   | IDCriiptoMethod
-  | IDAuth0Method;
+  | IDKeycloakMethod
+  | IDAuth0Method
+  | IDIdAustriaMethod;
+// TODO: JS - No Fake SSO?
+// TODO: JS - Can we add the icon name into the method type?

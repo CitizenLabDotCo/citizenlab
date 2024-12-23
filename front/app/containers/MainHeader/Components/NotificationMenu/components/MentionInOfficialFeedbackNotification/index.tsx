@@ -1,7 +1,5 @@
 import React, { memo } from 'react';
 
-import { RouteType } from 'routes';
-
 import { IMentionInOfficialFeedbackNotificationData } from 'api/notifications/types';
 
 import T from 'components/T';
@@ -11,23 +9,12 @@ import Link from 'utils/cl-router/Link';
 import { isNilOrError, stopPropagation } from 'utils/helperUtils';
 
 import messages from '../../messages';
-import { DeletedUser } from '../Notification';
+import { DeletedUser } from '../UserLink';
 import NotificationWrapper from '../NotificationWrapper';
 
 interface Props {
   notification: IMentionInOfficialFeedbackNotificationData;
 }
-
-const mapPostTypeToLink = (
-  notification: IMentionInOfficialFeedbackNotificationData
-): RouteType => {
-  switch (notification.attributes.post_type) {
-    case 'Idea':
-      return `/ideas/${notification.attributes.post_slug}`;
-    case 'Initiative':
-      return `/initiatives/${notification.attributes.post_slug}`;
-  }
-};
 
 const MentionInCommentNotification = memo<Props>((props) => {
   const { notification } = props;
@@ -40,7 +27,7 @@ const MentionInCommentNotification = memo<Props>((props) => {
 
   return (
     <NotificationWrapper
-      linkTo={mapPostTypeToLink(notification)}
+      linkTo={`/ideas/${notification.attributes.post_slug}`}
       timing={notification.attributes.created_at}
       icon="mention"
       isRead={!!notification.attributes.read_at}
@@ -49,9 +36,7 @@ const MentionInCommentNotification = memo<Props>((props) => {
         {...messages.mentionInOfficialFeedback}
         values={{
           officialName: deletedUser ? (
-            <DeletedUser>
-              <FormattedMessage {...messages.deletedUser} />
-            </DeletedUser>
+            <DeletedUser />
           ) : (
             <Link
               to={`/profile/${notification.attributes.initiating_user_slug}`}

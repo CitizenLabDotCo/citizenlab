@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class WebApi::V1::PhasesController < ApplicationController
-  before_action :set_phase, only: %i[show update destroy survey_results submission_count index_xlsx delete_inputs]
+  before_action :set_phase, only: %i[show show_mini update destroy survey_results submission_count index_xlsx delete_inputs]
   around_action :detect_invalid_timeline_changes, only: %i[create update destroy]
   skip_before_action :authenticate_user
 
@@ -10,13 +10,17 @@ class WebApi::V1::PhasesController < ApplicationController
       .where(project_id: params[:project_id])
       .order(:start_at)
     @phases = paginate @phases
-    @phases = @phases.includes(:permissions, :report, :custom_form)
+    @phases = @phases.includes(:permissions, :report, :custom_form, :manual_voters_last_updated_by)
 
-    render json: linked_json(@phases, WebApi::V1::PhaseSerializer, params: jsonapi_serializer_params, include: %i[permissions])
+    render json: linked_json(@phases, WebApi::V1::PhaseSerializer, params: jsonapi_serializer_params, include: %i[permissions manual_voters_last_updated_by])
   end
 
   def show
     render json: WebApi::V1::PhaseSerializer.new(@phase, params: jsonapi_serializer_params, include: %i[permissions]).serializable_hash
+  end
+
+  def show_mini
+    render json: WebApi::V1::PhaseMiniSerializer.new(@phase, params: jsonapi_serializer_params).serializable_hash
   end
 
   def create
@@ -34,6 +38,7 @@ class WebApi::V1::PhasesController < ApplicationController
   end
 
   def update
+    @phase.set_manual_voters(phase_params[:manual_voters_amount], current_user) if phase_params[:manual_voters_amount]
     @phase.assign_attributes phase_params
     authorize @phase
     sidefx.before_update(@phase, current_user)
@@ -78,7 +83,7 @@ class WebApi::V1::PhasesController < ApplicationController
 
   def index_xlsx
     I18n.with_locale(current_user.locale) do
-      xlsx = Export::Xlsx::InputsGenerator.new.generate_inputs_for_phase @phase.id, view_private_attributes: true
+      xlsx = Export::Xlsx::InputsGenerator.new.generate_inputs_for_phase @phase.id
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'inputs.xlsx'
     end
   end
@@ -111,6 +116,7 @@ class WebApi::V1::PhasesController < ApplicationController
       :participation_method,
       :submission_enabled,
       :commenting_enabled,
+      :autoshare_results_enabled,
       :reacting_enabled,
       :reacting_like_method,
       :reacting_like_limited_max,
@@ -129,6 +135,7 @@ class WebApi::V1::PhasesController < ApplicationController
       :prescreening_enabled,
       :reacting_threshold,
       :expire_days_limit,
+      :manual_voters_amount,
       {
         title_multiloc: CL2_SUPPORTED_LOCALES,
         description_multiloc: CL2_SUPPORTED_LOCALES,
@@ -173,3 +180,5 @@ class WebApi::V1::PhasesController < ApplicationController
     end
   end
 end
+
+WebApi::V1::PhasesController.include(AggressiveCaching::Patches::WebApi::V1::PhasesController)

@@ -72,6 +72,8 @@ const DesktopView = ({
     label: '',
   });
   const isWebMap = !!mapConfig?.data.attributes.esri_web_map_id;
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const layerCount = mapConfig?.data?.attributes?.layers?.length || 0;
 
   // Create refs for custom UI elements
@@ -85,14 +87,22 @@ const DesktopView = ({
 
   // Add the custom UI elements to the map
   useEffect(() => {
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     mapView?.ui?.add(instructionRef?.current || '', 'bottom-left');
 
     if (isLineOrPolygonInput(inputType)) {
       // Show these buttons in sequence for line/polygon inputs
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       mapView?.ui?.add(undoButtonRef?.current || '', 'top-right');
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       mapView?.ui?.add(resetButtonRef?.current || '', 'top-right');
       return;
     } else if (inputType === 'point') {
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       mapView?.ui?.add(resetButtonRef?.current || '', 'top-right');
     }
   }, [
@@ -136,6 +146,8 @@ const DesktopView = ({
 
   // Handle typed address input
   const handleLocationInputChange = (point: Point | undefined) => {
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     inputType === 'point' && handleSinglePointChange?.(point);
   };
 

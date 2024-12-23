@@ -7,11 +7,10 @@ sv:
     inappropriate_content_flagged:
       subject: 'Ett inlägg på din plattform har flaggats för granskning'
       header_title: 'Ett inlägg på din plattform har flaggats för granskning'
-      comment_author: '%{authorName} kommenterade:'
-      idea_author: '%{authorName} skickade ett inlägg:'
-      initiative_author: '%{authorName} skickade ett förslag:'
+      author_wrote: '%{authorName} skrev:'
+      preheader: 'Ett inlägg på din plattform har flaggats för granskning'
       automatically_flagged: >
         Det här inlägget upptäcktes automatiskt som potentiellt innehållande olämpligt innehåll. Vi skickar det här meddelandet till dig så att du kan granska inlägget i enlighet med dina egna riktlinjer för moderering.
       how_to_review: >
         Om inlägget inte innehåller olämpligt innehåll kan du ta bort varningen via din plattform på fliken Aktivitet i adminpanelen.
-      cta_review_post: 'Granska inlägget'
+      cta_review: 'Granskning'

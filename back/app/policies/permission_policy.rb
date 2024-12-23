@@ -1,14 +1,7 @@
 # frozen_string_literal: true
 
 class PermissionPolicy < ApplicationPolicy
-  class Scope
-    attr_reader :user, :scope
-
-    def initialize(user, scope)
-      @user  = user
-      @scope = scope
-    end
-
+  class Scope < ApplicationPolicy::Scope
     def resolve
       return scope.none if !user&.active?
 
@@ -38,6 +31,10 @@ class PermissionPolicy < ApplicationPolicy
   end
 
   def schema?
+    true
+  end
+
+  def access_denied_explanation?
     true
   end
 end

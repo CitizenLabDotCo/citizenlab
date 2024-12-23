@@ -149,7 +149,7 @@ module BulkImportIdeas
     def imported_draft_records
       if params[:model] == 'idea'
         phase = Phase.find(params[:id])
-        creation_phase_id = phase&.native_survey? ? phase.id : nil
+        creation_phase_id = phase.pmethod.transitive? ? nil : phase.id
         Idea
           .draft
           .in_phase(phase)

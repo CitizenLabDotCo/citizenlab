@@ -4,7 +4,7 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
-import { IQueryParameters, Sort } from 'api/ideas/types';
+import { IIdeaQueryParameters, Sort } from 'api/ideas/types';
 import useIdeas from 'api/ideas/useIdeas';
 import useTopics from 'api/topics/useTopics';
 
@@ -42,6 +42,11 @@ interface Props {
   defaultFilterMenu: TFilterMenu;
 }
 
+/*
+  There are still some minor differences between the ProjectProposalsManager and InputManager. 
+  - Unlike ideas, proposals cannot be moved between phases, they can only belong to a single phase. And you can select that phase from the phase navigation on top. So there is no need to have the phase filters in the left sidebar.
+  - Also, the statuses are different for proposals and ideation so we need to display a different list there.
+*/
 const ProjectProposalsManager = ({
   defaultFilterMenu,
   visibleFilterMenus,
@@ -57,7 +62,7 @@ const ProjectProposalsManager = ({
     participation_method: 'proposals',
   });
   const { data: proposalTopics } = useTopics();
-  const [queryParameters, setQueryParameters] = useState<IQueryParameters>({
+  const [queryParameters, setQueryParameters] = useState<IIdeaQueryParameters>({
     sort: 'new',
     phase: phaseId,
   });
@@ -182,13 +187,16 @@ const ProjectProposalsManager = ({
           project={projectId}
           queryParameters={queryParameters}
         />
-        <StyledExportMenu type={'ProjectProposals'} selection={selection} />
+        <StyledExportMenu
+          type={'ProjectProposals'}
+          selectedProject={projectId}
+          selection={selection}
+        />
       </TopActionBar>
 
       <ThreeColumns>
         <LeftColumn>
           <ActionBar
-            type={'ProjectProposals'}
             selection={selection}
             resetSelection={resetSelection}
             handleClickEdit={openPreviewEdit}
@@ -216,6 +224,7 @@ const ProjectProposalsManager = ({
               onChangeStatusFilter={onChangeStatus}
               statuses={ideaStatuses?.data ?? []}
               selectedStatus={queryParameters.idea_status}
+              selectedPhase={queryParameters.phase}
             />
           </Sticky>
         </LeftColumn>
@@ -227,7 +236,7 @@ const ProjectProposalsManager = ({
             sortDirection={
               queryParameters.sort
                 ? getSortDirection(queryParameters.sort)
-                : 'ascending'
+                : 'descending'
             }
             onChangeSort={onChangeSorting}
             posts={proposals.data}

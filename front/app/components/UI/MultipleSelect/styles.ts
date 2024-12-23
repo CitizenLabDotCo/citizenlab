@@ -1,11 +1,11 @@
 import {
   colors,
   fontSizes,
-  defaultStyles,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
+import { DefaultTheme } from 'styled-components';
 
-function getSelectStyles() {
+function getSelectStyles(theme: DefaultTheme) {
   return {
     valueContainer: (base) => ({
       ...base,
@@ -23,15 +23,17 @@ function getSelectStyles() {
     control: (base, { isFocused }) => ({
       ...base,
       fontSize: `${fontSizes.base}px`,
-      borderWidth: '1px',
-      borderColor: isFocused ? colors.black : `${colors.borderDark}`,
+      borderWidth: isFocused ? '2px' : '1px',
+      borderColor: isFocused
+        ? theme.colors.tenantPrimary
+        : `${colors.borderDark}`,
       borderRadius: stylingConsts.borderRadius,
       minHeight: '48px',
       backgroundColor: '#fff',
-      boxShadow: isFocused ? defaultStyles.boxShadowFocused : 'none',
+      boxShadow: 'none',
       cursor: 'pointer',
       '&:hover': {
-        borderColor: colors.black,
+        borderColor: `${theme.colors.tenantPrimary}`,
       },
     }),
     indicatorSeparator: () => ({
@@ -39,9 +41,11 @@ function getSelectStyles() {
     }),
     dropdownIndicator: (base, { isFocused }) => ({
       ...base,
-      color: isFocused ? colors.black : `${colors.borderDark}`,
+      color: isFocused
+        ? `${theme.colors.tenantPrimary}`
+        : `${colors.borderDark}`,
       '&:hover': {
-        color: colors.black,
+        color: `${theme.colors.tenantPrimary}`,
       },
     }),
     placeholder: (base) => ({

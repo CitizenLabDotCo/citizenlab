@@ -65,4 +65,8 @@ export default defineMessages({
     id: 'app.components.AuthProviders.verificationRequired',
     defaultMessage: 'Verification required',
   },
+  youCantParticipate: {
+    id: 'app.containers.NewAuthModal.youCantParticipate',
+    defaultMessage: "You can't participate",
+  },
 });

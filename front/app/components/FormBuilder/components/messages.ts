@@ -75,6 +75,10 @@ export default defineMessages({
     id: 'app.components.formBuilder.fileUpload',
     defaultMessage: 'File upload',
   },
+  cosponsors: {
+    id: 'app.components.formBuilder.cosponsors',
+    defaultMessage: 'Co-sponsors',
+  },
   shapefileUpload: {
     id: 'app.components.formBuilder.shapefileUpload',
     defaultMessage: 'Esri shapefile upload',
@@ -244,9 +248,9 @@ export default defineMessages({
       'This has already been added in the form. Default content may only be used once.',
   },
   disabledCustomFieldsTooltip: {
-    id: 'app.components.formBuilder.disabledCustomFieldsTooltip',
+    id: 'app.components.formBuilder.disabledCustomFieldsTooltip1',
     defaultMessage:
-      'Adding custom content is part of the premium license. Reach out to your GovSuccess Manager to learn more about it.',
+      'Adding custom content is not part of your current license. Reach out to your GovSuccess Manager to learn more about it.',
   },
   sectionCannotBeDeleted: {
     id: 'app.components.formBuilder.sectionCannotBeDeleted',

@@ -87,6 +87,12 @@ FactoryBot.define do
       end
     end
 
+    factory :project_with_past_information_phase do
+      after(:create) do |project, _evaluator|
+        project.phases << create(:past_phase, project: project, participation_method: 'information')
+      end
+    end
+
     factory :project_with_past_ideation_and_active_budgeting_phase do
       after(:create) do |project, _evaluator|
         project.phases << create(
@@ -321,21 +327,21 @@ FactoryBot.define do
         end_at = active_phase.start_at
         phases_before.to_s.chars.map(&:to_sym).reverse_each do |sequence_char|
           phase_config = evaluator.phases_config[sequence_char].clone || {}
-          project.phases << create(:phase,
+          project.phases << create(phase_config[:factory] || :phase,
             end_at: end_at - 1,
             start_at: end_at -= rand(1..120).days,
             project: project,
-            **phase_config)
+            **phase_config.except(:factory))
         end
 
         start_at = active_phase.end_at
         phases_after.to_s.chars.map(&:to_sym).each do |sequence_char|
           phase_config = evaluator.phases_config[sequence_char].clone || {}
-          project.phases << create(:phase,
+          project.phases << create(phase_config[:factory] || :phase,
             start_at: start_at + 1,
             end_at: start_at += rand(1..120).days,
             project: project,
-            **phase_config)
+            **phase_config.except(:factory))
         end
       end
     end

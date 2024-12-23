@@ -1,12 +1,12 @@
 import React from 'react';
 
-import { media, isRtl, fontSizes } from '@citizenlab/cl2-component-library';
+import { media, isRtl, colors, Title } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
 import { OnboardingCampaignName } from 'api/onboarding_campaigns/types';
 
-import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/HomepageBanner';
+import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Widgets/HomepageBanner';
 
 import T from 'components/T';
 
@@ -17,8 +17,7 @@ import messages from '../messages';
 
 import CTA from './CTA';
 import OnboardingStep from './OnboardingStep';
-
-import { Left, Right } from './';
+import { Left, Right } from './Shared';
 
 const HeaderContent = styled.div`
   position: absolute;
@@ -32,17 +31,11 @@ const HeaderContent = styled.div`
   padding-bottom: 20px;
   padding-left: 75px;
   padding-right: 75px;
+  color: ${colors.white};
 
   ${isRtl`
     flex-direction: row-reverse;
   `}
-
-  h2 {
-    color: #fff;
-    font-size: ${fontSizes.xxl}px;
-    line-height: 33px;
-    font-weight: 400;
-  }
 
   ${media.tablet`
     text-align: center;
@@ -77,15 +70,16 @@ const FallbackStep = ({
       >
         <HeaderContent id="e2e-signed-in-header-default-cta">
           <Left>
-            {defaultMessage && !isEmptyMultiloc(defaultMessage) ? (
-              <T as="h2" value={defaultMessage} supportHtml />
-            ) : (
-              <FormattedMessage
-                {...messages.defaultSignedInMessage}
-                tagName="h2"
-                values={{ firstName: authUser.data.attributes.first_name }}
-              />
-            )}
+            <Title variant="h2" m="0" color="white">
+              {defaultMessage && !isEmptyMultiloc(defaultMessage) ? (
+                <T value={defaultMessage} supportHtml />
+              ) : (
+                <FormattedMessage
+                  {...messages.defaultSignedInMessage}
+                  values={{ firstName: authUser.data.attributes.first_name }}
+                />
+              )}
+            </Title>
           </Left>
           <Right>
             <CTA

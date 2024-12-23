@@ -26,5 +26,11 @@ module BulkImportIdeas::Exporters
     def importer_data
       raise NotImplementedError, 'This method is not yet implemented'
     end
+
+    private
+
+    def custom_field_service
+      @custom_field_service ||= CustomFieldService.new
+    end
   end
 end

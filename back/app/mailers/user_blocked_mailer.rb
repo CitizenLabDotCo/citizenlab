@@ -11,8 +11,12 @@ class UserBlockedMailer < ApplicationMailer
     end
   end
 
+  def preheader
+    format_message('preheader', values: { organizationName: organization_name })
+  end
+
   def subject
-    t('.subject', organizationName: organization_name)
+    format_message('subject', values: { organizationName: organization_name })
   end
 
   def header_logo_only?

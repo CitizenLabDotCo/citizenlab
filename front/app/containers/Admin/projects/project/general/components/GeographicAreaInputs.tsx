@@ -18,7 +18,7 @@ import Link from 'utils/cl-router/Link';
 import { isString } from 'utils/helperUtils';
 
 import { TOnProjectAttributesDiffChangeFunction } from '..';
-import { LabelHeaderDescription } from '../../phase/phaseParticipationConfig/components/shared/labels';
+import { LabelHeaderDescription } from '../../../project/phaseSetup/components/PhaseParticipationConfig/components/shared/labels';
 import messages from '../messages';
 
 import { StyledSectionField, StyledMultipleSelect } from './styling';

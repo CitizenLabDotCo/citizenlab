@@ -94,15 +94,17 @@ const ModeratorListRow = ({
           disabled={!disabledTooltip}
           placement="left"
         >
-          <Button
-            onClick={handleDeleteClick}
-            buttonStyle="text"
-            icon="delete"
-            disabled={deleteDisabled}
-            processing={isLoading}
-          >
-            {formatMessage(messages.deleteModeratorLabel)}
-          </Button>
+          <Box>
+            <Button
+              onClick={handleDeleteClick}
+              buttonStyle="text"
+              icon="delete"
+              disabled={deleteDisabled}
+              processing={isLoading}
+            >
+              {formatMessage(messages.deleteModeratorLabel)}
+            </Button>
+          </Box>
         </Tooltip>
       </Box>
     </Row>

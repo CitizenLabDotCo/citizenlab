@@ -17,16 +17,6 @@ const EmailChange = lazy(() => import('containers/EmailChange'));
 const IdeasEditPage = lazy(() => import('containers/IdeasEditPage'));
 const IdeasIndexPage = lazy(() => import('containers/IdeasIndexPage'));
 const IdeasShowPage = lazy(() => import('containers/IdeasShowPage'));
-const InitiativesIndexPage = lazy(
-  () => import('containers/InitiativesIndexPage')
-);
-const InitiativesEditPage = lazy(
-  () => import('containers/InitiativesEditPage')
-);
-const InitiativesNewPage = lazy(() => import('containers/InitiativesNewPage'));
-const InitiativesShowPage = lazy(
-  () => import('containers/InitiativesShowPage')
-);
 const IdeasNewPage = lazy(() => import('containers/IdeasNewPage'));
 const IdeasNewSurveyPage = lazy(() => import('containers/IdeasNewSurveyPage'));
 const ProjectsIndexPage = lazy(() => import('containers/ProjectsIndexPage'));
@@ -54,6 +44,10 @@ const ReportPrintPage = lazy(
 );
 const DisabledAccount = lazy(() => import('containers/DisabledAccount'));
 
+const ProjectPreviewToken = lazy(
+  () => import('containers/Admin/projects/project/previewToken')
+);
+
 export type RouteType =
   | AdminRouteTypes
   | moduleRouteTypes
@@ -73,9 +67,8 @@ export enum citizenRoutes {
   profile = 'profile',
   signIn = 'sign-in',
   signUp = 'sign-up',
+  signInAdmin = 'sign-in/admin',
   invite = 'invite',
-  completeSignUp = 'complete-signup',
-  authenticationError = 'authentication-error',
   siteMap = 'site-map',
   profileEdit = `profile/edit`,
   changePassword = `profile/change-password`,
@@ -83,14 +76,12 @@ export enum citizenRoutes {
   ideas = 'ideas',
   ideasEditIdea = `ideas/edit/:ideaId`,
   ideasSlug = `ideas/:slug`,
-  initiatives = 'initiatives',
-  initiativeEdit = `initiatives/edit/:initiativeId`,
-  initiativesNew = `initiatives/new`,
-  initiativesSlug = `initiatives/:slug`,
   projects = 'projects',
   projectIdeaNew = `projects/:slug/ideas/new`,
   projectSurveyNew = `projects/:slug/surveys/new`,
   projectSlug = `projects/:slug`,
+  projectSlugPreview = `projects/:slug/preview`,
+  projectSlugPreviewToken = `:token`,
   phaseNumber = ':phaseNumber',
   folders = 'folders',
   foldersSlug = `folders/:slug`,
@@ -112,11 +103,10 @@ export enum citizenRoutes {
 type citizenRouteTypes =
   | '/'
   | `/${string}/`
+  | `/sign-in/admin`
   | `/sign-in`
   | `/sign-up`
   | `/invite`
-  | `/complete-signup`
-  | `/authentication-error`
   | `/site-map`
   | `/${citizenRoutes.profile}/edit`
   | `/${citizenRoutes.profile}/change-password`
@@ -124,14 +114,11 @@ type citizenRouteTypes =
   | `/ideas`
   | `/${citizenRoutes.ideas}/edit/${string}`
   | `/${citizenRoutes.ideas}/${string}`
-  | `/initiatives`
-  | `/${citizenRoutes.initiatives}/edit/${string}`
-  | `/${citizenRoutes.initiatives}/new`
-  | `/${citizenRoutes.initiatives}/${string}`
   | `/${citizenRoutes.projects}`
   | `/${citizenRoutes.projects}?focusSearch=${string}`
   | `/${citizenRoutes.projects}/${string}/${citizenRoutes.ideas}/new`
   | `/${citizenRoutes.projects}/${string}`
+  | `/${citizenRoutes.projects}/${string}/preview/${string}`
   | `/${citizenRoutes.folders}`
   | `/${citizenRoutes.folders}/${string}`
   | `/${citizenRoutes.events}`
@@ -161,6 +148,14 @@ export default function createRoutes() {
           ),
         },
         {
+          path: citizenRoutes.signInAdmin,
+          element: (
+            <PageLoading>
+              <HomePage />
+            </PageLoading>
+          ),
+        },
+        {
           path: citizenRoutes.signIn,
           element: (
             <PageLoading>
@@ -178,22 +173,6 @@ export default function createRoutes() {
         },
         {
           path: citizenRoutes.invite,
-          element: (
-            <PageLoading>
-              <HomePage />
-            </PageLoading>
-          ),
-        },
-        {
-          path: citizenRoutes.completeSignUp,
-          element: (
-            <PageLoading>
-              <HomePage />
-            </PageLoading>
-          ),
-        },
-        {
-          path: citizenRoutes.authenticationError,
           element: (
             <PageLoading>
               <HomePage />
@@ -257,39 +236,7 @@ export default function createRoutes() {
             </PageLoading>
           ),
         },
-        {
-          path: citizenRoutes.initiatives,
-          element: (
-            <PageLoading>
-              <InitiativesIndexPage />
-            </PageLoading>
-          ),
-        },
-        {
-          path: citizenRoutes.initiativeEdit,
-          element: (
-            <PageLoading>
-              <InitiativesEditPage />
-            </PageLoading>
-          ),
-        },
-        {
-          path: citizenRoutes.initiativesNew,
-          element: (
-            <PageLoading>
-              <InitiativesNewPage />
-            </PageLoading>
-          ),
-        },
-        // super important that this comes AFTER initiatives/new, if it comes before, new is interpreted as a slug
-        {
-          path: citizenRoutes.initiativesSlug,
-          element: (
-            <PageLoading>
-              <InitiativesShowPage />
-            </PageLoading>
-          ),
-        },
+
         {
           path: citizenRoutes.projectIdeaNew,
           element: (
@@ -306,6 +253,20 @@ export default function createRoutes() {
             </PageLoading>
           ),
         },
+        {
+          path: citizenRoutes.projectSlugPreview,
+          children: [
+            {
+              path: citizenRoutes.projectSlugPreviewToken,
+              element: (
+                <PageLoading>
+                  <ProjectPreviewToken />
+                </PageLoading>
+              ),
+            },
+          ],
+        },
+
         createAdminRoutes(),
         {
           path: citizenRoutes.projects,
@@ -333,14 +294,6 @@ export default function createRoutes() {
             },
             {
               path: citizenRoutes.phaseNumber,
-              element: (
-                <PageLoading>
-                  <ProjectsShowPage />
-                </PageLoading>
-              ),
-            },
-            {
-              path: citizenRoutes.wildcard,
               element: (
                 <PageLoading>
                   <ProjectsShowPage />

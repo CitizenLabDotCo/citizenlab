@@ -6,18 +6,19 @@ module EmailCampaigns
 
     def campaign_mail
       campaign = EmailCampaigns::Campaigns::ModeratorDigest.first
-      top_ideas = Idea.first(3)
+      top_ideas = Idea.published.first(3)
+      proposal = Idea.published.last
       name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient_user)
       project = Idea.first.project
       project_id = project.id
-      project_name = project.title_multiloc[recipient_user.locale] || project.title_multiloc[I18n.default_locale]
+      project_title = project.title_multiloc[recipient_user.locale] || project.title_multiloc[I18n.default_locale]
 
       # TODO: generate commands with campaign#generate_commands method
       command = {
         recipient: recipient_user,
         event_payload: {
           project_id: project_id,
-          project_name: project_name,
+          project_title: project_title,
           statistics: {
             new_ideas_increase: 3,
             new_comments_increase: 2,
@@ -39,11 +40,21 @@ module EmailCampaigns
               comments_increment: idea.comments.where('created_at > ?', Time.now - 7).count
             }
           end,
-          has_new_ideas: true
+          has_new_ideas: true,
+          successful_proposals: [
+            {
+              id: proposal.id,
+              title_multiloc: proposal.title_multiloc,
+              url: Frontend::UrlService.new.model_to_url(proposal),
+              published_at: proposal.published_at&.iso8601 || Time.now.iso8601,
+              author_name: name_service.display_name!(proposal.author),
+              likes_count: proposal.likes_count,
+              comments_count: proposal.comments_count
+            }
+          ]
         },
         tracked_content: {
-          idea_ids: [],
-          initiative_ids: []
+          idea_ids: [*top_ideas.map(&:id), proposal.id]
         }
       }
 

@@ -1,6 +1,7 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  // #input_term_copy
   xIdeas: {
     id: 'app.components.ProjectCard.xIdeas',
     defaultMessage:
@@ -36,6 +37,21 @@ export default defineMessages({
     defaultMessage:
       '{commentsCount, plural, no {# comments} one {# comments} other {# comments}}',
   },
+  xProposals: {
+    id: 'app.components.ProjectCard.xProposals',
+    defaultMessage:
+      '{ideasCount, plural, no {# proposals} one {# proposal} other {# proposals}}',
+  },
+  xInitiatives: {
+    id: 'app.components.ProjectCard.xInitiatives',
+    defaultMessage:
+      '{ideasCount, plural, no {# initiatives} one {# initiative} other {# initiatives}}',
+  },
+  xPetitions: {
+    id: 'app.components.ProjectCard.xPetitions',
+    defaultMessage:
+      '{ideasCount, plural, no {# petitions} one {# petition} other {# petitions}}',
+  },
   archived: {
     id: 'app.components.ProjectCard.archived',
     defaultMessage: 'Archived',
@@ -43,10 +59,6 @@ export default defineMessages({
   finished: {
     id: 'app.components.ProjectCard.finished',
     defaultMessage: 'Finished',
-  },
-  remaining: {
-    id: 'app.components.ProjectCard.remaining',
-    defaultMessage: '{timeRemaining} remaining',
   },
   allocateYourBudget: {
     id: 'app.components.ProjectCard.allocateYourBudget',
@@ -72,6 +84,7 @@ export default defineMessages({
     id: 'app.components.ProjectCard.takeThePoll',
     defaultMessage: 'Take the poll',
   },
+  // #input_term_copy
   submitYourIdea: {
     id: 'app.components.ProjectCard.submitYourIdea',
     defaultMessage: 'Submit your idea',
@@ -96,6 +109,18 @@ export default defineMessages({
     id: 'app.components.ProjectCard.contributeYourInput',
     defaultMessage: 'Contribute your input',
   },
+  submitYourProposal: {
+    id: 'app.components.ProjectCard.submitYourProposal',
+    defaultMessage: 'Submit your proposal',
+  },
+  submitYourInitiative: {
+    id: 'app.components.ProjectCard.submitYourInitiative',
+    defaultMessage: 'Submit your initiative',
+  },
+  submitYourPetition: {
+    id: 'app.components.ProjectCard.submitYourPetition',
+    defaultMessage: 'Submit your petition',
+  },
   reaction: {
     id: 'app.components.ProjectCard.reaction',
     defaultMessage: 'Reaction',
@@ -104,6 +129,7 @@ export default defineMessages({
     id: 'app.components.ProjectCard.comment',
     defaultMessage: 'Comment',
   },
+  // #input_term_copy
   viewTheIdeas: {
     id: 'app.components.ProjectCard.viewTheIdeas',
     defaultMessage: 'View the ideas',
@@ -128,6 +154,18 @@ export default defineMessages({
     id: 'app.components.ProjectCard.viewTheContributions',
     defaultMessage: 'View the contributions',
   },
+  viewTheProposals: {
+    id: 'app.components.ProjectCard.viewTheProposals',
+    defaultMessage: 'View the proposals',
+  },
+  viewTheInitiatives: {
+    id: 'app.components.ProjectCard.viewTheInitiatives',
+    defaultMessage: 'View the initiatives',
+  },
+  viewThePetitions: {
+    id: 'app.components.ProjectCard.viewThePetitions',
+    defaultMessage: 'View the petitions',
+  },
   a11y_projectTitle: {
     id: 'app.components.ProjectCard.a11y_projectTitle',
     defaultMessage: 'Project title: ',
@@ -135,5 +173,9 @@ export default defineMessages({
   a11y_projectDescription: {
     id: 'app.components.ProjectCard.a11y_projectDescription',
     defaultMessage: 'Project description: ',
+  },
+  readTheReport: {
+    id: 'app.components.ProjectCard.readTheReport',
+    defaultMessage: 'Read the report',
   },
 });

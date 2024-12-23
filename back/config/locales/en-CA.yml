@@ -170,6 +170,9 @@ en-CA:
       topic_ids:
         title: Tags
         description:
+      consponsor_ids:
+        title: Co-sponsors
+        description: Invite co-sponsors through the field below. The invited co-sponsor(s) will receive an email.
       location:
         title: Location
         description:
@@ -192,8 +195,8 @@ en-CA:
       section3:
         title: Details
         description:
-      other_text_field:
-        title: If you picked '{other_option}', what are you thinking of?
+      other_input_field:
+        title: Type your answer
   custom_forms:
     categories:
       main_content:
@@ -209,6 +212,12 @@ en-CA:
           title: What is your comment?
         option:
           title: What is your option?
+        proposal:
+          title: What is your proposal?
+        initiative:
+          title: What is your initiative?
+        petition:
+          title: What is your petition?
   custom_field_options:
     gender:
       male: Male
@@ -233,6 +242,7 @@ en-CA:
       <ul><li>Take the time to elaborate on your proposal. If necessary, type a draft first and then copy-paste it here.</li><li>Choose a meaningful title that explains clearly what your proposal entails.</li><li>Visualize your proposal with a fitting image to help it stand out!</li><li>Add relevant attachments, such as videos, inspiring examples, technical details or plans.</li><li>Share your idea on social media and other channels to gather support from others.</li></ul>
   reset_password_mailer:
     send_reset_password:
+      preheader: 'Reset your password for %{organizationName}'
       cta_reset_password: 'Reset your password'
       message_you_reset_your_password: 'You requested a password reset for the participation platform of %{organizationName}. Click the button below to choose a new, safe password. The link expires in 1 hour.'
       subject: '%{organizationName}: Reset your password'
@@ -256,6 +266,7 @@ en-CA:
       first_name: 'First name(s)'
       image_url: 'Image URL'
       input_id: 'ID'
+      manual_votes: 'Offline votes'
       input_url: 'URL'
       last_name: 'Last name'
       latitude: 'Latitude'
@@ -310,6 +321,7 @@ en-CA:
   confirmations_mailer:
     send_confirmation_code:
       subject: "Confirm your email address for %{organizationName}'s participation platform"
+      preheader: 'Confirm your email address for %{organizationName}'
       header: "Your Confirmation Code"
       header_message: "Hi %{firstName}!"
       confirm_email_address: "Confirm your email address"
@@ -324,6 +336,7 @@ en-CA:
   user_blocked_mailer:
     send_user_blocked_email:
       subject: 'Your account has been temporarily disabled'
+      preheader: 'Your account on the participation platform of %{organizationName} has been temporarily disabled'
       title_user_blocked: 'Your account has been temporarily disabled'
       paragraph_1_without_reason: "Your account on the participation platform of %{organizationName} has been temporarily disabled for a violation of the community guidelines."
       paragraph_1_with_reason: "Your account on the participation platform of %{organizationName} has been temporarily disabled for the following reason:"
@@ -331,6 +344,8 @@ en-CA:
       you_can_sign_in_again_from: "You can sign in again from %{date}"
   user:
     anon_first_name: "User"
+    anon_scheme:
+      animals: 'alligator,crocodile,alpaca,ant,antelope,ape,armadillo,baboon,badger,bat,bear,beaver,bee,beetle,buffalo,butterfly,camel,water buffalo,caribou,cat,cattle,cheetah,chimpanzee,chinchilla,cicada,clam,cockroach,cod,coyote,crab,cricket,crow,raven,deer,dinosaur,dog,dolphin,porpoise,duck,eagle,eel,elephant,elk,ferret,fish,fly,fox,frog,toad,gerbil,giraffe,gnat,gnu,wildebeest,goat,goldfish,goose,gorilla,grasshopper,guinea pig,hamster,hare,hedgehog,herring,hippopotamus,hornet,horse,hound,hyena,impala,jackal,jellyfish,kangaroo,wallaby,koala,leopard,lion,lizard,llama,locust,louse,macaw,mallard,mammoth,manatee,marten,mink,minnow,mole,moose,mosquito,mouse,rat,mule,muskrat,otter,ox,oyster,panda,pig,platypus,porcupine,prairie dog,pug,rabbit,raccoon,reindeer,rhinoceros,salmon,sardine,scorpion,seal,sea lion,serval,shark,sheep,skunk,snail,snake,spider,squirrel,swan,termite,tiger,trout,turtle,tortoise,walrus,wasp,whale,wolf,wombat,woodchuck,worm,yak,yellowjacket,zebra'
   time:
     am: am
     formats:
@@ -339,3 +354,5 @@ en-CA:
   voting_method:
     default_voting_term_singular: "vote"
     default_voting_term_plural: "votes"
+  ics_calendar_event:
+    event_details: "Event details"

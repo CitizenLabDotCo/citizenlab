@@ -54,6 +54,8 @@ import {
   SingleAttachmentControl,
   shapefileUploadControlTester,
   ShapefileUploadControl,
+  CosponsorsControl,
+  cosponsorsControlTester,
 } from 'components/Form/Components/Controls';
 
 const commonRenderers = [
@@ -78,6 +80,7 @@ const commonRenderers = [
   { tester: userPickerControlTester, renderer: UserPickerControl },
   { tester: multilocInputTester, renderer: MultilocInputLayout },
   { tester: orderedLayoutTester, renderer: OrderedLayout },
+  { tester: cosponsorsControlTester, renderer: CosponsorsControl },
 ];
 
 export const selectRenderers = (formType: 'default' | 'input' | 'survey') => {

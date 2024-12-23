@@ -1,41 +1,48 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 
 import {
   media,
-  fontSizes,
-  viewportWidths,
   defaultCardStyle,
-  isRtl,
   Spinner,
-  useWindowSize,
+  Box,
+  Title,
+  Text,
+  useBreakpoint,
 } from '@citizenlab/cl2-component-library';
+import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
+import useIdeaCustomFieldsSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
+import useIdeaMarkers from 'api/idea_markers/useIdeaMarkers';
+import { IdeaQueryParameters } from 'api/ideas/types';
 import useInfiniteIdeas from 'api/ideas/useInfiniteIdeas';
 import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
+import { PresentationMode, IdeaSortMethod, InputTerm } from 'api/phases/types';
 
-import { QueryParameters } from 'containers/IdeasIndexPage';
+import useLocale from 'hooks/useLocale';
 
-import Button from 'components/UI/Button';
-import SearchInput from 'components/UI/SearchInput';
+import ViewButtons from 'components/PostCardsComponents/ViewButtons';
 
 import { trackEventByName } from 'utils/analytics';
-import { FormattedMessage } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { isNilOrError } from 'utils/helperUtils';
+import { isFieldEnabled } from 'utils/projectUtils';
 
 import messages from '../messages';
-import SortFilterDropdown, { Sort } from '../shared/Filters/SortFilterDropdown';
 import IdeasView from '../shared/IdeasView';
 import tracks from '../tracks';
 
-import FiltersModal from './FiltersModal';
-import FiltersSideBar from './FiltersSideBar';
+import ButtonWithFiltersModal from './ButtonWithFiltersModal';
+import ContentRight from './ContentRight';
+import { InputFiltersProps } from './InputFilters';
+import { getInputCountMessage } from './utils';
 
-const gapWidth = 35;
+export const gapWidth = 35;
 
 const Container = styled.div`
   width: 100%;
-  max-width: 1445px;
+  max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
   display: flex;
@@ -56,56 +63,6 @@ const InitialLoading = styled.div`
   `}
 `;
 
-const MobileSearchInput = styled(SearchInput)`
-  margin-bottom: 20px;
-`;
-
-const MobileFilterButton = styled(Button)``;
-
-const AboveContent = styled.div<{ filterColumnWidth: number }>`
-  display: flex;
-  flex-direction: row-reverse;
-  align-items: center;
-  justify-content: space-between;
-  margin-right: ${({ filterColumnWidth }) => filterColumnWidth + gapWidth}px;
-  margin-bottom: 22px;
-
-  ${isRtl`
-    flex-direction: row-reverse;
-  `}
-
-  ${media.tablet`
-    margin-right: 0;
-    margin-top: 20px;
-  `}
-`;
-
-const AboveContentLeft = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const AboveContentRight = styled.div`
-  margin-left: auto;
-`;
-
-const IdeasCount = styled.div`
-  color: ${({ theme }) => theme.colors.tenantText};
-  font-size: ${fontSizes.base}px;
-  line-height: 21px;
-  white-space: nowrap;
-  display: flex;
-  align-items: center;
-
-  span > span {
-    font-weight: 600;
-  }
-`;
-
-const Content = styled.div`
-  display: flex;
-`;
-
 const ContentLeft = styled.div`
   flex: 1;
   display: flex;
@@ -114,55 +71,95 @@ const ContentLeft = styled.div`
   position: relative;
 `;
 
-const ContentRight = styled.div<{ filterColumnWidth: number }>`
-  flex: 0 0 ${({ filterColumnWidth }) => filterColumnWidth}px;
-  width: ${({ filterColumnWidth }) => filterColumnWidth}px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-self: flex-start;
-  margin-left: ${gapWidth}px;
-  position: relative;
-  position: sticky;
-  top: 100px;
-`;
-
 export interface QueryParametersUpdate {
-  sort?: Sort;
+  sort?: IdeaSortMethod;
   search?: string;
   idea_status?: string;
   topics?: string[];
 }
 
 export interface Props {
-  ideaQueryParameters: QueryParameters;
+  ideaQueryParameters: IdeaQueryParameters;
   onUpdateQuery: (newParams: QueryParametersUpdate) => void;
+  showViewToggle?: boolean;
+  defaultView?: PresentationMode;
+  projectId?: string;
+  phaseId?: string;
+  inputTerm?: InputTerm;
 }
 
-const IdeaCards = ({ ideaQueryParameters, onUpdateQuery }: Props) => {
-  const { windowWidth } = useWindowSize();
+const IdeasWithFiltersSidebar = ({
+  ideaQueryParameters,
+  projectId,
+  phaseId,
+  defaultView = 'card',
+  onUpdateQuery,
+  showViewToggle,
+  inputTerm,
+}: Props) => {
+  const locale = useLocale();
+  const { formatMessage } = useIntl();
+  const [searchParams] = useSearchParams();
+  const smallerThanPhone = useBreakpoint('phone');
+  const biggerThanLargeTablet = !useBreakpoint('tablet');
 
-  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useInfiniteIdeas(ideaQueryParameters);
+  // Get data from searchParams
+  const selectedIdeaMarkerId = searchParams.get('idea_map_id');
+  const selectedView =
+    (searchParams.get('view') as PresentationMode | null) ??
+    (selectedIdeaMarkerId ? 'map' : defaultView);
+
+  // Fetch ideas list & filter counts
+  const {
+    data,
+    isLoading,
+    isFetching,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteIdeas(ideaQueryParameters);
 
   const list = data?.pages.map((page) => page.data).flat();
   const { data: ideasFilterCounts } = useIdeasFilterCounts(ideaQueryParameters);
+  const ideasCount = ideasFilterCounts?.data.attributes.total || 0;
 
-  const [filtersModalOpened, setFiltersModalOpened] = useState(false);
+  // Determine if location field enabled (for view button visibility and fetching idea markers)
+  const { data: ideaCustomFieldsSchemas } = useIdeaCustomFieldsSchema({
+    phaseId: ideaQueryParameters.phase,
+    projectId,
+  });
+  const locationEnabled = !isNilOrError(ideaCustomFieldsSchemas)
+    ? isFieldEnabled(
+        'location_description',
+        ideaCustomFieldsSchemas.data.attributes,
+        locale
+      )
+    : false;
+  const showViewButtons = !!(locationEnabled && showViewToggle);
+  const loadIdeaMarkers = locationEnabled && selectedView === 'map';
+  const { data: ideaMarkers } = useIdeaMarkers(
+    {
+      projectIds: projectId ? [projectId] : null,
+      phaseId,
+      ...ideaQueryParameters,
+    },
+    loadIdeaMarkers
+  );
 
-  const openFiltersModal = useCallback(() => {
-    setFiltersModalOpened(true);
+  const setSelectedView = useCallback((view: PresentationMode) => {
+    updateSearchParams({ view });
   }, []);
 
   const handleSearchOnChange = useCallback(
-    (search: string) => {
+    (search: string | null) => {
+      trackEventByName(tracks.searchFilterUsedIdeas);
       onUpdateQuery({ search: search ?? undefined });
     },
     [onUpdateQuery]
   );
 
   const handleSortOnChange = useCallback(
-    (sort: Sort) => {
+    (sort: IdeaSortMethod) => {
       trackEventByName(tracks.sortingFilter, {
         sort,
       });
@@ -174,6 +171,9 @@ const IdeaCards = ({ ideaQueryParameters, onUpdateQuery }: Props) => {
 
   const handleStatusOnChange = useCallback(
     (idea_status: string | null) => {
+      trackEventByName(tracks.statusesFilter, {
+        idea_status,
+      });
       onUpdateQuery({ idea_status: idea_status ?? undefined });
     },
     [onUpdateQuery]
@@ -181,39 +181,55 @@ const IdeaCards = ({ ideaQueryParameters, onUpdateQuery }: Props) => {
 
   const handleTopicsOnChange = useCallback(
     (topics: string[] | null) => {
+      trackEventByName(tracks.topicsFilter, {
+        topics: topics?.toString(),
+      });
+
       onUpdateQuery({ topics: topics ?? undefined });
     },
     [onUpdateQuery]
   );
 
-  const clearFilters = useCallback(() => {
-    onUpdateQuery({
-      search: undefined,
-      idea_status: undefined,
-      topics: undefined,
-    });
-  }, [onUpdateQuery]);
+  const showInputFilterSidebar =
+    biggerThanLargeTablet && selectedView === 'card';
 
-  const closeModal = useCallback(() => {
-    setFiltersModalOpened(false);
-  }, []);
-
-  const filterColumnWidth = windowWidth && windowWidth < 1400 ? 340 : 352;
-  const filtersActive = !!(
-    ideaQueryParameters.search ||
-    ideaQueryParameters.idea_status ||
-    ideaQueryParameters.topics
-  );
-  const biggerThanLargeTablet = !!(
-    windowWidth && windowWidth >= viewportWidths.tablet
-  );
-  const smallerThan1440px = !!(windowWidth && windowWidth <= 1440);
-  const smallerThanPhone = !!(
-    windowWidth && windowWidth <= viewportWidths.phone
-  );
+  const inputFiltersProps: InputFiltersProps = {
+    ideasFilterCounts,
+    numberOfSearchResults: ideasCount,
+    ideaQueryParameters,
+    onSearch: handleSearchOnChange,
+    onChangeStatus: handleStatusOnChange,
+    onChangeTopics: handleTopicsOnChange,
+    handleSortOnChange,
+    phaseId,
+  };
 
   return (
     <Container id="e2e-ideas-container">
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        mb={showViewButtons ? '8px' : '16px'}
+      >
+        {inputTerm && (
+          <Title
+            variant="h5"
+            as="h2"
+            my="auto"
+            color="tenantText"
+            fontWeight="semi-bold"
+          >
+            {formatMessage(getInputCountMessage(inputTerm), {
+              ideasCount,
+            })}
+          </Title>
+        )}
+
+        {showViewButtons && (
+          <ViewButtons selectedView={selectedView} onClick={setSelectedView} />
+        )}
+      </Box>
+
       {list === undefined && (
         <InitialLoading id="ideas-loading">
           <Spinner />
@@ -222,104 +238,50 @@ const IdeaCards = ({ ideaQueryParameters, onUpdateQuery }: Props) => {
 
       {list && (
         <>
-          {!biggerThanLargeTablet && (
-            <>
-              <FiltersModal
-                opened={filtersModalOpened}
-                selectedIdeaFilters={ideaQueryParameters}
-                filtersActive={filtersActive}
-                ideasFilterCounts={ideasFilterCounts}
-                numberOfSearchResults={list ? list.length : 0}
-                onClearFilters={clearFilters}
-                onSearch={handleSearchOnChange}
-                onChangeStatus={handleStatusOnChange}
-                onChangeTopics={handleTopicsOnChange}
-                onClose={closeModal}
-              />
-
-              <MobileSearchInput
-                defaultValue={ideaQueryParameters.search}
-                onChange={handleSearchOnChange}
-                a11y_numberOfSearchResults={list.length}
-              />
-
-              <MobileFilterButton
-                buttonStyle="secondary-outlined"
-                onClick={openFiltersModal}
-                icon="filter"
-                text={<FormattedMessage {...messages.filter} />}
-              />
-            </>
+          <ButtonWithFiltersModal {...inputFiltersProps} />
+          {/* 
+            If we have an inputTerm (are on the project page), we don't need this because the number of results is displayed next to the heading (see above). This fallback is used on the /ideas page, where we have no inputTerm. 
+            TO DO: refactor this component so we can add it to the page instead to this general component.
+          */}
+          {!inputTerm && (
+            <Text mb="8px">
+              {formatMessage(messages.numberResults, {
+                postCount: ideasCount,
+              })}
+            </Text>
           )}
-
-          <AboveContent filterColumnWidth={filterColumnWidth}>
-            {/* This is effectively on the right,
-              with the help of flexbox. The HTML order, however,
-              needed to be like this for a11y (tab order).
-             */}
-            <AboveContentRight>
-              <SortFilterDropdown
-                value={ideaQueryParameters.sort}
-                onChange={handleSortOnChange}
-                alignment="right"
-              />
-            </AboveContentRight>
-            <AboveContentLeft>
-              {!isNilOrError(ideasFilterCounts) && (
-                <IdeasCount>
-                  <FormattedMessage
-                    {...messages.xResults}
-                    values={{
-                      ideasCount: ideasFilterCounts.data.attributes.total,
-                    }}
-                  />
-                </IdeasCount>
-              )}
-            </AboveContentLeft>
-          </AboveContent>
-
-          <Content>
+          <Box display={selectedView === 'map' ? 'block' : 'flex'}>
             <ContentLeft>
+              {isFetching && (
+                <Box mb="12px">
+                  <Spinner />
+                </Box>
+              )}
               <IdeasView
                 list={list}
                 querying={isLoading}
                 onLoadMore={fetchNextPage}
                 hasMore={!!hasNextPage}
                 loadingMore={isFetchingNextPage}
-                hideImage={biggerThanLargeTablet && smallerThan1440px}
-                hideImagePlaceholder={smallerThan1440px}
-                hideIdeaStatus={
-                  (biggerThanLargeTablet && smallerThan1440px) ||
-                  smallerThanPhone
-                }
-                view="card"
+                hideImagePlaceholder={true}
+                hideImage={false}
+                hideIdeaStatus={smallerThanPhone}
+                view={selectedView}
                 hasMoreThanOneView={false}
+                projectId={projectId}
+                hasFilterSidebar={true}
+                phaseId={phaseId}
+                ideaMarkers={ideaMarkers}
+                inputFiltersProps={inputFiltersProps}
               />
             </ContentLeft>
 
-            {biggerThanLargeTablet && (
-              <ContentRight
-                id="e2e-ideas-filters"
-                filterColumnWidth={filterColumnWidth}
-              >
-                <FiltersSideBar
-                  defaultValue={ideaQueryParameters.search}
-                  selectedIdeaFilters={ideaQueryParameters}
-                  filtersActive={filtersActive}
-                  ideasFilterCounts={ideasFilterCounts}
-                  numberOfSearchResults={list ? list.length : 0}
-                  onClearFilters={clearFilters}
-                  onSearch={handleSearchOnChange}
-                  onChangeStatus={handleStatusOnChange}
-                  onChangeTopics={handleTopicsOnChange}
-                />
-              </ContentRight>
-            )}
-          </Content>
+            {showInputFilterSidebar && <ContentRight {...inputFiltersProps} />}
+          </Box>
         </>
       )}
     </Container>
   );
 };
 
-export default IdeaCards;
+export default IdeasWithFiltersSidebar;

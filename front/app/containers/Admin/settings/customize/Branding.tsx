@@ -30,7 +30,6 @@ const ContrastWarning = styled(Warning)`
 
 interface Props {
   logo: UploadFile[] | null;
-  logoError: string | null;
   setAttributesDiff: (state: any) => void;
   getSetting: (setting: string) => any;
   setLogo: (logo: UploadFile[] | null) => void;
@@ -56,13 +55,7 @@ const TENANT_COLORS: TenantColor[] = [
   'color_text',
 ];
 
-export default ({
-  logo,
-  logoError,
-  setAttributesDiff,
-  getSetting,
-  setLogo,
-}: Props) => {
+export default ({ logo, setAttributesDiff, getSetting, setLogo }: Props) => {
   const [contrastRatios, setContrastRatios] = useState<ContrastRatios>({
     color_main: null,
     color_secondary: null,
@@ -214,7 +207,6 @@ export default ({
           objectFit="contain"
           onAdd={handleLogoOnAdd}
           onRemove={handleLogoOnRemove}
-          errorMessage={logoError}
         />
       </SectionField>
     </Section>

@@ -6,35 +6,32 @@ module EmailCampaigns
 
     def campaign_mail
       campaign = EmailCampaigns::Campaigns::AdminDigest.first
-      initiative = Initiative.first
-      idea = Idea.first
+      idea = Idea.published.first
 
-      # TODO: generate commands with campaign#generate_commands method
+      # # TODO: generate commands with campaign#generate_commands method
       command = {
         recipient: recipient_user,
         event_payload: {
           statistics: {
-            new_ideas_increase: 1,
+            new_inputs_increase: 1,
             new_comments_increase: 1,
             new_users_increase: 1
           },
-          top_project_ideas: [
+          top_project_inputs: [
             {
               project: { url: 'some_fake_url', title_multiloc: { 'en' => 'project title' } },
               current_phase: nil,
-              top_ideas: [campaign.serialize_idea(idea)]
+              top_ideas: [campaign.serialize_input(idea)]
             }
           ],
-          new_initiatives: [campaign.serialize_initiative(initiative)],
-          successful_initiatives: [campaign.serialize_initiative(initiative)]
+          successful_proposals: [campaign.serialize_proposal(idea)]
         },
         tracked_content: {
-          idea_ids: [],
-          initiative_ids: []
+          idea_ids: [idea.id]
         }
       }
 
-      campaign.mailer_class.with(campaign: campaign, command: command).campaign_mail
+      campaign.mailer_class.with(campaign:, command:).campaign_mail
     end
   end
 end

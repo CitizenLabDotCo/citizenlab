@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import {
   colors,
   fontSizes,
   isRtl,
   Box,
-  Title,
   useBreakpoint,
+  Title,
 } from '@citizenlab/cl2-component-library';
 import { useInView } from 'react-intersection-observer';
 import { useLocation } from 'react-router-dom';
@@ -15,10 +15,7 @@ import styled from 'styled-components';
 import { CommentsSort } from 'api/comments/types';
 import useComments from 'api/comments/useComments';
 import useIdeaById from 'api/ideas/useIdeaById';
-import useInitiativeById from 'api/initiatives/useInitiativeById';
 import useProjectById from 'api/projects/useProjectById';
-
-import useInitiativesPermissions from 'hooks/useInitiativesPermissions';
 
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
@@ -28,7 +25,6 @@ import messages from '../../messages';
 import tracks from '../../tracks';
 
 import CommentingIdeaDisabled from './CommentingIdeaDisabled';
-import CommentingProposalDisabled from './CommentingProposalDisabled';
 import Comments from './Comments';
 import CommentSorting from './CommentSorting';
 import ParentCommentForm from './ParentCommentForm';
@@ -51,32 +47,22 @@ const LoadingMoreMessage = styled.div`
 
 export interface Props {
   postId: string;
-  postType: 'idea' | 'initiative';
   className?: string;
   allowAnonymousParticipation?: boolean;
 }
 
 const PublicComments = ({
   postId,
-  postType,
   className,
   allowAnonymousParticipation,
 }: Props) => {
-  const { ref } = useInView({
-    rootMargin: '3000px',
-    onChange: (inView) => {
-      if (inView) {
-        if (hasNextPage) {
-          fetchNextPage();
-        }
-      }
-    },
+  const { ref: loadMoreRef, inView } = useInView({
+    rootMargin: '200px',
+    threshold: 0,
   });
   const isSmallerThanPhone = useBreakpoint('phone');
-  const initiativeId = postType === 'initiative' ? postId : undefined;
-  const ideaId = postType === 'idea' ? postId : undefined;
-  const { data: initiative } = useInitiativeById(initiativeId);
-  const { data: idea } = useIdeaById(ideaId);
+
+  const { data: idea } = useIdeaById(postId);
   const { pathname } = useLocation();
   const [sortOrder, setSortOrder] = useState<CommentsSort>('new');
   const {
@@ -86,23 +72,28 @@ const PublicComments = ({
     hasNextPage,
     isLoading,
   } = useComments({
-    initiativeId: postType === 'initiative' ? postId : undefined,
-    ideaId: postType === 'idea' ? postId : undefined,
+    ideaId: postId,
     sort: sortOrder,
+    pageSize: 10,
   });
-  const commentingPermissionInitiative = useInitiativesPermissions(
-    'commenting_initiative'
-  );
 
   const commentsList = comments?.pages.flatMap((page) => page.data);
 
-  const post = initiative || idea;
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const projectId = idea?.data.relationships?.project.data.id;
   const { data: project } = useProjectById(projectId);
 
   const [posting, setPosting] = useState(false);
 
-  if (!post || !commentsList) return null;
+  // Trigger fetching of next page when the user scrolls to the bottom
+  useEffect(() => {
+    if (inView && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, hasNextPage, fetchNextPage]);
+
+  if (!idea || !commentsList) return null;
 
   const handleSortOrderChange = (sortOrder: CommentsSort) => {
     trackEventByName(tracks.clickCommentsSortOrder);
@@ -113,19 +104,18 @@ const PublicComments = ({
     setPosting(isPosting);
   };
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const phaseId = project?.data.relationships?.current_phase?.data?.id;
-  const commentCount = post.data.attributes.comments_count;
+  const commentCount = idea.data.attributes.comments_count;
   const hasComments = commentCount > 0;
   const isAdminPage = isPage('admin', pathname);
   const showCommentCount = !isAdminPage && hasComments;
   const showHeader = !isAdminPage || hasComments;
-  const canComment = {
-    idea: !idea?.data.attributes.action_descriptors.commenting_idea
-      .disabled_reason,
-    initiative:
-      !commentingPermissionInitiative?.disabledReason &&
-      !commentingPermissionInitiative?.authenticationRequirements,
-  }[postType];
+  const canComment =
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    !idea?.data.attributes.action_descriptors.commenting_idea.disabled_reason;
 
   return (
     <Box className={className || ''}>
@@ -137,19 +127,17 @@ const PublicComments = ({
           mt="16px"
         >
           <Title
-            color="tenantText"
             variant="h2"
+            color="tenantText"
             fontSize={isSmallerThanPhone ? 'xl' : 'xxl'}
             id="comments-main-title"
           >
             <FormattedMessage {...messages.invisibleTitleComments} />
             {showCommentCount && <CommentCount>({commentCount})</CommentCount>}
           </Title>
-          {postType === 'idea' && idea ? (
-            <CommentingIdeaDisabled idea={idea} phaseId={phaseId} />
-          ) : (
-            <CommentingProposalDisabled />
-          )}
+
+          <CommentingIdeaDisabled idea={idea} phaseId={phaseId} />
+
           {hasComments && (
             <Box ml="auto" mb="24px">
               <CommentSorting
@@ -163,24 +151,22 @@ const PublicComments = ({
       {canComment && (
         <Box mb="24px">
           <ParentCommentForm
-            ideaId={ideaId}
-            initiativeId={initiativeId}
-            postType={postType}
+            ideaId={postId}
             postingComment={handleCommentPosting}
             allowAnonymousParticipation={allowAnonymousParticipation}
           />
         </Box>
       )}
       <Comments
-        ideaId={ideaId}
-        initiativeId={initiativeId}
-        postType={postType}
+        ideaId={postId}
         allComments={commentsList}
         loading={isLoading}
         allowAnonymousParticipation={allowAnonymousParticipation}
       />
 
-      {hasNextPage && !isFetchingNextPage && <Box ref={ref} w="100%" />}
+      {hasNextPage && !isFetchingNextPage && (
+        <Box ref={loadMoreRef} w="100%" h="50px" />
+      )}
 
       {isFetchingNextPage && !posting && (
         <Box

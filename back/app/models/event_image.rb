@@ -4,12 +4,13 @@
 #
 # Table name: event_images
 #
-#  id         :uuid             not null, primary key
-#  event_id   :uuid
-#  image      :string
-#  ordering   :integer
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id                :uuid             not null, primary key
+#  event_id          :uuid
+#  image             :string
+#  ordering          :integer
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  alt_text_multiloc :jsonb
 #
 # Indexes
 #

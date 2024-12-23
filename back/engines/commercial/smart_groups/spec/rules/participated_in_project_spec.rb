@@ -49,100 +49,100 @@ describe SmartGroups::Rules::ParticipatedInProject do
   end
 
   describe 'filter' do
-    before do
-      @project1 = create(:project)
-      @project2 = create(:project)
-      @user1 = create(:user)
-      @user2 = create(:user)
-      @user3 = create(:user)
-      @idea1 = create(:idea, project: @project1, author: @user1)
-      @reaction = create(:reaction, reactable: @idea1, user: @user2)
-      @comment = create(:comment, post: @idea1, author: @user3)
-      @idea2 = create(:idea, project: @project2, author: @user3)
-    end
+    let_it_be(:project1) { create(:single_phase_proposals_project) }
+    let_it_be(:project2) { create(:project) }
+    let_it_be(:user1) { create(:user) }
+    let_it_be(:user2) { create(:user) }
+    let_it_be(:user3) { create(:user) }
+    let_it_be(:user4) { create(:user) }
+    let_it_be(:idea1) { create(:idea, project: project1, author: user1) }
+    let_it_be(:propsal1) { create(:proposal, project: project1, author: user4) }
+    let_it_be(:reaction) { create(:reaction, reactable: idea1, user: user2) }
+    let_it_be(:comment) { create(:comment, post: idea1, author: user3) }
+    let_it_be(:idea2) { create(:idea, project: project2, author: user3) }
 
     it "correctly filters on 'in' predicate" do
-      rule = described_class.new('in', [@project1.id])
-      expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
-      expect(@ids).to match_array [@user1.id, @user2.id, @user3.id]
+      rule = described_class.new('in', [project1.id])
+      expect { @users = rule.filter(User) }.not_to exceed_query_limit(1)
+      expect(@users).to match_array [user1, user2, user3, user4]
     end
 
     it "correctly filters on 'not_in' predicate" do
-      rule = described_class.new('not_in', @project2.id)
-      expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
-      expect(@ids).to match_array [@user1.id, @user2.id]
+      rule = described_class.new('not_in', project2.id)
+      expect { @users = rule.filter(User) }.not_to exceed_query_limit(1)
+      expect(@users).to match_array [user1, user2, user4]
     end
 
     it "correctly filters on 'posted_in' predicate" do
-      rule = described_class.new('posted_in', [@project1.id, @project2.id])
-      expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
-      expect(@ids).to match_array [@user1.id, @user3.id]
+      rule = described_class.new('posted_in', [project1.id, project2.id])
+      expect { @users = rule.filter(User) }.not_to exceed_query_limit(1)
+      expect(@users).to match_array [user1, user3, user4]
     end
 
     it "correctly filters on 'not_posted_in' predicate" do
-      rule = described_class.new('not_posted_in', @project1.id)
-      expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
-      expect(@ids).to match_array [@user2.id, @user3.id]
+      rule = described_class.new('not_posted_in', project1.id)
+      expect { @users = rule.filter(User) }.not_to exceed_query_limit(1)
+      expect(@users).to match_array [user2, user3]
     end
 
     it "correctly filters on 'commented_in' predicate" do
-      rule = described_class.new('commented_in', [@project1.id])
-      expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
-      expect(@ids).to match_array [@user3.id]
+      rule = described_class.new('commented_in', [project1.id])
+      expect { @users = rule.filter(User) }.not_to exceed_query_limit(1)
+      expect(@users).to match_array [user3]
     end
 
     it "correctly filters on 'not_commented_in' predicate" do
-      rule = described_class.new('not_commented_in', @project1.id)
-      expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
-      expect(@ids).to match_array [@user1.id, @user2.id]
+      rule = described_class.new('not_commented_in', project1.id)
+      expect { @users = rule.filter(User) }.not_to exceed_query_limit(1)
+      expect(@users).to match_array [user1, user2, user4]
     end
 
     it "correctly filters on 'reacted_idea_in' predicate" do
-      rule = described_class.new('reacted_idea_in', [@project1.id])
-      expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
-      expect(@ids).to match_array [@user2.id]
+      rule = described_class.new('reacted_idea_in', [project1.id])
+      expect { @users = rule.filter(User) }.not_to exceed_query_limit(1)
+      expect(@users).to match_array [user2]
     end
 
     it "correctly filters on 'not_reacted_idea_in' predicate" do
-      rule = described_class.new('not_reacted_idea_in', @project1.id)
-      expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
-      expect(@ids).to match_array [@user1.id, @user3.id]
+      rule = described_class.new('not_reacted_idea_in', project1.id)
+      expect { @users = rule.filter(User) }.not_to exceed_query_limit(1)
+      expect(@users).to match_array [user1, user3, user4]
     end
 
     it "correctly filters on 'reacted_comment_in' predicate" do
-      rule = described_class.new('reacted_comment_in', [@project1.id])
-      expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
-      expect(@ids).to match_array []
+      rule = described_class.new('reacted_comment_in', [project1.id])
+      expect { @users = rule.filter(User) }.not_to exceed_query_limit(1)
+      expect(@users).to match_array []
     end
 
     it "correctly filters on 'not_reacted_comment_in' predicate" do
-      rule = described_class.new('not_reacted_comment_in', @project2.id)
-      expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
-      expect(@ids).to match_array [@user1.id, @user2.id, @user3.id]
+      rule = described_class.new('not_reacted_comment_in', project2.id)
+      expect { @users = rule.filter(User) }.not_to exceed_query_limit(1)
+      expect(@users).to match_array [user1, user2, user3, user4]
     end
 
     it "correctly filters on 'voted_in' predicate" do
-      rule = described_class.new('voted_in', [@project1.id])
-      expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
-      expect(@ids).to match_array []
+      rule = described_class.new('voted_in', [project1.id])
+      expect { @users = rule.filter(User) }.not_to exceed_query_limit(1)
+      expect(@users).to match_array []
     end
 
     it "correctly filters on 'not_voted_in' predicate" do
-      rule = described_class.new('not_voted_in', @project2.id)
-      expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
-      expect(@ids).to match_array [@user1.id, @user2.id, @user3.id]
+      rule = described_class.new('not_voted_in', project2.id)
+      expect { @users = rule.filter(User) }.not_to exceed_query_limit(1)
+      expect(@users).to match_array [user1, user2, user3, user4]
     end
 
     it "correctly filters on 'volunteered_in' predicate" do
-      rule = described_class.new('volunteered_in', [@project1.id])
-      expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
-      expect(@ids).to match_array []
+      rule = described_class.new('volunteered_in', [project1.id])
+      expect { @users = rule.filter(User) }.not_to exceed_query_limit(1)
+      expect(@users).to match_array []
     end
 
     it "correctly filters on 'not_volunteered_in' predicate" do
-      rule = described_class.new('not_volunteered_in', @project2.id)
-      expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
-      expect(@ids).to match_array [@user1.id, @user2.id, @user3.id]
+      rule = described_class.new('not_volunteered_in', project2.id)
+      expect { @users = rule.filter(User) }.not_to exceed_query_limit(1)
+      expect(@users).to match_array [user1, user2, user3, user4]
     end
   end
 
@@ -246,20 +246,6 @@ describe SmartGroups::Rules::ParticipatedInProject do
         'value' => project1.id
       })
     end
-    let(:participated_follows_something_rule) do
-      described_class.from_json({
-        'ruleType' => 'participated_in_project',
-        'predicate' => 'follows_something',
-        'value' => [project1.id, project2.id]
-      })
-    end
-    let(:participated_not_follows_something_rule) do
-      described_class.from_json({
-        'ruleType' => 'participated_in_project',
-        'predicate' => 'not_follows_something',
-        'value' => project1.id
-      })
-    end
     let(:participated_registered_to_an_event_rule) do
       described_class.from_json({
         'ruleType' => 'participated_in_project',
@@ -335,16 +321,6 @@ describe SmartGroups::Rules::ParticipatedInProject do
         'en' => 'Did not vote in the project beer',
         'fr-FR' => 'Did not vote in the project bière',
         'nl-NL' => 'Did not vote in the project bier'
-      })
-      expect(participated_follows_something_rule.description_multiloc).to eq({
-        'en' => 'Follows something in one of the following projects beer, delayed',
-        'fr-FR' => "Suit quelque chose dans l'un des projets suivants bière, retardé",
-        'nl-NL' => 'Volgt iets in een van de volgende projecten bier, uitgesteld'
-      })
-      expect(participated_not_follows_something_rule.description_multiloc).to eq({
-        'en' => 'Does not follow anything in the project beer',
-        'fr-FR' => 'Ne suit rien dans le projet bière',
-        'nl-NL' => 'Volgt niets in het project bier'
       })
       expect(participated_registered_to_an_event_rule.description_multiloc).to eq({
         'en' => 'Registered to an event in one of the following projects beer, delayed',

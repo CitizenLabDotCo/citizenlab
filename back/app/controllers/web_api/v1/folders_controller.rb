@@ -13,8 +13,10 @@ class WebApi::V1::FoldersController < ApplicationController
 
     # Array of publication IDs for folders that
     # still have visible children left.
-    parent_ids_for_visible_children = Pundit.policy_scope(current_user, Project)
-      .includes(:admin_publication).pluck('admin_publications.parent_id').compact
+    parent_ids_for_visible_children = policy_scope(Project)
+      .includes(:admin_publication)
+      .pluck('admin_publications.parent_id')
+      .compact
     # Caches the counts of visible children for
     # the current user.
     visible_children_count_by_parent_id = Hash.new(0).tap { |h| parent_ids_for_visible_children.each { |id| h[id] += 1 } }
@@ -90,13 +92,16 @@ class WebApi::V1::FoldersController < ApplicationController
   def destroy
     frozen_folder = nil
     frozen_projects = nil
+
     @project_folder.projects.each do |project|
       SideFxProjectService.new.before_destroy(project, current_user)
     end
+
     ActiveRecord::Base.transaction do
       frozen_projects = @project_folder.projects.each(&:destroy!)
       frozen_folder = @project_folder.destroy
     end
+
     if frozen_folder.destroyed?
       ProjectFolders::SideFxProjectFolderService.new.after_destroy(frozen_folder, current_user)
       frozen_projects.each do |project|
@@ -122,7 +127,10 @@ class WebApi::V1::FoldersController < ApplicationController
       admin_publication_attributes: [:publication_status],
       title_multiloc: CL2_SUPPORTED_LOCALES,
       description_multiloc: CL2_SUPPORTED_LOCALES,
-      description_preview_multiloc: CL2_SUPPORTED_LOCALES
+      description_preview_multiloc: CL2_SUPPORTED_LOCALES,
+      header_bg_alt_text_multiloc: CL2_SUPPORTED_LOCALES
     )
   end
 end
+
+WebApi::V1::FoldersController.include(AggressiveCaching::Patches::WebApi::V1::FoldersController)

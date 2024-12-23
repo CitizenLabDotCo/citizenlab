@@ -221,6 +221,151 @@ resource 'ProjectFolder' do
         expect(User.project_folder_moderator(id).count).to eq 0
         expect(User.project_moderator(project_with_moderator.id).count).to eq 0
       end
+
+      context 'when the homepage layout references the folder, its admin_publication or its children' do
+        let!(:project1) do
+          create(:project, admin_publication_attributes: { parent_id: project_folder.admin_publication.id })
+        end
+
+        let!(:project2) do
+          create(:project, admin_publication_attributes: { parent_id: project_folder.admin_publication.id })
+        end
+
+        let!(:project_folder2) { create(:project_folder) }
+
+        let!(:project3) do
+          create(:project, admin_publication_attributes: { parent_id: project_folder2.admin_publication.id })
+        end
+
+        let!(:layout) do
+          create(
+            :homepage_layout,
+            craftjs_json: {
+              ROOT: {
+                type: 'div',
+                nodes: %w[
+                  nUOW77iNcW
+                  VTKEOQmRdC
+                  lsKEOMxTkR
+                ],
+                props: {
+                  id: 'e2e-content-builder-frame'
+                },
+                custom: {},
+                hidden: false,
+                isCanvas: true,
+                displayName: 'div',
+                linkedNodes: {}
+              },
+              nUOW77iNcW: {
+                type: {
+                  resolvedName: 'Selection'
+                },
+                nodes: [],
+                props: {
+                  titleMultiloc: {
+                    en: 'Projects and folders'
+                  },
+                  adminPublicationIds: [
+                    project_folder.admin_publication.id,
+                    project1.admin_publication.id,
+                    project2.admin_publication.id,
+                    project_folder2.admin_publication.id,
+                    project3.admin_publication.id
+                  ]
+                },
+                custom: {},
+                hidden: false,
+                parent: 'ROOT',
+                isCanvas: false,
+                displayName: 'Selection',
+                linkedNodes: {}
+              },
+              VTKEOQmRdC: {
+                type: {
+                  resolvedName: 'Spotlight'
+                },
+                nodes: [],
+                props: {
+                  publicationId: project_folder.id,
+                  titleMultiloc: {
+                    en: 'Project folder'
+                  },
+                  publicationType: 'folder',
+                  buttonTextMultiloc: {
+                    en: 'Look in this folder!'
+                  },
+                  descriptionMultiloc: {
+                    en: 'some description text'
+                  }
+                },
+                custom: {},
+                hidden: false,
+                parent: 'ROOT',
+                isCanvas: false,
+                displayName: 'Spotlight',
+                linkedNodes: {}
+              },
+              lsKEOMxTkR: {
+                type: {
+                  resolvedName: 'Spotlight'
+                },
+                nodes: [],
+                props: {
+                  publicationId: project1.id,
+                  titleMultiloc: {
+                    en: 'Project in project_folder'
+                  },
+                  publicationType: 'project',
+                  buttonTextMultiloc: {
+                    en: 'Look at this project!'
+                  },
+                  descriptionMultiloc: {
+                    en: 'some description text'
+                  }
+                },
+                custom: {},
+                hidden: false,
+                parent: 'ROOT',
+                isCanvas: false,
+                displayName: 'Spotlight',
+                linkedNodes: {}
+              }
+            }
+          )
+        end
+
+        example 'Deleting removes any Spotlight widget for the folder from the homepage layout', document: false do
+          do_request
+          expect(layout.reload.craftjs_json['VTKEOQmRdC']).to be_nil
+        end
+
+        example(
+          'Deleting removes any Spotlight widget for ' \
+          'a child of the folder from the homepage layout',
+          document: false
+        ) do
+          do_request
+          expect(layout.reload.craftjs_json['lsKEOMxTkR']).to be_nil
+        end
+
+        example 'References to deleted homepage layout Spotlight widgets are also removed', document: false do
+          do_request
+          expect(layout.reload.craftjs_json['ROOT']['nodes']).to eq %w[nUOW77iNcW]
+        end
+
+        example(
+          "Deleting removes its and its children's admin_publication IDs" \
+          'from Selection widget(s) in homepage layout',
+          document: false
+        ) do
+          do_request
+
+          expect(response_status).to eq 200
+          expect(layout.reload.craftjs_json['nUOW77iNcW']['props']['adminPublicationIds'])
+            .to match_array [project_folder2.admin_publication.id, project3.admin_publication.id]
+        end
+      end
     end
   end
 

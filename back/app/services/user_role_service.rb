@@ -57,6 +57,7 @@ class UserRoleService
     end
   end
 
+  # Includes admins, folder and project moderators
   def moderators_for_project(project, scope = User)
     moderators_scope = scope.admin
     moderators_scope = moderators_scope.or scope.project_moderator(project.id) if project.id

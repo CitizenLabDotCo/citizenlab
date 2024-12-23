@@ -8,8 +8,8 @@ module VotingMethod
       end
     end
 
-    def export_columns
-      %w[participants votes]
+    def additional_export_columns
+      super + %w[participants votes]
     end
   end
 end

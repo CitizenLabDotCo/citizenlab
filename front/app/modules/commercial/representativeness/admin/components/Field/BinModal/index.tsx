@@ -112,6 +112,8 @@ const BinModal = ({ open, bins, onClose, onSave }: Props) => {
     const activeElement = document.activeElement;
 
     if (activeElement && activeElement.className === 'bin-input') {
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       (activeElement as HTMLElement)?.blur();
 
       setTimeout(() => {

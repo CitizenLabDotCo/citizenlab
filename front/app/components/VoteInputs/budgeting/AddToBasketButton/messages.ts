@@ -38,4 +38,9 @@ export default defineMessages({
     defaultMessage:
       'You have already submitted your budget. To change your budget, go back to the project page and click "Modify your budget".',
   },
+  phaseNotActive: {
+    id: 'app.components.VoteInputs.budgeting.AddToBasketButton.phaseNotActive',
+    defaultMessage:
+      'Budgeting is not available, since this phase is not active.',
+  },
 });

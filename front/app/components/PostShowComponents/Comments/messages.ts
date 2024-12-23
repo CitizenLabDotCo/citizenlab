@@ -58,24 +58,6 @@ export default defineMessages({
     id: 'app.containers.Comments.cancelCommentEdit',
     defaultMessage: 'Cancel',
   },
-  commentingInitiativeNotPermitted: {
-    id: 'app.components.Comments.commentingInitiativeNotPermitted',
-    defaultMessage: "You don't have the rights to comment.",
-  },
-  commentingInitiativeMaybeNotPermitted: {
-    id: 'app.components.Comments.commentingInitiativeMaybeNotPermitted',
-    defaultMessage:
-      'Not all users are allowed to comment. Please {signUpLink} or {signInLink} to see whether you comply.',
-  },
-  signInToCommentInitiative: {
-    id: 'app.containers.Comments.signInToCommentInitiative',
-    defaultMessage: 'Please {signUpLink} or {signInLink} to comment.',
-  },
-  signInAndVerifyToCommentInitiative: {
-    id: 'app.containers.Comments.signInAndVerifyToCommentInitiative',
-    defaultMessage:
-      'You need a verified account to comment, please {signUpLink} or {signInLink}.',
-  },
   signInLinkText: {
     id: 'app.containers.Comments.signInLinkText',
     defaultMessage: 'log in',
@@ -185,10 +167,6 @@ export default defineMessages({
     id: 'app.containers.Comments.ideaCommentBodyPlaceholder',
     defaultMessage: 'What do you think about this idea?',
   },
-  initiativeCommentBodyPlaceholder: {
-    id: 'app.containers.Comments.initiativeCommentBodyPlaceholder',
-    defaultMessage: 'What do you think about this initiative?',
-  },
   yourComment: {
     id: 'app.components.Comments.yourComment',
     defaultMessage: 'Your comment',
@@ -250,6 +228,11 @@ export default defineMessages({
   visibleToUsersWarning: {
     id: 'app.containers.Comments.visibleToUsersWarning',
     defaultMessage: 'Comments posted here will be visible to regular users.',
+  },
+  internalCommentingNudgeMessage: {
+    id: 'app.containers.Comments.internalCommentingNudgeMessage',
+    defaultMessage:
+      'Making internal comments is not included in your current license. Reach out to your GovSuccess Manager to learn more about it.',
   },
   notVisibleToUsersPlaceholder: {
     id: 'app.containers.Comments.notVisibleToUsersPlaceholder',

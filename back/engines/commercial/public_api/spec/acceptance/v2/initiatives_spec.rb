@@ -4,7 +4,7 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 require './engines/commercial/public_api/spec/acceptance/v2/support/shared'
 
-# TODO: move-old-proposals-test
+# TODO: cleanup-after-proposals-migration
 resource 'Posts' do
   # NOTE: Same name as in ideas_spec to combine the documentation into the same section
   explanation <<~DESC.squish

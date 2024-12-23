@@ -1,11 +1,7 @@
 import React, { useRef } from 'react';
 
-import {
-  colors,
-  fontSizes,
-  defaultStyles,
-} from '@citizenlab/cl2-component-library';
-import { isString, isEmpty, capitalize } from 'lodash-es';
+import { colors, fontSizes } from '@citizenlab/cl2-component-library';
+import { isString, isEmpty } from 'lodash-es';
 import { transparentize } from 'polished';
 import { MentionsInput, Mention, MentionItem } from 'react-mentions';
 import styled, { useTheme } from 'styled-components';
@@ -24,8 +20,7 @@ const Container = styled.div`
   background: #fff;
 
   & .hasBorder textarea:focus {
-    border-color: ${colors.black} !important;
-    box-shadow: ${defaultStyles.boxShadowFocused} !important;
+    border: solid 2px ${(props) => props.theme.colors.tenantPrimary} !important;
   }
 
   & .textareaWrapper__suggestions__list li:last-child {
@@ -60,7 +55,6 @@ export interface Props {
   placeholder?: string;
   rows: number;
   postId?: string;
-  postType?: 'idea' | 'initiative';
   error?: JSX.Element | string | null;
   onChange?: (arg: string, locale: SupportedLocale | undefined) => void;
   onFocus?: () => void;
@@ -104,7 +98,6 @@ const MentionsTextArea = ({
   locale,
   getTextareaRef,
   postId,
-  postType,
   id,
   className,
   ariaLabel,
@@ -210,6 +203,8 @@ const MentionsTextArea = ({
   };
 
   const setMentionsInputRef = () => {
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (textareaElement && textareaElement.current && getTextareaRef) {
       getTextareaRef(textareaElement.current as HTMLTextAreaElement);
     }
@@ -225,12 +220,13 @@ const MentionsTextArea = ({
       const queryParameters = {
         mention: query.toLowerCase(),
         post_id: postId,
-        post_type: capitalize(postType) as 'Idea' | 'Initiative',
         roles,
       };
 
       const response = await getMentions(queryParameters);
 
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (response && response.data && response.data.length > 0) {
         users = response.data.map((user) => ({
           display: `${user.attributes.first_name} ${
@@ -251,6 +247,8 @@ const MentionsTextArea = ({
     }
   };
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (getStyle()) {
     return (
       <Container className={className}>

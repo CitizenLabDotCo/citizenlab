@@ -2,7 +2,6 @@ import { QueryClient } from '@tanstack/react-query';
 
 import areasKeys from 'api/areas/keys';
 import ideasKeys from 'api/ideas/keys';
-import initiativesKeys from 'api/initiatives/keys';
 import meKeys from 'api/me/keys';
 import projectFoldersKeys from 'api/project_folders/keys';
 import projectsKeys from 'api/projects/keys';
@@ -25,9 +24,6 @@ export const invalidateFollowQueries = (
       break;
     case 'ideas':
       queryClient.invalidateQueries(ideasKeys.item({ id: followableId }));
-      break;
-    case 'initiatives':
-      queryClient.invalidateQueries(initiativesKeys.item({ id: followableId }));
       break;
     case 'project_folders':
       queryClient.invalidateQueries(

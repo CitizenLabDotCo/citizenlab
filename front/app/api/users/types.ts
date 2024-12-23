@@ -57,6 +57,7 @@ export interface IUserAttributes {
   education?: string;
   verified?: boolean;
   no_name?: boolean;
+  display_name?: string | null;
   no_password?: boolean;
   followings_count: number;
   last_active_at?: string | null;
@@ -135,4 +136,6 @@ export interface IQueryParameters {
   // Pass folder id to exclude all users who can moderate
   // the folder
   is_not_folder_moderator?: string;
+  // Admin users that can approve project review requests
+  project_reviewer?: boolean;
 }

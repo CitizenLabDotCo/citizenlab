@@ -12,7 +12,7 @@ RSpec.describe Analytics::FactPost do
     end
   end
 
-  # TODO: move-old-proposals-test
+  # TODO: cleanup-after-proposals-migration
   context 'when an initiative is created and there is an initiative type' do
     let!(:type_initiative) { create(:dimension_type, name: 'initiative') }
     let!(:initiative) { create(:initiative) }

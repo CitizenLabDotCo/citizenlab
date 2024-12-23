@@ -138,8 +138,12 @@ const CreateProjectFromTemplate = memo(
 
     const handleDepartmentFilterOnChange = useCallback(
       (departments: string[]) => {
-        trackEventByName(tracks.departmentFilterChanged, { departments });
+        trackEventByName(tracks.departmentFilterChanged, {
+          departments: departments.toString(),
+        });
         setDepartments(
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           departments && departments.length > 0 ? departments : null
         );
       },
@@ -147,16 +151,22 @@ const CreateProjectFromTemplate = memo(
     );
 
     const handlePurposeFilterOnChange = useCallback((purposes: string[]) => {
-      trackEventByName(tracks.purposeFilterChanged, { purposes });
+      trackEventByName(tracks.purposeFilterChanged, {
+        purposes: purposes.toString(),
+      });
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       setPurposes(purposes && purposes.length > 0 ? purposes : null);
     }, []);
 
     const handleParticipationLevelFilterOnChange = useCallback(
       (participationLevels: string[]) => {
         trackEventByName(tracks.participationLevelFilterChanged, {
-          participationLevels,
+          participationLevels: participationLevels.toString(),
         });
         setParticipationLevels(
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           participationLevels && participationLevels.length > 0
             ? participationLevels
             : null

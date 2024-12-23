@@ -4,7 +4,7 @@ import { API_PATH } from 'containers/App/constants';
 
 import { AuthenticationRequirementsResponse } from '../types';
 
-export const initiativeResponse: AuthenticationRequirementsResponse = {
+export const visitorResponse: AuthenticationRequirementsResponse = {
   data: {
     type: 'requirements',
     attributes: {
@@ -71,20 +71,13 @@ export const ideaResponse: AuthenticationRequirementsResponse = {
 };
 
 const globalPath = `${API_PATH}/permissions/visiting/requirements`;
-export const initiativesPath = `${API_PATH}/permissions/posting_initiative/requirements`;
 export const phasePath = `${API_PATH}/phases/456/permissions/posting_idea/requirements`;
 export const ideaPath = `${API_PATH}/ideas/789/permissions/commenting_idea/requirements`;
 
 const endpoints = {
   'GET permissions/visiting/requirements': http.get(globalPath, () => {
-    return HttpResponse.json(initiativeResponse, { status: 200 });
+    return HttpResponse.json(visitorResponse, { status: 200 });
   }),
-  'GET permissions/posting_initiative/requirements': http.get(
-    initiativesPath,
-    () => {
-      return HttpResponse.json(initiativeResponse, { status: 200 });
-    }
-  ),
   'GET phases/:phaseId/permissions/posting_idea/requirements': http.get(
     phasePath,
     () => {

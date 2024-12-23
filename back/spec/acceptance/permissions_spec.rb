@@ -11,7 +11,7 @@ resource 'Permissions' do
     @project = create(:single_phase_ideation_project)
     @phase = TimelineService.new.current_phase_not_archived(@project)
     Permissions::PermissionsUpdateService.new.update_all_permissions
-    SettingsService.new.activate_feature! 'verification', settings: { verification_methods: [{ name: 'fake_sso' }] }
+    SettingsService.new.activate_feature! 'verification', settings: { verification_methods: [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
   end
 
   let(:project_id) { @project.id }
@@ -109,7 +109,7 @@ resource 'Permissions' do
         expect(response_data[:id]).to eq @phase.permissions.first.id
         expect(response_data.dig(:attributes, :permitted_by)).to eq 'users'
         expect(response_data.dig(:relationships, :groups, :data).pluck(:id)).to match_array Group.all.pluck(:id)
-        # TODO: JS - Default Permissions fields not returned as relationships - needed?
+        # TODO: JS - Default Permissions fields will not be returned as relationships - are they needed?
       end
 
       example 'Get one group permission', document: false do
@@ -140,11 +140,13 @@ resource 'Permissions' do
         parameter :global_custom_fields, 'When set to true, the enabled registrations are associated to the permission', required: false
         parameter :group_ids, "An array of group id's associated to this permission", required: false
         parameter :verification_expiry, 'number of days before reverification required - nil means never reverify', required: false
+        parameter :access_denied_explanation_multiloc, 'Multiloc string for explaining why access is denied', required: false
       end
       ValidationErrorHelper.new.error_fields(self, Permission)
 
       let(:action) { @phase.permissions.first.action }
       let(:group_ids) { create_list(:group, 3, projects: [@phase.project]).map(&:id) }
+      let(:access_denied_explanation_multiloc) { { en: 'You do not have access because you are not in the right group' } }
 
       context 'permitted_by: verified' do
         let(:permitted_by) { 'verified' }
@@ -155,6 +157,7 @@ resource 'Permissions' do
           expect(response_data.dig(:attributes, :permitted_by)).to eq permitted_by
           expect(response_data.dig(:attributes, :verification_expiry)).to eq verification_expiry
           expect(response_data.dig(:attributes, :verification_enabled)).to be true
+          expect(response_data.dig(:attributes, :access_denied_explanation_multiloc)).to eq access_denied_explanation_multiloc
           expect(response_data.dig(:relationships, :groups, :data).pluck(:id)).to match_array group_ids
         end
       end
@@ -165,6 +168,7 @@ resource 'Permissions' do
         example_request 'Update group IDs when permitted_by "everyone_confirmed_email"' do
           assert_status 200
           expect(response_data.dig(:attributes, :permitted_by)).to eq permitted_by
+          expect(response_data.dig(:attributes, :access_denied_explanation_multiloc)).to eq access_denied_explanation_multiloc
           expect(response_data.dig(:relationships, :groups, :data).pluck(:id)).to match_array group_ids
         end
       end
@@ -478,6 +482,21 @@ resource 'Permissions' do
           required: [@field2.key]
         })
         expect(json_attributes[:ui_schema_multiloc]).to be_present
+      end
+    end
+
+    get 'web_api/v1/phases/:phase_id/permissions/:action/access_denied_explanation' do
+      before do
+        @permission = @phase.permissions.first
+        @multiloc = { en: '<p>You do not have access because you are not in the right group</p>' }
+        @permission.update!(access_denied_explanation_multiloc: @multiloc)
+      end
+
+      let(:action) { @permission.action }
+
+      example_request 'Get the access denied explanation of a phase permission' do
+        assert_status 200
+        expect(response_data[:attributes][:access_denied_explanation_multiloc]).to eq(@multiloc)
       end
     end
   end

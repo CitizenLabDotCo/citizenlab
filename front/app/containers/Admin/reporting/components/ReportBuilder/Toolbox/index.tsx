@@ -5,7 +5,6 @@ import {
   Spinner,
   stylingConsts,
   Button,
-  colors,
 } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
 import Transition from 'react-transition-group/Transition';
@@ -16,14 +15,16 @@ import usePhases from 'api/phases/usePhases';
 import useProjects from 'api/projects/useProjects';
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useAppConfigurationLocales, {
+  createMultiloc,
+} from 'hooks/useAppConfigurationLocales';
 
 import tracks from 'containers/Admin/projects/project/analysis/tracks';
 import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
-import { createMultiloc } from 'containers/Admin/reporting/utils/multiloc';
 
 import Container from 'components/admin/ContentBuilder/Toolbox/Container';
 import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
+import Section from 'components/admin/ContentBuilder/Toolbox/Section';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 
 import { trackEventByName } from 'utils/analytics';
@@ -58,12 +59,6 @@ import { findSurveyPhaseId, findIdeationPhaseId } from './utils';
 type ReportBuilderToolboxProps = {
   selectedLocale: SupportedLocale;
 };
-
-const Section = ({ children }) => (
-  <Box borderTop={`1px solid ${colors.divider}`} pt="12px" mb="12px">
-    {children}
-  </Box>
-);
 
 const ReportBuilderToolbox = ({
   selectedLocale,

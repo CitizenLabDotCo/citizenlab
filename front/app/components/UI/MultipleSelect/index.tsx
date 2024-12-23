@@ -2,6 +2,7 @@ import React, { KeyboardEvent } from 'react';
 
 import { Label } from '@citizenlab/cl2-component-library';
 import ReactSelect from 'react-select';
+import { useTheme } from 'styled-components';
 import { IOption } from 'typings';
 
 import selectStyles from 'components/UI/MultipleSelect/styles';
@@ -20,83 +21,73 @@ export type Props = {
   isSearchable?: boolean;
 };
 
-interface State {}
-
-export default class MultipleSelect extends React.PureComponent<Props, State> {
-  private emptyArray: never[];
-
-  constructor(props: Props) {
-    super(props);
-    this.emptyArray = [];
-  }
-
-  handleOnChange = (newValue: IOption[]) => {
-    this.props.onChange(newValue || this.emptyArray);
+const MultipleSelect = ({
+  id,
+  inputId,
+  value,
+  placeholder,
+  options,
+  autoBlur,
+  onChange,
+  disabled,
+  className,
+  label,
+  isSearchable,
+}: Props) => {
+  const theme = useTheme();
+  const handleOnChange = (newValue: IOption[]) => {
+    onChange(newValue);
   };
 
   //  Needed to keep our API compatible with react-select v1
   //  For a native react-select solution, follow this issue:
   //  https://github.com/JedWatson/react-select/issues/2669
-  findFullOptionValue = (value) => {
+  const findFullOptionValue = (value) => {
     if (typeof value === 'string') {
-      return (
-        this.props.options &&
-        this.props.options.find((option) => option.value === value)
-      );
+      return options && options.find((option) => option.value === value);
     }
 
     return value;
   };
 
-  findFullOptionValues = () => {
-    const { value } = this.props;
-
+  const findFullOptionValues = () => {
     if (Array.isArray(value)) {
-      return value.map(this.findFullOptionValue);
+      return value.map(findFullOptionValue);
     }
 
     return value;
   };
 
-  preventModalCloseOnEscape = (event: KeyboardEvent) => {
+  const preventModalCloseOnEscape = (event: KeyboardEvent) => {
     if (event.code === 'Escape') event.stopPropagation();
   };
 
-  render() {
-    const { id, className, disabled, label, isSearchable = true } = this.props;
-    let { value, placeholder, options, autoBlur } = this.props;
-    const { inputId } = this.props;
+  return (
+    <div>
+      {label && <Label htmlFor={inputId}>{label}</Label>}
+      <ReactSelect
+        id={id}
+        inputId={inputId}
+        className={className}
+        isMulti
+        isSearchable={isSearchable}
+        blurInputOnSelect={typeof autoBlur === 'boolean' ? autoBlur : false}
+        backspaceRemovesValue={false}
+        menuShouldScrollIntoView={false}
+        isClearable={false}
+        value={findFullOptionValues()}
+        placeholder={placeholder || ''}
+        options={options || []}
+        onChange={handleOnChange}
+        isDisabled={disabled}
+        styles={selectStyles(theme)}
+        menuPosition="fixed"
+        menuPlacement="auto"
+        hideSelectedOptions
+        onKeyDown={preventModalCloseOnEscape}
+      />
+    </div>
+  );
+};
 
-    value = this.findFullOptionValues();
-    placeholder = placeholder || '';
-    options = options || this.emptyArray;
-    autoBlur = typeof autoBlur === 'boolean' ? autoBlur : false;
-
-    return (
-      <div>
-        {label && <Label htmlFor={inputId}>{label}</Label>}
-        <ReactSelect
-          id={id}
-          inputId={inputId}
-          className={className}
-          isMulti
-          isSearchable={isSearchable}
-          blurInputOnSelect={autoBlur}
-          backspaceRemovesValue={false}
-          menuShouldScrollIntoView={false}
-          isClearable={false}
-          value={value}
-          placeholder={placeholder}
-          options={options}
-          onChange={this.handleOnChange}
-          isDisabled={disabled}
-          styles={selectStyles()}
-          menuPosition="fixed"
-          menuPlacement="auto"
-          hideSelectedOptions
-          onKeyDown={this.preventModalCloseOnEscape}
-        />
-      </div>
-    );
-  }
-}
+export default MultipleSelect;

@@ -1,11 +1,9 @@
-import React, { useEffect, lazy, Suspense } from 'react';
+import React, { lazy, Suspense } from 'react';
 
 import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import T from 'components/T';
 import Error from 'components/UI/Error';
@@ -19,6 +17,7 @@ import {
   HELPER_TEXT_KEYS,
   ERROR_CODE_MESSAGES,
 } from './messageUtils';
+import AccessDenied from './steps/AccessDenied';
 import AuthProviders from './steps/AuthProviders';
 import BuiltInFields from './steps/BuiltInFields';
 import ChangeEmail from './steps/ChangeEmail';
@@ -38,13 +37,12 @@ import SSOVerificationPolicies from './steps/SSOVerificationPolicies';
 import Success from './steps/Success';
 import Verification from './steps/Verification';
 import VerificationSuccess from './steps/VerificationSuccess';
-import { ModalProps } from './typings';
 import useSteps from './useSteps';
 // All steps above could be lazy loaded
 // but this one was the worst in terms of bundle size impact
 const CustomFields = lazy(() => import('./steps/CustomFields'));
 
-const AuthModal = ({ setModalOpen }: ModalProps) => {
+const AuthModal = () => {
   const {
     currentStep,
     state,
@@ -58,16 +56,8 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
   const { data: appConfiguration } = useAppConfiguration();
   const theme = useTheme();
 
-  useEffect(() => {
-    setModalOpen?.(currentStep !== 'closed');
-  }, [currentStep, setModalOpen]);
-
   const smallerThanPhone = useBreakpoint('phone');
   const { formatMessage } = useIntl();
-  const _fullscreenModalEnabled = useFeatureFlag({
-    name: 'franceconnect_login',
-  });
-  const fullscreenModalEnabled = _fullscreenModalEnabled && false;
 
   const closable = currentStep !== 'closed' && currentStep !== 'success';
 
@@ -90,8 +80,7 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
 
   return (
     <Modal
-      fullScreen={fullscreenModalEnabled}
-      zIndex={fullscreenModalEnabled ? 400 : 10000001}
+      zIndex={10000001}
       width="580px"
       opened={currentStep !== 'closed'}
       close={handleClose}
@@ -99,31 +88,14 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
       closeOnClickOutside={false}
       header={
         headerMessage ? (
-          <>
-            {fullscreenModalEnabled ? (
-              <Box w="100%" display="flex" justifyContent="center">
-                <Box w="580px" px={marginX}>
-                  <Title variant="h3" as="h1" mt="0px" mb="0px">
-                    {formatMessage(headerMessage)}
-                  </Title>
-                </Box>
-              </Box>
-            ) : (
-              <Title variant="h3" as="h1" mt="0px" mb="0px" ml={marginX}>
-                {formatMessage(headerMessage)}
-              </Title>
-            )}
-          </>
+          <Title variant="h3" as="h1" mt="0px" mb="0px" ml={marginX}>
+            {formatMessage(headerMessage)}
+          </Title>
         ) : undefined
       }
       niceHeader
     >
-      <Box
-        id="e2e-authentication-modal"
-        px={marginX}
-        py="32px"
-        w={fullscreenModalEnabled ? '580px' : '100%'}
-      >
+      <Box id="e2e-authentication-modal" px={marginX} py="32px" w="100%">
         {error && (
           <Box mb="16px">
             <Error
@@ -324,6 +296,13 @@ const AuthModal = ({ setModalOpen }: ModalProps) => {
             onSubmit={transition(currentStep, 'SIGN_IN')}
             onSwitchFlow={transition(currentStep, 'SWITCH_FLOW')}
             closeModal={transition(currentStep, 'CLOSE')}
+          />
+        )}
+
+        {currentStep === 'access-denied' && (
+          <AccessDenied
+            authenticationData={authenticationData}
+            onClose={transition(currentStep, 'CLOSE')}
           />
         )}
       </Box>

@@ -170,6 +170,9 @@ ach:
       topic_ids:
         title: crwdns207874:0crwdne207874:0
         description: crwdns207876:0crwdne207876:0
+      consponsor_ids:
+        title: crwdns3238295:0crwdne3238295:0
+        description: crwdns3238297:0crwdne3238297:0
       location:
         title: crwdns207878:0crwdne207878:0
         description: crwdns207880:0crwdne207880:0
@@ -192,8 +195,8 @@ ach:
       section3:
         title: crwdns207902:0crwdne207902:0
         description: crwdns207904:0crwdne207904:0
-      other_text_field:
-        title: crwdns2158534:0{other_option}crwdne2158534:0
+      other_input_field:
+        title: crwdns3058777:0crwdne3058777:0
   custom_forms:
     categories:
       main_content:
@@ -209,6 +212,12 @@ ach:
           title: crwdns207914:0crwdne207914:0
         option:
           title: crwdns207916:0crwdne207916:0
+        proposal:
+          title: crwdns3324807:0crwdne3324807:0
+        initiative:
+          title: crwdns3324809:0crwdne3324809:0
+        petition:
+          title: crwdns3324811:0crwdne3324811:0
   custom_field_options:
     gender:
       male: crwdns207924:0crwdne207924:0
@@ -233,6 +242,7 @@ ach:
       crwdns963563:0crwdne963563:0
   reset_password_mailer:
     send_reset_password:
+      preheader: 'crwdns3166231:0%{organizationName}crwdne3166231:0'
       cta_reset_password: 'crwdns207950:0crwdne207950:0'
       message_you_reset_your_password: 'crwdns207952:0%{organizationName}crwdne207952:0'
       subject: 'crwdns207954:0%{organizationName}crwdne207954:0'
@@ -256,6 +266,7 @@ ach:
       first_name: 'crwdns2289940:0crwdne2289940:0'
       image_url: 'crwdns1160092:0crwdne1160092:0'
       input_id: 'crwdns207958:0crwdne207958:0'
+      manual_votes: 'crwdns3549663:0crwdne3549663:0'
       input_url: 'crwdns207984:0crwdne207984:0'
       last_name: 'crwdns2289942:0crwdne2289942:0'
       latitude: 'crwdns207960:0crwdne207960:0'
@@ -310,6 +321,7 @@ ach:
   confirmations_mailer:
     send_confirmation_code:
       subject: "crwdns208006:0%{organizationName}crwdne208006:0"
+      preheader: 'crwdns3166233:0%{organizationName}crwdne3166233:0'
       header: "crwdns208008:0crwdne208008:0"
       header_message: "crwdns208010:0%{firstName}crwdne208010:0"
       confirm_email_address: "crwdns327752:0crwdne327752:0"
@@ -324,6 +336,7 @@ ach:
   user_blocked_mailer:
     send_user_blocked_email:
       subject: 'crwdns417898:0crwdne417898:0'
+      preheader: 'crwdns3166235:0%{organizationName}crwdne3166235:0'
       title_user_blocked: 'crwdns417900:0crwdne417900:0'
       paragraph_1_without_reason: "crwdns417902:0%{organizationName}crwdne417902:0"
       paragraph_1_with_reason: "crwdns417904:0%{organizationName}crwdne417904:0"
@@ -331,6 +344,8 @@ ach:
       you_can_sign_in_again_from: "crwdns417908:0%{date}crwdne417908:0"
   user:
     anon_first_name: "crwdns523109:0crwdne523109:0"
+    anon_scheme:
+      animals: 'crwdns3338239:0crwdne3338239:0'
   time:
     am: crwdns522947:0crwdne522947:0
     formats:
@@ -339,3 +354,5 @@ ach:
   voting_method:
     default_voting_term_singular: "crwdns777777:0crwdne777777:0"
     default_voting_term_plural: "crwdns777779:0crwdne777779:0"
+  ics_calendar_event:
+    event_details: "crwdns3166237:0crwdne3166237:0"

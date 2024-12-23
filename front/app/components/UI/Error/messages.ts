@@ -349,4 +349,9 @@ export default defineMessages({
     defaultMessage:
       "The campaign can't be sent out because there are no recipients. The group you're sending to is either empty, or nobody has consented to receiving emails.",
   },
+  verification_taken: {
+    id: 'app.errors.verification_taken',
+    defaultMessage:
+      'Verification cannot be completed as another account has been verified using the same details.',
+  },
 });

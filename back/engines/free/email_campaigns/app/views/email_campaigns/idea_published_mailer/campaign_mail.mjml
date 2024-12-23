@@ -74,7 +74,7 @@
         <td style="padding-left: 10px; padding-bottom:15px;">
           <%=
             format_message('action_share_twitter', values: {
-              twitterLink: "<a href=\"https://twitter.com/intent/tweet?text=#{CGI.escape event.post_url}\" style=\"text-decoration: underline;\">Twitter</a>"
+              twitterLink: "<a href=\"https://twitter.com/intent/tweet?text=#{CGI.escape event.post_url}\" style=\"text-decoration: underline;\">X</a>"
             }, escape_html: false)
           %>
         </td>
@@ -133,4 +133,4 @@
   </mj-column>
 </mj-section>
 
-<%= render partial: 'application/cta_button', locals: { href: event.post_url, message: format_message('cta_view_idea') } %>
+<%= render partial: 'application/cta_button', locals: { href: event.post_url, message: format_message("cta_goto_your.#{event.input_term}", component: 'general') } %>

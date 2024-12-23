@@ -8,6 +8,8 @@ describe 'rake fix_existing_tenants' do # rubocop:disable RSpec/DescribeClass
   let(:task) { Rake::Task[task_name] }
 
   describe ':remove_assignees_from_survey_responses' do
+    before { create(:idea_status_proposed) }
+
     let(:task_name) { 'fix_existing_tenants:remove_assignees_from_survey_responses' }
     let(:assignee) { create(:admin) }
     let!(:idea1) { create(:native_survey_response, assignee_id: assignee.id, assigned_at: Time.zone.now) }

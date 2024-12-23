@@ -74,14 +74,14 @@ fi:
     ineligible: kelpaamattomia
     ineligible_description: kelpaamattomia
   topics:
-    nature: Luonto ja biologinen monimuotoisuus
-    nature_description: Luonto ja biologinen monimuotoisuus
+    nature: Luonto ja ympäristö
+    nature_description: Luonto ja ympäristö
     waste: Puhtaus ja hukka
     waste_description: Puhtaus ja hukka
     sustainability: Kestävä kehitys
     sustainability_description: Kestävä kehitys
-    mobility: Liikkuvuus
-    mobility_description: Liikkuvuus
+    mobility: Liikenne
+    mobility_description: Liikenne
     technology: Energia ja tekniikka
     technology_description: Energia ja tekniikka
     economy: Työ, talous ja matkailu
@@ -92,8 +92,8 @@ fi:
     public_space_description: Julkiset tilat ja rakennukset
     safety: Turvallisuus
     safety_description: Turvallisuus
-    education: Koulutus ja nuoriso
-    education_description: Koulutus ja nuoriso
+    education: Koulutus
+    education_description: Koulutus
     culture: Kulttuuria, urheilua ja tapahtumia
     culture_description: Kulttuuria, urheilua ja tapahtumia
     health: Terveys ja hyvinvointi
@@ -170,6 +170,9 @@ fi:
       topic_ids:
         title: Tunnisteet
         description:
+      consponsor_ids:
+        title: Yhteissponsorit
+        description: Kutsu sponsoreita alla olevan kentän kautta. Kutsutut tukisponsorit saavat sähköpostin.
       location:
         title: Sijainti
         description:
@@ -192,8 +195,8 @@ fi:
       section3:
         title: Yksityiskohdat
         description:
-      other_text_field:
-        title: Jos valitsit{other_option}, mitä ajattelet?
+      other_input_field:
+        title: Kirjoita vastauksesi
   custom_forms:
     categories:
       main_content:
@@ -209,6 +212,12 @@ fi:
           title: Mikä on kommenttisi?
         option:
           title: Mikä on vaihtoehtosi?
+        proposal:
+          title: Mikä on ehdotuksesi?
+        initiative:
+          title: Mikä on aloitteesi?
+        petition:
+          title: Mikä on vetoomuksenne?
   custom_field_options:
     gender:
       male: Mies
@@ -233,6 +242,7 @@ fi:
       <ul><li>Käytä aikaa ehdotuksen tarkentamiseen. Kirjoita tarvittaessa ensin luonnos ja kopioi ja liitä se sitten tähän.</li><li>Valitse merkityksellinen otsikko, joka selittää selvästi, mitä ehdotuksesi sisältää.</li><li>Visualisoi ehdotuksesi sopivalla kuvalla, jotta se erottuu joukosta!</li><li>Lisää asiaankuuluvia liitteitä, kuten videoita, inspiroivia esimerkkejä, teknisiä yksityiskohtia tai suunnitelmia.</li><li>Jaa ideasi sosiaalisessa mediassa ja muissa kanavissa saadaksesi tukea muilta.</li></ul>
   reset_password_mailer:
     send_reset_password:
+      preheader: 'Palauta salasanasi %{organizationName}'
       cta_reset_password: 'Nollaa salasana'
       message_you_reset_your_password: 'Pyysit salasanan vaihtoa osallistumisalustalle %{organizationName}. Napsauta alla olevaa painiketta valitaksesi uuden, turvallisen salasanan. Linkki vanhenee 1 tunnin kuluttua.'
       subject: '%{organizationName}: Palauta salasanasi'
@@ -256,6 +266,7 @@ fi:
       first_name: 'Etunimet)'
       image_url: 'Kuvan URL-osoite'
       input_id: 'ID'
+      manual_votes: 'Offline-äänet'
       input_url: 'URL-osoite'
       last_name: 'Sukunimi'
       latitude: 'Leveysaste'
@@ -310,6 +321,7 @@ fi:
   confirmations_mailer:
     send_confirmation_code:
       subject: "Vahvista sähköpostiosoitteesi %{organizationName}:n osallistumisalustalle"
+      preheader: 'Vahvista sähköpostiosoitteesi kohteelle %{organizationName}'
       header: "Vahvistuskoodisi"
       header_message: "Hei %{firstName}!"
       confirm_email_address: "Vahvista sähköpostiosoitteesi"
@@ -324,6 +336,7 @@ fi:
   user_blocked_mailer:
     send_user_blocked_email:
       subject: 'Tilisi on väliaikaisesti poistettu käytöstä'
+      preheader: 'Tilisi osallistumisalustalla %{organizationName} on väliaikaisesti poistettu käytöstä'
       title_user_blocked: 'Tilisi on väliaikaisesti poistettu käytöstä'
       paragraph_1_without_reason: "Tilisi osallistumisalustalla %{organizationName} on poistettu tilapäisesti käytöstä yhteisön sääntöjen rikkomisen vuoksi."
       paragraph_1_with_reason: "Tilisi osallistumisalustalla %{organizationName} on poistettu tilapäisesti käytöstä seuraavasta syystä:"
@@ -331,6 +344,8 @@ fi:
       you_can_sign_in_again_from: "Voit kirjautua uudelleen sisään osoitteesta %{date}"
   user:
     anon_first_name: "Käyttäjä"
+    anon_scheme:
+      animals: 'alligaattori, krokotiili, alpakka, muurahainen, antilooppi, apina, armadillo, paviaani, mäyrä, lepakko, karhu, majava, mehiläinen, kovakuoriainen, puhveli, perhonen, kameli, vesipuhveli, karibu, kissa, karja, gepardi, simpanssi, chinchilla, sikada ,simpukka, torakka, turska, kojootti, rapu, kriketti, varis, korppi, hirvi, dinosaurus, koira, delfiini, pyöriäinen, ankka, kotka, ankerias, norsu, hirvi, fretti, kala, kärpänen, kettu, sammakko, rupikonna, gerbiili ,kirahvi, sääskä, gnu, metsikala, vuohi, kultakala, hanhi, gorilla, heinäsirkka, marsu, hamsteri, jänis, siili, silli, virtahepo, hornet, hevonen, koira, hyeena, impala, sakaali, meduusa, kenguru, wallaby, koala, leopardi, leijona, lisko, laama, heinäsirkka, täi, ara, sinisorsa, mammutti, manaatti, näätä, minkki, minnow, myyrä, hirvi, hyttynen, hiiri, rotta, muuli, piisami, saukko, härkä, osteri, panda, sika, platypus, porcupine, preeriakoira, mopsi, kani, pesukarhu, poro, sarvikuono, lohi, sardiini, skorpioni, hylke, merileijona, orja, hai, lammas, haisu, etana, käärme, hämähäkki, orava, joutsen, termiitti, tiikeri, taimenen, kilpikonna, kilpikonna, mursu, ampiainen, valas, susi, wombat, metsätukka, mato, jakki, keltatakki, seepra'
   time:
     am: olen
     formats:
@@ -339,3 +354,5 @@ fi:
   voting_method:
     default_voting_term_singular: "äänestys"
     default_voting_term_plural: "ääniä"
+  ics_calendar_event:
+    event_details: "Tapahtuman tiedot"

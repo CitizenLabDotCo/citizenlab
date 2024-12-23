@@ -76,7 +76,7 @@ executors:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_HOST: localhost
-      - image: "postgis/postgis:16-3.4"
+      - image: "citizenlabdotco/postgis-pgvector:latest"
         environment:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
@@ -178,11 +178,6 @@ jobs:
     environment:
       RAILS_ENV: development
     steps:
-      # CVE-2015-9284 is "CSRF vulnerability in OmniAuth's request phase"
-      # Solution: upgrade to '>= 2.0.0'
-      # But we can't, due to unmaintained gems that don't work with Omniauth 2.0.
-      # See https://github.com/rubysec/bundler-audit
-      #
       # GHSA-xc9x-jj77-9p9j
       # Solutions: upgrade Nokogiri (requires newer Ruby) or
       # Compile and link Nokogiri against new libxml2
@@ -191,7 +186,7 @@ jobs:
       # CVE-2023-51774
       # It has been fixed by upgrading to json-jwt to 1.16.6, but the CVE data has not
       # been updated yet. So we can safely ignore it.
-      - run: bundle exec bundle-audit check --update --ignore CVE-2015-9284 GHSA-xc9x-jj77-9p9j CVE-2023-51774
+      - run: bundle exec bundle-audit check --update --ignore GHSA-xc9x-jj77-9p9j CVE-2023-51774
 
   back-license-check:
     resource_class: small
@@ -968,7 +963,7 @@ workflows:
             branches:
               only: production
       - back-deploy-to-swarm:
-          name: Deploy to Europe
+          name: Deploy to Europe (Frankfurt)
           requires:
             - back-push-deployment-docker-image
           filters:
@@ -980,6 +975,32 @@ workflows:
           stack_name: cl2-prd-bnlx-stack
           env_file: ".env-web"
           cluster_name: "eu"
+      - back-deploy-to-swarm:
+          name: Deploy to Europe (Paris)
+          requires:
+            - back-push-deployment-docker-image
+          filters:
+            branches:
+              only:
+                - production
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_PARIS
+          compose_file: docker-compose-production.yml
+          stack_name: cl2
+          env_file: ".env-web"
+          cluster_name: "paris"
+      - back-deploy-to-swarm:
+          name: Deploy to Europe (Stockholm)
+          requires:
+            - back-push-deployment-docker-image
+          filters:
+            branches:
+              only:
+                - production
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_STOCKHOLM
+          compose_file: docker-compose-production.yml
+          stack_name: cl2
+          env_file: ".env-web"
+          cluster_name: "stockholm"
       - back-deploy-to-swarm:
           name: Deploy to Canada
           requires:
@@ -1132,7 +1153,7 @@ workflows:
     when: << pipeline.parameters.e2e >>
     jobs:
       - e2e-setup-db:
-          docker_layer_caching: true
+          docker_layer_caching: false
           context:
             - docker-hub-access
             - lastpass
@@ -1195,13 +1216,31 @@ workflows:
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
       - back-generate-tenant-templates:
-          name: "Europe (mainland)"
+          name: "Europe (Frankfurt)"
           context:
             - docker-hub-access
             - citizenlab-ee-environment
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
           ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_EUROPE
+          env_file: ".env-web"
+      - back-generate-tenant-templates:
+          name: "Europe (Paris)"
+          context:
+            - docker-hub-access
+            - citizenlab-ee-environment
+            - slack-dev-notifications-tenant-templates
+          <<: *slack-fail-post-step-templates
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_PARIS
+          env_file: ".env-web"
+      - back-generate-tenant-templates:
+          name: "Europe (Stockholm)"
+          context:
+            - docker-hub-access
+            - citizenlab-ee-environment
+            - slack-dev-notifications-tenant-templates
+          <<: *slack-fail-post-step-templates
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_STOCKHOLM
           env_file: ".env-web"
       - back-generate-tenant-templates:
           name: "South America"
@@ -1247,7 +1286,9 @@ workflows:
           <<: *slack-fail-post-step-templates
           requires:
             - back-build-docker-image
-            - "Europe (mainland)"
+            - "Europe (Frankfurt)"
+            - "Europe (Paris)"
+            - "Europe (Stockholm)"
             - "South America"
             - "Canada"
             - "US West"
@@ -1286,13 +1327,31 @@ workflows:
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
       - back-generate-tenant-templates:
-          name: "Europe (mainland)"
+          name: "Europe (Frankfurt)"
           context:
             - docker-hub-access
             - citizenlab-ee-environment
             - slack-dev-notifications-tenant-templates
           <<: *slack-fail-post-step-templates
           ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_EUROPE
+          env_file: ".env-web"
+      - back-generate-tenant-templates:
+          name: "Europe (Paris)"
+          context:
+            - docker-hub-access
+            - citizenlab-ee-environment
+            - slack-dev-notifications-tenant-templates
+          <<: *slack-fail-post-step-templates
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_PARIS
+          env_file: ".env-web"
+      - back-generate-tenant-templates:
+          name: "Europe (Stockholm)"
+          context:
+            - docker-hub-access
+            - citizenlab-ee-environment
+            - slack-dev-notifications-tenant-templates
+          <<: *slack-fail-post-step-templates
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_STOCKHOLM
           env_file: ".env-web"
       - back-generate-tenant-templates:
           name: "South America"
@@ -1338,7 +1397,9 @@ workflows:
           <<: *slack-fail-post-step-templates
           requires:
             - back-build-docker-image
-            - "Europe (mainland)"
+            - "Europe (Frankfurt)"
+            - "Europe (Paris)"
+            - "Europe (Stockholm)"
             - "South America"
             - "Canada"
             - "US West"
@@ -1368,6 +1429,20 @@ workflows:
               only:
                 - production
     jobs:
+      - check-for-inconsistent-data:
+          <<: *slack-fail-post-step-inconsistent-data
+          name: "Europe (Paris)"
+          context:
+            - slack-dev-notifications-inconsistent-data
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_PARIS
+          env_file: ".env-web"
+      - check-for-inconsistent-data:
+          <<: *slack-fail-post-step-inconsistent-data
+          name: "Europe (Stockholm)"
+          context:
+            - slack-dev-notifications-inconsistent-data
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_STOCKHOLM
+          env_file: ".env-web"
       - check-for-inconsistent-data:
           <<: *slack-fail-post-step-inconsistent-data
           name: "South America"

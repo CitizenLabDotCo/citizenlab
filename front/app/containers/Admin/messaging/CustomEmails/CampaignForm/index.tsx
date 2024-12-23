@@ -176,7 +176,7 @@ const CampaignForm = ({
               <Text fontSize="l">
                 <FormattedMessage {...messages.allParticipantsInProject} />{' '}
                 <Link to={`/admin/projects/${project.data.id}`} target="_blank">
-                  {localize(project?.data.attributes.title_multiloc)}
+                  {localize(project.data.attributes.title_multiloc)}
                 </Link>
               </Text>
             </>

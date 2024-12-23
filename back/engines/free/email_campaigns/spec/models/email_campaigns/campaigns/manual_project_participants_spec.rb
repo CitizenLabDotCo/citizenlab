@@ -13,19 +13,32 @@ RSpec.describe EmailCampaigns::Campaigns::ManualProjectParticipants do
     it { is_expected.to validate_presence_of(:context_id) }
 
     it { is_expected.to belong_to(:project) }
+
+    it 'destroys the campaign when the project is destroyed' do
+      campaign = create(:manual_project_participants_campaign)
+      project = campaign.project
+      project.destroy!
+      expect { project.reload }.to raise_error(ActiveRecord::RecordNotFound)
+      expect { campaign.reload }.to raise_error(ActiveRecord::RecordNotFound)
+    end
   end
 
   describe '#apply_recipient_filters' do
-    let(:non_participant) { create(:user) }
-    let(:participant) { create(:user) }
-    let(:project) { create(:project_with_active_ideation_phase) }
+    let!(:non_participant) { create(:user) }
+    let!(:participant) { create(:user) }
+    let!(:project) { create(:project_with_active_ideation_phase) }
     let!(:idea) { create(:idea, project: project, author: participant, publication_status: 'published', phases: project.phases) }
+    let!(:follower) do
+      user = create(:user)
+      create(:follower, followable: project, user: user)
+      user
+    end
     let(:campaign) { create(:manual_project_participants_campaign, project: project) }
 
-    it 'includes only project participants' do
+    it 'includes project participants and followers' do
       recipients = campaign.apply_recipient_filters
 
-      expect(recipients).to match_array [participant]
+      expect(recipients).to match_array [participant, follower]
     end
   end
 end

@@ -103,7 +103,9 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
   const ideaFormData: FormData | null =
     ideaId && ideaFormStatePerIdea[ideaId]
       ? ideaFormStatePerIdea[ideaId]
-      : idea && schema
+      : // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      idea && schema
       ? getIdeaFormValues(idea, schema)
       : null;
 
@@ -179,6 +181,7 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
       idea_files_attributes: _idea_files_attributes,
       idea_images_attributes: _idea_images_attributes,
       topic_ids: _topic_ideas,
+      cosponsor_ids: _cosponsor_ids,
       author_id: _author_id,
       ...supportedFormData
     } = ideaFormData;

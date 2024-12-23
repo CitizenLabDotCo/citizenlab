@@ -98,6 +98,10 @@ module ParticipationMethod
       false
     end
 
+    def supports_private_attributes_in_export?
+      false
+    end
+
     def supports_input_term?
       false
     end

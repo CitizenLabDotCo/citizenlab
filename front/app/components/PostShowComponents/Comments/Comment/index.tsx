@@ -8,7 +8,6 @@ import useProjectById from 'api/projects/useProjectById';
 import useUserById from 'api/users/useUserById';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import { canModerateInitiative } from 'utils/permissions/rules/initiativePermissions';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import messages from '../messages';
@@ -53,8 +52,6 @@ const DeletedIcon = styled(Icon)`
 
 interface Props {
   ideaId: string | undefined;
-  initiativeId: string | undefined;
-  postType: 'idea' | 'initiative';
   projectId?: string | null;
   commentId: string;
   commentType: 'parent' | 'child';
@@ -65,8 +62,6 @@ interface Props {
 
 const Comment = ({
   ideaId,
-  initiativeId,
-  postType,
   projectId,
   commentType,
   commentId,
@@ -76,6 +71,8 @@ const Comment = ({
 }: Props) => {
   const { data: comment } = useComment(commentId);
   const { data: author } = useUserById(
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     comment?.data.relationships?.author?.data?.id
   );
   const { data: project } = useProjectById(projectId);
@@ -95,10 +92,9 @@ const Comment = ({
   };
 
   const authorCanModerate = author
-    ? {
-        idea: project ? canModerateProject(project.data, author) : false,
-        initiative: canModerateInitiative(author),
-      }[postType]
+    ? project
+      ? canModerateProject(project.data, author)
+      : false
     : false;
 
   if (comment) {
@@ -140,13 +136,10 @@ const Comment = ({
                     onCommentSaved={onCommentSaved}
                     onCancelEditing={onCancelEditing}
                     ideaId={ideaId}
-                    initiativeId={initiativeId}
                   />
                   <CommentFooter
                     className={commentType}
                     ideaId={ideaId}
-                    initiativeId={initiativeId}
-                    postType={postType}
                     projectId={projectId}
                     commentId={commentId}
                     commentType={commentType}

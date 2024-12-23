@@ -2,45 +2,160 @@ models:
   content_builder/layout:
     - code: homepage
       enabled: true
+      craftjs_json:
+        ROOT:
+          type: 'div'
+          isCanvas: true
+          props:
+            id: 'e2e-content-builder-frame'
+          displayName: 'div'
+          custom: {}
+          hidden: false
+          nodes: ['HOMEPAGEBANNER', 'FOLLOWED_ITEMS', 'OPEN_TO_PARTICIPATION', 'FINISHED_OR_ARCHIVED']
+          linked_nodes: {}
+        HOMEPAGEBANNER:
+          type:
+            resolvedName: 'HomepageBanner'
+          isCanvas: false
+          props:
+            homepageSettings:
+              banner_layout: 'full_width_banner_layout'
+              banner_avatars_enabled: true
+              banner_cta_signed_in_url: ''
+              banner_cta_signed_in_type: 'no_button'
+              banner_cta_signed_out_url: ''
+              banner_cta_signed_out_type: 'sign_up_button'
+              banner_signed_in_header_multiloc:
+                en: ''
+                nl-BE: ''
+                fr-BE: ''
+              banner_signed_out_header_multiloc:
+                en: ''
+                nl-BE: ''
+                fr-BE: ''
+              banner_cta_signed_in_text_multiloc:
+                en: ''
+                nl-BE: ''
+                fr-BE: ''
+              banner_cta_signed_out_text_multiloc:
+                en: ''
+                nl-BE: ''
+                fr-BE: ''
+              banner_signed_out_subheader_multiloc:
+                en: ''
+                nl-BE: ''
+                fr-BE: ''
+              banner_signed_in_header_overlay_color: '#0A5159'
+              banner_signed_out_header_overlay_color: '#0A5159'
+              banner_signed_in_header_overlay_opacity: 90
+              banner_signed_out_header_overlay_opacity: 90
+            image:
+              imageUrl: 'https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/header.jpg'
+            errors: []
+            hasError: false
+          displayName: 'HomepageBanner'
+          custom:
+            title:
+              id: 'app.containers.admin.ContentBuilder.homepage.homepageBanner'
+              defaultMessage: 'Homepage banner'
+            noPointerEvents: true
+            noDelete: true
+          parent: 'ROOT'
+          hidden: false
+          nodes: []
+          linkedNodes: {}
+        FOLLOWED_ITEMS:
+          type:
+            resolvedName: 'FollowedItems'
+          nodes: []
+          props:
+            titleMultiloc:
+              en: 'For you'
+              nl-BE: 'Voor jou'
+              fr-BE: 'Pour vous'
+          custom: {}
+          hidden: false
+          parent: 'ROOT'
+          isCanvas: false
+          displayName: 'FollowedItems'
+          linkedNodes: {}
+        OPEN_TO_PARTICIPATION:
+          type:
+            resolvedName: 'OpenToParticipation'
+          nodes: []
+          props:
+            titleMultiloc:
+              en: 'Open to participation'
+              nl-BE: 'Open voor deelname'
+              fr-BE: 'Ouvert à la participation'
+          custom: {}
+          hidden: false
+          parent: 'ROOT'
+          isCanvas: false
+          displayName: 'OpenToParticipation'
+          linkedNodes: {}
+        FINISHED_OR_ARCHIVED:
+          type:
+            resolvedName: 'FinishedOrArchived'
+          nodes: []
+          props:
+            filterBy: 'finished_and_archived'
+            titleMultiloc:
+              en: 'You said, we did...'
+              nl-BE: 'Jij zei, wij deden...'
+              fr-BE: "La boucle est bouclée"
+          custom: {}
+          hidden: false
+          parent: 'ROOT'
+          isCanvas: false
+          displayName: 'FinishedOrArchived'
+          linkedNodes: {}
   idea_status:
     -
-      title_multiloc: idea_statuses.proposed
+      title_multiloc: idea_statuses.prescreening
       ordering: 0
+      code: prescreening
+      color: '#4B4B4B'
+      description_multiloc: idea_statuses.prescreening_description
+      participation_method: ideation
+    -
+      title_multiloc: idea_statuses.proposed
+      ordering: 1
       code: proposed
-      color: '#687782'
+      color: '#057ABE'
       description_multiloc: idea_statuses.proposed_description
       participation_method: ideation
     -
       title_multiloc: idea_statuses.viewed
-      ordering: 1
+      ordering: 2
       code: viewed
       color: '#01A1B1'
       description_multiloc: idea_statuses.viewed_description
       participation_method: ideation
     -
       title_multiloc: idea_statuses.under_consideration
-      ordering: 2
+      ordering: 3
       code: under_consideration
       color: '#0080A5'
       description_multiloc: idea_statuses.under_consideration_description
       participation_method: ideation
     -
       title_multiloc: idea_statuses.accepted
-      ordering: 3
+      ordering: 4
       code: accepted
       color: '#04884C'
       description_multiloc: idea_statuses.accepted_description
       participation_method: ideation
     -
       title_multiloc: idea_statuses.rejected
-      ordering: 4
+      ordering: 5
       code: rejected
       color: '#E52516'
       description_multiloc: idea_statuses.rejected_description
       participation_method: ideation
     -
       title_multiloc: idea_statuses.implemented
-      ordering: 5
+      ordering: 6
       code: implemented
       color: '#04884C'
       description_multiloc: idea_statuses.implemented_description
@@ -49,42 +164,42 @@ models:
       title_multiloc: idea_statuses.prescreening
       ordering: 0
       code: prescreening
-      color: '#767676'
+      color: '#4B4B4B'
       description_multiloc: idea_statuses.prescreening_description
       participation_method: proposals
     -
       title_multiloc: idea_statuses.proposed
       ordering: 1
       code: proposed
-      color: '#BEE7EB'
+      color: '#057ABE'
       description_multiloc: idea_statuses.proposed_description
       participation_method: proposals
     -
       title_multiloc: idea_statuses.threshold_reached
       ordering: 2
       code: threshold_reached
-      color: '#40B8C5'
+      color: '#008300'
       description_multiloc: idea_statuses.threshold_reached_description
       participation_method: proposals
     -
       title_multiloc: idea_statuses.expired
       ordering: 3
       code: expired
-      color: '#FF672F'
+      color: '#B22222'
       description_multiloc: idea_statuses.expired_description
       participation_method: proposals
     -
       title_multiloc: idea_statuses.answered
       ordering: 4
       code: answered
-      color: '#147985'
+      color: '#1E3A8A'
       description_multiloc: idea_statuses.answered_description
       participation_method: proposals
     -
       title_multiloc: idea_statuses.ineligible
       ordering: 5
       code: ineligible
-      color: '#E52516'
+      color: '#8B0000'
       description_multiloc: idea_statuses.ineligible_description
       participation_method: proposals
   initiative_status:
@@ -279,35 +394,6 @@ models:
       top_info_section_multiloc: static_pages.faq_body
       top_info_section_enabled: true
       files_section_enabled: true
-    - &initiatives-page
-      code: proposals
-      title_multiloc: static_pages.initiatives_title
-      top_info_section_multiloc: static_pages.initiatives_body
-      top_info_section_enabled: true
-      files_section_enabled: true
-      slug: initiatives
-      text_images_attributes:
-        - imageable_field: top_info_section_multiloc
-          remote_image_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_in_meeting_graphic.png
-          text_reference: 493c1992-608d-4666-90f0-20d38071353d
-        - imageable_field: top_info_section_multiloc
-          remote_image_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_in_meeting_graphic.png
-          text_reference: d5917ff6-985c-479b-bfb5-4b9d424f0933
-        - imageable_field: top_info_section_multiloc
-          remote_image_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_in_meeting_graphic.png
-          text_reference: b4e659ab-2830-48fd-b3ce-96e16856262f
-        - imageable_field: top_info_section_multiloc
-          remote_image_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_in_meeting_graphic.png
-          text_reference: 43f82d75-2aa1-41ab-8c45-9c8ba9dff49f
-        - imageable_field: top_info_section_multiloc
-          remote_image_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_in_meeting_graphic.png
-          text_reference: ba16670d-e551-46af-8ba4-51250fb97439
-        - imageable_field: top_info_section_multiloc
-          remote_image_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_in_meeting_graphic.png
-          text_reference: b4974fd9-7681-4acd-951b-a3979ffc55b0
-        - imageable_field: top_info_section_multiloc
-          remote_image_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_in_meeting_graphic.png
-          text_reference: 85a9e561-4c27-4f6b-949a-d8e06905787b
   nav_bar_item:
     -
       code: home
@@ -319,18 +405,15 @@ models:
       code: all_input
       ordering: 2
     -
-      code: proposals
+      code: events
       ordering: 3
     -
-      code: events
-      ordering: 4
-    -
       code: custom
-      ordering: 5
+      ordering: 4
       static_page_ref: *information-page
     -
       code: custom
-      ordering: 6
+      ordering: 5
       static_page_ref: *faq-page
   project:
     - &open_idea_project

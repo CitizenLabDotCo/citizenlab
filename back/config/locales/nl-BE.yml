@@ -170,6 +170,9 @@ nl-BE:
       topic_ids:
         title: Tags
         description:
+      consponsor_ids:
+        title: Ondersteuners
+        description: Nodig ondersteuners uit via het onderstaande veld. De uitgenodigde ondersteuner(s) ontvangen een e-mail.
       location:
         title: Locatie
         description:
@@ -192,8 +195,8 @@ nl-BE:
       section3:
         title: Details
         description:
-      other_text_field:
-        title: Als je '{other_option}' hebt geselecteerd, typ dan je antwoord.
+      other_input_field:
+        title: Typ je antwoord
   custom_forms:
     categories:
       main_content:
@@ -209,6 +212,12 @@ nl-BE:
           title: Wat is je reactie?
         option:
           title: Wat is je optie?
+        proposal:
+          title: Wat is jouw voorstel?
+        initiative:
+          title: Waar is jouw initiatief?
+        petition:
+          title: Wat is jouw petitie?
   custom_field_options:
     gender:
       male: Man
@@ -233,6 +242,7 @@ nl-BE:
       <ul><li>Neem de tijd om je voorstel uit te werken. Typ het eventueel eerst ergens anders en knip en plak het daarna hier.</li><li>Kies een sprekende titel, die direct en concreet uitlegt wat je voorstel omvat.</li><li>Illustreer je voorstel zeker met een passende afbeelding, zodat deze meer opvalt!</li><li>Voeg relevante bijlagen toe zoals video’s, inspirerende voorbeelden, technische details of plannen.</li><li>Deel je voorstel op social media en via andere kanalen om stemmen te verzamelen.</li></ul>
   reset_password_mailer:
     send_reset_password:
+      preheader: 'Reset je wachtwoord voor %{organizationName}'
       cta_reset_password: 'Stel je wachtwoord opnieuw in'
       message_you_reset_your_password: 'Je vroeg een reset van je wachtwoord om je aan te melden op het participatieplatform van %{organizationName}. Klik op onderstaande knop om een nieuw, veilig wachtwoord in te stellen. De link is 1 uur geldig.'
       subject: 'Reset je wachtwoord voor het participatieplatform van %{organizationName}'
@@ -256,6 +266,7 @@ nl-BE:
       first_name: 'Voorna(a)m(en)'
       image_url: 'Afbeelding URL'
       input_id: 'ID'
+      manual_votes: 'Offline stemmen'
       input_url: 'URL'
       last_name: 'Achternaam'
       latitude: 'Breedtegraad'
@@ -310,6 +321,7 @@ nl-BE:
   confirmations_mailer:
     send_confirmation_code:
       subject: "Bevestig je e-mailadres voor het participatieplatform van %{organizationName}"
+      preheader: 'Bevestig je e-mailadres voor %{organizationName}'
       header: "Je bevestigingscode "
       header_message: "Hallo %{firstName}!"
       confirm_email_address: "Bevestig uw e-mailadres"
@@ -324,6 +336,7 @@ nl-BE:
   user_blocked_mailer:
     send_user_blocked_email:
       subject: 'Uw account is tijdelijk uitgeschakeld'
+      preheader: 'Je account op het participatieplatform van %{organizationName} is tijdelijk uitgeschakeld'
       title_user_blocked: 'Uw account is tijdelijk uitgeschakeld'
       paragraph_1_without_reason: "Je account op het participatieplatform van %{organizationName} is tijdelijk uitgeschakeld wegens overtreding van de communityrichtlijnen."
       paragraph_1_with_reason: "Je account op het participatieplatform van %{organizationName} is tijdelijk uitgeschakeld om de volgende reden:"
@@ -331,6 +344,8 @@ nl-BE:
       you_can_sign_in_again_from: "U kunt zich opnieuw aanmelden vanaf %{date}"
   user:
     anon_first_name: "Gebruiker"
+    anon_scheme:
+      animals: 'alligator,krokodil,alpaca,antilope,aap,gordeldier,baviaan,das,vleermuis,beer,bever,bij,kever,buffel,vlinder,kameel,waterbuffel,kariboe,kat,vee,cheeta,chimpansee,chinchilla,cicade,mossel,kakkerlak,kabeljauw,coyote,krab,krekel,kraai,raaf,hert,dinosaurus,hond,dolfijn,bruinvis,eend,adelaar,paling,olifant,eland,fret,vis,vlieg,vos,kikker,pad,gerbil,giraf,gnat,gnoe,wildebeest,geit,goudvis,gans,gorilla,sprinkhaan,cavia,hamster,haas,egel,haring,nijlpaard,horzel,paard,jachthond,hyena,impala,jakhals,kwal,kangoeroe,wallaby,koala,luipaard,leeuw,hagedis,lama,sprinkhaan,luis,ara,wildeeend,mammoet,lamantijn,marter,nerts,minnow,mol,eland,mug,muis,rat,muildier,muskusrat,otter,os,oester,panda,varken,vogelbekdier,stekelvarken,prairiehond,mopshond,konijn,wasbeer,rendier,neushoorn,zalm,sardine,schorpioen,zeehond,zeeleeuw,serval,haai,schaap,stinkdier,slak,slang,spin,eekhoorn,zwaan,termiet,tijger,forel,schildpad,walrus,wesp,walvis,wolf,wombat,bosmarmot,worm,jak,geelkeel,zebra'
   time:
     am: '--'
     formats:
@@ -339,3 +354,5 @@ nl-BE:
   voting_method:
     default_voting_term_singular: "stem"
     default_voting_term_plural: "stemmen"
+  ics_calendar_event:
+    event_details: "Details evenement"

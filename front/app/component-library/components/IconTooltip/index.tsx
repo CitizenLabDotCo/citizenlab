@@ -20,6 +20,7 @@ import Tooltip from '../Tooltip';
 
 export const ContentWrapper = styled.div<{ tippytheme: 'light' | undefined }>`
   padding: 5px;
+  text-align: left;
 
   a {
     color: ${(props) =>
@@ -73,6 +74,7 @@ export type Props = {
   maxTooltipWidth?: number;
   iconAriaTitle?: string;
   transform?: string;
+  role?: string;
 } & BoxPositionProps &
   BoxMarginProps &
   BoxPaddingProps &
@@ -93,6 +95,7 @@ const IconTooltip: FC<Props> = memo<Props>(
     iconAriaTitle,
     className,
     transform,
+    role,
     ...rest
   }) => {
     const uuid = useInstanceId();
@@ -102,6 +105,7 @@ const IconTooltip: FC<Props> = memo<Props>(
         placement={placement || 'right-end'}
         theme={theme || ''}
         maxWidth={maxTooltipWidth || 350}
+        useWrapper={false}
         content={
           <ContentWrapper id={`tooltip-content-${uuid}`} tippytheme={theme}>
             {content}
@@ -113,6 +117,7 @@ const IconTooltip: FC<Props> = memo<Props>(
           className={`${className || ''} tooltip-icon`}
           aria-describedby={`tooltip-content-${uuid}`}
           data-testid={testEnv('tooltip-icon-button')}
+          role={role}
           p="0px"
           type="button"
           display="flex"

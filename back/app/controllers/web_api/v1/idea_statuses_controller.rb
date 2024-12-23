@@ -114,3 +114,5 @@ class WebApi::V1::IdeaStatusesController < ApplicationController
     IdeaStatus.where(code: IdeaStatus::LOCKED_CODES, participation_method: @idea_status.participation_method).maximum(:ordering) || -1
   end
 end
+
+WebApi::V1::IdeaStatusesController.include(AggressiveCaching::Patches::WebApi::V1::IdeaStatusesController)

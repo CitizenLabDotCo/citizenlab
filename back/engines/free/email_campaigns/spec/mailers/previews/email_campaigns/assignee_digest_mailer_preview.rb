@@ -12,7 +12,7 @@ module EmailCampaigns
       command = {
         recipient: recipient_user,
         event_payload: {
-          assigned_ideas: ideas.map do |idea|
+          assigned_inputs: ideas.map do |idea|
             {
               id: idea.id,
               title_multiloc: idea.title_multiloc,
@@ -25,28 +25,7 @@ module EmailCampaigns
               comments_count: idea.comments_count
             }
           end,
-          assigned_initiatives: initiatives.map do |initiative|
-            {
-              id: initiative.id,
-              title_multiloc: initiative.title_multiloc,
-              url: Frontend::UrlService.new.model_to_url(initiative),
-              published_at: initiative.published_at&.iso8601 || Time.now.iso8601,
-              assigned_at: initiative.assigned_at&.iso8601 || Time.now.iso8601,
-              author_name: name_service.display_name!(initiative.author),
-              likes_count: initiative.likes_count,
-              comments_count: initiative.comments_count,
-              images: initiative.initiative_images.map do |image|
-                {
-                  ordering: image.ordering,
-                  versions: image.image.versions.to_h { |k, v| [k.to_s, v.url] }
-                }
-              end,
-              header_bg: {
-                versions: initiative.header_bg.versions.to_h { |k, v| [k.to_s, v.url] }
-              }
-            }
-          end,
-          succesful_assigned_initiatives: initiatives.map do |initiative|
+          succesful_assigned_inputs: initiatives.map do |initiative|
             {
               id: initiative.id,
               title_multiloc: initiative.title_multiloc,
@@ -68,7 +47,7 @@ module EmailCampaigns
               }
             }
           end,
-          need_feedback_assigned_ideas_count: 5
+          need_feedback_assigned_inputs_count: 5
         }
       }
       campaign = EmailCampaigns::Campaigns::AssigneeDigest.first

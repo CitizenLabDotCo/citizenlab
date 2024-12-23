@@ -43,6 +43,7 @@ export const locales = [
   'hu-HU',
   'it-IT',
   'kl-GL',
+  'lt-LT',
   'lb-LU',
   'lv-LV',
   'mi',
@@ -51,6 +52,7 @@ export const locales = [
   'nl',
   'nl-BE',
   'nl-NL',
+  'pa-IN',
   'pl-PL',
   'pt-BR',
   'ro-RO',
@@ -58,6 +60,7 @@ export const locales = [
   'sr-SP',
   'sv-SE',
   'tr-TR',
+  'ur-PK',
 ];
 
 // the locales we really support, ie we have translations for these ect
@@ -83,11 +86,13 @@ export const appLocalePairs = {
   'it-IT': 'Italiano',
   'kl-GL': 'Kalaallisut',
   'lb-LU': 'Lëtzebuergesch',
+  'lt-LT': 'Lietuvių',
   'lv-LV': 'Latviešu',
   mi: 'Māori',
   'nb-NO': 'Norsk (Bokmål)',
   'nl-BE': 'Nederlands (België)',
   'nl-NL': 'Nederlands (Nederland)',
+  'pa-IN': 'ਪੰਜਾਬੀ (Gurmukhi)',
   'pl-PL': 'Polski',
   'pt-BR': 'Português (Brasil)',
   'ro-RO': 'Română',
@@ -95,6 +100,7 @@ export const appLocalePairs = {
   'sr-SP': 'Српски (Ћирилица)',
   'sv-SE': 'Svenska',
   'tr-TR': 'Türkçe',
+  'ur-PK': 'اردو (Urdu)',
 };
 
 export const appGraphqlLocalePairs = {
@@ -124,6 +130,7 @@ export const appGraphqlLocalePairs = {
   itIt: 'it-IT',
   klGl: 'kl-GL',
   lbLu: 'lb-LU',
+  ltLt: 'lt',
   lvLv: 'lv-LV',
   mi: 'mi',
   nb: 'nb',
@@ -131,6 +138,7 @@ export const appGraphqlLocalePairs = {
   nl: 'nl',
   nlBe: 'nl-BE',
   nlNl: 'nl-NL',
+  paIn: 'pa-IN',
   plPl: 'pl-PL',
   ptBr: 'pt-BR',
   roRo: 'ro-RO',
@@ -138,6 +146,7 @@ export const appGraphqlLocalePairs = {
   srSp: 'sr-SP',
   svSe: 'sv-SE',
   trTr: 'tr-TR',
+  urPk: 'ur-PK',
 };
 
 export const shortenedAppLocalePairs = {
@@ -162,11 +171,13 @@ export const shortenedAppLocalePairs = {
   'it-IT': 'Italiano',
   'kl-GL': 'Kalaallisut',
   'lb-LU': 'Lëtzebuergesch',
+  'lt-LT': 'Lietuvių',
   'lv-LV': 'Latviešu',
   mi: 'Māori',
   'nb-NO': 'Norsk',
   'nl-BE': 'Nederlands',
   'nl-NL': 'Nederlands',
+  'pa-IN': 'ਪੰਜਾਬੀ',
   'pl-PL': 'Polski',
   'pt-BR': 'Português',
   'ro-RO': 'Română',
@@ -174,6 +185,7 @@ export const shortenedAppLocalePairs = {
   'sr-SP': 'Српски',
   'sv-SE': 'Svenska',
   'tr-TR': 'Türkçe',
+  'ur-PK': 'اردو',
 };
 
 // https://github.com/moment/moment/tree/develop/locale lists the supported locales by moment.js
@@ -198,11 +210,13 @@ export const appLocalesMomentPairs = {
   'it-IT': 'it',
   'kl-GL': 'da',
   'lb-LU': 'lb',
+  'lt-LT': 'lt',
   'lv-LV': 'lv',
   mi: 'mi',
   'nb-NO': 'nb',
   'nl-BE': 'nl-be',
   'nl-NL': 'nl',
+  'pa-IN': 'pa-in',
   'pl-PL': 'pl',
   'pt-BR': 'pt-br',
   'ro-RO': 'ro',
@@ -210,4 +224,5 @@ export const appLocalesMomentPairs = {
   'sr-SP': 'sr',
   'sv-SE': 'sv',
   'tr-TR': 'tr',
+  'ur-PK': 'ur',
 };

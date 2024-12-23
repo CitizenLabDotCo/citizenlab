@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { IPhaseData } from 'api/phases/types';
+import { IdeaSortMethod, IPhaseData } from 'api/phases/types';
 
 import FilterSelector from 'components/FilterSelector';
 
@@ -11,12 +11,11 @@ import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../../messages';
 
-export type Sort = 'trending' | 'random' | 'popular' | 'new' | '-new';
-
-const optionMessages: { [key in Sort]: MessageDescriptor } = {
+const optionMessages: { [key in IdeaSortMethod]: MessageDescriptor } = {
   trending: messages.trending,
   random: messages.random,
   popular: messages.popular,
+  comments_count: messages.mostDiscussed,
   new: messages.newest,
   '-new': messages.oldest,
 };
@@ -24,7 +23,7 @@ const optionMessages: { [key in Sort]: MessageDescriptor } = {
 type Props = {
   id?: string | undefined;
   alignment: 'left' | 'right';
-  value: Sort;
+  value: IdeaSortMethod;
   onChange: (value: string) => void;
   phase?: IPhaseData;
 };
@@ -44,6 +43,8 @@ const SortFilterDropdown = ({ alignment, value, onChange, phase }: Props) => {
 
   if (!isNilOrError(phase)) {
     const config = getMethodConfig(phase.attributes.participation_method);
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (config?.postSortingOptions) {
       options = config.postSortingOptions;
     }
@@ -67,7 +68,6 @@ const SortFilterDropdown = ({ alignment, value, onChange, phase }: Props) => {
         values={options}
         onChange={handleOnChange}
         multipleSelectionAllowed={false}
-        width="180px"
         left={alignment === 'left' ? '-5px' : undefined}
         mobileLeft={alignment === 'left' ? '-5px' : undefined}
         right={alignment === 'right' ? '-5px' : undefined}

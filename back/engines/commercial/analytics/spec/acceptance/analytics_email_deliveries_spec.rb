@@ -14,7 +14,7 @@ resource 'Analytics - FactEmailDeliveries model' do
   post 'web_api/v1/analytics' do
     before_all do
       create(:delivery)
-      campaign1 = create(:comment_on_idea_you_follow_campaign)
+      campaign1 = create(:manual_project_participants_campaign) # Has a project context associated
       campaign2 = create(:comment_on_idea_you_follow_campaign)
       create(:delivery, campaign: campaign1)
       create(:delivery, campaign: campaign1)
@@ -49,7 +49,7 @@ resource 'Analytics - FactEmailDeliveries model' do
       })
 
       assert_status 200
-      expect(response_data[:attributes]).to eq([{ count: 1 }])
+      expect(response_data[:attributes]).to eq([{ count: 3 }])
     end
 
     example 'count email campaigns' do
@@ -64,6 +64,23 @@ resource 'Analytics - FactEmailDeliveries model' do
 
       assert_status 200
       expect(response_data[:attributes]).to eq([{ count_campaign_id: 3 }])
+    end
+
+    example 'filter emails by project' do
+      do_request({
+        query: {
+          fact: 'email_delivery',
+          filters: {
+            'dimension_project.id': Project.first.id
+          },
+          aggregations: {
+            all: 'count'
+          }
+        }
+      })
+
+      assert_status 200
+      expect(response_data[:attributes]).to match_array([{ count: 2 }])
     end
   end
 end

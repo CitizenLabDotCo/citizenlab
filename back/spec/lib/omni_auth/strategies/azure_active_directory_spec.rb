@@ -67,7 +67,10 @@ describe OmniAuth::Strategies::AzureActiveDirectory do
   describe '#callback_phase' do
     subject(:callback_phase) { -> { strategy.callback_phase } }
 
-    let(:request) { instance_double('Request', params: hybrid_flow_params, path_info: 'path') }
+    let(:request) do
+      instance_double('Request',
+        params: hybrid_flow_params, path: 'path')
+    end
     let(:strategy) do
       described_class.new(app, client_id, tenant).tap do |s|
         allow(s).to receive(:request) { request }

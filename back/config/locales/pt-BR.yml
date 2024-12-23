@@ -170,6 +170,9 @@ pt:
       topic_ids:
         title: Tópicos
         description:
+      consponsor_ids:
+        title: Co-patrocinadores
+        description: Convide co-patrocinadores por meio do campo abaixo. Você receberá um e-mail do(s) copatrocinador(es) convidado(s).
       location:
         title: Localização
         description:
@@ -192,8 +195,8 @@ pt:
       section3:
         title: Detalhes
         description:
-      other_text_field:
-        title: Se você escolheu "{other_option}", no que está pensando?
+      other_input_field:
+        title: Digite sua resposta
   custom_forms:
     categories:
       main_content:
@@ -209,6 +212,12 @@ pt:
           title: Qual é o seu problema?
         option:
           title: Qual é a sua opção?
+        proposal:
+          title: Qual é a sua proposta?
+        initiative:
+          title: Qual é a iniciativa de vocês?
+        petition:
+          title: Qual é a sua petição?
   custom_field_options:
     gender:
       male: Homem
@@ -233,6 +242,7 @@ pt:
       <ul><li>Reserve um tempo para elaborar a sua proposta. Se for necessário, digite primeiro um rascunho e depois copie e cole na caixa ao lado.</li><li>Escolha um título significativo que explique exatamente o que é sua proposta</li><li>Certifique-se de visualizar a sua proposta com uma imagem adequada, para que ela se destaque mais.</li><li>Adicione anexos relevantes, tais como vídeos, exemplos inspiradores, detalhes técnicos ou planos.</li><li>Compartilhe a sua ideia nas redes sociais e outros canais para obter o apoio de outros.</li></ul>
   reset_password_mailer:
     send_reset_password:
+      preheader: 'Redefinir sua senha para %{organizationName}'
       cta_reset_password: 'Resetar sua senha'
       message_you_reset_your_password: 'Você solicitou uma nova senha para a plataforma de participação de %{organizationName}. Clique no botão abaixo para escolher uma nova senha segura. O link expira em 1 hora.'
       subject: '%{organizationName}: Redefina sua senha'
@@ -256,6 +266,7 @@ pt:
       first_name: 'Nome(s) próprio(s)'
       image_url: 'imagem URL'
       input_id: 'ID'
+      manual_votes: 'Votações off-line'
       input_url: 'URL'
       last_name: 'Sobrenome'
       latitude: 'Latitude'
@@ -310,6 +321,7 @@ pt:
   confirmations_mailer:
     send_confirmation_code:
       subject: "Confirme seu endereço de e-mail para a plataforma de participação de %{organizationName}"
+      preheader: 'Confirme seu endereço de e-mail para %{organizationName}'
       header: "Seu Código de Confirmação"
       header_message: "Olá %{firstName}!"
       confirm_email_address: "Confirme o seu endereço de correio electrónico"
@@ -324,6 +336,7 @@ pt:
   user_blocked_mailer:
     send_user_blocked_email:
       subject: 'A sua conta foi temporariamente desactivada'
+      preheader: 'Sua conta na plataforma de participação do %{organizationName} foi temporariamente desativada'
       title_user_blocked: 'A sua conta foi temporariamente desactivada'
       paragraph_1_without_reason: "Sua conta na plataforma de participação do %{organizationName} foi temporariamente desativada por violação das diretrizes da comunidade."
       paragraph_1_with_reason: "Sua conta na plataforma de participação do %{organizationName} foi desativada temporariamente pelo seguinte motivo:"
@@ -331,6 +344,8 @@ pt:
       you_can_sign_in_again_from: "Pode voltar a assinar a partir de %{date}"
   user:
     anon_first_name: "Utilizador"
+    anon_scheme:
+      animals: 'jacaré, crocodilo, alpaca, formiga, antílope, macaco, tatu, babuíno, texugo, morcego, urso, castor, abelha, besouro, búfalo, borboleta, camelo, búfalo d''água, caribu, gato, gado, chita, chimpanzé, chinchila, cigarra, molusco, barata, bacalhau, coiote, caranguejo, grilo, corvo, corvo,veado, dinossauro, cachorro, golfinho, toninha, pato, águia, enguia, elefante, alce, furão, peixe, mosca, raposa, sapo, sapo, gerbilo, girafa, mosquito, gnu, gnu, gnu, gnu, cabra, peixe dourado, ganso, gorila, gafanhoto, porquinho-da-índia, hamster, lebre, ouriço, arenque, hipopótamo, vespa, cavalo, cão de caça,hiena, impala, chacal, água-viva, canguru, wallaby, coala, leopardo, leão, lagarto, lhama, gafanhoto, piolho, arara, pato-real, mamute, peixe-boi, marta, marta, mink, minnow, toupeira, alce, mosquito, camundongo, rato, mula, rato almiscarado, lontra, boi, ostra, panda, porco, ornitorrinco, porco-espinho, cão da pradaria,pug, coelho, guaxinim, rena, rinoceronte, salmão, sardinha, escorpião, foca, leão-marinho, serval, tubarão, ovelha, gambá, caracol, cobra, aranha, esquilo, cisne, cupim, tigre, truta, tartaruga, cágado, morsa, vespa, baleia, lobo, vombate, marmota, minhoca, iaque, jaqueta-amarela, zebra'
   time:
     am: am
     formats:
@@ -339,3 +354,5 @@ pt:
   voting_method:
     default_voting_term_singular: "voto"
     default_voting_term_plural: "votos"
+  ics_calendar_event:
+    event_details: "Detalhes do evento"

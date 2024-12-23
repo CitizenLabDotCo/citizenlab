@@ -59,11 +59,11 @@ class CustomField < ApplicationRecord
   INPUT_TYPES = %w[
     checkbox date file_upload files html html_multiloc image_files linear_scale multiline_text multiline_text_multiloc
     multiselect multiselect_image number page point line polygon select select_image shapefile_upload text text_multiloc
-    topic_ids section
+    topic_ids section cosponsor_ids
   ].freeze
   CODES = %w[
     author_id birthyear body_multiloc budget domicile education gender idea_files_attributes idea_images_attributes
-    ideation_section1 ideation_section2 ideation_section3 location_description proposed_budget title_multiloc topic_ids
+    ideation_section1 ideation_section2 ideation_section3 location_description proposed_budget title_multiloc topic_ids cosponsor_ids
   ].freeze
   VISIBLE_TO_PUBLIC = 'public'
   VISIBLE_TO_ADMINS = 'admins'
@@ -235,6 +235,8 @@ class CustomField < ApplicationRecord
       visitor.visit_text_multiloc self
     when 'topic_ids'
       visitor.visit_topic_ids self
+    when 'cosponsor_ids'
+      visitor.visit_cosponsor_ids self
     else
       raise "Unsupported input type: #{input_type}"
     end
@@ -259,7 +261,7 @@ class CustomField < ApplicationRecord
 
     other_field_key = "#{key}_other"
     title_multiloc = MultilocService.new.i18n_to_multiloc(
-      'custom_fields.ideas.other_text_field.title',
+      'custom_fields.ideas.other_input_field.title',
       locales: CL2_SUPPORTED_LOCALES
     )
 
@@ -322,7 +324,7 @@ class CustomField < ApplicationRecord
     else
       resource.participation_context
     end
-    phase&.input_term || Phase::DEFAULT_INPUT_TERM
+    phase&.input_term || Phase::FALLBACK_INPUT_TERM
   end
 
   private

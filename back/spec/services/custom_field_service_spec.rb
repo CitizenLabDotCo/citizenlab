@@ -206,4 +206,34 @@ describe CustomFieldService do
       expect(service.keyify(str)[0..-5]).to eq '0123456789_abcdefghijklmnopqrstuvwxyz___abcdefghijklmnopqrstuvwxyz_aaaaaaaeceeeeiiiidnoooooxouuuuythssaaaaaaaeceeeeiiiidnooooo_ouuuuythy'
     end
   end
+
+  describe 'handle_title' do
+    it 'returns the title in the requested locale' do
+      field = create(:custom_field, title_multiloc: { 'en' => 'size', 'nl-NL' => 'grootte' })
+      expect(service.handle_title(field, 'en')).to eq 'size'
+      expect(service.handle_title(field, 'nl-NL')).to eq 'grootte'
+    end
+
+    it 'returns the title from the first available locale if the requested locale is not available' do
+      field = create(:custom_field, title_multiloc: { 'en' => 'size', 'fr-FR' => 'taille' })
+      expect(service.handle_title(field, 'en')).to eq 'size'
+      expect(service.handle_title(field, 'fr-FR')).to eq 'taille'
+      expect(service.handle_title(field, 'nl-NL')).to eq 'size'
+    end
+  end
+
+  describe 'handle_description' do
+    it 'returns the description in the requested locale' do
+      field = create(:custom_field, description_multiloc: { 'en' => 'carrot', 'nl-NL' => 'wortel' })
+      expect(service.handle_description(field, 'en')).to eq 'carrot'
+      expect(service.handle_description(field, 'nl-NL')).to eq 'wortel'
+    end
+
+    it 'returns the description from the first available locale if the requested locale is not available' do
+      field = create(:custom_field, description_multiloc: { 'en' => 'carrot', 'fr-FR' => 'carrotte' })
+      expect(service.handle_description(field, 'en')).to eq 'carrot'
+      expect(service.handle_description(field, 'fr-FR')).to eq 'carrotte'
+      expect(service.handle_description(field, 'nl-NL')).to eq 'carrot'
+    end
+  end
 end

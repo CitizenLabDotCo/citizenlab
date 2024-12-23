@@ -22,6 +22,8 @@ export const checkMissingData = (
   const isGlobalSignInFlow =
     flow === 'signin' &&
     context.action === 'visiting' &&
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     context.type === 'global';
 
   // In the global sign in flow, we only want to show the custom

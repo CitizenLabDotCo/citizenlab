@@ -35,4 +35,34 @@ describe('Admin: edit project', () => {
 
     cy.location('pathname').should('eq', `/en/admin/projects/${projectId}`);
   });
+
+  it('changes project publication status', () => {
+    cy.get('#e2e-admin-projects-list-unsortable')
+      .children()
+      .first()
+      .contains(projectTitle);
+    cy.get('.e2e-admin-edit-publication > a').first().click({ force: true });
+    cy.get('#e2e-admin-edit-publication-status').click();
+    cy.get('.e2e-projectstatus-draft').click();
+
+    cy.visit('/admin/projects/draft');
+
+    cy.get('#e2e-admin-projects-list-unsortable')
+      .children()
+      .first()
+      .contains(projectTitle);
+
+    cy.get('.e2e-admin-edit-publication > a').first().click({ force: true });
+    cy.get('#e2e-admin-edit-publication-status').click();
+    cy.get('.e2e-projectstatus-archived').click();
+
+    cy.visit('/admin/projects/archived');
+
+    cy.get('#e2e-admin-projects-list-unsortable')
+      .children()
+      .first()
+      .contains(projectTitle);
+  });
+
+  after(() => cy.apiRemoveProject(projectId));
 });

@@ -4,6 +4,10 @@ module EmailCampaigns
   class WelcomeMailer < ApplicationMailer
     protected
 
+    def preheader
+      format_message('preheader', values: { organizationName: organization_name })
+    end
+
     def subject
       format_message('subject', values: { organizationName: organization_name })
     end
