@@ -220,7 +220,7 @@ const FilterSidebar = ({
           );
         })}
       </Box>
-      <Box border={BORDER} borderRadius={stylingConsts.border} p="12px">
+      <Box border={BORDER} borderRadius={stylingConsts.borderRadius} p="12px">
         {selectedItem.content}
       </Box>
     </>
