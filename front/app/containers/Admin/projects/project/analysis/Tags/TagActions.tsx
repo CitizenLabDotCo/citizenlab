@@ -64,7 +64,7 @@ const TagActions = ({ tag }: { tag: ITagData }) => {
         },
         {
           onSuccess: () => {
-            trackEventByName(tracks.tagDeleted.name, {
+            trackEventByName(tracks.tagDeleted, {
               analysisId,
             });
             closeDropdown();
