@@ -1676,7 +1676,6 @@
   "app.containers.AdminPage.ProjectEdit.defaultSorting": "چھانٹنا",
   "app.containers.AdminPage.ProjectEdit.departments": "محکمے",
   "app.containers.AdminPage.ProjectEdit.descriptionTab": "تفصیل",
-  "app.containers.AdminPage.ProjectEdit.disableDislikingTooltip": "یہ ناپسندیدگی کو غیر فعال کر دے گا، لیکن پسند کرنا پھر بھی فعال رہے گا۔ آپ اس ٹیب کے ایکشن سیکشن میں رد عمل کو مکمل طور پر غیر فعال کر سکتے ہیں۔",
   "app.containers.AdminPage.ProjectEdit.disabled": "معذور",
   "app.containers.AdminPage.ProjectEdit.dislikingMethodTitle": "فی شریک نا پسند کی تعداد",
   "app.containers.AdminPage.ProjectEdit.dislikingPosts": "ناپسندیدگی کو فعال کریں۔",
