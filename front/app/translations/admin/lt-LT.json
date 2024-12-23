@@ -2589,6 +2589,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleTooltip": "Naudotojams, kurie naudojasi ekrano skaitytuvu ar kita pagalbine technologija, naudinga pateikti šią informaciją.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabel": "Svetainės adresas",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabelTooltip": "Pilnas svetainės, kurią norite įterpti, URL.",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.iframeDescription2": "Rodyti išorinės svetainės turinį savo puslapyje HTML iFrame. Atkreipkite dėmesį, kad ne kiekvieną puslapį galima įterpti. Jei kyla sunkumų įterpiant puslapį, pasitarkite su svetainės savininku, ar jo serveris tinkamai sukonfigūruotas įterpimui.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeEmbedVisitLinkMessage": "Apsilankykite mūsų palaikymo puslapyje",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeHeightPlaceholder": "300",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeInvalidWhitelistUrlErrorMessage": "Atsiprašome, šio turinio nepavyko įterpti. {visitLinkMessage} sužinoti daugiau.",
