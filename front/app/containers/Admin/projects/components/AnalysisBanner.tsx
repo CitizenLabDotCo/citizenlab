@@ -70,7 +70,7 @@ const AnalysisBanner = ({ projectId, phaseId }: Props) => {
                 projectId || phase?.data.relationships.project.data.id
               }/analysis/${analysis.data.id}`
             );
-            trackEventByName(tracks.analysisCreated.name, {
+            trackEventByName(tracks.analysisCreated, {
               projectId,
               phaseId,
               participationMethod:

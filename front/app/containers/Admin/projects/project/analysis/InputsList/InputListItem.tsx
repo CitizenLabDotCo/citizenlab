@@ -62,7 +62,7 @@ const InputListItem = memo(({ input, onSelect, selected }: Props) => {
         id={`input-${input.id}`}
         onClick={() => {
           onSelect(input.id);
-          trackEventByName(tracks.inputPreviewedFromList.name, {
+          trackEventByName(tracks.inputPreviewedFromList, {
             inputId: input.id,
           });
         }}

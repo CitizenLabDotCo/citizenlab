@@ -24,10 +24,6 @@ export default {
   clickCommentLikeButton: 'Clicked on the like button of a comment',
   clickCommentCancelLikeButton:
     'Clicked on the cancel like button of a comment',
-  childCommentProfanityError: {
-    name: 'Profane child comment blocked',
-  },
-  parentCommentProfanityError: {
-    name: 'Profane parent comment blocked',
-  },
+  childCommentProfanityError: 'Profane child comment blocked',
+  parentCommentProfanityError: 'Profane parent comment blocked',
 };

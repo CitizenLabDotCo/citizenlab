@@ -108,7 +108,7 @@ const Toolbar = ({
       | { type: 'align'; option: 'left' | 'center' | 'right' }
       | { type: 'list'; option: 'bullet' | 'ordered' }) =>
     (_event: React.MouseEvent<HTMLElement>) => {
-      trackEventByName(tracks.advancedEditing.name, {
+      trackEventByName(tracks.advancedEditing, {
         type,
         option,
       });
@@ -132,7 +132,7 @@ const Toolbar = ({
         option = 'normal';
       }
 
-      trackEventByName(tracks.advancedEditing.name, {
+      trackEventByName(tracks.advancedEditing, {
         option,
         type: 'heading',
       });
@@ -142,17 +142,17 @@ const Toolbar = ({
   const trackBasic =
     (type: 'bold' | 'italic' | 'custom-link' | 'link') =>
     (_event: React.MouseEvent<HTMLElement>) => {
-      trackEventByName(tracks.basicEditing.name, {
+      trackEventByName(tracks.basicEditing, {
         type,
       });
     };
 
   const trackImage = (_event: React.MouseEvent<HTMLElement>) => {
-    trackEventByName(tracks.imageEditing.name);
+    trackEventByName(tracks.imageEditing);
   };
 
   const trackVideo = (_event: React.MouseEvent<HTMLElement>) => {
-    trackEventByName(tracks.videoEditing.name);
+    trackEventByName(tracks.videoEditing);
   };
 
   return (

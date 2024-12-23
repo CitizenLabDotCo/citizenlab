@@ -17,6 +17,7 @@ import { requestBlob } from 'utils/requestBlob';
 import { truncate } from 'utils/textUtils';
 
 import messages from './messages';
+import tracks from './tracks';
 
 const Container = styled.div`
   display: flex;
@@ -134,7 +135,7 @@ const ReportExportMenu = ({
       }
     });
 
-    trackEventByName('Clicked export svg', { graph: name });
+    trackEventByName(tracks.clickPng, { graph: name });
   };
 
   const handleDownloadPng = async () => {
@@ -194,7 +195,7 @@ const ReportExportMenu = ({
       }
     });
 
-    trackEventByName('Clicked export png', { graph: name });
+    trackEventByName(tracks.clickPng, { graph: name });
   };
 
   const toggleDropdown = (value?: boolean) => () => {
@@ -264,7 +265,7 @@ const ReportExportMenu = ({
     setExportingXls(false);
 
     // track this click for user analytics
-    trackEventByName('Clicked export xlsx', { graph: name });
+    trackEventByName(tracks.clickXlsx, { graph: name });
   };
 
   return (

@@ -68,7 +68,7 @@ const FilterToggleButton = ({ customFieldId, value }) => {
         ? newFilterValue
         : undefined,
     });
-    trackEventByName(tracks.inputCustomFieldFilterUsed.name, { customFieldId });
+    trackEventByName(tracks.inputCustomFieldFilterUsed, { customFieldId });
   };
 
   return (

@@ -177,7 +177,7 @@ export const GroupsListPanel = ({ onCreateGroup, className }: Props) => {
 
   const handleCreateGroup = (event) => {
     event.preventDefault();
-    trackEventByName(tracks.createGroup.name);
+    trackEventByName(tracks.createGroup);
     onCreateGroup();
   };
 

@@ -18,6 +18,7 @@ import LoginCredentials from './LoginCredentials';
 import messages from './messages';
 import ProfileDeletion from './ProfileDeletion';
 import ProfileForm from './ProfileForm';
+import tracks from './tracks';
 import UsersEditPageMeta from './UsersEditPageMeta';
 import VerificationStatus from './VerificationStatus';
 
@@ -62,7 +63,9 @@ const UsersEditPage = () => {
             <FragmentForm />
             {passwordLoginActive && <LoginCredentials user={authUser.data} />}
             <ProfileDeletion />
-            <CampaignsConsentForm />
+            <CampaignsConsentForm
+              trackEventName={tracks.defaultSettingsChanged}
+            />
           </div>
         </Container>
       </main>

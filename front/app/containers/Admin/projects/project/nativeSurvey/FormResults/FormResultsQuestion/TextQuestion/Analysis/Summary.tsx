@@ -120,7 +120,7 @@ const Summary = ({
             icon="refresh"
             onClick={() => {
               regenerateSummary({ analysisId, summaryId });
-              trackEventByName(tracks.regenerateAIInsights.name);
+              trackEventByName(tracks.regenerateAIInsights);
             }}
             processing={isLoadingRegenerateSummary}
           >

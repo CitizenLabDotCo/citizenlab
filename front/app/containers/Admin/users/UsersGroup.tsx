@@ -49,7 +49,7 @@ const UsersGroup = () => {
   const openGroupEditionModal = () => {
     if (group) {
       const groupType = group.data.attributes.membership_type;
-      trackEventByName(tracks.editGroup.name, {
+      trackEventByName(tracks.editGroup, {
         groupType,
       });
 

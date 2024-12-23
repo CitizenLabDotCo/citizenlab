@@ -13,6 +13,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 import InitialUnsubscribeFeedback from './InitialUnsubscribeFeedback';
 import messages from './messages';
+import tracks from './tracks';
 
 const Container = styled.div`
   background-color: ${colors.background};
@@ -88,7 +89,7 @@ const EmailSettingPage = () => {
           {initialUnsubscribeStatus &&
             initialUnsubscribeStatus !== 'loading' && (
               <CampaignConsentForm
-                trackEventName="Unsubcribed from unsubscribe link flow"
+                trackEventName={tracks.unsubscribedFromLink}
                 runOnSave={closeInitialUnsubscribe}
                 unsubscriptionToken={unsubscriptionToken}
               />

@@ -1,5 +1,3 @@
 export default {
-  settingToggled: {
-    name: 'Changed inappropriate content flag (NLP) setting',
-  },
+  settingToggled: 'Changed inappropriate content flag (NLP) setting',
 };

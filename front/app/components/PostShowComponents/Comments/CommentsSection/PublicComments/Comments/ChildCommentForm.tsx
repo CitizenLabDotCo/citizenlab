@@ -209,7 +209,7 @@ const ChildCommentForm = ({
               setHasApiError(true);
 
               if (profanityApiError) {
-                trackEventByName(tracks.childCommentProfanityError.name, {
+                trackEventByName(tracks.childCommentProfanityError, {
                   locale,
                   ideaId,
                   postType: 'idea',

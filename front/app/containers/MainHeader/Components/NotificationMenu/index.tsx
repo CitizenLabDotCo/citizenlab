@@ -17,10 +17,10 @@ const NotificationMenu = () => {
 
   const toggleDropdown = () => {
     if (!dropdownOpened) {
-      trackEventByName(tracks.clickOpenNotifications.name);
+      trackEventByName(tracks.clickOpenNotifications);
     } else {
       markAllAsRead();
-      trackEventByName(tracks.clickCloseNotifications.name);
+      trackEventByName(tracks.clickCloseNotifications);
     }
 
     setDropdownOpened((dropdownOpened) => !dropdownOpened);

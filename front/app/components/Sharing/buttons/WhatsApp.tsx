@@ -27,7 +27,7 @@ const WhatsApp = ({
 
   const trackClick = (medium: Medium) => () => {
     const properties = { network: medium };
-    trackEventByName(tracks.shareButtonClicked.name, properties);
+    trackEventByName(tracks.shareButtonClicked, properties);
   };
 
   const whatsAppSharingText = encodeURIComponent(whatsAppMessage).concat(

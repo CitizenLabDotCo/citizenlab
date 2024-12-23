@@ -29,7 +29,7 @@ const Email = ({
   const trackClick = (medium: Medium) => () => {
     const properties = { network: medium };
 
-    trackEventByName(tracks.shareButtonClicked.name, properties);
+    trackEventByName(tracks.shareButtonClicked, properties);
   };
 
   return (

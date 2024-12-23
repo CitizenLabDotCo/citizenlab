@@ -148,7 +148,7 @@ const Tags = () => {
       });
     }
     queryClient.invalidateQueries(inputsKeys.lists());
-    trackEventByName(tracks.tagFilterUsed.name, {
+    trackEventByName(tracks.tagFilterUsed, {
       tagId: id,
     });
   };

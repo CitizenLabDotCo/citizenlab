@@ -26,7 +26,7 @@ const RepresentativenessDashboard = () => {
   const [currentProjectFilter, setCurrentProjectFilter] = useState<string>();
 
   const onProjectFilter = ({ value }) => {
-    trackEventByName(tracks.filteredOnProject.name, {
+    trackEventByName(tracks.filteredOnProject, {
       projectId: value,
     });
 

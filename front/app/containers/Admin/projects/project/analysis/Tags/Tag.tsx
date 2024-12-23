@@ -58,10 +58,10 @@ export const TagTypeColorMap: Record<
 const Tag = ({ name, tagType, tagginsConfig }: TagProps) => {
   const handleTagClick = () => {
     if (tagginsConfig?.isSelectedAsTagging === true) {
-      trackEventByName(tracks.tagAssignmentDeleted.name);
+      trackEventByName(tracks.tagAssignmentDeleted);
       tagginsConfig.onDeleteTagging();
     } else if (tagginsConfig?.isSelectedAsTagging === false) {
-      trackEventByName(tracks.tagAssignmentCreated.name);
+      trackEventByName(tracks.tagAssignmentCreated);
       tagginsConfig.onAddTagging();
     }
   };
