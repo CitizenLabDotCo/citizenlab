@@ -50,7 +50,7 @@ const FilterSidebarStatuses = ({
       : '/admin/settings/proposals/statuses';
 
   return (
-    <Box display="flex" flexDirection="column" w="100%">
+    <Box display="flex" flexDirection="column">
       <StatusButton onClick={clearFilter} active={!selectedStatus}>
         <FormattedMessage {...messages.allStatuses} />
       </StatusButton>
