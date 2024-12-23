@@ -1677,7 +1677,7 @@
   "app.containers.AdminPage.ProjectEdit.defaultSorting": "Sortieren",
   "app.containers.AdminPage.ProjectEdit.departments": "Abteilungen",
   "app.containers.AdminPage.ProjectEdit.descriptionTab": "Beschreibung",
-  "app.containers.AdminPage.ProjectEdit.disableDislikingTooltip": "Dadurch werden Gegenstimmen deaktiviert. Zustimmen ist weiterhin aktiviert. Sie können das Reagieren im Bereich Aktionen dieser Registerkarte vollständig deaktivieren.",
+  "app.containers.AdminPage.ProjectEdit.disableDislikingTooltip2": "Dadurch wird die Option „Gefällt mir nicht“ aktiviert oder deaktiviert, die Option „Gefällt mir“ bleibt jedoch aktiviert. Wir empfehlen, diese Option deaktiviert zu lassen, es sei denn, Sie führen eine Optionsanalyse durch.",
   "app.containers.AdminPage.ProjectEdit.disabled": "Deaktiviert",
   "app.containers.AdminPage.ProjectEdit.dislikingMethodTitle": "Anzahl der Gegenstimmen/Gefällt mir nicht pro Teilnehmendem",
   "app.containers.AdminPage.ProjectEdit.dislikingPosts": "Aktivieren Sie Gegenstimmen/\"Gefällt mir nicht\"",
