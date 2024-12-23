@@ -1677,7 +1677,7 @@
   "app.containers.AdminPage.ProjectEdit.defaultSorting": "Sortering",
   "app.containers.AdminPage.ProjectEdit.departments": "Afdelinger",
   "app.containers.AdminPage.ProjectEdit.descriptionTab": "Beskrivelse",
-  "app.containers.AdminPage.ProjectEdit.disableDislikingTooltip": "Dette vil deaktivere disliking, men liking vil stadig være aktiveret. Du kan deaktivere stemmer helt i sektionen Handlinger på denne fane.",
+  "app.containers.AdminPage.ProjectEdit.disableDislikingTooltip2": "Dette vil aktivere eller deaktivere disliking, men liking vil stadig være aktiveret. Vi anbefaler, at du lader den være deaktiveret, medmindre du foretager en analyse af muligheder.",
   "app.containers.AdminPage.ProjectEdit.disabled": "Deaktiveret",
   "app.containers.AdminPage.ProjectEdit.dislikingMethodTitle": "Antal dislikes pr. deltager",
   "app.containers.AdminPage.ProjectEdit.dislikingPosts": "Aktiver dislike",
