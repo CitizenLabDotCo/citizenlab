@@ -1,19 +1,26 @@
 import React from 'react';
 
 import { useDrop } from 'react-dnd';
-import { Menu } from 'semantic-ui-react';
 
 import { IProjectData } from 'api/projects/types';
 
 import T from 'components/T';
 
+import FilterRadioButton from '../FilterRadioButton';
+
 interface Props {
   project: IProjectData;
   active: boolean;
   onClick: any;
+  name: string;
 }
 
-const FilterSidebarProjectsItem = ({ project, active, onClick }: Props) => {
+const FilterSidebarProjectsItem = ({
+  project,
+  active,
+  onClick,
+  name,
+}: Props) => {
   const [{ canDrop, isOver }, drop] = useDrop({
     accept: 'IDEA',
     drop: () => ({
@@ -27,14 +34,14 @@ const FilterSidebarProjectsItem = ({ project, active, onClick }: Props) => {
   });
 
   return (
-    <div ref={drop}>
-      <Menu.Item
-        className="e2e-idea-manager-project-filter-item"
-        active={active || (isOver && canDrop)}
-        onClick={onClick}
-      >
-        <T value={project.attributes.title_multiloc} />
-      </Menu.Item>
+    <div ref={drop} className="e2e-idea-manager-project-filter-item">
+      <FilterRadioButton
+        id={project.id}
+        name={name}
+        isSelected={active || (isOver && canDrop)}
+        onChange={onClick}
+        labelContent={<T value={project.attributes.title_multiloc} />}
+      />
     </div>
   );
 };

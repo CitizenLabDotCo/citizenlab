@@ -1,12 +1,6 @@
 import React from 'react';
 
-import {
-  IconTooltip,
-  Box,
-  Button,
-  colors,
-  Tooltip,
-} from '@citizenlab/cl2-component-library';
+import { IconTooltip, Box, Tooltip } from '@citizenlab/cl2-component-library';
 import ColorIndicator from 'component-library/components/ColorIndicator';
 import { useDrop } from 'react-dnd';
 import { useParams } from 'react-router-dom';
@@ -22,6 +16,8 @@ import T from 'components/T';
 import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../../../messages';
+
+import StatusButton from './StatusButton';
 
 const StatusText = styled.div`
   &:first-letter {
@@ -91,14 +87,9 @@ const FilterSidebarStatusesItem = ({ status, active, onClick }: Props) => {
         disabled={prescreeningTooltipIsDisabled}
       >
         <Box>
-          <Button
+          <StatusButton
             onClick={onClick}
-            buttonStyle="text"
-            bgColor={
-              active || (isOver && canDrop) ? colors.background : 'transparent'
-            }
-            justify="left"
-            bgHoverColor={colors.background}
+            active={active || (isOver && canDrop)}
             disabled={prescreeningButtonIsDisabled}
           >
             <Box
@@ -125,7 +116,7 @@ const FilterSidebarStatusesItem = ({ status, active, onClick }: Props) => {
                 )}
               </Box>
             </Box>
-          </Button>
+          </StatusButton>
         </Box>
       </Tooltip>
     </div>

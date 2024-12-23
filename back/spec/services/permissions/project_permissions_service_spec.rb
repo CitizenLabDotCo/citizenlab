@@ -216,7 +216,7 @@ describe Permissions::ProjectPermissionsService do
 
   describe '"reacting_idea" denied_reason_for_action' do
     context 'when reacting is enabled in the current phase' do
-      let(:current_phase_attrs) { { reacting_enabled: true } }
+      let(:current_phase_attrs) { { reacting_enabled: true, reacting_dislike_enabled: true } }
 
       it 'returns nil' do
         expect(service.denied_reason_for_action('reacting_idea', reaction_mode: 'up')).to be_nil
@@ -276,7 +276,7 @@ describe Permissions::ProjectPermissionsService do
     end
 
     context 'when the like limit was reached' do
-      let(:current_phase_attrs) { { reacting_enabled: true, reacting_like_method: 'limited', reacting_like_limited_max: 1 } }
+      let(:current_phase_attrs) { { reacting_enabled: true, reacting_dislike_enabled: true, reacting_like_method: 'limited', reacting_like_limited_max: 1 } }
 
       it 'returns `reacting_like_limited_max_reached`' do
         create(:reaction, mode: 'up', user: user, reactable: create(:idea, project: project, phases: project.phases))
@@ -289,7 +289,7 @@ describe Permissions::ProjectPermissionsService do
     describe 'with phase permissions' do
       let(:reasons) { described_class::REACTING_DENIED_REASONS }
 
-      let(:project) { create(:project_with_current_phase, current_phase_attrs: { with_permissions: true }) }
+      let(:project) { create(:project_with_current_phase, current_phase_attrs: { with_permissions: true, reacting_dislike_enabled: true }) }
       let(:idea) { create(:idea, project: project, phases: [project.phases[2]]) }
       let(:permission) do
         TimelineService.new.current_phase_not_archived(project).permissions
