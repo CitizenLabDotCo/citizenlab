@@ -2589,6 +2589,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleTooltip": "ਇਹ ਜਾਣਕਾਰੀ ਉਹਨਾਂ ਉਪਭੋਗਤਾਵਾਂ ਲਈ ਪ੍ਰਦਾਨ ਕਰਨਾ ਲਾਭਦਾਇਕ ਹੈ ਜੋ ਸਕ੍ਰੀਨ ਰੀਡਰ ਜਾਂ ਹੋਰ ਸਹਾਇਕ ਤਕਨਾਲੋਜੀ 'ਤੇ ਭਰੋਸਾ ਕਰਦੇ ਹਨ।",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabel": "ਵੈੱਬਸਾਈਟ ਦਾ ਪਤਾ",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabelTooltip": "ਉਸ ਵੈੱਬਸਾਈਟ ਦਾ ਪੂਰਾ URL ਜਿਸ ਨੂੰ ਤੁਸੀਂ ਏਮਬੈਡ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ।",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.iframeDescription2": "ਇੱਕ HTML iFrame ਵਿੱਚ ਆਪਣੇ ਪੰਨੇ 'ਤੇ ਇੱਕ ਬਾਹਰੀ ਵੈੱਬਸਾਈਟ ਤੋਂ ਸਮੱਗਰੀ ਪ੍ਰਦਰਸ਼ਿਤ ਕਰੋ। ਨੋਟ ਕਰੋ ਕਿ ਹਰ ਪੰਨੇ ਨੂੰ ਏਮਬੈਡ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ। ਜੇਕਰ ਤੁਹਾਨੂੰ ਕਿਸੇ ਪੰਨੇ ਨੂੰ ਏਮਬੈਡ ਕਰਨ ਵਿੱਚ ਮੁਸ਼ਕਲ ਆ ਰਹੀ ਹੈ, ਤਾਂ ਵੈੱਬਸਾਈਟ ਦੇ ਮਾਲਕ ਨਾਲ ਜਾਂਚ ਕਰੋ ਕਿ ਕੀ ਉਹਨਾਂ ਦਾ ਸਰਵਰ ਏਮਬੈਡ ਕਰਨ ਲਈ ਸਹੀ ਢੰਗ ਨਾਲ ਕੌਂਫਿਗਰ ਕੀਤਾ ਗਿਆ ਹੈ।",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeEmbedVisitLinkMessage": "ਸਾਡੇ ਸਹਾਇਤਾ ਪੰਨੇ 'ਤੇ ਜਾਓ",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeHeightPlaceholder": "300",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeInvalidWhitelistUrlErrorMessage": "ਮਾਫ਼ ਕਰਨਾ, ਇਸ ਸਮੱਗਰੀ ਨੂੰ ਏਮਬੈਡ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਿਆ। ਹੋਰ ਜਾਣਨ ਲਈ {visitLinkMessage} ।",
