@@ -1,4 +1,3 @@
-# frozen_string_literal: true
 class OfficialFeedbackPolicy < ApplicationPolicy
   class Scope < ApplicationPolicy::Scope
     def resolve
