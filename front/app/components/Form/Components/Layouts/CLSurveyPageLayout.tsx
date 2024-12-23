@@ -462,7 +462,6 @@ const CLSurveyPageLayout = memo(
           maxWidth={isMapPage ? '1100px' : '700px'}
           w="100%"
           position="fixed"
-          bottom={isMobileOrSmaller ? '0' : '40px'}
           role="progressbar"
           aria-valuemin={0}
           aria-valuemax={100}
@@ -476,6 +475,13 @@ const CLSurveyPageLayout = memo(
               style={{ transition: 'width 0.3s ease-in-out' }}
             />
           </Box>
+        </Box>
+        <Box
+          maxWidth={isMapPage ? '1100px' : '700px'}
+          w="100%"
+          position="fixed"
+          bottom={isMobileOrSmaller ? '0' : '40px'}
+        >
           <PageControlButtons
             handleNextAndSubmit={handleNextAndSubmit}
             handlePrevious={handlePrevious}

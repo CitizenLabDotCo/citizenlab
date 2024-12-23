@@ -58,7 +58,6 @@ const Submissions = () => {
       )}
       <Box display="flex" w="100%" justifyContent="center">
         <IdeaCardsWithoutFiltersSidebar
-          defaultSortingMethod={ideaQueryParameters.sort}
           ideaQueryParameters={ideaQueryParameters}
           onUpdateQuery={updateSearchParams}
           invisibleTitleMessage={messages.invisibleTitlePostsList}

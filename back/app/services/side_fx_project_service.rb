@@ -6,6 +6,10 @@ class SideFxProjectService
   def before_create(project, user); end
 
   def after_create(project, user)
+    if user && !UserRoleService.new.can_moderate_project?(project, user)
+      user.add_role('project_moderator', project_id: project.id).save!
+    end
+
     project.set_default_topics!
     project.update!(description_multiloc: TextImageService.new.swap_data_images_multiloc(project.description_multiloc, field: :description_multiloc, imageable: project))
     serialized_project = clean_time_attributes(project.attributes)
@@ -32,6 +36,15 @@ class SideFxProjectService
         source_project_id: source_project.id,
         copied_project_attributes: copied_project.attributes
       }
+    )
+  end
+
+  def after_destroy_participation_data(project, user)
+    LogActivityJob.perform_later(
+      project,
+      'participation_data_destroyed',
+      user,
+      Time.now.to_i
     )
   end
 
@@ -62,7 +75,7 @@ class SideFxProjectService
   def before_destroy(project, user); end
 
   def after_destroy(frozen_project, user)
-    ContentBuilder::LayoutService.new.delete_admin_pub_ids_from_homepage_layout(frozen_project.admin_publication.id)
+    ContentBuilder::LayoutService.new.clean_homepage_layout_when_publication_deleted(frozen_project)
 
     serialized_project = clean_time_attributes(frozen_project.attributes)
 

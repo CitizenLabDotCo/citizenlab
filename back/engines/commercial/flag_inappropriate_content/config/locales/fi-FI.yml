@@ -6,13 +6,11 @@ fi:
       "inappropriate_content_flagged": Sopimaton sisältö merkitty - järjestelmänvalvojat
     inappropriate_content_flagged:
       subject: 'Alustallasi oleva viesti on merkitty tarkistettavaksi'
-      preheader: 'Alustallasi oleva viesti on merkitty tarkistettavaksi'
       header_title: 'Alustallasi oleva viesti on merkitty tarkistettavaksi'
-      comment_author: '%{authorName} kommentoi:'
-      idea_author: '%{authorName} lähetti viestin:'
-      initiative_author: '%{authorName} lähetti ehdotuksen:'
+      author_wrote: '%{authorName} kirjoitti:'
+      preheader: 'Alustallasi oleva viesti on merkitty tarkistettavaksi'
       automatically_flagged: >
         Tämä viesti havaittiin automaattisesti mahdollisesti sisältäväksi sopimatonta sisältöä. Lähetämme sinulle tämän ilmoituksen, jotta voit tarkistaa viestin omien valvontaohjeidesi mukaisesti.
       how_to_review: >
         Jos viesti ei sisällä sopimatonta sisältöä, voit poistaa varoituksen alustasi kautta hallintapaneelin Toiminta-välilehdeltä.
-      cta_review_post: 'Tarkista viesti'
+      cta_review: 'Arvostelu'

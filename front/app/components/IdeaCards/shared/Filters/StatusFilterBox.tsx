@@ -8,22 +8,24 @@ import StatusFilter from 'components/FilterBoxes/StatusFilter';
 
 interface Props {
   selectedStatusId: string | null | undefined;
-  selectedIdeaFilters: IIdeasFilterCountsQueryParameters;
+  ideaQueryParameters: IIdeasFilterCountsQueryParameters;
   onChange: (arg: string | null) => void;
   className?: string;
+  participationMethod?: 'ideation' | 'proposals';
 }
 
 const StatusFilterBox = ({
   selectedStatusId,
   onChange,
   className,
-  selectedIdeaFilters,
+  ideaQueryParameters,
+  participationMethod,
 }: Props) => {
   const { data: ideaStatuses } = useIdeaStatuses({
-    participation_method: 'ideation',
+    participation_method: participationMethod,
   });
   const { data: ideasFilterCounts } = useIdeasFilterCounts({
-    ...selectedIdeaFilters,
+    ...ideaQueryParameters,
     idea_status: undefined,
   });
 

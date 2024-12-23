@@ -1,23 +1,29 @@
-import React, { PureComponent } from 'react';
+import React, { useEffect } from 'react';
 
-import { Color, colors } from '@citizenlab/cl2-component-library';
+import {
+  Color,
+  colors,
+  useWindowSize,
+  Box,
+  Title,
+  TitleProps,
+} from '@citizenlab/cl2-component-library';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 import CSSTransition from 'react-transition-group/CSSTransition';
-import { Subscription, fromEvent } from 'rxjs';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import styled from 'styled-components';
-import { SupportedLocale } from 'typings';
 
-import useLocale from 'hooks/useLocale';
+import modalMessages from 'components/UI/Modal/messages';
+
+import CloseIconButton from '../CloseIconButton';
 
 const slideInOutTimeout = 500;
 const slideInOutEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
 
 const Container = styled.div<{
   windowHeight: number;
-  windowWidth?: number;
-  contentBgColor?: InputProps['contentBgColor'];
+  windowWidth: number;
+  contentBgColor?: Props['contentBgColor'];
 }>`
   position: fixed;
   display: flex;
@@ -72,98 +78,113 @@ const ModalBottomBar = styled.div`
   bottom: 0;
 `;
 
-interface InputProps {
+interface Props {
   className?: string;
   opened: boolean;
   close: () => void;
-  topBar?: JSX.Element | null;
+  modalTitle?: JSX.Element | null;
+  titleAs?: TitleProps['as'];
+  titleVariant?: TitleProps['variant'];
   bottomBar?: JSX.Element | null;
   children: JSX.Element | null | undefined;
   contentBgColor?: Color;
 }
 
-interface Props extends InputProps {
-  locale: SupportedLocale;
-}
+const FullscreenModal = ({
+  className,
+  opened,
+  close,
+  modalTitle,
+  titleAs,
+  titleVariant,
+  bottomBar,
+  children,
+  contentBgColor,
+}: Props) => {
+  const { windowWidth, windowHeight } = useWindowSize();
 
-interface State {
-  windowHeight: number;
-  windowWidth: number;
-}
-
-class FullscreenModal extends PureComponent<Props, State> {
-  subscription: Subscription | null = null;
-
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      windowHeight: window.innerHeight,
-      windowWidth: window.innerWidth,
+  useEffect(() => {
+    const handleKeypress = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        close();
+      }
     };
-  }
 
-  componentDidMount() {
-    this.subscription = fromEvent(window, 'resize')
-      .pipe(debounceTime(50), distinctUntilChanged())
-      .subscribe((event) => {
-        if (event.target) {
-          const height = event.target['innerHeight'] as number;
-          const width = event.target['innerWidth'] as number;
+    window.addEventListener('keydown', handleKeypress);
 
-          this.setState({ windowHeight: height, windowWidth: width });
-        }
-      });
-  }
+    return () => {
+      window.removeEventListener('keydown', handleKeypress);
+    };
+  }, [close]);
 
-  componentWillUnmount() {
-    this.subscription?.unsubscribe();
-  }
-
-  render() {
-    const { windowHeight } = this.state;
-    const { children, opened, topBar, bottomBar, className, contentBgColor } =
-      this.props;
-
-    return (
-      <CSSTransition
-        classNames="modal"
-        in={opened}
-        timeout={{
-          enter: slideInOutTimeout,
-          exit: slideInOutTimeout,
-        }}
-        mountOnEnter={true}
-        unmountOnExit={true}
-        enter={true}
-        exit={true}
+  return (
+    <CSSTransition
+      classNames="modal"
+      in={opened}
+      timeout={{
+        enter: slideInOutTimeout,
+        exit: slideInOutTimeout,
+      }}
+      mountOnEnter={true}
+      unmountOnExit={true}
+      enter={true}
+      exit={true}
+    >
+      <Container
+        id="e2e-fullscreenmodal-content"
+        className={[bottomBar ? 'hasBottomBar' : '', className].join()}
+        windowHeight={windowHeight}
+        windowWidth={windowWidth}
+        contentBgColor={contentBgColor}
+        aria-labelledby={modalTitle ? 'full-screen-modal-title' : undefined}
+        aria-modal="true"
+        role="dialog"
       >
-        <Container
-          id="e2e-fullscreenmodal-content"
-          className={[bottomBar ? 'hasBottomBar' : '', className].join()}
-          windowHeight={windowHeight}
-          contentBgColor={contentBgColor}
-        >
-          <StyledFocusOn autoFocus>
-            {topBar}
-            <Content className="fullscreenmodal-scrollcontainer">
-              {children}
-            </Content>
-            {bottomBar && <ModalBottomBar>{bottomBar}</ModalBottomBar>}
-          </StyledFocusOn>
-        </Container>
-      </CSSTransition>
-    );
-  }
-}
+        <StyledFocusOn autoFocus>
+          {modalTitle && (
+            <Box
+              bgColor={colors.white}
+              borderBottom={`1px solid ${colors.grey300}`}
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              position="relative"
+            >
+              <Title
+                id="full-screen-modal-title"
+                as={titleAs || 'h2'}
+                variant={titleVariant || 'h5'}
+                m="0"
+                p="16px"
+                fontWeight="bold"
+              >
+                {modalTitle}
+              </Title>
+              <Box position="absolute" right="8px">
+                <CloseIconButton
+                  a11y_buttonActionMessage={modalMessages.closeWindow}
+                  onClick={close}
+                  iconColor={colors.textSecondary}
+                  iconColorOnHover={colors.grey800}
+                />
+              </Box>
+            </Box>
+          )}
+          <Content className="fullscreenmodal-scrollcontainer">
+            {children}
+          </Content>
+          {bottomBar && <ModalBottomBar>{bottomBar}</ModalBottomBar>}
+        </StyledFocusOn>
+      </Container>
+    </CSSTransition>
+  );
+};
 
-export default (inputProps: InputProps) => {
-  const locale = useLocale();
+export default (inputProps: Props) => {
   const modalPortalElement = document.getElementById('modal-portal');
 
   return modalPortalElement
-    ? createPortal(
-        <FullscreenModal {...inputProps} locale={locale} />,
-        modalPortalElement
-      )
+    ? createPortal(<FullscreenModal {...inputProps} />, modalPortalElement)
     : null;
 };

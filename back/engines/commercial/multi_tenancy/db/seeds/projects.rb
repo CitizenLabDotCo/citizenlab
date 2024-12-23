@@ -14,6 +14,7 @@ module MultiTenancy
 
       def create_fixed_projects
         create_mixed_3_methods_project
+        create_archived_project
       end
 
       def create_mixed_3_methods_project
@@ -50,6 +51,27 @@ module MultiTenancy
           native_survey_title_multiloc: { 'en' => 'Survey' },
           native_survey_button_multiloc: { 'en' => 'Take the survey' }
         )
+        project.project_images.create!(image: Rails.root.join("spec/fixtures/image#{rand(20)}.png").open)
+      end
+
+      def create_archived_project
+        project = Project.create!(
+          title_multiloc: { 'en' => 'Archived project' },
+          description_multiloc: runner.rand_description_multiloc,
+          slug: 'archived-project',
+          header_bg: Rails.root.join('spec/fixtures/image6.png').open,
+          allowed_input_topics: Topic.all,
+          admin_publication_attributes: { publication_status: 'archived' }
+        )
+        project.phases.create!(
+          title_multiloc: { 'en' => 'Past information phase' },
+          description_multiloc: runner.rand_description_multiloc,
+          participation_method: 'information',
+          start_at: Time.zone.today - 30.days,
+          end_at: Time.zone.today - 11.days,
+          campaigns_settings: { project_phase_started: true }
+        )
+        project.project_images.create!(image: Rails.root.join("spec/fixtures/image#{rand(20)}.png").open)
       end
 
       def create_random_projects

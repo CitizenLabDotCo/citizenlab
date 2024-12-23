@@ -10,4 +10,9 @@ FactoryBot.define do
     association :phase, factory: :native_survey_phase
     association :main_custom_field, factory: %i[custom_field for_custom_form]
   end
+
+  factory :proposals_analysis, class: 'Analysis::Analysis' do
+    association :phase, factory: :proposals_phase
+    additional_custom_fields { build_list(:custom_field, 2, :for_custom_form) }
+  end
 end

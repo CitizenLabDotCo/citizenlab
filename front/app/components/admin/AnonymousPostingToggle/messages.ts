@@ -32,8 +32,4 @@ export default defineMessages({
     defaultMessage:
       'https://support.citizenlab.co/en/articles/7946486-enabling-anonymous-participation',
   },
-  betaLabel: {
-    id: 'app.components.AnonymousPostingToggle.betaLabel',
-    defaultMessage: 'BETA',
-  },
 });

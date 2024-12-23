@@ -27,6 +27,7 @@ CL2_SUPPORTED_LOCALES = %i[
   it-IT
   kl-GL
   lb-LU
+  lt-LT
   lv-LV
   mi
   nb-NO
@@ -66,6 +67,7 @@ fallback_locales =
     pt
     ro
     sr
+    sr-Cyrl
     sv
     tr
   ].freeze

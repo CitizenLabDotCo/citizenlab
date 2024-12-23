@@ -26,6 +26,7 @@ import { IMapLayerAttributes } from 'api/map_layers/types';
 import { Localize } from 'hooks/useLocalize';
 
 import { hexToRGBA } from 'utils/helperUtils';
+import { projectPointToWebMercator } from 'utils/mapUtils/map';
 
 import {
   BASEMAP_AT_ATTRIBUTION,
@@ -399,9 +400,12 @@ export const goToMapLocation = async (
 // esriPointToGeoJson
 // Description: Converts an Esri point to an GeoJSON.Point
 export const esriPointToGeoJson = (esriPoint: Point): GeoJSON.Point => {
+  // Project the point to Web Mercator, in case the map is using a different projection
+  const projectedPoint = projectPointToWebMercator(esriPoint);
+
   return {
     type: 'Point',
-    coordinates: [esriPoint.longitude, esriPoint.latitude],
+    coordinates: [projectedPoint.longitude, projectedPoint.latitude],
   };
 };
 

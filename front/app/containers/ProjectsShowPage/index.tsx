@@ -74,7 +74,6 @@ interface Props {
 
 const ProjectsShowPage = ({ project }: Props) => {
   const projectId = project.id;
-
   const isSmallerThanTablet = useBreakpoint('tablet');
   const { formatMessage } = useIntl();
   const [mounted, setMounted] = useState(false);
@@ -118,54 +117,6 @@ const ProjectsShowPage = ({ project }: Props) => {
     }
   }, [mounted, loading, scrollToStatusModule, scrollToIdeas]);
 
-  let content: JSX.Element | null = null;
-
-  if (loading) {
-    content = <FullPageSpinner />;
-  } else {
-    content = (
-      <ContentWrapper id="e2e-project-page">
-        <ProjectHeader projectId={projectId} />
-        <ProjectCTABar projectId={projectId} />
-
-        <div id="participation-detail">
-          <TimelineContainer projectId={projectId} />
-        </div>
-        {!!events?.data.length && (
-          <Box
-            id="e2e-events-section-project-page"
-            display="flex"
-            flexDirection="column"
-            gap="48px"
-            mx="auto"
-            my="48px"
-            maxWidth={`${maxPageWidth}px`}
-            padding={isSmallerThanTablet ? '20px' : '0px'}
-          >
-            <EventsViewer
-              showProjectFilter={false}
-              projectId={projectId}
-              eventsTime="currentAndFuture"
-              title={formatMessage(messages.upcomingAndOngoingEvents)}
-              fallbackMessage={messages.noUpcomingOrOngoingEvents}
-              projectPublicationStatuses={['published', 'draft', 'archived']}
-            />
-            <EventsViewer
-              showProjectFilter={false}
-              projectId={projectId}
-              eventsTime="past"
-              title={formatMessage(messages.pastEvents)}
-              fallbackMessage={messages.noPastEvents}
-              projectPublicationStatuses={['published', 'draft', 'archived']}
-              showDateFilter={false}
-            />
-          </Box>
-        )}
-        <SuccessModal projectId={projectId} />
-      </ContentWrapper>
-    );
-  }
-
   return (
     <main>
       <Container
@@ -175,7 +126,55 @@ const ProjectsShowPage = ({ project }: Props) => {
           events && events?.data.length > 0 ? colors.white : colors.background
         }
       >
-        {content}
+        {loading ? (
+          <FullPageSpinner />
+        ) : (
+          <ContentWrapper id="e2e-project-page">
+            <ProjectHeader projectId={projectId} />
+            <ProjectCTABar projectId={projectId} />
+
+            <TimelineContainer projectId={projectId} />
+            {!!events?.data.length && (
+              <Box
+                id="e2e-events-section-project-page"
+                display="flex"
+                flexDirection="column"
+                gap="48px"
+                mx="auto"
+                my="48px"
+                maxWidth={`${maxPageWidth}px`}
+                padding={isSmallerThanTablet ? '20px' : '0px'}
+              >
+                <EventsViewer
+                  showProjectFilter={false}
+                  projectId={projectId}
+                  eventsTime="currentAndFuture"
+                  title={formatMessage(messages.upcomingAndOngoingEvents)}
+                  fallbackMessage={messages.noUpcomingOrOngoingEvents}
+                  projectPublicationStatuses={[
+                    'published',
+                    'draft',
+                    'archived',
+                  ]}
+                />
+                <EventsViewer
+                  showProjectFilter={false}
+                  projectId={projectId}
+                  eventsTime="past"
+                  title={formatMessage(messages.pastEvents)}
+                  fallbackMessage={messages.noPastEvents}
+                  projectPublicationStatuses={[
+                    'published',
+                    'draft',
+                    'archived',
+                  ]}
+                  showDateFilter={false}
+                />
+              </Box>
+            )}
+            <SuccessModal projectId={projectId} />
+          </ContentWrapper>
+        )}
       </Container>
     </main>
   );

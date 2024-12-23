@@ -148,6 +148,7 @@ resource 'Projects' do
       let(:areas) { create_list(:area, 2) }
       let(:area_ids) { areas.pluck(:id) }
       let!(:project) { create(:project, areas: areas) }
+      let!(:project_in_all_areas) { create(:project, include_all_areas: true) }
 
       before do
         # This project shouldn't be returned since it only has one of the requested areas.
@@ -157,7 +158,7 @@ resource 'Projects' do
       example_request 'List only the projects that are in the specified areas' do
         assert_status 200
         expect(json_response_body[:projects].pluck(:id))
-          .to match_array [project.id]
+          .to match_array [project.id, project_in_all_areas.id]
       end
     end
 

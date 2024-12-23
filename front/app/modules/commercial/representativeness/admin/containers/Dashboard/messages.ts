@@ -15,10 +15,6 @@ export default defineMessages({
     defaultMessage:
       'See how representative your platform users are compared to the total population - based on data collected during user registration.',
   },
-  betaLabel: {
-    id: 'app.containers.AdminPage.DashboardPage.representativeness.betaLabel',
-    defaultMessage: 'BETA',
-  },
   emptyStateTitle: {
     id: 'app.containers.AdminPage.DashboardPage.representativeness.emptyStateTitle',
     defaultMessage: 'Please provide a base dataset.',

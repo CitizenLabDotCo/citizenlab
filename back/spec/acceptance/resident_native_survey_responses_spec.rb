@@ -438,6 +438,7 @@ resource 'Ideas' do
       parameter :custom_field_name3, 'A value for another custom field'
       parameter :custom_field_name4, 'A value for another custom field'
       parameter :custom_field_name5, 'A value for another custom field'
+      parameter :publication_status, 'published or draft'
     end
     ValidationErrorHelper.new.error_fields(self, Idea)
     let(:project) { create(:project_with_active_native_survey_phase) }
@@ -579,6 +580,28 @@ resource 'Ideas' do
             })
           end
         end
+
+        # Tests the context where the survey has been opened in two tabs and the user submits one of them.
+        # context 'when there are two surveys in draft' do
+        #   let(:publication_status) { 'published' }
+
+        #   example 'Survey submits and removes other drafts by the same user' do
+        #     input.update!(publication_status: 'draft')
+        #     draft_survey_to_delete = create(
+        #       :native_survey_response,
+        #       author: user,
+        #       project: project,
+        #       creation_phase: creation_phase,
+        #       publication_status: 'draft'
+        #     )
+        #     draft_survey_to_delete_id = draft_survey_to_delete.id
+
+        #     do_request
+        #     assert_status 200
+        #     expect(project.reload.ideas.size).to eq 1
+        #     expect { Idea.find(draft_survey_to_delete_id) }.to raise_error(ActiveRecord::RecordNotFound)
+        #   end
+        # end
       end
     end
 

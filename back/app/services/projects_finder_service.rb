@@ -5,6 +5,7 @@ class ProjectsFinderService
     @page_size = (params.dig(:page, :size) || 500).to_i
     @page_number = (params.dig(:page, :number) || 1).to_i
     @filter_by = params[:filter_by]
+    @areas = params[:areas]
   end
 
   # Returns an ActiveRecord collection of published projects that are
@@ -70,6 +71,9 @@ class ProjectsFinderService
   # ordered by the follow created_at (most recent first).
   # => [Project]
   def followed_by_user
+    # return empty collection if user is not signed in
+    return Project.none unless @user
+
     subquery = Follower
       .where(user_id: @user.id)
       .where.not(followable_type: 'Initiative')
@@ -107,6 +111,34 @@ class ProjectsFinderService
       .joins("INNER JOIN (#{subquery.to_sql}) AS subquery ON projects.id = subquery.project_id")
       .select('projects.*, subquery.latest_follower_created_at')
       .order('subquery.latest_follower_created_at DESC')
+  end
+
+  # Returns an ActiveRecord collection of published projects, visible to user, that are also
+  # If :areas param: Returns all non-draft projects that are visible to user, for the selected areas.
+  # Else: Returns all non-draft projects that are visible to user, for the areas the user follows or for all-areas.
+  # Ordered by created_at, newest first.
+  # # => [Project]
+  def projects_for_areas
+    @projects = @projects.not_draft
+
+    projects = if @areas.present?
+      @projects.where(include_all_areas: true).or(@projects.with_some_areas(@areas))
+    else
+      subquery = Follower
+        .where(user_id: @user&.id)
+        .where.not(followable_type: 'Initiative')
+        .joins(
+          'LEFT JOIN areas AS followed_areas ON followers.followable_type = \'Area\' ' \
+          'AND followed_areas.id = followers.followable_id'
+        )
+        .joins('LEFT JOIN areas_projects ON areas_projects.area_id = followed_areas.id')
+        .joins('INNER JOIN projects ON areas_projects.project_id = projects.id')
+        .select('projects.id AS project_id')
+
+      @projects.where(include_all_areas: true).or(@projects.where(id: subquery))
+    end
+
+    projects.order(created_at: :desc)
   end
 
   # Returns ActiveRecord collection of projects that are either (finished OR have a last phase that contains a report)

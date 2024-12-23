@@ -20,10 +20,10 @@ import { isAdmin } from 'utils/permissions/roles';
 
 import messages from '../../messages';
 
-import PhasesMenu from './FilterSidebarPhases';
-import ProjectsMenu from './FilterSidebarProjects';
-import StatusesMenu from './FilterSidebarStatuses';
-import TopicsMenu from './FilterSidebarTopics';
+import FilterSidebarPhases from './phases/FilterSidebarPhases';
+import FilterSidebarProjects from './projects/FilterSidebarProjects';
+import FilterSidebarStatuses from './statuses/FilterSidebarStatuses';
+import FilterSidebarTopics from './topics/FilterSidebarTopics';
 
 const InfoIcon = styled(Icon)`
   fill: ${colors.teal700};
@@ -42,9 +42,9 @@ interface Props {
   statuses: IIdeaStatusData[];
   topics: ITopicData[];
   selectedTopics?: string[] | null;
-  selectedPhase?: string | null;
+  selectedPhase: string | undefined;
   selectedProject?: string | null;
-  selectedStatus?: string | null;
+  selectedStatus?: string;
   onChangePhaseFilter?: (arg: string | null) => void;
   onChangeTopicsFilter?: (topics: string[]) => void;
   onChangeProjectFilter?: (projects: string[] | undefined) => void;
@@ -142,19 +142,20 @@ const FilterSidebar = ({
     phases: () => ({
       name: tabName('timelineTab', selectedPhase, 'phases'),
       key: 'phases',
-      content: (
-        <PhasesMenu
-          phases={phases}
-          selectedPhase={selectedPhase}
-          onChangePhaseFilter={onChangePhaseFilter}
-        />
-      ),
+      content:
+        phases && onChangePhaseFilter ? (
+          <FilterSidebarPhases
+            phases={phases}
+            selectedPhase={selectedPhase}
+            onChangePhaseFilter={onChangePhaseFilter}
+          />
+        ) : null,
     }),
     topics: () => ({
       name: tabName('topicsTab', selectedTopics, 'topics'),
       key: 'topics',
       content: (
-        <TopicsMenu
+        <FilterSidebarTopics
           selectableTopics={topics}
           selectedTopics={selectedTopics}
           onChangeTopicsFilter={onChangeTopicsFilter}
@@ -166,7 +167,7 @@ const FilterSidebar = ({
       name: tabName('projectsTab', selectedProject, 'projects'),
       key: 'projects',
       content: (
-        <ProjectsMenu
+        <FilterSidebarProjects
           projects={projects}
           selectedProject={selectedProject}
           onChangeProjectFilter={onChangeProjectFilter}
@@ -177,7 +178,7 @@ const FilterSidebar = ({
       name: tabName('statusesTab', selectedStatus, 'statuses'),
       key: 'statuses',
       content: (
-        <StatusesMenu
+        <FilterSidebarStatuses
           type={type}
           statuses={statuses}
           selectedStatus={selectedStatus}

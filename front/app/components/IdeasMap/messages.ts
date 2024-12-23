@@ -17,6 +17,10 @@ export default defineMessages({
     id: 'app.components.IdeasMap.or',
     defaultMessage: 'or',
   },
+  filters: {
+    id: 'app.components.IdeasMap.filters',
+    defaultMessage: 'Filters',
+  },
   noResults: {
     id: 'app.components.IdeasMap.noResults',
     defaultMessage: 'No results found',

@@ -2,6 +2,7 @@ import React, { KeyboardEvent } from 'react';
 
 import { Label } from '@citizenlab/cl2-component-library';
 import ReactSelect from 'react-select';
+import { useTheme } from 'styled-components';
 import { IOption } from 'typings';
 
 import selectStyles from 'components/UI/MultipleSelect/styles';
@@ -33,6 +34,7 @@ const MultipleSelect = ({
   label,
   isSearchable,
 }: Props) => {
+  const theme = useTheme();
   const handleOnChange = (newValue: IOption[]) => {
     onChange(newValue);
   };
@@ -78,7 +80,7 @@ const MultipleSelect = ({
         options={options || []}
         onChange={handleOnChange}
         isDisabled={disabled}
-        styles={selectStyles()}
+        styles={selectStyles(theme)}
         menuPosition="fixed"
         menuPlacement="auto"
         hideSelectedOptions

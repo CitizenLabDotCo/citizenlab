@@ -8,11 +8,13 @@ import usePhase from 'api/phases/usePhase';
 
 import InputFilterCollapsible from 'components/FilterBoxes/InputFilterCollapsible';
 
-import { useIntl } from 'utils/cl-intl';
+import { ScreenReaderOnly } from 'utils/a11y';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
 
 import SortTypeButton from './SortTypeButton';
+import { getLabelForSortingOption } from './utils';
 
 type SortingBoxProps = {
   handleSortOnChange: (sort: IdeaSortMethod) => void;
@@ -24,8 +26,8 @@ const SortingBox = ({ handleSortOnChange, phaseId }: SortingBoxProps) => {
   const phaseDefaultSort = phase?.data.attributes.ideas_order;
 
   const [searchParams] = useSearchParams();
-  const currentSortType =
-    searchParams.get('sort') || phaseDefaultSort || 'trending';
+  const searchParamsSort = searchParams.get('sort') as IdeaSortMethod | null;
+  const currentSortType = searchParamsSort || phaseDefaultSort || 'trending';
 
   return (
     <InputFilterCollapsible title={formatMessage(messages.sortBy)}>
@@ -61,6 +63,16 @@ const SortingBox = ({ handleSortOnChange, phaseId }: SortingBoxProps) => {
           isSelected={currentSortType === '-new'}
         />
       </Box>
+      <ScreenReaderOnly aria-live="polite">
+        <FormattedMessage
+          {...messages.sortChangedScreenreaderMessage}
+          values={{
+            currentSortType: formatMessage(
+              getLabelForSortingOption(currentSortType)
+            ),
+          }}
+        />
+      </ScreenReaderOnly>
     </InputFilterCollapsible>
   );
 };

@@ -42,7 +42,6 @@ export interface Props {
   hideImagePlaceholder?: boolean;
   hideIdeaStatus?: boolean;
   showFollowButton?: boolean;
-  hasFilterSidebar?: boolean;
 }
 
 const Container = styled(Box)`
@@ -57,10 +56,6 @@ const Container = styled(Box)`
   ${media.tablet`
     flex-direction: column;
   `}
-
-  &.hasFilterSidebar {
-    flex-direction: column;
-  }
 `;
 
 const IdeaLoading = (props: Props) => {
@@ -84,7 +79,6 @@ const IdeaCard = ({
   hideImagePlaceholder = false,
   hideIdeaStatus = false,
   showFollowButton = false,
-  hasFilterSidebar = false,
 }: IdeaCardProps) => {
   const { data: ideaImage } = useIdeaImage(
     idea.data.id,
@@ -149,9 +143,7 @@ const IdeaCard = ({
 
   return (
     <Container
-      className={`e2e-card e2e-idea-card ${
-        hasFilterSidebar ? 'hasFilterSidebar' : ''
-      }`}
+      className={`e2e-card e2e-idea-card`}
       id={idea.data.id}
       onClick={handleClick}
       height="100%"
@@ -161,7 +153,6 @@ const IdeaCard = ({
         image={image}
         hideImagePlaceholder={hideImagePlaceholder}
         innerHeight={innerHeight}
-        hasFilterSidebar={hasFilterSidebar}
       />
 
       <Box
@@ -169,11 +160,14 @@ const IdeaCard = ({
         flexDirection="column"
         justifyContent="space-between"
         w="100%"
+        // Height of 100% needed to extent the card to the bottom of the row when there
+        // is a card with an image and a card without an image in the same row.
+        h="100%"
         overflowX="hidden"
       >
         <Box
           mb={
-            smallerThanTablet || hasFilterSidebar
+            smallerThanTablet
               ? '24px'
               : !image && hideImagePlaceholder
               ? '36px'
@@ -192,7 +186,8 @@ const IdeaCard = ({
             {!hideBody && <Body idea={idea} />}
           </Link>
         </Box>
-        <Box>
+        {/* marginTop used to push the interactions/footer to bottom of the card */}
+        <Box marginTop="auto">
           <Interactions idea={idea} phase={phaseData || null} />
           <Footer
             idea={idea.data}

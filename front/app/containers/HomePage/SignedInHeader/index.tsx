@@ -20,6 +20,8 @@ import { trackEventByName } from 'utils/analytics';
 
 import tracks from '../tracks';
 
+import Skeleton from './Skeleton';
+
 const CompleteProfileStep = lazy(() => import('./CompleteProfileStep'));
 const VerificationOnboardingStep = lazy(
   () => import('./VerificationOnboardingStep')
@@ -27,7 +29,7 @@ const VerificationOnboardingStep = lazy(
 const CustomCTAStep = lazy(() => import('./CustomCTAStep'));
 const FallbackStep = lazy(() => import('./FallbackStep'));
 
-const heights = {
+export const heights = {
   phone: 300,
   tablet: 250,
   desktop: 200,
@@ -60,26 +62,37 @@ const SignedInHeader = ({
   homepageSettings: Partial<IHomepageBannerSettings>;
   isContentBuilderDisplay?: boolean;
 }) => {
-  const { data: currentOnboardingCampaign } = useCurrentOnboardingCampaign();
+  const { data: currentOnboardingCampaign, isInitialLoading } =
+    useCurrentOnboardingCampaign();
   const { mutate: dismissOnboardingCampaign } = useDismissOnboardingCampaign();
 
   const handleSkip = (name: OnboardingCampaignName) => () => {
     trackEventByName(tracks.clickSkipButton, {
-      extra: { location: 'signed-in header', context: name },
+      location: 'signed-in header',
+      context: name,
     });
     dismissOnboardingCampaign(name);
   };
+
+  const homepageSettingColor =
+    homepageSettings.banner_signed_in_header_overlay_color;
+  const homepageSettingOpacity =
+    homepageSettings.banner_signed_in_header_overlay_opacity;
+
+  if (isInitialLoading) {
+    return (
+      <Skeleton
+        homepageSettingColor={homepageSettingColor ?? undefined}
+        homepageSettingOpacity={homepageSettingOpacity ?? undefined}
+      />
+    );
+  }
 
   if (!currentOnboardingCampaign) return null;
 
   const onboardingCampaignName = isContentBuilderDisplay
     ? 'default'
     : currentOnboardingCampaign.data.attributes.name;
-
-  const homepageSettingColor =
-    homepageSettings.banner_signed_in_header_overlay_color;
-  const homepageSettingOpacity =
-    homepageSettings.banner_signed_in_header_overlay_opacity;
 
   return (
     <Container

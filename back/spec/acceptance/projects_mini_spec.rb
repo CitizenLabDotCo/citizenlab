@@ -348,65 +348,27 @@ resource 'ProjectsMini' do # == Projects, but labeled as ProjectsMini, to help d
     let!(:_areas_project1) { create(:areas_project, project: project_with_areas, area: area1) }
     let!(:_areas_project2) { create(:areas_project, project: project_with_areas, area: area2) }
 
+    let!(:project_for_all_areas) { create(:project_with_active_ideation_phase, include_all_areas: true) }
+
     let!(:_project_without_area) { create(:project) }
 
-    example 'Lists projects for a given area' do
+    example 'Lists projects for a given area OR for all areas' do
       do_request areas: [area1.id]
       expect(status).to eq 200
 
-      expect(Project.count).to eq 2
+      expect(Project.count).to eq 3
 
       project_ids = json_response[:data].pluck(:id)
-      expect(project_ids).to match_array [project_with_areas.id]
+      expect(project_ids).to match_array [project_with_areas.id, project_for_all_areas.id]
     end
 
-    example 'Orders projects by created_at DESC', document: false do
-      project2 = create(:project)
-      project3 = create(:project)
-      project4 = create(:project)
-      create(:areas_project, project: project2, area: area1)
-      create(:areas_project, project: project3, area: area1)
-      create(:areas_project, project: project4, area: area1)
+    example_request 'Returns projects for followed areas & for all areas when areas param is blank', document: false do
+      create(:follower, followable: area1, user: @user)
 
-      project_with_areas.update!(created_at: 4.days.ago)
-      project2.update!(created_at: 1.day.ago)
-      project3.update!(created_at: 3.days.ago)
-      project4.update!(created_at: 2.days.ago)
-
-      do_request areas: [area1.id]
-      expect(status).to eq 200
-
-      project_ids = json_response[:data].pluck(:id)
-      expect(project_ids).to eq [project2.id, project4.id, project3.id, project_with_areas.id]
-    end
-
-    example_request 'Does not return duplicate projects when more than one areas_project matches', document: false do
-      do_request areas: [area1.id, area2.id]
-      expect(status).to eq 200
-
-      project_ids = json_response[:data].pluck(:id)
-      expect(project_ids).to match_array [project_with_areas.id]
-    end
-
-    example_request 'Returns an empty list when areas parameter is nil', document: false do
       do_request
       expect(status).to eq 200
-      expect(json_response[:data]).to eq []
-    end
 
-    context 'when admin' do
-      before do
-        @user = create(:admin)
-        header_token_for @user
-      end
-
-      example_request 'Does not include draft projects', document: false do
-        project_with_areas.update!(admin_publication_attributes: { publication_status: 'draft' })
-
-        do_request areas: [area1.id]
-        expect(status).to eq 200
-        expect(json_response[:data]).to eq []
-      end
+      expect(json_response[:data].pluck(:id)).to match_array [project_for_all_areas.id, project_with_areas.id]
     end
   end
 

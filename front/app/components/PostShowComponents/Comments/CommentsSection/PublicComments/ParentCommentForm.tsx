@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 
-import { Box, colors, defaultStyles } from '@citizenlab/cl2-component-library';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 import { isString, trim } from 'lodash-es';
 import { hideVisually } from 'polished';
 import { useLocation } from 'react-router-dom';
@@ -64,8 +64,7 @@ const Form = styled.form`
   }
 
   &.focused {
-    border-color: ${colors.black};
-    box-shadow: ${defaultStyles.boxShadowFocused};
+    border: solid 2px ${(props) => props.theme.colors.tenantPrimary};
   }
 `;
 
@@ -125,10 +124,8 @@ const ParentCommentForm = ({
   const onFocus = () => {
     setCommentCancelledMessage('');
     trackEventByName(tracks.focusParentCommentEditor, {
-      extra: {
-        postId: ideaId,
-        postType: 'idea',
-      },
+      postId: ideaId,
+      postType: 'idea',
     });
 
     setFocused(true);
@@ -160,11 +157,9 @@ const ParentCommentForm = ({
       };
 
       trackEventByName(tracks.clickParentCommentPublish, {
-        extra: {
-          postId: ideaId,
-          postType: 'idea',
-          content: inputValue,
-        },
+        postId: ideaId,
+        postType: 'idea',
+        content: inputValue,
       });
 
       if (projectId) {

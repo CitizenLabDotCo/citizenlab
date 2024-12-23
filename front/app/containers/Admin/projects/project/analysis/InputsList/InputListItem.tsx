@@ -13,6 +13,7 @@ import T from 'components/T';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
+import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import { getFullName } from 'utils/textUtils';
 
 import Taggings from '../Taggings';
@@ -34,6 +35,12 @@ const InputListItem = memo(({ input, onSelect, selected }: Props) => {
     id: input.relationships.author.data?.id ?? null,
     analysisId,
   });
+  const methodConfig =
+    analysis && getMethodConfig(analysis.data.attributes.participation_method);
+  const showLikes = methodConfig?.supportsReactions;
+  const showVotes = methodConfig?.supportsVotes;
+  const showComments = methodConfig?.supportsComments;
+
   const { formatDate, formatMessage } = useIntl();
 
   const showAuthor = author && author.data.attributes.first_name;
@@ -56,7 +63,7 @@ const InputListItem = memo(({ input, onSelect, selected }: Props) => {
         onClick={() => {
           onSelect(input.id);
           trackEventByName(tracks.inputPreviewedFromList.name, {
-            extra: { inputId: input.id },
+            inputId: input.id,
           });
         }}
         bg={selected ? colors.background : colors.white}
@@ -116,32 +123,34 @@ const InputListItem = memo(({ input, onSelect, selected }: Props) => {
           </Box>
         )}
 
-        {analysis.data.attributes.participation_method === 'ideation' && (
+        {(showLikes || showVotes || showComments) && (
           <Box display="flex" gap="8px">
-            {typeof input.attributes.likes_count === 'number' && (
+            {showLikes && typeof input.attributes.likes_count === 'number' && (
               <Box display="flex" gap="4px">
                 <Icon width="16px" height="16px" name="vote-up" />
                 <span> {input.attributes.likes_count}</span>
               </Box>
             )}
-            {typeof input.attributes.dislikes_count === 'number' && (
-              <Box display="flex" gap="4px">
-                <Icon width="16px" height="16px" name="vote-down" />
-                <span> {input.attributes.dislikes_count}</span>
-              </Box>
-            )}
-            {typeof input.attributes.votes_count === 'number' && (
+            {showLikes &&
+              typeof input.attributes.dislikes_count === 'number' && (
+                <Box display="flex" gap="4px">
+                  <Icon width="16px" height="16px" name="vote-down" />
+                  <span> {input.attributes.dislikes_count}</span>
+                </Box>
+              )}
+            {showVotes && typeof input.attributes.votes_count === 'number' && (
               <Box display="flex" gap="4px">
                 <Icon width="16px" height="16px" name="vote-ballot" />
                 <span> {input.attributes.votes_count}</span>
               </Box>
             )}
-            {typeof input.attributes.comments_count === 'number' && (
-              <Box display="flex" gap="4px">
-                <Icon width="16px" height="16px" name="comments" />
-                <span> {input.attributes.comments_count}</span>
-              </Box>
-            )}
+            {showComments &&
+              typeof input.attributes.comments_count === 'number' && (
+                <Box display="flex" gap="4px">
+                  <Icon width="16px" height="16px" name="comments" />
+                  <span> {input.attributes.comments_count}</span>
+                </Box>
+              )}
           </Box>
         )}
 

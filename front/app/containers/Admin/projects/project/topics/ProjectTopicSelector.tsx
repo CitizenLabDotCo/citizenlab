@@ -12,11 +12,13 @@ import useTopics from 'api/topics/useTopics';
 import Button from 'components/UI/Button';
 import MultipleSelect from 'components/UI/MultipleSelect';
 
+import { trackEventByName } from 'utils/analytics';
 import { injectIntl } from 'utils/cl-intl';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
 import messages from './messages';
+import tracks from './tracks';
 
 const Container = styled.div`
   width: 100%;
@@ -85,6 +87,7 @@ const ProjectTopicSelector = memo(
 
       try {
         await Promise.all(promises);
+        trackEventByName(tracks.projectTagsEdited, { projectId });
         setProcessing(false);
         setSelectedTopicOptions([]);
       } catch {

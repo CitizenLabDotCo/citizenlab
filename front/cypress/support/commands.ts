@@ -83,6 +83,7 @@ declare global {
       apiGetSurveySchema: typeof apiGetSurveySchema;
       uploadProjectFolderImage: typeof uploadProjectFolderImage;
       uploadProjectImage: typeof uploadProjectImage;
+      apiCreateModeratorForProject: typeof apiCreateModeratorForProject;
     }
   }
 }
@@ -426,38 +427,37 @@ function apiGetAppConfiguration() {
   });
 }
 
-function apiCreateModeratorForProject(
-  firstName: string,
-  lastName: string,
-  email: string,
-  password: string,
-  projectId: string
-) {
-  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
-    const adminJwt = response.body.jwt;
+function apiCreateModeratorForProject({
+  firstName,
+  lastName,
+  email,
+  password,
+  projectId,
+}: {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  projectId: string;
+}) {
+  return cy.apiSignup(firstName, lastName, email, password).then((response) => {
+    const userId = response.body.data.id;
+    return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+      const adminJwt = response.body.jwt;
 
-    return cy.request({
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
-      },
-      method: 'POST',
-      url: 'web_api/v1/users',
-      body: {
-        user: {
-          email,
-          password,
-          locale: 'en',
-          first_name: firstName,
-          last_name: lastName,
-          roles: [
-            {
-              type: 'project_moderator',
-              project_id: projectId,
-            },
-          ],
+      return cy.request({
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${adminJwt}`,
         },
-      },
+        method: 'POST',
+        url: `web_api/v1/projects/${projectId}/moderators`,
+        body: {
+          moderator: {
+            user_id: userId,
+          },
+        },
+      });
     });
   });
 }
@@ -1090,6 +1090,7 @@ function apiCreatePhase({
   votingMinTotal,
   nativeSurveyButtonMultiloc,
   nativeSurveyTitleMultiloc,
+  presentation_mode,
 }: {
   projectId: string;
   title: string;
@@ -1102,6 +1103,7 @@ function apiCreatePhase({
   description?: string;
   surveyUrl?: string;
   surveyService?: 'typeform' | 'survey_monkey' | 'google_forms';
+  presentation_mode?: 'card' | 'map';
   votingMaxTotal?: number;
   allow_anonymous_participation?: boolean;
   votingMethod?: VotingMethod;
@@ -1133,6 +1135,7 @@ function apiCreatePhase({
           submission_enabled: canPost,
           reacting_enabled: canReact,
           commenting_enabled: canComment,
+          presentation_mode,
           description_multiloc: { en: description },
           survey_embed_url: surveyUrl,
           survey_service: surveyService,
@@ -1890,3 +1893,7 @@ Cypress.Commands.add(
 Cypress.Commands.add('apiGetSurveySchema', apiGetSurveySchema);
 Cypress.Commands.add('uploadProjectFolderImage', uploadProjectFolderImage);
 Cypress.Commands.add('uploadProjectImage', uploadProjectImage);
+Cypress.Commands.add(
+  'apiCreateModeratorForProject',
+  apiCreateModeratorForProject
+);

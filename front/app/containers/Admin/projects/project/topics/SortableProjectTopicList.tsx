@@ -22,11 +22,13 @@ import Modal, {
 import Warning from 'components/UI/Warning';
 import VerticalCenterer from 'components/VerticalCenterer';
 
+import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { isNilOrError, byId } from 'utils/helperUtils';
 
 import messages from './messages';
+import tracks from './tracks';
 
 export const RowTitle = styled(T)`
   font-size: ${fontSizes.base}px;
@@ -81,6 +83,7 @@ const SortableProjectTopicList = memo(
       if (projectAllowedInputTopicIdToDelete) {
         deleteProjectAllowedInputTopic(projectAllowedInputTopicIdToDelete, {
           onSuccess: () => {
+            trackEventByName(tracks.projectTagsEdited, { projectId });
             setShowConfirmationModal(false);
             setProjectAllowedInputTopicIdToDelete(null);
           },

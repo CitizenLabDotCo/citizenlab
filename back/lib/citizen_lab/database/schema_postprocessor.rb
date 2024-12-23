@@ -87,9 +87,24 @@ class CitizenLab::Database::SchemaPostprocessor
     --
     
     COMMENT ON EXTENSION "uuid-ossp" IS 'generate universally unique identifiers (UUIDs)';
+
+
+    --
+    -- Name: vector; Type: EXTENSION; Schema: -; Owner: -
+    --
+    
+    CREATE EXTENSION IF NOT EXISTS vector WITH SCHEMA shared_extensions;
+    
+    
+    --
+    -- Name: EXTENSION vector; Type: COMMENT; Schema: -; Owner: -
+    --
+    
+    COMMENT ON EXTENSION vector IS 'Open-source vector similarity search for Postgres';
   SQL
 
   DROP_EXTENSIONS_SQL = <<~SQL.chomp # rubocop:disable Rails/SquishedSQLHeredocs
+    DROP EXTENSION IF EXISTS vector;
     DROP EXTENSION IF EXISTS "uuid-ossp";
     DROP EXTENSION IF EXISTS postgis;
     DROP EXTENSION IF EXISTS pgcrypto;

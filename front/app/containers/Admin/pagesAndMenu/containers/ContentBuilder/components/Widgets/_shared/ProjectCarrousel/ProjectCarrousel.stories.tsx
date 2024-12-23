@@ -20,7 +20,7 @@ const createData = (offset: number): MiniProjectData[] => {
     type: 'project_mini',
     attributes: {
       title_multiloc: {
-        en: `${offset + index} - Project title`,
+        en: `${offset + index} - Project title, but a bit longer`,
       },
       slug: 'project-slug',
       action_descriptors: {
@@ -59,10 +59,13 @@ const ManyProjectsWrapper = ({ title }) => {
           projects={data}
           hasMore={hasMore}
           onLoadMore={() => {
-            setTimeout(() => {
-              setData([...data, ...createData(data.length + 1)]);
-              setHasMore(false);
-            }, 2000);
+            return new Promise((resolve) => {
+              setTimeout(() => {
+                setData([...data, ...createData(data.length + 1)]);
+                setHasMore(false);
+                resolve(undefined);
+              }, 2000);
+            });
           }}
         />
       </div>
@@ -79,7 +82,7 @@ export const ManyProjects: Story = {
     // The next three props are not used in the component, but are required for the story to work
     projects: [],
     hasMore: true,
-    onLoadMore: () => {},
+    onLoadMore: () => new Promise(() => {}),
   },
   render: ({ title }) => {
     return <ManyProjectsWrapper title={title} />;
@@ -91,6 +94,6 @@ export const OneProject: Story = {
     title: 'Open to participation',
     projects: [createData(0)[0]],
     hasMore: false,
-    onLoadMore: () => {},
+    onLoadMore: () => new Promise(() => {}),
   },
 };

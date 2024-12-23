@@ -42,6 +42,11 @@ interface Props {
   defaultFilterMenu: TFilterMenu;
 }
 
+/*
+  There are still some minor differences between the ProjectProposalsManager and InputManager. 
+  - Unlike ideas, proposals cannot be moved between phases, they can only belong to a single phase. And you can select that phase from the phase navigation on top. So there is no need to have the phase filters in the left sidebar.
+  - Also, the statuses are different for proposals and ideation so we need to display a different list there.
+*/
 const ProjectProposalsManager = ({
   defaultFilterMenu,
   visibleFilterMenus,
@@ -182,7 +187,11 @@ const ProjectProposalsManager = ({
           project={projectId}
           queryParameters={queryParameters}
         />
-        <StyledExportMenu type={'ProjectProposals'} selection={selection} />
+        <StyledExportMenu
+          type={'ProjectProposals'}
+          selectedProject={projectId}
+          selection={selection}
+        />
       </TopActionBar>
 
       <ThreeColumns>
@@ -215,6 +224,7 @@ const ProjectProposalsManager = ({
               onChangeStatusFilter={onChangeStatus}
               statuses={ideaStatuses?.data ?? []}
               selectedStatus={queryParameters.idea_status}
+              selectedPhase={queryParameters.phase}
             />
           </Sticky>
         </LeftColumn>

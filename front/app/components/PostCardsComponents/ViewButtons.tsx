@@ -4,6 +4,7 @@ import React, {
   useRef,
   KeyboardEvent,
   useEffect,
+  useState,
 } from 'react';
 
 import {
@@ -28,7 +29,7 @@ const StyledIcon = styled(Icon)`
 `;
 
 const ViewButton = styled.button<{ active: boolean }>`
-  padding: 10px 12px;
+  padding: 4px 8px;
   font-size: ${fontSizes.base}px;
   border-radius: 3px;
   border-color: transparent;
@@ -79,21 +80,29 @@ interface Props {
 }
 
 const ViewButtons = memo<Props>(({ className, selectedView, onClick }) => {
+  const theme = useTheme();
   const isListViewSelected = selectedView === 'card';
   const isMapViewSelected = selectedView === 'map';
   const listButtonRef = useRef<HTMLButtonElement | null>(null);
   const mapButtonRef = useRef<HTMLButtonElement | null>(null);
-  const theme = useTheme();
+
+  const [viewChanged, setViewChanged] = useState<boolean | null>(null);
 
   useEffect(() => {
-    selectedView === 'map'
-      ? mapButtonRef.current?.focus()
-      : listButtonRef.current?.focus();
-  }, [selectedView]);
+    // We only want to update this focus if the user clicks/selects the tabs.
+    // Otherwise we end up setting focus when the page loads (which leads an
+    // issue where the user is incorrectly scrolled down to the idea section on page load).
+    if (viewChanged) {
+      selectedView === 'map'
+        ? mapButtonRef.current?.focus()
+        : listButtonRef.current?.focus();
+    }
+  }, [selectedView, viewChanged]);
 
   const handleOnClick =
     (selectedView: 'card' | 'map') => (event: FormEvent) => {
       event.preventDefault();
+      setViewChanged(true);
       onClick(selectedView);
       trackEventByName(tracks.toggleDisplay, {
         locationButtonWasClicked: location.pathname,
@@ -106,6 +115,7 @@ const ViewButtons = memo<Props>(({ className, selectedView, onClick }) => {
     const arrowRightPressed = e.key === 'ArrowRight';
 
     if (arrowLeftPressed || arrowRightPressed) {
+      setViewChanged(true);
       onClick(selectedView === 'card' ? 'map' : 'card');
     }
   };
@@ -113,29 +123,29 @@ const ViewButtons = memo<Props>(({ className, selectedView, onClick }) => {
   return (
     <Box
       display="flex"
-      p="4px"
+      gap="4px"
       borderRadius={theme.borderRadius}
       w="fit-content"
+      h="fit-content"
+      p="4px"
       className={`e2e-list-map-viewbuttons ${className || ''}`}
       role="tablist"
       background={colors.white}
     >
-      <Box mr="4px">
-        <ViewButton
-          role="tab"
-          aria-selected={isListViewSelected}
-          tabIndex={isListViewSelected ? 0 : -1}
-          id="view-tab-1"
-          aria-controls="view-panel-1"
-          onClick={handleOnClick('card')}
-          ref={(el) => (listButtonRef.current = el)}
-          onKeyDown={handleTabListOnKeyDown}
-          active={isListViewSelected}
-        >
-          <StyledIcon name="menu" />
-          <FormattedMessage {...messages.list} />
-        </ViewButton>
-      </Box>
+      <ViewButton
+        role="tab"
+        aria-selected={isListViewSelected}
+        tabIndex={isListViewSelected ? 0 : -1}
+        id="view-tab-1"
+        aria-controls="view-panel-1"
+        onClick={handleOnClick('card')}
+        ref={(el) => (listButtonRef.current = el)}
+        onKeyDown={handleTabListOnKeyDown}
+        active={isListViewSelected}
+      >
+        <StyledIcon name="menu" />
+        <FormattedMessage {...messages.list} />
+      </ViewButton>
       <ViewButton
         role="tab"
         aria-selected={isMapViewSelected}

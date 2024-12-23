@@ -39,6 +39,7 @@
 #  depth              :integer          default(0), not null
 #  children_allowed   :boolean          default(TRUE), not null
 #  children_count     :integer          default(0), not null
+#  first_published_at :datetime
 #
 # Indexes
 #
@@ -64,6 +65,7 @@ class AdminPublication < ApplicationRecord
 
   before_validation :set_publication_status, on: :create
   before_validation :set_default_children_allowed, on: :create
+  before_save :set_first_published_at
 
   scope :published, lambda {
     where(publication_status: 'published')
@@ -83,6 +85,14 @@ class AdminPublication < ApplicationRecord
 
   def published?
     publication_status == 'published'
+  end
+
+  def ever_published?
+    first_published_at.present?
+  end
+
+  def never_published?
+    !ever_published?
   end
 
   def draft?
@@ -107,5 +117,14 @@ class AdminPublication < ApplicationRecord
 
   def set_default_children_allowed
     self.children_allowed = false if publication_type == 'Project'
+  end
+
+  def set_first_published_at
+    return unless first_published_at.nil?
+    return unless published?
+
+    self.updated_at = Time.zone.now
+    self.created_at ||= updated_at
+    self.first_published_at = updated_at
   end
 end

@@ -113,6 +113,10 @@ const Container = styled(Link)<{ hideDescriptionPreview?: boolean }>`
     width: 100%;
     min-height: 460px;
   `}
+
+  &.dynamic {
+    border: 1px ${colors.grey300} solid;
+  }
 `;
 
 const ProjectImageContainer = styled.div`
@@ -389,15 +393,15 @@ const ProjectCard = memo<InputProps>(
     const [visible, setVisible] = useState(false);
 
     const handleProjectCardOnClick = (projectId: string) => {
-      trackEventByName(tracks.clickOnProjectCard, { extra: { projectId } });
+      trackEventByName(tracks.clickOnProjectCard, { projectId });
     };
 
     const handleCTAOnClick = (projectId: string) => {
-      trackEventByName(tracks.clickOnProjectCardCTA, { extra: { projectId } });
+      trackEventByName(tracks.clickOnProjectCardCTA, { projectId });
     };
 
     const handleProjectTitleOnClick = (projectId: string) => {
-      trackEventByName(tracks.clickOnProjectTitle, { extra: { projectId } });
+      trackEventByName(tracks.clickOnProjectTitle, { projectId });
     };
 
     if (project) {

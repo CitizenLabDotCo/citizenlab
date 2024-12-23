@@ -12,6 +12,7 @@ import useAnalysis from 'api/analyses/useAnalysis';
 import useUpdateAnalysis from 'api/analyses/useUpdateAnalysis';
 import useAnalysisInput from 'api/analysis_inputs/useAnalysisInput';
 import useAnalysisUserById from 'api/analysis_users/useAnalysisUserById';
+import usePhase from 'api/phases/usePhase';
 
 import Divider from 'components/admin/Divider';
 import Avatar from 'components/Avatar';
@@ -19,6 +20,7 @@ import Button from 'components/UI/Button';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
+import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import { getFullName } from 'utils/textUtils';
 
 import { useSelectedInputContext } from '../SelectedInputContext';
@@ -34,6 +36,7 @@ const InputListItem = () => {
   const { mutate: updateAnalysis } = useUpdateAnalysis();
 
   const phaseId = searchParams.get('phase_id');
+  const { data: phase } = usePhase(phaseId);
   const { formatMessage } = useIntl();
   const { selectedInputId } = useSelectedInputContext();
   const { analysisId } = useParams() as { analysisId: string };
@@ -54,29 +57,24 @@ const InputListItem = () => {
 
   if (!analysis || !input || !selectedInputId) return null;
 
-  const showManageIdeaButton =
-    analysis.data.attributes.participation_method === 'ideation' && phaseId;
-
-  const isSurveyAnalysis =
-    analysis.data.attributes.participation_method === 'native_survey';
+  const methodConfig = getMethodConfig(
+    analysis.data.attributes.participation_method
+  );
+  const showManageInputButton = methodConfig.showInputManager && phaseId;
 
   const mainCustomFieldId =
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    analysis.data.relationships?.main_custom_field?.data?.id;
+    analysis.data.relationships.main_custom_field?.data?.id;
 
   const additionalCustomFieldIds =
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    analysis.data.relationships?.additional_custom_fields?.data.map(
+    analysis.data.relationships.additional_custom_fields?.data.map(
       (field) => field.id
     );
 
   const allCustomFields = analysis.data.relationships.all_custom_fields.data;
-  const customFieldsInAnalysisIds =
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    [mainCustomFieldId, ...(additionalCustomFieldIds || [])] || [];
+  const customFieldsInAnalysisIds = [
+    mainCustomFieldId,
+    ...(additionalCustomFieldIds || []),
+  ];
 
   const handleAddRemoveAdditionalCustomField = (customFieldId: string) => {
     const newAdditionalCustomFieldIds = additionalCustomFieldIds?.includes(
@@ -104,23 +102,21 @@ const InputListItem = () => {
 
   return (
     <Box data-cy="e2e-analysis-input-preview">
-      {showManageIdeaButton && (
+      {showManageInputButton && (
         <Box display="flex" justifyContent="flex-end">
           <Button
-            // TODO: Fix this the next time the file is edited.
-            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-            linkTo={`/admin/projects/${analysis.data.relationships.project?.data?.id}/phases/${phaseId}/ideas?selected_idea_id=${selectedInputId}`}
+            linkTo={`/admin/projects/${phase?.data.relationships.project.data.id}/phases/${phaseId}/ideas?selected_idea_id=${selectedInputId}`}
             openLinkInNewTab
             buttonStyle="secondary-outlined"
             icon="settings"
             size="s"
             padding="4px 8px"
           >
-            {formatMessage(messages.manageIdea)}
+            {formatMessage(messages.manageInput)}
           </Button>
         </Box>
       )}
-      {isSurveyAnalysis && (
+      {mainCustomFieldId && (
         <Button
           id="e2e-analysis-toggle-show-all-questions-button"
           onClick={() =>
@@ -141,9 +137,7 @@ const InputListItem = () => {
       {showAuthor && (
         <Box mt="20px" display="flex" alignItems="center">
           <Avatar size={40} userId={author.data.id} />
-          {/* TODO: Fix this the next time the file is edited. */}
-          {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-          <Text m="0px">{getFullName(author?.data)}</Text>
+          <Text m="0px">{getFullName(author.data)}</Text>
           <Divider />
         </Box>
       )}
@@ -159,7 +153,7 @@ const InputListItem = () => {
             <Box
               bg={
                 customFieldsInAnalysisIds.includes(customField.id) &&
-                isSurveyAnalysis
+                mainCustomFieldId
                   ? colors.background
                   : colors.white
               }
@@ -167,7 +161,7 @@ const InputListItem = () => {
               py="16px"
               data-cy="e2e-analysis-custom-field-item"
             >
-              {isSurveyAnalysis && (
+              {mainCustomFieldId && (
                 <Box mb="8px">
                   {customField.id === mainCustomFieldId ? (
                     <Box
@@ -217,15 +211,11 @@ const InputListItem = () => {
               <LongFieldValue
                 customFieldId={customField.id}
                 input={input.data}
-                // TODO: Fix this the next time the file is edited.
-                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 projectId={analysis.data.relationships.project?.data?.id}
-                // TODO: Fix this the next time the file is edited.
-                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 phaseId={analysis.data.relationships.phase?.data?.id}
               />
             </Box>
-            {isSurveyAnalysis && <Divider m="0px" />}
+            {mainCustomFieldId && <Divider m="0px" />}
           </Box>
         ))}
 

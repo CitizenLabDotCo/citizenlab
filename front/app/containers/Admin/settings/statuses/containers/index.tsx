@@ -69,7 +69,7 @@ const IdeaStatuses = ({ variant }: { variant: 'ideation' | 'proposals' }) => {
   };
 
   const isRequired = (ideaStatus: IIdeaStatusData) => {
-    return ideaStatus.attributes.locked === false;
+    return ideaStatus.attributes.locked === true;
   };
 
   const isDeletable = (ideaStatus: IIdeaStatusData) => {

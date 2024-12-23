@@ -1397,10 +1397,10 @@
         }
       },
 
-      "new_homepage_widgets": {
+      "project_review": {
         "type": "object",
-        "title": "New homepage widgets",
-        "description": "New homepage widgets (sticky homepages tandem). Feature flagged until pricing plan stuff decided.",
+        "title": "Project review",
+        "description": "Enables the ability to review projects before they are published.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -1409,10 +1409,28 @@
         }
       },
 
-      "project_review": {
+      "similar_inputs": {
         "type": "object",
-        "title": "Project review",
-        "description": "Enables the ability to review projects before they are published.",
+        "title": "Experimental feature: Similar inputs",
+        "description":	"Show similar inputs (ideas) when viewing the page of an input, using AI (Cohere multilingual word embeddings). Inputs posted while the feature was disabled will not be included.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "required-settings": ["admins_only"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false},
+          "admins_only": {
+            "title": "Only admins can see similar inputs",
+            "type": "boolean",
+            "default": true
+          }
+        }
+      },
+
+      "platform_templates": {
+        "type": "object",
+        "title": "Platform templates",
+        "description": "Allow non-superadmins to create reports using platform templates.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {

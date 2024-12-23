@@ -401,4 +401,62 @@ describe ProjectsFinderService do
       end
     end
   end
+
+  describe 'projects_for_areas' do
+    let!(:area1) { create(:area) }
+    let!(:area2) { create(:area) }
+    let!(:project_with_areas) { create(:project_with_active_ideation_phase) }
+    let!(:_areas_project1) { create(:areas_project, project: project_with_areas, area: area1) }
+    let!(:_areas_project2) { create(:areas_project, project: project_with_areas, area: area2) }
+
+    let!(:project_for_all_areas) { create(:project_with_active_ideation_phase, include_all_areas: true) }
+
+    let!(:_project_without_area) { create(:project) }
+
+    it 'Lists projects for a given area OR for all areas' do
+      result = service.new(Project.all, user, { areas: [area1.id] }).projects_for_areas
+
+      expect(Project.count).to eq 3
+      expect(result).to match_array [project_with_areas, project_for_all_areas]
+    end
+
+    it 'Orders projects by created_at DESC' do
+      project2 = create(:project)
+      project3 = create(:project)
+      create(:areas_project, project: project2, area: area1)
+      create(:areas_project, project: project3, area: area1)
+
+      project_with_areas.update!(created_at: 4.days.ago)
+      project2.update!(created_at: 1.day.ago)
+      project3.update!(created_at: 3.days.ago)
+      project_for_all_areas.update!(created_at: 2.days.ago)
+
+      result = service.new(Project.all, user, { areas: [area1.id] }).projects_for_areas
+
+      expect(result).to eq [project2, project_for_all_areas, project3, project_with_areas]
+    end
+
+    it 'Does not return duplicate projects when more than one areas_project matches' do
+      result = service.new(Project.all, user, { areas: [area1.id, area2.id] }).projects_for_areas
+
+      expect(result).to eq [project_for_all_areas, project_with_areas]
+    end
+
+    it 'Returns projects for followed areas & for all areas when areas param is nil' do
+      create(:follower, followable: area1, user: user)
+
+      result = service.new(Project.all, user, {}).projects_for_areas
+
+      expect(result).to match_array [project_with_areas, project_for_all_areas]
+    end
+
+    it 'Does not include draft projects, even for an admin' do
+      user = create(:admin)
+      project_with_areas.update!(admin_publication_attributes: { publication_status: 'draft' })
+
+      result = service.new(Project.all, user, { areas: [area1.id] }).projects_for_areas
+
+      expect(result).to eq [project_for_all_areas]
+    end
+  end
 end

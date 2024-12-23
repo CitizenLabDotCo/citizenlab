@@ -102,6 +102,10 @@ const Container = styled(Link)`
     width: 100%;
     min-height: 460px;
   `}
+
+  &.dynamic {
+    border: 1px ${colors.grey300} solid;
+  }
 `;
 
 const FolderImageContainer = styled.div`
@@ -333,7 +337,7 @@ const ProjectFolderCard = memo<Props>(
     const handleProjectCardOnClick = useCallback(
       (projectFolderId: string) => () => {
         trackEventByName(tracks.clickOnProjectCard, {
-          extra: { projectFolderId },
+          projectFolderId,
         });
       },
       []
@@ -342,7 +346,7 @@ const ProjectFolderCard = memo<Props>(
     const handleProjectTitleOnClick = useCallback(
       (projectFolderId: string) => () => {
         trackEventByName(tracks.clickOnProjectTitle, {
-          extra: { projectFolderId },
+          projectFolderId,
         });
       },
       []

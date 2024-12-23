@@ -43,6 +43,7 @@ import {
   parseLayers,
   getShapeSymbol,
 } from 'components/EsriMap/utils';
+import { InputFiltersProps } from 'components/IdeaCards/IdeasWithFiltersSidebar/InputFilters';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
@@ -107,10 +108,17 @@ export interface Props {
   phaseId?: string;
   mapConfig?: IMapConfig | null;
   ideaMarkers?: IIdeaMarkers;
+  inputFiltersProps?: InputFiltersProps;
 }
 
 const IdeasMap = memo<Props>(
-  ({ projectId, phaseId, mapConfig, ideaMarkers }: Props) => {
+  ({
+    projectId,
+    phaseId,
+    mapConfig,
+    ideaMarkers,
+    inputFiltersProps,
+  }: Props) => {
     const theme = useTheme();
     const localize = useLocalize();
     const { formatMessage } = useIntl();
@@ -594,6 +602,7 @@ const IdeasMap = memo<Props>(
                   phaseId={phaseId}
                   onSelectIdea={onSelectIdeaFromList}
                   selectedIdea={selectedIdea}
+                  inputFiltersProps={inputFiltersProps}
                 />
               </Box>
             )}
