@@ -1677,7 +1677,7 @@
   "app.containers.AdminPage.ProjectEdit.defaultSorting": "Ordenar",
   "app.containers.AdminPage.ProjectEdit.departments": "Departamentos",
   "app.containers.AdminPage.ProjectEdit.descriptionTab": "Descripción",
-  "app.containers.AdminPage.ProjectEdit.disableDislikingTooltip": "Esto desactivará el 'no me gusta', pero el 'me gusta' seguirá activado. Puedes desactivar completamente la reacciones en la sección Acciones de esta pestaña.",
+  "app.containers.AdminPage.ProjectEdit.disableDislikingTooltip2": "Esto activará o desactivará el no gustar, pero el gustar seguirá activado. Te recomendamos que lo dejes desactivado a menos que estés realizando un análisis de opciones.",
   "app.containers.AdminPage.ProjectEdit.disabled": "Desactivado",
   "app.containers.AdminPage.ProjectEdit.dislikingMethodTitle": "Número de 'no me gusta' por participante",
   "app.containers.AdminPage.ProjectEdit.dislikingPosts": "Activar 'no me gusta'",
