@@ -1677,7 +1677,7 @@
   "app.containers.AdminPage.ProjectEdit.defaultSorting": "Sortering",
   "app.containers.AdminPage.ProjectEdit.departments": "Avdelinger",
   "app.containers.AdminPage.ProjectEdit.descriptionTab": "Beskrivelse",
-  "app.containers.AdminPage.ProjectEdit.disableDislikingTooltip": "Dette deaktiverer misliker, men liker vil fortsatt være aktivert. Du kan deaktivere reaksjoner helt i Handlinger-delen i denne fanen.",
+  "app.containers.AdminPage.ProjectEdit.disableDislikingTooltip2": "Dette vil aktivere eller deaktivere misliker, men liker vil fortsatt være aktivert. Vi anbefaler at du lar denne funksjonen være deaktivert med mindre du skal utføre en alternativanalyse.",
   "app.containers.AdminPage.ProjectEdit.disabled": "Deaktivert",
   "app.containers.AdminPage.ProjectEdit.dislikingMethodTitle": "Antall dislikes per deltaker",
   "app.containers.AdminPage.ProjectEdit.dislikingPosts": "Aktiver misliker",
