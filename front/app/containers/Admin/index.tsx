@@ -12,9 +12,6 @@ import { isAdmin, isModerator } from 'utils/permissions/roles';
 
 import Sidebar from './sideBar/';
 
-// stlying
-import 'assets/semantic/semantic.min.css';
-
 const Container = styled.div`
   display: flex;
   background: ${colors.background};
