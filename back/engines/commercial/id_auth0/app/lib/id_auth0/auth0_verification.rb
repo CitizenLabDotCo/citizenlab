@@ -17,7 +17,7 @@ module IdAuth0
     end
 
     def config_parameters
-      %i[client_id client_secret domain method_name_multiloc]
+      %i[client_id client_secret domain method_name_multiloc enabled_for_verified_actions]
     end
 
     def config_parameters_schema
@@ -25,6 +25,11 @@ module IdAuth0
         method_name_multiloc: {
           '$ref': '#/definitions/multiloc_string',
           private: true
+        },
+        enabled_for_verified_actions: {
+          private: true,
+          type: 'boolean',
+          description: 'Whether this verification method should be enabled for verified actions.'
         }
       }
     end

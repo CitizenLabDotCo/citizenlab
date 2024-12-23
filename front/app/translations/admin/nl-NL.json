@@ -1676,7 +1676,6 @@
   "app.containers.AdminPage.ProjectEdit.defaultSorting": "Sorteren",
   "app.containers.AdminPage.ProjectEdit.departments": "Departementen",
   "app.containers.AdminPage.ProjectEdit.descriptionTab": "Beschrijving",
-  "app.containers.AdminPage.ProjectEdit.disableDislikingTooltip": "Dit schakelt dislikes uit, maar likes staan nog steeds aan. Je kunt reageren volledig uitschakelen in het gedeelte 'Acties' van dit tabblad.",
   "app.containers.AdminPage.ProjectEdit.disabled": "Uitgeschakeld",
   "app.containers.AdminPage.ProjectEdit.dislikingMethodTitle": "Aantal dislikes per deelnemer",
   "app.containers.AdminPage.ProjectEdit.dislikingPosts": "Dislikes inschakelen",

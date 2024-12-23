@@ -1676,7 +1676,6 @@
   "app.containers.AdminPage.ProjectEdit.defaultSorting": "Šķirošana",
   "app.containers.AdminPage.ProjectEdit.departments": "Nodaļas",
   "app.containers.AdminPage.ProjectEdit.descriptionTab": "Apraksts",
-  "app.containers.AdminPage.ProjectEdit.disableDislikingTooltip": "Tas atslēgs nepatīk, bet patika joprojām būs iespējota. Reaģēšanu var pilnībā atspējot šīs cilnes sadaļā Darbības.",
   "app.containers.AdminPage.ProjectEdit.disabled": "atspējots",
   "app.containers.AdminPage.ProjectEdit.dislikingMethodTitle": "Nepatiku skaits uz vienu dalībnieku",
   "app.containers.AdminPage.ProjectEdit.dislikingPosts": "Iespējot nepatīk",

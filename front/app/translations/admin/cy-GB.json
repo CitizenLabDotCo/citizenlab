@@ -1676,7 +1676,6 @@
   "app.containers.AdminPage.ProjectEdit.defaultSorting": "Didoli",
   "app.containers.AdminPage.ProjectEdit.departments": "Adrannau",
   "app.containers.AdminPage.ProjectEdit.descriptionTab": "Disgrifiad",
-  "app.containers.AdminPage.ProjectEdit.disableDislikingTooltip": "Bydd hyn yn analluogi casáu, ond bydd hoffi yn dal i gael ei alluogi. Gallwch analluogi ymateb yn gyfan gwbl yn adran Camau Gweithredu y tab hwn.",
   "app.containers.AdminPage.ProjectEdit.disabled": "Anabl",
   "app.containers.AdminPage.ProjectEdit.dislikingMethodTitle": "Nifer y cas bethau fesul cyfranogwr",
   "app.containers.AdminPage.ProjectEdit.dislikingPosts": "Galluogi casáu",
