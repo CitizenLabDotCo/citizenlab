@@ -1677,7 +1677,7 @@
   "app.containers.AdminPage.ProjectEdit.defaultSorting": "Sortering",
   "app.containers.AdminPage.ProjectEdit.departments": "Avdelningar",
   "app.containers.AdminPage.ProjectEdit.descriptionTab": "Beskrivning",
-  "app.containers.AdminPage.ProjectEdit.disableDislikingTooltip": "Detta inaktiverar ogillande, men gillande kommer fortfarande att vara aktiverat. Du kan inaktivera reagera helt i avsnittet Åtgärder på den här fliken.",
+  "app.containers.AdminPage.ProjectEdit.disableDislikingTooltip2": "Detta kommer att aktivera eller inaktivera ogillande, men gillande kommer fortfarande att vara aktiverat. Vi rekommenderar att du låter detta vara inaktiverat om du inte genomför en alternativanalys.",
   "app.containers.AdminPage.ProjectEdit.disabled": "Inaktiverad",
   "app.containers.AdminPage.ProjectEdit.dislikingMethodTitle": "Antal ogillanden per deltagare",
   "app.containers.AdminPage.ProjectEdit.dislikingPosts": "Aktivera ogillande",
