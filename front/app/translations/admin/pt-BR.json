@@ -1677,7 +1677,7 @@
   "app.containers.AdminPage.ProjectEdit.defaultSorting": "Ordenar",
   "app.containers.AdminPage.ProjectEdit.departments": "Departamentos",
   "app.containers.AdminPage.ProjectEdit.descriptionTab": "Descrição",
-  "app.containers.AdminPage.ProjectEdit.disableDislikingTooltip": "Isto desactivará o não gostar, mas o gostar continuará a estar ativado. Pode desativar completamente a reação na secção Acções deste separador.",
+  "app.containers.AdminPage.ProjectEdit.disableDislikingTooltip2": "Isso ativará ou desativará o não gostar, mas o gostar ainda estará ativado. Recomendamos deixar essa opção desativada, a menos que você esteja realizando uma análise de opções.",
   "app.containers.AdminPage.ProjectEdit.disabled": "Desativado",
   "app.containers.AdminPage.ProjectEdit.dislikingMethodTitle": "Número de não gostos por participante",
   "app.containers.AdminPage.ProjectEdit.dislikingPosts": "Permitir não gostar",
