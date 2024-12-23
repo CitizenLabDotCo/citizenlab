@@ -487,6 +487,7 @@ models:
       submission_enabled: true
       commenting_enabled: true
       reacting_enabled: true
+      reacting_dislike_enabled: true
       reacting_like_method: unlimited
   event:
     - project_ref: *open_idea_project
