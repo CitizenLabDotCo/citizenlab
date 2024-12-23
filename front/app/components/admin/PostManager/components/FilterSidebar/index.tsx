@@ -220,14 +220,7 @@ const FilterSidebar = ({
           );
         })}
       </Box>
-      <Box
-        border={BORDER}
-        borderRadius={stylingConsts.border}
-        p="12px"
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-      >
+      <Box border={BORDER} borderRadius={stylingConsts.border} p="12px">
         {selectedItem.content}
       </Box>
     </>
