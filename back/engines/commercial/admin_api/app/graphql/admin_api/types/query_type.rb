@@ -72,21 +72,6 @@ module AdminApi
       ideas
     end
 
-    field :initiatives, Types::InitiativeType.connection_type, null: false
-
-    def initiatives
-      Initiative.all
-    end
-
-    field :public_initiatives, Types::InitiativeType.connection_type, null: false
-
-    def public_initiatives(_args = {})
-      ::InitiativePolicy::Scope.new(nil, Initiative)
-        .resolve
-        .includes(:initiative_images)
-        .published
-    end
-
     field :user, Types::UserType, null: false do
       argument :id, ID, required: true
     end
@@ -130,15 +115,6 @@ module AdminApi
 
     def idea(args)
       Idea.find(args[:id])
-    end
-
-    field :initiative, Types::InitiativeType, null: false do
-      argument :id, ID, required: true
-      description 'Find an initiative by ID'
-    end
-
-    def initiative(args)
-      Initiative.find(args[:id])
     end
 
     field :public_pages, Types::PageType.connection_type, null: false

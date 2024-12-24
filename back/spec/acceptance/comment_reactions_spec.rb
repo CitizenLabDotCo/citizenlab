@@ -70,9 +70,9 @@ resource 'Comment Reactions' do
     end
 
     describe do
-      before { @comment.update!(post: create(:initiative)) }
+      before { @comment.update!(post: create(:idea)) }
 
-      example 'Create a reaction on a comment of an initiative', document: false do
+      example 'Create a reaction on a comment of an idea', document: false do
         do_request
         assert_status 201
       end

@@ -10,7 +10,7 @@ RSpec.describe Notifications::OfficialFeedbackOnIdeaYouFollow do
       create(:follower)
       follower3 = create(:follower, followable: idea)
 
-      official_feedback = create(:official_feedback, post: idea)
+      official_feedback = create(:official_feedback, idea: idea)
       activity = create(:activity, item: official_feedback, action: :created)
 
       notifications = described_class.make_notifications_on(activity)
@@ -21,7 +21,7 @@ RSpec.describe Notifications::OfficialFeedbackOnIdeaYouFollow do
       idea = create(:idea)
       follower = create(:follower, followable: idea)
 
-      official_feedback = create(:official_feedback, post: idea, user: follower.user)
+      official_feedback = create(:official_feedback, idea: idea, user: follower.user)
       activity = create(:activity, item: official_feedback, action: :created)
 
       notifications = described_class.make_notifications_on(activity)
@@ -31,7 +31,7 @@ RSpec.describe Notifications::OfficialFeedbackOnIdeaYouFollow do
     it 'does not make a notification when follow feature is turned off' do
       idea = create(:idea)
       create(:follower, followable: idea)
-      official_feedback = create(:official_feedback, post: idea)
+      official_feedback = create(:official_feedback, idea: idea)
       activity = create(:activity, item: official_feedback, action: :created)
 
       SettingsService.new.deactivate_feature! 'follow'

@@ -113,7 +113,7 @@ module MultiTenancy
           Comment => serialize_comments(ideas, initiatives),
           InternalComment => serialize_internal_comments(ideas, initiatives),
           Reaction => serialize_reactions(ideas).merge!(serialize_reactions(initiatives)),
-          OfficialFeedback => serialize_records(OfficialFeedback.where(post: [ideas, initiatives])),
+          OfficialFeedback => serialize_records(OfficialFeedback),
 
           # Groups
           Group => serialize_records(groups),

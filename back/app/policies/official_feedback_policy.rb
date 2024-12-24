@@ -1,9 +1,7 @@
-# frozen_string_literal: true
-
-class IdeaOfficialFeedbackPolicy < ApplicationPolicy
+class OfficialFeedbackPolicy < ApplicationPolicy
   class Scope < ApplicationPolicy::Scope
     def resolve
-      scope.where(post: scope_for(Idea))
+      scope.where(idea: scope_for(Idea))
     end
   end
 
@@ -12,7 +10,7 @@ class IdeaOfficialFeedbackPolicy < ApplicationPolicy
   end
 
   def show?
-    policy_for(record.post).show?
+    policy_for(record.idea).show?
   end
 
   def update?
