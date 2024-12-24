@@ -16,6 +16,7 @@ ALTER TABLE IF EXISTS ONLY public.events_attendances DROP CONSTRAINT IF EXISTS f
 ALTER TABLE IF EXISTS ONLY public.comments DROP CONSTRAINT IF EXISTS fk_rails_f44b1e3c8a;
 ALTER TABLE IF EXISTS ONLY public.cosponsorships DROP CONSTRAINT IF EXISTS fk_rails_f32533b783;
 ALTER TABLE IF EXISTS ONLY public.report_builder_published_graph_data_units DROP CONSTRAINT IF EXISTS fk_rails_f21a19c203;
+ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_f1d8986d29;
 ALTER TABLE IF EXISTS ONLY public.idea_files DROP CONSTRAINT IF EXISTS fk_rails_efb12f53ad;
 ALTER TABLE IF EXISTS ONLY public.static_pages_topics DROP CONSTRAINT IF EXISTS fk_rails_edc8786515;
 ALTER TABLE IF EXISTS ONLY public.polls_response_options DROP CONSTRAINT IF EXISTS fk_rails_e871bf6e26;
@@ -107,6 +108,7 @@ ALTER TABLE IF EXISTS ONLY public.idea_imports DROP CONSTRAINT IF EXISTS fk_rail
 ALTER TABLE IF EXISTS ONLY public.ideas DROP CONSTRAINT IF EXISTS fk_rails_5ac7668cd3;
 ALTER TABLE IF EXISTS ONLY public.cosponsors_initiatives DROP CONSTRAINT IF EXISTS fk_rails_5ac54ec4a5;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_575368d182;
+ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_5471f55cd6;
 ALTER TABLE IF EXISTS ONLY public.identities DROP CONSTRAINT IF EXISTS fk_rails_5373344100;
 ALTER TABLE IF EXISTS ONLY public.permissions_custom_fields DROP CONSTRAINT IF EXISTS fk_rails_50335fc43f;
 ALTER TABLE IF EXISTS ONLY public.analytics_dimension_projects_fact_visits DROP CONSTRAINT IF EXISTS fk_rails_4ecebb6e8a;
@@ -217,15 +219,13 @@ DROP INDEX IF EXISTS public.index_notifications_on_spam_report_id;
 DROP INDEX IF EXISTS public.index_notifications_on_recipient_id_and_read_at;
 DROP INDEX IF EXISTS public.index_notifications_on_recipient_id;
 DROP INDEX IF EXISTS public.index_notifications_on_project_review_id;
-DROP INDEX IF EXISTS public.index_notifications_on_post_status_id_and_post_status_type;
-DROP INDEX IF EXISTS public.index_notifications_on_post_status_id;
-DROP INDEX IF EXISTS public.index_notifications_on_post_id_and_post_type;
 DROP INDEX IF EXISTS public.index_notifications_on_phase_id;
 DROP INDEX IF EXISTS public.index_notifications_on_official_feedback_id;
 DROP INDEX IF EXISTS public.index_notifications_on_invite_id;
 DROP INDEX IF EXISTS public.index_notifications_on_internal_comment_id;
 DROP INDEX IF EXISTS public.index_notifications_on_initiating_user_id;
 DROP INDEX IF EXISTS public.index_notifications_on_inappropriate_content_flag_id;
+DROP INDEX IF EXISTS public.index_notifications_on_idea_status_id;
 DROP INDEX IF EXISTS public.index_notifications_on_created_at;
 DROP INDEX IF EXISTS public.index_notifications_on_cosponsorship_id;
 DROP INDEX IF EXISTS public.index_notifications_on_cosponsors_initiative_id;
@@ -2879,7 +2879,7 @@ CREATE TABLE public.notifications (
     type character varying,
     read_at timestamp without time zone,
     recipient_id uuid,
-    post_id uuid,
+    idea_id uuid,
     comment_id uuid,
     project_id uuid,
     created_at timestamp without time zone NOT NULL,
@@ -2889,11 +2889,9 @@ CREATE TABLE public.notifications (
     invite_id uuid,
     reason_code character varying,
     other_reason character varying,
-    post_status_id uuid,
+    idea_status_id uuid,
     official_feedback_id uuid,
     phase_id uuid,
-    post_type character varying,
-    post_status_type character varying,
     project_folder_id uuid,
     inappropriate_content_flag_id uuid,
     internal_comment_id uuid,
@@ -5675,6 +5673,13 @@ CREATE INDEX index_notifications_on_created_at ON public.notifications USING btr
 
 
 --
+-- Name: index_notifications_on_idea_status_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_notifications_on_idea_status_id ON public.notifications USING btree (idea_status_id);
+
+
+--
 -- Name: index_notifications_on_inappropriate_content_flag_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -5714,27 +5719,6 @@ CREATE INDEX index_notifications_on_official_feedback_id ON public.notifications
 --
 
 CREATE INDEX index_notifications_on_phase_id ON public.notifications USING btree (phase_id);
-
-
---
--- Name: index_notifications_on_post_id_and_post_type; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_notifications_on_post_id_and_post_type ON public.notifications USING btree (post_id, post_type);
-
-
---
--- Name: index_notifications_on_post_status_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_notifications_on_post_status_id ON public.notifications USING btree (post_status_id);
-
-
---
--- Name: index_notifications_on_post_status_id_and_post_status_type; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_notifications_on_post_status_id_and_post_status_type ON public.notifications USING btree (post_status_id, post_status_type);
 
 
 --
@@ -6541,6 +6525,14 @@ ALTER TABLE ONLY public.identities
 
 
 --
+-- Name: notifications fk_rails_5471f55cd6; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.notifications
+    ADD CONSTRAINT fk_rails_5471f55cd6 FOREIGN KEY (idea_id) REFERENCES public.ideas(id);
+
+
+--
 -- Name: notifications fk_rails_575368d182; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7269,6 +7261,14 @@ ALTER TABLE ONLY public.idea_files
 
 
 --
+-- Name: notifications fk_rails_f1d8986d29; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.notifications
+    ADD CONSTRAINT fk_rails_f1d8986d29 FOREIGN KEY (idea_status_id) REFERENCES public.idea_statuses(id);
+
+
+--
 -- Name: report_builder_published_graph_data_units fk_rails_f21a19c203; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7807,4 +7807,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20241127093339'),
 ('20241203151945'),
 ('20241204133717'),
-('20241204144321');
+('20241204144321'),
+('20241224115952');
+
+
