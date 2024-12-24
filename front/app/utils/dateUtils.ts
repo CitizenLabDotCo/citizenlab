@@ -261,7 +261,9 @@ export const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 // This function makes sure that the date is always interpreted as midnight in the user's timezone.
 const backendDatestringRegex = /^\d{4}-\d{2}-\d{2}$/;
 
-export const parseBackendDateString = (dateString: string) => {
+export const parseBackendDateString = (dateString?: string) => {
+  if (!dateString) return undefined;
+
   if (!dateString.match(backendDatestringRegex)) {
     throw new Error('Invalid date string');
   }

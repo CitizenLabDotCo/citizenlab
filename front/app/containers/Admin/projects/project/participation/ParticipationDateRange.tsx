@@ -34,8 +34,8 @@ const ParticipationDatesRange = ({
         <Box width="100%" display="flex">
           <DateRangePicker
             selectedRange={{
-              from: startAt ? parseBackendDateString(startAt) : undefined,
-              to: endAt ? parseBackendDateString(endAt) : undefined,
+              from: parseBackendDateString(startAt),
+              to: parseBackendDateString(endAt),
             }}
             onUpdateRange={({ from, to }) => {
               setStartAt(toBackendDateString(from));
