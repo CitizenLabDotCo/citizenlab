@@ -1,5 +1,7 @@
 class RemoveInitiativesFromNotifications < ActiveRecord::Migration[7.0]
   def change
+    remove_column :notifications, :cosponsors_initiative_id, :uuid
+
     # post -> idea
     execute <<~SQL.squish
       DELETE FROM notifications
