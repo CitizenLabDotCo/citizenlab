@@ -8,8 +8,11 @@ export interface Props {
   endMonth?: Date;
   defaultMonth?: Date;
   disabled?: PropsBase['disabled'];
-  selectionMode?: SelectionMode;
   onUpdateRange: (range: Partial<DateRange>) => void;
+}
+
+export interface CalendarProps extends Props {
+  selectionMode?: SelectionMode;
   onUpdateSelectionMode: (selectionMode: SelectionMode) => void;
 }
 

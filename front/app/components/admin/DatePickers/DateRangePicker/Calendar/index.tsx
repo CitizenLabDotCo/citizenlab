@@ -7,10 +7,13 @@ import styled from 'styled-components';
 
 import useLocale from 'hooks/useLocale';
 
+import { useIntl } from 'utils/cl-intl';
+
 import { getEndMonth } from '../../_shared/getStartEndMonth';
 import { getLocale } from '../../_shared/locales';
-import { Props } from '../typings';
+import { CalendarProps } from '../typings';
 
+import messages from './messages';
 import { getNextSelectionMode } from './utils/getNextSelectionMode';
 import { getUpdatedRange } from './utils/getUpdatedRange';
 
@@ -35,8 +38,9 @@ const Calendar = ({
   selectionMode,
   onUpdateRange,
   onUpdateSelectionMode,
-}: Props) => {
+}: CalendarProps) => {
   const locale = useLocale();
+  const { formatMessage } = useIntl();
 
   const startMonth = _startMonth ?? new Date(1900, 0);
   const endMonth = getEndMonth({
@@ -93,7 +97,7 @@ const Calendar = ({
                   onUpdateRange({ from: undefined, to: selectedRange.to });
                 }}
               >
-                Clear start date
+                {formatMessage(messages.clearStartDate)}
               </Button>
             )}
             {selectedRange.to && (
@@ -107,7 +111,7 @@ const Calendar = ({
                   onUpdateRange({ from: selectedRange.from, to: undefined });
                 }}
               >
-                Clear end date
+                {formatMessage(messages.clearEndDate)}
               </Button>
             )}
           </Box>
