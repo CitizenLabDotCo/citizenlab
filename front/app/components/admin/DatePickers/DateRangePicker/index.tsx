@@ -6,7 +6,7 @@ import ClickOutsideContainer from '../_shared/ClickOutsideContainer';
 
 import Calendar from './Calendar';
 import Input from './Input';
-import { Props } from './typings';
+import { Props, SelectionMode } from './typings';
 
 const WIDTH = '620px';
 
@@ -18,12 +18,14 @@ const DateRangePicker = ({
   disabled,
   onUpdateRange,
 }: Props) => {
-  const [calendarOpen, setCalendarOpen] = useState(false);
+  const [selectionMode, setSelectionMode] = useState<SelectionMode>();
 
   return (
     <ClickOutsideContainer
       width={WIDTH}
-      onClickOutside={() => setCalendarOpen(false)}
+      onClickOutside={() => {
+        setSelectionMode(undefined);
+      }}
     >
       <Tooltip
         content={
@@ -34,17 +36,24 @@ const DateRangePicker = ({
               endMonth={endMonth}
               defaultMonth={defaultMonth}
               disabled={disabled}
+              selectionMode={selectionMode}
               onUpdateRange={onUpdateRange}
             />
           </Box>
         }
         placement="bottom"
-        visible={calendarOpen}
+        visible={!!selectionMode}
         width="1200px"
       >
         <Input
           selectedRange={selectedRange}
-          onClick={() => setCalendarOpen((open) => !open)}
+          selectionMode={selectionMode}
+          onClickFrom={() => {
+            setSelectionMode('from');
+          }}
+          onClickTo={() => {
+            setSelectionMode('to');
+          }}
         />
       </Tooltip>
     </ClickOutsideContainer>

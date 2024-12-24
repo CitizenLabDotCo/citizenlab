@@ -1,0 +1,52 @@
+import React from 'react';
+
+import {
+  defaultInputStyle,
+  colors,
+  fontSizes,
+  Icon,
+} from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
+const Container = styled.div<{ disabled: boolean }>`
+  ${defaultInputStyle};
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: ${fontSizes.base}px;
+  padding: 4px 8px;
+
+  color: ${colors.grey800};
+
+  ${({ disabled }) =>
+    disabled
+      ? `
+    cursor: not-allowed;
+    color: ${colors.grey500};
+    svg {
+      fill: ${colors.grey500};
+    }
+  `
+      : ''}
+`;
+
+interface Props {
+  id?: string;
+  disabled?: boolean;
+  children: React.ReactNode;
+}
+
+const InputContainer = ({ id, disabled = false, children }: Props) => {
+  return (
+    <Container
+      id={id}
+      className="e2e-date-phase-picker-input"
+      disabled={disabled}
+    >
+      {children}
+      <Icon name="calendar" height="18px" />
+    </Container>
+  );
+};
+
+export default InputContainer;

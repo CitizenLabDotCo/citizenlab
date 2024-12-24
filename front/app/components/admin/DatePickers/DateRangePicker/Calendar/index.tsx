@@ -11,6 +11,8 @@ import { getEndMonth } from '../../_shared/getStartEndMonth';
 import { getLocale } from '../../_shared/locales';
 import { Props } from '../typings';
 
+import { getUpdatedRange } from './utils/getUpdatedRange';
+
 const DayPickerStyles = styled.div`
   .rdp-root {
     --rdp-accent-color: ${colors.teal700};
@@ -29,6 +31,7 @@ const Calendar = ({
   endMonth: _endMonth,
   defaultMonth,
   disabled,
+  selectionMode,
   onUpdateRange,
 }: Props) => {
   const locale = useLocale();
@@ -40,25 +43,15 @@ const Calendar = ({
   });
 
   const handleDayClick: PropsBase['onDayClick'] = (day: Date) => {
-    // If we have no date range yet,
-    // OR we already have a fully set date range,
-    // Set 'from' to the clicked day and remove 'to'.
-    if (!selectedRange.from || selectedRange.to) {
-      onUpdateRange({ from: day, to: undefined });
-      return;
-    }
+    if (!selectionMode) return; // Should not be possible in practice
 
-    // If we clicked a day before the current 'from' date,
-    // we set the 'from' date to the clicked day and remove 'to'.
-    if (selectedRange.from > day) {
-      onUpdateRange({ from: day, to: undefined });
-      return;
-    }
-
-    onUpdateRange({
-      from: selectedRange.from,
-      to: day,
+    const nextRange = getUpdatedRange({
+      selectedRange,
+      selectionMode,
+      clickedDate: day,
     });
+
+    onUpdateRange(nextRange);
   };
 
   return (
