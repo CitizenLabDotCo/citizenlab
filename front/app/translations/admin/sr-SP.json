@@ -2589,7 +2589,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleTooltip": "Корисно је пружити ове информације корисницима који се ослањају на читач екрана или другу помоћну технологију.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabel": "Сајт адреса",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabelTooltip": "Пун УРЛ веб локације коју желите да уградите.",
-  "app.containers.admin.ContentBuilder.IframeMultiloc.iframeDescription2": "Display content from an external website on your page in an HTML iFrame. Note that not every page can be embedded. If you are having trouble embedding a page, check with the website owner if their server is configured correctly to be embedded.",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.iframeDescription3": "Display content from an external website on your page in an HTML iFrame. Note that not every page can be embedded. If you are having trouble embedding a page, check with the owner of the page if it is configured to allow embedding.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeEmbedVisitLinkMessage": "Посетите нашу страницу за подршку",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeHeightPlaceholder": "300",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeInvalidWhitelistUrlErrorMessage": "Жао нам је, овај садржај није могао да се угради. {visitLinkMessage} да бисте сазнали више.",
