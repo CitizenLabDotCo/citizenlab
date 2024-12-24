@@ -15,10 +15,10 @@ export const getUpdatedRange = ({
 }: GetUpdatedRangeParams): Partial<DateRange> => {
   if (selectionMode === 'from') {
     // If you are in the 'from' selection mode,
-    // but you click a date after the 'to' date,
+    // but you click a date equal to or after the 'to' date,
     // we will set the 'from' date but
     // remove the 'to' date.
-    if (from && to && clickedDate > to) {
+    if (to && clickedDate >= to) {
       return {
         from: clickedDate,
         to: undefined,
@@ -32,10 +32,10 @@ export const getUpdatedRange = ({
   }
 
   // If you are the 'to' selection mode,
-  // but you click a date before the 'from'
+  // but you click a date equal to or before the 'from'
   // date, we will set the 'to' date but
   // remove the 'from' date.
-  if (from && to && clickedDate < from) {
+  if (from && clickedDate <= from) {
     return {
       from: undefined,
       to: clickedDate,
