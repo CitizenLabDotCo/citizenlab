@@ -18,7 +18,7 @@ RSpec.describe Notifications::InternalComments::InternalCommentOnUnassignedUnmod
         expect(notifications.first).to have_attributes(
           recipient_id: admin.id,
           initiating_user_id: internal_comment.author_id,
-          post_id: idea.id,
+          idea_id: idea.id,
           internal_comment_id: internal_comment.id,
           project_id: internal_comment.post.project_id
         )

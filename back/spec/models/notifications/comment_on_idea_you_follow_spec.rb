@@ -14,7 +14,7 @@ RSpec.describe Notifications::CommentOnIdeaYouFollow do
       expect(notifications.first).to have_attributes(
         recipient_id: follower.user_id,
         initiating_user_id: comment.author_id,
-        post_id: idea.id,
+        idea_id: idea.id,
         comment_id: comment.id,
         project_id: comment.post.project_id
       )

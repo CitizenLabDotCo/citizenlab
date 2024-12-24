@@ -65,7 +65,7 @@
 #
 module Notifications
   class InternalComments::MentionInInternalComment < Notification
-    validates :initiating_user, :internal_comment, :post, presence: true
+    validates :initiating_user, :internal_comment, :idea, presence: true
 
     ACTIVITY_TRIGGERS = { 'InternalComment' => { 'mentioned' => true } }
     EVENT_NAME = 'Mention in an internal_comment'

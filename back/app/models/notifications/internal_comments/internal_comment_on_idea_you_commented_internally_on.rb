@@ -65,7 +65,7 @@
 #
 module Notifications
   class InternalComments::InternalCommentOnIdeaYouCommentedInternallyOn < Notification
-    validates :initiating_user, :internal_comment, :post, presence: true
+    validates :initiating_user, :internal_comment, :idea, presence: true
 
     ACTIVITY_TRIGGERS = { 'InternalComment' => { 'created' => true } }
     EVENT_NAME = 'Internal comment on idea you commented internally on'

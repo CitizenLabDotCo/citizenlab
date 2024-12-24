@@ -66,8 +66,7 @@
 module IdeaAssignment
   module Notifications
     class IdeaAssignedToYou < ::Notification
-      validates :initiating_user, :post, :project, presence: true
-      validates :post_type, inclusion: { in: ['Idea'] }
+      validates :initiating_user, :idea, :project, presence: true
 
       ACTIVITY_TRIGGERS = { 'Idea' => { 'changed_assignee' => true } }.freeze
       EVENT_NAME = 'Idea assigned to you'
@@ -83,7 +82,7 @@ module IdeaAssignment
           [
             new(
               recipient_id: recipient_id,
-              post: input,
+              idea: input,
               project_id: input.project_id,
               initiating_user_id: initiator_id
             )

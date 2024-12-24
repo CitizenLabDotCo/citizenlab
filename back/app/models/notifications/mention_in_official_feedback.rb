@@ -65,7 +65,7 @@
 #
 module Notifications
   class MentionInOfficialFeedback < Notification
-    validates :official_feedback, :post, :initiating_user, presence: true
+    validates :official_feedback, :idea, :initiating_user, presence: true
 
     ACTIVITY_TRIGGERS = { 'OfficialFeedback' => { 'mentioned' => true } }
     EVENT_NAME = 'Mention in official feedback'
@@ -77,17 +77,13 @@ module Notifications
       follower_user_ids = official_feedback.post.followers.pluck(:user_id)
 
       if recipient_id && initiator_id && (recipient_id != initiator_id) && follower_user_ids.exclude?(recipient_id)
-        attributes = {
+        [new(
           recipient_id: recipient_id,
           initiating_user_id: initiator_id,
           official_feedback: official_feedback,
-          post_id: official_feedback.post_id,
-          post_type: official_feedback.post_type
-        }
-        if attributes[:post_type] == 'Idea'
-          attributes[:project_id] = official_feedback.post.project_id
-        end
-        [new(attributes)]
+          idea_id: official_feedback.idea_id,
+          project_id: official_feedback.post.project_id
+        )]
       else
         []
       end

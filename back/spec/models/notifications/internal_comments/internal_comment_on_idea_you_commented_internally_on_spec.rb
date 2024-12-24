@@ -18,8 +18,7 @@ RSpec.describe Notifications::InternalComments::InternalCommentOnIdeaYouCommente
           recipient_id: commenter.id,
           initiating_user_id: internal_comment.author_id,
           internal_comment_id: internal_comment.id,
-          post_id: idea.id,
-          post_type: 'Idea',
+          idea_id: idea.id,
           project_id: internal_comment.post.project_id
         )
       end
@@ -38,8 +37,7 @@ RSpec.describe Notifications::InternalComments::InternalCommentOnIdeaYouCommente
           recipient_id: project_moderator.id,
           initiating_user_id: internal_comment.author_id,
           internal_comment_id: internal_comment.id,
-          post_id: idea2.id,
-          post_type: 'Idea',
+          idea_id: idea2.id,
           project_id: internal_comment.post.project_id
         )
       end

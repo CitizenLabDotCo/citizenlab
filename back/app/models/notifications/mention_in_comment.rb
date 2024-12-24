@@ -76,16 +76,13 @@ module Notifications
       initiator_id = comment&.author_id
 
       if recipient_id && initiator_id && (recipient_id != initiator_id)
-        attributes = {
+        [new(
           recipient_id: recipient_id,
           initiating_user_id: initiator_id,
           comment: comment,
-          idea: comment.post
-        }
-        if attributes[:post_type] == 'Idea'
-          attributes[:project_id] = comment.post.project_id
-        end
-        [new(attributes)]
+          idea: comment.post,
+          project_id: comment.post.project_id
+        )]
       else
         []
       end
