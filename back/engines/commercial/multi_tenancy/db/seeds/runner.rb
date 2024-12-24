@@ -16,7 +16,6 @@ require_relative 'events'
 require_relative 'followers'
 require_relative 'groups'
 require_relative 'ideas'
-require_relative 'initiatives'
 require_relative 'internal_comments'
 require_relative 'invites'
 require_relative 'permissions'
@@ -44,20 +43,17 @@ module MultiTenancy
         small: {
           num_users: 5,
           num_projects: 1,
-          num_ideas: 4,
-          num_initiatives: 3
+          num_ideas: 4
         },
         medium: {
           num_users: 10,
           num_projects: 5,
-          num_ideas: 15,
-          num_initiatives: 10
+          num_ideas: 15
         },
         large: {
           num_users: 50,
           num_projects: 20,
-          num_ideas: 100,
-          num_initiatives: 60
+          num_ideas: 100
         }
       }.freeze
 
@@ -111,7 +107,6 @@ module MultiTenancy
         MultiTenancy::Seeds::ProjectFolders.new(runner: self).run
         MultiTenancy::Seeds::Projects.new(runner: self).run
         MultiTenancy::Seeds::Ideas.new(runner: self).run
-        MultiTenancy::Seeds::Initiatives.new(runner: self).run
         MultiTenancy::Seeds::InternalComments.new(runner: self).run
 
         InitiativeStatusService.new.automated_transitions!
@@ -148,11 +143,6 @@ module MultiTenancy
       # @return [Integer] Number of ideas to be seeded
       def num_ideas
         SEED_SIZES.dig(seed_size, :num_ideas)
-      end
-
-      # @return [Integer] Number of iniatives to be seeded
-      def num_initiatives
-        SEED_SIZES.dig(seed_size, :num_initiatives)
       end
 
       # @return [Float] default map center

@@ -10,15 +10,15 @@ RSpec.describe 'Footer' do
 
   let(:locale) { 'en' }
   let(:recipient) { create(:user, locale: locale) }
-  let(:campaign) { EmailCampaigns::Campaigns::CommentOnInitiativeYouFollow.create! }
+  let(:campaign) { EmailCampaigns::Campaigns::CommentOnIdeaYouFollow.create! }
   let(:command) do
-    create(:comment_on_initiative_you_follow_campaign).generate_commands(
-      activity: create(:activity, item: create(:comment_on_initiative_you_follow), action: 'created'),
+    create(:comment_on_idea_you_follow_campaign).generate_commands(
+      activity: create(:activity, item: create(:comment_on_idea_you_follow), action: 'created'),
       recipient: recipient
     ).first.merge({ recipient: recipient })
   end
 
-  let(:mail) { EmailCampaigns::CommentOnInitiativeYouFollowMailer.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+  let(:mail) { EmailCampaigns::CommentOnIdeaYouFollowMailer.with(command: command, campaign: campaign).campaign_mail.deliver_now }
 
   it 'includes Go Vocal logo' do
     expect(mail.body.encoded).to have_tag('a', with: { href: 'https://govocal.com/' }) do
