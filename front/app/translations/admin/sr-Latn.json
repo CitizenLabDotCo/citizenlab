@@ -2589,7 +2589,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleTooltip": "It is useful to provide this information for users who rely on a screen reader or other assistive technology.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabel": "Website address",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabelTooltip": "Full URL of the website you want to embed.",
-  "app.containers.admin.ContentBuilder.IframeMultiloc.iframeDescription2": "Display content from an external website on your page in an HTML iFrame. Note that not every page can be embedded. If you are having trouble embedding a page, check with the website owner if their server is configured correctly to be embedded.",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.iframeDescription3": "Display content from an external website on your page in an HTML iFrame. Note that not every page can be embedded. If you are having trouble embedding a page, check with the owner of the page if it is configured to allow embedding.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeEmbedVisitLinkMessage": "Visit our support page",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeHeightPlaceholder": "300",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeInvalidWhitelistUrlErrorMessage": "Sorry, this content could not be embedded. {visitLinkMessage} to learn more.",
