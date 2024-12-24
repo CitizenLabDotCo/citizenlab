@@ -66,8 +66,8 @@
 class Notification < ApplicationRecord
   belongs_to :recipient, class_name: 'User'
   belongs_to :initiating_user, class_name: 'User', optional: true
-  belongs_to :post, polymorphic: true, optional: true
-  belongs_to :post_status, polymorphic: true, optional: true
+  belongs_to :idea, optional: true
+  belongs_to :idea_status, optional: true
   belongs_to :comment, optional: true
   belongs_to :internal_comment, optional: true
   belongs_to :project, optional: true
