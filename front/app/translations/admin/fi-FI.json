@@ -2589,7 +2589,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleTooltip": "On hyödyllistä antaa nämä tiedot käyttäjille, jotka käyttävät näytönlukuohjelmaa tai muuta aputekniikkaa.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabel": "Verkkosivuston osoite",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabelTooltip": "Upotettavan verkkosivuston täydellinen URL-osoite.",
-  "app.containers.admin.ContentBuilder.IframeMultiloc.iframeDescription2": "Näytä ulkoisen verkkosivuston sisältöä sivullasi HTML-iFrame-kehyksessä. Huomaa, että kaikkia sivuja ei voi upottaa. Jos sinulla on ongelmia sivun upottamisessa, tarkista verkkosivuston omistajalta, onko hänen palvelin määritetty oikein upotettavaksi.",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.iframeDescription3": "Näytä ulkoisen verkkosivuston sisältöä sivullasi HTML-iFrame-kehyksessä. Huomaa, että kaikkia sivuja ei voi upottaa. Jos sinulla on ongelmia sivun upottamisessa, tarkista sivun omistajalta, onko se määritetty sallimaan upottaminen.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeEmbedVisitLinkMessage": "Vieraile tukisivullamme",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeHeightPlaceholder": "300",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeInvalidWhitelistUrlErrorMessage": "Valitettavasti tätä sisältöä ei voitu upottaa. {visitLinkMessage} saadaksesi lisätietoja.",
