@@ -22,10 +22,8 @@ const ParticipationDatesRange = ({
 
   const { formatMessage } = useIntl();
 
-  const [startAt, setStartAt] = useState(
-    parseBackendDateString(defaultStartDate)
-  );
-  const [endAt, setEndAt] = useState(parseBackendDateString(defaultEndDate));
+  const [startAt, setStartAt] = useState(defaultStartDate);
+  const [endAt, setEndAt] = useState(defaultEndDate);
 
   return (
     <div>
@@ -36,12 +34,12 @@ const ParticipationDatesRange = ({
         <Box width="100%" display="flex">
           <DateRangePicker
             selectedRange={{
-              from: startAt,
-              to: endAt,
+              from: startAt ? parseBackendDateString(startAt) : undefined,
+              to: endAt ? parseBackendDateString(endAt) : undefined,
             }}
             onUpdateRange={({ from, to }) => {
-              setStartAt(from);
-              setEndAt(to);
+              setStartAt(toBackendDateString(from));
+              setEndAt(toBackendDateString(to));
             }}
           />
         </Box>
@@ -49,8 +47,8 @@ const ParticipationDatesRange = ({
       <Box p="44px" m="44px" bg="white">
         <ParticipationReportPreview
           projectId={projectId}
-          startAt={toBackendDateString(startAt)}
-          endAt={toBackendDateString(endAt)}
+          startAt={startAt}
+          endAt={endAt}
         />
       </Box>
     </div>
