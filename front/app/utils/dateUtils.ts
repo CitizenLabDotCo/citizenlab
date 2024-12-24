@@ -1,6 +1,5 @@
 import { isString } from 'lodash-es';
 import moment, { unitOfTime, Moment } from 'moment-timezone';
-import { TZDate } from 'react-day-picker';
 import { SupportedLocale } from 'typings';
 
 import { IEventData } from 'api/events/types';
@@ -253,14 +252,37 @@ export function calculateRoundedEndDate(
 
 export const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-export const parseBackendDateString = (dateString?: string) => {
-  if (!dateString) return undefined;
-  // backend date format: YYYY-MM-DD
-  // parse to midnight in user's timezone
-  return new TZDate(dateString, userTimezone);
+// Why do we need this function?
+// The backend sends dates in the format "YYYY-MM-DD" without a time component.
+// When we parse this date in the frontend, it is interpreted as
+// midnight in UTC.
+// This means that if we are west of UTC, e.g. in Brazil,
+// The date will be interpreted as 21:00 the previous day.
+// This function makes sure that the date is always interpreted as midnight in the user's timezone.
+const backendDatestringRegex = /^\d{4}-\d{2}-\d{2}$/;
+
+export const parseBackendDateString = (dateString: string) => {
+  if (!dateString.match(backendDatestringRegex)) {
+    throw new Error('Invalid date string');
+  }
+
+  const day = dateString.split('-').map(Number)[2];
+  const date = new Date(dateString);
+
+  const parsedDay = date.getDate();
+
+  if (day === parsedDay) {
+    date.setHours(0, 0, 0, 0);
+  } else if (day === parsedDay + 1) {
+    date.setHours(24, 0, 0, 0);
+  } else {
+    throw new Error('Invalid state');
+  }
+
+  return date;
 };
 
-export const toBackendDateString = (date?: TZDate) => {
+export const toBackendDateString = (date?: Date) => {
   if (!date) return undefined;
   return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
 };
