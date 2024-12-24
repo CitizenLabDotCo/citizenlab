@@ -273,10 +273,8 @@ export const parseBackendDateString = (dateString: string) => {
 
   if (day === parsedDay) {
     date.setHours(0, 0, 0, 0);
-  } else if (day === parsedDay + 1) {
-    date.setHours(24, 0, 0, 0);
   } else {
-    throw new Error('Invalid state');
+    date.setHours(24, 0, 0, 0);
   }
 
   return date;
@@ -284,5 +282,11 @@ export const parseBackendDateString = (dateString: string) => {
 
 export const toBackendDateString = (date?: Date) => {
   if (!date) return undefined;
-  return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+  const monthNumber = date.getMonth() + 1;
+  const dayNumber = date.getDate();
+
+  const month = monthNumber < 10 ? `0${monthNumber}` : monthNumber;
+  const day = dayNumber < 10 ? `0${dayNumber}` : dayNumber;
+
+  return `${date.getFullYear()}-${month}-${day}`;
 };
