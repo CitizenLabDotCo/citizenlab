@@ -2589,7 +2589,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleTooltip": "It is useful to provide this information for users who rely on a screen reader or other assistive technology.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabel": "Website address",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabelTooltip": "Full URL of the website you want to embed.",
-  "app.containers.admin.ContentBuilder.IframeMultiloc.iframeDescription2": "Εμφάνιση περιεχομένου από έναν εξωτερικό ιστότοπο στη σελίδα σας σε ένα iFrame HTML. Σημειώστε ότι δεν μπορεί να ενσωματωθεί κάθε σελίδα. Εάν αντιμετωπίζετε πρόβλημα με την ενσωμάτωση μιας σελίδας, επικοινωνήστε με τον ιδιοκτήτη του ιστότοπου, εάν ο διακομιστής του έχει ρυθμιστεί σωστά για την ενσωμάτωση.",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.iframeDescription3": "Εμφάνιση περιεχομένου από έναν εξωτερικό ιστότοπο στη σελίδα σας σε ένα iFrame HTML. Σημειώστε ότι δεν μπορεί να ενσωματωθεί κάθε σελίδα. Εάν αντιμετωπίζετε πρόβλημα με την ενσωμάτωση μιας σελίδας, επικοινωνήστε με τον ιδιοκτήτη της σελίδας, εάν έχει ρυθμιστεί ώστε να επιτρέπει την ενσωμάτωση.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeEmbedVisitLinkMessage": "Visit our support page",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeHeightPlaceholder": "300",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeInvalidWhitelistUrlErrorMessage": "Sorry, this content could not be embedded. {visitLinkMessage} to learn more.",
