@@ -24,6 +24,8 @@ import Button, {
 import CardButton from './components/CardButton';
 import Checkbox from './components/Checkbox';
 import CheckboxWithLabel from './components/CheckboxWithLabel';
+import CollapsibleContainer from './components/CollapsibleContainer';
+import ColorIndicator from './components/ColorIndicator';
 import ColorPickerInput, {
   Props as ColorPickerInputProps,
 } from './components/ColorPickerInput';
@@ -52,6 +54,7 @@ import Select, {
   SelectIcon,
   SelectWrapper,
 } from './components/Select';
+import Shimmer from './components/Shimmer';
 import Spinner from './components/Spinner';
 import StatusLabel from './components/StatusLabel';
 import Success from './components/Success';
@@ -150,6 +153,8 @@ export {
   ColorPickerInput,
   Badge,
   Accordion,
+  CollapsibleContainer,
+  ColorIndicator,
   CardButton,
   Dropdown,
   DropdownListItem,
@@ -191,4 +196,5 @@ export {
   Title,
   ListItem,
   Tooltip,
+  Shimmer,
 };

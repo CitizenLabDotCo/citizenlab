@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Icon, Title } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
@@ -13,9 +13,8 @@ import messages from '../messages';
 
 import AcceptButton from './AcceptButton';
 import OnboardingStep from './OnboardingStep';
+import { Left, Right, HeaderContent, Icons, StyledAvatar } from './Shared';
 import SkipButton from './SkipButton';
-
-import { Left, Right, Text, HeaderContent, Icons, StyledAvatar } from './';
 
 const CompleteProfileIcon = styled(Icon)`
   width: 48px;
@@ -46,6 +45,8 @@ const CompleteProfileStep = ({
           <Left>
             <Icons>
               <StyledAvatar
+                // TODO: Fix this the next time the file is edited.
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 userId={authUser?.data.id}
                 size={50}
                 fillColor="#fff"
@@ -54,13 +55,12 @@ const CompleteProfileStep = ({
               />
               <CompleteProfileIcon name="edit" fill="#fff" ariaHidden />
             </Icons>
-            <Text>
+            <Title variant="h2" color="white">
               <FormattedMessage
                 {...messages.completeYourProfile}
-                tagName="h2"
                 values={{ firstName: authUser.data.attributes.first_name }}
               />
-            </Text>
+            </Title>
           </Left>
 
           <Right>

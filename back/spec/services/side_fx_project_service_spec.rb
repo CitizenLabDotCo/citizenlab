@@ -101,6 +101,15 @@ describe SideFxProjectService do
           .to have_enqueued_job(LogActivityJob)
       end
     end
+
+    it 'invokes ContentBuilder::LayoutService#clean_homepage_layout_when_publication_deleted' do
+      layout_service = instance_double(ContentBuilder::LayoutService)
+      allow(ContentBuilder::LayoutService).to receive(:new).and_return(layout_service)
+      expect(layout_service).to receive(:clean_homepage_layout_when_publication_deleted).with(instance_of(Project))
+
+      frozen_project = project.destroy
+      service.after_destroy(frozen_project, user)
+    end
   end
 
   describe 'after_delete_inputs' do

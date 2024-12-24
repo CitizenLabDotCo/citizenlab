@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 
 import {
   Container,
@@ -83,8 +83,10 @@ const AccessibilityStatement = () => {
                     <p>
                       {formatMessage(messages.contentConformanceExceptions)}
                     </p>
-                    <h3>{formatMessage(messages.surveyTools)}</h3>
-                    <p>{formatMessage(messages.surveyToolsException)}</p>
+                    <h3>{formatMessage(messages.embeddedSurveyTools)}</h3>
+                    <p>
+                      {formatMessage(messages.embeddedSurveyToolsException)}
+                    </p>
                     <h3>{formatMessage(messages.mapping)}</h3>
                     <p>{formatMessage(messages.mapping_1)}</p>
                     <p>{formatMessage(messages.mapping_2)}</p>
@@ -94,14 +96,6 @@ const AccessibilityStatement = () => {
                     <p>{formatMessage(messages.exception_1)}</p>
                     <h3>{formatMessage(messages.workshops)}</h3>
                     <p>{formatMessage(messages.onlineWorkshopsException)}</p>
-                    <h3>{formatMessage(messages.compatibilityTitle)}</h3>
-                    <p>{formatMessage(messages.screenReaderBugWarning)}</p>
-                    <h4>{formatMessage(messages.screenReaderSearchResults)}</h4>
-                    <p>
-                      {formatMessage(
-                        messages.screenReaderSearchResultsException
-                      )}
-                    </p>
                     <h2>{formatMessage(messages.assesmentMethodsTitle)}</h2>
                     <p>
                       <FormattedMessage

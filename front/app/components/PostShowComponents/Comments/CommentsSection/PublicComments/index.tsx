@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import {
   colors,
   fontSizes,
   isRtl,
   Box,
-  Title,
   useBreakpoint,
+  Title,
 } from '@citizenlab/cl2-component-library';
 import { useInView } from 'react-intersection-observer';
 import { useLocation } from 'react-router-dom';
@@ -56,15 +56,9 @@ const PublicComments = ({
   className,
   allowAnonymousParticipation,
 }: Props) => {
-  const { ref } = useInView({
-    rootMargin: '3000px',
-    onChange: (inView) => {
-      if (inView) {
-        if (hasNextPage) {
-          fetchNextPage();
-        }
-      }
-    },
+  const { ref: loadMoreRef, inView } = useInView({
+    rootMargin: '200px',
+    threshold: 0,
   });
   const isSmallerThanPhone = useBreakpoint('phone');
 
@@ -80,14 +74,24 @@ const PublicComments = ({
   } = useComments({
     ideaId: postId,
     sort: sortOrder,
+    pageSize: 10,
   });
 
   const commentsList = comments?.pages.flatMap((page) => page.data);
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const projectId = idea?.data.relationships?.project.data.id;
   const { data: project } = useProjectById(projectId);
 
   const [posting, setPosting] = useState(false);
+
+  // Trigger fetching of next page when the user scrolls to the bottom
+  useEffect(() => {
+    if (inView && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, hasNextPage, fetchNextPage]);
 
   if (!idea || !commentsList) return null;
 
@@ -100,6 +104,8 @@ const PublicComments = ({
     setPosting(isPosting);
   };
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const phaseId = project?.data.relationships?.current_phase?.data?.id;
   const commentCount = idea.data.attributes.comments_count;
   const hasComments = commentCount > 0;
@@ -107,6 +113,8 @@ const PublicComments = ({
   const showCommentCount = !isAdminPage && hasComments;
   const showHeader = !isAdminPage || hasComments;
   const canComment =
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     !idea?.data.attributes.action_descriptors.commenting_idea.disabled_reason;
 
   return (
@@ -119,8 +127,8 @@ const PublicComments = ({
           mt="16px"
         >
           <Title
-            color="tenantText"
             variant="h2"
+            color="tenantText"
             fontSize={isSmallerThanPhone ? 'xl' : 'xxl'}
             id="comments-main-title"
           >
@@ -156,7 +164,9 @@ const PublicComments = ({
         allowAnonymousParticipation={allowAnonymousParticipation}
       />
 
-      {hasNextPage && !isFetchingNextPage && <Box ref={ref} w="100%" />}
+      {hasNextPage && !isFetchingNextPage && (
+        <Box ref={loadMoreRef} w="100%" h="50px" />
+      )}
 
       {isFetchingNextPage && !posting && (
         <Box

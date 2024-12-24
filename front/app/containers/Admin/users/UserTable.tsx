@@ -97,9 +97,7 @@ const UsersTable = ({
 
   const handleSortingOnChange = (sort: IQueryParameters['sort']) => () => {
     trackEventByName(tracks.sortChange.name, {
-      extra: {
-        sort,
-      },
+      sort,
     });
     onChangeSorting(sort);
   };

@@ -85,6 +85,8 @@ en:
           title: What is your petition?
   user:
     anon_first_name: "User"
+    anon_scheme:
+      animals: 'Aardvark,Cat,Platypus,Giraffe,Zebra'
   xlsx_export:
     anonymous: 'Anonymous'
     column_headers:
@@ -103,6 +105,7 @@ en:
       email: 'Email'
       first_name: 'First name(s)'
       image_url: 'Image URL'
+      manual_votes: 'Offline votes'
       input_id: 'ID'
       input_url: 'URL'
       last_name: 'Last name'

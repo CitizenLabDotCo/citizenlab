@@ -4,7 +4,6 @@ import {
   Box,
   Title,
   Text,
-  Badge,
   stylingConsts,
   colors,
 } from '@citizenlab/cl2-component-library';
@@ -40,7 +39,8 @@ const TopBar = ({ onClickPDFImport, onClickExcelImport }: Props) => {
   const { data: phase } = usePhase(phaseId);
 
   const topBarTitle =
-    localize(project?.data.attributes.title_multiloc) +
+    localize(project?.data.attributes.title_multiloc) + // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     (phase ? ` - ${localize(phase?.data.attributes.title_multiloc)}` : '');
 
   const isSurvey =
@@ -70,9 +70,6 @@ const TopBar = ({ onClickPDFImport, onClickExcelImport }: Props) => {
             <Text m="0px" color="textSecondary">
               <FormattedMessage {...messages.inputImporter} />
             </Text>
-            <Badge color={colors.textSecondary} className="inverse">
-              BETA
-            </Badge>
           </Box>
 
           <Title variant="h4" m="0px" mt="1px">

@@ -237,7 +237,11 @@ const PlatformFooter = ({ className }: Props) => {
     eventEmitter.emit('openConsentManager');
   };
 
-  const participationBar = document.getElementById('project-cta-bar');
+  /* 
+    Likely not the most reliable way to determine if the bar is present.
+    Context would probably be better, but this is a quick fix.
+  */
+  const participationBar = document.getElementById('project-cta-bar-bottom');
 
   useEffect(() => {
     setPaddingBottom(
@@ -308,6 +312,8 @@ const PlatformFooter = ({ className }: Props) => {
                     customizedA11yHref ? (
                       <StyledA
                         href={customizedA11yHref}
+                        // TODO: Fix this the next time the file is edited.
+                        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                         target={hasCustomizedA11yFooterLink && '_blank'}
                         className={index === 0 ? 'first' : ''}
                       >

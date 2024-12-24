@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/HomepageBanner';
+import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Widgets/HomepageBanner';
 import HeaderContent from 'containers/HomePage/SignedOutHeader/HeaderContent';
 
 import {

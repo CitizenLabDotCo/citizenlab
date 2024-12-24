@@ -52,6 +52,8 @@ const AuthorFieldFilterItem = ({
       display="flex"
     >
       <Box>
+        {/* TODO: Fix this the next time the file is edited. */}
+        {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
         <T value={customField?.data.attributes.title_multiloc} />
       </Box>
       <Box mx="3px">{predicate}</Box>

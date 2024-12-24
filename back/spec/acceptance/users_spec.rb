@@ -22,24 +22,33 @@ resource 'Users' do
         parameter :number, 'Page number'
         parameter :size, 'Number of users per page'
       end
+
       parameter :search, 'Filter by searching in first_name, last_name and email', required: false
-      parameter :sort, "Sort user by 'created_at', '-created_at', 'last_name', '-last_name', 'email', " \
-                       "'-email', 'role', '-role'", required: false
       parameter :group, 'Filter by group_id', required: false
-      parameter :can_moderate, 'Return only admins and moderators', required: false
+      parameter :project_reviewer, 'When true, return only project reviewers. When false, exclude project reviewers.', required: false
       parameter :can_admin, 'Return only admins', required: false
-      parameter :can_moderate_project, 'All admins + users who can moderate the project (by project id), ' \
-                                       'excluding folder moderators of folder containing project ' \
-                                       '(who can, in fact, moderate the project), ' \
-                                       'OR All admins + users with project moderator role ' \
-                                       '(if no project ID provided)', required: false
-      parameter :is_not_project_moderator, 'Users who are not project moderators of project, ' \
-                                           'nor folder moderator of folder containing project (by project id), ' \
-                                           'OR Users who do not have project moderator role ' \
-                                           '(if no project ID provided)', required: false
-      parameter :is_not_folder_moderator, 'Users who are not folder moderators of folder (by folder id), ' \
-                                          'OR Users who do not have folder moderator role ' \
-                                          '(if no folder ID provided)', required: false
+      parameter :can_moderate, 'Return only admins and moderators', required: false
+
+      parameter :can_moderate_project, <<~DESC, required: false
+        All admins + users who can moderate the project (by project id), excluding folder moderators of folder 
+        containing project (who can, in fact, moderate the project), OR All admins + users with project moderator role 
+        (if no project ID provided).
+      DESC
+
+      parameter :is_not_project_moderator, <<~DESC, required: false
+        Users who are not project moderators of project, nor folder moderator of folder containing project (by project
+        id), OR Users who do not have project moderator role (if no project ID provided).
+      DESC
+
+      parameter :is_not_folder_moderator, <<~DESC, required: false
+        Users who are not folder moderators of folder (by folder id), OR Users who do not have folder moderator role 
+        (if no folder ID provided).
+      DESC
+
+      parameter :sort, <<~DESC, required: false
+        Sort user by 'created_at', '-created_at', 'last_name', '-last_name', 'email', '-email', 'role', '-role'
+      DESC
+
       example_request '[error] List all users' do
         assert_status 401
       end
@@ -259,6 +268,30 @@ resource 'Users' do
             assert_status 422
           end
         end
+
+        describe 'profanity in user fields' do
+          let(:first_name) { 'big fuck face' }
+          let(:last_name) { 'twat' }
+
+          example 'profanity is allowed if extended blocking is not enabled', document: false do
+            config = AppConfiguration.instance
+            config.settings['blocking_profanity'] = { allowed: true, enabled: true, extended_blocking: false }
+            config.save!
+            do_request
+            assert_status 201
+            expect(User.first.first_name).to eq first_name
+            expect(User.first.last_name).to eq last_name
+          end
+
+          example '[error] profanity is NOT allowed if extended blocking is enabled', document: false do
+            config = AppConfiguration.instance
+            config.settings['blocking_profanity'] = { allowed: true, enabled: true, extended_blocking: true }
+            config.save!
+            do_request
+            assert_status 422
+            expect(User.count).to eq 0
+          end
+        end
       end
 
       context 'light registration without a password' do
@@ -349,6 +382,7 @@ resource 'Users' do
         parameter :can_moderate_project, 'Filter by users (and admins) who can moderate the project (by id)', required: false
         parameter :can_moderate, 'Return only admins and moderators', required: false
         parameter :can_admin, 'Return only admins if value is true, only non-admins if value is false', required: false
+        parameter :project_reviewer, 'Return only admins that are project reviewers', required: false
         parameter :blocked, 'Return only blocked users', required: false
 
         example_request 'List all users' do
@@ -617,6 +651,17 @@ resource 'Users' do
           do_request(can_admin: true)
           json_response = json_parse(response_body)
           expect(json_response[:data].pluck(:id)).to match_array [a.id, @user.id]
+        end
+
+        example 'List all project reviewers' do
+          create(:user)
+          create(:admin)
+          project_reviewer = create(:admin, :project_reviewer)
+
+          do_request(project_reviewer: true)
+
+          assert_status 200
+          expect(response_ids).to match_array [project_reviewer.id]
         end
       end
 
@@ -887,6 +932,26 @@ resource 'Users' do
                 expect(resident.reload.email).to eq 'original@email.com'
               end
             end
+
+            describe 'profanity in user fields' do
+              let(:bio_multiloc) { { en: 'I am a big fucking twat' } }
+
+              example 'profanity is allowed if extended blocking is not enabled', document: false do
+                config = AppConfiguration.instance
+                config.settings['blocking_profanity'] = { allowed: true, enabled: true, extended_blocking: false }
+                config.save!
+                do_request
+                assert_status 200
+              end
+
+              example '[error] profanity is NOT allowed if extended blocking is enabled', document: false do
+                config = AppConfiguration.instance
+                config.settings['blocking_profanity'] = { allowed: true, enabled: true, extended_blocking: true }
+                config.save!
+                do_request
+                assert_status 422
+              end
+            end
           end
 
           context 'on a folder moderator' do
@@ -900,6 +965,20 @@ resource 'Users' do
               json_response = json_parse response_body
               expect(json_response.dig(:data, :id)).to eq id
               expect(json_response.dig(:data, :attributes, :roles)).to include({ type: 'admin' })
+            end
+          end
+
+          context 'on an admin' do
+            let(:user) { create(:admin) }
+            let(:id) { user.id }
+            let(:roles) { [{ type: 'admin', project_reviewer: true }] }
+
+            example_request 'Make the admin a project reviewer' do
+              assert_status 200
+
+              expect(response_data[:id]).to eq(id)
+              expect(response_data.dig(:attributes, :roles)).to match [{ type: 'admin', project_reviewer: true }]
+              expect(user.reload.roles).to match [{ 'type' => 'admin', 'project_reviewer' => true }]
             end
           end
         end

@@ -89,6 +89,8 @@ const Sidebar = ({ authUser }: Props) => {
   const { data: ideasCount } = useIdeasCount(
     {
       feedback_needed: true,
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       assignee: authUser?.data.id,
       transitive: true,
     },
@@ -123,6 +125,8 @@ const Sidebar = ({ authUser }: Props) => {
     setNavItems(insertConfiguration(insertNavItemOptions)(navItems));
   };
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!(navItems && navItems.length > 1)) {
     return null;
   }

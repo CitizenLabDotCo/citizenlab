@@ -65,6 +65,7 @@ const GenericBottomInfoSection = ({
   };
 
   const onFormSubmitAndEnable = async (formValues: FormValues) => {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (!updatePageAndEnableSection) return;
 
     try {

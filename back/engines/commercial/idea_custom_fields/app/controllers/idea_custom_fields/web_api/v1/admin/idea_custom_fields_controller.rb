@@ -74,7 +74,7 @@ module IdeaCustomFields
       render json: ::WebApi::V1::CustomFieldSerializer.new(
         IdeaCustomFieldsService.new(@custom_form).all_fields,
         params: serializer_params(@custom_form),
-        include: %i[options options.image]
+        include: include_in_index_response
       ).serializable_hash
     rescue UpdateAllFailedError => e
       render json: { errors: e.errors }, status: :unprocessable_entity
@@ -110,7 +110,7 @@ module IdeaCustomFields
           options_params = field_params.delete :options
           if field_params[:id] && fields_by_id.key?(field_params[:id])
             field = fields_by_id[field_params[:id]]
-            next unless update_field! field, field_params, errors, index
+            next unless update_field!(field, field_params, errors, index)
           else
             field = create_field! field_params, errors, page_temp_ids_to_ids_mapping, index
             next unless field
@@ -164,6 +164,8 @@ module IdeaCustomFields
       field_params = idea_custom_field_service.remove_ignored_update_params field_params
       if field.errors.errors.empty?
         field.assign_attributes field_params
+        return true unless field.changed?
+
         SideFxCustomFieldService.new.before_update field, current_user
         if field.save
           SideFxCustomFieldService.new.after_update field, current_user
@@ -178,7 +180,7 @@ module IdeaCustomFields
       end
     end
 
-    # Overriden from CustomMaps::Patches::IdeaCustomFields::WebApi::V1::Admin::IdeaCustomFieldsController
+    # Overridden from CustomMaps::Patches::IdeaCustomFields::WebApi::V1::Admin::IdeaCustomFieldsController
     def relate_map_config_to_field(_field, _field_params, _errors, _index); end
 
     def delete_field!(field)
@@ -197,6 +199,7 @@ module IdeaCustomFields
         deleted_options = options.reject { |option| given_ids.include? option.id }
         deleted_options.each { |option| delete_option! option }
         options_params.each_with_index do |option_params, option_index|
+          option_params[:ordering] = option_index # Do this instead of ordering gem .move_to_bottom method for performance reasons
           if option_params[:id] && options_by_id[option_params[:id]]
             option = options_by_id[option_params[:id]]
             next unless update_option! option, option_params, errors, field_index, option_index
@@ -205,7 +208,6 @@ module IdeaCustomFields
             next unless option
           end
           update_option_image!(option, option_params[:image_id])
-          option.move_to_bottom
         end
       end
     end
@@ -248,6 +250,7 @@ module IdeaCustomFields
     def update_option!(option, option_params, errors, field_index, option_index)
       update_params = option_params.except('image_id')
       option.assign_attributes update_params
+      return true unless option.changed?
 
       SideFxCustomFieldOptionService.new.before_update option, current_user
       if option.save

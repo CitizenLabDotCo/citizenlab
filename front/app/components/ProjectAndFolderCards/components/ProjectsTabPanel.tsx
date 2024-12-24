@@ -29,6 +29,7 @@ const MockProjectCard = styled.div`
 
 interface Props extends BaseProps {
   tab: PublicationTab;
+  hasMoreThanOneTab: boolean;
 }
 
 const ProjectsTabPanel = ({
@@ -37,6 +38,7 @@ const ProjectsTabPanel = ({
   list,
   layout,
   hasMore,
+  hasMoreThanOneTab,
 }: Props) => {
   const isSmallerThanTablet = useBreakpoint('tablet');
   const isLargerThanTablet = !isSmallerThanTablet;
@@ -57,10 +59,9 @@ const ProjectsTabPanel = ({
     // See https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/tab_role
     <Container
       id={getTabPanelId(tab)}
-      role="tabpanel"
+      role={hasMoreThanOneTab ? 'tabpanel' : undefined}
       className={`e2e-projects-list ${tab === currentTab ? 'active-tab' : ''}`}
-      tabIndex={0}
-      aria-labelledby={getTabId(tab)}
+      aria-labelledby={hasMoreThanOneTab ? `${getTabId(tab)}` : undefined}
       hidden={tab !== currentTab}
       hide={tab !== currentTab}
     >
@@ -70,6 +71,8 @@ const ProjectsTabPanel = ({
         const getCardSize = (index: number) => {
           if (layout === 'dynamic') {
             return cardSizes[index];
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           } else if (layout === 'threecolumns') {
             return 'small';
           } else {

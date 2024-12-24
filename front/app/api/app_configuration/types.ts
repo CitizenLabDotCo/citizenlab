@@ -57,6 +57,8 @@ export type IAppConfigurationSettingsCore = {
   onboarding?: boolean;
   allow_sharing: boolean;
   customer_portal_url?: string | null;
+  anonymous_name_scheme?: string | null;
+  private_attributes_in_export: boolean;
 };
 
 export type TSeatNumber = number | null | undefined;
@@ -78,6 +80,10 @@ export type ProposalsSettings = {
 export interface IAppConfigurationSettings {
   core: IAppConfigurationSettingsCore;
   advanced_custom_pages: {
+    allowed: boolean;
+    enabled: boolean;
+  };
+  pages: {
     allowed: boolean;
     enabled: boolean;
   };
@@ -105,7 +111,7 @@ export interface IAppConfigurationSettings {
     client_id: string;
     logo_url: string;
     login_mechanism_name: string;
-    admin_only?: boolean;
+    visibility?: 'show' | 'link' | 'hide';
   };
   azure_ad_b2c_login?: {
     allowed: boolean;
@@ -126,6 +132,10 @@ export interface IAppConfigurationSettings {
     enabled: boolean;
   };
   hoplr_login?: {
+    allowed: boolean;
+    enabled: boolean;
+  };
+  id_austria_login?: {
     allowed: boolean;
     enabled: boolean;
   };
@@ -173,6 +183,7 @@ export interface IAppConfigurationSettings {
   survey_xact_surveys?: AppConfigurationFeature;
   snap_survey_surveys?: AppConfigurationFeature;
   project_folders?: AppConfigurationFeature;
+  project_preview_link?: AppConfigurationFeature;
   bulk_import_ideas?: AppConfigurationFeature;
   granular_permissions?: AppConfigurationFeature;
   machine_translations?: AppConfigurationFeature;
@@ -242,7 +253,13 @@ export interface IAppConfigurationSettings {
   management_feed?: AppConfigurationFeature;
   fake_sso?: AppConfigurationFeature;
   prescreening?: AppConfigurationFeature;
+  prescreening_ideation?: AppConfigurationFeature;
   input_cosponsorship?: AppConfigurationFeature;
+  project_review?: AppConfigurationFeature;
+  similar_inputs?: AppConfigurationFeature & {
+    admins_only: boolean;
+  };
+  platform_templates?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;

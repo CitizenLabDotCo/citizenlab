@@ -266,6 +266,7 @@ lv:
       first_name: 'Vārds(-i)'
       image_url: 'Attēla URL'
       input_id: 'ID'
+      manual_votes: 'Bezsaistes balsojumi'
       input_url: 'URL'
       last_name: 'Uzvārds'
       latitude: 'Ģeogrāfiskais platums'
@@ -344,6 +345,8 @@ lv:
       you_can_sign_in_again_from: "Varat atkal pierakstīties no %{date}"
   user:
     anon_first_name: "Lietotājs"
+    anon_scheme:
+      animals: 'aligators, krokodils, alpaka, skudra, antilope, pērtiķis, bruņurupucis, babuīns, kazlēns, sikspārnis, lācis, bebrs, bišu, vabole, bifeļu, tauriņš, kamielis, ūdens bifeļu, karibu, kaķis, liellopi, gepards, šimpanzis, šinšilla, cigada, gliemezis, tarakāns, menca, kojots, krabju, cīrulis, vārna, vārna,briedis, dinozaurs, suns, delfīns, cūkdelfīns, pīle, ērglis, zuilis, zilonis, aļnis, sesks, zivs, muša, lapsa, vardze, krupis, žurka, žurka, žurka, žubīte, žirafe, žurka, žubīte, zilonis, kaza, zelta zivtiņa, zoss, gorilla, mārrutks, jūrascūciņa, kāmis, zaķis, ezis, siļķe, haizivs, hipopotams, sirse, zirgs, kurts,hiena,impala,šakālis,medūza,ķengurs,kengurs,valabijs,koala,leopards,lauva,ķirzaka,lama,lauķis,lauvene,lauze,makabs,makabs,krunka,mamuts,lamantīns,klijāns,kurmītis,ūdele,sienāzis,sienāzis,mošķis,pele,žurka,muļķis,mošķeris,ūdrs,vērsis,ūdele,panda,cūka,platipusa,dzeguze,prēriju suns,mopsis,trusis,jenots,ziemeļbriedis,ziemeļbriedis,degunradis,laši,sardīne,skorpions,ronis,jūras lauva,servals,haizivs,aita,skunks,gliemezis,čūska,zirneklis,vāvere,gulbis,termīts,tīģeris,forele,bruņurupucis,bruņurupucis,bruņurupucis,bruņurupucis,valzis,vaļu,vilks,vombats,mežacūka,tārps,jaks,dzeltenkaja,zebra'
   time:
     am: am
     formats:

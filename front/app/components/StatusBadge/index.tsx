@@ -36,6 +36,8 @@ const StatusBadge = memo<Props>(({ statusId, id, className, maxLength }) => {
   const { data: ideaStatus } = useIdeaStatus(statusId);
 
   if (ideaStatus) {
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     const color = ideaStatus?.data.attributes?.color || '#bbb';
 
     return (

@@ -63,7 +63,7 @@ class WebApi::V1::FilesController < ApplicationController
 
   def index
     @files = @container.send(secure_constantize(:file_relationship)).order(:ordering)
-    @files = secure_constantize(:policy_scope_class).new(current_user, @files).resolve
+    @files = secure_constantize(:policy_scope_class).new(pundit_user, @files).resolve
     render json: WebApi::V1::FileSerializer.new(@files, params: jsonapi_serializer_params).serializable_hash
   end
 

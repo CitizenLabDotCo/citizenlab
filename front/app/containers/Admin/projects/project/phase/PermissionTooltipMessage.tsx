@@ -22,6 +22,8 @@ const PermissionTooltipMessage = ({
 }: PermissionTooltipMessageProps) => {
   const { formatMessage } = useIntl();
   const { data: groups } = useGroups({});
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!permissions || !permissions?.length || !groups) {
     return null;
   }
@@ -47,8 +49,14 @@ const PermissionTooltipMessage = ({
           <Text my="0px" variant="bodyS">
             {formatMessage(messages.whoCanParticipate)}
           </Text>
+          {/* TODO: Fix this the next time the file is edited. */}
+          {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
           {permissions &&
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             permissions?.length > 1 &&
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             permissions?.map((permission) => {
               return (
                 <Text my="0px" variant="bodyS" key={permission.id}>

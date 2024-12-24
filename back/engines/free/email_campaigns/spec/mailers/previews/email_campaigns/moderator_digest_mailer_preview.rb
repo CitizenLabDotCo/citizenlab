@@ -6,8 +6,8 @@ module EmailCampaigns
 
     def campaign_mail
       campaign = EmailCampaigns::Campaigns::ModeratorDigest.first
-      top_ideas = Idea.first(3)
-      proposal = Idea.last
+      top_ideas = Idea.published.first(3)
+      proposal = Idea.published.last
       name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient_user)
       project = Idea.first.project
       project_id = project.id
@@ -46,7 +46,7 @@ module EmailCampaigns
               id: proposal.id,
               title_multiloc: proposal.title_multiloc,
               url: Frontend::UrlService.new.model_to_url(proposal),
-              published_at: proposal.published_at.iso8601,
+              published_at: proposal.published_at&.iso8601 || Time.now.iso8601,
               author_name: name_service.display_name!(proposal.author),
               likes_count: proposal.likes_count,
               comments_count: proposal.comments_count

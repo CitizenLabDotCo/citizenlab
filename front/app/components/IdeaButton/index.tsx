@@ -103,7 +103,7 @@ const IdeaButton = memo<Props>(
       trackEventByName(tracks.postYourIdeaButtonClicked);
 
       if (authenticationRequirements) {
-        signUp();
+        signIn();
         return;
       }
 
@@ -113,8 +113,8 @@ const IdeaButton = memo<Props>(
       }
     };
 
-    const signUp = (event?: React.MouseEvent) => {
-      signUpIn('signup')(event);
+    const signIn = (event?: React.MouseEvent) => {
+      signUpIn('signin')(event);
     };
 
     const signUpIn =
@@ -142,6 +142,8 @@ const IdeaButton = memo<Props>(
 
     const tippyEnabled = !enabled && !!disabledReason;
 
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (inMap && !enabled && !!disabledReason) {
       return (
         <TippyContent

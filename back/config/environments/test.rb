@@ -34,7 +34,7 @@ Rails.application.configure do
   config.action_controller.perform_caching = false
 
   # Caching must be turned on for Rack::Attack to work and Rack::Attack tests to pass.
-  # config.cache_store = :null_store
+  config.cache_store = :memory_store
 
   # Raise exceptions instead of rendering exception templates.
   config.action_dispatch.show_exceptions = false

@@ -95,6 +95,8 @@ const AccessRightsNotice = ({
               <>
                 {surveyUserFields && (
                   <>
+                    {/* TODO: Fix this the next time the file is edited. */}
+                    {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
                     {surveyUserFields?.length > 0 && (
                       <>
                         <p>{formatMessage(messages.userFieldsIntro)}</p>

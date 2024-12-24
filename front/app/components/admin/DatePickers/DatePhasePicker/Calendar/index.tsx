@@ -144,6 +144,7 @@ const Calendar = ({
   defaultMonth,
   onUpdateRange,
 }: Props) => {
+  const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   const startMonth = getStartMonth({
     startMonth: _startMonth,
     selectedRange,
@@ -188,9 +189,7 @@ const Calendar = ({
       clickedDate: day,
     });
 
-    if (updatedRange) {
-      onUpdateRange(updatedRange);
-    }
+    onUpdateRange(updatedRange);
   };
 
   return (
@@ -211,6 +210,7 @@ const Calendar = ({
         // range rather than being controlled by our state.
         selected={[] as any}
         onSelect={NOOP}
+        timeZone={userTimezone}
       />
     </DayPickerStyles>
   );

@@ -1,7 +1,5 @@
 import React, { useMemo } from 'react';
 
-import { capitalize } from 'lodash-es';
-
 import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
 
 import useLocalize from 'hooks/useLocalize';
@@ -9,6 +7,7 @@ import useLocalize from 'hooks/useLocalize';
 import FilterSelector from 'components/FilterSelector';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { capitalize } from 'utils/textUtils';
 
 import messages from '../../messages';
 

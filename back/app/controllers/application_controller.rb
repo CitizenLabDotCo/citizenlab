@@ -3,6 +3,7 @@
 class ApplicationController < ActionController::API
   include AuthToken::Authenticable
   include Pundit::Authorization
+  include ActionController::Cookies
 
   class FeatureRequiredError < StandardError
     attr_reader :feature
@@ -14,6 +15,7 @@ class ApplicationController < ActionController::API
   end
 
   before_action :authenticate_user
+  before_action :set_policy_context
 
   after_action :verify_authorized, except: :index
   after_action :verify_policy_scoped, only: :index
@@ -30,6 +32,34 @@ class ApplicationController < ActionController::API
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   rescue_from FeatureRequiredError, with: :feature_required_error
+
+  # +pundit_user+ is overridden to be able to embed additional context in the +user+
+  # object passed to policies. It is meant to be used with policies that inherit from
+  # +ApplicationPolicy+, which includes all the necessary utilities to parse this *special
+  # user* seamlessly. In these policies, the +current_user+ can still be accessed as
+  # +user+ and the context can be accessed as `context`.
+  # @return [ApplicationPolicy::UserContext]
+  def pundit_user
+    ::ApplicationPolicy::UserContext.new(current_user, policy_context)
+  end
+
+  # This method can be used to populate the context (hash) that is passed by default to
+  # all policies instantiated in controllers that inherit from this class. You can add
+  # context by adding keys to the hash.
+  # @example
+  #   # In the controller:
+  #   policy_context[:foo] = 'bar'
+  #
+  #   # In the policy:
+  #   def show?
+  #    user.admin? && context[:foo] == 'bar'
+  #   end
+  # @see ApplicationController#pundit_user for more details.
+  # @see ApplicationController#set_policy_context for an usage example.
+  # @return [Hash]
+  def policy_context
+    @policy_context ||= {}
+  end
 
   def send_error(error = nil, status = 400)
     render json: error, status: status
@@ -78,7 +108,11 @@ class ApplicationController < ActionController::API
   end
 
   def jsonapi_serializer_params(extra_params = {})
-    { current_user: current_user, **extra_params.symbolize_keys }
+    {
+      current_user: current_user,
+      user_context: pundit_user,
+      **extra_params.symbolize_keys
+    }
   end
 
   def raw_json(json, type: nil)
@@ -148,7 +182,8 @@ class ApplicationController < ActionController::API
   end
 
   def paginate(collection)
-    collection.page(params.dig(:page, :number))
+    collection
+      .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
   end
 
@@ -158,4 +193,13 @@ class ApplicationController < ActionController::API
     # setting the image attribute to nil will not remove the image
     resource.public_send(:"remove_#{image_field_name}!")
   end
+
+  def set_policy_context
+    project_preview_token = cookies[:preview_token]
+    if project_preview_token && AppConfiguration.instance.feature_activated?('project_preview_link')
+      policy_context[:project_preview_token] = project_preview_token
+    end
+  end
 end
+
+ApplicationController.include(AggressiveCaching::Patches::ApplicationController)

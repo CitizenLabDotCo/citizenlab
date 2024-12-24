@@ -12,9 +12,6 @@ import { isAdmin, isModerator } from 'utils/permissions/roles';
 
 import Sidebar from './sideBar/';
 
-// stlying
-import 'assets/semantic/semantic.min.css';
-
 const Container = styled.div`
   display: flex;
   background: ${colors.background};
@@ -98,6 +95,8 @@ const AdminPage = memo<Props>(({ className }) => {
   });
 
   useEffect(() => {
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (authUser === null || (authUser !== undefined && !userCanViewPath)) {
       clHistory.push('/');
     }

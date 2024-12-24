@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 
 import {
   Box,
-  Title,
   colors,
   fontSizes,
   media,
   isRtl,
+  Title,
 } from '@citizenlab/cl2-component-library';
 import { useInView } from 'react-intersection-observer';
 import styled from 'styled-components';
@@ -102,7 +102,7 @@ const InternalCommentsSection = ({ postId, className }: Props) => {
           justifyContent="space-between"
           mt="16px"
         >
-          <Title color="tenantText" variant="h2" id="comments-main-title">
+          <Title variant="h2" color="tenantText" id="comments-main-title">
             <FormattedMessage {...commentsMessages.invisibleTitleComments} />
           </Title>
           <StyledCommentSorting

@@ -7,7 +7,7 @@ export const defaultParticipationConfig: IUpdatedPhaseProperties = {
   reacting_enabled: true,
   reacting_like_method: undefined,
   reacting_like_limited_max: null,
-  reacting_dislike_enabled: true,
+  reacting_dislike_enabled: false,
   reacting_dislike_method: undefined,
   reacting_dislike_limited_max: null,
   allow_anonymous_participation: false,
@@ -18,7 +18,7 @@ export const defaultParticipationConfig: IUpdatedPhaseProperties = {
   voting_term_singular_multiloc: null,
   voting_term_plural_multiloc: null,
   presentation_mode: 'card',
-  ideas_order: null,
+  ideas_order: undefined,
   input_term: 'idea',
   poll_anonymous: false,
   document_annotation_embed_url: null,
@@ -37,13 +37,14 @@ export const ideationDefaultConfig: IUpdatedPhaseProperties = {
   reacting_enabled: true,
   reacting_like_method: 'unlimited',
   reacting_like_limited_max: null,
-  reacting_dislike_enabled: true,
+  reacting_dislike_enabled: false,
   reacting_dislike_method: 'unlimited',
   allow_anonymous_participation: false,
   reacting_dislike_limited_max: null,
   presentation_mode: 'card',
   input_term: 'idea',
   ideas_order: 'trending',
+  prescreening_enabled: false,
 };
 
 export const nativeSurveyDefaultConfig: IUpdatedPhaseProperties = {
@@ -53,7 +54,7 @@ export const nativeSurveyDefaultConfig: IUpdatedPhaseProperties = {
   submission_enabled: true,
   reacting_enabled: true,
   reacting_like_method: 'unlimited',
-  reacting_dislike_enabled: true,
+  reacting_dislike_enabled: false,
   reacting_dislike_method: 'unlimited',
 };
 
@@ -65,6 +66,7 @@ export const votingDefaultConfig: IUpdatedPhaseProperties = {
   voting_max_total: 100,
   voting_max_votes_per_idea: 1,
   commenting_enabled: true,
+  autoshare_results_enabled: true,
   presentation_mode: 'card',
   ideas_order: 'random',
   input_term: 'idea',

@@ -200,7 +200,7 @@ describe Verification::VerificationService do
       create(:custom_field_birthyear)
 
       configuration = AppConfiguration.instance
-      configuration.settings['verification']['verification_methods'] << { name: 'fake_sso' }
+      configuration.settings['verification']['verification_methods'] << { name: 'fake_sso', enabled_for_verified_actions: true }
       configuration.save!
 
       metadata = service.method_metadata(service.first_method_enabled_for_verified_actions)

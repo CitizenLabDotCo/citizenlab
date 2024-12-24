@@ -70,6 +70,7 @@ Rails.application.routes.draw do
         get :filter_counts, on: :collection
         get :json_forms_schema, on: :member
         get 'draft/:phase_id', on: :collection, to: 'ideas#draft_by_phase'
+        get :similarities, on: :member
       end
 
       resources :initiatives,
@@ -168,10 +169,11 @@ Rails.application.routes.draw do
       end
       resources :event_attendances, only: %i[destroy], controller: 'events/attendances'
 
-      resources :phases, only: %i[show edit update destroy], concerns: :permissionable, defaults: { parent_param: :phase_id } do
+      resources :phases, only: %i[show show_mini edit update destroy], concerns: :permissionable, defaults: { parent_param: :phase_id } do
         resources :files, defaults: { container_type: 'Phase' }, shallow: false
         get 'survey_results', on: :member
         get :as_xlsx, on: :member, action: 'index_xlsx'
+        get :mini, on: :member, action: 'show_mini'
         get 'submission_count', on: :member
         delete 'inputs', on: :member, action: 'delete_inputs'
         resources :custom_fields, controller: 'phase_custom_fields', only: %i[] do
@@ -193,11 +195,27 @@ Rails.application.routes.draw do
           get :users_search, on: :collection
         end
 
-        post 'copy', on: :member
-        get 'by_slug/:slug', on: :collection, to: 'projects#by_slug'
-        get :as_xlsx, on: :member, action: 'index_xlsx'
-        get :votes_by_user_xlsx, on: :member, action: 'votes_by_user_xlsx'
-        get :votes_by_input_xlsx, on: :member, action: 'votes_by_input_xlsx'
+        collection do
+          get 'by_slug/:slug', to: 'projects#by_slug'
+          get 'for_areas', action: 'index_for_areas'
+          get 'for_topics', action: 'index_for_topics'
+          get 'finished_or_archived', action: 'index_finished_or_archived'
+          get 'for_followed_item', action: 'index_for_followed_item'
+          get 'with_active_participatory_phase', action: 'index_with_active_participatory_phase'
+        end
+
+        resource :review, controller: 'project_reviews'
+
+        member do
+          post :copy
+          post :refresh_preview_token
+
+          get :as_xlsx, action: 'index_xlsx'
+          get :votes_by_user_xlsx
+          get :votes_by_input_xlsx
+
+          delete :participation_data, action: 'destroy_participation_data'
+        end
       end
 
       resources :projects_allowed_input_topics, only: %i[show create destroy] do
@@ -206,6 +224,7 @@ Rails.application.routes.draw do
 
       resources :admin_publications, only: %i[index show] do
         patch 'reorder', on: :member
+        get 'select_and_order_by_ids', on: :collection, action: 'index_select_and_order_by_ids'
         get 'status_counts', on: :collection
       end
 
@@ -306,9 +325,4 @@ Rails.application.routes.draw do
   post '/auth/failure', to: 'omniauth_callback#failure'
   get '/auth/:provider/logout_data', to: 'omniauth_callback#logout_data'
   get '/auth/:provider/spslo', to: 'omniauth_callback#spslo'
-
-  if Rails.env.development?
-    require 'que/web'
-    mount Que::Web => '/que'
-  end
 end

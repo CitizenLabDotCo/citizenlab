@@ -21,6 +21,8 @@ import { isNilOrError } from 'utils/helperUtils';
 export const FullScreenPreview = () => {
   const [search] = useSearchParams();
   const selectedLocale =
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     (search.get('selected_locale') as SupportedLocale) || undefined;
   const localize = useLocalize();
 
@@ -41,7 +43,9 @@ export const FullScreenPreview = () => {
 
   const savedEditorData = projectDescriptionBuilderLayout?.data.attributes
     .craftjs_json
-    ? projectDescriptionBuilderLayout?.data.attributes.craftjs_json
+    ? // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      projectDescriptionBuilderLayout?.data.attributes.craftjs_json
     : undefined;
 
   const editorData = draftData || savedEditorData;

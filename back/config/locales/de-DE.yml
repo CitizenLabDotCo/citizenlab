@@ -37,9 +37,9 @@ de:
     outside: Anderer Ort
   idea_statuses:
     prescreening: Vorabprüfung
-    prescreening_description: Dieser Beitrag wird derzeit vom Projektmanager geprüft und ist noch nicht für die Öffentlichkeit sichtbar.
+    prescreening_description: Dieser Beitrag wird derzeit geprüft und ist noch nicht für die Öffentlichkeit sichtbar.
     proposed: eingereicht
-    proposed_description: Diese Idee wurde der Stadt vorgeschlagen
+    proposed_description: Dieser Beitrag wurde eingereicht und steht nun zur öffentlichen Abstimmung. Sammeln Sie Stimmen, um ihn weiterzubringen.
     viewed: angesehen
     viewed_description: Diese Idee ist von jemandem aus der Stadt gesehen worden
     under_consideration: unter Berücksichtigung
@@ -180,7 +180,7 @@ de:
         title: Vorgeschlagenes Budget
         description:
       budget:
-        title: Haushalt
+        title: Budget
       images:
         title: Bilder
         description:
@@ -213,7 +213,7 @@ de:
         option:
           title: Was ist Ihre Option?
         proposal:
-          title: Wie lautet Ihr Vorschlag?
+          title: Was ist dein Vorschlag?
         initiative:
           title: Was ist Ihre Initiative?
         petition:
@@ -239,7 +239,7 @@ de:
     default_eligibility_criteria: >
       <ul> <li>Es muss in die Politikbereiche und Kompetenzen des lokalen Politiks fallen.</li> <li>Es dient eher dem öffentlichen als dem individuellen Interesse</li> <li>Es diskriminiert nicht aufgrund von Geschlecht, Rasse, Alter oder Hintergrund.</li> <li>Es schadet anderen nicht</li></ul>
     default_posting_tips: >
-      <ul><li>Nehmen Sie sich die Zeit, Ihren Vorschlag auszuarbeiten. Wenn nötig, schreiben Sie zuerst einen Entwurf und fügen ihn dann hier ein. Sobald Sie ihn veröffentlichen, können andere ihn lesen und die Zeit beginnt zu laufen.</li><li>Wählen Sie einen aussagekräftigen Titel, der deutlich macht, worum es in Ihrem Vorschlag geht.</li><li>Visualisieren Sie Ihren Vorschlag mit einem passenden Bild, damit er sich abhebt!</li><li>Fügen Sie relevante Anhänge hinzu, z.B. Videos, inspirierende Beispiele, technische Details oder Pläne.</li><li>Teilen Sie Ihre Idee in den sozialen Medien und anderen Kanälen, um Unterstützung von anderen zu erhalten.</li></ul>
+      <ul><li>Nimm dir die Zeit, um deinen Vorschlag auszuarbeiten. Wenn nötig, schreibe zuerst einen Entwurf und füge ihn dann hier ein.</li><li>Wähle einen aussagekräftigen Titel, der deutlich macht, worum es in deinem Vorschlag geht.</li><li>Visualisiere deinen Vorschlag mit einem passenden Bild, damit er heraussticht!</li><li>Füge relevante Anhänge hinzu, wie Videos, inspirierende Beispiele, technische Details oder Pläne.</li><li>Teile deine Idee auf sozialen Medien und anderen Kanälen, um Unterstützung von anderen zu erhalten.</li></ul>
   reset_password_mailer:
     send_reset_password:
       preheader: 'Passwort für %{organizationName} zurücksetzen'
@@ -266,6 +266,7 @@ de:
       first_name: 'Vorname(n)'
       image_url: 'Bild-URL'
       input_id: 'ID'
+      manual_votes: 'Analoge Stimmen'
       input_url: 'URL'
       last_name: 'Familienname'
       latitude: 'Breitengrad'
@@ -343,6 +344,8 @@ de:
       you_can_sign_in_again_from: "Sie können sich ab dem %{date} erneut anmelden"
   user:
     anon_first_name: "Nutzer*in"
+    anon_scheme:
+      animals: 'Alligator, Krokodil, Alpaka, Ameise, Antilope, Affe, Gürteltier, Pavian, Dachs, Fledermaus, Bär, Biber, Biene, Käfer, Büffel, Schmetterling, Kamel, Wasserbüffel, Karibu, Katze, Rind, Gepard, Schimpanse, Chinchilla, Zikade, Muschel, Schabe, Kabeljau, Kojote, Krabbe, Grille, Krähe, Rabe,Hirsch, Dinosaurier, Hund, Delphin, Tümmler, Ente, Adler, Aal, Elefant, Elch, Frettchen, Fisch, Fliege, Fuchs, Frosch, Kröte, Rennmaus, Giraffe, Mücke, Gnu, Gnu, Ziege, Goldfisch, Gans, Gorilla, Grashüpfer, Meerschweinchen, Hamster, Hase, Igel, Hering, Flusspferd, Hornisse, Pferd, Hund,Hyäne,Impala,Schakal,Qualle,Känguru,Wallaby,Koala,Leopard,Löwe,Eidechse,Lama,Heuschrecke,Laus,Ara,Stockente,Mammut,Seekuh,Marder,Nerz,Elritze,Elch,Mücke,Maus,Ratte,Maultier,Bisamratte,Otter,Ochse,Auster,Panda,Schwein,Schnabeltier,Stachelschwein,Präriehund,Mops,Kaninchen,Waschbär,Rentier,Nashorn,Lachs,Sardine,Skorpion,Robbe,Seelöwe,Serval,Hai,Schaf,Stinktier,Schnecke,Schlange,Spinne,Eichhörnchen,Schwan,Termite,Tiger,Forelle,Schildkröte,Schildkröte,Walross,Wespe,Wal,Wolf,Wombat,Murmeltier,Wurm,Yak,Yellowjacket,Zebra'
   time:
     am: am
     formats:

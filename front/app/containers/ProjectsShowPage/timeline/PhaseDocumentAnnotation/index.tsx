@@ -1,12 +1,11 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Title } from '@citizenlab/cl2-component-library';
 
 import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 
 import DocumentAnnotation from 'containers/ProjectsShowPage/shared/document_annotation';
-import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -23,9 +22,9 @@ const PhaseDocumentAnnotation = ({ phase, project }: Props) => {
   if (documentUrl) {
     return (
       <Box position="relative" minHeight="500px">
-        <ProjectPageSectionTitle>
+        <Title variant="h2" mt="0" color="tenantText">
           <FormattedMessage {...messages.document} />
-        </ProjectPageSectionTitle>
+        </Title>
 
         <DocumentAnnotation
           project={project}

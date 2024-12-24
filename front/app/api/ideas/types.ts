@@ -1,5 +1,6 @@
 import { ILinks, IRelationship, Multiloc } from 'typings';
 
+import { IdeaSortMethod } from 'api/phases/types';
 import { PublicationStatus as ProjectPublicationStatus } from 'api/projects/types';
 
 import {
@@ -37,6 +38,12 @@ export type Sort =
   | '-status'
   | 'votes_count'
   | '-votes_count'
+  | 'total_votes'
+  | '-total_votes'
+  | 'total_baskets'
+  | '-total_baskets'
+  | 'manual_votes_amount'
+  | '-manual_votes_amount'
   | 'comments_count'
   | '-comments_count'
   | 'budget'
@@ -50,13 +57,18 @@ type ReactingIdeaActionDescriptor =
       cancelling_enabled: boolean;
     };
 
-export interface IMiniIdeaData {
-  id: string;
-  type: string;
-  attributes: {
-    title_multiloc: Multiloc;
-    slug: string;
-  };
+export interface IdeaQueryParameters {
+  'page[number]': number;
+  'page[size]': number;
+  project_publication_status?: 'published';
+  publication_status?: 'published';
+  phase?: string;
+
+  // filters
+  sort: IdeaSortMethod;
+  search?: string;
+  idea_status?: string;
+  topics?: string[];
 }
 
 export interface IIdeaData {
@@ -87,7 +99,13 @@ export interface IIdeaData {
     proposed_budget: number | null;
     created_at: string;
     updated_at: string;
-    published_at: string;
+    published_at: string | null;
+    // For manual_votes_amount, in a PB phase this refers to the # offline baskets with this idea (I.e. # offline picks)
+    // In the other voting methods, this refers to the total # offline votes cast for this idea.
+    manual_votes_amount: number;
+    // For total_votes, in a PB phase this refers to the total # baskets with this idea (I.e. Total # picks)
+    // In the other voting methods, this refers to the total # votes cast on this idea.
+    total_votes: number;
     action_descriptors: {
       reacting_idea: ReactingIdeaActionDescriptor & {
         up: ActionDescriptorFutureEnabled<IdeaReactingDisabledReason>;
@@ -152,6 +170,9 @@ export interface IIdeaData {
     cosponsors?: {
       data: IRelationship | null;
     };
+    manual_votes_last_updated_by?: {
+      data: IRelationship | null;
+    };
   };
 }
 
@@ -191,6 +212,7 @@ export interface IIdeaUpdate {
   proposed_budget?: number | null;
   anonymous?: boolean;
   idea_images_attributes?: { image: string }[];
+  manual_votes_amount?: number | null;
 }
 
 export interface IIdeas {
@@ -198,15 +220,11 @@ export interface IIdeas {
   links: ILinks;
 }
 
-export interface IMiniIdeas {
-  data: IMiniIdeaData[];
-}
-
 export interface IIdea {
   data: IIdeaData;
 }
 
-export interface IQueryParameters {
+export interface IIdeaQueryParameters {
   sort?: Sort;
   'page[number]'?: number;
   'page[size]'?: number;

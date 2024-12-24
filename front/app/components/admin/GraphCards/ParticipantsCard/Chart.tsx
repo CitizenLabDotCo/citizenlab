@@ -57,6 +57,8 @@ const Chart = ({
   };
 
   // Avoids unmounted component state update warning
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (timeSeries === undefined) {
     return null;
   }

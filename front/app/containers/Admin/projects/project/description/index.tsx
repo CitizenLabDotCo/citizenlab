@@ -149,6 +149,8 @@ const ProjectDescription = memo<
             />
             <Error
               fieldName="description_preview_multiloc"
+              // TODO: Fix this the next time the file is edited.
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
               apiErrors={apiError?.description_preview_multiloc}
             />
           </SectionField>
@@ -173,6 +175,8 @@ const ProjectDescription = memo<
               />
               <Error
                 fieldName="description_multiloc"
+                // TODO: Fix this the next time the file is edited.
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 apiErrors={apiError?.description_multiloc}
               />
             </SectionField>

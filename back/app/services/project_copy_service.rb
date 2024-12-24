@@ -320,6 +320,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
         yml_phase['voting_max_votes_per_idea'] = phase.voting_max_votes_per_idea
         yml_phase['voting_term_singular_multiloc'] = phase.voting_term_singular_multiloc
         yml_phase['voting_term_plural_multiloc'] = phase.voting_term_plural_multiloc
+        yml_phase['autoshare_results_enabled'] = phase.autoshare_results_enabled
       end
       if yml_phase['participation_method'] == 'survey'
         yml_phase['survey_embed_url'] = phase.survey_embed_url

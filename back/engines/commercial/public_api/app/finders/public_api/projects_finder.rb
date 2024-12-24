@@ -59,11 +59,10 @@ module PublicApi
     def filter_by_area_ids(scope)
       return scope unless @area_ids
 
-      scope
-        .joins(:areas)
-        .where(areas: { id: @area_ids })
+      scope.left_joins(:areas_projects)
+        .where('projects.include_all_areas = ? OR areas_projects.area_id IN (?)', true, @area_ids)
         .group('projects.id')
-        .having('COUNT(areas.id) = ?', @area_ids.size)
+        .having('projects.include_all_areas = ? OR COUNT(DISTINCT areas_projects.area_id) = ?', true, @area_ids.size)
     end
   end
 end

@@ -79,6 +79,8 @@ const UserHeader = ({ userSlug }: Props) => {
     }
   });
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const isBlocked = user.data.attributes?.blocked;
   const isCurrentUserAdmin = isAdmin(authUser);
   const canBlock = isCurrentUserAdmin && user.data.id !== authUser?.data.id;
@@ -147,9 +149,13 @@ const UserHeader = ({ userSlug }: Props) => {
         </Text>
         {!hideBio &&
           !isEmpty(user.data.attributes.bio_multiloc) &&
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           hasDescription && (
             <Bio data-testid="userHeaderBio">
               <QuillEditedContent>
+                {/* TODO: Fix this the next time the file is edited. */}
+                {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
                 {user.data.attributes.bio_multiloc && (
                   <T
                     value={user.data.attributes.bio_multiloc}

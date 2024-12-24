@@ -1,86 +1,102 @@
-import React, { memo, useCallback, MouseEvent } from 'react';
+import React, { useCallback, MouseEvent, memo, useState } from 'react';
 
 import {
   fontSizes,
   colors,
-  defaultCardStyle,
+  Box,
+  isRtl,
+  Button,
+  Text,
 } from '@citizenlab/cl2-component-library';
-import { isError, includes } from 'lodash-es';
+import { includes, get } from 'lodash-es';
 import { darken } from 'polished';
 import styled from 'styled-components';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { ITopicData } from 'api/topics/types';
 
-import T from 'components/T';
+import useLocalize from 'hooks/useLocalize';
 
 import { ScreenReaderOnly } from 'utils/a11y';
-import { FormattedMessage } from 'utils/cl-intl';
-import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
+import { trackEventByName } from 'utils/analytics';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
+import InputFilterCollapsible from './InputFilterCollapsible';
 import messages from './messages';
-import { Header, Title } from './styles';
+import tracks from './tracks';
+import { FilterCounts } from './types';
+import {
+  getSelectedTopicNames,
+  getTopicsWithIdeas,
+  scrollToTopIdeasList,
+} from './utils';
 
-const Container = styled.div`
-  width: 100%;
+const Topic = styled.button<{ selected: boolean | undefined }>`
+  color: ${({ selected }) => (selected ? colors.white : colors.textPrimary)};
+  font-size: ${fontSizes.base}px;
   display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  padding: 20px;
-  padding-top: 25px;
-  ${defaultCardStyle};
-`;
-
-const Topics = styled.div``;
-
-const Topic = styled.button`
-  color: ${colors.textSecondary};
-  font-size: ${fontSizes.s}px;
-  font-weight: 400;
+  width: 100%;
+  justify-content: space-between;
   line-height: normal;
-  display: inline-block;
-  padding-left: 14px;
-  padding-right: 14px;
-  padding-top: 8px;
-  padding-bottom: 8px;
+  padding: 8px 14px;
   margin: 0px;
   margin-right: 6px;
   margin-bottom: 8px;
   cursor: pointer;
   user-select: none;
-  border: solid 1px ${colors.divider};
+  border: solid 1px transparent;
   border-radius: ${(props) => props.theme.borderRadius};
   transition: all 80ms ease-out;
+  word-break: break-word;
+  text-align: left;
 
-  &:not(.selected) {
-    &:hover {
-      color: ${({ theme }) => theme.colors.tenantSecondary};
-      border-color: ${({ theme }) => theme.colors.tenantSecondary};
-    }
+  ${isRtl`
+      text-align: right;
+      direction: rtl;
+  `}
+
+  &:not(.selected):hover {
+    background: ${({ theme }) => theme.colors.grey200};
   }
 
   &.selected {
     color: #fff;
-    background: ${({ theme }) => theme.colors.tenantSecondary};
-    border-color: ${({ theme }) => theme.colors.tenantSecondary};
+    background: ${({ theme }) => theme.colors.tenantPrimary};
 
     &:hover {
-      background: ${({ theme }) => darken(0.15, theme.colors.tenantSecondary)};
-      border-color: ${({ theme }) =>
-        darken(0.15, theme.colors.tenantSecondary)};
+      background: ${({ theme }) => darken(0.15, theme.colors.tenantPrimary)};
     }
   }
 `;
 
+const Count = styled.span`
+  // Prevents the count from breaking into multiple lines
+  // when the topic title is too long.
+  // Given the filter boxes keep their width,
+  // flex-shrink: 0 is not needed.
+  white-space: nowrap;
+`;
+
 interface Props {
-  topics: ITopicData[];
+  topics?: ITopicData[];
   selectedTopicIds: string[] | null | undefined;
   onChange: (arg: string[] | null) => void;
   className?: string;
+  filterCounts?: FilterCounts;
 }
 
-const TopicsFilter = memo<Props & InjectedLocalized>(
-  ({ topics, selectedTopicIds, onChange, className, localize }) => {
+const TopicsFilter = memo<Props>(
+  ({ topics, selectedTopicIds, filterCounts, onChange, className }) => {
+    const localize = useLocalize();
+    const { formatMessage } = useIntl();
+    const { data: appConfig } = useAppConfiguration();
+
+    const [showFullList, setShowFullList] = useState(false);
+
+    const customTopicsTerm =
+      appConfig?.data.attributes.settings.core.topics_term;
+
     const handleOnClick = useCallback(
       (event: MouseEvent<HTMLElement>) => {
         const topicId = event.currentTarget.dataset.id as string;
@@ -95,62 +111,116 @@ const TopicsFilter = memo<Props & InjectedLocalized>(
         }
 
         onChange(output.length > 0 ? output : null);
+        scrollToTopIdeasList();
       },
       // eslint-disable-next-line react-hooks/exhaustive-deps
       [selectedTopicIds]
     );
 
-    if (!isNilOrError(topics) && topics.length > 0) {
-      const selectedTopics = topics.filter((topic) =>
-        includes(selectedTopicIds, topic.id)
-      );
-      const numberOfSelectedTopics = selectedTopics.length;
-      const selectedTopicNames = selectedTopics
-        .map((topic) => {
-          return (
-            !isNilOrError(topic) && localize(topic.attributes.title_multiloc)
-          );
-        })
-        .join(', ');
+    const selectedTopics = topics?.filter((topic) =>
+      includes(selectedTopicIds, topic.id)
+    );
+    const numberOfSelectedTopics = selectedTopics?.length;
+    const selectedTopicNames =
+      selectedTopics && getSelectedTopicNames(selectedTopics, localize);
 
-      return (
-        <Container className={className}>
-          <Header>
-            <Title>
-              <FormattedMessage {...messages.topicsTitle} />
-            </Title>
-          </Header>
+    const topicsWithIdeas = topics && getTopicsWithIdeas(topics, filterCounts);
 
-          <Topics className="e2e-topics-filters">
-            {topics
-              .filter((topic) => !isError(topic))
-              .map((topic: ITopicData) => (
-                <Topic
-                  key={topic.id}
-                  data-id={topic.id}
-                  onMouseDown={removeFocusAfterMouseClick}
-                  onClick={handleOnClick}
-                  className={`e2e-topic ${
-                    includes(selectedTopicIds, topic.id) ? 'selected' : ''
-                  }`}
-                >
-                  <T value={topic.attributes.title_multiloc} />
-                </Topic>
-              ))}
-          </Topics>
-          <ScreenReaderOnly aria-live="polite">
-            {/* Pronounces numbers of selected topics + selected topic names */}
-            <FormattedMessage
-              {...messages.a11y_selectedTopicFilters}
-              values={{ numberOfSelectedTopics, selectedTopicNames }}
-            />
-          </ScreenReaderOnly>
-        </Container>
-      );
-    }
+    return (
+      <InputFilterCollapsible
+        title={
+          localize(customTopicsTerm) || formatMessage(messages.topicsTitle)
+        }
+        className={className}
+      >
+        {!topicsWithIdeas || topicsWithIdeas.length < 1 ? (
+          <Box display="flex" justifyContent="center">
+            <Text color="textSecondary">
+              {formatMessage(messages.noValuesFound)}
+            </Text>
+          </Box>
+        ) : (
+          <Box>
+            <Box
+              className="e2e-topics-filters"
+              aria-live="polite"
+              id="e2e-topics-filters"
+            >
+              {topicsWithIdeas
+                .slice(0, showFullList ? undefined : 5) // We show only 5 topics by default with a "Show all" button.
+                .map((topic: ITopicData) => {
+                  const postCount = get(
+                    filterCounts,
+                    `topic_id.${topic.id}`,
+                    0
+                  );
 
-    return null;
+                  const topicSelected = selectedTopicIds?.includes(topic.id);
+
+                  return (
+                    <Topic
+                      key={topic.id}
+                      data-id={topic.id}
+                      onMouseDown={removeFocusAfterMouseClick}
+                      onClick={handleOnClick}
+                      className={`e2e-topic ${topicSelected ? 'selected' : ''}`}
+                      selected={topicSelected}
+                    >
+                      <Box as="span" mr="8px">
+                        {localize(topic.attributes.title_multiloc)}
+                      </Box>
+                      <Count aria-hidden>{postCount}</Count>
+                      <ScreenReaderOnly>
+                        {`${postCount} ${formatMessage(messages.inputs)}`}
+                      </ScreenReaderOnly>
+                    </Topic>
+                  );
+                })}
+            </Box>
+            {topicsWithIdeas.length > 5 && (
+              <Button
+                onClick={() => {
+                  if (!showFullList) {
+                    trackEventByName(tracks.seeAllTags);
+                  }
+                  setShowFullList((curentValue) => !curentValue);
+                }}
+                buttonStyle="text"
+                p="0px"
+                mt="12px"
+                fontSize="s"
+              >
+                {formatMessage(
+                  showFullList
+                    ? messages.showLess
+                    : messages.showTagsWithNumber,
+                  {
+                    numberTags: topicsWithIdeas.length,
+                  }
+                )}
+              </Button>
+            )}
+
+            <ScreenReaderOnly aria-live="polite">
+              {/* Pronounces numbers of selected topics + selected topic names */}
+              <FormattedMessage
+                {...messages.a11y_selectedTopicFilters}
+                values={{ numberOfSelectedTopics, selectedTopicNames }}
+              />
+            </ScreenReaderOnly>
+          </Box>
+        )}
+
+        <ScreenReaderOnly aria-live="polite">
+          {/* Pronounces numbers of selected topics + selected topic names */}
+          <FormattedMessage
+            {...messages.a11y_selectedTopicFilters}
+            values={{ numberOfSelectedTopics, selectedTopicNames }}
+          />
+        </ScreenReaderOnly>
+      </InputFilterCollapsible>
+    );
   }
 );
 
-export default injectLocalize(TopicsFilter);
+export default TopicsFilter;

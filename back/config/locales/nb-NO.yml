@@ -1,76 +1,76 @@
-"nb-NO":
+nb:
   locales:
     en: Engelsk
     ar-MA: Arabisk (Marokko)
     ar-SA: Arabisk (Saudi-Arabia)
-    ca-ES: katalansk
-    cy-GB: walisisk
-    da-DK: dansk
-    de-DE: tysk
-    el-GR: gresk
+    ca-ES: Katalansk
+    cy-GB: Walisisk
+    da-DK: Dansk
+    de-DE: Tysk
+    el-GR: Gresk
     en-CA: Engelsk (Canada)
-    en-GB: engelsk (Storbritannia)
+    en-GB: Engelsk (Storbritannia)
     en-IE: Engelsk (Irland)
-    es-CL: spansk (Chile)
+    es-CL: Spansk (Chile)
     es-ES: Spansk (Spania)
-    fi-FI: finsk
-    fr-BE: fransk (Belgia)
-    fr-FR: fransk
+    fi-FI: Finsk
+    fr-BE: Fransk (Belgia)
+    fr-FR: Fransk
     hr-HR: Kroatisk
-    hu-HU: ungarsk
-    it-IT: italiensk
+    hu-HU: Ungarsk
+    it-IT: Italiensk
     kl-GL: Grønlandsk
-    lb-LU: luxemburgsk
+    lb-LU: luxembourgsk
     lv-LV: latvisk
     mi: Maori
-    nb-NO: norsk (bokmål)
-    nl-BE: Nederlandsk (Belgia)
-    nl-NL: nederlandsk
-    pl-PL: Pusse
+    nb-NO: Norsk (bokmål)
+    nl-BE: nederlandsk (Belgia)
+    nl-NL: Nederlandsk
+    pl-PL: Polsk
     pt-BR: Portugisisk (Brasil)
     ro-RO: rumensk
-    sr-Latn: serbisk (latinsk)
-    sr-SP: serbisk (kyrillisk)
-    sv-SE: svensk
-    tr-TR: tyrkisk
+    sr-Latn: Serbisk (latin)
+    sr-SP: Serbisk (kyrillisk)
+    sv-SE: Svensk
+    tr-TR: Tyrkisk
   symbols:
-    outside: annet sted
+    outside: et annet sted
   idea_statuses:
-    prescreening: forhåndsscreening
-    prescreening_description: Dette innspillet er for tiden under vurdering av prosjektlederen og er ennå ikke synlig for offentligheten.
+    prescreening: screening
+    prescreening_description: Dette innspillet er for øyeblikket under vurdering av prosjektlederen og er ennå ikke synlig for publikum.
     proposed: foreslått
-    proposed_description: Ideen har blitt forslått til kommunen
-    viewed: Sett
-    viewed_description: Ideen  har blitt sett av noen som jobber i kommunen
-    under_consideration: Under vurdering
-    under_consideration_description: Denne ideen vurderes av kommunen
-    accepted: Akseptert
-    accepted_description: Denne ideen har blitt akseptert og vli bli tatt i bruk av kommunen
-    implemented: Implementert
-    implemented_description: Denne ideen har blitt tatt i bruk av kommunen
-    rejected: avslått
-    rejected_description: Denne ideen ble avslått
+    proposed_description: Dette innspillet er sendt inn og er nå åpent for offentlig støtte. Samle stemmer for å bidra til å ta det videre til neste trinn.
+    viewed: sett
+    viewed_description: Prosjektlederen har sett disse innspillene.
+    under_consideration: under vurdering
+    under_consideration_description: Prosjektlederen har tatt hensyn til disse innspillene.
+    accepted: akseptert
+    accepted_description: Dette innspillet er akseptert og vil bli implementert av prosjektlederen.
+    implemented: implementert
+    implemented_description: Dette innspillet har blitt implementert av prosjektlederen.
+    rejected: avvist
+    rejected_description: Dette innspillet har blitt avvist.
     expired: utløpt
-    expired_description: utløpt
+    expired_description: Dette innspillet er ikke lenger aktivt og har blitt stengt på grunn av tidsbegrensninger eller inaktivitet.
     threshold_reached: terskel nådd
-    threshold_reached_description: terskel nådd
-    answered: svarte
-    answered_description: svarte
+    threshold_reached_description: Dette innspillet har nådd den nødvendige støttegrensen og vil nå bli vurdert for videre tiltak.
+    answered: besvart
+    answered_description: Prosjektlederen har publisert en offisiell tilbakemelding på dette innspillet.
     ineligible: ikke kvalifisert
-    ineligible_description: ikke kvalifisert
+    ineligible_description: Dette innspillet har blitt gjennomgått og dessverre avvist. En offisiell oppdatering med flere detaljer er sendt ut.
   initiative_statuses:
-    review_pending: vurdering venter
-    review_pending_description: vurdering venter
-    changes_requested: endringer forespurt
-    changes_requested_description: endringer forespurt
+    review_pending: vurdering pågår
+    review_pending_description: vurdering pågår
+    changes_requested: ønskede endringer
+    changes_requested_description: ønskede endringer
     proposed: foreslått
     proposed_description: foreslått
     expired: utløpt
     expired_description: utløpt
-    threshold_reached: grense nådd
-    threshold_reached_description: grense nådd
-    answered: svart
-    answered_description: svart
+    threshold_reached: terskel nådd
+    threshold_reached_description: terskel nådd
+    answered: besvart
+    answered_description: besvart
     ineligible: ikke kvalifisert
     ineligible_description: ikke kvalifisert
   topics:
@@ -94,8 +94,8 @@
     safety_description: Sikkerhet
     education: Utdanning og ungdom
     education_description: Utdanning og ungdom
-    culture: Kultur, idrett og arrangementer
-    culture_description: Kultur, idrett og arrangementer
+    culture: Kultur, sport og arrangementer
+    culture_description: Kultur, sport og arrangementer
     health: Helse og velferd
     health_description: Helse og velferd
     inclusion: Sosial inkludering
@@ -109,45 +109,45 @@
   static_pages:
     terms_and_conditions_title: Vilkår og betingelser
     terms_and_conditions_body: >
-      <p>Denne plattformen for innbyggerinvolvering ønsker å gi så mange mennesker som muli  sjansen til  komme med innspill til fremtiden for byen eller instisusjonen som, sammen med Go Vocal, har satt opp denne platformen. Bidrag på plattformen er underlagt noen regler for å holde debatten åpen og konstruktiv. Vi er overbevist om at tydeliger regler skaper det beste grunnlag for et digitalt fellesskap.  Nedenfor finner du generelle vilkår for plattformen.</p> <p>Fordi Go Vocal setter pris på tilbakemeldingene fra brukerne av plattformen, vil vi gjerne høre ideene dine til forbedringer. Du kan sende oss forbedringsforslag på  support@govocal.com.</p> <h2>Hvem kan registrere seg på  plattformen?</h2> <p>Alle som ønsker kan følge debatten online. Alle kan lese ideer og kommentarer som er publisert. Ønsker du selv å delta i debatten (ved å dele egne ideer, kommentere på andres ideer eller støtte forslag) må du opprette en konto. Det er kun registrerte deltakere som kan delta aktivt.</p> <p>Du kan registrere deg via  e-post eller opprette en konto ved logge vil din Facebook- eller Googleprofil.</p> <p>Opprettelse av en konto gir ikke brukeren full eierskap over kontoen. Go Vocal forbeholder seg rette til å avvise, utelukke eller slette en konto, for eksempel hvis  en bruker ikke følger retningslinjene eller har blitt utestengt fra plattformen tidligere.</p> <p>Kontoen må foverholde følgende regler:</p> <ul> <li> <strong>enhver kontor er personlig</strong> <p>Enhver konto må være unik og tilhøre en person. Alle brukere har rett til å opprette en konto. Dersom det oppdages at en person har flere kontoer forbeholder Go Vocal seg rettigheten til å slette alle Alle brukere må være minimum 12 år. </p> </li> <li> <strong>En konto kan ikke overføres til en annen person</strong> <p>Da enhver konto er tilknyttet en person, kan kontoen ikke overføres til en annen person uten godkjennelse fra Go Vocal. Denne overførselsregel skal forståes i bredeste forstand. Go Vocal forbeholder seg retten til å avvise eller slette kontoen i tilfelle av overtredelse. </p> </li> <li> <strong>En konto må ikke benyttes til kommersielle formål</strong> <p>Go Vocal plattformen skal legge til rette for innbyggerinvolvering og økt deltakelse. Kontoen kan derfor kun brukes til dette formål. Enhver bruk av kontoen med formål om å nyte kommersielle formål er forbudt. </p> </li> <li> <strong>Kontoinformasjonen er konfidensiell </strong> <p> Det kun personen som opprettet kontoen som kan bruke den. Personen som oppretter kontoen må sikre seg at hun/han/hen oppbevarer passord og innloggingsinformasjon. Vi anbefaler deg å lage et  "sterkt" passord (et passord med en kombinasjon av små bokstaver, store bokstaver og tal). Go Vocal kan under ingen omstendigheter holdes ansvarlig for noe tap eller skade påført kotoen dersom ovenstående vilkår ikke er overholdt av brukeren. Go Vocal kan heller ikke holdes ansvarlig for tyveri av din konto, fra for eksempel 'phishing'. Go Vocal vil aldri spørre sine brukere om personlig data, for eksempel innloggingsinformasjon og passord via e-post. Hvis personlig data er etterspurt vil brukere alltid bli sendt til Go Vocal sin plattform. </p> </li> </ul> <h2>Begrensninger for innhold og bruk av  plattformen</h2> <p>For å sikre at Go Vocal plattformen virker optimalt og at du kan kommunisere og komme i kontakt med andre, er det noen restriksjoner på hvilken type innhold som kan publiseres på plattformen:</p> <ul> <li> <strong>Krenkende atferd</strong> <p> Vi er tilhengere av ytringsfrihet. Likevel, for å sikre at plattformen blir brukt på konstruktiv måte av brukerne med respekt for forskjellige meninger og uten at folk skal risikere at bli redde  for å utrykke meningene sine, tillater vi ikke støtende eller krenkende oppførsel som sjenerer  eller skaper frykt for å få en annen bruker til å tie stille. </p> <p>Kontoer og relaterte konto som gjør noen av følgende handlinger kan bli midlertidig blokkert og/eller permanent slettet.</p> <p> <ul> <li>Voldstrusler (direkte eller indirekte): Det er ikke lov å kommed trusler eller promotere vold, inkludert promotering av terrorisme.</li> <li>Trakassering: Det er ikke tillatt å oppmuntre til eller være involvert i bevisst å fornærme eller trakassere andre. Her er noen faktorer vi kan ta til etterrettning når undersøker og vurderer misbruk: om hovedformålet med den rapporterte kontoen er krenkelser eller å sende støtende beskjeder til andre; om den rapporterte atferden er enveis eller inneholder trusler; om den rapporterte konto oppfordrer andre til å true en annen konto; og om den rapporterte konto sender truene beskjeder til en konto fra flere kontoer.</li> <li>Hat: Det er ikke tillatt å promotere vold mot andre mennesker eller direkte angripe eller true dem på bakgrunn av rase, etnisk bakgrunn, nasjonalitet, seksuell orientering, kjønn, kjønnsidentitet, filosofisk eller religiøs tilknytning, alder, funksjonsnedsettelser eller sykdom.Vi tillatter heller ikke kontoer med mål om å gjøre skade på bakgrunn av disse kategoriene.</li> <li>Misbruk av flere kontoer Det er ikke tillatt å opprette flere kontorer med det formål å unngå midlertidig eller permanent suspensjon av en individuell konto.</li> <li>Private data: Du kan ikke pubilsere konfidensiell data eller personlig informasjon om andre uten deres dokumenterte tilatelse og samtykke. Disse data inkluderer, for eksempel, kredittkort opplysninger, adresse, telefonnumre eller data som utgjør personsensitive opplysninger.</li> <li>Etterligning: you may not be allowed to enter via the platform if someone else deceives, confuses or threatens in a manner that actually decks or threatens others.</li> </ul> </p> </li> <li> <strong>Spam</strong> <p>Vi bestreber oss til alle tider på beskytte brukere av  Go Vocal plattformen fra tekniske overgrep og spam. Kontorer, der følgende handlinger blir begått kan bli midlertidig blokkert eller permanent slettet.</p> <ul> <li>Skadevare / phishing / virus / worms / Trojans: Det er ikke tillat å publisere skadelig innhold eller lenker til skadelig innhold med formål om å skade eller forstyrre noen andres browsere eller pc'er eller med formål om å brydde noens privatliv.</li> <li>Spam: Du kan ikke bruke Go Vocal plattformen til å spamme folk. </li> </ul> </li> </ul> <h2>Overtredelse av gjeldende lover</h2> <p>Bruk av kontoen kan ikke på noen måte brukes til å overtrede gjeldende lover. Dette innebærer overtredelser av personvernloven intelektuelle eiendomsrettigheter,straffeloven,...</p> <p>Kontoen kan på ingen måte brukes til å gjennomføre eller oppfordre til ulovlig aktivitet.</p> <h2>I tilfelle av overtredelse av ovennevnte regler </h2> <p>Go Vocal forbeholder seg retten til å slette de relevante beskjedene og  suspendere eller permanent slette brukerprofiler, dersom reglene ikke følges</p> <p>Go Vocal kan på ingen måte holdes ansvarligfor beskjeder publisert av brukere eller tredjeparter, som bryter retningslinjene. Nettadministratoren vil følge med at disse regle ikke brytes Dersom en bruker oppdager brudd på reglene kan man alltid rapportere det til følgende e-post adresse : support@govocal.com.</p> <p>Det er mulig at filer kan bli lastet ned via plattformen, om det skyldes en bruker eller ikke, eller at brukere plasserer skadelige lenker. Enhver nedlastning av en bruker eller trykk på lenke/hyperkobling plassert av en annen bruker, gjøres på egen risiko og enhver skade som påføres er utelukkende brukerens eget ansvar.</p> <h2>Opphavsrettigheter</h2> <p>Go Vocal respekterer lov om opphavsretten og forventer at brukere av denne plattformen også respekterer disse.  Go Vocal forbeholder seg rettigheten til å fjerne innhold som bryter lov om opphavsrett Gjentakende btuff vil føre til suspensjon eller fjerning av kontoen av  Go Vocal.</p> <p>Overtredelser av opphavsrettigheter kan rapporteres til denne e-post adressen: support@govocal.com</p> <h2>Property rights Go Vocal</h2> <p>Go Vocal's platform is protected by intellectual property rights that relate to content, source code, database, etc. The use of this platform in no way means a transfer of these intellectual rights to the users of the platform. Every user must be aware of these rights and must act accordingly.</p> <p>It is thus forbidden to reproduce, distribute, modify or transmit the platform and its contents without permission.</p>
-    privacy_policy_title: Personvernerklæring
+      <p>Disse vilkårene og betingelsene beskriver regler og retningslinjer for å bidra til plattformen, og er ment å bidra til å sikre en konstruktiv dialog.</p> <p>Vi tar gjerne imot forslag til hvordan vi kan forbedre plattformen ytterligere, og du kan sende dem til support@govocal.com.</p> <h2>Hvem kan delta?</h2> <p>Alle kan se offentlige prosjekter via plattformen. Hvis du ønsker å bidra med innhold (f.eks. sende inn innspill eller reagere), må du registrere deg og opprette en konto. Du kan registrere deg med e-postadressen din, men på enkelte plattformer kan det også være mulig å logge inn med en eksisterende Facebook- eller Google-konto. Hvis du bruker en av disse tjenestene, vil navnet, e-postadressen og profilbildet ditt bli delt med og lagt til på plattformkontoen din.</p> <p>Vær oppmerksom på at opprettelsen av kontoen din ikke gir deg eierskap. Plattformadministratorer kan nekte, suspendere eller slette kontoer av grunner som for eksempel manglende overholdelse av vilkårene og betingelsene som er beskrevet på denne siden.</p> <p>De generelle vilkårene for kontoen din er følgende: </p> <ul> <li> <strong>Du kan opprette én konto</strong> <p>En person kan ikke opprette og opprettholde flere kontoer. Kontoopplysningene du oppgir, må være korrekte, og kontoen kan ikke overføres til noen andre uten tillatelse fra en plattformadministrator. </p> </li> <li> <strong>Kontoen din kan ikke brukes til kommersiell markedsføring</strong> <p>En konto kan ikke brukes utelukkende til reklame, markedsføring av et produkt eller en tjeneste osv.</p> </li> <li> <strong>Du er ansvarlig for å holde kontoinformasjonen din sikker og konfidensiell</strong> <p>Du er den eneste personen som skal bruke kontoen din og ha tilgang til kontoens passord og innloggingsdetaljer. For å forbedre sikkerheten på kontoen din anbefaler vi at du bruker et passord med en kombinasjon av tall, små bokstaver og store bokstaver. Vi er ikke ansvarlige for tap eller skade på kontoen din, og vi kan ikke holdes ansvarlig for tyveri (f.eks. via phishing). Merk at vi aldri vil be deg om innloggingsopplysninger, for eksempel passordet ditt. </p>  <h2>Din aktivitet på plattformen</h2> <p>For å sikre trygg og produktiv deltakelse er det noen begrensninger på hva slags innhold som kan publiseres på denne plattformen. Alt innhold du legger ut på plattformen, må være fritt for:</p> <ul> <li> <strong>Private opplysninger</strong> <p>Konfidensielle opplysninger og personlig informasjon om andre, for eksempel telefonnummer og adresser, kan ikke legges ut uten deres uttrykkelige tillatelse og samtykke.  </p> <li><strong>Spam / skadelig programvare / phishing / virus / ormer / trojanere</strong> <p>Skadelig innhold eller lenker som er ment å krenke andres personvern eller å skade eller forstyrre andres nettlesere eller datamaskiner.</p> </li> <li> <strong>Trusler, fornærmelser og annet upassende innhold </strong> <p>Personlige angrep og fornærmelser, truende oppførsel eller språk, diskriminerende kommentarer, banning og annet støtende språk.</p> </li> <li><strong>Reklame og kommersiell aktivitet</strong> <p>Innhold som er lagt ut med det ene formålet å reklamere for en kommersiell tjeneste eller et kommersielt produkt.</p> </li> <li> <strong>Opphavsrettsbeskyttet materiale</strong> <p>Innhold som krenker immaterielle rettigheter (f.eks. opphavsrettsbeskyttede bilder).</p> </li> <li> <strong>Ulovlige aktiviteter</strong> <p>Innhold som på noen måte fremmer ulovlige aktiviteter.</li></p> </ul> <p>Innlegg og annet innhold som inneholder noe av det ovennevnte, kan bli redigert, slettet eller på annen måte forhindret fra å bli lagt ut, og kontoen kan bli midlertidig blokkert eller permanent slettet. Nye eller flere kontoer som opprettes for å unngå midlertidig eller permanent sperring, kan også bli overvåket og slettet.</p> <h2>Gjeldende lover</h2> <p>Bruken av en konto må ikke være i strid med gjeldende lover. Dette inkluderer brudd på personvernlovgivningen, immaterielle rettigheter, straffeloven osv.</p> <p>Vi kan ikke på noen måte holdes ansvarlig for innhold som er lagt ut på plattformen, og som ikke er i samsvar med ovennevnte regler og lover. Brudd kan rapporteres til support@govocal.com og kan føre til at de aktuelle meldingene slettes og/eller at den underliggende kontoen blir suspendert eller permanent inndratt.</p> <p>Det er mulig at innhold som legges ut på plattformen kan inneholde skadelige filer eller lenker. Ved å laste ned filer eller gå inn på hyperkoblinger via plattformen, påtar du deg risikoen og ansvaret for eventuelle skader som kan oppstå.</p> <h2>Eiendomsrettigheter</h2> <p>Denne plattformen er beskyttet av immaterielle rettigheter knyttet til innhold, kildekode, databaser osv. Alt originalt innhold som du legger ut på plattformen, kan være synlig for offentligheten og faller inn under Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0) Public License, som tillater at innholdet ditt deles eller tilpasses med kildeangivelse. Du kan ikke reprodusere, distribuere, endre eller overføre plattformen og noe av innholdet som ikke faller inn under det offentlige domenet, uten tillatelse.</p>
+    privacy_policy_title: Retningslinjer for personvern
     privacy_policy_body: >
-      <p>Ansvarlig for behandlingen av dine opplysninger:</p> <p>CitizenLab NV - Pachecolaan 34 - 1000 Brussels - Belgium</p> <p>Kontakt via e-postadresse: support@govocal.com</p> <h2>1. Retningslinjer for personvern</h2> <p>Retningslinjene gjelder for 'personlige data' samlet inn av Go Vocal på vegne av dataeier via dette nettstedet <h2>2. HVA ER PERSONOPPLYSNINGER?</h2> <p>Retningslinjer for personvern henviser til personlige opplysninger, som kan gjøre det mulig å identifisere deg. En identifiserbar person er en person, som kan identifiseres, direkte eller indirekte, spesielt hvis det henviser til personnummer eller til en eller flere faktorer, som er knyttet til fysisk, psykiske, økonomisk, kulturell eller sosial identitet.. Et typisk eksempel på personlige opplysninger er ditt navn og din e-epostadresse <h2>3. HVILKE PERSONOPPLYSNINGER SAMLER VI INN?</h2> <p>Vi samler dine personlige opplysninger fra følgende tre kilder:</p> <h3>3.1 Personlige opplysninger, som du deler under registreringsprosessen på plattformen, der noen er valgfri</h3> <p>De personlige opplysninger, som vi muligens innhenter fra deg  er:</p> <ul> <li>For- og etternavn</li> <li>E-postadresse</li> <li>Fødselsår</li> <li>Kjønn</li> <li>Adresse</li> <li>Foretrukket språk</li> </ul> <p>Listen kan utvides etter ønske fra dataeier. Hvis du velger å logge på via en tredjepartsleverandører, som Google eller Facebook får vi utleverte dataene  fra dem.</p> <h3>3.2 Personlige data, som du leverer, når du foretar en handling på plattformen <p>Hver handling, du gjør på plattformen (stemming, publisere en ide, skrive en kommentar, besvare en meningsmåling osv.) registreres og lagres.  Disse dataene knyttet til din profil (3.1), som betyr at dataeier kan linke din profil til disse dataene.</p> <h3>3.3 Personlige data, som vi innsamler når du besøker vår plattform</h3> <p>Vi (og tredjepartsleverandører, som handler på våres vegne) samler informasjon om bruken av vår plattformen for å sikre en velfungerende og sikker plattform. Dette innebærer at vi samler inn   tekniske opplysninger, som kan identifisere deg eksempelvis din IP-adresse og browser-detaljer. Ved å bruke våre tjenester aksepterer du at dataene samles inn. Vi samler også brukerdata for å forbedre våre tjenester. Du kan velge bort denne samling til enhver tid.</p> <h2>4. HVORDAN BRUKER VI PERSONLIGE OPPLYSNINGER?</h2> <p>Vi bruker muligens dine personlige opplysninger til følgende formål:</p> <ul> <li>Først og fremst for å dele dine innspill med dataeier i relevant kontekst og utarbeider ferdige rapporter om alle de opplysninger innsamlet på denne plattformen - for å gi et godt beslutningsgrunnlag.</li><li>For at opprette og vedlikeholde din brukerprofil på nettstedet.</li> <li>For at administrere identifikasjon og godkjenne brukere.</li> <li>For å gi opplysninger om ditt lokalområde og/eller gi deg beskjed, når aktiviteter på plattformen kan være av interesse for deg. Du kan til enhver tid velge bort disse e-posteneunder kontoinnstillinger.</li> </ul> <p> De personlige opplysningene lagres og behandles kun i den periode, som kreves for formålet med behandlingen. Deretter blir opplysningene slettet eller anonymisert.</p> <h2>5. HVEM DELER VI DINE PERSONLIGE OPLYSNINGER MED?</h2> <p>Vi deler dine personlige opplysninger med dataeier som vi samler inn disse data for. Vi vil aldri selge eller dele  dine personlige opplysninger til andre tjenesteleverandører, Vi vil heller ikke dele dine personlige opplysninger med tjenesteleverandører som ikke overholder GDPR. Noen av våre tjenesteleverandører har delvis tilgang til disse data, men de kan ikke bruke dem til andre formål enn de vi har definert. </p> <h2>6. HVOR OVERFØRER VI DINE PERSONLIGE OPPLYSNINGER TIL?</h2> <p>Vi overfører kun dine personopplysninger til tjenesteleverandører etablert utenfor Det europeiske økonomiske samarbeidsområdet (EØS) hvis de overholder GDPR. </p> <h2>7. HVA ER DINE RETTIGHETER?</h2> <p>Du har til enhver tid rett til å se dine personlige opplysninger, og rett til å få informasjon om Go Vocal’s bruk av dine personlige data..</p> <h3>7.1Rett til rette, slette og begrense databehandlingen</h3> <p>Du kan selv bestemme om du vil dele dine personlige opplysninger til Go Vocal eller ei. Du har alltid rett til å be Go Vocal om å rette, supplere eller slette dine personlige opplysninger. Hvis du enten nekter å gi eller velger å slette personlige opplysninger kan det bety, at visse tjenester ikke lenger kan leveres. Du kan også spørre om behandlingen av dine personlige opplysninger er begrenset. Hvis du velger å slette kontoen din, fjernes de personlige opplysninger som har blitt samlet inn om deg. Noen personlige opplysninger, vil kunne bli registrert (logfiler) i opp til 30 dager - av sikkerhetsmessige og juridiske  årsaker.</p> <h3>7.2 Rett til innvende</h3> <p>Du har rett til å  innvende mot behandlingen av dine personlige opplysninger av alvorlige og legitime grunner. Utover dette har du alltid rett til har du alltid rett til at innvende mot bruken av din personlige  til direkte markedsføringsformål, og i slike tilfeller behøver du ikke oppgi grunn <h3>7.3 Rett til dataportabilitet</h3> <p>Du har rett til å innhente de personlige opplysninger, du har delt med Go Vocal, i et strukturert, alminnelig og maskinlesbart format. Du kan også be om å få dine personlige opplysninger overført til andre dataansvarlig.</p> <h3>7.4 Rett til at trekke tilbake samtykke</h3> <p>I det omfang behandlingen er basert på  samtykke, har du rett til at trekke tilbake samtykke.</p> <h3>7.5 Utøvelse av dine rettigheter</h3> <p>Du kan utøve dine rettigheter ved at kontakte Go Vocal, enten via e-mail til support@govocal.com, med post til Pachecolaan 34, 1000 Brussels, Belgien eller ved å kontakte oss via nettstedet,  forutsatt at du legger ved en kopi av legitimasjon.</p> <h3>7.6 Profilering og automatisert beslutningstagning</h3> <p> Behandlingen av dine personlige opplysninger inkluderer ikke profilering og utsettes ikke av Go Vocal til automatisk beslutningstagning.</p> <h3>7.7 Retten til å klage</h3> <p>Du har rett til å sende en klage til den belgiske kommisjonen for privatliv: Drukpersstraat 35, 1000 Brussels, Belgium, Tel +32 (0)2 274 48 00, Fax +32 (0)2 274 48 35, e-mail: contact@adp-gba.be. Dette påvirker ikke fritagelse for en civil domstol.</p> <h2>8. YTTERLIGERE OPLYSNINGER OM DATAINNSAMLING OG -BEHANDLING</h2> <h3>Juridisk prosedyre</h3> <p>Go Vocal og dataeier kan muligvis benytte brukerens personlige opplysninger til juridiske formål, ved en domstol eller under forskjellige faser av rettsaker i tilfeller ved ulovlig bruk av denne applikasjonen eller de relaterte tjenester. Vær oppmerksom på at dataansvarlig og databehandler kan dele personopplysninger hvis det er krav fra regjeringsinstitusjoner om å behandle dataene</p> <h3>Sikkerhetstiltak</h3> <p>Go Vocal har utviklet sikkerhetstiltak, som er tilpasset det teknologiske og organisatoriske nivå, for at forhindre ødeleggelse, tap, forfalskning, endring, forbudt adgang eller feilaktig distribusjon til tredjepartsleverandører av personlige opplysninger, samt andre forbudte handlinger i behandlingen av disse opplysninger. Go Vocal kan, under ingen omstendigheter, holdes ansvarlig for direkte eller indirekte tap som følge misbruk eller ulovlig bruk av dine personlige opplysninger av en tredjepartsleverandør. Du skal til enhver tid overholde sikkerhetsinstruksjoner bl.a. å forhindre tilgang til innlogging og passord. Du er alene ansvarlig for bruken fra nettstedet på din datamaskin, IP-adresse og dine personlige opplysning samt at det holdes konfidensielt.</p> <h3>Endringer av retningslinjer for personvern</h3> <p>Go Vocal forbeholder seg retten til når som helst at endre retningslinjer for personvern ved å informere brukere på denne siden. Vi oppfordrer deg til at sjekke denne side for mulige endringer og oppdateringer. Datoen for den siste oppdatering vises nederst på siden. Hvis en bruker har innvendinger mot endringene, bør ikke brukeren fortsette å bruke applikasjonen. Med mindre annet er spesifisert, er det de retningslinjene som gjaldt på det tidspunktet personlig data ble lagret, som er gjeldende for behandling av brukerdata. </p> <p><em>Siste oppdatering: 17/12/2019</em></p>
+      <p>Ansvarlig for behandlingen av opplysningene:</p> <p>CitizenLab NV - Pachecolaan 34 - 1000 Brussel - Belgia</p> <p>E-postadresse for kontakt: support@govocal.com</p> <p>Organisasjon: //insert client contacts</p> <h2>1. PERSONVERNERKLÆRING</h2> <p>Denne "Personvernerklæringen" gjelder for "Personopplysninger" som Go Vocal samler inn på vegne av organisasjonen gjennom dette nettstedet.</p> <h2>2. HVA ER PERSONOPPLYSNINGER?</h2> <p>I denne personvernerklæringen refererer personopplysninger til informasjon som gjør det mulig å identifisere deg. En identifiserbar person er en person som kan identifiseres, enten direkte eller indirekte, særlig ved å henvise til et identifikasjonsnummer eller til en eller flere faktorer som er knyttet til fysisk, fysiologisk, psykisk, økonomisk, kulturell eller sosial identitet. Et typisk eksempel på personopplysninger er navn og e-postadresse.</p> <h2>3. HVILKE PERSONOPPLYSNINGER SAMLER VI INN?</h2> <p>Vi kan samle inn dine personopplysninger fra følgende tre kilder:</p> <h3>3.1 Personopplysninger som du oppgir under registreringsprosessen på Plattformen, hvorav noen er valgfrie.</h3> <p>Personopplysningene vi kan samle inn fra deg er</p> <ul> <li>For- og etternavn</li> <li>E-postadresse</li> <li>Fødselsår</li> <li>kjønn</li> <li>Bostedsområde</li> <li>Foretrukket språk</li> </ul> <p>Denne listen kan utvides på forespørsel fra organisasjonen. Hvis du velger å logge på via en tredjeparts autentiseringsleverandør som Google Accounts, Facebook eller FranceConnect, vil vi få disse opplysningene fra dem. Hvis du velger å bekrefte identiteten din med en tredjeparts identitetsleverandør som COW, FranceConnect eller CSAM, vil vi få denne informasjonen fra dem.</p> <h3>3.2 Personopplysninger som du oppgir når du deltar på plattformen vår.</h3> <p>Hver handling du utfører på plattformen (stemme, legge ut en idé, skrive en kommentar, svare på en avstemning,…) blir registrert og lagret. Disse dataene er også knyttet til registreringsdataene dine (3.1), noe som innebærer at organisasjonen kan knytte plattformprofilen din til disse deltakelsesdataene.</p> <h3>3.3 Personopplysninger som vi samler inn når du besøker plattformen vår.</h3> <p>Vi (og tredjepartsbehandlere som handler på våre vegne) samler inn informasjon om bruken av plattformen vår for å vurdere om plattformen fungerer godt og er sikker. For dette formålet samler vi inn teknisk informasjon som kan identifisere deg, for eksempel din IP-adresse og nettleserdetaljer. Ved å bruke tjenestene våre samtykker du til at disse opplysningene samles inn.</p> <p>Vi samler også inn bruksdata for å forbedre tjenestene våre, og du kan til enhver tid reservere deg mot denne innsamlingen via samtykkeadministratoren.</p> <h2>4. HVORDAN BRUKER VI PERSONOPPLYSNINGER?</h2> <p>Vi kan bruke personopplysningene dine til følgende formål:</p> <ul> <li>Først og fremst for å kommunisere dine innspill til organisasjonen med relevant kontekst, og for å utarbeide aggregerte rapporter av alle dataene som samles inn på denne plattformen for å hjelpe dem med å ta beslutninger.</li> <li>For å opprette og vedlikeholde brukerprofilen din på dette nettstedet.</li> <li>For å administrere identifisering og autentisering av brukere.</li> <li>For å gi deg informasjon om fellesskapet ditt og/eller varsle deg når aktiviteter på plattformen kan interessere deg. Du kan når som helst velge bort e-post fra brukerprofilen din.</li> <li>For å forbedre tjenestene våre og overvåke funksjonaliteten.</li> </ul> <p>Personopplysningene lagres og behandles kun i den perioden som er nødvendig for formålet med behandlingen. Etter dette vil opplysningene bli slettet eller anonymisert.</p> <h2>5. HVEM DELER VI PERSONOPPLYSNINGENE DINE MED?</h2> <p>Vi deler personopplysningene dine med den organisasjonen som vi samler inn opplysningene på vegne av. Vi deler opplysningene dine med underdatabehandlere som arbeider på våre vegne. Vi vil aldri selge eller leie ut personopplysningene dine til andre tjenesteleverandører, og vi vil heller ikke dele personopplysningene dine med tjenesteleverandører som ikke overholder GDPR.</p> <h2>6. HVOR OVERFØRER VI PERSONOPPLYSNINGENE DINE TIL?</h2> <p>Vi overfører bare personopplysningene dine til tjenesteleverandører som er etablert utenfor Det europeiske økonomiske samarbeidsområdet, hvis de overholder art. 44 i GDPR.</p> <h2>7. HVILKE RETTIGHETER HAR DU?</h2> <p>Du har rett til å se personopplysningene dine når som helst, samt rett til å bli informert om hvordan Go Vocal bruker personopplysningene dine.</p> <h3>7.1 Rett til retting, sletting og begrensning av behandling</h3> <p>Du står fritt til å bestemme om du vil oppgi personopplysningene dine til Go Vocal eller ikke. I tillegg har du alltid rett til å be Go Vocal om å korrigere, supplere eller fjerne personopplysningene dine. Du erkjenner at et avslag på å oppgi eller en forespørsel om sletting av personopplysninger betyr at visse tjenester ikke lenger kan leveres. Du kan også be om at behandlingen av personopplysningene dine begrenses. Hvis du velger å fjerne kontoen din fra plattformen, vil personopplysningene som ble samlet inn om deg, bli fjernet fra serverne våre. Noen personopplysninger om deg kan forbli i loggdataene vi oppbevarer av sikkerhetsmessige og juridiske årsaker i opptil 30 dager.</p> <h3>7.2 Rett til å protestere</h3> <p>Du har rett til å protestere mot behandlingen av personopplysningene dine av alvorlige og legitime grunner. I tillegg har du alltid rett til å motsette deg bruk av personopplysningene dine til direkte markedsføring; i slike tilfeller trenger du ikke å oppgi noen grunn.</p> <h3>7.3 Rett til dataportabilitet</h3> <p>Du har rett til å få utlevert personopplysningene du har gitt til Go Vocal i en strukturert, typisk og maskinlesbar form og/eller få dem overført til andre behandlingsansvarlige.</p> <h3>7.4 Rett til å trekke tilbake samtykke</h3> <p>I den grad behandlingen er basert på ditt forutgående samtykke, har du rett til å trekke tilbake denne godkjenningen.</p> <h3>7.5 Utøvelse av dine rettigheter</h3> <p>Du kan utøve dine rettigheter ved å kontakte Go Vocal, enten per e-post til support@govocal.com, per post til Pachecolaan 34, 1000 Brussel, Belgia eller ved å bruke "Kontakt oss"-skjemaet på nettstedet vårt, forutsatt at du legger ved en kopi av forsiden av identitetskortet ditt.</p> <h3>7.6 Automatisert beslutningstaking og profilering</h3> <p>Behandlingen av dine personopplysninger omfatter ikke profilering, og Go Vocal skal heller ikke bruke automatiserte avgjørelser.</p> <h3>7.7 Rett til å sende inn en klage</h3> <p>Du har rett til å sende inn en klage til personvernmyndigheten i ditt land, eller til den belgiske personvernmyndigheten som Go Vocal er underlagt: Drukpersstraat 35, 1000 Brussel, Belgia, Tel +32 (0)2 274 48 00, Fax +32 (0)2 274 48 35, e-post: contact@adp-gba.be. Dette berører ikke søksmål for en sivil domstol.</p> <h2>8. YTTERLIGERE INFORMASJON OM INNSAMLING OG BEHANDLING AV DATA</h2> <h3>Juridiske prosedyrer</h3> <p>Go Vocal og organisasjonen vi behandler disse dataene for, kan bruke personopplysningene til brukeren for juridiske formål, for retten eller rettslige prosedyrer som går forut for faser i tilfelle ulovlig bruk av denne applikasjonen eller de relaterte tjenestene. Brukeren er klar over at Go Vocal og organisasjonen vi jobber med kan være forpliktet til å utlevere personopplysningene på forespørsel fra kompetente myndighetsinstitusjoner for behandling av dataene. Det juridiske grunnlaget for denne behandlingen er aksept av vilkårene og betingelsene (kontraktsgrunnlag) og gitt samtykke.</p> <h3>Sikkerhetstiltak</h3> <p>Go Vocal har utviklet sikkerhetstiltak som er tilpasset på teknologisk og organisatorisk nivå for å forhindre ødeleggelse, tap, forfalskning, endring, forbudt tilgang eller feilaktig utlevering av personopplysninger til tredjeparter, samt enhver annen forbudt behandling av disse opplysningene. Go Vocal kan ikke under noen omstendigheter holdes ansvarlig for direkte eller indirekte tap som følge av feilaktig eller ulovlig bruk av personopplysningene dine av en tredjepart. Du må til enhver tid overholde sikkerhetsinstruksjonene, blant annet ved å forhindre all forbudt tilgang til dine innloggingsdetaljer og passord. Du er eneansvarlig for bruken av nettstedet på din datamaskin, IP-adresse og dine identifikasjonsdetaljer, samt for konfidensialiteten av disse.</p> <h3>Endringer i denne personvernerklæringen</h3> <p>Go Vocal forbeholder seg retten til å endre denne personvernerklæringen når som helst ved å varsle brukerne på denne siden. Vi oppfordrer deg til å sjekke denne siden for eventuelle endringer. Datoen for siste endring er angitt nederst på siden. Hvis en bruker motsetter seg en endring i retningslinjene, må brukeren ikke fortsette å bruke denne applikasjonen. Med mindre annet er angitt, gjelder den til enhver tid gjeldende personvernerklæringen for alle personopplysninger som vi har samlet inn.</p> <p><em>Siste oppdatering: 17/12/2019</em></p>
     infopage_title: Informasjonsside
-    infopage_body: "<p>This <strong>all-in-one participation platform</strong> is an initiative of your municipality or organisation and can be used for different public consultation processes: collecting ideas, voting, discussing, surveys, polls, participatory budgeting, online mapping, scenario planning, support for advisory boards and committees, ...</p>\n<p>On the home page, you'll see which <strong>processes are active </strong>and in which <strong>phase </strong>they currently are.</p>\n<p><img data-cl2-text-image-text-reference=\"dc653d9c-6b69-4f90-b337-25718eb5c250\" alt=\"Horizontal separation rule\" data-align=\"center\" style=\"display: block; margin: auto;\"></p>\n<h2>How do I sign in on the platform?</h2>\n<p>Signing in is done easily by giving your first and last name and your e-mail address. You could also use your Google or Facebook account. Only your first and last name will be visible to others.</p>\n<h2>Can I use the platform myself, e.g. to organise a public consultation?</h2>\n<p>Absolutely. Ask the responsible within your municipality or organisation to give you the needed permission rights to become a project moderator. Once granted these permissions, you can set up your own project and timeline and share the information you want (video, documents, images, ...). This will also allow you to invite others to the platform, enabling them to post ideas within your project, vote or comment.</p>\n<h2>Can I participate as an association/organisation/committee? </h2>\n<p>Yes, that's possible. Given that only your first and last name are visible to others on the platform, you can simply use your organisation's name while setting up your profile.</p>\n<h2>Why would I use this platform and not create a website myself?</h2>\n<p>A team of dedicated developers and specialists in online participation (<a href=\"https://www.govocal.com/en\" target=\"_blank\">Go Vocal</a>, commissioned by your municipality or organisation) is improving and updating this platform on a daily basis. Even the smallest bug gets tackled immediately and if you have creative proposals, they can help you pointing out which features of the platform can be used for this or which ones are in the pipeline.</p>\n<p><img data-cl2-text-image-text-reference=\"45163616-fc6f-45b1-a5ca-183db79f86d3\" alt=\"Horizontal separation rule\" data-align=\"center\" style=\"display: block; margin: auto;\"></p>\n<p><strong><em>Need more information?</em></strong><em> Do you want to use the platform? Questions or feedback? Contact the responsible within your municipality or organisation. Or contact Go Vocal through support@govocal.com.</em></p><strong>"
-    faq_title: Vanlige spørsmål
-    faq_body: "<h2>Hva er formålet med denne plattformen?</h2><p>Denne plattformen\n    er ment som et digitalt knutepunkt hvor man kan dele informasjon, og få input\n    og tilbakemeldinger fra andre. Aktive prosjekter som er åpne for deltakelse vil\n    vises på hjem-siden, og man kan delta på ulike nivåer for ulike prosjekter; man\n    kan kommentere et forslag, stemme på eller prioritere prosjekter og delta i undersøkelser.</p><h2>Hvordan\n    kan jeg delta? </h2><p>Alle har tilgang til å se offentlige prosjekter,\n    men man må registrere seg for å få kunne delta aktivt. Dette gjør det lettere\n    å skape et felleskap, og sikrer at tilbakemeldingene og forslagene er genuine,\n    for eksempel ved å hindre at noen kan stemme flere ganger på samme prosjekt.</p><h2>Hva\n    slags informasjon om meg er synlig for andre?</h2><p>Ditt navn, bilde\n    og profilteksten din (om du har skrevet en profiltekst) er synlig. Du vil alltid\n    ha mulighet til å endre dette i dine Innstillinger.</p><h2>Hvorfor kan\n    jeg ikke publisere et innlegg eller en kommentar?</h2><p>Å publisere et\n    innlegg, en kommentar eller å stemme er kun mulig på spesielle tidspunkt eller\n    ved enkelte faser av et prosjekt. I noen tilfeller kan et prosjekt være åpent\n    for deltakelse fra enkelte interessentgrupper.</p><p>Når et prosjekt er åpent\n    for deltakelse vil du se en knapp som lar deg publisere et innlegg, svare på en\n    undersøkelse, eller lignende. Alternativt kan du velge å søke etter aktive prosjekter\n    dersom du ønsker å se alle prosjekter hvor du for øyeblikket har mulighet til\n    å delta.</p><h2>Hvordan kan jeg redigere eller slette innhold jeg har publisert?</h2><p>Om\n    du har publisert et innlegg eller en kommentar, men ønsker å redigere eller slette\n    det kan du gjøre dette ved å trykke på de tre små prikkene oppe til høyre av innlegget\n    ditt.</p><h2>Hva er retningslinjene for plattformen og modereringen av\n    denne?</h2><p>Våre retningslinjer er til for å forsikre at plattformen\n    er en trygg plass for alle som deltar. Forsikre deg om at dine innlegg ikke inneholder:</p><p>·     Personangrep,\n    trakassering eller diskriminerende kommentarer</p><p>·     Støtende språk, inkludert\n    banning</p><p>·     Markedsføring eller reklamemateriale</p><p>·     Andres personlige\n    informasjon</p><p>·     Innhold beskyttet av opphavsrett, for eksempel bilder</p><p>Alle\n    innlegg eller kommentarer som ikke er i tråd med disse retningslinjene kan bli\n    redigert, slettet, eller i ekstreme tilfeller hindres fra å bli publisert. Vennligst\n    les igjennom våre vilkår og betingelser<strong> </strong>for mer informasjon. </p><h2>Hvordan\n    kan jeg rapportere et støtende innlegg?</h2><p>Trykk på de tre små prikkene\n    oppe til høyre på et innlegg for å rapportere det. Vennligst angi årsaken til\n    rapporteringen – da blir det sendt et varsel om at innlegget må modereres.</p><h2>Hvorfor\n    opplever jeg problemer med å registrere meg eller logge inn?</h2><p>Om\n    du ikke får til å registrere deg kan det være fordi du allerede har registrert\n    en bruker med samme e-postadresse, eller at du tidligere har mottatt en invitasjon\n    for å registrere deg. Om du får en feilmelding om at e-postadressen din allerede\n    er tilknyttet en ventende invitasjon må du sjekke e-posten din og følge lenken\n    i invitasjonen for å registrere deg. Om du ikke finner invitasjonen kan du forsøke\n    å sjekke spam-filteret eller be om en ny invitasjon.</p><h2>Hvordan kan\n    jeg tilbakestille passordet mitt?</h2><p>Du kan alltid be om å tilbakestille\n    passordet ditt fra innloggingssiden. Om du tilbakestiller passordet ditt får du\n    en lenke tilsendt på e-post, følg instruksjonene i denne for å endre passordet\n    ditt. Av sikkerhetsårsaker er lenken kun gyldig i én time. Om lenken har utløpt\n    er det bare å trykke på «Har du glemt passordet ditt?» på innloggingssiden på\n    nytt for å få tilsendt en ny lenke.</p><p>Om du ikke mottar noen e-post bør du\n    sjekke at den ikke ligger i spam-filteret, og at du sender lenken til den samme\n    e-posten som du registrerte deg med.</p><h2>Hvordan behandler dere mine\n    data?</h2><p>Se våre personvernsvilkår for mer informasjon om innsamling\n    og bruk av data. Kort sagt, vi kommer aldri til å benytte din informasjon for\n    reklame, markedsføringsformål eller andre typer spam.</p><h2>Hva slags\n    e-poster kommer dere til å sende meg?</h2><p>Du kan komme til å motta\n    e-poster relatert til din konto og din aktivitet på plattformen, for eksempel\n    om noen kommenterer et av dine innlegg. Du kan selv bestemme hvilke e-poster du\n    ønsker å motta i dine Innstillinger. Der finner du et område som heter «Varsler»\n    hvor du kan skru av og på e-postvarsler.</p><h2>Hvordan kan jeg slette\n    kontoen min?</h2><p>I dine Innstillinger får du mulighet til å slette\n    kontoen din. Innhold du har publisert på plattformen vil fortsatt være synlig,\n    men ditt navn blir fjernet og erstattet med «ukjent forfatter». Om du ønsker å\n    slette alt innhold du har bidratt med fra plattformen må du selv gjøre dette før\n    du sletter kontoen din.</p>"
+    infopage_body: "<p>Denne <strong>alt-i-ett-plattformen for medvirkning</strong> er et initiativ fra din kommune eller organisasjon og kan brukes til ulike offentlige høringsprosesser: innsamling av ideer, stemmegivning, diskusjon, spørreundersøkelser, avstemninger, deltakende budsjettering, kartlegging på nett, scenarioplanlegging, støtte til rådgivende råd og utvalg, ...</p>\n<p>På hjemmesiden kan du se hvilke <strong>prosesser som er aktive </strong>og i hvilken <strong>fase </strong>de befinner seg i.</p>\n<p><img data-cl2-text-image-text-reference=\"e2c7bc7a-017d-4887-a3cb-b94185617a59\" alt=\"Horizontal separation rule\" data-align=\"center\" style=\"display: block; margin: auto;\"></p>\n<h2>Hvordan logger jeg meg på plattformen?</h2>\n<p>Du logger deg enkelt inn ved å oppgi for- og etternavn og e-postadresse. Du kan også bruke Google- eller Facebook-kontoen din. Bare for- og etternavnet ditt vil være synlig for andre.</p>\n<h2>Kan jeg bruke plattformen selv, f.eks. for å organisere en offentlig høring?</h2>\n<p>Ja, absolutt. Be den ansvarlige i kommunen eller organisasjonen din om å gi deg de nødvendige rettighetene for å bli prosjektmoderator. Når du har fått disse rettighetene, kan du sette opp ditt eget prosjekt og din egen tidslinje og dele den informasjonen du ønsker (video, dokumenter, bilder, ...). Da kan du også invitere andre til plattformen, slik at de kan legge ut ideer i prosjektet ditt, stemme eller kommentere.</p>\n<h2>Kan jeg delta som en forening/organisasjon/komité? </h2>\n<p>Ja, det er mulig. Ettersom det bare er for- og etternavnet ditt som er synlig for andre på plattformen, kan du bare bruke organisasjonens navn når du oppretter profilen din.</p>\n<h2>Hvorfor skal jeg bruke denne plattformen i stedet for å lage en nettside selv?</h2>\n<p>Et team av dedikerte utviklere og spesialister på nettdeltakelse<a href=\"https://www.govocal.com/en\" target=\"_blank\">(Go Vocal</a>, på oppdrag fra din kommune eller organisasjon) forbedrer og oppdaterer denne plattformen hver dag. Selv den minste feil blir rettet umiddelbart, og hvis du har kreative forslag, kan de hjelpe deg med å peke ut hvilke funksjoner i plattformen som kan brukes til dette, eller hvilke som er på trappene.</p>\n<p><img data-cl2-text-image-text-reference=\"392d0e47-e5f9-41ab-9ceb-affac617b8b1\" alt=\"Horizontal separation rule\" data-align=\"center\" style=\"display: block; margin: auto;\"></p>\n<p><strong><em>Trenger du mer informasjon?</em></strong><em> Ønsker du å bruke plattformen? Har du spørsmål eller tilbakemeldinger? Kontakt den ansvarlige i din kommune eller organisasjon. Eller kontakt Go Vocal via support@govocal.com.</em></p><strong>"
+    faq_title: VANLIGE SPØRSMÅL
+    faq_body: "<h2 class=\"ql-align-justify\">Hva er denne plattformen til for?</h2><p class=\"ql-align-justify\">Denne plattformen er utformet som et sentralt knutepunkt for å dele informasjon og få innspill og tilbakemeldinger. Deltakelsesprosjekter som er aktive for øyeblikket, vises på startsiden - hvert deltakelsesprosjekt kan ha ulike måter å engasjere seg på, enten det er å legge til en idé, kommentere et forslag, stemme over og prioritere prosjekter eller delta i en spørreundersøkelse. </p><h2 class=\"ql-align-justify\">Hvordan deltar jeg? </h2><p class=\"ql-align-justify\">Du kan alltid bla gjennom offentlige prosjekter, men du må registrere deg for å kunne delta. Dette bidrar til å opprettholde en fellesskapsfølelse og sikre legitimiteten til innspillene. </p><h2 class=\"ql-align-justify\">Hvilken informasjon kan folk se om meg?</h2><p class=\"ql-align-justify\">Navnet ditt, bildet ditt og biografien din, hvis du har lagt til en, er synlige. Du kan alltid endre disse i innstillingene dine.</p><h2 class=\"ql-align-justify\">Hvorfor kan jeg ikke legge ut innlegg eller sende inn en kommentar?</h2><p class=\"ql-align-justify\">Innlegg, kommentarer og stemmegivning kan være aktivert bare på bestemte tidspunkter eller i bestemte faser av et prosjekt. I noen tilfeller kan et prosjekt bare være åpent for bidrag fra en bestemt interessentgruppe.</p><p class=\"ql-align-justify\">Hvis innlegg er aktivert for et prosjekt, vil du se en knapp som ber deg om å sende inn et innlegg. Alternativt kan du bla gjennom andre aktive prosjekter for å finne flere muligheter for engasjement.</p><h2 class=\"ql-align-justify\">Hvordan redigerer eller sletter jeg innspillet mitt?</h2><p class=\"ql-align-justify\">Hvis du har lagt ut et innlegg, men ønsker å redigere eller slette det, finner du dette alternativet ved å klikke på de tre små prikkene øverst til høyre i innlegget. </p><h2 class=\"ql-align-justify\">Hva er retningslinjene for fellesskapet og moderering?</h2><p class=\"ql-align-justify\">Retningslinjene våre for fellesskapet skal bidra til å sikre at plattformen er et trygt sted for alle å delta. Sørg for at innleggene dine er fri for</p><ul>\n  <li class=\"ql-align-justify\">Personangrep, fornærmelser, krenkende eller diskriminerende kommentarer</li>\n  <li class=\"ql-align-justify\">støtende språk, inkludert banning</li>\n  <li class=\"ql-align-justify\">Markedsførings- eller reklamemateriell</li>\n  <li class=\"ql-align-justify\">Personlig informasjon om andre personer</li>\n  <li class=\"ql-align-justify\">Opphavsrettsbeskyttet materiale, for eksempel bilder</li>\n  </ul><p class=\"ql-align-justify\">Alle innlegg eller kommentarer som ikke overholder disse retningslinjene, kan bli redigert eller slettet, eller i ekstreme tilfeller forhindret fra å bli lagt ut. Se våre vilkår &amp; Betingelser for mer informasjon. </p><h2 class=\"ql-align-justify\">Hvordan rapporterer jeg et støtende innlegg?</h2><p class=\"ql-align-justify\">Klikk på de tre små prikkene øverst i høyre hjørne av innlegget for å rapportere det. Oppgi årsaken til at du rapporterer innholdet - dette vil sende et varsel om at innlegget skal gjennomgås.</p><h2 class=\"ql-align-justify\">Hvorfor har jeg problemer med å registrere meg eller logge inn?</h2><p class=\"ql-align-justify\">Hvis du ikke klarer å registrere deg, kan det skyldes at du allerede har registrert deg med samme e-postadresse eller tidligere har mottatt en invitasjon til å bli med på plattformen. Hvis du ser en melding om at e-postadressen din er opptatt av en ventende invitasjon, kan du sjekke e-posten din og følge lenken i invitasjonen for å registrere kontoen din. Hvis du ikke finner invitasjonen, kan du prøve å se i søppelposten eller be om en ny invitasjon. </p><h2 class=\"ql-align-justify\">Hvordan tilbakestiller jeg passordet mitt?</h2><p class=\"ql-align-justify\">Du kan alltid be om å få tilbakestilt passordet ditt fra innloggingssiden. Hvis du tilbakestiller passordet ditt, vil du få tilsendt en lenke til e-postadressen din - følg instruksjonene for å endre passordet. Av sikkerhetsgrunner er lenken gyldig i én time. Hvis lenken er utløpt, kan du klikke på \"Glemt passord?\" på innloggingssiden på nytt for å generere en ny tilbakestillingslenke.</p><p class=\"ql-align-justify\">Hvis du ikke har mottatt e-posten, må du kontrollere at den ikke ligger i søppelposten din og at du sender lenken til samme e-postadresse som du registrerte deg med.</p><h2 class=\"ql-align-justify\">Hva vil dere gjøre med opplysningene mine?</h2><p class=\"ql-align-justify\">Les personvernerklæringen vår for mer informasjon om innsamling og bruk av data. Kort sagt vil vi aldri bruke opplysningene dine til reklame, markedsføring eller andre typer søppelpost.</p><h2 class=\"ql-align-justify\">Hvilke e-poster vil jeg motta?</h2><p class=\"ql-align-justify\">Du kan motta e-postmeldinger relatert til kontoen din og aktiviteten din på plattformen, for eksempel når noen svarer på et av innleggene dine. Du kan kontrollere hvilke e-poster du mottar i innstillingene dine. Det finnes en seksjon som heter \"Varsler\", der du kan slå e-postvarsler av og på.</p><h2 class=\"ql-align-justify\">Hvordan sletter jeg kontoen min?</h2><p class=\"ql-align-justify\">I innstillingene dine kan du slette kontoen din. Innspill du har lagt ut, vil fortsatt være publisert, men navnet ditt vil bli fjernet fra innlegget og erstattet med \"ukjent forfatter\". Hvis du ønsker å slette alle innleggene dine, må du gjøre det før du sletter kontoen din. </p>"
     initiatives_title: Forslag
     initiatives_body: >
-      <img data-cl2-text-image-text-reference="b4974fd9-7681-4acd-951b-a3979ffc55b0" height="374.3745928338762" width="819" alt=""> <h2>What are citizen initiatives?</h2> <p>Citizen initiatives are initiatives that start from the bottom-up, that originate from a need, desire, dream, ... envisioned by you or other citizens. You and the other initiators want to change or improve a current situation or start something from scratch.</p> <p>What sets citizen initiatives apart is that they follow some rule-based system and that it includes the involvement of your (local) government. The rule-based system, often formalised in legislation, indicates the conditions that need to be met to get the (local) government officially involved. This involvement is needed for citizen initiatives to reach their objective, think of a city's permission for a temporary usage of a public space, support by city experts to implement your plans, ...</p> <p>Citizen initiatives never work in the personal interest, but always in the collective interest.</p> <h2>Why would you start one here?</h2> <p>This is the official participation platform of $|orgName|, which offers following advantages:</p> <ul> <li>$|orgName| is already present and actively listening to what's happening on the platform. So no need to find and reach out to relevant people within $|orgName|'s organisation.</li> <li>This platform is made specifically for participative actions such as citizen initiatives. All elements, the flow, ... are all built to optimise for this exact objective, which is far from being the case with classical 'social media'.</li> <li>Other citizens are already on here, increasing the potential reach to gather support for your initiative.</li> </ul> <h2>What steps to take?</h2> <h3>1. Check if your initiative fits $|orgName|'s criteria</h3> <p>$|initiativesEligibilityCriteria|</p> <h3>2. Check whether what $|orgName| offers will help you reach your objective</h3> <p>$|initiativesThresholdReachedMessage|</p> <h3>3. Prepare your initiative with the other citizens involved</h3> <p>As soon as you publish your initiative on this platform, the timer starts to run. Therefore, it is important to be well prepared when you write your initiative out. <a href="/initiatives/new" target="_blank">Find out how to prepare before publishing an initiative</a>.</p> <h3>4. Publish your initiative</h3> <p><a href="/initiatives/new" target="_blank">Publish your initiative</a>. Once you hit the 'Publish your initiative' button, it will be visible to all other citizens and the timer will start to run.</p> <h3>5. Gather support to reach the threshold on time</h3> <p>Now that your initiative is published, it is time to gather support for it. Make sure to gather $|initiativesVotingThreshold| votes in $|initiativesDaysLimit| days to obtain involvement of $|orgName|. For this, you can use the sharing options on the platform, or all other tools and channels you may think of.</p> <p><em>Still having questions? <a href="mailto:support@govocal.com" target="_blank">Contact us</a>.</em></p>
+      <img style="margin-bottom: 30px" data-cl2-text-image-text-reference="b4e659ab-2830-48fd-b3ce-96e16856262f" height="374.3745928338762" width="819" alt=""> <h2>Hva er et innbyggerforslag?</h2> <p>Som innbygger i $|orgNavn| kan du sette ditt forslag på dagsorden via denne plattformen. Forslagene er fortrinnsvis konkrete ideer som er knyttet til lokalpolitikken og som springer ut av et behov, et ønske eller en drøm. Det kan være ditt eget forslag eller et samarbeidsforslag. Kanskje du ønsker å endre eller forbedre en eksisterende situasjon eller starte et nytt prosjekt.</p> <p>Det må være både nødvendig og mulig å involvere $|orgName| i gjennomføringen av forslaget ditt. I et ideelt scenario er du også tilgjengelig for videre refleksjon eller samarbeid, men det er ikke en forpliktelse. "Redusere fartsgrensen på motorveien til 80 km/t" er derfor ikke et sterkt forslag, mens "Gjøre hovedgaten om til gågate" er det. Så kom med forslagene deres! Hvis det er behov for mer informasjon, vil du få en oppdatering eller en reaksjon.</p><h2>Hvorfor legge ut et forslag på denne plattformen?</h2> <p>Dette er den offisielle deltakelsesplattformen til $|orgName|, som tilbyr følgende fordeler:</p> <ul> <li>$|orgName| er offisielt involvert som eier av denne plattformen, og overvåker aktivt hva som skjer her. Når du legger ut et forslag, får den ansvarlige personen automatisk en melding. Du trenger ikke å kontakte dem for å forsikre deg om at forslaget ditt blir tatt i betraktning.</li> <li>Denne plattformen er utviklet spesielt for offisielle deltakende tiltak, som innbyggerforslag. Hvert eneste element, fra brukeropplevelsen til den trinnvise fremgangsmåten, er bygget nettopp for dette formålet. Når du bruker tradisjonelle sosiale medier, kan forslaget ditt forsvinne i mengden av stimuli, og en vanlig e-post forsvinner raskt i en full innboks.</li> <li>Medborgerne dine er også til stede på denne plattformen. De kan støtte og forbedre forslaget ditt. Jo mer kreativt forslaget ditt er, og jo mer støtte det klarer å samle, desto større er sjansen for at det blir gjennomført!</li> </ul> <h2>Hvordan kommer du i gang?</h2> <p>Først må du sjekke om forslaget ditt oppfyller følgende kriterier:</p> <p>$|initiativesEligibilityCriteria|</p> <h2>Hva kan du forvente når forslaget ditt når $|initiativesVotingThreshold| stemmer innen $|initiativesDaysLimit| dager?</h2> <p>$|initiativesThresholdReachedMessage| (InitiativesTerskelNåddMelding)</p> <h2>Hva skjer med forslagene som ikke får $|initiativesVotingThreshold| stemmer i tide? </h2> <p>Det skjer, men ikke bekymre deg. Forslaget ditt vil forbli på plattformen. Forslagets status endres automatisk til "Utløpt". Dermed vil det ikke lenger være mulig å stemme. Hvis du ønsker det, kan du når som helst velge å slette ditt eget forslag.</p>
   nav_bar_items:
     home:
       title: Hjem
     projects:
       title: Alle prosjekter
     all_input:
-      title: Innlegg
+      title: Alle innspill
     proposals:
       title: Forslag
     events:
-      title: Hendelser
+      title: Arrangementer
     about:
       title: Om
     faq:
-      title: Vanlige spørsmål
+      title: VANLIGE SPØRSMÅL
   projects:
-    open_idea_project_title: Har du en idé? Del den med politikerne
-    open_idea_project_description_preview: Har du en idé som ikke passer med noen av de eksisterende prosjektene? Del den her, samle støtte og sett den på den politiske dagsordenen!
+    open_idea_project_title: En idé? Ta den med til rådet ditt!
+    open_idea_project_description_preview: Kanskje har du en idé som ikke passer inn i et av de eksisterende prosjektene? Da kan du legge den ut her, samle støtte og få den opp på den politiske dagsordenen!
     open_idea_project_description: >
-      <p> Passer ikke ideen din innenfor en av de eksisterende prosjektene? Legg den til her!</p><p><strong>Målet?</strong> Hvordan sette din idé på den politiske dagsorden?</p><p><strong>How?</strong> Samle støtte til ideen din, minst 100 stemmer innen 3 måneder. You can do that by first making your idea 'attractive'. Write it in a clear and engaging way, add images, give strong arguments based on facts, add attachments with further details or background information, ... Dei ideen din i sosiale medier og via e-post. Inviter andre til å bli med i diskusjonen, eller overbevis dem om å støtte ideen ved å stemme.</p><p><strong>Hva kan ideen være?t?</strong> Ideen kan handle om mye forskjellig, men må være relatert til kommunen og deres ansvarsområder. Det kan være et problem, en erfaring, en løsning en visjon, eller en kombinasjon. Ideen kan være  vill og langsiktig, eller håndfast og lett å løse.</p><p><strong> Hva skjer videre? </strong>Fikk ideen 100 stemmer inn 3 måneder?? Gratulerer! Kommunen vil nå vurdere ideen din. Hvis ideen din er gjennomførbarn og ikke skalder en spesiell gruppe mennesker eller individer, du vil få sjansen til å presentere forslag på et politisk møte.  Politikerne vil gi en tilbakemelding om hva de vil gjøre med ideen og hvorfor. Forslaget blir ikke vurdert, hvis du ikke får 100 stemmer innen 3 måneder..</p><p>Vil er nysgjerrig på dine ideer</p>
+      <p>Her kan du starte din egen idé hvis den ikke passer inn i et av de eksisterende prosjektene.</p><p><strong>Hva er målet?</strong> Å få ideen din opp på den politiske dagsordenen.</p><p><strong>Hvordan?</strong> Ved å samle støtte, det vil si minst 100 stemmer i løpet av tre måneder. Det kan du gjøre ved først å gjøre ideen din "attraktiv". Skriv den på en tydelig og engasjerende måte, legg til bilder, gi sterke argumenter basert på fakta, legg til vedlegg med ytterligere detaljer eller bakgrunnsinformasjon, ... Når du har gjort det, kan du begynne å dele ideen din på sosiale medier eller via e-post. Inviter folk til å delta i diskusjonen om ideen din, eller overbevis dem ganske enkelt om å støtte den ved å stemme for den.</p><p><strong>Om hva da?</strong> Ideen din kan handle om mange ting, så lenge den er relatert til byen din og dens politikk. Det kan være et problem du opplever, en løsning du ser for deg, eller til og med en kombinasjon av begge deler. Det kan være vilt og langsiktig, eller veldig konkret og en rask gevinst.</p><p><strong>Og så? </strong>Nådde du 100 stemmer på tre måneder? Gratulerer med det! Byen vil nå ta ideen din i betraktning. Hvis ideen din anses som gjennomførbar og ikke skader bestemte grupper eller enkeltpersoner, vil du få sjansen til å presentere forslaget ditt under byrådsmøtet. Under det samme møtet vil rådsmedlemmene gi deg direkte tilbakemelding på hva de vil eller ikke vil gjøre med ideen din, og hvorfor. Hvis du ikke samler 100 stemmer i løpet av tre måneder, vil forslaget ditt ikke bli vurdert.</p><p>Vi er nysgjerrige på ideene dine!</p>
   phases:
     open_idea_phase_title: Nåværende fase
-    native_survey_title: undersøkelse
-    native_survey_button: Ta undersøkelsen
+    native_survey_title: Spørreundersøkelse
+    native_survey_button: Ta del i undersøkelsen
   events:
-    council_meeting_title: Politisk møte
+    council_meeting_title: Rådsmøte
     council_meeting_description: >
-      <p> Under dette kommunemøtet vil forslagene som fikk 100 stemmer på mindre enn 3 måneder, bli presentert.</p><p> Politikerne vil dele sine tanker om ideene.</p>
+      <p>Under dette rådsmøtet vil de innbyggerinitiativene som har fått 100 stemmer på mindre enn tre måneder, bli presentert.</p><p>Rådet vil deretter dele sitt syn på hver enkelt idé.</p>
   custom_fields:
     users:
       gender:
@@ -168,16 +168,16 @@
       author_id:
         title: Forfatter
       topic_ids:
-        title: Emner
+        title: Tagger
         description:
       consponsor_ids:
         title: Medsponsorer
-        description: Inviter medsponsorer gjennom feltet nedenfor. Den/de inviterte medsponsoren(e) vil motta en e-post.
+        description: Inviter medsponsorer via feltet nedenfor. De inviterte medsponsorene vil motta en e-post.
       location:
-        title: Lokalitet
+        title: Beliggenhet
         description:
       proposed_budget:
-        title: Proposed Budget
+        title: Forslag til budsjett
         description:
       budget:
         title: Budsjett
@@ -201,78 +201,85 @@
     categories:
       main_content:
         idea:
-          title: Hva er ideen din?
+          title: Hva er din idé?
         question:
           title: Hva er spørsmålet ditt?
         contribution:
-          title: Hva er bidraget ditt?
+          title: Hva er ditt bidrag?
         project:
           title: Hva er prosjektet ditt?
         issue:
-          title: Hva er problemet ditt?
+          title: Hva er din kommentar?
         option:
-          title: Hva er alternativet ditt?
+          title: Hva er ditt innspill?
+        proposal:
+          title: Hva er forslaget ditt?
+        initiative:
+          title: Hva er initiativet ditt?
+        petition:
+          title: Hva er din begjæring?
   custom_field_options:
     gender:
       male: Mann
       female: Kvinne
-      unspecified: Uspesifisert
+      unspecified: Annet
     domicile:
       outside: Et annet sted
     education:
-      ISCED2: Grunnskole
-      ISCED3: Grunnskole
-      ISCED4: Videregående skole
-      ISCED5: Fagskole
-      ISCED6: Bachelorgrad eller tilsvarende
-      ISCED7: Mastergrad eller tilsvarende
-      ISCED8: Doktorgrad  eller tilsvarende
+      ISCED2: Grunnskoleutdanning
+      ISCED3: Videregående opplæring
+      ISCED4: Etter- og videreutdanning utenfor videregående skole
+      ISCED5: Kort høyere utdanning
+      ISCED6: Bachelor eller tilsvarende
+      ISCED7: Master eller tilsvarende
+      ISCED8: Doktorgrad eller tilsvarende
   initiatives:
     default_threshold_reached_message: >
-      <p>Inivitiativtakerne er invitert til  å presentere sitt forslag under neste kommunemøte Vi vil gi en offisiell oppdatering.</p>
+      <p>Initiativtakerne er invitert til å presentere forslaget sitt på neste rådsmøte. Vi vil gi en offisiell oppdatering.</p>
     default_eligibility_criteria: >
-      <ul> <li>det skal være innenfor kommunens ansvarsområder</li> <li>Det tjener den offentlige interesse snarere enn din individuelle interesse</li> <li>Det diskriminerer ikke andre innbyggere basert på  kjønn rase, alder eller bakgrunn <li>det skader ikke andre</li></ul>
+      <ul> <li>Det må falle innenfor lokalpolitikkens politikkområder og kompetanseområder</li> <li>Den skal tjene allmennhetens interesser snarere enn dine individuelle interesser</li> <li>Den må ikke diskriminere på grunnlag av kjønn, rase, alder eller bakgrunn</li> <li>Den må ikke skade andre</li> </ul>
     default_posting_tips: >
-      <ul><li>Skriv mer om forslaget ditt. Du kan skrive en kladd og deretter kopiere det inn.</li><li>Velg en beskrivende tittel som forklarer hva forslaget ditt går ut på. </li><li>Husk å visualisere forslaget ditt med et passende bilde så det skiller seg ut.</li><li>Legg til relevante filer, som video, inspirerende eksempler, tekniske tegninger eller planer.</li><li>Del ideen din på sosiale medier og i andre kanaler for å samle støtte fra andre.</li></ul>
+      <ul><li>Ta deg tid til å utdype forslaget ditt. Skriv om nødvendig et utkast først, og kopier og lim det deretter inn her.</li><li>Velg en meningsfull tittel som tydelig forklarer hva forslaget ditt innebærer.</li><li>Visualiser forslaget ditt med et passende bilde for å få det til å skille seg ut!</li><li>Legg til relevante vedlegg, for eksempel videoer, inspirerende eksempler, tekniske detaljer eller planer.</li><li>Del ideen din på sosiale medier og i andre kanaler for å samle støtte fra andre.</li></ul>
   reset_password_mailer:
     send_reset_password:
       preheader: 'Tilbakestill passordet ditt for %{organizationName}'
       cta_reset_password: 'Tilbakestill passordet ditt'
-      message_you_reset_your_password: 'Du ba om å tilbakestille passord for plattformen til%{organizationName}. Klikk på knappen nedenfor for å velge et nytt, sikkert passord. Koblingen utløper om en time.'
-      subject: '%{organizationName}: tilbakestill passordet ditt'
+      message_you_reset_your_password: 'Du har bedt om å få tilbakestilt passordet ditt for deltakerplattformen %{organizationName}. Klikk på knappen nedenfor for å velge et nytt, sikkert passord. Koblingen utløper om 1 time.'
+      subject: '%{organizationName}: Tilbakestill passordet ditt'
       title_reset_your_password: 'Velg et nytt passord'
   xlsx_export:
     anonymous: 'Anonym'
     column_headers:
-      assignee_fullname: 'Anvist til'
-      assignee_email: 'Oppdragstakerens e-postadresse'
+      assignee_fullname: 'Mottaker'
+      assignee_email: 'Mottakers e-post'
       attachments: 'Vedlegg'
-      author_email: 'Forfatterens e-postadresse'
+      author_email: 'Forfatterens e-post'
       author_fullname: 'Forfatterens navn'
-      author_id: 'Forfatterens ID'
+      author_id: 'Forfatter-ID'
       budget: 'Budsjett'
       comments_count: 'Kommentarer'
-      cost: 'Koste'
-      created_at: 'Innsendt'
+      cost: 'Kostnader'
+      created_at: 'Innsendt på'
       description: 'Beskrivelse'
       dislikes_count: 'Misliker'
       email: 'E-post'
-      first_name: 'Fornavn)'
+      first_name: 'Fornavn(er)'
       image_url: 'Bilde-URL'
       input_id: 'ID'
-      input_url: 'URL-adresse'
+      manual_votes: 'Frakoblede stemmer'
+      input_url: 'URL'
       last_name: 'Etternavn'
       latitude: 'Breddegrad'
       likes_count: 'Liker'
-      location: 'plassering'
+      location: 'Beliggenhet'
       longitude: 'Lengdegrad'
       participants: 'Deltakere'
       picks: 'Valg'
       project: 'Prosjekt'
-      published_at: 'Publisert'
-      registration_completed_at: 'Påmelding fullført kl'
+      published_at: 'Publisert på'
+      registration_completed_at: 'Registrering fullført på'
       status: 'Status'
-      submitted_at: 'Innlevert kl'
+      submitted_at: 'Innsendt på'
       tags: 'Tagger'
       title: 'Tittel'
       user_data: 'Brukerdata'
@@ -284,66 +291,68 @@
       option2: 'Alternativ 2'
     form_end_page:
       title_text: 'Nesten ferdig'
-      description_text_2: "Du er i ferd med å sende inn svarene dine. Ved å klikke 'Send' gir du oss tillatelse til å analysere svarene dine.<br/>Etter at du har sendt inn, vil du ikke lenger kunne gå tilbake og endre noen av svarene dine."
+      description_text_2: "Du er i ferd med å sende inn svarene dine. Ved å klikke på \"Send inn\" gir du oss tillatelse til å analysere svarene dine.<br/>Etter at du har sendt inn, vil du ikke lenger kunne gå tilbake og endre noen av svarene dine."
     pdf_export:
-      personal_data: 'Personlig informasjon'
-      personal_data_explanation_public: "Vi vil sende inn dine innspill til %{organizationName}sin online deltakelsesplattform. Hvis du vil at navnet ditt skal vises som forfatter av dette innspillet og motta oppdateringer som er relevante for innspillet ditt på e-post, vennligst fyll ut følgende felt på denne siden, så oppretter vi en konto for deg. E-posten din vil ikke være offentlig og vil kun brukes av %{organizationName}. Hvis du ønsker å være anonym, eller ikke godtar at vi bruker dine personopplysninger på denne måten, kan du la dem stå tomme."
-      personal_data_explanation_private: "Vi vil sende inn dine innspill til %{organizationName}sin online deltakelsesplattform. Hvis du ønsker å motta oppdateringer som er relevante for dine innspill på e-post, vennligst fyll ut følgende felt på denne siden, så oppretter vi en konto for deg. Dataene dine vil ikke være offentlige og vil kun bli brukt av %{organizationName}. Hvis du ikke godtar at vi skal bruke dine personopplysninger på denne måten, kan du la dem stå tomme."
-      first_name: 'Fornavn'
+      personal_data: 'Personopplysninger'
+      personal_data_explanation_public: "Vi sender innspillet ditt til %{organizationName}sin online plattform for deltakelse. Hvis du vil at navnet ditt skal vises som forfatter av dette innspillet og motta oppdateringer som er relevante for innspillet ditt via e-post, kan du fylle ut følgende felt på denne siden, så oppretter vi en konto for deg. E-postadressen din vil ikke bli offentliggjort og vil kun bli brukt av %{organizationName}. Hvis du ønsker å være anonym, eller ikke godtar at vi bruker personopplysningene dine på denne måten, kan du la dem være tomme."
+      personal_data_explanation_private: "Vi sender inn innspillene dine til %{organizationName}sin online plattform for deltakelse. Hvis du ønsker å motta oppdateringer som er relevante for innspillene dine via e-post, kan du fylle ut følgende felt på denne siden, så oppretter vi en konto for deg. Opplysningene dine vil ikke bli offentliggjort og vil kun bli brukt av %{organizationName}. Hvis du ikke godtar at vi bruker personopplysningene dine på denne måten, kan du la dem stå tomme."
+      first_name: 'Fornavn(er)'
       last_name: 'Etternavn'
-      email_address: 'Epostadresse'
-      by_checking_this_box: "Ved å merke av i denne boksen samtykker jeg til at dataene mine brukes til å opprette en konto på %{organizationName}sin deltakelsesplattform."
-      optional: 'valgfri'
+      email_address: 'E-postadresse'
+      by_checking_this_box: "Ved å krysse av i denne boksen samtykker jeg til at opplysningene mine kan brukes til å opprette en konto på %{organizationName}."
+      optional: 'valgfritt'
       permission: 'Tillatelse'
       choose_as_many: 'Velg så mange du vil'
       choose_exactly:
-        one: 'Velg nøyaktig %{count} -alternativet'
+        one: 'Velg nøyaktig %{count} alternativ'
         other: 'Velg nøyaktig %{count} alternativer'
-      choose_between: 'Velg mellom %{min} og %{max} alternativer'
+      choose_between: 'Velg mellom %{min} og %{max}'
       choose_at_least: 'Velg minst %{count} alternativer'
       choose_at_most: 'Velg maksimalt %{count} alternativer'
-      this_answer: 'Dette svaret vil kun bli delt med moderatorer, og ikke til offentligheten.'
+      this_answer: 'Dette svaret vil kun bli delt med moderatorer, og ikke med offentligheten.'
       page: 'Side'
-      date_published: 'Publiseringsdato (dd-mm-åååå)'
-      instructions: 'Bruksanvisning'
-      write_as_clearly: 'Skriv så tydelig <b>du kan</b> disse skjemaene kan bli skannet'
+      date_published: 'Dato for publisering (dd-mm-ååååå)'
+      instructions: 'Instruksjoner'
+      write_as_clearly: 'Skriv så <b>tydelig</b> du kan - disse skjemaene kan bli skannet'
       write_in_language: 'Skriv svarene dine på samme språk som dette skjemaet'
-      linear_scale_print_description: 'Skriv kun et tall mellom %{min_label} og %{max_label}'
+      linear_scale_print_description: 'Vennligst skriv kun et tall mellom %{min_label} og %{max_label}'
   project_copy:
     title_suffix: 'Kopi'
   confirmations_mailer:
     send_confirmation_code:
-      subject: "Bekreft e-postadressen din på deltakerplattformen til %{organizationName}"
+      subject: "Bekreft e-postadressen din for %{organizationName}sin plattform for deltakelse"
       preheader: 'Bekreft e-postadressen din for %{organizationName}'
       header: "Din bekreftelseskode"
-      header_message: "Hei, %{firstName}!"
+      header_message: "Hei %{firstName}!"
       confirm_email_address: "Bekreft e-postadressen din"
-      thanks_for_signing_up1: "Takk for din deltagelse. Vennligst skriv inn denne bekreftelseskoden i vinduet på %{organizationName}sin deltakelsesplattform:"
+      thanks_for_signing_up1: "Takk for at du deltar. Vennligst skriv inn denne bekreftelseskoden i vinduet på %{organizationName}:"
       best_regards: "Med vennlig hilsen,"
-      ignore_email: "Hvis du ikke har bedt om en kode, kan du overse denne e-postmeldingen."
-      expire_code: "Denne koden utløper om"
+      ignore_email: "Hvis du ikke har bedt om en kode, kan du trygt ignorere denne e-posten."
+      expire_code: "Denne koden vil utløpe i "
       24_hours: "24 timer."
-      copy_paste_the_link_below: "Kopier koden nedenfor og lim den inn i ditt registreringsskjema."
-      the_link_is_valid_for: "Denne lenken er gyldig i 24 timer. Hvis lenken er utløpt, kan du <a href=\"%{link}\">be om en ny kode</a>."
-      did_you_receive_this_email_in_error: "Mottok du denne e-posten ved en feil? <a href=\"%{link}\">La oss få vite det</a>."
+      copy_paste_the_link_below: "Kopier og lim inn koden nedenfor i registreringsskjemaet på plattformen."
+      the_link_is_valid_for: "Denne lenken er gyldig i 24 timer. Hvis lenken har utløpt, kan du be om <a href=\"%{link}\">en ny kode</a>."
+      did_you_receive_this_email_in_error: "Har du mottatt denne e-posten ved en feil? Gi <a href=\"%{link}\">oss beskjed</a>."
   user_blocked_mailer:
     send_user_blocked_email:
-      subject: 'Kontoen din er midlertidig deaktivert'
-      preheader: 'Kontoen din på deltakelsesplattformen til %{organizationName} er midlertidig deaktivert'
-      title_user_blocked: 'Kontoen din er midlertidig deaktivert'
-      paragraph_1_without_reason: "Kontoen din på deltakelsesplattformen til %{organizationName} har blitt midlertidig deaktivert på grunn av brudd på fellesskapets retningslinjer."
-      paragraph_1_with_reason: "Kontoen din på deltakelsesplattformen til %{organizationName} har blitt midlertidig deaktivert av følgende grunn:"
-      for_more_information: "For mer informasjon om dette, kan du konsultere %{termsAndConditionsPage}"
+      subject: 'Kontoen din har blitt midlertidig deaktivert'
+      preheader: 'Kontoen din på deltakerplattformen på %{organizationName} er midlertidig deaktivert'
+      title_user_blocked: 'Kontoen din har blitt midlertidig deaktivert'
+      paragraph_1_without_reason: "Kontoen din på deltakelsesplattformen %{organizationName} er midlertidig deaktivert på grunn av brudd på retningslinjene for fellesskapet."
+      paragraph_1_with_reason: "Kontoen din på deltakerplattformen på %{organizationName} er midlertidig deaktivert av følgende grunn:"
+      for_more_information: "For mer informasjon om dette, se %{termsAndConditionsPage}"
       you_can_sign_in_again_from: "Du kan logge på igjen fra %{date}"
   user:
     anon_first_name: "Bruker"
+    anon_scheme:
+      animals: 'alligator, krokodille, alpakka, maur, antilope, ape, beltedyr, bavian, grevling, flaggermus, bjørn, bever, bie, bille, bøffel, sommerfugl, kamel, vannbøffel, karibu, katt, kveg, gepard, sjimpanse, chinchilla, cikade, musling, kakerlakk, torsk, prærieulv, krabbe, siriss, kråke, ravn,hjort, dinosaur, hund, delfin, nise, and, ørn, ål, elefant, elg, ilder, fisk, flue, rev, frosk, padde, ørkenrotte, sjiraff, mygg, gnu, gnu, gnu, geit, gullfisk, gås, gorilla, gresshoppe, marsvin, hamster, hare, pinnsvin, sild, flodhest, veps, hest, hund, hund,hyene, impala, sjakal, manet, kenguru, wallaby, koala, leopard, løve, øgle, lama, gresshoppe, lus, ara, stokkand, mammut, manatee, mår, mink, minnow, muldvarp, elg, mygg, mus, rotte, muldyr, moskusrotte, oter, okse, østers, panda, gris, nebbdyr, hulepinnsvin, præriehund..,mops, kanin, vaskebjørn, rein, neshorn, laks, sardin, skorpion, sel, sjøløve, serval, hai, sau, stinkdyr, snegl, slange, edderkopp, ekorn, svane, termit, tiger, ørret, skilpadde, skilpadde, hvalross, veps, hval, ulv, wombat, woodchuck, orm, yak, guljakke, sebra'
   time:
-    am: er
+    am: am
     formats:
-      hour_of_day: "%H:%M"
+      hour_of_day: "%l %p"
     pm: pm
   voting_method:
     default_voting_term_singular: "stemme"
     default_voting_term_plural: "stemmer"
   ics_calendar_event:
-    event_details: "Begivenhetsdetaljer"
+    event_details: "Detaljer om arrangementet"

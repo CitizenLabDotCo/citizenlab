@@ -21,10 +21,15 @@ FactoryBot.define do
 
     factory :admin do
       roles { [{ type: 'admin' }] }
+
       factory :super_admin do
         sequence(:email) do |n|
           "#{Faker::Name.first_name}.#{Faker::Name.last_name}-#{n}@govocal.com"
         end
+      end
+
+      trait :project_reviewer do
+        roles { [{ type: 'admin', project_reviewer: true }] }
       end
     end
 

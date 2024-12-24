@@ -56,6 +56,8 @@ const AdminFolderProjectsList = ({
     return null;
   }
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const userIsAdmin = authUser && isAdmin(authUser);
 
   return (

@@ -54,6 +54,8 @@ const AllCauses = ({ phaseId, projectId }: Props) => {
   const handleDragRow = useCallback(
     (fromIndex, toIndex) => {
       if (!isProcessing) {
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (!items) return;
         const itemsWhileDragging = clone(items);
         itemsWhileDragging.splice(fromIndex, 1);
@@ -66,6 +68,8 @@ const AllCauses = ({ phaseId, projectId }: Props) => {
 
   const handleDropRow = useCallback(
     (causeId: string, toIndex: number) => {
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (!items) return;
 
       const cause = items.find((item) => item.id === causeId);

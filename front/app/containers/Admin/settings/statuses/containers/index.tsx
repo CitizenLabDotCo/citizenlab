@@ -69,7 +69,7 @@ const IdeaStatuses = ({ variant }: { variant: 'ideation' | 'proposals' }) => {
   };
 
   const isRequired = (ideaStatus: IIdeaStatusData) => {
-    return ideaStatus.attributes.locked === false;
+    return ideaStatus.attributes.locked === true;
   };
 
   const isDeletable = (ideaStatus: IIdeaStatusData) => {
@@ -85,6 +85,8 @@ const IdeaStatuses = ({ variant }: { variant: 'ideation' | 'proposals' }) => {
   }
 
   if (ideaStatuses) {
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     const defaultStatuses = ideaStatuses?.data.filter(
       (ideaStatus) => ideaStatus.attributes.locked === true
     );

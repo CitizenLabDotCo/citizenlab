@@ -49,6 +49,8 @@ const ReferenceLink = ({
   const localize = useLocalize();
   const { data: analysis } = useAnalysis(analysisId);
   const { data: input } = useAnalysisInput(analysisId, match);
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const mainQuestion = analysis?.data.relationships.main_custom_field?.data?.id;
   const { data: customField } = useIdeaCustomField({
     projectId: phaseId ? undefined : projectId,
@@ -60,6 +62,8 @@ const ReferenceLink = ({
   const customFieldKey = customField?.data.attributes.key;
   const mainQuestionResponse =
     customFieldKey &&
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     input?.data.attributes.custom_field_values?.[customFieldKey];
 
   const isAnalysisScreen = pathname.includes('/analysis/');

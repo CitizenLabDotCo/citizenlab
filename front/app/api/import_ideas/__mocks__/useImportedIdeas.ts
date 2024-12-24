@@ -27,6 +27,7 @@ export const ideasData: IIdeaData[] = [
       budget: null,
       proposed_budget: null,
       baskets_count: 0,
+      total_votes: 0,
       votes_count: 0,
       action_descriptors: {
         editing_idea: {
@@ -68,6 +69,7 @@ export const ideasData: IIdeaData[] = [
       anonymous: false,
       author_hash: 'abc123',
       followers_count: 0,
+      manual_votes_amount: 0,
     },
     relationships: {
       topics: {

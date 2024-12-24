@@ -50,4 +50,19 @@ describe('<Button />', () => {
     expect(getByRole('link')).toBeInTheDocument();
     expect(getByRole('link')).toHaveAttribute('href', 'www.test.com');
   });
+
+  it('does not allow click events when disabled is true', () => {
+    const handleClick = jest.fn();
+
+    render(
+      <Button disabled onClick={handleClick}>
+        Test button
+      </Button>
+    );
+
+    const button = screen.getByText('Test button');
+    fireEvent.click(button);
+
+    expect(handleClick).toHaveBeenCalledTimes(0);
+  });
 });

@@ -27,9 +27,9 @@ export function userModeratesFolder(
  */
 export function isProjectFolderModerator(
   user?: IUser,
-  folderId?: string
+  folderId?: string | null
 ): boolean {
-  const roles = user?.data.attributes?.roles;
+  const roles = user?.data.attributes.roles;
   if (!roles) return false;
 
   if (folderId) {

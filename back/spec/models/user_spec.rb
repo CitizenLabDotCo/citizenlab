@@ -22,11 +22,25 @@ RSpec.describe User do
     it { is_expected.to have_many(:reactions).dependent(:nullify) }
     it { is_expected.to have_many(:event_attendances).class_name('Events::Attendance').dependent(:destroy) }
     it { is_expected.to have_many(:attended_events).through(:event_attendances).source(:event) }
+    it { is_expected.to have_many(:requested_project_reviews).class_name('ProjectReview').with_foreign_key('requester_id').dependent(:nullify) }
+    it { is_expected.to have_many(:assigned_project_reviews).class_name('ProjectReview').with_foreign_key('reviewer_id').dependent(:nullify) }
 
     it 'nullifies idea import association' do
       idea_import = create(:idea_import, import_user: user)
       expect { user.destroy }.not_to raise_error
       expect(idea_import.reload.import_user).to be_nil
+    end
+
+    it 'nullifies manual_votes_last_updated_by association' do
+      idea = create(:idea, manual_votes_last_updated_by: user)
+      expect { user.destroy }.not_to raise_error
+      expect(idea.reload.manual_votes_last_updated_by).to be_nil
+    end
+
+    it 'nullifies manual_voters_last_updated_by association' do
+      phase = create(:phase, manual_voters_last_updated_by: user)
+      expect { user.destroy }.not_to raise_error
+      expect(phase.reload.manual_voters_last_updated_by).to be_nil
     end
   end
 
@@ -1206,8 +1220,13 @@ RSpec.describe User do
   end
 
   describe '#no_name?' do
-    it 'returns true if first_name and last_name are not set' do
-      user = described_class.new(email: 'test@citizenlab.co')
+    it 'returns true if first_name and last_name are null' do
+      user = described_class.new(email: 'test@citizenlab.co', first_name: nil, last_name: nil)
+      expect(user.no_name?).to be true
+    end
+
+    it 'returns true if first_name and last_name are blank strings' do
+      user = described_class.new(email: 'test@citizenlab.co', first_name: '', last_name: '')
       expect(user.no_name?).to be true
     end
 
@@ -1224,6 +1243,17 @@ RSpec.describe User do
     it 'returns false if invite is pending' do
       user = described_class.new(email: 'test@citizenlab.co', invite_status: 'pending')
       expect(user.no_name?).to be false
+    end
+  end
+
+  describe '#full_name' do
+    it 'returns a consistent anonymous name if first_name and last_name are not set' do
+      settings = AppConfiguration.instance.settings
+      settings['core']['anonymous_name_scheme'] = 'animal'
+      AppConfiguration.instance.update!(settings: settings)
+      user = described_class.new(email: 'test@citizenlab.co')
+      expect(user.full_name).to eq 'Aardvark Cat'
+      expect(user.no_name?).to be true
     end
   end
 
@@ -1394,6 +1424,25 @@ RSpec.describe User do
 
     it '.non_super_admins returns non super admins' do
       expect(described_class.not_super_admins).to match_array(non_super_admins)
+    end
+  end
+
+  context 'project reviewer scope' do
+    let_it_be(:project_reviewers) { create_list(:admin, 2, :project_reviewer) }
+    let_it_be(:non_project_reviewers) do
+      [
+        create(:user),
+        create(:admin),
+        create(:project_moderator)
+      ]
+    end
+
+    specify do
+      expect(described_class.project_reviewers).to match_array(project_reviewers)
+    end
+
+    specify do
+      expect(described_class.project_reviewers(false)).to match_array(non_project_reviewers)
     end
   end
 end

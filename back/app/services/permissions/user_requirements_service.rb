@@ -46,7 +46,7 @@ class Permissions::UserRequirementsService
   def base_requirements(permission)
     users_requirements = {
       authentication: {
-        permitted_by: permission.permitted_by,
+        permitted_by: disable_everyone_confirmed_email?(permission) ? 'users' : permission.permitted_by,
         missing_user_attributes: %i[first_name last_name email confirmation password]
       },
       verification: false,
@@ -68,14 +68,17 @@ class Permissions::UserRequirementsService
     when 'everyone'
       everyone_requirements
     when 'everyone_confirmed_email'
-      if permission.action == 'following'
-        app_configuration.feature_activated?('user_confirmation') && app_configuration.feature_activated?('password_login') ? everyone_confirmed_email_requirements : users_requirements
-      else
-        app_configuration.feature_activated?('user_confirmation') ? everyone_confirmed_email_requirements : users_requirements
-      end
+      disable_everyone_confirmed_email?(permission) ? users_requirements : everyone_confirmed_email_requirements
     else # users | groups | verified | admins_moderators
       users_requirements
     end
+  end
+
+  def disable_everyone_confirmed_email?(permission)
+    return false unless permission.permitted_by == 'everyone_confirmed_email'
+
+    !app_configuration.feature_activated?('user_confirmation') ||
+      (permission.action == 'following' && !app_configuration.feature_activated?('password_login'))
   end
 
   def mark_satisfied_requirements!(requirements, permission, user)

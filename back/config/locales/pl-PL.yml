@@ -266,6 +266,7 @@ pl:
       first_name: 'Imię (imiona)'
       image_url: 'Adres URL obrazu'
       input_id: 'ID'
+      manual_votes: 'Głosowania offline'
       input_url: 'URL'
       last_name: 'Nazwisko'
       latitude: 'Szerokość geograficzna'
@@ -345,6 +346,8 @@ pl:
       you_can_sign_in_again_from: "Możesz zalogować się ponownie z %{date}."
   user:
     anon_first_name: "Użytkownik"
+    anon_scheme:
+      animals: 'aligator, krokodyl, alpaka, mrówka, antylopa, małpa, pancernik, pawian, borsuk, nietoperz, niedźwiedź, bóbr, pszczoła, żuk, bawół, motyl, wielbłąd, bawół wodny, karibu, kot, bydło, gepard, szympans, szynszyla, cykada, małż, karaluch, dorsz, kojot, krab, świerszcz, wrona, kruk,jeleń, dinozaur, pies, delfin, morświn, kaczka, orzeł, węgorz, słoń, łoś, fretka, ryba, mucha, lis, żaba, ropucha, myszoskoczek, żyrafa, gnat, gnu, gnu, koza, złota rybka, gęś, goryl, konik polny, świnka morska, chomik, zając, jeż, śledź, hipopotam, szerszeń, koń, pies,hiena, impala, szakal, meduza, kangur, walabia, koala, lampart, lew, jaszczurka, lama, szarańcza, wesz, ara, krzyżówka, mamut, manat, kuna, norka, nornica, kret, łoś, komar, mysz, szczur, muł, piżmak, wydra, wół, ostryga, panda, świnia, dziobak, jeżozwierz, piesek preriowy,mops, królik, szop pracz, renifer, nosorożec, łosoś, sardynka, skorpion, foka, lew morski, serwal, rekin, owca, skunks, ślimak, wąż, pająk, wiewiórka, łabędź, termit, tygrys, pstrąg, żółw, mors, osa, wieloryb, wilk, wombat, słonka, robak, jaka, żółta kurtka, zebra'
   time:
     am: am
     formats:

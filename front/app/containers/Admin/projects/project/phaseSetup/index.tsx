@@ -211,7 +211,9 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
     setInStatePhaseFiles(
       isDuplicate
         ? inStatePhaseFiles
-        : [...(inStatePhaseFiles || []), modifiedNewFile]
+        : // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+          [...(inStatePhaseFiles || []), modifiedNewFile]
     );
     setSubmitState(isDuplicate ? submitState : 'enabled');
   };
@@ -220,6 +222,8 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
     setInStatePhaseFiles(
       inStatePhaseFiles.filter((file) => file.name !== fileToRemove.name)
     );
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     setPhaseFilesToRemove([...(phaseFilesToRemove || []), fileToRemove]);
     setSubmitState('enabled');
   };
@@ -243,6 +247,8 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
   };
 
   const handleError = (error: { errors: CLErrors }) => {
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     setErrors(error.errors || null);
     setProcessing(false);
     setSubmitState('error');
@@ -301,7 +307,14 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
 
     if (phase) {
       updatePhase(
-        { phaseId: phase?.data.id, ...formData },
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        {
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+          phaseId: phase?.data.id,
+          ...formData,
+        },
         {
           onSuccess: (response) => {
             handleSaveResponse(response, false);
@@ -358,7 +371,6 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
             />
             <Error apiErrors={errors && errors.title_multiloc} />
           </SectionField>
-
           <DateSetup
             formData={formData}
             errors={errors}
@@ -367,7 +379,6 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
             setFormData={setFormData}
             setValidationErrors={setValidationErrors}
           />
-
           <PhaseParticipationConfig
             phase={phase}
             formData={formData}
@@ -397,7 +408,6 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
             />
             <Error apiErrors={errors && errors.description_multiloc} />
           </SectionField>
-
           <SectionField>
             <SubSectionTitle>
               <FormattedMessage {...messages.uploadAttachments} />
@@ -410,7 +420,6 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
               apiErrors={errors}
             />
           </SectionField>
-
           {Object.keys(flatCampaigns).length > 0 && (
             <SectionField>
               <SubSectionTitle>
@@ -423,6 +432,8 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
                 <CampaignRow
                   campaign={stringifyCampaignFields(campaign, localize)}
                   checked={
+                    // TODO: Fix this the next time the file is edited.
+                    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                     !!formData?.campaigns_settings?.[
                       campaign.attributes.campaign_name
                     ]
@@ -434,11 +445,15 @@ const AdminPhaseEdit = ({ projectId, phase, flatCampaigns }: Props) => {
             </SectionField>
           )}
 
+          {/* TODO: Fix this the next time the file is edited. */}
+          {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
           {errors && errors.project && (
             <SectionField>
               <Error apiErrors={errors.project} />
             </SectionField>
           )}
+          {/* TODO: Fix this the next time the file is edited. */}
+          {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
           {errors && errors.base && (
             <SectionField>
               <Error apiErrors={errors.base} />

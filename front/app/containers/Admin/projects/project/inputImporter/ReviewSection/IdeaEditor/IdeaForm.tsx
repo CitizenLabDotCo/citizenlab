@@ -40,6 +40,8 @@ const IdeaForm = ({
     (error) => {
       return (
         ideaFormMessages[
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           `api_error_${uiSchema?.options?.inputTerm}_${error}`
         ] ||
         ideaFormMessages[`api_error_${error}`] ||
@@ -53,14 +55,20 @@ const IdeaForm = ({
     (error) => {
       return (
         ideaFormMessages[
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           `ajv_error_${uiSchema?.options?.inputTerm}_${
             getFieldNameFromPath(error.instancePath) ||
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             error?.params?.missingProperty
           }_${error.keyword}`
         ] ||
         ideaFormMessages[
           `ajv_error_${
             getFieldNameFromPath(error.instancePath) ||
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             error?.params?.missingProperty
           }_${error.keyword}`
         ] ||

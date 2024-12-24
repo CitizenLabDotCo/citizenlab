@@ -13,9 +13,10 @@
 #
 # Indexes
 #
-#  index_followers_followable_type_id_user_id  (followable_id,followable_type,user_id) UNIQUE
-#  index_followers_on_followable               (followable_type,followable_id)
-#  index_followers_on_user_id                  (user_id)
+#  index_followers_followable_type_id_user_id            (followable_id,followable_type,user_id) UNIQUE
+#  index_followers_on_followable                         (followable_type,followable_id)
+#  index_followers_on_followable_id_and_followable_type  (followable_id,followable_type)
+#  index_followers_on_user_id                            (user_id)
 #
 # Foreign Keys
 #

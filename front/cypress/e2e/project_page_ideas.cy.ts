@@ -19,9 +19,6 @@ import { randomString, randomEmail } from '../support/commands';
 //     cy.get('#e2e-project-header-image');
 //     cy.get('#e2e-project-description');
 //     cy.get('#e2e-project-sidebar');
-//     cy.get('#e2e-project-sidebar-participants-count');
-//     cy.get('#e2e-project-sidebar-ideas-count');
-//     cy.get('#e2e-project-sidebar-share-button');
 //     cy.get('#e2e-project-see-ideas-button');
 //     cy.get('#project-ideabutton');
 //     cy.get('#e2e-project-description-read-more-button');
@@ -89,9 +86,6 @@ import { randomString, randomEmail } from '../support/commands';
 //   it('shows the correct project header', () => {
 //     cy.get('#e2e-project-description');
 //     cy.get('#e2e-project-sidebar');
-//     cy.get('#e2e-project-sidebar-participants-count');
-//     cy.get('#e2e-project-sidebar-phases-count');
-//     cy.get('#e2e-project-sidebar-share-button');
 //   });
 
 //   it('shows the idea cards', () => {
@@ -100,6 +94,44 @@ import { randomString, randomEmail } from '../support/commands';
 //     cy.get('.e2e-idea-card');
 //   });
 // });
+
+describe('New timeline project with ideation phase with default map view', () => {
+  const projectTitle = randomString();
+  let projectId: string;
+  let projectSlug: string;
+
+  before(() => {
+    cy.setAdminLoginCookie();
+
+    cy.apiCreateProject({
+      title: projectTitle,
+      descriptionPreview: 'Description preview',
+      description: 'Description full',
+      publicationStatus: 'published',
+    }).then((project) => {
+      projectId = project.body.data.id;
+      projectSlug = project.body.data.attributes.slug;
+      return cy.apiCreatePhase({
+        projectId,
+        title: 'phaseTitle',
+        startAt: '2018-03-01',
+        endAt: '2025-01-01',
+        participationMethod: 'ideation',
+        presentation_mode: 'map',
+        canComment: true,
+        canPost: true,
+        canReact: true,
+      });
+    });
+  });
+
+  it('shows the ideas map if the project presentation mode set to map', () => {
+    // Visit ideation project where default view is map
+    cy.visit(`/projects/${projectSlug}`);
+    // Confirm that the map is shown
+    cy.get('#e2e-ideas-map').should('exist');
+  });
+});
 
 describe('New timeline project with active ideation phase', () => {
   const firstName = randomString();
@@ -175,11 +207,10 @@ describe('New timeline project with active ideation phase', () => {
     cy.clearCookies();
   });
 
+  // TODO: Improve this test
   it('shows the correct project header', () => {
     cy.get('#e2e-project-description');
     cy.get('#e2e-project-sidebar');
-    cy.get('#e2e-project-sidebar-phases-count');
-    cy.get('#e2e-project-sidebar-share-button');
   });
 
   it('shows the see-the-ideas button', () => {

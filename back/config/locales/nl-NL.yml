@@ -155,7 +155,7 @@ nl:
       birthyear:
         title: Geboortejaar
       domicile:
-        title: Woonplaats
+        title: Waar woon je?
       education:
         title: Opleiding
     ideas:
@@ -266,6 +266,7 @@ nl:
       first_name: 'Voorna(a)m(en)'
       image_url: 'Afbeelding URL'
       input_id: 'ID'
+      manual_votes: 'Offline stemmen'
       input_url: 'URL'
       last_name: 'Achternaam'
       latitude: 'Breedtegraad'
@@ -343,6 +344,8 @@ nl:
       you_can_sign_in_again_from: "Je kan opnieuw inloggen vanaf %{date}"
   user:
     anon_first_name: "Gebruiker"
+    anon_scheme:
+      animals: 'alligator,krokodil,alpaca,antilope,aap,gordeldier,baviaan,das,vleermuis,beer,bever,bij,kever,buffel,vlinder,kameel,waterbuffel,kariboe,kat,vee,cheeta,chimpansee,chinchilla,cicade,mossel,kakkerlak,kabeljauw,coyote,krab,krekel,kraai,raaf,hert,dinosaurus,hond,dolfijn,bruinvis,eend,adelaar,paling,olifant,eland,fret,vis,vlieg,vos,kikker,pad,gerbil,giraf,gnat,gnoe,wildebeest,geit,goudvis,gans,gorilla,sprinkhaan,cavia,hamster,haas,egel,haring,nijlpaard,horzel,paard,jachthond,hyena,impala,jakhals,kwal,kangoeroe,wallaby,koala,luipaard,leeuw,hagedis,lama,sprinkhaan,luis,ara,wildeeend,mammoet,lamantijn,marter,nerts,minnow,mol,eland,mug,muis,rat,muildier,muskusrat,otter,os,oester,panda,varken,vogelbekdier,stekelvarken,prairiehond,mopshond,konijn,wasbeer,rendier,neushoorn,zalm,sardine,schorpioen,zeehond,zeeleeuw,serval,haai,schaap,stinkdier,slak,slang,spin,eekhoorn,zwaan,termiet,tijger,forel,schildpad,walrus,wesp,walvis,wolf,wombat,bosmarmot,worm,jak,geelkeel,zebra'
   time:
     am: '--'
     formats:

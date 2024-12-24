@@ -27,6 +27,7 @@ module Analysis
       'it-IT' => 'ita_Latn',
       'kl-GL' => nil,   # Kalaallisut (Greenland) is not present
       'lb-LU' => 'ltz_Latn',
+      'lt-LT' => 'lit_Latn',
       'lv-LV' => 'lav_Latn',
       'mi' => nil,      # Maori is not present
       'nb-NO' => 'nob_Latn',

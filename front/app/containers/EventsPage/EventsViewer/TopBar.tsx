@@ -53,11 +53,11 @@ const TopBar = memo<Props>(
         flexDirection={theme.isRtl ? 'row-reverse' : 'row'}
       >
         <Title
+          variant="h2"
           color="tenantText"
           m="0px"
           my="auto"
-          as="h2"
-          variant={isSmallerThanPhone ? 'h3' : 'h2'}
+          fontSize={isSmallerThanPhone ? 'xl' : 'xxl'}
         >
           {title}
         </Title>

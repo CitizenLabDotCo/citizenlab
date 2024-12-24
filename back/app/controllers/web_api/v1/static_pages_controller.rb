@@ -81,3 +81,5 @@ class WebApi::V1::StaticPagesController < ApplicationController
     authorize @page
   end
 end
+
+WebApi::V1::StaticPagesController.include(AggressiveCaching::Patches::WebApi::V1::StaticPagesController)

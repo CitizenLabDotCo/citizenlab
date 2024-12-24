@@ -17,7 +17,7 @@ import { IIdeaStatusData } from 'api/idea_statuses/types';
 import { Sort as IdeasSort, IIdeaData } from 'api/ideas/types';
 import { IPhaseData } from 'api/phases/types';
 
-import Pagination from 'components/admin/Pagination';
+import Pagination from 'components/Pagination';
 
 import { SortDirection } from 'utils/paginationUtils';
 
@@ -135,6 +135,8 @@ const PostTable = ({
   };
 
   const toggleSelectAll = () => {
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (!posts) return;
 
     onChangeSelection((currentSelection) => {

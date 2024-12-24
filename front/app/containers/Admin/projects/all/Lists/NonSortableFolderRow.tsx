@@ -42,6 +42,8 @@ const NonSortableFolderRow = ({
 
   const showProjects =
     !!folderChildAdminPublications &&
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     folderChildAdminPublications?.length > 0 &&
     !search;
 

@@ -266,6 +266,7 @@ tr:
       first_name: 'İlk isim(ler)'
       image_url: 'Resim URL''si'
       input_id: 'KIMLIK'
+      manual_votes: 'Çevrimdışı oylar'
       input_url: 'URL'
       last_name: 'Soyadı'
       latitude: 'Enlem'
@@ -343,6 +344,8 @@ tr:
       you_can_sign_in_again_from: "%{date}adresinden tekrar oturum açabilirsiniz."
   user:
     anon_first_name: "Kullanıcı"
+    anon_scheme:
+      animals: 'timsah,timsah,alpaka,karınca,antilop,maymun,armadillo,babun,porsuk,yarasa,ayı,kunduz,arı,böcek,bufalo,kelebek,deve,manda,karibu,kedi,sığır,çita,şempanze,çinçilla,ağustos böceği,istiridye,hamamböceği,morina,çakal,yengeç,kriket,karga,kuzgun,geyik,dinozor,köpek,yunus,domuzbalığı,ördek,kartal,yılanbalığı,fil,geyik,gelincik,balık,sinek,tilki,kurbağa,kurbağa,gerbil,zürafa,sivrisinek,gnu,antilop,keçi,Japon balığı,kaz,goril,çekirge,kobay,hamster,tavşan,kirpi,ringa balığı,su aygırı,eşekarısı,at,tazı,sırtlan,impala,çakal,denizanası,kanguru,wallaby,koala,leopar,aslan,kertenkele,lama,çekirge,bit,macaw,mallard,mammoth,manatee,sansar,mink,minnow,köstebek,geyik,sivrisinek,fare,sıçan,katır,muskrat,su samuru,öküz,istiridye,panda,domuz,platypus,kirpi,çayır köpeği,pug,tavşan,rakun,ren geyiği,gergedan,somon,sardalya,akrep,fok,deniz aslanı,serval,köpekbalığı,koyun,kokarca,salyangoz,yılan,örümcek,sincap,kuğu,termit,kaplan,alabalık,kaplumbağa,mors,eşekarısı,balina,kurt,vombat,ağaçkakan,solucan,yak,sarı ceket,zebra'
   time:
     am: am
     formats:

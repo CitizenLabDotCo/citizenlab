@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { Box, colors } from '@citizenlab/cl2-component-library';
+import { Box, colors, IconTooltip } from '@citizenlab/cl2-component-library';
 import { isEmpty, isString } from 'lodash-es';
 import { useParams, useLocation } from 'react-router-dom';
 import { Multiloc, UploadFile, CLErrors } from 'typings';
@@ -15,13 +15,10 @@ import useProjectImages, {
   CARD_IMAGE_ASPECT_RATIO_HEIGHT,
   CARD_IMAGE_ASPECT_RATIO_WIDTH,
 } from 'api/project_images/useProjectImages';
+import useUpdateProjectImage from 'api/project_images/useUpdateProjectImage';
 import projectPermissionKeys from 'api/project_permissions/keys';
 import projectsKeys from 'api/projects/keys';
-import {
-  IUpdatedProjectProperties,
-  IProjectData,
-  PublicationStatus,
-} from 'api/projects/types';
+import { IUpdatedProjectProperties, IProjectData } from 'api/projects/types';
 import useAddProject from 'api/projects/useAddProject';
 import useProjectById from 'api/projects/useProjectById';
 import useUpdateProject from 'api/projects/useUpdateProject';
@@ -43,6 +40,7 @@ import {
 } from 'components/admin/Section';
 import SlugInput from 'components/admin/SlugInput';
 import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
+import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { queryClient } from 'utils/cl-react-query/queryClient';
@@ -59,8 +57,11 @@ import ProjectCardImageTooltip from './components/ProjectCardImageTooltip';
 import ProjectFolderSelect from './components/ProjectFolderSelect';
 import ProjectHeaderImageTooltip from './components/ProjectHeaderImageTooltip';
 import ProjectNameInput from './components/ProjectNameInput';
-import ProjectStatusPicker from './components/ProjectStatusPicker';
-import { StyledForm, StyledSectionField } from './components/styling';
+import {
+  StyledForm,
+  StyledInputMultiloc,
+  StyledSectionField,
+} from './components/styling';
 import TopicInputs from './components/TopicInputs';
 import messages from './messages';
 import validateTitle from './utils/validateTitle';
@@ -78,6 +79,7 @@ const AdminProjectsProjectGeneral = () => {
   const { formatMessage } = useIntl();
   const { projectId } = useParams();
   const { data: project } = useProjectById(projectId);
+
   const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
   const appConfigLocales = useAppConfigurationLocales();
   const { width, containerRef } = useContainerWidthAndHeight();
@@ -88,6 +90,7 @@ const AdminProjectsProjectGeneral = () => {
 
   const { data: remoteProjectImages } = useProjectImages(projectId || null);
   const { mutateAsync: addProjectImage } = useAddProjectImage();
+  const { mutateAsync: updateProjectImage } = useUpdateProjectImage();
   const { mutateAsync: deleteProjectImage } = useDeleteProjectImage();
   const { mutateAsync: updateProject } = useUpdateProject();
   const { mutateAsync: addProject } = useAddProject();
@@ -114,6 +117,8 @@ const AdminProjectsProjectGeneral = () => {
   const [projectCardImage, setProjectCardImage] = useState<UploadFile | null>(
     null
   );
+  const [projectCardImageAltText, setProjectCardImageAltText] =
+    useState<Multiloc | null>(null);
   // project_images should always store one record, but in practice it was (or is?) different (maybe because of a bug)
   // https://citizenlabco.slack.com/archives/C015M14HYSF/p1674228018666059
   const [projectCardImageToRemove, setProjectCardImageToRemove] =
@@ -126,13 +131,10 @@ const AdminProjectsProjectGeneral = () => {
 
   const [slug, setSlug] = useState<string | null>(null);
   const [showSlugErrorMessage, setShowSlugErrorMessage] = useState(false);
-  const [publicationStatus, setPublicationStatus] =
-    useState<PublicationStatus>('draft');
 
   useEffect(() => {
     (async () => {
       if (project) {
-        setPublicationStatus(project.data.attributes.publication_status);
         setSlug(project.data.attributes.slug);
       }
     })();
@@ -168,6 +170,8 @@ const AdminProjectsProjectGeneral = () => {
          */
         setInitialProjectFilesOrdering(
           nextProjectFiles.reduce((acc, file) => {
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             if (file?.id) {
               acc[file.id] = file.ordering;
             }
@@ -181,23 +185,23 @@ const AdminProjectsProjectGeneral = () => {
   useEffect(() => {
     (async () => {
       if (!isNilOrError(remoteProjectImages)) {
-        const nextProjectImagesPromises = remoteProjectImages.data.map(
-          (projectImage) => {
-            const url = projectImage.attributes.versions.large;
+        for (const projectImage of remoteProjectImages.data) {
+          const url = projectImage.attributes.versions.large;
+          const altTextValue = projectImage.attributes.alt_text_multiloc;
 
-            if (url) {
-              return convertUrlToUploadFile(url, projectImage.id, null);
+          if (url) {
+            const uploadFile = await convertUrlToUploadFile(
+              url,
+              projectImage.id,
+              null
+            );
+            if (isUploadFile(uploadFile)) {
+              setProjectCardImage(uploadFile);
+              setProjectCardImageAltText(altTextValue);
+              break;
             }
-
-            return;
           }
-        );
-
-        const nextProjectImages = (
-          await Promise.all(nextProjectImagesPromises)
-        ).filter(isUploadFile);
-
-        setProjectCardImage(nextProjectImages[0]);
+        }
       }
     })();
   }, [remoteProjectImages]);
@@ -211,10 +215,23 @@ const AdminProjectsProjectGeneral = () => {
     setTitleError(null);
   };
 
+  const handleAltTextMultilocOnChange = (altTextMultiloc: Multiloc) => {
+    setSubmitState('enabled');
+    setProjectCardImageAltText(altTextMultiloc);
+  };
+
   const handleHeaderBgChange = (newImageBase64: string | null) => {
     setProjectAttributesDiff((projectAttributesDiff) => ({
       ...projectAttributesDiff,
       header_bg: newImageBase64,
+    }));
+    setSubmitState('enabled');
+  };
+
+  const handleHeaderBgAltTextChange = (altText: Multiloc) => {
+    setProjectAttributesDiff((projectAttributesDiff) => ({
+      ...projectAttributesDiff,
+      header_bg_alt_text_multiloc: altText,
     }));
     setSubmitState('enabled');
   };
@@ -314,7 +331,27 @@ const AdminProjectsProjectGeneral = () => {
           croppedProjectCardBase64 && latestProjectId
             ? addProjectImage({
                 projectId: latestProjectId,
-                image: { image: croppedProjectCardBase64 },
+                image: {
+                  image: croppedProjectCardBase64,
+                  ...(projectCardImageAltText
+                    ? { alt_text_multiloc: projectCardImageAltText }
+                    : {}),
+                },
+              })
+            : null;
+
+        const cardImageToUpdatePromise =
+          projectCardImage &&
+          projectCardImage.id &&
+          projectCardImageAltText &&
+          latestProjectId
+            ? updateProjectImage({
+                projectId: latestProjectId,
+                imageId: projectCardImage.id,
+                image: {
+                  image: projectCardImage.base64,
+                  alt_text_multiloc: projectCardImageAltText,
+                },
               })
             : null;
 
@@ -378,6 +415,7 @@ const AdminProjectsProjectGeneral = () => {
 
         await Promise.all([
           cardImageToAddPromise,
+          cardImageToUpdatePromise,
           cardImageToRemovePromise,
           ...filesToAddPromises,
           ...filesToRemovePromises,
@@ -411,17 +449,6 @@ const AdminProjectsProjectGeneral = () => {
   const onSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     saveForm();
-  };
-
-  const handleStatusChange = (publicationStatus: PublicationStatus) => {
-    setSubmitState('enabled');
-    setPublicationStatus(publicationStatus);
-    setProjectAttributesDiff((projectAttributesDiff) => ({
-      ...projectAttributesDiff,
-      admin_publication_attributes: {
-        publication_status: publicationStatus,
-      },
-    }));
   };
 
   const handleSlugOnChange = (slug: string) => {
@@ -503,12 +530,7 @@ const AdminProjectsProjectGeneral = () => {
               </SectionDescription>
             </>
           )}
-
-          <ProjectStatusPicker
-            publicationStatus={publicationStatus}
-            handleStatusChange={handleStatusChange}
-          />
-
+          <Warning>{formatMessage(messages.publicationStatusWarning)}</Warning>
           <ProjectNameInput
             titleMultiloc={projectAttrs.title_multiloc}
             titleError={titleError}
@@ -558,7 +580,9 @@ const AdminProjectsProjectGeneral = () => {
             </SubSectionTitle>
             <HeaderBgUploader
               imageUrl={project?.data.attributes.header_bg.large}
+              headerImageAltText={projectAttrs.header_bg_alt_text_multiloc}
               onImageChange={handleHeaderBgChange}
+              onHeaderImageAltTextChange={handleHeaderBgAltTextChange}
             />
           </SectionField>
 
@@ -585,6 +609,26 @@ const AdminProjectsProjectGeneral = () => {
               />
             )}
           </StyledSectionField>
+          {projectCardImage && (
+            <StyledSectionField>
+              <SubSectionTitle>
+                <FormattedMessage {...messages.projectImageAltTextTitle} />
+                <IconTooltip
+                  content={
+                    <FormattedMessage
+                      {...messages.projectImageAltTextTooltip}
+                    />
+                  }
+                />
+              </SubSectionTitle>
+              <StyledInputMultiloc
+                type="text"
+                valueMultiloc={projectCardImageAltText}
+                label={<FormattedMessage {...messages.altText} />}
+                onChange={handleAltTextMultilocOnChange}
+              />
+            </StyledSectionField>
+          )}
 
           <AttachmentsDropzone
             projectFiles={projectFiles}

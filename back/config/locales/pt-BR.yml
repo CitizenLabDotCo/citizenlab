@@ -266,6 +266,7 @@ pt:
       first_name: 'Nome(s) próprio(s)'
       image_url: 'imagem URL'
       input_id: 'ID'
+      manual_votes: 'Votações off-line'
       input_url: 'URL'
       last_name: 'Sobrenome'
       latitude: 'Latitude'
@@ -343,6 +344,8 @@ pt:
       you_can_sign_in_again_from: "Pode voltar a assinar a partir de %{date}"
   user:
     anon_first_name: "Utilizador"
+    anon_scheme:
+      animals: 'jacaré, crocodilo, alpaca, formiga, antílope, macaco, tatu, babuíno, texugo, morcego, urso, castor, abelha, besouro, búfalo, borboleta, camelo, búfalo d''água, caribu, gato, gado, chita, chimpanzé, chinchila, cigarra, molusco, barata, bacalhau, coiote, caranguejo, grilo, corvo, corvo,veado, dinossauro, cachorro, golfinho, toninha, pato, águia, enguia, elefante, alce, furão, peixe, mosca, raposa, sapo, sapo, gerbilo, girafa, mosquito, gnu, gnu, gnu, gnu, cabra, peixe dourado, ganso, gorila, gafanhoto, porquinho-da-índia, hamster, lebre, ouriço, arenque, hipopótamo, vespa, cavalo, cão de caça,hiena, impala, chacal, água-viva, canguru, wallaby, coala, leopardo, leão, lagarto, lhama, gafanhoto, piolho, arara, pato-real, mamute, peixe-boi, marta, marta, mink, minnow, toupeira, alce, mosquito, camundongo, rato, mula, rato almiscarado, lontra, boi, ostra, panda, porco, ornitorrinco, porco-espinho, cão da pradaria,pug, coelho, guaxinim, rena, rinoceronte, salmão, sardinha, escorpião, foca, leão-marinho, serval, tubarão, ovelha, gambá, caracol, cobra, aranha, esquilo, cisne, cupim, tigre, truta, tartaruga, cágado, morsa, vespa, baleia, lobo, vombate, marmota, minhoca, iaque, jaqueta-amarela, zebra'
   time:
     am: am
     formats:

@@ -71,4 +71,6 @@ export const threeColumnCraftConfig = {
 
 ThreeColumn.craft = threeColumnCraftConfig;
 
+export const threeColumnTitle = messages.threeColumn;
+
 export default ThreeColumn;

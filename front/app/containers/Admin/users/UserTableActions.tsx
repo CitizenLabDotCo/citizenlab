@@ -205,6 +205,8 @@ const UserTableActions = ({
     };
 
   const addUsersToGroups = async () => {
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (selectedGroupIds && selectedGroupIds.length > 0) {
       const usersIds = selectedUsers === 'all' ? allUsersIds : selectedUsers;
       const promises: Promise<IGroupMemberships | CLErrorsWrapper>[] = [];
@@ -227,10 +229,8 @@ const UserTableActions = ({
       };
 
       trackEventByName(tracks.addUsersToGroup.name, {
-        extra: {
-          usersIds,
-          selectedGroupIds,
-        },
+        usersIds: usersIds.toString(),
+        selectedGroupIds: selectedGroupIds.toString(),
       });
 
       if (isArray(usersIds)) {
@@ -250,9 +250,7 @@ const UserTableActions = ({
         return true;
       } catch (error) {
         trackEventByName(tracks.addedRedundantUserToGroup.name, {
-          extra: {
-            errorResponse: error,
-          },
+          errorResponse: error.toString(),
         });
 
         // if error because users already part of group(s)
@@ -384,6 +382,8 @@ const UserTableActions = ({
                       padding="12px"
                       whiteSpace="normal"
                       disabled={
+                        // TODO: Fix this the next time the file is edited.
+                        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                         !selectedGroupIds || selectedGroupIds.length === 0
                       }
                     >

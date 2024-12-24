@@ -163,7 +163,6 @@ export interface OutletsPropertyMap {
     title: string;
     translateButtonClicked?: boolean;
     color?: string;
-    align: 'left' | 'center';
   };
   'app.containers.Admin.settings.general.form': {
     onSettingChange: (settingName: string, settingValue: any) => void;
@@ -318,11 +317,17 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
 
   const callLifecycleMethods = (lifecycleMethod: LifecycleMethod) => () => {
     moduleConfigurations.forEach((module: ModuleConfiguration) =>
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       module?.[lifecycleMethod]?.()
     );
   };
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const citizenRoutes = parseModuleRoutes(mergedRoutes?.citizen);
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const adminRoutes = parseModuleRoutes(mergedRoutes?.admin, RouteTypes.ADMIN);
 
   return {
@@ -331,34 +336,50 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
       citizen: citizenRoutes,
       admin: adminRoutes,
       'admin.ideas': parseModuleRoutes(
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         mergedRoutes?.['admin.ideas'],
         RouteTypes.ADMIN
       ),
       'admin.pages-menu': parseModuleRoutes(
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         mergedRoutes?.['admin.pages-menu'],
         RouteTypes.ADMIN
       ),
       'admin.dashboards': parseModuleRoutes(
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         mergedRoutes?.['admin.dashboards'],
         RouteTypes.ADMIN
       ),
       'admin.projects': parseModuleRoutes(
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         mergedRoutes?.['admin.projects'],
         RouteTypes.ADMIN
       ),
       'admin.project_templates': parseModuleRoutes(
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         mergedRoutes?.['admin.project_templates'],
         RouteTypes.ADMIN
       ),
       'admin.settings': parseModuleRoutes(
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         mergedRoutes?.['admin.settings'],
         RouteTypes.ADMIN
       ),
       'admin.tools': parseModuleRoutes(
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         mergedRoutes?.['admin.tools'],
         RouteTypes.ADMIN
       ),
       'admin.reporting': parseModuleRoutes(
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         mergedRoutes?.['admin.reporting'],
         RouteTypes.ADMIN
       ),
@@ -367,6 +388,8 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
     afterMountApplication: callLifecycleMethods('afterMountApplication'),
     streamsToReset: moduleConfigurations.reduce(
       (acc: string[], module: ModuleConfiguration) => {
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         return [...acc, ...(module?.streamsToReset ?? [])];
       },
       []
@@ -407,6 +430,8 @@ export const insertConfiguration =
     const isItemInsertedAfter =
       itemAlreadyInserted &&
       insertAfterName &&
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       itemAtInsertIndex &&
       itemAtInsertIndex.name === insertAfterName;
 

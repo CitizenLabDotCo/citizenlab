@@ -229,6 +229,11 @@ export default defineMessages({
     id: 'app.containers.Comments.visibleToUsersWarning',
     defaultMessage: 'Comments posted here will be visible to regular users.',
   },
+  internalCommentingNudgeMessage: {
+    id: 'app.containers.Comments.internalCommentingNudgeMessage',
+    defaultMessage:
+      'Making internal comments is not included in your current license. Reach out to your GovSuccess Manager to learn more about it.',
+  },
   notVisibleToUsersPlaceholder: {
     id: 'app.containers.Comments.notVisibleToUsersPlaceholder',
     defaultMessage: 'This comment is not visible to regular users',

@@ -13,10 +13,15 @@ module BlockingProfanity
     end
   end
 
-  SUPPORTED_CLASS_ATTRS = {
+  DEFAULT_CLASS_ATTRS = {
     Comment.name => [:body_multiloc],
     Idea.name => %i[title_multiloc body_multiloc location_description],
     Initiative.name => %i[title_multiloc body_multiloc location_description]
+  }.freeze
+
+  # Can be turned on in settings - extended_blocking = true
+  EXTENDED_CLASS_ATTRS = {
+    User.name => %i[first_name last_name bio_multiloc]
   }.freeze
 
   included do
@@ -29,7 +34,8 @@ module BlockingProfanity
     all_blocked_words = []
     violating_attributes = []
     service = ProfanityService.new
-    attrs = SUPPORTED_CLASS_ATTRS[object.class.name]
+    attrs = DEFAULT_CLASS_ATTRS[object.class.name] || []
+    attrs += EXTENDED_CLASS_ATTRS[object.class.name] || [] if AppConfiguration.instance.settings.dig('blocking_profanity', 'extended_blocking')
     attrs&.each do |atr|
       next if object[atr].blank?
 

@@ -33,14 +33,13 @@ class WebApi::V1::IdeasController < ApplicationController
       :topics,
       :phases,
       :creation_phase,
+      :manual_votes_last_updated_by,
       {
         project: [:phases, { phases: { permissions: [:groups] } }, { custom_form: [:custom_fields] }],
         author: [:unread_notifications]
       }
     )
     ideas = ideas.includes(:idea_import) unless current_user&.normal_user? # defined through BulkImportIdeas engine
-
-    ideas = convert_phase_voting_counts ideas, params
 
     render json: linked_json(ideas, WebApi::V1::IdeaSerializer, serialization_options_for(ideas))
   end
@@ -88,31 +87,17 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def filter_counts
-    all_ideas = IdeasFinder.new(
+    ideas = IdeasFinder.new(
       params,
       scope: policy_scope(Idea),
       current_user: current_user
     ).find_records
-    all_ideas = paginate SortByParamsService.new.sort_ideas(all_ideas, params, current_user)
-    all_ideas = all_ideas.includes(:idea_trending_info)
-    counts = {
-      'idea_status_id' => {},
-      'topic_id' => {}
-    }
-    attributes = %w[idea_status_id topic_id]
-    all_ideas.published
-      .joins('FULL OUTER JOIN ideas_topics ON ideas_topics.idea_id = ideas.id')
-      .select('idea_status_id, ideas_topics.topic_id, COUNT(DISTINCT(ideas.id)) as count')
-      .reorder(nil) # Avoids SQL error on GROUP BY when a search string was used
-      .group('GROUPING SETS (idea_status_id, ideas_topics.topic_id)')
-      .each do |record|
-      attributes.each do |attribute|
-        id = record.send attribute
-        counts[attribute][id] = record.count if id
-      end
-    end
-    counts['total'] = all_ideas.count
-    render json: raw_json(counts)
+    ideas = SortByParamsService.new.sort_ideas(ideas, params, current_user)
+    ideas = ideas.includes(:idea_trending_info)
+
+    result = IdeasCountService.counts(ideas)
+    result['total'] = ideas.count
+    render json: raw_json(result)
   end
 
   def show
@@ -167,7 +152,7 @@ class WebApi::V1::IdeasController < ApplicationController
       input.anonymous = true
     end
     input.author ||= current_user
-    input.assign_defaults
+    phase.pmethod.assign_defaults(input)
 
     sidefx.before_create(input, current_user)
 
@@ -217,11 +202,15 @@ class WebApi::V1::IdeasController < ApplicationController
 
     user_can_moderate_project = UserRoleService.new.can_moderate_project?(input.project, current_user)
     update_params = idea_params(input.custom_form, user_can_moderate_project).to_h
+    phase_ids = update_params.delete(:phase_ids) if update_params[:phase_ids]
     update_params[:custom_field_values] = params_service.updated_custom_field_values(input.custom_field_values, update_params[:custom_field_values])
     CustomFieldService.new.compact_custom_field_values! update_params[:custom_field_values]
+    input.set_manual_votes(update_params[:manual_votes_amount], current_user) if update_params[:manual_votes_amount]
 
     ActiveRecord::Base.transaction do # Assigning relationships cause database changes
       input.assign_attributes update_params
+      sidefx.before_update(input, current_user)
+      input.phase_ids = phase_ids if phase_ids
       authorize input
       if not_allowed_update_errors(input)
         render json: not_allowed_update_errors(input), status: :unprocessable_entity
@@ -230,13 +219,11 @@ class WebApi::V1::IdeasController < ApplicationController
       verify_profanity input
     end
 
-    sidefx.before_update(input, current_user)
-    cosponsor_ids = input.cosponsors.map(&:id)
     save_options = {}
     save_options[:context] = :publication if params.dig(:idea, :publication_status) == 'published'
     ActiveRecord::Base.transaction do
       if input.save(**save_options)
-        sidefx.after_update(input, current_user, cosponsor_ids)
+        sidefx.after_update(input, current_user)
         update_file_upload_fields input, input.custom_form, update_params
         render json: WebApi::V1::IdeaSerializer.new(
           input.reload,
@@ -259,6 +246,14 @@ class WebApi::V1::IdeasController < ApplicationController
     else
       head :internal_server_error
     end
+  end
+
+  def similarities
+    idea = Idea.find params[:id]
+    similar_ideas_options = { scope: policy_scope(Idea), distance_threshold: 0.4 }
+    similar_ideas_options[:limit] = nil if params.key?(:page)
+    similar_ideas = paginate SimilarIdeasService.new(idea).similar_ideas(**similar_ideas_options)
+    render json: linked_json(similar_ideas, WebApi::V1::IdeaSerializer, serialization_options_for(similar_ideas))
   end
 
   private
@@ -332,7 +327,7 @@ class WebApi::V1::IdeasController < ApplicationController
     complex_attributes = idea_complex_attributes(custom_form, submittable_field_keys)
     attributes << complex_attributes if complex_attributes.any?
     if user_can_moderate_project
-      attributes.concat %i[author_id idea_status_id budget] + [phase_ids: []]
+      attributes.concat %i[author_id idea_status_id budget manual_votes_amount] + [phase_ids: []]
     end
     attributes
   end
@@ -402,7 +397,7 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def serialization_options_for(ideas)
-    include = %i[author idea_images ideas_phases cosponsors]
+    include = %i[author idea_images ideas_phases cosponsors manual_votes_last_updated_by]
     if current_user
       # I have no idea why but the trending query part
       # breaks if you don't fetch the ids in this way.
@@ -416,6 +411,7 @@ class WebApi::V1::IdeasController < ApplicationController
       user_followers ||= {}
       {
         params: jsonapi_serializer_params(
+          phase: params[:phase] && Phase.find(params[:phase]),
           vbii: reactions.index_by(&:reactable_id),
           user_followers: user_followers,
           user_requirements_service: Permissions::UserRequirementsService.new(check_groups_and_verification: false)
@@ -424,7 +420,9 @@ class WebApi::V1::IdeasController < ApplicationController
       }
     else
       {
-        params: jsonapi_serializer_params,
+        params: jsonapi_serializer_params(
+          phase: params[:phase] && Phase.find(params[:phase])
+        ),
         include: include
       }
     end
@@ -439,24 +437,6 @@ class WebApi::V1::IdeasController < ApplicationController
     return false if input.idea_import && input.idea_import.approved_at.nil?
 
     !input.participation_method_on_creation.supports_inputs_without_author?
-  end
-
-  # Change counts on idea for values for phase, if filtered by phase
-  def convert_phase_voting_counts(ideas, params)
-    if params[:phase]
-      phase_id = params[:phase]
-      ideas.map do |idea|
-        next if idea.baskets_count == 0
-
-        idea.ideas_phases.each do |ideas_phase|
-          if ideas_phase.phase_id == phase_id
-            idea.baskets_count = ideas_phase.baskets_count
-            idea.votes_count = ideas_phase.votes_count
-          end
-        end
-      end
-    end
-    ideas
   end
 
   def not_allowed_update_errors(input)
@@ -477,3 +457,4 @@ class WebApi::V1::IdeasController < ApplicationController
 end
 
 WebApi::V1::IdeasController.prepend(IdeaAssignment::Patches::WebApi::V1::IdeasController)
+WebApi::V1::IdeasController.include(AggressiveCaching::Patches::WebApi::V1::IdeasController)

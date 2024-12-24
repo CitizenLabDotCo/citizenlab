@@ -120,6 +120,8 @@ const ReportExportMenu = ({
     svgNodes.forEach((svgNode_, i) => {
       // eslint-disable-next-line react/no-find-dom-node
       const node = findDOMNode(
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         svgNode_ && svgNode_.current.container.children[0]
       );
       if (node) {
@@ -132,7 +134,7 @@ const ReportExportMenu = ({
       }
     });
 
-    trackEventByName('Clicked export svg', { extra: { graph: name } });
+    trackEventByName('Clicked export svg', { graph: name });
   };
 
   const handleDownloadPng = async () => {
@@ -142,6 +144,8 @@ const ReportExportMenu = ({
     svgNodes.forEach(async (svgNode_, i) => {
       // eslint-disable-next-line react/no-find-dom-node
       const node = findDOMNode(
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         svgNode_ && svgNode_.current.container.children[0]
       );
       if (node) {
@@ -190,7 +194,7 @@ const ReportExportMenu = ({
       }
     });
 
-    trackEventByName('Clicked export png', { extra: { graph: name } });
+    trackEventByName('Clicked export png', { graph: name });
   };
 
   const toggleDropdown = (value?: boolean) => () => {
@@ -260,7 +264,7 @@ const ReportExportMenu = ({
     setExportingXls(false);
 
     // track this click for user analytics
-    trackEventByName('Clicked export xlsx', { extra: { graph: name } });
+    trackEventByName('Clicked export xlsx', { graph: name });
   };
 
   return (

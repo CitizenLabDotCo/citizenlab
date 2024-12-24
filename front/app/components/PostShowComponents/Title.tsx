@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 
-import { media, fontSizes } from '@citizenlab/cl2-component-library';
+import { media, fontSizes, Title } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import Outlet from 'components/Outlet';
@@ -9,21 +9,10 @@ const Container = styled.div<{ align: 'left' | 'center' }>`
   width: ${({ align }) => (align === 'left' ? '100%' : 'auto')};
 `;
 
-export const Title = styled.h1<{
-  color: string | undefined;
-  align: 'left' | 'center';
+export const StyledH1 = styled(Title)<{
+  customColor: string | undefined;
 }>`
-  width: 100%;
-  color: ${({ color, theme }) => color || theme.colors.tenantText};
-  font-size: ${fontSizes.xxxl}px;
-  font-weight: 500;
-  line-height: normal;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  word-break: break-word;
-  margin: 0;
-  padding: 0;
-  z-index: 1;
+  color: ${({ customColor, theme }) => customColor || theme.colors.tenantText};
 
   ${media.tablet`
     font-size: ${fontSizes.xxl}px;
@@ -55,16 +44,15 @@ const PostTitle = memo<Props>(
           title={title}
           postId={postId}
           color={color}
-          align={align}
           translateButtonClicked={translateButtonClicked}
         >
           {(outletComponents) =>
             outletComponents.length > 0 ? (
               <>{outletComponents}</>
             ) : (
-              <Title id={`e2e-idea-title`} color={color} align={align}>
+              <StyledH1 id="e2e-idea-title" customColor={color} m="0">
                 {title}
-              </Title>
+              </StyledH1>
             )
           }
         </Outlet>

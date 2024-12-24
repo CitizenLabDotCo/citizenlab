@@ -4,53 +4,60 @@
 #
 # Table name: phases
 #
-#  id                            :uuid             not null, primary key
-#  project_id                    :uuid
-#  title_multiloc                :jsonb
-#  description_multiloc          :jsonb
-#  start_at                      :date
-#  end_at                        :date
-#  created_at                    :datetime         not null
-#  updated_at                    :datetime         not null
-#  participation_method          :string           default("ideation"), not null
-#  submission_enabled            :boolean          default(TRUE)
-#  commenting_enabled            :boolean          default(TRUE)
-#  reacting_enabled              :boolean          default(TRUE), not null
-#  reacting_like_method          :string           default("unlimited"), not null
-#  reacting_like_limited_max     :integer          default(10)
-#  survey_embed_url              :string
-#  survey_service                :string
-#  presentation_mode             :string           default("card")
-#  voting_max_total              :integer
-#  poll_anonymous                :boolean          default(FALSE), not null
-#  reacting_dislike_enabled      :boolean          default(TRUE), not null
-#  ideas_count                   :integer          default(0), not null
-#  ideas_order                   :string
-#  input_term                    :string           default("idea")
-#  voting_min_total              :integer          default(0)
-#  reacting_dislike_method       :string           default("unlimited"), not null
-#  reacting_dislike_limited_max  :integer          default(10)
-#  allow_anonymous_participation :boolean          default(FALSE), not null
-#  document_annotation_embed_url :string
-#  voting_method                 :string
-#  voting_max_votes_per_idea     :integer
-#  voting_term_singular_multiloc :jsonb
-#  voting_term_plural_multiloc   :jsonb
-#  baskets_count                 :integer          default(0), not null
-#  votes_count                   :integer          default(0), not null
-#  campaigns_settings            :jsonb
-#  native_survey_title_multiloc  :jsonb
-#  native_survey_button_multiloc :jsonb
-#  expire_days_limit             :integer
-#  reacting_threshold            :integer
-#  prescreening_enabled          :boolean          default(FALSE), not null
+#  id                               :uuid             not null, primary key
+#  project_id                       :uuid
+#  title_multiloc                   :jsonb
+#  description_multiloc             :jsonb
+#  start_at                         :date
+#  end_at                           :date
+#  created_at                       :datetime         not null
+#  updated_at                       :datetime         not null
+#  participation_method             :string           default("ideation"), not null
+#  submission_enabled               :boolean          default(TRUE)
+#  commenting_enabled               :boolean          default(TRUE)
+#  reacting_enabled                 :boolean          default(TRUE), not null
+#  reacting_like_method             :string           default("unlimited"), not null
+#  reacting_like_limited_max        :integer          default(10)
+#  survey_embed_url                 :string
+#  survey_service                   :string
+#  presentation_mode                :string           default("card")
+#  voting_max_total                 :integer
+#  poll_anonymous                   :boolean          default(FALSE), not null
+#  reacting_dislike_enabled         :boolean          default(FALSE), not null
+#  ideas_count                      :integer          default(0), not null
+#  ideas_order                      :string
+#  input_term                       :string           default("idea")
+#  voting_min_total                 :integer          default(0)
+#  reacting_dislike_method          :string           default("unlimited"), not null
+#  reacting_dislike_limited_max     :integer          default(10)
+#  allow_anonymous_participation    :boolean          default(FALSE), not null
+#  document_annotation_embed_url    :string
+#  voting_method                    :string
+#  voting_max_votes_per_idea        :integer
+#  voting_term_singular_multiloc    :jsonb
+#  voting_term_plural_multiloc      :jsonb
+#  baskets_count                    :integer          default(0), not null
+#  votes_count                      :integer          default(0), not null
+#  campaigns_settings               :jsonb
+#  native_survey_title_multiloc     :jsonb
+#  native_survey_button_multiloc    :jsonb
+#  expire_days_limit                :integer
+#  reacting_threshold               :integer
+#  prescreening_enabled             :boolean          default(FALSE), not null
+#  autoshare_results_enabled        :boolean          default(TRUE)
+#  manual_votes_count               :integer          default(0), not null
+#  manual_voters_amount             :integer
+#  manual_voters_last_updated_by_id :uuid
+#  manual_voters_last_updated_at    :datetime
 #
 # Indexes
 #
-#  index_phases_on_project_id  (project_id)
+#  index_phases_on_manual_voters_last_updated_by_id  (manual_voters_last_updated_by_id)
+#  index_phases_on_project_id                        (project_id)
 #
 # Foreign Keys
 #
+#  fk_rails_...  (manual_voters_last_updated_by_id => users.id)
 #  fk_rails_...  (project_id => projects.id)
 #
 class Phase < ApplicationRecord
@@ -67,6 +74,8 @@ class Phase < ApplicationRecord
   FALLBACK_INPUT_TERM = 'idea'
   CAMPAIGNS = [:project_phase_started].freeze
 
+  attribute :reacting_dislike_enabled, :boolean, default: -> { disliking_enabled_default }
+
   belongs_to :project
 
   has_one :custom_form, as: :participation_context, dependent: :destroy # native_survey only
@@ -79,6 +88,7 @@ class Phase < ApplicationRecord
   has_many :text_images, as: :imageable, dependent: :destroy
   accepts_nested_attributes_for :text_images
   has_many :phase_files, -> { order(:ordering) }, dependent: :destroy
+  belongs_to :manual_voters_last_updated_by, class_name: 'User', optional: true
 
   before_validation :sanitize_description_multiloc
   before_validation :strip_title
@@ -100,6 +110,10 @@ class Phase < ApplicationRecord
   validate :validate_start_at_before_end_at
   validate :validate_no_other_overlapping_phases
   validate :validate_campaigns_settings_keys_and_values
+  validates :manual_voters_amount, numericality: { only_integer: true, greater_than_or_equal_to: 0, allow_nil: true }
+  # This is a counter cache column, but it was too complex to implement it with counter_culture. It's
+  # therefore updated manually by calling update_manual_votes_count! through the idea sidefx service.
+  validates :manual_votes_count, numericality: { only_integer: true, greater_than_or_equal_to: 0, allow_nil: true }
 
   validates :participation_method, inclusion: { in: PARTICIPATION_METHODS }
 
@@ -149,6 +163,7 @@ class Phase < ApplicationRecord
     validate :validate_voting
     validates :voting_term_singular_multiloc, multiloc: { presence: false }
     validates :voting_term_plural_multiloc, multiloc: { presence: false }
+    validates :autoshare_results_enabled, inclusion: { in: [true, false] }
   end
   validates :voting_min_total,
     numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: :voting_max_total,
@@ -249,6 +264,25 @@ class Phase < ApplicationRecord
   def pmethod
     reload_participation_method if !@pmethod
     @pmethod
+  end
+
+  def set_manual_voters(amount, user)
+    return if amount == manual_voters_amount
+
+    self.manual_voters_amount = amount
+    self.manual_voters_last_updated_by = user if user
+    self.manual_voters_last_updated_at = Time.now
+  end
+
+  def update_manual_votes_count!
+    reload
+    update!(manual_votes_count: ideas.filter_map(&:manual_votes_amount).sum)
+  end
+
+  # If 'disable_disliking' is NOT enabled, then disliking will always be set to enabled on creation and cannot be changed
+  # Otherwise disliking is disabled on creation but can be changed in phase settings
+  def self.disliking_enabled_default
+    !AppConfiguration.instance.feature_activated?('disable_disliking')
   end
 
   private

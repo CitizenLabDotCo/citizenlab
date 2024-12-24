@@ -9,10 +9,13 @@ import {
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { IdeaQueryParameters } from 'api/ideas/types';
+import { IdeaSortMethod } from 'api/phases/types';
+
 import CityLogoSection from 'components/CityLogoSection';
 import ContentContainer from 'components/ContentContainer';
-import { IdeaCardsWithFiltersSidebar } from 'components/IdeaCards';
-import { Sort } from 'components/IdeaCards/shared/Filters/SortFilterDropdown';
+import IdeasWithFiltersSidebar from 'components/IdeaCards/IdeasWithFiltersSidebar';
+import IdeaListScrollAnchor from 'components/IdeaListScrollAnchor';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
@@ -73,27 +76,14 @@ const PageTitle = styled.h1`
  `}
 `;
 
-export interface QueryParameters {
-  'page[number]': number;
-  'page[size]': number;
-  project_publication_status: 'published';
-  publication_status: 'published';
-
-  // filters
-  sort: Sort;
-  search?: string;
-  idea_status?: string;
-  topics?: string[];
-}
-
 export default () => {
   const [searchParams] = useSearchParams();
-  const sortParam = searchParams.get('sort') as Sort | null;
+  const sortParam = searchParams.get('sort') as IdeaSortMethod | null;
   const searchParam = searchParams.get('search');
   const ideaStatusParam = searchParams.get('idea_status');
   const topicsParam = searchParams.get('topics');
 
-  const ideasQueryParameters = useMemo<QueryParameters>(
+  const ideasQueryParameters = useMemo<IdeaQueryParameters>(
     () => ({
       'page[number]': 1,
       'page[size]': 12,
@@ -117,8 +107,11 @@ export default () => {
             <PageTitle>
               <FormattedMessage {...messages.inputsPageTitle} />
             </PageTitle>
-            <IdeaCardsWithFiltersSidebar
-              invisibleTitleMessage={messages.a11y_IdeasListTitle1}
+            {/* Needed to add an anchor here so that we can scroll up the page correctly
+                when fitlers are changed in the IdeaCardsWithFiltersSidebar component and scrollToTopIdeasList util.
+            */}
+            <IdeaListScrollAnchor />
+            <IdeasWithFiltersSidebar
               ideaQueryParameters={ideasQueryParameters}
               onUpdateQuery={updateSearchParams}
             />

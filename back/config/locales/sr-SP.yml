@@ -1,6 +1,6 @@
 sr-Cyrl:
   locales:
-    en: English
+    en: енглески
     ar-MA: Arabic (Morocco)
     ar-SA: Arabic (Saudi Arabia)
     ca-ES: Catalan
@@ -252,7 +252,7 @@ sr-Cyrl:
     column_headers:
       assignee_fullname: 'Асигнее'
       assignee_email: 'Имејл примаоца'
-      attachments: 'Attachments'
+      attachments: 'Прилози'
       author_email: 'Имејл аутора'
       author_fullname: 'Име аутора'
       author_id: 'ИД аутора'
@@ -260,17 +260,18 @@ sr-Cyrl:
       comments_count: 'Коментари'
       cost: 'Cost'
       created_at: 'Послано на'
-      description: 'Description'
+      description: 'Опис'
       dislikes_count: 'Не свиђа ми се'
       email: 'Email'
       first_name: 'First name(s)'
       image_url: 'УРЛ слике'
       input_id: 'ИД'
+      manual_votes: 'Offline votes'
       input_url: 'УРЛ'
       last_name: 'Last name'
       latitude: 'Географска ширина'
       likes_count: 'Свиђа'
-      location: 'Location'
+      location: 'Локација'
       longitude: 'Географска дужина'
       participants: 'Учесници'
       picks: 'Пицкс'
@@ -279,8 +280,8 @@ sr-Cyrl:
       registration_completed_at: 'Registration completed at'
       status: 'Статус'
       submitted_at: 'Submitted at'
-      tags: 'Tags'
-      title: 'Title'
+      tags: 'Тема'
+      title: 'Наслов'
       user_data: 'User data'
       votes_count: 'Гласови'
   form_builder:
@@ -344,6 +345,8 @@ sr-Cyrl:
       you_can_sign_in_again_from: "Можете се поново пријавити од %{date}"
   user:
     anon_first_name: "Корисник"
+    anon_scheme:
+      animals: 'alligator,crocodile,alpaca,ant,antelope,ape,armadillo,baboon,badger,bat,bear,beaver,bee,beetle,buffalo,butterfly,camel,water buffalo,caribou,cat,cattle,cheetah,chimpanzee,chinchilla,cicada,clam,cockroach,cod,coyote,crab,cricket,crow,raven,deer,dinosaur,dog,dolphin,porpoise,duck,eagle,eel,elephant,elk,ferret,fish,fly,fox,frog,toad,gerbil,giraffe,gnat,gnu,wildebeest,goat,goldfish,goose,gorilla,grasshopper,guinea pig,hamster,hare,hedgehog,herring,hippopotamus,hornet,horse,hound,hyena,impala,jackal,jellyfish,kangaroo,wallaby,koala,leopard,lion,lizard,llama,locust,louse,macaw,mallard,mammoth,manatee,marten,mink,minnow,mole,moose,mosquito,mouse,rat,mule,muskrat,otter,ox,oyster,panda,pig,platypus,porcupine,prairie dog,pug,rabbit,raccoon,reindeer,rhinoceros,salmon,sardine,scorpion,seal,sea lion,serval,shark,sheep,skunk,snail,snake,spider,squirrel,swan,termite,tiger,trout,turtle,tortoise,walrus,wasp,whale,wolf,wombat,woodchuck,worm,yak,yellowjacket,zebra'
   time:
     am: сам
     formats:

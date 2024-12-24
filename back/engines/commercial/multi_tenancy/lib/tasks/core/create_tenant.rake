@@ -236,6 +236,10 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        project_preview_link: {
+          enabled: true,
+          allowed: true
+        },
         project_description_builder: {
           enabled: true,
           allowed: true
@@ -320,6 +324,14 @@ namespace :cl2_back do
         customisable_homepage_banner: {
           enabled: true,
           allowed: true
+        },
+        project_review: {
+          enabled: true,
+          allowed: true
+        },
+        platform_templates: {
+          enabled: false,
+          allowed: false
         }
       }
     )

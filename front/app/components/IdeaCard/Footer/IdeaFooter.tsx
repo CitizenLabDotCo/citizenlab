@@ -3,13 +3,13 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { IIdeaData } from 'api/ideas/types';
+import { ParticipationMethod } from 'api/phases/types';
 
 import ReactionControl from 'components/ReactionControl';
+import { showIdeaReactions } from 'components/ReactionControl/utils';
 import StatusBadge from 'components/StatusBadge';
 
 import CommentCount from './CommentCount';
-import { ParticipationMethod } from 'api/phases/types';
-import { showIdeaReactions } from 'components/ReactionControl/utils';
 
 const Container = styled.footer`
   display: flex;

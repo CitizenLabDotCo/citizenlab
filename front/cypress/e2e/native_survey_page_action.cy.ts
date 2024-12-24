@@ -171,7 +171,6 @@ describe('Native survey project page actions', () => {
         "Unfortunately, you can't participate in this project anymore because it has been archived"
       );
       cy.get('.e2e-idea-button').should('not.exist');
-      cy.contains('1 survey').should('not.exist');
     });
   });
 

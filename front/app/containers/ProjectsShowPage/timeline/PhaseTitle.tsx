@@ -7,6 +7,7 @@ import {
   fontSizes,
   viewportWidths,
   isRtl,
+  Title,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
@@ -72,22 +73,6 @@ const HeaderTitleWrapper = styled.div`
   `}
 `;
 
-const HeaderTitle = styled.h3`
-  color: ${colors.textSecondary};
-  font-size: ${fontSizes.l + 1}px;
-  line-height: normal;
-  font-weight: 600;
-  margin: 0;
-  padding: 0;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  word-break: break-word;
-
-  &.present {
-    color: ${colors.success};
-  }
-`;
-
 const PhaseDate = styled.div`
   color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
@@ -149,9 +134,14 @@ const PhaseTitle = ({
           {phaseNumber}
         </PhaseNumber>
         <HeaderTitleWrapper>
-          <HeaderTitle className={`e2e-phase-title ${phaseStatus}`}>
+          <Title
+            variant="h3"
+            className={`e2e-phase-title ${phaseStatus}`}
+            m="0"
+            color={phaseStatus === 'present' ? 'success' : 'textSecondary'}
+          >
             {phaseTitle || <FormattedMessage {...messages.noPhaseSelected} />}
-          </HeaderTitle>
+          </Title>
           <PhaseDate className={phaseStatus}>
             {isOneDayPhase ? startDate : `${startDate} - ${endDate}`}
           </PhaseDate>

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-import { Box, colors, defaultStyles } from '@citizenlab/cl2-component-library';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 import { hideVisually } from 'polished';
 import { Subscription } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
@@ -53,8 +53,7 @@ const Form = styled.form`
   }
 
   &.focused {
-    border-color: ${colors.black};
-    box-shadow: ${defaultStyles.boxShadowFocused};
+    border: solid 2px ${(props) => props.theme.colors.tenantPrimary};
   }
 `;
 
@@ -130,6 +129,8 @@ const ChildCommentForm = ({
   }
 
   const setCaretAtEnd = (element: HTMLTextAreaElement) => {
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (element.setSelectionRange && element.textContent) {
       element.setSelectionRange(
         element.textContent.length,
@@ -148,11 +149,9 @@ const ChildCommentForm = ({
 
   const onFocus = () => {
     trackEventByName(tracks.focusChildCommentEditor, {
-      extra: {
-        postId: ideaId,
-        postType: 'idea',
-        parentId,
-      },
+      postId: ideaId,
+      postType: 'idea',
+      parentId,
     });
 
     setFocused(true);
@@ -180,12 +179,10 @@ const ChildCommentForm = ({
       setCanSubmit(false);
 
       trackEventByName(tracks.clickChildCommentPublish, {
-        extra: {
-          postId: ideaId,
-          postType: 'idea',
-          parentId,
-          content: inputValue,
-        },
+        postId: ideaId,
+        postType: 'idea',
+        parentId,
+        content: inputValue,
       });
 
       if (projectId) {
@@ -237,6 +234,8 @@ const ChildCommentForm = ({
   const setRef = (element: HTMLTextAreaElement) => {
     textareaElement.current = element;
 
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (textareaElement.current) {
       textareaElement.current.scrollIntoView({
         behavior: 'smooth',
@@ -267,8 +266,12 @@ const ChildCommentForm = ({
         className={`${className || ''} e2e-childcomment-form`}
       >
         <StyledAvatar
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           userId={authUser?.data.id}
           size={30}
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           isLinkToProfile={!!authUser?.data.id}
           showModeratorStyles={userCanModerate}
         />
@@ -276,6 +279,8 @@ const ChildCommentForm = ({
           onClickOutside={onCancel}
           closeOnClickOutsideEnabled={false}
         >
+          {/* TODO: Fix this the next time the file is edited. */}
+          {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
           <Form className={focused ? 'focused' : ''}>
             <label>
               <HiddenLabel>

@@ -102,6 +102,8 @@ const InternalCommentBody = ({
   const setNewTextAreaRef = (element: HTMLTextAreaElement) => {
     textareaElement.current = element;
 
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (textareaElement.current) {
       textareaElement.current.scrollIntoView({
         behavior: 'smooth',
@@ -112,6 +114,8 @@ const InternalCommentBody = ({
   };
 
   const focusEndOfEditingArea = (element: HTMLTextAreaElement) => {
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (element.setSelectionRange && element.textContent) {
       element.setSelectionRange(
         element.textContent.length,
@@ -142,6 +146,8 @@ const InternalCommentBody = ({
           setCommentContent('');
         },
         onError: (error) => {
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           const apiErrors = error?.errors;
           setApiErrors(apiErrors);
         },
@@ -179,6 +185,8 @@ const InternalCommentBody = ({
           </QuillEditedContent>
           <ButtonsWrapper>
             {apiErrors &&
+              // TODO: Fix this the next time the file is edited.
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
               apiErrors.body_multiloc &&
               apiErrors.body_multiloc[locale] && (
                 <Error apiErrors={apiErrors.body_multiloc[locale]} />

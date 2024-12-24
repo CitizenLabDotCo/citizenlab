@@ -266,6 +266,7 @@ da:
       first_name: 'Fornavn(e)'
       image_url: 'Billed-URL'
       input_id: 'ID'
+      manual_votes: 'Offline-stemmer'
       input_url: 'URL'
       last_name: 'Efternavn'
       latitude: 'Breddegrad'
@@ -343,6 +344,8 @@ da:
       you_can_sign_in_again_from: "Du kan logge ind igen fra %{date}"
   user:
     anon_first_name: "Bruger"
+    anon_scheme:
+      animals: 'alligator,krokodille,alpaca,myre,antilope,abe,bæltedyr,bavian,grævling,flagermus,bjørn,bæver,bi,bille,bøffel,sommerfugl,kamel,vandbøffel,caribou,kat,kvæg,gepard,chimpanse,chinchilla,cikade,musling,kakerlak,torsk,prærieulv,krabbe,fårekylling,krage,ravn,hjort,dinosaur,hund,delfin,marsvin,and,ørn,ål,elefant,elg,ilder,fisk,flue,ræv,frø,tudse,ørkenrotte,giraf,myg,gnu,gnu,ged,guldfisk,gås,gorilla,græshoppe,marsvin,hamster,hare,pindsvin,sild,flodhest,hveps,hest,hund,hyæne,impala,sjakal,vandmand,kænguru,wallaby,koala,leopard,løve,firben,lama,græshoppe,lus,ara,gråand,mammut,søko,mår,mink,minnow,muldvarp,elg,myg,mus,rotte,muldyr,bisamrotte,odder,okse,østers,panda,gris,næbdyr,hulepindsvin,præriehund,mops,kanin,vaskebjørn,rensdyr,næsehorn,laks,sardin,skorpion,sæl,søløve,serval,haj,får,stinkdyr,snegl,slange,edderkop,egern,svane,termit,tiger,ørred,skildpadde,skildpadde,hvalros,hveps,hval,ulv,wombat,woodchuck,orm,yak,yellowjacket,zebra'
   time:
     am: am
     formats:

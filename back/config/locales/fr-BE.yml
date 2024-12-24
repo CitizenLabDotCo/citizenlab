@@ -266,6 +266,7 @@ fr-BE:
       first_name: 'Prénom(s)'
       image_url: 'URL de l''image'
       input_id: 'ID'
+      manual_votes: 'Votes hors ligne'
       input_url: 'URL'
       last_name: 'Nom'
       latitude: 'Latitude'
@@ -343,6 +344,8 @@ fr-BE:
       you_can_sign_in_again_from: "Vous pouvez vous reconnecter à partir de %{date}"
   user:
     anon_first_name: "Utilisateur"
+    anon_scheme:
+      animals: 'alligator,crocodile,alpaga,fourmi,antilope,singe,tatou,babouin,blaireau,chauve-souris,ours,castor,abeille,scarabée,buffle,papillon,chameau,buffle d''eau,caribou,chat,boeuf,guépard,chimpanzé,chinchilla,cigale,palourde,cafard,morue,coyote,crabe,criquet,corneille,corbeau,cerf,dinosaure,chien,dauphin,marsouin,canard,aigle,anguille,éléphant,élan,furet,poisson,mouche,renard,grenouille,crapaud,gerbille,girafe,moucheron,gnou,gnou,chèvre,poisson rouge,oie,gorille,sauterelle,cochon d''Inde,hamster,lièvre,hérisson,hareng,hippopotame,frelon,cheval,chien,hyène,impala,chacal,méduse,kangourou,wallaby,koala,léopard,lion,lézard,lama,criquet,pou,ara,canard colvert,mammouth,lamantin,martre,vison,vairon,taupe,orignal,moustique,souris,rat,mule,rat musqué,loutre,boeuf,huître,panda,cochon,ornithorynque,porc-épic,chien de prairie,carlin,lapin,raton laveur,renne,rhinocéros,saumon,sardine,scorpion,phoque,otarie,serval,requin,mouton,mouffette,escargot,serpent,araignée,écureuil,cygne,termite,tigre,truite,tortue,tortue,morse,guêpe,baleine,loup,wombat,marmotte,ver,yak,guêpe,zèbre'
   time:
     am: du matin
     formats:

@@ -5,6 +5,8 @@ import { useFormContext } from 'react-hook-form';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import {
   BuiltInKeyType,
   FormBuilderConfig,
@@ -15,7 +17,6 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 import ToolboxItem from './ToolboxItem';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 interface BuiltInFieldsProps {
   move: (indexA: number, indexB: number) => void;
@@ -53,7 +54,6 @@ const BuiltInFields = ({ move, builderConfig }: BuiltInFieldsProps) => {
   return (
     <Box w="100%" display="inline">
       <Title
-        fontWeight="normal"
         mb="4px"
         ml="16px"
         variant="h6"

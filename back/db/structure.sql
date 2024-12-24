@@ -10,6 +10,7 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 ALTER TABLE IF EXISTS ONLY public.ideas_topics DROP CONSTRAINT IF EXISTS fk_rails_ff1788eb50;
+ALTER TABLE IF EXISTS ONLY public.project_reviews DROP CONSTRAINT IF EXISTS fk_rails_fdbeb12ddd;
 ALTER TABLE IF EXISTS ONLY public.ideas_topics DROP CONSTRAINT IF EXISTS fk_rails_fd874ecf4b;
 ALTER TABLE IF EXISTS ONLY public.events_attendances DROP CONSTRAINT IF EXISTS fk_rails_fba307ba3b;
 ALTER TABLE IF EXISTS ONLY public.comments DROP CONSTRAINT IF EXISTS fk_rails_f44b1e3c8a;
@@ -22,7 +23,9 @@ ALTER TABLE IF EXISTS ONLY public.nav_bar_items DROP CONSTRAINT IF EXISTS fk_rai
 ALTER TABLE IF EXISTS ONLY public.cosponsors_initiatives DROP CONSTRAINT IF EXISTS fk_rails_e48253715f;
 ALTER TABLE IF EXISTS ONLY public.permissions_custom_fields DROP CONSTRAINT IF EXISTS fk_rails_e211dc8f99;
 ALTER TABLE IF EXISTS ONLY public.baskets_ideas DROP CONSTRAINT IF EXISTS fk_rails_dfb57cbce2;
+ALTER TABLE IF EXISTS ONLY public.project_reviews DROP CONSTRAINT IF EXISTS fk_rails_de7c38cbc4;
 ALTER TABLE IF EXISTS ONLY public.official_feedbacks DROP CONSTRAINT IF EXISTS fk_rails_ddd7e21dfa;
+ALTER TABLE IF EXISTS ONLY public.impact_tracking_pageviews DROP CONSTRAINT IF EXISTS fk_rails_dd3b2cc184;
 ALTER TABLE IF EXISTS ONLY public.project_folders_images DROP CONSTRAINT IF EXISTS fk_rails_dcbc962cfe;
 ALTER TABLE IF EXISTS ONLY public.project_folders_files DROP CONSTRAINT IF EXISTS fk_rails_dc7aeb6534;
 ALTER TABLE IF EXISTS ONLY public.analysis_summaries DROP CONSTRAINT IF EXISTS fk_rails_dbd13460f0;
@@ -49,6 +52,7 @@ ALTER TABLE IF EXISTS ONLY public.custom_field_options DROP CONSTRAINT IF EXISTS
 ALTER TABLE IF EXISTS ONLY public.baskets DROP CONSTRAINT IF EXISTS fk_rails_b3d04c10d5;
 ALTER TABLE IF EXISTS ONLY public.phases DROP CONSTRAINT IF EXISTS fk_rails_b0efe660f5;
 ALTER TABLE IF EXISTS ONLY public.analysis_tags DROP CONSTRAINT IF EXISTS fk_rails_afc2d02258;
+ALTER TABLE IF EXISTS ONLY public.project_reviews DROP CONSTRAINT IF EXISTS fk_rails_ac7bc0a42f;
 ALTER TABLE IF EXISTS ONLY public.maps_layers DROP CONSTRAINT IF EXISTS fk_rails_abbf8658b2;
 ALTER TABLE IF EXISTS ONLY public.memberships DROP CONSTRAINT IF EXISTS fk_rails_aaf389f138;
 ALTER TABLE IF EXISTS ONLY public.analytics_fact_visits DROP CONSTRAINT IF EXISTS fk_rails_a9aa810ecf;
@@ -74,6 +78,7 @@ ALTER TABLE IF EXISTS ONLY public.email_campaigns_campaigns DROP CONSTRAINT IF E
 ALTER TABLE IF EXISTS ONLY public.analysis_additional_custom_fields DROP CONSTRAINT IF EXISTS fk_rails_857115261d;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_849e0c7eb7;
 ALTER TABLE IF EXISTS ONLY public.ideas_phases DROP CONSTRAINT IF EXISTS fk_rails_845d7ca944;
+ALTER TABLE IF EXISTS ONLY public.impact_tracking_pageviews DROP CONSTRAINT IF EXISTS fk_rails_82dc979276;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_828a073a04;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_81c11ef894;
 ALTER TABLE IF EXISTS ONLY public.areas_initiatives DROP CONSTRAINT IF EXISTS fk_rails_81a9922de4;
@@ -90,6 +95,7 @@ ALTER TABLE IF EXISTS ONLY public.ideas DROP CONSTRAINT IF EXISTS fk_rails_73040
 ALTER TABLE IF EXISTS ONLY public.email_campaigns_campaigns_groups DROP CONSTRAINT IF EXISTS fk_rails_712f4ad915;
 ALTER TABLE IF EXISTS ONLY public.groups_permissions DROP CONSTRAINT IF EXISTS fk_rails_6fa6389d80;
 ALTER TABLE IF EXISTS ONLY public.initiatives_topics DROP CONSTRAINT IF EXISTS fk_rails_6ee3ffe8e1;
+ALTER TABLE IF EXISTS ONLY public.ideas DROP CONSTRAINT IF EXISTS fk_rails_6c9ab6d4f8;
 ALTER TABLE IF EXISTS ONLY public.report_builder_reports DROP CONSTRAINT IF EXISTS fk_rails_6988c9886e;
 ALTER TABLE IF EXISTS ONLY public.idea_imports DROP CONSTRAINT IF EXISTS fk_rails_67f00886f9;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_67be9591a3;
@@ -105,6 +111,7 @@ ALTER TABLE IF EXISTS ONLY public.permissions_custom_fields DROP CONSTRAINT IF E
 ALTER TABLE IF EXISTS ONLY public.analytics_dimension_projects_fact_visits DROP CONSTRAINT IF EXISTS fk_rails_4ecebb6e8a;
 ALTER TABLE IF EXISTS ONLY public.initiative_images DROP CONSTRAINT IF EXISTS fk_rails_4df6f76970;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_4aea6afa11;
+ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_47abdd0847;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_46dd2ccfd1;
 ALTER TABLE IF EXISTS ONLY public.email_campaigns_examples DROP CONSTRAINT IF EXISTS fk_rails_465d6356b2;
 ALTER TABLE IF EXISTS ONLY public.followers DROP CONSTRAINT IF EXISTS fk_rails_3d258d3942;
@@ -117,6 +124,7 @@ ALTER TABLE IF EXISTS ONLY public.nav_bar_items DROP CONSTRAINT IF EXISTS fk_rai
 ALTER TABLE IF EXISTS ONLY public.volunteering_volunteers DROP CONSTRAINT IF EXISTS fk_rails_33a154a9ba;
 ALTER TABLE IF EXISTS ONLY public.phase_files DROP CONSTRAINT IF EXISTS fk_rails_33852a9a71;
 ALTER TABLE IF EXISTS ONLY public.cosponsorships DROP CONSTRAINT IF EXISTS fk_rails_2d026b99a2;
+ALTER TABLE IF EXISTS ONLY public.phases DROP CONSTRAINT IF EXISTS fk_rails_2c74f68dd3;
 ALTER TABLE IF EXISTS ONLY public.analysis_analyses DROP CONSTRAINT IF EXISTS fk_rails_2a92a64a56;
 ALTER TABLE IF EXISTS ONLY public.events_attendances DROP CONSTRAINT IF EXISTS fk_rails_29ccdf5b04;
 ALTER TABLE IF EXISTS ONLY public.areas_static_pages DROP CONSTRAINT IF EXISTS fk_rails_231f268568;
@@ -179,6 +187,9 @@ DROP INDEX IF EXISTS public.index_projects_topics_on_project_id;
 DROP INDEX IF EXISTS public.index_projects_on_slug;
 DROP INDEX IF EXISTS public.index_projects_allowed_input_topics_on_topic_id_and_project_id;
 DROP INDEX IF EXISTS public.index_projects_allowed_input_topics_on_project_id;
+DROP INDEX IF EXISTS public.index_project_reviews_on_reviewer_id;
+DROP INDEX IF EXISTS public.index_project_reviews_on_requester_id;
+DROP INDEX IF EXISTS public.index_project_reviews_on_project_id;
 DROP INDEX IF EXISTS public.index_project_images_on_project_id;
 DROP INDEX IF EXISTS public.index_project_folders_images_on_project_folder_id;
 DROP INDEX IF EXISTS public.index_project_folders_folders_on_slug;
@@ -191,6 +202,7 @@ DROP INDEX IF EXISTS public.index_polls_response_options_on_option_id;
 DROP INDEX IF EXISTS public.index_polls_questions_on_phase_id;
 DROP INDEX IF EXISTS public.index_polls_options_on_question_id;
 DROP INDEX IF EXISTS public.index_phases_on_project_id;
+DROP INDEX IF EXISTS public.index_phases_on_manual_voters_last_updated_by_id;
 DROP INDEX IF EXISTS public.index_phase_files_on_phase_id;
 DROP INDEX IF EXISTS public.index_permissions_on_permission_scope_id;
 DROP INDEX IF EXISTS public.index_permissions_on_action;
@@ -204,6 +216,7 @@ DROP INDEX IF EXISTS public.index_official_feedbacks_on_post;
 DROP INDEX IF EXISTS public.index_notifications_on_spam_report_id;
 DROP INDEX IF EXISTS public.index_notifications_on_recipient_id_and_read_at;
 DROP INDEX IF EXISTS public.index_notifications_on_recipient_id;
+DROP INDEX IF EXISTS public.index_notifications_on_project_review_id;
 DROP INDEX IF EXISTS public.index_notifications_on_post_status_id_and_post_status_type;
 DROP INDEX IF EXISTS public.index_notifications_on_post_status_id;
 DROP INDEX IF EXISTS public.index_notifications_on_post_id_and_post_type;
@@ -261,6 +274,7 @@ DROP INDEX IF EXISTS public.index_ideas_phases_on_idea_id_and_phase_id;
 DROP INDEX IF EXISTS public.index_ideas_phases_on_idea_id;
 DROP INDEX IF EXISTS public.index_ideas_on_slug;
 DROP INDEX IF EXISTS public.index_ideas_on_project_id;
+DROP INDEX IF EXISTS public.index_ideas_on_manual_votes_last_updated_by_id;
 DROP INDEX IF EXISTS public.index_ideas_on_location_point;
 DROP INDEX IF EXISTS public.index_ideas_on_idea_status_id;
 DROP INDEX IF EXISTS public.index_ideas_on_author_id;
@@ -280,6 +294,7 @@ DROP INDEX IF EXISTS public.index_groups_permissions_on_permission_id;
 DROP INDEX IF EXISTS public.index_groups_permissions_on_group_id;
 DROP INDEX IF EXISTS public.index_groups_on_slug;
 DROP INDEX IF EXISTS public.index_followers_on_user_id;
+DROP INDEX IF EXISTS public.index_followers_on_followable_id_and_followable_type;
 DROP INDEX IF EXISTS public.index_followers_on_followable;
 DROP INDEX IF EXISTS public.index_followers_followable_type_id_user_id;
 DROP INDEX IF EXISTS public.index_events_on_project_id;
@@ -291,6 +306,9 @@ DROP INDEX IF EXISTS public.index_events_attendances_on_attendee_id_and_event_id
 DROP INDEX IF EXISTS public.index_events_attendances_on_attendee_id;
 DROP INDEX IF EXISTS public.index_event_images_on_event_id;
 DROP INDEX IF EXISTS public.index_event_files_on_event_id;
+DROP INDEX IF EXISTS public.index_embeddings_similarities_on_embedding;
+DROP INDEX IF EXISTS public.index_embeddings_similarities_on_embedded_attributes;
+DROP INDEX IF EXISTS public.index_embeddings_similarities_on_embeddable;
 DROP INDEX IF EXISTS public.index_email_snippets_on_email_and_snippet_and_locale;
 DROP INDEX IF EXISTS public.index_email_campaigns_unsubscription_tokens_on_user_id;
 DROP INDEX IF EXISTS public.index_email_campaigns_unsubscription_tokens_on_token;
@@ -363,6 +381,7 @@ DROP INDEX IF EXISTS public.index_analysis_additional_custom_fields_on_custom_fi
 DROP INDEX IF EXISTS public.index_analysis_additional_custom_fields_on_analysis_id;
 DROP INDEX IF EXISTS public.index_admin_publications_on_rgt;
 DROP INDEX IF EXISTS public.index_admin_publications_on_publication_type_and_publication_id;
+DROP INDEX IF EXISTS public.index_admin_publications_on_publication_status;
 DROP INDEX IF EXISTS public.index_admin_publications_on_parent_id;
 DROP INDEX IF EXISTS public.index_admin_publications_on_ordering;
 DROP INDEX IF EXISTS public.index_admin_publications_on_lft;
@@ -409,6 +428,7 @@ ALTER TABLE IF EXISTS ONLY public.public_api_api_clients DROP CONSTRAINT IF EXIS
 ALTER TABLE IF EXISTS ONLY public.projects_topics DROP CONSTRAINT IF EXISTS projects_topics_pkey;
 ALTER TABLE IF EXISTS ONLY public.projects DROP CONSTRAINT IF EXISTS projects_pkey;
 ALTER TABLE IF EXISTS ONLY public.projects_allowed_input_topics DROP CONSTRAINT IF EXISTS projects_allowed_input_topics_pkey;
+ALTER TABLE IF EXISTS ONLY public.project_reviews DROP CONSTRAINT IF EXISTS project_reviews_pkey;
 ALTER TABLE IF EXISTS ONLY public.project_images DROP CONSTRAINT IF EXISTS project_images_pkey;
 ALTER TABLE IF EXISTS ONLY public.project_folders_folders DROP CONSTRAINT IF EXISTS project_folders_pkey;
 ALTER TABLE IF EXISTS ONLY public.project_folders_images DROP CONSTRAINT IF EXISTS project_folder_images_pkey;
@@ -443,6 +463,7 @@ ALTER TABLE IF EXISTS ONLY public.initiative_images DROP CONSTRAINT IF EXISTS in
 ALTER TABLE IF EXISTS ONLY public.initiative_files DROP CONSTRAINT IF EXISTS initiative_files_pkey;
 ALTER TABLE IF EXISTS ONLY public.impact_tracking_sessions DROP CONSTRAINT IF EXISTS impact_tracking_sessions_pkey;
 ALTER TABLE IF EXISTS ONLY public.impact_tracking_salts DROP CONSTRAINT IF EXISTS impact_tracking_salts_pkey;
+ALTER TABLE IF EXISTS ONLY public.impact_tracking_pageviews DROP CONSTRAINT IF EXISTS impact_tracking_pageviews_pkey;
 ALTER TABLE IF EXISTS ONLY public.identities DROP CONSTRAINT IF EXISTS identities_pkey;
 ALTER TABLE IF EXISTS ONLY public.ideas_topics DROP CONSTRAINT IF EXISTS ideas_topics_pkey;
 ALTER TABLE IF EXISTS ONLY public.ideas DROP CONSTRAINT IF EXISTS ideas_pkey;
@@ -462,6 +483,7 @@ ALTER TABLE IF EXISTS ONLY public.events DROP CONSTRAINT IF EXISTS events_pkey;
 ALTER TABLE IF EXISTS ONLY public.events_attendances DROP CONSTRAINT IF EXISTS events_attendances_pkey;
 ALTER TABLE IF EXISTS ONLY public.event_images DROP CONSTRAINT IF EXISTS event_images_pkey;
 ALTER TABLE IF EXISTS ONLY public.event_files DROP CONSTRAINT IF EXISTS event_files_pkey;
+ALTER TABLE IF EXISTS ONLY public.embeddings_similarities DROP CONSTRAINT IF EXISTS embeddings_similarities_pkey;
 ALTER TABLE IF EXISTS ONLY public.email_snippets DROP CONSTRAINT IF EXISTS email_snippets_pkey;
 ALTER TABLE IF EXISTS ONLY public.email_campaigns_unsubscription_tokens DROP CONSTRAINT IF EXISTS email_campaigns_unsubscription_tokens_pkey;
 ALTER TABLE IF EXISTS ONLY public.email_campaigns_examples DROP CONSTRAINT IF EXISTS email_campaigns_examples_pkey;
@@ -525,6 +547,7 @@ DROP SEQUENCE IF EXISTS public.que_jobs_id_seq;
 DROP TABLE IF EXISTS public.public_api_api_clients;
 DROP TABLE IF EXISTS public.projects_topics;
 DROP TABLE IF EXISTS public.projects_allowed_input_topics;
+DROP TABLE IF EXISTS public.project_reviews;
 DROP TABLE IF EXISTS public.project_images;
 DROP TABLE IF EXISTS public.project_folders_images;
 DROP TABLE IF EXISTS public.project_folders_folders;
@@ -551,6 +574,7 @@ DROP VIEW IF EXISTS public.initiative_initiative_statuses;
 DROP TABLE IF EXISTS public.initiative_images;
 DROP TABLE IF EXISTS public.initiative_files;
 DROP TABLE IF EXISTS public.impact_tracking_salts;
+DROP TABLE IF EXISTS public.impact_tracking_pageviews;
 DROP TABLE IF EXISTS public.identities;
 DROP TABLE IF EXISTS public.ideas_topics;
 DROP TABLE IF EXISTS public.ideas_phases;
@@ -568,6 +592,7 @@ DROP TABLE IF EXISTS public.flag_inappropriate_content_inappropriate_content_fla
 DROP TABLE IF EXISTS public.experiments;
 DROP TABLE IF EXISTS public.event_images;
 DROP TABLE IF EXISTS public.event_files;
+DROP TABLE IF EXISTS public.embeddings_similarities;
 DROP TABLE IF EXISTS public.email_snippets;
 DROP TABLE IF EXISTS public.email_campaigns_unsubscription_tokens;
 DROP TABLE IF EXISTS public.email_campaigns_examples;
@@ -645,6 +670,7 @@ DROP FUNCTION IF EXISTS public.que_job_notify();
 DROP FUNCTION IF EXISTS public.que_determine_job_state(job public.que_jobs);
 DROP TABLE IF EXISTS public.que_jobs;
 DROP FUNCTION IF EXISTS public.que_validate_tags(tags_array jsonb);
+DROP EXTENSION IF EXISTS vector;
 DROP EXTENSION IF EXISTS "uuid-ossp";
 DROP EXTENSION IF EXISTS postgis;
 DROP EXTENSION IF EXISTS pgcrypto;
@@ -711,6 +737,20 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA shared_extensions;
 --
 
 COMMENT ON EXTENSION "uuid-ossp" IS 'generate universally unique identifiers (UUIDs)';
+
+
+--
+-- Name: vector; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS vector WITH SCHEMA shared_extensions;
+
+
+--
+-- Name: EXTENSION vector; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION vector IS 'Open-source vector similarity search for Postgres';
 
 
 --
@@ -958,7 +998,8 @@ CREATE TABLE public.admin_publications (
     updated_at timestamp(6) without time zone NOT NULL,
     depth integer DEFAULT 0 NOT NULL,
     children_allowed boolean DEFAULT true NOT NULL,
-    children_count integer DEFAULT 0 NOT NULL
+    children_count integer DEFAULT 0 NOT NULL,
+    first_published_at timestamp(6) without time zone
 );
 
 
@@ -1185,7 +1226,9 @@ CREATE TABLE public.projects (
     include_all_areas boolean DEFAULT false NOT NULL,
     baskets_count integer DEFAULT 0 NOT NULL,
     votes_count integer DEFAULT 0 NOT NULL,
-    followers_count integer DEFAULT 0 NOT NULL
+    followers_count integer DEFAULT 0 NOT NULL,
+    preview_token character varying NOT NULL,
+    header_bg_alt_text_multiloc jsonb DEFAULT '{}'::jsonb
 );
 
 
@@ -1403,7 +1446,7 @@ CREATE VIEW public.analytics_fact_email_deliveries AS
     (ecd.sent_at)::date AS dimension_date_sent_id,
     ecd.campaign_id,
     p.id AS dimension_project_id,
-    ((ecc.type)::text <> ALL ((ARRAY['EmailCampaigns::Campaigns::Manual'::character varying, 'EmailCampaigns::Campaigns::ManualProjectParticipants'::character varying])::text[])) AS automated
+    ((ecc.type)::text <> ALL (ARRAY[('EmailCampaigns::Campaigns::Manual'::character varying)::text, ('EmailCampaigns::Campaigns::ManualProjectParticipants'::character varying)::text])) AS automated
    FROM ((public.email_campaigns_deliveries ecd
      JOIN public.email_campaigns_campaigns ecc ON ((ecc.id = ecd.campaign_id)))
      LEFT JOIN public.projects p ON ((p.id = ecc.context_id)));
@@ -1532,7 +1575,10 @@ CREATE TABLE public.ideas (
     internal_comments_count integer DEFAULT 0 NOT NULL,
     votes_count integer DEFAULT 0 NOT NULL,
     followers_count integer DEFAULT 0 NOT NULL,
-    submitted_at timestamp(6) without time zone
+    submitted_at timestamp(6) without time zone,
+    manual_votes_amount integer,
+    manual_votes_last_updated_by_id uuid,
+    manual_votes_last_updated_at timestamp(6) without time zone
 );
 
 
@@ -1591,7 +1637,7 @@ CREATE TABLE public.phases (
     presentation_mode character varying DEFAULT 'card'::character varying,
     voting_max_total integer,
     poll_anonymous boolean DEFAULT false NOT NULL,
-    reacting_dislike_enabled boolean DEFAULT true NOT NULL,
+    reacting_dislike_enabled boolean DEFAULT false NOT NULL,
     ideas_count integer DEFAULT 0 NOT NULL,
     ideas_order character varying,
     input_term character varying DEFAULT 'idea'::character varying,
@@ -1611,7 +1657,12 @@ CREATE TABLE public.phases (
     native_survey_button_multiloc jsonb DEFAULT '{}'::jsonb,
     expire_days_limit integer,
     reacting_threshold integer,
-    prescreening_enabled boolean DEFAULT false NOT NULL
+    prescreening_enabled boolean DEFAULT false NOT NULL,
+    autoshare_results_enabled boolean DEFAULT true NOT NULL,
+    manual_votes_count integer DEFAULT 0 NOT NULL,
+    manual_voters_amount integer,
+    manual_voters_last_updated_by_id uuid,
+    manual_voters_last_updated_at timestamp(6) without time zone
 );
 
 
@@ -1936,7 +1987,11 @@ CREATE TABLE public.impact_tracking_sessions (
     highest_role character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    user_id uuid
+    user_id uuid,
+    referrer character varying,
+    device_type character varying,
+    browser_name character varying,
+    os_name character varying
 );
 
 
@@ -2125,7 +2180,7 @@ CREATE TABLE public.cosponsors_initiatives (
 --
 
 CREATE TABLE public.cosponsorships (
-    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
     status character varying DEFAULT 'pending'::character varying NOT NULL,
     user_id uuid NOT NULL,
     idea_id uuid NOT NULL,
@@ -2300,6 +2355,21 @@ CREATE TABLE public.email_snippets (
 
 
 --
+-- Name: embeddings_similarities; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.embeddings_similarities (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    embedding shared_extensions.vector(1024) NOT NULL,
+    embeddable_type character varying NOT NULL,
+    embeddable_id uuid NOT NULL,
+    embedded_attributes character varying,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: event_files; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2324,7 +2394,8 @@ CREATE TABLE public.event_images (
     image character varying,
     ordering integer,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    alt_text_multiloc jsonb DEFAULT '{}'::jsonb
 );
 
 
@@ -2554,6 +2625,20 @@ CREATE TABLE public.identities (
     user_id uuid,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: impact_tracking_pageviews; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.impact_tracking_pageviews (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    session_id uuid NOT NULL,
+    path character varying NOT NULL,
+    project_id uuid,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
 );
 
 
@@ -2815,7 +2900,8 @@ CREATE TABLE public.notifications (
     internal_comment_id uuid,
     basket_id uuid,
     cosponsors_initiative_id uuid,
-    cosponsorship_id uuid
+    cosponsorship_id uuid,
+    project_review_id uuid
 );
 
 
@@ -2966,7 +3052,8 @@ CREATE TABLE public.project_folders_folders (
     slug character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    followers_count integer DEFAULT 0 NOT NULL
+    followers_count integer DEFAULT 0 NOT NULL,
+    header_bg_alt_text_multiloc jsonb DEFAULT '{}'::jsonb
 );
 
 
@@ -2980,7 +3067,8 @@ CREATE TABLE public.project_folders_images (
     image character varying,
     ordering integer,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    alt_text_multiloc jsonb DEFAULT '{}'::jsonb
 );
 
 
@@ -2994,7 +3082,23 @@ CREATE TABLE public.project_images (
     image character varying,
     ordering integer,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    alt_text_multiloc jsonb DEFAULT '{}'::jsonb
+);
+
+
+--
+-- Name: project_reviews; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.project_reviews (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    project_id uuid NOT NULL,
+    requester_id uuid,
+    reviewer_id uuid,
+    approved_at timestamp(6) without time zone,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
 );
 
 
@@ -3687,6 +3791,14 @@ ALTER TABLE ONLY public.email_snippets
 
 
 --
+-- Name: embeddings_similarities embeddings_similarities_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.embeddings_similarities
+    ADD CONSTRAINT embeddings_similarities_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: event_files event_files_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3836,6 +3948,14 @@ ALTER TABLE ONLY public.ideas_topics
 
 ALTER TABLE ONLY public.identities
     ADD CONSTRAINT identities_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: impact_tracking_pageviews impact_tracking_pageviews_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.impact_tracking_pageviews
+    ADD CONSTRAINT impact_tracking_pageviews_pkey PRIMARY KEY (id);
 
 
 --
@@ -4108,6 +4228,14 @@ ALTER TABLE ONLY public.project_folders_folders
 
 ALTER TABLE ONLY public.project_images
     ADD CONSTRAINT project_images_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: project_reviews project_reviews_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.project_reviews
+    ADD CONSTRAINT project_reviews_pkey PRIMARY KEY (id);
 
 
 --
@@ -4453,6 +4581,13 @@ CREATE INDEX index_admin_publications_on_ordering ON public.admin_publications U
 --
 
 CREATE INDEX index_admin_publications_on_parent_id ON public.admin_publications USING btree (parent_id);
+
+
+--
+-- Name: index_admin_publications_on_publication_status; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_admin_publications_on_publication_status ON public.admin_publications USING btree (publication_status);
 
 
 --
@@ -4960,6 +5095,27 @@ CREATE INDEX index_email_snippets_on_email_and_snippet_and_locale ON public.emai
 
 
 --
+-- Name: index_embeddings_similarities_on_embeddable; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_embeddings_similarities_on_embeddable ON public.embeddings_similarities USING btree (embeddable_type, embeddable_id);
+
+
+--
+-- Name: index_embeddings_similarities_on_embedded_attributes; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_embeddings_similarities_on_embedded_attributes ON public.embeddings_similarities USING btree (embedded_attributes);
+
+
+--
+-- Name: index_embeddings_similarities_on_embedding; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_embeddings_similarities_on_embedding ON public.embeddings_similarities USING hnsw (embedding shared_extensions.vector_cosine_ops);
+
+
+--
 -- Name: index_event_files_on_event_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -5034,6 +5190,13 @@ CREATE UNIQUE INDEX index_followers_followable_type_id_user_id ON public.followe
 --
 
 CREATE INDEX index_followers_on_followable ON public.followers USING btree (followable_type, followable_id);
+
+
+--
+-- Name: index_followers_on_followable_id_and_followable_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_followers_on_followable_id_and_followable_type ON public.followers USING btree (followable_id, followable_type);
 
 
 --
@@ -5167,6 +5330,13 @@ CREATE INDEX index_ideas_on_idea_status_id ON public.ideas USING btree (idea_sta
 --
 
 CREATE INDEX index_ideas_on_location_point ON public.ideas USING gist (location_point);
+
+
+--
+-- Name: index_ideas_on_manual_votes_last_updated_by_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_ideas_on_manual_votes_last_updated_by_id ON public.ideas USING btree (manual_votes_last_updated_by_id);
 
 
 --
@@ -5569,6 +5739,13 @@ CREATE INDEX index_notifications_on_post_status_id_and_post_status_type ON publi
 
 
 --
+-- Name: index_notifications_on_project_review_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_notifications_on_project_review_id ON public.notifications USING btree (project_review_id);
+
+
+--
 -- Name: index_notifications_on_recipient_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -5660,6 +5837,13 @@ CREATE INDEX index_phase_files_on_phase_id ON public.phase_files USING btree (ph
 
 
 --
+-- Name: index_phases_on_manual_voters_last_updated_by_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_phases_on_manual_voters_last_updated_by_id ON public.phases USING btree (manual_voters_last_updated_by_id);
+
+
+--
 -- Name: index_phases_on_project_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -5741,6 +5925,27 @@ CREATE INDEX index_project_folders_images_on_project_folder_id ON public.project
 --
 
 CREATE INDEX index_project_images_on_project_id ON public.project_images USING btree (project_id);
+
+
+--
+-- Name: index_project_reviews_on_project_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_project_reviews_on_project_id ON public.project_reviews USING btree (project_id);
+
+
+--
+-- Name: index_project_reviews_on_requester_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_project_reviews_on_requester_id ON public.project_reviews USING btree (requester_id);
+
+
+--
+-- Name: index_project_reviews_on_reviewer_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_project_reviews_on_reviewer_id ON public.project_reviews USING btree (reviewer_id);
 
 
 --
@@ -6192,6 +6397,14 @@ ALTER TABLE ONLY public.analysis_analyses
 
 
 --
+-- Name: phases fk_rails_2c74f68dd3; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.phases
+    ADD CONSTRAINT fk_rails_2c74f68dd3 FOREIGN KEY (manual_voters_last_updated_by_id) REFERENCES public.users(id);
+
+
+--
 -- Name: cosponsorships fk_rails_2d026b99a2; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -6285,6 +6498,14 @@ ALTER TABLE ONLY public.email_campaigns_examples
 
 ALTER TABLE ONLY public.notifications
     ADD CONSTRAINT fk_rails_46dd2ccfd1 FOREIGN KEY (phase_id) REFERENCES public.phases(id);
+
+
+--
+-- Name: notifications fk_rails_47abdd0847; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.notifications
+    ADD CONSTRAINT fk_rails_47abdd0847 FOREIGN KEY (project_review_id) REFERENCES public.project_reviews(id);
 
 
 --
@@ -6405,6 +6626,14 @@ ALTER TABLE ONLY public.idea_imports
 
 ALTER TABLE ONLY public.report_builder_reports
     ADD CONSTRAINT fk_rails_6988c9886e FOREIGN KEY (phase_id) REFERENCES public.phases(id);
+
+
+--
+-- Name: ideas fk_rails_6c9ab6d4f8; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ideas
+    ADD CONSTRAINT fk_rails_6c9ab6d4f8 FOREIGN KEY (manual_votes_last_updated_by_id) REFERENCES public.users(id);
 
 
 --
@@ -6533,6 +6762,14 @@ ALTER TABLE ONLY public.notifications
 
 ALTER TABLE ONLY public.notifications
     ADD CONSTRAINT fk_rails_828a073a04 FOREIGN KEY (cosponsors_initiative_id) REFERENCES public.cosponsors_initiatives(id);
+
+
+--
+-- Name: impact_tracking_pageviews fk_rails_82dc979276; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.impact_tracking_pageviews
+    ADD CONSTRAINT fk_rails_82dc979276 FOREIGN KEY (project_id) REFERENCES public.projects(id);
 
 
 --
@@ -6733,6 +6970,14 @@ ALTER TABLE ONLY public.memberships
 
 ALTER TABLE ONLY public.maps_layers
     ADD CONSTRAINT fk_rails_abbf8658b2 FOREIGN KEY (map_config_id) REFERENCES public.maps_map_configs(id);
+
+
+--
+-- Name: project_reviews fk_rails_ac7bc0a42f; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.project_reviews
+    ADD CONSTRAINT fk_rails_ac7bc0a42f FOREIGN KEY (project_id) REFERENCES public.projects(id);
 
 
 --
@@ -6944,11 +7189,27 @@ ALTER TABLE ONLY public.project_folders_images
 
 
 --
+-- Name: impact_tracking_pageviews fk_rails_dd3b2cc184; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.impact_tracking_pageviews
+    ADD CONSTRAINT fk_rails_dd3b2cc184 FOREIGN KEY (session_id) REFERENCES public.impact_tracking_sessions(id);
+
+
+--
 -- Name: official_feedbacks fk_rails_ddd7e21dfa; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.official_feedbacks
     ADD CONSTRAINT fk_rails_ddd7e21dfa FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- Name: project_reviews fk_rails_de7c38cbc4; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.project_reviews
+    ADD CONSTRAINT fk_rails_de7c38cbc4 FOREIGN KEY (reviewer_id) REFERENCES public.users(id);
 
 
 --
@@ -7045,6 +7306,14 @@ ALTER TABLE ONLY public.events_attendances
 
 ALTER TABLE ONLY public.ideas_topics
     ADD CONSTRAINT fk_rails_fd874ecf4b FOREIGN KEY (idea_id) REFERENCES public.ideas(id);
+
+
+--
+-- Name: project_reviews fk_rails_fdbeb12ddd; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.project_reviews
+    ADD CONSTRAINT fk_rails_fdbeb12ddd FOREIGN KEY (requester_id) REFERENCES public.users(id);
 
 
 --
@@ -7519,4 +7788,22 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20241002200522'),
 ('20241008143004'),
 ('20241011101454'),
-('20241016201503');
+('20241011816395'),
+('20241016201503'),
+('20241022101049'),
+('20241024110349'),
+('20241028162618'),
+('20241029080612'),
+('20241105053818'),
+('20241105053934'),
+('20241105081014'),
+('20241112110758'),
+('20241115141553'),
+('20241115141717'),
+('20241125094000'),
+('20241125094100'),
+('20241127074734'),
+('20241127093339'),
+('20241203151945'),
+('20241204133717'),
+('20241204144321');

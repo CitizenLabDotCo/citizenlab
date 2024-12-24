@@ -39,6 +39,8 @@ const VisibleNavbarItemList = ({
 
   const handleClickEdit = (navbarItem: Item) => () => {
     // redirect to homepage edit page
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (navbarItem?.attributes?.code && navbarItem.attributes.code === 'home') {
       clHistory.push(
         `${ADMIN_PAGES_MENU_PATH}/homepage-builder/?variant=signedOut`

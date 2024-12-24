@@ -39,6 +39,8 @@ const ContentBuilderLanguageProvider = ({
     };
   }, [contentBuilderLocale, platformLocale]);
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (isNilOrError(contentBuilderLocale) || !messages) {
     return null;
   }

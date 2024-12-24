@@ -12,7 +12,7 @@ module FlagInappropriateContent
         ToxicityDetectionJob.perform_later idea, attributes: SUPPORTED_ATTRS
       end
 
-      def after_update(idea, user, _old_cosponsor_ids)
+      def after_update(idea, user)
         return super unless idea.participation_method_on_creation.supports_toxicity_detection?
 
         # before super to reliably detect attribute changes

@@ -10,7 +10,7 @@ import {
   hasChildren,
 } from 'containers/Admin/reporting/components/ReportBuilder/Widgets';
 
-import messages from 'components/admin/ContentBuilder/Editor/RenderNode/messages';
+import messages from 'components/admin/ContentBuilder/messages';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -50,8 +50,11 @@ const RenderNode = ({ render }) => {
   } = useNode((node) => {
     // This can sometimes be undefined, even though
     // craftjs says it can't
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (!node) return {};
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (!node.data) return {};
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (!node.events) return {};
 
     const name = node.data.name;
@@ -59,6 +62,8 @@ const RenderNode = ({ render }) => {
     return {
       props: node.data.props,
       name,
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       hasError: node.data.props?.hasError,
       title: WIDGET_TITLES[name],
       noPointerEvents: hasNoPointerEvents(name),
@@ -82,6 +87,8 @@ const RenderNode = ({ render }) => {
   });
 
   const parentNode = parentId ? node(parentId).get() : undefined;
+
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const parentName = parentNode?.data?.name;
   const isChildOfComplexComponent = parentName
     ? hasChildren(parentName)

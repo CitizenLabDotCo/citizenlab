@@ -6,6 +6,7 @@ import {
   LocaleSwitcher,
   colors,
   fontSizes,
+  Title,
 } from '@citizenlab/cl2-component-library';
 import { forOwn, isEmpty } from 'lodash-es';
 import styled from 'styled-components';
@@ -37,15 +38,6 @@ const FormLabel = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-bottom: 15px;
-`;
-
-const AddOfficialUpdateTitle = styled.h2`
-  color: ${({ theme }) => theme.colors.tenantText};
-  font-size: ${fontSizes.m}px;
-  line-height: normal;
-  font-weight: 600;
-  padding: 0;
-  margin: 0;
 `;
 
 const StyledLocaleSwitcher = styled(LocaleSwitcher)`
@@ -315,9 +307,9 @@ const OfficialFeedbackForm = ({
             >
               <Box my="auto">
                 {formType === 'new' && (
-                  <AddOfficialUpdateTitle>
+                  <Title variant="h2" fontSize="m" color="tenantText" m="0">
                     <FormattedMessage {...messages.addOfficalUpdate} />
-                  </AddOfficialUpdateTitle>
+                  </Title>
                 )}
               </Box>
               <Box my="auto">
@@ -335,6 +327,8 @@ const OfficialFeedbackForm = ({
             name="official-feedback-form-mentions-textarea"
             locale={selectedLocale}
             ariaLabel={formatMessage(messages.officialUpdateBody)}
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             value={formValues.bodyMultiloc?.[selectedLocale] || ''}
             onChange={handleBodyOnChange}
             placeholder={formatMessage(messages.textAreaPlaceholder)}
@@ -347,6 +341,8 @@ const OfficialFeedbackForm = ({
           <StyledInput
             type="text"
             locale={selectedLocale}
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             value={formValues.authorMultiloc?.[selectedLocale] || ''}
             onChange={handleAuthorOnChange}
             placeholder={formatMessage(messages.officialNamePlaceholder)}

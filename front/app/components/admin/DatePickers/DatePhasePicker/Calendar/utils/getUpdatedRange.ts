@@ -1,4 +1,4 @@
-import { addDays } from 'date-fns';
+import { addDays, isSameDay } from 'date-fns';
 
 import { DateRange } from 'components/admin/DatePickers/_shared/typings';
 
@@ -17,7 +17,7 @@ export const getUpdatedRange = ({
   selectedRange: { from, to },
   disabledRanges,
   clickedDate,
-}: GetUpdatedRangeParams) => {
+}: GetUpdatedRangeParams): Partial<DateRange> => {
   const { valid, reason } = rangesValid({ from, to }, disabledRanges);
 
   if (!valid) {
@@ -30,16 +30,16 @@ export const getUpdatedRange = ({
     };
   }
 
-  if (from > clickedDate) {
-    return {
-      from: clickedDate,
-    };
-  }
-
-  if (from.getTime() === clickedDate.getTime()) {
+  if (isSameDay(from, clickedDate)) {
     return {
       from: clickedDate,
       to: clickedDate,
+    };
+  }
+
+  if (from > clickedDate) {
+    return {
+      from: clickedDate,
     };
   }
 

@@ -36,6 +36,9 @@ const SSOButtons = (props: Props) => {
   const hoplrLoginEnabled = useFeatureFlag({
     name: 'hoplr_login',
   });
+  const idAustriaLoginEnabled = useFeatureFlag({
+    name: 'id_austria_login',
+  });
   const criiptoLoginEnabled = useFeatureFlag({
     name: 'criipto_login',
   });
@@ -52,7 +55,8 @@ const SSOButtons = (props: Props) => {
     !claveUnicaLoginEnabled &&
     !hoplrLoginEnabled &&
     !criiptoLoginEnabled &&
-    !keycloakLoginEnabled
+    !keycloakLoginEnabled &&
+    !idAustriaLoginEnabled
   ) {
     if (passwordLoginEnabled) {
       return null;

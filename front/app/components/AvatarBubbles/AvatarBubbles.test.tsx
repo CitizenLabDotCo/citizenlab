@@ -7,49 +7,161 @@ import { AvatarBubbles } from './';
 jest.mock('api/avatars/useRandomAvatars');
 jest.mock('api/avatars/useAvatarsWithIds');
 
-describe('AvatarBubbles', () => {
-  it('Confirm container exists', () => {
+describe('AvatarBubbles Component', () => {
+  it('renders the container', () => {
     render(<AvatarBubbles avatarIds={['sample']} size={1} userCount={10} />);
     expect(screen.getByTestId('avatarBubblesContainer')).toBeInTheDocument();
   });
-  it('Confirm avatar image is present', () => {
+
+  it('renders the correct number of avatar images', () => {
     render(<AvatarBubbles avatarIds={['sample']} size={1} userCount={10} />);
-    expect(screen.getByTestId('avatarImageBubble')).toBeInTheDocument();
-  });
-  it('User count 999 displayed as expected', () => {
-    render(<AvatarBubbles avatarIds={['sample']} size={1} userCount={999} />);
-    expect(screen.getByTestId('userCountBubbleInner')).toHaveTextContent(/998/);
+    const avatarBubbles = screen.getAllByTestId('avatarImageBubble');
+    expect(avatarBubbles).toHaveLength(4);
   });
 
-  it('User count 15550 truncates as expected', () => {
-    render(<AvatarBubbles avatarIds={['sample']} size={1} userCount={15500} />);
-    expect(screen.getByTestId('userCountBubbleInner')).toHaveTextContent(
-      /15.5k/
-    );
+  describe('when showParticipantText is on', () => {
+    it('displays user count of 999 correctly as "995 participants"', () => {
+      render(
+        <AvatarBubbles
+          avatarIds={['sample']}
+          size={1}
+          userCount={999}
+          showParticipantText
+        />
+      );
+      expect(screen.getByTestId('userCountBubbleInner')).toHaveTextContent(
+        /995 participants/
+      );
+    });
+
+    it('truncates user count of 15,500 to "15.5k participants"', () => {
+      render(
+        <AvatarBubbles
+          avatarIds={['sample']}
+          size={1}
+          userCount={15500}
+          showParticipantText
+        />
+      );
+      expect(screen.getByTestId('userCountBubbleInner')).toHaveTextContent(
+        /15.5k participants/
+      );
+    });
+
+    it('truncates user count of 999,999 to "999k participants"', () => {
+      render(
+        <AvatarBubbles
+          avatarIds={['sample']}
+          size={1}
+          userCount={999999}
+          showParticipantText
+        />
+      );
+      expect(screen.getByTestId('userCountBubbleInner')).toHaveTextContent(
+        /999k participants/
+      );
+    });
+
+    it('truncates user count of 1,000,003 to "1M participants"', () => {
+      render(
+        <AvatarBubbles
+          avatarIds={['sample']}
+          size={1}
+          userCount={1000003}
+          limit={3}
+          showParticipantText
+        />
+      );
+      expect(screen.getByTestId('userCountBubbleInner')).toHaveTextContent(
+        /1M participants/
+      );
+    });
+
+    it('truncates user count of 1,200,001 to "1.2M participants"', () => {
+      render(
+        <AvatarBubbles
+          avatarIds={['sample']}
+          size={1}
+          userCount={1200001}
+          showParticipantText
+        />
+      );
+      expect(screen.getByTestId('userCountBubbleInner')).toHaveTextContent(
+        /1.2M participants/
+      );
+    });
   });
 
-  it('User count 999999 truncates as expected', () => {
-    render(
-      <AvatarBubbles avatarIds={['sample']} size={1} userCount={999999} />
-    );
-    expect(screen.getByTestId('userCountBubbleInner')).toHaveTextContent(
-      /999k/
-    );
-  });
+  describe('when showParticipantText is off', () => {
+    it('displays user count of 995 as "995"', () => {
+      render(
+        <AvatarBubbles
+          avatarIds={['sample']}
+          size={1}
+          userCount={999}
+          showParticipantText={false}
+        />
+      );
+      expect(screen.getByTestId('userCountBubbleInner')).toHaveTextContent(
+        /995/
+      );
+    });
 
-  it('User count 1,000,001 truncates as expected', () => {
-    render(
-      <AvatarBubbles avatarIds={['sample']} size={1} userCount={1000001} />
-    );
-    expect(screen.getByTestId('userCountBubbleInner')).toHaveTextContent(/1M/);
-  });
+    it('truncates user count of 15,500 to "15.5k"', () => {
+      render(
+        <AvatarBubbles
+          avatarIds={['sample']}
+          size={1}
+          userCount={15500}
+          showParticipantText={false}
+        />
+      );
+      expect(screen.getByTestId('userCountBubbleInner')).toHaveTextContent(
+        /15.5k/
+      );
+    });
 
-  it('User count 1,200,001 truncates as expected', () => {
-    render(
-      <AvatarBubbles avatarIds={['sample']} size={1} userCount={1200001} />
-    );
-    expect(screen.getByTestId('userCountBubbleInner')).toHaveTextContent(
-      /1.2M/
-    );
+    it('truncates user count of 999,999 to "999k"', () => {
+      render(
+        <AvatarBubbles
+          avatarIds={['sample']}
+          size={1}
+          userCount={999999}
+          showParticipantText={false}
+        />
+      );
+      expect(screen.getByTestId('userCountBubbleInner')).toHaveTextContent(
+        /999k/
+      );
+    });
+
+    it('truncates user count of 1,000,003 to "1M"', () => {
+      render(
+        <AvatarBubbles
+          avatarIds={['sample']}
+          size={1}
+          userCount={1000003}
+          limit={3}
+          showParticipantText={false}
+        />
+      );
+      expect(screen.getByTestId('userCountBubbleInner')).toHaveTextContent(
+        /1M/
+      );
+    });
+
+    it('truncates user count of 1,200,001 to "1.2M"', () => {
+      render(
+        <AvatarBubbles
+          avatarIds={['sample']}
+          size={1}
+          userCount={1200001}
+          showParticipantText={false}
+        />
+      );
+      expect(screen.getByTestId('userCountBubbleInner')).toHaveTextContent(
+        /1.2M/
+      );
+    });
   });
 });

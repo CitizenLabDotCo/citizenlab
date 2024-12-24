@@ -1,14 +1,7 @@
 # frozen_string_literal: true
 
 class UserPolicy < ApplicationPolicy
-  class Scope
-    attr_reader :user, :scope
-
-    def initialize(user, scope)
-      @user  = user
-      @scope = scope
-    end
-
+  class Scope < ApplicationPolicy::Scope
     def resolve
       if user&.admin?
         scope.all
@@ -113,7 +106,7 @@ class UserPolicy < ApplicationPolicy
     # avatar is allowed even if the feature "user_avatars" is not activated to allow
     # users to remove their avatar.
     shared = [:email, :first_name, :last_name, :password, :avatar, :locale, { onboarding: [:topics_and_areas], custom_field_values: allowed_custom_field_keys, bio_multiloc: CL2_SUPPORTED_LOCALES }]
-    admin? ? shared + [roles: %i[type project_id project_folder_id]] : shared
+    admin? ? shared + [roles: %i[type project_id project_folder_id project_reviewer]] : shared
   end
 
   private

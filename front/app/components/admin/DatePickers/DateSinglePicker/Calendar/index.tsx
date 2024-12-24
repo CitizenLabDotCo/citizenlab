@@ -7,7 +7,7 @@ import styled from 'styled-components';
 
 import useLocale from 'hooks/useLocale';
 
-import { getEndMonth, getStartMonth } from '../../_shared/getStartEndMonth';
+import { getEndMonth } from '../../_shared/getStartEndMonth';
 import { getLocale } from '../../_shared/locales';
 import { CalendarProps } from '../typings';
 
@@ -33,9 +33,9 @@ const Calendar = ({
   onChange,
 }: CalendarProps) => {
   const locale = useLocale();
-
-  const startMonth = getStartMonth({ startMonth: _startMonth, selectedDate });
+  const startMonth = new Date(1900, 0);
   const endMonth = getEndMonth({ endMonth: _endMonth, selectedDate });
+  const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
   return (
     <DayPickerStyles>
@@ -48,6 +48,7 @@ const Calendar = ({
         defaultMonth={defaultMonth}
         selected={selectedDate}
         onSelect={onChange}
+        timeZone={userTimezone}
       />
     </DayPickerStyles>
   );

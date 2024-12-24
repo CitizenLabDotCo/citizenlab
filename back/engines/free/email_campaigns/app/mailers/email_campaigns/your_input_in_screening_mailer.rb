@@ -6,8 +6,7 @@ module EmailCampaigns
 
     def subject
       format_message('subject', values: {
-        input_title: localize_for_recipient(event.input_title_multiloc),
-        status_title: localize_for_recipient(event.status_title_multiloc)
+        input_title: localize_for_recipient(event.input_title_multiloc)
       })
     end
 

@@ -67,6 +67,8 @@ const Tag = ({ name, tagType, tagginsConfig }: TagProps) => {
   };
   return (
     <Box
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       bg={TagTypeColorMap[tagType]?.background}
       px="12px"
       py="4px"
@@ -77,6 +79,8 @@ const Tag = ({ name, tagType, tagginsConfig }: TagProps) => {
       borderRadius="3px"
       gap="4px"
       as={tagginsConfig ? 'button' : 'div'}
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       border={`1px solid ${TagTypeColorMap[tagType]?.text}`}
       onClick={tagginsConfig ? handleTagClick : undefined}
       tabIndex={tagginsConfig ? 0 : undefined}
@@ -85,10 +89,14 @@ const Tag = ({ name, tagType, tagginsConfig }: TagProps) => {
       }}
       data-cy="e2e-analysis-tag"
     >
+      {/* TODO: Fix this the next time the file is edited. */}
+      {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
       <Box color={TagTypeColorMap[tagType]?.text}>{name}</Box>
       {tagginsConfig?.isSelectedAsTagging === true && (
         <Icon
           name="close"
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           fill={TagTypeColorMap[tagType]?.text}
           width="16px"
           height="16px"
@@ -99,6 +107,8 @@ const Tag = ({ name, tagType, tagginsConfig }: TagProps) => {
           name="plus"
           width="16px"
           height="16px"
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           fill={TagTypeColorMap[tagType]?.text}
         />
       )}

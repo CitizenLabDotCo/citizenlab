@@ -57,4 +57,43 @@ RSpec.describe VotingMethod::SingleVoting do
       expect(baskets_idea.votes).to eq 1
     end
   end
+
+  describe '#votes_for_idea' do
+    let(:other_voting_phase) { create(:single_voting_phase, project: phase.project, start_at: phase.end_at + 1.day, end_at: phase.end_at + 10.days) }
+
+    before do
+      create(:baskets_idea, basket: create(:basket, phase: phase), idea: idea, votes: 1)
+      create(:baskets_idea, basket: create(:basket, phase: phase), idea: idea, votes: 1)
+      create(:baskets_idea, basket: create(:basket, phase: other_voting_phase), idea: idea, votes: 1)
+      Basket.update_counts(phase)
+    end
+
+    context 'when the idea is in the voting phase' do
+      let(:idea) { create(:idea, project: phase.project, phases: [phase, other_voting_phase]) }
+
+      it 'returns the votes for the idea' do
+        expect(voting_method.votes_for_idea(idea)).to eq 2
+      end
+    end
+
+    context 'when the idea is not in the voting phase' do
+      let(:idea) { create(:idea, project: phase.project, phases: [other_voting_phase]) }
+
+      it 'returns 0' do
+        expect(voting_method.votes_for_idea(idea)).to eq 0
+      end
+    end
+  end
+
+  describe '#supports_serializing?' do
+    it 'returns true for voting attributes' do
+      %i[
+        voting_method voting_max_total voting_min_total voting_max_votes_per_idea baskets_count
+        voting_term_singular_multiloc voting_term_plural_multiloc votes_count total_votes_amount
+        autoshare_results_enabled
+      ].each do |attribute|
+        expect(voting_method.supports_serializing?(attribute)).to be true
+      end
+    end
+  end
 end

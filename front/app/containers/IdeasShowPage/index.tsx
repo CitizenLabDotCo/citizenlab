@@ -4,12 +4,11 @@ import {
   Box,
   useBreakpoint,
   Spinner,
-  stylingConsts,
   media,
   colors,
 } from '@citizenlab/cl2-component-library';
 import { useParams, useSearchParams } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 
 import { VotingContext } from 'api/baskets_ideas/useVoting';
 import useIdeaBySlug from 'api/ideas/useIdeaBySlug';
@@ -19,7 +18,6 @@ import useProjectById from 'api/projects/useProjectById';
 
 import IdeasShow from 'containers/IdeasShow';
 import IdeaMeta from 'containers/IdeasShow/components/IdeaMeta';
-import IdeaNavigationButtons from 'containers/IdeasShow/components/IdeaNavigationButtons';
 import ProjectCTABar from 'containers/ProjectsShowPage/ProjectCTABar';
 
 import PageNotFound from 'components/PageNotFound';
@@ -40,7 +38,7 @@ const StyledIdeaShowPageTopBar = styled(IdeaShowPageTopBar)`
 `;
 
 // note: StyledIdeasShow styles defined here should match that in PostPageFullscreenModal!
-const StyledIdeasShow = styled(IdeasShow)<{ hasNextPreviousControl?: boolean }>`
+const StyledIdeasShow = styled(IdeasShow)`
   min-height: calc(
     100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
   );
@@ -49,20 +47,18 @@ const StyledIdeasShow = styled(IdeasShow)<{ hasNextPreviousControl?: boolean }>`
   padding-right: 60px;
 
   ${({ theme }) => media.tablet`
-    margin-top: ${(props) =>
-      props.hasNextPreviousControl ? '0' : theme.menuHeight}px;
     min-height: calc(100vh - ${theme.mobileTopBarHeight}px);
     padding-top: 35px;
   `}
 
   ${media.phone`
-    padding-top: ${(props) => (props.hasNextPreviousControl ? '0px' : '25px')};
     padding-left: 15px;
     padding-right: 15px;
   `}
 `;
 
 const IdeasShowPage = () => {
+  const theme = useTheme();
   const { slug } = useParams() as { slug: string };
   const { data: idea, status, error } = useIdeaBySlug(slug);
   const isSmallerThanTablet = useBreakpoint('tablet');
@@ -99,18 +95,15 @@ const IdeasShowPage = () => {
     ).length > 0;
   const showCTABar =
     isIdeaInCurrentPhase && phase?.attributes.participation_method === 'voting';
-  const showCTABarAtTopOfPage = !isSmallerThanTablet && showCTABar;
 
   return (
     <>
       <IdeaMeta ideaId={idea.data.id} />
-      <VotingContext projectId={project.data.id}>
-        <Box
-          background={colors.white}
-          pt={
-            showCTABarAtTopOfPage ? `${stylingConsts.menuHeight}px` : undefined
-          }
-        >
+      <VotingContext
+        projectId={project.data.id}
+        phaseId={phaseContext || phase?.id}
+      >
+        <Box background={colors.white}>
           {isSmallerThanTablet ? (
             <StyledIdeaShowPageTopBar
               projectId={idea.data.relationships.project.data.id}
@@ -118,36 +111,26 @@ const IdeasShowPage = () => {
               phase={phase}
             />
           ) : (
-            <DesktopTopBar project={project.data} />
-          )}
-          <>
-            <Box mb="8px">
-              {phaseContext && (
-                <Box
-                  width="100%"
-                  display="flex"
-                  justifyContent="center"
-                  mt={isSmallerThanTablet ? '68px ' : ''}
-                >
-                  <Box width="80px">
-                    <IdeaNavigationButtons
-                      projectId={project.data.id}
-                      phaseContext={phaseContext}
-                    />
-                  </Box>
-                </Box>
-              )}
-
-              <main id="e2e-idea-show">
-                <StyledIdeasShow
-                  ideaId={idea.data.id}
-                  projectId={idea.data.relationships.project.data.id}
-                  compact={isSmallerThanTablet}
-                  hasNextPreviousControl={phaseContext !== null}
-                />
-              </main>
+            // 64px is the height of the CTA bar (see ParticipationCTAContent)
+            <Box mt={showCTABar ? '64px' : undefined}>
+              <DesktopTopBar project={project.data} />
             </Box>
-          </>
+          )}
+          <Box
+            mt={
+              // If we show IdeaShowPageTopBar on mobile, we need to push down main
+              isSmallerThanTablet ? `${theme.mobileTopBarHeight}px` : undefined
+            }
+            mb="8px"
+          >
+            <main id="e2e-idea-show">
+              <StyledIdeasShow
+                ideaId={idea.data.id}
+                projectId={idea.data.relationships.project.data.id}
+                compact={isSmallerThanTablet}
+              />
+            </main>
+          </Box>
         </Box>
         {showCTABar && (
           <Box

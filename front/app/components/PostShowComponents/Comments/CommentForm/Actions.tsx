@@ -96,6 +96,7 @@ const Actions = ({
       </Button>
       <Button
         className={submitButtonClassName}
+        id="e2e-submit-comment-btn"
         processing={processing}
         disabled={submitButtonDisabled}
         padding={smallerThanTablet ? '6px 12px' : undefined}

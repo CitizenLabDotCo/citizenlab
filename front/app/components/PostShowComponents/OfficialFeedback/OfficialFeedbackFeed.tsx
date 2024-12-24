@@ -5,6 +5,7 @@ import {
   fontSizes,
   media,
   isRtl,
+  Title,
 } from '@citizenlab/cl2-component-library';
 import { FormattedDate } from 'react-intl';
 import styled from 'styled-components';
@@ -39,15 +40,6 @@ const FeedbackHeader = styled.div`
     align-items: stretch;
     justify-content: left;
   `}
-`;
-
-const FeedbackTitle = styled.h2`
-  color: ${colors.red600};
-  font-size: ${fontSizes.l}px;
-  line-height: normal;
-  font-weight: 600;
-  padding: 0;
-  margin: 0;
 `;
 
 const FeedbackSubtitle = styled.div`
@@ -135,9 +127,9 @@ const OfficialFeedbackFeed = ({
         id="official-feedback-feed"
       >
         <FeedbackHeader>
-          <FeedbackTitle>
+          <Title variant="h2" m="0" color="red600" fontSize="l">
             <FormattedMessage {...messages.officialUpdates} />
-          </FeedbackTitle>
+          </Title>
           <FeedbackSubtitle>
             <FormattedMessage
               {...messages.lastUpdate}

@@ -28,10 +28,16 @@ class SortByParamsService
     when '-likes_count' then scope.order(likes_count: :asc)
     when 'dislikes_count' then scope.order(dislikes_count: :desc)
     when '-dislikes_count' then scope.order(dislikes_count: :asc)
-    when 'baskets_count' then idea_voting_count_sort(scope, 'baskets_count', params[:phase], 'desc')
-    when '-baskets_count' then idea_voting_count_sort(scope, 'baskets_count', params[:phase], 'asc')
-    when 'votes_count' then idea_voting_count_sort(scope, 'votes_count', params[:phase], 'desc')
-    when '-votes_count' then idea_voting_count_sort(scope, 'votes_count', params[:phase], 'asc')
+    when 'baskets_count' then idea_voting_count_sort(scope, 'baskets_count', params[:phase], direction: :desc)
+    when '-baskets_count' then idea_voting_count_sort(scope, 'baskets_count', params[:phase])
+    when 'votes_count' then idea_voting_count_sort(scope, 'votes_count', params[:phase], direction: :desc)
+    when '-votes_count' then idea_voting_count_sort(scope, 'votes_count', params[:phase])
+    when 'total_votes' then idea_voting_count_sort(scope, 'votes_count', params[:phase], direction: :desc, add_column: 'manual_votes_amount')
+    when '-total_votes' then idea_voting_count_sort(scope, 'votes_count', params[:phase], add_column: 'manual_votes_amount')
+    when 'total_baskets' then idea_voting_count_sort(scope, 'baskets_count', params[:phase], direction: :desc, add_column: 'manual_votes_amount')
+    when '-total_baskets' then idea_voting_count_sort(scope, 'baskets_count', params[:phase], add_column: 'manual_votes_amount')
+    when 'manual_votes_amount' then scope.order(Arel.sql('COALESCE(manual_votes_amount, -1)') => :desc)
+    when '-manual_votes_amount' then scope.order(manual_votes_amount: :asc)
     when 'comments_count' then scope.order(comments_count: :desc)
     when '-comments_count' then scope.order(comments_count: :asc)
     when 'budget' then scope.order(budget: :desc)
@@ -82,12 +88,13 @@ class SortByParamsService
 
   private
 
-  def idea_voting_count_sort(scope, sort, phase_id, direction)
+  def idea_voting_count_sort(scope, sort, phase_id, direction: :asc, add_column: nil)
     if phase_id
-      ids = IdeasPhase.where(phase_id: phase_id).order("#{sort} #{direction}").pluck(:idea_id)
-      Idea.unscoped.where(id: ids).order_as_specified(id: ids)
+      sort_part = add_column ? Arel.sql("ideas_phases.#{sort} + COALESCE(ideas.#{add_column}, 0)") : "ideas_phases.#{sort}"
+      scope.left_outer_joins(:ideas_phases).where(ideas_phases: { phase_id: phase_id }).order(sort_part => direction)
     else
-      scope.order("#{sort} #{direction}")
+      sort_part = add_column ? Arel.sql("#{sort} + COALESCE(#{add_column}, 0)") : sort
+      scope.order(sort_part => direction)
     end
   end
 end

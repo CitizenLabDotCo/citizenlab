@@ -1,30 +1,28 @@
-import React, { memo, useCallback } from 'react';
+import React, { memo, useCallback, useState } from 'react';
 
-import {
-  Icon,
-  Spinner,
-  colors,
-  fontSizes,
-} from '@citizenlab/cl2-component-library';
+import { Button, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useIdeaJsonFormSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
 import useIdeaMarkers from 'api/idea_markers/useIdeaMarkers';
+import { IdeaSortMethod } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
-import { ideaDefaultSortMethodFallback } from 'api/phases/utils';
+import { IdeaSortMethodFallback } from 'api/phases/utils';
 
-import { Sort } from 'components/IdeaCards/shared/Filters/SortFilterDropdown';
-import Centerer from 'components/UI/Centerer';
-import SearchInput from 'components/UI/SearchInput';
+import { InputFiltersProps } from 'components/IdeaCards/IdeasWithFiltersSidebar/InputFilters';
+import FiltersMapView from 'components/IdeaCards/IdeasWithFiltersSidebar/MapView/FiltersMapView';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { trackEventByName } from 'utils/analytics';
+import { useIntl } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import { isNilOrError } from 'utils/helperUtils';
 
-import IdeaMapCard from '../IdeaMapCard';
 import messages from '../messages';
+
+import IdeaMapCards from './IdeaMapCards';
+import tracks from './tracks';
 
 const Container = styled.div`
   width: 100%;
@@ -41,68 +39,32 @@ const Header = styled.div`
   border-bottom: solid 1px #ccc;
 `;
 
-const StyledSearchInput = styled(SearchInput)`
-  width: 100%;
-`;
-
-const IdeaMapCards = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  padding-top: 20px;
-  overflow-x: hidden;
-  overflow-y: auto;
-`;
-
-const StyledIdeaMapCard = styled(IdeaMapCard)`
-  margin-left: 20px;
-  margin-right: 20px;
-`;
-
-const EmptyContainer = styled.div`
-  width: 100%;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin-top: 100px;
-  margin-bottom: 100px;
-`;
-
-const IdeaIcon = styled(Icon)`
-  flex: 0 0 26px;
-  width: 26px;
-  height: 26px;
-  fill: ${colors.textSecondary};
-`;
-
-const EmptyMessage = styled.div`
-  padding-left: 50px;
-  padding-right: 50px;
-  margin-top: 12px;
-  margin-bottom: 30px;
-`;
-
-const EmptyMessageLine = styled.div`
-  color: ${colors.textSecondary};
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  line-height: normal;
-  text-align: center;
-`;
-
 interface Props {
   projectId: string;
   phaseId?: string;
   className?: string;
   onSelectIdea: (ideaId: string | null) => void;
+  inputFiltersProps?: InputFiltersProps;
 }
 
 const MapIdeasList = memo<Props>(
-  ({ projectId, phaseId, className, onSelectIdea }) => {
+  ({ projectId, phaseId, className, onSelectIdea, inputFiltersProps }) => {
     const [searchParams] = useSearchParams();
+    const isTabletOrSmaller = useBreakpoint('tablet');
+    const { formatMessage } = useIntl();
+    const [showFilters, setShowFilters] = useState(false);
+
+    const {
+      ideaQueryParameters,
+      onChangeStatus,
+      onChangeTopics,
+      handleSortOnChange,
+      ideasFilterCounts,
+      numberOfSearchResults,
+    } = inputFiltersProps ?? {};
+
+    const hasInputFilterProps =
+      onChangeStatus && onChangeTopics && handleSortOnChange;
 
     const { data: ideaCustomFieldsSchema } = useIdeaJsonFormSchema({
       projectId,
@@ -111,9 +73,9 @@ const MapIdeasList = memo<Props>(
     const { data: phase } = usePhase(phaseId);
 
     const sort =
-      (searchParams.get('sort') as Sort | null) ??
+      (searchParams.get('sort') as IdeaSortMethod | null) ??
       phase?.data.attributes.ideas_order ??
-      ideaDefaultSortMethodFallback;
+      IdeaSortMethodFallback;
     const search = searchParams.get('search');
     const topicsParam = searchParams.get('topics');
     const topics: string[] = topicsParam ? JSON.parse(topicsParam) : [];
@@ -135,58 +97,58 @@ const MapIdeasList = memo<Props>(
     if (isNilOrError(ideaCustomFieldsSchema)) return null;
 
     const methodConfig =
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       phase && getMethodConfig(phase.data.attributes?.participation_method);
 
     return (
       <Container className={className || ''}>
-        {methodConfig?.showIdeaFilters && (
-          <Header>
-            <StyledSearchInput
-              defaultValue={search ?? undefined}
-              onChange={handleSearchOnChange}
-              a11y_numberOfSearchResults={
-                ideaMarkers && ideaMarkers.data.length > 0
-                  ? ideaMarkers.data.length
-                  : 0
-              }
-            />
-          </Header>
-        )}
-
-        <IdeaMapCards id="e2e-idea-map-cards">
-          {ideaMarkers === undefined && (
-            <Centerer>
-              <Spinner />
-            </Centerer>
-          )}
-
-          {ideaMarkers &&
-            ideaMarkers.data.length > 0 &&
-            ideaMarkers.data.map((ideaMarker) => (
-              <StyledIdeaMapCard
-                projectId={projectId}
-                idea={ideaMarker}
-                key={ideaMarker.id}
-                phaseId={phaseId}
-                onSelectIdea={onSelectIdea}
+        {methodConfig?.showIdeaFilters &&
+          !showFilters &&
+          !isTabletOrSmaller && (
+            // Show the "Filters" button only in the Desktop idea list view
+            <Header>
+              <Button
+                buttonStyle="secondary-outlined"
+                icon="filter"
+                size="s"
+                text={formatMessage(messages.filters)}
+                onClick={() => {
+                  trackEventByName(tracks.clickMapIdeaFiltersButton);
+                  setShowFilters(true);
+                }}
               />
-            ))}
-
-          {(ideaMarkers === null || ideaMarkers?.data.length === 0) && (
-            <EmptyContainer>
-              <IdeaIcon ariaHidden name="idea" />
-              <EmptyMessage>
-                <EmptyMessageLine>
-                  <FormattedMessage
-                    {...(isFiltered
-                      ? messages.noFilteredResults
-                      : messages.noResults)}
-                  />
-                </EmptyMessageLine>
-              </EmptyMessage>
-            </EmptyContainer>
+            </Header>
           )}
-        </IdeaMapCards>
+
+        {showFilters && hasInputFilterProps && (
+          <>
+            <FiltersMapView
+              ideaQueryParameters={ideaQueryParameters || {}}
+              ideasFilterCounts={ideasFilterCounts}
+              numberOfSearchResults={
+                numberOfSearchResults ? numberOfSearchResults : 0
+              }
+              onSearch={handleSearchOnChange}
+              onChangeStatus={onChangeStatus}
+              onChangeTopics={onChangeTopics}
+              handleSortOnChange={handleSortOnChange}
+              opened={showFilters}
+              onClose={() => {
+                setShowFilters(false);
+              }}
+            />
+          </>
+        )}
+        {!showFilters && (
+          <IdeaMapCards
+            ideaMarkers={ideaMarkers}
+            projectId={projectId}
+            phaseId={phaseId}
+            isFiltered={isFiltered}
+            onSelectIdea={onSelectIdea}
+          />
+        )}
       </Container>
     );
   }

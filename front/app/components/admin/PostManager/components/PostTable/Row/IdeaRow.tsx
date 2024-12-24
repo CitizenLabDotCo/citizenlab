@@ -3,7 +3,6 @@ import React, { ChangeEvent, useState, MouseEvent } from 'react';
 import { Box, colors, Td, Badge } from '@citizenlab/cl2-component-library';
 import { uniq, isEmpty } from 'lodash-es';
 import { useDrag } from 'react-dnd';
-import { Icon } from 'semantic-ui-react';
 import { CellConfiguration, SupportedLocale, Override } from 'typings';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
@@ -33,6 +32,7 @@ import IdeaOfficialFeedbackModal, {
   getIdeaOfficialFeedbackModalEventName,
 } from '../../IdeaOfficialFeedbackModal';
 
+import LikeIndicator from './LikeIndicator';
 import PhaseDeselectModal from './PhaseDeselectModal';
 import StyledRow from './StyledRow';
 import SubRow from './SubRow';
@@ -190,9 +190,21 @@ const IdeaRow = ({
       },
     },
     {
+      name: 'offline_votes',
+      Component: ({ idea }: IdeaCellComponentProps) => {
+        return <>{idea.attributes.manual_votes_amount || 0}</>;
+      },
+    },
+    {
       name: 'picks',
       Component: ({ idea }: IdeaCellComponentProps) => {
         return <>{idea.attributes.baskets_count}</>;
+      },
+    },
+    {
+      name: 'offline_picks',
+      Component: ({ idea }: IdeaCellComponentProps) => {
+        return <>{idea.attributes.manual_votes_amount || 0}</>;
       },
     },
     {
@@ -215,12 +227,12 @@ const IdeaRow = ({
     },
     {
       name: 'up',
-      Component: ({ idea }) => {
+      Component: ({ idea }: IdeaCellComponentProps) => {
         return (
-          <>
-            <Icon name="thumbs up" />
-            {idea.attributes.likes_count}
-          </>
+          <LikeIndicator
+            likeCount={idea.attributes.likes_count}
+            iconName="vote-up"
+          />
         );
       },
     },
@@ -230,10 +242,10 @@ const IdeaRow = ({
             name: 'down',
             Component: ({ idea }: IdeaCellComponentProps) => {
               return (
-                <>
-                  <Icon name="thumbs down" />
-                  {idea.attributes.dislikes_count}
-                </>
+                <LikeIndicator
+                  likeCount={idea.attributes.dislikes_count}
+                  iconName="vote-down"
+                />
               );
             },
           },
@@ -290,6 +302,8 @@ const IdeaRow = ({
           location: 'Idea overview',
           method: 'Dragged and dropped idea(s) in manager',
         });
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       } else if (dropResult && dropResult.type) {
         const ideaIds = selection.has(item.id)
           ? [...selection].map((id) => id)
@@ -330,7 +344,8 @@ const IdeaRow = ({
 
           ideaIds.forEach((ideaId) => {
             if (
-              !hasPhases ||
+              !hasPhases || // TODO: Fix this the next time the file is edited.
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
               (hasPhases &&
                 window.confirm(
                   formatMessage(messages.loseIdeaPhaseInfoConfirmation)
@@ -373,6 +388,8 @@ const IdeaRow = ({
     };
 
     const Content =
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       displayColumns && !displayColumns.has(name) ? null : (
         <Td key={name} borderBottom="none !important">
           <Box

@@ -3,8 +3,15 @@ import React from 'react';
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 import { VotingContext } from 'api/baskets_ideas/useVoting';
-import { votingIdeaHandler } from 'api/ideas/__mocks__/_mockServer';
-import { votingPhaseHandler } from 'api/phases/__mocks__/_mockServer';
+import {
+  votingIdeaHandler,
+  votingResultsIdeaHandler,
+} from 'api/ideas/__mocks__/_mockServer';
+import {
+  budgetingPastNoResultPhaseHandler,
+  votingPastNoResultPhaseHandler,
+  votingPhaseHandler,
+} from 'api/phases/__mocks__/_mockServer';
 import { votingProjectHandler } from 'api/projects/__mocks__/_mockServer';
 
 import mockEndpoints from 'utils/storybook/mockEndpoints';
@@ -21,6 +28,7 @@ const IdeaCards = (props: Props) => {
       w="100%"
       h="100%"
       maxWidth="1166px"
+      maxHeight="240px"
       display="flex"
       flexDirection={smallerThanPhone ? 'column' : 'row'}
     >
@@ -71,6 +79,44 @@ export const Voting: Story = {
       'GET projects/:id': votingProjectHandler,
       'GET ideas/:id': votingIdeaHandler,
       'GET phases/:id': votingPhaseHandler,
+    }),
+  },
+};
+
+export const PastVotingNoResultSharing: Story = {
+  render: (props) => (
+    <VotingContext projectId="1">
+      <IdeaCards {...props} />
+    </VotingContext>
+  ),
+  args: {
+    ...Standard.args,
+    phaseId: 'ph1',
+  },
+  parameters: {
+    msw: mockEndpoints({
+      'GET projects/:id': votingProjectHandler,
+      'GET ideas/:id': votingResultsIdeaHandler,
+      'GET phases/:id': votingPastNoResultPhaseHandler,
+    }),
+  },
+};
+
+export const PastBudgetingNoResultSharing: Story = {
+  render: (props) => (
+    <VotingContext projectId="1">
+      <IdeaCards {...props} />
+    </VotingContext>
+  ),
+  args: {
+    ...Standard.args,
+    phaseId: 'ph1',
+  },
+  parameters: {
+    msw: mockEndpoints({
+      'GET projects/:id': votingProjectHandler,
+      'GET ideas/:id': votingResultsIdeaHandler,
+      'GET phases/:id': budgetingPastNoResultPhaseHandler,
     }),
   },
 };

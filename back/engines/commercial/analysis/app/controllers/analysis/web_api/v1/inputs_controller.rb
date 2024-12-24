@@ -21,6 +21,7 @@ module Analysis
             InputSerializer,
             params: {
               app_configuration: AppConfiguration.instance,
+              view_private_attributes: view_private_attributes?,
               **jsonapi_serializer_params
             },
             include: %i[author idea_files],
@@ -36,6 +37,7 @@ module Analysis
             @input,
             params: {
               app_configuration: AppConfiguration.instance,
+              view_private_attributes: view_private_attributes?,
               **jsonapi_serializer_params
             },
             include: [:author]
@@ -47,6 +49,13 @@ module Analysis
         def set_analysis
           @analysis = Analysis.find(params[:analysis_id])
           authorize(@analysis, :show?)
+        end
+
+        # Whether to include private attributes in included authors (for native surveys).
+        def view_private_attributes?
+          return true unless @analysis.phase_id
+
+          @analysis.phase.pmethod.supports_private_attributes_in_export?
         end
       end
     end

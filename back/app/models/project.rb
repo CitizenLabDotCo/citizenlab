@@ -21,6 +21,8 @@
 #  baskets_count                :integer          default(0), not null
 #  votes_count                  :integer          default(0), not null
 #  followers_count              :integer          default(0), not null
+#  preview_token                :string           not null
+#  header_bg_alt_text_multiloc  :jsonb
 #
 # Indexes
 #
@@ -32,6 +34,8 @@
 #
 class Project < ApplicationRecord
   include PgSearch::Model
+
+  attribute :preview_token, :string, default: -> { generate_preview_token }
 
   VISIBLE_TOS = %w[public groups admins].freeze
 
@@ -62,6 +66,7 @@ class Project < ApplicationRecord
   accepts_nested_attributes_for :text_images
   has_many :project_files, -> { order(:ordering) }, dependent: :destroy
   has_many :followers, as: :followable, dependent: :destroy
+  has_many :impact_tracking_pageviews, class_name: 'ImpactTracking::Pageview', dependent: :nullify
 
   before_validation :sanitize_description_multiloc, if: :description_multiloc
   before_validation :set_admin_publication, unless: proc { Current.loading_tenant_template }
@@ -71,6 +76,7 @@ class Project < ApplicationRecord
   has_many :notifications, dependent: :nullify
 
   has_one :nav_bar_item, dependent: :destroy
+  has_one :review, class_name: 'ProjectReview', dependent: :destroy
 
   has_one :admin_publication, as: :publication, dependent: :destroy
   accepts_nested_attributes_for :admin_publication, update_only: true
@@ -110,8 +116,12 @@ class Project < ApplicationRecord
     includes(:admin_publication).order('admin_publications.ordering')
   }
 
+  scope :draft, lambda {
+    includes(:admin_publication).where(admin_publications: { publication_status: 'draft' })
+  }
+
   scope :not_draft, lambda {
-    includes(:admin_publication).where.not(admin_publications: { publication_status: 'draft' })
+    where.not(id: draft)
   }
 
   scope :publicly_visible, lambda {
@@ -126,10 +136,16 @@ class Project < ApplicationRecord
 
   alias project_id id
 
+  delegate :ever_published?, :never_published?, to: :admin_publication, allow_nil: true
+
   class << self
     def search_ids_by_all_including_patches(term)
       result = defined?(super) ? super : []
       result + search_by_all(term).pluck(:id)
+    end
+
+    def generate_preview_token
+      SecureRandom.urlsafe_base64(64)
     end
   end
 
@@ -195,6 +211,10 @@ class Project < ApplicationRecord
     # The following mimics the same behaviour now that participation method is not available on the project
     # TODO: Maybe change to find phase with ideation or voting where created date between start and end date?
     @pmethod ||= ParticipationMethod::Ideation.new(phases.first)
+  end
+
+  def refresh_preview_token
+    self.preview_token = self.class.generate_preview_token
   end
 
   private

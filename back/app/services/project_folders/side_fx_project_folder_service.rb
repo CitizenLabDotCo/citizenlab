@@ -28,6 +28,8 @@ module ProjectFolders
     end
 
     def after_destroy(frozen_folder, user)
+      ContentBuilder::LayoutService.new.clean_homepage_layout_when_publication_deleted(frozen_folder)
+
       serialized_folder = clean_time_attributes(frozen_folder.attributes)
 
       LogActivityJob.perform_later(

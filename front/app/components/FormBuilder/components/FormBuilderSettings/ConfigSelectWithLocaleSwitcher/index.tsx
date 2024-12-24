@@ -58,6 +58,12 @@ const ConfigSelectWithLocaleSwitcher = ({
     formState: { errors: formContextErrors },
     trigger,
   } = useFormContext();
+
+  // Handles drag and drop
+  const { move, update, append, remove, insert } = useFieldArray({
+    name,
+  });
+
   const [selectedLocale, setSelectedLocale] = useState<SupportedLocale | null>(
     platformLocale
   );
@@ -72,6 +78,8 @@ const ConfigSelectWithLocaleSwitcher = ({
 
   useEffect(() => {
     if (
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       customFieldOptionImages &&
       customFieldOptionImages.length !== prevImageQueries?.length
     ) {
@@ -79,11 +87,15 @@ const ConfigSelectWithLocaleSwitcher = ({
         const promises = customFieldOptionImages.map(
           async (customFieldOptionImage) => {
             if (
+              // TODO: Fix this the next time the file is edited.
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
               !customFieldOptionImage?.data?.data.attributes.versions.medium
             ) {
               return;
             }
             const imageData = await convertUrlToUploadFile(
+              // TODO: Fix this the next time the file is edited.
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
               customFieldOptionImage?.data?.data.attributes.versions.medium
             );
             return { [customFieldOptionImage.data.data.id]: imageData };
@@ -102,26 +114,6 @@ const ConfigSelectWithLocaleSwitcher = ({
     onSelectedLocaleChange?.(platformLocale);
   }, [platformLocale, onSelectedLocaleChange]);
 
-  const handleOnSelectedLocaleChange = useCallback(
-    (newSelectedLocale: SupportedLocale) => {
-      setSelectedLocale(newSelectedLocale);
-      onSelectedLocaleChange?.(newSelectedLocale);
-    },
-    [onSelectedLocaleChange]
-  );
-
-  // Handles drag and drop
-  const { move, update, append, remove, insert } = useFieldArray({
-    name,
-  });
-
-  const handleDragRow = useCallback(
-    (fromIndex: number, toIndex: number) => {
-      move(fromIndex, toIndex);
-    },
-    [move]
-  );
-
   const addOption = useCallback(() => {
     const otherOptionIndex = selectOptions.findIndex(
       (choice) => choice.other === true
@@ -138,7 +130,43 @@ const ConfigSelectWithLocaleSwitcher = ({
     };
 
     insert(insertIndex, newOption);
+    document.getElementById(`e2e-option-input-${insertIndex}`)?.focus();
   }, [insert, inputType, selectOptions]);
+
+  // Handles adding an option when pressing enter
+  // It only works when the focus is on the input fields
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (
+        document
+          .getElementById('select-options')
+          ?.contains(document.activeElement) &&
+        event.key === 'Enter'
+      ) {
+        addOption();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [addOption]);
+
+  const handleOnSelectedLocaleChange = useCallback(
+    (newSelectedLocale: SupportedLocale) => {
+      setSelectedLocale(newSelectedLocale);
+      onSelectedLocaleChange?.(newSelectedLocale);
+    },
+    [onSelectedLocaleChange]
+  );
+
+  const handleDragRow = useCallback(
+    (fromIndex: number, toIndex: number) => {
+      move(fromIndex, toIndex);
+    },
+    [move]
+  );
 
   const removeOption = useCallback(
     (index: number) => {
@@ -213,6 +241,7 @@ const ConfigSelectWithLocaleSwitcher = ({
                 onBlur();
                 trigger();
               }}
+              id="select-options"
             >
               <SectionField>
                 <Box
@@ -234,8 +263,11 @@ const ConfigSelectWithLocaleSwitcher = ({
                   </Box>
                 </Box>
                 <DndProvider backend={HTML5Backend}>
+                  {/* TODO: Fix this the next time the file is edited. */}
+                  {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
                   <List key={choices?.length}>
-                    {choices
+                    {choices // TODO: Fix this the next time the file is edited.
+                      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                       ?.sort((a, b) => {
                         const aValue = a.other ? 1 : 0;
                         const bValue = b.other ? 1 : 0;
@@ -295,25 +327,8 @@ const ConfigSelectWithLocaleSwitcher = ({
                   data-cy="e2e-add-answer"
                   onClick={addOption}
                   text={formatMessage(messages.addAnswer)}
+                  type="button"
                 />
-
-                <Box mt="24px" data-cy="e2e-other-option-toggle">
-                  <Toggle
-                    label={
-                      <Box display="flex">
-                        {formatMessage(messages.otherOption)}
-                        <Box pl="4px">
-                          <IconTooltip
-                            placement="top-start"
-                            content={formatMessage(messages.otherOptionTooltip)}
-                          />
-                        </Box>
-                      </Box>
-                    }
-                    checked={hasOtherOption}
-                    onChange={toggleOtherOption}
-                  />
-                </Box>
 
                 {validationError && (
                   <Error
@@ -332,6 +347,24 @@ const ConfigSelectWithLocaleSwitcher = ({
                     scrollIntoView={false}
                   />
                 )}
+
+                <Box mt="24px" data-cy="e2e-other-option-toggle">
+                  <Toggle
+                    label={
+                      <Box display="flex">
+                        {formatMessage(messages.otherOption)}
+                        <Box pl="4px">
+                          <IconTooltip
+                            placement="top-start"
+                            content={formatMessage(messages.otherOptionTooltip)}
+                          />
+                        </Box>
+                      </Box>
+                    }
+                    checked={hasOtherOption}
+                    onChange={toggleOtherOption}
+                  />
+                </Box>
               </SectionField>
             </Box>
           );

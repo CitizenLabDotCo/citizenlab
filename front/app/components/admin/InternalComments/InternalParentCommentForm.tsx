@@ -1,10 +1,6 @@
 import React, { useState, useRef } from 'react';
 
-import {
-  useBreakpoint,
-  colors,
-  defaultStyles,
-} from '@citizenlab/cl2-component-library';
+import { useBreakpoint, colors } from '@citizenlab/cl2-component-library';
 import { isString, trim } from 'lodash-es';
 import { hideVisually } from 'polished';
 import styled from 'styled-components';
@@ -63,8 +59,7 @@ const Form = styled.form`
   }
 
   &.focused {
-    border-color: ${colors.black};
-    box-shadow: ${defaultStyles.boxShadowFocused};
+    border: solid 2px ${(props) => props.theme.colors.tenantPrimary};
   }
 `;
 
@@ -126,10 +121,8 @@ const InternalParentCommentForm = ({ ideaId, className }: Props) => {
 
   const onFocus = () => {
     trackEventByName(tracks.focusParentCommentEditor, {
-      extra: {
-        postId: ideaId,
-        postType: 'idea',
-      },
+      postId: ideaId,
+      postType: 'idea',
     });
 
     setFocused(true);
@@ -154,11 +147,9 @@ const InternalParentCommentForm = ({ ideaId, className }: Props) => {
       );
 
       trackEventByName(tracks.clickParentCommentPublish, {
-        extra: {
-          postId: ideaId,
-          postType: 'idea',
-          content: inputValue,
-        },
+        postId: ideaId,
+        postType: 'idea',
+        content: inputValue,
       });
 
       if (projectId && ideaId) {

@@ -64,6 +64,8 @@ export const parseTimeSeries = (
 
   return calculateCumulativeSerie(
     timeSeries,
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     total[0]?.sum_reactions_count,
     (row: TimeSeriesRow) => row.likes + row.dislikes
   );

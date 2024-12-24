@@ -37,6 +37,8 @@ const UserPickerControl = ({
     return (
       <Box display="flex">
         {getLabel(uischema, schema, path)}
+        {/* TODO: Fix this the next time the file is edited. */}
+        {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
         {uischema?.options?.isAdminField && (
           <IconTooltip
             iconColor={colors.grey800}

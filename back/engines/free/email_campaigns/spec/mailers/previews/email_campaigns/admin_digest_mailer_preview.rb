@@ -6,7 +6,7 @@ module EmailCampaigns
 
     def campaign_mail
       campaign = EmailCampaigns::Campaigns::AdminDigest.first
-      idea = Idea.first
+      idea = Idea.published.first
 
       # # TODO: generate commands with campaign#generate_commands method
       command = {

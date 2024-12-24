@@ -33,7 +33,6 @@ const CustomRadio = styled.div<{ borderColor: string | undefined }>`
   border-radius: 50%;
   border: ${({ borderColor }) =>
     borderColor ? `solid 1px ${borderColor}` : `solid 1px ${colors.grey500}`};
-  border: ;
   transition: all 120ms ease-out;
 
   ${isRtl`
@@ -134,7 +133,11 @@ const Radio = ({
     if (!disabled && onChange) {
       const targetElement = get(event, 'target') as HTMLElement;
       const targetElementIsLink =
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         targetElement &&
+        // TODO: Fix this the next time the file is edited.
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         targetElement.hasAttribute &&
         targetElement.hasAttribute('href');
 

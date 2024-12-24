@@ -28,7 +28,9 @@ module Verification
 
       active_methods = app_configuration.settings['verification']['verification_methods']
       active_method_names = active_methods.pluck('name')
-      all_methods.select { |method| active_method_names.include?(method.name) }
+      all_methods.select do |method|
+        active_method_names.include?(method.name) if method.respond_to?(:name)
+      end
     end
 
     # @param [AppConfiguration] configuration

@@ -52,6 +52,7 @@ describe('Verification modal', () => {
       cy.get('.e2e-idea-button').first().find('button').click({ force: true });
 
       // email/password sign up step
+      cy.get('#e2e-goto-signup').click();
       cy.get('#e2e-sign-up-email-password-container');
       const firstName = randomString();
       const lastName = randomString();
@@ -100,6 +101,7 @@ describe('Verification modal', () => {
       cy.get('.e2e-idea-button').first().find('button').click({ force: true });
 
       // email/password sign up step
+      cy.get('#e2e-goto-signup').click();
       cy.get('#e2e-sign-up-email-password-container');
       const firstName = randomString();
       const lastName = randomString();

@@ -266,6 +266,7 @@ sv:
       first_name: 'Förnamn(en)'
       image_url: 'URL för bild'
       input_id: 'ID'
+      manual_votes: 'Offline röster'
       input_url: 'Webbadress'
       last_name: 'Efternamn'
       latitude: 'Latitud'
@@ -343,6 +344,8 @@ sv:
       you_can_sign_in_again_from: "Du kan logga in igen från %{date}"
   user:
     anon_first_name: "Användare"
+    anon_scheme:
+      animals: 'alligator,krokodil,alpaca,myra,antilop,apa,bältdjur,babian,grävling,fladdermus,björn,bäver,bi,skalbagge,buffel,fjäril,kamel,vattenbuffel,caribou,katt,nötkreatur,gepard,schimpans,chinchilla,cikada,mussla,kackerlacka,torsk,prärievarg,krabba,syrsa,kråka,korp,hjort,dinosaurie,hund,delfin,tumlare,anka,örn,ål,elefant,älg,iller,fisk,fluga,räv,groda,padda,gerbil,giraff,mygga,gnu,gnu, gnu, get,guldfisk,gås,gorilla,gräshoppa,marsvin,hamster,hare,igelkott,sill,flodhäst,geting,häst,hundhyena,impala,schakal,manet,känguru,wallaby,koala,leopard,lejon,ödla,lama,gräshoppa,lus,ara,gräsand,mammut,manatee,mård,mink,minnow,mullvad,älg,mygga,mus,råtta,mula,bisamråtta,utter,oxe,ostron,panda,gris,näbbdjur,piggsvin,präriehund,mops,kanin,tvättbjörn,ren,noshörning,lax,sardin,skorpion,säl,sjölejon,serval,haj,får,skunk,snigel,orm,spindel,ekorre,svan,termit,tiger,öring,sköldpadda,sköldpadda,valross,geting,val,varg,wombat,woodchuck,mask,jak,guljacka,zebra'
   time:
     am: Jag är
     formats:

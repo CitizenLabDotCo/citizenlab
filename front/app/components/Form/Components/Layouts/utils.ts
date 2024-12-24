@@ -150,6 +150,8 @@ export function getFormCompletionPercentage(
   const filteredData = {};
 
   pages.forEach((page) => {
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (page.elements) {
       page.elements.forEach((element) => {
         const scope = element.scope.split('/').pop();

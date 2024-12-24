@@ -1,18 +1,24 @@
 import React from 'react';
 
-import { Box, Spinner, Text, Title } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Spinner,
+  Text,
+  Title,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import { useEditor, SerializedNodes } from '@craftjs/core';
-import useAddProjectDescriptionBuilderLayout from 'api/project_description_builder/useAddProjectDescriptionBuilderLayout';
 import { useParams } from 'react-router-dom';
 import { SupportedLocale } from 'typings';
 
+import useAddProjectDescriptionBuilderLayout from 'api/project_description_builder/useAddProjectDescriptionBuilderLayout';
 import useProjectById from 'api/projects/useProjectById';
 
 import useLocalize from 'hooks/useLocalize';
 
 import Container from 'components/admin/ContentBuilder/TopBar/Container';
 import GoBackButton from 'components/admin/ContentBuilder/TopBar/GoBackButton';
-import LocaleSwitcher from 'components/admin/ContentBuilder/TopBar/LocaleSwitcher';
+import LocaleSelect from 'components/admin/ContentBuilder/TopBar/LocaleSelect';
 import PreviewToggle from 'components/admin/ContentBuilder/TopBar/PreviewToggle';
 import SaveButton from 'components/admin/ContentBuilder/TopBar/SaveButton';
 import Button from 'components/UI/Button';
@@ -27,7 +33,7 @@ type ProjectDescriptionBuilderTopBarProps = {
   hasError?: boolean;
   previewEnabled: boolean;
   setPreviewEnabled: React.Dispatch<React.SetStateAction<boolean>>;
-  selectedLocale: SupportedLocale | undefined;
+  selectedLocale: SupportedLocale;
   onSelectLocale: (args: {
     locale: SupportedLocale;
     editorData: SerializedNodes;
@@ -60,12 +66,10 @@ const ProjectDescriptionBuilderTopBar = ({
   };
 
   const handleSave = async () => {
-    if (selectedLocale) {
-      addProjectDescriptionBuilderLayout({
-        projectId,
-        craftjs_json: query.getSerializedNodes(),
-      });
-    }
+    addProjectDescriptionBuilderLayout({
+      projectId,
+      craftjs_json: query.getSerializedNodes(),
+    });
   };
 
   const handleSelectLocale = (locale: SupportedLocale) => {
@@ -80,25 +84,22 @@ const ProjectDescriptionBuilderTopBar = ({
   return (
     <Container>
       <GoBackButton onClick={goBack} />
-      <Box display="flex" p="15px" flexGrow={1} alignItems="center">
+      <Box display="flex" p="15px" pl="8px" flexGrow={1} alignItems="center">
         <Box flexGrow={2}>
           {!project ? (
             <Spinner />
           ) : (
             <>
-              <Text mb="0px" color="textSecondary">
-                {localize(project.data.attributes.title_multiloc)}
-              </Text>
-              <Title variant="h4" as="h1">
+              <Title variant="h3" as="h1" mb="0px" mt="0px">
                 <FormattedMessage {...messages.descriptionTopicManagerText} />
               </Title>
+              <Text m="0" color="textSecondary">
+                {localize(project.data.attributes.title_multiloc)}
+              </Text>
             </>
           )}
         </Box>
-        <LocaleSwitcher
-          selectedLocale={selectedLocale}
-          onSelectLocale={handleSelectLocale}
-        />
+        <LocaleSelect locale={selectedLocale} setLocale={handleSelectLocale} />
         <Box ml="24px" />
         <PreviewToggle
           checked={previewEnabled}
@@ -106,19 +107,21 @@ const ProjectDescriptionBuilderTopBar = ({
         />
         <Button
           id="e2e-view-project-button"
-          buttonStyle="secondary-outlined"
           icon="eye"
-          mx="20px"
+          buttonStyle="secondary-outlined"
+          iconColor={colors.textPrimary}
+          iconSize="20px"
+          px="11px"
+          py="6px"
+          ml="32px"
           disabled={!project}
-          linkTo={`/projects/${project?.data.attributes.slug}`}
           openLinkInNewTab
-        >
-          <FormattedMessage {...messages.viewProject} />
-        </Button>
+          linkTo={`/projects/${project?.data.attributes.slug}`}
+        />
         <SaveButton
-          disabled={disableSave}
-          processing={isLoading}
-          onClick={handleSave}
+          isDisabled={disableSave}
+          isLoading={isLoading}
+          onSave={handleSave}
         />
         {isError && (
           <Text

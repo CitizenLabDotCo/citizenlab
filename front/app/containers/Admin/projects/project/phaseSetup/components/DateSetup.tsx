@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { format } from 'date-fns';
+import { format, parseISO, startOfDay } from 'date-fns';
 import { useParams } from 'react-router-dom';
 import { CLErrors } from 'typings';
 
@@ -45,13 +45,12 @@ const DateSetup = ({
 
   const { start_at, end_at } = formData;
 
-  const selectedRange = useMemo(
-    () => ({
-      from: start_at ? new Date(start_at) : undefined,
-      to: end_at ? new Date(end_at) : undefined,
-    }),
-    [start_at, end_at]
-  );
+  const selectedRange = useMemo(() => {
+    return {
+      from: start_at ? startOfDay(parseISO(start_at)) : undefined,
+      to: end_at ? startOfDay(parseISO(end_at)) : undefined,
+    };
+  }, [start_at, end_at]);
 
   const disabledRanges = useMemo(() => {
     if (!phases) return undefined;
@@ -59,8 +58,8 @@ const DateSetup = ({
     const otherPhases = phases.data.filter((phase) => phase.id !== phaseId);
     const disabledRanges = otherPhases.map(
       ({ attributes: { start_at, end_at } }) => ({
-        from: new Date(start_at),
-        to: end_at ? new Date(end_at) : undefined,
+        from: startOfDay(parseISO(start_at)),
+        to: end_at ? startOfDay(parseISO(end_at)) : undefined,
       })
     );
 
@@ -102,6 +101,8 @@ const DateSetup = ({
           }));
           setFormData({
             ...formData,
+            // TODO: Fix this the next time the file is edited.
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             start_at: from ? format(from, 'yyyy-MM-dd') : '',
             end_at: to ? format(to, 'yyyy-MM-dd') : '',
           });

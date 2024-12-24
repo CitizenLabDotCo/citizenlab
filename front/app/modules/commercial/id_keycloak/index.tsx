@@ -6,9 +6,9 @@ import {
 } from 'api/verification_methods/types';
 import { isLastVerificationMethod } from 'api/verification_methods/util';
 
-import { ModuleConfiguration } from 'utils/moduleUtils';
+import SSOVerificationButton from 'containers/Authentication/steps/_components/SSOVerificationButton';
 
-import KeycloakButton from './components/KeycloakButton';
+import { ModuleConfiguration } from 'utils/moduleUtils';
 
 const verificationMethodName: TVerificationMethodName = 'keycloak';
 const configuration: ModuleConfiguration = {
@@ -27,7 +27,7 @@ const configuration: ModuleConfiguration = {
           verificationMethods
         );
         return (
-          <KeycloakButton
+          <SSOVerificationButton
             verificationMethod={method as IDKeycloakMethod}
             last={last}
             {...props}

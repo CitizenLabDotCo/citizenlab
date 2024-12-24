@@ -10,11 +10,12 @@ import {
 } from 'api/user_custom_fields/types';
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useAppConfigurationLocales, {
+  createMultiloc,
+} from 'hooks/useAppConfigurationLocales';
 
 import GroupFilter from 'containers/Admin/dashboard/components/filters/GroupFilter';
 import groupFilterMessages from 'containers/Admin/dashboard/messages';
-import { createMultiloc } from 'containers/Admin/reporting/utils/multiloc';
 
 import {
   useIntl,

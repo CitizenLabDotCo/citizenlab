@@ -231,6 +231,19 @@
             "description": "Link to the customer portal in Planhat.",
             "type": "string",
             "format": "uri"
+          },
+          "anonymous_name_scheme":  {
+            "title": "Scheme to use when displaying anonymous names",
+            "description": "Default is User 123456.",
+            "type": "string",
+            "enum": ["user", "animal"],
+            "default": "user"
+          },
+          "private_attributes_in_export":  {
+            "title": "Allow private attributes (user name & email) in native survey exports & analysis?",
+            "description": "When disabled exports and analyses on native survey phases will not return any private attributes.",
+            "type": "boolean",
+            "default": true
           }
         }
       },
@@ -339,6 +352,18 @@
         }
       },
 
+      "project_preview_link" : {
+        "type": "object",
+        "title": "Project Preview Link",
+        "description": "Allows sharing a preview of a draft project via a link, which can be found in the project's settings.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
       "password_login": {
         "type": "object",
         "title": "Password Login",
@@ -439,11 +464,12 @@
             "type": "string",
             "description": "The Login Mechanism Name is used for user-facing copy. For instance, \"Sign up with {login_mechanism_name}.\"."
           },
-          "admin_only": {
-            "title": "Admin only",
-            "type": "boolean",
-            "default": false,
-            "description": "Should this login mechanism be available only for admins at /sign-in/admin ?"
+          "visibility": {
+            "title": "Visibility",
+            "type": "string",
+            "enum": ["show", "link", "hide"],
+            "default": "show",
+            "description": "Should this login mechanism be shown with other options to everyone, be hidden but available at /sign-in/admin or linked from the login modal via an 'admin options' link?"
           }
         }
       },
@@ -782,13 +808,25 @@
 
       "prescreening": {
         "type": "object",
-        "title": "Screening",
-        "description": "When active, screening can be activated on a per-project basis, which requires admins/moderators to explicitly approve each input before it becomes visible to the public.",
+        "title": "Screening (proposals)",
+        "description": "When active, screening can be activated for proposals phases, which requires admins/moderators to explicitly approve each input before it becomes visible to the public.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": true },
           "enabled": { "type": "boolean", "default": true }
+        }
+      },
+
+      "prescreening_ideation": {
+        "type": "object",
+        "title": "Screening (ideation)",
+        "description": "When active, screening can be activated for ideation phases, which requires admins/moderators to explicitly approve each input before it becomes visible to the public.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
         }
       },
 
@@ -951,7 +989,8 @@
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": false}
+          "enabled": { "type": "boolean", "default": false},
+          "extended_blocking": { "type": "boolean", "default": false}
         }
       },
 
@@ -981,8 +1020,8 @@
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
-          "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false}
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
         }
       },
 
@@ -1350,6 +1389,48 @@
         "type": "object",
         "title": "Management Feed",
         "description": "Experimental feature: A minimal list of selected actions performed by admins or managers in the last 30 days. Not all actions are included.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "project_review": {
+        "type": "object",
+        "title": "Project review",
+        "description": "Enables the ability to review projects before they are published.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "similar_inputs": {
+        "type": "object",
+        "title": "Experimental feature: Similar inputs",
+        "description":	"Show similar inputs (ideas) when viewing the page of an input, using AI (Cohere multilingual word embeddings). Inputs posted while the feature was disabled will not be included.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "required-settings": ["admins_only"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false},
+          "admins_only": {
+            "title": "Only admins can see similar inputs",
+            "type": "boolean",
+            "default": true
+          }
+        }
+      },
+
+      "platform_templates": {
+        "type": "object",
+        "title": "Platform templates",
+        "description": "Allow non-superadmins to create reports using platform templates.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {

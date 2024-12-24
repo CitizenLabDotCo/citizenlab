@@ -81,8 +81,12 @@ interface Props {
 
 const EmptyContainer = ({ titleMessage, descriptionMessage }: Props) => {
   const objectFitCoverSupported =
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     window['CSS'] &&
     typeof CSS !== 'undefined' &&
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     CSS.supports &&
     CSS.supports('object-fit: cover');
 

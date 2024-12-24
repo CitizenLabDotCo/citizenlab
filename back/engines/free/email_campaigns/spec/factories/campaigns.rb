@@ -178,6 +178,14 @@ FactoryBot.define do
     enabled { true }
   end
 
+  factory :project_review_request_campaign, class: EmailCampaigns::Campaigns::ProjectReviewRequest do
+    enabled { true }
+  end
+
+  factory :project_review_state_change_campaign, class: EmailCampaigns::Campaigns::ProjectReviewRequest do
+    enabled { true }
+  end
+
   factory :status_change_on_idea_you_follow_campaign, class: EmailCampaigns::Campaigns::StatusChangeOnIdeaYouFollow do
     enabled { true }
   end
@@ -210,11 +218,6 @@ FactoryBot.define do
   end
 
   factory :user_digest_campaign, class: EmailCampaigns::Campaigns::UserDigest do
-    enabled { true }
-    schedule { weekly_schedule }
-  end
-
-  factory :your_proposed_initiatives_digest_campaign, class: EmailCampaigns::Campaigns::YourProposedInitiativesDigest do
     enabled { true }
     schedule { weekly_schedule }
   end

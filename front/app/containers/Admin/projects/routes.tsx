@@ -66,6 +66,8 @@ const ReportTab = lazy(() => import('./project/information/ReportTab'));
 
 const AdminProjectProposals = lazy(() => import('./project/proposals'));
 
+const AdminProjectsData = lazy(() => import('./project/data'));
+
 export function adminProjectsProjectPath(projectId: string): RouteType {
   return `/admin/projects/${projectId}`;
 }
@@ -77,6 +79,7 @@ export enum projectsRoutes {
   published = 'published',
   draft = 'draft',
   archived = 'archived',
+  pending = 'pending',
   projectIdeaId = ':projectId/ideas/:ideaId',
   projectSettings = ':projectId/settings',
   projectTraffic = 'traffic',
@@ -91,6 +94,7 @@ export enum projectsRoutes {
   projectEventsId = 'events/:id',
   projectSettingsTags = 'tags',
   projectSettingsAccessRights = 'access-rights',
+  projectSettingsData = 'data',
   projectId = ':projectId',
   projectIdPhases = 'phases',
   projectPhasesSetup = 'setup',
@@ -120,6 +124,7 @@ export type projectsRouteTypes =
   | AdminRoute<`${projectsRoutes.projects}/${projectsRoutes.published}`>
   | AdminRoute<`${projectsRoutes.projects}/${projectsRoutes.draft}`>
   | AdminRoute<`${projectsRoutes.projects}/${projectsRoutes.archived}`>
+  | AdminRoute<`${projectsRoutes.projects}/${projectsRoutes.pending}`>
   | AdminRoute<`${projectsRoutes.projects}/${projectsRoutes.new}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/ideas/${string}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/settings`>
@@ -203,6 +208,15 @@ const createAdminProjectsRoutes = () => {
           </PageLoading>
         ),
       },
+      {
+        path: projectsRoutes.pending,
+        element: (
+          <PageLoading>
+            <AdminProjectsList />
+          </PageLoading>
+        ),
+      },
+
       ...moduleConfiguration.routes['admin.project_templates'],
       ...moduleConfiguration.routes['admin.projects'],
       {
@@ -254,6 +268,14 @@ const createAdminProjectsRoutes = () => {
             element: (
               <PageLoading>
                 <AdminProjectPermissions />
+              </PageLoading>
+            ),
+          },
+          {
+            path: projectsRoutes.projectSettingsData,
+            element: (
+              <PageLoading>
+                <AdminProjectsData />
               </PageLoading>
             ),
           },

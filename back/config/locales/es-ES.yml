@@ -266,6 +266,7 @@ es:
       first_name: 'Nombre(s)'
       image_url: 'URL de la imagen'
       input_id: 'ID'
+      manual_votes: 'Votos offline'
       input_url: 'URL'
       last_name: 'Apellido'
       latitude: 'Latitud'
@@ -343,6 +344,8 @@ es:
       you_can_sign_in_again_from: "Puedes acceder de nuevo desde %{date}"
   user:
     anon_first_name: "Usuario"
+    anon_scheme:
+      animals: 'caimán,cocodrilo,alpaca,hormiga,antílope,simio,armadillo,babuino,tejón,murciélago,oso,castor,abeja,escarabajo,búfalo,mariposa,camello,búfalo de agua,caribú,gato,ganado,guepardo,chimpancé,chinchilla,cigarra,almeja,cucaracha,bacalao,coyote,cangrejo,grillo,cuervo,cuervo,ciervo,dinosaurio,perro,delfín,marsopa,pato,águila,anguila,elefante,alce,hurón,pez,mosca,zorro,rana,sapo,jerbo,jirafa,mosquito,ñu,ñu,cabra,pez de colores,ganso,gorila,saltamontes,cobaya,hámster,liebre,erizo,arenque,hipopótamo,avispón,caballo,sabueso,hiena,impala,chacal,medusa,canguro,wallaby,koala,leopardo,león,lagarto,llama,langosta,piojo,guacamayo,ánade real,mamut,manatí,marta,visón,pececillo,topo,alce,mosquito,ratón,rata,mula,rata almizclera,nutria,buey,ostra,panda,cerdo,ornitorrinco,puercoespín,perrito de las praderas,carlino, conejo, mapache, reno, rinoceronte, salmón, sardina, escorpión, foca, león marino, serval, tiburón, oveja, mofeta, caracol, serpiente, araña, ardilla, cisne, termita, tigre, trucha, tortuga, morsa, avispa, ballena, lobo, wombat, marmota, gusano, yak, chaqueta amarilla y cebra.'
   time:
     am: soy
     formats:

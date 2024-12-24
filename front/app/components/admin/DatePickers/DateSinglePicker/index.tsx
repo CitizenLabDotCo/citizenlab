@@ -36,6 +36,8 @@ const DateSinglePicker = ({
               defaultMonth={defaultMonth}
               onChange={(date) => {
                 // We don't allow deselecting dates
+                // TODO: Fix this the next time the file is edited.
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 if (!date) return;
                 onChange(date);
               }}

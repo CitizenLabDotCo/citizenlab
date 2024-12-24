@@ -13,6 +13,14 @@ RSpec.describe EmailCampaigns::Campaigns::ManualProjectParticipants do
     it { is_expected.to validate_presence_of(:context_id) }
 
     it { is_expected.to belong_to(:project) }
+
+    it 'destroys the campaign when the project is destroyed' do
+      campaign = create(:manual_project_participants_campaign)
+      project = campaign.project
+      project.destroy!
+      expect { project.reload }.to raise_error(ActiveRecord::RecordNotFound)
+      expect { campaign.reload }.to raise_error(ActiveRecord::RecordNotFound)
+    end
   end
 
   describe '#apply_recipient_filters' do

@@ -114,6 +114,8 @@ const FirstTagAssistance = ({ tagId, onHide }: Props) => {
     anchorElement = document.getElementById(`tag-${tagId}`);
   } else if (step === 'step2-manual') {
     anchorElement = document.getElementById('tags-control');
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   } else if (step === 'step2-auto') {
     anchorElement = document.getElementById('auto-tag-button');
   }

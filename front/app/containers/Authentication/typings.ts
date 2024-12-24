@@ -7,10 +7,6 @@ import { SSOProvider } from 'api/authentication/singleSignOn';
 import { SuccessAction } from './SuccessActions/actions';
 import { getStepConfig } from './useSteps/stepConfig';
 
-export interface ModalProps {
-  setModalOpen?: (bool: boolean) => void;
-}
-
 export type ErrorCode =
   | 'account_creation_failed'
   | 'wrong_confirmation_code'

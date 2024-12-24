@@ -3,8 +3,8 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import { UserComponent } from '@craftjs/core';
 
-import Events from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/Events';
-import Projects from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/Projects';
+import Events from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Widgets/Events';
+import Projects from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Widgets/ProjectsAndFoldersLegacy';
 
 const Container: UserComponent = ({ children }) => {
   return (

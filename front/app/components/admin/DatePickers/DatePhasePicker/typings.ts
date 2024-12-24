@@ -11,5 +11,5 @@ export interface Props {
   startMonth?: Date;
   endMonth?: Date;
   defaultMonth?: Date;
-  onUpdateRange: (range: DateRange) => void;
+  onUpdateRange: (range: Partial<DateRange>) => void;
 }

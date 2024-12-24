@@ -33,6 +33,14 @@ export default defineMessages({
     id: 'app.Admin.ManagementFeed.created',
     defaultMessage: 'Created',
   },
+  projectReviewRequested: {
+    id: 'app.Admin.ManagementFeed.projectReviewRequested',
+    defaultMessage: 'Project review requested',
+  },
+  projectReviewApproved: {
+    id: 'app.Admin.ManagementFeed.projectReviewApproved',
+    defaultMessage: 'Project approved',
+  },
   project: {
     id: 'app.Admin.ManagementFeed.project',
     defaultMessage: 'Project',
@@ -85,5 +93,10 @@ export default defineMessages({
   noActivityFound: {
     id: 'app.Admin.ManagementFeed.noActivityFound',
     defaultMessage: 'No activity found',
+  },
+  managementFeedNudge: {
+    id: 'app.Admin.ManagementFeed.managementFeedNudge',
+    defaultMessage:
+      'Accessing the management feed is not included in your current license. Reach out to your GovSuccess Manager to learn more about it.',
   },
 });

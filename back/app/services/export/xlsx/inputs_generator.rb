@@ -1,17 +1,17 @@
 module Export
   module Xlsx
     class InputsGenerator
-      def generate_inputs_for_phase(phase_id, include_private_attributes)
+      def generate_inputs_for_phase(phase_id)
         phase = eager_load_phase(phase_id)
         create_stream do |workbook|
-          create_phase_sheet(workbook, phase, include_private_attributes)
+          create_phase_sheet(workbook, phase)
         end
       end
 
-      def generate_inputs_for_project(project_id, include_private_attributes)
+      def generate_inputs_for_project(project_id)
         project = eager_load_project(project_id)
         create_stream do |workbook|
-          generate_for_timeline_project(workbook, project, include_private_attributes)
+          generate_for_timeline_project(workbook, project)
         end
       end
 
@@ -40,17 +40,17 @@ module Export
         inputs.includes(:project, :author, :ideas_topics, :topics, :idea_files, :idea_status, :assignee).order(:created_at)
       end
 
-      def generate_for_timeline_project(workbook, project, include_private_attributes)
+      def generate_for_timeline_project(workbook, project)
         project.phases.each do |phase|
           next if !phase.pmethod.supports_exports?
 
-          create_phase_sheet(workbook, phase, include_private_attributes)
+          create_phase_sheet(workbook, phase)
         end
       end
 
-      def create_phase_sheet(workbook, phase, include_private_attributes)
-        inputs = eager_load_inputs(phase.ideas.published)
-        sheet_generator = InputSheetGenerator.new inputs, phase, include_private_attributes
+      def create_phase_sheet(workbook, phase)
+        inputs = eager_load_inputs(phase.ideas.submitted_or_published)
+        sheet_generator = InputSheetGenerator.new inputs, phase
         sheet_name = MultilocService.new.t phase.title_multiloc
         sheet_generator.generate_sheet(workbook, sheet_name)
       end

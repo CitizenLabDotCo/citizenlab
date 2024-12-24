@@ -5,6 +5,10 @@ export default defineMessages({
     id: 'app.components.IdeaCards.showMore',
     defaultMessage: 'Show more',
   },
+  filters: {
+    id: 'app.components.IdeaCards.filters',
+    defaultMessage: 'Filters',
+  },
   noFilteredResults: {
     id: 'app.containers.IdeaCards.noFilteredResults',
     defaultMessage:
@@ -14,6 +18,55 @@ export default defineMessages({
     id: 'app.containers.IdeaCards.tryDifferentFilters',
     defaultMessage:
       'No results found. Please try a different filter or search term.',
+  },
+  numberResults: {
+    id: 'app.containers.IdeaCards.numberResults',
+    defaultMessage: 'Results ({postCount})',
+  },
+  xIdeas: {
+    id: 'app.containers.IdeaCards.xIdeas2',
+    defaultMessage:
+      '{ideasCount, plural, no {{ideasCount} ideas} one {{ideasCount} idea} other {{ideasCount} ideas}}',
+  },
+  xOptions: {
+    id: 'app.containers.IdeaCards.xOptions2',
+    defaultMessage:
+      '{ideasCount, plural, no {{ideasCount} options} one {{ideasCount} option} other {{ideasCount} options}}',
+  },
+  xProjects: {
+    id: 'app.containers.IdeaCards.xProjects3',
+    defaultMessage:
+      '{ideasCount, plural, no {{ideasCount} projects} one {{ideasCount} project} other {{ideasCount} projects}}',
+  },
+  xQuestions: {
+    id: 'app.containers.IdeaCards.xQuestion2',
+    defaultMessage:
+      '{ideasCount, plural, no {{ideasCount} questions} one {{ideasCount} question} other {{ideasCount} questions}}',
+  },
+  xComments: {
+    id: 'app.containers.IdeaCards.xComments3',
+    defaultMessage:
+      '{ideasCount, plural, no {{ideasCount} comments} one {{ideasCount} comment} other {{ideasCount} comments}}',
+  },
+  xContributions: {
+    id: 'app.containers.IdeaCards.xContributions2',
+    defaultMessage:
+      '{ideasCount, plural, no {{ideasCount} contributions} one {{ideasCount} contribution} other {{ideasCount} contributions}}',
+  },
+  xProposals: {
+    id: 'app.containers.IdeaCards.xProposals2',
+    defaultMessage:
+      '{ideasCount, plural, no {{ideasCount} proposals} one {{ideasCount} proposal} other {{ideasCount} proposals}}',
+  },
+  xInitiatives: {
+    id: 'app.containers.IdeaCards.xInitiatives2',
+    defaultMessage:
+      '{ideasCount, plural, no {{ideasCount} initiatives} one {{ideasCount} initiative} other {{ideasCount} initiatives}}',
+  },
+  xPetitions: {
+    id: 'app.containers.IdeaCards.xPetitions2',
+    defaultMessage:
+      '{ideasCount, plural, no {{ideasCount} petitions} one {{ideasCount} petition} other {{ideasCount} petitions}}',
   },
   topics: {
     id: 'app.containers.IdeaCards.topics',
@@ -63,6 +116,10 @@ export default defineMessages({
     id: 'app.containers.IdeaCards.oldest',
     defaultMessage: 'Oldest',
   },
+  mostDiscussed: {
+    id: 'app.containers.IdeaCards.mostDiscussed',
+    defaultMessage: 'Most discussed',
+  },
   map: {
     id: 'app.containers.IdeaCards.map',
     defaultMessage: 'Map',
@@ -80,19 +137,6 @@ export default defineMessages({
     id: 'app.containers.IdeaCards.all',
     defaultMessage: 'All',
   },
-  filter: {
-    id: 'app.containers.IdeaCards.filter',
-    defaultMessage: 'Filter',
-  },
-  showResults: {
-    id: 'app.containers.IdeaCards.showResults',
-    defaultMessage: 'Show results',
-  },
-  showXResults: {
-    id: 'app.containers.IdeaCards.showXResults',
-    defaultMessage:
-      'Show {ideasCount, plural, no {# results} one {# result} other {# results}}',
-  },
   resetFilters: {
     id: 'app.containers.IdeaCards.resetFilters',
     defaultMessage: 'Reset filters',
@@ -104,5 +148,42 @@ export default defineMessages({
   a11y_ideasHaveBeenSorted: {
     id: 'app.components.IdeaCards.a11y_ideasHaveBeenSorted',
     defaultMessage: '{sortOder} ideas have loaded.',
+  },
+  // #input_term_copy
+  ideas: {
+    id: 'app.containers.IdeaCards.ideaTerm',
+    defaultMessage: 'Ideas',
+  },
+  projects: {
+    id: 'app.containers.IdeaCards.projectTerm',
+    defaultMessage: 'Projects',
+  },
+  questions: {
+    id: 'app.containers.IdeaCards.questionTerm',
+    defaultMessage: 'Questions',
+  },
+  options: {
+    id: 'app.containers.IdeaCards.optionTerm',
+    defaultMessage: 'Options',
+  },
+  issues: {
+    id: 'app.containers.IdeaCards.issueTerm',
+    defaultMessage: 'Issues',
+  },
+  contributions: {
+    id: 'app.containers.IdeaCards.contributions',
+    defaultMessage: 'Contributions',
+  },
+  proposals: {
+    id: 'app.containers.IdeaCards.proposals',
+    defaultMessage: 'Proposals',
+  },
+  initiatives: {
+    id: 'app.containers.IdeaCards.initiatives',
+    defaultMessage: 'Initiatives',
+  },
+  petitions: {
+    id: 'app.containers.IdeaCards.petitions',
+    defaultMessage: 'Petitions',
   },
 });

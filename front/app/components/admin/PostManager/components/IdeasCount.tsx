@@ -3,7 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import useIdeasCount from 'api/idea_count/useIdeasCount';
-import { IQueryParameters } from 'api/ideas/types';
+import { IIdeaQueryParameters } from 'api/ideas/types';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -21,7 +21,7 @@ interface Props {
   // We are using ideas, not ideas_count query parameter types.
   // This is because the IdeasCount component is used in the PostManager,
   // which uses the ideas query parameter types.
-  queryParameters: IQueryParameters;
+  queryParameters: IIdeaQueryParameters;
 }
 
 const IdeasCount = ({ project, queryParameters }: Props) => {

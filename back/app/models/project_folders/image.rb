@@ -10,6 +10,7 @@
 #  ordering          :integer
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
+#  alt_text_multiloc :jsonb
 #
 # Indexes
 #

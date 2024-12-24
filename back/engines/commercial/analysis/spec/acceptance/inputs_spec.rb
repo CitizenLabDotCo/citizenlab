@@ -185,12 +185,53 @@ resource 'Inputs' do
   get 'web_api/v1/analyses/:analysis_id/inputs/:id' do
     before { admin_header_token }
 
-    let(:analysis) { create(:analysis) }
     let(:analysis_id) { analysis.id }
-    let(:input) { create(:idea, project: analysis.project) }
     let(:id) { input.id }
-    example_request 'get one inputs in the analysis by id' do
-      expect(status).to eq(200)
+
+    context 'idea analysis' do
+      let(:analysis) { create(:analysis) }
+      let(:input) { create(:idea, project: analysis.project) }
+
+      example_request 'get one ideation in the analysis by id' do
+        assert_status 200
+      end
+    end
+
+    context 'survey analysis' do
+      before { create(:idea_status_proposed) }
+
+      let(:analysis) { create(:survey_analysis) }
+      let(:input) { create(:native_survey_response, project: analysis.phase.project) }
+
+      example 'get one survey response in the analysis by id when private attributes are turned on', document: false do
+        do_request
+
+        assert_status 200
+        expect(json_response_body[:included].first.dig(:attributes, :first_name)).not_to be_nil
+        expect(json_response_body[:included].first.dig(:attributes, :last_name)).not_to be_nil
+        expect(json_response_body[:included].first.dig(:attributes, :slug)).not_to be_nil
+      end
+
+      example 'get one survey response in the analysis by id when private attributes are turned off', document: false do
+        config = AppConfiguration.instance
+        config.settings['core']['private_attributes_in_export'] = false
+        config.save!
+        do_request
+
+        assert_status 200
+        expect(json_response_body[:included].first.dig(:attributes, :first_name)).to be_nil
+        expect(json_response_body[:included].first.dig(:attributes, :last_name)).to be_nil
+        expect(json_response_body[:included].first.dig(:attributes, :slug)).to be_nil
+      end
+    end
+
+    context 'proposals analysis' do
+      let(:analysis) { create(:proposals_analysis) }
+      let(:input) { create(:proposal, project: analysis.source_project, phases: [analysis.phase]) }
+
+      example_request 'get one proposal in the analysis by id' do
+        assert_status 200
+      end
     end
   end
 end

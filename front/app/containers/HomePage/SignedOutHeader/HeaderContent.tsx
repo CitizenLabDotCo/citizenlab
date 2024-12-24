@@ -6,7 +6,7 @@ import styled from 'styled-components';
 
 import useLocalize from 'hooks/useLocalize';
 
-import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/CraftComponents/HomepageBanner';
+import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Widgets/HomepageBanner';
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
 import AvatarBubbles from 'components/AvatarBubbles';
@@ -63,9 +63,9 @@ const HeaderContent = ({
   const signUpIn = (event: React.FormEvent) => {
     event.preventDefault();
     trackEventByName(tracks.clickCreateAccountCTA, {
-      extra: { location: 'signed-out header' },
+      location: 'signed-out header',
     });
-    triggerAuthenticationFlow();
+    triggerAuthenticationFlow({}, 'signup');
   };
   const buttonStyle = getButtonStyle(fontColors);
 
@@ -105,6 +105,7 @@ const HeaderContent = ({
         </HeaderTitle>
 
         <HeaderSubtitle
+          variant="h2"
           hasHeader={!!headerImage}
           className="e2e-signed-out-header-subtitle"
           fontColors={fontColors}
@@ -114,7 +115,9 @@ const HeaderContent = ({
           {headerSubtitle}
         </HeaderSubtitle>
 
-        {displayHeaderAvatars && <StyledAvatarBubbles />}
+        {displayHeaderAvatars && (
+          <StyledAvatarBubbles showParticipantText={false} />
+        )}
 
         <CTA
           buttonStyle={buttonStyle}

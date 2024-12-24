@@ -1,16 +1,9 @@
 # frozen_string_literal: true
 
 class IdeaCommentPolicy < ApplicationPolicy
-  class Scope
-    attr_reader :user, :scope
-
-    def initialize(user, scope)
-      @user  = user
-      @scope = scope
-    end
-
+  class Scope < ApplicationPolicy::Scope
     def resolve
-      scope.where(post_id: Pundit.policy_scope(user, Idea))
+      scope.where(post_id: scope_for(Idea))
     end
   end
 
@@ -19,10 +12,12 @@ class IdeaCommentPolicy < ApplicationPolicy
   end
 
   def create?
+    return false unless record.post
+
     (
       user&.active? &&
       (record.author_id == user.id) &&
-      ProjectPolicy.new(user, record.post.project).show? &&
+      policy_for(record.post.project).show? &&
       check_commenting_allowed(record, user)
     ) || (
       user&.active? && UserRoleService.new.can_moderate?(record.post, user)
@@ -34,7 +29,7 @@ class IdeaCommentPolicy < ApplicationPolicy
   end
 
   def show?
-    IdeaPolicy.new(user, record.post).show?
+    policy_for(record.post).show?
   end
 
   def update?

@@ -115,6 +115,8 @@ const InsightFooter = ({
         </Box>
       </Tooltip>
 
+      {/* TODO: Fix this the next time the file is edited. */}
+      {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
       {mainCustomFieldId && additionalCustomFieldIds?.length > 0 && (
         <Tooltip
           zIndex={99999}
@@ -129,6 +131,8 @@ const InsightFooter = ({
                     phaseId={phaseId}
                   />
                 </li>
+                {/* TODO: Fix this the next time the file is edited. */}
+                {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
                 {additionalCustomFieldIds?.map((customFieldId) => (
                   <li key={customFieldId}>
                     <CustomFieldTitle
@@ -155,7 +159,6 @@ const InsightFooter = ({
           </Box>
         </Tooltip>
       )}
-
       {generatedAt && (
         <Text m="0px" fontSize="s">
           {timeAgo(Date.parse(generatedAt), locale)}

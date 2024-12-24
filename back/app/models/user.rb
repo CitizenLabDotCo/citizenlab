@@ -137,6 +137,8 @@ class User < ApplicationRecord
   has_many :idea_imports, class_name: 'BulkImportIdeas::IdeaImport', foreign_key: :import_user_id, dependent: :nullify
   has_many :initiatives, foreign_key: :author_id, dependent: :nullify
   has_many :assigned_initiatives, class_name: 'Initiative', foreign_key: :assignee_id, dependent: :nullify
+  has_many :manual_votes_last_updated_ideas, class_name: 'Idea', foreign_key: :manual_votes_last_updated_by_id, dependent: :nullify
+  has_many :manual_voters_last_updated_phases, class_name: 'Phase', foreign_key: :manual_voters_last_updated_by_id, dependent: :nullify
   has_many :comments, foreign_key: :author_id, dependent: :nullify
   has_many :internal_comments, foreign_key: :author_id, dependent: :nullify
   has_many :official_feedbacks, dependent: :nullify
@@ -160,6 +162,9 @@ class User < ApplicationRecord
   has_many :baskets, -> { order(:phase_id) }
   before_destroy :destroy_baskets
   has_many :initiative_status_changes, dependent: :nullify
+
+  has_many :requested_project_reviews, class_name: 'ProjectReview', foreign_key: :requester_id, dependent: :nullify
+  has_many :assigned_project_reviews, class_name: 'ProjectReview', foreign_key: :reviewer_id, dependent: :nullify
 
   store_accessor :custom_field_values, :gender, :birthyear, :domicile, :education
   store_accessor :onboarding, :topics_and_areas
@@ -236,22 +241,12 @@ class User < ApplicationRecord
   def full_name
     return [first_name, last_name].compact.join(' ') unless no_name?
 
-    [anon_first_name, anon_last_name].compact.join(' ')
+    anon = AnonymousNameService.new(self)
+    [anon.first_name, anon.last_name].compact.join(' ')
   end
 
   def no_name?
-    !self[:last_name] && !self[:first_name] && !invite_pending?
-  end
-
-  # Anonymous names to use if no first name and last name
-  def anon_first_name
-    I18n.t 'user.anon_first_name'
-  end
-
-  def anon_last_name
-    # Generate a numeric last name in the format of '123456'
-    name_key = email || unique_code || id
-    (name_key.sum**2).to_s[0, 6]
+    self[:last_name].blank? && self[:first_name].blank? && !invite_pending?
   end
 
   def authenticate(unencrypted_password)
@@ -259,6 +254,8 @@ class User < ApplicationRecord
       # Allow authentication without password - but only if confirmation is required on the user
       unencrypted_password.empty? && confirmation_required? ? self : false
     else
+      return false unless AppConfiguration.instance.feature_activated?('password_login') || super_admin?
+
       BCrypt::Password.new(password_digest).is_password?(unencrypted_password) && self
     end
   end

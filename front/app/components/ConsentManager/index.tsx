@@ -34,16 +34,6 @@ const ConsentManager = () => {
   const { data: appConfiguration } = useAppConfiguration();
   const { data: authUser } = useAuthUser();
 
-  useEffect(() => {
-    const cookieConsent = getConsent();
-    setCookieConsent(cookieConsent);
-
-    eventEmitter.emit<ISavedDestinations>(
-      'destinationConsentChanged',
-      cookieConsent?.savedChoices || {}
-    );
-  }, []);
-
   const resetPreferences = useCallback(() => {
     setPreferences(
       getCurrentPreferences(
@@ -53,6 +43,28 @@ const ConsentManager = () => {
       )
     );
   }, [appConfiguration, authUser, cookieConsent]);
+
+  useEffect(() => {
+    const cookieConsent = getConsent();
+    setCookieConsent(cookieConsent);
+
+    const defaultPreferences = getCurrentPreferences(
+      appConfiguration?.data,
+      authUser?.data,
+      cookieConsent
+    );
+
+    if (defaultPreferences.functional === undefined) {
+      defaultPreferences.functional = true;
+    }
+
+    setPreferences(defaultPreferences);
+
+    eventEmitter.emit<ISavedDestinations>(
+      'destinationConsentChanged',
+      cookieConsent?.savedChoices || {}
+    );
+  }, [appConfiguration?.data, authUser?.data]);
 
   const updatePreference = useCallback(
     (category: TCategory, value: boolean) => {

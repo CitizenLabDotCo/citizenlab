@@ -12,11 +12,11 @@ import styled from 'styled-components';
 
 import useIdeaCustomFieldsSchema from 'api/idea_json_form_schema/useIdeaJsonFormSchema';
 import useIdeaMarkers from 'api/idea_markers/useIdeaMarkers';
-import { IQueryParameters } from 'api/ideas/types';
+import { IIdeaQueryParameters } from 'api/ideas/types';
 import useInfiniteIdeas from 'api/ideas/useInfiniteIdeas';
-import { IdeaDefaultSortMethod } from 'api/phases/types';
+import { IdeaSortMethod } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
-import { ideaDefaultSortMethodFallback } from 'api/phases/utils';
+import { IdeaSortMethodFallback } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
 
 import useLocale from 'hooks/useLocale';
@@ -32,7 +32,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { isFieldEnabled } from 'utils/projectUtils';
 
 import messages from '../messages';
-import SelectSort, { Sort } from '../shared/Filters/SortFilterDropdown';
+import SelectSort from '../shared/Filters/SortFilterDropdown';
 import StatusFilterDropdown from '../shared/Filters/StatusFilterDropdown';
 import TopicFilterDropdown from '../shared/Filters/TopicFilterDropdown';
 import IdeasView from '../shared/IdeasView';
@@ -73,21 +73,21 @@ const StyledSearchInput = styled(SearchInput)`
 
 export interface QueryParametersUpdate {
   search?: string;
-  sort?: Sort;
+  sort?: IdeaSortMethod;
   projects?: string[];
   topics?: string[];
   idea_status?: string;
 }
 
 export interface Props {
-  ideaQueryParameters: IQueryParameters;
+  ideaQueryParameters: IIdeaQueryParameters;
   onUpdateQuery: (newParams: QueryParametersUpdate) => void;
 
   // other
   projectId?: string;
   phaseId?: string;
   showViewToggle?: boolean | undefined;
-  defaultSortingMethod?: IdeaDefaultSortMethod;
+  defaultSortingMethod?: IdeaSortMethod;
   defaultView?: 'card' | 'map';
   className?: string;
   allowProjectsFilter?: boolean;
@@ -134,14 +134,27 @@ const IdeasWithoutFiltersSidebar = ({
     return data?.pages.map((page) => page.data).flat();
   }, [data?.pages]);
   const { data: phase } = usePhase(phaseId);
-  const { data: ideaMarkers } = useIdeaMarkers({
-    projectIds: projectId ? [projectId] : null,
-    phaseId,
-    ...ideaQueryParameters,
-  });
+  const locationEnabled = !isNilOrError(ideaCustomFieldsSchemas)
+    ? isFieldEnabled(
+        'location_description',
+        ideaCustomFieldsSchemas.data.attributes,
+        locale
+      )
+    : false;
+  const loadIdeaMarkers = locationEnabled && selectedView === 'map';
+  const { data: ideaMarkers } = useIdeaMarkers(
+    {
+      projectIds: projectId ? [projectId] : null,
+      phaseId,
+      ...ideaQueryParameters,
+    },
+    loadIdeaMarkers
+  );
 
   const handleSearchOnChange = useCallback(
     (search: string) => {
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       onUpdateQuery({ search: search ?? undefined });
     },
     [onUpdateQuery]
@@ -151,7 +164,7 @@ const IdeasWithoutFiltersSidebar = ({
     onUpdateQuery({ projects });
   };
 
-  const handleSortOnChange = (sort: Sort) => {
+  const handleSortOnChange = (sort: IdeaSortMethod) => {
     trackEventByName(tracks.sortingFilter, {
       sort,
     });
@@ -161,7 +174,7 @@ const IdeasWithoutFiltersSidebar = ({
 
   const handleTopicsOnChange = (topics: string[]) => {
     trackEventByName(tracks.topicsFilter, {
-      topics,
+      topics: topics.toString(),
     });
 
     topics.length === 0
@@ -176,13 +189,6 @@ const IdeasWithoutFiltersSidebar = ({
 
     onUpdateQuery({ idea_status });
   };
-  const locationEnabled = !isNilOrError(ideaCustomFieldsSchemas)
-    ? isFieldEnabled(
-        'location_description',
-        ideaCustomFieldsSchemas.data.attributes,
-        locale
-      )
-    : false;
 
   const topicsEnabled = !isNilOrError(ideaCustomFieldsSchemas)
     ? isFieldEnabled(
@@ -232,7 +238,7 @@ const IdeasWithoutFiltersSidebar = ({
                 w={showSearch ? 'auto' : '100%'}
               >
                 <SelectSort
-                  value={defaultSortingMethod ?? ideaDefaultSortMethodFallback}
+                  value={defaultSortingMethod ?? IdeaSortMethodFallback}
                   phase={phase?.data}
                   onChange={handleSortOnChange}
                   alignment={!smallerThanTablet ? 'right' : 'left'}

@@ -20,6 +20,7 @@ import Editor from '../../components/Editor';
 export const FullScreenPreview = () => {
   const [search] = useSearchParams();
   const selectedLocale =
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     (search.get('selected_locale') as SupportedLocale) || undefined;
   const [draftData, setDraftData] = useState<SerializedNodes | undefined>();
   const platformLocale = useLocale();
@@ -30,7 +31,7 @@ export const FullScreenPreview = () => {
   }
 
   const savedEditorData = homepage?.data.attributes.craftjs_json
-    ? homepage?.data.attributes.craftjs_json
+    ? homepage.data.attributes.craftjs_json
     : undefined;
 
   const editorData = draftData || savedEditorData;

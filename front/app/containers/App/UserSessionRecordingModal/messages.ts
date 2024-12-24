@@ -15,6 +15,10 @@ export default defineMessages({
     defaultMessage:
       'The sole purpose of the recorded data is to improve the website. None of your data will be shared with a 3rd party. Any sensitive information you enter will be filtered.',
   },
+  modalDescriptionFaq: {
+    id: 'app.sessionRecording.modalDescriptionFaq',
+    defaultMessage: 'FAQ here.',
+  },
   modalDescription3: {
     id: 'app.sessionRecording.modalDescription3',
     defaultMessage: 'Do you accept?',

@@ -214,6 +214,10 @@ class ImagesDropzone extends PureComponent<
   }
 
   componentDidMount() {
+    forEach(this.state.urlObjects, (urlObject) =>
+      window.URL.revokeObjectURL(urlObject)
+    );
+
     this.setUrlObjects();
     this.removeExcessImages();
 
@@ -257,12 +261,6 @@ class ImagesDropzone extends PureComponent<
       }
     }
   };
-
-  UNSAFE_componentWillMount() {
-    forEach(this.state.urlObjects, (urlObject) =>
-      window.URL.revokeObjectURL(urlObject)
-    );
-  }
 
   setUrlObjects = () => {
     const images = this.props.images || [];
@@ -308,6 +306,8 @@ class ImagesDropzone extends PureComponent<
           : formatMessage(messages.onlyXImages, { maxItemsCount });
       this.setState({ errorMessage });
       setTimeout(() => this.setState({ errorMessage: null }), 6000);
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     } else if (images && images.length > 0) {
       for (let i = 0; i < images.length; i += 1) {
         if (!images[i].base64) {
@@ -444,6 +444,8 @@ class ImagesDropzone extends PureComponent<
                 maxWidth={maxImagePreviewWidth}
                 ratio={imagePreviewRatio}
                 className={
+                  // TODO: Fix this the next time the file is edited.
+                  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                   images && maxNumberOfImages > 1 && index !== images.length - 1
                     ? 'hasRightMargin'
                     : ''

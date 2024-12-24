@@ -53,6 +53,8 @@ const FieldTypeSwitcher = ({ field, formHasSubmissions }: Props) => {
                   shouldDirty: true,
                 }
               );
+              // TODO: Fix this the next time the file is edited.
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
               setValue(inputTypeName, value?.value, { shouldDirty: true });
             }}
             value={watch(inputTypeName)}

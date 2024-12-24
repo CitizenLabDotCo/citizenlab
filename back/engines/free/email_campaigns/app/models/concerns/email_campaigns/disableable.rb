@@ -4,6 +4,9 @@ module EmailCampaigns
   module Disableable
     extend ActiveSupport::Concern
 
+    # NOTE: This concern is now applied to all campaigns
+    # but is left here so that future campaigns have the ability to not be disabled
+
     # If one instance is enabled, we consider the campaign_type enabled. This
     # returns all campaign_types that are not all disabled
     def self.enabled_campaign_types(instances)

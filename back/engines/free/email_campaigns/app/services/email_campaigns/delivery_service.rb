@@ -48,6 +48,8 @@ module EmailCampaigns
       Campaigns::ProjectPhaseStarted,
       Campaigns::ProjectPhaseUpcoming,
       Campaigns::ProjectPublished,
+      Campaigns::ProjectReviewRequest,
+      Campaigns::ProjectReviewStateChange,
       Campaigns::StatusChangeOnIdeaYouFollow,
       Campaigns::StatusChangeOnInitiativeYouFollow,
       Campaigns::ThresholdReachedForAdmin,
@@ -58,8 +60,7 @@ module EmailCampaigns
       Campaigns::VotingPhaseStarted,
       Campaigns::VotingResults,
       Campaigns::Welcome,
-      Campaigns::YourInputInScreening,
-      Campaigns::YourProposedInitiativesDigest
+      Campaigns::YourInputInScreening
     ].freeze
 
     def campaign_classes

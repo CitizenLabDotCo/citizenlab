@@ -11,6 +11,7 @@ import { darken } from 'polished';
 import { RouteType } from 'routes';
 import styled from 'styled-components';
 
+import useAuthUser from 'api/me/useAuthUser';
 import { IUserData } from 'api/users/types';
 import useUserById from 'api/users/useUserById';
 
@@ -95,6 +96,7 @@ const UserName = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const { data: user } = useUserById(userId);
+  const { data: authUser } = useAuthUser();
 
   const sharedNameProps: StyleProps = {
     fontWeight,
@@ -161,24 +163,48 @@ const UserName = ({
       e2e-username
     `;
 
-    if (isLinkToProfile) {
+    const isAuthorWithNoName =
+      // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      user.data.id === authUser?.data.id && authUser?.data.attributes.no_name;
+
+    const nameElement = (
+      <Name {...sharedNameProps} className={classNames}>
+        {name}
+      </Name>
+    );
+
+    const linkedNamelement = (
+      <Link
+        to={profileLink}
+        className={`e2e-author-link ${className || ''}`}
+        scrollToTop
+      >
+        {nameElement}
+      </Link>
+    );
+
+    if (isAuthorWithNoName) {
       return (
-        <Link
-          to={profileLink}
-          className={`e2e-author-link ${className || ''}`}
-          scrollToTop
+        <Tooltip
+          placement="top-start"
+          maxWidth={'260px'}
+          theme={'dark'}
+          content={
+            <Box style={{ cursor: 'default' }}>
+              <Text my="8px" color="white" fontSize="s">
+                {formatMessage(messages.authorWithNoNameTooltip)}
+              </Text>
+            </Box>
+          }
         >
-          <Name {...sharedNameProps} className={classNames}>
-            {name}
-          </Name>
-        </Link>
+          {linkedNamelement}
+        </Tooltip>
       );
+    } else if (isLinkToProfile) {
+      return linkedNamelement;
     } else {
-      return (
-        <Name {...sharedNameProps} className={classNames}>
-          {name}
-        </Name>
-      );
+      return nameElement;
     }
   }
 

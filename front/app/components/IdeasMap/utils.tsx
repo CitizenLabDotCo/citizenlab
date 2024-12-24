@@ -25,8 +25,12 @@ export const initialWindowWidth = Math.max(
   window.innerWidth || 0
 );
 export const initialContainerWidth =
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   document?.getElementById('e2e-ideas-container')?.offsetWidth ||
-  (initialWindowWidth < maxPageWidth ? initialWindowWidth - 40 : maxPageWidth);
+  initialWindowWidth < maxPageWidth
+    ? initialWindowWidth - 40
+    : maxPageWidth;
 
 export const initialInnerContainerLeftMargin = getInnerContainerLeftMargin(
   initialWindowWidth,

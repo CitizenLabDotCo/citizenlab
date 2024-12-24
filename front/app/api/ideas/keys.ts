@@ -1,6 +1,6 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
 
-import { IQueryParameters } from './types';
+import { IIdeaQueryParameters } from './types';
 
 const baseKey = {
   type: 'idea',
@@ -9,7 +9,7 @@ const baseKey = {
 const ideasKeys = {
   all: () => [baseKey],
   lists: () => [{ ...baseKey, operation: 'list' }],
-  list: (parameters: IQueryParameters) => [
+  list: (parameters: IIdeaQueryParameters) => [
     { ...baseKey, operation: 'list', parameters },
   ],
   items: () => [{ ...baseKey, operation: 'item' }],

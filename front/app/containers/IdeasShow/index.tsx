@@ -87,6 +87,8 @@ export const IdeasShow = ({
 
   const authorId = idea.data.relationships.author?.data?.id || null;
   const statusId = idea.data.relationships.idea_status.data?.id;
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const ideaImageLarge = ideaImages?.data[0]?.attributes?.versions?.large;
   const participationContext = getCurrentPhase(phases?.data);
   const wasImported = !!idea.data.relationships.idea_import?.data;
@@ -151,6 +153,8 @@ export const IdeasShow = ({
           <Box mb={compact ? '12px' : '40px'}>
             <Body
               postId={ideaId}
+              // TODO: Fix this the next time the file is edited.
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
               body={localize(idea.data.attributes?.body_multiloc)}
               translateButtonClicked={translateButtonIsClicked}
             />
@@ -190,6 +194,8 @@ export const IdeasShow = ({
                 followableType="ideas"
                 followableId={ideaId}
                 followersCount={idea.data.attributes.followers_count}
+                // TODO: Fix this the next time the file is edited.
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 followerId={idea.data.relationships.user_follower?.data?.id}
                 width="100%"
                 toolTipType="input"

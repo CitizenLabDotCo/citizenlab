@@ -25,6 +25,7 @@ import useEventFiles from 'api/event_files/useEventFiles';
 import useAddEventImage from 'api/event_images/useAddEventImage';
 import useDeleteEventImage from 'api/event_images/useDeleteEventImage';
 import useEventImage from 'api/event_images/useEventImage';
+import useUpdateEventImage from 'api/event_images/useUpdateEventImage';
 import { IEvent, IEventProperties } from 'api/events/types';
 import useAddEvent from 'api/events/useAddEvent';
 import useEvent from 'api/events/useEvent';
@@ -32,6 +33,8 @@ import useUpdateEvent from 'api/events/useUpdateEvent';
 
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 import useLocale from 'hooks/useLocale';
+
+import projectMessages from 'containers/Admin/projects/project/general/messages';
 
 import DateTimePicker from 'components/admin/DatePickers/DateTimePicker';
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';
@@ -95,6 +98,7 @@ const AdminProjectEventEdit = () => {
 
   // event image
   const { mutate: addEventImage } = useAddEventImage();
+  const { mutate: updateEventImage } = useUpdateEventImage();
   const { mutate: deleteEventImage } = useDeleteEventImage();
   const { data: remoteEventImage } = useEventImage(event?.data);
 
@@ -110,7 +114,7 @@ const AdminProjectEventEdit = () => {
     useState(false);
   const [uploadedImage, setUploadedImage] = useState<UploadFile | null>(null);
   const [locationPoint, setLocationPoint] = useState<GeoJSON.Point | null>(
-    event?.data?.attributes?.location_point_geojson || null
+    event?.data.attributes.location_point_geojson || null
   );
   const [geocodedPoint, setGeocodedPoint] = useState<GeoJSON.Point | null>(
     null
@@ -119,12 +123,21 @@ const AdminProjectEventEdit = () => {
     []
   );
   const [successfulGeocode, setSuccessfulGeocode] = useState(false);
+  const [eventImageAltText, setEventImagealtText] = useState<Multiloc | null>(
+    null
+  );
+  const [hasAltTextChanged, setHasAltTextChanged] = useState(false);
 
   // Remote values
-  const remotePoint = event?.data?.attributes?.location_point_geojson;
+  const remotePoint = event?.data.attributes.location_point_geojson;
 
   const eventAttrs = event
-    ? { ...event?.data.attributes, ...attributeDiff }
+    ? // TODO: Fix this the next time the file is edited.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      {
+        ...event.data.attributes,
+        ...attributeDiff,
+      }
     : { ...attributeDiff };
 
   useEffect(() => {
@@ -151,9 +164,12 @@ const AdminProjectEventEdit = () => {
     async function convertRemoteImage() {
       if (remoteEventImage) {
         const imageUrl = remoteEventImage.data.attributes.versions.medium;
+        const altTextValue = remoteEventImage.data.attributes.alt_text_multiloc;
         if (imageUrl) {
           const imageFile = await convertUrlToUploadFile(imageUrl);
           setUploadedImage(imageFile);
+          setEventImagealtText(altTextValue);
+          setHasAltTextChanged(false);
         }
       }
     }
@@ -356,10 +372,10 @@ const AdminProjectEventEdit = () => {
     );
   };
 
-  const handleEventImage = async (data: IEvent) => {
+  const addOrDeleteEventImage = async (data: IEvent) => {
     const hasRemoteImage = !isNilOrError(remoteEventImage);
     const remoteImageId = hasRemoteImage
-      ? event?.data?.relationships?.event_images?.data?.[0].id
+      ? event?.data.relationships.event_images.data[0].id
       : undefined;
     if (
       (uploadedImage === null || !uploadedImage.remote) &&
@@ -376,6 +392,27 @@ const AdminProjectEventEdit = () => {
         eventId: data.data.id,
         image: {
           image: uploadedImage.base64,
+          ...(eventImageAltText
+            ? { alt_text_multiloc: eventImageAltText }
+            : {}),
+        },
+      });
+    }
+  };
+
+  const updateImage = async (data: IEvent) => {
+    const hasRemoteImage = !isNilOrError(remoteEventImage);
+    const remoteImageId = hasRemoteImage
+      ? event?.data.relationships.event_images.data[0].id
+      : undefined;
+
+    if (remoteImageId && uploadedImage && eventImageAltText) {
+      updateEventImage({
+        eventId: data.data.id,
+        imageId: remoteImageId,
+        image: {
+          image: uploadedImage.base64,
+          alt_text_multiloc: eventImageAltText,
         },
       });
     }
@@ -384,51 +421,49 @@ const AdminProjectEventEdit = () => {
   const handleEventFiles = async (data: IEvent) => {
     setSubmitState('success');
 
-    if (data) {
-      const { id: eventId } = data.data;
-      eventFiles
-        .filter((file) => !file.remote)
-        .map((file) =>
-          addEventFile(
-            {
-              eventId,
-              file: file.base64,
-              name: file.name,
-              ordering: null,
+    const { id: eventId } = data.data;
+    eventFiles
+      .filter((file) => !file.remote)
+      .map((file) =>
+        addEventFile(
+          {
+            eventId,
+            file: file.base64,
+            name: file.name,
+            ordering: null,
+          },
+          {
+            onSuccess: () => {
+              setSubmitState('success');
             },
+            onError: () => {
+              setSubmitState('error');
+            },
+          }
+        )
+      );
+    eventFilesToRemove
+      .filter((file) => !!file.remote)
+      .map((file) => {
+        if (file.id) {
+          deleteEventFile(
+            { eventId, fileId: file.id },
             {
               onSuccess: () => {
+                setEventFilesToRemove(
+                  eventFilesToRemove.filter(
+                    (fileToRemove) => fileToRemove.id !== file.id
+                  )
+                );
                 setSubmitState('success');
               },
               onError: () => {
                 setSubmitState('error');
               },
             }
-          )
-        );
-      eventFilesToRemove
-        .filter((file) => !!file.remote)
-        .map((file) => {
-          if (file.id) {
-            deleteEventFile(
-              { eventId, fileId: file.id },
-              {
-                onSuccess: () => {
-                  setEventFilesToRemove(
-                    eventFilesToRemove.filter((fileToRemove) => {
-                      fileToRemove.id !== file.id;
-                    })
-                  );
-                  setSubmitState('success');
-                },
-                onError: () => {
-                  setSubmitState('error');
-                },
-              }
-            );
-          }
-        });
-    }
+          );
+        }
+      });
   };
 
   const handleOnSubmit = async (e: FormEvent) => {
@@ -446,17 +481,17 @@ const AdminProjectEventEdit = () => {
       setSaving(true);
 
       // If only files have changed
-      if (isEmpty(attributeDiff) && eventFilesToRemove) {
-        if (event) {
-          handleEventFiles(event);
-        }
+      if (isEmpty(attributeDiff) && event) {
+        handleEventFiles(event);
       }
 
       // If only image has changed
-      if (isEmpty(attributeDiff) && imageChanged) {
-        if (event) {
-          handleEventImage(event);
-        }
+      if (isEmpty(attributeDiff) && imageChanged && event) {
+        addOrDeleteEventImage(event);
+      }
+
+      if (hasAltTextChanged && !imageChanged && event) {
+        updateImage(event);
       }
 
       // non-file input fields have changed
@@ -465,17 +500,21 @@ const AdminProjectEventEdit = () => {
         if (event) {
           updateEvent(
             {
+              // TODO: Fix this the next time the file is edited.
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
               eventId: event?.data.id,
               event: {
                 ...attributeDiff,
                 location_point_geojson: locationPointChanged
                   ? locationPointUpdated
-                  : event?.data.attributes.location_point_geojson,
+                  : // TODO: Fix this the next time the file is edited.
+                    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+                    event?.data.attributes.location_point_geojson,
               },
             },
             {
               onSuccess: async (data) => {
-                handleEventImage(data);
+                addOrDeleteEventImage(data);
                 handleEventFiles(data);
                 setSubmitState('success');
               },
@@ -500,7 +539,7 @@ const AdminProjectEventEdit = () => {
               onSuccess: async (data) => {
                 setSubmitState('success');
                 handleEventFiles(data);
-                handleEventImage(data);
+                addOrDeleteEventImage(data);
                 clHistory.push(`/admin/projects/${projectId}/events`);
               },
               onError: async (errors) => {
@@ -522,6 +561,12 @@ const AdminProjectEventEdit = () => {
         setSubmitState('error');
       }
     }
+  };
+
+  const handleEventImageAltTextChange = (altTextMultiloc: Multiloc) => {
+    setSubmitState('enabled');
+    setEventImagealtText(altTextMultiloc);
+    setHasAltTextChanged(true);
   };
 
   if (event !== undefined && isInitialLoading) {
@@ -579,12 +624,27 @@ const AdminProjectEventEdit = () => {
                   imagePreviewRatio={1 / 2}
                 />
               </SectionField>
-              <Title
-                variant="h4"
-                fontWeight="bold"
-                color="primary"
-                style={{ fontWeight: '600' }}
-              >
+              {uploadedImage && (
+                <SectionField>
+                  <Label>
+                    <FormattedMessage {...messages.eventImageAltTextTitle} />
+                    <IconTooltip
+                      content={
+                        <FormattedMessage
+                          {...projectMessages.projectImageAltTextTooltip}
+                        />
+                      }
+                    />
+                  </Label>
+                  <InputMultilocWithLocaleSwitcher
+                    type="text"
+                    valueMultiloc={eventImageAltText}
+                    label={<FormattedMessage {...projectMessages.altText} />}
+                    onChange={handleEventImageAltTextChange}
+                  />
+                </SectionField>
+              )}
+              <Title variant="h4" color="primary" style={{ fontWeight: '600' }}>
                 {formatMessage(messages.eventDates)}
               </Title>
               <Box display="flex" flexDirection="column" maxWidth="400px">
@@ -611,12 +671,7 @@ const AdminProjectEventEdit = () => {
                 </SectionField>
               </Box>
 
-              <Title
-                variant="h4"
-                fontWeight="bold"
-                color="primary"
-                style={{ fontWeight: '600' }}
-              >
+              <Title variant="h4" color="primary" style={{ fontWeight: '600' }}>
                 {formatMessage(messages.eventLocation)}
               </Title>
 
@@ -701,6 +756,8 @@ const AdminProjectEventEdit = () => {
                           setLocationPoint={setLocationPoint}
                           position={
                             geocodedPoint || // Present when an address is geocoded but hasn't been saved yet
+                            // TODO: Fix this the next time the file is edited.
+                            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                             event?.data?.attributes?.location_point_geojson
                           }
                         />
@@ -712,7 +769,6 @@ const AdminProjectEventEdit = () => {
 
               <Title
                 variant="h4"
-                fontWeight="bold"
                 color="primary"
                 style={{ fontWeight: '600' }}
                 mt="48px"
@@ -782,6 +838,8 @@ const AdminProjectEventEdit = () => {
                         minWidth="160px"
                         iconPos={'right'}
                         icon={
+                          // TODO: Fix this the next time the file is edited.
+                          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                           attendanceOptionsVisible ? undefined : 'plus-circle'
                         }
                         iconSize="20px"
@@ -789,8 +847,12 @@ const AdminProjectEventEdit = () => {
                         linkTo={eventAttrs.using_url}
                         openLinkInNewTab={true}
                       >
+                        {/* TODO: Fix this the next time the file is edited. */}
+                        {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
                         {eventAttrs?.attend_button_multiloc?.[locale]
-                          ? eventAttrs?.attend_button_multiloc[locale]
+                          ? // TODO: Fix this the next time the file is edited.
+                            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+                            eventAttrs?.attend_button_multiloc[locale]
                           : formatMessage(messages.attend)}
                       </Button>
                     </Box>
@@ -800,7 +862,6 @@ const AdminProjectEventEdit = () => {
 
               <Title
                 variant="h4"
-                fontWeight="bold"
                 color="primary"
                 style={{ fontWeight: '600' }}
                 mt="48px"

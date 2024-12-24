@@ -26,6 +26,7 @@ import { IMapLayerAttributes } from 'api/map_layers/types';
 import { Localize } from 'hooks/useLocalize';
 
 import { hexToRGBA } from 'utils/helperUtils';
+import { projectPointToWebMercator } from 'utils/mapUtils/map';
 
 import {
   BASEMAP_AT_ATTRIBUTION,
@@ -69,10 +70,14 @@ export const getDefaultBasemap = (tileProvider: string | undefined): Layer => {
 // getTileAttribution
 // Description: Gets the correct tile attribution given a certain tileProvider URL.
 const getTileAttribution = (tileProvider: string): string => {
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (tileProvider?.includes('maptiler')) {
     return MAPTILER_ATTRIBUTION;
   }
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (tileProvider?.includes('wien.gv.at/basemap')) {
     return BASEMAP_AT_ATTRIBUTION;
   }
@@ -395,9 +400,12 @@ export const goToMapLocation = async (
 // esriPointToGeoJson
 // Description: Converts an Esri point to an GeoJSON.Point
 export const esriPointToGeoJson = (esriPoint: Point): GeoJSON.Point => {
+  // Project the point to Web Mercator, in case the map is using a different projection
+  const projectedPoint = projectPointToWebMercator(esriPoint);
+
   return {
     type: 'Point',
-    coordinates: [esriPoint.longitude, esriPoint.latitude],
+    coordinates: [projectedPoint.longitude, projectedPoint.latitude],
   };
 };
 
@@ -533,12 +541,16 @@ export const parseLayers = (
   mapConfig: IMapConfig | null | undefined,
   localize: Localize
 ) => {
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const mapConfigLayers = mapConfig?.data?.attributes.layers;
   if (!mapConfigLayers) return [];
 
   // All layers are either of type Esri or GeoJSON, so we can check just the first layer
   if (mapConfigLayers[0]?.type === 'CustomMaps::GeojsonLayer') {
     return createEsriGeoJsonLayers(mapConfigLayers, localize);
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   } else if (mapConfigLayers[0]?.type === 'CustomMaps::EsriFeatureLayer') {
     return createEsriFeatureLayers(mapConfigLayers, localize);
   }
@@ -570,6 +582,8 @@ export const createEsriGeoJsonLayers = (
     });
 
     // All features in a layer will have the same geometry, so we can just check the first feature
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     const geometryType = layer.geojson?.features?.[0]?.geometry?.type;
 
     if (geometryType === 'Polygon') {
@@ -637,6 +651,8 @@ export const handleWebMapReferenceLayers = (
   referenceLayers: Collection<Layer>
 ) => {
   // Add current basemap layers to new variable
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const newBasemapLayers = webMap.basemap?.baseLayers;
   // Append the reference layers to the new basemap layers list
   webMap.addMany(referenceLayers.toArray());
@@ -649,6 +665,8 @@ export const handleWebMapReferenceLayers = (
 // applyHeatMapRenderer
 // Description: Apply a heat map renderer to a point Feature layer
 export const applyHeatMapRenderer = (layer: FeatureLayer, mapView: MapView) => {
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (layer && mapView) {
     // Set up the parameters for the heatmapRendererCreator
     const heatmapParams = {

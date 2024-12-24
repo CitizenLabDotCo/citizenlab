@@ -13,6 +13,7 @@
 #  created_at                   :datetime         not null
 #  updated_at                   :datetime         not null
 #  followers_count              :integer          default(0), not null
+#  header_bg_alt_text_multiloc  :jsonb
 #
 # Indexes
 #

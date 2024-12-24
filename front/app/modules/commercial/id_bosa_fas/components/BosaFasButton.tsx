@@ -23,7 +23,7 @@ const BosaFasButton = ({ method, last, onClick }: Props) => {
     onClick(method);
 
     const jwt = getJwt();
-    window.location.href = `${AUTH_PATH}/bosa_fas?token=${jwt}&pathname=${removeUrlLocale(
+    window.location.href = `${AUTH_PATH}/bosa_fas?token=${jwt}&verification_pathname=${removeUrlLocale(
       window.location.pathname
     )}`;
   };

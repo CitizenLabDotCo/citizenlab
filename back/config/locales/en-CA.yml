@@ -266,6 +266,7 @@ en-CA:
       first_name: 'First name(s)'
       image_url: 'Image URL'
       input_id: 'ID'
+      manual_votes: 'Offline votes'
       input_url: 'URL'
       last_name: 'Last name'
       latitude: 'Latitude'
@@ -343,6 +344,8 @@ en-CA:
       you_can_sign_in_again_from: "You can sign in again from %{date}"
   user:
     anon_first_name: "User"
+    anon_scheme:
+      animals: 'alligator,crocodile,alpaca,ant,antelope,ape,armadillo,baboon,badger,bat,bear,beaver,bee,beetle,buffalo,butterfly,camel,water buffalo,caribou,cat,cattle,cheetah,chimpanzee,chinchilla,cicada,clam,cockroach,cod,coyote,crab,cricket,crow,raven,deer,dinosaur,dog,dolphin,porpoise,duck,eagle,eel,elephant,elk,ferret,fish,fly,fox,frog,toad,gerbil,giraffe,gnat,gnu,wildebeest,goat,goldfish,goose,gorilla,grasshopper,guinea pig,hamster,hare,hedgehog,herring,hippopotamus,hornet,horse,hound,hyena,impala,jackal,jellyfish,kangaroo,wallaby,koala,leopard,lion,lizard,llama,locust,louse,macaw,mallard,mammoth,manatee,marten,mink,minnow,mole,moose,mosquito,mouse,rat,mule,muskrat,otter,ox,oyster,panda,pig,platypus,porcupine,prairie dog,pug,rabbit,raccoon,reindeer,rhinoceros,salmon,sardine,scorpion,seal,sea lion,serval,shark,sheep,skunk,snail,snake,spider,squirrel,swan,termite,tiger,trout,turtle,tortoise,walrus,wasp,whale,wolf,wombat,woodchuck,worm,yak,yellowjacket,zebra'
   time:
     am: am
     formats:

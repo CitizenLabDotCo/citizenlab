@@ -1,11 +1,13 @@
 import React from 'react';
 
+import { FontWeight } from 'component-library/utils/typings';
 import styled, { css } from 'styled-components';
 
 import {
   Color,
   colors,
   fontSizes,
+  getFontWeightCSS,
   isRtl,
   MainThemeProps,
 } from '../../utils/styleUtils';
@@ -21,11 +23,10 @@ import Box, {
   BoxVisibilityProps,
 } from '../Box';
 
-type Variant = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
-type FontSize = keyof typeof fontSizes;
-type FontWeight = 'bold' | 'normal';
+export type Variant = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+export type FontSize = keyof typeof fontSizes;
 type FontStyle = 'italic' | 'normal';
-type TextAlign =
+export type TextAlign =
   | 'left'
   | 'right'
   | 'center'
@@ -38,9 +39,9 @@ export type TitleProps = {
   color?: Color;
   fontSize?: FontSize;
   as?: Variant;
-  fontWeight?: FontWeight;
   fontStyle?: FontStyle;
   textAlign?: TextAlign;
+  fontWeight?: FontWeight;
 } & BoxMarginProps &
   BoxPaddingProps &
   BoxPositionProps &
@@ -53,22 +54,22 @@ export type TitleProps = {
   React.HTMLAttributes<HTMLHeadingElement>;
 
 const StyledTitle = styled(Box)`
-  line-height: 1.3;
-
   ${isRtl`direction: rtl;`}
 
   ${({
     variant,
     color,
     fontSize,
-    fontWeight,
     fontStyle,
     textAlign,
+    fontWeight,
   }: TitleProps) => css`
     color: ${({ theme }: { theme: MainThemeProps }) =>
       color ? theme.colors[color] : colors.textPrimary};
-    font-weight: ${fontWeight ? fontWeight : 'bold'};
     font-style: ${fontStyle ? fontStyle : 'normal'};
+    font-weight: ${getFontWeightCSS(fontWeight || 'bold')};
+    line-height: 1.3;
+    word-break: break-word;
 
     ${textAlign ? `text-align: ${textAlign};` : ''}
     ${variant === 'h1'
@@ -110,7 +111,6 @@ const Title: React.FC<TitleProps> = ({
   color,
   as,
   fontSize,
-  fontWeight,
   ...props
 }) => {
   const mb = props.mb || props.my || props.m || '16px';
@@ -121,7 +121,6 @@ const Title: React.FC<TitleProps> = ({
       color={color}
       as={as || variant}
       fontSize={fontSize}
-      fontWeight={fontWeight}
       mb={mb}
       {...props}
     >

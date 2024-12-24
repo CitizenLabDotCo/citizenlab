@@ -8,7 +8,7 @@ import {
   isDateControl,
 } from '@jsonforms/core';
 import { withJsonFormsControlProps } from '@jsonforms/react';
-import moment from 'moment';
+import { format, startOfDay } from 'date-fns';
 
 import DateSinglePicker from 'components/admin/DatePickers/DateSinglePicker';
 import { FormLabel } from 'components/UI/FormComponents';
@@ -51,14 +51,15 @@ const DateControl = ({
           id={sanitizeForClassname(id)}
           selectedDate={data ? new Date(data) : undefined}
           onChange={(value) => {
-            handleChange(
-              path,
-              value ? moment(value).format('YYYY-MM-DD') : null
-            );
+            handleChange(path, format(startOfDay(value), 'yyyy-MM-dd'));
             setDidBlur(true);
           }}
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           disabled={uischema?.options?.readonly}
         />
+        {/* TODO: Fix this the next time the file is edited. */}
+        {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
         <VerificationIcon show={uischema?.options?.verificationLocked} />
       </Box>
       <ErrorDisplay

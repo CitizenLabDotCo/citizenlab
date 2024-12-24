@@ -15,7 +15,7 @@ import { isDraft } from 'api/campaigns/util';
 import DraftCampaignRow from 'components/admin/Email/DraftCampaignRow';
 import SentCampaignRow from 'components/admin/Email/SentCampaignRow';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
-import Pagination from 'components/admin/Pagination';
+import Pagination from 'components/Pagination';
 import { List } from 'components/admin/ResourceList';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -37,6 +37,8 @@ const CustomEmails = () => {
 
   if (!campaignsList) return null;
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const lastPage = getPageNumberFromUrl(campaigns?.pages[0].links.last) || 1;
 
   const goToPage = (page: number) => {
@@ -55,12 +57,7 @@ const CustomEmails = () => {
             padding="80px 0 100px"
           >
             <Icon name="email-2" width="80px" height="80px" />
-            <Title
-              fontSize="xl"
-              fontWeight="bold"
-              marginBottom="10px"
-              color="primary"
-            >
+            <Title fontSize="xl" marginBottom="10px" color="primary">
               <FormattedMessage {...messages.noCampaignsHeader} />
             </Title>
             <Text color="textSecondary" mb="30px" maxWidth="450px">

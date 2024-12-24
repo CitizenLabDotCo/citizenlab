@@ -79,6 +79,10 @@ fr:
           title: Quel est votre problème ?
         option:
           title: Quelle est votre option ?
+  user:
+    anon_first_name: "Utilisateur"
+    anon_scheme:
+      animals: 'Oryctérope,Chat,Ornithorynque,Girafe,Zèbre'
   xlsx_export:
     anonymous: 'Anonyme'
     column_headers:
@@ -97,6 +101,7 @@ fr:
       email: 'E-mail'
       first_name: 'Prénom(s)'
       image_url: "URL de l'image"
+      manual_votes: 'Votes hors ligne'
       input_id: 'Identifiant'
       input_url: 'URL'
       last_name: 'Nom de famille'

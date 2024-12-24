@@ -24,8 +24,6 @@ import useLocalize from 'hooks/useLocalize';
 
 import { Tab } from 'components/admin/NavigationTabs';
 import Modal from 'components/UI/Modal';
-import NewBadge from 'components/UI/NewBadge';
-import { isExpired } from 'components/UI/NewBadge/utils';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
@@ -77,6 +75,8 @@ export const PhaseHeader = ({ phase, tabs }: Props) => {
     formatMessage
   );
 
+  // TODO: Fix this the next time the file is edited.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!phase) {
     return null;
   }
@@ -226,7 +226,7 @@ export const PhaseHeader = ({ phase, tabs }: Props) => {
           boxShadow="0px 2px 4px -1px rgba(0, 0, 0, 0.06)"
           background="#FBFBFB"
         >
-          {tabs.map(({ url, label, name, disabledTooltipText }) => (
+          {tabs.map(({ url, label, disabledTooltipText }) => (
             <Tab
               label={label}
               url={url}
@@ -236,13 +236,6 @@ export const PhaseHeader = ({ phase, tabs }: Props) => {
                 pathname,
                 url
               )}
-              badge={
-                name === 'report' && !isExpired('01-04-2024') ? (
-                  <Box display="inline" ml="8px">
-                    <NewBadge />
-                  </Box>
-                ) : null
-              }
               disabledTooltipText={disabledTooltipText}
             />
           ))}

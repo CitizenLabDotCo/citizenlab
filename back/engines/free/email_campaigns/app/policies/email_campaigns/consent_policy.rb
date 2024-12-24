@@ -1,21 +1,11 @@
 # frozen_string_literal: true
 
 module EmailCampaigns
-  class ConsentPolicy < EmailCampaignsPolicy
-    class Scope
-      attr_reader :user, :scope
-
-      def initialize(user, scope)
-        @user  = user
-        @scope = scope
-      end
-
+  class ConsentPolicy < ApplicationPolicy
+    class Scope < ApplicationPolicy::Scope
       def resolve
-        consentable_campaign_types = DeliveryService.new.consentable_campaign_types_for(@user)
-        scope.where(
-          user_id: @user.id,
-          campaign_type: consentable_campaign_types
-        )
+        consentable_campaign_types = DeliveryService.new.consentable_campaign_types_for(user)
+        scope.where(user_id: user.id, campaign_type: consentable_campaign_types)
       end
     end
 
@@ -24,13 +14,13 @@ module EmailCampaigns
     end
 
     def update?
-      user&.active? &&
-        user.id == record.user_id &&
-        DeliveryService.new.consentable_campaign_types_for(user).include?(record.campaign_type)
+      user&.active? && update_by_campaign_id?
     end
 
     def update_by_campaign_id?
-      update?
+      # NOTE: User does not need to be active for this endpoint so they can always click unsubscribe from emails
+      user.id == record.user_id &&
+        DeliveryService.new.consentable_campaign_types_for(user).include?(record.campaign_type)
     end
   end
 end
