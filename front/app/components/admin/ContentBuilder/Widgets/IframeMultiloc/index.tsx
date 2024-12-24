@@ -34,7 +34,7 @@ interface Props {
   selectedLocale: SupportedLocale;
 }
 
-const Iframe = ({ url, height, hasError, title }: Props) => {
+const IframeMultiloc = ({ url, height, hasError, title }: Props) => {
   const localize = useLocalize();
 
   const componentDefaultPadding = useCraftComponentDefaultPadding();
@@ -83,10 +83,19 @@ const IframeSettings = injectIntl(({ intl: { formatMessage } }) => {
   }));
 
   const handleChange = (value: string) => {
-    const validation = isValidUrl(value);
-    setProp((props: Props) => (props.url = value));
-    setProp((props: Props) => (props.errorType = 'invalidUrl'));
-    setProp((props: Props) => (props.hasError = !validation));
+    setProp((props: Props) => {
+      props.url = value;
+    });
+  };
+
+  const handleBlur = () => {
+    const validation = isValidUrl(url);
+
+    setProp((props: Props) => {
+      props.errorType = 'invalidUrl';
+      props.hasError = !validation;
+    });
+
     eventEmitter.emit(CONTENT_BUILDER_ERROR_EVENT, {
       [id]: { hasError: !validation, selectedLocale },
     });
@@ -106,6 +115,7 @@ const IframeSettings = injectIntl(({ intl: { formatMessage } }) => {
           onChange={(value) => {
             handleChange(value);
           }}
+          onBlur={handleBlur}
         />
         {hasError && errorType === 'invalidUrl' && (
           <Error
@@ -152,7 +162,7 @@ const IframeSettings = injectIntl(({ intl: { formatMessage } }) => {
   );
 });
 
-Iframe.craft = {
+IframeMultiloc.craft = {
   props: {
     url: '',
     height: '',
@@ -168,4 +178,4 @@ Iframe.craft = {
 
 export const iframeTitle = messages.url;
 
-export default Iframe;
+export default IframeMultiloc;

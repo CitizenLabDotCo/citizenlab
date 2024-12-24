@@ -2589,7 +2589,6 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleTooltip": "Mae'n ddefnyddiol darparu'r wybodaeth hon i ddefnyddwyr sy'n dibynnu ar ddarllenydd sgrin neu dechnoleg gynorthwyol arall.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabel": "Cyfeiriad gwefan",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabelTooltip": "URL llawn y wefan rydych chi am ei hymgorffori.",
-  "app.containers.admin.ContentBuilder.IframeMultiloc.iframeDescription": "Arddangos cynnwys o wefan allanol ar eich tudalen mewn iFrame HTML.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeEmbedVisitLinkMessage": "Ewch i'n tudalen gefnogaeth",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeHeightPlaceholder": "300",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeInvalidWhitelistUrlErrorMessage": "Mae'n ddrwg gennym, ni allai'r cynnwys hwn gael ei fewnosod. {visitLinkMessage} i ddysgu mwy.",
