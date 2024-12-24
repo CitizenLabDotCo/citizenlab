@@ -1,5 +1,6 @@
 import { isString } from 'lodash-es';
 import moment, { unitOfTime, Moment } from 'moment-timezone';
+import { TZDate } from 'react-day-picker';
 import { SupportedLocale } from 'typings';
 
 import { IEventData } from 'api/events/types';
@@ -249,3 +250,17 @@ export function calculateRoundedEndDate(
   endDate.setMinutes(startDate.getMinutes() + durationInMinutes);
   return endDate;
 }
+
+export const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+export const parseBackendDateString = (dateString?: string) => {
+  if (!dateString) return undefined;
+  // backend date format: YYYY-MM-DD
+  // parse to midnight in user's timezone
+  return new TZDate(dateString, userTimezone);
+};
+
+export const toBackendDateString = (date?: TZDate) => {
+  if (!date) return undefined;
+  return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+};

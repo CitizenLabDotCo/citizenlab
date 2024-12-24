@@ -1,4 +1,6 @@
+import { TZDate } from '@date-fns/tz';
+
 export type DateRange = {
-  from: Date;
-  to?: Date;
+  from: TZDate;
+  to?: TZDate;
 };

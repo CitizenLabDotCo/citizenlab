@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
-import moment, { Moment } from 'moment';
 import { useParams } from 'react-router-dom';
 
 import DateRangePicker from 'components/admin/DatePickers/DateRangePicker';
 
 import { useIntl } from 'utils/cl-intl';
+import { parseBackendDateString, toBackendDateString } from 'utils/dateUtils';
 
 import messages from './messages';
 import ParticipationReportPreview from './ParticipationReportPreview';
@@ -22,19 +22,10 @@ const ParticipationDatesRange = ({
 
   const { formatMessage } = useIntl();
 
-  const [startAt, setStartAt] = useState(defaultStartDate);
-  const [endAt, setEndAt] = useState(defaultEndDate);
-
-  const handleChangeTimeRange = ({
-    startDate,
-    endDate,
-  }: {
-    startDate: Moment | null;
-    endDate: Moment | null;
-  }) => {
-    setStartAt(startDate?.format('YYYY-MM-DD'));
-    setEndAt(endDate?.format('YYYY-MM-DD'));
-  };
+  const [startAt, setStartAt] = useState(
+    parseBackendDateString(defaultStartDate)
+  );
+  const [endAt, setEndAt] = useState(parseBackendDateString(defaultEndDate));
 
   return (
     <div>
@@ -45,14 +36,12 @@ const ParticipationDatesRange = ({
         <Box width="100%" display="flex">
           <DateRangePicker
             selectedRange={{
-              from: startAt ? new Date(startAt) : undefined,
-              to: endAt ? new Date(endAt) : undefined,
+              from: startAt,
+              to: endAt,
             }}
             onUpdateRange={({ from, to }) => {
-              handleChangeTimeRange({
-                startDate: from ? moment(from) : null,
-                endDate: to ? moment(to) : null,
-              });
+              setStartAt(from);
+              setEndAt(to);
             }}
           />
         </Box>
@@ -60,8 +49,8 @@ const ParticipationDatesRange = ({
       <Box p="44px" m="44px" bg="white">
         <ParticipationReportPreview
           projectId={projectId}
-          startAt={startAt}
-          endAt={endAt}
+          startAt={toBackendDateString(startAt)}
+          endAt={toBackendDateString(endAt)}
         />
       </Box>
     </div>
