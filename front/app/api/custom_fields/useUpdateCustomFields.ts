@@ -15,12 +15,18 @@ type IUpdateCustomFieldProperties = {
   > & {
     id?: string;
   })[];
+  customForm: {
+    saveType: 'auto' | 'manual';
+    openedAt?: string;
+    lastUpdatedAt?: string;
+  };
 };
 
 const updateCustomField = async ({
   projectId,
   phaseId,
   customFields,
+  customForm,
 }: IUpdateCustomFieldProperties) => {
   const apiEndpoint = phaseId
     ? `admin/phases/${phaseId}/custom_fields/update_all`
@@ -28,7 +34,12 @@ const updateCustomField = async ({
   return fetcher<ICustomField>({
     path: `/${apiEndpoint}`,
     action: 'patch',
-    body: { custom_fields: customFields },
+    body: {
+      custom_fields: customFields,
+      form_save_type: customForm.saveType,
+      // form_opened_at: customForm.openedAt,
+      // form_last_updated_at: customForm.lastUpdatedAt,
+    },
   });
 };
 
