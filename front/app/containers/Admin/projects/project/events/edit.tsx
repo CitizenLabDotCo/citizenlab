@@ -294,13 +294,13 @@ const AdminProjectEventEdit = () => {
   };
 
   const handleDateTimePickerOnChange =
-    (name: 'start_at' | 'end_at') => (time: moment.Moment) => {
+    (name: 'start_at' | 'end_at') => (time: Date) => {
       if (!isInitialLoading) {
         setSubmitState('enabled');
         setAttributeDiff((previousState) => {
           const newAttributes = {
             ...previousState,
-            [name]: time.toISOString(),
+            [name]: time.toISOString,
           };
 
           // If the start time is changed, update the end time
@@ -648,27 +648,35 @@ const AdminProjectEventEdit = () => {
                 {formatMessage(messages.eventDates)}
               </Title>
               <Box display="flex" flexDirection="column" maxWidth="400px">
-                <SectionField style={{ width: 'auto' }}>
+                <Box>
                   <Label>
                     <FormattedMessage {...messages.dateStartLabel} />
                   </Label>
                   <DateTimePicker
-                    value={eventAttrs.start_at}
+                    selectedDate={
+                      eventAttrs.start_at
+                        ? new Date(eventAttrs.start_at)
+                        : undefined
+                    }
                     onChange={handleDateTimePickerOnChange('start_at')}
                   />
                   <ErrorComponent apiErrors={get(errors, 'start_at')} />
-                </SectionField>
+                </Box>
 
-                <SectionField>
+                <Box mt="12px">
                   <Label>
                     <FormattedMessage {...messages.datesEndLabel} />
                   </Label>
                   <DateTimePicker
-                    value={eventAttrs.end_at}
+                    selectedDate={
+                      eventAttrs.end_at
+                        ? new Date(eventAttrs.end_at)
+                        : undefined
+                    }
                     onChange={handleDateTimePickerOnChange('end_at')}
                   />
                   <ErrorComponent apiErrors={get(errors, 'end_at')} />
-                </SectionField>
+                </Box>
               </Box>
 
               <Title variant="h4" color="primary" style={{ fontWeight: '600' }}>

@@ -2,21 +2,13 @@ import React from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
 
 import {
-  Icon,
   colors,
   fontSizes,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
-import moment from 'moment';
-import DatePicker from 'react-datepicker';
 import styled from 'styled-components';
 
-import useLocale from 'hooks/useLocale';
-
-import { useIntl } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
-
-import messages from './messages';
+import DateSinglePicker from '../DateSinglePicker';
 
 const Container = styled.div`
   display: flex;
@@ -69,37 +61,14 @@ const Container = styled.div`
 `;
 
 interface Props {
-  value: string | undefined;
-  onChange: (arg: moment.Moment) => void;
+  selectedDate: Date | undefined;
+  onChange: (date: Date) => void;
 }
 
-const DateTimePicker = ({ value, onChange }: Props) => {
-  const { formatMessage } = useIntl();
-  const locale = useLocale();
-
-  if (isNilOrError(locale)) return null;
-
-  const handleDateChange = (date: Date | null) => {
-    const momentDate = date ? moment(date) : null;
-
-    if (momentDate) {
-      onChange(momentDate);
-    }
-  };
-
+const DateTimePicker = ({ selectedDate, onChange }: Props) => {
   return (
     <Container>
-      <Icon name="calendar" fill={colors.blue500} />
-      <DatePicker
-        selected={value ? new Date(value) : new Date()}
-        onChange={handleDateChange}
-        showTimeSelect
-        timeIntervals={15}
-        // This makes sure we adjust date + time based on the passed locale.
-        dateFormat="Pp"
-        locale={locale}
-        timeCaption={formatMessage(messages.time)}
-      />
+      <DateSinglePicker selectedDate={selectedDate} onChange={onChange} />
     </Container>
   );
 };
