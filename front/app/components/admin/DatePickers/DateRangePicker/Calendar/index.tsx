@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { colors } from '@citizenlab/cl2-component-library';
+import { Box, colors, Button } from '@citizenlab/cl2-component-library';
 import { DayPicker, PropsBase } from 'react-day-picker';
 import 'react-day-picker/style.css';
 import styled from 'styled-components';
@@ -80,6 +80,38 @@ const Calendar = ({
         // DayPicker will rely on its internal state to manage the selected
         // range rather than being controlled by our state.
         onSelect={NOOP}
+        footer={
+          <Box mt="12px" w="100%" display="flex">
+            {selectedRange.from && (
+              <Button
+                buttonStyle="text"
+                size="s"
+                w="auto"
+                pl="0px"
+                ml="8px"
+                onClick={() => {
+                  onUpdateRange({ from: undefined, to: selectedRange.to });
+                }}
+              >
+                Clear start date
+              </Button>
+            )}
+            {selectedRange.to && (
+              <Button
+                buttonStyle="text"
+                size="s"
+                w="auto"
+                pl="0px"
+                ml="8px"
+                onClick={() => {
+                  onUpdateRange({ from: selectedRange.from, to: undefined });
+                }}
+              >
+                Clear end date
+              </Button>
+            )}
+          </Box>
+        }
       />
     </DayPickerStyles>
   );
