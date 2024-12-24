@@ -18,7 +18,7 @@ module Notifications
     end
 
     def preconditions_met?
-      post_type == 'Idea'
+      true
     end
 
     def notification_class

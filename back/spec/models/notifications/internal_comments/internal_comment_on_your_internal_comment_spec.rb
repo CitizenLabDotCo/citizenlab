@@ -17,8 +17,7 @@ RSpec.describe Notifications::InternalComments::InternalCommentOnYourInternalCom
           recipient_id: parent_internal_comment.author_id,
           initiating_user_id: child_internal_comment.author_id,
           internal_comment_id: child_internal_comment.id,
-          post_id: parent_internal_comment.post_id,
-          post_type: child_internal_comment.post_type,
+          idea_id: parent_internal_comment.post_id,
           project_id: parent_internal_comment.post.project_id
         )
       end

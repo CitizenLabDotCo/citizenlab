@@ -16,7 +16,7 @@ RSpec.describe EmailCampaigns::OfficialFeedbackOnIdeaYouFollowMailer do
     let_it_be(:feedback_author_multiloc) { { 'en' => 'Gonzo' } }
     let_it_be(:feedback) { create(:official_feedback, body_multiloc: { 'en' => 'We appreciate your participation' }, idea: input, author_multiloc: feedback_author_multiloc) }
     let_it_be(:campaign) { EmailCampaigns::Campaigns::OfficialFeedbackOnIdeaYouFollow.create! }
-    let_it_be(:notification) { create(:official_feedback_on_idea_you_follow, recipient: recipient, post: input, official_feedback: feedback) }
+    let_it_be(:notification) { create(:official_feedback_on_idea_you_follow, recipient: recipient, idea: input, official_feedback: feedback) }
     let_it_be(:command) do
       activity = create(:activity, item: notification, action: 'created')
       create(:official_feedback_on_idea_you_follow_campaign).generate_commands(

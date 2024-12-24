@@ -17,8 +17,7 @@ RSpec.describe Notifications::InternalComments::InternalCommentOnIdeaAssignedToY
           recipient_id: assignee.id,
           initiating_user_id: internal_comment.author_id,
           internal_comment_id: internal_comment.id,
-          post_id: idea.id,
-          post_type: 'Idea',
+          idea_id: idea.id,
           project_id: internal_comment.post.project_id
         )
       end
@@ -61,15 +60,6 @@ RSpec.describe Notifications::InternalComments::InternalCommentOnIdeaAssignedToY
 
       # Don't create this notification if the Activity (internal comment created)
       # should lead to a MentionInInternalComment notification to the recipient.
-      it_behaves_like 'no notification created'
-    end
-
-    context 'when the internal comment is on an initiative the assignee is assigned to' do
-      let(:initiative) { create(:initiative, assignee: assignee) }
-      let(:internal_comment) { create(:internal_comment, post: initiative) }
-
-      # Don't create this notification if the Activity (internal comment created)
-      # should lead to a InternalCommentOnIntiativeAssignedToYou notification to the recipient.
       it_behaves_like 'no notification created'
     end
   end

@@ -75,19 +75,19 @@ module EmailCampaigns
     def generate_commands(recipient:, activity:, time: nil)
       notification = activity.item
       assignee_attributes = {}
-      if notification.post.assignee_id
-        assignee_attributes[:assignee_first_name] = notification.post.assignee.first_name
-        assignee_attributes[:assignee_last_name] = notification.post.assignee.last_name
+      if notification.idea.assignee_id
+        assignee_attributes[:assignee_first_name] = notification.idea.assignee.first_name
+        assignee_attributes[:assignee_last_name] = notification.idea.assignee.last_name
       end
       [{
         event_payload: {
-          post_title_multiloc: notification.post.title_multiloc,
-          post_body_multiloc: notification.post.body_multiloc,
-          post_published_at: notification.post.published_at.iso8601,
-          post_author_name: notification.post.author_name,
-          post_url: Frontend::UrlService.new.model_to_url(notification.post, locale: Locale.new(recipient.locale)),
-          post_likes_count: notification.post.likes_count,
-          post_comments_count: notification.post.comments_count,
+          post_title_multiloc: notification.idea.title_multiloc,
+          post_body_multiloc: notification.idea.body_multiloc,
+          post_published_at: notification.idea.published_at.iso8601,
+          post_author_name: notification.idea.author_name,
+          post_url: Frontend::UrlService.new.model_to_url(notification.idea, locale: Locale.new(recipient.locale)),
+          post_likes_count: notification.idea.likes_count,
+          post_comments_count: notification.idea.comments_count,
           **assignee_attributes
         }
       }]

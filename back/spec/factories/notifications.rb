@@ -12,7 +12,7 @@ FactoryBot.define do
 
   factory :comment_deleted_by_admin, parent: :notification, class: 'Notifications::CommentDeletedByAdmin' do
     comment
-    association :post, factory: :idea
+    idea
     initiating_user
     reason_code { 'irrelevant' }
     other_reason { nil }
@@ -20,7 +20,7 @@ FactoryBot.define do
 
   factory :comment_marked_as_spam, parent: :notification, class: 'Notifications::CommentMarkedAsSpam' do
     comment
-    association :post, factory: :idea
+    idea
     spam_report
     initiating_user
   end
@@ -28,11 +28,11 @@ FactoryBot.define do
   factory :comment_on_your_comment, parent: :notification, class: 'Notifications::CommentOnYourComment' do
     initiating_user
     comment
-    association :post, factory: :idea
+    idea
   end
 
   factory :cosponsor_of_your_idea, parent: :notification, class: 'Notifications::CosponsorOfYourIdea' do
-    association :post, factory: :idea
+    idea
     cosponsorship
     initiating_user
   end
@@ -42,7 +42,7 @@ FactoryBot.define do
     class: 'Notifications::InternalComments::InternalCommentOnIdeaAssignedToYou' do
     initiating_user
     internal_comment
-    association :post, factory: :idea
+    idea
   end
 
   factory :internal_comment_on_idea_you_commented_internally_on,
@@ -50,7 +50,7 @@ FactoryBot.define do
     class: 'Notifications::InternalComments::InternalCommentOnIdeaYouCommentedInternallyOn' do
     initiating_user
     internal_comment
-    association :post, factory: :idea
+    idea
   end
 
   factory :internal_comment_on_idea_you_moderate,
@@ -58,7 +58,7 @@ FactoryBot.define do
     class: 'Notifications::InternalComments::InternalCommentOnIdeaYouModerate' do
     initiating_user
     internal_comment
-    association :post, factory: :idea
+    idea
   end
 
   factory :internal_comment_on_unassigned_unmoderated_idea,
@@ -66,7 +66,7 @@ FactoryBot.define do
     class: 'Notifications::InternalComments::InternalCommentOnUnassignedUnmoderatedIdea' do
     initiating_user
     internal_comment
-    association :post, factory: :idea
+    idea
   end
 
   factory :internal_comment_on_your_internal_comment,
@@ -74,11 +74,11 @@ FactoryBot.define do
     class: 'Notifications::InternalComments::InternalCommentOnYourInternalComment' do
     initiating_user
     internal_comment
-    association :post, factory: :idea
+    idea
   end
 
   factory :idea_marked_as_spam, parent: :notification, class: 'Notifications::IdeaMarkedAsSpam' do
-    association :post, factory: :idea
+    idea
     project
     spam_report
     initiating_user
@@ -90,7 +90,7 @@ FactoryBot.define do
   end
 
   factory :invitation_to_cosponsor_idea, parent: :notification, class: 'Notifications::InvitationToCosponsorIdea' do
-    association :post, factory: :idea
+    idea
     cosponsorship
     initiating_user
   end
@@ -98,32 +98,32 @@ FactoryBot.define do
   factory :comment_on_idea_you_follow, parent: :notification, class: 'Notifications::CommentOnIdeaYouFollow' do
     initiating_user
     comment
-    association :post, factory: :idea
+    idea
     project
   end
 
   factory :mention_in_comment, parent: :notification, class: 'Notifications::MentionInComment' do
     initiating_user
     comment
-    association :post, factory: :idea
+    idea
   end
 
   factory :mention_in_internal_comment, parent: :notification, class: 'Notifications::InternalComments::MentionInInternalComment' do
     initiating_user
     internal_comment
-    association :post, factory: :idea
+    idea
   end
 
   factory :mention_in_official_feedback, parent: :notification, class: 'Notifications::MentionInOfficialFeedback' do
     initiating_user
     official_feedback
-    association :post, factory: :idea
+    idea
   end
 
   factory :official_feedback_on_idea_you_follow, parent: :notification, class: 'Notifications::OfficialFeedbackOnIdeaYouFollow' do
     initiating_user
     official_feedback
-    association :post, factory: :idea
+    idea
     project
   end
 
@@ -164,21 +164,21 @@ FactoryBot.define do
   end
 
   factory :status_change_on_idea_you_follow, parent: :notification, class: 'Notifications::StatusChangeOnIdeaYouFollow' do
-    association :post, factory: :idea
+    idea
     project
-    association :post_status, factory: :idea_status
+    idea_status
     before(:create) do |notification|
-      notification.post.idea_status = notification.post_status
+      notification.idea.idea_status = notification.idea_status
     end
   end
 
   factory :threshold_reached_for_admin, parent: :notification, class: 'Notifications::ThresholdReachedForAdmin' do
-    association :post, factory: :idea
-    association :post_status, factory: :proposals_status
+    idea
+    idea_status
   end
 
   factory :native_survey_not_submitted, parent: :notification, class: 'Notifications::NativeSurveyNotSubmitted' do
-    association :post, factory: :idea
+    idea
     project
     phase
   end

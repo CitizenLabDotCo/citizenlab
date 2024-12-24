@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class WebApi::V1::Notifications::CommentOnYourCommentSerializer < WebApi::V1::Notifications::NotificationSerializer
-  attribute :post_type
-
   attribute :initiating_user_first_name do |object|
     object.initiating_user&.first_name
   end
@@ -17,10 +15,10 @@ class WebApi::V1::Notifications::CommentOnYourCommentSerializer < WebApi::V1::No
   end
 
   attribute :post_title_multiloc do |object|
-    object.post&.title_multiloc
+    object.idea&.title_multiloc
   end
 
   attribute :post_slug do |object|
-    object.post&.slug
+    object.idea&.slug
   end
 end

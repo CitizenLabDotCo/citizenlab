@@ -46,8 +46,6 @@ class InternalCommentPolicy < ApplicationPolicy
   def internal_commenter?
     if record.post_type == 'Idea'
       active? && (admin? || UserRoleService.new.can_moderate?(record.post, user))
-    elsif record.post_type == 'Initiative'
-      active? && admin?
     else
       false
     end

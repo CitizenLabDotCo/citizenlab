@@ -14,7 +14,7 @@ RSpec.describe Notifications::CommentOnYourComment do
       expect(notifications.first).to have_attributes(
         recipient_id: parent_comment.author_id,
         initiating_user_id: child_comment.author_id,
-        post_id: parent_comment.post_id,
+        idea_id: parent_comment.post_id,
         comment_id: child_comment.id,
         project_id: parent_comment.post.project_id
       )

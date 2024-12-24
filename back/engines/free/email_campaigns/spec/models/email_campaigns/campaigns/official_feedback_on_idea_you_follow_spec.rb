@@ -26,8 +26,8 @@ RSpec.describe EmailCampaigns::Campaigns::OfficialFeedbackOnIdeaYouFollow do
           official_feedback_body_multiloc: notification.official_feedback.body_multiloc,
           official_feedback_url: an_instance_of(String),
           post_published_at: an_instance_of(String),
-          post_title_multiloc: notification.post.title_multiloc,
-          post_author_name: notification.post.author_name,
+          post_title_multiloc: notification.idea.title_multiloc,
+          post_author_name: notification.idea.author_name,
           input_term: 'idea'
         )
       })

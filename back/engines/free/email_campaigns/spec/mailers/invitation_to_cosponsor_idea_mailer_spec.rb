@@ -11,7 +11,7 @@ RSpec.describe EmailCampaigns::InvitationToCosponsorIdeaMailer do
     let_it_be(:campaign) { EmailCampaigns::Campaigns::InvitationToCosponsorIdea.create! }
     let_it_be(:author_name) { UserDisplayNameService.new(AppConfiguration.instance, author).display_name!(proposal.author) }
     let_it_be(:command) do
-      item = Notifications::InvitationToCosponsorIdea.new(post: proposal)
+      item = Notifications::InvitationToCosponsorIdea.new(idea: proposal)
       activity = Activity.new(item: item)
       commands = EmailCampaigns::Campaigns::InvitationToCosponsorIdea.new.generate_commands(recipient: recipient, activity: activity)
       commands[0].merge({ recipient: recipient })

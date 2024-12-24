@@ -28,13 +28,10 @@ RSpec.shared_examples 'internal_comment_campaign_generate_commands' do
     ).to eq(Frontend::UrlService.new.model_to_url(notification.internal_comment, locale: Locale.new(recipient.locale)))
     expect(
       command.dig(:event_payload, :post_title_multiloc)
-    ).to eq(notification.post.title_multiloc)
+    ).to eq(notification.idea.title_multiloc)
     expect(
       command.dig(:event_payload, :post_body_multiloc)
-    ).to eq(notification.post.body_multiloc)
-    expect(
-      command.dig(:event_payload, :post_type)
-    ).to eq(notification.post_type)
+    ).to eq(notification.idea.body_multiloc)
     expect(
       command.dig(:event_payload, :post_image_medium_url)
     ).to eq(post_image.image.versions[:medium].url)

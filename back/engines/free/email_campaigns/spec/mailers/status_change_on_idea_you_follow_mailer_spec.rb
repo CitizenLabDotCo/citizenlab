@@ -17,7 +17,7 @@ RSpec.describe EmailCampaigns::StatusChangeOnIdeaYouFollowMailer do
     let_it_be(:command) do
       campaign.generate_commands(
         recipient: recipient,
-        activity: build(:activity, item: build(:notification, post: input))
+        activity: build(:activity, item: build(:notification, idea: input))
       ).first.merge({ recipient: recipient })
     end
 

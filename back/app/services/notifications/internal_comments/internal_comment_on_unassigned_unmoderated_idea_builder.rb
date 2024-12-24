@@ -20,8 +20,7 @@ module Notifications
     end
 
     def preconditions_met?
-      post_type == 'Idea' &&
-        assignee_id.nil? &&
+      assignee_id.nil? &&
         User.project_moderator(project_id).empty? &&
         User.project_folder_moderator(folder_id).empty?
     end

@@ -69,7 +69,7 @@ module EmailCampaigns
     end
 
     def generate_commands(recipient:, activity:)
-      idea = activity.item.post
+      idea = activity.item.idea
       cosponsor = activity.item.initiating_user
       name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient)
 
