@@ -9,7 +9,7 @@ RSpec.describe EmailCampaigns::ThresholdReachedForAdminMailer do
     let_it_be(:assignee) { create(:admin, locale: 'en') }
     let_it_be(:campaign) { EmailCampaigns::Campaigns::ThresholdReachedForAdmin.create! }
     let_it_be(:proposal) { create(:proposal, assignee: assignee) }
-    let_it_be(:notification) { create(:threshold_reached_for_admin, recipient: recipient, post: proposal) }
+    let_it_be(:notification) { create(:threshold_reached_for_admin, recipient: recipient, idea: proposal) }
     let_it_be(:command) do
       {
         recipient: recipient,
