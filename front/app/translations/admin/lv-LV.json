@@ -120,6 +120,8 @@
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.untilNow": "{date} līdz šim",
   "app.components.admin.DatePhasePicker.Input.openEnded": "Atklāts",
   "app.components.admin.DatePhasePicker.Input.selectDate": "Izvēlieties datumu",
+  "app.components.admin.DatePickers.DateRangePicker.Calendar.clearEndDate": "Skaidrs beigu datums",
+  "app.components.admin.DatePickers.DateRangePicker.Calendar.clearStartDate": "Skaidrs sākuma datums",
   "app.components.admin.DateTimePicker.time": "Laiks",
   "app.components.admin.Graphs": "Ar pašreizējiem filtriem dati nav pieejami.",
   "app.components.admin.Graphs.noDataShort": "Nav pieejami nekādi dati.",
