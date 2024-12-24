@@ -40,7 +40,17 @@ const Calendar = ({
   });
 
   const handleDayClick: PropsBase['onDayClick'] = (day: Date) => {
+    // If we have no date range yet,
+    // OR we already have a fully set date range,
+    // Set 'from' to the clicked day and remove 'to'.
     if (!selectedRange.from || selectedRange.to) {
+      onUpdateRange({ from: day, to: undefined });
+      return;
+    }
+
+    // If we clicked a day before the current 'from' date,
+    // we set the 'from' date to the clicked day and remove 'to'.
+    if (selectedRange.from > day) {
       onUpdateRange({ from: day, to: undefined });
       return;
     }
