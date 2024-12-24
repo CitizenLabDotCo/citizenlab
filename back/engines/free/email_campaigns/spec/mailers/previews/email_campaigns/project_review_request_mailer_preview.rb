@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
+require_relative 'preview_mailer'
+
 module EmailCampaigns
-  class ProjectReviewRequestMailerPreview < PreviewMailer
+  class ProjectReviewRequestMailerPreview < ::PreviewMailer
     def campaign_mail
       campaign.mailer_class
         .with(campaign: campaign, command: command)
