@@ -65,10 +65,7 @@ const getLastPeriod = (resolution: IResolution) => {
   return moment().subtract({ days: 1 }).format('YYYY-MM-DD');
 };
 
-export const getComparedTimeRange = (
-  startAt: string | Moment,
-  endAt: string | Moment
-) => {
+export const getComparedTimeRange = (startAt?: string, endAt?: string) => {
   if (!startAt || !endAt) return {};
 
   const startAtMoment = moment(startAt, 'YYYY-MM-DD');

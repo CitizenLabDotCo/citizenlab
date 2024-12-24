@@ -6,9 +6,9 @@ import { useIntl } from 'utils/cl-intl';
 
 import InputContainer from '../_shared/InputContainer';
 import sharedMessages from '../_shared/messages';
+import { DateRange } from '../_shared/typings';
 
 import messages from './messages';
-import { DateRange } from './typings';
 
 interface Props {
   selectedRange: Partial<DateRange>;
