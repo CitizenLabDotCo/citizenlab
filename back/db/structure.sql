@@ -81,7 +81,6 @@ ALTER TABLE IF EXISTS ONLY public.analysis_additional_custom_fields DROP CONSTRA
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_849e0c7eb7;
 ALTER TABLE IF EXISTS ONLY public.ideas_phases DROP CONSTRAINT IF EXISTS fk_rails_845d7ca944;
 ALTER TABLE IF EXISTS ONLY public.impact_tracking_pageviews DROP CONSTRAINT IF EXISTS fk_rails_82dc979276;
-ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_828a073a04;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_81c11ef894;
 ALTER TABLE IF EXISTS ONLY public.areas_initiatives DROP CONSTRAINT IF EXISTS fk_rails_81a9922de4;
 ALTER TABLE IF EXISTS ONLY public.projects_topics DROP CONSTRAINT IF EXISTS fk_rails_812b6d9149;
@@ -228,7 +227,6 @@ DROP INDEX IF EXISTS public.index_notifications_on_inappropriate_content_flag_id
 DROP INDEX IF EXISTS public.index_notifications_on_idea_status_id;
 DROP INDEX IF EXISTS public.index_notifications_on_created_at;
 DROP INDEX IF EXISTS public.index_notifications_on_cosponsorship_id;
-DROP INDEX IF EXISTS public.index_notifications_on_cosponsors_initiative_id;
 DROP INDEX IF EXISTS public.index_notifications_on_basket_id;
 DROP INDEX IF EXISTS public.index_nav_bar_items_on_static_page_id;
 DROP INDEX IF EXISTS public.index_nav_bar_items_on_project_id;
@@ -2896,7 +2894,6 @@ CREATE TABLE public.notifications (
     inappropriate_content_flag_id uuid,
     internal_comment_id uuid,
     basket_id uuid,
-    cosponsors_initiative_id uuid,
     cosponsorship_id uuid,
     project_review_id uuid
 );
@@ -5652,13 +5649,6 @@ CREATE INDEX index_notifications_on_basket_id ON public.notifications USING btre
 
 
 --
--- Name: index_notifications_on_cosponsors_initiative_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_notifications_on_cosponsors_initiative_id ON public.notifications USING btree (cosponsors_initiative_id);
-
-
---
 -- Name: index_notifications_on_cosponsorship_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6738,14 +6728,6 @@ ALTER TABLE ONLY public.areas_initiatives
 
 ALTER TABLE ONLY public.notifications
     ADD CONSTRAINT fk_rails_81c11ef894 FOREIGN KEY (internal_comment_id) REFERENCES public.internal_comments(id);
-
-
---
--- Name: notifications fk_rails_828a073a04; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.notifications
-    ADD CONSTRAINT fk_rails_828a073a04 FOREIGN KEY (cosponsors_initiative_id) REFERENCES public.cosponsors_initiatives(id);
 
 
 --

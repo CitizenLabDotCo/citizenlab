@@ -25,14 +25,12 @@
 #  inappropriate_content_flag_id :uuid
 #  internal_comment_id           :uuid
 #  basket_id                     :uuid
-#  cosponsors_initiative_id      :uuid
 #  cosponsorship_id              :uuid
 #  project_review_id             :uuid
 #
 # Indexes
 #
 #  index_notifications_on_basket_id                      (basket_id)
-#  index_notifications_on_cosponsors_initiative_id       (cosponsors_initiative_id)
 #  index_notifications_on_cosponsorship_id               (cosponsorship_id)
 #  index_notifications_on_created_at                     (created_at)
 #  index_notifications_on_idea_status_id                 (idea_status_id)
@@ -51,7 +49,6 @@
 #
 #  fk_rails_...  (basket_id => baskets.id)
 #  fk_rails_...  (comment_id => comments.id)
-#  fk_rails_...  (cosponsors_initiative_id => cosponsors_initiatives.id)
 #  fk_rails_...  (cosponsorship_id => cosponsorships.id)
 #  fk_rails_...  (idea_id => ideas.id)
 #  fk_rails_...  (idea_status_id => idea_statuses.id)
