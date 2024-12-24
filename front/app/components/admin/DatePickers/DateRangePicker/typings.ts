@@ -1,12 +1,12 @@
-import { PropsBase, TZDate } from 'react-day-picker';
+import { PropsBase } from 'react-day-picker';
 
 import { DateRange } from '../_shared/typings';
 
 export interface Props {
   selectedRange: Partial<DateRange>;
-  startMonth?: TZDate;
-  endMonth?: TZDate;
-  defaultMonth?: TZDate;
+  startMonth?: Date;
+  endMonth?: Date;
+  defaultMonth?: Date;
   disabled?: PropsBase['disabled'];
   onUpdateRange: (range: Partial<DateRange>) => void;
 }
