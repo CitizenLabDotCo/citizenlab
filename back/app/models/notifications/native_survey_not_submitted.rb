@@ -65,7 +65,7 @@
 #
 module Notifications
   class NativeSurveyNotSubmitted < Notification
-    validates :post, presence: true # native survey response (idea)
+    validates :idea, presence: true # native survey response (idea)
     validates :project, presence: true
     validates :phase, presence: true
 
@@ -79,7 +79,7 @@ module Notifications
       if idea && recipient_id
         [new(
           recipient_id: recipient_id,
-          post: idea,
+          idea: idea,
           project: idea.project,
           phase: idea.creation_phase
         )]

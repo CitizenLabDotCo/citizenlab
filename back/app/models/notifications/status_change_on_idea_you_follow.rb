@@ -65,8 +65,7 @@
 #
 module Notifications
   class StatusChangeOnIdeaYouFollow < Notification
-    validates :post_status, :post, :project, presence: true
-    validates :post_type, inclusion: { in: ['Idea'] }
+    validates :idea_status, :idea, :project, presence: true
 
     ACTIVITY_TRIGGERS = { 'Idea' => { 'changed_status' => true } }
     EVENT_NAME = 'Status change on idea you follow'
@@ -82,9 +81,9 @@ module Notifications
         new(
           recipient_id: recipient.id,
           initiating_user_id: initiator_id,
-          post: idea,
+          idea: idea,
           project_id: idea.project_id,
-          post_status: idea.idea_status
+          idea_status: idea.idea_status
         )
       end
     end

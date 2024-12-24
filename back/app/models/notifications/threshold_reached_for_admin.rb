@@ -65,7 +65,7 @@
 #
 module Notifications
   class ThresholdReachedForAdmin < Notification
-    validates :post, presence: true
+    validates :idea, presence: true
 
     ACTIVITY_TRIGGERS = { 'Idea' => { 'changed_status' => true } }
     EVENT_NAME = 'Threshold reached for admin'
@@ -81,8 +81,8 @@ module Notifications
         new(
           recipient: recipient,
           initiating_user_id: initiator_id,
-          post: input,
-          post_status: status
+          idea: input,
+          idea_status: status
         )
       end
     end

@@ -65,8 +65,7 @@
 #
 module Notifications
   class IdeaMarkedAsSpam < MarkedAsSpam
-    validates :post, :project, presence: true
-    validates :post_type, inclusion: { in: ['Idea'] }
+    validates :idea, :project, presence: true
 
     ACTIVITY_TRIGGERS = { 'SpamReport' => { 'created' => true } }
     EVENT_NAME = 'Idea marked as spam'
@@ -81,7 +80,7 @@ module Notifications
             recipient_id: recipient_id,
             initiating_user_id: initiator_id,
             spam_report: spam_report,
-            post: spam_report.spam_reportable,
+            idea: spam_report.spam_reportable,
             project_id: project_id
           )
         end

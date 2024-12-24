@@ -65,7 +65,7 @@
 #
 module Notifications
   class MentionInComment < Notification
-    validates :initiating_user, :comment, :post, presence: true
+    validates :initiating_user, :comment, :idea, presence: true
 
     ACTIVITY_TRIGGERS = { 'Comment' => { 'mentioned' => true } }
     EVENT_NAME = 'Mention in a comment'
@@ -80,8 +80,7 @@ module Notifications
           recipient_id: recipient_id,
           initiating_user_id: initiator_id,
           comment: comment,
-          post_id: comment.post_id,
-          post_type: comment.post_type
+          idea: comment.post
         }
         if attributes[:post_type] == 'Idea'
           attributes[:project_id] = comment.post.project_id

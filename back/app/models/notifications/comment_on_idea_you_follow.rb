@@ -65,8 +65,7 @@
 #
 module Notifications
   class CommentOnIdeaYouFollow < Notification
-    validates :comment, :initiating_user, :post, :project, presence: true
-    validates :post_type, inclusion: { in: ['Idea'] }
+    validates :comment, :initiating_user, :idea, :project, presence: true
 
     ACTIVITY_TRIGGERS = { 'Comment' => { 'created' => true } }
     EVENT_NAME = 'Comment on idea you follow'
@@ -82,7 +81,7 @@ module Notifications
           new(
             recipient_id: recipient.id,
             initiating_user_id: initiator_id,
-            post: comment.post,
+            idea: comment.post,
             comment: comment,
             project_id: comment.post.project_id
           )

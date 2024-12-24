@@ -65,8 +65,7 @@
 #
 module Notifications
   class OfficialFeedbackOnIdeaYouFollow < Notification
-    validates :initiating_user, :official_feedback, :post, :project, presence: true
-    validates :post_type, inclusion: { in: ['Idea'] }
+    validates :initiating_user, :official_feedback, :idea, :project, presence: true
 
     ACTIVITY_TRIGGERS = { 'OfficialFeedback' => { 'created' => true } }
     EVENT_NAME = 'Official feedback on idea you follow'
@@ -82,7 +81,7 @@ module Notifications
           new(
             recipient_id: recipient.id,
             initiating_user_id: initiator_id,
-            post: official_feedback.idea,
+            idea: official_feedback.idea,
             official_feedback: official_feedback,
             project_id: official_feedback.idea.project_id
           )

@@ -82,7 +82,7 @@ module Notifications
           recipient_id: recipient_id,
           initiating_user: initiating_user,
           cosponsorship: cosponsorship,
-          post: idea
+          idea: idea
         )]
       else
         []
