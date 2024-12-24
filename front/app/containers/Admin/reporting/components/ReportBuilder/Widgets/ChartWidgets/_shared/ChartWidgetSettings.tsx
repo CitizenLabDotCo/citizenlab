@@ -124,18 +124,21 @@ export const DateRangeInput = ({
       <Text variant="bodyM" color="textSecondary" mb="5px">
         {label ?? formatMessage(messages.analyticsChartDateRange)}
       </Text>
-      <DateRangePicker
-        selectedRange={{
-          from: parseBackendDateString(startAt),
-          to: parseBackendDateString(endAt),
-        }}
-        onUpdateRange={({ from, to }) => {
-          handleChangeTimeRange({
-            startDate: toBackendDateString(from),
-            endDate: toBackendDateString(to),
-          });
-        }}
-      />
+      <Box w="100%" display="flex">
+        <DateRangePicker
+          selectedRange={{
+            from: parseBackendDateString(startAt),
+            to: parseBackendDateString(endAt),
+          }}
+          numberOfMonths={1}
+          onUpdateRange={({ from, to }) => {
+            handleChangeTimeRange({
+              startDate: toBackendDateString(from),
+              endDate: toBackendDateString(to),
+            });
+          }}
+        />
+      </Box>
     </Box>
   );
 };

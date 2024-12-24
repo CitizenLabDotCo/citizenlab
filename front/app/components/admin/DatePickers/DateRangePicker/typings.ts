@@ -8,6 +8,7 @@ export interface Props {
   endMonth?: Date;
   defaultMonth?: Date;
   disabled?: PropsBase['disabled'];
+  numberOfMonths?: number;
   onUpdateRange: (range: Partial<DateRange>) => void;
 }
 

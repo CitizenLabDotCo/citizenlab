@@ -8,28 +8,29 @@ import Calendar from './Calendar';
 import Input from './Input';
 import { Props, SelectionMode } from './typings';
 
-const WIDTH = '620px';
-
 const DateRangePicker = ({
   selectedRange,
   startMonth,
   endMonth,
   defaultMonth,
   disabled,
+  numberOfMonths,
   onUpdateRange,
 }: Props) => {
   const [selectionMode, setSelectionMode] = useState<SelectionMode>();
 
+  const width = numberOfMonths === 1 ? '310px' : '620px';
+
   return (
     <ClickOutsideContainer
-      width={WIDTH}
+      width={width}
       onClickOutside={() => {
         setSelectionMode(undefined);
       }}
     >
       <Tooltip
         content={
-          <Box width={WIDTH}>
+          <Box width={width}>
             <Calendar
               selectedRange={selectedRange}
               startMonth={startMonth}
@@ -37,6 +38,7 @@ const DateRangePicker = ({
               defaultMonth={defaultMonth}
               disabled={disabled}
               selectionMode={selectionMode}
+              numberOfMonths={numberOfMonths}
               onUpdateRange={onUpdateRange}
               onUpdateSelectionMode={setSelectionMode}
             />

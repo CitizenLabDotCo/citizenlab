@@ -36,6 +36,7 @@ const Calendar = ({
   defaultMonth,
   disabled,
   selectionMode,
+  numberOfMonths = 2,
   onUpdateRange,
   onUpdateSelectionMode,
 }: CalendarProps) => {
@@ -71,7 +72,7 @@ const Calendar = ({
     <DayPickerStyles>
       <DayPicker
         mode="range"
-        numberOfMonths={2}
+        numberOfMonths={numberOfMonths}
         captionLayout="dropdown"
         locale={getLocale(locale)}
         startMonth={startMonth}
