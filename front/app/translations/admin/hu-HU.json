@@ -2589,7 +2589,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleTooltip": "It is useful to provide this information for users who rely on a screen reader or other assistive technology.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabel": "Website address",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabelTooltip": "Full URL of the website you want to embed.",
-  "app.containers.admin.ContentBuilder.IframeMultiloc.iframeDescription2": "Egy külső webhelyről származó tartalmat jeleníthet meg az oldalon egy HTML iFrame-ben. Vegye figyelembe, hogy nem minden oldal ágyazható be. Ha problémái vannak egy oldal beágyazásával, kérdezze meg a webhely tulajdonosától, hogy a szervere megfelelően van-e beágyazva.",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.iframeDescription3": "Egy külső webhelyről származó tartalmat jeleníthet meg az oldalon egy HTML iFrame-ben. Vegye figyelembe, hogy nem minden oldal ágyazható be. Ha problémái vannak egy oldal beágyazásával, kérdezze meg az oldal tulajdonosát, hogy be van-e állítva a beágyazás engedélyezésére.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeEmbedVisitLinkMessage": "Visit our support page",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeHeightPlaceholder": "300",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeInvalidWhitelistUrlErrorMessage": "Sorry, this content could not be embedded. {visitLinkMessage} to learn more.",
