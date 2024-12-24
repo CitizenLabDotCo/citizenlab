@@ -57,8 +57,6 @@ module EmailCampaigns
         recipients = User.admin
         if comment.post_type == 'Idea' && !initiator.project_moderator?(comment.post.project.id)
           recipient_ids = recipients.or(User.project_moderator(comment.post.project.id)).ids
-        elsif comment.post_type == 'Initiative'
-          recipient_ids = recipients.ids
         end
       end
 
