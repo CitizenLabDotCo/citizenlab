@@ -2589,7 +2589,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleTooltip": "Es ist sinnvoll, diese Informationen für Nutzer*innen bereitzustellen, die auf einen Bildschirmleser oder eine andere unterstützende Technologie angewiesen sind.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabel": "Adresse der Webseite",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabelTooltip": "Vollständige URL der Webseite, die Sie einbetten möchten.",
-  "app.containers.admin.ContentBuilder.IframeMultiloc.iframeDescription2": "Zeigen Sie Inhalte einer externen Website auf Ihrer Seite in einem HTML-iFrame an. Beachten Sie, dass nicht jede Seite eingebettet werden kann. Wenn Sie Probleme beim Einbetten einer Seite haben, erkundigen Sie sich beim Eigentümer der Website, ob ihr Server korrekt für die Einbettung konfiguriert ist.",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.iframeDescription3": "Zeigen Sie Inhalte einer externen Website auf Ihrer Seite in einem HTML-iFrame an. Beachten Sie, dass nicht jede Seite eingebettet werden kann. Wenn Sie Probleme beim Einbetten einer Seite haben, erkundigen Sie sich beim Eigentümer der Seite, ob diese so konfiguriert ist, dass sie das Einbetten erlaubt.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeEmbedVisitLinkMessage": "Besuchen Sie die Wissensdatenbank",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeHeightPlaceholder": "300",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeInvalidWhitelistUrlErrorMessage": "Dieser Inhalt konnte leider nicht eingebettet werden. {visitLinkMessage} um mehr zu erfahren.",
