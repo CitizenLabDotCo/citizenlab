@@ -2589,7 +2589,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleTooltip": "É útil fornecer essas informações aos usuários que dependem de um leitor de tela ou de outra tecnologia de assistência.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabel": "Endereço do site",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabelTooltip": "URL completo do site que você deseja incorporar.",
-  "app.containers.admin.ContentBuilder.IframeMultiloc.iframeDescription2": "Exibir conteúdo de um site externo em sua página em um iFrame HTML. Observe que nem todas as páginas podem ser incorporadas. Se você estiver tendo problemas para incorporar uma página, verifique com o proprietário do site se o servidor está configurado corretamente para ser incorporado.",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.iframeDescription3": "Exibir conteúdo de um site externo em sua página em um iFrame HTML. Observe que nem todas as páginas podem ser incorporadas. Se você estiver tendo problemas para incorporar uma página, verifique com o proprietário da página se ela está configurada para permitir a incorporação.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeEmbedVisitLinkMessage": "Visite nossa página de suporte",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeHeightPlaceholder": "300",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeInvalidWhitelistUrlErrorMessage": "Desculpe, não foi possível incorporar este conteúdo. {visitLinkMessage} para saber mais.",
