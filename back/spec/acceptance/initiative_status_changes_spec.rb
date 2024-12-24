@@ -84,27 +84,6 @@ resource 'InitiativeStatusChange' do
         assert_status 201
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :relationships, :user, :data, :id)).to eq @user.id
-        expect(@initiative.reload.official_feedbacks_count).to eq 1
-      end
-
-      describe do
-        let(:official_feedback_id) { create(:official_feedback, post: @initiative).id }
-        let(:body_multiloc) { nil }
-        let(:author_multiloc) { nil }
-
-        example_request 'Create a status change on an initiative using an existing feedback' do
-          assert_status 201
-          expect(@initiative.reload.official_feedbacks_count).to eq 1
-        end
-      end
-
-      describe do
-        let(:body_multiloc) { nil }
-        let(:author_multiloc) { nil }
-
-        example_request '[error] Create a status change on an initiative without feedback' do
-          assert_status 422
-        end
       end
 
       describe do

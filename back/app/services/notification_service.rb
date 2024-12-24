@@ -30,7 +30,6 @@ class NotificationService
     Notifications::MentionInOfficialFeedback,
     Notifications::NativeSurveyNotSubmitted,
     Notifications::OfficialFeedbackOnIdeaYouFollow,
-    Notifications::OfficialFeedbackOnInitiativeYouFollow,
     Notifications::ProjectFolderModerationRightsReceived,
     Notifications::ProjectModerationRightsReceived,
     Notifications::ProjectPhaseStarted,

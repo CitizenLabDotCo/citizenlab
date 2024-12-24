@@ -98,6 +98,7 @@ class Idea < ApplicationRecord
   has_many :baskets, through: :baskets_ideas
   has_many :text_images, as: :imageable, dependent: :destroy
   has_many :followers, as: :followable, dependent: :destroy
+  has_many :official_feedbacks, dependent: :destroy
 
   has_many :cosponsorships, dependent: :destroy
   has_many :cosponsors, through: :cosponsorships, source: :user
@@ -175,7 +176,7 @@ class Idea < ApplicationRecord
   scope :feedback_needed, lambda {
     scope = joins(:idea_status)
     scope.where(idea_statuses: { code: 'proposed' })
-      .where('ideas.id NOT IN (SELECT DISTINCT(post_id) FROM official_feedbacks)')
+      .where('ideas.id NOT IN (SELECT DISTINCT(idea_id) FROM official_feedbacks)')
       .or(scope.where(idea_statuses: { code: 'threshold_reached' }))
   }
 

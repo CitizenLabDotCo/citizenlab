@@ -9,7 +9,9 @@ class UserRoleService
       can_moderate? object.project, user
     when 'Initiative'
       can_moderate_initiatives? user
-    when 'Comment', 'OfficialFeedback'
+    when 'OfficialFeedback'
+      can_moderate? object.idea, user
+    when 'Comment'
       can_moderate? object.post, user
     when 'Reaction'
       can_moderate? object.reactable, user

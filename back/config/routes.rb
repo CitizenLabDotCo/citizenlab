@@ -32,7 +32,6 @@ Rails.application.routes.draw do
           patch :mark_as_deleted, on: :member
         end
         get 'comments/as_xlsx', on: :collection, to: 'comments#index_xlsx'
-        resources :official_feedback, shallow: true
       end
       concern :spam_reportable do
         resources :spam_reports, shallow: true
@@ -70,12 +69,14 @@ Rails.application.routes.draw do
         get :filter_counts, on: :collection
         get :json_forms_schema, on: :member
         get 'draft/:phase_id', on: :collection, to: 'ideas#draft_by_phase'
+
+        resources :official_feedback, shallow: true
         get :similarities, on: :member
       end
 
       resources :initiatives,
-        concerns: %i[reactable spam_reportable post followable],
-        defaults: { reactable: 'Initiative', spam_reportable: 'Initiative', post: 'Initiative', followable: 'Initiative' } do
+        concerns: %i[reactable post followable],
+        defaults: { reactable: 'Initiative', post: 'Initiative', followable: 'Initiative' } do
         resources :images, defaults: { container_type: 'Initiative' }
         resources :files, defaults: { container_type: 'Initiative' }
 

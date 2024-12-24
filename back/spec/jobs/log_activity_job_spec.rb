@@ -187,7 +187,6 @@ RSpec.describe LogActivityJob do
         Notifications::MentionInComment,
         Notifications::MentionInOfficialFeedback,
         Notifications::OfficialFeedbackOnIdeaYouFollow,
-        Notifications::OfficialFeedbackOnInitiativeYouFollow,
         Notifications::ProjectFolderModerationRightsReceived,
         Notifications::ProjectModerationRightsReceived,
         Notifications::ProjectPhaseStarted,
