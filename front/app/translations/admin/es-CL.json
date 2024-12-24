@@ -2589,7 +2589,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeTitleTooltip": "Es útil proporcionar esta información para los usuarios que dependen de un lector de pantalla u otra tecnología de asistencia.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabel": "Añada su URL",
   "app.containers.admin.ContentBuilder.IframeMultiloc.embedIframeUrlLabelTooltip": "URL completa del sitio web que desea incrustar.",
-  "app.containers.admin.ContentBuilder.IframeMultiloc.iframeDescription2": "Muestra el contenido de un sitio web externo en tu página en un iFrame HTML. Ten en cuenta que no todas las páginas pueden incrustarse. Si tienes problemas para incrustar una página, comprueba con el propietario del sitio web si su servidor está configurado correctamente para ser incrustado.",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.iframeDescription3": "Muestra el contenido de un sitio web externo en tu página en un iFrame HTML. Ten en cuenta que no todas las páginas pueden incrustarse. Si tienes problemas para incrustar una página, comprueba con el propietario de la página si está configurada para permitir la incrustación.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeEmbedVisitLinkMessage": "Visite nuestra página de soporte",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeHeightPlaceholder": "300",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeInvalidWhitelistUrlErrorMessage": "Lo sentimos. Este contenido no pudo ser incrustado. {visitLinkMessage} para saber más.",
