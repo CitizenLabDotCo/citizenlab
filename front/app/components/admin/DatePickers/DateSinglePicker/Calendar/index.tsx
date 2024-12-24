@@ -33,7 +33,7 @@ const Calendar = ({
   onChange,
 }: CalendarProps) => {
   const locale = useLocale();
-  const startMonth = new Date(1900, 0);
+  const startMonth = _startMonth ?? new Date(1900, 0);
   const endMonth = getEndMonth({ endMonth: _endMonth, selectedDate });
   const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
