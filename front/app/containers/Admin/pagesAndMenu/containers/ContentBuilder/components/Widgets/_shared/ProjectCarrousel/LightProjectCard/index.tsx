@@ -14,7 +14,6 @@ import getCTAMessage from 'components/ProjectCard/getCTAMessage';
 
 import { useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
-import { truncate } from 'utils/textUtils';
 
 import { CardContainer, CardImage } from '../../BaseCard';
 import { CARD_WIDTH } from '../constants';
@@ -64,7 +63,7 @@ const LightProjectCard = ({ project, ml, mr, onKeyDown }: Props) => {
     >
       <CardImage imageUrl={imageUrl ?? undefined} alt={imageAltText} />
       <Title variant="h3" fontSize="m" mt="8px" mb="0px" color="tenantText">
-        {truncate(title, 50)}
+        {title}
       </Title>
       <Box mt="8px">
         <TimeIndicator
