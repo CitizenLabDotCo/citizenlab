@@ -7,7 +7,7 @@ import styled from 'styled-components';
 
 import useLocale from 'hooks/useLocale';
 
-import { getEndMonth, getStartMonth } from '../../_shared/getStartEndMonth';
+import { getEndMonth } from '../../_shared/getStartEndMonth';
 import { getLocale } from '../../_shared/locales';
 import { Props } from '../typings';
 
@@ -33,11 +33,7 @@ const Calendar = ({
 }: Props) => {
   const locale = useLocale();
 
-  const startMonth = getStartMonth({
-    startMonth: _startMonth,
-    selectedDate: selectedRange.from,
-  });
-
+  const startMonth = _startMonth ?? new Date(1900, 0);
   const endMonth = getEndMonth({
     endMonth: _endMonth,
     selectedDate: selectedRange.to,
