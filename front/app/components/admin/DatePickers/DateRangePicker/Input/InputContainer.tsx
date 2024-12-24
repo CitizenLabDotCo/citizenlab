@@ -14,7 +14,10 @@ const Container = styled.div<{ disabled: boolean }>`
   flex-direction: row;
   align-items: center;
   font-size: ${fontSizes.base}px;
-  padding: 4px 8px;
+  padding-left: 4px;
+  padding-right: 10px;
+  padding-top: 8px;
+  padding-bottom: 8px;
   cursor: default;
 
   color: ${colors.grey800};

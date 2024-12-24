@@ -19,19 +19,18 @@ const StyledButton = styled(Box)<{ isSelected: boolean }>`
 interface Props {
   children: string;
   isSelected: boolean;
-  ml?: string;
+  mr?: string;
   onClick: () => void;
 }
 
-const DateButton = ({ children, isSelected, ml, onClick }: Props) => {
+const DateButton = ({ children, isSelected, mr, onClick }: Props) => {
   return (
     <StyledButton
       as="button"
-      mr="4px"
-      ml={ml}
       px="8px"
       py="4px"
       cursor="pointer"
+      mr={mr}
       borderRadius={stylingConsts.borderRadius}
       isSelected={isSelected}
       onClick={onClick}

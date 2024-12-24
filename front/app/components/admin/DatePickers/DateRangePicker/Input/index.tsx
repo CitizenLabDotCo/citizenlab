@@ -37,7 +37,7 @@ const Input = ({
       <Icon name="chevron-right" height="18px" />
       <DateButton
         isSelected={selectionMode === 'to'}
-        ml="4px"
+        mr="2px"
         onClick={onClickTo}
       >
         {selectedRange.to ? selectedRange.to.toLocaleDateString() : selectDate}
