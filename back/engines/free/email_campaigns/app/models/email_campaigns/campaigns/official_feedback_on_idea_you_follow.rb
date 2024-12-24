@@ -76,12 +76,12 @@ module EmailCampaigns
           official_feedback_author_multiloc: notification.official_feedback.author_multiloc,
           official_feedback_body_multiloc: notification.official_feedback.body_multiloc,
           official_feedback_url: Frontend::UrlService.new.model_to_url(notification.official_feedback, locale: Locale.new(recipient.locale)),
-          post_published_at: notification.post.published_at.iso8601,
-          post_title_multiloc: notification.post.title_multiloc,
-          post_body_multiloc: notification.post.body_multiloc,
-          post_author_name: name_service.display_name!(notification.post.author),
-          unfollow_url: Frontend::UrlService.new.unfollow_url(Follower.new(followable: notification.post, user: recipient)),
-          input_term: notification.post.input_term
+          post_published_at: notification.idea.published_at.iso8601,
+          post_title_multiloc: notification.idea.title_multiloc,
+          post_body_multiloc: notification.idea.body_multiloc,
+          post_author_name: name_service.display_name!(notification.idea.author),
+          unfollow_url: Frontend::UrlService.new.unfollow_url(Follower.new(followable: notification.idea, user: recipient)),
+          input_term: notification.idea.input_term
         }
       }]
     end

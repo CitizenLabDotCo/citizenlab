@@ -69,7 +69,7 @@ module EmailCampaigns
     end
 
     def generate_commands(recipient:, activity:)
-      idea = activity.item.post
+      idea = activity.item.idea
       status = idea.idea_status
       [{
         event_payload: {
