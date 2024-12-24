@@ -261,8 +261,21 @@ export const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 // This function makes sure that the date is always interpreted as midnight in the user's timezone.
 const backendDatestringRegex = /^\d{4}-\d{2}-\d{2}$/;
 
-export const parseBackendDateString = (dateString?: string) => {
-  if (!dateString) return undefined;
+export const parseBackendDateString = (_dateString?: string) => {
+  if (!_dateString) return undefined;
+
+  let dateString = _dateString;
+
+  // Sometimes, e.g. in the craftjson layouts,
+  // we still have old reports using datestrings like
+  // 2023-01-13T14:54:51.5151
+  // This was an implementation bug- we should have used
+  // the yyyy-MM-DD from the start.
+  // But for now, we need to handle this case.
+  // TODO: fix this properly in a migration.
+  if (dateString.length > 10) {
+    dateString = dateString.slice(0, 10);
+  }
 
   if (!dateString.match(backendDatestringRegex)) {
     throw new Error('Invalid date string');
