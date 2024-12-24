@@ -1,7 +1,8 @@
-import { format } from 'date-fns';
 import { RouteType } from 'routes';
 
 import { DateRange } from 'components/admin/DatePickers/_shared/typings';
+
+import { toBackendDateString } from 'utils/dateUtils';
 
 import { Template } from './typings';
 
@@ -28,8 +29,8 @@ export const getRedirectUrl = ({
   }
 
   if (template === 'platform' && from && to) {
-    const startDateFormat = format(from, 'yyyy-MM-dd');
-    const endDateFormat = format(to, 'yyyy-MM-dd');
+    const startDateFormat = toBackendDateString(from);
+    const endDateFormat = toBackendDateString(to);
 
     const startDateParam = `startDatePlatformReport=${startDateFormat}`;
     const endDateParam = `endDatePlatformReport=${endDateFormat}`;

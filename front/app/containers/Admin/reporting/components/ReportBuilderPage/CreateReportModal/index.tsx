@@ -123,7 +123,7 @@ const CreateReportModal = ({ open, onClose }: Props) => {
           </Box>
         )}
         {template === 'platform' && (
-          <Box width="100%" mt="12px">
+          <Box width="100%" mt="12px" display="flex">
             <DateRangePicker selectedRange={dates} onUpdateRange={setDates} />
           </Box>
         )}
