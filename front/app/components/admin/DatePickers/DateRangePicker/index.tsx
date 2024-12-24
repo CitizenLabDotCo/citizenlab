@@ -38,6 +38,7 @@ const DateRangePicker = ({
               disabled={disabled}
               selectionMode={selectionMode}
               onUpdateRange={onUpdateRange}
+              onUpdateSelectionMode={setSelectionMode}
             />
           </Box>
         }

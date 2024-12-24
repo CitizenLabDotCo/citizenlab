@@ -15,6 +15,7 @@ const Container = styled.div<{ disabled: boolean }>`
   align-items: center;
   font-size: ${fontSizes.base}px;
   padding: 4px 8px;
+  cursor: default;
 
   color: ${colors.grey800};
 
@@ -27,7 +28,21 @@ const Container = styled.div<{ disabled: boolean }>`
       fill: ${colors.grey500};
     }
   `
-      : ''}
+      : `
+  &:hover,
+  &:focus {
+      color: ${colors.black};
+  }
+
+  svg {
+    fill: ${colors.grey700};
+  }
+
+  &:hover svg,
+  &:focus svg {
+    fill: ${colors.black};
+  }
+  `}
 `;
 
 interface Props {

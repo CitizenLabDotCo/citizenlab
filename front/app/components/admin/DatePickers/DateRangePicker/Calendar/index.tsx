@@ -11,6 +11,7 @@ import { getEndMonth } from '../../_shared/getStartEndMonth';
 import { getLocale } from '../../_shared/locales';
 import { Props } from '../typings';
 
+import { getNextSelectionMode } from './utils/getNextSelectionMode';
 import { getUpdatedRange } from './utils/getUpdatedRange';
 
 const DayPickerStyles = styled.div`
@@ -33,6 +34,7 @@ const Calendar = ({
   disabled,
   selectionMode,
   onUpdateRange,
+  onUpdateSelectionMode,
 }: Props) => {
   const locale = useLocale();
 
@@ -52,6 +54,13 @@ const Calendar = ({
     });
 
     onUpdateRange(nextRange);
+
+    const nextSelectionMode = getNextSelectionMode({
+      selectionMode,
+      selectedRange: nextRange,
+    });
+
+    onUpdateSelectionMode(nextSelectionMode);
   };
 
   return (

@@ -10,6 +10,7 @@ export interface Props {
   disabled?: PropsBase['disabled'];
   selectionMode?: SelectionMode;
   onUpdateRange: (range: Partial<DateRange>) => void;
+  onUpdateSelectionMode: (selectionMode: SelectionMode) => void;
 }
 
 export type SelectionMode = 'from' | 'to';
