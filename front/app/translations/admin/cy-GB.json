@@ -120,7 +120,6 @@
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.untilNow": "{date} hyd yn hyn",
   "app.components.admin.DatePhasePicker.Input.openEnded": "penagored",
   "app.components.admin.DatePhasePicker.Input.selectDate": "Dewiswch ddyddiad",
-  "app.components.admin.DateTimePicker.time": "Amser",
   "app.components.admin.Graphs": "Dim data ar gael gyda'r hidlwyr cyfredol.",
   "app.components.admin.Graphs.noDataShort": "Dim data ar gael.",
   "app.components.admin.GraphsCards.CommentsByTime.hooks.useCommentsByTime.timeSeries": "Sylwadau dros amser",
