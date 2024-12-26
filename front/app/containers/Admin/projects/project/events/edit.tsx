@@ -280,7 +280,7 @@ const AdminProjectEventEdit = () => {
     setErrors({});
   };
 
-  const handleDateTimePickerOnChange =
+  const _handleDateTimePickerOnChange =
     (name: 'start_at' | 'end_at') => (time: Date) => {
       if (!isInitialLoading) {
         setSubmitState('enabled');

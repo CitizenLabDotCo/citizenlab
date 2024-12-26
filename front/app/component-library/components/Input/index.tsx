@@ -101,7 +101,6 @@ export interface InputProps {
   className?: string;
   size?: InputSize;
   'data-testid'?: string;
-  step?: number;
 }
 
 class Input extends PureComponent<InputProps> {
@@ -155,7 +154,6 @@ class Input extends PureComponent<InputProps> {
       autocomplete,
       size = 'medium',
       'data-testid': dataTestId,
-      step,
     } = this.props;
     const hasError = !isNil(this.props.error) && !isEmpty(this.props.error);
     const optionalProps = isBoolean(spellCheck) ? { spellCheck } : null;
@@ -206,7 +204,6 @@ class Input extends PureComponent<InputProps> {
           required={required}
           autoComplete={autocomplete}
           onKeyDown={onKeyDown}
-          step={step}
           {...optionalProps}
         />
 

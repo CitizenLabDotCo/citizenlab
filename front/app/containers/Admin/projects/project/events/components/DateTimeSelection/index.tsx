@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Label, Input } from '@citizenlab/cl2-component-library';
+import { Box, Label } from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
 
 import DateSinglePicker from 'components/admin/DatePickers/DateSinglePicker';
@@ -8,17 +8,16 @@ import ErrorComponent from 'components/UI/Error';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import messages from '../messages';
-import { ErrorType } from '../types';
+import messages from '../../messages';
+import { ErrorType } from '../../types';
+
+import TimeInput from './TimeInput';
+import { Hour, Minute } from './types';
 
 interface Props {
   eventAttrs: Record<string, any>;
   errors: ErrorType;
 }
-
-// For the 'step' (interval) attribute of the input[type="time"] element,
-// seconds are used. So 15 minutes is 15 * 60 seconds.
-const FIFTEEN_MINUTES = 15 * 60;
 
 const DateTimeSelection = ({ eventAttrs, errors }: Props) => {
   const handleSelectStartAtDay = (_date: Date) => {
@@ -27,6 +26,14 @@ const DateTimeSelection = ({ eventAttrs, errors }: Props) => {
 
   const handleSelectEndAtDay = (_date: Date) => {
     // TODO
+  };
+
+  const handleSelectStartAtTime = (h: Hour, m: Minute) => {
+    console.log({ h, m });
+  };
+
+  const handleSelectEndAtTime = (h: Hour, m: Minute) => {
+    console.log({ h, m });
   };
 
   return (
@@ -42,7 +49,9 @@ const DateTimeSelection = ({ eventAttrs, errors }: Props) => {
             }
             onChange={handleSelectStartAtDay}
           />
-          <Input type="time" step={FIFTEEN_MINUTES} />
+          <Box ml="12px">
+            <TimeInput h={18} m={15} onChange={handleSelectStartAtTime} />
+          </Box>
         </Box>
         <ErrorComponent apiErrors={get(errors, 'start_at')} />
       </Box>
@@ -58,7 +67,9 @@ const DateTimeSelection = ({ eventAttrs, errors }: Props) => {
             }
             onChange={handleSelectEndAtDay}
           />
-          <Input type="time" step={FIFTEEN_MINUTES} />
+          <Box ml="12px">
+            <TimeInput h={18} m={15} onChange={handleSelectEndAtTime} />
+          </Box>
         </Box>
         <ErrorComponent apiErrors={get(errors, 'end_at')} />
       </Box>
