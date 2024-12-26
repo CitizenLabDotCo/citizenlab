@@ -172,7 +172,9 @@ module MultiTenancy
 
       # Creates nested comments for a given post
       def create_comment_tree(post, parent, depth = 0)
-        amount = rand(2 / (depth + 1))
+        return if depth > 1
+
+        amount = 1 + rand(3)
         amount.times do |_i|
           c = Comment.create!({
             body_multiloc: {
