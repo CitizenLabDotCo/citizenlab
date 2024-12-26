@@ -72,7 +72,7 @@ export interface InputProps {
   labelTooltipText?: string | JSX.Element | null;
   value?: string | null;
   locale?: Locale;
-  type: 'text' | 'email' | 'password' | 'number' | 'date' | 'time';
+  type: 'text' | 'email' | 'password' | 'number' | 'date';
   placeholder?: string | null;
   error?: string | null;
   onChange?: (arg: string, locale: Locale | undefined) => void;
