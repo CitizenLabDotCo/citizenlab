@@ -12,7 +12,7 @@ class UserRoleService
     when 'OfficialFeedback'
       can_moderate? object.idea, user
     when 'Comment'
-      can_moderate? object.post, user
+      can_moderate? object.idea, user
     when 'Reaction'
       can_moderate? object.reactable, user
     when 'ProjectFolders::Folder'
@@ -44,7 +44,7 @@ class UserRoleService
     when 'Initiative'
       scope.admin
     when 'Comment'
-      moderators_for object.post, scope
+      moderators_for object.idea, scope
     when 'ProjectFolders::Folder'
       scope.admin.or(scope.project_folder_moderator(object.id))
     when 'Project'

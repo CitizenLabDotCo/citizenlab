@@ -83,10 +83,10 @@ module Notifications
           recipient_id: recipient_id,
           initiating_user_id: initiator_id,
           comment_id: comment.id,
-          idea: comment.post,
+          idea: comment.idea,
           reason_code: activity.payload['reason_code'],
           other_reason: activity.payload['other_reason'],
-          project: comment.post.project
+          project: comment.idea.project
         )]
       else
         []

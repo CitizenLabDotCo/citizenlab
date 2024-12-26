@@ -74,7 +74,7 @@ module Notifications
       official_feedback = activity.item
       recipient_id = activity.payload['mentioned_user']
       initiator_id = official_feedback&.user_id
-      follower_user_ids = official_feedback.post.followers.pluck(:user_id)
+      follower_user_ids = official_feedback.idea.followers.pluck(:user_id)
 
       if recipient_id && initiator_id && (recipient_id != initiator_id) && follower_user_ids.exclude?(recipient_id)
         [new(
@@ -82,7 +82,7 @@ module Notifications
           initiating_user_id: initiator_id,
           official_feedback: official_feedback,
           idea_id: official_feedback.idea_id,
-          project_id: official_feedback.post.project_id
+          project_id: official_feedback.idea.project_id
         )]
       else
         []

@@ -16,7 +16,7 @@ module Notifications
           recipient_id: recipient.id,
           initiating_user_id: initiator_id,
           internal_comment: internal_comment,
-          idea: internal_comment.post,
+          idea: internal_comment.idea,
           project_id: idea.project_id
         )
       end
@@ -45,7 +45,7 @@ module Notifications
     end
 
     def idea
-      internal_comment.post
+      internal_comment.idea
     end
 
     def project_id

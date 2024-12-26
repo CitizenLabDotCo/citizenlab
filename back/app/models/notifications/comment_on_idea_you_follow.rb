@@ -76,14 +76,14 @@ module Notifications
       comment = activity.item
       initiator_id = comment&.author_id
 
-      if comment.post_type == 'Idea' && initiator_id
-        User.from_follows(comment.post.followers).where.not(id: initiator_id).map do |recipient|
+      if initiator_id
+        User.from_follows(comment.idea.followers).where.not(id: initiator_id).map do |recipient|
           new(
             recipient_id: recipient.id,
             initiating_user_id: initiator_id,
-            idea: comment.post,
+            idea: comment.idea,
             comment: comment,
-            project_id: comment.post.project_id
+            project_id: comment.idea.project_id
           )
         end
       else

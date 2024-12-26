@@ -672,7 +672,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
         'author_ref' => lookup_ref(c.author_id, :user),
         'author_hash' => c.author_hash,
         'anonymous' => c.anonymous,
-        'post_ref' => lookup_ref(c.post_id, :idea),
+        'idea_ref' => lookup_ref(c.idea_id, :idea),
         'body_multiloc' => c.body_multiloc,
         'created_at' => shift_timestamp(c.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(c.updated_at, shift_timestamps)&.iso8601,

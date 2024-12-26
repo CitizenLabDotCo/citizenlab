@@ -80,8 +80,8 @@ module Notifications
           recipient_id: recipient_id,
           initiating_user_id: initiator_id,
           comment: comment,
-          idea: comment.post,
-          project: comment.post.project
+          idea: comment.idea,
+          project: comment.idea.project
         )]
       else
         []

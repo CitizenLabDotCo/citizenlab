@@ -56,8 +56,8 @@ class SideFxReactionService
   def create_followers(reaction, user)
     post = case reaction.reactable_type
     when 'Comment'
-      reaction.reactable.post
-    when 'Idea', 'Initiative'
+      reaction.reactable.idea
+    when 'Idea'
       reaction.reactable
     end
     return if !post.is_a? Idea
