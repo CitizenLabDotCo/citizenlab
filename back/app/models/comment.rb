@@ -6,7 +6,7 @@
 #
 #  id                 :uuid             not null, primary key
 #  author_id          :uuid
-#  post_id            :uuid
+#  idea_id            :uuid
 #  parent_id          :uuid
 #  lft                :integer          not null
 #  rgt                :integer          not null
@@ -26,15 +26,16 @@
 #
 #  index_comments_on_author_id              (author_id)
 #  index_comments_on_created_at             (created_at)
+#  index_comments_on_idea_id                (idea_id)
+#  index_comments_on_idea_id_and_post_type  (idea_id,post_type)
 #  index_comments_on_lft                    (lft)
 #  index_comments_on_parent_id              (parent_id)
-#  index_comments_on_post_id                (post_id)
-#  index_comments_on_post_id_and_post_type  (post_id,post_type)
 #  index_comments_on_rgt                    (rgt)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (author_id => users.id)
+#  fk_rails_...  (idea_id => ideas.id)
 #
 class Comment < ApplicationRecord
   include AnonymousParticipation
@@ -42,7 +43,7 @@ class Comment < ApplicationRecord
   acts_as_nested_set dependent: :destroy, counter_cache: :children_count
 
   belongs_to :author, class_name: 'User', optional: true
-  belongs_to :post, polymorphic: true
+  belongs_to :idea
   has_many :reactions, as: :reactable, dependent: :destroy
   has_many :likes, -> { where(mode: 'up') }, as: :reactable, class_name: 'Reaction'
   has_many :dislikes, -> { where(mode: 'down') }, as: :reactable, class_name: 'Reaction'
@@ -55,7 +56,7 @@ class Comment < ApplicationRecord
   has_many :notifications, dependent: :nullify
 
   counter_culture(
-    :post,
+    :idea,
     column_name: proc { |model| model.published? ? 'comments_count' : nil },
     column_names: {
       ['comments.publication_status = ?', 'published'] => 'comments_count'
@@ -71,23 +72,9 @@ class Comment < ApplicationRecord
     touch: true
   )
 
-  # This code allows us to do something like comments.include(:idea)
-  # After https://stackoverflow.com/a/16124295/3585671
-  belongs_to :idea, -> { joins(:comments).where(comments: { post_type: 'Idea' }) }, foreign_key: 'post_id', optional: true, class_name: 'Idea'
-  def idea
-    return unless post_type == 'Idea'
-
-    super
-  end
-  belongs_to :initiative, -> { joins(:comments).where(comments: { post_type: 'Initiative' }) }, foreign_key: 'post_id', optional: true, class_name: 'Initiative'
-  def initiative
-    return unless post_type == 'Initiative'
-
-    super
-  end
-
   PUBLICATION_STATUSES = %w[published deleted]
 
+  validates :idea, presence: true
   validates :body_multiloc, presence: true, multiloc: { presence: true, html: true }
   validates :publication_status, presence: true, inclusion: { in: PUBLICATION_STATUSES }
 
@@ -99,10 +86,6 @@ class Comment < ApplicationRecord
 
   def author_name
     @author_name ||= author&.full_name
-  end
-
-  def project_id
-    post.try(:project_id)
   end
 
   private

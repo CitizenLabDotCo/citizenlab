@@ -87,6 +87,7 @@ ALTER TABLE IF EXISTS ONLY public.projects_topics DROP CONSTRAINT IF EXISTS fk_r
 ALTER TABLE IF EXISTS ONLY public.projects_allowed_input_topics DROP CONSTRAINT IF EXISTS fk_rails_812b6d9149;
 ALTER TABLE IF EXISTS ONLY public.report_builder_reports DROP CONSTRAINT IF EXISTS fk_rails_81137213da;
 ALTER TABLE IF EXISTS ONLY public.polls_response_options DROP CONSTRAINT IF EXISTS fk_rails_80d00e60ae;
+ALTER TABLE IF EXISTS ONLY public.comments DROP CONSTRAINT IF EXISTS fk_rails_7fbb3b1416;
 ALTER TABLE IF EXISTS ONLY public.email_campaigns_campaign_email_commands DROP CONSTRAINT IF EXISTS fk_rails_7f284a4f09;
 ALTER TABLE IF EXISTS ONLY public.activities DROP CONSTRAINT IF EXISTS fk_rails_7e11bb717f;
 ALTER TABLE IF EXISTS ONLY public.analysis_questions DROP CONSTRAINT IF EXISTS fk_rails_74e779db86;
@@ -139,6 +140,7 @@ ALTER TABLE IF EXISTS ONLY public.ideas DROP CONSTRAINT IF EXISTS fk_rails_0e5b4
 ALTER TABLE IF EXISTS ONLY public.invites DROP CONSTRAINT IF EXISTS fk_rails_0b6ac3e1da;
 ALTER TABLE IF EXISTS ONLY public.initiatives DROP CONSTRAINT IF EXISTS fk_rails_06c1835844;
 ALTER TABLE IF EXISTS ONLY public.invites DROP CONSTRAINT IF EXISTS fk_rails_06b2d7a3a8;
+ALTER TABLE IF EXISTS ONLY public.internal_comments DROP CONSTRAINT IF EXISTS fk_rails_04be8cf6ba;
 ALTER TABLE IF EXISTS ONLY public.events DROP CONSTRAINT IF EXISTS fk_rails_0434b48643;
 ALTER TABLE IF EXISTS ONLY public.analytics_dimension_locales_fact_visits DROP CONSTRAINT IF EXISTS fk_rails_00698f2e02;
 DROP TRIGGER IF EXISTS que_state_notify ON public.que_jobs;
@@ -242,10 +244,9 @@ DROP INDEX IF EXISTS public.index_invites_on_token;
 DROP INDEX IF EXISTS public.index_invites_on_inviter_id;
 DROP INDEX IF EXISTS public.index_invites_on_invitee_id;
 DROP INDEX IF EXISTS public.index_internal_comments_on_rgt;
-DROP INDEX IF EXISTS public.index_internal_comments_on_post_id;
-DROP INDEX IF EXISTS public.index_internal_comments_on_post;
 DROP INDEX IF EXISTS public.index_internal_comments_on_parent_id;
 DROP INDEX IF EXISTS public.index_internal_comments_on_lft;
+DROP INDEX IF EXISTS public.index_internal_comments_on_idea_id;
 DROP INDEX IF EXISTS public.index_internal_comments_on_created_at;
 DROP INDEX IF EXISTS public.index_internal_comments_on_author_id;
 DROP INDEX IF EXISTS public.index_initiatives_topics_on_topic_id;
@@ -337,10 +338,10 @@ DROP INDEX IF EXISTS public.index_cosponsors_initiatives_on_initiative_id;
 DROP INDEX IF EXISTS public.index_content_builder_layouts_content_buidable_type_id_code;
 DROP INDEX IF EXISTS public.index_common_passwords_on_password;
 DROP INDEX IF EXISTS public.index_comments_on_rgt;
-DROP INDEX IF EXISTS public.index_comments_on_post_id_and_post_type;
-DROP INDEX IF EXISTS public.index_comments_on_post_id;
 DROP INDEX IF EXISTS public.index_comments_on_parent_id;
 DROP INDEX IF EXISTS public.index_comments_on_lft;
+DROP INDEX IF EXISTS public.index_comments_on_idea_id_and_post_type;
+DROP INDEX IF EXISTS public.index_comments_on_idea_id;
 DROP INDEX IF EXISTS public.index_comments_on_created_at;
 DROP INDEX IF EXISTS public.index_comments_on_author_id;
 DROP INDEX IF EXISTS public.index_campaigns_groups;
@@ -1507,7 +1508,7 @@ CREATE TABLE public.baskets (
 CREATE TABLE public.comments (
     id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
     author_id uuid,
-    post_id uuid,
+    idea_id uuid,
     parent_id uuid,
     lft integer NOT NULL,
     rgt integer NOT NULL,
@@ -1768,7 +1769,7 @@ UNION ALL
     c.dislikes_count
    FROM ((public.comments c
      JOIN public.analytics_dimension_types adt ON ((((adt.name)::text = 'comment'::text) AND ((adt.parent)::text = lower((c.post_type)::text)))))
-     LEFT JOIN public.ideas i ON ((c.post_id = i.id)))
+     LEFT JOIN public.ideas i ON ((c.idea_id = i.id)))
 UNION ALL
  SELECT r.id,
     r.user_id AS dimension_user_id,
@@ -1789,7 +1790,7 @@ UNION ALL
      JOIN public.analytics_dimension_types adt ON ((((adt.name)::text = 'reaction'::text) AND ((adt.parent)::text = lower((r.reactable_type)::text)))))
      LEFT JOIN public.ideas i ON ((i.id = r.reactable_id)))
      LEFT JOIN public.comments c ON ((c.id = r.reactable_id)))
-     LEFT JOIN public.ideas ic ON ((ic.id = c.post_id)))
+     LEFT JOIN public.ideas ic ON ((ic.id = c.idea_id)))
 UNION ALL
  SELECT pr.id,
     pr.user_id AS dimension_user_id,
@@ -2569,12 +2570,12 @@ CREATE VIEW public.idea_trending_infos AS
     GREATEST(comments_at.last_comment_at, likes_at.last_liked_at, ideas.published_at) AS last_activity_at,
     to_timestamp(round((((GREATEST(((comments_at.comments_count)::double precision * comments_at.mean_comment_at), (0)::double precision) + GREATEST(((likes_at.likes_count)::double precision * likes_at.mean_liked_at), (0)::double precision)) + date_part('epoch'::text, ideas.published_at)) / (((GREATEST((comments_at.comments_count)::numeric, 0.0) + GREATEST((likes_at.likes_count)::numeric, 0.0)) + 1.0))::double precision))) AS mean_activity_at
    FROM ((public.ideas
-     FULL JOIN ( SELECT comments.post_id AS idea_id,
+     FULL JOIN ( SELECT comments.idea_id,
             max(comments.created_at) AS last_comment_at,
             avg(date_part('epoch'::text, comments.created_at)) AS mean_comment_at,
-            count(comments.post_id) AS comments_count
+            count(comments.idea_id) AS comments_count
            FROM public.comments
-          GROUP BY comments.post_id) comments_at ON ((ideas.id = comments_at.idea_id)))
+          GROUP BY comments.idea_id) comments_at ON ((ideas.id = comments_at.idea_id)))
      FULL JOIN ( SELECT reactions.reactable_id,
             max(reactions.created_at) AS last_liked_at,
             avg(date_part('epoch'::text, reactions.created_at)) AS mean_liked_at,
@@ -2714,8 +2715,7 @@ CREATE TABLE public.initiatives_topics (
 CREATE TABLE public.internal_comments (
     id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
     author_id uuid,
-    post_type character varying,
-    post_id uuid,
+    idea_id uuid,
     parent_id uuid,
     lft integer NOT NULL,
     rgt integer NOT NULL,
@@ -2847,7 +2847,7 @@ UNION ALL
     moderation_moderation_statuses.status AS moderation_status
    FROM (((public.comments
      LEFT JOIN public.moderation_moderation_statuses ON ((moderation_moderation_statuses.moderatable_id = comments.id)))
-     LEFT JOIN public.ideas ON ((ideas.id = comments.post_id)))
+     LEFT JOIN public.ideas ON ((ideas.id = comments.idea_id)))
      LEFT JOIN public.projects ON ((projects.id = ideas.project_id)))
   WHERE ((comments.post_type)::text = 'Idea'::text);
 
@@ -4851,6 +4851,20 @@ CREATE INDEX index_comments_on_created_at ON public.comments USING btree (create
 
 
 --
+-- Name: index_comments_on_idea_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_comments_on_idea_id ON public.comments USING btree (idea_id);
+
+
+--
+-- Name: index_comments_on_idea_id_and_post_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_comments_on_idea_id_and_post_type ON public.comments USING btree (idea_id, post_type);
+
+
+--
 -- Name: index_comments_on_lft; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -4862,20 +4876,6 @@ CREATE INDEX index_comments_on_lft ON public.comments USING btree (lft);
 --
 
 CREATE INDEX index_comments_on_parent_id ON public.comments USING btree (parent_id);
-
-
---
--- Name: index_comments_on_post_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_comments_on_post_id ON public.comments USING btree (post_id);
-
-
---
--- Name: index_comments_on_post_id_and_post_type; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_comments_on_post_id_and_post_type ON public.comments USING btree (post_id, post_type);
 
 
 --
@@ -5516,6 +5516,13 @@ CREATE INDEX index_internal_comments_on_created_at ON public.internal_comments U
 
 
 --
+-- Name: index_internal_comments_on_idea_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_internal_comments_on_idea_id ON public.internal_comments USING btree (idea_id);
+
+
+--
 -- Name: index_internal_comments_on_lft; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -5527,20 +5534,6 @@ CREATE INDEX index_internal_comments_on_lft ON public.internal_comments USING bt
 --
 
 CREATE INDEX index_internal_comments_on_parent_id ON public.internal_comments USING btree (parent_id);
-
-
---
--- Name: index_internal_comments_on_post; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_internal_comments_on_post ON public.internal_comments USING btree (post_type, post_id);
-
-
---
--- Name: index_internal_comments_on_post_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_internal_comments_on_post_id ON public.internal_comments USING btree (post_id);
 
 
 --
@@ -6267,6 +6260,14 @@ ALTER TABLE ONLY public.events
 
 
 --
+-- Name: internal_comments fk_rails_04be8cf6ba; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.internal_comments
+    ADD CONSTRAINT fk_rails_04be8cf6ba FOREIGN KEY (idea_id) REFERENCES public.ideas(id);
+
+
+--
 -- Name: invites fk_rails_06b2d7a3a8; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -6680,6 +6681,14 @@ ALTER TABLE ONLY public.activities
 
 ALTER TABLE ONLY public.email_campaigns_campaign_email_commands
     ADD CONSTRAINT fk_rails_7f284a4f09 FOREIGN KEY (recipient_id) REFERENCES public.users(id);
+
+
+--
+-- Name: comments fk_rails_7fbb3b1416; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.comments
+    ADD CONSTRAINT fk_rails_7fbb3b1416 FOREIGN KEY (idea_id) REFERENCES public.ideas(id);
 
 
 --
@@ -7790,6 +7799,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20241203151945'),
 ('20241204133717'),
 ('20241204144321'),
-('20241224115952');
+('20241224115952'),
+('20241226093506');
 
 

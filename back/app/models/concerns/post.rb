@@ -30,8 +30,8 @@ module Post
 
     has_many :activities, as: :item
 
-    has_many :comments, as: :post, dependent: :destroy
-    has_many :internal_comments, as: :post, dependent: :destroy
+    has_many :comments, as: :idea, dependent: :destroy
+    has_many :internal_comments, as: :idea, dependent: :destroy
 
     has_many :reactions, as: :reactable, dependent: :destroy
     has_many :likes, -> { where(mode: 'up') }, as: :reactable, class_name: 'Reaction'
