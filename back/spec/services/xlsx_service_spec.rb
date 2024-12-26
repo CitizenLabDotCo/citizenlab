@@ -190,9 +190,9 @@ describe XlsxService do
     end
   end
 
-  describe 'generate_idea_comments_xlsx' do
+  describe 'generate_comments_xlsx' do
     let(:comments) { create_list(:comment, 5, post: create(:idea)) }
-    let(:xlsx) { service.generate_idea_comments_xlsx(comments) }
+    let(:xlsx) { service.generate_comments_xlsx(comments) }
     let(:workbook) { RubyXL::Parser.parse_buffer(xlsx) }
     let(:worksheet) { workbook.worksheets[0] }
 
@@ -206,7 +206,7 @@ describe XlsxService do
     end
 
     describe do
-      let(:xlsx) { service.generate_idea_comments_xlsx(comments, view_private_attributes: false) }
+      let(:xlsx) { service.generate_comments_xlsx(comments, view_private_attributes: false) }
 
       it 'hides private attributes' do
         custom_field = create(:custom_field, enabled: false)

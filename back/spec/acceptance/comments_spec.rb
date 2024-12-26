@@ -21,22 +21,22 @@ resource 'Comments' do
 
     describe 'default sorting' do
       before do
-        @c1 = create(:comment, post: @idea)
-        @c2 = create(:comment, post: @idea)
-        @c1sub1 = create(:comment, parent: @c2, post: @idea)
-        @c1sub2 = create(:comment, parent: @c2, post: @idea)
-        @c1sub3 = create(:comment, parent: @c2, post: @idea)
-        @c1sub4 = create(:comment, parent: @c2, post: @idea)
-        @c1sub5 = create(:comment, parent: @c2, post: @idea)
-        @c3 = create(:comment, post: @idea)
-        @c3sub1 = create(:comment, parent: @c3, post: @idea)
-        @c3sub2 = create(:comment, parent: @c3, post: @idea)
-        @c3sub3 = create(:comment, parent: @c3, post: @idea)
-        @c3sub4 = create(:comment, parent: @c3, post: @idea)
-        @c3sub5 = create(:comment, parent: @c3, post: @idea)
-        @c3sub6 = create(:comment, parent: @c3, post: @idea)
-        @c4 = create(:comment, post: @idea)
-        @c4sub1 = create(:comment, parent: @c4, post: @idea)
+        @c1 = create(:comment, idea: @idea)
+        @c2 = create(:comment, idea: @idea)
+        @c1sub1 = create(:comment, parent: @c2, idea: @idea)
+        @c1sub2 = create(:comment, parent: @c2, idea: @idea)
+        @c1sub3 = create(:comment, parent: @c2, idea: @idea)
+        @c1sub4 = create(:comment, parent: @c2, idea: @idea)
+        @c1sub5 = create(:comment, parent: @c2, idea: @idea)
+        @c3 = create(:comment, idea: @idea)
+        @c3sub1 = create(:comment, parent: @c3, idea: @idea)
+        @c3sub2 = create(:comment, parent: @c3, idea: @idea)
+        @c3sub3 = create(:comment, parent: @c3, idea: @idea)
+        @c3sub4 = create(:comment, parent: @c3, idea: @idea)
+        @c3sub5 = create(:comment, parent: @c3, idea: @idea)
+        @c3sub6 = create(:comment, parent: @c3, idea: @idea)
+        @c4 = create(:comment, idea: @idea)
+        @c4sub1 = create(:comment, parent: @c4, idea: @idea)
       end
 
       let(:idea_id) { @idea.id }
@@ -67,10 +67,10 @@ resource 'Comments' do
       let(:sort) { '-likes_count' }
 
       before do
-        @c1, @c2, @c3 = create_list(:comment, 3, post: @idea)
+        @c1, @c2, @c3 = create_list(:comment, 3, idea: @idea)
         create_list(:reaction, 2, reactable: @c3)
         create_list(:reaction, 3, reactable: @c2)
-        @c3sub1, @c3sub2 = create_list(:comment, 2, parent: @c3, post: @idea)
+        @c3sub1, @c3sub2 = create_list(:comment, 2, parent: @c3, idea: @idea)
         create(:reaction, reactable: @c3sub2)
       end
 
@@ -97,14 +97,14 @@ resource 'Comments' do
     end
 
     before do
-      @c = create(:comment, post: @idea)
-      @csub1 = create(:comment, parent: @c, post: @idea)
-      @csub2 = create(:comment, parent: @c, post: @idea)
-      @csub3 = create(:comment, parent: @c, post: @idea)
-      @csub4 = create(:comment, parent: @c, post: @idea)
-      @csub5 = create(:comment, parent: @c, post: @idea)
-      @csub6 = create(:comment, parent: @c, post: @idea)
-      @c2 = create(:comment, post: @idea)
+      @c = create(:comment, idea: @idea)
+      @csub1 = create(:comment, parent: @c, idea: @idea)
+      @csub2 = create(:comment, parent: @c, idea: @idea)
+      @csub3 = create(:comment, parent: @c, idea: @idea)
+      @csub4 = create(:comment, parent: @c, idea: @idea)
+      @csub5 = create(:comment, parent: @c, idea: @idea)
+      @csub6 = create(:comment, parent: @c, idea: @idea)
+      @c2 = create(:comment, idea: @idea)
     end
 
     let(:comment_id) { @c.id }
@@ -141,7 +141,7 @@ resource 'Comments' do
       before do
         @project = create(:project)
         @comments = Array.new(3) do |_i|
-          create(:comment, post: create(:idea, project: @project))
+          create(:comment, idea: create(:idea, project: @project))
         end
       end
 
@@ -160,7 +160,7 @@ resource 'Comments' do
         @comments = create_list(:comment, 4)
       end
 
-      let(:ideas) { @comments.map(&:post_id) }
+      let(:ideas) { @comments.map(&:idea_id) }
 
       example 'XLSX export by idea ids', document: false do
         do_request
@@ -205,7 +205,7 @@ resource 'Comments' do
         @project = create(:project)
 
         @comments = Array.new(3) do |_i|
-          create(:comment, post: create(:idea, project: @project))
+          create(:comment, idea: create(:idea, project: @project))
         end
         @unmoderated_comment = create(:comment)
 
@@ -237,8 +237,8 @@ resource 'Comments' do
 
   get 'web_api/v1/comments/:id' do
     let(:idea) { create(:idea) }
-    let(:parent) { create(:comment, post: idea) }
-    let(:comment) { create(:comment, parent: parent, post: idea) }
+    let(:parent) { create(:comment, idea: idea) }
+    let(:comment) { create(:comment, parent: parent, idea: idea) }
     let(:id) { comment.id }
 
     example_request 'Get one comment by id' do
@@ -255,8 +255,8 @@ resource 'Comments' do
         author_hash: comment.author_hash
       )
       expect(json_response.dig(:data, :relationships)).to include(
-        post: {
-          data: { id: comment.post_id, type: 'idea' }
+        idea: {
+          data: { id: comment.idea_id, type: 'idea' }
         },
         author: {
           data: { id: comment.author_id, type: 'user' }
@@ -282,7 +282,7 @@ resource 'Comments' do
       let(:idea_id) { @idea.id }
 
       example 'List all comments of an idea includes the user_reaction when authenticated' do
-        comment = create(:comment, post: @idea)
+        comment = create(:comment, idea: @idea)
         reaction = create(:reaction, user: @user, reactable: comment)
         do_request
         json_response = json_parse(response_body)
@@ -310,12 +310,12 @@ resource 'Comments' do
         expect(json_response.dig(:data, :relationships, :author, :data, :id)).to eq @user.id
         expect(json_response.dig(:data, :attributes, :body_multiloc).stringify_keys).to match body_multiloc
         expect(json_response.dig(:data, :relationships, :parent, :data)).to be_nil
-        expect(json_response.dig(:data, :relationships, :post, :data, :id)).to eq idea_id
+        expect(json_response.dig(:data, :relationships, :idea, :data, :id)).to eq idea_id
         expect(@idea.reload.comments_count).to eq 1
       end
 
       describe 'comments on comments' do
-        let(:parent_id) { create(:comment, post: @idea).id }
+        let(:parent_id) { create(:comment, idea: @idea).id }
 
         example_request 'Create a comment on a comment' do
           assert_status 201
@@ -323,7 +323,7 @@ resource 'Comments' do
           expect(json_response.dig(:data, :relationships, :author, :data, :id)).to eq @user.id
           expect(json_response.dig(:data, :attributes, :body_multiloc).stringify_keys).to match body_multiloc
           expect(json_response.dig(:data, :relationships, :parent, :data, :id)).to eq parent_id
-          expect(json_response.dig(:data, :relationships, :post, :data, :id)).to eq idea_id
+          expect(json_response.dig(:data, :relationships, :idea, :data, :id)).to eq idea_id
           expect(@idea.reload.comments_count).to eq 2
         end
       end
@@ -414,7 +414,7 @@ resource 'Comments' do
         parameter :other_reason, "the reason for deleting the comment, if none of the reason codes is applicable, in which case 'other' must be chosen", required: false
       end
 
-      let(:comment) { create(:comment, author: @user, post: @idea) }
+      let(:comment) { create(:comment, author: @user, idea: @idea) }
       let(:id) { comment.id }
 
       example_request 'Mark a comment on an idea as deleted' do
@@ -438,7 +438,7 @@ resource 'Comments' do
       ValidationErrorHelper.new.error_fields(self, Comment)
       response_field :base, "Array containing objects with signature { error: #{Permissions::PhasePermissionsService::COMMENTING_DENIED_REASONS.values.join(' | ')} }", scope: :errors
 
-      let(:comment) { create(:comment, author: @user, post: @idea) }
+      let(:comment) { create(:comment, author: @user, idea: @idea) }
       let(:id) { comment.id }
       let(:body_multiloc) { { 'en' => "His hair is not blond, it's orange. Get your facts straight!" } }
 

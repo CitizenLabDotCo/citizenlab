@@ -20,19 +20,6 @@ Rails.application.routes.draw do
       concern :followable do
         resources :followers, only: [:create]
       end
-      concern :post do
-        resources :comments, shallow: true,
-          concerns: %i[reactable spam_reportable],
-          defaults: { reactable: 'Comment', spam_reportable: 'Comment' } do
-          get :children, on: :member
-          post :mark_as_deleted, on: :member
-        end
-        resources :internal_comments, except: [:destroy], shallow: true do
-          get :children, on: :member
-          patch :mark_as_deleted, on: :member
-        end
-        get 'comments/as_xlsx', on: :collection, to: 'comments#index_xlsx'
-      end
       concern :spam_reportable do
         resources :spam_reports, shallow: true
       end
@@ -54,8 +41,8 @@ Rails.application.routes.draw do
       resources :activities, only: [:index]
 
       resources :ideas,
-        concerns: %i[reactable spam_reportable post followable permissionable],
-        defaults: { reactable: 'Idea', spam_reportable: 'Idea', post: 'Idea', followable: 'Idea', parent_param: :idea_id } do
+        concerns: %i[reactable spam_reportable followable permissionable],
+        defaults: { reactable: 'Idea', spam_reportable: 'Idea', followable: 'Idea', parent_param: :idea_id } do
         resources :images, defaults: { container_type: 'Idea' }
         resources :files, defaults: { container_type: 'Idea' }
         resources :cosponsorships, defaults: { container_type: 'Idea' } do
@@ -71,6 +58,18 @@ Rails.application.routes.draw do
         get 'draft/:phase_id', on: :collection, to: 'ideas#draft_by_phase'
 
         resources :official_feedback, shallow: true
+        resources :comments, shallow: true,
+          concerns: %i[reactable spam_reportable],
+          defaults: { reactable: 'Comment', spam_reportable: 'Comment' } do
+          get :children, on: :member
+          post :mark_as_deleted, on: :member
+        end
+        resources :internal_comments, except: [:destroy], shallow: true do
+          get :children, on: :member
+          patch :mark_as_deleted, on: :member
+        end
+        get 'comments/as_xlsx', on: :collection, to: 'comments#index_xlsx'
+
         get :similarities, on: :member
       end
 

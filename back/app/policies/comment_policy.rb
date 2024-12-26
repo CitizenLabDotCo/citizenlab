@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-class IdeaCommentPolicy < ApplicationPolicy
+class CommentPolicy < ApplicationPolicy
   class Scope < ApplicationPolicy::Scope
     def resolve
-      scope.where(post_id: scope_for(Idea))
+      scope.where(idea_id: scope_for(Idea))
     end
   end
 
@@ -12,15 +12,15 @@ class IdeaCommentPolicy < ApplicationPolicy
   end
 
   def create?
-    return false unless record.post
+    return false unless record.idea
 
     (
       user&.active? &&
       (record.author_id == user.id) &&
-      policy_for(record.post.project).show? &&
+      policy_for(record.idea.project).show? &&
       check_commenting_allowed(record, user)
     ) || (
-      user&.active? && UserRoleService.new.can_moderate?(record.post, user)
+      user&.active? && UserRoleService.new.can_moderate?(record.idea, user)
     )
   end
 
@@ -29,7 +29,7 @@ class IdeaCommentPolicy < ApplicationPolicy
   end
 
   def show?
-    policy_for(record.post).show?
+    policy_for(record.idea).show?
   end
 
   def update?
@@ -47,6 +47,6 @@ class IdeaCommentPolicy < ApplicationPolicy
   private
 
   def check_commenting_allowed(comment, user)
-    !Permissions::IdeaPermissionsService.new(comment.post, user).denied_reason_for_action 'commenting_idea'
+    !Permissions::IdeaPermissionsService.new(comment.idea, user).denied_reason_for_action 'commenting_idea'
   end
 end

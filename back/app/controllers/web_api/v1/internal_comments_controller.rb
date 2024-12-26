@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class WebApi::V1::InternalCommentsController < ApplicationController
-  before_action :set_post_type_and_id, only: %i[index create]
   before_action :set_comment, only: %i[children show update mark_as_deleted]
 
   FULLY_EXPAND_THRESHOLD = 5
@@ -10,7 +9,7 @@ class WebApi::V1::InternalCommentsController < ApplicationController
   def index
     include_attrs = [author: [:unread_notifications]]
     root_comments = policy_scope(InternalComment)
-      .where(post_type: @post_type, post_id: @post_id)
+      .where(idea_id: params[:idea_id])
       .where(parent: nil)
 
     root_comments = sort_comments root_comments
@@ -68,8 +67,7 @@ class WebApi::V1::InternalCommentsController < ApplicationController
 
   def create
     @comment = InternalComment.new permitted_attributes(InternalComment)
-    @comment.post_type = @post_type
-    @comment.post_id = @post_id
+    @comment.idea_id = params[:idea_id]
     @comment.author ||= current_user
     authorize @comment
 
@@ -127,13 +125,7 @@ class WebApi::V1::InternalCommentsController < ApplicationController
 
   def set_comment
     @comment = InternalComment.find params[:id]
-    @post_type = @comment.post_type
     authorize @comment
-  end
-
-  def set_post_type_and_id
-    @post_type = params[:post]
-    @post_id = params[:"#{@post_type.underscore}_id"]
   end
 
   # Merge both arrays in such a way that the order of both is preserved, but
