@@ -14,8 +14,7 @@ resource 'Mentions' do
 
   get 'web_api/v1/mentions/users' do
     parameter :mention, 'The (partial) search string for the mention (without the @)', required: true
-    parameter :post_id, 'An post that is used as a context to return related users first', required: false
-    parameter :post_type, "The type of post, either 'Idea' or 'Initiative'", required: false
+    parameter :idea_id, 'An idea that is used as a context to return related users first', required: false
     parameter :limit, 'The number of results to return', required: false
     parameter :roles, "An array, including 'admin' and/or 'moderator' (moderators of post, if post specified)." \
                       'The roles of the users to return, exclusively - response will not include regular users,' \
@@ -36,13 +35,13 @@ resource 'Mentions' do
       idea = create(:idea)
       comments = Array.new(3) do
         user = create(:user, first_name: first_name)
-        create(:comment, post: idea, author: user)
+        create(:comment, idea: idea, author: user)
       end
-      create(:comment, post: idea)
+      create(:comment, idea: idea)
 
       idea_related = comments.map(&:author)
 
-      do_request post_id: idea.id, post_type: 'Idea', mention: first_name
+      do_request idea_id: idea.id, mention: first_name
 
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq idea_related.size
@@ -51,9 +50,9 @@ resource 'Mentions' do
     end
 
     context 'when current user is author of post' do
-      let(:initiative) { create(:initiative, author: @current_user) }
+      let(:proposal) { create(:proposal, author: @current_user) }
       let(:base_query_params) do
-        { post_id: initiative.id, post_type: 'Initiative', mention: @current_user.first_name[0..3] }
+        { idea_id: proposal.id, mention: @current_user.first_name[0..3] }
       end
 
       example 'does not return current user' do
@@ -65,9 +64,9 @@ resource 'Mentions' do
     end
 
     context 'when current user is not author of post' do
-      let(:initiative) { create(:initiative, author: create(:user)) }
+      let(:proposal) { create(:proposal, author: create(:user)) }
       let(:base_query_params) do
-        { post_id: initiative.id, post_type: 'Initiative', mention: @current_user.first_name[0..3] }
+        { idea_id: proposal.id, mention: @current_user.first_name[0..3] }
       end
 
       example 'does not return current user' do
@@ -110,10 +109,10 @@ resource 'Mentions' do
       let!(:moderator_of_project) { create(:project_moderator, names.merge({ projects: [project] })) }
       let!(:moderator_of_other_project) { create(:project_moderator, names) }
 
-      let(:base_query_params) { { post_id: idea.id, post_type: 'Idea', mention: first_name } }
+      let(:base_query_params) { { ideat_id: idea.id, mention: first_name } }
 
       example 'Does not include regular user, even if has commented on post' do
-        create(:comment, post: idea, author: regular_user)
+        create(:comment, idea: idea, author: regular_user)
 
         do_request base_query_params.merge({ roles: %w[admin moderator] })
         assert_status 200
