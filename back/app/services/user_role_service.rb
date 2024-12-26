@@ -7,11 +7,7 @@ class UserRoleService
     case object.class.name
     when 'Idea'
       can_moderate? object.project, user
-    when 'Initiative'
-      can_moderate_initiatives? user
-    when 'OfficialFeedback'
-      can_moderate? object.idea, user
-    when 'Comment'
+    when 'Comment', 'OfficialFeedback'
       can_moderate? object.idea, user
     when 'Reaction'
       can_moderate? object.reactable, user
@@ -41,8 +37,6 @@ class UserRoleService
     case object.class.name
     when 'Idea'
       moderators_for object.project, scope
-    when 'Initiative'
-      scope.admin
     when 'Comment'
       moderators_for object.idea, scope
     when 'ProjectFolders::Folder'

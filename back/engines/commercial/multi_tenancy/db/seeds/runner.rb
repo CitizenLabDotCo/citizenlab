@@ -174,8 +174,7 @@ module MultiTenancy
       def create_comment_tree(post, parent, depth = 0)
         return if depth > 1
 
-        amount = 1 + rand(3)
-        amount.times do |_i|
+        rand(1..4).times do |_i|
           c = Comment.create!({
             body_multiloc: {
               'en' => Faker::Lorem.paragraphs.map { |p| "<p>#{p}</p>" }.join,
