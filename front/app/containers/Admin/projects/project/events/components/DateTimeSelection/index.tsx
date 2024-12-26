@@ -3,6 +3,8 @@ import React from 'react';
 import { Box, Label } from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
 
+import { IEventProperties } from 'api/events/types';
+
 import DateSinglePicker from 'components/admin/DatePickers/DateSinglePicker';
 import ErrorComponent from 'components/UI/Error';
 
@@ -15,26 +17,54 @@ import TimeInput from './TimeInput';
 import { Hour, Minute } from './types';
 
 interface Props {
-  eventAttrs: Record<string, any>;
+  startAt: string;
+  endAt: string;
   errors: ErrorType;
+  setAttributeDiff: React.Dispatch<React.SetStateAction<IEventProperties>>;
 }
 
-const DateTimeSelection = ({ eventAttrs, errors }: Props) => {
-  const handleSelectStartAtDay = (_date: Date) => {
-    // TODO
+const DateTimeSelection = ({
+  startAt,
+  endAt,
+  errors,
+  setAttributeDiff,
+}: Props) => {
+  const handleSelectStartAtDay = (date: Date) => {
+    setAttributeDiff((prev) => ({
+      ...prev,
+      start_at: date.toISOString(),
+    }));
   };
 
-  const handleSelectEndAtDay = (_date: Date) => {
-    // TODO
+  const handleSelectEndAtDay = (date: Date) => {
+    setAttributeDiff((prev) => ({
+      ...prev,
+      end_at: date.toISOString(),
+    }));
   };
 
   const handleSelectStartAtTime = (h: Hour, m: Minute) => {
-    console.log({ h, m });
+    const newDate = new Date(startAt);
+    newDate.setHours(h);
+    newDate.setMinutes(m);
+    setAttributeDiff((prev) => ({
+      ...prev,
+      start_at: newDate.toISOString(),
+    }));
   };
 
   const handleSelectEndAtTime = (h: Hour, m: Minute) => {
-    console.log({ h, m });
+    const newDate = new Date(startAt);
+    newDate.setHours(h);
+    newDate.setMinutes(m);
+    setAttributeDiff((prev) => ({
+      ...prev,
+      start_at: newDate.toISOString(),
+    }));
   };
+
+  const startAtDate = new Date(startAt);
+  const endAtDate = new Date(endAt);
 
   return (
     <Box display="flex" flexDirection="column" maxWidth="400px">
@@ -44,13 +74,15 @@ const DateTimeSelection = ({ eventAttrs, errors }: Props) => {
         </Label>
         <Box display="flex" flexDirection="row">
           <DateSinglePicker
-            selectedDate={
-              eventAttrs.start_at ? new Date(eventAttrs.start_at) : undefined
-            }
+            selectedDate={startAt ? new Date(startAt) : undefined}
             onChange={handleSelectStartAtDay}
           />
           <Box ml="12px">
-            <TimeInput h={18} m={15} onChange={handleSelectStartAtTime} />
+            <TimeInput
+              h={startAtDate.getHours() as Hour}
+              m={startAtDate.getMinutes() as Minute}
+              onChange={handleSelectStartAtTime}
+            />
           </Box>
         </Box>
         <ErrorComponent apiErrors={get(errors, 'start_at')} />
@@ -62,13 +94,15 @@ const DateTimeSelection = ({ eventAttrs, errors }: Props) => {
         </Label>
         <Box display="flex" flexDirection="row">
           <DateSinglePicker
-            selectedDate={
-              eventAttrs.end_at ? new Date(eventAttrs.end_at) : undefined
-            }
+            selectedDate={endAt ? new Date(endAt) : undefined}
             onChange={handleSelectEndAtDay}
           />
           <Box ml="12px">
-            <TimeInput h={18} m={15} onChange={handleSelectEndAtTime} />
+            <TimeInput
+              h={endAtDate.getHours() as Hour}
+              m={endAtDate.getMinutes() as Minute}
+              onChange={handleSelectEndAtTime}
+            />
           </Box>
         </Box>
         <ErrorComponent apiErrors={get(errors, 'end_at')} />

@@ -43,7 +43,11 @@ const TimeInput = ({ h, m, onChange }: Props) => {
       visible={visible}
       onClickOutside={() => setVisible(false)}
       content={
-        <Box maxHeight={`${5 * 45}px`} overflowY="scroll" id="scroll-thingy">
+        <Box
+          maxHeight={`${5 * BUTTON_HEIGHT}px`}
+          overflowY="scroll"
+          id="scroll-thingy"
+        >
           {TIMES.map((time, i) => (
             <Button
               key={time}

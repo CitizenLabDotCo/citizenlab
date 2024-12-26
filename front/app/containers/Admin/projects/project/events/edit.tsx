@@ -13,7 +13,6 @@ import {
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import { isEmpty, get, isError } from 'lodash-es';
-import moment from 'moment';
 import { useParams } from 'react-router-dom';
 import { RouteType } from 'routes';
 import { useTheme } from 'styled-components';
@@ -61,6 +60,7 @@ import { defaultAdminCardPadding } from 'utils/styleConstants';
 import DateTimeSelection from './components/DateTimeSelection';
 import messages from './messages';
 import { SubmitState, ErrorType, ApiErrorType } from './types';
+import { initializeAttributeDiff } from './utils';
 
 const EventMap = lazy(() => import('./components/EventMap'));
 
@@ -96,7 +96,10 @@ const AdminProjectEventEdit = () => {
   const [submitState, setSubmitState] = useState<SubmitState>('disabled');
   const [eventFiles, setEventFiles] = useState<UploadFile[]>([]);
 
-  const [attributeDiff, setAttributeDiff] = useState<IEventProperties>({});
+  const [attributeDiff, setAttributeDiff] = useState<IEventProperties>(
+    initializeAttributeDiff
+  );
+
   const [attendanceOptionsVisible, setAttendanceOptionsVisible] =
     useState(false);
   const [uploadedImage, setUploadedImage] = useState<UploadFile | null>(null);
@@ -280,59 +283,59 @@ const AdminProjectEventEdit = () => {
     setErrors({});
   };
 
-  const _handleDateTimePickerOnChange =
-    (name: 'start_at' | 'end_at') => (time: Date) => {
-      if (!isInitialLoading) {
-        setSubmitState('enabled');
-        setAttributeDiff((previousState) => {
-          const newAttributes = {
-            ...previousState,
-            [name]: time.toISOString(),
-          };
+  // const _handleDateTimePickerOnChange =
+  //   (name: 'start_at' | 'end_at') => (time: Date) => {
+  //     if (!isInitialLoading) {
+  //       setSubmitState('enabled');
+  //       setAttributeDiff((previousState) => {
+  //         const newAttributes = {
+  //           ...previousState,
+  //           [name]: time.toISOString(),
+  //         };
 
-          // If the start time is changed, update the end time
-          if (name === 'start_at' && newAttributes['start_at']) {
-            const duration = newAttributes['end_at']
-              ? moment
-                  .duration(
-                    moment(newAttributes['end_at']).diff(
-                      moment(previousState['start_at'])
-                    )
-                  )
-                  .asMinutes()
-              : 30;
+  //         // If the start time is changed, update the end time
+  //         if (name === 'start_at' && newAttributes['start_at']) {
+  //           const duration = newAttributes['end_at']
+  //             ? moment
+  //               .duration(
+  //                 moment(newAttributes['end_at']).diff(
+  //                   moment(previousState['start_at'])
+  //                 )
+  //               )
+  //               .asMinutes()
+  //             : 30;
 
-            newAttributes['end_at'] = calculateRoundedEndDate(
-              new Date(newAttributes['start_at']),
-              duration
-            ).toISOString();
-          } else if (name === 'end_at' && newAttributes['end_at']) {
-            const isStartDateAfterEndDate =
-              newAttributes['start_at'] && newAttributes['end_at']
-                ? newAttributes['start_at'] > newAttributes['end_at']
-                : false;
+  //           newAttributes['end_at'] = calculateRoundedEndDate(
+  //             new Date(newAttributes['start_at']),
+  //             duration
+  //           ).toISOString();
+  //         } else if (name === 'end_at' && newAttributes['end_at']) {
+  //           const isStartDateAfterEndDate =
+  //             newAttributes['start_at'] && newAttributes['end_at']
+  //               ? newAttributes['start_at'] > newAttributes['end_at']
+  //               : false;
 
-            if (isStartDateAfterEndDate) {
-              const duration = moment
-                .duration(
-                  moment(previousState['end_at']).diff(
-                    moment(newAttributes['start_at'])
-                  )
-                )
-                .asMinutes();
+  //           if (isStartDateAfterEndDate) {
+  //             const duration = moment
+  //               .duration(
+  //                 moment(previousState['end_at']).diff(
+  //                   moment(newAttributes['start_at'])
+  //                 )
+  //               )
+  //               .asMinutes();
 
-              newAttributes['start_at'] = calculateRoundedEndDate(
-                new Date(newAttributes['end_at']),
-                -duration
-              ).toISOString();
-            }
-          }
+  //             newAttributes['start_at'] = calculateRoundedEndDate(
+  //               new Date(newAttributes['end_at']),
+  //               -duration
+  //             ).toISOString();
+  //           }
+  //         }
 
-          return newAttributes;
-        });
-        setErrors({});
-      }
-    };
+  //         return newAttributes;
+  //       });
+  //       setErrors({});
+  //     }
+  //   };
 
   const handleOnImageAdd = (imageFiles: UploadFile[]) => {
     setSubmitState('enabled');
@@ -631,16 +634,20 @@ const AdminProjectEventEdit = () => {
                   />
                 </SectionField>
               )}
+
               <Title variant="h4" color="primary" style={{ fontWeight: '600' }}>
                 {formatMessage(messages.eventDates)}
               </Title>
-
-              <DateTimeSelection eventAttrs={eventAttrs} errors={errors} />
+              <DateTimeSelection
+                startAt={eventAttrs.start_at}
+                endAt={eventAttrs.end_at}
+                errors={errors}
+                setAttributeDiff={setAttributeDiff}
+              />
 
               <Title variant="h4" color="primary" style={{ fontWeight: '600' }}>
                 {formatMessage(messages.eventLocation)}
               </Title>
-
               <SectionField>
                 <Box mt="16px" maxWidth="400px">
                   <Input
