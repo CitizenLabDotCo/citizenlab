@@ -43,7 +43,7 @@ class InternalComment < ApplicationRecord
   has_many :notifications, dependent: :nullify
 
   counter_culture(
-    :post,
+    :idea,
     column_name: proc { |model| model.published? ? 'internal_comments_count' : nil },
     column_names: {
       ['internal_comments.publication_status = ?', 'published'] => 'internal_comments_count'

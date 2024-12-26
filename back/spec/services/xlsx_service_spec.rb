@@ -218,31 +218,6 @@ describe XlsxService do
     end
   end
 
-  describe 'generate_initiative_comments_xlsx' do
-    let(:comments) { create_list(:comment, 5, post: create(:initiative)) }
-    let(:xlsx) { service.generate_initiative_comments_xlsx(comments) }
-    let(:workbook) { RubyXL::Parser.parse_buffer(xlsx) }
-    let(:worksheet) { workbook.worksheets[0] }
-
-    it 'exports a valid excel file and contains a row for every comment' do
-      expect { workbook }.not_to raise_error
-      expect(worksheet.sheet_data.size).to eq(comments.size + 1)
-      expect(worksheet[comments.size].cells.map(&:value)[worksheet[0].cells.map(&:value).index('parent_comment_id')]).to eq comments.last.parent_id
-    end
-
-    describe do
-      let(:xlsx) { service.generate_initiative_comments_xlsx(comments, view_private_attributes: false) }
-
-      it 'hides private attributes' do
-        custom_field = create(:custom_field, enabled: false)
-        expect(worksheet[0].cells.map(&:value)).not_to include 'author_id'
-        expect(worksheet[0].cells.map(&:value)).not_to include 'author_email'
-        expect(worksheet[0].cells.map(&:value)).not_to include 'author_name'
-        expect(worksheet[0].cells.map(&:value)).to include custom_field.title_multiloc['en']
-      end
-    end
-  end
-
   describe 'generate_invites_xlsx' do
     let(:invites) { create_list(:invite, 2) }
     let(:xlsx) { service.generate_invites_xlsx(invites) }
