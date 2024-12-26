@@ -442,7 +442,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
     user_ids = []
     idea_ids = exported_ideas.ids
     user_ids += Idea.where(id: idea_ids).pluck(:author_id)
-    comment_ids = Comment.where(post_id: idea_ids, post_type: 'Idea').ids
+    comment_ids = Comment.where(idea_id: idea_ids).ids
     user_ids += Comment.where(id: comment_ids).pluck(:author_id)
     reaction_ids = Reaction.where(reactable_id: [idea_ids + comment_ids]).ids
     user_ids += Reaction.where(id: reaction_ids).pluck(:user_id)
@@ -702,7 +702,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
 
   def yml_reactions(exported_ideas, shift_timestamps: 0)
     idea_ids = exported_ideas.ids
-    comment_ids = Comment.where(post_id: idea_ids, post_type: 'Idea')
+    comment_ids = Comment.where(idea_id: idea_ids)
     Reaction.where.not(user_id: nil).where(reactable_id: idea_ids + comment_ids).map do |v|
       yml_reaction = {
         'reactable_ref' => lookup_ref(v.reactable_id, %i[idea comment]),
