@@ -72,8 +72,8 @@ export interface IEvents {
 }
 
 export interface IEventProperties {
-  start_at: string;
-  end_at: string;
+  start_at?: string;
+  end_at?: string;
   project_id?: string;
   title_multiloc?: Multiloc;
   description_multiloc?: Multiloc;

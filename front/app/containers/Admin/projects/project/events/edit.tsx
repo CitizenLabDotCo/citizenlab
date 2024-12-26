@@ -48,10 +48,6 @@ import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMult
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-import {
-  roundToNearestMultipleOfFive,
-  calculateRoundedEndDate,
-} from 'utils/dateUtils';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { geocode } from 'utils/locationTools';
@@ -60,7 +56,7 @@ import { defaultAdminCardPadding } from 'utils/styleConstants';
 import DateTimeSelection from './components/DateTimeSelection';
 import messages from './messages';
 import { SubmitState, ErrorType, ApiErrorType } from './types';
-import { initializeAttributeDiff } from './utils';
+import { initializeEventTimes } from './utils';
 
 const EventMap = lazy(() => import('./components/EventMap'));
 
@@ -96,9 +92,7 @@ const AdminProjectEventEdit = () => {
   const [submitState, setSubmitState] = useState<SubmitState>('disabled');
   const [eventFiles, setEventFiles] = useState<UploadFile[]>([]);
 
-  const [attributeDiff, setAttributeDiff] = useState<IEventProperties>(
-    initializeAttributeDiff
-  );
+  const [attributeDiff, setAttributeDiff] = useState<IEventProperties>({});
 
   const [attendanceOptionsVisible, setAttendanceOptionsVisible] =
     useState(false);
@@ -133,19 +127,8 @@ const AdminProjectEventEdit = () => {
   useEffect(() => {
     // Check that the event has loaded and only then can we be sure if we are creating a new one or using an existing one
     if (!isInitialLoading) {
-      const initialRoundedStartDate = roundToNearestMultipleOfFive(new Date());
-      const initialRoundedEndDate = calculateRoundedEndDate(
-        initialRoundedStartDate
-      );
-
-      setAttributeDiff({
-        start_at: event
-          ? event.data.attributes.start_at
-          : initialRoundedStartDate.toISOString(),
-        end_at: event
-          ? event.data.attributes.end_at
-          : initialRoundedEndDate.toISOString(),
-      });
+      if (event) return;
+      setAttributeDiff(initializeEventTimes());
     }
   }, [event, isInitialLoading]);
 
@@ -638,12 +621,14 @@ const AdminProjectEventEdit = () => {
               <Title variant="h4" color="primary" style={{ fontWeight: '600' }}>
                 {formatMessage(messages.eventDates)}
               </Title>
-              <DateTimeSelection
-                startAt={eventAttrs.start_at}
-                endAt={eventAttrs.end_at}
-                errors={errors}
-                setAttributeDiff={setAttributeDiff}
-              />
+              {eventAttrs.start_at && eventAttrs.end_at && (
+                <DateTimeSelection
+                  startAt={eventAttrs.start_at}
+                  endAt={eventAttrs.end_at}
+                  errors={errors}
+                  setAttributeDiff={setAttributeDiff}
+                />
+              )}
 
               <Title variant="h4" color="primary" style={{ fontWeight: '600' }}>
                 {formatMessage(messages.eventLocation)}

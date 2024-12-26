@@ -1,6 +1,6 @@
 import { roundToNearestMinutes, addMinutes } from 'date-fns';
 
-export const initializeAttributeDiff = () => {
+export const initializeEventTimes = () => {
   const date = new Date();
   const roundedDate = roundToNearestMinutes(date, { nearestTo: 15 });
 
