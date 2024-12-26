@@ -108,9 +108,6 @@ module MultiTenancy
         MultiTenancy::Seeds::Projects.new(runner: self).run
         MultiTenancy::Seeds::Ideas.new(runner: self).run
         MultiTenancy::Seeds::InternalComments.new(runner: self).run
-
-        InitiativeStatusService.new.automated_transitions!
-
         MultiTenancy::Seeds::Baskets.new(runner: self).run
         MultiTenancy::Seeds::Groups.new(runner: self).run
         MultiTenancy::Seeds::StaticPages.new(runner: self).run
@@ -183,7 +180,7 @@ module MultiTenancy
               'nl-BE' => Faker::Lorem.paragraphs.map { |p| "<p>#{p}</p>" }.join
             },
             author: rand_instance(User.normal_user),
-            post: post,
+            idea: post,
             parent: parent,
             created_at: Faker::Date.between(from: (parent ? parent.created_at : post.published_at), to: Time.zone.now)
           })
