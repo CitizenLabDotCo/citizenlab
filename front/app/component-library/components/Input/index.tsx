@@ -72,7 +72,7 @@ export interface InputProps {
   labelTooltipText?: string | JSX.Element | null;
   value?: string | null;
   locale?: Locale;
-  type: 'text' | 'email' | 'password' | 'number' | 'date';
+  type: 'text' | 'email' | 'password' | 'number' | 'date' | 'time';
   placeholder?: string | null;
   error?: string | null;
   onChange?: (arg: string, locale: Locale | undefined) => void;
@@ -101,6 +101,7 @@ export interface InputProps {
   className?: string;
   size?: InputSize;
   'data-testid'?: string;
+  step?: number;
 }
 
 class Input extends PureComponent<InputProps> {
@@ -154,6 +155,7 @@ class Input extends PureComponent<InputProps> {
       autocomplete,
       size = 'medium',
       'data-testid': dataTestId,
+      step,
     } = this.props;
     const hasError = !isNil(this.props.error) && !isEmpty(this.props.error);
     const optionalProps = isBoolean(spellCheck) ? { spellCheck } : null;
@@ -204,6 +206,7 @@ class Input extends PureComponent<InputProps> {
           required={required}
           autoComplete={autocomplete}
           onKeyDown={onKeyDown}
+          step={step}
           {...optionalProps}
         />
 

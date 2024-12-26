@@ -17,7 +17,7 @@ import moment from 'moment';
 import { useParams } from 'react-router-dom';
 import { RouteType } from 'routes';
 import { useTheme } from 'styled-components';
-import { Multiloc, CLError, UploadFile } from 'typings';
+import { Multiloc, UploadFile } from 'typings';
 
 import useAddEventFile from 'api/event_files/useAddEventFile';
 import useDeleteEventFile from 'api/event_files/useDeleteEventFile';
@@ -36,7 +36,6 @@ import useLocale from 'hooks/useLocale';
 
 import projectMessages from 'containers/Admin/projects/project/general/messages';
 
-import DateTimePicker from 'components/admin/DatePickers/DateTimePicker';
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import Button from 'components/UI/Button';
@@ -59,23 +58,11 @@ import { isNilOrError } from 'utils/helperUtils';
 import { geocode } from 'utils/locationTools';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 
+import DateTimeSelection from './components/DateTimeSelection';
 import messages from './messages';
+import { SubmitState, ErrorType, ApiErrorType } from './types';
 
 const EventMap = lazy(() => import('./components/EventMap'));
-
-export type SubmitState = 'disabled' | 'enabled' | 'error' | 'success';
-type ErrorType =
-  | Error
-  | CLError[]
-  | {
-      [fieldName: string]: CLError[];
-    };
-
-type ApiErrorType =
-  | Error
-  | {
-      [fieldName: string]: CLError[];
-    };
 
 const AdminProjectEventEdit = () => {
   const { id, projectId } = useParams() as {
@@ -300,7 +287,7 @@ const AdminProjectEventEdit = () => {
         setAttributeDiff((previousState) => {
           const newAttributes = {
             ...previousState,
-            [name]: time.toISOString,
+            [name]: time.toISOString(),
           };
 
           // If the start time is changed, update the end time
@@ -647,37 +634,8 @@ const AdminProjectEventEdit = () => {
               <Title variant="h4" color="primary" style={{ fontWeight: '600' }}>
                 {formatMessage(messages.eventDates)}
               </Title>
-              <Box display="flex" flexDirection="column" maxWidth="400px">
-                <Box>
-                  <Label>
-                    <FormattedMessage {...messages.dateStartLabel} />
-                  </Label>
-                  <DateTimePicker
-                    selectedDate={
-                      eventAttrs.start_at
-                        ? new Date(eventAttrs.start_at)
-                        : undefined
-                    }
-                    onChange={handleDateTimePickerOnChange('start_at')}
-                  />
-                  <ErrorComponent apiErrors={get(errors, 'start_at')} />
-                </Box>
 
-                <Box mt="12px">
-                  <Label>
-                    <FormattedMessage {...messages.datesEndLabel} />
-                  </Label>
-                  <DateTimePicker
-                    selectedDate={
-                      eventAttrs.end_at
-                        ? new Date(eventAttrs.end_at)
-                        : undefined
-                    }
-                    onChange={handleDateTimePickerOnChange('end_at')}
-                  />
-                  <ErrorComponent apiErrors={get(errors, 'end_at')} />
-                </Box>
-              </Box>
+              <DateTimeSelection eventAttrs={eventAttrs} errors={errors} />
 
               <Title variant="h4" color="primary" style={{ fontWeight: '600' }}>
                 {formatMessage(messages.eventLocation)}
