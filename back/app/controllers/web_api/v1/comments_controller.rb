@@ -12,7 +12,7 @@ class WebApi::V1::CommentsController < ApplicationController
 
   def index
     include_attrs = [author: [:unread_notifications]]
-    root_comments = policy_scope(Comment, policy_scope_class: CommentPolicy::Scope)
+    root_comments = policy_scope(Comment)
       .where(idea_id: params[:idea_id])
       .where(parent: nil)
       .includes(*include_attrs)
@@ -79,7 +79,7 @@ class WebApi::V1::CommentsController < ApplicationController
       authorize :comment, :index_xlsx?
     end
 
-    @comments = policy_scope(Comment, policy_scope_class: CommentPolicy::Scope)
+    @comments = policy_scope(Comment)
       .includes(:author, :idea)
       .order(:lft)
     @comments = @comments.where(ideas: { project_id: UserRoleService.new.moderatable_projects(current_user) })
@@ -96,7 +96,7 @@ class WebApi::V1::CommentsController < ApplicationController
   end
 
   def children
-    @comments = policy_scope(Comment, policy_scope_class: CommentPolicy::Scope)
+    @comments = policy_scope(Comment)
       .where(parent: params[:id])
       .order(:lft)
     @comments = paginate @comments

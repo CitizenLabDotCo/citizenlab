@@ -1440,30 +1440,14 @@ resource 'Users' do
       end
 
       get 'web_api/v1/users/:id/comments_count' do
-        parameter :post_type, "Count only comments of one post type. Either 'Idea' or 'Initiative'.", required: false
-
         let(:id) { @user.id }
 
         example 'Get the number of comments posted by one user' do
           create(:comment)
-          create(:comment, author: @user, post: create(:idea))
-          create(:comment, author: @user, post: create(:idea))
+          create(:comment, author: @user, idea: create(:idea))
+          create(:comment, author: @user, idea: create(:idea))
           create(:comment, author: @user, publication_status: 'deleted')
           do_request
-          expect(status).to eq 200
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:data, :attributes, :count)).to eq 2
-        end
-
-        # TODO: cleanup-after-proposals-migration
-        # This test won't make sense once Comment.post_type is removed
-        example 'Get the number of comments on ideas posted by one user' do
-          create(:comment, author: @user, post: create(:initiative))
-          create(:comment, post: create(:initiative))
-          create(:comment, author: @user, post: create(:idea))
-          create(:comment, author: @user, post: create(:idea))
-          create(:comment, author: @user, publication_status: 'deleted', post: create(:idea))
-          do_request post_type: 'Idea'
           expect(status).to eq 200
           json_response = json_parse(response_body)
           expect(json_response.dig(:data, :attributes, :count)).to eq 2
