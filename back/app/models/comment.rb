@@ -80,6 +80,8 @@ class Comment < ApplicationRecord
 
   scope :published, -> { where publication_status: 'published' }
 
+  delegate :project_id, to: :idea
+
   def published?
     publication_status == 'published'
   end

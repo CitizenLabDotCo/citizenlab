@@ -8,7 +8,7 @@ RSpec.describe EmailCampaigns::CommentOnIdeaYouFollowMailer do
     let_it_be(:campaign) { EmailCampaigns::Campaigns::CommentOnIdeaYouFollow.create! }
     let_it_be(:idea) { create(:idea) }
     let_it_be(:initiator) { create(:user, first_name: 'Marion') }
-    let_it_be(:comment) { create(:comment, post: idea, body_multiloc: { 'en' => 'I agree' }, author: initiator) }
+    let_it_be(:comment) { create(:comment, idea: idea, body_multiloc: { 'en' => 'I agree' }, author: initiator) }
     let_it_be(:notification) { create(:comment_on_idea_you_follow, recipient: recipient, idea: idea, comment: comment) }
     let_it_be(:command) do
       activity = create(:activity, item: notification, action: 'created')

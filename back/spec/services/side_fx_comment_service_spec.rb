@@ -38,7 +38,7 @@ describe SideFxCommentService do
       project = create(:project)
       folder = create(:project_folder, projects: [project])
       idea = create(:idea, project: project)
-      comment = create(:comment, post: idea)
+      comment = create(:comment, idea: idea)
 
       expect do
         service.after_create comment.reload, user
@@ -51,7 +51,7 @@ describe SideFxCommentService do
       project = create(:project)
       folder = create(:project_folder, projects: [project])
       idea = create(:idea, project: project)
-      comment = create(:comment, post: idea)
+      comment = create(:comment, idea: idea)
 
       create(:follower, followable: idea, user: user)
       create(:follower, followable: project, user: user)

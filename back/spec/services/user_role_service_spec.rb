@@ -40,8 +40,8 @@ describe UserRoleService do
     end
 
     it 'for a comment' do
-      initiative = create(:initiative)
-      comment = create(:comment, post: initiative)
+      proposal = create(:proposal)
+      comment = create(:comment, idea: proposal)
 
       expect(service.can_moderate?(comment, create(:admin))).to be true
       expect(service.can_moderate?(comment, create(:user))).to be false
@@ -132,19 +132,9 @@ describe UserRoleService do
       also_moderator = create(:project_moderator, projects: [project])
       create(:project_moderator, projects: [other_project])
       idea = create(:idea, project: project)
-      comment = create(:comment, post: idea)
+      comment = create(:comment, idea: idea)
 
       expect(service.moderators_for(comment).ids).to match_array [admin.id, moderator.id, also_moderator.id]
-    end
-
-    it 'lists all moderators of an initiative' do
-      project = create(:project)
-      create(:user)
-      admin = create(:admin)
-      create(:project_moderator, projects: [project])
-      initiative = create(:initiative)
-
-      expect(service.moderators_for(initiative).ids).to match_array [admin.id]
     end
   end
 

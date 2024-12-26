@@ -6,7 +6,7 @@ RSpec.describe Notification do
   describe 'Deleting stuff related to notifications works when' do
     let!(:project) { create(:project) }
     let!(:idea) { create(:idea, project: project) }
-    let!(:parent) { create(:comment, post: idea) }
+    let!(:parent) { create(:comment, idea: idea) }
     let!(:child) { create(:comment, parent: parent) }
     let!(:initiator) { create(:user) }
     let!(:recipient) { create(:user) }

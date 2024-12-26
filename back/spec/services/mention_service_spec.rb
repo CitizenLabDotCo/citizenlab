@@ -94,8 +94,8 @@ describe MentionService do
       @u3 = create(:user, first_name: 'rudolf', last_name: 'deer')
       @u4 = create(:user, first_name: 'janus', last_name: 'lurker')
       @idea = create(:idea, author: @u1)
-      create(:comment, post: @idea, author: @u2)
-      create(:comment, post: @idea, author: @u3)
+      create(:comment, idea: @idea, author: @u2)
+      create(:comment, idea: @idea, author: @u3)
       create(:comment)
     end
 
