@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
 
 import {
   Tooltip,
@@ -23,12 +23,17 @@ const TimeInput = ({ h, m, onChange }: Props) => {
 
   const timeIndex = h * 4 + m / 15;
 
+  const timeIndexRef = useRef(timeIndex);
+  useLayoutEffect(() => {
+    timeIndexRef.current = timeIndex;
+  });
+
   useEffect(() => {
     if (!visible) return;
     const el = document.getElementById('scroll-thingy');
     if (!el) return;
-    el.scrollTop = Math.max(timeIndex - 2, 0) * BUTTON_HEIGHT;
-  }, [visible, timeIndex]);
+    el.scrollTop = Math.max(timeIndexRef.current - 2, 0) * BUTTON_HEIGHT;
+  }, [visible]);
 
   const handleButtonClick = (i: number) => {
     const time = TIMES[i];
