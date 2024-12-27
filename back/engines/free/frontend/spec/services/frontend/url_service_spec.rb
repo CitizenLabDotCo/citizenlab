@@ -8,9 +8,9 @@ describe Frontend::UrlService do
 
   describe '#model_to_url' do
     let(:idea) { create(:idea) }
-    let(:internal_comment1) { create(:internal_comment, post: idea) }
+    let(:internal_comment1) { create(:internal_comment, idea: idea) }
     let(:initiative) { create(:initiative) }
-    let(:internal_comment2) { create(:internal_comment, post: initiative) }
+    let(:internal_comment2) { create(:internal_comment, idea: initiative) }
     let(:locale) { Locale.new('en') }
 
     it 'returns the correct url for an internal comment on an idea' do

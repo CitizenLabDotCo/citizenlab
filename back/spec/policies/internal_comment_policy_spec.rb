@@ -11,7 +11,7 @@ describe InternalCommentPolicy do
     let(:project) { create(:single_phase_ideation_project) }
     let(:idea) { create(:idea, project: project) }
     let(:author) { create(:admin) }
-    let!(:internal_comment) { create(:internal_comment, post: idea, author: author) }
+    let!(:internal_comment) { create(:internal_comment, idea: idea, author: author) }
 
     context 'for a visitor' do
       let(:user) { nil }
@@ -66,7 +66,7 @@ describe InternalCommentPolicy do
     let(:project) { create(:single_phase_ideation_project) }
     let(:idea) { create(:idea, project: project) }
     let(:author) { create(:project_moderator, projects: [project]) }
-    let!(:internal_comment) { create(:internal_comment, post: idea, author: author) }
+    let!(:internal_comment) { create(:internal_comment, idea: idea, author: author) }
 
     context 'for a moderator who is author of the internal comment' do
       let(:user) { author }
