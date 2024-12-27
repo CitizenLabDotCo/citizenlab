@@ -74,7 +74,7 @@ const DateTimeSelection = ({
         </Label>
         <Box display="flex" flexDirection="row">
           <DateSinglePicker
-            selectedDate={startAt ? new Date(startAt) : undefined}
+            selectedDate={startAtDate}
             onChange={handleSelectStartAtDay}
           />
           <Box ml="12px">
@@ -94,7 +94,7 @@ const DateTimeSelection = ({
         </Label>
         <Box display="flex" flexDirection="row">
           <DateSinglePicker
-            selectedDate={endAt ? new Date(endAt) : undefined}
+            selectedDate={endAtDate}
             onChange={handleSelectEndAtDay}
           />
           <Box ml="12px">
