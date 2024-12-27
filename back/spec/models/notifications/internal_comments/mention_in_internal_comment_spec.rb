@@ -14,8 +14,8 @@ RSpec.describe Notifications::InternalComments::MentionInInternalComment do
         recipient_id: user.id,
         initiating_user_id: internal_comment.author_id,
         internal_comment_id: internal_comment.id,
-        idea_id: internal_comment.post_id,
-        project_id: internal_comment.post.project_id
+        idea_id: internal_comment.idea_id,
+        project_id: internal_comment.idea.project_id
       )
     end
 

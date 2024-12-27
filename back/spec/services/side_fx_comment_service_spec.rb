@@ -6,7 +6,7 @@ describe SideFxCommentService do
   let(:service) { described_class.new }
   let(:user) { create(:user) }
   let(:comment) { create(:comment) }
-  let(:project_id) { comment.post.project_id }
+  let(:project_id) { comment.idea.project_id }
 
   describe 'after_create' do
     it "logs a 'created' action when a comment is created" do
@@ -90,7 +90,7 @@ describe SideFxCommentService do
 
       expectation = expect { service.after_update(comment, user) }
       created_at = comment.created_at.to_i
-      project_id = comment.post.project_id
+      project_id = comment.idea.project_id
       expectation.not_to enqueue_job(LogActivityJob).with(comment, 'mentioned', user, created_at, payload: { mentioned_user: u1.id }, project_id: project_id)
       expectation.to enqueue_job(LogActivityJob).with(comment, 'mentioned', user, created_at, payload: { mentioned_user: u2.id }, project_id: project_id)
     end

@@ -55,8 +55,8 @@ module EmailCampaigns
       recipient_ids = []
       unless initiator&.admin?
         recipients = User.admin
-        if comment.post_type == 'Idea' && !initiator.project_moderator?(comment.post.project.id)
-          recipient_ids = recipients.or(User.project_moderator(comment.post.project.id)).ids
+        if !initiator.project_moderator?(comment.idea.project_id)
+          recipient_ids = recipients.or(User.project_moderator(comment.idea.project_id)).ids
         end
       end
 
@@ -85,7 +85,7 @@ module EmailCampaigns
 
     def generate_commands(recipient:, activity:, time: nil)
       comment = activity.item
-      post = comment.post
+      idea = comment.idea
       [{
         event_payload: {
           initiating_user_first_name: comment.author&.first_name,
@@ -93,10 +93,9 @@ module EmailCampaigns
           comment_author_name: comment.author_name,
           comment_body_multiloc: comment.body_multiloc,
           comment_url: Frontend::UrlService.new.model_to_url(comment, locale: Locale.new(recipient.locale)),
-          post_published_at: post.published_at.iso8601,
-          post_title_multiloc: post.title_multiloc,
-          post_author_name: post.author_name,
-          post_type: comment.post_type
+          post_published_at: idea.published_at.iso8601,
+          post_title_multiloc: idea.title_multiloc,
+          post_author_name: idea.author_name
         }
       }]
     end
