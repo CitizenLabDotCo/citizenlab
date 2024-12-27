@@ -8,21 +8,28 @@ import {
 } from '@citizenlab/cl2-component-library';
 
 import { TIMES } from './constants';
-import { Hour, Minute } from './types';
 
 const BUTTON_HEIGHT = 45;
 
 interface Props {
-  h: Hour;
-  m: Minute;
-  onChange: (h: Hour, m: Minute) => void;
+  selectedDate: Date;
+  onChange: (newDate: Date) => void;
 }
 
-const TimeInput = ({ h, m, onChange }: Props) => {
+const TimeInput = ({ selectedDate, onChange }: Props) => {
   const [visible, setVisible] = useState(false);
 
-  const timeIndex = h * 4 + m / 15;
+  const h = selectedDate.getHours();
+  const m = selectedDate.getMinutes();
 
+  // In theory the Math.floor should not be necessary,
+  // but just in case we will floor it to avoid
+  // getting a floating point value.
+  const timeIndex = Math.floor(h * 4 + m / 15);
+
+  // This is necessary to be able to use the timeIndex
+  // in the next useEffect block without making it
+  // a dependency of the useEffect.
   const timeIndexRef = useRef(timeIndex);
   useLayoutEffect(() => {
     timeIndexRef.current = timeIndex;
@@ -38,7 +45,10 @@ const TimeInput = ({ h, m, onChange }: Props) => {
   const handleButtonClick = (i: number) => {
     const time = TIMES[i];
     const [hour, minute] = time.split(':').map(Number);
-    onChange(hour as Hour, minute as Minute);
+    const newDate = new Date(selectedDate);
+    newDate.setHours(hour);
+    newDate.setMinutes(minute);
+    onChange(newDate);
   };
 
   return (

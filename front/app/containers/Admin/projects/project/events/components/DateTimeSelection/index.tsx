@@ -14,7 +14,6 @@ import messages from '../../messages';
 import { ErrorType } from '../../types';
 
 import TimeInput from './TimeInput';
-import { Hour, Minute } from './types';
 
 interface Props {
   startAt: string;
@@ -43,20 +42,14 @@ const DateTimeSelection = ({
     }));
   };
 
-  const handleSelectStartAtTime = (h: Hour, m: Minute) => {
-    const newDate = new Date(startAt);
-    newDate.setHours(h);
-    newDate.setMinutes(m);
+  const handleSelectStartAtTime = (newDate: Date) => {
     setAttributeDiff((prev) => ({
       ...prev,
       start_at: newDate.toISOString(),
     }));
   };
 
-  const handleSelectEndAtTime = (h: Hour, m: Minute) => {
-    const newDate = new Date(startAt);
-    newDate.setHours(h);
-    newDate.setMinutes(m);
+  const handleSelectEndAtTime = (newDate: Date) => {
     setAttributeDiff((prev) => ({
       ...prev,
       end_at: newDate.toISOString(),
@@ -79,8 +72,7 @@ const DateTimeSelection = ({
           />
           <Box ml="12px">
             <TimeInput
-              h={startAtDate.getHours() as Hour}
-              m={startAtDate.getMinutes() as Minute}
+              selectedDate={startAtDate}
               onChange={handleSelectStartAtTime}
             />
           </Box>
@@ -99,8 +91,7 @@ const DateTimeSelection = ({
           />
           <Box ml="12px">
             <TimeInput
-              h={endAtDate.getHours() as Hour}
-              m={endAtDate.getMinutes() as Minute}
+              selectedDate={endAtDate}
               onChange={handleSelectEndAtTime}
             />
           </Box>
