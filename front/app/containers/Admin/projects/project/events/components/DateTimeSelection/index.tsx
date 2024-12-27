@@ -28,10 +28,14 @@ const DateTimeSelection = ({
   errors,
   setAttributeDiff,
 }: Props) => {
-  const handleSelectStartAtDay = (date: Date) => {
+  const updateStartAt = (date: Date) => {
+    const currentDifference =
+      new Date(endAt).getTime() - new Date(startAt).getTime();
+
     setAttributeDiff((prev) => ({
       ...prev,
       start_at: date.toISOString(),
+      end_at: new Date(date.getTime() + currentDifference).toISOString(),
     }));
   };
 
@@ -42,17 +46,10 @@ const DateTimeSelection = ({
     }));
   };
 
-  const handleSelectStartAtTime = (newDate: Date) => {
+  const handleSelectEndAtTime = (date: Date) => {
     setAttributeDiff((prev) => ({
       ...prev,
-      start_at: newDate.toISOString(),
-    }));
-  };
-
-  const handleSelectEndAtTime = (newDate: Date) => {
-    setAttributeDiff((prev) => ({
-      ...prev,
-      end_at: newDate.toISOString(),
+      end_at: date.toISOString(),
     }));
   };
 
@@ -68,13 +65,10 @@ const DateTimeSelection = ({
         <Box display="flex" flexDirection="row">
           <DateSinglePicker
             selectedDate={startAtDate}
-            onChange={handleSelectStartAtDay}
+            onChange={updateStartAt}
           />
           <Box ml="12px">
-            <TimeInput
-              selectedDate={startAtDate}
-              onChange={handleSelectStartAtTime}
-            />
+            <TimeInput selectedDate={startAtDate} onChange={updateStartAt} />
           </Box>
         </Box>
         <ErrorComponent apiErrors={get(errors, 'start_at')} />
