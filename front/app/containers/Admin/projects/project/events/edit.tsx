@@ -266,59 +266,6 @@ const AdminProjectEventEdit = () => {
     setErrors({});
   };
 
-  // const _handleDateTimePickerOnChange =
-  //   (name: 'start_at' | 'end_at') => (time: Date) => {
-  //     if (!isInitialLoading) {
-  //       setSubmitState('enabled');
-  //       setAttributeDiff((previousState) => {
-  //         const newAttributes = {
-  //           ...previousState,
-  //           [name]: time.toISOString(),
-  //         };
-
-  //         // If the start time is changed, update the end time
-  //         if (name === 'start_at' && newAttributes['start_at']) {
-  //           const duration = newAttributes['end_at']
-  //             ? moment
-  //               .duration(
-  //                 moment(newAttributes['end_at']).diff(
-  //                   moment(previousState['start_at'])
-  //                 )
-  //               )
-  //               .asMinutes()
-  //             : 30;
-
-  //           newAttributes['end_at'] = calculateRoundedEndDate(
-  //             new Date(newAttributes['start_at']),
-  //             duration
-  //           ).toISOString();
-  //         } else if (name === 'end_at' && newAttributes['end_at']) {
-  //           const isStartDateAfterEndDate =
-  //             newAttributes['start_at'] && newAttributes['end_at']
-  //               ? newAttributes['start_at'] > newAttributes['end_at']
-  //               : false;
-
-  //           if (isStartDateAfterEndDate) {
-  //             const duration = moment
-  //               .duration(
-  //                 moment(previousState['end_at']).diff(
-  //                   moment(newAttributes['start_at'])
-  //                 )
-  //               )
-  //               .asMinutes();
-
-  //             newAttributes['start_at'] = calculateRoundedEndDate(
-  //               new Date(newAttributes['end_at']),
-  //               -duration
-  //             ).toISOString();
-  //           }
-  //         }
-
-  //         return newAttributes;
-  //       });
-  //       setErrors({});
-  //     }
-  //   };
   const handleDateTimePickerOnChange = (
     value: React.SetStateAction<IEventProperties>
   ) => {
