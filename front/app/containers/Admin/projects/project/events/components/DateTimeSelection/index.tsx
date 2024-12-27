@@ -28,9 +28,11 @@ const DateTimeSelection = ({
   errors,
   setAttributeDiff,
 }: Props) => {
+  const startAtDate = new Date(startAt);
+  const endAtDate = new Date(endAt);
+
   const updateStartAt = (date: Date) => {
-    const currentDifference =
-      new Date(endAt).getTime() - new Date(startAt).getTime();
+    const currentDifference = endAtDate.getTime() - startAtDate.getTime();
 
     setAttributeDiff((prev) => ({
       ...prev,
@@ -39,22 +41,22 @@ const DateTimeSelection = ({
     }));
   };
 
-  const handleSelectEndAtDay = (date: Date) => {
+  const updateEndAt = (date: Date) => {
+    let newStartAtDate = new Date(startAtDate);
+    const newEndAtDateIsBeforeStartDate = date < startAtDate;
+
+    if (newEndAtDateIsBeforeStartDate) {
+      const currentDifference = endAtDate.getTime() - startAtDate.getTime();
+
+      newStartAtDate = new Date(date.getTime() - currentDifference);
+    }
+
     setAttributeDiff((prev) => ({
       ...prev,
+      start_at: newStartAtDate.toISOString(),
       end_at: date.toISOString(),
     }));
   };
-
-  const handleSelectEndAtTime = (date: Date) => {
-    setAttributeDiff((prev) => ({
-      ...prev,
-      end_at: date.toISOString(),
-    }));
-  };
-
-  const startAtDate = new Date(startAt);
-  const endAtDate = new Date(endAt);
 
   return (
     <Box display="flex" flexDirection="column" maxWidth="400px">
@@ -65,7 +67,13 @@ const DateTimeSelection = ({
         <Box display="flex" flexDirection="row">
           <DateSinglePicker
             selectedDate={startAtDate}
-            onChange={updateStartAt}
+            onChange={(date) => {
+              const h = startAtDate.getHours();
+              const m = startAtDate.getMinutes();
+              date.setHours(h);
+              date.setMinutes(m);
+              updateStartAt(date);
+            }}
           />
           <Box ml="12px">
             <TimeInput selectedDate={startAtDate} onChange={updateStartAt} />
@@ -81,13 +89,16 @@ const DateTimeSelection = ({
         <Box display="flex" flexDirection="row">
           <DateSinglePicker
             selectedDate={endAtDate}
-            onChange={handleSelectEndAtDay}
+            onChange={(date) => {
+              const h = endAtDate.getHours();
+              const m = endAtDate.getMinutes();
+              date.setHours(h);
+              date.setMinutes(m);
+              updateEndAt(date);
+            }}
           />
           <Box ml="12px">
-            <TimeInput
-              selectedDate={endAtDate}
-              onChange={handleSelectEndAtTime}
-            />
+            <TimeInput selectedDate={endAtDate} onChange={updateEndAt} />
           </Box>
         </Box>
         <ErrorComponent apiErrors={get(errors, 'end_at')} />
