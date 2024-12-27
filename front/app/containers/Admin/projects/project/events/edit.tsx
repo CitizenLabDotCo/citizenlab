@@ -319,6 +319,13 @@ const AdminProjectEventEdit = () => {
   //       setErrors({});
   //     }
   //   };
+  const handleDateTimePickerOnChange = (
+    value: React.SetStateAction<IEventProperties>
+  ) => {
+    setSubmitState('enabled');
+    setAttributeDiff(value);
+    setErrors({});
+  };
 
   const handleOnImageAdd = (imageFiles: UploadFile[]) => {
     setSubmitState('enabled');
@@ -626,7 +633,7 @@ const AdminProjectEventEdit = () => {
                   startAt={eventAttrs.start_at}
                   endAt={eventAttrs.end_at}
                   errors={errors}
-                  setAttributeDiff={setAttributeDiff}
+                  setAttributeDiff={handleDateTimePickerOnChange}
                 />
               )}
 
