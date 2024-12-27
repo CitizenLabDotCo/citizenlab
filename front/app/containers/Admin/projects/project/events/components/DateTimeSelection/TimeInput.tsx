@@ -18,6 +18,7 @@ interface Props {
 
 const TimeInput = ({ selectedDate, onChange }: Props) => {
   const [visible, setVisible] = useState(false);
+  const scrollContainerRef = useRef<HTMLDivElement | null>(null);
 
   const h = selectedDate.getHours();
   const m = selectedDate.getMinutes();
@@ -35,11 +36,13 @@ const TimeInput = ({ selectedDate, onChange }: Props) => {
     timeIndexRef.current = timeIndex;
   });
 
+  // Make sure the selected time is centered inside
+  // of the scroll container
   useEffect(() => {
     if (!visible) return;
-    const el = document.getElementById('scroll-thingy');
-    if (!el) return;
-    el.scrollTop = Math.max(timeIndexRef.current - 2, 0) * BUTTON_HEIGHT;
+    if (!scrollContainerRef.current) return;
+    scrollContainerRef.current.scrollTop =
+      Math.max(timeIndexRef.current - 2, 0) * BUTTON_HEIGHT;
   }, [visible]);
 
   const handleButtonClick = (i: number) => {
@@ -59,9 +62,9 @@ const TimeInput = ({ selectedDate, onChange }: Props) => {
       onClickOutside={() => setVisible(false)}
       content={
         <Box
+          ref={scrollContainerRef}
           maxHeight={`${5 * BUTTON_HEIGHT}px`}
           overflowY="scroll"
-          id="scroll-thingy"
         >
           {TIMES.map((time, i) => (
             <Button
