@@ -21,7 +21,7 @@ module Frontend
       when User
         subroute = 'profile'
         slug = model_instance.slug
-      when Comment. OfficialFeedback # Comments and official feedback do not have a path yet, we return the idea path for now
+      when Comment, OfficialFeedback # Comments and official feedback do not have a path yet, we return the idea path for now
         return model_to_path(model_instance.idea)
       when InternalComment # Internal comments are only implemented in the Back Office / Admin UI
         return "admin/projects/#{model_instance.idea.project_id}/ideas/#{model_instance.idea.id}##{model_instance.id}"
