@@ -101,7 +101,7 @@ describe('getUpdatedRange', () => {
   });
 
   describe('selectionMode = to', () => {
-    const selectionMode = 'from';
+    const selectionMode = 'to';
 
     it('if no dates set, should set to date', () => {
       const selectedRange = { from: undefined, to: undefined };
