@@ -59,7 +59,7 @@ const DateTimeSelection = ({
     newDate.setMinutes(m);
     setAttributeDiff((prev) => ({
       ...prev,
-      start_at: newDate.toISOString(),
+      end_at: newDate.toISOString(),
     }));
   };
 
