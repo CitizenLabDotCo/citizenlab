@@ -29,6 +29,11 @@ module ReportBuilder
       non_overlapping_phase_ids = Phase.where('end_at <= ? OR start_at >= ?', start_date, end_date).select(:id)
 
       Phase
+        .where(
+          project_id: Project
+            .joins(:admin_publication)
+            .where(admin_publication: { publication_status: %w[published archived] })
+        )
         .where.not(id: non_overlapping_phase_ids)
         .group(:participation_method)
         .count
