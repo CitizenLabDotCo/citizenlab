@@ -18,7 +18,7 @@ RSpec.describe EmailCampaigns::Campaigns::UserDigest do
     let!(:ideas) { create_list(:idea, 10, project: new_project, published_at: Time.now - 2.hours) }
     let!(:reactions) { create_list(:reaction, 3, mode: 'up', reactable: top_idea) + [top_idea] }
     let!(:top_comment) { create(:comment, idea: top_idea, created_at: Time.now - 3.minutes) }
-    let!(:comments) { create_list(:comment, 3, idea: top_idea, parent: top_comment) + create_list(:comment, 5, post: top_idea) + [top_comment] }
+    let!(:comments) { create_list(:comment, 3, idea: top_idea, parent: top_comment) + create_list(:comment, 5, idea: top_idea) + [top_comment] }
     let!(:draft_project) { create(:project, admin_publication_attributes: { publication_status: 'draft' }, created_at: Time.now - 2.minutes) }
     let!(:threshold_reached_status) { create(:proposals_status, code: 'threshold_reached') }
     let!(:proposal) { create(:proposal, idea_status: threshold_reached_status, published_at: 1.year.ago) }

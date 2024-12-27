@@ -70,7 +70,7 @@ resource 'Comment Reactions' do
     end
 
     describe do
-      before { @comment.update!(post: create(:idea)) }
+      before { @comment.update!(idea: create(:idea)) }
 
       example 'Create a reaction on a comment of an idea', document: false do
         do_request

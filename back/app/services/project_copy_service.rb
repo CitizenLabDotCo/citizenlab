@@ -667,7 +667,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
   end
 
   def yml_comments(exported_ideas, shift_timestamps: 0)
-    Comment.where(post: exported_ideas).map do |c|
+    Comment.where(idea: exported_ideas).map do |c|
       yml_comment = {
         'author_ref' => lookup_ref(c.author_id, :user),
         'author_hash' => c.author_hash,
