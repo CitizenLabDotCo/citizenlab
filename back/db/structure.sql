@@ -1703,7 +1703,7 @@ UNION ALL
     c.likes_count,
     c.dislikes_count
    FROM ((public.comments c
-     JOIN public.analytics_dimension_types adt ON ((((adt.name)::text = 'comment'::text) AND ((adt.parent)::text = lower((c.post_type)::text)))))
+     JOIN public.analytics_dimension_types adt ON ((((adt.name)::text = 'comment'::text) AND ((adt.parent)::text = 'idea'::text))))
      LEFT JOIN public.ideas i ON ((c.idea_id = i.id)))
 UNION ALL
  SELECT r.id,
@@ -7759,3 +7759,5 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20241220103433'),
 ('20241224115952'),
 ('20241226093506');
+
+

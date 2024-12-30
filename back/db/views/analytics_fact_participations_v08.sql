@@ -35,8 +35,8 @@ SELECT
     c.likes_count,
     c.dislikes_count
 FROM comments c
-INNER JOIN analytics_dimension_types adt ON adt.name = 'comment' AND adt.parent = LOWER(c.post_type)
-LEFT JOIN ideas i ON c.post_id = i.id
+INNER JOIN analytics_dimension_types adt ON adt.name = 'comment' AND adt.parent = 'idea'
+LEFT JOIN ideas i ON c.idea_id = i.id
 
 UNION ALL
 
@@ -55,7 +55,7 @@ FROM reactions r
 INNER JOIN analytics_dimension_types adt ON adt.name = 'reaction' AND adt.parent = LOWER(r.reactable_type)
 LEFT JOIN ideas i ON i.id = r.reactable_id
 LEFT JOIN comments c ON c.id = r.reactable_id
-LEFT JOIN ideas ic ON ic.id = c.post_id
+LEFT JOIN ideas ic ON ic.id = c.idea_id
 
 UNION ALL
 
