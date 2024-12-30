@@ -6,6 +6,11 @@ import {
   Box,
   colors,
 } from '@citizenlab/cl2-component-library';
+import { format } from 'date-fns';
+
+import useLocale from 'hooks/useLocale';
+
+import { getLocale } from 'components/admin/DatePickers/_shared/locales';
 
 import { TIMES } from './constants';
 
@@ -19,9 +24,12 @@ interface Props {
 const TimeInput = ({ selectedDate, onChange }: Props) => {
   const [visible, setVisible] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
+  const locale = useLocale();
 
   const h = selectedDate.getHours();
   const m = selectedDate.getMinutes();
+
+  console.log({ selectedDate, h, m });
 
   // In theory the Math.floor should not be necessary,
   // but just in case we will floor it to avoid
@@ -91,7 +99,8 @@ const TimeInput = ({ selectedDate, onChange }: Props) => {
         }}
         textColor={colors.black}
       >
-        {TIMES[timeIndex]}
+        {/* {TIMES[timeIndex]} */}
+        {format(selectedDate, 'hh:mm aaa', { locale: getLocale(locale) })}
       </Button>
     </Tooltip>
   );
