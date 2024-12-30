@@ -178,4 +178,49 @@ resource 'Areas' do
       it_behaves_like 'publication filtering model', 'area'
     end
   end
+
+  get 'web_api/v1/areas/with_visible_projects_counts' do
+    before do
+      user = create(:user)
+      header_token_for(user)
+    end
+
+    let!(:area1) { create(:area, title_multiloc: { en: 'area 1' }) }
+    let!(:area2) { create(:area, title_multiloc: { en: 'area 2' }) }
+    let!(:area3) { create(:area, title_multiloc: { en: 'area 3' }) }
+
+    let!(:project_for_area1) { create(:project, areas: [area1]) }
+    let!(:project_for_areas1and2) { create(:project, areas: [area1, area2]) }
+
+    let!(:visible_project_for_all_areas) { create(:project, include_all_areas: true) }
+    let!(:_invisible_project_for_all_areas) { create(:project, include_all_areas: true, visible_to: 'admins') }
+
+    example_request 'it includes the visible_projects_count, and orders the areas by them' do
+      assert_status 200
+
+      json_response = json_parse(response_body)
+      expect(json_response[:data].map { |d| d[:attributes][:visible_projects_count] }).to eq [3, 2, 1]
+    end
+
+    example 'returns zero counts for areas with no projects, even when no visible projects', document: false do
+      project_for_area1.destroy!
+      project_for_areas1and2.destroy!
+      visible_project_for_all_areas.destroy!
+
+      do_request
+      json_response = json_parse(response_body)
+      expect(json_response[:data].map { |d| d[:attributes][:visible_projects_count] }).to eq [0, 0, 0]
+    end
+
+    example 'orders by ordering when visible_projects_count values are equal', document: false do
+      project_for_area1.destroy!
+      project_for_areas1and2.destroy!
+      visible_project_for_all_areas.destroy!
+
+      do_request
+      json_response = json_parse(response_body)
+      expect(json_response[:data].map { |d| d[:attributes][:ordering] })
+        .to eq json_response[:data].map { |d| d[:attributes][:ordering] }.sort
+    end
+  end
 end

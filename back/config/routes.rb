@@ -140,6 +140,9 @@ Rails.application.routes.draw do
 
       resources :areas do
         resources :followers, only: [:create], defaults: { followable: 'Area' }
+        collection do
+          get 'with_visible_projects_counts', to: 'areas#with_visible_projects_counts'
+        end
       end
 
       resources :followers, except: %i[create update]
@@ -202,7 +205,6 @@ Rails.application.routes.draw do
           get 'finished_or_archived', action: 'index_finished_or_archived'
           get 'for_followed_item', action: 'index_for_followed_item'
           get 'with_active_participatory_phase', action: 'index_with_active_participatory_phase'
-          get 'counts_by_area', action: 'counts_by_area'
         end
 
         resource :review, controller: 'project_reviews'
