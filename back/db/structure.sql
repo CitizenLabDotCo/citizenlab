@@ -571,6 +571,9 @@ DROP TABLE IF EXISTS public.machine_translations_machine_translations;
 DROP TABLE IF EXISTS public.internal_comments;
 DROP TABLE IF EXISTS public.initiatives_topics;
 DROP VIEW IF EXISTS public.initiative_initiative_statuses;
+DROP TABLE IF EXISTS public.initiatives;
+DROP TABLE IF EXISTS public.initiative_statuses;
+DROP TABLE IF EXISTS public.initiative_status_changes;
 DROP TABLE IF EXISTS public.initiative_images;
 DROP TABLE IF EXISTS public.initiative_files;
 DROP TABLE IF EXISTS public.impact_tracking_salts;
@@ -622,14 +625,12 @@ DROP VIEW IF EXISTS public.analytics_fact_registrations;
 DROP TABLE IF EXISTS public.invites;
 DROP VIEW IF EXISTS public.analytics_fact_project_statuses;
 DROP VIEW IF EXISTS public.analytics_fact_posts;
-DROP TABLE IF EXISTS public.initiative_status_changes;
 DROP VIEW IF EXISTS public.analytics_fact_participations;
 DROP TABLE IF EXISTS public.volunteering_volunteers;
 DROP TABLE IF EXISTS public.volunteering_causes;
 DROP TABLE IF EXISTS public.reactions;
 DROP TABLE IF EXISTS public.polls_responses;
 DROP TABLE IF EXISTS public.phases;
-DROP TABLE IF EXISTS public.initiatives;
 DROP TABLE IF EXISTS public.ideas;
 DROP TABLE IF EXISTS public.events_attendances;
 DROP TABLE IF EXISTS public.comments;
@@ -644,7 +645,6 @@ DROP TABLE IF EXISTS public.users;
 DROP TABLE IF EXISTS public.analytics_fact_visits;
 DROP TABLE IF EXISTS public.analytics_dimension_types;
 DROP VIEW IF EXISTS public.analytics_dimension_statuses;
-DROP TABLE IF EXISTS public.initiative_statuses;
 DROP TABLE IF EXISTS public.idea_statuses;
 DROP TABLE IF EXISTS public.analytics_dimension_referrer_types;
 DROP TABLE IF EXISTS public.analytics_dimension_projects_fact_visits;
@@ -1160,7 +1160,7 @@ CREATE VIEW public.analytics_build_feedbacks AS
             0 AS feedback_official,
             1 AS feedback_status_change
            FROM public.activities
-          WHERE (((activities.action)::text = 'changed_status'::text) AND ((activities.item_type)::text = ANY (ARRAY[('Idea'::character varying)::text, ('Initiative'::character varying)::text])))
+          WHERE (((activities.action)::text = 'changed_status'::text) AND ((activities.item_type)::text = 'Idea'::text))
           GROUP BY activities.item_id
         UNION ALL
          SELECT official_feedbacks.idea_id AS post_id,
@@ -1281,37 +1281,15 @@ CREATE TABLE public.idea_statuses (
 
 
 --
--- Name: initiative_statuses; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.initiative_statuses (
-    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    title_multiloc jsonb DEFAULT '{}'::jsonb,
-    description_multiloc jsonb DEFAULT '{}'::jsonb,
-    ordering integer,
-    code character varying,
-    color character varying,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
 -- Name: analytics_dimension_statuses; Type: VIEW; Schema: public; Owner: -
 --
 
 CREATE VIEW public.analytics_dimension_statuses AS
- SELECT idea_statuses.id,
-    idea_statuses.title_multiloc,
-    idea_statuses.code,
-    idea_statuses.color
-   FROM public.idea_statuses
-UNION ALL
- SELECT initiative_statuses.id,
-    initiative_statuses.title_multiloc,
-    initiative_statuses.code,
-    initiative_statuses.color
-   FROM public.initiative_statuses;
+ SELECT id,
+    title_multiloc,
+    code,
+    color
+   FROM public.idea_statuses;
 
 
 --
@@ -1582,37 +1560,6 @@ CREATE TABLE public.ideas (
 
 
 --
--- Name: initiatives; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.initiatives (
-    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    title_multiloc jsonb DEFAULT '{}'::jsonb,
-    body_multiloc jsonb DEFAULT '{}'::jsonb,
-    publication_status character varying,
-    published_at timestamp without time zone,
-    author_id uuid,
-    likes_count integer DEFAULT 0 NOT NULL,
-    dislikes_count integer DEFAULT 0 NOT NULL,
-    location_point shared_extensions.geography(Point,4326),
-    location_description character varying,
-    slug character varying,
-    comments_count integer DEFAULT 0 NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    header_bg character varying,
-    assignee_id uuid,
-    official_feedbacks_count integer DEFAULT 0 NOT NULL,
-    assigned_at timestamp without time zone,
-    author_hash character varying,
-    anonymous boolean DEFAULT false NOT NULL,
-    internal_comments_count integer DEFAULT 0 NOT NULL,
-    followers_count integer DEFAULT 0 NOT NULL,
-    editing_locked boolean DEFAULT false NOT NULL
-);
-
-
---
 -- Name: phases; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1747,18 +1694,6 @@ CREATE VIEW public.analytics_fact_participations AS
      LEFT JOIN public.analytics_dimension_types survey ON (((survey.name)::text = 'survey'::text)))
   WHERE ((i.publication_status)::text = 'published'::text)
 UNION ALL
- SELECT i.id,
-    i.author_id AS dimension_user_id,
-    COALESCE((i.author_id)::text, (i.author_hash)::text, (i.id)::text) AS participant_id,
-    NULL::uuid AS dimension_project_id,
-    adt.id AS dimension_type_id,
-    (i.created_at)::date AS dimension_date_created_id,
-    (i.likes_count + i.dislikes_count) AS reactions_count,
-    i.likes_count,
-    i.dislikes_count
-   FROM (public.initiatives i
-     JOIN public.analytics_dimension_types adt ON (((adt.name)::text = 'initiative'::text)))
-UNION ALL
  SELECT c.id,
     c.author_id AS dimension_user_id,
     COALESCE((c.author_id)::text, (c.author_hash)::text, (c.id)::text) AS participant_id,
@@ -1848,21 +1783,6 @@ UNION ALL
 
 
 --
--- Name: initiative_status_changes; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.initiative_status_changes (
-    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    user_id uuid,
-    initiative_id uuid,
-    initiative_status_id uuid,
-    official_feedback_id uuid,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
 -- Name: analytics_fact_posts; Type: VIEW; Schema: public; Owner: -
 --
 
@@ -1894,32 +1814,7 @@ CREATE VIEW public.analytics_fact_posts AS
             WHEN ((creation_phase.participation_method)::text = 'proposals'::text) THEN 'proposal'::text
             ELSE NULL::text
         END)))
-  WHERE ((creation_phase.* IS NULL) OR ((creation_phase.participation_method)::text = 'proposals'::text))
-UNION ALL
- SELECT i.id,
-    i.author_id AS user_id,
-    NULL::uuid AS dimension_project_id,
-    adt.id AS dimension_type_id,
-    (i.created_at)::date AS dimension_date_created_id,
-    (abf.feedback_first_date)::date AS dimension_date_first_feedback_id,
-    isc.initiative_status_id AS dimension_status_id,
-    (abf.feedback_first_date - i.created_at) AS feedback_time_taken,
-    COALESCE(abf.feedback_official, 0) AS feedback_official,
-    COALESCE(abf.feedback_status_change, 0) AS feedback_status_change,
-        CASE
-            WHEN (abf.feedback_first_date IS NULL) THEN 1
-            ELSE 0
-        END AS feedback_none,
-    (i.likes_count + i.dislikes_count) AS reactions_count,
-    i.likes_count,
-    i.dislikes_count,
-    i.publication_status
-   FROM (((public.initiatives i
-     JOIN public.analytics_dimension_types adt ON (((adt.name)::text = 'initiative'::text)))
-     LEFT JOIN public.analytics_build_feedbacks abf ON ((abf.post_id = i.id)))
-     LEFT JOIN public.initiative_status_changes isc ON (((isc.initiative_id = i.id) AND (isc.updated_at = ( SELECT max(isc_.updated_at) AS max
-           FROM public.initiative_status_changes isc_
-          WHERE (isc_.initiative_id = i.id))))));
+  WHERE ((creation_phase.* IS NULL) OR ((creation_phase.participation_method)::text = 'proposals'::text));
 
 
 --
@@ -2679,6 +2574,68 @@ CREATE TABLE public.initiative_images (
     ordering integer,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: initiative_status_changes; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.initiative_status_changes (
+    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
+    user_id uuid,
+    initiative_id uuid,
+    initiative_status_id uuid,
+    official_feedback_id uuid,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: initiative_statuses; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.initiative_statuses (
+    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
+    title_multiloc jsonb DEFAULT '{}'::jsonb,
+    description_multiloc jsonb DEFAULT '{}'::jsonb,
+    ordering integer,
+    code character varying,
+    color character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: initiatives; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.initiatives (
+    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
+    title_multiloc jsonb DEFAULT '{}'::jsonb,
+    body_multiloc jsonb DEFAULT '{}'::jsonb,
+    publication_status character varying,
+    published_at timestamp without time zone,
+    author_id uuid,
+    likes_count integer DEFAULT 0 NOT NULL,
+    dislikes_count integer DEFAULT 0 NOT NULL,
+    location_point shared_extensions.geography(Point,4326),
+    location_description character varying,
+    slug character varying,
+    comments_count integer DEFAULT 0 NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    header_bg character varying,
+    assignee_id uuid,
+    official_feedbacks_count integer DEFAULT 0 NOT NULL,
+    assigned_at timestamp without time zone,
+    author_hash character varying,
+    anonymous boolean DEFAULT false NOT NULL,
+    internal_comments_count integer DEFAULT 0 NOT NULL,
+    followers_count integer DEFAULT 0 NOT NULL,
+    editing_locked boolean DEFAULT false NOT NULL
 );
 
 
@@ -7807,4 +7764,5 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20241127093339'),
 ('20241203151945'),
 ('20241204133717'),
-('20241204144321');
+('20241204144321'),
+('20241220103433');
