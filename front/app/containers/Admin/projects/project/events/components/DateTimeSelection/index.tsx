@@ -47,7 +47,6 @@ const DateTimeSelection = ({
 
     if (newEndAtDateIsBeforeStartDate) {
       const currentDifference = endAtDate.getTime() - startAtDate.getTime();
-
       newStartAtDate = new Date(date.getTime() - currentDifference);
     }
 

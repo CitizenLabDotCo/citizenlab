@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 // eslint-disable-next-line no-restricted-imports
 import Tippy from '@tippyjs/react';
@@ -29,7 +29,7 @@ const useActiveElement = () => {
     return () => {
       document.removeEventListener('click', handleOutsideClick);
     };
-  });
+  }, []);
 
   useEffect(() => {
     document.addEventListener('focusin', handleFocusIn);
@@ -41,6 +41,29 @@ const useActiveElement = () => {
   return active;
 };
 
+const PLUGINS = [
+  {
+    name: 'hideOnEsc',
+    defaultValue: true,
+    fn({ hide }) {
+      function onKeyDown(event: KeyboardEvent) {
+        if (event.key === 'Escape') {
+          hide();
+        }
+      }
+
+      return {
+        onShow() {
+          document.addEventListener('keydown', onKeyDown);
+        },
+        onHide() {
+          document.removeEventListener('keydown', onKeyDown);
+        },
+      };
+    },
+  },
+];
+
 const TippyComponent = ({
   children,
   theme,
@@ -50,6 +73,7 @@ const TippyComponent = ({
   setIsFocused,
   setKey,
   tooltipId,
+  onHidden,
   ...rest
 }: {
   children: React.ReactNode;
@@ -61,39 +85,20 @@ const TippyComponent = ({
   setKey: React.Dispatch<React.SetStateAction<number>>;
   tooltipId: React.MutableRefObject<string>;
 } & TooltipProps) => {
+  const handleOnHidden = useCallback(() => {
+    setIsFocused(undefined);
+    setKey((prev) => prev + 1);
+  }, [setIsFocused, setKey]);
+
   return (
     <Tippy
       key={componentKey}
-      plugins={[
-        {
-          name: 'hideOnEsc',
-          defaultValue: true,
-          fn({ hide }) {
-            function onKeyDown(event: KeyboardEvent) {
-              if (event.key === 'Escape') {
-                hide();
-              }
-            }
-
-            return {
-              onShow() {
-                document.addEventListener('keydown', onKeyDown);
-              },
-              onHide() {
-                document.removeEventListener('keydown', onKeyDown);
-              },
-            };
-          },
-        },
-      ]}
+      plugins={PLUGINS}
       interactive={true}
       role="tooltip"
       visible={isFocused}
       // Ensures tippy works with both keyboard and mouse
-      onHidden={() => {
-        setIsFocused(undefined);
-        setKey((prev) => prev + 1);
-      }}
+      onHidden={onHidden ?? handleOnHidden}
       theme={theme}
       {...rest}
     >

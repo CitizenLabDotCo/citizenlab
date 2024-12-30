@@ -60,6 +60,7 @@ const TimeInput = ({ selectedDate, onChange }: Props) => {
       duration={[200, 0]}
       visible={visible}
       onClickOutside={() => setVisible(false)}
+      onHidden={() => setVisible(false)}
       content={
         <Box
           ref={scrollContainerRef}
