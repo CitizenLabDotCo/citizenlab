@@ -5,10 +5,6 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 import styled from 'styled-components';
 
-export { default as SortableList } from './SortableList';
-export { default as SortableRow } from './SortableRow';
-export { default as LockedRow } from './LockedRow';
-
 const StyledList = styled.div`
   display: flex;
   flex-direction: column;

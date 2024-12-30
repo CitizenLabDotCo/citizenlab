@@ -10,12 +10,10 @@ import useReorderIdeaStatus from 'api/idea_statuses/useReorderIdeaStatus';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { ButtonWrapper } from 'components/admin/PageWrapper';
-import {
-  LockedRow,
-  SortableList,
-  SortableRow,
-  TextCell,
-} from 'components/admin/ResourceList';
+import { TextCell } from 'components/admin/ResourceList';
+import LockedRow from 'components/admin/ResourceList/LockedRow';
+import SortableList from 'components/admin/ResourceList/SortableList';
+import SortableRow from 'components/admin/ResourceList/SortableRow';
 import {
   Section,
   SectionTitle,

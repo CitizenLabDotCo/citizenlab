@@ -148,8 +148,11 @@ const config = {
       async: isDev,
       typescript: {
         configFile: path.join(process.cwd(), 'app/tsconfig.json'),
+        memoryLimit: 4096,
       },
-      logger: { infrastructure: !!argv.json ? 'silent' : 'console' }, // silent when trying to profile the chunks sizes
+      logger: !!argv.json
+      ? { error: () => {}, warn: () => {}, info: () => {} } // Silent when trying to profile the chunks sizes
+      : console, // Use the default `console` logger
     }),
 
     new CleanWebpackPlugin(),
