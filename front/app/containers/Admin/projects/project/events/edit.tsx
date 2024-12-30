@@ -65,6 +65,9 @@ const AdminProjectEventEdit = () => {
     id: string;
     projectId: string;
   };
+
+  const isCreatingNewEvent = !id;
+
   const { width, containerRef } = useContainerWidthAndHeight();
   const { formatMessage } = useIntl();
   const theme = useTheme();
@@ -92,7 +95,9 @@ const AdminProjectEventEdit = () => {
   const [submitState, setSubmitState] = useState<SubmitState>('disabled');
   const [eventFiles, setEventFiles] = useState<UploadFile[]>([]);
 
-  const [attributeDiff, setAttributeDiff] = useState<IEventProperties>({});
+  const [attributeDiff, setAttributeDiff] = useState<IEventProperties>(
+    isCreatingNewEvent ? initializeEventTimes() : {}
+  );
 
   const [attendanceOptionsVisible, setAttendanceOptionsVisible] =
     useState(false);
@@ -123,14 +128,6 @@ const AdminProjectEventEdit = () => {
         ...attributeDiff,
       }
     : { ...attributeDiff };
-
-  useEffect(() => {
-    // Check that the event has loaded and only then can we be sure if we are creating a new one or using an existing one
-    if (!isInitialLoading) {
-      if (event) return;
-      setAttributeDiff(initializeEventTimes());
-    }
-  }, [event, isInitialLoading]);
 
   // Set image value to remote image if present
   useEffect(() => {
