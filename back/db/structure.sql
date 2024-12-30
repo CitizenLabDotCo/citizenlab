@@ -340,7 +340,6 @@ DROP INDEX IF EXISTS public.index_common_passwords_on_password;
 DROP INDEX IF EXISTS public.index_comments_on_rgt;
 DROP INDEX IF EXISTS public.index_comments_on_parent_id;
 DROP INDEX IF EXISTS public.index_comments_on_lft;
-DROP INDEX IF EXISTS public.index_comments_on_idea_id_and_post_type;
 DROP INDEX IF EXISTS public.index_comments_on_idea_id;
 DROP INDEX IF EXISTS public.index_comments_on_created_at;
 DROP INDEX IF EXISTS public.index_comments_on_author_id;
@@ -1497,7 +1496,6 @@ CREATE TABLE public.comments (
     publication_status character varying DEFAULT 'published'::character varying NOT NULL,
     body_updated_at timestamp without time zone,
     children_count integer DEFAULT 0 NOT NULL,
-    post_type character varying,
     author_hash character varying,
     anonymous boolean DEFAULT false NOT NULL
 );
@@ -4775,13 +4773,6 @@ CREATE INDEX index_comments_on_idea_id ON public.comments USING btree (idea_id);
 
 
 --
--- Name: index_comments_on_idea_id_and_post_type; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_comments_on_idea_id_and_post_type ON public.comments USING btree (idea_id, post_type);
-
-
---
 -- Name: index_comments_on_lft; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -7716,10 +7707,11 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20241203151945'),
 ('20241204133717'),
 ('20241204144321'),
-('20241220103433'),
 ('20241224115952'),
 ('20241226093506'),
+('20241227103433'),
 ('20241230165323'),
-('20241230165518');
+('20241230165518'),
+('20241230172612');
 
 

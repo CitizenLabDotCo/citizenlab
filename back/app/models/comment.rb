@@ -18,19 +18,17 @@
 #  publication_status :string           default("published"), not null
 #  body_updated_at    :datetime
 #  children_count     :integer          default(0), not null
-#  post_type          :string
 #  author_hash        :string
 #  anonymous          :boolean          default(FALSE), not null
 #
 # Indexes
 #
-#  index_comments_on_author_id              (author_id)
-#  index_comments_on_created_at             (created_at)
-#  index_comments_on_idea_id                (idea_id)
-#  index_comments_on_idea_id_and_post_type  (idea_id,post_type)
-#  index_comments_on_lft                    (lft)
-#  index_comments_on_parent_id              (parent_id)
-#  index_comments_on_rgt                    (rgt)
+#  index_comments_on_author_id   (author_id)
+#  index_comments_on_created_at  (created_at)
+#  index_comments_on_idea_id     (idea_id)
+#  index_comments_on_lft         (lft)
+#  index_comments_on_parent_id   (parent_id)
+#  index_comments_on_rgt         (rgt)
 #
 # Foreign Keys
 #
