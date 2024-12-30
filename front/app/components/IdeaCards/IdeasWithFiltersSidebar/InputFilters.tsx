@@ -22,11 +22,9 @@ import ResetFiltersButton from './ResetFiltersButton';
 
 export interface InputFiltersProps {
   defaultValue?: string;
-  filtersActive: boolean;
   ideasFilterCounts: IIdeasFilterCounts | NilOrError;
   numberOfSearchResults: number;
-  ideaQueryParameters: Partial<IIdeaQueryParameters>;
-  onClearFilters: () => void;
+  ideaQueryParameters: IIdeaQueryParameters;
   onSearch: (searchTerm: string) => void;
   onChangeStatus: (ideaStatus: string | null) => void;
   onChangeTopics: (topics: string[] | null) => void;
@@ -39,12 +37,10 @@ export interface InputFiltersProps {
 
 const InputFilters = ({
   defaultValue,
-  filtersActive,
   ideasFilterCounts,
   numberOfSearchResults,
   ideaQueryParameters,
   phaseId,
-  onClearFilters,
   showResetButton = true,
   showStatusFilter = true,
   showSearchField = true,
@@ -101,10 +97,7 @@ const InputFilters = ({
       )}
       {showResetButton && (
         <Box mt="8px">
-          <ResetFiltersButton
-            onClick={onClearFilters}
-            filtersActive={filtersActive}
-          />
+          <ResetFiltersButton ideaQueryParameters={ideaQueryParameters} />
         </Box>
       )}
     </>

@@ -3,6 +3,8 @@ import React from 'react';
 import { useTheme } from 'styled-components';
 import { SupportedLocale } from 'typings';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
 import useAppConfigurationLocales, {
   createMultiloc,
 } from 'hooks/useAppConfigurationLocales';
@@ -70,6 +72,8 @@ import Spotlight, {
 } from '../Widgets/Spotlight';
 import TextMultiloc, { textMultilocTitle } from '../Widgets/TextMultiloc';
 
+import { platformCreatedBeforeReleaseNewWidgets } from './utils';
+
 type HomepageBuilderToolboxProps = {
   selectedLocale: SupportedLocale;
 };
@@ -82,8 +86,9 @@ const HomepageBuilderToolbox = ({
   const formatMessageWithLocale = useFormatMessageWithLocale();
   const appConfigurationLocales = useAppConfigurationLocales();
   const followEnabled = useFeatureFlag({ name: 'follow' });
+  const { data: appConfiguration } = useAppConfiguration();
 
-  if (!appConfigurationLocales) return null;
+  if (!appConfigurationLocales || !appConfiguration) return null;
 
   const toMultiloc = (message: MessageDescriptor) => {
     return createMultiloc(appConfigurationLocales, (locale) => {
@@ -151,7 +156,10 @@ const HomepageBuilderToolbox = ({
         <DraggableElement
           id="e2e-draggable-spotlight"
           component={
-            <Spotlight buttonTextMultiloc={toMultiloc(buttonTextDefault)} />
+            <Spotlight
+              buttonTextMultiloc={toMultiloc(buttonTextDefault)}
+              hideAvatars={false}
+            />
           }
           icon="flash"
           label={formatMessage(spotlightTitle)}
@@ -180,12 +188,6 @@ const HomepageBuilderToolbox = ({
           label={formatMessage(messages.eventsTitle)}
         />
         <DraggableElement
-          id="e2e-draggable-image-text-cards"
-          component={<ImageTextCards />}
-          icon="section-image-text"
-          label={formatMessage(messages.imageTextCards)}
-        />
-        <DraggableElement
           id="e2e-draggable-call-to-action"
           component={
             <CallToAction primaryButtonText={{}} secondaryButtonText={{}} />
@@ -193,18 +195,22 @@ const HomepageBuilderToolbox = ({
           icon="button"
           label={formatMessage(callToActionTitle)}
         />
-        <DraggableElement
-          id="e2e-draggable-projects"
-          component={
-            <ProjectsAndFoldersLegacy
-              currentlyWorkingOnText={toMultiloc(
-                projectsMessages.projectsTitlePlaceholder
-              )}
-            />
-          }
-          icon="projects"
-          label={formatMessage(projectsAndFoldersLegacyTitle)}
-        />
+        {platformCreatedBeforeReleaseNewWidgets(
+          appConfiguration.data.attributes.created_at
+        ) && (
+          <DraggableElement
+            id="e2e-draggable-projects"
+            component={
+              <ProjectsAndFoldersLegacy
+                currentlyWorkingOnText={toMultiloc(
+                  projectsMessages.projectsTitlePlaceholder
+                )}
+              />
+            }
+            icon="projects"
+            label={formatMessage(projectsAndFoldersLegacyTitle)}
+          />
+        )}
       </Section>
       <Section>
         <DraggableElement
@@ -264,10 +270,16 @@ const HomepageBuilderToolbox = ({
           label={formatMessage(twoColumnTitle)}
         />
         <DraggableElement
-          id="e2e-draggable-two-column"
+          id="e2e-draggable-three-column"
           component={<ThreeColumn />}
           icon="layout-3column"
           label={formatMessage(threeColumnTitle)}
+        />
+        <DraggableElement
+          id="e2e-draggable-image-text-cards"
+          component={<ImageTextCards />}
+          icon="section-image-text"
+          label={formatMessage(messages.imageTextCards)}
         />
       </Section>
     </Container>
