@@ -66,6 +66,7 @@ const DateTimeSelection = ({
         <Box display="flex" flexDirection="row">
           <DateSinglePicker
             selectedDate={startAtDate}
+            placement="top"
             onChange={(date) => {
               const h = startAtDate.getHours();
               const m = startAtDate.getMinutes();
