@@ -15,7 +15,7 @@
     "prebuild": "npm run build:clean",
     "build-vite": "NODE_OPTIONS='--max-old-space-size=4096' vite build --mode production --logLevel info",
     "build": "cross-env NODE_ENV=production NODE_OPTIONS='--max-old-space-size=4096' webpack --config internals/webpack/webpack.config.js --color",
-    "build:test": " cross-env NODE_ENV=test NODE_OPTIONS='--max-old-space-size=4096' vite build --mode production",
+    "build:test": "cross-env NODE_ENV=test NODE_OPTIONS='--max-old-space-size=4096' vite build --mode production",
     "build:clean": "rimraf ./build",
     "preview": "NODE_OPTIONS='--max-old-space-size=4096' BUG=* vite preview --logLevel info",
     "start": "vite --mode development",
