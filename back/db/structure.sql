@@ -2805,8 +2805,7 @@ UNION ALL
    FROM (((public.comments
      LEFT JOIN public.moderation_moderation_statuses ON ((moderation_moderation_statuses.moderatable_id = comments.id)))
      LEFT JOIN public.ideas ON ((ideas.id = comments.idea_id)))
-     LEFT JOIN public.projects ON ((projects.id = ideas.project_id)))
-  WHERE ((comments.post_type)::text = 'Idea'::text);
+     LEFT JOIN public.projects ON ((projects.id = ideas.project_id)));
 
 
 --
@@ -7758,6 +7757,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20241204144321'),
 ('20241220103433'),
 ('20241224115952'),
-('20241226093506');
+('20241226093506'),
+('20241230165323');
 
 

@@ -19,7 +19,7 @@
 #  slug                     :string
 #  official_feedbacks_count :integer
 #
-class UnionPost < ApplicationRecord
+class UnionPost < ApplicationRecord # TODO: DELETE!
   self.primary_key = 'id'
 
   has_many :comments
